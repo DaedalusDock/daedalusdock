@@ -72,7 +72,8 @@
 	return TRUE
 
 /datum/keybinding/mob/toggle_move_intent
-	hotkey_keys = list("Alt") //PARIAH EDIT CHANGE - COMBAT_INDICATOR
+	//hotkey_keys = list("C") ORIGINAL
+	hotkey_keys = list("Alt") //PARIAH EDIT - combat_indicator module
 	name = "toggle_move_intent"
 	full_name = "Hold to toggle move intent"
 	description = "Held down to cycle to the other move intent, release to cycle back"
@@ -92,7 +93,8 @@
 	return TRUE
 
 /datum/keybinding/mob/toggle_move_intent_alternative
-	hotkey_keys = list("Unbound")
+	//hotkey_keys = list("Alt") //ORIGINAL
+	hotkey_keys = list("Unbound") //PARIAH EDIT - combat_indicator module
 	name = "toggle_move_intent_alt"
 	full_name = "press to cycle move intent"
 	description = "Pressing this cycle to the opposite move intent, does not cycle back"

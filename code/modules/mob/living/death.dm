@@ -91,7 +91,7 @@
 	med_hud_set_status()
 	stop_pulling()
 
-	set_combat_indicator(FALSE) //PARIAH EDIT ADDITION - COMBAT_INDICATOR
+	set_combat_indicator(FALSE) //PARIAH EDIT - combat_indicator module
 
 	SEND_SIGNAL(src, COMSIG_LIVING_DEATH, gibbed)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_DEATH, src, gibbed)

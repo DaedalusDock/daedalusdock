@@ -3,7 +3,6 @@
 //General
 #define COMSIG_KB_ACTIVATED (1<<0)
 #define COMSIG_KB_EMOTE "keybinding_emote_down"
-#define COMSIG_KB_LIVING_COMBAT_INDICATOR "keybinding_living_combat_indicator"
 
 //Admin
 #define COMSIG_KB_ADMIN_ASAY_DOWN "keybinding_admin_asay_down"

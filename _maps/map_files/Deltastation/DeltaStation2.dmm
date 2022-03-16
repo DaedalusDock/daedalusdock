@@ -886,10 +886,25 @@
 	dir = 1
 	},
 /area/engineering/atmos/mix)
+<<<<<<< HEAD
 "ahN" = (
 /obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
+=======
+"ahM" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron,
+/area/maintenance/department/crew_quarters/bar)
+"ahN" = (
+/obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/engineering/atmos)
 "ahR" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1274,6 +1289,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
+<<<<<<< HEAD
 "apX" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 1
@@ -1281,6 +1297,8 @@
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "aqa" = (
 /obj/structure/reagent_dispensers/fueltank,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
@@ -1591,10 +1609,13 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
 /area/maintenance/starboard/aft)
+<<<<<<< HEAD
 "aub" = (
 /obj/structure/sign/poster/contraband/random,
 /turf/closed/wall,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "auf" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -2099,6 +2120,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/circuit/green,
 /area/ai_monitored/turret_protected/ai)
+<<<<<<< HEAD
 "aCd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/siding/wood/corner{
@@ -2112,6 +2134,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "aCv" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -2171,6 +2195,7 @@
 	},
 /turf/open/space/basic,
 /area/space)
+<<<<<<< HEAD
 "aDm" = (
 /obj/structure/reagent_dispensers/fueltank,
 /obj/structure/sign/poster/random{
@@ -2178,6 +2203,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "aDu" = (
 /obj/machinery/door/airlock/grunge{
 	name = "Crematorium";
@@ -2900,6 +2927,7 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)
+<<<<<<< HEAD
 "aLQ" = (
 /obj/structure/table/reinforced,
 /obj/item/flashlight/lamp,
@@ -2915,6 +2943,37 @@
 /obj/machinery/airalarm/directional/east,
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
 /turf/open/floor/iron,
+=======
+"aLz" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/yellow{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/yellow,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron,
+/area/commons/lounge)
+"aLQ" = (
+/obj/structure/table/reinforced,
+/obj/item/flashlight/lamp,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/turret_protected/ai)
+"aLV" = (
+/obj/item/kirbyplants/random,
+/obj/machinery/light/directional/east,
+/obj/machinery/camera/directional/east{
+	c_tag = "Security Post - Cargo"
+	},
+/obj/machinery/airalarm/directional/east,
+/obj/effect/turf_decal/tile/red/anticorner/contrasted,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/security/checkpoint/supply)
 "aLX" = (
 /obj/structure/chair/sofa/bench/right{
@@ -3368,6 +3427,18 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/carpet,
 /area/service/chapel/office)
+<<<<<<< HEAD
+=======
+"aQL" = (
+/obj/machinery/computer/med_data{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/obj/machinery/light/small/directional/south,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron/dark,
+/area/security/checkpoint/customs/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "aQW" = (
 /obj/structure/table/glass,
 /obj/item/reagent_containers/glass/bottle/morphine,
@@ -4859,12 +4930,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "bjP" = (
 /obj/effect/landmark/start/hangover,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "bjV" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/command{
@@ -5310,6 +5384,21 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/hallway/secondary/service)
+"brd" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/directional/north,
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron{
+	heat_capacity = 1e+006
+	},
+/area/commons/vacant_room/commissary)
 "bre" = (
 /obj/machinery/light/directional/west,
 /obj/structure/sign/warning/electricshock{
@@ -5891,19 +5980,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
-"bxX" = (
-/obj/machinery/door/firedoor,
-/obj/machinery/door/airlock/medical{
-	name = "Surgery Observation"
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/medical/surgery/theatre)
 "bxZ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
@@ -6021,6 +6097,14 @@
 	},
 /turf/open/floor/iron,
 /area/security/brig)
+"byQ" = (
+/obj/effect/landmark/start/hangover,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
 "byZ" = (
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/green{
@@ -7244,6 +7328,10 @@
 /obj/structure/sign/nanotrasen,
 /turf/closed/wall/r_wall,
 /area/security/checkpoint/engineering)
+"bOo" = (
+/obj/effect/turf_decal/tile/brown/half/contrasted,
+/turf/open/floor/iron,
+/area/cargo/lobby)
 "bOv" = (
 /obj/structure/chair/wood,
 /turf/open/floor/wood,
@@ -8112,6 +8200,14 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/port)
+<<<<<<< HEAD
+=======
+"bWV" = (
+/obj/effect/turf_decal/bot,
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "bWX" = (
 /turf/open/floor/circuit/green/telecomms/mainframe,
 /area/tcommsat/server)
@@ -8826,6 +8922,7 @@
 "cdt" = (
 /turf/closed/wall/r_wall,
 /area/ai_monitored/turret_protected/ai_upload)
+<<<<<<< HEAD
 "cdU" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -8835,6 +8932,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cdZ" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -8849,6 +8948,7 @@
 	},
 /obj/effect/turf_decal/tile/purple/anticorner/contrasted{
 	dir = 1
+<<<<<<< HEAD
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos)
@@ -8865,6 +8965,24 @@
 	dir = 8
 	},
 /turf/open/floor/iron,
+=======
+	},
+/turf/open/floor/iron,
+/area/engineering/atmos)
+"ces" = (
+/obj/structure/table/reinforced,
+/obj/item/clipboard,
+/obj/item/mining_voucher,
+/obj/machinery/light/directional/west,
+/obj/machinery/camera/directional/west{
+	c_tag = "Auxiliary Construction - Storage";
+	name = "engineering camera"
+	},
+/obj/effect/turf_decal/tile/yellow/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/construction/mining/aux_base)
 "cev" = (
 /obj/structure/cable,
@@ -9886,6 +10004,7 @@
 	heat_capacity = 1e+006
 	},
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "cpB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/hangover/closet,
@@ -9901,6 +10020,8 @@
 	},
 /turf/open/floor/wood,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cpI" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/delivery,
@@ -10554,6 +10675,21 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron,
 /area/medical/virology)
+<<<<<<< HEAD
+=======
+"cwv" = (
+/obj/structure/table,
+/obj/item/storage/secure/briefcase,
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron,
+/area/commons/vacant_room/commissary)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cwD" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -10687,6 +10823,14 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+<<<<<<< HEAD
+=======
+"cys" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/crew_quarters/bar)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cyt" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -10870,10 +11014,24 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
+<<<<<<< HEAD
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/science/research/abandoned)
+=======
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/science/research/abandoned)
+"cAN" = (
+/obj/machinery/light/directional/south,
+/obj/machinery/modular_computer/console/preset/curator{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/service/library)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cAT" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -11038,6 +11196,7 @@
 	icon_state = "chapel"
 	},
 /area/service/chapel)
+<<<<<<< HEAD
 "cDI" = (
 /obj/structure/easel,
 /obj/item/canvas/twentythree_twentythree,
@@ -11046,6 +11205,8 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cDN" = (
 /obj/machinery/disposal/bin,
 /obj/machinery/light/directional/south,
@@ -11239,6 +11400,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
 "cGY" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment{
@@ -11247,6 +11409,31 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
+=======
+"cGU" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment{
+	dir = 6
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/structure/sign/nanotrasen{
+	pixel_y = 32
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
+"cGY" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/maintenance/port/greater)
 "cHc" = (
 /obj/machinery/door/firedoor,
@@ -11432,6 +11619,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/commons/toilet/locker)
+<<<<<<< HEAD
 "cJL" = (
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/ywflowers,
@@ -11439,6 +11627,8 @@
 /obj/structure/flora/rock/pile,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cJP" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/line{
@@ -12763,6 +12953,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/medical/surgery/theatre)
+<<<<<<< HEAD
+=======
+"cUb" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/turf/open/floor/iron/freezer,
+/area/service/kitchen/coldroom)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cUd" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -13811,6 +14010,19 @@
 /obj/item/bot_assembly/medbot,
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
+<<<<<<< HEAD
+=======
+"cZT" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "cZW" = (
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -15041,6 +15253,7 @@
 /obj/machinery/newscaster/directional/south,
 /turf/open/floor/wood,
 /area/command/meeting_room/council)
+<<<<<<< HEAD
 "dhg" = (
 /obj/structure/table,
 /obj/item/storage/secure/briefcase,
@@ -15052,8 +15265,17 @@
 	},
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
+=======
+"dhi" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 	},
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
+<<<<<<< HEAD
 /area/commons/vacant_room/commissary)
 "dhi" = (
 /obj/structure/disposalpipe/segment{
@@ -15063,6 +15285,8 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/security/office)
 "dhm" = (
 /obj/machinery/camera/directional/north{
@@ -15257,6 +15481,9 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/command/heads_quarters/hos)
+"diy" = (
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "diE" = (
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
@@ -15760,6 +15987,20 @@
 /obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
+<<<<<<< HEAD
+=======
+"dlJ" = (
+/obj/structure/disposalpipe/segment,
+/obj/structure/cable,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "dlM" = (
 /turf/closed/wall,
 /area/science/robotics/mechbay)
@@ -16473,6 +16714,7 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "drz" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
@@ -16486,6 +16728,8 @@
 /obj/item/pen,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "drG" = (
 /obj/machinery/light/directional/south,
 /obj/structure/reagent_dispensers/water_cooler,
@@ -18351,6 +18595,14 @@
 /obj/machinery/light_switch/directional/north,
 /turf/open/floor/plating,
 /area/security/detectives_office/private_investigators_office)
+<<<<<<< HEAD
+=======
+"dFA" = (
+/obj/effect/landmark/event_spawn,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "dFF" = (
 /obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
@@ -18838,6 +19090,12 @@
 /obj/machinery/light_switch/directional/south,
 /turf/open/floor/plating,
 /area/medical/morgue)
+"dJh" = (
+/obj/structure/flora/ausbushes/grassybush,
+/obj/structure/flora/rock/jungle,
+/obj/machinery/light/floor,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "dJo" = (
 /obj/effect/turf_decal/tile/green,
 /obj/structure/extinguisher_cabinet/directional/south,
@@ -18907,6 +19165,16 @@
 	},
 /turf/open/floor/iron,
 /area/security/checkpoint/escape)
+<<<<<<< HEAD
+=======
+"dJN" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/bot,
+/obj/structure/closet/firecloset,
+/obj/structure/sign/poster/official/random/directional/west,
+/turf/open/floor/iron/dark,
+/area/hallway/primary/port)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "dJQ" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -21135,6 +21403,15 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/surgery/aft)
+<<<<<<< HEAD
+=======
+"eaw" = (
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "eay" = (
 /obj/machinery/hydroponics/constructable,
 /obj/effect/turf_decal/tile/blue{
@@ -21311,6 +21588,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
 "eby" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/random{
@@ -21318,6 +21596,8 @@
 	},
 /turf/open/floor/wood,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ebz" = (
 /obj/machinery/iv_drip,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -22620,6 +22900,17 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/security/checkpoint/customs/aft)
+"elE" = (
+/obj/structure/sign/poster/random{
+	pixel_y = 32
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/rack,
+/obj/effect/turf_decal/bot,
+/obj/item/integrated_circuit/loaded/speech_relay,
+/obj/item/integrated_circuit/loaded/hello_world,
+/turf/open/floor/iron/dark,
+/area/science/misc_lab)
 "elJ" = (
 /obj/structure/sign/warning/radiation,
 /turf/closed/wall/r_wall,
@@ -22658,12 +22949,15 @@
 /obj/item/storage/wallet/random,
 /turf/open/floor/wood,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
 "emm" = (
 /obj/structure/flora/ausbushes/brflowers,
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/grassybush,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "emw" = (
 /obj/structure/filingcabinet/security,
 /turf/open/floor/carpet,
@@ -23080,6 +23374,16 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/engineering/storage/tech)
+<<<<<<< HEAD
+=======
+"ese" = (
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "esi" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/start/hangover,
@@ -23601,11 +23905,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/service/abandoned_gambling_den)
+<<<<<<< HEAD
 "eBW" = (
 /obj/effect/landmark/event_spawn,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "eCk" = (
 /obj/machinery/porta_turret/ai,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -24234,12 +24541,26 @@
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "eLo" = (
 /obj/structure/chair,
 /obj/machinery/light/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/medical/surgery/theatre)
+=======
+"eLc" = (
+/obj/machinery/hydroponics/constructable,
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron,
+/area/service/hydroponics)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "eLz" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -24264,6 +24585,14 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/checker,
 /area/service/janitor)
+"eLI" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/rack,
+/obj/item/stack/ducts/fifty,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
 "eLM" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral{
@@ -24532,6 +24861,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron/grimy,
 /area/command/corporate_showroom)
+<<<<<<< HEAD
+=======
+"ePR" = (
+/obj/structure/flora/ausbushes/genericbush,
+/obj/structure/flora/ausbushes/pointybush,
+/obj/structure/flora/ausbushes/lavendergrass,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ePW" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -24561,11 +24899,14 @@
 	},
 /turf/open/floor/iron,
 /area/commons/toilet/locker)
+<<<<<<< HEAD
 "eQg" = (
 /obj/structure/flora/ausbushes/reedbush,
 /obj/structure/flora/ausbushes/leafybush,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "eQr" = (
 /turf/open/floor/circuit/green,
 /area/ai_monitored/command/nuke_storage)
@@ -25061,6 +25402,14 @@
 /obj/structure/grille,
 /turf/closed/wall/r_wall,
 /area/engineering/atmos)
+<<<<<<< HEAD
+=======
+"eYF" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/chair,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "eZg" = (
 /obj/structure/table/glass,
 /obj/item/stack/medical/suture,
@@ -25314,6 +25663,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/central/aft)
+<<<<<<< HEAD
 "fce" = (
 /obj/structure/chair{
 	dir = 8
@@ -25331,6 +25681,8 @@
 	dir = 4
 	},
 /area/engineering/lobby)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fcg" = (
 /obj/structure/table/wood,
 /obj/item/clothing/under/costume/geisha,
@@ -25684,6 +26036,18 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/tcommsat/server)
+<<<<<<< HEAD
+=======
+"fgF" = (
+/obj/structure/disposalpipe/segment{
+	dir = 10
+	},
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fgO" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -26128,6 +26492,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
+<<<<<<< HEAD
 "fod" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/rods/fifty,
@@ -26145,6 +26510,13 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
+=======
+"foe" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -26782,6 +27154,7 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+<<<<<<< HEAD
 "fyg" = (
 /obj/structure/chair,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -26789,6 +27162,8 @@
 /obj/machinery/newscaster/directional/east,
 /turf/open/floor/iron/dark,
 /area/medical/surgery/theatre)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fyh" = (
 /obj/machinery/computer/mecha{
 	dir = 8
@@ -26842,6 +27217,16 @@
 /obj/machinery/light_switch/directional/east,
 /turf/open/floor/iron,
 /area/engineering/hallway)
+<<<<<<< HEAD
+=======
+"fzf" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fzh" = (
 /obj/structure/closet/toolcloset,
 /obj/effect/turf_decal/bot,
@@ -26983,6 +27368,7 @@
 /turf/open/floor/iron/dark,
 /area/service/kitchen)
 "fBQ" = (
+<<<<<<< HEAD
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/table/reinforced,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
@@ -27001,6 +27387,35 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 9
 	},
+=======
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/table/reinforced,
+/obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
+	dir = 4
+	},
+/obj/item/stack/package_wrap,
+/obj/item/stack/package_wrap,
+/obj/item/hand_labeler,
+/obj/effect/turf_decal/bot,
+/turf/open/floor/iron/dark,
+/area/engineering/atmos)
+"fBR" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
+"fBY" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 9
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron/dark,
 /area/engineering/transit_tube)
 "fCk" = (
@@ -27397,6 +27812,7 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
 "fIg" = (
 /obj/machinery/light/directional/east,
 /obj/machinery/conveyor_switch/oneway{
@@ -27414,6 +27830,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fIm" = (
 /obj/machinery/hydroponics/constructable,
 /obj/effect/turf_decal/trimline/green/end{
@@ -27430,6 +27848,7 @@
 	dir = 8
 	},
 /area/service/hydroponics/garden)
+<<<<<<< HEAD
 "fIs" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -27439,6 +27858,8 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fIw" = (
 /obj/structure/window/reinforced{
 	dir = 1
@@ -28093,6 +28514,7 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos)
+<<<<<<< HEAD
 "fSA" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/decal/cleanable/dirt,
@@ -28105,6 +28527,8 @@
 	},
 /turf/open/floor/plating,
 /area/service/abandoned_gambling_den)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fSE" = (
 /obj/structure/closet/athletic_mixed,
 /obj/machinery/light/small/directional/east,
@@ -28146,6 +28570,7 @@
 /turf/open/floor/plating,
 /area/service/library/abandoned)
 "fTg" = (
+<<<<<<< HEAD
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/airlock/security{
@@ -28194,9 +28619,47 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/airlock/security{
+	name = "Private Interrogation";
+	req_access_txt = "4"
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/detectives_office)
+"fTm" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/disposalpipe/segment,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
 /turf/open/floor/iron,
-/area/medical/surgery/theatre)
+/area/maintenance/disposal)
+"fTn" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/landmark/blobstart,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/maintenance/port/greater)
+"fTq" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/spawner/random/maintenance,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/turf/open/floor/iron,
+/area/maintenance/starboard/aft)
 "fTu" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -28212,6 +28675,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
+<<<<<<< HEAD
+=======
+"fTH" = (
+/obj/machinery/vending/wardrobe/bar_wardrobe,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/checker,
+/area/service/bar)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fTK" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -28271,12 +28742,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hos)
+<<<<<<< HEAD
 "fUF" = (
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/junglebush/large,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "fUJ" = (
 /obj/machinery/shieldgen,
 /obj/effect/decal/cleanable/dirt,
@@ -29067,6 +29541,7 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/lobby)
+<<<<<<< HEAD
 "ggM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -29078,6 +29553,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/port)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ggT" = (
 /turf/closed/wall,
 /area/commons/vacant_room)
@@ -29307,12 +29784,15 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
+<<<<<<< HEAD
 "gjX" = (
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/rock/jungle,
 /obj/machinery/light/floor,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gjY" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/command{
@@ -29548,6 +30028,16 @@
 	heat_capacity = 1e+006
 	},
 /area/maintenance/port/greater)
+<<<<<<< HEAD
+=======
+"gnD" = (
+/obj/structure/disposalpipe/segment,
+/obj/structure/cable,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gnF" = (
 /obj/machinery/vending/cigarette,
 /obj/effect/turf_decal/tile/purple{
@@ -30233,6 +30723,7 @@
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
 /turf/open/floor/iron,
 /area/engineering/lobby)
+<<<<<<< HEAD
 "gxs" = (
 /obj/structure/sign/poster/random{
 	pixel_y = 32
@@ -30244,6 +30735,8 @@
 /obj/item/integrated_circuit/loaded/hello_world,
 /turf/open/floor/iron/dark,
 /area/science/misc_lab)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gxy" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -30288,6 +30781,14 @@
 /obj/item/pen,
 /turf/open/floor/wood,
 /area/service/library/abandoned)
+"gye" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 4
+	},
+/obj/effect/spawner/random/structure/closet_private,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
 "gyy" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -30381,6 +30882,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/engineering/hallway)
+"gzz" = (
+/obj/effect/spawner/random/trash/hobo_squat,
+/obj/effect/spawner/random/trash/cigbutt,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
+/area/maintenance/department/crew_quarters/bar)
 "gzE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -30583,6 +31092,27 @@
 	},
 /turf/open/floor/iron,
 /area/security/warden)
+<<<<<<< HEAD
+=======
+"gCC" = (
+/obj/structure/disposalpipe/trunk,
+/obj/item/radio/intercom/directional/north,
+/obj/effect/turf_decal/tile/yellow{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/yellow,
+/obj/effect/turf_decal/tile/red{
+	dir = 8
+	},
+/obj/machinery/disposal/bin,
+/obj/effect/turf_decal/bot,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron,
+/area/commons/lounge)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gCD" = (
 /obj/structure/reflector/double,
 /turf/open/floor/plating,
@@ -30903,6 +31433,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/maintenance/department/science)
+<<<<<<< HEAD
+=======
+"gHc" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half/contrasted,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gHr" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/scrubbers/visible{
 	dir = 4
@@ -31003,6 +31541,7 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+<<<<<<< HEAD
 "gIx" = (
 /obj/structure/sign/poster/random{
 	pixel_x = 32
@@ -31012,6 +31551,8 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/department/crew_quarters/bar)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gIy" = (
 /obj/machinery/computer/prisoner/gulag_teleporter_computer{
 	dir = 1
@@ -31127,6 +31668,14 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
+=======
+"gKm" = (
+/obj/structure/flora/tree/jungle,
+/obj/structure/flora/ausbushes/fullgrass,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gKr" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -31461,6 +32010,7 @@
 	},
 /turf/open/floor/iron,
 /area/command/teleporter)
+<<<<<<< HEAD
 "gOP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -31470,6 +32020,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gOS" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -31947,6 +32499,22 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/cargo/storage)
+<<<<<<< HEAD
+=======
+"gWQ" = (
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/medical{
+	name = "Surgery Observation"
+	},
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "gWX" = (
 /obj/item/kirbyplants/random,
 /obj/machinery/light/small/directional/south,
@@ -32523,6 +33091,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/command/gateway)
+"hfh" = (
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/medical{
+	name = "Surgery Observation"
+	},
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
 "hfi" = (
 /obj/effect/decal/cleanable/oil,
 /turf/closed/wall/r_wall,
@@ -32601,6 +33182,13 @@
 	},
 /turf/open/floor/wood,
 /area/service/abandoned_gambling_den)
+"hgp" = (
+/obj/structure/flora/ausbushes/fullgrass,
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/rock/pile,
+/obj/machinery/light/floor,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "hgv" = (
 /obj/machinery/chem_dispenser,
 /obj/effect/turf_decal/stripes/line{
@@ -34017,12 +34605,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/security/courtroom)
+<<<<<<< HEAD
 "hBt" = (
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted{
 	dir = 1
 	},
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hBy" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
@@ -34376,6 +34967,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
+<<<<<<< HEAD
 "hHg" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -34384,6 +34976,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hHh" = (
 /obj/structure/cable,
 /obj/machinery/light/directional/north,
@@ -34821,6 +35415,7 @@
 "hML" = (
 /turf/closed/wall,
 /area/command/meeting_room/council)
+<<<<<<< HEAD
 "hMP" = (
 /obj/structure/cable,
 /obj/machinery/duct,
@@ -34830,6 +35425,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hMV" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -34854,6 +35451,13 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
+<<<<<<< HEAD
+=======
+"hNi" = (
+/obj/effect/turf_decal/bot,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hNj" = (
 /obj/structure/table/wood,
 /obj/machinery/microwave{
@@ -35322,6 +35926,12 @@
 /obj/structure/lattice/catwalk,
 /turf/open/space/basic,
 /area/space/nearstation)
+"hTB" = (
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/grassybush,
+/obj/structure/flora/junglebush/large,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "hTO" = (
 /obj/structure/sign/warning/nosmoking,
 /turf/closed/wall/r_wall,
@@ -35368,6 +35978,7 @@
 /obj/item/bedsheet/dorms,
 /turf/open/floor/iron/grimy,
 /area/commons/dorms)
+<<<<<<< HEAD
 "hUF" = (
 /obj/structure/sign/poster/official/random{
 	pixel_x = -32
@@ -35378,6 +35989,8 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/miningoffice)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hUS" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/public/glass{
@@ -35473,6 +36086,20 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"hWk" = (
+/obj/structure/table,
+/obj/item/paper_bin,
+/obj/item/pen,
+/obj/machinery/light/directional/west,
+/obj/item/radio/intercom/directional/west,
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "hWl" = (
 /obj/effect/spawner/random/trash/box,
 /obj/effect/spawner/random/food_or_drink/seed,
@@ -35987,6 +36614,16 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/textured,
 /area/engineering/storage)
+<<<<<<< HEAD
+=======
+"iev" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/structure/sign/poster/official/random/directional/west,
+/turf/open/floor/wood,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iez" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -36058,12 +36695,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
+<<<<<<< HEAD
 "ifv" = (
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/rock,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ifw" = (
 /obj/machinery/atmospherics/components/binary/pump/on{
 	name = "Air Outlet Pump"
@@ -36075,6 +36715,13 @@
 /obj/structure/bed/roller,
 /turf/open/floor/iron/white,
 /area/medical/treatment_center)
+"ifT" = (
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron/dark,
+/area/service/kitchen/abandoned)
 "ifY" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/delivery,
@@ -36165,6 +36812,14 @@
 	},
 /turf/open/floor/iron,
 /area/security/warden)
+<<<<<<< HEAD
+=======
+"igV" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood,
+/area/service/theater)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iha" = (
 /obj/effect/turf_decal/bot,
 /obj/item/radio/intercom/directional/north,
@@ -36340,6 +36995,7 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/research)
+<<<<<<< HEAD
 "ijD" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -36352,6 +37008,8 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ijL" = (
 /obj/structure/sign/poster/contraband/kudzu{
 	pixel_x = -32
@@ -37105,6 +37763,17 @@
 "itf" = (
 /turf/open/floor/iron/white,
 /area/medical/surgery/aft)
+<<<<<<< HEAD
+=======
+"itg" = (
+/obj/structure/disposalpipe/segment{
+	dir = 5
+	},
+/obj/effect/turf_decal/bot,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "itm" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/maintenance_hatch{
@@ -37132,10 +37801,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/maintenance/department/science)
+<<<<<<< HEAD
 "itA" = (
 /obj/structure/sign/poster/contraband/random,
 /turf/closed/wall,
 /area/service/kitchen/abandoned)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "itD" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -37209,6 +37881,7 @@
 	},
 /turf/open/floor/iron,
 /area/command/heads_quarters/cmo)
+<<<<<<< HEAD
 "iuz" = (
 /obj/machinery/hydroponics/constructable,
 /obj/effect/turf_decal/tile/blue{
@@ -37222,6 +37895,8 @@
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iuC" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/decal/cleanable/dirt,
@@ -37270,6 +37945,7 @@
 	icon_state = "wood-broken5"
 	},
 /area/service/library/abandoned)
+<<<<<<< HEAD
 "iww" = (
 /obj/structure/sign/poster/official/random{
 	pixel_x = -32
@@ -37279,6 +37955,22 @@
 	},
 /turf/open/floor/wood,
 /area/maintenance/port/fore)
+=======
+"iwx" = (
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/medical{
+	name = "Surgery Observation"
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iwS" = (
 /obj/structure/sign/warning/securearea{
 	pixel_x = 32
@@ -37371,6 +38063,7 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
+<<<<<<< HEAD
 "iyA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -37385,6 +38078,16 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+=======
+"iyQ" = (
+/obj/structure/chair/office{
+	dir = 4
+	},
+/obj/effect/landmark/start/security_officer,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 4
 	},
@@ -37642,6 +38345,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
+<<<<<<< HEAD
 "iBW" = (
 /obj/structure/table,
 /obj/item/paper_bin,
@@ -37661,6 +38365,16 @@
 	dir = 1
 	},
 /turf/open/floor/iron,
+=======
+"iCg" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/science/xenobiology)
 "iCs" = (
 /obj/structure/chair/sofa/bench/right{
@@ -37850,11 +38564,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/maintenance/department/electrical)
+<<<<<<< HEAD
 "iFf" = (
 /obj/structure/flora/ausbushes/sunnybush,
 /obj/structure/flora/junglebush/c,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iFm" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -37916,12 +38633,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/security/brig)
+<<<<<<< HEAD
 "iGh" = (
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/rock/jungle,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iGo" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -38021,6 +38741,14 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
+=======
+"iHU" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iHY" = (
 /obj/effect/landmark/start/head_of_security,
 /obj/structure/cable,
@@ -38378,6 +39106,17 @@
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
+<<<<<<< HEAD
+=======
+"iNG" = (
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/purple/half/contrasted{
+	dir = 8
+	},
+/obj/structure/sign/poster/official/random/directional/west,
+/turf/open/floor/iron,
+/area/cargo/miningoffice)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iOd" = (
 /obj/effect/turf_decal/bot/left,
 /turf/open/floor/iron/dark/textured_large,
@@ -39114,6 +39853,23 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"iZG" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/closet/emcloset,
+/obj/machinery/light/small/directional/north,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/delivery,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron,
+/area/maintenance/department/crew_quarters/bar)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "iZI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/hangover,
@@ -39180,6 +39936,17 @@
 /obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
+<<<<<<< HEAD
+=======
+"jaW" = (
+/obj/machinery/piratepad/civilian,
+/obj/effect/turf_decal/trimline/yellow,
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "jaY" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -39244,6 +40011,7 @@
 /obj/machinery/vending/coffee,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
+<<<<<<< HEAD
 "jcM" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral{
@@ -39262,6 +40030,8 @@
 /obj/machinery/rnd/production/techfab/department/service,
 /turf/open/floor/iron/checker,
 /area/hallway/secondary/service)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "jdk" = (
 /obj/structure/bed,
 /obj/item/bedsheet/medical,
@@ -39709,9 +40479,20 @@
 	},
 /turf/open/floor/iron,
 /area/command/teleporter)
+<<<<<<< HEAD
 "jjM" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
+=======
+"jjL" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron,
+/area/science/misc_lab/range)
+"jjM" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/engineering/storage/tech)
 "jjY" = (
 /obj/effect/spawner/random/maintenance,
@@ -39990,6 +40771,21 @@
 	icon_state = "chapel"
 	},
 /area/service/chapel)
+<<<<<<< HEAD
+=======
+"joQ" = (
+/obj/structure/disposalpipe/trunk{
+	dir = 1
+	},
+/obj/machinery/disposal/bin,
+/obj/effect/turf_decal/bot,
+/obj/machinery/status_display/evac/directional/west,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "jpd" = (
 /obj/machinery/modular_computer/console/preset/id{
 	dir = 4
@@ -40002,6 +40798,7 @@
 	},
 /turf/open/floor/carpet,
 /area/command/heads_quarters/captain)
+<<<<<<< HEAD
 "jpm" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/random{
@@ -40010,6 +40807,8 @@
 /obj/effect/turf_decal/box,
 /turf/open/floor/iron/dark,
 /area/maintenance/department/engine/atmos)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "jpo" = (
 /obj/machinery/light/directional/east,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
@@ -40471,6 +41270,21 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
+<<<<<<< HEAD
+=======
+"jvZ" = (
+/obj/machinery/door/firedoor,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/door/airlock/public/glass{
+	name = "Cargo Lobby"
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "jwa" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/camera/directional/south{
@@ -41745,6 +42559,11 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/service/abandoned_gambling_den)
+"jOq" = (
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/ausbushes/sparsegrass,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "jOx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -43251,11 +44070,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/command/corporate_showroom)
+<<<<<<< HEAD
 "kjb" = (
 /obj/structure/flora/ausbushes/brflowers,
 /obj/structure/flora/ausbushes/sparsegrass,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kjh" = (
 /obj/structure/fireplace,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -43287,6 +44109,7 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
+<<<<<<< HEAD
 "kjH" = (
 /obj/structure/bed,
 /obj/item/bedsheet/clown,
@@ -43296,6 +44119,8 @@
 	},
 /turf/open/floor/wood,
 /area/hallway/secondary/service)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kjI" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/north,
@@ -43639,6 +44464,18 @@
 	},
 /turf/open/floor/iron,
 /area/security/checkpoint/supply)
+<<<<<<< HEAD
+=======
+"kpc" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kpq" = (
 /obj/machinery/airalarm/directional/south,
 /obj/structure/table/wood,
@@ -44380,6 +45217,26 @@
 "kBt" = (
 /turf/open/floor/carpet,
 /area/service/library)
+<<<<<<< HEAD
+=======
+"kBP" = (
+/obj/machinery/light/directional/east,
+/obj/machinery/conveyor_switch/oneway{
+	dir = 8;
+	id = "cargodeliver";
+	name = "crate return conveyor";
+	pixel_x = 8
+	},
+/obj/effect/turf_decal/box/corners,
+/obj/machinery/status_display/supply{
+	pixel_x = 32
+	},
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kBY" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -44456,6 +45313,14 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted,
 /turf/open/floor/iron,
 /area/cargo/office)
+<<<<<<< HEAD
+=======
+"kDQ" = (
+/obj/effect/spawner/random/engineering/atmospherics_portable,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/engine/atmos)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kDR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -44525,12 +45390,20 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/science/research)
+<<<<<<< HEAD
 "kEZ" = (
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/rock/pile,
 /obj/machinery/light/floor,
 /turf/open/floor/plating/grass,
+=======
+"kEN" = (
+/obj/structure/flora/ausbushes/fullgrass,
+/obj/structure/flora/ausbushes/grassybush,
+/obj/machinery/light/floor,
+/turf/open/misc/grass,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/hallway/primary/fore)
 "kFi" = (
 /obj/structure/chair/office{
@@ -44723,6 +45596,15 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
+<<<<<<< HEAD
+=======
+"kII" = (
+/obj/structure/flora/ausbushes/fernybush,
+/obj/structure/flora/ausbushes,
+/obj/structure/flora/junglebush,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kIZ" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -45236,6 +46118,14 @@
 	},
 /turf/open/floor/iron,
 /area/security/brig)
+<<<<<<< HEAD
+=======
+"kRc" = (
+/obj/structure/closet/l3closet/janitor,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/dark,
+/area/service/janitor)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kRh" = (
 /obj/structure/chair,
 /obj/effect/turf_decal/bot,
@@ -45475,6 +46365,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/eva)
+<<<<<<< HEAD
+=======
+"kUG" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/landmark/start/hangover,
+/obj/effect/turf_decal/bot,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kUH" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing{
@@ -45488,6 +46387,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron,
 /area/medical/surgery/theatre)
+<<<<<<< HEAD
 "kUS" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -45497,6 +46397,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/primary/port)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kUT" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/turf_decal/tile/neutral,
@@ -45582,6 +46484,7 @@
 /obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
+<<<<<<< HEAD
 "kWJ" = (
 /obj/structure/sign/poster/contraband/random{
 	pixel_y = -32
@@ -45593,6 +46496,8 @@
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kXk" = (
 /obj/machinery/holopad,
 /obj/structure/disposalpipe/segment,
@@ -45638,6 +46543,18 @@
 	},
 /turf/open/floor/iron,
 /area/commons/locker)
+<<<<<<< HEAD
+=======
+"kXy" = (
+/obj/machinery/light/small/directional/south,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "kXB" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/barricade/wooden,
@@ -45810,6 +46727,14 @@
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"laF" = (
+/obj/structure/rack,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron,
+/area/maintenance/port/greater)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "laU" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -46171,6 +47096,18 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat_interior)
+<<<<<<< HEAD
+=======
+"lgu" = (
+/obj/structure/table/wood,
+/obj/item/flashlight/lamp,
+/obj/structure/sign/warning/nosmoking{
+	pixel_x = 32
+	},
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/wood,
+/area/commons/vacant_room/office)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "lgz" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/tile/neutral,
@@ -46595,6 +47532,17 @@
 	},
 /turf/open/floor/iron,
 /area/science/misc_lab/range)
+<<<<<<< HEAD
+=======
+"lmH" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "lmK" = (
 /obj/machinery/camera/directional/south{
 	c_tag = "Chemistry - Center";
@@ -47014,6 +47962,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/service/library)
+"lsv" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
 "lsy" = (
 /obj/structure/cable,
 /turf/closed/wall,
@@ -47330,6 +48285,15 @@
 	},
 /turf/open/floor/iron,
 /area/command/gateway)
+<<<<<<< HEAD
+=======
+"lwe" = (
+/obj/structure/closet/secure_closet/freezer/fridge/open,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/plating,
+/area/service/kitchen/abandoned)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "lwh" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -47772,6 +48736,7 @@
 /obj/machinery/drone_dispenser,
 /turf/open/floor/iron,
 /area/science/research/abandoned)
+<<<<<<< HEAD
 "lBv" = (
 /obj/structure/chair/stool/bar/directional/north,
 /obj/machinery/light/small/directional/west,
@@ -47789,6 +48754,25 @@
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
+=======
+"lBt" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/chair/stool/bar/directional/west,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/wood,
+/area/service/electronic_marketing_den)
+"lBw" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron{
+	heat_capacity = 1e+006
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/maintenance/port/aft)
 "lBH" = (
 /obj/structure/table/wood,
@@ -49336,6 +50320,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/disposalpipe/segment{
 	dir = 4
+<<<<<<< HEAD
 	},
 /turf/open/floor/iron,
 /area/medical/morgue)
@@ -49347,9 +50332,11 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 	},
 /turf/open/floor/iron,
-/area/medical/surgery/theatre)
+/area/medical/morgue)
 "lWv" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
@@ -49418,6 +50405,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/grimy,
 /area/service/lawoffice)
+"lXn" = (
+/obj/structure/chair/stool/bar/directional/north,
+/obj/machinery/light/small/directional/west,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/grimy,
+/area/service/abandoned_gambling_den)
 "lXt" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
@@ -49779,6 +50772,12 @@
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /turf/open/floor/circuit/green/telecomms/mainframe,
 /area/tcommsat/server)
+"mco" = (
+/obj/item/kirbyplants/random,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/plating,
+/area/service/abandoned_gambling_den)
 "mct" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment{
@@ -49789,6 +50788,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/starboard)
+"mcw" = (
+/obj/structure/flora/ausbushes/fernybush,
+/obj/structure/flora/ausbushes/leafybush,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "mcx" = (
 /obj/structure/table,
 /obj/item/stack/sheet/iron/fifty,
@@ -50092,6 +51096,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/medical/morgue)
+<<<<<<< HEAD
 "mgb" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -50107,6 +51112,14 @@
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 4
 	},
+=======
+"mgJ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 4
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
 "mgK" = (
@@ -50581,6 +51594,7 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
+<<<<<<< HEAD
 "mno" = (
 /obj/structure/table/reinforced,
 /obj/machinery/microwave,
@@ -50589,6 +51603,8 @@
 	},
 /turf/open/floor/wood,
 /area/engineering/break_room)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "mnu" = (
 /obj/effect/turf_decal/tile/blue,
 /obj/structure/cable,
@@ -51544,6 +52560,7 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "mDH" = (
 /obj/machinery/hydroponics/constructable,
 /obj/effect/turf_decal/tile/blue,
@@ -51558,6 +52575,8 @@
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "mDL" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -51738,6 +52757,7 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
 "mGu" = (
 /obj/structure/sign/poster/official/random{
 	pixel_y = -32
@@ -51745,6 +52765,8 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/science/misc_lab/range)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "mGx" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -52308,6 +53330,7 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
+<<<<<<< HEAD
 "mQE" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/contraband/random{
@@ -52315,6 +53338,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "mQN" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -52708,6 +53733,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
+<<<<<<< HEAD
 "mWI" = (
 /obj/effect/decal/cleanable/glass,
 /obj/structure/sign/poster/contraband/random{
@@ -52715,6 +53741,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "mWL" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -52830,10 +53858,24 @@
 /obj/structure/table/reinforced,
 /turf/open/floor/iron,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "mZa" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
+=======
+"mYZ" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 8
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron,
+/area/maintenance/department/crew_quarters/bar)
+"mZa" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/structure/disposalpipe/segment,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/medical/medbay/lobby)
 "mZs" = (
 /obj/effect/turf_decal/stripes/line{
@@ -52863,11 +53905,14 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
 "naa" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nab" = (
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
@@ -53122,6 +54167,13 @@
 	},
 /turf/open/floor/wood,
 /area/commons/dorms)
+<<<<<<< HEAD
+=======
+"neH" = (
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/engine,
+/area/science/misc_lab)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "neN" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -53161,6 +54213,14 @@
 /obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain)
+<<<<<<< HEAD
+=======
+"ngN" = (
+/obj/structure/flora/ausbushes/brflowers,
+/obj/structure/flora/ausbushes/sparsegrass,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nhb" = (
 /obj/structure/table,
 /obj/item/folder/white,
@@ -53182,6 +54242,7 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/commons/storage/primary)
+<<<<<<< HEAD
 "nhi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/random{
@@ -53199,6 +54260,8 @@
 	heat_capacity = 1e+006
 	},
 /area/commons/vacant_room/commissary)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nhr" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/line,
@@ -53232,6 +54295,18 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/service/abandoned_gambling_den/gaming)
+<<<<<<< HEAD
+=======
+"nhM" = (
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/machinery/computer/cargo/request{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nhN" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/table/reinforced,
@@ -54017,6 +55092,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/electronic_marketing_den)
+"nuD" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/cargo/lobby)
 "nuH" = (
 /turf/open/floor/iron,
 /area/engineering/storage)
@@ -54206,6 +55285,24 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/cargo/sorting)
+<<<<<<< HEAD
+=======
+"nxV" = (
+/obj/structure/sink{
+	dir = 8;
+	pixel_x = 12
+	},
+/obj/effect/turf_decal/siding/green/corner{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/camera/directional/east{
+	c_tag = "Garden"
+	},
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/iron,
+/area/service/hydroponics/garden)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nyg" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/cobweb,
@@ -54335,6 +55432,7 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos/hfr_room)
+<<<<<<< HEAD
 "nAm" = (
 /obj/effect/spawner/random/trash/hobo_squat,
 /obj/structure/sign/poster/random{
@@ -54345,6 +55443,8 @@
 	icon_state = "panelscorched"
 	},
 /area/maintenance/department/crew_quarters/bar)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nAB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -54610,6 +55710,7 @@
 /obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron/white,
 /area/science/research)
+<<<<<<< HEAD
 "nFt" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/sign/poster/random{
@@ -54617,6 +55718,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/engine/atmos)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nFy" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -54633,12 +55736,15 @@
 	icon_state = "panelscorched"
 	},
 /area/security/prison)
+<<<<<<< HEAD
 "nFR" = (
 /obj/effect/turf_decal/tile/brown/half/contrasted{
 	dir = 4
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nFV" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
@@ -54749,6 +55855,13 @@
 /obj/structure/railing,
 /turf/open/space/basic,
 /area/space/nearstation)
+<<<<<<< HEAD
+=======
+"nHp" = (
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nHA" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -55441,6 +56554,7 @@
 /obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron,
 /area/security/execution/transfer)
+<<<<<<< HEAD
 "nQW" = (
 /obj/structure/dresser,
 /obj/effect/turf_decal/siding/wood,
@@ -55458,6 +56572,8 @@
 	},
 /turf/open/floor/wood,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nRq" = (
 /obj/machinery/washing_machine,
 /obj/effect/turf_decal/tile/blue{
@@ -55616,6 +56732,16 @@
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /turf/open/floor/iron/dark,
 /area/engineering/transit_tube)
+<<<<<<< HEAD
+=======
+"nSL" = (
+/obj/structure/sign/poster/official/do_not_question{
+	pixel_x = -32
+	},
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/carpet,
+/area/commons/vacant_room/office)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nSN" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -55859,6 +56985,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/event_spawn,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+<<<<<<< HEAD
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "nWy" = (
@@ -55883,6 +57010,16 @@
 	},
 /turf/open/floor/iron,
 /area/commons/lounge)
+=======
+/turf/open/floor/iron,
+/area/engineering/atmos)
+"nWy" = (
+/obj/structure/closet/secure_closet/contraband/heads,
+/obj/item/storage/secure/briefcase,
+/obj/effect/turf_decal/tile/blue/anticorner/contrasted,
+/turf/open/floor/iron,
+/area/security/checkpoint/customs/aft)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "nWP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -56609,10 +57746,13 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/service/library)
+<<<<<<< HEAD
 "ohY" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oid" = (
 /obj/machinery/suit_storage_unit/engine,
 /obj/machinery/status_display/evac/directional/north,
@@ -56807,6 +57947,7 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
 "ole" = (
 /obj/machinery/light/small/directional/west,
 /obj/effect/decal/cleanable/dirt,
@@ -56815,6 +57956,8 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/service/abandoned_gambling_den)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oli" = (
 /obj/structure/sign/departments/medbay/alt{
 	pixel_x = 32;
@@ -56908,6 +58051,22 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/science/storage)
+<<<<<<< HEAD
+=======
+"olW" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/landmark/start/hangover/closet,
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/closet/secure_closet/personal/cabinet{
+	name = "clown's closet"
+	},
+/obj/machinery/light_switch/directional/west{
+	pixel_y = -6
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/wood,
+/area/service/theater)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "omc" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -57098,6 +58257,14 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
 /area/maintenance/starboard)
+<<<<<<< HEAD
+=======
+"ooA" = (
+/obj/machinery/photocopier,
+/obj/item/radio/intercom/directional/south,
+/turf/open/floor/iron/dark,
+/area/service/library)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ooH" = (
 /obj/machinery/door/airlock{
 	name = "Custodial Closet";
@@ -57464,6 +58631,17 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"otv" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/light/small/directional/east,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/spawner/random/trash/mess,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/grimy,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "otz" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/red{
@@ -57677,6 +58855,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
+<<<<<<< HEAD
 "oxk" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/decal/cleanable/dirt,
@@ -57686,6 +58865,8 @@
 /obj/machinery/vending/boozeomat/all_access,
 /turf/open/floor/plating,
 /area/service/abandoned_gambling_den)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oxn" = (
 /obj/machinery/modular_computer/console/preset/engineering,
 /obj/structure/cable,
@@ -57768,6 +58949,7 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/surgery/aft)
+<<<<<<< HEAD
 "oyq" = (
 /obj/machinery/vending/wardrobe/bar_wardrobe,
 /obj/structure/sign/poster/random{
@@ -57775,6 +58957,8 @@
 	},
 /turf/open/floor/iron/checker,
 /area/service/bar)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oyx" = (
 /obj/machinery/dna_scannernew,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -57859,7 +59043,10 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "oAp" = (
+<<<<<<< HEAD
 /obj/structure/chair,
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/dark,
@@ -57943,6 +59130,28 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
+=======
+"oBZ" = (
+/obj/structure/closet/crate/hydroponics,
+/obj/item/paper/guides/jobs/hydroponics,
+/obj/item/seeds/onion,
+/obj/item/seeds/garlic,
+/obj/item/seeds/potato,
+/obj/item/seeds/tomato,
+/obj/item/seeds/carrot,
+/obj/item/seeds/grass,
+/obj/item/seeds/ambrosia,
+/obj/item/seeds/wheat,
+/obj/item/seeds/pumpkin,
+/obj/effect/spawner/random/contraband/prison,
+/obj/structure/window,
+/obj/effect/decal/cleanable/dirt,
+/obj/item/seeds/tower,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron,
+/area/security/prison)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oCd" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/delivery,
@@ -58060,6 +59269,15 @@
 /obj/vehicle/ridden/janicart,
 /turf/open/floor/iron/checker,
 /area/service/janitor)
+<<<<<<< HEAD
+=======
+"oEe" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/box,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/dark,
+/area/maintenance/department/engine/atmos)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oEj" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -58200,12 +59418,23 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
+=======
+"oHu" = (
+/obj/structure/flora/ausbushes/reedbush,
+/obj/structure/flora/ausbushes/leafybush,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oHH" = (
 /obj/machinery/atmospherics/components/unary/outlet_injector/atmos/carbon_input{
 	dir = 4
 	},
 /turf/open/floor/engine/co2,
 /area/engineering/atmos)
+"oHM" = (
+/turf/closed/wall,
+/area/cargo/lobby)
 "oHU" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -58825,6 +60054,15 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/checker,
 /area/hallway/secondary/service)
+<<<<<<< HEAD
+=======
+"oRH" = (
+/obj/effect/landmark/start/hangover,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oRI" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -59039,6 +60277,7 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
+<<<<<<< HEAD
 "oUK" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -59049,6 +60288,17 @@
 /obj/effect/spawner/random/structure/closet_private,
 /turf/open/floor/wood,
 /area/hallway/secondary/service)
+=======
+"oUS" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "oUU" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/bot,
@@ -59842,6 +61092,7 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/medical)
+<<<<<<< HEAD
 "phC" = (
 /obj/structure/table/wood,
 /obj/item/flashlight/lamp,
@@ -59853,6 +61104,8 @@
 	},
 /turf/open/floor/wood,
 /area/commons/vacant_room/office)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "phL" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/effect/turf_decal/siding/brown/corner,
@@ -60351,6 +61604,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/medical/virology)
+<<<<<<< HEAD
 "psg" = (
 /obj/structure/disposalpipe/segment{
 	dir = 10
@@ -60360,6 +61614,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "psv" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -60478,6 +61734,15 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark/textured,
 /area/engineering/main)
+<<<<<<< HEAD
+=======
+"pum" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "puq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -60879,6 +62144,7 @@
 	},
 /turf/open/floor/iron,
 /area/security/courtroom)
+<<<<<<< HEAD
 "pzY" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -60891,6 +62157,8 @@
 	},
 /turf/open/floor/iron/white,
 /area/maintenance/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "pAb" = (
 /obj/structure/table/wood,
 /obj/item/clothing/suit/syndicatefake,
@@ -61868,6 +63136,14 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos/storage/gas)
+<<<<<<< HEAD
+=======
+"pNe" = (
+/obj/structure/reagent_dispensers/fueltank,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "pNm" = (
 /obj/structure/chair/office{
 	dir = 8
@@ -61985,6 +63261,7 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
 "pOR" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -61996,6 +63273,8 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "pOW" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -62302,10 +63581,13 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/freezer,
 /area/service/kitchen/coldroom)
+<<<<<<< HEAD
 "pSS" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/wood,
 /area/service/electronic_marketing_den)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "pSX" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -62470,6 +63752,16 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
+<<<<<<< HEAD
+=======
+"pUw" = (
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "pUA" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -62823,8 +64115,24 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
+<<<<<<< HEAD
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+=======
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+"qav" = (
+/obj/structure/disposalpipe/trunk{
+	dir = 1
+	},
+/obj/machinery/disposal/bin,
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/directional/south,
+/obj/effect/turf_decal/delivery,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron,
+/area/cargo/miningoffice)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qay" = (
 /obj/structure/cable,
 /obj/machinery/door/firedoor,
@@ -62838,6 +64146,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/bridge)
+<<<<<<< HEAD
+=======
+"qaI" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qaR" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -63046,6 +64361,14 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/science/xenobiology)
+<<<<<<< HEAD
+=======
+"qfz" = (
+/obj/effect/landmark/start/hangover,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qfA" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -63431,6 +64754,23 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+<<<<<<< HEAD
+=======
+"qjP" = (
+/obj/machinery/status_display/supply{
+	pixel_y = 32
+	},
+/obj/effect/turf_decal/arrows{
+	dir = 4
+	},
+/obj/machinery/camera/directional/north{
+	c_tag = "Cargo - Waiting Room";
+	name = "cargo camera"
+	},
+/obj/machinery/status_display/evac/directional/north,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qke" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -63602,6 +64942,7 @@
 /obj/structure/sign/warning/biohazard,
 /turf/closed/wall/r_wall,
 /area/medical/virology)
+<<<<<<< HEAD
 "qmv" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/kirbyplants/random,
@@ -63624,6 +64965,21 @@
 /obj/item/chisel{
 	pixel_y = 7
 	},
+=======
+"qmA" = (
+/obj/structure/table/wood,
+/obj/item/storage/crayons,
+/obj/item/storage/crayons,
+/obj/item/toy/crayon/spraycan{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/toy/crayon/spraycan,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/item/chisel{
+	pixel_y = 7
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/library)
@@ -63925,6 +65281,24 @@
 /obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"qrj" = (
+/obj/structure/dresser,
+/obj/effect/turf_decal/siding/wood,
+/obj/item/toy/dummy{
+	pixel_x = -1;
+	pixel_y = 10
+	},
+/obj/machinery/newscaster/directional/north,
+/obj/machinery/camera/directional/east{
+	c_tag = "Service - Mime's Room";
+	name = "service camera"
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/wood,
+/area/service/theater)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qrD" = (
 /obj/machinery/light_switch/directional/north,
 /turf/open/floor/wood,
@@ -64033,6 +65407,13 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron/grimy,
 /area/service/library)
+<<<<<<< HEAD
+=======
+"qtM" = (
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/plating,
+/area/cargo/drone_bay)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qtR" = (
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
@@ -64411,6 +65792,16 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/commons/storage/primary)
+<<<<<<< HEAD
+=======
+"qAM" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/firealarm/directional/north,
+/obj/machinery/newscaster/directional/east,
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qAO" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -64565,6 +65956,18 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/security/courtroom)
+<<<<<<< HEAD
+=======
+"qCM" = (
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted,
+/obj/machinery/button/door/directional/east{
+	id = "warehouse_shutters";
+	name = "warehouse shutters control"
+	},
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qCN" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible/layer4{
 	dir = 4
@@ -64678,6 +66081,7 @@
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron,
 /area/engineering/hallway)
+<<<<<<< HEAD
 "qEB" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/rack,
@@ -64688,6 +66092,8 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qEK" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/siding/green{
@@ -64820,6 +66226,13 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
+=======
+"qHr" = (
+/obj/structure/flora/junglebush/c,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qHs" = (
 /obj/structure/statue/sandstone/venus{
 	dir = 1;
@@ -65602,6 +67015,7 @@
 	dir = 8
 	},
 /area/service/hydroponics/garden)
+<<<<<<< HEAD
 "qSP" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -65611,6 +67025,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qSS" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -65636,6 +67052,24 @@
 /obj/machinery/newscaster/directional/south,
 /turf/open/floor/iron,
 /area/engineering/storage/tech)
+<<<<<<< HEAD
+=======
+"qSY" = (
+/obj/structure/chair{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/yellow{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/yellow,
+/obj/effect/landmark/start/hangover,
+/obj/item/radio/intercom/directional/east,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron/dark/corner{
+	dir = 4
+	},
+/area/engineering/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qSZ" = (
 /obj/structure/table,
 /obj/item/folder,
@@ -65955,6 +67389,15 @@
 	},
 /turf/open/floor/iron,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"qXK" = (
+/obj/machinery/deepfryer,
+/obj/effect/turf_decal/bot,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron/cafeteria,
+/area/service/kitchen)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "qXX" = (
 /obj/structure/table,
 /obj/item/reagent_containers/glass/beaker/large,
@@ -67067,6 +68510,7 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+<<<<<<< HEAD
 "roR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -67083,6 +68527,31 @@
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
+=======
+"roJ" = (
+/obj/effect/turf_decal/loading_area{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+"roR" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/poddoor/preopen{
+	id = "bridgedoors";
+	name = "Bridge Access Blast door"
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/command/bridge)
+"roT" = (
+/obj/machinery/computer/cargo/request{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/command/heads_quarters/hop)
 "rpf" = (
 /obj/structure/cable,
@@ -67101,6 +68570,20 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/solars/starboard/fore)
+<<<<<<< HEAD
+=======
+"rpt" = (
+/obj/structure/chair{
+	dir = 4
+	},
+/obj/effect/landmark/start/assistant,
+/obj/machinery/bounty_board/directional/west,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rpy" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/effect/decal/cleanable/dirt,
@@ -67741,6 +69224,21 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted,
 /turf/open/floor/iron,
 /area/cargo/office)
+<<<<<<< HEAD
+=======
+"rzB" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/iron,
+/area/commons/vacant_room)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rzC" = (
 /obj/machinery/door/airlock{
 	name = "Bathroom"
@@ -67763,6 +69261,7 @@
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron/grimy,
 /area/commons/dorms)
+<<<<<<< HEAD
 "rzT" = (
 /obj/machinery/light/directional/east,
 /obj/structure/closet/secure_closet/personal/patient,
@@ -67800,6 +69299,55 @@
 	dir = 4
 	},
 /turf/open/floor/iron,
+=======
+"rzP" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/table,
+/obj/effect/decal/cleanable/dirt,
+/obj/item/clothing/suit/apron/chef,
+/obj/item/clothing/head/chefhat,
+/obj/effect/turf_decal/bot,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/iron,
+/area/service/kitchen/abandoned)
+"rzT" = (
+/obj/machinery/light/directional/east,
+/obj/structure/closet/secure_closet/personal/patient,
+/obj/structure/sign/poster/official/cleanliness{
+	pixel_x = 32
+	},
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/iron/white,
+/area/medical/treatment_center)
+"rzV" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/door/window/northleft{
+	name = "Drone Launchsite"
+	},
+/obj/effect/turf_decal/tile/brown/anticorner/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/cargo/drone_bay)
+"rAf" = (
+/obj/structure/disposalpipe/segment{
+	dir = 10
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron/dark,
+/area/service/library)
+"rAg" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/maintenance/starboard/aft)
 "rAn" = (
 /obj/structure/chair,
@@ -67841,6 +69389,7 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+<<<<<<< HEAD
 "rBf" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
@@ -67850,6 +69399,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rBk" = (
 /obj/machinery/shower{
 	dir = 8
@@ -68262,6 +69813,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/security/detectives_office)
+<<<<<<< HEAD
 "rGz" = (
 /obj/effect/spawner/random/engineering/atmospherics_portable,
 /obj/structure/sign/poster/random{
@@ -68274,6 +69826,13 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
 	},
+=======
+"rGD" = (
+/obj/machinery/computer/crew,
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "rGF" = (
@@ -68386,12 +69945,15 @@
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron,
 /area/medical/break_room)
+<<<<<<< HEAD
 "rIr" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rJj" = (
 /obj/machinery/hydroponics/soil,
 /obj/effect/decal/cleanable/dirt,
@@ -68401,6 +69963,29 @@
 	icon_state = "panelscorched"
 	},
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"rJq" = (
+/obj/structure/disposalpipe/sorting/mail/flip{
+	dir = 2;
+	name = "Kitchen Junction";
+	sortType = 20
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/loading_area{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rJw" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -68679,6 +70264,7 @@
 /obj/item/gun/energy/laser/practice,
 /turf/open/floor/iron/white,
 /area/science/misc_lab/range)
+<<<<<<< HEAD
 "rMU" = (
 /obj/structure/sign/poster/official/do_not_question{
 	pixel_x = -32
@@ -68688,6 +70274,8 @@
 	},
 /turf/open/floor/carpet,
 /area/commons/vacant_room/office)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rNh" = (
 /obj/machinery/computer/shuttle/mining{
 	dir = 1
@@ -68712,6 +70300,20 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
+<<<<<<< HEAD
+=======
+"rNU" = (
+/obj/structure/table/wood,
+/obj/structure/sign/barsign{
+	pixel_y = 32
+	},
+/obj/item/wrench,
+/obj/item/clothing/under/suit/waiter,
+/obj/item/clothing/accessory/waistcoat,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/dark,
+/area/service/electronic_marketing_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rNW" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "brigfront";
@@ -68894,6 +70496,22 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/service/cafeteria)
+"rPZ" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red,
+/obj/structure/closet/crate/wooden/toy,
+/obj/item/toy/mecha/honk,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/iron,
+/area/service/theater)
 "rQa" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -68930,6 +70548,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/corporate_showroom)
+<<<<<<< HEAD
 "rQy" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -68948,6 +70567,8 @@
 	},
 /turf/open/floor/iron,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "rQE" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/airalarm/directional/south,
@@ -69078,6 +70699,7 @@
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/iron/grimy,
 /area/security/detectives_office/private_investigators_office)
+<<<<<<< HEAD
 "rSg" = (
 /obj/effect/landmark/start/hangover,
 /obj/structure/railing{
@@ -69092,6 +70714,31 @@
 	dir = 1
 	},
 /turf/open/floor/iron,
+=======
+"rRT" = (
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/west,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+"rSg" = (
+/obj/effect/landmark/start/hangover,
+/obj/structure/railing{
+	dir = 1
+	},
+/obj/structure/chair/sofa/bench/left,
+/obj/effect/turf_decal/box/corners,
+/obj/effect/turf_decal/box/corners{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/hallway/primary/fore)
 "rSv" = (
 /obj/structure/table/wood,
@@ -69376,6 +71023,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
+"rXP" = (
+/obj/effect/landmark/start/hangover/closet,
+/obj/effect/spawner/random/clothing/wardrobe_closet_colored,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/dark,
+/area/hallway/secondary/service)
 "rYc" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 4
@@ -70279,12 +71932,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
+<<<<<<< HEAD
 "sle" = (
 /obj/structure/sign/poster/random{
 	pixel_x = 32
 	},
 /turf/open/floor/engine,
 /area/science/misc_lab)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "slj" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/table/reinforced,
@@ -70466,6 +72122,16 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/science/research)
+<<<<<<< HEAD
+=======
+"snH" = (
+/obj/machinery/light/small/directional/south,
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/vending/boozeomat/all_access,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/plating,
+/area/service/abandoned_gambling_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "snW" = (
 /obj/machinery/door/window/northleft{
 	dir = 4;
@@ -70579,6 +72245,7 @@
 	},
 /turf/open/floor/iron,
 /area/medical/break_room)
+<<<<<<< HEAD
 "spf" = (
 /obj/machinery/status_display/supply{
 	pixel_y = 32
@@ -70606,6 +72273,21 @@
 /obj/effect/turf_decal/stripes/end{
 	dir = 1
 	},
+=======
+"spi" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment,
+/turf/open/floor/iron,
+/area/medical/medbay/central)
+"spk" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/stripes/end{
+	dir = 1
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron,
 /area/science/storage)
 "spl" = (
@@ -70831,6 +72513,7 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark/corner,
 /area/engineering/atmos/mix)
+<<<<<<< HEAD
 "srB" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -70850,6 +72533,8 @@
 /obj/item/toy/crayon/spraycan/mimecan,
 /turf/open/floor/iron/checker,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "srM" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/virology/glass{
@@ -71190,6 +72875,17 @@
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/plating,
 /area/maintenance/disposal)
+"sxE" = (
+/obj/machinery/door/firedoor,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/door/airlock/public/glass{
+	name = "Cargo Lobby"
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
 "sxF" = (
 /obj/machinery/conveyor{
 	dir = 4;
@@ -71942,6 +73638,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/wood,
 /area/service/library)
+<<<<<<< HEAD
 "sHs" = (
 /obj/structure/table,
 /obj/item/storage/box/lights/mixed,
@@ -71955,6 +73652,13 @@
 /obj/effect/turf_decal/siding/yellow,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
+=======
+"sHI" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/siding/yellow,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/engineering/atmos)
 "sHM" = (
 /obj/effect/landmark/start/hangover,
@@ -72178,6 +73882,16 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/ai_monitored/command/storage/eva)
+<<<<<<< HEAD
+=======
+"sKR" = (
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron,
+/area/cargo/drone_bay)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "sKS" = (
 /obj/machinery/vending/wardrobe/engi_wardrobe,
 /obj/effect/turf_decal/delivery,
@@ -72230,6 +73944,16 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
+<<<<<<< HEAD
+=======
+"sMi" = (
+/obj/structure/bed,
+/obj/item/bedsheet/clown,
+/obj/machinery/newscaster/directional/east,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "sMk" = (
 /obj/structure/table/reinforced,
 /obj/item/folder/red,
@@ -72463,6 +74187,14 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/starboard/aft)
+<<<<<<< HEAD
+=======
+"sPL" = (
+/obj/item/kirbyplants/random,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/wood,
+/area/service/electronic_marketing_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "sPP" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -72470,6 +74202,17 @@
 /obj/effect/turf_decal/tile/purple/half/contrasted,
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
+<<<<<<< HEAD
+=======
+"sQd" = (
+/obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "sQy" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -72638,6 +74381,23 @@
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/wood,
 /area/service/abandoned_gambling_den)
+"sSq" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
+/obj/machinery/light/small/directional/south,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/structure/table/wood,
+/obj/item/food/baguette,
+/obj/item/toy/crayon/spraycan/mimecan,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/checker,
+/area/service/theater)
 "sSy" = (
 /obj/machinery/vending/hydronutrients,
 /turf/open/floor/iron/dark,
@@ -72953,6 +74713,18 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white,
 /area/medical/treatment_center)
+<<<<<<< HEAD
+=======
+"sWY" = (
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/obj/effect/landmark/start/hangover,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "sXE" = (
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
 /obj/structure/lattice/catwalk,
@@ -72990,6 +74762,18 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/service/kitchen/abandoned)
+"sYm" = (
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/medical{
+	name = "Surgery Observation"
+	},
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/medical/surgery/theatre)
 "sYr" = (
 /obj/item/kirbyplants{
 	icon_state = "plant-21"
@@ -73251,6 +75035,7 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/fore)
+<<<<<<< HEAD
 "tbM" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 1
@@ -73283,6 +75068,33 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
 	},
+=======
+"tbN" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/hallway/primary/aft)
+"tca" = (
+/obj/machinery/teleport/hub,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/command/teleporter)
+"tce" = (
+/obj/structure/flora/ausbushes/brflowers,
+/obj/structure/flora/ausbushes/sparsegrass,
+/obj/structure/flora/ausbushes/grassybush,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+"tci" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 1
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron,
 /area/security/checkpoint/escape)
 "tcj" = (
@@ -73613,10 +75425,13 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/maintenance/space_hut/observatory)
+<<<<<<< HEAD
 "tgz" = (
 /obj/structure/flora/junglebush/c,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tgL" = (
 /obj/machinery/light_switch/directional/east{
 	pixel_x = 22
@@ -73868,12 +75683,15 @@
 	},
 /turf/open/floor/iron,
 /area/medical/virology)
+<<<<<<< HEAD
 "tkE" = (
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/machinery/light/floor,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tkH" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/bookcase/random/adult,
@@ -74016,6 +75834,16 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/bridge)
+<<<<<<< HEAD
+=======
+"tnb" = (
+/obj/structure/closet/crate/trashcart,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sign/poster/official/random/directional/east,
+/turf/open/floor/iron,
+/area/security/prison)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tnc" = (
 /obj/structure/table/reinforced,
 /obj/item/crowbar,
@@ -74614,11 +76442,14 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/security/interrogation)
+<<<<<<< HEAD
 "tuQ" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/light/directional/north,
 /turf/open/floor/plating,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tuR" = (
 /obj/structure/filingcabinet/chestdrawer,
 /obj/effect/decal/cleanable/dirt,
@@ -74951,6 +76782,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/security/interrogation)
+<<<<<<< HEAD
 "tzO" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
@@ -74963,6 +76795,19 @@
 /obj/structure/flora/junglebush,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+"tzN" = (
+/obj/effect/landmark/start/hangover,
+/obj/effect/turf_decal/bot,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+"tzO" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/engineering/atmos)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tAx" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/techstorage/engineering_all,
@@ -75030,6 +76875,22 @@
 	},
 /turf/open/floor/iron,
 /area/medical/cryo)
+<<<<<<< HEAD
+=======
+"tBt" = (
+/obj/structure/table/reinforced,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/window/westleft{
+	dir = 4;
+	name = "Mining Desk";
+	req_access_txt = "48"
+	},
+/obj/effect/turf_decal/delivery,
+/obj/item/paper_bin,
+/obj/item/pen,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tBu" = (
 /obj/effect/turf_decal/trimline/yellow/corner,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -75348,6 +77209,20 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
+<<<<<<< HEAD
+=======
+"tHT" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/structure/chair/office{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/dark,
+/area/hallway/secondary/service)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tHU" = (
 /mob/living/basic/cockroach,
 /turf/open/floor/wood,
@@ -75384,6 +77259,21 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
+=======
+"tIl" = (
+/obj/structure/cable,
+/obj/machinery/duct,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/plating,
+/area/maintenance/port/fore)
+"tIo" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron/dark,
+/area/service/abandoned_gambling_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tIC" = (
 /obj/effect/turf_decal/stripes/white/line,
 /turf/open/floor/wood,
@@ -75626,6 +77516,14 @@
 	dir = 8
 	},
 /area/engineering/lobby)
+<<<<<<< HEAD
+=======
+"tLL" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tLN" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -75705,6 +77603,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/break_room)
+<<<<<<< HEAD
+=======
+"tNC" = (
+/obj/effect/turf_decal/tile/brown,
+/obj/item/kirbyplants/random,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "tNW" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -75833,6 +77739,11 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+"tPp" = (
+/obj/structure/flora/ausbushes/stalkybush,
+/obj/structure/flora/ausbushes/leafybush,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "tPM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -76536,6 +78447,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/carpet,
 /area/service/chapel/office)
+<<<<<<< HEAD
+=======
+"udU" = (
+/obj/structure/flora/ausbushes/fullgrass,
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/machinery/light/floor,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "udZ" = (
 /obj/structure/table,
 /obj/effect/spawner/random/entertainment/drugs{
@@ -76921,6 +78841,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
+<<<<<<< HEAD
+=======
+"ujj" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/plating,
+/area/maintenance/department/engine/atmos)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ujG" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -77872,6 +79800,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/grimy,
 /area/command/heads_quarters/hop)
+<<<<<<< HEAD
+=======
+"uxi" = (
+/obj/structure/disposalpipe/segment,
+/obj/effect/landmark/start/hangover,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/warehouse)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uxo" = (
 /obj/structure/chair/wood{
 	dir = 4
@@ -77906,6 +79847,15 @@
 	},
 /turf/open/floor/iron,
 /area/security/checkpoint)
+<<<<<<< HEAD
+=======
+"uxJ" = (
+/obj/machinery/light/small/directional/west,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/grimy,
+/area/service/abandoned_gambling_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uxO" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -77980,6 +79930,14 @@
 /obj/structure/disposalpipe/junction,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+<<<<<<< HEAD
+=======
+"uzl" = (
+/obj/effect/turf_decal/tile/brown/half/contrasted,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uzu" = (
 /obj/item/assembly/timer{
 	pixel_x = 5;
@@ -78051,6 +80009,18 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron,
 /area/cargo/storage)
+<<<<<<< HEAD
+=======
+"uzQ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/yellow{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron,
+/area/hallway/primary/port)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uAb" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -78397,6 +80367,24 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
+"uFZ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red,
+/obj/structure/table/wood,
+/obj/item/toy/crayon/spraycan/lubecan,
+/obj/item/bikehorn,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/iron,
+/area/service/theater)
 "uGq" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -78486,6 +80474,14 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/engineering/hallway)
+<<<<<<< HEAD
+=======
+"uIp" = (
+/obj/structure/flora/ausbushes/stalkybush,
+/obj/structure/flora/ausbushes/lavendergrass,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uIx" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -79143,12 +81139,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
 "uUo" = (
 /obj/structure/sign/poster/official/random{
 	pixel_y = 32
 	},
 /turf/open/floor/plating,
 /area/cargo/drone_bay)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "uUB" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -79729,6 +81728,12 @@
 "vdw" = (
 /turf/closed/wall/r_wall,
 /area/maintenance/aft)
+"vdx" = (
+/obj/effect/turf_decal/bot,
+/obj/machinery/rnd/production/techfab/department/service,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/checker,
+/area/hallway/secondary/service)
 "vdK" = (
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /obj/effect/decal/cleanable/dirt,
@@ -79785,6 +81790,7 @@
 /obj/structure/sign/warning/electricshock,
 /turf/closed/wall/r_wall,
 /area/engineering/storage/tech)
+<<<<<<< HEAD
 "veH" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 4
@@ -79792,6 +81798,8 @@
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "veI" = (
 /obj/structure/table,
 /obj/item/disk/tech_disk{
@@ -79839,11 +81847,14 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/sorting)
+<<<<<<< HEAD
 "veM" = (
 /obj/structure/flora/ausbushes/stalkybush,
 /obj/structure/flora/ausbushes/lavendergrass,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vfb" = (
 /obj/machinery/vending/wardrobe/hydro_wardrobe,
 /obj/effect/turf_decal/bot,
@@ -80317,6 +82328,18 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"vlX" = (
+/obj/machinery/light/directional/south,
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/brown/half/contrasted,
+/obj/machinery/light/directional/south,
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/south,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vmj" = (
 /obj/structure/sign/painting/library{
 	pixel_y = -32
@@ -80351,6 +82374,16 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/gravity_generator)
+<<<<<<< HEAD
+=======
+"vmC" = (
+/obj/structure/flora/ausbushes/fullgrass,
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/ausbushes/stalkybush,
+/obj/structure/flora/rock/pile,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vmI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -81082,10 +83115,13 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/qm)
+<<<<<<< HEAD
 "vxC" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vxK" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -81200,11 +83236,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/central/aft)
+<<<<<<< HEAD
 "vzq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vzu" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -81306,7 +83345,11 @@
 "vAJ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+<<<<<<< HEAD
 /obj/machinery/firealarm/directional/west,
+=======
+/obj/machinery/light/small/directional/west,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron/dark,
 /area/medical/surgery/theatre)
 "vAO" = (
@@ -81468,6 +83511,7 @@
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain)
+<<<<<<< HEAD
 "vDS" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/decal/cleanable/dirt,
@@ -81484,6 +83528,13 @@
 	pixel_x = -32;
 	pixel_y = -32
 	},
+=======
+"vEk" = (
+/obj/structure/sign/nanotrasen{
+	pixel_x = -32;
+	pixel_y = -32
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/machinery/light/small/directional/south,
 /obj/item/kirbyplants{
 	icon_state = "plant-22"
@@ -81549,6 +83600,7 @@
 	location = "engi3"
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+<<<<<<< HEAD
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "vFB" = (
@@ -81562,6 +83614,10 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+/turf/open/floor/iron,
+/area/hallway/primary/port)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vFK" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -81797,6 +83853,7 @@
 	},
 /turf/open/floor/iron,
 /area/science/mixing)
+<<<<<<< HEAD
 "vJQ" = (
 /obj/effect/landmark/start/hangover/closet,
 /obj/effect/spawner/random/clothing/wardrobe_closet_colored,
@@ -81805,6 +83862,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vJV" = (
 /obj/structure/chair{
 	dir = 8
@@ -81837,6 +83896,7 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/lobby)
+<<<<<<< HEAD
 "vKz" = (
 /obj/structure/disposalpipe/sorting/mail/flip{
 	dir = 2;
@@ -81859,6 +83919,14 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/port/fore)
+=======
+"vJY" = (
+/obj/structure/table/reinforced,
+/obj/machinery/microwave,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/wood,
+/area/engineering/break_room)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vKD" = (
 /obj/structure/table/wood,
 /obj/machinery/light/directional/east,
@@ -81946,6 +84014,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/aft)
+<<<<<<< HEAD
 "vMp" = (
 /obj/structure/sink{
 	dir = 8;
@@ -81963,6 +84032,8 @@
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics/garden)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vME" = (
 /obj/structure/table/glass,
 /obj/item/folder/white,
@@ -81977,6 +84048,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
+<<<<<<< HEAD
+=======
+"vMX" = (
+/obj/machinery/light/small/directional/south,
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/chem_dispenser/drinks/beer{
+	dir = 1
+	},
+/obj/structure/table/wood/poker,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/plating,
+/area/service/abandoned_gambling_den)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vNp" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -82375,11 +84459,14 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/aft)
+<<<<<<< HEAD
 "vTl" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vTm" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/cobweb,
@@ -82807,6 +84894,13 @@
 	},
 /turf/open/floor/wood,
 /area/commons/dorms)
+<<<<<<< HEAD
+=======
+"vZM" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "vZS" = (
 /obj/machinery/newscaster/directional/north,
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
@@ -82868,6 +84962,7 @@
 	},
 /turf/open/floor/glass,
 /area/maintenance/space_hut/observatory)
+<<<<<<< HEAD
 "waq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -82879,6 +84974,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "way" = (
 /obj/structure/rack,
 /obj/item/analyzer{
@@ -83112,6 +85209,7 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/service/kitchen/abandoned)
+<<<<<<< HEAD
 "wdf" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -83124,6 +85222,8 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wdg" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -83254,6 +85354,7 @@
 /obj/effect/spawner/random/vending/colavend,
 /turf/open/floor/iron/cafeteria,
 /area/security/prison)
+<<<<<<< HEAD
 "wfk" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/medical{
@@ -83266,6 +85367,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/medical/surgery/theatre)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wfz" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
@@ -83498,6 +85601,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
+"wko" = (
+/obj/structure/flora/ausbushes/ppflowers,
+/obj/structure/flora/ausbushes/sparsegrass,
+/obj/structure/flora/rock/jungle,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
 "wkq" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
@@ -83735,6 +85844,7 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/medical/medbay/lobby)
+<<<<<<< HEAD
 "woR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/blue{
@@ -83755,6 +85865,8 @@
 	},
 /turf/open/floor/iron,
 /area/service/theater)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "woW" = (
 /obj/structure/railing{
 	dir = 10
@@ -84340,6 +86452,21 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
+<<<<<<< HEAD
+=======
+"wzp" = (
+/obj/machinery/hydroponics/constructable,
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/green{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron,
+/area/service/hydroponics)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wzA" = (
 /turf/open/floor/wood{
 	icon_state = "wood-broken3"
@@ -84450,6 +86577,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"wAP" = (
+/obj/structure/easel,
+/obj/item/canvas/twentythree_twentythree,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/grimy,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wBe" = (
 /obj/structure/chair/stool/directional/east,
 /turf/open/floor/iron/cafeteria,
@@ -84834,6 +86970,14 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/sorting)
+<<<<<<< HEAD
+=======
+"wGo" = (
+/obj/effect/decal/cleanable/glass,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wGv" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -85485,6 +87629,17 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/engineering/main)
+<<<<<<< HEAD
+=======
+"wSk" = (
+/obj/effect/landmark/start/hangover,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "wSu" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -86038,6 +88193,7 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted,
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+<<<<<<< HEAD
 "xbx" = (
 /obj/structure/closet/toolcloset,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -86047,6 +88203,35 @@
 	dir = 4
 	},
 /turf/open/floor/iron,
+=======
+"xbg" = (
+/obj/structure/table,
+/obj/item/storage/box/lights/mixed,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+"xbj" = (
+/obj/structure/table/reinforced,
+/obj/item/stack/rods/fifty,
+/obj/item/wrench,
+/obj/item/storage/box/lights/mixed,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron,
+/area/maintenance/port/greater)
+"xbx" = (
+/obj/structure/closet/toolcloset,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/yellow/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /area/construction/mining/aux_base)
 "xbE" = (
 /obj/machinery/door/firedoor,
@@ -86223,6 +88408,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/science/server)
+<<<<<<< HEAD
+=======
+"xet" = (
+/obj/effect/turf_decal/tile/brown{
+	dir = 1
+	},
+/obj/item/kirbyplants/random,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xew" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/west,
@@ -86324,6 +88519,19 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
+<<<<<<< HEAD
+=======
+"xgd" = (
+/obj/machinery/modular_computer/console/preset/cargochat/engineering{
+	dir = 1
+	},
+/obj/effect/turf_decal/trimline/brown/filled/line{
+	dir = 5
+	},
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron,
+/area/engineering/storage_shared)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xgu" = (
 /obj/item/kirbyplants/random,
 /obj/effect/decal/cleanable/dirt,
@@ -86629,6 +88837,7 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
+<<<<<<< HEAD
 "xlq" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/decal/cleanable/dirt,
@@ -86640,6 +88849,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xlC" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -86992,10 +89203,13 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/service/chapel/office)
+<<<<<<< HEAD
 "xsB" = (
 /obj/effect/turf_decal/tile/brown,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xta" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -87008,6 +89222,21 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark/corner,
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
+=======
+"xtb" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/delivery,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+/area/maintenance/port/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xtc" = (
 /obj/effect/landmark/start/hangover,
 /obj/structure/table/reinforced,
@@ -87262,6 +89491,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/commons/storage/tools)
+<<<<<<< HEAD
 "xwH" = (
 /obj/structure/sign/poster/random{
 	pixel_x = 32
@@ -87271,6 +89501,8 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/drone_bay)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xwI" = (
 /obj/structure/closet,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
@@ -87446,6 +89678,7 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
+<<<<<<< HEAD
 "xAm" = (
 /obj/machinery/modular_computer/console/preset/cargochat/engineering{
 	dir = 1
@@ -87458,6 +89691,8 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xAz" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -87518,11 +89753,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/science/mixing)
+<<<<<<< HEAD
 "xBx" = (
 /obj/structure/flora/tree/jungle,
 /obj/structure/flora/ausbushes/fullgrass,
 /turf/open/floor/plating/grass,
 /area/hallway/primary/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xBy" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -87717,6 +89955,14 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+<<<<<<< HEAD
+=======
+"xEB" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xFa" = (
 /obj/structure/sign/nanotrasen,
 /turf/closed/wall/r_wall,
@@ -87857,6 +90103,7 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
+<<<<<<< HEAD
 "xGH" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -87870,6 +90117,12 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
+=======
+"xGR" = (
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -88196,6 +90449,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/security/checkpoint/medical)
+<<<<<<< HEAD
 "xLc" = (
 /obj/structure/closet/secure_closet/freezer/fridge/open,
 /obj/effect/decal/cleanable/dirt,
@@ -88204,6 +90458,8 @@
 	},
 /turf/open/floor/plating,
 /area/service/kitchen/abandoned)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xLe" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/tile/red{
@@ -88336,6 +90592,7 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
+<<<<<<< HEAD
 "xNJ" = (
 /obj/machinery/light/directional/south,
 /obj/item/radio/intercom/directional/south,
@@ -88344,6 +90601,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/library)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xNK" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -88567,6 +90826,15 @@
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
+=======
+"xQS" = (
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/rock,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xRb" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/maintenance_hatch{
@@ -88614,12 +90882,35 @@
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/plating,
 /area/service/abandoned_gambling_den/gaming)
+<<<<<<< HEAD
+=======
+"xRw" = (
+/obj/structure/flora/ausbushes/sunnybush,
+/obj/structure/flora/junglebush/c,
+/turf/open/misc/grass,
+/area/hallway/primary/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xRE" = (
 /obj/structure/chair,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
+<<<<<<< HEAD
+=======
+"xRK" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "xRL" = (
 /turf/open/floor/wood{
 	icon_state = "wood-broken7"
@@ -89120,8 +91411,13 @@
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
 "xYV" = (
+<<<<<<< HEAD
 /obj/machinery/light/small/directional/north,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+=======
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/firealarm/directional/north,
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 /turf/open/floor/iron/dark,
 /area/medical/surgery/theatre)
 "xZo" = (
@@ -89259,6 +91555,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/science/misc_lab/range)
+<<<<<<< HEAD
+=======
+"yaR" = (
+/obj/machinery/computer/piratepad_control/civilian{
+	dir = 4
+	},
+/obj/machinery/firealarm/directional/west,
+/obj/effect/turf_decal/tile/brown/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/cargo/lobby)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ybd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/hangover,
@@ -89468,10 +91777,13 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/nuke_storage)
+<<<<<<< HEAD
 "ydg" = (
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
+=======
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ydi" = (
 /obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/blue{
@@ -89662,6 +91974,19 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/grimy,
 /area/service/bar)
+<<<<<<< HEAD
+=======
+"ygH" = (
+/obj/effect/turf_decal/tile/yellow{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/yellow{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/white,
+/area/maintenance/fore)
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 "ygJ" = (
 /obj/structure/table/reinforced,
 /obj/item/electronics/airalarm,
@@ -110502,9 +112827,15 @@ aad
 aad
 ish
 pRv
+<<<<<<< HEAD
 ole
 uJw
 lBv
+=======
+uxJ
+uJw
+lXn
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fET
 ish
 aad
@@ -112244,7 +114575,11 @@ pRV
 gNL
 srx
 fiJ
+<<<<<<< HEAD
 mno
+=======
+vJY
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fMQ
 aNW
 msU
@@ -112310,7 +114645,11 @@ wtM
 tOK
 jfz
 ogi
+<<<<<<< HEAD
 fSA
+=======
+vMX
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nPM
 aad
 vVc
@@ -112810,7 +115149,11 @@ fOD
 rlN
 syw
 fOD
+<<<<<<< HEAD
 iVI
+=======
+tIo
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 doc
 mDX
 nhx
@@ -112824,7 +115167,11 @@ alt
 tOK
 kAa
 lsT
+<<<<<<< HEAD
 oxk
+=======
+snH
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nPM
 aad
 vVc
@@ -113787,7 +116134,11 @@ kPH
 lfA
 vFY
 ckW
+<<<<<<< HEAD
 xAm
+=======
+xgd
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 mLw
 mPn
 lYC
@@ -114096,7 +116447,11 @@ ddP
 rEy
 fOD
 xzZ
+<<<<<<< HEAD
 mhQ
+=======
+mco
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nTO
 kjm
 nTO
@@ -115387,7 +117742,11 @@ nyh
 bzr
 mLI
 xKO
+<<<<<<< HEAD
 mGu
+=======
+jjL
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nGy
 dum
 dli
@@ -116335,10 +118694,17 @@ iSU
 wtX
 hrd
 izP
+<<<<<<< HEAD
 nFt
 fYY
 roa
 jpm
+=======
+ujj
+fYY
+roa
+oEe
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 iSU
 iWG
 evx
@@ -116924,7 +119290,11 @@ bzr
 mJi
 lax
 fOD
+<<<<<<< HEAD
 pDq
+=======
+laF
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 dTM
 bzr
 rMT
@@ -117103,7 +119473,11 @@ lqW
 mRd
 qqN
 iSU
+<<<<<<< HEAD
 rGz
+=======
+kDQ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 vzS
 vmY
 jUI
@@ -117387,7 +119761,11 @@ hQo
 kqV
 mif
 osJ
+<<<<<<< HEAD
 fce
+=======
+qSY
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jsK
 rmw
 yam
@@ -117621,7 +119999,11 @@ qta
 wRC
 cwD
 kof
+<<<<<<< HEAD
 ijD
+=======
+cZT
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 tvA
 xiB
 gYb
@@ -117908,7 +120290,11 @@ qiz
 alh
 rGW
 gBj
+<<<<<<< HEAD
 kUS
+=======
+dJN
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 bQg
 bQg
 bQg
@@ -118367,7 +120753,11 @@ aaa
 aaa
 aaa
 tXR
+<<<<<<< HEAD
 sAP
+=======
+rNU
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pqX
 mqO
 mBI
@@ -118376,7 +120766,11 @@ alf
 gGJ
 dQy
 rEC
+<<<<<<< HEAD
 vnr
+=======
+sQd
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 aMm
 ebx
 uzc
@@ -118637,7 +121031,11 @@ alf
 alf
 alf
 alf
+<<<<<<< HEAD
 pHl
+=======
+lmH
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 uir
 stJ
 alf
@@ -118658,9 +121056,15 @@ gpX
 twz
 cWD
 alf
+<<<<<<< HEAD
 iww
 hNI
 xlq
+=======
+iev
+hNI
+kXy
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 isW
 alf
@@ -118674,7 +121078,11 @@ cGq
 xLl
 rqk
 bHv
+<<<<<<< HEAD
 ggM
+=======
+uzQ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 rwx
 gMr
 msV
@@ -118705,7 +121113,11 @@ bvH
 dTM
 rTa
 bBR
+<<<<<<< HEAD
 fod
+=======
+xbj
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fOD
 jQA
 bzr
@@ -119142,8 +121554,13 @@ rJT
 xLr
 hoZ
 tdr
+<<<<<<< HEAD
 tdr
 aub
+=======
+lBt
+alf
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 iQF
 tfa
 sIW
@@ -119157,7 +121574,11 @@ alf
 alf
 abU
 gJb
+<<<<<<< HEAD
 qEB
+=======
+eLI
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 lNW
 aqV
@@ -119176,7 +121597,11 @@ oRU
 emk
 sen
 khL
+<<<<<<< HEAD
 cDI
+=======
+wAP
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 bAo
 alf
@@ -119657,12 +122082,21 @@ hkj
 ktE
 qES
 wof
+<<<<<<< HEAD
 aub
 vno
 sOx
 hJt
 feC
 eue
+=======
+alf
+xtb
+sOx
+hJt
+feC
+otv
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 qXX
 alf
 cET
@@ -119934,7 +122368,11 @@ kBo
 pcj
 fkR
 mJM
+<<<<<<< HEAD
 pRs
+=======
+dlJ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 scQ
 jKP
 mJM
@@ -119943,11 +122381,19 @@ bCh
 vbq
 jKP
 cmk
+<<<<<<< HEAD
 cdU
 bCh
 mJM
 bPQ
 vKz
+=======
+gnD
+bCh
+mJM
+bPQ
+rJq
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jlO
 pEQ
 huU
@@ -120170,8 +122616,13 @@ kOw
 uva
 oDy
 wqg
+<<<<<<< HEAD
 pSS
 aub
+=======
+sPL
+alf
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 cbR
 alf
 alf
@@ -120446,7 +122897,11 @@ alf
 oRX
 wLt
 xcu
+<<<<<<< HEAD
 hMP
+=======
+tIl
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 rcX
 usi
@@ -120454,10 +122909,17 @@ kow
 lFa
 fDd
 vtV
+<<<<<<< HEAD
 lQG
 kEi
 tbd
 xGH
+=======
+qXK
+kEi
+tbd
+cUb
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pSR
 sQB
 wQk
@@ -120522,7 +122984,11 @@ ujG
 cON
 eLz
 cMY
+<<<<<<< HEAD
 gxs
+=======
+elE
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nRB
 uiJ
 pyA
@@ -120698,7 +123164,11 @@ gvS
 pvt
 gBk
 qok
+<<<<<<< HEAD
 mDH
+=======
+wzp
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 eBp
 alf
@@ -120788,6 +123258,10 @@ mfq
 mHE
 sle
 mHE
+<<<<<<< HEAD
+=======
+neH
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 lCB
 nUN
 nnZ
@@ -121746,11 +124220,19 @@ cmg
 vwF
 gQZ
 alf
+<<<<<<< HEAD
 fIs
 iHI
 sYy
 alf
 rMU
+=======
+lsv
+iHI
+sYy
+alf
+nSL
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 woa
 kmL
 alf
@@ -121973,7 +124455,11 @@ fnm
 tbz
 wwd
 alf
+<<<<<<< HEAD
 iuz
+=======
+eLc
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nfz
 awX
 iUA
@@ -122260,7 +124746,11 @@ gtE
 alf
 dkP
 xmc
+<<<<<<< HEAD
 qSP
+=======
+fzf
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 nLr
 tTh
@@ -122501,7 +124991,11 @@ qZr
 qZr
 pFs
 nqw
+<<<<<<< HEAD
 oIH
+=======
+rzB
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 ggT
 qDO
 wXx
@@ -122558,7 +125052,11 @@ sNJ
 pAm
 nJo
 tHl
+<<<<<<< HEAD
 dhg
+=======
+cwv
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 tDX
 jSd
 fOD
@@ -123069,9 +125567,15 @@ iiE
 qIJ
 tnH
 bQL
+<<<<<<< HEAD
 xNJ
 nJo
 nhi
+=======
+cAN
+nJo
+brd
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 sFH
 hfr
 qxI
@@ -123551,7 +126055,11 @@ ldY
 ldY
 ldY
 yls
+<<<<<<< HEAD
 phC
+=======
+lgu
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 alf
 uqm
 alf
@@ -123583,7 +126091,11 @@ kCw
 nJo
 nEh
 hPd
+<<<<<<< HEAD
 sSg
+=======
+ooA
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nJo
 sfG
 cxK
@@ -123785,9 +126297,15 @@ sAe
 nlP
 jUl
 nPU
+<<<<<<< HEAD
 iGh
 ybe
 iMi
+=======
+wko
+udU
+tPp
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 lmC
 hDd
 wTI
@@ -124041,11 +126559,19 @@ gxy
 xNF
 cWZ
 pbX
+<<<<<<< HEAD
 tAb
 cJL
 fUF
 ifv
 emm
+=======
+kII
+vmC
+hTB
+xQS
+tce
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 tKd
 oyS
 grU
@@ -124298,11 +126824,19 @@ vcE
 vcE
 qfI
 wYd
+<<<<<<< HEAD
 tkE
 eQg
 ihO
 xBx
 gjX
+=======
+kEN
+oHu
+diy
+gKm
+dJh
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 uPo
 eMz
 vcE
@@ -124555,11 +127089,19 @@ miq
 miq
 cBJ
 epX
+<<<<<<< HEAD
 tgz
 pmV
 xCw
 iFf
 veM
+=======
+qHr
+ePR
+mcw
+xRw
+uIp
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 rSg
 xOW
 ugl
@@ -124813,9 +127355,15 @@ eXZ
 vPt
 smX
 kCu
+<<<<<<< HEAD
 kjb
 kEZ
 mxH
+=======
+ngN
+hgp
+jOq
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 gDj
 oUC
 gRa
@@ -125849,7 +128397,11 @@ msf
 pPa
 sZx
 pwZ
+<<<<<<< HEAD
 eby
+=======
+igV
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 oPO
 oWD
 wsX
@@ -126608,7 +129160,11 @@ sqN
 vRD
 eQX
 aDI
+<<<<<<< HEAD
 vCC
+=======
+gCC
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 oKj
 mvt
 iSL
@@ -126618,7 +129174,11 @@ rYc
 exB
 aQI
 pwc
+<<<<<<< HEAD
 nWM
+=======
+aLz
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pwZ
 voa
 unw
@@ -126857,7 +129417,11 @@ uwH
 hyX
 kqt
 nIV
+<<<<<<< HEAD
 nIZ
+=======
+kRc
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 rhv
 aDI
 aDI
@@ -127117,7 +129681,11 @@ aDI
 aDI
 aDI
 aDI
+<<<<<<< HEAD
 vJQ
+=======
+rXP
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 hst
 hDu
 mWg
@@ -127379,7 +129947,11 @@ vGx
 oGd
 wRz
 vuI
+<<<<<<< HEAD
 jdg
+=======
+vdx
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 aDI
 iRE
 bAa
@@ -127391,9 +129963,15 @@ lqz
 kfB
 cjW
 pwZ
+<<<<<<< HEAD
 cpB
 lRQ
 woR
+=======
+olW
+lRQ
+uFZ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pwZ
 guD
 asG
@@ -127654,11 +130232,19 @@ jss
 pwZ
 pMY
 dWK
+<<<<<<< HEAD
 srB
 ewz
 xIc
 ewz
 waq
+=======
+sSq
+ewz
+xIc
+ewz
+fBR
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 rmp
 iIE
 twc
@@ -127893,7 +130479,11 @@ mMu
 iPP
 aoK
 aDI
+<<<<<<< HEAD
 oUK
+=======
+gye
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pIv
 ewz
 ewz
@@ -127907,9 +130497,15 @@ xAQ
 pwZ
 ffU
 iph
+<<<<<<< HEAD
 rQy
 pwZ
 nQW
+=======
+rPZ
+pwZ
+qrj
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 vyC
 cAT
 ewz
@@ -128142,7 +130738,11 @@ wFu
 hyX
 vkh
 aDI
+<<<<<<< HEAD
 kjH
+=======
+sMi
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 hDr
 aDI
 wRz
@@ -128405,7 +131005,11 @@ aDI
 rZQ
 aDI
 bxL
+<<<<<<< HEAD
 aCd
+=======
+tHT
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 aDI
 mac
 uyX
@@ -128672,18 +131276,30 @@ msX
 ewz
 ewz
 ewz
+<<<<<<< HEAD
 oyq
 nBe
 evt
 ewz
 nAm
+=======
+fTH
+nBe
+evt
+ewz
+gzz
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jlM
 ucr
 jlm
 vJe
 sDr
 ewz
+<<<<<<< HEAD
 sqV
+=======
+iZG
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pZR
 ewz
 mZS
@@ -129184,7 +131800,11 @@ waZ
 uWt
 hLf
 ewz
+<<<<<<< HEAD
 xiZ
+=======
+cys
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 gAd
 rbQ
 rbQ
@@ -129690,12 +132310,20 @@ vmL
 jab
 qSM
 ewz
+<<<<<<< HEAD
 jcM
+=======
+ahM
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 xIc
 sGR
 hDa
 rVb
+<<<<<<< HEAD
 gIx
+=======
+mYZ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 xIc
 ewz
 gAd
@@ -129707,6 +132335,7 @@ gcp
 lPc
 rRw
 unx
+<<<<<<< HEAD
 iBW
 fFq
 psg
@@ -129714,6 +132343,15 @@ bkv
 wck
 qWb
 ohY
+=======
+hWk
+rpt
+fgF
+joQ
+yaR
+jaW
+nuD
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 hwg
 sSd
@@ -129944,7 +132582,11 @@ vLs
 qWI
 qEK
 lWR
+<<<<<<< HEAD
 vMp
+=======
+nxV
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 kQp
 jVU
 xIc
@@ -129964,6 +132606,7 @@ lfo
 jUD
 sbJ
 sNC
+<<<<<<< HEAD
 sHs
 vxC
 vxC
@@ -129971,6 +132614,15 @@ vxC
 vxC
 nqp
 ohY
+=======
+xbg
+qaI
+qaI
+qaI
+qaI
+bOo
+nuD
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 eYe
 gHZ
 kqI
@@ -130221,6 +132873,7 @@ nWP
 nWP
 ycn
 hFF
+<<<<<<< HEAD
 gOP
 iyA
 rIr
@@ -130228,6 +132881,15 @@ naa
 hHg
 nqp
 vFB
+=======
+oUS
+pum
+kUG
+xEB
+wSk
+bOo
+sxE
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 nHO
 kqI
@@ -130478,6 +133140,7 @@ nZE
 idA
 kDK
 sNC
+<<<<<<< HEAD
 apX
 bjP
 wIy
@@ -130486,6 +133149,16 @@ vxC
 nqp
 vFB
 jOx
+=======
+xet
+oRH
+nHp
+hNi
+qaI
+uzl
+jvZ
+kpc
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 nHO
 kqI
 twc
@@ -130704,7 +133377,11 @@ cAl
 ouN
 fLu
 wpm
+<<<<<<< HEAD
 dug
+=======
+aQL
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 vLs
 rnD
 dkt
@@ -130721,7 +133398,11 @@ aRz
 fGv
 wLN
 vLs
+<<<<<<< HEAD
 uUo
+=======
+qtM
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 wVI
 tnr
 mTD
@@ -130735,6 +133416,7 @@ bVk
 idA
 vBl
 unx
+<<<<<<< HEAD
 spf
 vzq
 vxC
@@ -130743,6 +133425,16 @@ ial
 hRY
 vPh
 inB
+=======
+qjP
+tLL
+qaI
+qaI
+qfz
+vlX
+oHM
+xRK
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 iVN
 ovI
 vPh
@@ -130970,7 +133662,11 @@ aIc
 mVJ
 vLs
 tdj
+<<<<<<< HEAD
 aDm
+=======
+pNe
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 uOA
 vLs
 ajB
@@ -130982,7 +133678,11 @@ ets
 pwH
 rzV
 kYg
+<<<<<<< HEAD
 xwH
+=======
+sKR
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 pSp
 gXo
 uTd
@@ -130991,6 +133691,7 @@ lKP
 dnI
 wrl
 ewg
+<<<<<<< HEAD
 sNC
 ydg
 vzq
@@ -130999,6 +133700,16 @@ wIy
 vxC
 nqp
 vFB
+=======
+unx
+bWV
+tLL
+hNi
+nHp
+qaI
+bOo
+sxE
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 nHO
 kqI
@@ -131249,6 +133960,7 @@ kPp
 idA
 rBU
 sNC
+<<<<<<< HEAD
 ydg
 hCl
 wIy
@@ -131256,6 +133968,15 @@ vTl
 vxC
 nqp
 vFB
+=======
+hNi
+byQ
+nHp
+tzN
+qaI
+bOo
+sxE
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 gjk
 kqI
@@ -131467,11 +134188,19 @@ abi
 vLs
 hGM
 bKF
+<<<<<<< HEAD
 mWI
 xlC
 xlC
 sVy
 pzY
+=======
+wGo
+xlC
+xlC
+sVy
+ygH
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 vLs
 mdc
 uUe
@@ -131483,10 +134212,17 @@ qqm
 hNq
 sVy
 vLs
+<<<<<<< HEAD
 hBt
 sra
 nUC
 vDS
+=======
+ese
+rRT
+nUC
+sWY
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 rLA
 qNv
 fdo
@@ -131506,6 +134242,7 @@ xXb
 idA
 dyu
 gfN
+<<<<<<< HEAD
 wIy
 vxC
 eBW
@@ -131513,6 +134250,15 @@ ial
 vxC
 fdy
 ohY
+=======
+nHp
+qaI
+dFA
+qfz
+qaI
+gHc
+nuD
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 nHO
 kqI
@@ -131736,12 +134482,21 @@ lxd
 rVE
 sRo
 wtz
+<<<<<<< HEAD
 ukn
 qQF
 cVX
 tbB
 pOR
 mgb
+=======
+pUw
+qQF
+cVX
+tbB
+uxi
+itg
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 lkE
 ybU
 fqP
@@ -131763,6 +134518,7 @@ idA
 idA
 rzA
 sNC
+<<<<<<< HEAD
 rBf
 wIy
 xsB
@@ -131770,6 +134526,15 @@ nFR
 fIg
 veH
 ohY
+=======
+nhM
+nHp
+tNC
+eaw
+kBP
+roJ
+nuD
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jOx
 nHO
 kvS
@@ -132020,8 +134785,13 @@ qUy
 vmT
 oki
 unx
+<<<<<<< HEAD
 tuQ
 drz
+=======
+vZM
+tBt
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fmd
 axc
 oSu
@@ -132240,7 +135010,11 @@ pEs
 vLs
 xvv
 xlC
+<<<<<<< HEAD
 mQE
+=======
+iHU
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 sit
 hCk
 vLs
@@ -132517,7 +135291,11 @@ knh
 mkx
 rRv
 lrU
+<<<<<<< HEAD
 kWJ
+=======
+qCM
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 ssB
 tKE
 pEv
@@ -133785,7 +136563,11 @@ nCZ
 xrO
 wwo
 vex
+<<<<<<< HEAD
 xLc
+=======
+lwe
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 cqr
 tPe
 hXl
@@ -133826,7 +136608,11 @@ iZZ
 iZZ
 iZZ
 iZZ
+<<<<<<< HEAD
 wdf
+=======
+cGU
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fHS
 hHq
 tyo
@@ -134035,7 +136821,11 @@ aeF
 aeF
 aeF
 cqr
+<<<<<<< HEAD
 qmv
+=======
+ifT
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fXq
 goN
 lMW
@@ -134079,7 +136869,11 @@ nFV
 olE
 srN
 ogI
+<<<<<<< HEAD
 hUF
+=======
+iNG
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jVo
 wNb
 aig
@@ -134813,8 +137607,13 @@ slP
 gxj
 eXx
 npV
+<<<<<<< HEAD
 qfE
 itA
+=======
+rzP
+cqr
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 sOh
 sOh
 xFO
@@ -135366,7 +138165,11 @@ oTw
 eID
 jKt
 mNW
+<<<<<<< HEAD
 tbM
+=======
+qav
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 aig
 bpa
 aig
@@ -137231,7 +140034,11 @@ bmh
 aRe
 iDJ
 uJp
+<<<<<<< HEAD
 lWq
+=======
+sYm
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jYi
 xJG
 mSk
@@ -137743,9 +140550,9 @@ cPv
 qQP
 ohz
 aRe
+iwx
 lLv
-bxX
-lLv
+aRe
 aRe
 aRe
 sVG
@@ -138001,7 +140808,11 @@ avN
 bmh
 aRe
 oAp
+<<<<<<< HEAD
 wzK
+=======
+eYF
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fRy
 gpV
 qus
@@ -138256,7 +141067,11 @@ fma
 cPv
 kQS
 bmh
+<<<<<<< HEAD
 wfk
+=======
+hfh
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 jUk
 wzK
 fRy
@@ -138770,7 +141585,11 @@ fma
 cPv
 kQS
 bmh
+<<<<<<< HEAD
 fTs
+=======
+gWQ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fxe
 wzK
 fRy
@@ -139028,8 +141847,13 @@ iAW
 exG
 ehZ
 aRe
+<<<<<<< HEAD
 fyg
 eLo
+=======
+qAM
+eYF
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 fRy
 ikv
 bKv
@@ -143060,7 +145884,11 @@ rgR
 utT
 lBf
 utT
+<<<<<<< HEAD
 qnU
+=======
+tnb
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 icB
 aHj
 oJL
@@ -144851,7 +147679,11 @@ aFm
 aFm
 aFm
 aFm
+<<<<<<< HEAD
 jRE
+=======
+oBZ
+>>>>>>> c2a8bf78ce2 (Rearranges the viewing area of DeltaStation's Surgery Theatre (#65475))
 ric
 srX
 vBy

@@ -158,7 +158,7 @@
 /area/science/xenobiology)
 "aaO" = (
 /obj/structure/flora/grass/jungle,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "aaP" = (
 /obj/effect/turf_decal/tile/blue{
@@ -368,7 +368,7 @@
 /area/medical/virology)
 "abJ" = (
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "abK" = (
 /obj/effect/turf_decal/tile/purple{
@@ -611,7 +611,7 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "acY" = (
 /obj/structure/table,
@@ -629,13 +629,13 @@
 "acZ" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/flora/ausbushes/fernybush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "add" = (
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "ade" = (
 /obj/structure/sign/warning/nosmoking{
@@ -648,7 +648,7 @@
 /area/maintenance/port/fore)
 "adf" = (
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "adg" = (
 /turf/closed/wall/r_wall,
@@ -877,7 +877,7 @@
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "aeU" = (
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "aeV" = (
 /obj/machinery/door/airlock/external{
@@ -2635,7 +2635,7 @@
 /mob/living/simple_animal/hostile/asteroid/basilisk{
 	environment_smash = 0
 	},
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "amr" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -2663,7 +2663,7 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/leafybush,
 /obj/structure/flora/ausbushes/sparsegrass,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/hallway/secondary/exit/departure_lounge)
 "amz" = (
 /turf/closed/wall/r_wall/rust,
@@ -2953,7 +2953,7 @@
 /area/maintenance/department/electrical)
 "aoz" = (
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "aoD" = (
 /obj/structure/sign/warning/securearea,
@@ -3037,7 +3037,7 @@
 /area/service/chapel/monastery)
 "apm" = (
 /obj/effect/decal/cleanable/blood/gibs/old,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "apn" = (
 /obj/machinery/porta_turret/ai{
@@ -3513,7 +3513,7 @@
 "arz" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/tank/internals/emergency_oxygen/empty,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "arB" = (
 /obj/effect/turf_decal/tile/blue{
@@ -5227,7 +5227,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "aAS" = (
 /obj/effect/turf_decal/tile/purple{
@@ -5289,7 +5289,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "aBu" = (
 /obj/effect/decal/cleanable/dirt,
@@ -5557,7 +5557,7 @@
 	},
 /area/security/execution/education)
 "aDQ" = (
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "aDR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -5799,7 +5799,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "aEP" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -6423,7 +6423,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "aKl" = (
 /obj/effect/decal/cleanable/dirt,
@@ -6753,7 +6753,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "aLB" = (
 /obj/machinery/door/firedoor,
@@ -8314,7 +8314,7 @@
 /area/medical/pharmacy)
 "aUz" = (
 /obj/structure/flora/rock/pile,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "aUE" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -13647,7 +13647,7 @@
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/hallway/primary/central)
 "bJJ" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -13755,7 +13755,7 @@
 /area/security/courtroom)
 "bKl" = (
 /obj/structure/flora/rock/pile,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "bKN" = (
 /obj/structure/closet/cardboard,
@@ -13912,7 +13912,7 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/aft)
 "bMM" = (
 /obj/effect/decal/cleanable/oil,
@@ -14185,7 +14185,7 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bPN" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14213,13 +14213,13 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/flora/grass/jungle/b,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bPR" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bPV" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14230,13 +14230,13 @@
 /area/maintenance/starboard/fore)
 "bPX" = (
 /obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bPZ" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bQa" = (
 /obj/structure/sign/warning/docking,
@@ -14292,7 +14292,7 @@
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/pickaxe,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "bQU" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -14441,7 +14441,7 @@
 "bRy" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/blood/gibs/old,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "bRz" = (
 /obj/effect/turf_decal/tile/purple{
@@ -14542,7 +14542,7 @@
 /turf/open/floor/grass,
 /area/hallway/secondary/exit/departure_lounge)
 "bSp" = (
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "bSr" = (
 /turf/closed/wall,
@@ -14773,7 +14773,7 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bTU" = (
 /obj/effect/turf_decal/delivery,
@@ -14813,14 +14813,14 @@
 	},
 /obj/structure/flora/grass/jungle,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUe" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUf" = (
 /obj/effect/spawner/structure/window/reinforced,
@@ -14840,7 +14840,7 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUm" = (
 /obj/structure/table,
@@ -14867,7 +14867,7 @@
 	},
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUq" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14895,7 +14895,7 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUz" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14923,7 +14923,7 @@
 	},
 /obj/effect/turf_decal/stripes/corner,
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUC" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14931,7 +14931,7 @@
 	},
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUD" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14939,7 +14939,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUE" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -14948,12 +14948,12 @@
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUF" = (
 /obj/structure/flora/rock/pile,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "bUI" = (
 /obj/effect/turf_decal/stripes/line{
@@ -16730,7 +16730,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cdd" = (
 /obj/effect/turf_decal/stripes/line,
@@ -17831,11 +17831,11 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "ciZ" = (
 /obj/structure/flora/grass/jungle,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cjc" = (
 /obj/structure/fluff/clockwork/alloy_shards/medium_gearbit,
@@ -18585,7 +18585,7 @@
 /area/maintenance/port/aft)
 "cnf" = (
 /obj/structure/grille,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "cni" = (
 /obj/structure/sign/warning/securearea,
@@ -18830,7 +18830,7 @@
 /area/space/nearstation)
 "coy" = (
 /obj/structure/flora/rock,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "coB" = (
 /turf/closed/wall/r_wall/rust,
@@ -19523,13 +19523,13 @@
 /area/maintenance/port/greater)
 "csN" = (
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "csS" = (
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "csX" = (
 /obj/effect/turf_decal/delivery,
@@ -19613,7 +19613,7 @@
 /area/ai_monitored/security/armory)
 "ctu" = (
 /obj/effect/decal/cleanable/oil,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "ctx" = (
 /obj/effect/turf_decal/tile/brown,
@@ -19691,11 +19691,11 @@
 /area/maintenance/starboard)
 "cui" = (
 /mob/living/simple_animal/hostile/asteroid/goliath,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "cuj" = (
 /mob/living/simple_animal/hostile/asteroid/hivelord,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "cul" = (
 /obj/effect/turf_decal/tile/red{
@@ -21003,15 +21003,15 @@
 /area/maintenance/aft)
 "cBv" = (
 /obj/structure/flora/grass/jungle,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "cBw" = (
 /obj/structure/flora/rock/pile,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "cBx" = (
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "cBy" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -21019,7 +21019,7 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "cBB" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -21040,7 +21040,7 @@
 /turf/open/floor/plating,
 /area/space/nearstation)
 "cBI" = (
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "cBK" = (
 /obj/effect/turf_decal/tile/brown,
@@ -21110,7 +21110,7 @@
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cCF" = (
 /obj/structure/reagent_dispensers/watertank,
@@ -21161,7 +21161,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cCX" = (
 /obj/docking_port/stationary/random{
@@ -21717,35 +21717,35 @@
 /area/maintenance/starboard/fore)
 "cGi" = (
 /obj/structure/flora/grass/jungle/b,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGj" = (
 /obj/structure/flora/rock/pile,
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGl" = (
 /obj/structure/flora/rock,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGm" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGp" = (
 /obj/structure/flora/ausbushes/palebush,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGr" = (
 /obj/structure/flora/grass/jungle/b,
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "cGs" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -22920,7 +22920,7 @@
 /obj/structure/sign/warning/securearea{
 	pixel_x = -32
 	},
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "cQl" = (
 /obj/structure/cable,
@@ -24176,7 +24176,7 @@
 /area/hallway/primary/fore)
 "dny" = (
 /obj/machinery/light/directional/north,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "dnD" = (
 /obj/effect/turf_decal/tile/green{
@@ -24526,7 +24526,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "dvN" = (
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "dwd" = (
 /obj/structure/table,
@@ -24646,7 +24646,7 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushb1"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "dyT" = (
 /obj/structure/cable,
@@ -25466,7 +25466,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/hallway/secondary/exit/departure_lounge)
 "dNg" = (
 /obj/structure/table/wood,
@@ -28406,7 +28406,7 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "eOv" = (
 /obj/effect/turf_decal/bot,
@@ -29071,7 +29071,7 @@
 /obj/structure/flora/grass/jungle,
 /obj/machinery/light/directional/east,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "eYL" = (
 /obj/effect/decal/cleanable/oil,
@@ -32805,7 +32805,7 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushc2"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "gtm" = (
 /obj/machinery/computer/security/telescreen/interrogation{
@@ -33216,7 +33216,7 @@
 "gyK" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/chair,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/port/lesser)
 "gyT" = (
 /obj/effect/turf_decal/siding/thinplating/light{
@@ -33487,7 +33487,7 @@
 "gCB" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/flora/ausbushes/sparsegrass,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/hallway/secondary/exit/departure_lounge)
 "gCG" = (
 /obj/structure/rack,
@@ -35484,7 +35484,7 @@
 /area/space/nearstation)
 "hms" = (
 /obj/structure/flora/rock,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space)
 "hmJ" = (
 /obj/effect/turf_decal/bot,
@@ -36178,7 +36178,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt2"
 	},
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "hzD" = (
 /obj/item/radio/intercom/directional/west,
@@ -41909,7 +41909,7 @@
 	dir = 8
 	},
 /obj/machinery/light/directional/east,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "jou" = (
 /obj/effect/decal/cleanable/dirt,
@@ -44793,7 +44793,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
 	},
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "kmM" = (
 /obj/structure/table/bronze,
@@ -46287,6 +46287,25 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/grimy,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"kJN" = (
+/mob/living/simple_animal/chicken,
+/obj/machinery/light/small/directional/west,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+"kJP" = (
+/obj/effect/landmark/blobstart,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/loading_area{
+	dir = 1;
+	pixel_y = 5
+	},
+/obj/effect/turf_decal/tile/purple/half/contrasted,
+/obj/effect/turf_decal/tile/purple,
+/turf/open/floor/iron/showroomfloor,
+/area/science/storage)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "kJX" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -46363,7 +46382,7 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fernybush_3"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "kLB" = (
 /obj/effect/turf_decal/stripes/line{
@@ -51842,7 +51861,7 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fernybush_1"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "mzw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible,
@@ -54115,7 +54134,7 @@
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
 /obj/machinery/light/directional/west,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "nnX" = (
 /obj/structure/table/reinforced,
@@ -63959,7 +63978,7 @@
 /area/engineering/atmos)
 "qvq" = (
 /obj/structure/flora/rock,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "qvt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -66547,7 +66566,7 @@
 /area/security/prison)
 "rkn" = (
 /obj/item/stack/cable_coil,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "rko" = (
 /obj/structure/grille,
@@ -70782,6 +70801,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/teleporter)
+<<<<<<< HEAD
+=======
+"sCD" = (
+/obj/effect/turf_decal/siding/green,
+/obj/machinery/door/firedoor/border_only/closed,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "sCG" = (
 /obj/structure/chair/sofa/right{
 	color = "#c45c57";
@@ -71260,6 +71287,14 @@
 "sLq" = (
 /turf/closed/wall,
 /area/security/medical)
+<<<<<<< HEAD
+=======
+"sLx" = (
+/mob/living/basic/cow,
+/obj/machinery/light/small/directional/east,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "sLz" = (
 /obj/structure/table,
 /obj/item/reagent_containers/food/drinks/drinkingglass,
@@ -72335,7 +72370,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "lavarocks2"
 	},
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "thp" = (
 /turf/closed/wall/rust,
@@ -72376,7 +72411,7 @@
 /area/engineering/atmos)
 "thU" = (
 /mob/living/simple_animal/hostile/asteroid/goliath,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "tim" = (
 /obj/effect/turf_decal/siding/thinplating/dark,
@@ -75566,7 +75601,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "uje" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
@@ -75645,7 +75680,7 @@
 /turf/open/floor/plating,
 /area/cargo/warehouse)
 "uku" = (
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space)
 "ukD" = (
 /obj/structure/table,
@@ -75838,7 +75873,7 @@
 	dir = 8
 	},
 /obj/machinery/light/directional/north,
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/maintenance/fore)
 "upr" = (
 /obj/structure/cable,
@@ -78028,7 +78063,7 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "grassb5"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "vdS" = (
 /obj/structure/lattice,
@@ -79528,7 +79563,7 @@
 /obj/structure/flora/grass/jungle,
 /obj/machinery/light/directional/north,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "vDB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -80280,7 +80315,7 @@
 "vQF" = (
 /obj/structure/lattice,
 /obj/structure/grille,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "vRa" = (
 /obj/structure/lattice/catwalk,
@@ -80556,7 +80591,7 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "genericbush_1"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "vVZ" = (
 /obj/effect/turf_decal/tile/brown{
@@ -80721,6 +80756,13 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
+=======
+"vZx" = (
+/obj/item/radio/intercom/directional/north,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "vZO" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 4
@@ -81460,7 +81502,7 @@
 	name = "Tuna";
 	real_name = "Tuna"
 	},
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "woP" = (
 /obj/effect/turf_decal/box/corners{
@@ -82343,7 +82385,7 @@
 /area/maintenance/disposal/incinerator)
 "wDI" = (
 /obj/structure/flora/rock/pile,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "wDJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -83905,7 +83947,7 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushc2"
 	},
-/turf/open/floor/plating/asteroid,
+/turf/open/misc/asteroid,
 /area/space/nearstation)
 "xdt" = (
 /obj/structure/cable,
@@ -84025,7 +84067,7 @@
 /area/hallway/secondary/exit/departure_lounge)
 "xfU" = (
 /obj/item/circuitboard/computer/solar_control,
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "xgf" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
@@ -85499,6 +85541,38 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+<<<<<<< HEAD
+=======
+"xEG" = (
+/obj/machinery/door/morgue{
+	name = "Confession Booth (Chaplain)";
+	req_access_txt = "22"
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/wood/parquet,
+/area/service/chapel/monastery)
+"xEU" = (
+/obj/effect/turf_decal/bot,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/rack,
+/obj/item/extinguisher{
+	pixel_x = -4;
+	pixel_y = 8
+	},
+/obj/item/tank/internals/oxygen/red{
+	pixel_x = 4;
+	pixel_y = 2
+	},
+/obj/item/clothing/mask/gas,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating,
+/area/maintenance/port/lesser)
+"xFl" = (
+/obj/structure/window/reinforced/spawner,
+/obj/effect/turf_decal/siding/green,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "xFp" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
@@ -86731,7 +86805,7 @@
 /area/engineering/atmos)
 "ycp" = (
 /mob/living/simple_animal/hostile/asteroid/hivelord,
-/turf/open/floor/plating/asteroid/lowpressure,
+/turf/open/misc/asteroid/lowpressure,
 /area/space/nearstation)
 "ycs" = (
 /obj/structure/cable,

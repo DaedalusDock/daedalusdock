@@ -48,6 +48,12 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+"bc" = (
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/wood{
+	icon_state = "wood-broken"
+	},
+/area/ctf)
 "bd" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -61,6 +67,10 @@
 	resistance_flags = 64
 	},
 /turf/open/floor/iron,
+/area/ctf)
+"bg" = (
+/obj/structure/flora/ausbushes/grassybush,
+/turf/open/misc/grass,
 /area/ctf)
 "bs" = (
 /obj/structure/chair/stool/bar/directional/south{
@@ -96,6 +106,14 @@
 	dir = 6
 	},
 /obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/ctf)
+"bT" = (
+/obj/structure/holohoop{
+	dir = 4;
+	resistance_flags = 64
+	},
+/obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron,
 /area/ctf)
 "ce" = (
@@ -189,6 +207,12 @@
 /obj/effect/turf_decal/tile/bar,
 /turf/open/floor/iron,
 /area/ctf)
+"ei" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/ctf)
 "ek" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -201,6 +225,11 @@
 "en" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
+/area/ctf)
+"ev" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating,
 /area/ctf)
 "ey" = (
 /obj/effect/turf_decal/siding/wood{
@@ -245,6 +274,7 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "fj" = (
 /obj/structure/sign/poster/random{
 	pixel_x = -32
@@ -252,6 +282,12 @@
 /turf/open/floor/wood{
 	icon_state = "wood-broken"
 	},
+=======
+"fn" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "fw" = (
 /obj/effect/turf_decal/trimline/red/line{
@@ -275,6 +311,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "gh" = (
 /obj/structure/holohoop{
 	dir = 8;
@@ -283,6 +320,8 @@
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "gn" = (
 /obj/machinery/computer{
 	icon_keyboard = "rd_key";
@@ -299,6 +338,14 @@
 	},
 /turf/open/floor/wood,
 /area/ctf)
+<<<<<<< HEAD
+=======
+"gu" = (
+/obj/structure/barricade/security/ctf,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "gv" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/carpet/red,
@@ -317,6 +364,14 @@
 /obj/structure/closet/crate/large{
 	resistance_flags = 64
 	},
+/turf/open/floor/iron,
+/area/ctf)
+"gO" = (
+/obj/structure/holohoop{
+	dir = 8;
+	resistance_flags = 64
+	},
+/obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron,
 /area/ctf)
 "gR" = (
@@ -348,6 +403,14 @@
 	},
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/carpet/red,
+/area/ctf)
+"hg" = (
+/obj/structure/chair{
+	dir = 4;
+	item_chair = null;
+	resistance_flags = 64
+	},
+/turf/open/misc/grass,
 /area/ctf)
 "hl" = (
 /obj/effect/turf_decal/trimline/red/line{
@@ -474,9 +537,20 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "ja" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron/dark/side{
+=======
+"je" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/eighties,
+/area/ctf)
+"jf" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark/corner{
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 	dir = 1
 	},
 /area/ctf)
@@ -528,12 +602,6 @@
 /area/ctf)
 "jS" = (
 /turf/open/floor/iron,
-/area/ctf)
-"jT" = (
-/obj/structure/table/wood{
-	resistance_flags = 64
-	},
-/turf/open/floor/plating/grass,
 /area/ctf)
 "jX" = (
 /obj/effect/turf_decal/stripes/white/line{
@@ -602,6 +670,12 @@
 /obj/effect/turf_decal/siding/yellow,
 /turf/open/floor/iron/dark,
 /area/ctf)
+"lz" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark/corner{
+	dir = 8
+	},
+/area/ctf)
 "lC" = (
 /obj/structure/rack{
 	resistance_flags = 64
@@ -613,6 +687,11 @@
 "lK" = (
 /obj/item/ctf/blue,
 /turf/open/floor/circuit/green/anim,
+/area/ctf)
+"lL" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/eighties,
 /area/ctf)
 "lT" = (
 /obj/structure/rack{
@@ -627,9 +706,12 @@
 /obj/effect/decal/cleanable/shreds,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "mj" = (
 /turf/open/floor/plating/grass,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "mm" = (
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 8
@@ -652,6 +734,7 @@
 	dir = 10
 	},
 /area/ctf)
+<<<<<<< HEAD
 "mP" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/structure/sign/poster/contraband/random{
@@ -659,6 +742,8 @@
 	},
 /turf/open/floor/eighties,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "no" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
@@ -671,6 +756,7 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "nL" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -680,6 +766,8 @@
 	},
 /turf/open/floor/eighties,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "nO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/blue/line{
@@ -696,6 +784,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+"nS" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/ctf)
 "nT" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -704,6 +798,23 @@
 /obj/structure/table/reinforced/ctf,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
+=======
+"ok" = (
+/obj/effect/turf_decal/tile/bar{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/bar,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron,
+/area/ctf)
+"on" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark/corner{
+	dir = 4
+	},
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "oo" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -715,6 +826,10 @@
 	name = "Arcade";
 	resistance_flags = 64
 	},
+/turf/open/floor/iron,
+/area/ctf)
+"or" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron,
 /area/ctf)
 "oC" = (
@@ -791,6 +906,7 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "pI" = (
 /obj/structure/sign/poster/contraband/random{
 	pixel_x = 32
@@ -801,6 +917,8 @@
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark/side,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "qh" = (
 /obj/machinery/door/poddoor/shutters/window{
 	id = "flag1";
@@ -830,6 +948,7 @@
 	},
 /turf/open/floor/wood,
 /area/ctf)
+<<<<<<< HEAD
 "qT" = (
 /obj/structure/sign/poster/random{
 	pixel_y = 32
@@ -839,6 +958,8 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "rk" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -915,6 +1036,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "st" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron/dark/corner{
@@ -929,6 +1051,8 @@
 	},
 /turf/open/floor/plating/grass,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "sZ" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -1001,6 +1125,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+"ve" = (
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/plating,
+/area/ctf)
 "vo" = (
 /obj/structure/table/wood{
 	resistance_flags = 64
@@ -1050,9 +1178,23 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "vZ" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark,
+=======
+"wx" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/plating,
+/area/ctf)
+"wR" = (
+/obj/effect/turf_decal/trimline/red/line{
+	dir = 1
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "wU" = (
 /obj/structure/rack{
@@ -1117,12 +1259,15 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "xk" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark/corner{
 	dir = 1
 	},
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "xq" = (
 /obj/effect/turf_decal/trimline/blue/line,
 /obj/effect/decal/cleanable/dirt,
@@ -1227,6 +1372,16 @@
 /obj/effect/turf_decal/trimline/red/line,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
+=======
+"zj" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/eighties,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "zq" = (
 /obj/effect/turf_decal/siding/yellow/corner{
 	dir = 8
@@ -1307,6 +1462,12 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+"Ap" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/table/reinforced/ctf,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+/area/ctf)
 "Av" = (
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 8
@@ -1328,9 +1489,16 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "AI" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron,
+=======
+"AL" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/plating,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "AR" = (
 /obj/effect/turf_decal/trimline/red/line{
@@ -1367,6 +1535,14 @@
 "BH" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
+/area/ctf)
+"BK" = (
+/obj/effect/turf_decal/stripes/corner,
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
 /area/ctf)
 "BO" = (
 /obj/effect/turf_decal/trimline/blue/line{
@@ -1430,11 +1606,17 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "Cv" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
+=======
+"Ch" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark/side,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "CB" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1546,6 +1728,10 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/ctf)
+"Ew" = (
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating,
+/area/ctf)
 "EB" = (
 /obj/machinery/button/door/directional/south{
 	id = "flag1";
@@ -1616,13 +1802,22 @@
 	},
 /turf/open/floor/carpet/blue,
 /area/ctf)
-"Ga" = (
-/obj/structure/flora/ausbushes/ywflowers,
-/turf/open/floor/plating/grass,
-/area/ctf)
 "Gg" = (
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron/dark,
+/area/ctf)
+"Gk" = (
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+/area/ctf)
+"Gm" = (
+/obj/machinery/door/poddoor/shutters/window{
+	id = "flag2";
+	name = "flag shutters";
+	resistance_flags = 64
+	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
 /area/ctf)
 "GA" = (
 /obj/structure/barricade/sandbags{
@@ -1633,6 +1828,13 @@
 "GB" = (
 /obj/structure/table/reinforced/ctf,
 /turf/open/floor/plating,
+/area/ctf)
+"GC" = (
+/obj/effect/turf_decal/trimline/blue/line{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron,
 /area/ctf)
 "GE" = (
 /obj/effect/turf_decal/stripes/corner{
@@ -1663,14 +1865,6 @@
 /obj/effect/decal/cleanable/plastic,
 /turf/open/floor/iron,
 /area/ctf)
-"GP" = (
-/obj/structure/chair{
-	dir = 4;
-	item_chair = null;
-	resistance_flags = 64
-	},
-/turf/open/floor/plating/grass,
-/area/ctf)
 "GT" = (
 /obj/machinery/door/airlock{
 	name = "Arcade";
@@ -1699,17 +1893,21 @@
 /obj/effect/turf_decal/siding/yellow,
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "HF" = (
 /obj/structure/sign/poster/contraband/random{
 	pixel_x = -32
 	},
 /turf/open/floor/plating,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Ie" = (
 /turf/open/floor/wood{
 	icon_state = "wood-broken5"
 	},
 /area/ctf)
+<<<<<<< HEAD
 "Ig" = (
 /obj/effect/turf_decal/trimline/blue/line{
 	dir = 1
@@ -1717,6 +1915,13 @@
 /obj/structure/sign/poster/random{
 	pixel_y = 32
 	},
+=======
+"Ij" = (
+/obj/effect/turf_decal/trimline/red/line{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/north,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /turf/open/floor/iron,
 /area/ctf)
 "Il" = (
@@ -1733,6 +1938,7 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "Is" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
@@ -1745,11 +1951,14 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "It" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/blue/line,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "Iy" = (
 /obj/machinery/door/poddoor/shutters/window{
 	id = "flag2";
@@ -1759,6 +1968,26 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/floor/iron,
 /area/ctf)
+=======
+"II" = (
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+/area/ctf)
+"IO" = (
+/obj/structure/chair{
+	dir = 8;
+	item_chair = null;
+	resistance_flags = 64
+	},
+/turf/open/misc/grass,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "IS" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/red{
@@ -1768,6 +1997,10 @@
 	resistance_flags = 64
 	},
 /turf/open/floor/iron,
+/area/ctf)
+"IY" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark/side,
 /area/ctf)
 "Jc" = (
 /obj/effect/turf_decal/trimline/red/line,
@@ -1833,10 +2066,6 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
-"Kd" = (
-/obj/structure/flora/ausbushes/grassybush,
-/turf/open/floor/plating/grass,
-/area/ctf)
 "Kh" = (
 /obj/effect/turf_decal/trimline/red/line{
 	dir = 1
@@ -1857,6 +2086,18 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
+=======
+"Kz" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/door/poddoor/shutters/window{
+	id = "flag2";
+	name = "flag shutters";
+	resistance_flags = 64
+	},
+/turf/open/floor/iron,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "KD" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -1885,6 +2126,10 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+"KL" = (
+/obj/structure/flora/ausbushes/ywflowers,
+/turf/open/misc/grass,
+/area/ctf)
 "KN" = (
 /turf/open/floor/wood{
 	icon_state = "wood-broken6"
@@ -1901,6 +2146,10 @@
 	resistance_flags = 64
 	},
 /turf/open/floor/iron/dark,
+/area/ctf)
+"Lr" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron,
 /area/ctf)
 "Lz" = (
 /obj/effect/turf_decal/trimline/red/line,
@@ -1929,12 +2178,15 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "LR" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark/side{
 	dir = 1
 	},
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "LY" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark{
@@ -1942,6 +2194,22 @@
 	name = "bus"
 	},
 /area/ctf)
+<<<<<<< HEAD
+=======
+"Mb" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark,
+/area/ctf)
+"Mq" = (
+/obj/structure/hedge{
+	resistance_flags = 64
+	},
+/turf/open/misc/grass,
+/area/ctf)
+"Mz" = (
+/turf/open/misc/grass,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "MM" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -1969,6 +2237,18 @@
 	},
 /turf/open/floor/carpet/red,
 /area/ctf)
+<<<<<<< HEAD
+=======
+"MY" = (
+/obj/machinery/button/door/directional/south{
+	id = "flag2";
+	name = "Flag Shutters";
+	resistance_flags = 64
+	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/ctf)
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Nj" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -2035,6 +2315,10 @@
 /obj/effect/turf_decal/siding/yellow,
 /turf/open/floor/iron/dark,
 /area/ctf)
+"Ol" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark/corner,
+/area/ctf)
 "Om" = (
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 1
@@ -2045,6 +2329,7 @@
 /obj/effect/decal/cleanable/plastic,
 /turf/open/floor/iron,
 /area/ctf)
+<<<<<<< HEAD
 "OA" = (
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/structure/sign/poster/random{
@@ -2052,6 +2337,8 @@
 	},
 /turf/open/floor/eighties,
 /area/ctf)
+=======
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "OO" = (
 /obj/effect/turf_decal/siding/white{
 	dir = 9
@@ -2167,11 +2454,12 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
-"RB" = (
-/obj/structure/hedge{
-	resistance_flags = 64
+"Rz" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
 	},
-/turf/open/floor/plating/grass,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/eighties,
 /area/ctf)
 "RD" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible{
@@ -2181,6 +2469,11 @@
 	},
 /obj/effect/turf_decal/siding/white/corner,
 /turf/open/floor/iron/dark,
+/area/ctf)
+"RK" = (
+/obj/structure/trap/ctf/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
 /area/ctf)
 "RN" = (
 /obj/effect/turf_decal/trimline/red/line{
@@ -2213,6 +2506,11 @@
 	},
 /turf/open/floor/wood,
 /area/ctf)
+"Sf" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/eighties,
+/area/ctf)
 "Sg" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/carpet/blue,
@@ -2234,6 +2532,10 @@
 	},
 /turf/open/floor/plating,
 /area/ctf)
+"SW" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/ctf)
 "Tb" = (
 /obj/effect/turf_decal/siding/white,
 /obj/structure/barricade/security/ctf,
@@ -2249,6 +2551,12 @@
 	},
 /obj/effect/turf_decal/trimline/red/line,
 /turf/open/floor/iron,
+/area/ctf)
+"Ty" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
 /area/ctf)
 "TA" = (
 /obj/effect/turf_decal/siding/yellow/corner{
@@ -2297,12 +2605,21 @@
 /obj/structure/barricade/security/ctf,
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "UQ" = (
 /obj/item/toy/beach_ball/holoball,
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark/side{
 	dir = 8
 	},
+=======
+"UV" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/eighties,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "UY" = (
 /obj/effect/decal/cleanable/shreds,
@@ -2370,11 +2687,19 @@
 "Wh" = (
 /turf/open/floor/circuit/green/anim,
 /area/ctf)
+<<<<<<< HEAD
 "Wk" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron/dark/side{
 	dir = 4
 	},
+=======
+"Wi" = (
+/obj/structure/table/wood{
+	resistance_flags = 64
+	},
+/turf/open/misc/grass,
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "WD" = (
 /obj/effect/turf_decal/tile/bar,
@@ -2457,6 +2782,10 @@
 	},
 /turf/open/floor/iron,
 /area/ctf)
+"XU" = (
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark,
+/area/ctf)
 "Yb" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
@@ -2536,9 +2865,18 @@
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron/dark,
 /area/ctf)
+<<<<<<< HEAD
 "Zu" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron,
+=======
+"ZA" = (
+/obj/item/toy/beach_ball/holoball,
+/obj/effect/turf_decal/tile/green/fourcorners,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/ctf)
 "ZM" = (
 /obj/structure/barricade/sandbags{
@@ -2613,12 +2951,21 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 ZP
 ZP
 ZP
 ZP
 Cb
+=======
+SW
+SW
+SW
+SW
+SW
+Kz
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 no
 Ay
 Yj
@@ -2629,6 +2976,7 @@ ce
 Yj
 Yj
 WZ
+<<<<<<< HEAD
 Xp
 ZP
 ZP
@@ -2640,6 +2988,19 @@ ZP
 ZP
 ZP
 ZP
+=======
+RK
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 td
 Te
@@ -2651,12 +3012,21 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 wY
 wY
 wY
 ZP
 Cb
+=======
+SW
+gu
+gu
+gu
+SW
+Kz
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 aM
 jS
 jS
@@ -2667,6 +3037,7 @@ jS
 jS
 jS
 QW
+<<<<<<< HEAD
 Xp
 ZP
 ZP
@@ -2679,6 +3050,20 @@ ZP
 ZP
 ZP
 ZP
+=======
+RK
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 td
 Te
@@ -2689,12 +3074,21 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 ZP
 wY
 ZP
 ZP
 Iy
+=======
+SW
+SW
+gu
+SW
+SW
+Gm
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 aM
 jS
 iY
@@ -2705,6 +3099,7 @@ oQ
 gJ
 jS
 QW
+<<<<<<< HEAD
 Xp
 ZP
 ZP
@@ -2718,6 +3113,21 @@ ZP
 ZP
 ZP
 ZP
+=======
+RK
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 td
 "}
@@ -2727,11 +3137,19 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 ZP
 ZP
 ZP
 YL
+=======
+SW
+SW
+SW
+SW
+MY
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 Il
 iY
@@ -2752,11 +3170,19 @@ td
 kO
 td
 td
+<<<<<<< HEAD
 ZP
 ZP
 ZP
 ZP
 ZP
+=======
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 "}
 (6,1,1) = {"
@@ -2765,11 +3191,19 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 iD
 Wh
 iD
 ZP
+=======
+SW
+iD
+Wh
+iD
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 GY
 TD
@@ -2790,11 +3224,19 @@ ku
 ku
 jl
 td
+<<<<<<< HEAD
 ZP
 ZP
 Wh
 ZP
 ZP
+=======
+SW
+SW
+Wh
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 "}
 (7,1,1) = {"
@@ -2803,6 +3245,7 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 Wh
 lK
@@ -2810,6 +3253,15 @@ Wh
 ZP
 td
 Ig
+=======
+SW
+Wh
+lK
+Wh
+SW
+td
+GC
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 TD
 xe
 Xj
@@ -2828,11 +3280,19 @@ ku
 Xj
 Gg
 td
+<<<<<<< HEAD
 ZP
 Wh
 eA
 Wh
 ZP
+=======
+SW
+Wh
+eA
+Wh
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 "}
 (8,1,1) = {"
@@ -2841,11 +3301,19 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 iD
 Wh
 iD
 ZP
+=======
+SW
+iD
+Wh
+iD
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 mB
 TD
@@ -2866,11 +3334,19 @@ ku
 Xj
 Gg
 td
+<<<<<<< HEAD
 ZP
 ZP
 Wh
 ZP
 ZP
+=======
+SW
+SW
+Wh
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 "}
 (9,1,1) = {"
@@ -2879,11 +3355,19 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 ZP
 ZP
 ZP
 ZP
 ZP
+=======
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 mB
 TD
@@ -2904,11 +3388,19 @@ ku
 Xj
 Gg
 td
+<<<<<<< HEAD
 ZP
 ZP
 ZP
 ZP
 ZP
+=======
+SW
+SW
+SW
+SW
+SW
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 "}
 (10,1,1) = {"
@@ -3015,7 +3507,11 @@ Dd
 BH
 BH
 xs
+<<<<<<< HEAD
 rS
+=======
+wx
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 BH
 BH
@@ -3029,7 +3525,11 @@ Te
 Te
 Te
 td
+<<<<<<< HEAD
 Qb
+=======
+fn
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xs
 td
 Ll
@@ -3124,7 +3624,11 @@ De
 Ad
 TD
 td
+<<<<<<< HEAD
 Is
+=======
+II
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 Ym
 vY
 jS
@@ -3331,7 +3835,11 @@ Te
 "}
 (21,1,1) = {"
 td
+<<<<<<< HEAD
 LJ
+=======
+ev
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 BH
 xs
@@ -3400,7 +3908,11 @@ BH
 BH
 BH
 BH
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 Te
 Te
@@ -3448,11 +3960,19 @@ td
 BH
 BH
 GT
+<<<<<<< HEAD
 OA
 cp
 xw
 cp
 Yk
+=======
+Sf
+cp
+Rz
+cp
+zj
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 Hf
 td
 mB
@@ -3486,7 +4006,11 @@ td
 El
 xs
 td
+<<<<<<< HEAD
 Bh
+=======
+lL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 ql
 go
 ql
@@ -3521,10 +4045,17 @@ Te
 "}
 (26,1,1) = {"
 td
+<<<<<<< HEAD
 Ag
 BH
 td
 Bh
+=======
+Ap
+BH
+td
+lL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 kZ
 xy
 kZ
@@ -3541,12 +4072,12 @@ ZM
 De
 Ad
 jS
-RB
-Kd
-mj
-GP
-Kd
-mj
+Mq
+bg
+Mz
+hg
+bg
+Mz
 TD
 td
 xs
@@ -3579,12 +4110,12 @@ jD
 De
 Ad
 jS
-RB
-mj
-jT
-jT
-jT
-mj
+Mq
+Mz
+Wi
+Wi
+Wi
+Mz
 TD
 td
 xs
@@ -3617,12 +4148,12 @@ Xj
 De
 Ad
 zA
-RB
-Kd
-mj
-sM
-mj
-Kd
+Mq
+bg
+Mz
+IO
+Mz
+bg
 TD
 td
 BH
@@ -3676,7 +4207,11 @@ td
 xs
 BH
 td
+<<<<<<< HEAD
 Bh
+=======
+lL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 kZ
 xy
 kZ
@@ -3714,14 +4249,22 @@ td
 BH
 El
 td
+<<<<<<< HEAD
 mP
+=======
+je
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 hU
 ql
 hU
 ql
 QC
 td
+<<<<<<< HEAD
 zD
+=======
+GC
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 Uf
 dC
 gZ
@@ -3733,9 +4276,15 @@ nO
 jS
 jS
 JS
+<<<<<<< HEAD
 AI
 Vg
 AI
+=======
+Lr
+bT
+Lr
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 TD
 td
@@ -3755,7 +4304,11 @@ td
 pm
 oo
 oo
+<<<<<<< HEAD
 nL
+=======
+UV
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 oo
 du
 td
@@ -3771,9 +4324,15 @@ nO
 zA
 jS
 JS
+<<<<<<< HEAD
 pQ
 vZ
 LR
+=======
+Ch
+XU
+nS
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 TD
 td
@@ -3787,7 +4346,11 @@ Te
 "}
 (33,1,1) = {"
 td
+<<<<<<< HEAD
 vJ
+=======
+Gk
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 El
 td
 td
@@ -3809,14 +4372,24 @@ Ad
 zA
 jS
 JS
+<<<<<<< HEAD
 pQ
 vZ
 LR
+=======
+Ch
+XU
+nS
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 TD
 td
 El
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 Te
 Te
@@ -3833,7 +4406,11 @@ xs
 xs
 BH
 BH
+<<<<<<< HEAD
 LJ
+=======
+ev
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 Ad
 Uf
@@ -3847,9 +4424,15 @@ Ao
 zA
 jS
 JS
+<<<<<<< HEAD
 Cv
 UQ
 xk
+=======
+lz
+ZA
+jf
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 TD
 Am
@@ -3869,7 +4452,11 @@ BH
 xs
 xs
 BH
+<<<<<<< HEAD
 pI
+=======
+ve
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 BH
 BH
@@ -3885,9 +4472,15 @@ Kh
 jS
 jS
 JS
+<<<<<<< HEAD
 uJ
 Wk
 st
+=======
+Ol
+Ty
+on
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 da
 Am
@@ -3923,9 +4516,15 @@ Kh
 jS
 jS
 JS
+<<<<<<< HEAD
 kj
 yE
 ja
+=======
+IY
+Mb
+ei
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 da
 td
@@ -3943,11 +4542,19 @@ BH
 El
 td
 DE
+<<<<<<< HEAD
 Ut
 oS
 UZ
 ql
 fj
+=======
+ok
+oS
+UZ
+ql
+bc
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 Kh
 jH
@@ -3961,9 +4568,15 @@ ru
 jS
 jS
 JS
+<<<<<<< HEAD
 kj
 yE
 ja
+=======
+IY
+Mb
+ei
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 da
 td
@@ -3987,7 +4600,11 @@ Dm
 ql
 go
 td
+<<<<<<< HEAD
 qT
+=======
+Ij
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 yX
 eC
 kR
@@ -3999,9 +4616,15 @@ ru
 jS
 jS
 JS
+<<<<<<< HEAD
 Zu
 gh
 Zu
+=======
+or
+gO
+or
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xK
 da
 td
@@ -4016,7 +4639,11 @@ Te
 (39,1,1) = {"
 td
 BH
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 vX
 dO
@@ -4111,15 +4738,19 @@ Xj
 De
 Kh
 zA
-RB
-Ga
-mj
-GP
-mj
-Ga
+Mq
+KL
+Mz
+hg
+Mz
+KL
 da
 td
+<<<<<<< HEAD
 Qb
+=======
+fn
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 GB
 td
 Te
@@ -4149,12 +4780,12 @@ jD
 KV
 Kh
 zA
-RB
-mj
-jT
-jT
-jT
-mj
+Mq
+Mz
+Wi
+Wi
+Wi
+Mz
 da
 td
 BH
@@ -4187,12 +4818,12 @@ ZM
 De
 Kh
 zA
-RB
-Ga
-mj
-sM
-Ga
-mj
+Mq
+KL
+Mz
+IO
+KL
+Mz
 da
 td
 BH
@@ -4206,7 +4837,11 @@ Te
 (44,1,1) = {"
 td
 GB
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 MQ
 MQ
@@ -4312,14 +4947,22 @@ xs
 xs
 BH
 BH
+<<<<<<< HEAD
 LJ
+=======
+ev
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 Te
 Te
 "}
 (47,1,1) = {"
 td
+<<<<<<< HEAD
 Qb
+=======
+fn
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 xs
 xs
 SU
@@ -4360,7 +5003,11 @@ td
 BH
 BH
 BH
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 ag
 ag
@@ -4588,7 +5235,11 @@ Te
 Te
 td
 GB
+<<<<<<< HEAD
 WN
+=======
+AL
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 td
 MU
 MU
@@ -4606,7 +5257,11 @@ De
 Kh
 da
 td
+<<<<<<< HEAD
 tp
+=======
+BK
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 fi
 dw
 jS
@@ -4615,7 +5270,11 @@ jS
 jS
 NS
 td
+<<<<<<< HEAD
 Ag
+=======
+Ap
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 td
 Te
@@ -4724,7 +5383,11 @@ BH
 Dd
 BH
 xs
+<<<<<<< HEAD
 HF
+=======
+Ew
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BH
 BH
 BH
@@ -4899,7 +5562,11 @@ jk
 Wh
 rQ
 td
+<<<<<<< HEAD
 yT
+=======
+wR
+>>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 BC
 xe
 Xj

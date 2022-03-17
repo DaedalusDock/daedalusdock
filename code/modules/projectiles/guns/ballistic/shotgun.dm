@@ -128,7 +128,8 @@
 	fire_delay = 0
 	pin = /obj/item/firing_pin/implant/pindicate
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
-	actions_types = list()
+	//actions_types = list() Original
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC) //PARIAH EDIT
 	mag_display = TRUE
 	empty_indicator = TRUE
 	empty_alarm = TRUE

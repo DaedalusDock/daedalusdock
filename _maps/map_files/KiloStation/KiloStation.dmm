@@ -158,7 +158,11 @@
 /area/science/xenobiology)
 "aaO" = (
 /obj/structure/flora/grass/jungle,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "aaP" = (
 /obj/effect/turf_decal/tile/blue{
@@ -368,7 +372,11 @@
 /area/medical/virology)
 "abJ" = (
 /obj/structure/flora/ausbushes/palebush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "abK" = (
 /obj/effect/turf_decal/tile/purple{
@@ -611,7 +619,11 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "acY" = (
 /obj/structure/table,
@@ -629,13 +641,21 @@
 "acZ" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/flora/ausbushes/fernybush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "add" = (
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "ade" = (
 /obj/structure/sign/warning/nosmoking{
@@ -648,7 +668,11 @@
 /area/maintenance/port/fore)
 "adf" = (
 /obj/structure/flora/grass/jungle/b,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "adg" = (
 /turf/closed/wall/r_wall,
@@ -877,7 +901,11 @@
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "aeU" = (
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "aeV" = (
 /obj/machinery/door/airlock/external{
@@ -2635,7 +2663,11 @@
 /mob/living/simple_animal/hostile/asteroid/basilisk{
 	environment_smash = 0
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "amr" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -2663,7 +2695,11 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/leafybush,
 /obj/structure/flora/ausbushes/sparsegrass,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/hallway/secondary/exit/departure_lounge)
 "amz" = (
 /turf/closed/wall/r_wall/rust,
@@ -2953,7 +2989,11 @@
 /area/maintenance/department/electrical)
 "aoz" = (
 /obj/effect/decal/cleanable/blood/old,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "aoD" = (
 /obj/structure/sign/warning/securearea,
@@ -3026,6 +3066,7 @@
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron,
 /area/security/courtroom)
+<<<<<<< HEAD
 "apg" = (
 /obj/structure/railing{
 	dir = 8
@@ -3038,6 +3079,11 @@
 "apm" = (
 /obj/effect/decal/cleanable/blood/gibs/old,
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+"apm" = (
+/obj/effect/decal/cleanable/blood/gibs/old,
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "apn" = (
 /obj/machinery/porta_turret/ai{
@@ -3513,7 +3559,11 @@
 "arz" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/tank/internals/emergency_oxygen/empty,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "arB" = (
 /obj/effect/turf_decal/tile/blue{
@@ -5557,7 +5607,11 @@
 	},
 /area/security/execution/education)
 "aDQ" = (
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "aDR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -8314,7 +8368,11 @@
 /area/medical/pharmacy)
 "aUz" = (
 /obj/structure/flora/rock/pile,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "aUE" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -8677,26 +8735,6 @@
 	},
 /turf/open/floor/plating,
 /area/medical/pharmacy)
-"aWy" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/transit_tube/horizontal{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/maintenance/fore)
-"aWI" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/transit_tube/crossing,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/maintenance/fore)
 "aWJ" = (
 /turf/open/floor/engine,
 /area/science/xenobiology)
@@ -11027,6 +11065,10 @@
 	dir = 1
 	},
 /area/hallway/primary/port)
+"bjR" = (
+/obj/structure/flora/rock,
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "bjY" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -11831,6 +11873,20 @@
 	},
 /turf/open/floor/iron/dark,
 /area/maintenance/fore)
+<<<<<<< HEAD
+=======
+"brY" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment,
+/obj/structure/cable,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
+	},
+/area/maintenance/port/fore)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "bsf" = (
 /obj/structure/sign/departments/custodian,
 /turf/closed/wall,
@@ -12056,9 +12112,12 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/science/mixing/launch)
+<<<<<<< HEAD
 "bvP" = (
 /turf/closed/mineral/random/labormineral,
 /area/space)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "bvZ" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -13647,7 +13706,11 @@
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/hallway/primary/central)
 "bJJ" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -13755,7 +13818,11 @@
 /area/security/courtroom)
 "bKl" = (
 /obj/structure/flora/rock/pile,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bKN" = (
 /obj/structure/closet/cardboard,
@@ -13912,7 +13979,11 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/aft)
 "bMM" = (
 /obj/effect/decal/cleanable/oil,
@@ -14185,7 +14256,11 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bPN" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14213,13 +14288,21 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/flora/grass/jungle/b,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bPR" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bPV" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14230,13 +14313,21 @@
 /area/maintenance/starboard/fore)
 "bPX" = (
 /obj/effect/turf_decal/stripes/line,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bPZ" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle/b,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bQa" = (
 /obj/structure/sign/warning/docking,
@@ -14292,7 +14383,11 @@
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/pickaxe,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bQU" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -14441,7 +14536,11 @@
 "bRy" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/blood/gibs/old,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bRz" = (
 /obj/effect/turf_decal/tile/purple{
@@ -14773,7 +14872,11 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bTU" = (
 /obj/effect/turf_decal/delivery,
@@ -14813,14 +14916,22 @@
 	},
 /obj/structure/flora/grass/jungle,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUe" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
 /obj/structure/flora/grass/jungle/b,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUf" = (
 /obj/effect/spawner/structure/window/reinforced,
@@ -14840,7 +14951,11 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUm" = (
 /obj/structure/table,
@@ -14867,7 +14982,11 @@
 	},
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUq" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14895,7 +15014,11 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUz" = (
 /obj/effect/decal/cleanable/dirt,
@@ -14923,7 +15046,11 @@
 	},
 /obj/effect/turf_decal/stripes/corner,
 /obj/structure/flora/grass/jungle/b,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUC" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14931,7 +15058,11 @@
 	},
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUD" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14939,7 +15070,11 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/flora/grass/jungle,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUE" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -14948,12 +15083,20 @@
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUF" = (
 /obj/structure/flora/rock/pile,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "bUI" = (
 /obj/effect/turf_decal/stripes/line{
@@ -16775,21 +16918,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
-"cds" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/sign/warning/securearea{
-	pixel_x = -32;
-	pixel_y = -32
-	},
-/obj/structure/transit_tube/horizontal{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/maintenance/fore)
 "cdt" = (
 /obj/structure/transit_tube/curved/flipped{
 	dir = 1
@@ -17561,18 +17689,6 @@
 /obj/structure/lattice,
 /turf/open/space/basic,
 /area/space/nearstation)
-"chN" = (
-/obj/structure/transit_tube/curved/flipped{
-	dir = 1
-	},
-/obj/structure/window/reinforced,
-/obj/structure/lattice/catwalk,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/maintenance/fore)
 "chO" = (
 /obj/structure/sign/warning/vacuum/external,
 /turf/closed/wall,
@@ -18585,7 +18701,11 @@
 /area/maintenance/port/aft)
 "cnf" = (
 /obj/structure/grille,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "cni" = (
 /obj/structure/sign/warning/securearea,
@@ -18830,7 +18950,11 @@
 /area/space/nearstation)
 "coy" = (
 /obj/structure/flora/rock,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "coB" = (
 /turf/closed/wall/r_wall/rust,
@@ -19523,13 +19647,21 @@
 /area/maintenance/port/greater)
 "csN" = (
 /obj/structure/flora/grass/jungle/b,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/port/lesser)
 "csS" = (
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/fernybush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/port/lesser)
 "csX" = (
 /obj/effect/turf_decal/delivery,
@@ -19613,7 +19745,11 @@
 /area/ai_monitored/security/armory)
 "ctu" = (
 /obj/effect/decal/cleanable/oil,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "ctx" = (
 /obj/effect/turf_decal/tile/brown,
@@ -19691,11 +19827,19 @@
 /area/maintenance/starboard)
 "cui" = (
 /mob/living/simple_animal/hostile/asteroid/goliath,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
 /area/space/nearstation)
 "cuj" = (
 /mob/living/simple_animal/hostile/asteroid/hivelord,
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
+"cuj" = (
+/mob/living/simple_animal/hostile/asteroid/hivelord,
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "cul" = (
 /obj/effect/turf_decal/tile/red{
@@ -20923,9 +21067,17 @@
 /obj/structure/sign/departments/security,
 /turf/closed/wall,
 /area/maintenance/fore)
+<<<<<<< HEAD
 "cAX" = (
 /turf/open/floor/wood/parquet,
 /area/service/chapel/monastery)
+=======
+"cAM" = (
+/obj/structure/fluff/clockwork/alloy_shards/medium,
+/obj/structure/chair/bronze,
+/turf/open/floor/bronze/flat,
+/area/maintenance/department/chapel)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cAY" = (
 /obj/docking_port/stationary{
 	dheight = 1;
@@ -21003,6 +21155,7 @@
 /area/maintenance/aft)
 "cBv" = (
 /obj/structure/flora/grass/jungle,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
 /area/maintenance/port/lesser)
 "cBw" = (
@@ -21012,6 +21165,17 @@
 "cBx" = (
 /obj/structure/flora/ausbushes/palebush,
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+/area/maintenance/port/lesser)
+"cBw" = (
+/obj/structure/flora/rock/pile,
+/turf/open/misc/asteroid,
+/area/maintenance/port/lesser)
+"cBx" = (
+/obj/structure/flora/ausbushes/palebush,
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/port/lesser)
 "cBy" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -21019,7 +21183,11 @@
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/ausbushes/palebush,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/port/lesser)
 "cBB" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -21040,7 +21208,11 @@
 /turf/open/floor/plating,
 /area/space/nearstation)
 "cBI" = (
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/maintenance/port/lesser)
 "cBK" = (
 /obj/effect/turf_decal/tile/brown,
@@ -21896,6 +22068,17 @@
 "cHc" = (
 /turf/closed/wall/rust,
 /area/maintenance/solars/starboard/fore)
+<<<<<<< HEAD
+=======
+"cHk" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/obj/machinery/newscaster/directional/north,
+/obj/item/kirbyplants/random,
+/turf/open/floor/carpet/royalblue,
+/area/service/chapel/office)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cHu" = (
 /obj/structure/lattice/catwalk,
 /turf/open/floor/plating/airless,
@@ -22916,10 +23099,21 @@
 /obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/iron/dark,
 /area/hallway/primary/starboard)
+<<<<<<< HEAD
+=======
+"cPT" = (
+/obj/structure/closet/crate,
+/obj/item/hand_labeler,
+/obj/item/storage/crayons,
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cPY" = (
 /obj/structure/sign/warning/securearea{
 	pixel_x = -32
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
 /area/space/nearstation)
 "cQl" = (
@@ -22938,6 +23132,10 @@
 	dir = 1
 	},
 /area/service/chapel/dock)
+=======
+/turf/open/misc/asteroid/lowpressure,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cQm" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -22985,6 +23183,7 @@
 /obj/effect/turf_decal/stripes/box,
 /turf/open/floor/iron/dark,
 /area/security/office)
+<<<<<<< HEAD
 "cRO" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/light_switch/directional/west{
@@ -22994,6 +23193,8 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/dark,
 /area/science/storage)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cSy" = (
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
@@ -23091,6 +23292,7 @@
 	},
 /turf/open/space/basic,
 /area/space/nearstation)
+<<<<<<< HEAD
 "cTO" = (
 /obj/structure/railing{
 	dir = 1
@@ -23106,6 +23308,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/asteroid)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "cTP" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -24526,6 +24730,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "dvN" = (
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
 /area/space/nearstation)
 "dwd" = (
@@ -24537,6 +24742,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/brig)
+=======
+/turf/open/misc/asteroid/lowpressure,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "dwf" = (
 /obj/structure/reflector/single/anchored{
 	dir = 10
@@ -24646,7 +24855,11 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushb1"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "dyT" = (
 /obj/structure/cable,
@@ -24893,9 +25106,17 @@
 	dir = 1
 	},
 /obj/structure/cable,
+<<<<<<< HEAD
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/maintenance/port/fore)
+=======
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/showroomfloor,
+/area/security/warden)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "dCE" = (
 /obj/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -25466,7 +25687,11 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/hallway/secondary/exit/departure_lounge)
 "dNg" = (
 /obj/structure/table/wood,
@@ -26366,6 +26591,22 @@
 /obj/machinery/light/directional/east,
 /turf/open/floor/carpet/green,
 /area/service/lawoffice)
+<<<<<<< HEAD
+=======
+"eeT" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 1
+	},
+/obj/machinery/airalarm/directional/south,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/security/office)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "eff" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/rack,
@@ -26744,6 +26985,7 @@
 	icon_state = "platingdmg3"
 	},
 /area/maintenance/aft)
+<<<<<<< HEAD
 "emh" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -26753,6 +26995,25 @@
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /turf/open/floor/iron/showroomfloor,
 /area/security/prison)
+=======
+"emd" = (
+/obj/structure/flora/grass/jungle/b,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+"emi" = (
+/obj/effect/turf_decal/siding/thinplating/light/corner{
+	dir = 4
+	},
+/obj/machinery/airalarm/directional/north,
+/obj/machinery/light/directional{
+	dir = 1
+	},
+/turf/open/floor/glass/reinforced,
+/area/service/chapel/asteroid)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "emk" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -27242,11 +27503,14 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/lobby)
+<<<<<<< HEAD
 "etg" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold/cyan/visible,
 /turf/open/floor/plating,
 /area/engineering/atmos/pumproom)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "etH" = (
 /obj/structure/closet/secure_closet/atmospherics,
 /obj/effect/turf_decal/tile/neutral,
@@ -28406,7 +28670,11 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "eOv" = (
 /obj/effect/turf_decal/bot,
@@ -28504,6 +28772,7 @@
 /obj/machinery/atmospherics/pipe/bridge_pipe/yellow/visible,
 /turf/open/space/basic,
 /area/space/nearstation)
+<<<<<<< HEAD
 "eQh" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/disposal/bin,
@@ -28513,6 +28782,8 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/dark,
 /area/security/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "eQt" = (
 /obj/machinery/vending/assist,
 /obj/effect/turf_decal/delivery,
@@ -29071,7 +29342,11 @@
 /obj/structure/flora/grass/jungle,
 /obj/machinery/light/directional/east,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "eYL" = (
 /obj/effect/decal/cleanable/oil,
@@ -29461,6 +29736,17 @@
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
+<<<<<<< HEAD
+=======
+"fga" = (
+/obj/structure/sign/departments/holy{
+	pixel_y = 30
+	},
+/turf/open/floor/iron/stairs/right{
+	dir = 4
+	},
+/area/service/chapel/dock)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "fgj" = (
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable,
@@ -30375,6 +30661,30 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/cargo/warehouse)
+<<<<<<< HEAD
+=======
+"fxC" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
+/obj/structure/closet/crate{
+	icon_state = "crateopen"
+	},
+/obj/item/tank/internals/oxygen/red{
+	pixel_x = 4
+	},
+/obj/item/tank/internals/oxygen/red{
+	pixel_x = -4
+	},
+/obj/item/wrench,
+/obj/item/clothing/mask/breath,
+/obj/item/clothing/mask/breath,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/execution/education)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "fxE" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "mech bay maintenance";
@@ -31202,7 +31512,14 @@
 /obj/structure/closet/secure_closet/brig,
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
 /turf/open/floor/iron/showroomfloor,
+<<<<<<< HEAD
 /area/security/prison)
+=======
+/area/security/medical)
+"fLN" = (
+/turf/closed/wall,
+/area/service/chapel/funeral)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "fLV" = (
 /obj/machinery/biogenerator,
 /obj/effect/turf_decal/trimline/green/filled/line{
@@ -31273,6 +31590,18 @@
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/dark,
 /area/service/library)
+"fOf" = (
+/obj/structure/transit_tube/curved/flipped{
+	dir = 1
+	},
+/obj/structure/window/reinforced,
+/obj/structure/lattice/catwalk,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/space/nearstation)
 "fOh" = (
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
@@ -32790,6 +33119,7 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
+<<<<<<< HEAD
 "gsZ" = (
 /obj/structure/chair/pew/right{
 	dir = 8
@@ -32798,6 +33128,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/chapel,
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "gtd" = (
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fullgrass_2"
@@ -32805,7 +33137,11 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushc2"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "gtm" = (
 /obj/machinery/computer/security/telescreen/interrogation{
@@ -33216,6 +33552,7 @@
 "gyK" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/chair,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
 /area/maintenance/port/lesser)
 "gyT" = (
@@ -33227,6 +33564,10 @@
 	},
 /turf/open/floor/glass/reinforced,
 /area/service/chapel/asteroid)
+=======
+/turf/open/misc/asteroid,
+/area/maintenance/port/lesser)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "gzd" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -33487,7 +33828,11 @@
 "gCB" = (
 /obj/structure/flora/grass/jungle,
 /obj/structure/flora/ausbushes/sparsegrass,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/hallway/secondary/exit/departure_lounge)
 "gCG" = (
 /obj/structure/rack,
@@ -34050,6 +34395,48 @@
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
+<<<<<<< HEAD
+=======
+"gNc" = (
+/obj/structure/bodycontainer/morgue{
+	dir = 8
+	},
+/obj/machinery/light/directional{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/funeral)
+"gNj" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/obj/effect/turf_decal/stripes/corner,
+/obj/effect/spawner/random/maintenance,
+/obj/effect/spawner/random/structure/crate,
+/obj/structure/closet/cardboard,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
+	},
+/area/maintenance/starboard)
+"gNm" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
+/area/maintenance/port/fore)
+"gNI" = (
+/obj/structure/chair/wood{
+	dir = 4
+	},
+/obj/item/radio/intercom/chapel/directional/north,
+/obj/effect/landmark/start/chaplain,
+/turf/open/floor/wood/parquet,
+/area/service/chapel/monastery)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "gNL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -35480,11 +35867,19 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "hms" = (
 /obj/structure/flora/rock,
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/floor/iron/dark,
+/area/service/chapel/funeral)
+"hms" = (
+/obj/structure/flora/rock,
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space)
 "hmJ" = (
 /obj/effect/turf_decal/bot,
@@ -35938,11 +36333,24 @@
 /obj/effect/landmark/event_spawn,
 /turf/open/floor/iron/freezer,
 /area/service/kitchen/coldroom)
+<<<<<<< HEAD
 "hvF" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/firedoor/heavy,
 /turf/open/floor/plating,
 /area/service/chapel/asteroid)
+=======
+"hvw" = (
+/obj/structure/chair/pew{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/thinplating/dark{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron/chapel,
+/area/service/chapel/monastery)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "hwr" = (
 /obj/structure/table,
 /obj/machinery/cell_charger{
@@ -36178,7 +36586,11 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt2"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "hzD" = (
 /obj/item/radio/intercom/directional/west,
@@ -36726,6 +37138,7 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/maintenance/starboard/aft)
+<<<<<<< HEAD
 "hJC" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/light/directional/north,
@@ -36738,6 +37151,8 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/dark,
 /area/science/mixing)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "hJF" = (
 /obj/structure/closet/secure_closet/detective,
 /obj/structure/reagent_dispensers/wall/peppertank/directional/north,
@@ -36979,6 +37394,22 @@
 /obj/structure/sign/warning/vacuum,
 /turf/closed/wall/rust,
 /area/cargo/warehouse)
+<<<<<<< HEAD
+=======
+"hNt" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/food/grown/poppy/lily{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/obj/item/food/grown/poppy/lily{
+	pixel_x = 6;
+	pixel_y = 6
+	},
+/obj/item/food/grown/poppy/lily,
+/turf/open/floor/iron/dark,
+/area/service/chapel/asteroid)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "hNz" = (
 /obj/structure/reagent_dispensers/watertank,
 /obj/effect/turf_decal/delivery,
@@ -38439,6 +38870,14 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/cargo/warehouse)
+"inw" = (
+/obj/structure/flora/grass/jungle/b,
+/obj/structure/window/reinforced,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "inz" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
@@ -41300,6 +41739,13 @@
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/maintenance/department/crew_quarters/bar)
+"jbP" = (
+/obj/structure/flora/rock/pile,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "jbR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/tile/neutral{
@@ -41541,6 +41987,7 @@
 /obj/structure/cable,
 /turf/open/floor/wood,
 /area/security/detectives_office)
+<<<<<<< HEAD
 "jfW" = (
 /turf/closed/wall,
 /area/engineering/atmos/pumproom)
@@ -41559,6 +42006,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/service/chapel/dock)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "jgw" = (
 /obj/effect/decal/cleanable/chem_pile,
 /obj/structure/cable,
@@ -41941,6 +42390,25 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
+<<<<<<< HEAD
+=======
+"joZ" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/service/chapel/dock)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "jpb" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -41965,6 +42433,16 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
+"jps" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/light/directional{
+	dir = 8
+	},
+/obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/cable,
+/turf/open/floor/iron/dark,
+/area/service/chapel/asteroid)
 "jpG" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -42738,6 +43216,14 @@
 	},
 /turf/open/floor/engine/vacuum,
 /area/engineering/atmos)
+<<<<<<< HEAD
+=======
+"jEk" = (
+/obj/machinery/hydroponics/soil,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/grass,
+/area/service/hydroponics/garden)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "jEq" = (
 /obj/machinery/exodrone_launcher,
 /obj/effect/turf_decal/trimline/yellow,
@@ -43352,6 +43838,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/showroomfloor,
 /area/commons/toilet/restrooms)
+<<<<<<< HEAD
 "jQy" = (
 /obj/structure/fluff/broken_flooring{
 	dir = 4;
@@ -43371,6 +43858,19 @@
 	},
 /turf/open/floor/bronze/filled,
 /area/maintenance/department/chapel)
+=======
+"jQV" = (
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/sparsegrass,
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/ausbushes/grassybush,
+/obj/structure/flora/ausbushes/palebush,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "jQW" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -44793,6 +45293,7 @@
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
 /area/space/nearstation)
 "kmM" = (
@@ -44800,6 +45301,10 @@
 /obj/item/toy/clockwork_watch,
 /turf/open/floor/bronze,
 /area/maintenance/department/chapel)
+=======
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "kmT" = (
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
@@ -46249,6 +46754,7 @@
 /obj/machinery/smartfridge,
 /turf/closed/wall,
 /area/service/hydroponics)
+<<<<<<< HEAD
 "kJq" = (
 /obj/item/storage/toolbox/electrical{
 	pixel_x = -3;
@@ -46266,6 +46772,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/warden)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "kJw" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -46287,6 +46795,25 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/grimy,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"kJN" = (
+/mob/living/simple_animal/chicken,
+/obj/machinery/light/small/directional/west,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+"kJP" = (
+/obj/effect/landmark/blobstart,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/loading_area{
+	dir = 1;
+	pixel_y = 5
+	},
+/obj/effect/turf_decal/tile/purple/half/contrasted,
+/obj/effect/turf_decal/tile/purple,
+/turf/open/floor/iron/showroomfloor,
+/area/science/storage)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "kJX" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/reinforced,
@@ -46363,7 +46890,11 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fernybush_3"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "kLB" = (
 /obj/effect/turf_decal/stripes/line{
@@ -47237,6 +47768,29 @@
 	},
 /turf/open/floor/plating,
 /area/cargo/storage)
+<<<<<<< HEAD
+=======
+"kZS" = (
+/obj/machinery/disposal/bin,
+/obj/effect/turf_decal/bot,
+/obj/structure/disposalpipe/trunk{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/security/warden)
+"kZX" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/transit_tube/crossing,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "laA" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -48823,6 +49377,7 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
+<<<<<<< HEAD
 "lCC" = (
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
@@ -48833,6 +49388,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "lDt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -50086,9 +50643,12 @@
 /obj/machinery/holopad,
 /turf/open/floor/iron/showroomfloor,
 /area/security/warden)
+<<<<<<< HEAD
 "lWz" = (
 /turf/open/floor/glass/reinforced,
 /area/service/chapel/asteroid)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "lXd" = (
 /obj/structure/table,
 /obj/item/stack/cable_coil/five,
@@ -51842,7 +52402,11 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fernybush_1"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "mzw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible,
@@ -52883,6 +53447,20 @@
 	},
 /turf/open/floor/iron,
 /area/command/bridge)
+<<<<<<< HEAD
+=======
+"mRr" = (
+/obj/structure/railing,
+/obj/effect/turf_decal/siding/wideplating/dark{
+	dir = 4
+	},
+/obj/machinery/door/firedoor/border_only,
+/obj/machinery/door/firedoor/border_only{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/asteroid)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "mRu" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral{
@@ -53839,6 +54417,12 @@
 	},
 /turf/open/floor/glass/reinforced,
 /area/service/chapel/asteroid)
+"nig" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "niB" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -53973,6 +54557,7 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
+<<<<<<< HEAD
 "nlf" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/effect/turf_decal/tile/neutral,
@@ -53984,6 +54569,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/bar)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "nlh" = (
 /obj/structure/frame/machine,
 /obj/effect/turf_decal/stripes/line{
@@ -54108,6 +54695,7 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/service/hydroponics)
+<<<<<<< HEAD
 "nnU" = (
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/sparsegrass,
@@ -54117,6 +54705,8 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/plating/asteroid,
 /area/maintenance/fore)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "nnX" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/window/westleft{
@@ -54949,6 +55539,23 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
+<<<<<<< HEAD
+=======
+"nDN" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/food/grown/poppy/geranium{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/obj/item/food/grown/poppy/geranium{
+	pixel_x = 6;
+	pixel_y = 6
+	},
+/obj/item/food/grown/poppy/geranium,
+/obj/machinery/firealarm/directional/east,
+/turf/open/floor/iron/dark,
+/area/service/chapel/asteroid)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "nEj" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -58942,6 +59549,13 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
+"oSs" = (
+/obj/structure/flora/grass/jungle,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "oSw" = (
 /obj/item/kirbyplants{
 	icon_state = "plant-16"
@@ -59879,6 +60493,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/hallway/primary/starboard)
+<<<<<<< HEAD
 "phs" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -59898,6 +60513,15 @@
 	icon_state = "platingdmg3"
 	},
 /area/hallway/primary/aft)
+=======
+"phQ" = (
+/obj/structure/flora/ausbushes/palebush,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "phZ" = (
 /obj/structure/chair{
 	dir = 8
@@ -60321,9 +60945,20 @@
 /turf/open/floor/plating,
 /area/maintenance/port/lesser)
 "poU" = (
+<<<<<<< HEAD
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron/dark,
 /area/service/chapel/funeral)
+=======
+/obj/structure/flora/ausbushes/sparsegrass,
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/fernybush,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "poZ" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -60496,6 +61131,7 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/engineering/atmos)
+<<<<<<< HEAD
 "prf" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -60505,6 +61141,8 @@
 	},
 /turf/open/floor/iron,
 /area/security/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "prk" = (
 /obj/effect/decal/cleanable/ash,
 /obj/effect/decal/cleanable/dirt,
@@ -61178,6 +61816,7 @@
 	},
 /turf/open/floor/wood,
 /area/service/bar)
+<<<<<<< HEAD
 "pBX" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -61190,6 +61829,8 @@
 	},
 /turf/open/floor/iron,
 /area/security/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "pCq" = (
 /obj/machinery/computer/pandemic,
 /obj/effect/turf_decal/delivery,
@@ -62426,6 +63067,16 @@
 	},
 /turf/open/floor/plating,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"pTV" = (
+/obj/machinery/computer/secure_data,
+/obj/effect/turf_decal/bot,
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/turf/open/floor/iron/dark,
+/area/security/prison)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "pTY" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/structure/crate,
@@ -63690,6 +64341,7 @@
 	dir = 8
 	},
 /area/hallway/primary/fore)
+<<<<<<< HEAD
 "qrM" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/chem_dispenser/drinks/beer{
@@ -63698,6 +64350,16 @@
 /obj/structure/table,
 /obj/structure/noticeboard/directional/west,
 /obj/effect/turf_decal/tile/neutral{
+=======
+"qsb" = (
+/turf/closed/wall/r_wall,
+/area/ai_monitored/command/storage/eva)
+"qsg" = (
+/obj/machinery/airalarm/directional/south,
+/obj/effect/turf_decal/bot,
+/obj/structure/filingcabinet/chestdrawer,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 	dir = 4
 	},
 /turf/open/floor/iron/dark,
@@ -63778,10 +64440,28 @@
 /obj/structure/cable,
 /turf/open/floor/iron/showroomfloor,
 /area/command/heads_quarters/cmo)
+<<<<<<< HEAD
 "qsO" = (
 /obj/structure/flora/ausbushes/ywflowers,
 /turf/open/floor/grass,
 /area/service/chapel/monastery)
+=======
+"qsT" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/sign/warning/securearea{
+	pixel_x = -32;
+	pixel_y = -32
+	},
+/obj/structure/transit_tube/horizontal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "qtb" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -63959,7 +64639,11 @@
 /area/engineering/atmos)
 "qvq" = (
 /obj/structure/flora/rock,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "qvt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -66547,7 +67231,11 @@
 /area/security/prison)
 "rkn" = (
 /obj/item/stack/cable_coil,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "rko" = (
 /obj/structure/grille,
@@ -68977,6 +69665,13 @@
 "rZN" = (
 /turf/closed/wall/r_wall/rust,
 /area/ai_monitored/command/storage/satellite)
+"sac" = (
+/obj/structure/flora/grass/jungle/b,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "sai" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -69262,12 +69957,20 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron/dark,
 /area/maintenance/port/greater)
+<<<<<<< HEAD
 "sdu" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/asteroid)
+=======
+"sdt" = (
+/obj/structure/disposalpipe/segment,
+/obj/structure/window/reinforced/spawner/north,
+/turf/open/floor/plating,
+/area/maintenance/fore)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "sdE" = (
 /obj/machinery/chem_heater/withbuffer{
 	pixel_x = 6
@@ -70217,6 +70920,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/bar)
+"ssU" = (
+/obj/structure/flora/grass/jungle,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "stp" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
@@ -70422,12 +71132,17 @@
 /obj/structure/displaycase/forsale/kitchen{
 	pixel_y = 4
 	},
+<<<<<<< HEAD
 /obj/structure/sign/picture_frame/portrait/bar{
 	pixel_y = 32
 	},
 /obj/machinery/door/firedoor,
 /turf/open/floor/wood,
 /area/service/bar)
+=======
+/turf/open/floor/iron/dark,
+/area/science/storage)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "sxk" = (
 /obj/structure/easel,
 /obj/item/canvas/nineteen_nineteen,
@@ -70782,6 +71497,11 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/teleporter)
+"sCD" = (
+/obj/effect/turf_decal/siding/green,
+/obj/machinery/door/firedoor/border_only/closed,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
 "sCG" = (
 /obj/structure/chair/sofa/right{
 	color = "#c45c57";
@@ -71260,6 +71980,11 @@
 "sLq" = (
 /turf/closed/wall,
 /area/security/medical)
+"sLx" = (
+/mob/living/basic/cow,
+/obj/machinery/light/small/directional/east,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
 "sLz" = (
 /obj/structure/table,
 /obj/item/reagent_containers/food/drinks/drinkingglass,
@@ -72125,6 +72850,22 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/department/crew_quarters/bar)
+<<<<<<< HEAD
+=======
+"tdj" = (
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/decal/cleanable/blood/old,
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/maintenance/port/fore)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "tdH" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -72327,15 +73068,22 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
 "tgN" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "tgU" = (
 /obj/structure/flora/rock/pile{
 	icon_state = "lavarocks2"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "thp" = (
 /turf/closed/wall/rust,
@@ -72376,12 +73124,17 @@
 /area/engineering/atmos)
 "thU" = (
 /mob/living/simple_animal/hostile/asteroid/goliath,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
 /area/space/nearstation)
 "tim" = (
 /obj/effect/turf_decal/siding/thinplating/dark,
 /turf/open/floor/glass/reinforced,
 /area/service/chapel/asteroid)
+=======
+/turf/open/misc/asteroid/lowpressure,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "tiE" = (
 /obj/machinery/door/airlock/maintenance{
 	req_access_txt = "12"
@@ -72457,6 +73210,7 @@
 	luminosity = 2
 	},
 /area/engineering/gravity_generator)
+<<<<<<< HEAD
 "tjP" = (
 /obj/effect/turf_decal/siding/thinplating/light/corner{
 	dir = 4
@@ -72491,6 +73245,8 @@
 /obj/structure/cable,
 /turf/open/floor/wood,
 /area/maintenance/port/fore)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "tkg" = (
 /obj/structure/weightmachine/weightlifter,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -72590,6 +73346,12 @@
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+"tlM" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
 "tlS" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -72869,6 +73631,16 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/grass,
 /area/medical/psychology)
+<<<<<<< HEAD
+=======
+"tre" = (
+/obj/structure/flora/ausbushes/palebush,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "tsd" = (
 /obj/machinery/door/poddoor/shutters{
 	id = "custodialwagon";
@@ -75565,6 +76337,17 @@
 "uiX" = (
 /obj/structure/flora/rock/pile{
 	icon_state = "basalt"
+<<<<<<< HEAD
+=======
+	},
+/turf/open/misc/asteroid,
+/area/space/nearstation)
+"uju" = (
+/obj/machinery/disposal/bin,
+/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 	},
 /turf/open/floor/plating/asteroid,
 /area/space/nearstation)
@@ -75645,7 +76428,11 @@
 /turf/open/floor/plating,
 /area/cargo/warehouse)
 "uku" = (
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space)
 "ukD" = (
 /obj/structure/table,
@@ -75925,6 +76712,7 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/science/research)
+<<<<<<< HEAD
 "url" = (
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
@@ -75940,6 +76728,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/office)
+=======
+"urA" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/disposalpipe/segment,
+/obj/structure/window/reinforced/spawner,
+/turf/open/floor/plating/airless,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "urC" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/rack,
@@ -76104,6 +76900,17 @@
 "uuQ" = (
 /turf/closed/wall,
 /area/service/kitchen)
+<<<<<<< HEAD
+=======
+"uuR" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/spawner/random/structure/grille,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
+/area/maintenance/fore)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "uvb" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -76352,6 +77159,7 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/science/mixing/chamber)
+<<<<<<< HEAD
 "uyT" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral{
@@ -76367,6 +77175,8 @@
 /obj/structure/disposalpipe/trunk,
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "uzc" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -76397,6 +77207,7 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/lesser)
+<<<<<<< HEAD
 "uzP" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/loading_area{
@@ -76417,6 +77228,8 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "uAg" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate,
@@ -77471,6 +78284,7 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos/storage/gas)
+<<<<<<< HEAD
 "uTG" = (
 /obj/structure/disposalpipe/sorting/mail/flip{
 	dir = 4;
@@ -77487,6 +78301,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/dock)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "uTL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
@@ -77910,12 +78726,15 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/security/prison)
+<<<<<<< HEAD
 "vcm" = (
 /obj/effect/landmark/event_spawn,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /turf/open/floor/iron,
 /area/security/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vcs" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -78028,7 +78847,11 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "grassb5"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "vdS" = (
 /obj/structure/lattice,
@@ -79528,7 +80351,24 @@
 /obj/structure/flora/grass/jungle,
 /obj/machinery/light/directional/north,
 /obj/effect/decal/cleanable/dirt,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
+=======
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment{
+	dir = 5
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron/dark,
+/area/medical/morgue)
+"vDw" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/flora/grass/jungle,
+/obj/machinery/light/directional/north,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/misc/asteroid/airless,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "vDB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -79797,6 +80637,7 @@
 	},
 /turf/open/floor/iron,
 /area/service/theater)
+<<<<<<< HEAD
 "vHs" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /mob/living/simple_animal/bot/cleanbot/medbay{
@@ -79805,6 +80646,8 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vHG" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/blue{
@@ -80131,6 +80974,7 @@
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/iron/dark,
 /area/medical/medbay/central)
+<<<<<<< HEAD
 "vOf" = (
 /obj/structure/railing{
 	dir = 8
@@ -80140,6 +80984,8 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vOk" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -80280,8 +81126,42 @@
 "vQF" = (
 /obj/structure/lattice,
 /obj/structure/grille,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
 /area/space/nearstation)
+=======
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
+"vQN" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/directional{
+	dir = 4
+	},
+/turf/open/floor/iron/stairs{
+	dir = 1
+	},
+/area/service/chapel/monastery)
+"vQX" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/structure/table,
+/obj/item/exodrone,
+/obj/machinery/camera/directional/south{
+	c_tag = "Cargo Drones";
+	name = "cargo camera";
+	network = list("ss13","qm")
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/dark,
+/area/cargo/drone_bay)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vRa" = (
 /obj/structure/lattice/catwalk,
 /turf/open/floor/plating/airless,
@@ -80539,6 +81419,7 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/service/bar/atrium)
+<<<<<<< HEAD
 "vVv" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -80549,6 +81430,8 @@
 	},
 /turf/open/floor/carpet/royalblue,
 /area/service/chapel/office)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vVX" = (
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "fullgrass_2"
@@ -80556,7 +81439,11 @@
 /obj/structure/flora/ausbushes/palebush{
 	icon_state = "genericbush_1"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "vVZ" = (
 /obj/effect/turf_decal/tile/brown{
@@ -80584,6 +81471,7 @@
 	},
 /turf/open/floor/iron,
 /area/command/bridge)
+<<<<<<< HEAD
 "vWz" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -80596,6 +81484,12 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/starboard/fore)
+=======
+"vWy" = (
+/obj/effect/turf_decal/stripes/line,
+/turf/open/floor/iron/dark,
+/area/service/chapel/funeral)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "vWL" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "service maintenance";
@@ -80721,6 +81615,10 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+"vZx" = (
+/obj/item/radio/intercom/directional/north,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
 "vZO" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 4
@@ -81461,6 +82359,14 @@
 	real_name = "Tuna"
 	},
 /turf/open/floor/plating/asteroid/airless,
+/area/space/nearstation)
+"woH" = (
+/mob/living/simple_animal/hostile/carp{
+	environment_smash = 0;
+	name = "Tuna";
+	real_name = "Tuna"
+	},
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "woP" = (
 /obj/effect/turf_decal/box/corners{
@@ -82343,7 +83249,11 @@
 /area/maintenance/disposal/incinerator)
 "wDI" = (
 /obj/structure/flora/rock/pile,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
+=======
+/turf/open/misc/asteroid/lowpressure,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "wDJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -83103,6 +84013,7 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/showroomfloor,
 /area/medical/medbay/central)
+<<<<<<< HEAD
 "wQy" = (
 /obj/effect/turf_decal/siding/thinplating/dark/end{
 	dir = 8
@@ -83121,6 +84032,11 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/security/medical)
+=======
+"wQw" = (
+/turf/open/floor/glass/reinforced,
+/area/service/chapel/asteroid)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "wRj" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/item/tank/internals/oxygen/empty,
@@ -83280,9 +84196,12 @@
 	},
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
 "wVm" = (
 /turf/open/floor/iron/recharge_floor,
 /area/maintenance/department/chapel)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "wVz" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -83754,10 +84673,13 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hos)
+<<<<<<< HEAD
 "xaW" = (
 /obj/structure/railing/corner,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "xbm" = (
 /obj/effect/turf_decal/box,
 /obj/effect/turf_decal/stripes/line,
@@ -83905,7 +84827,11 @@
 /obj/structure/flora/grass/jungle{
 	icon_state = "bushc2"
 	},
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid,
+=======
+/turf/open/misc/asteroid,
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 /area/space/nearstation)
 "xdt" = (
 /obj/structure/cable,
@@ -84025,6 +84951,7 @@
 /area/hallway/secondary/exit/departure_lounge)
 "xfU" = (
 /obj/item/circuitboard/computer/solar_control,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/airless,
 /area/space/nearstation)
 "xgf" = (
@@ -84036,6 +84963,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/science/mixing)
+=======
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "xgx" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -84094,6 +85025,7 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
+<<<<<<< HEAD
 "xhN" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
@@ -84103,6 +85035,8 @@
 	icon_state = "panelscorched"
 	},
 /area/maintenance/fore)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "xhX" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/closed/wall/r_wall,
@@ -85216,6 +86150,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/engine,
 /area/ai_monitored/turret_protected/aisat/foyer)
+<<<<<<< HEAD
 "xzi" = (
 /obj/structure/chair/pew/left{
 	dir = 8
@@ -85228,6 +86163,8 @@
 	dir = 4
 	},
 /area/service/chapel/monastery)
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "xzl" = (
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
@@ -85499,6 +86436,38 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+<<<<<<< HEAD
+=======
+"xEG" = (
+/obj/machinery/door/morgue{
+	name = "Confession Booth (Chaplain)";
+	req_access_txt = "22"
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/wood/parquet,
+/area/service/chapel/monastery)
+"xEU" = (
+/obj/effect/turf_decal/bot,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/rack,
+/obj/item/extinguisher{
+	pixel_x = -4;
+	pixel_y = 8
+	},
+/obj/item/tank/internals/oxygen/red{
+	pixel_x = 4;
+	pixel_y = 2
+	},
+/obj/item/clothing/mask/gas,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/plating,
+/area/maintenance/port/lesser)
+"xFl" = (
+/obj/structure/window/reinforced/spawner,
+/obj/effect/turf_decal/siding/green,
+/turf/open/misc/sandy_dirt,
+/area/service/hydroponics/garden)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "xFp" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
@@ -86731,8 +87700,28 @@
 /area/engineering/atmos)
 "ycp" = (
 /mob/living/simple_animal/hostile/asteroid/hivelord,
+<<<<<<< HEAD
 /turf/open/floor/plating/asteroid/lowpressure,
 /area/space/nearstation)
+=======
+/turf/open/misc/asteroid/lowpressure,
+/area/space/nearstation)
+"ycq" = (
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/green{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/service/hydroponics/garden)
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 "ycs" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -86828,6 +87817,17 @@
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
+"yfq" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/transit_tube/horizontal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/space/nearstation)
 "yfT" = (
 /obj/structure/plasticflaps/opaque,
 /turf/open/floor/plating,
@@ -90973,7 +91973,11 @@ aeu
 aeu
 aeU
 aeU
+<<<<<<< HEAD
 pDi
+=======
+rGn
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -91230,7 +92234,11 @@ aeu
 aeu
 aeu
 aeu
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeU
 aaa
@@ -92772,7 +93780,11 @@ aeU
 aeU
 aeu
 aeU
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeU
 aeU
@@ -93029,7 +94041,11 @@ aeU
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeU
 aaa
@@ -93286,7 +94302,11 @@ aeU
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -95590,6 +96610,7 @@ aeu
 aeu
 aeu
 aeu
+<<<<<<< HEAD
 dmk
 dmk
 dmk
@@ -95600,6 +96621,18 @@ aeU
 aeU
 aeU
 bkY
+=======
+ivR
+ivR
+ivR
+ivR
+ivR
+ivR
+aeU
+aeU
+aeU
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeU
 aeU
@@ -95847,6 +96880,7 @@ aeu
 aeu
 aeu
 aeu
+<<<<<<< HEAD
 dmk
 hhq
 whg
@@ -95857,6 +96891,18 @@ aeU
 aeU
 aeU
 bkY
+=======
+ivR
+poi
+lOK
+lOK
+cVp
+ivR
+aeU
+aeU
+aeU
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeU
 aeU
@@ -96104,6 +97150,7 @@ aeu
 aeu
 aeu
 aeu
+<<<<<<< HEAD
 dmk
 dTf
 dTf
@@ -96114,6 +97161,18 @@ aeU
 aeU
 aeU
 bkY
+=======
+ivR
+dTU
+dTU
+dTU
+oFk
+ivR
+aeU
+aeU
+aeU
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeu
 aeu
@@ -96370,7 +97429,11 @@ dmk
 aeu
 aeU
 aeU
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -96627,7 +97690,11 @@ dmk
 aeu
 cmU
 aeU
+<<<<<<< HEAD
 bkY
+=======
+saq
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -101599,7 +102666,10 @@ euM
 jiK
 cmU
 cmU
+<<<<<<< HEAD
 cmU
+=======
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeU
 aeU
@@ -102002,6 +103072,7 @@ aeu
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 lwO
 dTD
 hUo
@@ -102026,6 +103097,32 @@ lWz
 feV
 hvF
 tDW
+=======
+bCl
+boa
+hVm
+bCl
+hrW
+rpj
+gLs
+apT
+tZq
+rpj
+psW
+rpj
+psW
+rpj
+tzS
+eUr
+uVz
+rpj
+rpj
+emi
+wQw
+fjR
+gVK
+kpS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -102259,6 +103356,7 @@ aeu
 aeu
 aeU
 aeU
+<<<<<<< HEAD
 lwO
 aoX
 dmp
@@ -102283,6 +103381,32 @@ lWz
 eND
 hvF
 tDW
+=======
+bCl
+gkl
+cDP
+bCl
+jEZ
+akF
+nzG
+mGa
+nzG
+psW
+ckC
+jps
+aMT
+psW
+nzG
+wtZ
+nzG
+gne
+hIG
+mOw
+wQw
+xcn
+gVK
+kpS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -102516,6 +103640,7 @@ aeu
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 lwO
 aoX
 wzU
@@ -102540,6 +103665,32 @@ ixp
 pWm
 hvF
 tDW
+=======
+bCl
+gkl
+tfD
+bCl
+rzX
+rzX
+elP
+mGa
+mGa
+jML
+mGa
+dQl
+itd
+vPQ
+itd
+yfj
+kDs
+opt
+pRo
+snV
+wAK
+juS
+gVK
+kpS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -102773,6 +103924,7 @@ bVv
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 lwO
 lwO
 rAs
@@ -102797,6 +103949,32 @@ nix
 hvF
 hvF
 tDW
+=======
+bCl
+bCl
+goy
+lNL
+rzX
+nzG
+suV
+ahv
+nzG
+psW
+nzG
+cRa
+nzG
+psW
+nzG
+hNY
+suV
+xDF
+hyz
+gEY
+iMQ
+gVK
+gVK
+kpS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -103031,6 +104209,7 @@ aeU
 aUz
 aap
 aeU
+<<<<<<< HEAD
 lwO
 lwO
 lwO
@@ -103054,6 +104233,31 @@ hvF
 hvF
 hZF
 jGc
+=======
+bCl
+bCl
+bCl
+hrW
+tap
+nDN
+kDs
+hOU
+rpj
+xGJ
+teW
+xGJ
+rpj
+hNt
+rQg
+hNt
+mTR
+hrW
+gVK
+gVK
+gVK
+woz
+lge
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aaa
 aaa
 aaa
@@ -104093,7 +105297,11 @@ aaa
 aaa
 aaa
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -104607,7 +105815,11 @@ aaa
 aaa
 aaa
 aaa
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeU
 aeu
 aeu
@@ -105121,7 +106333,11 @@ aaa
 aaa
 aaa
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -105203,10 +106419,17 @@ eLt
 uBZ
 jSh
 nYd
+<<<<<<< HEAD
 exb
 bIm
 aZh
 ezN
+=======
+vpA
+wvX
+mGf
+oFW
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aUz
 aaa
 aaa
@@ -105378,7 +106601,11 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -105635,7 +106862,11 @@ aaa
 aaa
 aUz
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -105892,7 +107123,11 @@ aaa
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 aeu
@@ -106149,7 +107384,11 @@ aaa
 aeU
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 cwp
@@ -106406,7 +107645,11 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 aeu
 cwp
@@ -106663,7 +107906,11 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 cwq
 cwp
@@ -106920,7 +108167,11 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 kFb
+=======
+exA
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aeu
 cwq
 cyE
@@ -107177,12 +108428,21 @@ aaa
 aaa
 aaa
 aeU
+<<<<<<< HEAD
 iDQ
 cjP
 exk
 uwx
 oyH
 msZ
+=======
+nxx
+lBP
+fvD
+vWT
+xML
+arw
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 cme
 cme
 cme
@@ -107435,8 +108695,13 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 usR
 vRW
+=======
+wbG
+cUP
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 cyE
 oqX
 lVE
@@ -107692,7 +108957,11 @@ aaa
 aaa
 aeU
 aeU
+<<<<<<< HEAD
 usR
+=======
+wbG
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 cwp
 cwq
 oTv
@@ -112333,6 +113602,7 @@ amo
 amo
 amo
 adH
+<<<<<<< HEAD
 kFQ
 emN
 sSP
@@ -112344,6 +113614,19 @@ hgx
 eof
 bvz
 pOk
+=======
+kJN
+xFl
+kTW
+vGY
+dmG
+lUC
+jEk
+jcQ
+qDt
+iek
+qAS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 jvb
 gCd
 nwx
@@ -112590,6 +113873,7 @@ cBk
 adH
 lLm
 adQ
+<<<<<<< HEAD
 nIu
 nkw
 xIy
@@ -112601,6 +113885,19 @@ eJA
 wXk
 ecv
 pOk
+=======
+vZx
+sCD
+veI
+cWR
+dmG
+dER
+jEk
+eBE
+cPC
+vjx
+qAS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 ieW
 gCd
 sim
@@ -112847,6 +114144,7 @@ cBc
 adH
 cqp
 adH
+<<<<<<< HEAD
 edZ
 emN
 sSP
@@ -112858,6 +114156,19 @@ mhC
 eof
 nBq
 pOk
+=======
+sLx
+xFl
+kTW
+kbt
+dmG
+nAd
+jEk
+lnE
+qDt
+ikW
+qAS
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 aKK
 epa
 thp
@@ -114901,10 +116212,17 @@ adQ
 ood
 cyz
 adQ
+<<<<<<< HEAD
 ciZ
 bSp
 bSp
 nnU
+=======
+aaO
+aDQ
+aDQ
+acW
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 uxN
 hTt
 skB
@@ -115158,10 +116476,17 @@ adQ
 fqL
 adH
 adH
+<<<<<<< HEAD
 dny
 cGi
 cCB
 cGp
+=======
+aDQ
+adf
+add
+abJ
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 uxN
 vKc
 xRE
@@ -115414,11 +116739,19 @@ aaa
 cDk
 aqm
 cDk
+<<<<<<< HEAD
 bSp
 cCB
 bSp
 cGl
 bSp
+=======
+aDQ
+add
+aDQ
+bjR
+aDQ
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 uxN
 itn
 jRQ
@@ -115671,12 +117004,21 @@ aaa
 adH
 jjS
 adH
+<<<<<<< HEAD
 ccZ
 cCV
 cGj
 cGm
 ccZ
 cGr
+=======
+oSs
+tre
+jbP
+tlM
+oSs
+sac
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 uxN
 yjd
 icn
@@ -115928,13 +117270,13 @@ awb
 aWa
 rcx
 aWa
-aWy
-aWI
-aWy
-aWy
-aWy
-cds
-chN
+yfq
+kZX
+yfq
+yfq
+yfq
+qsT
+fOf
 qmX
 chU
 brq
@@ -116185,6 +117527,7 @@ aaa
 adH
 uDJ
 adQ
+<<<<<<< HEAD
 upp
 aAL
 aBt
@@ -116192,6 +117535,15 @@ aEO
 joj
 aKi
 aLA
+=======
+phQ
+nig
+jQV
+ssU
+poU
+emd
+inw
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 cGx
 afu
 qag
@@ -116442,8 +117794,13 @@ aaa
 cDk
 btF
 cDk
+<<<<<<< HEAD
 ciY
 ciZ
+=======
+acW
+aaO
+>>>>>>> 66408f2f3cd (De-areas a section of KiloStation Fore Maintenance (#65480))
 ahh
 ahh
 ahh

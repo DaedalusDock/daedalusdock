@@ -23829,6 +23829,18 @@
 	},
 /turf/open/floor/plating,
 /area/science/research)
+<<<<<<< HEAD
+=======
+"hei" = (
+/obj/machinery/door/window/southleft{
+	name = "Armory";
+	req_access_txt = "3"
+	},
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 "hex" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/event_spawn,
@@ -30843,6 +30855,7 @@
 /obj/structure/chair/stool/bar/directional/south,
 /obj/effect/landmark/start/assistant,
 /obj/machinery/duct,
+/obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron,
 /area/commons/lounge)
 "jIX" = (
@@ -56388,6 +56401,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 9
 	},
+<<<<<<< HEAD
 /obj/machinery/vending/cigarette,
 /obj/structure/railing/corner{
 	dir = 8
@@ -56401,6 +56415,11 @@
 	},
 /turf/open/floor/iron,
 /area/commons/dorms)
+=======
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/processing)
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 "tgg" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -61485,6 +61504,23 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/tram/mid)
+<<<<<<< HEAD
+=======
+"uXH" = (
+/obj/structure/chair/office{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
+"uYg" = (
+/obj/machinery/airalarm/directional/east,
+/obj/machinery/light_switch/directional/north,
+/obj/structure/closet/emcloset,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/processing)
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 "uYt" = (
 /obj/structure/window/reinforced,
 /obj/effect/turf_decal/loading_area{
@@ -69894,6 +69930,17 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+<<<<<<< HEAD
+=======
+"ybV" = (
+/obj/machinery/power/apc/auto_name/directional/east,
+/obj/structure/cable,
+/obj/machinery/firealarm/directional/south,
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/processing)
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 "ybW" = (
 /obj/effect/turf_decal/trimline/yellow/filled/corner,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -69913,6 +69960,16 @@
 /obj/item/honey_frame,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
+<<<<<<< HEAD
+=======
+"ycF" = (
+/obj/machinery/computer/prisoner/gulag_teleporter_computer{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/security/processing)
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 "ycI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -155893,10 +155950,17 @@ aBM
 dhe
 dhe
 hNf
+<<<<<<< HEAD
 rsH
 rsH
 rsH
 rsH
+=======
+pby
+pby
+pby
+cou
+>>>>>>> 4cecf13c260 (fixes random ass removed turfs and adds a bar air alarm (#65517))
 laC
 lsi
 uwy

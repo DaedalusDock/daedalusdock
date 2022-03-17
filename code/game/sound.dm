@@ -207,6 +207,7 @@ distance_multiplier - Can be used to multiply the distance at which the sound is
 
 /proc/get_sfx(soundin)
 	if(istext(soundin))
+		soundin = get_sfx_pariah(soundin) //PARIAH EDIT ADDITION - This overrides the default sound effects too, so use it to modularly change a sound effect output.
 		switch(soundin)
 			if (SFX_SHATTER)
 				soundin = pick('sound/effects/glassbr1.ogg','sound/effects/glassbr2.ogg','sound/effects/glassbr3.ogg')

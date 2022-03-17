@@ -3948,6 +3948,11 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine,
 /obj/item/reagent_containers/syringe,
 /obj/structure/extinguisher_cabinet/directional/west,
+/obj/machinery/camera{
+	c_tag = "Security - Medical Center";
+	dir = 10;
+	network = list("ss13","Security")
+	},
 /turf/open/floor/iron/white,
 /area/security/medical)
 "aAp" = (
@@ -7866,6 +7871,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "bwG" = (
@@ -8552,6 +8558,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/security/brig)
 "bIe" = (
@@ -12536,11 +12543,6 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/west,
-/obj/machinery/camera{
-	c_tag = "Security - Medical Center";
-	dir = 10;
-	network = list("ss13","Security")
-	},
 /turf/open/floor/iron/white,
 /area/security/medical)
 "diu" = (
@@ -20008,6 +20010,8 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 9
 	},
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "fKY" = (
@@ -20813,6 +20817,7 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 8
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "fZt" = (
@@ -32376,6 +32381,7 @@
 "kjs" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "kjt" = (
@@ -41786,6 +41792,13 @@
 /obj/effect/turf_decal/caution,
 /turf/open/floor/iron,
 /area/hallway/primary/tram/center)
+"nIN" = (
+/obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/security/brig)
 "nIO" = (
 /obj/effect/turf_decal/trimline/green/filled/corner{
 	dir = 8
@@ -52673,6 +52686,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "rKI" = (
@@ -67347,6 +67361,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "xjy" = (
@@ -67972,6 +67987,7 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 10
 	},
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron/white,
 /area/security/medical)
 "xvn" = (
@@ -153326,7 +153342,7 @@ feD
 feD
 oOT
 qZW
-tRQ
+nIN
 ktC
 dhe
 dhe
@@ -153583,7 +153599,7 @@ cJK
 feD
 oOT
 qZW
-tRQ
+nIN
 ktC
 ktC
 ktC

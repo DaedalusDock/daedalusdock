@@ -39,7 +39,8 @@
 	mag_type = /obj/item/ammo_box/magazine/m75
 	burst_size = 1
 	fire_delay = 0
-	actions_types = list()
+	//actions_types = list() Original
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC) //PARIAH EDIT
 	casing_ejector = FALSE
 
 /obj/item/gun/ballistic/rocketlauncher

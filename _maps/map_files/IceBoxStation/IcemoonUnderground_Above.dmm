@@ -105,6 +105,12 @@
 	dir = 10
 	},
 /area/mine/living_quarters)
+"au" = (
+/obj/structure/fence/corner{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "av" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -118,26 +124,10 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"ax" = (
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
-"ay" = (
-/obj/machinery/exodrone_launcher,
-/obj/item/exodrone{
-	pixel_y = 8
-	},
-/obj/effect/turf_decal/trimline/yellow/end,
-/obj/effect/turf_decal/trimline/yellow/mid_joiner{
-	dir = 4
-	},
-/obj/effect/turf_decal/trimline/yellow/mid_joiner{
-	dir = 8
-	},
-/obj/effect/turf_decal/trimline/yellow/mid_joiner,
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/iron/smooth_large,
-/area/cargo/drone_bay)
+"aw" = (
+/obj/structure/closet/crate,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "az" = (
 /turf/open/floor/iron,
 /area/mine/laborcamp)
@@ -192,6 +182,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"aG" = (
+/obj/structure/fence/corner{
+	dir = 10
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "aH" = (
 /obj/machinery/light/directional/east,
 /obj/machinery/status_display/evac/directional/east,
@@ -435,12 +431,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/mine/production)
-"bt" = (
-/obj/structure/sign/poster/official/here_for_your_safety{
-	pixel_x = 32
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "bu" = (
 /obj/item/candle{
 	pixel_x = -7;
@@ -454,11 +444,6 @@
 /obj/structure/table/wood,
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"bv" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron,
-/area/mine/laborcamp/security)
 "bw" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -498,6 +483,14 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
+"bC" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "bD" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -507,11 +500,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"bE" = (
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "bF" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -572,6 +560,15 @@
 "bP" = (
 /turf/open/floor/iron,
 /area/mine/production)
+"bQ" = (
+/obj/effect/landmark/event_spawn,
+/obj/machinery/duct,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
 "bR" = (
 /obj/structure/sign/warning/vacuum{
 	pixel_y = -32
@@ -598,28 +595,6 @@
 /obj/effect/spawner/random/trash/soap,
 /turf/open/floor/plating,
 /area/maintenance/department/chapel)
-"bY" = (
-/obj/effect/turf_decal/tile/purple{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/purple,
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/storage/medkit/fire{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/medkit/regular{
-	pixel_x = -3;
-	pixel_y = -3
-	},
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "bZ" = (
 /obj/structure/cable,
 /turf/open/floor/iron/white,
@@ -697,6 +672,13 @@
 	},
 /turf/open/floor/iron/white/side,
 /area/mine/living_quarters)
+"cm" = (
+/obj/item/wrench,
+/obj/item/clothing/glasses/monocle,
+/obj/structure/table/wood,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+/area/service/theater)
 "cn" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -714,6 +696,10 @@
 	icon_state = "panelscorched"
 	},
 /area/maintenance/department/medical/morgue)
+"cp" = (
+/obj/structure/flora/rock/pile/icy,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "cq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -746,6 +732,12 @@
 	},
 /turf/open/floor/iron,
 /area/science/xenobiology)
+"cu" = (
+/obj/structure/sign/plaques/kiddie/devils_tooth{
+	pixel_y = 32
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "cv" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Crematorium Maintenance";
@@ -839,12 +831,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
-"cL" = (
-/obj/structure/closet,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/official/random/directional/east,
-/turf/open/floor/carpet/donk,
-/area/mine/production)
 "cM" = (
 /turf/closed/wall,
 /area/mine/living_quarters)
@@ -852,12 +838,6 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/plating/snowed/icemoon,
 /area/maintenance/aft/lesser)
-"cO" = (
-/obj/structure/railing/corner{
-	dir = 8
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "cP" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -915,6 +895,13 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
+"cW" = (
+/obj/structure/closet/crate/coffin,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/machinery/light/small/directional/north,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/chapel)
 "cX" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -1031,12 +1018,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
-"dn" = (
-/obj/structure/fence/corner{
-	dir = 6
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "do" = (
 /obj/effect/turf_decal/trimline/green/filled/warning{
 	dir = 8
@@ -1056,14 +1037,16 @@
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/plating/snowed/icemoon,
 /area/medical/chemistry)
-"ds" = (
-/obj/structure/ore_box,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "dt" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
+"du" = (
+/obj/structure/fence/corner{
+	dir = 6
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "dw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
@@ -1077,13 +1060,6 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/commons/lounge)
-"dy" = (
-/obj/item/clothing/mask/fakemoustache,
-/obj/item/clothing/mask/cigarette/pipe,
-/obj/structure/table/wood,
-/obj/structure/sign/poster/contraband/random/directional/south,
-/turf/open/floor/wood/tile,
-/area/service/theater)
 "dB" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -1100,33 +1076,17 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
-<<<<<<< HEAD
-=======
-"dD" = (
-/obj/structure/chair{
-	dir = 4
-	},
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/department/medical/morgue)
-"dE" = (
-/obj/effect/spawner/random/structure/furniture_parts,
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/structure/furniture_parts,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
 "dF" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/duct,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/structure/sign/poster/contraband/random/directional/north,
 /obj/structure/cable,
-/turf/open/floor/plating,
-/area/maintenance/port/greater)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
 "dG" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -1150,10 +1110,6 @@
 /obj/effect/spawner/random/engineering/tracking_beacon,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
-"dJ" = (
-/obj/structure/flora/grass/green,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "dK" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
@@ -1170,6 +1126,17 @@
 	dir = 8
 	},
 /area/mine/eva)
+"dL" = (
+/obj/structure/table,
+/obj/item/dice/d4{
+	pixel_x = -3;
+	pixel_y = 8
+	},
+/obj/item/flashlight,
+/obj/item/radio/intercom/directional/west,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "dM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -1188,14 +1155,6 @@
 	},
 /turf/open/floor/stone,
 /area/commons/lounge)
-"dO" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 9
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "dR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -1250,6 +1209,12 @@
 	},
 /turf/open/floor/plating,
 /area/service/chapel)
+"ec" = (
+/obj/machinery/light/directional/east,
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/service/chapel)
 "ed" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
@@ -1295,20 +1260,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/wood/parquet,
 /area/commons/lounge)
-"ei" = (
-/obj/machinery/camera/directional/south{
-	c_tag = "Labor Camp External North";
-	network = list("labor")
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/laborcamp)
-"ej" = (
-/obj/item/wrench,
-/obj/item/clothing/glasses/monocle,
-/obj/structure/table/wood,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/iron,
-/area/service/theater)
 "ek" = (
 /obj/machinery/atmospherics/components/tank/air{
 	dir = 8
@@ -1396,6 +1347,12 @@
 /obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/dark/side,
 /area/service/chapel)
+"et" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "eu" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
@@ -1450,17 +1407,10 @@
 	},
 /turf/open/floor/iron/smooth_large,
 /area/cargo/warehouse)
-"eB" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 8
-	},
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
+"eA" = (
+/obj/structure/flora/grass/both,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "eC" = (
 /obj/structure/extinguisher_cabinet/directional/south,
 /obj/effect/turf_decal/tile/neutral{
@@ -1480,6 +1430,14 @@
 /obj/effect/spawner/random/food_or_drink/donkpockets,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"eG" = (
+/obj/machinery/atmospherics/pipe/layer_manifold/supply/hidden{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron/smooth,
+/area/mine/laborcamp/security)
 "eI" = (
 /obj/machinery/smartfridge/organ,
 /obj/effect/turf_decal/tile/neutral/full,
@@ -1489,6 +1447,11 @@
 /obj/structure/ladder,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
+"eL" = (
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/obj/structure/displaycase,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "eM" = (
 /obj/structure/disposalpipe/segment{
 	dir = 6
@@ -1498,6 +1461,28 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
+"eN" = (
+/obj/effect/turf_decal/tile/purple{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/purple,
+/obj/structure/table/reinforced/plastitaniumglass,
+/obj/item/storage/medkit/fire{
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/item/storage/medkit/regular{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "eO" = (
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/machinery/light/directional/east,
@@ -1524,10 +1509,6 @@
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"eW" = (
-/obj/item/clothing/suit/hooded/wintercoat/science,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "eX" = (
 /obj/effect/turf_decal/tile/dark{
 	dir = 1
@@ -1578,6 +1559,13 @@
 	},
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
+"fe" = (
+/obj/machinery/light/small/directional/east,
+/obj/structure/dresser,
+/obj/machinery/firealarm/directional/east,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron,
+/area/service/theater)
 "ff" = (
 /obj/structure/stairs/south,
 /obj/structure/disposalpipe/segment,
@@ -1686,6 +1674,13 @@
 "fu" = (
 /turf/closed/wall,
 /area/icemoon/underground/explored)
+"fv" = (
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/obj/structure/window/reinforced/spawner/north,
+/obj/structure/rack,
+/obj/item/crowbar/large/old,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "fw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -1714,11 +1709,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
-"fD" = (
-/obj/structure/tank_holder/extinguisher,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
 "fE" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 9
@@ -1757,11 +1747,10 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/commons/lounge)
-"fN" = (
-/obj/machinery/vending/dinnerware,
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
+"fM" = (
+/obj/effect/decal/cleanable/blood/gibs,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "fO" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 1
@@ -1848,9 +1837,6 @@
 /obj/machinery/holopad,
 /turf/open/floor/iron,
 /area/service/bar)
-"fY" = (
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/storage)
 "ga" = (
 /obj/structure/grille,
 /obj/structure/window/reinforced/spawner/north,
@@ -1991,12 +1977,6 @@
 	},
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/lavaland/surface/outdoors/explored)
-"gv" = (
-/obj/effect/turf_decal/weather/snow/corner,
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "gw" = (
 /obj/effect/turf_decal/trimline/yellow/filled/corner,
 /turf/open/floor/iron/white,
@@ -2067,6 +2047,12 @@
 /obj/item/storage/crayons,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
+"gG" = (
+/obj/structure/sign/warning/biohazard{
+	pixel_y = 32
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "gH" = (
 /obj/structure/sink{
 	dir = 4;
@@ -2118,17 +2104,6 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/department/medical/morgue)
-"gN" = (
-/obj/structure/table,
-/obj/item/dice/d4{
-	pixel_x = -3;
-	pixel_y = 8
-	},
-/obj/item/flashlight,
-/obj/item/radio/intercom/directional/west,
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/iron,
-/area/cargo/storage)
 "gO" = (
 /obj/machinery/camera/directional/east{
 	c_tag = "Xenobiology Pens - Starboard Aft";
@@ -2142,13 +2117,6 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/commons/lounge)
-"gQ" = (
-/obj/machinery/light/small/directional/east,
-/obj/structure/dresser,
-/obj/machinery/firealarm/directional/east,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/iron,
-/area/service/theater)
 "gR" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
@@ -2406,15 +2374,6 @@
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/science/xenobiology)
-"hC" = (
-/obj/structure/railing{
-	dir = 5
-	},
-/obj/structure/sign/warning/biohazard{
-	pixel_x = -32
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "hE" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/paper/fluff/jobs/prisoner/letter{
@@ -2450,6 +2409,12 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron,
 /area/cargo/storage)
+"hI" = (
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "hJ" = (
 /obj/structure/window/reinforced{
 	dir = 1
@@ -2551,16 +2516,15 @@
 	},
 /turf/open/floor/plating/elevatorshaft,
 /area/mine/storage)
-<<<<<<< HEAD
-"hX" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/obj/structure/tank_holder/extinguisher,
+"hW" = (
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/food_or_drink/cups,
+/obj/effect/spawner/random/food_or_drink/booze,
+/obj/effect/spawner/random/food_or_drink/booze,
+/obj/machinery/light/small/directional/north,
+/obj/structure/sign/poster/contraband/random/directional/north,
 /turf/open/floor/plating,
-/area/maintenance/aft/lesser)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/area/maintenance/department/chapel)
 "hY" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 8
@@ -2636,6 +2600,12 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
+"ij" = (
+/obj/structure/railing{
+	dir = 6
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "ik" = (
 /obj/machinery/light/dim/directional/east,
 /obj/structure/table,
@@ -2694,14 +2664,13 @@
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
-<<<<<<< HEAD
 "iq" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/floor,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/item/clothing/mask/fakemoustache,
+/obj/item/clothing/mask/cigarette/pipe,
+/obj/structure/table/wood,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/wood/tile,
+/area/service/theater)
 "ir" = (
 /obj/structure/cable,
 /obj/structure/closet,
@@ -2724,13 +2693,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"iu" = (
-/obj/machinery/vending/autodrobe,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = -32
-	},
-/turf/open/floor/wood/tile,
-/area/service/theater)
 "iv" = (
 /obj/structure/window/reinforced/spawner/east,
 /obj/structure/grille,
@@ -2774,12 +2736,6 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"iC" = (
-/obj/structure/fence/corner{
-	dir = 10
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "iD" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -2867,13 +2823,6 @@
 /obj/machinery/light/small/directional/west,
 /obj/structure/disposalpipe/trunk,
 /turf/open/floor/iron,
-/area/service/theater)
-"iT" = (
-/obj/item/soap/nanotrasen,
-/obj/item/clothing/head/sombrero,
-/obj/structure/table/wood,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/wood/tile,
 /area/service/theater)
 "iU" = (
 /obj/machinery/hydroponics/constructable,
@@ -2964,23 +2913,6 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
-<<<<<<< HEAD
-"jf" = (
-/obj/effect/landmark/event_spawn,
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
-=======
-"je" = (
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/maintenance/aft/lesser)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "jg" = (
 /obj/machinery/light/small/directional/west,
 /obj/effect/turf_decal/stripes/line{
@@ -3138,21 +3070,23 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
-"jN" = (
-/obj/structure/chair{
-	dir = 4
-	},
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/department/medical/morgue)
 "jO" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"jP" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/machinery/duct,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
 "jQ" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -3206,6 +3140,10 @@
 	},
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
+"jZ" = (
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/engineering/lobby)
 "ka" = (
 /obj/structure/sign/warning/vacuum{
 	pixel_y = -32
@@ -3304,12 +3242,6 @@
 /obj/item/melee/roastingstick,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
-"kq" = (
-/obj/structure/sign/poster/random/directional/west,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
-/area/maintenance/aft/lesser)
 "kt" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 5
@@ -3319,13 +3251,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
-"ku" = (
-/obj/structure/railing/corner,
-/obj/structure/sign/warning/biohazard{
-	pixel_x = -32
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "kv" = (
 /obj/effect/turf_decal/tile/dark,
 /obj/effect/turf_decal/tile/dark{
@@ -3383,10 +3308,6 @@
 /obj/item/gps/mining,
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-"kC" = (
-/obj/structure/marker_beacon/burgundy,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "kD" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 6
@@ -3411,6 +3332,13 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
+"kG" = (
+/obj/machinery/camera/directional/south{
+	c_tag = "Labor Camp External North";
+	network = list("labor")
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/laborcamp)
 "kH" = (
 /obj/structure/closet/athletic_mixed,
 /turf/open/floor/plating,
@@ -3429,9 +3357,6 @@
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/fore)
-"kK" = (
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "kL" = (
 /obj/machinery/atmospherics/pipe/multiz/supply/visible/layer4{
 	color = "#0000ff";
@@ -3450,13 +3375,6 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-"kN" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/directional/west,
-/obj/structure/window/reinforced/spawner/north,
-/obj/structure/displaycase,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "kP" = (
 /obj/structure/chair/stool/directional/west,
 /turf/open/floor/carpet,
@@ -3545,7 +3463,6 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/mine/production)
-<<<<<<< HEAD
 "la" = (
 /obj/structure/sign/plaques/kiddie/badger{
 	pixel_y = 32
@@ -3554,19 +3471,18 @@
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"lc" = (
+/obj/item/soap/nanotrasen,
+/obj/item/clothing/head/sombrero,
+/obj/structure/table/wood,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood/tile,
+/area/service/theater)
 "ld" = (
 /obj/effect/spawner/random/trash/hobo_squat,
 /obj/effect/decal/cleanable/generic,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"le" = (
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron,
-/area/hallway/secondary/service)
 "lf" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -3711,10 +3627,6 @@
 /obj/effect/spawner/random/engineering/tracking_beacon,
 /turf/open/floor/iron,
 /area/mine/eva)
-"ly" = (
-/obj/structure/closet/crate,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "lA" = (
 /obj/structure/closet/decay,
 /turf/open/floor/plating,
@@ -3784,12 +3696,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
-"lM" = (
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "lN" = (
 /obj/machinery/door/airlock/external{
 	name = "External Access"
@@ -3865,14 +3771,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"mc" = (
-/obj/machinery/computer/mechpad,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/textured,
-/area/mine/mechbay)
 "md" = (
 /obj/structure/ladder,
 /turf/open/floor/wood{
@@ -3885,13 +3783,6 @@
 	},
 /turf/open/floor/iron/white/smooth_large,
 /area/medical/chemistry)
-"mg" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/window/reinforced/spawner/north,
-/obj/structure/rack,
-/obj/item/crowbar/large/old,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "mh" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Mining Station Maintenance";
@@ -3947,10 +3838,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
-"mr" = (
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "ms" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/table/reinforced,
@@ -4026,15 +3913,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
-"mF" = (
-/obj/item/clothing/mask/fakemoustache,
-/obj/item/clothing/mask/cigarette/pipe,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = -32
-	},
-/obj/structure/table/wood,
-/turf/open/floor/wood/tile,
-/area/service/theater)
 "mG" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -4042,10 +3920,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/iron/freezer,
 /area/science/xenobiology)
-"mH" = (
-/obj/machinery/light/directional/north,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/storage)
 "mJ" = (
 /obj/structure/cable,
 /turf/open/floor/iron/chapel{
@@ -4219,13 +4093,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"nc" = (
-/obj/machinery/camera/directional/west{
-	c_tag = "Labor Camp External West";
-	network = list("labor")
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/laborcamp)
 "nd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -4267,15 +4134,10 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/engine,
 /area/science/xenobiology)
-<<<<<<< HEAD
-=======
 "nl" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/rack,
-/obj/item/pickaxe,
+/obj/structure/sign/poster/official/random/directional/north,
 /turf/open/floor/iron,
-/area/mine/living_quarters)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/area/hallway/secondary/service)
 "nn" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 4
@@ -4324,10 +4186,6 @@
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"nr" = (
-/obj/machinery/light/small/directional/south,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/laborcamp)
 "ns" = (
 /turf/closed/wall/r_wall,
 /area/cargo/storage)
@@ -4369,12 +4227,6 @@
 /obj/item/paper/carbon,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
-"nw" = (
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/fore)
 "nx" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
@@ -4399,11 +4251,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"nB" = (
-/turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "nD" = (
 /obj/structure/cable/multilayer/multiz,
 /obj/effect/turf_decal/stripes/line,
@@ -4420,23 +4267,6 @@
 	},
 /turf/open/floor/iron/dark/textured,
 /area/hallway/secondary/service)
-"nI" = (
-<<<<<<< HEAD
-/obj/structure/table,
-/obj/item/storage/medkit/regular,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/turf/open/floor/iron/white,
-/area/mine/laborcamp)
-=======
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "nJ" = (
 /turf/closed/wall,
 /area/service/hydroponics)
@@ -4607,15 +4437,10 @@
 	icon_state = "panelscorched"
 	},
 /area/maintenance/department/medical/morgue)
-<<<<<<< HEAD
-=======
 "oo" = (
-/obj/structure/railing/corner{
-	dir = 1
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/aft/lesser)
 "op" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -4645,19 +4470,6 @@
 /obj/structure/window/reinforced/spawner/east,
 /turf/open/floor/plating,
 /area/mine/eva)
-"os" = (
-/obj/structure/table,
-/obj/item/dice/d4{
-	pixel_x = -3;
-	pixel_y = 8
-	},
-/obj/item/flashlight,
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
-/obj/item/radio/intercom/directional/west,
-/turf/open/floor/iron,
-/area/cargo/storage)
 "ot" = (
 /obj/structure/stairs/south,
 /obj/structure/railing{
@@ -5061,14 +4873,15 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"pv" = (
+/obj/machinery/vending/autodrobe,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/wood/tile,
+/area/service/theater)
 "px" = (
 /obj/structure/stairs/north,
 /turf/open/floor/iron,
 /area/service/chapel)
-"py" = (
-/obj/structure/ore_box,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/storage)
 "pz" = (
 /turf/open/openspace/icemoon/keep_below,
 /area/lavaland/surface/outdoors/explored)
@@ -5088,6 +4901,12 @@
 /obj/item/wrench,
 /obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
+/area/maintenance/aft/lesser)
+"pD" = (
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
 /area/maintenance/aft/lesser)
 "pE" = (
 /obj/structure/cable,
@@ -5147,6 +4966,17 @@
 /obj/structure/fence,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
+"pQ" = (
+/obj/structure/table,
+/obj/item/storage/medkit/regular,
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/turf/open/floor/iron/white,
+/area/mine/laborcamp)
 "pR" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
@@ -5211,6 +5041,11 @@
 /obj/structure/grille,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
+"qa" = (
+/obj/structure/bed,
+/obj/item/bedsheet/random,
+/turf/open/floor/plating,
+/area/maintenance/department/medical/morgue)
 "qb" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 1
@@ -5222,13 +5057,17 @@
 	dir = 1
 	},
 /area/mine/eva)
-<<<<<<< HEAD
 "qc" = (
 /obj/item/clothing/suit/hooded/wintercoat/science,
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"qd" = (
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/obj/machinery/light/directional/west,
+/obj/structure/window/reinforced/spawner/north,
+/obj/structure/displaycase,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "qe" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -5310,14 +5149,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/dark,
 /area/service/chapel/office)
-"qp" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 8
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "qq" = (
 /obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 8
@@ -5338,33 +5169,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"qu" = (
-/obj/structure/chair/wood{
-	dir = 8
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
-"qw" = (
-/obj/effect/turf_decal/tile/brown{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/random/directional/west,
-/turf/open/floor/iron/dark/side{
-	dir = 8
-	},
-/area/mine/eva)
-"qx" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 6
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "qy" = (
 /obj/machinery/vending/wardrobe/viro_wardrobe,
 /obj/effect/turf_decal/tile/green/full,
@@ -5417,10 +5221,6 @@
 /obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"qG" = (
-/obj/structure/sign/poster/contraband/random,
-/turf/closed/wall/r_wall,
-/area/mine/storage)
 "qI" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -5638,10 +5438,6 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"rm" = (
-/obj/structure/flora/rock/icy,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "rn" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/light/small/directional/north,
@@ -5796,6 +5592,10 @@
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/mine/laborcamp/security)
+"rJ" = (
+/obj/structure/chair/wood,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "rK" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/plating,
@@ -5896,12 +5696,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/science/xenobiology)
-"rY" = (
-/obj/structure/railing/corner{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "sa" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 1
@@ -5970,10 +5764,6 @@
 /obj/structure/fireplace,
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"sl" = (
-/obj/effect/decal/cleanable/blood/tracks,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "sm" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -6013,15 +5803,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp)
-"sq" = (
-/obj/effect/spawner/random/structure/furniture_parts,
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/structure/furniture_parts,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
 "ss" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -6387,10 +6168,6 @@
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/service/hydroponics)
-"tr" = (
-/obj/machinery/light/small/directional/west,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/eva)
 "ts" = (
 /turf/closed/wall,
 /area/maintenance/department/crew_quarters/bar)
@@ -6409,6 +6186,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"tw" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "ty" = (
 /obj/effect/decal/cleanable/generic,
 /turf/open/floor/plating,
@@ -6449,14 +6234,6 @@
 	},
 /turf/open/floor/iron/white/side,
 /area/mine/living_quarters)
-"tG" = (
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/maintenance/aft/lesser)
 "tI" = (
 /obj/structure/chair/stool/directional/south,
 /obj/machinery/flasher/directional/west{
@@ -6505,17 +6282,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"tP" = (
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/food_or_drink/cups,
-/obj/effect/spawner/random/food_or_drink/booze,
-/obj/effect/spawner/random/food_or_drink/booze,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
 "tQ" = (
 /obj/structure/table/glass,
 /obj/item/grenade/chem_grenade/antiweed,
@@ -6600,35 +6366,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
-<<<<<<< HEAD
 "tY" = (
 /obj/structure/railing/corner{
 	dir = 1
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-"tZ" = (
-/obj/machinery/conveyor{
-	id = "mining_internal"
-	},
-/obj/structure/window/reinforced/spawner/west,
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_x = 32
-	},
-/obj/machinery/camera{
-	c_tag = "Mining Ore Smeltery";
-	dir = 6
-	},
-/turf/open/floor/iron,
-/area/mine/production)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "ua" = (
 /obj/effect/landmark/start/chaplain,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -6651,10 +6394,6 @@
 	},
 /turf/open/floor/iron/freezer,
 /area/science/xenobiology)
-"ud" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/dark,
-/area/maintenance/department/medical/morgue)
 "ue" = (
 /obj/structure/chair/wood/wings{
 	dir = 8
@@ -6686,39 +6425,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/iron/freezer,
 /area/science/xenobiology)
-"ul" = (
-/obj/machinery/conveyor{
-	id = "mining_internal"
-	},
-/obj/structure/window/reinforced/spawner/west,
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/machinery/camera{
-	c_tag = "Mining Ore Smeltery";
-	dir = 6
-	},
-/obj/structure/sign/poster/official/random/directional/east,
-/turf/open/floor/iron,
-/area/mine/production)
 "um" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/plating,
 /area/maintenance/department/chapel)
-"uo" = (
-/obj/machinery/atmospherics/pipe/layer_manifold/supply/hidden{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/smooth,
-/area/mine/laborcamp/security)
 "uq" = (
 /obj/structure/sign/warning/vacuum/external{
 	pixel_y = -31
@@ -6731,24 +6442,6 @@
 	},
 /turf/open/floor/iron/freezer,
 /area/science/xenobiology)
-"us" = (
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
-/obj/machinery/exodrone_launcher,
-/obj/item/exodrone{
-	pixel_y = 8
-	},
-/obj/effect/turf_decal/trimline/yellow/end,
-/obj/effect/turf_decal/trimline/yellow/mid_joiner{
-	dir = 4
-	},
-/obj/effect/turf_decal/trimline/yellow/mid_joiner{
-	dir = 8
-	},
-/obj/effect/turf_decal/trimline/yellow/mid_joiner,
-/turf/open/floor/iron/smooth_large,
-/area/cargo/drone_bay)
 "uu" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -6776,14 +6469,6 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"uw" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 5
-	},
-/turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "ux" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment{
@@ -6791,10 +6476,6 @@
 	},
 /turf/open/floor/wood/tile,
 /area/service/theater)
-"uy" = (
-/obj/effect/spawner/random/structure/crate,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "uz" = (
 /obj/machinery/door/window/northleft{
 	dir = 4;
@@ -6808,12 +6489,6 @@
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/science/xenobiology)
-"uA" = (
-/obj/structure/sign/plaques/kiddie/devils_tooth{
-	pixel_y = 32
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "uD" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -6880,13 +6555,6 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-"uN" = (
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/mine/laborcamp/security)
 "uO" = (
 /obj/effect/spawner/random/structure/tank_holder,
 /obj/effect/decal/cleanable/dirt,
@@ -7013,12 +6681,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"vo" = (
-/obj/item/flashlight/lantern{
-	light_on = 1
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "vr" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/sign/warning/coldtemp{
@@ -7126,7 +6788,6 @@
 	},
 /turf/open/floor/engine,
 /area/science/xenobiology)
-<<<<<<< HEAD
 "vH" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 5
@@ -7135,17 +6796,6 @@
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
-"vI" = (
-/obj/structure/chair{
-	dir = 1
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "vK" = (
 /obj/structure/reagent_dispensers/watertank,
 /obj/machinery/firealarm/directional/west,
@@ -7174,6 +6824,11 @@
 "vQ" = (
 /obj/structure/ladder,
 /turf/open/floor/plating/snowed/icemoon,
+/area/icemoon/underground/explored)
+"vR" = (
+/obj/item/stack/sheet/animalhide/monkey,
+/obj/effect/decal/cleanable/blood,
+/turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "vS" = (
 /obj/item/radio/intercom/directional/south,
@@ -7270,11 +6925,6 @@
 /obj/item/clothing/under/misc/burial,
 /turf/open/floor/plating,
 /area/maintenance/department/chapel)
-"wi" = (
-/obj/structure/closet/firecloset,
-/obj/effect/turf_decal/tile/purple/fourcorners,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "wj" = (
 /obj/machinery/atmospherics/components/tank/air{
 	dir = 8
@@ -7312,18 +6962,10 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
-<<<<<<< HEAD
-=======
-"wo" = (
-/obj/structure/chair/wood{
-	dir = 8
-	},
-/obj/machinery/light/small/directional/east,
-/obj/machinery/computer/security/telescreen/entertainment/directional/north,
+"wn" = (
 /obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/wood/parquet,
-/area/commons/lounge)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/turf/open/floor/plating,
+/area/maintenance/aft/lesser)
 "wp" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 8
@@ -7391,21 +7033,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"wB" = (
-<<<<<<< HEAD
-/obj/item/storage/medkit/toxin{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/structure/closet/emcloset,
-/obj/effect/turf_decal/tile/purple/fourcorners,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
-=======
-/obj/item/stack/rods/ten,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "wC" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -7492,6 +7119,12 @@
 /obj/item/clothing/mask/breath,
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
+"wW" = (
+/obj/structure/closet,
+/obj/machinery/light/small/directional/north,
+/obj/structure/sign/poster/official/random/directional/east,
+/turf/open/floor/carpet/donk,
+/area/mine/production)
 "wX" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -7574,6 +7207,10 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"xi" = (
+/obj/effect/decal/cleanable/blood/tracks,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "xj" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
@@ -7703,12 +7340,6 @@
 	icon_state = "platingdmg2"
 	},
 /area/maintenance/aft/lesser)
-"xI" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/rack,
-/obj/item/pickaxe,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "xJ" = (
 /obj/structure/table,
 /obj/item/stock_parts/scanning_module{
@@ -7740,29 +7371,17 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on,
 /turf/open/floor/iron/dark,
 /area/medical/virology)
-<<<<<<< HEAD
-"xN" = (
-/obj/item/wrench,
-/obj/item/clothing/glasses/monocle,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/obj/structure/table/wood,
-/turf/open/floor/iron,
-/area/service/theater)
 "xO" = (
 /obj/structure/flora/rock/icy,
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-=======
-"xP" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
-	},
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating/elevatorshaft,
-/area/mine/storage)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"xQ" = (
+/obj/item/clothing/mask/animal/pig,
+/obj/item/bikehorn,
+/obj/structure/table/wood,
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/wood/tile,
+/area/service/theater)
 "xR" = (
 /obj/effect/landmark/xeno_spawn,
 /obj/structure/cable,
@@ -7850,6 +7469,11 @@
 	},
 /turf/open/floor/wood/tile,
 /area/service/theater)
+"yg" = (
+/obj/structure/flora/tree/pine,
+/obj/structure/flora/grass/green,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "yh" = (
 /obj/structure/sign/warning/gasmask{
 	pixel_y = -32
@@ -7884,20 +7508,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
-<<<<<<< HEAD
-"yp" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 8
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "yq" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 9
@@ -7906,8 +7516,6 @@
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "yr" = (
 /turf/closed/wall/r_wall,
 /area/mine/laborcamp)
@@ -8010,6 +7618,16 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/lobby)
+"yI" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/maintenance/port/greater)
 "yJ" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -8037,12 +7655,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"yQ" = (
-/obj/structure/chair/wood{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "yR" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Chapel"
@@ -8050,6 +7662,11 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark/textured,
 /area/service/chapel)
+"yS" = (
+/obj/structure/tank_holder/extinguisher,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/aft/lesser)
 "yT" = (
 /obj/structure/railing{
 	dir = 1
@@ -8069,6 +7686,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/dark,
 /area/medical/virology)
+"yW" = (
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/laborcamp)
 "yX" = (
 /obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
@@ -8224,15 +7845,6 @@
 	dir = 8
 	},
 /area/science/xenobiology)
-"zx" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/obj/item/soap/nanotrasen,
-/obj/item/clothing/head/sombrero,
-/obj/structure/table/wood,
-/turf/open/floor/wood/tile,
-/area/service/theater)
 "zy" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/showroomfloor,
@@ -8276,6 +7888,11 @@
 	},
 /turf/open/floor/iron/dark/textured,
 /area/hallway/secondary/service)
+"zD" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron,
+/area/mine/laborcamp/security)
 "zE" = (
 /obj/structure/cable/multilayer/multiz,
 /obj/effect/turf_decal/stripes/box,
@@ -8298,14 +7915,6 @@
 	name = "Theater Stage"
 	},
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/carpet,
-/area/service/theater)
-"zH" = (
-/obj/effect/turf_decal/siding/thinplating/dark{
-	dir = 8
-	},
-/obj/structure/musician/piano,
-/obj/structure/sign/poster/random/directional/north,
 /turf/open/floor/carpet,
 /area/service/theater)
 "zJ" = (
@@ -8360,13 +7969,6 @@
 /area/cargo/warehouse)
 "zS" = (
 /obj/structure/closet/toolcloset,
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
-"zT" = (
-/obj/structure/chair{
-	dir = 1
-	},
-/obj/structure/sign/poster/random/directional/south,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "zU" = (
@@ -8570,19 +8172,10 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-<<<<<<< HEAD
-=======
-"Az" = (
-/obj/structure/chair/wood,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "AA" = (
-/obj/structure/fence{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/closed/wall,
+/area/maintenance/department/chapel)
 "AB" = (
 /obj/structure/grille,
 /obj/structure/window/reinforced/spawner/east,
@@ -8609,12 +8202,6 @@
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
-"AJ" = (
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
 "AL" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -8655,18 +8242,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"AS" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
 "AT" = (
 /obj/machinery/seed_extractor,
 /obj/effect/turf_decal/tile/blue{
@@ -8727,6 +8302,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
+"Bb" = (
+/obj/item/flashlight/lantern{
+	light_on = 1
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Bc" = (
 /obj/structure/cable/multilayer/multiz,
 /turf/open/floor/plating,
@@ -8843,14 +8424,6 @@
 "Bt" = (
 /turf/closed/wall,
 /area/service/kitchen)
-"Bu" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 4
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "Bv" = (
 /obj/structure/frame/machine,
 /obj/item/circuitboard/machine/chem_master,
@@ -8871,16 +8444,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
-"By" = (
-/obj/effect/turf_decal/siding/thinplating/dark{
-	dir = 8
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/obj/structure/musician/piano,
-/turf/open/floor/carpet,
-/area/service/theater)
 "Bz" = (
 /obj/structure/chair/pew{
 	dir = 1
@@ -8890,12 +8453,6 @@
 	dir = 8
 	},
 /area/service/chapel)
-"BA" = (
-/obj/structure/closet/crate/grave,
-/turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "BB" = (
 /obj/structure/chair/pew{
 	dir = 1
@@ -8903,15 +8460,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron/chapel,
 /area/service/chapel)
-"BC" = (
-/obj/effect/landmark/event_spawn,
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "BD" = (
 /obj/item/screwdriver,
 /turf/open/floor/plating/snowed/icemoon,
@@ -8928,13 +8476,17 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark/side,
 /area/mine/eva)
-<<<<<<< HEAD
+"BF" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 9
+	},
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating/elevatorshaft,
+/area/mine/storage)
 "BG" = (
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/mine/eva)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "BH" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/visible{
 	dir = 4
@@ -8982,13 +8534,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-<<<<<<< HEAD
-=======
 "BO" = (
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/plating,
-/area/maintenance/fore)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "BP" = (
 /obj/structure/table,
 /obj/item/clothing/mask/gas,
@@ -9010,14 +8559,6 @@
 /obj/structure/tank_holder/extinguisher,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"BV" = (
-/obj/structure/closet,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/official/random{
-	pixel_x = 32
-	},
-/turf/open/floor/carpet/donk,
-/area/mine/production)
 "BW" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -9123,16 +8664,18 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"Co" = (
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron,
-/area/hallway/secondary/service)
 "Cq" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/maintenance/department/chapel)
+"Cs" = (
+/obj/effect/decal/cleanable/blood/tracks{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Ct" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -9272,6 +8815,9 @@
 	dir = 8
 	},
 /area/mine/living_quarters)
+"CM" = (
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/lavaland/surface/outdoors/explored)
 "CN" = (
 /obj/structure/table,
 /obj/effect/landmark/event_spawn,
@@ -9377,6 +8923,11 @@
 /obj/machinery/duct,
 /turf/open/floor/iron,
 /area/service/theater)
+"CY" = (
+/obj/machinery/icecream_vat,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/cafeteria,
+/area/service/kitchen)
 "Dc" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -9427,10 +8978,10 @@
 /obj/structure/closet/secure_closet/medical1,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"Dl" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
+"Dk" = (
+/obj/structure/fence/door,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Dm" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 9
@@ -9484,26 +9035,6 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/science/xenobiology)
-"Dv" = (
-<<<<<<< HEAD
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 8
-	},
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/mine/production)
-=======
-/obj/structure/railing{
-	dir = 9
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Dw" = (
 /obj/structure/sign/warning/gasmask{
 	desc = "A sign that warns of dangerous gasses in the air, instructing you to wear internals.";
@@ -9512,12 +9043,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/mine/mechbay)
-"Dx" = (
-/obj/structure/railing{
-	dir = 10
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Dy" = (
 /obj/machinery/door/airlock/medical/glass{
 	name = "Icemoon Exterior Garden";
@@ -9536,11 +9061,6 @@
 /obj/machinery/newscaster/directional/south,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
-"DC" = (
-/obj/item/stack/sheet/animalhide/monkey,
-/obj/effect/decal/cleanable/blood,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "DD" = (
 /obj/structure/grille,
 /obj/structure/window/reinforced/spawner/north,
@@ -9572,14 +9092,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"DG" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/iron/smooth_large,
-/area/cargo/warehouse)
 "DH" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 9
@@ -9602,14 +9114,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
-"DK" = (
-/obj/structure/bed,
-/obj/item/bedsheet/random,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/department/medical/morgue)
 "DL" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/plating,
@@ -9679,6 +9183,11 @@
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
+"DX" = (
+/turf/open/floor/plating/dirt/dark{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "DZ" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
@@ -9781,17 +9290,6 @@
 "El" = (
 /turf/open/floor/iron/freezer,
 /area/mine/laborcamp)
-"Em" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 4
-	},
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/obj/structure/sign/poster/official/random/directional/south,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "Eo" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 8
@@ -9880,11 +9378,6 @@
 /obj/item/seeds/apple,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"EE" = (
-/obj/machinery/icecream_vat,
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
 "EF" = (
 /obj/structure/cable,
 /obj/machinery/button/door/directional/west{
@@ -9911,6 +9404,16 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
+"EK" = (
+/obj/structure/fence/end{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
+"EL" = (
+/obj/structure/railing/corner,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "EM" = (
 /obj/effect/turf_decal/trimline/yellow/filled/corner{
 	dir = 8
@@ -9932,19 +9435,21 @@
 	dir = 1
 	},
 /area/service/hydroponics)
+"EO" = (
+/obj/structure/chair/wood{
+	dir = 8
+	},
+/obj/machinery/light/small/directional/east,
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/wood/parquet,
+/area/commons/lounge)
 "EP" = (
 /obj/structure/fence{
 	dir = 1
 	},
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
-<<<<<<< HEAD
-"EQ" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/aft/lesser)
 "ER" = (
 /obj/structure/fence{
 	dir = 4
@@ -9955,22 +9460,13 @@
 "ET" = (
 /turf/closed/wall,
 /area/cargo/storage)
-=======
-"ET" = (
-/turf/closed/wall,
-/area/cargo/storage)
 "EV" = (
-/obj/structure/table,
-/obj/item/storage/medkit/regular,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
+/obj/structure/chair{
 	dir = 4
 	},
-/turf/open/floor/iron/white,
-/area/mine/laborcamp)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/medical/morgue)
 "EW" = (
 /obj/machinery/door/airlock/external{
 	name = "External Access"
@@ -10087,23 +9583,16 @@
 /obj/effect/mob_spawn/corpse/human/skeleton,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"Fj" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
-	},
-/turf/open/floor/plating/elevatorshaft,
-/area/mine/storage)
 "Fk" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
-"Fm" = (
-/obj/effect/decal/cleanable/blood/gibs,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Fo" = (
 /turf/closed/wall/r_wall,
 /area/engineering/lobby)
+"Fp" = (
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Fq" = (
 /turf/closed/wall/mineral/wood,
 /area/maintenance/aft/lesser)
@@ -10125,10 +9614,6 @@
 /obj/effect/turf_decal/tile/green/full,
 /turf/open/floor/iron/dark/smooth_large,
 /area/medical/virology)
-"Fu" = (
-/obj/structure/fence,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Fv" = (
 /obj/structure/rack,
 /obj/item/clothing/head/soft/mime,
@@ -10158,14 +9643,13 @@
 /obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-<<<<<<< HEAD
-=======
-"Fz" = (
-/obj/structure/flora/tree/pine,
-/obj/structure/flora/grass/green,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"FB" = (
+/obj/effect/spawner/random/structure/furniture_parts,
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/structure/furniture_parts,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/chapel)
 "FD" = (
 /obj/structure/chair/plastic{
 	dir = 8
@@ -10209,6 +9693,24 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"FJ" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/machinery/washing_machine,
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/machinery/washing_machine,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron/cafeteria,
+/area/commons/dorms/laundry)
 "FL" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
@@ -10225,6 +9727,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"FP" = (
+/obj/item/stack/rods/ten,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
+"FQ" = (
+/obj/structure/flora/grass/green,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "FR" = (
 /turf/closed/mineral/random/snow/high_chance,
 /area/icemoon/underground/explored)
@@ -10268,6 +9778,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"FW" = (
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/official/random/directional/west,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/mine/eva)
 "FX" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
@@ -10363,10 +9886,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-"Gk" = (
-/obj/machinery/light/directional/east,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/storage)
 "Gl" = (
 /obj/structure/table/wood,
 /obj/machinery/airalarm/directional/north,
@@ -10479,10 +9998,6 @@
 /obj/item/pen,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"Gx" = (
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/closed/wall,
-/area/maintenance/department/chapel)
 "Gz" = (
 /obj/machinery/door/window/northleft{
 	base_state = "right";
@@ -10546,6 +10061,12 @@
 /obj/structure/closet/emcloset,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
+"GK" = (
+/obj/structure/chair/wood{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "GL" = (
 /obj/machinery/hydroponics/soil,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
@@ -10781,6 +10302,14 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
+"Hr" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "Hs" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -10941,11 +10470,12 @@
 	dir = 8
 	},
 /area/mine/living_quarters)
-"HM" = (
-/obj/effect/turf_decal/trimline/yellow/filled/line,
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/iron/white,
-/area/medical/chemistry)
+"HO" = (
+/obj/structure/closet/crate/grave,
+/turf/open/floor/plating/dirt/dark{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "HP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -11112,17 +10642,6 @@
 	},
 /turf/open/floor/iron/dark/side,
 /area/mine/eva)
-"Im" = (
-/obj/structure/chair/wood{
-	dir = 8
-	},
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/obj/machinery/light/small/directional/east,
-/obj/machinery/computer/security/telescreen/entertainment/directional/north,
-/turf/open/floor/wood/parquet,
-/area/commons/lounge)
 "In" = (
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
@@ -11155,25 +10674,6 @@
 /obj/structure/girder,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
-"It" = (
-<<<<<<< HEAD
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/displaycase,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
-=======
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 8
-	},
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/mine/production)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Iu" = (
 /obj/machinery/door/airlock/highsecurity{
 	name = "Service Hall Exit";
@@ -11198,6 +10698,9 @@
 /obj/effect/turf_decal/bot_red,
 /turf/open/floor/plating,
 /area/maintenance/fore)
+"Iy" = (
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/unexplored)
 "IA" = (
 /obj/structure/sign/directions/engineering{
 	desc = "A sign that shows there are doors here. There are doors everywhere!";
@@ -11259,16 +10762,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/medical/chemistry)
-"IJ" = (
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/iron/smooth_large,
-/area/cargo/warehouse)
 "IL" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating{
@@ -11303,6 +10796,10 @@
 /obj/effect/turf_decal/trimline/green/filled/corner,
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"IP" = (
+/obj/structure/fence,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "IQ" = (
 /obj/machinery/door/airlock/mining/glass{
 	name = "Mining Base";
@@ -11328,12 +10825,6 @@
 /obj/machinery/camera/directional/north{
 	c_tag = "Chapel Coffin Storage"
 	},
-/turf/open/floor/iron/dark,
-/area/service/chapel)
-"IT" = (
-/obj/machinery/light/directional/east,
-/obj/item/kirbyplants/random,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
 "IU" = (
@@ -11418,6 +10909,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
+"Jf" = (
+/obj/structure/fence{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Jg" = (
 /obj/effect/turf_decal/siding/brown,
 /obj/structure/chair/office,
@@ -11444,37 +10941,12 @@
 /obj/effect/turf_decal/tile/green/full,
 /turf/open/floor/iron/dark/smooth_large,
 /area/medical/virology)
-<<<<<<< HEAD
-"Jp" = (
-/obj/effect/turf_decal/tile/purple{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/purple,
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/storage/medkit/fire{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/medkit/regular{
-	pixel_x = -3;
-	pixel_y = -3
-	},
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "Jq" = (
 /obj/structure/marker_beacon/burgundy{
 	name = "landing marker"
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Jr" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
@@ -11531,10 +11003,6 @@
 /obj/structure/window/reinforced/spawner/west,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
-"Jz" = (
-/obj/structure/flora/grass/both,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "JA" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "misclab";
@@ -11600,12 +11068,10 @@
 	dir = 1
 	},
 /area/service/hydroponics)
-"JJ" = (
-/obj/effect/decal/cleanable/blood/tracks{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
+"JK" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/storage)
 "JL" = (
 /obj/machinery/door/airlock/maintenance{
 	req_access_txt = "12"
@@ -11667,6 +11133,10 @@
 	},
 /turf/open/openspace/icemoon/keep_below,
 /area/icemoon/underground/explored)
+"JV" = (
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/eva)
 "JW" = (
 /obj/structure/rack,
 /obj/item/storage/toolbox/mechanical,
@@ -11697,9 +11167,6 @@
 /obj/structure/grille/broken,
 /turf/open/openspace/icemoon/keep_below,
 /area/icemoon/underground/explored)
-"Kb" = (
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/unexplored)
 "Kc" = (
 /obj/structure/chair/pew{
 	dir = 1
@@ -11732,6 +11199,12 @@
 	},
 /turf/open/floor/engine,
 /area/science/xenobiology)
+"Ki" = (
+/obj/structure/sign/poster/official/here_for_your_safety{
+	pixel_x = 32
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Kj" = (
 /obj/machinery/camera/directional/west{
 	c_tag = "Labor Camp External South";
@@ -11739,20 +11212,6 @@
 	},
 /turf/open/openspace/icemoon/keep_below,
 /area/mine/laborcamp)
-<<<<<<< HEAD
-"Kk" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/machinery/washing_machine,
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/cafeteria,
-/area/commons/dorms/laundry)
 "Kl" = (
 /obj/machinery/camera/directional/west{
 	c_tag = "Labor Camp External West";
@@ -11760,8 +11219,6 @@
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/mine/laborcamp)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Km" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -11845,19 +11302,6 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/maintenance/department/medical/morgue)
-"KC" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 4
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
-/obj/machinery/duct,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/hallway/secondary/service)
 "KD" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "xenobio2";
@@ -12028,11 +11472,12 @@
 /obj/item/radio/intercom/chapel/directional/east,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"Lb" = (
-/obj/machinery/vending/autodrobe,
-/obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/wood/tile,
-/area/service/theater)
+"Lc" = (
+/obj/structure/closet/crate/grave,
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "Ld" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating,
@@ -12090,6 +11535,11 @@
 /mob/living/carbon/human/species/monkey/punpun,
 /turf/open/floor/iron,
 /area/service/bar)
+"Ll" = (
+/obj/structure/closet/firecloset,
+/obj/effect/turf_decal/tile/purple/fourcorners,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "Lm" = (
 /obj/effect/turf_decal/tile/dark{
 	dir = 8
@@ -12136,15 +11586,24 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
-<<<<<<< HEAD
+"Lu" = (
+/obj/effect/turf_decal/tile/brown{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/mine/production)
 "Lv" = (
 /obj/structure/railing/corner{
 	dir = 8
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Lw" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -12154,12 +11613,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"Ly" = (
-/obj/structure/marker_beacon{
-	icon_state = "markerburgundy-on"
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Lz" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -12196,29 +11649,10 @@
 "LE" = (
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/lavaland/surface/outdoors/explored)
-"LF" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
 "LG" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-"LH" = (
-/obj/structure/closet/crate/coffin,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
 "LJ" = (
 /obj/structure/bed,
 /obj/item/bedsheet/medical,
@@ -12243,14 +11677,6 @@
 /obj/structure/sign/warning/electricshock,
 /turf/closed/wall/r_wall,
 /area/science/xenobiology)
-"LN" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 10
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "LO" = (
 /obj/machinery/deepfryer,
 /obj/item/radio/intercom/directional/south,
@@ -12375,6 +11801,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
+"Mi" = (
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
+	},
+/area/maintenance/aft/lesser)
 "Mj" = (
 /obj/structure/chair/stool/bar/directional/south,
 /obj/effect/turf_decal/siding/wood{
@@ -12454,13 +11886,6 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/engineering/lobby)
-"Mt" = (
-/obj/effect/turf_decal/trimline/yellow/filled/line,
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/iron/white,
-/area/medical/chemistry)
 "Mu" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 6
@@ -12569,10 +11994,6 @@
 "MH" = (
 /turf/closed/wall,
 /area/medical/virology)
-"MI" = (
-/obj/structure/fence/door,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "MJ" = (
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
@@ -12601,6 +12022,22 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/science/xenobiology)
+"ML" = (
+/obj/machinery/exodrone_launcher,
+/obj/item/exodrone{
+	pixel_y = 8
+	},
+/obj/effect/turf_decal/trimline/yellow/end,
+/obj/effect/turf_decal/trimline/yellow/mid_joiner{
+	dir = 4
+	},
+/obj/effect/turf_decal/trimline/yellow/mid_joiner{
+	dir = 8
+	},
+/obj/effect/turf_decal/trimline/yellow/mid_joiner,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron/smooth_large,
+/area/cargo/drone_bay)
 "MM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/closed/wall,
@@ -12629,6 +12066,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
+"MR" = (
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/obj/structure/rack,
+/obj/item/pickaxe,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "MS" = (
 /mob/living/simple_animal/slime,
 /turf/open/floor/engine,
@@ -12666,6 +12109,12 @@
 	},
 /turf/open/floor/plating,
 /area/medical/virology)
+"MX" = (
+/obj/structure/chair/wood{
+	dir = 8
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "MY" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
@@ -12769,31 +12218,26 @@
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
-<<<<<<< HEAD
-=======
 "Nv" = (
-/obj/machinery/light/directional/east,
-/obj/item/kirbyplants/random,
+/obj/machinery/vending/coffee,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/sign/poster/random/directional/east,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Nw" = (
 /obj/structure/table/wood/poker,
 /obj/item/clothing/mask/cigarette/pipe,
 /turf/open/floor/wood/parquet,
 /area/commons/lounge)
-<<<<<<< HEAD
-=======
 "Ny" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/machinery/light/small/directional/east,
-/obj/machinery/duct,
-/turf/open/floor/wood/tile,
-/area/service/theater)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/item/storage/medkit/toxin{
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/structure/closet/emcloset,
+/obj/effect/turf_decal/tile/purple/fourcorners,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "Nz" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -12804,21 +12248,6 @@
 "NA" = (
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
-<<<<<<< HEAD
-"NB" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = 32
-	},
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/dark,
-/area/maintenance/department/medical/morgue)
-=======
-"NC" = (
-/obj/item/organ/tail/monkey,
-/obj/effect/decal/cleanable/blood/splatter,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "NE" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
@@ -12827,6 +12256,9 @@
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp)
+"NH" = (
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/storage)
 "NI" = (
 /obj/structure/table,
 /obj/item/reagent_containers/food/condiment/saltshaker{
@@ -12862,11 +12294,6 @@
 /obj/machinery/restaurant_portal/bar,
 /turf/open/floor/stone,
 /area/commons/lounge)
-"NO" = (
-/obj/structure/bed,
-/obj/item/bedsheet/random,
-/turf/open/floor/plating,
-/area/maintenance/department/medical/morgue)
 "NP" = (
 /obj/structure/stairs/east,
 /obj/structure/railing,
@@ -12904,12 +12331,6 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"NU" = (
-/obj/structure/railing{
-	dir = 1
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "NV" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -12925,6 +12346,16 @@
 /obj/structure/cable,
 /turf/open/floor/iron/cafeteria,
 /area/mine/laborcamp)
+"NX" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment{
+	dir = 9
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/cafeteria,
+/area/service/kitchen)
 "NY" = (
 /obj/machinery/conveyor{
 	dir = 8;
@@ -12934,16 +12365,6 @@
 /obj/structure/plasticflaps,
 /turf/open/floor/plating,
 /area/mine/laborcamp)
-"Oa" = (
-/obj/structure/fence/end{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
-"Oc" = (
-/obj/structure/railing/corner,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Od" = (
 /obj/structure/fence/corner{
 	dir = 6
@@ -13002,6 +12423,12 @@
 /obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
+"Ol" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Om" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
@@ -13028,12 +12455,6 @@
 	},
 /turf/open/floor/iron/smooth_large,
 /area/cargo/warehouse)
-"Op" = (
-/obj/structure/railing{
-	dir = 8
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Oq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -13042,12 +12463,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"Or" = (
-/obj/structure/fence/corner{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Os" = (
 /obj/machinery/door/window/northleft{
 	dir = 4;
@@ -13060,28 +12475,10 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/science/xenobiology)
-"Ot" = (
-/obj/machinery/computer/mechpad,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron/textured,
-/area/mine/mechbay)
 "Ou" = (
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/engineering/lobby)
-"Ov" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/plating,
-/area/maintenance/port/greater)
 "Ow" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/reagent_containers/glass/bucket,
@@ -13107,19 +12504,21 @@
 /obj/machinery/duct,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
-<<<<<<< HEAD
-=======
 "OA" = (
-/obj/structure/fence/door/opened{
-	dir = 4
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/machinery/vending/dinnerware,
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/cafeteria,
+/area/service/kitchen)
 "OB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
+"OC" = (
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "OE" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -13165,20 +12564,30 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
-<<<<<<< HEAD
 "OH" = (
 /obj/structure/railing{
 	dir = 10
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
-=======
-"OI" = (
-/obj/structure/marker_beacon/burgundy{
-	name = "landing marker"
-	},
-/turf/open/misc/asteroid/snow/icemoon,
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 /area/icemoon/underground/explored)
+"OI" = (
+/obj/machinery/conveyor{
+	id = "mining_internal"
+	},
+/obj/structure/window/reinforced/spawner/west,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/machinery/camera{
+	c_tag = "Mining Ore Smeltery";
+	dir = 6
+	},
+/obj/structure/sign/poster/official/random/directional/east,
+/turf/open/floor/iron,
+/area/mine/production)
 "OK" = (
 /obj/structure/railing/corner{
 	dir = 1
@@ -13205,15 +12614,11 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
-<<<<<<< HEAD
-=======
 "ON" = (
-/obj/structure/closet/crate/grave,
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/effect/turf_decal/trimline/yellow/filled/line,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/white,
+/area/medical/chemistry)
 "OO" = (
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
@@ -13399,14 +12804,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/mine/laborcamp)
-"Pq" = (
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/obj/machinery/vending/coffee,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron/dark,
-/area/service/chapel)
 "Ps" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 4
@@ -13514,6 +12911,10 @@
 "PG" = (
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
+"PI" = (
+/obj/structure/marker_beacon/burgundy,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "PJ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 6
@@ -13524,6 +12925,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"PL" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron/smooth_large,
+/area/cargo/warehouse)
 "PO" = (
 /obj/machinery/duct,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -13536,21 +12945,6 @@
 /obj/effect/turf_decal/stripes/box,
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"PR" = (
-/obj/effect/turf_decal/tile/brown{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_x = -32
-	},
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/dark/side{
-	dir = 8
-	},
-/area/mine/eva)
 "PT" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -13672,7 +13066,6 @@
 /obj/effect/landmark/event_spawn,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
-<<<<<<< HEAD
 "Qh" = (
 /obj/structure/marker_beacon{
 	icon_state = "markerburgundy-on"
@@ -13683,21 +13076,6 @@
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-"Qj" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
-=======
-"Qj" = (
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/food_or_drink/cups,
-/obj/effect/spawner/random/food_or_drink/booze,
-/obj/effect/spawner/random/food_or_drink/booze,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Qk" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/white,
@@ -13741,12 +13119,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"Qp" = (
-/obj/structure/railing{
-	dir = 6
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Qq" = (
 /obj/structure/stairs/north,
 /obj/structure/railing{
@@ -13806,13 +13178,6 @@
 /obj/machinery/holopad,
 /turf/open/floor/iron/grimy,
 /area/service/chapel/office)
-"Qz" = (
-/obj/machinery/icecream_vat,
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
 "QA" = (
 /obj/structure/chair/sofa/corp/left{
 	dir = 1
@@ -13945,6 +13310,10 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark,
 /area/service/chapel)
+"QT" = (
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/plating,
+/area/maintenance/fore)
 "QU" = (
 /obj/structure/closet/crate/coffin,
 /turf/open/floor/iron/dark/smooth_half,
@@ -14036,10 +13405,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
-"Ri" = (
-/obj/structure/flora/tree/pine,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Rj" = (
 /obj/structure/lattice,
 /turf/open/openspace/icemoon/keep_below,
@@ -14054,6 +13419,15 @@
 	dir = 1
 	},
 /area/medical/chemistry)
+"Rl" = (
+/obj/structure/railing{
+	dir = 5
+	},
+/obj/structure/sign/warning/biohazard{
+	pixel_x = -32
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "Rm" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -14391,6 +13765,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
+"Si" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/maintenance/department/medical/morgue)
 "Sj" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 1
@@ -14600,15 +13978,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"SQ" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/obj/machinery/light/small/directional/east,
-/obj/structure/dresser,
-/obj/machinery/firealarm/directional/east,
-/turf/open/floor/iron,
-/area/service/theater)
 "SR" = (
 /obj/structure/sign/warning,
 /turf/closed/wall/r_wall,
@@ -14640,12 +14009,6 @@
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
-"SW" = (
-/obj/structure/sign/warning/biohazard{
-	pixel_y = 32
-	},
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "SX" = (
 /obj/machinery/conveyor{
 	id = "gulag"
@@ -14653,6 +14016,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/mine/laborcamp)
+"SY" = (
+/obj/structure/fence/door/opened{
+	dir = 4
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "SZ" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/sheet/iron/fifty,
@@ -14774,13 +14143,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
-"Tp" = (
-/obj/machinery/vending/dinnerware,
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/iron/cafeteria,
-/area/service/kitchen)
 "Tq" = (
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
@@ -14795,10 +14157,6 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
-"Tt" = (
-/obj/structure/flora/rock/pile/icy,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "Tu" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
@@ -14865,6 +14223,10 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood,
 /area/hallway/secondary/service)
+"TE" = (
+/obj/structure/ore_box,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/storage)
 "TH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -14907,7 +14269,6 @@
 /obj/structure/sign/warning/electricshock,
 /turf/open/floor/plating,
 /area/science/xenobiology)
-<<<<<<< HEAD
 "TL" = (
 /obj/structure/railing/corner,
 /obj/structure/sign/warning/biohazard{
@@ -14915,17 +14276,6 @@
 	},
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-"TM" = (
-/obj/item/clothing/mask/animal/pig,
-/obj/item/bikehorn,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = -32
-	},
-/obj/structure/table/wood,
-/turf/open/floor/wood/tile,
-/area/service/theater)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "TN" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -14937,20 +14287,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
-"TO" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/floor,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
-"TP" = (
-/obj/item/storage/medkit/toxin{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/structure/closet/emcloset,
-/obj/effect/turf_decal/tile/purple/fourcorners,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "TQ" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
@@ -15028,6 +14364,17 @@
 /obj/effect/spawner/random/medical/two_percent_xeno_egg_spawner,
 /turf/open/floor/engine,
 /area/science/xenobiology)
+"Ud" = (
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/wood,
+/area/hallway/secondary/service)
+"Uf" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/plating,
+/area/maintenance/aft/lesser)
 "Uh" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
@@ -15088,6 +14435,14 @@
 	},
 /turf/open/floor/plating/snowed/icemoon,
 /area/medical/virology)
+"Ur" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/icemoon/underground/explored)
 "Us" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/ore_box,
@@ -15154,6 +14509,14 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/stone,
 /area/commons/lounge)
+"UB" = (
+/obj/effect/turf_decal/siding/thinplating/dark{
+	dir = 8
+	},
+/obj/structure/musician/piano,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/carpet,
+/area/service/theater)
 "UC" = (
 /obj/machinery/light/directional/west,
 /obj/structure/closet/secure_closet/freezer/gulag_fridge,
@@ -15165,18 +14528,6 @@
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
-"UD" = (
-<<<<<<< HEAD
-/obj/structure/closet/firecloset,
-/obj/effect/turf_decal/tile/purple/fourcorners,
-=======
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/directional/west,
-/obj/structure/window/reinforced/spawner/north,
-/obj/structure/displaycase,
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "UF" = (
 /obj/structure/table/glass,
 /obj/item/clothing/gloves/color/latex,
@@ -15288,12 +14639,29 @@
 /obj/machinery/duct,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
+"US" = (
+/obj/effect/turf_decal/tile/brown{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/mine/eva)
 "UT" = (
 /obj/structure/closet/firecloset,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
 /area/maintenance/department/chapel)
+"UU" = (
+/obj/structure/railing,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "UV" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
@@ -15407,6 +14775,11 @@
 /obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
+"Vn" = (
+/obj/effect/turf_decal/tile/dark/fourcorners,
+/obj/machinery/light/floor,
+/turf/open/floor/iron,
+/area/mine/living_quarters)
 "Vo" = (
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -15420,11 +14793,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron,
 /area/service/bar)
-"Vr" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/displaycase,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "Vs" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -15438,12 +14806,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron,
 /area/service/bar)
-"Vt" = (
-/obj/machinery/vending/coffee,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/iron/dark,
-/area/service/chapel)
 "Vv" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 4
@@ -15599,21 +14961,6 @@
 "VP" = (
 /turf/open/floor/carpet/lone,
 /area/service/chapel)
-"VQ" = (
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 4
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_y = 32
-	},
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/mine/eva)
 "VR" = (
 /obj/machinery/door/airlock/mining/glass{
 	name = "Cargo Warehouse";
@@ -15625,14 +14972,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark/textured_half,
 /area/cargo/warehouse)
-"VT" = (
-/obj/structure/sign/poster/random{
-	pixel_x = -32
-	},
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
-/area/maintenance/aft/lesser)
 "VV" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -15644,6 +14983,10 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/chapel)
+"VW" = (
+/obj/structure/flora/tree/pine,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "VX" = (
 /obj/structure/stairs/north,
 /obj/structure/railing{
@@ -15785,14 +15128,6 @@
 /obj/item/queen_bee/bought,
 /turf/open/floor/grass,
 /area/service/hydroponics)
-"Ws" = (
-/obj/structure/sign/plaques/kiddie/badger{
-	pixel_y = 32
-	},
-/turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/icemoon/underground/explored)
 "Wt" = (
 /obj/structure/window/reinforced,
 /turf/open/floor/engine,
@@ -15866,6 +15201,11 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/mine/living_quarters)
+"WF" = (
+/obj/item/organ/tail/monkey,
+/obj/effect/decal/cleanable/blood/splatter,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "WG" = (
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
@@ -15875,13 +15215,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/science/xenobiology)
-"WH" = (
-/obj/structure/closet/crate/coffin,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/plating,
-/area/maintenance/department/chapel)
 "WJ" = (
 /obj/structure/sink/kitchen{
 	pixel_y = 20
@@ -15889,13 +15222,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
-"WK" = (
-/obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/structure/window/reinforced/spawner/north,
-/obj/structure/rack,
-/obj/item/crowbar/large/old,
-/turf/open/floor/iron,
-/area/mine/living_quarters)
 "WM" = (
 /obj/machinery/shower{
 	pixel_y = 22
@@ -15963,13 +15289,14 @@
 	},
 /turf/open/floor/plating,
 /area/cargo/drone_bay)
-<<<<<<< HEAD
-=======
 "WT" = (
-/obj/machinery/light/small/directional/west,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/engineering/lobby)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/machinery/light/small/directional/east,
+/obj/machinery/duct,
+/turf/open/floor/wood/tile,
+/area/service/theater)
 "WU" = (
 /obj/structure/chair/stool/directional/south,
 /obj/effect/landmark/start/hangover,
@@ -16120,19 +15447,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
-"Xw" = (
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/brown{
-	dir = 4
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/mine/eva)
 "Xy" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/light/small/directional/south,
@@ -16179,6 +15493,12 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"XI" = (
+/obj/structure/railing{
+	dir = 9
+	},
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "XJ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -16271,6 +15591,10 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/medical/chemistry)
+"XV" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/mine/storage)
 "XW" = (
 /obj/machinery/door/window/northleft{
 	base_state = "right";
@@ -16340,10 +15664,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel)
-"Yd" = (
-/obj/machinery/light/small/directional/south,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/mine/eva)
 "Ye" = (
 /obj/machinery/door/window/eastleft{
 	dir = 8;
@@ -16433,27 +15753,6 @@
 /obj/structure/sign/warning,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
-<<<<<<< HEAD
-"Yw" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = 32
-	},
-/obj/machinery/light/small/directional/east,
-/obj/machinery/duct,
-/turf/open/floor/wood/tile,
-/area/service/theater)
-=======
-"Yv" = (
-/obj/structure/fence{
-	dir = 4
-	},
-/obj/structure/sign/nanotrasen,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Yx" = (
 /obj/item/beacon,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -16462,24 +15761,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/mine/eva)
-"Yy" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/machinery/washing_machine,
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/machinery/washing_machine,
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron/cafeteria,
-/area/commons/dorms/laundry)
 "Yz" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -16521,6 +15802,10 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/science/xenobiology)
+"YF" = (
+/obj/structure/ore_box,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "YG" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/recharge_floor,
@@ -16556,10 +15841,6 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/textured,
 /area/mine/mechbay)
-"YM" = (
-/obj/structure/railing,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "YQ" = (
 /obj/machinery/door/airlock/external{
 	glass = 1;
@@ -16644,9 +15925,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
-"Ze" = (
-/turf/open/misc/asteroid/snow/icemoon,
-/area/lavaland/surface/outdoors/explored)
 "Zf" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 8
@@ -16816,14 +16094,11 @@
 /obj/structure/flora/junglebush/c,
 /turf/open/floor/grass,
 /area/medical/virology)
-"ZF" = (
-/obj/machinery/atmospherics/pipe/layer_manifold/supply/hidden{
-	dir = 4
+"ZG" = (
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "ICEMOON_ATMOS"
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron/smooth,
-/area/mine/laborcamp/security)
+/area/icemoon/underground/explored)
 "ZH" = (
 /obj/structure/table/wood,
 /obj/machinery/newscaster/directional/south,
@@ -16913,16 +16188,12 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
-<<<<<<< HEAD
-=======
 "ZR" = (
-/obj/item/clothing/mask/animal/pig,
-/obj/item/bikehorn,
-/obj/structure/table/wood,
-/obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/wood/tile,
-/area/service/theater)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+/obj/machinery/computer/mechpad,
+/obj/machinery/light/small/directional/north,
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron/textured,
+/area/mine/mechbay)
 "ZS" = (
 /obj/effect/turf_decal/tile/brown{
 	dir = 1
@@ -26655,10 +25926,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -26908,17 +26179,17 @@ ak
 ak
 ak
 ak
-kK
-kK
-dJ
-kK
-kK
-kK
-Ri
-dJ
-kK
-Tt
-kK
+Fp
+Fp
+FQ
+Fp
+Fp
+Fp
+VW
+FQ
+Fp
+cp
+Fp
 ak
 ak
 ak
@@ -27161,22 +26432,22 @@ ak
 ak
 ak
 ak
-kK
-Tt
-kK
-kK
-kK
-kK
-rm
-kK
-kK
-kK
-kK
-kK
-rm
-kK
-kK
-kK
+Fp
+cp
+Fp
+Fp
+Fp
+Fp
+xO
+Fp
+Fp
+Fp
+Fp
+Fp
+xO
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -27415,27 +26686,27 @@ ak
 mO
 ak
 ak
-kK
-dJ
-kK
-kK
-kK
-rm
-kK
-kK
-Ri
-kK
-kK
-kK
-kK
-dJ
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+FQ
+Fp
+Fp
+Fp
+xO
+Fp
+Fp
+VW
+Fp
+Fp
+Fp
+Fp
+FQ
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -27673,28 +26944,28 @@ mO
 mO
 mO
 mO
-kK
-dJ
-kK
-kK
-kK
-kK
-kK
-Tt
-kK
-kK
-Tt
-kK
-kK
-Fz
-kK
-kK
-kK
-Ri
-kK
-rm
-kK
-kK
+Fp
+FQ
+Fp
+Fp
+Fp
+Fp
+Fp
+cp
+Fp
+Fp
+cp
+Fp
+Fp
+yg
+Fp
+Fp
+Fp
+VW
+Fp
+xO
+Fp
+Fp
 ak
 ak
 mO
@@ -27930,29 +27201,29 @@ mO
 mO
 mO
 mO
-kK
-kK
-Ri
-kK
-kK
-kK
-kK
-kK
-Ri
-dJ
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-Tt
-dJ
-kK
-kK
-kK
+Fp
+Fp
+VW
+Fp
+Fp
+Fp
+Fp
+Fp
+VW
+FQ
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+cp
+FQ
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -28187,27 +27458,27 @@ ak
 mO
 mO
 mO
-kK
-kK
-kK
-rm
-kK
+Fp
+Fp
+Fp
+xO
+Fp
 PG
-kK
-PG
-PG
-PG
-kK
-kK
-PG
-PG
-kK
-kK
-kK
+Fp
 PG
 PG
 PG
-kK
+Fp
+Fp
+PG
+PG
+Fp
+Fp
+Fp
+PG
+PG
+PG
+Fp
 mO
 mO
 mO
@@ -28445,15 +27716,15 @@ ak
 mO
 mO
 mO
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 PG
 PG
-kK
+Fp
 rz
 kQ
 kQ
@@ -28470,8 +27741,8 @@ mO
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 mO
 mO
 ak
@@ -28704,10 +27975,10 @@ mO
 mO
 mO
 PG
-kK
+Fp
 PG
 PG
-kK
+Fp
 PG
 rz
 rz
@@ -28724,11 +27995,11 @@ mO
 mO
 mO
 mO
-kK
-Tt
-kK
-kK
-kK
+Fp
+cp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -28962,10 +28233,10 @@ mO
 mO
 mO
 mO
-kK
+Fp
 PG
-dJ
-kK
+FQ
+Fp
 CS
 xX
 il
@@ -28979,13 +28250,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-rm
-kK
-kK
-kK
-Ri
+Fp
+Fp
+xO
+Fp
+Fp
+Fp
+VW
 ak
 ak
 ak
@@ -29237,13 +28508,13 @@ rz
 PG
 PG
 PG
-kK
-kK
-dJ
-kK
-kK
-kK
-kK
+Fp
+Fp
+FQ
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -29481,35 +28752,26 @@ mO
 mO
 mO
 CS
-<<<<<<< HEAD
-Jp
-=======
-bY
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+eN
 Qr
 RD
 UL
 no
 rM
 Gg
-<<<<<<< HEAD
-kN
-It
-=======
-UD
-Vr
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+qd
+eL
 cM
 rz
 rz
 rz
 JQ
-kK
-kK
-kK
-kK
-Tt
-kK
+Fp
+Fp
+Fp
+Fp
+cp
+Fp
 ak
 ak
 ak
@@ -29754,24 +29016,19 @@ Jt
 Qk
 WD
 JX
-<<<<<<< HEAD
-Qj
-Qj
-=======
-Dl
-Dl
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+BO
+BO
 CS
 lw
 WN
 rz
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -30016,13 +29273,8 @@ DT
 Jt
 fS
 JX
-<<<<<<< HEAD
-iq
-Qj
-=======
-TO
-Dl
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Vn
+BO
 Lz
 GU
 GU
@@ -30031,9 +29283,9 @@ PG
 PG
 PG
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -30278,24 +29530,19 @@ CL
 at
 Sz
 Bk
-<<<<<<< HEAD
-Qj
-Qj
-=======
-Dl
-Dl
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+BO
+BO
 CS
 yK
 ef
 Jy
 PG
-kK
+Fp
 PG
 PG
-kK
-kK
-dJ
+Fp
+Fp
+FQ
 ak
 ak
 ak
@@ -30540,24 +29787,19 @@ cM
 Ic
 Cu
 Lm
-<<<<<<< HEAD
-mg
-xI
-=======
-WK
-nl
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+fv
+MR
 cM
 kQ
 kQ
 rz
 JQ
 PG
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -30807,14 +30049,14 @@ rz
 rz
 mO
 mO
-dJ
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+FQ
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -31066,12 +30308,12 @@ mO
 mO
 mO
 mO
-kK
-kK
-Fz
-rm
-kK
-kK
+Fp
+Fp
+yg
+xO
+Fp
+Fp
 ak
 ak
 ak
@@ -31325,9 +30567,9 @@ Rj
 Rj
 Rj
 Xo
-Tt
-kK
-kK
+cp
+Fp
+Fp
 ak
 ak
 ak
@@ -31583,8 +30825,8 @@ mO
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -31830,11 +31072,7 @@ CT
 Qr
 Sz
 zN
-<<<<<<< HEAD
-UD
-=======
-wi
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Ll
 rz
 mO
 mO
@@ -31844,8 +31082,8 @@ mO
 mO
 mO
 mO
-dJ
-dJ
+FQ
+FQ
 ak
 ak
 ak
@@ -32091,11 +31329,7 @@ FD
 tF
 to
 ep
-<<<<<<< HEAD
-wB
-=======
-TP
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Ny
 rz
 mO
 mO
@@ -32607,11 +31841,7 @@ mO
 Rj
 mO
 br
-<<<<<<< HEAD
-Dv
-=======
-It
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Lu
 br
 mO
 Rj
@@ -33395,7 +32625,7 @@ mO
 mO
 mO
 mO
-Tt
+cp
 mO
 mO
 ak
@@ -33605,11 +32835,7 @@ ak
 ak
 ak
 oZ
-<<<<<<< HEAD
-Ov
-=======
-dF
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+yI
 js
 oZ
 ak
@@ -33656,8 +32882,8 @@ mO
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 mO
 mO
 ak
@@ -33914,8 +33140,8 @@ Rj
 Rj
 Rj
 Xo
-kK
-dJ
+Fp
+FQ
 mO
 ak
 ak
@@ -34128,9 +33354,9 @@ oZ
 oZ
 iK
 iK
-uA
+cu
 PG
-kK
+Fp
 ak
 ak
 ak
@@ -34169,10 +33395,10 @@ mO
 mO
 mO
 mO
-kK
-rm
-kK
-kK
+Fp
+xO
+Fp
+Fp
 mO
 mO
 ak
@@ -34385,9 +33611,9 @@ OW
 cn
 dB
 iK
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -34426,10 +33652,10 @@ mO
 mO
 mO
 mO
-dJ
-dJ
-kK
-Tt
+FQ
+FQ
+Fp
+cp
 mO
 mO
 ak
@@ -34642,9 +33868,9 @@ To
 cP
 aT
 iK
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -34682,11 +33908,11 @@ mO
 mO
 mO
 mO
-Fz
-kK
-Tt
-rm
-kK
+yg
+Fp
+cp
+xO
+Fp
 ak
 mO
 ak
@@ -34899,10 +34125,10 @@ EH
 cP
 iZ
 iK
-kK
-Ri
-kK
-kK
+Fp
+VW
+Fp
+Fp
 PG
 Xo
 Rj
@@ -34922,7 +34148,7 @@ mO
 mO
 yT
 PG
-Jz
+eA
 PG
 wI
 Rj
@@ -34939,11 +34165,11 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 mO
 ak
@@ -35156,11 +34382,11 @@ cP
 vc
 GM
 iK
-kK
-kK
-rm
-kK
-kK
+Fp
+Fp
+xO
+Fp
+Fp
 PG
 mO
 mO
@@ -35170,11 +34396,7 @@ mO
 jn
 nu
 HC
-<<<<<<< HEAD
-us
-=======
-ay
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+ML
 rP
 dk
 bf
@@ -35199,12 +34421,12 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 mO
@@ -35417,12 +34639,12 @@ cP
 Qg
 gE
 iK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -35456,12 +34678,12 @@ qs
 Rj
 Rj
 Xo
-dJ
-Tt
-kK
-kK
-dJ
-kK
+FQ
+cp
+Fp
+Fp
+FQ
+Fp
 ak
 ak
 mO
@@ -35674,12 +34896,12 @@ Hs
 To
 aT
 iK
-kK
-kK
-kK
-kK
-Tt
-kK
+Fp
+Fp
+Fp
+Fp
+cp
+Fp
 mO
 mO
 mO
@@ -35696,11 +34918,7 @@ Hi
 wl
 sh
 bf
-<<<<<<< HEAD
-BV
-=======
-cL
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+wW
 DZ
 bq
 PX
@@ -35716,13 +34934,13 @@ mO
 Rj
 mO
 mO
-kK
-kK
-kK
-kK
-Fz
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+yg
+Fp
+Fp
 ak
 ak
 mO
@@ -35938,9 +35156,9 @@ iK
 oZ
 iv
 oZ
-kK
-kK
-OI
+Fp
+Fp
+Jq
 mO
 mO
 mO
@@ -35973,13 +35191,13 @@ mO
 Rj
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-Tt
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+cp
+Fp
 ak
 ak
 ak
@@ -36187,11 +35405,7 @@ ak
 ak
 ak
 iK
-<<<<<<< HEAD
-Kk
-=======
-Yy
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+FJ
 vc
 Nu
 cP
@@ -36199,9 +35413,9 @@ sJ
 NA
 NA
 DD
-kK
-kK
-kK
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -36233,14 +35447,14 @@ mO
 mO
 Rj
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -36456,7 +35670,7 @@ iK
 wU
 yz
 DD
-kK
+Fp
 PG
 PG
 mO
@@ -36489,13 +35703,13 @@ vC
 mO
 mO
 cy
-kK
-kK
-kK
-kK
-rm
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+xO
+Fp
+Fp
 ak
 ak
 ak
@@ -36713,7 +35927,7 @@ ak
 oZ
 gL
 oZ
-kK
+Fp
 PG
 Xo
 mO
@@ -36725,11 +35939,7 @@ iM
 wm
 Hj
 Rn
-<<<<<<< HEAD
-os
-=======
-gN
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+dL
 ET
 vK
 qb
@@ -36751,12 +35961,12 @@ Kx
 Kx
 Bd
 cy
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -36974,7 +36184,7 @@ ak
 oZ
 NA
 HH
-kK
+Fp
 PG
 Rj
 mO
@@ -37000,11 +36210,7 @@ bq
 bq
 bq
 Ck
-<<<<<<< HEAD
-tZ
-=======
-ul
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+OI
 ws
 mP
 bq
@@ -37012,12 +36218,12 @@ TU
 uZ
 kj
 cy
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -37269,12 +36475,12 @@ No
 Rc
 Ru
 cy
-kK
-Ri
-kK
-kK
-kK
-kK
+Fp
+VW
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -37489,9 +36695,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Xo
 Rj
 qs
@@ -37526,12 +36732,12 @@ lt
 BY
 Ru
 cy
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -37783,12 +36989,12 @@ fC
 kc
 Bd
 cy
-kK
-kK
-Fz
-kK
-kK
-kK
+Fp
+Fp
+yg
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -38040,12 +37246,12 @@ bf
 bf
 Kq
 ZN
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -38278,30 +37484,18 @@ Xh
 QE
 nS
 ny
-<<<<<<< HEAD
-VQ
-=======
-Xw
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+US
 uI
 Tl
 UV
 Fg
-<<<<<<< HEAD
-PR
-=======
-qw
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+FW
 rB
 CO
 gR
 wl
 UV
-<<<<<<< HEAD
-PR
-=======
-qw
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+FW
 dK
 NS
 or
@@ -38309,12 +37503,12 @@ VG
 vr
 Kq
 tA
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -38566,11 +37760,11 @@ sY
 sY
 UI
 tA
-kK
-rm
-kK
-kK
-kK
+Fp
+xO
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -38823,11 +38017,11 @@ kB
 BP
 GZ
 tA
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -39010,7 +38204,7 @@ wS
 wS
 wS
 mO
-kK
+Fp
 RF
 PV
 PV
@@ -39059,11 +38253,7 @@ Bs
 Wv
 HK
 gq
-<<<<<<< HEAD
-IJ
-=======
-DG
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+PL
 ny
 kV
 IW
@@ -39084,10 +38274,10 @@ ok
 ok
 Kq
 ZN
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -39270,15 +38460,11 @@ wS
 wS
 wS
 ak
-kK
-kK
+Fp
+Fp
 pr
 lk
-<<<<<<< HEAD
-nw
-=======
-BO
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+QT
 mU
 mU
 pr
@@ -39346,9 +38532,9 @@ vw
 vw
 Hc
 HQ
-kK
+Fp
 BD
-kK
+Fp
 HQ
 ak
 ak
@@ -39531,15 +38717,15 @@ wS
 wS
 ak
 ak
-kK
-kK
+Fp
+Fp
 pr
 EW
 pr
 Zv
 mU
 pr
-kK
+Fp
 ak
 ak
 wS
@@ -39572,11 +38758,11 @@ Rj
 mO
 Rj
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 Yi
 hu
 Yi
@@ -39598,15 +38784,15 @@ Kq
 mB
 PG
 RT
-kK
-kK
-kK
-kK
-kK
-wB
+Fp
+Fp
+Fp
+Fp
+Fp
+FP
 mv
 Eh
-kK
+Fp
 ak
 ak
 ak
@@ -39788,16 +38974,16 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 RF
 mU
 pr
 pr
 Og
 pr
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -39826,16 +39012,16 @@ zd
 zd
 zd
 Rj
-kK
+Fp
 Xo
-kK
-kK
-kK
-kK
-rm
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+xO
+Fp
+Fp
+Fp
 Yi
 On
 On
@@ -39855,15 +39041,15 @@ Kq
 PG
 PG
 RT
-kK
-kK
-Ri
-kK
-kK
+Fp
+Fp
+VW
+Fp
+Fp
 mv
 vQ
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -40045,16 +39231,16 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 pr
 RZ
 pr
 kJ
 QD
 pr
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -40062,17 +39248,17 @@ ak
 ak
 ak
 ak
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
 wS
 wS
 mO
@@ -40083,48 +39269,44 @@ zd
 zd
 qs
 Xo
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-AA
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Jf
+Fp
+Fp
 Kq
 ZQ
 sY
 Qc
 nM
-<<<<<<< HEAD
-mc
-=======
-Ot
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+ZR
 Hg
 YG
 lD
-kK
-Ri
-tr
+Fp
+VW
+JV
 PG
 PG
-kK
+Fp
 Vl
-kK
-kK
-kK
-kK
-bt
+Fp
+Fp
+Fp
+Fp
+Ki
 LT
 mv
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -40307,14 +39489,14 @@ ak
 ak
 ak
 ak
-kK
-kC
+Fp
+PI
 PG
 pr
 yU
 mU
 pr
-kK
+Fp
 ak
 ak
 ak
@@ -40323,40 +39505,40 @@ ak
 ak
 ak
 ak
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-Kb
-kK
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Iy
+Fp
 Xo
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-Ri
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+VW
 RT
 PG
-Yd
+BG
 Kq
 Kq
 bw
@@ -40366,21 +39548,21 @@ UN
 IN
 dl
 lD
-kK
+Fp
 PG
 PG
 PG
-kK
+Fp
 PG
 RT
-rm
-kK
-kK
-kK
+xO
+Fp
+Fp
+Fp
 HQ
-kK
-kK
-kK
+Fp
+Fp
+Fp
 HQ
 ak
 ak
@@ -40564,14 +39746,14 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 pr
 pr
 pr
 pr
-kK
+Fp
 ak
 ak
 ak
@@ -40605,16 +39787,16 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-Yv
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+ER
+Fp
 PG
-tr
+JV
 PG
 PG
 PG
@@ -40630,10 +39812,10 @@ pP
 pP
 pP
 Od
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -40823,12 +40005,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -40863,15 +40045,15 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-AA
+Fp
+Fp
+Fp
+Fp
+Fp
+Jf
 PG
-kK
-kK
+Fp
+Fp
 PG
 PG
 PG
@@ -40880,17 +40062,17 @@ oG
 aA
 Dw
 XT
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -41081,10 +40263,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -41120,16 +40302,16 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-AA
-rm
+Fp
+Fp
+Fp
+Fp
+Fp
+Jf
+xO
 PG
-kK
-kK
+Fp
+Fp
 PG
 Wq
 XT
@@ -41137,17 +40319,17 @@ XT
 Qf
 Qf
 XT
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -41378,31 +40560,31 @@ ak
 ak
 ak
 Et
-kK
-kK
-kK
-kK
-AA
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Jf
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Xm
 Xj
 vw
 vw
 gx
-rm
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+xO
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -41636,29 +40818,29 @@ ak
 ak
 ak
 ak
-kK
-rm
-kK
-AA
-kK
-kK
-kK
-kK
-kK
-kK
-Yv
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+xO
+Fp
+Jf
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+ER
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -41893,21 +41075,21 @@ ak
 ak
 Et
 Et
-kK
-kK
-kK
-Or
-Fu
-Fu
-Fu
+Fp
+Fp
+Fp
+au
+IP
+IP
+IP
 pP
-OA
-Fu
-dn
-kK
-kK
-Ri
-kK
+SY
+IP
+du
+Fp
+Fp
+VW
+Fp
 Et
 Et
 Et
@@ -42150,21 +41332,21 @@ ak
 Et
 Et
 Et
-kK
-Ri
-kK
-kK
-kK
-kK
-kK
+Fp
+VW
+Fp
+Fp
+Fp
+Fp
+Fp
 PG
 PG
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Et
 ak
 ak
@@ -42413,8 +41595,8 @@ Et
 ak
 ak
 Et
-rm
-kK
+xO
+Fp
 ak
 ak
 ak
@@ -42660,7 +41842,7 @@ ak
 ak
 ak
 sT
-fY
+NH
 sT
 ak
 ak
@@ -43173,9 +42355,9 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
+NH
+NH
+NH
 ak
 ak
 ak
@@ -43429,10 +42611,10 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
 ak
 ak
 ak
@@ -43686,10 +42868,10 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
 ak
 ak
 ak
@@ -43942,12 +43124,12 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
+NH
+NH
 ak
 ak
 ak
@@ -44197,14 +43379,14 @@ ak
 ak
 ak
 ak
-fY
-Gk
-fY
-Gk
-fY
-fY
-fY
-fY
+NH
+XV
+NH
+XV
+NH
+NH
+NH
+NH
 ak
 ak
 ak
@@ -44377,8 +43559,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 mO
 mO
 wS
@@ -44453,15 +43635,15 @@ ak
 ak
 ak
 ak
-fY
-fY
+NH
+NH
 SR
 Bh
 SR
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
 ak
 ak
 ak
@@ -44634,7 +43816,7 @@ ak
 ak
 ak
 ak
-kK
+Fp
 mO
 mO
 mO
@@ -44709,15 +43891,15 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
+NH
+NH
+NH
 Hv
 kx
 Hv
-fY
-fY
-fY
+NH
+NH
+NH
 ak
 ak
 ak
@@ -44891,7 +44073,7 @@ ak
 ak
 ak
 ak
-kK
+Fp
 mO
 mO
 mO
@@ -44966,15 +44148,15 @@ ak
 ak
 ak
 ak
-fY
-fY
+NH
+NH
 Hv
 Hv
 tV
 Hv
 Hv
-py
-fY
+TE
+NH
 ak
 ak
 ak
@@ -45147,8 +44329,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 mO
 mO
 mO
@@ -45223,22 +44405,15 @@ ak
 ak
 ak
 ak
-<<<<<<< HEAD
 NH
 NH
-qG
-Fj
-=======
-fY
-fY
 Hv
-xP
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+BF
 hV
 yu
 Hv
-py
-fY
+TE
+NH
 ak
 ak
 ak
@@ -45411,9 +44586,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -45494,8 +44669,8 @@ om
 wT
 Up
 Hv
-py
-fY
+TE
+NH
 ak
 ak
 ak
@@ -45668,9 +44843,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -45752,7 +44927,7 @@ hm
 AF
 Hv
 SR
-mH
+JK
 ak
 ak
 ak
@@ -45923,12 +45098,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -46009,7 +45184,7 @@ BJ
 QW
 aE
 YZ
-fY
+NH
 ak
 ak
 ak
@@ -46171,22 +45346,22 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -46266,7 +45441,7 @@ BJ
 AF
 Hv
 SR
-mH
+JK
 ak
 ak
 ak
@@ -46427,23 +45602,23 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -46523,7 +45698,7 @@ uP
 Ja
 Hv
 sT
-fY
+NH
 ak
 ak
 ak
@@ -46683,22 +45858,22 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -46772,15 +45947,15 @@ ak
 ak
 ak
 ak
-fY
+NH
 sT
 Hv
 Sk
 KT
 LW
 Hv
-fY
-fY
+NH
+NH
 ak
 ak
 ak
@@ -46939,22 +46114,22 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -47028,16 +46203,16 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
+NH
+NH
+NH
 Hv
 Hv
 Hv
 Hv
 Hv
-fY
-fY
+NH
+NH
 ak
 ak
 ak
@@ -47050,8 +46225,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 PG
 ak
 ak
@@ -47195,23 +46370,23 @@ ak
 ak
 ak
 ak
-kK
-kK
-Ze
-Ze
+Fp
+Fp
+CM
+CM
 LE
-Ze
-LE
-LE
-Ze
+CM
 LE
 LE
+CM
 LE
-Ze
 LE
 LE
-Ze
-Ze
+CM
+LE
+LE
+CM
+CM
 mO
 mO
 mO
@@ -47285,16 +46460,16 @@ ak
 ak
 ak
 ak
-fY
-fY
-fY
+NH
+NH
+NH
 IE
 uV
 uV
 uV
 IE
-fY
-fY
+NH
+NH
 ak
 ak
 ak
@@ -47310,7 +46485,7 @@ PG
 gn
 mv
 gn
-kK
+Fp
 ak
 ak
 ak
@@ -47451,16 +46626,16 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 LE
 LE
 LE
 LE
 LE
 LE
-Ze
+CM
 LE
 LE
 LE
@@ -47468,7 +46643,7 @@ LE
 LE
 LE
 LE
-Ze
+CM
 mO
 mO
 mO
@@ -47543,14 +46718,14 @@ ak
 ak
 ak
 sT
-fY
-fY
+NH
+NH
 sT
 sT
 sT
 sT
 sT
-fY
+NH
 sT
 ak
 ak
@@ -47563,7 +46738,7 @@ ak
 ak
 ak
 ak
-kK
+Fp
 Su
 vv
 Su
@@ -47708,23 +46883,23 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 LE
 LE
 LE
-Ze
+CM
 LE
-Ze
-Ze
-Ze
+CM
+CM
+CM
 LE
-Ze
-Ze
-Ze
-Ze
-Ze
+CM
+CM
+CM
+CM
+CM
 LE
 mO
 mO
@@ -47801,15 +46976,15 @@ ak
 sT
 sT
 sT
-fY
-fY
-fY
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
+NH
+NH
+NH
 sT
-fY
+NH
 ak
 ak
 ak
@@ -47820,12 +46995,12 @@ ak
 ak
 ak
 ak
-kK
+Fp
 Su
 er
 Su
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -47963,26 +47138,26 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 LE
-Ze
-LE
-LE
-Ze
-Ze
+CM
 LE
 LE
-Ze
-Ze
+CM
+CM
+LE
+LE
+CM
+CM
 LE
 LE
 LE
 LE
-Ze
+CM
 mO
 mO
 mO
@@ -48043,31 +47218,31 @@ ak
 ak
 ak
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
 mO
 mO
 mO
-fY
+NH
 sT
 sT
 sT
-fY
+NH
 ak
 ak
 ak
 ak
 ak
-fY
-fY
-fY
-fY
+NH
+NH
+NH
+NH
 ak
 mO
 mO
@@ -48093,13 +47268,13 @@ ak
 ak
 ak
 ak
-kK
+Fp
 mO
 mO
 mO
 mO
 mO
-kK
+Fp
 ak
 ak
 ak
@@ -48219,27 +47394,27 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-Ze
-Ze
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+CM
+CM
 LE
-Ze
-Ze
+CM
+CM
 LE
-Ze
-LE
-LE
-Ze
+CM
 LE
 LE
+CM
 LE
-Ze
-Ze
+LE
+LE
+CM
+CM
 mO
 mO
 mO
@@ -48299,14 +47474,14 @@ ak
 ak
 ak
 ak
-Oa
-kK
-kK
+EK
+Fp
+Fp
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -48314,14 +47489,14 @@ mO
 mO
 qf
 sT
-fY
+NH
 ak
 ak
 ak
 ak
 ak
 ak
-fY
+NH
 zd
 zd
 Rj
@@ -48349,14 +47524,14 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 Ae
 Ae
 Ae
 Ae
 Ae
-kK
+Fp
 ak
 ak
 ak
@@ -48476,26 +47651,26 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 LE
-Ze
+CM
 LE
-Ze
-LE
-LE
-Ze
-Ze
-Ze
+CM
 LE
 LE
+CM
+CM
+CM
 LE
 LE
-Ze
+LE
+LE
+CM
 pz
 mO
 mO
@@ -48505,8 +47680,8 @@ mO
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -48556,15 +47731,15 @@ ak
 ak
 ak
 ak
-Yv
-kK
-kK
+ER
+Fp
+Fp
 PG
 PG
-kK
+Fp
 PG
 PG
-kK
+Fp
 mO
 mO
 mO
@@ -48577,7 +47752,7 @@ ak
 ak
 ak
 ak
-kK
+Fp
 zd
 zd
 qs
@@ -48605,16 +47780,16 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Fo
 tN
 rR
 KH
 Fo
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -48733,25 +47908,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-Ze
-Ze
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+CM
+CM
 LE
 LE
 LE
-Ze
-Ze
+CM
+CM
 LE
 LE
 LE
 LE
 LE
-Ze
+CM
 LE
 pz
 mO
@@ -48762,8 +47937,8 @@ mO
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -48813,8 +47988,8 @@ ak
 ak
 ak
 ak
-MI
-kK
+Dk
+Fp
 PG
 PG
 Ql
@@ -48838,7 +48013,7 @@ Rj
 qs
 zd
 zd
-kK
+Fp
 ak
 ak
 ak
@@ -48861,17 +48036,17 @@ ak
 ak
 ak
 ak
-kK
-Ri
+Fp
+VW
 PG
-kK
+Fp
 Ae
 yF
 Jc
 tf
 Ae
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -48990,25 +48165,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 LE
-Ze
-LE
-LE
-LE
-LE
-Ze
+CM
 LE
 LE
 LE
 LE
-Ze
-Ze
+CM
+LE
+LE
+LE
+LE
+CM
+CM
 pz
 pz
 mO
@@ -49018,9 +48193,9 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -49069,8 +48244,8 @@ ak
 ak
 ak
 ak
-kK
-AA
+Fp
+Jf
 PG
 PG
 Ql
@@ -49094,7 +48269,7 @@ mO
 Rj
 zd
 zd
-kK
+Fp
 ak
 ak
 ak
@@ -49116,18 +48291,18 @@ Et
 Et
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Fo
 fh
 jK
 Ms
 Fo
-kK
+Fp
 ak
 ak
 ak
@@ -49247,25 +48422,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 LE
 LE
-Ze
-Ze
+CM
+CM
 LE
-Ze
-LE
-LE
-LE
+CM
 LE
 LE
 LE
-Ze
+LE
+LE
+LE
+CM
 pz
 pz
 mO
@@ -49273,11 +48448,11 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -49326,8 +48501,8 @@ ak
 ak
 ak
 ak
-kK
-AA
+Fp
+Jf
 PG
 Et
 Ql
@@ -49348,17 +48523,17 @@ mO
 mO
 Et
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 As
 As
 Su
@@ -49372,13 +48547,13 @@ Et
 Et
 Et
 Et
-kK
-kK
-kK
+Fp
+Fp
+Fp
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Fo
 Fo
 KY
@@ -49504,25 +48679,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-Ze
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+CM
 LE
-Ze
+CM
 LE
-Ze
-Ze
-Ze
+CM
+CM
+CM
 LE
 LE
 LE
 gt
 LE
-Ze
+CM
 pz
 pz
 mO
@@ -49530,11 +48705,11 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -49582,8 +48757,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 Et
 Et
 nJ
@@ -49606,17 +48781,17 @@ Et
 FR
 Et
 Et
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
-kK
-Ri
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+VW
+Fp
+Fp
 As
 Su
 KB
@@ -49631,16 +48806,16 @@ Su
 Su
 tD
 tD
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 Fo
 xm
 Fo
-kK
+Fp
 ak
 ak
 ak
@@ -49761,12 +48936,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 yr
 ap
 ap
@@ -49787,11 +48962,11 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -49838,9 +49013,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 nJ
 nJ
@@ -49853,35 +49028,31 @@ Ha
 ed
 pd
 Ql
-kK
+Fp
 mO
 mO
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 Et
 Et
 Et
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Su
 ZI
-<<<<<<< HEAD
-NB
-=======
-ud
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Si
 kw
 uj
 lf
@@ -49892,16 +49063,16 @@ SP
 lf
 Lw
 tD
-kK
-Ri
-kK
-kK
-kK
-Ri
+Fp
+VW
+Fp
+Fp
+Fp
+VW
 Fo
 Eq
 Fo
-kK
+Fp
 ak
 ak
 ak
@@ -50022,12 +49193,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 yr
 Ee
 Ac
@@ -50047,12 +49218,12 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -50099,8 +49270,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 Et
 Et
 nJ
@@ -50119,14 +49290,14 @@ pP
 pP
 pP
 fc
-kK
-kK
+Fp
+Fp
 Et
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 OV
 OV
 XU
@@ -50150,15 +49321,15 @@ Su
 vD
 tD
 PG
-kK
+Fp
 ak
 ak
 ak
-OI
-WT
+Jq
+jZ
 PG
 Ou
-kK
+Fp
 ak
 ak
 ak
@@ -50279,12 +49450,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 yr
 pu
 NI
@@ -50303,13 +49474,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -50377,13 +49548,13 @@ GL
 GL
 wf
 fc
-kK
-kK
-kK
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 PG
-kK
+Fp
 OV
 vN
 ro
@@ -50406,15 +49577,15 @@ tD
 Su
 uF
 tD
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
 ak
-kK
+Fp
 PG
-kK
+Fp
 ak
 ak
 ak
@@ -50536,9 +49707,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ap
 ap
 ap
@@ -50563,10 +49734,10 @@ FF
 FF
 FF
 Hd
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -50634,13 +49805,13 @@ PG
 PG
 GL
 RT
-kK
+Fp
 PG
-yQ
-kK
-kK
-kK
-kK
+GK
+Fp
+Fp
+Fp
+Fp
 OV
 DV
 lB
@@ -50663,8 +49834,8 @@ Gu
 Su
 vD
 tD
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -50792,10 +49963,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ap
 El
 zj
@@ -50821,9 +49992,9 @@ OB
 uT
 BL
 RP
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -50872,15 +50043,9 @@ pO
 pO
 pO
 pO
-<<<<<<< HEAD
-iu
+pv
 MU
-TM
-=======
-Lb
-MU
-ZR
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+xQ
 nJ
 xz
 Qd
@@ -50897,13 +50062,13 @@ PG
 PG
 GL
 Vl
-kK
-Az
+Fp
+rJ
 kp
-kK
-kK
+Fp
+Fp
 PG
-kK
+Fp
 OV
 Nl
 Om
@@ -50926,8 +50091,8 @@ Gu
 Su
 vD
 Su
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -51054,11 +50219,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-ei
+Fp
+Fp
+Fp
+Fp
+kG
 yr
 Mf
 YU
@@ -51085,8 +50250,8 @@ vM
 Hd
 Hd
 Hd
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -51132,20 +50297,12 @@ ak
 ak
 Et
 pO
-<<<<<<< HEAD
-xN
-=======
-ej
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+cm
 iS
 sP
 AG
 ue
-<<<<<<< HEAD
-mF
-=======
-dy
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+iq
 nJ
 Iw
 eO
@@ -51162,13 +50319,13 @@ PG
 PG
 GL
 RT
-kK
-kK
-qu
-kK
+Fp
+Fp
+MX
+Fp
 PG
-kK
-kK
+Fp
+Fp
 XU
 Qs
 pA
@@ -51191,7 +50348,7 @@ Gu
 Su
 tR
 Su
-kK
+Fp
 Et
 Et
 ak
@@ -51317,13 +50474,13 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-ly
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+aw
 yr
 WM
 mS
@@ -51344,18 +50501,14 @@ Pu
 bh
 Fd
 Hd
-<<<<<<< HEAD
-uN
-=======
-bv
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+zD
 bh
 vM
 mu
 bh
 ce
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -51423,13 +50576,13 @@ PG
 PG
 Ew
 Od
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 OV
 kL
 hi
@@ -51577,11 +50730,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ap
 ap
 ap
@@ -51611,8 +50764,8 @@ mW
 Hd
 Hd
 Hd
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -51658,20 +50811,12 @@ Et
 Et
 Et
 pO
-<<<<<<< HEAD
-SQ
-=======
-gQ
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+fe
 CX
 zi
 Ul
 KL
-<<<<<<< HEAD
-Yw
-=======
-Ny
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+WT
 UR
 Oz
 Jx
@@ -51687,14 +50832,14 @@ Et
 EP
 XF
 Od
-kK
-kK
-kK
-Ri
-kK
+Fp
+Fp
+Fp
+VW
+Fp
 PG
-kK
-kK
+Fp
+Fp
 OV
 Xc
 ZD
@@ -51842,17 +50987,13 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ap
-<<<<<<< HEAD
-nI
-=======
-EV
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+pQ
 nV
 aq
 LU
@@ -51880,8 +51021,8 @@ tc
 tc
 bA
 FF
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -51947,14 +51088,14 @@ Et
 Et
 Et
 PG
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 PG
 XU
 Pz
@@ -52103,11 +51244,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ap
 oM
 mZ
@@ -52137,8 +51278,8 @@ bh
 tc
 VB
 FF
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -52203,14 +51344,14 @@ ts
 ts
 ts
 Et
-kK
-kK
+Fp
+Fp
 PG
 PG
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 dq
 mv
 OV
@@ -52227,11 +51368,7 @@ Ad
 Ad
 Ad
 WY
-<<<<<<< HEAD
-Mt
-=======
-HM
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+ON
 Vj
 DP
 zy
@@ -52364,11 +51501,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ap
 SK
 UP
@@ -52399,7 +51536,7 @@ OG
 Hd
 Hd
 Hd
-kK
+Fp
 ak
 ak
 ak
@@ -52448,11 +51585,7 @@ Ji
 Ji
 PO
 pO
-<<<<<<< HEAD
-zx
-=======
-iT
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+lc
 ux
 qm
 gX
@@ -52469,13 +51602,13 @@ hO
 ts
 Et
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 OV
 tW
 OV
@@ -52625,11 +51758,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 yr
 SK
 aq
@@ -52654,13 +51787,13 @@ Pa
 zX
 Hd
 mO
-kK
+Fp
 Hd
 RO
 bb
 Aa
 Hd
-kK
+Fp
 ak
 ak
 ak
@@ -52726,13 +51859,13 @@ ps
 ts
 Et
 Et
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 OV
 fU
 rk
@@ -52882,11 +52015,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-ds
+Fp
+Fp
+Fp
+Fp
+YF
 yr
 SK
 aq
@@ -52911,17 +52044,13 @@ FF
 FF
 Hd
 mO
-kK
+Fp
 Hd
-<<<<<<< HEAD
-uo
-=======
-ZF
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+eG
 mm
 MC
 Hd
-kK
+Fp
 ak
 ak
 ak
@@ -52970,11 +52099,7 @@ qJ
 pO
 pO
 pO
-<<<<<<< HEAD
-By
-=======
-zH
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+UB
 oH
 qq
 yX
@@ -52991,7 +52116,7 @@ ps
 ts
 Et
 Et
-kK
+Fp
 ak
 ak
 vO
@@ -53018,11 +52143,7 @@ uW
 Vj
 Bv
 zy
-<<<<<<< HEAD
-DK
-=======
-NO
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+qa
 Su
 kI
 yM
@@ -53151,11 +52272,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-ds
+Fp
+Fp
+Fp
+Fp
+YF
 yr
 pS
 aq
@@ -53180,13 +52301,13 @@ mO
 mO
 mO
 mO
-kK
+Fp
 Hd
 eY
 ne
 RJ
 Hd
-kK
+Fp
 ak
 ak
 ak
@@ -53408,9 +52529,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-nr
+Fp
+Fp
+yW
 yr
 yr
 yr
@@ -53437,13 +52558,13 @@ mO
 mO
 mO
 mO
-kK
+Fp
 Hd
 wj
 wj
 Hd
 Hd
-kK
+Fp
 ak
 ak
 ak
@@ -53485,11 +52606,7 @@ ak
 ak
 Et
 qJ
-<<<<<<< HEAD
-le
-=======
-Co
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+nl
 If
 BM
 qJ
@@ -53669,9 +52786,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ST
 DL
 xV
@@ -53698,13 +52815,13 @@ mO
 mO
 mO
 mO
-kK
+Fp
 Hd
 aD
 aD
 Hd
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -53926,9 +53043,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-nr
+Fp
+Fp
+yW
 yr
 yr
 yr
@@ -53955,13 +53072,13 @@ mO
 mO
 mO
 mO
-kK
+Fp
 Hd
 Hd
 Hd
 Hd
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -54004,11 +53121,7 @@ Et
 Et
 qJ
 Ry
-<<<<<<< HEAD
-yp
-=======
-eB
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+dF
 qJ
 qJ
 AU
@@ -54187,10 +53300,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-ly
+Fp
+Fp
+Fp
+aw
 ap
 GY
 Ee
@@ -54216,13 +53329,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -54265,11 +53378,7 @@ Et
 Et
 qJ
 sG
-<<<<<<< HEAD
-jf
-=======
-BC
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+bQ
 CF
 qJ
 oe
@@ -54316,10 +53425,10 @@ Su
 Su
 Et
 Et
-kK
+Fp
 PG
-Fm
-kK
+fM
+Fp
 Su
 pW
 pW
@@ -54448,10 +53557,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ap
 Ee
 Ee
@@ -54477,13 +53586,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -54525,11 +53634,7 @@ ak
 Et
 qJ
 qJ
-<<<<<<< HEAD
-lM
-=======
-mr
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Ud
 oV
 uf
 qJ
@@ -54575,11 +53680,11 @@ gY
 RW
 Et
 Et
-kK
-kK
-DC
-kK
-kK
+Fp
+Fp
+vR
+Fp
+Fp
 PG
 Su
 zP
@@ -54709,10 +53814,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ap
 jU
 Ps
@@ -54738,13 +53843,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -54831,12 +53936,12 @@ Ec
 Mu
 RW
 Et
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Et
 Su
 Kf
@@ -54966,10 +54071,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ap
 jU
 jo
@@ -54983,8 +54088,8 @@ yr
 zU
 TT
 ap
-kK
-kK
+Fp
+Fp
 mO
 mO
 mO
@@ -54995,13 +54100,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -55088,10 +54193,10 @@ ZM
 np
 RW
 Et
-kK
-DC
-NC
-Fm
+Fp
+vR
+WF
+fM
 Et
 Et
 Et
@@ -55223,10 +54328,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ap
 ap
 ap
@@ -55240,8 +54345,8 @@ yr
 ap
 ap
 ap
-kK
-kK
+Fp
+Fp
 mO
 mO
 mO
@@ -55252,13 +54357,13 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -55320,11 +54425,7 @@ lS
 cV
 aa
 oC
-<<<<<<< HEAD
-Qz
-=======
-EE
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+CY
 Bt
 ak
 ak
@@ -55349,8 +54450,8 @@ fA
 wb
 RW
 RW
-kK
-JJ
+Fp
+Cs
 Et
 Et
 Et
@@ -55359,11 +54460,7 @@ Et
 Su
 Su
 Su
-<<<<<<< HEAD
-jN
-=======
-dD
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+EV
 Ik
 MF
 Su
@@ -55488,25 +54585,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-nc
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Kl
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -55569,11 +54666,7 @@ kA
 oV
 CF
 qJ
-<<<<<<< HEAD
-Im
-=======
-wo
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+EO
 xZ
 eh
 xZ
@@ -55588,11 +54681,7 @@ Bt
 HW
 ze
 SJ
-<<<<<<< HEAD
-AS
-=======
-LF
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+NX
 Bt
 Bt
 ak
@@ -55618,10 +54707,10 @@ jO
 pN
 mn
 RW
-SW
-kK
-sl
-kK
+gG
+Fp
+xi
+Fp
 Et
 Et
 Et
@@ -55753,25 +54842,25 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -55831,11 +54920,7 @@ Et
 Et
 qJ
 TD
-<<<<<<< HEAD
-KC
-=======
-Em
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+jP
 qJ
 qJ
 Dg
@@ -55852,11 +54937,7 @@ Dg
 Pn
 Yr
 wC
-<<<<<<< HEAD
-Tp
-=======
-fN
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+OA
 Bt
 Bt
 ak
@@ -55884,11 +54965,11 @@ qi
 pc
 RW
 Et
-kK
-Yv
-JJ
-kK
-kK
+Fp
+ER
+Cs
+Fp
+Fp
 Et
 Et
 Et
@@ -55899,8 +54980,8 @@ Mc
 Su
 er
 Su
-kK
-kK
+Fp
+Fp
 Et
 ak
 ak
@@ -56018,25 +55099,25 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -56143,12 +55224,12 @@ RW
 Et
 Et
 Et
-kK
+Fp
 PG
-sl
-kK
-kK
-kK
+xi
+Fp
+Fp
+Fp
 Rj
 mO
 mO
@@ -56157,8 +55238,8 @@ Su
 kl
 Su
 mO
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -56168,10 +55249,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -56279,21 +55360,21 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -56400,10 +55481,10 @@ RW
 RW
 Et
 ak
-kK
-kK
+Fp
+Fp
 PG
-kK
+Fp
 PG
 zd
 zd
@@ -56414,9 +55495,9 @@ zd
 zd
 DM
 mO
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -56424,12 +55505,12 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -56536,21 +55617,21 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 mO
 mO
 mO
@@ -56658,8 +55739,8 @@ RW
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 PG
 PG
 PG
@@ -56673,20 +55754,20 @@ Rj
 mO
 mO
 mO
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 PG
-kC
-kK
-kK
+PI
+Fp
+Fp
 ak
 ak
 ak
@@ -56916,10 +55997,10 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 Rj
 zd
 zd
@@ -56931,14 +56012,14 @@ mO
 mO
 mO
 mO
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 hM
 lN
 hM
@@ -57175,8 +56256,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 mO
 Rj
 Rj
@@ -57187,9 +56268,9 @@ Rj
 mO
 mO
 mO
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 hM
@@ -57201,11 +56282,7 @@ Fa
 hM
 VJ
 Fa
-<<<<<<< HEAD
-VT
-=======
-kq
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+pD
 Fa
 hM
 ak
@@ -57446,9 +56523,9 @@ cF
 hM
 Rj
 mO
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -57702,8 +56779,8 @@ hM
 aP
 hM
 Rj
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -57958,8 +57035,8 @@ Et
 hM
 Cd
 hM
-kK
-kK
+Fp
+Fp
 Et
 ak
 ak
@@ -58230,11 +57307,7 @@ hM
 ak
 ak
 hM
-<<<<<<< HEAD
-hX
-=======
-fD
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+yS
 Fa
 MD
 Fa
@@ -58416,11 +57489,11 @@ ak
 ak
 ak
 ak
-AA
+Jf
 PG
 PG
 PG
-kK
+Fp
 Et
 fK
 fK
@@ -58433,11 +57506,11 @@ Et
 Et
 Et
 Et
-kK
+Fp
 PG
 PG
 PG
-kK
+Fp
 ak
 ak
 ak
@@ -58460,11 +57533,7 @@ CR
 CR
 CR
 YT
-<<<<<<< HEAD
-vI
-=======
-zT
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Uf
 hM
 hM
 hM
@@ -58677,13 +57746,13 @@ ak
 ak
 ak
 ak
-AA
-kK
+Jf
+Fp
 PG
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 oh
 oh
@@ -58693,13 +57762,13 @@ Et
 Et
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -58934,14 +58003,14 @@ ak
 ak
 ak
 ak
-Yv
+ER
 PG
-kK
+Fp
 PG
-kK
-kK
-kK
-AA
+Fp
+Fp
+Fp
+Jf
 oh
 oh
 Et
@@ -58952,11 +58021,11 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -58968,11 +58037,11 @@ Et
 Et
 Et
 Et
-ku
-Qp
+TL
+ij
 Eo
-hC
-rY
+Rl
+hI
 CR
 Fa
 Fa
@@ -59191,18 +58260,18 @@ ak
 ak
 ak
 ak
-AA
-vo
-kK
+Jf
+Bb
+Fp
 PG
 PG
-kK
-Ri
-Or
-Fu
-Fu
-dn
-kK
+Fp
+VW
+au
+IP
+IP
+du
+Fp
 ak
 ak
 ak
@@ -59211,10 +58280,10 @@ ak
 ak
 ak
 PG
-kK
+Fp
 PG
-kK
-kK
+Fp
+Fp
 ak
 ak
 ak
@@ -59224,12 +58293,12 @@ ak
 ak
 Et
 Et
-Oc
-Qp
+EL
+ij
 aj
 aj
 aj
-NU
+OC
 CR
 CR
 CR
@@ -59245,11 +58314,7 @@ pb
 Fa
 Fa
 Fa
-<<<<<<< HEAD
-AJ
-=======
-nI
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+wn
 Fa
 Fa
 Fa
@@ -59262,11 +58327,7 @@ Fa
 zS
 pY
 CG
-<<<<<<< HEAD
-tG
-=======
-je
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Mi
 Fa
 Fa
 Fa
@@ -59457,17 +58518,17 @@ ak
 ak
 ak
 Et
-kK
+Fp
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -59476,9 +58537,9 @@ ak
 ak
 ak
 ak
-kK
+Fp
 PG
-Ly
+Qh
 ak
 ak
 ak
@@ -59489,12 +58550,12 @@ ak
 ak
 ak
 Et
-YM
+UU
 aj
 aj
 aj
 aj
-NU
+OC
 Et
 Et
 hM
@@ -59713,19 +58774,19 @@ ak
 ak
 ak
 ak
-AA
-kK
-kK
+Jf
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
-Ri
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+VW
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -59746,12 +58807,12 @@ ak
 ak
 ak
 PG
-cO
-Dx
+Lv
+OH
 aj
 aj
-Dv
-oo
+XI
+tY
 Et
 Et
 hM
@@ -59971,18 +59032,18 @@ ak
 ak
 ak
 Zc
-kK
+Fp
 PG
-kK
+Fp
 PG
 PG
-kK
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -60004,11 +59065,11 @@ ak
 ak
 Et
 Et
-cO
-Op
-Op
-oo
-kK
+Lv
+Ol
+Ol
+tY
+Fp
 PG
 Et
 hM
@@ -60227,22 +59288,22 @@ Et
 Et
 ak
 ak
-AA
-kK
+Jf
+Fp
 PG
-kK
+Fp
 PG
 PG
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-Ri
-kK
+Fp
+VW
+Fp
 ak
 ak
 ak
@@ -60266,7 +59327,7 @@ Et
 Et
 Et
 HQ
-kK
+Fp
 Et
 hM
 Fa
@@ -60485,31 +59546,29 @@ Et
 Et
 Et
 Et
-kK
-kK
-kK
+Fp
+Fp
+Fp
 UK
 Ax
 UK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 ak
-kK
-kK
-kK
-ak
-ak
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -60522,9 +59581,11 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+ak
+ak
+Fp
+Fp
+Fp
 hM
 xH
 CR
@@ -60743,28 +59804,28 @@ UK
 UK
 UK
 UK
-kK
-kK
+Fp
+Fp
 UK
 Yt
 UK
-kK
+Fp
 fc
 pP
-Fu
+IP
 pP
 pP
 pP
-Fu
+IP
 pP
-iC
-kK
-kK
+aG
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -60780,8 +59841,8 @@ ak
 ak
 ak
 ak
-kK
-kK
+Fp
+Fp
 hM
 Fa
 CR
@@ -61007,22 +60068,22 @@ VV
 UK
 UK
 UK
-kK
-dO
-qp
-qp
-qp
-LN
-kK
+Fp
+yq
+bC
+bC
+bC
+tw
+Fp
 Yu
-kK
-kK
-kK
-kK
-kK
-kK
-Ri
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+VW
+Fp
 ak
 ak
 ak
@@ -61038,13 +60099,9 @@ ak
 ak
 Et
 Et
-kK
+Fp
 hM
-<<<<<<< HEAD
-EQ
-=======
-ax
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+oo
 CR
 Fx
 ZY
@@ -61268,23 +60325,23 @@ lI
 LQ
 Lp
 UK
-dO
-ON
-bE
-BA
-bE
-ON
-LN
-AA
-kK
+yq
+Lc
+ZG
+HO
+ZG
+Lc
+tw
+Jf
+Fp
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 PG
 Et
@@ -61298,8 +60355,8 @@ ak
 ak
 Et
 Et
-kK
-kK
+Fp
+Fp
 hM
 Fa
 CR
@@ -61525,27 +60582,27 @@ Mp
 Bq
 Nc
 UK
-Ws
-bE
-bE
-nB
-nB
-bE
-gv
+la
+ZG
+ZG
+DX
+DX
+ZG
+et
 YB
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 Et
 Et
 Et
@@ -61554,9 +60611,9 @@ Et
 Et
 Et
 Et
-kK
-kK
-kK
+Fp
+Fp
+Fp
 hM
 Fa
 CR
@@ -61782,38 +60839,38 @@ cv
 UK
 UK
 UK
-bE
-ON
-bE
-ON
-nB
-ON
-qx
-AA
-kK
-kK
+ZG
+Lc
+ZG
+Lc
+DX
+Lc
+Hr
+Jf
+Fp
+Fp
 Qu
 PG
 Qu
-kK
-kK
-kK
+Fp
+Fp
+Fp
 PG
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
-kK
+Fp
 HQ
 Et
 Et
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 hM
 Fa
 CR
@@ -62039,15 +61096,15 @@ gl
 wK
 wv
 Hx
-uw
-Bu
-bE
-Bu
-bE
-qx
-kK
+vH
+Ur
+ZG
+Ur
+ZG
+Hr
+Fp
 RT
-kK
+Fp
 Et
 IC
 xG
@@ -62055,22 +61112,22 @@ IC
 Et
 ak
 ak
-kK
+Fp
 PG
-kK
-uy
+Fp
+Qi
 Et
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 Et
 Et
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
 hM
 Fa
 CR
@@ -62315,18 +61372,18 @@ ak
 ak
 ak
 ak
-eW
+qc
 Et
 Et
 Et
-kK
+Fp
 PG
-kK
+Fp
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 hM
 hM
 Fa
@@ -62577,13 +61634,13 @@ ak
 ak
 Et
 Et
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 hM
 RC
 Fa
@@ -62834,13 +61891,13 @@ ak
 ak
 ak
 Et
-Ly
-kK
-kK
+Qh
+Fp
+Fp
 PG
-kK
-kK
-kK
+Fp
+Fp
+Fp
 hM
 GF
 Fa
@@ -63093,8 +62150,8 @@ ak
 Et
 Et
 Et
-kK
-kK
+Fp
+Fp
 PG
 PG
 cN
@@ -63352,7 +62409,7 @@ Et
 Et
 Et
 Et
-kK
+Fp
 PG
 IH
 YQ
@@ -63568,11 +62625,7 @@ ak
 ak
 Et
 UK
-<<<<<<< HEAD
-LH
-=======
-WH
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+cW
 yZ
 cT
 UK
@@ -63612,8 +62665,8 @@ ak
 ak
 Et
 Et
-kK
-kK
+Fp
+Fp
 PG
 cN
 hM
@@ -63870,9 +62923,9 @@ ak
 ak
 Et
 HQ
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 Et
 Et
@@ -63881,8 +62934,8 @@ Et
 Et
 Et
 Et
-kK
-kK
+Fp
+Fp
 Et
 Et
 ak
@@ -64127,8 +63180,8 @@ ak
 ak
 Et
 Et
-kK
-kK
+Fp
+Fp
 Et
 Et
 Et
@@ -64137,10 +63190,10 @@ Et
 Et
 Et
 Et
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -64342,13 +63395,8 @@ ak
 ak
 Et
 Et
-<<<<<<< HEAD
-UK
-sq
-=======
-Gx
-dE
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+AA
+FB
 bg
 Ro
 UK
@@ -64390,7 +63438,7 @@ ak
 ak
 Et
 Et
-kK
+Fp
 Et
 ak
 ak
@@ -64400,9 +63448,9 @@ ak
 Et
 Et
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 ak
 ak
 ak
@@ -64604,13 +63652,8 @@ ak
 Et
 Et
 Et
-<<<<<<< HEAD
-UK
-tP
-=======
-Gx
-Qj
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+AA
+hW
 zo
 cD
 JL
@@ -65380,7 +64423,7 @@ ak
 ak
 Et
 Et
-kK
+Fp
 fu
 oh
 oh
@@ -65403,13 +64446,8 @@ qt
 AQ
 IC
 IC
-<<<<<<< HEAD
-IT
-Pq
-=======
+ec
 Nv
-Vt
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 IC
 Et
 Et
@@ -65642,7 +64680,7 @@ ak
 ak
 ak
 PG
-kK
+Fp
 fu
 oh
 oh
@@ -65899,7 +64937,7 @@ ak
 ak
 ak
 ak
-kK
+Fp
 mv
 oh
 oh
@@ -66156,9 +65194,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 oh
 oh
 fu
@@ -66216,7 +65254,7 @@ ak
 ak
 ak
 Et
-kK
+Fp
 Et
 ak
 ak
@@ -66415,7 +65453,7 @@ ak
 ak
 ak
 PG
-kK
+Fp
 oh
 oh
 oh
@@ -66472,7 +65510,7 @@ ak
 ak
 ak
 Et
-kK
+Fp
 oh
 Et
 ak
@@ -66671,9 +65709,9 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 oh
 oh
 oh
@@ -66930,18 +65968,18 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 oh
 oh
 oh
 oh
 oh
-kK
-kK
-kK
+Fp
+Fp
+Fp
 Et
 Et
 Et
@@ -67189,15 +66227,15 @@ ak
 ak
 ak
 ak
-kK
-kK
-kK
+Fp
+Fp
+Fp
 oh
 oh
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
 PG
 ak
 ak
@@ -67448,12 +66486,12 @@ ak
 ak
 ak
 PG
-kK
-kK
-kK
-kK
-kK
-kK
+Fp
+Fp
+Fp
+Fp
+Fp
+Fp
 ak
 ak
 ak

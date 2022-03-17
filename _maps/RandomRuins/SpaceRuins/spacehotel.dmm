@@ -13,15 +13,6 @@
 	},
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
-"ah" = (
-/obj/structure/chair/wood{
-	dir = 1
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel/bar)
 "ai" = (
 /obj/structure/cable,
 /obj/machinery/power/terminal{
@@ -79,19 +70,18 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
+"aT" = (
+/obj/structure/table/reinforced/plastitaniumglass,
+/obj/machinery/light/directional/south,
+/obj/structure/sign/poster/contraband/random/directional/south,
+/turf/open/floor/iron/dark/smooth_edge,
+/area/ruin/space/has_grav/hotel/workroom)
 "aU" = (
 /obj/structure/chair/sofa/corp/right{
 	dir = 1
 	},
 /obj/machinery/light/directional/south,
 /turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
-"bb" = (
-/obj/machinery/light/directional/east,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/carpet/black,
 /area/ruin/space/has_grav/hotel)
 "be" = (
 /obj/structure/cable,
@@ -137,14 +127,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
-"bs" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/wood,
-/area/ruin/space/has_grav/hotel/bar)
 "bu" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -220,14 +202,6 @@
 	},
 /turf/open/floor/wood/large,
 /area/ruin/space/has_grav/hotel/dock)
-"bY" = (
-/obj/item/toy/beach_ball,
-/turf/open/misc/beach/sand,
-/area/ruin/space/has_grav/hotel/pool)
-"bZ" = (
-/obj/structure/sign/poster/random/directional/north,
-/turf/closed/wall,
-/area/ruin/space/has_grav/hotel/pool)
 "ca" = (
 /obj/structure/dresser,
 /turf/open/floor/wood/parquet,
@@ -336,11 +310,6 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel/dock)
-"db" = (
-/turf/open/misc/beach/coastline_b{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/pool)
 "dd" = (
 /obj/structure/sink{
 	dir = 8;
@@ -367,16 +336,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/hotel)
-"dk" = (
-/obj/machinery/computer/security{
-	dir = 4;
-	network = list("spacehotel")
-	},
-/obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "dq" = (
 /obj/structure/table/wood/fancy/orange,
 /obj/item/paper_bin,
@@ -394,6 +353,15 @@
 /obj/structure/closet/crate/bin,
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark,
+/area/ruin/space/has_grav/hotel)
+"dB" = (
+/obj/structure/chair/comfy{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
 /area/ruin/space/has_grav/hotel)
 "dE" = (
 /obj/structure/fluff/tram_rail,
@@ -448,15 +416,14 @@
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
-<<<<<<< HEAD
-=======
-"ep" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/machinery/light/directional/south,
-/obj/structure/sign/poster/contraband/random/directional/south,
-/turf/open/floor/iron/dark/smooth_edge,
+"er" = (
+/obj/machinery/recharge_station,
+/obj/machinery/light/directional/north,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 1
+	},
 /area/ruin/space/has_grav/hotel/workroom)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "eu" = (
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/dock)
@@ -507,24 +474,16 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel/bar)
-"eN" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/item/kirbyplants{
-	icon_state = "plant-05"
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/dark/corner{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel)
 "eR" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
+"eY" = (
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/catwalk_floor,
+/area/ruin/space/has_grav/hotel/dock)
 "eZ" = (
 /obj/machinery/door/airlock{
 	name = "Toilet"
@@ -556,29 +515,20 @@
 	dir = 8
 	},
 /area/ruin/space/has_grav/hotel)
-<<<<<<< HEAD
-=======
 "fg" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/structure/sign/poster/random/directional/north,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/item/kirbyplants{
+	icon_state = "plant-05"
+	},
+/obj/structure/sign/poster/random/directional/south,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "fi" = (
 /obj/structure/dresser,
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
-"fl" = (
-/obj/structure/chair/comfy{
-	dir = 8
-	},
-/obj/structure/sign/poster/random{
-	pixel_x = 32
-	},
-/turf/open/floor/iron/dark/side{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel)
 "fn" = (
 /obj/machinery/door/airlock/hatch,
 /turf/open/floor/plating,
@@ -613,13 +563,6 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
-"fT" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random/directional/west,
-/turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
 "fW" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing{
@@ -672,12 +615,6 @@
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
-"gn" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/plating,
-/area/ruin/space/has_grav/hotel)
 "go" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -698,13 +635,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
-"gu" = (
-/obj/structure/chair/wood{
-	dir = 1
-	},
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel/bar)
 "gv" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -917,19 +847,6 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/has_grav/hotel/bar)
-"ig" = (
-/obj/structure/window/reinforced/survival_pod{
-	dir = 8
-	},
-/obj/structure/window/reinforced/survival_pod,
-/obj/structure/rack,
-/obj/item/crowbar,
-/obj/item/storage/medkit/regular,
-/obj/item/paper/fluff/ruins/spacehotel/notice,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "ii" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -942,14 +859,6 @@
 	dir = 8
 	},
 /turf/open/floor/plating/airless,
-/area/ruin/space/has_grav/hotel)
-"ip" = (
-/obj/structure/closet/emcloset,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/obj/item/card/id/away/hotel,
-/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
 "iq" = (
 /obj/effect/turf_decal/siding/wood,
@@ -1083,6 +992,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
+"iR" = (
+/obj/structure/chair/plastic{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/sepia,
+/area/ruin/space/has_grav/hotel/pool)
 "iT" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -1137,23 +1053,6 @@
 /obj/structure/rack,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
-<<<<<<< HEAD
-"ji" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/obj/machinery/light/small/directional/north,
-/turf/open/floor/wood,
-/area/ruin/space/has_grav/hotel/bar)
-=======
-"jh" = (
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/catwalk_floor,
-/area/ruin/space/has_grav/hotel/dock)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "jo" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -1227,21 +1126,6 @@
 /obj/machinery/vending/cigarette,
 /turf/open/floor/wood/large,
 /area/ruin/space/has_grav/hotel/dock)
-"jO" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/wood/tile,
-/area/ruin/space/has_grav/hotel)
-"jP" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = -32
-	},
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron/dark/smooth_edge,
-/area/ruin/space/has_grav/hotel/workroom)
 "jQ" = (
 /obj/structure/frame,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -1262,17 +1146,12 @@
 /obj/effect/spawner/random/vending/colavend,
 /turf/open/floor/wood/large,
 /area/ruin/space/has_grav/hotel/dock)
-<<<<<<< HEAD
-"ka" = (
+"kc" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/random/directional/north,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "kd" = (
 /obj/structure/tank_dispenser/oxygen,
 /turf/open/floor/plating,
@@ -1281,6 +1160,10 @@
 /obj/structure/chair/sofa/corp/left,
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
+"kj" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/plating/beach/water/coastline_t,
+/area/ruin/space/has_grav/hotel/pool)
 "kk" = (
 /obj/structure/flora/ausbushes/leafybush,
 /obj/structure/flora/ausbushes/fullgrass,
@@ -1363,6 +1246,11 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel/bar)
+"kP" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood/tile,
+/area/ruin/space/has_grav/hotel)
 "kS" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/cable,
@@ -1371,12 +1259,6 @@
 	},
 /turf/template_noop,
 /area/ruin/space/has_grav/hotel)
-"kW" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/turf/open/floor/catwalk_floor,
-/area/ruin/space/has_grav/hotel/dock)
 "kX" = (
 /obj/machinery/door/airlock{
 	name = "Bathroom"
@@ -1438,16 +1320,6 @@
 	},
 /turf/template_noop,
 /area/template_noop)
-"lu" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/item/kirbyplants{
-	icon_state = "plant-05"
-	},
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/iron/dark/corner{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel)
 "lw" = (
 /obj/item/storage/toolbox/mechanical,
 /turf/open/floor/plating,
@@ -1547,15 +1419,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-<<<<<<< HEAD
+"mB" = (
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/grimy,
+/area/ruin/space/has_grav/hotel)
 "mC" = (
 /obj/structure/chair/plastic{
 	dir = 8
 	},
 /turf/open/floor/plating/beach/sand,
 /area/ruin/space/has_grav/hotel/pool)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "mD" = (
 /obj/structure/table/wood/fancy/cyan,
 /obj/item/flashlight/lamp,
@@ -1564,15 +1437,14 @@
 "mF" = (
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
-"mH" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/structure/cable,
-/obj/item/paper_bin,
-/obj/structure/sign/poster/contraband/random/directional/east,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
+"mJ" = (
+/turf/open/floor/plating/beach/water/coastline_t,
+/area/ruin/space/has_grav/hotel/pool)
+"mK" = (
+/turf/open/floor/plating/beach/coastline_b{
+	dir = 8
 	},
-/area/ruin/space/has_grav/hotel/workroom)
+/area/ruin/space/has_grav/hotel/pool)
 "mL" = (
 /turf/open/floor/iron/sepia,
 /area/ruin/space/has_grav/hotel/pool)
@@ -1583,6 +1455,11 @@
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/carpet/orange,
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
+"mN" = (
+/turf/open/floor/plating/beach/coastline_t{
+	dir = 8
+	},
+/area/ruin/space/has_grav/hotel/pool)
 "mO" = (
 /obj/structure/closet/crate/freezer,
 /obj/item/food/grown/wheat,
@@ -1651,14 +1528,6 @@
 /obj/item/paper_bin,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-"na" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/structure/chair,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/wood/large,
-/area/ruin/space/has_grav/hotel/dock)
 "ne" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/structure/chair,
@@ -1706,31 +1575,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/hotel/dock)
-"nn" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/ruin/space/has_grav/hotel/dock)
 "no" = (
 /obj/structure/sign/warning/nosmoking/circle{
 	pixel_y = 32
 	},
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-"nq" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = 32
-	},
-/obj/structure/cable,
-/obj/item/paper_bin,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "ns" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -1751,13 +1601,6 @@
 "nx" = (
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/hotel)
-"ny" = (
-/obj/machinery/light/small/directional/east,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/freezer,
-/area/ruin/space/has_grav/hotel/pool)
 "nz" = (
 /obj/structure/cable,
 /turf/open/floor/iron/grimy,
@@ -1783,12 +1626,6 @@
 	},
 /turf/open/floor/iron/sepia,
 /area/ruin/space/has_grav/hotel/pool)
-"nL" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel)
 "nP" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Hotel Maintenance";
@@ -1873,6 +1710,16 @@
 /obj/structure/filingcabinet,
 /turf/open/floor/carpet/black,
 /area/ruin/space/has_grav/hotel)
+"oT" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/item/kirbyplants{
+	icon_state = "plant-05"
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/dark/corner{
+	dir = 8
+	},
+/area/ruin/space/has_grav/hotel)
 "oZ" = (
 /obj/machinery/atmospherics/components/tank/air{
 	dir = 4
@@ -1897,10 +1744,6 @@
 /obj/structure/fluff/tram_rail,
 /turf/template_noop,
 /area/template_noop)
-"po" = (
-/obj/structure/fluff/beach_umbrella/syndi,
-/turf/open/misc/beach/sand,
-/area/ruin/space/has_grav/hotel/pool)
 "pz" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -1954,23 +1797,10 @@
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
-"qg" = (
-/obj/structure/chair/plastic{
-	dir = 1
-	},
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/iron/sepia,
-/area/ruin/space/has_grav/hotel/pool)
 "qj" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
-"qv" = (
-/obj/structure/chair/plastic{
-	dir = 8
-	},
-/turf/open/misc/beach/sand,
-/area/ruin/space/has_grav/hotel/pool)
 "qz" = (
 /obj/structure/frame,
 /obj/item/stack/cable_coil/five,
@@ -2041,6 +1871,14 @@
 "qU" = (
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
+"rc" = (
+/obj/item/kirbyplants{
+	icon_state = "plant-16"
+	},
+/obj/structure/sign/poster/random/directional/north,
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/carpet/blue,
+/area/ruin/space/has_grav/hotel)
 "re" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
@@ -2065,6 +1903,10 @@
 "rx" = (
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_1)
+"rG" = (
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood/tile,
+/area/ruin/space/has_grav/hotel)
 "rM" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -2135,6 +1977,22 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
+"sE" = (
+/obj/machinery/computer/security{
+	dir = 4;
+	network = list("spacehotel")
+	},
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 8
+	},
+/area/ruin/space/has_grav/hotel/workroom)
+"sG" = (
+/obj/structure/sign/poster/contraband/random/directional/west,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 8
+	},
+/area/ruin/space/has_grav/hotel/workroom)
 "sJ" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 9
@@ -2183,25 +2041,9 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/dock)
-"sZ" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 1
-	},
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel)
 "tb" = (
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel)
-"td" = (
-/obj/structure/chair/comfy{
-	dir = 4
-	},
-/obj/structure/sign/poster/random/directional/west,
-/turf/open/floor/iron/dark/side{
-	dir = 4
-	},
 /area/ruin/space/has_grav/hotel)
 "ti" = (
 /obj/structure/railing/corner{
@@ -2275,21 +2117,6 @@
 "up" = (
 /obj/structure/sign/warning/vacuum,
 /turf/closed/wall,
-/area/ruin/space/has_grav/hotel)
-"uw" = (
-/obj/effect/turf_decal/siding/wood,
-/obj/structure/chair,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/wood/large,
-/area/ruin/space/has_grav/hotel/dock)
-"uG" = (
-/obj/structure/chair/comfy{
-	dir = 8
-	},
-/obj/structure/sign/poster/random/directional/east,
-/turf/open/floor/iron/dark/side{
-	dir = 8
-	},
 /area/ruin/space/has_grav/hotel)
 "uI" = (
 /obj/structure/chair/plastic{
@@ -2409,14 +2236,6 @@
 /obj/item/soap,
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
-"vX" = (
-/obj/machinery/recharge_station,
-/obj/machinery/light/directional/north,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 1
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "vY" = (
 /obj/machinery/button{
 	id = "hcb1";
@@ -2439,11 +2258,6 @@
 /obj/structure/chair/sofa/corp/right,
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
-"wd" = (
-/obj/machinery/light/directional/east,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/carpet/black,
-/area/ruin/space/has_grav/hotel)
 "wf" = (
 /turf/open/floor/carpet/lone,
 /area/ruin/space/has_grav/hotel/guestroom/room_1)
@@ -2451,10 +2265,24 @@
 /obj/item/soap,
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
+"wj" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 1
+	},
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/iron/grimy,
+/area/ruin/space/has_grav/hotel)
 "wk" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/hotel/dock)
+"wq" = (
+/obj/item/kirbyplants{
+	icon_state = "plant-16"
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/carpet/blue,
+/area/ruin/space/has_grav/hotel)
 "wr" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -2506,6 +2334,10 @@
 /obj/structure/lattice/catwalk,
 /turf/template_noop,
 /area/ruin/space/has_grav/hotel)
+"wJ" = (
+/obj/structure/fluff/beach_umbrella/syndi,
+/turf/open/floor/plating/beach/sand,
+/area/ruin/space/has_grav/hotel/pool)
 "wK" = (
 /obj/effect/spawner/random/vending/snackvend,
 /turf/open/floor/iron,
@@ -2575,12 +2407,6 @@
 /obj/effect/turf_decal/box/white/corners,
 /turf/open/floor/catwalk_floor,
 /area/ruin/space/has_grav/hotel/dock)
-"xe" = (
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/ruin/space/has_grav/hotel/dock)
 "xh" = (
 /obj/structure/table/wood/fancy/royalblue,
 /obj/machinery/light_switch/directional/south,
@@ -2605,16 +2431,6 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/has_grav/hotel/pool)
-"xq" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/obj/item/kirbyplants{
-	icon_state = "plant-05"
-	},
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/wood/tile,
-/area/ruin/space/has_grav/hotel)
 "xs" = (
 /obj/machinery/door/airlock/freezer{
 	name = "Freezer";
@@ -2661,18 +2477,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/hotel/dock)
-"xV" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/obj/structure/sign/poster/random{
-	pixel_x = -32
-	},
-/turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
 "xZ" = (
 /obj/structure/table/wood,
 /obj/machinery/firealarm/directional/east,
@@ -2816,10 +2620,6 @@
 	},
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-"zJ" = (
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/wood/tile,
-/area/ruin/space/has_grav/hotel)
 "zO" = (
 /obj/structure/bed/pod,
 /obj/item/bedsheet/ian,
@@ -2838,6 +2638,14 @@
 "An" = (
 /turf/open/floor/carpet/red,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
+"AD" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/closet/crate/bin,
+/obj/structure/sign/poster/random/directional/south,
+/turf/open/floor/wood/tile,
+/area/ruin/space/has_grav/hotel)
 "AG" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -2845,6 +2653,10 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
+"AJ" = (
+/obj/item/toy/beach_ball,
+/turf/open/floor/plating/beach/sand,
+/area/ruin/space/has_grav/hotel/pool)
 "AO" = (
 /obj/structure/chair/sofa/corp/left,
 /obj/machinery/light/directional/north,
@@ -2904,6 +2716,14 @@
 /obj/item/flashlight/lamp,
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
+"Bv" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/small/directional/north,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood,
+/area/ruin/space/has_grav/hotel/bar)
 "By" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -2919,11 +2739,6 @@
 "BK" = (
 /turf/closed/wall,
 /area/ruin/space/has_grav/hotel/guestroom/room_1)
-"BL" = (
-/obj/machinery/light/small/directional/east,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/iron/freezer,
-/area/ruin/space/has_grav/hotel/pool)
 "BM" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -2931,21 +2746,11 @@
 /obj/machinery/vending/coffee,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/hotel)
-<<<<<<< HEAD
-"BT" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/obj/item/kirbyplants{
-	icon_state = "plant-05"
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/wood/tile,
-/area/ruin/space/has_grav/hotel)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"BN" = (
+/obj/machinery/light/small/directional/east,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/freezer,
+/area/ruin/space/has_grav/hotel/pool)
 "BU" = (
 /obj/structure/cable,
 /turf/open/floor/circuit/green,
@@ -2953,6 +2758,15 @@
 "Cl" = (
 /turf/template_noop,
 /area/template_noop)
+"Cs" = (
+/obj/structure/table/reinforced/plastitaniumglass,
+/obj/structure/cable,
+/obj/item/paper_bin,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 4
+	},
+/area/ruin/space/has_grav/hotel/workroom)
 "Ct" = (
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/catwalk_floor,
@@ -2968,17 +2782,6 @@
 "Cw" = (
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
-"CE" = (
-/obj/structure/closet/emcloset,
-/obj/item/card/id/away/hotel,
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating,
-/area/ruin/space/has_grav/hotel)
-"CG" = (
-/turf/open/misc/beach/coastline_t{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/pool)
 "CH" = (
 /obj/structure/cable,
 /obj/machinery/power/terminal,
@@ -3023,27 +2826,13 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
-<<<<<<< HEAD
-=======
-"Db" = (
-/obj/structure/window/reinforced/survival_pod{
-	dir = 8
+"Dh" = (
+/obj/structure/chair/wood{
+	dir = 1
 	},
-/obj/structure/window/reinforced/survival_pod,
-/obj/structure/rack,
-/obj/item/crowbar,
-/obj/item/storage/medkit/regular,
-/obj/item/paper/fluff/ruins/spacehotel/notice,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
-"Df" = (
-/obj/structure/chair/wood,
-/obj/structure/sign/poster/random/directional/north,
+/obj/structure/sign/poster/random/directional/south,
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel/bar)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Dp" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -3073,18 +2862,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/hotel/bar)
-<<<<<<< HEAD
-"DL" = (
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel)
-=======
-"DK" = (
-/turf/open/misc/beach/coastline_t,
-/area/ruin/space/has_grav/hotel/pool)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "DO" = (
 /obj/effect/turf_decal/loading_area,
 /turf/open/floor/iron/dark,
@@ -3106,14 +2883,6 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel/bar)
-"DX" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = -32
-	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "Ea" = (
 /obj/item/soap,
 /turf/open/floor/iron/showroomfloor,
@@ -3169,12 +2938,6 @@
 "ED" = (
 /obj/structure/extinguisher_cabinet/directional/north,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
-/turf/open/floor/wood/tile,
-/area/ruin/space/has_grav/hotel)
-"EG" = (
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
 "EJ" = (
@@ -3243,11 +3006,6 @@
 "Ff" = (
 /turf/closed/wall,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
-"Fi" = (
-/obj/structure/cable,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/iron/sepia,
-/area/ruin/space/has_grav/hotel/pool)
 "Fj" = (
 /obj/structure/closet/emcloset,
 /turf/open/floor/plating,
@@ -3443,13 +3201,11 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
-<<<<<<< HEAD
-=======
-"HI" = (
-/obj/machinery/light/directional/west,
-/turf/open/misc/beach/coastline_t,
-/area/ruin/space/has_grav/hotel/pool)
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"HN" = (
+/obj/structure/chair/wood,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/grimy,
+/area/ruin/space/has_grav/hotel/bar)
 "HP" = (
 /obj/structure/table/wood/fancy/red,
 /obj/item/flashlight/lamp,
@@ -3476,14 +3232,6 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel/dock)
-"Ib" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random/directional/north,
-/obj/structure/sign/poster/random/directional/west,
-/turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
 "Ic" = (
 /obj/structure/lattice/catwalk,
 /turf/open/floor/plating/airless,
@@ -3565,31 +3313,19 @@
 /obj/effect/turf_decal/loading_area,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/hotel)
-<<<<<<< HEAD
-"Jq" = (
-/obj/structure/chair/comfy{
-	dir = 4
-	},
-/obj/structure/sign/poster/random{
-	pixel_x = -32
-	},
-/turf/open/floor/iron/dark/side{
-	dir = 4
-	},
-=======
-"JA" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/random/directional/north,
-/turf/open/floor/wood/tile,
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
-/area/ruin/space/has_grav/hotel)
 "JC" = (
 /obj/structure/railing,
 /obj/effect/turf_decal/siding/white,
 /obj/structure/rack,
 /turf/open/floor/iron/sepia,
 /area/ruin/space/has_grav/hotel/pool)
+"JD" = (
+/obj/structure/table/reinforced/plastitaniumglass,
+/obj/item/storage/medkit/regular,
+/turf/open/floor/iron/dark/smooth_corner{
+	dir = 4
+	},
+/area/ruin/space/has_grav/hotel/workroom)
 "JF" = (
 /obj/item/soap,
 /turf/open/floor/iron/showroomfloor,
@@ -3659,18 +3395,8 @@
 "Ko" = (
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
-<<<<<<< HEAD
-"KE" = (
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 1
-	},
-=======
-"KA" = (
-/obj/structure/sign/poster/random/directional/north,
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+"Kx" = (
+/obj/structure/sign/poster/random/directional/south,
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel)
 "KJ" = (
@@ -3681,18 +3407,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel/bar)
-"KQ" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 4
-	},
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
 "KS" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/iron/dark,
@@ -3707,16 +3421,6 @@
 /obj/structure/cable,
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
-"Lc" = (
-/obj/machinery/recharge_station,
-/obj/structure/sign/poster/contraband/random{
-	pixel_y = 32
-	},
-/obj/machinery/light/directional/north,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 1
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "Lg" = (
 /obj/machinery/recharge_station,
 /turf/open/floor/iron/dark/smooth_corner{
@@ -3777,6 +3481,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
+"Mc" = (
+/obj/structure/sign/poster/random/directional/north,
+/turf/closed/wall,
+/area/ruin/space/has_grav/hotel/pool)
 "Mi" = (
 /obj/machinery/light/directional/north,
 /obj/structure/chair/comfy{
@@ -3808,10 +3516,6 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/carpet/red,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
-"MB" = (
-/obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/plating,
-/area/ruin/space/has_grav/hotel)
 "MD" = (
 /obj/structure/chair/plastic,
 /obj/structure/cable,
@@ -3863,6 +3567,25 @@
 	},
 /turf/open/floor/carpet/green,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
+"Nb" = (
+/obj/structure/window/reinforced/survival_pod{
+	dir = 8
+	},
+/obj/structure/window/reinforced/survival_pod,
+/obj/structure/rack,
+/obj/item/crowbar,
+/obj/item/storage/medkit/regular,
+/obj/item/paper/fluff/ruins/spacehotel/notice,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 4
+	},
+/area/ruin/space/has_grav/hotel/workroom)
+"Ni" = (
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/ruin/space/has_grav/hotel/dock)
 "Nl" = (
 /obj/machinery/door/airlock{
 	name = "Bathroom"
@@ -3906,6 +3629,12 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood/tile,
+/area/ruin/space/has_grav/hotel)
+"NW" = (
+/obj/structure/closet/emcloset,
+/obj/item/card/id/away/hotel,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
 "Oc" = (
 /obj/machinery/door/firedoor,
@@ -3990,6 +3719,10 @@
 	},
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
+"OP" = (
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/plating,
+/area/ruin/space/has_grav/hotel)
 "OR" = (
 /obj/machinery/deepfryer,
 /turf/open/floor/iron/cafeteria,
@@ -4017,15 +3750,6 @@
 /obj/structure/cable,
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
-"OZ" = (
-/obj/structure/chair/plastic{
-	dir = 1
-	},
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/iron/sepia,
-/area/ruin/space/has_grav/hotel/pool)
 "Pj" = (
 /obj/structure/window{
 	dir = 4
@@ -4091,6 +3815,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
+"PN" = (
+/obj/structure/chair/comfy{
+	dir = 8
+	},
+/obj/structure/sign/poster/random/directional/east,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/ruin/space/has_grav/hotel)
 "PQ" = (
 /obj/structure/cable,
 /obj/structure/closet,
@@ -4131,14 +3864,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/hotel/bar)
-"Qf" = (
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = 32
-	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "Qq" = (
 /obj/structure/chair/wood,
 /turf/open/floor/wood,
@@ -4162,15 +3887,15 @@
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
+"QG" = (
+/turf/open/floor/plating/beach/sand,
+/area/ruin/space/has_grav/hotel/pool)
 "QH" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
-"QJ" = (
-/turf/open/misc/beach/sand,
-/area/ruin/space/has_grav/hotel/pool)
 "QK" = (
 /obj/structure/cable,
 /obj/machinery/airalarm/directional/north,
@@ -4200,16 +3925,6 @@
 /obj/structure/chair/sofa/corp/left{
 	dir = 1
 	},
-/turf/open/floor/carpet/blue,
-/area/ruin/space/has_grav/hotel)
-"Rf" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 4
-	},
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random/directional/north,
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
 "Rg" = (
@@ -4337,18 +4052,6 @@
 /obj/structure/cable,
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
-"SB" = (
-/obj/machinery/computer/security{
-	dir = 4;
-	network = list("spacehotel")
-	},
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = -32
-	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "SD" = (
 /obj/machinery/door/firedoor,
 /turf/open/floor/wood/tile,
@@ -4403,6 +4106,11 @@
 "Ts" = (
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
+"Tt" = (
+/obj/structure/cable,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/iron/sepia,
+/area/ruin/space/has_grav/hotel/pool)
 "Tv" = (
 /obj/structure/sink{
 	dir = 4;
@@ -4411,6 +4119,16 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
+"Tx" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/kirbyplants{
+	icon_state = "plant-16"
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/carpet/blue,
+/area/ruin/space/has_grav/hotel)
 "TA" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing{
@@ -4445,23 +4163,12 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/hotel)
-"TM" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/storage/medkit/regular,
-/turf/open/floor/iron/dark/smooth_corner{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "TQ" = (
 /obj/structure/chair/sofa/right{
 	dir = 8
 	},
 /turf/open/floor/carpet/orange,
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
-"TR" = (
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel)
 "TX" = (
 /obj/structure/table/wood,
 /obj/effect/turf_decal/siding/wood{
@@ -4492,15 +4199,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron,
-/area/ruin/space/has_grav/hotel)
-"Ui" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-16"
-	},
-/obj/structure/sign/poster/random{
-	pixel_x = -32
-	},
-/turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
 "Um" = (
 /obj/effect/turf_decal/siding/wood{
@@ -4593,12 +4291,6 @@
 	},
 /turf/open/floor/catwalk_floor,
 /area/ruin/space/has_grav/hotel/dock)
-"Vs" = (
-/obj/structure/sign/poster/contraband/random/directional/east,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "VA" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood/tile,
@@ -4622,13 +4314,6 @@
 	},
 /turf/open/floor/iron/dark/smooth_corner{
 	dir = 1
-	},
-/area/ruin/space/has_grav/hotel/workroom)
-"VP" = (
-/obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/storage/medkit/regular,
-/turf/open/floor/iron/dark/smooth_corner{
-	dir = 4
 	},
 /area/ruin/space/has_grav/hotel/workroom)
 "VS" = (
@@ -4698,13 +4383,6 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel)
-"Wu" = (
-/obj/structure/cable,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/sepia,
-/area/ruin/space/has_grav/hotel/pool)
 "Ww" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Dock"
@@ -4738,12 +4416,6 @@
 	},
 /turf/template_noop,
 /area/ruin/space/has_grav/hotel)
-"WR" = (
-/obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/workroom)
 "WV" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -4857,6 +4529,18 @@
 	},
 /turf/open/floor/iron/dark/textured_half,
 /area/ruin/space/has_grav/hotel)
+"XQ" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/chair,
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/wood/large,
+/area/ruin/space/has_grav/hotel/dock)
+"XR" = (
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/iron/dark/smooth_edge{
+	dir = 4
+	},
+/area/ruin/space/has_grav/hotel/workroom)
 "XS" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -4903,19 +4587,11 @@
 /obj/structure/table/wood/fancy/green,
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
-<<<<<<< HEAD
-"Yu" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/obj/structure/closet/crate/bin,
-/obj/structure/sign/poster/random{
-	pixel_y = -32
-	},
-/turf/open/floor/wood/tile,
+"Yt" = (
+/obj/machinery/light/directional/east,
+/obj/structure/sign/poster/contraband/random/directional/north,
+/turf/open/floor/carpet/black,
 /area/ruin/space/has_grav/hotel)
-=======
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
 "Yw" = (
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
@@ -4954,14 +4630,6 @@
 /obj/structure/cable,
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
-/area/ruin/space/has_grav/hotel)
-"YR" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/obj/structure/closet/crate/bin,
-/obj/structure/sign/poster/random/directional/south,
-/turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
 "YS" = (
 /obj/machinery/airalarm/directional/west,
@@ -5058,13 +4726,6 @@
 /obj/effect/spawner/random/vending/snackvend,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/hotel)
-"ZY" = (
-/obj/structure/chair/wood,
-/obj/structure/sign/poster/random{
-	pixel_y = 32
-	},
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/hotel/bar)
 
 (1,1,1) = {"
 Cl
@@ -5909,11 +5570,7 @@ OJ
 gw
 ku
 OJ
-<<<<<<< HEAD
-ah
-=======
-gu
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Dh
 Ki
 zz
 Qq
@@ -5921,11 +5578,7 @@ EC
 iw
 vL
 Ki
-<<<<<<< HEAD
-ZY
-=======
-Df
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+HN
 OJ
 gw
 ku
@@ -6270,11 +5923,7 @@ bV
 cf
 PF
 cf
-<<<<<<< HEAD
-BT
-=======
-xq
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+fg
 LD
 Yh
 Ts
@@ -6357,11 +6006,7 @@ LD
 Em
 Fj
 Ki
-<<<<<<< HEAD
-ji
-=======
-bs
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Bv
 wb
 kk
 Ki
@@ -6423,11 +6068,7 @@ tw
 WD
 lL
 mq
-<<<<<<< HEAD
-DL
-=======
-TR
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Kx
 WD
 Ko
 Lx
@@ -6498,11 +6139,7 @@ Pn
 QW
 eA
 WD
-<<<<<<< HEAD
-nL
-=======
-KA
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+mB
 iM
 qR
 WD
@@ -6666,21 +6303,12 @@ mR
 BM
 Gp
 nv
-<<<<<<< HEAD
-DX
+sG
 wu
 SS
 ul
-SB
-TM
-=======
-WR
-wu
-SS
-ul
-dk
-VP
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+sE
+JD
 Gp
 km
 mR
@@ -6688,11 +6316,7 @@ HU
 nf
 dO
 JY
-<<<<<<< HEAD
-ny
-=======
-BL
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+BN
 Sf
 nk
 JY
@@ -6751,34 +6375,21 @@ iQ
 lK
 ho
 Gp
-<<<<<<< HEAD
-Lc
-=======
-vX
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+er
 gG
 Is
 iA
 vz
 iW
-<<<<<<< HEAD
-jP
-=======
-ep
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+aT
 Gp
 kn
 mR
 qF
 JY
 JY
-<<<<<<< HEAD
-JY
-JY
-=======
-bZ
-bZ
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Mc
+Mc
 IO
 JY
 JY
@@ -6820,11 +6431,7 @@ Zb
 cP
 lf
 WD
-<<<<<<< HEAD
-nL
-=======
-KA
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+mB
 iM
 cf
 WD
@@ -6842,19 +6449,11 @@ mR
 PB
 Gp
 Lg
-<<<<<<< HEAD
-Qf
-ig
+XR
+Nb
 hV
 nA
-nq
-=======
-Vs
-Db
-hV
-nA
-mH
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Cs
 VM
 Gp
 ZV
@@ -6918,11 +6517,7 @@ WD
 PI
 qe
 WD
-<<<<<<< HEAD
-ka
-=======
-JA
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+kc
 mR
 WD
 Gp
@@ -6946,11 +6541,11 @@ aE
 JY
 JY
 JY
-DK
-HI
-DK
-HI
-DK
+mJ
+kj
+mJ
+kj
+mJ
 JY
 cN
 Cl
@@ -6998,11 +6593,7 @@ WD
 de
 mR
 WD
-<<<<<<< HEAD
-xV
-=======
-Ib
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+rc
 NB
 TX
 Sg
@@ -7010,15 +6601,9 @@ mR
 Sg
 El
 nY
-<<<<<<< HEAD
-Ui
+wq
 WD
-EG
-=======
-fT
-WD
-zJ
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+rG
 qF
 XT
 Sf
@@ -7029,11 +6614,11 @@ Sf
 eZ
 xj
 JY
-DK
-DK
-DK
-DK
-DK
+mJ
+mJ
+mJ
+mJ
+mJ
 JY
 cN
 Cl
@@ -7068,11 +6653,7 @@ eg
 cf
 PF
 cf
-<<<<<<< HEAD
-BT
-=======
-xq
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+fg
 vy
 hL
 An
@@ -7106,11 +6687,11 @@ ia
 JY
 JY
 JY
-DK
-DK
-DK
-DK
-DK
+mJ
+mJ
+mJ
+mJ
+mJ
 JY
 JY
 JY
@@ -7179,11 +6760,11 @@ MQ
 JY
 ma
 JC
-db
-db
-db
-db
-db
+mK
+mK
+mK
+mK
+mK
 xP
 ma
 JY
@@ -7252,11 +6833,11 @@ Iw
 Vq
 Si
 QP
-db
-db
-db
-db
-db
+mK
+mK
+mK
+mK
+mK
 nJ
 mL
 JY
@@ -7323,23 +6904,15 @@ WD
 JY
 JY
 JY
-<<<<<<< HEAD
-Wu
-=======
-Fi
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Tt
 QP
-db
-db
-db
-db
-db
+mK
+mK
+mK
+mK
+mK
 nJ
-<<<<<<< HEAD
-OZ
-=======
-qg
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+iR
 JY
 Cl
 Cl
@@ -7395,11 +6968,7 @@ MJ
 tq
 OM
 WD
-<<<<<<< HEAD
-EG
-=======
-zJ
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+rG
 qF
 Gc
 rW
@@ -7410,11 +6979,11 @@ yV
 JY
 wW
 Cu
-db
-db
-db
-db
-db
+mK
+mK
+mK
+mK
+mK
 Qc
 dN
 JY
@@ -7475,11 +7044,7 @@ Ez
 mR
 qF
 WD
-<<<<<<< HEAD
-bb
-=======
-wd
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Yt
 rW
 MN
 WD
@@ -7487,11 +7052,11 @@ yV
 JY
 MD
 ti
-CG
-CG
-CG
-CG
-CG
+mN
+mN
+mN
+mN
+mN
 PW
 ci
 JY
@@ -7529,11 +7094,7 @@ cf
 LS
 WD
 Gi
-<<<<<<< HEAD
-Jq
-=======
-td
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+dB
 YY
 vH
 La
@@ -7543,11 +7104,7 @@ La
 og
 SD
 WD
-<<<<<<< HEAD
-KQ
-=======
-Rf
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Tx
 iY
 iY
 iY
@@ -7568,11 +7125,11 @@ WD
 JY
 RS
 Zg
-QJ
-QJ
-po
-qv
-QJ
+QG
+QG
+wJ
+mC
+QG
 lV
 CN
 JY
@@ -7641,11 +7198,11 @@ mR
 Oc
 Si
 Zg
-QJ
-qv
-bY
-QJ
-QJ
+QG
+mC
+AJ
+QG
+QG
 lV
 ci
 JY
@@ -7749,11 +7306,7 @@ dh
 CH
 be
 QN
-<<<<<<< HEAD
-eN
-=======
-lu
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+oT
 cf
 pG
 cf
@@ -7761,11 +7314,7 @@ fc
 WD
 Mi
 xZ
-<<<<<<< HEAD
-fl
-=======
-uG
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+PN
 qL
 WD
 nP
@@ -8060,20 +7609,12 @@ Bb
 SN
 cG
 BK
-<<<<<<< HEAD
-gn
-=======
-MB
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+OP
 WD
 WD
 qe
 VV
-<<<<<<< HEAD
-kW
-=======
-jh
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+eY
 hZ
 hZ
 hZ
@@ -8130,11 +7671,7 @@ RH
 RH
 RH
 Ff
-<<<<<<< HEAD
-jO
-=======
-fg
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+kP
 cf
 PF
 cf
@@ -8211,11 +7748,7 @@ bV
 cf
 PF
 cf
-<<<<<<< HEAD
-Yu
-=======
-YR
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+AD
 BK
 Ur
 wf
@@ -8232,11 +7765,7 @@ mO
 hZ
 hZ
 VV
-<<<<<<< HEAD
-na
-=======
-uw
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+XQ
 iP
 jf
 FT
@@ -8304,11 +7833,7 @@ WD
 WD
 YZ
 VV
-<<<<<<< HEAD
-kW
-=======
-jh
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+eY
 hE
 xd
 hZ
@@ -8441,11 +7966,7 @@ MO
 sK
 Lj
 iM
-<<<<<<< HEAD
-KE
-=======
-sZ
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+wj
 WD
 RR
 JF
@@ -8610,11 +8131,7 @@ WD
 WD
 VV
 VV
-<<<<<<< HEAD
-nn
-=======
-xe
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+Ni
 jf
 YU
 VV
@@ -8677,11 +8194,7 @@ PI
 PI
 PI
 WD
-<<<<<<< HEAD
-ip
-=======
-CE
->>>>>>> 0e904f70328 ([MDB IGNORE] Moves non floor turfs off /floor. You can put lattices on lavaland edition (#65504))
+NW
 YZ
 cn
 JL

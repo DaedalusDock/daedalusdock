@@ -1,3 +1,4 @@
+/* PARIAH EDIT REMOVAL - moved to modular, master_files fullauto.dm
 #define AUTOFIRE_MOUSEUP 0
 #define AUTOFIRE_MOUSEDOWN 1
 
@@ -284,3 +285,4 @@
 
 #undef AUTOFIRE_MOUSEUP
 #undef AUTOFIRE_MOUSEDOWN
+*/

@@ -310,16 +310,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	item_path = /obj/item/clothing/head/ushanka/sec
 	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY)
 
-/datum/loadout_item/head/navyblueofficerberet
-	name = "Security Officer's Navyblue beret"
-	item_path = /obj/item/clothing/head/beret/sec/navyofficer
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
-
-/datum/loadout_item/head/navybluewardenberet
-	name = "Warden's navyblue beret"
-	item_path = /obj/item/clothing/head/beret/sec/navywarden
-	restricted_roles = list(JOB_WARDEN)
-
 /datum/loadout_item/head/nursehat
 	name = "Nurse Hat"
 	item_path = /obj/item/clothing/head/nursehat
@@ -345,6 +335,21 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	item_path = /obj/item/clothing/head/beret/medical
 	restricted_roles = list(JOB_MEDICAL_DOCTOR,JOB_VIROLOGIST, JOB_CHEMIST, JOB_CHIEF_MEDICAL_OFFICER)
 
+/datum/loadout_item/head/beret_sec
+	name = "Security Beret"
+	item_path = /obj/item/clothing/head/beret/sec
+	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
+
+/datum/loadout_item/head/navyblueofficerberet
+	name = "Security Navy Blue Beret"
+	item_path = /obj/item/clothing/head/beret/sec/navyofficer
+	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
+
+/datum/loadout_item/head/navybluewardenberet
+	name = "Warden's Navy Blue beret"
+	item_path = /obj/item/clothing/head/beret/sec/navywarden
+	restricted_roles = list(JOB_WARDEN)
+
 /datum/loadout_item/head/beret_paramedic
 	name = "Paramedic Beret"
 	item_path = /obj/item/clothing/head/beret/medical/paramedic
@@ -361,12 +366,12 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	restricted_roles = list(JOB_CHEMIST, JOB_CHIEF_MEDICAL_OFFICER)
 
 /datum/loadout_item/head/beret_sci
-	name = "Scientist's Beret"
+	name = "Science Beret"
 	item_path = /obj/item/clothing/head/beret/science
 	restricted_roles = list(JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST, JOB_RESEARCH_DIRECTOR)
 
 /datum/loadout_item/head/beret_robo
-	name = "Roboticist's Beret"
+	name = "Robotics Beret"
 	item_path = /obj/item/clothing/head/beret/science/fancy/robo
 	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR)
 

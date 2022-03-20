@@ -56,6 +56,8 @@ SUBSYSTEM_DEF(decay)
 
 	do_medical()
 
+	return ..()
+
 /datum/controller/subsystem/decay/proc/do_common()
 	for(var/turf/open/floor/iterating_floor in possible_turfs)
 		if(!istype(iterating_floor, /turf/open/floor/plating))

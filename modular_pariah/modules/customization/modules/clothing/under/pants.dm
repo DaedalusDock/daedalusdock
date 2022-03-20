@@ -27,13 +27,6 @@
 	desc = "Yeehaw"
 	icon_state = "chaps"
 
-/obj/item/clothing/under/pants/yoga
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	name = "yoga pants"
-	desc = "Comfy!"
-	icon_state = "yoga_pants"
-
 /obj/item/clothing/under/pants/blackshorts
 	name = "black ripped shorts"
 	desc = "No one will ever know if you did this on accident or on purpose, but hey it looks good."

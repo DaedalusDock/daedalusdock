@@ -150,38 +150,27 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head/dark_blue_hardhat
 	name = "Dark Blue Hardhat"
 	item_path = /obj/item/clothing/head/hardhat/dblue
+	restricted_roles = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN)
 
 /datum/loadout_item/head/orange_hardhat
 	name = "Orange Hardhat"
 	item_path = /obj/item/clothing/head/hardhat/orange
+	restricted_roles = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN)
 
 /datum/loadout_item/head/red_hardhat
 	name = "Red Hardhat"
 	item_path = /obj/item/clothing/head/hardhat/red
+	restricted_roles = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN)
 
 /datum/loadout_item/head/white_hardhat
 	name = "White Hardhat"
 	item_path = /obj/item/clothing/head/hardhat/white
+	restricted_roles = list(JOB_CHIEF_ENGINEER)
 
 /datum/loadout_item/head/yellow_hardhat
 	name = "Yellow Hardhat"
 	item_path = /obj/item/clothing/head/hardhat
-
-/datum/loadout_item/head/mail_cap
-	name = "Mail Cap"
-	item_path = /obj/item/clothing/head/mailman
-
-/datum/loadout_item/head/nurse_hat
-	name = "Nurse Hat"
-	item_path = /obj/item/clothing/head/nursehat
-
-/datum/loadout_item/head/kitty_ears
-	name = "Kitty Ears"
-	item_path = /obj/item/clothing/head/kitty
-
-/datum/loadout_item/head/rabbit_ears
-	name = "Rabbit Ears"
-	item_path = /obj/item/clothing/head/rabbitears
+	restricted_roles = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN)
 
 /datum/loadout_item/head/bandana
 	name = "Bandana"
@@ -198,48 +187,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head/bowler_hat
 	name = "Bowler Hat"
 	item_path = /obj/item/clothing/head/bowler
-
-//HALLOWEEN
-
-/datum/loadout_item/head/bear_pelt
-	name = "Bear Pelt"
-	item_path = /obj/item/clothing/head/bearpelt
-
-/datum/loadout_item/head/plague_doctor
-	name = "Plague Doctor Cap"
-	item_path = /obj/item/clothing/head/plaguedoctorhat
-
-/datum/loadout_item/head/snowman
-	name = "Snowman Head"
-	item_path = /obj/item/clothing/head/snowman
-
-/datum/loadout_item/head/chicken
-	name = "Chicken Suit Head"
-	item_path = /obj/item/clothing/head/chicken
-
-/datum/loadout_item/head/cardborg
-	name = "Cardborg Helmet"
-	item_path = /obj/item/clothing/head/cardborg
-
-/datum/loadout_item/head/xenos
-	name = "Xenos Helmet"
-	item_path = /obj/item/clothing/head/xenos
-
-/datum/loadout_item/head/wedding_veil
-	name = "Wedding Veil"
-	item_path = /obj/item/clothing/head/weddingveil
-
-/datum/loadout_item/head/synde
-	name = "Black Space-helmet Replica"
-	item_path = /obj/item/clothing/head/syndicatefake
-
-/datum/loadout_item/head/glatiator
-	name = "Gladiator Helmet"
-	item_path = /obj/item/clothing/head/helmet/gladiator
-
-/datum/loadout_item/head/griffin
-	name = "Griffon Head"
-	item_path = /obj/item/clothing/head/griffin
 
 //MISC
 /datum/loadout_item/head/baseball
@@ -302,14 +249,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Flak Helmet"
 	item_path = /obj/item/clothing/head/flakhelm
 
-/datum/loadout_item/head/bunnyears
-	name = "Bunny Ears"
-	item_path = /obj/item/clothing/head/rabbitears
-
-/datum/loadout_item/head/mailmanhat
-	name = "Mailman's Hat"
-	item_path = /obj/item/clothing/head/mailman
-
 /datum/loadout_item/head/whitekepi
 	name = "White Kepi"
 	item_path = /obj/item/clothing/head/kepi
@@ -317,22 +256,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head/whitekepiold
 	name = "White Kepi, Old"
 	item_path = /obj/item/clothing/head/kepi/old
-
-/datum/loadout_item/head/maidhead
-	name = "Maid Headband"
-	item_path = /obj/item/clothing/head/maid
-
-/datum/loadout_item/head/cardboard
-	name = "Cardboard Helmet"
-	item_path = /obj/item/clothing/head/cardborg
-
-/datum/loadout_item/head/wig
-	name = "Wig"
-	item_path = /obj/item/clothing/head/wig
-
-/datum/loadout_item/head/wignatural
-	name = "Natural Wig"
-	item_path = /obj/item/clothing/head/wig/natural
 
 //Cowboy Stuff
 /datum/loadout_item/head/cowboyhat
@@ -371,48 +294,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Deputy Hat"
 	item_path = /obj/item/clothing/head/cowboyhat/deputy
 
-//Trek fancy Hats! (Job-locked too)
-/datum/loadout_item/head/trekcap
-	name = "Federation Officer's Cap (White)"
-	item_path = /obj/item/clothing/head/caphat/parade/fedcap
-	restricted_roles = list(JOB_CAPTAIN,JOB_HEAD_OF_PERSONNEL)
-
-/datum/loadout_item/head/trekcapcap
-	name = "Federation Officer's Cap (Black)"
-	item_path = /obj/item/clothing/head/caphat/parade/fedcap/black
-	restricted_roles = list(JOB_CAPTAIN,JOB_HEAD_OF_PERSONNEL,JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/head/trekcapmedisci
-	name = "Federation Officer's Cap (Blue)"
-	item_path = /obj/item/clothing/head/caphat/parade/fedcap/medsci
-	restricted_roles = list(JOB_CHIEF_MEDICAL_OFFICER,JOB_MEDICAL_DOCTOR,JOB_PARAMEDIC,JOB_CHEMIST,JOB_VIROLOGIST,JOB_PSYCHOLOGIST,JOB_GENETICIST,JOB_RESEARCH_DIRECTOR,JOB_SCIENTIST,JOB_ROBOTICIST)
-
-/datum/loadout_item/head/trekcapeng
-	name = "Federation Officer's Cap (Yellow)"
-	item_path = /obj/item/clothing/head/caphat/parade/fedcap/eng
-	restricted_roles = list(JOB_CHIEF_ENGINEER,JOB_ATMOSPHERIC_TECHNICIAN,JOB_STATION_ENGINEER,JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY,JOB_CARGO_TECHNICIAN, JOB_SHAFT_MINER, JOB_QUARTERMASTER)
-
-/datum/loadout_item/head/trekcapsec
-	name = "Federation Officer's Cap (Red)"
-	item_path = /obj/item/clothing/head/caphat/parade/fedcap/sec
-	restricted_roles = list(JOB_CHIEF_ENGINEER,JOB_ATMOSPHERIC_TECHNICIAN,JOB_STATION_ENGINEER,JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY,JOB_CARGO_TECHNICIAN, JOB_SHAFT_MINER, JOB_QUARTERMASTER)
-
 //Job Locked Hats
-/datum/loadout_item/head/imperial_cap
-	name = "Captain's Naval Cap"
-	item_path = /obj/item/clothing/head/imperial/cap
-	restricted_roles = list(JOB_CAPTAIN)
-
-/datum/loadout_item/head/imperial_hop
-	name = "Head of Personnel's Naval Cap"
-	item_path = /obj/item/clothing/head/imperial/hop
-	restricted_roles = list(JOB_HEAD_OF_PERSONNEL)
-
-/datum/loadout_item/head/imperial_ce
-	name = "Chief Engineer's blast helmet."
-	item_path = /obj/item/clothing/head/imperial/ce
-	restricted_roles = list(JOB_CHIEF_ENGINEER)
-
 /datum/loadout_item/head/cowboyhat_sec
 	name = "Cowboy Hat, Security"
 	item_path = /obj/item/clothing/head/cowboyhat/sec
@@ -428,29 +310,9 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	item_path = /obj/item/clothing/head/ushanka/sec
 	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY)
 
-/datum/loadout_item/head/blasthelmet
-	name = "General's Helmet"
-	item_path = /obj/item/clothing/head/imperialhelmet
-	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/head/navybluehoscap
-	name = "Head of Security's Naval Cap"
-	item_path = /obj/item/clothing/head/imperial/hos
-	restricted_roles = list(JOB_HEAD_OF_SECURITY)
-
 /datum/loadout_item/head/navyblueofficerberet
 	name = "Security Officer's Navyblue beret"
 	item_path = /obj/item/clothing/head/beret/sec/navyofficer
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
-
-/datum/loadout_item/head/solofficercap
-	name = "Security Officer's Sol Cap"
-	item_path = /obj/item/clothing/head/sec/peacekeeper/sol
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
-
-/datum/loadout_item/head/soltrafficoff
-	name = "Traffic Officer Cap"
-	item_path = /obj/item/clothing/head/soltraffic
 	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_HEAD_OF_SECURITY, JOB_WARDEN)
 
 /datum/loadout_item/head/navybluewardenberet
@@ -458,30 +320,15 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	item_path = /obj/item/clothing/head/beret/sec/navywarden
 	restricted_roles = list(JOB_WARDEN)
 
-/datum/loadout_item/head/cybergoggles	//Cyberpunk-P.I. Outfit
-	name = "Type-34C Forensics Headwear"
-	item_path = /obj/item/clothing/head/fedora/det_hat/cybergoggles
-	restricted_roles = list(JOB_DETECTIVE)
-
 /datum/loadout_item/head/nursehat
 	name = "Nurse Hat"
 	item_path = /obj/item/clothing/head/nursehat
 	restricted_roles = list(JOB_MEDICAL_DOCTOR, JOB_CHIEF_MEDICAL_OFFICER, JOB_GENETICIST, JOB_CHEMIST, JOB_VIROLOGIST)
 
-/datum/loadout_item/head/imperial_generic
-	name = "Naval Officer Cap"
-	item_path = /obj/item/clothing/head/imperial
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/head/imperial_grey
-	name = "Grey Naval Officer Cap"
-	item_path = /obj/item/clothing/head/imperial/grey
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/head/imperial_red
-	name = "Red Naval Officer Cap"
-	item_path = /obj/item/clothing/head/imperial/red
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
+/datum/loadout_item/head/mailmanhat
+	name = "Mailman's Hat"
+	item_path = /obj/item/clothing/head/mailman
+	restricted_roles = list(JOB_QUARTERMASTER, JOB_CARGO_TECHNICIAN)
 
 // JOB - Berets
 /datum/loadout_item/head/atmos_beret
@@ -535,80 +382,39 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Fashionable baseball cap"
 	item_path = /obj/item/clothing/head/soft/yankee
 
-//Families Gear
-/datum/loadout_item/head/tmc
-	name = "TMC Hat"
-	item_path = /obj/item/clothing/head/tmc
-
-/datum/loadout_item/head/pg
-	name = "PG Hat"
-	item_path = /obj/item/clothing/head/pg
-
-/datum/loadout_item/head/deckers
-	name = "Deckers Hat"
-	item_path = /obj/item/clothing/head/deckers
-
-/datum/loadout_item/head/morningstar
-	name = "Morningstar Hat"
-	item_path = /obj/item/clothing/head/morningstar
-
-/datum/loadout_item/head/saints
-	name = "Saints Hat"
-	item_path = /obj/item/clothing/head/saints
-
-/datum/loadout_item/head/sybil
-	name = "Sybil Hat"
-	item_path = /obj/item/clothing/head/sybil_slickers
-
-/datum/loadout_item/head/basil
-	name = "Basil Hat"
-	item_path = /obj/item/clothing/head/basil_boys
-
-// Donator hats here
-/datum/loadout_item/head/donator
-	donator_only = TRUE
-
-/datum/loadout_item/head/donator/poppy
+/datum/loadout_item/head/poppy
 	name = "Poppy Flower"
 	item_path = /obj/item/food/grown/poppy
 
-/datum/loadout_item/head/donator/lily
+/datum/loadout_item/head/lily
 	name = "Lily Flower"
 	item_path = /obj/item/food/grown/poppy/lily
 
-/datum/loadout_item/head/donator/geranium
+/datum/loadout_item/head/geranium
 	name = "Geranium Flower"
 	item_path = /obj/item/food/grown/poppy/geranium
 
-/datum/loadout_item/head/donator/fraxinella
+/datum/loadout_item/head/fraxinella
 	name = "Fraxinella Flower"
 	item_path = /obj/item/food/grown/poppy/geranium/fraxinella
 
-/datum/loadout_item/head/donator/harebell
+/datum/loadout_item/head/harebell
 	name = "Harebell Flower"
 	item_path = /obj/item/food/grown/harebell
 
-/datum/loadout_item/head/donator/rose
+/datum/loadout_item/head/rose
 	name = "Rose Flower"
 	item_path = /obj/item/food/grown/rose
 
-/datum/loadout_item/head/donator/carbon_rose
+/datum/loadout_item/head/carbon_rose
 	name = "Carbon Rose Flower"
 	item_path = /obj/item/grown/carbon_rose
 
-/datum/loadout_item/head/donator/sunflower
+/datum/loadout_item/head/sunflower
 	name = "Sunflower"
 	item_path = /obj/item/food/grown/sunflower
 
-/datum/loadout_item/head/donator/rainbow_bunch
+/datum/loadout_item/head/rainbow_bunch
 	name = "Rainbow Bunch"
 	item_path = /obj/item/food/grown/rainbow_flower
 	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
-
-/datum/loadout_item/head/donator/enclave
-	name = "Enclave Cap"
-	item_path = /obj/item/clothing/head/soft/enclave
-
-/datum/loadout_item/head/donator/enclaveo
-	name = "Enclave Cap - officer"
-	item_path = /obj/item/clothing/head/soft/enclaveo

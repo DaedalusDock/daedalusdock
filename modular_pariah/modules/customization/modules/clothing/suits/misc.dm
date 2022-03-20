@@ -26,13 +26,6 @@
 	desc = "A modest labcoat with medical coloring, meant to distinguish personnel in the line of duty."
 	icon_state = "labcoat_gen"
 
-/obj/item/clothing/suit/dutchjacketsr
-	name = "western jacket"
-	desc = "Botanists screaming of mangos have been rumored to wear this."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	icon_state = "dutchjacket"
-
 /obj/item/clothing/suit/hawaiian_blue
 	name = "blue hawaiian shirt"
 	desc = "Strangely en vouge with aviator wearing shibas."
@@ -134,17 +127,6 @@
 	icon_state = "aerostatic_bomber_jacket"
 	mutant_variants = NONE
 
-/obj/item/clothing/suit/blackfurrich
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "expensive black fur coat"
-	desc = "Ever thought to yourself 'I'm a rich bitch, but I haven't GOT the Mafia Princess look?' Well thanks to the tireless work of underpaid slave labour in Space China, your dreams of looking like a bitch have been fulfilled, like a Genie with a sweatshop."
-	icon_state = "expensivecoat"
-	mutant_variants = NONE
-	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-
 /obj/item/clothing/suit/brownbattlecoat
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
@@ -193,18 +175,6 @@
 	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 
-/obj/item/clothing/suit/british_officer
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "british officers coat"
-	desc = "Whether you're commanding a colonial crusade or commanding a battalion for the British Empire, this coat will suit you."
-	icon_state = "british_officer"
-	mutant_variants = NONE
-	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	armor = list(MELEE = 10, BULLET = 10, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-
 /obj/item/clothing/suit/modern_winter
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
@@ -225,30 +195,6 @@
 	mutant_variants = NONE
 	body_parts_covered = CHEST|GROIN|ARMS
 
-
-/obj/item/clothing/suit/gautumn
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "neo american general's coat"
-	desc = "In stark contrast to the undersuit, this large and armored coat is as white as snow, perfect for the bloodstains."
-	icon_state = "soldier"
-	mutant_variants = NONE
-	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	armor = list(MELEE = 10, BULLET = 10, LASER = 20,ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-
-/obj/item/clothing/suit/autumn
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "neo american officer's coat"
-	desc = "In stark contrast to the undersuit, this coat is a greeny white colour, layered with slight protection against bullets and melee weapons."
-	icon_state = "autumn"
-	mutant_variants = NONE
-	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	armor = list(MELEE = 10, BULLET = 10, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/suit/texas
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
@@ -274,30 +220,6 @@
 	desc = "Hop on your horse, dawn your really fluffy hat, and strap this coat to your back."
 	icon_state = "don_cossak"
 	mutant_variants = NONE
-
-/obj/item/clothing/suit/corgisuit/en
-	name = "\improper super-hero E-N suit"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	icon_state = "ensuit"
-	mutant_variants = NONE
-
-/obj/item/clothing/suit/corgisuit/en/New()
-	..()
-	START_PROCESSING(SSobj, src)
-
-/obj/item/clothing/suit/corgisuit/en/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/clothing/suit/corgisuit/en/process()
-	if(prob(2))
-		for(var/obj/M in orange(2,src))
-			if(!M.anchored && (M.flags_1 & CONDUCT_1))
-				step_towards(M,src)
-		for(var/mob/living/silicon/S in orange(2,src))
-			if(istype(S, /mob/living/silicon/ai)) continue
-			step_towards(S,src)
 
 /obj/item/clothing/suit/trenchbrown
 	name = "brown trenchcoat"

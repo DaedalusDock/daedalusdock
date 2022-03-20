@@ -52,22 +52,6 @@
 	desc = "A black winter coat hood."
 	icon_state = "winterhood_aformal"
 
-/obj/item/clothing/suit/hooded/wintercoat/ratvar/fake
-	name = "brass winter coat"
-	desc = "A brass-plated button up winter coat. Instead of a zipper tab, it has a brass cog with a tiny red piece of plastic as an inset."
-	icon_state = "coatratvar"
-	inhand_icon_state = "coatratvar"
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman, /obj/item/toy, /obj/item/storage/fancy/cigarettes, /obj/item/lighter)
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0,"energy" = 0, "bomb" = 0, "bio" = 0, "fire" = 0, "acid" = 0, "wound" = 0)
-
-/obj/item/clothing/suit/hooded/wintercoat/narsie/fake
-	name = "runed winter coat"
-	desc = "A dusty button up winter coat in the tones of oblivion and ash. The zipper pull looks like a single drop of blood."
-	icon_state = "coatnarsie"
-	inhand_icon_state = "coatnarsie"
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman, /obj/item/toy, /obj/item/storage/fancy/cigarettes, /obj/item/lighter)
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0,"energy" = 0, "bomb" = 0, "bio" = 0, "fire" = 0, "acid" = 0, "wound" = 0)
-
 /obj/item/clothing/suit/flakjack
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'

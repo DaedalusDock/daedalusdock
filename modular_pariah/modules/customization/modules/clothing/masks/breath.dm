@@ -107,24 +107,6 @@
 	visor_flags_inv = HIDEFACIALHAIR|HIDESNOUT
 	visor_flags_cover = PEPPERPROOF
 
-/obj/item/clothing/mask/balaclava/threehole
-	name = "three hole balaclava"
-	desc = "Tiocfaidh ar la."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/masks.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/mask.dmi'
-	icon_state = "balaclavam"
-	inhand_icon_state = "balaclava"
-
-/obj/item/clothing/mask/balaclava/threehole/green
-	name = "three hole green balaclava"
-	desc = "Tiocfaidh ar la."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/masks.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/mask.dmi'
-	icon_state = "swatclavam"
-	inhand_icon_state = "balaclava"
-
-
-
 /obj/item/clothing/mask/gas/german
 	name = "black gas mask"
 	desc = "A black gas mask. Are you my Mummy?"

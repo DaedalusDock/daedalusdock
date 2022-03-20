@@ -8,32 +8,6 @@
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	can_adjust = FALSE
 
-/obj/item/clothing/under/misc/royalkilt
-	name = "royal kilt"
-	desc = "A far more modern kilt, the tunic's been tossed for a combat sweater, the Hunting tartan swapped for Royal Stuart, the itchy green socks are now not itchy or green!"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "royalkilt"
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
-/obj/item/clothing/under/misc/tactical1
-	name = "irish tactical uniform"
-	desc = "The SAM missiles are in the sky! Faint whiffs of cheap booze and Libyan semtex come off this getup, someone was so kind as to leave a book in one of the pockets, too bad it's all in Gaelic!"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "tactical1"
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
-/obj/item/clothing/under/rank/security/blackwatch
-	name = "security kilt"
-	desc = "Youve heard about the B-men, the cruel RUC. Well theres another regiment the devil calls his own. Theyre known as the Black Watch commissioned by the Crown"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "blackwatch"
-	inhand_icon_state = "kilt"
-	armor = list(MELEE = 30, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 10, ACID = 20, WOUND = 10)
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
 /obj/item/clothing/under/misc/discounder
 	name = "superstar cop uniform"
 	desc = "Flare cut trousers and a dirty shirt that might have been classy before someone took a piss in the armpits, it's the dress of a superstar."
@@ -66,13 +40,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESHOES
 
-/obj/item/clothing/under/misc/peakyblinder
-	name = "birmingham bling"
-	desc = "A grey suit with a white vest, maybe you run a whiskey plant, maybe you have a frenemy relationship with that guy out of that one film, whatever it is, it's still a nice looking suit."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "peakyblinder"
-
 /obj/item/clothing/under/misc/taccas
 	name = "tacticasual uniform"
 	desc = "A white wifebeater on top of some cargo pants. For when you need to carry various beers."
@@ -86,49 +53,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "tracksuit_blue"
-
-/obj/item/clothing/under/misc/hlscience
-	name = "ridiculous scientist outfit"
-	desc = "The tie is mandatory."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "hl_scientist"
-
-/obj/item/clothing/under/enclaveo
-	name = "neo american officer uniform"
-	desc = "Throughout the stars, rumors of mad scientists and angry drill sergeant run rampent, of creatures in armor black as night being led by men or women wearing this uniform, they share one thing, a deep, natonalistic zeal of the dream of America."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "enclaveo"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
-/obj/item/clothing/under/enclave
-	name = "neo american sergeant uniform"
-	desc = "Not as high ranking as the officers often standing in front of them, this outfit is less armored than it's sister."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "enclave"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
-/obj/item/clothing/under/enclaveo/real
-	name = "neo american officer uniform"
-	desc = "Throughout the stars, rumors of mad scientists and angry drill sergeant run rampent, of creatures in armor black as night being led by men or women wearing this uniform, they share one thing, a deep, natonalistic zeal of the dream of America."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "enclaveo"
-	armor = list(MELEE = 0, BULLET = 10, LASER = 20,ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 0, ACID = 10, WOUND = 10)
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-
-/obj/item/clothing/under/enclave/real
-	name = "neo american sergeant uniform"
-	desc = "Not as high ranking as the officers often standing in front of them, this outfit is less armored than it's sister."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "enclave"
-	armor = list(MELEE = 0, BULLET = 10, LASER = 10,ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 0, ACID = 10, WOUND = 10)
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 
 /obj/item/clothing/under/tachawaiian
 	name = "orange tactical hawaiian outfit"
@@ -182,42 +106,6 @@
 	icon_state = "pmars_robe"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	flags_inv = HIDESHOES
-
-///COWBOY
-/obj/item/clothing/under/rancher
-	name = "rancher outfit"
-	desc = "An outfit from the desert outback, phrases around family murder or revenge seem to echo from this get-up."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "rancher"
-
-/obj/item/clothing/under/rancher/pioneer
-	name = "pioneer outfit"
-	desc = "An outfit from the desert outback, this one seems like one on the frontline, don't trust a german, or anyone trying to get you to go to Callifornia."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "pioneer"
-
-/obj/item/clothing/under/rancher/worker
-	name = "western worker outfit"
-	desc = "An outfit from the desert outback, this one seems something a coffin maker would wear, hope you're good at eyeballing size."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "worker"
-
-/obj/item/clothing/under/rancher/cowboy
-	name = "cowboy outfit"
-	desc = "An outfit from the desert outback, this one seems fitting for a hat and poncho, maybe a long flowing coat."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "cowboy"
-
-/obj/item/clothing/under/rancher/checkered
-	name = "western checkered outfit"
-	desc = "An outfit from the desert outback, this one seems like something someone with no fashion sense would wear."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "checkered"
 
 ///FORMAL DEPT
 /obj/item/clothing/under/rank/medical/virologist/formal ///Do NOT add this to the vendor unless you want Peter Griffen
@@ -329,13 +217,6 @@
 	armor = list(MELEE = 10, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	can_adjust = FALSE
 
-/obj/item/clothing/under/uvf
-	name = "british combat sweater"
-	desc = "Thankfully doesn't include the sash your father wore."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "uvf"
-
 /obj/item/clothing/under/suit/black/female/skirt
 	name = "feminine skirt"
 	desc = "Perfect for a secretary that does no work."
@@ -408,93 +289,12 @@
 	mutant_variants = NONE
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 
-/obj/item/clothing/under/rank/security/peacekeeper/trousers
-	name = "peacekeeper's trousers"
-	desc = "Some light blue combat trousers, however you get protected by these, I have no idea."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "workpants_blue"
-	body_parts_covered = GROIN
-	can_adjust = FALSE
-	mutant_variants = NONE
-	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
-
-/obj/item/clothing/under/rank/security/peacekeeper/trousers/red
+/obj/item/clothing/under/rank/security/trousers/red
 	name = "security officer's trousers"
 	desc = "Some red combat trousers, however you get protected by these, I have no idea."
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "workpants_red"
-
-/obj/item/clothing/under/rank/captain/imperial
-	desc = "A white jumpsuit adorned with golden epaulets and a rank badge denoting a Captain. There are two ways to destroy a person, kill him, or ruin his reputation."
-	name = "captain's naval jumpsuit"
-	icon_state = "impcap"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/rank/civilian/head_of_personnel/imperial
-	desc = "A olive green navel suit and a rank badge denoting the Personnel Officer. Target, maximum firepower."
-	name = "head of personnel's naval jumpsuit"
-	icon_state = "imphop"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/rank/security/head_of_security/imperial
-	desc = "A tar black navel jumpsuit and a rank badge denoting the Officer of The Internal Security Division. Be careful your underlings don't bump their head on a door."
-	name = "head of security's naval jumpsuit"
-	icon_state = "imphos"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/rank/rnd/research_director/imperial
-	desc = "A grey, sterile jumpsuit with a rank badge denoting the Officer of the Internal Science Division. It's a peaceful life."
-	name = "research director's naval jumpsuit"
-	icon_state = "imprd"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/rank/engineering/chief_engineer/imperial
-	desc = "A black, lead lined jumpsuit with a rank badge denoting the Officer of the Internal Engineering Division. Doesn't come with a death machine building guide."
-	name = "chief engineer's naval jumpsuit"
-	icon_state = "impce"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/rank/medical/chief_medical_officer/imperial
-	desc = "A teal, sterile jumpsuit with a rank badge denoting the Officer of the Medical Corps. Doesn't protect against blaster fire."
-	name = "chief medical officer's naval jumpsuit"
-	icon_state = "impcmo"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/imperial
-	desc = "A light grey jumpsuit with a rank badge denoting an Officer. Doesn't protect against blaster fire."
-	name = "light grey officer's naval jumpsuit"
-	icon_state = "impcom"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/imperial/grey
-	desc = "A grey jumpsuit with a rank badge denoting an Officer. Doesn't protect against blaster fire."
-	name = "grey officer's naval jumpsuit"
-	icon_state = "impcommand"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/imperial/grey/trouser
-	desc = "A grey jumpsuit with a rank badge denoting an Officer. This one has grey trousers."
-	name = "grey officer's naval jumpsuit"
-	icon_state = "admiral_uniform"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-
-/obj/item/clothing/under/imperial/red
-	desc = "A red jumpsuit with a rank badge denoting an Officer. Doesn't protect against blaster fire."
-	name = "red officer's naval jumpsuit"
-	icon_state = "impred_uniform"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 
 /obj/item/clothing/under/rank/civilian/lawyer/grey/skirtybaby
 	desc = "A white shirt with a grey pancilskirt."
@@ -647,10 +447,3 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "black_suit_fem"
-
-/obj/item/clothing/under/rank/captain/black
-	name = "captains black suit"
-	desc = "A very sleek naval captains uniform for those who think they're commanding a battleship."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "captainblacksuit"

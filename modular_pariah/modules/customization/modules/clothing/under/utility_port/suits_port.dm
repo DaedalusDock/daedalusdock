@@ -18,7 +18,7 @@
 /obj/item/clothing/suit/toggle/jacket
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "bomber jacket"
+	name = "classic bomber jacket"
 	desc = "A warm bomber jacket, with synthetic-wool lining to keep you nice and warm in the depths of space. Aviators not included."
 	icon_state = "bomberalt"
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman, /obj/item/toy, /obj/item/storage/fancy/cigarettes, /obj/item/lighter, /obj/item/radio)

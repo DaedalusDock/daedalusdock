@@ -50,80 +50,9 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Rainbow Jumpskirt"
 	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
 
-/datum/loadout_item/under/jumpsuit/impcap
-	name = "Captain's Naval Jumpsuit"
-	item_path = /obj/item/clothing/under/rank/captain/imperial
-	restricted_roles = list(JOB_CAPTAIN)
-
-/datum/loadout_item/under/jumpsuit/imphop
-	name = "Head of Personnel's Naval Jumpsuit"
-	item_path = /obj/item/clothing/under/rank/civilian/head_of_personnel/imperial
-	restricted_roles = list(JOB_HEAD_OF_PERSONNEL)
-
-/datum/loadout_item/under/jumpsuit/imphos
-	name = "Head of Security's Naval Uniform"
-	item_path = /obj/item/clothing/under/rank/security/head_of_security/imperial
-	restricted_roles = list(JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/under/jumpsuit/impcmo
-	name = "Chief Medical Officer's Naval Uniform"
-	item_path = /obj/item/clothing/under/rank/medical/chief_medical_officer/imperial
-	restricted_roles = list(JOB_CHIEF_MEDICAL_OFFICER)
-
-/datum/loadout_item/under/jumpsuit/impce
-	name = "Chief Engineer's Naval Uniform"
-	item_path = /obj/item/clothing/under/rank/engineering/chief_engineer/imperial
-	restricted_roles = list(JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/under/jumpsuit/imprd
-	name = "Research Director's Naval Uniform"
-	item_path = /obj/item/clothing/under/rank/rnd/research_director/imperial
-	restricted_roles = list(JOB_RESEARCH_DIRECTOR)
-
-/datum/loadout_item/under/jumpsuit/impcommand
-	name = "Light Grey Officer's Naval Jumpsuit"
-	item_path = /obj/item/clothing/under/imperial
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/under/jumpsuit/impcom
-	name = "Grey Officer's Naval Jumpsuit"
-	item_path = /obj/item/clothing/under/imperial/grey
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/under/jumpsuit/impred
-	name = "Red Officer's Naval Jumpsuit"
-	item_path = /obj/item/clothing/under/imperial/red
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)	//NT Reps would never wear red, it's unbefitting
-
-
-/datum/loadout_item/under/jumpsuit/impcomtrous
-	name = "Grey Officer's Naval Jumpsuit (Trousers)"
-	item_path = /obj/item/clothing/under/imperial/grey/trouser
-	restricted_roles = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_RESEARCH_DIRECTOR, JOB_QUARTERMASTER, JOB_CHIEF_MEDICAL_OFFICER, JOB_CHIEF_ENGINEER)
-
-/datum/loadout_item/under/jumpsuit/solwarden
-	name = "Sol Warden Uniform"
-	item_path = /obj/item/clothing/under/rank/security/warden/peacekeeper/sol
-	restricted_roles = list(JOB_WARDEN)
-
-/datum/loadout_item/under/jumpsuit/peacetrouse
-	name = "Peacekeeper Trousers"
-	item_path = /obj/item/clothing/under/rank/security/peacekeeper/trousers
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_WARDEN, JOB_HEAD_OF_SECURITY)
-
 /datum/loadout_item/under/jumpsuit/security_trousers
 	name = "Security Trousers"
-	item_path = /obj/item/clothing/under/rank/security/peacekeeper/trousers/red
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_WARDEN, JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/under/jumpsuit/sectrafficop
-	name = "Sol Traffic Cop Uniform"
-	item_path = /obj/item/clothing/under/rank/security/peacekeeper/junior/sol/traffic
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_WARDEN, JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/under/jumpsuit/solofficerthing
-	name = "Sol Officer Uniform"
-	item_path = /obj/item/clothing/under/rank/security/peacekeeper/sol
+	item_path = /obj/item/clothing/under/rank/security/trousers/red
 	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_WARDEN, JOB_HEAD_OF_SECURITY)
 
 /datum/loadout_item/under/jumpsuit/disco
@@ -131,15 +60,10 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	item_path = /obj/item/clothing/under/misc/discounder
 	restricted_roles = list(JOB_DETECTIVE)
 
-/datum/loadout_item/under/jumpsuit/seckilt
-	name = "Security Kilt"
-	item_path = /obj/item/clothing/under/rank/security/blackwatch
-	restricted_roles = list(JOB_SECURITY_OFFICER, JOB_WARDEN, JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/under/jumpsuit/para_red
-	name = "Red Paramedic Jumpsuit"
-	item_path = /obj/item/clothing/under/utility/para_red
-	restricted_roles = list(JOB_CHIEF_MEDICAL_OFFICER, JOB_PARAMEDIC)
+/datum/loadout_item/under/jumpsuit/mailman
+	name = "Mailman's Jumpsuit"
+	item_path = /obj/item/clothing/under/misc/mailman
+	restricted_roles = list(JOB_QUARTERMASTER, JOB_CARGO_TECHNICIAN)
 
 /datum/loadout_item/under/jumpsuit/utility
 	name = "Utility Uniform"
@@ -158,11 +82,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/jumpsuit/utility_sci
 	name = "Science Utility Uniform"
 	item_path = /obj/item/clothing/under/utility/sci
-	restricted_roles = list(JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST, JOB_RESEARCH_DIRECTOR)
-
-/datum/loadout_item/under/jumpsuit/hlscientist
-	name = "Ridiculous Scientist Outfit"
-	item_path = /obj/item/clothing/under/misc/hlscience
 	restricted_roles = list(JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST, JOB_RESEARCH_DIRECTOR)
 
 /datum/loadout_item/under/jumpsuit/utility_cargo
@@ -245,6 +164,14 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Red Shorts"
 	item_path = /obj/item/clothing/under/shorts/red
 
+/datum/loadout_item/under/miscellaneous/denim_skirt
+	name = "Denim Skirt"
+	item_path = /obj/item/clothing/under/pants/denimskirt
+
+/datum/loadout_item/under/miscellaneous/jeanshorts
+	name = "Jean Shorts"
+	item_path = /obj/item/clothing/under/pants/jeanshort
+
 /datum/loadout_item/under/miscellaneous/tam
 	name = "Tan Pants"
 	item_path = /obj/item/clothing/under/pants/tan
@@ -261,10 +188,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "White Pants"
 	item_path = /obj/item/clothing/under/pants/white
 
-/datum/loadout_item/under/miscellaneous/kilt
-	name = "Kilt"
-	item_path = /obj/item/clothing/under/costume/kilt
-
 /datum/loadout_item/under/miscellaneous/treasure_hunter
 	name = "Treasure Hunter"
 	item_path = /obj/item/clothing/under/rank/civilian/curator/treasure_hunter
@@ -272,10 +195,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/miscellaneous/overalls
 	name = "Overalls"
 	item_path = /obj/item/clothing/under/misc/overalls
-
-/datum/loadout_item/under/miscellaneous/pj_blue
-	name = "Mailman Jumpsuit"
-	item_path = /obj/item/clothing/under/misc/mailman
 
 /datum/loadout_item/under/miscellaneous/vice_officer
 	name = "Vice Officer Jumpsuit"
@@ -288,14 +207,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/miscellaneous/redcoat
 	name = "Redcoat"
 	item_path = /obj/item/clothing/under/costume/redcoat
-
-/datum/loadout_item/under/miscellaneous/pj_red
-	name = "Red PJs"
-	item_path = /obj/item/clothing/under/misc/pj/red
-
-/datum/loadout_item/under/miscellaneous/pj_blue
-	name = "Blue PJs"
-	item_path = /obj/item/clothing/under/misc/pj/blue
 
 /datum/loadout_item/under/miscellaneous/tactical_hawaiian_orange
 	name = "Tactical Hawaiian Outfit - Orange"
@@ -313,17 +224,9 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Tactical Hawaiian Outfit - Green"
 	item_path = /obj/item/clothing/under/tachawaiian/green
 
-/datum/loadout_item/under/miscellaneous/maidcostume
-	name = "Maid costume"
-	item_path = /obj/item/clothing/under/costume/maid
-
 /datum/loadout_item/under/miscellaneous/croptop
 	name = "Croptop"
 	item_path = /obj/item/clothing/under/croptop
-
-/datum/loadout_item/under/miscellaneous/royalkilt
-	name = "Royal Kilt"
-	item_path = /obj/item/clothing/under/misc/royalkilt
 
 /datum/loadout_item/under/miscellaneous/qipao
 	name = "Qipao, Black"
@@ -349,18 +252,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Long Modern Coat"
 	item_path = /obj/item/clothing/under/costume/cybersleek/long
 
-/datum/loadout_item/under/miscellaneous/dutch
-	name = "Dutch Suit"
-	item_path = /obj/item/clothing/under/costume/dutch
-
-/datum/loadout_item/under/miscellaneous/arthur
-	name = "Dutch Assistant Suit"
-	item_path = /obj/item/clothing/under/costume/arthur
-
-/datum/loadout_item/under/miscellaneous/yoga
-	name = "Yoga Pants"
-	item_path = /obj/item/clothing/under/pants/yoga
-
 /datum/loadout_item/under/miscellaneous/tacticool_turtleneck
 	name = "Tactitool Turtleneck"
 	item_path = /obj/item/clothing/under/syndicate/tacticool/sensors
@@ -370,34 +261,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	item_path = /obj/item/clothing/under/pants/tactical
 
 //HALLOWEEN
-/datum/loadout_item/under/miscellaneous/pj_blood
-	name = "Blood-red Pajamas"
-	item_path = /obj/item/clothing/under/syndicate/bloodred/sleepytime/sensors
-
-/datum/loadout_item/under/miscellaneous/gladiator
-	name = "Gladiator Uniform"
-	item_path = /obj/item/clothing/under/costume/gladiator
-
-/datum/loadout_item/under/miscellaneous/griffon
-	name = "Griffon Uniform"
-	item_path = /obj/item/clothing/under/costume/griffin
-
-/datum/loadout_item/under/miscellaneous/owl
-	name = "Owl Uniform"
-	item_path = /obj/item/clothing/under/costume/owl
-
-/datum/loadout_item/under/miscellaneous/villain
-	name = "Villain Suit"
-	item_path = /obj/item/clothing/under/costume/villain
-//November 1st
-/datum/loadout_item/under/miscellaneous/tactical_irish
-	name = "Irish Tactical Sweater"
-	item_path = /obj/item/clothing/under/misc/tactical1
-
-/datum/loadout_item/under/miscellaneous/tactical_british
-	name = "British Tactical Sweater"
-	item_path = /obj/item/clothing/under/uvf
-
 /datum/loadout_item/under/miscellaneous/tactical_skirt
 	name = "Tactitool Skirtleneck"
 	item_path = /obj/item/clothing/under/syndicate/tacticool/skirt/sensors
@@ -472,33 +335,9 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Countess Dress"
 	item_path = /obj/item/clothing/under/misc/countess
 
-/datum/loadout_item/under/miscellaneous/peakyblinder
-	name = "Birmingham Bling"
-	item_path = /obj/item/clothing/under/misc/peakyblinder
-
 /datum/loadout_item/under/miscellaneous/taccas
 	name = "Tacticasual Uniform"
 	item_path = /obj/item/clothing/under/misc/taccas
-
-/datum/loadout_item/under/miscellaneous/rancher
-	name = "Rancher Outfit"
-	item_path = /obj/item/clothing/under/rancher
-
-/datum/loadout_item/under/miscellaneous/rancher_pioneer
-	name = "Pioneer Outfit"
-	item_path = /obj/item/clothing/under/rancher/pioneer
-
-/datum/loadout_item/under/miscellaneous/rancher_worker
-	name = "Western Worker Outfit"
-	item_path = /obj/item/clothing/under/rancher/worker
-
-/datum/loadout_item/under/miscellaneous/rancher_cowboy
-	name = "Cowboy Outfit"
-	item_path = /obj/item/clothing/under/rancher/cowboy
-
-/datum/loadout_item/under/miscellaneous/rancher_checkered
-	name = "Western Checkered Outfit"
-	item_path = /obj/item/clothing/under/rancher/checkered
 
 /datum/loadout_item/under/miscellaneous/cargo_casual
 	name = "Cargo Tech Casual Wear"
@@ -621,14 +460,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Navy Suit"
 	item_path = /obj/item/clothing/under/suit/navy
 
-/datum/loadout_item/under/formal/maid_outfit
-	name = "Maid Outfit"
-	item_path = /obj/item/clothing/under/costume/maid
-
-/datum/loadout_item/under/formal/maid_uniform
-	name = "Maid Uniform"
-	item_path = /obj/item/clothing/under/rank/civilian/janitor/maid
-
 /datum/loadout_item/under/formal/purple_suit
 	name = "Purple Suit"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/purpsuit
@@ -636,10 +467,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/purple_suitskirt
 	name = "Purple Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/purpsuit/skirt
-
-/datum/loadout_item/under/formal/purple_skirt
-	name = "Purple Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/purple
 
 /datum/loadout_item/under/formal/purple_skirt_plaid
 	name = "Purple Plaid Skirt"
@@ -669,10 +496,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Red Evening Gown"
 	item_path = /obj/item/clothing/under/dress/redeveninggown
 
-/datum/loadout_item/under/formal/red_skirt
-	name = "Red Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/red
-
 /datum/loadout_item/under/formal/red_skirt_plaid
 	name = "Red Plaid Skirt"
 	item_path = /obj/item/clothing/under/dress/skirt/plaid
@@ -684,14 +507,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/sailor_skirt
 	name = "Sailor Dress"
 	item_path = /obj/item/clothing/under/dress/sailor
-
-/datum/loadout_item/under/formal/scratch_suit
-	name = "Scratch Suit"
-	item_path = /obj/item/clothing/under/suit/white_on_white
-
-/datum/loadout_item/under/formal/denim_skirt
-	name = "Denim Skirt"
-	item_path = /obj/item/clothing/under/pants/denimskirt
 
 /datum/loadout_item/under/formal/striped_skirt
 	name = "Striped Dress"
@@ -733,114 +548,3 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Formal Medical Suit"
 	item_path = /obj/item/clothing/under/rank/medical/doctor/formal
 	restricted_roles = list(JOB_MEDICAL_DOCTOR, JOB_CHIEF_MEDICAL_OFFICER, JOB_GENETICIST, JOB_CHEMIST, JOB_VIROLOGIST, JOB_PARAMEDIC, JOB_PSYCHOLOGIST)
-
-/datum/loadout_item/under/formal/trek
-	name = "Trekkie Uniform"
-	item_path = /obj/item/clothing/under/trek
-
-/datum/loadout_item/under/formal/trek_command
-	name = "Trekkie Command Uniform"
-	item_path = /obj/item/clothing/under/trek/command
-
-/datum/loadout_item/under/formal/trek_engsec
-	name = "Trekkie Engsec Uniform"
-	item_path = /obj/item/clothing/under/trek/engsec
-
-/datum/loadout_item/under/formal/trek_medsci
-	name = "Trekkie Medsci Uniform"
-	item_path = /obj/item/clothing/under/trek/medsci
-
-/datum/loadout_item/under/formal/trek_next_command
-	name = "Trekkie TNG Command Uniform"
-	item_path = /obj/item/clothing/under/trek/command/next
-
-/datum/loadout_item/under/formal/trek_next_engsec
-	name = "Trekkie TNG Engsec Uniform"
-	item_path = /obj/item/clothing/under/trek/engsec/next
-
-/datum/loadout_item/under/formal/trek_next_medsci
-	name = "Trekkie TNG Medsci Uniform"
-	item_path = /obj/item/clothing/under/trek/medsci/next
-
-/datum/loadout_item/under/formal/trek_ent_command
-	name = "Trekkie ENT Command Uniform"
-	item_path = /obj/item/clothing/under/trek/command/ent
-
-/datum/loadout_item/under/formal/trek_ent_engsec
-	name = "Trekkie ENT Engsec Uniform"
-	item_path = /obj/item/clothing/under/trek/engsec/ent
-
-/datum/loadout_item/under/formal/trek_ent_medsci
-	name = "Trekkie ENT Medsci Uniform"
-	item_path = /obj/item/clothing/under/trek/medsci/ent
-
-/datum/loadout_item/under/formal/the_q
-	name = "French Marshall's Uniform"
-	item_path = /obj/item/clothing/under/trek/q
-
-/datum/loadout_item/under/formal/jeanshorts //why are these formal??? who the fuck wears jorts formally??????
-	name = "Jean Shorts"
-	item_path = /obj/item/clothing/under/pants/jeanshort
-
-//FAMILIES GEAR
-/datum/loadout_item/under/formal/osi
-	name = "OSI Uniform"
-	item_path = /obj/item/clothing/under/costume/osi
-
-/datum/loadout_item/under/formal/tmc
-	name = "TMC Uniform"
-	item_path = /obj/item/clothing/under/costume/tmc
-
-/datum/loadout_item/under/formal/pg
-	name = "PG Uniform"
-	item_path = /obj/item/clothing/under/costume/pg
-
-/datum/loadout_item/under/formal/driscol
-	name = "Driscol Uniform"
-	item_path = /obj/item/clothing/under/costume/driscoll
-
-/datum/loadout_item/under/formal/deckers
-	name = "Deckers Uniform"
-	item_path = /obj/item/clothing/under/costume/deckers
-
-/datum/loadout_item/under/formal/morningstar
-	name = "Morningstar Uniform"
-	item_path = /obj/item/clothing/under/costume/morningstar
-
-/datum/loadout_item/under/formal/saints
-	name = "Saints Uniform"
-	item_path = /obj/item/clothing/under/costume/saints
-
-/datum/loadout_item/under/formal/phantom
-	name = "Phantom Uniform"
-	item_path = /obj/item/clothing/under/costume/phantom
-
-/datum/loadout_item/under/formal/sybil
-	name = "Sybil Uniform"
-	item_path = /obj/item/clothing/under/costume/sybil_slickers
-
-/datum/loadout_item/under/formal/basil
-	name = "Basil Uniform"
-	item_path = /obj/item/clothing/under/costume/basil_boys
-
-/datum/loadout_item/under/formal/inferno
-	name = "Inferno Suit"
-	item_path = /obj/item/clothing/under/rank/civilian/lawyer/inferno
-
-/datum/loadout_item/under/formal/inferno_skirt
-	name = "Inferno Skirt"
-	item_path = /obj/item/clothing/under/rank/civilian/lawyer/inferno/skirt
-
-/datum/loadout_item/under/formal/designer_inferno
-	name = "Designer Inferno Suit"
-	item_path = /obj/item/clothing/under/rank/civilian/lawyer/inferno/beeze
-	restricted_roles = list(JOB_LAWYER)
-
-/// DONATOR
-/datum/loadout_item/under/donator
-	donator_only = TRUE
-
-/datum/loadout_item/under/donator/captain_black
-	name  = "Captains Black Uniform"
-	item_path = /obj/item/clothing/under/rank/captain/black
-	restricted_roles = list(JOB_CAPTAIN)

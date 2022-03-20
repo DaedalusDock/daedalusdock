@@ -19,10 +19,6 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 		outfit.mask = item_path
 
 
-/datum/loadout_item/mask/balaclava
-	name = "Balaclava"
-	item_path = /obj/item/clothing/mask/balaclava
-
 /datum/loadout_item/mask/gas_mask
 	name = "Gas Mask"
 	item_path = /obj/item/clothing/mask/gas
@@ -51,10 +47,6 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Skull Bandana"
 	item_path = /obj/item/clothing/mask/bandana/skull
 
-/datum/loadout_item/mask/surgical_mask
-	name = "Face Mask"
-	item_path = /obj/item/clothing/mask/surgical
-
 /datum/loadout_item/mask/fake_mustache
 	name = "Fake Moustache"
 	item_path = /obj/item/clothing/mask/fakemoustache
@@ -71,18 +63,6 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Plague Doctor Mask"
 	item_path = /obj/item/clothing/mask/gas/plaguedoctor
 
-/datum/loadout_item/head/monky
-	name = "Monkey Mask"
-	item_path = /obj/item/clothing/mask/gas/monkeymask
-
-/datum/loadout_item/head/owl
-	name = "Owl Mask"
-	item_path = /obj/item/clothing/mask/gas/owl_mask
-
-/datum/loadout_item/mask/joy
-	name = "Joy Mask"
-	item_path = /obj/item/clothing/mask/joy
-
 /datum/loadout_item/mask/lollipop
 	name = "Lollipop"
 	item_path = /obj/item/food/lollipop
@@ -90,22 +70,12 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 /datum/loadout_item/mask/balaclava
 	name = "Balaclava"
 	item_path = /obj/item/clothing/mask/balaclava
+	restricted_roles = list(JOB_SECURITY_OFFICER ,JOB_HEAD_OF_SECURITY, JOB_WARDEN)
 
 /datum/loadout_item/mask/balaclavaadj
 	name = "Adjustable Balaclava"
 	item_path = /obj/item/clothing/mask/balaclavaadjust
-
-/datum/loadout_item/mask/balaclavathree
-	name = "Three Hole Balaclava"
-	item_path = /obj/item/clothing/mask/balaclava/threehole
-
-/datum/loadout_item/mask/balaclavagreen
-	name = "Three Hole Green Balaclava"
-	item_path = /obj/item/clothing/mask/balaclava/threehole/green
-
-/datum/loadout_item/mask/moustache
-	name = "Fake moustache"
-	item_path = /obj/item/clothing/mask/fakemoustache
+	restricted_roles = list(JOB_SECURITY_OFFICER ,JOB_HEAD_OF_SECURITY, JOB_WARDEN)
 
 /datum/loadout_item/mask/bandana_redft
 	name = "Skin Tight Red Bandana"
@@ -139,8 +109,3 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Sterile Mask"
 	item_path = /obj/item/clothing/mask/surgical
 	restricted_roles = list(JOB_CHIEF_MEDICAL_OFFICER, JOB_MEDICAL_DOCTOR, JOB_VIROLOGIST, JOB_CHEMIST, JOB_GENETICIST, JOB_PARAMEDIC, JOB_PSYCHOLOGIST)
-
-//Families Gear
-/datum/loadout_item/mask/driscoll
-	name = "Driscoll Mask"
-	item_path = /obj/item/clothing/mask/gas/driscoll

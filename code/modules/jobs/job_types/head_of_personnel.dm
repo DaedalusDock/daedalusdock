@@ -1,10 +1,10 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
-	description = "Alter access on ID cards, manage civil and supply departments, \
+	description = "Alter access on ID cards, manage the civil departments, \
 		protect Ian, run the station when the captain dies."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
-	head_announce = list(RADIO_CHANNEL_SERVICE) //SKYRAT EDIT CHANGE
+	head_announce = list(RADIO_CHANNEL_SERVICE) //PARIAH EDIT CHANGE
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1

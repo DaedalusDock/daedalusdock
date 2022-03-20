@@ -2,7 +2,7 @@
 	title = JOB_QUARTERMASTER
 	description = "Coordinate cargo technicians and shaft miners, assist with \
 		economical purchasing."
-	department_head = list(JOB_CAPTAIN)//PARIAH EDIT
+	department_head = list(JOB_CAPTAIN) //PARIAH EDIT
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
@@ -14,7 +14,7 @@
 	outfit = /datum/outfit/job/quartermaster
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
-	paycheck = PAYCHECK_COMMAND//PARIAH EDIT
+	paycheck = PAYCHECK_COMMAND //PARIAH EDIT
 	paycheck_department = ACCOUNT_CAR
 
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
@@ -40,7 +40,7 @@
 	uniform = /obj/item/clothing/under/rank/cargo/qm
 	backpack_contents = list(
 		/obj/item/modular_computer/tablet/preset/cargo/quartermaster = 1,
-		/obj/item/melee/baton/telescopic=1,
+		/obj/item/melee/baton/telescopic = 1,
 		/obj/item/modular_computer/tablet/preset/advanced/command = 1
 		)
 	belt = /obj/item/pda/quartermaster

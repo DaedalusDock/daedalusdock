@@ -4402,4 +4402,5 @@
 #include "modular_pariah\modules\combat_indicator\code\combat_indicator.dm"
 #include "modular_pariah\modules\gunsafety\code\gun_safety.dm"
 #include "modular_pariah\modules\large_doors\code\large_doors.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
 // END_INCLUDE

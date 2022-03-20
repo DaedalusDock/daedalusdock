@@ -157,6 +157,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		data["character_profiles"] = create_character_profiles()
 		tainted_character_profiles = FALSE
 
+	//PARIAH EDIT BEGIN
+	data["preview_options"] = list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)
+	data["preview_selection"] = preview_pref
+	//PARIAH EDIT END
+
 	data["character_preferences"] = compile_character_preferences(user)
 
 	data["active_slot"] = default_slot
@@ -266,6 +271,22 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			return TRUE
+
+		//PARIAH EDIT ADDITION
+		if("update_preview")
+			preview_pref = params["updated_preview"]
+			character_preview_view.update_body()
+			return TRUE
+
+		if ("open_loadout")
+			if(parent.open_loadout_ui)
+				parent.open_loadout_ui.ui_interact(usr)
+			else
+				var/datum/loadout_manager/tgui = new(usr)
+				tgui.ui_interact(usr)
+			return TRUE
+		//SKYRAT EDIT END
+
 
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]

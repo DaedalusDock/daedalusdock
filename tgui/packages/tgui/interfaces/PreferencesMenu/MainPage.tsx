@@ -1,6 +1,6 @@
 import { classes } from "common/react";
 import { sendAct, useBackend, useLocalState } from "../../backend";
-import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks } from "../../components";
+import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks, Dropdown } from "../../components"; // SKYRAT EDIT CHANGE
 import { createSetPreference, PreferencesMenuData, RandomSetting } from "./data";
 import { CharacterPreview } from "./CharacterPreview";
 import { RandomizationButton } from "./RandomizationButton";
@@ -13,7 +13,7 @@ import { filterMap, sortBy } from "common/collections";
 import { useRandomToggleState } from "./useRandomToggleState";
 
 const CLOTHING_CELL_SIZE = 48;
-const CLOTHING_SIDEBAR_ROWS = 9;
+const CLOTHING_SIDEBAR_ROWS = 13.4; // SKYRAT EDIT CHANGE - ORIGINAL:  9
 
 const CLOTHING_SELECTION_CELL_SIZE = 48;
 const CLOTHING_SELECTION_WIDTH = 5.4;
@@ -22,6 +22,7 @@ const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 const CharacterControls = (props: {
   handleRotate: () => void,
   handleOpenSpecies: () => void,
+  handleLoadout: () => void, // SKYRAT EDIT ADDITION
   gender: Gender,
   setGender: (gender: Gender) => void,
   showGender: boolean,
@@ -53,6 +54,18 @@ const CharacterControls = (props: {
           <GenderButton
             gender={props.gender}
             handleSetGender={props.setGender}
+          />
+        </Stack.Item>
+      )}
+      {props.handleLoadout && (
+        // SKYRAT EDIT ADDITION
+        <Stack.Item>
+          <Button
+            onClick={props.handleLoadout}
+            fontSize="22px"
+            icon="suitcase"
+            tooltip="Show Loadout Menu"
+            tooltipPosition="top"
           />
         </Stack.Item>
       )}
@@ -499,6 +512,10 @@ export const MainPage = (props: {
                     handleRotate={() => {
                       act("rotate");
                     }}
+                    handleLoadout={() => {
+                      act("open_loadout");
+                    }}
+                    // SKYRAT EDIT END
                     setGender={createSetPreference(act, "gender")}
                     showGender={
                       currentSpeciesData ? !!currentSpeciesData.sexes : true
@@ -508,10 +525,19 @@ export const MainPage = (props: {
 
                 <Stack.Item grow>
                   <CharacterPreview
-                    height="100%"
+                    height="80%" // SKYRAT EDIT - ORIGINAL: height="100%"
                     id={data.character_preview_view} />
                 </Stack.Item>
 
+                <Dropdown
+                  // SKYRAT EDIT ADDITION
+                  width="100%"
+                  position="relative"
+                  selected={data.preview_selection}
+                  options={data.preview_options}
+                  onSelected={value => act('update_preview', {
+                    updated_preview: value,
+                  })} />
                 <Stack.Item position="relative">
                   <NameInput
                     name={

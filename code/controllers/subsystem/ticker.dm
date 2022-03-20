@@ -412,6 +412,11 @@ SUBSYSTEM_DEF(ticker)
 			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
 				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
 			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
+		//PARIAH EDIT ADDITION
+		if(ishuman(new_player_living))
+			for(var/datum/loadout_item/item as anything in loadout_list_to_datums(new_player_mob.client?.prefs?.loadout_list))
+				item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
+		//PARIAH EDIT END
 		CHECK_TICK
 
 	if(captainless)

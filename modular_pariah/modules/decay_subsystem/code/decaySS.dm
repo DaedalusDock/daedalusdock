@@ -13,8 +13,6 @@ These procs are incredibly expensive and should only really be run once. That's 
 #define FLOOR_TILE_MISSING_PERCENT_CHANCE 1
 #define FLOOR_COBWEB_PERCENT_CHANCE 1
 
-#define NEST_PERCENT_CHANCE 1
-
 #define LIGHT_FLICKER_PERCENT_CHANCE 10
 
 SUBSYSTEM_DEF(decay)

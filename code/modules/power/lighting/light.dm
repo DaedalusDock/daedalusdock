@@ -243,7 +243,10 @@
 	if(cell)
 		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
 
-
+//PARIAH EDIT ADDITION
+	if(constant_flickering)
+		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
+	//PARIAH EDIT END
 
 // attack with item - insert light (if right type), otherwise try to break the light
 
@@ -254,6 +257,16 @@
 		var/obj/item/lightreplacer/replacer = tool
 		replacer.ReplaceLight(src, user)
 		return
+
+	//PARIAH EDIT ADDITION
+	if(istype(tool, /obj/item/multitool) && constant_flickering)
+		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
+		if(do_after(user, 2 SECONDS, src))
+			stop_flickering()
+			to_chat(user, span_notice("You repair the ballast of [src]!"))
+		return
+
+	//PARIAH EDIT END
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
@@ -365,8 +378,8 @@
 // returns if the light has power /but/ is manually turned off
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
-	var/area/local_area = get_area(src)
-	return !local_area.lightswitch && local_area.power_light || flickering
+	var/area/A = get_area(src)
+	return !A.lightswitch && A.power_light || flickering || constant_flickering //PARIAH EDIT CHANGE
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
@@ -409,10 +422,10 @@
 			if(status != LIGHT_OK)
 				break
 			on = !on
-			update(FALSE)
+			update(FALSE, TRUE) //PARIAH EDIT CHANGE
 			sleep(rand(5, 15))
 		on = (status == LIGHT_OK)
-		update(FALSE)
+		update(FALSE, TRUE) //PARIAH EDIT CHANGE
 		. = TRUE //did we actually flicker?
 	flickering = FALSE
 

@@ -438,7 +438,6 @@ SUBSYSTEM_DEF(explosions)
 				SSexplosions.lowturf += T
 		//PARIAH EDIT ADDITION
 		for(var/obj/machinery/light/iterating_light in T)
-
 			iterating_light.start_flickering()
 		//PARIAH EDIT END
 		if(flame_dist && prob(40) && !isspaceturf(T) && !T.density)

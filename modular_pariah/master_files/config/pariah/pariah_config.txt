@@ -1,0 +1,3 @@
+
+## Toggles off SSDecay when uncommented, HIGHLY recommended for map test-merges, to avoid giving it a bad first impression.
+#SSDECAY_DISABLED

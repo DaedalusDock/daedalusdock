@@ -3011,6 +3011,7 @@
 #include "code\modules\mafia\map_pieces.dm"
 #include "code\modules\mafia\outfits.dm"
 #include "code\modules\mafia\roles.dm"
+#include "code\modules\mapping\access_helpers.dm"
 #include "code\modules\mapping\map_template.dm"
 #include "code\modules\mapping\mapping_helpers.dm"
 #include "code\modules\mapping\preloader.dm"
@@ -4337,6 +4338,7 @@
 #include "interface\menu.dm"
 #include "interface\stylesheet.dm"
 #include "interface\skin.dmf"
+#include "modular_pariah\master_files\code\controllers\configuration\entries\pariah_config_entries.dm"
 #include "modular_pariah\master_files\code\datums\components\fullauto.dm"
 #include "modular_pariah\master_files\code\game\sound.dm"
 #include "modular_pariah\master_files\code\modules\mob\living\emote_popup.dm"
@@ -4404,4 +4406,6 @@
 #include "modular_pariah\modules\large_doors\code\large_doors.dm"
 #include "modular_pariah\master_files\code\game\objects\items\devices\radio\encryption_key.dm"
 #include "modular_pariah\master_files\code\game\objects\items\devices\radio\headset.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
 // END_INCLUDE

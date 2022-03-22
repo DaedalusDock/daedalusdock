@@ -4342,6 +4342,7 @@
 #include "interface\stylesheet.dm"
 #include "interface\skin.dmf"
 #include "modular_pariah\master_files\code\_globalvars\configuration.dm"
+#include "modular_pariah\master_files\code\controllers\configuration\entries\pariah_config_entries.dm"
 #include "modular_pariah\master_files\code\datums\components\fullauto.dm"
 #include "modular_pariah\master_files\code\game\sound.dm"
 #include "modular_pariah\master_files\code\modules\mob\living\emote_popup.dm"
@@ -4410,4 +4411,6 @@
 #include "modular_pariah\modules\gunsafety\code\gun_safety.dm"
 #include "modular_pariah\modules\large_doors\code\large_doors.dm"
 #include "modular_pariah\master_files\code\_globalvars\lists\chat.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
 // END_INCLUDE

@@ -243,7 +243,7 @@
 	if(cell)
 		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
 
-//PARIAH EDIT ADDITION
+	//PARIAH EDIT ADDITION
 	if(constant_flickering)
 		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 	//PARIAH EDIT END
@@ -378,8 +378,8 @@
 // returns if the light has power /but/ is manually turned off
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
-	var/area/A = get_area(src)
-	return !A.lightswitch && A.power_light || flickering || constant_flickering //PARIAH EDIT CHANGE
+	var/area/local_area = get_area(src)
+	return !local_area.lightswitch && local_area.power_light || flickering || constant_flickering //PARIAH EDIT CHANGE
 
 // returns whether this light has power
 // true if area has power and lightswitch is on

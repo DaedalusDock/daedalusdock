@@ -57,7 +57,7 @@
 /obj/structure/chair/sofa/corp/corner
 	icon_state = "corp_sofacorner"
 
-// Ported from Skyrat
+// Ported from Pariah
 /obj/structure/chair/sofa/bench
 	name = "bench"
 	desc = "Perfectly designed to be comfortable to sit on, and hellish to sleep on."

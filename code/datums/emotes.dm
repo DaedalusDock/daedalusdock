@@ -99,7 +99,10 @@
 		return
 
 	user.log_message(msg, LOG_EMOTE)
-	var/dchatmsg = "<b>[user]</b> [msg]"
+	// PARIAH EDIT START - Better emotes - Original: var/dchatmsg = "<b>[user]</b> [msg]"
+	var/space = should_have_space_before_emote(html_decode(msg)[1]) ? " " : ""
+	var/dchatmsg = "<b>[user]</b>[space][msg]"
+	// PARIAH EDIT END
 
 	var/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && !TIMER_COOLDOWN_CHECK(user, type))
@@ -115,9 +118,9 @@
 				ghost.show_message("<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
 
 	if(emote_type == EMOTE_AUDIBLE)
-		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>", audible_message_flags = EMOTE_MESSAGE)
+		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b>[space][msg]</span>", audible_message_flags = EMOTE_MESSAGE, separation = space) // PARIAH EDIT ADDITION - Original: user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>", audible_message_flags = EMOTE_MESSAGE)
 	else
-		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b> [msg]</span>", visible_message_flags = EMOTE_MESSAGE)
+		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b>[space][msg]</span>", visible_message_flags = EMOTE_MESSAGE, separation = space) // PARIAH EDIT ADDITION - Original: user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b> [msg]</span>", visible_message_flags = EMOTE_MESSAGE)
 
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))
 

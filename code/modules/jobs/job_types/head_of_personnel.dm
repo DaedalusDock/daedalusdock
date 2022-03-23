@@ -1,9 +1,11 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
+	// description = "Alter access on ID cards, manage civil and supply departments, \ //ORIGINAL
 	description = "Alter access on ID cards, manage the civil departments, \
-		protect Ian, run the station when the captain dies."
+		protect Ian, run the station when the captain dies." //PARIAH EDIT
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
+	// head_announce = list(RADIO_CHANNEL_SUPPLY, RADIO_CHANNEL_SERVICE) //ORIGINAL
 	head_announce = list(RADIO_CHANNEL_SERVICE) //PARIAH EDIT CHANGE
 	faction = FACTION_STATION
 	total_positions = 1

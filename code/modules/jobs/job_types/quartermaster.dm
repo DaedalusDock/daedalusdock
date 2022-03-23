@@ -18,7 +18,7 @@
 	outfit = /datum/outfit/job/quartermaster
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
-	// paycheck = PAYCHECK_MEDIUM // ORIGINAL
+	// paycheck = PAYCHECK_MEDIUM //ORIGINAL
 	paycheck = PAYCHECK_COMMAND //PARIAH EDIT
 	paycheck_department = ACCOUNT_CAR
 
@@ -52,7 +52,7 @@
 		/obj/item/melee/baton/telescopic = 1
 		)
 	belt = /obj/item/pda/quartermaster
-	// ears = /obj/item/radio/headset/headset_cargo // ORIGINAL
+	// ears = /obj/item/radio/headset/headset_cargo //ORIGINAL
 	ears = /obj/item/radio/headset/heads/qm //PARIAH EDIT
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/sneakers/brown

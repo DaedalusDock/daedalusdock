@@ -157,6 +157,7 @@
 #define INIT_ORDER_SHUTTLE -21
 #define INIT_ORDER_MINOR_MAPPING -40
 #define INIT_ORDER_PATH -50
+#define INIT_ORDER_DECAY -61 //PARIAH ADDITION
 #define INIT_ORDER_EXPLOSIONS -69
 #define INIT_ORDER_STATPANELS -98
 #define INIT_ORDER_INIT_PROFILER -99 //Near the end, logs the costs of initialize

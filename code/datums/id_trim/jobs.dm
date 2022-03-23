@@ -272,7 +272,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
 	job = /datum/job/geneticist
 
-/datum/id_trim/job/head_of_personnel
+/datum/id_trim/job/head_of_personnel // PARIAH EDIT - minimal_access overriden in master_files jobs.dm
 	assignment = "Head of Personnel"
 	intern_alt_name = "Head of Personnel-in-Training"
 	trim_state = "trim_headofpersonnel"
@@ -290,20 +290,17 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_personnel
 
-/datum/id_trim/job/head_of_security
+/datum/id_trim/job/head_of_security // PARIAH EDIT - minimal_access overriden in master_files jobs.dm
 	assignment = "Head of Security"
 	intern_alt_name = "Head of Security-in-Training"
 	trim_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
 	extra_wildcard_access = list()
-	minimal_access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_COURT, ACCESS_WEAPONS,
-						ACCESS_MEDICAL, ACCESS_PSYCHOLOGY, ACCESS_ENGINE, ACCESS_CHANGE_IDS, ACCESS_AI_UPLOAD, ACCESS_EVA, ACCESS_HEADS,
-						ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_MAINT_TUNNELS, ACCESS_BAR, ACCESS_JANITOR, ACCESS_CONSTRUCTION, ACCESS_MORGUE,
-						ACCESS_CREMATORIUM, ACCESS_KITCHEN, ACCESS_HYDROPONICS, ACCESS_LAWYER,
-						ACCESS_MECH_ENGINE, ACCESS_MECH_SCIENCE, ACCESS_MECH_SECURITY, ACCESS_MECH_MEDICAL,
-						ACCESS_THEATRE, ACCESS_CHAPEL_OFFICE, ACCESS_LIBRARY, ACCESS_RESEARCH, ACCESS_VAULT, ACCESS_MINING_STATION,
-						ACCESS_HOP, ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH, ACCESS_GATEWAY, ACCESS_MINERAL_STOREROOM, ACCESS_AUX_BASE, ACCESS_TELEPORTER) //PARIAH EDIT
+	minimal_access = list(ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_ARMORY, ACCESS_AUX_BASE, ACCESS_BRIG, ACCESS_CONSTRUCTION, ACCESS_COURT,
+					ACCESS_ENGINE, ACCESS_EVA, ACCESS_FORENSICS_LOCKERS, ACCESS_GATEWAY, ACCESS_HEADS, ACCESS_KEYCARD_AUTH,
+					ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_SECURITY, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM,
+					ACCESS_MINING, ACCESS_MORGUE, ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_WEAPONS)
 	minimal_wildcard_access = list(ACCESS_HOS)
 	config_job = "head_of_security"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
@@ -416,13 +413,13 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/psychologist
 
-/datum/id_trim/job/quartermaster
+/datum/id_trim/job/quartermaster // PARIAH EDIT - minimal_access and trim_icon overriden in master_files jobs.dm
 	assignment = "Quartermaster"
 	trim_state = "trim_quartermaster"
 	sechud_icon_state = SECHUD_QUARTERMASTER
 	extra_access = list()
-	minimal_access = list(ACCESS_MAINT_TUNNELS, ACCESS_MAILSORTING, ACCESS_CARGO, ACCESS_QM, ACCESS_MINING, ACCESS_MECH_MINING, ACCESS_MINING_STATION, ACCESS_MINERAL_STOREROOM,
-						ACCESS_VAULT, ACCESS_AUX_BASE, ACCESS_KEYCARD_AUTH, ACCESS_RC_ANNOUNCE, ACCESS_SEC_DOORS, ACCESS_HEADS) //PARIAH EDIT
+	minimal_access = list(ACCESS_AUX_BASE, ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINING_STATION,
+					ACCESS_MINERAL_STOREROOM, ACCESS_MINING, ACCESS_QM, ACCESS_RC_ANNOUNCE, ACCESS_VAULT)
 	config_job = "quartermaster"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/quartermaster

@@ -69,7 +69,7 @@
 	resistance_flags = NONE
 	permeability_coefficient = 0.05 //Thick soles, and covers the ankle
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
-	can_be_tied = TRUE //SKYRAT EDIT
+	can_be_tied = TRUE //PARIAH EDIT
 
 /obj/item/clothing/shoes/jackboots/black
 	name = "dark jackboots"

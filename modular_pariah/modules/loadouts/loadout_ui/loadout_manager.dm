@@ -110,9 +110,6 @@
 			owner?.prefs.preview_pref = params["updated_preview"]
 			owner?.prefs?.character_preview_view.update_body()
 
-		if("ckey_explain")
-			to_chat(owner, examine_block(span_green("This item is restricted to your ckey only. Thank you!")))
-
 	return TRUE
 
 /// Select [path] item to [category_slot] slot.
@@ -310,6 +307,5 @@
 		formatted_list[array_index++] = formatted_item
 
 	return formatted_list
-
 
 

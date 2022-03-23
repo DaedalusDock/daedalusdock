@@ -285,7 +285,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				var/datum/loadout_manager/tgui = new(usr)
 				tgui.ui_interact(usr)
 			return TRUE
-		//SKYRAT EDIT END
+		//PARIAH EDIT END
 
 
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)

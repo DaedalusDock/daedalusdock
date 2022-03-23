@@ -28,18 +28,13 @@ export const LoadoutManager = (props, context) => {
               align="center"
               buttons={(
                 <Button
-                  icon="info"
-                  align="center"
-                  content="Tutorial"
-                  onClick={() => act('toggle_tutorial')} />
+                  icon="check-double"
+                  color="good"
+                  content="Confirm"
+                  tooltip="Confirm loadout and exit UI."
+                  onClick={() => act('close_ui', { revert: 0 })} />
 
               )}>
-              <Button
-                icon="check-double"
-                color="good"
-                content="Confirm"
-                tooltip="Confirm loadout and exit UI."
-                onClick={() => act('close_ui', { revert: 0 })} />
               <Dropdown
                 width="100%"
                 selected={selectedTabName}

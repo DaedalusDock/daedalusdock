@@ -4454,6 +4454,8 @@
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\alcohol_reagents.dm"
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\drink_reagents.dm"
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\other_reagents.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
+#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
 #include "modular_pariah\modules\dogfashion\code\head.dm"
 #include "modular_pariah\modules\GAGS\greyscale_configs.dm"
 #include "modular_pariah\modules\gunsafety\code\gun_safety.dm"
@@ -4475,6 +4477,4 @@
 #include "modular_pariah\modules\loadouts\loadout_items\under\loadout_datum_under.dm"
 #include "modular_pariah\modules\loadouts\loadout_ui\loadout_manager.dm"
 #include "modular_pariah\modules\loadouts\loadout_ui\loadout_outfit_helpers.dm"
-#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
-#include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
 // END_INCLUDE

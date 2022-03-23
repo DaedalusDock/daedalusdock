@@ -272,7 +272,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
 	job = /datum/job/geneticist
 
-/datum/id_trim/job/head_of_personnel
+/datum/id_trim/job/head_of_personnel //PARIAH EDIT - minimal_access overriden in master_files jobs.dm
 	assignment = "Head of Personnel"
 	intern_alt_name = "Head of Personnel-in-Training"
 	trim_state = "trim_headofpersonnel"
@@ -290,7 +290,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_personnel
 
-/datum/id_trim/job/head_of_security
+/datum/id_trim/job/head_of_security //PARIAH EDIT - minimal_access overriden in master_files jobs.dm
 	assignment = "Head of Security"
 	intern_alt_name = "Head of Security-in-Training"
 	trim_state = "trim_headofsecurity"
@@ -413,7 +413,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/psychologist
 
-/datum/id_trim/job/quartermaster
+/datum/id_trim/job/quartermaster //PARIAH EDIT - minimal_access and trim_icon overriden in master_files jobs.dm
 	assignment = "Quartermaster"
 	trim_state = "trim_quartermaster"
 	sechud_icon_state = SECHUD_QUARTERMASTER

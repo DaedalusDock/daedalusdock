@@ -113,12 +113,21 @@
 	/// String. If set to a non-empty one, it will be the key for the policy text value to show this role on spawn.
 	var/policy_index = ""
 
+	//PARIAH ADDITION START
+	/// Job title to use for spawning. Allows a job to spawn without needing map edits.
+	var/job_spawn_title
+	//PARIAH ADDITION END
+
 	///RPG job names, for the memes
 	var/rpg_title
 
 
 /datum/job/New()
 	. = ..()
+	//PARIAH ADDITION START
+	if(!job_spawn_title)
+		job_spawn_title = title
+	//PARIAH ADDITION END
 	var/list/jobs_changes = get_map_changes()
 	if(!jobs_changes)
 		return
@@ -184,20 +193,20 @@
 /mob/living/proc/on_job_equipping(datum/job/equipping)
 	return
 
-/mob/living/carbon/human/on_job_equipping(datum/job/equipping)
+/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref) //PARIAH EDIT CHANGE
 	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
 	bank_account.payday(STARTING_PAYCHECKS, TRUE)
 	account_id = bank_account.account_id
 
-	dress_up_as_job(equipping)
+	dress_up_as_job(equipping, FALSE, used_pref) //PARIAH EDIT CHANGE
 
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
 
-/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
+/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) //PARIAH EDIT CHANGE
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equipOutfit(equipping.outfit, visual_only)
+	equip_outfit_and_loadout(equipping.outfit, used_pref, visual_only, equipping) //PARIAH EDIT CHANGE
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.

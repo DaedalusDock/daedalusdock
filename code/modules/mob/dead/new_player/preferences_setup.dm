@@ -88,6 +88,7 @@
 
 	return preview_job
 
+/* PARIAH EDIT REMOVE - moved to master files
 /datum/preferences/proc/render_new_preview_appearance(mob/living/carbon/human/dummy/mannequin)
 	var/datum/job/preview_job = get_highest_priority_job()
 
@@ -107,3 +108,4 @@
 
 	COMPILE_OVERLAYS(mannequin)
 	return mannequin.appearance
+*/

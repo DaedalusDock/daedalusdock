@@ -45058,10 +45058,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/pumproom)
-"kzz" = (
-/obj/structure/sign/poster/random/directional/north,
-/turf/closed/wall,
-/area/maintenance/department/bridge)
 "kzB" = (
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
@@ -52474,6 +52470,11 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"mUJ" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/item/poster/random_contraband,
+/turf/open/floor/plating/airless,
+/area/space/nearstation)
 "mUT" = (
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
 	dir = 4
@@ -82198,13 +82199,6 @@
 "wGF" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/maintenance/port/aft)
-"wGJ" = (
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/sign/poster/contraband/fun_police{
-	pixel_y = -32
-	},
-/turf/open/floor/plating/airless,
-/area/space/nearstation)
 "wGL" = (
 /obj/structure/table/glass,
 /obj/effect/turf_decal/tile/neutral,
@@ -101550,8 +101544,8 @@ euM
 euM
 jiK
 cmU
-wGJ
 cmU
+mUJ
 aeU
 aeU
 aeU
@@ -121307,7 +121301,7 @@ wYc
 klM
 efj
 pry
-kzz
+vJP
 mNB
 sSI
 acm

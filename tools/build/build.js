@@ -69,6 +69,7 @@ export const DmTarget = new Juke.Target({
     'html/**',
     'icons/**',
     'interface/**',
+    'modular_pariah/**', //PARIAH EDIT
     `${DME_NAME}.dme`,
   ],
   outputs: [

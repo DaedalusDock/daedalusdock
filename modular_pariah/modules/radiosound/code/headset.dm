@@ -7,7 +7,7 @@
 /obj/item/radio/headset/headset_sec
 	radiosound = 'modular_pariah/modules/radiosound/sound/radio/security.ogg'
 
-/obj/item/radio/headset/talk_into(mob/living/M, message, channel, list/spans, datum/language/language, list/message_mods, direct = TRUE)
+/obj/item/radio/headset/talk_into(mob/living/M, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(radiosound && listening)
 		playsound(M, radiosound, rand(20, 30))
 	. = ..()

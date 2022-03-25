@@ -9,5 +9,5 @@
 
 /obj/item/radio/headset/talk_into(mob/living/M, message, channel, list/spans, datum/language/language, list/message_mods, direct = TRUE)
 	if(radiosound && listening)
-		playsound(M, radiosound, rand(20, 30), 0, 0, SOUND_FALLOFF_EXPONENT)
+		playsound(M, radiosound, rand(20, 30))
 	. = ..()

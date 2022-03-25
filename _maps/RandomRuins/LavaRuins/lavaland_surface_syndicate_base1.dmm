@@ -2165,7 +2165,6 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/main)
-<<<<<<< HEAD
 "iP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4{
@@ -2243,14 +2242,12 @@
 "iW" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 1
-=======
 "iQ" = (
 /obj/machinery/door/window/left/directional/south{
 	base_state = "right";
 	dir = 1;
 	icon_state = "right";
 	name = "Bar"
->>>>>>> 9bc24417889 ([MDB IGNORE] Gives windoors directional variants (#65656))
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
@@ -4918,7 +4915,6 @@
 /obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,
 /turf/open/floor/plating,
 /area/ruin/syndicate_lava_base/engineering)
-
 (1,1,1) = {"
 IU
 aa

@@ -17735,8 +17735,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron/white/smooth_large,
 /area/service/kitchen/diner)
-<<<<<<< HEAD
-=======
 "gjh" = (
 /obj/structure/table/glass,
 /obj/item/storage/medkit/toxin{
@@ -17775,7 +17773,6 @@
 /obj/structure/sign/poster/official/random/directional/south,
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
->>>>>>> 9bc24417889 ([MDB IGNORE] Gives windoors directional variants (#65656))
 "gjy" = (
 /obj/structure/table,
 /obj/machinery/light/directional/east,
@@ -36093,8 +36090,6 @@
 /obj/structure/table/wood,
 /turf/open/floor/wood,
 /area/commons/dorms)
-<<<<<<< HEAD
-=======
 "pud" = (
 /obj/structure/table/glass,
 /obj/item/storage/medkit/fire{
@@ -36116,7 +36111,6 @@
 /obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/dark/smooth_large,
 /area/maintenance/department/medical)
->>>>>>> 9bc24417889 ([MDB IGNORE] Gives windoors directional variants (#65656))
 "puh" = (
 /obj/structure/chair/stool/directional/south,
 /obj/effect/decal/cleanable/dirt,
@@ -42100,8 +42094,6 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
-<<<<<<< HEAD
-=======
 "srI" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -42116,7 +42108,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/courtroom)
->>>>>>> 9bc24417889 ([MDB IGNORE] Gives windoors directional variants (#65656))
 "srL" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -54028,7 +54019,6 @@
 /obj/machinery/meter/atmos/layer4,
 /turf/open/floor/plating,
 /area/maintenance/fore/greater)
-
 (1,1,1) = {"
 gQb
 gQb

@@ -1273,6 +1273,7 @@
 #include "code\game\machinery\computer\atmos_computers\__identifiers.dm"
 #include "code\game\machinery\computer\atmos_computers\_air_sensor.dm"
 #include "code\game\machinery\computer\atmos_computers\_atmos_control.dm"
+#include "code\game\machinery\computer\atmos_computers\air_sensors.dm"
 #include "code\game\machinery\computer\atmos_computers\atmos_controls.dm"
 #include "code\game\machinery\computer\atmos_computers\inlets.dm"
 #include "code\game\machinery\computer\atmos_computers\meters.dm"

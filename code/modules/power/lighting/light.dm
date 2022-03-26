@@ -108,7 +108,7 @@
 /obj/machinery/light/update_icon_state()
 	switch(status) // set icon_states
 		if(LIGHT_OK)
-			//var/area/A = get_area(src) //PARIAH EDIT REMOVAL
+			//var/area/local_area = get_area(src) //PARIAH EDIT REMOVAL
 			if(emergency_mode || firealarm) //PARIAH EDIT CHANGE
 				icon_state = "[base_state]_emergency"
 			else

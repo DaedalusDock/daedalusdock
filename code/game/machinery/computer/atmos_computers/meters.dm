@@ -31,7 +31,7 @@
 	. = ..()
 	if(!radio_connection)
 		return
-	
+
 	var/datum/signal/signal = new(list(
 		"tag" = id_tag,
 		"device" = "AM",

@@ -10,7 +10,7 @@
 	id_tag = chamber_id + "_in"
 	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 	return ..()
-	
+
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/atmos_init()
 	. = ..()
 	broadcast_status()

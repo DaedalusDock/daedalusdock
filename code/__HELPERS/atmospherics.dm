@@ -8,11 +8,11 @@
 	return (((a + epsilon) > b) && ((a - epsilon) < b))
 
 /** A simple rudimentary gasmix to information list converter. Can be used for UIs.
- * Args: 
+ * Args:
  * - gasmix: [/datum/gas_mixture]
  * - name: String used to name the list, optional.
  * Returns: A list parsed_gasmixes with the following structure:
- * - parsed_gasmixes    Value: Assoc List     Desc: The thing we return	
+ * - parsed_gasmixes    Value: Assoc List     Desc: The thing we return
  * -- Key: name         Value: String         Desc: Gasmix Name
  * -- Key: temperature  Value: Number         Desc: Temperature in kelvins
  * -- Key: volume       Value: Number         Desc: Volume in liters
@@ -43,8 +43,8 @@
 		return
 	for(var/gas_path in gasmix.gases)
 		.["gases"] += list(list(
-			gasmix.gases[gas_path][GAS_META][META_GAS_ID], 
-			gasmix.gases[gas_path][GAS_META][META_GAS_NAME], 
+			gasmix.gases[gas_path][GAS_META][META_GAS_ID],
+			gasmix.gases[gas_path][GAS_META][META_GAS_NAME],
 			gasmix.gases[gas_path][MOLES],
 		))
 	for(var/datum/gas_reaction/reaction_result as anything in gasmix.reaction_results)

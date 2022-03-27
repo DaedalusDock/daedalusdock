@@ -209,6 +209,7 @@
 	objectives.Cut()
 
 	//PARIAH EDIT START - PROGTOT REVERT
+	/*
 
 	var/datum/objective/traitor_progression/final_objective = new /datum/objective/traitor_progression()
 	final_objective.owner = owner
@@ -217,7 +218,7 @@
 	var/datum/objective/traitor_objectives/objective_completion = new /datum/objective/traitor_objectives()
 	objective_completion.owner = owner
 	objectives += objective_completion
-
+	*/
 	var/objective_limit = CONFIG_GET(number/traitor_objectives_amount)
 	var/objective_count = 0
 

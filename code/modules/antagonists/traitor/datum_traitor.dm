@@ -27,10 +27,10 @@
 
 	/// The uplink handler that this traitor belongs to.
 	var/datum/uplink_handler/uplink_handler
-		// SKYRAT EDIT START
+	// PARIAH EDIT START
 	///the final objective the traitor has to accomplish, be it escaping, hijacking, or just martyrdom.
 	var/datum/objective/ending_objective
-	// SKYRAT EDIT END
+	// PARIAH EDIT END
 
 	var/uplink_sale_count = 3
 
@@ -73,7 +73,7 @@
 
 	if(give_objectives)
 		forge_traitor_objectives()
-		forge_ending_objective() //SKYRAT EDIT
+		forge_ending_objective() //PARIAH EDIT
 	pick_employer()
 
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
@@ -224,6 +224,8 @@
 
 	for(var/objective in objective_count to objective_limit - 1)
 		objectives += forge_single_generic_objective()
+
+
 	//PARIAH EDIT END
 
 /datum/antagonist/traitor/apply_innate_effects(mob/living/mob_override)

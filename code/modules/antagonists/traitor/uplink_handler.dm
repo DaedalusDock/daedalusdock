@@ -11,7 +11,7 @@
 	/// The current uplink flag of this uplink
 	var/uplink_flag = NONE
 	/// This uplink has progression
-	var/has_progression = TRUE
+	var/has_progression = FALSE //PARIAH EDIT
 	/// The amount of experience points this traitor has
 	var/progression_points = 0
 	/// The purchase log of this uplink handler
@@ -21,9 +21,9 @@
 	/// Extra stuff that can be purchased by an uplink, regardless of flag.
 	var/list/extra_purchasable = list()
 	/// Whether this uplink handler has objectives.
-	var/has_objectives = TRUE
+	var/has_objectives = FALSE
 	/// Whether this uplink handler can TAKE objectives.
-	var/can_take_objectives = TRUE
+	var/can_take_objectives = FALSE
 	/// The maximum number of objectives that can be taken
 	var/maximum_active_objectives = 2
 	/// The maximum number of potential objectives that can exist.

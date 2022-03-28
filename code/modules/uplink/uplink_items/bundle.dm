@@ -50,3 +50,9 @@
 	desc = "Twenty telecrystals in their rawest and purest form; can be utilized on active uplinks to increase their telecrystal count."
 	item = /obj/item/stack/telecrystal/twenty
 	cost = 20
+
+/datum/uplink_item/bundles_tc
+	name = "Contractor Bundle"
+	desc = "A box containing everything you need to take contracts from the Syndicate. Kidnap people and drop them off at specified locations for rewards in the form of Telecrystals (Usable in the provided uplink) and Contractor Points."
+	item = /obj/item/storage/box/syndicate/contract_kit
+	cost = 20

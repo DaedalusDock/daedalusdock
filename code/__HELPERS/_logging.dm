@@ -204,10 +204,6 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 /proc/log_subtler(text)
 	if (CONFIG_GET(flag/log_emote))
 		WRITE_LOG(GLOB.world_game_log, "SUBTLER: [text]")
-
-/proc/log_subtle(text)
-	if (CONFIG_GET(flag/log_emote))
-		WRITE_LOG(GLOB.world_game_log, "SUBTLE: [text]")
 //PARIAH END EDIT
 /proc/log_radio_emote(text)
 	if (CONFIG_GET(flag/log_emote))

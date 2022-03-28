@@ -4437,6 +4437,7 @@
 #include "modular_pariah\modules\aesthetics\washing_machine\code\washing_machine.dm"
 #include "modular_pariah\modules\aesthetics\windows\code\windows.dm"
 #include "modular_pariah\modules\combat_indicator\code\combat_indicator.dm"
+#include "modular_pariah\modules\contractor\code\items\modsuit.dm"
 #include "modular_pariah\modules\customization\__DEFINES\loadout.dm"
 #include "modular_pariah\modules\customization\datums\components\crafting\clothing.dm"
 #include "modular_pariah\modules\customization\datums\keybinding\communication.dm"

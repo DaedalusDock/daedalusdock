@@ -43,7 +43,7 @@
 			// Bake their data right into the hard drive, or we don't allow non-antags gaining access to an unused
 			// contract system.
 			// We also create their contracts at this point.
-			if (traitor_data)
+			if(traitor_data)
 				// Only play greet sound, and handle contractor hub when assigning for the first time.
 				if (!traitor_data.contractor_hub)
 					user.playsound_local(user, 'sound/effects/contractstartup.ogg', 100, FALSE)
@@ -102,7 +102,7 @@
 			else
 				user.playsound_local(user, 'sound/machines/uplinkerror.ogg', 50)
 			return TRUE
-		if ("PRG_clear_error")
+		if("PRG_clear_error")
 			error = ""
 			return TRUE
 		if("PRG_set_first_load_finished")
@@ -111,7 +111,7 @@
 		if("PRG_toggle_info")
 			info_screen = !info_screen
 			return TRUE
-		if ("buy_hub")
+		if("buy_hub")
 			if (hard_drive.traitor_data.owner.current == user)
 				var/item = params["item"]
 

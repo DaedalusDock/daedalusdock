@@ -1,102 +1,3 @@
-/// Support unit gets it's own very basic antag datum for admin logging.
-/datum/antagonist/traitor/contractor_support
-	name = "Contractor Support Unit"
-	antag_moodlet = /datum/mood_event/focused
-
-	show_in_roundend = FALSE /// We're already adding them in to the contractor's roundend.
-	give_objectives = TRUE /// We give them their own custom objective.
-	show_in_antagpanel = FALSE /// Not a proper/full antag.
-	give_uplink = FALSE /// Don't give them an uplink.
-
-	var/datum/team/contractor_team/contractor_team
-
-/// Team for storing both the contractor and their support unit - only really for the HUD and admin logging.
-/datum/team/contractor_team
-	show_roundend_report = FALSE
-
-/datum/antagonist/traitor/contractor_support/forge_traitor_objectives()
-	var/datum/objective/generic_objective = new
-
-	generic_objective.name = "Follow Contractor's Orders"
-	generic_objective.explanation_text = "Follow your orders. Assist agents in this mission area."
-
-	generic_objective.completed = TRUE
-
-	objectives += generic_objective
-
-/datum/contractor_hub
-	var/contract_rep = 0
-	var/list/hub_items = list()
-	var/list/purchased_items = list()
-	var/static/list/contractor_items = typecacheof(/datum/contractor_item/, TRUE)
-
-	var/datum/syndicate_contract/current_contract
-	var/list/datum/syndicate_contract/assigned_contracts = list()
-
-	var/list/assigned_targets = list() // used as a blacklist to make sure we're not assigning targets already assigned
-
-	var/contracts_completed = 0
-	var/contract_TC_payed_out = 0 // Keeping track for roundend reporting
-	var/contract_TC_to_redeem = 0 // Used internally and roundend reporting - what TC we have available to cashout.
-
-/datum/contractor_hub/proc/create_hub_items()
-	for(var/path in contractor_items)
-		var/datum/contractor_item/contractor_item = new path
-
-		hub_items.Add(contractor_item)
-
-/datum/contractor_hub/proc/create_contracts(datum/mind/owner)
-
-	// 6 initial contracts
-	var/list/to_generate = list(
-		CONTRACT_PAYOUT_LARGE,
-		CONTRACT_PAYOUT_MEDIUM,
-		CONTRACT_PAYOUT_SMALL,
-		CONTRACT_PAYOUT_SMALL,
-		CONTRACT_PAYOUT_SMALL,
-		CONTRACT_PAYOUT_SMALL
-	)
-
-	//What the fuck
-	if(length(to_generate) > length(GLOB.data_core.locked))
-		to_generate.Cut(1, length(GLOB.data_core.locked))
-
-	// We don't want the sum of all the payouts to be under this amount
-	var/lowest_TC_threshold = 30
-
-	var/total = 0
-	var/lowest_paying_sum = 0
-	var/datum/syndicate_contract/lowest_paying_contract
-
-	// Randomise order, so we don't have contracts always in payout order.
-	to_generate = shuffle(to_generate)
-
-	// Support contract generation happening multiple times
-	var/start_index = 1
-	if (assigned_contracts.len != 0)
-		start_index = assigned_contracts.len + 1
-
-	// Generate contracts, and find the lowest paying.
-	for(var/i in 1 to to_generate.len)
-		var/datum/syndicate_contract/contract_to_add = new(owner, assigned_targets, to_generate[i])
-		var/contract_payout_total = contract_to_add.contract.payout + contract_to_add.contract.payout_bonus
-
-		assigned_targets.Add(contract_to_add.contract.target)
-
-		if (!lowest_paying_contract || (contract_payout_total < lowest_paying_sum))
-			lowest_paying_sum = contract_payout_total
-			lowest_paying_contract = contract_to_add
-
-		total += contract_payout_total
-		contract_to_add.id = start_index
-		assigned_contracts.Add(contract_to_add)
-
-		start_index++
-
-	// If the threshold for TC payouts isn't reached, boost the lowest paying contract
-	if (total < lowest_TC_threshold)
-		lowest_paying_contract.contract.payout_bonus += (lowest_TC_threshold - total)
-
 /datum/contractor_item
 	var/name // Name of item
 	var/desc // description of item
@@ -145,7 +46,7 @@
 
 /datum/contractor_item/fulton_extraction_kit
 	name = "Fulton Extraction Kit"
-	desc = "For getting your target across the station to those difficult dropoffs. Place the beacon somewhere secure, and link the pack. Activating the pack on your target in space will send them over to the beacon - make sure they're not just going to run away though!"
+	desc = "For getting your target across the station to those difficult dropoffs. Place the beacon somewhere secure, and link the pack. Activating the pack on your target will send them over to the beacon - make sure they're not just going to run away though!"
 	item = /obj/item/storage/box/contractor/fulton_extraction
 	item_icon = "parachute-box"
 	limited = 1
@@ -289,3 +190,27 @@
 /obj/item/storage/box/contractor/fulton_extraction/PopulateContents()
 	new /obj/item/extraction_pack(src)
 	new /obj/item/fulton_core(src)
+
+/datum/contractor_item/baton_holster
+	name = "Baton Holster Module"
+	desc = "Never worry about dropping your baton again with this holster module! Simply insert your baton into the module, put it in your MODsuit, and the baton will retract whenever dropped."
+	item = /obj/item/mod/module/baton_holster
+	item_icon = "arrow-up-from-arc" //I cannot find anything better, replace if you find something more fitting
+	limited = 1
+	cost = 1
+
+/datum/contractor_item/baton_upgrade_cuff
+	name = "Baton Cuff Upgrade"
+	desc = "Using technology reverse-engineered from some alien batons we had lying around, you can now cuff people using your baton with the secondary attack. Due to technical limitations, only cable cuffs and zipties work, and they need to be loaded into the baton manually."
+	item = /obj/item/baton_upgrade/cuff
+	item_icon = "handcuff"
+	limited = 1
+	cost = 1
+
+/datum/contractor_item/baton_upgrade_mute
+	name = "Baton Mute Upgrade"
+	desc = "A relatively new advancement in completely proprietary baton technology, this baton upgrade will mute anyone hit for ten seconds, maximizing at twenty seconds."
+	item = /obj/item/baton_upgrade/mute
+	item_icon = "comment-slash"
+	limited = 1
+	cost = 2

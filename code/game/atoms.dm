@@ -2178,6 +2178,12 @@
 				//We inline a MAPTEXT() here, because there's no good way to statically add to a string like this
 				active_hud.screentip_text.maptext = "<span class='maptext' style='text-align: center; font-size: 32px; color: [active_hud.screentip_color]'>[name][extra_context]</span>"
 
+	//PARIAH EDIT ADDITION
+	// Face directions on combat mode. No procs, no typechecks, just a var for speed
+	if(user?.face_mouse)
+		user.face_atom(src)
+	//PARIAH EDIT END
+
 /// Gets a merger datum representing the connected blob of objects in the allowed_types argument
 /atom/proc/GetMergeGroup(id, list/allowed_types)
 	RETURN_TYPE(/datum/merger)

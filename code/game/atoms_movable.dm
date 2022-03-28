@@ -84,6 +84,11 @@
 	/// The degree of pressure protection that mobs in list/contents have from the external environment, between 0 and 1
 	var/contents_pressure_protection = 0
 
+	//PARIAH EDIT ADDITION
+	/// Whether a user will face atoms on entering them with a mouse. Despite being a mob variable, it is here for performances
+	var/face_mouse = FALSE
+	//PARIAH EDIT ADDITION
+
 /atom/movable/Initialize(mapload)
 	. = ..()
 	switch(blocks_emissive)
@@ -459,7 +464,7 @@
 	if(!direction)
 		direction = get_dir(src, newloc)
 
-	if(set_dir_on_move)
+	if(set_dir_on_move && !face_mouse) //PARIAH EDIT
 		setDir(direction)
 
 	var/is_multi_tile_object = bound_width > 32 || bound_height > 32
@@ -586,7 +591,7 @@
 						moving_diagonally = SECOND_DIAG_STEP
 						. = step(src, SOUTH)
 			if(moving_diagonally == SECOND_DIAG_STEP)
-				if(!. && set_dir_on_move)
+				if(!. && set_dir_on_move && !face_mouse)
 					setDir(first_step_dir)
 				else if (!inertia_moving)
 					newtonian_move(direct)
@@ -625,7 +630,7 @@
 
 	last_move = direct
 
-	if(set_dir_on_move)
+	if(set_dir_on_move && !face_mouse) //PARIAH EDIT
 		setDir(direct)
 	if(. && has_buckled_mobs() && !handle_buckled_mob_movement(loc, direct, glide_size_override)) //movement failed due to buckled mob(s)
 		. = FALSE

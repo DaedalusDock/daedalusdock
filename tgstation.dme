@@ -4372,7 +4372,6 @@
 #include "modular_pariah\master_files\code\game\objects\items\devices\radio\headset.dm"
 #include "modular_pariah\master_files\code\modules\client\preferences.dm"
 #include "modular_pariah\master_files\code\modules\client\preferences_savefile.dm"
-#include "modular_pariah\master_files\code\modules\client\preferences\face_cursor_combat_mode.dm"
 #include "modular_pariah\master_files\code\modules\client\preferences\loadout_override_preference.dm"
 #include "modular_pariah\master_files\code\modules\mob\dead\new_player\preferences_setup.dm"
 #include "modular_pariah\master_files\code\modules\mob\living\emote_popup.dm"

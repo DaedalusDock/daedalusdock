@@ -86,10 +86,8 @@
 		return
 	. = combat_mode
 	combat_mode = new_mode
-	SEND_SIGNAL(src, COMSIG_LIVING_COMBAT_MODE_TOGGLE, new_mode) //PARIAH EDIT ADDITION
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
-	face_mouse = (client?.prefs?.read_preference(/datum/preference/toggle/face_cursor_combat_mode) && combat_mode) ? TRUE : FALSE //PARIAH EDIT ADDITION
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
 		return
 	if(combat_mode)

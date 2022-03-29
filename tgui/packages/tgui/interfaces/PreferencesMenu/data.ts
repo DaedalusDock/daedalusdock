@@ -124,8 +124,8 @@ export type PreferencesMenuData = {
   character_preview_view: string;
   character_profiles: (string | null)[];
 
-  preview_options: string; // PARIAH EDIT ADDITION
-  preview_selection: string; // PARIAH EDIT ADDITION
+  preview_options: string; //PARIAH EDIT ADDITION
+  preview_selection: string; //PARIAH EDIT ADDITION
 
   character_preferences: {
     clothing: Record<string, string>;

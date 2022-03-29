@@ -328,6 +328,10 @@
 			vol_each_max = min(40, vol_each_max)
 		else if (item_type == "bottle")
 			vol_each_max = min(30, vol_each_max)
+		//PARIAH EDIT ADDITION
+		else if (item_type == "vial")
+			vol_each_max = min(60, vol_each_max)
+		//PARIAH EDIT END
 		else if (item_type == "condimentPack")
 			vol_each_max = min(10, vol_each_max)
 		else if (item_type == "condimentBottle")
@@ -410,6 +414,15 @@
 				adjust_item_drop_location(P)
 				reagents.trans_to(P, vol_each, transfered_by = usr)
 			return TRUE
+		//PARIAH EDIT ADDTION
+		if(item_type == "vial")
+			var/obj/item/reagent_containers/glass/vial/small/P
+			for(var/i = 0; i < amount; i++)
+				P = new/obj/item/reagent_containers/glass/vial/small(drop_location())
+				P.name = trim("[name] vial")
+				adjust_item_drop_location(P)
+				reagents.trans_to(P, vol_each, transfered_by = usr)
+		//PARIAH EDIT END
 		if(item_type == "condimentPack")
 			var/obj/item/reagent_containers/food/condiment/pack/P
 			for(var/i in 1 to amount)

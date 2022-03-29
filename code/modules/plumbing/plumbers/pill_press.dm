@@ -3,6 +3,7 @@
 	name = "chemical press"
 	desc = "A press that makes pills, patches and bottles."
 	icon_state = "pill_press"
+	buffer = 60 //PARIAH EDIT ADDITION - this is needed so it can completely fill the vials up.
 
 	///maximum size of a pill
 	var/max_pill_volume = 50
@@ -12,6 +13,9 @@
 	var/max_bottle_volume = 30
 	///current operating product (pills or patches)
 	var/product = "pill"
+	//PARIAH EDIT ADDITION - maximum size of a vial
+	var/max_vial_volume = 60
+	//PARIAH EDIT END
 	///the minimum size a pill or patch can be
 	var/min_volume = 5
 	///the maximum size a pill or patch can be
@@ -85,6 +89,13 @@
 			reagents.trans_to(P, current_volume)
 			P.name = trim("[product_name] bottle")
 			stored_products += P
+		//PARIAH EDIT ADDITION
+		else if (product == "vial")
+			var/obj/item/reagent_containers/glass/vial/small/P = new(src)
+			reagents.trans_to(P, current_volume)
+			P.name = trim("[product_name] vial")
+			stored_products += P
+		//SKYRAT EDIT END
 	if(stored_products.len)
 		var/pill_amount = 0
 		for(var/thing in loc)
@@ -144,6 +155,10 @@
 				max_volume = max_patch_volume
 			else if (product == "bottle")
 				max_volume = max_bottle_volume
+			//PARIAH EDIT ADDITION
+			else if (product == "vial")
+				max_volume = max_vial_volume
+			//PARIAH EDIT END
 			current_volume = clamp(current_volume, min_volume, max_volume)
 		if("change_patch_style")
 			patch_style = params["patch_style"]

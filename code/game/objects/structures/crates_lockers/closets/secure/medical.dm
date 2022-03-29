@@ -83,7 +83,8 @@
 	new /obj/item/defibrillator/compact/loaded(src)
 	new /obj/item/healthanalyzer/advanced(src)
 	new /obj/item/assembly/flash/handheld(src)
-	new /obj/item/reagent_containers/hypospray/cmo(src)
+	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
+	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
 	new /obj/item/autosurgeon/organ/cmo(src)
 	new /obj/item/door_remote/chief_medical_officer(src)
 	new /obj/item/clothing/neck/petcollar(src)

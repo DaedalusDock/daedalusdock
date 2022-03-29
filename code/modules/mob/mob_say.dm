@@ -5,6 +5,10 @@
 	set name = "Say"
 	set category = "IC"
 	set instant = TRUE
+	//PARIAH EDIT ADDITION
+	if(typing_indicator)
+		set_typing_indicator(FALSE)
+	//PARIAH EDIT END
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
 		to_chat(usr, span_danger("Speech is currently admin-disabled."))
@@ -36,6 +40,10 @@
 /mob/verb/me_verb(message as text)
 	set name = "Me"
 	set category = "IC"
+	//PARIAH EDIT ADDITION
+	if(typing_indicator)
+		set_typing_indicator(FALSE)
+	//PARIAH EDIT END
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
 		to_chat(usr, span_danger("Speech is currently admin-disabled."))

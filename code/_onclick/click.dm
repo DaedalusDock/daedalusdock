@@ -105,6 +105,11 @@
 		CtrlClickOn(A)
 		return
 
+	//PARIAH EDIT ADDITION
+	if(typing_indicator)
+		set_typing_indicator(FALSE)
+	//PARIAH EDIT END
+
 	if(incapacitated(IGNORE_RESTRAINTS|IGNORE_STASIS))
 		return
 

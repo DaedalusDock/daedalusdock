@@ -1,18 +1,3 @@
-/// Chance that the traitor could roll hijack if the pop limit is met.
-#define HIJACK_PROB 10
-/// Hijack is unavailable as a random objective below this player count.
-#define HIJACK_MIN_PLAYERS 30
-
-/// Chance the traitor gets a martyr objective instead of having to escape alive, as long as all the objectives are martyr compatible.
-#define MARTYR_PROB 20
-
-/// Chance the traitor gets a kill objective. If this prob fails, they will get a steal objective instead.
-#define KILL_PROB 50
-/// If a kill objective is rolled, chance that it is to destroy the AI.
-#define DESTROY_AI_PROB(denominator) (100 / denominator)
-/// If the destroy AI objective doesn't roll, chance that we'll get a maroon instead. If this prob fails, they will get a generic assassinate objective instead.
-#define MAROON_PROB 30
-
 /datum/antagonist/traitor
 	name = "\improper Traitor"
 	roundend_category = "traitors"
@@ -44,6 +29,7 @@
 
 	/// The uplink handler that this traitor belongs to.
 	var/datum/uplink_handler/uplink_handler
+
 	// PARIAH EDIT START
 	///the final objective the traitor has to accomplish, be it escaping, hijacking, or just martyrdom.
 	var/datum/objective/ending_objective
@@ -171,7 +157,9 @@
 	employer = pick(possible_employers)
 	traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
 
-/* /datum/objective/traitor_progression
+//PARIAH EDIT REMOVAL
+/*
+/datum/objective/traitor_progression
 	name = "traitor progression"
 	explanation_text = "Become a living legend by getting a total of %REPUTATION% reputation points"
 
@@ -222,98 +210,22 @@
 		total_points += objective.progression_reward
 	if(total_points < required_progression_in_objectives)
 		return FALSE
-	return TRUE */
+	return TRUE
 
 /// Generates a complete set of traitor objectives up to the traitor objective limit, including non-generic objectives such as martyr and hijack.
 /datum/antagonist/traitor/proc/forge_traitor_objectives()
 	objectives.Cut()
-	var/objective_count = 0
 
-	if((GLOB.joined_player_list.len >= HIJACK_MIN_PLAYERS) && prob(HIJACK_PROB))
-		is_hijacker = TRUE
-		objective_count++
+	var/datum/objective/traitor_progression/final_objective = new /datum/objective/traitor_progression()
+	final_objective.owner = owner
+	objectives += final_objective
 
-	var/objective_limit = CONFIG_GET(number/traitor_objectives_amount)
+	var/datum/objective/traitor_objectives/objective_completion = new /datum/objective/traitor_objectives()
+	objective_completion.owner = owner
+	objectives += objective_completion
 
-	// for(in...to) loops iterate inclusively, so to reach objective_limit we need to loop to objective_limit - 1
-	// This does not give them 1 fewer objectives than intended.
-	for(var/i in objective_count to objective_limit - 1)
-		objectives += forge_single_generic_objective()
-
-
-/**
- * ## forge_ending_objective
- *
- * Forges the endgame objective and adds it to this datum's objective list.
- */
-/datum/antagonist/traitor/proc/forge_ending_objective()
-	if(is_hijacker)
-		ending_objective = new /datum/objective/hijack
-		ending_objective.owner = owner
-		return
-
-	var/martyr_compatibility = TRUE
-
-	for(var/datum/objective/traitor_objective in objectives)
-		if(!traitor_objective.martyr_compatible)
-			martyr_compatibility = FALSE
-			break
-
-	if(martyr_compatibility && prob(MARTYR_PROB))
-		ending_objective = new /datum/objective/martyr
-		ending_objective.owner = owner
-		objectives += ending_objective
-		return
-
-	ending_objective = new /datum/objective/escape
-	ending_objective.owner = owner
-	objectives += ending_objective
-
-/// Forges a single escape objective and adds it to this datum's objective list.
-/datum/antagonist/traitor/proc/forge_escape_objective()
-	var/is_martyr = prob(MARTYR_PROB)
-	var/martyr_compatibility = TRUE
-
-	for(var/datum/objective/traitor_objective in objectives)
-		if(!traitor_objective.martyr_compatible)
-			martyr_compatibility = FALSE
-			break
-
-	if(martyr_compatibility && is_martyr)
-		var/datum/objective/martyr/martyr_objective = new
-		martyr_objective.owner = owner
-		objectives += martyr_objective
-		return
-
-	var/datum/objective/escape/escape_objective = new
-	escape_objective.owner = owner
-	objectives += escape_objective
-
-/// Adds a generic kill or steal objective to this datum's objective list.
-/datum/antagonist/traitor/proc/forge_single_generic_objective()
-	if(prob(KILL_PROB))
-		var/list/active_ais = active_ais()
-		if(active_ais.len && prob(DESTROY_AI_PROB(GLOB.joined_player_list.len)))
-			var/datum/objective/destroy/destroy_objective = new
-			destroy_objective.owner = owner
-			destroy_objective.find_target()
-			return destroy_objective
-
-		if(prob(MAROON_PROB))
-			var/datum/objective/maroon/maroon_objective = new
-			maroon_objective.owner = owner
-			maroon_objective.find_target()
-			return maroon_objective
-
-		var/datum/objective/assassinate/kill_objective = new
-		kill_objective.owner = owner
-		kill_objective.find_target()
-		return kill_objective
-
-	var/datum/objective/steal/steal_objective = new
-	steal_objective.owner = owner
-	steal_objective.find_target()
-	return steal_objective
+	*/
+	//PARIAH EDIT END
 
 /datum/antagonist/traitor/apply_innate_effects(mob/living/mob_override)
 	. = ..()
@@ -393,12 +305,18 @@
 
 	result += objectives_text
 
-	var/special_role_text = lowertext(name)
+	//PARIAH EDIT REMOVAL
+	/*
+	if(uplink_handler)
+		var/completed_objectives_text = "Completed Uplink Objectives: "
+		for(var/datum/traitor_objective/objective as anything in uplink_handler.completed_objectives)
+			if(objective.objective_state == OBJECTIVE_STATE_COMPLETED)
+				completed_objectives_text += "<br><B>[objective.name]</B> - ([objective.telecrystal_reward] TC, [round(objective.progression_reward/600, 0.1)] Reputation)"
+		result += completed_objectives_text
+	*/
+	//PARIAH EDIT REMOVAL
 
-	//PARIAH EDIT ADDITION
-	if(contractor_hub)
-		result += contractor_round_end()
-	//PARIAH EDIT END
+	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
 		result += span_greentext("The [special_role_text] was successful!")
@@ -433,10 +351,3 @@
 	sword.worn_icon_state = "e_sword_on_red"
 
 	H.update_inv_hands()
-
-#undef HIJACK_PROB
-#undef HIJACK_MIN_PLAYERS
-#undef MARTYR_PROB
-#undef KILL_PROB
-#undef DESTROY_AI_PROB
-#undef MAROON_PROB

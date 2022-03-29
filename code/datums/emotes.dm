@@ -99,7 +99,7 @@
 		return
 
 	user.log_message(msg, LOG_EMOTE)
-	// var/dchatmsg = "<b>[user]</b> [msg]" //ORIGINAL
+	//var/dchatmsg = "<b>[user]</b> [msg]" //ORIGINAL
 	//PARIAH EDIT
 	var/space = should_have_space_before_emote(html_decode(msg)[1]) ? " " : ""
 	var/dchatmsg = "<b>[user]</b>[space][msg]"
@@ -124,7 +124,7 @@
 	else
 		// Original: user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b> [msg]</span>", visible_message_flags = EMOTE_MESSAGE)
 		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b>[space][msg]</span>", visible_message_flags = EMOTE_MESSAGE, separation = space)
-	 // PARIAH EDIT END
+	//PARIAH EDIT END
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))
 
 /**

@@ -10,7 +10,7 @@
 	savefile_key = "erp_status_pref"
 
 /datum/preference/choiced/erp_status/init_possible_values()
-	return list("Yes", "Ask", "Check OOC", "No")
+	return list("Yes", "Check OOC", "No")
 
 /datum/preference/choiced/erp_status/create_default_value()
 	return "Ask"

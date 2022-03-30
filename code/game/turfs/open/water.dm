@@ -27,4 +27,6 @@
 	base_icon_state = "water"
 	baseturfs = /turf/open/water/beach
 
-
+//Same turf, but instead used in the Beach Biodome
+/turf/open/water/beach/biodome
+	initial_gas_mix = OPENTURF_DEFAULT_ATMOS

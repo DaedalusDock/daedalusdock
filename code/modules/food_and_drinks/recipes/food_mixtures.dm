@@ -1,5 +1,6 @@
 /datum/crafting_recipe/food
 	var/real_parts
+	time = 1 SECONDS //PARIAH EDIT
 	category = CAT_FOOD
 
 /datum/crafting_recipe/food/New()

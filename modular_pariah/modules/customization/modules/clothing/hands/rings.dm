@@ -10,7 +10,7 @@
 	inhand_icon_state = "gring"
 	worn_icon_state = "gring"
 	body_parts_covered = 0
-	transfer_prints = TRUE
+	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 	strip_delay = 40
 
 /obj/item/clothing/gloves/ring/suicide_act(mob/living/carbon/user)

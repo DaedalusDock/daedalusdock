@@ -196,13 +196,14 @@
 
 /datum/objective_item/steal/hypo
 	name = "the hypospray"
-	targetitem = /obj/item/reagent_containers/hypospray/cmo
+	// targetitem = /obj/item/reagent_containers/hypospray/cmo //ORIGINAL
+	targetitem = /obj/item/hypospray/mkii/cmo //PARIAH EDIT
 	difficulty = 5
 	excludefromjob = list(JOB_CHIEF_MEDICAL_OFFICER)
 	exists_on_map = TRUE
 
-/obj/item/reagent_containers/hypospray/cmo/add_stealing_item_objective()
-	ADD_STEAL_ITEM(src, /obj/item/reagent_containers/hypospray/cmo)
+/obj/item/hypospray/mkii/cmo/add_stealing_item_objective() //PARIAH EDIT
+	ADD_STEAL_ITEM(src, /obj/item/hypospray/mkii/cmo) //PARIAH EDIT
 
 /datum/objective_item/steal/nukedisc
 	name = "the nuclear authentication disk"

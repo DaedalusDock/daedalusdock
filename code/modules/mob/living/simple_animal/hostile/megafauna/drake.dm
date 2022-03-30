@@ -105,6 +105,16 @@
 	QDEL_NULL(lava_swoop)
 	return ..()
 
+/mob/living/simple_animal/hostile/megafauna/dragon/revive(full_heal = FALSE, admin_revive = FALSE)
+	. = ..()
+	if(!.)
+		return
+	pull_force = MOVE_FORCE_OVERPOWERING
+
+/mob/living/simple_animal/hostile/megafauna/dragon/death(gibbed)
+	move_force = MOVE_FORCE_DEFAULT
+	return ..()
+
 /mob/living/simple_animal/hostile/megafauna/dragon/OpenFire()
 	if(swooping)
 		return
@@ -209,7 +219,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/simple_animal/hostile/megafauna/dragon/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
+/mob/living/simple_animal/hostile/megafauna/dragon/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, separation = " ") //PARIAH EDIT - Better emotes // Original: /mob/living/simple_animal/hostile/megafauna/dragon/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
 	if(swooping & SWOOP_INVULNERABLE) //to suppress attack messages without overriding every single proc that could send a message saying we got hit
 		return
 	return ..()

@@ -108,8 +108,8 @@
 /obj/machinery/light/update_icon_state()
 	switch(status) // set icon_states
 		if(LIGHT_OK)
-			var/area/local_area = get_area(src)
-			if(emergency_mode || (local_area?.fire))
+			//var/area/local_area = get_area(src) //PARIAH EDIT REMOVAL
+			if(emergency_mode || firealarm) //PARIAH EDIT CHANGE
 				icon_state = "[base_state]_emergency"
 			else
 				icon_state = "[base_state]"
@@ -126,8 +126,11 @@
 	if(!on || status != LIGHT_OK)
 		return
 
+	/* ORIGINAL:
 	var/area/local_area = get_area(src)
 	if(emergency_mode || (local_area?.fire))
+	*/
+	if(emergency_mode || firealarm) //PARIAH EDIT END
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
 	if(nightshift_enabled)
@@ -135,13 +138,19 @@
 		return
 	. += mutable_appearance(overlay_icon, base_state)
 
+//PARIAH EDIT ADDITION
+#define LIGHT_ON_DELAY_UPPER 3 SECONDS
+#define LIGHT_ON_DELAY_LOWER 1 SECONDS
+//PARIAH EDIT END
+
 // update the icon_state and luminosity of the light depending on its state
-/obj/machinery/light/proc/update(trigger = TRUE)
+/obj/machinery/light/proc/update(trigger = TRUE, instant = FALSE, play_sound = TRUE) //PARIAH EDIT CHANGE
 	switch(status)
 		if(LIGHT_BROKEN,LIGHT_BURNED,LIGHT_EMPTY)
 			on = FALSE
 	emergency_mode = FALSE
 	if(on)
+	/* ORIGINAL
 		var/brightness_set = brightness
 		var/power_set = bulb_power
 		var/color_set = bulb_colour
@@ -171,6 +180,17 @@
 					l_power = power_set,
 					l_color = color_set
 					)
+		*/
+		//PARIAH EDIT
+		if(instant)
+			turn_on(trigger, play_sound)
+		else if(maploaded)
+			turn_on(trigger, play_sound)
+			maploaded = FALSE
+		else if(!turning_on)
+			turning_on = TRUE
+			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+		//PARIAH EDIT END
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
@@ -190,6 +210,11 @@
 			removeStaticPower(static_power_used, AREA_USAGE_STATIC_LIGHT)
 
 	broken_sparks(start_only=TRUE)
+
+//PARIAH EDIT
+#undef LIGHT_ON_DELAY_UPPER
+#undef LIGHT_ON_DELAY_LOWER
+//PARIAH EDIT END
 
 /obj/machinery/light/update_atom_colour()
 	..()
@@ -242,11 +267,12 @@
 			. += "The [fitting] has been smashed."
 	if(cell)
 		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
-
 	//PARIAH EDIT ADDITION
 	if(constant_flickering)
 		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 	//PARIAH EDIT END
+
+
 
 // attack with item - insert light (if right type), otherwise try to break the light
 
@@ -265,7 +291,6 @@
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return
-
 	//PARIAH EDIT END
 
 	// attempt to insert light
@@ -385,6 +410,10 @@
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
 	var/area/local_area = get_area(src)
+	//PARIAH EDIT ADDITION
+	if(isnull(local_area))
+		return FALSE
+	//PARIAH EDIT END
 	return local_area.lightswitch && local_area.power_light
 
 // returns whether this light has emergency power

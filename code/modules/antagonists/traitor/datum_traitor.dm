@@ -25,8 +25,15 @@
 	///reference to the uplink this traitor was given, if they were.
 	var/datum/weakref/uplink_ref
 
+	var/datum/contractor_hub/contractor_hub //PARIAH EDIT
+
 	/// The uplink handler that this traitor belongs to.
 	var/datum/uplink_handler/uplink_handler
+
+	// PARIAH EDIT START
+	///the final objective the traitor has to accomplish, be it escaping, hijacking, or just martyrdom.
+	var/datum/objective/ending_objective
+	// PARIAH EDIT END
 
 	var/uplink_sale_count = 3
 
@@ -47,10 +54,10 @@
 			uplink.uplink_handler = uplink_handler
 		else
 			uplink_handler = uplink.uplink_handler
-		uplink_handler.has_progression = TRUE
+		uplink_handler.has_progression = FALSE //PARIAH EDIT
 		SStraitor.register_uplink_handler(uplink_handler)
 
-		uplink_handler.has_objectives = TRUE
+		uplink_handler.has_objectives = FALSE //PARIAH EDIT
 		uplink_handler.generate_objectives()
 
 		if(uplink_handler.progression_points < SStraitor.current_global_progression)
@@ -69,12 +76,8 @@
 
 	if(give_objectives)
 		forge_traitor_objectives()
-
-	var/faction = prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN
-
-	pick_employer(faction)
-
-	traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
+		forge_ending_objective() //PARIAH EDIT
+	pick_employer()
 
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
@@ -141,13 +144,21 @@
 	var/list/possible_employers = list()
 	possible_employers.Add(GLOB.syndicate_employers, GLOB.nanotrasen_employers)
 
+	if(istype(ending_objective, /datum/objective/hijack))
+		possible_employers -= GLOB.normal_employers
+	else //escape or martyrdom
+		possible_employers -= GLOB.hijack_employers
+
 	switch(faction)
 		if(FACTION_SYNDICATE)
 			possible_employers -= GLOB.nanotrasen_employers
 		if(FACTION_NANOTRASEN)
 			possible_employers -= GLOB.syndicate_employers
 	employer = pick(possible_employers)
+	traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
 
+//PARIAH EDIT REMOVAL
+/*
 /datum/objective/traitor_progression
 	name = "traitor progression"
 	explanation_text = "Become a living legend by getting a total of %REPUTATION% reputation points"
@@ -213,6 +224,8 @@
 	objective_completion.owner = owner
 	objectives += objective_completion
 
+	*/
+	//PARIAH EDIT END
 
 /datum/antagonist/traitor/apply_innate_effects(mob/living/mob_override)
 	. = ..()
@@ -292,12 +305,16 @@
 
 	result += objectives_text
 
+	//PARIAH EDIT REMOVAL
+	/*
 	if(uplink_handler)
 		var/completed_objectives_text = "Completed Uplink Objectives: "
 		for(var/datum/traitor_objective/objective as anything in uplink_handler.completed_objectives)
 			if(objective.objective_state == OBJECTIVE_STATE_COMPLETED)
 				completed_objectives_text += "<br><B>[objective.name]</B> - ([objective.telecrystal_reward] TC, [round(objective.progression_reward/600, 0.1)] Reputation)"
 		result += completed_objectives_text
+	*/
+	//PARIAH EDIT REMOVAL
 
 	var/special_role_text = lowertext(name)
 

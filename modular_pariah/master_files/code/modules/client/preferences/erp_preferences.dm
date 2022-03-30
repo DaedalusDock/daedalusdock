@@ -15,5 +15,16 @@
 /datum/preference/choiced/erp_status/create_default_value()
 	return "Ask"
 
+/datum/preference/choiced/erp_status/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+
+	return preferences.read_preference(/datum/preference/toggle/master_erp_preferences)
+
+/datum/preference/choiced/erp_status/deserialize(input, datum/preferences/preferences)
+	if(!preferences.read_preference(/datum/preference/toggle/master_erp_preferences))
+		return "No"
+	. = ..()
+
 /datum/preference/choiced/erp_status/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	return FALSE

@@ -4519,6 +4519,7 @@
 #include "modular_pariah\modules\indicators\code\typing_indicator.dm"
 #include "modular_pariah\modules\large_doors\code\large_doors.dm"
 #include "modular_pariah\master_files\code\_globalvars\lists\chat.dm"
+#include "modular_pariah\modules\pixel_shift\code\pixel_shift.dm"
 #include "modular_pariah\modules\radiosound\code\headset.dm"
 #include "modular_pariah\modules\loadouts\loadout_items\_loadout_datum.dm"
 #include "modular_pariah\modules\loadouts\loadout_items\loadout_datum_accessory.dm"

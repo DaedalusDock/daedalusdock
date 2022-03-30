@@ -332,7 +332,7 @@ export const FeatureValueInput = (props: {
   );
 };
 
-// SKYRAT FEATURES DOWN HERE
+// PARIAH FEATURES
 
 export const FeatureTextInput = (
   props: FeatureValueProps<string>
@@ -352,52 +352,4 @@ export const FeatureShortTextInput = (
     value={props.value}
     onChange={(_, value) => props.handleSetValue(value)}
   />);
-};
-
-export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
-  const setColorValue = (color, index) => {
-    const currentValue = [...props.value];
-    currentValue[index] = color;
-    props.handleSetValue(currentValue);
-  };
-  return (
-    <Stack align="center" fill>
-      <Stack.Item grow>
-        <Input
-          width="100%"
-          value={props.value[0]}
-          onChange={(_, value) => setColorValue(value, 0)}
-        />
-      </Stack.Item>
-      <Stack.Item>
-        <ColorBox
-          color={props.value[0]}
-        />
-      </Stack.Item>
-      <Stack.Item grow>
-        <Input
-          width="100%"
-          value={props.value[1]}
-          onChange={(_, value) => setColorValue(value, 1)}
-        />
-      </Stack.Item>
-      <Stack.Item>
-        <ColorBox
-          color={props.value[1]}
-        />
-      </Stack.Item>
-      <Stack.Item grow>
-        <Input
-          width="100%"
-          value={props.value[2]}
-          onChange={(_, value) => setColorValue(value, 2)}
-        />
-      </Stack.Item>
-      <Stack.Item>
-        <ColorBox
-          color={props.value[2]}
-        />
-      </Stack.Item>
-    </Stack>
-  );
 };

@@ -10,8 +10,6 @@ export const ExaminePanel = (props, context) => {
     assigned_map,
     flavor_text,
     ooc_notes,
-    custom_species,
-    custom_species_lore,
   } = data;
   return (
     <Window

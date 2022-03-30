@@ -20,10 +20,7 @@
 			if(job_ref && job_ref.outfit)
 				var/datum/outfit/outfit_ref = new()
 				outfit_ref.equip(dummy_holder, visualsOnly=TRUE)
-		/*
-		else if(issilicon(holder))
-			dummy_holder = image('icons/mob/robots.dmi', icon_state = "robot", dir = SOUTH) // this doesn't work and just shows a black screen, idk a solution though feel free to pitch in
-		*/
+
 		examine_panel_screen = new
 		examine_panel_screen.vis_contents += dummy_holder
 		examine_panel_screen.name = "screen"

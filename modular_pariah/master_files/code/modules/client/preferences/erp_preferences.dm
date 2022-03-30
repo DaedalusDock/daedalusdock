@@ -13,7 +13,7 @@
 	return list("Yes", "Check OOC", "No")
 
 /datum/preference/choiced/erp_status/create_default_value()
-	return "Ask"
+	return "No"
 
 /datum/preference/choiced/erp_status/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))

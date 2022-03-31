@@ -17209,6 +17209,15 @@
 /obj/item/flashlight,
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
+"hrD" = (
+/obj/structure/table,
+/obj/item/circular_saw,
+/obj/item/scalpel{
+	pixel_y = 12
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron/dark,
+/area/science/robotics/lab)
 "hrF" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
@@ -20209,6 +20218,14 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
 /area/science/misc_lab)
+"iSe" = (
+/obj/machinery/camera/directional/south{
+	c_tag = "Robotics Lab - South";
+	network = list("ss13","rd")
+	},
+/obj/machinery/mechpad,
+/turf/open/floor/iron/white,
+/area/science/robotics/lab)
 "iSn" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/public/glass{
@@ -26857,6 +26874,16 @@
 	dir = 8
 	},
 /area/medical/medbay/central)
+"mmc" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/cargo/qm)
 "mmg" = (
 /obj/machinery/navbeacon{
 	codes_txt = "delivery;dir=8";
@@ -27765,6 +27792,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
+"mLG" = (
+/obj/structure/table/wood,
+/obj/machinery/computer/libraryconsole/bookmanagement,
+/obj/machinery/light_switch/directional/north,
+/obj/machinery/status_display/evac/directional/east,
+/turf/open/floor/wood,
+/area/service/library)
 "mLJ" = (
 /obj/structure/railing{
 	dir = 1
@@ -29151,6 +29185,12 @@
 "nxB" = (
 /turf/open/floor/plating,
 /area/engineering/atmos)
+"nxD" = (
+/obj/structure/table,
+/obj/machinery/light/small/directional/north,
+/obj/machinery/microwave,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "nxI" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -30301,6 +30341,12 @@
 	},
 /turf/open/floor/iron,
 /area/command/bridge)
+"nXL" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/white/side{
+	dir = 9
+	},
+/area/science/research)
 "nXM" = (
 /obj/machinery/camera/directional/east{
 	c_tag = "Arrivals Escape Pod 2"
@@ -31488,6 +31534,13 @@
 /obj/structure/cable,
 /turf/open/floor/iron/freezer,
 /area/service/kitchen/coldroom)
+"oCG" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/structure/extinguisher_cabinet/directional/east,
+/turf/open/floor/iron/white/side{
+	dir = 9
+	},
+/area/science/research)
 "oDq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/sorting/mail{
@@ -38343,6 +38396,20 @@
 /obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/large,
 /area/medical/treatment_center)
+"rVv" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 8
+	},
+/obj/machinery/computer/secure_data{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/red,
+/obj/machinery/firealarm/directional/west,
+/turf/open/floor/iron,
+/area/hallway/secondary/exit/departure_lounge)
 "rVx" = (
 /obj/machinery/airalarm/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -41546,6 +41613,17 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
+"txT" = (
+/obj/structure/table,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/item/mmi,
+/obj/item/mmi,
+/obj/item/mmi,
+/obj/machinery/newscaster/directional/north,
+/turf/open/floor/iron/dark,
+/area/science/robotics/lab)
 "tyA" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 1
@@ -41671,10 +41749,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/lab)
-"tBp" = (
-/obj/machinery/status_display/evac/directional/west,
-/turf/open/openspace,
-/area/service/chapel)
 "tBz" = (
 /obj/effect/spawner/random/trash/mess,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -46503,6 +46577,18 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
+"vUj" = (
+/obj/effect/turf_decal/tile/purple{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/starboard)
 "vUl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -71736,7 +71822,11 @@ dXf
 pnN
 uzv
 wCX
+<<<<<<< HEAD
 tru
+=======
+mmc
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 phO
 ota
 kjD
@@ -93845,7 +93935,11 @@ cHN
 blv
 kij
 bfT
+<<<<<<< HEAD
 mBw
+=======
+hrD
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 bsQ
 gMl
 box
@@ -94359,7 +94453,11 @@ blw
 bjP
 bnb
 bfT
+<<<<<<< HEAD
 boG
+=======
+txT
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 rMf
 cIe
 box
@@ -94875,7 +94973,11 @@ tTq
 gTp
 bpR
 biL
+<<<<<<< HEAD
 eiU
+=======
+iSe
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 box
 wjP
 hZM
@@ -96398,7 +96500,11 @@ qqn
 oPd
 iGZ
 pXx
+<<<<<<< HEAD
 tHJ
+=======
+mLG
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 dCx
 pXx
 byR
@@ -96912,7 +97018,7 @@ iim
 bOU
 iim
 iim
-tBp
+iim
 iim
 bOU
 iim
@@ -97445,8 +97551,13 @@ bvx
 tUs
 jzP
 bBD
+<<<<<<< HEAD
 wPH
 oqz
+=======
+nXL
+oCG
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 bro
 gXU
 mqG
@@ -97952,7 +98063,11 @@ mGd
 aYV
 nPT
 kFG
+<<<<<<< HEAD
 ubR
+=======
+vUj
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 asn
 iJN
 kTP
@@ -100508,7 +100623,11 @@ eKT
 sdJ
 xjW
 dzn
+<<<<<<< HEAD
 gjk
+=======
+rVv
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 sdJ
 rmV
 xze
@@ -100791,7 +100910,11 @@ uub
 gKw
 hwJ
 bon
+<<<<<<< HEAD
 nSf
+=======
+nxD
+>>>>>>> 513380deb0f (Fixes commented out line in IceBoxStation.dmm (!!!) (#65837))
 xaY
 ttk
 bEC

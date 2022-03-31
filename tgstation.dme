@@ -4512,6 +4512,7 @@
 #include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
 #include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
 #include "modular_pariah\modules\dogfashion\code\head.dm"
+#include "modular_pariah\modules\emotes\code\emotes.dm"
 #include "modular_pariah\modules\GAGS\greyscale_configs.dm"
 #include "modular_pariah\modules\gunsafety\code\gun_safety.dm"
 #include "modular_pariah\modules\hyposprays\code\autolathe_designs.dm"

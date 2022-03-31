@@ -52,7 +52,7 @@
 		return 'modular_pariah/modules/emotes/sound/emotes/female/female_sneeze.ogg'
 	return*/
 
-/datum/emote/living/peep
+/*datum/emote/living/peep
 	key = "peep"
 	key_third_person = "peeps"
 	message = "peeps like a bird!"
@@ -66,7 +66,7 @@
 	message = "peeps twice like a bird!"
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/peep.ogg'
+	sound = 'modular_pariah/modules/emotes/sound/voice/peep.ogg'*/
 
 /datum/emote/living/snap
 	key = "snap"

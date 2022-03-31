@@ -5,3 +5,5 @@
 	var/socks_color = "#FFFFFF"
 	///Flags for showing/hiding underwear, toggleabley by a verb
 	var/underwear_visibility = NONE
+	///The Examine Panel TGUI.
+	var/datum/examine_panel/tgui = new() //create the datum

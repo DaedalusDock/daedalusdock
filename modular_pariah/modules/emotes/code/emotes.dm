@@ -26,47 +26,8 @@
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/emotes/voxrustle.ogg'
 
-
-/*datum/emote/living/cough/get_sound(mob/living/user)//We done have any Vox currently, put these aside for now.
-	if(isvox(user))
-		return 'modular_pariah/modules/emotes/sound/emotes/voxcough.ogg'
-	if(iscarbon(user))
-		if(user.gender == MALE)
-			return pick('modular_pariah/modules/emotes/sound/emotes/male/male_cough_1.ogg',
-						'modular_pariah/modules/emotes/sound/emotes/male/male_cough_2.ogg',
-						'modular_pariah/modules/emotes/sound/emotes/male/male_cough_3.ogg')
-		return pick('modular_pariah/modules/emotes/sound/emotes/female/female_cough_1.ogg',
-					'modular_pariah/modules/emotes/sound/emotes/female/female_cough_2.ogg',
-					'modular_pariah/modules/emotes/sound/emotes/female/female_cough_3.ogg')
-	return*/
-
 /datum/emote/living/sneeze
 	vary = TRUE
-
-/*datum/emote/living/sneeze/get_sound(mob/living/user)
-	//if(isvox(user))
-		return 'modular_pariah/modules/emotes/sound/emotes/voxsneeze.ogg'
-	if(iscarbon(user))
-		if(user.gender == MALE)
-			return 'modular_pariah/modules/emotes/sound/emotes/male/male_sneeze.ogg'
-		return 'modular_pariah/modules/emotes/sound/emotes/female/female_sneeze.ogg'
-	return*/
-
-/*datum/emote/living/peep
-	key = "peep"
-	key_third_person = "peeps"
-	message = "peeps like a bird!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/peep_once.ogg'
-
-/datum/emote/living/peep2
-	key = "peep2"
-	key_third_person = "peeps twice"
-	message = "peeps twice like a bird!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/peep.ogg'*/
 
 /datum/emote/living/snap
 	key = "snap"
@@ -98,30 +59,6 @@
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/voice/snap3.ogg'
 
-/*datum/emote/living/awoo
-	key = "awoo"
-	key_third_person = "awoos"
-	message = "lets out an awoo!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/awoo.ogg'*/
-
-/*datum/emote/living/nya
-	key = "nya"
-	key_third_person = "nyas"
-	message = "lets out a nya!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/nya.ogg'*/
-
-/*datum/emote/living/weh
-	key = "weh"
-	key_third_person = "wehs"
-	message = "lets out a weh!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/weh.ogg'*/
-
 /datum/emote/living/mothsqueak
 	key = "msqueak"
 	key_third_person = "lets out a tiny squeak"
@@ -130,22 +67,6 @@
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/voice/mothsqueak.ogg'
 
-/*datum/emote/living/mousesqueak
-	key = "squeak"
-	key_third_person = "squeaks"
-	message = "squeaks!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'sound/effects/mousesqueek.ogg'*/
-
-/*datum/emote/living/merp
-	key = "merp"
-	key_third_person = "merps"
-	message = "merps!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/merp.ogg'*/
-
 /datum/emote/living/bark
 	key = "bark"
 	key_third_person = "barks"
@@ -153,14 +74,6 @@
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/voice/bark2.ogg'
-
-/*datum/emote/living/squish
-	key = "squish"
-	key_third_person = "squishes"
-	message = "squishes!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/slime_squish.ogg'*/
 
 /datum/emote/living/meow
 	key = "meow"
@@ -269,8 +182,7 @@
 	mob_type_allowed_typecache = list(/mob/living/carbon, /mob/living/silicon/pai)
 
 /datum/emote/living/clap1/get_sound(mob/living/user)
-	return pick('modular_pariah/modules/emotes/sound/emotes/claponce1.ogg',
-				'modular_pariah/modules/emotes/sound/emotes/claponce2.ogg')
+	return pick('modular_pariah/modules/emotes/sound/emotes/claponce2.ogg')
 
 /datum/emote/living/clap1/can_run_emote(mob/living/carbon/user, status_check = TRUE , intentional)
 	if(user.usable_hands < 2)
@@ -289,59 +201,11 @@
 	sound = 'modular_pariah/modules/emotes/sound/emotes/twobeep.ogg'
 	mob_type_allowed_typecache = list(/mob/living) //Beep already exists on brains and silicons
 
-// Avian revolution
-/*datum/emote/living/bawk
-	key = "bawk"
-	key_third_person = "bawks"
-	message = "bawks like a chicken."
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/bawk.ogg'*/
-
-/*datum/emote/living/caw
-	key = "caw"
-	key_third_person = "caws"
-	message = "caws!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/caw.ogg'
-
-/datum/emote/living/caw2
-	key = "caw2"
-	key_third_person = "caws twice"
-	message = "caws twice!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/caw2.ogg'*/
-
 /datum/emote/living/whistle
 	key = "whistle"
 	key_third_person = "whistles"
 	message = "whistles."
 	emote_type = EMOTE_AUDIBLE
-
-/*datum/emote/living/blep
-	key = "blep"
-	key_third_person = "bleps"
-	message = "bleps their tongue out. Blep."
-	message_AI = "shows an image of a random blepping animal. Blep."
-	message_robot = "bleps their robo-tongue out. Blep."
-
-/datum/emote/living/bork
-	key = "bork"
-	key_third_person = "borks"
-	message = "lets out a bork."
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/bork.ogg'
-
-/datum/emote/living/hoot
-	key = "hoot"
-	key_third_person = "hoots"
-	message = "hoots!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/hoot.ogg'*/
 
 /datum/emote/living/growl
 	key = "growl"
@@ -358,23 +222,6 @@
 	message = "lets out a woof."
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/woof.ogg'
-
-/*datum/emote/living/baa
-	key = "baa"
-	key_third_person = "baas"
-	message = "lets out a baa."
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/baa.ogg'
-
-/datum/emote/living/baa2
-	key = "baa2"
-	key_third_person = "baas"
-	message = "bleats."
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/baa2.ogg'*/
 
 /datum/emote/living/wurble
 	key = "wurble"
@@ -384,15 +231,6 @@
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/voice/wurble.ogg'
 
-/*datum/emote/living/rattle
-	key = "rattle"
-	key_third_person = "rattles"
-	message = "rattles!"
-	emote_type = EMOTE_AUDIBLE
-	muzzle_ignore = TRUE
-	vary = TRUE
-	sound = 'modular_pariah/modules/emotes/sound/voice/rattle.ogg'*/
-
 /datum/emote/living/cackle
 	key = "cackle"
 	key_third_person = "cackles"
@@ -400,18 +238,6 @@
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
 	sound = 'modular_pariah/modules/emotes/sound/voice/cackle_yeen.ogg'
-
-/*mob/living/proc/do_ass_slap_animation(atom/slapped)
-	do_attack_animation(slapped, no_effect=TRUE)
-	var/image/gloveimg = image('icons/effects/effects.dmi', slapped, "slapglove", slapped.layer + 0.1)
-	gloveimg.pixel_y = -5
-	gloveimg.pixel_x = 0
-	flick_overlay(gloveimg, GLOB.clients, 10)
-
-	// And animate the attack!
-	animate(gloveimg, alpha = 175, transform = matrix() * 0.75, pixel_x = 0, pixel_y = -5, pixel_z = 0, time = 3)
-	animate(time = 1)
-	animate(alpha = 0, time = 3, easing = CIRCULAR_EASING|EASE_OUT)*/
 
 //Froggie Revolution
 /datum/emote/living/warble

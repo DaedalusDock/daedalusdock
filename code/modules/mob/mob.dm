@@ -799,6 +799,7 @@
 					L[++L.len] = list("[S.panel]", "[S.holder_var_type] [S.holder_var_amount]", S.name, REF(S))
 	return L
 
+//PARIAH EDIT ADDITION
 #define MOB_FACE_DIRECTION_DELAY 1
 
 // facing verbs
@@ -869,6 +870,7 @@
 	setDir(SOUTH)
 	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
+//PARIAH EDIT END
 
 /mob/proc/swap_hand()
 	var/obj/item/held_item = get_active_held_item()

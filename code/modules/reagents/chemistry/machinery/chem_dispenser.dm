@@ -66,7 +66,7 @@
 		/datum/reagent/water,
 		/datum/reagent/fuel
 	)
-	//SKYRAT EDIT ADDITION BEGIN - Skyrat-SS13/Skyrat-tg#1931
+	//PARIAH EDIT
 	var/list/upgrade_reagents = list(
 		/datum/reagent/fuel/oil,
 		/datum/reagent/ammonia,
@@ -92,7 +92,7 @@
 		/datum/reagent/toxin/histamine,
 		/datum/reagent/medicine/morphine
 	)
-	//SKYRAT EDIT ADDITION END
+	//PARIAH EDIT END
 
 	var/list/recording_recipe
 
@@ -105,14 +105,14 @@
 		emagged_reagents = sort_list(emagged_reagents, /proc/cmp_reagents_asc)
 	if(upgrade_reagents)
 		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
-	//SKYRAT EDIT ADDITION BEGIN - Skyrat-SS13/Skyrat-tg#1931
+	//PARIAH EDIT
 	if(upgrade_reagents)
 		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
 	if(upgrade_reagents2)
 		upgrade_reagents2 = sort_list(upgrade_reagents2, /proc/cmp_reagents_asc)
 	if(upgrade_reagents3)
 		upgrade_reagents3 = sort_list(upgrade_reagents3, /proc/cmp_reagents_asc)
-	//SKYRAT EDIT ADDITION END
+	//PARIAH EDIT END
 	if(is_operational)
 		begin_processing()
 	update_appearance()
@@ -503,7 +503,7 @@
 		/datum/reagent/consumable/lemonjuice,
 		/datum/reagent/consumable/menthol
 	)
-	//SKYRAT EDIT ADDITION BEGIN - Skyrat-SS13/Skyrat-tg#2429
+	//PARIAH EDIT
 	upgrade_reagents = list(
 		/datum/reagent/consumable/applejuice,
 		/datum/reagent/consumable/pumpkinjuice,
@@ -519,7 +519,7 @@
 		/datum/reagent/consumable/peachjuice,
 		/datum/reagent/consumable/sol_dry
 	)
-	//SKYRAT EDIT ADDITION END
+	//PARIAH EDIT END
 	emagged_reagents = list(
 		/datum/reagent/consumable/ethanol/thirteenloko,
 		/datum/reagent/consumable/ethanol/whiskey_cola,
@@ -595,7 +595,7 @@
 		/datum/reagent/consumable/ethanol/curacao,
 		/datum/reagent/consumable/ethanol/sake,
 		/datum/reagent/consumable/ethanol/applejack,
-		/datum/reagent/consumable/ethanol/synthanol// SKYRAT EDIT
+		/datum/reagent/consumable/ethanol/synthanol// PARIAH EDIT
 	)
 	upgrade_reagents = null
 	emagged_reagents = list(

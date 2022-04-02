@@ -13,3 +13,8 @@
 #define DIGITIGRADE_SHOES_FILE 'modular_pariah/master_files/icons/mob/clothing/feet_digi.dmi' //PARIAH EDIT
 ///The dmi containing digitigrade oversuits
 #define DIGITIGRADE_SUIT_FILE 'modular_pariah/master_files/icons/mob/clothing/suit_digi.dmi' //PARIAH EDIT
+
+//PARIAH EDIT ADDITION
+///The dmi containing snouted variation maskss
+#define SNOUTED_MASK_FILE 'modular_pariah/master_files/icons/mob/clothing/mask_muzzled.dmi'
+//PARIAH EDIT END

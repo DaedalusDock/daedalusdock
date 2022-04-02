@@ -528,6 +528,12 @@ There are several things that need to be remembered:
 		var/icon_file = 'icons/mob/clothing/mask.dmi'
 		var/handled_by_bodytype = TRUE
 
+		//PARIAH EDIT ADDITION
+		if(dna.species.bodytype & BODYTYPE_SNOUTED)
+			if(worn_item.supports_variations_flags & CLOTHING_SNOUTED_VARIATION)
+				icon_file = SNOUTED_MASK_FILE
+		//PARIAH EDIT END
+
 		if(!(ITEM_SLOT_MASK in check_obscured_slots()))
 
 			if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))

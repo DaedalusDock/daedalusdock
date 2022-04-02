@@ -3,6 +3,7 @@
 	limb_id = SPECIES_LIZARD
 	uses_mutcolor = TRUE
 	is_dimorphic = FALSE
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_SNOUTED //PARIAH EDIT ADDITION
 
 /obj/item/bodypart/chest/lizard
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'

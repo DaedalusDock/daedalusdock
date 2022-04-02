@@ -1,7 +1,6 @@
 /obj/item/clothing/under/sweater
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	worn_icon_digi = 'modular_pariah/master_files/icons/mob/clothing/uniform_digi.dmi'
 	name = "cream sweater"
 	desc = "Why trade style for comfort? Now you can go commando down south and still be cozy up north."
 	icon_state = "bb_turtle"

@@ -9,7 +9,6 @@
 	desc = "This jacket is for those special occasions when a security officer isn't required to wear their armor."
 	icon_state = "officerbluejacket"
 	body_parts_covered = CHEST|ARMS
-	mutant_variants = NONE
 
 // HEAD OF SECURITY
 
@@ -29,7 +28,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
 	icon_state = "trenchcloak"
-	mutant_variants = NONE
 	body_parts_covered = CHEST|ARMS|LEGS
 
 /obj/item/clothing/suit/armor/hos/parade/female

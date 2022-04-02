@@ -346,11 +346,13 @@ There are several things that need to be remembered:
 		update_hud_shoes(worn_item)
 		var/handled_by_bodytype = TRUE
 
+		//PARIAH EDIT
 		//(Currently) unused digitigrade handling
-		/*if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
-				icon_file = DIGITIGRADE_SHOES_FILE*/
+				icon_file = DIGITIGRADE_SHOES_FILE
+		//PARIAH EDIT END
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -463,10 +465,12 @@ There are several things that need to be remembered:
 
 		var/handled_by_bodytype = TRUE
 
+		//PARIAH EDIT
 		//More currently unused digitigrade handling
-		/*if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
+		if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION)
-				icon_file = DIGITIGRADE_SUIT_FILE*/
+				icon_file = DIGITIGRADE_SUIT_FILE
+		//PARIAH EDIT END
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE

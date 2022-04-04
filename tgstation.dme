@@ -4526,6 +4526,7 @@
 #include "modular_pariah\modules\customization\modules\clothing\under\trek.dm"
 #include "modular_pariah\modules\customization\modules\clothing\under\utility_port\suits_port.dm"
 #include "modular_pariah\modules\customization\modules\clothing\under\utility_port\utility.dm"
+#include "modular_pariah\modules\customization\modules\food_and_drinks\recipes\drink_recipes.dm"
 #include "modular_pariah\modules\customization\modules\jobs\_job.dm"
 #include "modular_pariah\modules\customization\modules\mob\living\carbon\human\human.dm"
 #include "modular_pariah\modules\customization\modules\mob\living\carbon\human\human_defines.dm"

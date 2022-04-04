@@ -1,4 +1,94 @@
 // Modular Booze REAGENTS, see the following file for the mixes: modular_pariah\modules\customization\modules\food_and_drinks\recipes\drinks_recipes.dm
+// ROBOT ALCOHOL PAST THIS POINT
+// WOOO!
+
+/datum/reagent/consumable/ethanol/synthanol
+	name = "Synthanol"
+	description = "A runny liquid with conductive capacities. Its effects on synthetics are similar to those of alcohol on organics."
+	color = "#1BB1FF"
+	boozepwr = 50
+	quality = DRINK_NICE
+	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi' // This should cover anything synthanol related. Will have to individually tag others unless we make an object path for pariah drinks.
+	glass_icon_state = "synthanolglass"
+	glass_name = "glass of synthanol"
+	glass_desc = "The equivalent of alcohol for synthetic crewmembers. They'd find it awful if they had tastebuds too."
+	taste_description = "motor oil"
+
+/datum/reagent/consumable/ethanol/synthanol/on_mob_life(mob/living/carbon/C)
+	if(!(C.mob_biotypes & MOB_ROBOTIC))
+		metabolization_rate = 3.6 //gets removed from organics very fast
+		if(prob(25))
+			C.vomit(5, FALSE, FALSE)
+	return ..()
+
+/datum/reagent/consumable/ethanol/synthanol/expose_mob(mob/living/carbon/C, method=TOUCH, volume)
+	. = ..()
+	if(C.mob_biotypes & MOB_ROBOTIC)
+		return
+	if(method == INGEST)
+		to_chat(C, pick(span_danger("That was awful!"), span_danger("That was disgusting!")))
+
+/datum/reagent/consumable/ethanol/synthanol/robottears
+	name = "Robot Tears"
+	description = "An oily substance that an IPC could technically consider a 'drink'."
+	color = "#363636"
+	boozepwr = 25
+	glass_icon_state = "robottearsglass"
+	glass_name = "glass of robot tears"
+	glass_desc = "No robots were hurt in the making of this drink."
+	taste_description = "existential angst"
+
+/datum/reagent/consumable/ethanol/synthanol/trinary
+	name = "Trinary"
+	description = "A fruit drink meant only for synthetics, however that works."
+	color = "#ADB21f"
+	boozepwr = 20
+	glass_icon_state = "trinaryglass"
+	glass_name = "glass of trinary"
+	glass_desc = "Colorful drink made for synthetic crewmembers. It doesn't seem like it would taste well."
+	taste_description = "modem static"
+
+/datum/reagent/consumable/ethanol/synthanol/servo
+	name = "Servo"
+	description = "A drink containing some organic ingredients, but meant only for synthetics."
+	color = "#5B3210"
+	boozepwr = 25
+	glass_icon_state = "servoglass"
+	glass_name = "glass of servo"
+	glass_desc = "Chocolate - based drink made for IPCs. Not sure if anyone's actually tried out the recipe."
+	taste_description = "motor oil and cocoa"
+
+/datum/reagent/consumable/ethanol/synthanol/uplink
+	name = "Uplink"
+	description = "A potent mix of alcohol and synthanol. Will only work on synthetics."
+	color = "#E7AE04"
+	boozepwr = 15
+	glass_icon_state = "uplinkglass"
+	glass_name = "glass of uplink"
+	glass_desc = "An exquisite mix of the finest liquoirs and synthanol. Meant only for synthetics."
+	taste_description = "a GUI in visual basic"
+
+/datum/reagent/consumable/ethanol/synthanol/synthncoke
+	name = "Synth 'n Coke"
+	description = "The classic drink adjusted for a robot's tastes."
+	color = "#7204E7"
+	boozepwr = 25
+	glass_icon_state = "synthncokeglass"
+	glass_name = "glass of synth 'n coke"
+	glass_desc = "Classic drink altered to fit the tastes of a robot, contains de-rustifying properties. Bad idea to drink if you're made of carbon."
+	taste_description = "fizzy motor oil"
+
+/datum/reagent/consumable/ethanol/synthanol/synthignon
+	name = "Synthignon"
+	description = "Someone mixed wine and alcohol for robots. Hope you're proud of yourself."
+	color = "#D004E7"
+	boozepwr = 25
+	glass_icon_state = "synthignonglass"
+	glass_name = "glass of synthignon"
+	glass_desc = "Someone mixed good wine and robot booze. Romantic, but atrocious."
+	taste_description = "fancy motor oil"
+
+// Other Booze
 
 /datum/reagent/consumable/ethanol/gunfire
 	name = "Gunfire"
@@ -223,42 +313,6 @@
 		M.adjust_disgust(25)
 	return ..()
 
-/datum/reagent/consumable/ethanol/nord_king
-	name = "Nord King"
-	color = "#EB1010" //(235, 16, 16)
-	description = "Strong mead mixed with more honey and ethanol. Beloved by its human patrons."
-	boozepwr = 50 //strong!
-	taste_description = "honey and red wine"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
-	glass_icon_state = "nord_king"
-	glass_name = "keg of nord king"
-	glass_desc = "A dripping keg of red mead."
-
-/datum/reagent/consumable/ethanol/nord_king/on_mob_life(mob/living/carbon/M)
-	if(ishumanbasic(M))
-		quality = RACE_DRINK
-	else
-		M.adjust_disgust(25)
-	return ..()
-
-/datum/reagent/consumable/ethanol/velvet_kiss
-	name = "Velvet Kiss"
-	color = "#EB1010" //(235, 16, 16)
-	description = "A bloody drink mixed with wine."
-	boozepwr = 10 //weak
-	taste_description = "iron with grapejuice"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
-	glass_icon_state = "velvet_kiss"
-	glass_name = "glass of velvet kiss"
-	glass_desc = "Red and white drink for the upper classes or undead."
-
-/datum/reagent/consumable/ethanol/velvet_kiss/on_mob_life(mob/living/carbon/M)
-	if(iszombie(M) || isvampire(M) || isdullahan(M)) //Rare races!
-		quality = RACE_DRINK
-	else
-		M.adjust_disgust(25)
-	return ..()
-
 /datum/reagent/consumable/ethanol/abduction_fruit
 	name = "Abduction Fruit"
 	color = "#DEFACD" //(222, 250, 205)
@@ -272,24 +326,6 @@
 
 /datum/reagent/consumable/ethanol/abduction_fruit/on_mob_life(mob/living/carbon/M)
 	if(isabductor(M)) //add xenohyrids to this at some point
-		quality = RACE_DRINK
-	else
-		M.adjust_disgust(25)
-	return ..()
-
-/datum/reagent/consumable/ethanol/bug_zapper
-	name = "Bug Zapper"
-	color = "#F5882A" //(222, 250, 205)
-	description = "Copper and lemon juice. Hardly even a drink."
-	boozepwr = 5 //No booze really
-	taste_description = "copper and AC power"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
-	glass_icon_state = "bug_zapper"
-	glass_name = "glass of bug zapper"
-	glass_desc = "An odd mix of copper, lemon juice and power meant for non-human consumption."
-
-/datum/reagent/consumable/ethanol/bug_zapper/on_mob_life(mob/living/carbon/M)
-	if(isflyperson(M) || ismoth(M))
 		quality = RACE_DRINK
 	else
 		M.adjust_disgust(25)
@@ -363,24 +399,6 @@
 
 /datum/reagent/consumable/ethanol/laval_spit/on_mob_life(mob/living/carbon/M)
 	if(isgolem(M))
-		quality = RACE_DRINK
-	else
-		M.adjust_disgust(25)
-	return ..()
-
-/datum/reagent/consumable/ethanol/frisky_kitty
-	name = "Frisky Kitty"
-	color = "#FCF7D4" //(252, 247, 212)
-	description = "Warm milk mixed with catnip."
-	boozepwr = 0
-	taste_description = "Warm milk and catnip"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
-	glass_icon_state = "frisky_kitty"
-	glass_name = "cup of frisky kitty"
-	glass_desc = "Warm milk and some catnip."
-
-/datum/reagent/consumable/ethanol/frisky_kitty/on_mob_life(mob/living/carbon/M)
-	if(isfelinid(M))
 		quality = RACE_DRINK
 	else
 		M.adjust_disgust(25)

@@ -16,7 +16,7 @@
 
 /datum/reagent/consumable/ethanol/synthanol/on_mob_life(mob/living/carbon/C)
 	if(!(C.mob_biotypes & MOB_ROBOTIC))
-		C.reagents.remove_reagent(type, 3.6) //gets removed from organics very fast
+		metabolization_rate = 3.6 //gets removed from organics very fast
 		if(prob(25))
 			C.vomit(5, FALSE, FALSE)
 	return ..()

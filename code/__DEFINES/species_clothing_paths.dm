@@ -15,6 +15,6 @@
 #define DIGITIGRADE_SUIT_FILE 'modular_pariah/master_files/icons/mob/clothing/suit_digi.dmi' //PARIAH EDIT
 
 //PARIAH EDIT ADDITION
-///The dmi containing snouted variation maskss
+///The dmi containing snouted variation masks
 #define SNOUTED_MASK_FILE 'modular_pariah/master_files/icons/mob/clothing/mask_muzzled.dmi'
 //PARIAH EDIT END

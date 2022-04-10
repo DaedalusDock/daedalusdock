@@ -72,6 +72,9 @@ export type Department = {
 export type Job = {
   description: string;
   department: string;
+  // PARIAH EDIT
+  alt_titles?: string[];
+// PARIAH EDIT END
 };
 
 export type Quirk = {

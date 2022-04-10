@@ -235,11 +235,14 @@
 		humanc = character //Let's retypecast the var to be human,
 
 	if(humanc) //These procs all expect humans
-		GLOB.data_core.manifest_inject(humanc)
+		//PARIAH EDIT START
+		var/chosen_rank = humanc.client?.prefs.alt_job_titles[rank] || rank
+		GLOB.data_core.manifest_inject(humanc, humanc.client)
 		if(SSshuttle.arrivals)
-			SSshuttle.arrivals.QueueAnnounce(humanc, rank)
+			SSshuttle.arrivals.QueueAnnounce(humanc, chosen_rank)
 		else
-			announce_arrival(humanc, rank)
+			announce_arrival(humanc, chosen_rank)
+		//PARIAH EDIT END
 		AddEmploymentContract(humanc)
 
 		humanc.increment_scar_slot()

@@ -149,6 +149,31 @@ h1.alert, h2.alert		{color: #000000;}
 		100%	{color: #3bb5d3;}
 }
 
+// PARIAH EDIT ADDITION
+}
+.doyourjobidiot {
+  color: #c51e1e;
+  text-shadow: 0 0 4px #e22525;
+  font-size: 125%;
+  font-weight: bold;
+  animation: flashingfuckingwarning 250ms infinite;
+}
+@keyframes flashingfuckingwarning {
+  0% {
+    color: #c51e1e;
+    text-shadow: 0 0 4px #c51e1e;
+  }
+  50% {
+    color: #e22525;
+    text-shadow: 0 0 8px #e22525;
+  }
+  100% {
+    color: #c51e1e;
+    text-shadow: 0 0 4px #c51e1e;
+  }
+}
+// PARIAH EDIT END
+
 .phobia			{color: #dd0000;	font-weight: bold;	animation: phobia 750ms infinite;}
 	@keyframes phobia {
 		0%		{color: #0d0d0d;}

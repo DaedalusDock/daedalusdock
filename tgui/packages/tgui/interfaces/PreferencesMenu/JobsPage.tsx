@@ -3,6 +3,7 @@ import { classes } from "common/react";
 import { InfernoNode, SFC } from "inferno";
 import { useBackend } from "../../backend";
 import { Box, Button, Dropdown, Stack, Tooltip } from "../../components";
+import { logger } from "../../logging";
 import { createSetPreference, Job, JoblessRole, JobPriority, PreferencesMenuData } from "./data";
 import { ServerPreferencesFetcher } from "./ServerPreferencesFetcher";
 
@@ -26,21 +27,21 @@ const PriorityButton = (props: {
   const className = `PreferencesMenu__Jobs__departments__priority`;
 
   return (
-    <Stack.Item height={PRIORITY_BUTTON_SIZE}>
-      <Button
-        className={classes([
-          className,
-          props.modifier && `${className}--${props.modifier}`,
-        ])}
-        color={props.enabled ? props.color : "white"}
-        circular
-        onClick={props.onClick}
-        tooltip={props.name}
-        tooltipPosition="bottom"
-        height={PRIORITY_BUTTON_SIZE}
-        width={PRIORITY_BUTTON_SIZE}
-      />
-    </Stack.Item>
+    // PARIAH EDIT START
+    <Button
+      className={classes([
+        className,
+        props.modifier && `${className}--${props.modifier}`,
+      ])}
+      color={props.enabled ? props.color : "white"}
+      circular
+      onClick={props.onClick}
+      tooltip={props.name}
+      tooltipPosition="bottom"
+      height={PRIORITY_BUTTON_SIZE}
+      width={PRIORITY_BUTTON_SIZE}
+    />
+    // PARIAH EDIT END
   );
 };
 
@@ -114,12 +115,12 @@ const PriorityButtons = (props: {
   const { createSetPriority, isOverflow, priority } = props;
 
   return (
-    <Stack
+    <Box inline // PARIAH EDIT
       style={{
         "align-items": "center",
         "height": "100%",
-        "justify-content": "flex-end",
-        "padding-left": "0.3em",
+        "textAlign": "end", // PARIAH EDIT
+        "padding": "0.3em", // PARIAH EDIT
       }}
     >
       {isOverflow
@@ -173,7 +174,7 @@ const PriorityButtons = (props: {
             />
           </>
         )}
-    </Stack>
+    </Box> // PARIAH EDIT
   );
 };
 
@@ -189,10 +190,18 @@ const JobRow = (props: {
   const priority = data.job_preferences[name];
 
   const createSetPriority = createCreateSetPriorityFromName(context, name);
+  // PARIAH EDIT
+  const { act } = useBackend<PreferencesMenuData>(context);
+  // PARIAH EDIT END
 
   const experienceNeeded = data.job_required_experience
     && data.job_required_experience[name];
   const daysLeft = data.job_days_left ? data.job_days_left[name] : 0;
+
+  // PARIAH EDIT
+  const alt_title_selected = data.job_alt_titles[name]
+    ? data.job_alt_titles[name] : name;
+  // PARIAH EDIT END
 
   let rightSide: InfernoNode;
 
@@ -230,35 +239,41 @@ const JobRow = (props: {
       priority={priority}
     />);
   }
-
   return (
-    <Stack.Item className={className} height="100%" style={{
+    <Box className={className} style={{ // PARIAH EDIT
       "margin-top": 0,
     }}>
-      <Stack fill align="center">
+      <Stack align="center" /* PARIAH EDIT */>
         <Tooltip
           content={job.description}
-          position="bottom-start"
+          position="right"// PARIAH EDIT bottom-start->right
         >
           <Stack.Item className="job-name" width="50%" style={{
             "padding-left": "0.3em",
-          }}>
-
-            {name}
+          }}> { // PARIAH EDIT
+              (!job.alt_titles ? name : <Dropdown
+                width="100%"
+                options={job.alt_titles}
+                displayText={alt_title_selected}
+                onSelected={(value) => act("set_job_title", { job: name, new_title: value })}
+              />)
+            // PARIAH EDIT END
+            }
           </Stack.Item>
         </Tooltip>
 
-        <Stack.Item grow className="options">
+        <Stack.Item width="50%" className="options" /* PARIAH EDIT */>
           {rightSide}
         </Stack.Item>
       </Stack>
-    </Stack.Item>
+    </Box> // PARIAH EDIT
   );
 };
 
 const Department: SFC<{ department: string}> = (props) => {
   const { children, department: name } = props;
   const className = `PreferencesMenu__Jobs__departments--${name}`;
+  logger.log(name + ": " + className);
 
   return (
     <ServerPreferencesFetcher
@@ -285,20 +300,18 @@ const Department: SFC<{ department: string}> = (props) => {
           department.head
         );
 
+        logger.log(className);
         return (
           <Box>
-            <Stack
-              vertical
-              fill>
-              {jobsForDepartment.map(([name, job]) => {
-                return (<JobRow
-                  className={classes([className, name === department.head && "head"])}
-                  key={name}
-                  job={job}
-                  name={name}
-                />);
-              })}
-            </Stack>
+            {jobsForDepartment.map(([name, job]) => {
+              logger.log(name);
+              return (<JobRow /* PARIAH EDIT START - Fixing alt titles */
+                className={classes([className, name === department.head && "head"])}
+                key={name}
+                job={job}
+                name={name}
+              />);
+            })/* PARIAH EDIT END */}
 
             {children}
           </Box>

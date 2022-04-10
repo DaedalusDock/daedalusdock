@@ -17,4 +17,6 @@
 //PARIAH EDIT ADDITION
 ///The dmi containing snouted variation masks
 #define SNOUTED_MASK_FILE 'modular_pariah/master_files/icons/mob/clothing/mask_muzzled.dmi'
+
+#define SNOUTED_HEAD_FILE 'modular_pariah/master_files/icons/mob/clothing/head_muzzled.dmi'
 //PARIAH EDIT END

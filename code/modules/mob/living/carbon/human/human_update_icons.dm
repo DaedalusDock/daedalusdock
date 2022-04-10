@@ -402,7 +402,7 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = head
 		var/mutable_appearance/head_overlay
 		update_hud_head(worn_item)
-		var/handled_by_bodytype = FALSE
+		var/handled_by_bodytype = TRUE //PARIAH EDIT
 		var/icon_file
 
 		//PARIAH EDIT ADDITION

@@ -140,10 +140,27 @@ $department_map: (
           border-right: 2px solid rgba(0, 0, 0, 0.3);
           color: black;
 
+          // PARIAH EDIT
           > * {
             height: calc(100% + 0.2em);
-            padding-bottom: 0.2em;
           }
+
+          .jobRow {
+            align-items: center;
+            justify-content: center;
+          }
+
+          .options .Button {
+            margin-right: 0.2em;
+            margin-top: 0.2em;
+          }
+
+          .options:last-child .Button {
+            margin-bottom: 0;
+            margin-right: 0.2em;
+            margin-top: 0.2em;
+          }
+          // PARIAH EDIT END
 
           &:first-child {
             border-top: 2px solid rgba(0, 0, 0, 0.3);
@@ -152,6 +169,11 @@ $department_map: (
           .options {
             background: rgba(0, 0, 0, 0.2);
             height: 100%;
+            // PARIAH EDIT
+            text-align: right;
+            align-items: center;
+            justify-content: center;
+            // PARIAH EDIT END
           }
         }
 

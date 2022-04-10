@@ -52,14 +52,8 @@
 		if (policy)
 			to_chat(new_spawn, policy)
 		to_chat(new_spawn, "Build golem shells in the autolathe, and feed refined mineral sheets to the shells to bring them to life! You are generally a peaceful group unless provoked.")
-<<<<<<< HEAD
-		var/static/list/allowed_areas
-		if(!allowed_areas)
-			allowed_areas = typecacheof(list(/area/icemoon, /area/lavaland, /area/ruin))
-		new_spawn.AddComponent(/datum/component/hazard_area, area_whitelist=allowed_areas)
-=======
+
 		try_keep_home(new_spawn)
->>>>>>> 166dcdeb268 ([NO GBP] Resolves Golems not being allowed in the areas they created (#66000))
 	else
 		new_spawn.mind.enslave_mind_to_creator(owner)
 		log_game("[key_name(new_spawn)] possessed a golem shell enslaved to [key_name(owner)].")
@@ -75,15 +69,12 @@
 	else
 		new_spawn.mind.set_assigned_role(SSjob.GetJobType(/datum/job/free_golem))
 
-<<<<<<< HEAD
-=======
 /obj/effect/mob_spawn/ghost_role/human/golem/proc/try_keep_home(mob/new_spawn)
-	var/static/list/allowed_areas = typecacheof(list(/area/icemoon, /area/lavaland, /area/ruin)) + typecacheof(/area/survivalpod)
+	var/static/list/allowed_areas = typecacheof(list(/area/icemoon, /area/lavaland, /area/ruin))
 
 	ADD_TRAIT(new_spawn, TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION, INNATE_TRAIT)
 	new_spawn.AddComponent(/datum/component/hazard_area, area_whitelist = allowed_areas)
 
->>>>>>> 166dcdeb268 ([NO GBP] Resolves Golems not being allowed in the areas they created (#66000))
 /obj/effect/mob_spawn/ghost_role/human/golem/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(.)

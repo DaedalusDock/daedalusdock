@@ -200,6 +200,9 @@
 
 	dress_up_as_job(equipping, FALSE, used_pref) //PARIAH EDIT CHANGE
 
+	bank_account.replaceable = FALSE
+	dress_up_as_job(equipping)
+
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return

@@ -40,13 +40,17 @@
 		icon_state = base_icon_state
 		return ..()
 
-	var/glass_icon = get_glass_icon(reagents.get_master_reagent())
+	//var/glass_icon = get_glass_icon(reagents.get_master_reagent()) //ORIGINAL
+	var/datum/reagent/master_reagent = reagents.get_master_reagent() //PARIAH EDIT ADDITION
+	var/glass_icon = get_glass_icon(master_reagent) //PARIAH EDIT
 	if(glass_icon)
+		icon = master_reagent.glass_icon //PARIAH EDIT ADDITION
 		icon_state = glass_icon
 		fill_icon_thresholds = null
 	else
 		//Make sure the fill_icon_thresholds and the icon_state are reset. We'll use reagent overlays.
 		fill_icon_thresholds = fill_icon_thresholds || list(1)
+		icon = initial(icon) //PARIAH EDIT ADDITION
 		icon_state = base_icon_state
 	return ..()
 

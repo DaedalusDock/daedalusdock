@@ -20,6 +20,7 @@
 	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/water/beach
+	planetary_atmos = FALSE
 	gender = PLURAL
 	desc = "You get the feeling that nobody's bothered to actually make this water functional..."
 	icon = 'icons/misc/beach.dmi'

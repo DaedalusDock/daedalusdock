@@ -57,6 +57,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/disliked_food = GROSS
 	///Bitfield for food types that the species absolutely hates, giving them even more disgust than disliked food. Meat is "toxic" to moths, for example.
 	var/toxic_food = TOXIC
+	///How are we treated regarding processing reagents, by default we process them as if we're organic
+	var/reagent_flags = PROCESS_ORGANIC
 	///Inventory slots the race can't equip stuff to. Golems cannot wear jumpsuits, for example.
 	var/list/no_equip = list()
 	/// Allows the species to equip items that normally require a jumpsuit without having one equipped. Used by golems.

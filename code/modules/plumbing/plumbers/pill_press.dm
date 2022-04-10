@@ -95,7 +95,7 @@
 			reagents.trans_to(P, current_volume)
 			P.name = trim("[product_name] vial")
 			stored_products += P
-		//SKYRAT EDIT END
+		//PARIAH EDIT END
 	if(stored_products.len)
 		var/pill_amount = 0
 		for(var/thing in loc)

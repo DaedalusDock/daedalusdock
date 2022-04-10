@@ -1,7 +1,7 @@
 /proc/translate_legacy_chem_id(id)
 	switch (id)
 		if ("sacid")
-			return "sulphuricacid"
+			return "sulfuricacid"
 		if ("facid")
 			return "fluorosulfuricacid"
 		if ("co2")
@@ -66,22 +66,33 @@
 		/datum/reagent/water,
 		/datum/reagent/fuel
 	)
-	//these become available once the manipulator has been upgraded to tier 4 (femto)
+	//PARIAH EDIT
 	var/list/upgrade_reagents = list(
-		/datum/reagent/acetone,
-		/datum/reagent/ammonia,
-		/datum/reagent/ash,
-		/datum/reagent/diethylamine,
 		/datum/reagent/fuel/oil,
-		/datum/reagent/saltpetre
+		/datum/reagent/ammonia,
+		/datum/reagent/ash
 	)
-	var/list/emagged_reagents = list(
-		/datum/reagent/toxin/carpotoxin,
+
+	var/list/upgrade_reagents2 = list(
+		/datum/reagent/acetone,
+		/datum/reagent/phenol,
+		/datum/reagent/diethylamine
+	)
+
+	var/list/upgrade_reagents3 = list(
 		/datum/reagent/medicine/mine_salve,
-		/datum/reagent/medicine/morphine,
-		/datum/reagent/drug/space_drugs,
 		/datum/reagent/toxin
 	)
+
+	var/list/emagged_reagents = list(
+		/datum/reagent/drug/space_drugs,
+		/datum/reagent/toxin/plasma,
+		/datum/reagent/consumable/frostoil,
+		/datum/reagent/toxin/carpotoxin,
+		/datum/reagent/toxin/histamine,
+		/datum/reagent/medicine/morphine
+	)
+	//PARIAH EDIT END
 
 	var/list/recording_recipe
 
@@ -94,6 +105,14 @@
 		emagged_reagents = sort_list(emagged_reagents, /proc/cmp_reagents_asc)
 	if(upgrade_reagents)
 		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
+	//PARIAH EDIT
+	if(upgrade_reagents)
+		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
+	if(upgrade_reagents2)
+		upgrade_reagents2 = sort_list(upgrade_reagents2, /proc/cmp_reagents_asc)
+	if(upgrade_reagents3)
+		upgrade_reagents3 = sort_list(upgrade_reagents3, /proc/cmp_reagents_asc)
+	//PARIAH EDIT END
 	if(is_operational)
 		begin_processing()
 	update_appearance()
@@ -355,9 +374,12 @@
 			if(beaker)
 				beaker.reagents.ui_interact(usr)
 
+/obj/machinery/chem_dispenser/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	default_unfasten_wrench(user, tool)
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
 /obj/machinery/chem_dispenser/attackby(obj/item/I, mob/living/user, params)
-	if(default_unfasten_wrench(user, I))
-		return
 	if(default_deconstruction_screwdriver(user, icon_state, icon_state, I))
 		update_appearance()
 		return
@@ -484,7 +506,23 @@
 		/datum/reagent/consumable/lemonjuice,
 		/datum/reagent/consumable/menthol
 	)
-	upgrade_reagents = null
+	//PARIAH EDIT
+	upgrade_reagents = list(
+		/datum/reagent/consumable/applejuice,
+		/datum/reagent/consumable/pumpkinjuice,
+		/datum/reagent/consumable/vanilla
+	)
+	upgrade_reagents2 = list(
+		/datum/reagent/consumable/banana,
+		/datum/reagent/consumable/berryjuice,
+		/datum/reagent/consumable/blumpkinjuice
+	)
+	upgrade_reagents3 = list(
+		/datum/reagent/consumable/watermelonjuice,
+		/datum/reagent/consumable/peachjuice,
+		/datum/reagent/consumable/sol_dry
+	)
+	//PARIAH EDIT END
 	emagged_reagents = list(
 		/datum/reagent/consumable/ethanol/thirteenloko,
 		/datum/reagent/consumable/ethanol/whiskey_cola,
@@ -559,7 +597,8 @@
 		/datum/reagent/consumable/ethanol/triple_sec,
 		/datum/reagent/consumable/ethanol/curacao,
 		/datum/reagent/consumable/ethanol/sake,
-		/datum/reagent/consumable/ethanol/applejack
+		/datum/reagent/consumable/ethanol/applejack,
+		/datum/reagent/consumable/ethanol/synthanol// PARIAH EDIT
 	)
 	upgrade_reagents = null
 	emagged_reagents = list(

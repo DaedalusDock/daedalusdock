@@ -7,7 +7,6 @@
 	icon_state = "qipao"
 	body_parts_covered = CHEST|GROIN
 	can_adjust = FALSE
-	mutant_variants = NONE
 
 /obj/item/clothing/under/costume/qipao/white
 	name = "white qipao"
@@ -39,7 +38,6 @@
 	icon_state = "cheong"
 	body_parts_covered = CHEST|GROIN
 	can_adjust = FALSE
-	mutant_variants = NONE
 
 /obj/item/clothing/under/costume/cheongsam/white
 	name = "white cheongsam"
@@ -61,7 +59,6 @@
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "cyberpunksleek"
 	body_parts_covered = CHEST|ARMS|GROIN|LEGS
-	mutant_variants = NONE
 	can_adjust = FALSE
 
 /obj/item/clothing/under/costume/cybersleek/long

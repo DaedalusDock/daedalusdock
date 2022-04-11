@@ -19,18 +19,6 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 	name = "Jackboots"
 	item_path = /obj/item/clothing/shoes/jackboots
 
-/datum/loadout_item/shoes/junhle
-	name = "Brown Jackboots"
-	item_path = /obj/item/clothing/shoes/jungleboots
-
-/datum/loadout_item/shoes/thighboot
-	name = "Thigh Boots"
-	item_path = /obj/item/clothing/shoes/jackboots/thigh
-
-/datum/loadout_item/shoes/kneeboot
-	name = "Knee Boots"
-	item_path = /obj/item/clothing/shoes/jackboots/knee
-
 /datum/loadout_item/shoes/timbs
 	name = "Fashionable Boots"
 	item_path = /obj/item/clothing/shoes/jackboots/timbs
@@ -115,10 +103,6 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
 
-/datum/loadout_item/shoes/sportshoes
-	name = "Sport Shoes"
-	item_path = /obj/item/clothing/shoes/sports
-
 /datum/loadout_item/shoes/gildedcuffs
 	name = "Gilded leg wraps"
 	item_path = /obj/item/clothing/shoes/wraps
@@ -160,36 +144,3 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 	name = "Jester shoes"
 	item_path = /obj/item/clothing/shoes/clown_shoes/jester
 	restricted_roles = list(JOB_CLOWN)
-
-//Families Gear
-/datum/loadout_item/shoes/deckers
-	name = "Deckers Shoes"
-	item_path = /obj/item/clothing/shoes/deckers
-
-/datum/loadout_item/shoes/morningstar
-	name = "Morningstar Shoes"
-	item_path = /obj/item/clothing/shoes/morningstar
-
-/datum/loadout_item/shoes/saints
-	name = "Saints Shoes"
-	item_path = /obj/item/clothing/shoes/saints
-
-/datum/loadout_item/shoes/phantom
-	name = "Phantom Shoes"
-	item_path = /obj/item/clothing/shoes/phantom
-
-/datum/loadout_item/shoes/sybil
-	name = "Sybil Shoes"
-	item_path = /obj/item/clothing/shoes/sybil_slickers
-
-/datum/loadout_item/shoes/basil
-	name = "Basil Shoes"
-	item_path = /obj/item/clothing/shoes/basil_boys
-
-/datum/loadout_item/shoes/blackjackboots
-	name = "Black Jackboots"
-	item_path = /obj/item/clothing/shoes/jackboots/black
-
-/datum/loadout_item/shoes/rainbow
-	name = "Rainbow Converse"
-	item_path = /obj/item/clothing/shoes/sneakers/rainbow

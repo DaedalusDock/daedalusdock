@@ -172,11 +172,11 @@
 
 // JUMPSUITS
 
-/datum/greyscale_config/jumpsuit_worn/digi
+/datum/greyscale_config/jumpsuit_worn/digitigrade
 	name = "Worn Jumpsuit - Digitigrade"
 	icon_file = 'modular_pariah/modules/GAGS/icons/jumpsuit_digi.dmi'
 
-/datum/greyscale_config/jumpsuit_prison_worn/digi
+/datum/greyscale_config/jumpsuit_prison_worn/digitigrade
 	name = "Worn Prison Jumpsuit - Digitigrade"
 	icon_file = 'modular_pariah/modules/GAGS/icons/jumpsuit_digi.dmi'
 
@@ -197,11 +197,11 @@
 
 // SNEAKERS
 
-/datum/greyscale_config/sneakers_worn/digi
+/datum/greyscale_config/sneakers_worn/digitigrade
 	name = "Worn Sneakers - Digitigrade"
 	icon_file = 'modular_pariah/modules/GAGS/icons/sneakers_digi.dmi'
 
-/datum/greyscale_config/sneakers_orange_worn/digi
+/datum/greyscale_config/sneakers_orange_worn/digitigrade
 	name = "Worn Orange Sneakers - Digitigrade"
 	icon_file = 'modular_pariah/modules/GAGS/icons/sneakers_digi.dmi'
 

@@ -234,10 +234,6 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 	name = "Puffer jacket"
 	item_path = /obj/item/clothing/suit/jacket/puffer
 
-/datum/loadout_item/suit/flakjack
-	name = "Flak Jacket"
-	item_path = /obj/item/clothing/suit/flakjack
-
 
 //HOODIES
 /datum/loadout_item/suit/hoodie/greyscale

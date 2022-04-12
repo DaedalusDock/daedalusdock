@@ -4,6 +4,7 @@
  * time at all to add more or add some for a job that doesn't have any.
  */
 
+
 /datum/job
 	/// The list of alternative job titles people can pick from, null by default.
 	var/list/alt_titles = null

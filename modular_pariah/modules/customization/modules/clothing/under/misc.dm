@@ -60,7 +60,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "tacticool_hawaiian_orange"
-	mutant_variants = NONE
 
 /obj/item/clothing/under/tachawaiian/blue
 	name = "blue tactical hawaiian outfit"
@@ -73,39 +72,6 @@
 /obj/item/clothing/under/tachawaiian/green
 	name = "green tactical hawaiian outfit"
 	icon_state = "tacticool_hawaiian_green"
-
-/obj/item/clothing/under/texas
-	name = "texan formal outfit"
-	desc = "A premium quality shirt and pants combo straight from Texas."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "texas"
-	mutant_variants = NONE
-
-/obj/item/clothing/under/doug_dimmadome
-	name = "dimmadome formal outfit"
-	desc = "A tight fitting suit with a belt that is surely made out of gold."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "doug_dimmadome"
-	mutant_variants = NONE
-
-/obj/item/clothing/under/westender
-	name = "westender outfit"
-	desc = "An outfit harking back to a pre-industrial revolution era."
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "westender"
-	mutant_variants = NONE
-
-/obj/item/clothing/under/rank/pmarsrobe
-	name = "priestess robe"
-	desc = "A thick woolly robe adorned with black furs of a wolf. Keepers of the Flame of utter boredom. Sadly not flameproof"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "pmars_robe"
-	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	flags_inv = HIDESHOES
 
 ///FORMAL DEPT
 /obj/item/clothing/under/rank/medical/virologist/formal ///Do NOT add this to the vendor unless you want Peter Griffen
@@ -266,28 +232,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
 	icon_state = "scrubswhite"
-
-/obj/item/clothing/under/rank/engineering/engineer/trouser
-	desc = "A yellow set of trousers that somehow protect against radiation."
-	name = "engineer's trousers"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "workpants_orange"
-	body_parts_covered = GROIN
-	can_adjust = FALSE
-	mutant_variants = NONE
-	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
-
-/obj/item/clothing/under/rank/civilian/hydroponics/trouser
-	desc = "A green set of trousers, perfect for making pigs smoke."
-	name = "farmer's trousers"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/uniforms.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/uniform.dmi'
-	icon_state = "workpants_green"
-	body_parts_covered = GROIN
-	can_adjust = FALSE
-	mutant_variants = NONE
-	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 
 /obj/item/clothing/under/rank/security/trousers/red
 	name = "security officer's trousers"

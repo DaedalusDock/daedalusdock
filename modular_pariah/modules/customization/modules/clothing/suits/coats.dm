@@ -1,6 +1,3 @@
-/obj/item/clothing/suit/hooded/wintercoat
-	mutant_variants = NONE
-
 /obj/item/clothing/suit/hooded/wintercoat/paramedic
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
@@ -52,19 +49,6 @@
 	desc = "A black winter coat hood."
 	icon_state = "winterhood_aformal"
 
-/obj/item/clothing/suit/flakjack
-	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	name = "flak jacket"
-	desc = "A dilapidated jacket made of a supposedly bullet-proof material (Hint: It isn't.). Smells faintly of napalm."
-	icon_state = "flakjack"
-	inhand_icon_state = "redtag"
-	blood_overlay_type = "armor"
-	body_parts_covered = CHEST
-	resistance_flags = NONE
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0,"energy" = 0, "bomb" = 5, "bio" = 0, "fire" = -5, "acid" = -15, "wound" = 0) //nylon sucks against acid
-	mutant_variants = NONE
-
 /obj/item/clothing/suit/hooded/cloak/david
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
@@ -73,7 +57,6 @@
 	desc = "Ever wanted to look like a badass without ANY effort? Try this nanotrasen brand red cloak, perfect for kids"
 	hoodtype = /obj/item/clothing/head/hooded/cloakhood/david
 	body_parts_covered = CHEST|GROIN|ARMS
-	mutant_variants = NONE
 
 /obj/item/clothing/head/hooded/cloakhood/david
 	icon = 'modular_pariah/master_files/icons/obj/clothing/hats.dmi'
@@ -82,7 +65,6 @@
 	icon_state = "golhood"
 	desc = "conceal your face in shame with this nanotrasen brand hood"
 	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR
-	mutant_variants = NONE
 
 /obj/item/clothing/suit/toggle/deckard
 	name = "runner coat"
@@ -90,7 +72,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
 	icon_state = "deckard"
-	mutant_variants = NONE
 	inhand_icon_state = "det_suit"
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
@@ -104,7 +85,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
 	icon_state = "hazardbg"
-	mutant_variants = NONE
 	blood_overlay_type = "coat"
 	toggle_noun = "zipper"
 	armor = list(MELEE = 10, BULLET = 5, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
@@ -114,7 +94,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
 	icon_state = "suitjacket_black"
-	mutant_variants = NONE
 
 
 /obj/item/clothing/suit/toggle/lawyer/white
@@ -123,7 +102,6 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
 	icon_state = "suitjacket_white"
-	mutant_variants = NONE
 
 /obj/item/clothing/suit/hooded/wintercoat/christmas
 	name = "red christmas coat"
@@ -177,4 +155,3 @@
 	cold_protection = CHEST|ARMS
 	icon = 'modular_pariah/master_files/icons/obj/clothing/suits.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/suit.dmi'
-	mutant_variants = NONE

@@ -245,10 +245,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Top Hat"
 	item_path = /obj/item/clothing/head/that
 
-/datum/loadout_item/head/flakhelm
-	name = "Flak Helmet"
-	item_path = /obj/item/clothing/head/flakhelm
-
 /datum/loadout_item/head/whitekepi
 	name = "White Kepi"
 	item_path = /obj/item/clothing/head/kepi

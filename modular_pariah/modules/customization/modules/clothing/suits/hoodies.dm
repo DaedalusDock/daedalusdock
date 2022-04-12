@@ -10,7 +10,6 @@
 	greyscale_config_worn = /datum/greyscale_config/hoodie/worn
 	greyscale_colors = "#FFFFFF"
 	flags_1 = IS_PLAYER_COLORABLE_1
-	mutant_variants = NONE
 	min_cold_protection_temperature = T0C - 20	//Not as good as the base jacket
 
 /obj/item/clothing/suit/toggle/jacket/hoodie/trim

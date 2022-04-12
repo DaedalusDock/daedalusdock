@@ -21,7 +21,7 @@
 	alt_titles = list("Chief Medical Officer", "Medical Director", "Head of Medical")
 
 /datum/job/head_of_personnel
-	alt_titles = list("Head of Personnel", "First Officer", "Crew Overseer")
+	alt_titles = list("Head of Personnel", "Personnel Manager", "Crew Overseer")
 
 /datum/job/head_of_security
 	alt_titles = list("Head of Security", "Security Commander", "Chief of Security")

@@ -223,6 +223,10 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	var/static/list/show_directions = list(SOUTH, WEST)
 	if(H.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST)
 		var/assignment = H.mind.assigned_role.title
+		//PARIAH EDIT ADDITION
+		// The alt job title, if user picked one, or the default
+		var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
+		//PARIAH EDIT END
 
 		var/static/record_id_num = 1001
 		var/id = num2hex(record_id_num++,6)
@@ -245,7 +249,8 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/datum/data/record/G = new()
 		G.fields["id"] = id
 		G.fields["name"] = H.real_name
-		G.fields["rank"] = assignment
+		// G.fields["rank"] = assignment //ORIGINAL
+		G.fields["rank"] = chosen_assignment //PARIAH EDIT
 		G.fields["trim"] = assignment
 		G.fields["initial_rank"] = assignment
 		G.fields["age"] = H.age
@@ -294,7 +299,8 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/datum/data/record/L = new()
 		L.fields["id"] = md5("[H.real_name][assignment]") //surely this should just be id, like the others?
 		L.fields["name"] = H.real_name
-		L.fields["rank"] = assignment
+		// L.fields["rank"] = assignment //ORIGINAL
+		L.fields["rank"] = chosen_assignment  //PARIAH EDIT
 		L.fields["trim"] = assignment
 		G.fields["initial_rank"] = assignment
 		L.fields["age"] = H.age

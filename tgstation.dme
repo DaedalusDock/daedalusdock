@@ -4482,6 +4482,8 @@
 #include "modular_pariah\modules\aesthetics\walls\code\walls.dm"
 #include "modular_pariah\modules\aesthetics\washing_machine\code\washing_machine.dm"
 #include "modular_pariah\modules\aesthetics\windows\code\windows.dm"
+#include "modular_pariah\modules\alternative_job_titles\code\alt_job_titles.dm"
+#include "modular_pariah\modules\alternative_job_titles\code\job.dm"
 #include "modular_pariah\modules\contractor\code\datums\contract.dm"
 #include "modular_pariah\modules\contractor\code\datums\contractor_datum.dm"
 #include "modular_pariah\modules\contractor\code\datums\contractor_hub.dm"

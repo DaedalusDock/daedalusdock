@@ -20,7 +20,7 @@
 	alt_titles = list("Chief Medical Officer", "Medical Director", "Head of Medical")
 
 /datum/job/head_of_personnel
-	alt_titles = list("Head of Personnel", "Executive Officer", "Crew Overseer")
+	alt_titles = list("Head of Personnel", "First Officer", "Crew Overseer")
 
 /datum/job/head_of_security
 	alt_titles = list("Head of Security", "Security Commander", "Chief of Security")
@@ -31,7 +31,7 @@
 // Security
 
 /datum/job/security_officer
-	alt_titles = list("Security Officer", "Security Guard", "Security Operative")
+	alt_titles = list("Security Officer", "Security Guard", "Security Operative", "Security Marshal")
 
 /datum/job/warden
 	alt_titles = list("Warden", "Brig Officer", "Security Sergeant")
@@ -57,7 +57,7 @@
 	alt_titles = list("Virologist", "Pathologist", "Microbiologist")
 
 /datum/job/psychologist
-	alt_titles = list("Psychologist", "Psychiatrist", "Therapist", "Counsellor")
+	alt_titles = list("Psychologist", "Psychiatrist", "Therapist")
 
 // Science
 
@@ -65,7 +65,7 @@
 	alt_titles = list("Roboticist", "Biomechanical Engineer", "Mechatronic Engineer")
 
 /datum/job/scientist
-	alt_titles = list("Scientist", "Circuitry Designer", "Xenobiologist", "Cytologist", "Plasma Researcher", "Anomalist", "Ordnance Technician",)
+	alt_titles = list("Scientist", "Circuitry Designer", "Xenobiologist", "Cytologist", "Plasma Researcher", "Anomalist", "Ordnance Technician")
 
 /datum/job/geneticist
 	alt_titles = list("Geneticist", "Mutation Researcher")
@@ -104,7 +104,7 @@
 	alt_titles = list("Janitor", "Custodian", "Sanitation Technician")
 
 /datum/job/chaplain
-	alt_titles = list("Chaplain", "Priest", "Preacher", "Reverend", "Oracle", "Pontifex", "Magister")
+	alt_titles = list("Chaplain", "Priest", "Preacher", "Reverend", "Oracle", "Pontifex", "Magister", "High Priest", "Imam", "Rabbi", "Monk", "Counselor")
 
 /datum/job/lawyer
 	alt_titles = list("Lawyer", "Human Resources Agent", "Defence Attorney", "Public Defender", "Prosecutor")
@@ -112,4 +112,4 @@
 // Misc
 
 /datum/job/assistant
-	alt_titles = list("Assistant", "Civilian", "Tourist", "Businessman", "Trader", "Freelancer", "Off-Duty")
+	alt_titles = list("Assistant", "Civilian", "Tourist", "Businessman", "Trader", "Freelancer", "Off-Duty Crew")

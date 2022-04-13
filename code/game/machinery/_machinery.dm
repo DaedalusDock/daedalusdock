@@ -90,7 +90,7 @@
 	desc = "Some kind of machine."
 	verb_say = "beeps"
 	verb_yell = "blares"
-	pressure_resistance = 15
+	//pressure_resistance = 15
 	pass_flags_self = PASSMACHINE
 	max_integrity = 200
 	layer = BELOW_OBJ_LAYER //keeps shit coming out of the machine from ending up underneath it.
@@ -536,10 +536,11 @@
 	if(!.)
 		return FALSE
 
-	var/turf/user_turf = get_turf(user)
+	/*var/turf/user_turf = get_turf(user)
 	var/turf/machine_turf = get_turf(src)
 	if(!(user_turf in machine_turf.atmos_adjacent_turfs))
 		return FALSE
+	*/
 
 	if((interaction_flags_machine & INTERACT_MACHINE_REQUIRES_SIGHT) && user.is_blind())
 		to_chat(user, span_warning("This machine requires sight to use."))

@@ -447,7 +447,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 					dat += "Unable to obtain a reading.<br>"
 				else
 					var/datum/gas_mixture/environment = T.return_air()
-					var/list/env_gases = environment.gases
+					var/list/env_gases = environment.get_gases()
 
 					var/pressure = environment.return_pressure()
 					var/total_moles = environment.total_moles()
@@ -456,9 +456,9 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 					if (total_moles)
 						for(var/id in env_gases)
-							var/gas_level = env_gases[id][MOLES]/total_moles
+							var/gas_level = environment.get_gas(id)/total_moles
 							if(gas_level > 0)
-								dat += "[env_gases[id][GAS_META][META_GAS_NAME]]: [round(gas_level*100, 0.01)]%<br>"
+								dat += "[env_gases[id]]: [round(gas_level*100, 0.01)]%<br>"
 
 					dat += "Temperature: [round(environment.temperature-T0C)]&deg;C<br>"
 				dat += "<br>"

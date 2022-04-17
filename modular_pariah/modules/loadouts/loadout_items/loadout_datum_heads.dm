@@ -131,10 +131,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Flat Cap"
 	item_path = /obj/item/clothing/head/flatcap
 
-/datum/loadout_item/head/pflatcap
-	name = "Poly Flat cap"
-	item_path = /obj/item/clothing/head/colourable_flatcap
-
 /datum/loadout_item/head/beige_fedora
 	name = "Beige Fedora"
 	item_path = /obj/item/clothing/head/fedora/beige
@@ -205,10 +201,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Pirate hat"
 	item_path = /obj/item/clothing/head/pirate
 
-/datum/loadout_item/head/flowerpin
-	name = "Flower Pin"
-	item_path = /obj/item/clothing/head/flowerpin
-
 /datum/loadout_item/head/rice_hat
 	name = "Rice hat"
 	item_path = /obj/item/clothing/head/rice_hat
@@ -220,18 +212,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head/ushanka/soviet
 	name = "Soviet Ushanka"
 	item_path = /obj/item/clothing/head/ushanka/soviet
-
-/datum/loadout_item/head/wrussian
-	name = "Black Papakha"
-	item_path = /obj/item/clothing/head/whiterussian
-
-/datum/loadout_item/head/wrussianw
-	name = "White Papakha"
-	item_path = /obj/item/clothing/head/whiterussian/white
-
-/datum/loadout_item/head/wrussianb
-	name = "Black and Red Papakha"
-	item_path = /obj/item/clothing/head/whiterussian/black
 
 /datum/loadout_item/head/slime
 	name = "Slime hat"
@@ -245,66 +225,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Top Hat"
 	item_path = /obj/item/clothing/head/that
 
-/datum/loadout_item/head/whitekepi
-	name = "White Kepi"
-	item_path = /obj/item/clothing/head/kepi
-
-/datum/loadout_item/head/whitekepiold
-	name = "White Kepi, Old"
-	item_path = /obj/item/clothing/head/kepi/old
-
-//Cowboy Stuff
-/datum/loadout_item/head/cowboyhat
-	name = "Cowboy Hat, Brown"
-	item_path = /obj/item/clothing/head/cowboyhat
-
-/datum/loadout_item/head/cowboyhat_black
-	name = "Cowboy Hat, Black"
-	item_path = /obj/item/clothing/head/cowboyhat/black
-
-/datum/loadout_item/head/cowboyhat_blackwide
-	name = "Wide Cowboy Hat, Black"
-	item_path = /obj/item/clothing/head/cowboyhat/blackwide
-
-/datum/loadout_item/head/cowboyhat_wide
-	name = "Wide Cowboy Hat, Brown"
-	item_path = /obj/item/clothing/head/cowboyhat/wide
-
-/datum/loadout_item/head/cowboyhat_white
-	name = "Cowboy Hat, White"
-	item_path = /obj/item/clothing/head/cowboyhat/white
-
-/datum/loadout_item/head/cowboyhat_pink
-	name = "Cowboy Hat, Pink"
-	item_path = /obj/item/clothing/head/cowboyhat/pink
-
-/datum/loadout_item/head/cowboyhat_winter
-	name = "Winter Cowboy Hat"
-	item_path = /obj/item/clothing/head/cowboyhat/sheriff
-
-/datum/loadout_item/head/cowboyhat_sheriff
-	name = "Sheriff Hat"
-	item_path = /obj/item/clothing/head/cowboyhat/sheriff/alt
-
-/datum/loadout_item/head/cowboyhat_deputy
-	name = "Deputy Hat"
-	item_path = /obj/item/clothing/head/cowboyhat/deputy
-
 //Job Locked Hats
-/datum/loadout_item/head/cowboyhat_sec
-	name = "Cowboy Hat, Security"
-	item_path = /obj/item/clothing/head/cowboyhat/sec
-	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/head/cowboyhat_secwide
-	name = "Wide Cowboy Hat, Security"
-	item_path = /obj/item/clothing/head/cowboyhat/widesec
-	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY)
-
-/datum/loadout_item/head/ushanka/sec
-	name = "Security Ushanka"
-	item_path = /obj/item/clothing/head/ushanka/sec
-	restricted_roles = list(JOB_WARDEN,JOB_DETECTIVE,JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY)
 
 /datum/loadout_item/head/nursehat
 	name = "Nurse Hat"
@@ -370,18 +291,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Robotics Beret"
 	item_path = /obj/item/clothing/head/beret/science/fancy/robo
 	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR)
-
-/datum/loadout_item/head/brfed
-	name = "Brown Fedora"
-	item_path = /obj/item/clothing/head/fedora/fedbrown
-
-/datum/loadout_item/head/blfed
-	name = "Black Fedora"
-	item_path = /obj/item/clothing/head/fedora/fedblack
-
-/datum/loadout_item/head/fashionable_cap
-	name = "Fashionable baseball cap"
-	item_path = /obj/item/clothing/head/soft/yankee
 
 /datum/loadout_item/head/poppy
 	name = "Poppy Flower"

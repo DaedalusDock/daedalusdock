@@ -19,10 +19,6 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 	name = "Jackboots"
 	item_path = /obj/item/clothing/shoes/jackboots
 
-/datum/loadout_item/shoes/timbs
-	name = "Fashionable Boots"
-	item_path = /obj/item/clothing/shoes/jackboots/timbs
-
 /datum/loadout_item/shoes/winter_boots
 	name = "Winter Boots"
 	item_path = /obj/item/clothing/shoes/winterboots
@@ -102,38 +98,6 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 /datum/loadout_item/shoes/sandals
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
-
-/datum/loadout_item/shoes/gildedcuffs
-	name = "Gilded leg wraps"
-	item_path = /obj/item/clothing/shoes/wraps
-
-/datum/loadout_item/shoes/silvercuffs
-	name = "Silver leg wraps"
-	item_path = /obj/item/clothing/shoes/wraps/silver
-
-/datum/loadout_item/shoes/redcuffs
-	name = "Red leg wraps"
-	item_path = /obj/item/clothing/shoes/wraps/red
-
-/datum/loadout_item/shoes/bluecuffs
-	name = "Blue leg wraps"
-	item_path = /obj/item/clothing/shoes/wraps/blue
-
-/datum/loadout_item/shoes/clothwrap
-	name = "Colourable Cloth Wraps"
-	item_path = /obj/item/clothing/shoes/wraps/colourable
-
-/datum/loadout_item/shoes/high_heels
-	name = "High Heels"
-	item_path = /obj/item/clothing/shoes/high_heels
-
-/datum/loadout_item/shoes/cowboyboots
-	name = "Cowboy Boots, Brown"
-	item_path = /obj/item/clothing/shoes/cowboyboots
-
-/datum/loadout_item/shoes/cowboyboots_black
-	name = "Cowboy Boots, Black"
-	item_path = /obj/item/clothing/shoes/cowboyboots/black
 
 /datum/loadout_item/shoes/disco
 	name = "Green Snakeskin Shoes"

@@ -71,10 +71,6 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 	name = "White Gloves"
 	item_path = /obj/item/clothing/gloves/color/white
 
-/datum/loadout_item/gloves/evening
-	name = "Evening Gloves"
-	item_path = /obj/item/clothing/gloves/evening
-
 /datum/loadout_item/gloves/goldring
 	name = "Gold ring"
 	item_path = /obj/item/clothing/gloves/ring

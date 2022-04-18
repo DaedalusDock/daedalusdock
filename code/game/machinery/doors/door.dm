@@ -167,7 +167,7 @@
 		return
 
 /obj/machinery/door/Move()
-	var/turf/T = loc
+	//var/turf/T = loc
 	. = ..()
 	/*if(density) //Gotta be closed my friend
 		move_update_air(T)*/

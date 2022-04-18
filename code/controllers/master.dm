@@ -109,7 +109,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			for(var/global_var in global.vars)
 				if (istype(global.vars[global_var], /datum/controller/subsystem))
 					existing_subsystems += global.vars[global_var]
-					
+
 			//Either init a new SS or if an existing one was found use that
 			for(var/I in subsystem_types)
 				var/ss_idx = existing_subsystems.Find(I)
@@ -221,6 +221,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		if (SS.flags & SS_NO_INIT || SS.initialized) //Don't init SSs with the correspondig flag or if they already are initialzized
 			continue
 		current_initializing_subsystem = SS
+		to_chat(world, span_blue(span_boldannounce("Initializing [SS.name]...")))
 		SS.Initialize(REALTIMEOFDAY)
 		CHECK_TICK
 	current_initializing_subsystem = null

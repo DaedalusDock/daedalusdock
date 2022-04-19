@@ -277,6 +277,7 @@
 	gender = PLURAL
 	max_integrity = 20
 	can_atmos_pass = CANPASS_NEVER
+	obj_flags = CAN_BE_HIT | BLOCK_Z_IN_DOWN | BLOCK_Z_IN_UP
 	///Var used to prevent spamming of the construction sound
 	var/next_beep = 0
 

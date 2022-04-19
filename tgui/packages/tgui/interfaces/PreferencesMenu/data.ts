@@ -72,6 +72,9 @@ export type Department = {
 export type Job = {
   description: string;
   department: string;
+  // PARIAH EDIT
+  alt_titles?: string[];
+// PARIAH EDIT END
 };
 
 export type Quirk = {
@@ -158,6 +161,9 @@ export type PreferencesMenuData = {
     required_playtime: number,
   }>;
   job_preferences: Record<string, JobPriority>;
+
+
+  job_alt_titles: Record<string, string>; // PARIAH EDIT ADDITION
 
   keybindings: Record<string, string[]>;
   overflow_role: string;

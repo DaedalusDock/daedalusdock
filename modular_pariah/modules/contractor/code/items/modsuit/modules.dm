@@ -133,7 +133,7 @@
 	chameleon_right = initial(mod.righthand_file)
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, .proc/reset_chameleon)
 
-/obj/item/mod/module/chameleon/on_uninstall()
+/obj/item/mod/module/chameleon/on_uninstall(deleting = FALSE)
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
 	reset_chameleon()
 

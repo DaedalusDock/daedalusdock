@@ -23,30 +23,6 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Gas Mask"
 	item_path = /obj/item/clothing/mask/gas
 
-/datum/loadout_item/mask/black_bandana
-	name = "Black Bandana"
-	item_path = /obj/item/clothing/mask/bandana/black
-
-/datum/loadout_item/mask/blue_bandana
-	name = "Blue Bandana"
-	item_path = /obj/item/clothing/mask/bandana/blue
-
-/datum/loadout_item/mask/gold_bandana
-	name = "Gold Bandana"
-	item_path = /obj/item/clothing/mask/bandana/gold
-
-/datum/loadout_item/mask/green_bandana
-	name = "Green Bandana"
-	item_path = /obj/item/clothing/mask/bandana/green
-
-/datum/loadout_item/mask/red_bandana
-	name = "Red Bandana"
-	item_path = /obj/item/clothing/mask/bandana/red
-
-/datum/loadout_item/mask/skull_bandana
-	name = "Skull Bandana"
-	item_path = /obj/item/clothing/mask/bandana/skull
-
 /datum/loadout_item/mask/fake_mustache
 	name = "Fake Moustache"
 	item_path = /obj/item/clothing/mask/fakemoustache
@@ -71,39 +47,6 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Balaclava"
 	item_path = /obj/item/clothing/mask/balaclava
 	restricted_roles = list(JOB_SECURITY_OFFICER ,JOB_HEAD_OF_SECURITY, JOB_WARDEN)
-
-/datum/loadout_item/mask/balaclavaadj
-	name = "Adjustable Balaclava"
-	item_path = /obj/item/clothing/mask/balaclavaadjust
-	restricted_roles = list(JOB_SECURITY_OFFICER ,JOB_HEAD_OF_SECURITY, JOB_WARDEN)
-
-/datum/loadout_item/mask/bandana_redft
-	name = "Skin Tight Red Bandana"
-	item_path = /obj/item/clothing/mask/bandana/red/ft
-
-/datum/loadout_item/mask/bandana_blueft
-	name = "Skin Tight Blue Bandana"
-	item_path = /obj/item/clothing/mask/bandana/blue/ft
-
-/datum/loadout_item/mask/bandana_greenft
-	name = "Skin Tight Green Bandana"
-	item_path = /obj/item/clothing/mask/bandana/green/ft
-
-/datum/loadout_item/mask/bandana_goldft
-	name = "Skin Tight Gold Bandana"
-	item_path = /obj/item/clothing/mask/bandana/gold/ft
-
-/datum/loadout_item/mask/bandana_blackft
-	name = "Skin Tight Black Bandana"
-	item_path = /obj/item/clothing/mask/bandana/black/ft
-
-/datum/loadout_item/mask/bandana_skullft
-	name = "Skin Tight Skull Bandana"
-	item_path = /obj/item/clothing/mask/bandana/skull/ft
-
-/datum/loadout_item/mask/gas_glass
-	name = "Glass Gas Mask"
-	item_path = /obj/item/clothing/mask/gas/glass
 
 /datum/loadout_item/mask/surgical
 	name = "Sterile Mask"

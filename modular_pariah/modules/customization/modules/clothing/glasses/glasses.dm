@@ -100,23 +100,6 @@
 	inhand_icon_state = "glasses_rimless"
 	vision_correction = TRUE
 
-/obj/item/clothing/glasses/trickblindfold/hamburg
-	name = "thief visor"
-	desc = "Perfect for stealing hamburgers from innocent multinational capitalist monopolies."
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/eyes.dmi'
-	icon = 'modular_pariah/master_files/icons/obj/clothing/glasses.dmi'
-	icon_state = "thiefmask"
-
-///GOGGLES
-/obj/item/clothing/glasses/biker
-	name = "biker goggles"
-	desc = "Brown leather riding gear, You can leave, just give us the gas."
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/eyes.dmi'
-	icon = 'modular_pariah/master_files/icons/obj/clothing/glasses.dmi'
-	icon_state = "biker"
-	inhand_icon_state = "welding-g"
-	vision_correction = TRUE
-
 // Like sunglasses, but without any protection
 /obj/item/clothing/glasses/fake_sunglasses
 	name = "low-UV sunglasses"

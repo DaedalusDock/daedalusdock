@@ -223,7 +223,7 @@
 /area/ruin/unpowered/no_grav)
 "K" = (
 /turf/open/floor/iron/stairs/right{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/ruin/unpowered/no_grav)
 "Q" = (
@@ -237,12 +237,12 @@
 /area/ruin/space/has_grav/hilbertresearchfacility)
 "U" = (
 /turf/open/floor/iron/stairs/medium{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/ruin/unpowered/no_grav)
 "X" = (
 /turf/open/floor/iron/stairs/left{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/ruin/unpowered/no_grav)
 

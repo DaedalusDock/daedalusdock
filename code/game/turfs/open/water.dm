@@ -4,7 +4,7 @@
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "riverwater_motion"
 	baseturfs = /turf/open/chasm/lavaland
-	initial_gas_mix = OPENTURF_LOW_PRESSURE
+	initial_gas = OPENTURF_LOW_PRESSURE
 	planetary_atmos = TRUE
 	slowdown = 1
 	bullet_sizzle = TRUE
@@ -17,7 +17,7 @@
 	heavyfootstep = FOOTSTEP_WATER
 
 /turf/open/water/jungle
-	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	initial_gas = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/water/beach
 	planetary_atmos = FALSE
@@ -30,4 +30,4 @@
 
 //Same turf, but instead used in the Beach Biodome
 /turf/open/water/beach/biodome
-	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	initial_gas = OPENTURF_DEFAULT_ATMOS

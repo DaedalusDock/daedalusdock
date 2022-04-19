@@ -471,7 +471,7 @@
 /area/medical/virology)
 "bE" = (
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "bF" = (
@@ -1246,7 +1246,7 @@
 	dir = 9
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "dP" = (
@@ -2194,7 +2194,7 @@
 "gv" = (
 /obj/effect/turf_decal/weather/snow/corner,
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "gw" = (
@@ -4768,7 +4768,7 @@
 /area/medical/virology)
 "nB" = (
 /turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "nC" = (
@@ -5720,7 +5720,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "qq" = (
@@ -5776,7 +5776,7 @@
 	dir = 6
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "qy" = (
@@ -7268,7 +7268,7 @@
 	dir = 5
 	},
 /turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "ux" = (
@@ -9524,7 +9524,7 @@
 	dir = 4
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "Bv" = (
@@ -9562,7 +9562,7 @@
 "BA" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt/dark{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "BB" = (
@@ -13350,7 +13350,7 @@
 	dir = 10
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "LO" = (
@@ -14362,7 +14362,7 @@
 "ON" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "OO" = (
@@ -17211,7 +17211,7 @@
 	pixel_y = 32
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored)
 "Wt" = (

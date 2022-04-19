@@ -52,7 +52,7 @@
 /area/awaymission/wildwest/vault)
 "an" = (
 /turf/open/floor/cult{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/wildwest/vault)
 "ao" = (
@@ -131,7 +131,7 @@
 "aL" = (
 /obj/item/paper/fluff/awaymissions/wildwest/grinder,
 /turf/open/floor/cult{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/wildwest/vault)
 "aM" = (
@@ -143,7 +143,7 @@
 "aO" = (
 /obj/effect/mob_spawn/corpse/human/syndicatecommando,
 /turf/open/floor/cult{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/wildwest/vault)
 "aP" = (

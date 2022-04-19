@@ -450,18 +450,18 @@
 /area/awaymission/challenge/main)
 "bF" = (
 /turf/open/floor/iron/white/corner{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/challenge/main)
 "bG" = (
 /turf/open/floor/iron/white/side{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/challenge/main)
 "bH" = (
 /turf/open/floor/iron/white/corner{
 	dir = 8;
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/challenge/main)
 "bI" = (
@@ -529,7 +529,7 @@
 "bQ" = (
 /obj/item/gun/ballistic/revolver/russian,
 /turf/open/floor/iron/white/side{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/challenge/main)
 "bR" = (
@@ -560,7 +560,7 @@
 "bU" = (
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron/white{
-	initial_gas_mix = "TEMP=2.7"
+	initial_gas = "TEMP=2.7"
 	},
 /area/awaymission/challenge/main)
 "bV" = (

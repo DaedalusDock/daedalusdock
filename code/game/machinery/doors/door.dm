@@ -49,7 +49,6 @@
 	. = ..()
 	set_init_door_layer()
 	update_freelook_sight()
-	//air_update_turf(TRUE, TRUE)
 	register_context()
 	GLOB.airlocks += src
 	spark_system = new /datum/effect_system/spark_spread
@@ -108,6 +107,8 @@
 	return ..()
 
 /obj/machinery/door/c_airblock(turf/other)
+	if(QDELETED(src))
+		return AIR_ALLOWED
 	if(block_air_zones)
 		return density ? AIR_BLOCKED : ZONE_BLOCKED
 	return density ? AIR_BLOCKED : AIR_ALLOWED
@@ -361,7 +362,7 @@
 	update_appearance()
 	set_opacity(0)
 	operating = FALSE
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 	update_freelook_sight()
 	if(autoclose)
 		autoclose_in(DOOR_CLOSE_WAIT)
@@ -391,7 +392,7 @@
 	if(visible && !glass)
 		set_opacity(1)
 	operating = FALSE
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 	update_freelook_sight()
 
 	if(!can_crush)

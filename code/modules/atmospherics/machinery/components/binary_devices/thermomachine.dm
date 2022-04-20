@@ -333,7 +333,7 @@
 	if(node2)
 		node2.atmos_init()
 		node2.add_member(src)
-	SSzas.add_to_rebuild_queue(src)
+	SSairmachines.add_to_rebuild_queue(src)
 
 /obj/machinery/atmospherics/components/binary/thermomachine/proc/disconnect_pipes()
 	var/obj/machinery/atmospherics/node1 = nodes[1]

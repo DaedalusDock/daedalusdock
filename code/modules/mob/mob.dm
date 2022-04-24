@@ -485,7 +485,14 @@
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
-	to_chat(src, "<span class='infoplain'>[result.Join("\n")]</span>")
+	//PARIAH EDIT ADDITION
+	if(result.len)
+		for(var/i = 1, i <= result.len, i++)
+			if(!findtext(result[i], "<hr>"))
+				result[i] += "\n"
+	//PARIAH EDIT END
+
+	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
 

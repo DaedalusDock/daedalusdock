@@ -536,12 +536,6 @@
 	if(!.)
 		return FALSE
 
-	/*var/turf/user_turf = get_turf(user)
-	var/turf/machine_turf = get_turf(src)
-	if(!(user_turf in machine_turf.atmos_adjacent_turfs))
-		return FALSE
-	*/
-
 	if((interaction_flags_machine & INTERACT_MACHINE_REQUIRES_SIGHT) && user.is_blind())
 		to_chat(user, span_warning("This machine requires sight to use."))
 		return FALSE
@@ -941,7 +935,10 @@
 				. += "It appears heavily damaged."
 			if(0 to 25)
 				. += span_warning("It's falling apart!")
-	if(user.research_scanner && component_parts)
+
+/obj/machinery/examine_more(mob/user)
+	. = ..()
+	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) && component_parts)
 		. += display_parts(user, TRUE)
 
 //called on machinery construction (i.e from frame to machinery) but not on initialization

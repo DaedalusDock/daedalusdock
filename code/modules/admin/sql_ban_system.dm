@@ -564,7 +564,8 @@
 
 	notify_all_banned_players(player_ckey, player_ip, player_cid, player_ban_notification, other_ban_notification, is_server_ban, applies_to_admins)
 
-	var/datum/admin_help/linked_ahelp_ticket = admin_ticket_log(player_ckey, "[kna] [msg]")
+	// var/datum/admin_help/linked_ahelp_ticket = admin_ticket_log(player_ckey, "[kna] [msg]") // PARIAH EDIT ORIGINAL
+	var/datum/admin_help/linked_ahelp_ticket = admin_ticket_log(player_ckey, "[kna] [msg]", FALSE) // PARIAH EDIT --  Player ticket viewing
 
 	if(is_server_ban && linked_ahelp_ticket)
 		linked_ahelp_ticket.Resolve()

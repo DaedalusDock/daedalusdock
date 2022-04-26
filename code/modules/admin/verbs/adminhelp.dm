@@ -103,7 +103,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		var/datum/admin_help/AH = I
 		if(AH.initiator)
 			var/obj/effect/statclick/updated = AH.statclick.update()
-			L[++L.len] = list("#[AH.id]. [AH.initiator_key_name]:", "[updated.name]", REF(AH))
+			//L[++L.len] = list("#[AH.id]. [AH.initiator_key_name]:", "[updated.name]", REF(AH)) //ORIGINAL
+			L[++L.len] = list("[AH.handler ? "H-[AH.handler]" : ""]#[AH.id]. [AH.initiator_key_name]:", "[updated.name]", REF(AH)) //PARIAH EDIT CHANGE - ADMIN
 		else
 			++num_disconnected
 	if(num_disconnected)
@@ -203,12 +204,17 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
  * * msg_raw - The first message of this admin_help: used for the initial title of the ticket
  * * is_bwoink - Boolean operator, TRUE if this ticket was started by an admin PM
  */
-/datum/admin_help/New(msg_raw, client/C, is_bwoink, urgent = FALSE)
+/datum/admin_help/New(msg_raw, client/C, is_bwoink, client/admin_C, urgent = FALSE) //PARIAH EDIT CHANGE
 	//clean the input msg
 	var/msg = sanitize(copytext_char(msg_raw, 1, MAX_MESSAGE_LEN))
 	if(!msg || !C || !C.mob)
 		qdel(src)
 		return
+
+	//PARIAH EDIT ADDITION BEGIN
+	if(admin_C && is_bwoink)
+		handler = "[admin_C.ckey]"
+	//PARIAH EDIT END
 
 	id = ++ticket_counter
 	opened_at = world.time
@@ -231,6 +237,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 	if(is_bwoink)
 		AddInteraction("<font color='blue'>[key_name_admin(usr)] PM'd [LinkedReplyName()]</font>")
+		AddInteractionPlayer("<font color='blue'>[key_name_admin(usr, FALSE)] PM'd [LinkedReplyName()]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 		message_admins("<font color='blue'>Ticket [TicketHref("#[id]")] created</font>")
 	else
 		MessageNoRecipient(msg_raw, urgent)
@@ -371,6 +378,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	. += " (<A HREF='?_src_=holder;[HrefToken(TRUE)];ahelp=[ref_src];ahelp_action=icissue'>IC</A>)"
 	. += " (<A HREF='?_src_=holder;[HrefToken(TRUE)];ahelp=[ref_src];ahelp_action=close'>CLOSE</A>)"
 	. += " (<A HREF='?_src_=holder;[HrefToken(TRUE)];ahelp=[ref_src];ahelp_action=resolve'>RSLVE</A>)"
+	. += " (<A HREF='?_src_=holder;[HrefToken(TRUE)];ahelp=[ref_src];ahelp_action=handleissue'>HANDLE</A>)" //PARIAH EDIT ADDITION - ADMIN
 
 //private
 /datum/admin_help/proc/LinkedReplyName(ref_src)
@@ -393,6 +401,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/admin_msg = span_adminnotice(span_adminhelp("Ticket [TicketHref("#[id]", ref_src)]</span><b>: [LinkedReplyName(ref_src)] [FullMonty(ref_src)]:</b> <span class='linkify'>[keywords_lookup(msg)]"))
 
 	AddInteraction("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
+	AddInteractionPlayer("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 	log_admin_private("Ticket #[id]: [key_name(initiator)]: [msg]")
 
 	//send this msg to all admins
@@ -437,6 +446,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		initiator.current_ticket = src
 
 	AddInteraction("<font color='purple'>Reopened by [key_name_admin(usr)]</font>")
+	AddInteractionPlayer("<font color='purple'>Reopened by [key_name_admin(usr, FALSE)]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 	var/msg = span_adminhelp("Ticket [TicketHref("#[id]")] reopened by [key_name_admin(usr)].")
 	message_admins(msg)
 	log_admin_private(msg)
@@ -460,10 +470,17 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 /datum/admin_help/proc/Close(key_name = key_name_admin(usr), silent = FALSE)
 	if(state != AHELP_ACTIVE)
 		return
+	//PARIAH EDIT ADDITION BEGIN - ADMIN
+	if(handler && handler != usr.ckey)
+		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		if(!response || response == "No")
+			return
+	//PARIAH EDIT ADDITION END
 	RemoveActive()
 	state = AHELP_CLOSED
 	GLOB.ahelp_tickets.ListInsert(src)
 	AddInteraction("<font color='red'>Closed by [key_name].</font>")
+	AddInteractionPlayer("<font color='red'>Closed by [key_name_admin(usr, FALSE)].</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "closed")
 		var/msg = "Ticket [TicketHref("#[id]")] closed by [key_name]."
@@ -475,6 +492,14 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 /datum/admin_help/proc/Resolve(key_name = key_name_admin(usr), silent = FALSE)
 	if(state != AHELP_ACTIVE)
 		return
+
+	//PARIAH EDIT ADDITION BEGIN - ADMIN
+	if(handler && handler != usr.ckey)
+		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		if(!response || response == "No")
+			return
+	//PARIAH EDIT ADDITION END
+
 	RemoveActive()
 	state = AHELP_RESOLVED
 	GLOB.ahelp_tickets.ListInsert(src)
@@ -482,6 +507,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	addtimer(CALLBACK(initiator, /client/proc/giveadminhelpverb), 50)
 
 	AddInteraction("<font color='green'>Resolved by [key_name].</font>")
+	AddInteractionPlayer("<font color='green'>Resolved by [key_name_admin(usr, FALSE)].</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 	to_chat(initiator, span_adminhelp("Your ticket has been resolved by an admin. The Adminhelp verb will be returned to you shortly."), confidential = TRUE)
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "resolved")
@@ -494,6 +520,13 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 /datum/admin_help/proc/Reject(key_name = key_name_admin(usr))
 	if(state != AHELP_ACTIVE)
 		return
+
+	//PARIAH EDIT ADDITION BEGIN - ADMIN
+	if(handler && handler != usr.ckey)
+		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		if(!response || response == "No")
+			return
+	//PARIAH EDIT ADDITION END
 
 	if(initiator)
 		initiator.giveadminhelpverb()
@@ -509,6 +542,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	message_admins(msg)
 	log_admin_private(msg)
 	AddInteraction("Rejected by [key_name].")
+	AddInteractionPlayer("Rejected by [key_name_admin(usr, FALSE)].") // PARIAH EDIT ADDITION -- Player ticket viewing
 	SSblackbox.LogAhelp(id, "Rejected", "Rejected by [usr.key]", null, usr.ckey)
 	Close(silent = TRUE)
 
@@ -516,6 +550,13 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 /datum/admin_help/proc/ICIssue(key_name = key_name_admin(usr))
 	if(state != AHELP_ACTIVE)
 		return
+
+	//PARIAH EDIT ADDITION BEGIN - ADMIN
+	if(handler && handler != usr.ckey)
+		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		if(!response || response == "No")
+			return
+	//PARIAH EDIT ADDITION END
 
 	var/msg = "<font color='red' size='4'><b>- AdminHelp marked as IC issue! -</b></font><br>"
 	msg += "<font color='red'>Your issue has been determined by an administrator to be an in character issue and does NOT require administrator intervention at this time. For further resolution you should pursue options that are in character.</font>"
@@ -528,6 +569,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	message_admins(msg)
 	log_admin_private(msg)
 	AddInteraction("Marked as IC issue by [key_name]")
+	AddInteractionPlayer("Marked as IC issue by [key_name_admin(usr, FALSE)]") // PARIAH EDIT ADDITION -- Player ticket viewing
 	SSblackbox.LogAhelp(id, "IC Issue", "Marked as IC issue by [usr.key]", null,  usr.ckey)
 	Resolve(silent = TRUE)
 
@@ -612,6 +654,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		if("reject")
 			Reject()
 		if("reply")
+			HandleIssue() /// PARIAH EDIT ADDITION - ADMIN HANDLE
 			usr.client.cmd_ahelp_reply(initiator)
 		if("icissue")
 			ICIssue()
@@ -621,6 +664,10 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			Resolve()
 		if("reopen")
 			Reopen()
+		//PARIAH EDIT ADDITION BEING - ADMIN
+		if("handleissue")
+			HandleIssue()
+		//PARIAH EDIT ADDITION END
 
 //
 // TICKET STATCLICK
@@ -733,7 +780,8 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		user_client.current_ticket.MessageNoRecipient(message, urgent)
 		return
 
-	new /datum/admin_help(message, user_client, FALSE, urgent)
+	//new /datum/admin_help(message, user_client, FALSE, urgent) //ORIGINAL
+	new /datum/admin_help(message, user_client, FALSE, urgent=urgent) //PARIAH EDIT CHANGE - ADMIN
 
 /client/verb/no_tgui_adminhelp(message as message)
 	set name = "NoTguiAdminhelp"
@@ -761,7 +809,8 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 //what can be a client, ckey, or mob
 //log_in_blackbox: Whether or not this message with the blackbox system.
 //If disabled, this message should be logged with a different proc call
-/proc/admin_ticket_log(what, message, log_in_blackbox = TRUE)
+// /proc/admin_ticket_log(what, message, log_in_blackbox = TRUE) // SKYRAT EDIT ORIGINAL
+/proc/admin_ticket_log(what, message, log_in_blackbox = TRUE, admin_only = TRUE) // PARIAH EDIT CHANGE -- Player ticket viewing
 	var/client/C
 	var/mob/Mob = what
 	if(istype(Mob))
@@ -770,6 +819,10 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		C = what
 	if(istype(C) && C.current_ticket)
 		C.current_ticket.AddInteraction(message)
+		// PARIAH EDIT ADDITION START -- Player ticket viewing
+		if(!admin_only)
+			C.current_ticket.AddInteractionPlayer(message)
+		// PARIAH EDIT ADDITION END
 		if(log_in_blackbox)
 			SSblackbox.LogAhelp(C.current_ticket.id, "Interaction", message, C.ckey, usr.ckey)
 		return C.current_ticket
@@ -777,6 +830,10 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		var/datum/admin_help/AH = GLOB.ahelp_tickets.CKey2ActiveTicket(what)
 		if(AH)
 			AH.AddInteraction(message)
+			// PARIAH EDIT ADDITION START -- Player ticket viewing
+			if(!admin_only)
+				AH.AddInteractionPlayer(message)
+			// PARIAH EDIT ADDITION END
 			if(log_in_blackbox)
 				SSblackbox.LogAhelp(AH.id, "Interaction", message, what, usr.ckey)
 			return AH

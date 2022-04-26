@@ -118,6 +118,14 @@ SUBSYSTEM_DEF(vote)
 			if("map")
 				SSmapping.changemap(global.config.maplist[.])
 				SSmapping.map_voted = TRUE
+			//PARIAH EDIT ADDITION BEGIN
+			if("transfer")
+				if(. == "Initiate Crew Transfer")
+					SSshuttle.autoEnd()
+					var/obj/machinery/computer/communications/C = locate() in GLOB.machines
+					if(C)
+						C.post_status("shuttle")
+			//PARIAH EDIT ADDITION END
 	if(restart)
 		var/active_admins = FALSE
 		for(var/client/C in GLOB.admins + GLOB.deadmins)
@@ -151,7 +159,7 @@ SUBSYSTEM_DEF(vote)
 
 /datum/controller/subsystem/vote/proc/initiate_vote(vote_type, initiator_key)
 	//Server is still intializing.
-	if(!Master.current_runlevel)
+	if(!MC_RUNNING(init_stage))
 		to_chat(usr, span_warning("Cannot start vote, server is not done initializing."))
 		return FALSE
 	var/lower_admin = FALSE
@@ -200,6 +208,10 @@ SUBSYSTEM_DEF(vote)
 					if(!option || mode || !usr.client)
 						break
 					choices.Add(capitalize(option))
+			//PARIAH EDIT ADDITION BEGIN - AUTOTRANSFER
+			if("transfer")
+				choices.Add("Initiate Crew Transfer", "Continue Playing")
+			//PARIAH EDIT ADDITION END - AUTOTRANSFER
 			else
 				return FALSE
 		mode = vote_type
@@ -298,6 +310,11 @@ SUBSYSTEM_DEF(vote)
 		if("custom")
 			if(usr.client.holder)
 				initiate_vote("custom",usr.key)
+		//PARIAH EDIT ADDITION BEGIN - autotransfer
+		if("transfer")
+			if(check_rights(R_ADMIN))
+				initiate_vote("transfer",usr.key)
+		//PARIAH EDIT ADDITION END
 		if("vote")
 			submit_vote(round(text2num(params["index"])))
 	return TRUE

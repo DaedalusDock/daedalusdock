@@ -208,7 +208,6 @@
 	if(atom_to_check == cell)
 		cell = null
 		update_appearance()
-		updateUsrDialog()
 
 /obj/machinery/power/apc/examine(mob/user)
 	. = ..()

@@ -215,6 +215,7 @@
 			html = span_notice("PM to-<b>Admins</b>: <span class='linkify'>[rawmsg]</span>"),
 			confidential = TRUE)
 		var/datum/admin_help/AH = admin_ticket_log(src, "<font color='red'>Reply PM from-<b>[key_name(src, TRUE, TRUE)]</b> to <i>External</i>: [keywordparsedmsg]</font>")
+		AH.AddInteractionPlayer("<font color='red'>Reply PM from-<b>[key_name(src, TRUE, FALSE)]</b> to <i>External</i>: [keywordparsedmsg]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 		externalreplyamount--
 		send2adminchat("[AH ? "#[AH.id] " : ""]Reply: [ckey]", rawmsg)
 	else
@@ -235,13 +236,16 @@
 					confidential = TRUE)
 				//omg this is dumb, just fill in both their tickets
 				var/interaction_message = "<font color='purple'>PM from-<b>[key_name(src, recipient, 1)]</b> to-<b>[key_name(recipient, src, 1)]</b>: [keywordparsedmsg]</font>"
-				admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE)
-				if(recipient != src) //reeee
-					admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE)
+				// admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
+				admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+				if(recipient != src)//reeee
+					// admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
+					admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
 				SSblackbox.LogAhelp(current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
 			else //recipient is an admin but sender is not
 				var/replymsg = "Reply PM from-<b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"
-				admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE)
+				// admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
+				admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
 					html = span_danger("[replymsg]"),
@@ -259,9 +263,21 @@
 			if(holder) //sender is an admin but recipient is not. Do BIG RED TEXT
 				var/already_logged = FALSE
 				if(!recipient.current_ticket)
-					new /datum/admin_help(msg, recipient, TRUE)
+					//new /datum/admin_help(msg, recipient, TRUE) //ORIGINAL
+					new /datum/admin_help(msg, recipient, TRUE, src) //PARIAH EDIT CHANGE - ADMIN
 					already_logged = TRUE
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Ticket Opened", msg, recipient.ckey, src.ckey)
+
+				//PARIAH EDIT ADDITION BEGIN - ADMIN
+				if(recipient.current_ticket.handler)
+					if(recipient.current_ticket.handler != usr.ckey)
+						var/response = tgui_alert(usr, "This ticket is already being handled by [recipient.current_ticket.handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+
+						if(response == "No")
+							return
+				else
+					recipient.current_ticket.HandleIssue()
+				//PARIAH EDIT ADDITION END
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
@@ -280,7 +296,8 @@
 					html = span_notice("Admin PM to-<b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),
 					confidential = TRUE)
 
-				admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE)
+				// admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
+				admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src, FALSE)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
 
 				if(!already_logged) //Reply to an existing ticket
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)

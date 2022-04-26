@@ -6,6 +6,7 @@ GLOBAL_PROTECT(admin_verbs_default)
 	return list(
 	/client/proc/deadmin, /*destroys our own admin datum so we can play as a regular player*/
 	/client/proc/cmd_admin_say, /*admin-only ooc chat*/
+	/client/proc/cmd_loud_admin_say, /*ditto except its annoying - PARIAH EDIT ADDITION - ADMIN*/
 	/client/proc/hide_verbs, /*hides all our adminverbs*/
 	/client/proc/debug_variables, /*allows us to -see- the variables of any instance in the game. +VAREDIT needed to modify*/
 	/client/proc/dsay, /*talk in deadchat using our ckey/fakekey*/
@@ -79,6 +80,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/known_alts_panel,
 	/datum/admins/proc/paintings_manager,
 	/datum/admins/proc/display_tags,
+	/client/proc/cmd_ic_spawn, //PARIAH EDIT - IC Spawning
 	)
 GLOBAL_LIST_INIT(admin_verbs_ban, list(/client/proc/unban_panel, /client/proc/ban_panel, /client/proc/stickybanpanel))
 GLOBAL_PROTECT(admin_verbs_ban)

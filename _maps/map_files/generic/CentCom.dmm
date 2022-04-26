@@ -12945,7 +12945,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
-/obj/machinery/portable_atmospherics/canister/tier_2,
+/obj/machinery/portable_atmospherics/canister,
 /turf/open/floor/plating,
 /area/syndicate_mothership/expansion_bombthreat)
 "Mg" = (
@@ -15218,7 +15218,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/machinery/portable_atmospherics/canister/tier_2,
+/obj/machinery/portable_atmospherics/canister,
 /turf/open/floor/plating,
 /area/syndicate_mothership/expansion_bombthreat)
 "Su" = (

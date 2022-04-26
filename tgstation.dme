@@ -4613,4 +4613,5 @@
 #include "modular_pariah\modules\loadouts\loadout_ui\loadout_outfit_helpers.dm"
 #include "modular_pariah\modules\pixel_shift\code\pixel_shift.dm"
 #include "modular_pariah\modules\radiosound\code\headset.dm"
+#include "modular_pariah\modules\tableflip\code\flipped_table.dm"
 // END_INCLUDE

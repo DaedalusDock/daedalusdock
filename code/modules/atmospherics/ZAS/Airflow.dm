@@ -1,6 +1,7 @@
 /*
 Contains helper procs for airflow, handled in /connection_group.
 */
+#define AIRBORNE_DAMAGE(airborne_thing) (min(airborne_thing.airflow_speed, (airborne_thing.airborne_acceleration*2)) * SSzas.settings.airflow_damage)
 
 /mob/var/tmp/last_airflow_stun = 0
 /mob/proc/airflow_stun()
@@ -115,11 +116,19 @@ Contains helper procs for airflow, handled in /connection_group.
 
 /atom/movable/Bump(atom/A)
 	if(airflow_speed > 0 && airflow_dest)
+		var/turf/T = get_turf(A)
 		if(airborne_acceleration > 1)
 			airflow_hit(A)
+			A.airflow_hit_act(src)
 		else if(istype(src, /mob/living/carbon/human))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
-			airborne_acceleration = 0
+		if(airflow_originally_not_dense && !T.density)
+			if(ismovable(A) && A:airflow_originally_not_dense)
+				set_density(FALSE)
+				A.set_density(FALSE)
+				step_towards(src, airflow_dest)
+				set_density(TRUE)
+				A.set_density(TRUE)
 	else
 		airflow_speed = 0
 		airflow_time = 0
@@ -131,35 +140,59 @@ Contains helper procs for airflow, handled in /connection_group.
 	airflow_dest = null
 	airborne_acceleration = 0
 
-/mob/airflow_hit(atom/A)
-	for(var/mob/M in hearers(src))
-		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
-	playsound(src.loc, "smash.ogg", 25, 1, -1)
-	. = ..()
-
 /mob/living/airflow_hit(atom/A)
-	var/weak_amt = istype(A,/obj/item) ? A:w_class : rand(1,5) //Heheheh
-	Knockdown(weak_amt)
+	var/b_loss = AIRBORNE_DAMAGE(src)
+	apply_damage(b_loss, BRUTE)
+	if(istype(A, /obj/structure) || iswallturf(A))
+		if(airflow_speed > 10)
+			Paralyze(round(airflow_speed * SSzas.settings.airflow_stun))
+			Stun(round(airflow_speed * SSzas.settings.airflow_stun) + 3)
+		else
+			Stun(round(airflow_speed * SSzas.settings.airflow_stun/2))
+
 	return ..()
 
-/obj/airflow_hit(atom/A)
-	for(var/mob/M in hearers(src))
-		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
-	playsound(src.loc, "smash.ogg", 25, 1, -1)
+/mob/living/carbon/airflow_hit(atom/A)
+	if (prob(33))
+		loc.add_blood_DNA(return_blood_DNA())
+	return ..()
+
+
+/atom/proc/airflow_hit_act(atom/movable/flying)
+	src.visible_message(
+		span_danger("\a flying [flying] slams into \the [src]!"),
+		span_danger("You're hit by a flying [flying]!"),
+		span_danger("You hear a loud slam!")
+	)
+
+/mob/living/airflow_hit_act(atom/movable/flying)
 	. = ..()
-
-/obj/item/airflow_hit(atom/A)
-	airflow_speed = 0
-	airflow_dest = null
-
-/mob/living/carbon/human/airflow_hit(atom/A)
-	for(var/mob/M in hearers(src))
-		M.show_message("<span class='danger'>[src] slams into [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
 	playsound(src.loc, "punch", 25, 1, -1)
+	var/weak_amt
+	if(istype(flying,/obj/item))
+		weak_amt = flying:w_class*2 ///Heheheh
+	else if(!flying.airflow_originally_not_dense) //If the object is dense by default (this var is stupidly named)
+		weak_amt = 5 //Getting crushed by a flying canister or computer is going to fuck you up
+	else
+		weak_amt = rand(1, 3)
+
+	src.Knockdown(weak_amt SECONDS)
+
+/obj/airflow_hit_act(atom/movable/flying)
+	. = ..()
+	playsound(src.loc, "smash.ogg", 25, 1, -1)
+
+	if(!uses_integrity)
+		return
+
+	take_damage(SSzas.settings.airflow_damage, BRUTE)
+
+/mob/living/carbon/human/airflow_hit_act(atom/movable/flying)
+	. = ..()
 	if (prob(33))
 		loc.add_blood_DNA(return_blood_DNA())
 
-	var/b_loss = min(airflow_speed, (airborne_acceleration*2)) * SSzas.settings.airflow_damage
+	var/b_loss = AIRBORNE_DAMAGE(flying)
 
 	apply_damage(b_loss/3, BRUTE, BODY_ZONE_HEAD)
 
@@ -167,16 +200,18 @@ Contains helper procs for airflow, handled in /connection_group.
 
 
 	if(airflow_speed > 10)
-		Paralyze(round(airflow_speed * SSzas.settings.airflow_stun))
-		Stun(round(airflow_speed * SSzas.settings.airflow_stun) + 3)
+		Paralyze(round(flying.airflow_speed * SSzas.settings.airflow_stun))
+		Stun(round(flying.airflow_speed * SSzas.settings.airflow_stun) + 3)
 	else
-		Stun(round(airflow_speed * SSzas.settings.airflow_stun/2))
-	return ..()
+		Stun(round(flying.airflow_speed * SSzas.settings.airflow_stun/2))
 
 /zone/proc/movables()
+	RETURN_TYPE(/list)
 	. = list()
 	for(var/turf/T in contents)
-		for(var/atom/movable/A in T)
-			if(!A.simulated || A.anchored || istype(A, /obj/effect) || isobserver(A))
+		for(var/atom/movable/A as anything in T)
+			if(!A.simulated || A.anchored)
 				continue
 			. += A
+
+#undef AIRBORNE_DAMAGE

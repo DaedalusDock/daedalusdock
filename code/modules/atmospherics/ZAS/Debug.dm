@@ -12,6 +12,7 @@ GLOBAL_REAL_VAR(obj/effect/zasdbg/mark/zasdbgovl_mark) = new
 /obj/effect/zasdbg
 	icon = 'modular_pariah/master_files/icons/testing/Zone.dmi'
 	invisibility = INVISIBILITY_OBSERVER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/zasdbg/assigned
 	icon_state = "assigned"

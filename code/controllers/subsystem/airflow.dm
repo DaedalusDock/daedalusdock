@@ -4,7 +4,8 @@
 	TARGET.airflow_speed = 0; \
 	TARGET.airflow_time = 0; \
 	TARGET.airflow_skip_speedcheck = FALSE; \
-	if (TARGET.airflow_od) { \
+	TARGET.airborne_acceleration = 0; \
+	if (TARGET.airflow_originally_not_dense) { \
 		TARGET.set_density(FALSE); \
 	}
 
@@ -59,7 +60,7 @@ SUBSYSTEM_DEF(airflow)
 		if (!target.airflow_skip_speedcheck)
 			if (target.airflow_speed > 7)
 				if (target.airflow_time++ >= target.airflow_speed - 7)
-					if (target.airflow_od)
+					if (target.airflow_originally_not_dense)
 						target.set_density(FALSE)
 					target.airflow_skip_speedcheck = TRUE
 					if (MC_TICK_CHECK)
@@ -67,7 +68,7 @@ SUBSYSTEM_DEF(airflow)
 						return
 					continue
 			else
-				if (target.airflow_od)
+				if (target.airflow_originally_not_dense)
 					target.set_density(FALSE)
 				target.airflow_process_delay = max(1, 10 - (target.airflow_speed + 3))
 				target.airflow_skip_speedcheck = TRUE
@@ -76,7 +77,7 @@ SUBSYSTEM_DEF(airflow)
 					return
 				continue
 		target.airflow_skip_speedcheck = FALSE
-		if (target.airflow_od)
+		if (target.airflow_originally_not_dense)
 			target.set_density(TRUE)
 		if (!target.airflow_dest || target.loc == target.airflow_dest)
 			target.airflow_dest = locate(min(max(target.x + target.airflow_xo, 1), world.maxx), min(max(target.y + target.airflow_yo, 1), world.maxy), target.z)
@@ -92,13 +93,13 @@ SUBSYSTEM_DEF(airflow)
 				current.Cut(i)
 				return
 			continue
+
 		var/olddir = target.dir
-		if(isobj(target))
-			target.SpinAnimation(3, 1, rand(50), parallel = FALSE)
 		//target.set_dir_on_move = FALSE
 		step_towards(target, target.airflow_dest)
 		//target.set_dir_on_move = TRUE
 		target.dir = olddir
+		target.airborne_acceleration++
 
 		if (ismob(target))
 			var/mob/M = target
@@ -113,7 +114,7 @@ SUBSYSTEM_DEF(airflow)
 
 /atom/movable/var/tmp/airflow_xo
 /atom/movable/var/tmp/airflow_yo
-/atom/movable/var/tmp/airflow_od
+/atom/movable/var/tmp/airflow_originally_not_dense
 /atom/movable/var/tmp/airflow_process_delay
 /atom/movable/var/tmp/airflow_skip_speedcheck
 
@@ -124,10 +125,10 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
 		return FALSE
-	if (airflow_dest == loc)
-		step_away(src, loc)
 	if (!AirflowCanMove(strength))
 		return FALSE
+	if (airflow_dest == loc)
+		step_away(src, loc)
 	if (ismob(src))
 		to_chat(src, span_danger("You are pushed away by a rush of air!"))
 	last_airflow = world.time
@@ -136,10 +137,10 @@ SUBSYSTEM_DEF(airflow)
 		airflow_dest = null
 		return FALSE
 	airflow_speed = min(max(strength * (9 / airflow_falloff), 1), 9)
-	airflow_od = FALSE
+	airflow_originally_not_dense = FALSE
 	if (!density)
 		set_density(TRUE)
-		airflow_od = TRUE
+		airflow_originally_not_dense = TRUE
 	return TRUE
 
 

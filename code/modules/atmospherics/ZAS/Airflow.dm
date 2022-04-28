@@ -122,7 +122,7 @@ Contains helper procs for airflow, handled in /connection_group.
 			A.airflow_hit_act(src)
 		else if(istype(src, /mob/living/carbon/human))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
-		if(airflow_originally_not_dense && !T.density)
+		if(!T.density)
 			if(ismovable(A) && A:airflow_originally_not_dense)
 				set_density(FALSE)
 				A.set_density(FALSE)
@@ -160,7 +160,7 @@ Contains helper procs for airflow, handled in /connection_group.
 
 /atom/proc/airflow_hit_act(atom/movable/flying)
 	src.visible_message(
-		span_danger("\a flying [flying] slams into \the [src]!"),
+		span_danger("A flying [flying] slams into \the [src]!"),
 		span_danger("You're hit by a flying [flying]!"),
 		span_danger("You hear a loud slam!")
 	)

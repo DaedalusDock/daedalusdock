@@ -95,7 +95,7 @@ Class Procs:
 /connection_edge/proc/recheck()
 
 /connection_edge/proc/flow(list/movable, differential, repelled)
-	for(var/i = 1; i <= movable.len; i++)
+	for(var/i in 1 to length(movable))
 		var/atom/movable/M = movable[i]
 
 		//If they're already being tossed, don't do it again.
@@ -170,7 +170,14 @@ Class Procs:
 			repelled = A.movables()
 
 		if(REALTIMEOFDAY > last_woosh + 2 SECONDS)
-			playsound(pick(connecting_turfs), 'modular_pariah/master_files/sound/effects/space_wind_big.ogg', 100, TRUE, null, pressure_affected = FALSE)
+			playsound(
+				pick(connecting_turfs),
+				abs(differential) > SSzas.settings.airflow_heavy_pressure ? 'modular_pariah/master_files/sound/effects/space_wind_big.ogg' : 'modular_pariah/master_files/sound/effects/space_wind.ogg',
+				100,
+				TRUE,
+				null,
+				pressure_affected = FALSE
+			)
 			last_woosh = REALTIMEOFDAY
 
 		flow(attracted, abs(differential), 0)

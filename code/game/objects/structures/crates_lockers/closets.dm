@@ -697,7 +697,7 @@
 /obj/structure/closet/AllowDrop()
 	return TRUE
 
-/obj/structure/closet/return_temperature()
+/obj/structure/closet/getTemperature()
 	return
 
 /obj/structure/closet/proc/locker_carbon(datum/source, mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)

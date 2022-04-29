@@ -31,7 +31,7 @@
 /datum/gas_mixture/immutable/copy()
 	return new type //we're immutable, so we can just return a new instance.
 
-/datum/gas_mixture/immutable/copy_from()
+/datum/gas_mixture/immutable/copyFrom()
 	return FALSE //we're immutable.
 
 /datum/gas_mixture/immutable/copy_from_turf()
@@ -48,13 +48,13 @@
 /datum/gas_mixture/immutable/space
 	initial_temperature = TCMB
 
-/datum/gas_mixture/immutable/space/heat_capacity()
+/datum/gas_mixture/immutable/space/getHeatCapacity()
 	return HEAT_CAPACITY_VACUUM
 
 /datum/gas_mixture/immutable/space/remove()
 	return copy() //we're always empty, so we can just return a copy.
 
-/datum/gas_mixture/immutable/space/remove_ratio()
+/datum/gas_mixture/immutable/space/removeRatio()
 	return copy() //we're always empty, so we can just return a copy.
 
 //planet side stuff

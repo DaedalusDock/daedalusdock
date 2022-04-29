@@ -108,7 +108,7 @@
 			else if(isturf(loc)) //Breathe from loc as turf
 				var/breath_moles = 0
 				if(environment)
-					breath_moles = environment.total_moles()*BREATH_PERCENTAGE
+					breath_moles = environment.getMoles()*BREATH_PERCENTAGE
 
 				breath = loc.remove_air(breath_moles)
 		else //Breathe from loc as obj again
@@ -128,12 +128,12 @@
 				// Little bit of sanity so we aren't trying to add 0.0000000001 units of CO2, and so we don't end up with 99999 units of CO2.
 				if(reagent_amount >= 0.05)
 					reagents.add_reagent(breathed_product, reagent_amount)
-					breath.adjust_gas(gasname, -breath.gas[gasname], update = 0) //update after
+					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
 	check_breath(breath)
 
 	if(breath)
-		breath.update_values()
+		breath.updateValues()
 		loc.assume_air(breath)
 
 /mob/living/carbon/proc/has_smoke_protection()
@@ -200,8 +200,8 @@
 		oxygen_used = breath_gases[GAS_OXYGEN]
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
-	breath.adjust_gas(GAS_OXYGEN, -oxygen_used, update = 0)
-	breath.adjust_gas(GAS_CO2, oxygen_used, update = 0)
+	breath.adjustGas(GAS_OXYGEN, -oxygen_used, update = 0)
+	breath.adjustGas(GAS_CO2, oxygen_used, update = 0)
 
 	//CARBON DIOXIDE
 	if(CO2_partialpressure > safe_co2_max)
@@ -250,7 +250,7 @@
 	//BZ (Facepunch port of their Agent B)
 	/*
 	if(breath_gases[/datum/gas/bz])
-		var/bz_partialpressure = (breath_gases[/datum/gas/bz][MOLES]/breath.total_moles())*breath_pressure
+		var/bz_partialpressure = (breath_gases[/datum/gas/bz][MOLES]/breath.getMoles())*breath_pressure
 		if(bz_partialpressure > 1)
 			hallucination += 10
 		else if(bz_partialpressure > 0.01)
@@ -259,7 +259,7 @@
 	//NITRIUM
 	/*
 	if(breath_gases[/datum/gas/nitrium])
-		var/nitrium_partialpressure = (breath_gases[/datum/gas/nitrium][MOLES]/breath.total_moles())*breath_pressure
+		var/nitrium_partialpressure = (breath_gases[/datum/gas/nitrium][MOLES]/breath.getMoles())*breath_pressure
 		if(nitrium_partialpressure > 0.5)
 			adjustFireLoss(nitrium_partialpressure * 0.15)
 		if(nitrium_partialpressure > 5)
@@ -267,12 +267,12 @@
 
 	//FREON
 	if(breath_gases[/datum/gas/freon])
-		var/freon_partialpressure = (breath_gases[/datum/gas/freon][MOLES]/breath.total_moles())*breath_pressure
+		var/freon_partialpressure = (breath_gases[/datum/gas/freon][MOLES]/breath.getMoles())*breath_pressure
 		adjustFireLoss(freon_partialpressure * 0.25)
 
 	//MIASMA
 	if(breath_gases[/datum/gas/miasma])
-		var/miasma_partialpressure = (breath_gases[/datum/gas/miasma][MOLES]/breath.total_moles())*breath_pressure
+		var/miasma_partialpressure = (breath_gases[/datum/gas/miasma][MOLES]/breath.getMoles())*breath_pressure
 
 		if(prob(1 * miasma_partialpressure))
 			var/datum/disease/advance/miasma_disease = new /datum/disease/advance/random(2,3)

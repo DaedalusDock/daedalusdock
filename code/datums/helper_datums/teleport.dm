@@ -140,17 +140,17 @@
 	if(!floor_gases)
 		return
 
-	if(!(floor_gases.get_gas(GAS_OXYGEN) >= 16))
+	if(!(floor_gases.getGroupGas(GAS_OXYGEN) >= 16))
 		return
-	if(floor_gases.get_gas(GAS_PLASMA))
+	if(floor_gases.getGroupGas(GAS_PLASMA))
 		return
-	if(floor_gases.get_gas(GAS_CO2) >= 10)
+	if(floor_gases.getGroupGas(GAS_CO2) >= 10)
 		return
 
 	// Aim for goldilocks temperatures and pressure
 	if((floor_gases.temperature <= 270) || (floor_gases.temperature >= 360))
 		return
-	var/pressure = floor_gases.return_pressure()
+	var/pressure = floor_gases.returnPressure()
 	if((pressure <= 20) || (pressure >= 550))
 		return
 

@@ -98,7 +98,7 @@
 /obj/structure/blob/block_superconductivity()
 	return atmosblock
 
-/obj/structure/blob/c_airblock(turf/T, vertical = FALSE)
+/obj/structure/blob/zas_canpass(turf/T, vertical = FALSE)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	return atmosblock ? AIR_BLOCKED : AIR_ALLOWED

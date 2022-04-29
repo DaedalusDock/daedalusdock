@@ -41,7 +41,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	return igniting
 
 /zone/proc/process_fire()
-	var/datum/gas_mixture/burn_gas = air.remove_ratio(SSzas.settings.fire_consumption_rate, fire_tiles.len)
+	var/datum/gas_mixture/burn_gas = air.removeRatio(SSzas.settings.fire_consumption_rate, fire_tiles.len)
 
 	var/firelevel = burn_gas.react(src, fire_tiles, force_burn = 1, no_check = 1)
 
@@ -166,7 +166,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		set_light_range(3)
 
 	for(var/mob/living/L in loc)
-		L.FireBurn(firelevel, air_contents.temperature, air_contents.return_pressure())  //Burn the mobs!
+		L.FireBurn(firelevel, air_contents.temperature, air_contents.returnPressure())  //Burn the mobs!
 
 	loc.fire_act(air_contents, air_contents.temperature, air_contents.volume)
 	for(var/atom/A in loc)
@@ -282,7 +282,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 		//get the current thermal energy of the gas mix
 		//this must be taken here to prevent the addition or deletion of energy by a changing heat capacity
-		var/starting_energy = temperature * heat_capacity()
+		var/starting_energy = temperature * getHeatCapacity()
 
 		//determine how far the reaction can progress
 		var/reaction_limit = min(total_oxidizers*(FIRE_REACTION_FUEL_AMOUNT/FIRE_REACTION_OXIDIZER_AMOUNT), total_fuel) //stoichiometric limit
@@ -324,22 +324,22 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		var/used_gas_fuel = min(max(0.25, used_fuel*(gas_reaction_progress/total_reaction_progress)), gas_fuel) //remove in proportion to the relative reaction progress
 		var/used_liquid_fuel = min(max(0.25, used_fuel-used_gas_fuel), liquid_fuel)
 
-		//remove_by_flag() and adjust_gas() handle the group_multiplier for us.
-		remove_by_flag(XGM_GAS_OXIDIZER, used_oxidizers)
-		var/datum/gas_mixture/burned_fuel = remove_by_flag(XGM_GAS_FUEL, used_gas_fuel)
+		//removeByFlag() and adjustGas() handle the group_multiplier for us.
+		removeByFlag(XGM_GAS_OXIDIZER, used_oxidizers)
+		var/datum/gas_mixture/burned_fuel = removeByFlag(XGM_GAS_FUEL, used_gas_fuel)
 		for(var/g in burned_fuel.gas)
-			adjust_gas(xgm_gas_data.burn_product[g], burned_fuel.gas[g])
+			adjustGas(xgm_gas_data.burn_product[g], burned_fuel.gas[g])
 
 		if(zone)
 			zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())
 
 		//calculate the energy produced by the reaction and then set the new temperature of the mix
-		temperature = (starting_energy + SSzas.settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / heat_capacity()
-		update_values()
+		temperature = (starting_energy + SSzas.settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
+		updateValues()
 
 		#ifdef FIREDBG
 		log_admin("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
-		log_admin("new temperature = [temperature]; new pressure = [return_pressure()]")
+		log_admin("new temperature = [temperature]; new pressure = [returnPressure()]")
 		#endif
 
 		if (temperature<220)

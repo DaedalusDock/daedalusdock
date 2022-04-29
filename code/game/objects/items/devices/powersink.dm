@@ -139,7 +139,7 @@
 	var/temp_to_give = internal_heat / FRACTION_TO_RELEASE
 	internal_heat -= temp_to_give
 	var/datum/gas_mixture/environment = our_turf.return_air()
-	var/delta_temperature = temp_to_give / environment.heat_capacity()
+	var/delta_temperature = temp_to_give / environment.getHeatCapacity()
 	if(delta_temperature)
 		environment.temperature += delta_temperature
 		//air_update_turf(FALSE, FALSE)

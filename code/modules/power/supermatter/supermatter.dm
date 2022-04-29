@@ -331,7 +331,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	data["SM_integrity"] = get_integrity_percent()
 	data["SM_power"] = power
 	data["SM_ambienttemp"] = air.temperature
-	data["SM_ambientpressure"] = air.return_pressure()
+	data["SM_ambientpressure"] = air.returnPressure()
 	data["SM_bad_moles_amount"] = MOLE_PENALTY_THRESHOLD / gasefficency
 	data["SM_moles"] = 0
 	data["SM_uid"] = uid
@@ -340,12 +340,12 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 	var/list/gasdata = list()
 
-	if(air.total_moles())
-		data["SM_moles"] = air.total_moles()
+	if(air.getMoles())
+		data["SM_moles"] = air.getMoles()
 		for(var/gasid in air.gases)
 			gasdata.Add(list(list(
 			"name"= air.gases[gasid][GAS_META][META_GAS_NAME],
-			"amount" = round(100*air.gases[gasid][MOLES]/air.total_moles(),0.01))))
+			"amount" = round(100*air.gases[gasid][MOLES]/air.getMoles(),0.01))))
 
 	else
 		for(var/gasid in air.gases)
@@ -653,7 +653,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	var/turf/target_turf = get_turf(target)
 	var/pressure = 1
 	if(target_turf?.return_air())
-		pressure = max(1,target_turf.return_air().return_pressure())
+		pressure = max(1,target_turf.return_air().returnPressure())
 	//We get our range with the strength of the zap and the pressure, the higher the former and the lower the latter the better
 	var/new_range = clamp(zap_str / pressure * 10, 2, 7)
 	var/zap_count = 1

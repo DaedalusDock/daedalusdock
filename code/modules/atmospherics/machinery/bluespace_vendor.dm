@@ -188,7 +188,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/bluespace_vendor, 30)
 	gas_price = temp_price
 
 	if(attempt_charge(src, user, gas_price) & COMPONENT_OBJ_CANCEL_CHARGE)
-		var/datum/gas_mixture/remove = working_mix.remove_ratio(1)
+		var/datum/gas_mixture/remove = working_mix.removeRatio(1)
 		connected_machine.bluespace_network.merge(remove)
 		return
 	connected_machine.credits_gained += gas_price + tank_cost
@@ -208,7 +208,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/bluespace_vendor, 30)
 /obj/machinery/bluespace_vendor/ui_data(mob/user)
 	var/list/data = list()
 	var/list/bluespace_gasdata = list()
-	if(connected_machine.bluespace_network.total_moles())
+	if(connected_machine.bluespace_network.getMoles())
 		for(var/gas_id in connected_machine.bluespace_network.gases)
 			bluespace_gasdata.Add(list(list(
 			"name" = connected_machine.bluespace_network.gases[gas_id][GAS_META][META_GAS_NAME],
@@ -233,7 +233,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/bluespace_vendor, 30)
 	var/total_tank_pressure
 	if(internal_tank)
 		var/datum/gas_mixture/working_mix = internal_tank.return_air()
-		total_tank_pressure = working_mix.return_pressure()
+		total_tank_pressure = working_mix.returnPressure()
 	else
 		total_tank_pressure = 0
 	data["tank_full"] = total_tank_pressure

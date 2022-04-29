@@ -42,8 +42,8 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/output_starting_pressure = air1.return_pressure()
-	var/input_starting_pressure = air2.return_pressure()
+	var/output_starting_pressure = air1.returnPressure()
+	var/input_starting_pressure = air2.returnPressure()
 
 	if(output_starting_pressure >= input_starting_pressure-10)
 		//Need at least 10 KPa difference to overcome friction in the mechanism

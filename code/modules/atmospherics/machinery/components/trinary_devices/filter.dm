@@ -79,16 +79,16 @@
 	// If the side output is full, we try to send the non-filtered gases to the main output port (air3).
 	// Any gas that can't be moved due to its destination being too full is sent back to the input (air1).
 
-	var/side_output_full = air2.return_pressure() >= MAX_OUTPUT_PRESSURE
-	var/main_output_full = air3.return_pressure() >= MAX_OUTPUT_PRESSURE
+	var/side_output_full = air2.returnPressure() >= MAX_OUTPUT_PRESSURE
+	var/main_output_full = air3.returnPressure() >= MAX_OUTPUT_PRESSURE
 
 	// If both output ports are full, there's nothing we can do. Don't bother removing anything from the input.
 	if (side_output_full && main_output_full)
 		return
 
-	var/datum/gas_mixture/removed = air1.remove_ratio(transfer_ratio)
+	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
 
-	if(!removed || !removed.total_moles())
+	if(!removed || !removed.getMoles())
 		return
 
 	var/filtering = TRUE

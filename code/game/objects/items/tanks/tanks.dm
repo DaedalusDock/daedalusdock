@@ -119,7 +119,7 @@
 			. += span_notice("If you want any more information you'll need to get closer.")
 		return
 
-	. += span_notice("The pressure gauge reads [round(src.air_contents.return_pressure(),0.01)] kPa.")
+	. += span_notice("The pressure gauge reads [round(src.air_contents.returnPressure(),0.01)] kPa.")
 
 	var/celsius_temperature = air_contents.temperature-T0C
 	var/descriptive
@@ -150,7 +150,7 @@
 	var/mob/living/carbon/human/H = user
 	user.visible_message(span_suicide("[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/effects/spray.ogg', 10, TRUE, -3)
-	if(!QDELETED(H) && air_contents && air_contents.return_pressure() >= 1000)
+	if(!QDELETED(H) && air_contents && air_contents.returnPressure() >= 1000)
 		ADD_TRAIT(H, TRAIT_DISFIGURED, TRAIT_GENERIC)
 		H.inflate_gib()
 		return MANUAL_SUICIDE
@@ -185,7 +185,7 @@
 
 /obj/item/tank/ui_data(mob/user)
 	. = list(
-		"tankPressure" = round(air_contents.return_pressure()),
+		"tankPressure" = round(air_contents.returnPressure()),
 		"releasePressure" = round(distribute_pressure)
 	)
 
@@ -245,7 +245,7 @@
 	if(!air_contents)
 		return null
 
-	var/tank_pressure = air_contents.return_pressure()
+	var/tank_pressure = air_contents.returnPressure()
 	var/actual_distribute_pressure = clamp(tank_pressure, 0, distribute_pressure)
 
 	// Lets do some algebra to understand why this works, yeah?
@@ -277,7 +277,7 @@
 	var/atom/location = loc
 	if(!location)
 		return
-	var/datum/gas_mixture/leaked_gas = air_contents.remove_ratio(0.25)
+	var/datum/gas_mixture/leaked_gas = air_contents.removeRatio(0.25)
 	location.assume_air(leaked_gas)
 
 /**
@@ -291,8 +291,8 @@
 	if(!air_contents)
 		return FALSE
 
-	var/pressure = air_contents.return_pressure()
-	var/temperature = air_contents.return_temperature()
+	var/pressure = air_contents.returnPressure()
+	var/temperature = air_contents.getTemperature()
 	if(temperature >= TANK_MELT_TEMPERATURE)
 		var/temperature_damage_ratio = (temperature - TANK_MELT_TEMPERATURE) / temperature
 		take_damage(max_integrity * temperature_damage_ratio * delta_time, BURN, FIRE, FALSE, NONE)
@@ -325,13 +325,13 @@
 		return ..()
 
 	/// Handle fragmentation
-	var/pressure = air_contents.return_pressure()
+	var/pressure = air_contents.returnPressure()
 	if(pressure > TANK_FRAGMENT_PRESSURE)
 		if(!istype(loc, /obj/item/transfer_valve))
 			log_bomber(get_mob_by_key(fingerprintslast), "was last key to touch", src, "which ruptured explosively")
 		//Give the gas a chance to build up more pressure through reacting
 		air_contents.react(src)
-		pressure = air_contents.return_pressure()
+		pressure = air_contents.returnPressure()
 
 		// As of writing this this is calibrated to maxcap at 140L and 160atm.
 		var/power = (air_contents.volume * (pressure - TANK_FRAGMENT_PRESSURE)) / TANK_FRAGMENT_SCALE
@@ -341,7 +341,7 @@
 
 /obj/item/tank/proc/merging_information()
 	SIGNAL_HANDLER
-	if(air_contents.return_pressure() > TANK_FRAGMENT_PRESSURE)
+	if(air_contents.returnPressure() > TANK_FRAGMENT_PRESSURE)
 		explosion_info += TANK_MERGE_OVERPRESSURE
 
 /obj/item/tank/proc/explosion_information()

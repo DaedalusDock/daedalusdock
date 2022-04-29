@@ -125,22 +125,22 @@
 /// Glorified volume pump.
 /obj/machinery/atmospherics/components/binary/tank_compressor/process_atmos()
 	var/datum/gas_mixture/input_air = airs[2]
-	if(!input_air?.total_moles() || !active || !transfer_rate || !inserted_tank)
+	if(!input_air?.getMoles() || !active || !transfer_rate || !inserted_tank)
 		return
 
 	var/datum/gas_mixture/tank_air = inserted_tank.return_air()
 	if(!tank_air)
 		return
 
-	if(input_air.return_pressure() < 0.01 || tank_air.return_pressure() > TANK_COMPRESSOR_PRESSURE_LIMIT)
+	if(input_air.returnPressure() < 0.01 || tank_air.returnPressure() > TANK_COMPRESSOR_PRESSURE_LIMIT)
 		return
 
 	/// Prevent pumping if tank is taking damage but still below pressure limit. Here to prevent exploiting the buffer system.
-	if((inserted_tank.leaking) && (tank_air.return_pressure() <= TANK_LEAK_PRESSURE))
+	if((inserted_tank.leaking) && (tank_air.returnPressure() <= TANK_LEAK_PRESSURE))
 		active = FALSE
 		return
 
-	var/datum/gas_mixture/removed = input_air.remove_ratio(transfer_rate / input_air.volume)
+	var/datum/gas_mixture/removed = input_air.removeRatio(transfer_rate / input_air.volume)
 	if(!removed)
 		return
 
@@ -160,7 +160,7 @@
 		return
 	flush_buffer()
 	var/datum/gas_mixture/tank_air = inserted_tank.return_air()
-	last_recorded_pressure = tank_air.return_pressure()
+	last_recorded_pressure = tank_air.returnPressure()
 	active = FALSE
 	return
 
@@ -176,13 +176,13 @@
  * Mole requirements in experiments are tracked by buffer data.
  */
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/flush_buffer()
-	if(!leaked_gas_buffer.total_moles())
+	if(!leaked_gas_buffer.getMoles())
 		return
-	if(leaked_gas_buffer.total_moles() > SIGNIFICANT_AMOUNT_OF_MOLES)
+	if(leaked_gas_buffer.getMoles() > SIGNIFICANT_AMOUNT_OF_MOLES)
 		record_data()
 	else
 		say("Buffer data discarded. Required moles for storage: [SIGNIFICANT_AMOUNT_OF_MOLES] moles.")
-	var/datum/gas_mixture/removed = leaked_gas_buffer.remove_ratio(1)
+	var/datum/gas_mixture/removed = leaked_gas_buffer.removeRatio(1)
 	airs[1].merge(removed)
 	say("Gas stored in buffer flushed to output port. Compressor ready to start the next experiment.")
 
@@ -229,7 +229,7 @@
 	if(!inserted_tank)
 		return FALSE
 	var/datum/gas_mixture/tank_air = inserted_tank.return_air()
-	if(!tank_air.return_pressure() >= PUMP_MAX_PRESSURE)
+	if(!tank_air.returnPressure() >= PUMP_MAX_PRESSURE)
 		return FALSE
 	flush_buffer()
 	if(user)
@@ -335,7 +335,7 @@
 	var/list/data = list()
 	data["tankPresent"] = inserted_tank ? TRUE : FALSE
 	var/datum/gas_mixture/tank_air = inserted_tank?.return_air()
-	data["tankPressure"] = tank_air?.return_pressure()
+	data["tankPressure"] = tank_air?.returnPressure()
 	data["leaking"] = inserted_tank?.leaking
 
 	data["active"] = active

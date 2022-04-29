@@ -49,10 +49,10 @@
 	var/datum/gas_mixture/open_turf_gases = open_turf.return_air()
 
 
-	var/plas = open_turf_gases.get_gas(GAS_PLASMA)
-	var/oxy = open_turf_gases.get_gas(GAS_OXYGEN)
-	var/n2 = open_turf_gases.get_gas(GAS_NITROGEN)
-	var/co2 = open_turf_gases.get_gas(GAS_CO2)
+	var/plas = open_turf_gases.getGroupGas(GAS_PLASMA)
+	var/oxy = open_turf_gases.getGroupGas(GAS_OXYGEN)
+	var/n2 = open_turf_gases.getGroupGas(GAS_NITROGEN)
+	var/co2 = open_turf_gases.getGroupGas(GAS_CO2)
 
 	. = TRUE
 	if(atmos_requirements["min_oxy"] && oxy < atmos_requirements["min_oxy"])

@@ -44,8 +44,8 @@
 		. += "siphon-connector"
 
 /obj/machinery/portable_atmospherics/pump/process_atmos()
-	var/pressure = air_contents.return_pressure()
-	var/temperature = air_contents.return_temperature()
+	var/pressure = air_contents.returnPressure()
+	var/temperature = air_contents.getTemperature()
 	///function used to check the limit of the pumps and also set the amount of damage that the pump can receive, if the heat and pressure are way higher than the limit the more damage will be done
 	if(temperature > heat_limit || pressure > pressure_limit)
 		take_damage(clamp((temperature/heat_limit) * (pressure/pressure_limit), 5, 50), BURN, 0)
@@ -68,11 +68,11 @@
 		environment = local_turf.return_air()
 
 	if(direction == PUMP_OUT)
-		pressure_delta = target_pressure - environment.return_pressure()
+		pressure_delta = target_pressure - environment.returnPressure()
 		output_volume = environment.volume * environment.group_multiplier
 		air_temperature = environment.temperature? environment.temperature : air_contents.temperature
 	else
-		pressure_delta = environment.return_pressure() - target_pressure
+		pressure_delta = environment.returnPressure() - target_pressure
 		output_volume = air_contents.volume * air_contents.group_multiplier
 		air_temperature = air_contents.temperature? air_contents.temperature : environment.temperature
 
@@ -124,7 +124,7 @@
 	data["on"] = on
 	data["direction"] = direction == PUMP_IN ? TRUE : FALSE
 	data["connected"] = connected_port ? TRUE : FALSE
-	data["pressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["pressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 	data["target_pressure"] = round(target_pressure ? target_pressure : 0)
 	data["default_pressure"] = round(PUMP_DEFAULT_PRESSURE)
 	data["min_pressure"] = round(PUMP_MIN_PRESSURE)
@@ -134,7 +134,7 @@
 		data["holding"] = list()
 		data["holding"]["name"] = holding.name
 		var/datum/gas_mixture/holding_mix = holding.return_air()
-		data["holding"]["pressure"] = round(holding_mix.return_pressure())
+		data["holding"]["pressure"] = round(holding_mix.returnPressure())
 	else
 		data["holding"] = null
 	return data
@@ -149,8 +149,8 @@
 			if(on)
 				SSairmachines.start_processing_machine(src)
 			if(on && !holding)
-				var/plasma = air_contents.get_gas(GAS_PLASMA)
-				var/n2o = air_contents.get_gas(GAS_N2O)
+				var/plasma = air_contents.getGroupGas(GAS_PLASMA)
+				var/n2o = air_contents.getGroupGas(GAS_N2O)
 				if(n2o || plasma)
 					message_admins("[ADMIN_LOOKUPFLW(usr)] turned on a pump that contains [n2o ? "N2O" : ""][n2o && plasma ? " & " : ""][plasma ? "Plasma" : ""] at [ADMIN_VERBOSEJMP(src)]")
 					log_admin("[key_name(usr)] turned on a pump that contains [n2o ? "N2O" : ""][n2o && plasma ? " & " : ""][plasma ? "Plasma" : ""] at [AREACOORD(src)]")

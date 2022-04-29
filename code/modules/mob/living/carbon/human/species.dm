@@ -1664,7 +1664,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(mob/living/carbon/human/H, datum/gas_mixture/environment, delta_time, times_fired)
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	var/adjusted_pressure = H.calculate_affecting_pressure(pressure)
 
 	// Set alerts and apply damage based on the amount of pressure

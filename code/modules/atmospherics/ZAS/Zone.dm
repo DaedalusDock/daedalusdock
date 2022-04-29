@@ -160,7 +160,7 @@ Class Procs:
 			T.create_fire(SSzas.settings.fire_firelevel_multiplier)
 
 	// Update gas overlays.
-	if(air.check_tile_graphic(graphic_add, graphic_remove))
+	if(air.checkTileGraphic(graphic_add, graphic_remove))
 		//for(var/turf/simulated/T in contents)
 		for(var/turf/open/T in contents)
 			if(T.simulated)
@@ -185,7 +185,7 @@ Class Procs:
 				var/condense_amt = min(air.gas[g], rand(3,5))
 				if(condense_amt < 1)
 					break
-				air.adjust_gas(g, -condense_amt)
+				air.adjustGas(g, -condense_amt)
 				flooding.add_fluid(condense_amt, product)
 	*/
 
@@ -206,7 +206,7 @@ Class Procs:
 	to_chat(M, name)
 	for(var/g in air.gas)
 		to_chat(M, "[xgm_gas_data.name[g]]: [air.gas[g]]")
-	to_chat(M, "P: [air.return_pressure()] kPa V: [air.volume]L T: [air.temperature]°K ([air.temperature - T0C]°C)")
+	to_chat(M, "P: [air.returnPressure()] kPa V: [air.volume]L T: [air.temperature]°K ([air.temperature - T0C]°C)")
 	to_chat(M, "O2 per N2: [(air.gas[GAS_NITROGEN] ? air.gas[GAS_OXYGEN]/air.gas[GAS_NITROGEN] : "N/A")] Moles: [air.total_moles]")
 	to_chat(M, "Simulated: [contents.len] ([air.group_multiplier])")
 	to_chat(M, "Edges: [edges.len]")
@@ -219,7 +219,7 @@ Class Procs:
 		else
 			space_edges++
 			space_coefficient += E.coefficient
-			to_chat(M, "[E:air:return_pressure()]kPa")
+			to_chat(M, "[E:air:returnPressure()]kPa")
 
 	to_chat(M, "Zone Edges: [zone_edges]")
 	to_chat(M, "Space Edges: [space_edges] ([space_coefficient] connections)\n")

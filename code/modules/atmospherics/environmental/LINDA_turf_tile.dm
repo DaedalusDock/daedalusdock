@@ -92,11 +92,11 @@
 
 /turf/open/proc/copy_air_with_tile(turf/open/target_turf)
 	if(istype(target_turf))
-		air.copy_from(target_turf.air)
+		air.copyFrom(target_turf.air)
 
 /turf/open/proc/copy_air(datum/gas_mixture/copy)
 	if(copy)
-		air.copy_from(copy)
+		air.copyFrom(copy)
 
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
@@ -328,7 +328,7 @@
 			// shares 4/5 of our difference in moles with the atmosphere
 			our_air.share(planetary_mix, 0.8, 0.8)
 			// temperature share with the atmosphere with an inflated heat capacity to simulate faster sharing with a large atmosphere
-			our_air.temperature_share(planetary_mix, OPEN_HEAT_TRANSFER_COEFFICIENT, planetary_mix.temperature_archived, planetary_mix.heat_capacity() * 5)
+			our_air.temperature_share(planetary_mix, OPEN_HEAT_TRANSFER_COEFFICIENT, planetary_mix.temperature_archived, planetary_mix.getHeatCapacity() * 5)
 			planetary_mix.garbage_collect()
 			PLANET_SHARE_CHECK
 
@@ -462,12 +462,12 @@
 		var/datum/gas_mixture/turf/mix = group_member.air
 		if (roundstart && istype(group_member.air, /datum/gas_mixture/immutable))
 			imumutable_in_group = TRUE
-			shared_mix.copy_from(group_member.air) //This had better be immutable young man
+			shared_mix.copyFrom(group_member.air) //This had better be immutable young man
 			shared_gases = shared_mix.gases //update the cache
 			break
 		//"borrowing" this code from merge(), I need to play with the temp portion. Lets expand it out
 		//temperature = (giver.temperature * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
-		var/capacity = mix.heat_capacity()
+		var/capacity = mix.getHeatCapacity()
 		energy += mix.temperature * capacity
 		heat_cap += capacity
 
@@ -484,9 +484,9 @@
 
 	for(var/turf/open/group_member as anything in turf_list)
 		if(group_member.planetary_atmos) //We do this as a hack to try and minimize unneeded excited group spread over planetary turfs
-			group_member.air.copy_from(SSair.planetary[group_member.initial_gas]) //Comes with a cost of "slower" drains, but it's worth it
+			group_member.air.copyFrom(SSair.planetary[group_member.initial_gas]) //Comes with a cost of "slower" drains, but it's worth it
 		else
-			group_member.air.copy_from(shared_mix) //Otherwise just set the mix to a copy of our equalized mix
+			group_member.air.copyFrom(shared_mix) //Otherwise just set the mix to a copy of our equalized mix
 		group_member.update_visuals()
 		if(poke_turfs) //Because we only activate all these once every breakdown, in event of lag due to this code and slow space + vent things, increase the wait time for breakdowns
 			SSair.add_to_active(group_member)
@@ -633,7 +633,7 @@ Then we space some of our heat, and think about if we should stop conducting.
 /turf/open/consider_superconductivity(starting)
 	if(air.temperature < (starting?MINIMUM_TEMPERATURE_START_SUPERCONDUCTION:MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION))
 		return FALSE
-	if(air.heat_capacity() < M_CELL_WITH_RATIO) // Was: MOLES_CELLSTANDARD*0.1*0.05 Since there are no variables here we can make this a constant.
+	if(air.getHeatCapacity() < M_CELL_WITH_RATIO) // Was: MOLES_CELLSTANDARD*0.1*0.05 Since there are no variables here we can make this a constant.
 		return FALSE
 	return ..()
 

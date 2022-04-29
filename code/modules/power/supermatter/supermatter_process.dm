@@ -22,7 +22,7 @@
 	var/datum/gas_mixture/removed
 	if(produces_gas)
 		//Remove gas from surrounding area
-		removed = env.remove(gasefficency * env.total_moles())
+		removed = env.remove(gasefficency * env.getMoles())
 	else
 		// Pass all the gas related code an empty gas container
 		removed = new()
@@ -35,7 +35,7 @@
 		else
 			psy_overlay = FALSE
 	damage_archived = damage
-	if(!removed || !removed.total_moles() || isspaceturf(local_turf)) //we're in space or there is no gas to process
+	if(!removed || !removed.getMoles() || isspaceturf(local_turf)) //we're in space or there is no gas to process
 		if(takes_damage)
 			damage += max((power / 1000) * DAMAGE_INCREASE_MULTIPLIER, 0.1) // always does at least some damage
 		if(!istype(env, /datum/gas_mixture/immutable) && produces_gas && power) //There is no gas to process, but we are not in a space turf. Lets make them.
@@ -113,7 +113,7 @@
 	//((((some value between 0.5 and 1 * temp - ((273.15 + 40) * some values between 1 and 10)) * some number between 0.25 and knock your socks off / 150) * 0.25
 	//Heat and mols account for each other, a lot of hot mols are more damaging then a few
 	//Mols start to have a positive effect on damage after 350
-	damage = max(damage + (max(clamp(removed.total_moles() / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
+	damage = max(damage + (max(clamp(removed.getMoles() / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Power only starts affecting damage when it is above 5000
 	damage = max(damage + (max(power - POWER_PENALTY_THRESHOLD, 0)/500) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Molar count only starts affecting damage when it is above 1800
@@ -151,7 +151,7 @@
 
 	//calculating gas related values
 	//Wanna know a secret? See that max() to zero? it's used for error checking. If we get a mol count in the negative, we'll get a divide by zero error //Old me, you're insane
-	combined_gas = max(removed.total_moles(), 0)
+	combined_gas = max(removed.getMoles(), 0)
 
 	//This is more error prevention, according to all known laws of atmos, gas_mix.remove() should never make negative mol values.
 	//But this is tg
@@ -197,7 +197,7 @@
 /obj/machinery/power/supermatter_crystal/proc/special_gases_interactions(datum/gas_mixture/env, datum/gas_mixture/removed)
 	//Miasma is really just microscopic particulate. It gets consumed like anything else that touches the crystal.
 	if(gas_comp[/datum/gas/miasma])
-		var/miasma_pp = env.return_pressure() * gas_comp[/datum/gas/miasma]
+		var/miasma_pp = env.returnPressure() * gas_comp[/datum/gas/miasma]
 		var/consumed_miasma = clamp(((miasma_pp - MIASMA_CONSUMPTION_PP) / (miasma_pp + MIASMA_PRESSURE_SCALING)) * (1 + (gasmix_power_ratio * MIASMA_GASMIX_SCALING)), MIASMA_CONSUMPTION_RATIO_MIN, MIASMA_CONSUMPTION_RATIO_MAX)
 		consumed_miasma *= gas_comp[/datum/gas/miasma] * combined_gas
 		if(consumed_miasma)
@@ -206,7 +206,7 @@
 
 	//Let's say that the CO2 touches the SM surface and the radiation turns it into Pluoxium.
 	if(gas_comp[/datum/gas/carbon_dioxide] && gas_comp[/datum/gas/oxygen])
-		var/carbon_dioxide_pp = env.return_pressure() * gas_comp[/datum/gas/carbon_dioxide]
+		var/carbon_dioxide_pp = env.returnPressure() * gas_comp[/datum/gas/carbon_dioxide]
 		var/consumed_carbon_dioxide = clamp(((carbon_dioxide_pp - CO2_CONSUMPTION_PP) / (carbon_dioxide_pp + CO2_PRESSURE_SCALING)), CO2_CONSUMPTION_RATIO_MIN, CO2_CONSUMPTION_RATIO_MAX)
 		consumed_carbon_dioxide = min(consumed_carbon_dioxide * gas_comp[/datum/gas/carbon_dioxide] * combined_gas, removed.gases[/datum/gas/carbon_dioxide][MOLES] * INVERSE(0.5), removed.gases[/datum/gas/oxygen][MOLES] * INVERSE(0.5))
 		if(consumed_carbon_dioxide)
@@ -265,7 +265,7 @@
 		//(1 + (tritRad + pluoxDampen * bzDampen * o2Rad * plasmaRad / (10 - bzrads))) * freonbonus
 		playsound(src, 'sound/weapons/emitter2.ogg', 70, TRUE)
 		var/power_multiplier = max(0, (1 + (power_transmission_bonus / (10 - (gas_comp[/datum/gas/bz] * BZ_RADIOACTIVITY_MODIFIER)))) * freonbonus)// RadModBZ(500%)
-		var/pressure_multiplier = max((1 / ((env.return_pressure() ** pressure_bonus_curve_angle) + 1) * pressure_bonus_derived_steepness) + pressure_bonus_derived_constant, 1)
+		var/pressure_multiplier = max((1 / ((env.returnPressure() ** pressure_bonus_curve_angle) + 1) * pressure_bonus_derived_steepness) + pressure_bonus_derived_constant, 1)
 		var/co2_power_increase = max(gas_comp[/datum/gas/carbon_dioxide] * 2, 1)
 		supermatter_zap(
 			zapstart = src,
@@ -334,12 +334,12 @@
 		return
 	var/range = 4
 	zap_cutoff = 1500
-	if(removed && removed.return_pressure() > 0 && removed.return_temperature() > 0)
+	if(removed && removed.returnPressure() > 0 && removed.getTemperature() > 0)
 		//You may be able to freeze the zapstate of the engine with good planning, we'll see
-		zap_cutoff = clamp(3000 - (power * (removed.total_moles()) / 10) / removed.return_temperature(), 350, 3000)//If the core is cold, it's easier to jump, ditto if there are a lot of mols
+		zap_cutoff = clamp(3000 - (power * (removed.getMoles()) / 10) / removed.getTemperature(), 350, 3000)//If the core is cold, it's easier to jump, ditto if there are a lot of mols
 		//We should always be able to zap our way out of the default enclosure
 		//See supermatter_zap() for more details
-		range = clamp(power / removed.return_pressure() * 10, 2, 7)
+		range = clamp(power / removed.returnPressure() * 10, 2, 7)
 	var/flags = ZAP_SUPERMATTER_FLAGS
 	var/zap_count = 0
 	//Deal with power zaps

@@ -659,7 +659,7 @@
 		leaving.Bump(src)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/machinery/door/firedoor/border_only/c_airblock(turf/T, vertical = FALSE)
+/obj/machinery/door/firedoor/border_only/zas_canpass(turf/T, vertical = FALSE)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(get_dir(loc, T) == dir)

@@ -40,7 +40,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			var/datum/component/wet_floor/WF = T.AddComponent(/datum/component/wet_floor)
 			WF.InheritComponent(slip)
 		if (copy_air)
-			T.return_air().copy_from(return_air())
+			T.return_air().copyFrom(return_air())
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)
@@ -166,12 +166,12 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 /turf/open/ChangeTurf(path, list/new_baseturfs, flags) //Resist the temptation to make this default to keeping air.
 	if ((flags & CHANGETURF_INHERIT_AIR) && ispath(path, /turf/open))
 		var/datum/gas_mixture/stashed_air = new()
-		stashed_air.copy_from(air)
+		stashed_air.copyFrom(air)
 		. = ..() //If path == type this will return us, don't bank on making a new type
 		if (!.) // changeturf failed or didn't do anything
 			return
 		var/turf/open/newTurf = .
-		newTurf.air.copy_from(stashed_air)
+		newTurf.air.copyFrom(stashed_air)
 		SSzas.mark_for_update(newTurf)
 	else
 		if(ispath(path,/turf/closed) || ispath(path,/turf/cordon))
@@ -334,7 +334,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/heat_cap = 0
 	for(var/turf/T in turf_list)
 		var/datum/gas_mixture/turf_mix = T.return_air()
-		var/capacity = turf_mix.heat_capacity()
+		var/capacity = turf_mix.getHeatCapacity()
 		energy += turf_mix.temperature * capacity
 		heat_cap += capacity
 
@@ -347,7 +347,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		total_gases[id] /= turf_count
 
 	for(var/turf/T as anything in turf_list)
-		T.return_air().copy_from(total)
+		T.return_air().copyFrom(total)
 		SSzas.mark_for_update(T)
 */
 /*
@@ -370,7 +370,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		var/datum/gas_mixture/turf/mix = T.air
 		//"borrowing" this code from merge(), I need to play with the temp portion. Lets expand it out
 		//temperature = (giver.temperature * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
-		var/capacity = mix.heat_capacity()
+		var/capacity = mix.getHeatCapacity()
 		energy += mix.temperature * capacity
 		heat_cap += capacity
 
@@ -385,7 +385,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	for(var/t in turf_list)
 		var/turf/open/T = t
-		T.air.copy_from(total)
+		T.air.copyFrom(total)
 		T.update_visuals()
 		SSair.add_to_active(T)
 */

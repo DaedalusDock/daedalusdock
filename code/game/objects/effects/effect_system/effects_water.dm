@@ -18,7 +18,7 @@
 	if(abs(diff_temp) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
 		var/altered_temp = max(env.temperature + (ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT * diff_temp), 0)
 		env.temperature = (diff_temp > 0) ? min(temperature, altered_temp) : max(temperature, altered_temp)
-		env.update_values()
+		env.updateValues()
 
 	if (--src.life < 1)
 		qdel(src)

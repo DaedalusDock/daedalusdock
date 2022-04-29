@@ -319,10 +319,10 @@
 		if(ST.air)
 			var/datum/gas_mixture/muhair = ST.return_air()
 
-			var/plas = muhair.get_gas(GAS_PLASMA)
-			var/oxy = muhair.get_gas(GAS_OXYGEN)
-			var/n2 = muhair.get_gas(GAS_NITROGEN)
-			var/co2 = muhair.get_gas(GAS_CO2)
+			var/plas = muhair.getGroupGas(GAS_PLASMA)
+			var/oxy = muhair.getGroupGas(GAS_OXYGEN)
+			var/n2 = muhair.getGroupGas(GAS_NITROGEN)
+			var/co2 = muhair.getGroupGas(GAS_CO2)
 
 			if(atmos_requirements["min_oxy"] && oxy < atmos_requirements["min_oxy"])
 				. = FALSE

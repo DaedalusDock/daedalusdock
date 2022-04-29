@@ -178,7 +178,7 @@
 */
 
 /turf/open/GetHeatCapacity()
-	. = air.heat_capacity()
+	. = air.getHeatCapacity()
 
 /turf/open/GetTemperature()
 	. = return_air().temperature

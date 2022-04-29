@@ -14,8 +14,8 @@
 
 /obj/structure/transit_tube_pod/Initialize(mapload)
 	. = ..()
-	air_contents.adjust_gas(GAS_OXYGEN, MOLES_O2STANDARD)
-	air_contents.adjust_gas(GAS_NITROGEN, MOLES_N2STANDARD)
+	air_contents.adjustGas(GAS_OXYGEN, MOLES_O2STANDARD)
+	air_contents.adjustGas(GAS_NITROGEN, MOLES_N2STANDARD)
 	air_contents.temperature = T20C
 
 /obj/structure/transit_tube_pod/Destroy()
@@ -203,7 +203,7 @@
 		return
 
 
-/obj/structure/transit_tube_pod/return_temperature()
+/obj/structure/transit_tube_pod/getTemperature()
 	return air_contents.temperature
 
 //special pod made by the dispenser, it fizzles away when reaching a station.

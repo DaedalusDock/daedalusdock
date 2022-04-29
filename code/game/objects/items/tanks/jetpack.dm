@@ -41,7 +41,7 @@
 /obj/item/tank/jetpack/populate_gas()
 	if(gas_type)
 		var/datum/gas_mixture/our_mix = return_air()
-		our_mix.adjust_gas(gas_type, (6*ONE_ATMOSPHERE) * volume / (R_IDEAL_GAS_EQUATION * T20C))
+		our_mix.adjustGas(gas_type, (6*ONE_ATMOSPHERE) * volume / (R_IDEAL_GAS_EQUATION * T20C))
 
 /obj/item/tank/jetpack/ui_action_click(mob/user, action)
 	if(istype(action, /datum/action/item_action/toggle_jetpack))
@@ -123,12 +123,12 @@
 		return COMSIG_MOVABLE_STOP_SPACEMOVE
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user)
-	if((num < 0.005 || air_contents.total_moles() < num))
+	if((num < 0.005 || air_contents.getMoles() < num))
 		turn_off(user)
 		return
 
 	var/datum/gas_mixture/removed = remove_air(num)
-	if(removed.total_moles() < 0.005)
+	if(removed.getMoles() < 0.005)
 		turn_off(user)
 		return
 

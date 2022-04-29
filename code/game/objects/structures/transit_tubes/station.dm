@@ -169,7 +169,7 @@
 	if(QDELETED(pod))
 		return
 	var/datum/gas_mixture/floor_mixture = loc.return_air()
-	pod.air_contents.share_ratio(floor_mixture, 1)
+	pod.air_contents.shareRatio(floor_mixture, 1)
 
 /obj/structure/transit_tube/station/init_tube_dirs()
 	switch(dir)

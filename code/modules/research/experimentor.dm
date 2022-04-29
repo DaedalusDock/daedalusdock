@@ -368,10 +368,10 @@
 		else if(prob(EFFECT_PROB_MEDIUM-badThingCoeff))
 			visible_message(span_warning("[src] malfunctions, melting [exp_on] and leaking hot air!"))
 			var/datum/gas_mixture/env = loc.return_air()
-			var/transfer_moles = 0.25 * env.total_moles()
+			var/transfer_moles = 0.25 * env.getMoles()
 			var/datum/gas_mixture/removed = env.remove(transfer_moles)
 			if(removed)
-				var/heat_capacity = removed.heat_capacity()
+				var/heat_capacity = removed.getHeatCapacity()
 				if(heat_capacity == 0 || heat_capacity == null)
 					heat_capacity = 1
 				removed.temperature = min((removed.temperature*heat_capacity + 100000)/heat_capacity, 1000)
@@ -414,10 +414,10 @@
 		else if(prob(EFFECT_PROB_LOW-badThingCoeff))
 			visible_message(span_warning("[src] malfunctions, shattering [exp_on] and leaking cold air!"))
 			var/datum/gas_mixture/env = loc.return_air()
-			var/transfer_moles = 0.25 * env.total_moles()
+			var/transfer_moles = 0.25 * env.getMoles()
 			var/datum/gas_mixture/removed = env.remove(transfer_moles)
 			if(removed)
-				var/heat_capacity = removed.heat_capacity()
+				var/heat_capacity = removed.getHeatCapacity()
 				if(heat_capacity == 0 || heat_capacity == null)
 					heat_capacity = 1
 				removed.temperature = (removed.temperature*heat_capacity - 75000)/heat_capacity

@@ -28,7 +28,7 @@
 	T.pixel_y = (PipingLayer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_P_Y;
 
 ///Calculate the thermal energy of the selected gas (J)
-#define THERMAL_ENERGY(gas) (gas.temperature * gas.heat_capacity())
+#define THERMAL_ENERGY(gas) (gas.temperature * gas.getHeatCapacity())
 
 ///Directly adds a gas to a gas mixture without checking for its presence beforehand, use only if is certain the absence of said gas
 /*

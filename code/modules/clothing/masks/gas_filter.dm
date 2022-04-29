@@ -56,27 +56,27 @@
 
 	for(var/gas_id in breath.gas)
 		if(gas_id in high_filtering_gases)
-			if(breath.get_gas(gas_id) > HIGH_FILTERING_MOLES)
-				breath.get_gas(gas_id) = max(breath.get_gas(gas_id) - filter_strength_high * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(breath.getGroupGas(gas_id) > HIGH_FILTERING_MOLES)
+				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_high * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 0.5
 				continue
-			breath.get_gas(gas_id) = max(breath.get_gas(gas_id) - filter_strength_high * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_high * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.05
 			continue
 		if(gas_id in mid_filtering_gases)
-			if(breath.get_gas(gas_id) > MID_FILTERING_MOLES)
-				breath.get_gas(gas_id) = max(breath.get_gas(gas_id)- filter_strength_mid * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(breath.getGroupGas(gas_id) > MID_FILTERING_MOLES)
+				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id)- filter_strength_mid * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 0.75
 				continue
-			breath.get_gas(gas_id) = max(breath.get_gas(gas_id) - filter_strength_mid * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_mid * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.15
 			continue
 		if(gas_id in low_filtering_gases)
-			if(breath.get_gas(gas_id)> LOW_FILTERING_MOLES)
-				breath.get_gas(gas_id) = max(breath.get_gas(gas_id) - filter_strength_low * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(breath.getGroupGas(gas_id)> LOW_FILTERING_MOLES)
+				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_low * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 1
 				continue
-			breath.get_gas(gas_id) = max(breath.get_gas(gas_id) - filter_strength_low * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_low * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.5
 			continue
 

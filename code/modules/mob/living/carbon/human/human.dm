@@ -82,7 +82,7 @@
 		else
 			. += ""
 			. += "Internal Atmosphere Info: [internal.name]"
-			. += "Tank Pressure: [internal_air.return_pressure()]"
+			. += "Tank Pressure: [internal_air.returnPressure()]"
 			. += "Distribution Pressure: [internal.distribute_pressure]"
 	if(istype(wear_suit, /obj/item/clothing/suit/space))
 		var/obj/item/clothing/suit/space/S = wear_suit

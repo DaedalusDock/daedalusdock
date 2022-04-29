@@ -1125,7 +1125,7 @@
 	var/loc_temp = environment ? environment.temperature : T0C
 	if(isobj(loc))
 		var/obj/oloc = loc
-		var/obj_temp = oloc.return_temperature()
+		var/obj_temp = oloc.getTemperature()
 		if(obj_temp != null)
 			loc_temp = obj_temp
 	else if(isspaceturf(get_turf(src)))

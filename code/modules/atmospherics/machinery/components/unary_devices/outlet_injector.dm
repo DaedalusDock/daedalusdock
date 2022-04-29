@@ -55,7 +55,7 @@
 	var/datum/gas_mixture/air_contents = airs[1]
 
 	if(air_contents.temperature > 0)
-		var/transfer_moles = (air_contents.return_pressure() * volume_rate) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
+		var/transfer_moles = (air_contents.returnPressure() * volume_rate) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
 
 		if(!transfer_moles)
 			return

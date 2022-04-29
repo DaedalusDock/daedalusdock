@@ -176,9 +176,9 @@
 			//T.air_update_turf(FALSE, FALSE)
 			for(var/obj/effect/hotspot/H in T)
 				qdel(H)
-			if(G.get_gas(GAS_PLASMA))
-				G.adjust_gas(GAS_NITROGEN, G.get_gas(GAS_PLASMA))
-				G.adjust_gas(GAS_PLASMA, -G.gas[GAS_PLASMA])
+			if(G.getGroupGas(GAS_PLASMA))
+				G.adjustGas(GAS_NITROGEN, G.getGroupGas(GAS_PLASMA))
+				G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])
 		if (weldvents)
 			for(var/obj/machinery/atmospherics/components/unary/U in T)
 				if(!isnull(U.welded) && !U.welded) //must be an unwelded vent pump or vent scrubber.

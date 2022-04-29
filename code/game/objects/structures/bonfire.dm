@@ -102,7 +102,7 @@
 		var/turf/open/bonfire_turf = loc
 		var/datum/gas_mixture/local_gas = bonfire_turf.return_air()
 		if(local_gas)
-			if(local_gas.has_gas(GAS_OXYGEN, 5))
+			if(local_gas.hasGas(GAS_OXYGEN, 5))
 				return TRUE
 	return FALSE
 

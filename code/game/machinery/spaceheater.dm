@@ -113,7 +113,7 @@
 	if(mode == HEATER_MODE_STANDBY)
 		return
 
-	var/heat_capacity = enviroment.heat_capacity()
+	var/heat_capacity = enviroment.getHeatCapacity()
 	var/required_energy = abs(enviroment.temperature - target_temperature) * heat_capacity
 	required_energy = min(required_energy, heating_power)
 

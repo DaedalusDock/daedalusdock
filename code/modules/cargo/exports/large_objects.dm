@@ -109,8 +109,8 @@
 	var/list/gases_to_check = GLOB.all_gases
 
 	for(var/gasID in gases_to_check)
-		if(canister_mix.get_gas(gasID) > 0)
-			worth += get_gas_value(gasID, canister_mix.get_gas(gasID))
+		if(canister_mix.getGroupGas(gasID) > 0)
+			worth += get_gas_value(gasID, canister_mix.getGroupGas(gasID))
 
 	return worth
 

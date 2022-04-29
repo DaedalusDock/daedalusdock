@@ -35,13 +35,13 @@
 		if(!unsim)
 			continue
 
-		block = unsim.c_airblock(src)
+		block = unsim.zas_canpass(src)
 
 		if(block & AIR_BLOCKED)
 			//unsim.dbg(air_blocked, turn(180,d))
 			continue
 
-		var/r_block = c_airblock(unsim)
+		var/r_block = zas_canpass(unsim)
 
 		if(r_block & AIR_BLOCKED)
 			continue
@@ -71,13 +71,13 @@
 		if(!unsim)
 			continue
 
-		block = unsim.c_airblock(src)
+		block = unsim.zas_canpass(src)
 
 		if(block & AIR_BLOCKED)
 			//unsim.dbg(air_blocked, turn(180,d))
 			continue
 
-		var/r_block = c_airblock(unsim)
+		var/r_block = zas_canpass(unsim)
 
 		if(r_block & AIR_BLOCKED)
 			continue
@@ -179,7 +179,7 @@
 		if(!unsim) //edge of map
 			continue
 
-		//var/block = unsim.c_airblock(src)
+		//var/block = unsim.zas_canpass(src)
 		var/block
 		ATMOS_CANPASS_TURF(block, src, unsim)
 		if(block & AIR_BLOCKED)
@@ -191,7 +191,7 @@
 
 			continue
 
-		//var/r_block = c_airblock(unsim)
+		//var/r_block = zas_canpass(unsim)
 		var/r_block
 		ATMOS_CANPASS_TURF(r_block, unsim, src)
 		if(r_block & AIR_BLOCKED)
@@ -328,6 +328,7 @@
 	my_air.merge(giver)
 
 //turf/simulated/assume_gas(gasid, moles, temp = null) ZASTURF
+///Basically adjustGasWithTemp() but a turf proc.
 /turf/proc/assume_gas(gasid, moles, temp = null)
 	if(!simulated)
 		return
@@ -335,9 +336,9 @@
 	var/datum/gas_mixture/my_air = return_air()
 
 	if(isnull(temp))
-		my_air.adjust_gas(gasid, moles)
+		my_air.adjustGas(gasid, moles)
 	else
-		my_air.adjust_gas_temp(gasid, moles, temp)
+		my_air.adjustGasWithTemp(gasid, moles, temp)
 
 	return 1
 
@@ -350,7 +351,7 @@
 		if(initial_gas)
 			GM.gas = initial_gas.Copy()
 		GM.temperature = temperature
-		GM.update_values()
+		GM.updateValues()
 
 	if(zone)
 		if(!zone.invalid)
@@ -371,12 +372,12 @@
 	air.temperature = temperature
 	if(initial_gas)
 		air.gas = initial_gas.Copy()
-	air.update_values()
+	air.updateValues()
 
 //turf/simulated/proc/c_copy_air() ZASTURF
 /turf/proc/c_copy_air()
 	if(!air) air = new/datum/gas_mixture
-	air.copy_from(zone.air)
+	air.copyFrom(zone.air)
 	air.group_multiplier = 1
 
 /*/turf/open/space/c_copy_air()
@@ -390,9 +391,9 @@
 	var/datum/gas_mixture/new_gas = new
 	var/datum/gas_mixture/existing_gas = return_air()
 	if(isnull(initial_temperature))
-		new_gas.adjust_gas(gas_id, amount)
+		new_gas.adjustGas(gas_id, amount)
 	else
-		new_gas.adjust_gas_temp(gas_id, amount, initial_temperature)
+		new_gas.adjustGasWithTemp(gas_id, amount, initial_temperature)
 	existing_gas.merge(new_gas)
 
 /turf/open/space/atmos_spawn_air()

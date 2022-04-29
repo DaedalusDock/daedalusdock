@@ -75,7 +75,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 //PV = nRT
 
 ///joules per kelvin
-/datum/gas_mixture/proc/heat_capacity(data = MOLES)
+/datum/gas_mixture/proc/getHeatCapacity(data = MOLES)
 	var/list/cached_gases = gases
 	. = 0
 	for(var/id in cached_gases)
@@ -83,7 +83,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		. += gas_data[data] * gas_data[GAS_META][META_GAS_SPECIFIC_HEAT]
 
 /// Same as above except vacuums return HEAT_CAPACITY_VACUUM
-/datum/gas_mixture/turf/heat_capacity(data = MOLES)
+/datum/gas_mixture/turf/getHeatCapacity(data = MOLES)
 	var/list/cached_gases = gases
 	. = 0
 	for(var/id in cached_gases)
@@ -93,21 +93,21 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		. += HEAT_CAPACITY_VACUUM //we want vacuums in turfs to have the same heat capacity as space
 
 /// Calculate moles
-/datum/gas_mixture/proc/total_moles()
+/datum/gas_mixture/proc/getMoles()
 	var/cached_gases = gases
 	TOTAL_MOLES(cached_gases, .)
 
 /// Checks to see if gas amount exists in mixture.
 /// Do NOT use this in code where performance matters!
 /// It's better to batch calls to garbage_collect(), especially in places where you're checking many gastypes
-/datum/gas_mixture/proc/has_gas(gas_id, amount=0)
+/datum/gas_mixture/proc/hasGas(gas_id, amount=0)
 	ASSERT_GAS(gas_id, src)
 	var/is_there_gas = amount < gases[gas_id][MOLES]
 	garbage_collect()
 	return is_there_gas
 
 /// Calculate pressure in kilopascals
-/datum/gas_mixture/proc/return_pressure()
+/datum/gas_mixture/proc/returnPressure()
 	if(volume) // to prevent division by zero
 		var/cached_gases = gases
 		TOTAL_MOLES(cached_gases, .)
@@ -116,15 +116,15 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 0
 
 /// Calculate temperature in kelvins
-/datum/gas_mixture/proc/return_temperature()
+/datum/gas_mixture/proc/getTemperature()
 	return temperature
 
 /// Calculate volume in liters
-/datum/gas_mixture/proc/return_volume()
+/datum/gas_mixture/proc/getVolume()
 	return max(0, volume)
 
 /// Gets the gas visuals for everything in this mixture
-/datum/gas_mixture/proc/return_visuals()
+/datum/gas_mixture/proc/returnVisuals()
 	var/list/output
 	GAS_OVERLAYS(gases, output)
 	return output
@@ -150,8 +150,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 	//heat transfer
 	if(abs(temperature - giver.temperature) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
-		var/self_heat_capacity = heat_capacity()
-		var/giver_heat_capacity = giver.heat_capacity()
+		var/self_heat_capacity = getHeatCapacity()
+		var/giver_heat_capacity = giver.getHeatCapacity()
 		var/combined_heat_capacity = giver_heat_capacity + self_heat_capacity
 		if(combined_heat_capacity)
 			temperature = (giver.temperature * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
@@ -191,7 +191,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 ///Proportionally removes amount of gas from the gas_mixture.
 ///Returns: gas_mixture with the gases removed
-/datum/gas_mixture/proc/remove_ratio(ratio)
+/datum/gas_mixture/proc/removeRatio(ratio)
 	if(ratio <= 0)
 		var/datum/gas_mixture/removed = new(volume)
 		return removed
@@ -251,10 +251,10 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 //Returns: bool indicating whether gases moved between the two mixes
 /datum/gas_mixture/proc/equalize(datum/gas_mixture/other)
 	. = FALSE
-	if(abs(return_temperature() - other.return_temperature()) > MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND)
+	if(abs(getTemperature() - other.getTemperature()) > MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND)
 		. = TRUE
-		var/self_heat_cap = heat_capacity()
-		var/other_heat_cap = other.heat_capacity()
+		var/self_heat_cap = getHeatCapacity()
+		var/other_heat_cap = other.getHeatCapacity()
 		var/new_temp = (temperature * self_heat_cap + other.temperature * other_heat_cap) / (self_heat_cap + other_heat_cap)
 		temperature = new_temp
 		other.temperature = new_temp
@@ -290,7 +290,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 ///Copies variables from sample, moles multiplicated by partial
 ///Returns: 1 if we are mutable, 0 otherwise
-/datum/gas_mixture/proc/copy_from(datum/gas_mixture/sample, partial = 1)
+/datum/gas_mixture/proc/copyFrom(datum/gas_mixture/sample, partial = 1)
 	var/list/cached_gases = gases //accessing datum vars is slower than proc vars
 	var/list/sample_gases = sample.gases
 
@@ -355,8 +355,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	var/old_self_heat_capacity = 0
 	var/old_sharer_heat_capacity = 0
 	if(abs_temperature_delta > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
-		old_self_heat_capacity = heat_capacity()
-		old_sharer_heat_capacity = sharer.heat_capacity()
+		old_self_heat_capacity = getHeatCapacity()
+		old_sharer_heat_capacity = sharer.getHeatCapacity()
 
 	var/heat_capacity_self_to_sharer = 0 //heat capacity of the moles transferred from us to the sharer
 	var/heat_capacity_sharer_to_self = 0 //heat capacity of the moles transferred from the sharer to us
@@ -439,8 +439,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		sharer_temperature = sharer.temperature_archived
 	var/temperature_delta = temperature_archived - sharer_temperature
 	if(abs(temperature_delta) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
-		var/self_heat_capacity = heat_capacity(ARCHIVE)
-		sharer_heat_capacity = sharer_heat_capacity || sharer.heat_capacity(ARCHIVE)
+		var/self_heat_capacity = getHeatCapacity(ARCHIVE)
+		sharer_heat_capacity = sharer_heat_capacity || sharer.getHeatCapacity(ARCHIVE)
 
 		if((sharer_heat_capacity > MINIMUM_HEAT_CAPACITY) && (self_heat_capacity > MINIMUM_HEAT_CAPACITY))
 			var/heat = conduction_coefficient*temperature_delta* \
@@ -545,17 +545,17 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
  * eg:
  * Plas_PP = get_partial_pressure(gas_mixture.plasma)
  * O2_PP = get_partial_pressure(gas_mixture.oxygen)
- * get_breath_partial_pressure(gas_pp) --> gas_pp/total_moles()*breath_pp = pp
- * get_true_breath_pressure(pp) --> gas_pp = pp/breath_pp*total_moles()
+ * getBreathPartialPressure(gas_pp) --> gas_pp/getMoles()*breath_pp = pp
+ * getTrueBreathPressure(pp) --> gas_pp = pp/breath_pp*getMoles()
  *
  * 10/20*5 = 2.5
  * 10 = 2.5/5*20
  */
 
-/datum/gas_mixture/proc/get_breath_partial_pressure(gas_pressure)
+/datum/gas_mixture/proc/getBreathPartialPressure(gas_pressure)
 	return (gas_pressure * R_IDEAL_GAS_EQUATION * temperature) / BREATH_VOLUME
 ///inverse
-/datum/gas_mixture/proc/get_true_breath_pressure(partial_pressure)
+/datum/gas_mixture/proc/getTrueBreathPressure(partial_pressure)
 	return (partial_pressure * BREATH_VOLUME) / (R_IDEAL_GAS_EQUATION * temperature)
 
 /**
@@ -566,9 +566,9 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
  * - output_air (gasmix).
  */
 /datum/gas_mixture/proc/gas_pressure_minimum_transfer(datum/gas_mixture/output_air)
-	var/resulting_energy = output_air.thermal_energy() + (MOLAR_ACCURACY / total_moles() * thermal_energy())
-	var/resulting_capacity = output_air.heat_capacity() + (MOLAR_ACCURACY / total_moles() * heat_capacity())
-	return (output_air.total_moles() + MOLAR_ACCURACY) * R_IDEAL_GAS_EQUATION * (resulting_energy / resulting_capacity) / output_air.volume
+	var/resulting_energy = output_air.thermal_energy() + (MOLAR_ACCURACY / getMoles() * thermal_energy())
+	var/resulting_capacity = output_air.getHeatCapacity() + (MOLAR_ACCURACY / getMoles() * getHeatCapacity())
+	return (output_air.getMoles() + MOLAR_ACCURACY) * R_IDEAL_GAS_EQUATION * (resulting_energy / resulting_capacity) / output_air.volume
 
 
 /** Returns the amount of gas to be pumped to a specific container.
@@ -578,15 +578,15 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
  * - ignore_temperature. Returns a cheaper form of gas calculation, useful if the temperature difference between the two gasmixes is low or nonexistant.
  */
 /datum/gas_mixture/proc/gas_pressure_calculate(datum/gas_mixture/output_air, target_pressure, ignore_temperature = FALSE)
-	if((total_moles() <= 0) || (temperature <= 0))
+	if((getMoles() <= 0) || (temperature <= 0))
 		return FALSE
 
 	var/pressure_delta = 0
-	if((output_air.temperature <= 0) || (output_air.total_moles() <= 0))
+	if((output_air.temperature <= 0) || (output_air.getMoles() <= 0))
 		ignore_temperature = TRUE
 		pressure_delta = target_pressure
 	else
-		pressure_delta = target_pressure - output_air.return_pressure()
+		pressure_delta = target_pressure - output_air.returnPressure()
 
 	if(pressure_delta < 0.01 || gas_pressure_minimum_transfer(output_air) > target_pressure)
 		return FALSE
@@ -600,8 +600,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	var/rt_high = R_IDEAL_GAS_EQUATION * min(temperature, output_air.temperature)
 	// These works by assuming our gas has extremely high heat capacity
 	// and the resultant gasmix will hit either the highest or lowest temperature possible.
-	var/lower_limit = max((pv / rt_low) - output_air.total_moles(), 0)
-	var/upper_limit = (pv / rt_high) - output_air.total_moles() // In theory this should never go below zero, the pressure_delta check above should account for this.
+	var/lower_limit = max((pv / rt_low) - output_air.getMoles(), 0)
+	var/upper_limit = (pv / rt_high) - output_air.getMoles() // In theory this should never go below zero, the pressure_delta check above should account for this.
 
 	/*
 	 * We have PV=nRT as a nice formula, we can rearrange it into nT = PV/R
@@ -627,13 +627,13 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 	// Our thermal energy and moles
 	var/w2 = thermal_energy()
-	var/n2 = total_moles()
-	var/c2 = heat_capacity()
+	var/n2 = getMoles()
+	var/c2 = getHeatCapacity()
 
 	// Target thermal energy and moles
 	var/w1 = output_air.thermal_energy()
-	var/n1 = output_air.total_moles()
-	var/c1 = output_air.heat_capacity()
+	var/n1 = output_air.getMoles()
+	var/c1 = output_air.getHeatCapacity()
 
 	/// The PV/R part in our equation.
 	var/pvr = pv / R_IDEAL_GAS_EQUATION
@@ -704,8 +704,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 /// Releases gas from src to output air. This means that it can not transfer air to gas mixture with higher pressure.
 /datum/gas_mixture/proc/release_gas_to(datum/gas_mixture/output_air, target_pressure, rate=1)
-	var/output_starting_pressure = output_air.return_pressure()
-	var/input_starting_pressure = return_pressure()
+	var/output_starting_pressure = output_air.returnPressure()
+	var/input_starting_pressure = returnPressure()
 
 	//Need at least 10 KPa difference to overcome friction in the mechanism
 	if(output_starting_pressure >= min(target_pressure,input_starting_pressure-10))

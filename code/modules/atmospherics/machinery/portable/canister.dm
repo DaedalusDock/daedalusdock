@@ -101,7 +101,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		internal_cell = new /obj/item/stock_parts/cell/high(src)
 
 	if(existing_mixture)
-		air_contents.copy_from(existing_mixture)
+		air_contents.copyFrom(existing_mixture)
 	else
 		create_gas()
 
@@ -310,8 +310,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	greyscale_colors = "#9fba6c#3d4680"
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix/create_gas()
-	air_contents.adjust_gas(GAS_OXYGEN, (O2_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
-	air_contents.adjust_gas(GAS_N2O, (N2O_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjustGas(GAS_OXYGEN, (O2_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjustGas(GAS_N2O, (N2O_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSairmachines.start_processing_machine(src)
 
 /**
@@ -363,12 +363,12 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		return
 	if(starter_temp)
 		air_contents.temperature = starter_temp
-	air_contents.adjust_gas(gas_type,(maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjustGas(gas_type,(maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/air/create_gas()
-	air_contents.adjust_gas(GAS_OXYGEN, (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
-	air_contents.adjust_gas(GAS_NITROGEN, (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjustGas(GAS_OXYGEN, (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjustGas(GAS_NITROGEN, (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/update_icon_state()
@@ -395,7 +395,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	if(connected_port)
 		. += mutable_appearance(canister_overlay_file, "can-connector")
 
-	var/air_pressure = air_contents.return_pressure()
+	var/air_pressure = air_contents.returnPressure()
 
 	switch(air_pressure)
 		if((40 * ONE_ATMOSPHERE) to INFINITY)
@@ -427,7 +427,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	cut_overlay(window)
 	window = image(icon, icon_state="window-base", layer=FLOAT_LAYER)
 	var/list/window_overlays = list()
-	/*for(var/visual in air_contents.return_visuals())
+	/*for(var/visual in air_contents.returnVisuals())
 		var/image/new_visual = image(visual, layer=FLOAT_LAYER)
 		new_visual.filters = alpha_filter
 		window_overlays += new_visual*/
@@ -492,7 +492,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	. = ..()
 	if(!I.tool_start_check(user, amount=0))
 		return TRUE
-	var/pressure = air_contents.return_pressure()
+	var/pressure = air_contents.returnPressure()
 	if(pressure > 300)
 		to_chat(user, span_alert("The pressure gauge on [src] indicates a high pressure inside... maybe you want to reconsider?"))
 		message_admins("[src] deconstructed by [ADMIN_LOOKUPFLW(user)]")
@@ -543,7 +543,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
  */
 /obj/machinery/portable_atmospherics/canister/proc/canister_break()
 	disconnect()
-	var/datum/gas_mixture/expelled_gas = air_contents.remove(air_contents.total_moles())
+	var/datum/gas_mixture/expelled_gas = air_contents.remove(air_contents.getMoles())
 	var/turf/T = get_turf(src)
 	T.assume_air(expelled_gas)
 
@@ -572,8 +572,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 
 /obj/machinery/portable_atmospherics/canister/process(delta_time)
 
-	var/our_pressure = air_contents.return_pressure()
-	var/our_temperature = air_contents.return_temperature()
+	var/our_pressure = air_contents.returnPressure()
+	var/our_temperature = air_contents.getTemperature()
 
 	protected_contents = FALSE
 	if(shielding_powered)
@@ -608,7 +608,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		else
 			environment = location.return_air()
 
-		var/env_pressure = environment.return_pressure()
+		var/env_pressure = environment.returnPressure()
 		var/pressure_delta = release_pressure - env_pressure
 
 		if((air_contents.temperature > 0) && (pressure_delta > 0))
@@ -619,8 +619,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 
 	air_contents.react()
 
-	var/our_pressure = air_contents.return_pressure()
-	var/our_temperature = air_contents.return_temperature()
+	var/our_pressure = air_contents.returnPressure()
+	var/our_temperature = air_contents.getTemperature()
 
 	///function used to check the limit of the canisters and also set the amount of damage that the canister can receive, if the heat and pressure are way higher than the limit the more damage will be done
 	if(!protected_contents && (our_temperature > heat_limit || our_pressure > pressure_limit))
@@ -650,7 +650,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 /obj/machinery/portable_atmospherics/canister/ui_data()
 	. = list(
 		"portConnected" = !!connected_port,
-		"tankPressure" = round(air_contents.return_pressure()),
+		"tankPressure" = round(air_contents.returnPressure()),
 		"releasePressure" = round(release_pressure),
 		"valveOpen" = !!valve_open,
 		"isPrototype" = !!prototype,
@@ -673,7 +673,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		. += list(
 			"holdingTank" = list(
 				"name" = holding.name,
-				"tankPressure" = round(holding_mix.return_pressure())
+				"tankPressure" = round(holding_mix.returnPressure())
 			)
 		)
 	. += list(
@@ -741,7 +741,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 				if(!holding)
 					var/list/gaseslog = list() //list for logging all gases in canister
 					for(var/gas in air_contents.gas)
-						gaseslog[xgm_gas_data.name[gas]] = air_contents.get_gas(gas)	//adds gases to gaseslog
+						gaseslog[xgm_gas_data.name[gas]] = air_contents.getGroupGas(gas)	//adds gases to gaseslog
 						if(!(xgm_gas_data.flags[gas] & XGM_GAS_CONTAMINANT|XGM_GAS_FUEL))
 							continue
 						danger = TRUE //at least 1 danger gas

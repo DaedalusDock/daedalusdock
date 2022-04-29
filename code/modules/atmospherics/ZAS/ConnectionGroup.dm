@@ -156,9 +156,9 @@ Class Procs:
 		erase()
 		return
 
-	var/equiv = A.air.share_ratio(B.air, coefficient)
+	var/equiv = A.air.shareRatio(B.air, coefficient)
 
-	var/differential = A.air.return_pressure() - B.air.return_pressure()
+	var/differential = A.air.returnPressure() - B.air.returnPressure()
 	if(abs(differential) >= SSzas.settings.airflow_lightest_pressure)
 		var/list/attracted
 		var/list/repelled
@@ -239,15 +239,15 @@ Class Procs:
 		erase()
 		return
 
-	var/equiv = A.air.share_space(air)
+	var/equiv = A.air.shareSpace(air)
 
-	var/differential = A.air.return_pressure() - air.return_pressure()
+	var/differential = A.air.returnPressure() - air.returnPressure()
 	if(abs(differential) >= SSzas.settings.airflow_lightest_pressure)
 		var/list/attracted = A.movables()
 		flow(attracted, abs(differential), differential < 0)
 
 	if(equiv)
-		A.air.copy_from(air)
+		A.air.copyFrom(air)
 		SSzas.mark_edge_sleeping(src)
 
 	SSzas.mark_zone_update(A)
@@ -262,11 +262,11 @@ Class Procs:
 /proc/ShareHeat(datum/gas_mixture/A, datum/gas_mixture/B, connecting_tiles)
 	//This implements a simplistic version of the Stefan-Boltzmann law.
 	var/energy_delta = ((A.temperature - B.temperature) ** 4) * STEFAN_BOLTZMANN_CONSTANT * connecting_tiles * 2.5
-	var/maximum_energy_delta = max(0, min(A.temperature * A.heat_capacity() * A.group_multiplier, B.temperature * B.heat_capacity() * B.group_multiplier))
+	var/maximum_energy_delta = max(0, min(A.temperature * A.getHeatCapacity() * A.group_multiplier, B.temperature * B.getHeatCapacity() * B.group_multiplier))
 	if(maximum_energy_delta > abs(energy_delta))
 		if(energy_delta < 0)
 			maximum_energy_delta *= -1
 		energy_delta = maximum_energy_delta
 
-	A.temperature -= energy_delta / (A.heat_capacity() * A.group_multiplier)
-	B.temperature += energy_delta / (B.heat_capacity() * B.group_multiplier)
+	A.temperature -= energy_delta / (A.getHeatCapacity() * A.group_multiplier)
+	B.temperature += energy_delta / (B.getHeatCapacity() * B.group_multiplier)

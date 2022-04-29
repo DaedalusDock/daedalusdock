@@ -57,7 +57,7 @@ Passive gate is similar to the regular pump except:
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
-	var/input_starting_pressure = air1.return_pressure()
+	var/input_starting_pressure = air1.returnPressure()
 
 	var/pressure_delta = input_starting_pressure - target_pressure
 

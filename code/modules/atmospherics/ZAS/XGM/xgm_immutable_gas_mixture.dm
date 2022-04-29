@@ -2,11 +2,11 @@
 	temperature = TCMB
 	var/initial_temperature = TCMB
 
-/datum/gas_mixture/immutable/update_values()
+/datum/gas_mixture/immutable/updateValues()
 	temperature = initial_temperature
 	return ..()
 
-/datum/gas_mixture/immutable/adjust_gas(gasid, moles, update = 1)
+/datum/gas_mixture/immutable/adjustGas(gasid, moles, update = 1)
 	return
 
 /datum/gas_mixture/immutable/remove()
@@ -24,34 +24,34 @@
 /datum/gas_mixture/immutable/multiply()
 	return TRUE
 
-/datum/gas_mixture/immutable/adjust_gas_temp(gasid, moles, temp, update = 1)
+/datum/gas_mixture/immutable/adjustGasWithTemp(gasid, moles, temp, update = 1)
 	return
 
-/datum/gas_mixture/immutable/adjust_multi()
+/datum/gas_mixture/immutable/adjustMultipleGases()
 	return
 
-/datum/gas_mixture/immutable/adjust_multi_temp()
+/datum/gas_mixture/immutable/adjustMultipleGasesWithTemp()
 	return
 
 /datum/gas_mixture/immutable/merge()
 	return
 
-/datum/gas_mixture/immutable/copy_from()
+/datum/gas_mixture/immutable/copyFrom()
 	return
 
-/datum/gas_mixture/immutable/heat_capacity()
+/datum/gas_mixture/immutable/getHeatCapacity()
 	return HEAT_CAPACITY_VACUUM
 
-/datum/gas_mixture/immutable/remove_ratio()
+/datum/gas_mixture/immutable/removeRatio()
 	return new type
 
-/datum/gas_mixture/immutable/remove_volume()
+/datum/gas_mixture/immutable/removeVolume()
 	return new type
 
-/datum/gas_mixture/immutable/remove_by_flag()
+/datum/gas_mixture/immutable/removeByFlag()
 	return new type
 
-/datum/gas_mixture/immutable/share_ratio(datum/gas_mixture/other, connecting_tiles, share_size, one_way)
+/datum/gas_mixture/immutable/shareRatio(datum/gas_mixture/other, connecting_tiles, share_size, one_way)
 	. = ..()
 	temperature = initial_temperature
 

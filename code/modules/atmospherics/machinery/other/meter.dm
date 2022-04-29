@@ -60,7 +60,7 @@
 		icon_state = "meter0"
 		return FALSE
 
-	var/env_pressure = pipe_air.return_pressure()
+	var/env_pressure = pipe_air.returnPressure()
 	if(env_pressure <= 0.15 * ONE_ATMOSPHERE)
 		icon_state = "meter0"
 	else if(env_pressure <= 1.8 * ONE_ATMOSPHERE)
@@ -106,7 +106,7 @@
 	if (target)
 		var/datum/gas_mixture/pipe_air = target.return_air()
 		if(pipe_air)
-			. = "The pressure gauge reads [round(pipe_air.return_pressure(), 0.01)] kPa; [round(pipe_air.temperature,0.01)] K ([round(pipe_air.temperature-T0C,0.01)]&deg;C)."
+			. = "The pressure gauge reads [round(pipe_air.returnPressure(), 0.01)] kPa; [round(pipe_air.temperature,0.01)] K ([round(pipe_air.temperature-T0C,0.01)]&deg;C)."
 		else
 			. = "The sensor error light is blinking."
 	else
@@ -178,7 +178,7 @@
 	if(!connected_meter)
 		return
 	var/datum/gas_mixture/environment = connected_meter.target.return_air()
-	pressure.set_output(environment.return_pressure())
+	pressure.set_output(environment.returnPressure())
 	net_temperature.set_output(environment.temperature)
 
 // TURF METER - REPORTS A TILE'S AIR CONTENTS

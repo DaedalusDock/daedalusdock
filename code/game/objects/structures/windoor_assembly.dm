@@ -70,7 +70,7 @@
 	if(istype(mover, /obj/structure/windoor_assembly) || istype(mover, /obj/machinery/door/window))
 		return valid_window_location(loc, mover.dir, is_fulltile = FALSE)
 
-/obj/structure/windoor_assembly/c_airblock(turf/T, vertical = FALSE)
+/obj/structure/windoor_assembly/zas_canpass(turf/T, vertical = FALSE)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(get_dir(loc, T) == dir)

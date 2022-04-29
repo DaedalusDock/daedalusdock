@@ -37,7 +37,7 @@
 	// Now let the random choices begin
 	var/datum/gas/gastype
 	var/amount
-	while(gasmix.return_pressure() < target_pressure)
+	while(gasmix.returnPressure() < target_pressure)
 		if(!prob(restricted_chance) || !length(spicy_gas))
 			gastype = pick(normal_gases)
 			amount = normal_gases[gastype]
@@ -54,7 +54,7 @@
 		gaslist[gastype][MOLES] += amount
 
 	// That last one put us over the limit, remove some of it
-	while(gasmix.return_pressure() > target_pressure)
+	while(gasmix.returnPressure() > target_pressure)
 		gaslist[gastype][MOLES] -= gaslist[gastype][MOLES] * 0.1
 	gaslist[gastype][MOLES] = FLOOR(gaslist[gastype][MOLES], 0.1)
 	gasmix.garbage_collect()

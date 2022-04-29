@@ -219,7 +219,7 @@
 	var/datum/tlv/cur_tlv
 
 	data["environment_data"] = list()
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	cur_tlv = TLV["pressure"]
 	data["environment_data"] += list(list(
 							"name" = "Pressure",
@@ -235,9 +235,9 @@
 							"unit" = "K ([round(temperature - T0C, 0.1)]C)",
 							"danger_level" = cur_tlv.get_danger_level(temperature)
 	))
-	var/total_moles = environment.total_moles()
+	var/total_moles = environment.getMoles()
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume
-	for(var/gas_id in environment.get_gases())
+	for(var/gas_id in environment.getGases())
 		if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
 			continue
 		cur_tlv = TLV[gas_id]
@@ -624,11 +624,11 @@
 	//cache for sanic speed (lists are references anyways)
 	var/list/cached_tlv = TLV
 
-	var/list/env_gases = environment.get_gases()
+	var/list/env_gases = environment.getGases()
 	//var/partial_pressure = R_IDEAL_GAS_EQUATION * exposed_temperature / environment.volume
 
 	current_tlv = cached_tlv["pressure"]
-	var/environment_pressure = environment.return_pressure()
+	var/environment_pressure = environment.returnPressure()
 	var/pressure_dangerlevel = current_tlv.get_danger_level(environment_pressure)
 
 	current_tlv = cached_tlv["temperature"]
@@ -991,10 +991,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 	if(COMPONENT_TRIGGERED_BY(request_data, port))
 		var/turf/alarm_turf = get_turf(connected_alarm)
 		var/datum/gas_mixture/environment = alarm_turf.return_air()
-		pressure.set_output(round(environment.return_pressure()))
+		pressure.set_output(round(environment.returnPressure()))
 		my_temperature.set_output(round(environment.temperature))
 		if(ispath(options_map[current_option]))
-			gas_amount.set_output(round(environment.get_gases()[options_map[current_option]]))
+			gas_amount.set_output(round(environment.getGases()[options_map[current_option]]))
 		return
 
 	var/datum/tlv/settings = connected_alarm.TLV[options_map[current_option]]

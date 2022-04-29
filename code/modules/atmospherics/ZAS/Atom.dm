@@ -29,7 +29,7 @@
 // AIR_BLOCKED - Blocked
 // ZONE_BLOCKED - Not blocked, but zone boundaries will not cross.
 // BLOCKED - Blocked, zone boundaries will not cross even if opened.
-/atom/proc/c_airblock(turf/other)
+/atom/proc/zas_canpass(turf/other)
 	#ifdef ZASDBG
 	ASSERT(isturf(other))
 	#endif
@@ -41,7 +41,7 @@
 	return (AIR_BLOCKED*!ATMOS_CANPASS_NOTTURF(src))
 
 // This is a legacy proc only here for compatibility - you probably should just use ATMOS_CANPASS_TURF directly.
-/turf/c_airblock(turf/other)
+/turf/zas_canpass(turf/other)
 	#ifdef ZASDBG
 	ASSERT(isturf(other))
 	#endif

@@ -44,8 +44,8 @@
 		. += "scrubber-connector"
 
 /obj/machinery/portable_atmospherics/scrubber/process_atmos()
-	var/pressure = air_contents.return_pressure()
-	var/temperature = air_contents.return_temperature()
+	var/pressure = air_contents.returnPressure()
+	var/temperature = air_contents.getTemperature()
 	///function used to check the limit of the scrubbers and also set the amount of damage that the scrubber can receive, if the heat and pressure are way higher than the limit the more damage will be done
 	if(temperature > heat_limit || pressure > pressure_limit)
 		take_damage(clamp((temperature/heat_limit) * (pressure/pressure_limit), 5, 50), BURN, 0)
@@ -69,7 +69,7 @@
  * * mixture: the gas mixture to be scrubbed
  */
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/mixture)
-	if(air_contents.return_pressure() >= overpressure_m * ONE_ATMOSPHERE)
+	if(air_contents.returnPressure() >= overpressure_m * ONE_ATMOSPHERE)
 		return
 
 	var/transfer_moles = min(1, volume_rate/mixture.volume)*mixture.total_moles
@@ -106,7 +106,7 @@
 	var/data = list()
 	data["on"] = on
 	data["connected"] = connected_port ? 1 : 0
-	data["pressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["pressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
 
 	data["id_tag"] = -1 //must be defined in order to reuse code between portable and vent scrubbers
 	data["filter_types"] = list()
@@ -117,7 +117,7 @@
 		data["holding"] = list()
 		data["holding"]["name"] = holding.name
 		var/datum/gas_mixture/holding_mix = holding.return_air()
-		data["holding"]["pressure"] = round(holding_mix.return_pressure())
+		data["holding"]["pressure"] = round(holding_mix.returnPressure())
 	else
 		data["holding"] = null
 	return data

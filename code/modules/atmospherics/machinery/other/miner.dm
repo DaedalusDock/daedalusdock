@@ -56,11 +56,11 @@
 		set_broken(TRUE)
 		return FALSE
 	var/datum/gas_mixture/G = OT.return_air()
-	if(G.return_pressure() > (max_ext_kpa - ((spawn_mol*spawn_temp*R_IDEAL_GAS_EQUATION)/(CELL_VOLUME))))
+	if(G.returnPressure() > (max_ext_kpa - ((spawn_mol*spawn_temp*R_IDEAL_GAS_EQUATION)/(CELL_VOLUME))))
 		broken_message = span_boldwarning("EXTERNAL PRESSURE OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE
-	if(G.total_moles() > max_ext_mol)
+	if(G.getMoles() > max_ext_mol)
 		broken_message = span_boldwarning("EXTERNAL AIR CONCENTRATION OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE
@@ -84,7 +84,7 @@
 		active_power_usage = idle_power_usage
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/G = T.return_air()
-	var/P = G.return_pressure()
+	var/P = G.returnPressure()
 	switch(power_draw)
 		if(GASMINER_POWER_NONE)
 			update_use_power(ACTIVE_POWER_USE, 0)
@@ -134,7 +134,7 @@
 	if(!isopenturf(O))
 		return FALSE
 	var/datum/gas_mixture/merger = new
-	merger.adjust_gas_temp(spawn_id, spawn_mol * delta_time, spawn_temp)
+	merger.adjustGasWithTemp(spawn_id, spawn_mol * delta_time, spawn_temp)
 	O.assume_air(merger)
 
 /obj/machinery/atmospherics/miner/attack_ai(mob/living/silicon/user)

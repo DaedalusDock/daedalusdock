@@ -41,11 +41,11 @@
 	)
 	if(!gasmix)
 		return
-	for(var/gas_path in gasmix.get_gases())
+	for(var/gas_path in gasmix.getGases())
 		.["gases"] += list(list(
 			"[gas_path]",
 			"[gas_path]",
-			gasmix.get_gas(gas_path),
+			gasmix.getGroupGas(gas_path),
 		))
 	//.for(var/datum/gas_reaction/reaction_result as anything in gasmix.reaction_results)
 	.["reactions"] += list(list(
@@ -53,10 +53,10 @@
 		"UNIMPLIMENTED",
 		"UNIMPLIMENTED",
 	))
-	.["total_moles"] = gasmix.total_moles()
+	.["total_moles"] = gasmix.getMoles()
 	.["temperature"] = gasmix.temperature
 	.["volume"] = gasmix.volume
-	.["pressure"] = gasmix.return_pressure()
+	.["pressure"] = gasmix.returnPressure()
 	.["reference"] = REF(gasmix)
 
 GLOBAL_LIST_EMPTY(reaction_handbook)

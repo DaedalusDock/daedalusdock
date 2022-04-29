@@ -6,7 +6,7 @@
 	if(status_flags & GODMODE)
 		return
 
-	if(!breath || (breath.total_moles() == 0))
+	if(!breath || (breath.getMoles() == 0))
 		//Aliens breathe in vaccuum
 		return 0
 
@@ -15,23 +15,23 @@
 
 	var/plasma_used = 0
 	var/plas_detect_threshold = 0.02
-	var/breath_pressure = (breath.total_moles()*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
+	var/breath_pressure = (breath.getMoles()*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
 
 	//Partial pressure of the plasma in our breath
-	var/Plasma_pp = (breath.get_gas(GAS_PLASMA)/breath.total_moles())*breath_pressure
+	var/Plasma_pp = (breath.getGroupGas(GAS_PLASMA)/breath.getMoles())*breath_pressure
 
 	if(Plasma_pp > plas_detect_threshold) // Detect plasma in air
-		adjustPlasma(breath.get_gas(GAS_PLASMA)*250)
+		adjustPlasma(breath.getGroupGas(GAS_PLASMA)*250)
 		throw_alert(ALERT_XENO_PLASMA, /atom/movable/screen/alert/alien_plas)
 
-		plasma_used = breath.get_gas(GAS_PLASMA)
+		plasma_used = breath.getGroupGas(GAS_PLASMA)
 
 	else
 		clear_alert(ALERT_XENO_PLASMA)
 
 	//Breathe in plasma and out oxygen
-	breath.adjust_gas(GAS_PLASMA, -plasma_used)
-	breath.adjust_gas(GAS_OXYGEN, plasma_used)
+	breath.adjustGas(GAS_PLASMA, -plasma_used)
+	breath.adjustGas(GAS_OXYGEN, plasma_used)
 	//BREATH TEMPERATURE
 	handle_breath_temperature(breath)
 

@@ -226,7 +226,7 @@
 	var/datum/gas_mixture/environment = tile.return_air()
 	var/datum/gas_mixture/air_contents = airs[1]
 
-	if(air_contents.return_pressure() >= 50 * ONE_ATMOSPHERE)
+	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
 		return FALSE
 
 	if(scrubbing == SCRUBBING)
@@ -236,7 +236,7 @@
 			filtered_out.temperature = environment.temperature
 
 			var/total_moles_to_remove = 0
-			for(var/gas in filter_types & environment.get_gases())
+			for(var/gas in filter_types & environment.getGases())
 				total_moles_to_remove += environment.gas[gas]
 
 			if(total_moles_to_remove == 0)//sometimes this gets non gc'd values
@@ -254,7 +254,7 @@
 
 	else //Just siphoning all air
 
-		var/transfer_moles = environment.total_moles() * (volume_rate / environment.volume)
+		var/transfer_moles = environment.getMoles() * (volume_rate / environment.volume)
 
 		var/datum/gas_mixture/removed = tile.remove_air(transfer_moles)
 

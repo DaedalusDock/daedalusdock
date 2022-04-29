@@ -530,7 +530,7 @@ SUBSYSTEM_DEF(zas)
 	///This is where the fun begins...
 	var/amount
 	var/gastype
-	while(mix_real.return_pressure() < target_pressure)
+	while(mix_real.returnPressure() < target_pressure)
 		gastype = pick(chosen_gases)
 
 		amount = rand(5,10)
@@ -539,11 +539,11 @@ SUBSYSTEM_DEF(zas)
 		amount = CEILING(amount, 0.1)
 
 		mix_real.gas[gastype] += amount
-		mix_real.update_values()
+		mix_real.updateValues()
 
-	while(mix_real.return_pressure() > target_pressure)
+	while(mix_real.returnPressure() > target_pressure)
 		mix_real.gas[gastype] -= mix_real.gas[gastype] * 0.1
-		mix_real.update_values()
+		mix_real.updateValues()
 
 	mix_real.gas[gastype] = FLOOR(mix_real.gas[gastype], 0.1)
 
@@ -559,4 +559,4 @@ SUBSYSTEM_DEF(zas)
 			CHECK_TICK
 
 	lavaland_atmos = mix_real
-	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.return_pressure()] kpa."))
+	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))

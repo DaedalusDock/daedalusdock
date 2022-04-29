@@ -61,8 +61,8 @@
 		A.last_flow_rate = (transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
 
 		if (A.debug)
-			A.visible_message("[A]: source entropy: [round(source.specific_entropy(), 0.01)] J/Kmol --> sink entropy: [round(sink.specific_entropy(), 0.01)] J/Kmol")
-			A.visible_message("[A]: specific entropy change = [round(sink.specific_entropy() - source.specific_entropy(), 0.01)] J/Kmol")
+			A.visible_message("[A]: source entropy: [round(source.specificGroupEntropy(), 0.01)] J/Kmol --> sink entropy: [round(sink.specificGroupEntropy(), 0.01)] J/Kmol")
+			A.visible_message("[A]: specific entropy change = [round(sink.specificGroupEntropy() - source.specificGroupEntropy(), 0.01)] J/Kmol")
 			A.visible_message("[A]: specific power = [round(specific_power, 0.1)] W/mol")
 			A.visible_message("[A]: moles transferred = [transfer_moles] mol")
 
@@ -178,14 +178,14 @@
 		transfer_moles = min(transfer_moles, total_transfer_moles*(source.gas[g]/total_filterable_moles))
 
 		//use update=0. All the filtered gasses are supposed to be added simultaneously, so we update after the for loop.
-		source.adjust_gas(g, -transfer_moles, update=0)
-		sink.adjust_gas_temp(g, transfer_moles, source.temperature, update=0)
+		source.adjustGas(g, -transfer_moles, update=0)
+		sink.adjustGasWithTemp(g, transfer_moles, source.temperature, update=0)
 
 		power_draw += specific_power_gas[g]*transfer_moles
 
 	//Remix the resulting gases
-	sink.update_values()
-	source.update_values()
+	sink.updateValues()
+	source.updateValues()
 
 	return power_draw
 
@@ -205,7 +205,7 @@
 	var/total_filterable_moles = 0		//the total amount of filterable gas
 	var/total_unfilterable_moles = 0	//the total amount of non-filterable gas
 	var/list/specific_power_gas = list()	//the power required to remove one mole of pure gas, for each gas type
-	for (var/g in source.get_gases())
+	for (var/g in source.getGases())
 		if (source.gas[g] < MINIMUM_MOLES_TO_FILTER)
 			continue
 
@@ -250,21 +250,21 @@
 
 		if (g in filtering)
 			//use update=0. All the filtered gasses are supposed to be added simultaneously, so we update after the for loop.
-			sink_filtered.adjust_gas_temp(g, removed.gas[g], removed.temperature, update=0)
-			removed.adjust_gas(g, -removed.gas[g], update=0)
+			sink_filtered.adjustGasWithTemp(g, removed.gas[g], removed.temperature, update=0)
+			removed.adjustGas(g, -removed.gas[g], update=0)
 			filtered_power_used += power_used
 		else
 			unfiltered_power_used += power_used
 
-	sink_filtered.update_values()
-	removed.update_values()
+	sink_filtered.updateValues()
+	removed.updateValues()
 
 	sink_clean.merge(removed)
 
 	return filtered_power_used + unfiltered_power_used
 
 //For omni devices. Instead filtering is an associative list mapping gasids to gas mixtures.
-//I don't like the copypasta, but I decided to keep both versions of gas filtering as filter_gas is slightly faster (doesn't create as many temporary lists, doesn't call update_values() as much)
+//I don't like the copypasta, but I decided to keep both versions of gas filtering as filter_gas is slightly faster (doesn't create as many temporary lists, doesn't call updateValues() as much)
 //filter_gas can be removed and replaced with this proc if need be.
 /proc/filter_gas_multi(obj/machinery/M, list/filtering, datum/gas_mixture/source, datum/gas_mixture/sink_clean, total_transfer_moles = null, available_power = null)
 	if (source.total_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
@@ -326,14 +326,14 @@
 		if (g in filtering)
 			var/datum/gas_mixture/sink_filtered = filtering[g]
 			//use update=0. All the filtered gasses are supposed to be added simultaneously, so we update after the for loop.
-			sink_filtered.adjust_gas_temp(g, removed.gas[g], removed.temperature, update=1)
-			removed.adjust_gas(g, -removed.gas[g], update=0)
+			sink_filtered.adjustGasWithTemp(g, removed.gas[g], removed.temperature, update=1)
+			removed.adjustGas(g, -removed.gas[g], update=0)
 			if (power_used)
 				filtered_power_used[sink_filtered] = power_used
 		else
 			unfiltered_power_used += power_used
 
-	removed.update_values()
+	removed.updateValues()
 
 	var/power_draw = unfiltered_power_used
 	for (var/datum/gas_mixture/sink_filtered in filtered_power_used)
@@ -422,7 +422,7 @@
 /proc/calculate_specific_power(datum/gas_mixture/source, datum/gas_mixture/sink)
 	//Calculate the amount of energy required
 	var/air_temperature = (sink.temperature > 0)? sink.temperature : source.temperature
-	var/specific_entropy = sink.specific_entropy() - source.specific_entropy() //sink is gaining moles, source is loosing
+	var/specific_entropy = sink.specificGroupEntropy() - source.specificGroupEntropy() //sink is gaining moles, source is loosing
 	var/specific_power = 0	// W/mol
 
 	//If specific_entropy is < 0 then power is required to move gas
@@ -435,7 +435,7 @@
 /proc/calculate_specific_power_gas(gasid, datum/gas_mixture/source, datum/gas_mixture/sink)
 	//Calculate the amount of energy required
 	var/air_temperature = (sink.temperature > 0)? sink.temperature : source.temperature
-	var/specific_entropy = sink.specific_entropy_gas(gasid) - source.specific_entropy_gas(gasid) //sink is gaining moles, source is loosing
+	var/specific_entropy = sink.specificEntropyGas(gasid) - source.specificEntropyGas(gasid) //sink is gaining moles, source is loosing
 	var/specific_power = 0	// W/mol
 
 	//If specific_entropy is < 0 then power is required to move gas
@@ -457,8 +457,8 @@
 	if(sink.total_moles > 0 && sink.temperature > 0)
 		//estimate the final temperature of the sink after transfer
 		var/estimate_moles = pressure_delta*output_volume/(sink.temperature * R_IDEAL_GAS_EQUATION)
-		var/sink_heat_capacity = sink.heat_capacity()
-		var/transfer_heat_capacity = source.heat_capacity()*estimate_moles/source_total_moles
+		var/sink_heat_capacity = sink.getHeatCapacity()
+		var/transfer_heat_capacity = source.getHeatCapacity()*estimate_moles/source_total_moles
 		air_temperature = (sink.temperature*sink_heat_capacity  + source.temperature*transfer_heat_capacity) / (sink_heat_capacity + transfer_heat_capacity)
 
 	//get the number of moles that would have to be transfered to bring sink to the target pressure
@@ -472,8 +472,8 @@
 	var/source_volume = source.volume * source.group_multiplier
 	var/sink_volume = sink.volume * sink.group_multiplier
 
-	var/source_pressure = source.return_pressure()
-	var/sink_pressure = sink.return_pressure()
+	var/source_pressure = source.returnPressure()
+	var/sink_pressure = sink.returnPressure()
 
 	return (source_pressure - sink_pressure)/(R_IDEAL_GAS_EQUATION * (source.temperature/source_volume + sink.temperature/sink_volume))
 
@@ -492,7 +492,7 @@
 		status.Add("Temperature too [atmosphere.temperature > (T0C + 50) ? "high" : "low"].")
 
 	// Pressure check
-	var/pressure = atmosphere.return_pressure()
+	var/pressure = atmosphere.returnPressure()
 	if((pressure > 120) || (pressure < 80))
 		status.Add("Pressure too [pressure > 120 ? "high" : "low"].")
 

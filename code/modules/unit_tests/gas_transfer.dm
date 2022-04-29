@@ -9,12 +9,12 @@
 
 		first_mix.volume = 200
 		second_mix.volume = 200
-		first_mix.adjust_gas(GAS_OXYGEN, tempNmoles)
-		second_mix.adjust_gas(GAS_NITROGEN, 200)
+		first_mix.adjustGas(GAS_OXYGEN, tempNmoles)
+		second_mix.adjustGas(GAS_NITROGEN, 200)
 		first_mix.temperature = tempNmoles
 		second_mix.temperature = T20C
 
-		var/initial_pressure = second_mix.return_pressure()
+		var/initial_pressure = second_mix.returnPressure()
 		// A constant value would be nicer but there will be cases when even MOLAR_ACCURACY amounts would far exceed the pressure so we need to scale it somewhat.
 		var/additional_pressure = (tempNmoles / 1000) + 500
 
@@ -25,7 +25,7 @@
 		var/error_margin = first_mix.gas_pressure_minimum_transfer(second_mix) - initial_pressure
 
 		first_mix.pump_gas_to(second_mix, (initial_pressure + additional_pressure))
-		var/margin = abs(second_mix.return_pressure() - (initial_pressure+additional_pressure))
+		var/margin = abs(second_mix.returnPressure() - (initial_pressure+additional_pressure))
 
-		TEST_ASSERT(margin<=error_margin, "Gas pressure pumping test failed for [tempNmoles]. Expected pressure = [initial_pressure+additional_pressure] +/- [error_margin]. Got [second_mix.return_pressure()].")
+		TEST_ASSERT(margin<=error_margin, "Gas pressure pumping test failed for [tempNmoles]. Expected pressure = [initial_pressure+additional_pressure] +/- [error_margin]. Got [second_mix.returnPressure()].")
 	*/

@@ -58,7 +58,7 @@
 		update_appearance()
 		update_nearby_tiles(TRUE)
 
-/obj/structure/falsewall/c_airblock(turf/other)
+/obj/structure/falsewall/zas_canpass(turf/other)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	return density ? (AIR_BLOCKED|ZONE_BLOCKED) : ZONE_BLOCKED

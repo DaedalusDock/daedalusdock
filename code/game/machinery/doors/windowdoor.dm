@@ -174,7 +174,7 @@
 
 	return TRUE
 
-/obj/machinery/door/window/c_airblock(turf/T, vertical = FALSE)
+/obj/machinery/door/window/zas_canpass(turf/T, vertical = FALSE)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(get_dir(loc, T) == dir)

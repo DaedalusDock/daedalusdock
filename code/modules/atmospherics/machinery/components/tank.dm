@@ -136,13 +136,13 @@
 	var/pressure_limit = max_pressure * safety_margin
 
 	var/moles_to_add = (pressure_limit * air_contents.volume) / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
-	air_contents.adjust_gas(gastype, moles_to_add)
+	air_contents.adjustGas(gastype, moles_to_add)
 
 /obj/machinery/atmospherics/components/tank/process_atmos()
 	if(air_contents.react(src))
 		update_parents()
 
-	if(air_contents.return_pressure() > max_pressure)
+	if(air_contents.returnPressure() > max_pressure)
 		take_damage(0.1, BRUTE, sound_effect = FALSE)
 		if(prob(40))
 			playsound(src, pick(breaking_sounds), 30, vary = TRUE)
@@ -216,7 +216,7 @@
 		return
 	var/shares = length(merger.members) + length(leaving_members) - length(joining_members)
 	for(var/obj/machinery/atmospherics/components/tank/leaver as anything in leaving_members)
-		var/datum/gas_mixture/gas_share = air_contents.remove_ratio(1 / shares--)
+		var/datum/gas_mixture/gas_share = air_contents.removeRatio(1 / shares--)
 		air_contents.volume -= leaver.volume
 		leaver.air_contents = gas_share
 		leaver.update_appearance()
@@ -268,7 +268,7 @@
 	window = image(icon, icon_state = "window-bg", layer = FLOAT_LAYER)
 
 	var/list/new_underlays = list()
-	for(var/obj/effect/gas_overlay/gas as anything in air_contents.return_visuals())
+	for(var/obj/effect/gas_overlay/gas as anything in air_contents.returnVisuals())
 		var/image/new_underlay = image(gas.icon, icon_state = gas.icon_state, layer = FLOAT_LAYER)
 		new_underlay.filters = alpha_mask_filter(icon = icon(icon, icon_state = "window-bg"))
 		new_underlays += new_underlay
@@ -322,7 +322,7 @@
 	var/time_taken = 4 SECONDS
 	var/unsafe = FALSE
 
-	var/internal_pressure = air_contents.return_pressure() - airmix.return_pressure()
+	var/internal_pressure = air_contents.returnPressure() - airmix.returnPressure()
 	if(internal_pressure > 2 * ONE_ATMOSPHERE)
 		time_taken *= 2
 		to_chat(user, span_warning("The tank seems to be pressurized, are you sure this is a good idea?"))

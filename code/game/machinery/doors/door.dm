@@ -109,7 +109,7 @@
 	update_nearby_tiles()
 	return ..()
 
-/obj/machinery/door/c_airblock(turf/other)
+/obj/machinery/door/zas_canpass(turf/other)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(block_air_zones)

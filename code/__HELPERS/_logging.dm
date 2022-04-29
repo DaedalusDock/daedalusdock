@@ -178,9 +178,9 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 /// Logs the contents of the gasmix to the game log, prefixed by text
 /proc/log_atmos(text, datum/gas_mixture/mix)
 	var/message = text
-	message += "TEMP=[mix.return_temperature()],MOL=[mix.total_moles()],VOL=[mix.volume]"
-	for(var/key in mix.get_gases())
-		message += "[key]=[mix.get_gas(key)];"
+	message += "TEMP=[mix.getTemperature()],MOL=[mix.getMoles()],VOL=[mix.volume]"
+	for(var/key in mix.getGases())
+		message += "[key]=[mix.getGroupGas(key)];"
 	log_game(message)
 
 /proc/log_say(text)

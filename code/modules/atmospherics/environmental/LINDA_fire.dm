@@ -138,7 +138,7 @@
 		reference = location.air // Our color and volume will depend on the turf's gasmix
 	//Active mode
 	else
-		var/datum/gas_mixture/affected = location.air.remove_ratio(volume/location.air.volume)
+		var/datum/gas_mixture/affected = location.air.removeRatio(volume/location.air.volume)
 		if(affected) //in case volume is 0
 			reference = affected // Our color and volume will depend on this small sparked gasmix
 			affected.temperature = temperature

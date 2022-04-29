@@ -101,7 +101,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	// if(!blocks_air || !simulated)
 		// air = new
-		// air.copy_from(src.return_air())
+		// air.copyFrom(src.return_air())
 
 	// by default, vis_contents is inherited from the turf that was here before
 	vis_contents.Cut()

@@ -39,7 +39,7 @@
 
 	//heatup/cooldown any mobs buckled to ourselves based on our temperature
 	if(has_buckled_mobs())
-		var/hc = pipe_air.heat_capacity()
+		var/hc = pipe_air.getHeatCapacity()
 		var/mob/living/heat_source = buckled_mobs[1]
 		//Best guess-estimate of the total bodytemperature of all the mobs, since they share the same environment it's ~ok~ to guess like this
 		var/avg_temp = (pipe_air.temperature * hc + (heat_source.bodytemperature * buckled_mobs.len) * 3500) / (hc + (buckled_mobs ? buckled_mobs.len * 3500 : 0))

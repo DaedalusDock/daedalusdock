@@ -182,12 +182,12 @@
 	for(var/obj/machinery/atmospherics/pipe/member in members)
 		member.air_temporary = new
 		member.air_temporary.volume = member.volume
-		member.air_temporary.copy_from(air, member.volume / air.volume)
+		member.air_temporary.copyFrom(air, member.volume / air.volume)
 
 		member.air_temporary.temperature = air.temperature
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
-	var/total_heat_capacity = air.heat_capacity()
+	var/total_heat_capacity = air.getHeatCapacity()
 	var/partial_heat_capacity = total_heat_capacity * (share_volume / air.volume)
 	var/target_temperature
 	var/target_heat_capacity
@@ -250,10 +250,10 @@
 	var/list/total_gas = list()
 	for(var/datum/gas_mixture/gasmix in gases)
 		total_volume += gasmix.volume
-		var/temp_heatcap = gasmix.heat_capacity()
+		var/temp_heatcap = gasmix.getHeatCapacity()
 		total_thermal_energy += gasmix.temperature * temp_heatcap
 		total_heat_capacity += temp_heatcap
-		for(var/g in gasmix.get_gases())
+		for(var/g in gasmix.getGases())
 			total_gas[g] += gasmix.gas[g]
 
 	if(total_volume > 0)
@@ -263,13 +263,13 @@
 		//Calculate temperature
 		if(total_heat_capacity > 0)
 			combined.temperature = total_thermal_energy / total_heat_capacity
-		combined.update_values()
+		combined.updateValues()
 
 		//Allow for reactions
 		combined.react()
 
 		//Average out the gases
-		for(var/g in combined.get_gases())
+		for(var/g in combined.getGases())
 			combined.gas[g] /= total_volume
 
 		//Update individual gas_mixtures

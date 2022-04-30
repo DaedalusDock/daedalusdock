@@ -37,7 +37,7 @@
 
 /obj/item/reagent_containers/blood/random/Initialize(mapload)
 	icon_state = "bloodpack"
-	blood_type = pick("A+", "A-", "B+", "B-", "O+", "O-", "L")
+	blood_type = pick("A+", "A-", "B+", "B-", "O+", "O-", "L", "S")
 	return ..()
 
 /obj/item/reagent_containers/blood/a_plus
@@ -64,6 +64,9 @@
 /obj/item/reagent_containers/blood/ethereal
 	blood_type = "LE"
 	unique_blood = /datum/reagent/consumable/liquidelectricity
+
+/obj/item/reagent_containers/blood/skrell
+	blood_type = "S"
 
 /obj/item/reagent_containers/blood/universal
 	blood_type = "U"

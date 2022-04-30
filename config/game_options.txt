@@ -327,6 +327,8 @@ ROUNDSTART_RACES ethereal
 #ROUNDSTART_RACES abductor
 #ROUNDSTART_RACES synth
 
+ROUNDSTART_RACES skrell
+
 ## Including all the various golem subtypes that are better than humans in some ways, but worse in others
 #ROUNDSTART_RACES iron_golem
 #ROUNDSTART_RACES adamantine_golem

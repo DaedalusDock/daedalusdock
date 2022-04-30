@@ -528,6 +528,28 @@
 		var/plasma_pp = breath.get_breath_partial_pressure(breath.gases[/datum/gas/plasma][MOLES])
 		owner.blood_volume += (0.2 * plasma_pp) // 10/s when breathing literally nothing but plasma, which will suffocate you.
 
+/obj/item/organ/lungs/skrell
+	name = "skrell lungs"
+	icon_state = "lungs-skrell"
+	safe_plasma_max = 40
+	safe_co2_max = 40
+
+	cold_level_1_threshold = 248
+	cold_level_2_threshold = 220
+	cold_level_3_threshold = 170
+	cold_level_1_damage = COLD_GAS_DAMAGE_LEVEL_2 //Keep in mind with gas damage levels, you can set these to be negative, if you want someone to heal, instead.
+	cold_level_2_damage = COLD_GAS_DAMAGE_LEVEL_2
+	cold_level_3_damage = COLD_GAS_DAMAGE_LEVEL_3
+	cold_damage_type = BRUTE
+
+	heat_level_1_threshold = 318
+	heat_level_2_threshold = 348
+	heat_level_3_threshold = 1000
+	heat_level_1_damage = HEAT_GAS_DAMAGE_LEVEL_2
+	heat_level_2_damage = HEAT_GAS_DAMAGE_LEVEL_2
+	heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
+	heat_damage_type = BURN
+
 /obj/item/organ/lungs/cybernetic
 	name = "basic cybernetic lungs"
 	desc = "A basic cybernetic version of the lungs found in traditional humanoid entities."

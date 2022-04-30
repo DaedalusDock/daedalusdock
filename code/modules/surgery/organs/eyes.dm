@@ -457,6 +457,12 @@
 	eye_icon_state = "flyeyes"
 	icon_state = "eyeballs-fly"
 
+/obj/item/organ/eyes/skrell
+	name = "amphibian eyes"
+	desc = "Large black orbs."
+	eye_icon_state = "skrelleyes"
+	icon_state = "eyeballs-skrell"
+
 /obj/item/organ/eyes/fly/Insert(mob/living/carbon/eye_owner, special = FALSE)
 	. = ..()
 	ADD_TRAIT(eye_owner, TRAIT_FLASH_SENSITIVE, ORGAN_TRAIT)

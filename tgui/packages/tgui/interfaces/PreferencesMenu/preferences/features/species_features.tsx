@@ -75,3 +75,8 @@ export const feature_vampire_status: Feature<string> = {
   name: "Vampire status",
   component: FeatureDropdownInput,
 };
+
+export const feature_headtails: FeatureChoiced = {
+  name: "Headtails",
+  component: FeatureDropdownInput,
+};

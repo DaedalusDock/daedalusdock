@@ -57,6 +57,8 @@
 	var/use_command = FALSE
 	/// If true, use_command can be toggled at will.
 	var/command = FALSE
+	/// If true, the radio can be used even when the user is restrained.
+	var/handsfree = FALSE
 
 	///makes anyone who is talking through this anonymous.
 	var/anonymize = FALSE
@@ -221,6 +223,15 @@
 		set_listening(FALSE, actual_setting = FALSE)
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(iscarbon(talking_movable) && (message_mods[MODE_HEADSET] || message_mods[RADIO_EXTENSION]) && !handsfree)
+		var/mob/living/carbon/talking_carbon = talking_movable
+		if(talking_carbon.handcuffed)// If we're handcuffed, we can't press the button
+			to_chat(talking_carbon, span_warning("You can't use the radio while handcuffed!"))
+			return ITALICS | REDUCE_RANGE
+		if(talking_carbon.pulledby?.grab_state)
+			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
+			return ITALICS | REDUCE_RANGE
+
 	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over radios
 		var/mob/living/carbon/mute = talking_movable
 		if(istype(mute))

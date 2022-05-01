@@ -135,16 +135,16 @@
 	if(no_teleport && (destination_area.area_flags & NOTELEPORT))
 		return
 
-	var/datum/gas_mixture/floor_gases= floor_turf.return_air()
+	var/datum/gas_mixture/floor_gases= floor_turf.return_air()?.getGases()
 
 	if(!floor_gases)
 		return
 
-	if(!(floor_gases.getGroupGas(GAS_OXYGEN) >= 16))
+	if(!(floor_gases[GAS_OXYGEN] >= 16))
 		return
-	if(floor_gases.getGroupGas(GAS_PLASMA))
+	if(floor_gases[GAS_PLASMA])
 		return
-	if(floor_gases.getGroupGas(GAS_CO2) >= 10)
+	if(floor_gases[GAS_CO2] >= 10)
 		return
 
 	// Aim for goldilocks temperatures and pressure

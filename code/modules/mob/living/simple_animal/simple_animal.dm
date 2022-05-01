@@ -317,12 +317,12 @@
 	if(isturf(loc) && isopenturf(loc))
 		var/turf/open/ST = loc
 		if(ST.air)
-			var/datum/gas_mixture/muhair = ST.return_air()
+			var/datum/gas_mixture/muhair = ST.return_air().getGases()
 
-			var/plas = muhair.getGroupGas(GAS_PLASMA)
-			var/oxy = muhair.getGroupGas(GAS_OXYGEN)
-			var/n2 = muhair.getGroupGas(GAS_NITROGEN)
-			var/co2 = muhair.getGroupGas(GAS_CO2)
+			var/plas = muhair[GAS_PLASMA]
+			var/oxy = muhair[GAS_OXYGEN]
+			var/n2 = muhair[GAS_NITROGEN]
+			var/co2 = muhair[GAS_CO2]
 
 			if(atmos_requirements["min_oxy"] && oxy < atmos_requirements["min_oxy"])
 				. = FALSE

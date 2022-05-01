@@ -150,8 +150,8 @@
 ///Conduction between the internal gasmix and the moderating (cooling/heating) gasmix.
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_conduction()
 	var/datum/gas_mixture/cooling_port = airs[1]
-	if(cooling_port.getMoles() > MINIMUM_MOLE_COUNT)
-		if(internal.getMoles() > 0)
+	if(cooling_port.get_moles() > MINIMUM_MOLE_COUNT)
+		if(internal.get_moles() > 0)
 			var/coolant_temperature_delta = cooling_port.temperature - internal.temperature
 			var/cooling_heat_capacity = cooling_port.getHeatCapacity()
 			var/internal_heat_capacity = internal.getHeatCapacity()
@@ -169,7 +169,7 @@
 
 ///Removes the gases from the internal gasmix when the recipe is changed
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/dump_gases()
-	var/datum/gas_mixture/remove = internal.remove(internal.getMoles())
+	var/datum/gas_mixture/remove = internal.remove(internal.get_moles())
 	airs[2].merge(remove)
 	internal.garbage_collect()
 
@@ -179,7 +179,7 @@
 
 	inject_gases()
 
-	if(!internal.getMoles())
+	if(!internal.get_moles())
 		return
 
 	heat_conduction()
@@ -266,7 +266,7 @@
 		data["selected"] = ""
 
 	var/list/internal_gas_data = list()
-	if(internal.getMoles())
+	if(internal.get_moles())
 		for(var/gasid in internal.gases)
 			internal_gas_data.Add(list(list(
 			"name"= internal.gases[gasid][GAS_META][META_GAS_NAME],
@@ -294,7 +294,7 @@
 	data["requirements"] = requirements.Join("\n")
 
 	var/temperature
-	if(internal.getMoles())
+	if(internal.get_moles())
 		temperature = internal.temperature
 	else
 		temperature = 0
@@ -316,7 +316,7 @@
 			selected_recipe = null
 			var/recipe_name = "nothing"
 			var/datum/gas_recipe/recipe = GLOB.gas_recipe_meta[params["mode"]]
-			if(internal.getMoles())
+			if(internal.get_moles())
 				dump_gases()
 			quality_loss = 0
 			progress_bar = 0

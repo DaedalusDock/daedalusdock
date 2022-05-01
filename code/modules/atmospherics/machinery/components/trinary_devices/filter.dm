@@ -88,7 +88,7 @@
 
 	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
 
-	if(!removed || !removed.getMoles())
+	if(!removed || !removed.get_moles())
 		return
 
 	var/filtering = TRUE

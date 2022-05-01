@@ -177,7 +177,7 @@
 			for(var/obj/effect/hotspot/H in T)
 				qdel(H)
 			if(G.getGroupGas(GAS_PLASMA))
-				G.adjustGas(GAS_NITROGEN, G.getGroupGas(GAS_PLASMA))
+				G.adjustGas(GAS_NITROGEN, G.gas[GAS_PLASMA])
 				G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])
 		if (weldvents)
 			for(var/obj/machinery/atmospherics/components/unary/U in T)

@@ -121,7 +121,7 @@
 				var/transfer_moles = (pressure_delta * environment.volume) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
 				var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
-				if(!removed || !removed.getMoles())
+				if(!removed || !removed.get_moles())
 					return
 
 				loc.assume_air(removed)
@@ -139,7 +139,7 @@
 
 			var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
 
-			if(!removed || !removed.getMoles()) //No venting from space 4head
+			if(!removed || !removed.get_moles()) //No venting from space 4head
 				return
 
 			air_contents.merge(removed)

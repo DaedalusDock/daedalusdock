@@ -526,7 +526,7 @@
 	var/turbine_pressure = max(turbine.machine_gasmix.returnPressure(), 0.01)
 
 	//the total work done by the gas
-	var/work_done = turbine.machine_gasmix.getMoles() * R_IDEAL_GAS_EQUATION * turbine.machine_gasmix.temperature * log(compressor_pressure / turbine_pressure)
+	var/work_done = turbine.machine_gasmix.get_moles() * R_IDEAL_GAS_EQUATION * turbine.machine_gasmix.temperature * log(compressor_pressure / turbine_pressure)
 
 	//removing the work needed to move the compressor but adding back the turbine work that is the one generating most of the power.
 	work_done = max(work_done - compressor_work * TURBINE_COMPRESSOR_STATOR_INTERACTION_MULTIPLIER - turbine_work, 0)
@@ -545,7 +545,7 @@
  * Handles all the calculations needed for the gases, work done, temperature increase/decrease
  */
 /obj/machinery/power/turbine/core_rotor/proc/do_calculations(datum/gas_mixture/input_mix, datum/gas_mixture/output_mix, work_amount_to_remove, regulated = FALSE)
-	var/work_done = input_mix.getMoles() * R_IDEAL_GAS_EQUATION * input_mix.temperature * log((input_mix.volume * max(input_mix.returnPressure(), 0.01)) / (output_mix.volume * max(output_mix.returnPressure(), 0.01))) * TURBINE_WORK_CONVERSION_MULTIPLIER
+	var/work_done = input_mix.get_moles() * R_IDEAL_GAS_EQUATION * input_mix.temperature * log((input_mix.volume * max(input_mix.returnPressure(), 0.01)) / (output_mix.volume * max(output_mix.returnPressure(), 0.01))) * TURBINE_WORK_CONVERSION_MULTIPLIER
 	if(work_amount_to_remove)
 		work_done = work_done - work_amount_to_remove
 
@@ -557,7 +557,7 @@
 	var/output_mix_heat_capacity = output_mix.getHeatCapacity()
 	if(!output_mix_heat_capacity)
 		return 0
-	output_mix.temperature = max((output_mix.temperature * output_mix_heat_capacity + work_done * output_mix.getMoles() * TURBINE_HEAT_CONVERSION_MULTIPLIER) / output_mix_heat_capacity, TCMB)
+	output_mix.temperature = max((output_mix.temperature * output_mix_heat_capacity + work_done * output_mix.get_moles() * TURBINE_HEAT_CONVERSION_MULTIPLIER) / output_mix_heat_capacity, TCMB)
 	return work_done
 
 /obj/item/paper/guides/jobs/atmos/turbine

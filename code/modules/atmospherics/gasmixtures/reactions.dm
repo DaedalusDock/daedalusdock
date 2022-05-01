@@ -138,7 +138,7 @@
 /datum/gas_reaction/miaster/react(datum/gas_mixture/air, datum/holder)
 	var/list/cached_gases = air.gases
 	// As the name says it, it needs to be dry
-	if(cached_gases[/datum/gas/water_vapor] && cached_gases[/datum/gas/water_vapor][MOLES] / air.getMoles() > MIASTER_STERILIZATION_MAX_HUMIDITY)
+	if(cached_gases[/datum/gas/water_vapor] && cached_gases[/datum/gas/water_vapor][MOLES] / air.get_moles() > MIASTER_STERILIZATION_MAX_HUMIDITY)
 		return NO_REACTION
 
 	//Replace miasma with oxygen

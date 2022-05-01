@@ -267,7 +267,7 @@
 		var/datum/gas_mixture/gas_mix = turf.air
 		if(!gas_mix.getGroupGas(GAS_OXYGEN))
 			return
-		gas_mix.gas[GAS_OXYGEN] = max(gas_mix.getGroupGas(GAS_OXYGEN) - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0)
+		gas_mix.setGasMoles(GAS_OXYGEN, max(gas_mix.gas[GAS_OXYGEN] - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0))
 
 /datum/spacevine_mutation/nitro_eater
 	name = "Nitrogen consuming"
@@ -281,7 +281,7 @@
 		var/datum/gas_mixture/gas_mix = turf.air
 		if(!gas_mix.getGroupGas(GAS_NITROGEN))
 			return
-		gas_mix.gas[GAS_NITROGEN] = max(gas_mix.getGroupGas(GAS_NITROGEN) - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0)
+		gas_mix.setGasMoles(GAS_NITROGEN, max(gas_mix.gas[GAS_NITROGEN] - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0))
 
 /datum/spacevine_mutation/carbondioxide_eater
 	name = "CO2 consuming"
@@ -295,7 +295,7 @@
 		var/datum/gas_mixture/gas_mix = turf.air
 		if(!gas_mix.getGroupGas(GAS_OXYGEN))
 			return
-		gas_mix.gas[GAS_CO2] = max(gas_mix.getGroupGas(GAS_CO2) - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0)
+		gas_mix.setGasMoles(GAS_CO2, max(gas_mix.gas[GAS_CO2] - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0))
 
 /datum/spacevine_mutation/plasma_eater
 	name = "Plasma consuming"
@@ -309,7 +309,7 @@
 		var/datum/gas_mixture/gas_mix = turf.air
 		if(!gas_mix.getGroupGas(GAS_PLASMA))
 			return
-		gas_mix.gas[GAS_PLASMA] = max(gas_mix.getGroupGas(GAS_PLASMA) - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0)
+		gas_mix.setGasMoles(GAS_PLASMA, max(gas_mix.gas[GAS_PLASMA] - GAS_MUTATION_REMOVAL_MULTIPLIER * holder.energy, 0))
 
 /datum/spacevine_mutation/thorns
 	name = "Thorny"

@@ -129,6 +129,7 @@
 	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
+
 	//Vars for n2o and healium induced euphorias.
 	var/n2o_euphoria = EUPHORIA_LAST_FLAG
 	var/healium_euphoria = EUPHORIA_LAST_FLAG
@@ -262,7 +263,7 @@
 	if(breath) // If there's some other shit in the air lets deal with it here.
 
 	// N2O
-		var/n2o_moles = breath.getGroupGas(GAS_N2O)
+		var/n2o_moles = breath.gas[GAS_N2O]
 		var/SA_pp = breath.getBreathPartialPressure(n2o_moles)
 		if(SA_pp > SA_para_min) // Enough to make us stunned for a bit
 			breather.throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
@@ -586,11 +587,11 @@
 
 	var/datum/gas_mixture/immutable/planetary/mix = SSair.planetary[LAVALAND_DEFAULT_ATMOS]
 
-	if(!mix?.getMoles()) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
+	if(!mix?.get_moles()) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
 		return
 
 	// Take a "breath" of the air
-	var/datum/gas_mixture/breath = mix.remove(mix.getMoles() * BREATH_PERCENTAGE)
+	var/datum/gas_mixture/breath = mix.remove(mix.get_moles() * BREATH_PERCENTAGE)
 
 	var/oxygen_pp = breath.getBreathPartialPressure(breath_gases[/datum/gas/oxygen][MOLES])
 	var/nitrogen_pp = breath.getBreathPartialPressure(breath_gases[/datum/gas/nitrogen][MOLES])

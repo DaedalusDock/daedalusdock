@@ -31,7 +31,7 @@
 	return total_moles * group_multiplier
 
 //Takes a gas string and the amount of moles to adjust by.  Calls updateValues() if update isn't 0.
-/datum/gas_mixture/proc/adjustGas(gasid, moles, update = 1)
+/datum/gas_mixture/proc/adjustGas(gasid, moles, update = TRUE)
 	if(moles == 0)
 		return
 
@@ -43,6 +43,18 @@
 	if(update)
 		updateValues()
 
+/datum/gas_mixture/proc/setGasMoles(gasid, moles, update = TRUE, divide_among_group = FALSE)
+	if(moles == 0)
+		return
+
+	//Generally setGasMoles actions pre-calculate, just in case.
+	if(divide_among_group && group_multiplier != 1)
+		gas[gasid] = moles/group_multiplier
+	else
+		gas[gasid] = moles
+
+	if(update)
+		updateValues()
 
 //Same as adjustGas(), but takes a temperature which is mixed in with the gas.
 /datum/gas_mixture/proc/adjustGasWithTemp(gasid, moles, temp, update = 1)
@@ -299,10 +311,16 @@
 			. += gas[g]
 
 //Copies gas and temperature from another gas_mixture.
-/datum/gas_mixture/proc/copyFrom(const/datum/gas_mixture/sample)
-	gas = sample.gas.Copy()
-	temperature = sample.temperature
+/datum/gas_mixture/proc/copyFrom(const/datum/gas_mixture/sample, partial = 1)
+	var/list/cached_gas = gas
+	var/list/sample_gas = sample.gas.Copy()
 
+	//remove all gases not in the sample
+	cached_gas &= sample_gas
+
+	temperature = sample.temperature
+	for(var/id in sample_gas)
+		cached_gas[id] = sample_gas[id] * partial
 	updateValues()
 	return 1
 
@@ -473,20 +491,21 @@
 	if(M)
 		return getMass()/M
 
-////LINDA COMPATABILITY PROCS////
-/datum/gas_mixture/proc/getVolume()
-	return max(0, volume)
-
-/datum/gas_mixture/proc/getTemperature()
-	return temperature
-
-/datum/gas_mixture/proc/getMoles()
-	updateValues()
-	return total_moles
-
 /datum/gas_mixture/proc/hasGas(gas_id, required_amount)
 	var/amt = getGroupGas(gas_id)
 	return (amt >= required_amount)
+
+////LINDA COMPATABILITY PROCS////
+/datum/gas_mixture/proc/get_volume()
+	return max(0, volume)
+
+/datum/gas_mixture/proc/get_temperature()
+	return temperature
+
+/datum/gas_mixture/proc/get_moles()
+	updateValues()
+	return total_moles
+////END LINDA COMPATABILITY////
 
 ///Returns the gas list with an update.
 /datum/gas_mixture/proc/getGases()
@@ -521,8 +540,8 @@
  * eg:
  * Plas_PP = get_partial_pressure(gas_mixture.plasma)
  * O2_PP = get_partial_pressure(gas_mixture.oxygen)
- * getBreathPartialPressure(gas_pp) --> gas_pp/getMoles()*breath_pp = pp
- * getTrueBreathPressure(pp) --> gas_pp = pp/breath_pp*getMoles()
+ * getBreathPartialPressure(gas_pp) --> gas_pp/get_moles()*breath_pp = pp
+ * getTrueBreathPressure(pp) --> gas_pp = pp/breath_pp*get_moles()
  *
  * 10/20*5 = 2.5
  * 10 = 2.5/5*20

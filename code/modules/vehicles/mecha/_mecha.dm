@@ -429,12 +429,12 @@
 				var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
 				if(int_tank_air.returnPressure() > internal_tank.maximum_pressure && !(internal_damage & MECHA_INT_TANK_BREACH))
 					set_internal_damage(MECHA_INT_TANK_BREACH)
-				if(int_tank_air && int_tank_air.getVolume() > 0) //heat the air_contents
+				if(int_tank_air && int_tank_air.get_volume() > 0) //heat the air_contents
 					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(5,7.5)*delta_time)
-			if(cabin_air && cabin_air.getVolume()>0)
-				cabin_air.temperature = min(6000+T0C, cabin_air.getTemperature()+rand(5,7.5)*delta_time)
-				if(cabin_air.getTemperature() > max_temperature/2)
-					take_damage(delta_time*2/round(max_temperature/cabin_air.getTemperature(),0.1), BURN, 0, 0)
+			if(cabin_air && cabin_air.get_volume()>0)
+				cabin_air.temperature = min(6000+T0C, cabin_air.get_temperature()+rand(5,7.5)*delta_time)
+				if(cabin_air.get_temperature() > max_temperature/2)
+					take_damage(delta_time*2/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
 
 
 		if(internal_damage & MECHA_INT_TANK_BREACH) //remove some air from internal tank
@@ -453,7 +453,7 @@
 				cell.maxcharge -= min(10 * delta_time, cell.maxcharge)
 
 	if(!(internal_damage & MECHA_INT_TEMP_CONTROL))
-		if(cabin_air && cabin_air.getVolume() > 0)
+		if(cabin_air && cabin_air.get_volume() > 0)
 			var/delta = cabin_air.temperature - T20C
 			cabin_air.temperature -= clamp(round(delta / 8, 0.1), -5, 5) * delta_time
 
@@ -1237,7 +1237,7 @@
 	return air?.returnPressure()
 
 ///fetches temp of the gas mixture we are using
-/obj/vehicle/sealed/mecha/getTemperature()
+/obj/vehicle/sealed/mecha/return_temperature()
 	var/datum/gas_mixture/air = return_air()
 	return air?.temperature
 

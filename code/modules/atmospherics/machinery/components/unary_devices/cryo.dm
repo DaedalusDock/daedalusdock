@@ -272,7 +272,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.getMoles() > CRYO_MIN_GAS_MOLES)
+	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
 			consume_gas = TRUE
@@ -287,7 +287,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	var/datum/gas_mixture/air1 = airs[1]
 
 	/* PARIAH EDIT REMOVAL - HUGBOX BARGAGE
-	if(!nodes[1] || !airs[1] || !air1.gas.len || air1.getMoles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
+	if(!nodes[1] || !airs[1] || !air1.gas.len || air1.get_moles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
 		var/msg = "Insufficient cryogenic gas, shutting down."
 		radio.talk_into(src, msg, radio_channel)
 		set_on(FALSE)
@@ -327,7 +327,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return null
 	var/datum/gas_mixture/air1 = airs[1]
 	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.getMoles() * breath_percentage)
+	return air1.remove(air1.get_moles() * breath_percentage)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -539,10 +539,10 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_see_pipes()
 	return FALSE // you can't see the pipe network when inside a cryo cell.
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/getTemperature()
+/obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.getMoles() > 10)
+	if(G.get_moles() > 10)
 		return G.temperature
 	return ..()
 

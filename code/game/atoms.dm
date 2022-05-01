@@ -1370,7 +1370,7 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
 ///Return atom temperature
-/atom/proc/getTemperature()
+/atom/proc/return_temperature()
 	return
 
 /**

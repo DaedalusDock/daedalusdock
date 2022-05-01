@@ -203,7 +203,7 @@
 		return
 
 
-/obj/structure/transit_tube_pod/getTemperature()
+/obj/structure/transit_tube_pod/return_temperature()
 	return air_contents.temperature
 
 //special pod made by the dispenser, it fizzles away when reaching a station.

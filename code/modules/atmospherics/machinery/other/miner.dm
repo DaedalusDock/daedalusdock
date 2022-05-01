@@ -60,7 +60,7 @@
 		broken_message = span_boldwarning("EXTERNAL PRESSURE OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE
-	if(G.getMoles() > max_ext_mol)
+	if(G.get_moles() > max_ext_mol)
 		broken_message = span_boldwarning("EXTERNAL AIR CONCENTRATION OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE

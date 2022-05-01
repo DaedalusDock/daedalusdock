@@ -237,7 +237,7 @@
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_fuel()
 	if(!selected_fuel)
 		return FALSE
-	if(!internal_fusion.getMoles())
+	if(!internal_fusion.get_moles())
 		return FALSE
 	for(var/gas_type in selected_fuel.requirements)
 		internal_fusion.assert_gas(gas_type)
@@ -267,7 +267,7 @@
 
 ///Removes the gases from the internal gasmix when the recipe is changed
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/dump_gases()
-	var/datum/gas_mixture/remove = internal_fusion.remove(internal_fusion.getMoles())
+	var/datum/gas_mixture/remove = internal_fusion.remove(internal_fusion.get_moles())
 	linked_output.airs[1].merge(remove)
 	internal_fusion.garbage_collect()
 	linked_input.airs[1].garbage_collect()
@@ -476,7 +476,7 @@
 			around_turfs -= turf
 			continue
 	var/datum/gas_mixture/remove_fusion
-	if(internal_fusion.getMoles() > 0)
+	if(internal_fusion.get_moles() > 0)
 		remove_fusion = internal_fusion.removeRatio(0.2)
 		var/datum/gas_mixture/remove
 		for(var/i in 1 to gas_pockets)
@@ -485,7 +485,7 @@
 			local.assume_air(remove)
 		loc.assume_air(internal_fusion)
 	var/datum/gas_mixture/remove_moderator
-	if(moderator_internal.getMoles() > 0)
+	if(moderator_internal.get_moles() > 0)
 		remove_moderator = moderator_internal.removeRatio(0.2)
 		var/datum/gas_mixture/remove
 		for(var/i in 1 to gas_pockets)
@@ -587,7 +587,7 @@
 		spill_gases(cracked_part, moderator_internal, ratio = 1 - (1 - leak_rate) ** delta_time)
 		return
 
-	if (moderator_internal.getMoles() < HYPERTORUS_HYPERCRITICAL_MOLES)
+	if (moderator_internal.get_moles() < HYPERTORUS_HYPERCRITICAL_MOLES)
 		return
 	cracked_part = create_crack()
 	// See if we do anything in the initial rupture

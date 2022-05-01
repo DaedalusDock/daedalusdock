@@ -108,7 +108,7 @@ Chilling extracts:
 	for(var/turf/T in A)
 		var/datum/gas_mixture/G = T.air
 		if(istype(G))
-			G.gas[GAS_PLASMA] = 0
+			G.setGasMoles(GAS_PLASMA, 0)
 			filtered = TRUE
 			//T.air_update_turf(FALSE, FALSE)
 	if(filtered)

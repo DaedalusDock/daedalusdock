@@ -37,7 +37,7 @@
 	update_appearance()
 
 /obj/machinery/atmospherics/components/unary/bluespace_sender/Destroy()
-	if(bluespace_network.getMoles())
+	if(bluespace_network.get_moles())
 		var/turf/local_turf = get_turf(src)
 		local_turf.assume_air(bluespace_network)
 	return ..()
@@ -75,7 +75,7 @@
 			return
 	if(default_change_direction_wrench(user, item))
 		return
-	if(item.tool_behaviour == TOOL_CROWBAR && panel_open && bluespace_network.getMoles() > 0)
+	if(item.tool_behaviour == TOOL_CROWBAR && panel_open && bluespace_network.get_moles() > 0)
 		say("WARNING - Bluespace network can contain hazardous gases, deconstruct with caution!")
 		if(!do_after(user, 3 SECONDS, src))
 			return
@@ -120,7 +120,7 @@
 	data["on"] = on
 	data["gas_transfer_rate"] = gas_transfer_rate
 	var/list/bluespace_gasdata = list()
-	if(bluespace_network.getMoles())
+	if(bluespace_network.get_moles())
 		for(var/gas_id in bluespace_network.gases)
 			bluespace_gasdata.Add(list(list(
 			"name" = bluespace_network.gases[gas_id][GAS_META][META_GAS_NAME],
@@ -170,8 +170,8 @@
 			. = TRUE
 
 		if("retrieve")
-			if(bluespace_network.getMoles() > 0)
-				var/datum/gas_mixture/remove = bluespace_network.remove(bluespace_network.getMoles())
+			if(bluespace_network.get_moles() > 0)
+				var/datum/gas_mixture/remove = bluespace_network.remove(bluespace_network.get_moles())
 				airs[1].merge(remove)
 				update_parents()
 				bluespace_network.garbage_collect()

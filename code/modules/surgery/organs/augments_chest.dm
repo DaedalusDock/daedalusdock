@@ -225,9 +225,9 @@
 
 	// Priority 3: use internals tank.
 	var/datum/gas_mixture/internal_mix = owner.internal.return_air()
-	if(internal_mix && internal_mix.getMoles() > num)
+	if(internal_mix && internal_mix.get_moles() > num)
 		var/datum/gas_mixture/removed = internal_mix.remove(num)
-		if(removed.getMoles() > 0.005)
+		if(removed.get_moles() > 0.005)
 			owner_turf.assume_air(removed)
 			ion_trail.generate_effect()
 			return TRUE

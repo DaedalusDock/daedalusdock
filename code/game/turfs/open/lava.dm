@@ -100,7 +100,7 @@
 /turf/open/lava/GetHeatCapacity()
 	. = 700000
 
-/turf/open/lava/GetTemperature()
+/turf/open/lava/return_temperature()
 	. = 5000
 
 /turf/open/lava/TakeTemperature(temp)

@@ -22,7 +22,7 @@
 	var/datum/gas_mixture/removed
 	if(produces_gas)
 		//Remove gas from surrounding area
-		removed = env.remove(gasefficency * env.getMoles())
+		removed = env.remove(gasefficency * env.get_moles())
 	else
 		// Pass all the gas related code an empty gas container
 		removed = new()
@@ -35,7 +35,7 @@
 		else
 			psy_overlay = FALSE
 	damage_archived = damage
-	if(!removed || !removed.getMoles() || isspaceturf(local_turf)) //we're in space or there is no gas to process
+	if(!removed || !removed.get_moles() || isspaceturf(local_turf)) //we're in space or there is no gas to process
 		if(takes_damage)
 			damage += max((power / 1000) * DAMAGE_INCREASE_MULTIPLIER, 0.1) // always does at least some damage
 		if(!istype(env, /datum/gas_mixture/immutable) && produces_gas && power) //There is no gas to process, but we are not in a space turf. Lets make them.
@@ -113,7 +113,7 @@
 	//((((some value between 0.5 and 1 * temp - ((273.15 + 40) * some values between 1 and 10)) * some number between 0.25 and knock your socks off / 150) * 0.25
 	//Heat and mols account for each other, a lot of hot mols are more damaging then a few
 	//Mols start to have a positive effect on damage after 350
-	damage = max(damage + (max(clamp(removed.getMoles() / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
+	damage = max(damage + (max(clamp(removed.get_moles() / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Power only starts affecting damage when it is above 5000
 	damage = max(damage + (max(power - POWER_PENALTY_THRESHOLD, 0)/500) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Molar count only starts affecting damage when it is above 1800
@@ -151,7 +151,7 @@
 
 	//calculating gas related values
 	//Wanna know a secret? See that max() to zero? it's used for error checking. If we get a mol count in the negative, we'll get a divide by zero error //Old me, you're insane
-	combined_gas = max(removed.getMoles(), 0)
+	combined_gas = max(removed.get_moles(), 0)
 
 	//This is more error prevention, according to all known laws of atmos, gas_mix.remove() should never make negative mol values.
 	//But this is tg
@@ -334,9 +334,9 @@
 		return
 	var/range = 4
 	zap_cutoff = 1500
-	if(removed && removed.returnPressure() > 0 && removed.getTemperature() > 0)
+	if(removed && removed.returnPressure() > 0 && removed.get_temperature() > 0)
 		//You may be able to freeze the zapstate of the engine with good planning, we'll see
-		zap_cutoff = clamp(3000 - (power * (removed.getMoles()) / 10) / removed.getTemperature(), 350, 3000)//If the core is cold, it's easier to jump, ditto if there are a lot of mols
+		zap_cutoff = clamp(3000 - (power * (removed.get_moles()) / 10) / removed.get_temperature(), 350, 3000)//If the core is cold, it's easier to jump, ditto if there are a lot of mols
 		//We should always be able to zap our way out of the default enclosure
 		//See supermatter_zap() for more details
 		range = clamp(power / removed.returnPressure() * 10, 2, 7)

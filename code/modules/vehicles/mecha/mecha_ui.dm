@@ -120,7 +120,7 @@
 	data["airtank_temp"] = int_tank_air?.temperature
 	data["port_connected"] = internal_tank?.connected_port ? TRUE : FALSE
 	data["cabin_pressure"] = round(returnPressure(), 0.01)
-	data["cabin_temp"] = getTemperature()
+	data["cabin_temp"] = return_temperature()
 	data["dna_lock"] = dna_lock
 	data["mech_view"] = ui_view.assigned_map
 	if(radio)

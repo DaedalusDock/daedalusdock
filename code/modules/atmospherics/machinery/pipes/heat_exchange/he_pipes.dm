@@ -30,7 +30,7 @@
 			environment_temperature = local_turf.temperature
 		else
 			var/turf/open/open_local = local_turf
-			environment_temperature = open_local.GetTemperature()
+			environment_temperature = open_local.return_temperature()
 	else
 		environment_temperature = local_turf.temperature
 	if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)

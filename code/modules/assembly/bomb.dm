@@ -202,7 +202,7 @@
 
 /obj/item/tank/proc/release() //This happens when the bomb is not welded. Tank contents are just spat out.
 	var/datum/gas_mixture/our_mix = return_air()
-	var/datum/gas_mixture/removed = remove_air(our_mix.getMoles())
+	var/datum/gas_mixture/removed = remove_air(our_mix.get_moles())
 	var/turf/T = get_turf(src)
 	if(!T)
 		return

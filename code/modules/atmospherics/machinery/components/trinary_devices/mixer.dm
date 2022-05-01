@@ -76,8 +76,8 @@
 	var/transfer_moles1 = air1.temperature ? node1_concentration * general_transfer / air1.temperature : 0
 	var/transfer_moles2 = air2.temperature ? node2_concentration * general_transfer / air2.temperature : 0
 
-	var/air1_moles = air1.getMoles()
-	var/air2_moles = air2.getMoles()
+	var/air1_moles = air1.get_moles()
+	var/air2_moles = air2.get_moles()
 
 	if(!node2_concentration)
 		if(air1.temperature <= 0)

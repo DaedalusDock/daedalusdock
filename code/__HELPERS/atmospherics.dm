@@ -45,7 +45,7 @@
 		.["gases"] += list(list(
 			"[gas_path]",
 			"[gas_path]",
-			gasmix.getGroupGas(gas_path),
+			gasmix.gas[gas_path],
 		))
 	//.for(var/datum/gas_reaction/reaction_result as anything in gasmix.reaction_results)
 	.["reactions"] += list(list(
@@ -53,7 +53,7 @@
 		"UNIMPLIMENTED",
 		"UNIMPLIMENTED",
 	))
-	.["total_moles"] = gasmix.getMoles()
+	.["total_moles"] = gasmix.get_moles()
 	.["temperature"] = gasmix.temperature
 	.["volume"] = gasmix.volume
 	.["pressure"] = gasmix.returnPressure()

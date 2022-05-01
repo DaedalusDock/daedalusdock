@@ -41,11 +41,11 @@
 
 	var/turf/open/T = get_turf(src)
 	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in T)
-	if(hotspot && istype(T) && T.air)
+	if(hotspot && istype(T) && T.zone)
 		qdel(hotspot)
 		var/datum/gas_mixture/G = T.return_air()
 		if(G.getGroupGas(GAS_PLASMA))
-			var/plas_amt = min(30, G.getGroupGas(GAS_PLASMA)) //Absorb some plasma
+			var/plas_amt = min(30, G.gas[GAS_PLASMA]) //Absorb some plasma
 			G.adjustGas(GAS_PLASMA, -plas_amt)
 			absorbed_plasma += plas_amt
 		if(G.temperature > T20C)

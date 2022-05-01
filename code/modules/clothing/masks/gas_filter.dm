@@ -51,38 +51,38 @@
  *
  */
 /obj/item/gas_filter/proc/reduce_filter_status(datum/gas_mixture/breath)
-/*
+	var/list/gases = breath.getGases()
 	var/danger_points = 0
 
-	for(var/gas_id in breath.gas)
+	for(var/gas_id in gases)
 		if(gas_id in high_filtering_gases)
-			if(breath.getGroupGas(gas_id) > HIGH_FILTERING_MOLES)
-				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_high * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(gases[gas_id] > HIGH_FILTERING_MOLES)
+				gases[gas_id] = max(gases[gas_id] - filter_strength_high * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 0.5
 				continue
-			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_high * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			gases[gas_id] = max(gases[gas_id] - filter_strength_high * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.05
 			continue
 		if(gas_id in mid_filtering_gases)
-			if(breath.getGroupGas(gas_id) > MID_FILTERING_MOLES)
-				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id)- filter_strength_mid * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(gases[gas_id] > MID_FILTERING_MOLES)
+				gases[gas_id] = max(gases[gas_id]- filter_strength_mid * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 0.75
 				continue
-			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_mid * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			gases[gas_id] = max(gases[gas_id] - filter_strength_mid * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.15
 			continue
 		if(gas_id in low_filtering_gases)
-			if(breath.getGroupGas(gas_id)> LOW_FILTERING_MOLES)
-				breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_low * filter_efficiency * HIGH_FILTERING_RATIO, 0)
+			if(gases[gas_id] > LOW_FILTERING_MOLES)
+				gases[gas_id] = max(gases[gas_id] - filter_strength_low * filter_efficiency * HIGH_FILTERING_RATIO, 0)
 				danger_points += 1
 				continue
-			breath.getGroupGas(gas_id) = max(breath.getGroupGas(gas_id) - filter_strength_low * filter_efficiency * LOW_FILTERING_RATIO, 0)
+			gases[gas_id] = max(gases[gas_id] - filter_strength_low * filter_efficiency * LOW_FILTERING_RATIO, 0)
 			danger_points += 0.5
 			continue
 
 	filter_status = max(filter_status - danger_points - FILTERS_CONSTANT_WEAR, 0)
 	return breath
-*/
+
 
 /obj/item/gas_filter/damaged
 	name = "damaged gas filter"

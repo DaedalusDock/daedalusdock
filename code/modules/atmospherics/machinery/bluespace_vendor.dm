@@ -208,7 +208,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/bluespace_vendor, 30)
 /obj/machinery/bluespace_vendor/ui_data(mob/user)
 	var/list/data = list()
 	var/list/bluespace_gasdata = list()
-	if(connected_machine.bluespace_network.getMoles())
+	if(connected_machine.bluespace_network.get_moles())
 		for(var/gas_id in connected_machine.bluespace_network.gases)
 			bluespace_gasdata.Add(list(list(
 			"name" = connected_machine.bluespace_network.gases[gas_id][GAS_META][META_GAS_NAME],

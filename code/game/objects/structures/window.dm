@@ -385,7 +385,7 @@
 
 /obj/structure/window/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if (exposed_temperature > melting_point)
-		take_damage(round(air.getVolume() / 100), BURN, 0, 0)
+		take_damage(round(air.get_volume() / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
 	return null

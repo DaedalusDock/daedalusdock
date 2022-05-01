@@ -194,7 +194,7 @@
 
 
 	var/turf/modeled_location = target
-	target_temperature = modeled_location.GetTemperature()
+	target_temperature = modeled_location.return_temperature()
 	target_heat_capacity = modeled_location.GetHeatCapacity()
 
 	var/delta_temperature = air.temperature - target_temperature
@@ -238,9 +238,36 @@
 			pipeline_list |= atmos_machine.return_pipenets_for_reconcilation(src)
 			gas_mixture_list |= atmos_machine.return_airs_for_reconcilation(src)
 
-	equalize_gases(gas_mixture_list)
 
+	var/total_thermal_energy = 0
+	var/total_heat_capacity = 0
+	var/datum/gas_mixture/total_gas_mixture = new
 
+	var/list/total_gases = total_gas_mixture.gas
+
+	for(var/datum/gas_mixture/gas_mixture as anything in gas_mixture_list)
+		total_gas_mixture.volume += gas_mixture.volume
+
+		// This is sort of a combined merge + heat_capacity calculation
+
+		var/list/giver_gases = gas_mixture.gas
+		//gas transfer
+		for(var/giver_id in giver_gases)
+			var/moles = giver_gases[giver_id]
+			total_gas_mixture.adjustGas(giver_id, moles)
+
+		total_thermal_energy += THERMAL_ENERGY(gas_mixture)
+
+	total_heat_capacity = total_gas_mixture.getHeatCapacity()
+	total_gas_mixture.temperature = total_heat_capacity ? (total_thermal_energy / total_heat_capacity) : 0
+
+	if(total_gas_mixture.volume > 0)
+		//Update individual gas_mixtures by volume ratio
+		for(var/mixture in gas_mixture_list)
+			var/datum/gas_mixture/gas_mixture = mixture
+			gas_mixture.copyFrom(total_gas_mixture, gas_mixture.volume / total_gas_mixture.volume)
+
+/*
 /proc/equalize_gases(list/datum/gas_mixture/gases)
 	//Calculate totals from individual components
 	var/total_volume = 0
@@ -279,3 +306,4 @@
 			gasmix.multiply(gasmix.volume)
 
 	return 1
+*/

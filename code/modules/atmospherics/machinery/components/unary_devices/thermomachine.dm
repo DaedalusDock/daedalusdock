@@ -143,7 +143,7 @@
 	// The gas we want to cool/heat
 	var/datum/gas_mixture/port = airs[1]
 
-	if(!port.getMoles()) // Nothing to cool? go home lad
+	if(!port.get_moles()) // Nothing to cool? go home lad
 		return
 
 	var/port_capacity = port.getHeatCapacity()

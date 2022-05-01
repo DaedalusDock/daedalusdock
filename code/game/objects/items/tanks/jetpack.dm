@@ -123,12 +123,12 @@
 		return COMSIG_MOVABLE_STOP_SPACEMOVE
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user)
-	if((num < 0.005 || air_contents.getMoles() < num))
+	if((num < 0.005 || air_contents.get_moles() < num))
 		turn_off(user)
 		return
 
 	var/datum/gas_mixture/removed = remove_air(num)
-	if(removed.getMoles() < 0.005)
+	if(removed.get_moles() < 0.005)
 		turn_off(user)
 		return
 

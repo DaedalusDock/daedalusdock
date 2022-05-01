@@ -81,7 +81,7 @@
 
 	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
 
-	if(!removed.getMoles())
+	if(!removed.get_moles())
 		return
 
 	if(overclocked)//Some of the gas from the mixture leaks to the environment when overclocked
@@ -326,5 +326,5 @@
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
 	input_pressure.set_output(air_input.returnPressure())
 	output_pressure.set_output(air_output.returnPressure())
-	input_temperature.set_output(air_input.getTemperature())
-	output_temperature.set_output(air_output.getTemperature())
+	input_temperature.set_output(air_input.get_temperature())
+	output_temperature.set_output(air_output.get_temperature())

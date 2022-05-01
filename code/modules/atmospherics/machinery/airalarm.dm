@@ -235,7 +235,7 @@
 							"unit" = "K ([round(temperature - T0C, 0.1)]C)",
 							"danger_level" = cur_tlv.get_danger_level(temperature)
 	))
-	var/total_moles = environment.getMoles()
+	var/total_moles = environment.get_moles()
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume
 	for(var/gas_id in environment.getGases())
 		if(!(gas_id in TLV)) // We're not interested in this gas, it seems.

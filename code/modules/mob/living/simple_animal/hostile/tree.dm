@@ -59,7 +59,7 @@
 	if(!T.air || !T.air.hasGas(GAS_CO2))
 		return
 
-	var/co2 = T.air.getGroupGas(GAS_CO2)
+	var/co2 = T.air.gas[GAS_CO2]
 	if(co2 > 0 && DT_PROB(13, delta_time))
 		var/amt = min(co2, 9)
 		T.air.adjustGas(GAS_CO2, -amt)

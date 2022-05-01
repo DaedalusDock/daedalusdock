@@ -240,7 +240,7 @@
 
 	//Internal Fusion gases
 	var/list/fusion_gasdata = list()
-	if(connected_core.internal_fusion.getMoles())
+	if(connected_core.internal_fusion.get_moles())
 		for(var/gas_type in connected_core.internal_fusion.gases)
 			var/datum/gas/gas = gas_type
 			fusion_gasdata.Add(list(list(
@@ -256,7 +256,7 @@
 				)))
 	//Moderator gases
 	var/list/moderator_gasdata = list()
-	if(connected_core.moderator_internal.getMoles())
+	if(connected_core.moderator_internal.get_moles())
 		for(var/gas_type in connected_core.moderator_internal.gases)
 			var/datum/gas/gas = gas_type
 			moderator_gasdata.Add(list(list(
@@ -382,7 +382,7 @@
 			if(fuel)
 				connected_core.selected_fuel = fuel
 				fuel_mix = fuel.name
-			if(connected_core.internal_fusion.getMoles())
+			if(connected_core.internal_fusion.get_moles())
 				connected_core.dump_gases()
 			connected_core.update_parents() //prevent the machine from stopping because of the recipe change and the pipenet not updating
 			connected_core.linked_input.update_parents()

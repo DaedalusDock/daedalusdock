@@ -254,7 +254,7 @@
 
 	else //Just siphoning all air
 
-		var/transfer_moles = environment.getMoles() * (volume_rate / environment.volume)
+		var/transfer_moles = environment.get_moles() * (volume_rate / environment.volume)
 
 		var/datum/gas_mixture/removed = tile.remove_air(transfer_moles)
 

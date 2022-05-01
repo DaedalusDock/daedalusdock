@@ -158,7 +158,6 @@ There are several things that need to be remembered:
 
 		var/mutable_appearance/uniform_overlay
 
-		//Change check_adjustable_clothing.dm if you change this
 		var/handled_by_bodytype = TRUE
 		var/icon_file
 		var/woman
@@ -184,7 +183,7 @@ There are several things that need to be remembered:
 				override_file = handled_by_bodytype ? icon_file : null
 			)
 
-		if(OFFSET_UNIFORM in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_UNIFORM in dna.species.offset_features))
 			uniform_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
 			uniform_overlay?.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
@@ -215,7 +214,7 @@ There are several things that need to be remembered:
 
 		if(!id_overlay)
 			return
-		if(OFFSET_ID in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_ID in dna.species.offset_features))
 			id_overlay.pixel_x += dna.species.offset_features[OFFSET_ID][1]
 			id_overlay.pixel_y += dna.species.offset_features[OFFSET_ID][2]
 		overlays_standing[ID_LAYER] = id_overlay
@@ -259,7 +258,7 @@ There are several things that need to be remembered:
 
 		if(!gloves_overlay)
 			return
-		if(OFFSET_GLOVES in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_GLOVES in dna.species.offset_features))
 			gloves_overlay.pixel_x += dna.species.offset_features[OFFSET_GLOVES][1]
 			gloves_overlay.pixel_y += dna.species.offset_features[OFFSET_GLOVES][2]
 		overlays_standing[GLOVES_LAYER] = gloves_overlay
@@ -293,7 +292,7 @@ There are several things that need to be remembered:
 
 		if(!glasses_overlay)
 			return
-		if(OFFSET_GLASSES in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_GLASSES in dna.species.offset_features))
 			glasses_overlay.pixel_x += dna.species.offset_features[OFFSET_GLASSES][1]
 			glasses_overlay.pixel_y += dna.species.offset_features[OFFSET_GLASSES][2]
 		overlays_standing[GLASSES_LAYER] = glasses_overlay
@@ -326,7 +325,7 @@ There are several things that need to be remembered:
 
 		if(!ears_overlay)
 			return
-		if(OFFSET_EARS in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_EARS in dna.species.offset_features))
 			ears_overlay.pixel_x += dna.species.offset_features[OFFSET_EARS][1]
 			ears_overlay.pixel_y += dna.species.offset_features[OFFSET_EARS][2]
 		overlays_standing[EARS_LAYER] = ears_overlay
@@ -355,7 +354,7 @@ There are several things that need to be remembered:
 
 			if(!neck_overlay)
 				return
-			if(OFFSET_NECK in dna.species.offset_features && !handled_by_bodytype)
+			if(!handled_by_bodytype && (OFFSET_NECK in dna.species.offset_features))
 				neck_overlay.pixel_x += dna.species.offset_features[OFFSET_NECK][1]
 				neck_overlay.pixel_y += dna.species.offset_features[OFFSET_NECK][2]
 			overlays_standing[NECK_LAYER] = neck_overlay
@@ -396,7 +395,7 @@ There are several things that need to be remembered:
 
 		if(!shoes_overlay)
 			return
-		if(!(handled_by_bodytype) && (OFFSET_SHOES in dna.species.offset_features))
+		if(!handled_by_bodytype && (OFFSET_SHOES in dna.species.offset_features))
 			shoes_overlay.pixel_x += dna.species.offset_features[OFFSET_SHOES][1]
 			shoes_overlay.pixel_y += dna.species.offset_features[OFFSET_SHOES][2]
 		overlays_standing[SHOES_LAYER] = shoes_overlay
@@ -453,7 +452,7 @@ There are several things that need to be remembered:
 
 		if(!head_overlay)
 			return
-		if(!(handled_by_bodytype) && (OFFSET_HEAD in dna.species.offset_features))
+		if(!handled_by_bodytype && (OFFSET_HEAD in dna.species.offset_features))
 			head_overlay.pixel_x += dna.species.offset_features[OFFSET_HEAD][1]
 			head_overlay.pixel_y += dna.species.offset_features[OFFSET_HEAD][2]
 		overlays_standing[HEAD_LAYER] = head_overlay
@@ -483,7 +482,7 @@ There are several things that need to be remembered:
 
 		if(!belt_overlay)
 			return
-		if(OFFSET_BELT in dna.species.offset_features && !handled_by_bodytype)
+		if(!handled_by_bodytype && (OFFSET_BELT in dna.species.offset_features))
 			belt_overlay.pixel_x += dna.species.offset_features[OFFSET_BELT][1]
 			belt_overlay.pixel_y += dna.species.offset_features[OFFSET_BELT][2]
 		overlays_standing[BELT_LAYER] = belt_overlay
@@ -584,7 +583,7 @@ There are several things that need to be remembered:
 
 		if(!mask_overlay)
 			return
-		if((!handled_by_bodytype) && (OFFSET_FACEMASK in dna.species.offset_features))
+		if(!handled_by_bodytype && (OFFSET_FACEMASK in dna.species.offset_features))
 			mask_overlay.pixel_x += dna.species.offset_features[OFFSET_FACEMASK][1]
 			mask_overlay.pixel_y += dna.species.offset_features[OFFSET_FACEMASK][2]
 
@@ -615,7 +614,7 @@ There are several things that need to be remembered:
 
 		if(!back_overlay)
 			return
-		if((!handled_by_bodytype) && (OFFSET_BACK in dna.species.offset_features))
+		if(!handled_by_bodytype && (OFFSET_BACK in dna.species.offset_features))
 			back_overlay.pixel_x += dna.species.offset_features[OFFSET_BACK][1]
 			back_overlay.pixel_y += dna.species.offset_features[OFFSET_BACK][2]
 		overlays_standing[BACK_LAYER] = back_overlay

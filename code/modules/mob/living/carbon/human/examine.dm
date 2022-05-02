@@ -442,12 +442,6 @@
 	if (flavor_text_link)
 		. += flavor_text_link
 
-	if(client)
-		var/erp_status_pref = client.prefs.read_preference(/datum/preference/choiced/erp_status)
-		if(erp_status_pref && erp_status_pref != "disabled")
-			. += span_notice("ERP STATUS: [erp_status_pref]")
-	//PARIAH EDIT END
-
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
 /mob/living/proc/status_effect_examines(pronoun_replacement) //You can include this in any mob's examine() to show the examine texts of status effects!

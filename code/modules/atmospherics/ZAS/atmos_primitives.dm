@@ -22,7 +22,7 @@
 
 // Will not bother pumping or filtering if the gas source as fewer than this amount of moles, to help with performance.
 #define MINIMUM_MOLES_TO_PUMP   0.01
-#define MINIMUM_MOLES_TO_FILTER 0.04
+#define MINIMUM_MOLES_TO_FILTER 0.04 //0.04
 
 
 /obj/machinery/atmospherics/var/debug = 0
@@ -206,6 +206,7 @@
 	var/total_unfilterable_moles = 0	//the total amount of non-filterable gas
 	var/list/specific_power_gas = list()	//the power required to remove one mole of pure gas, for each gas type
 	for (var/g in source.getGases())
+		source.gas[g] = QUANTIZE(source.gas[g]) //Reforged note: Gas can no longer leak through filters. Thats actually "intentional" behavior, but it annoyed the fuck out of me and i need sterile testing environments.
 		if (source.gas[g] < MINIMUM_MOLES_TO_FILTER)
 			continue
 
@@ -247,7 +248,6 @@
 	var/unfiltered_power_used = 0	//power used to move unfilterable gas to sink_clean
 	for (var/g in removed.gas)
 		var/power_used = specific_power_gas[g]*removed.gas[g]
-
 		if (g in filtering)
 			//use update=0. All the filtered gasses are supposed to be added simultaneously, so we update after the for loop.
 			sink_filtered.adjustGasWithTemp(g, removed.gas[g], removed.temperature, update=0)

@@ -140,19 +140,19 @@ export const RADIO_CHANNELS = [
 
 const GASES = [
   {
-    'id': 'o2',
+    'id': 'oxygen',
     'name': 'Oxygen',
     'label': 'O₂',
     'color': 'blue',
   },
   {
-    'id': 'n2',
+    'id': 'nitrogen',
     'name': 'Nitrogen',
     'label': 'N₂',
     'color': 'red',
   },
   {
-    'id': 'co2',
+    'id': 'carbon_dioxide',
     'name': 'Carbon Dioxide',
     'label': 'CO₂',
     'color': 'grey',
@@ -164,7 +164,7 @@ const GASES = [
     'color': 'pink',
   },
   {
-    'id': 'water_vapor',
+    'id': 'steam',
     'name': 'Water Vapor',
     'label': 'H₂O',
     'color': 'lightsteelblue',
@@ -176,15 +176,15 @@ const GASES = [
     'color': 'teal',
   },
   {
-    'id': 'n2o',
+    'id': 'sleeping_agent',
     'name': 'Nitrous Oxide',
     'label': 'N₂O',
     'color': 'bisque',
   },
   {
-    'id': 'no2',
-    'name': 'Nitrium',
-    'label': 'Nitrium',
+    'id': 'nitrodioxide',
+    'name': 'Nitrogen Dioxide',
+    'label': 'Nitrodioxide',
     'color': 'brown',
   },
   {
@@ -257,6 +257,72 @@ const GASES = [
     'id': 'antinoblium',
     'name': 'Antinoblium',
     'label': 'Anti-Noblium',
+    'color': 'maroon',
+  },
+  {
+    'id': 'carbon_monoxide',
+    'name': 'Carbon Monoxide',
+    'label': 'CO',
+    'color': 'maroon',
+  },
+  {
+    'id': 'methyl_bromide',
+    'name': 'Methyl Bromide',
+    'label': 'NO₂',
+    'color': 'maroon',
+  },
+  {
+    'id': 'methane',
+    'name': 'Methane',
+    'label': 'CH₄',
+    'color': 'maroon',
+  },
+  {
+    'id': 'methane',
+    'name': 'Methane',
+    'label': 'CH₄',
+    'color': 'maroon',
+  },
+  {
+    'id': 'argon',
+    'name': 'Argon',
+    'label': 'Ar',
+    'color': 'maroon',
+  },
+  {
+    'id': 'krypton',
+    'name': 'Krypton',
+    'label': 'Kr',
+    'color': 'maroon',
+  },
+  {
+    'id': 'xenon',
+    'name': 'Xenon',
+    'label': 'Xe',
+    'color': 'maroon',
+  },
+  {
+    'id': 'neon',
+    'name': 'Neon',
+    'label': 'Ne',
+    'color': 'maroon',
+  },
+  {
+    'id': 'ammonia',
+    'name': 'Ammonia',
+    'label': 'NH₃',
+    'color': 'maroon',
+  },
+  {
+    'id': 'chlorine',
+    'name': 'Chlorine',
+    'label': 'Cl',
+    'color': 'maroon',
+  },
+  {
+    'id': 'sulfurdioxide',
+    'name': 'Chlorine',
+    'label': 'SO₂',
     'color': 'maroon',
   },
 ];

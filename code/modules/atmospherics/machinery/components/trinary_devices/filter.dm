@@ -99,13 +99,18 @@
 	// If no filter is set, we just try to forward everything to air3 to avoid gas being outright lost.
 	if(filtering)
 		var/datum/gas_mixture/filtered_out = new
-		filter_gas(filtering, removed, filtered_out, removed, null, INFINITY)
-		// Send things to the side output if we can, return them to the input if we can't.
+		var/datum/gas_mixture/merge_to
+				// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
 		if (side_output_full)
-			air1.merge(filtered_out)
+			merge_to = air1
 		else
-			air2.merge(filtered_out)
+			merge_to = air2
+		var/transfer_moles = calculate_transfer_moles(removed, merge_to, transfer_rate - merge_to.returnPressure())
+		filter_gas(filter_type, removed, filtered_out, removed, transfer_moles)
+		// Send things to the side output if we can, return them to the input if we can't.
+		// This means that other gases continue to flow to the main output if the side output is blocked.
+		merge_to.merge(filtered_out)
 		// Make sure we don't send any now-empty gas entries to the main output
 
 	// Send things to the main output if we can, return them to the input if we can't.
@@ -135,8 +140,8 @@
 	data["max_rate"] = round(MAX_TRANSFER_RATE)
 
 	data["filter_types"] = list()
-	for(var/gas in GLOB.all_gases)
-		data["filter_types"] += list(list("name" = xgm_gas_data[gas], "enabled" = (gas in filter_type)))
+	for(var/gas in GLOB.common_gases)
+		data["filter_types"] += list(list("name" = xgm_gas_data.name[gas], "gas_id" = gas, "enabled" = (gas in filter_type)))
 
 	return data
 

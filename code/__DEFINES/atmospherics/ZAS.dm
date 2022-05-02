@@ -47,8 +47,7 @@ GLOBAL_REAL(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 	} \
 	else if (A.contents.len) { \
 		ret = 0;\
-		for (var/thing in A) { \
-			var/atom/movable/AM = thing; \
+		for (var/atom/movable/AM as anything in A) { \
 			switch (AM.can_atmos_pass) { \
 				if (CANPASS_ALWAYS) { \
 					continue; \
@@ -84,8 +83,7 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 	} \
 	else if (A.contents.len) { \
 		ret = 0;\
-		for (var/thing in A) { \
-			var/atom/movable/AM = thing; \
+		for (var/atom/movable/AM as anything in A) { \
 			switch (AM.can_atmos_pass) { \
 				if (CANPASS_ALWAYS) { \
 					continue; \
@@ -256,7 +254,7 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 
 GLOBAL_LIST_INIT(all_gases, list(GAS_OXYGEN, GAS_CO2, GAS_CO, GAS_METHYL_BROMIDE, GAS_N2O, GAS_NITROGEN, GAS_NO, GAS_METHANE, GAS_ALIEN, GAS_HYDROGEN, GAS_DEUTERIUM, GAS_TRITIUM, GAS_HELIUM, GAS_ARGON, GAS_KRYPTON, GAS_NEON, GAS_XENON, GAS_AMMONIA, GAS_CHLORINE, GAS_SULFUR, GAS_STEAM, GAS_PLASMA))
 GLOBAL_LIST_INIT(common_gases, list(GAS_OXYGEN, GAS_CO2, GAS_N2O, GAS_PLASMA, GAS_NITROGEN))
-GLOBAL_LIST_INIT(noble_gases, list(GAS_HELIUM, GAS_HELIUM, GAS_ARGON, GAS_NEON, GAS_KRYPTON))
+GLOBAL_LIST_INIT(noble_gases, list(GAS_HELIUM, GAS_ARGON, GAS_NEON, GAS_KRYPTON))
 
 GLOBAL_LIST_INIT(reverse_dir, list( // reverse_dir[dir] = reverse of dir
 	     2,  1,  3,  8, 10,  9, 11,  4,  6,  5,  7, 12, 14, 13, 15,

@@ -8,7 +8,7 @@
 			var/datum/gas_mixture/mix = T.return_air()
 			to_chat(mob,span_admin( "ZASDBG_MAIN: [mix.returnPressure()] kPa [mix.temperature]C"))
 			for(var/g in mix.gas)
-				to_chat(mob, span_admin("ZASDBG_GAS:[g]: [mix.gas[g]]\n"))
+				to_chat(mob, span_admin("ZASDBG_GAS: [g]: [mix.gas[g]]\n"))
 	else
 		if(zone_debug_images)
 			for(var/zone in  zone_debug_images)
@@ -43,13 +43,10 @@
 			to_chat(mob, "No air passage :x")
 		return
 
-	//var/turf/simulated/other_turf = get_step(T, direction_list[direction]) ZASTURF
 	var/turf/other_turf = get_step(T, direction_list[direction])
 	if(istype(other_turf, /turf/open/space))
 		return
 
-	//var/t_block = T.zas_canpass(other_turf)
-//	var/o_block = other_turf.zas_canpass(T)
 	var/t_block
 	ATMOS_CANPASS_TURF(t_block, T, other_turf)
 	var/o_block

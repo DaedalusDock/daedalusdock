@@ -161,7 +161,8 @@
 			var/list/cached_gases = air.gas
 			for(var/id in cached_gases)
 				var/gas_concentration = cached_gases[id]/total_moles
-				message += span_notice("[id]: [round(air.getGroupGas(id), 0.01)] mol ([round(gas_concentration*100, 0.01)] %)")
+				var/amount = round(air.gas[id], 0.01)
+				message += span_notice("[xgm_gas_data.name[id]]: [amount >= 0.01 ? "[amount] mol" : "Trace amounts." ] ([round(gas_concentration*100, 0.01)] %)")
 			message += span_notice("Temperature: [round(temperature - T0C,0.01)] &deg;C ([round(temperature, 0.01)] K)")
 			message += span_notice("Volume: [volume] L")
 			message += span_notice("Pressure: [round(pressure, 0.01)] kPa")

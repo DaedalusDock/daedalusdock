@@ -423,3 +423,6 @@
 		if(open_directions & dir)
 			adjacent_turfs += get_step(src, dir)
 	return length(adjacent_turfs) ? adjacent_turfs : null
+
+/turf/open/return_analyzable_air()
+	return return_air()

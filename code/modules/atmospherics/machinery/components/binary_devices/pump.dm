@@ -64,8 +64,9 @@
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
-	var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	if(pump_gas(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)))
+	//var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
+	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure(), air2 ? air2.volume : 0)
+	if(pump_gas(air1, air2, transfer_moles))
 		update_parents()
 
 /**

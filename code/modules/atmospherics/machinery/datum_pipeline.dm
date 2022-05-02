@@ -241,9 +241,7 @@
 
 	var/total_thermal_energy = 0
 	var/total_heat_capacity = 0
-	var/datum/gas_mixture/total_gas_mixture = new
-
-	var/list/total_gases = total_gas_mixture.gas
+	var/datum/gas_mixture/total_gas_mixture = new(0)
 
 	for(var/datum/gas_mixture/gas_mixture as anything in gas_mixture_list)
 		total_gas_mixture.volume += gas_mixture.volume

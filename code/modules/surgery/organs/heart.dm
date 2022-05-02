@@ -97,6 +97,11 @@
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)
 
+/obj/item/organ/heart/skrell
+	name = "skrell heart"
+	icon_state = "heart-skrell"
+	beating = FALSE
+
 /obj/item/organ/heart/cursed
 	name = "cursed heart"
 	desc = "A heart that, when inserted, will force you to pump it manually."

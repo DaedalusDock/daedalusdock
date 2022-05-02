@@ -215,6 +215,13 @@
 	toxLethality = 2.5 * LIVER_DEFAULT_TOX_LETHALITY // rejects its owner early after too much punishment
 	toxTolerance = 15 // complete toxin immunity like xenos have would be too powerful
 
+/obj/item/organ/liver/skrell
+	name = "skrell liver"
+	icon_state = "liver-skrell"
+	alcohol_tolerance = 5
+	toxTolerance = 10 //can shrug off up to 10u of toxins.
+	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
+
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"

@@ -236,3 +236,23 @@
 		.["shuttle_timer"] = SSshuttle.emergency.timeLeft()
 		// Shuttle timer, in seconds
 
+//Status Cog Support Code
+/datum/world_topic/whois
+	keyword = "whoIs"
+
+/datum/world_topic/whois/Run(list/input)
+	. = list()
+	.["players"] = GLOB.clients
+
+	return list2params(.)
+
+/datum/world_topic/getadmins
+	keyword = "getAdmins"
+
+/datum/world_topic/getadmins/Run(list/input)
+	. = list()
+	var/list/adm = get_admin_counts()
+	.["admins"] = adm["present"]
+	.["admins"] += adm["afk"]
+
+	return list2params(.)

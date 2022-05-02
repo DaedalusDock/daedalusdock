@@ -201,7 +201,13 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	//ZAS Debug Verbs
 	/client/proc/Zone_Info, //Right-Click Gas Debug Info
 	/client/proc/Test_ZAS_Connection, //ZAS Connection Test
+	/client/proc/jumptocoord,
+	/client/proc/jumptokey,
+	/client/proc/jumptoarea,
+	/client/proc/admin_ghost,
+	/client/proc/cmd_admin_create_centcom_report,
 	)
+
 GLOBAL_LIST_INIT(admin_verbs_possess, list(/proc/possess, /proc/release))
 GLOBAL_PROTECT(admin_verbs_possess)
 GLOBAL_LIST_INIT(admin_verbs_permissions, list(/client/proc/edit_admin_permissions))

@@ -1152,3 +1152,6 @@
 
 /mob/living/carbon/human/species/zombie/infectious
 	race = /datum/species/zombie/infectious
+
+/mob/living/carbon/human/species/skrell
+	race = /datum/species/skrell

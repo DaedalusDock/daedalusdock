@@ -29,10 +29,13 @@
 	name = "implanter (EMP)"
 	imp_type = /obj/item/implant/emp
 
+/obj/item/radio/implanted
+	handsfree = TRUE
+
 /obj/item/implant/radio
 	name = "internal radio implant"
 	activated = TRUE
-	var/obj/item/radio/radio
+	var/obj/item/radio/implanted/radio
 	var/radio_key
 	var/subspace_transmission = FALSE
 	icon = 'icons/obj/radio.dmi'

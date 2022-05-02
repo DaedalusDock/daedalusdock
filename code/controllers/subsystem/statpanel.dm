@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(statpanels)
 			"Internal Round Timer: [SSticker.round_start_time ? time2text(world.time - SSticker.round_start_time, "hh:mm:ss", 0) : "The round hasn't started yet!"]",
 			"Actual Round Timer: [SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0) : "The round hasn't started yet!"]",
 			"\n",
-			"Playes Playing/Connected: [get_active_player_count()]/[length(GLOB.clients)]"
+			"Players Playing/Connected: [get_active_player_count()]/[length(GLOB.clients)]"
 		)
 
 		if(SSshuttle.emergency)

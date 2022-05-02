@@ -205,8 +205,7 @@
 	var/total_filterable_moles = 0		//the total amount of filterable gas
 	var/total_unfilterable_moles = 0	//the total amount of non-filterable gas
 	var/list/specific_power_gas = list()	//the power required to remove one mole of pure gas, for each gas type
-	for (var/g in source.getGases())
-		source.gas[g] = QUANTIZE(source.gas[g]) //Reforged note: Gas can no longer leak through filters. Thats actually "intentional" behavior, but it annoyed the fuck out of me and i need sterile testing environments.
+	for (var/g in source.gas)
 		if (source.gas[g] < MINIMUM_MOLES_TO_FILTER)
 			continue
 
@@ -232,13 +231,6 @@
 
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
-
-	//Update flow rate var
-	/*
-	if (istype(M, /obj/machinery/atmospherics))
-		var/obj/machinery/atmospherics/A = M
-		A.last_flow_rate = (total_transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	*/
 
 	var/datum/gas_mixture/removed = source.remove(total_transfer_moles)
 	if (!removed) //Just in case

@@ -100,14 +100,13 @@
 	if(filtering)
 		var/datum/gas_mixture/filtered_out = new
 		var/datum/gas_mixture/merge_to
-				// Send things to the side output if we can, return them to the input if we can't.
+		// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
 		if (side_output_full)
 			merge_to = air1
 		else
 			merge_to = air2
-		var/transfer_moles = calculate_transfer_moles(removed, merge_to, transfer_rate - merge_to.returnPressure())
-		filter_gas(filter_type, removed, filtered_out, removed, transfer_moles)
+		filter_gas(filter_type, removed, filtered_out, removed)
 		// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
 		merge_to.merge(filtered_out)

@@ -244,6 +244,8 @@
 	for(var/g in gas)
 		removed.gas[g] = QUANTIZE((gas[g] / total_moles) * amount)
 		gas[g] -= removed.gas[g] / group_multiplier
+		if(gas[g] <= ATMOS_PRECISION) //Removing floating point errors from the equation
+			gas[g] = 0
 
 	removed.temperature = temperature
 	updateValues()

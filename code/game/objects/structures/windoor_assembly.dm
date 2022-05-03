@@ -33,7 +33,7 @@
 	. = ..()
 	if(set_dir)
 		setDir(set_dir)
-	//air_update_turf(TRUE, TRUE)
+	update_nearby_tiles(TRUE)
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = .proc/on_exit,
@@ -47,12 +47,12 @@
 	set_density(FALSE)
 	update_nearby_tiles()
 	return ..()
-/*
+/
 /obj/structure/windoor_assembly/Move()
-	var/turf/T = loc
+	update_nearby_tiles()
 	. = ..()
-	move_update_air(T)
-*/
+	update_nearby_tiles()
+
 /obj/structure/windoor_assembly/update_icon_state()
 	icon_state = "[facing]_[secure ? "secure_" : ""]windoor_assembly[state]"
 	return ..()
@@ -74,7 +74,7 @@
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(get_dir(loc, T) == dir)
-		return density ? AIR_BLOCKED : ZONE_BLOCKED
+		return density ? AIR_BLOCKED|ZONE_BLOCKED : ZONE_BLOCKED
 	else
 		return ZONE_BLOCKED
 

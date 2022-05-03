@@ -83,7 +83,7 @@
 	else
 		return ..()
 
-/obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume)
+/obj/effect/decal/cleanable/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(reagents)
 		reagents.expose_temperature(exposed_temperature)
 	..()

@@ -358,7 +358,12 @@
 		return AIR_ALLOWED
 	if(!anchored || !density)
 		return ZONE_BLOCKED
-	return (fulltile || dir == get_dir(loc, T)) ? AIR_BLOCKED : ZONE_BLOCKED
+	if(!fulltile)
+		if(get_dir(loc, T) & dir)
+			return AIR_BLOCKED|ZONE_BLOCKED
+		else
+			return AIR_ALLOWED
+	return AIR_BLOCKED|ZONE_BLOCKED
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()

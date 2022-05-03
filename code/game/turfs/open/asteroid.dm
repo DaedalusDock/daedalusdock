@@ -148,6 +148,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/airless
 	initial_gas = AIRLESS_ATMOS
+	temperature = T0C
 	baseturfs = /turf/open/misc/asteroid/airless
 	turf_type = /turf/open/misc/asteroid/airless
 

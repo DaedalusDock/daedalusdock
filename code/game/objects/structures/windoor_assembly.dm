@@ -47,7 +47,7 @@
 	set_density(FALSE)
 	update_nearby_tiles()
 	return ..()
-/
+
 /obj/structure/windoor_assembly/Move()
 	update_nearby_tiles()
 	. = ..()

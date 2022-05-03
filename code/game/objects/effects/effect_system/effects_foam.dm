@@ -355,8 +355,8 @@
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		O.ClearWet()
-		if(O.air)
-			var/datum/gas_mixture/G = O.air
+		if(O.return_air())
+			var/datum/gas_mixture/G = O.return_air()
 			G.temperature = 293.15
 			for(var/obj/effect/hotspot/H in O)
 				qdel(H)

@@ -160,7 +160,7 @@ Contains helper procs for airflow, handled in /connection_group.
 
 /atom/proc/airflow_hit_act(atom/movable/flying)
 	src.visible_message(
-		span_danger("A flying [flying] slams into \the [src]!"),
+		span_danger("A flying \improper [flying] slams into \the [src]!"),
 		span_danger("You're hit by a flying [flying]!"),
 		span_danger("You hear a loud slam!")
 	)

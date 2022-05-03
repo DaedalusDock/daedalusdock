@@ -344,6 +344,12 @@
 	update_nearby_icons()
 	can_atmos_pass = CANPASS_ALWAYS //hacky-sacky
 	update_nearby_tiles()
+
+	if(!fulltile)
+		var/turf/open/T = get_step(src, dir)
+		if(istype(T))
+			SSzas.mark_for_update(T)
+
 	. = ..()
 
 /obj/structure/window/Move()

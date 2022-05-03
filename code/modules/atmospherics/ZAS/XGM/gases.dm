@@ -6,7 +6,7 @@
 	flags = XGM_GAS_OXIDIZER | XGM_GAS_FUSION_FUEL
 	symbol_html = "O<sub>2</sub>"
 	symbol = "O2"
-
+	purchaseable = TRUE
 
 /datum/xgm_gas/nitrogen
 	id = GAS_NITROGEN
@@ -15,6 +15,7 @@
 	molar_mass = 0.028	// kg/mol
 	symbol_html = "N<sub>2</sub>"
 	symbol = "N2"
+	purchaseable = TRUE
 
 /datum/xgm_gas/carbon_dioxide
 	id = GAS_CO2
@@ -23,6 +24,7 @@
 	molar_mass = 0.044	// kg/mol
 	symbol_html = "CO<sub>2</sub>"
 	symbol = "CO2"
+	purchaseable = TRUE
 
 /datum/xgm_gas/methyl_bromide
 	id = GAS_METHYL_BROMIDE
@@ -140,6 +142,7 @@
 	molar_mass = 0.018	// kg/mol
 	symbol_html = "Ar"
 	symbol = "Ar"
+	purchaseable = TRUE
 
 // If narcosis is ever simulated, krypton has a narcotic potency seven times greater than regular airmix.
 /datum/xgm_gas/krypton
@@ -149,7 +152,7 @@
 	molar_mass = 0.036	// kg/mol
 	symbol_html = "Kr"
 	symbol = "Kr"
-
+	purchaseable = TRUE
 /datum/xgm_gas/neon
 	id = GAS_NEON
 	name = "Neon"
@@ -157,6 +160,7 @@
 	molar_mass = 0.01	// kg/mol
 	symbol_html = "Ne"
 	symbol = "Ne"
+	purchaseable = TRUE
 
 /datum/xgm_gas/xenon
 	id = GAS_XENON

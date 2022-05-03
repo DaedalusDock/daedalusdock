@@ -80,9 +80,9 @@
 
 	if (pressure_delta > 0.01)
 		if (direction == PUMP_OUT)
-			pump_gas(src, air_contents, environment, transfer_moles)
+			pump_gas(air_contents, environment, transfer_moles)
 		else
-			pump_gas(src, environment, air_contents, transfer_moles)
+			pump_gas(environment, air_contents, transfer_moles)
 	//air_update_turf(FALSE, FALSE) // Update the environment if needed.
 
 	return ..()

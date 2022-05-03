@@ -43,6 +43,20 @@ GLOBAL_LIST_EMPTY(tails_list_monkey)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 GLOBAL_LIST_EMPTY(headtails_list)
 
+
+	//Body sizes//
+#define BODY_SIZE_SHORT 0.93
+#define BODY_SIZE_NORMAL 1
+#define BODY_SIZE_TALL 1.03
+
+	//Body Sizes
+GLOBAL_LIST_INIT(body_sizes, list(
+	"Short" = BODY_SIZE_SHORT,
+	"Normal" = BODY_SIZE_NORMAL,
+	"Tall" = BODY_SIZE_TALL,
+))
+
+
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",
 	"Bright Yellow" = "#ffff99",

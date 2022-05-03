@@ -75,7 +75,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	var/stability = 100
 	///Did we take something like mutagen? In that case we cant get our genes scanned to instantly cheese all the powers.
 	var/scrambled = FALSE
-
+	///Current body size, used for proper re-sizing and keeping track of that
+	var/current_body_size = BODY_SIZE_NORMAL
 
 /datum/dna/New(mob/living/new_holder)
 	if(istype(new_holder))
@@ -122,6 +123,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	new_dna.species = new species.type
 	new_dna.species.species_traits = species.species_traits
 	new_dna.real_name = real_name
+	new_dna.update_body_size() //Must come after features.Copy()
 	// Mutations aren't gc managed, but they still aren't templates
 	// Let's do a proper copy
 	for(var/datum/mutation/human/mutation in mutations)
@@ -456,6 +458,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	return
 
 /////////////////////////// DNA MOB-PROCS //////////////////////
+/datum/dna/proc/update_body_size()
+	if(!holder || !features["body_size"])
+		return
+	var/desired_size = GLOB.body_sizes[features["body_size"]]
+
+	if(desired_size == current_body_size)
+		return
+
+	var/change_multiplier = desired_size / current_body_size
+	var/translate = ((change_multiplier-1) * 32) * 0.5
+	holder.transform = holder.transform.Scale(change_multiplier)
+	holder.transform = holder.transform.Translate(0, translate)
+	current_body_size = desired_size
 
 /mob/proc/set_species(datum/species/mrace, icon_update = 1)
 	return

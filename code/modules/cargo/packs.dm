@@ -1134,6 +1134,17 @@
 
 		canister_packs += pack
 
+	////AIRMIX SPECIAL BABY
+	var/datum/supply_pack/materials/airpack = new
+	airpack.name = "Airmix Canister"
+	airpack.desc = "Contains a canister of breathable air."
+	airpack.crate_name = "airmix canister crate"
+	airpack.id = "[type](airmix)"
+	airpack.cost = 3000
+	airpack.contains = list(/obj/machinery/portable_atmospherics/canister/air)
+	airpack.crate_type = crate_type
+	canister_packs += airpack
+
 	return canister_packs
 
 //////////////////////////////////////////////////////////////////////////////

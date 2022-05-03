@@ -10,6 +10,11 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		GAS_CO2 = /obj/machinery/portable_atmospherics/canister/carbon_dioxide,
 		GAS_PLASMA = /obj/machinery/portable_atmospherics/canister/plasma,
 		GAS_N2O = /obj/machinery/portable_atmospherics/canister/nitrous_oxide,
+		GAS_XENON = /obj/machinery/portable_atmospherics/canister/xenon,
+		GAS_KRYPTON = /obj/machinery/portable_atmospherics/canister/krypton,
+		GAS_ARGON = /obj/machinery/portable_atmospherics/canister/argon,
+		GAS_CHLORINE = /obj/machinery/portable_atmospherics/canister/chlorine,
+		GAS_NEON = /obj/machinery/portable_atmospherics/canister/neon,
 		/*"nitrium" = /obj/machinery/portable_atmospherics/canister/nitrium,
 		"bz" = /obj/machinery/portable_atmospherics/canister/bz,
 		"air" = /obj/machinery/portable_atmospherics/canister/air,
@@ -166,50 +171,19 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	gas_type = GAS_CO
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#808080"
-/*
-/obj/machinery/portable_atmospherics/canister/freon
-	name = "Freon canister"
-	gas_type = /datum/gas/freon
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/double_stripe
-	greyscale_colors = "#6696ee#fefb30"
 
-/obj/machinery/portable_atmospherics/canister/halon
-	name = "Halon canister"
-	gas_type = /datum/gas/halon
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/double_stripe
-	greyscale_colors = "#9b5d7f#368bff"
+/obj/machinery/portable_atmospherics/canister/xenon
+	name = "Xenon canister"
+	gas_type = GAS_XENON
+	greyscale_config = /datum/greyscale_config/canister
+	greyscale_colors = "#808080"
 
-/obj/machinery/portable_atmospherics/canister/healium
-	name = "Healium canister"
-	gas_type = /datum/gas/healium
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/double_stripe
-	greyscale_colors = "#009823#ff0e00"
+/obj/machinery/portable_atmospherics/canister/krypton
+	name = "Krypton canister"
+	gas_type = GAS_KRYPTON
+	greyscale_config = /datum/greyscale_config/canister
+	greyscale_colors = "#44E022"
 
-/obj/machinery/portable_atmospherics/canister/helium
-	name = "Helium canister"
-	gas_type = /datum/gas/helium
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/double_stripe
-	greyscale_colors = "#9b5d7f#368bff"
-*/
-/*
-/obj/machinery/portable_atmospherics/canister/hydrogen
-	name = "Hydrogen canister"
-	gas_type = GAS_HYDROGEN
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/stripe
-	greyscale_colors = "#bdc2c0#ffffff"
-
-/obj/machinery/portable_atmospherics/canister/miasma
-	name = "Miasma canister"
-	gas_type = /datum/gas/miasma
-	filled = 1
-	greyscale_config = /datum/greyscale_config/canister/double_stripe
-	greyscale_colors = "#009823#f7d5d3"
-*/
 /obj/machinery/portable_atmospherics/canister/nitrogen
 	name = "Nitrogen canister"
 	gas_type = GAS_NITROGEN
@@ -227,6 +201,19 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	gas_type = GAS_CHLORINE
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#b9d41b"
+
+/obj/machinery/portable_atmospherics/canister/argon
+	name = "Argon canister"
+	gas_type = GAS_ARGON
+	greyscale_config = /datum/greyscale_config/canister
+	greyscale_colors = "#CC4DCD"
+
+/obj/machinery/portable_atmospherics/canister/neon
+	name = "Neon canister"
+	gas_type = GAS_NEON
+	greyscale_config = /datum/greyscale_config/canister
+	greyscale_colors = "#FF825C"
+
 /*
 /obj/machinery/portable_atmospherics/canister/nitrium
 	name = "Nitrium canister"

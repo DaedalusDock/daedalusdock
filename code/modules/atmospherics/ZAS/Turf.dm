@@ -51,7 +51,7 @@
 			//var/turf/simulated/sim = unsim
 			if(TURF_HAS_VALID_ZONE(unsim))
 				SSzas.connect(unsim, src)
-
+/*
 ///Yes. Massive copy paste. Pain.
 /turf/open/space/update_air_properties()
 	var/block
@@ -82,10 +82,11 @@
 		if(r_block & AIR_BLOCKED)
 			continue
 
-		if(!istype(unsim, /turf/open/space))
+		if(unsim.simulated)
 			var/turf/sim = unsim
 			if(TURF_HAS_VALID_ZONE(sim))
 				SSzas.connect(sim, src)
+*/
 
 // Helper for can_safely_remove_from_zone().
 //ZASTURF - MACRO IM NOT COMMENTING THIS SHIT OUT
@@ -94,7 +95,7 @@
 	if (T.zone) { \
 		for (var/_gzn_dir in gzn_check) { \
 			var/turf/other = get_step(T, _gzn_dir); \
-			if (!istype(other, /turf/open/space) && other.zone == T.zone) { \
+			if (other.simulated && other.zone == T.zone) { \
 				var/block; \
 				ATMOS_CANPASS_TURF(block, other, T); \
 				if (!(block & AIR_BLOCKED)) { \
@@ -125,7 +126,7 @@
 			//var/turf/simulated/T = get_step(src, dir) ZASTURF
 			var/turf/T = get_step(src, dir)
 			//if (!istype(T)) ZASTURF
-			if (istype(T, /turf/open/space) || !T.simulated)
+			if (!T.simulated)
 				. &= ~dir
 				continue
 
@@ -204,7 +205,7 @@
 			//Check that our zone hasn't been cut off recently.
 			//This happens when windows move or are constructed. We need to rebuild.
 			//if((previously_open & d) && istype(unsim, /turf/simulated)) ZAS
-			if((previously_open & d) && !istype(unsim, /turf/open/space))
+			if((previously_open & d) && unsim.simulated)
 				var/turf/sim = unsim
 				if(zone && sim.zone == zone)
 					zone.rebuild()
@@ -215,7 +216,7 @@
 		open_directions |= d
 
 		//if(istype(unsim, /turf/simulated)) ZASTURF
-		if(!istype(unsim, /turf/open/space))
+		if(unsim.simulated)
 
 			var/turf/sim = unsim
 			sim.open_directions |= GLOB.reverse_dir[d]
@@ -313,9 +314,6 @@
 			make_air()
 		return air
 
-/turf/open/space/return_air()
-	return air
-
 /turf/remove_air(amount as num)
 	var/datum/gas_mixture/GM = return_air()
 	return GM.remove(amount)
@@ -374,15 +372,11 @@
 		air.gas = initial_gas.Copy()
 	air.updateValues()
 
-//turf/simulated/proc/c_copy_air() ZASTURF
 /turf/proc/c_copy_air()
 	if(!air) air = new/datum/gas_mixture
 	air.copyFrom(zone.air)
 	air.group_multiplier = 1
 
-/*/turf/open/space/c_copy_air()
-	return
-*/
 
 //turf/simulated/proc/atmos_spawn_air(gas_id, amount, initial_temperature) ZASTURF
 /turf/proc/atmos_spawn_air(gas_id, amount, initial_temperature)

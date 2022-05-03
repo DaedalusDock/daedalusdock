@@ -107,7 +107,7 @@ Class Procs:
 
 /connection/proc/update()
 //	log_admin("Updated, \...")
-	if(istype(A,/turf/open/space))
+	if(!A.simulated)
 //		log_admin("Invalid A.")
 		erase()
 		return
@@ -122,7 +122,7 @@ Class Procs:
 	else
 		mark_direct()
 
-	var/b_is_space = istype(B,/turf/open/space)
+	var/b_is_space = !B.simulated
 
 	if(state & CONNECTION_SPACE)
 		if(!b_is_space)

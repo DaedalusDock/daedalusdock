@@ -92,7 +92,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	changing_turf = TRUE
 
 	if(connections) connections.erase_all()
-	if(!istype(src, /turf/open/space))
+	if(simulated)
 		//Yeah, we're just going to rebuild the whole thing.
 		//Despite this being called a bunch during explosions,
 		//the zone will only really do heavy lifting once.

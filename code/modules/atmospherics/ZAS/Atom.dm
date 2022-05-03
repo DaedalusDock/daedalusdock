@@ -17,7 +17,7 @@
 /atom/movable/proc/update_nearby_tiles(need_rebuild)
 	//for(var/turf/simulated/turf in locs) ZASTURF
 	for(var/turf/turf in locs)
-		if(istype(turf, /turf/open/space))
+		if(!turf.simulated)
 			continue
 		SSzas.mark_for_update(turf)
 
@@ -35,10 +35,6 @@
 	#endif
 	if(can_atmos_pass == CANPASS_PROC)
 		CRASH("Atmos pass assigned proc when proc doesn't exist.")
-	//var/direction = get_dir(src, other)
-	//return (AIR_BLOCKED*!CanPass(null, other, 0, 0))|(ZONE_BLOCKED*!CanPass(null, other, 1.5, 1))
-	//return (AIR_BLOCKED*!CanPass(other, direction, 0))|(ZONE_BLOCKED*!CanPass(other, direction, 1))
-	return (AIR_BLOCKED*!ATMOS_CANPASS_NOTTURF(src))
 
 // This is a legacy proc only here for compatibility - you probably should just use ATMOS_CANPASS_TURF directly.
 /turf/zas_canpass(turf/other)

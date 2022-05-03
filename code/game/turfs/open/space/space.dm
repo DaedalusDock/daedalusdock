@@ -14,7 +14,8 @@
 	var/destination_x
 	var/destination_y
 
-	var/static/datum/gas_mixture/immutable/space_gas = new
+	initial_gas = AIRLESS_ATMOS
+
 	// run_later = TRUE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
@@ -35,7 +36,6 @@
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
 	icon_state = SPACE_ICON_STATE
-	air = space_gas
 	vis_contents.Cut() //removes inherited overlays
 	visibilityChanged()
 

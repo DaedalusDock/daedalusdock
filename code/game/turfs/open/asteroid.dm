@@ -14,7 +14,7 @@
 	clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-	simulated = FALSE //OHHH HELLLL NAW
+	simulated = TRUE //Kilostation
 
 	/// Base turf type to be created by the tunnel
 	var/turf_type = /turf/open/misc/asteroid
@@ -108,6 +108,9 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	digResult = /obj/item/stack/ore/glass/basalt
 	broken_state = "basalt_dug"
 
+	initial_gas = LAVALAND_DEFAULT_ATMOS
+	simulated = FALSE //OH *FUCK* NO.
+
 /turf/open/misc/asteroid/basalt/getDug()
 	set_light(0)
 	GLOB.dug_up_basalt |= src
@@ -149,6 +152,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 /turf/open/misc/asteroid/airless
 	initial_gas = AIRLESS_ATMOS
 	temperature = T0C
+
 	baseturfs = /turf/open/misc/asteroid/airless
 	turf_type = /turf/open/misc/asteroid/airless
 
@@ -164,6 +168,10 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	temperature = 180
 	slowdown = 2
 	flags_1 = NONE
+
+	simulated = FALSE
+	initial_gas = ICEMOON_DEFAULT_ATMOS
+
 	planetary_atmos = TRUE
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null
@@ -181,11 +189,9 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/openspace/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 	slowdown = 0
 
 /turf/open/lava/plasma/ice_moon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 	baseturfs = /turf/open/lava/plasma/ice_moon
 	planetary_atmos = TRUE
 
@@ -206,7 +212,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/snow/ice/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 	planetary_atmos = TRUE
 	slowdown = 0
 
@@ -229,4 +234,5 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/snow/standard_air
 	initial_gas = OPENTURF_DEFAULT_ATMOS
+	temperature = T0C
 	planetary_atmos = FALSE

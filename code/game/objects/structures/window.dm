@@ -390,7 +390,7 @@
 
 /obj/structure/window/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if (exposed_temperature > melting_point)
-		take_damage(round(air.get_volume() / 100), BURN, 0, 0)
+		take_damage(round(air.get_volume() / 100), BURN, 0, 0) //The max of 9 is to ensure it takes 4 ticks to destroy, which is incredibly dramatic
 
 /obj/structure/window/get_dumping_location()
 	return null

@@ -1,7 +1,7 @@
 /client/proc/Zone_Info(turf/T as null|turf)
 	set category = "Debug"
 	if(T)
-		if(!istype(T,/turf/open/space) && T:zone) //ZASTURF
+		if(T.simulated && T:zone) //ZASTURF
 			T:zone:dbg_data(src)
 		else
 			to_chat(mob, span_admin("ZASDBG: No zone here."))
@@ -19,7 +19,7 @@
 
 /client/proc/Test_ZAS_Connection(turf/T as turf) //ZASTURF
 	set category = "Debug"
-	if(istype(T, /turf/open/space)) //ZASTURF
+	if(!T.simulated) //ZASTURF
 		return
 
 	var/direction_list = list(\
@@ -44,7 +44,7 @@
 		return
 
 	var/turf/other_turf = get_step(T, direction_list[direction])
-	if(istype(other_turf, /turf/open/space))
+	if(!other_turf.simulated)
 		return
 
 	var/t_block

@@ -15,6 +15,8 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
 	plane = GAME_PLANE_FOV_HIDDEN
+	simulated = FALSE
+
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
 	var/hitsound_wall = ""

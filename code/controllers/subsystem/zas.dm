@@ -377,7 +377,7 @@ SUBSYSTEM_DEF(zas)
 //datum/controller/subsystem/zas/proc/connect(turf/simulated/A, turf/simulated/B) //ZASTURF
 /datum/controller/subsystem/zas/proc/connect(turf/A, turf/B)
 	#ifdef ZASDBG
-	ASSERT(!istype(A, /turf/open/space))
+	ASSERT(A.simulated)
 	ASSERT(isturf(B))
 	ASSERT(A.zone)
 	ASSERT(!A.zone.invalid)

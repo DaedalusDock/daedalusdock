@@ -9,10 +9,12 @@ Contains helper procs for airflow, handled in /connection_group.
 /mob/living/airflow_stun()
 	if(stat == 2)
 		return 0
-	if(last_airflow_stun > world.time - SSzas.settings.airflow_stun_cooldown)	return 0
+	if(last_airflow_stun > world.time - SSzas.settings.airflow_stun_cooldown)
+		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
+		return 0
 
 	if(!(status_flags & CANSTUN) && !(status_flags & CANKNOCKDOWN))
-		to_chat(src, "<span class='notice'>You stay upright as the air rushes past you.</span>")
+		to_chat(src, "<span class='notice'>Air suddenly rushes past you, but you manage to keep your footing!</span>")
 		return 0
 	if(buckled)
 		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
@@ -20,7 +22,7 @@ Contains helper procs for airflow, handled in /connection_group.
 	if(!body_position == LYING_DOWN)
 		to_chat(src, "<span class='warning'>The sudden rush of air knocks you over!</span>")
 
-	Knockdown(5)
+	Knockdown(SSzas.settings.airflow_stun SECONDS)
 	last_airflow_stun = world.time
 
 /mob/living/silicon/airflow_stun()
@@ -29,35 +31,8 @@ Contains helper procs for airflow, handled in /connection_group.
 /mob/living/carbon/slime/airflow_stun()
 	return
 
-/mob/living/carbon/human/airflow_stun()
-	if(!slip_chance())
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
-		return 0
-	..()
-
 /atom/movable/proc/experience_pressure_difference()
 	return
-
-/mob/proc/slip_chance()
-	return
-
-/mob/living/carbon/human/slip_chance(prob_slip = 50)
-	if(stat)
-		return FALSE
-	if(buckled)
-		return FALSE
-	if(shoes)
-		var/obj/item/clothing/myshoes = shoes
-		if(myshoes.clothing_flags & NOSLIP|NOSLIP_ICE)
-			return FALSE
-
-	if(m_intent == MOVE_INTENT_RUN) //No running in the halls!
-		prob_slip *= 2
-
-	if(HAS_TRAIT(src, TRAIT_NOSLIPALL))
-		return
-
-	return prob(prob_slip)
 
 /atom/movable/proc/check_airflow_movable(n)
 

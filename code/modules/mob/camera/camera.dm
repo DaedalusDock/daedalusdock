@@ -10,6 +10,7 @@
 	invisibility = INVISIBILITY_ABSTRACT // No one can see us
 	sight = SEE_SELF
 	move_on_shuttle = FALSE
+	simulated = FALSE
 
 /mob/camera/Initialize(mapload)
 	. = ..()
@@ -18,6 +19,7 @@
 /mob/camera/experience_pressure_difference()
 	return
 */
+
 /mob/camera/canUseStorage()
 	return FALSE
 

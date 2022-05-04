@@ -131,8 +131,7 @@
 					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
 	check_breath(breath)
-
-	if(breath)
+	if(breath.total_moles)
 		breath.updateValues()
 		loc.assume_air(breath)
 

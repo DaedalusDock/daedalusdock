@@ -124,12 +124,14 @@
 	var/N2_moles = breath.gas[GAS_NITROGEN]
 	var/plasma_moles = breath.gas[GAS_PLASMA]
 	var/CO2_moles = breath.gas[GAS_CO2]
+	var/SA_moles = breath.gas[GAS_N2O]
+
 
 	var/O2_pp = breath.getBreathPartialPressure(O2_moles)//+(8*breath.getBreathPartialPressure(breath_gases[/datum/gas/pluoxium][MOLES]))
 	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
-
+	var/SA_pp = breath.getBreathPartialPressure(SA_moles)
 	//Vars for n2o and healium induced euphorias.
 	var/n2o_euphoria = EUPHORIA_LAST_FLAG
 	var/healium_euphoria = EUPHORIA_LAST_FLAG
@@ -158,8 +160,8 @@
 			breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
 	//Exhale
-	breath.adjustGas(GAS_OXYGEN, -gas_breathed)
-	breath.adjustGas(GAS_CO2, gas_breathed)
+	breath.adjustGas(GAS_OXYGEN, -gas_breathed, FALSE)
+	breath.adjustGas(GAS_CO2, gas_breathed, FALSE)
 	gas_breathed = 0
 
 	//-- Nitrogen --//
@@ -186,8 +188,8 @@
 			breather.clear_alert(ALERT_NOT_ENOUGH_NITRO)
 
 	//Exhale
-	breath.adjustGas(GAS_NITROGEN, -gas_breathed)
-	breath.adjustGas(GAS_CO2, gas_breathed)
+	breath.adjustGas(GAS_NITROGEN, -gas_breathed, FALSE)
+	breath.adjustGas(GAS_CO2, gas_breathed, FALSE)
 	gas_breathed = 0
 
 	//-- CO2 --//
@@ -223,8 +225,8 @@
 			breather.clear_alert(ALERT_NOT_ENOUGH_CO2)
 
 	//Exhale
-	breath.adjustGas(GAS_CO2, -gas_breathed)
-	breath.adjustGas(GAS_OXYGEN, gas_breathed)
+	breath.adjustGas(GAS_CO2, -gas_breathed, FALSE)
+	breath.adjustGas(GAS_OXYGEN, gas_breathed, FALSE)
 	gas_breathed = 0
 
 
@@ -253,18 +255,16 @@
 			breather.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 
 	//Exhale
-	breath.adjustGas(GAS_PLASMA, -gas_breathed)
-	breath.adjustGas(GAS_CO2, gas_breathed)
+	breath.adjustGas(GAS_PLASMA, -gas_breathed, FALSE)
+	breath.adjustGas(GAS_CO2, gas_breathed, FALSE)
 	gas_breathed = 0
 
 
 	//-- TRACES --//
-
-	if(breath) // If there's some other shit in the air lets deal with it here.
+	breath.updateValues()
+	if(breath.total_moles) // If there's some other shit in the air lets deal with it here.
 
 	// N2O
-		var/n2o_moles = breath.gas[GAS_N2O]
-		var/SA_pp = breath.getBreathPartialPressure(n2o_moles)
 		if(SA_pp > SA_para_min) // Enough to make us stunned for a bit
 			breather.throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
 			breather.Unconscious(60) // 60 gives them one second to wake up and run away a bit!

@@ -66,7 +66,7 @@
 	molar_mass = 0.044	// kg/mol. N2O
 	tile_overlay = "sleeping_agent"
 	flags = XGM_GAS_OXIDIZER //N2O is a powerful oxidizer
-	breathed_product = /datum/reagent/nitrous_oxide
+	//breathed_product = /datum/reagent/nitrous_oxide
 	symbol_html = "N<sub>2</sub>O"
 	symbol = "N2O"
 	base_value = 3

@@ -43,10 +43,14 @@
 
 // Copper restores blood for Skrell instead of iron.
 /datum/species/skrell/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
+	. = ..()
 	if(chem.type == /datum/reagent/copper)
-		H.blood_volume += 0.5 * delta_time
+		if(H.blood_volume < BLOOD_VOLUME_NORMAL)
+			H.blood_volume += 0.5 * delta_time
+		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
 		return TRUE
 	if(chem.type == /datum/reagent/iron)
+		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
 		return TRUE
 
 /datum/species/skrell/random_name(gender, unique, lastname, attempts)

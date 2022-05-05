@@ -185,7 +185,7 @@
 
 /datum/syndicate_contract/proc/victim_stage_two(mob/living/target)
 	to_chat(target, span_warning("That pod did something to you..."))
-	target.dizziness += 10
+	target.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness)
 	addtimer(CALLBACK(src, .proc/victim_stage_three, target), 6 SECONDS)
 
 /datum/syndicate_contract/proc/victim_stage_three(mob/living/target)
@@ -206,7 +206,7 @@
 				we thank you for providing them. Your value is expended, and you will be ransomed back to your station. We always get paid, \
 				so it's only a matter of time before we ship you back...\"</i>")))
 	target.blur_eyes(10)
-	target.dizziness += 30
+	target.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/dizziness)
 	target.add_confusion(20)
 
 /// We're returning the victim
@@ -243,7 +243,7 @@
 
 		target.flash_act()
 		target.blur_eyes(30)
-		target.Dizzy(70)
+		target.adjust_timed_status_effect(7 SECONDS, /datum/status_effect/dizziness)
 		target.add_confusion(20)
 
 		new /obj/effect/pod_landingzone(possible_drop_loc[pod_rand_loc], return_pod)

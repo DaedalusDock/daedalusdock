@@ -505,14 +505,14 @@
 	return temperature
 
 /datum/gas_mixture/proc/get_moles()
-	updateValues()
+	//updateValues()
 	return total_moles
 ////END LINDA COMPATABILITY////
 
 ///Returns the gas list with an update.
 /datum/gas_mixture/proc/getGases()
 	RETURN_TYPE(/list)
-	updateValues()
+	//updateValues()
 	return gas
 
 /datum/gas_mixture/proc/returnVisuals()

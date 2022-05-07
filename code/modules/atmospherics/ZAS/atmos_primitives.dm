@@ -54,23 +54,6 @@
 	if (transfer_moles < MINIMUM_MOLES_TO_PUMP) //if we can't transfer enough gas just stop to avoid further processing
 		return -1
 
-	/*
-	//Update flow rate meter
-	if (istype(M, /obj/machinery/atmospherics))
-		var/obj/machinery/atmospherics/A = M
-		A.last_flow_rate = (transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-
-		if (A.debug)
-			A.visible_message("[A]: source entropy: [round(source.specificGroupEntropy(), 0.01)] J/Kmol --> sink entropy: [round(sink.specificGroupEntropy(), 0.01)] J/Kmol")
-			A.visible_message("[A]: specific entropy change = [round(sink.specificGroupEntropy() - source.specificGroupEntropy(), 0.01)] J/Kmol")
-			A.visible_message("[A]: specific power = [round(specific_power, 0.1)] W/mol")
-			A.visible_message("[A]: moles transferred = [transfer_moles] mol")
-
-	if (istype(M, /obj/machinery/portable_atmospherics))
-		var/obj/machinery/portable_atmospherics/P = M
-		P.last_flow_rate = (transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	*/
-
 	var/datum/gas_mixture/removed = source.remove(transfer_moles)
 	if (!removed) //Just in case
 		return -1

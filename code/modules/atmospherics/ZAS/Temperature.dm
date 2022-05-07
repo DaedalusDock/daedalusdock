@@ -29,26 +29,23 @@
 	. = ..()
 	temperature_coefficient = isnull(temperature_coefficient) ? clamp(MAX_TEMPERATURE_COEFFICIENT - FLOOR(mob_size/4, 1), MIN_TEMPERATURE_COEFFICIENT, MAX_TEMPERATURE_COEFFICIENT) : temperature_coefficient
 
-/atom/proc/process_atmos_exposure()
+/atom/proc/process_atmos_exposure(delta_time)
 	// Get our location temperature if possible.
 	// Nullspace is room temperature, clearly.
 	var/adjust_temp
 	var/datum/gas_mixture/local_air
 	if(loc)
-		if(!loc.simulated)
+		if(!isturf(loc))
 			adjust_temp = loc.temperature
 		else
-			//var/turf/simulated/T = loc
 			var/turf/T = get_turf(loc)
-			if(!istype(T))
-				return
 			if(T.zone && T.zone.air)
 				adjust_temp = T.zone.air.temperature
 				SEND_SIGNAL(T, COMSIG_TURF_EXPOSE, T.zone.air, T.zone.air.temperature)
 				atmos_expose(T.zone.air, T.zone.air.temperature)
 				local_air = T.zone.air
 			else
-				adjust_temp = T20C
+				adjust_temp = T.temperature
 	else
 		adjust_temp = T20C
 

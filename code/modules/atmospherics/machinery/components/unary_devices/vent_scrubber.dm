@@ -38,8 +38,6 @@
 	///Radio connection from the air alarm
 	var/radio_filter_in
 
-	COOLDOWN_DECLARE(check_turfs_cooldown)
-
 /obj/machinery/atmospherics/components/unary/vent_scrubber/New()
 	if(!id_tag)
 		id_tag = SSnetworks.assign_random_name()
@@ -70,16 +68,19 @@
 	if(!islist(filter_or_filters))
 		filter_or_filters = list(filter_or_filters)
 
-	var/turf/open/our_turf = get_turf(src)
+	for(var/gas_to_filter in filter_or_filters)
+		filter_types |= gas_to_filter
 
-	if(!isopenturf(our_turf))
+	var/turf/our_turf = get_turf(src)
+
+	if(!our_turf.simulated)
 		return FALSE
 
 	var/datum/gas_mixture/turf_gas = our_turf.air
 	if(!turf_gas)
 		return FALSE
 
-	COOLDOWN_RESET(src, check_turfs_cooldown)
+	COOLDOWN_RESET(src, hibernating)
 	return TRUE
 
 ///remove a gas or list of gases from our filter_types.used so that the scrubber can check if its supposed to be processing after each change
@@ -87,17 +88,19 @@
 	if(!islist(filter_or_filters))
 		filter_or_filters = list(filter_or_filters)
 
+	for(var/gas_to_filter in filter_or_filters)
+		filter_types -= gas_to_filter
 
-	var/turf/open/our_turf = get_turf(src)
+	var/turf/our_turf = get_turf(src)
 	var/datum/gas_mixture/turf_gas
 
-	if(isopenturf(our_turf))
-		turf_gas = our_turf.air
+	if(our_turf.simulated)
+		turf_gas = our_turf.return_air()
 
 	if(!turf_gas)
 		return FALSE
 
-	COOLDOWN_RESET(src, check_turfs_cooldown)
+	COOLDOWN_RESET(src, hibernating)
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/toggle_filters(filter_or_filters)
@@ -105,16 +108,21 @@
 		filter_or_filters = list(filter_or_filters)
 
 	for(var/gas_to_filter in filter_or_filters)
+		if(gas_to_filter in filter_types)
+			filter_types -= gas_to_filter
+		else
+			filter_types |= gas_to_filter
 
-	var/turf/open/our_turf = get_turf(src)
+	var/turf/our_turf = get_turf(src)
 
-	if(!isopenturf(our_turf))
+	if(!our_turf.simulated)
 		return FALSE
 
 	var/datum/gas_mixture/turf_gas = our_turf.return_air()
 
 	if(!turf_gas)
 		return FALSE
+	COOLDOWN_RESET(src, hibernating)
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/update_icon_nopipes()
@@ -197,24 +205,26 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process_atmos()
 	if(welded || !is_operational)
 		return
+//	if(!COOLDOWN_FINISHED(src, hibernating))
+//		return
 	if(!on || !nodes[1])
 		on = FALSE
-		return
-	if(!COOLDOWN_FINISHED(src, check_turfs_cooldown))
 		return
 	var/turf/open/us = loc
 	if(!istype(us))
 		return
+
 	var/should_cooldown = TRUE
 	if(scrub(us))
 		should_cooldown = FALSE
 	if(widenet)
 		check_turfs()
 		for(var/turf/tile in adjacent_turfs)
-			if(scrub(tile))
+			if(scrub(tile) && should_cooldown)
 				should_cooldown = FALSE
 	if(should_cooldown)
-		COOLDOWN_START(src, check_turfs_cooldown, 5 SECONDS)
+		COOLDOWN_START(src, hibernating, 15 SECONDS)
+
 	return TRUE
 
 ///filtered gases at or below this amount automatically get removed from the mix
@@ -245,8 +255,8 @@
 			//take this gases portion of removal_ratio of the turfs air, or all of that gas if less than or equal to MINIMUM_MOLES_TO_SCRUB
 			//var/transfer_moles = min(environment.total_moles, volume_rate/environment.volume)*environment.total_moles
 			var/transfer_moles = min(environment.total_moles, environment.total_moles*volume_rate/environment.volume)
-			scrub_gas(filter_types, environment, filtered_out, transfer_moles, INFINITY)
-
+			if(scrub_gas(filter_types, environment, filtered_out, transfer_moles, INFINITY) == -1)
+				. = FALSE
 
 			//Remix the resulting gases
 			air_contents.merge(filtered_out)
@@ -260,8 +270,8 @@
 
 		air_contents.merge(removed)
 		update_parents()
+		return TRUE
 
-	return TRUE
 
 #undef MINIMUM_MOLES_TO_SCRUB
 

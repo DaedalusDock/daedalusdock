@@ -16,6 +16,9 @@
 	/// Mirror of the machine var signifying whether this is live in the air subsystem
 	var/atmos_processing = FALSE
 
+	///Mirror of the machine var, unused for gas_leaker specifically.
+	COOLDOWN_DECLARE(hibernating)
+
 /datum/component/gas_leaker/Initialize(integrity_leak_percent=0.9, leak_rate=1)
 	. = ..()
 	if(istype(parent, /obj/machinery/atmospherics/components))

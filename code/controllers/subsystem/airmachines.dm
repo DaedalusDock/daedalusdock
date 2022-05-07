@@ -13,6 +13,7 @@ SUBSYSTEM_DEF(airmachines)
 	var/list/rebuild_queue = list()
 	var/list/expansion_queue = list()
 	var/list/atmos_machinery = list()
+	var/sleeping_machines = 0
 
 	var/list/current_run = list()
 	var/list/current_process = SSAIRMACH_PIPENETS
@@ -20,6 +21,7 @@ SUBSYSTEM_DEF(airmachines)
 	var/cost_rebuilds
 	var/cost_pipenets
 	var/cost_atmos_machinery
+
 
 /datum/controller/subsystem/airmachines/Initialize(timeofday)
 	var/starttime = REALTIMEOFDAY
@@ -36,8 +38,9 @@ SUBSYSTEM_DEF(airmachines)
 	msg += "CR: [cost_rebuilds ? cost_rebuilds : 0]|"
 	msg += "CPN: [cost_pipenets]|"
 	msg += "CAM: [cost_atmos_machinery]|"
-	msg += "NN: [length(networks)]|"
+	msg += "NPN: [length(networks)]|"
 	msg += "NAM: [length(atmos_machinery)]|"
+	msg += "NSM: [sleeping_machines]|"
 	msg += "RQ: [length(rebuild_queue)]|"
 	msg += "EQ: [length(expansion_queue)]"
 	return ..()
@@ -136,11 +139,15 @@ SUBSYSTEM_DEF(airmachines)
 		src.current_run = atmos_machinery.Copy()
 	//cache for sanic speed (lists are references anyways)
 	var/list/current_run = src.current_run
+	sleeping_machines = 0
 	while(current_run.len)
 		var/obj/machinery/M = current_run[current_run.len]
 		current_run.len--
 		if(!M)
 			atmos_machinery -= M
+		if(!COOLDOWN_FINISHED(M, hibernating))
+			sleeping_machines++
+			continue
 		if(M.process_atmos() == PROCESS_KILL)
 			stop_processing_machine(M)
 		if(MC_TICK_CHECK)

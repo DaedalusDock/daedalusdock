@@ -42,8 +42,6 @@
 	var/radio_filter_out
 	///Radio connection from the air alarm
 	var/radio_filter_in
-	///Optimization
-	COOLDOWN_DECLARE(sleeping)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/New()
 	if(!id_tag)
@@ -104,8 +102,6 @@
 		on = FALSE
 	if(!on || welded)
 		return
-	if(!COOLDOWN_FINISHED(src, sleeping))
-		return
 	var/turf/open/us = loc
 	if(!istype(us))
 		return
@@ -116,19 +112,22 @@
 	if((environment.temperature || air_contents.temperature) && pressure_delta > 0.5)
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
-			pump_gas(air_contents, environment, transfer_moles)
+			if(pump_gas(air_contents, environment, transfer_moles) == -1)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 			update_parents()
+
 		else //external -> internal
 			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta)
 
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
-			pump_gas(environment, air_contents, transfer_moles)
+			if(pump_gas(environment, air_contents, transfer_moles) == -1)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 			update_parents()
 
 	else
 		if(pump_direction && (pressure_checks&EXT_BOUND))
-			COOLDOWN_START(src, sleeping, 15 SECONDS)
+			COOLDOWN_START(src, hibernating, 15 SECONDS)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/get_pressure_delta(datum/gas_mixture/environment)
 	var/pressure_delta = DEFAULT_PRESSURE_DELTA

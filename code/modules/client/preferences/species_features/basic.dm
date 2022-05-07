@@ -29,7 +29,10 @@
 	relevant_species_trait = EYECOLOR
 
 /datum/preference/color/eye_color/apply_to_human(mob/living/carbon/human/target, value)
-	target.eye_color = value
+	var/hetero = target.eye_color_heterochromatic
+	target.eye_color_left = value
+	if(!hetero)
+		target.eye_color_right = value
 
 	var/obj/item/organ/internal/eyes/eyes_organ = target.getorgan(/obj/item/organ/internal/eyes)
 	if (!eyes_organ || !istype(eyes_organ))

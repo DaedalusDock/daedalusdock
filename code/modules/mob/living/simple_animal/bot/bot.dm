@@ -480,39 +480,33 @@
 
 //Generalized behavior code, override where needed!
 
-/*
-scan() will search for a given type (such as turfs, human mobs, or objects) in the bot's view range, and return a single result.
-Arguments: The object type to be searched (such as "/mob/living/carbon/human"), the old scan result to be ignored, if one exists,
-and the view range, which defaults to 7 (full screen) if an override is not passed.
-If the bot maintains an ignore list, it is also checked here.
-
-Example usage: patient = scan(/mob/living/carbon/human, oldpatient, 1)
-The proc would return a human next to the bot to be set to the patient var.
-Pass the desired type path itself, declaring a temporary var beforehand is not required.
-*/
-/mob/living/simple_animal/bot/proc/scan(scan_type, old_target, scan_range = DEFAULT_SCAN_RANGE)
-	var/turf/T = get_turf(src)
-	if(!T)
+/**
+ * Attempt to scan tiles near [src], first by checking adjacent, then if a target is still not found, nearby.
+ *
+ * scan_types - list (of typepaths) that nearby tiles are being scanned for.
+ * old_target - what has already been scanned, and will early return at checkscan.
+ * scan_range - how far away from [src] will be scanned, if nothing is found directly adjacent.
+ */
+/mob/living/simple_animal/bot/proc/scan(list/scan_types, old_target, scan_range = DEFAULT_SCAN_RANGE)
+	var/turf/current_turf = get_turf(src)
+	if(!current_turf)
 		return
-	var/list/adjacent = get_adjacent_open_turfs(T)
+	var/list/adjacent = current_turf.get_atmos_adjacent_turfs()
 	if(shuffle) //If we were on the same tile as another bot, let's randomize our choices so we dont both go the same way
 		adjacent = shuffle(adjacent)
 		shuffle = FALSE
-	for(var/scan in adjacent)//Let's see if there's something right next to us first!
+
+	for(var/turf/scan as anything in adjacent) //Let's see if there's something right next to us first!
 		if(check_bot(scan)) //Is there another bot there? Then let's just skip it
 			continue
-		if(isturf(scan_type)) //If we're lookeing for a turf we can just run the checks directly!
-			var/final_result = checkscan(scan,scan_type,old_target)
-			if(final_result)
-				return final_result
-		else
-			var/turf/turfy = scan
-			for(var/deepscan in turfy.contents)//Check the contents since adjacent is turfs
-				var/final_result = checkscan(deepscan,scan_type,old_target)
-				if(final_result)
-					return final_result
-	for (var/scan in shuffle(view(scan_range, src))-adjacent) //Search for something in range!
-		var/final_result = checkscan(scan,scan_type,old_target)
+		var/final_result = checkscan(scan, scan_types, old_target)
+		if(final_result)
+			return final_result
+
+	for(var/turf/scanned_turfs as anything in shuffle(view(scan_range, src)) - adjacent) //Search for something in range, minus what we already checked.
+		if(check_bot(scanned_turfs)) //Is there another bot there? Then let's just skip it
+			continue
+		var/final_result = checkscan(scanned_turfs, scan_types, old_target)
 		if(final_result)
 			return final_result
 
@@ -524,7 +518,7 @@ Pass the desired type path itself, declaring a temporary var beforehand is not r
 			continue
 
 		var/scan_result = process_scan(scan) //Some bots may require additional processing when a result is selected.
-		if(!isnull(scan_result))
+		if(scan_result)
 			return scan_result
 
 //When the scan finds a target, run bot specific processing to select it for the next step. Empty by default.
@@ -532,14 +526,11 @@ Pass the desired type path itself, declaring a temporary var beforehand is not r
 	return scan_target
 
 /mob/living/simple_animal/bot/proc/check_bot(targ)
-	var/turf/target_turf = get_turf(targ)
-	if(!target_turf)
-		return FALSE
-	for(var/turf_contents in target_turf.contents)
-		//Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
-		if(istype(turf_contents, type) && (turf_contents != src))
-			return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
-	return FALSE
+	var/turf/T = get_turf(targ)
+	if(T)
+		for(var/C in T.contents)
+			if(istype(C,type) && (C != src)) //Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
+				return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
 
 /mob/living/simple_animal/bot/proc/add_to_ignore(subject)
 	if(ignore_list.len < 50) //This will help keep track of them, so the bot is always trying to reach a blocked spot.

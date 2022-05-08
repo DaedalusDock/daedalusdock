@@ -66,6 +66,16 @@ export const feature_mcolor: Feature<string> = {
   component: FeatureColorInput,
 };
 
+export const feature_mcolor2: Feature<string> = {
+  name: "Secondary Mutant color",
+  component: FeatureColorInput,
+};
+
+export const feature_mcolor3: Feature<string> = {
+  name: "Tertiary Mutant color",
+  component: FeatureColorInput,
+};
+
 export const underwear_color: Feature<string> = {
   name: "Underwear color",
   component: FeatureColorInput,

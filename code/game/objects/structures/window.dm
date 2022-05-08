@@ -687,6 +687,15 @@
 	damage_per_fire_tick = 5
 	damage_deflection = 11
 
+/obj/structure/window/reinforced/shuttle/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/titanium(location)
+	. += new /obj/effect/decal/cleanable/glass/titanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/titanium(location)
+
 /obj/structure/window/reinforced/shuttle/narsie_act()
 	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
 
@@ -721,6 +730,15 @@
 	glass_amount = 2
 	rad_insulation = RAD_HEAVY_INSULATION
 	melting_point = 10000000 //Yeah this thing isnt melting
+
+/obj/structure/window/reinforced/plasma/plastitanium/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/plastitanium(location)
+	. += new /obj/effect/decal/cleanable/glass/plastitanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/plastitanium(location)
 
 /obj/structure/window/reinforced/plasma/plastitanium/unanchored
 	anchored = FALSE

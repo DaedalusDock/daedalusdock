@@ -17,7 +17,7 @@
 
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK)
 
 	rcd_memory = RCD_MEMORY_WALL
 	///bool on whether this wall can be chiselled into

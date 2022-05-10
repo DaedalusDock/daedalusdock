@@ -3,6 +3,7 @@
 
 /obj/machinery/atmospherics/components
 	hide = FALSE
+	layer = GAS_PUMP_LAYER
 	///Is the component welded?
 	var/welded = FALSE
 	///Should the component should show the pipe underneath it?
@@ -245,3 +246,6 @@
 	SHOULD_CALL_PARENT(FALSE) //This entire tree currently sucks. It can handle itself.
 	//TODO: MAKE IT NOT SUCK. MAYBE.
 	. = ..()
+
+/obj/machinery/atmospherics/components/update_layer()
+	layer = initial(layer) + (piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE + (GLOB.pipe_colors_ordered[pipe_color] * 0.001)

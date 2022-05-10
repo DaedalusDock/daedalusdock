@@ -344,6 +344,9 @@ TYPEINFO_DEF(/obj/machinery/atmospherics/components/unary/thermomachine)
 		return
 	. = ..()
 
+/obj/machinery/atmospherics/components/unary/thermomachine/update_layer()
+	return
+
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer
 
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer/on

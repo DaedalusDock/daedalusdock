@@ -1,6 +1,6 @@
 import { exhaustiveCheck } from "common/exhaustive";
 import { useBackend, useLocalState } from "../../backend";
-import { Button, Stack } from "../../components";
+import { Stack, Dropdown, Flex } from "../../components";
 import { Window } from "../../layouts";
 import { PreferencesMenuData } from "./data";
 import { PageButton } from "./PageButton";
@@ -23,21 +23,24 @@ const CharacterProfiles = (props: {
   onClick: (index: number) => void,
   profiles: (string | null)[],
 }) => {
-  const { profiles } = props;
+  const { profiles, activeSlot, onClick } = props;
 
   return (
-    <Stack justify="center" wrap>
-      {profiles.map((profile, slot) => (
-        <Stack.Item key={slot}>
-          <Button
-            selected={slot === props.activeSlot}
-            onClick={() => {
-              props.onClick(slot);
-            }} fluid>{profile ?? "New Character"}
-          </Button>
-        </Stack.Item>
-      ))}
-    </Stack>
+    <Flex justify="center">
+      <Flex.Item width="25%">
+        <Dropdown
+          width="100%"
+          displayText={profiles[activeSlot]}
+          options={profiles.map((profile, slot) => ({
+            value: slot,
+            displayText: profile ?? 'New Character',
+          }))}
+          onSelected={(slot) => {
+            onClick(slot);
+          }}
+        />
+      </Flex.Item>
+    </Flex>
   );
 };
 

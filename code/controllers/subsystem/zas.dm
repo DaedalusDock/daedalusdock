@@ -102,6 +102,7 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
+	var/last_process
 	var/active_zones = 0
 	var/next_id = 1
 
@@ -197,6 +198,7 @@ SUBSYSTEM_DEF(zas)
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
 
+	last_process = "TILES"
 
 /////////TILES//////////
 	cached_cost = 0
@@ -240,6 +242,7 @@ SUBSYSTEM_DEF(zas)
 	cost_tiles = MC_AVERAGE(cost_tiles, TICK_DELTA_TO_MS(cached_cost))
 
 //////////DEFERRED TILES//////////
+	last_process = "DEFERRED TILES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_defer.len)
@@ -262,7 +265,7 @@ SUBSYSTEM_DEF(zas)
 	cost_deferred_tiles = MC_AVERAGE(cost_deferred_tiles, TICK_DELTA_TO_MS(cached_cost))
 
 //////////EDGES//////////
-
+	last_process = "EDGES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_edges.len)
@@ -287,6 +290,7 @@ SUBSYSTEM_DEF(zas)
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
 //////////FIRES//////////
+	last_process = "FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_fire.len)
@@ -304,6 +308,7 @@ SUBSYSTEM_DEF(zas)
 	cost_fires= MC_AVERAGE(cost_fires, TICK_DELTA_TO_MS(cached_cost))
 
 //////////HOTSPOTS//////////
+	last_process = "HOTSPOTS"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_hotspot.len)

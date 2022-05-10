@@ -276,16 +276,16 @@
 /datum/config_entry/string/banappeals
 
 /datum/config_entry/string/wikiurl
-	default = "http://www.tgstation13.org/wiki"
+	default = "https://wiki.pariahstation.org/index.php/Main_Page"
 
 /datum/config_entry/string/forumurl
-	default = "http://tgstation13.org/phpBB/index.php"
+	default = "https://discord.gg/96dfjqwfVM" /// Until we actually get a forum, we will use this as a placeholder.
 
 /datum/config_entry/string/rulesurl
-	default = "http://www.tgstation13.org/wiki/Rules"
+	default = "https://wiki.pariahstation.org/index.php/Our_Rules"
 
 /datum/config_entry/string/githuburl
-	default = "https://www.github.com/tgstation/tgstation"
+	default = "https://github.com/pariahstation/Pariah-Station"
 
 /datum/config_entry/string/discordbotcommandprefix
 	default = "?"

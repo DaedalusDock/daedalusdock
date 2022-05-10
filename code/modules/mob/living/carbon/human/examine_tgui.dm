@@ -36,15 +36,10 @@
 /datum/examine_panel/ui_data(mob/user)
 	var/list/data = list()
 
-	var/datum/preferences/preferences = holder.client?.prefs
 
 	var/flavor_text
 	var/obscured
 	var/ooc_notes = ""
-
-	if(preferences && preferences.read_preference(/datum/preference/toggle/master_erp_preferences))
-		var/e_prefs = preferences.read_preference(/datum/preference/choiced/erp_status)
-		ooc_notes += "ERP: [e_prefs]\n"
 
 	if(ishuman(holder))
 		var/mob/living/carbon/human/holder_human = holder

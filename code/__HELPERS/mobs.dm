@@ -93,6 +93,8 @@
 	//For now we will always return none for tail_human and ears.
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
+		"mcolor2" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
+		"mcolor3" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
 		"tail_lizard" = pick(GLOB.tails_list_lizard),
 		"tail_human" = "None",

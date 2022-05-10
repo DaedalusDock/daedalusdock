@@ -99,8 +99,8 @@
 
 /obj/item/organ/heart/skrell
 	name = "skrell heart"
-	icon_state = "heart-skrell"
-	beating = FALSE
+	icon_state = "heart-skrell-on"
+	base_icon_state = "heart-skrell"
 
 /obj/item/organ/heart/cursed
 	name = "cursed heart"

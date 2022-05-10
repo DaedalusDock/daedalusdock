@@ -1,6 +1,7 @@
 import { classes } from "common/react";
+import { InfernoNode } from "inferno";
 import { sendAct, useBackend, useLocalState } from "../../backend";
-import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks, Dropdown } from "../../components"; // PARIAH EDIT CHANGE
+import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks, Dropdown, Tooltip } from "../../components";
 import { createSetPreference, PreferencesMenuData, RandomSetting } from "./data";
 import { CharacterPreview } from "./CharacterPreview";
 import { RandomizationButton } from "./RandomizationButton";
@@ -368,10 +369,23 @@ const PreferenceList = (props: {
                 );
               }
 
+              let name: InfernoNode = feature.name;
+              if (feature.description) {
+                name = (
+                  <Tooltip content={feature.description} position="bottom-start">
+                    <Box as="span" style={{
+                      "border-bottom": "2px dotted rgba(255, 255, 255, 0.8)",
+                    }}>
+                      {name}:
+                    </Box>
+                  </Tooltip>
+                );
+              }
+
               return (
                 <LabeledList.Item
                   key={featureId}
-                  label={feature.name}
+                  label={name}
                   verticalAlign="middle"
                 >
                   <Stack fill>

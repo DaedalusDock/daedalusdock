@@ -20,8 +20,8 @@
 				to_chat(H, span_userdanger("You hear a loud buzz in your head, silencing your thoughts!"))
 				H.Stun(50)
 			if(2)
-				to_chat(H, span_warning("You hear an annoying buzz in your head."))
-				H.add_confusion(15)
+				to_chat(target, span_warning("You hear an annoying buzz in your head."))
+				H.adjust_timed_status_effect(15 SECONDS, /datum/status_effect/confusion)
 				H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 160)
 			if(3)
 				H.hallucination += 60

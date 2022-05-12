@@ -2226,6 +2226,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/bot,
+/obj/structure/closet/secure_closet/lethalshots,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "akF" = (

@@ -54,6 +54,8 @@
 		"sec_38",
 		"sec_Islug",
 		"sec_beanbag_slug",
+		"sec_bshot", 
+		"sec_slug",
 		"sec_dart",
 		"sec_rshot",
 		"space_heater",

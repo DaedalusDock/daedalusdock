@@ -15,28 +15,20 @@
 	unit_name = "solar panel control board"
 	export_types = list(/obj/item/circuitboard/computer/solar_control)
 
-//Computer Tablets and Parts
-/datum/export/modular_part
-	cost = CARGO_CRATE_VALUE * 0.075
-	unit_name = "miscellaneous computer part"
-	export_types = list(/obj/item/computer_hardware)
-	include_subtypes = TRUE
+// Computer and Tablet Parts
+//Batteries
 
-//Processors.
-
-/datum/export/modular_part/processor
-	cost = CARGO_CRATE_VALUE * 0.2
-	unit_name = "computer processor"
-	export_types = list(/obj/item/computer_hardware/processor_unit)
+/datum/export/modular_part/battery/advanced
+	cost = CARGO_CRATE_VALUE * 0.6
+	unit_name = "advanced computer battery"
+	export_types = list(/obj/item/stock_parts/cell/computer/advanced)
 	include_subtypes = FALSE
 
-/datum/export/modular_part/processor/photoic
-	cost = CARGO_CRATE_VALUE * 0.5
-	unit_name = "advanced computer processor"
-	export_types = list(/obj/item/computer_hardware/processor_unit)
+/datum/export/modular_part/battery/super
+	cost = CARGO_CRATE_VALUE * 0.8
+	unit_name = "super computer battery"
+	export_types = list(/obj/item/stock_parts/cell/computer/super)
 	include_subtypes = FALSE
-
-//Batteries.
 
 /datum/export/modular_part/battery
 	cost = CARGO_CRATE_VALUE * 0.2

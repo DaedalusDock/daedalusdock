@@ -46,6 +46,9 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/max_hardware_size = 0 // Maximal hardware w_class. Tablets/PDAs have 1, laptops 2, consoles 4.
 	var/steel_sheet_cost = 5 // Amount of steel sheets refunded when disassembling an empty frame of this computer.
 
+	/// Amount of programs that can be ran at once
+	var/max_idle_programs = 2
+
 	/// List of "connection ports" in this computer and the components with which they are plugged
 	var/list/all_components = list()
 	/// Lazy List of extra hardware slots that can be used modularly.
@@ -74,6 +77,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	var/datum/picture/saved_image // the saved image used for messaging purpose like come on dude
 
+	/// Stored pAI in the computer
 	var/obj/item/paicard/inserted_pai = null
 
 	var/datum/action/item_action/toggle_computer_light/light_butt
@@ -81,7 +85,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 /obj/item/modular_computer/Initialize(mapload)
 	. = ..()
 
-	var/obj/item/computer_hardware/identifier/id = all_components[MC_IDENTIFY]
 	START_PROCESSING(SSobj, src)
 	if(!physical)
 		physical = src
@@ -90,8 +93,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	idle_threads = list()
 	if(looping_sound)
 		soundloop = new(src, enabled)
-	if(id)
-		id.UpdateDisplay()
+	UpdateDisplay()
 	if(has_light)
 		light_butt = new(src)
 	update_appearance()
@@ -366,7 +368,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(recharger)
 		recharger.enabled = 1
 
-	if(all_components[MC_CPU] && use_power()) // use_power() checks if the PC is powered
+	if(use_power()) // use_power() checks if the PC is powered
 		if(issynth)
 			to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
 		else
@@ -583,6 +585,9 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	comp_light_color = color
 	set_light_color(color)
 	return TRUE
+
+/obj/item/modular_computer/proc/UpdateDisplay()
+	name = "[saved_identification] ([saved_job])"
 
 /obj/item/modular_computer/screwdriver_act(mob/user, obj/item/tool)
 	if(!deconstructable)

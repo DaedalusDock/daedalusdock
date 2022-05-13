@@ -57,7 +57,7 @@
 		progs_to_store += new /datum/computer_file/program/shipping(src)
 
 	if(disk_flags & DISK_SIGNAL)
-		progs_to_store += new /datum/computer_file/program/signaler(src)
+		progs_to_store += new /datum/computer_file/program/signal_commander(src)
 
 	if(disk_flags & DISK_NEWS)
 		progs_to_store += new /datum/computer_file/program/newscaster(src)

@@ -8,7 +8,6 @@
 	desc = "The ground is covered in volcanic ash."
 	baseturfs = /turf/open/misc/ashplanet/wateryrock //I assume this will be a chasm eventually, once this becomes an actual surface
 	initial_gas = LAVALAND_DEFAULT_ATMOS
-	planetary_atmos = TRUE
 
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND

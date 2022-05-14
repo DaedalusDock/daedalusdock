@@ -167,8 +167,8 @@
 		power_draw += specific_power_gas[g]*transfer_moles
 
 	//Remix the resulting gases
-	sink.updateValues()
-	source.updateValues()
+	AIR_UPDATE_VALUES(sink)
+	AIR_UPDATE_VALUES(source)
 
 	return power_draw
 
@@ -231,8 +231,8 @@
 		else
 			unfiltered_power_used += power_used
 
-	sink_filtered.updateValues()
-	removed.updateValues()
+	AIR_UPDATE_VALUES(sink_filtered)
+	AIR_UPDATE_VALUES(removed)
 
 	sink_clean.merge(removed)
 
@@ -308,7 +308,7 @@
 		else
 			unfiltered_power_used += power_used
 
-	removed.updateValues()
+	AIR_UPDATE_VALUES(removed)
 
 	var/power_draw = unfiltered_power_used
 	for (var/datum/gas_mixture/sink_filtered in filtered_power_used)

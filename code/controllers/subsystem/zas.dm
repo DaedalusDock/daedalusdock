@@ -60,6 +60,7 @@ Class Procs:
 		Called when an edge is erased. Removes it from processing.
 
 */
+GLOBAL_REAL(zas_settings, /datum/zas_controller) = new
 
 SUBSYSTEM_DEF(zas)
 	name = "Air Core"
@@ -118,6 +119,8 @@ SUBSYSTEM_DEF(zas)
 		while (state != SS_IDLE)
 			stoplag()
 
+	zas_settings = new //Reset the global zas settings
+
 	while (zones.len)
 		var/zone/zone = zones[zones.len]
 		zones.len--
@@ -152,7 +155,7 @@ SUBSYSTEM_DEF(zas)
 /datum/controller/subsystem/zas/Initialize(timeofday, simulate = TRUE)
 
 	var/starttime = REALTIMEOFDAY
-	settings = new
+	settings = zas_settings
 	gas_data = xgm_gas_data
 
 	to_chat(world, span_boldannounce("ZAS: Processing Geometry..."))
@@ -544,11 +547,11 @@ SUBSYSTEM_DEF(zas)
 		amount = CEILING(amount, 0.1)
 
 		mix_real.gas[gastype] += amount
-		mix_real.updateValues()
+		AIR_UPDATE_VALUES(mix_real)
 
 	while(mix_real.returnPressure() > target_pressure)
 		mix_real.gas[gastype] -= mix_real.gas[gastype] * 0.1
-		mix_real.updateValues()
+		AIR_UPDATE_VALUES(mix_real)
 
 	mix_real.gas[gastype] = FLOOR(mix_real.gas[gastype], 0.1)
 

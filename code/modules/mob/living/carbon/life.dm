@@ -132,7 +132,7 @@
 
 	check_breath(breath)
 	if(breath.total_moles)
-		breath.updateValues()
+		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
 /mob/living/carbon/proc/has_smoke_protection()

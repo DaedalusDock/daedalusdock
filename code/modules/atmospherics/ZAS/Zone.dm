@@ -157,7 +157,7 @@ Class Procs:
 	if(air.temperature >= PHORON_FLASHPOINT && !(src in SSzas.active_fire_zones) && air.check_combustability() && contents.len)
 		var/turf/T = pick(contents)
 		if(istype(T))
-			T.create_fire(SSzas.settings.fire_firelevel_multiplier)
+			T.create_fire(zas_settings.fire_firelevel_multiplier)
 
 	// Update gas overlays.
 	if(air.checkTileGraphic(graphic_add, graphic_remove))

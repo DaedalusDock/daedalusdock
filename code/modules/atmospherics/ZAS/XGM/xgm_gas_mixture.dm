@@ -41,7 +41,7 @@
 		gas[gasid] += moles
 
 	if(update)
-		updateValues()
+		AIR_UPDATE_VALUES(src)
 
 /datum/gas_mixture/proc/setGasMoles(gasid, moles, update = TRUE, divide_among_group = FALSE)
 	if(moles == 0)
@@ -54,7 +54,7 @@
 		gas[gasid] = moles
 
 	if(update)
-		updateValues()
+		AIR_UPDATE_VALUES(src)
 
 //Same as adjustGas(), but takes a temperature which is mixed in with the gas.
 /datum/gas_mixture/proc/adjustGasWithTemp(gasid, moles, temp, update = 1)
@@ -74,7 +74,7 @@
 		gas[gasid] += moles
 
 	if(update)
-		updateValues()
+		AIR_UPDATE_VALUES(src)
 
 
 //Variadic version of adjustGas().  Takes any number of gas and mole pairs and applies them.
@@ -84,7 +84,7 @@
 	for(var/i in 1 to args.len-1 step 2)
 		adjustGas(args[i], args[i+1], update = 0)
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 
 
 //Variadic version of adjustGasWithTemp().  Takes any number of gas, mole and temperature associations and applies them.
@@ -94,7 +94,7 @@
 	for(var/i in 1 to args.len-1 step 3)
 		adjustGasWithTemp(args[i], args[i + 1], args[i + 2], update = 0)
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 
 
 //Merges all the gas from another mixture into this one.  Respects group_multipliers and adjusts temperature correctly.
@@ -117,7 +117,7 @@
 		for(var/g in giver.gas)
 			gas[g] += giver.gas[g]
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 
 // Used to equalize the mixture between two zones before sleeping an edge.
 /datum/gas_mixture/proc/equalize(datum/gas_mixture/sharer)
@@ -139,8 +139,8 @@
 		temperature = ((temperature * our_heatcap) + (sharer.temperature * share_heatcap)) / (our_heatcap + share_heatcap)
 	sharer.temperature = temperature
 
-	updateValues()
-	sharer.updateValues()
+	AIR_UPDATE_VALUES(src)
+	AIR_UPDATE_VALUES(sharer)
 
 	return 1
 
@@ -209,19 +209,15 @@
 	var/safe_temp = max(temperature, TCMB) // We're about to divide by this.
 	return R_IDEAL_GAS_EQUATION * ( log( (IDEAL_GAS_ENTROPY_CONSTANT*volume/(gas[gasid] * safe_temp)) * (molar_mass*specific_heat*safe_temp)**(2/3) + 1 ) +  15 )
 
-	//alternative, simpler equation
-	//var/partial_pressure = gas[gasid] * R_IDEAL_GAS_EQUATION * temperature / volume
-	//return R_IDEAL_GAS_EQUATION * ( log (1 + IDEAL_GAS_ENTROPY_CONSTANT/partial_pressure) + 20 )
-
-
-//Updates the total_moles count and trims any empty gases.
+///Updates the total_moles count and trims any empty gases. DO NOT USE. USE AIR_UPDATE_VALUES(air)!!!
 /datum/gas_mixture/proc/updateValues()
+	var/list/cached_gas = gas
 	total_moles = 0
-	for(var/g in gas)
-		if(gas[g] <= 0)
-			gas -= g
+	for(var/g in cached_gas)
+		if(cached_gas[g] <= 0)
+			cached_gas -= g
 		else
-			total_moles += gas[g]
+			total_moles += cached_gas[g]
 
 
 //Returns the pressure of the gas mix.  Only accurate if there have been no gas modifications since updateValues() has been called.
@@ -248,8 +244,8 @@
 			gas[g] = 0
 
 	removed.temperature = temperature
-	updateValues()
-	removed.updateValues()
+	AIR_UPDATE_VALUES(src)
+	AIR_UPDATE_VALUES(removed)
 
 	return removed
 
@@ -271,8 +267,8 @@
 
 	removed.temperature = temperature
 	removed.volume = volume * group_multiplier / out_group_multiplier
-	updateValues()
-	removed.updateValues()
+	AIR_UPDATE_VALUES(src)
+	AIR_UPDATE_VALUES(removed)
 
 	return removed
 
@@ -300,8 +296,8 @@
 			gas[g] -= removed.gas[g] / group_multiplier
 
 	removed.temperature = temperature
-	updateValues()
-	removed.updateValues()
+	AIR_UPDATE_VALUES(src)
+	AIR_UPDATE_VALUES(removed)
 
 	return removed
 
@@ -323,7 +319,7 @@
 	temperature = sample.temperature
 	for(var/id in sample_gas)
 		cached_gas[id] = sample_gas[id] * partial
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	return 1
 
 
@@ -402,7 +398,7 @@
 	for(var/g in right_side.gas)
 		gas[g] += right_side.gas[g]
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	return 1
 
 
@@ -411,7 +407,7 @@
 	for(var/g in right_side.gas)
 		gas[g] -= right_side.gas[g]
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	return 1
 
 
@@ -420,7 +416,7 @@
 	for(var/g in gas)
 		gas[g] *= factor
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	return 1
 
 
@@ -429,7 +425,7 @@
 	for(var/g in gas)
 		gas[g] /= factor
 
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	return 1
 
 
@@ -474,8 +470,8 @@
 	if(!one_way)
 		other.temperature = max(0, (other.temperature - temp_avg) * (1-ratio) + temp_avg)
 
-	updateValues()
-	other.updateValues()
+	AIR_UPDATE_VALUES(src)
+	AIR_UPDATE_VALUES(other)
 
 	return compare(other)
 
@@ -516,14 +512,14 @@
 	return gas
 
 /datum/gas_mixture/proc/returnVisuals()
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	checkTileGraphic()
 	return graphic
 
 /datum/gas_mixture/proc/copy()
 	RETURN_TYPE(/datum/gas_mixture)
 	var/datum/gas_mixture/new_gas = new
-	updateValues()
+	AIR_UPDATE_VALUES(src)
 	new_gas.gas = src.gas
 	new_gas.temperature = src.temperature
 	new_gas.total_moles = src.total_moles

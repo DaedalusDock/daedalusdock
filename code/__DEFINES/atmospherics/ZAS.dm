@@ -22,6 +22,23 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
+
+#define AIR_UPDATE_VALUES(air) \
+	do{ \
+		var/list/cache = air.gas; \
+		air.total_moles = 0; \
+		for(var/g in cache) { \
+			if(cache[g] <= 0) { \
+				cache -= g \
+			} \
+			else { \
+				air.total_moles += cache[g]; \
+			} \
+		} \
+	} while(FALSE)
+
+
+
 //#define TURF_HAS_VALID_ZONE(T) (istype(T, /turf/simulated) && T:zone && !T:zone:invalid) ZASTURF
 
 #define TURF_HAS_VALID_ZONE(T) (T.simulated && T:zone && !T:zone:invalid)

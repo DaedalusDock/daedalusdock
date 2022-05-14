@@ -344,12 +344,15 @@
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
+		if(air)
+			return air
 		var/datum/gas_mixture/GM = new
 
 		if(initial_gas)
 			GM.gas = initial_gas.Copy()
 		GM.temperature = temperature
-		GM.updateValues()
+		AIR_UPDATE_VALUES(GM)
+		air = GM
 
 	if(zone)
 		if(!zone.invalid)
@@ -370,7 +373,7 @@
 	air.temperature = temperature
 	if(initial_gas)
 		air.gas = initial_gas.Copy()
-	air.updateValues()
+	AIR_UPDATE_VALUES(air)
 
 /turf/proc/c_copy_air()
 	if(!air) air = new/datum/gas_mixture

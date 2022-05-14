@@ -41,7 +41,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	return igniting
 
 /zone/proc/process_fire()
-	var/datum/gas_mixture/burn_gas = air.removeRatio(SSzas.settings.fire_consumption_rate, fire_tiles.len)
+	var/datum/gas_mixture/burn_gas = air.removeRatio(zas_settings.fire_consumption_rate, fire_tiles.len)
 
 	var/firelevel = burn_gas.react(src, fire_tiles, force_burn = 1, no_check = 1)
 
@@ -195,7 +195,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 				//Spread the fire.
 				//Atmos Canpass probably needs to be checked here
-				if(prob(50 + 50 * (firelevel/SSzas.settings.fire_firelevel_multiplier)))
+				if(prob(50 + 50 * (firelevel/zas_settings.fire_firelevel_multiplier)))
 					enemy_tile.create_fire(firelevel)
 
 			else
@@ -222,7 +222,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	SSzas.active_hotspots.Add(src)
 
 /obj/effect/hotspot/proc/fire_color(env_temperature)
-	var/temperature = max(4000*sqrt(firelevel/SSzas.settings.fire_firelevel_multiplier), env_temperature)
+	var/temperature = max(4000*sqrt(firelevel/zas_settings.fire_firelevel_multiplier), env_temperature)
 	return heat2color(temperature)
 
 /obj/effect/hotspot/Destroy()
@@ -288,12 +288,12 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		var/reaction_limit = min(total_oxidizers*(FIRE_REACTION_FUEL_AMOUNT/FIRE_REACTION_OXIDIZER_AMOUNT), total_fuel) //stoichiometric limit
 
 		//vapour fuels are extremely volatile! The reaction progress is a percentage of the total fuel (similar to old zburn).)
-		var/gas_firelevel = calculate_firelevel(gas_fuel, total_oxidizers, reaction_limit, volume*group_multiplier) / SSzas.settings.fire_firelevel_multiplier
+		var/gas_firelevel = calculate_firelevel(gas_fuel, total_oxidizers, reaction_limit, volume*group_multiplier) / zas_settings.fire_firelevel_multiplier
 		var/min_burn = 0.30*volume*group_multiplier/CELL_VOLUME //in moles - so that fires with very small gas concentrations burn out fast
 		var/gas_reaction_progress = min(max(min_burn, gas_firelevel*gas_fuel)*FIRE_GAS_BURNRATE_MULT, gas_fuel)
 
 		//liquid fuels are not as volatile, and the reaction progress depends on the size of the area that is burning. Limit the burn rate to a certain amount per area.
-		var/liquid_firelevel = calculate_firelevel(liquid_fuel, total_oxidizers, reaction_limit, 0) / SSzas.settings.fire_firelevel_multiplier
+		var/liquid_firelevel = calculate_firelevel(liquid_fuel, total_oxidizers, reaction_limit, 0) / zas_settings.fire_firelevel_multiplier
 		var/liquid_reaction_progress = min((liquid_firelevel*0.2 + 0.05)*fuel_area*FIRE_LIQUID_BURNRATE_MULT, liquid_fuel)
 
 		var/firelevel = (gas_fuel*gas_firelevel + liquid_fuel*liquid_firelevel)/total_fuel
@@ -334,8 +334,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())
 
 		//calculate the energy produced by the reaction and then set the new temperature of the mix
-		temperature = (starting_energy + SSzas.settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
-		updateValues()
+		temperature = (starting_energy + zas_settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
+		AIR_UPDATE_VALUES(src)
 
 		#ifdef FIREDBG
 		log_admin("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
@@ -369,7 +369,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /datum/gas_mixture/proc/check_combustability(obj/effect/decal/cleanable/oil/liquid)
 	. = 0
 	for(var/g in gas)
-		if(xgm_gas_data.flags[g] & XGM_GAS_OXIDIZER && QUANTIZE(gas[g] * SSzas.settings.fire_consumption_rate) >= 0.1)
+		if(xgm_gas_data.flags[g] & XGM_GAS_OXIDIZER && QUANTIZE(gas[g] * zas_settings.fire_consumption_rate) >= 0.1)
 			. = 1
 			break
 
@@ -381,11 +381,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	. = 0
 	for(var/g in gas)
-		if(xgm_gas_data.flags[g] & XGM_GAS_FUEL && QUANTIZE(gas[g] * SSzas.settings.fire_consumption_rate) >= 0.1)
+		if(xgm_gas_data.flags[g] & XGM_GAS_FUEL && QUANTIZE(gas[g] * zas_settings.fire_consumption_rate) >= 0.1)
 			. = 1
 			break
 
-//returns a value between 0 and SSzas.settings.fire_firelevel_multiplier
+//returns a value between 0 and zas_settings.fire_firelevel_multiplier
 /datum/gas_mixture/proc/calculate_firelevel(total_fuel, total_oxidizers, reaction_limit, gas_volume)
 	//Calculates the firelevel based on one equation instead of having to do this multiple times in different areas.
 	var/firelevel = 0
@@ -410,13 +410,13 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		#endif
 
 		//toss everything together -- should produce a value between 0 and fire_firelevel_multiplier
-		firelevel = SSzas.settings.fire_firelevel_multiplier * mix_multiplier * damping_multiplier
+		firelevel = zas_settings.fire_firelevel_multiplier * mix_multiplier * damping_multiplier
 
 	return max( 0, firelevel)
 
 
 /mob/living/proc/FireBurn(firelevel, last_temperature, pressure)
-	var/mx = 5 * firelevel/SSzas.settings.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
+	var/mx = 5 * firelevel/zas_settings.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
 	apply_damage(2.5*mx, BURN)
 	return mx
 
@@ -446,7 +446,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			if(C.body_parts_covered & ARMS)
 				arms_exposure = 0
 	//minimize this for low-pressure environments
-	var/mx = 5 * firelevel/SSzas.settings.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
+	var/mx = 5 * firelevel/zas_settings.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
 
 	//Always check these damage procs first if fire damage isn't working. They're probably what's wrong.
 

@@ -82,5 +82,5 @@
 /client/proc/ZASSettings()
 	set category = "Debug"
 
-	SSzas.settings.SetDefault(mob)
+	zas_settings.SetDefault(mob)
 */

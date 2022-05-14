@@ -81,7 +81,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 	//Handles all the bad things phoron can do.
 
 	//Contamination
-	if(SSzas.settings.plc.cloth_contamination)
+	if(zas_settings.plc.cloth_contamination)
 		contaminate()
 
 	//Anything else requires them to not be dead.
@@ -89,7 +89,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 		return
 
 	//Burn skin if exposed.
-	if(SSzas.settings.plc.skin_burns)
+	if(zas_settings.plc.skin_burns)
 		if(!pl_head_protected() || !pl_suit_protected())
 			//burn_skin(0.75)
 			if(prob(20))
@@ -97,13 +97,13 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 			updatehealth()
 
 	//Burn eyes if exposed.
-	if(SSzas.settings.plc.eye_burns)
+	if(zas_settings.plc.eye_burns)
 		if(!is_eyes_covered())
 			burn_eyes()
 
 	//Genetic Corruption
-	if(SSzas.settings.plc.genetic_corruption)
-		if(rand(1,10000) < SSzas.settings.plc.genetic_corruption)
+	if(zas_settings.plc.genetic_corruption)
+		if(rand(1,10000) < zas_settings.plc.genetic_corruption)
 			easy_random_mutate(NEGATIVE)
 			to_chat(src, "<span class='danger'>High levels of toxins cause you to spontaneously mutate!</span>")
 			domutcheck(src, null)
@@ -125,7 +125,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 /mob/living/carbon/human/proc/pl_head_protected()
 	//Checks if the head is adequately sealed.
 	if(head)
-		if(SSzas.settings.plc.plasmaguard_only)
+		if(zas_settings.plc.plasmaguard_only)
 			if(head.obj_flags & PLASMAGUARD)
 				return TRUE
 		else if(is_eyes_covered())
@@ -140,15 +140,15 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 			continue
 		if(istype(protection, /obj/item/clothing))
 			var/obj/item/clothing/clothing_item = protection
-			if(SSzas.settings.plc.plasmaguard_only && !((clothing_item.clothing_flags & THICKMATERIAL) || (clothing_item.clothing_flags & GAS_FILTERING) || (clothing_item.obj_flags & PLASMAGUARD)))
+			if(zas_settings.plc.plasmaguard_only && !((clothing_item.clothing_flags & THICKMATERIAL) || (clothing_item.clothing_flags & GAS_FILTERING) || (clothing_item.obj_flags & PLASMAGUARD)))
 				return FALSE
 
-		else if(SSzas.settings.plc.plasmaguard_only && !(protection.obj_flags & PLASMAGUARD))
+		else if(zas_settings.plc.plasmaguard_only && !(protection.obj_flags & PLASMAGUARD))
 			return FALSE
 
 		coverage |= protection.body_parts_covered
 
-	if(SSzas.settings.plc.plasmaguard_only)
+	if(zas_settings.plc.plasmaguard_only)
 		return TRUE
 
 	return (~(coverage) & (CHEST|LEGS|FEET|ARMS|HANDS) == 0)
@@ -166,7 +166,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 /turf/Entered(obj/item/I)
 	. = ..()
 	//Items that are in plasma, but not on a mob, can still be contaminated.
-	if(istype(I) && SSzas && SSzas.settings?.plc.cloth_contamination && I.can_contaminate())
+	if(istype(I) && SSzas && zas_settings?.plc.cloth_contamination && I.can_contaminate())
 		var/datum/gas_mixture/env = return_air()
 		if(!env)
 			return

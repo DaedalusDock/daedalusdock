@@ -56,7 +56,7 @@ SUBSYSTEM_DEF(airflow)
 		else if (target.airflow_process_delay)
 			target.airflow_process_delay = 0
 		target.airflow_speed = min(target.airflow_speed, 15)
-		target.airflow_speed -= SSzas.settings.airflow_speed_decay
+		target.airflow_speed -= zas_settings.airflow_speed_decay
 		if (!target.airflow_skip_speedcheck)
 			if (target.airflow_speed > 7)
 				if (target.airflow_time++ >= target.airflow_speed - 7)
@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(airflow)
 
 		if (ismob(target))
 			var/mob/M = target
-			M.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE, SSzas.settings.airflow_mob_slowdown)
+			M.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE, zas_settings.airflow_mob_slowdown)
 			addtimer(CALLBACK(M, /mob/proc/remove_movespeed_modifier, /datum/movespeed_modifier/atmos_pressure, TRUE), 3 SECONDS, flags = TIMER_DELETE_ME)
 		if (MC_TICK_CHECK)
 			current.Cut(i)
@@ -120,7 +120,7 @@ SUBSYSTEM_DEF(airflow)
 
 
 /atom/movable/proc/prepare_airflow(strength)
-	if (!airflow_dest || airflow_speed < 0 || last_airflow > world.time - SSzas.settings.airflow_delay)
+	if (!airflow_dest || airflow_speed < 0 || last_airflow > world.time - zas_settings.airflow_delay)
 		return FALSE
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)

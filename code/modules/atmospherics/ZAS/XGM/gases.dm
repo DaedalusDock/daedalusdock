@@ -122,8 +122,8 @@
 /datum/xgm_gas/hydrogen/deuterium
 	id = GAS_DEUTERIUM
 	name = "Deuterium"
-	symbol_html = "D"
-	symbol = "D"
+	symbol_html = "<sup>2</sup>H"
+	symbol = "2H"
 
 /datum/xgm_gas/hydrogen/tritium
 	id = GAS_TRITIUM

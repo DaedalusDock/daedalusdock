@@ -261,7 +261,7 @@
 
 
 	//-- TRACES --//
-	breath.updateValues()
+	AIR_UPDATE_VALUES(breath)
 	if(breath.total_moles) // If there's some other shit in the air lets deal with it here.
 
 	// N2O
@@ -439,7 +439,6 @@
 		// Activate mood on first flag, remove on second, do nothing on third.
 
 		handle_breath_temperature(breath, breather)
-		breath.updateValues()
 
 	return TRUE
 

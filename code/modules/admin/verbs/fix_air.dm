@@ -25,7 +25,7 @@
 	for(var/datum/pipeline/PN as anything in SSairmachines.networks)
 		for(var/datum/gas_mixture/G in list(PN.air) & PN.other_airs)
 			G.gas = list()
-			G.updateValues()
+			AIR_UPDATE_VALUES(G)
 
 	to_chat(usr, "\[2/5\] - All pipenets purged of gas.")
 

@@ -365,7 +365,7 @@
 				if(I == GAS_OXYGEN || I == GAS_NITROGEN)
 					continue
 				G_gases[I] = 0
-			G.updateValues()
+			AIR_UPDATE_VALUES(G)
 		for(var/obj/machinery/atmospherics/components/unary/U in O)
 			if(!U.welded)
 				U.welded = TRUE

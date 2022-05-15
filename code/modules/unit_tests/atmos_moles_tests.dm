@@ -4,6 +4,9 @@
 	//template = /datum/unit_test/atmos_machinery
 	var/list/test_cases = list()
 
+/datum/unit_test/atmos_machinery/Run()
+	return
+
 /datum/unit_test/atmos_machinery/proc/create_gas_mixes(gas_mix_data)
 	var/list/gas_mixes = list()
 	for(var/mix_name in gas_mix_data)
@@ -161,6 +164,8 @@
 		),
 	)
 
+/datum/unit_test/atmos_machinery/conserve_moles/Run()
+	return
 
 /datum/unit_test/atmos_machinery/conserve_moles/pump_gas
 	//name = "ATMOS MACHINERY: pump_gas() Conserves Moles"
@@ -259,7 +264,7 @@
 			var/datum/gas_mixture/mix_source = after_gas_mixes["sink"]
 			mix_sources[mix_source] = 1.0/xgm_gas_data.gases.len //doesn't work as a macro for some reason
 
-		mix_gas(null, mix_sources, after_gas_mixes["sink"], null, INFINITY)
+		mix_gas(mix_sources, after_gas_mixes["sink"], null, INFINITY)
 
 		check_moles_conserved(case_name, before_gas_mixes, after_gas_mixes)
 

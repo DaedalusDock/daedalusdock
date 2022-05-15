@@ -241,7 +241,7 @@
 //For omni devices. Instead filtering is an associative list mapping gasids to gas mixtures.
 //I don't like the copypasta, but I decided to keep both versions of gas filtering as filter_gas is slightly faster (doesn't create as many temporary lists, doesn't call updateValues() as much)
 //filter_gas can be removed and replaced with this proc if need be.
-/proc/filter_gas_multi(obj/machinery/M, list/filtering, datum/gas_mixture/source, datum/gas_mixture/sink_clean, total_transfer_moles = null, available_power = null)
+/proc/filter_gas_multi(list/filtering, datum/gas_mixture/source, datum/gas_mixture/sink_clean, total_transfer_moles = null, available_power = null)
 	if (source.total_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
 
@@ -278,16 +278,6 @@
 
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
-
-	/*
-	//Update Flow Rate var
-	if (istype(M, /obj/machinery/atmospherics))
-		var/obj/machinery/atmospherics/A = M
-		A.last_flow_rate = (total_transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	if (istype(M, /obj/machinery/portable_atmospherics))
-		var/obj/machinery/portable_atmospherics/P = M
-		P.last_flow_rate = (total_transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	*/
 
 	var/datum/gas_mixture/removed = source.remove(total_transfer_moles)
 	if (!removed) //Just in case

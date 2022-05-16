@@ -221,10 +221,6 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Fedora"
 	item_path = /obj/item/clothing/head/fedora
 
-/datum/loadout_item/head/that
-	name = "Top Hat"
-	item_path = /obj/item/clothing/head/that
-
 //Job Locked Hats
 
 /datum/loadout_item/head/nursehat

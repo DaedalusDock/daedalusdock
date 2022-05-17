@@ -38,7 +38,7 @@
 
 /datum/export/organ/tail/lizard
 	cost = CARGO_CRATE_VALUE * 1.25
-	unit_name = "lizard tail"
+	unit_name = "unathi tail"
 	export_types = list(/obj/item/organ/tail/lizard)
 
 

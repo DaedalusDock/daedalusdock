@@ -98,7 +98,7 @@
 
 /datum/mutation/human/firebreath
 	name = "Fire Breath"
-	desc = "An ancient mutation that gives lizards breath of fire."
+	desc = "An ancient mutation that gives unathi breath of fire."
 	quality = POSITIVE
 	difficulty = 12
 	locked = TRUE

@@ -500,7 +500,7 @@
 
 /obj/item/toy/plush/lizard_plushie
 	name = "lizard plushie"
-	desc = "An adorable stuffed toy that resembles a lizardperson."
+	desc = "An adorable stuffed toy that resembles a unathi."
 	icon_state = "map_plushie_lizard"
 	greyscale_config = /datum/greyscale_config/plush_lizard
 	attack_verb_continuous = list("claws", "hisses", "tail slaps")
@@ -523,12 +523,12 @@
 
 // Preset lizard plushie that uses the original lizard plush green. (Or close to it)
 /obj/item/toy/plush/lizard_plushie/green
-	desc = "An adorable stuffed toy that resembles a green lizardperson. This one fills you with nostalgia and soul."
+	desc = "An adorable stuffed toy that resembles a green unathi. This one fills you with nostalgia and soul."
 	greyscale_colors = "#66ff33#000000"
 
 /obj/item/toy/plush/space_lizard_plushie
 	name = "space lizard plushie"
-	desc = "An adorable stuffed toy that resembles a very determined spacefaring lizardperson. To infinity and beyond, little guy."
+	desc = "An adorable stuffed toy that resembles a very determined spacefaring unathi. To infinity and beyond, little guy."
 	icon_state = "plushie_spacelizard"
 	inhand_icon_state = "plushie_spacelizard"
 	// space lizards can't hit people with their tail, it's stuck in their suit
@@ -653,7 +653,7 @@
 
 /obj/item/toy/plush/moth
 	name = "moth plushie"
-	desc = "A plushie depicting an adorable mothperson. It's a huggable bug!"
+	desc = "A plushie depicting an adorable gamuioda. It's a huggable bug!"
 	icon_state = "moffplush"
 	inhand_icon_state = "moffplush"
 	attack_verb_continuous = list("flutters", "flaps")
@@ -666,9 +666,9 @@
 	user.visible_message(span_suicide("[user] stares deeply into the eyes of [src] and it begins consuming [user.p_them()]!  It looks like [user.p_theyre()] trying to commit suicide!"))
 	suicide_count++
 	if(suicide_count < 3)
-		desc = "A plushie depicting an unsettling mothperson. After killing [suicide_count] [suicide_count == 1 ? "person" : "people"] it's not looking so huggable now..."
+		desc = "A plushie depicting an unsettling gamuioda. After killing [suicide_count] [suicide_count == 1 ? "person" : "people"] it's not looking so huggable now..."
 	else
-		desc = "A plushie depicting a creepy mothperson. It's killed [suicide_count] people! I don't think I want to hug it any more!"
+		desc = "A plushie depicting a creepy gamuioda. It's killed [suicide_count] people! I don't think I want to hug it any more!"
 		divine = TRUE
 		resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	playsound(src, 'sound/hallucinations/wail.ogg', 50, TRUE, -1)

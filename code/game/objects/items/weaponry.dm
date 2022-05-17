@@ -565,7 +565,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/tailclub
 	name = "tail club"
-	desc = "For the beating to death of lizards with their own tails."
+	desc = "For the beating to death of unathi with their own tails."
 	icon_state = "tailclub"
 	force = 14
 	throwforce = 1 // why are you throwing a club do you even weapon
@@ -576,7 +576,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/melee/chainofcommand/tailwhip
 	name = "liz o' nine tails"
-	desc = "A whip fashioned from the severed tails of lizards."
+	desc = "A whip fashioned from the severed tails of unathi."
 	icon_state = "tailwhip"
 	inhand_icon_state = "tailwhip"
 	item_flags = NONE

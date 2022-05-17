@@ -402,8 +402,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/lizardwine
-	name = "Lizard Wine"
-	description = "An alcoholic beverage from Space China, made by infusing lizard tails in ethanol."
+	name = "Unathi Wine"
+	description = "An alcoholic beverage from Space China, made by infusing unathi tails in ethanol."
 	color = "#7E4043" // rgb: 126, 64, 67
 	boozepwr = 45
 	quality = DRINK_FANTASTIC
@@ -2590,7 +2590,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_description = "regret"
 	glass_icon_state = "protein_blend"
 	glass_name = "Protein Blend"
-	glass_desc = "Vile, even by lizard standards."
+	glass_desc = "Vile, even by unathi standards."
 	nutriment_factor = 3 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -2616,7 +2616,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/triumphal_arch
 	name = "Triumphal Arch"
-	description = "A drink celebrating the Lizard Empire and its military victories. It's popular at bars on Unification Day."
+	description = "A drink celebrating the Unathi Empire and its military victories. It's popular at bars on Unification Day."
 	boozepwr = 60
 	color = "#FFD700"
 	quality = DRINK_FANTASTIC

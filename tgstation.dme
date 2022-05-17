@@ -4599,8 +4599,6 @@
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\alcohol_reagents.dm"
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\drink_reagents.dm"
 #include "modular_pariah\modules\customization\modules\reagents\chemistry\reagents\other_reagents.dm"
-#include "modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm"
-#include "modular_pariah\modules\decay_subsystem\code\decaySS.dm"
 #include "modular_pariah\modules\dogfashion\code\head.dm"
 #include "modular_pariah\modules\emotes\code\emotes.dm"
 #include "modular_pariah\modules\GAGS\greyscale_configs.dm"

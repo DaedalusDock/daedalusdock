@@ -1,6 +1,7 @@
 //Nuclear particle projectile - a deadly side effect of fusion
 /obj/projectile/energy/nuclear_particle
 	name = "nuclear particle"
+	desc = "Wow, that's moving pretty fast!"
 	icon_state = "nuclear_particle"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	armor_flag = ENERGY
@@ -9,6 +10,11 @@
 	speed = 0.4
 	hitsound = 'sound/weapons/emitter2.ogg'
 	impact_type = /obj/effect/projectile/impact/xray
+	var/energy = 10 //energy in eV
+	var/mega_energy = 0 //energy in MeV
+	var/particle_type
+	var/additional_particles = 0
+
 	var/static/list/particle_colors = list(
 		"red" = "#FF0000",
 		"blue" = "#00FF00",

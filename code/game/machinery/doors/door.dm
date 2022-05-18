@@ -183,9 +183,8 @@
 	. = ..()
 
 
-/obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir, air_group)
+/obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
-	if(air_group) return !block_air_zones
 	if(.)
 		return
 	// Snowflake handling for PASSGLASS.

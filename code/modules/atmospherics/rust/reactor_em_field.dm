@@ -18,10 +18,10 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	icon = 'icons/obj/machines/rust/fusion.dmi'
 	icon_state = "emfield_s1"
 	alpha = 30
-	layer = 4
+	layer = RIPPLE_LAYER
 	light_color = COLOR_RED
 	color = COLOR_RED
-
+	anchored = TRUE //STOP FUCKING DRAGGING THE ELECTROMAGNETIC FIELD
 	var/size = 1
 	var/energy = 0
 	var/plasma_temperature = 0
@@ -30,16 +30,16 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	var/tick_instability = 0
 	var/percent_unstable = 0
 
-	var/obj/machinery/reactor_core/owned_core
+	var/obj/machinery/power/reactor_core/owned_core
 	var/list/reactants = list()
 	var/list/particle_catchers = list()
 
-	var/list/ignore_types = list(
-		/obj/item/projectile,
+	var/list/ignore_types = typecacheof(list(
+		/obj/projectile,
 		/obj/effect,
 		/obj/structure/cable,
 		/obj/machinery/atmospherics
-		)
+	))
 
 	var/light_min_range = 2
 	var/light_min_power = 0.2
@@ -49,7 +49,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	var/last_range
 	var/last_power
 
-/obj/effect/fusion_em_field/New(loc, var/obj/machinery/power/fusion_core/new_owned_core)
+/obj/effect/reactor_em_field/New(loc, var/obj/machinery/power/reactor_core/new_owned_core)
 	..()
 
 	set_light(light_min_power, light_min_range / 10, light_min_range)
@@ -65,37 +65,47 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 	catcher = new (locate(src.x,src.y,src.z))
 	catcher.parent = src
-	catcher.SetSize(1)
+	catcher.set_size(1)
 	particle_catchers.Add(catcher)
 
-	for(var/iter=1,iter<=6,iter++)
+	for(var/iter in 1 to 6)
 		catcher = new (locate(src.x-iter,src.y,src.z))
 		catcher.parent = src
-		catcher.SetSize((iter*2)+1)
+		catcher.set_size((iter*2)+1)
 		particle_catchers.Add(catcher)
 
 		catcher = new (locate(src.x+iter,src.y,src.z))
 		catcher.parent = src
-		catcher.SetSize((iter*2)+1)
+		catcher.set_size((iter*2)+1)
 		particle_catchers.Add(catcher)
 
 		catcher = new (locate(src.x,src.y+iter,src.z))
 		catcher.parent = src
-		catcher.SetSize((iter*2)+1)
+		catcher.set_size((iter*2)+1)
 		particle_catchers.Add(catcher)
 
 		catcher = new (locate(src.x,src.y-iter,src.z))
 		catcher.parent = src
-		catcher.SetSize((iter*2)+1)
+		catcher.set_size((iter*2)+1)
 		particle_catchers.Add(catcher)
 
 	START_PROCESSING(SSobj, src)
 
-/obj/effect/fusion_em_field/Initialize()
+/obj/effect/reactor_em_field/Initialize()
 	. = ..()
 	addtimer(CALLBACK(src, .proc/update_light_colors), 10 SECONDS, TIMER_LOOP)
+	if(!GLOB.fusion_reactions.len)
+		GLOB.fusion_reactions = list()
+		for(var/rtype in subtypesof(/datum/fusion_reaction))
+			var/datum/fusion_reaction/cur_reaction = new rtype()
+			if(!GLOB.fusion_reactions[cur_reaction.p_react])
+				GLOB.fusion_reactions[cur_reaction.p_react] = list()
+			GLOB.fusion_reactions[cur_reaction.p_react][cur_reaction.s_react] = cur_reaction
+			if(!GLOB.fusion_reactions[cur_reaction.s_react])
+				GLOB.fusion_reactions[cur_reaction.s_react] = list()
+			GLOB.fusion_reactions[cur_reaction.s_react][cur_reaction.p_react] = cur_reaction
 
-/obj/effect/fusion_em_field/proc/update_light_colors()
+/obj/effect/reactor_em_field/proc/update_light_colors()
 	var/use_range
 	var/use_power
 	switch (plasma_temperature)
@@ -136,7 +146,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		last_range = use_range
 		last_power = use_power
 
-/obj/effect/fusion_em_field/Process()
+/obj/effect/reactor_em_field/process()
 	//make sure the field generator is still intact
 	if(QDELETED(owned_core))
 		qdel(src)
@@ -146,18 +156,18 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	var/added_particles = FALSE
 	var/datum/gas_mixture/uptake_gas = owned_core.loc.return_air()
 	if(uptake_gas)
-		uptake_gas = uptake_gas.remove_by_flag(XGM_GAS_FUSION_FUEL, rand(50,100))
+		uptake_gas = uptake_gas.removeByFlag(XGM_GAS_FUSION_FUEL, rand(50,100))
 	if(uptake_gas && uptake_gas.total_moles)
 		for(var/gasname in uptake_gas.gas)
 			if(uptake_gas.gas[gasname]*10 > reactants[gasname])
-				AddParticles(gasname, uptake_gas.gas[gasname]*10)
-				uptake_gas.adjust_gas(gasname, -(uptake_gas.gas[gasname]), update=FALSE)
+				add_particles(gasname, uptake_gas.gas[gasname]*10)
+				uptake_gas.adjustGas(gasname, -(uptake_gas.gas[gasname]), update=FALSE)
 				added_particles = TRUE
 		if(added_particles)
-			uptake_gas.update_values()
+			AIR_UPDATE_VALUES(uptake_gas)
 
 	//let the particles inside the field react
-	React()
+	react()
 
 	// Dump power to our powernet.
 	owned_core.add_avail(FUSION_ENERGY_PER_K * plasma_temperature)
@@ -179,12 +189,12 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 			radiation += radiate
 
 	check_instability()
-	Radiate()
+	radiate()
 	if(radiation)
-		SSradiation.radiate(src, round(radiation*0.001))
+		radiation_pulse(src, src.size/2, RAD_FULL_INSULATION, 100)
 	return 1
 
-/obj/effect/fusion_em_field/proc/check_instability()
+/obj/effect/reactor_em_field/proc/check_instability()
 	if(tick_instability > 0)
 		percent_unstable += (tick_instability*size)/FUSION_INSTABILITY_DIVISOR
 		tick_instability = 0
@@ -237,22 +247,27 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 							reactants[particle] -= lost_fuel
 							if(reactants[particle] <= 0)
 								reactants.Remove(particle)
-					Radiate()
+					radiate()
 	return
 
-/obj/effect/fusion_em_field/proc/is_shutdown_safe()
+/obj/effect/reactor_em_field/proc/is_shutdown_safe()
 	return plasma_temperature < 1000
 
-/obj/effect/fusion_em_field/proc/Rupture()
-	visible_message("<span class='danger'>\The [src] shudders like a dying animal before flaring to eye-searing brightness and rupturing!</span>")
+/obj/effect/reactor_em_field/proc/rupture()
+	visible_message(
+		span_danger("\The [src] shudders like a dying animal before flaring to eye-searing brightness and rupturing!"),
+		null,
+		span_hear("You hear a horrifying resonant crash. Oh no.")
+	)
 	set_light(1, 0.1, 15, 2, "#ccccff")
 	empulse(get_turf(src), Ceil(plasma_temperature/1000), Ceil(plasma_temperature/300))
-	sleep(5)
-	RadiateAll()
-	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
-	return
+	addtimer(CALLBACK(src, .proc/kaboom), 5 SECONDS)
 
-/obj/effect/fusion_em_field/proc/ChangeFieldStrength(var/new_strength)
+/obj/effect/reactor_em_field/proc/kaboom()
+	radiate_all()
+	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
+
+/obj/effect/reactor_em_field/proc/set_field_strength(var/new_strength)
 	var/calc_size = 1
 	if(new_strength <= 50)
 		calc_size = 1
@@ -271,40 +286,39 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	field_strength = new_strength
 	change_size(calc_size)
 
-/obj/effect/fusion_em_field/proc/AddEnergy(var/a_energy, var/a_plasma_temperature)
-	energy += a_energy
-	plasma_temperature += a_plasma_temperature
-	if(a_energy && percent_unstable > 0)
-		percent_unstable -= a_energy/10000
+/obj/effect/reactor_em_field/proc/add_energy(added_energy, added_plasma_temperature)
+	energy += added_energy
+	plasma_temperature += added_plasma_temperature
+	if(added_energy && percent_unstable > 0)
+		percent_unstable -= added_energy/10000
 		if(percent_unstable < 0)
 			percent_unstable = 0
 	while(energy >= 100)
 		energy -= 100
 		plasma_temperature += 1
 
-/obj/effect/fusion_em_field/proc/AddParticles(var/name, var/quantity = 1)
+/obj/effect/reactor_em_field/proc/add_particles(name, quantity = 1)
 	if(name in reactants)
 		reactants[name] += quantity
 	else if(name != "proton" && name != "electron" && name != "neutron")
 		reactants.Add(name)
 		reactants[name] = quantity
 
-/obj/effect/fusion_em_field/proc/RadiateAll(var/ratio_lost = 1)
-
+/obj/effect/reactor_em_field/proc/radiate_all(ratio_lost = 1)
 	// Create our plasma field and dump it into our environment.
 	var/turf/T = get_turf(src)
 	if(istype(T))
 		var/datum/gas_mixture/plasma
 		for(var/reactant in reactants)
-			if(!gas_data.name[reactant])
+			if(!xgm_gas_data.name[reactant])
 				continue
 			if(!plasma)
 				plasma = new
-			plasma.adjust_gas(reactant, max(1,round(reactants[reactant]*0.1)), 0) // *0.1 to compensate for *10 when uptaking gas.
+			plasma.adjustGas(reactant, max(1,round(reactants[reactant]*0.1)), 0) // *0.1 to compensate for *10 when uptaking gas.
 		if(!plasma)
 			return
 		plasma.temperature = (plasma_temperature/2)
-		plasma.update_values()
+		AIR_UPDATE_VALUES(plasma)
 		T.assume_air(plasma)
 		T.hotspot_expose(plasma_temperature)
 		plasma = null
@@ -316,36 +330,28 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	radiation += plasma_temperature/2
 	plasma_temperature = 0
 
-	SSradiation.radiate(src, round(radiation*0.001))
-	Radiate()
+	radiation_pulse(src, src.size/2, RAD_FULL_INSULATION, 100)
+	radiate()
 
-/obj/effect/fusion_em_field/proc/Radiate()
-	if(istype(loc, /turf))
+/obj/effect/reactor_em_field/proc/radiate()
+	if(isturf(loc))
+		var/list/cache4speed = ignore_types
 		var/empsev = max(1, min(3, Ceil(size/2)))
 		for(var/atom/movable/AM in range(max(1,Floor(size/2)), loc))
-
-			if(AM == src || AM == owned_core || !AM.simulated)
+			if(AM == src || AM == owned_core || !AM.simulated || cache4speed[AM.type])
 				continue
 
-			var/skip_obstacle
-			for(var/ignore_path in ignore_types)
-				if(istype(AM, ignore_path))
-					skip_obstacle = TRUE
-					break
-			if(skip_obstacle)
-				continue
-
-			AM.visible_message("<span class='danger'>The field buckles visibly around \the [AM]!</span>")
+			AM.visible_message(span_danger("The field buckles visibly around \the [AM]!"))
 			tick_instability += rand(30,50)
 			AM.emp_act(empsev)
 
 	if(owned_core && owned_core.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
 		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
-			environment.add_thermal_energy(plasma_temperature*20000)
+			environment.addThermalEnergy(plasma_temperature*20000)
 	radiation = 0
 
-/obj/effect/fusion_em_field/proc/change_size(var/newsize = 1)
+/obj/effect/reactor_em_field/proc/change_size(var/newsize = 1)
 	var/changed = 0
 	var/static/list/size_to_icon = list(
 			"3" = 'icons/effects/96x96.dmi',
@@ -361,17 +367,17 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		if(newsize>1)
 			icon = size_to_icon["[newsize]"]
 		icon_state = "emfield_s[newsize]"
-		pixel_x = ((newsize-1) * -16) * PIXEL_MULTIPLIER
-		pixel_y = ((newsize-1) * -16) * PIXEL_MULTIPLIER
+		pixel_x = ((newsize-1) * -16)
+		pixel_y = ((newsize-1) * -16)
 		size = newsize
 		changed = newsize
 
-	for(var/obj/effect/fusion_particle_catcher/catcher in particle_catchers)
-		catcher.UpdateSize()
+	for(var/obj/effect/fusion_particle_catcher/catcher as anything in particle_catchers)
+		catcher.update_size()
 	return changed
 
 //the !!fun!! part
-/obj/effect/fusion_em_field/proc/React()
+/obj/effect/reactor_em_field/proc/react()
 	//loop through the reactants in random order
 	var/list/react_pool = reactants.Copy()
 
@@ -405,7 +411,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 			for(var/cur_s_react in possible_s_reacts)
 				if(possible_s_reacts[cur_s_react] < 1)
 					continue
-				var/decl/fusion_reaction/cur_reaction = get_fusion_reaction(cur_p_react, cur_s_react)
+				var/datum/fusion_reaction/cur_reaction = get_fusion_reaction(cur_p_react, cur_s_react)
 				if(cur_reaction && plasma_temperature >= cur_reaction.minimum_energy_level)
 					LAZYDISTINCTADD(possible_reactions, cur_reaction)
 
@@ -418,7 +424,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 			//split up the reacting atoms between the possible reactions
 			while(possible_reactions.len)
-				var/decl/fusion_reaction/cur_reaction = possible_reactions[1]
+				var/datum/fusion_reaction/cur_reaction = possible_reactions[1]
 				possible_reactions.Remove(cur_reaction)
 
 				//set the randmax to be the lower of the two involved reactants
@@ -479,24 +485,24 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 		// Loop through the newly produced reactants and add them to the pool.
 		for(var/reactant in produced_reactants)
-			AddParticles(reactant, produced_reactants[reactant])
+			add_particles(reactant, produced_reactants[reactant])
 
 		// Check whether there are reactants left, and add them back to the pool.
 		for(var/reactant in react_pool)
-			AddParticles(reactant, react_pool[reactant])
+			add_particles(reactant, react_pool[reactant])
 
-/obj/effect/fusion_em_field/Destroy()
+/obj/effect/reactor_em_field/Destroy()
 	set_light(0)
-	RadiateAll()
-	QDEL_NULL_LIST(particle_catchers)
+	radiate_all()
+	QDEL_LIST(particle_catchers)
 	if(owned_core)
 		owned_core.owned_field = null
 		owned_core = null
 	STOP_PROCESSING(SSobj, src)
-	. = ..()
+	return ..()
 
-/obj/effect/fusion_em_field/bullet_act(var/obj/item/projectile/Proj)
-	AddEnergy(Proj.damage)
+/obj/effect/reactor_em_field/bullet_act(obj/projectile/proj)
+	add_energy(proj.damage)
 	update_icon()
 	return 0
 

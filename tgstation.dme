@@ -2327,6 +2327,7 @@
 #include "code\modules\atmospherics\machinery\components\electrolyzer\electrolyzer.dm"
 #include "code\modules\atmospherics\machinery\components\electrolyzer\electrolyzer_reactions.dm"
 */
+#include "code\modules\atmospherics\rust\fusion_reactions.dm"
 /*
 #include "code\modules\atmospherics\machinery\components\fusion\hfr_core.dm"
 #include "code\modules\atmospherics\machinery\components\fusion\hfr_defines.dm"
@@ -2336,6 +2337,7 @@
 #include "code\modules\atmospherics\machinery\components\fusion\hfr_procs.dm"
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\atmos_machines_recipes.dm"
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\crystallizer.dm"
+#include "code\modules\atmospherics\rust\particle_catcher.dm"
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\crystallizer_items.dm"
 */
 #include "code\modules\atmospherics\machinery\components\trinary_devices\filter.dm"
@@ -2348,7 +2350,8 @@
 #include "code\modules\atmospherics\machinery\components\unary_devices\passive_vent.dm"
 #include "code\modules\atmospherics\machinery\components\unary_devices\portables_connector.dm"
 #include "code\modules\atmospherics\rust\reactor_core.dm"
-#include "code\modules\atmospherics\rust\reactor_core.dm"
+#include "code\modules\atmospherics\rust\reactor_em_field.dm"
+#include "code\modules\atmospherics\rust\particle_catcher.dm"
 #include "code\modules\atmospherics\machinery\components\unary_devices\thermomachine.dm"
 #include "code\modules\atmospherics\machinery\components\unary_devices\unary_devices.dm"
 #include "code\modules\atmospherics\machinery\components\unary_devices\vent_pump.dm"

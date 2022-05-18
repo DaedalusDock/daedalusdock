@@ -33,7 +33,7 @@
 	id = GAS_METHYL_BROMIDE
 	name = "Methyl Bromide"
 	specific_heat = 42.59 // J/(mol*K)
-	molar_mass = 0.095	  // kg/mol
+	molar_mass = 0.095 // kg/mol
 	//breathed_product = /datum/reagent/toxin/methyl_bromide
 	symbol_html = "CH<sub>3</sub>Br"
 	symbol = "CH3Br"

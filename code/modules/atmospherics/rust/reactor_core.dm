@@ -4,13 +4,16 @@
 /obj/machinery/power/reactor_core
 	name = "\improper R-UST Mk. 10 Tokamak Reactor"
 	desc = "An enormous solenoid for generating extremely high power electromagnetic fields."
-	icon = 'icons/obj/machines/rust/reactor_core.dmi'
+	icon = 'icons/obj/machines/rust/fusion_core.dmi'
 	icon_state = "core0"
+	layer = ABOVE_ALL_MOB_LAYER
 	density = TRUE
 	use_power = IDLE_POWER_USE
+	idle_power_usage = IDLE_POWER_USE
 	active_power_usage = 1000 //multiplied by field strength
 	anchored = FALSE
 
+	var/is_on = FALSE
 	var/obj/effect/reactor_em_field/owned_field
 	var/field_strength = 1//0.01
 	var/initial_id_tag
@@ -19,8 +22,9 @@
 	anchored = TRUE
 
 /obj/machinery/power/reactor_core/process()
-	if((machine_stat & BROKEN) || !powernet || !owned_field)
-		Shutdown()
+	if((machine_stat & BROKEN) || !use_power_from_net(use_power) || !owned_field)
+		if(is_on)
+			Shutdown()
 /*
 /obj/machinery/power/reactor_core/Topic(href, href_list)
 	if(..())
@@ -40,6 +44,7 @@
 	owned_field.set_field_strength(field_strength)
 	icon_state = "core1"
 	update_use_power(ACTIVE_POWER_USE)
+	is_on = TRUE
 	return TRUE
 
 /obj/machinery/power/reactor_core/proc/Shutdown(force_rupture)
@@ -52,6 +57,7 @@
 		qdel(owned_field)
 		owned_field = null
 	update_use_power(IDLE_POWER_USE)
+	is_on = FALSE
 
 /obj/machinery/power/reactor_core/proc/add_particles(var/name, var/quantity = 1)
 	if(owned_field)
@@ -70,15 +76,14 @@
 		owned_field.set_field_strength(value)
 
 /obj/machinery/power/reactor_core/attack_hand(mob/user)
-	visible_message("<span class='notice'>\The [user] hugs \the [src] to make it feel better!</span>")
-	if(owned_field)
-		Shutdown()
-	return TRUE
-/obj/machinery/power/reactor_core/tool_act(mob/living/user, obj/item/tool, tool_type)
 	. = ..()
+	if(!.)
+		visible_message("<span class='notice'>\The [user] hugs \the [src] to make it feel better!</span>")
+		if(owned_field)
+			Shutdown()
+		return TRUE
 
 /obj/machinery/power/reactor_core/attackby(var/obj/item/W, var/mob/user)
-
 	if(owned_field)
 		to_chat(user,"<span class='warning'>Shut \the [src] off first!</span>")
 		return
@@ -98,7 +103,7 @@
 
 	return ..()
 
-/obj/machinery/power/reactor_core/proc/jumpstart(var/field_temperature)
+/obj/machinery/power/reactor_core/proc/Jumpstart(var/field_temperature)
 	field_strength = 501 // Generally a good size.
 	Startup()
 	if(!owned_field)
@@ -109,6 +114,6 @@
 /obj/machinery/power/reactor_core/proc/check_core_status()
 	if(machine_stat & BROKEN)
 		return FALSE
-	if(idle_power_usage > avail())
-		return FALSE
+	/*if(idle_power_usage > avail())
+		return FALSE*/
 	return TRUE

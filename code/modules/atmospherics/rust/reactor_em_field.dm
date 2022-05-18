@@ -34,12 +34,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	var/list/reactants = list()
 	var/list/particle_catchers = list()
 
-	var/list/ignore_types = typecacheof(list(
-		/obj/projectile,
-		/obj/effect,
-		/obj/structure/cable,
-		/obj/machinery/atmospherics
-	))
+	var/static/list/ignore_types
 
 	var/light_min_range = 2
 	var/light_min_power = 0.2
@@ -51,8 +46,17 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 /obj/effect/reactor_em_field/New(loc, var/obj/machinery/power/reactor_core/new_owned_core)
 	..()
+	if(!ignore_types)
+		ignore_types = typecacheof(
+			list(
+				/obj/projectile,
+				/obj/effect,
+				/obj/structure/cable,
+				/obj/machinery/atmospherics
+			)
+		)
 
-	set_light(light_min_power, light_min_range / 10, light_min_range)
+	set_light(light_min_range, light_min_power, light_color, TRUE)
 	last_range = light_min_range
 	last_power = light_min_power
 
@@ -142,7 +146,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 	if (last_range != use_range || last_power != use_power || color != light_color)
 		color = light_color
-		set_light(min(use_power, 1), use_range / 6, use_range) //cap first arg at 1 to avoid breaking lighting stuff.
+		set_light(use_range, min(use_power, 1), light_color) //cap first arg at 1 to avoid breaking lighting stuff.
 		last_range = use_range
 		last_power = use_power
 
@@ -259,7 +263,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		null,
 		span_hear("You hear a horrifying resonant crash. Oh no.")
 	)
-	set_light(1, 0.1, 15, 2, "#ccccff")
+	set_light(15, 1, "#ccccff")
 	empulse(get_turf(src), Ceil(plasma_temperature/1000), Ceil(plasma_temperature/300))
 	addtimer(CALLBACK(src, .proc/kaboom), 5 SECONDS)
 
@@ -354,16 +358,16 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 /obj/effect/reactor_em_field/proc/change_size(var/newsize = 1)
 	var/changed = 0
 	var/static/list/size_to_icon = list(
-			"3" = 'icons/effects/96x96.dmi',
-			"5" = 'icons/effects/160x160.dmi',
-			"7" = 'icons/effects/224x224.dmi',
-			"9" = 'icons/effects/288x288.dmi',
-			"11" = 'icons/effects/352x352.dmi',
-			"13" = 'icons/effects/416x416.dmi'
+			"3" = 'icons/obj/machines/rust/96x96.dmi',
+			"5" = 'icons/obj/machines/rust//160x160.dmi',
+			"7" = 'icons/obj/machines/rust/224x224.dmi',
+			"9" = 'icons/obj/machines/rust/288x288.dmi',
+			"11" = 'icons/obj/machines/rust/352x352.dmi',
+			"13" = 'icons/obj/machines/rust/416x416.dmi'
 			)
 
 	if( ((newsize-1)%2==0) && (newsize<=13) )
-		icon = 'icons/obj/machines/power/fusion.dmi'
+		icon = 'icons/obj/machines/rust/fusion.dmi'
 		if(newsize>1)
 			icon = size_to_icon["[newsize]"]
 		icon_state = "emfield_s[newsize]"
@@ -395,6 +399,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		var/list/produced_reactants = new/list
 		var/list/p_react_pool = react_pool.Copy()
 		while(p_react_pool.len)
+		//for(var/i = 1; i <= p_react_pool.len; i++)
 			//pick one of the unprocessed reacting reagents randomly
 			var/cur_p_react = pick(p_react_pool)
 			p_react_pool.Remove(cur_p_react)

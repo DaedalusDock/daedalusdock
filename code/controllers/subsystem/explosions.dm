@@ -389,8 +389,7 @@ SUBSYSTEM_DEF(explosions)
 
 	//lists are guaranteed to contain at least 1 turf at this point
 
-	for(var/TI in affected_turfs)
-		var/turf/T = TI
+	for(var/turf/T as anything in affected_turfs)
 		var/init_dist = cheap_hypotenuse(T.x, T.y, x0, y0)
 		var/dist = init_dist
 
@@ -414,12 +413,10 @@ SUBSYSTEM_DEF(explosions)
 
 		if(T == epicenter) // Ensures explosives detonating from bags trigger other explosives in that bag
 			var/list/items = list()
-			for(var/I in T)
-				var/atom/A = I
+			for(var/atom/A in T)
 				if (length(A.contents) && !(A.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)) //The atom/contents_explosion() proc returns null if the contents ex_acting has been handled by the atom, and TRUE if it hasn't.
 					items += A.get_all_contents(ignore_flag_1 = PREVENT_CONTENTS_EXPLOSION_1)
-			for(var/thing in items)
-				var/atom/movable/movable_thing = thing
+			for(var/atom/movable/movable_thing as anything in items)
 				if(QDELETED(movable_thing))
 					continue
 				switch(dist)

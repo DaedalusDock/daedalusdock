@@ -169,5 +169,5 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	return initial(knowledge_b.priority) - initial(knowledge_a.priority)
 
 ///Orders R-UST fusion by priority
-/proc/cmp_fusion_reaction_des(var/decl/fusion_reaction/A, var/decl/fusion_reaction/B)
+/proc/cmp_fusion_reaction_des(datum/fusion_reaction/A, datum/fusion_reaction/B)
 	return B.priority - A.priority

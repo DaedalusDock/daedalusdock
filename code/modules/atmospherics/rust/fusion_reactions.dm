@@ -20,9 +20,10 @@ GLOBAL_LIST_EMPTY(fusion_reactions)
 
 /datum/fusion_reaction/deuterium_lithium
 	p_react = GAS_DEUTERIUM
-	s_react = "lithium"
-	energy_consumption = 2
-	energy_production = 0
+	//s_react = "lithium"
+	s_react = GAS_NEON //DEBUG PURPOSES
+	energy_consumption = 0
+	energy_production = 2
 	radiation = 3
 	products = list(GAS_TRITIUM= 1)
 	instability = 1

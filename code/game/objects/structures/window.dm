@@ -307,6 +307,9 @@
 		if(BURN)
 			playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 
+/obj/structure/window/ex_act(severity, target)
+	return ..(min(EXPLODE_DEVASTATE, severity + 1), target)
+
 
 /obj/structure/window/deconstruct(disassembled = TRUE)
 	if(QDELETED(src))

@@ -107,6 +107,16 @@
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
+/obj/machinery/power/rtg/debug/station
+	name = "Debug RTG"
+	power_gen = 400000
+
+/obj/machinery/power/rtg/debug/station/Initialize(mapload)
+	. = ..()
+	var/joke = pick("Singularity", "Supermatter Shard", "Tesla Coil")
+	name = "Totally a [joke]."
+	desc = "Yup. That's a [joke]."
+
 /obj/machinery/power/rtg/lavaland
 	name = "Lava powered RTG"
 	desc = "This device only works when exposed to the toxic fumes of Lavaland"

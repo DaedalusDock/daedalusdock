@@ -23,6 +23,18 @@
 	var/list/moderator_rods = list()
 	var/list/fuel_rods = list()
 
+	var/list/rods_by_slot = list(
+		REACTOR_SLOT_1 = null,
+		REACTOR_SLOT_2 = null,
+		REACTOR_SLOT_3 = null,
+		REACTOR_SLOT_4 = null,
+		REACTOR_SLOT_5 = null,
+		REACTOR_SLOT_6 = null,
+		REACTOR_SLOT_7 = null,
+		REACTOR_SLOT_8 = null,
+		REACTOR_SLOT_9 = null
+	)
+
 /obj/machinery/power/reactor_core/mapped
 	anchored = TRUE
 

@@ -44,7 +44,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	var/last_range
 	var/last_power
 
-/obj/effect/reactor_em_field/New(loc, var/obj/machinery/power/reactor_core/new_owned_core)
+/obj/effect/reactor_em_field/New(loc, obj/machinery/power/reactor_core/new_owned_core)
 	..()
 	if(!ignore_types)
 		ignore_types = typecacheof(

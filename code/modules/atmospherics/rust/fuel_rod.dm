@@ -11,12 +11,56 @@
 	custom_materials = list(/datum/material/iron = 500)
 
 	var/obj/machinery/power/reactor_core/parent
+	///Fuel, Control, Moderator
+	var/rod_type
+	///The reactor slot this rod occupies
+	var/occupied_slot
 	var/max_volume
 	///The amount of contents being exposed to the air, as a decimal
 	var/exposure_rate = 0
 
 /obj/item/fuel_rod/proc/return_volume()
 	return
+
+/obj/item/fuel_rod/proc/insert(obj/machinery/power/reactor_core/reactor, slot, mob/user) // No, you can't put two in one slot. Im sorry.
+	if(reactor.rods_by_slot[slot])
+		to_chat(user, span_notice("There is already a fuel rod in that slot."))
+		return
+
+	parent = reactor
+	parent.rods_by_slot[slot] = src
+	parent.all_rods += src
+	occupied_slot = slot
+
+	switch(rod_type)
+		if(ROD_FUEL)
+			parent.fuel_rods += src
+		if(ROD_CONTROL)
+			parent.control_rods += src
+		if(ROD_MODERATOR)
+			parent.moderator_rods += src
+
+
+/obj/item/fuel_rod/proc/remove(mob/user) // PULL OUT PULL OUT
+	if(!parent)
+		CRASH("Fuel rod remove() called with no parent")
+
+	if(user)
+		user.put_in_hands(src)
+	else
+		forceMove(get_turf(parent))
+
+	parent.rods_by_slot[occupied_slot] = null
+	parent.all_rods -= src
+	occupied_slot = null
+	switch(rod_type)
+		if(ROD_FUEL)
+			parent.fuel_rods -= src
+		if(ROD_CONTROL)
+			parent.control_rods -= src
+		if(ROD_MODERATOR)
+			parent.moderator_rods -= src
+	parent = null
 
 /obj/item/fuel_rod/gas
 	name = "fuel rod (gas)"

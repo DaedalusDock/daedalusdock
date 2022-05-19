@@ -161,7 +161,6 @@ Class Procs:
 
 	// Update gas overlays.
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
-		//for(var/turf/simulated/T in contents)
 		for(var/turf/open/T in contents)
 			if(T.simulated)
 				T.update_graphic(graphic_add, graphic_remove)
@@ -192,7 +191,6 @@ Class Procs:
 	// Update atom temperature.
 	if(abs(air.temperature - last_air_temperature) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
 		last_air_temperature = air.temperature
-		//for(var/turf/simulated/T in contents) ZASTURF
 		for(var/turf/T in contents)
 			if(!T.simulated)
 				continue

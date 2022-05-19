@@ -1,0 +1,6 @@
+#define FUEL_ROD_GAS_VOLUME (CELL_VOLUME/2)
+#define FUEL_ROD_REAGENT_VOLUME 200
+
+#define ROD_FUEL (1<<0)
+#define ROD_MODERATOR (1<<1)
+#define ROD_CONTROL (1<<2)

@@ -271,7 +271,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	radiate_all()
 	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
 
-/obj/effect/reactor_em_field/proc/set_field_strength(var/new_strength)
+/obj/effect/reactor_em_field/proc/set_field_strength(new_strength)
 	var/calc_size = 1
 	if(new_strength <= 50)
 		calc_size = 1
@@ -355,11 +355,11 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 			environment.addThermalEnergy(plasma_temperature*20000)
 	radiation = 0
 
-/obj/effect/reactor_em_field/proc/change_size(var/newsize = 1)
+/obj/effect/reactor_em_field/proc/change_size(newsize = 1)
 	var/changed = 0
 	var/static/list/size_to_icon = list(
 			"3" = 'icons/obj/machines/rust/96x96.dmi',
-			"5" = 'icons/obj/machines/rust//160x160.dmi',
+			"5" = 'icons/obj/machines/rust/160x160.dmi',
 			"7" = 'icons/obj/machines/rust/224x224.dmi',
 			"9" = 'icons/obj/machines/rust/288x288.dmi',
 			"11" = 'icons/obj/machines/rust/352x352.dmi',

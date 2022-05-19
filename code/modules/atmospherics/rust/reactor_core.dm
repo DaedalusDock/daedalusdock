@@ -18,6 +18,11 @@
 	var/field_strength = 1//0.01
 	var/initial_id_tag
 
+	var/list/all_rods = list()
+	var/list/control_rods = list()
+	var/list/moderator_rods = list()
+	var/list/fuel_rods = list()
+
 /obj/machinery/power/reactor_core/mapped
 	anchored = TRUE
 
@@ -59,7 +64,7 @@
 	update_use_power(IDLE_POWER_USE)
 	is_on = FALSE
 
-/obj/machinery/power/reactor_core/proc/add_particles(var/name, var/quantity = 1)
+/obj/machinery/power/reactor_core/proc/add_particles(name, quantity = 1)
 	if(owned_field)
 		owned_field.add_particles(name, quantity)
 		return TRUE
@@ -68,7 +73,7 @@
 	if(owned_field)
 		. = owned_field.bullet_act(Proj)
 
-/obj/machinery/power/reactor_core/proc/set_strength(var/value)
+/obj/machinery/power/reactor_core/proc/set_strength(value)
 	value = clamp(value, MIN_FIELD_STR, MAX_FIELD_STR)
 	field_strength = value
 	active_power_usage = value*5
@@ -83,7 +88,7 @@
 			Shutdown()
 		return TRUE
 
-/obj/machinery/power/reactor_core/attackby(var/obj/item/W, var/mob/user)
+/obj/machinery/power/reactor_core/attackby(obj/item/W, mob/user)
 	if(owned_field)
 		to_chat(user,"<span class='warning'>Shut \the [src] off first!</span>")
 		return
@@ -103,7 +108,7 @@
 
 	return ..()
 
-/obj/machinery/power/reactor_core/proc/Jumpstart(var/field_temperature)
+/obj/machinery/power/reactor_core/proc/Jumpstart(field_temperature)
 	field_strength = 501 // Generally a good size.
 	Startup()
 	if(!owned_field)

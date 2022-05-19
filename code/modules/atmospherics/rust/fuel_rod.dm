@@ -19,7 +19,7 @@
 	///The amount of contents being exposed to the air, as a decimal
 	var/exposure_rate = 0
 
-/obj/item/fuel_rod/proc/Destroy(force)
+/obj/item/fuel_rod/Destroy(force)
 	if(parent)
 		remove(parent)
 	return ..()
@@ -51,7 +51,7 @@
 		CRASH("Fuel rod remove() called with no parent")
 
 	if(user)
-		user.put_in_hands(src)
+		INVOKE_ASYNC(user, /mob.proc/put_in_hands, src)
 	else
 		forceMove(get_turf(parent))
 

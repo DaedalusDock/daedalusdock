@@ -19,6 +19,11 @@
 	///The amount of contents being exposed to the air, as a decimal
 	var/exposure_rate = 0
 
+/obj/item/fuel_rod/proc/Destroy(force)
+	if(parent)
+		remove(parent)
+	return ..()
+
 /obj/item/fuel_rod/proc/return_volume()
 	return
 

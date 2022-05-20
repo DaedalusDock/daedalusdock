@@ -1168,8 +1168,8 @@
 	dir = 8
 	},
 /obj/machinery/camera/directional/east{
-	network = list("ss13","prison");
-	c_tag = "Security - Permabrig Library Reading Room"
+	c_tag = "Security - Permabrig Library Reading Room";
+	network = list("ss13","prison")
 	},
 /turf/open/floor/carpet/blue,
 /area/security/prison/work)
@@ -1708,8 +1708,8 @@
 /area/maintenance/department/medical/morgue)
 "eN" = (
 /obj/machinery/door/window/brigdoor/left/directional/north{
-	req_access_txt = "3";
-	name = "Secure Weapons Storage"
+	name = "Secure Weapons Storage";
+	req_access_txt = "3"
 	},
 /turf/open/floor/iron/dark/textured,
 /area/ai_monitored/security/armory)
@@ -4522,7 +4522,7 @@
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/structure/cable,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "mz" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -4792,7 +4792,7 @@
 "ni" = (
 /obj/structure/cable/multilayer/multiz,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "nj" = (
 /obj/effect/turf_decal/tile/green/anticorner/contrasted{
 	dir = 8
@@ -5142,7 +5142,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "ok" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "Trial Transfer";
@@ -5625,7 +5625,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "pz" = (
 /obj/structure/cable,
 /obj/effect/spawner/structure/window/hollow/reinforced/middle{
@@ -7097,7 +7097,7 @@
 "tu" = (
 /obj/machinery/portable_atmospherics/canister/bz,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "tv" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -8610,7 +8610,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "xU" = (
 /obj/machinery/plumbing/growing_vat,
 /obj/effect/decal/cleanable/dirt,
@@ -9287,8 +9287,8 @@
 /obj/item/reagent_containers/glass/bottle/welding_fuel,
 /obj/item/reagent_containers/glass/bottle/welding_fuel,
 /obj/machinery/camera/directional/west{
-	network = list("ss13","prison");
-	c_tag = "Security - Permabrig Cytology"
+	c_tag = "Security - Permabrig Cytology";
+	network = list("ss13","prison")
 	},
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/grimy,
@@ -9899,7 +9899,7 @@
 "BV" = (
 /obj/structure/sign/poster/contraband/random/directional/north,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "BW" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -10235,8 +10235,9 @@
 "CS" = (
 /obj/machinery/atmospherics/pipe/multiz/scrubbers/visible/layer2,
 /obj/machinery/atmospherics/pipe/multiz/supply/visible/layer4,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
-/area/security/prison)
+/area/security/prison/safe)
 "CT" = (
 /obj/structure/table,
 /obj/effect/turf_decal/tile/purple{
@@ -10430,8 +10431,8 @@
 /area/maintenance/starboard/lesser)
 "Dr" = (
 /obj/machinery/camera/directional/east{
-	network = list("ss13","prison");
-	c_tag = "Security - Permabrig Upper Hallway East"
+	c_tag = "Security - Permabrig Upper Hallway East";
+	network = list("ss13","prison")
 	},
 /turf/open/openspace,
 /area/security/prison)
@@ -13489,8 +13490,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/camera/directional/west{
-	network = list("ss13","prison");
-	c_tag = "Security - Upper Permabrig Hallway West"
+	c_tag = "Security - Upper Permabrig Hallway West";
+	network = list("ss13","prison")
 	},
 /turf/open/floor/iron/dark/textured,
 /area/security/prison)
@@ -14261,8 +14262,8 @@
 /area/icemoon/underground/explored)
 "NV" = (
 /obj/machinery/button/door/directional/east{
-	name = "Privacy Shutters";
-	id = "kanyewest"
+	id = "kanyewest";
+	name = "Privacy Shutters"
 	},
 /obj/structure/chair/office{
 	dir = 8
@@ -15671,9 +15672,6 @@
 	name = "engineering external airlock";
 	opacity = 0;
 	req_access_txt = "10;24"
-	},
-/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
-	cycle_id = "cargo-warehouse-external"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "Engineering-External"
@@ -45521,10 +45519,10 @@ ak
 ak
 qZ
 kK
-Cf
+CD
 ni
 mx
-Si
+Py
 Zk
 Np
 ce
@@ -45778,10 +45776,10 @@ mO
 mO
 qZ
 kK
-Cf
+CD
 CS
 py
-Si
+Py
 iv
 Np
 mZ
@@ -46035,10 +46033,10 @@ mO
 mO
 Jf
 kK
-Cf
+CD
 tu
 oj
-Si
+Py
 mL
 Np
 hv
@@ -46292,10 +46290,10 @@ mO
 mO
 mO
 mO
-Cf
+CD
 BV
 py
-Si
+Py
 mL
 Np
 NE
@@ -46549,10 +46547,10 @@ mO
 mO
 mO
 mO
-Cf
-Si
+CD
+Py
 xT
-Si
+Py
 mL
 Np
 nm

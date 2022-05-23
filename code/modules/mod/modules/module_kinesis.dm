@@ -15,16 +15,25 @@
 	overlay_state_inactive = "module_kinesis"
 	overlay_state_active = "module_kinesis_on"
 	accepted_anomalies = list(/obj/item/assembly/signaler/anomaly/grav)
+	/// Range of the knesis grab.
 	var/grab_range = 5
+	/// Time between us hitting objects with kinesis.
 	var/hit_cooldown_time = 1 SECONDS
-	var/movement_animation
+	/// Stat required for us to grab a mob.
+	var/stat_required = DEAD
+	/// How long we stun a mob for.
+	var/mob_stun_time = 5 SECONDS
+	/// Atom we grabbed with kinesis.
 	var/atom/movable/grabbed_atom
+	/// Ref of the beam following the grabbed atom.
 	var/datum/beam/kinesis_beam
+	/// Overlay we add to each grabbed atom.
 	var/mutable_appearance/kinesis_icon
 	/// Our mouse movement catcher.
 	var/atom/movable/screen/fullscreen/cursor_catcher/kinesis/kinesis_catcher
 	/// The sounds playing while we grabbed an object.
 	var/datum/looping_sound/gravgen/kinesis/soundloop
+	/// The cooldown between us hitting objects with kinesis.
 	COOLDOWN_DECLARE(hit_cooldown)
 
 /obj/item/mod/module/anomaly_locked/kinesis/Initialize(mapload)
@@ -32,12 +41,6 @@
 	soundloop = new(src)
 
 /obj/item/mod/module/anomaly_locked/kinesis/Destroy()
-	if(grabbed_atom)
-		kinesis_catcher = null
-		mod.wearer.clear_fullscreen("kinesis")
-		grabbed_atom.cut_overlay(kinesis_icon)
-		QDEL_NULL(kinesis_beam)
-		grabbed_atom.animate_movement = movement_animation
 	QDEL_NULL(soundloop)
 	return ..()
 
@@ -59,6 +62,9 @@
 		return
 	drain_power(use_power_cost)
 	grabbed_atom = target
+	if(isliving(grabbed_atom))
+		var/mob/living/grabbed_mob = grabbed_atom
+		grabbed_mob.Stun(mob_stun_time)
 	playsound(grabbed_atom, 'sound/effects/contractorbatonhit.ogg', 75, TRUE)
 	kinesis_icon = mutable_appearance(icon='icons/effects/effects.dmi', icon_state="kinesis", layer=grabbed_atom.layer-0.1)
 	kinesis_icon.appearance_flags = RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM
@@ -148,7 +154,7 @@
 		if(!isliving(movable_target))
 			return FALSE
 		var/mob/living/living_target = movable_target
-		if(living_target.stat != DEAD)
+		if(living_target.stat < stat_required)
 			return FALSE
 	else if(isitem(movable_target))
 		var/obj/item/item_target = movable_target

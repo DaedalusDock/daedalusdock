@@ -118,6 +118,16 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		GLOB.ooc_allowed = !GLOB.ooc_allowed
 	to_chat(world, "<span class='oocplain'><B>The OOC channel has been globally [GLOB.ooc_allowed ? "enabled" : "disabled"].</B></span>")
 
+/proc/toggle_looc(toggle = null)
+	if(toggle != null)
+		if(toggle != GLOB.looc_allowed)
+			GLOB.looc_allowed = toggle
+		else
+			return
+	else
+		GLOB.looc_allowed = !GLOB.looc_allowed
+	to_chat(world, "<b>The LOOC channel has been globally [GLOB.looc_allowed ? "enabled" : "disabled"].</b>")
+
 /proc/toggle_dooc(toggle = null)
 	if(toggle != null)
 		if(toggle != GLOB.dooc_allowed)

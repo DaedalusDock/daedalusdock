@@ -90,7 +90,7 @@
 	var/list/possible_objectives = list(
 		"You love the Syndicate",
 		"Do not trust Nanotrasen",
-		"The Captain is a lizardperson",
+		"The Captain is a unathi",
 		"Nanotrasen isn't real",
 		"They put things in the food to make you forget",
 		"You are the only real person on the station"

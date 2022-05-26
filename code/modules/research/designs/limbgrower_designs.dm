@@ -102,7 +102,7 @@
 
 // Grows a fake lizard tail - not usable in lizard wine and other similar recipes.
 /datum/design/lizard_tail
-	name = "Lizard Tail"
+	name = "Unathi Tail"
 	id = "liztail"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
@@ -250,13 +250,13 @@
 	build_path = /obj/item/disk/design_disk/limbs/felinid
 
 /obj/item/disk/design_disk/limbs/lizard
-	name = "Lizard Organ Design Disk"
+	name = "Unathi Organ Design Disk"
 	limb_designs = list(/datum/design/lizard_tail, /datum/design/lizard_tongue)
 
 /datum/design/limb_disk/lizard
-	name = "Lizard Organ Design Disk"
-	desc = "Contains designs for lizard organs for the limbgrower - Lizard tongue, and tail"
-	id = "limbdesign_lizard"
+	name = "Unathi Organ Design Disk"
+	desc = "Contains designs for unathi organs for the limbgrower - Unathi tongue, and tail"
+	id = "limbdesign_unathi"
 	build_path = /obj/item/disk/design_disk/limbs/lizard
 
 /obj/item/disk/design_disk/limbs/plasmaman

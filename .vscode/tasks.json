@@ -26,12 +26,12 @@
 		},
 		{
 			"type": "dreammaker",
-			"dme": "tgstation.dme",
+			"dme": "pariah.dme",
 			"problemMatcher": [
 				"$dreammaker"
 			],
 			"group": "build",
-			"label": "dm: build - tgstation.dme"
+			"label": "dm: build - pariah.dme"
 		},
 		{
 			"command": "${command:dreammaker.reparse}",

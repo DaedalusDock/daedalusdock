@@ -68,8 +68,8 @@
 	wanted_types = list(/obj/item/organ/tongue = TRUE)
 
 /datum/bounty/item/medical/lizard_tail
-	name = "Lizard Tail"
-	description = "The Wizard Federation has made off with Nanotrasen's supply of lizard tails. While CentCom is dealing with the wizards, can the station spare a tail of their own?"
+	name = "Unathi Tail"
+	description = "The Wizard Federation has made off with Nanotrasen's supply of unathi tails. While CentCom is dealing with the wizards, can the station spare a tail of their own?"
 	reward = CARGO_CRATE_VALUE * 6
 	wanted_types = list(/obj/item/organ/tail/lizard = TRUE)
 

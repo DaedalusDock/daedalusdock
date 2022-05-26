@@ -584,8 +584,8 @@
 	venue_value = FOOD_PRICE_CHEAP
 
 /obj/item/food/kebab/tail
-	name = "lizard-tail kebab"
-	desc = "Severed lizard tail on a stick."
+	name = "unathi-tail kebab"
+	desc = "Severed unathi tail on a stick."
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 30, /datum/reagent/consumable/nutriment/vitamin = 4)
 	tastes = list("meat" = 8, "metal" = 4, "scales" = 1)
 	foodtypes = MEAT
@@ -1050,7 +1050,7 @@
 	tastes = list("chicken" = 1)
 
 /obj/item/food/meat/steak/plain/human/lizard
-	name = "lizard steak"
+	name = "unathi steak"
 	icon_state = "birdsteak"
 	tastes = list("juicy chicken" = 3, "scales" = 1)
 	foodtypes = MEAT

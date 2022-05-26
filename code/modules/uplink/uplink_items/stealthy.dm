@@ -8,6 +8,14 @@
 
 // No progression cost
 
+/datum/uplink_item/stealthy_weapons/camera_flash
+	name = "Camera Flash"
+	desc = "A flash disguised as a camera with a self-charging safety system preventing the flash from burning out. \
+	        Due to its design, this flash cannot be overcharged like regular flashes can. \
+	        Useful for stunning borgs and individuals without eye protection or blinding a crowd for a get away."
+	item = /obj/item/assembly/flash/camera
+	cost = 1
+
 /datum/uplink_item/stealthy_weapons/dart_pistol
 	name = "Dart Pistol"
 	desc = "A miniaturized version of a normal syringe gun. It is very quiet when fired and can fit into any \

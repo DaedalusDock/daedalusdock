@@ -88,7 +88,7 @@
 
 /obj/effect/spawner/random/clothing/lizardboots
 	name = "random lizard boot quality"
-	desc = "Which ever gets picked, the lizard race loses"
+	desc = "Which ever gets picked, the unathi race loses"
 	icon_state = "lizard_boots"
 	loot = list(
 		/obj/item/clothing/shoes/cowboy/lizard = 7,

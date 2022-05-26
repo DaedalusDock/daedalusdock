@@ -24,7 +24,7 @@
 /// Folder directory for strings
 #define STRING_DIRECTORY "strings"
 
-// JSON text files found in the tgstation/strings folder 
+// JSON text files found in the /strings folder
 /// File location for brain damage traumas
 #define BRAIN_DAMAGE_FILE "traumas.json"
 /// File location for AI ion laws

@@ -1,7 +1,3 @@
-
-## Toggles off SSDecay when uncommented, HIGHLY recommended for map test-merges, to avoid giving it a bad first impression.
-#SSDECAY_DISABLED
-
 ## autovote initial delay (deciseconds in real time) before first automatic transfer vote call (default 120 minutes)
 ## Set to 0 to disable the subsystem altogether.
 VOTE_AUTOTRANSFER_INITIAL 90000

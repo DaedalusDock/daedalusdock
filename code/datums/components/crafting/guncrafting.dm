@@ -43,7 +43,7 @@
 
 /obj/item/weaponcrafting/gunkit/temperature
 	name = "temperature gun parts kit"
-	desc = "A suitcase containing the necessary gun parts to tranform a standard energy gun into a temperature gun. Fantastic at birthday parties and killing indigenious populations of lizardpeople."
+	desc = "A suitcase containing the necessary gun parts to tranform a standard energy gun into a temperature gun. Fantastic at birthday parties and killing indigenious populations of unathi."
 
 /obj/item/weaponcrafting/gunkit/beam_rifle
 	name = "particle acceleration rifle part kit"

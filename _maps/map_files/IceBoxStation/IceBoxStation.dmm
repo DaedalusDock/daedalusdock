@@ -25891,6 +25891,7 @@
 /area/maintenance/starboard/fore)
 "lzZ" = (
 /obj/machinery/airalarm/directional/north,
+/obj/structure/closet/secure_closet/lethalshots,
 /turf/open/floor/glass/reinforced,
 /area/ai_monitored/security/armory/upper)
 "lAq" = (

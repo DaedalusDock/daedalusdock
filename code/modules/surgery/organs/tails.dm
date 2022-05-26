@@ -43,8 +43,8 @@
 		tail_owner.update_body()
 
 /obj/item/organ/tail/lizard
-	name = "lizard tail"
-	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
+	name = "unathi tail"
+	desc = "A severed unathi tail. Somewhere, no doubt, a unathi hater is very pleased with themselves."
 	color = "#116611"
 	tail_type = "Smooth"
 	/// The sprite accessory this tail gives to the human it's attached to. If null, it will inherit its value from the human's DNA once attached.
@@ -95,8 +95,8 @@
 	new_tail.spines = spines
 
 /obj/item/organ/tail/lizard/fake
-	name = "fabricated lizard tail"
-	desc = "A fabricated severed lizard tail. This one's made of synthflesh. Probably not usable for lizard wine."
+	name = "fabricated unathi tail"
+	desc = "A fabricated severed unathi tail. This one's made of synthflesh. Probably not usable for unathi wine."
 	tail_type = null
 	spines = null
 

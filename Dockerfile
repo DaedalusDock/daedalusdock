@@ -80,5 +80,5 @@ COPY --from=build /deploy ./
 COPY --from=rust_g /rust_g/target/i686-unknown-linux-gnu/release/librust_g.so ./librust_g.so
 
 VOLUME [ "/tgstation/config", "/tgstation/data" ]
-ENTRYPOINT [ "DreamDaemon", "tgstation.dmb", "-port", "1337", "-trusted", "-close", "-verbose" ]
+ENTRYPOINT [ "DreamDaemon", "pariah.dmb", "-port", "1337", "-trusted", "-close", "-verbose" ]
 EXPOSE 1337

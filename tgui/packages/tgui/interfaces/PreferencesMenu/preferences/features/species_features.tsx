@@ -90,3 +90,23 @@ export const feature_headtails: FeatureChoiced = {
   name: "Headtails",
   component: FeatureDropdownInput,
 };
+
+export const teshari_feathers: Feature<string> = {
+  name: "Head feathers",
+  component: FeatureDropdownInput,
+};
+
+export const teshari_ears: Feature<string> = {
+  name: "Ears",
+  component: FeatureDropdownInput,
+};
+
+export const teshari_body_feathers: Feature<string> = {
+  name: "Body feathers",
+  component: FeatureDropdownInput,
+};
+
+export const tail_teshari: Feature<string> = {
+  name: "Tail",
+  component: FeatureDropdownInput,
+};

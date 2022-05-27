@@ -78,6 +78,7 @@
 	desc = "Good for your eyes."
 	icon_state = "satchel_carrot"
 	inhand_icon_state = "satchel_carrot"
+	supports_variations_flags = NONE
 
 //Egg prizes and egg spawns!
 /obj/item/surprise_egg

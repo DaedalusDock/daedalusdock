@@ -20,6 +20,7 @@
 	slot_flags = ITEM_SLOT_BACK //ERROOOOO
 	resistance_flags = NONE
 	max_integrity = 300
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/backpack/ComponentInitialize()
 	. = ..()
@@ -80,6 +81,7 @@
 	icon_state = "giftbag0"
 	inhand_icon_state = "giftbag"
 	w_class = WEIGHT_CLASS_BULKY
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/santabag/Initialize(mapload)
 	. = ..()
@@ -122,6 +124,7 @@
 	desc = "It's a backpack made by Honk! Co."
 	icon_state = "clownpack"
 	inhand_icon_state = "clownpack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/explorer
 	name = "explorer bag"
@@ -134,6 +137,7 @@
 	desc = "A silent backpack made for those silent workers. Silence Co."
 	icon_state = "mimepack"
 	inhand_icon_state = "mimepack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/medic
 	name = "medical backpack"
@@ -165,6 +169,7 @@
 	desc = "It's a backpack made of all-natural fibers."
 	icon_state = "botpack"
 	inhand_icon_state = "botpack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/chemistry
 	name = "chemistry backpack"
@@ -177,18 +182,21 @@
 	desc = "A bag designed to be super tough, just in case someone hulks out on you."
 	icon_state = "genepack"
 	inhand_icon_state = "genepack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/science
 	name = "science backpack"
 	desc = "A specially designed backpack. It's fire resistant and smells vaguely of plasma."
 	icon_state = "scipack"
 	inhand_icon_state = "scipack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/virology
 	name = "virology backpack"
 	desc = "A backpack made of hypo-allergenic fibers. It's designed to help prevent the spread of disease. Smells like monkey."
 	icon_state = "viropack"
 	inhand_icon_state = "viropack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert
 	name = "emergency response team commander backpack"
@@ -196,31 +204,37 @@
 	icon_state = "ert_commander"
 	inhand_icon_state = "securitypack"
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert/security
 	name = "emergency response team security backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Security Officers of an Emergency Response Team."
 	icon_state = "ert_security"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert/medical
 	name = "emergency response team medical backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Medical Officers of an Emergency Response Team."
 	icon_state = "ert_medical"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert/engineer
 	name = "emergency response team engineer backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Engineers of an Emergency Response Team."
 	icon_state = "ert_engineering"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert/janitor
 	name = "emergency response team janitor backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Janitors of an Emergency Response Team."
 	icon_state = "ert_janitor"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/ert/clown
 	name = "emergency response team clown backpack"
 	desc = "A spacious backpack with lots of pockets, worn by Clowns of an Emergency Response Team."
 	icon_state = "ert_clown"
+	supports_variations_flags = NONE
 /*
  * Satchel Types
  */
@@ -261,18 +275,21 @@
 	desc = "A sterile satchel with virologist colours."
 	icon_state = "satchel-vir"
 	inhand_icon_state = "satchel-vir"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/satchel/chem
 	name = "chemist satchel"
 	desc = "A sterile satchel with chemist colours."
 	icon_state = "satchel-chem"
 	inhand_icon_state = "satchel-chem"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/satchel/gen
 	name = "geneticist satchel"
 	desc = "A sterile satchel with geneticist colours."
 	icon_state = "satchel-gen"
 	inhand_icon_state = "satchel-gen"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/satchel/science
 	name = "scientist satchel"
@@ -285,6 +302,7 @@
 	desc = "A satchel made of all natural fibers."
 	icon_state = "satchel-hyd"
 	inhand_icon_state = "satchel-hyd"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/satchel/sec
 	name = "security satchel"
@@ -310,6 +328,7 @@
 	icon_state = "satchel-flat"
 	inhand_icon_state = "satchel-flat"
 	w_class = WEIGHT_CLASS_NORMAL //Can fit in backpacks itself.
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/satchel/flat/Initialize(mapload)
 	. = ..()
@@ -360,6 +379,7 @@
 	max_integrity = 100
 	///counts time passed since it ate food
 	var/hunger = 0
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/cursed/Initialize(mapload)
 	. = ..()
@@ -371,12 +391,14 @@
 	desc = "A large duffel bag for holding extra captainly goods."
 	icon_state = "duffel-captain"
 	inhand_icon_state = "duffel-captain"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/med
 	name = "medical duffel bag"
 	desc = "A large duffel bag for holding extra medical supplies."
 	icon_state = "duffel-med"
 	inhand_icon_state = "duffel-med"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/med/surgery
 	name = "surgical duffel bag"
@@ -387,36 +409,42 @@
 	desc = "A large duffel bag for holding extra exotic treasures."
 	icon_state = "duffel-explorer"
 	inhand_icon_state = "duffel-explorer"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/hydroponics
 	name = "hydroponic's duffel bag"
 	desc = "A large duffel bag for holding extra gardening tools."
 	icon_state = "duffel-hydroponics"
 	inhand_icon_state = "duffel-hydroponics"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/chemistry
 	name = "chemistry duffel bag"
 	desc = "A large duffel bag for holding extra chemical substances."
 	icon_state = "duffel-chemistry"
 	inhand_icon_state = "duffel-chemistry"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/genetics
 	name = "geneticist's duffel bag"
 	desc = "A large duffel bag for holding extra genetic mutations."
 	icon_state = "duffel-genetics"
 	inhand_icon_state = "duffel-genetics"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/science
 	name = "scientist's duffel bag"
 	desc = "A large duffel bag for holding extra scientific components."
 	icon_state = "duffel-sci"
 	inhand_icon_state = "duffel-sci"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/virology
 	name = "virologist's duffel bag"
 	desc = "A large duffel bag for holding extra viral bottles."
 	icon_state = "duffel-virology"
 	inhand_icon_state = "duffel-virology"
+	supports_variations_flags = NONE
 
 
 
@@ -438,6 +466,7 @@
 	desc = "A large duffel bag for holding extra security supplies and ammunition."
 	icon_state = "duffel-sec"
 	inhand_icon_state = "duffel-sec"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/sec/surgery
 	name = "surgical duffel bag"
@@ -461,6 +490,7 @@
 	icon_state = "duffel-eng"
 	inhand_icon_state = "duffel-eng"
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/drone
 	name = "drone duffel bag"
@@ -468,6 +498,7 @@
 	icon_state = "duffel-drone"
 	inhand_icon_state = "duffel-drone"
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/drone/PopulateContents()
 	new /obj/item/screwdriver(src)
@@ -483,6 +514,7 @@
 	desc = "A large duffel bag for holding lots of funny gags!"
 	icon_state = "duffel-clown"
 	inhand_icon_state = "duffel-clown"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/clown/cream_pie/PopulateContents()
 	for(var/i in 1 to 10)
@@ -498,6 +530,7 @@
 	inhand_icon_state = "duffel-syndieammo"
 	slowdown = 0
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/syndie/ComponentInitialize()
 	. = ..()
@@ -674,9 +707,11 @@
 	desc = "Granted to the henchmen who deserve it. This probably doesn't include you."
 	icon_state = "henchmen"
 	inhand_icon_state = "henchmen"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/duffelbag/cops
 	name = "police bag"
 	desc = "A large duffel bag for holding extra police gear."
 	slowdown = 0
+	supports_variations_flags = NONE
 

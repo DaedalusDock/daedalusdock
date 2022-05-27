@@ -136,6 +136,8 @@
 ///Has a sprite for snouted heads specifically.
 #define CLOTHING_SNOUTED_VARIATION (1<<3)
 //PARIAH EDIT END
+///Has a custom sprite for Teshari
+#define CLOTHING_TESHARI_VARIATION (1<<4)
 
 //flags for covering body parts
 #define GLASSESCOVERSEYES (1<<0)

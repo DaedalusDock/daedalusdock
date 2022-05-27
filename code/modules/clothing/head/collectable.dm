@@ -14,6 +14,7 @@
 	name = "ultra rare Pete's hat!"
 	desc = "It smells faintly of plasma."
 	icon_state = "petehat"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/xenom
 	name = "collectable xenomorph helmet!"
@@ -49,6 +50,7 @@
 	inhand_icon_state = "caphat"
 
 	dog_fashion = /datum/dog_fashion/head/captain
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/police
 	name = "collectable police officer's hat"
@@ -56,6 +58,7 @@
 	icon_state = "policehelm"
 
 	dog_fashion = /datum/dog_fashion/head/warden
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/beret
 	name = "collectable beret"
@@ -73,6 +76,7 @@
 	icon_state = "welding"
 	inhand_icon_state = "welding"
 	clothing_flags = SNUG_FIT
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/slime
 	name = "collectable slime hat"
@@ -123,6 +127,7 @@
 	icon_state = "wizard"
 
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/hardhat
 	name = "collectable hard hat"
@@ -137,13 +142,14 @@
 	name = "collectable HoS hat"
 	desc = "Now you too can beat prisoners, set silly sentences, and arrest for no reason!"
 	icon_state = "hoscap"
-
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/hop
 	name = "collectable HoP hat"
 	desc = "It's your turn to demand excessive paperwork, signatures, stamps, and hire more clowns! Papers, please!"
 	icon_state = "hopcap"
 	dog_fashion = /datum/dog_fashion/head/hop
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/collectable/thunderdome
 	name = "collectable Thunderdome helmet"
@@ -160,3 +166,4 @@
 	inhand_icon_state = "swat"
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEHAIR
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION

@@ -27,6 +27,8 @@
 	name = "space suit"
 	desc = "A suit that protects against low pressure environments. Has a big 13 on the back."
 	icon_state = "spaceold"
+	fallback_colors = list(list(10, 20))
+	fallback_icon_state = "spacesuit"
 	inhand_icon_state = "s_suit"
 	w_class = WEIGHT_CLASS_BULKY
 	permeability_coefficient = 0.02

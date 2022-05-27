@@ -251,6 +251,7 @@
 	name = "\improper Nanotrasen banner backpack"
 	desc = "It's a backpack with lots of extra room.  A banner with Nanotrasen's logo is attached, that can't be removed."
 	icon_state = "bannerpack"
+	supports_variations_flags = NONE
 
 /obj/item/storage/backpack/bannerpack/Initialize(mapload)
 	. = ..()

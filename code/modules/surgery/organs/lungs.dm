@@ -550,6 +550,14 @@
 	heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
 	heat_damage_type = BURN
 
+/obj/item/organ/lungs/teshari
+	name = "teshari lungs"
+
+	// 30 degrees less
+	cold_level_1_threshold = 230
+	cold_level_2_threshold = 170
+	cold_level_3_threshold = 90
+
 /obj/item/organ/lungs/cybernetic
 	name = "basic cybernetic lungs"
 	desc = "A basic cybernetic version of the lungs found in traditional humanoid entities."

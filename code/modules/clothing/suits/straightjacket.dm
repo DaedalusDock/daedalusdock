@@ -9,3 +9,4 @@
 	equip_delay_self = 50
 	strip_delay = 60
 	breakouttime = 5 MINUTES
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION

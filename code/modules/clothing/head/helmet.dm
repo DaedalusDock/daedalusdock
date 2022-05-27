@@ -96,6 +96,7 @@
 	armor = list(MELEE = 15, BULLET = 60, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
 	can_flashlight = TRUE
 	dog_fashion = null
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/helmet/marine
 	name = "tactical combat helmet"
@@ -156,6 +157,7 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	visor_flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	dog_fashion = null
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(can_toggle && !user.incapacitated())
@@ -222,11 +224,13 @@
 	strip_delay = 80
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	dog_fashion = null
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/helmet/police
 	name = "police officer's hat"
 	desc = "A police officer's Hat. This hat emphasizes that you are THE LAW."
 	icon_state = "policehelm"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 
 /obj/item/clothing/head/helmet/constable
@@ -403,6 +407,7 @@
 	flags_inv = HIDEHAIR|HIDEFACIALHAIR|HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	strip_delay = 80
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/helmet/elder_atmosian
 	name = "\improper Elder Atmosian Helmet"

@@ -39,6 +39,7 @@
 	custom_premium_price = PAYCHECK_MEDIUM * 2
 	drop_sound = 'sound/items/handling/toolbelt_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbelt_pickup.ogg'
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/utility/ComponentInitialize()
 	. = ..()
@@ -203,6 +204,7 @@
 	icon_state = "medical"
 	inhand_icon_state = "medical"
 	worn_icon_state = "medical"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/medical/ComponentInitialize()
 	. = ..()
@@ -296,6 +298,7 @@
 	inhand_icon_state = "security"//Could likely use a better one.
 	worn_icon_state = "security"
 	content_overlays = TRUE
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/security/ComponentInitialize()
 	. = ..()
@@ -350,6 +353,7 @@
 	inhand_icon_state = "explorer1"
 	worn_icon_state = "explorer1"
 	w_class = WEIGHT_CLASS_BULKY
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/mining/ComponentInitialize()
 	. = ..()
@@ -406,6 +410,7 @@
 	icon_state = "explorer2"
 	inhand_icon_state = "explorer2"
 	worn_icon_state = "explorer2"
+	supports_variations_flags = NONE
 
 /obj/item/storage/belt/mining/primitive
 	name = "hunter's belt"
@@ -413,6 +418,7 @@
 	icon_state = "ebelt"
 	inhand_icon_state = "ebelt"
 	worn_icon_state = "ebelt"
+	supports_variations_flags = NONE
 
 /obj/item/storage/belt/mining/primitive/ComponentInitialize()
 	. = ..()
@@ -472,6 +478,7 @@
 	inhand_icon_state = "militarywebbing"
 	worn_icon_state = "militarywebbing"
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/military/ComponentInitialize()
 	. = ..()
@@ -533,6 +540,7 @@
 	inhand_icon_state = "security"
 	worn_icon_state = "security"
 	content_overlays = TRUE
+	supports_variations_flags = NONE
 
 /obj/item/storage/belt/military/abductor/full/PopulateContents()
 	new /obj/item/screwdriver/abductor(src)
@@ -549,6 +557,7 @@
 	icon_state = "grenadebeltold"
 	inhand_icon_state = "security"
 	worn_icon_state = "grenadebeltold"
+	supports_variations_flags = NONE
 
 /obj/item/storage/belt/military/assault
 	name = "assault belt"
@@ -556,6 +565,7 @@
 	icon_state = "assaultbelt"
 	inhand_icon_state = "security"
 	worn_icon_state = "assault"
+	supports_variations_flags = NONE
 
 /obj/item/storage/belt/military/assault/ComponentInitialize()
 	. = ..()
@@ -642,6 +652,7 @@
 	icon_state = "janibelt"
 	inhand_icon_state = "janibelt"
 	worn_icon_state = "janibelt"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/janitor/ComponentInitialize()
 	. = ..()
@@ -677,6 +688,7 @@
 	icon_state = "bandolier"
 	inhand_icon_state = "bandolier"
 	worn_icon_state = "bandolier"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/bandolier/ComponentInitialize()
 	. = ..()
@@ -771,6 +783,7 @@
 	inhand_icon_state = "sheath"
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/storage/belt/sabre/ComponentInitialize()
 	. = ..()

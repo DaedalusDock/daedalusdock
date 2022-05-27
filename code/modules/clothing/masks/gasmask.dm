@@ -9,6 +9,7 @@
 	permeability_coefficient = 0.01
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION
 	///Max numbers of installable filters
 	var/max_filters = 1
 	///List to keep track of each filter
@@ -103,6 +104,7 @@
 	permeability_coefficient = 0.001
 	resistance_flags = FIRE_PROOF
 	max_filters = 3
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/atmos/captain
 	name = "captain's gas mask"
@@ -137,6 +139,7 @@
 	visor_flags_inv = HIDEEYES
 	visor_flags_cover = MASKCOVERSEYES
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/welding/attack_self(mob/user)
 	weldingvisortoggle(user)
@@ -158,6 +161,7 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 2,ENERGY = 2, BOMB = 0, BIO = 75, FIRE = 0, ACID = 0)
 	has_fov = FALSE
 	flags_cover = MASKCOVERSEYES
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/syndicate
 	name = "syndicate mask"
@@ -230,6 +234,7 @@
 	resistance_flags = FLAMMABLE
 	species_exception = list(/datum/species/golem/bananium)
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/mime
 	name = "mime mask"
@@ -287,6 +292,7 @@
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/sexymime
 	name = "sexy mime mask"
@@ -306,6 +312,7 @@
 	resistance_flags = FLAMMABLE
 	has_fov = FALSE
 	flags_cover = MASKCOVERSEYES
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"
@@ -315,6 +322,7 @@
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/carp
 	name = "carp mask"
@@ -322,6 +330,7 @@
 	icon_state = "carp_mask"
 	has_fov = FALSE
 	flags_cover = MASKCOVERSEYES
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/tiki_mask
 	name = "tiki mask"
@@ -336,6 +345,7 @@
 	actions_types = list(/datum/action/item_action/adjust)
 	dog_fashion = null
 	species_exception = list(/datum/species/golem/wood)
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 	var/list/tikimask_designs = list()
 
 /obj/item/clothing/mask/gas/tiki_mask/Initialize(mapload)
@@ -378,6 +388,7 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR|HIDESNOUT
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/driscoll
 	name = "driscoll mask"
@@ -386,6 +397,7 @@
 	flags_inv = HIDEFACIALHAIR
 	w_class = WEIGHT_CLASS_NORMAL
 	inhand_icon_state = "driscoll_mask"
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/gas/prop
 	name = "prop gas mask"
@@ -403,3 +415,4 @@
 	inhand_icon_state = "gas_atmos"
 	flags_cover = MASKCOVERSMOUTH
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION

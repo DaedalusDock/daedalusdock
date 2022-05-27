@@ -80,6 +80,8 @@
 #define BODYTYPE_SNOUTED (1<<5)
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
+///The limb is small and feathery
+#define BODYTYPE_TESHARI (1<<7)
 
 //Defines for Species IDs
 #define SPECIES_ABDUCTOR "abductor"
@@ -105,6 +107,7 @@
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
+#define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
@@ -388,6 +391,7 @@
 #define OFFSET_BACK "back"
 #define OFFSET_SUIT "suit"
 #define OFFSET_NECK "neck"
+#define OFFSET_ACCESSORY "accessory"
 
 //MINOR TWEAKS/MISC
 #define AGE_MIN 18 //youngest a character can be

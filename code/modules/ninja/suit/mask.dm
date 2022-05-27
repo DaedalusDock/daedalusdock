@@ -14,3 +14,4 @@
 	strip_delay = 120
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION

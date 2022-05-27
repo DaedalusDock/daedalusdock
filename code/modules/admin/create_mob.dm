@@ -40,6 +40,10 @@
 	H.dna.features["moth_antennae"] = pick(GLOB.moth_antennae_list)
 	H.dna.features["pod_hair"] = pick(GLOB.pod_hair_list)
 	H.dna.features["headtails"] = pick(GLOB.headtails_list)
+	H.dna.features["teshari_feathers"] = pick(GLOB.teshari_feathers_list)
+	H.dna.features["teshari_ears"] = pick(GLOB.teshari_ears_list)
+	H.dna.features["teshari_body_feathers"] = pick(GLOB.teshari_body_feathers_list)
+	H.dna.features["tail_teshari"] = pick(GLOB.teshari_tails_list)
 
 	H.update_body(is_creating = TRUE)
 	H.update_hair(is_creating = TRUE)

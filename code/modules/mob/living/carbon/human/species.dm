@@ -29,6 +29,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
 	///Clothing offsets. If a species has a different body than other species, you can offset clothing so they look less weird.
 	var/list/offset_features = list(OFFSET_UNIFORM = list(0,0), OFFSET_ID = list(0,0), OFFSET_GLOVES = list(0,0), OFFSET_GLASSES = list(0,0), OFFSET_EARS = list(0,0), OFFSET_SHOES = list(0,0), OFFSET_S_STORE = list(0,0), OFFSET_FACEMASK = list(0,0), OFFSET_HEAD = list(0,0), OFFSET_FACE = list(0,0), OFFSET_BELT = list(0,0), OFFSET_BACK = list(0,0), OFFSET_SUIT = list(0,0), OFFSET_NECK = list(0,0))
+	///If this species needs special 'fallback' sprites, what is the path to the file that contains them?
+	var/fallback_clothing_path
 
 	///The maximum number of bodyparts this species can have.
 	var/max_bodypart_count = 6
@@ -133,7 +135,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A path to an outfit that is important for species life e.g. plasmaman outfit
 	var/datum/outfit/outfit_important_for_life
 
-	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi'
+	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi' if not set
 	var/species_eye_path
 
 	///Is this species a flying species? Used as an easy check for some things

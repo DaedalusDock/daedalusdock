@@ -203,6 +203,7 @@
 	greyscale_config = /datum/greyscale_config/ctf_standard
 	greyscale_config_worn = /datum/greyscale_config/ctf_standard_worn
 	greyscale_colors = "#ffffff"
+	supports_variations_flags = NONE
 
 	///Icon state to be fed into the shielded component
 	var/team_shield_icon = "shield-old"

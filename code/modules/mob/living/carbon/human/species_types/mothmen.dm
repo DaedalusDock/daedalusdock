@@ -4,7 +4,7 @@
 	id = SPECIES_MOTH
 	say_mod = "flutters"
 	default_color = "00FF00"
-	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE)
+	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE, BODY_RESIZABLE)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,

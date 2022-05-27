@@ -11,3 +11,4 @@
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	armor = list(MELEE = 15, BULLET = 25, LASER = 15, ENERGY = 15, BOMB = 20, BIO = 10, FIRE = 0, ACID = 0)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION

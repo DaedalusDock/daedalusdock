@@ -83,6 +83,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/under/costume/kilt/highlander
 	desc = "You're the only one worthy of this kilt."
@@ -113,7 +114,7 @@
 	inhand_icon_state = "maid"
 	body_parts_covered = CHEST|GROIN
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION
 	can_adjust = FALSE
 
 /obj/item/clothing/under/costume/maid/Initialize(mapload)
@@ -308,18 +309,21 @@
 	icon_state = "decker_jumpsuit"
 	inhand_icon_state = "decker_jumpsuit"
 	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/under/costume/morningstar
 	name = "Morningstar suit"
 	icon_state = "morningstar_jumpsuit"
 	inhand_icon_state = "morningstar_jumpsuit"
 	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/under/costume/saints
 	name = "Saints outfit"
 	icon_state = "saints_jumpsuit"
 	inhand_icon_state = "saints_jumpsuit"
 	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/under/costume/phantom
 	name = "Phantom Thief outfit"

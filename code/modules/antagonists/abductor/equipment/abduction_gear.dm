@@ -643,6 +643,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "abductor_headset"
 	inhand_icon_state = "abductor_headset"
 	keyslot2 = new /obj/item/encryptionkey/heads/captain
+	supports_variations_flags = NONE
 
 /obj/item/radio/headset/abductor/Initialize(mapload)
 	. = ..()

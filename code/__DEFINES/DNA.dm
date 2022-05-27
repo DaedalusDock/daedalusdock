@@ -36,7 +36,7 @@
 #define DNA_UNI_IDENTITY_BLOCKS 7
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 19
+#define DNA_FEATURE_BLOCKS 23
 
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
@@ -57,6 +57,10 @@
 #define DNA_HEADTAILS_BLOCK 17
 #define DNA_MUTANT_COLOR_BLOCK_2 18
 #define DNA_MUTANT_COLOR_BLOCK_3 19
+#define DNA_TESHARI_FEATHERS_BLOCK 20
+#define DNA_TESHARI_EARS_BLOCK 21
+#define DNA_TESHARI_BODY_FEATHERS_BLOCK 22
+#define DNA_TESHARI_TAIL_BLOCK 23
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -93,9 +97,11 @@
 #define NOAUGMENTS 20
 ///will be assigned a universal vampire themed last name shared by their department. this is preferenced!
 #define BLOOD_CLANS 21
+/// Can this species use the 'Body size' preference
+#define BODY_RESIZABLE 22
 
-#define MUTCOLORS2			22
-#define MUTCOLORS3			23
+#define MUTCOLORS2			23
+#define MUTCOLORS3			24
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
@@ -134,6 +140,9 @@
 #define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_HEADTAILS "headtails"
+#define ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS "teshari_feathers"
+#define ORGAN_SLOT_EXTERNAL_TESHARI_EARS "teshari_ears"
+#define ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS "teshari_body_feathers"
 
 /// Xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"

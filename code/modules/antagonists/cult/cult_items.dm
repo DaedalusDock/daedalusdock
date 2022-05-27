@@ -365,6 +365,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon_state = "cultrobesalt"
 	inhand_icon_state = "cultrobesalt"
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/alt
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/suit/hooded/cultrobes/alt/ghost
 	item_flags = DROPDEL
@@ -1077,12 +1078,12 @@ Striking a noncultist, however, will tear their flesh."}
 
 		if(target.can_block_magic() || IS_CULTIST(target))
 			target.visible_message(span_warning("[src] bounces off of [target], as if repelled by an unseen force!"))
-			return 
+			return
 		if(IS_CULTIST(target) && target.put_in_active_hand(src))
 			playsound(src, 'sound/weapons/throwtap.ogg', 50)
 			target.visible_message(span_warning("[target] catches [src] out of the air!"))
 			return
-		if(!..())			
+		if(!..())
 			target.Paralyze(30)
 			if(D?.thrower)
 				for(var/mob/living/Next in orange(2, T))

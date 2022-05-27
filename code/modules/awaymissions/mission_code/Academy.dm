@@ -79,6 +79,7 @@
 	desc = "I can see forever!"
 	icon_state = "monocle"
 	inhand_icon_state = "headset"
+	supports_variations_flags = NONE
 
 
 /obj/structure/academy_wizard_spawner

@@ -12,6 +12,7 @@
 	attack_verb_continuous = list("warns", "cautions", "smashes")
 	attack_verb_simple = list("warn", "caution", "smash")
 	resistance_flags = NONE
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 
 /obj/item/clothing/head/cone/worn_overlays(mutable_appearance/standing, isinhands, icon_file)

@@ -19,6 +19,7 @@
 	distribute_pressure = TANK_DEFAULT_RELEASE_PRESSURE
 	force = 10
 	dog_fashion = /datum/dog_fashion/back
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 
 /obj/item/tank/internals/oxygen/populate_gas()
@@ -31,12 +32,14 @@
 	icon_state = "oxygen_f"
 	tank_holder_icon_state = "holder_oxygen_f"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/tank/internals/oxygen/red
 	desc = "A tank of oxygen, this one is red."
 	icon_state = "oxygen_fr"
 	tank_holder_icon_state = "holder_oxygen_fr"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/tank/internals/oxygen/empty/populate_gas()
 	return
@@ -51,6 +54,7 @@
 	inhand_icon_state = "an_tank"
 	tank_holder_icon_state = "holder_anesthetic"
 	force = 10
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/tank/internals/anesthetic/populate_gas()
 	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrous_oxide)
@@ -147,6 +151,7 @@
 	worn_icon_state = "emergency"
 	tank_holder_icon_state = "holder_emergency"
 	worn_icon = null
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_SMALL
@@ -179,6 +184,7 @@
 	icon_state = "emergency_double"
 	worn_icon_state = "emergency_engi"
 	tank_holder_icon_state = "holder_emergency_engi"
+	supports_variations_flags = NONE
 	volume = 12 //If it's double of the above, shouldn't it be double the volume??
 
 /obj/item/tank/internals/emergency_oxygen/double/empty/populate_gas()

@@ -70,6 +70,7 @@
 	inhand_icon_state = "overalls"
 	body_parts_covered = CHEST|GROIN|LEGS
 	species_exception = list(/datum/species/golem)
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/suit/apron/purple_bartender
 	name = "purple bartender apron"
@@ -77,6 +78,7 @@
 	icon_state = "purplebartenderapron"
 	inhand_icon_state = "purplebartenderapron"
 	body_parts_covered = CHEST|GROIN|LEGS
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/syndicatefake
 	name = "black and red space suit replica"
@@ -181,6 +183,7 @@
 	icon_state = "classicponcho"
 	inhand_icon_state = "classicponcho"
 	species_exception = list(/datum/species/golem)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/suit/poncho/green
 	name = "green poncho"
@@ -199,6 +202,7 @@
 	desc = "Forced to live on your shameful acting as a fake Mexican, you and your poncho have grown inseparable. Literally."
 	icon_state = "ponchoshame"
 	inhand_icon_state = "ponchoshame"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/suit/poncho/ponchoshame/Initialize(mapload)
 	. = ..()
@@ -222,6 +226,7 @@
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT //Space carp like space, so you should too
 	allowed = list(/obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman, /obj/item/gun/ballistic/rifle/boltaction/harpoon)
 	hoodtype = /obj/item/clothing/head/hooded/carp_hood
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/hooded/carp_hood
 	name = "carp hood"
@@ -332,6 +337,7 @@
 	actions_types = list(/datum/action/item_action/toggle_human_head)
 	hoodtype = /obj/item/clothing/head/hooded/human_head
 	species_exception = list(/datum/species/golem) //Finally, flesh
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 
 /obj/item/clothing/head/hooded/human_head
@@ -487,7 +493,7 @@
 	icon_state = "driscoll_suit"
 	inhand_icon_state = "driscoll_suit"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/suit/irs
 	name = "internal revenue service jacket"

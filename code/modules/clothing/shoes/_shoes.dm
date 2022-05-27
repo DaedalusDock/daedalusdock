@@ -1,6 +1,8 @@
 /obj/item/clothing/shoes
 	name = "shoes"
 	icon = 'icons/obj/clothing/shoes.dmi'
+	fallback_colors = list(list(13, 3))
+	fallback_icon_state = "shoes"
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	var/chained = FALSE

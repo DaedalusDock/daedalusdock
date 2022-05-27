@@ -3,6 +3,7 @@
 	desc = "It's a baseball hat in a tasteless yellow colour."
 	icon_state = "cargosoft"
 	inhand_icon_state = "helmet"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 	var/soft_type = "cargo"
 
 	dog_fashion = /datum/dog_fashion/head/cargo_tech
@@ -48,6 +49,7 @@
 	icon_state = "redsoft"
 	soft_type = "red"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/blue
 	name = "blue cap"
@@ -55,6 +57,7 @@
 	icon_state = "bluesoft"
 	soft_type = "blue"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/green
 	name = "green cap"
@@ -62,6 +65,7 @@
 	icon_state = "greensoft"
 	soft_type = "green"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/yellow
 	name = "yellow cap"
@@ -69,6 +73,7 @@
 	icon_state = "yellowsoft"
 	soft_type = "yellow"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/grey
 	name = "grey cap"
@@ -76,6 +81,7 @@
 	icon_state = "greysoft"
 	soft_type = "grey"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /* A grey baseball cap that grants TRAIT_JOLLY when it's on your head.
  * Used for testing that gaining and losing the JOLLY trait behaves properly.
@@ -92,6 +98,7 @@
 	icon_state = "orangesoft"
 	soft_type = "orange"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/mime
 	name = "white cap"
@@ -99,6 +106,7 @@
 	icon_state = "mimesoft"
 	soft_type = "mime"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/purple
 	name = "purple cap"
@@ -106,6 +114,7 @@
 	icon_state = "purplesoft"
 	soft_type = "purple"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/black
 	name = "black cap"
@@ -120,6 +129,7 @@
 	icon_state = "rainbowsoft"
 	soft_type = "rainbow"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/sec
 	name = "security cap"
@@ -129,6 +139,7 @@
 	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 20, ACID = 50)
 	strip_delay = 60
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/soft/paramedic
 	name = "paramedic cap"

@@ -6,6 +6,7 @@
 	flags_inv = 0
 	armor = list(MELEE = 30, BULLET = 15, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	strip_delay = 80
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/spacepolice
 	name = "space police cap"
@@ -165,6 +166,7 @@
 	icon_state = "capcap"
 	inhand_icon_state = "that"
 	armor = list(MELEE = 25, BULLET = 15, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/jackbros
 	name = "frosty hat"
@@ -177,6 +179,7 @@
 	desc = "A gauzy white veil."
 	icon_state = "weddingveil"
 	inhand_icon_state = "weddingveil"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/centcom_cap
 	name = "\improper CentCom commander cap"

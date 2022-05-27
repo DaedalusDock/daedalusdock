@@ -409,6 +409,7 @@
  * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
+ * * no_id: When true, doors with public access will count as impassible
 */
 /turf/proc/LinkBlockedWithAccess(turf/destination_turf, atom/movable/caller, ID, no_id = FALSE)
 	if(destination_turf.x != x && destination_turf.y != y) //diagonal
@@ -418,7 +419,7 @@
 
 		for(var/first_step_direction in list(first_step_direction_a,first_step_direction_b))
 			var/turf/midstep_turf = get_step(destination_turf,first_step_direction)
-			var/way_blocked = midstep_turf.density || LinkBlockedWithAccess(midstep_turf, caller, ID, no_id) || midstep_turf.LinkBlockedWithAccess(destination_turf, caller, ID, no_id)
+			var/way_blocked = midstep_turf.density || LinkBlockedWithAccess(midstep_turf,caller,ID, no_id = no_id) || midstep_turf.LinkBlockedWithAccess(destination_turf,caller,ID, no_id = no_id)
 			if(!way_blocked)
 				return FALSE
 		return TRUE
@@ -431,7 +432,7 @@
 		//	if(destination_turf.density)
 		//		return TRUE
 		if(TURF_PATHING_PASS_PROC)
-			if(!destination_turf.CanAStarPass(ID, actual_dir, caller, no_id))
+			if(!destination_turf.CanAStarPass(ID, actual_dir , caller, no_id = no_id))
 				return TRUE
 		if(TURF_PATHING_PASS_NO)
 			return TRUE

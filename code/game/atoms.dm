@@ -2233,7 +2233,7 @@
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

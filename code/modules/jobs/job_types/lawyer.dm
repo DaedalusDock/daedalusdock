@@ -10,8 +10,12 @@
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/lawyer
-	plasmaman_outfit = /datum/outfit/plasmaman/bar
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/lawyer,
+			SPECIES_PLASMAMAN = /datum/outfit/job/lawyer/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_SRV
@@ -44,6 +48,13 @@
 	l_hand = /obj/item/storage/briefcase/lawyer
 
 	chameleon_extras = /obj/item/stamp/law
+
+/datum/outfit/job/lawyer/plasmaman
+	name = "Lawyer (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white
 
 /datum/outfit/job/lawyer/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)

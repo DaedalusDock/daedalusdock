@@ -14,8 +14,13 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/detective
-	plasmaman_outfit = /datum/outfit/plasmaman/detective
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/detective,
+			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/security,
 		)
@@ -71,6 +76,13 @@
 		/obj/item/gun/ballistic/revolver/detective,
 		)
 	implants = list(/obj/item/implant/mindshield)
+
+/datum/outfit/job/detective/plasmaman
+	name = "Detective Plasmaman"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white
 
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

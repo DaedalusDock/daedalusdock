@@ -11,8 +11,12 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/scientist
-	plasmaman_outfit = /datum/outfit/plasmaman/science
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/scientist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/scientist/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_SCI
@@ -48,6 +52,13 @@
 	backpack = /obj/item/storage/backpack/science
 	satchel = /obj/item/storage/backpack/satchel/science
 	duffelbag = /obj/item/storage/backpack/duffelbag/science
+
+/datum/outfit/job/scientist/plasmaman
+	name = "Scientist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/science
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/science
 
 /datum/outfit/job/scientist/pre_equip(mob/living/carbon/human/H)
 	..()

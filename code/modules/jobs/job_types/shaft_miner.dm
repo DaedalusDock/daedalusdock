@@ -10,8 +10,12 @@
 	selection_color = "#dcba97"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/miner
-	plasmaman_outfit = /datum/outfit/plasmaman/mining
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/miner,
+			SPECIES_PLASMAMAN = /datum/outfit/job/miner/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_CAR
@@ -52,6 +56,13 @@
 
 	box = /obj/item/storage/box/survival/mining
 	chameleon_extras = /obj/item/gun/energy/recharge/kinetic_accelerator
+
+/datum/outfit/job/miner/plasmaman
+	name = "Shaft Miner (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/mining
+	gloves = /obj/item/clothing/gloves/color/plasmaman/explorer
+	head = /obj/item/clothing/head/helmet/space/plasmaman/mining
 
 /datum/outfit/job/miner/equipped
 	name = "Shaft Miner (Equipment)"

@@ -12,8 +12,12 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/engineer
-	plasmaman_outfit = /datum/outfit/plasmaman/engineering
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer,
+			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_ENG
@@ -58,6 +62,13 @@
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
+
+/datum/outfit/job/engineer/plasmaman
+	name = "Station Engineer (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/engineering
+	gloves = /obj/item/clothing/gloves/color/plasmaman/engineer
+	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
 
 /datum/outfit/job/engineer/gloved
 	name = "Station Engineer (Gloves)"

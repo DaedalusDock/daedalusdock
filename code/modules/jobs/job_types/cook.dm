@@ -12,8 +12,12 @@
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
 	var/list/kitchen_areas = list(/area/service/kitchen)
 
-	outfit = /datum/outfit/job/cook
-	plasmaman_outfit = /datum/outfit/plasmaman/chef
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/cook,
+			SPECIES_PLASMAMAN = /datum/outfit/job/cook/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_SRV
@@ -100,6 +104,13 @@
 	mask = /obj/item/clothing/mask/fakemoustache/italian
 
 	skillchips = list(/obj/item/skillchip/job/chef)
+
+/datum/outfit/job/cook/plasmaman
+	name = "Cook (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/chef
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

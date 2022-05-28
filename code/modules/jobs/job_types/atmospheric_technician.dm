@@ -14,6 +14,13 @@
 	outfit = /datum/outfit/job/atmos
 	plasmaman_outfit = /datum/outfit/plasmaman/atmospherics
 
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/atmos,
+			SPECIES_PLASMAMAN = /datum/outfit/job/atmos/plasmaman,
+		),
+	)
+
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_ENG
 
@@ -55,6 +62,15 @@
 
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
+
+/datum/outfit/job/atmos/plasmaman
+	name = "Atmospheric Technician (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/atmospherics
+	gloves = /obj/item/clothing/gloves/color/plasmaman/atmos
+	head = /obj/item/clothing/head/helmet/space/plasmaman/atmospherics
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/atmos/mod
 	name = "Atmospheric Technician (MODsuit)"

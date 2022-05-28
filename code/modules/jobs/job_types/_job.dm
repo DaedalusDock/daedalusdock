@@ -52,6 +52,11 @@
 	/// The job's outfit that will be assigned for plasmamen.
 	var/plasmaman_outfit = null
 
+	/// Different outfits for alternate job titles and different species
+	var/list/outfits = list(
+		"Job Title" = list(),
+	)
+
 	/// Minutes of experience-time required to play in this job. The type is determined by [exp_required_type] and [exp_required_type_department] depending on configs.
 	var/exp_requirements = 0
 	/// Experience required to play this job, if the config is enabled, and `exp_required_type_department` is not enabled with the proper config.
@@ -215,8 +220,17 @@
 	return
 
 /mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) //PARIAH EDIT CHANGE
+	//Find job title in the first list, then pick the outfit based on species.
+	var/datum/outfit/outfit2wear = equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[src.dna.species.id]
+	outfit2wear ||= equipping.outfits["Default"]?[src.dna.species.id]//A fallback that uses the default job title outfit for the species.
+	outfit2wear ||= equipping.outfits[used_pref.alt_job_titles[equipping.title] || "Default"]?[SPECIES_HUMAN]//Another fallback that uses the default human outfit for the chosen job title.
+	outfit2wear ||= equipping.outfits["Default"]?[SPECIES_HUMAN]//Third fallback that uses the default job title and human outfit.
+	if(!outfit2wear)
+		outfit2wear = /datum/outfit/job//Emergency fallback that equips the generic "job outfit". This shouldn't happen unless something is wrong.
+		stack_trace("[equipping] has no valid outfits in it's list.")
+
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equip_outfit_and_loadout(equipping.outfit, used_pref, visual_only, equipping) //PARIAH EDIT CHANGE
+	equip_outfit_and_loadout(outfit2wear, used_pref, visual_only, equipping) //PARIAH EDIT CHANGE
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.

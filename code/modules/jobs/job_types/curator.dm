@@ -10,8 +10,12 @@
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/curator
-	plasmaman_outfit = /datum/outfit/plasmaman/curator
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/curator,
+			SPECIES_PLASMAMAN = /datum/outfit/job/curator/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_SRV
@@ -46,6 +50,13 @@
 	l_hand = /obj/item/storage/bag/books
 
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
+
+/datum/outfit/job/curator/plasmaman
+	name = "Curator (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/curator
+	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
+	head = /obj/item/clothing/head/helmet/space/plasmaman/curator
 
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

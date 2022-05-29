@@ -44,3 +44,7 @@ endmap
 
 map multiz_debug
 endmap
+
+map pubbystation
+	voteable
+endmap

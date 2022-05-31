@@ -223,7 +223,7 @@
 	//Find job title in the first list, then pick the outfit based on species.
 	var/datum/outfit/outfit2wear = equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[src.dna.species.id]
 	outfit2wear ||= equipping.outfits["Default"]?[src.dna.species.id]//A fallback that uses the default job title outfit for the species.
-	outfit2wear ||= equipping.outfits[used_pref.alt_job_titles[equipping.title] || "Default"]?[SPECIES_HUMAN]//Another fallback that uses the default human outfit for the chosen job title.
+	outfit2wear ||= equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[SPECIES_HUMAN]//Another fallback that uses the default human outfit for the chosen job title.
 	outfit2wear ||= equipping.outfits["Default"]?[SPECIES_HUMAN]//Third fallback that uses the default job title and human outfit.
 	if(!outfit2wear)
 		outfit2wear = /datum/outfit/job//Emergency fallback that equips the generic "job outfit". This shouldn't happen unless something is wrong.

@@ -109,6 +109,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["vox_hair"] = "None"
 	dna.features["vox_facial_hair"] = "None"
 	dna.features["spines_vox"] = "None"
+	dna.features["tail_cat"] = "None"
+	dna.features["tail_lizard"] = "Light"
 
 //Inefficient pooling/caching way.
 GLOBAL_LIST_EMPTY(human_dummy_list)

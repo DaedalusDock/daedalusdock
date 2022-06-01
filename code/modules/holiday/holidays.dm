@@ -256,12 +256,12 @@
 
 //Draconic Day is celebrated on May 3rd, the date on which the Draconic language was merged (#26780)
 /datum/holiday/draconic_day
-	name = "Draconic Language Day"
+	name = "Sinta'Unathi Language Day"
 	begin_month = MAY
 	begin_day = 3
 
 /datum/holiday/draconic_day/greet()
-	return "On this day, Lizardkind celebrates their language with literature and other cultural works."
+	return "On this day, the Unathi celebrate their language with literature and other cultural works."
 
 /datum/holiday/draconic_day/getStationPrefix()
 	return pick("Draconic", "Literature", "Reading")
@@ -293,7 +293,7 @@
 	begin_day = 15
 
 /datum/holiday/atrakor_festival/greet()
-	return "On this day, the Lizards traditionally celebrate the Festival of Atrakor's Might, where they honour the moon god with lavishly adorned clothing, large portions of food, and a massive celebration into the night."
+	return "On this day, the Unathi traditionally celebrate the Festival of Atrakor's Might, where they honour the moon god with lavishly adorned clothing, large portions of food, and a massive celebration into the night."
 
 /datum/holiday/atrakor_festival/getStationPrefix()
 	return pick("Moon", "Night Sky", "Celebration")
@@ -414,7 +414,7 @@
 
 /datum/holiday/indigenous/getStationPrefix()
 	return pick("Endangered language", "Word", "Language", "Language revitalization", "Potato", "Corn")
-	
+
 // AUGUST
 
 /datum/holiday/ukraine
@@ -429,15 +429,15 @@
 
 //Tiziran Unification Day is celebrated on Sept 1st, the day on which lizards were made a roundstart race
 /datum/holiday/tiziran_unification
-	name = "Tiziran Unification Day"
+	name = "Moghes Unification Day"
 	begin_month = SEPTEMBER
 	begin_day = 1
 
 /datum/holiday/tiziran_unification/greet()
-	return "On this day over 400 years ago, Lizardkind first united under a single banner, ready to face the stars as one unified people."
+	return "On this day over 400 years ago, the Unathi first united under a single banner, ready to face the stars as one unified people."
 
 /datum/holiday/tiziran_unification/getStationPrefix()
-	return pick("Tizira", "Lizard", "Imperial")
+	return pick("Moghes", "Unathi", "Imperial")
 
 /datum/holiday/ianbirthday
 	name = "Ian's Birthday" //github.com/tgstation/tgstation/commit/de7e4f0de0d568cd6e1f0d7bcc3fd34700598acb

@@ -1385,7 +1385,7 @@
 		{
 			"id": "scientist_moth",
 			"name": "Scientist (Moth)",
-			"desc": "Moths are a common sight in Nanotrasen research departments, acting as integral ideas guys for new clothing designs and lighting innovations.",
+			"desc": "Gamuioda are a common sight in Nanotrasen research departments, acting as integral ideas guys for new clothing designs and lighting innovations.",
 			"rules": "",
 			"icon_state": "scientist_moth",
 			"power": "2",

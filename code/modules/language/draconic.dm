@@ -1,6 +1,6 @@
 /datum/language/draconic
-	name = "Draconic"
-	desc = "The common language of lizard-people, composed of sibilant hisses and rattles."
+	name = "Sinta'Unathi"
+	desc = "The common language of the Unathi, composed of sibilant hisses and rattles."
 	key = "o"
 	flags = TONGUELESS_SPEECH
 	space_chance = 40

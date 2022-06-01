@@ -1,6 +1,6 @@
 /datum/species/moth
-	name = "\improper Mothman"
-	plural_form = "Mothmen"
+	name = "\improper Gamuioda"
+	plural_form = "Gamuioda"
 	id = SPECIES_MOTH
 	say_mod = "flutters"
 	default_color = "00FF00"
@@ -105,28 +105,32 @@
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "feather-alt",
 			SPECIES_PERK_NAME = "Precious Wings",
-			SPECIES_PERK_DESC = "Moths can fly in pressurized, zero-g environments and safely land short falls using their wings.",
+			SPECIES_PERK_DESC = "Gamuioda can fly in pressurized, zero-g environments and safely land short falls using their wings.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "tshirt",
 			SPECIES_PERK_NAME = "Meal Plan",
-			SPECIES_PERK_DESC = "Moths can eat clothes for nourishment.",
+			SPECIES_PERK_DESC = "Gamuioda can eat clothes for nourishment.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "fire",
 			SPECIES_PERK_NAME = "Ablazed Wings",
-			SPECIES_PERK_DESC = "Moth wings are fragile, and can be easily burnt off.",
+			SPECIES_PERK_DESC = "Gamuioda wings are fragile, and can be easily burnt off.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "sun",
 			SPECIES_PERK_NAME = "Bright Lights",
-			SPECIES_PERK_DESC = "Moths need an extra layer of flash protection to protect \
+			SPECIES_PERK_DESC = "Gamuioda need an extra layer of flash protection to protect \
 				themselves, such as against security officers or when welding. Welding \
 				masks will work.",
 		),
 	)
 
 	return to_add
+
+/datum/species/moth/prepare_human_for_preview(mob/living/carbon/human/human)
+	human.dna.features["mcolor"] = "#f4d697"
+	human.update_body(TRUE)

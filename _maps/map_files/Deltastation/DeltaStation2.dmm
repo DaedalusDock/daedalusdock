@@ -17592,6 +17592,13 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/science/robotics/lab)
+"dAQ" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/mob/living/simple_animal/bot/secbot/beepsky/armsky,
+/turf/open/floor/iron,
+/area/ai_monitored/security/armory)
 "dAR" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
 /turf/open/floor/iron/white,
@@ -32404,11 +32411,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/medical/medbay/lobby)
-"hkR" = (
-/obj/effect/turf_decal/tile/red,
-/obj/machinery/power/apc/auto_name/directional/east,
-/turf/open/floor/iron,
-/area/security/brig)
 "hkX" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -34790,6 +34792,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "sci-toxins-circuits"
+	},
 /turf/open/floor/iron,
 /area/science/misc_lab)
 "hTB" = (
@@ -41686,7 +41691,6 @@
 	name = "Research Division Access";
 	req_access_txt = "47"
 	},
-/obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -41694,6 +41698,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "sci-toxins-circuits"
+	},
 /turf/open/floor/iron,
 /area/science/research)
 "jVh" = (
@@ -54521,6 +54528,9 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "sci-toxins-circuits"
+	},
 /turf/open/floor/iron,
 /area/science/mixing/hallway)
 "nKP" = (
@@ -66139,7 +66149,7 @@
 "rfe" = (
 /obj/machinery/light/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/mob/living/simple_animal/bot/secbot/beepsky/armsky,
+/obj/structure/closet/secure_closet/lethalshots,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "rfo" = (
@@ -141607,7 +141617,7 @@ bCg
 bNj
 oNn
 gCn
-hkR
+lpE
 bnJ
 bnJ
 bnJ
@@ -143411,7 +143421,7 @@ bLs
 nlZ
 bPx
 bRt
-bRt
+dAQ
 bRt
 bXO
 inX

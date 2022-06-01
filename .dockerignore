@@ -17,11 +17,11 @@ cfg
 data
 SQL
 node_modules
-tgstation.dmb
-tgstation.int
-tgstation.rsc
-tgstation.lk
-tgstation.dyn.rsc
+pariah.dmb
+pariah.int
+pariah.rsc
+pariah.lk
+pariah.dyn.rsc
 *.dll
 Dockerfile
 tools/bootstrap/.cache

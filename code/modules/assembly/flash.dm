@@ -32,6 +32,7 @@
 	var/last_used = 0 //last world.time it was used.
 	var/cooldown = 0
 	var/last_trigger = 0 //Last time it was successfully triggered.
+	var/flash_sound = 'sound/weapons/flash.ogg' //For custom sounds when the flash is used.
 
 /obj/item/assembly/flash/suicide_act(mob/living/user)
 	if(burnt_out)
@@ -115,7 +116,7 @@
 	if(burnt_out || (world.time < last_trigger + cooldown))
 		return FALSE
 	last_trigger = world.time
-	playsound(src, 'sound/weapons/flash.ogg', 100, TRUE)
+	playsound(src, flash_sound, 100, TRUE)
 	set_light_on(TRUE)
 	addtimer(CALLBACK(src, .proc/flash_end), FLASH_LIGHT_DURATION, TIMER_OVERRIDE|TIMER_UNIQUE)
 	times_used++
@@ -322,6 +323,61 @@
 /obj/item/assembly/flash/cyborg/screwdriver_act(mob/living/user, obj/item/I)
 	return
 
+///Camera flash
+
+/obj/item/assembly/flash/camera
+	name = "camera"
+	icon = 'icons/obj/items_and_weapons.dmi'
+	desc = "A polaroid camera."
+	icon_state = "camera"
+	inhand_icon_state = "camera"
+	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
+	slot_flags = ITEM_SLOT_NECK
+	pickup_sound = null //override pickup and drop sounds so it behaves more like a real camera.
+	drop_sound = null
+	flash_sound = 'sound/items/polaroid1.ogg'
+	var/max_charges = 5
+	var/current_charges = 5
+	var/list/charge_timers = list()
+	var/charge_time = 30 SECONDS
+
+/obj/item/assembly/flash/camera/burn_out()
+	return //use self charging system instead
+
+/obj/item/assembly/flash/camera/attack_self(mob/living/carbon/user, flag = 0)
+	if(use_charge(user))
+		. = ..()
+
+/obj/item/assembly/flash/camera/attack(mob/living/M, mob/user)
+	if(use_charge(user))
+		. = ..()
+
+/obj/item/assembly/flash/camera/proc/use_charge(mob/user)
+	if(current_charges)
+		current_charges--
+		to_chat(user, span_notice("You use [src]. It now has [current_charges] charge\s remaining."))
+		charge_timers.Add(addtimer(CALLBACK(src, .proc/recharge), charge_time, TIMER_STOPPABLE))
+		return TRUE
+	else
+		to_chat(user, span_warning("[src] is recharging."))
+
+/obj/item/assembly/flash/camera/proc/recharge(mob/user)
+	current_charges = min(current_charges+1, max_charges)
+	charge_timers.Remove(charge_timers[1])
+
+/obj/item/assembly/flash/camera/examine(mob/user)
+	. = ..()
+	. += span_notice("It has [current_charges] charge\s remaining.")
+	if (length(charge_timers))
+		. += span_boldnotice("A small display on the screen reads:")
+	for (var/i in 1 to length(charge_timers))
+		var/timeleft = timeleft(charge_timers[i])
+		var/loadingbar = num2loadingbar(timeleft/charge_time)
+		. += span_boldnotice("CHARGE #[i]: [loadingbar] ([timeleft*0.1]s)")
+
+//Memorizer
+
 /obj/item/assembly/flash/memorizer
 	name = "memorizer"
 	desc = "If you see this, you're not likely to remember it any time soon."
@@ -355,7 +411,7 @@
 		return FALSE
 	overheat = TRUE
 	addtimer(CALLBACK(src, .proc/cooldown), flashcd)
-	playsound(src, 'sound/weapons/flash.ogg', 100, TRUE)
+	playsound(src, flash_sound, 100, TRUE)
 	update_icon(ALL, TRUE)
 	return TRUE
 

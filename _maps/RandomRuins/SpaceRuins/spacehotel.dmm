@@ -4225,8 +4225,11 @@
 /area/ruin/space/has_grav/hotel/guestroom/room_1)
 "Uw" = (
 /obj/machinery/door/airlock/external/glass,
-/turf/open/space/basic,
-/area/ruin/space/has_grav/hotel/power)
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 8
+	},
+/turf/open/floor/plating,
+/area/ruin/space/has_grav/hotel)
 "UD" = (
 /obj/effect/turf_decal/stripes/end,
 /turf/open/floor/plating/airless,
@@ -6180,7 +6183,7 @@ zb
 kM
 WD
 dO
-WD
+QN
 QN
 QN
 QN

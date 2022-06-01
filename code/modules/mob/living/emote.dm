@@ -581,3 +581,19 @@
 	key_third_person = "swears"
 	message = "says a swear word!"
 	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/chirp
+	key = "chirp"
+	key_third_person = "chirps"
+	message = "chirps!"
+	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
+	sound = 'sound/voice/bird/chirp.ogg'
+
+/datum/emote/living/chirp2
+	key = "chirp2"
+	key_third_person = "chirps"
+	message = "chirps!"
+	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
+	sound = 'sound/voice/bird/chirp2.ogg'

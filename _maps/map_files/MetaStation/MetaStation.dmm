@@ -30596,6 +30596,7 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
+/obj/structure/closet/secure_closet/lethalshots,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "kaE" = (

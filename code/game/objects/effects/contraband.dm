@@ -371,8 +371,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 	icon_state = "the_griffin"
 
 /obj/structure/sign/poster/contraband/lizard
-	name = "Lizard"
-	desc = "This lewd poster depicts a lizard preparing to mate."
+	name = "Unathi"
+	desc = "This lewd poster depicts a unathi preparing to mate."
 	icon_state = "lizard"
 
 /obj/structure/sign/poster/contraband/free_drone
@@ -439,7 +439,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 
 /obj/structure/sign/poster/contraband/the_big_gas_giant_truth
 	name = "The Big Gas Giant Truth"
-	desc = "Don't believe everything you see on a poster, patriots. All the lizards at central command don't want to answer this SIMPLE QUESTION: WHERE IS THE GAS MINER MINING FROM, CENTCOM?"
+	desc = "Don't believe everything you see on a poster, patriots. All the unathi at central command don't want to answer this SIMPLE QUESTION: WHERE IS THE GAS MINER MINING FROM, CENTCOM?"
 	icon_state = "the_big_gas_giant_truth"
 
 /obj/structure/sign/poster/contraband/got_wood
@@ -497,7 +497,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 
 /obj/structure/sign/poster/contraband/imperial_propaganda
 	name = "AVENGE OUR LORD, ENLIST TODAY"
-	desc = "An old Lizard Empire propaganda poster from around the time of the final Human-Lizard war. It invites the viewer to enlist in the military to avenge the strike on Atrakor and take the fight to the humans."
+	desc = "An old Unathi Empire propaganda poster from around the time of the final Human-Unathi war. It invites the viewer to enlist in the military to avenge the strike on Atrakor and take the fight to the humans."
 	icon_state = "imperial_propaganda"
 
 /obj/structure/sign/poster/contraband/soviet_propaganda

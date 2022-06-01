@@ -1,4 +1,4 @@
-environment = "tgstation.dme"
+environment = "pariah.dme"
 
 [langserver]
 dreamchecker = true

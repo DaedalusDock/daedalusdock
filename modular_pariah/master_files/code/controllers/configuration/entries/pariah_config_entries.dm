@@ -1,7 +1,3 @@
-
-// To turn off SSDecay based on a config. You're welcome.
-/datum/config_entry/flag/ssdecay_disabled
-
 /// Length of time before the first autotransfer vote is called (deciseconds, default 2 hours)
 /// Set to 0 to disable the subsystem altogether.
 /datum/config_entry/number/vote_autotransfer_initial

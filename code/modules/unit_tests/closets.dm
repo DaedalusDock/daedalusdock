@@ -10,4 +10,4 @@
 		var/obj/structure/closet/closet = allocate(closet_type)
 		var/contents_len = length(closet.contents)
 		if(contents_len > closet.storage_capacity)
-			Fail("Initial Contents of [closet.type] ([contents_len]) exceed its storage capacity ([closet.storage_capacity]).")
+			TEST_FAIL("Initial Contents of [closet.type] ([contents_len]) exceed its storage capacity ([closet.storage_capacity]).")

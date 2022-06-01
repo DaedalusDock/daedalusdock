@@ -42,7 +42,7 @@
 
 /obj/item/food/headcheese
 	name = "headcheese block"
-	desc = "A cured block of headcheese. Delicious, if you're a lizard."
+	desc = "A cured block of headcheese. Delicious, if you're a unathi."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_cheese"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 5, /datum/reagent/consumable/salt = 5)
@@ -95,7 +95,7 @@
 
 /obj/item/food/moonfish_eggs
 	name = "moonfish eggs"
-	desc = "The moonfish lays large, transparent white eggs which are prized in lizard cooking. Their flavour is similar to caviar, but generally is described as deeper and more complex."
+	desc = "The moonfish lays large, transparent white eggs which are prized in unathi cooking. Their flavour is similar to caviar, but generally is described as deeper and more complex."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "moonfish_eggs"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2)
@@ -105,7 +105,7 @@
 
 /obj/item/food/moonfish_caviar
 	name = "moonfish caviar paste"
-	desc = "A rich paste made from moonfish eggs. Generally the only way most lizards can get them, and used fairly heavily in coastal cooking."
+	desc = "A rich paste made from moonfish eggs. Generally the only way most unathi can get them, and used fairly heavily in coastal cooking."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "moonfish_caviar"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2)
@@ -115,7 +115,7 @@
 
 /obj/item/food/lizard_escargot
 	name = "desert snail cocleas"
-	desc = "Another example of cultural crossover between lizards and humans, desert snail escargot is closer to the Roman dish cocleas than the contemporary French escargot. It's a common street food in the desert cities."
+	desc = "Another example of cultural crossover between unathi and humans, desert snail escargot is closer to the Roman dish cocleas than the contemporary French escargot. It's a common street food in the desert cities."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_escargot"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/garlic = 1)
@@ -136,7 +136,7 @@
 //Why does like, every language on the planet besides English call them pommes? Who knows, who cares- the lizards call them it too, because funny.
 /obj/item/food/lizard_fries
 	name = "loaded poms-franzisks"
-	desc = "One of the many human foods to make its way to the lizards was french fries, which are called poms-franzisks in Draconic. When topped with barbecued meat and sauce, they make a hearty meal."
+	desc = "One of the many human foods to make its way to the unathi was french fries, which are called poms-franzisks in Draconic. When topped with barbecued meat and sauce, they make a hearty meal."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_fries"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/protein = 3, /datum/reagent/consumable/salt = 1, /datum/reagent/consumable/bbqsauce = 2)
@@ -146,7 +146,7 @@
 
 /obj/item/food/brain_pate
 	name = "eyeball-and-brain pate"
-	desc = "A thick pink puree made from finely chopped poached eyeballs and brains, fried onions, and fat. Lizards swear it's delicious!"
+	desc = "A thick pink puree made from finely chopped poached eyeballs and brains, fried onions, and fat. Unathi swear it's delicious!"
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "brain_pate"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 5)
@@ -248,7 +248,7 @@
 
 /obj/item/food/spaghetti/garlic_nizaya
 	name = "garlic-and-oil nizaya"
-	desc = "A lizard adaptation of the Italian pasta dish, aglio e olio, made with nizaya pasta."
+	desc = "A unathi adaptation of the Italian pasta dish, aglio e olio, made with nizaya pasta."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "garlic_nizaya"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 8)
@@ -324,7 +324,7 @@
 
 /obj/item/food/root_flatbread
 	name = "root flatbread"
-	desc = "A plain grilled root flatbread. Can be topped with a variety of foods that lizards like to eat."
+	desc = "A plain grilled root flatbread. Can be topped with a variety of foods that unathi like to eat."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "root_flatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 7)
@@ -347,7 +347,7 @@
 
 /obj/item/food/bread/root
 	name = "rootbread"
-	desc = "The lizard equivalent to bread, made from tubers like potatoes and yams mixed with ground nuts and seeds. Noticably denser than regular bread."
+	desc = "The unathi equivalent to bread, made from tubers like potatoes and yams mixed with ground nuts and seeds. Noticably denser than regular bread."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_bread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 10)
@@ -392,7 +392,7 @@
 
 /obj/item/food/pizza/italic_flatbread
 	name = "\improper Italic flatbread"
-	desc = "The introduction of human foods to Tizira led to an advancement in lizard cooking- the Italic flatbread is now a common sight on the menus of takeout stores on the planet."
+	desc = "The introduction of human foods to Tizira led to an advancement in unathi cooking- the Italic flatbread is now a common sight on the menus of takeout stores on the planet."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "italic_flatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 15)
@@ -403,7 +403,7 @@
 
 /obj/item/food/pizza/imperial_flatbread
 	name = "\improper Imperial flatbread"
-	desc = "A flatbread topped with pate, pickled vegetables, and cubed headcheese. Not very suited to anyone's tastes but the lizards."
+	desc = "A flatbread topped with pate, pickled vegetables, and cubed headcheese. Not very suited to anyone's tastes but the unathi."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "imperial_flatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 15)
@@ -546,7 +546,7 @@
 //Misc Dishes
 /obj/item/food/sauerkraut
 	name = "sauerkraut"
-	desc = "Pickled cabbage, as made famous by Germans, and which has become common in lizard cooking, where it is known as Zauerkrat."
+	desc = "Pickled cabbage, as made famous by Germans, and which has become common in unathi cooking, where it is known as Zauerkrat."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "sauerkraut"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3)
@@ -586,7 +586,7 @@
 
 /obj/item/food/desert_snails
 	name = "canned desert snails"
-	desc = "Giant snails from the Tiziran desert, packaged in brine. Shells included. Probably best not eaten raw, unless you're a lizard."
+	desc = "Giant snails from the Tiziran desert, packaged in brine. Shells included. Probably best not eaten raw, unless you're a unathi."
 	icon = 'icons/obj/food/canned.dmi'
 	icon_state = "canned_snails"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 4, /datum/reagent/consumable/salt = 2)

@@ -20,7 +20,7 @@
 /turf/proc/update_air_properties()
 	var/block
 	ATMOS_CANPASS_TURF(block, src, src)
-	if(block & AIR_BLOCKED)
+	if(block & AIR_BLOCKED || block & BLOCKED)
 		//dbg(blocked)
 		return 1
 
@@ -51,42 +51,6 @@
 			//var/turf/simulated/sim = unsim
 			if(TURF_HAS_VALID_ZONE(unsim))
 				SSzas.connect(unsim, src)
-/*
-///Yes. Massive copy paste. Pain.
-/turf/open/space/update_air_properties()
-	var/block
-	ATMOS_CANPASS_TURF(block, src, src)
-	if(block & AIR_BLOCKED)
-		//dbg(blocked)
-		return 1
-
-	#ifdef MULTIZAS
-	for(var/d = 1, d < 64, d *= 2)
-	#else
-	for(var/d = 1, d < 16, d *= 2)
-	#endif
-
-		var/turf/unsim = get_step(src, d)
-
-		if(!unsim)
-			continue
-
-		block = unsim.zas_canpass(src)
-
-		if(block & AIR_BLOCKED)
-			//unsim.dbg(air_blocked, turn(180,d))
-			continue
-
-		var/r_block = zas_canpass(unsim)
-
-		if(r_block & AIR_BLOCKED)
-			continue
-
-		if(unsim.simulated)
-			var/turf/sim = unsim
-			if(TURF_HAS_VALID_ZONE(sim))
-				SSzas.connect(sim, src)
-*/
 
 // Helper for can_safely_remove_from_zone().
 //ZASTURF - MACRO IM NOT COMMENTING THIS SHIT OUT

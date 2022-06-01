@@ -3,7 +3,7 @@
 	turf_flags = IS_SOLID
 	opacity = TRUE
 	density = TRUE
-	blocks_air = TRUE
+	blocks_air = AIR_BLOCKED
 	rad_insulation = RAD_MEDIUM_INSULATION
 	pass_flags_self = PASSCLOSEDTURF
 /*

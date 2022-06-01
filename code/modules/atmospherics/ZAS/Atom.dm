@@ -8,18 +8,21 @@
 
 	return 1
 
-//Basically another way of calling CanPass(null, other, 0, 0) and CanPass(null, other, 1.5, 1).
+
 //Returns:
 // 0 - Not blocked
 // AIR_BLOCKED - Blocked
 // ZONE_BLOCKED - Not blocked, but zone boundaries will not cross.
 // BLOCKED - Blocked, zone boundaries will not cross even if opened.
+///Checks whether or not ZAS can occupy this atom's turf. Invoked by the ATMOS_CANPASS_TURF macro.
 /atom/proc/zas_canpass(turf/other)
 	#ifdef ZASDBG
 	ASSERT(isturf(other))
 	#endif
 	if(can_atmos_pass == CANPASS_PROC)
 		CRASH("Atmos pass assigned proc when proc doesn't exist.")
+	else
+		CRASH("FUCK. zas_canpass() invoked when the atom doesn't even use it")
 
 // This is a legacy proc only here for compatibility - you probably should just use ATMOS_CANPASS_TURF directly.
 /turf/zas_canpass(turf/other)

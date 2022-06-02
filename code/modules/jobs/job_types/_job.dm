@@ -53,9 +53,7 @@
 	var/plasmaman_outfit = null
 
 	/// Different outfits for alternate job titles and different species
-	var/list/outfits = list(
-		"Default" = list(),
-	)
+	var/list/outfits
 
 	/// Minutes of experience-time required to play in this job. The type is determined by [exp_required_type] and [exp_required_type_department] depending on configs.
 	var/exp_requirements = 0

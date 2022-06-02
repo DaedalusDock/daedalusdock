@@ -227,7 +227,7 @@ Class Procs:
 			#ifdef ZASDBG
 			if(verbose)
 				zas_log("Turf A or B lost it's zone. Erasing...")
-			#endif ZASDBG
+			#endif
 			erase()
 			return
 

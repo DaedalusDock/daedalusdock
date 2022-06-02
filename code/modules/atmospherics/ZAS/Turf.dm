@@ -30,7 +30,9 @@
 	var/self_block
 	ATMOS_CANPASS_TURF(self_block, src, src)
 	if(self_block & AIR_BLOCKED)
+		#ifdef ZASDBG
 		src.dbg(zasdbgovl_blocked)
+		#endif
 		return TRUE
 
 	#ifdef MULTIZAS
@@ -112,7 +114,7 @@
 		return ..()
 
 	if(zone && zone.invalid) //this turf's zone is in the process of being rebuilt
-		take_zone_air() //not very efficient :(
+		copy_zone_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
 	var/self_block
@@ -127,7 +129,7 @@
 			var/zone/z = zone
 
 			if(can_safely_remove_from_zone()) //Helps normal airlocks avoid rebuilding zones all the time
-				take_zone_air() //we aren't rebuilding, but hold onto the old air so it can be readded
+				copy_zone_air() //we aren't rebuilding, but hold onto the old air so it can be readded
 				z.remove_turf(src)
 			else
 				z.rebuild()
@@ -310,7 +312,7 @@
 		else
 			if(!air)
 				make_air()
-			take_zone_air()
+			copy_zone_air()
 			return air
 	else
 		if(!air)
@@ -325,8 +327,8 @@
 		air.gas = initial_gas.Copy()
 	AIR_UPDATE_VALUES(air)
 
-///Takes this turf's group share from the zone. Usually used before removing it from the zone.
-/turf/proc/take_zone_air()
+///Copies this turf's group share from the zone. Usually used before removing it from the zone.
+/turf/proc/copy_zone_air()
 	if(!air)
 		air = new/datum/gas_mixture
 	air.copyFrom(zone.air)

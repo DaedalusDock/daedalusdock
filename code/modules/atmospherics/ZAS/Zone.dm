@@ -12,17 +12,17 @@ Class Vars:
 	air - The gas mixture that any turfs in this zone will return. Values are per-tile with a group multiplier.
 
 Class Procs:
-	add(turf/simulated/T)
+	add_turf(turf/T)
 		Adds a turf to the contents, sets its zone and merges its air.
 
-	remove(turf/simulated/T)
+	remove_turf(turf/T)
 		Removes a turf, sets its zone to null and erases any gas graphics.
 		Invalidates the zone if it has no more tiles.
 
-	c_merge(zone/into)
+	merge_into(zone/into)
 		Invalidates this zone and adds all its former contents to into.
 
-	c_invalidate()
+	invalidate()
 		Marks this zone as invalid and removes it from processing.
 
 	rebuild()
@@ -41,15 +41,24 @@ Class Procs:
 
 
 /zone
+	///A simple numerical value
 	var/name
+	///If a zone is "invalid" it will not process
 	var/invalid = 0
 	var/list/contents = list()
+	///All fire tiles in this zone
 	var/list/fire_tiles = list()
+	///All physical sources of fire fuel in this zone
 	var/list/fuel_objs = list()
+	///Does SSzas need to update this zone? (SSzas.mark_zone_update(zone))
 	var/needs_update = 0
+	///A list of /connection_edge/
 	var/list/edges = list()
+	///The zone's gas contents
 	var/datum/gas_mixture/air = new
+	///Air overlays to add next process
 	var/list/graphic_add = list()
+	///Air overlays to remove next process
 	var/list/graphic_remove = list()
 	var/last_air_temperature = TCMB
 
@@ -59,7 +68,8 @@ Class Procs:
 	air.group_multiplier = 1
 	air.volume = CELL_VOLUME
 
-/zone/proc/add(turf/T)
+///Adds the given turf to the zone
+/zone/proc/add_turf(turf/T)
 #ifdef ZASDBG
 	ASSERT(!invalid)
 	ASSERT(istype(T))
@@ -77,7 +87,8 @@ Class Procs:
 		if(fuel) fuel_objs += fuel
 	T.update_graphic(air.graphic)
 
-/zone/proc/remove(turf/T)
+///Removes the given turf from the zone. Will invalidate the zone if it was the last turf.
+/zone/proc/remove_turf(turf/T)
 #ifdef ZASDBG
 	ASSERT(!invalid)
 	ASSERT(istype(T))
@@ -94,21 +105,22 @@ Class Procs:
 	if(contents.len)
 		air.group_multiplier = contents.len
 	else
-		c_invalidate()
+		invalidate()
 
-/zone/proc/c_merge(zone/into)
+///Merges src into the given zone
+/zone/proc/merge_into(zone/into)
 #ifdef ZASDBG
 	ASSERT(!invalid)
 	ASSERT(istype(into))
 	ASSERT(into != src)
 	ASSERT(!into.invalid)
 #endif
-	c_invalidate()
+	invalidate()
 
 	for(var/turf/T in contents)
 		if(!T.simulated)
 			continue
-		into.add(T)
+		into.add_turf(T)
 		T.update_graphic(graphic_remove = air.graphic)
 		#ifdef ZASDBG
 		T.dbg(zasdbgovl_merged)
@@ -121,7 +133,8 @@ Class Procs:
 		for(var/turf/T in E.connecting_turfs)
 			SSzas.mark_for_update(T)
 
-/zone/proc/c_invalidate()
+///Marks the zone as invalid, removing it from the SSzas zone list.
+/zone/proc/invalidate()
 	invalid = 1
 	SSzas.remove_zone(src)
 	#ifdef ZASDBG
@@ -130,27 +143,31 @@ Class Procs:
 			T.dbg(zasdbgovl_invalid_zone)
 	#endif
 
+///Invalidates the zone and marks all of it's contents for update.
 /zone/proc/rebuild()
 	if(invalid)
 		return //Short circuit for explosions where rebuild is called many times over.
-	c_invalidate()
+	invalidate()
 
 	for(var/turf/T in contents)
 		if(!T.simulated)
 			continue
 		T.update_graphic(graphic_remove = air.graphic) //we need to remove the overlays so they're not doubled when the zone is rebuilt
+		#ifdef ZASDBG
 		//T.dbg(invalid_zone)
+		#endif
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSzas.mark_for_update(T)
 
+///Assumes a given gas mixture, dividing it amongst the zone.
 /zone/proc/add_tile_air(datum/gas_mixture/tile_air)
-	//air.volume += CELL_VOLUME
 	air.group_multiplier = 1
 	air.multiply(contents.len)
 	air.merge(tile_air)
 	air.divide(contents.len+1)
 	air.group_multiplier = contents.len+1
 
+///Zone's process proc.
 /zone/proc/tick()
 
 	// Update fires.
@@ -200,6 +217,7 @@ Class Procs:
 					QUEUE_TEMPERATURE_ATOMS(checking)
 			CHECK_TICK
 
+///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)
 	to_chat(M, name)
 	for(var/g in air.gas)
@@ -213,7 +231,8 @@ Class Procs:
 	var/space_edges = 0
 	var/space_coefficient = 0
 	for(var/connection_edge/E in edges)
-		if(E.type == /connection_edge/zone) zone_edges++
+		if(E.type == /connection_edge/zone)
+			zone_edges++
 		else
 			space_edges++
 			space_coefficient += E.coefficient

@@ -156,11 +156,11 @@
 	floor_tile = /obj/item/stack/tile/bronze/filled
 
 /turf/open/floor/bronze/filled/lavaland
-	planetary_atmos = TRUE
+
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 /turf/open/floor/bronze/filled/icemoon
-	planetary_atmos = TRUE
+
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/floor/white

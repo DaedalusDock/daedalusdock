@@ -34,16 +34,18 @@ Macros:
 // macro-ized to cut down on proc calls
 #define check(c) (c && c.valid())
 
-/turf/var/tmp/connection_manager/connections
+/turf
+	var/tmp/connection_manager/connections
 
-/connection_manager/var/connection/N
-/connection_manager/var/connection/S
-/connection_manager/var/connection/E
-/connection_manager/var/connection/W
+/connection_manager/
+	var/connection/N
+	var/connection/S
+	var/connection/E
+	var/connection/W
 
 #ifdef MULTIZAS
-/connection_manager/var/connection/U
-/connection_manager/var/connection/D
+	var/connection/U
+	var/connection/D
 #endif
 
 /connection_manager/proc/get(d)

@@ -107,7 +107,7 @@ SUBSYSTEM_DEF(zas)
 	var/active_zones = 0
 	var/next_id = 1
 
-
+///Stops processing while all ZAS-controlled airs and fires are nulled and the subsystem is reinitialized.
 /datum/controller/subsystem/zas/proc/Reboot()
 	// Stop processing while we rebuild.
 	can_fire = FALSE
@@ -125,7 +125,7 @@ SUBSYSTEM_DEF(zas)
 		var/zone/zone = zones[zones.len]
 		zones.len--
 
-		zone.c_invalidate()
+		zone.invalidate()
 
 	edges.Cut()
 	tiles_to_update.Cut()
@@ -344,17 +344,20 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_zones = MC_AVERAGE(cost_zones, TICK_DELTA_TO_MS(cached_cost))
 
+///Adds a zone to the subsystem, gives it's identifer, and marks it for update.
 /datum/controller/subsystem/zas/proc/add_zone(zone/z)
 	zones += z
 	z.name = "Zone [next_id++]"
 	mark_zone_update(z)
 
+///Removes a zone from the subsystem.
 /datum/controller/subsystem/zas/proc/remove_zone(zone/z)
 	zones -= z
 	zones_to_update -= z
 	if (processing_zones)
 		processing_zones -= z
 
+///Checks to see if air can flow between A and B.
 /datum/controller/subsystem/zas/proc/air_blocked(turf/A, turf/B)
 	#ifdef ZASDBG
 	ASSERT(isturf(A))
@@ -367,6 +370,7 @@ SUBSYSTEM_DEF(zas)
 	ATMOS_CANPASS_TURF(., B, A)
 	return ablock | .
 
+///Merges two zones. Largest by turf count wins.
 /datum/controller/subsystem/zas/proc/merge(zone/A, zone/B)
 	#ifdef ZASDBG
 	ASSERT(istype(A))
@@ -376,12 +380,13 @@ SUBSYSTEM_DEF(zas)
 	ASSERT(A != B)
 	#endif
 	if(A.contents.len < B.contents.len)
-		A.c_merge(B)
+		A.merge_into(B)
 		mark_zone_update(B)
 	else
-		B.c_merge(A)
+		B.merge_into(A)
 		mark_zone_update(A)
 
+///Forms a /connection/ between two turfs.
 /datum/controller/subsystem/zas/proc/connect(turf/A, turf/B)
 	#ifdef ZASDBG
 	ASSERT(A.simulated)
@@ -406,15 +411,17 @@ SUBSYSTEM_DEF(zas)
 	var/a_to_b = get_dir(A,B)
 	var/b_to_a = get_dir(B,A)
 
-	if(!A.connections) A.connections = new
-	if(!B.connections) B.connections = new
+	if(!A.connections)
+		A.connections = new
+	if(!B.connections)
+		B.connections = new
 
 	if(A.connections.get(a_to_b))
 		return
 	if(B.connections.get(b_to_a))
 		return
-	if(!space)
-		if(A.zone == B.zone) return
+	if(!space && (A.zone == B.zone))
+		return
 
 
 	var/connection/c = new /connection(A,B)
@@ -422,8 +429,10 @@ SUBSYSTEM_DEF(zas)
 	A.connections.place(c, a_to_b)
 	B.connections.place(c, b_to_a)
 
-	if(direct) c.mark_direct()
+	if(direct)
+		c.mark_direct()
 
+///Marks a turf for update.
 /datum/controller/subsystem/zas/proc/mark_for_update(turf/T)
 	#ifdef ZASDBG
 	ASSERT(isturf(T))
@@ -436,6 +445,7 @@ SUBSYSTEM_DEF(zas)
 	#endif
 	T.needs_air_update = 1
 
+///Marks a zone for update.
 /datum/controller/subsystem/zas/proc/mark_zone_update(zone/Z)
 	#ifdef ZASDBG
 	ASSERT(istype(Z))
@@ -445,6 +455,7 @@ SUBSYSTEM_DEF(zas)
 	zones_to_update += Z
 	Z.needs_update = 1
 
+///Sleeps an edge, preventing it from processing.
 /datum/controller/subsystem/zas/proc/mark_edge_sleeping(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
@@ -454,6 +465,7 @@ SUBSYSTEM_DEF(zas)
 	active_edges -= E
 	E.sleeping = 1
 
+///Wakes an edge, adding it to the active process list.
 /datum/controller/subsystem/zas/proc/mark_edge_active(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
@@ -463,9 +475,11 @@ SUBSYSTEM_DEF(zas)
 	active_edges += E
 	E.sleeping = 0
 
+///Wrapper for zoneA.air.compare(zoneB.air)
 /datum/controller/subsystem/zas/proc/equivalent_pressure(zone/A, zone/B)
 	return A.air.compare(B.air)
 
+///Returns *AN* edge between zones A and B, if one exists. Calls recheck() on it.
 /datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B)
 	if(istype(B))
 		for(var/connection_edge/zone/edge in A.edges)
@@ -484,6 +498,7 @@ SUBSYSTEM_DEF(zas)
 		edge.recheck()
 		return edge
 
+///Compare two turfs to see if they are EXACTLY the same.
 /datum/controller/subsystem/zas/proc/has_same_air(turf/A, turf/B)
 	if(A.initial_gas)
 		if(!B.initial_gas)
@@ -501,6 +516,7 @@ SUBSYSTEM_DEF(zas)
 		return 0
 	return 1
 
+///Removes an edge from the subsystem.
 /datum/controller/subsystem/zas/proc/remove_edge(connection_edge/E)
 	edges -= E
 	if(!E.sleeping)
@@ -508,6 +524,7 @@ SUBSYSTEM_DEF(zas)
 	if(processing_edges)
 		processing_edges -= E
 
+///Randomizes the lavaland gas mixture, and sets all lavaland unsimmed turfs to it.
 /datum/controller/subsystem/zas/proc/fuck_lavaland()
 	var/list/restricted_gases = list()
 	///No funny gasses allowed

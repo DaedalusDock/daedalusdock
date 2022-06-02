@@ -31,7 +31,7 @@
 
 	// Delete all zones.
 	for(var/zone/Z in world)
-		Z.c_invalidate()
+		Z.invalidate()
 
 	to_chat(usr, "\[3/5\] - All ZAS Zones removed.")
 

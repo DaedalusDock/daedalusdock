@@ -141,7 +141,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/basalt/lava_land_surface
 	initial_gas = LAVALAND_DEFAULT_ATMOS
-	planetary_atmos = TRUE
 	baseturfs = /turf/open/lava/smooth/lava_land_surface
 
 /turf/open/misc/asteroid/lowpressure
@@ -172,7 +171,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	simulated = FALSE
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 
-	planetary_atmos = TRUE
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null
 	digResult = /obj/item/stack/sheet/mineral/snow
@@ -193,7 +191,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/lava/plasma/ice_moon
 	baseturfs = /turf/open/lava/plasma/ice_moon
-	planetary_atmos = TRUE
+
 
 /turf/open/misc/asteroid/snow/ice
 	name = "icy snow"
@@ -212,7 +210,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/snow/ice/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
-	planetary_atmos = TRUE
+
 	slowdown = 0
 
 /turf/open/misc/asteroid/snow/ice/burn_tile()
@@ -230,9 +228,9 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/misc/asteroid/snow/atmosphere
 	temperature = 180
-	planetary_atmos = FALSE
+
 
 /turf/open/misc/asteroid/snow/standard_air
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	temperature = T0C
-	planetary_atmos = FALSE
+

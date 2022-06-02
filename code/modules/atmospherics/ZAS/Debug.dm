@@ -80,6 +80,15 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 /proc/soft_assert(thing,fail)
 	if(!thing) message_admins(fail)
 
-/turf/proc/zas_log(string)
-	to_chat(world, "[span_admin("ZAS:")] verbose turf output of [src] at ([src.x], [src.y], [src.z]): [string]")
+/datum/proc/zas_log(string)
+	return
+
+/turf/zas_log(string)
+	to_chat(world, "[span_admin("ZAS:")] Turf output of [src] at ([src.x], [src.y], [src.z]): [string]")
+
+/connection/zas_log(string)
+	to_chat(world, "[span_admin("ZAS:")] Verbose connection output: [string]")
+
+/connection_edge/zas_log(string)
+	to_chat(world, "[span_admin("ZAS:")] Verbose connection edge output: [string]")
 #endif

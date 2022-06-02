@@ -47,7 +47,7 @@
 		set_broken(TRUE)
 		return FALSE
 	var/turf/open/OT = T
-	if(OT.planetary_atmos)
+	if(!OT.simulated)
 		broken_message = span_boldwarning("DEVICE NOT ENCLOSED IN A PRESSURIZED ENVIRONMENT")
 		set_broken(TRUE)
 		return FALSE

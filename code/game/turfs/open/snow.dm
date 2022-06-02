@@ -4,7 +4,7 @@
 	icon = 'icons/turf/snow.dmi'
 	desc = "Looks cold."
 	icon_state = "snow"
-	planetary_atmos = TRUE
+
 	temperature = 180
 	slowdown = 2
 	bullet_sizzle = TRUE
@@ -23,5 +23,5 @@
 
 /turf/open/misc/snow/actually_safe
 	slowdown = 0
-	planetary_atmos = FALSE
+
 	initial_gas = OPENTURF_DEFAULT_ATMOS

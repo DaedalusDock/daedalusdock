@@ -198,8 +198,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(simulated && zone)
 		///Try to gracefully remove
 		if(can_safely_remove_from_zone())
-			c_copy_air()
-			zone.remove(src)
+			take_zone_air()
+			zone.remove_turf(src)
 
 		else //Just rebuild the fucker
 			zone.rebuild()

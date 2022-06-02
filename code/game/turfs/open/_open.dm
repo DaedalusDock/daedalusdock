@@ -118,7 +118,6 @@
 	icon = 'icons/turf/boss_floors.dmi'
 	icon_state = "boss"
 	baseturfs = /turf/open/indestructible/boss
-	planetary_atmos = TRUE
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 /turf/open/indestructible/boss/air
@@ -126,7 +125,6 @@
 
 /turf/open/indestructible/hierophant
 	icon = 'icons/turf/floors/hierophant_floor.dmi'
-	planetary_atmos = TRUE
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 	baseturfs = /turf/open/indestructible/hierophant
 	smoothing_flags = SMOOTH_CORNERS

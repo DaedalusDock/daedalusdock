@@ -58,42 +58,67 @@ Class Procs:
 */
 
 
-/connection_edge/var/zone/A
+/connection_edge
+	var/zone/A
 
-/connection_edge/var/list/connecting_turfs = list()
-/connection_edge/var/direct = 0
-/connection_edge/var/sleeping = 1
+	var/list/connecting_turfs = list()
+	var/direct = 0
+	var/sleeping = 1
+	var/coefficient = 0
 
-/connection_edge/var/coefficient = 0
+	#ifdef ZASDBG
+	///Set this to TRUE during testing to get verbose debug information.
+	var/verbose = FALSE
+	#endif
 
 /connection_edge/New()
 	CRASH("Cannot make connection edge without specifications.")
 
+///Adds a connection to this edge. Usually increments the coefficient and adds a turf to connecting_turfs.
 /connection_edge/proc/add_connection(connection/c)
 	coefficient++
-	if(c.direct()) direct++
-//	log_admin("Connection added: [type] Coefficient: [coefficient]")
+	if(c.direct())
+		direct++
 
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Connection added: [type] Coefficient: [coefficient]")
+	#endif
 
+///Removes a connection from this edge. This works even if c is not in the edge, so be careful.
 /connection_edge/proc/remove_connection(connection/c)
-//	log_admin("Connection removed: [type] Coefficient: [coefficient-1]")
-
 	coefficient--
 	if(coefficient <= 0)
 		erase()
-	if(c.direct()) direct--
+	if(c.direct())
+		direct--
 
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Connection removed: [type] Coefficient: [coefficient-1]")
+	#endif
+
+///Returns true if either A or B is equal to Z. Unsimulated connections return true only on A.
 /connection_edge/proc/contains_zone(zone/Z)
+	return
 
+///Removes this connection from processing and zone edge lists.
 /connection_edge/proc/erase()
 	SSzas.remove_edge(src)
-//	log_admin("[type] Erased.")
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("[type] Erased.")
+	#endif
 
-
+///Called every air tick on edges in the processing list. Equalizes gas.
 /connection_edge/proc/tick()
+	return
 
+///Checks both connection ends to see if they need to process.
 /connection_edge/proc/recheck()
+	return
 
+///Airflow proc causing all objects in movable to be checked against a pressure differential. See file header for more info.
 /connection_edge/proc/flow(list/movable, differential, repelled)
 	for(var/i in 1 to length(movable))
 		var/atom/movable/M = movable[i]
@@ -122,8 +147,10 @@ Class Procs:
 
 
 
-/connection_edge/zone/var/zone/B
-/connection_edge/zone/var/last_woosh
+/connection_edge/zone
+	var/zone/B
+	///The last time the "woosh" airflow sound played, world.time
+	var/last_woosh
 
 /connection_edge/zone/New(zone/A, zone/B)
 
@@ -132,8 +159,10 @@ Class Procs:
 	A.edges.Add(src)
 	B.edges.Add(src)
 	//id = edge_id(A,B)
-//	log_admin("New edge between [A] and [B]")
-
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("New edge between [A] and [B]")
+	#endif
 
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
@@ -141,7 +170,7 @@ Class Procs:
 
 /connection_edge/zone/remove_connection(connection/c)
 	connecting_turfs.Remove(c.A)
-	. = ..()
+	return ..()
 
 /connection_edge/zone/contains_zone(zone/Z)
 	return A == Z || B == Z
@@ -149,7 +178,7 @@ Class Procs:
 /connection_edge/zone/erase()
 	A.edges.Remove(src)
 	B.edges.Remove(src)
-	. = ..()
+	return ..()
 
 /connection_edge/zone/tick()
 	if(A.invalid || B.invalid)
@@ -200,21 +229,26 @@ Class Procs:
 	// Edges with only one side being vacuum need processing no matter how close.
 		SSzas.mark_edge_active(src)
 
-//Helper proc to get connections for a zone.
+///Helper proc to get connections for a zone.
 /connection_edge/zone/proc/get_connected_zone(zone/from)
-	if(A == from) return B
-	else return A
+	if(A == from)
+		return B
+	else
+		return A
 
-/connection_edge/unsimulated/var/turf/B
-/connection_edge/unsimulated/var/datum/gas_mixture/air
+/connection_edge/unsimulated
+	var/turf/B
+	var/datum/gas_mixture/air
 
 /connection_edge/unsimulated/New(zone/A, turf/B)
 	src.A = A
 	src.B = B
 	A.edges.Add(src)
 	air = B.return_air()
-	//id = 52*A.id
-//	log_admin("New edge from [A] to [B].")
+	#ifdef ZASDBG
+	if(verbose)
+		log_admin("New edge from [A] to [B] ([B.x], [B.y], [B.z]).")
+	#endif
 
 
 /connection_edge/unsimulated/add_connection(connection/c)
@@ -225,11 +259,11 @@ Class Procs:
 /connection_edge/unsimulated/remove_connection(connection/c)
 	connecting_turfs.Remove(c.B)
 	air.group_multiplier = coefficient
-	. = ..()
+	return ..()
 
 /connection_edge/unsimulated/erase()
 	A.edges.Remove(src)
-	. = ..()
+	return ..()
 
 /connection_edge/unsimulated/contains_zone(zone/Z)
 	return A == Z

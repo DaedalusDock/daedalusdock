@@ -1,25 +1,31 @@
 /turf
+	///The turf's current zone parent.
 	var/zone/zone
+	///All directions in which a turf that can contain air is present.
 	var/open_directions
 
 /turf
+	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.update_nearby_tiles())
 	var/needs_air_update = 0
+	///The local gas mixture of this turf. Use return_air(). This will always exist even if not in use, because GCing air contents would be too expensive.
 	var/datum/gas_mixture/air
 	var/heat_capacity = 1
 	var/thermal_conductivity = 0.05
+	///A gas_mixture gas list to be used as the initial value. Ex: list(GAS_OXYGEN = 50)
 	var/list/initial_gas
-	var/planetary_atmos //Let's just let this exist for now.
 #ifdef ZASDBG
 	///Set to TRUE during debugging to get chat output on the atmos status of this turf
 	var/verbose = FALSE
 #endif
 
+///Adds the graphic_add list to vis_contents, removes graphic_remove.
 /turf/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
 	if(graphic_add && graphic_add.len)
 		vis_contents += graphic_add
 	if(graphic_remove && graphic_remove.len)
 		vis_contents -= graphic_remove
 
+///Updates the turf's air source properties, breaking or creating zone connections as necessary.
 /turf/proc/update_air_properties()
 	var/self_block
 	ATMOS_CANPASS_TURF(self_block, src, src)
@@ -76,7 +82,7 @@
 	Instead of analyzing the entire zone, we only check the nearest 3x3 turfs surrounding the src turf.
 	This implementation may produce false negatives but it (hopefully) will not produce any false postiives.
 */
-
+///Simple heuristic for determining if removing the turf from it's zone will not partition the zone (A very bad thing).
 /turf/proc/can_safely_remove_from_zone()
 	if(!zone)
 		return 1
@@ -106,7 +112,7 @@
 		return ..()
 
 	if(zone && zone.invalid) //this turf's zone is in the process of being rebuilt
-		c_copy_air() //not very efficient :(
+		take_zone_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
 	var/self_block
@@ -121,8 +127,8 @@
 			var/zone/z = zone
 
 			if(can_safely_remove_from_zone()) //Helps normal airlocks avoid rebuilding zones all the time
-				c_copy_air() //we aren't rebuilding, but hold onto the old air so it can be readded
-				z.remove(src)
+				take_zone_air() //we aren't rebuilding, but hold onto the old air so it can be readded
+				z.remove_turf(src)
 			else
 				z.rebuild()
 
@@ -161,7 +167,7 @@
 		if(us_to_target & AIR_BLOCKED)
 			#ifdef ZASDBG
 			if(verbose)
-				log_admin("[dir2text(d)] is blocked.")
+				zas_log("[dir2text(d)] is blocked.")
 			target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
 
@@ -199,7 +205,7 @@
 						postponed.Add(sim_target)
 
 					else
-						sim_target.zone.add(src)
+						sim_target.zone.add_turf(src)
 
 						#ifdef ZASDBG
 						dbg(zasdbgovl_assigned)
@@ -230,7 +236,7 @@
 
 	if(!TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
 		var/zone/newzone = new/zone()
-		newzone.add(src)
+		newzone.add_turf(src)
 
 	#ifdef ZASDBG
 		dbg(zasdbgovl_created)
@@ -243,7 +249,8 @@
 	for(var/turf/T in postponed)
 		if(T.zone == src.zone)
 			#ifdef ZASDBG
-			zas_log("This turf tried to merge into itself! Current type: [src.type]")
+			if(verbose)
+				zas_log("This turf tried to merge into itself! Current type: [src.type]")
 			#endif
 			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
 		SSzas.connect(src, T)
@@ -252,30 +259,16 @@
 	if(connections)
 		connections.update_all()
 
+///Currently unused.
 /atom/movable/proc/block_superconductivity()
 	return
 
-/turf/return_air()
-	RETURN_TYPE(/datum/gas_mixture)
-	//Create gas mixture to hold data for passing
-	if(zone)
-		if(!zone.invalid)
-			SSzas.mark_zone_update(zone)
-			return zone.air
-		else
-			if(!air)
-				make_air()
-			c_copy_air()
-			return air
-	else
-		if(!air)
-			make_air()
-		return air
-
+///Wrapper for [/datum/gas_mixture/proc/remove()]
 /turf/remove_air(amount as num)
 	var/datum/gas_mixture/GM = return_air()
 	return GM.remove(amount)
 
+///Merges a given gas mixture with the turf's current air source.
 /turf/assume_air(datum/gas_mixture/giver)
 	if(!simulated)
 		return
@@ -296,6 +289,7 @@
 
 	return 1
 
+///Return the currently used gas_mixture datum.
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
@@ -316,13 +310,14 @@
 		else
 			if(!air)
 				make_air()
-			c_copy_air()
+			take_zone_air()
 			return air
 	else
 		if(!air)
 			make_air()
 		return air
 
+///Initializes the turf's "air" datum to it's initial values.
 /turf/proc/make_air()
 	air = new/datum/gas_mixture
 	air.temperature = temperature
@@ -330,13 +325,14 @@
 		air.gas = initial_gas.Copy()
 	AIR_UPDATE_VALUES(air)
 
-/turf/proc/c_copy_air()
+///Takes this turf's group share from the zone. Usually used before removing it from the zone.
+/turf/proc/take_zone_air()
 	if(!air)
 		air = new/datum/gas_mixture
 	air.copyFrom(zone.air)
 	air.group_multiplier = 1
 
-
+///Creates a gas_mixture datum with the given parameters and merges it into the turf's air source.
 /turf/proc/atmos_spawn_air(gas_id, amount, initial_temperature)
 	if(!simulated)
 		return
@@ -351,9 +347,7 @@
 /turf/open/space/atmos_spawn_air()
 	return
 
-/proc/turf_contains_dense_objects(turf/T)
-	return T.contains_dense_objects()
-
+///Checks a turf to see if any of it's contents are dense. Is NOT recursive.
 /turf/proc/contains_dense_objects()
 	if(density)
 		return 1
@@ -366,9 +360,10 @@
 /turf/proc/TryGetNonDenseNeighbour()
 	for(var/d in GLOB.cardinals)
 		var/turf/T = get_step(src, d)
-		if (T && !turf_contains_dense_objects(T))
+		if (T && !T.contains_dense_objects())
 			return T
 
+///Returns a list of adjacent turfs that can contain air. Returns null if none.
 /turf/proc/get_atmos_adjacent_turfs()
 	var/list/adjacent_turfs = list()
 	for(var/dir in GLOB.cardinals)

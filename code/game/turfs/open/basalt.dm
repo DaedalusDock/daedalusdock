@@ -14,4 +14,4 @@
 		set_basalt_light(src)
 
 /turf/open/misc/basalt/safe
-	planetary_atmos = FALSE
+

@@ -1,15 +1,23 @@
-#define ZASDBG
+//#define ZASDBG
 //#define MULTIZAS
 
+///Air and zones freely mingle with this turf under the given conditions
 #define AIR_ALLOWED (0<<0)
+///Neither air nor zones can interact with this turf under the given conditions
 #define AIR_BLOCKED (1<<0)
+///Air can pass through or into this turf, but zones may not merge with it.
 #define ZONE_BLOCKED (1<<1)
 
-#define ZONE_MIN_SIZE 14 //zones with less than this many turfs will always merge, even if the connection is not direct
+///Zones with less than this many turfs will always merge, even if the connection is not direct
+#define ZONE_MIN_SIZE 14
 
+///Air can always pass
 #define CANPASS_ALWAYS 1
+///Air can only pass if density is FALSE
 #define CANPASS_DENSITY 2
+///This atom uses /proc/zas_canpass()
 #define CANPASS_PROC 3
+///Air can never pass
 #define CANPASS_NEVER 4
 
 #define NORTHUP (NORTH|UP)
@@ -21,7 +29,7 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-
+///A replacement for /datum/gas_mixture/proc/update_values()
 #define AIR_UPDATE_VALUES(air) \
 	do{ \
 		var/list/cache = air.gas; \

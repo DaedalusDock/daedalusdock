@@ -6,7 +6,7 @@
 	base_icon_state = "ice_turf-0"
 	temperature = 180
 	temperature = 180
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/misc/ice
 	slowdown = 1
 	bullet_sizzle = TRUE
@@ -38,4 +38,4 @@
 	slowdown = 0
 
 /turf/open/misc/ice/icemoon/no_planet_atmos
-	planetary_atmos = FALSE
+

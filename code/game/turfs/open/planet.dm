@@ -7,7 +7,7 @@
 	base_icon_state = "dirt"
 	baseturfs = /turf/open/chasm/jungle
 	initial_gas = OPENTURF_LOW_PRESSURE
-	planetary_atmos = TRUE
+
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
@@ -47,7 +47,7 @@
 /turf/open/misc/grass/jungle
 	name = "jungle grass"
 	initial_gas = OPENTURF_DEFAULT_ATMOS
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/misc/dirt
 	desc = "Greener on the other side."
 	icon_state = "junglegrass"

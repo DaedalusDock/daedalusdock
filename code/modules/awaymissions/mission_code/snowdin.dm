@@ -158,8 +158,6 @@
 
 /turf/open/floor/iron/dark/snowdin
 	temperature = 180
-	planetary_atmos = 1
-	temperature = 180
 
 /turf/open/lava/plasma
 	name = "liquid plasma"

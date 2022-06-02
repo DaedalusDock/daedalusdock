@@ -47,7 +47,7 @@
 	temperature = 180
 	temperature = 180
 	attachment_holes = FALSE
-	planetary_atmos = TRUE
+
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
@@ -66,7 +66,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_FLOOR_SNOWED)
 	canSmoothWith = list(SMOOTH_GROUP_FLOOR_SNOWED)
-	planetary_atmos = TRUE
+
 
 /turf/open/floor/plating/snowed/temperatre
 	temperature = 255.37
@@ -79,7 +79,7 @@
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/floor/plating/lavaland_atmos
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/lava/smooth/lava_land_surface
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 

@@ -12,7 +12,7 @@
 
 /turf/open/water/cursed_spring
 	baseturfs = /turf/open/water/cursed_spring
-	planetary_atmos = TRUE
+
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/water/cursed_spring/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)

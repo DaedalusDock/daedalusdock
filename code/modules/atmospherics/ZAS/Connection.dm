@@ -49,7 +49,7 @@ Class Procs:
 
 */
 
-/connection/
+/connection
 	var/turf/A
 	var/turf/B
 	var/zone/zoneA
@@ -57,7 +57,13 @@ Class Procs:
 
 	var/connection_edge/edge
 
+	///Invalid or Valid
 	var/state = 0
+
+	#ifdef ZASDBG
+	///Set to true during testing to get verbose debug information
+	var/verbose = FALSE
+	#endif
 
 /connection/New(turf/A, turf/B)
 	#ifdef ZASDBG
@@ -76,45 +82,77 @@ Class Procs:
 		edge = SSzas.get_edge(A.zone,B.zone)
 		edge.add_connection(src)
 
+///Unmarks this connection as direct. Does not update the edge. Called by update() as a correction.
 /connection/proc/mark_direct()
 	if(!direct())
 		state |= CONNECTION_DIRECT
 		edge.direct++
-//	log_admin("Marked direct.")
 
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Marked direct.")
+	#endif
+
+///Unmarks this connection as direct. Does not update the edge. Called by update() as a correction.
 /connection/proc/mark_indirect()
 	if(direct())
 		state &= ~CONNECTION_DIRECT
 		edge.direct--
-//	log_admin("Marked indirect.")
 
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Marked indirect.")
+	#endif
+
+///Marks this connection as unsimulated. Updating the connection will check the validity of this. See file header for more information.
 /connection/proc/mark_space()
 	state |= CONNECTION_SPACE
 
+///Returns 1 if no doors are in between A and B.
 /connection/proc/direct()
 	return (state & CONNECTION_DIRECT)
 
+///Returns 1 if the connection has not been erased.
 /connection/proc/valid()
 	return !(state & CONNECTION_INVALID)
 
+///Called by update() and connection_manager/erase_all(). Marks the connection as erased and removes it from its edge.
 /connection/proc/erase()
 	edge.remove_connection(src)
 	state |= CONNECTION_INVALID
-//	log_admin("Connection Erased: [state]")
 
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Connection Erased: [state]")
+	#endif
+
+///Makes numerous checks to decide whether the connection is still valid. Erases it automatically if not.
 /connection/proc/update()
-//	log_admin("Updated, \...")
-	if(!A.simulated)
-//		log_admin("Invalid A.")
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Updated, \...")
+	#endif
+
+	if(!A.simulated) //If turf A isn't simulated, erase this connection.
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Invalid A. Erasing...")
+		#endif
+
 		erase()
 		return
 
 	var/block_status = SSzas.air_blocked(A,B)
-	if(block_status & AIR_BLOCKED)
-//		log_admin("Blocked connection.")
+	if(block_status & AIR_BLOCKED) //If turfs A and B cant mingle, erase this connection
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Blocked connection. Erasing...")
+		#endif
+
 		erase()
 		return
-	else if(block_status & ZONE_BLOCKED)
+
+	else if(block_status & ZONE_BLOCKED) //If they can mingle but they can't merge zones, mark this connection as indirect
 		mark_indirect()
 	else
 		mark_direct()
@@ -122,48 +160,78 @@ Class Procs:
 	var/b_is_space = !B.simulated
 
 	if(state & CONNECTION_SPACE)
-		if(!b_is_space)
-//			log_admin("Invalid B.")
+		if(!b_is_space) //If this is an unsimulated connection and B isn't unsimulated, erase.
+			#ifdef ZASDBG
+			if(verbose)
+				zas_log("Invalid B. Erasing...")
+			#endif
 			erase()
 			return
-		if(A.zone != zoneA)
-//			log_admin("Zone changed, \...")
-			if(!A.zone)
+
+		if(A.zone != zoneA) //If turf A's zone has changed, attempt to migrate the connection to the new zone. Otherwise, erase.
+			#ifdef ZASDBG
+			if(verbose)
+				zas_log("Zone changed, \...")
+			#endif
+
+			if(!A.zone) //No zone, erase.
 				erase()
-//				log_admin("erased.")
+
+				#ifdef ZASDBG
+				if(verbose)
+					zas_log("Turf A's zone has disappeared. Erasing...")
+				#endif
 				return
+
 			else
 				edge.remove_connection(src)
 				edge = SSzas.get_edge(A.zone, B)
 				edge.add_connection(src)
 				zoneA = A.zone
 
-//		log_admin("valid.")
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Connection is valid.")
+		#endif
 		return
 
-	else if(b_is_space)
-//		log_admin("Invalid B.")
+	else if(b_is_space) //If B is unsimulated and this isn't an unsimulated connection, erase.
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Turf B is unsimulated, but this is a simulated connection. Erasing...")
+		#endif
 		erase()
 		return
 
-	if(A.zone == B.zone)
-//		log_admin("A == B")
+	if(A.zone == B.zone) //If both turfs share a zone, erase.
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Turf A and Turf B share a zone. Erasing...")
+		#endif
 		erase()
 		return
 
-	if(A.zone != zoneA || (zoneB && (B.zone != zoneB)))
+	if(A.zone != zoneA || (zoneB && (B.zone != zoneB))) //If either turf's zone changed
+		#ifdef ZASDBG
+		if(verbose)
+			zas_log("Zones changed, \...")
+		#endif
 
-//		log_admin("Zones changed, \...")
-		if(A.zone && B.zone)
+		if(A.zone && B.zone) //Find where we're supposed to be and move us there
 			edge.remove_connection(src)
 			edge = SSzas.get_edge(A.zone, B.zone)
 			edge.add_connection(src)
 			zoneA = A.zone
 			zoneB = B.zone
 		else
-//			log_admin("erased.")
+			#ifdef ZASDBG
+			if(verbose)
+				zas_log("Turf A or B lost it's zone. Erasing...")
+			#endif ZASDBG
 			erase()
 			return
 
-
-//	log_admin("valid.")
+	#ifdef ZASDBG
+	if(verbose)
+		zas_log("Connection is valid.")
+	#endif

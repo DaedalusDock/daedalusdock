@@ -5,7 +5,7 @@
 	icon_state = "riverwater_motion"
 	baseturfs = /turf/open/chasm/lavaland
 	initial_gas = OPENTURF_LOW_PRESSURE
-	planetary_atmos = TRUE
+
 	slowdown = 1
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null //needs a splashing sound one day.
@@ -20,7 +20,6 @@
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/water/beach
-	planetary_atmos = FALSE
 	gender = PLURAL
 	desc = "You get the feeling that nobody's bothered to actually make this water functional..."
 	icon = 'icons/misc/beach.dmi'

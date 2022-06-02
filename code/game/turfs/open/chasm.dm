@@ -78,7 +78,7 @@
 // Chasms for Lavaland, with planetary atmos and lava glow
 /turf/open/chasm/lavaland
 	initial_gas = LAVALAND_DEFAULT_ATMOS
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/chasm/lavaland
 	light_range = 1.9 //slightly less range than lava
 	light_power = 0.65 //less bright, too
@@ -90,7 +90,7 @@
 	icon_state = "icechasms-255"
 	base_icon_state = "icechasms"
 	initial_gas = ICEMOON_DEFAULT_ATMOS
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/chasm/icemoon
 	light_range = 1.9
 	light_power = 0.65
@@ -102,7 +102,7 @@
 	icon_state = "junglechasm-255"
 	base_icon_state = "junglechasm"
 	initial_gas = OPENTURF_LOW_PRESSURE
-	planetary_atmos = TRUE
+
 	baseturfs = /turf/open/chasm/jungle
 
 /turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)

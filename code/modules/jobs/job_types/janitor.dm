@@ -50,6 +50,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/janitor
 	gloves = /obj/item/clothing/gloves/color/plasmaman/janny
 	head = /obj/item/clothing/head/helmet/space/plasmaman/janitor
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

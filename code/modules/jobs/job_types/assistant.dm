@@ -59,7 +59,8 @@ Assistant
 	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/assistant/plasmaman/pre_equip(mob/living/carbon/human/target)
-	..()
+	uniform = /obj/item/clothing/under/plasmaman
+	return
 
 /datum/outfit/job/assistant/proc/give_jumpsuit(mob/living/carbon/human/target)
 	var/static/jumpsuit_number = 0

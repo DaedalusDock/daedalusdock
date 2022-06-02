@@ -89,6 +89,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/chief_medical_officer
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
 	head = /obj/item/clothing/head/helmet/space/plasmaman/chief_medical_officer
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cmo/mod
 	name = "Chief Medical Officer (MODsuit)"

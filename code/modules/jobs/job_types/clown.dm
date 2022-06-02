@@ -79,6 +79,7 @@
 	gloves = /obj/item/clothing/gloves/color/plasmaman/clown
 	head = /obj/item/clothing/head/helmet/space/plasmaman/clown
 	mask = /obj/item/clothing/mask/gas/clown_hat/plasmaman
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/clown/mod
 	name = "Clown (MODsuit)"

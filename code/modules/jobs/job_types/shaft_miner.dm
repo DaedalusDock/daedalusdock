@@ -63,6 +63,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/mining
 	gloves = /obj/item/clothing/gloves/color/plasmaman/explorer
 	head = /obj/item/clothing/head/helmet/space/plasmaman/mining
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/miner/equipped
 	name = "Shaft Miner (Equipment)"

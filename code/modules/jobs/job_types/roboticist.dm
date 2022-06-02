@@ -67,6 +67,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/robotics
 	gloves = /obj/item/clothing/gloves/color/plasmaman/robot
 	head = /obj/item/clothing/head/helmet/space/plasmaman/robotics
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/roboticist/mod
 	name = "Roboticist (MODsuit)"

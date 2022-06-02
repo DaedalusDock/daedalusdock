@@ -115,6 +115,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/captain
 	gloves = /obj/item/clothing/gloves/color/captain
 	head = /obj/item/clothing/head/helmet/space/plasmaman/captain
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/captain/mod
 	name = "Captain (MODsuit)"

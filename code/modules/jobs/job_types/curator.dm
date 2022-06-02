@@ -57,6 +57,8 @@
 	uniform = /obj/item/clothing/under/plasmaman/curator
 	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
 	head = /obj/item/clothing/head/helmet/space/plasmaman/curator
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

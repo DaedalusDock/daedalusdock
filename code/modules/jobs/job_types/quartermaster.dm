@@ -69,3 +69,5 @@
 	uniform = /obj/item/clothing/under/plasmaman/cargo
 	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
 	head = /obj/item/clothing/head/helmet/space/plasmaman/cargo
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full

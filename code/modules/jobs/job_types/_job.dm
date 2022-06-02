@@ -54,7 +54,7 @@
 
 	/// Different outfits for alternate job titles and different species
 	var/list/outfits = list(
-		"Job Title" = list(),
+		"Default" = list(),
 	)
 
 	/// Minutes of experience-time required to play in this job. The type is determined by [exp_required_type] and [exp_required_type_department] depending on configs.
@@ -213,6 +213,10 @@
 
 /mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) //PARIAH EDIT CHANGE
 	//Find job title in the first list, then pick the outfit based on species.
+	if(!equipping.outfits)
+		dna.species.pre_equip_species_outfit(equipping, src, visual_only)
+		return//for jobs that don't come with any equipment or load outfits differently
+
 	var/datum/outfit/outfit2wear = equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[src.dna.species.id]
 	outfit2wear ||= equipping.outfits["Default"]?[src.dna.species.id]//A fallback that uses the default job title outfit for the species.
 	outfit2wear ||= equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[SPECIES_HUMAN]//Another fallback that uses the default human outfit for the chosen job title.

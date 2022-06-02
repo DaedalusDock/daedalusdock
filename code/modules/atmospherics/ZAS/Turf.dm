@@ -226,7 +226,7 @@
 					zas_log("[dir2text(d)] has same zone.")
 
 			else if(verbose)
-				zas_log("[dir2text(d)] has invalid or rebuilding zone.")
+				zas_log("[dir2text(d)] has an invalid or rebuilding zone.")
 			#endif
 		else
 			//Postponing connections to tiles until a zone is assured.

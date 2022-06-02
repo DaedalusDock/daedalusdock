@@ -62,7 +62,7 @@
 	if(reinf && anchored)
 		state = RWINDOW_SECURE
 
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 	if(fulltile)
 		setDir()
@@ -333,7 +333,7 @@
 		. += new /obj/item/shard(location)
 
 /obj/structure/window/proc/AfterRotation(mob/user, degrees)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 /obj/structure/window/proc/on_painted(obj/structure/window/source, is_dark_color)
 	SIGNAL_HANDLER
@@ -358,9 +358,6 @@
 /obj/structure/window/Move()
 	update_nearby_tiles()
 	. = ..()
-	/*
-	if(anchored)
-		move_update_air(T)*/
 
 /obj/structure/window/zas_canpass(turf/T, vertical = FALSE)
 	if(QDELETED(src))

@@ -1,6 +1,5 @@
 //Convenience function for atoms to update turfs they occupy
-/atom/movable/proc/update_nearby_tiles(need_rebuild)
-	//for(var/turf/simulated/turf in locs) ZASTURF
+/atom/movable/proc/update_nearby_tiles()
 	for(var/turf/turf in locs)
 		if(!turf.simulated)
 			continue
@@ -10,10 +9,9 @@
 
 
 //Returns:
-// 0 - Not blocked
-// AIR_BLOCKED - Blocked
-// ZONE_BLOCKED - Not blocked, but zone boundaries will not cross.
-// BLOCKED - Blocked, zone boundaries will not cross even if opened.
+// 0 / AIR_ALLOWED - Not blocked. Air and zones can mingle with this turf as they please.
+// AIR_BLOCKED - Blocked. Air cannot move into, out of, or over this turf.
+// ZONE_BLOCKED - Air can flow in this turf, but zones may not merge over it.
 ///Checks whether or not ZAS can occupy this atom's turf. Invoked by the ATMOS_CANPASS_TURF macro.
 /atom/proc/zas_canpass(turf/other)
 	#ifdef ZASDBG
@@ -32,6 +30,7 @@
 
 	. = 0
 	ATMOS_CANPASS_TURF(., src, other)
+	stack_trace("Turf ZAS canpass invoked.")
 
 /atom/proc/zas_mark_update()
 	var/turf/local_turf = get_turf(loc)
@@ -42,6 +41,3 @@
 /atom
 	var/simulated = TRUE
 	var/can_atmos_pass = CANPASS_ALWAYS
-#ifdef ZASDBG
-	var/verbose = FALSE
-#endif

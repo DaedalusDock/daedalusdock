@@ -185,10 +185,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		for(var/A in B.contents)
 			qdel(A)
 		return
+
 	visibilityChanged()
 	QDEL_LIST(blueprint_data)
 	flags_1 &= ~INITIALIZED_1
 	requires_activation = FALSE
+
+	///ZAS THINGS
+	if(connections)
+		connections.erase_all()
+
+	if(simulated && zone)
+		///Try to gracefully remove
+		if(can_safely_remove_from_zone())
+			c_copy_air()
+			zone.remove(src)
+
+		else //Just rebuild the fucker
+			zone.rebuild()
+	///NO MORE ZAS THINGS
+
 	..()
 
 	vis_contents.Cut()

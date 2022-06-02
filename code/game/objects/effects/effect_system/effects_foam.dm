@@ -279,11 +279,11 @@
 
 /obj/structure/foamedmetal/Initialize(mapload)
 	. = ..()
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 /obj/structure/foamedmetal/Destroy()
 	set_density(0)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 	. = ..()
 
 /obj/structure/foamedmetal/Move()

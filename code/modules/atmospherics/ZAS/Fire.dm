@@ -56,7 +56,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				fire_tiles -= T
 				fuel_objs -= fuel
 	else
-		//for(var/turf/simulated/T in fire_tiles) ZASTURF
 		for(var/turf/T in fire_tiles)
 			if(istype(T.fire))
 				qdel(T.fire)
@@ -92,7 +91,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf/proc/create_fire(fl)
 	return 0
 
-//turf/simulated/create_fire(fl) ZASTURF
 /turf/open/create_fire(fl, create_own_fuel)
 	if(!simulated)
 		return
@@ -142,7 +140,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(QDELETED(src))
 		return PROCESS_KILL
 
-	//var/turf/simulated/my_tile = loc ZASTURF
 	var/turf/my_tile = loc
 	if(istype(my_tile, /turf/open/space) || !my_tile.zone)
 		if(my_tile && my_tile.fire == src)
@@ -174,7 +171,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	//spread
 	for(var/direction in GLOB.cardinals)
-		//var/turf/simulated/enemy_tile = get_step(my_tile, direction) ZASTURF
 		var/turf/enemy_tile = get_step(my_tile, direction)
 		if(!istype(enemy_tile, /turf/open/space))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
@@ -233,12 +229,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	SSzas.active_hotspots.Remove(src)
 	. = ..()
 
-//turf/simulated/var/fire_protection = 0 //Protects newly extinguished tiles from being overrun again. ZASTURF
 /turf/var/fire_protection = 0
 /turf/proc/apply_fire_protection()
 	fire_protection = world.time
-/*/turf/simulated/apply_fire_protection() ZASTURF
-	fire_protection = world.time*/
 
 /turf/open/space/apply_fire_protection()
 	return
@@ -475,11 +468,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		to_be_destroyed = FALSE
 
 
-//turf/proc/adjacent_fire_act(turf/simulated/floor/source, exposed_temperature, exposed_volume)
 /turf/proc/adjacent_fire_act(turf/open/floor/source, datum/gas_mixture/adj_air, adj_temp, adj_volume)
 	return
 
-//turf/simulated/floor/adjacent_fire_act(turf/simulated/floor/adj_turf, datum/gas_mixture/adj_air, adj_temp, adj_volume) ZASTURF
 /turf/open/floor/adjacent_fire_act(turf/open/floor/adj_turf, datum/gas_mixture/adj_air, adj_temp, adj_volume)
 	var/dir_to = get_dir(src, adj_turf)
 

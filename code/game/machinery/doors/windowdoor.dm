@@ -60,7 +60,7 @@
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()

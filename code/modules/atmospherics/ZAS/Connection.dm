@@ -48,20 +48,17 @@ Class Procs:
 		Makes numerous checks to decide whether the connection is still valid. Erases it automatically if not.
 
 */
-/* ZASTURF
-/connection/var/turf/simulated/A
-/connection/var/turf/simulated/B
-*/
-/connection/var/turf/A
-/connection/var/turf/B
-/connection/var/zone/zoneA
-/connection/var/zone/zoneB
 
-/connection/var/connection_edge/edge
+/connection/
+	var/turf/A
+	var/turf/B
+	var/zone/zoneA
+	var/zone/zoneB
 
-/connection/var/state = 0
+	var/connection_edge/edge
 
-//connection/New(turf/simulated/A, turf/simulated/B) ZASTURF
+	var/state = 0
+
 /connection/New(turf/A, turf/B)
 	#ifdef ZASDBG
 	//ASSERT(TURF_HAS_VALID_ZONE(A))

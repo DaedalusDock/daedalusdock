@@ -33,7 +33,7 @@
 	. = ..()
 	if(set_dir)
 		setDir(set_dir)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = .proc/on_exit,
@@ -41,7 +41,7 @@
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 /obj/structure/windoor_assembly/Destroy()
 	set_density(FALSE)

@@ -71,7 +71,7 @@
 
 /obj/structure/inflatable/New(location)
 	..()
-	update_nearby_tiles(need_rebuild=1)
+	update_nearby_tiles()
 
 /obj/structure/inflatable/Initialize()
 	. = ..()

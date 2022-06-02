@@ -161,7 +161,7 @@ SUBSYSTEM_DEF(zas)
 	to_chat(world, span_boldannounce("ZAS: Processing Geometry..."))
 
 	var/simulated_turf_count = 0
-	//for(var/turf/simulated/S) ZASTURF
+
 	for(var/turf/S)
 		if(!S.simulated)
 			continue
@@ -362,7 +362,7 @@ SUBSYSTEM_DEF(zas)
 	#endif
 	var/ablock
 	ATMOS_CANPASS_TURF(ablock, A, B)
-	if(ablock & BLOCKED)
+	if(ablock & AIR_BLOCKED)
 		return AIR_BLOCKED
 	ATMOS_CANPASS_TURF(., B, A)
 	return ablock | .
@@ -382,7 +382,6 @@ SUBSYSTEM_DEF(zas)
 		B.c_merge(A)
 		mark_zone_update(A)
 
-//datum/controller/subsystem/zas/proc/connect(turf/simulated/A, turf/simulated/B) //ZASTURF
 /datum/controller/subsystem/zas/proc/connect(turf/A, turf/B)
 	#ifdef ZASDBG
 	ASSERT(A.simulated)

@@ -1,8 +1,8 @@
 /client/proc/Zone_Info(turf/T as null|turf)
 	set category = "Debug"
 	if(T)
-		if(T.simulated && T:zone) //ZASTURF
-			T:zone:dbg_data(src)
+		if(T.simulated && T.zone)
+			T.zone.dbg_data(src)
 		else
 			to_chat(mob, span_admin("ZASDBG: No zone here."))
 			var/datum/gas_mixture/mix = T.return_air()
@@ -17,9 +17,9 @@
 
 /client/var/list/zone_debug_images
 
-/client/proc/Test_ZAS_Connection(turf/T as turf) //ZASTURF
+/client/proc/Test_ZAS_Connection(turf/T as turf)
 	set category = "Debug"
-	if(!T.simulated) //ZASTURF
+	if(!T.simulated)
 		return
 
 	var/direction_list = list(\
@@ -37,7 +37,9 @@
 		return
 
 	if(direction == "N/A")
-		if(!(T.zas_canpass(T) & AIR_BLOCKED))
+		var/canpass_self
+		ATMOS_CANPASS_TURF(canpass_self, T, T)
+		if(!(canpass_self & AIR_BLOCKED))
 			to_chat(mob, "The turf can pass air! :D")
 		else
 			to_chat(mob, "No air passage :x")

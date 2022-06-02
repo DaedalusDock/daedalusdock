@@ -104,7 +104,7 @@ Class Procs:
 	ASSERT(!into.invalid)
 #endif
 	c_invalidate()
-	//for(var/turf/simulated/T in contents) ZASTURF
+
 	for(var/turf/T in contents)
 		if(!T.simulated)
 			continue
@@ -125,16 +125,16 @@ Class Procs:
 	invalid = 1
 	SSzas.remove_zone(src)
 	#ifdef ZASDBG
-	//for(var/turf/simulated/T in contents) ZASTURF
 	for(var/turf/T in contents)
 		if(!T.simulated)
 			T.dbg(zasdbgovl_invalid_zone)
 	#endif
 
 /zone/proc/rebuild()
-	if(invalid) return //Short circuit for explosions where rebuild is called many times over.
+	if(invalid)
+		return //Short circuit for explosions where rebuild is called many times over.
 	c_invalidate()
-	//for(var/turf/simulated/T in contents) ZASTURF
+
 	for(var/turf/T in contents)
 		if(!T.simulated)
 			continue

@@ -42,7 +42,7 @@
 	setDir(pick(GLOB.cardinals))
 	update_appearance()
 	if(atmosblock)
-		update_nearby_tiles(TRUE)
+		update_nearby_tiles()
 	ConsumeTile()
 	if(!QDELETED(src)) //Consuming our tile can in rare cases cause us to del
 		AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOB, CELL_VIRUS_TABLE_GENERIC, 2, 2)

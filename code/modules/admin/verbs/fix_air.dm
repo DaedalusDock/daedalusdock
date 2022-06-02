@@ -39,7 +39,6 @@
 	for(var/id in xgm_gas_data.tile_overlay)
 		unsorted_overlays |= xgm_gas_data.tile_overlay[id]
 
-	//for(var/turf/simulated/T in world) ZASTURF
 	for(var/turf/T in world)
 		if(!T.simulated)
 			continue

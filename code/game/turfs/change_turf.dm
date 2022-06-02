@@ -14,9 +14,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		qdel(thing, force=TRUE)
 
 	if(turf_type)
-		var/turf/newT = ChangeTurf(turf_type, baseturf_type, flags)
-		SSzas.mark_for_update(newT)
-		//CALCULATE_ADJACENT_TURFS(newT, KILL_EXCITED)
+		ChangeTurf(turf_type, baseturf_type, flags)
 
 /turf/proc/copyTurf(turf/T)
 	if(T.type != type)
@@ -81,8 +79,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_bp = blueprint_data
 	blueprint_data = null
 
-
-
 	var/list/old_baseturfs = baseturfs
 	var/old_type = type
 
@@ -91,15 +87,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	changing_turf = TRUE
 
-	if(connections) connections.erase_all()
-	if(simulated)
-		//Yeah, we're just going to rebuild the whole thing.
-		//Despite this being called a bunch during explosions,
-		//the zone will only really do heavy lifting once.
-		var/turf/S = src
-		if(S.zone) S.zone.rebuild()
-
 	qdel(src) //Just get the side effects and call Destroy
+
 	//We do this here so anything that doesn't want to persist can clear itself
 	var/list/old_comp_lookup = comp_lookup?.Copy()
 	var/list/old_signal_procs = signal_procs?.Copy()

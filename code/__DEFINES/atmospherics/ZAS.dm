@@ -4,7 +4,6 @@
 #define AIR_ALLOWED (0<<0)
 #define AIR_BLOCKED (1<<0)
 #define ZONE_BLOCKED (1<<1)
-#define BLOCKED (1<<2)
 
 #define ZONE_MIN_SIZE 14 //zones with less than this many turfs will always merge, even if the connection is not direct
 
@@ -37,16 +36,15 @@
 		} \
 	} while(FALSE)
 
-
-
-//#define TURF_HAS_VALID_ZONE(T) (istype(T, /turf/simulated) && T:zone && !T:zone:invalid) ZASTURF
-
-#define TURF_HAS_VALID_ZONE(T) (T.simulated && T:zone && !T:zone:invalid)
+#define TURF_HAS_VALID_ZONE(T) (T.simulated && T.zone && !T.zone.invalid)
 #ifdef MULTIZAS
 
+///"Can safely remove from zone"
 GLOBAL_REAL(list/csrfz_check) = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, NORTHUP, EASTUP, WESTUP, SOUTHUP, NORTHDOWN, EASTDOWN, WESTDOWN, SOUTHDOWN)
+///"Get zone neighbors"
 GLOBAL_REAL(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 
+///Can air move from B to A?
 #define ATMOS_CANPASS_TURF(ret,A,B) \
 	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
 		ret = BLOCKED; \
@@ -78,10 +76,10 @@ GLOBAL_REAL(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 					ret |= AM.zas_canpass(B); \
 				} \
 				if (CANPASS_NEVER) { \
-					ret = BLOCKED; \
+					ret = AIR_BLOCKED; \
 				} \
 			} \
-			if (ret == BLOCKED) { \
+			if (ret == AIR_BLOCKED) { \
 				break;\
 			}\
 		}\
@@ -91,9 +89,10 @@ GLOBAL_REAL(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 GLOBAL_REAL_VAR(list/csrfz_check) = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 
+///Can air move from B to A?
 #define ATMOS_CANPASS_TURF(ret,A,B) \
 	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
-		ret = BLOCKED; \
+		ret = AIR_BLOCKED|ZONE_BLOCKED; \
 	} \
 	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
 		ret = ZONE_BLOCKED; \
@@ -107,17 +106,17 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 				} \
 				if (CANPASS_DENSITY) { \
 					if (AM.density) { \
-						ret |= AIR_BLOCKED; \
+						ret |= AIR_BLOCKED|ZONE_BLOCKED; \
 					} \
 				} \
 				if (CANPASS_PROC) { \
 					ret |= AM.zas_canpass(B); \
 				} \
 				if (CANPASS_NEVER) { \
-					ret = BLOCKED; \
+					ret = AIR_BLOCKED|ZONE_BLOCKED; \
 				} \
 			} \
-			if (ret == BLOCKED) { \
+			if (ret & AIR_BLOCKED) { \
 				break;\
 			}\
 		}\

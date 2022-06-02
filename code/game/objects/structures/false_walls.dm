@@ -31,7 +31,7 @@
 	var/obj/item/stack/initialized_mineral = new mineral // Okay this kinda sucks.
 	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
 	qdel(initialized_mineral)
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
@@ -56,7 +56,7 @@
 		set_opacity(density)
 		opening = FALSE
 		update_appearance()
-		update_nearby_tiles(TRUE)
+		update_nearby_tiles()
 
 /obj/structure/falsewall/zas_canpass(turf/other)
 	if(QDELETED(src))

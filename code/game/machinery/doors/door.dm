@@ -61,7 +61,7 @@
 	else
 		flags_1 &= ~PREVENT_CLICK_UNDER_1
 
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 	//doors only block while dense though so we have to use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
@@ -179,7 +179,7 @@
 		return
 
 /obj/machinery/door/Move()
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 	. = ..()
 
 

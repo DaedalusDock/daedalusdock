@@ -14,7 +14,7 @@
 /obj/structure/emergency_shield/Initialize(mapload)
 	. = ..()
 	setDir(pick(GLOB.cardinals))
-	update_nearby_tiles(TRUE)
+	update_nearby_tiles()
 
 /obj/structure/emergency_shield/Destroy()
 	update_nearby_tiles()

@@ -4540,7 +4540,6 @@
 /area/maintenance/disposal/incinerator)
 "bEy" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/electrolyzer,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "bEC" = (

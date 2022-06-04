@@ -25,12 +25,11 @@
 	var/turf/open/to_fill = run_loc_floor_bottom_left
 	//Prep the floor
 	to_fill.initial_gas = OPENTURF_DEFAULT_ATMOS
-	to_fill.air = new
-	to_fill.air.copyFrom(to_fill.return_air())
+	to_fill.make_air()
 
 	lab_rat.breathe()
 
-	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans can't get a full breath from the standard initial_gas on a turf")
+	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans can't get a full breath from the standard initial_gas on a turf. Turf: [to_fill.type] | Air: [json_encode(to_fill.air.gas)] | Returned Air: [json_encode(to_fill.return_air().gas)]")
 
 /// Tests to make sure plasmaman can breath from their internal tanks
 /datum/unit_test/breath_sanity_plasmamen
@@ -65,8 +64,7 @@
 	var/turf/open/to_fill = run_loc_floor_bottom_left
 	//Prep the floor
 	to_fill.initial_gas = LAVALAND_DEFAULT_ATMOS
-	to_fill.air = new
-	to_fill.air.copyFrom(to_fill.return_air())
+	to_fill.make_air()
 
 	lab_rat.breathe()
 

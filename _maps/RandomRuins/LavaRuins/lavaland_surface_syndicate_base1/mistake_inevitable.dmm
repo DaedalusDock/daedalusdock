@@ -305,7 +305,7 @@
 "JO" = (
 /obj/machinery/atmospherics/components/trinary/filter/on{
 	dir = 1;
-	filter_type = list(/datum/gas/nitrogen)
+	filter_type = list("nitrogen")
 	},
 /obj/structure/window/reinforced/plasma/spawner,
 /turf/open/floor/engine,

@@ -27,7 +27,7 @@ Contains helper procs for airflow, handled in /connection_group.
 /mob/living/silicon/airflow_stun()
 	return
 
-/mob/living/carbon/slime/airflow_stun()
+/mob/living/simple_animal/slime/airflow_stun()
 	return
 
 /atom/movable/proc/experience_pressure_difference()

@@ -18,8 +18,13 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	baseturfs = /turf/open/openspace
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
+	#ifndef ZASDBG //Multi-Z zone debugging
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	#endif
 	pathing_pass_method = TURF_PATHING_PASS_PROC
+
+	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
+
 	var/can_cover_up = TRUE
 	var/can_build_on = TRUE
 
@@ -27,7 +32,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	initial_gas = AIRLESS_ATMOS
 
 /turf/open/openspace/airless/planetary
-
+	simulated = FALSE
 
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()

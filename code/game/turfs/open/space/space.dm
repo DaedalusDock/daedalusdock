@@ -4,7 +4,7 @@
 	name = "\proper space"
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
-
+	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
 	temperature = TCMB
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
@@ -228,6 +228,7 @@
 /turf/open/space/openspace
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "invisible"
+	simulated = TRUE
 
 /turf/open/space/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()

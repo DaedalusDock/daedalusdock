@@ -37,6 +37,7 @@
 		return
 
 	if(direction == "N/A")
+		to_chat(mob, "Testing self-blocking...")
 		var/canpass_self
 		ATMOS_CANPASS_TURF(canpass_self, T, T)
 		if(!(canpass_self & AIR_BLOCKED))
@@ -54,6 +55,7 @@
 	var/o_block
 	ATMOS_CANPASS_TURF(o_block, other_turf, T)
 
+	to_chat(mob, "Testing connection between ([T.x], [T.y], [T.z]) and ([other_turf.x], [other_turf.y], [other_turf.z])...")
 	if(o_block & AIR_BLOCKED)
 		if(t_block & AIR_BLOCKED)
 			to_chat(mob, "Neither turf can connect. :(")

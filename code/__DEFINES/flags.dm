@@ -288,3 +288,13 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define SPACEVINE_HEAT_RESISTANT (1 << 0)
 /// Is the spacevine / flower bud cold resistant
 #define SPACEVINE_COLD_RESISTANT (1 << 1)
+
+//Z-level flags. Currently only for ZAS
+///Allows air to flow IN from higher Z levels
+#define Z_ATMOS_IN_UP (1<<0)
+///Allows air to flow IN from lower z levels
+#define Z_ATMOS_IN_DOWN (1<<1)
+///Allows air to flow OUT to higher Z levels
+#define Z_ATMOS_OUT_UP (1<<2)
+///Allows air to flow OUT to LOWER z levels
+#define Z_ATMOS_OUT_DOWN (1<<3)

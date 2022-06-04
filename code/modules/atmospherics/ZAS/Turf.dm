@@ -3,6 +3,8 @@
 	var/zone/zone
 	///All directions in which a turf that can contain air is present.
 	var/open_directions
+	///Can atmos pass down through this turf?
+	var/z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
 
 /turf
 	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.update_nearby_tiles())
@@ -55,7 +57,7 @@
 		ATMOS_CANPASS_TURF(target_blocks_us, target, src)
 		if(target_blocks_us & AIR_BLOCKED)
 			#ifdef ZASDBG
-			target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
+			//target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
 			continue
 
@@ -158,7 +160,7 @@
 			#ifdef ZASDBG
 			if(verbose)
 				zas_log("[dir2text(d)] is blocked.")
-			src.dbg(ZAS_DIRECTIONAL_BLOCKER(d))
+			//src.dbg(ZAS_DIRECTIONAL_BLOCKER(d))
 			#endif
 
 			continue
@@ -170,7 +172,7 @@
 			#ifdef ZASDBG
 			if(verbose)
 				zas_log("[dir2text(d)] is blocked.")
-			target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
+			//target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
 
 			//Check that our zone hasn't been cut off recently.
@@ -198,7 +200,7 @@
 						#ifdef ZASDBG
 						if(verbose)
 							zas_log("[dir2text(d)] is zone blocked.")
-						dbg(ZAS_ZONE_BLOCKER(d))
+						//dbg(ZAS_ZONE_BLOCKER(d))
 						#endif
 
 						//Postpone this tile rather than exit, since a connection can still be made.

@@ -45,5 +45,8 @@ endmap
 map atmostest
 endmap
 
+map atmostest_multiz
+endmap
+
 map multiz_debug
 endmap

@@ -3500,7 +3500,6 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/north,
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
@@ -18345,9 +18344,6 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "fkD" = (
-/obj/machinery/power/turbine/inlet_compressor{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "fkQ" = (
@@ -20640,9 +20636,6 @@
 /area/maintenance/central/greater)
 "fZl" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/computer/turbine_computer{
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable/layer1,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
@@ -24824,7 +24817,6 @@
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/south,
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
@@ -28929,7 +28921,6 @@
 /area/medical/medbay/central)
 "iZW" = (
 /obj/effect/turf_decal/bot,
-/obj/machinery/portable_atmospherics/canister/water_vapor,
 /obj/machinery/airalarm/directional/north,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 1
@@ -31653,7 +31644,6 @@
 /obj/effect/turf_decal/trimline/neutral/filled/corner{
 	dir = 1
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/tram/left)
 "jWc" = (
@@ -37104,7 +37094,6 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 1
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/secondary/exit)
 "lON" = (
@@ -42581,7 +42570,7 @@
 /turf/open/floor/iron/white,
 /area/science/explab)
 "nSy" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/rtg/debug/station,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "nSQ" = (
@@ -54687,10 +54676,6 @@
 /obj/effect/turf_decal/bot,
 /obj/item/stack/sheet/plasteel/fifty,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/hfr_box/body/fuel_input,
-/obj/item/hfr_box/body/interface,
-/obj/item/hfr_box/body/moderator_input,
-/obj/item/hfr_box/body/waste_output,
 /turf/open/floor/iron,
 /area/engineering/atmospherics_engine)
 "sop" = (
@@ -55922,7 +55907,6 @@
 /obj/structure/chair{
 	dir = 4
 	},
-/obj/machinery/bluespace_vendor/directional/south,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/exit/departure_lounge)
@@ -58945,7 +58929,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/east,
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
@@ -59169,10 +59152,6 @@
 /turf/open/floor/iron,
 /area/maintenance/tram/left)
 "tTD" = (
-/obj/machinery/power/turbine/core_rotor{
-	dir = 4;
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable/layer1,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -64014,7 +63993,6 @@
 /obj/effect/turf_decal/siding/thinplating/corner{
 	dir = 1
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/tram/center)
 "vLu" = (
@@ -64362,7 +64340,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/east,
 /obj/structure/cable,
 /obj/structure/disposalpipe/junction/flip{
 	dir = 1

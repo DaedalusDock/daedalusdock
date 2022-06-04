@@ -22599,7 +22599,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark/corner{
 	dir = 4
 	},
@@ -26485,7 +26484,6 @@
 	c_tag = "Port Hallway Firelock";
 	name = "port camera"
 	},
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -43849,7 +43847,6 @@
 	c_tag = "Fore Hallway Diner";
 	name = "fore camera"
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
 "kmJ" = (
@@ -46830,9 +46827,6 @@
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "lmB" = (
-/obj/machinery/power/turbine/core_rotor{
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -47185,10 +47179,6 @@
 	name = "atmospherics camera";
 	network = list("ss13","engine")
 	},
-/obj/item/hfr_box/body/fuel_input,
-/obj/item/hfr_box/body/interface,
-/obj/item/hfr_box/body/moderator_input,
-/obj/item/hfr_box/body/waste_output,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "lrD" = (
@@ -47897,7 +47887,7 @@
 /turf/open/floor/wood,
 /area/service/lawoffice)
 "lGe" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/rtg/debug/station,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "lGj" = (
@@ -50104,7 +50094,6 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "moD" = (
@@ -54821,7 +54810,6 @@
 /turf/open/floor/plating,
 /area/cargo/warehouse)
 "nUs" = (
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "nUt" = (
@@ -54928,7 +54916,7 @@
 /obj/effect/turf_decal/siding/wideplating/dark{
 	dir = 4
 	},
-/obj/machinery/bluespace_vendor/directional/south,
+
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "nVD" = (
@@ -76127,10 +76115,6 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 9
 	},
-/obj/machinery/computer/turbine_computer{
-	dir = 1;
-	mapping_id = "main_turbine"
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "uXa" = (
@@ -77204,7 +77188,6 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "vpc" = (
@@ -84298,7 +84281,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "xFO" = (
-/obj/machinery/power/turbine/inlet_compressor,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "xFY" = (

@@ -410,7 +410,6 @@
 "fO" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing,
-/obj/machinery/portable_atmospherics/canister/water_vapor,
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "fP" = (

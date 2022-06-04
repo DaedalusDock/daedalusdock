@@ -109,10 +109,6 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 				GLOB.fusion_reactions[cur_reaction.s_react] = list()
 			GLOB.fusion_reactions[cur_reaction.s_react][cur_reaction.p_react] = cur_reaction
 
-/obj/effect/reactor_em_field/Destroy()
-	QDEL_LIST(particle_catchers)
-	return ..()
-
 /obj/effect/reactor_em_field/proc/update_light_colors()
 	var/use_range
 	var/use_power

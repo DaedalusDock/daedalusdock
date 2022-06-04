@@ -9,9 +9,9 @@
 	var/mysize = 0
 
 /obj/effect/fusion_particle_catcher/Destroy()
-	. =..()
 	parent?.particle_catchers -= src //This should never actually exist outside of the R-UST, but, unit tests.
 	parent = null
+	return ..()
 
 /obj/effect/fusion_particle_catcher/proc/set_size(newsize)
 	name = "collector [newsize]"

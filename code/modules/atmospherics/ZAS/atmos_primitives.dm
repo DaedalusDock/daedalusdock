@@ -426,6 +426,12 @@
 		var/transfer_heat_capacity = source.getHeatCapacity()*estimate_moles/source_total_moles
 		air_temperature = (sink.temperature*sink_heat_capacity  + source.temperature*transfer_heat_capacity) / (sink_heat_capacity + transfer_heat_capacity)
 
+	#ifdef UNIT_TESTS
+	if(air_temperature == 0)
+		CRASH("Air temperature is 0. Source: ([json_encode(source.gas)], [source.temperature] | Sink: ([json_encode(sink.gasJ)], [sink.temperature])")
+	if((output_volume/(air_temperature*R_IDEAL_GAS_EQUATION)) == 0)
+		CRASH("Transfer moles is about to divide by 0. Source Total Moles: [source_total_moles] | Output Volume: [output_volume]")
+	#endif
 	//get the number of moles that would have to be transfered to bring sink to the target pressure
 	return pressure_delta*output_volume/(air_temperature * R_IDEAL_GAS_EQUATION)
 

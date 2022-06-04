@@ -68417,7 +68417,6 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "rMk" = (
-/obj/machinery/portable_atmospherics/canister/bz,
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/bot,
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
@@ -76438,7 +76437,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "ueV" = (
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
 	},
@@ -87403,7 +87401,6 @@
 /turf/open/floor/iron,
 /area/engineering/main)
 "xyC" = (
-/obj/machinery/power/turbine/turbine_outlet,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "xyE" = (

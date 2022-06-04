@@ -4041,9 +4041,6 @@
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
 "OI" = (
-/obj/machinery/power/turbine/turbine_outlet{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/engineering)
 "OQ" = (

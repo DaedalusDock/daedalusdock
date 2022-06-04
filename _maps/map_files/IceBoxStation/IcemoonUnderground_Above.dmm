@@ -3831,7 +3831,6 @@
 /area/security/detectives_office)
 "kp" = (
 /obj/structure/bonfire,
-/obj/item/melee/roastingstick,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "kq" = (
@@ -7101,7 +7100,6 @@
 /turf/open/floor/iron,
 /area/service/bar)
 "tu" = (
-/obj/machinery/portable_atmospherics/canister/bz,
 /turf/open/floor/plating,
 /area/security/prison/safe)
 "tv" = (
@@ -8018,7 +8016,6 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "wg" = (
-/obj/machinery/portable_atmospherics/canister/bz,
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
 /obj/effect/turf_decal/stripes/line{
 	dir = 10

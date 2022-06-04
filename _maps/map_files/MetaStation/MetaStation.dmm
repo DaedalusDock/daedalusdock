@@ -23400,9 +23400,6 @@
 /turf/open/floor/iron/dark,
 /area/engineering/main)
 "hoj" = (
-/obj/machinery/atmospherics/components/binary/crystallizer{
-	dir = 4
-	},
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 1
 	},
@@ -25442,7 +25439,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "ies" = (
@@ -26944,9 +26940,6 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "iKn" = (
-/obj/machinery/power/turbine/turbine_outlet{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "iKr" = (
@@ -44116,7 +44109,6 @@
 /area/science/storage)
 "oRj" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
-/obj/machinery/portable_atmospherics/canister/bz,
 /obj/machinery/light/directional/north,
 /obj/effect/turf_decal/box,
 /turf/open/floor/iron,

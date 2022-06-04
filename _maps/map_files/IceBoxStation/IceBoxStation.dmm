@@ -12188,7 +12188,6 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "eRO" = (
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
@@ -47835,9 +47834,6 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
 "wtn" = (
-/obj/machinery/power/turbine/turbine_outlet{
-	dir = 8
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "wtr" = (

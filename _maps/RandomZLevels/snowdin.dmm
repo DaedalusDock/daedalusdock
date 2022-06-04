@@ -9417,7 +9417,7 @@
 /obj/machinery/suit_storage_unit/syndicate,
 /turf/open/floor/mineral/plastitanium{
 	initial_gas = "o2=22;n2=82;TEMP=180";
-	simulateds = 0;
+	simulated = 0;
 	temperature = 180
 	},
 /area/awaymission/snowdin/cave)
@@ -9431,7 +9431,7 @@
 	},
 /turf/open/floor/mineral/plastitanium{
 	initial_gas = "o2=22;n2=82;TEMP=180";
-	simulateds = 0;
+	simulated = 0;
 	temperature = 180
 	},
 /area/awaymission/snowdin/cave)

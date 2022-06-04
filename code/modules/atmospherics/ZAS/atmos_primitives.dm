@@ -428,7 +428,7 @@
 
 	#ifdef UNIT_TESTS
 	if(air_temperature == 0)
-		CRASH("Air temperature is 0. Source: ([json_encode(source.gas)], [source.temperature] | Sink: ([json_encode(sink.gasJ)], [sink.temperature])")
+		CRASH("Air temperature is 0. Source: ([json_encode(source.gas)], [source.temperature] | Sink: ([json_encode(sink.gas)], [sink.temperature])")
 	if((output_volume/(air_temperature*R_IDEAL_GAS_EQUATION)) == 0)
 		CRASH("Transfer moles is about to divide by 0. Source Total Moles: [source_total_moles] | Output Volume: [output_volume]")
 	#endif

@@ -71,7 +71,7 @@
 	if (T.zone) { \
 		for (var/_gzn_dir in gzn_check) { \
 			var/turf/other = get_step(T, _gzn_dir); \
-			if (other.simulated && other.zone == T.zone) { \
+			if (other && other.simulated && other.zone == T.zone) { \
 				var/block; \
 				ATMOS_CANPASS_TURF(block, other, T); \
 				if (!(block & AIR_BLOCKED)) { \
@@ -99,7 +99,7 @@
 		if((dir & check_dirs) == dir)
 			//check that they are connected by the corner turf
 			var/turf/T = get_step(src, dir)
-			if (!T.simulated)
+			if (!T?.simulated)
 				. &= ~dir
 				continue
 

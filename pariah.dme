@@ -4616,8 +4616,6 @@
 #include "modular_pariah\modules\hyposprays\code\hyposprays_II.dm"
 #include "modular_pariah\modules\hyposprays\code\hypovials.dm"
 #include "modular_pariah\modules\hyposprays\code\vending_hypospray.dm"
-#include "modular_pariah\modules\icspawning\code\admin_procs.dm"
-#include "modular_pariah\modules\icspawning\code\spell.dm"
 #include "modular_pariah\modules\indicators\code\ssd_indicator.dm"
 #include "modular_pariah\modules\indicators\code\typing_indicator.dm"
 #include "modular_pariah\modules\large_doors\code\large_doors.dm"

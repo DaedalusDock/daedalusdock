@@ -134,6 +134,7 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/client/proc/adminchangemap,
 	/client/proc/panicbunker,
 	/client/proc/toggle_interviews,
+	/client/proc/toggle_require_discord,
 	/client/proc/toggle_hub,
 	/client/proc/toggle_cdn
 	)
@@ -272,6 +273,7 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	/client/proc/reload_admins,
 	/client/proc/panicbunker,
 	/client/proc/toggle_interviews,
+	/client/proc/toggle_require_discord,
 	/client/proc/admin_change_sec_level,
 	/client/proc/toggle_nuke,
 	/client/proc/cmd_display_del_log,

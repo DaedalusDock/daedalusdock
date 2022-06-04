@@ -356,16 +356,23 @@ EXTREME_POPCAP_MESSAGE The server is currently serving a high number of users, f
 NOTIFY_NEW_PLAYER_AGE 0
 
 ## Notify admins when a player connects if their byond account was created in the last X days
-## Requires database
+##  Requires database
 NOTIFY_NEW_PLAYER_ACCOUNT_AGE 1
 
 ## Notify the irc channel when a new player makes their first connection
-##	Requres database
+##	Requires database
 #IRC_FIRST_CONNECTION_ALERT
 
 ## Deny all new connections by ckeys we haven't seen before (exempts admins and only denies the connection if the database is enabled and connected)
 ##	Requires database
 #PANIC_BUNKER
+
+## Allow accounts that are registered via other means to pass the bunker
+##  Requires database and PANIC_BUNKER
+#PANIC_BUNKER_DISCORD_REQUIRE
+
+## Custom message to show the client if they are not allowed access due to MFA
+#PANIC_BUNKER_DISCORD_REGISTER_MESSAGE Sorry but this server requires players to link their Discord account before playing! Please enter the following command, including the token, into this Server's Discord Guild.
 
 ## Uncomment to enable the interview system for players who are below the living hour requirement instead of explicitly blocking them from the server
 ## Note this requires the PANIC_BUNKER to be enabled to do anything.

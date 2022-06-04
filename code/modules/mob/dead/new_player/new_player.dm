@@ -47,7 +47,7 @@
 	if(!client)
 		return
 
-	if(client.interviewee)
+	if(client.restricted_mode)
 		return FALSE
 
 	if(href_list["late_join"]) //This still exists for queue messages in chat

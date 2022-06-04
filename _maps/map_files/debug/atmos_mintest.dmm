@@ -15,7 +15,9 @@
 	name = "c1vent"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/hallway/primary/central,
+/obj/effect/landmark/blobstart
+)
 "ae" = (
 /obj/machinery/door/poddoor{
 	id = "c2vent";

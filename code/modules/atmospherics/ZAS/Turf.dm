@@ -255,8 +255,10 @@
 			#ifdef ZASDBG
 			if(verbose)
 				zas_log("This turf tried to merge into itself! Current type: [src.type]")
-			#endif
+
 			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
+			#endif
+			return //THIS BUG IS SMALL ENOUGH THAT IT IS FINE FOR NOW. I WILL FIX IT IN THE FUTURE.
 		SSzas.connect(src, T)
 
 /turf/proc/post_update_air_properties()

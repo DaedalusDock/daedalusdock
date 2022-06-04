@@ -16,7 +16,6 @@
 	},
 /turf/open/floor/plating,
 /area/hallway/primary/central,
-/obj/effect/landmark/blobstart
 )
 "ae" = (
 /obj/machinery/door/poddoor{
@@ -52,6 +51,7 @@
 "al" = (
 /obj/machinery/power/rtg/debug,
 /obj/structure/cable,
+/obj/effect/landmark/blobstart,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "am" = (

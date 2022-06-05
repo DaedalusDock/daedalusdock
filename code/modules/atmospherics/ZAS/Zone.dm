@@ -84,7 +84,9 @@ Class Procs:
 		var/obj/effect/decal/cleanable/oil/fuel = locate() in T
 		fire_tiles.Add(T)
 		SSzas.active_fire_zones |= src
-		if(fuel) fuel_objs += fuel
+		if(fuel)
+			fuel_objs += fuel
+			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, .proc/handle_fuel_del)
 	T.update_graphic(air.graphic)
 
 ///Removes the given turf from the zone. Will invalidate the zone if it was the last turf.
@@ -243,3 +245,7 @@ Class Procs:
 
 	//for(var/turf/T in unsimulated_contents)
 //		to_chat(M, "[T] at ([T.x],[T.y])")
+
+///If fuel disappears from anything that isn't a fire burning it out, we gotta clear it's ref
+/zone/proc/handle_fuel_del(datum/source)
+	fuel_objs -= src

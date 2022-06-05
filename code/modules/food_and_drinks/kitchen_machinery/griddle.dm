@@ -137,7 +137,7 @@
 		var/obj/item/griddled_item = i
 		if(SEND_SIGNAL(griddled_item, COMSIG_ITEM_GRILLED, src, delta_time) & COMPONENT_HANDLED_GRILLING)
 			continue
-		griddled_item.fire_act(1000) //Hot hot hot!
+		griddled_item.fire_act(null, 1000) //Hot hot hot!
 		if(prob(10))
 			visible_message(span_danger("[griddled_item] doesn't seem to be doing too great on the [src]!"))
 

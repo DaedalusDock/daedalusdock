@@ -60,6 +60,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			if(istype(T.fire))
 				qdel(T.fire)
 		fire_tiles.Cut()
+		//Gotta make sure we don't leave any left over signals
+		for(var/fuel in fuel_objs)
+			UnregisterSignal(fuel, COMSIG_PARENT_QDELETING)
 		fuel_objs.Cut()
 
 	if(!fire_tiles.len)
@@ -84,8 +87,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		if(fuel.reagent_amount <= 0)
 			fuel_objs -= fuel
 			if(remove_fire)
-				var/turf/T = fuel.loc
-				if(istype(T) && T.fire) qdel(T.fire)
+				if(T.fire)
+					qdel(T.fire)
 			qdel(fuel)
 
 /turf/proc/create_fire(fl)
@@ -165,9 +168,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	for(var/mob/living/L in loc)
 		L.FireBurn(firelevel, air_contents.temperature, air_contents.returnPressure())  //Burn the mobs!
 
-	loc.fire_act(air_contents, air_contents.temperature, air_contents.volume)
+	loc.fire_act(air_contents.temperature, air_contents.volume)
 	for(var/atom/A in loc)
-		A.fire_act(air_contents, air_contents.temperature, air_contents.volume)
+		A.fire_act(air_contents.temperature, air_contents.volume)
 
 	//spread
 	for(var/direction in GLOB.cardinals)

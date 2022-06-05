@@ -56,7 +56,7 @@
 	qdel(src)
 
 /// fire_act reaction.
-/datum/component/combustible_flooder/proc/flame_react(datum/source, exposed_temperature, exposed_volume)
+/datum/component/combustible_flooder/proc/flame_react(datum/source, exposed_contents, exposed_temperature, exposed_volume)
 	SIGNAL_HANDLER
 
 	if(exposed_temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)

@@ -5,14 +5,14 @@
 	if (z_list)
 		if (z > z_list.len)
 			stack_trace("Unmanaged z-level [z]! maxz = [world.maxz], z_list.len = [z_list.len]")
-			return list()
+			return FALSE
 		var/datum/space_level/S = get_level(z)
 		return S.traits[trait]
 	else
 		var/list/default = DEFAULT_MAP_TRAITS
 		if (z > default.len)
 			stack_trace("Unmanaged z-level [z]! maxz = [world.maxz], default.len = [default.len]")
-			return list()
+			return FALSE
 		return default[z][DL_TRAITS][trait]
 
 /// Check if levels[z] has any of the specified traits
@@ -51,12 +51,6 @@
 
 /// Attempt to get the turf below the provided one according to Z traits
 /datum/controller/subsystem/mapping/proc/get_turf_below(turf/T)
-	///Type mismatch of "list" at some point, I WILL FIND THIS BUG.
-	#ifdef UNIT_TESTS
-	ASSERT(istype(us))
-	ASSERT(istype(them))
-	#endif
-
 	if (!T)
 		return
 	var/offset = level_trait(T.z, ZTRAIT_DOWN)

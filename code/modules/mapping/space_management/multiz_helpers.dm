@@ -8,12 +8,6 @@
 	return get_step(ref, dir)
 
 /proc/get_dir_multiz(turf/us, turf/them)
-	///Type mismatch of "list" at some point, I WILL FIND THIS BUG.
-	#ifdef UNIT_TESTS
-	ASSERT(istype(us))
-	ASSERT(istype(them))
-	#endif
-
 	us = get_turf(us)
 	them = get_turf(them)
 	if(!us || !them)

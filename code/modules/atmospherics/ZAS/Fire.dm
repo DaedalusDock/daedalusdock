@@ -87,7 +87,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		if(fuel.reagent_amount <= 0)
 			fuel_objs -= fuel
 			if(remove_fire)
-				if(T.fire)
+				var/turf/T = fuel.loc
+				if(istype(T) && T.fire)
 					qdel(T.fire)
 			qdel(fuel)
 

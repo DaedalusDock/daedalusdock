@@ -51,6 +51,12 @@
 
 /// Attempt to get the turf below the provided one according to Z traits
 /datum/controller/subsystem/mapping/proc/get_turf_below(turf/T)
+	///Type mismatch of "list" at some point, I WILL FIND THIS BUG.
+	#ifdef UNIT_TESTS
+	ASSERT(istype(us))
+	ASSERT(istype(them))
+	#endif
+
 	if (!T)
 		return
 	var/offset = level_trait(T.z, ZTRAIT_DOWN)

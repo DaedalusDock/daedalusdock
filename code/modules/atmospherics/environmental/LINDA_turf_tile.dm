@@ -374,7 +374,7 @@
 
 /atom/movable
 	///How much delta pressure is needed for us to move
-	var///pressure_resistance = 10
+	var/pressure_resistance = 10
 	var/last_high_pressure_movement_air_cycle = 0
 
 /atom/movable/proc/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)

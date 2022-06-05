@@ -141,6 +141,7 @@ Class Procs:
 
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 
+			//Soul code im too scared to touch
 			if(repelled) spawn if(M) M.RepelAirflowDest(differential/5)
 			else spawn if(M) M.GotoAirflowDest(differential/10)
 

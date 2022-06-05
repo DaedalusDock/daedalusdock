@@ -1,11 +1,27 @@
 /*
 Contains helper procs for airflow, handled in /connection_group.
+This entire system is an absolute mess.
 */
 #define AIRBORNE_DAMAGE(airborne_thing) (min(airborne_thing.airflow_speed, (airborne_thing.airborne_acceleration*2)) * zas_settings.airflow_damage)
 
-/mob/var/tmp/last_airflow_stun = 0
+/mob
+	var/tmp/last_airflow_stun = 0
+
+/atom/movable
+	///The location the atom is trying to step towards during airflow.
+	var/tmp/turf/airflow_dest
+	///The speed the object is travelling during airflow
+	var/tmp/airflow_speed = 0
+	///Time (ticks) spent in airflow
+	var/tmp/airflow_time = 0
+	///Time (ticks) since last airflow movement
+	var/tmp/last_airflow = 0
+	var/tmp/airborne_acceleration = 0
+
+///Applies the effects of the mob colliding with another movable due to airflow.
 /mob/proc/airflow_stun()
 	return
+
 /mob/living/airflow_stun()
 	if(stat == 2)
 		return FALSE
@@ -30,16 +46,19 @@ Contains helper procs for airflow, handled in /connection_group.
 /mob/living/simple_animal/slime/airflow_stun()
 	return
 
+///NEEDS IMPLIMENATION, SEE: LINDA_turf_tile.dm
 /atom/movable/proc/experience_pressure_difference()
 	return
 
+///Checks to see if airflow can move this movable.
 /atom/movable/proc/check_airflow_movable(n)
+	if(anchored && !ismob(src))
+		return FALSE
 
-	if(anchored && !ismob(src)) return 0
+	if(!isobj(src) && n < zas_settings.airflow_dense_pressure)
+		return FALSE
 
-	if(!isobj(src) && n < zas_settings.airflow_dense_pressure) return 0
-
-	return 1
+	return TRUE
 
 /mob/check_airflow_movable(n)
 	if(n < zas_settings.airflow_heavy_pressure)
@@ -52,7 +71,8 @@ Contains helper procs for airflow, handled in /connection_group.
 	return 0
 
 /obj/check_airflow_movable(n)
-	if(n < zas_settings.airflow_dense_pressure) return 0
+	if(n < zas_settings.airflow_dense_pressure)
+		return FALSE
 
 	return ..()
 
@@ -70,13 +90,7 @@ Contains helper procs for airflow, handled in /connection_group.
 			if(n < zas_settings.airflow_dense_pressure) return 0
 	return ..()
 
-
-/atom/movable/var/tmp/turf/airflow_dest
-/atom/movable/var/tmp/airflow_speed = 0
-/atom/movable/var/tmp/airflow_time = 0
-/atom/movable/var/tmp/last_airflow = 0
-/atom/movable/var/tmp/airborne_acceleration = 0
-
+///Seemingly redundant, look to remove.
 /atom/movable/proc/AirflowCanMove(n)
 	return 1
 
@@ -111,6 +125,7 @@ Contains helper procs for airflow, handled in /connection_group.
 		airborne_acceleration = 0
 		. = ..()
 
+///Called when src collides with A during airflow
 /atom/movable/proc/airflow_hit(atom/A)
 	airflow_speed = 0
 	airflow_dest = null
@@ -133,7 +148,7 @@ Contains helper procs for airflow, handled in /connection_group.
 		loc.add_blood_DNA(return_blood_DNA())
 	return ..()
 
-
+///Called when "flying" calls airflow_hit() on src
 /atom/proc/airflow_hit_act(atom/movable/flying)
 	src.visible_message(
 		span_danger("A flying [flying.name] slams into \the [src]!"),

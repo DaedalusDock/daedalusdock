@@ -2,10 +2,12 @@
 	plane = FLOOR_PLANE
 	var/slowdown = 0 //negative for faster, positive for slower
 	initial_gas = OPENTURF_DEFAULT_ATMOS
+	z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
 	var/footstep = null
 	var/barefootstep = null
 	var/clawfootstep = null
 	var/heavyfootstep = null
+
 
 //direction is direction of travel of A
 /turf/open/zPassIn(atom/movable/A, direction, turf/source)

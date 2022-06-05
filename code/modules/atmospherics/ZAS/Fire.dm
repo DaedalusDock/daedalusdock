@@ -449,7 +449,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	apply_damage(0.9*mx*head_exposure,  BURN, BODY_ZONE_HEAD)
 	apply_damage(2.5*mx*chest_exposure, BURN, BODY_ZONE_CHEST)
-	//apply_damage(2,0*mx*groin_exposure, BURN, BODY_ZONE_PRECISE_GROIN)
 	apply_damage(0.6*mx*legs_exposure,  BURN, BODY_ZONE_L_LEG)
 	apply_damage(0.6*mx*legs_exposure,  BURN, BODY_ZONE_R_LEG)
 	apply_damage(0.4*mx*arms_exposure,  BURN, BODY_ZONE_L_ARM)
@@ -480,7 +479,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	for(var/obj/structure/window/W in src)
 		if(W.dir == dir_to || W.fulltile) //Same direction or diagonal (full tile)
-			W.fire_act(adj_air, adj_temp, adj_volume)
+			W.fire_act(adj_temp, adj_volume)
 
 /turf/closed/wall/adjacent_fire_act(turf/open/floor/adj_turf, datum/gas_mixture/adj_air, adj_temp, adj_volume)
 	burn(adj_temp)

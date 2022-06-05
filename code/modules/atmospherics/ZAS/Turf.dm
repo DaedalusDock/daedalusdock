@@ -4,7 +4,7 @@
 	///All directions in which a turf that can contain air is present.
 	var/open_directions
 	///Can atmos pass down through this turf?
-	var/z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
+	var/z_flags = NONE
 
 /turf
 	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.update_nearby_tiles())
@@ -257,8 +257,9 @@
 				zas_log("This turf tried to merge into itself! Current type: [src.type]")
 
 			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
-			#endif
+			#else
 			return //THIS BUG IS SMALL ENOUGH THAT IT IS FINE FOR NOW. I WILL FIX IT IN THE FUTURE.
+			#endif
 		SSzas.connect(src, T)
 
 /turf/proc/post_update_air_properties()

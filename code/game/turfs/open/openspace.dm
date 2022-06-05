@@ -172,6 +172,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	name = "ice chasm"
 	baseturfs = /turf/open/openspace/icemoon
 	initial_gas = ICEMOON_DEFAULT_ATMOS
+	simulated = FALSE
 
 	var/replacement_turf = /turf/open/misc/asteroid/snow/icemoon
 	/// Replaces itself with replacement_turf if the turf below this one is in a no ruins allowed area (usually ruins themselves)

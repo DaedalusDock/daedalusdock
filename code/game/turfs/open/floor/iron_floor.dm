@@ -36,6 +36,7 @@
 /turf/open/floor/iron/icemoon
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 	temperature = 80
+
 /turf/open/floor/iron/edge
 	icon_state = "floor_edge"
 	base_icon_state = "floor_edge"

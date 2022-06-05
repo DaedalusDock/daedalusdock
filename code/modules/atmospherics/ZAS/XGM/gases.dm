@@ -52,7 +52,7 @@
 	molar_mass = 0.405	// kg/mol
 
 	tile_overlay = "plasma"
-	overlay_limit = 0.7
+	overlay_limit = MOLES_PHORON_VISIBLE
 	flags = XGM_GAS_FUEL | XGM_GAS_CONTAMINANT | XGM_GAS_FUSION_FUEL
 	breathed_product = /datum/reagent/toxin/plasma
 	symbol_html = "Ph"

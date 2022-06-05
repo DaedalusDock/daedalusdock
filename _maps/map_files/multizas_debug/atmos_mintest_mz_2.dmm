@@ -60,7 +60,6 @@
 /area/hallway/primary/upper)
 "o" = (
 /obj/structure/cable/multilayer/multiz,
-/obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/primary/upper)
 "p" = (

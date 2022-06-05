@@ -53,7 +53,6 @@
 /area/hallway/primary/central/fore)
 "o" = (
 /obj/structure/cable/multilayer/multiz,
-/obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/primary/central/fore)
 "p" = (

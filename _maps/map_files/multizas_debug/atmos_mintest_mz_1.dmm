@@ -873,7 +873,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cW" = (
-/obj/structure/cable,
 /obj/structure/cable/multilayer/multiz,
 /turf/open/floor/plating,
 /area/hallway/primary/central)

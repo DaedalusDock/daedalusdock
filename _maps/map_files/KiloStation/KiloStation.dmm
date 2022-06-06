@@ -47887,7 +47887,7 @@
 /turf/open/floor/wood,
 /area/service/lawoffice)
 "lGe" = (
-/obj/machinery/power/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter_crystal,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "lGj" = (

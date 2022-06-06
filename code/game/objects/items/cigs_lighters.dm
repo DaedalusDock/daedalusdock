@@ -133,6 +133,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	body_parts_covered = null
 	grind_results = list()
 	heat = 1000
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	/// Whether this cigarette has been lit.
 	var/lit = FALSE
 	/// Whether this cigarette should start lit.
@@ -430,6 +431,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 4 MINUTES
 	chem_volume = 50
 	list_reagents = null
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/cigarette/rollie/Initialize(mapload)
 	name = pick(list(
@@ -502,6 +504,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	heat = 473.15 // Lowered so that the sugar can be carmalized, but not burnt.
 	lung_harm = 0.5
 	list_reagents = list(/datum/reagent/consumable/sugar = 20)
+	supports_variations_flags = NONE
 
 /obj/item/clothing/mask/cigarette/candy/nicotine
 	desc = "For all ages*! Doesn't contain any* amount of nicotine. Health and safety risks can be read on the tip of the cigarette."
@@ -546,6 +549,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 20 MINUTES
 	chem_volume = 80
 	list_reagents = list(/datum/reagent/drug/nicotine = 40)
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/clothing/mask/cigarette/cigar/havana
 	name = "premium Havanian cigar"
@@ -556,6 +560,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 30 MINUTES
 	chem_volume = 60
 	list_reagents = list(/datum/reagent/drug/nicotine = 45)
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 
 /obj/item/cigbutt
 	name = "cigarette butt"
@@ -585,6 +590,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 0
 	chem_volume = 200 // So we can fit densified chemicals plants
 	list_reagents = null
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 	///name of the stuff packed inside this pipe
 	var/packeditem
 

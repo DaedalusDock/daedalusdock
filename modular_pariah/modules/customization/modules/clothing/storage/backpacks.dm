@@ -6,3 +6,4 @@
 	icon_state = "crusader_bandolier"
 	inhand_icon_state = "explorerpack"
 	w_class = WEIGHT_CLASS_BULKY
+	supports_variations_flags = NONE

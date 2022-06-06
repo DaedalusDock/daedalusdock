@@ -66,7 +66,7 @@
 	savefile_key = "facial_hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_species_trait = FACEHAIR
+	relevant_species_trait = FACEHAIRCOLOR
 
 /datum/preference/color/facial_hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.facial_hair_color = value
@@ -109,7 +109,7 @@
 	savefile_key = "hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_species_trait = HAIR
+	relevant_species_trait = HAIRCOLOR
 
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.hair_color = value

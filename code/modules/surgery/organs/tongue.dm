@@ -32,6 +32,8 @@
 		/datum/language/terrum,
 		/datum/language/nekomimetic,
 		/datum/language/skrell,
+		/datum/language/schechi,
+		/datum/language/vox,
 	))
 
 /obj/item/organ/tongue/Initialize(mapload)

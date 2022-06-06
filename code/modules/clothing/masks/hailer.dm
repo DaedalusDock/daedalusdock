@@ -57,6 +57,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	visor_flags_cover = MASKCOVERSMOUTH
 	tint = 0
 	has_fov = FALSE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 	var/aggressiveness = AGGR_BAD_COP
 	var/overuse_cooldown = FALSE
 	var/recent_uses = 0
@@ -75,6 +76,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	has_fov = TRUE
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/gas/sechailer/swat/spacepol
 	name = "spacepol mask"
@@ -84,6 +86,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	tint = 1.5
 	flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
+	supports_variations_flags = NONE
 
 /obj/item/clothing/mask/gas/sechailer/cyborg
 	name = "security hailer"

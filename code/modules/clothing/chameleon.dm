@@ -222,6 +222,7 @@
 		item_target.worn_icon = initial(picked_item.worn_icon)
 		item_target.lefthand_file = initial(picked_item.lefthand_file)
 		item_target.righthand_file = initial(picked_item.righthand_file)
+		item_target.supports_variations_flags = initial(picked_item.supports_variations_flags)
 		if(initial(picked_item.greyscale_colors))
 			if(initial(picked_item.greyscale_config_worn))
 				item_target.worn_icon = SSgreyscale.GetColoredIconByType(initial(picked_item.greyscale_config_worn), initial(picked_item.greyscale_colors))
@@ -407,6 +408,7 @@
 	blood_overlay_type = "armor"
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -435,6 +437,7 @@
 	inhand_icon_state = "meson"
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -464,6 +467,7 @@
 
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -540,6 +544,7 @@
 	permeability_coefficient = 0.01
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH
 	w_class = WEIGHT_CLASS_SMALL
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/voice_change = 1 ///This determines if the voice changer is on or off.
 
@@ -646,6 +651,7 @@
 /obj/item/storage/belt/chameleon
 	name = "toolbelt"
 	desc = "Holds tools."
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/storage/belt/chameleon/Initialize(mapload)

@@ -11,6 +11,7 @@
 	desc = "Makes you want to frolic in a field of daisies."
 	icon_state = "sundress"
 	inhand_icon_state = "sundress"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/dress/blacktango
 	name = "black tango dress"
@@ -38,6 +39,7 @@
 	inhand_icon_state = "wedding_dress"
 	body_parts_covered = CHEST|GROIN|LEGS
 	flags_cover = HIDESHOES
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/dress/redeveninggown
 	name = "red evening gown"
@@ -49,6 +51,7 @@
 	name = "black skirt"
 	desc = "A black skirt, very fancy!"
 	icon_state = "blackskirt"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/dress/skirt/blue
 	name = "blue skirt"
@@ -56,6 +59,7 @@
 	icon_state = "blueskirt"
 	inhand_icon_state = "b_suit"
 	custom_price = PAYCHECK_EASY
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/under/dress/skirt/red
 	name = "red skirt"
@@ -63,6 +67,7 @@
 	icon_state = "redskirt"
 	inhand_icon_state = "r_suit"
 	custom_price = PAYCHECK_EASY
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/under/dress/skirt/purple
 	name = "purple skirt"
@@ -70,6 +75,7 @@
 	icon_state = "purpleskirt"
 	inhand_icon_state = "p_suit"
 	custom_price = PAYCHECK_EASY
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/under/dress/skirt/plaid
 	name = "red plaid skirt"
@@ -97,3 +103,4 @@
 	desc = "A preppy green skirt with a white blouse."
 	icon_state = "plaid_green"
 	inhand_icon_state = "plaid_green"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON

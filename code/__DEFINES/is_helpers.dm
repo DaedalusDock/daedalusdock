@@ -71,6 +71,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define isgolem(A) (is_species(A, /datum/species/golem))
 #define islizard(A) (is_species(A, /datum/species/lizard))
 #define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
+#define isvox(A) (is_species(A, /datum/species/vox))
 #define ispodperson(A) (is_species(A, /datum/species/pod))
 #define isflyperson(A) (is_species(A, /datum/species/fly))
 #define isjellyperson(A) (is_species(A, /datum/species/jelly))
@@ -86,6 +87,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
 #define isandroid(A) (is_species(A, /datum/species/android))
 #define isskrell(A) (is_species(A, /datum/species/skrell))
+#define isteshari(A) (is_species(A, /datum/species/teshari))
 
 //More carbon mobs
 #define isalien(A) (istype(A, /mob/living/carbon/alien))

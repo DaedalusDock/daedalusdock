@@ -6,6 +6,8 @@
 	icon = 'icons/obj/clothing/cloaks.dmi'
 	icon_state = "qmcloak"
 	inhand_icon_state = "qmcloak"
+	fallback_colors = list(list(11, 15), list(12, 22))
+	fallback_icon_state = "cloak"
 	w_class = WEIGHT_CLASS_SMALL
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESUITSTORAGE
@@ -18,36 +20,43 @@
 	name = "head of security's cloak"
 	desc = "Worn by Securistan, ruling the station with an iron fist."
 	icon_state = "hoscloak"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/qm
 	name = "quartermaster's cloak"
 	desc = "Worn by Cargonia, supplying the station with the necessary tools for survival."
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/cmo
 	name = "chief medical officer's cloak"
 	desc = "Worn by Meditopia, the valiant men and women keeping pestilence at bay."
 	icon_state = "cmocloak"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/ce
 	name = "chief engineer's cloak"
 	desc = "Worn by Engitopia, wielders of an unlimited power."
 	icon_state = "cecloak"
 	resistance_flags = FIRE_PROOF
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/rd
 	name = "research director's cloak"
 	desc = "Worn by Sciencia, thaumaturges and researchers of the universe."
 	icon_state = "rdcloak"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/cap
 	name = "captain's cloak"
 	desc = "Worn by the commander of Space Station 13."
 	icon_state = "capcloak"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/hop
 	name = "head of personnel's cloak"
 	desc = "Worn by the Head of Personnel. It smells faintly of bureaucracy."
 	icon_state = "hopcloak"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/suit/hooded/cloak/goliath
 	name = "goliath cloak"
@@ -81,6 +90,7 @@
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	transparent_protection = HIDEGLOVES|HIDESUITSTORAGE|HIDEJUMPSUIT|HIDESHOES
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/head/hooded/cloakhood/drake
 	name = "drake helm"
@@ -93,6 +103,7 @@
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/suit/hooded/cloak/godslayer
 	name = "godslayer armour"

@@ -205,3 +205,31 @@
 	name = "Shaved"
 	icon_state = null
 	gender = NEUTER
+
+/datum/sprite_accessory/facial_vox_hair
+	icon = 'icons/mob/vox_facial_hair.dmi'
+	color_src = FACEHAIR
+
+/datum/sprite_accessory/facial_vox_hair/vox_beard
+	name = "Vox Beard"
+	icon_state = "beard"
+
+/datum/sprite_accessory/facial_vox_hair/vox_colonel
+	name = "Vox Beard (Colonel)"
+	icon_state = "colonel"
+
+/datum/sprite_accessory/facial_vox_hair/vox_fu
+	name = "Vox Beard (Fu)"
+	icon_state = "fu"
+
+/datum/sprite_accessory/facial_vox_hair/vox_neck
+	name = "Vox Neck Quills"
+	icon_state = "neck"
+
+/datum/sprite_accessory/facial_vox_hair/vox_mane
+	name = "Vox Mane"
+	icon_state = "mane"
+
+/datum/sprite_accessory/facial_vox_hair/none
+	name = "None"
+	icon_state = "none"

@@ -18,6 +18,7 @@
 	vision_flags = NONE
 	darkness_view = 2
 	invis_view = SEE_INVISIBLE_LIVING
+	supports_variations_flags = NONE
 
 	var/list/modes = list(MODE_NONE = MODE_MESON, MODE_MESON = MODE_TRAY, MODE_TRAY = MODE_NONE)
 	var/mode = MODE_NONE

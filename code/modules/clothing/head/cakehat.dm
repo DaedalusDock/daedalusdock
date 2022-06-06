@@ -18,6 +18,7 @@
 	light_system = MOVABLE_LIGHT
 	flags_cover = HEADCOVERSEYES
 	heat = 999
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	dog_fashion = /datum/dog_fashion/head
 
@@ -63,6 +64,7 @@
 	force_on = 18 //same as epen (but much more obvious)
 	light_range = 3 //ditto
 	heat = 0
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/hardhat/cakehat/energycake/turn_on(mob/living/user)
 	playsound(user, 'sound/weapons/saberon.ogg', 5, TRUE)

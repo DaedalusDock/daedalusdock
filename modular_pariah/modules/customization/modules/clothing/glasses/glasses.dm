@@ -65,6 +65,7 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/glasses.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/eyes.dmi'
 	icon_state = "eyewrap"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/eyepatch/white
 	name = "white eyepatch"
@@ -72,6 +73,8 @@
 	icon = 'modular_pariah/master_files/icons/obj/clothing/glasses.dmi'
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/eyes.dmi'
 	icon_state = "eyepatch_white"
+	supports_variations_flags = NONE
+
 ///GLASSSES
 /obj/item/clothing/glasses/thin
 	name = "thin glasses"
@@ -81,6 +84,7 @@
 	icon_state = "glasses_thin"
 	inhand_icon_state = "glasses"
 	vision_correction = TRUE
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/betterunshit
 	name = "modern glasses"

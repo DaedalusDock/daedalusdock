@@ -80,6 +80,10 @@
 #define BODYTYPE_SNOUTED (1<<5)
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
+///THe limb is voxed
+#define BODYTYPE_VOX (1<<7)
+///The limb is small and feathery
+#define BODYTYPE_TESHARI (1<<8)
 
 //Defines for Species IDs
 #define SPECIES_ABDUCTOR "abductor"
@@ -96,6 +100,7 @@
 #define SPECIES_LIZARD "lizard"
 #define SPECIES_LIZARD_ASH "ashwalker"
 #define SPECIES_LIZARD_SILVER "silverscale"
+#define SPECIES_VOX "vox"
 #define SPECIES_NIGHTMARE "nightmare"
 #define SPECIES_MONKEY "monkey"
 #define SPECIES_MOTH "moth"
@@ -105,6 +110,7 @@
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
+#define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
@@ -388,6 +394,7 @@
 #define OFFSET_BACK "back"
 #define OFFSET_SUIT "suit"
 #define OFFSET_NECK "neck"
+#define OFFSET_ACCESSORY "accessory"
 
 //MINOR TWEAKS/MISC
 #define AGE_MIN 18 //youngest a character can be

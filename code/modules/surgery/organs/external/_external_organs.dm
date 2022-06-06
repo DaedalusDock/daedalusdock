@@ -77,7 +77,7 @@
 	bodypart.contents.Add(src)
 
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
-/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
+/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color, mob/living/carbon/owner)
 	if(!sprite_datum)
 		return
 
@@ -86,13 +86,29 @@
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = -image_layer)
 	appearance.dir = image_dir
 
-	if(sprite_datum.color_src) //There are multiple flags, but only one is ever used so meh :/
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		switch(sprite_datum.color_src)
+			if(FACEHAIR)
+				appearance.color = human_owner.facial_hair_color
+			if(HAIR)
+				appearance.color = human_owner.hair_color
+			if(EYECOLOR)
+				appearance.color = human_owner.eye_color
+			if(MUTCOLORS)
+				appearance.color = image_color
+			if(MUTCOLORS2)
+				appearance.color = human_owner?.dna?.features["mcolor2"] ? human_owner.dna.features["mcolor2"] : image_color
+			if(MUTCOLORS3)
+				appearance.color = human_owner?.dna?.features["mcolor3"] ? human_owner.dna.features["mcolor3"] : image_color
+	else if(sprite_datum.color_src)
 		appearance.color = image_color
 
 	if(sprite_datum.center)
 		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
 
 	overlay_list += appearance
+	return appearance
 
 /obj/item/organ/external/proc/set_sprite(sprite_name)
 	sprite_datum = get_sprite_datum(sprite_name)
@@ -208,6 +224,16 @@
 /obj/item/organ/external/snout/get_global_feature_list()
 	return GLOB.snouts_list
 
+///Guess what part of the vox is this?
+/obj/item/organ/external/snout/vox
+	feature_key = "vox_snout"
+	preference = "feature_vox_snout"
+
+	dna_block = DNA_VOX_SNOUT_BLOCK
+
+/obj/item/organ/external/snout/vox/get_global_feature_list()
+	return GLOB.vox_snouts_list
+
 ///A moth's antennae
 /obj/item/organ/external/antennae
 	zone = BODY_ZONE_HEAD
@@ -289,6 +315,42 @@
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
 
+/obj/item/organ/external/vox_hair
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
+	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+
+	dna_block = DNA_VOX_HAIR_BLOCK
+
+	feature_key = "vox_hair"
+	preference = "feature_vox_hair"
+
+/obj/item/organ/external/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+		return TRUE
+	return FALSE
+
+/obj/item/organ/external/vox_hair/get_global_feature_list()
+	return GLOB.vox_hair_list
+
+/obj/item/organ/external/vox_facial_hair
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
+	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+
+	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
+
+	feature_key = "vox_facial_hair"
+	preference = "feature_vox_facial_hair"
+
+/obj/item/organ/external/vox_facial_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+		return TRUE
+	return FALSE
+
+/obj/item/organ/external/vox_facial_hair/get_global_feature_list()
+	return GLOB.vox_facial_hair_list
+
 //skrell
 /obj/item/organ/external/headtails
 	zone = BODY_ZONE_HEAD
@@ -308,3 +370,131 @@
 
 /obj/item/organ/external/headtails/get_global_feature_list()
 	return GLOB.headtails_list
+
+// Teshari head feathers
+/obj/item/organ/external/teshari_feathers
+	name = "Head feathers"
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS
+	layers = EXTERNAL_ADJACENT
+
+	feature_key = "teshari_feathers"
+	preference = "teshari_feathers"
+
+	dna_block = DNA_TESHARI_FEATHERS_BLOCK
+	overrides_color = TRUE
+
+/obj/item/organ/external/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+		return FALSE
+	return TRUE
+
+/obj/item/organ/external/teshari_feathers/get_global_feature_list()
+	return GLOB.teshari_feathers_list
+
+/obj/item/organ/external/teshari_feathers/override_color(rgb_value)
+	if(ishuman(ownerlimb?.owner))
+		var/mob/living/carbon/human/human_owner = ownerlimb.owner
+		return human_owner.hair_color
+
+// Teshari ears
+/obj/item/organ/external/teshari_ears
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_TESHARI_EARS
+	layers = EXTERNAL_ADJACENT
+
+	feature_key = "teshari_ears"
+	preference = "teshari_ears"
+
+	dna_block = DNA_TESHARI_EARS_BLOCK
+
+/obj/item/organ/external/teshari_ears/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+		return FALSE
+	return TRUE
+
+/obj/item/organ/external/teshari_ears/get_global_feature_list()
+	return GLOB.teshari_ears_list
+
+/obj/item/organ/external/teshari_ears/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
+	..()
+	if(sprite_datum.icon_state == "none")
+		return
+
+	var/mutable_appearance/inner_ears = mutable_appearance(sprite_datum.icon, "m_teshari_earsinner_[sprite_datum.icon_state]_ADJ", layer = -image_layer)
+	var/mob/living/carbon/human/human_owner = owner
+	inner_ears.color = human_owner.facial_hair_color
+	overlay_list += inner_ears
+
+// Teshari body feathers
+/obj/item/organ/external/teshari_body_feathers
+	name = "Body feathers"
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS
+	layers = EXTERNAL_ADJACENT
+
+	feature_key = "teshari_body_feathers"
+	preference = "teshari_body_feathers"
+
+	dna_block = DNA_TESHARI_BODY_FEATHERS_BLOCK
+	overrides_color = TRUE
+
+/obj/item/organ/external/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+		return FALSE
+	return TRUE
+
+/obj/item/organ/external/teshari_body_feathers/get_global_feature_list()
+	return GLOB.teshari_body_feathers_list
+
+// TODO: Get this to figure out which limbs are missing, and skip drawing the overlay on those.
+/obj/item/organ/external/teshari_body_feathers/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
+	var/mutable_appearance/chest_feathers = ..()
+	if(sprite_datum.icon_state == "none")
+		return
+
+	var/list/limb_overlays = list()
+	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_head", layer = -image_layer)
+	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_arm", layer = -image_layer)
+	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_arm", layer = -image_layer)
+	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_leg", layer = -image_layer)
+	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_leg", layer = -image_layer)
+
+	for(var/mutable_appearance/overlay as anything in limb_overlays)
+		overlay.color = image_color
+		overlay_list += overlay
+
+/obj/item/organ/external/teshari_body_feathers/override_color(rgb_value)
+	var/mob/living/carbon/human/human_owner = owner
+	return human_owner.facial_hair_color
+
+// Teshari tail
+/obj/item/organ/external/tail/teshari
+	name = "Teshari tail"
+	zone = BODY_ZONE_CHEST // Don't think about this too much
+	slot = ORGAN_SLOT_TAIL
+	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
+
+	feature_key = "tail_teshari"
+	preference = "tail_teshari"
+
+	dna_block = DNA_TESHARI_TAIL_BLOCK
+
+/obj/item/organ/external/tail/teshari/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+		return FALSE
+	return TRUE
+
+/obj/item/organ/external/tail/teshari/get_global_feature_list()
+	return GLOB.teshari_tails_list
+
+/obj/item/organ/external/tail/teshari/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
+	var/mutable_appearance/tail_primary = ..()
+	var/mutable_appearance/tail_secondary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_secondary", layer = -image_layer)
+	var/mutable_appearance/tail_tertiary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_tertiary", layer = -image_layer)
+
+	tail_secondary.color = owner.dna.features["mcolor2"]
+	tail_tertiary.color = owner.dna.features["mcolor3"]
+
+	overlay_list += tail_secondary
+	overlay_list += tail_tertiary

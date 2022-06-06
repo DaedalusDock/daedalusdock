@@ -1,12 +1,15 @@
 /obj/item/clothing/shoes
 	name = "shoes"
 	icon = 'icons/obj/clothing/shoes.dmi'
+	fallback_colors = list(list(13, 3))
+	fallback_icon_state = "shoes"
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	var/chained = FALSE
 
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
+	supports_variations_flags = CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 	permeability_coefficient = 0.5
 	slowdown = SHOES_SLOWDOWN

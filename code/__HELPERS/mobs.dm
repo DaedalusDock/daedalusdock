@@ -89,6 +89,25 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!GLOB.headtails_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
+	if(!GLOB.teshari_feathers_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
+	if(!GLOB.teshari_ears_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_ears, GLOB.teshari_ears_list)
+	if(!GLOB.teshari_body_feathers_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
+	if(!GLOB.teshari_tails_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
+
+	if(!GLOB.vox_hair_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
+	if(!GLOB.spines_list_vox.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_spines, GLOB.spines_list_vox)
+	if(!GLOB.vox_facial_hair_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list)
+	if(!GLOB.tails_list_vox.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_tails, GLOB.tails_list_vox)
+	if(!GLOB.vox_snouts_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
 
 	//For now we will always return none for tail_human and ears.
 	return(list(
@@ -113,6 +132,15 @@
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
 		"headtails" = (pick(GLOB.headtails_list)),
+		"vox_snout" = pick(GLOB.vox_snouts_list),
+		"spines_vox" = pick(GLOB.spines_list_vox),
+		"tail_vox" = pick(GLOB.tails_list_vox),
+		"vox_hair" = pick(GLOB.vox_hair_list),
+		"vox_facial_hair" = pick(GLOB.vox_facial_hair_list),
+		"teshari_feathers" = pick(GLOB.teshari_feathers_list),
+		"teshari_ears" = pick(GLOB.teshari_ears_list),
+		"teshari_body_feathers" = pick(GLOB.teshari_body_feathers_list),
+		"tail_teshari" = pick(GLOB.teshari_tails_list),
 	))
 
 /proc/random_hairstyle(gender)
@@ -150,6 +178,13 @@
 		if(!findname(.))
 			break
 
+/proc/random_unique_vox_name(attempts_to_find_unique_name=10)
+	for(var/i in 1 to attempts_to_find_unique_name)
+		. = capitalize(vox_name())
+
+		if(!findname(.))
+			break
+
 /proc/random_unique_plasmaman_name(attempts_to_find_unique_name=10)
 	for(var/i in 1 to attempts_to_find_unique_name)
 		. = capitalize(plasmaman_name())
@@ -167,6 +202,13 @@
 /proc/random_unique_moth_name(attempts_to_find_unique_name=10)
 	for(var/i in 1 to attempts_to_find_unique_name)
 		. = capitalize(pick(GLOB.moth_first)) + " " + capitalize(pick(GLOB.moth_last))
+
+		if(!findname(.))
+			break
+
+/proc/random_unique_teshari_name(attempts_to_find_unique_name = 10)
+	for(var/I in 1 to attempts_to_find_unique_name)
+		. = teshari_name()
 
 		if(!findname(.))
 			break

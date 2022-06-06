@@ -5,6 +5,7 @@
 	inhand_icon_state = "that"
 	body_parts_covered = HEAD
 	slot_flags = ITEM_SLOT_HEAD
+	supports_variations_flags = CLOTHING_VOX_VARIATION
 	var/blockTracking = 0 //For AI tracking
 	var/can_toggle = null
 

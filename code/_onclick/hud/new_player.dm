@@ -2,7 +2,7 @@
 
 /datum/hud/new_player/New(mob/owner)
 	..()
-	if (owner?.client?.interviewee)
+	if (owner?.client?.restricted_mode)
 		return
 	var/list/buttons = subtypesof(/atom/movable/screen/lobby)
 	for(var/button_type in buttons)

@@ -28,6 +28,7 @@
 	instrument_range = 1
 	circuit_type = /obj/item/circuit_component/synth/headphones
 	shell_capacity = SHELL_CAPACITY_TINY
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/instrument/piano_synth/headphones/ComponentInitialize()
 	. = ..()
@@ -60,6 +61,7 @@
 	strip_delay = 100 //air pods don't fall out
 	instrument_range = 0 //you're paying for quality here
 	custom_premium_price = PAYCHECK_ASSISTANT * 36 //Save up 5 shifts worth of pay just to lose it down a drainpipe on the sidewalk
+	supports_variations_flags = NONE
 
 /obj/item/circuit_component/synth
 	display_name = "Synthesizer"

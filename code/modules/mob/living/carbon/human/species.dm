@@ -29,6 +29,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
 	///Clothing offsets. If a species has a different body than other species, you can offset clothing so they look less weird.
 	var/list/offset_features = list(OFFSET_UNIFORM = list(0,0), OFFSET_ID = list(0,0), OFFSET_GLOVES = list(0,0), OFFSET_GLASSES = list(0,0), OFFSET_EARS = list(0,0), OFFSET_SHOES = list(0,0), OFFSET_S_STORE = list(0,0), OFFSET_FACEMASK = list(0,0), OFFSET_HEAD = list(0,0), OFFSET_FACE = list(0,0), OFFSET_BELT = list(0,0), OFFSET_BACK = list(0,0), OFFSET_SUIT = list(0,0), OFFSET_NECK = list(0,0))
+	///If this species needs special 'fallback' sprites, what is the path to the file that contains them?
+	var/fallback_clothing_path
 
 	///The maximum number of bodyparts this species can have.
 	var/max_bodypart_count = 6
@@ -133,7 +135,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A path to an outfit that is important for species life e.g. plasmaman outfit
 	var/datum/outfit/outfit_important_for_life
 
-	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi'
+	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi' if not set
 	var/species_eye_path
 
 	///Is this species a flying species? Used as an easy check for some things
@@ -686,6 +688,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "tail_lizard"
 
+	if(mutant_bodyparts["tail_vox"])
+		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
+			bodyparts_to_add -= "tail_vox"
+
 	if(mutant_bodyparts["waggingtail_lizard"])
 		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "waggingtail_lizard"
@@ -709,6 +715,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(mutant_bodyparts["spines"])
 		if(!source.dna.features["spines"] || source.dna.features["spines"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "spines"
+
+	if(mutant_bodyparts["spines_vox"])
+		if(!source.dna.features["spines_vox"] || source.dna.features["spines_vox"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
+			bodyparts_to_add -= "spines_vox"
 
 	if(mutant_bodyparts["waggingspines"])
 		if(!source.dna.features["spines"] || source.dna.features["spines"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
@@ -755,6 +765,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.tails_list_monkey[source.dna.features["tail_monkey"]]
 				if("headtails")
 					accessory = GLOB.headtails_list[source.dna.features["headtails"]]
+				if("tail_vox")
+					accessory = GLOB.tails_list_vox[source.dna.features["tail_vox"]]
+				if("spines_vox")
+					accessory = GLOB.spines_list_vox[source.dna.features["spines_vox"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue
@@ -762,7 +776,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/mutable_appearance/accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
 
 			//A little rename so we don't have to use tail_lizard or tail_human when naming the sprites.
-			if(bodypart == "tail_lizard" || bodypart == "tail_human" || bodypart == "tail_monkey")
+			if(bodypart == "tail_lizard" || bodypart == "tail_human" || bodypart == "tail_monkey" || bodypart == "tail_vox")
 				bodypart = "tail"
 			else if(bodypart == "waggingtail_lizard" || bodypart == "waggingtail_human")
 				bodypart = "waggingtail"

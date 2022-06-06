@@ -320,6 +320,7 @@ ROUNDSTART_RACES lizard
 ROUNDSTART_RACES moth
 ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
+ROUNDSTART_RACES teshari
 
 ## Races that are better than humans in some ways, but worse in others
 ROUNDSTART_RACES ethereal
@@ -328,6 +329,7 @@ ROUNDSTART_RACES ethereal
 #ROUNDSTART_RACES synth
 
 ROUNDSTART_RACES skrell
+ROUNDSTART_RACES vox
 
 ## Including all the various golem subtypes that are better than humans in some ways, but worse in others
 #ROUNDSTART_RACES iron_golem

@@ -9,24 +9,28 @@
 	clothing_flags = SNUG_FIT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/wizard/red
 	name = "red wizard hat"
 	desc = "Strange-looking red hat-wear that most certainly belongs to a real magic user."
 	icon_state = "redwizard"
 	dog_fashion = /datum/dog_fashion/head/red_wizard
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/wizard/yellow
 	name = "yellow wizard hat"
 	desc = "Strange-looking yellow hat-wear that most certainly belongs to a powerful magic user."
 	icon_state = "yellowwizard"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/wizard/black
 	name = "black wizard hat"
 	desc = "Strange-looking black hat-wear that most certainly belongs to a real skeleton. Spooky."
 	icon_state = "blackwizard"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/wizard/fake
 	name = "wizard hat"
@@ -36,6 +40,7 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	resistance_flags = FLAMMABLE
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/wizard/marisa
 	name = "witch hat"
@@ -49,6 +54,7 @@
 	icon_state = "magus"
 	inhand_icon_state = "magus"
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/wizard/santa
 	name = "Santa's hat"
@@ -56,6 +62,7 @@
 	icon_state = "santahat"
 	flags_inv = HIDEHAIR|HIDEFACIALHAIR
 	dog_fashion = null
+	supports_variations_flags = NONE
 
 /obj/item/clothing/suit/wizrobe
 	name = "wizard robe"

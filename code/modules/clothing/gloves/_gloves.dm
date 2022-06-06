@@ -3,9 +3,12 @@
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
+	fallback_colors = list(list(10, 13))
+	fallback_icon_state = "gloves"
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	supports_variations_flags = CLOTHING_VOX_VARIATION
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20

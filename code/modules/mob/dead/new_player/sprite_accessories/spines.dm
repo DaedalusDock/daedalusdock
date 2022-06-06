@@ -53,3 +53,24 @@
 /datum/sprite_accessory/spines_animated/aqautic
 	name = "Aquatic"
 	icon_state = "aqua"
+
+/datum/sprite_accessory/vox_spines
+	icon = 'icons/mob/vox_spines.dmi'
+	em_block = TRUE
+	color_src = MUTCOLORS3
+
+/datum/sprite_accessory/vox_spines/vox_bands
+	name = "Vox Bands"
+	icon_state = "bands"
+
+/datum/sprite_accessory/vox_spines/vox_tip
+	name = "Vox Tip"
+	icon_state = "tip"
+
+/datum/sprite_accessory/vox_spines/vox_stripe
+	name = "vox stripe"
+	icon_state = "stripe"
+
+/datum/sprite_accessory/vox_spines/none
+	name = "None"
+	icon_state = "none"

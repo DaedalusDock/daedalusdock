@@ -50,6 +50,7 @@
 	name = "orange space suit"
 	icon_state = "syndicate-orange"
 	inhand_icon_state = "syndicate-orange"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 //Blue syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/blue

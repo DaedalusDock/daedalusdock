@@ -9,6 +9,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 	resistance_flags = ACID_PROOF
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
@@ -26,6 +27,7 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = ACID_PROOF
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 //Standard biosuit, orange stripe
 /obj/item/clothing/head/bio_hood/general
@@ -93,6 +95,7 @@
 	inhand_icon_state = "bio_suit"
 	strip_delay = 40
 	equip_delay_other = 20
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/suit/bio_suit/plaguedoctorsuit/Initialize(mapload)
 	. = ..()

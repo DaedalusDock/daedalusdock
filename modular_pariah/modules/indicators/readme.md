@@ -6,15 +6,11 @@ MODULE ID: INDICATORS
 
 ### Description:
 
-The compilation of all player indicators (CI, SSD, Typing)
-Combat Indicator - Toggleable by players, declares intent to engage in combat
+The compilation of all player indicators (SSD, Typing)
 SSD Indicator - Automatically shows when a player has disconnected
 Typing Indicator - Shows when a player is typing
 
 ### TG Proc Changes:
-Combat Indicator
- - ADDITION: code/modules/mob/living/death.dm > /mob/living/death()
- - CHANGE: code/datums/keybinding/mob.dm > /datum/keybinding/mob/toggle_move_intent()
 Typing Indicator
  - APPEND: code/modules/keybindings/setup.dm > /datum/proc/key_down()
  - ADDITION: code/onclick/_click.dm > /mob/proc/ClickOn() 

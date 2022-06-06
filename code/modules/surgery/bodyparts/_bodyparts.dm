@@ -32,6 +32,8 @@
 	VAR_PROTECTED/limb_gender = "m"
 	///Does this limb have a greyscale version?
 	var/uses_mutcolor = TRUE
+	///Which mutcolor to use, if mutcolors are used
+	var/mutcolor_used = MUTCOLORS
 	///Is there a sprite difference between male and female?
 	var/is_dimorphic = FALSE
 	///The actual color a limb is drawn as, set by /proc/update_limb()
@@ -660,7 +662,13 @@
 			if(owner_species.fixed_mut_color)
 				species_color = owner_species.fixed_mut_color
 			else
-				species_color = human_owner.dna.features["mcolor"]
+				switch(mutcolor_used)
+					if(MUTCOLORS)
+						species_color = human_owner.dna.features["mcolor"]
+					if(MUTCOLORS2)
+						species_color = human_owner.dna.features["mcolor2"]
+					if(MUTCOLORS3)
+						species_color = human_owner.dna.features["mcolor3"]
 		else
 			species_color = null
 
@@ -802,7 +810,8 @@
 					image_dir,
 					external_organ.bitflag_to_layer(external_layer),
 					limb_gender,
-					external_organ.overrides_color ? external_organ.override_color(draw_color) : draw_color
+					external_organ.overrides_color ? external_organ.override_color(draw_color) : draw_color,
+					owner,
 				)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)

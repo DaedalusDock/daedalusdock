@@ -336,6 +336,36 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				qdel(src)
 				return
 
+	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
+		if(!SSdbcore.Connect())
+			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
+
+			if(!CONFIG_GET(flag/sql_enabled))
+				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
+
+			log_world(msg)
+			message_admins(msg)
+		else
+			if(!discord_is_link_valid(ckey))
+				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
+
+				//These need to be immediate because we're disposing of the client the second we're done with this.
+				to_chat_immediate(src, span_danger(CONFIG_GET(string/panic_bunker_discord_register_message)))
+				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
+				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
+				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
+
+				if(connecting_admin)
+					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
+					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
+					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
+
+				else
+					log_access("Failed Login: [key] - No valid Discord account link registered.")
+					qdel(src)
+					return
+
 	if(SSinput.initialized)
 		set_macros()
 
@@ -480,7 +510,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!tooltips)
 		tooltips = new /datum/tooltip(src)
 
-	if (!interviewee)
+	if (!restricted_mode)
 		initialize_menus()
 
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
@@ -935,7 +965,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	..()
 
 /client/proc/add_verbs_from_config()
-	if (interviewee)
+	if (restricted_mode)
 		return
 	if(CONFIG_GET(flag/see_own_notes))
 		add_verb(src, /client/proc/self_notes)

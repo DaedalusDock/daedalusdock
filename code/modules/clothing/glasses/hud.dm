@@ -62,6 +62,7 @@
 	hud_type = DATA_HUD_MEDICAL_ADVANCED
 	hud_trait = TRAIT_MEDICAL_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/lightblue
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/hud/health/night
 	name = "night vision health scanner HUD"
@@ -115,6 +116,7 @@
 	hud_type = DATA_HUD_SECURITY_ADVANCED
 	hud_trait = TRAIT_SECURITY_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/red
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/hud/security/chameleon
 	name = "chameleon security HUD"
@@ -144,6 +146,7 @@
 	name = "eyepatch HUD"
 	desc = "A heads-up display that connects directly to the optical nerve of the user, replacing the need for that useless eyeball."
 	icon_state = "hudpatch"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/hud/security/sunglasses
 	name = "security HUDSunglasses"
@@ -153,6 +156,7 @@
 	flash_protect = FLASH_PROTECTION_FLASH
 	tint = 1
 	glass_colour_type = /datum/client_colour/glass_colour/darkred
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/hud/security/night
 	name = "night vision security HUD"
@@ -162,6 +166,7 @@
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 	glass_colour_type = /datum/client_colour/glass_colour/green
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/hud/security/sunglasses/gars
 	name = "\improper HUD gar glasses"
@@ -248,6 +253,7 @@
 	flash_protect = FLASH_PROTECTION_FLASH
 	tint = 1
 	glass_colour_type = /datum/client_colour/glass_colour/gray
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 
 /obj/item/clothing/glasses/hud/spacecop/hidden // for the undercover cop

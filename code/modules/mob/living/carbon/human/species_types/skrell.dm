@@ -3,7 +3,7 @@
 	id = SPECIES_SKRELL
 	say_mod = "warbles"
 	default_color = "42F58D"
-	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
+	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE, BODY_RESIZABLE)
 	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_LIGHT_DRINKER)
 	external_organs = list(/obj/item/organ/external/headtails = "Long")
 	liked_food = VEGETABLES | FRUIT

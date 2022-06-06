@@ -25,9 +25,9 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/minigunpack/Destroy()
-	if(!QDELETED(gun))
-		qdel(gun)
-	gun = null
+	if(gun)
+		gun.ammo_pack = null
+		QDEL_NULL(gun)
 	QDEL_NULL(battery)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
@@ -112,21 +112,22 @@
 	cell_type = /obj/item/stock_parts/cell/crap
 	item_flags = NEEDS_PERMIT | SLOWS_WHILE_IN_HAND
 	can_charge = FALSE
+	display_empty = FALSE
 	var/obj/item/minigunpack/ammo_pack
 	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_FULLY_AUTOMATIC) //PARIAH EDIT ADDITION
 
 /obj/item/gun/energy/minigun/Initialize(mapload)
+	. = ..()
 	if(!istype(loc, /obj/item/minigunpack)) //We should spawn inside an ammo pack so let's use that one.
 		return INITIALIZE_HINT_QDEL //No pack, no gun
 	ammo_pack = loc
 	AddElement(/datum/element/update_icon_blocker)
 	//AddComponent(/datum/component/automatic_fire, 0.2 SECONDS) PARIAH EDIT REMOVAL
-	return ..()
 
 /obj/item/gun/energy/minigun/Destroy()
-	if(!QDELETED(ammo_pack))
-		qdel(ammo_pack)
-	ammo_pack = null
+	if(ammo_pack)
+		ammo_pack.gun = null
+		QDEL_NULL(ammo_pack)
 	return ..()
 
 /obj/item/gun/energy/minigun/attack_self(mob/living/user)
@@ -136,7 +137,7 @@
 	SHOULD_CALL_PARENT(FALSE)
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
-	else
+	else if(!QDELETED(src))
 		qdel(src)
 
 /obj/item/gun/energy/minigun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)

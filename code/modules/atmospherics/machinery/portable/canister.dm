@@ -233,13 +233,13 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	gas_type = GAS_OXYGEN
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
-/*
+
 /obj/machinery/portable_atmospherics/canister/pluoxium
 	name = "Pluoxium canister"
-	gas_type = /datum/gas/pluoxium
+	gas_type = GAS_PLUOXIUM
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#2786e5"
-
+/*
 /obj/machinery/portable_atmospherics/canister/proto_nitrate
 	name = "Proto Nitrate canister"
 	gas_type = /datum/gas/proto_nitrate

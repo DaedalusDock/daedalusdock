@@ -6,9 +6,12 @@
 		else
 			to_chat(mob, span_admin("ZASDBG: No zone here."))
 			var/datum/gas_mixture/mix = T.return_air()
-			to_chat(mob,span_admin( "ZASDBG_MAIN: [mix.returnPressure()] kPa [mix.temperature]C"))
+			to_chat(mob,span_admin( "ZASDBG_MAIN: [mix.returnPressure()] kPa [mix.temperature] k"))
 			for(var/g in mix.gas)
 				to_chat(mob, span_admin("ZASDBG_GAS: [g]: [mix.gas[g]]\n"))
+
+			if((T.zone && (length(T.zone.contents) > ZONE_MIN_SIZE)))
+				to_chat(mob, span_notice("This turf's zone is below the minimum size, and will merge over zone blockers."))
 	else
 		if(zone_debug_images)
 			for(var/zone in  zone_debug_images)

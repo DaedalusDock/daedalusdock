@@ -8961,7 +8961,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "ctk" = (
-/obj/machinery/power/rtg/debug/station,
+/obj/machinery/power/obj/machinery/power/supermatter_crystal,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "ctm" = (

@@ -115,19 +115,19 @@
 
 	var/gas_breathed = 0
 
-	//var/list/breath_gases = breath.gases
+	var/list/breath_gases = breath.gas
 	//Handle subtypes' breath processing
 	handle_gas_override(breather, breath, gas_breathed)
 
+	//Molar count cache of our key gases
+	var/O2_moles = breath_gases[GAS_OXYGEN]
+	var/N2_moles = breath_gases[GAS_NITROGEN]
+	var/plasma_moles = breath_gases[GAS_PLASMA]
+	var/CO2_moles = breath_gases[GAS_CO2]
+	var/SA_moles = breath_gases[GAS_N2O]
+
 	//Partial pressures in our breath
-	var/O2_moles = breath.gas[GAS_OXYGEN]
-	var/N2_moles = breath.gas[GAS_NITROGEN]
-	var/plasma_moles = breath.gas[GAS_PLASMA]
-	var/CO2_moles = breath.gas[GAS_CO2]
-	var/SA_moles = breath.gas[GAS_N2O]
-
-
-	var/O2_pp = breath.getBreathPartialPressure(O2_moles)//+(8*breath.getBreathPartialPressure(breath_gases[/datum/gas/pluoxium][MOLES]))
+	var/O2_pp = breath.getBreathPartialPressure(O2_moles) / max(1, (8 * breath.getBreathPartialPressure(breath_gases[GAS_PLUOXIUM])))
 	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)

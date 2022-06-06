@@ -188,29 +188,61 @@
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
 	var/total_heat_capacity = air.getHeatCapacity()
-	var/partial_heat_capacity = total_heat_capacity * (share_volume / air.volume)
-	var/target_temperature
-	var/target_heat_capacity
+	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.volume)
+
+	if(target.simulated)
+		var/turf/modeled_location = target
+
+		if(modeled_location.blocks_air)
+
+			if((modeled_location.heat_capacity>0) && (partial_heat_capacity>0))
+				var/delta_temperature = air.temperature - modeled_location.temperature
+
+				var/heat = thermal_conductivity*delta_temperature* \
+					(partial_heat_capacity*modeled_location.heat_capacity/(partial_heat_capacity+modeled_location.heat_capacity))
+
+				air.temperature -= heat/total_heat_capacity
+				modeled_location.temperature += heat/modeled_location.heat_capacity
+
+		else
+			var/delta_temperature = 0
+			var/sharer_heat_capacity = 0
+
+			if(modeled_location.zone)
+				delta_temperature = (air.temperature - modeled_location.zone.air.temperature)
+				sharer_heat_capacity = modeled_location.zone.air.getHeatCapacity()
+			else
+				delta_temperature = (air.temperature - modeled_location.air.temperature)
+				sharer_heat_capacity = modeled_location.air.getHeatCapacity()
+
+			var/self_temperature_delta = 0
+			var/sharer_temperature_delta = 0
+
+			if((sharer_heat_capacity>0) && (partial_heat_capacity>0))
+				var/heat = thermal_conductivity*delta_temperature* \
+					(partial_heat_capacity*sharer_heat_capacity/(partial_heat_capacity+sharer_heat_capacity))
+
+				self_temperature_delta = -heat/total_heat_capacity
+				sharer_temperature_delta = heat/sharer_heat_capacity
+			else
+				return 1
+
+			air.temperature += self_temperature_delta
+
+			if(modeled_location.zone)
+				modeled_location.zone.air.temperature += sharer_temperature_delta/modeled_location.zone.air.group_multiplier
+			else
+				modeled_location.air.temperature += sharer_temperature_delta
 
 
-	var/turf/modeled_location = target
-	target_temperature = modeled_location.return_temperature()
-	target_heat_capacity = modeled_location.GetHeatCapacity()
+	else
+		if((target.heat_capacity>0) && (partial_heat_capacity>0))
+			var/delta_temperature = air.temperature - target.temperature
 
-	var/delta_temperature = air.temperature - target_temperature
-	var/sharer_heat_capacity = target_heat_capacity
+			var/heat = thermal_conductivity*delta_temperature* \
+				(partial_heat_capacity*target.heat_capacity/(partial_heat_capacity+target.heat_capacity))
 
-	if((sharer_heat_capacity <= 0) || (partial_heat_capacity <= 0))
-		return TRUE
-	var/heat = thermal_conductivity * delta_temperature * (partial_heat_capacity * sharer_heat_capacity / (partial_heat_capacity + sharer_heat_capacity))
-
-	var/self_temperature_delta = - heat / total_heat_capacity
-	var/sharer_temperature_delta = heat / sharer_heat_capacity
-
-	air.temperature += self_temperature_delta
-	modeled_location.TakeTemperature(sharer_temperature_delta)
-	/*if(modeled_location.blocks_air & AIR_BLOCKED)
-		modeled_location.temperature_expose(air, modeled_location.temperature)*/
+			air.temperature -= heat/total_heat_capacity
 
 	update = TRUE
 

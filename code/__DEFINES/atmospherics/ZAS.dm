@@ -12,7 +12,7 @@
 #define AIR_ALLOWED (0<<0)
 ///Neither air nor zones can interact with this turf under the given conditions
 #define AIR_BLOCKED (1<<0)
-///Air can pass through or into this turf, but zones may not merge with it.
+///Air can pass through or into this turf, but zones may not merge with it. Will not block zone merges, if either zone is below ZONE_MIN_SIZE
 #define ZONE_BLOCKED (1<<1)
 
 ///Zones with less than this many turfs will always merge, even if the connection is not direct
@@ -306,6 +306,8 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 #define GAS_SULFUR				"sulfurdioxide"
 #define GAS_STEAM				"water"
 #define GAS_PLASMA				"plasma"
+//TG GASES - PLAN TO REMOVE
+#define GAS_PLUOXIUM			"pluoxium"
 
 GLOBAL_LIST_INIT(all_gases, list(GAS_OXYGEN, GAS_CO2, GAS_CO, GAS_METHYL_BROMIDE, GAS_N2O, GAS_NITROGEN, GAS_NO, GAS_METHANE, GAS_ALIEN, GAS_HYDROGEN, GAS_DEUTERIUM, GAS_TRITIUM, GAS_HELIUM, GAS_ARGON, GAS_KRYPTON, GAS_NEON, GAS_XENON, GAS_AMMONIA, GAS_CHLORINE, GAS_SULFUR, GAS_STEAM, GAS_PLASMA))
 GLOBAL_LIST_INIT(common_gases, list(GAS_OXYGEN, GAS_CO2, GAS_N2O, GAS_PLASMA, GAS_NITROGEN))

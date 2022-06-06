@@ -46,7 +46,7 @@
 	var/airflow_stun_cooldown_NAME = "Aiflow Stunning - Cooldown"
 	var/airflow_stun_cooldown_DESC = "How long, in tenths of a second, to wait before stunning them again."
 
-	var/airflow_stun = 1
+	var/airflow_stun = 1 SECONDS
 	var/airflow_stun_NAME = "Airflow Impact - Stunning"
 	var/airflow_stun_DESC = "How much a mob is stunned when hit by an object."
 

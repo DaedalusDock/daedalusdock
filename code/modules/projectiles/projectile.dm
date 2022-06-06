@@ -1020,9 +1020,6 @@
 	if(cleanup)
 		cleanup_beam_segments()
 
-/obj/projectile/experience_pressure_difference()
-	return
-
 ///Like [/obj/item/proc/updateEmbedding] but for projectiles instead, call this when you want to add embedding or update the stats on the embedding element
 /obj/projectile/proc/updateEmbedding()
 	if(!shrapnel_type || !LAZYLEN(embedding))

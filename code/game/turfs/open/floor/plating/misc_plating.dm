@@ -45,7 +45,6 @@
 	icon_state = "snowplating"
 	base_icon_state = "snowplating"
 	temperature = 180
-	temperature = 180
 	attachment_holes = FALSE
 
 	footstep = FOOTSTEP_SAND

@@ -18,6 +18,13 @@ This entire system is an absolute mess.
 	var/tmp/last_airflow = 0
 	var/tmp/airborne_acceleration = 0
 
+	var/tmp/airflow_xo
+	var/tmp/airflow_yo
+	///If the movable is dense by default, it won't step into tiles containing other dense objects
+	var/tmp/airflow_originally_not_dense
+	var/tmp/airflow_process_delay
+	var/tmp/airflow_skip_speedcheck
+
 ///Applies the effects of the mob colliding with another movable due to airflow.
 /mob/proc/airflow_stun()
 	return
@@ -34,10 +41,16 @@ This entire system is an absolute mess.
 	if(buckled)
 		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
 		return FALSE
-	if(!body_position == LYING_DOWN)
-		to_chat(src, "<span class='warning'>The sudden rush of air knocks you over!</span>")
+	if(body_position == LYING_DOWN) //Lying down protects you from Z A S M O M E N T S
+		return
 
-	Knockdown(zas_settings.airflow_stun SECONDS)
+	Knockdown(zas_settings.airflow_stun)
+	visible_message(
+		span_danger("[src] is thrown to the floor by a gust of air!"),
+		span_danger("A sudden rush of air knocks you over!"),
+		span_hear("You hear a gust of air, followed by a soft thud.")
+	)
+
 	last_airflow_stun = world.time
 
 /mob/living/silicon/airflow_stun()
@@ -46,34 +59,28 @@ This entire system is an absolute mess.
 /mob/living/simple_animal/slime/airflow_stun()
 	return
 
-///NEEDS IMPLIMENATION, SEE: LINDA_turf_tile.dm
-/atom/movable/proc/experience_pressure_difference()
-	return
-
 ///Checks to see if airflow can move this movable.
 /atom/movable/proc/check_airflow_movable(n)
-	if(anchored && !ismob(src))
-		return FALSE
-
-	if(!isobj(src) && n < zas_settings.airflow_dense_pressure)
-		return FALSE
-
+	//We're just hoping nothing goes wrong
 	return TRUE
 
 /mob/check_airflow_movable(n)
+	if(status_flags & GODMODE)
+		return FALSE
 	if(n < zas_settings.airflow_heavy_pressure)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
 		return FALSE
-	return TRUE
+	return ..()
 
 /mob/living/silicon/check_airflow_movable()
 	return 0
 
 /obj/check_airflow_movable(n)
+	if(anchored)
+		return FALSE
 	if(n < zas_settings.airflow_dense_pressure)
 		return FALSE
-
 	return ..()
 
 /obj/item/check_airflow_movable(n)
@@ -90,20 +97,6 @@ This entire system is an absolute mess.
 			if(n < zas_settings.airflow_dense_pressure) return 0
 	return ..()
 
-///Seemingly redundant, look to remove.
-/atom/movable/proc/AirflowCanMove(n)
-	return 1
-
-/mob/AirflowCanMove(n)
-	if(status_flags & GODMODE)
-		return 0
-	if(buckled)
-		return 0
-	var/obj/item/clothing/shoes = get_item_by_slot(ITEM_SLOT_FEET)
-	if(istype(shoes) && (shoes.clothing_flags & NOSLIP))
-		return 0
-	return 1
-
 /atom/movable/Bump(atom/A)
 	if(airflow_speed > 0 && airflow_dest)
 		var/turf/T = get_turf(A)
@@ -112,6 +105,12 @@ This entire system is an absolute mess.
 			A.airflow_hit_act(src)
 		else if(istype(src, /mob/living/carbon/human))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
+		/*
+		If the turf of the atom we bumped is NOT dense, then we check if the flying object is dense.
+		We check the special var because flying objects gain density so they can Bump() objects.
+		If the object is NOT normally dense, we remove our density and the target's density,
+		enabling us to step into their turf. Then, we set the density back to the way its supposed to be for airflow.
+		*/
 		if(!T.density)
 			if(ismovable(A) && A:airflow_originally_not_dense)
 				set_density(FALSE)
@@ -134,30 +133,42 @@ This entire system is an absolute mess.
 /mob/living/airflow_hit(atom/A)
 	var/b_loss = AIRBORNE_DAMAGE(src)
 	apply_damage(b_loss, BRUTE)
+	return ..()
+
+/mob/living/carbon/airflow_hit(atom/A)
 	if(istype(A, /obj/structure) || iswallturf(A))
 		if(airflow_speed > 10)
 			Paralyze(round(airflow_speed * zas_settings.airflow_stun))
 			Stun(round(airflow_speed * zas_settings.airflow_stun) + 3)
+			loc.add_blood_DNA(return_blood_DNA())
+			visible_message(
+				span_danger("[src] splats against \the [A]!"),
+				span_userdanger("You slam into \the [A] with tremendous force!"),
+				span_hear("You hear a loud thud.")
+			)
+			INVOKE_ASYNC(emote("scream"))
 		else
 			Stun(round(airflow_speed * zas_settings.airflow_stun/2))
+			visible_message(
+				span_danger("[src] slams into \the [A]!"),
+				span_userdanger("You're thrown against \the [A] by pressure!"),
+				span_hear("You hear a loud thud.")
+			)
 
-	return ..()
-
-/mob/living/carbon/airflow_hit(atom/A)
-	if (prob(33))
-		loc.add_blood_DNA(return_blood_DNA())
 	return ..()
 
 ///Called when "flying" calls airflow_hit() on src
 /atom/proc/airflow_hit_act(atom/movable/flying)
-	src.visible_message(
-		span_danger("A flying [flying.name] slams into \the [src]!"),
-		span_danger("You're hit by a flying [flying]!"),
-		span_danger("You hear a loud slam!")
-	)
+	return
 
 /mob/living/airflow_hit_act(atom/movable/flying)
 	. = ..()
+	src.visible_message(
+		span_danger("A flying [flying.name] slams into \the [src]!"),
+		span_danger("You're hit by a flying [flying]!"),
+		span_danger("You hear a soft thud.")
+	)
+
 	playsound(src.loc, "punch", 25, 1, -1)
 	var/weak_amt
 	if(istype(flying,/obj/item))
@@ -171,6 +182,13 @@ This entire system is an absolute mess.
 
 /obj/airflow_hit_act(atom/movable/flying)
 	. = ..()
+	if(!flying.airflow_originally_not_dense)
+		src.visible_message(
+			span_danger("A flying [flying.name] slams into \the [src]!"),
+			null,
+			span_danger("You hear a loud slam!")
+		)
+
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
 
 	if(!uses_integrity)
@@ -180,6 +198,7 @@ This entire system is an absolute mess.
 
 /mob/living/carbon/human/airflow_hit_act(atom/movable/flying)
 	. = ..()
+
 	if (prob(33))
 		loc.add_blood_DNA(return_blood_DNA())
 

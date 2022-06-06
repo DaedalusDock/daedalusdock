@@ -122,6 +122,8 @@ Class Procs:
 /connection_edge/proc/flow(list/movable, differential, repelled)
 	for(var/i in 1 to length(movable))
 		var/atom/movable/M = movable[i]
+		//Non simulated objects dont get tossed
+		if(!M.simulated) continue
 
 		//If they're already being tossed, don't do it again.
 		if(M.last_airflow > world.time - zas_settings.airflow_delay) continue

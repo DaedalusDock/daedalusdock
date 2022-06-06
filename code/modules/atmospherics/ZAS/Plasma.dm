@@ -5,9 +5,9 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 	var/plasma_dmg_name = "Plasma Damage Amount"
 	var/plasma_dmg_desc = "Self Descriptive"
 
-	var/cloth_contamination = TRUE
-	var/cloth_contamination_name = "Cloth Contamination"
-	var/cloth_contamination_desc = "If this is on, phoron does damage by getting into cloth."
+	var/cloth_contamination = FALSE
+	var/cloth_contamination_name = "Phoron Contamination"
+	var/cloth_contamination_desc = "If this is on, phoron can contiminate items."
 
 	var/plasmaguard_only = FALSE
 	var/plamaguard_only_name = "\"PlasmaGuard Only\""

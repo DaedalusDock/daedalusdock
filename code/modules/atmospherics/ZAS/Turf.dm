@@ -11,7 +11,7 @@
 	var/needs_air_update = 0
 	///The local gas mixture of this turf. Use return_air(). This will always exist even if not in use, because GCing air contents would be too expensive.
 	var/datum/gas_mixture/air
-	var/heat_capacity = 1
+	var/heat_capacity = INFINITY
 	var/thermal_conductivity = 0.05
 	///A gas_mixture gas list to be used as the initial value. Ex: list(GAS_OXYGEN = 50)
 	var/list/initial_gas
@@ -37,6 +37,9 @@
 		#endif
 		return TRUE
 
+	///EXPERIMENTAL
+	open_directions = NONE
+
 	#ifdef MULTIZAS
 	for(var/d = 1, d < 64, d *= 2)
 	#else
@@ -60,6 +63,8 @@
 			//target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
 			continue
+
+		open_directions |= d
 
 		if(target.simulated)
 			if(TURF_HAS_VALID_ZONE(target))

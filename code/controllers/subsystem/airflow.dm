@@ -111,21 +111,11 @@ SUBSYSTEM_DEF(airflow)
 
 #undef CLEAR_OBJECT
 
-
-/atom/movable/var/tmp/airflow_xo
-/atom/movable/var/tmp/airflow_yo
-/atom/movable/var/tmp/airflow_originally_not_dense
-/atom/movable/var/tmp/airflow_process_delay
-/atom/movable/var/tmp/airflow_skip_speedcheck
-
-
 /atom/movable/proc/prepare_airflow(strength)
 	if (!airflow_dest || airflow_speed < 0 || last_airflow > world.time - zas_settings.airflow_delay)
 		return FALSE
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
-		return FALSE
-	if (!AirflowCanMove(strength))
 		return FALSE
 	if (airflow_dest == loc)
 		step_away(src, loc)

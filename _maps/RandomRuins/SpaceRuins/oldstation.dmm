@@ -4771,7 +4771,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "mm" = (
-/obj/machinery/power/rtg/debug/station,
+/obj/machinery/power/obj/machinery/power/supermatter_crystal,
 /obj/structure/closet/crate/engineering{
 	name = "supermatter shard crate"
 	},

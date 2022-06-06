@@ -255,3 +255,12 @@
 	breathed_product = /datum/reagent/carbon_monoxide
 	symbol_html = "CO"
 	symbol = "CO"
+
+/datum/xgm_gas/pluoxium
+	id = GAS_PLUOXIUM
+	name = "Pluoxium"
+	specific_heat = 80
+	molar_mass = 0.002 //Yeah idk, its some kind of super gas or something
+	base_value = 5
+	symbol_html = "Pl"
+	symbol = "Pl"

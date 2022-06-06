@@ -137,7 +137,7 @@
 		icon_state = "scrub_welded"
 		return
 
-	if(!nodes[1] || !on || !is_operational)
+	if(!nodes[1] || !on || !is_operational || !COOLDOWN_FINISHED(src, hibernating))
 		icon_state = "scrub_off"
 		return
 
@@ -205,8 +205,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process_atmos()
 	if(welded || !is_operational)
 		return
-//	if(!COOLDOWN_FINISHED(src, hibernating))
-//		return
 	if(!on || !nodes[1])
 		on = FALSE
 		return
@@ -224,6 +222,7 @@
 				should_cooldown = FALSE
 	if(should_cooldown)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
+	update_icon_nopipes()
 
 	return TRUE
 
@@ -261,6 +260,7 @@
 			//Remix the resulting gases
 			air_contents.merge(filtered_out)
 			update_parents()
+			return TRUE
 
 	else //Just siphoning all air
 
@@ -384,6 +384,8 @@
 	. = ..()
 	if(welded)
 		. += "It seems welded shut."
+	if(!COOLDOWN_FINISHED(src, hibernating))
+		. += span_notice("It is sleeping to conserve power.")
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user, list/modifiers)
 	if(!welded || !(do_after(user, 20, target = src)))

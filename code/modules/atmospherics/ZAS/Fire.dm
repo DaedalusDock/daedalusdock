@@ -482,8 +482,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			W.fire_act(adj_temp, adj_volume)
 
 /turf/closed/wall/adjacent_fire_act(turf/open/floor/adj_turf, datum/gas_mixture/adj_air, adj_temp, adj_volume)
-	burn(adj_temp)
-	if(adj_temp > heat_capacity)
+	if(!uses_integrity)
+		burn(adj_temp)
+	else if (adj_temp > heat_capacity)
 		take_damage(log(Frand(0.9, 1.1) * (adj_temp - heat_capacity)), BURN)
 
 	return ..()

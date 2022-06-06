@@ -96,6 +96,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["frills"] = "None"
 	dna.features["horns"] = "None"
 	dna.features["mcolor"] = COLOR_VIBRANT_LIME
+	dna.features["mcolor2"] = COLOR_VIBRANT_LIME
+	dna.features["mcolor3"] = COLOR_VIBRANT_LIME
 	dna.features["moth_antennae"] = "Plain"
 	dna.features["moth_markings"] = "None"
 	dna.features["moth_wings"] = "Plain"
@@ -103,6 +105,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["spines"] = "None"
 	dna.features["tail_human"] = "None"
 	dna.features["tail_lizard"] = "Smooth"
+	dna.features["tail_vox"] = "Vox Tail"
+	dna.features["vox_hair"] = "None"
+	dna.features["vox_facial_hair"] = "None"
+	dna.features["spines_vox"] = "None"
 
 //Inefficient pooling/caching way.
 GLOBAL_LIST_EMPTY(human_dummy_list)

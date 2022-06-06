@@ -19,6 +19,31 @@
 #define SNOUTED_MASK_FILE 'modular_pariah/master_files/icons/mob/clothing/mask_muzzled.dmi'
 
 #define SNOUTED_HEAD_FILE 'modular_pariah/master_files/icons/mob/clothing/head_muzzled.dmi'
+
+
+#define VOX_MASK_FILE 'icons/mob/clothing/species/vox/mask.dmi'
+
+#define VOX_HEAD_FILE 'icons/mob/clothing/species/vox/head.dmi'
+
+#define VOX_BACK_FILE 'icons/mob/clothing/species/vox/back.dmi'
+
+#define VOX_BELT_FILE 'icons/mob/clothing/species/vox/belt.dmi'
+
+#define VOX_EARS_FILE 'icons/mob/clothing/species/vox/ears.dmi'
+
+#define VOX_EYES_FILE 'icons/mob/clothing/species/vox/eyes.dmi'
+
+#define VOX_SHOES_FILE 'icons/mob/clothing/species/vox/feet.dmi'
+
+#define VOX_GLOVES_FILE 'icons/mob/clothing/species/vox/hands.dmi'
+
+#define VOX_HELMET_FILE 'icons/mob/clothing/species/vox/helmet.dmi'
+
+#define VOX_SUIT_FILE 'icons/mob/clothing/species/vox/suit.dmi'
+
+#define VOX_UNIFORM_FILE 'icons/mob/clothing/species/vox/uniform.dmi'
+
+#define VOX_GAGS_FILE 'icons/mob/clothing/species/vox/color_gags_vox.dmi'
 //PARIAH EDIT END
 
 //TESHARI PATHS

@@ -8,7 +8,7 @@
 	var/enabled_waddle = TRUE
 	lace_time = 20 SECONDS // how the hell do these laces even work??
 	species_exception = list(/datum/species/golem/bananium)
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/shoes/clown_shoes/Initialize(mapload)
 	. = ..()

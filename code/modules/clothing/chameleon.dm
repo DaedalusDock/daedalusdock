@@ -408,7 +408,7 @@
 	blood_overlay_type = "armor"
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -437,7 +437,7 @@
 	inhand_icon_state = "meson"
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -467,7 +467,7 @@
 
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -544,7 +544,7 @@
 	permeability_coefficient = 0.01
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH
 	w_class = WEIGHT_CLASS_SMALL
-	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/voice_change = 1 ///This determines if the voice changer is on or off.
 

@@ -1,6 +1,6 @@
 // MODsuit-related overrides for our digitigrade sprites and such
 /obj/item/clothing/head/mod
-	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
+
 	worn_icon_snouted = 'modular_pariah/master_files/icons/mob/mod.dmi'
 
 

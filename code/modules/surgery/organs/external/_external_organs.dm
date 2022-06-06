@@ -77,7 +77,7 @@
 	bodypart.contents.Add(src)
 
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
-/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
+/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color, mob/living/carbon/owner)
 	if(!sprite_datum)
 		return
 
@@ -86,7 +86,22 @@
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = -image_layer)
 	appearance.dir = image_dir
 
-	if(sprite_datum.color_src) //There are multiple flags, but only one is ever used so meh :/
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		switch(sprite_datum.color_src)
+			if(FACEHAIR)
+				appearance.color = human_owner.facial_hair_color
+			if(HAIR)
+				appearance.color = human_owner.hair_color
+			if(EYECOLOR)
+				appearance.color = human_owner.eye_color
+			if(MUTCOLORS)
+				appearance.color = image_color
+			if(MUTCOLORS2)
+				appearance.color = human_owner?.dna?.features["mcolor2"] ? human_owner.dna.features["mcolor2"] : image_color
+			if(MUTCOLORS3)
+				appearance.color = human_owner?.dna?.features["mcolor3"] ? human_owner.dna.features["mcolor3"] : image_color
+	else if(sprite_datum.color_src)
 		appearance.color = image_color
 
 	if(sprite_datum.center)
@@ -209,6 +224,16 @@
 /obj/item/organ/external/snout/get_global_feature_list()
 	return GLOB.snouts_list
 
+///Guess what part of the vox is this?
+/obj/item/organ/external/snout/vox
+	feature_key = "vox_snout"
+	preference = "feature_vox_snout"
+
+	dna_block = DNA_VOX_SNOUT_BLOCK
+
+/obj/item/organ/external/snout/vox/get_global_feature_list()
+	return GLOB.vox_snouts_list
+
 ///A moth's antennae
 /obj/item/organ/external/antennae
 	zone = BODY_ZONE_HEAD
@@ -289,6 +314,42 @@
 /obj/item/organ/external/pod_hair/override_color(rgb_value)
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
+
+/obj/item/organ/external/vox_hair
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
+	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+
+	dna_block = DNA_VOX_HAIR_BLOCK
+
+	feature_key = "vox_hair"
+	preference = "feature_vox_hair"
+
+/obj/item/organ/external/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+		return TRUE
+	return FALSE
+
+/obj/item/organ/external/vox_hair/get_global_feature_list()
+	return GLOB.vox_hair_list
+
+/obj/item/organ/external/vox_facial_hair
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
+	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+
+	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
+
+	feature_key = "vox_facial_hair"
+	preference = "feature_vox_facial_hair"
+
+/obj/item/organ/external/vox_facial_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+		return TRUE
+	return FALSE
+
+/obj/item/organ/external/vox_facial_hair/get_global_feature_list()
+	return GLOB.vox_facial_hair_list
 
 //skrell
 /obj/item/organ/external/headtails

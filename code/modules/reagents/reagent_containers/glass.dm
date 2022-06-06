@@ -263,7 +263,7 @@
 	slot_flags = ITEM_SLOT_HEAD
 	resistance_flags = NONE
 	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50) //Weak melee protection, because you can wear it on your head
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	slot_equipment_priority = list( \
 		ITEM_SLOT_BACK, ITEM_SLOT_ID,\
 		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\

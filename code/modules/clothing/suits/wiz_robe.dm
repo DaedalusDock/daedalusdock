@@ -9,7 +9,7 @@
 	clothing_flags = SNUG_FIT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/wizard/red
 	name = "red wizard hat"

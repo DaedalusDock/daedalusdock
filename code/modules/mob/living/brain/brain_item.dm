@@ -322,6 +322,33 @@
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
 
+/obj/item/organ/brain/vox
+	name = "cortical stack"
+	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
+	icon_state = "cortical-stack"
+	status = ORGAN_ROBOTIC
+	organ_flags = ORGAN_SYNTHETIC
+
+/obj/item/organ/brain/vox/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+	if(owner.stat == DEAD)
+		return
+	switch(severity)
+		if(1)
+			to_chat(owner, span_boldwarning("You feel [pick("like your brain is being fried", "a sharp pain in your head")]!"))
+			owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 20, 150)
+			owner.jitteriness += 30
+			owner.adjust_timed_status_effect(30 SECONDS, /datum/status_effect/speech/stutter)
+			owner.add_confusion(10)
+		if(2)
+			to_chat(owner, span_warning("You feel [pick("disoriented", "confused", "dizzy")]."))
+			owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 150)
+			owner.jitteriness += 10
+			owner.adjust_timed_status_effect(30 SECONDS, /datum/status_effect/speech/stutter)
+			owner.add_confusion(3)
+
 /obj/item/organ/brain/skrell
 	name = "spongy brain"
 	icon_state = "skrell-brain"

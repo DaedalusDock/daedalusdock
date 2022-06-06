@@ -84,7 +84,7 @@
 	icon_state = "glasses_thin"
 	inhand_icon_state = "glasses"
 	vision_correction = TRUE
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/betterunshit
 	name = "modern glasses"

@@ -18,7 +18,7 @@
 	light_system = MOVABLE_LIGHT
 	flags_cover = HEADCOVERSEYES
 	heat = 999
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	dog_fashion = /datum/dog_fashion/head
 

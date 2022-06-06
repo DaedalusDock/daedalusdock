@@ -71,6 +71,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define isgolem(A) (is_species(A, /datum/species/golem))
 #define islizard(A) (is_species(A, /datum/species/lizard))
 #define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
+#define isvox(A) (is_species(A, /datum/species/vox))
 #define ispodperson(A) (is_species(A, /datum/species/pod))
 #define isflyperson(A) (is_species(A, /datum/species/fly))
 #define isjellyperson(A) (is_species(A, /datum/species/jelly))

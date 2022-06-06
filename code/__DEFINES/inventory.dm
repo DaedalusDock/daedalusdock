@@ -132,12 +132,12 @@
 #define CLOTHING_DIGITIGRADE_VARIATION (1<<1)
 ///The sprite works fine for digitigrade legs as-is.
 #define CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON (1<<2)
-//PARIAH EDIT
+///Has a sprite for voxes specifically.
+#define CLOTHING_VOX_VARIATION (1<<3)
 ///Has a sprite for snouted heads specifically.
-#define CLOTHING_SNOUTED_VARIATION (1<<3)
-//PARIAH EDIT END
+#define CLOTHING_SNOUTED_VARIATION (1<<4)
 ///Has a custom sprite for Teshari
-#define CLOTHING_TESHARI_VARIATION (1<<4)
+#define CLOTHING_TESHARI_VARIATION (1<<5)
 
 //flags for covering body parts
 #define GLASSESCOVERSEYES (1<<0)

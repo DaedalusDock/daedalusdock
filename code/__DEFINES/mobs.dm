@@ -80,8 +80,10 @@
 #define BODYTYPE_SNOUTED (1<<5)
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
+///THe limb is voxed
+#define BODYTYPE_VOX (1<<7)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<7)
+#define BODYTYPE_TESHARI (1<<8)
 
 //Defines for Species IDs
 #define SPECIES_ABDUCTOR "abductor"
@@ -98,6 +100,7 @@
 #define SPECIES_LIZARD "lizard"
 #define SPECIES_LIZARD_ASH "ashwalker"
 #define SPECIES_LIZARD_SILVER "silverscale"
+#define SPECIES_VOX "vox"
 #define SPECIES_NIGHTMARE "nightmare"
 #define SPECIES_MONKEY "monkey"
 #define SPECIES_MOTH "moth"

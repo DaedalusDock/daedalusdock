@@ -26,7 +26,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 	slot_flags = ITEM_SLOT_EARS
 	dog_fashion = null
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	var/obj/item/encryptionkey/keyslot2 = null
 
 /obj/item/radio/headset/suicide_act(mob/living/carbon/user)

@@ -12,7 +12,7 @@
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
 	resistance_flags = NONE
-	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/breath/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is wrapping \the [src]'s tube around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -37,3 +37,10 @@
 	inhand_icon_state = "m_mask"
 	permeability_coefficient = 0.01
 	equip_delay_other = 10
+
+/obj/item/clothing/mask/breath/vox
+	desc = "A close-fitting mask that can be connected to an air supply. This one's got an easily accessible feeding port to be more suitable for the Vox crewmembers."
+	name = "vox breath mask"
+	actions_types = list()
+	flags_cover = NONE
+

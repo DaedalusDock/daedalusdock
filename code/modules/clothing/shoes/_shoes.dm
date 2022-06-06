@@ -9,6 +9,7 @@
 
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
+	supports_variations_flags = CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 	permeability_coefficient = 0.5
 	slowdown = SHOES_SLOWDOWN

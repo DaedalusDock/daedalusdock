@@ -3,7 +3,7 @@
 	desc = "It's a baseball hat in a tasteless yellow colour."
 	icon_state = "cargosoft"
 	inhand_icon_state = "helmet"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	var/soft_type = "cargo"
 
 	dog_fashion = /datum/dog_fashion/head/cargo_tech

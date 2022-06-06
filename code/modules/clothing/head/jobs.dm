@@ -49,7 +49,7 @@
 	armor = list(MELEE = 25, BULLET = 15, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/captain
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 //Captain: This is no longer space-worthy
 /obj/item/clothing/head/caphat/parade
@@ -141,7 +141,7 @@
 	armor = list(MELEE = 40, BULLET = 30, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 10, FIRE = 50, ACID = 60, WOUND = 10)
 	icon_state = "hoscap"
 	strip_delay = 80
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 
 /obj/item/clothing/head/hos/syndicate
@@ -172,7 +172,7 @@
 	armor = list(MELEE = 40, BULLET = 30, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 60, WOUND = 6)
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/warden
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/warden/red
 	name = "warden's hat"

@@ -480,7 +480,7 @@
 	actions_types = list()
 	cell = null
 	show_hud = FALSE
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/space/changeling/Initialize(mapload)
 	. = ..()
@@ -540,7 +540,7 @@
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/armor/changeling/Initialize(mapload)
 	. = ..()

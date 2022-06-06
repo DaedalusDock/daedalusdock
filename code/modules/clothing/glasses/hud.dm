@@ -62,7 +62,7 @@
 	hud_type = DATA_HUD_MEDICAL_ADVANCED
 	hud_trait = TRAIT_MEDICAL_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/lightblue
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/hud/health/night
 	name = "night vision health scanner HUD"
@@ -116,7 +116,7 @@
 	hud_type = DATA_HUD_SECURITY_ADVANCED
 	hud_trait = TRAIT_SECURITY_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/red
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/glasses/hud/security/chameleon
 	name = "chameleon security HUD"
@@ -253,7 +253,7 @@
 	flash_protect = FLASH_PROTECTION_FLASH
 	tint = 1
 	glass_colour_type = /datum/client_colour/glass_colour/gray
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 
 /obj/item/clothing/glasses/hud/spacecop/hidden // for the undercover cop

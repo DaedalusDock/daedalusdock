@@ -215,6 +215,11 @@
 	toxLethality = 2.5 * LIVER_DEFAULT_TOX_LETHALITY // rejects its owner early after too much punishment
 	toxTolerance = 15 // complete toxin immunity like xenos have would be too powerful
 
+/obj/item/organ/liver/vox
+	name = "vox liver"
+	icon_state = "vox-liver"
+	alcohol_tolerance = 0.008 // 60% more toxic
+
 /obj/item/organ/liver/skrell
 	name = "skrell liver"
 	icon_state = "liver-skrell"

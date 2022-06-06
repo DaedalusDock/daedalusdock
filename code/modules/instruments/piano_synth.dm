@@ -28,7 +28,7 @@
 	instrument_range = 1
 	circuit_type = /obj/item/circuit_component/synth/headphones
 	shell_capacity = SHELL_CAPACITY_TINY
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/instrument/piano_synth/headphones/ComponentInitialize()
 	. = ..()

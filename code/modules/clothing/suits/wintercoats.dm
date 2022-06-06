@@ -11,7 +11,7 @@
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	allowed = list()
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
 	. = ..()
@@ -38,7 +38,7 @@
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	flags_inv = HIDEHAIR|HIDEEARS
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 // CentCom
 /obj/item/clothing/suit/hooded/wintercoat/centcom
@@ -261,12 +261,12 @@
 	icon_state = "coatparamed"
 	inhand_icon_state = "coatparamed"
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/paramedic
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/hooded/winterhood/medical/paramedic
 	desc = "A white winter coat hood with blue markings."
 	icon_state = "hood_paramed"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 // Scientist
 /obj/item/clothing/suit/hooded/wintercoat/science

@@ -8,6 +8,7 @@
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	supports_variations_flags = CLOTHING_VOX_VARIATION
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20

@@ -9,7 +9,7 @@
 	permeability_coefficient = 0.01
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
-	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	///Max numbers of installable filters
 	var/max_filters = 1
 	///List to keep track of each filter

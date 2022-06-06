@@ -2,7 +2,7 @@
 	name = "\improper Teshari"
 	plural_form = "Teshari"
 	id = SPECIES_TESHARI
-	species_traits = list(MUTCOLORS, MUTCOLORS2, MUTCOLORS3, EYECOLOR, NO_UNDERWEAR, HAS_FLESH, HAS_BONE)
+	species_traits = list(MUTCOLORS, MUTCOLORS2, MUTCOLORS3, EYECOLOR, NO_UNDERWEAR, HAS_FLESH, HAS_BONE, HAIRCOLOR, FACEHAIRCOLOR)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/teshari
 	species_eye_path = 'icons/mob/species/teshari/eyes.dmi'

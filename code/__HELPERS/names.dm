@@ -16,6 +16,16 @@
 /proc/moth_name()
 	return "[pick(GLOB.moth_first)] [pick(GLOB.moth_last)]"
 
+/proc/vox_name()
+	var/sounds = rand(2, 8)
+	var/i = 0
+	var/newname = ""
+
+	while(i <= sounds)
+		i++
+		newname += pick(list("ti","hi","ki","ya","ta","ha","ka","ya","chi","cha","kah","ri","ra"))
+	return newname
+
 /proc/teshari_name()
 	var/name = pick(list("Fa", "Fe", "Fi", "Ma", "Me", "Mi", "Na", "Ne", "Ni", "Sa", "Se", "Si", "Ta", "Te", "Ti"))
 	name += pick(list("fa", "fe", "fi", "la", "le", "li", "ma", "me", "mi", "na", "ne", "ni", "ra", "re", "ri", "sa", "se", "si", "sha", "she", "shi", "ta", "te", "ti"))

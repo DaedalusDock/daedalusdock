@@ -40,6 +40,12 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
 
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_spines, GLOB.spines_list_vox)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_tails, GLOB.tails_list_vox)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
+
 	//Species
 	for(var/spath in subtypesof(/datum/species))
 		var/datum/species/S = new spath()

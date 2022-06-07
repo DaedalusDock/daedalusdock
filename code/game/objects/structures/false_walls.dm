@@ -61,7 +61,7 @@
 /obj/structure/falsewall/zas_canpass(turf/other)
 	if(QDELETED(src))
 		return AIR_ALLOWED
-	return density ? (AIR_BLOCKED|ZONE_BLOCKED) : ZONE_BLOCKED
+	return ZONE_BLOCKED
 
 /obj/structure/falsewall/update_icon(updates=ALL)//Calling icon_update will refresh the smoothwalls if it's closed, otherwise it will make sure the icon is correct if it's open
 	. = ..()

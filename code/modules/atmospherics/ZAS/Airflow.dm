@@ -43,6 +43,8 @@ This entire system is an absolute mess.
 		return FALSE
 	if(body_position == LYING_DOWN) //Lying down protects you from Z A S M O M E N T S
 		return
+	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
+		return FALSE
 
 	Knockdown(zas_settings.airflow_stun)
 	visible_message(

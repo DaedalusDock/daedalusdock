@@ -117,6 +117,8 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
 		return FALSE
+	if(!check_airflow_movable(strength))
+		return FALSE
 	if (airflow_dest == loc)
 		step_away(src, loc)
 	if (ismob(src))

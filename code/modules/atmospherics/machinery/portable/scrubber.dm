@@ -71,11 +71,13 @@
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/mixture)
 	if(air_contents.returnPressure() >= overpressure_m * ONE_ATMOSPHERE)
 		return
+	if(!mixture.total_moles)
+		return
 
 	var/transfer_moles = min(1, volume_rate/mixture.volume)*mixture.total_moles
 
 	var/datum/gas_mixture/gas2scrub = mixture.remove(transfer_moles) // Remove part of the mixture to filter.
-	//var/datum/gas_mixture/filtered = new
+
 	if(!scrubbing)
 		return
 

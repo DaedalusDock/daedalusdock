@@ -81,6 +81,10 @@
 			icon_state = "vent_in-off"
 		return
 
+	if(!COOLDOWN_FINISHED(src, hibernating))
+		icon_state = "vent_hibernating"
+		return
+
 	if(icon_state == ("vent_out-off" || "vent_in-off" || "vent_off"))
 		if(pump_direction & RELEASING)
 			icon_state = "vent_out"
@@ -128,6 +132,8 @@
 	else
 		if(pump_direction && (pressure_checks&EXT_BOUND))
 			COOLDOWN_START(src, hibernating, 15 SECONDS)
+
+	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/get_pressure_delta(datum/gas_mixture/environment)
 	var/pressure_delta = DEFAULT_PRESSURE_DELTA

@@ -47,11 +47,8 @@
 
 ///Sets the given gas id's mole count to the specified amount.
 /datum/gas_mixture/proc/setGasMoles(gasid, moles, update = TRUE, divide_among_group = FALSE)
-	if(moles == 0)
-		return
-
 	//Generally setGasMoles actions pre-calculate, just in case.
-	if(divide_among_group && group_multiplier != 1)
+	if(divide_among_group && group_multiplier != 1 && moles != 0)
 		gas[gasid] = moles/group_multiplier
 	else
 		gas[gasid] = moles
@@ -274,7 +271,7 @@
 
 	return removed
 
-///Removes a volume of gas from the mixture and returns a gas_mixture containing the removed air with the given volume/
+///Removes a volume of gas from the mixture and returns a gas_mixture containing the removed air with the given volume.
 /datum/gas_mixture/proc/removeVolume(removed_volume)
 	var/datum/gas_mixture/removed = removeRatio(removed_volume/(volume*group_multiplier), 1)
 	removed.volume = removed_volume

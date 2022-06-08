@@ -38,7 +38,8 @@
 //transfer_moles - Limits the amount of moles to transfer. The actual amount of gas moved may also be limited by available_power, if given.
 //available_power - the maximum amount of power that may be used when moving gas. If null then the transfer is not limited by power.
 /proc/pump_gas(datum/gas_mixture/source, datum/gas_mixture/sink, transfer_moles = null, available_power = null)
-	if (source.total_moles < MINIMUM_MOLES_TO_PUMP) //if we can't transfer enough gas just stop to avoid further processing
+	if (source.total_moles < MINIMUM_MOLES_TO_PUMP)
+		sink.merge(source.remove(INFINITY))
 		return -1
 
 	if (isnull(transfer_moles))
@@ -116,13 +117,18 @@
 	var/list/specific_power_gas = list()	//the power required to remove one mole of pure gas, for each gas type
 	for (var/g in filtering)
 		if (source.gas[g] < MINIMUM_MOLES_TO_FILTER)
+			total_filterable_moles += source.gas[g] //Just get rid of it, ffs
 			continue
 
 		var/specific_power = calculate_specific_power_gas(g, source, sink)/ATMOS_FILTER_EFFICIENCY
 		specific_power_gas[g] = specific_power
 		total_filterable_moles += source.gas[g]
 
-	if (total_filterable_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
+	///Just transfer it, who really cares at a scale this small.
+	if (total_filterable_moles < MINIMUM_MOLES_TO_FILTER)
+		for(var/g in filtering)
+			source.setGasMoles(g, 0)
+			sink.adjustGasWithTemp(g, source.gas[g] * source.group_multiplier, source.temperature)
 		return -1
 
 	//now that we know the total amount of filterable gas, we can calculate the amount of power needed to scrub one mole of gas

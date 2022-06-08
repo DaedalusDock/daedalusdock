@@ -137,11 +137,17 @@
 		icon_state = "scrub_welded"
 		return
 
-	if(!nodes[1] || !on || !is_operational || !COOLDOWN_FINISHED(src, hibernating))
+	if(!nodes[1] || !on || !is_operational)
 		icon_state = "scrub_off"
 		return
 
-	if(scrubbing & SCRUBBING)
+	if(!COOLDOWN_FINISHED(src, hibernating))
+		if(widenet)
+			icon_state = "scrub_wide_hibernating"
+		else
+			icon_state = "scrub_hibernating"
+
+	else if(scrubbing & SCRUBBING)
 		if(widenet)
 			icon_state = "scrub_wide"
 		else
@@ -240,6 +246,7 @@
 
 	if(scrubbing == SCRUBBING)
 		if(length(environment.gas & filter_types))
+			. = TRUE
 			///contains all of the gas we're sucking out of the tile, gets put into our parent pipenet
 			var/datum/gas_mixture/filtered_out = new
 			filtered_out.temperature = environment.temperature
@@ -260,7 +267,7 @@
 			//Remix the resulting gases
 			air_contents.merge(filtered_out)
 			update_parents()
-			return TRUE
+			return .
 
 	else //Just siphoning all air
 

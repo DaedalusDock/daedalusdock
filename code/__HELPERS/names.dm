@@ -24,6 +24,8 @@
 	while(i <= sounds)
 		i++
 		newname += pick(list("ti","hi","ki","ya","ta","ha","ka","ya","chi","cha","kah","ri","ra"))
+
+	newname = capitalize(newname)
 	return newname
 
 /proc/teshari_name()

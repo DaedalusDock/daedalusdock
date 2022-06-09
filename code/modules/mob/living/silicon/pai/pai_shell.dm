@@ -56,9 +56,9 @@
 		return
 	visible_message(span_notice("[src] deactivates its holochassis emitter and folds back into a compact card!"))
 	stop_pulling()
-	if(istype(loc, /obj/item/clothing/head/mob_holder))
-		var/obj/item/clothing/head/mob_holder/MH = loc
-		MH.release(display_messages = FALSE)
+	if(ismobholder(loc))
+		var/obj/item/mob_holder/MH = loc
+		MH.release_mob(display_messages = FALSE)
 	if(client)
 		client.perspective = EYE_PERSPECTIVE
 		client.eye = card
@@ -148,8 +148,9 @@
 		set_light(0)
 		to_chat(src, span_notice("You disable your integrated light."))
 
-/mob/living/silicon/pai/mob_try_pickup(mob/living/user, instant=FALSE)
+/mob/living/silicon/pai/mob/mob_pickup_checks(mob/living/user, display_messages)
 	if(!possible_chassis[chassis])
-		to_chat(user, span_warning("[src]'s current form isn't able to be carried!"))
+		if(display_messages)
+			to_chat(user, span_warning("[src]'s current form isn't able to be carried!"))
 		return FALSE
 	return ..()

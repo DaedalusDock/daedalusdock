@@ -42,7 +42,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BUG
 	gold_core_spawnable = FRIENDLY_SPAWN
 	search_objects = 1 //have to find those plant trays!
-	can_be_held = TRUE
+	held_type = /obj/item/mob_holder/destructible
 	held_w_class = WEIGHT_CLASS_TINY
 
 	//Spaceborn beings don't get hurt by space
@@ -68,16 +68,17 @@
 	AddComponent(/datum/component/swarming)
 	add_cell_sample()
 
-/mob/living/simple_animal/hostile/bee/mob_pickup(mob/living/L)
+/mob/living/simple_animal/hostile/bee/mob_pickup_checks(mob/living/user, display_messages)
 	if(flags_1 & HOLOGRAM_1)
-		return
-	var/obj/item/clothing/head/mob_holder/destructible/holder = new(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
+		return FALSE
+	return ..()
+
+/mob/living/simple_animal/hostile/bee/mob_pickup(mob/living/L)
+	var/obj/item/mob_holder/holder = ..()
 	var/list/reee = list(/datum/reagent/consumable/nutriment/vitamin = 5)
 	if(beegent)
 		reee[beegent.type] = 5
 	holder.AddComponent(/datum/component/edible, reee, null, RAW | MEAT | GROSS, 10, 0, list("bee"), null, 10)
-	L.visible_message(span_warning("[L] scoops up [src]!"))
-	L.put_in_hands(holder)
 
 /mob/living/simple_animal/hostile/bee/Destroy()
 	if(beehome)

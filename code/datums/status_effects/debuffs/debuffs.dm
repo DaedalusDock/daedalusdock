@@ -406,7 +406,7 @@
 	return ..()
 
 /datum/status_effect/eldritch/on_apply()
-	if(owner.mob_size >= MOB_SIZE_HUMAN)
+	if(owner.mob_size >= MOB_SIZE_HUMAN || ishuman(owner)) // This is horrible but I can't see a better way to do it
 		RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/update_owner_underlay)
 		owner.update_icon(UPDATE_OVERLAYS)
 		return TRUE

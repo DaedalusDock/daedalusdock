@@ -16,6 +16,7 @@
 		OFFSET_BACK = list(0, -4),
 		OFFSET_ACCESSORY = list(0, -3))
 
+	species_mob_size = MOB_SIZE_SMALL
 	say_mod = "chirps"
 	attack_verb = "slash"
 	attack_effect = ATTACK_EFFECT_CLAW

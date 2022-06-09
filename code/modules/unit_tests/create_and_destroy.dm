@@ -85,7 +85,7 @@
 	//Needs a linked mecha
 	ignore += typesof(/obj/effect/skyfall_landingzone)
 	//Expects a mob to holderize, we have nothing to give
-	ignore += typesof(/obj/item/clothing/head/mob_holder)
+	ignore += typesof(/obj/item/mob_holder)
 	//Needs cards passed into the initilazation args
 	ignore += typesof(/obj/item/toy/cards/cardhand)
 	//Needs a holodeck area linked to it which is not guarenteed to exist and technically is supposed to have a 1:1 relationship with computer anyway.

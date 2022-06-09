@@ -21,7 +21,6 @@
 	emote_hear = list("hops.")
 	emote_see = list("hops around","bounces up and down")
 	butcher_results = list(/obj/item/food/meat/slab = 1)
-	can_be_held = TRUE
 	density = FALSE
 	speak_chance = 2
 	turns_per_move = 3

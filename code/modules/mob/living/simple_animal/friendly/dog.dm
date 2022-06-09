@@ -16,7 +16,6 @@
 	see_in_dark = 5
 	speak_chance = 1
 	turns_per_move = 10
-	can_be_held = TRUE
 	ai_controller = /datum/ai_controller/dog
 	stop_automated_movement = TRUE
 	///In the case 'melee_damage_upper' is somehow raised above 0
@@ -177,7 +176,7 @@
 /mob/living/simple_animal/pet/dog/corgi/Initialize(mapload)
 	. = ..()
 	regenerate_icons()
-	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items)
+	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, /mob/living/.proc/should_strip)
 
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/Initialize(mapload)
 		. = ..()

@@ -14,7 +14,6 @@
 	health = 500
 	maxHealth = 500
 	layer = LOW_MOB_LAYER
-	can_be_held = TRUE
 	move_force = 0
 	pull_force = 0
 	move_resist = 0

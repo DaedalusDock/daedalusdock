@@ -264,7 +264,7 @@
 		return
 
 	//Allow for reactions
-	excited = (excited | air_contents.react(src))
+	excited = (excited | air_contents.react())
 	excited = (excited | handle_tolerances(delta_time))
 	excited = (excited | leaking)
 
@@ -324,19 +324,52 @@
 	if(!air_contents)
 		return ..()
 
+	var/turf/T = get_turf(src)
+	if(!T)
+		return ..()
+	T.hotspot_expose(air_contents.temperature, 70, 1)
+	T.assume_air(air_contents)
 	/// Handle fragmentation
 	var/pressure = air_contents.returnPressure()
 	if(pressure > TANK_FRAGMENT_PRESSURE)
 		if(!istype(loc, /obj/item/transfer_valve))
 			log_bomber(get_mob_by_key(fingerprintslast), "was last key to touch", src, "which ruptured explosively")
-		//Give the gas a chance to build up more pressure through reacting
-		air_contents.react(src)
+		//Give the gas a chance to build up more pressure through reacting. Alot.
+		air_contents.react()
+		air_contents.react()
+		air_contents.react()
+
 		pressure = air_contents.returnPressure()
 
 		// As of writing this this is calibrated to maxcap at 140L and 160atm.
-		var/power = (air_contents.volume * (pressure - TANK_FRAGMENT_PRESSURE)) / TANK_FRAGMENT_SCALE
-		log_atmos("[type] exploded with a power of [power] and a mix of ", air_contents)
-		dyn_explosion(src, power, flash_range = 1.5, ignorecap = FALSE)
+		var/strength = ((pressure-TANK_FRAGMENT_PRESSURE)/TANK_FRAGMENT_SCALE)
+		var/mult = ((air_contents.volume/140)**(1/2)) * (air_contents.total_moles**2/3)/((29*0.64) **2/3)
+
+		log_atmos("[type] exploded with a power of [strength * mult] and a mix of ", air_contents)
+		explosion(
+			get_turf(loc),
+			round(min(BOMBCAP_DVSTN_RADIUS, ((mult)*strength)*0.15)),
+			round(min(BOMBCAP_HEAVY_RADIUS, ((mult)*strength)*0.35)),
+			round(min(BOMBCAP_LIGHT_RADIUS, ((mult)*strength)*0.80)),
+			round(min(BOMBCAP_FLASH_RADIUS, ((mult)*strength)*1.20)),
+		)
+		var/num_fragments = round(rand(8,10) * sqrt(strength * mult))
+		///Holy. Fucking. Shit. This is AGONIZING. Give me /obj/proc/fragmentate() PLEASE.
+		AddComponent(/datum/component/pellet_cloud, projectile_type = /obj/projectile/bullet/shrapnel, magnitude = num_fragments)
+		SEND_SIGNAL(src, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER)
+
+	else if (pressure > TANK_RUPTURE_PRESSURE)
+		playsound(T, 'sound/weapons/gun/shotgun/shot.ogg', 20, 1)
+		visible_message("[icon2html(src, viewers(get_turf(src)))] <span class='danger'>\The [src] flies apart!</span>", "<span class='warning'>You hear a bang!</span>")
+
+		var/strength = 1+((pressure-TANK_LEAK_PRESSURE)/TANK_FRAGMENT_SCALE)
+
+		var/mult = (air_contents.total_moles**2/3)/((29*0.64) **2/3) //tanks appear to be experiencing a reduction on scale of about 0.64 total moles
+
+		var/num_fragments = round(rand(6,8) * sqrt(strength * mult)) //Less chunks, but bigger
+		AddComponent(/datum/component/pellet_cloud, projectile_type = /obj/projectile/bullet/shrapnel/mega, magnitude = num_fragments)
+		SEND_SIGNAL(src, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER)
+
 	return ..()
 
 /obj/item/tank/proc/merging_information()

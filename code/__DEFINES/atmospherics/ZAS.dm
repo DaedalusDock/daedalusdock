@@ -326,3 +326,9 @@ GLOBAL_LIST_INIT(reverse_dir, list( // reverse_dir[dir] = reverse of dir
 #define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
 #define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
 #define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.
+
+///Bomb caps
+#define BOMBCAP_DVSTN_RADIUS (zas_settings.max_explosion_range / 4)
+#define BOMBCAP_HEAVY_RADIUS (zas_settings.max_explosion_range / 2)
+#define BOMBCAP_LIGHT_RADIUS (zas_settings.max_explosion_range)
+#define BOMBCAP_FLASH_RADIUS (zas_settings.max_explosion_range * 1.5)

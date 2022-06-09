@@ -55,7 +55,7 @@
 
 
 /datum/component/pellet_cloud/Initialize(projectile_type=/obj/item/shrapnel, magnitude=5)
-	if(!isammocasing(parent) && !isgrenade(parent) && !islandmine(parent) && !issupplypod(parent))
+	if(!isammocasing(parent) && !isgrenade(parent) && !islandmine(parent) && !issupplypod(parent) && !istype(parent, /obj/item/tank))
 		return COMPONENT_INCOMPATIBLE
 
 	if(magnitude < 1)
@@ -64,7 +64,7 @@
 
 	src.projectile_type = projectile_type
 
-	if(isammocasing(parent))
+	if(isammocasing(parent) || istype(parent, /obj/item/tank))
 		num_pellets = magnitude
 	else if(isgrenade(parent) || islandmine(parent) || issupplypod(parent))
 		radius = magnitude
@@ -88,6 +88,8 @@
 		RegisterSignal(parent, COMSIG_MINE_TRIGGERED, .proc/create_blast_pellets)
 	else if(issupplypod(parent))
 		RegisterSignal(parent, COMSIG_SUPPLYPOD_LANDED, .proc/create_blast_pellets)
+	else if(istype(parent, /obj/item/tank))
+		RegisterSignal(parent, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER, .proc/create_blast_pellets)
 
 /datum/component/pellet_cloud/UnregisterFromParent()
 	UnregisterSignal(parent, list(COMSIG_PARENT_PREQDELETED, COMSIG_PELLET_CLOUD_INIT, COMSIG_GRENADE_DETONATE, COMSIG_GRENADE_ARMED, COMSIG_MOVABLE_MOVED, COMSIG_MINE_TRIGGERED, COMSIG_ITEM_DROPPED))

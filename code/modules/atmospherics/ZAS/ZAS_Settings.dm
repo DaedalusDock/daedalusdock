@@ -73,3 +73,7 @@
 	var/connection_temperature_delta = 10
 	var/connection_temperature_delta_NAME = "Connections - Temperature Difference"
 	var/connection_temperature_delta_DESC = "The smallest temperature difference which will cause heat to travel through doors."
+
+	var/max_explosion_range = 14
+	var/max_explosion_range_NAME = "TTV Explosion Range Maximum"
+	var/max_explosion_range_DESC = "What it says on the tin"

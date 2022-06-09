@@ -15,6 +15,7 @@ SUBSYSTEM_DEF(airflow)
 	wait = 1
 	flags = SS_NO_INIT
 	priority = FIRE_PRIORITY_AIRFLOW
+	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/static/tmp/list/processing = list()
 	var/static/tmp/list/current = list()
@@ -115,7 +116,7 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
 		return FALSE
-	if(!check_airflow_movable(INFINITY)) //This is a hack but it works so im sure its fine
+	if(!check_airflow_movable(strength*10)) //Repel/Gotoairflowdest() divide the differential by a max of 10, so we're undoing that here
 		return FALSE
 	if (airflow_dest == loc)
 		step_away(src, loc)

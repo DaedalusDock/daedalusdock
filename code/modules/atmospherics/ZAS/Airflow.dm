@@ -26,27 +26,26 @@ This entire system is an absolute mess.
 	var/tmp/airflow_skip_speedcheck
 
 ///Applies the effects of the mob colliding with another movable due to airflow.
-/mob/proc/airflow_stun()
+/mob/proc/airflow_stun(delta_p)
 	return
 
-/mob/living/airflow_stun()
+/mob/living/airflow_stun(delta_p)
 	if(stat == 2)
 		return FALSE
+	if(pulledby || pulling)
+		return FALSE
 	if(last_airflow_stun > world.time - zas_settings.airflow_stun_cooldown)
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
 		return FALSE
 	if(!(status_flags & CANSTUN) && !(status_flags & CANKNOCKDOWN))
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you, but you manage to keep your footing!</span>")
 		return FALSE
 	if(buckled)
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
 		return FALSE
 	if(body_position == LYING_DOWN) //Lying down protects you from Z A S M O M E N T S
-		return
+		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
 		return FALSE
 
-	Knockdown(zas_settings.airflow_stun)
+	Knockdown(zas_settings.airflow_stun * clamp((delta_p / zas_settings.airflow_stun_pressure), 1, 3))
 	visible_message(
 		span_danger("[src] is thrown to the floor by a gust of air!"),
 		span_danger("A sudden rush of air knocks you over!"),
@@ -55,10 +54,10 @@ This entire system is an absolute mess.
 
 	last_airflow_stun = world.time
 
-/mob/living/silicon/airflow_stun()
+/mob/living/silicon/airflow_stun(delta_p)
 	return
 
-/mob/living/simple_animal/slime/airflow_stun()
+/mob/living/simple_animal/slime/airflow_stun(delta_p)
 	return
 
 ///Checks to see if airflow can move this movable.
@@ -87,7 +86,7 @@ This entire system is an absolute mess.
 
 /obj/item/check_airflow_movable(n)
 	switch(w_class)
-		if(1,2)
+		if(0,1,2)
 			if(n < zas_settings.airflow_lightest_pressure) return 0
 		if(3)
 			if(n < zas_settings.airflow_light_pressure) return 0
@@ -107,6 +106,7 @@ This entire system is an absolute mess.
 			A.airflow_hit_act(src)
 		else if(istype(src, /mob/living/carbon/human))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
+			src:Stun(1 SECONDS) // :)
 		/*
 		If the turf of the atom we bumped is NOT dense, then we check if the flying object is dense.
 		We check the special var because flying objects gain density so they can Bump() objects.
@@ -128,9 +128,11 @@ This entire system is an absolute mess.
 
 ///Called when src collides with A during airflow
 /atom/movable/proc/airflow_hit(atom/A)
+	SHOULD_CALL_PARENT(TRUE)
 	airflow_speed = 0
 	airflow_dest = null
 	airborne_acceleration = 0
+	A.airflow_hit_act(src)
 
 /mob/living/airflow_hit(atom/A)
 	var/b_loss = AIRBORNE_DAMAGE(src)

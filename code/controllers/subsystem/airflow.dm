@@ -95,9 +95,7 @@ SUBSYSTEM_DEF(airflow)
 			continue
 
 		var/olddir = target.dir
-		//target.set_dir_on_move = FALSE
 		step_towards(target, target.airflow_dest)
-		//target.set_dir_on_move = TRUE
 		target.dir = olddir
 		target.airborne_acceleration++
 
@@ -117,7 +115,7 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
 		return FALSE
-	if(!check_airflow_movable(strength))
+	if(!check_airflow_movable(INFINITY)) //This is a hack but it works so im sure its fine
 		return FALSE
 	if (airflow_dest == loc)
 		step_away(src, loc)

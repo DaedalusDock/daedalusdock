@@ -132,7 +132,8 @@ Class Procs:
 		//Check for knocking people over
 		if(ismob(M) && differential > zas_settings.airflow_stun_pressure)
 			if(M:status_flags & GODMODE) continue
-			M:airflow_stun()
+			if(!M:airflow_stun())
+				to_chat(M, "<span class='danger'>Air suddenly rushes past you!</span>")
 
 		if(M.check_airflow_movable(differential))
 			//Check for things that are in range of the midpoint turfs.

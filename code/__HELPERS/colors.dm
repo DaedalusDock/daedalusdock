@@ -1,6 +1,6 @@
 /// Given a color in the format of "#RRGGBB", will return if the color
 /// is dark.
-/proc/is_color_dark(color, threshold = 25)
+/proc/is_color_dark(color, threshold = 15)
 	var/hsl = rgb2num(color, COLORSPACE_HSL)
 	return hsl[3] < threshold
 

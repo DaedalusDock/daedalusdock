@@ -36,7 +36,7 @@
 		return
 	reconcile_air()
 	//Only react if the mix has changed, and don't keep updating if it hasn't
-	update = air.react(src)
+	update = air.react()
 
 ///Preps a pipeline for rebuilding, insterts it into the rebuild queue
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/base)

@@ -139,7 +139,7 @@
 	air_contents.adjustGas(gastype, moles_to_add)
 
 /obj/machinery/atmospherics/components/tank/process_atmos()
-	if(air_contents.react(src))
+	if(air_contents.react())
 		update_parents()
 
 	if(air_contents.returnPressure() > max_pressure)

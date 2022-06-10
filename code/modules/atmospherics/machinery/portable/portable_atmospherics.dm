@@ -44,7 +44,7 @@
 
 /obj/machinery/portable_atmospherics/process_atmos()
 	if(!connected_port) // Pipe network handles reactions if connected, and we can't stop processing if there's a port effecting our mix
-		excited = (excited | air_contents.react(src))
+		excited = (excited | air_contents.react())
 		if(!excited)
 			return PROCESS_KILL
 	excited = FALSE

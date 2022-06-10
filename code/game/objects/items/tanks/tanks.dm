@@ -341,7 +341,6 @@
 
 		pressure = air_contents.returnPressure()
 
-		// As of writing this this is calibrated to maxcap at 140L and 160atm.
 		var/strength = ((pressure-TANK_FRAGMENT_PRESSURE)/TANK_FRAGMENT_SCALE)
 		var/mult = ((air_contents.volume/140)**(1/2)) * (air_contents.total_moles**2/3)/((29*0.64) **2/3)
 

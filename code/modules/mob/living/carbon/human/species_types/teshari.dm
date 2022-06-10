@@ -60,10 +60,13 @@
 /datum/species/teshari/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = TESH_BODY_COLOR
 	human.hair_color = TESH_FEATHER_COLOR
-	human.facial_hair_color = COLOR_WHITE
 
 	var/obj/item/organ/external/teshari_feathers/head_feathers = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS]
 	head_feathers.set_sprite("Plain")
+	var/obj/item/organ/external/teshari_body_feathers/body_feathers = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS]
+	body_feathers.set_sprite("None")
+	var/obj/item/organ/external/teshari_ears/ears = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_EARS]
+	ears.set_sprite("None")
 	human.update_body(TRUE)
 
 #undef TESH_BODY_COLOR

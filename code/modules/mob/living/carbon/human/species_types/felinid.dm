@@ -1,6 +1,6 @@
 //Subtype of human
 /datum/species/human/felinid
-	name = "Felinid"
+	name = "\improper Felinid"
 	id = SPECIES_FELINE
 	say_mod = "meows"
 

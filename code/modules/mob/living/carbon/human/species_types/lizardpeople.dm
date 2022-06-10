@@ -179,7 +179,7 @@
 Lizard subspecies: ASHWALKERS
 */
 /datum/species/lizard/ashwalker
-	name = "Ash Walker"
+	name = "\improper Ash Walker"
 	id = SPECIES_LIZARD_ASH
 	species_traits = list(MUTCOLORS,EYECOLOR,LIPS,HAS_FLESH,HAS_BONE)
 	mutantlungs = /obj/item/organ/lungs/ashwalker
@@ -196,7 +196,7 @@ Lizard subspecies: ASHWALKERS
 Lizard subspecies: SILVER SCALED
 */
 /datum/species/lizard/silverscale
-	name = "Silver Scale"
+	name = "\improper Silver Scale"
 	id = SPECIES_LIZARD_SILVER
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(

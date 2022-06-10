@@ -1,5 +1,5 @@
 /datum/species/monkey
-	name = "Monkey"
+	name = "\improper Monkey"
 	id = SPECIES_MONKEY
 	say_mod = "chimpers"
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_MONKEY

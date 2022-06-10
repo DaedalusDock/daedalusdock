@@ -14,11 +14,14 @@
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
 			obscure_name = TRUE
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM><hr>") //PARIAH EDIT CHANGE
-
 	var/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 
+	var/species_text
+	if(dna.species && !skipface)
+		species_text = ", \a [dna.species.name]"
+
+	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
 
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))

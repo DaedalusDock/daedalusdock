@@ -1,5 +1,5 @@
 /datum/species/mush //mush mush codecuck
-	name = "Mushroomperson"
+	name = "\improper Mushroomperson"
 	plural_form = "Mushroompeople"
 	id = SPECIES_MUSHROOM
 	mutant_bodyparts = list("caps" = "Round")

@@ -2,7 +2,7 @@
 
 /datum/species/zombie
 	// 1spooky
-	name = "High-Functioning Zombie"
+	name = "\improper High-Functioning Zombie"
 	id = SPECIES_ZOMBIE
 	say_mod = "moans"
 	sexes = 0
@@ -77,7 +77,7 @@
 	return to_add
 
 /datum/species/zombie/infectious
-	name = "Infectious Zombie"
+	name = "\improper Infectious Zombie"
 	id = SPECIES_ZOMBIE_INFECTIOUS
 	examine_limb_id = SPECIES_ZOMBIE
 	mutanthands = /obj/item/zombie_hand

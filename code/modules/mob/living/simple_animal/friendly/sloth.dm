@@ -10,7 +10,6 @@
 	emote_see = list("dozes off.", "looks around sleepily.")
 	speak_chance = 1
 	turns_per_move = 5
-	can_be_held = TRUE
 	butcher_results = list(/obj/item/food/meat/slab = 3)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -19,6 +18,7 @@
 	response_harm_continuous = "kicks"
 	response_harm_simple = "kick"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
+	mob_size = MOB_SIZE_SMALL
 	gold_core_spawnable = FRIENDLY_SPAWN
 	melee_damage_lower = 18
 	melee_damage_upper = 18

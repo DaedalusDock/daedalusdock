@@ -18,6 +18,14 @@
 	item = /obj/item/card/id/advanced/chameleon
 	cost = 2
 
+/datum/uplink_item/stealthy_tools/agent_card_advanced
+	name = "Advanced Agent Identification Card"
+	desc = "Created by Cybersun Industries to be the ultimate for field operations, this upgraded Agent ID \
+			comes with all the fluff of the original, but with an upgraded microchip - allowing for the storage of all \
+			standard Nanotrasen access codes in one conveinent package. Now in glossy black by default!"
+	item = /obj/item/card/id/advanced/chameleon/black
+	cost = 5
+
 /datum/uplink_item/stealthy_tools/ai_detector
 	name = "Artificial Intelligence Detector"
 	desc = "A functional multitool that turns red when it detects an artificial intelligence watching it, and can be \

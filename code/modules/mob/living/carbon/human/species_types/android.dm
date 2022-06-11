@@ -1,5 +1,5 @@
 /datum/species/android
-	name = "Android"
+	name = "\improper Android"
 	id = SPECIES_ANDROID
 	say_mod = "states"
 	species_traits = list(NOBLOOD, NO_DNA_COPY, NOTRANSSTING)

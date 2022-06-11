@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species
 	///If the game needs to manually check your race to do something not included in a proc here, it will use this.
 	var/id
-	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Leave them generic for other servers to customize.
+	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Must be `\improper`.
 	var/name
 	/// The formatting of the name of the species in plural context. Defaults to "[name]\s" if unset.
 	/// Ex "[Plasmamen] are weak", "[Mothmen] are strong", "[Lizardpeople] don't like", "[Golems] hate"
@@ -172,6 +172,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	///List of factions the mob gain upon gaining this species.
 	var/list/inherent_factions
+	/// The [/mob/living/var/mob_size] of members of this species.
+	var/species_mob_size = MOB_SIZE_HUMAN
 
 	///Punch-specific attack verb.
 	var/attack_verb = SFX_PUNCH
@@ -429,7 +431,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(C.hud_used)
 		C.hud_used.update_locked_slots()
 
-
+	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
 	replace_body(C, src)

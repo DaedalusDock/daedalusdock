@@ -294,10 +294,6 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	addtimer(VARSET_CALLBACK(src, freshly_laundered, FALSE), 5 MINUTES, TIMER_UNIQUE | TIMER_OVERRIDE)
 	..()
 
-/obj/item/clothing/head/mob_holder/machine_wash(obj/machinery/washing_machine/washer)
-	..()
-	held_mob.machine_wash(washer)
-
 /obj/item/clothing/shoes/sneakers/machine_wash(obj/machinery/washing_machine/washer)
 	if(chained)
 		chained = FALSE

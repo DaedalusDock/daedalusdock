@@ -912,7 +912,7 @@
 /obj/item/paint/violet,
 /obj/item/paint/white,
 /obj/item/paint/yellow,
-/obj/item/paint/paint_remover,
+/obj/item/paint_remover,
 /turf/open/floor/sepia,
 /area/shuttle/escape)
 "yJ" = (

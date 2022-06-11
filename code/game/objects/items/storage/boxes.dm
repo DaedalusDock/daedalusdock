@@ -856,9 +856,8 @@
 /obj/item/storage/box/clown/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] opens [src] and gets consumed by [p_them()]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(user, 'sound/misc/scary_horn.ogg', 70, vary = TRUE)
-	var/obj/item/clothing/head/mob_holder/consumed = new(src, user)
-	user.forceMove(consumed)
-	consumed.desc = "It's [user.real_name]! It looks like [user.p_they()] committed suicide!"
+	forceMove(get_turf(user))
+	new /obj/item/mob_holder(src, user) // Put the mob in the box
 	return OXYLOSS
 
 //////

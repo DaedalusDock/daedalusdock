@@ -493,8 +493,9 @@
 	var/mutable_appearance/tail_secondary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_secondary", layer = -image_layer)
 	var/mutable_appearance/tail_tertiary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_tertiary", layer = -image_layer)
 
-	tail_secondary.color = owner.dna.features["mcolor2"]
-	tail_tertiary.color = owner.dna.features["mcolor3"]
+	if(owner)
+		tail_secondary.color = owner.dna.features["mcolor2"]
+		tail_tertiary.color = owner.dna.features["mcolor3"]
 
 	overlay_list += tail_secondary
 	overlay_list += tail_tertiary

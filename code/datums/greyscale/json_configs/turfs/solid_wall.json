@@ -1,0 +1,58 @@
+{
+	"wall": 
+	{
+		"bitmask_config": 7,
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "wall",
+				"blend_mode": "overlay",
+				"bitmask": true,
+				"color_ids": [1]
+			},
+			{
+				"type": "icon_state",
+				"icon_state": "shine",
+				"blend_mode": "overlay",
+				"bitmask": true
+			}
+		]
+	},
+	"fwall_opening": 
+	{
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "fwall_opening",
+				"blend_mode": "overlay",
+				"color_ids": [1]
+			}
+		]
+	},
+	"fwall_open": 
+	{
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "fwall_open",
+				"blend_mode": "overlay",
+				"color_ids": [1]
+			}
+		]
+	},
+	"fwall_closing": 
+	{
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "fwall_closing",
+				"blend_mode": "overlay",
+				"color_ids": [1]
+			}
+		]
+	}
+}

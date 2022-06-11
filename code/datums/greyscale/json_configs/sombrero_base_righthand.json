@@ -1,16 +1,20 @@
 {
-    "": [
-        {
-            "type": "icon_state",
-            "icon_state": "cloth_righthand",
-            "blend_mode": "overlay",
-            "color_ids": [ 1 ]
-        },
-        {
-            "type": "icon_state",
-            "icon_state": "ornamentation_righthand",
-            "blend_mode": "overlay",
-            "color_ids": [ 2 ]
-        }
-    ]
+	"":
+	{
+		"layers":
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "cloth_righthand",
+				"blend_mode": "overlay",
+				"color_ids": [ 1 ]
+			},
+			{
+				"type": "icon_state",
+				"icon_state": "ornamentation_righthand",
+				"blend_mode": "overlay",
+				"color_ids": [ 2 ]
+			}
+		]
+	}
 }

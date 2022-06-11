@@ -263,6 +263,7 @@
 		"coverLocked" = coverlocked,
 		"siliconUser" = user.has_unlimited_silicon_privilege || user.using_power_flow_console(),
 		"malfStatus" = get_malf_status(user),
+		"mainLights" = area.lightswitch,
 		"emergencyLights" = !emergency_lights,
 		"nightshiftLights" = nightshift_lights,
 
@@ -307,9 +308,10 @@
 		. = UI_INTERACTIVE
 
 /obj/machinery/power/apc/ui_act(action, params)
+	var/list/locked_actions = list("main_lights", "toggle_nightshift")
 	. = ..()
 
-	if(. || !can_use(usr, 1) || (locked && !usr.has_unlimited_silicon_privilege && !failure_timer && action != "toggle_nightshift"))
+	if(. || !can_use(usr, 1) || (locked && !usr.has_unlimited_silicon_privilege && !failure_timer && !(action in locked_actions)))
 		return
 	switch(action)
 		if("lock")
@@ -366,6 +368,12 @@
 			failure_timer = 0
 			update_appearance()
 			update()
+		if("main_lights")
+			area.lightswitch = !area.lightswitch
+			area.power_change()
+			for(var/obj/machinery/light_switch/light_switch in area)
+				light_switch.update_appearance()
+				SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, area.lightswitch)
 		if("emergency_lighting")
 			emergency_lights = !emergency_lights
 			for(var/obj/machinery/light/L in area)

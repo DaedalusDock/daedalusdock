@@ -73,6 +73,7 @@
 #define PROJECTILE_HIT_THRESHHOLD_LAYER 2.75 //projectiles won't hit objects at or below this layer if possible
 #define TABLE_LAYER 2.8
 #define GATEWAY_UNDERLAY_LAYER 2.85
+#define LOW_WALL_LAYER 2.86
 #define BELOW_OBJ_LAYER 2.9
 #define LOW_ITEM_LAYER 2.95
 //#define OBJ_LAYER 3 //For easy recordkeeping; this is a byond define
@@ -81,6 +82,7 @@
 #define ABOVE_OBJ_LAYER 3.2
 #define CLOSED_BLASTDOOR_LAYER 3.3 // ABOVE WINDOWS AND DOORS
 #define SHUTTER_LAYER 3.3 // HERE BE DRAGONS
+#define LOW_WALL_STRIPE_LAYER 3.25
 #define ABOVE_WINDOW_LAYER 3.3
 #define SIGN_LAYER 3.4
 #define CORGI_ASS_PIN_LAYER 3.41

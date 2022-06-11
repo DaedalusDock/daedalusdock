@@ -2,7 +2,7 @@
  * A highly aggressive subset of shadowlings
  */
 /datum/species/shadow/nightmare
-	name = "Nightmare"
+	name = "\improper Nightmare"
 	id = SPECIES_NIGHTMARE
 	examine_limb_id = "shadow"
 	burnmod = 1.5

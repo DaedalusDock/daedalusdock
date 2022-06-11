@@ -54,6 +54,8 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isplatingturf(A) (istype(A, /turf/open/floor/plating))
 
+#define iswall(A) (istype(A, /turf/closed/wall))
+
 #define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
 
 //Mobs
@@ -206,7 +208,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isclothing(A) (istype(A, /obj/item/clothing))
 
-#define ispickedupmob(A) (istype(A, /obj/item/clothing/head/mob_holder)) // Checks if clothing item is actually a held mob
+#define ismobholder(A) (istype(A, /obj/item/mob_holder))
 
 #define iscash(A) (istype(A, /obj/item/coin) || istype(A, /obj/item/stack/spacecash) || istype(A, /obj/item/holochip))
 
@@ -219,6 +221,8 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define isinstrument(A) (istype(A, /obj/item/instrument) || istype(A, /obj/structure/musician))
 
 #define is_reagent_container(O) (istype(O, /obj/item/reagent_containers))
+
+#define isfalsewall(A) (istype(A, /obj/structure/falsewall))
 
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))

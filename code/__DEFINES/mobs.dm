@@ -81,9 +81,13 @@
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
 ///THe limb is voxed
-#define BODYTYPE_VOX (1<<7)
+#define BODYTYPE_VOX_BEAK (1<<7)
+///The limb is in the shape of a vox leg.
+#define BODYTYPE_VOX_LEGS (1<<8)
+///Vox limb that isnt a head or legs.
+#define BODYTYPE_VOX_OTHER (1<<9)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<8)
+#define BODYTYPE_TESHARI (1<<10)
 
 //Defines for Species IDs
 #define SPECIES_ABDUCTOR "abductor"

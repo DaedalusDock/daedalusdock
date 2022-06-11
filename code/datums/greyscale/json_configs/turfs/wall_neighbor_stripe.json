@@ -1,0 +1,22 @@
+{
+	"stripe": 
+	{
+		"bitmask_config": 1,
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "stripe",
+				"blend_mode": "overlay",
+				"bitmask": true,
+				"color_ids": [1]
+			},
+			{
+				"type": "icon_state",
+				"icon_state": "shine",
+				"blend_mode": "overlay",
+				"bitmask": true
+			}
+		]
+	}
+}

@@ -1158,3 +1158,6 @@
 
 /mob/living/carbon/human/species/skrell
 	race = /datum/species/skrell
+
+/mob/living/carbon/human/species/vox
+	race = /datum/species/vox

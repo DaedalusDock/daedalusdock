@@ -442,7 +442,7 @@
 //Luminescents are able to consume and use slime extracts, without them decaying.
 
 /datum/species/jelly/luminescent
-	name = "Luminescent"
+	name = "\improper Luminescent"
 	plural_form = null
 	id = SPECIES_LUMINESCENT
 	examine_limb_id = SPECIES_JELLYPERSON

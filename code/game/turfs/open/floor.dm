@@ -23,7 +23,7 @@
 	var/broken = FALSE
 	var/burnt = FALSE
 	/// Path of the tile that this floor drops
-	var/floor_tile = null 
+	var/floor_tile = null
 	var/list/broken_states
 	var/list/burnt_states
 
@@ -269,7 +269,8 @@
 	switch(passed_mode)
 		if(RCD_FLOORWALL)
 			to_chat(user, span_notice("You build a wall."))
-			PlaceOnTop(/turf/closed/wall)
+			var/turf/closed/wall/placed_wall = PlaceOnTop(/turf/closed/wall)
+			placed_wall.set_wall_information(/datum/material/iron)
 			return TRUE
 		if(RCD_AIRLOCK)
 			for(var/obj/machinery/door/door in src)

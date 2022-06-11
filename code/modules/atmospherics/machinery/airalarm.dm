@@ -237,7 +237,7 @@
 	))
 	var/total_moles = environment.get_moles()
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume
-	for(var/gas_id in environment.getGases())
+	for(var/gas_id in environment.gas)
 		if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
 			continue
 		cur_tlv = TLV[gas_id]
@@ -624,7 +624,7 @@
 	//cache for sanic speed (lists are references anyways)
 	var/list/cached_tlv = TLV
 
-	var/list/env_gases = environment.getGases()
+	var/list/env_gases = environment.gas
 	//var/partial_pressure = R_IDEAL_GAS_EQUATION * exposed_temperature / environment.volume
 
 	current_tlv = cached_tlv["pressure"]
@@ -994,7 +994,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 		pressure.set_output(round(environment.returnPressure()))
 		my_temperature.set_output(round(environment.temperature))
 		if(ispath(options_map[current_option]))
-			gas_amount.set_output(round(environment.getGases()[options_map[current_option]]))
+			gas_amount.set_output(round(environment.gas[options_map[current_option]]))
 		return
 
 	var/datum/tlv/settings = connected_alarm.TLV[options_map[current_option]]

@@ -252,7 +252,7 @@
 			filtered_out.temperature = environment.temperature
 
 			var/total_moles_to_remove = 0
-			for(var/gas in filter_types & environment.getGases())
+			for(var/gas in filter_types & environment.gas)
 				total_moles_to_remove += environment.gas[gas]
 
 			if(total_moles_to_remove == 0)//sometimes this gets non gc'd values

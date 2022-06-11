@@ -260,7 +260,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 // and referencing that. I don't know why.
 /proc/init_holographic_wall()
 	return getHologramIcon(
-		icon('icons/turf/walls/wall.dmi', "wall-0"),
+		icon('icons/turf/walls/legacy/wall.dmi', "wall-0"),
 		opacity = 1,
 	)
 

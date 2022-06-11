@@ -138,8 +138,8 @@
 /// Called after every config has refreshed, this proc handles data verification that depends on multiple entwined configurations.
 /datum/greyscale_config/proc/CrossVerify()
 	for(var/icon_state in icon_states)
-		var/list/verification_targets = icon_states[icon_state]
-		verification_targets = verification_targets.Copy()
+		var/datum/greyscale_state/gags_state = icon_states[icon_state]
+		var/list/verification_targets = gags_state.layers.Copy()
 		while(length(verification_targets))
 			var/datum/greyscale_layer/layer = verification_targets[length(verification_targets)]
 			verification_targets.len--
@@ -157,13 +157,16 @@
 /datum/greyscale_config/proc/ReadIconStateConfiguration(list/data)
 	icon_states = list()
 	for(var/state in data)
-		var/list/raw_layers = data[state]
+		var/list/state_information = data[state]
+		var/list/raw_layers = state_information["layers"]
+		var/bitmask_config = state_information["bitmask_config"] ? text2num(state_information["bitmask_config"]) : NONE
+		var/default_state_if_bitmask = state_information["default_state_if_bitmask"] ? TRUE : FALSE
 		if(!length(raw_layers))
 			stack_trace("The json configuration [DebugName()] for icon state '[state]' is missing any layers.")
 			continue
 		if(icon_states[state])
 			stack_trace("The json configuration [DebugName()] has a duplicate icon state '[state]' and is being overriden.")
-		icon_states[state] = ReadLayersFromJson(raw_layers)
+		icon_states[state] = new /datum/greyscale_state(ReadLayersFromJson(raw_layers), bitmask_config, default_state_if_bitmask)
 
 /// Takes the json layers configuration and puts it into a more processed format
 /datum/greyscale_config/proc/ReadLayersFromJson(list/data)
@@ -190,8 +193,10 @@
 	width = source.Width()
 
 	var/list/datum/greyscale_layer/all_layers = list()
+	var/list/to_process = list()
 	for(var/state in icon_states)
-		var/list/to_process = list(icon_states[state])
+		var/datum/greyscale_state/gags_state = icon_states[state]
+		to_process += gags_state.layers
 		var/list/state_layers = list()
 
 		while(length(to_process))
@@ -239,6 +244,13 @@
 
 	var/icon/icon_bundle = GenerateBundle(color_string, last_external_icon=last_external_icon)
 	icon_bundle = fcopy_rsc(icon_bundle)
+
+	// This block is done like this because generated icons are unable to be scaled before getting added to the rsc
+	icon_bundle = fcopy_rsc(icon_bundle)
+	icon_bundle = icon(icon_bundle)
+	icon_bundle.Scale(width, height)
+	icon_bundle = fcopy_rsc(icon_bundle)
+
 	icon_cache[key] = icon_bundle
 	var/icon/output = icon(icon_bundle)
 	return output
@@ -252,34 +264,61 @@
 
 	var/list/generated_icons = list()
 	for(var/icon_state in icon_states)
-		var/list/icon_state_steps
-		if(render_steps)
-			icon_state_steps = render_steps[icon_state] = list()
-		var/icon/generated_icon = GenerateLayerGroup(colors, icon_states[icon_state], icon_state_steps, last_external_icon)
-		// We read a pixel to force the icon to be fully generated before we let it loose into the world
-		// I hate this
-		generated_icon.GetPixel(1, 1)
-		generated_icons[icon_state] = generated_icon
+		var/datum/greyscale_state/gags_state = icon_states[icon_state]
+		var/list/layers = gags_state.layers
+		var/bitmask_config = gags_state.bitmask_config
+		var/default_state_if_bitmask = gags_state.default_state_if_bitmask
+		// Generate the default icon state if we are not bitmasking, or we want to do so despite bitmasking
+		if(bitmask_config == NONE || default_state_if_bitmask == TRUE)
+			var/icon/generated_icon = GenerateLayerGroup(colors, layers, render_steps)
+			// We read a pixel to force the icon to be fully generated before we let it loose into the world
+			// I hate this
+			generated_icon.GetPixel(1, 1)
+			generated_icons[icon_state] = generated_icon
 
-	var/icon/icon_bundle = generated_icons[""] || icon('icons/testing/greyscale_error.dmi')
-	icon_bundle.Scale(width, height)
-	generated_icons -= ""
+		// Also generate bitmasked states if the config tells us to.
+		if(bitmask_config != NONE)
+			var/list/steps = list()
+			for(var/potential_step in 0 to 255)
+				if(!(bitmask_config & GAGS_CARDINAL_SMOOTH))
+					if(potential_step & (NORTH_JUNCTION|SOUTH_JUNCTION|EAST_JUNCTION|WEST_JUNCTION))
+						continue
+				if(potential_step & (NORTHEAST_JUNCTION|SOUTHEAST_JUNCTION|SOUTHWEST_JUNCTION|NORTHWEST_JUNCTION))
+					if(!(bitmask_config & GAGS_DIAGONAL_SMOOTH))
+						continue
+					else if (bitmask_config & GAGS_DIAGONAL_NEED_ADJACENT_CARDINAL)
+						if(potential_step & NORTHEAST_JUNCTION && !(potential_step & NORTH_JUNCTION && potential_step & EAST_JUNCTION))
+							continue
+						if(potential_step & SOUTHEAST_JUNCTION && !(potential_step & SOUTH_JUNCTION && potential_step & EAST_JUNCTION))
+							continue
+						if(potential_step & SOUTHWEST_JUNCTION && !(potential_step & SOUTH_JUNCTION && potential_step & WEST_JUNCTION))
+							continue
+						if(potential_step & NORTHWEST_JUNCTION && !(potential_step & NORTH_JUNCTION && potential_step & WEST_JUNCTION))
+							continue
 
+				steps += potential_step
+			for(var/bit_step in steps)
+				var/icon/generated_icon = GenerateLayerGroup(colors, layers, render_steps, TRUE, bit_step)
+				// Same as above.
+				generated_icon.GetPixel(1, 1)
+				generated_icons["[icon_state]-[bit_step]"] = generated_icon
+
+	var/icon/icon_bundle = icon('icons/testing/greyscale_error.dmi')
 	for(var/icon_state in generated_icons)
 		icon_bundle.Insert(generated_icons[icon_state], icon_state)
 
 	return icon_bundle
 
 /// Internal recursive proc to handle nested layer groups
-/datum/greyscale_config/proc/GenerateLayerGroup(list/colors, list/group, list/render_steps, icon/last_external_icon)
+/datum/greyscale_config/proc/GenerateLayerGroup(list/colors, list/group, list/render_steps, do_bitmasking = FALSE, bitmask_step, icon/last_external_icon)
 	var/icon/new_icon
 	for(var/datum/greyscale_layer/layer as anything in group)
 		var/icon/layer_icon
 		if(islist(layer))
-			layer_icon = GenerateLayerGroup(colors, layer, render_steps, new_icon || last_external_icon)
+			layer_icon = GenerateLayerGroup(colors, layer, render_steps, do_bitmasking, bitmask_step, last_external_icon)
 			layer = layer[1] // When there are multiple layers in a group like this we use the first one's blend mode
 		else
-			layer_icon = layer.Generate(colors, render_steps, new_icon || last_external_icon)
+			layer_icon = layer.Generate(colors, render_steps, do_bitmasking, bitmask_step, last_external_icon)
 
 		if(!new_icon)
 			new_icon = layer_icon
@@ -289,7 +328,7 @@
 		// These are so we can see the result of every step of the process in the preview ui
 		if(render_steps)
 			var/list/icon_data = list()
-			render_steps += list(icon_data)
+			render_steps[icon(layer_icon)] = icon_data
 			icon_data["config_name"] = name
 			icon_data["step"] = icon(layer_icon)
 			icon_data["result"] = icon(new_icon)

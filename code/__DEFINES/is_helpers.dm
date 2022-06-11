@@ -54,6 +54,8 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isplatingturf(A) (istype(A, /turf/open/floor/plating))
 
+#define iswall(A) (istype(A, /turf/closed/wall))
+
 #define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
 
 //Mobs
@@ -219,6 +221,8 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define isinstrument(A) (istype(A, /obj/item/instrument) || istype(A, /obj/structure/musician))
 
 #define is_reagent_container(O) (istype(O, /obj/item/reagent_containers))
+
+#define isfalsewall(A) (istype(A, /obj/structure/falsewall))
 
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))

@@ -1,10 +1,14 @@
 {
-	"": [
-		{
-			"type": "icon_state",
-			"icon_state": "animation",
-			"blend_mode": "overlay",
-			"color_ids": [ 1 ]
-		}
-	]
+	"":
+	{
+		"layers":
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "animation",
+				"blend_mode": "overlay",
+				"color_ids": [ 1 ]
+			}
+		]
+	}
 }

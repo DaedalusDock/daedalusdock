@@ -1558,7 +1558,7 @@
 /turf/open/floor/grass/fairy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Iy" = (
-/turf/closed/indestructible/riveted/plastinum/nodiagonal,
+/turf/closed/indestructible/riveted/plastinum,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
 "ID" = (
 /obj/structure/table/reinforced/rglass,
@@ -1878,7 +1878,7 @@
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Ok" = (
-/turf/closed/indestructible/riveted/plastinum/nodiagonal,
+/turf/closed/indestructible/riveted/plastinum,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "OA" = (
 /obj/machinery/door/airlock/titanium,

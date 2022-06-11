@@ -1,0 +1,16 @@
+{
+	"wall": 
+	{
+		"bitmask_config": 7,
+		"layers": 
+		[
+			{
+				"type": "icon_state",
+				"icon_state": "wall",
+				"blend_mode": "overlay",
+				"bitmask": true,
+				"color_ids": [1]
+			}
+		]
+	}
+}

@@ -2,21 +2,15 @@
 	name = "runed metal wall"
 	desc = "A cold metal wall engraved with indecipherable symbols. Studying them causes your head to pound."
 	icon = 'icons/turf/walls/cult_wall.dmi'
-	icon_state = "cult_wall-0"
-	base_icon_state = "cult_wall"
 	turf_flags = IS_SOLID
 	smoothing_flags = SMOOTH_BITMASK
 	canSmoothWith = null
-	sheet_type = /obj/item/stack/sheet/runed_metal
-	sheet_amount = 1
-	girder_type = /obj/structure/girder/cult
+	plating_material = /datum/material/runedmetal
+	color = "#3C3434" //To display in mapping softwares
 
 /turf/closed/wall/mineral/cult/Initialize(mapload)
 	new /obj/effect/temp_visual/cult/turf(src)
 	. = ..()
-
-/turf/closed/wall/mineral/cult/devastate_wall()
-	new sheet_type(get_turf(src), sheet_amount)
 
 /turf/closed/wall/mineral/cult/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -41,9 +35,6 @@
 
 /turf/closed/wall/vault
 	name = "strange wall"
-	icon = 'icons/turf/walls.dmi'
-	icon_state = "rockvault"
-	base_icon_state = "rockvault"
 	turf_flags = IS_SOLID
 	smoothing_flags = NONE
 	canSmoothWith = null
@@ -65,9 +56,6 @@
 	base_icon_state = "sandstonevault"
 
 /turf/closed/wall/ice
-	icon = 'icons/turf/walls/icedmetal_wall.dmi'
-	icon_state = "icedmetal_wall-0"
-	base_icon_state = "icedmetal_wall"
 	desc = "A wall covered in a thick sheet of ice."
 	turf_flags = IS_SOLID
 	smoothing_flags = SMOOTH_BITMASK
@@ -100,28 +88,20 @@
 /turf/closed/wall/mineral/bronze
 	name = "clockwork wall"
 	desc = "A huge chunk of bronze, decorated like gears and cogs."
-	icon = 'icons/turf/walls/clockwork_wall.dmi'
-	icon_state = "clockwork_wall-0"
-	base_icon_state = "clockwork_wall"
 	turf_flags = IS_SOLID
 	smoothing_flags = SMOOTH_BITMASK
-	sheet_type = /obj/item/stack/sheet/bronze
-	sheet_amount = 2
-	girder_type = /obj/structure/girder/bronze
+	plating_material = /datum/material/bronze
+	color = "#92661A" //To display in mapping softwares
 
 /turf/closed/wall/rock
 	name = "reinforced rock"
 	desc = "It has metal struts that need to be welded away before it can be mined."
-	icon = 'icons/turf/walls/reinforced_rock.dmi'
+	icon = 'icons/turf/walls/legacy/reinforced_rock.dmi'
 	icon_state = "porous_rock-0"
 	base_icon_state = "porous_rock"
 	turf_flags = NO_RUST
-	sheet_amount = 1
 	hardness = 50
-	girder_type = null
-	decon_type = /turf/closed/mineral/asteroid
 
 /turf/closed/wall/rock/porous
 	name = "reinforced porous rock"
 	desc = "This rock is filled with pockets of breathable air. It has metal struts to protect it from mining."
-	decon_type = /turf/closed/mineral/asteroid/porous

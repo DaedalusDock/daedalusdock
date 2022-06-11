@@ -5,7 +5,7 @@
 	name = "wall"
 	desc = "A huge chunk of metal used to separate rooms."
 	anchored = TRUE
-	icon = 'icons/turf/walls/wall.dmi'
+	icon = 'icons/turf/walls/legacy/wall.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 	layer = LOW_OBJ_LAYER
@@ -23,7 +23,6 @@
 	var/mineral_amount = 2
 	var/tram_wall_type = /obj/structure/tramwall
 	var/girder_type = /obj/structure/girder/tram
-
 
 /obj/structure/tramwall/Initialize(mapload)
 	. = ..()
@@ -76,23 +75,18 @@
 /obj/structure/tramwall/titanium
 	name = "wall"
 	desc = "A light-weight titanium wall used in shuttles."
-	icon = 'icons/turf/walls/shuttle_wall.dmi'
-	icon_state = "shuttle_wall-0"
-	base_icon_state = "shuttle_wall"
-	mineral = /obj/item/stack/sheet/mineral/titanium
+	explosion_block = 3
+	flags_1 = CAN_BE_DIRTY_1
+	flags_ricochet = RICOCHET_SHINY | RICOCHET_HARD
 	tram_wall_type = /obj/structure/tramwall/titanium
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_TITANIUM_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_TITANIUM_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = list(SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL)
+	color = "#b3c0c7" //To display in mapping softwares
 
 /obj/structure/tramwall/plastitanium
 	name = "wall"
 	desc = "An evil wall of plasma and titanium."
-	icon = 'icons/turf/walls/plastitanium_wall.dmi'
-	icon_state = "plastitanium_wall-0"
-	base_icon_state = "plastitanium_wall"
-	mineral = /obj/item/stack/sheet/mineral/plastitanium
+	icon = 'icons/turf/walls/metal_wall.dmi'
 	tram_wall_type = /obj/structure/tramwall/plastitanium
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_PLASTITANIUM_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_PLASTITANIUM_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = list(SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL)

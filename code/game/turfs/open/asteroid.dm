@@ -191,7 +191,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/open/lava/plasma/ice_moon
 	baseturfs = /turf/open/lava/plasma/ice_moon
-
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/misc/asteroid/snow/ice
 	name = "icy snow"

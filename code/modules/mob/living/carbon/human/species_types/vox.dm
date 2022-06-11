@@ -50,8 +50,8 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/vox,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/vox,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/vox,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/digitigrade/vox,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/digitigrade/vox,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/vox,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/vox,
 	)
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)

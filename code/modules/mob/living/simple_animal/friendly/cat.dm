@@ -32,7 +32,6 @@
 	var/mob/living/simple_animal/mouse/movement_target
 	gold_core_spawnable = FRIENDLY_SPAWN
 	collar_type = "cat"
-	can_be_held = TRUE
 	held_state = "cat2"
 	///In the case 'melee_damage_upper' is somehow raised above 0
 	attack_verb_continuous = "claws"

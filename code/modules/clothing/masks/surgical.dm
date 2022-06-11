@@ -11,7 +11,7 @@
 	permeability_coefficient = 0.01
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 25, FIRE = 0, ACID = 0)
 	actions_types = list(/datum/action/item_action/adjust)
-	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/surgical/attack_self(mob/user)
 	adjustmask(user)

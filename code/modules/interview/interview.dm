@@ -102,7 +102,7 @@
 	set name = "Open Interview"
 	set category = "Interview"
 	var/mob/dead/new_player/M = usr
-	if (M?.client?.interviewee)
+	if (M?.client?.restricted_mode)
 		var/datum/interview/I = GLOB.interviews.interview_for_client(M.client)
 		if (I) // we can be returned nothing if the user is on cooldown
 			I.ui_interact(M)

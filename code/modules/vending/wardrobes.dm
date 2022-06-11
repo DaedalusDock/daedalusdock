@@ -322,7 +322,7 @@
 					/obj/item/clothing/head/soft/purple = 2,
 					/obj/item/clothing/mask/bandana/color/purple = 2,
 					/obj/item/pushbroom = 2,
-					/obj/item/paint/paint_remover = 2,
+					/obj/item/paint_remover = 2,
 					/obj/item/melee/flyswatter = 2,
 					/obj/item/flashlight = 2,
 					/obj/item/clothing/suit/caution = 6,

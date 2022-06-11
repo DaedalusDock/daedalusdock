@@ -48,7 +48,7 @@
 	dextrous_hud_type = /datum/hud/dextrous/drone
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	see_in_dark = 7
-	can_be_held = TRUE
+	held_type = /obj/item/mob_holder/drone
 	worn_slot_flags = ITEM_SLOT_HEAD
 	held_items = list(null, null)
 	/// `TRUE` if we have picked our visual appearance, `FALSE` otherwise (default)

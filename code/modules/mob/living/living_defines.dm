@@ -133,13 +133,6 @@
 
 	var/list/obj/effect/proc_holder/abilities = list()
 
-	///whether this can be picked up and held.
-	var/can_be_held = FALSE
-	/// The w_class of the holder when held.
-	var/held_w_class = WEIGHT_CLASS_NORMAL
-	///if it can be held, can it be equipped to any slots? (think pAI's on head)
-	var/worn_slot_flags = NONE
-
 	var/ventcrawl_layer = PIPING_LAYER_DEFAULT
 	var/losebreath = 0
 
@@ -152,6 +145,12 @@
 	/// List of changes to body temperature, used by desease symtoms like fever
 	var/list/body_temp_changes = list()
 
+	/// The type of /obj/item/mob_holder to create if the mob is picked up.
+	var/held_type = /obj/item/mob_holder
+	/// The w_class of the holder when held.
+	var/held_w_class = WEIGHT_CLASS_NORMAL
+	///if it can be held, can it be equipped to any slots? (think pAI's on head)
+	var/worn_slot_flags = NONE
 	//this stuff is here to make it simple for admins to mess with custom held sprites
 	var/icon/held_lh = 'icons/mob/pets_held_lh.dmi'//icons for holding mobs
 	var/icon/held_rh = 'icons/mob/pets_held_rh.dmi'

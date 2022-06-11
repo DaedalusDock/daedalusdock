@@ -13,7 +13,7 @@
 	custom_premium_price = PAYCHECK_COMMAND * 6
 	cut_type = /obj/item/clothing/gloves/cut
 	clothing_traits = list(TRAIT_CHUNKYFINGERS)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/color/yellow/heavy
 	name = "ceramic-lined insulated gloves"
@@ -112,7 +112,7 @@
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	cut_type = /obj/item/clothing/gloves/fingerless
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/fingerless
 	name = "fingerless gloves"
@@ -203,7 +203,7 @@
 	strip_delay = 60
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 70, ACID = 50)
 	resistance_flags = NONE
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/color/chief_engineer
 	desc = "These gloves provide excellent heat and electric insulation. They are so thin you can barely feel them."
@@ -216,7 +216,7 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/color/latex
 	name = "latex gloves"
@@ -234,7 +234,7 @@
 	icon_state = "nitrile"
 	inhand_icon_state = "nitrilegloves"
 	clothing_traits = list(TRAIT_QUICKER_CARRY, TRAIT_FASTMED)
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/color/infiltrator
 	name = "infiltrator gloves"
@@ -245,7 +245,7 @@
 	permeability_coefficient = 0.3
 	clothing_traits = list(TRAIT_QUICKER_CARRY)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/gloves/color/latex/engineering
 	name = "tinker's gloves"

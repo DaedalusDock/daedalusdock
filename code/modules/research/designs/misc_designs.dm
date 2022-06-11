@@ -415,7 +415,7 @@
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/iron = 1000)
 	reagents_list = list(/datum/reagent/acetone = 60)
-	build_path = /obj/item/paint/paint_remover
+	build_path = /obj/item/paint_remover
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 

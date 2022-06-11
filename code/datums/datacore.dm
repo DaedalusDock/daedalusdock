@@ -164,6 +164,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 			misc_list[++misc_list.len] = list(
 				"name" = name,
 				"rank" = rank,
+				"trim" = trim,
 				)
 			continue
 		for(var/department_type as anything in job.departments_list)
@@ -174,6 +175,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 			var/list/entry = list(
 				"name" = name,
 				"rank" = rank,
+				"trim" = trim,
 				)
 			var/list/department_list = manifest_out[department.department_name]
 			if(istype(job, department.department_head))
@@ -209,7 +211,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/even = FALSE
 		for(var/entry in entries)
 			var/list/entry_list = entry
-			dat += "<tr[even ? " class='alt'" : ""]><td>[entry_list["name"]]</td><td>[entry_list["rank"]]</td></tr>"
+			dat += "<tr[even ? " class='alt'" : ""]><td>[entry_list["name"]]</td><td>[entry_list["rank"] == entry_list["trim"] ? entry_list["rank"] : "[entry_list["rank"]] ([entry_list["trim"]])"]</td></tr>"
 			even = !even
 
 	dat += "</table>"

@@ -5,7 +5,7 @@
 #define VAMP_DRAIN_AMOUNT 50
 
 /datum/species/vampire
-	name = "Vampire"
+	name = "\improper Vampire"
 	id = SPECIES_VAMPIRE
 	default_color = "FFFFFF"
 	species_traits = list(
@@ -17,6 +17,8 @@
 		HAS_FLESH,
 		HAS_BONE,
 		BLOOD_CLANS,
+		HAIRCOLOR,
+		FACEHAIRCOLOR,
 	)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,

@@ -1,5 +1,5 @@
 /datum/species/abductor
-	name = "Abductor"
+	name = "\improper Abductor"
 	id = SPECIES_ABDUCTOR
 	say_mod = "gibbers"
 	sexes = FALSE

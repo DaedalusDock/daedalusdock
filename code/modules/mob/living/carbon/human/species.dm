@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species
 	///If the game needs to manually check your race to do something not included in a proc here, it will use this.
 	var/id
-	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Leave them generic for other servers to customize.
+	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Must be `\improper`.
 	var/name
 	/// The formatting of the name of the species in plural context. Defaults to "[name]\s" if unset.
 	/// Ex "[Plasmamen] are weak", "[Mothmen] are strong", "[Lizardpeople] don't like", "[Golems] hate"
@@ -172,6 +172,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	///List of factions the mob gain upon gaining this species.
 	var/list/inherent_factions
+	/// The [/mob/living/var/mob_size] of members of this species.
+	var/species_mob_size = MOB_SIZE_HUMAN
 
 	///Punch-specific attack verb.
 	var/attack_verb = SFX_PUNCH
@@ -429,7 +431,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(C.hud_used)
 		C.hud_used.update_locked_slots()
 
-
+	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
 	replace_body(C, src)
@@ -688,6 +690,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "tail_lizard"
 
+	if(mutant_bodyparts["tail_vox"])
+		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
+			bodyparts_to_add -= "tail_vox"
+
 	if(mutant_bodyparts["waggingtail_lizard"])
 		if(source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "waggingtail_lizard"
@@ -711,6 +717,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(mutant_bodyparts["spines"])
 		if(!source.dna.features["spines"] || source.dna.features["spines"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
 			bodyparts_to_add -= "spines"
+
+	if(mutant_bodyparts["spines_vox"])
+		if(!source.dna.features["spines_vox"] || source.dna.features["spines_vox"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
+			bodyparts_to_add -= "spines_vox"
 
 	if(mutant_bodyparts["waggingspines"])
 		if(!source.dna.features["spines"] || source.dna.features["spines"] == "None" || source.wear_suit && (source.wear_suit.flags_inv & HIDEJUMPSUIT))
@@ -757,6 +767,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.tails_list_monkey[source.dna.features["tail_monkey"]]
 				if("headtails")
 					accessory = GLOB.headtails_list[source.dna.features["headtails"]]
+				if("tail_vox")
+					accessory = GLOB.tails_list_vox[source.dna.features["tail_vox"]]
+				if("spines_vox")
+					accessory = GLOB.spines_list_vox[source.dna.features["spines_vox"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue
@@ -764,7 +778,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/mutable_appearance/accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
 
 			//A little rename so we don't have to use tail_lizard or tail_human when naming the sprites.
-			if(bodypart == "tail_lizard" || bodypart == "tail_human" || bodypart == "tail_monkey")
+			if(bodypart == "tail_lizard" || bodypart == "tail_human" || bodypart == "tail_monkey" || bodypart == "tail_vox")
 				bodypart = "tail"
 			else if(bodypart == "waggingtail_lizard" || bodypart == "waggingtail_human")
 				bodypart = "waggingtail"

@@ -236,6 +236,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["tail_teshari"])
 		L[DNA_TESHARI_TAIL_BLOCK] = construct_block(GLOB.teshari_tails_list.Find(features["tail_teshari"]), GLOB.teshari_tails_list.len)
 
+	if(features["tail_vox"])
+		L[DNA_VOX_TAIL_BLOCK] = construct_block(GLOB.tails_list_vox.Find(features["tail_vox"]), GLOB.tails_list_vox.len)
+	if(features["vox_hair"])
+		L[DNA_VOX_HAIR_BLOCK] = construct_block(GLOB.vox_hair_list.Find(features["vox_hair"]), GLOB.vox_hair_list.len)
+	if(features["vox_facial_hair"])
+		L[DNA_VOX_FACIAL_HAIR_BLOCK] = construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len)
+	if(features["spines_vox"])
+		L[DNA_VOX_SPINES_BLOCK] = construct_block(GLOB.spines_list_vox.Find(features["spines_vox"]), GLOB.spines_list_vox.len)
+	if(features["vox_snout"])
+		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
+
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
 
@@ -383,6 +394,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.teshari_body_feathers_list.Find(features["teshari_body_feathers"]), GLOB.teshari_body_feathers_list.len))
 		if(DNA_TESHARI_TAIL_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.teshari_tails_list.Find(features["tail_teshari"]), GLOB.teshari_tails_list.len))
+
+		if(DNA_VOX_TAIL_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_vox.Find(features["tail_vox"]), GLOB.tails_list_vox.len))
+		if(DNA_VOX_HAIR_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_hair_list.Find(features["vox_hair"]), GLOB.vox_hair_list.len))
+		if(DNA_VOX_FACIAL_HAIR_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len))
+		if(DNA_VOX_SPINES_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.spines_list_vox.Find(features["spines_vox"]), GLOB.spines_list_vox.len))
+		if(DNA_VOX_SNOUT_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len))
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/HM)
@@ -662,6 +684,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["teshari_body_feathers"] = GLOB.teshari_body_feathers_list[deconstruct_block(get_uni_feature_block(features, DNA_TESHARI_BODY_FEATHERS_BLOCK), GLOB.teshari_body_feathers_list.len)]
 	if(dna.features["tail_teshari"])
 		dna.features["tail_teshari"] = GLOB.teshari_tails_list[deconstruct_block(get_uni_feature_block(features, DNA_TESHARI_TAIL_BLOCK), GLOB.teshari_tails_list.len)]
+
+	if(dna.features["tail_vox"])
+		dna.features["tail_vox"] = GLOB.tails_list_vox[deconstruct_block(get_uni_feature_block(features, DNA_VOX_TAIL_BLOCK), GLOB.tails_list_vox.len)]
+	if(dna.features["vox_hair"])
+		dna.features["vox_hair"] = GLOB.vox_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_HAIR_BLOCK), GLOB.vox_hair_list.len)]
+	if(dna.features["vox_facial_hair"])
+		dna.features["vox_facial_hair"] = GLOB.vox_facial_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_FACIAL_HAIR_BLOCK), GLOB.vox_facial_hair_list.len)]
+	if(dna.features["spines_vox"])
+		dna.features["spines_vox"] = GLOB.spines_list_vox[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SPINES_BLOCK), GLOB.spines_list_vox.len)]
+	if(dna.features["vox_snout"])
+		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
 
 	for(var/obj/item/organ/external/external_organ in internal_organs)
 		external_organ.mutate_feature(features, src)

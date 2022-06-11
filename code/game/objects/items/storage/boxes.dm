@@ -116,11 +116,13 @@
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
 
 /obj/item/storage/box/survival/PopulateContents()
-	if(!isplasmaman(loc))
+	if(isplasmaman(loc))
+		new /obj/item/tank/internals/plasmaman/belt(src)
+	else if(isvox(loc))
+		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+	else
 		new mask_type(src)
 		new internal_type(src)
-	else
-		new /obj/item/tank/internals/plasmaman/belt(src)
 
 	if(!isnull(medipen_type))
 		new medipen_type(src)
@@ -134,13 +136,19 @@
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
-	if(!isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
-		return
-	var/obj/item/mask = locate(mask_type) in src
-	var/obj/item/internals = locate(internal_type) in src
-	new /obj/item/tank/internals/plasmaman/belt(src)
-	qdel(mask) // Get rid of the items that shouldn't be
-	qdel(internals)
+	if(isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
+		var/obj/item/mask = locate(mask_type) in src
+		var/obj/item/internals = locate(internal_type) in src
+		new /obj/item/tank/internals/plasmaman/belt(src)
+		qdel(mask) // Get rid of the items that shouldn't be
+		qdel(internals)
+	else if(isvox(loc))
+		var/obj/item/mask = locate(mask_type) in src
+		var/obj/item/internals = locate(internal_type) in src
+		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+		qdel(mask)
+		qdel(internals)
+
 
 // Mining survival box
 /obj/item/storage/box/survival/mining
@@ -848,9 +856,8 @@
 /obj/item/storage/box/clown/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] opens [src] and gets consumed by [p_them()]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(user, 'sound/misc/scary_horn.ogg', 70, vary = TRUE)
-	var/obj/item/clothing/head/mob_holder/consumed = new(src, user)
-	user.forceMove(consumed)
-	consumed.desc = "It's [user.real_name]! It looks like [user.p_they()] committed suicide!"
+	forceMove(get_turf(user))
+	new /obj/item/mob_holder(src, user) // Put the mob in the box
 	return OXYLOSS
 
 //////
@@ -861,13 +868,15 @@
 
 // Clown survival box
 /obj/item/storage/box/hug/survival/PopulateContents()
-	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
-	if(!isplasmaman(loc))
-		new /obj/item/tank/internals/emergency_oxygen(src)
-	else
+	if(isplasmaman(loc))
 		new /obj/item/tank/internals/plasmaman/belt(src)
+	else if(isvox(loc))
+		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+	else
+		new /obj/item/clothing/mask/breath(src)
+		new /obj/item/tank/internals/emergency_oxygen(src)
 
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
 		new /obj/item/flashlight/flare(src)

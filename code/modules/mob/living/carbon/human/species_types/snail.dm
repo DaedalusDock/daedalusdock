@@ -1,5 +1,5 @@
 /datum/species/snail
-	name = "Snailperson"
+	name = "\improper Snailperson"
 	id = SPECIES_SNAIL
 	offset_features = list(OFFSET_GLASSES = list(0,4))
 	default_color = "336600" //vomit green

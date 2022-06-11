@@ -365,7 +365,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon_state = "cultrobesalt"
 	inhand_icon_state = "cultrobesalt"
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/alt
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/hooded/cultrobes/alt/ghost
 	item_flags = DROPDEL

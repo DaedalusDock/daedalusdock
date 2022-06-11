@@ -16,6 +16,10 @@
 	/// How many uses are left
 	var/paintleft = 10
 
+/obj/item/paint/examine(mob/user)
+	. = ..()
+	. += span_notice("Paint wall stripes by right clicking a walls.")
+
 /obj/item/paint/red
 	name = "red paint"
 	paint_color = COLOR_RED
@@ -55,6 +59,17 @@
 	gender = PLURAL
 	name = "adaptive paint"
 	icon_state = "paint_neutral"
+
+/obj/item/paint/anycolor/examine(mob/user)
+	. = ..()
+	. += span_notice("Choose a basic color by using the paint.")
+	. += span_notice("Choose any color by alt-clicking the paint.")
+
+/obj/item/paint/anycolor/AltClick(mob/living/user)
+	var/new_paint_color = input(user, "Choose new paint color", "Paint Color", paint_color) as color|null
+	if(new_paint_color)
+		paint_color = new_paint_color
+		icon_state = "paint_neutral"
 
 /obj/item/paint/anycolor/attack_self(mob/user)
 	var/list/possible_colors = list(
@@ -102,28 +117,121 @@
 		return FALSE
 	return TRUE
 
-/obj/item/paint/afterattack(atom/target, mob/user, proximity)
+/obj/item/paint/afterattack(atom/target, mob/user, proximity, params)
 	. = ..()
+	if(.)
+		return
 	if(!proximity)
 		return
+	var/list/modifiers = params2list(params)
 	if(paintleft <= 0)
 		icon_state = "paint_empty"
 		return
+	if(istype(target, /obj/structure/low_wall))
+		var/obj/structure/low_wall/target_low_wall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			target_low_wall.set_stripe_paint(paint_color)
+		else
+			target_low_wall.set_wall_paint(paint_color)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] paints \the [target_low_wall]."), \
+			span_notice("You paint \the [target_low_wall]."))
+		return TRUE
+	if(iswall(target))
+		var/turf/closed/wall/target_wall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			target_wall.paint_stripe(paint_color)
+		else
+			target_wall.paint_wall(paint_color)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] paints \the [target_wall]."), \
+			span_notice("You paint \the [target_wall]."))
+		return TRUE
+	if(isfalsewall(target))
+		var/obj/structure/falsewall/target_falsewall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			target_falsewall.paint_stripe(paint_color)
+		else
+			target_falsewall.paint_wall(paint_color)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] paints \the [target_falsewall]."), \
+			span_notice("You paint \the [target_falsewall]."))
+		return TRUE
 	if(!isturf(target) || isspaceturf(target))
-		return
+		return TRUE
 	target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
 
-/obj/item/paint/paint_remover
+/obj/item/paint_remover
 	gender = PLURAL
 	name = "paint remover"
 	desc = "Used to remove color from anything."
+	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "paint_neutral"
+	inhand_icon_state = "paintcan"
+	w_class = WEIGHT_CLASS_NORMAL
+	resistance_flags = FLAMMABLE
+	max_integrity = 100
 
-/obj/item/paint/paint_remover/afterattack(atom/target, mob/user, proximity)
+/obj/item/paint_remover/examine(mob/user)
 	. = ..()
+	. += span_notice("Remove wall stripe paint by right-clicking a wall.")
+
+/obj/item/paint_remover/afterattack(atom/target, mob/user, proximity, params)
+	. = ..()
+	if(.)
+		return
 	if(!proximity)
 		return
-	if(!isturf(target) || !isobj(target))
+	var/list/modifiers = params2list(params)
+	if(istype(target, /obj/structure/low_wall))
+		var/obj/structure/low_wall/target_low_wall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			if(!target_low_wall.stripe_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_low_wall.set_stripe_paint(null)
+		else
+			if(!target_low_wall.wall_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_low_wall.set_wall_paint(null)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] strips the paint from \the [target_low_wall]."), \
+			span_notice("You strip the paint from \the [target_low_wall]."))
+		return TRUE
+	if(iswall(target))
+		var/turf/closed/wall/target_wall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			if(!target_wall.stripe_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_wall.paint_stripe(null)
+		else
+			if(!target_wall.wall_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_wall.paint_wall(null)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] strips the paint from \the [target_wall]."), \
+			span_notice("You strip the paint from \the [target_wall]."))
+		return TRUE
+	if(isfalsewall(target))
+		var/obj/structure/falsewall/target_falsewall = target
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			if(!target_falsewall.stripe_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_falsewall.paint_stripe(null)
+		else
+			if(!target_falsewall.wall_paint)
+				to_chat(user, span_warning("There is no paint to strip!"))
+				return TRUE
+			target_falsewall.paint_wall(null)
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_notice("[user] strips the paint from \the [target_falsewall]."), \
+			span_notice("You strip the paint from \the [target_falsewall]."))
+		return TRUE
+	if(!isturf(target) && !isobj(target))
 		return
 	if(target.color != initial(target.color))
 		target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)

@@ -168,8 +168,10 @@ There are several things that need to be remembered:
 			if(dna.species.bodytype & BODYTYPE_TESHARI)
 				if(U.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 					icon_file = TESHARI_UNIFORM_FILE
-				else
-					handled_by_bodytype = FALSE
+
+			if(dna.species.bodytype & BODYTYPE_VOX_LEGS)
+				if(U.supports_variations_flags & CLOTHING_VOX_VARIATION)
+					icon_file = U.worn_icon_vox || VOX_UNIFORM_FILE
 
 			//Female sprites have lower priority than digitigrade sprites
 			else if(dna.species.sexes && (dna.species.bodytype & BODYTYPE_HUMANOID) && physique == FEMALE && U.adjusted != NO_FEMALE_UNIFORM) //Agggggggghhhhh
@@ -179,6 +181,7 @@ There are several things that need to be remembered:
 				icon_file = DEFAULT_UNIFORM_FILE
 				handled_by_bodytype = FALSE
 			//END SPECIES HANDLING
+
 			uniform_overlay = U.build_worn_icon(
 				default_layer = UNIFORM_LAYER,
 				default_icon_file = icon_file,
@@ -261,8 +264,10 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(gloves.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_GLOVES_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_OTHER)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_GLOVES_FILE
 
 		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item)))
 			icon_file = 'icons/mob/clothing/hands.dmi'
@@ -305,8 +310,10 @@ There are several things that need to be remembered:
 			if(dna.species.bodytype & BODYTYPE_TESHARI)
 				if(glasses.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 					icon_file = TESHARI_EYES_FILE
-				else
-					handled_by_bodytype = FALSE
+
+			if(dna.species.bodytype & BODYTYPE_VOX_OTHER)
+				if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+					icon_file = worn_item.worn_icon_vox || VOX_EYES_FILE
 
 			if(!icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item)))
 				icon_file = 'icons/mob/clothing/eyes.dmi'
@@ -348,8 +355,10 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(ears.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_EARS_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_OTHER)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_EARS_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -382,8 +391,6 @@ There are several things that need to be remembered:
 			if(dna.species.bodytype & BODYTYPE_TESHARI)
 				if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 					icon_file = TESHARI_NECK_FILE
-				else
-					handled_by_bodytype = FALSE
 
 			if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 				handled_by_bodytype = FALSE
@@ -423,18 +430,21 @@ There are several things that need to be remembered:
 		update_hud_shoes(worn_item)
 		var/handled_by_bodytype = TRUE
 
-		//PARIAH EDIT
 		//(Currently) unused digitigrade handling
 		if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
 				icon_file = shoes.worn_icon_digitigrade || DIGITIGRADE_SHOES_FILE //PARIAH EDIT
-		//PARIAH EDIT END
+
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_SHOES_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_LEGS)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
+				if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
+					icon_file = worn_item.worn_icon_vox || VOX_SHOES_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -492,16 +502,17 @@ There are several things that need to be remembered:
 		var/handled_by_bodytype = TRUE //PARIAH EDIT
 		var/icon_file
 
-		//PARIAH EDIT ADDITION
 		if(dna.species.bodytype & BODYTYPE_SNOUTED)
 			if(worn_item.supports_variations_flags & CLOTHING_SNOUTED_VARIATION)
 				icon_file = head.worn_icon_snouted || SNOUTED_HEAD_FILE
-		//PARIAH EDIT END
+
+		if(dna.species.bodytype & BODYTYPE_VOX_BEAK)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_HEAD_FILE
+
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_HEAD_FILE
-			else
-				handled_by_bodytype = FALSE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -539,8 +550,10 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_BELT_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_OTHER)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_BELT_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -585,8 +598,10 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_SUIT_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_LEGS)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_SUIT_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			handled_by_bodytype = FALSE
@@ -643,24 +658,24 @@ There are several things that need to be remembered:
 		inv.update_icon()
 
 	if(wear_mask)
-		var/obj/item/worn_item = wear_mask
-		update_hud_wear_mask(worn_item)
-		var/mutable_appearance/mask_overlay
-		var/icon_file = 'icons/mob/clothing/mask.dmi'
-		var/handled_by_bodytype = TRUE
-
-		//PARIAH EDIT ADDITION
-		if(dna.species.bodytype & BODYTYPE_SNOUTED)
-			if(worn_item.supports_variations_flags & CLOTHING_SNOUTED_VARIATION)
-				icon_file = wear_mask.worn_icon_snouted || SNOUTED_MASK_FILE
-		//PARIAH EDIT END
-		if(dna.species.bodytype & BODYTYPE_TESHARI)
-			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
-				icon_file = TESHARI_MASK_FILE
-			else
-				handled_by_bodytype = FALSE
-
 		if(!(ITEM_SLOT_MASK in check_obscured_slots()))
+			var/obj/item/worn_item = wear_mask
+			update_hud_wear_mask(worn_item)
+			var/mutable_appearance/mask_overlay
+			var/icon_file
+			var/handled_by_bodytype = TRUE
+
+			if(dna.species.bodytype & BODYTYPE_SNOUTED)
+				if(worn_item.supports_variations_flags & CLOTHING_SNOUTED_VARIATION)
+					icon_file = wear_mask.worn_icon_snouted || SNOUTED_MASK_FILE
+
+			if(dna.species.bodytype & BODYTYPE_VOX_BEAK)
+				if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+					icon_file = worn_item.worn_icon_vox || VOX_MASK_FILE
+
+			if(dna.species.bodytype & BODYTYPE_TESHARI)
+				if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
+					icon_file = TESHARI_MASK_FILE
 
 			if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 				icon_file = 'icons/mob/clothing/mask.dmi'
@@ -672,13 +687,13 @@ There are several things that need to be remembered:
 				override_file = handled_by_bodytype ? icon_file : null
 			)
 
-		if(!mask_overlay)
-			return
-		if(!handled_by_bodytype && (OFFSET_FACEMASK in dna.species.offset_features))
-			mask_overlay.pixel_x += dna.species.offset_features[OFFSET_FACEMASK][1]
-			mask_overlay.pixel_y += dna.species.offset_features[OFFSET_FACEMASK][2]
+			if(!mask_overlay)
+				return
+			if(!handled_by_bodytype && (OFFSET_FACEMASK in dna.species.offset_features))
+				mask_overlay.pixel_x += dna.species.offset_features[OFFSET_FACEMASK][1]
+				mask_overlay.pixel_y += dna.species.offset_features[OFFSET_FACEMASK][2]
 
-		overlays_standing[FACEMASK_LAYER] = mask_overlay
+			overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
 	update_mutant_bodyparts() //e.g. upgate needed because mask now hides lizard snout
@@ -694,13 +709,16 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = back
 		var/mutable_appearance/back_overlay
 		update_hud_back(worn_item)
-		var/icon_file = 'icons/mob/clothing/back.dmi'
+		var/icon_file
 		var/handled_by_bodytype = TRUE
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_BACK_FILE
-			else
-				handled_by_bodytype = FALSE
+
+		if(dna.species.bodytype & BODYTYPE_VOX_OTHER)
+			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
+				icon_file = worn_item.worn_icon_vox || VOX_BACK_FILE
+
 
 		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item)))
 			icon_file = 'icons/mob/clothing/back.dmi'
@@ -857,7 +875,7 @@ There are several things that need to be remembered:
 
 /mob/living/carbon/human/proc/update_hud_s_store(obj/item/worn_item)
 	worn_item.screen_loc = ui_sstore1
-	if((client && hud_used) && (hud_used.inventory_shown && hud_used.hud_shown))
+	if(client && hud_used?.hud_shown)
 		client.screen += worn_item
 	update_observer_view(worn_item,TRUE)
 

@@ -3,19 +3,16 @@
 #define SMOOTH_CORNERS (1<<0)
 /// Smoothing system in where adjacencies are calculated and used to select a pre-baked icon_state, encoded by bitmasking.
 #define SMOOTH_BITMASK (1<<1)
-/// Atom has diagonal corners, with underlays under them.
-#define SMOOTH_DIAGONAL_CORNERS (1<<2)
 /// Atom will smooth with the borders of the map.
-#define SMOOTH_BORDER (1<<3)
+#define SMOOTH_BORDER (1<<2)
 /// Atom is currently queued to smooth.
-#define SMOOTH_QUEUED (1<<4)
+#define SMOOTH_QUEUED (1<<3)
 /// Smooths with objects, and will thus need to scan turfs for contents.
-#define SMOOTH_OBJ (1<<5)
+#define SMOOTH_OBJ (1<<4)
 
 DEFINE_BITFIELD(smoothing_flags, list(
 	"SMOOTH_CORNERS" = SMOOTH_CORNERS,
 	"SMOOTH_BITMASK" = SMOOTH_BITMASK,
-	"SMOOTH_DIAGONAL_CORNERS" = SMOOTH_DIAGONAL_CORNERS,
 	"SMOOTH_BORDER" = SMOOTH_BORDER,
 	"SMOOTH_QUEUED" = SMOOTH_QUEUED,
 	"SMOOTH_OBJ" = SMOOTH_OBJ,
@@ -96,12 +93,10 @@ DEFINE_BITFIELD(smoothing_flags, list(
 #define SMOOTH_GROUP_BAMBOO_FLOOR S_TURF(52) //![/turf/open/floor/bamboo]
 
 #define SMOOTH_GROUP_CLOSED_TURFS S_TURF(53) ///turf/closed
-#define SMOOTH_GROUP_MATERIAL_WALLS S_TURF(54) ///turf/closed/wall/material
-#define SMOOTH_GROUP_SYNDICATE_WALLS S_TURF(55) ///turf/closed/wall/r_wall/syndicate, /turf/closed/indestructible/syndicate
-#define SMOOTH_GROUP_HOTEL_WALLS S_TURF(56) ///turf/closed/indestructible/hotelwall
-#define SMOOTH_GROUP_MINERAL_WALLS S_TURF(57) ///turf/closed/mineral, /turf/closed/indestructible
-#define SMOOTH_GROUP_BOSS_WALLS S_TURF(58) ///turf/closed/indestructible/riveted/boss
-#define SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS S_TURF(59) ///turf/closed/wall/mineral/titanium/survival
+#define SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS S_TURF(53) ///turf/closed/wall/mineral/titanium/survival
+#define SMOOTH_GROUP_HOTEL_WALLS S_TURF(54) ///turf/closed/indestructible/hotelwall
+#define SMOOTH_GROUP_MINERAL_WALLS S_TURF(55) ///turf/closed/mineral, /turf/closed/indestructible
+#define SMOOTH_GROUP_BOSS_WALLS S_TURF(56) ///turf/closed/indestructible/riveted/boss
 
 #define MAX_S_TURF SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS //Always match this value with the one above it.
 
@@ -110,22 +105,8 @@ DEFINE_BITFIELD(smoothing_flags, list(
 /* /obj included */
 
 #define SMOOTH_GROUP_WALLS S_OBJ(0) ///turf/closed/wall, /obj/structure/falsewall
-#define SMOOTH_GROUP_URANIUM_WALLS S_OBJ(1) ///turf/closed/wall/mineral/uranium, /obj/structure/falsewall/uranium
-#define SMOOTH_GROUP_GOLD_WALLS S_OBJ(2) ///turf/closed/wall/mineral/gold, /obj/structure/falsewall/gold
-#define SMOOTH_GROUP_SILVER_WALLS S_OBJ(3) ///turf/closed/wall/mineral/silver, /obj/structure/falsewall/silver
-#define SMOOTH_GROUP_DIAMOND_WALLS S_OBJ(4) ///turf/closed/wall/mineral/diamond, /obj/structure/falsewall/diamond
-#define SMOOTH_GROUP_PLASMA_WALLS S_OBJ(5) ///turf/closed/wall/mineral/plasma, /obj/structure/falsewall/plasma
-#define SMOOTH_GROUP_BANANIUM_WALLS S_OBJ(6) ///turf/closed/wall/mineral/bananium, /obj/structure/falsewall/bananium
-#define SMOOTH_GROUP_SANDSTONE_WALLS S_OBJ(7) ///turf/closed/wall/mineral/sandstone, /obj/structure/falsewall/sandstone
-#define SMOOTH_GROUP_WOOD_WALLS S_OBJ(8) ///turf/closed/wall/mineral/wood, /obj/structure/falsewall/wood
-#define SMOOTH_GROUP_IRON_WALLS S_OBJ(9) ///turf/closed/wall/mineral/iron, /obj/structure/falsewall/iron
-#define SMOOTH_GROUP_ABDUCTOR_WALLS S_OBJ(10) ///turf/closed/wall/mineral/abductor, /obj/structure/falsewall/abductor
-#define SMOOTH_GROUP_TITANIUM_WALLS S_OBJ(11) ///turf/closed/wall/mineral/titanium, /obj/structure/falsewall/titanium
-#define SMOOTH_GROUP_PLASTITANIUM_WALLS S_OBJ(13) ///turf/closed/wall/mineral/plastitanium, /obj/structure/falsewall/plastitanium
-#define SMOOTH_GROUP_SURVIVAL_TIANIUM_POD S_OBJ(14) ///turf/closed/wall/mineral/titanium/survival/pod, /obj/machinery/door/airlock/survival_pod, /obj/structure/window/reinforced/shuttle/survival_pod
-#define SMOOTH_GROUP_HIERO_WALL S_OBJ(15) ///obj/effect/temp_visual/elite_tumor_wall, /obj/effect/temp_visual/hierophant/wall
-#define SMOOTH_GROUP_BAMBOO_WALLS S_TURF(16) //![/turf/closed/wall/mineral/bamboo, /obj/structure/falsewall/bamboo]
-#define SMOOTH_GROUP_PLASTINUM_WALLS S_TURF(17) //![turf/closed/indestructible/riveted/plastinum]
+#define SMOOTH_GROUP_HIERO_WALL S_OBJ(1) ///obj/effect/temp_visual/elite_tumor_wall, /obj/effect/temp_visual/hierophant/wall
+#define SMOOTH_GROUP_SURVIVAL_TIANIUM_POD S_OBJ(2) ///turf/closed/wall/mineral/titanium/survival/pod, /obj/machinery/door/airlock/survival_pod, /obj/structure/window/reinforced/shuttle/survival_pod
 
 #define SMOOTH_GROUP_PAPERFRAME S_OBJ(20) ///obj/structure/window/paperframe, /obj/structure/mineral_door/paperframe
 
@@ -136,8 +117,11 @@ DEFINE_BITFIELD(smoothing_flags, list(
 
 #define SMOOTH_GROUP_LATTICE  S_OBJ(30) ///obj/structure/lattice
 #define SMOOTH_GROUP_CATWALK  S_OBJ(31) ///obj/structure/lattice/catwalk
+#define SMOOTH_GROUP_GRILLE  S_OBJ(32) ///obj/structure/grille
+#define SMOOTH_GROUP_LOW_WALL  S_OBJ(33) ///obj/structure/low_wall
 
 #define SMOOTH_GROUP_AIRLOCK S_OBJ(40) ///obj/machinery/door/airlock
+#define SMOOTH_GROUP_SHUTTERS_BLASTDOORS S_OBJ(41) ///obj/machinery/door/poddoor
 
 #define SMOOTH_GROUP_TABLES S_OBJ(50) ///obj/structure/table
 #define SMOOTH_GROUP_WOOD_TABLES S_OBJ(51) ///obj/structure/table/wood

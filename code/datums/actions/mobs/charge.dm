@@ -287,7 +287,7 @@
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hallucination_surround
 	name = "Surround Target"
-	icon_icon = 'icons/turf/walls/wall.dmi'
+	icon_icon = 'icons/turf/walls/legacy/wall.dmi'
 	button_icon_state = "wall-0"
 	desc = "Allows you to create hallucinations that charge around your target."
 	charge_delay = 0.6 SECONDS

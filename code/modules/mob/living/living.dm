@@ -1566,38 +1566,69 @@
 	var/mob/living/U = user
 	if(isliving(dropping))
 		var/mob/living/M = dropping
-		if(M.can_be_held && U.pulling == M)
+		if(U.pulling == M && mob_size > M.mob_size)
 			M.mob_try_pickup(U)//blame kevinz
 			return//dont open the mobs inventory if you are picking them up
 	. = ..()
 
-/mob/living/proc/mob_pickup(mob/living/L)
-	var/obj/item/clothing/head/mob_holder/holder = new(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
-	L.visible_message(span_warning("[L] scoops up [src]!"))
-	L.put_in_hands(holder)
+/**
+ * Attempt to pick up a mob.
+ *
+ * `src` is the mob being picked up, `user` is the mob doing the pick upping.
+ *
+ * Arguments:
+ * * mob/living/user - The user attempting to pick up this mob.
+ * * instant - Should the mob be picked up instantly?
+ */
+/mob/living/proc/mob_try_pickup(mob/living/user, instant = FALSE)
+	. = FALSE
+	if(!mob_pickup_checks(user))
+		return
+	if(!instant)
+		user.visible_message(span_warning("[user] starts trying to pick up [src]!"),
+			span_danger("You start trying to pick up [src]..."), ignored_mobs = src)
+		to_chat(src, span_userdanger("[user] starts trying to pick you up!"))
+		if(!do_after(user, 2 SECONDS, src))
+			return
+		if(!mob_pickup_checks(user)) // Check everything again after the timer
+			return
+	mob_pickup(user)
+	return TRUE
+
+/mob/living/proc/mob_pickup_checks(mob/living/user, display_messages = TRUE)
+	if(QDELETED(src) || !istype(user))
+		return FALSE
+	if(!user.get_empty_held_indexes())
+		if(display_messages)
+			to_chat(user, span_warning("Your hands are full!"))
+		return FALSE
+	if(buckled)
+		if(display_messages)
+			to_chat(user, span_warning("[src] is buckled to [buckled] and cannot be picked up!"))
+		return FALSE
+	return TRUE
+
+/**
+ * Spawn a [/obj/item/mob_holder], move `src` into it, and put it into the hands of `user`.
+ *
+ * [/mob/living/proc/mob_try_pickup] should be called instead of this under most circumstances.
+ *
+ * Arguments:
+ * * mob/living/user - The user picking up this mob.
+ */
+/mob/living/proc/mob_pickup(mob/living/user)
+	var/obj/item/mob_holder/holder = new held_type(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
+	user.visible_message(span_warning("[user] picks up [src]!"))
+	user.put_in_hands(holder)
+	return holder
+
+/mob/living/remove_air(amount) //To prevent those in contents suffocating
+	return loc ? loc.remove_air(amount) : null
 
 /mob/living/proc/set_name()
 	numba = rand(1, 1000)
 	name = "[name] ([numba])"
 	real_name = name
-
-/mob/living/proc/mob_try_pickup(mob/living/user, instant=FALSE)
-	if(!ishuman(user))
-		return
-	if(!user.get_empty_held_indexes())
-		to_chat(user, span_warning("Your hands are full!"))
-		return FALSE
-	if(buckled)
-		to_chat(user, span_warning("[src] is buckled to something!"))
-		return FALSE
-	if(!instant)
-		user.visible_message(span_warning("[user] starts trying to scoop up [src]!"), \
-						span_danger("You start trying to scoop up [src]..."), null, null, src)
-		to_chat(src, span_userdanger("[user] starts trying to scoop you up!"))
-		if(!do_after(user, 2 SECONDS, target = src))
-			return FALSE
-	mob_pickup(user)
-	return TRUE
 
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))

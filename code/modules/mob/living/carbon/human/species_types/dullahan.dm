@@ -1,8 +1,8 @@
 /datum/species/dullahan
-	name = "Dullahan"
+	name = "\improper Dullahan"
 	id = SPECIES_DULLAHAN
 	default_color = "FFFFFF"
-	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
+	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE, HAIRCOLOR, FACEHAIRCOLOR)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,

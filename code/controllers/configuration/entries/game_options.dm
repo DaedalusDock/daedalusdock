@@ -36,6 +36,7 @@
 /datum/config_entry/flag/humans_need_surnames
 
 /datum/config_entry/flag/allow_ai // allow ai job
+	default = TRUE
 
 /datum/config_entry/flag/allow_ai_multicam // allow ai multicamera mode
 

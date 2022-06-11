@@ -18,16 +18,16 @@
 	ignore_syncmesh_share = TRUE
 
 /obj/structure/blob/special/core/Initialize(mapload, client/new_overmind = null, placed = 0)
+	. = ..()
+	if(!placed && !overmind)
+		return INITIALIZE_HINT_QDEL
 	GLOB.blob_cores += src
 	START_PROCESSING(SSobj, src)
 	SSpoints_of_interest.make_point_of_interest(src)
 	update_appearance() //so it atleast appears
-	if(!placed && !overmind)
-		return INITIALIZE_HINT_QDEL
 	if(overmind)
 		overmind.blobstrain.on_gain()
 		update_appearance()
-	. = ..()
 
 /obj/structure/blob/special/core/Destroy()
 	GLOB.blob_cores -= src

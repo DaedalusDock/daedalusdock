@@ -7,8 +7,8 @@ export const Apc = (props, context) => {
   return (
     <Window
       width={450}
-      height={445}>
-      <Window.Content scrollable>
+      height={432}>
+      <Window.Content>
         <ApcContent />
       </Window.Content>
     </Window>
@@ -86,7 +86,17 @@ const ApcContent = (props, context) => {
   return (
     <>
       <InterfaceLockNoticeBox />
-      <Section title="Power Status">
+      <Section
+        title="Power Status"
+        buttons={(
+          <Button
+            icon={data.mainLights ? "lightbulb" : "lightbulb-o"}
+            content="Main Lights"
+            color={data.mainLights ? "green" : "red"}
+            onClick={() => act('main_lights')}
+          />
+        )}
+      >
         <LabeledList>
           <LabeledList.Item
             label="Main Breaker"
@@ -196,8 +206,11 @@ const ApcContent = (props, context) => {
             label="Emergency Lighting"
             buttons={(
               <Button
-                icon="lightbulb-o"
+                icon={data.emergencyLights ? "lightbulb" : "lightbulb-o"}
                 content={data.emergencyLights ? 'Enabled' : 'Disabled'}
+                width={6.6}
+                textAlign="left"
+                selected={data.emergencyLights}
                 disabled={locked}
                 onClick={() => act('emergency_lighting')} />
             )} />
@@ -205,8 +218,11 @@ const ApcContent = (props, context) => {
             label="Night Shift Lighting"
             buttons={(
               <Button
-                icon="lightbulb-o"
+                icon={data.nightshiftLights ? "lightbulb" : "lightbulb-o"}
                 content={data.nightshiftLights ? 'Enabled' : 'Disabled'}
+                width={6.6}
+                textAlign="left"
+                selected={data.nightshiftLights}
                 onClick={() => act('toggle_nightshift')} />
             )} />
         </LabeledList>

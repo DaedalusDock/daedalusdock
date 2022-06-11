@@ -1,5 +1,5 @@
 /datum/species/skrell
-	name = "Skrell"
+	name = "\improper Skrell"
 	id = SPECIES_SKRELL
 	say_mod = "warbles"
 	default_color = "42F58D"

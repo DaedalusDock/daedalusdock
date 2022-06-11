@@ -45,14 +45,16 @@
 
 /**
  * Proc handling the loading of map configs. Will return the default map config using [/proc/load_default_map_config] if the loading of said file fails for any reason whatsoever, so we always have a working map for the server to run.
+ *
  * Arguments:
  * * filename - Name of the config file for the map we want to load. The .json file extension is added during the proc, so do not specify filenames with the extension.
- * * directory - Name of the directory containing our .json - Must be in MAP_DIRECTORY_WHITELIST. We default this to MAP_DIRECTORY_MAPS as it will likely be the most common usecase. If no filename is set, we ignore this.
- * * error_if_missing - Bool that says whether failing to load the config for the map will be logged in log_world or not as it's passed to LoadConfig().
+ * * directory - Name of the directory containing our .json - Must be in `MAP_DIRECTORY_WHITELIST`. We default this to `MAP_DIRECTORY_MAPS` as it will likely be the most common usecase. If no filename is set, we ignore this.
+ * * log_missing - Bool that says whether failing to load the config for the map will be logged in log_world or not as it's passed to LoadConfig().
+ * * log_whitelist - Bool that says whether the directory not being in `MAP_DIRECTORY_WHITELIST` will be logged in log_world.
  *
  * Returns the config for the map to load.
  */
-/proc/load_map_config(filename = null, directory = null, error_if_missing = TRUE)
+/proc/load_map_config(filename = null, directory = null, log_missing = TRUE, log_whitelist = TRUE)
 	var/datum/map_config/config = load_default_map_config()
 
 	if(filename) // If none is specified, then go to look for next_map.json, for map rotation purposes.
@@ -60,7 +62,8 @@
 		//Default to MAP_DIRECTORY_MAPS if no directory is passed
 		if(directory)
 			if(!(directory in MAP_DIRECTORY_WHITELIST))
-				log_world("map directory not in whitelist: [directory] for map [filename]")
+				if(log_whitelist)
+					log_world("map directory not in whitelist: [directory] for map [filename]")
 				return config
 		else
 			directory = MAP_DIRECTORY_MAPS
@@ -70,7 +73,7 @@
 		filename = PATH_TO_NEXT_MAP_JSON
 
 
-	if (!config.LoadConfig(filename, error_if_missing))
+	if (!config.LoadConfig(filename, log_missing))
 		qdel(config)
 		return load_default_map_config()
 	return config
@@ -78,9 +81,9 @@
 
 #define CHECK_EXISTS(X) if(!istext(json[X])) { log_world("[##X] missing from json!"); return; }
 
-/datum/map_config/proc/LoadConfig(filename, error_if_missing)
+/datum/map_config/proc/LoadConfig(filename, log_missing)
 	if(!fexists(filename))
-		if(error_if_missing)
+		if(log_missing)
 			log_world("map_config not found: [filename]")
 		return
 
@@ -176,7 +179,7 @@
 			log_world("map_config \"job_changes\" field is missing or invalid!")
 			return
 		job_changes = json["job_changes"]
-	
+
 	if("library_areas" in json)
 		if(!islist(json["library_areas"]))
 			log_world("map_config \"library_areas\" field is missing or invalid!")

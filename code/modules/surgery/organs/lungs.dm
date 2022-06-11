@@ -675,3 +675,21 @@
 	breath_gases[/datum/gas/oxygen][MOLES] += gas_breathed
 	breath_gases[/datum/gas/hydrogen][MOLES] += gas_breathed*2
 	breath_gases[/datum/gas/water_vapor][MOLES] -= gas_breathed
+
+/obj/item/organ/lungs/vox
+	name = "Vox lungs"
+	desc = "They're filled with dust....wow."
+	icon_state = "vox-lungs"
+
+	safe_oxygen_min = 0 //We don't breathe this
+	safe_oxygen_max = 0.05 //This is toxic to us
+	safe_nitro_min = 16 //We breathe THIS!
+	oxy_damage_type = TOX //And it poisons us
+	oxy_breath_dam_min = 6
+	oxy_breath_dam_max = 20
+
+	cold_level_1_threshold = 0 // Vox should be able to breathe in cold gas without issues?
+	cold_level_2_threshold = 0
+	cold_level_3_threshold = 0
+	status = ORGAN_ROBOTIC
+	organ_flags = ORGAN_SYNTHETIC

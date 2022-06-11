@@ -180,7 +180,7 @@
  *
  * Use for atoms performing visible actions
  *
- * message is output to anyone who can see, e.g. `"The [src] does something!"`
+ * message is output to anyone who can see, e.g. `"[src] does something!"`
  *
  * Vars:
  * * self_message (optional) is what the src mob sees e.g. "You do something!"
@@ -217,7 +217,7 @@
 		if(M.see_invisible < invisibility)//if src is invisible to M
 			msg = blind_message
 			msg_type = MSG_AUDIBLE
-		else if(T != loc && T != src) //if src is inside something and not a turf.
+		else if((T != loc && T != src) && !ismobholder(loc)) //if src is inside something and not a turf.
 			if(M != loc) // Only give the blind message to hearers that aren't the location
 				msg = blind_message
 				msg_type = MSG_AUDIBLE

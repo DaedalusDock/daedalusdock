@@ -2090,7 +2090,7 @@
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 "Dn" = (
-/obj/item/paint/paint_remover{
+/obj/item/paint_remover{
 	pixel_y = 8
 	},
 /obj/structure/table/wood,

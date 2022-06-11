@@ -28,29 +28,9 @@
 			else
 				to_chat(drone, span_warning("You need to remain still to cannibalize [src]!"))
 
-//ATTACK HAND IGNORING PARENT RETURN VALUE
-/mob/living/simple_animal/drone/attack_hand(mob/user, list/modifiers)
-	if(ishuman(user))
-		if(stat == DEAD || status_flags & GODMODE || !can_be_held)
-			..()
-			return
-		if(user.get_active_held_item())
-			to_chat(user, span_warning("Your hands are full!"))
-			return
-		visible_message(span_warning("[user] starts picking up [src]."), \
-						span_userdanger("[user] starts picking you up!"))
-		if(!do_after(user, 20, target = src))
-			return
-		visible_message(span_warning("[user] picks up [src]!"), \
-						span_userdanger("[user] picks you up!"))
-		if(buckled)
-			to_chat(user, span_warning("[src] is buckled to [buckled] and cannot be picked up!"))
-			return
-		to_chat(user, span_notice("You pick [src] up."))
-		drop_all_held_items()
-		var/obj/item/clothing/head/mob_holder/drone/DH = new(get_turf(src), src)
-		DH.slot_flags = worn_slot_flags
-		user.put_in_hands(DH)
+/mob/living/simple_animal/drone/mob_pickup(mob/living/user)
+	drop_all_held_items()
+	return ..()
 
 /**
  * Called when a drone attempts to reactivate a dead drone

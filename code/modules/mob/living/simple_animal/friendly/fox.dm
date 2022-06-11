@@ -21,7 +21,6 @@
 	response_harm_continuous = "kicks"
 	response_harm_simple = "kick"
 	gold_core_spawnable = FRIENDLY_SPAWN
-	can_be_held = TRUE
 	held_state = "fox"
 	///In the case 'melee_damage_upper' is somehow raised above 0
 	attack_verb_continuous = "bites"

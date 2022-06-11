@@ -32,6 +32,7 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	matter_amount = 4
 	cost = 500
 	source = /datum/robot_energy_storage/glass
+	window_type = /obj/structure/window/fulltile
 
 /obj/item/stack/sheet/glass/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to slice [user.p_their()] neck with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -94,6 +95,7 @@ GLOBAL_LIST_INIT(pglass_recipes, list ( \
 	grind_results = list(/datum/reagent/silicon = 20, /datum/reagent/toxin/plasma = 10)
 	material_flags = NONE
 	tableVariant = /obj/structure/table/glass/plasmaglass
+	window_type = /obj/structure/window/plasma/fulltile
 
 /obj/item/stack/sheet/plasmaglass/fifty
 	amount = 50
@@ -149,6 +151,7 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	point_value = 4
 	matter_amount = 6
 	tableVariant = /obj/structure/table/reinforced/rglass
+	window_type = /obj/structure/window/reinforced/fulltile
 
 /obj/item/stack/sheet/rglass/attackby(obj/item/W, mob/user, params)
 	add_fingerprint(user)
@@ -202,6 +205,7 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	point_value = 23
 	matter_amount = 8
 	tableVariant = /obj/structure/table/reinforced/plasmarglass
+	window_type = /obj/structure/window/reinforced/plasma/fulltile
 
 /obj/item/stack/sheet/plasmarglass/get_main_recipes()
 	. = ..()
@@ -224,6 +228,7 @@ GLOBAL_LIST_INIT(titaniumglass_recipes, list(
 	resistance_flags = ACID_PROOF
 	merge_type = /obj/item/stack/sheet/titaniumglass
 	tableVariant = /obj/structure/table/reinforced/titaniumglass
+	window_type = /obj/structure/window/reinforced/shuttle
 
 /obj/item/stack/sheet/titaniumglass/fifty
 	amount = 50
@@ -250,6 +255,7 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	resistance_flags = ACID_PROOF
 	merge_type = /obj/item/stack/sheet/plastitaniumglass
 	tableVariant = /obj/structure/table/reinforced/plastitaniumglass
+	window_type = /obj/structure/window/reinforced/plasma/plastitanium
 
 /obj/item/stack/sheet/plastitaniumglass/get_main_recipes()
 	. = ..()

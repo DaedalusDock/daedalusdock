@@ -420,6 +420,11 @@
 
 	stop_crystalization_process(ethereal)
 
+/obj/item/organ/heart/vox
+	name = "vox heart"
+	icon_state = "vox-heart-on"
+	base_icon_state = "vox-heart"
+
 /obj/structure/ethereal_crystal
 	name = "ethereal resurrection crystal"
 	desc = "It seems to contain the corpse of an ethereal mending its wounds."

@@ -307,7 +307,7 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/paint/black = 1,
 		/obj/item/paint/blue = 1,
 		/obj/item/paint/green = 1,
-		/obj/item/paint/paint_remover = 1,
+		/obj/item/paint_remover = 1,
 		/obj/item/paint/red = 1,
 		/obj/item/paint/violet = 1,
 		/obj/item/paint/white = 1,

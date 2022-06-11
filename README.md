@@ -1,17 +1,17 @@
-## /tg/station codebase
+## Pariah Station codebase
 
-[![Build Status](https://github.com/tgstation/tgstation/workflows/CI%20Suite/badge.svg)](https://github.com/tgstation/tgstation/actions?query=workflow%3A%22CI+Suite%22)
-[![Percentage of issues still open](https://isitmaintained.com/badge/open/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Percentage of issues still open")
-[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Average time to resolve an issue")
-![Coverage](https://img.shields.io/badge/coverage---3%25-red.svg)
+[![CI Suite](https://github.com/pariahstation/Pariah-Station/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/pariahstation/Pariah-Station/actions/workflows/ci_suite.yml)
+<!-- [![Percentage of issues still open](https://isitmaintained.com/badge/open/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Percentage of issues still open") -->
+<!-- [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Average time to resolve an issue") -->
+<!-- ![Coverage](https://img.shields.io/badge/coverage---3%25-red.svg) -->
 
 [![resentment](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://www.monkeyuser.com/assets/images/2019/131-bug-free.png) [![resentment](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://user-images.githubusercontent.com/8171642/50290880-ffef5500-043a-11e9-8270-a2e5b697c86c.png) [![forinfinityandbyond](https://user-images.githubusercontent.com/5211576/29499758-4efff304-85e6-11e7-8267-62919c3688a9.gif)](https://www.reddit.com/r/SS13/comments/5oplxp/what_is_the_main_problem_with_byond_as_an_engine/dclbu1a)
 
-* **Website:** https://wiki.pariahstation.org/index.php/Main_Page
+* **Website:** https://pariahstation.org
 * **Code:** https://github.com/pariahstation/Pariah-Station
 * **Wiki:** https://wiki.pariahstation.org/index.php/Main_Page
-* **Codedocs:** https://codedocs.tgstation13.org/
-* **Pariah Station Discord:** https://discord.gg/96dfjqwfVM
+<!-- * **Codedocs:** https://codedocs.tgstation13.org/ -->
+* **Pariah Station Discord:** https://discord.gg/pariahstation
 * **Coderbus Discord:** https://discord.gg/Vh8TJp9
 
 This is the codebase for the /tg/station flavoured fork of SpaceStation 13.
@@ -27,7 +27,7 @@ Space Station 13 is a paranoia-laden round-based roleplaying game set against th
 
 ## :exclamation: How to compile :exclamation:
 
-On **2021-01-04** we have changed the way to compile the codebase.
+On **2021-01-04**, /TG/station changed the way to compile the codebase.
 
 **The quick way**. Find `bin/server.cmd` in this folder and double click it to automatically build and host the server on port 1337.
 
@@ -40,9 +40,9 @@ On **2021-01-04** we have changed the way to compile the codebase.
 ## Contributors
 [Guides for Contributors](.github/CONTRIBUTING.md)
 
-[/tg/station HACKMD account](https://hackmd.io/@tgstation) - Design documentation here
+<!-- [/tg/station HACKMD account](https://hackmd.io/@tgstation) - Design documentation here
 
-[Interested in some starting lore?](https://github.com/tgstation/common_core)
+[Interested in some starting lore?](https://github.com/tgstation/common_core) -->
 
 ## LICENSE
 

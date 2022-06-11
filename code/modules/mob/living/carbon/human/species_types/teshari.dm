@@ -2,7 +2,7 @@
 	name = "\improper Teshari"
 	plural_form = "Teshari"
 	id = SPECIES_TESHARI
-	species_traits = list(MUTCOLORS, MUTCOLORS2, MUTCOLORS3, EYECOLOR, NO_UNDERWEAR, HAS_FLESH, HAS_BONE)
+	species_traits = list(MUTCOLORS, MUTCOLORS2, MUTCOLORS3, EYECOLOR, NO_UNDERWEAR, HAS_FLESH, HAS_BONE, HAIRCOLOR, FACEHAIRCOLOR)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/teshari
 	species_eye_path = 'icons/mob/species/teshari/eyes.dmi'
@@ -16,6 +16,7 @@
 		OFFSET_BACK = list(0, -4),
 		OFFSET_ACCESSORY = list(0, -3))
 
+	species_mob_size = MOB_SIZE_SMALL
 	say_mod = "chirps"
 	attack_verb = "slash"
 	attack_effect = ATTACK_EFFECT_CLAW
@@ -59,10 +60,13 @@
 /datum/species/teshari/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = TESH_BODY_COLOR
 	human.hair_color = TESH_FEATHER_COLOR
-	human.facial_hair_color = COLOR_WHITE
 
 	var/obj/item/organ/external/teshari_feathers/head_feathers = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS]
 	head_feathers.set_sprite("Plain")
+	var/obj/item/organ/external/teshari_body_feathers/body_feathers = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS]
+	body_feathers.set_sprite("None")
+	var/obj/item/organ/external/teshari_ears/ears = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_TESHARI_EARS]
+	ears.set_sprite("None")
 	human.update_body(TRUE)
 
 #undef TESH_BODY_COLOR

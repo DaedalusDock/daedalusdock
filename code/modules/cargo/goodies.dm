@@ -167,3 +167,9 @@
 	desc = "A complete meal package for the terminally lazy. Contains one Ready-Donk meal."
 	cost = PAYCHECK_MEDIUM * 2
 	contains = list(/obj/item/food/ready_donk)
+
+/datum/supply_pack/goody/paint
+	name = "Adaptive Paint"
+	desc = "A single, premium can of adaptive paint. Now you can turn the entire station neon pink!"
+	cost = PAYCHECK_EASY * 2
+	contains = list(/obj/item/paint/anycolor)

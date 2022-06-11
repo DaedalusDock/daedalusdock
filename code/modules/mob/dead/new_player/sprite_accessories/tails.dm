@@ -60,3 +60,9 @@
 	name = "Monkey"
 	icon_state = "monkey"
 	color_src = FALSE
+
+/datum/sprite_accessory/vox_tails/vox
+	icon = 'icons/mob/vox_tails.dmi'
+	name = "Vox Tail"
+	icon_state = "vox"
+	em_block = TRUE

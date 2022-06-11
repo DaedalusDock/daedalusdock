@@ -5,6 +5,7 @@
 	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/ears.dmi'
 	icon_state = "headphones"
 	inhand_icon_state = "headphones"
+	supports_variations_flags = CLOTHING_VOX_VARIATION
 	slot_flags = ITEM_SLOT_EARS | ITEM_SLOT_HEAD | ITEM_SLOT_NECK		//Fluff item, put it whereever you want!
 	actions_types = list(/datum/action/item_action/toggle_headphones)
 	var/headphones_on = FALSE

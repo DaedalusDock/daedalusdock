@@ -22,12 +22,15 @@
 /// Someone, for the love of god, profile this.  Is there a reason to cache mutable_appearance
 /// if so, why are we JUST doing the airlocks when we can put this in mutable_appearance.dm for
 /// everything
-/proc/get_airlock_overlay(icon_state, icon_file, em_block)
+/proc/get_airlock_overlay(icon_state, icon_file, em_block, color)
 	var/static/list/airlock_overlays = list()
 
-	var/base_icon_key = "[icon_state][icon_file]"
+	var/base_icon_key = "[icon_state][icon_file][color]"
 	if(!(. = airlock_overlays[base_icon_key]))
-		. = airlock_overlays[base_icon_key] = mutable_appearance(icon_file, icon_state)
+		var/mutable_appearance/airlock_overlay = mutable_appearance(icon_file, icon_state)
+		if(color)
+			airlock_overlay.color = color
+		. = airlock_overlays[base_icon_key] = airlock_overlay
 	if(isnull(em_block))
 		return
 
@@ -85,7 +88,7 @@
 
 /obj/machinery/door/airlock
 	name = "airlock"
-	icon = 'icons/obj/doors/airlocks/station/public.dmi'
+	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
 	icon_state = "closed"
 	max_integrity = 300
 	var/normal_integrity = AIRLOCK_INTEGRITY_N
@@ -101,6 +104,8 @@
 
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	blocks_emissive = NONE // Custom emissive blocker. We don't want the normal behavior.
+	align_to_windows = TRUE
+	door_align_type = /obj/machinery/door/airlock
 
 	var/security_level = 0 //How much are wires secured
 	var/aiControlDisabled = AI_WIRE_NORMAL //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
@@ -130,9 +135,17 @@
 	var/boltDown = 'sound/machines/boltsdown.ogg'
 	var/noPower = 'sound/machines/doorclick.ogg'
 	var/previous_airlock = /obj/structure/door_assembly //what airlock assembly mineral plating was applied to
-	var/airlock_material //material of inner filling; if its an airlock with glass, this should be set to "glass"
-	var/overlays_file = 'icons/obj/doors/airlocks/station/overlays.dmi' //PARIAH STATION EDIT - moved to aesthetics/airlock module
-	var/note_overlay_file = 'icons/obj/doors/airlocks/station/overlays.dmi' //Used for papers and photos pinned to the airlock //PARIAH STATION EDIT - moved to aesthetics/airlock module
+
+	var/stripe_overlays = 'icons/obj/doors/airlocks/station/airlock_stripe.dmi'
+	var/color_overlays = 'icons/obj/doors/airlocks/station/airlock_color.dmi'
+	var/glass_fill_overlays = 'icons/obj/doors/airlocks/station/glass_overlays.dmi'
+	var/overlays_file = 'icons/obj/doors/airlocks/station/overlays.dmi'
+	var/note_overlay_file = 'icons/obj/doors/airlocks/station/note_overlays.dmi' //Used for papers and photos pinned to the airlock
+
+	var/has_fill_overlays = TRUE
+
+	var/airlock_paint
+	var/stripe_paint
 
 	var/cyclelinkeddir = 0
 	var/obj/machinery/door/airlock/cyclelinkedairlock
@@ -148,29 +161,9 @@
 
 /obj/machinery/door/airlock/Initialize(mapload)
 	. = ..()
-	//PARIAH STATION EDIT - aesthetics/airlock module
-	if(multi_tile)
-		SetBounds()
-	//overlay2
-	vis_overlay1 = new()
-	vis_overlay1.icon = overlays_file
-	//overlay1
-	vis_overlay2 = new()
-	vis_overlay2.icon = overlays_file
-	vis_overlay2.layer = layer
-	vis_overlay2.plane = 1
-	vis_contents += vis_overlay1
-	vis_contents += vis_overlay2
-	if(multi_tile)
-		vis_overlay1.dir = src.dir
-		vis_overlay2.dir = src.dir
-	update_overlays()
-	//PARIAH STATION EDIT END
 	wires = set_wires()
 	if(frequency)
 		set_frequency(frequency)
-	if(glass)
-		airlock_material = "glass"
 	if(security_level > AIRLOCK_SECURITY_IRON)
 		atom_integrity = normal_integrity * AIRLOCK_INTEGRITY_MULTIPLIER
 		max_integrity = normal_integrity * AIRLOCK_INTEGRITY_MULTIPLIER
@@ -469,14 +462,10 @@
 
 	. = ..()
 
-	//Pariah Station Removal - aesthetics/airlock module
-
-	// if(hasPower() && unres_sides)
-	// 	set_light(2, 1)
-	// else
-	// 	set_light(0)
-
-	//Pariah Station Removal End
+	if(hasPower() && unres_sides)
+		set_light(2, 1)
+	else
+		set_light(0)
 
 /obj/machinery/door/airlock/update_icon_state()
 	. = ..()
@@ -487,86 +476,93 @@
 			icon_state = "nonexistenticonstate" //MADNESS
 
 
-//PARIAH STATION EDIT - moved to aesthetics/airlock module
+/obj/machinery/door/airlock/update_overlays()
+	. = ..()
 
-// /obj/machinery/door/airlock/update_overlays()
-// 	. = ..()
+	var/frame_state
+	var/light_state
+	switch(airlock_state)
+		if(AIRLOCK_CLOSED)
+			frame_state = AIRLOCK_FRAME_CLOSED
+			if(locked)
+				light_state = AIRLOCK_LIGHT_BOLTS
+			else if(emergency)
+				light_state = AIRLOCK_LIGHT_EMERGENCY
+		if(AIRLOCK_DENY)
+			frame_state = AIRLOCK_FRAME_CLOSED
+			light_state = AIRLOCK_LIGHT_DENIED
+		if(AIRLOCK_EMAG)
+			frame_state = AIRLOCK_FRAME_CLOSED
+		if(AIRLOCK_CLOSING)
+			frame_state = AIRLOCK_FRAME_CLOSING
+			light_state = AIRLOCK_LIGHT_CLOSING
+		if(AIRLOCK_OPEN)
+			frame_state = AIRLOCK_FRAME_OPEN
+		if(AIRLOCK_OPENING)
+			frame_state = AIRLOCK_FRAME_OPENING
+			light_state = AIRLOCK_LIGHT_OPENING
 
-// 	var/frame_state
-// 	var/light_state
-// 	switch(airlock_state)
-// 		if(AIRLOCK_CLOSED)
-// 			frame_state = AIRLOCK_FRAME_CLOSED
-// 			if(locked)
-// 				light_state = AIRLOCK_LIGHT_BOLTS
-// 			else if(emergency)
-// 				light_state = AIRLOCK_LIGHT_EMERGENCY
-// 		if(AIRLOCK_DENY)
-// 			frame_state = AIRLOCK_FRAME_CLOSED
-// 			light_state = AIRLOCK_LIGHT_DENIED
-// 		if(AIRLOCK_EMAG)
-// 			frame_state = AIRLOCK_FRAME_CLOSED
-// 		if(AIRLOCK_CLOSING)
-// 			frame_state = AIRLOCK_FRAME_CLOSING
-// 			light_state = AIRLOCK_LIGHT_CLOSING
-// 		if(AIRLOCK_OPEN)
-// 			frame_state = AIRLOCK_FRAME_OPEN
-// 		if(AIRLOCK_OPENING)
-// 			frame_state = AIRLOCK_FRAME_OPENING
-// 			light_state = AIRLOCK_LIGHT_OPENING
+	. += get_airlock_overlay(frame_state, icon, em_block = TRUE)
+	if(has_fill_overlays)
+		if(glass)
+			. += get_airlock_overlay("glass_[frame_state]", glass_fill_overlays, em_block = TRUE)
+		else
+			. += get_airlock_overlay("fill_[frame_state]", icon, em_block = TRUE)
 
-// 	. += get_airlock_overlay(frame_state, icon, em_block = TRUE)
-// 	if(airlock_material)
-// 		. += get_airlock_overlay("[airlock_material]_[frame_state]", overlays_file, em_block = TRUE)
-// 	else
-// 		. += get_airlock_overlay("fill_[frame_state]", icon, em_block = TRUE)
+	if(airlock_paint && color_overlays)
+		. += get_airlock_overlay(frame_state, color_overlays, color = airlock_paint)
+		if(!glass && has_fill_overlays)
+			. += get_airlock_overlay("fill_[frame_state]", color_overlays, color = airlock_paint)
 
-// 	if(lights && hasPower())
-// 		. += get_airlock_overlay("lights_[light_state]", overlays_file, em_block = FALSE)
+	if(stripe_paint && stripe_overlays)
+		. += get_airlock_overlay(frame_state, stripe_overlays, color = stripe_paint)
+		if(!glass && has_fill_overlays)
+			. += get_airlock_overlay("fill_[frame_state]", stripe_overlays, color = stripe_paint)
 
-// 	if(panel_open)
-// 		. += get_airlock_overlay("panel_[frame_state][security_level ? "_protected" : null]", overlays_file, em_block = TRUE)
-// 	if(frame_state == AIRLOCK_FRAME_CLOSED && welded)
-// 		. += get_airlock_overlay("welded", overlays_file, em_block = TRUE)
+	if(lights && hasPower())
+		. += get_airlock_overlay("lights_[light_state]", overlays_file, em_block = FALSE)
 
-// 	if(airlock_state == AIRLOCK_EMAG)
-// 		. += get_airlock_overlay("sparks", overlays_file, em_block = FALSE)
+	if(panel_open)
+		. += get_airlock_overlay("panel_[frame_state][security_level ? "_protected" : null]", overlays_file, em_block = TRUE)
+	if(frame_state == AIRLOCK_FRAME_CLOSED && welded)
+		. += get_airlock_overlay("welded", overlays_file, em_block = TRUE)
 
-// 	if(hasPower())
-// 		if(frame_state == AIRLOCK_FRAME_CLOSED)
-// 			if(atom_integrity < integrity_failure * max_integrity)
-// 				. += get_airlock_overlay("sparks_broken", overlays_file, em_block = FALSE)
-// 			else if(atom_integrity < (0.75 * max_integrity))
-// 				. += get_airlock_overlay("sparks_damaged", overlays_file, em_block = FALSE)
-// 		else if(frame_state == AIRLOCK_FRAME_OPEN)
-// 			if(atom_integrity < (0.75 * max_integrity))
-// 				. += get_airlock_overlay("sparks_open", overlays_file, em_block = FALSE)
+	if(airlock_state == AIRLOCK_EMAG)
+		. += get_airlock_overlay("sparks", overlays_file, em_block = FALSE)
 
-// 	if(note)
-// 		. += get_airlock_overlay(get_note_state(frame_state), note_overlay_file, em_block = TRUE)
+	if(hasPower())
+		if(frame_state == AIRLOCK_FRAME_CLOSED)
+			if(atom_integrity < integrity_failure * max_integrity)
+				. += get_airlock_overlay("sparks_broken", overlays_file, em_block = FALSE)
+			else if(atom_integrity < (0.75 * max_integrity))
+				. += get_airlock_overlay("sparks_damaged", overlays_file, em_block = FALSE)
+		else if(frame_state == AIRLOCK_FRAME_OPEN)
+			if(atom_integrity < (0.75 * max_integrity))
+				. += get_airlock_overlay("sparks_open", overlays_file, em_block = FALSE)
 
-// 	if(frame_state == AIRLOCK_FRAME_CLOSED && seal)
-// 		. += get_airlock_overlay("sealed", overlays_file, em_block = TRUE)
+	if(note)
+		. += get_airlock_overlay(get_note_state(frame_state), note_overlay_file, em_block = TRUE)
 
-// 	if(hasPower() && unres_sides)
-// 		if(unres_sides & NORTH)
-// 			var/image/I = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_n")
-// 			I.pixel_y = 32
-// 			. += I
-// 		if(unres_sides & SOUTH)
-// 			var/image/I = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_s")
-// 			I.pixel_y = -32
-// 			. += I
-// 		if(unres_sides & EAST)
-// 			var/image/I = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_e")
-// 			I.pixel_x = 32
-// 			. += I
-// 		if(unres_sides & WEST)
-// 			var/image/I = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_w")
-// 			I.pixel_x = -32
-// 			. += I
+	if(frame_state == AIRLOCK_FRAME_CLOSED && seal)
+		. += get_airlock_overlay("sealed", overlays_file, em_block = TRUE)
 
-//PARIAH STATION EDIT END
+	if(hasPower() && unres_sides)
+		if(unres_sides & NORTH)
+			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_n")
+			I.pixel_y = 32
+			. += I
+		if(unres_sides & SOUTH)
+			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_s")
+			I.pixel_y = -32
+			. += I
+		if(unres_sides & EAST)
+			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_e")
+			I.pixel_x = 32
+			. += I
+		if(unres_sides & WEST)
+			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_w")
+			I.pixel_x = -32
+			. += I
 
 /obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)
@@ -1153,8 +1149,7 @@
 		use_power(50)
 		playsound(src, doorOpen, 30, TRUE)
 	else
-		//playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) - Original
-		playsound(src, forcedOpen, 30, TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
+		playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE)
 
 	if(autoclose)
 		autoclose_in(normalspeed ? 8 SECONDS : 1.5 SECONDS)
@@ -1185,17 +1180,9 @@
 	update_icon(ALL, AIRLOCK_OPENING, TRUE)
 	sleep(1)
 	set_opacity(0)
-	//PARIAH STATION EDIT ADDITION START - aesthetics/large_doors module
-	if(multi_tile)
-		filler.set_opacity(FALSE)
-	//PARIAH STATION EDIT END
 	update_freelook_sight()
 	sleep(4)
 	set_density(FALSE)
-	//PARIAH STATION EDIT ADDITION START - aesthetics/large_doors module
-	if(multi_tile)
-		filler.set_density(FALSE)
-	//PARIAH STATION EDIT END
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
 	air_update_turf(TRUE, FALSE)
 	sleep(1)
@@ -1230,8 +1217,7 @@
 		playsound(src, doorClose, 30, TRUE)
 
 	else
-		//playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) //Original
-		playsound(src, forcedClosed, 30, TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
+		playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) //Original
 
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
 	if(killthis)
@@ -1243,29 +1229,17 @@
 	if(air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		//PARIAH STATION EDIT ADDITION START - aesthetics/large_doors module
-		if(multi_tile)
-			filler.density = TRUE
-		//PARIAH STATION EDIT END
 		air_update_turf(TRUE, TRUE)
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		//PARIAH STATION EDIT ADDITION START - aesthetics/large_doors module
-		if(multi_tile)
-			filler.density = TRUE
-		//PARIAH STATION EDIT END
 		air_update_turf(TRUE, TRUE)
 	sleep(4)
 	if(dangerous_close)
 		crush()
 	if(visible && !glass)
 		set_opacity(1)
-		//PARIAH STATION EDIT ADDITION START - aesthetics/large_doors module
-		if(multi_tile)
-			filler.set_opacity(TRUE)
-		//PARIAH STATION EDIT END
 	update_freelook_sight()
 	sleep(1)
 	update_icon(ALL, AIRLOCK_CLOSED, 1)
@@ -1297,14 +1271,20 @@
 	var/obj/machinery/door/airlock/airlock = airlock_type // we need to create a new instance of the airlock and assembly to read vars from them
 	var/obj/structure/door_assembly/assembly = initial(airlock.assemblytype)
 
-	if(airlock_material == "glass" && initial(assembly.noglass)) // prevents painting glass airlocks with a paint job that doesn't have a glass version, such as the freezer
+	if(glass && initial(assembly.noglass)) // prevents painting glass airlocks with a paint job that doesn't have a glass version, such as the freezer
 		to_chat(user, span_warning("This paint job can only be applied to non-glass airlocks."))
 		return
 
 	// applies the user-chosen airlock's icon, overlays and assemblytype to the src airlock
 	painter.use_paint(user)
 	icon = initial(airlock.icon)
+	stripe_overlays = initial(airlock.stripe_overlays)
+	color_overlays = initial(airlock.color_overlays)
+	glass_fill_overlays = initial(airlock.glass_fill_overlays)
 	overlays_file = initial(airlock.overlays_file)
+	note_overlay_file = initial(airlock.note_overlay_file)
+	airlock_paint = initial(airlock.airlock_paint)
+	stripe_paint = initial(airlock.stripe_paint)
 	assemblytype = initial(airlock.assemblytype)
 	update_appearance()
 

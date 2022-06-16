@@ -47,6 +47,12 @@
 		return FALSE
 	return ..()
 
+/datum/emote/living/carbon/whistle
+	key = "whistle"
+	key_third_person = "whistles"
+	message = "whistles."
+	emote_type = EMOTE_AUDIBLE
+
 /datum/emote/living/carbon/circle
 	key = "circle"
 	key_third_person = "circles"

@@ -162,6 +162,7 @@
 					false_wall.set_wall_information(S.material_type, reinforced_material, wall_paint, stripe_paint)
 					transfer_fingerprints_to(false_wall)
 				qdel(src)
+				return
 
 		add_hiddenprint(user)
 

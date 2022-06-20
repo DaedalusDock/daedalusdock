@@ -220,12 +220,13 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 				mind.announce_objectives()
 		else if(istype(objective.target) && objective.target == mob_occupant.mind)
 			if(istype(objective, /datum/objective/contract))
-				var/datum/antagonist/traitor/affected_traitor = objective.owner.has_antag_datum(/datum/antagonist/traitor)
-				var/datum/contractor_hub/affected_contractor_hub = affected_traitor.contractor_hub
-				for(var/datum/syndicate_contract/affected_contract as anything in affected_contractor_hub.assigned_contracts)
+				var/datum/contractor_hub/the_hub = GLOB.contractors[objective.owner]
+				if(!the_hub)
+					return
+				for(var/datum/syndicate_contract/affected_contract as anything in the_hub.assigned_contracts)
 					if(affected_contract.contract == objective)
-						affected_contract.generate(affected_contractor_hub.assigned_targets)
-						affected_contractor_hub.assigned_targets.Add(affected_contract.contract.target)
+						affected_contract.generate(the_hub.assigned_targets)
+						the_hub.assigned_targets.Add(affected_contract.contract.target)
 						to_chat(objective.owner.current, "<BR>[span_userdanger("Contract target out of reach. Contract rerolled.")]")
 						break
 			else

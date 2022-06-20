@@ -112,6 +112,7 @@ GLOBAL_VAR(antag_prototypes)
 				GLOB.antag_prototypes[cat_id] = list(A)
 			else
 				GLOB.antag_prototypes[cat_id] += A
+	sortTim(GLOB.antag_prototypes,/proc/cmp_text_asc)
 	sortTim(GLOB.antag_prototypes,/proc/cmp_text_asc,associative=TRUE)
 
 	var/list/sections = list()

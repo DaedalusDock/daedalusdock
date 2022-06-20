@@ -25,8 +25,6 @@
 	///reference to the uplink this traitor was given, if they were.
 	var/datum/weakref/uplink_ref
 
-	var/datum/contractor_hub/contractor_hub //PARIAH EDIT
-
 	/// The uplink handler that this traitor belongs to.
 	var/datum/uplink_handler/uplink_handler
 

@@ -136,6 +136,11 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 			if(uses_left <= 0)
 				qdel(src)
 
+/obj/item/extraction_pack/contractor
+	name = "black fulton extraction pack"
+	icon_state = "extraction_pack_contractor"
+	can_use_indoors = TRUE
+	desc = "A modified fulton pack that can be used indoors thanks to Bluespace technology. Favored by Syndicate Contractors."
 
 /obj/item/fulton_core
 	name = "extraction beacon signaller"

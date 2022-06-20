@@ -344,6 +344,15 @@
 	playsound(user ? user : src, on_sound, 50, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
+#define CUFF_MAXIMUM 3
+#define MUTE_CYCLES 5
+#define MUTE_MAX_MOD 2
+#define BONUS_STAMINA_DAM 35
+#define BONUS_STUTTER 10 SECONDS
+#define BATON_CUFF_UPGRADE (1<<0)
+#define BATON_MUTE_UPGRADE (1<<1)
+#define BATON_FOCUS_UPGRADE (1<<2)
+
 /obj/item/melee/baton/telescopic/contractor_baton
 	name = "contractor baton"
 	desc = "A compact, specialised baton assigned to Syndicate contractors. Applies light electrical shocks to targets."
@@ -365,6 +374,8 @@
 	on_inhand_icon_state = "contractor_baton_on"
 	on_sound = 'sound/weapons/contractorbatonextend.ogg'
 	active_force = 16
+	/// Bitflags for what upgrades the baton has
+	var/upgrade_flags
 
 /obj/item/melee/baton/telescopic/contractor_baton/get_wait_description()
 	return span_danger("The baton is still charging!")
@@ -372,6 +383,110 @@
 /obj/item/melee/baton/telescopic/contractor_baton/additional_effects_non_cyborg(mob/living/target, mob/living/user)
 	target.Jitter(20)
 	target.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/speech/stutter)
+	if(!iscarbon(target))
+		return
+	var/mob/living/carbon/carbon_target = target
+	if(upgrade_flags & BATON_MUTE_UPGRADE)
+		if(carbon_target.silent < (MUTE_CYCLES * MUTE_MAX_MOD))
+			carbon_target.silent = min((carbon_target.silent + MUTE_CYCLES), (MUTE_CYCLES * MUTE_MAX_MOD))
+	if(upgrade_flags & BATON_FOCUS_UPGRADE)
+		var/datum/contractor_hub/the_hub = GLOB.contractors[user?.mind]
+		if(carbon_target == the_hub?.current_contract?.contract.target?.current) // Pain
+			carbon_target.apply_damage(BONUS_STAMINA_DAM, STAMINA, BODY_ZONE_CHEST)
+			carbon_target.adjust_timed_status_effect(BONUS_STUTTER, /datum/status_effect/speech/stutter)
+
+/obj/item/melee/baton/telescopic/contractor_baton/attack_secondary(mob/living/victim, mob/living/user, params)
+	if(!(upgrade_flags & BATON_CUFF_UPGRADE) || !active)
+		return
+	for(var/obj/item/restraints/handcuffs/cuff in contents)
+		cuff.attack(victim, user)
+		break
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/melee/baton/telescopic/contractor_baton/attackby(obj/item/attacking_item, mob/user, params)
+	. = ..()
+	if(istype(attacking_item, /obj/item/baton_upgrade))
+		add_upgrade(attacking_item, user)
+	if(!(upgrade_flags & BATON_CUFF_UPGRADE))
+		return
+	if(!istype(attacking_item, /obj/item/restraints/handcuffs/cable))
+		return
+	var/cuffcount = 0
+	for(var/obj/item/restraints/handcuffs/cuff in contents)
+		cuffcount++
+	if(cuffcount >= CUFF_MAXIMUM)
+		to_chat(user, span_warning("[src] is at maximum capacity for handcuffs!"))
+		return
+	attacking_item.forceMove(src)
+	to_chat(user, span_notice("You insert [attacking_item] into [src]."))
+
+/obj/item/melee/baton/telescopic/contractor_baton/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	for(var/obj/item/baton_upgrade/upgrade in src.contents)
+		upgrade.forceMove(get_turf(src))
+		upgrade_flags &= ~upgrade.upgrade_flag
+	tool.play_tool_sound(src)
+
+/obj/item/melee/baton/telescopic/contractor_baton/examine(mob/user)
+	. = ..()
+	if(upgrade_flags)
+		. += "<br><br>[span_boldnotice("[src] has the following upgrades attached:")]"
+	for(var/obj/item/baton_upgrade/upgrade in contents)
+		. += "<br>[span_notice("[upgrade].")]"
+
+/obj/item/melee/baton/telescopic/contractor_baton/proc/add_upgrade(obj/item/baton_upgrade/upgrade, mob/user)
+	if(!(upgrade_flags & upgrade.upgrade_flag))
+		upgrade_flags |= upgrade.upgrade_flag
+		upgrade.forceMove(src)
+		if(user)
+			user.visible_message(span_notice("[user] inserts the [upgrade] into [src]."), span_notice("You insert [upgrade] into [src]."), span_hear("You hear a faint click."))
+		return TRUE
+	return FALSE
+
+/obj/item/melee/baton/telescopic/contractor_baton/upgraded
+	desc = "A compact, specialised baton assigned to Syndicate contractors. Applies light electrical shocks to targets. This one seems to have unremovable parts."
+
+/obj/item/melee/baton/telescopic/contractor_baton/upgraded/Initialize(mapload)
+	. = ..()
+	for(var/upgrade in subtypesof(/obj/item/baton_upgrade))
+		var/obj/item/baton_upgrade/the_upgrade = new upgrade()
+		add_upgrade(the_upgrade)
+	for(var/i in 1 to CUFF_MAXIMUM)
+		new/obj/item/restraints/handcuffs/cable(src)
+
+/obj/item/melee/baton/telescopic/contractor_baton/upgraded/wrench_act(mob/living/user, obj/item/tool)
+	return
+
+/obj/item/baton_upgrade
+	icon = 'icons/obj/items_and_weapons.dmi'
+	var/upgrade_flag
+
+/obj/item/baton_upgrade/cuff
+	name = "handcuff baton upgrade"
+	desc = "Allows the user to apply restraints to a target via baton, requires to be loaded with up to three prior."
+	icon_state = "contractor_cuff_upgrade"
+	upgrade_flag = BATON_CUFF_UPGRADE
+
+/obj/item/baton_upgrade/mute
+	name = "mute baton upgrade"
+	desc = "Use of the baton on a target will mute them for a short period."
+	icon_state = "contractor_mute_upgrade"
+	upgrade_flag = BATON_MUTE_UPGRADE
+
+/obj/item/baton_upgrade/focus
+	name = "focus baton upgrade"
+	desc = "Use of the baton on a target, should they be the subject of your contract, will be extra exhausted."
+	icon_state = "contractor_focus_upgrade"
+	upgrade_flag = BATON_FOCUS_UPGRADE
+
+#undef CUFF_MAXIMUM
+#undef MUTE_CYCLES
+#undef MUTE_MAX_MOD
+#undef BONUS_STAMINA_DAM
+#undef BONUS_STUTTER
+#undef BATON_CUFF_UPGRADE
+#undef BATON_MUTE_UPGRADE
+#undef BATON_FOCUS_UPGRADE
 
 /obj/item/melee/baton/security
 	name = "stun baton"

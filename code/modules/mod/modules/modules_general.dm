@@ -65,6 +65,7 @@
 	icon_state = "storage_syndi"
 	max_combined_w_class = 30
 	max_items = 21
+	var/chameleon_disguised = FALSE
 
 /obj/item/mod/module/storage/bluespace
 	name = "MOD bluespace storage module"

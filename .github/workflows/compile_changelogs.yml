@@ -36,7 +36,7 @@ jobs:
       - name: "Compile"
         if: steps.value_holder.outputs.ACTIONS_ENABLED
         run: |
-          python tools/ss13_genchangelog.py html/changelogs
+          python tools/changelog/ss13_genchangelog.py html/changelogs
       - name: Commit
         if: steps.value_holder.outputs.ACTIONS_ENABLED
         run: |

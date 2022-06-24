@@ -1,0 +1,4 @@
+author: SabreML
+delete-after: true
+changes:
+  - server: Added the changelogs of every previous Pariah PR to the changelog archives.

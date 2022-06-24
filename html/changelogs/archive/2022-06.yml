@@ -143,6 +143,8 @@
   francinum:
   - config: Holidays can now be prevented from making changes to the floor tiles.
 2022-06-24:
+  Ebin-Halcyon:
+  - imageadd: Moths now have a slightly altered head and eye shape.
   SabreML:
   - server: Added the changelogs of every previous Pariah PR to the changelog archives.
   - bugfix: Fixed an error from right clicking hydroponics trays.

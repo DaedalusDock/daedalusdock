@@ -34,7 +34,7 @@
 	)
 	external_organs = list(
 		/obj/item/organ/external/snout/vox = "Vox Snout",
-		/obj/item/organ/external/vox_hair = "Vox Afro",
+		/obj/item/organ/external/vox_hair = "None",
 		/obj/item/organ/external/vox_facial_hair = "None")
 	attack_verb = "slash"
 	attack_effect = ATTACK_EFFECT_CLAW
@@ -54,13 +54,26 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/vox,
 	)
 
+#define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
+#define VOX_SNOUT_COLOR "#E5C04B"
+#define VOX_HAIR_COLOR "#997C28"
+
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = "#99FF99"
-	human.dna.features["mcolor2"] = "#F0F064"
-	human.hair_color = "#FF9966"
-	human.facial_hair_color = "#FF9966"
+	human.dna.features["mcolor"] = VOX_BODY_COLOR
+	human.dna.features["mcolor2"] = VOX_SNOUT_COLOR
+	human.hair_color = VOX_HAIR_COLOR
 	human.eye_color = COLOR_TEAL
+
+	var/obj/item/organ/external/vox_hair/hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_HAIR]
+	hair.set_sprite("Vox Short Quills")
+	var/obj/item/organ/external/vox_facial_hair/facial_hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR]
+	facial_hair.set_sprite("None")
+
 	human.update_body(TRUE)
+
+#undef VOX_BODY_COLOR
+#undef VOX_SNOUT_COLOR
+#undef VOX_HAIR_COLOR
 
 /datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
 	. = ..()
@@ -116,19 +129,19 @@
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-low",
 			SPECIES_PERK_NAME = "Cold Resistance",
-			SPECIES_PERK_DESC = "Voxes have their organs heavily modified to resist the coldness of space",
+			SPECIES_PERK_DESC = "Vox have their organs heavily modified to resist the coldness of space.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "bolt",
 			SPECIES_PERK_NAME = "EMP Sensitivity",
-			SPECIES_PERK_DESC = "Due to their organs being synthetic, they are susceptible to emps.",
+			SPECIES_PERK_DESC = "Due to their organs being synthetic, they are susceptible to EMPs.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
 			SPECIES_PERK_NAME = "Nitrogen Breathing",
-			SPECIES_PERK_DESC = "Voxes must breathe nitrogen to survive. You receive a tank when you arrive.",
+			SPECIES_PERK_DESC = "Vox must breathe nitrogen to survive. You receive a tank when you arrive.",
 		),
 	)
 

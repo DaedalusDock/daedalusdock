@@ -63,11 +63,14 @@
 /obj/item/language_manual/roundstart_species/Initialize(mapload)
 	. = ..()
 	language = pick( \
-		/datum/language/voltaic, \
-		/datum/language/nekomimetic, \
-		/datum/language/draconic, \
-		/datum/language/moffic, \
-		/datum/language/calcic \
+		/datum/language/voltaic,
+		/datum/language/nekomimetic,
+		/datum/language/draconic,
+		/datum/language/moffic,
+		/datum/language/calcic,
+		/datum/language/skrell,
+		/datum/language/schechi,
+		/datum/language/vox,
 	)
 	name = "[initial(language.name)] manual"
 	desc = "The book's cover reads: \"[initial(language.name)] for Xenos - Learn common galactic tongues in seconds.\""

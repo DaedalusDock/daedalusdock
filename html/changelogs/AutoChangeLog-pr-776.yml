@@ -1,0 +1,15 @@
+author: SabreML
+delete-after: true
+changes:
+  - rscadd: Changed the hairstyle and colours of the Vox preview mob to more closely
+      resemble the image on the wiki.
+  - rscadd: Adds a species whitelist to Vox breath masks, so that only Vox can wear
+      them. (Beaks!)
+  - rscadd: Added the Vox, Skrell, and Teshari languages as options for language manuals.
+  - bugfix: Fixed the Vox feature preview icons being slightly off-centre.
+  - bugfix: Fixed the beak changing colour in the Vox feature preview icons.
+  - bugfix: Fixed the 'Vox Yasu' hairstyle not working.
+  - bugfix: Fixed the inhand sprites for nitrogen tanks being backwards.
+  - imageadd: Added a item sprite for the Vox breath mask.
+  - imageadd: Added a sprite for the Vox language.
+  - spellcheck: Changed 'Voxes' to 'Vox' (plural) in the Vox species perk descriptions.

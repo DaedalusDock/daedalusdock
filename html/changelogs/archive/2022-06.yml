@@ -50,3 +50,6 @@
   vincentiusvin:
   - spellcheck: made the reaction list on a few machines' ui (compressor, atmos control)
       to be newlined.
+2022-06-24:
+  francinum:
+  - config: Holidays can now be prevented from making changes to the floor tiles.

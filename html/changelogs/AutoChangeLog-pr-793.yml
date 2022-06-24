@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - config: Holidays can now be prevented from making changes to the floor tiles.

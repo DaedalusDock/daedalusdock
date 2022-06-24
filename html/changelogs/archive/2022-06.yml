@@ -142,3 +142,6 @@
   - rscadd: Added round time and alert to the hub
   francinum:
   - config: Holidays can now be prevented from making changes to the floor tiles.
+2022-06-24:
+  SabreML:
+  - server: Added the changelogs of every previous Pariah PR to the changelog archives.

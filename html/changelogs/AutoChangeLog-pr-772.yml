@@ -1,0 +1,4 @@
+author: SabreML
+delete-after: true
+changes:
+  - bugfix: Fixed an error from right clicking hydroponics trays.

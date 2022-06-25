@@ -135,7 +135,7 @@
 	if(no_teleport && (destination_area.area_flags & NOTELEPORT))
 		return
 
-	var/datum/gas_mixture/floor_gases= floor_turf.return_air()?.getGases()
+	var/list/floor_gases= floor_turf.return_air()?.gas
 
 	if(!floor_gases)
 		return

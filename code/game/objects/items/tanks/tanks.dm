@@ -346,7 +346,7 @@
 
 		log_atmos("[type] exploded with a power of [strength * mult] and a mix of ", air_contents)
 		explosion(
-			get_turf(loc),
+			src,
 			round(min(BOMBCAP_DVSTN_RADIUS, ((mult)*strength)*0.15)),
 			round(min(BOMBCAP_HEAVY_RADIUS, ((mult)*strength)*0.35)),
 			round(min(BOMBCAP_LIGHT_RADIUS, ((mult)*strength)*0.80)),

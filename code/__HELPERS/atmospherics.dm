@@ -41,7 +41,7 @@
 	)
 	if(!gasmix)
 		return
-	for(var/gas_path in gasmix.getGases())
+	for(var/gas_path in gasmix.gas)
 		.["gases"] += list(list(
 			"[gas_path]",
 			xgm_gas_data.name[gas_path],

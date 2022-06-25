@@ -15,7 +15,7 @@
 ///Air can pass through or into this turf, but zones may not merge with it. Will not block zone merges, if either zone is below ZONE_MIN_SIZE
 #define ZONE_BLOCKED (1<<1)
 
-///Zones with less than this many turfs will always merge, even if the connection is not direct
+///Zones with less than this many turfs will always merge, even if the connection is not direct, tons of micro zones are expensive!
 #define ZONE_MIN_SIZE 14
 
 ///Air can always pass

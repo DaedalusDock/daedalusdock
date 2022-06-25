@@ -1,0 +1,47 @@
+tags:
+    admin: admin
+    add: &add_type rscadd
+    adds: *add_type
+    rscadd: *add_type
+    balance: &balance_type balance
+    rebalance: *balance_type
+    code_imp: &code_type code_imp
+    code: *code_type
+    config: config
+    del: &del_type rscdel
+    dels: *del_type
+    rscdel: *del_type
+    fix: &fix_type bugfix
+    fixes: *fix_type
+    bugfix: *fix_type
+    imageadd: imageadd
+    imagedel: imagedel
+    rsctweak: &tweak_type tweak
+    tweak: *tweak_type
+    tweaks: *tweak_type
+    qol: qol
+    refactor: refactor
+    server: server
+    soundadd: soundadd
+    sounddel: sounddel
+    typo: &typo_type spellcheck
+    spellcheck: *typo_type
+    tgs: tgs
+
+defaults:
+    add: Added new mechanics or gameplay changes
+    add2: Added more things
+    del: Removed old things
+    qol: made something easier to use
+    balance: rebalanced something
+    fix: fixed a few things
+    soundadd: added a new sound thingy
+    sounddel: removed an old sound thingy
+    imageadd: added some icons and images
+    imagedel: deleted some icons and images
+    spellcheck: fixed a few typos
+    code: changed some code
+    refactor: refactored some code
+    config: changed some config setting
+    admin: messed with admin stuff
+    server: something server ops should know

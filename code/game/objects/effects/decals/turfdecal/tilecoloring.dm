@@ -7,7 +7,9 @@
 #define PRIDE_ALPHA 60
 
 /obj/effect/turf_decal/tile/Initialize(mapload)
-	if(SSevents.holidays)
+	if(!mapload) //Player or admin created, Don't touch it regardless.
+		return ..()
+	if(SSevents.holidays && !CONFIG_GET(flag/disable_holiday_floor_effects))
 		if (SSevents.holidays[APRIL_FOOLS])
 			color = "#[random_short_color()]"
 		else if (SSevents.holidays[PRIDE_WEEK])

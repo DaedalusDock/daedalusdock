@@ -47,6 +47,8 @@
 	var/list/mob_type_blacklist_typecache
 	/// Types that can use this emote regardless of their state.
 	var/list/mob_type_ignore_stat_typecache
+	/// Species types which the emote will be exclusively available to.
+	var/list/species_type_whitelist_typecache
 	/// In which state can you use this emote? (Check stat.dm for a full list of them)
 	var/stat_allowed = CONSCIOUS
 	/// Sound to play when emote is called.
@@ -73,6 +75,7 @@
 
 	mob_type_blacklist_typecache = typecacheof(mob_type_blacklist_typecache)
 	mob_type_ignore_stat_typecache = typecacheof(mob_type_ignore_stat_typecache)
+	species_type_whitelist_typecache = typecacheof(species_type_whitelist_typecache)
 
 /**
  * Handles the modifications and execution of emotes.
@@ -107,7 +110,7 @@
 	var/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && !TIMER_COOLDOWN_CHECK(user, type))
 		TIMER_COOLDOWN_START(user, type, audio_cooldown)
-		playsound(user, tmp_sound, 50, vary)
+		playsound(user, tmp_sound, 50, vary, frequency = get_frequency(user))
 
 	var/user_turf = get_turf(user)
 	if (user.client)
@@ -159,6 +162,18 @@
  */
 /datum/emote/proc/get_sound(mob/living/user)
 	return sound //by default just return this var.
+
+/**
+ * Returns a number to be used as the `frequency` variable for the emote sound.
+ * `[/datum/emote/var/vary]` must also be set to `TRUE` for this to work, due a check in `playsound_local()`.
+ *
+ * Arguments:
+ * * user - Person that is trying to send the emote.
+ *
+ * Returns the frequency that will modify the the sound used by the emote.
+ */
+/datum/emote/proc/get_frequency(mob/living/user)
+	return 0
 
 /**
  * To replace pronouns in the inputed string with the user's proper pronouns.
@@ -238,6 +253,11 @@
 		return FALSE
 	if(is_type_in_typecache(user, mob_type_blacklist_typecache))
 		return FALSE
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(species_type_whitelist_typecache && H.dna && !species_type_whitelist_typecache[H.dna.species.type])
+			return FALSE
+
 	if(status_check && !is_type_in_typecache(user, mob_type_ignore_stat_typecache))
 		if(user.stat > stat_allowed)
 			if(!intentional)

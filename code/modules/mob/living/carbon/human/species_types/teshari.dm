@@ -73,7 +73,7 @@
 #undef TESH_FEATHER_COLOR
 
 /datum/species/teshari/get_scream_sound(mob/living/carbon/human/human)
-	return 'modular_pariah/modules/emotes/sound/emotes/raptorscream.ogg'
+	return 'sound/voice/raptor_scream.ogg'
 
 /datum/species/teshari/random_name(gender, unique, lastname)
 	if(unique)

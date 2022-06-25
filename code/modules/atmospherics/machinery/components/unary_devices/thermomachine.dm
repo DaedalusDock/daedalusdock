@@ -89,7 +89,7 @@
 		set_greyscale(colors=colors_to_use)
 
 	if(panel_open)
-		icon_state = "thermo-open"
+		icon_state = "thermo_open"
 		return ..()
 	if(on && is_operational)
 		icon_state = "thermo_1"
@@ -171,7 +171,7 @@
 	if(!anchored)
 		to_chat(user, span_notice("Anchor [src] first!"))
 		return TOOL_ACT_TOOLTYPE_SUCCESS
-	if(default_deconstruction_screwdriver(user, "thermo-open", "thermo-0", tool))
+	if(default_deconstruction_screwdriver(user, "thermo_open", "thermo_base", tool))
 		change_pipe_connection(panel_open)
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 

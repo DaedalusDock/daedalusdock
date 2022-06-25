@@ -1,4 +1,4 @@
-// Modular Booze MIXES, see the following file for the reagents: modular_skyrat\modules\customization\modules\reagents\chemistry\reagents\alcohol_reagents.dm
+// Modular Booze MIXES, see the following file for the reagents: modular_pariah\modules\customization\modules\reagents\chemistry\reagents\alcohol_reagents.dm
 
 // ROBOT ALCOHOL PAST THIS POINT
 // WOOO!
@@ -141,7 +141,7 @@
 	required_reagents = list(/datum/reagent/iron = 5,  /datum/reagent/consumable/ethanol/mauna_loa = 10, /datum/reagent/sulfur = 5)
 	required_temp = 900 // (626.85'C)
 
-// Non-Booze, see modular_skyrat\modules\customization\modules\reagents\chemistry\reagents\drink_reagents.dm
+// Non-Booze, see modular_pariah\modules\customization\modules\reagents\chemistry\reagents\drink_reagents.dm
 
 /datum/chemical_reaction/drink/pinkmilk
 	results = list(/datum/reagent/consumable/pinkmilk = 2)

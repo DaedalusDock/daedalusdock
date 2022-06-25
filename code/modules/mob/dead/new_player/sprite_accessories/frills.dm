@@ -16,3 +16,7 @@
 /datum/sprite_accessory/frills/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
+
+/datum/sprite_accessory/frills/sides //narrow cobra hood from probably hyper
+	name = "Sides"
+	icon_state = "sides"

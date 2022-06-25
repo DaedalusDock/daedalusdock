@@ -127,6 +127,8 @@
 			))
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(src, cardinal)
+		if(!can_area_smooth(step_turf))
+			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(neighbor_typecache[movable_thing.type])
 				neighbor_stripe ^= cardinal

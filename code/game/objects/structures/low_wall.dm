@@ -81,8 +81,7 @@
 	var/neighbor_stripe = NONE
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(src, cardinal)
-		var/obj/structure/low_wall/neighboring_lowwall = locate() in step_turf
-		if(neighboring_lowwall)
+		if(!can_area_smooth(step_turf))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(airlock_typecache[movable_thing.type])
@@ -198,6 +197,7 @@
 
 /obj/structure/low_wall/titanium
 	plating_material = /datum/material/titanium
+	canSmoothWith = list(SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
 
 /obj/structure/low_wall/plastitanium
 	plating_material = /datum/material/alloy/plastitanium

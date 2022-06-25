@@ -32,35 +32,54 @@
 			}; \
 		}; \
 		else { \
-			if(!isnull(neighbor.smoothing_groups)) { \
-				for(var/target in source.canSmoothWith) { \
-					if(!(source.canSmoothWith[target] & neighbor.smoothing_groups[target])) { \
-						continue; \
-					}; \
-					junction |= direction_flag; \
-					break; \
-				}; \
-			}; \
-			if(!(junction & direction_flag) && source.smoothing_flags & SMOOTH_OBJ) { \
-				for(var/obj/thing in neighbor) { \
-					if(!thing.anchored || isnull(thing.smoothing_groups)) { \
-						continue; \
-					}; \
+			if(source.can_area_smooth(neighbor)) { \
+				if(!isnull(neighbor.smoothing_groups)) { \
 					for(var/target in source.canSmoothWith) { \
-						if(!(source.canSmoothWith[target] & thing.smoothing_groups[target])) { \
+						if(!(source.canSmoothWith[target] & neighbor.smoothing_groups[target])) { \
 							continue; \
 						}; \
 						junction |= direction_flag; \
 						break; \
 					}; \
-					if(junction & direction_flag) { \
-						break; \
+				}; \
+				if(!(junction & direction_flag) && source.smoothing_flags & SMOOTH_OBJ) { \
+					for(var/obj/thing in neighbor) { \
+						if(!thing.anchored || isnull(thing.smoothing_groups)) { \
+							continue; \
+						}; \
+						for(var/target in source.canSmoothWith) { \
+							if(!(source.canSmoothWith[target] & thing.smoothing_groups[target])) { \
+								continue; \
+							}; \
+							junction |= direction_flag; \
+							break; \
+						}; \
+						if(junction & direction_flag) { \
+							break; \
+						}; \
 					}; \
 				}; \
 			}; \
 		}; \
 	} while(FALSE)
 
+
+/**
+ * Checks if `src` can smooth with `target`, based on the [/area/var/area_limited_icon_smoothing] variable of their areas.
+ *
+ * If neither area has `area_limited_icon_smoothing` set, return `TRUE`.
+ * If one area has the other's type set as `area_limited_icon_smoothing`, return `TRUE`.
+ * Else, return `FALSE`
+ *
+ * Arguments:
+ * * target - The atom we're trying to smooth with.
+ */
+/atom/proc/can_area_smooth(target)
+	var/area/target_area = get_area(target)
+	var/area/source_area = get_area(src)
+	if((!source_area.area_limited_icon_smoothing || istype(target_area, source_area.area_limited_icon_smoothing)) && (!target_area.area_limited_icon_smoothing || istype(source_area, target_area.area_limited_icon_smoothing)))
+		return TRUE
+	return FALSE
 
 ///Scans all adjacent turfs to find targets to smooth with.
 /atom/proc/calculate_adjacencies()
@@ -228,9 +247,7 @@
 	if(!target_turf)
 		return NULLTURF_BORDER
 
-	var/area/target_area = get_area(target_turf)
-	var/area/source_area = get_area(src)
-	if((source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing)) || (target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing)))
+	if(!can_area_smooth(target_turf))
 		return NO_ADJ_FOUND
 
 	if(isnull(canSmoothWith)) //special case in which it will only smooth with itself

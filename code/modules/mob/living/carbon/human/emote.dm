@@ -50,8 +50,16 @@
 	message = "screams!"
 	message_mime = "acts out a scream!"
 	emote_type = EMOTE_AUDIBLE
-	only_forced_audio = TRUE
 	vary = TRUE
+
+/datum/emote/living/carbon/human/scream/select_message_type(mob/user, msg, intentional)
+	. = ..()
+	var/mob/living/carbon/human/human = user
+	if(human.dna.species.scream_verb)
+		if(human.mind?.miming)
+			return "[human.dna.species.scream_verb] silently!"
+		else
+			return "[human.dna.species.scream_verb]!"
 
 /datum/emote/living/carbon/human/scream/get_sound(mob/living/user)
 	if(!ishuman(user))

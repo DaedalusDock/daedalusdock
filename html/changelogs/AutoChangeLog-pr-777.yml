@@ -1,4 +1,0 @@
-author: SabreML
-delete-after: true
-changes:
-  - rscadd: Prevented shuttles tiles from smoothing with station tiles.

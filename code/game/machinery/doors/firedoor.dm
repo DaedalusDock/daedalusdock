@@ -665,7 +665,7 @@
 	if(get_dir(loc, T) == dir)
 		return density ? (AIR_BLOCKED|ZONE_BLOCKED) : ZONE_BLOCKED
 	else
-		return  ZONE_BLOCKED
+		return ZONE_BLOCKED
 
 /obj/machinery/door/firedoor/heavy
 	name = "heavy firelock"

@@ -62,7 +62,7 @@ Class Procs:
 
 	#ifdef ZASDBG
 	///Set to true during testing to get verbose debug information
-	var/verbose = FALSE
+	var/tmp/verbose = FALSE
 	#endif
 
 /connection/New(turf/A, turf/B)

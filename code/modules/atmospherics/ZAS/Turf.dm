@@ -17,7 +17,7 @@
 	var/list/initial_gas
 #ifdef ZASDBG
 	///Set to TRUE during debugging to get chat output on the atmos status of this turf
-	var/verbose = FALSE
+	var/tmp/verbose = FALSE
 #endif
 
 ///Adds the graphic_add list to vis_contents, removes graphic_remove.
@@ -244,27 +244,26 @@
 			postponed.Add(target)
 
 	if(!TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
-		var/zone/newzone = new/zone()
+		var/zone/newzone = new
 		newzone.add_turf(src)
 
 	#ifdef ZASDBG
 		dbg(zasdbgovl_created)
+		if(verbose)
+			zas_log("New zone created for src.")
 
 	ASSERT(zone)
 	#endif
 
 	//At this point, a zone should have happened. If it hasn't, don't add more checks, fix the bug.
 
-	for(var/turf/T in postponed)
+	for(var/turf/T as anything in postponed)
 		if(T.zone == src.zone)
 			#ifdef ZASDBG
 			if(verbose)
 				zas_log("This turf tried to merge into itself! Current type: [src.type]")
-
-			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
-			#else
-			return //THIS BUG IS SMALL ENOUGH THAT IT IS FINE FOR NOW. I WILL FIX IT IN THE FUTURE.
 			#endif
+			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
 		SSzas.connect(src, T)
 
 /turf/proc/post_update_air_properties()
@@ -378,9 +377,9 @@
 ///Returns a list of adjacent turfs that can contain air. Returns null if none.
 /turf/proc/get_atmos_adjacent_turfs()
 	var/list/adjacent_turfs = list()
-	for(var/dir in GLOB.cardinals)
-		if(open_directions & dir)
-			adjacent_turfs += get_step(src, dir)
+	for(var/direct in GLOB.cardinals)
+		if(open_directions & direct)
+			adjacent_turfs += get_step(src, direct)
 	return length(adjacent_turfs) ? adjacent_turfs : null
 
 /turf/open/return_analyzable_air()

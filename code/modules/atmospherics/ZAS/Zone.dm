@@ -180,7 +180,7 @@ Class Procs:
 
 	// Update gas overlays.
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
-		for(var/turf/open/T in contents)
+		for(var/turf/T in contents)
 			if(T.simulated)
 				T.update_graphic(graphic_add, graphic_remove)
 		graphic_add.len = 0

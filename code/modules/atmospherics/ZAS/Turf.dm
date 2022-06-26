@@ -257,14 +257,12 @@
 
 	//At this point, a zone should have happened. If it hasn't, don't add more checks, fix the bug.
 
+	//Loop through all previous connection attempts and try again
 	for(var/turf/T as anything in postponed)
-		if(T.zone == src.zone)
-			#ifdef ZASDBG
-			if(verbose)
-				zas_log("This turf tried to merge into itself! Current type: [src.type]")
-			#endif
-			CRASH("Turf in the postponed turflist shares a zone with src, aborting merge!") //Yes yes this is not a fix but atleast it keeps the warning
+		if(T.zone == src.zone) //Don't try to connect to yourself
+			continue
 		SSzas.connect(src, T)
+
 
 /turf/proc/post_update_air_properties()
 	if(connections)

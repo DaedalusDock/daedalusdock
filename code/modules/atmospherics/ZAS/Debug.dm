@@ -84,11 +84,11 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 	return
 
 /turf/zas_log(string)
-	to_chat(world, "[span_admin("ZAS:")] Turf output of [src] at ([src.x], [src.y], [src.z]): [string]")
+	to_chat(world, "[span_admin("ZAS:")] ([src.x], [src.y], [src.z]): [string]")
 
 /connection/zas_log(string)
-	to_chat(world, "[span_admin("ZAS:")] Verbose connection output: [string]")
+	to_chat(world, "[span_admin("ZAS:")] connection output: [string]")
 
 /connection_edge/zas_log(string)
-	to_chat(world, "[span_admin("ZAS:")] Verbose connection edge output: [string]")
+	to_chat(world, "[span_admin("ZAS:")] connection edge output: [string]")
 #endif

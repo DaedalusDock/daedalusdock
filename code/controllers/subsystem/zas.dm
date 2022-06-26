@@ -397,7 +397,8 @@ SUBSYSTEM_DEF(zas)
 	ASSERT(A != B)
 	#endif
 	var/block = air_blocked(A,B)
-	if(block & AIR_BLOCKED) return
+	if(block & AIR_BLOCKED)
+		return
 
 	var/direct = !(block & ZONE_BLOCKED)
 	//var/space = istype(B, /turf/open/space)
@@ -406,7 +407,7 @@ SUBSYSTEM_DEF(zas)
 	if(!space)
 		if(min(A.zone.contents.len, B.zone.contents.len) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
 			merge(A.zone,B.zone)
-			return
+			return TRUE
 
 	var/a_to_b = get_dir(A,B)
 	var/b_to_a = get_dir(B,A)
@@ -431,6 +432,8 @@ SUBSYSTEM_DEF(zas)
 
 	if(direct)
 		c.mark_direct()
+
+	return TRUE
 
 ///Marks a turf for update.
 /datum/controller/subsystem/zas/proc/mark_for_update(turf/T)

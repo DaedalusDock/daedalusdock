@@ -359,7 +359,7 @@
 	update_nearby_tiles()
 	. = ..()
 
-/obj/structure/window/zas_canpass(turf/T, vertical = FALSE)
+/obj/structure/window/zas_canpass(turf/T)
 	if(QDELETED(src))
 		return AIR_ALLOWED
 	if(!anchored || !density)

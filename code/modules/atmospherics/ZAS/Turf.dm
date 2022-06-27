@@ -209,9 +209,7 @@
 						#endif
 
 						//Postpone this tile rather than exit, since a connection can still be made.
-						if(!postponed)
-							postponed = list()
-						postponed.Add(sim_target)
+						LAZYADD(postponed, sim_target)
 
 					else
 						sim_target.zone.add_turf(src)
@@ -239,9 +237,7 @@
 			#endif
 		else
 			//Postponing connections to tiles until a zone is assured.
-			if(!postponed)
-				postponed = list()
-			postponed.Add(target)
+			LAZYADD(postponed, target)
 
 	if(!TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
 		var/zone/newzone = new

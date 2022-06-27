@@ -366,7 +366,7 @@ SUBSYSTEM_DEF(zas)
 	var/ablock
 	ATMOS_CANPASS_TURF(ablock, A, B)
 	if(ablock & AIR_BLOCKED)
-		return AIR_BLOCKED
+		return AIR_BLOCKED|ZONE_BLOCKED
 	ATMOS_CANPASS_TURF(., B, A)
 	return ablock | .
 

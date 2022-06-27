@@ -98,10 +98,10 @@
 /obj/structure/blob/block_superconductivity()
 	return atmosblock
 
-/obj/structure/blob/zas_canpass(turf/T, vertical = FALSE)
+/obj/structure/blob/zas_canpass(turf/T)
 	if(QDELETED(src))
 		return AIR_ALLOWED
-	return atmosblock ? AIR_BLOCKED : AIR_ALLOWED
+	return atmosblock ? (AIR_BLOCKED|ZONE_BLOCKED) : AIR_ALLOWED
 
 /obj/structure/blob/update_icon() //Updates color based on overmind color if we have an overmind.
 	. = ..()

@@ -1,6 +1,0 @@
-author: ElorgRHG
-delete-after: true
-changes:
-  - rscadd: The scream emote is now audible.
-  - rscadd: Species specific scream messages, so something like "Vox shrieks!", "Monkey
-      screeches!" and "Moth buzzes!".

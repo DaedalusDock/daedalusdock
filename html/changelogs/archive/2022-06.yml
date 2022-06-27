@@ -166,3 +166,8 @@
   SabreML:
   - admin: Added a 'Set all lights' button to the secrets panel.
   - rscadd: Prevented shuttles tiles from smoothing with station tiles.
+2022-06-27:
+  ElorgRHG:
+  - rscadd: The scream emote is now audible.
+  - rscadd: Species specific scream messages, so something like "Vox shrieks!", "Monkey
+      screeches!" and "Moth buzzes!".

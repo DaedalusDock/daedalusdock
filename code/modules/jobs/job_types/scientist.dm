@@ -16,6 +16,10 @@
 			SPECIES_HUMAN = /datum/outfit/job/scientist,
 			SPECIES_PLASMAMAN = /datum/outfit/job/scientist/plasmaman,
 		),
+		"Xenobiologist" = list(
+			SPECIES_HUMAN = /datum/outfit/job/scientist/xenobiologist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/scientist/xenobiologist/plasmaman,
+		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
@@ -61,6 +65,18 @@
 	head = /obj/item/clothing/head/helmet/space/plasmaman/science
 	mask = /obj/item/clothing/mask/breath
 	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+
+/datum/outfit/job/scientist/xenobiologist
+	name = "Xenobiologist"
+	suit = /obj/item/clothing/suit/overalls_sci
+
+/datum/outfit/job/scientist/xenobiologist/plasmaman
+	name = "Xenobiologist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/science
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/science
+	suit = /obj/item/clothing/suit/overalls_sci
 
 /datum/outfit/job/scientist/pre_equip(mob/living/carbon/human/H)
 	..()

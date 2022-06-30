@@ -17,6 +17,15 @@
 			SPECIES_HUMAN = /datum/outfit/job/engineer,
 			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
 		),
+		"Engine Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
+		),
+		"Electrician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/electrician,
+		),
+		"Maintenance Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/mainttech,
+		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
@@ -85,3 +94,15 @@
 	head = null
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+
+/datum/outfit/job/engineer/enginetech
+	name = "Engine Technician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/enginetech
+
+/datum/outfit/job/engineer/electrician
+	name = "Electrician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/electrician
+
+/datum/outfit/job/engineer/mainttech
+	name = "Maintenance Technician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/hazard

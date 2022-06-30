@@ -19,6 +19,10 @@
 			SPECIES_HUMAN = /datum/outfit/job/detective,
 			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
 		),
+		"Forensic Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/detective/forensic,
+			SPECIES_PLASMAMAN = /datum/outfit/job/detective/forensic/plasmaman,
+		),
 	)
 
 	departments_list = list(
@@ -78,7 +82,7 @@
 	implants = list(/obj/item/implant/mindshield)
 
 /datum/outfit/job/detective/plasmaman
-	name = "Detective Plasmaman"
+	name = "Detective (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
@@ -94,3 +98,19 @@
 
 	if(visualsOnly)
 		return
+
+/datum/outfit/job/detective/forensic
+	name = "Forensic Technician"
+
+	uniform = /obj/item/clothing/under/rank/security/detective/noir
+	suit = /obj/item/clothing/suit/toggle/labcoat/forensic
+	gloves = /obj/item/clothing/gloves/color/latex
+	head = /obj/item/clothing/head/flatcap
+	shoes = /obj/item/clothing/shoes/laceup
+
+/datum/outfit/job/detective/forensic/plasmaman
+	name = "Forensic Technician (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white

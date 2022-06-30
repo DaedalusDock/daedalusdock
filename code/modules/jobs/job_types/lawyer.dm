@@ -15,6 +15,12 @@
 			SPECIES_HUMAN = /datum/outfit/job/lawyer,
 			SPECIES_PLASMAMAN = /datum/outfit/job/lawyer/plasmaman,
 		),
+		"Defence Attorney" = list(
+			SPECIES_HUMAN = /datum/outfit/job/lawyer/defence,
+		),
+		"Prosecutor" = list(
+			SPECIES_HUMAN = /datum/outfit/job/lawyer/prosecutor,
+		),
 	)
 
 	paycheck = PAYCHECK_EASY
@@ -38,8 +44,7 @@
 	jobtype = /datum/job/lawyer
 
 	id_trim = /datum/id_trim/job/lawyer
-	uniform = /obj/item/clothing/under/rank/civilian/lawyer/bluesuit
-	suit = /obj/item/clothing/suit/toggle/lawyer
+	uniform = /obj/item/clothing/under/rank/civilian/lawyer/black
 	belt = /obj/item/modular_computer/tablet/pda/lawyer
 	ears = /obj/item/radio/headset/headset_srvsec
 	shoes = /obj/item/clothing/shoes/laceup
@@ -58,6 +63,7 @@
 	mask = /obj/item/clothing/mask/breath
 	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
+/* Commenting this out for now, since it overrides alternate job title outfits
 /datum/outfit/job/lawyer/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
 		return ..()
@@ -73,4 +79,12 @@
 /datum/outfit/job/lawyer/get_types_to_preload()
 	. = ..()
 	. += /obj/item/clothing/under/rank/civilian/lawyer/purpsuit
-	. += /obj/item/clothing/suit/toggle/lawyer/purple
+	. += /obj/item/clothing/suit/toggle/lawyer/purple*/
+
+/datum/outfit/job/lawyer/defence
+	name = "Defence Attorney"
+	uniform = /obj/item/clothing/under/rank/civilian/lawyer/blue
+
+/datum/outfit/job/lawyer/prosecutor
+	name = "Prosecutor"
+	uniform = /obj/item/clothing/under/rank/civilian/lawyer/red

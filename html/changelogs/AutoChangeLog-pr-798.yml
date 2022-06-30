@@ -1,0 +1,14 @@
+author: Ebb-Real, ElorgRHG
+delete-after: true
+changes:
+  - rscadd: Adds the Engineering, medical and cargo bandana to departmental clothing
+      vendors.
+  - balance: Bandanas are no longer pepper spray proof.
+  - rscadd: Bandana sprites now visually show that they are a neckerchief by being
+      wide instead of by neckerchief being added to their name.
+  - rscadd: Slightly tweaks the purple bandana's color to match the janitor's uniform.
+  - bugfix: Bandana sprites can no longer be glitched by dying a bandana while its
+      adjusted.
+  - bugfix: You can no longer reset a bandana's name to what it was before getting
+      dyed by adjusting it.
+  - code_imp: 'Integrates the unnecessary subtype of bandana: /color, into the parent.'

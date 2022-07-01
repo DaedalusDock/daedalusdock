@@ -1,3 +1,47 @@
+2022-06-02:
+  SabreML:
+  - bugfix: Fixed Teshari using the human husk sprite.
+  Tokorizo:
+  - rscadd: New Gamuioda lore
+  - rscdel: Old Mothmen lore
+  Zonespace27:
+  - bugfix: Jobs who spawn with tablets not on the belt, have their name and job properly
+      displayed on the tablet, like everyone else.
+2022-06-04:
+  ElorgRHG:
+  - rscdel: Tail pulling.
+  SabreML:
+  - bugfix: Fixed a runtime error caused by the help text of the 'Basic' and 'Advanced'
+      admin buildmodes.
+  atakiya, francinum:
+  - server: Discord-based Whitelist system
+  francinum:
+  - rscdel: Combat Indicator has been removed.
+2022-06-05:
+  SabreML:
+  - bugfix: Fixed donuts sometimes spawning as a giant red 'Error' message.
+2022-06-06:
+  Gonenoculer5:
+  - rscadd: Re-added the Deluxe Agent Card to the uplink.
+  SabreML:
+  - bugfix: Fixed some runtimes caused by the laser gatling gun.
+  - qol: Added an area lightswitch button to the APC UI.
+  Zonespace27:
+  - bugfix: Spamming the start compression test button will not make the anomaly refinery
+      eject a live TTV.
+  - rscadd: That's what the emag is for.
+  jupyterkat:
+  - rscadd: Vox species.
+2022-06-09:
+  ElorgRHG:
+  - code_imp: Darkest color threshold has been lowered a bit, most noticable change
+      is that characters can now have a bit darker mutant colors than before.
+  SabreML:
+  - rscadd: Refactored mob grabbing/holding code to allow any mob smaller than you
+      to be picked up. (Including Teshari!)
+  - bugfix: Fixed a runtime caused by being eaten by a clown box.
+  - imageadd: Added sprites for wearing mice, maintenance drones, and the corgi and
+      fox pAIs on your head.
 2022-06-10:
   ArcaneMusic ft. sprites by Kryson:
   - rscadd: Newscasters have been moved over to TGUI, and with them several new features.
@@ -7,12 +51,16 @@
       have been merged.
   - refactor: Bounty boards and newscaster code have been refactored in order to merge
       the two pieces of content.
+  ElorgRHG:
+  - rscadd: Tablets now have a crew manifest app by default.
   GoblinBackwards:
   - bugfix: Fixed stray syndicate supply pods not containing any items.
   - bugfix: Fixed airlocks and windoors not being able to be attacked by melee weapons
       in combat mode.
   Jolly:
   - bugfix: SnowCabin.dmm had its active turfs rectified.
+  Kylerace:
+  - bugfix: Fixed a runtime caused by tall mobs spawning at the top of the map.
   LemonInTheDark:
   - bugfix: The latejoin menu will now properly close when you join the game
   Maurukas:
@@ -23,6 +71,11 @@
       than usual decals. That tile is back to normal.
   Rhials:
   - rscadd: Added command encryption keys to the cargo order console
+  SabreML:
+  - rscadd: Added species names to examine text.
+  - bugfix: Fixed a runtime caused by a hand of cards spawning on the 'NT Frigate'
+      ruin.
+  - bugfix: Fixed the species preview image for Teshari not being consistent.
   SuperNovaa41:
   - bugfix: Fixes nonhuman head of departments showing up as their original species
       in security records.
@@ -50,3 +103,71 @@
   vincentiusvin:
   - spellcheck: made the reaction list on a few machines' ui (compressor, atmos control)
       to be newlined.
+2022-06-11:
+  Kapu1178:
+  - bugfix: Vox sprites now work better
+  SabreML:
+  - bugfix: Fixed items disappearing in the suit storage slot if the clothing UI was
+      hidden.
+  SabreML, ElorgRHG, Azarak:
+  - rscadd: Added new (colorable) wall, low wall and window sprites.
+  Zonespace27:
+  - imageadd: Resprited PAI doorjack cable
+2022-06-16:
+  ElorgRHG, SabreML, lewcc:
+  - code_imp: Certain emotes are now restricted to species.
+  SabreML:
+  - bugfix: Fixed a small runtime error from wall building.
+2022-06-18:
+  lemons:
+  - rscadd: adds side frills and broken horns to customization
+2022-06-20:
+  SabreML:
+  - bugfix: Fixed thermomachines (pipe heaters/coolers) not having a sprite when opened.
+  Zonespace27:
+  - rscadd: New midround antagonist, Drifting Contractor, an equipped contractor that's
+      not part of the crew.
+  - rscadd: Added two new contractor MODsuit modules, the SCORPION and the magnetic
+      deployment module.
+  - rscadd: New contractor baton upgrade, the focus upgrade.
+  - balance: Contractor MODsuit is less armored in exchange for no slowdown
+  - balance: Contractor contracts only can apply to people on-station.
+  - imageadd: Contractor MODsuit has a digitigrade sprite
+2022-06-21:
+  ElorgRHG:
+  - bugfix: Tramstation medbay maint won't sometimes get double stacked cables and
+      piping.
+2022-06-23:
+  13spacemen:
+  - rscadd: Added round time and alert to the hub
+  francinum:
+  - config: Holidays can now be prevented from making changes to the floor tiles.
+2022-06-24:
+  Ebin-Halcyon:
+  - imageadd: Moths now have a slightly altered head and eye shape.
+  SabreML:
+  - server: Added the changelogs of every previous Pariah PR to the changelog archives.
+  - bugfix: Fixed an error from right clicking hydroponics trays.
+  - rscadd: Changed the hairstyle and colours of the Vox preview mob to more closely
+      resemble the image on the wiki.
+  - rscadd: Adds a species whitelist to Vox breath masks, so that only Vox can wear
+      them. (Beaks!)
+  - rscadd: Added the Vox, Skrell, and Teshari languages as options for language manuals.
+  - bugfix: Fixed the Vox feature preview icons being slightly off-centre.
+  - bugfix: Fixed the beak changing colour in the Vox feature preview icons.
+  - bugfix: Fixed the 'Vox Yasu' hairstyle not working.
+  - bugfix: Fixed the inhand sprites for nitrogen tanks being backwards.
+  - imageadd: Added a item sprite for the Vox breath mask.
+  - imageadd: Added a sprite for the Vox language.
+  - spellcheck: Changed 'Voxes' to 'Vox' (plural) in the Vox species perk descriptions.
+  SabreML, Mothblocks:
+  - bugfix: Fixed the antagonist preference icons for Blood Brothers, Thief, and Opportunist.
+2022-06-26:
+  SabreML:
+  - admin: Added a 'Set all lights' button to the secrets panel.
+  - rscadd: Prevented shuttles tiles from smoothing with station tiles.
+2022-06-27:
+  ElorgRHG:
+  - rscadd: The scream emote is now audible.
+  - rscadd: Species specific scream messages, so something like "Vox shrieks!", "Monkey
+      screeches!" and "Moth buzzes!".

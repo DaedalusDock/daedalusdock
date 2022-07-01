@@ -122,6 +122,8 @@
 			neighbor_typecache = typecacheof(list(/obj/machinery/door/airlock, /obj/structure/window/reinforced/fulltile, /obj/structure/window/fulltile, /obj/structure/window/reinforced/shuttle, /obj/machinery/door/poddoor))
 		for(var/cardinal in GLOB.cardinals)
 			var/turf/step_turf = get_step(src, cardinal)
+			if(!can_area_smooth(step_turf))
+				continue
 			for(var/atom/movable/movable_thing as anything in step_turf)
 				if(neighbor_typecache[movable_thing.type])
 					neighbor_stripe ^= cardinal
@@ -351,7 +353,7 @@
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/titanium
 	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_SHUTTLE_PARTS)
 
 /obj/structure/falsewall/plastitanium
 	name = "wall"

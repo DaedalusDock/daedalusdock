@@ -1,0 +1,133 @@
+2022-05-02:
+  Tokorizo:
+  - rscdel: Removed ERP pref code from TGUI, since we no longer have ERP
+  fighterslam:
+  - rscadd: Adds cryopods to all the maps. Again.
+2022-05-03:
+  ElorgRHG:
+  - bugfix: Skrell no longer die instantly and get a new beating heart sprite.
+  Kapu1178:
+  - rscadd: 'You can now pick body size for characters: short, normal or tall.'
+  Kapu1178, Tiviplus:
+  - code_imp: TGMC screen alerts.
+2022-05-04:
+  SabreML:
+  - bugfix: Fixed Copper and Iron reagents not being removed from Skrell.
+  - bugfix: Fixed species with S type blood not being able to safely recieve S type
+      blood transfusions.
+  Tokorizo:
+  - rscdel: Removed subtle code
+2022-05-05:
+  Cenrus, DrMacCool:
+  - rscadd: Many new hairs are available in the character menu.
+  SabreML:
+  - qol: Added support for character preference tooltips.
+2022-05-06:
+  Deek-Za:
+  - rscadd: Moths now optional colors via the mutcolors trait
+2022-05-07:
+  Tokorizo:
+  - config: changed the ingame panel URL's to our sources
+  vincentiusvin:
+  - rscdel: Removed adding glass floors to plating
+  - balance: Allows you to replace plating with glass floors instead. 3 second timer.
+  - rscdel: Removed deconstructing the glass floors. No replacement for this one,
+      use a rcd.
+  - bugfix: Fixed metastation glassfloor spawning a weird turf when crowbarred.
+2022-05-08:
+  jupyterkat:
+  - rscadd: Added more mutant colors for future species
+2022-05-09:
+  ElorgRHG:
+  - soundadd: Added a sound when clicking on preference menus.
+  NotRanged:
+  - balance: Ghosts can no longer see smuggler satchels.
+2022-05-10:
+  ElorgRHG:
+  - rscadd: Added more character slots.
+  SabreML:
+  - bugfix: Fixed false walls using the wrong spriteset.
+2022-05-12:
+  Cenrus:
+  - balance: Revival of buckshot and slug printing.
+2022-05-14:
+  SabreML:
+  - bugfix: Fixed bar customer robots repeatedly asking for drinks.
+  francinum:
+  - server: TG why did you do it like this what the actual fuck?
+2022-05-16:
+  GoldenAlpharex:
+  - refactor: Refactored how legs are rendered, using dynamically-generated masks
+      to avoid left legs always displaying over right ones, or right legs above left
+      ones.
+  Gonenoculer5:
+  - bugfix: Adjusts moth, skrell, and Unathi skin tones in the species dummy, and
+      gives felinids and humans hair in their species dummy.
+  SabreML:
+  - bugfix: Removed a couple of duplicate loadout entries.
+  Support-Sergal:
+  - rscadd: Added 2 more emotes for bird players
+  - soundadd: added a chirp.ogg for the bird nerds
+2022-05-17:
+  SabreML:
+  - rscadd: Changed some instances of 'Lizardpeople' and 'Mothpeople' to 'Unathi'
+      and 'Gamuioda'.
+  - bugfix: Fixed the HoS not having `ACCESS_SECURITY`. (Sec lockers, records, bots,
+      etc.)
+  Tokorizo:
+  - rscadd: Added  new arrivals shuttle voice line from Blackdog
+  gonenoculer5:
+  - qol: SSDecay has been sent to the ZAS Testing Rooms where it belongs, never to
+      return.
+2022-05-20:
+  timothymtorres, san7890, axietheaxolotl:
+  - rscadd: Adds haunted tarot deck that allows the user the ability to see and communicate
+      with the dead. Can be found in maint loot as a rare item.
+  - rscadd: Adds blank card decks to games vendor. These can be written on with a
+      pen or crayon.
+  - soundadd: Adds a public domain cardflip.ogg from freesound.org that is used when
+      drawing a card.
+  - qol: Cards, decks, and cardhands have new hotkeys. Decks are now a 2 handed wielded
+      object.
+  - qol: Add card ruleset to Wiz-Off at the top of the deck.
+  - bugfix: Holodeck card decks are now spawned as syndicate deck to convey that they
+      can do damage if safeties are overridden.
+  - bugfix: Any holodeck items have their force and throwforce damage nerfed to zero
+      while the safeties are on.
+  - bugfix: Fix xray trait to appear on mobs that equip xray glasses or have xray
+      eye augmentation.
+  - code_imp: Moved the card deck code to it's own files and folder.
+  - rscdel: Remove CAS decks from random deck spawner (you need both decks to play
+      so only having one spawn was bleh)
+  - refactor: Cards have been refactored and a lot of deprecated code has been removed.
+  - imagedel: Remove old cardhand icons that were unused.
+  - imageadd: Add some new blank/scribble card icons.
+  - imageadd: Add new clown and mime joker cards to standard decks curtesy of axietheaxolotl
+      (Viro on discord)
+2022-05-23:
+  MNarath1:
+  - bugfix: fixes goliath not chasing people
+2022-05-24:
+  LemonInTheDark:
+  - qol: Space Parallax will now smoothly animate between steps, based off your movement
+      speed. Please report any jitter.
+  - bugfix: Parallax will no longer "freeze" when you cross some area boundaries.
+      Looks better now.
+  - bugfix: Dragging objects diagonally will no longer cause them to visually "jump"
+      to catch up to you. Seriously how did none report this, are we just collectively
+      blind?
+2022-05-25:
+  Tokorizo:
+  - bugfix: fixed LOOC by adding the proc to it
+2022-05-26:
+  SabreML:
+  - server: Changed tgstation.dme (and associated files) to pariah.dme
+2022-05-27:
+  SabreML:
+  - rscadd: Teshari!
+2022-05-28:
+  francinum:
+  - qol: Consoles no longer click as incessantly
+2022-05-29:
+  JohnFulpWillard, Jolly-66:
+  - rscadd: Pubbystation is now back in rotation

@@ -104,12 +104,13 @@ const HelpfulTab = (props, context) => {
       <Stack.Item>
         <Stack fill>
           <Stack.Item>
-            <NoticeBox
-              mb={-0.5}
+            <Button
+              icon="lightbulb"
+              lineHeight={lineHeightNormal}
               width={buttonWidthNormal}
-              height={lineHeightNormal}>
-              Your admin button here, coder!
-            </NoticeBox>
+              content="Set all lights"
+              onClick={() => act("set_lights")}
+            />
           </Stack.Item>
           <Stack.Item>
             <Button

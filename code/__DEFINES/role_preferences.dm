@@ -39,6 +39,7 @@
 #define ROLE_SPACE_DRAGON "Space Dragon"
 #define ROLE_SPIDER "Spider"
 #define ROLE_WIZARD_MIDROUND "Wizard (Midround)"
+#define ROLE_DRIFTING_CONTRACTOR "Drifting Contractor"
 
 // Latejoin roles
 #define ROLE_HERETIC_SMUGGLER "Heretic Smuggler"
@@ -139,6 +140,7 @@ GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_SPACE_DRAGON = 0,
 	ROLE_SPIDER = 0,
 	ROLE_WIZARD_MIDROUND = 14,
+	ROLE_DRIFTING_CONTRACTOR = 14,
 
 	// Latejoin
 	ROLE_HERETIC_SMUGGLER = 0,

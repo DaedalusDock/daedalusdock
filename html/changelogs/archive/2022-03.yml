@@ -444,11 +444,15 @@
   - bugfix: fixed an inconsistency where booze bottles and molotovs wouldn't splash
       their contents when thrown at things while drinking and shot glasses do.
 2022-03-13:
+  Azarak, E-MonaRhg:
+  - code_imp: Properly adds a modularised combat indicator.
   Gandalf2k15:
   - imageadd: Medkit sprites have now been updated to proper 3/4th perpsective.
   - spellcheck: All instances of "firstaid" have been replaced with "medkit".
   Melbert:
   - bugfix: Casters who sold their soul can no longer use Soul Tap
+  Nari Harimoto:
+  - bugfix: Engineering borgs can now place wallmounts again
   OneAsianTortoise:
   - bugfix: being inside locker no longer protects you from a nuke
   - balance: being inside the fridge guarantees you to survive nuclear bomb
@@ -494,6 +498,13 @@
       (except kilo which gets slightly less, because Kilo is too small) so you do
       not need to have to learn vastly different mixing methods per map, removed stored
       co2 as it is not used
+  PariahBot:
+  - qol: hand labeler paper roll and toner cartridge can be printed at autolathe and
+      protolathes now
+  - bugfix: Water vapor should wet and freeze floors once again.
+  - bugfix: fixes the doppler array nullifying some of your bombs.
+  - bugfix: Fixes airlock reinforcement not being removable.
+  - refactor: Heavily refactors reinforcing and un-reinforcing airlocks.
   Pepsilawn:
   - bugfix: Removed the extra keycard auth device hidden under the CE's extinguisher
       cabinet
@@ -502,6 +513,35 @@
   - code_imp: Updates `init_gaslist_cache` to match current code standards.
   TemporalOroboros:
   - expansion: Splashed blood is as infective as bled blood.
+  Tokorizo:
+  - code_imp: Updates init_gaslist_cache to match current code standards.
+  - bugfix: Clown tears will no longer explode on creation.
+  - code_imp: Removes a forgotten devil proc in photocopier code.
+  - bugfix: Fixes the syndie screwdriver using the wrong belt sprite.
+  - imageadd: Added belt sprites for the syndie screwdriver and all alien tools.
+  - qol: Each Map now comes with a standard amount of gas cans in Ordanance Storage
+      (except kilo which gets slightly less, because Kilo is too small) so you do
+      not need to have to learn vastly different mixing methods per map, removed stored
+      co2 as it is not used
+  - imageadd: Medkit sprites have now been updated to proper 3/4th perpsective.
+  - spellcheck: All instances of "firstaid" have been replaced with "medkit".
+  - qol: Revs/Traitors adding more threat is now shown on the roundend report.
+  - bugfix: IceBox's Psychology office medical computer records console now faces
+      the right way.
+  - bugfix: Fixes persistent painting patron name not being loaded
+  - qol: Most foods decompose into JUST moldy food, which then gets eaten by ants,
+      leaving only the anthills and ultimately making them more visible.
+  - bugfix: Cleanable decals will try to merge their reagents before they delete if
+      they have mergeable_decal = TRUE, meaning ants will now properly stack their
+      reagents when they spawn on the same tile.
+  - qol: Ants no longer spawn on lavaland's basalt.
+  - code_imp: upstream fetch
+  Wallem:
+  - rscadd: Seeing how many miners we lose on a weekly basis, we've decided to dig
+      through some of our prototypes to get something to help you all. Your venders
+      have been supplied with Kheiral Cuffs, a wrist-worn suit sensor range booster.
+      Note that any accelerated aging caused by the device will not be counted towards
+      your retirement.
   cacogen:
   - bugfix: Fixed firelock screentips telling silicons they could knock or bash them
   - bugfix: Fixed firelock screentips saying bash with combat mode off and knock with
@@ -574,6 +614,10 @@
 2022-03-17:
   Fikou:
   - imageadd: new punching bag sprites!!!!!!!!!!!!!!!!
+  Gandalf2k15, E-MonaRhg:
+  - rscadd: Added new walls, windows, airlocks and status displays, and several others.
+      Credit to Tau Ceti.
+  - rscadd: Hundreds of new miscellaneous sprites.
   JosephJomama:
   - imageadd: The police baton has been resprited into a handsome beatin' stick worthy
       for a lone-wolf detective who doesn't play by the rules to whack perps with.
@@ -583,6 +627,76 @@
   - bugfix: Because of the above, you can now properly fix the icebox mining shuttle
   - refactor: Non floor turfs are no longer typed as floor. This may break things,
       please yell at me if it does
+  MMMiracles:
+  - bugfix: Patches up the sporadically popping up space turfs that appeared in tram's
+      security wing.
+  - bugfix: The bar now has an air alarm.
+  Melbert:
+  - bugfix: Makes the wizard's Lich Phylactery mechanic actually work consistently.
+  - bugfix: The description of the Bind Soul spell (and entry) should match its behavior
+      a bit more accurately now. You will revive regardless if your body is destroyed
+      or leaves the z-level. With each revival, the time it takes to respawn does
+      not change, but the duration of the stun does.
+  - refactor: Makes Phylacteries a component.
+  - qol: Gave Lich Phylacerties some QoL features and pizazz. Examining it'll offer
+      more information to wizards and ghosts.
+  PariahBot:
+  - bugfix: Podpeople now take self-respiration into account when taking damage from
+      critical condition, like most other species.
+  - bugfix: Fixed two firelocks being on the same tile in the Starfury.
+  - admin: When you send people to Admin Prison for any number of reasons, please
+      take joy in knowing they can't explode out the floors any more.
+  - rscadd: Random Poster Spawners now have directional variants. You don't have to
+      memorize the pixel offset for those anymore (it was 32).
+  - bugfix: The Syndicate realized that the indoor portion of their top-secret Nuclear
+      Operative base actually partially owned some of the outside portion of the planetary
+      body it rests on. It has been corrected.
+  - imageadd: On the mapping end, the Abductor Ship, the Wizard's Ship, and the Thunderdome
+      Administration and Observation Areas now have new area turf sprites. Does this
+      matter to your in-game experience? Probably not.
+  - bugfix: supply pods, crab-17s, explosions in general(?), and ash drakes(?????????)
+      no longer make a shattering sound.
+  - code_imp: turns some "if ("s into "if("s in sound.dm
+  - admin: Silicon law logs are shorter and easier to read
+  - rscadd: 'On DeltaStation, IceBoxStation, and TramStation: Nanotrasen has now blocked
+      off the area informally known as the "Cargo Lobby", and formally defined it.'
+  - rscadd: Rather then being tileable with just floor tiles, lavaland turfs, asteroid
+      and snow (among other things) now support lattice -> floor tile construction
+  - bugfix: Because of the above, you can now properly fix the icebox mining shuttle
+  - refactor: Non floor turfs are no longer typed as floor. This may break things,
+      please yell at me if it does
+  - bugfix: Pride pins can be reskinned again, accessories whose location can be toggled
+      now do so with right-click.
+  - imageadd: The police baton has been resprited into a handsome beatin' stick worthy
+      for a lone-wolf detective who doesn't play by the rules to whack perps with.
+  - rscadd: Nanotrasen decided to shuffle some things around in DeltaStation's Grand
+      Surgery Theatre's Viewing Room in order to save the cost of having to purchase
+      two new chairs with each station.
+  - bugfix: KiloStation's Chapel Entrance now receives power.
+  - bugfix: There is no longer a space turf in the middle of an asteroid on KiloStation
+      with gravity attached to it.
+  - bugfix: Nanotrasen corrected an oversight with the Security Medical ward on TramStation;
+      it now has an Air Alarm and APC.
+  - bugfix: DeltaStation's Bomb Range no longer has a floating camera. Instead, the
+      camera has been redirected to attach on the wall the proper way.
+  - rscadd: Nanotrasen decided to do a few more cost-cutting procedures, removing
+      lights from a certain outdoor section of KiloStation.
+  - bugfix: Prevents invalid materials being used on airlock assemblies.
+  - bugfix: Using telekinesis will no longer break chameleon.
+  - bugfix: Fixes being able to spam deny sounds on deliver first crates.
+  - bugfix: drones are no longer shy around maint rats and such
+  - bugfix: native fast gui boxes work again
+  - rscadd: Parts and Machine frame to build an ORM from the golem ship
+  - rscdel: Removed Prebuilt ORM from the golem ship
+  - qol: signalers can now be triggered through right click
+  - imageadd: On the mapping end, the Diner now has it's own area turf. If you don't
+      know what that means, just know that it's a good thing.
+  - bugfix: soulscythes are now immune to mining planet storms
+  Ryll/Shaps:
+  - bugfix: Dog AI's should no longer lock up and become unresponsive after failed
+      fetch attempts
+  - soundadd: Dogs in harass mode that are guarding against someone will now make
+      growling sounds
   Thunder12345:
   - bugfix: Pride pins can be reskinned again, accessories whose location can be toggled
       now do so with right-click.
@@ -654,9 +768,29 @@
   - rscadd: Nanotrasen decided to do a few more cost-cutting procedures, removing
       lights from a certain outdoor section of KiloStation.
 2022-03-19:
+  Dex:
+  - bugfix: Fixed training toolbox sprite
   Fikou:
   - bugfix: you cant hide stuff in locked modsuit storages, it empties when removed
       from the suit
+  PariahBot:
+  - bugfix: Ants now don't appear on icemoon/space asteroids, rather than only lavaland.
+  - bugfix: you cant hide stuff in locked modsuit storages, it empties when removed
+      from the suit
+  - qol: Tooltips of low/no power screen alerts (used by cyborgs, MODsuits, mechs
+      and ethereals) will tell you the actual locations of the roundstart station
+      chargers
+  - bugfix: Fixes issue with low/no power screen alerts not clearing after leaving
+      a mech
+  - bugfix: Fixed runtime on Give screen alert where a proximity check was happening
+      twice
+  - bugfix: Fixed being able to take things as a dead person
+  - qol: Added a search function to the "Marlowe Treeby's Art Galaxy" app. You can
+      now search for paintings by title or author now.
+  - qol: Speaking of the same app, the name of the author is now displayed under that
+      of the painting in its preview section.
+  - bugfix: Fixed a potential BSOD in its TGUI if no painting was ever archived.
+  - qol: The AI Portrait Picker also got a similar treatment.
   Son-of-Space:
   - bugfix: Engineers have finally solved for the reason why their solar setups on
       TramStation never worked.
@@ -758,8 +892,26 @@
   Jolly:
   - bugfix: The Beach Biodome had the water turf corrected, and as such, shouldn't
       have atmos issues.
+  Melbert:
+  - balance: Flesh Heretic's summon objective now counts all summons done, alive or
+      dead, instead of all alive summons. Still does not include flesh ghouls or voiceless
+      dead.
   OneAsianTortoise:
   - bugfix: fixes medical scrub being named "under"
+  PariahBot:
+  - balance: allows you to heal using plasma fixation in minor amounts of plasma such
+      as in Icebox's atmosphere
+  - bugfix: fixes medical scrub being named "under"
+  - bugfix: Prevents iron/adamantine/yellow slime cookies from being to able to stack
+      their bonuses.
+  - bugfix: Fixes the description for mice being incredibly rude, judgmental, and
+      insulting towards mice, who are objectively adorable.
+  - bugfix: Recyclers no longer eat their own parts when dismantled.
+  - qol: Amputation, Compound Fracture Repair, Cavity Implantation, Augmentation,
+      and Prosthetic Replacement surgeries now all clamp bleeders after retracting
+      skin like most surgeries, rather than before.
+  Tokorizo:
+  - rscadd: A subsystem has been added that allows the station to start dirty.
 2022-03-23:
   Daggertail:
   - qol: Amputation, Compound Fracture Repair, Cavity Implantation, Augmentation,
@@ -826,6 +978,9 @@
   TemporalOroboros:
   - bugfix: Blood-spread-only diseases will no longer always spread upon exposure
       to blood.
+  Tokorizo:
+  - balance: QM is now a head of cargo, instead of the HoP. And while being a head
+      he's also command and all that stuff.
   capsaicinz:
   - bugfix: xray beams can now be resisted by laser-resistant armor
   - code_imp: /obj/projectile flag is renamed to armor_flag
@@ -854,11 +1009,40 @@
   - bugfix: Fixed icebox plasma facility mood event color not working.
   - code_imp: Improved mood events descriptions to be simpler to write.
 2022-03-24:
+  ElorgRHG:
+  - rscadd: Added a loadout menu and stuff to populate it.
   Ghilker:
   - refactor: refactored the electrolyzer to use datumized reactions instead of hardcode
       them in process
   - expansion: added the hypernoblium to antinoblium conversion, when hypernoblium
       is exposed to the electrolyzer it will be converted to antinoblium
+  Jolly:
+  - rscadd: Charlie and Delta Storage rooms were added (as an area).
+  - rscadd: Charlie Dorms were added (as an area).
+  - imageadd: Fresh coat of paint for the Old Station (Charlie Station ruin) area
+      sprites.
+  PariahBot:
+  - bugfix: Bluespace shelters now come with a ceiling.
+  - code_imp: Added optional automatic ceiling generation for map templates.
+  - bugfix: Nanotrasen realized that they should stop installing grilles right on
+      top of the Air Flow Meters on IceBoxStation.
+  - bugfix: Fixes being able to use revival surgery on blacklisted defib victims
+  - bugfix: xray beams can now be resisted by laser-resistant armor
+  - bugfix: Nanotrasen decided that today was a good day to remove the random floating
+      poster on the exterior of Security on KiloStation.
+  - qol: Mood events colors now accurately reflect the severity for the positive or
+      negative. Really good is bold green, good is green, neutral is gray, bad is
+      red, and really bad is bold red.
+  - bugfix: Fixed icebox plasma facility mood event color not working.
+  - code_imp: Improved mood events descriptions to be simpler to write.
+  - bugfix: There is no longer a poster splayed out over a vending machine in KiloStation's
+      Botany Section.
+  - refactor: refactored the electrolyzer to use datumized reactions instead of hardcode
+      them in process
+  - balance: xray lasers now have 100 armor penetration
+  Shiets, Dragomagol:
+  - rscadd: Podpeople now have plant-like growths springing from their heads!
+  - rscadd: Podpeople can style their "hair" with secateurs
 2022-03-25:
   Fikou:
   - balance: xray lasers now have 100 armor penetration
@@ -867,6 +1051,22 @@
   - bugfix: Fixed 24x24 paintings not being centered inside their frames.
   JohnFulpWillard:
   - bugfix: Bot's modes have been fixed, Medibots will no longer be on 'arrest' mode.
+  Obliii:
+  - qol: makes food craft faster
+  PariahBot:
+  - bugfix: Fixed Departmental Techfab machine board for service being named oddly
+      compared to the other ones.
+  - bugfix: Fix an overlooked crystallizer issue where gases wouldn't get consumed
+      because of a fixed rate of removal instead of an percentage based one.
+  - bugfix: Fixed double firelocks in Deltastation's fore customs area.
+  SabreML:
+  - code_imp: Fixed juke build not detecting code changes in the `modular_pariah`
+      folder.
+  Tokorizo:
+  - rscadd: radio headsets make noise now, common, syndicate, and security varients
+  Wallem:
+  - bugfix: GPSes don't start deactivated anymore, which also brings back most space
+      ruin GPS signals. Sorry about that.
   san7890:
   - imageadd: Nanotrasen has upgraded "that machine that prints all of those decals
       on our station tiles" to now print two corners that face opposite each other
@@ -889,11 +1089,44 @@
 2022-03-26:
   Colovorat:
   - bugfix: Clicking on airlock with ID Scan wire cut, should not open airlock.
+  ElorgRHG:
+  - refactor: Refactored the atmos control console devices. The ones that hook to
+      the big turf chambers.
+  - qol: Distro meter now broadcast the whole gasmix info instead of just pressure
+      to the monitors.
+  - bugfix: Lavaland syndie's atmos chamber vents are now actually configurable. Moved
+      a few things around to accomodate this.
+  - bugfix: Lavalannd syndie chambers hooked to distro and moved distro pipe to layer2
+  - qol: atmos monitors can detect reactions now.
+  - code_imp: Some minor code changes to how anomaly refinery and implosion compressor
+      show the gas info. No changes expected, report if bug.
+  - code_imp: recoded checks for atmos chamber abnormalities in debug verbs.
+  - refactor: cryotubes can now work with any gases
+  - qol: replaced oxygen canisters with anesthetic ones (a mix of oxygen and n2o at
+      65-35 ratio) for allowing the patient to sleep
+  - bugfix: The Kilostation chapel has less stacked turf decals. They're still around,
+      though.. Watching. Waiting... Additionally, magic power has been NUKED from
+      the maintenance room back there. Pour one out.
+  - bugfix: All lights (and cameras) in the Kilostation chapel have been PREPARED
+      FOR THE FUTURE. And by the future, I mean the wallening.
+  - rscadd: Lights now have a new sound for turning on.
+  - rscadd: Light switches now actually switch.
+  - code_imp: Lights take some time to warm up and turn on.
+  - code_imp: All areas now have a 50% chance to start with lights off(provided the
+      area has a lightswitch!)
+  - code_imp: Lights are now dimmer by default.
   Ghilker:
   - bugfix: Fix an overlooked crystallizer issue where gases wouldn't get consumed
       because of a fixed rate of removal instead of an percentage based one.
   OperativeLyn:
   - bugfix: Fixed double firelocks in Deltastation's fore customs area.
+  PariahBot:
+  - qol: Windoors now use directional variants
+  - soundadd: Sound effects for attacking bushes, trees, mushrooms and rocks.
+  - code_imp: Minor code improvements in flora.dm
+  Ryll/Shaps:
+  - qol: Mystery boxes no longer cut off each other's sound clips when playing their
+      own
   SmArtKar:
   - expansion: Added VOX and Thought Listener BCI components
   - expansion: Object Overlay component overlays can now be rotated
@@ -902,6 +1135,8 @@
   - qol: The supply and supply request consoles now have a search bar.
   - bugfix: Picking a high priority role in character creation no longer breaks assistant
       selection behind the scenes.
+  Tokorizo:
+  - code_imp: Upstream fetch, part 3
   Wallem:
   - bugfix: GPSes don't start deactivated anymore, which also brings back most space
       ruin GPS signals. Sorry about that.
@@ -917,3 +1152,172 @@
   - qol: Mappers now have access to an autoname helper for airlocks! One less field
       to punch in means a few seconds extra YOU can use placing down lizard plushies,
       wondering where it all went wrong, and adding lattices on the CentCom Z-level.
+2022-03-27:
+  PariahBot:
+  - imageadd: For those who seek out rarer materials, Runite Bars have a nicer appearance.
+  - balance: Airlocks will now autoclose in 8 seconds rather then 15
+  - bugfix: TGUI and Tooltip windows now work with high-dpi web browsers
+  - bugfix: Fix tritium fire releasing more radiation than it should.
+2022-03-28:
+  ElorgRHG:
+  - soundadd: Added thunderdome.ogg as a possible lobby music track.
+  - code_imp: clown.ogg removed as a possible lobby music track.
+  PariahBot:
+  - rscadd: Right-click with a MOD paint now lets you paint the suit's color!
+  - bugfix: fixed lavaland syndie base's pipes popping up.
+  - bugfix: Fixes an exploit that allowed players to send unsanitized text to admins.
+  - bugfix: Bartenders can throw drinks again, rejoice!
+  - qol: Added a 50 count bamboo stack to base stack types
+  - bugfix: cleans up some force-feeding code indentation, and adds some headless
+      flavor
+  - bugfix: Bots blowing up can now be sorted under Info.
+  - bugfix: Gunpowder's reaction can now be sorted under Info.
+  - code_imp: boldnotice messages are now sorted under Info.
+  - bugfix: fixes a bug that causes podpeople hair to crash the pref menu
+  - balance: Free Golems are now penalized for leaving their natural habitat
+  - bugfix: removes duplicate dorm airlock on tramstation.
+  - bugfix: charlie station dorms now only has one APC, as god intended
+  - qol: the gulag item reclaimer now requires brig access to use instead of general
+      security access
+  - bugfix: You can no longer create money out of thin air using bounty boards.
+  - refactor: The mech UI(s) now use TGUI
+  - rscadd: Mechs no longer have RNG chances to completely ignore attacks
+  - rscadd: Mech armor will now directly add armor instead increasing deflection chance
+  - rscadd: Mechs now have slots for equipping "power", "utility" and "armor" modules
+  - rscadd: Mechs now use left and right click to use the left and right weapons respectively
+  - rscadd: Mech internal damage no longer requires low HP and instead now requires
+      a minimum damage in an attack to consider it
+  - rscdel: hidden mech bay has (at least for now) been removed
+  - rscdel: Some ballistic weapons reloading with energy has been removed so they
+      have infinite ammo
+  - rscdel: tesla power module has been removed
+  - rscdel: Honker no longer has snowflake UI that plays sounds
+  - bugfix: admin uis now work on mech equipment properly
+  Ryll/Shaps and MrDoomBringer:
+  - imageadd: Added new bleeding overlays for humans! People who are losing blood
+      will now have overlays displayed on them that show which bodyparts are bleeding,
+      and how much blood they're losing from that bodypart.
+  - bugfix: Slash wounds now properly retain their bleed rate when being demoted to
+      lower severities, meaning critical slashes will no longer be fully healed after
+      using one suture.
+  - balance: Critical slash wounds have had their initial bloodflow reduced, and existing
+      slash wounds gain less bloodloss when hit with further slash attacks. The cap
+      for how much blood a slash can lose per tick has been raised slightly.
+  - balance: Grabbing your own bleeding limb to staunch the bleeding is quicker and
+      slows you down less
+  Tokorizo:
+  - rscdel: Progression Traitors are now gone
+2022-03-29:
+  ElorgRHG:
+  - rscadd: Added typing, emote and SSD indicators.
+  - rscadd: Added a preference setting for facing your character towards the cursor
+      while in combat mode.
+  - code_imp: Improved combat indicator code.
+  - bugfix: Hijack objective is now properly given.
+  - bugfix: CE's tablet once again has the supermatter monitoring tablet program.
+  - rscadd: Ported SR's hyposprays.
+  Jolly:
+  - bugfix: Lavaland agents rejoice! Theres no longer a missing tile that leads to
+      space! ..Wait, what?
+  PariahBot:
+  - qol: Contractors lost some appliances in kitchen maintenance on MetaStation, BoxStation,
+      and DeltaStation
+  - bugfix: The 0.7% charge high capacity power cell (which actually also stored 50%
+      more charge than a regular high capacity power cell, didn't notice that right?)
+      in Metastation engineering has been replaced with a regular high capacity power
+      cell.
+  - bugfix: The Zeta emergency shuttle's brig now travels with the rest of the shuttle
+  - bugfix: The thunderdome side rooms will now properly reset.
+  - admin: The thunderdome is now a placeable map template.
+  - balance: Improvements in the smoke powder formula have resulted in a doubling
+      of the maximum possible carry density for the resulting clouds. This brings
+      it to par with the fluorosurfactant formula in this area.
+  - balance: Fluorosurfactant no longer acts as an arbitrarily powerful accelerating
+      catalyst in an emulsified state. Research into foam based thermobaric weaponry
+      has begun.
+  - bugfix: On IceBoxStation, hopefully all (if not a good chunk) of the cameras have
+      been moved to no longer be on windows, and on walls instead.
+  Tokorizo:
+  - rscadd: Added LOOC, subtle, and subtler. Tweaked WHO too.
+  - qol: Emotes starting with a comma (,) or an apostrophe (') will no longer have
+      an awkward space between the mob name and said comma.
+  - code_imp: Improved a bit some of the subtle and subtler code.
+2022-03-30:
+  PariahBot:
+  - bugfix: modsuit painting is fixed
+  - qol: The beach away mission has a light yellow tint
+  - bugfix: Some areas that were once pitch black are no longer
+  - bugfix: you can no longer push ash drake corpses into doors
+  - rscadd: IceBox Station has a new Security Department
+  - bugfix: Reality has downloaded CS Source which fixed the missing texture of a
+      poster in departures security checkpoint
+  - bugfix: I've replaced the pumps in server rooms/slime kill rooms with passive
+      vents. It's faster ok don't worry about it
+  - balance: scrubbers now remove small amounts of gas faster than they used to, without
+      affecting how fast they scrub gases in high concentrations.
+  - bugfix: Fixed 2 newscasters that were accidently mapped next to each other on
+      tram.
+  - bugfix: Fix plants to not hurt user while using telekinesis
+  - bugfix: Fix welders wasting fuel when clicking on tiles
+  - bugfix: Fix jumpsuits to drop accessories when destroyed
+  - admin: Admins can now see the number of players when someone sends an urgent ahelp.
+  - admin: Added an option to config send non-urgent ahelps to a channel (where there
+      are no available admins on).
+  - admin: Added a response that is sent by the server when an ahelp is responded
+      to in any way by an admin.
+  Tokorizo:
+  - rscadd: Added pixelshifting. (Default keybinding is ALT, check your keybinds!)
+  - rscadd: Flavor text, OOC notes, ERP preference setting.
+  timothymtorres, lewcc:
+  - bugfix: Fix attack messages appearing when using tools on blast doors
+2022-03-31:
+  ElorgRHG:
+  - bugfix: Fixed the preview in the Select Equipment menu
+  ErdinyoBarboza:
+  - bugfix: Makes cyborg lollipop dispenser use the cyborg (non-omnizine) variant
+      for consistency.
+  - bugfix: Adds descriptions to some turfs that missed them.
+  Melbert:
+  - admin: Plant mob spawning (Killer Tomatos) are now logged more thoroughly and
+      in investigate botany now
+  PariahBot:
+  - rscadd: The crashed ship ruin has been remapped
+  - server: Bookcases will generate way more db calls during init then is normal.
+      If this causes issues please bug me and I'll work out a solution
+  - bugfix: Library consoles and a few other things will no longer look "on" even
+      when their power is cut.
+  - imageadd: Nanotrasen has once more updated its legendary Central Command Wardrobe,
+      improving upon its designs even further!
+  - bugfix: fixes a runtime with conveyor where right clicking it with any item would
+      cause a runtime
+  - bugfix: Fixes slime core removal surgery being impossible to start
+  - qol: paintings shown in the "Marlowe Treeby's Art Galaxy" app  will now always
+      have a 1:1 pixel ratio, ergo 23x19, as well as the new canvases, won't appear
+      stretched in its UI anymore.
+  - bugfix: Fixed the 24x24 canvas not having a wip overlay (the one that shows up
+      on canvases with unfinished paintings).
+  - bugfix: Pull tail screentip now works properly
+  - bugfix: removed stray pixel on the CQC manual
+  - bugfix: protector stands no longer remove all their overlays when leaving shield
+      mode
+  - bugfix: Nanotrasen realized how much they were spending on newscasters that got
+      buried under posters and the like, so the corporation decided to stock the crew
+      with juuuuust enough. They have saved a lot of money from this venture, and
+      the economy will promptly begin to skyrocket to new heights.
+  - bugfix: Machine frames and circuit boards no longer call manipulators micro-manipulators
+      when examined
+  - code_imp: Improves code in constructable_frame.dm and circuitboard.dm
+  - qol: Ectoscopic Sniffers now shout a handful of silly phrases to remind robotics
+      to not ignore them, and to accommodate deaf players.
+  - rscadd: Re-added the Hotkeys-Help verb, and linked the Hotkeys menu item to it.
+  - qol: Move Help menu to the end of the menu bar.
+  - bugfix: Humans no longer "enter" mechs twice
+  - qol: as a side effect mech entering will cancel immediately instead of failing
+      at the end only
+  - bugfix: fixed mech air tanks being removable
+  - rscadd: Added an ic atmos reaction guide. Available in your atmos control consoles/monitors,
+      ntosatmos app, and analyzer.
+  - code_imp: Some changes to how gas canister descriptions are generated.
+  - qol: space dragon can now make it's sprite smaller
+  'TheBonded, timothymtorres ':
+  - bugfix: Fixed mulebot movement animation to be smoother

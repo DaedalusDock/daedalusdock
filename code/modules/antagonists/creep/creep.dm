@@ -37,12 +37,12 @@
 	. = ..()
 
 /datum/antagonist/obsessed/get_preview_icon()
-	var/mob/living/carbon/human/dummy/consistent/victim_dummy = new
-	victim_dummy.hair_color = "#bb9966" // Brown
-	victim_dummy.hairstyle = "Messy"
-	victim_dummy.update_hair()
+	var/mob/living/carbon/human/dummy/consistent/obsessed_dummy = new
+	obsessed_dummy.hair_color = "#bb9966" // Brown
+	obsessed_dummy.hairstyle = "Messy"
+	obsessed_dummy.update_hair(TRUE)
 
-	var/icon/obsessed_icon = render_preview_outfit(preview_outfit)
+	var/icon/obsessed_icon = render_preview_outfit(preview_outfit, obsessed_dummy)
 	obsessed_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
 
 	var/icon/final_icon = finish_preview_icon(obsessed_icon)
@@ -59,11 +59,11 @@
 /datum/outfit/obsessed
 	name = "Obsessed (Preview only)"
 
-	uniform = /obj/item/clothing/under/misc/overalls
+	uniform = /obj/item/clothing/under/rank/medical/doctor
 	gloves = /obj/item/clothing/gloves/color/latex
 	mask = /obj/item/clothing/mask/surgical
-	neck = /obj/item/camera
-	suit = /obj/item/clothing/suit/apron
+	l_hand = /obj/item/camera
+	suit = /obj/item/clothing/suit/apron/surgical
 
 /datum/outfit/obsessed/post_equip(mob/living/carbon/human/H)
 	for(var/obj/item/carried_item in H.get_equipped_items(TRUE))

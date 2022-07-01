@@ -206,7 +206,7 @@
 /datum/antagonist/rev/head/proc/make_assistant_icon(hairstyle)
 	var/mob/living/carbon/human/dummy/consistent/assistant = new
 	assistant.hairstyle = hairstyle
-	assistant.update_hair()
+	assistant.update_hair(TRUE)
 
 	var/icon/assistant_icon = render_preview_outfit(/datum/outfit/job/assistant/consistent, assistant)
 	assistant_icon.ChangeOpacity(0.5)
@@ -434,7 +434,7 @@
 	if (. == STATION_VICTORY)
 		// If the revolution was quelled, make rev heads unable to be revived through pods
 		for (var/datum/mind/rev_head as anything in ex_headrevs)
-			if(!isnull(rev_head.current))	
+			if(!isnull(rev_head.current))
 				ADD_TRAIT(rev_head.current, TRAIT_DEFIB_BLACKLISTED, REF(src))
 				rev_head.current.med_hud_set_status()
 

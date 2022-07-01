@@ -1,0 +1,6 @@
+# ss13_genchangelog
+PyYaml==5.4
+beautifulsoup4==4.9.3
+# generat_cl
+ruamel.yaml==0.17.20
+PyGithub==1.55

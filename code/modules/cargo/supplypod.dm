@@ -78,6 +78,12 @@
 	bluespace = TRUE
 	explosionSize = list(0,0,1,2)
 	delays = list(POD_TRANSIT = 25, POD_FALLING = 4, POD_OPENING = 30, POD_LEAVING = 30)
+	/// Tied contractor's contract hub
+	var/datum/contractor_hub/contract_hub
+	/// The associated contract should this have been contractor-made
+	var/datum/syndicate_contract/tied_contract
+	/// If this pod is currently able to recieve a person
+	var/recieving = FALSE
 
 /obj/structure/closet/supplypod/centcompod
 	style = STYLE_CENTCOM
@@ -99,6 +105,27 @@
 	. = ..()
 	var/turf/picked_turf = pick(GLOB.holdingfacility)
 	reverse_dropoff_coords = list(picked_turf.x, picked_turf.y, picked_turf.z)
+
+/obj/structure/closet/supplypod/extractionpod/Destroy()
+	if(recieving)
+		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
+		if (contract_hub.current_contract == tied_contract)
+			contract_hub.current_contract = null
+		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
+		tied_contract = null
+		contract_hub = null
+	return ..()
+
+/obj/structure/closet/supplypod/extractionpod/Moved()
+	if(recieving && (atom_integrity <= 0))
+		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
+		if (contract_hub.current_contract == tied_contract)
+			contract_hub.current_contract = null
+		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
+		tied_contract = null
+		contract_hub = null
+	return ..()
+
 
 /obj/structure/closet/supplypod/proc/setStyle(chosenStyle) //Used to give the sprite an icon state, name, and description.
 	style = chosenStyle

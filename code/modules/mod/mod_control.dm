@@ -446,6 +446,12 @@
 	icon_state = "[skin]-control[active ? "-sealed" : ""]"
 	return ..()
 
+/obj/item/mod/control/update_appearance(updates)
+	for(var/obj/item/mod/module/chameleon/module in modules)
+		if(module.on)
+			return
+	return ..()
+
 /obj/item/mod/control/proc/set_wearer(mob/user)
 	wearer = user
 	SEND_SIGNAL(src, COMSIG_MOD_WEARER_SET, wearer)

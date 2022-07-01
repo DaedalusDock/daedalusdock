@@ -1171,6 +1171,8 @@
 	name = "Hibiscus"
 	icon_state = "hibiscus"
 
+// Vox 'hair'
+
 /datum/sprite_accessory/vox_hair
 	icon = 'icons/mob/vox_hair.dmi'
 	color_src = HAIR
@@ -1229,7 +1231,7 @@
 
 /datum/sprite_accessory/vox_hair/vox_yasu
 	name = "Vox Yasu"
-	icon_state = "hair_vox_yasu"
+	icon_state = "yasu"
 
 /datum/sprite_accessory/vox_hair/surf
 	name = "Vox Surf"

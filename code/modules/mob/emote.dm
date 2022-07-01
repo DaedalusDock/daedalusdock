@@ -45,20 +45,33 @@
 
 /datum/emote/help/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
-	var/list/keys = list()
-	var/list/message = list("Available emotes, you can use them with say \"*emote\": ")
+	var/list/base_keys = list()
+	var/list/all_keys = list()
+	var/list/species_emotes = list()
+	var/list/message = list("<b>Available emotes, you can use them with say \"*emote\":</b> \n")
 
+	var/mob/living/carbon/human/H = user
 	for(var/key in GLOB.emote_list)
 		for(var/datum/emote/P in GLOB.emote_list[key])
-			if(P.key in keys)
+			if(P.key in all_keys)
 				continue
-			if(P.can_run_emote(user, status_check = FALSE , intentional = TRUE))
-				keys += P.key
+			if(P.can_run_emote(user, status_check = FALSE, intentional = TRUE))
+				if(istype(H) && P.species_type_whitelist_typecache && H.dna && P.species_type_whitelist_typecache[H.dna.species.type])
+					species_emotes += P.key
+				else
+					base_keys += P.key
+				all_keys += P.key
 
-	keys = sort_list(keys)
-	message += keys.Join(", ")
+	base_keys = sort_list(base_keys)
+
+	message += base_keys.Join(", ")
 	message += "."
 	message = message.Join("")
+	if(length(species_emotes))
+		species_emotes = sort_list(species_emotes)
+		message += "\n<b><u>Species specific emotes</u></b>: \n"
+		message += species_emotes.Join(", ")
+		message += "."
 	to_chat(user, message)
 
 /datum/emote/flip

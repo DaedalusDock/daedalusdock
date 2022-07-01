@@ -46,6 +46,13 @@
 	key_third_person = "burps"
 	message = "burps."
 	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
+
+/datum/emote/living/burp/get_sound(mob/living/user)
+	if(iscarbon(user))
+		if(user.gender == MALE)
+			return 'sound/emotes/male/burp_m.ogg'
+		return 'sound/emotes/female/burp_f.ogg'
 
 /datum/emote/living/choke
 	key = "choke"
@@ -182,6 +189,22 @@
 	emote_type = EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
 
+/datum/emote/living/gasp/get_sound(mob/living/user)
+	if(iscarbon(user))
+		if(user.gender == MALE)
+			return pick('sound/emotes/male/gasp_m1.ogg',
+						'sound/emotes/male/gasp_m2.ogg',
+						'sound/emotes/male/gasp_m3.ogg',
+						'sound/emotes/male/gasp_m4.ogg',
+						'sound/emotes/male/gasp_m5.ogg',
+						'sound/emotes/male/gasp_m6.ogg')
+		return pick('sound/emotes/female/gasp_f1.ogg',
+					'sound/emotes/female/gasp_f2.ogg',
+					'sound/emotes/female/gasp_f3.ogg',
+					'sound/emotes/female/gasp_f4.ogg',
+					'sound/emotes/female/gasp_f5.ogg',
+					'sound/emotes/female/gasp_f6.ogg')
+
 /datum/emote/living/giggle
 	key = "giggle"
 	key_third_person = "giggles"
@@ -255,13 +278,17 @@
 		return !C.silent
 
 /datum/emote/living/laugh/get_sound(mob/living/user)
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.dna.species.id == SPECIES_HUMAN && (!H.mind || !H.mind.miming))
-			if(user.gender == FEMALE)
-				return 'sound/voice/human/womanlaugh.ogg'
-			else
-				return pick('sound/voice/human/manlaugh1.ogg', 'sound/voice/human/manlaugh2.ogg')
+	if(!ishuman(user) || user.mind?.miming)
+		return null
+
+	var/mob/living/carbon/human/H = user
+	if(H.dna.species.id == SPECIES_HUMAN)
+		if(user.gender == FEMALE)
+			return 'sound/voice/human/womanlaugh.ogg'
+		else
+			return pick('sound/voice/human/manlaugh1.ogg', 'sound/voice/human/manlaugh2.ogg')
+	if(H.dna.species.id == SPECIES_MOTH)
+		return 'sound/emotes/mothlaugh.ogg'
 
 /datum/emote/living/look
 	key = "look"
@@ -334,6 +361,30 @@
 	message = "sighs."
 	emote_type = EMOTE_AUDIBLE
 
+/datum/emote/living/sigh/get_sound(mob/living/user)
+	if(iscarbon(user))
+		if(user.gender == MALE)
+			return 'sound/emotes/male/male_sigh.ogg'
+		return 'sound/emotes/female/female_sigh.ogg'
+
+/datum/emote/living/clap1
+	key = "clap1"
+	key_third_person = "claps once"
+	message = "claps once."
+	emote_type = EMOTE_AUDIBLE
+	muzzle_ignore = TRUE
+	hands_use_check = TRUE
+	vary = TRUE
+	mob_type_allowed_typecache = list(/mob/living/carbon, /mob/living/silicon/pai)
+
+/datum/emote/living/clap1/get_sound(mob/living/user)
+	return pick('sound/emotes/claponce2.ogg')
+
+/datum/emote/living/clap1/can_run_emote(mob/living/carbon/user, status_check = TRUE, intentional)
+	if(user.usable_hands < 2)
+		return FALSE
+	return ..()
+
 /datum/emote/living/sit
 	key = "sit"
 	key_third_person = "sits"
@@ -349,6 +400,7 @@
 	key_third_person = "sneezes"
 	message = "sneezes."
 	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
 
 /datum/emote/living/smug
 	key = "smug"
@@ -360,6 +412,13 @@
 	key_third_person = "sniffs"
 	message = "sniffs."
 	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
+
+/datum/emote/living/sniff/get_sound(mob/living/user)
+	if(iscarbon(user))
+		if(user.gender == MALE)
+			return 'sound/emotes/male/male_sniff.ogg'
+		return 'sound/emotes/female/female_sniff.ogg'
 
 /datum/emote/living/snore
 	key = "snore"
@@ -368,6 +427,8 @@
 	message_mime = "sleeps soundly."
 	emote_type = EMOTE_AUDIBLE
 	stat_allowed = UNCONSCIOUS
+	vary = TRUE
+	sound = 'sound/emotes/snore.ogg'
 
 /datum/emote/living/stare
 	key = "stare"
@@ -411,6 +472,7 @@
 	key = "tilt"
 	key_third_person = "tilts"
 	message = "tilts their head to the side."
+	message_AI = "tilts the image on their display."
 
 /datum/emote/living/tremble
 	key = "tremble"
@@ -582,18 +644,33 @@
 	message = "says a swear word!"
 	emote_type = EMOTE_AUDIBLE
 
-/datum/emote/living/chirp
-	key = "chirp"
-	key_third_person = "chirps"
-	message = "chirps!"
+/datum/emote/living/snap
+	key = "snap"
+	key_third_person = "snaps"
+	message = "snaps their fingers."
 	emote_type = EMOTE_AUDIBLE
+	muzzle_ignore = TRUE
+	hands_use_check = TRUE
 	vary = TRUE
-	sound = 'sound/voice/bird/chirp.ogg'
+	sound = 'sound/voice/snap.ogg'
 
-/datum/emote/living/chirp2
-	key = "chirp2"
-	key_third_person = "chirps"
-	message = "chirps!"
+/datum/emote/living/snap2
+	key = "snap2"
+	key_third_person = "snaps twice"
+	message = "snaps twice."
 	emote_type = EMOTE_AUDIBLE
+	muzzle_ignore = TRUE
+	hands_use_check = TRUE
 	vary = TRUE
-	sound = 'sound/voice/bird/chirp2.ogg'
+	sound = 'sound/voice/snap2.ogg'
+
+/datum/emote/living/snap3
+	key = "snap3"
+	key_third_person = "snaps thrice"
+	message = "snaps thrice."
+	emote_type = EMOTE_AUDIBLE
+	muzzle_ignore = TRUE
+	hands_use_check = TRUE
+	vary = TRUE
+	sound = 'sound/voice/snap3.ogg'
+

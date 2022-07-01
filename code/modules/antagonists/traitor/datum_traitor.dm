@@ -336,10 +336,10 @@
 /datum/outfit/traitor
 	name = "Traitor (Preview only)"
 
-	uniform = /obj/item/clothing/under/color/grey
-	suit = /obj/item/clothing/suit/hooded/ablative
+	uniform = /obj/item/clothing/under/color/grey/ancient
 	gloves = /obj/item/clothing/gloves/color/yellow
 	mask = /obj/item/clothing/mask/gas
+	shoes = /obj/item/clothing/shoes/jackboots
 	l_hand = /obj/item/melee/energy/sword
 	r_hand = /obj/item/gun/energy/recharge/ebow
 
@@ -349,3 +349,16 @@
 	sword.worn_icon_state = "e_sword_on_red"
 
 	H.update_inv_hands()
+
+
+/datum/antagonist/traitor/get_preview_icon()
+	var/mob/living/carbon/human/dummy/consistent/traitor_dummy = new
+	traitor_dummy.hair_color = "#4D4D4D"
+	traitor_dummy.hairstyle = "Business Hair"
+	traitor_dummy.update_hair(TRUE)
+
+	var/icon/traitor_icon = render_preview_outfit(preview_outfit, traitor_dummy)
+
+	var/icon/final_icon = finish_preview_icon(traitor_icon)
+
+	return final_icon

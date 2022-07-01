@@ -1,5 +1,0 @@
-author: ElorgRHG
-delete-after: true
-changes:
-  - code_imp: More clothing should now have species specifis sprites now, mostly applies
-      to vox though.

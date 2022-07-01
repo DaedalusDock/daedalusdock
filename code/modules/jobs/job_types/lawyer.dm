@@ -17,9 +17,11 @@
 		),
 		"Defence Attorney" = list(
 			SPECIES_HUMAN = /datum/outfit/job/lawyer/defence,
+			SPECIES_VOX = /datum/outfit/job/lawyer/defence,
 		),
 		"Prosecutor" = list(
 			SPECIES_HUMAN = /datum/outfit/job/lawyer/prosecutor,
+			SPECIES_VOX = /datum/outfit/job/lawyer/prosecutor,
 		),
 	)
 

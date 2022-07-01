@@ -15,14 +15,20 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook,
+			SPECIES_TESHARI = /datum/outfit/job/cook,
+			SPECIES_VOX = /datum/outfit/job/cook,
 			SPECIES_PLASMAMAN = /datum/outfit/job/cook/plasmaman,
 		),
 		"Chef" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
+			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
+			SPECIES_VOX = /datum/outfit/job/cook/chef,
 			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 		"Culinary Artist" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
+			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
+			SPECIES_VOX = /datum/outfit/job/cook/chef,
 			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 	)

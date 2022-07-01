@@ -17,10 +17,13 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/detective,
+			SPECIES_TESHARI = /datum/outfit/job/detective,
+			SPECIES_VOX = /datum/outfit/job/detective,
 			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
 		),
 		"Forensic Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/detective/forensic,
+			SPECIES_TESHARI = /datum/outfit/job/detective/forensic,
 			SPECIES_PLASMAMAN = /datum/outfit/job/detective/forensic/plasmaman,
 		),
 	)

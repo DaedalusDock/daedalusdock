@@ -215,13 +215,13 @@
 		dna.species.pre_equip_species_outfit(equipping, src, visual_only)
 		return//for jobs that don't come with any equipment or load outfits differently
 
-	var/datum/outfit/outfit2wear = equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[src.dna.species.id]
-	outfit2wear ||= equipping.outfits["Default"]?[src.dna.species.id]//A fallback that uses the default job title outfit for the species.
-	outfit2wear ||= equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[SPECIES_HUMAN]//Another fallback that uses the default human outfit for the chosen job title.
-	outfit2wear ||= equipping.outfits["Default"]?[SPECIES_HUMAN]//Third fallback that uses the default job title and human outfit.
+	var/species2try = dna.species.job_outfit_type || dna.species.id //Uses the job_outfit_type of the species, if possible.
+	var/datum/outfit/outfit2wear = equipping.outfits[used_pref?.alt_job_titles[equipping.title] || "Default"]?[species2try]
+	outfit2wear ||= equipping.outfits["Default"]?[species2try]//A fallback that uses the default job title outfit for the species.
+	outfit2wear ||= equipping.outfits["Default"]?[SPECIES_HUMAN]//Second fallback that uses the default job title and human outfit.
 	if(!outfit2wear)
 		outfit2wear = /datum/outfit/job//Emergency fallback that equips the generic "job outfit". This shouldn't happen unless something is wrong.
-		stack_trace("[equipping] has no valid outfits in it's list.")
+		stack_trace("[equipping] has no valid outfits in its list.")
 
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
 	equip_outfit_and_loadout(outfit2wear, used_pref, visual_only, equipping) //PARIAH EDIT CHANGE

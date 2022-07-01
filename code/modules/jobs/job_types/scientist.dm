@@ -14,10 +14,13 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/scientist,
+			SPECIES_TESHARI = /datum/outfit/job/scientist,
+			SPECIES_VOX = /datum/outfit/job/scientist,
 			SPECIES_PLASMAMAN = /datum/outfit/job/scientist/plasmaman,
 		),
 		"Xenobiologist" = list(
 			SPECIES_HUMAN = /datum/outfit/job/scientist/xenobiologist,
+			SPECIES_TESHARI = /datum/outfit/job/scientist/xenobiologist,
 			SPECIES_PLASMAMAN = /datum/outfit/job/scientist/xenobiologist/plasmaman,
 		),
 	)

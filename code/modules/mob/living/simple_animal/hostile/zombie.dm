@@ -37,8 +37,8 @@
 	//outfit.r_hand = null
 
 	var/mob/living/carbon/human/dummy/dummy = new
-	dummy.temporarilyRemoveItemFromInventory(dummy.get_item_for_held_index(1))
-	dummy.temporarilyRemoveItemFromInventory(dummy.get_item_for_held_index(2))
+	qdel(dummy.get_item_for_held_index(1))
+	qdel(dummy.get_item_for_held_index(2))
 	dummy.equipOutfit(outfit)
 	dummy.set_species(/datum/species/zombie)
 	COMPILE_OVERLAYS(dummy)

@@ -1,6 +1,5 @@
-author: Ebb-Real, ElorgRHG
-delete-after: true
-changes:
+2022-07-01:
+  Ebb-Real, ElorgRHG:
   - rscadd: Adds the Engineering, medical and cargo bandana to departmental clothing
       vendors.
   - balance: Bandanas are no longer pepper spray proof.

@@ -10,6 +10,3 @@
 	//this is somewhat awful, but ¯\_(ツ)_/¯
 	var/greyscale_config_worn_vox
 	var/icon/worn_icon_vox
-
-/obj/item/clothing/under
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION

@@ -67,7 +67,7 @@
 	icon_state = "iceboots"
 	inhand_icon_state = "iceboots"
 	clothing_flags = NOSLIP_ICE
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/shoes/workboots
 	name = "work boots"

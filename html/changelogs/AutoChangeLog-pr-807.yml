@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: OOC in lightmode has been reverted back to it's original color.

@@ -22,10 +22,12 @@
 		"Engine Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
 			SPECIES_TESHARI = /datum/outfit/job/engineer/enginetech,
+			SPECIES_VOX = /datum/outfit/job/engineer/enginetech,
 		),
 		"Electrician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/electrician,
 			SPECIES_TESHARI = /datum/outfit/job/engineer/electrician,
+			SPECIES_VOX = /datum/outfit/job/engineer/electrician,
 		),
 		"Maintenance Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/mainttech,

@@ -72,25 +72,25 @@
 	name = "engine technician's jumpsuit"
 	icon_state = "enginetech"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/enginetech/skirt
 	desc = "It's an orange high visibility jumpskirt worn by engineers specialized in maintaining engines. Made from fire resistant materials."
 	name = "engine technician's jumpskirt"
 	icon_state = "enginetech_skirt"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/electrician
 	desc = "It's an orange high visibility jumpsuit worn by electricians. Made from fire resistant materials."
 	name = "electrician's jumpsuit"
 	icon_state = "electrician"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/electrician/skirt
 	desc = "It's an orange high visibility jumpskirt worn by electricians. Made from fire resistant materials."
 	name = "electrician's jumpskirt"
 	icon_state = "electrician_skirt"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

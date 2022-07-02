@@ -15,6 +15,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		GAS_ARGON = /obj/machinery/portable_atmospherics/canister/argon,
 		GAS_CHLORINE = /obj/machinery/portable_atmospherics/canister/chlorine,
 		GAS_NEON = /obj/machinery/portable_atmospherics/canister/neon,
+		"air" = /obj/machinery/portable_atmospherics/canister/air,
 		/*"nitrium" = /obj/machinery/portable_atmospherics/canister/nitrium,
 		"bz" = /obj/machinery/portable_atmospherics/canister/bz,
 		"air" = /obj/machinery/portable_atmospherics/canister/air,

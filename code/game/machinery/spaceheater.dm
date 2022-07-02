@@ -82,7 +82,7 @@
 
 /obj/machinery/space_heater/process_atmos()
 	if(!on || !is_operational)
-		if (on) // If it's broken, turn it off too
+		if(on) // If it's broken, turn it off too
 			on = FALSE
 		return PROCESS_KILL
 

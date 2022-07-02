@@ -188,12 +188,6 @@ const GASES = [
     'color': 'brown',
   },
   {
-    'id': 'tritium',
-    'name': 'Tritium',
-    'label': 'Tritium',
-    'color': 'limegreen',
-  },
-  {
     'id': 'bz',
     'name': 'BZ',
     'label': 'BZ',
@@ -202,7 +196,7 @@ const GASES = [
   {
     'id': 'pluox',
     'name': 'Pluoxium',
-    'label': 'Pluoxium',
+    'label': 'O₁₆',
     'color': 'mediumslateblue',
   },
   {

@@ -44,6 +44,8 @@ This entire system is an absolute mess.
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
 		return FALSE
+	if(IsKnockdown()) //Uhhh maybe?
+		return FALSE
 
 	Knockdown(zas_settings.airflow_stun * clamp((delta_p / zas_settings.airflow_stun_pressure), 1, 3))
 	visible_message(

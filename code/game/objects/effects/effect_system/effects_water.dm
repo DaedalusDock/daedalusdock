@@ -14,7 +14,7 @@
 /obj/effect/particle_effect/water/Move(turf/newloc)
 	//WOW. OKAY. THIS IS REALLY HACKY. THIS NEEDS TO BE STANDARDIZED.
 	var/datum/gas_mixture/env = get_step(src, 0)?.return_air()
-	var/diff_temp = (temperature - env.temperature) / env.group_multiplier / 4 //MAGIC NUMBER ALERT!!!!!!!
+	var/diff_temp = (temperature - env.temperature) / env.group_multiplier / 2 //MAGIC NUMBER ALERT!!!!!!!
 	if(abs(diff_temp) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
 		var/altered_temp = max(env.temperature + (ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT * diff_temp), 0)
 		env.temperature = (diff_temp > 0) ? min(temperature, altered_temp) : max(temperature, altered_temp)

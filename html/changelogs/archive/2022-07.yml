@@ -22,3 +22,6 @@
   - rscadd: Added new Skrell language icon
   '[ArchieBeepBoop](https://github.com/ArchieBeepBoop) [Starless-Horizon](https://github.com/Starless-Horizon)':
   - rscadd: New Parallax
+2022-07-02:
+  francinum:
+  - bugfix: OOC in lightmode has been reverted back to it's original color.

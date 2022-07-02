@@ -328,7 +328,7 @@ const GASES = [
   {
     'id': 'deuterium',
     'name': 'Deuterium',
-    'label': 'D',
+    'label': '²H',
     'color': 'lightgrey',
   },
   {

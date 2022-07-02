@@ -335,7 +335,7 @@ GLOBAL_LIST_INIT(all_gases, list(
 	GAS_NO,
 	GAS_METHYL_BROMIDE,
 ))
-GLOBAL_LIST_INIT(common_gases, list(GAS_OXYGEN, GAS_CO2, GAS_N2O, GAS_PLASMA, GAS_NITROGEN))
+GLOBAL_LIST_INIT(common_gases, list(GAS_OXYGEN, GAS_NITROGEN, GAS_CO2, GAS_N2O, GAS_PLASMA,))
 GLOBAL_LIST_INIT(noble_gases, list(GAS_HELIUM, GAS_ARGON, GAS_NEON, GAS_KRYPTON))
 
 GLOBAL_LIST_INIT(reverse_dir, list( // reverse_dir[dir] = reverse of dir

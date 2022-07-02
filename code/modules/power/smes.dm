@@ -15,7 +15,7 @@
 #define SMES_INPUT_ATTEMPT 9
 
 /obj/machinery/power/smes
-	name = "power storage unit"
+	name = "\improper SMES unit"
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit."
 	icon_state = "smes"
 	density = TRUE
@@ -408,7 +408,7 @@
 	log_smes()
 
 /obj/machinery/power/smes/engineering
-	charge = 2e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone
+	charge = 5e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
 	output_level = 90000
 
 /obj/machinery/power/smes/magical

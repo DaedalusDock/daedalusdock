@@ -164,7 +164,7 @@ const GASES = [
     'color': 'pink',
   },
   {
-    'id': 'steam',
+    'id': 'water',
     'name': 'Water Vapor',
     'label': 'H₂O',
     'color': 'lightsteelblue',
@@ -324,6 +324,24 @@ const GASES = [
     'name': 'Chlorine',
     'label': 'SO₂',
     'color': 'maroon',
+  },
+  {
+    'id': 'nitricoxide',
+    'name': 'Nitric Oxide',
+    'label': 'NO',
+    'color': 'maroon',
+  },
+  {
+    'id': 'deuterium',
+    'name': 'Deuterium',
+    'label': 'D',
+    'color': 'lightgrey',
+  },
+  {
+    'id': 'tritium',
+    'name': 'Tritium',
+    'label': '³H',
+    'color': 'limegreen',
   },
 ];
 

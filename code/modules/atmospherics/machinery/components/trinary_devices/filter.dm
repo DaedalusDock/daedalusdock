@@ -139,7 +139,7 @@
 	data["max_rate"] = round(MAX_TRANSFER_RATE)
 
 	data["filter_types"] = list()
-	for(var/gas in GLOB.common_gases)
+	for(var/gas in GLOB.all_gases - GAS_ALIEN)
 		data["filter_types"] += list(list("name" = xgm_gas_data.name[gas], "gas_id" = gas, "enabled" = (gas in filter_type)))
 
 	return data

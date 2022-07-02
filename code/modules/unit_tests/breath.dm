@@ -67,8 +67,19 @@
 	to_fill.make_air()
 
 	lab_rat.breathe()
+	var/list/reason
+	if(lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN))
+		if(!to_fill.return_air())
+			return Fail("Assertion Failed: Turf failed to return air. Type: [to_fill.type], Initial Gas: [json_encode(to_fill.initial_gas)]")
 
-	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Ashwalkers can't get a full breath from the Lavaland's initial_gas on a turf")
+		var/datum/gas_mixture/turf_gas = to_fill.return_air()
+		LAZYADD(reason, "Turf mix: [json_encode(turf_gas.gas)] | T: [turf_gas.temperature] | P: [turf_gas.returnPressure()]")
+
+		if(lab_rat.loc != to_fill)
+			LAZYADD(reason, "Rat was not located on it's intended turf!")
+
+	if(reason)
+		return Fail("Assertion Failed: [reason.Join(";")]", __FILE__, __LINE__)
 
 /datum/unit_test/breath_sanity_ashwalker/Destroy()
 	//Reset initial_gas to avoid future issues on other tests

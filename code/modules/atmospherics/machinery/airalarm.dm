@@ -967,8 +967,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 			"Temperature" = "temperature"
 		)
 
-		for(var/gas_id in GLOB.common_gases)
-			//component_options[GLOB.meta_gas_info[gas_id][META_GAS_NAME]] = gas_id2path(gas_id)
+		for(var/gas_id in GLOB.all_gases)
 			component_options |= gas_id
 	air_alarm_options = add_option_port("Air Alarm Options", component_options)
 	options_map = component_options

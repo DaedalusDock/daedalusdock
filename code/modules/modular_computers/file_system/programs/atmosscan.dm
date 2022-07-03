@@ -16,7 +16,7 @@
 		to_chat(user, span_warning("\The [computer] flashes an error: \"hardware\\sensorpackage\\startup.bin -- file not found\"."))
 
 /datum/computer_file/program/atmosscan/ui_static_data(mob/user)
-	return //return_atmos_handbooks()
+	return
 
 /datum/computer_file/program/atmosscan/ui_data(mob/user)
 	var/list/data = get_header_data()

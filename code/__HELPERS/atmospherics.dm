@@ -31,7 +31,6 @@
 /proc/gas_mixture_parser(datum/gas_mixture/gasmix, name)
 	. = list(
 		"gases" = list(),
-		"reactions" = list(),
 		"name" = name,
 		"total_moles" = null,
 		"temperature" = null,
@@ -47,7 +46,7 @@
 			xgm_gas_data.name[gas_path],
 			gasmix.gas[gas_path],
 		))
-	.["total_moles"] = gasmix.get_moles()
+	.["total_moles"] = gasmix.total_moles
 	.["temperature"] = gasmix.temperature
 	.["volume"] = gasmix.volume
 	.["pressure"] = gasmix.returnPressure()

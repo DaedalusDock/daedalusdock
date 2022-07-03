@@ -16,7 +16,6 @@ type GasmixParserProps = {
   temperatureOnClick?: () => void;
   volumeOnClick?: () => void;
   pressureOnClick?: () => void;
-  reactionOnClick?: (reaction_id: string) => void;
 };
 
 export const GasmixParser = (props: GasmixParserProps, context) => {
@@ -26,7 +25,6 @@ export const GasmixParser = (props: GasmixParserProps, context) => {
     temperatureOnClick,
     volumeOnClick,
     pressureOnClick,
-    reactionOnClick,
     ...rest
   } = props;
 

@@ -44,32 +44,6 @@
 
 ///All gases that are not placeholders.
 #define ASSORTED_GASES (xgm_gas_data.gases - GAS_ALIEN)
-///All gases in the game. The sorting of UIs like scrubbers will match this, so keep that in mind.
-GLOBAL_LIST_INIT(all_gases, list(
-	GAS_ALIEN,
-	GAS_OXYGEN,
-	GAS_NITROGEN,
-	GAS_CO2,
-	GAS_N2O,
-	GAS_PLASMA,
-	GAS_STEAM,
-	GAS_HYDROGEN,
-	GAS_DEUTERIUM,
-	GAS_TRITIUM,
-	GAS_HELIUM,
-	GAS_ARGON,
-	GAS_KRYPTON,
-	GAS_NEON,
-	GAS_XENON,
-	GAS_BORON,
-	GAS_AMMONIA,
-	GAS_CHLORINE,
-	GAS_SULFUR,
-	GAS_METHANE,
-	GAS_CO,
-	GAS_NO,
-	GAS_METHYL_BROMIDE,
-))
 ///All gases that a player will reliably encounter every round or close to it.
 GLOBAL_LIST_EMPTY(common_gases) //Filled in by xgm_gas_data/New()
 ///All the noble gases.

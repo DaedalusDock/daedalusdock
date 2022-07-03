@@ -39,8 +39,6 @@
 	var/area/my_area
 	///List of problem turfs with bad temperature
 	var/list/turf/issue_turfs
-	///Tracks if the firelock is being held open by a crowbar. If so, we don't close until they walk away
-	var/being_held_open = FALSE
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
 	var/alarm_type = null
 	///The merger_id and merger_typecache variables are used to make rows of firelocks activate at the same time.
@@ -233,7 +231,6 @@
 			continue
 		process_results(checked_turf)
 		RegisterSignal(checked_turf, COMSIG_TURF_EXPOSE, .proc/process_results)
-		RegisterSignal(checked_turf, COMSIG_TURF_CALCULATED_ADJACENT_ATMOS, .proc/process_results)
 
 
 /obj/machinery/door/firedoor/proc/unregister_adjacent_turfs(atom/loc)
@@ -244,7 +241,6 @@
 			continue
 
 		UnregisterSignal(checked_turf, COMSIG_TURF_EXPOSE)
-		UnregisterSignal(checked_turf, COMSIG_TURF_CALCULATED_ADJACENT_ATMOS)
 
 /obj/machinery/door/firedoor/proc/check_atmos(turf/checked_turf)
 	var/datum/gas_mixture/environment = checked_turf.return_air()
@@ -459,44 +455,26 @@
 		return
 
 	if(density)
-		being_held_open = TRUE
-		user.balloon_alert_to_viewers("holding [src] open", "holding [src] open")
-		open()
-		if(QDELETED(user))
-			being_held_open = FALSE
+		user.visible_message(
+			span_danger("[user] presses their crowbar into [src] to pry it open!"),
+			span_notice("You press your crowbar between the door and begin to pry it open..."),
+			span_hear("You hear a metal clang, followed by metallic groans.")
+		)
+		if(!do_after(user, 3 SECONDS, src))
 			return
-		RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/handle_held_open_adjacency)
-		RegisterSignal(user, COMSIG_LIVING_SET_BODY_POSITION, .proc/handle_held_open_adjacency)
-		RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/handle_held_open_adjacency)
-		handle_held_open_adjacency(user)
-	else
-		close()
-
-/// A simple toggle for firedoors between on and off
-/obj/machinery/door/firedoor/try_to_crowbar_secondary(obj/item/acting_object, mob/user)
-	if(welded || operating)
-		return
-
-	if(density)
+		user.visible_message(
+			span_danger("[user] forces [src] open with a crowbar!"),
+			span_notice("You force open [src]."),
+			span_hear("You hear a heavy metallic object sliding.")
+		)
 		open()
-		if(alarm_type)
-			addtimer(CALLBACK(src, .proc/correct_state), 2 SECONDS, TIMER_UNIQUE)
 	else
+		user.visible_message(
+			span_notice("[user] forces [src] shut."),
+			span_notice("You force [src] closed."),
+			span_hear("You hear a heavy metallic object sliding, followed by a clang.")
+		)
 		close()
-
-/obj/machinery/door/firedoor/proc/handle_held_open_adjacency(mob/user)
-	SIGNAL_HANDLER
-
-	var/mob/living/living_user = user
-	if(!QDELETED(user) && Adjacent(user) && isliving(user) && (living_user.body_position == STANDING_UP))
-		return
-	being_held_open = FALSE
-	correct_state()
-	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-	UnregisterSignal(user, COMSIG_LIVING_SET_BODY_POSITION)
-	UnregisterSignal(user, COMSIG_PARENT_QDELETING)
-	if(user)
-		user.balloon_alert_to_viewers("released [src]", "released [src]")
 
 /obj/machinery/door/firedoor/attack_ai(mob/user)
 	add_fingerprint(user)
@@ -557,7 +535,7 @@
  * changes during the timer, the door doesn't close or open incorrectly.
  */
 /obj/machinery/door/firedoor/proc/correct_state()
-	if(obj_flags & EMAGGED || being_held_open)
+	if(obj_flags & EMAGGED)
 		return //Unmotivated, indifferent, we have no real care what state we're in anymore.
 	if(alarm_type && !density) //We should be closed but we're not
 		INVOKE_ASYNC(src, .proc/close)

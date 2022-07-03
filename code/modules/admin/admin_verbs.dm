@@ -528,35 +528,38 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	set name = "Drop Bomb"
 	set desc = "Cause an explosion of varying strength at your location."
 
-	var/list/choices = list("Small Bomb (1, 2, 3, 3)", "Medium Bomb (2, 3, 4, 4)", "Big Bomb (3, 5, 7, 5)", "Maxcap", "Custom Bomb")
+	var/list/choices = list("Small Bomb (1, 2, 3, 0, 3)", "Medium Bomb (1, 2, 3, 0, 3)", "Big Bomb (3, 5, 7, 0, 5)", "Maxcap (4, 8, 16, 16, 20 by default)", "Custom Bomb")
 	var/choice = tgui_input_list(src, "What size explosion would you like to produce? NOTE: You can do all this rapidly and in an IC manner (using cruise missiles!) with the Config/Launch Supplypod verb. WARNING: These ignore the maxcap", "Drop Bomb", choices)
 	if(isnull(choice))
 		return
 	var/turf/epicenter = mob.loc
 
 	switch(choice)
-		if("Small Bomb (1, 2, 3, 3)")
+		if("Small Bomb (1, 2, 3, 0, 3)")
 			explosion(epicenter, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 3, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Medium Bomb (2, 3, 4, 4)")
+		if("Medium Bomb (1, 2, 3, 0, 3)")
 			explosion(epicenter, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, flash_range = 4, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Big Bomb (3, 5, 7, 5)")
+		if("Big Bomb (3, 5, 7, 0, 5)")
 			explosion(epicenter, devastation_range = 3, heavy_impact_range = 5, light_impact_range = 7, flash_range = 5, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Maxcap")
-			explosion(epicenter, devastation_range = GLOB.MAX_EX_DEVESTATION_RANGE, heavy_impact_range = GLOB.MAX_EX_HEAVY_RANGE, light_impact_range = GLOB.MAX_EX_LIGHT_RANGE, flash_range = GLOB.MAX_EX_FLASH_RANGE, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+		if("Maxcap (4, 8, 16, 16, 20 by default)")
+			explosion(epicenter, devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flame_range = zas_settings.maxex_fire_range, flash_range = zas_settings.maxex_flash_range, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Custom Bomb")
 			var/range_devastation = input("Devastation range (in tiles):") as null|num
-			if(range_devastation == null)
+			if(isnull(range_devastation))
 				return
 			var/range_heavy = input("Heavy impact range (in tiles):") as null|num
-			if(range_heavy == null)
+			if(isnull(range_heavy))
 				return
 			var/range_light = input("Light impact range (in tiles):") as null|num
-			if(range_light == null)
+			if(isnull(range_light))
+				return
+			var/range_flame = input("Flame range (in tiles):") as null|num
+			if(isnull(range_flame))
 				return
 			var/range_flash = input("Flash range (in tiles):") as null|num
-			if(range_flash == null)
+			if(isnull(range_flash))
 				return
-			if(range_devastation > GLOB.MAX_EX_DEVESTATION_RANGE || range_heavy > GLOB.MAX_EX_HEAVY_RANGE || range_light > GLOB.MAX_EX_LIGHT_RANGE || range_flash > GLOB.MAX_EX_FLASH_RANGE)
+			if(range_devastation > zas_settings.maxex_devastation_range || range_heavy > zas_settings.maxex_heavy_range || range_light > zas_settings.maxex_light_range || range_flash > zas_settings.maxex_flash_range || range_flame > zas_settings.maxex_fire_range)
 				if(tgui_alert(usr, "Bomb is bigger than the maxcap. Continue?",,list("Yes","No")) != "Yes")
 					return
 			epicenter = mob.loc //We need to reupdate as they may have moved again

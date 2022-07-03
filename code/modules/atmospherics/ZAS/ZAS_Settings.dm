@@ -74,6 +74,32 @@
 	var/connection_temperature_delta_NAME = "Connections - Temperature Difference"
 	var/connection_temperature_delta_DESC = "The smallest temperature difference which will cause heat to travel through doors."
 
-	var/max_explosion_range = 14
-	var/max_explosion_range_NAME = "TTV Explosion Range Maximum"
-	var/max_explosion_range_DESC = "What it says on the tin"
+	var/maxex_devastation_range = 4
+	var/max_explosion_range_NAME = "Explosion Devastation Range"
+	var/max_explosion_range_DESC = "By default, 1/4th of fire range."
+
+	var/maxex_heavy_range = 8
+	var/max_heavy_range_NAME = "Explosion Heavy Range"
+	var/max_heavy_range_DESC = "By default, 1/2 of light range"
+
+	var/maxex_light_range = 16
+	var/max_light_range_NAME = "Explosion Light Range"
+	var/max_light_range_DESC = "By default, this is the baseline for other explosion values."
+
+	var/maxex_fire_range = 16
+	var/max_fire_range_NAME = "Explosion Fire Range"
+	var/max_fire_range_DESC = "By default, equal to light range."
+
+	var/maxex_flash_range = 20
+	var/max_flash_range_NAME = "Explosion Flash Range"
+	var/max_flash_range_DESC = "By default, 5/4ths of light range."
+
+/datum/zas_controller/proc/set_bomb_cap(val)
+	if(!isnum(val))
+		CRASH("Non-number given to set_bomb_cap.")
+
+	maxex_devastation_range = val/4
+	maxex_heavy_range = val/2
+	maxex_light_range = val
+	maxex_fire_range = val
+	maxex_flash_range = val*1.2

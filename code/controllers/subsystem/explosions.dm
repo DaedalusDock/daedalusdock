@@ -182,7 +182,7 @@ SUBSYSTEM_DEF(explosions)
 		return
 	var/range = 0
 	range = round((2 * power)**GLOB.DYN_EX_SCALE)
-	explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
+	return explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
 
 
 
@@ -238,12 +238,12 @@ SUBSYSTEM_DEF(explosions)
 	)
 	var/atom/location = isturf(origin) ? origin : origin.loc
 	if(SEND_SIGNAL(origin, COMSIG_ATOM_EXPLODE, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
+		return COMSIG_CANCEL_EXPLOSION // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
 
 	while(location)
 		var/next_loc = location.loc
 		if(SEND_SIGNAL(location, COMSIG_ATOM_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-			return
+			return COMSIG_CANCEL_EXPLOSION
 		if(isturf(location))
 			break
 		location = next_loc
@@ -253,7 +253,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/area/epicenter_area = get_area(location)
 	if(SEND_SIGNAL(epicenter_area, COMSIG_AREA_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return
+		return COMSIG_CANCEL_EXPLOSION
 
 	arguments -= EXARG_KEY_ORIGIN
 
@@ -303,11 +303,11 @@ SUBSYSTEM_DEF(explosions)
 		cap_multiplier = 1
 
 	if(!ignorecap)
-		devastation_range = min(GLOB.MAX_EX_DEVESTATION_RANGE * cap_multiplier, devastation_range)
-		heavy_impact_range = min(GLOB.MAX_EX_HEAVY_RANGE * cap_multiplier, heavy_impact_range)
-		light_impact_range = min(GLOB.MAX_EX_LIGHT_RANGE * cap_multiplier, light_impact_range)
-		flash_range = min(GLOB.MAX_EX_FLASH_RANGE * cap_multiplier, flash_range)
-		flame_range = min(GLOB.MAX_EX_FLAME_RANGE * cap_multiplier, flame_range)
+		devastation_range = min(zas_settings.maxex_devastation_range * cap_multiplier, devastation_range)
+		heavy_impact_range = min(zas_settings.maxex_heavy_range * cap_multiplier, heavy_impact_range)
+		light_impact_range = min(zas_settings.maxex_light_range * cap_multiplier, light_impact_range)
+		flash_range = min(zas_settings.maxex_flash_range * cap_multiplier, flash_range)
+		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
 
 	var/max_range = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
 	var/started_at = REALTIMEOFDAY
@@ -669,10 +669,8 @@ SUBSYSTEM_DEF(explosions)
 		var/list/flame_turf = flameturf
 		flameturf = list()
 		for(var/thing in flame_turf)
-			if(thing)
-				var/turf/T = thing
-				//new /obj/effect/hotspot(T) //Mostly for ambience!
-				T.create_fire(2, 25)
+			var/turf/T = thing
+			T.create_fire(2, rand(5, 20))
 		cost_flameturf = MC_AVERAGE(cost_flameturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
 		if (low_turf.len || med_turf.len || high_turf.len)

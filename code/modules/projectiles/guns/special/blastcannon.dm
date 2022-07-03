@@ -189,8 +189,8 @@
 	var/cap_multiplier = SSmapping.level_trait(start_turf.z, ZTRAIT_BOMBCAP_MULTIPLIER)
 	if(isnull(cap_multiplier))
 		cap_multiplier = 1
-	var/capped_heavy = min(GLOB.MAX_EX_DEVESTATION_RANGE * cap_multiplier, heavy)
-	var/capped_medium = min(GLOB.MAX_EX_HEAVY_RANGE * cap_multiplier, medium)
+	var/capped_heavy = min(zas_settings.maxex_devastation_range * cap_multiplier, heavy)
+	var/capped_medium = min(zas_settings.maxex_heavy_range * cap_multiplier, medium)
 	SSexplosions.shake_the_room(start_turf, max(heavy, medium, light, 0), (capped_heavy * 15) + (capped_medium * 20), capped_heavy, capped_medium)
 
 	var/obj/projectile/blastwave/blastwave = new(loc, heavy, medium, light)

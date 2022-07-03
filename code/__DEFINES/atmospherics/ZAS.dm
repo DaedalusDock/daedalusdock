@@ -258,7 +258,9 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 /// the default air mix that open turfs spawn
 #define OPENTURF_DEFAULT_ATMOS list(GAS_OXYGEN = MOLES_O2STANDARD, GAS_NITROGEN=MOLES_N2STANDARD)
 #define OPENTURF_LOW_PRESSURE list(GAS_OXYGEN = 14, GAS_NITROGEN = 30)
-//#define OPENTURF_LOW_PRESSURE "o2=14;n2=30;TEMP=293.15"
+
+///A long and hot fire
+#define BURNMIX_ATMOS list(GAS_OXYGEN = 2500, GAS_PLASMA = 5000); temperature = PHORON_FLASHPOINT
 /// -193,15°C telecommunications. also used for xenobiology slime killrooms
 #define TCOMMS_ATMOS list(GAS_NITROGEN = 100)
 //#define TCOMMS_ATMOS "n2=100;TEMP=80"

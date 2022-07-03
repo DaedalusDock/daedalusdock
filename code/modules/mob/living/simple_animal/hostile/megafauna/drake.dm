@@ -183,10 +183,9 @@
 	for(var/turf/T in turfs)
 		if(istype(T, /turf/closed))
 			break
-		//var/obj/effect/hotspot/drake_fire_hotspot = new /obj/effect/hotspot(T)
-		T.create_fire(1, 10)
-		var/obj/effect/hotspot/drake_fire_hotspot = locate() in T
-		if(frozen)
+
+		var/obj/effect/hotspot/drake_fire_hotspot = T.create_fire(1, 10)
+		if(frozen && drake_fire_hotspot)
 			drake_fire_hotspot.add_atom_colour(COLOR_BLUE_LIGHT, FIXED_COLOUR_PRIORITY)
 		T.hotspot_expose(DRAKE_FIRE_TEMP,DRAKE_FIRE_EXPOSURE,1)
 		for(var/mob/living/L in T.contents)

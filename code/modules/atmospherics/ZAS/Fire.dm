@@ -92,7 +92,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 					qdel(T.fire)
 			qdel(fuel)
 
-/turf/proc/create_fire(fl)
+///Creates a fire with firelevel (fl). If create_own_fuel is given, it will create that many units of welding fuel on the turf.
+/turf/proc/create_fire(fl, create_own_fuel)
 	return 0
 
 /turf/open/create_fire(fl, create_own_fuel)
@@ -100,10 +101,10 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		return
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
-		return 1
+		return
 
 	if(!zone)
-		return 1
+		return
 
 	fire = new(src, fl)
 	SSzas.active_fire_zones |= zone
@@ -117,9 +118,10 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			fuel.reagent_amount += create_own_fuel
 
 	zone.fire_tiles |= src
-	if(fuel) zone.fuel_objs += fuel
+	if(fuel)
+		zone.fuel_objs += fuel
 
-	return 0
+	return src
 
 /turf/open/space/create_fire()
 	return

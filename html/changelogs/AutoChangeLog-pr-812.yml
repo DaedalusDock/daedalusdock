@@ -1,0 +1,4 @@
+author: ElorgRHG
+delete-after: true
+changes:
+  - rscadd: Skrell can now color their headtails a different color than their body.

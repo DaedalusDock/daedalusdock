@@ -127,7 +127,7 @@
 	var/SA_moles = breath_gases[GAS_N2O]
 
 	//Partial pressures in our breath
-	var/O2_pp = breath.getBreathPartialPressure(O2_moles) / max(1, (8 * breath.getBreathPartialPressure(breath_gases[GAS_PLUOXIUM])))
+	var/O2_pp = breath.getBreathPartialPressure(O2_moles)
 	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)

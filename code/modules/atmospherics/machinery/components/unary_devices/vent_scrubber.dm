@@ -162,7 +162,7 @@
 		return FALSE
 
 	var/list/f_types = list()
-	for(var/gas_id in GLOB.all_gases - GAS_ALIEN)
+	for(var/gas_id in ASSORTED_GASES)
 		f_types += list(list("gas_id" = gas_id, "gas_name" = gas_id, "enabled" = (gas_id in filter_types)))
 
 	var/datum/signal/signal = new(list(

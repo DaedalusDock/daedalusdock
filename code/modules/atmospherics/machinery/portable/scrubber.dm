@@ -102,7 +102,7 @@
 
 	data["id_tag"] = -1 //must be defined in order to reuse code between portable and vent scrubbers
 	data["filter_types"] = list()
-	for(var/gas_id in GLOB.all_gases - GAS_ALIEN)
+	for(var/gas_id in ASSORTED_GASES)
 		data["filter_types"] += list(list("gas_id" = gas_id, "gas_name" = gas_id, "enabled" = (gas_id in scrubbing)))
 
 	if(holding)

@@ -106,7 +106,7 @@
 	var/obj/machinery/portable_atmospherics/canister/C = O
 	var/worth = cost
 	var/datum/gas_mixture/canister_mix = C.return_air()
-	var/list/gases_to_check = GLOB.all_gases
+	var/list/gases_to_check = xgm_gas_data.gases
 
 	for(var/gasID in gases_to_check)
 		if(canister_mix.getGroupGas(gasID) > 0)

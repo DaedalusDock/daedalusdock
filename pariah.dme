@@ -200,6 +200,7 @@
 #include "code\__DEFINES\atmospherics\atmos_piping.dm"
 #include "code\__DEFINES\atmospherics\reactor.dm"
 #include "code\__DEFINES\atmospherics\temperature.dm"
+#include "code\__DEFINES\atmospherics\XGM.dm"
 #include "code\__DEFINES\atmospherics\ZAS.dm"
 #include "code\__DEFINES\atmospherics\ZAS_math.dm"
 #include "code\__DEFINES\dcs\flags.dm"

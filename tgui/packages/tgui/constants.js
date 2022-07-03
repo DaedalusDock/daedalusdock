@@ -337,6 +337,12 @@ const GASES = [
     'label': '³H',
     'color': 'limegreen',
   },
+  {
+    'id': 'boron',
+    'name': 'Boron',
+    'label': 'B',
+    'color': 'limegreen',
+  },
 ];
 
 export const getGasLabel = (gasId, fallbackValue) => {

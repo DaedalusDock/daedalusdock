@@ -214,7 +214,7 @@
 		if(consumed_carbon_dioxide)
 			removed.adjustGas(GAS_CO2, -consumed_carbon_dioxide * 0.5, FALSE)
 			removed.adjustGas(GAS_OXYGEN, -consumed_carbon_dioxide * 0.5, FALSE)
-			removed.adjustGas(GAS_PLUOXIUM, consumed_carbon_dioxide * 0.25, FALSE)
+			removed.adjustGas(GAS_HYDROGEN, consumed_carbon_dioxide * 0.25, FALSE) //Pluoxium is hydrogen now, deal with it.
 
 	/*if(prob(gas_comp[/datum/gas/zauker]))
 		playsound(loc, 'sound/weapons/emitter2.ogg', 100, TRUE, extrarange = 10)

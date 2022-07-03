@@ -535,7 +535,7 @@ SUBSYSTEM_DEF(zas)
 		if(xgm_gas_data.flags[gas] & (XGM_GAS_CONTAMINANT|XGM_GAS_FUEL|XGM_GAS_OXIDIZER))
 			restricted_gases |= gas
 
-	var/list/viable_gases = GLOB.all_gases - restricted_gases - GAS_XENON //TODO: add XGM_GAS_DANGEROUS
+	var/list/viable_gases = xgm_gas_data.gases - restricted_gases - GAS_XENON //TODO: add XGM_GAS_DANGEROUS
 	var/datum/gas_mixture/mix_real = new
 	var/list/mix_list = list()
 	var/num_gases = rand(1, 3)

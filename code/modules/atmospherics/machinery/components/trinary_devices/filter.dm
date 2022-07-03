@@ -133,13 +133,13 @@
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_data()
 	var/data = list()
-	var/static/all_gases = GLOB.all_gases
+	var/static/all_gases = xgm_gas_data.gases
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
 	data["max_rate"] = round(MAX_TRANSFER_RATE)
 
 	data["filter_types"] = list()
-	for(var/gas in GLOB.all_gases - GAS_ALIEN)
+	for(var/gas in ASSORTED_GASES)
 		data["filter_types"] += list(list("name" = xgm_gas_data.name[gas], "gas_id" = gas, "enabled" = (gas in filter_type)))
 
 	return data

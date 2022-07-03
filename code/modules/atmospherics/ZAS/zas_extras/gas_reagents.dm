@@ -36,6 +36,15 @@
 		to_chat(M, "<span class='warning'>You feel [warning_message].</span>")
 
 	return ..()
+
 /datum/reagent/carbon_monoxide/on_mob_end_metabolize(mob/living/L)
 	. = ..()
 	L.clear_alert(ALERT_TOO_MUCH_CO2, clear_override = TRUE)
+
+/datum/reagent/toxin/boron
+	name = "Boron"
+	description = "A chemical that is highly valued for its potential in fusion energy."
+	taste_description = "metal"
+	reagent_state = SOLID
+	color = "#837e79"
+	toxpwr = 7

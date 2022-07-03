@@ -235,12 +235,6 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 //How many moles of fuel are contained within one solid/liquid fuel volume unit
 #define LIQUIDFUEL_AMOUNT_TO_MOL		0.45  //mol/volume unit
 
-// XGM gas flags.
-#define XGM_GAS_FUEL        1
-#define XGM_GAS_OXIDIZER    2
-#define XGM_GAS_CONTAMINANT 4
-#define XGM_GAS_FUSION_FUEL 8
-
 #define TANK_LEAK_PRESSURE     (30 * ONE_ATMOSPHERE) // Tank starts leaking.
 #define TANK_RUPTURE_PRESSURE  (40 * ONE_ATMOSPHERE) // Tank spills all contents into atmosphere.
 #define TANK_FRAGMENT_PRESSURE (50 * ONE_ATMOSPHERE) // Boom 3x3 base explosion.
@@ -284,61 +278,6 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 
 #define MAX_PUMP_PRESSURE		15000	// Maximal pressure setting for pumps and vents
 #define MAX_OMNI_PRESSURE		15000	// Maximal output(s) pressure for omni devices (filters/mixers)
-
-#define GAS_OXYGEN				"oxygen"
-#define GAS_CO2					"carbon_dioxide"
-#define GAS_CO					"carbon_monoxide"
-#define GAS_METHYL_BROMIDE		"methyl_bromide"
-#define GAS_N2O					"sleeping_agent"
-#define GAS_NITROGEN			"nitrogen"
-#define GAS_NO2					"nitrodioxide"
-#define GAS_NO					"nitricoxide"
-#define GAS_METHANE				"methane"
-#define GAS_ALIEN				"aliether"
-#define GAS_HYDROGEN			"hydrogen"
-#define GAS_DEUTERIUM			"deuterium"
-#define GAS_TRITIUM				"tritium"
-#define GAS_HELIUM				"helium"
-#define GAS_ARGON				"argon"
-#define GAS_KRYPTON				"krypton"
-#define GAS_NEON				"neon"
-#define GAS_XENON				"xenon"
-#define GAS_AMMONIA				"ammonia"
-#define GAS_CHLORINE			"chlorine"
-#define GAS_SULFUR				"sulfurdioxide"
-#define GAS_STEAM				"water"
-#define GAS_PLASMA				"plasma"
-//TG GASES - PLAN TO REMOVE
-#define GAS_PLUOXIUM			"pluoxium"
-
-///All gases in the game. The sorting of UIs like scrubbers will match this, so keep that in mind.
-GLOBAL_LIST_INIT(all_gases, list(
-	GAS_ALIEN,
-	GAS_OXYGEN,
-	GAS_NITROGEN,
-	GAS_CO2,
-	GAS_N2O,
-	GAS_PLASMA,
-	GAS_STEAM,
-	GAS_HYDROGEN,
-	GAS_DEUTERIUM,
-	GAS_TRITIUM,
-	GAS_PLUOXIUM,
-	GAS_HELIUM,
-	GAS_ARGON,
-	GAS_KRYPTON,
-	GAS_NEON,
-	GAS_XENON,
-	GAS_AMMONIA,
-	GAS_CHLORINE,
-	GAS_SULFUR,
-	GAS_METHANE,
-	GAS_CO,
-	GAS_NO,
-	GAS_METHYL_BROMIDE,
-))
-GLOBAL_LIST_INIT(common_gases, list(GAS_OXYGEN, GAS_NITROGEN, GAS_CO2, GAS_N2O, GAS_PLASMA,))
-GLOBAL_LIST_INIT(noble_gases, list(GAS_HELIUM, GAS_ARGON, GAS_NEON, GAS_KRYPTON))
 
 GLOBAL_LIST_INIT(reverse_dir, list( // reverse_dir[dir] = reverse of dir
 	     2,  1,  3,  8, 10,  9, 11,  4,  6,  5,  7, 12, 14, 13, 15,

@@ -396,7 +396,7 @@
 
 /obj/structure/window/fire_act(exposed_temperature, exposed_volume)
 	if (exposed_temperature > melting_point)
-		take_damage(round(exposed_volume / 100), BURN, 0, 0) //The max of 9 is to ensure it takes 4 ticks to destroy, which is incredibly dramatic
+		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
 	return null
@@ -586,6 +586,7 @@
 	damage_deflection = 21
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
+	melting_point = 25000
 
 /obj/structure/window/reinforced/plasma/block_superconductivity()
 	return TRUE

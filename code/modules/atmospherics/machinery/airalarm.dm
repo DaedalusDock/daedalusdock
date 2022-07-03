@@ -312,7 +312,7 @@
 		thresholds[thresholds.len]["settings"] += list(list("env" = "temperature", "val" = "warning_max", "selected" = selected.warning_max))
 		thresholds[thresholds.len]["settings"] += list(list("env" = "temperature", "val" = "hazard_max", "selected" = selected.hazard_max))
 
-		for(var/gas_id in GLOB.all_gases - GAS_ALIEN)
+		for(var/gas_id in ASSORTED_GASES)
 			if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
 				continue
 			selected = TLV[gas_id]
@@ -476,7 +476,7 @@
 			for(var/device_id in my_area.air_scrub_info)
 				send_signal(device_id, list(
 					"power" = 1,
-					"set_filters" = GLOB.all_gases - GAS_ALIEN,
+					"set_filters" = ASSORTED_GASES,
 					"scrubbing" = 1,
 					"quicksucc" = 1
 				), signal_source)
@@ -967,7 +967,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 			"Temperature" = "temperature"
 		)
 
-		for(var/gas_id in GLOB.all_gases)
+		for(var/gas_id in ASSORTED_GASES)
 			component_options |= gas_id
 	air_alarm_options = add_option_port("Air Alarm Options", component_options)
 	options_map = component_options

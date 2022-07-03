@@ -1,0 +1,4 @@
+author: ElorgRHG
+delete-after: true
+changes:
+  - rscdel: Removed gun safeties.

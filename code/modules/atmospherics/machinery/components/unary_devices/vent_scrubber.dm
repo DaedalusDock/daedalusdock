@@ -24,10 +24,8 @@
 	var/list/filter_types = list(GAS_CO2)
 	///Rate of the scrubber to remove gases from the air
 	var/volume_rate = 200
-	///is this scrubber acting on the 3x3 area around it.
-	var/widenet = FALSE
-	///List of the turfs near the scrubber, used for widenet
-	var/list/turf/adjacent_turfs = list()
+	///A fast-siphon toggle, siphons at 9x speed for 9x the power cost.
+	var/quicksucc = FALSE
 
 	///Frequency id for connecting to the NTNet
 	var/frequency = FREQ_ATMOS_CONTROL
@@ -59,7 +57,6 @@
 
 	SSradio.remove_object(src,frequency)
 	radio_connection = null
-	adjacent_turfs.Cut()
 	SSairmachines.stop_processing_machine(src)
 	return ..()
 
@@ -142,13 +139,13 @@
 		return
 
 	if(!COOLDOWN_FINISHED(src, hibernating))
-		if(widenet)
+		if(quicksucc)
 			icon_state = "scrub_wide_hibernating"
 		else
 			icon_state = "scrub_hibernating"
 
 	else if(scrubbing & SCRUBBING)
-		if(widenet)
+		if(quicksucc)
 			icon_state = "scrub_wide"
 		else
 			icon_state = "scrub_on"
@@ -175,7 +172,7 @@
 		"timestamp" = world.time,
 		"power" = on,
 		"scrubbing" = scrubbing,
-		"widenet" = widenet,
+		"quicksucc" = quicksucc,
 		"filter_types" = f_types,
 		"sigtype" = "status"
 	))
@@ -205,7 +202,6 @@
 	if(frequency)
 		set_frequency(frequency)
 	broadcast_status()
-	check_turfs()
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process_atmos()
@@ -221,10 +217,9 @@
 	var/should_cooldown = TRUE
 	if(scrub(us))
 		should_cooldown = FALSE
-	if(widenet)
-		check_turfs()
-		for(var/turf/tile in adjacent_turfs)
-			if(scrub(tile) && should_cooldown)
+	if(quicksucc)
+		for(var/i in 1 to 9) //quicksucc is actually now just "fast mode"
+			if(scrub(us))
 				should_cooldown = FALSE
 	if(should_cooldown)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
@@ -282,19 +277,12 @@
 
 #undef MINIMUM_MOLES_TO_SCRUB
 
-///we populate a list of turfs with nonatmos-blocked cardinal turfs AND
-/// diagonal turfs that can share atmos with *both* of the cardinal turfs
-/obj/machinery/atmospherics/components/unary/vent_scrubber/proc/check_turfs()
-	adjacent_turfs.Cut()
-	var/turf/local_turf = get_turf(src)
-	adjacent_turfs = get_adjacent_open_turfs(local_turf)
-
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
 	if(!is_operational || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return
 	COOLDOWN_RESET(src, hibernating)
 
-	var/old_widenet = widenet
+	var/old_quicksucc = quicksucc
 	var/old_scrubbing = scrubbing
 	var/old_filter_length = length(filter_types)
 
@@ -308,10 +296,10 @@
 	if("power_toggle" in signal.data)
 		on = !on
 
-	if("widenet" in signal.data)
-		widenet = text2num(signal.data["widenet"])
-	if("toggle_widenet" in signal.data)
-		widenet = !widenet
+	if("quicksucc" in signal.data)
+		quicksucc = text2num(signal.data["quicksucc"])
+	if("toggle_quicksucc" in signal.data)
+		quicksucc = !quicksucc
 
 	if("scrubbing" in signal.data)
 		scrubbing = text2num(signal.data["scrubbing"])
@@ -340,7 +328,7 @@
 	update_appearance()
 
 
-	if(length(filter_types) == old_filter_length && old_scrubbing == scrubbing && old_widenet == widenet)
+	if(length(filter_types) == old_filter_length && old_scrubbing == scrubbing && old_quicksucc == quicksucc)
 		return
 
 	idle_power_usage = initial(idle_power_usage)
@@ -354,8 +342,8 @@
 		new_power_usage = active_power_usage
 		update_use_power(ACTIVE_POWER_USE)
 
-	if(widenet)
-		new_power_usage += new_power_usage * (length(adjacent_turfs) * (length(adjacent_turfs) / 2))
+	if(quicksucc)
+		new_power_usage += new_power_usage * 9
 
 	update_mode_power_usage(scrubbing == SCRUBBING ? IDLE_POWER_USE : ACTIVE_POWER_USE, new_power_usage)
 

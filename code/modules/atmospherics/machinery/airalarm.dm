@@ -53,12 +53,12 @@
 
 #define AALARM_MODE_SCRUBBING 1
 #define AALARM_MODE_VENTING 2 //makes draught
-#define AALARM_MODE_PANIC 3 //like siphon, but stronger (enables widenet)
+#define AALARM_MODE_PANIC 3 //like siphon, but stronger (enables quicksucc)
 #define AALARM_MODE_REPLACEMENT 4 //sucks off all air, then refill and swithes to scrubbing
 #define AALARM_MODE_OFF 5
 #define AALARM_MODE_FLOOD 6 //Emagged mode; turns off scrubbers and pressure checks on vents
 #define AALARM_MODE_SIPHON 7 //Scrubbers suck air
-#define AALARM_MODE_CONTAMINATED 8 //Turns on all filtering and widenet scrubbing.
+#define AALARM_MODE_CONTAMINATED 8 //Turns on all filtering and quicksucc scrubbing.
 #define AALARM_MODE_REFILL 9 //just like normal, but with triple the air output
 
 #define AALARM_REPORT_TIMEOUT 100
@@ -279,7 +279,7 @@
 					"long_name" = sanitize(long_name),
 					"power" = info["power"],
 					"scrubbing" = info["scrubbing"],
-					"widenet" = info["widenet"],
+					"quicksucc" = info["quicksucc"],
 					"filter_types" = info["filter_types"]
 				))
 		data["mode"] = mode
@@ -338,7 +338,7 @@
 			if(usr.has_unlimited_silicon_privilege && !wires.is_cut(WIRE_IDSCAN))
 				locked = !locked
 				. = TRUE
-		if("power", "toggle_filter", "widenet", "scrubbing", "direction")
+		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
 			send_signal(device_id, list("[action]" = params["val"]), usr)
 			. = TRUE
 		if("excheck")
@@ -464,7 +464,7 @@
 					"power" = 1,
 					"set_filters" = list(GAS_CO2),
 					"scrubbing" = 1,
-					"widenet" = 0
+					"quicksucc" = 0
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)
 				send_signal(device_id, list(
@@ -478,7 +478,7 @@
 					"power" = 1,
 					"set_filters" = GLOB.all_gases - GAS_ALIEN,
 					"scrubbing" = 1,
-					"widenet" = 1
+					"quicksucc" = 1
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)
 				send_signal(device_id, list(
@@ -490,7 +490,7 @@
 			for(var/device_id in my_area.air_scrub_info)
 				send_signal(device_id, list(
 					"power" = 1,
-					"widenet" = 0,
+					"quicksucc" = 0,
 					"scrubbing" = 0
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)
@@ -505,7 +505,7 @@
 					"power" = 1,
 					"set_filters" = list(GAS_CO2),
 					"scrubbing" = 1,
-					"widenet" = 0
+					"quicksucc" = 0
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)
 				send_signal(device_id, list(
@@ -518,7 +518,7 @@
 			for(var/device_id in my_area.air_scrub_info)
 				send_signal(device_id, list(
 					"power" = 1,
-					"widenet" = 1,
+					"quicksucc" = 1,
 					"scrubbing" = 0
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)
@@ -529,7 +529,7 @@
 			for(var/device_id in my_area.air_scrub_info)
 				send_signal(device_id, list(
 					"power" = 1,
-					"widenet" = 0,
+					"quicksucc" = 0,
 					"scrubbing" = 0
 				), signal_source)
 			for(var/device_id in my_area.air_vent_info)

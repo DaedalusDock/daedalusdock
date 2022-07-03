@@ -150,16 +150,6 @@
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
 
-	/*
-	//Update flow rate var
-	if (istype(M, /obj/machinery/atmospherics))
-		var/obj/machinery/atmospherics/A = M
-		A.last_flow_rate = (total_transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	if (istype(M, /obj/machinery/portable_atmospherics))
-		var/obj/machinery/portable_atmospherics/P = M
-		P.last_flow_rate = (total_transfer_moles/source.total_moles)*source.volume //group_multiplier gets divided out here
-	*/
-
 	var/power_draw = 0
 	for (var/g in filtering)
 		var/transfer_moles = source.gas[g]

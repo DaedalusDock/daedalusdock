@@ -18,12 +18,11 @@
 	///Should the machine use overlay in update_overlays() when open/close?
 	var/use_overlays = TRUE
 	var/power_rating = 7500
-	///List of gases that can be scrubbed
-	var/list/scrubbing = list(
-		GAS_PLASMA,
-		GAS_CO2,
-		GAS_N2O,
-	)
+	///List of gases that are being scrubbed.
+	var/list/scrubbing = list()
+
+/obj/machinery/portable_atmospherics/scrubber/Initialize(mapload)
+	. = ..()
 
 /obj/machinery/portable_atmospherics/scrubber/Destroy()
 	var/turf/T = get_turf(src)
@@ -69,23 +68,14 @@
  * * mixture: the gas mixture to be scrubbed
  */
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/mixture)
-	if(air_contents.returnPressure() >= overpressure_m * ONE_ATMOSPHERE)
+	if(!mixture.total_moles || !length(scrubbing))
 		return
-	if(!mixture.total_moles)
+	if(air_contents.returnPressure() >= overpressure_m * ONE_ATMOSPHERE)
 		return
 
 	var/transfer_moles = min(1, volume_rate/mixture.volume)*mixture.total_moles
 
-	var/datum/gas_mixture/gas2scrub = mixture.remove(transfer_moles) // Remove part of the mixture to filter.
-
-	if(!scrubbing)
-		return
-
-	scrub_gas(scrubbing, gas2scrub, air_contents, transfer_moles, power_rating)
-	/*
-	if(!holding)
-		air_update_turf(FALSE, FALSE)
-	*/
+	scrub_gas(scrubbing, mixture, air_contents, transfer_moles, power_rating)
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
 	. = ..()

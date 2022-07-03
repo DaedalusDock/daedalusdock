@@ -212,6 +212,8 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return
 
+	COOLDOWN_RESET(src, hibernating)
+
 	var/atom/signal_sender = signal.data["user"]
 
 	if("purge" in signal.data)

@@ -23,8 +23,6 @@
 	armor = list(MELEE = 10, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 
-	COOLDOWN_DECLARE(detect_cooldown)
-
 	///Trick to get the glowing overlay visible from a distance
 	luminosity = 1
 	///X offset for the overlay lights, so that they line up with the thin border firelocks
@@ -33,25 +31,13 @@
 	var/light_yoffset = 0
 
 	var/boltslocked = TRUE
-	///List of areas we handle. See CalculateAffectingAreas()
-	var/list/affecting_areas
 	///For the few times we affect only the area we're actually in. Set during Init. If we get moved, we don't update, but this is consistant with fire alarms and also kinda funny so call it intentional.
 	var/area/my_area
-	///List of problem turfs with bad temperature
-	var/list/turf/issue_turfs
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
-	var/alarm_type = null
-	///The merger_id and merger_typecache variables are used to make rows of firelocks activate at the same time.
-	var/merger_id = "firelocks"
-	var/static/list/merger_typecache
+	var/alarm_type = FIRE_CLEAR
 
 	///Overlay object for the warning lights. This and some plane settings allows the lights to glow in the dark.
 	var/mutable_appearance/warn_lights
-
-	///looping sound datum for our fire alarm siren.
-	var/datum/looping_sound/firealarm/soundloop
-	///Keeps track of if we're playing the alarm sound loop (as only one firelock per group should be). Used during power changes.
-	var/is_playing_alarm = FALSE
 
 	var/knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
@@ -59,13 +45,7 @@
 
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
-	COOLDOWN_START(src, detect_cooldown, DETECT_COOLDOWN_STEP_TIME)
-	soundloop = new(src, FALSE)
-	CalculateAffectingAreas()
-	my_area = get_area(src)
-	if(!merger_typecache)
-		merger_typecache = typecacheof(/obj/machinery/door/firedoor)
-
+	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
 	if(prob(0.004) && icon == 'icons/obj/doors/doorfireglass.dmi')
 		base_icon_state = "sus"
 		desc += " This one looks a bit sus..."
@@ -74,10 +54,12 @@
 
 /obj/machinery/door/firedoor/LateInitialize()
 	. = ..()
-	RegisterSignal(src, COMSIG_MERGER_ADDING, .proc/merger_adding)
-	RegisterSignal(src, COMSIG_MERGER_REMOVING, .proc/merger_removing)
-	GetMergeGroup(merger_id, merger_typecache)
-	register_adjacent_turfs(src)
+	set_area(get_area(src))
+
+/obj/machinery/door/firedoor/Destroy()
+	set_area(null)
+	return ..()
+
 /**
  * Sets the offset for the warning lights.
  *
@@ -85,11 +67,6 @@
  */
 /obj/machinery/door/firedoor/proc/adjust_lights_starting_offset()
 	return
-
-/obj/machinery/door/firedoor/Destroy()
-	remove_from_areas()
-	QDEL_NULL(soundloop)
-	return ..()
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
@@ -159,202 +136,48 @@
 
 	return .
 
-/**
- * Calculates what areas we should worry about.
- *
- * This proc builds a list of areas we are in and areas we border
- * and writes it to affecting_areas.
- */
-/obj/machinery/door/firedoor/proc/CalculateAffectingAreas()
-	var/list/new_affecting_areas = get_adjacent_open_areas(src) | get_area(src)
-	if(compare_list(new_affecting_areas, affecting_areas))
-		return //No changes needed
+/obj/machinery/door/firedoor/Moved(atom/oldloc)
+	. = ..()
+	var/new_area = get_area(src)
+	if(my_area != new_area)
+		set_area(new_area)
 
-	remove_from_areas()
-	affecting_areas = new_affecting_areas
-	for(var/area/place in affecting_areas)
-		LAZYADD(place.firedoors, src)
-		if(alarm_type)
-			if(place == get_area(src))
-				LAZYADD(place.active_firelocks, src) //We only add ourselves to our own area's active firelocks...
-			for(var/obj/machinery/firealarm/fire_panel in place.firealarms)
-				fire_panel.set_status() //...but all adjacent fire alarms are notified
-
-/**
- * Removes us from any lists of areas in the affecting_areas list, then clears affecting_areas
- *
- * Undoes everything done in the CalculateAffectingAreas() proc, to clean up prior to deletion.
- * Calls reset() first, in case any alarms need to be cleared first.
- */
-/obj/machinery/door/firedoor/proc/remove_from_areas()
-	if(!affecting_areas)
+/obj/machinery/door/firedoor/proc/set_area(new_area)
+	if(my_area)
+		LAZYREMOVE(my_area.firedoors, src)
+	if(!new_area)
 		return
-	for(var/area/place in affecting_areas)
-		LAZYREMOVE(place.firedoors, src)
-		LAZYREMOVE(place.active_firelocks, src)
-		if(LAZYLEN(place.active_firelocks)) //if we were the last firelock still active in this particular area
-			continue
-		for(var/obj/machinery/firealarm/fire_panel in place.firealarms)
-			fire_panel.set_status()
-
-/obj/machinery/door/firedoor/proc/merger_adding(obj/machinery/door/firedoor/us, datum/merger/new_merger)
-	SIGNAL_HANDLER
-	if(new_merger.id != merger_id)
-		return
-	RegisterSignal(new_merger, COMSIG_MERGER_REFRESH_COMPLETE, .proc/refresh_shared_turfs)
-
-/obj/machinery/door/firedoor/proc/merger_removing(obj/machinery/door/firedoor/us, datum/merger/old_merger)
-	SIGNAL_HANDLER
-	if(old_merger.id != merger_id)
-		return
-	UnregisterSignal(old_merger, COMSIG_MERGER_REFRESH_COMPLETE)
-
-/obj/machinery/door/firedoor/proc/refresh_shared_turfs(datum/source, list/leaving_members, list/joining_members)
-	SIGNAL_HANDLER
-	var/datum/merger/temp_group = source
-	if(temp_group.origin != src)
-		return
-	var/list/shared_problems = list() // We only want to do this once, this is a nice way of pulling that off
-	for(var/obj/machinery/door/firedoor/firelock as anything in temp_group.members)
-		firelock.issue_turfs = shared_problems
-		for(var/dir in GLOB.cardinals)
-			var/turf/checked_turf = get_step(get_turf(firelock), dir)
-			if(!checked_turf)
-				continue
-			process_results(checked_turf)
-
-/obj/machinery/door/firedoor/proc/register_adjacent_turfs(atom/loc)
-	for(var/dir in GLOB.cardinals)
-		var/turf/checked_turf = get_step(get_turf(loc), dir)
-
-		if(!checked_turf)
-			continue
-		process_results(checked_turf)
-		RegisterSignal(checked_turf, COMSIG_TURF_EXPOSE, .proc/process_results)
+	my_area = new_area
+	if(my_area)
+		LAZYADD(my_area.firedoors, src)
 
 
-/obj/machinery/door/firedoor/proc/unregister_adjacent_turfs(atom/loc)
-	for(var/dir in GLOB.cardinals)
-		var/turf/checked_turf = get_step(get_turf(loc), dir)
-
-		if(!checked_turf)
-			continue
-
-		UnregisterSignal(checked_turf, COMSIG_TURF_EXPOSE)
-
-/obj/machinery/door/firedoor/proc/check_atmos(turf/checked_turf)
-	var/datum/gas_mixture/environment = checked_turf.return_air()
-
-	if(environment?.temperature >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
-		return FIRELOCK_ALARM_TYPE_HOT
-	if(environment?.temperature <= BODYTEMP_COLD_DAMAGE_LIMIT)
-		return FIRELOCK_ALARM_TYPE_COLD
-	return
-
-/obj/machinery/door/firedoor/proc/process_results(datum/source)
+/obj/machinery/door/firedoor/proc/handle_alert(datum/source, code, sent_by_neighbor)
 	SIGNAL_HANDLER
 
-	if(!COOLDOWN_FINISHED(src, detect_cooldown))
+	if(sent_by_neighbor && !alarm_type) //We dont care about neighbors if we have our own problems
+		if(code == FIRE_CLEAR) //bitflag & 0 returns false, dumbass.
+			INVOKE_ASYNC(src, .proc/open)
+		else
+			INVOKE_ASYNC(src, .proc/close)
 		return
-	if(alarm_type == FIRELOCK_ALARM_TYPE_GENERIC)
+
+	if(code == alarm_type) //We're already on this alert level.
 		return
 
-	for(var/area/place in affecting_areas)
-		if(!place.fire_detect) //if any area is set to disable detection
-			return
-
-	var/turf/checked_turf = source
-	var/result = check_atmos(checked_turf)
-
-	if(result && Adjacent(checked_turf))
-		issue_turfs |= checked_turf
-		if(!alarm_type)
-			start_activation_process(result)
-	else
-		issue_turfs -= checked_turf
-		if(!length(issue_turfs) && alarm_type)
-			start_deactivation_process()
-
-
-/**
- * Begins activation process of us and our neighbors.
- *
- * This proc will call activate() on every fire lock (including us) listed
- * in the merge group datum. Returns without doing anything if our alarm_type
- * was already set, as that means that we're already active.
- *
- * Arguments:
- * code should be one of three defined alarm types, or can be not supplied. Will dictate the color of the fire alarm lights, and defults to "firelock_alarm_type_generic"
- */
-/obj/machinery/door/firedoor/proc/start_activation_process(code = FIRELOCK_ALARM_TYPE_GENERIC)
-	if(alarm_type)
-		return //We're already active
-	soundloop.start()
-	is_playing_alarm = TRUE
-	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
-	for(var/obj/machinery/door/firedoor/buddylock as anything in merge_group.members)
-		buddylock.activate(code)
-/**
- * Begins deactivation process of us and our neighbors.
- *
- * This proc will call reset() on every fire lock (including us) listed
- * in the merge group datum. sets our alarm type to null, signifying no alarm.
- */
-/obj/machinery/door/firedoor/proc/start_deactivation_process()
-	soundloop.stop()
-	is_playing_alarm = FALSE
-	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
-	for(var/obj/machinery/door/firedoor/buddylock as anything in merge_group.members)
-		buddylock.reset()
-
-/**
- * Proc that handles activation of the firelock and all this details
- *
- * Sets the alarm_type variable based on the single arg, which is in turn
- * used by several procs to understand the intended state of the fire lock.
- * Also calls set_status() on all fire alarms in all affected areas, tells
- * the area the firelock sits in to report the event (AI, alarm consoles, etc)
- * and finally calls correct_state(), which will handle opening or closing
- * this fire lock.
- */
-/obj/machinery/door/firedoor/proc/activate(code = FIRELOCK_ALARM_TYPE_GENERIC)
-	SIGNAL_HANDLER
-	if(alarm_type)
-		return //Already active
-	alarm_type = code
-	for(var/area/place in affecting_areas)
-		LAZYADD(place.active_firelocks, src)
-		if(LAZYLEN(place.active_firelocks) == 1) //if we're the first to activate in this particular area
-			for(var/obj/machinery/firealarm/fire_panel in place.firealarms)
-				fire_panel.set_status()
-			if(alarm_type != FIRELOCK_ALARM_TYPE_GENERIC) //Generic alarms tend to activate all firelocks in an area, which otherwise makes the red lighting spread like a virus. Anyway, fire alarms already do this for manual pulls.
-				place.set_fire_alarm_effect() //bathe in red
-			if(place == my_area)
-				place.alarm_manager.send_alarm(ALARM_FIRE, place) //We'll limit our reporting to just the area we're on. If the issue affects bordering areas, they can report it themselves
-	update_icon() //Sets the door lights even if the door doesn't move.
-	correct_state()
-
-/**
- * Proc that handles reset steps
- *
- * Clears the alarm state and attempts to open the firelock.
- */
-/obj/machinery/door/firedoor/proc/reset()
-	SIGNAL_HANDLER
-	alarm_type = null
-	for(var/area/place in affecting_areas)
-		LAZYREMOVE(place.active_firelocks, src)
-		if(!LAZYLEN(place.active_firelocks)) //if we were the last firelock still active in this particular area
-			for(var/obj/machinery/firealarm/fire_panel in place.firealarms)
-				fire_panel.set_status()
-			if(place == my_area)
-				place.alarm_manager.clear_alarm(ALARM_FIRE, place)
-			place.unset_fire_alarm_effects()
-	COOLDOWN_START(src, detect_cooldown, DETECT_COOLDOWN_STEP_TIME)
-	soundloop.stop()
-	is_playing_alarm = FALSE
-	update_icon() //Sets the door lights even if the door doesn't move.
-	correct_state()
+	switch(code)
+		if(FIRE_CLEAR)
+			alarm_type = code
+			INVOKE_ASYNC(src, .proc/open)
+		if(FIRE_RAISED_AIRALARM) //Pulls do not override air alarms
+			if(!alarm_type)
+				alarm_type = code
+				INVOKE_ASYNC(src, .proc/close)
+		if(FIRE_RAISED_PULL)
+			if(alarm_type & FIRE_RAISED_AIRALARM)
+				return //We cannot overrule airalarms
+			alarm_type = code
+			INVOKE_ASYNC(src, .proc/close)
 
 /obj/machinery/door/firedoor/emag_act(mob/user, obj/item/card/emag/doorjack/digital_crowbar)
 	if(obj_flags & EMAGGED)
@@ -379,16 +202,6 @@
 /obj/machinery/door/firedoor/power_change()
 	. = ..()
 	update_icon()
-
-	if(machine_stat & NOPOWER)
-		soundloop.stop()
-		return
-
-	correct_state()
-
-	if(is_playing_alarm)
-		soundloop.start()
-
 
 /obj/machinery/door/firedoor/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -447,7 +260,6 @@
 		user.visible_message(span_danger("[user] [welded?"welds":"unwelds"] [src]."), span_notice("You [welded ? "weld" : "unweld"] [src]."))
 		log_game("[key_name(user)] [welded ? "welded":"unwelded"] firedoor [src] with [W] at [AREACOORD(src)]")
 		update_appearance()
-		correct_state()
 
 /// We check for adjacency when using the primary attack.
 /obj/machinery/door/firedoor/try_to_crowbar(obj/item/acting_object, mob/user)
@@ -482,8 +294,6 @@
 		return TRUE
 	if(density)
 		open()
-		if(alarm_type)
-			addtimer(CALLBACK(src, .proc/correct_state), 2 SECONDS, TIMER_UNIQUE)
 	else
 		close()
 	return TRUE
@@ -497,8 +307,6 @@
 		to_chat(user, span_warning("[src] refuses to budge!"))
 		return
 	open()
-	if(alarm_type)
-		addtimer(CALLBACK(src, .proc/correct_state), 2 SECONDS, TIMER_UNIQUE)
 
 /obj/machinery/door/firedoor/do_animate(animation)
 	switch(animation)
@@ -526,39 +334,16 @@
 		hazards.pixel_y = light_yoffset
 		. += hazards
 
-/**
- * Corrects the current state of the door, based on if alarm_type is set.
- *
- * This proc is called after weld and power restore events. Gives the
- * illusion that the door is constantly attempting to move without actually
- * having to process it. Timers also call this, so that if alarm_type
- * changes during the timer, the door doesn't close or open incorrectly.
- */
-/obj/machinery/door/firedoor/proc/correct_state()
-	if(obj_flags & EMAGGED)
-		return //Unmotivated, indifferent, we have no real care what state we're in anymore.
-	if(alarm_type && !density) //We should be closed but we're not
-		INVOKE_ASYNC(src, .proc/close)
-		return
-	if(!alarm_type && density) //We should be open but we're not
-		INVOKE_ASYNC(src, .proc/open)
-		return
-
 /obj/machinery/door/firedoor/open()
 	if(welded)
 		return
-	var/alarm = alarm_type
-	. = ..()
-	if(alarm != alarm_type) //Something changed while we were sleeping
-		correct_state() //So we should re-evaluate our state
+	return ..()
 
 /obj/machinery/door/firedoor/close()
 	if(HAS_TRAIT(loc, TRAIT_FIREDOOR_STOP))
 		return
-	var/alarm = alarm_type
-	. = ..()
-	if(alarm != alarm_type) //Something changed while we were sleeping
-		correct_state() //So we should re-evaluate our state
+	return ..()
+
 
 /obj/machinery/door/firedoor/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -575,15 +360,10 @@
 			new /obj/item/electronics/firelock (targetloc)
 	qdel(src)
 
-/obj/machinery/door/firedoor/Moved(atom/oldloc)
-	. = ..()
-	unregister_adjacent_turfs(oldloc)
-	register_adjacent_turfs(src)
-
 /obj/machinery/door/firedoor/closed
 	icon_state = "door_closed"
 	density = TRUE
-	alarm_type = FIRELOCK_ALARM_TYPE_GENERIC
+	alarm_type = FIRE_RAISED_PULL
 
 /obj/machinery/door/firedoor/border_only
 	icon = 'icons/obj/doors/edge_Doorfire.dmi'
@@ -594,7 +374,7 @@
 /obj/machinery/door/firedoor/border_only/closed
 	icon_state = "door_closed"
 	density = TRUE
-	alarm_type = FIRELOCK_ALARM_TYPE_GENERIC
+	alarm_type = FIRE_RAISED_PULL
 
 /obj/machinery/door/firedoor/border_only/Initialize(mapload)
 	. = ..()
@@ -812,4 +592,3 @@
 
 #undef CONSTRUCTION_PANEL_OPEN
 #undef CONSTRUCTION_NO_CIRCUIT
-#undef DETECT_COOLDOWN_STEP_TIME

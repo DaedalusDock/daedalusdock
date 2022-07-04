@@ -79,6 +79,8 @@
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
+	///The fire alert type currently active
+	var/alert_type = FIRE_CLEAR
 	///A reference to the area we are in
 	var/area/my_area
 
@@ -121,30 +123,6 @@
 		GAS_SULFUR = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_ARGON = new/datum/tlv(-1, -1, 1000, 1000),
 	)
-	/* // Breathable air.
-		"pressure" = new/datum/tlv(HAZARD_LOW_PRESSURE, WARNING_LOW_PRESSURE, WARNING_HIGH_PRESSURE, HAZARD_HIGH_PRESSURE), // kPa. Values are hazard_min, warning_min, warning_max, hazard_max
-		"temperature" = new/datum/tlv(BODYTEMP_COLD_WARNING_1, BODYTEMP_COLD_WARNING_1+10, BODYTEMP_HEAT_WARNING_1-27, BODYTEMP_HEAT_WARNING_1),
-		/datum/gas/oxygen = new/datum/tlv(16, 19, 135, 140), // Partial pressure, kpa
-		/datum/gas/nitrogen = new/datum/tlv(-1, -1, 1000, 1000),
-		/datum/gas/carbon_dioxide = new/datum/tlv(-1, -1, 5, 10),
-		/datum/gas/miasma = new/datum/tlv/(-1, -1, 15, 30),
-		/datum/gas/plasma = new/datum/tlv/dangerous,
-		/datum/gas/nitrous_oxide = new/datum/tlv/dangerous,
-		/datum/gas/bz = new/datum/tlv/dangerous,
-		/datum/gas/hypernoblium = new/datum/tlv(-1, -1, 1000, 1000), // Hyper-Noblium is inert and nontoxic
-		/datum/gas/water_vapor = new/datum/tlv/dangerous,
-		/datum/gas/tritium = new/datum/tlv/dangerous,
-		/datum/gas/nitrium = new/datum/tlv/dangerous,
-		/datum/gas/pluoxium = new/datum/tlv(-1, -1, 1000, 1000), // Unlike oxygen, pluoxium does not fuel plasma/tritium fires
-		/datum/gas/freon = new/datum/tlv/dangerous,
-		/datum/gas/hydrogen = new/datum/tlv/dangerous,
-		/datum/gas/healium = new/datum/tlv/dangerous,
-		/datum/gas/proto_nitrate = new/datum/tlv/dangerous,
-		/datum/gas/zauker = new/datum/tlv/dangerous,
-		/datum/gas/helium = new/datum/tlv/dangerous,
-		/datum/gas/antinoblium = new/datum/tlv/dangerous,
-		/datum/gas/halon = new/datum/tlv/dangerous
-		)*/
 
 /obj/machinery/airalarm/Initialize(mapload, ndir, nbuild)
 	. = ..()
@@ -160,7 +138,7 @@
 		name = "[get_area_name(src)] Air Alarm"
 
 	alarm_manager = new(src)
-	my_area = get_area(src)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
 	update_appearance()
 
 	set_frequency(frequency)
@@ -169,15 +147,35 @@
 		/obj/item/circuit_component/air_alarm,
 	))
 
+	return INITIALIZE_HINT_LATELOAD
 
+/obj/machinery/airalarm/LateInitialize()
+	. = ..()
+	set_area(get_area(src))
 
 /obj/machinery/airalarm/Destroy()
-	if(my_area)
-		my_area = null
+	set_area(null)
 	SSradio.remove_object(src, frequency)
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
 	return ..()
+
+/obj/machinery/airalarm/Moved(atom/OldLoc, Dir)
+	. = ..()
+	var/new_area = get_area(src)
+	if(my_area != new_area)
+		set_area(new_area)
+
+/obj/machinery/airalarm/proc/set_area(new_area)
+	SHOULD_NOT_SLEEP(TRUE)
+
+	if(my_area)
+		LAZYREMOVE(my_area.airalarms, src)
+	if(!new_area)
+		return
+	my_area = new_area
+	if(my_area)
+		LAZYADD(my_area.airalarms, src)
 
 /obj/machinery/airalarm/examine(mob/user)
 	. = ..()
@@ -211,8 +209,8 @@
 		"danger_level" = danger_level,
 	)
 
-	data["atmos_alarm"] = !!my_area.active_alarms[ALARM_ATMOS]
-	data["fire_alarm"] = my_area.fire
+	data["atmos_alarm"] = !!my_area.active_alarms[ALARM_ATMOS] //Casting to boolean
+	data["fire_alarm"] = !!alert_type //Same here
 
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/environment = T.return_air()
@@ -673,22 +671,13 @@
 /obj/machinery/airalarm/proc/apply_danger_level()
 
 	var/new_area_danger_level = 0
-	for(var/obj/machinery/airalarm/AA in my_area)
+	for(var/obj/machinery/airalarm/AA in my_area?.airalarms)
 		if (!(AA.machine_stat & (NOPOWER|BROKEN)) && !AA.shorted)
 			new_area_danger_level = clamp(max(new_area_danger_level, AA.danger_level), 0, 1)
 
 	var/did_anything_happen
-	var/area/local_area = get_area(src)
 	if(new_area_danger_level)
 		did_anything_happen = alarm_manager.send_alarm(ALARM_ATMOS)
-		if(danger_level == TLV_OUTSIDE_HAZARD_LIMIT)
-			for(var/obj/machinery/door/firedoor/door in local_area.firedoors)
-				door.start_activation_process(FIRELOCK_ALARM_TYPE_GENERIC)
-	else
-		if(danger_level < TLV_OUTSIDE_WARNING_LIMIT)
-			for(var/obj/machinery/door/firedoor/door in local_area.firedoors)
-				door.start_deactivation_process(FIRELOCK_ALARM_TYPE_GENERIC)
-
 		did_anything_happen = alarm_manager.clear_alarm(ALARM_ATMOS)
 	if(did_anything_happen) //if something actually changed
 		post_alert(new_area_danger_level)
@@ -852,23 +841,8 @@
 		GAS_OXYGEN = new/datum/tlv/no_checks,
 		GAS_NITROGEN = new/datum/tlv/no_checks,
 		GAS_CO2 = new/datum/tlv/no_checks,
-		//datum/gas/miasma = new/datum/tlv/no_checks,
 		GAS_PLASMA = new/datum/tlv/no_checks,
 		GAS_N2O = new/datum/tlv/no_checks,
-		/*/datum/gas/bz = new/datum/tlv/no_checks,
-		/datum/gas/hypernoblium = new/datum/tlv/no_checks,
-		/datum/gas/water_vapor = new/datum/tlv/no_checks,
-		/datum/gas/tritium = new/datum/tlv/no_checks,
-		/datum/gas/nitrium = new/datum/tlv/no_checks,
-		/datum/gas/pluoxium = new/datum/tlv/no_checks,
-		/datum/gas/freon = new/datum/tlv/no_checks,
-		/datum/gas/hydrogen = new/datum/tlv/no_checks,
-		/datum/gas/healium = new/datum/tlv/dangerous,
-		/datum/gas/proto_nitrate = new/datum/tlv/dangerous,
-		/datum/gas/zauker = new/datum/tlv/dangerous,
-		/datum/gas/helium = new/datum/tlv/dangerous,
-		/datum/gas/antinoblium = new/datum/tlv/dangerous,
-		/datum/gas/halon = new/datum/tlv/dangerous,*/
 	)
 
 /obj/machinery/airalarm/kitchen_cold_room // Kitchen cold rooms start off at -14°C or 259.15K.
@@ -878,23 +852,7 @@
 		GAS_OXYGEN = new/datum/tlv(16, 19, 135, 140), // Partial pressure, kpa
 		GAS_NITROGEN = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_CO2 = new/datum/tlv(-1, -1, 5, 10),
-		//datum/gas/miasma = new/datum/tlv/(-1, -1, 2, 5),
 		GAS_PLASMA = new/datum/tlv/dangerous,
-		/*/datum/gas/nitrous_oxide = new/datum/tlv/dangerous,
-		/datum/gas/bz = new/datum/tlv/dangerous,
-		/datum/gas/hypernoblium = new/datum/tlv(-1, -1, 1000, 1000), // Hyper-Noblium is inert and nontoxic
-		/datum/gas/water_vapor = new/datum/tlv/dangerous,
-		/datum/gas/tritium = new/datum/tlv/dangerous,
-		/datum/gas/nitrium = new/datum/tlv/dangerous,
-		/datum/gas/pluoxium = new/datum/tlv(-1, -1, 1000, 1000), // Unlike oxygen, pluoxium does not fuel plasma/tritium fires
-		/datum/gas/freon = new/datum/tlv/dangerous,
-		/datum/gas/hydrogen = new/datum/tlv/dangerous,
-		/datum/gas/healium = new/datum/tlv/dangerous,
-		/datum/gas/proto_nitrate = new/datum/tlv/dangerous,
-		/datum/gas/zauker = new/datum/tlv/dangerous,
-		/datum/gas/helium = new/datum/tlv/dangerous,
-		/datum/gas/antinoblium = new/datum/tlv/dangerous,
-		/datum/gas/halon = new/datum/tlv/dangerous,*/
 	)
 
 /obj/machinery/airalarm/unlocked
@@ -1001,6 +959,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 	settings.warning_min = min_1
 	settings.warning_max = max_1
 	settings.hazard_max = max_2
+
+/obj/machinery/airalarm/proc/handle_alert(datum/source, code, sent_by_neighbor)
+	SIGNAL_HANDLER
+
+	return
+
 
 #undef AALARM_MODE_SCRUBBING
 #undef AALARM_MODE_VENTING

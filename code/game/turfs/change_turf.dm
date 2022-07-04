@@ -290,19 +290,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 //If you modify this function, ensure it works correctly with lateloaded map templates.
 /turf/proc/AfterChange(flags, oldType) //called after a turf has been replaced in ChangeTurf()
 	levelupdate()
-	/*if(flags & CHANGETURF_RECALC_ADJACENT)
-		immediate_calculate_adjacent_turfs()
-		if(ispath(oldType, /turf/closed) && istype(src, /turf/open))
-			SSair.add_to_active(src)
-	else //In effect, I want closed turfs to make their tile active when sheered, but we need to queue it since they have no adjacent turfs
-		CALCULATE_ADJACENT_TURFS(src, (!(ispath(oldType, /turf/closed) && istype(src, /turf/open)) ? NORMAL_TURF : MAKE_ACTIVE))*/
-	//update firedoor adjacency
-	var/list/turfs_to_check = get_adjacent_open_turfs(src) | src
-	for(var/I in turfs_to_check)
-		var/turf/T = I
-		for(var/obj/machinery/door/firedoor/FD in T)
-			FD.CalculateAffectingAreas()
-
 	HandleTurfChange(src)
 
 /turf/open/AfterChange(flags, oldType)
@@ -312,75 +299,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		//Assimilate_Air()
 		SSzas.mark_for_update(src)
 
-//////Assimilate Air//////
-/*/turf/open/proc/Assimilate_Air()
-	var/list/turf/turf_list = get_adjacent_open_turfs(src)
-	var/turf_count = LAZYLEN(turf_list)
-	if(blocks_air || !turf_count)
-		return
-	var/datum/gas_mixture/total = new
-	var/list/total_gases = total.gas
-	turf_list += src
-	turf_count += 1
-	var/energy = 0
-	var/heat_cap = 0
-	for(var/turf/T in turf_list)
-		var/datum/gas_mixture/turf_mix = T.return_air()
-		var/capacity = turf_mix.getHeatCapacity()
-		energy += turf_mix.temperature * capacity
-		heat_cap += capacity
-
-		var/list/giver_gases = turf_mix.gas
-		for(var/giver_id in giver_gases)
-			total_gases[giver_id] = giver_gases[giver_id]
-
-	total.temperature = energy / heat_cap
-	for(var/id in total_gases)
-		total_gases[id] /= turf_count
-
-	for(var/turf/T as anything in turf_list)
-		T.return_air().copyFrom(total)
-		SSzas.mark_for_update(T)
-*/
-/*
-/turf/open/proc/Assimilate_Air()
-	var/turf_count = LAZYLEN(atmos_adjacent_turfs)
-	if(blocks_air || !turf_count) //if there weren't any open turfs, no need to update.
-		return
-
-	var/datum/gas_mixture/total = new//Holders to assimilate air from nearby turfs
-	var/list/total_gases = total.gases
-	//Stolen blatently from self_breakdown
-	var/list/turf_list = atmos_adjacent_turfs + src
-	var/turflen = turf_list.len
-	var/energy = 0
-	var/heat_cap = 0
-
-	for(var/t in turf_list)
-		var/turf/open/T = t
-		//Cache?
-		var/datum/gas_mixture/turf/mix = T.air
-		//"borrowing" this code from merge(), I need to play with the temp portion. Lets expand it out
-		//temperature = (giver.temperature * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
-		var/capacity = mix.getHeatCapacity()
-		energy += mix.temperature * capacity
-		heat_cap += capacity
-
-		var/list/giver_gases = mix.gases
-		for(var/giver_id in giver_gases)
-			ASSERT_GAS(giver_id, total)
-			total_gases[giver_id][MOLES] += giver_gases[giver_id][MOLES]
-
-	total.temperature = energy / heat_cap
-	for(var/id in total_gases)
-		total_gases[id][MOLES] /= turflen
-
-	for(var/t in turf_list)
-		var/turf/open/T = t
-		T.air.copyFrom(total)
-		T.update_visuals()
-		SSair.add_to_active(T)
-*/
 /turf/proc/ReplaceWithLattice()
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 	new /obj/structure/lattice(locate(x, y, z))

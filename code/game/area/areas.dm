@@ -15,20 +15,18 @@
 
 	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
-	///Do we have an active fire alarm?
-	var/fire = FALSE
-	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm, checked by fire locks.
+	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm.
 	var/fire_detect = TRUE
 	///A list of all fire locks in this area. Used by fire alarm panels when resetting fire locks or activating all in an area
 	var/list/firedoors
-	///A list of firelocks currently active. Used by fire alarms when setting their icons.
-	var/list/active_firelocks
 	///A list of all fire alarms in this area. Used by fire locks and burglar alarms to tell the fire alarm to change its icon.
 	var/list/firealarms
+	///A list of all air alarms in this area
+	var/list/airalarms
+	///A list of adjacent areas that will close their fire doors when a fire alarm is sent out by us.
+	var/list/adjacent_fire_areas
 	///Alarm type to count of sources. Not usable for ^ because we handle fires differently
 	var/list/active_alarms = list()
-	///We use this just for fire alarms, because they're area based right now so one alarm going poof shouldn't prevent you from clearing your alarms listing. Fire alarms and fire locks will set and clear alarms.
-	var/datum/alarm_handler/alarm_manager
 
 	var/lightswitch = TRUE
 
@@ -100,6 +98,8 @@
 	var/list/air_vent_info = list()
 	var/list/air_scrub_info = list()
 
+	var/datum/alarm_handler/alarm_manager
+
 /**
  * A list of teleport locations
  *
@@ -143,7 +143,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if (area_flags & UNIQUE_AREA)
 		GLOB.areas_by_type[type] = src
 	power_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
-	alarm_manager = new(src) // just in case
+	alarm_manager = new(src) //Just in case. Apparently.
 	return ..()
 
 /*
@@ -194,6 +194,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /area/LateInitialize()
 	power_change() // all machines set to current power level, also updates icon
 	update_beauty()
+	CalculateAdjacentFireAreas()
 
 /area/proc/RunGeneration()
 	if(map_generator)
@@ -266,38 +267,10 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if (area_flags & NO_ALERTS)
 		return
 	//Trigger alarm effect
-	set_fire_alarm_effect()
+	communicate_fire_alert(FIRE_RAISED_PULL)
 	//Lockdown airlocks
 	for(var/obj/machinery/door/door in src)
 		close_and_lock_door(door)
-
-/**
- * Trigger the fire alarm visual affects in an area
- *
- * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
- */
-/area/proc/set_fire_alarm_effect()
-	if(fire)
-		return
-	fire = TRUE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/obj/machinery/light/L in src)
-		L.update()
-	for(var/obj/machinery/firealarm/firepanel in firealarms)
-		firepanel.set_status()
-
-/**
- * unset the fire alarm visual affects in an area
- *
- * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
- */
-/area/proc/unset_fire_alarm_effects()
-	fire = FALSE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/obj/machinery/light/L in src)
-		L.update()
-	for(var/obj/machinery/firealarm/firepanel in firealarms)
-		firepanel.set_status()
 
 /**
  * Update the icon state of the area
@@ -506,3 +479,50 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
 	return
+
+///Called by airalarms and firealarms to communicate the status of the area to relevant machines
+/area/proc/communicate_fire_alert(code, sent_by_neighbor)
+	for(var/obj/machinery/light/L in src)
+		L.update()
+
+	if(sent_by_neighbor) //If a neighboring area is sending an alert, only the firedoors care.
+		if(firedoors)
+			for(var/datum/listener as anything in firedoors)
+				SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code, sent_by_neighbor)
+	else
+		for(var/datum/listener in airalarms + firealarms + firedoors)
+			SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code, sent_by_neighbor)
+
+		for(var/area/neighbor as anything in adjacent_fire_areas)
+			neighbor.communicate_fire_alert(code, TRUE)
+
+/**
+ * Calculates what areas are nearby to recieve alarm.
+ *
+ * This proc builds a list of areas that border other areas using firedoors.
+ * It is fairly expensive so it should be run as little as possible (lateinit + area creation)
+ */
+/proc/CalculateAdjacentFireAreas()
+	for(var/area/area_iter in GLOB.sortedAreas)
+		area_iter.adjacent_fire_areas = list()
+
+	for(var/area/area_iter in GLOB.sortedAreas)
+		//Area has no fire doors? Fuck it. We don't care about it.
+		if(!area_iter.firedoors)
+			continue
+
+		//Loop through all fire doors in the area...
+		for(var/obj/machinery/door/firedoor/FD as anything in area_iter.firedoors)
+			//Grab a list of areas adjacent to the fire doors
+			var/list/areas2add = get_adjacent_areas(FD)
+			//Loop through the areas that the firedoors are touching...
+			for(var/area/adj_area as anything in areas2add)
+				//Ignore their loc area
+				if(adj_area == area_iter)
+					continue
+				//Add them to iter's adjacency
+				area_iter.adjacent_fire_areas |= adj_area
+				//Add iter to their adjacency
+				adj_area.adjacent_fire_areas |= area_iter
+
+

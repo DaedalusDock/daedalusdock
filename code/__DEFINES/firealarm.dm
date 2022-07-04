@@ -11,3 +11,10 @@
 #define FIRELOCK_ALARM_TYPE_COLD "firelock_alarm_type_cold"
 ///Designates a fire lock should be closed due unknown reasons (IE fire alarm was pulled)
 #define FIRELOCK_ALARM_TYPE_GENERIC "firelock_alarm_type_generic"
+
+///Fire alert cleared by any means
+#define FIRE_CLEAR (0<<0)
+///Fire alert raised by pulling the fire alarm
+#define FIRE_RAISED_PULL (1<<0)
+///Fire alert raised by the air alarm
+#define FIRE_RAISED_AIRALARM (1<<1)

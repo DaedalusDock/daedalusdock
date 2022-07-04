@@ -960,7 +960,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 	settings.warning_max = max_1
 	settings.hazard_max = max_2
 
-/obj/machinery/airalarm/proc/handle_alert(datum/source, code, sent_by_neighbor)
+/obj/machinery/airalarm/proc/handle_alert(datum/source, code)
 	SIGNAL_HANDLER
 
 	return

@@ -17,14 +17,12 @@
 
 	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm.
 	var/fire_detect = TRUE
-	///A list of all fire locks in this area. Used by fire alarm panels when resetting fire locks or activating all in an area
+	///A list of all fire locks in this area and on the border of this area.
 	var/list/firedoors
-	///A list of all fire alarms in this area. Used by fire locks and burglar alarms to tell the fire alarm to change its icon.
+	///A list of all fire alarms in this area OR ADJACENT TO IT
 	var/list/firealarms
 	///A list of all air alarms in this area
 	var/list/airalarms
-	///A list of adjacent areas that will close their fire doors when a fire alarm is sent out by us.
-	var/list/adjacent_fire_areas
 	///Alarm type to count of sources. Not usable for ^ because we handle fires differently
 	var/list/active_alarms = list()
 
@@ -194,7 +192,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /area/LateInitialize()
 	power_change() // all machines set to current power level, also updates icon
 	update_beauty()
-	CalculateAdjacentFireAreas()
 
 /area/proc/RunGeneration()
 	if(map_generator)
@@ -481,48 +478,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	return
 
 ///Called by airalarms and firealarms to communicate the status of the area to relevant machines
-/area/proc/communicate_fire_alert(code, sent_by_neighbor)
+/area/proc/communicate_fire_alert(code)
 	for(var/obj/machinery/light/L in src)
 		L.update()
 
-	if(sent_by_neighbor) //If a neighboring area is sending an alert, only the firedoors care.
-		if(firedoors)
-			for(var/datum/listener as anything in firedoors)
-				SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code, sent_by_neighbor)
-	else
-		for(var/datum/listener in airalarms + firealarms + firedoors)
-			SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code, sent_by_neighbor)
-
-		for(var/area/neighbor as anything in adjacent_fire_areas)
-			neighbor.communicate_fire_alert(code, TRUE)
-
-/**
- * Calculates what areas are nearby to recieve alarm.
- *
- * This proc builds a list of areas that border other areas using firedoors.
- * It is fairly expensive so it should be run as little as possible (lateinit + area creation)
- */
-/proc/CalculateAdjacentFireAreas()
-	for(var/area/area_iter in GLOB.sortedAreas)
-		area_iter.adjacent_fire_areas = list()
-
-	for(var/area/area_iter in GLOB.sortedAreas)
-		//Area has no fire doors? Fuck it. We don't care about it.
-		if(!area_iter.firedoors)
-			continue
-
-		//Loop through all fire doors in the area...
-		for(var/obj/machinery/door/firedoor/FD as anything in area_iter.firedoors)
-			//Grab a list of areas adjacent to the fire doors
-			var/list/areas2add = get_adjacent_areas(FD)
-			//Loop through the areas that the firedoors are touching...
-			for(var/area/adj_area as anything in areas2add)
-				//Ignore their loc area
-				if(adj_area == area_iter)
-					continue
-				//Add them to iter's adjacency
-				area_iter.adjacent_fire_areas |= adj_area
-				//Add iter to their adjacency
-				adj_area.adjacent_fire_areas |= area_iter
-
-
+	for(var/datum/listener in airalarms + firealarms + firedoors)
+		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code,)

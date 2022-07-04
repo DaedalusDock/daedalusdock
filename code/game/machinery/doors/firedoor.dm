@@ -31,8 +31,10 @@
 	var/light_yoffset = 0
 
 	var/boltslocked = TRUE
-	///For the few times we affect only the area we're actually in. Set during Init. If we get moved, we don't update, but this is consistant with fire alarms and also kinda funny so call it intentional.
+	///The firedoor's area loc
 	var/area/my_area
+	///Every area a firedoor is listening to.
+	var/list/joined_areas = list()
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
 	var/alarm_type = FIRE_CLEAR
 
@@ -145,23 +147,23 @@
 /obj/machinery/door/firedoor/proc/set_area(new_area)
 	if(my_area)
 		LAZYREMOVE(my_area.firedoors, src)
+	for(var/area/A in joined_areas)
+		LAZYREMOVE(A.firedoors, src)
+	joined_areas.Cut()
+
 	if(!new_area)
 		return
 	my_area = new_area
-	if(my_area)
-		LAZYADD(my_area.firedoors, src)
-
-
-/obj/machinery/door/firedoor/proc/handle_alert(datum/source, code, sent_by_neighbor)
-	SIGNAL_HANDLER
-
-	if(sent_by_neighbor && !alarm_type) //We dont care about neighbors if we have our own problems
-		if(code == FIRE_CLEAR) //bitflag & 0 returns false, dumbass.
-			INVOKE_ASYNC(src, .proc/open)
-		else
-			INVOKE_ASYNC(src, .proc/close)
+	if(!my_area)
 		return
 
+	for(var/area/area2join in get_adjacent_open_areas(src) | my_area)
+		LAZYDISTINCTADD(area2join.firedoors, src)
+		joined_areas |= area2join
+
+
+/obj/machinery/door/firedoor/proc/handle_alert(datum/source, code)
+	SIGNAL_HANDLER
 	if(code == alarm_type) //We're already on this alert level.
 		return
 

@@ -474,7 +474,6 @@
 	var/N2_moles = breath_gases[GAS_NITROGEN]
 	var/plasma_moles = breath_gases[GAS_PLASMA]
 	var/CO2_moles = breath_gases[GAS_CO2]
-	var/SA_moles = breath_gases[GAS_N2O]
 
 	//Partial pressures in our breath
 	var/O2_pp = breath.getBreathPartialPressure(O2_moles)

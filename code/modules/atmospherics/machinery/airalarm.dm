@@ -63,6 +63,9 @@
 
 #define AALARM_REPORT_TIMEOUT 100
 
+#define AALARM_THERMOSTAT_HEATING_POWER 40000 //T2 space heater
+#define AALARM_THERMOSTAT_HEATING_EFFICIENCY 30000 //T2 space heater
+
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
@@ -79,15 +82,26 @@
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
+
+	//Fire alarm related vars//
+
 	///The fire alert type currently active
 	var/alert_type = FIRE_CLEAR
 	///A reference to the area we are in
 	var/area/my_area
+	///The loopingsound for when there's shit fucky
+	var/datum/looping_sound/firealarm/soundloop
+	var/datum/looping_sound/atmosalarm/atmosloop
 
 	var/locked = TRUE
 	var/aidisabled = 0
 	var/shorted = 0
 	var/buildstage = AIRALARM_BUILD_COMPLETE // 2 = complete, 1 = no wires,  0 = circuit gone
+
+	///How far the thermostat may deviate from T2OC
+	var/thermostat_deviation_max = 20
+	///The current thermostat target temp
+	var/thermostat_target = T20C
 
 	var/frequency = FREQ_ATMOS_CONTROL
 	var/alarm_frequency = FREQ_ATMOS_ALARMS
@@ -95,9 +109,7 @@
 	///Represents a signel source of atmos alarms, complains to all the listeners if one of our thresholds is violated
 	var/datum/alarm_handler/alarm_manager
 
-	var/static/list/atmos_connections = list(COMSIG_TURF_EXPOSE = .proc/check_air_dangerlevel)
-
-	var/list/TLV = list(
+	var/list/datum/tlv/TLV = list(
 		"pressure" = new/datum/tlv(HAZARD_LOW_PRESSURE, WARNING_LOW_PRESSURE, WARNING_HIGH_PRESSURE, HAZARD_HIGH_PRESSURE),
 		"temperature" = new/datum/tlv(BODYTEMP_COLD_WARNING_1, BODYTEMP_COLD_WARNING_1+10, BODYTEMP_HEAT_WARNING_1-27, BODYTEMP_HEAT_WARNING_1),
 		GAS_OXYGEN = new/datum/tlv(16, 19, 135, 140), // Partial pressure, kpa
@@ -138,14 +150,27 @@
 		name = "[get_area_name(src)] Air Alarm"
 
 	alarm_manager = new(src)
+	soundloop = new(src, FALSE)
+	atmosloop = new(src, FALSE)
 	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
 	update_appearance()
 
 	set_frequency(frequency)
-	AddElement(/datum/element/connect_loc, atmos_connections)
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/air_alarm,
 	))
+	SSairmachines.start_processing_machine(src)
+
+	/*
+	if(mapload)
+		var/turf/my_turf = get_turf(src)
+		if(my_turf && (initial(my_turf.temperature) != T20C))
+			var/difftemp = T20C - initial(my_turf.temperature)
+			TLV["temperature"].warning_min -= difftemp
+			TLV["temperature"].hazard_min -= difftemp
+			TLV["temperature"].warning_max -= difftemp
+			TLV["temperature"].hazard_max -= difftemp
+	*/
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -156,8 +181,11 @@
 /obj/machinery/airalarm/Destroy()
 	set_area(null)
 	SSradio.remove_object(src, frequency)
+	SSairmachines.stop_processing_machine(src)
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
+	QDEL_NULL(soundloop)
+	QDEL_NULL(atmosloop)
 	return ..()
 
 /obj/machinery/airalarm/Moved(atom/OldLoc, Dir)
@@ -246,6 +274,11 @@
 								"danger_level" = cur_tlv.get_danger_level(environment.gas[gas_id]* partial_pressure)
 		))
 
+	data["thermostat"] = list(
+		"deviation" = thermostat_deviation_max,
+		"target" = thermostat_target - T0C //Convert kelvin to Celsius for the UI
+	)
+
 	if(!locked || user.has_unlimited_silicon_privilege)
 		data["vents"] = list()
 		for(var/id_tag in my_area.air_vent_info)
@@ -328,6 +361,15 @@
 
 	if(. || buildstage != AIRALARM_BUILD_COMPLETE)
 		return
+
+	if(action == "target") //Setting the thermostat doesn't require any access
+		var/target = text2num(params["target"])
+		if(target != null)
+			thermostat_target = target
+			. = TRUE
+			thermostat_target = clamp(target, 20 - thermostat_deviation_max, 20 + thermostat_deviation_max)
+			thermostat_target += T0C //Convert back to Kelvin //-270.45 is TCMB
+
 	if((locked && !usr.has_unlimited_silicon_privilege) || (usr.has_unlimited_silicon_privilege && aidisabled))
 		return
 	var/device_id = params["id_tag"]
@@ -374,7 +416,7 @@
 				investigate_log(" treshold value for [env]:[name] was set to [value] by [key_name(usr)]",INVESTIGATE_ATMOS)
 				var/turf/our_turf = get_turf(src)
 				var/datum/gas_mixture/environment = our_turf.return_air()
-				check_air_dangerlevel(our_turf, environment, environment.temperature)
+				check_air_dangerlevel(environment)
 				. = TRUE
 		if("mode")
 			mode = text2num(params["mode"])
@@ -389,6 +431,10 @@
 			if(alarm_manager.clear_alarm(ALARM_ATMOS))
 				post_alert(0)
 			. = TRUE
+		if("fire_alarm")
+			my_area.communicate_fire_alert(alert_type ? FIRE_CLEAR : FIRE_RAISED_AIRALARM)
+			. = TRUE
+
 	update_appearance()
 
 
@@ -565,7 +611,9 @@
 
 	var/area/our_area = get_area(src)
 	var/color
-	switch(max(danger_level, !!our_area.active_alarms[ALARM_ATMOS]))
+	var/alert = max(danger_level, !!our_area.active_alarms[ALARM_ATMOS])
+	alert ||= !!alert_type //Fires should only display yellow alerts
+	switch(alert)
 		if(0)
 			color = "#03A728" // green
 		if(1)
@@ -597,7 +645,10 @@
 
 	var/area/our_area = get_area(src)
 	var/state
-	switch(max(danger_level, !!our_area.active_alarms[ALARM_ATMOS]))
+
+	var/alert = max(danger_level, !!our_area.active_alarms[ALARM_ATMOS])
+	alert ||= !!alert_type //Fires should only display yellow alerts
+	switch(alert)
 		if(0)
 			state = "alarm0"
 		if(1)
@@ -608,16 +659,53 @@
 	. += mutable_appearance(icon, state)
 	. += emissive_appearance(icon, state, alpha = src.alpha)
 
+/obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume)
+	. = ..()
+	if(!danger_level)
+		check_air_dangerlevel(loc.return_air())
+
+/obj/machinery/airalarm/process_atmos()
+	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
+		return
+
+	var/datum/gas_mixture/environment = loc.return_air()
+
+	check_air_dangerlevel(loc.return_air())
+
+	if(!my_area.apc?.terminal)
+		COOLDOWN_START(src, hibernating, 5 SECONDS)
+		return
+
+	var/obj/machinery/power/terminal/local_term = my_area.apc.terminal
+
+	var/heat_capacity = environment.getHeatCapacity()
+	var/required_energy = abs(environment.temperature - thermostat_target) * heat_capacity
+	required_energy = min(required_energy, AALARM_THERMOSTAT_HEATING_POWER)
+
+	if(required_energy < 1 && !danger_level)
+		COOLDOWN_START(src, hibernating, 5 SECONDS)
+		return
+
+	var/delta_temperature = required_energy / heat_capacity
+	if(!delta_temperature)
+		return
+
+	if(environment.temperature > thermostat_target)
+		delta_temperature *= -1
+
+	var/energy2use = required_energy / AALARM_THERMOSTAT_HEATING_EFFICIENCY
+	if(!local_term.avail(energy2use))
+		return
+
+	local_term.use_power(energy2use)
+	environment.temperature += delta_temperature
+
 /**
  * main proc for throwing a shitfit if the air isnt right.
  * goes into warning mode if gas parameters are beyond the tlv warning bounds, goes into hazard mode if gas parameters are beyond tlv hazard bounds
  *
  */
-/obj/machinery/airalarm/proc/check_air_dangerlevel(turf/location, datum/gas_mixture/environment, exposed_temperature)
-	SIGNAL_HANDLER
-	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
-		return
-
+/obj/machinery/airalarm/proc/check_air_dangerlevel(datum/gas_mixture/environment)
 	var/datum/tlv/current_tlv
 	//cache for sanic speed (lists are references anyways)
 	var/list/cached_tlv = TLV
@@ -630,7 +718,7 @@
 	var/pressure_dangerlevel = current_tlv.get_danger_level(environment_pressure)
 
 	current_tlv = cached_tlv["temperature"]
-	var/temperature_dangerlevel = current_tlv.get_danger_level(exposed_temperature)
+	var/temperature_dangerlevel = current_tlv.get_danger_level(environment.temperature)
 
 	var/gas_dangerlevel = 0
 	for(var/gas_id in env_gases)
@@ -651,7 +739,7 @@
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
-
+	my_area.communicate_fire_alert(alert_level ? FIRE_RAISED_AIRALARM : FIRE_CLEAR)
 	if(!frequency)
 		return
 
@@ -678,7 +766,9 @@
 	var/did_anything_happen
 	if(new_area_danger_level)
 		did_anything_happen = alarm_manager.send_alarm(ALARM_ATMOS)
+	else
 		did_anything_happen = alarm_manager.clear_alarm(ALARM_ATMOS)
+
 	if(did_anything_happen) //if something actually changed
 		post_alert(new_area_danger_level)
 
@@ -844,6 +934,8 @@
 		GAS_PLASMA = new/datum/tlv/no_checks,
 		GAS_N2O = new/datum/tlv/no_checks,
 	)
+	thermostat_target = 80
+	thermostat_deviation_max = 250
 
 /obj/machinery/airalarm/kitchen_cold_room // Kitchen cold rooms start off at -14°C or 259.15K.
 	TLV = list(
@@ -854,6 +946,8 @@
 		GAS_CO2 = new/datum/tlv(-1, -1, 5, 10),
 		GAS_PLASMA = new/datum/tlv/dangerous,
 	)
+	thermostat_target = COLD_ROOM_TEMP
+	thermostat_deviation_max = 34
 
 /obj/machinery/airalarm/unlocked
 	locked = FALSE
@@ -963,7 +1057,25 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 /obj/machinery/airalarm/proc/handle_alert(datum/source, code)
 	SIGNAL_HANDLER
 
-	return
+	if(alert_type == code)
+		return
+
+	switch(code)
+		if(FIRE_RAISED_AIRALARM)
+			if(alert_type & FIRE_RAISED_PULL)
+				soundloop.stop()
+			alarm_manager.send_alarm(ALARM_FIRE)
+			atmosloop.start()
+		if(FIRE_RAISED_PULL) //We will never recieve a pulled signal if we aren't currently clear
+			soundloop.start()
+			alarm_manager.send_alarm(ALARM_FIRE)
+		else
+			alarm_manager.clear_alarm(ALARM_FIRE)
+			soundloop.stop()
+			atmosloop.stop()
+
+	alert_type = code
+
 
 
 #undef AALARM_MODE_SCRUBBING

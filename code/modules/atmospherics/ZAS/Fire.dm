@@ -172,7 +172,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		L.FireBurn(firelevel, air_contents.temperature, air_contents.returnPressure())  //Burn the mobs!
 
 	loc.fire_act(air_contents.temperature, air_contents.volume)
-	for(var/atom/A in loc)
+	for(var/atom/A as anything in loc)
 		A.fire_act(air_contents.temperature, air_contents.volume)
 
 	//spread

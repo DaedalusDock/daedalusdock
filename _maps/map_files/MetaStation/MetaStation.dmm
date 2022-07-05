@@ -13320,7 +13320,10 @@
 /obj/item/wrench/medical,
 /obj/effect/turf_decal/siding/white,
 /obj/item/food/popsicle/creamsicle_orange,
-/obj/machinery/airalarm/directional/north,
+/obj/machinery/airalarm/kitchen_cold_room{
+	dir = 1;
+	pixel_y = 24
+	},
 /turf/open/floor/iron/kitchen_coldroom,
 /area/medical/coldroom)
 "dDG" = (

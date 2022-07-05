@@ -297,7 +297,6 @@
 /turf/open/floor/iron/solarpanel/airless
 	initial_gas = AIRLESS_ATMOS
 
-
 /turf/open/floor/iron/freezer
 	icon_state = "freezerfloor"
 	base_icon_state = "freezerfloor"
@@ -308,7 +307,7 @@
 
 /turf/open/floor/iron/kitchen_coldroom
 	name = "cold room floor"
-	temperature = COLD_ROOM_TEMP
+	initial_gas = KITCHEN_COLDROOM_ATMOS
 
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor
 	icon_state = "freezerfloor"

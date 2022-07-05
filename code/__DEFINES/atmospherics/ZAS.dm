@@ -263,7 +263,8 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 /// -93.15°C snow and ice turfs
 //#define FROZEN_ATMOS "o2=22;n2=82;TEMP=180"
 /// -14°C kitchen coldroom, just might loss your tail; higher amount of mol to reach about 101.3 kpA
-//#define KITCHEN_COLDROOM_ATMOS "o2=26;n2=97;TEMP=[COLD_ROOM_TEMP]"
+#define KITCHEN_COLDROOM_ATMOS list(GAS_OXYGEN = 26, GAS_NITROGEN = 97); temperature = COLD_ROOM_TEMP
+
 
 // Defines how much of certain gas do the Atmospherics tanks start with. Values are in kpa per tile (assuming 20C)
 #define ATMOSTANK_NITROGEN      list(GAS_NITROGEN = 90000) // A lot of N2 is needed to produce air mix, that's why we keep 90MPa of it

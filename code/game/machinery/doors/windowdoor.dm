@@ -266,7 +266,7 @@
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/door/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > T0C + (reinf ? 1600 : 800)) ? KEEP_ME_GOING : FALSE
+	return (exposed_temperature > T0C + (reinf ? 1600 : 800)) ? TRUE : FALSE
 
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)

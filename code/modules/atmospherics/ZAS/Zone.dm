@@ -213,8 +213,7 @@ Class Procs:
 		for(var/turf/T in contents)
 			if(!T.simulated)
 				continue
-			for(var/check_atom in T.contents)
-				var/atom/checking = check_atom
+			for(var/atom/movable/checking as anything in T.contents)
 				if(checking.simulated)
 					QUEUE_TEMPERATURE_ATOMS(checking)
 			CHECK_TICK

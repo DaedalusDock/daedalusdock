@@ -1,14 +1,6 @@
 #define ATOM_IS_TEMPERATURE_SENSITIVE(A) (A && !QDELETED(A) && !(A.flags_2 & NO_TEMP_CHANGE_2))
 #define ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD 5
 #define ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT 0.25
-#define KEEP_ME_GOING 1
-
-/*#define ADJUST_ATOM_TEMPERATURE(_atom, _temp) \
-	_atom.temperature = _temp; \
-	if(_atom.reagents) { \
-		START_PROCESSING(SSreagents, _atom.reagents); \
-	} \
-	QUEUE_TEMPERATURE_ATOMS(_atom);*/
 
 #define ADJUST_ATOM_TEMPERATURE(_atom, _temp) \
 	_atom.temperature = _temp; \
@@ -16,8 +8,7 @@
 
 #define QUEUE_TEMPERATURE_ATOMS(_atoms) \
 	if(islist(_atoms)) { \
-		for(var/thing in _atoms) { \
-			var/atom/A = thing; \
+		for(var/atom/A as anything in _atoms) { \
 			if(ATOM_IS_TEMPERATURE_SENSITIVE(A)) { \
 				START_PROCESSING(SSairatoms, A); \
 			} \

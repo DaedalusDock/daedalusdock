@@ -679,6 +679,10 @@
 	var/obj/machinery/power/terminal/local_term = my_area.apc.terminal
 
 	var/heat_capacity = environment.getHeatCapacity()
+
+	if(!heat_capacity) //No air
+		return
+
 	var/required_energy = abs(environment.temperature - thermostat_target) * heat_capacity
 	required_energy = min(required_energy, AALARM_THERMOSTAT_HEATING_POWER)
 

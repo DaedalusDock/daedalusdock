@@ -67,19 +67,23 @@
 /**
  * Checks if `src` can smooth with `target`, based on the [/area/var/area_limited_icon_smoothing] variable of their areas.
  *
- * If neither area has `area_limited_icon_smoothing` set, return `TRUE`.
- * If one area has the other's type set as `area_limited_icon_smoothing`, return `TRUE`.
- * Else, return `FALSE`
+ * * If `target` doesn't have an area (E.g. the edge of the z level), return `FALSE`.
+ * * If one area has `area_limited_icon_smoothing` set, and the other area's type doesn't match it, return `FALSE`.
+ * * Else, return `TRUE`.
  *
  * Arguments:
  * * target - The atom we're trying to smooth with.
  */
-/atom/proc/can_area_smooth(target)
+/atom/proc/can_area_smooth(atom/target)
 	var/area/target_area = get_area(target)
 	var/area/source_area = get_area(src)
-	if((!source_area.area_limited_icon_smoothing || istype(target_area, source_area.area_limited_icon_smoothing)) && (!target_area.area_limited_icon_smoothing || istype(source_area, target_area.area_limited_icon_smoothing)))
-		return TRUE
-	return FALSE
+	if(!target_area)
+		return FALSE
+	if(target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing))
+		return FALSE
+	if(source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing))
+		return FALSE
+	return TRUE
 
 ///Scans all adjacent turfs to find targets to smooth with.
 /atom/proc/calculate_adjacencies()

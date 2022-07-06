@@ -68,6 +68,6 @@
 /atom/proc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	return
 
-///Return KEEP_ME_GOING if the atom should keep processing regardless of normal conditions.
+///Return TRUE if the atom should keep processing regardless of normal conditions.
 /atom/proc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return

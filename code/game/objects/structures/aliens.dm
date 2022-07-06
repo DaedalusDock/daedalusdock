@@ -420,7 +420,7 @@
 						break
 
 /obj/structure/alien/egg/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > 500 ? KEEP_ME_GOING : 0
+	return exposed_temperature > 500 ? TRUE : 0
 
 /obj/structure/alien/egg/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 500)

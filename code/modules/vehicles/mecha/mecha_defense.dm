@@ -193,7 +193,7 @@
 
 /obj/vehicle/sealed/mecha/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > max_temperature)
-		return KEEP_ME_GOING
+		return TRUE
 
 /obj/vehicle/sealed/mecha/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > max_temperature)

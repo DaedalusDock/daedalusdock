@@ -558,7 +558,7 @@
 		breaked_light.break_light_tube()
 		stoplag()
 /obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 2000) ? KEEP_ME_GOING : FALSE
+	return (exposed_temperature > 2000) ? TRUE : FALSE
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

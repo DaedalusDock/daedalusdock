@@ -91,7 +91,6 @@
 	var/area/my_area
 	///The loopingsound for when there's shit fucky
 	var/datum/looping_sound/firealarm/soundloop
-	var/datum/looping_sound/atmosalarm/atmosloop
 
 	var/locked = TRUE
 	var/aidisabled = 0
@@ -151,7 +150,6 @@
 
 	alarm_manager = new(src)
 	soundloop = new(src, FALSE)
-	atmosloop = new(src, FALSE)
 	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
 	update_appearance()
 
@@ -1066,17 +1064,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 
 	switch(code)
 		if(FIRE_RAISED_AIRALARM)
-			if(alert_type & FIRE_RAISED_PULL)
-				soundloop.stop()
 			alarm_manager.send_alarm(ALARM_FIRE)
-			atmosloop.start()
+			soundloop.start()
 		if(FIRE_RAISED_PULL) //We will never recieve a pulled signal if we aren't currently clear
 			soundloop.start()
 			alarm_manager.send_alarm(ALARM_FIRE)
 		else
 			alarm_manager.clear_alarm(ALARM_FIRE)
 			soundloop.stop()
-			atmosloop.stop()
 
 	alert_type = code
 

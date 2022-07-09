@@ -183,7 +183,6 @@
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
 	QDEL_NULL(soundloop)
-	QDEL_NULL(atmosloop)
 	return ..()
 
 /obj/machinery/airalarm/Moved(atom/OldLoc, Dir)

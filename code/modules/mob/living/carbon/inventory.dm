@@ -115,7 +115,7 @@
 			put_in_hands(I)
 			update_held_items()
 		if(ITEM_SLOT_BACKPACK)
-			if(!back || !SEND_SIGNAL(back, COMSIG_TRY_STORAGE_INSERT, I, src, TRUE))
+			if(!back || !back.atom_storage?.attempt_insert(back, I, src, override = TRUE))
 				not_handled = TRUE
 		else
 			not_handled = TRUE

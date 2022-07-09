@@ -322,10 +322,9 @@
 	throw_range = 4
 	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 3)
 
-/obj/item/storage/briefcase/inflatable/ComponentInitialize()
+/obj/item/storage/briefcase/inflatable/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/inflatable))
+	atom_storage.set_holdable(list(/obj/item/inflatable))
 
 /obj/item/storage/briefcase/inflatable/PopulateContents()
 	for(var/path in startswith)

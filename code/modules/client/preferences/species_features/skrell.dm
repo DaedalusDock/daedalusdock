@@ -37,3 +37,8 @@
 
 /datum/preference/choiced/headtails/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["headtails"] = value
+
+/datum/preference/choiced/headtails/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "hair_color"
+	return data

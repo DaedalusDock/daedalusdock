@@ -406,6 +406,13 @@
 /obj/item/stack/license_plates/empty/fifty,
 /turf/open/floor/iron/dark/smooth_half,
 /area/security/prison/work)
+"bi" = (
+/turf/open/misc/dirt/dark{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "bj" = (
 /obj/machinery/camera{
 	c_tag = "Morgue Hallway"
@@ -556,12 +563,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"bE" = (
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "bF" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -897,6 +898,16 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/security/courtroom)
+"cG" = (
+/obj/structure/sign/plaques/kiddie/badger{
+	pixel_y = 32
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "cH" = (
 /obj/structure/disposalpipe/segment{
 	dir = 9
@@ -939,6 +950,16 @@
 "cM" = (
 /turf/closed/wall,
 /area/mine/living_quarters)
+"cN" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "cO" = (
 /obj/structure/railing/corner{
 	dir = 8
@@ -1333,15 +1354,6 @@
 	},
 /turf/open/floor/stone,
 /area/commons/lounge)
-"dO" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 9
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "dP" = (
 /obj/structure/sign/departments/cargo,
 /turf/closed/wall/r_wall,
@@ -2260,13 +2272,6 @@
 	},
 /turf/open/floor/iron/textured,
 /area/security/brig)
-"gv" = (
-/obj/effect/turf_decal/weather/snow/corner,
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "gw" = (
 /obj/effect/turf_decal/trimline/yellow/filled/corner,
 /turf/open/floor/iron/white,
@@ -3829,10 +3834,6 @@
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/carpet,
 /area/security/detectives_office)
-"kp" = (
-/obj/structure/bonfire,
-/turf/open/floor/plating/snowed/smoothed/icemoon,
-/area/icemoon/underground/explored)
 "kq" = (
 /obj/structure/sign/poster/random/directional/west,
 /turf/open/floor/plating{
@@ -4131,6 +4132,16 @@
 /obj/item/clothing/under/rank/civilian/lawyer/black/skirt,
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
+"lj" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 5
+	},
+/turf/open/misc/dirt/dark{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "ll" = (
 /obj/structure/railing{
 	dir = 1
@@ -4935,12 +4946,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"nB" = (
-/turf/open/misc/dirt/dark{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "nC" = (
 /obj/structure/sign/departments/mait,
 /turf/closed/wall,
@@ -5945,15 +5950,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/dark,
 /area/service/chapel/office)
-"qp" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 8
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "qq" = (
 /obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 8
@@ -5998,15 +5994,6 @@
 	dir = 8
 	},
 /area/mine/eva)
-"qx" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 6
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "qy" = (
 /obj/machinery/vending/wardrobe/viro_wardrobe,
 /obj/effect/turf_decal/tile/green/full,
@@ -6707,6 +6694,13 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
+"sn" = (
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "so" = (
 /obj/machinery/atmospherics/pipe/multiz/scrubbers/visible/layer2{
 	color = "#ff0000";
@@ -7099,9 +7093,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/service/bar)
-"tu" = (
-/turf/open/floor/plating,
-/area/security/prison/safe)
 "tv" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -7464,15 +7455,6 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"uw" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 5
-	},
-/turf/open/misc/dirt/dark{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "ux" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment{
@@ -7852,6 +7834,16 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/medical/morgue)
+"vE" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "vF" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 8
@@ -8015,14 +8007,6 @@
 	},
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
-"wg" = (
-/obj/machinery/atmospherics/components/unary/portables_connector/visible,
-/obj/effect/turf_decal/stripes/line{
-	dir = 10
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/science/xenobiology)
 "wh" = (
 /obj/structure/window/reinforced{
 	dir = 1
@@ -8075,15 +8059,6 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
-"wn" = (
-/obj/structure/table/wood,
-/obj/item/paper_bin{
-	pixel_x = -3;
-	pixel_y = 7
-	},
-/obj/item/pen,
-/turf/open/floor/wood,
-/area/service/lawoffice)
 "wo" = (
 /obj/structure/chair/wood{
 	dir = 8
@@ -8344,12 +8319,6 @@
 /obj/effect/turf_decal/tile/neutral/full,
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
-"xb" = (
-/obj/effect/turf_decal/tile/red/half/contrasted{
-	dir = 1
-	},
-/turf/open/floor/iron/dark/textured_edge,
-/area/security/prison)
 "xc" = (
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
@@ -9003,6 +8972,16 @@
 /obj/machinery/duct,
 /turf/open/floor/iron,
 /area/service/theater)
+"zj" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 9
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "zl" = (
 /obj/structure/sink{
 	pixel_y = 20
@@ -9735,15 +9714,6 @@
 "Bt" = (
 /turf/closed/wall,
 /area/service/kitchen)
-"Bu" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 4
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "Bv" = (
 /obj/structure/frame/machine,
 /obj/item/circuitboard/machine/chem_master,
@@ -9776,13 +9746,6 @@
 	dir = 8
 	},
 /area/service/chapel)
-"BA" = (
-/obj/structure/closet/crate/grave,
-/turf/open/misc/dirt/dark{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "BB" = (
 /obj/structure/chair/pew{
 	dir = 1
@@ -10346,6 +10309,14 @@
 	},
 /turf/open/floor/plating,
 /area/hallway/secondary/service)
+"De" = (
+/obj/structure/closet/crate/grave,
+/turf/open/misc/dirt/dark{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "Df" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -11751,6 +11722,11 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on,
 /turf/open/floor/iron/dark,
 /area/medical/virology)
+"He" = (
+/obj/structure/table/wood,
+/obj/machinery/fax_machine,
+/turf/open/floor/wood,
+/area/service/lawoffice)
 "Hg" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -11879,6 +11855,16 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms/laundry)
+"Hu" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "Hv" = (
 /turf/closed/wall/r_wall,
 /area/mine/storage)
@@ -13524,15 +13510,6 @@
 /obj/structure/sign/warning/electricshock,
 /turf/closed/wall/r_wall,
 /area/science/xenobiology)
-"LN" = (
-/obj/effect/turf_decal/weather/snow/corner{
-	dir = 10
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "LO" = (
 /obj/machinery/deepfryer,
 /obj/item/radio/intercom/directional/south,
@@ -14593,13 +14570,6 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
-"ON" = (
-/obj/structure/closet/crate/grave,
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "OO" = (
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
@@ -14733,6 +14703,23 @@
 /obj/effect/turf_decal/tile/red/half,
 /turf/open/floor/iron/dark/textured,
 /area/ai_monitored/security/armory)
+"Pe" = (
+/obj/structure/rack,
+/obj/item/clothing/glasses/sunglasses/big{
+	pixel_x = 4;
+	pixel_y = 8
+	},
+/obj/item/clothing/glasses/sunglasses/big{
+	pixel_x = 4;
+	pixel_y = 2
+	},
+/obj/item/paper_bin{
+	pixel_x = -3;
+	pixel_y = 7
+	},
+/obj/item/pen,
+/turf/open/floor/wood,
+/area/service/lawoffice)
 "Pf" = (
 /obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk{
@@ -14791,6 +14778,10 @@
 /obj/machinery/oven,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
+"Pp" = (
+/obj/structure/bonfire,
+/turf/open/floor/plating/snowed/smoothed/icemoon,
+/area/icemoon/underground/explored)
 "Pr" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/middle{
 	dir = 4
@@ -14901,6 +14892,14 @@
 /area/service/bar)
 "PG" = (
 /turf/open/floor/plating/snowed/smoothed/icemoon,
+/area/icemoon/underground/explored)
+"PI" = (
+/obj/structure/closet/crate/grave,
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
 /area/icemoon/underground/explored)
 "PJ" = (
 /obj/structure/disposalpipe/segment{
@@ -15828,6 +15827,14 @@
 "Sc" = (
 /turf/closed/wall/r_wall,
 /area/medical/morgue)
+"Sd" = (
+/obj/machinery/atmospherics/components/unary/portables_connector/visible,
+/obj/effect/turf_decal/stripes/line{
+	dir = 10
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/science/xenobiology)
 "Sf" = (
 /obj/effect/turf_decal/caution/stand_clear,
 /obj/effect/turf_decal/stripes/line,
@@ -16698,18 +16705,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/smooth_large,
 /area/cargo/warehouse)
-"Uu" = (
-/obj/structure/rack,
-/obj/item/clothing/glasses/sunglasses/big{
-	pixel_x = 4;
-	pixel_y = 8
-	},
-/obj/item/clothing/glasses/sunglasses/big{
-	pixel_x = 4;
-	pixel_y = 2
-	},
-/turf/open/floor/wood,
-/area/service/lawoffice)
 "Uv" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Evidence Storage";
@@ -17427,15 +17422,6 @@
 /obj/item/queen_bee/bought,
 /turf/open/floor/grass,
 /area/service/hydroponics)
-"Ws" = (
-/obj/structure/sign/plaques/kiddie/badger{
-	pixel_y = 32
-	},
-/turf/open/misc/dirt{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	},
-/area/icemoon/underground/explored)
 "Wt" = (
 /obj/structure/window/reinforced,
 /turf/open/floor/engine,
@@ -17772,6 +17758,14 @@
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
+"Xu" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "Xv" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/effect/turf_decal/stripes/line{
@@ -18319,6 +18313,16 @@
 	},
 /turf/open/floor/plating,
 /area/security/courtroom)
+"YV" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/open/misc/dirt{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180;
+	
+	},
+/area/icemoon/underground/explored)
 "YW" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood,
@@ -41177,7 +41181,7 @@ mO
 Wi
 Wi
 aP
-wn
+He
 Dw
 Wi
 mO
@@ -41946,7 +41950,7 @@ kK
 kK
 kK
 Wi
-Uu
+Pe
 ks
 YN
 eL
@@ -42447,7 +42451,7 @@ gt
 gt
 gt
 vV
-xb
+mL
 Np
 mZ
 sD
@@ -46042,7 +46046,7 @@ mO
 Jf
 kK
 CD
-tu
+rJ
 oj
 Py
 mL
@@ -52534,7 +52538,7 @@ GL
 Vl
 kK
 Az
-kp
+Pp
 kK
 kK
 PG
@@ -62539,11 +62543,11 @@ UK
 UK
 UK
 kK
-dO
-qp
-qp
-qp
-LN
+zj
+vE
+vE
+vE
+YV
 kK
 Yu
 kK
@@ -62795,13 +62799,13 @@ lI
 LQ
 Lp
 UK
-dO
-ON
-bE
-BA
-bE
-ON
-LN
+zj
+PI
+sn
+De
+sn
+PI
+YV
 AA
 kK
 PG
@@ -62830,7 +62834,7 @@ kK
 hM
 Fa
 CR
-wg
+Sd
 Cl
 Cc
 kX
@@ -63052,13 +63056,13 @@ Mp
 Bq
 Nc
 UK
-Ws
-bE
-bE
-nB
-nB
-bE
-gv
+cG
+sn
+sn
+bi
+bi
+sn
+Xu
 YB
 PG
 kK
@@ -63309,13 +63313,13 @@ cv
 UK
 UK
 UK
-bE
-ON
-bE
-ON
-nB
-ON
-qx
+sn
+PI
+sn
+PI
+bi
+PI
+cN
 AA
 kK
 kK
@@ -63566,12 +63570,12 @@ gl
 wK
 wv
 Hx
-uw
-Bu
-bE
-Bu
-bE
-qx
+lj
+Hu
+sn
+Hu
+sn
+cN
 kK
 RT
 kK

@@ -53,3 +53,8 @@
 #define WIRE_AGELIMIT "Age Limit"
 #define WIRE_ACCEPT "Scan Success"
 #define WIRE_DENY "Scan Fail"
+
+// Wire IDs for the fax machine
+#define WIRE_SEND_FAXES "Send wire"
+#define WIRE_RECEIVE_FAXES "Receive wire"
+#define WIRE_PAPERWORK "Paperwork wire"

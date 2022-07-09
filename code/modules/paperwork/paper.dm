@@ -61,6 +61,10 @@
 	var/list/form_fields = list()
 	var/field_counter = 1
 
+	/// If this paper was sent via fax, where it came from.
+	var/was_faxed_from
+
+
 /obj/item/paper/Destroy()
 	stamps = null
 	stamped = null

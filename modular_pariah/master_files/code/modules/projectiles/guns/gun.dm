@@ -82,10 +82,6 @@
 	var/datum/action/toggle_scope_zoom/azoom
 	var/pb_knockback = 0
 
-	var/safety = FALSE ///Internal variable for keeping track whether the safety is on or off
-	var/has_gun_safety = FALSE ///Whether the gun actually has a gun safety
-	var/datum/action/item_action/toggle_safety/tsafety
-
 	var/datum/action/item_action/toggle_firemode/firemode_action
 	///Current fire selection, can choose between burst, single, and full auto.
 	var/fire_select = SELECT_SEMI_AUTOMATIC
@@ -95,16 +91,9 @@
 	///if i`1t has an icon for a selector switch indicating current firemode.
 	var/selector_switch_icon = FALSE
 
-/datum/action/item_action/toggle_safety
-	name = "Toggle Safety"
-	icon_icon = 'modular_pariah/modules/gunsafety/icons/actions.dmi'
-	button_icon_state = "safety_on"
-
 /obj/item/gun/ui_action_click(mob/user, actiontype)
 	if(istype(actiontype, /datum/action/item_action/toggle_firemode))
 		fire_select()
-	else if(istype(actiontype, tsafety))
-		toggle_safety(user)
 	else
 		..()
 
@@ -117,10 +106,6 @@
 		alight = new(src)
 
 	build_zooming()
-
-	if(has_gun_safety)
-		safety = TRUE
-		tsafety = new(src)
 
 	if(burst_size > 1 && !(SELECT_BURST_SHOT in fire_select_modes))
 		fire_select_modes.Add(SELECT_BURST_SHOT)
@@ -154,8 +139,6 @@
 		QDEL_NULL(azoom)
 	if(isatom(suppressed))
 		QDEL_NULL(suppressed)
-	if(tsafety)
-		QDEL_NULL(tsafety)
 	if(firemode_action)
 		QDEL_NULL(firemode_action)
 	. = ..()
@@ -203,8 +186,6 @@
 			. += span_info("[bayonet] looks like it can be <b>unscrewed</b> from [src].")
 	if(can_bayonet)
 		. += "It has a <b>bayonet</b> lug on it."
-	if(has_gun_safety)
-		. += "<span>The safety is [safety ? "<font color='#00ff15'>ON</font>" : "<font color='#ff0000'>OFF</font>"].</span>"
 
 /obj/item/gun/equipped(mob/living/user, slot)
 	. = ..()
@@ -381,26 +362,6 @@
 	. = ..()
 	if(!handle_pins(user))
 		return FALSE
-	if(has_gun_safety && safety)
-		to_chat(user, span_warning("The safety is on!"))
-		return FALSE
-
-/obj/item/gun/proc/toggle_safety(mob/user, override)
-	if(!has_gun_safety)
-		return
-	if(override)
-		if(override == "off")
-			safety = FALSE
-		else
-			safety = TRUE
-	else
-		safety = !safety
-	tsafety.button_icon_state = "safety_[safety ? "on" : "off"]"
-	tsafety.UpdateButtons()
-	playsound(src, 'sound/weapons/empty.ogg', 100, TRUE)
-	user.visible_message(span_notice("[user] toggles [src]'s safety [safety ? "<font color='#00ff15'>ON</font>" : "<font color='#ff0000'>OFF</font>"]."),
-	span_notice("You toggle [src]'s safety [safety ? "<font color='#00ff15'>ON</font>" : "<font color='#ff0000'>OFF</font>"]."))
-	// SEND_SIGNAL(src, COMSIG_UPDATE_AMMO_HUD)
 
 /obj/item/gun/proc/handle_pins(mob/living/user)
 	if(pinless)

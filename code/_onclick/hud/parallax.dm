@@ -10,6 +10,7 @@
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_1(null, screenmob)
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_2(null, screenmob)
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/planet(null, screenmob)
+		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/nebula(null, screenmob)
 		if(SSparallax.random_layer)
 			C.parallax_layers_cached += new SSparallax.random_layer(null, screenmob)
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_3(null, screenmob)
@@ -322,6 +323,11 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 
 /atom/movable/screen/parallax_layer/random/asteroids
 	icon_state = "asteroids"
+
+/atom/movable/screen/parallax_layer/nebula
+	icon_state = "nebula1"
+	speed = 1
+	layer = 3
 
 /atom/movable/screen/parallax_layer/planet
 	icon_state = "planet"

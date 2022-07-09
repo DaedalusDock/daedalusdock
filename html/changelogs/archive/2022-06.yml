@@ -162,3 +162,12 @@
   - spellcheck: Changed 'Voxes' to 'Vox' (plural) in the Vox species perk descriptions.
   SabreML, Mothblocks:
   - bugfix: Fixed the antagonist preference icons for Blood Brothers, Thief, and Opportunist.
+2022-06-26:
+  SabreML:
+  - admin: Added a 'Set all lights' button to the secrets panel.
+  - rscadd: Prevented shuttles tiles from smoothing with station tiles.
+2022-06-27:
+  ElorgRHG:
+  - rscadd: The scream emote is now audible.
+  - rscadd: Species specific scream messages, so something like "Vox shrieks!", "Monkey
+      screeches!" and "Moth buzzes!".

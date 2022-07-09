@@ -67,6 +67,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/nojumpsuit = FALSE
 	///Affects the speech message, for example: Motharula flutters, "My speech message is flutters!"
 	var/say_mod = "says"
+	///Affects the species' screams, for example: "Motharula buzzes!"
+	var/scream_verb = "screams"
 	///What languages this species can understand and say. Use a [language holder datum][/datum/language_holder] in this var.
 	var/species_language_holder = /datum/language_holder
 	/**

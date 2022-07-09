@@ -3,6 +3,7 @@
 	name = "Vox"
 	id = SPECIES_VOX
 	say_mod = "skrees"
+	scream_verb = "shrieks"
 	default_color = "#1e5404"
 	species_eye_path = 'icons/mob/species/vox/eyes.dmi'
 	species_traits = list(

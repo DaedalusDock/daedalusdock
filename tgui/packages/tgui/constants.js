@@ -262,7 +262,7 @@ const GASES = [
   {
     'id': 'methyl_bromide',
     'name': 'Methyl Bromide',
-    'label': 'NO₂',
+    'label': 'CH₃Br',
     'color': 'maroon',
   },
   {

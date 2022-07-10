@@ -184,7 +184,7 @@ const GASES = [
   {
     'id': 'nitrodioxide',
     'name': 'Nitrogen Dioxide',
-    'label': 'Nitrodioxide',
+    'label': 'NO₂',
     'color': 'brown',
   },
   {

@@ -151,7 +151,7 @@ Class Procs:
 		return //Short circuit for explosions where rebuild is called many times over.
 	invalidate()
 
-	for(var/turf/T in contents)
+	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			continue
 		T.update_graphic(graphic_remove = air.graphic) //we need to remove the overlays so they're not doubled when the zone is rebuilt
@@ -173,7 +173,7 @@ Class Procs:
 /zone/proc/tick()
 
 	// Update fires.
-	if(air.temperature >= PHORON_FLASHPOINT && !(src in SSzas.active_fire_zones) && air.check_combustability() && contents.len)
+	if(!(src in SSzas.active_fire_zones) && length(contents) && air.temperature >= PHORON_FLASHPOINT && air.check_combustability())
 		var/turf/T = pick(contents)
 		if(istype(T))
 			T.create_fire(zas_settings.fire_firelevel_multiplier)
@@ -187,7 +187,7 @@ Class Procs:
 		graphic_remove.len = 0
 
 	// Update connected edges.
-	for(var/connection_edge/E in edges)
+	for(var/connection_edge/E as anything in edges)
 		if(E.sleeping)
 			E.recheck()
 
@@ -210,7 +210,7 @@ Class Procs:
 	// Update atom temperature.
 	if(abs(air.temperature - last_air_temperature) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
 		last_air_temperature = air.temperature
-		for(var/turf/T in contents)
+		for(var/turf/T as anything in contents)
 			if(!T.simulated)
 				continue
 			for(var/atom/movable/checking as anything in T.contents)

@@ -39,6 +39,7 @@
 
 /datum/species/skrell/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = COLOR_BLUE_GRAY
+	human.hair_color = COLOR_BLUE_GRAY
 	human.update_body(TRUE)
 
 // Copper restores blood for Skrell instead of iron.

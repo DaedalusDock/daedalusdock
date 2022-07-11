@@ -104,6 +104,7 @@
 /area/ruin/unpowered/ash_walkers
 	icon_state = "red"
 	ambient_buzz = 'sound/ambience/magma.ogg'
+
 /area/ruin/unpowered/ratvar
 	icon_state = "dk_yellow"
 	outdoors = TRUE

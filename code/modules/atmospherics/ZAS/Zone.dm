@@ -161,6 +161,8 @@ Class Procs:
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSzas.mark_for_update(T)
 
+		CHECK_TICK
+
 ///Assumes a given gas mixture, dividing it amongst the zone.
 /zone/proc/add_tile_air(datum/gas_mixture/tile_air)
 	air.group_multiplier = 1

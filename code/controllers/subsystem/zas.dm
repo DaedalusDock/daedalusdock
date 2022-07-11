@@ -405,7 +405,7 @@ SUBSYSTEM_DEF(zas)
 	var/space = !B.simulated
 
 	if(!space)
-		if(min(A.zone.contents.len, B.zone.contents.len) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
+		if((direct && (times_fired == 0 || equivalent_pressure(A.zone,B.zone))))
 			merge(A.zone,B.zone)
 			return TRUE
 

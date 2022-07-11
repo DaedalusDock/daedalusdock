@@ -12,11 +12,8 @@
 #define AIR_ALLOWED (0<<0)
 ///Neither air nor zones can interact with this turf under the given conditions
 #define AIR_BLOCKED (1<<0)
-///Air can pass through or into this turf, but zones may not merge with it. Will not block zone merges, if either zone is below ZONE_MIN_SIZE
+///Air can pass through or into this turf, but zones may not merge with it. Will not block zone merges
 #define ZONE_BLOCKED (1<<1)
-
-///Zones with less than this many turfs will always merge, even if the connection is not direct, tons of micro zones are expensive!
-#define ZONE_MIN_SIZE 14
 
 ///Air can always pass
 #define CANPASS_ALWAYS 1

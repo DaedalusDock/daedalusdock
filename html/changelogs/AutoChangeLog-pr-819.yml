@@ -1,0 +1,4 @@
+author: ElorgRHG
+delete-after: true
+changes:
+  - bugfix: Teshari no longer have a single chest sprite pixel protruding from clothing.

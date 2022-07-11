@@ -199,7 +199,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			zone.remove_turf(src)
 
 		else //Just rebuild the fucker
-			INVOKE_ASYNC(zone.rebuild()) //rebuild() contains CHECK_TICK
+			INVOKE_ASYNC(zone, .proc/rebuild) //rebuild() contains CHECK_TICK
 	///NO MORE ZAS THINGS
 
 	..()

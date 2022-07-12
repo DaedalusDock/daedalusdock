@@ -1,4 +1,6 @@
 2022-07-01:
+  ArchieBeepBoop, Starless-Horizon:
+  - rscadd: New Parallax
   Ebb-Real, ElorgRHG:
   - rscadd: Adds the Engineering, medical and cargo bandana to departmental clothing
       vendors.
@@ -20,8 +22,6 @@
   Vox sprite from Oracle, Skrell sprite from Skyrat Spc-Dragonfruits:
   - rscadd: Added new Vox language icon
   - rscadd: Added new Skrell language icon
-  ArchieBeepBoop, Starless-Horizon:
-  - rscadd: New Parallax
 2022-07-02:
   francinum:
   - bugfix: OOC in lightmode has been reverted back to it's original color.
@@ -35,3 +35,7 @@
   fighterslam, MrMelbert, Sprites by Imaginos16:
   - rscadd: Adds Fax Machines from Jollystation. Comes with auto-generated faxes you
       can sort through for credits.
+2022-07-12:
+  ElorgRHG:
+  - bugfix: Fixed black skrell headtails in their species preview.
+  - bugfix: Teshari no longer have a single chest sprite pixel protruding from clothing.

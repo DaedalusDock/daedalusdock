@@ -175,14 +175,14 @@ Class Procs:
 /zone/proc/tick()
 
 	// Update fires.
-	if(!(src in SSzas.active_fire_zones) && length(contents) && air.temperature >= PHORON_FLASHPOINT && air.check_combustability())
+	if(air.temperature >= PHORON_FLASHPOINT && !length(fire_tiles) && length(contents) && !(src in SSzas.active_fire_zones) && air.check_combustability())
 		var/turf/T = pick(contents)
-		if(istype(T))
+		if(T.simulated)
 			T.create_fire(zas_settings.fire_firelevel_multiplier)
 
 	// Update gas overlays.
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
-		for(var/turf/T in contents)
+		for(var/turf/T as anything in contents)
 			if(T.simulated)
 				T.update_graphic(graphic_add, graphic_remove)
 		graphic_add.len = 0

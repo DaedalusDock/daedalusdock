@@ -199,6 +199,7 @@
 #include "code\__DEFINES\atmospherics\atmos_mapping_helpers.dm"
 #include "code\__DEFINES\atmospherics\atmos_mob_interaction.dm"
 #include "code\__DEFINES\atmospherics\atmos_piping.dm"
+#include "code\__DEFINES\atmospherics\Connections.dm"
 #include "code\__DEFINES\atmospherics\reactor.dm"
 #include "code\__DEFINES\atmospherics\temperature.dm"
 #include "code\__DEFINES\atmospherics\XGM.dm"

@@ -15,6 +15,9 @@
 ///Air can pass through or into this turf, but zones may not merge with it. Will not block zone merges
 #define ZONE_BLOCKED (1<<1)
 
+///Zones with less than this many turfs will always merge, even if the connection is not direct. This MUST be ATLEAST 2, or doorways will BREAK.
+#define ZONE_MIN_SIZE 5
+
 ///Air can always pass
 #define CANPASS_ALWAYS 1
 ///Air can only pass if density is FALSE

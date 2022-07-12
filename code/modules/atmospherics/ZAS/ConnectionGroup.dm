@@ -66,6 +66,9 @@ Class Procs:
 	var/sleeping = 1
 	var/coefficient = 0
 
+	///The last time the "woosh" airflow sound played, world.time
+	var/last_woosh
+
 	#ifdef ZASDBG
 	///Set this to TRUE during testing to get verbose debug information.
 	var/tmp/verbose = FALSE
@@ -153,8 +156,6 @@ Class Procs:
 
 /connection_edge/zone
 	var/zone/B
-	///The last time the "woosh" airflow sound played, world.time
-	var/last_woosh
 
 /connection_edge/zone/New(zone/A, zone/B)
 
@@ -191,30 +192,7 @@ Class Procs:
 
 	var/equiv = A.air.shareRatio(B.air, coefficient)
 
-	var/differential = A.air.returnPressure() - B.air.returnPressure()
-	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
-		var/list/attracted
-		var/list/repelled
-		if(differential > 0)
-			attracted = A.movables()
-			repelled = B.movables()
-		else
-			attracted = B.movables()
-			repelled = A.movables()
-
-		if(REALTIMEOFDAY > last_woosh + 2 SECONDS)
-			playsound(
-				pick(connecting_turfs),
-				abs(differential) > zas_settings.airflow_heavy_pressure ? 'modular_pariah/master_files/sound/effects/space_wind_big.ogg' : 'modular_pariah/master_files/sound/effects/space_wind.ogg',
-				100,
-				TRUE,
-				null,
-				pressure_affected = FALSE
-			)
-			last_woosh = REALTIMEOFDAY
-
-		flow(attracted, abs(differential), 0)
-		flow(repelled, abs(differential), 1)
+	queue_spacewind()
 
 	if(equiv)
 		if(direct)
@@ -232,6 +210,23 @@ Class Procs:
 	if(!A.air.compare(B.air, vacuum_exception = 1))
 	// Edges with only one side being vacuum need processing no matter how close.
 		SSzas.mark_edge_active(src)
+
+/connection_edge/zone/queue_spacewind()
+	var/differential = A.air.returnPressure() - B.air.returnPressure()
+	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
+		var/list/attracted
+		var/list/repelled
+		if(differential > 0)
+			attracted = A.movables()
+			repelled = B.movables()
+		else
+			attracted = B.movables()
+			repelled = A.movables()
+
+		WOOSH
+
+		flow(attracted, abs(differential), 0)
+		flow(repelled, abs(differential), 1)
 
 ///Helper proc to get connections for a zone.
 /connection_edge/zone/proc/get_connected_zone(zone/from)
@@ -279,10 +274,7 @@ Class Procs:
 
 	var/equiv = A.air.shareSpace(air)
 
-	var/differential = A.air.returnPressure() - air.returnPressure()
-	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
-		var/list/attracted = A.movables()
-		flow(attracted, abs(differential), differential < 0)
+	queue_spacewind()
 
 	if(equiv)
 		A.air.copyFrom(air)
@@ -296,6 +288,15 @@ Class Procs:
 	// does not specially handle the less common case of a simulated room exposed to an unsimulated pressurized turf.
 	if(!A.air.compare(air, vacuum_exception = 1))
 		SSzas.mark_edge_active(src)
+
+/connection_edge/unsimulated/queue_spacewind()
+	var/differential = A.air.returnPressure() - air.returnPressure()
+	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
+		var/list/attracted = A.movables()
+
+		WOOSH
+
+		flow(attracted, abs(differential), differential < 0)
 
 /proc/ShareHeat(datum/gas_mixture/A, datum/gas_mixture/B, connecting_tiles)
 	//This implements a simplistic version of the Stefan-Boltzmann law.

@@ -235,3 +235,6 @@ Class Procs:
 	if(verbose)
 		zas_log("Connection is valid.")
 	#endif
+
+/connection_edge/proc/queue_spacewind()
+	return

@@ -1,5 +1,6 @@
 #define CLEAR_OBJECT(TARGET) \
 	processing -= TARGET; \
+	REMOVE_TRAIT(TARGET, TRAIT_EXPERIENCING_AIRFLOW, src); \
 	TARGET.airflow_dest = null; \
 	TARGET.airflow_speed = 0; \
 	TARGET.airflow_time = 0; \
@@ -100,10 +101,8 @@ SUBSYSTEM_DEF(airflow)
 		target.dir = olddir
 		target.airborne_acceleration++
 
-		if (ismob(target))
-			var/mob/M = target
-			M.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE, zas_settings.airflow_mob_slowdown)
-			addtimer(CALLBACK(M, /mob/proc/remove_movespeed_modifier, /datum/movespeed_modifier/atmos_pressure, TRUE), 3 SECONDS, flags = TIMER_DELETE_ME)
+		ADD_TRAIT(target, TRAIT_EXPERIENCING_AIRFLOW, src)
+
 		if (MC_TICK_CHECK)
 			current.Cut(i)
 			return

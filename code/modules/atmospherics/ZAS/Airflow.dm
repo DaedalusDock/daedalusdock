@@ -106,7 +106,7 @@ This entire system is an absolute mess.
 		if(airborne_acceleration > 1)
 			airflow_hit(A)
 			A.airflow_hit_act(src)
-		else if(istype(src, /mob/living/carbon/human))
+		else if(istype(src, /mob/living/carbon/human) && ismovable(A) && !(A:airflow_originally_not_dense))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
 			src:Stun(1 SECONDS) // :)
 		/*

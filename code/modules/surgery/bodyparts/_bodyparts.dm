@@ -268,11 +268,11 @@
 	return bodypart_organs
 
 //Return TRUE to get whatever mob this is in to update health.
-/obj/item/bodypart/proc/on_life(delta_time, times_fired)
+/obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
 	//DO NOT update health here, it'll be done in the carbon's life.
 	if(stamina_dam > DAMAGE_PRECISION && owner.stam_regen_start_time <= world.time)
-		heal_damage(0, 0, INFINITY, null, FALSE)
+		heal_damage(0, 0, stam_heal, null, FALSE)
 		. |= BODYPART_LIFE_UPDATE_HEALTH
 
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.

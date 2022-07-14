@@ -21,6 +21,8 @@
 	if(getStaminaLoss() < 120) // Puts you a little further into the initial stamcrit, makes stamcrit harder to outright counter with chems.
 		adjustStaminaLoss(30, FALSE)
 
+	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
+
 /mob/living/carbon/adjust_disgust(amount)
 	disgust = clamp(disgust+amount, 0, DISGUST_LEVEL_MAXEDOUT)
 

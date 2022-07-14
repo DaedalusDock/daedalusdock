@@ -228,6 +228,70 @@
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
 
+/* DISORIENTED */
+/**
+ * Applies the "disoriented" status effect to the mob, among other potential statuses.
+ * Args:
+ * * amount : duration for src to be disoriented
+ * * stamina_amount : stamina damage to deal before LERP
+ * * ignore_canstun : ignore stun immunities, if using a secondary form of status
+ * * knockdown : duration to knock src down
+ * * stun : duration to stun src
+ * * paralyze : duration to paralyze src
+ * * overstam : If TRUE, stamina_amount will be able to deal stamina damage even if src is already in stamcrit
+ * * stack_status : Should the given status value(s) stack ontop of existing status values?
+ */
+/mob/living/proc/Disorient(amount, stamina_amount, ignore_canstun, knockdown, stun, paralyze, overstam, stack_status)
+	var/protection_amt = 0
+	///placeholder
+	var/disorient_multiplier = 1 - (protection_amt/100)
+	var/stamina_multiplier = LERP(disorient_multiplier, 1, 0.25)
+
+	if(!HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA) || overstam)
+		adjustStaminaLoss(stamina_amount * stamina_multiplier)
+
+	var/stamloss = getStaminaLoss()
+	if(stamloss >= 40)
+		var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
+		set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)
+
+	if(knockdown)
+		if(stack_status)
+			AdjustKnockdown(knockdown, ignore_canstun)
+		else
+			Knockdown(knockdown, ignore_canstun)
+
+	if(paralyze)
+		if(stack_status)
+			AdjustParalyzed(paralyze, ignore_canstun)
+		else
+			Knockdown(knockdown, ignore_canstun)
+
+	if(stun)
+		if(stack_status)
+			AdjustStun(stun, ignore_canstun)
+		else
+			Stun(stun, ignore_canstun)
+
+	var/datum/status_effect/disoriented/D = IsDisoriented(FALSE)
+	if(D)
+		D.duration = min(15 SECONDS, amount + D.duration)
+	else if(amount > 0)
+		D = apply_status_effect(/datum/status_effect/disoriented, amount)
+
+	return D
+
+
+/mob/living/proc/IsDisoriented() //If we're paralyzed
+	return has_status_effect(/datum/status_effect/disoriented)
+
+/mob/living/proc/AmountDisoriented() //How many deciseconds remain in our Paralyzed status effect
+	var/datum/status_effect/disoriented/P = IsDisoriented()
+	if(P)
+		return P.duration - world.time
+	return 0
+
+
 /* INCAPACITATED */
 
 

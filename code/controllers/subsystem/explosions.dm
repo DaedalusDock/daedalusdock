@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(explosions)
 	// Track how many explosions have happened.
 	var/explosion_index = 0
 
-	var/currentpart = SSAIR_PIPENETS
+	var/currentpart = SSEXPLOSIONS_MOVABLES
 
 
 /datum/controller/subsystem/explosions/stat_entry(msg)

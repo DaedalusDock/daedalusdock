@@ -9,15 +9,7 @@
 /datum/map_generator_module/bottom_layer/repressurize/generate()
 	if(!mother)
 		return
-	/*
-	var/list/map = mother.map
-	for(var/turf/T in map)
-		SSair.remove_from_active(T)
-	for(var/turf/open/T in map)
-		if(T.air)
-			T.air.copy_from_turf(T)
-		SSair.add_to_active(T, TRUE)
-*/
+
 /datum/map_generator_module/bottom_layer/massdelete
 	spawnableAtoms = list()
 	spawnableTurfs = list()

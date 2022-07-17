@@ -6,3 +6,12 @@
 
 # Ebin-Halcyon
 /icons/ @Ebin-Halcyon
+
+# Kapu1178
+/code/_DEFINES/atmospherics/ @Kapu1178
+/code/modules/atmospherics/ @Kapu1178
+/code/modules/power/supermatter/ @Kapu1178
+/code/controllers/subsystem/airflow.dm @Kapu1178
+/code/controllers/subsystem/airmachines.dm @Kapu1178
+/code/controllers/subsystem/zas.dm @Kapu1178
+/code/controllers/subsystem/processing/airatoms.dm @Kapu1178

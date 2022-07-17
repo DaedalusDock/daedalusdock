@@ -120,7 +120,7 @@
 	data["has_light"] = has_light
 	data["light_on"] = light_on
 	data["comp_light_color"] = comp_light_color
-	data["pai"] = pai
+	data["pai"] = inserted_pai
 	return data
 
 
@@ -276,12 +276,12 @@
 		if("PC_Pai_Interact")
 			switch(params["option"])
 				if("eject")
-					usr.put_in_hands(pai)
-					pai.slotted = FALSE
-					pai = null
+					usr.put_in_hands(inserted_pai)
+					inserted_pai.slotted = FALSE
+					inserted_pai = null
 					to_chat(usr, span_notice("You remove the pAI from the [name]."))
 				if("interact")
-					pai.attack_self(usr)
+					inserted_pai.attack_self(usr)
 			return UI_UPDATE
 		else
 			return

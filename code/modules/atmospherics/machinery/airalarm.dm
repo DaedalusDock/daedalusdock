@@ -185,7 +185,7 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
-/obj/machinery/airalarm/Moved(atom/OldLoc, Dir)
+/obj/machinery/airalarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	var/new_area = get_area(src)
 	if(my_area != new_area)

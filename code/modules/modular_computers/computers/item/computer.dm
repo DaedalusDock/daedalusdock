@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	var/datum/picture/saved_image // the saved image used for messaging purpose like come on dude
 
-	var/obj/item/paicard/pai = null
+	var/obj/item/paicard/inserted_pai = null
 
 	var/datum/action/item_action/toggle_computer_light/light_butt
 
@@ -112,8 +112,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	QDEL_NULL(soundloop)
 	Remove_Messenger()
 
-	if(istype(pai))
-		QDEL_NULL(pai)
+	if(istype(inserted_pai))
+		QDEL_NULL(inserted_pai)
 	if(istype(light_butt))
 		QDEL_NULL(light_butt)
 

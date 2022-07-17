@@ -74,7 +74,8 @@
 
 	var/atom/movable/movable_parent = parent
 	movable_parent.setDir(old_dir)
-	if(movable_parent.Process_Spacemove(0))
+	movable_parent.inertia_moving = FALSE
+	if(movable_parent.Process_Spacemove(drifting_loop.direction, continuous_move = TRUE))
 		glide_to_halt(visual_delay)
 		return
 

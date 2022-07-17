@@ -479,19 +479,7 @@
 		pathset = TRUE //Indicates the AI's custom path is initialized.
 		start()
 
-/mob/living/simple_animal/bot/mulebot/Move(atom/newloc, direct) //handle leaving bloody tracks. can't be done via Moved() since that can end up putting the tracks somewhere BEFORE we get bloody.
-	if(!bloodiness) //important to check this first since Bump() is called in the Move() -> Entered() chain
-		return ..()
-	var/atom/oldLoc = loc
-	. = ..()
-	if(!last_move || isspaceturf(oldLoc)) //if we didn't sucessfully move, or if our old location was a spaceturf.
-		return
-	var/obj/effect/decal/cleanable/blood/tracks/B = new(oldLoc)
-	B.add_blood_DNA(return_blood_DNA())
-	B.setDir(direct)
-	bloodiness--
-
-/mob/living/simple_animal/bot/mulebot/Moved()
+/mob/living/simple_animal/bot/mulebot/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	if(has_gravity())
 		for(var/mob/living/carbon/human/future_pancake in loc)

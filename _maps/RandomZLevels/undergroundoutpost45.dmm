@@ -29,7 +29,7 @@
 /obj/effect/turf_decal/sand/plating,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006;
-	initial_gas = list("carbon_dioxide" = 173.4, "nitrogen" = 135.1, "plasma" = 229.8)
+	initial_gas = list("carbon_dioxide" = 173.4, "nitrogen" = 135.1, "plasma" = 229.8);
 	temperature = 363.9
 	},
 /area/awaymission/undergroundoutpost45/caves)

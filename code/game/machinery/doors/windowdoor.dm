@@ -14,7 +14,7 @@
 	flags_1 = ON_BORDER_1
 	opacity = FALSE
 	pass_flags_self = PASSGLASS
-	can_atmos_pass = ATMOS_PASS_PROC
+	can_atmos_pass = CANPASS_PROC
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	network_id = NETWORK_DOOR_AIRLOCKS
 	set_dir_on_move = FALSE
@@ -60,7 +60,7 @@
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
-	AddElement(/datum/element/atmos_sensitive, mapload)
+	update_nearby_tiles()
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()
@@ -72,8 +72,9 @@
 	if(atom_integrity == 0)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
-	var/turf/floor = get_turf(src)
-	floor.air_update_turf(TRUE, FALSE)
+	/*var/turf/floor = get_turf(src)
+	floor.air_update_turf(TRUE, FALSE)*/
+	update_nearby_tiles()
 	return ..()
 
 /obj/machinery/door/window/update_icon_state()
@@ -173,11 +174,13 @@
 
 	return TRUE
 
-/obj/machinery/door/window/can_atmos_pass(turf/T, vertical = FALSE)
+/obj/machinery/door/window/zas_canpass(turf/T)
+	if(QDELETED(src))
+		return AIR_ALLOWED
 	if(get_dir(loc, T) == dir)
-		return !density
+		return density ? (AIR_BLOCKED|ZONE_BLOCKED) : ZONE_BLOCKED
 	else
-		return TRUE
+		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
 /obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
@@ -214,7 +217,7 @@
 	icon_state ="[base_state]open"
 	sleep(10)
 	set_density(FALSE)
-	air_update_turf(TRUE, FALSE)
+	//air_update_turf(TRUE, FALSE)
 	update_freelook_sight()
 
 	if(operating == 1) //emag again
@@ -236,7 +239,7 @@
 	icon_state = base_state
 
 	set_density(TRUE)
-	air_update_turf(TRUE, TRUE)
+	//air_update_turf(TRUE, TRUE)
 	update_freelook_sight()
 	sleep(10)
 
@@ -263,11 +266,30 @@
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/door/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > T0C + (reinf ? 1600 : 800))
+	return (exposed_temperature > T0C + (reinf ? 1600 : 800)) ? TRUE : FALSE
 
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
+/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
+	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
+
+/obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	var/initial_damage_percentage = get_integrity_percentage()
+	. = ..()
+	if(.) //received damage
+		if(atom_integrity > 0)
+			playsound(src, get_sfx(SFX_GLASS_CRACK), 100, TRUE)
+			var/damage_percentage = get_integrity_percentage()
+			if (damage_percentage >= 75 && initial_damage_percentage < 75)
+				visible_message(span_warning("\The [src] looks like it's about to shatter!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
+			else if (damage_percentage >= 50 && initial_damage_percentage < 50)
+				visible_message(span_warning("\The [src] looks seriously damaged!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
+			else if (damage_percentage >= 25 && initial_damage_percentage < 25)
+				visible_message(span_warning("Cracks begin to appear in \the [src]!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
 
 /obj/machinery/door/window/emag_act(mob/user)
 	if(!operating && density && !(obj_flags & EMAGGED))

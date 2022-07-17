@@ -16,7 +16,7 @@
 
 	if(ispath(target))
 		drip = new /datum/outfit
-		drip.copy_from(new target)
+		drip.copyFrom(new target)
 	else if(istype(target))
 		drip = target
 	else

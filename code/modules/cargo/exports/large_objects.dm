@@ -79,7 +79,7 @@
 /datum/export/large/supermatter
 	cost = CARGO_CRATE_VALUE * 16
 	unit_name = "supermatter shard"
-	export_types = list(/obj/machinery/power/supermatter_crystal/shard)
+	//export_types = list(/obj/machinery/power/supermatter_crystal/shard)
 
 /datum/export/large/grounding_rod
 	cost = CARGO_CRATE_VALUE * 1.2
@@ -106,32 +106,14 @@
 	var/obj/machinery/portable_atmospherics/canister/C = O
 	var/worth = cost
 	var/datum/gas_mixture/canister_mix = C.return_air()
-	var/canister_gas = canister_mix.gases
-	var/list/gases_to_check = list(
-								/datum/gas/bz,
-								/datum/gas/nitrium,
-								/datum/gas/hypernoblium,
-								/datum/gas/miasma,
-								/datum/gas/tritium,
-								/datum/gas/pluoxium,
-								/datum/gas/freon,
-								/datum/gas/hydrogen,
-								/datum/gas/healium,
-								/datum/gas/proto_nitrate,
-								/datum/gas/zauker,
-								/datum/gas/helium,
-								/datum/gas/antinoblium,
-								/datum/gas/halon,
-								)
+	var/list/gases_to_check = xgm_gas_data.gases
 
 	for(var/gasID in gases_to_check)
-		canister_mix.assert_gas(gasID)
-		if(canister_gas[gasID][MOLES] > 0)
-			worth += get_gas_value(gasID, canister_gas[gasID][MOLES])
+		if(canister_mix.getGroupGas(gasID) > 0)
+			worth += get_gas_value(gasID, canister_mix.getGroupGas(gasID))
 
-	canister_mix.garbage_collect()
 	return worth
 
-/datum/export/large/gas_canister/proc/get_gas_value(datum/gas/gasType, moles)
-	var/baseValue = initial(gasType.base_value)
+/datum/export/large/gas_canister/proc/get_gas_value(gastype, moles)
+	var/baseValue = xgm_gas_data.base_value[gastype]
 	return round((baseValue/k_elasticity) * (1 - NUM_E**(-1 * k_elasticity * moles)))

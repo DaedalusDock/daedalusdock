@@ -6,7 +6,7 @@
 	requires_power = FALSE
 	static_lighting = FALSE
 	base_lighting_alpha = 255
-	
+
 /area/awaymission/snowdin/outside
 	name = "Snowdin Tundra Plains"
 	icon_state = "awaycontent25"
@@ -157,15 +157,12 @@
 //liquid plasma!!!!!!//
 
 /turf/open/floor/iron/dark/snowdin
-	initial_gas_mix = FROZEN_ATMOS
-	planetary_atmos = 1
 	temperature = 180
 
 /turf/open/lava/plasma
 	name = "liquid plasma"
 	desc = "A flowing stream of chilled liquid plasma. You probably shouldn't get in."
 	icon_state = "liquidplasma"
-	initial_gas_mix = "n2=82;plasma=24;TEMP=120"
 	baseturfs = /turf/open/lava/plasma
 
 	light_range = 3
@@ -226,7 +223,7 @@
 
 //mafia specific tame happy plasma (normal atmos, no slowdown)
 /turf/open/lava/plasma/mafia
-	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	initial_gas = OPENTURF_DEFAULT_ATMOS
 	baseturfs = /turf/open/lava/plasma/mafia
 	slowdown = 0
 

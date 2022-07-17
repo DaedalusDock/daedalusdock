@@ -1,11 +1,13 @@
 /turf/open
 	plane = FLOOR_PLANE
 	var/slowdown = 0 //negative for faster, positive for slower
-
+	initial_gas = OPENTURF_DEFAULT_ATMOS
+	z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
 	var/footstep = null
 	var/barefootstep = null
 	var/clawfootstep = null
 	var/heavyfootstep = null
+
 
 //direction is direction of travel of A
 /turf/open/zPassIn(atom/movable/A, direction, turf/source)
@@ -35,7 +37,7 @@
 
 /turf/open/update_icon()
 	. = ..()
-	update_visuals()
+	//update_visuals()
 
 /turf/open/indestructible
 	name = "floor"
@@ -46,6 +48,7 @@
 	clawfootstep = FOOTSTEP_HARD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	tiled_dirt = TRUE
+	simulated = FALSE
 
 /turf/open/indestructible/Melt()
 	to_be_destroyed = FALSE
@@ -97,7 +100,7 @@
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "necro1"
 	baseturfs = /turf/open/indestructible/necropolis
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	footstep = FOOTSTEP_LAVA
 	barefootstep = FOOTSTEP_LAVA
 	clawfootstep = FOOTSTEP_LAVA
@@ -110,23 +113,21 @@
 		icon_state = "necro[rand(2,3)]"
 
 /turf/open/indestructible/necropolis/air
-	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	initial_gas = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/indestructible/boss //you put stone tiles on this and use it as a base
 	name = "necropolis floor"
 	icon = 'icons/turf/boss_floors.dmi'
 	icon_state = "boss"
 	baseturfs = /turf/open/indestructible/boss
-	planetary_atmos = TRUE
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 /turf/open/indestructible/boss/air
-	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	initial_gas = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/indestructible/hierophant
 	icon = 'icons/turf/floors/hierophant_floor.dmi'
-	planetary_atmos = TRUE
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	baseturfs = /turf/open/indestructible/hierophant
 	smoothing_flags = SMOOTH_CORNERS
 	tiled_dirt = FALSE
@@ -148,7 +149,7 @@
 
 /turf/open/indestructible/binary
 	name = "tear in the fabric of reality"
-	can_atmos_pass = ATMOS_PASS_NO
+	can_atmos_pass = CANPASS_NEVER
 	baseturfs = /turf/open/indestructible/binary
 	icon_state = "binary"
 	footstep = null
@@ -160,7 +161,7 @@
 	icon_state = "bluespace"
 	blocks_air = TRUE
 	baseturfs = /turf/open/indestructible/airblock
-
+/*
 /turf/open/Initalize_Atmos(times_fired)
 	excited = FALSE
 	update_visuals()
@@ -174,16 +175,17 @@
 			//testing("Active turf found. Return value of compare(): [is_active]")
 			excited = TRUE
 			SSair.active_turfs += src
+*/
 
 /turf/open/GetHeatCapacity()
-	. = air.heat_capacity()
+	. = air.getHeatCapacity()
 
-/turf/open/GetTemperature()
-	. = air.temperature
+/turf/open/return_temperature()
+	. = return_air().temperature
 
 /turf/open/TakeTemperature(temp)
 	air.temperature += temp
-	air_update_turf(FALSE, FALSE)
+	//air_update_turf(FALSE, FALSE)
 
 /turf/open/proc/freeze_turf()
 	for(var/obj/I in contents)

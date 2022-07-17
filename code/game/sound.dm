@@ -140,7 +140,7 @@ distance_multiplier - Can be used to multiply the distance at which the sound is
 			var/datum/gas_mixture/source_env = turf_source.return_air()
 
 			if(hearer_env && source_env)
-				var/pressure = min(hearer_env.return_pressure(), source_env.return_pressure())
+				var/pressure = min(hearer_env.returnPressure(), source_env.returnPressure())
 				if(pressure < ONE_ATMOSPHERE)
 					pressure_factor = max((pressure - SOUND_MINIMUM_PRESSURE)/(ONE_ATMOSPHERE - SOUND_MINIMUM_PRESSURE), 0)
 			else //space

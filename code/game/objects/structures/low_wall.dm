@@ -9,6 +9,7 @@
 	density = TRUE
 	anchored = TRUE
 	pass_flags_self = PASSTABLE | LETPASSTHROW
+	can_atmos_pass = CANPASS_ALWAYS
 	layer = LOW_WALL_LAYER
 	max_integrity = 150
 	smoothing_flags = SMOOTH_BITMASK

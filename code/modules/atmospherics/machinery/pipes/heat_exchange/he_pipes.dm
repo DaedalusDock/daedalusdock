@@ -23,23 +23,26 @@
 	var/datum/gas_mixture/pipe_air = return_air()
 
 	var/turf/local_turf = loc
-	if(istype(local_turf))
+	if(!istype(local_turf))
+		CRASH("Processing HE pipe not in a")
+	if(isspaceturf(local_turf))
+		radiate_heat_to_space(pipe_air, 2, 1) //the magic "2" is the surface area in square meters.
+	else
 		if(islava(local_turf))
 			environment_temperature = 5000 //Yuck
 		else if(local_turf.blocks_air)
 			environment_temperature = local_turf.temperature
 		else
 			var/turf/open/open_local = local_turf
-			environment_temperature = open_local.GetTemperature()
-	else
-		environment_temperature = local_turf.temperature
-	if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
-		parent.temperature_interact(local_turf, volume, thermal_conductivity)
+			environment_temperature = open_local.return_temperature()
+
+		if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
+			parent.temperature_interact(local_turf, volume, thermal_conductivity)
 
 
 	//heatup/cooldown any mobs buckled to ourselves based on our temperature
 	if(has_buckled_mobs())
-		var/hc = pipe_air.heat_capacity()
+		var/hc = pipe_air.getHeatCapacity()
 		var/mob/living/heat_source = buckled_mobs[1]
 		//Best guess-estimate of the total bodytemperature of all the mobs, since they share the same environment it's ~ok~ to guess like this
 		var/avg_temp = (pipe_air.temperature * hc + (heat_source.bodytemperature * buckled_mobs.len) * 3500) / (hc + (buckled_mobs ? buckled_mobs.len * 3500 : 0))

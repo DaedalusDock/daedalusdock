@@ -12,6 +12,8 @@
 	light_color = LIGHT_COLOR_LAVA
 	bullet_bounce_sound = 'sound/items/welder2.ogg'
 
+	simulated = FALSE
+
 	footstep = FOOTSTEP_LAVA
 	barefootstep = FOOTSTEP_LAVA
 	clawfootstep = FOOTSTEP_LAVA
@@ -44,7 +46,7 @@
 	return
 
 /turf/open/lava/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/lava/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	if(burn_stuff(arrived))
@@ -98,7 +100,7 @@
 /turf/open/lava/GetHeatCapacity()
 	. = 700000
 
-/turf/open/lava/GetTemperature()
+/turf/open/lava/return_temperature()
 	. = 5000
 
 /turf/open/lava/TakeTemperature(temp)
@@ -233,9 +235,9 @@
 	canSmoothWith = list(SMOOTH_GROUP_FLOOR_LAVA)
 
 /turf/open/lava/smooth/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
-	planetary_atmos = TRUE
+	initial_gas = LAVALAND_DEFAULT_ATMOS
+
 	baseturfs = /turf/open/lava/smooth/lava_land_surface
 
 /turf/open/lava/smooth/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS

@@ -146,10 +146,11 @@
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_LANGUAGE 25
 #define INIT_ORDER_MACHINES 20
+#define INIT_ORDER_AIRMACHINES 17
 #define INIT_ORDER_SKILLS 15
 #define INIT_ORDER_TIMER 1
 #define INIT_ORDER_DEFAULT 0
-#define INIT_ORDER_AIR -1
+//#define INIT_ORDER_AIR -1
 #define INIT_ORDER_PERSISTENCE -2
 #define INIT_ORDER_PERSISTENT_PAINTINGS -3 // Assets relies on this
 #define INIT_ORDER_ASSETS -4
@@ -161,8 +162,9 @@
 #define INIT_ORDER_SHUTTLE -21
 #define INIT_ORDER_MINOR_MAPPING -40
 #define INIT_ORDER_PATH -50
-#define INIT_ORDER_DECAY -61 //PARIAH ADDITION
+#define INIT_ORDER_DECAY -61
 #define INIT_ORDER_EXPLOSIONS -69
+#define INIT_ORDER_AIR -70
 #define INIT_ORDER_STATPANELS -98
 #define INIT_ORDER_INIT_PROFILER -99 //Near the end, logs the costs of initialize
 #define INIT_ORDER_CHAT -100 //Should be last to ensure chat remains smooth during init.
@@ -178,6 +180,8 @@
 #define FIRE_PRIORITY_AMBIENCE 10
 #define FIRE_PRIORITY_GARBAGE 15
 #define FIRE_PRIORITY_DATABASE 16
+#define FIRE_PRIORITY_AIRFLOW 17
+#define FIRE_PRIORITY_AIRATOMS 18
 #define FIRE_PRIORITY_WET_FLOORS 20
 #define FIRE_PRIORITY_AIR 20
 #define FIRE_PRIORITY_NPC 20
@@ -192,6 +196,7 @@
 #define FIRE_PRIORITY_OBJ 40
 #define FIRE_PRIORITY_ACID 40
 #define FIRE_PRIOTITY_BURNING 40
+#define FIRE_PRIORITY_AIRMACHINES 45
 #define FIRE_PRIORITY_DEFAULT 50
 #define FIRE_PRIORITY_PARALLAX 65
 #define FIRE_PRIORITY_INSTRUMENTS 80
@@ -266,19 +271,21 @@
 */
 #define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
 
-// Air subsystem subtasks
-#define SSAIR_PIPENETS 1
-#define SSAIR_ATMOSMACHINERY 2
-#define SSAIR_ACTIVETURFS 3
-#define SSAIR_HOTSPOTS 4
-#define SSAIR_EXCITEDGROUPS 5
-#define SSAIR_HIGHPRESSURE 6
-#define SSAIR_SUPERCONDUCTIVITY 7
-#define SSAIR_PROCESS_ATOMS 8
+#define SSZAS_TILES 1
+#define SSZAS_DEFERED_TILES 2
+#define SSZAS_EDGES 3
+#define SSZAS_FIRES 4
+#define SSZAS_HOTSPOTS 5
+#define SSZAS_ZONES 6
+#define SSZAS_ATOMS 7
+
+//Air Machine subsystem subtasks
+#define SSAIRMACH_PIPENETS 1
+#define SSAIRMACH_MACHINES 2
 
 //Pipeline rebuild helper defines, these suck but it'll do for now //Fools you actually merged it
-#define SSAIR_REBUILD_PIPELINE 1
-#define SSAIR_REBUILD_QUEUE 2
+#define SSAIRMACH_REBUILD_PIPELINE 1
+#define SSAIRMACH_REBUILD_QUEUE 2
 
 // Explosion Subsystem subtasks
 #define SSEXPLOSIONS_MOVABLES 1

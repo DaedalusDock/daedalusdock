@@ -90,7 +90,7 @@
 	desc = "Some kind of machine."
 	verb_say = "beeps"
 	verb_yell = "blares"
-	pressure_resistance = 15
+	//pressure_resistance = 15
 	pass_flags_self = PASSMACHINE
 	max_integrity = 200
 	layer = BELOW_OBJ_LAYER //keeps shit coming out of the machine from ending up underneath it.
@@ -143,6 +143,9 @@
 	var/last_used_time = 0
 	/// Mobtype of last user. Typecast to [/mob/living] for initial() usage
 	var/mob/living/last_user_mobtype
+
+	///Used by SSairmachines for optimizing scrubbers and vent pumps.
+	COOLDOWN_DECLARE(hibernating)
 
 /obj/machinery/Initialize(mapload)
 	if(!armor)

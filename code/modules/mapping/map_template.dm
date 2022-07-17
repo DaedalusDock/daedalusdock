@@ -105,7 +105,7 @@
 	// NOTE, now that Initialize and LateInitialize run correctly, do we really
 	// need these two below?
 	SSmachines.setup_template_powernets(cables)
-	SSair.setup_template_machinery(atmos_machines)
+	SSairmachines.setup_template_machinery(atmos_machines)
 	SSshuttle.setup_shuttles(ports)
 
 	//calculate all turfs inside the border
@@ -122,7 +122,7 @@
 			)
 		)
 	for(var/turf/affected_turf as anything in template_and_bordering_turfs)
-		affected_turf.air_update_turf(TRUE, TRUE)
+		//affected_turf.air_update_turf(TRUE, TRUE)
 		affected_turf.levelupdate()
 
 /datum/map_template/proc/load_new_z(secret = FALSE)
@@ -154,13 +154,7 @@
 	if(T.y+height > world.maxy)
 		return
 
-	var/list/border = block(locate(max(T.x-1, 1), max(T.y-1, 1),  T.z),
-							locate(min(T.x+width+1, world.maxx), min(T.y+height+1, world.maxy), T.z))
-	for(var/L in border)
-		var/turf/turf_to_disable = L
-		SSair.remove_from_active(turf_to_disable) //stop processing turfs along the border to prevent runtimes, we return it in initTemplateBounds()
-		turf_to_disable.atmos_adjacent_turfs?.Cut()
-
+	SSzas.can_fire = FALSE
 	// Accept cached maps, but don't save them automatically - we don't want
 	// ruins clogging up memory for the whole round.
 	var/datum/parsed_map/parsed = cached_map || new(file(mappath))
@@ -187,6 +181,7 @@
 		generate_ceiling(affected_turfs)
 
 	log_game("[name] loaded at [T.x],[T.y],[T.z]")
+	SSzas.can_fire = TRUE
 	return bounds
 
 /datum/map_template/proc/generate_ceiling(affected_turfs)

@@ -634,10 +634,6 @@
 /area/ruin/syndicate_lava_base/engineering)
 "eM" = (
 /obj/machinery/light/small/directional/south,
-/obj/machinery/computer/turbine_computer{
-	dir = 1;
-	mapping_id = "syndie_lavaland_incineratorturbine"
-	},
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
@@ -3230,9 +3226,6 @@
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
 "AB" = (
-/obj/machinery/power/turbine/inlet_compressor{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/engineering)
 "AD" = (
@@ -4048,9 +4041,6 @@
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
 "OI" = (
-/obj/machinery/power/turbine/turbine_outlet{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/engineering)
 "OQ" = (
@@ -4354,10 +4344,6 @@
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
 "TV" = (
-/obj/machinery/power/turbine/core_rotor{
-	dir = 4;
-	mapping_id = "syndie_lavaland_incineratorturbine"
-	},
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/engineering)

@@ -48,7 +48,7 @@
 		return FALSE
 
 	var/turf/open/our_turf = loc
-	if(our_turf.GetTemperature() > T0C)
+	if(our_turf.return_temperature() > T0C)
 		loc.balloon_alert(user, "ritual failed, not cold enough!")
 		return FALSE
 
@@ -189,7 +189,7 @@
 		return FALSE
 
 	var/turf/open/our_turf = loc
-	if(our_turf.GetTemperature() > T0C)
+	if(our_turf.return_temperature() > T0C)
 		loc.balloon_alert(user, "ritual failed, not cold enough!")
 		return FALSE
 

@@ -35,24 +35,22 @@
 
 /obj/effect/particle_effect/foam/firefighting/Initialize(mapload)
 	. = ..()
-	RemoveElement(/datum/element/atmos_sensitive)
 
 /obj/effect/particle_effect/foam/firefighting/process()
 	..()
 
 	var/turf/open/T = get_turf(src)
 	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in T)
-	if(hotspot && istype(T) && T.air)
+	if(hotspot && istype(T) && T.zone)
 		qdel(hotspot)
-		var/datum/gas_mixture/G = T.air
-		if(G.gases[/datum/gas/plasma])
-			var/plas_amt = min(30,G.gases[/datum/gas/plasma][MOLES]) //Absorb some plasma
-			G.gases[/datum/gas/plasma][MOLES] -= plas_amt
+		var/datum/gas_mixture/G = T.return_air()
+		if(G.getGroupGas(GAS_PLASMA))
+			var/plas_amt = min(30, G.gas[GAS_PLASMA]) //Absorb some plasma
+			G.adjustGas(GAS_PLASMA, -plas_amt)
 			absorbed_plasma += plas_amt
 		if(G.temperature > T20C)
 			G.temperature = max(G.temperature/2,T20C)
-		G.garbage_collect()
-		T.air_update_turf(FALSE, FALSE)
+		//T.air_update_turf(FALSE, FALSE)
 
 /obj/effect/particle_effect/foam/firefighting/kill_foam()
 	STOP_PROCESSING(SSfastprocess, src)
@@ -96,7 +94,6 @@
 	create_reagents(1000) //limited by the size of the reagent holder anyway.
 	START_PROCESSING(SSfastprocess, src)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
-	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/effect/particle_effect/foam/ComponentInitialize()
 	. = ..()
@@ -193,12 +190,10 @@
 		F.add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 		F.metal = metal
 
-/obj/effect/particle_effect/foam/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > 475
-
 /obj/effect/particle_effect/foam/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	if(prob(max(0, exposed_temperature - 475)))   //foam dissolves when heated
-		kill_foam()
+	if(exposed_temperature > 475)
+		if(prob(max(0, exposed_temperature - 475)))   //foam dissolves when heated
+			kill_foam()
 
 
 ///////////////////////////////////////////////
@@ -276,19 +271,21 @@
 	desc = "A lightweight foamed metal wall."
 	gender = PLURAL
 	max_integrity = 20
+	can_atmos_pass = CANPASS_NEVER
+	obj_flags = CAN_BE_HIT | BLOCK_Z_IN_DOWN | BLOCK_Z_IN_UP
 
 /obj/structure/foamedmetal/Initialize()
 	. = ..()
-	air_update_turf(TRUE, TRUE)
+	update_nearby_tiles()
 
 /obj/structure/foamedmetal/Destroy()
-	air_update_turf(TRUE, FALSE)
+	set_density(0)
+	update_nearby_tiles()
 	. = ..()
 
 /obj/structure/foamedmetal/Move()
-	var/turf/T = loc
 	. = ..()
-	move_update_air(T)
+	update_nearby_tiles()
 
 /obj/structure/foamedmetal/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -324,17 +321,17 @@
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		O.ClearWet()
-		if(O.air)
-			var/datum/gas_mixture/G = O.air
+		if(O.return_air())
+			var/datum/gas_mixture/G = O.return_air()
 			G.temperature = 293.15
 			for(var/obj/effect/hotspot/H in O)
 				qdel(H)
-			var/list/G_gases = G.gases
+			var/list/G_gases = G.gas
 			for(var/I in G_gases)
-				if(I == /datum/gas/oxygen || I == /datum/gas/nitrogen)
+				if(I == GAS_OXYGEN || I == GAS_NITROGEN)
 					continue
-				G_gases[I][MOLES] = 0
-			G.garbage_collect()
+				G_gases[I] = 0
+			AIR_UPDATE_VALUES(G)
 		for(var/obj/machinery/atmospherics/components/unary/U in O)
 			if(!U.welded)
 				U.welded = TRUE

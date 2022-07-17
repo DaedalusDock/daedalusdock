@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(explosions)
 	// Track how many explosions have happened.
 	var/explosion_index = 0
 
-	var/currentpart = SSAIR_PIPENETS
+	var/currentpart = SSEXPLOSIONS_MOVABLES
 
 
 /datum/controller/subsystem/explosions/stat_entry(msg)
@@ -182,7 +182,7 @@ SUBSYSTEM_DEF(explosions)
 		return
 	var/range = 0
 	range = round((2 * power)**GLOB.DYN_EX_SCALE)
-	explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
+	return explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
 
 
 
@@ -238,12 +238,12 @@ SUBSYSTEM_DEF(explosions)
 	)
 	var/atom/location = isturf(origin) ? origin : origin.loc
 	if(SEND_SIGNAL(origin, COMSIG_ATOM_EXPLODE, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
+		return COMSIG_CANCEL_EXPLOSION // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
 
 	while(location)
 		var/next_loc = location.loc
 		if(SEND_SIGNAL(location, COMSIG_ATOM_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-			return
+			return COMSIG_CANCEL_EXPLOSION
 		if(isturf(location))
 			break
 		location = next_loc
@@ -253,7 +253,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/area/epicenter_area = get_area(location)
 	if(SEND_SIGNAL(epicenter_area, COMSIG_AREA_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return
+		return COMSIG_CANCEL_EXPLOSION
 
 	arguments -= EXARG_KEY_ORIGIN
 
@@ -303,11 +303,11 @@ SUBSYSTEM_DEF(explosions)
 		cap_multiplier = 1
 
 	if(!ignorecap)
-		devastation_range = min(GLOB.MAX_EX_DEVESTATION_RANGE * cap_multiplier, devastation_range)
-		heavy_impact_range = min(GLOB.MAX_EX_HEAVY_RANGE * cap_multiplier, heavy_impact_range)
-		light_impact_range = min(GLOB.MAX_EX_LIGHT_RANGE * cap_multiplier, light_impact_range)
-		flash_range = min(GLOB.MAX_EX_FLASH_RANGE * cap_multiplier, flash_range)
-		flame_range = min(GLOB.MAX_EX_FLAME_RANGE * cap_multiplier, flame_range)
+		devastation_range = min(zas_settings.maxex_devastation_range * cap_multiplier, devastation_range)
+		heavy_impact_range = min(zas_settings.maxex_heavy_range * cap_multiplier, heavy_impact_range)
+		light_impact_range = min(zas_settings.maxex_light_range * cap_multiplier, light_impact_range)
+		flash_range = min(zas_settings.maxex_flash_range * cap_multiplier, flash_range)
+		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
 
 	var/max_range = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
 	var/started_at = REALTIMEOFDAY
@@ -389,8 +389,7 @@ SUBSYSTEM_DEF(explosions)
 
 	//lists are guaranteed to contain at least 1 turf at this point
 
-	for(var/TI in affected_turfs)
-		var/turf/T = TI
+	for(var/turf/T as anything in affected_turfs)
 		var/init_dist = cheap_hypotenuse(T.x, T.y, x0, y0)
 		var/dist = init_dist
 
@@ -414,12 +413,10 @@ SUBSYSTEM_DEF(explosions)
 
 		if(T == epicenter) // Ensures explosives detonating from bags trigger other explosives in that bag
 			var/list/items = list()
-			for(var/I in T)
-				var/atom/A = I
+			for(var/atom/A in T)
 				if (length(A.contents) && !(A.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)) //The atom/contents_explosion() proc returns null if the contents ex_acting has been handled by the atom, and TRUE if it hasn't.
 					items += A.get_all_contents(ignore_flag_1 = PREVENT_CONTENTS_EXPLOSION_1)
-			for(var/thing in items)
-				var/atom/movable/movable_thing = thing
+			for(var/atom/movable/movable_thing as anything in items)
 				if(QDELETED(movable_thing))
 					continue
 				switch(dist)
@@ -672,9 +669,8 @@ SUBSYSTEM_DEF(explosions)
 		var/list/flame_turf = flameturf
 		flameturf = list()
 		for(var/thing in flame_turf)
-			if(thing)
-				var/turf/T = thing
-				new /obj/effect/hotspot(T) //Mostly for ambience!
+			var/turf/T = thing
+			T.create_fire(2, rand(5, 20))
 		cost_flameturf = MC_AVERAGE(cost_flameturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
 		if (low_turf.len || med_turf.len || high_turf.len)

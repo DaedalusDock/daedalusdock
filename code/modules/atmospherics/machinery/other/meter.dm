@@ -17,7 +17,7 @@
 	var/target_layer = PIPING_LAYER_DEFAULT
 
 /obj/machinery/meter/Destroy()
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	target = null
 	return ..()
 
@@ -25,7 +25,7 @@
 	if(!isnull(new_piping_layer))
 		target_layer = new_piping_layer
 
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 
 	if(!target)
 		reattach_to_layer()
@@ -49,10 +49,10 @@
 
 /obj/machinery/meter/on_set_is_operational(old_value)
 	if(is_operational)
-		SSair.start_processing_machine(src)//dont set icon_state here because it will be reset on next process() if it ever happens
+		SSairmachines.start_processing_machine(src)//dont set icon_state here because it will be reset on next process() if it ever happens
 	else
 		icon_state = "meter"
-		SSair.stop_processing_machine(src)
+		SSairmachines.stop_processing_machine(src)
 
 /obj/machinery/meter/process_atmos()
 	var/datum/gas_mixture/pipe_air = target.return_air()
@@ -60,7 +60,7 @@
 		icon_state = "meter0"
 		return FALSE
 
-	var/env_pressure = pipe_air.return_pressure()
+	var/env_pressure = pipe_air.returnPressure()
 	if(env_pressure <= 0.15 * ONE_ATMOSPHERE)
 		icon_state = "meter0"
 	else if(env_pressure <= 1.8 * ONE_ATMOSPHERE)
@@ -106,7 +106,7 @@
 	if (target)
 		var/datum/gas_mixture/pipe_air = target.return_air()
 		if(pipe_air)
-			. = "The pressure gauge reads [round(pipe_air.return_pressure(), 0.01)] kPa; [round(pipe_air.temperature,0.01)] K ([round(pipe_air.temperature-T0C,0.01)]&deg;C)."
+			. = "The pressure gauge reads [round(pipe_air.returnPressure(), 0.01)] kPa; [round(pipe_air.temperature,0.01)] K ([round(pipe_air.temperature-T0C,0.01)]&deg;C)."
 		else
 			. = "The sensor error light is blinking."
 	else
@@ -153,7 +153,7 @@
 	///Pressure of the pipenet
 	var/datum/port/output/pressure
 	///Temperature of the pipenet
-	var/datum/port/output/temperature
+	var/datum/port/output/net_temperature
 
 	///The component parent object
 	var/obj/machinery/meter/connected_meter
@@ -162,7 +162,7 @@
 	request_data = add_input_port("Request Meter Data", PORT_TYPE_SIGNAL, trigger = .proc/request_meter_data)
 
 	pressure = add_output_port("Pressure", PORT_TYPE_NUMBER)
-	temperature = add_output_port("Temperature", PORT_TYPE_NUMBER)
+	net_temperature = add_output_port("Temperature", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/atmos_meter/register_usb_parent(atom/movable/shell)
 	. = ..()
@@ -178,8 +178,8 @@
 	if(!connected_meter)
 		return
 	var/datum/gas_mixture/environment = connected_meter.target.return_air()
-	pressure.set_output(environment.return_pressure())
-	temperature.set_output(environment.temperature)
+	pressure.set_output(environment.returnPressure())
+	net_temperature.set_output(environment.temperature)
 
 // TURF METER - REPORTS A TILE'S AIR CONTENTS
 // why are you yelling?

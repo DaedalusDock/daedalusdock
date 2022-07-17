@@ -14,19 +14,19 @@
 	other_airs = list()
 	members = list()
 	other_atmos_machines = list()
-	SSair.networks += src
+	SSairmachines.networks += src
 
 /datum/pipeline/Destroy()
-	SSair.networks -= src
+	SSairmachines.networks -= src
 	if(building)
-		SSair.remove_from_expansion(src)
+		SSairmachines.remove_from_expansion(src)
 	if(air?.volume)
 		temporarily_store_air()
 	for(var/obj/machinery/atmospherics/pipe/considered_pipe in members)
 		considered_pipe.parent = null
 		if(QDELETED(considered_pipe))
 			continue
-		SSair.add_to_rebuild_queue(considered_pipe)
+		SSairmachines.add_to_rebuild_queue(considered_pipe)
 	for(var/obj/machinery/atmospherics/components/considered_component in other_atmos_machines)
 		considered_component.nullify_pipenet(src)
 	return ..()
@@ -36,7 +36,7 @@
 		return
 	reconcile_air()
 	//Only react if the mix has changed, and don't keep updating if it hasn't
-	update = air.react(src)
+	update = air.react()
 
 ///Preps a pipeline for rebuilding, insterts it into the rebuild queue
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/base)
@@ -56,7 +56,7 @@
 		air = new
 
 	air.volume = volume
-	SSair.add_to_expansion(src, base)
+	SSairmachines.add_to_expansion(src, base)
 
 ///Has the same effect as build_pipeline(), but this doesn't queue its work, so overrun abounds. It's useful for the pregame
 /datum/pipeline/proc/build_pipeline_blocking(obj/machinery/atmospherics/base)
@@ -182,35 +182,67 @@
 	for(var/obj/machinery/atmospherics/pipe/member in members)
 		member.air_temporary = new
 		member.air_temporary.volume = member.volume
-		member.air_temporary.copy_from(air, member.volume / air.volume)
+		member.air_temporary.copyFrom(air, member.volume / air.volume)
 
 		member.air_temporary.temperature = air.temperature
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
-	var/total_heat_capacity = air.heat_capacity()
-	var/partial_heat_capacity = total_heat_capacity * (share_volume / air.volume)
-	var/target_temperature
-	var/target_heat_capacity
+	var/total_heat_capacity = air.getHeatCapacity()
+	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.volume)
+
+	if(target.simulated)
+		var/turf/modeled_location = target
+
+		if(modeled_location.blocks_air)
+
+			if((modeled_location.heat_capacity>0) && (partial_heat_capacity>0))
+				var/delta_temperature = air.temperature - modeled_location.temperature
+
+				var/heat = thermal_conductivity*delta_temperature* \
+					(partial_heat_capacity*modeled_location.heat_capacity/(partial_heat_capacity+modeled_location.heat_capacity))
+
+				air.temperature -= heat/total_heat_capacity
+				modeled_location.temperature += heat/modeled_location.heat_capacity
+
+		else
+			var/delta_temperature = 0
+			var/sharer_heat_capacity = 0
+
+			if(modeled_location.zone)
+				delta_temperature = (air.temperature - modeled_location.zone.air.temperature)
+				sharer_heat_capacity = modeled_location.zone.air.getHeatCapacity()
+			else
+				delta_temperature = (air.temperature - modeled_location.air.temperature)
+				sharer_heat_capacity = modeled_location.air.getHeatCapacity()
+
+			var/self_temperature_delta = 0
+			var/sharer_temperature_delta = 0
+
+			if((sharer_heat_capacity>0) && (partial_heat_capacity>0))
+				var/heat = thermal_conductivity*delta_temperature* \
+					(partial_heat_capacity*sharer_heat_capacity/(partial_heat_capacity+sharer_heat_capacity))
+
+				self_temperature_delta = -heat/total_heat_capacity
+				sharer_temperature_delta = heat/sharer_heat_capacity
+			else
+				return 1
+
+			air.temperature += self_temperature_delta
+
+			if(modeled_location.zone)
+				modeled_location.zone.air.temperature += sharer_temperature_delta/modeled_location.zone.air.group_multiplier
+			else
+				modeled_location.air.temperature += sharer_temperature_delta
 
 
-	var/turf/modeled_location = target
-	target_temperature = modeled_location.GetTemperature()
-	target_heat_capacity = modeled_location.GetHeatCapacity()
+	else
+		if((target.heat_capacity>0) && (partial_heat_capacity>0))
+			var/delta_temperature = air.temperature - target.temperature
 
-	var/delta_temperature = air.temperature - target_temperature
-	var/sharer_heat_capacity = target_heat_capacity
+			var/heat = thermal_conductivity*delta_temperature* \
+				(partial_heat_capacity*target.heat_capacity/(partial_heat_capacity+target.heat_capacity))
 
-	if((sharer_heat_capacity <= 0) || (partial_heat_capacity <= 0))
-		return TRUE
-	var/heat = thermal_conductivity * delta_temperature * (partial_heat_capacity * sharer_heat_capacity / (partial_heat_capacity + sharer_heat_capacity))
-
-	var/self_temperature_delta = - heat / total_heat_capacity
-	var/sharer_temperature_delta = heat / sharer_heat_capacity
-
-	air.temperature += self_temperature_delta
-	modeled_location.TakeTemperature(sharer_temperature_delta)
-	if(modeled_location.blocks_air)
-		modeled_location.temperature_expose(air, modeled_location.temperature)
+			air.temperature -= heat/total_heat_capacity
 
 	update = TRUE
 
@@ -238,33 +270,70 @@
 			pipeline_list |= atmos_machine.return_pipenets_for_reconcilation(src)
 			gas_mixture_list |= atmos_machine.return_airs_for_reconcilation(src)
 
+
 	var/total_thermal_energy = 0
 	var/total_heat_capacity = 0
 	var/datum/gas_mixture/total_gas_mixture = new(0)
-
-	var/list/total_gases = total_gas_mixture.gases
 
 	for(var/datum/gas_mixture/gas_mixture as anything in gas_mixture_list)
 		total_gas_mixture.volume += gas_mixture.volume
 
 		// This is sort of a combined merge + heat_capacity calculation
 
-		var/list/giver_gases = gas_mixture.gases
+		var/list/giver_gases = gas_mixture.gas
 		//gas transfer
 		for(var/giver_id in giver_gases)
-			var/giver_gas_data = giver_gases[giver_id]
-			ASSERT_GAS(giver_id, total_gas_mixture)
-			total_gases[giver_id][MOLES] += giver_gas_data[MOLES]
-			total_heat_capacity += giver_gas_data[MOLES] * giver_gas_data[GAS_META][META_GAS_SPECIFIC_HEAT]
+			var/moles = giver_gases[giver_id]
+			total_gas_mixture.adjustGas(giver_id, moles)
 
 		total_thermal_energy += THERMAL_ENERGY(gas_mixture)
 
+	total_heat_capacity = total_gas_mixture.getHeatCapacity()
 	total_gas_mixture.temperature = total_heat_capacity ? (total_thermal_energy / total_heat_capacity) : 0
-
-	total_gas_mixture.garbage_collect()
 
 	if(total_gas_mixture.volume > 0)
 		//Update individual gas_mixtures by volume ratio
 		for(var/mixture in gas_mixture_list)
 			var/datum/gas_mixture/gas_mixture = mixture
-			gas_mixture.copy_from(total_gas_mixture, gas_mixture.volume / total_gas_mixture.volume)
+			gas_mixture.copyFrom(total_gas_mixture, gas_mixture.volume / total_gas_mixture.volume)
+
+/*
+/proc/equalize_gases(list/datum/gas_mixture/gases)
+	//Calculate totals from individual components
+	var/total_volume = 0
+	var/total_thermal_energy = 0
+	var/total_heat_capacity = 0
+
+	var/list/total_gas = list()
+	for(var/datum/gas_mixture/gasmix in gases)
+		total_volume += gasmix.volume
+		var/temp_heatcap = gasmix.getHeatCapacity()
+		total_thermal_energy += gasmix.temperature * temp_heatcap
+		total_heat_capacity += temp_heatcap
+		for(var/g in gasmix.getGases())
+			total_gas[g] += gasmix.gas[g]
+
+	if(total_volume > 0)
+		var/datum/gas_mixture/combined = new(total_volume)
+		combined.gas = total_gas
+
+		//Calculate temperature
+		if(total_heat_capacity > 0)
+			combined.temperature = total_thermal_energy / total_heat_capacity
+		combined.updateValues()
+
+		//Allow for reactions
+		combined.react()
+
+		//Average out the gases
+		for(var/g in combined.getGases())
+			combined.gas[g] /= total_volume
+
+		//Update individual gas_mixtures
+		for(var/datum/gas_mixture/gasmix in gases)
+			gasmix.gas = combined.gas.Copy()
+			gasmix.temperature = combined.temperature
+			gasmix.multiply(gasmix.volume)
+
+	return 1
+*/

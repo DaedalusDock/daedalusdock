@@ -10,7 +10,7 @@
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS)
 	baseturfs = /turf/open/misc/asteroid/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 	opacity = TRUE
 	density = TRUE
 	plane = GAME_PLANE_UPPER
@@ -130,10 +130,11 @@
 	var/old_type = type
 	if(defer_change) // TODO: make the defer change var a var for any changeturf flag
 		flags = CHANGETURF_DEFER_CHANGE
-	var/turf/open/mined = ScrapeAway(null, flags)
+	ScrapeAway(null, flags)
+	SSzas.mark_for_update(src)
 	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
 	playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE) //beautiful destruction
-	mined.update_visuals()
+	//mined.update_visuals()
 
 /turf/closed/mineral/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	if((user.environment_smash & ENVIRONMENT_SMASH_WALLS) || (user.environment_smash & ENVIRONMENT_SMASH_RWALLS))
@@ -223,7 +224,7 @@
 /turf/closed/mineral/random/high_chance/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 	mineralSpawnChanceList = list(
 		/obj/item/stack/ore/uranium = 35, /obj/item/stack/ore/diamond = 30, /obj/item/stack/ore/gold = 45, /obj/item/stack/ore/titanium = 45,
@@ -248,7 +249,7 @@
 /turf/closed/mineral/random/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 
 	mineralChance = 10
@@ -268,7 +269,7 @@
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 	weak_turf = TRUE
 
 /turf/closed/mineral/random/snow/Change_Ore(ore_type, random = 0)
@@ -310,7 +311,7 @@
 /turf/closed/mineral/random/labormineral/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 	mineralSpawnChanceList = list(
 		/obj/item/stack/ore/uranium = 3, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 8, /obj/item/stack/ore/titanium = 8,
@@ -329,7 +330,7 @@
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 	defer_change = TRUE
 	mineralSpawnChanceList = list(
 		/obj/item/stack/ore/uranium = 3, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 8, /obj/item/stack/ore/titanium = 8,
@@ -356,7 +357,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
 	baseturfs = /turf/open/misc/asteroid/snow/ice
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	defer_change = TRUE
 
 /turf/closed/mineral/uranium
@@ -374,7 +375,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
 	baseturfs = /turf/open/misc/asteroid/snow/ice
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	defer_change = TRUE
 
 /turf/closed/mineral/gold
@@ -384,7 +385,7 @@
 /turf/closed/mineral/gold/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 
 /turf/closed/mineral/silver
@@ -394,7 +395,7 @@
 /turf/closed/mineral/silver/ice/icemoon
 	turf_type = /turf/open/misc/asteroid/snow/ice/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/closed/mineral/titanium
 	mineralType = /obj/item/stack/ore/titanium
@@ -411,7 +412,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
 	baseturfs = /turf/open/misc/asteroid/snow/ice
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	defer_change = TRUE
 
 /turf/closed/mineral/bananium
@@ -427,13 +428,13 @@
 /turf/closed/mineral/bscrystal/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 
 /turf/closed/mineral/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt
 	baseturfs = /turf/open/misc/asteroid/basalt
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 /turf/closed/mineral/volcanic/lava_land_surface
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
@@ -449,7 +450,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
 	baseturfs = /turf/open/misc/ashplanet/wateryrock
-	initial_gas_mix = OPENTURF_LOW_PRESSURE
+	initial_gas = OPENTURF_LOW_PRESSURE
 	turf_type = /turf/open/misc/ashplanet/rocky
 	defer_change = TRUE
 
@@ -462,14 +463,14 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
 	baseturfs = /turf/open/misc/asteroid/snow
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	turf_type = /turf/open/misc/asteroid/snow
 	defer_change = TRUE
 
 /turf/closed/mineral/snowmountain/icemoon
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/closed/mineral/snowmountain/cavern
 	name = "ice cavern rock"
@@ -484,7 +485,7 @@
 /turf/closed/mineral/snowmountain/cavern/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
 	turf_type = /turf/open/misc/asteroid/snow/ice/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 //yoo RED ROCK RED ROCK
 
@@ -598,14 +599,15 @@
 	var/old_type = type
 	if(defer_change) // TODO: make the defer change var a var for any changeturf flag
 		flags = CHANGETURF_DEFER_CHANGE
-	var/turf/open/mined = ScrapeAway(null, flags)
+	ScrapeAway(null, flags)
+	SSzas.mark_for_update(src)
 	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
-	mined.update_visuals()
+	//mined.update_visuals()
 
 /turf/closed/mineral/gibtonite/volcanic
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = TRUE
 
 /turf/closed/mineral/gibtonite/ice
@@ -615,20 +617,20 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
 	baseturfs = /turf/open/misc/asteroid/snow/ice
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	defer_change = TRUE
 
 /turf/closed/mineral/gibtonite/ice/icemoon
 	turf_type = /turf/open/misc/asteroid/snow/ice/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/closed/mineral/strong
 	name = "Very strong rock"
 	desc = "Seems to be stronger than the other rocks in the area. Only a master of mining techniques could destroy this."
 	turf_type = /turf/open/misc/asteroid/basalt/lava_land_surface
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = 1
 	smooth_icon = 'icons/turf/walls/legacy/rock_wall.dmi'
 	base_icon_state = "rock_wall"
@@ -656,10 +658,11 @@
 	var/old_type = type
 	if(defer_change) // TODO: make the defer change var a var for any changeturf flag
 		flags = CHANGETURF_DEFER_CHANGE
-	var/turf/open/mined = ScrapeAway(null, flags)
+	ScrapeAway(null, flags)
+	SSzas.mark_for_update(src)
 	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
 	playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE) //beautiful destruction
-	mined.update_visuals()
+	//mined.update_visuals()
 	H.mind?.adjust_experience(/datum/skill/mining, 100) //yay!
 
 /turf/closed/mineral/strong/proc/drop_ores()

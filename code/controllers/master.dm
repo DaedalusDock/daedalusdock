@@ -241,6 +241,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			if (subsystem.flags & SS_NO_INIT || subsystem.initialized) //Don't init SSs with the correspondig flag or if they already are initialzized
 				continue
 			current_initializing_subsystem = subsystem
+			to_chat(world, span_blue(span_bold("Initializing [subsystem.name]...")))
 			subsystem.Initialize(REALTIMEOFDAY)
 			CHECK_TICK
 		current_initializing_subsystem = null

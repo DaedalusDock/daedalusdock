@@ -53,17 +53,17 @@
 	if(!partner)
 		partner_ref = null
 		return
-	if(SSair.times_fired <= update_cycle)
+	if(SSzas.times_fired <= update_cycle)
 		return
 
-	update_cycle = SSair.times_fired
-	partner.update_cycle = SSair.times_fired
+	update_cycle = SSzas.times_fired
+	partner.update_cycle = SSzas.times_fired
 
 	var/datum/gas_mixture/air_contents = airs[1]
 	var/datum/gas_mixture/partnerair_contents = partner.airs[1]
 
-	var/air_heat_capacity = air_contents.heat_capacity()
-	var/other_air_heat_capacity = partnerair_contents.heat_capacity()
+	var/air_heat_capacity = air_contents.getHeatCapacity()
+	var/other_air_heat_capacity = partnerair_contents.getHeatCapacity()
 	var/combined_heat_capacity = other_air_heat_capacity + air_heat_capacity
 
 	var/old_temperature = air_contents.temperature

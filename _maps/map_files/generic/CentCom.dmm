@@ -183,7 +183,7 @@
 	dir = 6
 	},
 /turf/open/floor/catwalk_floor/iron_smooth{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/syndicate_mothership)
 "aJ" = (
@@ -281,7 +281,7 @@
 "aU" = (
 /obj/structure/flora/tree/dead,
 /turf/open/misc/asteroid/basalt/wasteland{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "aV" = (
@@ -1952,10 +1952,7 @@
 	icon_state = "ladder10";
 	invisibility = 100
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/awaymission/errorroom)
 "fA" = (
 /obj/machinery/vending/cola,
@@ -2547,7 +2544,7 @@
 /area/syndicate_mothership/control)
 "hs" = (
 /turf/open/misc/asteroid/basalt/wasteland{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "ht" = (
@@ -2894,10 +2891,7 @@
 /turf/open/floor/iron,
 /area/syndicate_mothership/control)
 "ik" = (
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/awaymission/errorroom)
 "il" = (
 /turf/closed/indestructible/riveted,
@@ -5391,9 +5385,7 @@
 	pixel_x = -4;
 	pixel_y = 4
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "pi" = (
 /obj/structure/table/reinforced,
@@ -5700,9 +5692,7 @@
 /turf/open/floor/iron/dark,
 /area/tdome/administration)
 "qe" = (
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "qf" = (
 /obj/structure/chair/comfy/black{
@@ -6325,7 +6315,7 @@
 /area/syndicate_mothership/control)
 "sm" = (
 /obj/structure/window/paperframe{
-	can_atmos_pass = 0
+	can_atmos_pass = 4
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -8545,10 +8535,7 @@
 /area/centcom/supply)
 "zi" = (
 /obj/item/rupee,
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/awaymission/errorroom)
 "zk" = (
 /obj/machinery/door/airlock/medical/glass{
@@ -8948,9 +8935,7 @@
 	pixel_x = 4;
 	pixel_y = -4
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "Ak" = (
 /obj/effect/turf_decal/tile/bar,
@@ -11298,7 +11283,7 @@
 /obj/structure/railing,
 /turf/open/floor/iron/stairs/old{
 	dir = 8;
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/syndicate_mothership)
 "GS" = (
@@ -11390,9 +11375,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "Hj" = (
 /obj/structure/closet/crate/bin,
@@ -12287,7 +12270,7 @@
 /obj/item/flashlight/lantern,
 /turf/open/misc/ironsand{
 	color = "#525252";
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "JZ" = (
@@ -12564,9 +12547,7 @@
 /obj/structure/flora/rock/pile/largejungle{
 	pixel_y = -3
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "KU" = (
 /obj/structure/closet/emcloset,
@@ -13509,7 +13490,7 @@
 "NS" = (
 /turf/open/misc/ironsand{
 	color = "#525252";
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "NU" = (
@@ -13794,7 +13775,7 @@
 "OC" = (
 /obj/structure/flora/rock/pile,
 /turf/open/misc/asteroid/basalt/wasteland{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "OD" = (
@@ -14088,9 +14069,7 @@
 	pixel_x = -4;
 	pixel_y = -4
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "Pq" = (
 /turf/open/floor/iron/grimy,
@@ -14324,7 +14303,7 @@
 	dir = 4
 	},
 /turf/open/floor/catwalk_floor/iron_smooth{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/syndicate_mothership)
 "PV" = (
@@ -14467,7 +14446,7 @@
 /area/syndicate_mothership/control)
 "Qu" = (
 /obj/structure/window/paperframe{
-	can_atmos_pass = 0
+	can_atmos_pass = 4
 	},
 /obj/effect/turf_decal/siding/wood,
 /obj/effect/turf_decal/siding/wood{
@@ -14849,9 +14828,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/evacuation)
 "Rt" = (
-/turf/open/water{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/water,
 /area/centcom/holding)
 "Ru" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14862,7 +14839,7 @@
 /area/centcom/supplypod)
 "Rv" = (
 /obj/structure/window/paperframe{
-	can_atmos_pass = 0
+	can_atmos_pass = 4
 	},
 /turf/open/floor/wood/tile,
 /area/centcom/holding)
@@ -16088,9 +16065,7 @@
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/centcom/holding)
 "UM" = (
 /obj/effect/turf_decal/tile/brown{
@@ -16244,7 +16219,7 @@
 /obj/structure/flora/rock/pile,
 /turf/open/misc/ironsand{
 	color = "#525252";
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/centcom/holding)
 "Vg" = (
@@ -17569,7 +17544,7 @@
 "YG" = (
 /obj/structure/railing,
 /turf/open/floor/catwalk_floor/iron_smooth{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/syndicate_mothership)
 "YI" = (
@@ -17930,7 +17905,7 @@
 	dir = 4
 	},
 /obj/structure/window/paperframe{
-	can_atmos_pass = 0
+	can_atmos_pass = 4
 	},
 /turf/open/floor/sepia,
 /area/centcom/holding)
@@ -17944,10 +17919,7 @@
 /area/syndicate_mothership/expansion_bombthreat)
 "ZE" = (
 /obj/effect/landmark/error,
-/turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0
-	},
+/turf/open/misc/ashplanet/wateryrock,
 /area/awaymission/errorroom)
 "ZF" = (
 /obj/structure/dresser,

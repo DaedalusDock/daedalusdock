@@ -116,7 +116,7 @@ var/datum/gas_mixture/air = new
 air.assert_gas(/datum/gas/oxygen)
 air.gases[/datum/gas/oxygen][MOLES] = 100
 world << air.gases[/datum/gas/oxygen][GAS_META][META_GAS_NAME] //outputs "Oxygen"
-world << air.gases.heat_capacity() //outputs 2000 (100 mol * 20 J/K/mol)
+world << air.gases.getHeatCapacity() //outputs 2000 (100 mol * 20 J/K/mol)
 air.gases[/datum/gas/oxygen][MOLES] -= 110
 air.garbage_collect() //oxygen is now removed from the gases list, since it was empty
 ```
@@ -128,16 +128,16 @@ Of particular note in this snippet are the two procs assert_gas() and garbage_co
 * *`/datum/gas_mixture/proc/assert_gas()`* - Used before accessing a particular type of gas.
 * *`/datum/gas_mixture/proc/assert_gases()`* - Shorthand for calling assert_gas() multiple times.
 * *`/datum/gas_mixture/proc/garbage_collect()`* - Used after removing any number of moles from a mixture.
-* *`/datum/gas_mixture/proc/return_pressure()`* - Pressure is what should be displayed to players to quantify gas; measured in kilopascals.
+* *`/datum/gas_mixture/proc/returnPressure()`* - Pressure is what should be displayed to players to quantify gas; measured in kilopascals.
 * *`/datum/gas_mixture/var/temperature`* - Measured in kelvins. Useful constants are T0C and T20C for 0 and 20 degrees Celsius respectively, and TCMB,the temperature of space and the lower bound for temperature in atmos.
 * *`/datum/gas_mixture/var/volume`* - Measured in liters.
 
 While we're on the subject, `/datum/gas_mixture` has two subtypes.
-The first is `/datum/gas_mixture/turf`, which exists for literally one purpose. When a turf is empty, we want it to have the same heat capacity as space. This lets us achieve that by overriding `heat_capacity()`
+The first is `/datum/gas_mixture/turf`, which exists for literally one purpose. When a turf is empty, we want it to have the same heat capacity as space. This lets us achieve that by overriding `getHeatCapacity()`
 
 The second is `/datum/gas_mixture/immutable`, which itself has two subtypes.
 The type is built to allow for gasmixtures that serve as infinite sources of "something", which can't be changed or mutated.
-It's used by `/datum/gas_mixture/immutable/space`, which implements some particular things for `heat_capacity()` and some optimizations for gas operations.
+It's used by `/datum/gas_mixture/immutable/space`, which implements some particular things for `getHeatCapacity()` and some optimizations for gas operations.
 It's also implemented by `/datum/gas_mixture/immutable/planetary`, which is used for planetary turfs, and has some code that makes actually having a gasmix possible.
 
 

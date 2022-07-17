@@ -1,5 +1,5 @@
-#define MAX_RADIUS_REQUIRED 20 //maxcap
-#define MIN_RADIUS_REQUIRED 4 //1, 2, 4
+#define MAX_RADIUS_REQUIRED zas_settings.maxex_light_range //maxcap
+#define MIN_RADIUS_REQUIRED zas_settings.maxex_light_range/5 //1, 2, 4
 /// How long the compression test can last before the machine just gives up and ejects the items.
 #define COMPRESSION_TEST_TIME (SSOBJ_DT SECONDS * 5)
 
@@ -216,8 +216,8 @@
 	var/cap_multiplier = SSmapping.level_trait(location.z, ZTRAIT_BOMBCAP_MULTIPLIER)
 	if(isnull(cap_multiplier))
 		cap_multiplier = 1
-	var/capped_heavy = min(GLOB.MAX_EX_DEVESTATION_RANGE * cap_multiplier, heavy)
-	var/capped_medium = min(GLOB.MAX_EX_HEAVY_RANGE * cap_multiplier, medium)
+	var/capped_heavy = min(zas_settings.maxex_devastation_range * cap_multiplier, heavy)
+	var/capped_medium = min(zas_settings.maxex_heavy_range * cap_multiplier, medium)
 	SSexplosions.shake_the_room(location, explosion_range, (capped_heavy * 15) + (capped_medium * 20), capped_heavy, capped_medium)
 
 	if(explosion_range < required_range)

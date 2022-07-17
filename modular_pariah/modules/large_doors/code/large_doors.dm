@@ -61,7 +61,7 @@
 	density = TRUE
 	opacity = TRUE
 	anchored = TRUE
-	can_atmos_pass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_DENSITY
 	var/parent_airlock
 
 /obj/airlock_filler_object/CanAllowThrough(atom/movable/mover, turf/target)

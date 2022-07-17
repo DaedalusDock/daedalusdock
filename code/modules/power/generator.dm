@@ -20,12 +20,12 @@
 	AddComponent(/datum/component/simple_rotation)
 	find_circs()
 	connect_to_network()
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 	update_appearance()
 
 /obj/machinery/power/generator/Destroy()
 	kill_circs()
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	return ..()
 
 /obj/machinery/power/generator/update_overlays()
@@ -53,8 +53,8 @@
 
 		if(cold_air && hot_air)
 
-			var/cold_air_heat_capacity = cold_air.heat_capacity()
-			var/hot_air_heat_capacity = hot_air.heat_capacity()
+			var/cold_air_heat_capacity = cold_air.getHeatCapacity()
+			var/hot_air_heat_capacity = hot_air.getHeatCapacity()
 
 			var/delta_temperature = hot_air.temperature - cold_air.temperature
 
@@ -116,11 +116,11 @@
 
 		t += "<B><font color='blue'>Cold loop</font></B><BR>"
 		t += "Temperature Inlet: [round(cold_circ_air2.temperature, 0.1)] K / Outlet: [round(cold_circ_air1.temperature, 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(cold_circ_air2.return_pressure(), 0.1)] kPa /  Outlet: [round(cold_circ_air1.return_pressure(), 0.1)] kPa<BR>"
+		t += "Pressure Inlet: [round(cold_circ_air2.returnPressure(), 0.1)] kPa /  Outlet: [round(cold_circ_air1.returnPressure(), 0.1)] kPa<BR>"
 
 		t += "<B><font color='red'>Hot loop</font></B><BR>"
 		t += "Temperature Inlet: [round(hot_circ_air2.temperature, 0.1)] K / Outlet: [round(hot_circ_air1.temperature, 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(hot_circ_air2.return_pressure(), 0.1)] kPa / Outlet: [round(hot_circ_air1.return_pressure(), 0.1)] kPa<BR>"
+		t += "Pressure Inlet: [round(hot_circ_air2.returnPressure(), 0.1)] kPa / Outlet: [round(hot_circ_air1.returnPressure(), 0.1)] kPa<BR>"
 
 		t += "</div>"
 	else if(!hot_circ && cold_circ)

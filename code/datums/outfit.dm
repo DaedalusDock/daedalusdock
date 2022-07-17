@@ -391,7 +391,7 @@
 	.["accessory"] = accessory
 
 /// Copy most vars from another outfit to this one
-/datum/outfit/proc/copy_from(datum/outfit/target)
+/datum/outfit/proc/copyFrom(datum/outfit/target)
 	name = target.name
 	uniform = target.uniform
 	suit = target.suit

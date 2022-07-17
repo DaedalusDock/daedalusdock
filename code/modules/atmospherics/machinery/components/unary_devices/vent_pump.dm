@@ -5,6 +5,7 @@
 #define SIPHONING 0
 #define RELEASING 1
 
+#define DEFAULT_PRESSURE_DELTA 10000
 /obj/machinery/atmospherics/components/unary/vent_pump
 	icon_state = "vent_map-3"
 
@@ -80,6 +81,10 @@
 			icon_state = "vent_in-off"
 		return
 
+	if(!COOLDOWN_FINISHED(src, hibernating))
+		icon_state = "vent_hibernating"
+		return
+
 	if(icon_state == ("vent_out-off" || "vent_in-off" || "vent_off"))
 		if(pump_direction & RELEASING)
 			icon_state = "vent_out"
@@ -104,47 +109,49 @@
 	var/turf/open/us = loc
 	if(!istype(us))
 		return
+
 	var/datum/gas_mixture/air_contents = airs[1]
 	var/datum/gas_mixture/environment = us.return_air()
-	var/environment_pressure = environment.return_pressure()
-
-	if(pump_direction & RELEASING) // internal -> external
-		var/pressure_delta = 10000
-
-		if(pressure_checks&EXT_BOUND)
-			pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
-		if(pressure_checks&INT_BOUND)
-			pressure_delta = min(pressure_delta, (air_contents.return_pressure() - internal_pressure_bound))
-
-		if(pressure_delta > 0)
-			if(air_contents.temperature > 0)
-				var/transfer_moles = (pressure_delta * environment.volume) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
-				var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
-
-				if(!removed || !removed.total_moles())
-					return
-
-				loc.assume_air(removed)
-				update_parents()
-
-	else // external -> internal
-		var/pressure_delta = 10000
-		if(pressure_checks&EXT_BOUND)
-			pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
-		if(pressure_checks&INT_BOUND)
-			pressure_delta = min(pressure_delta, (internal_pressure_bound - air_contents.return_pressure()))
-
-		if(pressure_delta > 0 && environment.temperature > 0)
-			var/transfer_moles = (pressure_delta * air_contents.volume) / (environment.temperature * R_IDEAL_GAS_EQUATION)
-
-			var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
-
-			if(!removed || !removed.total_moles()) //No venting from space 4head
-				return
-
-			air_contents.merge(removed)
+	var/pressure_delta = get_pressure_delta(environment)
+	if((environment.temperature || air_contents.temperature) && pressure_delta > 0.5)
+		if(pump_direction & RELEASING) //internal -> external
+			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
+			if(pump_gas(air_contents, environment, transfer_moles) == -1)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 			update_parents()
 
+		else //external -> internal
+			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta)
+
+			//limit flow rate from turfs
+			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
+			if(pump_gas(environment, air_contents, transfer_moles) == -1)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
+			update_parents()
+
+	else
+		if(pump_direction && (pressure_checks&EXT_BOUND))
+			COOLDOWN_START(src, hibernating, 15 SECONDS)
+
+	update_icon_nopipes()
+
+/obj/machinery/atmospherics/components/unary/vent_pump/proc/get_pressure_delta(datum/gas_mixture/environment)
+	var/pressure_delta = DEFAULT_PRESSURE_DELTA
+	var/environment_pressure = environment.returnPressure()
+	var/datum/gas_mixture/air_contents = airs[1]
+
+	if(pump_direction) //internal -> external
+		if(pressure_checks & EXT_BOUND)
+			pressure_delta = min(pressure_delta, external_pressure_bound - environment_pressure) //increasing the pressure here
+		if(pressure_checks & INT_BOUND)
+			pressure_delta = min(pressure_delta, air_contents.returnPressure() - internal_pressure_bound) //decreasing the pressure here
+	else //external -> internal
+		if(pressure_checks & EXT_BOUND)
+			pressure_delta = min(pressure_delta, environment_pressure - external_pressure_bound) //decreasing the pressure here
+		if(pressure_checks & INT_BOUND)
+			pressure_delta = min(pressure_delta, internal_pressure_bound - air_contents.returnPressure()) //increasing the pressure here
+
+	return pressure_delta
 //Radio remote control
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/set_frequency(new_frequency)
@@ -204,6 +211,8 @@
 	// log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/components/unary/vent_pump/receive_signal([signal.debug_print()])")
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return
+
+	COOLDOWN_RESET(src, hibernating)
 
 	var/atom/signal_sender = signal.data["user"]
 
@@ -298,6 +307,8 @@
 	. = ..()
 	if(welded)
 		. += "It seems welded shut."
+	if(!COOLDOWN_FINISHED(src, hibernating))
+		. += span_notice("It is sleeping to conserve power.")
 
 /obj/machinery/atmospherics/components/unary/vent_pump/power_change()
 	. = ..()

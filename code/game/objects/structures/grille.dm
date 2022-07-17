@@ -11,8 +11,9 @@
 	density = TRUE
 	anchored = TRUE
 	pass_flags_self = PASSGRILLE
+	can_atmos_pass = CANPASS_ALWAYS
 	flags_1 = CONDUCT_1
-	pressure_resistance = 5*ONE_ATMOSPHERE
+	//pressure_resistance = 5*ONE_ATMOSPHERE
 	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 50
 	integrity_failure = 0.4
@@ -22,10 +23,6 @@
 	var/rods_type = /obj/item/stack/rods
 	var/rods_amount = 2
 	var/rods_broken = TRUE
-
-/obj/structure/grille/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/atmos_sensitive, mapload)
 
 /obj/structure/grille/Destroy()
 	update_cable_icons_on_turf(get_turf(src))
@@ -257,11 +254,9 @@
 			return FALSE
 	return FALSE
 
-/obj/structure/grille/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > T0C + 1500 && !broken
-
 /obj/structure/grille/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(1, BURN, 0, 0)
+	if(exposed_temperature > T0C + 1500 && !broken)
+		take_damage(1, BURN, 0, 0)
 
 /obj/structure/grille/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(isobj(AM))

@@ -7,7 +7,6 @@ export type Gasmix = {
   volume: number;
   pressure: number;
   total_moles: number;
-  reactions: [string, string, number][]; // ID, name, and amount.
   reference: string;
 };
 
@@ -17,9 +16,6 @@ type GasmixParserProps = {
   temperatureOnClick?: () => void;
   volumeOnClick?: () => void;
   pressureOnClick?: () => void;
-  reactionOnClick?: (reaction_id: string) => void;
-  // Whether we need to show the number of the reaction or not
-  detailedReactions?: boolean;
 };
 
 export const GasmixParser = (props: GasmixParserProps, context) => {
@@ -29,12 +25,10 @@ export const GasmixParser = (props: GasmixParserProps, context) => {
     temperatureOnClick,
     volumeOnClick,
     pressureOnClick,
-    reactionOnClick,
-    detailedReactions,
     ...rest
   } = props;
 
-  const { gases, temperature, volume, pressure, total_moles, reactions }
+  const { gases, temperature, volume, pressure, total_moles }
     = gasmix;
 
   return !total_moles ? (
@@ -84,37 +78,6 @@ export const GasmixParser = (props: GasmixParserProps, context) => {
         }>
         {(total_moles ? pressure.toFixed(2) : '-') + ' kPa'}
       </LabeledList.Item>
-      {detailedReactions ? (
-        reactions.map((reaction) => (
-          <LabeledList.Item
-            key={`${gasmix.reference}-${reaction[0]}`}
-            label={
-              reactionOnClick ? (
-                <Button
-                  content={reaction[1]}
-                  onClick={reactionOnClick(reaction[0])}
-                />
-              ) : (reaction[1])
-            }>
-            {reaction[2]}
-          </LabeledList.Item>
-        ))
-      ) : (
-        <LabeledList.Item label="Gas Reactions">
-          {reactions.length
-            ? reactions.map((reaction) =>
-              reactionOnClick ? (
-                <Box mb="0.5em">
-                  <Button
-                    content={reaction[1]}
-                    onClick={() => reactionOnClick(reaction[0])}
-                  />
-                </Box>
-              ) : (reaction[1])
-            )
-            : 'No reactions detected'}
-        </LabeledList.Item>
-      )}
     </LabeledList>
   );
 };

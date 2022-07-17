@@ -55,7 +55,7 @@
 
 /obj/projectile/bullet/cannonball/biggest_one/on_hit(atom/target, blocked = FALSE)
 	if(projectile_piercing == NONE)
-		explosion(target, devastation_range = GLOB.MAX_EX_DEVESTATION_RANGE, heavy_impact_range = GLOB.MAX_EX_HEAVY_RANGE, light_impact_range = GLOB.MAX_EX_LIGHT_RANGE, flash_range = GLOB.MAX_EX_FLASH_RANGE, explosion_cause = src)
+		explosion(target,devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flash_range = zas_settings.maxex_flash_range, explosion_cause = src)
 	. = ..()
 
 /obj/projectile/bullet/cannonball/trashball

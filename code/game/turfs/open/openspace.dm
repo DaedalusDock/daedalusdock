@@ -18,16 +18,21 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	baseturfs = /turf/open/openspace
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
+	#ifndef ZASDBG //Multi-Z zone debugging
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	#endif
 	pathing_pass_method = TURF_PATHING_PASS_PROC
+
+	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
+
 	var/can_cover_up = TRUE
 	var/can_build_on = TRUE
 
 /turf/open/openspace/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/openspace/airless/planetary
-	planetary_atmos = TRUE
+	simulated = FALSE
 
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()
@@ -166,8 +171,9 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /turf/open/openspace/icemoon
 	name = "ice chasm"
 	baseturfs = /turf/open/openspace/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
-	planetary_atmos = TRUE
+	initial_gas = ICEMOON_DEFAULT_ATMOS
+	simulated = FALSE
+
 	var/replacement_turf = /turf/open/misc/asteroid/snow/icemoon
 	/// Replaces itself with replacement_turf if the turf below this one is in a no ruins allowed area (usually ruins themselves)
 	var/protect_ruin = TRUE

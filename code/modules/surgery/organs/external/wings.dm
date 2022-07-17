@@ -78,7 +78,7 @@
 		return FALSE
 
 	var/datum/gas_mixture/environment = location.return_air()
-	if(environment?.return_pressure() < HAZARD_LOW_PRESSURE + 10)
+	if(environment?.returnPressure() < HAZARD_LOW_PRESSURE + 10)
 		to_chat(human, span_warning("The atmosphere is too thin for you to fly!"))
 		return FALSE
 	else
@@ -202,7 +202,7 @@
 
 	if(!isspaceturf(owner.loc) && !burnt)
 		var/datum/gas_mixture/current = owner.loc.return_air()
-		if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
+		if(current && (current.returnPressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
 			ADD_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, src)
 			return
 

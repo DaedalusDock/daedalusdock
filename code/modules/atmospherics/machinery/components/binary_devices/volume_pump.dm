@@ -67,8 +67,8 @@
 
 // Pump mechanism just won't do anything if the pressure is too high/too low unless you overclock it.
 
-	var/input_starting_pressure = air1.return_pressure()
-	var/output_starting_pressure = air2.return_pressure()
+	var/input_starting_pressure = air1.returnPressure()
+	var/output_starting_pressure = air2.returnPressure()
 
 	if((input_starting_pressure < 0.01) || ((output_starting_pressure > 9000))&&!overclocked)
 		return
@@ -79,15 +79,15 @@
 
 	var/transfer_ratio = transfer_rate / air1.volume
 
-	var/datum/gas_mixture/removed = air1.remove_ratio(transfer_ratio)
+	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
 
-	if(!removed.total_moles())
+	if(!removed.get_moles())
 		return
 
 	if(overclocked)//Some of the gas from the mixture leaks to the environment when overclocked
 		var/turf/open/T = loc
 		if(istype(T))
-			var/datum/gas_mixture/leaked = removed.remove_ratio(VOLUME_PUMP_LEAK_AMOUNT)
+			var/datum/gas_mixture/leaked = removed.removeRatio(VOLUME_PUMP_LEAK_AMOUNT)
 			T.assume_air(leaked)
 
 	air2.merge(removed)
@@ -324,7 +324,7 @@
 		return
 	var/datum/gas_mixture/air_input = connected_pump.airs[1]
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
-	input_pressure.set_output(air_input.return_pressure())
-	output_pressure.set_output(air_output.return_pressure())
-	input_temperature.set_output(air_input.return_temperature())
-	output_temperature.set_output(air_output.return_temperature())
+	input_pressure.set_output(air_input.returnPressure())
+	output_pressure.set_output(air_output.returnPressure())
+	input_temperature.set_output(air_input.get_temperature())
+	output_temperature.set_output(air_output.get_temperature())

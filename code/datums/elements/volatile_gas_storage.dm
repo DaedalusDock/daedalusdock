@@ -28,7 +28,7 @@
 	UnregisterSignal(source, COMSIG_ATOM_BREAK)
 
 /datum/element/volatile_gas_storage/proc/Break(atom/origin, datum/gas_mixture/released_gas)
-	var/expelled_pressure = min(released_gas?.return_pressure(), max_explosive_pressure)
+	var/expelled_pressure = min(released_gas?.returnPressure(), max_explosive_pressure)
 
 	if(expelled_pressure < minimum_explosive_pressure)
 		return

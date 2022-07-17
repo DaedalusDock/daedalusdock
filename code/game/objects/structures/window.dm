@@ -4,14 +4,14 @@
 	icon_state = "window"
 	density = TRUE
 	layer = ABOVE_OBJ_LAYER //Just above doors
-	pressure_resistance = 4*ONE_ATMOSPHERE
+	//pressure_resistance = 4*ONE_ATMOSPHERE
 	anchored = TRUE //initially is 0 for tile smoothing
 	flags_1 = ON_BORDER_1
 	max_integrity = 25
 	can_be_unanchored = TRUE
 	resistance_flags = ACID_PROOF
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
-	can_atmos_pass = ATMOS_PASS_PROC
+	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 	pass_flags_self = PASSGLASS
 	set_dir_on_move = FALSE
@@ -33,6 +33,10 @@
 	var/hit_sound = 'sound/effects/glasshit.ogg'
 	/// If some inconsiderate jerk has had their blood spilled on this window, thus making it cleanable
 	var/bloodied = FALSE
+	///Snowflake for fire act damage
+	var/damage_per_fire_tick = 1
+	///The amount of heat needed to start damaging the window
+	var/melting_point = T0C + 3000 //See, because some dipass decided to make the station 50% glass, NT opted to infuse all the windows with plasma.
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -58,7 +62,7 @@
 	if(reinf && anchored)
 		state = RWINDOW_SECURE
 
-	air_update_turf(TRUE, TRUE)
+	update_nearby_tiles()
 
 	if(fulltile)
 		setDir()
@@ -69,7 +73,6 @@
 
 	flags_1 |= ALLOW_DARK_PAINTS_1
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, .proc/on_painted)
-	AddElement(/datum/element/atmos_sensitive, mapload)
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src,.proc/AfterRotation))
 
 	var/static/list/loc_connections = list(
@@ -248,7 +251,7 @@
 
 /obj/structure/window/set_anchored(anchorvalue)
 	..()
-	air_update_turf(TRUE, anchorvalue)
+	//air_update_turf(TRUE, anchorvalue)
 	update_nearby_icons()
 
 /obj/structure/window/proc/check_state(checked_state)
@@ -277,9 +280,22 @@
 
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	var/initial_damage_percentage = get_integrity_percentage()
 	. = ..()
 	if(.) //received damage
 		update_nearby_icons()
+		if(atom_integrity > 0)
+			playsound(src, get_sfx(SFX_GLASS_CRACK), 100, TRUE)
+			var/damage_percentage = get_integrity_percentage()
+			if (damage_percentage >= 75 && initial_damage_percentage < 75)
+				visible_message(span_warning("\The [src] looks like it's about to shatter!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
+			else if (damage_percentage >= 50 && initial_damage_percentage < 50)
+				visible_message(span_warning("\The [src] looks seriously damaged!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
+			else if (damage_percentage >= 25 && initial_damage_percentage < 25)
+				visible_message(span_warning("Cracks begin to appear in \the [src]!"))
+				playsound(loc, get_sfx(SFX_GLASS_CRACK), 100, 1)
 
 /obj/structure/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -291,12 +307,16 @@
 		if(BURN)
 			playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 
+/obj/structure/window/ex_act(severity, target)
+	return ..(min(EXPLODE_DEVASTATE, severity + 1), target)
+
 
 /obj/structure/window/deconstruct(disassembled = TRUE)
 	if(QDELETED(src))
 		return
 	if(!disassembled)
 		playsound(src, break_sound, 70, TRUE)
+		visible_message(span_danger("\The [src] shatters into pieces!"), null, "You hear glass shatter!")
 		if(!(flags_1 & NODECONSTRUCT_1))
 			for(var/obj/item/shard/debris in spawnDebris(drop_location()))
 				transfer_fingerprints_to(debris) // transfer fingerprints to shards only
@@ -313,7 +333,7 @@
 		. += new /obj/item/shard(location)
 
 /obj/structure/window/proc/AfterRotation(mob/user, degrees)
-	air_update_turf(TRUE, FALSE)
+	update_nearby_tiles()
 
 /obj/structure/window/proc/on_painted(obj/structure/window/source, is_dark_color)
 	SIGNAL_HANDLER
@@ -324,20 +344,32 @@
 
 /obj/structure/window/Destroy()
 	set_density(FALSE)
-	air_update_turf(TRUE, FALSE)
 	update_nearby_icons()
-	return ..()
+	can_atmos_pass = CANPASS_ALWAYS //hacky-sacky
+	update_nearby_tiles()
+
+	if(!fulltile)
+		var/turf/open/T = get_step(src, dir)
+		if(istype(T))
+			SSzas.mark_for_update(T)
+
+	. = ..()
 
 /obj/structure/window/Move()
-	var/turf/T = loc
+	update_nearby_tiles()
 	. = ..()
-	if(anchored)
-		move_update_air(T)
 
-/obj/structure/window/can_atmos_pass(turf/T, vertical = FALSE)
+/obj/structure/window/zas_canpass(turf/T)
+	if(QDELETED(src))
+		return AIR_ALLOWED
 	if(!anchored || !density)
-		return TRUE
-	return !(fulltile || dir == get_dir(loc, T))
+		return ZONE_BLOCKED
+	if(!fulltile)
+		if(get_dir(loc, T) & dir)
+			return AIR_BLOCKED|ZONE_BLOCKED
+		else
+			return AIR_ALLOWED
+	return AIR_BLOCKED|ZONE_BLOCKED
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
@@ -362,11 +394,9 @@
 	crack_overlay = mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1), appearance_flags = RESET_COLOR)
 	. += crack_overlay
 
-/obj/structure/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > T0C + heat_resistance
-
-/obj/structure/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(round(air.return_volume() / 100), BURN, 0, 0)
+/obj/structure/window/fire_act(exposed_temperature, exposed_volume)
+	if (exposed_temperature > melting_point)
+		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
 	return null
@@ -408,6 +438,7 @@
 	glass_type = /obj/item/stack/sheet/rglass
 	rad_insulation = RAD_HEAVY_INSULATION
 	receive_ricochet_chance_mod = 1.1
+	melting_point = T0C + 4000
 
 //this is shitcode but all of construction is shitcode and needs a refactor, it works for now
 //If you find this like 4 years later and construction still hasn't been refactored, I'm so sorry for this //Adding a timestamp, I found this in 2020, I hope it's from this year -Lemon
@@ -518,10 +549,10 @@
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/plasmaglass
 	rad_insulation = RAD_NO_INSULATION
+	melting_point = 25000 //Yeah fuck you
 
 /obj/structure/window/plasma/Initialize(mapload, direct)
 	. = ..()
-	RemoveElement(/datum/element/atmos_sensitive)
 
 /obj/structure/window/plasma/spawnDebris(location)
 	. = list()
@@ -555,6 +586,7 @@
 	damage_deflection = 21
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
+	melting_point = 25000
 
 /obj/structure/window/reinforced/plasma/block_superconductivity()
 	return TRUE
@@ -616,6 +648,7 @@
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	glass_amount = 2
+	melting_point = 25000
 
 /obj/structure/window/plasma/fulltile/unanchored
 	anchored = FALSE
@@ -636,6 +669,7 @@
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	glass_amount = 2
+	melting_point = 28000
 
 /obj/structure/window/reinforced/plasma/fulltile/unanchored
 	anchored = FALSE
@@ -680,6 +714,8 @@
 /obj/structure/window/reinforced/fulltile/ice
 	max_integrity = 150
 	glass_amount = 2
+	melting_point = T0C
+	damage_per_fire_tick = 15
 
 //there is a sub shuttle window in survival_pod.dm for mining pods
 /obj/structure/window/reinforced/shuttle//this is called reinforced because it is reinforced w/titanium
@@ -706,6 +742,8 @@
 	glass_type = /obj/item/stack/sheet/titaniumglass
 	glass_amount = 2
 	receive_ricochet_chance_mod = 1.2
+	melting_point = 8000
+	damage_per_fire_tick = 5
 	damage_deflection = 11
 
 /obj/structure/window/reinforced/shuttle/narsie_act()
@@ -741,6 +779,7 @@
 	glass_type = /obj/item/stack/sheet/plastitaniumglass
 	glass_amount = 2
 	rad_insulation = RAD_HEAVY_INSULATION
+	melting_point = 10000000 //Yeah this thing isnt melting
 
 /obj/structure/window/reinforced/plasma/plastitanium/unanchored
 	anchored = FALSE
@@ -763,13 +802,15 @@
 	glass_type = /obj/item/stack/sheet/paperframes
 	heat_resistance = 233
 	decon_speed = 10
-	can_atmos_pass = ATMOS_PASS_YES
+	can_atmos_pass = CANPASS_ALWAYS
 	resistance_flags = FLAMMABLE
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	knock_sound = SFX_PAGE_TURN
 	bash_sound = 'sound/weapons/slashmiss.ogg'
 	break_sound = 'sound/items/poster_ripped.ogg'
 	hit_sound = 'sound/weapons/slashmiss.ogg'
+	melting_point = T0C
+	damage_per_fire_tick = 15
 	var/static/mutable_appearance/torn = mutable_appearance('icons/obj/smooth_structures/paperframes.dmi',icon_state = "torn", layer = ABOVE_OBJ_LAYER - 0.1)
 	var/static/mutable_appearance/paper = mutable_appearance('icons/obj/smooth_structures/paperframes.dmi',icon_state = "paper", layer = ABOVE_OBJ_LAYER - 0.1)
 
@@ -811,7 +852,7 @@
 
 /obj/structure/window/paperframe/attackby(obj/item/W, mob/living/user)
 	if(W.get_temperature())
-		fire_act(W.get_temperature())
+		fire_act(null, W.get_temperature(), null)
 		return
 	if(user.combat_mode)
 		return ..()

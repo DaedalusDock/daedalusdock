@@ -7,7 +7,6 @@ import {
   Input,
   LabeledList,
   Section,
-  Stack,
   Tooltip,
 } from '../../components';
 
@@ -205,27 +204,6 @@ const ReactionHandbook = (props, context) => {
         </>
       )}
     </Section>
-  );
-};
-
-export const AtmosHandbookContent = (
-  props: { vertical?: boolean },
-  context
-) => {
-  return props.vertical ? (
-    <>
-      <GasHandbook />
-      <ReactionHandbook />
-    </>
-  ) : (
-    <Stack>
-      <Stack.Item grow>
-        <ReactionHandbook />
-      </Stack.Item>
-      <Stack.Item grow>
-        <GasHandbook />
-      </Stack.Item>
-    </Stack>
   );
 };
 

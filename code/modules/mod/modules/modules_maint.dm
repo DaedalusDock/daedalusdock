@@ -315,7 +315,7 @@
 	var/turf/open/openspace/turf_above = get_step_multiz(mod.wearer, UP)
 	if(current_turf && istype(turf_above))
 		current_turf.zFall(mod.wearer)
-	else if(!turf_above && istype(current_turf) && current_turf.planetary_atmos) //nothing holding you down
+	else if(!turf_above && istype(current_turf) && !current_turf.simulated) //nothing holding you down
 		INVOKE_ASYNC(src, .proc/fly_away)
 	else if(!(step_count % 2))
 		playsound(current_turf, 'sound/items/modsuit/atrocinator_step.ogg', 50)

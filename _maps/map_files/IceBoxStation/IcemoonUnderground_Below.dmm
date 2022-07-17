@@ -142,7 +142,8 @@
 /obj/structure/window/reinforced/spawner,
 /obj/item/throwing_star/toy,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas = list("oxygen" = 22, "nitrogen"=82);
+	temperature =293.15;
 	},
 /area/security/prison/rec)
 "bz" = (
@@ -2465,7 +2466,8 @@
 /obj/structure/flora/ausbushes/sparsegrass,
 /obj/machinery/light/warm/directional/north,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas = list("oxygen" = 22, "nitrogen"=82);
+	temperature =293.15;
 	},
 /area/security/prison/rec)
 "zD" = (
@@ -4244,7 +4246,8 @@
 /obj/structure/flora/junglebush,
 /obj/structure/flora/ausbushes/sparsegrass,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas = list("oxygen" = 22, "nitrogen"=82);
+	temperature =293.15;
 	},
 /area/security/prison/rec)
 "Rs" = (

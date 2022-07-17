@@ -216,3 +216,8 @@
 			continue
 		var/turf/oldT = moved_atoms[moved_object]
 		moved_object.lateShuttleMove(oldT, movement_force, movement_direction)
+
+
+	///THIS IS PROBABLY NOT THE ANSWER. BUT IT WORKS AND ISN'T TERRIBLY EXPENSIVE.
+	for(var/turf/T as anything in new_turfs)
+		SSzas.mark_for_update(T)

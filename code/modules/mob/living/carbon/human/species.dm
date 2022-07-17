@@ -185,7 +185,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/sound/miss_sound = 'sound/weapons/punchmiss.ogg'
 
 	///What gas does this species breathe? Used by suffocation screen alerts, most of actual gas breathing is handled by mutantlungs. See [life.dm][code/modules/mob/living/carbon/human/life.dm]
-	var/breathid = "o2"
+	var/breathid = GAS_OXYGEN
 
 	///What anim to use for dusting
 	var/dust_anim = "dust-h"
@@ -1691,7 +1691,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(mob/living/carbon/human/H, datum/gas_mixture/environment, delta_time, times_fired)
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	var/adjusted_pressure = H.calculate_affecting_pressure(pressure)
 
 	// Set alerts and apply damage based on the amount of pressure

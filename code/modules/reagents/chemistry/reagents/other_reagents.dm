@@ -915,7 +915,7 @@
 
 
 /datum/reagent/chlorine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.take_bodypart_damage(0.5*REM*delta_time, 0, 0, 0)
+	M.adjustToxLoss(3*REM*delta_time)
 	. = TRUE
 	..()
 
@@ -1393,7 +1393,7 @@
 	. = ..()
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("n2o=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.assume_gas(GAS_N2O, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 
 /datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()

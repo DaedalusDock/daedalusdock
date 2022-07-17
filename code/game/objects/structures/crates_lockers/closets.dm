@@ -697,9 +697,6 @@
 /obj/structure/closet/AllowDrop()
 	return TRUE
 
-/obj/structure/closet/return_temperature()
-	return
-
 /obj/structure/closet/proc/locker_carbon(datum/source, mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)
 	SIGNAL_HANDLER
 	if(!opened && (locked || welded)) //Yes this could be less code, no I don't care

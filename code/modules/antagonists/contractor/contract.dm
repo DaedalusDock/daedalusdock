@@ -178,7 +178,7 @@
 
 /datum/syndicate_contract/proc/victim_stage_one(mob/living/target)
 	target.flash_act()
-	target.add_confusion(10)
+	target.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/confusion)
 	target.blur_eyes(5)
 	to_chat(target, span_warning("You feel strange..."))
 	addtimer(CALLBACK(src, .proc/victim_stage_two, target), 6 SECONDS)
@@ -191,7 +191,7 @@
 /datum/syndicate_contract/proc/victim_stage_three(mob/living/target)
 	to_chat(target, span_warning("Your head pounds... It feels like it's going to burst out your skull!"))
 	target.flash_act()
-	target.add_confusion(20)
+	target.adjust_timed_status_effect(20 SECONDS, /datum/status_effect/confusion)
 	target.blur_eyes(3)
 	addtimer(CALLBACK(src, .proc/victim_stage_four, target), 3 SECONDS)
 
@@ -207,7 +207,7 @@
 				so it's only a matter of time before we ship you back...\"</i>")))
 	target.blur_eyes(10)
 	target.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/dizziness)
-	target.add_confusion(20)
+	target.adjust_timed_status_effect(20 SECONDS, /datum/status_effect/confusion)
 
 /// We're returning the victim
 /datum/syndicate_contract/proc/return_victim(mob/living/carbon/target)
@@ -244,7 +244,7 @@
 		target.flash_act()
 		target.blur_eyes(30)
 		target.adjust_timed_status_effect(7 SECONDS, /datum/status_effect/dizziness)
-		target.add_confusion(20)
+		target.adjust_timed_status_effect(20 SECONDS, /datum/status_effect/confusion)
 
 		new /obj/effect/pod_landingzone(possible_drop_loc[pod_rand_loc], return_pod)
 	else

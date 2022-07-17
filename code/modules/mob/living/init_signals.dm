@@ -30,6 +30,9 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_RESTRAINED), .proc/on_restrained_trait_gain)
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_RESTRAINED), .proc/on_restrained_trait_loss)
 
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_EXPERIENCING_AIRFLOW), .proc/on_airflow_trait_gain)
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_EXPERIENCING_AIRFLOW), .proc/on_airflow_trait_loss)
+
 	RegisterSignal(src, list(
 		SIGNAL_ADDTRAIT(TRAIT_CRITICAL_CONDITION),
 		SIGNAL_REMOVETRAIT(TRAIT_CRITICAL_CONDITION),
@@ -213,3 +216,15 @@
 /mob/living/proc/on_skittish_trait_loss(datum/source)
 	SIGNAL_HANDLER
 	RemoveElement(/datum/element/skittish)
+
+/// Called when [TRAIT_EXPERIENCING_AIRFLOW] is added to the mob.
+/mob/living/proc/on_airflow_trait_gain(datum/source)
+	SIGNAL_HANDLER
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE, zas_settings.airflow_mob_slowdown)
+
+/// Called when [TRAIT_EXPERIENCING_AIRFLOW] is removed from the mob.
+/mob/living/proc/on_airflow_trait_loss(datum/source)
+	SIGNAL_HANDLER
+	remove_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE)
+	if(!resting)
+		get_up(TRUE)

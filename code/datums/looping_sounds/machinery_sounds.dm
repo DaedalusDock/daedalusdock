@@ -150,6 +150,16 @@
 	mid_sounds = list('sound/machines/FireAlarm1.ogg' = 1,'sound/machines/FireAlarm2.ogg' = 1,'sound/machines/FireAlarm3.ogg' = 1,'sound/machines/FireAlarm4.ogg' = 1)
 	mid_length = 2.4 SECONDS
 	volume = 75
+	ignore_walls = FALSE
+	extra_range = 5
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/datum/looping_sound/atmosalarm
+	mid_sounds = list('sound/machines/atmosalarm.ogg' = 1)
+	mid_length = 1 SECONDS
+	ignore_walls = FALSE
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

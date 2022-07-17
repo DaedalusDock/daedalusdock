@@ -143,10 +143,10 @@
 	// The gas we want to cool/heat
 	var/datum/gas_mixture/port = airs[1]
 
-	if(!port.total_moles()) // Nothing to cool? go home lad
+	if(!port.get_moles()) // Nothing to cool? go home lad
 		return
 
-	var/port_capacity = port.heat_capacity()
+	var/port_capacity = port.getHeatCapacity()
 
 	// The difference between target and what we need to heat/cool. Positive if heating, negative if cooling.
 	var/temperature_target_delta = target_temperature - port.temperature
@@ -227,7 +227,7 @@
 	if(node1)
 		node1.atmos_init()
 		node1.add_member(src)
-	SSair.add_to_rebuild_queue(src)
+	SSairmachines.add_to_rebuild_queue(src)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/proc/disconnect_pipes()
 	var/obj/machinery/atmospherics/node1 = nodes[1]
@@ -269,7 +269,7 @@
 
 	var/datum/gas_mixture/port = airs[1]
 	data["temperature"] = port.temperature
-	data["pressure"] = port.return_pressure()
+	data["pressure"] = port.returnPressure()
 	return data
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_act(action, params)

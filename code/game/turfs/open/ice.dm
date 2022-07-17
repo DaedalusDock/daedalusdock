@@ -4,9 +4,9 @@
 	icon = 'icons/turf/floors/ice_turf.dmi'
 	icon_state = "ice_turf-0"
 	base_icon_state = "ice_turf-0"
-	initial_gas_mix = FROZEN_ATMOS
 	temperature = 180
-	planetary_atmos = TRUE
+	temperature = 180
+
 	baseturfs = /turf/open/misc/ice
 	slowdown = 1
 	bullet_sizzle = TRUE
@@ -34,8 +34,10 @@
 
 /turf/open/misc/ice/icemoon
 	baseturfs = /turf/open/openspace/icemoon
-	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	initial_gas = ICEMOON_DEFAULT_ATMOS
 	slowdown = 0
+	simulated = FALSE
 
 /turf/open/misc/ice/icemoon/no_planet_atmos
-	planetary_atmos = FALSE
+	simulated = TRUE
+

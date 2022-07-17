@@ -215,9 +215,7 @@
 	cabin_air = new
 	cabin_air.volume = 200
 	cabin_air.temperature = T20C
-	cabin_air.add_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	cabin_air.gases[/datum/gas/oxygen][MOLES] = O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)
-	cabin_air.gases[/datum/gas/nitrogen][MOLES] = N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)
+	cabin_air.adjustMultipleGases(GAS_OXYGEN, (O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)), GAS_NITROGEN, (N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)))
 
 	add_cell()
 	add_scanmod()
@@ -234,7 +232,6 @@
 	diag_hud_set_mechstat()
 	update_appearance()
 
-	AddElement(/datum/element/atmos_sensitive, mapload)
 	become_hearing_sensitive(trait_source = ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT) //protects pilots from ashstorms.
 	for(var/key in equip_by_category)
@@ -430,20 +427,20 @@
 				clear_internal_damage(MECHA_INT_FIRE)
 			if(internal_tank)
 				var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
-				if(int_tank_air.return_pressure() > internal_tank.maximum_pressure && !(internal_damage & MECHA_INT_TANK_BREACH))
+				if(int_tank_air.returnPressure() > internal_tank.maximum_pressure && !(internal_damage & MECHA_INT_TANK_BREACH))
 					set_internal_damage(MECHA_INT_TANK_BREACH)
-				if(int_tank_air && int_tank_air.return_volume() > 0) //heat the air_contents
+				if(int_tank_air && int_tank_air.get_volume() > 0) //heat the air_contents
 					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(5,7.5)*delta_time)
-			if(cabin_air && cabin_air.return_volume()>0)
-				cabin_air.temperature = min(6000+T0C, cabin_air.return_temperature()+rand(5,7.5)*delta_time)
-				if(cabin_air.return_temperature() > max_temperature/2)
-					take_damage(delta_time*2/round(max_temperature/cabin_air.return_temperature(),0.1), BURN, 0, 0)
+			if(cabin_air && cabin_air.get_volume()>0)
+				cabin_air.temperature = min(6000+T0C, cabin_air.get_temperature()+rand(5,7.5)*delta_time)
+				if(cabin_air.get_temperature() > max_temperature/2)
+					take_damage(delta_time*2/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
 
 
 		if(internal_damage & MECHA_INT_TANK_BREACH) //remove some air from internal tank
 			if(internal_tank)
 				var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
-				var/datum/gas_mixture/leaked_gas = int_tank_air.remove_ratio(DT_PROB_RATE(0.05, delta_time))
+				var/datum/gas_mixture/leaked_gas = int_tank_air.removeRatio(DT_PROB_RATE(0.05, delta_time))
 				if(loc)
 					loc.assume_air(leaked_gas)
 				else
@@ -456,7 +453,7 @@
 				cell.maxcharge -= min(10 * delta_time, cell.maxcharge)
 
 	if(!(internal_damage & MECHA_INT_TEMP_CONTROL))
-		if(cabin_air && cabin_air.return_volume() > 0)
+		if(cabin_air && cabin_air.get_volume() > 0)
 			var/delta = cabin_air.temperature - T20C
 			cabin_air.temperature -= clamp(round(delta / 8, 0.1), -5, 5) * delta_time
 
@@ -464,21 +461,21 @@
 		var/datum/gas_mixture/tank_air = internal_tank.return_air()
 
 		var/release_pressure = internal_tank_valve
-		var/cabin_pressure = cabin_air.return_pressure()
-		var/pressure_delta = min(release_pressure - cabin_pressure, (tank_air.return_pressure() - cabin_pressure)/2)
+		var/cabin_pressure = cabin_air.returnPressure()
+		var/pressure_delta = min(release_pressure - cabin_pressure, (tank_air.returnPressure() - cabin_pressure)/2)
 		var/transfer_moles = 0
 		if(pressure_delta > 0) //cabin pressure lower than release pressure
-			if(tank_air.return_temperature() > 0)
-				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.return_temperature() * R_IDEAL_GAS_EQUATION)
+			if(tank_air.temperature > 0)
+				transfer_moles = pressure_delta*cabin_air.volume/(cabin_air.temperature * R_IDEAL_GAS_EQUATION)
 				var/datum/gas_mixture/removed = tank_air.remove(transfer_moles)
 				cabin_air.merge(removed)
 		else if(pressure_delta < 0) //cabin pressure higher than release pressure
 			var/datum/gas_mixture/t_air = return_air()
 			pressure_delta = cabin_pressure - release_pressure
 			if(t_air)
-				pressure_delta = min(cabin_pressure - t_air.return_pressure(), pressure_delta)
+				pressure_delta = min(cabin_pressure - t_air.returnPressure(), pressure_delta)
 			if(pressure_delta > 0) //if location pressure is lower than cabin pressure
-				transfer_moles = pressure_delta*cabin_air.return_volume()/(cabin_air.return_temperature() * R_IDEAL_GAS_EQUATION)
+				transfer_moles = pressure_delta*cabin_air.volume/(cabin_air.temperature * R_IDEAL_GAS_EQUATION)
 				var/datum/gas_mixture/removed = cabin_air.remove(transfer_moles)
 				if(t_air)
 					t_air.merge(removed)
@@ -1231,14 +1228,14 @@
 	return cabin_air
 
 ///fetches pressure of the gas mixture we are using
-/obj/vehicle/sealed/mecha/proc/return_pressure()
+/obj/vehicle/sealed/mecha/proc/returnPressure()
 	var/datum/gas_mixture/air = return_air()
-	return air?.return_pressure()
+	return air?.returnPressure()
 
 ///fetches temp of the gas mixture we are using
 /obj/vehicle/sealed/mecha/return_temperature()
 	var/datum/gas_mixture/air = return_air()
-	return air?.return_temperature()
+	return air?.temperature
 
 
 

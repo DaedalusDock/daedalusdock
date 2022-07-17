@@ -57,7 +57,13 @@ Passive gate is similar to the regular pump except:
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
-	if(air1.release_gas_to(air2, target_pressure))
+	var/input_starting_pressure = air1.returnPressure()
+
+	var/pressure_delta = input_starting_pressure - target_pressure
+
+	var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
+	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta))
+	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)//pump_gas() will return a negative number if no flow occurred
 		update_parents()
 
 //Radio remote control

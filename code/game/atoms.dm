@@ -17,6 +17,9 @@
 
 	///First atom flags var
 	var/flags_1 = NONE
+	///Second atom flags var
+	var/flags_2 = NONE
+
 	///Intearaction flags
 	var/interaction_flags_atom = NONE
 
@@ -337,6 +340,8 @@
 /atom/proc/CanPass(atom/movable/mover, border_dir)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
+	if(!mover)
+		return FALSE
 	if(mover.movement_type & PHASING)
 		return TRUE
 	. = CanAllowThrough(mover, border_dir)

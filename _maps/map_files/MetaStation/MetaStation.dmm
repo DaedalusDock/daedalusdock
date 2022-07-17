@@ -7699,7 +7699,6 @@
 "bWb" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/commons/locker)
 "bWz" = (
@@ -8958,7 +8957,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "ctk" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/supermatter_crystal,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "ctm" = (
@@ -13295,7 +13294,10 @@
 /obj/item/wrench/medical,
 /obj/effect/turf_decal/siding/white,
 /obj/item/food/popsicle/creamsicle_orange,
-/obj/machinery/airalarm/directional/north,
+/obj/machinery/airalarm/kitchen_cold_room{
+	dir = 1;
+	pixel_y = 24
+	},
 /turf/open/floor/iron/kitchen_coldroom,
 /area/medical/coldroom)
 "dDG" = (
@@ -16826,7 +16828,6 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
@@ -17716,7 +17717,7 @@
 "ffP" = (
 /obj/effect/spawner/random/structure/grille,
 /turf/open/floor/plating/foam{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/space/nearstation)
 "ffR" = (
@@ -20971,10 +20972,6 @@
 /area/service/kitchen/coldroom)
 "gql" = (
 /obj/structure/table,
-/obj/item/hfr_box/body/waste_output,
-/obj/item/hfr_box/body/moderator_input,
-/obj/item/hfr_box/body/fuel_input,
-/obj/item/hfr_box/body/interface,
 /obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/iron/dark,
 /area/engineering/atmospherics_engine)
@@ -23427,9 +23424,6 @@
 /turf/open/floor/iron/dark,
 /area/engineering/main)
 "hoj" = (
-/obj/machinery/atmospherics/components/binary/crystallizer{
-	dir = 4
-	},
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 1
 	},
@@ -23869,7 +23863,7 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/components/trinary/filter/flipped/critical{
-	filter_type = list(/datum/gas/nitrogen)
+	filter_type = list("nitrogen")
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
@@ -25469,7 +25463,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "ies" = (
@@ -26987,9 +26980,6 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "iKn" = (
-/obj/machinery/power/turbine/turbine_outlet{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "iKr" = (
@@ -28651,7 +28641,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "jpP" = (
@@ -29709,7 +29698,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "jIS" = (
@@ -30000,7 +29988,6 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/commons/dorms)
 "jOn" = (
@@ -31040,7 +31027,7 @@
 "kiE" = (
 /obj/item/book/manual/nuclear,
 /turf/open/floor/plating/foam{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/space/nearstation)
 "kiM" = (
@@ -31192,7 +31179,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "kmR" = (
@@ -40102,7 +40088,6 @@
 	},
 /obj/item/pen,
 /obj/effect/turf_decal/delivery,
-/obj/machinery/bluespace_vendor/directional/east,
 /turf/open/floor/iron,
 /area/hallway/secondary/command)
 "nnO" = (
@@ -44142,7 +44127,6 @@
 /area/science/storage)
 "oRj" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
-/obj/machinery/portable_atmospherics/canister/bz,
 /obj/machinery/light/directional/north,
 /obj/effect/turf_decal/box,
 /turf/open/floor/iron,
@@ -51615,7 +51599,7 @@
 /area/security/checkpoint/supply)
 "rLv" = (
 /turf/open/floor/plating/foam{
-	initial_gas_mix = "TEMP=2.7"
+	temperature = 2.7
 	},
 /area/space/nearstation)
 "rLz" = (
@@ -57078,7 +57062,6 @@
 /area/engineering/gravity_generator)
 "tSb" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/electrolyzer,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -58401,10 +58384,6 @@
 /turf/open/floor/iron,
 /area/ai_monitored/command/storage/eva)
 "uuy" = (
-/obj/machinery/power/turbine/core_rotor{
-	dir = 4;
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -60462,7 +60441,6 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "vlR" = (
@@ -61455,11 +61433,6 @@
 /area/hallway/primary/starboard)
 "vEF" = (
 /obj/structure/table,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/core,
 /turf/open/floor/iron/dark,
 /area/engineering/atmospherics_engine)
 "vEJ" = (
@@ -62383,9 +62356,6 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "vVR" = (
-/obj/machinery/power/turbine/inlet_compressor{
-	dir = 4
-	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "vWe" = (
@@ -62589,7 +62559,6 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/hangover,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "waq" = (
@@ -62727,9 +62696,6 @@
 "wdO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
-/obj/machinery/computer/turbine_computer{
-	mapping_id = "main_turbine"
-	},
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "wdQ" = (
@@ -64237,7 +64203,6 @@
 /obj/effect/turf_decal/tile/red,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "wGZ" = (
@@ -65291,7 +65256,6 @@
 /area/command/heads_quarters/cmo)
 "xaY" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/portable_atmospherics/canister/water_vapor,
 /turf/open/floor/iron,
 /area/service/janitor)
 "xbs" = (

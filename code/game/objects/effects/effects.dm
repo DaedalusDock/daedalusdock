@@ -5,9 +5,11 @@
 	icon = 'icons/effects/effects.dmi'
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 	move_resist = INFINITY
+	flags_2 = NO_TEMP_CHANGE_2
 	obj_flags = NONE
 	vis_flags = VIS_INHERIT_PLANE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
+	simulated = FALSE
 
 /obj/effect/attackby(obj/item/weapon, mob/user, params)
 	if(SEND_SIGNAL(weapon, COMSIG_ITEM_ATTACK_EFFECT, src, user, params) & COMPONENT_NO_AFTERATTACK)
@@ -34,9 +36,6 @@
 /obj/effect/attack_hulk(mob/living/carbon/human/user)
 	return FALSE
 
-/obj/effect/experience_pressure_difference()
-	return
-
 /obj/effect/ex_act(severity, target)
 	return FALSE
 
@@ -59,4 +58,8 @@
 	return
 
 /obj/effect/dummy/singularity_act()
+	return
+
+//PARIAH EDIT - PLASMA CONTAMINATION
+/obj/effect/contaminate()
 	return

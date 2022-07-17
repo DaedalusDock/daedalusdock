@@ -52,13 +52,13 @@
 	///Whether it can be painted
 	var/paintable = TRUE
 
-	///Is the thing being rebuilt by SSair or not. Prevents list bloat
+	///Is the thing being rebuilt by SSzas or not. Prevents list bloat
 	var/rebuilding = FALSE
 
 	///The bitflag that's being checked on ventcrawling. Default is to allow ventcrawling and seeing pipes.
 	var/vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE
-	
-	///keeps the name of the object from being overridden if it's vareditted. 
+
+	///keeps the name of the object from being overridden if it's vareditted.
 	var/override_naming
 
 /obj/machinery/atmospherics/LateInitialize()
@@ -83,20 +83,20 @@
 		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 100, ACID = 70)
 	..()
 	if(process)
-		SSair.start_processing_machine(src)
+		SSairmachines.start_processing_machine(src)
 	set_init_directions(init_dir)
 
 /obj/machinery/atmospherics/Initialize(mapload)
 	if(mapload && name != initial(name))
 		override_naming = TRUE
-	return ..()	
+	return ..()
 
 /obj/machinery/atmospherics/Destroy()
 	for(var/i in 1 to device_type)
 		nullify_node(i)
 
-	SSair.stop_processing_machine(src)
-	SSair.rebuild_queue -= src
+	SSairmachines.stop_processing_machine(src)
+	SSairmachines.rebuild_queue -= src
 
 	if(pipe_vision_img)
 		qdel(pipe_vision_img)
@@ -114,7 +114,7 @@
 	on = active
 	SEND_SIGNAL(src, COMSIG_ATMOS_MACHINE_SET_ON, on)
 
-/// This should only be called by SSair as part of the rebuild queue.
+/// This should only be called by SSzas as part of the rebuild queue.
 /// Handles rebuilding pipelines after init or they've been changed.
 /obj/machinery/atmospherics/proc/rebuild_pipes()
 	var/list/targets = get_rebuild_targets()
@@ -367,7 +367,7 @@
 	add_fingerprint(user)
 
 	var/unsafe_wrenching = FALSE
-	var/internal_pressure = int_air.return_pressure()-env_air.return_pressure()
+	var/internal_pressure = int_air.returnPressure()-env_air.returnPressure()
 
 	to_chat(user, span_notice("You begin to unfasten \the [src]..."))
 
@@ -413,7 +413,7 @@
 	if(!pressures)
 		var/datum/gas_mixture/int_air = return_air()
 		var/datum/gas_mixture/env_air = loc.return_air()
-		pressures = int_air.return_pressure() - env_air.return_pressure()
+		pressures = int_air.returnPressure() - env_air.returnPressure()
 
 	user.visible_message(span_danger("[user] is sent flying by pressure!"),span_userdanger("The pressure sends you flying!"))
 
@@ -470,7 +470,7 @@
 	for(var/obj/machinery/atmospherics/A in nodes)
 		A.atmos_init()
 		A.add_member(src)
-	SSair.add_to_rebuild_queue(src)
+	SSairmachines.add_to_rebuild_queue(src)
 
 /obj/machinery/atmospherics/update_name()
 	if(!override_naming)

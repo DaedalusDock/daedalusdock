@@ -9,7 +9,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -25,8 +25,8 @@
 "dX" = (
 /obj/effect/decal/cleanable/oil,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -43,7 +43,7 @@
 "gJ" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -63,8 +63,8 @@
 "lz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -94,7 +94,7 @@
 "nG" = (
 /obj/structure/bonfire/prelit,
 /turf/open/misc/dirt/jungle/wasteland{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -106,8 +106,8 @@
 	dir = 10
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -116,7 +116,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -141,8 +141,8 @@
 	},
 /obj/effect/decal/cleanable/oil,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -153,8 +153,8 @@
 "qu" = (
 /obj/effect/turf_decal/weather/dirt,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -165,8 +165,8 @@
 	dir = 5
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -178,8 +178,8 @@
 "sb" = (
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -188,8 +188,8 @@
 	dir = 9
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -211,7 +211,7 @@
 	dir = 1
 	},
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -220,8 +220,8 @@
 	dir = 4
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -230,19 +230,19 @@
 	dir = 1
 	},
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
 "wE" = (
 /turf/open/misc/dirt/jungle/wasteland{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
 "wS" = (
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -262,8 +262,8 @@
 /obj/structure/stone_tile/slab,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -294,8 +294,8 @@
 /area/heretic_sacrifice/rust)
 "Bw" = (
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -327,7 +327,7 @@
 /obj/effect/decal/cleanable/plasma,
 /obj/effect/landmark/heretic/ash,
 /turf/open/misc/dirt/jungle/wasteland{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -336,7 +336,7 @@
 	dir = 4
 	},
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -351,8 +351,8 @@
 	dir = 1
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -378,8 +378,8 @@
 	},
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -388,8 +388,8 @@
 	dir = 5
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -402,8 +402,8 @@
 	dir = 1
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -420,14 +420,14 @@
 	dir = 4
 	},
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
 "Kz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -440,8 +440,8 @@
 "KP" = (
 /obj/structure/stone_tile/surrounding_tile,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -459,7 +459,7 @@
 /obj/effect/decal/cleanable/ash/large,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/wasteland{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -476,8 +476,8 @@
 "NA" = (
 /obj/structure/stone_tile/burnt,
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -486,15 +486,15 @@
 	dir = 1
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
 "OD" = (
 /obj/effect/landmark/heretic,
 /turf/open/misc/dirt/jungle/wasteland{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -503,8 +503,8 @@
 	dir = 10
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -513,15 +513,15 @@
 	dir = 6
 	},
 /turf/open/misc/ashplanet/wateryrock{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15";
-	planetary_atmos = 0;
+	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
 "Qi" = (
 /obj/structure/stone_tile,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -532,7 +532,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -559,7 +559,7 @@
 "Sy" = (
 /obj/structure/stone_tile/block,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -570,7 +570,7 @@
 "TC" = (
 /obj/effect/decal/cleanable/ash,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)
@@ -600,7 +600,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
-	planetary_atmos = 0;
+	simulated = 1;
 	slowdown = 0
 	},
 /area/heretic_sacrifice/ash)

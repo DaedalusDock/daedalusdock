@@ -164,7 +164,7 @@
 "J" = (
 /obj/effect/spawner/structure/window/reinforced/shuttle,
 /turf/open/floor/plating{
-	initial_gas_mix = "LAVALAND_ATMOS"
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30)
 	},
 /area/ruin/powered)
 "L" = (

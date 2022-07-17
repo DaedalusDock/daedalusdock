@@ -233,7 +233,7 @@
 	density = TRUE
 	var/buildstacktype = /obj/item/stack/sheet/iron
 	var/buildstackamount = 5
-	can_atmos_pass = ATMOS_PASS_NO
+	can_atmos_pass = CANPASS_NEVER
 
 /obj/structure/fans/deconstruct()
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -262,10 +262,10 @@
 
 /obj/structure/fans/Initialize(mapload)
 	. = ..()
-	air_update_turf(TRUE, TRUE)
+	//air_update_turf(TRUE, TRUE)
 
 /obj/structure/fans/Destroy()
-	air_update_turf(TRUE, FALSE)
+	//air_update_turf(TRUE, FALSE)
 	. = ..()
 //Invisible, indestructible fans
 /obj/structure/fans/tiny/invisible
@@ -290,7 +290,7 @@
 		/obj/item/ship_in_a_bottle,
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
-		/obj/item/melee/supermatter_sword,
+		//obj/item/melee/supermatter_sword,
 		/obj/item/shield/changeling,
 		/obj/item/lava_staff,
 		/obj/item/energy_katana,

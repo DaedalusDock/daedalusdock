@@ -22563,7 +22563,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark/corner{
 	dir = 4
 	},
@@ -26449,7 +26448,6 @@
 	c_tag = "Port Hallway Firelock";
 	name = "port camera"
 	},
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -43806,7 +43804,6 @@
 	c_tag = "Fore Hallway Diner";
 	name = "fore camera"
 	},
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
 "kmJ" = (
@@ -46796,9 +46793,6 @@
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "lmB" = (
-/obj/machinery/power/turbine/core_rotor{
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -47125,10 +47119,6 @@
 	name = "atmospherics camera";
 	network = list("ss13","engine")
 	},
-/obj/item/hfr_box/body/fuel_input,
-/obj/item/hfr_box/body/interface,
-/obj/item/hfr_box/body/moderator_input,
-/obj/item/hfr_box/body/waste_output,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "lrD" = (
@@ -47837,7 +47827,7 @@
 /turf/open/floor/wood,
 /area/service/lawoffice)
 "lGe" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/supermatter_crystal,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "lGj" = (
@@ -50019,7 +50009,6 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "moD" = (
@@ -54753,7 +54742,6 @@
 /turf/open/floor/plating,
 /area/cargo/warehouse)
 "nUs" = (
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "nUt" = (
@@ -54860,7 +54848,7 @@
 /obj/effect/turf_decal/siding/wideplating/dark{
 	dir = 4
 	},
-/obj/machinery/bluespace_vendor/directional/south,
+
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "nVD" = (
@@ -56012,7 +56000,7 @@
 "oqQ" = (
 /obj/machinery/atmospherics/components/trinary/filter/flipped/critical{
 	dir = 8;
-	filter_type = list(/datum/gas/nitrogen)
+	filter_type = list("nitrogen")
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable,
@@ -61196,7 +61184,6 @@
 /area/ai_monitored/turret_protected/aisat/atmos)
 "pZk" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/electrolyzer,
 /turf/open/floor/iron/dark,
 /area/maintenance/disposal/incinerator)
 "pZn" = (
@@ -61597,7 +61584,6 @@
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
 "qga" = (
-/obj/machinery/power/turbine/turbine_outlet,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "qge" = (
@@ -65509,11 +65495,6 @@
 	dir = 4
 	},
 /obj/structure/table,
-/obj/item/hfr_box/core,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "rou" = (
@@ -73056,7 +73037,6 @@
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 4
 	},
-/obj/machinery/portable_atmospherics/canister/bz,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -76026,7 +76006,6 @@
 /area/service/chapel/dock)
 "uVC" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
 "uVP" = (
@@ -76101,10 +76080,6 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 9
-	},
-/obj/machinery/computer/turbine_computer{
-	dir = 1;
-	mapping_id = "main_turbine"
 	},
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -77163,7 +77138,6 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "vpc" = (
@@ -84288,7 +84262,6 @@
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hop)
 "xFO" = (
-/obj/machinery/power/turbine/inlet_compressor,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "xFY" = (

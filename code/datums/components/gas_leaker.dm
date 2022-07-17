@@ -16,6 +16,9 @@
 	/// Mirror of the machine var signifying whether this is live in the air subsystem
 	var/atmos_processing = FALSE
 
+	///Mirror of the machine var, unused for gas_leaker specifically.
+	COOLDOWN_DECLARE(hibernating)
+
 /datum/component/gas_leaker/Initialize(integrity_leak_percent=0.9, leak_rate=1)
 	. = ..()
 	if(istype(parent, /obj/machinery/atmospherics/components))
@@ -31,7 +34,7 @@
 	src.leak_rate = leak_rate
 
 /datum/component/gas_leaker/Destroy(force, silent)
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	return ..()
 
 /datum/component/gas_leaker/RegisterWithParent()
@@ -56,7 +59,7 @@
 	SIGNAL_HANDLER
 	// Hello fellow atmospherics machines, I too am definitely an atmos machine like you!
 	// This component needs to tick at the same rate as the atmos system
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 
 /datum/component/gas_leaker/proc/process_obj(obj/master, list/airs=list())
 	airs += master.return_air()
@@ -76,11 +79,11 @@
 	if(current_integrity > master.max_integrity * integrity_leak_percent)
 		return PROCESS_KILL
 	var/turf/location = get_turf(master)
-	var/true_rate = (1 - (current_integrity / master.max_integrity)) * leak_rate
+	var/datum/gas_mixture/open_air = location.return_air()
+	//var/true_rate = (1 - (current_integrity / master.max_integrity)) * leak_rate
 	for(var/datum/gas_mixture/mix as anything in airs)
-		var/pressure = mix.return_pressure()
-		if(mix.release_gas_to(location.return_air(), pressure, true_rate))
-			location.air_update_turf(FALSE, FALSE)
+		mix.leak_to_enviroment(open_air)
+
 
 #undef PROCESS_OBJ
 #undef PROCESS_MACHINE

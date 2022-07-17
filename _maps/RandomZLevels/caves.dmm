@@ -11,14 +11,16 @@
 "ad" = (
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ah" = (
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
@@ -27,25 +29,29 @@
 /area/awaymission/caves/bmp_asteroid/level_three)
 "ao" = (
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ap" = (
 /obj/structure/destructible/cult/pylon,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ar" = (
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "as" = (
 /obj/effect/decal/cleanable/blood/gibs/old,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "au" = (
@@ -58,7 +64,8 @@
 /obj/item/clothing/mask/gas/clown_hat,
 /obj/item/organ/heart/demon,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "av" = (
@@ -67,13 +74,15 @@
 	name = "shock rune"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aw" = (
 /obj/effect/decal/remains/human,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ax" = (
@@ -87,39 +96,45 @@
 	},
 /obj/item/coin/antagtoken,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "az" = (
 /obj/structure/constructshell,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aA" = (
 /obj/structure/girder/cult,
 /obj/item/stack/sheet/runed_metal,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aB" = (
 /obj/structure/spawner/skeleton,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aC" = (
 /obj/structure/bed,
 /obj/item/bedsheet/cult,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aD" = (
 /obj/item/stack/sheet/runed_metal,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aE" = (
@@ -132,7 +147,8 @@
 	name = "\proper an extremely flamboyant book"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aF" = (
@@ -143,13 +159,15 @@
 	name = "weak forcefield"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aG" = (
 /obj/item/ectoplasm,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aH" = (
@@ -158,7 +176,8 @@
 "aI" = (
 /obj/machinery/door/airlock/external/ruin,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aJ" = (
@@ -166,7 +185,8 @@
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aK" = (
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aM" = (
@@ -175,7 +195,8 @@
 	id = "minedeep"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aP" = (
@@ -185,33 +206,38 @@
 	name = "rusty ladder"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aR" = (
 /obj/effect/forcefield/cult,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aS" = (
 /obj/structure/girder/cult,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aV" = (
 /obj/effect/forcefield/cult,
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aW" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aX" = (
@@ -225,7 +251,8 @@
 	name = "light of the tunnel"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aZ" = (
@@ -234,26 +261,30 @@
 	name = "flame rune"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ba" = (
 /obj/structure/destructible/cult/item_dispenser/altar,
 /obj/item/book/granter/martial/plasma_fist/nobomb,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bf" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bl" = (
 /obj/structure/ore_box,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "bm" = (
@@ -261,7 +292,8 @@
 	calibrated = 0
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bn" = (
@@ -272,14 +304,16 @@
 /obj/effect/decal/cleanable/blood,
 /obj/structure/spawner/skeleton,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bz" = (
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bA" = (
@@ -287,25 +321,29 @@
 /obj/item/necromantic_stone,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bC" = (
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bD" = (
 /mob/living/simple_animal/hostile/skeleton,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bE" = (
 /obj/structure/destructible/cult/pylon,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bF" = (
@@ -315,7 +353,8 @@
 	name = "rusty ladder"
 	},
 /turf/open/floor/engine/cult{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bK" = (
@@ -327,7 +366,8 @@
 "bM" = (
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid)
@@ -337,7 +377,8 @@
 "bO" = (
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
@@ -350,12 +391,14 @@
 "bS" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bT" = (
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bU" = (
@@ -369,19 +412,22 @@
 	name = "light of the tunnel"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bY" = (
 /mob/living/simple_animal/hostile/skeleton,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ca" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ce" = (
@@ -390,12 +436,14 @@
 	id = "mineintro"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cf" = (
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cg" = (
@@ -407,7 +455,8 @@
 "cl" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cm" = (
@@ -415,24 +464,28 @@
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cn" = (
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cp" = (
 /obj/structure/table,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cr" = (
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cs" = (
 /obj/item/shard,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "ct" = (
@@ -440,36 +493,42 @@
 /obj/item/stack/rods,
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cu" = (
 /obj/effect/decal/cleanable/blood/gibs,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cv" = (
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cw" = (
 /obj/item/stack/rods,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cx" = (
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "cA" = (
 /obj/effect/decal/remains/xeno,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cB" = (
@@ -478,7 +537,8 @@
 	},
 /obj/effect/decal/cleanable/xenoblood,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cC" = (
@@ -486,13 +546,15 @@
 /obj/item/restraints/handcuffs/cable,
 /obj/item/restraints/handcuffs/cable,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cD" = (
 /obj/effect/decal/remains/human,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cE" = (
@@ -502,19 +564,22 @@
 	},
 /obj/item/stack/rods,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cF" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cH" = (
 /obj/machinery/door/airlock/external/ruin,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cK" = (
@@ -528,7 +593,8 @@
 /obj/machinery/door/window/left/directional/east,
 /obj/effect/decal/cleanable/xenoblood/xgibs,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cO" = (
@@ -537,19 +603,22 @@
 	},
 /obj/machinery/door/window/left/directional/east,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cP" = (
 /obj/machinery/door/airlock/external/ruin,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cR" = (
 /obj/effect/landmark/awaystart,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cS" = (
@@ -559,7 +628,8 @@
 	icon_state = "right"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cT" = (
@@ -570,13 +640,15 @@
 	icon_state = "right"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cV" = (
 /obj/effect/decal/cleanable/xenoblood/xgibs,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cW" = (
@@ -584,20 +656,23 @@
 	dir = 4
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cX" = (
 /obj/structure/table,
 /obj/item/melee/baton/security,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cY" = (
 /obj/structure/glowshroom/single,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "cZ" = (
@@ -606,7 +681,8 @@
 	pixel_x = 32
 	},
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "db" = (
@@ -614,13 +690,15 @@
 /obj/machinery/cell_charger,
 /obj/item/stock_parts/cell/crap,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "dd" = (
 /obj/structure/closet/emcloset,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "df" = (
@@ -631,7 +709,8 @@
 /obj/item/grenade/syndieminibomb/concussion,
 /obj/item/grenade/syndieminibomb/concussion,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "dg" = (
@@ -645,7 +724,8 @@
 	name = "light of the tunnel"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "dh" = (
@@ -832,20 +912,23 @@
 /area/awaymission/caves/northblock)
 "ec" = (
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "ed" = (
 /obj/structure/bed,
 /obj/effect/landmark/awaystart,
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "ee" = (
 /obj/structure/girder,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "eg" = (
@@ -882,24 +965,28 @@
 "em" = (
 /obj/structure/closet/secure_closet/personal,
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "en" = (
 /obj/effect/decal/cleanable/shreds,
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "eo" = (
 /obj/item/stack/rods,
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "ep" = (
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "er" = (
@@ -917,7 +1004,8 @@
 "et" = (
 /obj/effect/decal/cleanable/shreds,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "ev" = (
@@ -1076,18 +1164,21 @@
 	name = "light of the tunnel"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fy" = (
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fz" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fA" = (
@@ -1131,7 +1222,8 @@
 /area/awaymission/caves/bmp_asteroid)
 "fQ" = (
 /turf/open/floor/plating/elevatorshaft{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	name = "elevator flooring"
 	},
 /area/awaymission/caves/bmp_asteroid)
@@ -1142,14 +1234,16 @@
 "fU" = (
 /obj/effect/landmark/awaystart,
 /turf/open/floor/plating/elevatorshaft{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	name = "elevator flooring"
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fW" = (
 /obj/structure/girder,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fY" = (
@@ -1163,7 +1257,8 @@
 	id = "mineintro"
 	},
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gb" = (
@@ -1173,7 +1268,8 @@
 "gc" = (
 /obj/item/stack/rods,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gf" = (
@@ -1185,20 +1281,23 @@
 /obj/structure/table/reinforced,
 /obj/item/storage/box/donkpockets,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gh" = (
 /obj/structure/table/reinforced,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gi" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/rods,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gj" = (
@@ -1218,13 +1317,15 @@
 "go" = (
 /obj/structure/chair/stool/directional/west,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gp" = (
 /obj/structure/table_frame,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gq" = (
@@ -1272,7 +1373,8 @@
 "gB" = (
 /obj/machinery/mech_bay_recharge_port,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gC" = (
@@ -1284,7 +1386,8 @@
 /obj/item/storage/toolbox/mechanical,
 /obj/item/clothing/glasses/material,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gG" = (
@@ -1300,12 +1403,14 @@
 "gI" = (
 /obj/structure/chair/stool/directional/west,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gJ" = (
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gK" = (
@@ -1323,19 +1428,22 @@
 "gN" = (
 /obj/structure/holohoop,
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gO" = (
 /obj/structure/closet/emcloset,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gP" = (
 /obj/item/toy/beach_ball/holoball,
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gU" = (
@@ -1343,7 +1451,8 @@
 	dir = 1
 	},
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gX" = (
@@ -1354,7 +1463,8 @@
 /obj/effect/baseturf_helper/lava,
 /turf/open/lava/smooth{
 	desc = "Looks hot.";
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7";
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	luminosity = 5
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
@@ -1372,19 +1482,22 @@
 /area/awaymission/caves/northblock)
 "hq" = (
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "hr" = (
 /obj/structure/spider/stickyweb,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "hw" = (
 /obj/structure/barricade/wooden,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "hQ" = (
@@ -1394,19 +1507,22 @@
 "hT" = (
 /obj/structure/flora/rock,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "jH" = (
 /obj/structure/spawner/mining/basilisk,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "jU" = (
 /obj/structure/spawner/mining/basilisk,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ki" = (
@@ -1418,7 +1534,8 @@
 /obj/item/gun/energy/laser/captain/scattershot,
 /obj/item/slimepotion/fireproof,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "kw" = (
@@ -1426,7 +1543,8 @@
 	pixel_y = -32
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "kE" = (
@@ -1447,13 +1565,15 @@
 "ml" = (
 /mob/living/simple_animal/hostile/asteroid/fugu,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ms" = (
 /obj/structure/spawner/mining/goliath,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "mX" = (
@@ -1461,7 +1581,8 @@
 	name = "Mining cart"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "nw" = (
@@ -1475,18 +1596,21 @@
 	name = "rusted mine"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "nY" = (
 /obj/item/slimepotion/fireproof,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "oI" = (
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "pc" = (
@@ -1498,13 +1622,15 @@
 /obj/item/mjollnir,
 /mob/living/simple_animal/hostile/giant_spider/nurse,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "qD" = (
 /obj/machinery/light/small/directional/north,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "qE" = (
@@ -1514,7 +1640,8 @@
 "ra" = (
 /obj/structure/glowshroom/single,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "rl" = (
@@ -1525,12 +1652,14 @@
 	amount = 12
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "rv" = (
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "rF" = (
@@ -1540,7 +1669,8 @@
 "sl" = (
 /obj/structure/spawner/mining/hivelord,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "sw" = (
@@ -1550,19 +1680,22 @@
 "sE" = (
 /obj/item/greentext,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "sI" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "sT" = (
 /obj/structure/spawner/mining/hivelord,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "tz" = (
@@ -1573,7 +1706,8 @@
 "tU" = (
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "uN" = (
@@ -1593,13 +1727,15 @@
 "vX" = (
 /obj/effect/forcefield/cult,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "wl" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ww" = (
@@ -1608,13 +1744,15 @@
 "wT" = (
 /obj/structure/destructible/cult/pylon,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "xs" = (
 /obj/item/bedsheet/patriot,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "yS" = (
@@ -1630,50 +1768,58 @@
 /obj/item/slimepotion/fireproof,
 /obj/item/clothing/glasses/thermal,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "yV" = (
 /obj/structure/flora/rock,
 /obj/item/soulstone/anybody,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "zn" = (
 /obj/effect/landmark/awaystart,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zH" = (
 /obj/structure/flora/rock,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "zN" = (
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zR" = (
 /obj/effect/decal/cleanable/ash,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zS" = (
 /obj/machinery/light/small/directional/west,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Aj" = (
 /obj/structure/grille,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "AN" = (
@@ -1682,13 +1828,15 @@
 	name = "shock rune"
 	},
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "AZ" = (
 /obj/structure/girder,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Bd" = (
@@ -1697,54 +1845,63 @@
 	name = "flame rune"
 	},
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Bo" = (
 /obj/structure/ore_box,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Bs" = (
 /obj/effect/landmark/awaystart,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Bz" = (
 /mob/living/simple_animal/hostile/giant_spider/nurse,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "BH" = (
 /obj/structure/spawner/skeleton,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "BK" = (
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "BL" = (
 /obj/item/stack/rods,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "BQ" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Cc" = (
 /obj/item/gun/energy/laser/captain/scattershot,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "CB" = (
@@ -1753,7 +1910,8 @@
 	name = "Cave Bat"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ds" = (
@@ -1761,7 +1919,8 @@
 	pixel_x = 5
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "DH" = (
@@ -1772,7 +1931,8 @@
 	pixel_x = 5
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "DO" = (
@@ -1783,7 +1943,8 @@
 	},
 /obj/machinery/light/small/directional/west,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Fj" = (
@@ -1792,13 +1953,15 @@
 	desc = "It's a beachball with a face crudely drawn onto it with some soot."
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "FI" = (
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "FS" = (
@@ -1810,7 +1973,8 @@
 "FV" = (
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Gt" = (
@@ -1824,31 +1988,36 @@
 "HK" = (
 /obj/structure/destructible/cult/pylon,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Ik" = (
 /obj/item/stack/rods,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IN" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IY" = (
 /obj/structure/spider/cocoon,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IZ" = (
 /obj/item/clothing/head/collectable/wizard,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Jp" = (
@@ -1859,26 +2028,30 @@
 	pixel_x = 32
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "JD" = (
 /obj/structure/ore_box,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Kh" = (
 /obj/machinery/light/small/built/directional/west,
 /turf/open/floor/wood{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/northblock)
 "KY" = (
 /obj/structure/table,
 /obj/item/paper/crumpled/awaymissions/caves/unsafe_area,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ls" = (
@@ -1886,7 +2059,8 @@
 	pixel_x = -32
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Ly" = (
@@ -1900,7 +2074,8 @@
 	amount = 15
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Mk" = (
@@ -1910,19 +2085,22 @@
 "Mq" = (
 /obj/structure/flora/rock,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Mw" = (
 /obj/item/shard,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "MB" = (
 /obj/item/grown/log,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "MC" = (
@@ -1935,7 +2113,8 @@
 "MM" = (
 /obj/machinery/light/small/directional/south,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Np" = (
@@ -1944,7 +2123,8 @@
 	name = "rusted mine"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "NO" = (
@@ -1952,25 +2132,29 @@
 /obj/structure/filingcabinet,
 /obj/item/paper/fluff/awaymissions/caves/omega,
 /turf/open/floor/iron{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "NX" = (
 /obj/effect/decal/cleanable/blood/gibs/old,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "OA" = (
 /obj/item/gun/ballistic/automatic/pistol/deagle/gold,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "OE" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/plating{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/research)
 "OJ" = (
@@ -1979,7 +2163,8 @@
 	name = "Cave Bat"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "OX" = (
@@ -2001,7 +2186,8 @@
 "Rm" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Rp" = (
@@ -2012,38 +2198,44 @@
 	},
 /obj/machinery/light/small/built/directional/east,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ry" = (
 /obj/structure/grille,
 /obj/structure/barricade/wooden,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "RJ" = (
 /obj/machinery/light/small/directional/west,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "SV" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Tj" = (
 /obj/item/assembly/igniter,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "TT" = (
 /obj/item/ectoplasm,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Uu" = (
@@ -2056,7 +2248,8 @@
 /obj/effect/decal/remains/human,
 /obj/item/clothing/under/misc/patriotsuit,
 /turf/open/misc/asteroid/basalt/lava{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "VK" = (
@@ -2064,7 +2257,8 @@
 	name = "spooky skeleton remains"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Wj" = (
@@ -2086,13 +2280,15 @@
 	pixel_x = -32
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Xs" = (
 /mob/living/simple_animal/hostile/giant_spider/hunter,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "XG" = (
@@ -2101,44 +2297,51 @@
 	name = "rusted mine"
 	},
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "XN" = (
 /obj/item/grenade/syndieminibomb/concussion,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "XR" = (
 /obj/structure/spider/stickyweb,
 /mob/living/simple_animal/hostile/giant_spider/hunter,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "YG" = (
 /obj/item/organ/brain/alien,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "YZ" = (
 /mob/living/simple_animal/hostile/skeleton,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Zj" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ZS" = (
 /obj/structure/barricade/wooden,
 /turf/open/misc/asteroid/basalt{
-	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
+	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
+	temperature = 2.7;
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 

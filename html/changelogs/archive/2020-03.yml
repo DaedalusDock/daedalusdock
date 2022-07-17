@@ -737,7 +737,7 @@
   - bugfix: Fixed runtime on donutstation caused by mistype in dmm file
 2020-03-26:
   Dennok:
-  - code_imp: now copy_from(target, partial) can copy part of target gas moles
+  - code_imp: now copyFrom(target, partial) can copy part of target gas moles
   Detective-Google:
   - code_imp: shotgun's weapon_weight variable being defined twice
   Fikou:

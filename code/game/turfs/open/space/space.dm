@@ -4,17 +4,19 @@
 	name = "\proper space"
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
-
+	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
 	temperature = TCMB
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
+	simulated = FALSE
 
 	var/destination_z
 	var/destination_x
 	var/destination_y
 
-	var/static/datum/gas_mixture/immutable/space/space_gas = new
-	run_later = TRUE
+	initial_gas = AIRLESS_ATMOS
+
+	// run_later = TRUE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 	light_power = 0.25
@@ -34,7 +36,6 @@
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
 	icon_state = SPACE_ICON_STATE
-	air = space_gas
 	vis_contents.Cut() //removes inherited overlays
 	visibilityChanged()
 
@@ -55,8 +56,10 @@
 	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(GLOB.fullbright_overlay)
 
+	/*
 	if(requires_activation)
 		SSair.add_to_active(src, TRUE)
+	*/
 
 	if (light_system == STATIC_LIGHT && light_power && light_range)
 		update_light()
@@ -81,9 +84,10 @@
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
+/*
 /turf/open/space/Initalize_Atmos(times_fired)
 	return
-
+*/
 /turf/open/space/TakeTemperature(temp)
 
 /turf/open/space/RemoveLattice()
@@ -91,10 +95,10 @@
 
 /turf/open/space/AfterChange()
 	..()
-	atmos_overlay_types = null
+	//atmos_overlay_types = null
 
-/turf/open/space/Assimilate_Air()
-	return
+/*/turf/open/space/Assimilate_Air()
+	return*/
 
 //IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
 /turf/open/space/remove_air(amount)
@@ -224,6 +228,7 @@
 /turf/open/space/openspace
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "invisible"
+	simulated = TRUE
 
 /turf/open/space/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()

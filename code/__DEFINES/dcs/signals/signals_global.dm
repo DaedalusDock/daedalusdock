@@ -68,3 +68,6 @@
 
 /// Global signal sent when a light mechanism is completed (try_id)
 #define COMSIG_GLOB_LIGHT_MECHANISM_COMPLETED "!light_mechanism_completed"
+
+///Global signal sent when SSticker enters Runlevel Game
+#define COMSIG_GLOB_GAME_START "!game_started"

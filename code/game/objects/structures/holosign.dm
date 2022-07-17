@@ -94,7 +94,7 @@
 	icon_state = "holo_firelock"
 	density = FALSE
 	anchored = TRUE
-	can_atmos_pass = ATMOS_PASS_NO
+	can_atmos_pass = CANPASS_NEVER
 	alpha = 150
 	rad_insulation = RAD_LIGHT_INSULATION
 
@@ -106,7 +106,7 @@
 	. = ..()
 	var/turf/local = get_turf(loc)
 	ADD_TRAIT(local, TRAIT_FIREDOOR_STOP, TRAIT_GENERIC)
-	air_update_turf(TRUE, TRUE)
+	update_nearby_tiles()
 
 /obj/structure/holosign/barrier/atmos/block_superconductivity() //Didn't used to do this, but it's "normal", and will help ease heat flow transitions with the players.
 	return TRUE
@@ -114,7 +114,7 @@
 /obj/structure/holosign/barrier/atmos/Destroy()
 	var/turf/local = get_turf(loc)
 	REMOVE_TRAIT(local, TRAIT_FIREDOOR_STOP, TRAIT_GENERIC)
-	air_update_turf(TRUE, FALSE)
+	update_nearby_tiles()
 	return ..()
 
 /obj/structure/holosign/barrier/cyborg

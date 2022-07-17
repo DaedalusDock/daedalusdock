@@ -1197,7 +1197,7 @@
 		filler.set_density(FALSE)
 	//PARIAH STATION EDIT END
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
-	air_update_turf(TRUE, FALSE)
+	update_nearby_tiles()
 	sleep(1)
 	layer = OPEN_DOOR_LAYER
 	update_icon(ALL, AIRLOCK_OPEN, TRUE)
@@ -1247,7 +1247,7 @@
 		if(multi_tile)
 			filler.density = TRUE
 		//PARIAH STATION EDIT END
-		air_update_turf(TRUE, TRUE)
+		update_nearby_tiles()
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
@@ -1256,7 +1256,7 @@
 		if(multi_tile)
 			filler.density = TRUE
 		//PARIAH STATION EDIT END
-		air_update_turf(TRUE, TRUE)
+		update_nearby_tiles()
 	sleep(4)
 	if(dangerous_close)
 		crush()

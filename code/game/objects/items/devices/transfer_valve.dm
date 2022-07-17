@@ -148,8 +148,8 @@
 
 	if(change_volume)
 		target_mix.volume += other_mix.volume
-	
-	target_mix.merge(other_mix.remove_ratio(1))
+
+	target_mix.merge(other_mix.removeRatio(1))
 	return TRUE
 
 /obj/item/transfer_valve/proc/split_gases()
@@ -160,7 +160,7 @@
 
 	var/volume_ratio = mix_one.volume/mix_two.volume
 	var/datum/gas_mixture/temp
-	temp = mix_two.remove_ratio(volume_ratio)
+	temp = mix_two.removeRatio(volume_ratio)
 	mix_one.merge(temp)
 	mix_two.volume -= mix_one.volume
 

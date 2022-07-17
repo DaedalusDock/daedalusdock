@@ -920,7 +920,6 @@
 	amount = 10
 	},
 /obj/item/lighter,
-/obj/item/melee/roastingstick,
 /turf/open/floor/iron/dark/textured,
 /area/shuttle/pirate)
 "UJ" = (

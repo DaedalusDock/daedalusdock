@@ -139,10 +139,10 @@
 	var/temp_to_give = internal_heat / FRACTION_TO_RELEASE
 	internal_heat -= temp_to_give
 	var/datum/gas_mixture/environment = our_turf.return_air()
-	var/delta_temperature = temp_to_give / environment.heat_capacity()
+	var/delta_temperature = temp_to_give / environment.getHeatCapacity()
 	if(delta_temperature)
 		environment.temperature += delta_temperature
-		air_update_turf(FALSE, FALSE)
+		//air_update_turf(FALSE, FALSE)
 	if(admins_warned && internal_heat < max_heat * 0.75)
 		admins_warned = FALSE
 		message_admins("Power sink at ([x],[y],[z] - <A HREF='?_src_=holder;[HrefToken()];adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>) has cooled down and will not explode.")

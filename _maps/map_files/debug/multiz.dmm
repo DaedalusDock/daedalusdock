@@ -647,6 +647,7 @@
 /turf/open/floor/iron,
 /area/commons/storage/primary)
 "cW" = (
+/obj/effect/landmark/blobstart,
 /obj/effect/turf_decal/stripes/corner,
 /obj/structure/cable,
 /turf/open/floor/iron,

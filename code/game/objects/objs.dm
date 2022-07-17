@@ -30,6 +30,9 @@
 
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
 
+	///How large is the object, used for stuff like whether it can fit in backpacks or not
+	var/w_class = null
+
 	/// Map tag for something.  Tired of it being used on snowflake items.  Moved here for some semblance of a standard.
 	/// Next pr after the network fix will have me refactor door interactions, so help me god.
 	var/id_tag = null
@@ -116,8 +119,8 @@
 
 	if(breath_request>0)
 		var/datum/gas_mixture/environment = return_air()
-		var/breath_percentage = BREATH_VOLUME / environment.return_volume()
-		return remove_air(environment.total_moles() * breath_percentage)
+		var/breath_percentage = BREATH_VOLUME / environment.get_volume()
+		return remove_air(environment.get_moles() * breath_percentage)
 	else
 		return null
 

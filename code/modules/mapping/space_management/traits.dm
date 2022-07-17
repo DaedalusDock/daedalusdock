@@ -5,14 +5,14 @@
 	if (z_list)
 		if (z > z_list.len)
 			stack_trace("Unmanaged z-level [z]! maxz = [world.maxz], z_list.len = [z_list.len]")
-			return list()
+			return FALSE
 		var/datum/space_level/S = get_level(z)
 		return S.traits[trait]
 	else
 		var/list/default = DEFAULT_MAP_TRAITS
 		if (z > default.len)
 			stack_trace("Unmanaged z-level [z]! maxz = [world.maxz], default.len = [default.len]")
-			return list()
+			return FALSE
 		return default[z][DL_TRAITS][trait]
 
 /// Check if levels[z] has any of the specified traits

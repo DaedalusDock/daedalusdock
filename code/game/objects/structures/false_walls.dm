@@ -17,7 +17,7 @@
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE)
 	can_be_unanchored = FALSE
-	can_atmos_pass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
 	material_flags = MATERIAL_EFFECTS
 	greyscale_config = /datum/greyscale_config/low_wall
@@ -37,7 +37,7 @@
 /obj/structure/falsewall/Initialize()
 	. = ..()
 	color = null //Clear the color that's a mapping aid
-	air_update_turf(TRUE, TRUE)
+	update_nearby_tiles()
 	set_wall_information(plating_material, reinf_material, wall_paint, stripe_paint)
 
 /obj/structure/falsewall/update_greyscale()
@@ -86,7 +86,12 @@
 		set_opacity(density)
 		opening = FALSE
 		update_appearance()
-		air_update_turf(TRUE, !density)
+		update_nearby_tiles()
+
+/obj/structure/falsewall/zas_canpass(turf/other)
+	if(QDELETED(src))
+		return AIR_ALLOWED
+	return ZONE_BLOCKED
 
 /obj/structure/falsewall/update_icon(updates=ALL)//Calling icon_update will refresh the smoothwalls if it's closed, otherwise it will make sure the icon is correct if it's open
 	. = ..()

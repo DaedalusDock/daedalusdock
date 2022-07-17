@@ -130,7 +130,7 @@
  * * exposed_temperature - The temperature of the flame hitting the thermite
  * * exposed_volume - The volume of the flame
  */
-/datum/component/thermite/proc/flame_react(datum/source, exposed_temperature, exposed_volume)
+/datum/component/thermite/proc/flame_react(datum/source, exposed_contents, exposed_temperature, exposed_volume)
 	SIGNAL_HANDLER
 
 	if(exposed_temperature > 1922) // This is roughly the real life requirement to ignite thermite

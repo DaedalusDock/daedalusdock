@@ -28,13 +28,13 @@ SUBSYSTEM_DEF(statpanels)
 			cached ? "Next Map: [cached.map_name]" : null,
 			"Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]",
 			"Time Dilation: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
-			"\n",
 			"Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")]",
+			"\n",
+			"Station Time: [station_time_timestamp()]",
 			"Internal Round Timer: [SSticker.round_start_time ? time2text(world.time - SSticker.round_start_time, "hh:mm:ss", 0) : "The round hasn't started yet!"]",
 			"Actual Round Timer: [SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0) : "The round hasn't started yet!"]",
-			"Station Time: [station_time_timestamp()]",
 			"\n",
-			"Connected/Playing: [length(GLOB.clients)]/[get_active_player_count()]"
+			"Players Playing/Connected: [get_active_player_count()]/[length(GLOB.clients)]"
 		)
 
 		if(SSshuttle.emergency)

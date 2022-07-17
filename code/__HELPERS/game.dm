@@ -350,7 +350,7 @@
 	var/datum/gas_mixture/environment = turf_to_check.return_air()
 	if(!istype(environment))
 		return
-	var/pressure = environment.return_pressure()
+	var/pressure = environment.returnPressure()
 	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
 		. = TRUE
 

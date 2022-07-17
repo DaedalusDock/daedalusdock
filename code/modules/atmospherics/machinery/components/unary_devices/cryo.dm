@@ -272,7 +272,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.total_moles() > CRYO_MIN_GAS_MOLES)
+	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
 			consume_gas = TRUE
@@ -286,11 +286,13 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(!nodes[1] || !airs[1] || !air1.gases.len || air1.total_moles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
+	/* PARIAH EDIT REMOVAL - HUGBOX BARGAGE
+	if(!nodes[1] || !airs[1] || !air1.gas.len || air1.get_moles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
 		var/msg = "Insufficient cryogenic gas, shutting down."
 		radio.talk_into(src, msg, radio_channel)
 		set_on(FALSE)
 		return
+	*/
 
 	if(occupant)
 		var/mob/living/mob_occupant = occupant
@@ -302,7 +304,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 			cold_protection = H.get_cold_protection(air1.temperature)
 
 		if(abs(temperature_delta) > 1)
-			var/air_heat_capacity = air1.heat_capacity()
+			var/air_heat_capacity = air1.getHeatCapacity()
 
 			var/heat = ((1 - cold_protection) * 0.1 + conduction_coefficient) * temperature_delta * (air_heat_capacity * heat_capacity / (air_heat_capacity + heat_capacity))
 
@@ -313,9 +315,6 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 			if(ishuman(mob_occupant))
 				var/mob/living/carbon/human/humi = mob_occupant
 				humi.adjust_coretemperature(humi.bodytemperature - humi.coretemperature)
-
-
-		air1.garbage_collect()
 
 		if(air1.temperature > 2000)
 			take_damage(clamp((air1.temperature)/200, 10, 20), BURN)
@@ -328,7 +327,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return null
 	var/datum/gas_mixture/air1 = airs[1]
 	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.total_moles() * breath_percentage)
+	return air1.remove(air1.get_moles() * breath_percentage)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -543,7 +542,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.total_moles() > 10)
+	if(G.get_moles() > 10)
 		return G.temperature
 	return ..()
 
@@ -563,7 +562,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		if(node)
 			node.atmos_init()
 			node.add_member(src)
-		SSair.add_to_rebuild_queue(src)
+		SSairmachines.add_to_rebuild_queue(src)
 
 #undef MAX_TEMPERATURE
 #undef CRYO_MULTIPLY_FACTOR

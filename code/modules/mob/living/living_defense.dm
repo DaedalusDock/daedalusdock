@@ -39,7 +39,7 @@
 /mob/living/proc/get_ear_protection()
 	var/turf/current_turf = get_turf(src)
 	var/datum/gas_mixture/environment = current_turf.return_air()
-	var/pressure = environment ? environment.return_pressure() : 0
+	var/pressure = environment ? environment.returnPressure() : 0
 	if(pressure < SOUND_MINIMUM_PRESSURE) //space is empty
 		return 1
 	return 0

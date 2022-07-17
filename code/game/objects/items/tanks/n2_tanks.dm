@@ -10,12 +10,10 @@
 	distribute_pressure = TANK_DEFAULT_RELEASE_PRESSURE
 
 /obj/item/tank/internals/nitrogen/populate_gas()
-	air_contents.assert_gas(/datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
+	air_contents.adjustGas(GAS_NITROGEN, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/nitrogen/full/populate_gas()
-	air_contents.assert_gas(/datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
+	air_contents.adjustGas(GAS_NITROGEN, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/nitrogen/belt
 	icon_state = "nitrogen_extended"
@@ -26,8 +24,7 @@
 	supports_variations_flags = CLOTHING_VOX_VARIATION
 
 /obj/item/tank/internals/nitrogen/belt/full/populate_gas()
-	air_contents.assert_gas(/datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
+	air_contents.adjustGas(GAS_NITROGEN, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
 
 /obj/item/tank/internals/nitrogen/belt/emergency
 	name = "emergency nitrogen tank"
@@ -36,5 +33,5 @@
 	volume = 3
 
 /obj/item/tank/internals/nitrogen/belt/emergency/populate_gas()
-	air_contents.assert_gas(/datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
+	air_contents.adjustGas(GAS_NITROGEN, (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C))
+

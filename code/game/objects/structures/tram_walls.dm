@@ -16,7 +16,7 @@
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_WALLS)
 	can_be_unanchored = FALSE
-	can_atmos_pass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_DENSITY
 	rad_insulation = RAD_MEDIUM_INSULATION
 	material_flags = MATERIAL_EFFECTS
 	var/mineral = /obj/item/stack/sheet/iron
@@ -29,7 +29,7 @@
 	var/obj/item/stack/initialized_mineral = new mineral
 	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
 	qdel(initialized_mineral)
-	air_update_turf(TRUE, TRUE)
+	//air_update_turf(TRUE, TRUE)
 
 /obj/structure/tramwall/attackby(obj/item/welder, mob/user, params)
 	if(welder.tool_behaviour == TOOL_WELDER)

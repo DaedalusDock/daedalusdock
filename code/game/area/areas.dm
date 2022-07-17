@@ -15,20 +15,16 @@
 
 	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
-	///Do we have an active fire alarm?
-	var/fire = FALSE
-	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm, checked by fire locks.
+	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm.
 	var/fire_detect = TRUE
-	///A list of all fire locks in this area. Used by fire alarm panels when resetting fire locks or activating all in an area
+	///A list of all fire locks in this area and on the border of this area.
 	var/list/firedoors
-	///A list of firelocks currently active. Used by fire alarms when setting their icons.
-	var/list/active_firelocks
-	///A list of all fire alarms in this area. Used by fire locks and burglar alarms to tell the fire alarm to change its icon.
+	///A list of all fire alarms in this area OR ADJACENT TO IT
 	var/list/firealarms
+	///A list of all air alarms in this area
+	var/list/airalarms
 	///Alarm type to count of sources. Not usable for ^ because we handle fires differently
 	var/list/active_alarms = list()
-	///We use this just for fire alarms, because they're area based right now so one alarm going poof shouldn't prevent you from clearing your alarms listing. Fire alarms and fire locks will set and clear alarms.
-	var/datum/alarm_handler/alarm_manager
 
 	var/lightswitch = TRUE
 
@@ -100,6 +96,8 @@
 	var/list/air_vent_info = list()
 	var/list/air_scrub_info = list()
 
+	var/datum/alarm_handler/alarm_manager
+
 /**
  * A list of teleport locations
  *
@@ -143,7 +141,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if (area_flags & UNIQUE_AREA)
 		GLOB.areas_by_type[type] = src
 	power_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
-	alarm_manager = new(src) // just in case
+	alarm_manager = new(src) //Just in case. Apparently.
 	return ..()
 
 /*
@@ -266,38 +264,10 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if (area_flags & NO_ALERTS)
 		return
 	//Trigger alarm effect
-	set_fire_alarm_effect()
+	communicate_fire_alert(FIRE_RAISED_PULL)
 	//Lockdown airlocks
 	for(var/obj/machinery/door/door in src)
 		close_and_lock_door(door)
-
-/**
- * Trigger the fire alarm visual affects in an area
- *
- * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
- */
-/area/proc/set_fire_alarm_effect()
-	if(fire)
-		return
-	fire = TRUE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/obj/machinery/light/L in src)
-		L.update()
-	for(var/obj/machinery/firealarm/firepanel in firealarms)
-		firepanel.set_status()
-
-/**
- * unset the fire alarm visual affects in an area
- *
- * Updates the fire light on fire alarms in the area and sets all lights to emergency mode
- */
-/area/proc/unset_fire_alarm_effects()
-	fire = FALSE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	for(var/obj/machinery/light/L in src)
-		L.update()
-	for(var/obj/machinery/firealarm/firepanel in firealarms)
-		firepanel.set_status()
 
 /**
  * Update the icon state of the area
@@ -506,3 +476,11 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
 	return
+
+///Called by airalarms and firealarms to communicate the status of the area to relevant machines
+/area/proc/communicate_fire_alert(code)
+	for(var/obj/machinery/light/L in src)
+		L.update()
+
+	for(var/datum/listener in airalarms + firealarms + firedoors)
+		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code,)

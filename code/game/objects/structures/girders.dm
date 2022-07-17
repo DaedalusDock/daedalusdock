@@ -9,6 +9,8 @@
 	anchored = TRUE
 	density = TRUE
 	max_integrity = 200
+	rad_insulation = RAD_VERY_LIGHT_INSULATION
+	can_atmos_pass = CANPASS_ALWAYS
 	var/state = GIRDER_NORMAL
 	var/girderpasschance = GIRDER_PASSCHANCE_NORMAL // percentage chance that a projectile passes through the girder.
 	var/can_displace = TRUE //If the girder can be moved around by wrenching it

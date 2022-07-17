@@ -24,13 +24,12 @@
 
 	var/turf/open/to_fill = run_loc_floor_bottom_left
 	//Prep the floor
-	to_fill.initial_gas_mix = OPENTURF_DEFAULT_ATMOS
-	to_fill.air = new
-	to_fill.air.copy_from_turf(to_fill)
+	to_fill.initial_gas = OPENTURF_DEFAULT_ATMOS
+	to_fill.make_air()
 
 	lab_rat.breathe()
 
-	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans can't get a full breath from the standard initial_gas_mix on a turf")
+	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans can't get a full breath from the standard initial_gas on a turf. Turf: [to_fill.type] | Air: [json_encode(to_fill.air.gas)] | Returned Air: [json_encode(to_fill.return_air().gas)]")
 
 /// Tests to make sure plasmaman can breath from their internal tanks
 /datum/unit_test/breath_sanity_plasmamen
@@ -64,16 +63,26 @@
 
 	var/turf/open/to_fill = run_loc_floor_bottom_left
 	//Prep the floor
-	to_fill.initial_gas_mix = LAVALAND_DEFAULT_ATMOS
-	to_fill.air = new
-	to_fill.air.copy_from_turf(to_fill)
+	to_fill.initial_gas = SSzas.lavaland_atmos.gas
+	to_fill.make_air()
 
 	lab_rat.breathe()
+	var/list/reason
+	if(lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN))
+		if(!to_fill.return_air())
+			return Fail("Assertion Failed: Turf failed to return air. Type: [to_fill.type], Initial Gas: [json_encode(to_fill.initial_gas)]")
 
-	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Ashwalkers can't get a full breath from the Lavaland's initial_gas_mix on a turf")
+		var/datum/gas_mixture/turf_gas = to_fill.return_air()
+		LAZYADD(reason, "Turf mix: [json_encode(turf_gas.gas)] | T: [turf_gas.temperature] | P: [turf_gas.returnPressure()] | Initial Gas: [json_encode(to_fill.initial_gas)]")
+
+		if(lab_rat.loc != to_fill)
+			LAZYADD(reason, "Rat was not located on it's intended turf!")
+
+	if(reason)
+		return Fail("Assertion Failed: [reason.Join(";")]", __FILE__, __LINE__)
 
 /datum/unit_test/breath_sanity_ashwalker/Destroy()
-	//Reset initial_gas_mix to avoid future issues on other tests
+	//Reset initial_gas to avoid future issues on other tests
 	var/turf/open/to_fill = run_loc_floor_bottom_left
-	to_fill.initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+	to_fill.initial_gas = OPENTURF_DEFAULT_ATMOS
 	return ..()

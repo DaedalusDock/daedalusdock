@@ -36,6 +36,10 @@
 			return "northwest"
 		if(SOUTHWEST)
 			return "southwest"
+		if(UP)
+			return "upwards"
+		if(DOWN)
+			return "downwards"
 		else
 	return
 

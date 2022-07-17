@@ -48,10 +48,10 @@
 	if(ispath(cell))
 		cell = new cell(src)
 	update_appearance()
-	SSair.start_processing_machine(src)
+	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/space_heater/Destroy()
-	SSair.stop_processing_machine(src)
+	SSairmachines.stop_processing_machine(src)
 	return..()
 
 /obj/machinery/space_heater/on_deconstruction()
@@ -82,7 +82,7 @@
 
 /obj/machinery/space_heater/process_atmos()
 	if(!on || !is_operational)
-		if (on) // If it's broken, turn it off too
+		if(on) // If it's broken, turn it off too
 			on = FALSE
 		return PROCESS_KILL
 
@@ -113,7 +113,7 @@
 	if(mode == HEATER_MODE_STANDBY)
 		return
 
-	var/heat_capacity = enviroment.heat_capacity()
+	var/heat_capacity = enviroment.getHeatCapacity()
 	var/required_energy = abs(enviroment.temperature - target_temperature) * heat_capacity
 	required_energy = min(required_energy, heating_power)
 
@@ -125,7 +125,6 @@
 		delta_temperature *= -1
 	if(delta_temperature)
 		enviroment.temperature += delta_temperature
-		air_update_turf(FALSE, FALSE)
 	cell.use(required_energy / efficiency)
 
 /obj/machinery/space_heater/RefreshParts()
@@ -266,7 +265,7 @@
 	usr.visible_message(span_notice("[usr] switches [on ? "on" : "off"] \the [src]."), span_notice("You switch [on ? "on" : "off"] \the [src]."))
 	update_appearance()
 	if (on)
-		SSair.start_processing_machine(src)
+		SSairmachines.start_processing_machine(src)
 
 ///For use with heating reagents in a ghetto way
 /obj/machinery/space_heater/improvised_chem_heater

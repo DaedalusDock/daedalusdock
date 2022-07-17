@@ -8,7 +8,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	distribute_pressure = ONE_ATMOSPHERE * O2STANDARD
 	actions_types = list(/datum/action/item_action/set_internals, /datum/action/item_action/toggle_jetpack, /datum/action/item_action/jetpack_stabilization)
-	var/gas_type = /datum/gas/oxygen
+	var/gas_type = GAS_OXYGEN
 	var/on = FALSE
 	var/stabilizers = FALSE
 	var/full_speed = TRUE // If the jetpack will have a speedboost in space/nograv or not
@@ -41,8 +41,7 @@
 /obj/item/tank/jetpack/populate_gas()
 	if(gas_type)
 		var/datum/gas_mixture/our_mix = return_air()
-		our_mix.assert_gas(gas_type)
-		our_mix.gases[gas_type][MOLES] = ((6 * ONE_ATMOSPHERE) * volume / (R_IDEAL_GAS_EQUATION * T20C))
+		our_mix.adjustGas(gas_type, (6*ONE_ATMOSPHERE) * volume / (R_IDEAL_GAS_EQUATION * T20C))
 
 /obj/item/tank/jetpack/ui_action_click(mob/user, action)
 	if(istype(action, /datum/action/item_action/toggle_jetpack))
@@ -124,12 +123,12 @@
 		return COMSIG_MOVABLE_STOP_SPACEMOVE
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user)
-	if((num < 0.005 || air_contents.total_moles() < num))
+	if((num < 0.005 || air_contents.get_moles() < num))
 		turn_off(user)
 		return
 
 	var/datum/gas_mixture/removed = remove_air(num)
-	if(removed.total_moles() < 0.005)
+	if(removed.get_moles() < 0.005)
 		turn_off(user)
 		return
 
@@ -210,4 +209,4 @@
 	icon_state = "jetpack-black"
 	inhand_icon_state = "jetpack-black"
 	distribute_pressure = 0
-	gas_type = /datum/gas/carbon_dioxide
+	gas_type = GAS_CO2

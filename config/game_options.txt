@@ -403,7 +403,7 @@ REACTIONARY_EXPLOSIONS
 ## eg: If you give the number 20. The bomb cap will be 5,10,20.
 ## Can be any number above 4, some examples are provided below.
 
-## Small (3, 7, 14)
+## Small (4, 8, 16)
 #BOMBCAP 14
 ## Default (5, 10, 20) (recommended if you enable REACTIONARY_EXPLOSIONS above)
 BOMBCAP 20

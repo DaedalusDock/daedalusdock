@@ -171,6 +171,7 @@
 	playsound(get_turf(src), hitsound, 75, TRUE, -1)
 	return TOXLOSS
 
+/*
 /obj/item/melee/supermatter_sword
 	name = "supermatter sword"
 	desc = "In a station full of bad ideas, this might just be the worst."
@@ -272,7 +273,7 @@
 
 /obj/item/melee/supermatter_sword/add_blood_DNA(list/blood_dna)
 	return FALSE
-
+*/
 /obj/item/melee/curator_whip
 	name = "curator's whip"
 	desc = "Somewhat eccentric and outdated, it still stings like hell to be hit by."
@@ -413,6 +414,7 @@
 		QDEL_NULL(beam)
 		playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
 		to_chat(user, span_notice("You put [src] away."))
+
 
 /obj/item/melee/cleric_mace
 	name = "cleric mace"

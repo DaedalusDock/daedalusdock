@@ -60,7 +60,7 @@
 	var/datum/gas_mixture/air2 = airs[2]
 
 	var/datum/gas_mixture/environment = loc.return_air()
-	var/environment_pressure = environment.return_pressure()
+	var/environment_pressure = environment.returnPressure()
 
 	if(pump_direction) //input -> external
 		var/pressure_delta = 10000
@@ -68,7 +68,7 @@
 		if(pressure_checks&EXT_BOUND)
 			pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
 		if(pressure_checks&INPUT_MIN)
-			pressure_delta = min(pressure_delta, (air1.return_pressure() - input_pressure_min))
+			pressure_delta = min(pressure_delta, (air1.returnPressure() - input_pressure_min))
 
 		if(pressure_delta <= 0)
 			return
@@ -92,7 +92,7 @@
 		if(pressure_checks&EXT_BOUND)
 			pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
 		if(pressure_checks&INPUT_MIN)
-			pressure_delta = min(pressure_delta, (output_pressure_max - air2.return_pressure()))
+			pressure_delta = min(pressure_delta, (output_pressure_max - air2.returnPressure()))
 
 		if(pressure_delta <= 0)
 			return

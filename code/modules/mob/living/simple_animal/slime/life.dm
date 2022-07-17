@@ -141,11 +141,11 @@
 				adjustBruteLoss(round(sqrt(bodytemperature)) * delta_time)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
-
+	/*
 	if(stat != DEAD)
 		var/bz_percentage =0
 		if(environment.gases[/datum/gas/bz])
-			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.total_moles()
+			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.get_moles()
 		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
 
 		switch(stat)
@@ -161,7 +161,7 @@
 					to_chat(src, span_notice("You wake up from the stasis."))
 					set_stat(CONSCIOUS)
 					regenerate_icons()
-
+	*/
 	updatehealth()
 
 

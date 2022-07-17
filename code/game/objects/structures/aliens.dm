@@ -63,22 +63,22 @@
 	canSmoothWith = list(SMOOTH_GROUP_ALIEN_RESIN)
 	max_integrity = 200
 	var/resintype = null
-	can_atmos_pass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_DENSITY
 
 
 /obj/structure/alien/resin/Initialize(mapload)
 	. = ..()
-	air_update_turf(TRUE, TRUE)
+	//air_update_turf(TRUE, TRUE)
 
 /obj/structure/alien/resin/Destroy()
-	air_update_turf(TRUE, FALSE)
+	//air_update_turf(TRUE, FALSE)
 	. = ..()
-
+/*
 /obj/structure/alien/resin/Move()
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
-
+*/
 /obj/structure/alien/resin/wall
 	name = "resin wall"
 	desc = "Thick resin solidified into a wall."
@@ -166,8 +166,6 @@
 
 	set_base_icon()
 
-	AddElement(/datum/element/atmos_sensitive, mapload)
-
 /obj/structure/alien/weeds/Destroy()
 	if(parent_node)
 		UnregisterSignal(parent_node, COMSIG_PARENT_QDELETING)
@@ -202,7 +200,7 @@
 		qdel(src)
 		return
 	//lets try to grow in a direction
-	for(var/turf/check_turf in src_turf.get_atmos_adjacent_turfs())
+	for(var/turf/check_turf in get_adjacent_open_turfs(src_turf))
 		//we cannot grow on blacklisted turfs
 		if(is_type_in_list(check_turf, blacklisted_turfs))
 			continue
@@ -244,13 +242,11 @@
  * Called to delete the weed
  */
 /obj/structure/alien/weeds/proc/do_qdel()
-	qdel(src)
-
-/obj/structure/alien/weeds/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > 300
+	qdel(src) //WHY THE FUCK DOES THIS EXIST? WHAT THE FUCK?
 
 /obj/structure/alien/weeds/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(5, BURN, 0, 0)
+	if(exposed_temperature > T0C + 100)
+		take_damage(5, BURN, 0, 0)
 
 /obj/structure/alien/weeds/node
 	name = "glowing resin"
@@ -353,8 +349,6 @@
 	if(status == BURST)
 		atom_integrity = integrity_failure * max_integrity
 
-	AddElement(/datum/element/atmos_sensitive, mapload)
-
 /obj/structure/alien/egg/update_icon_state()
 	switch(status)
 		if(GROWING)
@@ -426,10 +420,11 @@
 						break
 
 /obj/structure/alien/egg/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > 500
+	return exposed_temperature > 500 ? TRUE : 0
 
 /obj/structure/alien/egg/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(5, BURN, 0, 0)
+	if(exposed_temperature > 500)
+		take_damage(5, BURN, 0, 0)
 
 /obj/structure/alien/egg/atom_break(damage_flag)
 	. = ..()

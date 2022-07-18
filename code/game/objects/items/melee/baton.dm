@@ -14,18 +14,16 @@
 
 	/// Whether this baton is active or not
 	var/active = TRUE
-	/// Used interally, you don't want to modify
-	var/cooldown_check = 0
 	/// Default wait time until can stun again.
 	var/cooldown = (4 SECONDS)
-	/// The length of the knockdown applied to a struck living, non-cyborg mob.
-	var/knockdown_time = (1.5 SECONDS)
+	/// The length of the knockdown applied to a struck living mob, if they are disoriented.
+	var/knockdown_time = (10 SECONDS)
 	/// If affect_cyborg is TRUE, this is how long we stun cyborgs for on a hit.
 	var/stun_time_cyborg = (5 SECONDS)
 	/// The length of the knockdown applied to the user on clumsy_check()
 	var/clumsy_knockdown_time = 18 SECONDS
 	/// How much stamina damage we deal on a successful hit against a living, non-cyborg mob.
-	var/stamina_damage = 65
+	var/stamina_damage = 130
 	/// Can we stun cyborgs?
 	var/affect_cyborg = FALSE
 	/// The path of the default sound to play when we stun something.
@@ -76,10 +74,7 @@
  * [/baton_effect()] is third in the line. It knockdowns targets, along other effects called in additional_effects_cyborg() and
  * * additional_effects_non_cyborg().
  *
- * Last but not least [/set_batoned()], which gives the target the IWASBATONED trait with REF(user) as source and then removes it
- * * after a cooldown has passed. Basically, it stops users from cheesing the cooldowns by dual wielding batons.
- *
- * TL;DR: [/baton_attack()] -> [/finalize_baton_attack()] -> [/baton_effect()] -> [/set_batoned()]
+ * TL;DR: [/baton_attack()] -> [/finalize_baton_attack()] -> [/baton_effect()]
  */
 /obj/item/melee/baton/attack(mob/living/target, mob/living/user, params)
 	add_fingerprint(user)
@@ -123,17 +118,7 @@
 	if(!active || LAZYACCESS(modifiers, RIGHT_CLICK))
 		return BATON_DO_NORMAL_ATTACK
 
-	if(cooldown_check > world.time)
-		var/wait_desc = get_wait_description()
-		if (wait_desc)
-			to_chat(user, wait_desc)
-		return BATON_ATTACK_DONE
-
 	if(check_parried(target, user))
-		return BATON_ATTACK_DONE
-
-	if(HAS_TRAIT_FROM(target, TRAIT_IWASBATONED, REF(user))) //no doublebaton abuse anon!
-		to_chat(user, span_danger("You fumble and miss [target]!"))
 		return BATON_ATTACK_DONE
 
 	if(stun_animation)
@@ -164,10 +149,6 @@
 		return TRUE
 
 /obj/item/melee/baton/proc/finalize_baton_attack(mob/living/target, mob/living/user, modifiers, in_attack_chain = TRUE)
-	if(!in_attack_chain && HAS_TRAIT_FROM(target, TRAIT_IWASBATONED, REF(user)))
-		return BATON_ATTACK_DONE
-
-	cooldown_check = world.time + cooldown
 	if(on_stun_sound)
 		playsound(get_turf(src), on_stun_sound, on_stun_volume, TRUE, -1)
 	if(user)
@@ -176,26 +157,23 @@
 		target.LAssailant = WEAKREF(user)
 		if(log_stun_attack)
 			log_combat(user, target, "stun attacked", src)
-	if(baton_effect(target, user, modifiers) && user)
-		set_batoned(target, user, cooldown)
 
-/obj/item/melee/baton/proc/baton_effect(mob/living/target, mob/living/user, modifiers, stun_override)
+	baton_effect(target, user, modifiers)
+
+/obj/item/melee/baton/proc/baton_effect(mob/living/target, mob/living/user, modifiers)
 	var/trait_check = HAS_TRAIT(target, TRAIT_STUNRESISTANCE)
+	var/disable_duration =  knockdown_time * (trait_check ? 0.1 : 1)
 	if(iscyborg(target))
 		if(!affect_cyborg)
 			return FALSE
 		target.flash_act(affect_silicon = TRUE)
-		target.Paralyze((isnull(stun_override) ? stun_time_cyborg : stun_override) * (trait_check ? 0.1 : 1))
+		target.Disorient(6 SECONDS, stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_cyborg(target, user)
 	else
-		target.apply_damage(stamina_damage, STAMINA, BODY_ZONE_CHEST)
-		target.Knockdown((isnull(stun_override) ? knockdown_time : stun_override) * (trait_check ? 0.1 : 1))
+		target.Disorient(6 SECONDS, stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_non_cyborg(target, user)
 	return TRUE
 
-/// Description for trying to stun when still on cooldown.
-/obj/item/melee/baton/proc/get_wait_description()
-	return
 
 /// Default message for stunning a living, non-cyborg mob.
 /obj/item/melee/baton/proc/get_stun_description(mob/living/target, mob/living/user)
@@ -231,13 +209,6 @@
 /// Contains any special effects that we apply to cyborgs we stun. Does not include flashing the cyborg's screen, hardstunning them, etc.
 /obj/item/melee/baton/proc/additional_effects_cyborg(mob/living/target, mob/living/user)
 	return
-
-/obj/item/melee/baton/proc/set_batoned(mob/living/target, mob/living/user, cooldown)
-	if(!cooldown)
-		return
-	var/user_ref = REF(user) // avoids harddels.
-	ADD_TRAIT(target, TRAIT_IWASBATONED, user_ref)
-	addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_IWASBATONED, user_ref), cooldown)
 
 /obj/item/melee/baton/proc/clumsy_check(mob/living/user, mob/living/intented_target)
 	if(!active || !HAS_TRAIT(user, TRAIT_CLUMSY) || prob(50))
@@ -377,9 +348,6 @@
 	/// Bitflags for what upgrades the baton has
 	var/upgrade_flags
 
-/obj/item/melee/baton/telescopic/contractor_baton/get_wait_description()
-	return span_danger("The baton is still charging!")
-
 /obj/item/melee/baton/telescopic/contractor_baton/additional_effects_non_cyborg(mob/living/target, mob/living/user)
 	target.set_timed_status_effect(40 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	target.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/speech/stutter)
@@ -504,8 +472,8 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 80, ACID = 80)
 
 	throwforce = 7
-	stamina_damage = 60
-	knockdown_time = 5 SECONDS
+	stamina_damage = 130
+	knockdown_time = 6 SECONDS
 	clumsy_knockdown_time = 15 SECONDS
 	cooldown = 2.5 SECONDS
 	on_stun_sound = 'sound/weapons/egloves.ogg'
@@ -655,7 +623,7 @@
 	if(. != BATON_DO_NORMAL_ATTACK)
 		return
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
-		if(active && cooldown_check <= world.time && !check_parried(target, user))
+		if(active && !check_parried(target, user))
 			finalize_baton_attack(target, user, modifiers, in_attack_chain = FALSE)
 	else if(!user.combat_mode)
 		target.visible_message(span_warning("[user] prods [target] with [src]. Luckily it was off."), \
@@ -677,23 +645,11 @@
  * After a period of time, we then check to see what stun duration we give.
  */
 /obj/item/melee/baton/security/additional_effects_non_cyborg(mob/living/target, mob/living/user)
-	target.set_timed_status_effect(40 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
+	target.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	target.set_timed_status_effect(10 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
-	target.set_timed_status_effect(16 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+	target.set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	SEND_SIGNAL(target, COMSIG_LIVING_MINOR_SHOCK)
-	addtimer(CALLBACK(src, .proc/apply_stun_effect_end, target), 2 SECONDS)
-
-/// After the initial stun period, we check to see if the target needs to have the stun applied.
-/obj/item/melee/baton/security/proc/apply_stun_effect_end(mob/living/target)
-	var/trait_check = HAS_TRAIT(target, TRAIT_STUNRESISTANCE) //var since we check it in out to_chat as well as determine stun duration
-	if(!target.IsKnockdown())
-		to_chat(target, span_warning("Your muscles seize, making you collapse[trait_check ? ", but your body quickly recovers..." : "!"]"))
-
-	target.Knockdown(knockdown_time * (trait_check ? 0.1 : 1))
-
-/obj/item/melee/baton/security/get_wait_description()
-	return span_danger("The baton is still charging!")
 
 /obj/item/melee/baton/security/get_stun_description(mob/living/target, mob/living/user)
 	. = list()
@@ -829,3 +785,6 @@
 	if(!. || target.move_resist >= MOVE_FORCE_OVERPOWERING)
 		return
 	do_teleport(target, get_turf(target), 15, channel = TELEPORT_CHANNEL_BLUESPACE)
+
+/obj/item/melee/baton/security/debug
+	preload_cell_type = /obj/item/stock_parts/cell/bluespace

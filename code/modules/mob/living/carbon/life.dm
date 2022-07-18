@@ -344,16 +344,9 @@
 	if(stam_regen_start_time <= world.time)
 		if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
 			. |= BODYPART_LIFE_UPDATE_HEALTH //make sure we remove the stamcrit
-		var/total_stamina_loss = 0	//Quicker to put it here too than do it again with getStaminaLoss
-		//Find how many bodyparts we have with stamina damage
-		for(var/obj/item/bodypart/BP as anything in bodyparts)
-			if(BP.stamina_dam >= DAMAGE_PRECISION)
-				total_stamina_loss += BP.stamina_dam * BP.stam_damage_coeff
-		//Increase damage the more stam damage
-		//Increased stamina healing when above 50 stamloss, up to 2x healing rate when at 100 stamloss.
-		var/stam_heal = (delta_time * 0.5) * (stam_recovery * clamp(total_stamina_loss / 50, 1, 2))
 		//Heal bodypart stamina damage
-		adjustStaminaLoss(-stam_heal, FALSE)
+		if(staminaloss > 0)
+			adjustStaminaLoss(-(stamina_recovery * (delta_time * 0.5)), FALSE)
 
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		. |= limb.on_life(delta_time, times_fired)

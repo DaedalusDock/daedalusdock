@@ -518,11 +518,10 @@
 	var/total_burn = 0
 	var/total_brute = 0
 	var/total_stamina = 0
-	for(var/X in bodyparts) //hardcoded to streamline things a bit
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
 		total_brute += (BP.brute_dam * BP.body_damage_coeff)
 		total_burn += (BP.burn_dam * BP.body_damage_coeff)
-		total_stamina += (BP.stamina_dam * BP.stam_damage_coeff)
+		total_stamina += (BP.stamina_dam)
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute, DAMAGE_PRECISION))
 	staminaloss = round(total_stamina, DAMAGE_PRECISION)
 	update_stat()
@@ -537,10 +536,11 @@
 
 /mob/living/carbon/update_stamina()
 	var/stam = getStaminaLoss()
-	if(stam > DAMAGE_PRECISION && (maxHealth - stam) <= crit_threshold)
+	var/is_stam_stunned = HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)
+	if(stam > DAMAGE_PRECISION && stam >= STAMINA_STUN_THRESHOLD && !is_stam_stunned)
 		if (!stat)
 			enter_stamcrit()
-	else if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
+	else if(stam <= STAMINA_WEAKENED_THRESHOLD && is_stam_stunned)
 		REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 		REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
@@ -779,20 +779,20 @@
 /mob/living/carbon/update_stamina_hud(shown_stamina_amount)
 	if(!client || !hud_used?.stamina)
 		return
-	if(stat == DEAD || IsStun() || IsParalyzed() || IsImmobilized() || IsKnockdown() || IsFrozen())
+	if(stat == DEAD)
 		hud_used.stamina.icon_state = "stamina6"
 	else
 		if(shown_stamina_amount == null)
-			shown_stamina_amount = health - getStaminaLoss() - crit_threshold
-		if(shown_stamina_amount >= health)
+			shown_stamina_amount = STAMINA_HUMAN_MAX - getStaminaLoss()
+		if(shown_stamina_amount >= STAMINA_HUMAN_MAX)
 			hud_used.stamina.icon_state = "stamina0"
-		else if(shown_stamina_amount > health*0.8)
+		else if(shown_stamina_amount > STAMINA_HUMAN_MAX*0.8)
 			hud_used.stamina.icon_state = "stamina1"
-		else if(shown_stamina_amount > health*0.6)
+		else if(shown_stamina_amount > STAMINA_HUMAN_MAX*0.6)
 			hud_used.stamina.icon_state = "stamina2"
-		else if(shown_stamina_amount > health*0.4)
+		else if(shown_stamina_amount > STAMINA_HUMAN_MAX*0.4)
 			hud_used.stamina.icon_state = "stamina3"
-		else if(shown_stamina_amount > health*0.2)
+		else if(shown_stamina_amount > STAMINA_HUMAN_MAX*0.2)
 			hud_used.stamina.icon_state = "stamina4"
 		else if(shown_stamina_amount > 0)
 			hud_used.stamina.icon_state = "stamina5"

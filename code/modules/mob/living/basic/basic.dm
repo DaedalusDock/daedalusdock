@@ -12,8 +12,6 @@
 
 	///Defines how fast the basic mob can move. This is a multiplier
 	var/speed = 1
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///how much damage this basic mob does to objects, if any.
 	var/obj_damage = 0

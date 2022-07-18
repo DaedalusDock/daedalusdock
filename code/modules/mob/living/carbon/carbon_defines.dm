@@ -75,9 +75,8 @@
 		)
 	/*
 		Stamina healed per 2 seconds overall. When the mob has taken more than 60 stamina damage
-		the rate of stamina regeneration will be increased, up to 20 per second when the mob has taken 120 stamina damage.
 	*/
-	var/stam_recovery = 12
+	stamina_recovery = 10
 
 	/// A collection of arms (or actually whatever the fug /bodyparts you monsters use to wreck my systems)
 	var/list/hand_bodyparts = list()

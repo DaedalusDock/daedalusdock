@@ -56,8 +56,6 @@
 	var/force_threshold = 0
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///Minimal body temperature without receiving damage
 	var/minbodytemp = 250

@@ -13,13 +13,15 @@
 		return
 	if(absorb_stun(0)) //continuous effect, so we don't want it to increment the stuns absorbed.
 		return
-	to_chat(src, span_notice("You're too exhausted to keep going..."))
+	visible_message(
+		span_danger("[src] slumps over, too weak to continue fighting..."),
+		span_userdanger("You're too exhausted to continue fighting..."),
+		span_hear("You hear something hit the floor.")
+	)
 	ADD_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 	ADD_TRAIT(src, TRAIT_FLOORED, STAMINA)
-	filters += FILTER_STAMINACRIT //PARIAH EDIT
-	if(getStaminaLoss() < 120) // Puts you a little further into the initial stamcrit, makes stamcrit harder to outright counter with chems.
-		adjustStaminaLoss(30, FALSE)
+	filters += FILTER_STAMINACRIT
 
 	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
 

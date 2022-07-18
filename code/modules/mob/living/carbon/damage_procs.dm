@@ -95,17 +95,19 @@
 
 /mob/living/carbon/getStaminaLoss()
 	. = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		. += round(BP.stamina_dam * BP.stam_damage_coeff, DAMAGE_PRECISION)
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		. += round(BP.stamina_dam, DAMAGE_PRECISION)
 
 /mob/living/carbon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
+	var/stam_before = getStaminaLoss()
 	if(amount > 0)
 		take_overall_damage(0, 0, amount, updating_health)
 	else
 		heal_overall_damage(0, 0, abs(amount), null, updating_health)
+	to_chat(world, "KDEBUG: adjustStaminaLoss([amount]) added [getStaminaLoss() - stam_before] to [stam_before]")
+	to_chat(world, "KDEBUG: CURRENT: [getStaminaLoss()]")
 	return amount
 
 /mob/living/carbon/setStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
@@ -248,7 +250,6 @@
 /mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
 	if(status_flags & GODMODE)
 		return //godmode
-
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_status)
 	var/update = 0
 	while(parts.len && (brute > 0 || burn > 0 || stamina > 0))
@@ -266,9 +267,10 @@
 
 		brute = round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
 		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
-		stamina = round(stamina - (picked.stamina_dam - stamina_was), DAMAGE_PRECISION)
+		stamina = stamina - (picked.stamina_dam - stamina_was)
 
 		parts -= picked
+
 	if(updating_health)
 		updatehealth()
 	if(update)

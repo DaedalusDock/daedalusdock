@@ -68,8 +68,6 @@
 	var/can_be_disabled = FALSE
 	///Multiplier of the limb's damage that gets applied to the mob
 	var/body_damage_coeff = 1
-	///Multiplier of the limb's stamina damage that gets applied to the mob. Why is this 0.75 by default? Good question!
-	var/stam_damage_coeff = 0.75
 	var/brutestate = 0
 	var/burnstate = 0
 
@@ -415,7 +413,6 @@
 //Cannot apply negative damage
 /obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
-
 	var/hit_percent = (100-blocked)/100
 	if((!brute && !burn && !stamina) || hit_percent <= 0)
 		return FALSE
@@ -522,7 +519,7 @@
 			owner.updatehealth()
 			if(stamina > DAMAGE_PRECISION)
 				owner.update_stamina()
-				owner.stam_regen_start_time = world.time + STAMINA_REGEN_BLOCK_TIME
+				owner.stam_regen_start_time = world.time + STAMINA_REGEN_TIME
 				. = TRUE
 	return update_bodypart_damage_state() || .
 

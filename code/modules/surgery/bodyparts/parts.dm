@@ -68,7 +68,7 @@
 	attack_verb_continuous = list("slaps", "punches")
 	attack_verb_simple = list("slap", "punch")
 	max_damage = 50
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	body_zone = BODY_ZONE_L_ARM
 	body_part = ARM_LEFT
 	plaintext_zone = "left arm"
@@ -177,7 +177,7 @@
 	held_index = 2
 	px_x = 6
 	px_y = 0
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 
 
@@ -272,7 +272,7 @@
 	body_damage_coeff = 0.75
 	px_x = -2
 	px_y = 12
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 
 
@@ -363,7 +363,7 @@
 	body_damage_coeff = 0.75
 	px_x = 2
 	px_y = 12
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 	/// We store this here to generate our icon key more easily.
 	var/left_leg_mask_key

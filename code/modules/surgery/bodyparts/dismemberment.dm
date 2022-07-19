@@ -85,6 +85,8 @@
 	update_limb(1)
 	owner.remove_bodypart(src)
 
+	owner.maximum_stamina_loss -= src.max_stamina_damage
+
 	if(held_index)
 		if(owner.hand_bodyparts[held_index] == src)
 			// We only want to do this if the limb being removed is the active hand part.
@@ -360,6 +362,9 @@
 			continue
 		scar.victim = new_limb_owner
 		LAZYADD(new_limb_owner.all_scars, scar)
+
+	///Add our stamina to their pool
+	new_limb_owner.maximum_stamina_loss += max_stamina_damage
 
 	update_bodypart_damage_state()
 	if(can_be_disabled)

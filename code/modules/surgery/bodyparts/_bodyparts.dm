@@ -384,7 +384,6 @@
 			owner.updatehealth()
 			if(stamina > DAMAGE_PRECISION)
 				owner.update_stamina()
-				owner.stam_regen_start_time = world.time + STAMINA_REGEN_TIME
 				. = TRUE
 	return update_bodypart_damage_state() || .
 

@@ -536,17 +536,14 @@
 
 /mob/living/carbon/update_stamina()
 	var/stam = getStaminaLoss()
+	var/is_exhausted = HAS_TRAIT_FROM(src, TRAIT_EXHAUSTED, STAMINA)
 	var/is_stam_stunned = HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)
-	if(stam > DAMAGE_PRECISION && stam >= STAMINA_STUN_THRESHOLD && !is_stam_stunned)
-		if (!stat)
-			enter_stamcrit()
-	else if(stam <= STAMINA_WEAKENED_THRESHOLD && is_stam_stunned)
-		REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
-		filters -= FILTER_STAMINACRIT //PARIAH EDIT
-	else
-		return
+	if(stam >= STAMINA_EXHAUSTION_THRESHOLD && !is_exhausted)
+		ADD_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
+	if(stam >= STAMINA_STUN_THRESHOLD && !is_stam_stunned && !stat)
+		stamina_stun()
+	if(is_exhausted && stam < STAMINA_EXHAUSTION_THRESHOLD)
+		REMOVE_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
 	update_stamina_hud()
 
 /mob/living/carbon/update_sight()

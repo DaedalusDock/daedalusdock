@@ -6,7 +6,13 @@
 /mob/living/carbon/IsParalyzed(include_stamcrit = TRUE)
 	return ..() || (include_stamcrit && HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
 
-/mob/living/carbon/proc/enter_stamcrit()
+/mob/living/proc/stamina_crit()
+	return
+
+/mob/living/carbon/stamina_crit()
+	return
+
+/mob/living/carbon/proc/stamina_stun()
 	if(!(status_flags & CANKNOCKDOWN) || HAS_TRAIT(src, TRAIT_STUNIMMUNE))
 		return
 	if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)) //Already in stamcrit
@@ -24,6 +30,13 @@
 	filters += FILTER_STAMINACRIT
 
 	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
+	addtimer(CALLBACK(src, .proc/exit_stamina_stun), STAMINA_STUN_TIME)
+
+/mob/living/carbon/proc/exit_stamina_stun()
+	REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
+	REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
+	REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
+	filters -= FILTER_STAMINACRIT
 
 /mob/living/carbon/adjust_disgust(amount)
 	disgust = clamp(disgust+amount, 0, DISGUST_LEVEL_MAXEDOUT)

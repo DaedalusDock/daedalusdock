@@ -215,6 +215,17 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
 	var/override_notes = FALSE
 
+	/*___________*/
+	/*Goon Combat*/
+	/*‾‾‾‾‾‾‾‾‾‾‾*/
+	var/stamina_cost = STAMINA_SWING_COST_ITEM
+	var/stamina_damage = STAMINA_DAMAGE_ITEM
+	var/stamina_critical_chance = STAMINA_CRITICAL_RATE_ITEM
+	var/stamina_critical_modifier = STAMINA_CRITICAL_MODIFIER
+
+	var/combat_click_delay = CLICK_CD_MELEE
+
+
 /obj/item/Initialize(mapload)
 
 	if(attack_verb_continuous)

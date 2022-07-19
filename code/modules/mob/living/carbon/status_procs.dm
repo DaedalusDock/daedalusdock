@@ -6,13 +6,14 @@
 /mob/living/carbon/IsParalyzed(include_stamcrit = TRUE)
 	return ..() || (include_stamcrit && HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
 
-/mob/living/proc/stamina_crit()
+/mob/living/proc/stamina_stun()
 	return
 
-/mob/living/carbon/stamina_crit()
+/mob/living/proc/exit_stamina_stun()
+	SIGNAL_HANDLER
 	return
 
-/mob/living/carbon/proc/stamina_stun()
+/mob/living/carbon/stamina_stun()
 	if(!(status_flags & CANKNOCKDOWN) || HAS_TRAIT(src, TRAIT_STUNIMMUNE))
 		return
 	if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)) //Already in stamcrit
@@ -32,7 +33,7 @@
 	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
 	addtimer(CALLBACK(src, PROC_REF(exit_stamina_stun)), STAMINA_STUN_TIME)
 
-/mob/living/carbon/proc/exit_stamina_stun()
+/mob/living/carbon/exit_stamina_stun()
 	REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 	REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 	REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)

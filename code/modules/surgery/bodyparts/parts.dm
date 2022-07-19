@@ -101,7 +101,7 @@
 	attack_verb_continuous = list("slaps", "punches")
 	attack_verb_simple = list("slap", "punch")
 	max_damage = 50
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	body_zone = BODY_ZONE_L_ARM
 	body_part = ARM_LEFT
 	plaintext_zone = "left arm"
@@ -192,7 +192,7 @@
 	px_x = 6
 	px_y = 0
 	bodypart_trait_source = RIGHT_ARM_TRAIT
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 
 /obj/item/bodypart/arm/right/set_owner(new_owner)
@@ -289,7 +289,7 @@
 	plaintext_zone = "left leg"
 	px_x = -2
 	px_y = 12
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 	bodypart_trait_source = LEFT_LEG_TRAIT
 
@@ -369,7 +369,7 @@
 	px_x = 2
 	px_y = 12
 	bodypart_trait_source = RIGHT_LEG_TRAIT
-	max_stamina_damage = 25
+	max_stamina_damage = 35
 	can_be_disabled = TRUE
 
 /obj/item/bodypart/leg/right/set_owner(new_owner)

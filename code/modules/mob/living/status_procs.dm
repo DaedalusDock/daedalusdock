@@ -253,7 +253,7 @@
 	if(overstam)
 		apply_damage(stam2deal, STAMINA, spread_damage = TRUE)
 	else
-		apply_damage(stam2deal, STAMINA, spread_damage = TRUE, cap_loss_at = STAMINA_EXHAUSTION_THRESHOLD)
+		apply_damage(stam2deal, STAMINA, spread_damage = TRUE, cap_loss_at = (src.maximum_stamina_loss + STAMINA_EXHAUSTION_THRESHOLD_MODIFIER))
 
 	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
 	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)

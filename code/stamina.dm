@@ -15,13 +15,13 @@
 ////
 
 ///The maximum stamina a human has, after adding up all bodyparts.
-#define STAMINA_HUMAN_MAX 200
-///Carbons enter a "weakened" state over this staminaloss, opening them up to Disorient stuns.
-#define STAMINA_EXHAUSTION_THRESHOLD 150
+#define STAMINA_HUMAN_MAX 250
+///Carbons enter a "weakened" state over [maximum_stamina_loss] plus this value, opening them up to Disorient stuns.
+#define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (-50)
 ///The slowdown when a mob is exhausted
 #define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
-///Carbons will become stamina stunned upon reaching or exceeding this staminaloss.
-#define STAMINA_STUN_THRESHOLD 200
+///Carbons will become stamina stunned upon reaching or exceeding [maximum_stamina_loss] plus this value
+#define STAMINA_STUN_THRESHOLD_MODIFIER 0
 
 
 

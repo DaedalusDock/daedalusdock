@@ -107,6 +107,9 @@
 /datum/movespeed_modifier/slime_tempmod
 	variable = TRUE
 
+/datum/movespeed_modifier/living_exhaustion
+	multiplicative_slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
+	flags = IGNORE_NOSLOW
 /datum/movespeed_modifier/carbon_crawling
 	multiplicative_slowdown = CRAWLING_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW

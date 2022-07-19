@@ -83,6 +83,8 @@
 		affecting = bodyparts[1]
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 	send_item_attack_message(I, user, affecting.plaintext_zone, affecting)
+	if(I.stamina_damage)
+		apply_damage(I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1), STAMINA, spread_damage = TRUE, attack_direction = get_dir(user, src))
 	if(I.force)
 		var/attack_direction = get_dir(user, src)
 		apply_damage(I.force, I.damtype, affecting, sharpness = I.get_sharpness(), attack_direction = attack_direction)

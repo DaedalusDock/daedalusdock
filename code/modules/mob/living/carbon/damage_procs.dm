@@ -1,6 +1,6 @@
 
 
-/mob/living/carbon/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked = FALSE, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null)
+/mob/living/carbon/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked = FALSE, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	SEND_SIGNAL(src, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone)
 	var/hit_percent = (100-blocked)/100
 	if(!damage || (!forced && hit_percent <= 0))
@@ -101,14 +101,10 @@
 /mob/living/carbon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	var/stam_before = getStaminaLoss()
 	if(amount > 0)
 		take_overall_damage(0, 0, amount, updating_health)
 	else
 		heal_overall_damage(0, 0, abs(amount), null, updating_health)
-	if(amount>0)
-		to_chat(world, "KDEBUG: adjustStaminaLoss([amount]) added [getStaminaLoss() - stam_before] to [stam_before]")
-		to_chat(world, "KDEBUG: CURRENT: [getStaminaLoss()] | EXPECTED: [stam_before + amount] | DIFFERENCE: [getStaminaLoss() - (stam_before + amount)]")
 	return amount
 
 /mob/living/carbon/setStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
@@ -254,8 +250,6 @@
 		return //godmode
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_status)
 	var/update = 0
-	var/damage2distribute = stamina
-	var/damagedistributed
 	while(length(parts) && (brute > 0 || burn > 0))
 		var/obj/item/bodypart/picked = pick(parts)
 		var/brute_per_part = round(brute/parts.len, DAMAGE_PRECISION)
@@ -302,15 +296,10 @@
 					continue
 				///Distribute the damage share to this limb, record how much was actually used.
 				var/stamina_was = picked.stamina_dam
-				update |= picked.receive_damage(0, 0, damage_share, FALSE, required_status, wound_bonus = CANT_WOUND)
+				update |= picked.receive_damage(0, 0, damage_share, FALSE, required_status)
 				stamina = round(stamina - (picked.stamina_dam - stamina_was), DAMAGE_PRECISION)
-				damagedistributed += round(picked.stamina_dam - stamina_was, DAMAGE_PRECISION)
 				parts -= picked
 
-	if(damage2distribute - damagedistributed > 0)
-		to_chat(world, "KDEBUG: take_overall_damage() failed to distribute [damage2distribute - damagedistributed]!")
-	else if(damage2distribute - damagedistributed < 0)
-		to_chat(world, "KDEBUG, take_overall_damage() distributed [damagedistributed-damage2distribute] extra damage!")
 	if(updating_health)
 		updatehealth()
 	if(update)

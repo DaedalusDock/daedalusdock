@@ -2306,3 +2306,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 
 	adjust_timed_status_effect(duration SECONDS, impediments[chosen])
+
+///Take away stamina from an attack being thrown.
+/mob/living/proc/stamina_swing(cost)
+	var/user_loss = src.getStaminaLoss()
+	if((STAMINA_MAXIMUM_TO_SWING - user_loss - cost) > 0)
+		src.adjustStaminaLoss(cost)
+	else
+		src.adjustStaminaLoss(STAMINA_MAXIMUM_TO_SWING - user_loss)

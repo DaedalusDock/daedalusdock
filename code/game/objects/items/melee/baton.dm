@@ -22,7 +22,7 @@
 	/// The length of the knockdown applied to the user on clumsy_check()
 	var/clumsy_knockdown_time = 18 SECONDS
 	/// How much stamina damage we deal on a successful hit against a living, non-cyborg mob.
-	var/stamina_damage = 130
+	var/charged_stamina_damage = 130
 	/// Can we stun cyborgs?
 	var/affect_cyborg = FALSE
 	/// The path of the default sound to play when we stun something.
@@ -55,8 +55,8 @@
 /obj/item/melee/baton/Initialize(mapload)
 	. = ..()
 	// Adding an extra break for the sake of presentation
-	if(stamina_damage != 0)
-		offensive_notes = "\nVarious interviewed security forces report being able to beat criminals into exhaustion with only [span_warning("[CEILING(100 / stamina_damage, 1)] hit\s!")]"
+	if(charged_stamina_damage != 0)
+		offensive_notes = "\nVarious interviewed security forces report being able to beat criminals into exhaustion with only [span_warning("[CEILING(100 / charged_stamina_damage, 1)] hit\s!")]"
 
 	register_item_context()
 
@@ -166,10 +166,10 @@
 		if(!affect_cyborg)
 			return FALSE
 		target.flash_act(affect_silicon = TRUE)
-		target.Disorient(6 SECONDS, stamina_damage, paralyze = disable_duration, stack_status = FALSE)
+		target.Disorient(6 SECONDS, charged_stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_cyborg(target, user)
 	else
-		target.Disorient(6 SECONDS, stamina_damage, paralyze = disable_duration, stack_status = FALSE)
+		target.Disorient(6 SECONDS, charged_stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_non_cyborg(target, user)
 	return TRUE
 
@@ -225,7 +225,7 @@
 			playsound(get_turf(src), 'sound/effects/bang.ogg', 10, TRUE)
 	else
 		user.Knockdown(clumsy_knockdown_time)
-		user.apply_damage(stamina_damage, STAMINA, BODY_ZONE_HEAD)
+		user.apply_damage(charged_stamina_damage, STAMINA, BODY_ZONE_HEAD)
 		additional_effects_non_cyborg(user, user) // user is the target here
 		if(on_stun_sound)
 			playsound(get_turf(src), on_stun_sound, on_stun_volume, TRUE, -1)
@@ -334,7 +334,7 @@
 	item_flags = NONE
 	force = 5
 	cooldown = 2.5 SECONDS
-	stamina_damage = 85
+	charged_stamina_damage = 85
 	clumsy_knockdown_time = 24 SECONDS
 	affect_cyborg = TRUE
 	on_stun_sound = 'sound/effects/contractorbatonhit.ogg'
@@ -468,7 +468,7 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 80, ACID = 80)
 
 	throwforce = 7
-	stamina_damage = 130
+	charged_stamina_damage = 130
 	knockdown_time = 6 SECONDS
 	clumsy_knockdown_time = 15 SECONDS
 	cooldown = 2.5 SECONDS

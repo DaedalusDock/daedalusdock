@@ -248,17 +248,17 @@
 	var/stamina_multiplier = LERP(disorient_multiplier, 1, 0.25)
 
 	var/stam2deal = stamina_amount * stamina_multiplier
+
+	//You can never be stam-stunned w/o overstam
 	if(overstam)
-		adjustStaminaLoss(stam2deal) //You can never be stam-stunned w/o overstam
+		apply_damage(stam2deal, STAMINA, spread_damage = TRUE)
 	else
-		stam2deal = clamp(stam2deal, 0, CEILING((STAMINA_WEAKENED_THRESHOLD - getStaminaLoss()), 1))
-		if(stam2deal)
-			adjustStaminaLoss(stam2deal)
+		apply_damage(stam2deal, STAMINA, spread_damage = TRUE, cap_loss_at = STAMINA_EXHAUSTION_THRESHOLD)
 
 	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
 	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)
 
-	if(staminaloss >= STAMINA_WEAKENED_THRESHOLD)
+	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 		if(knockdown)
 			if(stack_status)
 				AdjustKnockdown(knockdown, ignore_canstun)

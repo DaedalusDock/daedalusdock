@@ -84,7 +84,7 @@
 	/*
 		Stamina healed per 2 seconds overall. When the mob has taken more than 60 stamina damage
 	*/
-	stamina_recovery = 10
+	stamina_recovery = STAMINA_REGEN
 
 	/// A collection of arms (or actually whatever the fug /bodyparts you monsters use to wreck my systems)
 	var/list/hand_bodyparts = list()

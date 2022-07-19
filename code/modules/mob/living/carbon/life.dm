@@ -342,7 +342,7 @@
 
 /mob/living/carbon/proc/handle_bodyparts(delta_time, times_fired)
 	if(stam_regen_start_time <= world.time)
-		if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
+		if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA) || HAS_TRAIT_FROM(src, TRAIT_EXHAUSTED, STAMINA))
 			. |= BODYPART_LIFE_UPDATE_HEALTH //make sure we remove the stamcrit
 		//Heal bodypart stamina damage
 		if(staminaloss > 0)

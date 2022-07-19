@@ -174,7 +174,7 @@
 				terrible_conversion_proc(flashed, user)
 				visible_message(span_danger("[user] blinds [flashed] with the flash!"), span_userdanger("[user] blinds you with the flash!"))
 			//easy way to make sure that you can only long stun someone who is facing in your direction
-			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), (70*(1-(deviation*0.5))), paralyze = 2 SECONDS)
+			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 70, paralyze = 2 SECONDS)
 		else if(user)
 			visible_message(span_warning("[user] fails to blind [flashed] with the flash!"), span_danger("[user] fails to blind you with the flash!"))
 		else

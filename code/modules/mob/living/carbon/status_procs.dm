@@ -20,6 +20,10 @@
 		return
 	if(absorb_stun(0)) //continuous effect, so we don't want it to increment the stuns absorbed.
 		return
+
+	var/chance = STAMINA_SCALING_STUN_BASE + (STAMINA_SCALING_STUN_SCALER * ((0 - (src.maximum_stamina_loss - getStaminaLoss())) / STAMINA_STUN_THRESHOLD_MODIFIER))
+	if(!prob(chance))
+		return
 	visible_message(
 		span_danger("[src] slumps over, too weak to continue fighting..."),
 		span_userdanger("You're too exhausted to continue fighting..."),
@@ -30,7 +34,6 @@
 	ADD_TRAIT(src, TRAIT_FLOORED, STAMINA)
 	filters += FILTER_STAMINACRIT
 
-	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
 	addtimer(CALLBACK(src, .proc/exit_stamina_stun), STAMINA_STUN_TIME)
 
 /mob/living/carbon/exit_stamina_stun()

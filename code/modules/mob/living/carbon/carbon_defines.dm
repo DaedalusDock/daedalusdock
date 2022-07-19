@@ -78,7 +78,7 @@
 	*/
 	stamina_recovery = STAMINA_REGEN
 	///Carbon stamina is dynamically changed by bodyparts
-	maximum_stamina_loss = 0
+	maximum_stamina_loss = STAMINA_HUMAN_MAX
 
 	/// A collection of arms (or actually whatever the fug /bodyparts you monsters use to wreck my systems)
 	var/list/hand_bodyparts = list()

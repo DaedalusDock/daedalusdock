@@ -9,10 +9,10 @@
 /mob/living/proc/stamina_crit()
 	return
 
-/mob/living/proc/exit_stamina_crit()
+/mob/living/proc/exit_stamina_stun()
 	return
 
-/mob/living/carbon/stamina_crit()
+/mob/living/carbon/stamina_stun()
 	return
 
 /mob/living/carbon/proc/stamina_stun()

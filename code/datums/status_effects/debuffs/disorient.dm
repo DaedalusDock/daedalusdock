@@ -15,7 +15,7 @@
 
 /datum/status_effect/incapacitating/disoriented/tick()
 	if(last_twitch < world.time + 7 && (!HAS_TRAIT(owner, TRAIT_IMMOBILIZED)))
-		INVOKE_ASYNC(owner, TYPE_PROC_REF(/atom/movable,twitch))
+		INVOKE_ASYNC(owner, TYPE_PROC_REF(/atom/movable, twitch))
 		playsound(owner, 'sound/effects/electric_shock_short.ogg', 35, TRUE, 0.5, 1.5)
 		last_twitch = world.time
 

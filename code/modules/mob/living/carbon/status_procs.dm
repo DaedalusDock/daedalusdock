@@ -9,6 +9,9 @@
 /mob/living/proc/stamina_crit()
 	return
 
+/mob/living/proc/exit_stamina_crit()
+	return
+
 /mob/living/carbon/stamina_crit()
 	return
 
@@ -32,7 +35,9 @@
 	stam_regen_start_time = world.time + STAMINA_CRIT_TIME
 	addtimer(CALLBACK(src, .proc/exit_stamina_stun), STAMINA_STUN_TIME)
 
-/mob/living/carbon/proc/exit_stamina_stun()
+/mob/living/carbon/exit_stamina_stun()
+	SIGNAL_HANDLER
+
 	REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 	REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 	REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)

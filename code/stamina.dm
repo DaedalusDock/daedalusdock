@@ -17,11 +17,11 @@
 ///The maximum stamina a human has, after adding up all bodyparts.
 #define STAMINA_HUMAN_MAX 250
 ///Carbons enter a "weakened" state over [maximum_stamina_loss] plus this value, opening them up to Disorient stuns.
-#define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (-100)
+#define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (-100) //150
 ///The slowdown when a mob is exhausted
 #define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
-///Carbons will become stamina stunned upon reaching or exceeding [maximum_stamina_loss] plus this value
-#define STAMINA_STUN_THRESHOLD_MODIFIER (-50)
+///Carbons will be exposed to stamina stuns upon reaching or exceeding [maximum_stamina_loss] plus this value
+#define STAMINA_STUN_THRESHOLD_MODIFIER (-50) //-200
 
 
 
@@ -34,9 +34,9 @@
 ///The default stamina damage of an item
 #define STAMINA_DAMAGE_ITEM 15
 ///The default stamina damage of unarmed attacks
-#define STAMINA_DAMAGE_UNARMED 30
+#define STAMINA_DAMAGE_UNARMED 24
 ///The default stamina consumption of unarmed attacks
-#define STAMINA_SWING_COST_UNARMED 15
+#define STAMINA_SWING_COST_UNARMED 12
 ///The default critical hit chance of an item
 #define STAMINA_CRITICAL_RATE_ITEM 25
 ///The multiplier applied to damage on a critical
@@ -44,7 +44,7 @@
 ///The amount of stamina at which point swinging is free.
 #define STAMINA_MAXIMUM_TO_SWING 150
 ///The time a mob is stunned when stamina stunned
-#define STAMINA_STUN_TIME 5 SECONDS
+#define STAMINA_STUN_TIME 3 SECONDS
 ///The base value of a stamina stun chance
 #define STAMINA_SCALING_STUN_BASE 20
 ///The maximum additional stun chance based on missing stamina

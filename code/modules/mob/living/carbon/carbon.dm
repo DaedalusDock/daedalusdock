@@ -529,7 +529,7 @@
 	var/is_stam_stunned = HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)
 	if((stam >= (src.maximum_stamina_loss + STAMINA_EXHAUSTION_THRESHOLD_MODIFIER)) && !is_exhausted)
 		ADD_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
-	if((stam >= (src.maximum_stamina_loss + STAMINA_STUN_THRESHOLD_MODIFIER)) && !is_stam_stunned && !stat)
+	if((stam >= (src.maximum_stamina_loss + STAMINA_STUN_THRESHOLD_MODIFIER)) && !is_stam_stunned && stat <= SOFT_CRIT)
 		stamina_stun()
 	if(is_exhausted && (stam < (src.maximum_stamina_loss + STAMINA_EXHAUSTION_THRESHOLD_MODIFIER)))
 		REMOVE_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
@@ -651,40 +651,40 @@
 	if(health <= crit_threshold)
 		var/severity = 0
 		switch(health)
-			if(-20 to -10)
+			if(-120 to -110)
 				severity = 1
-			if(-30 to -20)
+			if(-130 to -120)
 				severity = 2
-			if(-40 to -30)
+			if(-140 to -130)
 				severity = 3
-			if(-50 to -40)
+			if(-150 to -140)
 				severity = 4
-			if(-50 to -40)
+			if(-150 to -140)
 				severity = 5
-			if(-60 to -50)
+			if(-160 to -150)
 				severity = 6
-			if(-70 to -60)
+			if(-170 to -160)
 				severity = 7
-			if(-90 to -70)
+			if(-190 to -170)
 				severity = 8
-			if(-95 to -90)
+			if(-195 to -190)
 				severity = 9
-			if(-INFINITY to -95)
+			if(-INFINITY to -195)
 				severity = 10
-		if(stat != HARD_CRIT)
+		if(stat >= UNCONSCIOUS)
 			var/visionseverity = 4
 			switch(health)
-				if(-8 to -4)
+				if(-115 to -100)
 					visionseverity = 5
-				if(-12 to -8)
+				if(-130 to -115)
 					visionseverity = 6
-				if(-16 to -12)
+				if(-145 to -130)
 					visionseverity = 7
-				if(-20 to -16)
+				if(-160 to -145)
 					visionseverity = 8
-				if(-24 to -20)
+				if(-175 to -160)
 					visionseverity = 9
-				if(-INFINITY to -24)
+				if(-INFINITY to -175)
 					visionseverity = 10
 			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, visionseverity)
 		else

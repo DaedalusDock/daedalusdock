@@ -89,25 +89,21 @@ SUBSYSTEM_DEF(ticker)
 		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name) //Not map specific
 			title_music_data += list(music_entry)
 
-	///I wish I knew a better way to do this
-	var/list/old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
-	if(length(title_music_data) > 1)
-		for(var/entry in title_music_data)
-			if(entry["file"] == old_login_music["file"])
-				title_music_data -= entry
-				break
 
+	var/list/old_login_music
+	if(fexists("data/last_round_lobby_music.json"))
+		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
 	///Ensure the files actually exist
 	for(var/entry in title_music_data)
 		if(!fexists("[global.config.directory]/title_music/sounds/[entry["file"]]"))
 			title_music_data -= entry
 			continue
-		if((length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
+		if(old_login_music && (length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
 			title_music_data -= entry
 
 	///Remove any files with illegal extensions.
 	for(var/entry in title_music_data)
-		var/list/directory_split = splittext(entry["file"],"/")
+		var/list/directory_split = splittext(entry["file"], "/")
 		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
 		if(extension_split.len >= 2)
 			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
@@ -682,7 +678,7 @@ SUBSYSTEM_DEF(ticker)
 		if(M.client.prefs?.toggles & SOUND_ENDOFROUND)
 			SEND_SOUND(M.client, end_of_round_sound_ref)
 
-	WRITE_FILE("data/last_round_lobby_music.txt", json_encode(login_music))
+	WRITE_FILE(file("data/last_round_lobby_music.json"), json_encode(login_music))
 
 /datum/controller/subsystem/ticker/proc/choose_round_end_song()
 	var/list/reboot_sounds = flist("[global.config.directory]/reboot_themes/")

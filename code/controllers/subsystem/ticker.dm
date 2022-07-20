@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(ticker)
 
 	var/datum/game_mode/mode = null
 
-	var/login_music //music played in pregame lobby
+	var/list/login_music //music played in pregame lobby
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
@@ -79,45 +79,49 @@ SUBSYSTEM_DEF(ticker)
 		"aiff" = TRUE,
 	)
 
-	var/list/provisional_title_music = flist("[global.config.directory]/title_music/sounds/")
-	var/list/music = list()
+	var/list/title_music_data = list()
 	var/use_rare_music = prob(1)
+	for(var/json_entry in flist("[global.config.directory]/title_music/jsons/"))
+		var/list/music_entry = json_decode(file2text("[global.config.directory]/title_music/jsons/[json_entry]"))
+		if(music_entry["rare"])
+			if((use_rare_music && music_entry["rare"]) && (!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
+				title_music_data += list(music_entry)
+		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name) //Not map specific
+			title_music_data += list(music_entry)
 
-	for(var/S in provisional_title_music)
-		var/lower = lowertext(S)
-		var/list/L = splittext(lower,"+")
-		switch(L.len)
-			if(3) //rare+MAP+sound.ogg or MAP+rare.sound.ogg -- Rare Map-specific sounds
-				if(use_rare_music)
-					if(L[1] == "rare" && L[2] == SSmapping.config.map_name)
-						music += S
-					else if(L[2] == "rare" && L[1] == SSmapping.config.map_name)
-						music += S
-			if(2) //rare+sound.ogg or MAP+sound.ogg -- Rare sounds or Map-specific sounds
-				if((use_rare_music && L[1] == "rare") || (L[1] == SSmapping.config.map_name))
-					music += S
-			if(1) //sound.ogg -- common sound
-				if(L[1] == "exclude")
-					continue
-				music += S
+	///I wish I knew a better way to do this
+	var/list/old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
+	if(length(title_music_data) > 1)
+		for(var/entry in title_music_data)
+			if(entry["file"] == old_login_music["file"])
+				title_music_data -= entry
+				break
 
-	var/old_login_music = trim(file2text("data/last_round_lobby_music.txt"))
-	if(music.len > 1)
-		music -= old_login_music
+	///Ensure the files actually exist
+	for(var/entry in title_music_data)
+		if(!fexists("[global.config.directory]/title_music/sounds/[entry["file"]]"))
+			title_music_data -= entry
+			continue
+		if((length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
+			title_music_data -= entry
 
-	for(var/S in music)
-		var/list/L = splittext(S,".")
-		if(L.len >= 2)
-			var/ext = lowertext(L[L.len]) //pick the real extension, no 'honk.ogg.exe' nonsense here
+	///Remove any files with illegal extensions.
+	for(var/entry in title_music_data)
+		var/list/directory_split = splittext(entry["file"],"/")
+		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
+		if(extension_split.len >= 2)
+			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
 			if(byond_sound_formats[ext])
 				continue
-		music -= S
+		title_music_data -= entry
 
-	if(!length(music))
-		music = world.file2list(ROUND_START_MUSIC_LIST, "\n")
-		login_music = pick(music)
+	///If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
+	if(!length(title_music_data))
+		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
+		var/list/split_path = splittext(music, "/")
+		login_music = list("name" = split_path[length(split_path)], "author" = null, "file" = music)
 	else
-		login_music = "[global.config.directory]/title_music/sounds/[pick(music)]"
+		login_music = pick(title_music_data)
 
 
 	if(!GLOB.syndicate_code_phrase)
@@ -678,7 +682,7 @@ SUBSYSTEM_DEF(ticker)
 		if(M.client.prefs?.toggles & SOUND_ENDOFROUND)
 			SEND_SOUND(M.client, end_of_round_sound_ref)
 
-	text2file(login_music, "data/last_round_lobby_music.txt")
+	WRITE_FILE("data/last_round_lobby_music.txt", json_encode(login_music))
 
 /datum/controller/subsystem/ticker/proc/choose_round_end_song()
 	var/list/reboot_sounds = flist("[global.config.directory]/reboot_themes/")

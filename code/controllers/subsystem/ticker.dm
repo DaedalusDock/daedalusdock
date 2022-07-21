@@ -95,11 +95,13 @@ SUBSYSTEM_DEF(ticker)
 		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
 	///Ensure the files actually exist
 	for(var/entry in title_music_data)
-		if(!fexists("[global.config.directory]/title_music/sounds/[entry["file"]]"))
+		entry["file"] = "[config.directory]/[entry["file"]]"
+		if(!fexists(entry["file"]))
 			title_music_data -= entry
 			continue
-		if(old_login_music && (length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
+		else if(old_login_music && (length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
 			title_music_data -= entry
+
 
 	///Remove any files with illegal extensions.
 	for(var/entry in title_music_data)
@@ -677,7 +679,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/mob/M in GLOB.player_list)
 		if(M.client.prefs?.toggles & SOUND_ENDOFROUND)
 			SEND_SOUND(M.client, end_of_round_sound_ref)
-
+	fdel("data/last_round_lobby_music.json")
 	WRITE_FILE(file("data/last_round_lobby_music.json"), json_encode(login_music))
 
 /datum/controller/subsystem/ticker/proc/choose_round_end_song()

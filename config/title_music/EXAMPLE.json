@@ -1,7 +1,7 @@
 {
 	"name" : "Starman",
 	"author" : "David Bowie",
-	"file" : "[world.config.directory]/title_music/sounds/starman.ogg",
+	"file" : "title_music/sounds/starman.ogg",
 	"map" : false,
 	"rare" : false
 }

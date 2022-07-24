@@ -97,6 +97,11 @@ Class Procs:
 	ASSERT(T.zone == src)
 	soft_assert(T in contents, "Lists are weird broseph")
 #endif
+	if(!T.can_safely_remove_from_zone())
+		INVOKE_ASYNC(src, .proc/rebuild)
+		return
+
+	T.copy_zone_air()
 	contents.Remove(T)
 	fire_tiles.Remove(T)
 	if(T.fire)

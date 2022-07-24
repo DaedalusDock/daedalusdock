@@ -107,7 +107,6 @@
 
 	for(var/dir in csrfz_check)
 		//for each pair of "adjacent" cardinals (e.g. NORTH and WEST, but not NORTH and SOUTH)
-		var/dirtext = dir2text(dir)
 		if(((check_dirs & dir) == dir))
 			//check that they are connected by the corner turf
 			var/turf/T = get_step(src, dir)

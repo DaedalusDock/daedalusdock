@@ -54,7 +54,6 @@
 		ATMOS_CANPASS_TURF(us_blocks_target, src, target)
 
 		if(us_blocks_target & AIR_BLOCKED)
-			closed_directions |= d
 			continue
 
 		var/target_blocks_us
@@ -63,7 +62,6 @@
 			#ifdef ZASDBG
 			//target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
-			closed_directions |= d
 			continue
 
 		open_directions |= d
@@ -147,7 +145,6 @@
 
 	var/previously_open = open_directions
 	open_directions = NONE
-	closed_directions = NONE
 
 	var/list/postponed
 
@@ -170,7 +167,6 @@
 				zas_log("[dir2text(d)] is blocked.")
 			//src.dbg(ZAS_DIRECTIONAL_BLOCKER(d))
 			#endif
-			closed_directions |= d
 			continue
 
 		///The air mobility of target >> src
@@ -182,7 +178,6 @@
 				zas_log("[dir2text(d)] is blocked.")
 			//target.dbg(ZAS_DIRECTIONAL_BLOCKER(turn(d, 180)))
 			#endif
-			closed_directions |= d
 			//Check that our zone hasn't been cut off recently.
 			//This happens when windows move or are constructed. We need to rebuild.
 			if((previously_open & d) && target.simulated)

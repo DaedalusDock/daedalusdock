@@ -147,9 +147,10 @@ Class Procs:
 
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 
-			//Soul code im too scared to touch
-			if(repelled) spawn if(M) M.RepelAirflowDest(differential/5)
-			else spawn if(M) M.GotoAirflowDest(differential/10)
+			//Soul code im too scared to touch - Edit, I am no longer too scared to touch it. This used to cause an OOM if an admin bussed too hard.
+			if(M)
+				if(repelled) INVOKE_ASYNC(M, /atom/movable/proc/RepelAirflowDest, differential/5)
+				else INVOKE_ASYNC(M, /atom/movable/proc/GotoAirflowDest, differential/10)
 
 
 

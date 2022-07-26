@@ -123,8 +123,7 @@ Class Procs:
 
 ///Airflow proc causing all objects in movable to be checked against a pressure differential. See file header for more info.
 /connection_edge/proc/flow(list/movable, differential, repelled)
-	for(var/i in 1 to length(movable))
-		var/atom/movable/M = movable[i]
+	for(var/atom/movable/M as anything in movable)
 		//Non simulated objects dont get tossed
 		if(!M.simulated) continue
 

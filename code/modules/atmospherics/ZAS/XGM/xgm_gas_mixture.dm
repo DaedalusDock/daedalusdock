@@ -361,7 +361,9 @@
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/checkTileGraphic(list/graphic_add = null, list/graphic_remove = null)
-	for(var/obj/effect/gas_overlay/O in graphic)
+	for(var/obj/effect/gas_overlay/O as anything in graphic)
+		if(O.type == /obj/effect/gas_overlay/heat)
+			continue
 		if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
 			LAZYADD(graphic_remove, O)
 	for(var/g in xgm_gas_data.overlay_limit)
@@ -370,7 +372,20 @@
 			var/tile_overlay = getTileOverlay(g)
 			if(!(tile_overlay in graphic))
 				LAZYADD(graphic_add, tile_overlay)
+
 	. = 0
+
+	//If it's hot add something
+	if(temperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
+		var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
+		if(!tile_overlay)
+			LAZYSET(tile_overlay_cache, "heat", new/obj/effect/gas_overlay/heat(null, "heat"))
+			tile_overlay = tile_overlay_cache["heat"]
+		if(!(tile_overlay in graphic))
+			LAZYADD(graphic_add, tile_overlay)
+	else if (LAZYACCESS(tile_overlay_cache, "heat"))
+		LAZYADD(graphic_remove, tile_overlay_cache["heat"])
+
 	//Apply changes
 	if(graphic_add && graphic_add.len)
 		graphic |= graphic_add
@@ -380,7 +395,12 @@
 		. = 1
 	if(graphic.len)
 		var/pressure_mod = clamp(returnPressure() / ONE_ATMOSPHERE, 0, 2)
-		for(var/obj/effect/gas_overlay/O in graphic)
+		for(var/obj/effect/gas_overlay/O as anything in graphic)
+			if(O.type == /obj/effect/gas_overlay/heat) //Heat based
+				var/new_alpha = clamp(max(125, 255 * ((temperature - BODYTEMP_HEAT_DAMAGE_LIMIT) / BODYTEMP_HEAT_DAMAGE_LIMIT * 4)), 125, 255)
+				if(new_alpha != O.alpha)
+					O.update_alpha_animation(new_alpha)
+				continue
 			var/concentration_mod = clamp(gas[O.gas_id] / total_moles, 0.1, 1)
 			var/new_alpha = min(240, round(pressure_mod * concentration_mod * 180, 5))
 			if(new_alpha != O.alpha)

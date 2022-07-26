@@ -2382,6 +2382,7 @@
 #include "code\modules\atmospherics\ZAS\Diagnostic.dm"
 #include "code\modules\atmospherics\ZAS\Fire.dm"
 #include "code\modules\atmospherics\machinery\pipes\heat_exchange\simple.dm"
+#include "code\modules\atmospherics\ZAS\zas_extras\heat.dm"
 #include "code\modules\atmospherics\ZAS\Turf.dm"
 #include "code\modules\atmospherics\ZAS\XGM\gases.dm"
 #include "code\modules\atmospherics\ZAS\Zone.dm"

@@ -101,6 +101,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		fire.firelevel = max(fl, fire.firelevel)
 		return
 
+	new /obj/effect/hotspot(src, fl)
+
+	if(!fire) //Could not create a fire on this turf.
+		return
+
 	var/obj/effect/decal/cleanable/oil/fuel = locate() in src
 	if(create_own_fuel)
 		if(!fuel)
@@ -111,11 +116,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	if(fuel)
 		zone.fuel_objs += fuel
-
-	new /obj/effect/hotspot(src, fl)
-
-	if(!fire) //Could not create a fire on this turf.
-		return
 
 	return fire
 

@@ -157,6 +157,8 @@
 		if(!target) //edge of map
 			continue
 
+		target.open_directions &= ~GLOB.reverse_dir[d]
+
 		///The air mobility of src >> target
 		var/us_to_target
 		ATMOS_CANPASS_TURF(us_to_target, target, src)
@@ -185,6 +187,7 @@
 			continue
 
 		open_directions |= d
+		target.open_directions |= GLOB.reverse_dir[d]
 
 		if(target.simulated)
 

@@ -8,7 +8,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 //#define FIREDBG
 
-/turf/var/obj/effect/hotspot/fire = null
+/turf
+	var/obj/effect/hotspot/fire = null
 
 //Some legacy definitions so fires can be started.
 /atom/movable/proc/is_burnable()
@@ -25,7 +26,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		return 0
 	if(fire_protection > world.time-300)
 		return 0
-	if(locate(/obj/effect/hotspot) in src)
+	if(src.fire)
 		return 1
 	var/datum/gas_mixture/air_contents = return_air()
 	if(!air_contents || exposed_temperature < PHORON_MINIMUM_BURN_TEMPERATURE)
@@ -48,16 +49,18 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	air.merge(burn_gas)
 
 	if(firelevel)
-		for(var/turf/T in fire_tiles)
+		for(var/turf/T as anything in fire_tiles)
 			if(T.fire)
 				T.fire.firelevel = firelevel
 			else
 				var/obj/effect/decal/cleanable/oil/fuel = locate() in T
+				if(fuel)
+					UnregisterSignal(fuel, COMSIG_PARENT_QDELETING)
+					fuel_objs -= fuel
 				fire_tiles -= T
-				fuel_objs -= fuel
 	else
-		for(var/turf/T in fire_tiles)
-			if(istype(T.fire))
+		for(var/turf/T as anything in fire_tiles)
+			if(T.fire)
 				qdel(T.fire)
 		fire_tiles.Cut()
 		//Gotta make sure we don't leave any left over signals
@@ -65,11 +68,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			UnregisterSignal(fuel, COMSIG_PARENT_QDELETING)
 		fuel_objs.Cut()
 
-	if(!fire_tiles.len)
+	if(!length(fire_tiles))
 		SSzas.active_fire_zones.Remove(src)
 
 /zone/proc/remove_liquidfuel(used_liquid_fuel, remove_fire=0)
-	if(!fuel_objs.len)
+	if(!length(fuel_objs))
 		return
 
 	//As a simplification, we remove fuel equally from all fuel sources. It might be that some fuel sources have more fuel,
@@ -77,12 +80,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	var/fuel_to_remove = used_liquid_fuel/(fuel_objs.len*LIQUIDFUEL_AMOUNT_TO_MOL) //convert back to liquid volume units
 
-	for(var/O in fuel_objs)
-		var/obj/effect/decal/cleanable/oil/fuel = O
-		if(!istype(fuel))
-			fuel_objs -= fuel
-			continue
-
+	for(var/obj/effect/decal/cleanable/oil/fuel as anything in fuel_objs)
 		fuel.reagent_amount -= fuel_to_remove
 		if(fuel.reagent_amount <= 0)
 			fuel_objs -= fuel
@@ -103,12 +101,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		fire.firelevel = max(fl, fire.firelevel)
 		return
 
-	if(!zone)
-		return
-
-	fire = new(src, fl)
-	SSzas.active_fire_zones |= zone
-
 	var/obj/effect/decal/cleanable/oil/fuel = locate() in src
 	if(create_own_fuel)
 		if(!fuel)
@@ -117,11 +109,15 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		else
 			fuel.reagent_amount += create_own_fuel
 
-	zone.fire_tiles |= src
 	if(fuel)
 		zone.fuel_objs += fuel
 
-	return src
+	new /obj/effect/hotspot(src, fl)
+
+	if(!fire) //Could not create a fire on this turf.
+		return
+
+	return fire
 
 /turf/open/space/create_fire()
 	return
@@ -140,6 +136,37 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	light_color = LIGHT_COLOR_FIRE
 
 	var/firelevel = 1 //Calculated by gas_mixture.calculate_firelevel()
+
+/obj/effect/hotspot/Initialize(fl)
+	. = ..()
+	var/turf/T = loc
+	if(!istype(T) || !T.zone)
+		return INITIALIZE_HINT_QDEL
+
+	if(T.fire)
+		T.create_fire(fl) //Add the fire level to the existing fire and fuck off
+		return INITIALIZE_HINT_QDEL
+
+	//setDir(pick(GLOB.cardinals))
+	T.fire = src
+	T.zone.fire_tiles |= T
+	var/datum/gas_mixture/air_contents = T.return_air()
+	color = FIRECOLOR(air_contents.temperature)
+	set_light_range(3)
+	set_light_power(1)
+	set_light_color(color)
+	firelevel = fl
+	SSzas.active_hotspots.Add(src)
+	SSzas.active_fire_zones |= T.zone
+
+/obj/effect/hotspot/Destroy()
+	var/turf/T = loc
+	if (istype(T))
+		set_light(0)
+		if(T.fire == src)
+			T.fire = null
+	SSzas.active_hotspots.Remove(src)
+	return ..()
 
 /obj/effect/hotspot/process()
 	. = 1
@@ -178,6 +205,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	//spread
 	for(var/direction in GLOB.cardinals)
 		var/turf/enemy_tile = get_step(my_tile, direction)
+		if(!enemy_tile)
+			continue
 		if(!istype(enemy_tile, /turf/open/space))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
 				if(!enemy_tile.zone || enemy_tile.fire)
@@ -203,37 +232,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			else
 				enemy_tile.adjacent_fire_act(loc, air_contents, air_contents.temperature, air_contents.volume)
 
-	animate(src, color = fire_color(air_contents.temperature), 5)
+	animate(src, color = FIRECOLOR(air_contents.temperature), 5)
 	set_light_color(color)
-
-/obj/effect/hotspot/New(newLoc,fl)
-	..()
-
-	if(!istype(loc, /turf))
-		qdel(src)
-		return
-
-	setDir(pick(GLOB.cardinals))
-
-	var/datum/gas_mixture/air_contents = loc.return_air()
-	color = fire_color(air_contents.temperature)
-	set_light_range(3)
-	set_light_power(1)
-	set_light_color(color)
-	firelevel = fl
-	SSzas.active_hotspots.Add(src)
-
-/obj/effect/hotspot/proc/fire_color(env_temperature)
-	var/temperature = max(4000*sqrt(firelevel/zas_settings.fire_firelevel_multiplier), env_temperature)
-	return heat2color(temperature)
-
-/obj/effect/hotspot/Destroy()
-	var/turf/T = loc
-	if (istype(T))
-		set_light(0)
-		T.fire = null
-	SSzas.active_hotspots.Remove(src)
-	. = ..()
 
 /turf/var/fire_protection = 0
 /turf/proc/apply_fire_protection()
@@ -245,7 +245,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 //Returns the firelevel
 /datum/gas_mixture/proc/react(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check || check_recombustability(zone? zone.fuel_objs : null)))
 
 		#ifdef FIREDBG
 		log_admin("***************** FIREDBG *****************")
@@ -356,7 +356,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(!.)
 		return 0
 
-	if(fuel_objs && fuel_objs.len)
+	if(fuel_objs && length(fuel_objs))
 		return 1
 
 	. = 0

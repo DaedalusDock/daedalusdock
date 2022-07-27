@@ -102,6 +102,11 @@ Class Procs:
 		return
 
 	T.copy_zone_air()
+
+	for(var/d in GLOB.cardinals)
+		var/turf/other = get_step(T, d)
+		other?.open_directions &= ~GLOB.reverse_dir[d]
+
 	contents.Remove(T)
 	fire_tiles.Remove(T)
 	if(T.fire)

@@ -205,8 +205,8 @@ SUBSYSTEM_DEF(zas)
 
 /////////TILES//////////
 	cached_cost = 0
-	while (curr_tiles.len)
-		var/turf/T = curr_tiles[curr_tiles.len]
+	while (length(curr_tiles))
+		var/turf/T = curr_tiles[length(curr_tiles)]
 		curr_tiles.len--
 
 		if (!T)
@@ -248,8 +248,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "DEFERRED TILES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (curr_defer.len)
-		var/turf/T = curr_defer[curr_defer.len]
+	while (length(curr_defer))
+		var/turf/T = curr_defer[length(curr_defer)]
 		curr_defer.len--
 
 		T.update_air_properties()
@@ -271,8 +271,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "EDGES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (curr_edges.len)
-		var/connection_edge/edge = curr_edges[curr_edges.len]
+	while (length(curr_edges))
+		var/connection_edge/edge = curr_edges[length(curr_edges)]
 		curr_edges.len--
 
 		if (!edge)
@@ -296,8 +296,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (curr_fire.len)
-		var/zone/Z = curr_fire[curr_fire.len]
+	while (length(curr_fire))
+		var/zone/Z = curr_fire[length(curr_fire)]
 		curr_fire.len--
 
 		Z.process_fire()
@@ -314,8 +314,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "HOTSPOTS"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (curr_hotspot.len)
-		var/obj/effect/hotspot/F = curr_hotspot[curr_hotspot.len]
+	while (length(curr_hotspot))
+		var/obj/effect/hotspot/F = curr_hotspot[length(curr_hotspot)]
 		curr_hotspot.len--
 
 		F.process()
@@ -329,8 +329,8 @@ SUBSYSTEM_DEF(zas)
 
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (curr_zones.len)
-		var/zone/Z = curr_zones[curr_zones.len]
+	while (length(curr_zones))
+		var/zone/Z = curr_zones[length(curr_zones)]
 		curr_zones.len--
 
 		Z.tick()

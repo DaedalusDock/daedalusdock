@@ -40,7 +40,7 @@
 	..()
 
 	var/turf/open/T = get_turf(src)
-	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in T)
+	var/obj/effect/hotspot/hotspot = T.fire
 	if(hotspot && istype(T) && T.zone)
 		qdel(hotspot)
 		var/datum/gas_mixture/G = T.return_air()
@@ -324,8 +324,7 @@
 		if(O.return_air())
 			var/datum/gas_mixture/G = O.return_air()
 			G.temperature = 293.15
-			for(var/obj/effect/hotspot/H in O)
-				qdel(H)
+			QDEL_NULL(O.fire)
 			var/list/G_gases = G.gas
 			for(var/I in G_gases)
 				if(I == GAS_OXYGEN || I == GAS_NITROGEN)

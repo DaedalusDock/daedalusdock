@@ -35,15 +35,12 @@
 
 	to_chat(usr, "\[3/5\] - All ZAS Zones removed.")
 
-	var/list/unsorted_overlays = list()
-	for(var/id in xgm_gas_data.tile_overlay)
-		unsorted_overlays |= xgm_gas_data.tile_overlay[id]
-
 	for(var/turf/T in world)
 		if(!T.simulated)
 			continue
 		T.air = null
-		T.overlays.Remove(unsorted_overlays)
+		for(var/obj/effect/gas_overlay/effect in T.vis_contents)
+			qdel(effect)
 		T.zone = null
 
 	to_chat(usr, "\[4/5\] - All turfs reset to roundstart values.")

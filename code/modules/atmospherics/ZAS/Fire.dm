@@ -19,9 +19,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	return simulated
 
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
+	return
 
-
-/turf/hotspot_expose(exposed_temperature, exposed_volume, soh)
+/turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	if(!simulated)
 		return 0
 	if(fire_protection > world.time-300)
@@ -82,8 +82,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	for(var/obj/effect/decal/cleanable/oil/fuel as anything in fuel_objs)
 		fuel.reagent_amount -= fuel_to_remove
-		if(fuel.reagent_amount <= 0)
-			fuel_objs -= fuel
+		if(fuel.reagent_amount <= 0.1) //Precision loss kinda fucks with us here so
 			if(remove_fire)
 				var/turf/T = fuel.loc
 				if(istype(T) && T.fire)
@@ -97,6 +96,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf/open/create_fire(fl, create_own_fuel)
 	if(!simulated)
 		return
+
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return
@@ -116,6 +116,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	if(fuel)
 		zone.fuel_objs += fuel
+		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, /zone/proc/handle_fuel_del)
 
 	return fire
 

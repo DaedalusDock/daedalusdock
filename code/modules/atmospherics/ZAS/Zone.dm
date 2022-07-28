@@ -259,4 +259,4 @@ Class Procs:
 
 ///If fuel disappears from anything that isn't a fire burning it out, we gotta clear it's ref
 /zone/proc/handle_fuel_del(datum/source)
-	fuel_objs -= src
+	fuel_objs -= source

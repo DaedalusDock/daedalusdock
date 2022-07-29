@@ -385,6 +385,7 @@
 			LAZYADD(graphic_add, tile_overlay)
 	else if (LAZYACCESS(tile_overlay_cache, "heat"))
 		LAZYADD(graphic_remove, tile_overlay_cache["heat"])
+		LAZYREMOVE(tile_overlay_cache, "heat") //Unique snowflake behavior so that zones that are cool but were previously hot aren't constantly looping through all turfs
 
 	//Apply changes
 	if(graphic_add && graphic_add.len)

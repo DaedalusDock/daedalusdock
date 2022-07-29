@@ -1191,6 +1191,7 @@
 #include "code\datums\storage\subtypes\cards.dm"
 #include "code\datums\storage\subtypes\extract_inventory.dm"
 #include "code\datums\storage\subtypes\implant.dm"
+#include "code\datums\storage\subtypes\organ_box.dm"
 #include "code\datums\storage\subtypes\pockets.dm"
 #include "code\datums\weather\weather.dm"
 #include "code\datums\weather\weather_types\ash_storm.dm"

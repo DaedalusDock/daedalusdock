@@ -103,7 +103,13 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
+	///The last process, as a string, before the previous run ended.
 	var/last_process
+	///REALTIMEOFDAY when pause() was called
+	var/paused_at
+	var/pause_count = 0
+	///Will no longer bug admins about freezing, nor log it.
+	var/silenced = FALSE
 	var/active_zones = 0
 	var/next_id = 1
 
@@ -116,8 +122,7 @@ SUBSYSTEM_DEF(zas)
 	// Make sure we don't rebuild mid-tick.
 	if (state != SS_IDLE)
 		to_chat(world, span_boldannounce("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing."))
-		while (state != SS_IDLE)
-			stoplag()
+		UNTIL(state == SS_IDLE)
 
 	zas_settings = new //Reset the global zas settings
 
@@ -150,6 +155,18 @@ SUBSYSTEM_DEF(zas)
 		msg += "AFZ: [length(active_fire_zones)] "
 		msg += "AH: [length(active_hotspots)] "
 		msg += "AE: [length(active_edges)]"
+	return ..()
+
+/datum/controller/subsystem/zas/pause()
+	if(!silenced)
+		log_game("ZAS paused due to load exceeding tick allowance during [last_process]!")
+		message_admins("ZAS temporarily paused due to exceeding tick allowance during [last_process]!. ")
+		paused_at = REALTIMEOFDAY
+		pause_count++
+		if(pause_count > 10)
+			log_game("ZAS logs silenced.")
+			message_admins("ZAS logging has been silenced.")
+			silenced = TRUE
 	return ..()
 
 /datum/controller/subsystem/zas/Initialize(timeofday, simulate = TRUE)
@@ -193,6 +210,9 @@ SUBSYSTEM_DEF(zas)
 		processing_edges = active_edges.Copy()
 		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
+	else if(!silenced)
+		log_game("ZAS subsystem ignited successfully after [REALTIMEOFDAY - paused_at].")
+		message_admins("ZAS reignited, processing resumed after [REALTIMEOFDAY - paused_at] seconds.")
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
@@ -205,8 +225,8 @@ SUBSYSTEM_DEF(zas)
 
 /////////TILES//////////
 	cached_cost = 0
-	while (length(curr_tiles))
-		var/turf/T = curr_tiles[length(curr_tiles)]
+	while (curr_tiles.len)
+		var/turf/T = curr_tiles[curr_tiles.len]
 		curr_tiles.len--
 
 		if (!T)
@@ -248,8 +268,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "DEFERRED TILES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (length(curr_defer))
-		var/turf/T = curr_defer[length(curr_defer)]
+	while (curr_defer.len)
+		var/turf/T = curr_defer[curr_defer.len]
 		curr_defer.len--
 
 		T.update_air_properties()
@@ -271,8 +291,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "EDGES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (length(curr_edges))
-		var/connection_edge/edge = curr_edges[length(curr_edges)]
+	while (curr_edges.len)
+		var/connection_edge/edge = curr_edges[curr_edges.len]
 		curr_edges.len--
 
 		if (!edge)
@@ -293,11 +313,11 @@ SUBSYSTEM_DEF(zas)
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
 //////////FIRES//////////
-	last_process = "FIRES"
+	last_process = "ZONE FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (length(curr_fire))
-		var/zone/Z = curr_fire[length(curr_fire)]
+	while (curr_fire.len)
+		var/zone/Z = curr_fire[curr_fire.len]
 		curr_fire.len--
 
 		Z.process_fire()
@@ -314,8 +334,8 @@ SUBSYSTEM_DEF(zas)
 	last_process = "HOTSPOTS"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (length(curr_hotspot))
-		var/obj/effect/hotspot/F = curr_hotspot[length(curr_hotspot)]
+	while (curr_hotspot.len)
+		var/obj/effect/hotspot/F = curr_hotspot[curr_hotspot.len]
 		curr_hotspot.len--
 
 		F.process()
@@ -327,10 +347,12 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
+//////////ZONES//////////
+	last_process = "ZONES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while (length(curr_zones))
-		var/zone/Z = curr_zones[length(curr_zones)]
+	while (curr_zones.len)
+		var/zone/Z = curr_zones[curr_zones.len]
 		curr_zones.len--
 
 		Z.tick()

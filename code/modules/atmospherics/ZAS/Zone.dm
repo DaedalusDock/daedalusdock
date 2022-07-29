@@ -129,7 +129,7 @@ Class Procs:
 #endif
 	invalidate()
 
-	for(var/turf/T in contents)
+	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			continue
 		into.add_turf(T)
@@ -139,10 +139,10 @@ Class Procs:
 		#endif
 
 	//rebuild the old zone's edges so that they will be possessed by the new zone
-	for(var/connection_edge/E in edges)
+	for(var/connection_edge/E as anything in edges)
 		if(E.contains_zone(into))
 			continue //don't need to rebuild this edge
-		for(var/turf/T in E.connecting_turfs)
+		for(var/turf/T as anything in E.connecting_turfs)
 			SSzas.mark_for_update(T)
 
 ///Marks the zone as invalid, removing it from the SSzas zone list.
@@ -150,7 +150,7 @@ Class Procs:
 	invalid = 1
 	SSzas.remove_zone(src)
 	#ifdef ZASDBG
-	for(var/turf/T in contents)
+	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			T.dbg(zasdbgovl_invalid_zone)
 	#endif
@@ -187,14 +187,12 @@ Class Procs:
 	// Update fires.
 	if(air.temperature >= PHORON_FLASHPOINT && !length(fire_tiles) && length(contents) && !(src in SSzas.active_fire_zones) && air.check_combustability())
 		var/turf/T = pick(contents)
-		if(T.simulated)
-			T.create_fire(zas_settings.fire_firelevel_multiplier)
+		T.create_fire(zas_settings.fire_firelevel_multiplier)
 
 	// Update gas overlays.
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
 		for(var/turf/T as anything in contents)
-			if(T.simulated)
-				T.update_graphic(graphic_add, graphic_remove)
+			T.update_graphic(graphic_add, graphic_remove)
 		graphic_add.len = 0
 		graphic_remove.len = 0
 
@@ -223,8 +221,6 @@ Class Procs:
 	if(abs(air.temperature - last_air_temperature) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
 		last_air_temperature = air.temperature
 		for(var/turf/T as anything in contents)
-			if(!T.simulated)
-				continue
 			for(var/atom/movable/checking as anything in T.contents)
 				if(checking.simulated)
 					QUEUE_TEMPERATURE_ATOMS(checking)
@@ -253,9 +249,6 @@ Class Procs:
 
 	to_chat(M, "Zone Edges: [zone_edges]")
 	to_chat(M, "Space Edges: [space_edges] ([space_coefficient] connections)\n")
-
-	//for(var/turf/T in unsimulated_contents)
-//		to_chat(M, "[T] at ([T.x],[T.y])")
 
 ///If fuel disappears from anything that isn't a fire burning it out, we gotta clear it's ref
 /zone/proc/handle_fuel_del(datum/source)

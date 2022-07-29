@@ -61,6 +61,7 @@ Class Procs:
 /connection_edge
 	var/zone/A
 
+	///An associative list of {turf = TRUE}, containing all the the turfs that make up the connection
 	var/list/connecting_turfs = list()
 	var/direct = 0
 	var/sleeping = 1
@@ -123,6 +124,7 @@ Class Procs:
 
 ///Airflow proc causing all objects in movable to be checked against a pressure differential. See file header for more info.
 /connection_edge/proc/flow(list/movable, differential, repelled)
+	set waitfor = FALSE
 	for(var/atom/movable/M as anything in movable)
 		//Non simulated objects dont get tossed
 		if(!M.simulated) continue
@@ -140,8 +142,9 @@ Class Procs:
 		if(M.check_airflow_movable(differential))
 			//Check for things that are in range of the midpoint turfs.
 			var/list/close_turfs = list()
-			for(var/turf/U in connecting_turfs)
-				if(get_dist(M,U) < world.view) close_turfs += U
+			for(var/turf/T as anything in RANGE_TURFS(world.view, M))
+				if(connecting_turfs[T])
+					close_turfs += T
 			if(!close_turfs.len) continue
 
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
@@ -151,8 +154,7 @@ Class Procs:
 				if(repelled) INVOKE_ASYNC(M, /atom/movable/proc/RepelAirflowDest, differential/5)
 				else INVOKE_ASYNC(M, /atom/movable/proc/GotoAirflowDest, differential/10)
 
-
-
+			CHECK_TICK
 
 /connection_edge/zone
 	var/zone/B
@@ -171,7 +173,7 @@ Class Procs:
 
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
-	connecting_turfs.Add(c.A)
+	connecting_turfs[c.A] = TRUE
 
 /connection_edge/zone/remove_connection(connection/c)
 	connecting_turfs.Remove(c.A)
@@ -252,7 +254,7 @@ Class Procs:
 
 /connection_edge/unsimulated/add_connection(connection/c)
 	. = ..()
-	connecting_turfs.Add(c.B)
+	connecting_turfs[c.B] = TRUE
 	air.group_multiplier = coefficient
 
 /connection_edge/unsimulated/remove_connection(connection/c)

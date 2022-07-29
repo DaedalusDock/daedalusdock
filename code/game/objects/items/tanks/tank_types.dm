@@ -132,8 +132,6 @@
 /obj/item/tank/internals/plasmaman/belt/empty/populate_gas()
 	return
 
-
-
 /*
  * Emergency Oxygen
  */

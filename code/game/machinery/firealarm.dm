@@ -56,7 +56,6 @@
 		lmb_text = "Turn on", \
 		rmb_text = "Turn off", \
 	)
-
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/firealarm/LateInitialize()

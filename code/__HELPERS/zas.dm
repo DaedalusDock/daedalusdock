@@ -34,4 +34,4 @@
 		(temp) >= 66 ? 255 : (temp <= 16 ? 0 : clamp(138.5177312231 * log(temp - 10) - 305.0447927307, 0, 255)) \
 	)\
 
-#define FIRECOLOR(temp) (HEAT2COLOR(max(4000*sqrt(firelevel/zas_settings.fire_firelevel_multiplier), temp) / 100))
+#define FIRECOLOR(temp) (HEAT2COLOR(max(6000*sqrt(firelevel/zas_settings.fire_firelevel_multiplier), temp) / 100))

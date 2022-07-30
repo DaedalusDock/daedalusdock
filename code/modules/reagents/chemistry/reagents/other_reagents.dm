@@ -187,7 +187,7 @@
 		if(exposed_turf.air)
 			var/datum/gas_mixture/air = exposed_turf.air
 			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
-			air.react(src)
+			air.react()
 			qdel(hotspot)
 
 /*

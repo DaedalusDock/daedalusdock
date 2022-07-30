@@ -151,10 +151,12 @@ Class Procs:
 
 			//Soul code im too scared to touch - Edit, I am no longer too scared to touch it. This used to cause an OOM if an admin bussed too hard.
 			if(M)
-				if(repelled) INVOKE_ASYNC(M, /atom/movable/proc/RepelAirflowDest, differential/5)
-				else INVOKE_ASYNC(M, /atom/movable/proc/GotoAirflowDest, differential/10)
+				if(repelled)
+					M.RepelAirflowDest(differential/5)
+				else
+					M.GotoAirflowDest(differential/10)
 
-			CHECK_TICK
+		CHECK_TICK
 
 /connection_edge/zone
 	var/zone/B

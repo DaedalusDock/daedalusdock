@@ -106,17 +106,8 @@ SUBSYSTEM_DEF(zas)
 	var/active_zones = 0
 	var/next_id = 1
 
-	/*
-		Super unnecessary debugging tools
-	*/
 	///The last process, as a string, before the previous run ended.
 	var/last_process
-	///REALTIMEOFDAY when pause() was called
-	var/paused_at
-	///The amount of times paused, after 10 it will silence the subsystem.
-	var/pause_count = 0
-	///Will no longer bug admins about freezing, nor log it.
-	var/silenced = FALSE
 
 ///Stops processing while all ZAS-controlled airs and fires are nulled and the subsystem is reinitialized.
 /datum/controller/subsystem/zas/proc/Reboot()
@@ -162,22 +153,6 @@ SUBSYSTEM_DEF(zas)
 		msg += "AE: [length(active_edges)]"
 	return ..()
 
-/datum/controller/subsystem/zas/pause()
-	. = ..()
-	if(!silenced && SSticker.current_state == GAME_STATE_PLAYING)
-		if(state == SS_PAUSED)
-			message_admins("ZAS temporarily paused due to exceeding tick allowance during [last_process]!.")
-			log_game("ZAS paused due to load exceeding tick allowance during [last_process]!")
-		else
-			message_admins("ZAS fell asleep during processing due to [last_process] process sleeping.")
-			log_game("ZAS fell asleep during processing due to [last_process] process sleeping.")
-		paused_at = REALTIMEOFDAY
-		pause_count++
-		if(pause_count > 10)
-			log_game("ZAS logs silenced.")
-			message_admins("ZAS logging has been silenced.")
-			silenced = TRUE
-
 /datum/controller/subsystem/zas/Initialize(timeofday, simulate = TRUE)
 
 	var/starttime = REALTIMEOFDAY
@@ -219,9 +194,6 @@ SUBSYSTEM_DEF(zas)
 		processing_edges = active_edges.Copy()
 		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
-	else if(!silenced && SSticker.current_state == GAME_STATE_PLAYING)
-		log_game("ZAS subsystem ignited successfully after [REALTIMEOFDAY - paused_at].")
-		message_admins("ZAS reignited, processing resumed after [REALTIMEOFDAY - paused_at] seconds.")
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred

@@ -852,9 +852,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/structure/door_assembly/door_assembly_abductor
 	name = "alien airlock assembly"
-	icon = 'icons/obj/doors/airlocks/abductor/abductor_airlock.dmi'
 	base_name = "alien airlock"
-	overlays_file = 'icons/obj/doors/airlocks/abductor/overlays.dmi'
 	airlock_type = /obj/machinery/door/airlock/abductor
 	material_type = /obj/item/stack/sheet/mineral/abductor
 	noglass = TRUE

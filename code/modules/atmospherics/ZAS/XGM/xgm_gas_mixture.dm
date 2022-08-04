@@ -199,7 +199,7 @@
 	which is bit more realistic (natural log), and returns a fairly accurate entropy around room temperatures and pressures.
 */
 /datum/gas_mixture/proc/specificEntropyGas(gasid)
-	if (!(gasid in gas) || gas[gasid] == 0)
+	if (!gas[gasid])
 		return SPECIFIC_ENTROPY_VACUUM	//that gas isn't here
 
 	//group_multiplier gets divided out in volume/gas[gasid] - also, V/(m*T) = R/(partial pressure)
@@ -374,18 +374,16 @@
 				LAZYADD(graphic_add, tile_overlay)
 
 	. = 0
-
+	var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
 	//If it's hot add something
 	if(temperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
-		var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
 		if(!tile_overlay)
 			LAZYSET(tile_overlay_cache, "heat", new/obj/effect/gas_overlay/heat(null, "heat"))
 			tile_overlay = tile_overlay_cache["heat"]
 		if(!(tile_overlay in graphic))
 			LAZYADD(graphic_add, tile_overlay)
-	else if (LAZYACCESS(tile_overlay_cache, "heat"))
-		LAZYADD(graphic_remove, tile_overlay_cache["heat"])
-		LAZYREMOVE(tile_overlay_cache, "heat") //Unique snowflake behavior so that zones that are cool but were previously hot aren't constantly looping through all turfs
+	else if(tile_overlay in graphic)
+		LAZYADD(graphic_remove, tile_overlay)
 
 	//Apply changes
 	if(graphic_add && graphic_add.len)

@@ -105,7 +105,7 @@ Class Procs:
 
 	for(var/d in GLOB.cardinals)
 		var/turf/other = get_step(T, d)
-		other?.open_directions &= ~GLOB.reverse_dir[d]
+		other?.open_directions &= ~reverse_dir[d]
 
 	contents.Remove(T)
 	fire_tiles.Remove(T)

@@ -386,13 +386,14 @@
 		LAZYADD(graphic_remove, tile_overlay)
 
 	//Apply changes
-	if(graphic_add && graphic_add.len)
+	if(length(graphic_add))
 		graphic |= graphic_add
 		. = 1
-	if(graphic_remove && graphic_remove.len)
+	if(length(graphic_remove))
 		graphic -= graphic_remove
 		. = 1
-	if(graphic.len)
+
+	if(length(graphic))
 		var/pressure_mod = clamp(returnPressure() / ONE_ATMOSPHERE, 0, 2)
 		for(var/obj/effect/gas_overlay/O as anything in graphic)
 			if(O.type == /obj/effect/gas_overlay/heat) //Heat based

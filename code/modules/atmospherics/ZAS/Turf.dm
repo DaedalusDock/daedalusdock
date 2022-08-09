@@ -116,7 +116,7 @@
 
 			var/connected_dirs
 			GET_ZONE_NEIGHBOURS(T, connected_dirs)
-			if(connected_dirs && (dir & GLOB.reverse_dir[connected_dirs]) == dir)
+			if(connected_dirs && (dir & reverse_dir[connected_dirs]) == dir)
 				. &= ~dir //they are, so unflag the cardinals in question
 
 	//it is safe to remove src from the zone if all cardinals are connected by corner turfs
@@ -157,7 +157,7 @@
 		if(!target) //edge of map
 			continue
 
-		target.open_directions &= ~GLOB.reverse_dir[d]
+		target.open_directions &= ~reverse_dir[d]
 
 		///The air mobility of src >> target
 		var/us_to_target
@@ -187,7 +187,7 @@
 			continue
 
 		open_directions |= d
-		target.open_directions |= GLOB.reverse_dir[d]
+		target.open_directions |= reverse_dir[d]
 
 		if(target.simulated)
 

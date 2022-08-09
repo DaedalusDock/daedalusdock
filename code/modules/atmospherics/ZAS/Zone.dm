@@ -56,10 +56,6 @@ Class Procs:
 	var/list/edges = list()
 	///The zone's gas contents
 	var/datum/gas_mixture/air = new
-	///Air overlays to add next process
-	var/list/graphic_add = list()
-	///Air overlays to remove next process
-	var/list/graphic_remove = list()
 	var/last_air_temperature = TCMB
 
 /zone/New()
@@ -114,8 +110,8 @@ Class Procs:
 		fuel_objs -= fuel
 	T.zone = null
 	T.update_graphic(graphic_remove = air.graphic)
-	if(contents.len)
-		air.group_multiplier = contents.len
+	if(length(contents))
+		air.group_multiplier = length(contents)
 	else
 		invalidate()
 
@@ -176,10 +172,10 @@ Class Procs:
 ///Assumes a given gas mixture, dividing it amongst the zone.
 /zone/proc/add_tile_air(datum/gas_mixture/tile_air)
 	air.group_multiplier = 1
-	air.multiply(contents.len)
+	air.multiply(length(contents))
 	air.merge(tile_air)
-	air.divide(contents.len+1)
-	air.group_multiplier = contents.len+1
+	air.divide(length(contents)+1)
+	air.group_multiplier = length(contents)+1
 
 ///Zone's process proc.
 /zone/proc/tick()
@@ -189,12 +185,13 @@ Class Procs:
 		var/turf/T = pick(contents)
 		T.create_fire(zas_settings.fire_firelevel_multiplier)
 
-	// Update gas overlays.
+
+	// Update gas overlays, with some reference passing tomfoolery.
+	var/list/graphic_add = list()
+	var/list/graphic_remove = list()
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
 		for(var/turf/T as anything in contents)
 			T.update_graphic(graphic_add, graphic_remove)
-		graphic_add.len = 0
-		graphic_remove.len = 0
 
 	// Update connected edges.
 	for(var/connection_edge/E as anything in edges)

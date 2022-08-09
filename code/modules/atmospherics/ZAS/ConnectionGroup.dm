@@ -127,15 +127,18 @@ Class Procs:
 	set waitfor = FALSE
 	for(var/atom/movable/M as anything in movable)
 		//Non simulated objects dont get tossed
-		if(!M.simulated) continue
-
+		if(!M.simulated)
+			continue
 		//If they're already being tossed, don't do it again.
-		if(M.last_airflow > world.time - zas_settings.airflow_delay) continue
-		if(M.airflow_speed) continue
+		if(M.last_airflow > world.time - zas_settings.airflow_delay)
+			continue
+		if(M.airflow_speed)
+			continue
 
 		//Check for knocking people over
 		if(ismob(M) && differential > zas_settings.airflow_stun_pressure)
-			if(M:status_flags & GODMODE) continue
+			if(M:status_flags & GODMODE)
+				continue
 			if(!M:airflow_stun())
 				to_chat(M, "<span class='danger'>Air suddenly rushes past you!</span>")
 
@@ -145,7 +148,9 @@ Class Procs:
 			for(var/turf/T as anything in RANGE_TURFS(world.view, M))
 				if(connecting_turfs[T])
 					close_turfs += T
-			if(!close_turfs.len) continue
+
+			if(!length(close_turfs))
+				continue
 
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 

@@ -24,7 +24,7 @@
 
 ///Returns the volume of a specific gas within the entire zone.
 /datum/gas_mixture/proc/getGroupGas(gasid)
-	if(!gas.len)
+	if(!length(gas))
 		return 0 //if the list is empty BYOND treats it as a non-associative list, which runtimes
 	return gas[gasid] * group_multiplier
 
@@ -178,7 +178,7 @@
 
 ///Returns the ideal gas specific entropy of the whole mix. This is the entropy per mole of /mixed/ gas.
 /datum/gas_mixture/proc/specificGroupEntropy()
-	if (!gas.len || total_moles == 0)
+	if (!length(gas) || total_moles == 0)
 		return SPECIFIC_ENTROPY_VACUUM
 
 	. = 0
@@ -360,7 +360,7 @@
 	return 1
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
-/datum/gas_mixture/proc/checkTileGraphic(list/graphic_add = null, list/graphic_remove = null)
+/datum/gas_mixture/proc/checkTileGraphic(list/graphic_add, list/graphic_remove)
 	for(var/obj/effect/gas_overlay/O as anything in graphic)
 		if(O.type == /obj/effect/gas_overlay/heat)
 			continue
@@ -476,7 +476,7 @@
 		temp_avg = (temperature * full_heat_capacity + other.temperature * s_full_heat_capacity) / (full_heat_capacity + s_full_heat_capacity)
 
 	//WOOT WOOT TOUCH THIS AND YOU ARE A RETARD.
-	if(sharing_lookup_table.len >= connecting_tiles) //6 or more interconnecting tiles will max at 42% of air moved per tick.
+	if(length(sharing_lookup_table) >= connecting_tiles) //6 or more interconnecting tiles will max at 42% of air moved per tick.
 		ratio = sharing_lookup_table[connecting_tiles]
 	//WOOT WOOT TOUCH THIS AND YOU ARE A RETARD
 

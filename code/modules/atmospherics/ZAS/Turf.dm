@@ -22,9 +22,9 @@
 
 ///Adds the graphic_add list to vis_contents, removes graphic_remove.
 /turf/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
-	if(graphic_add && graphic_add.len)
+	if(length(graphic_add))
 		vis_contents += graphic_add
-	if(graphic_remove && graphic_remove.len)
+	if(length(graphic_remove))
 		vis_contents -= graphic_remove
 
 ///Updates the turf's air source properties, breaking or creating zone connections as necessary.

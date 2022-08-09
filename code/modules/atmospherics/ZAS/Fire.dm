@@ -329,7 +329,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	removeByFlag(XGM_GAS_OXIDIZER, used_oxidizers)
 	var/datum/gas_mixture/burned_fuel = removeByFlag(XGM_GAS_FUEL, used_gas_fuel)
 	for(var/g in burned_fuel.gas)
-		adjustGas(xgm_gas_data.burn_product[g], burned_fuel.gas[g])
+		adjustGas(xgm_gas_data.burn_product[g], burned_fuel.gas[g], FALSE)
 
 	if(zone && used_liquid_fuel)
 		zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())

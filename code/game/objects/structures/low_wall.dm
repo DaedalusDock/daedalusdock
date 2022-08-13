@@ -103,6 +103,9 @@
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
 		return TRUE
 
+/obj/structure/low_wall/IsObscured()
+	return //NEVER. This makes paint work LOL
+
 /obj/structure/low_wall/attackby(obj/item/weapon, mob/living/user, params)
 	if(is_top_obstructed())
 		return TRUE

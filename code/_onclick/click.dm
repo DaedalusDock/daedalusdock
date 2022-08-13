@@ -189,13 +189,14 @@
 	var/turf/T = get_turf_pixel(src)
 	if(!T)
 		return FALSE
-	for(var/atom/movable/AM as anything in T)
+	for(var/atom/movable/AM in T)
 		if(AM.flags_1 & PREVENT_CLICK_UNDER_1 && AM.density && AM.layer > layer)
 			return TRUE
 	return FALSE
 
 /turf/IsObscured()
-	for(var/atom/movable/AM as anything in src)
+	for(var/item in src)
+		var/atom/movable/AM = item
 		if(AM.flags_1 & PREVENT_CLICK_UNDER_1)
 			return TRUE
 	return FALSE

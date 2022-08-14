@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Low walls can now be painted while a window is atop them.

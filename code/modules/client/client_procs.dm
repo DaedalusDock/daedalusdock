@@ -461,6 +461,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/cached_player_age = set_client_age_from_db(tdata) //we have to cache this because other shit may change it and we need it's current value now down below.
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
 		player_age = 0
+		var/msg = "<b>This server changes default TG preference values to better fit the feel of our server.</b><br>"
+		msg += "We encourage you to try it out to see if you like it.<br>"
+		msg += "You may re-enable modern visuals in the preference menu.<br><br>"
+		msg += "<b>You will only see this message once</b>"
+		src << browse(msg, "window=warning_popup")
+
 	var/nnpa = CONFIG_GET(number/notify_new_player_age)
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
 		if (nnpa >= 0)

@@ -2,7 +2,7 @@
 
 ## What is unit testing?
 
-Unit tests are automated code to verify that parts of the game work exactly as they should. For example, [a test to make sure that the amputation surgery actually amputates the limb](https://github.com/tgstation/tgstation/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/surgeries.dm#L1-L13). These are ran every time a PR is made, and thus are very helpful for preventing bugs from cropping up in your code that would've otherwise gone unnoticed. For example, would you have thought to check [that beach boys would still work the same after editing pizza](https://github.com/tgstation/tgstation/pull/53641#issuecomment-691384934)? If you value your time, probably not.
+Unit tests are automated code to verify that parts of the game work exactly as they should. For example, [a test to make sure that the amputation surgery actually amputates the limb](https://github.com/DaedalusDock/Gameserver/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/surgeries.dm#L1-L13). These are ran every time a PR is made, and thus are very helpful for preventing bugs from cropping up in your code that would've otherwise gone unnoticed. For example, would you have thought to check [that beach boys would still work the same after editing pizza](https://github.com/DaedalusDock/Gameserver/pull/53641#issuecomment-691384934)? If you value your time, probably not.
 
 On their most basic level, when `UNIT_TESTS` is defined, all subtypes of `/datum/unit_test` will have their `Run` proc executed. From here, if `Fail` is called at any point, then the tests will report as failed.
 
@@ -39,11 +39,11 @@ Open `code/_compile_options.dm` and uncomment the following line.
 //#define UNIT_TESTS			//If this is uncommented, we do a single run though of the game setup and tear down process with unit tests in between
 ```
 
-Then, run pariah.dmb in Dream Daemon. Don't bother trying to connect, you won't need to. You'll be able to see the outputs of all the tests. You'll get to see which tests failed and for what reason. If they all pass, you're set!
+Then, run daedalus.dmb in Dream Daemon. Don't bother trying to connect, you won't need to. You'll be able to see the outputs of all the tests. You'll get to see which tests failed and for what reason. If they all pass, you're set!
 
 ## How to think about tests
 
-Unit tests exist to prevent bugs that would happen in a real game. Thus, they should attempt to emulate the game world wherever possible.  For example, the [quick swap sanity test](https://github.com/tgstation/tgstation/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/quick_swap_sanity.dm) emulates a *real* scenario of the bug it fixed occurring by creating a character and giving it real items. The unrecommended alternative would be to create special test-only items. This isn't a hard rule, the [reagent method exposure tests](https://github.com/tgstation/tgstation/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/reagent_mod_expose.dm) create a test-only reagent for example, but do keep it in mind.
+Unit tests exist to prevent bugs that would happen in a real game. Thus, they should attempt to emulate the game world wherever possible.  For example, the [quick swap sanity test](https://github.com/DaedalusDock/Gameserver/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/quick_swap_sanity.dm) emulates a *real* scenario of the bug it fixed occurring by creating a character and giving it real items. The unrecommended alternative would be to create special test-only items. This isn't a hard rule, the [reagent method exposure tests](https://github.com/DaedalusDock/Gameserver/blob/e416283f162b86345a8623125ab866839b1ac40d/code/modules/unit_tests/reagent_mod_expose.dm) create a test-only reagent for example, but do keep it in mind.
 
 Unit tests should also be just that--testing *units* of code. For example, instead of having one massive test for reagents, there are instead several smaller tests for testing exposure, metabolization, etc.
 

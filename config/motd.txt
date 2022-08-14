@@ -1,7 +1,7 @@
 <!-- Most valid html will work in here, excluding images. -->
 
-<h1>Welcome to Pariah Station!</h1>
+<h1>Welcome to Daedalus Dock!</h1>
 
-<i>This server is running a /tg/station 13 Git build.</i>
+<i>This server is running a crafted with care lovechild of Baystation12 and TGStation.</i>
 
 <i>Enjoy your stay!</i>

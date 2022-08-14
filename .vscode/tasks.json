@@ -26,12 +26,12 @@
 		},
 		{
 			"type": "dreammaker",
-			"dme": "pariah.dme",
+			"dme": "daedalus.dme",
 			"problemMatcher": [
 				"$dreammaker"
 			],
 			"group": "build",
-			"label": "dm: build - pariah.dme"
+			"label": "dm: build - daedalus.dme"
 		},
 		{
 			"command": "${command:dreammaker.reparse}",

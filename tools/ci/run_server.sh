@@ -16,6 +16,6 @@ cp tools/ci/ci_config.txt ci_test/config/config.txt
 cp _maps/$MAP.json ci_test/data/next_map.json
 
 cd ci_test
-DreamDaemon pariah.dmb -close -trusted -verbose -params "log-directory=ci"
+DreamDaemon daedalus.dmb -close -trusted -verbose -params "log-directory=ci"
 cd ..
 cat ci_test/data/logs/ci/clean_run.lk

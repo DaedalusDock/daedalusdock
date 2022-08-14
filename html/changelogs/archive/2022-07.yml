@@ -39,3 +39,7 @@
   ElorgRHG:
   - bugfix: Fixed black skrell headtails in their species preview.
   - bugfix: Teshari no longer have a single chest sprite pixel protruding from clothing.
+2022-07-18:
+  Kapu1178:
+  - rscdel: Linda atmospherics
+  - rscadd: Zone Atmospheric System

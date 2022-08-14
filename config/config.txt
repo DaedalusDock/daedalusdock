@@ -16,13 +16,13 @@ $include pariah/pariah_config.txt
 # There are various options which are hard-locked for security reasons.
 
 ## Server name: This appears at the top of the screen in-game and in the BYOND hub. Uncomment and replace 'tgstation' with the name of your choice.
-SERVERNAME Pariah Station
+SERVERNAME Daedalus Dock
 
 ## Server SQL name: This is the name used to identify the server to the SQL DB, distinct from SERVERNAME as it must be at most 32 characters.
-SERVERSQLNAME pariahstation
+SERVERSQLNAME daedalusdock
 
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
-STATIONNAME Space Station 13
+STATIONNAME Daedalus Outpost
 
 ## Put on byond hub: Uncomment this to put your server on the byond hub.
 #HUB
@@ -253,16 +253,16 @@ CHECK_RANDOMIZER
 # SERVER ss13.example.com:2506
 
 ## forum address
-# FORUMURL http://tgstation13.org/phpBB/index.php
+# FORUMURL https://daedalus13.net/
 
 ## Wiki address
-# WIKIURL http://www.tgstation13.org/wiki
+# WIKIURL https://daedalus13.net/
 
 ## Rules address
-# RULESURL http://www.tgstation13.org/wiki/Rules
+# RULESURL https://daedalus13.net/
 
 ## Github address
-GITHUBURL https://github.com/Tokorizo/Pariah-Station
+GITHUBURL https://github.com/DaedalusDock/Gameserver
 
 ## Discord bot command prefix, if the discord bot is used
 # DISCORDBOTCOMMANDPREFIX ?

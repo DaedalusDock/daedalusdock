@@ -1,4 +1,4 @@
-environment = "pariah.dme"
+environment = "daedalus.dme"
 
 [langserver]
 dreamchecker = true

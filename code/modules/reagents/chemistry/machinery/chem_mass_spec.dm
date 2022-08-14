@@ -255,7 +255,7 @@ This will not clean any inverted reagents. Inverted reagents will still be corre
 				say("This [src] is missing an output beaker!")
 				return
 			if(processing_reagents)
-				say("You shouldn't be seeing this message! Please report this bug to https://github.com/tgstation/tgstation/issues . Thank you!")
+				say("You shouldn't be seeing this message! Please report this bug to https://github.com/DaedalusDock/Gameserver/issues . Thank you!")
 				stack_trace("Someone managed to break the HPLC and tried to get it to activate when it's already activated!")
 				return
 			processing_reagents = TRUE

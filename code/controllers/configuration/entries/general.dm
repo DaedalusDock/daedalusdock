@@ -278,16 +278,16 @@
 /datum/config_entry/string/banappeals
 
 /datum/config_entry/string/wikiurl
-	default = "https://wiki.pariahstation.org/index.php/Main_Page"
+	default = "https://daedalus13.net/"
 
 /datum/config_entry/string/forumurl
-	default = "https://discord.gg/96dfjqwfVM" /// Until we actually get a forum, we will use this as a placeholder.
+	default = "https://daedalus13.net/" /// Until we actually get a forum, we will use this as a placeholder.
 
 /datum/config_entry/string/rulesurl
-	default = "https://wiki.pariahstation.org/index.php/Our_Rules"
+	default = "https://daedalus13.net/"
 
 /datum/config_entry/string/githuburl
-	default = "https://github.com/pariahstation/Pariah-Station"
+	default = "https://github.com/DaedalusDock/Gameserver"
 
 /datum/config_entry/string/discordbotcommandprefix
 	default = "?"

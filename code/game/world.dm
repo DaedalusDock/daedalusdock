@@ -294,56 +294,26 @@ GLOBAL_VAR(restart_counter)
 	..()
 
 /world/proc/update_status()
-
-	var/list/features = list()
-
-	if(LAZYACCESS(SSlag_switch.measures, DISABLE_NON_OBSJOBS))
-		features += "closed"
-
-	var/s = ""
-	var/hostedby
+	var/new_status = ""
 	if(config)
 		var/server_name = CONFIG_GET(string/servername)
-		if (server_name)
-			s += "<b>[server_name]</b> "
-		features += "[CONFIG_GET(flag/norespawn) ? "no " : ""]respawn"
-		if(CONFIG_GET(flag/allow_ai))
-			features += "AI allowed"
-		hostedby = CONFIG_GET(string/hostedby)
-
-	if (CONFIG_GET(flag/station_name_in_hub_entry))
-		s += " &#8212; <b>[station_name()]</b>"
-
-	s += " ("
-	s += "<a href=\"https://pariahstation.org/\">" //Change this to wherever you want the hub to link to.
-	s += "Website"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
-	s += "</a>"
-	s += ")"
+		var/website_url = CONFIG_GET(string/forumurl)
+		if(server_name)
+			new_status += "<b>[website_url ? server_name : "<a href=\"[website_url]\">[server_name]</a>"]</b>]"
+			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>) — (<a href =\"https://github.com/DaedalusDock/Gameserver\">Code</a>)"
 
 	var/players = GLOB.clients.len
 
-	var/popcaptext = ""
-	var/popcap = max(CONFIG_GET(number/extreme_popcap), CONFIG_GET(number/hard_popcap), CONFIG_GET(number/soft_popcap))
-	if (popcap)
-		popcaptext = "/[popcap]"
-
-	if (players > 1)
-		features += "[players][popcaptext] players"
-	else if (players > 0)
-		features += "[players][popcaptext] player"
-
 	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
 
-	if (!host && hostedby)
-		features += "hosted by <b>[hostedby]</b>"
+	new_status += "<br><i>Running custom code!</i><br>"
+	if(SSmapping.config)
+		new_status += "<br>Map: <b>[SSmapping.config.map_path == CUSTOM_MAP_PATH ? "Uncharted Territory" : SSmapping.config.map_name]</b>"
+	if(SSticker.current_state >= GAME_STATE_PLAYING)
+		new_status += "<br>Active Users: <b>[get_active_player_count()]</b>"
 
-	if (features)
-		s += ": [jointext(features, ", ")]"
-
-	s += "<br>Round time: <b>[gameTimestamp("hh:mm")]</b>"
-	s += "<br>Alert level: <b>[capitalize(get_security_level())]</b>"
-
-	status = s
+	new_status += "<br>\[Round Time: <b>[SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0) : "The round hasn't started yet!"]</b>"
+	status = new_status
 
 /world/proc/update_hub_visibility(new_visibility)
 	if(new_visibility == GLOB.hub_visibility)

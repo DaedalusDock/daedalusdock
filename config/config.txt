@@ -22,7 +22,7 @@ SERVERNAME Daedalus Dock
 SERVERSQLNAME daedalusdock
 
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
-STATIONNAME Space Station 13
+STATIONNAME Daedalus Outpost
 
 ## Put on byond hub: Uncomment this to put your server on the byond hub.
 #HUB

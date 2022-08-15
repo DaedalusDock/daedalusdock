@@ -15,6 +15,15 @@
 	density = FALSE
 	opacity = FALSE
 
+/obj/machinery/door/poddoor/shutters/do_animate(animation)
+	switch(animation)
+		if("opening")
+			flick("opening", src)
+			playsound(src, 'sound/machines/doors/shutters_open.ogg', 100, TRUE)
+		if("closing")
+			flick("closing", src)
+			playsound(src, 'sound/machines/doors/shutters_close.ogg', 100, TRUE)
+
 /obj/machinery/door/poddoor/shutters/indestructible
 	name = "hardened shutters"
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF

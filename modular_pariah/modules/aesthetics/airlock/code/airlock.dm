@@ -18,14 +18,6 @@
 /obj/machinery/door/airlock
 	var/obj/effect/overlay/vis_airlock/vis_overlay1
 	var/obj/effect/overlay/vis_airlock/vis_overlay2
-	doorOpen = 'modular_pariah/modules/aesthetics/airlock/sound/open.ogg'
-	doorClose = 'modular_pariah/modules/aesthetics/airlock/sound/close.ogg'
-	doorDeni = 'modular_pariah/modules/aesthetics/airlock/sound/access_denied.ogg'
-	boltUp = 'modular_pariah/modules/aesthetics/airlock/sound/bolts_up.ogg'
-	boltDown = 'modular_pariah/modules/aesthetics/airlock/sound/bolts_down.ogg'
-	//noPower = 'sound/machines/doorclick.ogg'
-	var/forcedOpen = 'modular_pariah/modules/aesthetics/airlock/sound/open_force.ogg' //Come on guys, why aren't all the sound files like this.
-	var/forcedClosed = 'modular_pariah/modules/aesthetics/airlock/sound/close_force.ogg'
 
 	var/has_environment_lights = TRUE //Does this airlock emit a light?
 	var/light_color_poweron = AIRLOCK_POWERON_LIGHT_COLOR

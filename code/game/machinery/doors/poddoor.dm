@@ -16,6 +16,7 @@
 	can_open_with_hands = FALSE
 	block_air_zones = FALSE
 	smoothing_groups = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	door_align_type = /obj/machinery/door/poddoor
 	var/datum/crafting_recipe/recipe_type = /datum/crafting_recipe/blast_doors
 	var/deconstruction = BLASTDOOR_FINISHED // deconstruction step
 	var/id = 1

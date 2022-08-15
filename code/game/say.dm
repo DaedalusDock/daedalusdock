@@ -35,6 +35,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 
+/mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+	. = ..()
+	if(client && radio_freq)
+		var/atom/movable/virtualspeaker/V = speaker
+		if(isAI(V.source))
+			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, use_reverb = FALSE)
+
 /atom/movable/proc/can_speak()
 	//SHOULD_BE_PURE(TRUE)
 	return TRUE

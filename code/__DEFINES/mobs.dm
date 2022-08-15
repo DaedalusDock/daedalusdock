@@ -714,3 +714,6 @@ GLOBAL_REAL_VAR(list/voice_type2sound) = list(
 		"?" = sound('goon/sounds/speak_4_ask.ogg')
 	),
 )
+
+///Managed global that is a reference to the real global
+GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)

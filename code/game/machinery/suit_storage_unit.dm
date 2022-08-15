@@ -404,7 +404,7 @@
 			else
 				visible_message(span_warning("[src]'s door slides open, barraging you with the nauseating smell of charred flesh."))
 				qdel(mob_occupant.GetComponent(/datum/component/irradiated))
-			playsound(src, 'sound/machines/airlockclose.ogg', 25, TRUE)
+			playsound(src, 'sound/machines/doors/airlock_close.ogg', 25, TRUE)
 			var/list/things_to_clear = list() //Done this way since using GetAllContents on the SSU itself would include circuitry and such.
 			if(suit)
 				things_to_clear += suit

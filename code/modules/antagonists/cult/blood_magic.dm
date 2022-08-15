@@ -625,7 +625,7 @@
 				qdel(candidate)
 		else if(istype(target,/obj/machinery/door/airlock))
 			channeling = TRUE
-			playsound(T, 'sound/machines/airlockforced.ogg', 50, TRUE)
+			playsound(T, 'sound/machines/doors/airlock_open_force.ogg', 50, TRUE)
 			do_sparks(5, TRUE, target)
 			if(do_after(user, 50, target = user))
 				if(QDELETED(target))

@@ -261,7 +261,7 @@ GLOBAL_LIST_INIT(scarySounds, list(
 	'sound/effects/glassbr3.ogg',
 	'sound/items/welder.ogg',
 	'sound/items/welder2.ogg',
-	'sound/machines/airlock.ogg',
+	'sound/machines/doors/airlock_open.ogg',
 	'sound/voice/hiss1.ogg',
 	'sound/voice/hiss2.ogg',
 	'sound/voice/hiss3.ogg',

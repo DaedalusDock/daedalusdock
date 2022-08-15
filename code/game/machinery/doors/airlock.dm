@@ -128,12 +128,14 @@
 	var/abandoned = FALSE
 	var/cutAiWire = FALSE
 	var/autoname = FALSE
-	var/doorOpen = 'sound/machines/airlock.ogg'
-	var/doorClose = 'sound/machines/airlockclose.ogg'
+	var/doorOpen = 'sound/machines/doors/airlock_open.ogg'
+	var/doorClose = 'sound/machines/doors/airlock_close.ogg'
 	var/doorDeni = 'sound/machines/deniedbeep.ogg' // i'm thinkin' Deni's
 	var/boltUp = 'sound/machines/boltsup.ogg'
 	var/boltDown = 'sound/machines/boltsdown.ogg'
 	var/noPower = 'sound/machines/doorclick.ogg'
+	var/forcedOpen = 'sound/machines/doors/airlock_open_force.ogg'
+	var/forcedClosed = 'sound/machines/doors/airlock_close_force.ogg'
 	var/previous_airlock = /obj/structure/door_assembly //what airlock assembly mineral plating was applied to
 
 	var/stripe_overlays = 'icons/obj/doors/airlocks/station/airlock_stripe.dmi'
@@ -761,12 +763,19 @@
 		if((HAS_TRAIT(H, TRAIT_DUMB)) && Adjacent(user))
 			playsound(src, 'sound/effects/bang.ogg', 25, TRUE)
 			if(!istype(H.head, /obj/item/clothing/head/helmet))
-				H.visible_message(span_danger("[user] headbutts the airlock."), \
-									span_userdanger("You headbutt the airlock!"))
+				H.visible_message(
+					span_danger("[user] headbutts the airlock."), \
+					span_userdanger("You headbutt the airlock!"),
+					span_hear("You hear a loud thud.")
+				)
 				H.Paralyze(100)
 				H.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 			else
-				visible_message(span_danger("[user] headbutts the airlock. Good thing [user.p_theyre()] wearing a helmet."))
+				visible_message(
+					span_danger("[user] headbutts the airlock. Good thing [user.p_theyre()] wearing a helmet."),
+					span_danger("You slam your head into the airlock"),
+					span_hear("You hear a loud thud.")
+				)
 
 /obj/machinery/door/airlock/attempt_wire_interaction(mob/user)
 	if(security_level)
@@ -802,13 +811,20 @@
 		. = TOOL_ACT_TOOLTYPE_SUCCESS  // everything after this shouldn't result in attackby
 		if(hasPower() && shock(user, 60)) // Protective grille of wiring is electrified
 			return .
-		to_chat(user, span_notice("You start cutting through the outer grille."))
+		user.visible_message(
+			span_notice("[user] cut through [src]'s outer grille."),
+			span_notice("You cut through [src]'s outer grille."),
+			span_hear("You hear thin metal being cut.")
+		)
 		if(!tool.use_tool(src, user, 10, volume=100))
 			return .
 		if(!panel_open)  // double check it wasn't closed while we were trying to snip
 			return .
-		user.visible_message(span_notice("[user] cut through [src]'s outer grille."),
-							span_notice("You cut through [src]'s outer grille."))
+		user.visible_message(
+			span_notice("[user] removes [src]'s shielding."),
+			span_notice("You remove [src]'s shielding."),
+			span_hear("You hear metal being pryed up.")
+		)
 		security_level = AIRLOCK_SECURITY_PLASTEEL_O
 		return .
 	if(note)
@@ -975,7 +991,7 @@
 		if(!user.transferItemToLoc(airlockseal, src))
 			to_chat(user, span_warning("For some reason, you can't attach [airlockseal]!"))
 			return
-		playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE)
+		playsound(src, forcedClosed, 30, TRUE)
 		user.visible_message(span_notice("[user] finishes sealing [src]."), span_notice("You finish sealing [src]."))
 		seal = airlockseal
 		modify_max_integrity(max_integrity * AIRLOCK_SEAL_MULTIPLIER)
@@ -988,7 +1004,7 @@
 		if(!user.transferItemToLoc(C, src))
 			to_chat(user, span_warning("For some reason, you can't attach [C]!"))
 			return
-		user.visible_message(span_notice("[user] pins [C] to [src]."), span_notice("You pin [C] to [src]."))
+		user.visible_message(span_notice("[user] pins [C] to [src]."), span_notice("You pin [C] to [src]."), span_hear("You hear a metallic thud."))
 		note = C
 		update_appearance()
 	else
@@ -1006,7 +1022,7 @@
 				return
 			user.visible_message(span_notice("[user] begins welding the airlock."), \
 							span_notice("You begin repairing the airlock..."), \
-							span_hear("You hear welding."))
+							span_hear("You hear a welding torch fusing metal."))
 			if(W.use_tool(src, user, 40, volume=50, extra_checks = CALLBACK(src, .proc/weld_checks, W, user)))
 				atom_integrity = max_integrity
 				set_machine_stat(machine_stat & ~BROKEN)
@@ -1021,7 +1037,7 @@
 		return
 	user.visible_message(span_notice("[user] begins [welded ? "unwelding":"welding"] the airlock."), \
 		span_notice("You begin [welded ? "unwelding":"welding"] the airlock..."), \
-		span_hear("You hear welding."))
+		span_hear("You hear metal a welding torch splitting metal."))
 	if(!tool.use_tool(src, user, 40, volume=50, extra_checks = CALLBACK(src, .proc/weld_checks, tool, user)))
 		return
 	welded = !welded
@@ -1049,7 +1065,7 @@
 		to_chat(user, span_warning("You don't have the dexterity to remove the seal!"))
 		return TRUE
 	user.visible_message(span_notice("[user] begins removing the seal from [src]."), span_notice("You begin removing [src]'s pneumatic seal."))
-	playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE)
+	playsound(src, forcedOpen, 30, TRUE)
 	if(!do_after(user, airlockseal.unseal_time, target = src))
 		return TRUE
 	if(!seal)
@@ -1147,9 +1163,10 @@
 		if(obj_flags & EMAGGED)
 			return FALSE
 		use_power(50)
-		playsound(src, doorOpen, 30, TRUE)
+		playsound(src, doorOpen, 45, TRUE)
 	else
-		playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE)
+		//playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) - Original
+		playsound(src, forcedOpen, 45, TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
 
 	if(autoclose)
 		autoclose_in(normalspeed ? 8 SECONDS : 1.5 SECONDS)
@@ -1217,7 +1234,7 @@
 		playsound(src, doorClose, 30, TRUE)
 
 	else
-		playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) //Original
+		playsound(src, forcedClosed, 60, TRUE)
 
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
 	if(killthis)

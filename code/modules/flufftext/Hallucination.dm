@@ -940,10 +940,10 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	//Strange audio
 	switch(sound_type)
 		if("airlock")
-			target.playsound_local(source,'sound/machines/airlock.ogg', 30, 1)
+			target.playsound_local(source,'sound/machines/doors/airlock_open.ogg', 30, 1)
 		if("airlock pry")
 			target.playsound_local(source,'sound/machines/airlock_alien_prying.ogg', 100, 1)
-			addtimer(CALLBACK(target, /mob/.proc/playsound_local, source, 'sound/machines/airlockforced.ogg', 30, 1), 50)
+			addtimer(CALLBACK(target, /mob/.proc/playsound_local, source, 'sound/machines/doors/airlock_open_force.ogg', 30, 1), 50)
 		if("console")
 			target.playsound_local(source,'sound/machines/terminal_prompt.ogg', 25, 1)
 		if("explosion")
@@ -969,7 +969,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		//Hacking a door
 		if("door hack")
 			target.playsound_local(source, 'sound/items/screwdriver.ogg', 50, 1)
-			addtimer(CALLBACK(target, /mob/.proc/playsound_local, source, 'sound/machines/airlockforced.ogg', 30, 1), rand(40, 80))
+			addtimer(CALLBACK(target, /mob/.proc/playsound_local, source, 'sound/machines/doors/airlock_open_force.ogg', 30, 1), rand(40, 80))
 	qdel(src)
 
 /datum/hallucination/mech_sounds

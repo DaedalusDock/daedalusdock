@@ -342,7 +342,7 @@ Difficulty: Hard
 	new /obj/effect/temp_visual/hierophant/telegraph(T, src)
 	new /obj/effect/temp_visual/hierophant/telegraph(source, src)
 	playsound(T,'sound/magic/wand_teleport.ogg', 200, TRUE)
-	playsound(source,'sound/machines/airlockopen.ogg', 200, TRUE)
+	playsound(source,'sound/machines/doors/airlock_open.ogg', 200, TRUE)
 	blinking = TRUE
 	SLEEP_CHECK_DEATH(2, src) //short delay before we start...
 	new /obj/effect/temp_visual/hierophant/telegraph/teleport(T, src)
@@ -381,7 +381,7 @@ Difficulty: Hard
 
 //expanding square
 /proc/hierophant_burst(mob/caster, turf/original, burst_range, spread_speed = 0.5)
-	playsound(original,'sound/machines/airlockopen.ogg', 200, TRUE)
+	playsound(original,'sound/machines/doors/airlock_open.ogg', 200, TRUE)
 	var/last_dist = 0
 	for(var/t in spiral_range_turfs(burst_range, original))
 		var/turf/T = t

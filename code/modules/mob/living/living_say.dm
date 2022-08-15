@@ -282,7 +282,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			speak_sound = voice_type2sound[voice_type]["!"]
 		else
 			speak_sound = voice_type2sound[voice_type][voice_type]
-		playsound(src, speak_sound, 170, 1, 8, ignore_walls = FALSE, use_reverb = FALSE)
+		playsound(src, speak_sound, 300, 0, 8, 0, pressure_affected = FALSE, ignore_walls = FALSE, use_reverb = FALSE)
 
 	if(succumbed)
 		succumb(TRUE)
@@ -298,7 +298,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(radio_freq && can_hear())
 		var/atom/movable/virtualspeaker/V = speaker
 		if(isAI(V.source))
-			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, use_reverb = FALSE)
+			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
 	var/deaf_message
 	var/deaf_type

@@ -1,0 +1,5 @@
+author: Azarak, ElorgRHG, DatBoiTim
+delete-after: true
+changes:
+  - rscadd: Added new airlocks, shutter and blast door sprites to better fit the current
+      walls.

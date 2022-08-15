@@ -430,8 +430,33 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	var/obj/machinery/door/airlock/proto = airlock_type
 	var/ic = initial(proto.icon)
 	var/mutable_appearance/MA = mutable_appearance(ic, "closed")
-	if(!initial(proto.glass))
+	var/has_glass = initial(proto.glass)
+
+	var/color_overlays = initial(proto.color_overlays)
+	var/stripe_overlays = initial(proto.stripe_overlays)
+	var/airlock_paint = initial(proto.airlock_paint)
+	var/stripe_paint = initial(proto.stripe_paint)
+
+	if(!has_glass)
 		MA.overlays += "fill_closed"
+	else
+		MA.overlays += mutable_appearance(initial(proto.glass_fill_overlays), "glass_closed")
+	if(color_overlays && airlock_paint)
+		var/mutable_appearance/paint = mutable_appearance(color_overlays, "closed")
+		paint.color = airlock_paint
+		MA.overlays += paint
+		if(!has_glass)
+			var/mutable_appearance/paint_fill = mutable_appearance(color_overlays, "fill_closed")
+			paint_fill.color = airlock_paint
+			MA.overlays += paint_fill
+	if(stripe_overlays && stripe_paint)
+		var/mutable_appearance/stripe = mutable_appearance(stripe_overlays, "closed")
+		stripe.color = stripe_paint
+		MA.overlays += stripe
+		if(!has_glass)
+			var/mutable_appearance/stripe_fill = mutable_appearance(stripe_overlays, "fill_closed")
+			stripe_fill.color = stripe_paint
+			MA.overlays += stripe_fill
 	//Not scaling these down to button size because they look horrible then, instead just bumping up radius.
 	return MA
 

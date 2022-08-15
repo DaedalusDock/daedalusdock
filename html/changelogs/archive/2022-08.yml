@@ -1,3 +1,7 @@
 2022-08-14:
   Kapu1178:
   - bugfix: Low walls can now be painted while a window is atop them.
+2022-08-15:
+  Kapu1178:
+  - code_imp: All tooling moved over to the daedalus name.
+  - server: Scripts updated to the daedalus name.

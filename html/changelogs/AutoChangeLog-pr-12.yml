@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - code_imp: All tooling moved over to the daedalus name.
-  - server: Scripts updated to the daedalus name.

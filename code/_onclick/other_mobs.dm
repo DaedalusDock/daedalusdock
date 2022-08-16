@@ -227,10 +227,9 @@
 		return
 	if(dextrous && (isitem(attack_target) || !combat_mode))
 		attack_target.attack_hand(src, modifiers)
-		update_inv_hands()
+		update_held_items()
 	else
 		return ..()
-
 
 /*
 	Hostile animals

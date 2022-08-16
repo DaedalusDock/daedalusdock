@@ -273,7 +273,7 @@
 				balloon_alert(mod.wearer, "too dark!")
 				return
 			set_light_color(value)
-			mod.wearer.update_inv_back()
+			mod.wearer.update_worn_back()
 		if("light_range")
 			set_light_range(clamp(value, min_range, max_range))
 
@@ -543,7 +543,7 @@
 	if(mod.wearer.transferItemToLoc(hitting_item, src, force = FALSE, silent = TRUE))
 		attached_hat = hitting_item
 		balloon_alert(user, "hat attached, right-click to remove")
-		mod.wearer.update_inv_back()
+		mod.wearer.update_worn_back()
 
 /obj/item/mod/module/hat_stabilizer/generate_worn_overlay()
 	. = ..()
@@ -561,7 +561,7 @@
 	else
 		balloon_alert_to_viewers("the hat falls to the floor!")
 	attached_hat = null
-	mod.wearer.update_inv_back()
+	mod.wearer.update_worn_back()
 
 ///Sign Language Translator - allows people to sign over comms using the modsuit's gloves.
 /obj/item/mod/module/signlang_radio

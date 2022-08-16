@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Firelocks are now color-coded to the threat that caused them to drop.

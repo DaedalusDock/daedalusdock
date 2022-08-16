@@ -264,7 +264,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if (area_flags & NO_ALERTS)
 		return
 	//Trigger alarm effect
-	communicate_fire_alert(FIRE_RAISED_PULL)
+	communicate_fire_alert(FIRE_RAISED_GENERIC, TRUE)
 	//Lockdown airlocks
 	for(var/obj/machinery/door/door in src)
 		close_and_lock_door(door)
@@ -483,4 +483,4 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		L.update()
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)
-		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code,)
+		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)

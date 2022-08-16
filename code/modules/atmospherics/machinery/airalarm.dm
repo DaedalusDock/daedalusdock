@@ -429,7 +429,7 @@
 				post_alert(0)
 			. = TRUE
 		if("fire_alarm")
-			my_area.communicate_fire_alert(alert_type ? FIRE_CLEAR : FIRE_RAISED_AIRALARM)
+			my_area.communicate_fire_alert(alert_type ? FIRE_CLEAR : FIRE_RAISED_GENERIC)
 			. = TRUE
 
 	update_appearance()
@@ -709,7 +709,7 @@
 /obj/machinery/airalarm/proc/check_air_dangerlevel(datum/gas_mixture/environment)
 	var/datum/tlv/current_tlv
 	//cache for sanic speed (lists are references anyways)
-	var/list/cached_tlv = TLV
+	var/list/datum/tlv/cached_tlv = TLV
 
 	var/list/env_gases = environment.gas
 	//var/partial_pressure = R_IDEAL_GAS_EQUATION * exposed_temperature / environment.volume
@@ -733,6 +733,17 @@
 
 	if(old_danger_level != danger_level)
 		INVOKE_ASYNC(src, .proc/apply_danger_level)
+		if(alert_type)
+			if(!danger_level)
+				my_area.communicate_fire_alert(FIRE_CLEAR)
+		else if(danger_level)
+			if(temperature_dangerlevel > 1)
+				my_area.communicate_fire_alert(environment.temperature >= cached_tlv["temperature"].hazard_max ? FIRE_RAISED_HOT : FIRE_RAISED_COLD)
+			else if(pressure_dangerlevel > 1)
+				my_area.communicate_fire_alert(FIRE_RAISED_PRESSURE)
+			else
+				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
+
 	if(mode == AALARM_MODE_REPLACEMENT && environment_pressure < ONE_ATMOSPHERE * 0.05)
 		mode = AALARM_MODE_SCRUBBING
 		INVOKE_ASYNC(src, .proc/apply_mode, src)
@@ -740,7 +751,7 @@
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
-	my_area.communicate_fire_alert(alert_level ? FIRE_RAISED_AIRALARM : FIRE_CLEAR)
+
 	if(!frequency)
 		return
 
@@ -1055,22 +1066,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 	settings.warning_max = max_1
 	settings.hazard_max = max_2
 
-/obj/machinery/airalarm/proc/handle_alert(datum/source, code)
+/obj/machinery/airalarm/proc/handle_alert(datum/source, code, tier)
 	SIGNAL_HANDLER
-
-	if(alert_type == code)
+	if(!!alert_type == !!code)
 		return
 
-	switch(code)
-		if(FIRE_RAISED_AIRALARM)
-			alarm_manager.send_alarm(ALARM_FIRE)
-			soundloop.start()
-		if(FIRE_RAISED_PULL) //We will never recieve a pulled signal if we aren't currently clear
-			soundloop.start()
-			alarm_manager.send_alarm(ALARM_FIRE)
-		else
-			alarm_manager.clear_alarm(ALARM_FIRE)
-			soundloop.stop()
+	if(code)
+		alarm_manager.send_alarm(ALARM_FIRE)
+		soundloop.start()
+	else
+		alarm_manager.clear_alarm(ALARM_FIRE)
+		soundloop.stop()
 
 	alert_type = code
 

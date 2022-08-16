@@ -5,3 +5,7 @@
   Kapu1178:
   - code_imp: All tooling moved over to the daedalus name.
   - server: Scripts updated to the daedalus name.
+2022-08-16:
+  Azarak, ElorgRHG, DatBoiTim:
+  - rscadd: Added new airlocks, shutter and blast door sprites to better fit the current
+      walls.

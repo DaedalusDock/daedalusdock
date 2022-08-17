@@ -1252,10 +1252,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(M.istate.secondary)
 		disarm(M, H, attacker_style)
 		return // dont attack after
-	if(M.combat_mode)
+	if(M.istate.harm)
 		harm(M, H, attacker_style)
 	else
 		help(M, H, attacker_style)

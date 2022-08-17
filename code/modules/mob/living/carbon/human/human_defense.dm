@@ -227,7 +227,7 @@
 	if (martial_result != MARTIAL_ATTACK_INVALID)
 		return martial_result
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK)) //Always drop item in hand, if no item, get stunned instead.
+	if(user.istate.secondary) //Always drop item in hand, if no item, get stunned instead.
 		var/obj/item/I = get_active_held_item()
 		if(I && !(I.item_flags & ABSTRACT) && dropItemToGround(I))
 			playsound(loc, 'sound/weapons/slash.ogg', 25, TRUE, -1)
@@ -278,7 +278,7 @@
 	if(!.)
 		return
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK)) //Always drop item in hand, if no item, get stun instead.
+	if(user.istate.secondary) //Always drop item in hand, if no item, get stun instead.
 		var/obj/item/I = get_active_held_item()
 		if(I && dropItemToGround(I))
 			playsound(loc, 'sound/weapons/slash.ogg', 25, TRUE, -1)

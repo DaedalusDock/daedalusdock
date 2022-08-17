@@ -1,6 +1,6 @@
 /// Checks for RIGHT_CLICK in modifiers and runs attack_hand_secondary if so. Returns TRUE if normal chain blocked
 /mob/living/proc/right_click_attack_chain(atom/target, list/modifiers)
-	if (!LAZYACCESS(modifiers, RIGHT_CLICK))
+	if (!istate.secondary)
 		return
 	var/secondary_result = target.attack_hand_secondary(src, modifiers)
 

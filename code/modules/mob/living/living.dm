@@ -2234,16 +2234,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * It is also used to process martial art attacks by nonhumans, even against humans
  * Human vs human attacks are handled in species code right now.
  */
-/mob/living/proc/apply_martial_art(mob/living/target, modifiers, is_grab = FALSE)
+/mob/living/proc/apply_martial_art(mob/living/target, modifiers)
 	if(HAS_TRAIT(target, TRAIT_MARTIAL_ARTS_IMMUNE))
 		return MARTIAL_ATTACK_INVALID
 	var/datum/martial_art/style = mind?.martial_art
 	if (!style)
 		return MARTIAL_ATTACK_INVALID
 	// will return boolean below since it's not invalid
-	if (is_grab)
+	if (istate.control)
 		return style.grab_act(src, target)
-	if (LAZYACCESS(modifiers, RIGHT_CLICK))
+	if (istate.secondary)
 		return style.disarm_act(src, target)
 	if(combat_mode)
 		if (HAS_TRAIT(src, TRAIT_PACIFISM))

@@ -3,7 +3,7 @@
 	if (..())
 		return TRUE
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(user.istate.secondary)
 		if(user.move_force < move_resist)
 			return
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
@@ -68,7 +68,7 @@
 
 /mob/living/simple_animal/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
 	if(..()) //if harm or disarm intent.
-		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(user.istate.secondary)
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, TRUE, -1)
 			visible_message(span_danger("[user] [response_disarm_continuous] [name]!"), \
 							span_userdanger("[user] [response_disarm_continuous] you!"), null, COMBAT_MESSAGE_RANGE, user)

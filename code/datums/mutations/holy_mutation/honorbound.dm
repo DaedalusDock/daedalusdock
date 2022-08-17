@@ -63,7 +63,7 @@
 		return
 	if(weapon?.item_flags & NOBLUDGEON)
 		return
-	if(!honorbound.combat_mode && (HAS_TRAIT(clickedmob, TRAIT_ALLOWED_HONORBOUND_ATTACK) || ((!weapon || !weapon.force) && !LAZYACCESS(modifiers, RIGHT_CLICK))))
+	if(!honorbound.istate.harm && (HAS_TRAIT(clickedmob, TRAIT_ALLOWED_HONORBOUND_ATTACK) || ((!weapon || !weapon.force) && !honorbound.istate.secondary)))
 		return
 	if(!is_honorable(honorbound, clickedmob))
 		return (COMSIG_MOB_CANCEL_CLICKON)

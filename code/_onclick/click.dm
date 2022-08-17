@@ -135,7 +135,7 @@
 	var/obj/item/W = get_active_held_item()
 
 	if(W == A)
-		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(user.istate.secondary)
 			W.attack_self_secondary(src, modifiers)
 			update_inv_hands()
 			return
@@ -368,7 +368,7 @@
 		return FALSE
 
 	var/mob/living/user_living = user
-	if(user_living.apply_martial_art(src, null, is_grab=TRUE) == MARTIAL_ATTACK_SUCCESS)
+	if(user_living.apply_martial_art(src, null) == MARTIAL_ATTACK_SUCCESS)
 		user_living.changeNext_move(CLICK_CD_MELEE)
 		return TRUE
 

@@ -97,7 +97,7 @@
 		return TRUE
 
 	var/try_to_fail = FALSE
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(user.istate.secondary)
 		try_to_fail = TRUE
 
 	var/datum/surgery_step/step = get_surgery_step()

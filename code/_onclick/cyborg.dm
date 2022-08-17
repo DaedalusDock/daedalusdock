@@ -36,7 +36,7 @@
 	if(LAZYACCESS(modifiers, CTRL_CLICK))
 		CtrlClickOn(A)
 		return
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && !module_active)
+	if(user.istate.secondary && !module_active)
 		var/secondary_result = A.attack_robot_secondary(src, modifiers)
 		if(secondary_result == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || secondary_result == SECONDARY_ATTACK_CONTINUE_CHAIN)
 			return

@@ -467,7 +467,7 @@
 		return
 
 	var/list/modifiers = params2list(params)
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(user.istate.secondary)
 		do_disarm(M, user)
 		return
 

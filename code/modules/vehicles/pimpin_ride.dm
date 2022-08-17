@@ -78,7 +78,7 @@
 
 /obj/vehicle/ridden/janicart/attack_hand(mob/user, list/modifiers)
 	// right click removes bag without unbuckling when possible
-	. = (LAZYACCESS(modifiers, RIGHT_CLICK) && try_remove_bag(user)) || ..()
+	. = (user.istate.secondary && try_remove_bag(user)) || ..()
 	if (!.)
 		try_remove_bag(user)
 

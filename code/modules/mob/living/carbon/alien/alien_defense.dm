@@ -57,7 +57,7 @@ In all, this is a lot like the monkey code. /N
 		return martial_result
 
 	if(user.istate.harm)
-		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(user.istate.secondary)
 			user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 			return TRUE
 		user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)

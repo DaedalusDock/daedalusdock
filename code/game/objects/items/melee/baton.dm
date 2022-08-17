@@ -120,7 +120,7 @@
 	if(clumsy_check(user, target))
 		return BATON_ATTACK_DONE
 
-	if(!active || LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(!active || user.istate.secondary)
 		return BATON_DO_NORMAL_ATTACK
 
 	if(cooldown_check > world.time)

@@ -9,7 +9,7 @@
 	response_harm_continuous = "strikes"
 	response_harm_simple = "strike"
 	status_flags = NONE
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	see_in_dark = 4
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	mob_size = MOB_SIZE_LARGE

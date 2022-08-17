@@ -76,6 +76,8 @@
 
 	var/list/modifiers = params2list(params)
 
+	client?.imode.update_istate(src, modifiers)
+
 	if(SEND_SIGNAL(src, COMSIG_MOB_CLICKON, A, modifiers) & COMSIG_MOB_CANCEL_CLICKON)
 		return
 

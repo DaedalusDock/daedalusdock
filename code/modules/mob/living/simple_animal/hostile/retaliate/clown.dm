@@ -16,7 +16,7 @@
 	speak = list("HONK", "Honk!", "Welcome to clown planet!")
 	emote_see = list("honks", "squeaks")
 	speak_chance = 1
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	maxHealth = 75
 	health = 75
 	speed = 1

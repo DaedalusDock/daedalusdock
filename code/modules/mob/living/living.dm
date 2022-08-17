@@ -91,11 +91,11 @@
 		return TRUE
 
 	var/they_can_move = TRUE
-	var/their_combat_mode = FALSE
+	var/theyre_blocking = FALSE
 
 	if(isliving(M))
 		var/mob/living/L = M
-		their_combat_mode = L.combat_mode
+		theyre_blocking = L.istate.blocking
 		they_can_move = L.mobility_flags & MOBILITY_MOVE
 		//Also spread diseases
 		for(var/thing in diseases)
@@ -137,7 +137,7 @@
 				mob_swap = TRUE
 			else if(
 				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
-				((HAS_TRAIT(M, TRAIT_RESTRAINED) && !too_strong) || !their_combat_mode) &&\
+				((HAS_TRAIT(M, TRAIT_RESTRAINED) && !too_strong) || !theyre_blocking) &&\
 				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !combat_mode)
 			)
 				mob_swap = TRUE

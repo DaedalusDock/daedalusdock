@@ -12,7 +12,7 @@
 	emote_see = list("vibrates")
 	emote_taunt = list("vibrates")
 	taunt_chance = 40
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	maxHealth = 10
 	health = 10
 	minbodytemp = 0

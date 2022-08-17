@@ -57,7 +57,7 @@
 	response_harm_continuous = "swats"
 	response_harm_simple = "swat"
 	stop_automated_movement = 1
-	combat_mode = TRUE //parrots now start "aggressive" since only player parrots will nuzzle.
+	istate = new /datum/interaction_state/harm //parrots now start "aggressive" since only player parrots will nuzzle.
 	attack_verb_continuous = "chomps"
 	attack_verb_simple = "chomp"
 	attack_vis_effect = ATTACK_EFFECT_BITE

@@ -359,7 +359,7 @@
 		if(!L.anchored && !L.throwing)//avoid double hits
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L
-				var/firer_combat_mode = TRUE
+				var/firer_istate = new /datum/interaction_state/harm
 				var/mob/living/living_shooter = firer
 				if(istype(living_shooter))
 					firer_combat_mode = living_shooter.combat_mode

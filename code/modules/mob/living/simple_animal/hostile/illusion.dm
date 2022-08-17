@@ -9,7 +9,7 @@
 	mob_biotypes = NONE
 	melee_damage_lower = 5
 	melee_damage_upper = 5
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	attack_verb_continuous = "gores"
 	attack_verb_simple = "gore"
 	maxHealth = 100

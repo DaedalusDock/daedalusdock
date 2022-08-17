@@ -24,7 +24,7 @@
 	casingtype = /obj/item/ammo_casing/shotgun/buckshot
 	wander = FALSE
 	ranged = TRUE
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	move_resist = MOVE_FORCE_STRONG
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID

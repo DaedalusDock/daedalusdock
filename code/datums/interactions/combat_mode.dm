@@ -1,0 +1,42 @@
+/datum/interaction_mode/combat_mode
+	shift_to_open_context_menu = TRUE
+	var/combat_mode = FALSE
+
+/datum/interaction_mode/combat_mode/update_istate(mob/M, modifiers)
+	M.istate.harm = combat_mode
+	M.istate.blocking = combat_mode
+	M.istate.secondary = LAZYACCESS(modifiers, RIGHT_CLICK)
+	M.istate.alternate = LAZYACCESS(modifiers, SHIFT_CLICK)
+	M.istate.control = LAZYACCESS(modifiers, CTRL_CLICK)
+
+/datum/interaction_mode/combat_mode/procure_hud(mob/M, datum/hud/H)
+	if (!M.hud_used.has_interaction_ui)
+		return
+	var/atom/movable/screen/combattoggle/flashy/CT = new
+	CT.hud = H
+	CT.icon = H.ui_style
+	CT.combat_mode = src
+	UI = CT
+	return CT
+
+/datum/interaction_mode/combat_mode/state_changed(datum/interaction_state/state)
+	if (state.harm)
+		istate = new /datum/interaction_state/harm
+	else
+		combat_mode = FALSE
+	update_istate(owner.mob, null)
+	UI.update_icon_state()
+
+/datum/interaction_mode/combat_mode/keybind(type)
+	switch (type)
+		if (0)
+			combat_mode = TRUE
+		if (2)
+			combat_mode = FALSE
+		if (3)
+			combat_mode = !combat_mode
+	update_istate(owner.mob, null)
+	UI.update_icon_state()
+
+/datum/interaction_mode/combat_mode/status()
+	return "Combat Mode: [combat_mode ? "On" : "Off"]"

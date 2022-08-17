@@ -238,3 +238,8 @@
 	var/datum/client_interface/mock_client
 
 	var/interaction_range = 0 //how far a mob has to be to interact with something without caring about obsctruction, defaulted to 0 tiles
+
+	/// Path to forced interaction mode, should be used for mobs that have special interaction modes such as cyborgs.
+	var/forced_interaction_mode
+	/// The interaction state of this mob, istate for short because typing interaction_state is annoying.
+	var/datum/interaction_state/istate = new

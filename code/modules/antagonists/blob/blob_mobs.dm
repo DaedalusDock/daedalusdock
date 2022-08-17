@@ -14,7 +14,7 @@
 	minbodytemp = 0
 	maxbodytemp = INFINITY
 	unique_name = 1
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	see_in_dark = NIGHTVISION_FOV_RANGE
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	initial_language_holder = /datum/language_holder/empty

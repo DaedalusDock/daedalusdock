@@ -37,7 +37,7 @@
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
 	attack_sound = 'sound/weapons/punch1.ogg'
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	loot = list(/obj/effect/mob_spawn/corpse/human/syndicatesoldier)
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 7.5
@@ -290,7 +290,7 @@
 	icon_state = "viscerator_attack"
 	icon_living = "viscerator_attack"
 	pass_flags = PASSTABLE | PASSMOB
-	combat_mode = TRUE
+	istate = new /datum/interaction_state/harm
 	mob_biotypes = MOB_ROBOTIC
 	health = 25
 	maxHealth = 25

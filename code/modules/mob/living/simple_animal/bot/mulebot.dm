@@ -20,7 +20,7 @@
 	maxHealth = 50
 	speed = 3
 	damage_coeff = list(BRUTE = 0.5, BURN = 0.7, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
-	combat_mode = TRUE //No swapping
+	istate = new /datum/interaction_state/harm //No swapping
 	buckle_lying = 0
 	mob_size = MOB_SIZE_LARGE
 	buckle_prevents_pull = TRUE // No pulling loaded shit

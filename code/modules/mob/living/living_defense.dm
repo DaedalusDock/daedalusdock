@@ -81,19 +81,10 @@
 		else
 				return 0
 
+///LEGACY HELPER
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
-	if(combat_mode == new_mode)
-		return
-	. = combat_mode
-	combat_mode = new_mode
-	if(hud_used?.action_intent)
-		hud_used.action_intent.update_appearance()
-	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
-		return
-	if(combat_mode)
-		SEND_SOUND(src, sound('sound/misc/ui_togglecombat.ogg', volume = 25)) //Sound from interbay!
-	else
-		SEND_SOUND(src, sound('sound/misc/ui_toggleoffcombat.ogg', volume = 25)) //Slightly modified version of the above
+	if(!client?.imode.set_combat_mode(new_mode, silent))
+		istate.harm = TRUE
 
 /mob/living/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
 	if(isitem(AM))

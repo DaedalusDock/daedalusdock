@@ -75,45 +75,54 @@
 	living_mob.toggle_resting()
 	return TRUE
 
-/datum/keybinding/living/toggle_combat_mode
-	hotkey_keys = list("F")
-	name = "toggle_combat_mode"
-	full_name = "Toggle Combat Mode"
-	description = "Toggles combat mode. Like Help/Harm but cooler."
-	keybind_signal = COMSIG_KB_LIVING_TOGGLE_COMBAT_DOWN
-
-
-/datum/keybinding/living/toggle_combat_mode/down(client/user)
-	. = ..()
-	if(.)
-		return
-	var/mob/living/user_mob = user.mob
-	user_mob.set_combat_mode(!user_mob.combat_mode, FALSE)
-
-/datum/keybinding/living/enable_combat_mode
-	hotkey_keys = list("4")
-	name = "enable_combat_mode"
-	full_name = "Enable Combat Mode"
-	description = "Enable combat mode."
-	keybind_signal = COMSIG_KB_LIVING_ENABLE_COMBAT_DOWN
-
-/datum/keybinding/living/enable_combat_mode/down(client/user)
-	. = ..()
-	if(.)
-		return
-	var/mob/living/user_mob = user.mob
-	user_mob.set_combat_mode(TRUE, silent = FALSE)
-
-/datum/keybinding/living/disable_combat_mode
+/datum/keybinding/living/interaction_action1
 	hotkey_keys = list("1")
-	name = "disable_combat_mode"
-	full_name = "Disable Combat Mode"
-	description = "Disable combat mode."
-	keybind_signal = COMSIG_KB_LIVING_DISABLE_COMBAT_DOWN
+	name = "interaction_mode_action_1"
+	full_name = "Help Intent/Combat Off"
+	description = "Does interaction mode specific action."
+	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_1
 
-/datum/keybinding/living/disable_combat_mode/down(client/user)
+/datum/keybinding/living/interaction_action1/down(client/user)
 	. = ..()
 	if(.)
 		return
-	var/mob/living/user_mob = user.mob
-	user_mob.set_combat_mode(FALSE, silent = FALSE)
+	user.imode.keybind(0)
+
+/datum/keybinding/living/interaction_action2
+	hotkey_keys = list("2")
+	name = "interaction_mode_action_2"
+	full_name = "Grab Intent"
+	description = "Does interaction mode specific action."
+	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_2
+
+/datum/keybinding/living/interaction_action2/down(client/user)
+	. = ..()
+	if(.)
+		return
+	user.imode.keybind(1)
+
+/datum/keybinding/living/interaction_action3
+	hotkey_keys = list("3")
+	name = "interaction_mode_action_3"
+	full_name = "Harm Intent/Combat On"
+	description = "Does interaction mode specific action."
+	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_3
+
+/datum/keybinding/living/interaction_action3/down(client/user)
+	. = ..()
+	if(.)
+		return
+	user.imode.keybind(2)
+
+/datum/keybinding/living/interaction_action4
+	hotkey_keys = list("4", "F")
+	name = "interaction_mode_action_4"
+	full_name = "Cycle Intent/Toggle Combat"
+	description = "Does interaction mode specific action."
+	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_4
+
+/datum/keybinding/living/interaction_action4/down(client/user)
+	. = ..()
+	if(.)
+		return
+	user.imode.keybind(3)

@@ -6,6 +6,7 @@
 	M.istate.reset()
 	M.istate.secondary = LAZYACCESS(modifiers, RIGHT_CLICK)
 	if (intent == INTENT_HELP)
+		UI.icon_state = "[intent]"
 		return
 	M.istate.blocking = TRUE
 	switch (intent)
@@ -13,6 +14,7 @@
 			M.istate.control = TRUE
 		if (INTENT_HARM)
 			M.istate.harm = TRUE
+	UI.icon_state = "[intent]"
 
 /datum/interaction_mode/intents3/procure_hud(mob/M, datum/hud/H)
 	if (!M.hud_used.has_interaction_ui)
@@ -31,7 +33,6 @@
 	else
 		intent = INTENT_HELP
 	update_istate(owner.mob, null)
-	UI.icon_state = "[intent]3"
 
 /datum/interaction_mode/intents3/keybind(type)
 	var/static/next_intent = list(
@@ -48,7 +49,13 @@
 		if (3)
 			intent = next_intent[intent]
 	update_istate(owner.mob, null)
-	UI.icon_state = "[intent]"
 
 /datum/interaction_mode/intents3/status()
 	return "Intent: [intent]"
+
+/datum/interaction_mode/set_combat_mode(new_state, silent)
+	. = ..()
+	if(intent = INTENT_HARM)
+		return
+	intent = INTENT_HARM
+	update_istate(owner.mob)

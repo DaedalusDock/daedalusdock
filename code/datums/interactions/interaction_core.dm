@@ -44,3 +44,6 @@ GLOBAL_LIST_INIT(available_interaction_modes, list(
 /datum/interaction_mode/proc/keybind(type)
 
 /datum/interaction_mode/proc/status()
+
+/datum/interaction_mode/proc/set_combat_mode(new_state, silent)
+	return TRUE

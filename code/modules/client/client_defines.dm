@@ -70,6 +70,8 @@
 		/////////
 	///Player preferences datum for the client
 	var/datum/preferences/prefs = null
+	/// Player interaction mode, set by preferences.
+	var/datum/interaction_mode/imode
 	//PARIAH EDIT ADDITION
 	///last turn of the controlled mob, I think this is only used by mechs?
 	var/last_turn = 0

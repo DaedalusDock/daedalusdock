@@ -1,8 +1,8 @@
 /// Checks for RIGHT_CLICK in modifiers and runs attack_hand_secondary if so. Returns TRUE if normal chain blocked
-/mob/living/proc/right_click_attack_chain(atom/target, list/modifiers)
+/mob/living/proc/right_click_attack_chain(atom/target)
 	if (!istate.secondary)
 		return
-	var/secondary_result = target.attack_hand_secondary(src, modifiers)
+	var/secondary_result = target.attack_hand_secondary(src)
 
 	if (secondary_result == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || secondary_result == SECONDARY_ATTACK_CONTINUE_CHAIN)
 		return TRUE
@@ -15,7 +15,7 @@
 
 	Otherwise pretty standard.
 */
-/mob/living/carbon/human/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
+/mob/living/carbon/human/UnarmedAttack(atom/A, proximity_flag)
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		if(src == A)
 			check_self_for_injuries()
@@ -33,24 +33,24 @@
 	// If the gloves do anything, have them return 1 to stop
 	// normal attack_hand() here.
 	var/obj/item/clothing/gloves/G = gloves // not typecast specifically enough in defines
-	if(proximity_flag && istype(G) && G.Touch(A,1,modifiers))
+	if(proximity_flag && istype(G) && G.Touch(A,1))
 		return
 	//This signal is needed to prevent gloves of the north star + hulk.
-	if(SEND_SIGNAL(src, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, A, proximity_flag, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, A, proximity_flag) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
-	SEND_SIGNAL(src, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, A, proximity_flag, modifiers)
+	SEND_SIGNAL(src, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, A, proximity_flag)
 
-	if(!right_click_attack_chain(A, modifiers) && !dna?.species?.spec_unarmedattack(src, A, modifiers)) //Because species like monkeys dont use attack hand
-		A.attack_hand(src, modifiers)
+	if(!right_click_attack_chain(A) && !dna?.species?.spec_unarmedattack(src, A)) //Because species like monkeys dont use attack hand
+		A.attack_hand(src)
 
 
 
 /// Return TRUE to cancel other attack hand effects that respect it. Modifiers is the assoc list for click info such as if it was a right click.
-/atom/proc/attack_hand(mob/user, list/modifiers)
+/atom/proc/attack_hand(mob/user)
 	. = FALSE
 	if(!(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND))
 		add_fingerprint(user)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
 	if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
 		. = _try_interact(user)
@@ -225,7 +225,7 @@
 /mob/living/simple_animal/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
-	if(dextrous && (isitem(attack_target) || !combat_mode))
+	if(dextrous && (isitem(attack_target) || !istate.harm))
 		attack_target.attack_hand(src, modifiers)
 		update_inv_hands()
 	else
@@ -240,7 +240,7 @@
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
 	GiveTarget(attack_target)
-	if(dextrous && (isitem(attack_target) || !combat_mode))
+	if(dextrous && (isitem(attack_target) || !istate.harm))
 		..()
 	else
 		AttackingTarget(attack_target)

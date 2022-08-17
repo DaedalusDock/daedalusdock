@@ -40,3 +40,17 @@
 
 /datum/interaction_mode/combat_mode/status()
 	return "Combat Mode: [combat_mode ? "On" : "Off"]"
+
+/datum/interaction_mode/set_combat_mode(new_state, silent)
+	. = ..()
+	if(combat_mode == new_mode)
+		return
+
+	keybind(3)
+	if(silent || !(owner?.prefs.toggles & SOUND_COMBATMODE))
+		return
+
+	if(combat_mode)
+		SEND_SOUND(src, sound('sound/misc/ui_togglecombat.ogg', volume = 25)) //Sound from interbay!
+	else
+		SEND_SOUND(src, sound('sound/misc/ui_toggleoffcombat.ogg', volume = 25)) //Slightly modified version of the above

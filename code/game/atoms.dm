@@ -1391,7 +1391,7 @@
 		if(processing_recipes.len)
 			process_recipes(user, tool, processing_recipes)
 		if(QDELETED(tool))
-			return TRUE
+			return TOOL_ACT_SIGNAL_BLOCKING
 		switch(tool_type)
 			if(TOOL_CROWBAR)
 				act_result = crowbar_act(user, tool)

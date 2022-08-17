@@ -1,26 +1,38 @@
-/// The light switch. Can have multiple per area.
+/obj/item/wallframe/light_switch
+	name = "light switch frame"
+	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
+	icon_state = "lightswitch_frame"
+	result_path = /obj/machinery/light_switch
+	pixel_shift = 26
+
+/obj/item/wallframe/light_switch/after_attach(obj/machinery/light_switch/light_switch)
+	. = ..()
+	light_switch.has_wires = FALSE
+	light_switch.panel_open = TRUE
+	light_switch.update_appearance()
+
 /obj/machinery/light_switch
 	name = "light switch"
-	icon = 'icons/obj/power.dmi'
-	icon_state = "light1"
-	base_icon_state = "light"
+	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
+	icon_state = "lightswitch_base"
+	base_icon_state = "lightswitch"
 	desc = "Make dark."
 	power_channel = AREA_USAGE_LIGHT
 	use_power = NO_POWER_USE
 	/// Set this to a string, path, or area instance to control that area
 	/// instead of the switch's location.
 	var/area/area = null
-
-/obj/machinery/light_switch/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/usb_port, list(
-		/obj/item/circuit_component/light_switch,
-	))
+	var/has_wires = TRUE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 
 /obj/machinery/light_switch/Initialize(mapload)
 	. = ..()
+
+	AddComponent(/datum/component/usb_port, list(
+		/obj/item/circuit_component/light_switch,
+	))
+
 	if(istext(area))
 		area = text2path(area)
 	if(ispath(area))
@@ -31,30 +43,98 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	if(!name)
 		name = "light switch ([area.name])"
 
+	area.light_switches += src
 	update_appearance()
 
-/obj/machinery/light_switch/update_appearance(updates=ALL)
-	. = ..()
-	luminosity = (machine_stat & NOPOWER) ? 0 : 1
-
-/obj/machinery/light_switch/update_icon_state()
-	if(machine_stat & NOPOWER)
-		icon_state = "[base_icon_state]-p"
-		return ..()
-	icon_state = "[base_icon_state][area.lightswitch ? 1 : 0]"
+/obj/machinery/light_switch/Destroy()
+	area.light_switches -= src
+	if(!length(area.light_switches))
+		set_lights(TRUE)
+	area = null
 	return ..()
+
+/obj/machinery/light_switch/on_set_is_operational(old_value)
+	luminosity = is_operational
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/light_switch/update_overlays()
 	. = ..()
-	if(!(machine_stat & NOPOWER))
-		. += emissive_appearance(icon, "[base_icon_state]-glow", alpha = src.alpha)
+	if(is_operational)
+		var/target_state = "[base_icon_state]_[(area.lightswitch ? "on" : "off")]"
+		. += mutable_appearance(icon, target_state, alpha = src.alpha)
+		. += emissive_appearance(icon, target_state, alpha = src.alpha)
+	else
+		if(panel_open && has_wires)
+			. += mutable_appearance(icon, "[base_icon_state]_wires")
+
+/obj/machinery/light_switch/screwdriver_act(mob/living/user, obj/item/tool)
+	if(!panel_open)
+		panel_open = TRUE
+		balloon_alert(user, "opened panel")
+		set_machine_stat(machine_stat | MAINT)
+		return TRUE
+
+	if(!has_wires)
+		balloon_alert(user, "you should wire it first")
+		return TRUE
+
+	panel_open = FALSE
+	balloon_alert(user, "closed panel")
+	set_machine_stat(machine_stat & ~MAINT)
+	return TRUE
+
+/obj/machinery/light_switch/wirecutter_act(mob/living/user, obj/item/tool)
+	if(!panel_open)
+		return ..()
+
+	if(!has_wires)
+		balloon_alert(user, "there arent any wires")
+		return TRUE
+
+	has_wires = FALSE
+	update_appearance()
+	new /obj/item/stack/cable_coil(src, 1)
+	return TRUE
+
+/obj/machinery/light_switch/crowbar_act(mob/living/user, obj/item/tool)
+	if(!panel_open)
+		return ..()
+
+	if(has_wires)
+		if(user.electrocute_act(10, src))
+			return TRUE
+
+	new /obj/item/wallframe/light_switch(src)
+	qdel(src)
+	return TRUE
+
+/obj/machinery/light_switch/attackby(obj/item/stack/cable_coil, mob/user, params)
+	if(!istype(cable_coil))
+		return ..()
+
+	cable_coil.use(1)
+	has_wires = TRUE
+	balloon_alert(user, "wired the switch")
+	update_appearance()
+	return TRUE
 
 /obj/machinery/light_switch/examine(mob/user)
 	. = ..()
-	. += "It is [area.lightswitch ? "on" : "off"]."
+	if(panel_open)
+		if(has_wires)
+			. += "The wires are visible and could be <i>screwed</i> in place."
+		else
+			. += "The circuitry needs to be <i>wired</i> to be functional."
+		return .
+
+	if(is_operational)
+		. += "It is [area.lightswitch ? "on" : "off"]."
+	else
+		. += "It doesn't appear to be functional."
 
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()
+	playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
 	set_lights(!area.lightswitch)
 
 /obj/machinery/light_switch/proc/set_lights(status)
@@ -63,7 +143,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	area.lightswitch = status
 	area.update_appearance()
 
-	for(var/obj/machinery/light_switch/light_switch in area)
+	for(var/obj/machinery/light_switch/light_switch as anything in area.light_switches)
 		light_switch.update_appearance()
 		SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, status)
 

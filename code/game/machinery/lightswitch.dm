@@ -93,7 +93,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 
 	has_wires = FALSE
 	update_appearance()
-	new /obj/item/stack/cable_coil(src, 1)
+	balloon_alert(user, "removed the wires")
+	new /obj/item/stack/cable_coil(get_turf(user), 1)
 	return TRUE
 
 /obj/machinery/light_switch/crowbar_act(mob/living/user, obj/item/tool)
@@ -104,7 +105,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		if(user.electrocute_act(10, src))
 			return TRUE
 
-	new /obj/item/wallframe/light_switch(src)
+	new /obj/item/wallframe/light_switch(get_turf(user))
 	qdel(src)
 	return TRUE
 

@@ -18,8 +18,13 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/rd
-	plasmaman_outfit = /datum/outfit/plasmaman/research_director
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/rd,
+			SPECIES_PLASMAMAN = /datum/outfit/job/rd/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/science,
 		/datum/job_department/command,
@@ -73,6 +78,15 @@
 
 	chameleon_extras = /obj/item/stamp/rd
 	skillchips = list(/obj/item/skillchip/job/research_director)
+
+/datum/outfit/job/rd/plasmaman
+	name = "Research Director (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/research_director
+	gloves = /obj/item/clothing/gloves/color/plasmaman/research_director
+	head = /obj/item/clothing/head/helmet/space/plasmaman/research_director
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/rd/mod
 	name = "Research Director (MODsuit)"

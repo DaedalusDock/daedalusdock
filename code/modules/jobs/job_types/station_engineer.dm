@@ -12,8 +12,27 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/engineer
-	plasmaman_outfit = /datum/outfit/plasmaman/engineering
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer,
+			SPECIES_TESHARI = /datum/outfit/job/engineer,
+			SPECIES_VOX = /datum/outfit/job/engineer,
+			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
+		),
+		"Engine Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
+			SPECIES_TESHARI = /datum/outfit/job/engineer/enginetech,
+			SPECIES_VOX = /datum/outfit/job/engineer/enginetech,
+		),
+		"Electrician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/electrician,
+			SPECIES_TESHARI = /datum/outfit/job/engineer/electrician,
+			SPECIES_VOX = /datum/outfit/job/engineer/electrician,
+		),
+		"Maintenance Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/engineer/mainttech,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_ENG
@@ -59,6 +78,15 @@
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
 
+/datum/outfit/job/engineer/plasmaman
+	name = "Station Engineer (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/engineering
+	gloves = /obj/item/clothing/gloves/color/plasmaman/engineer
+	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+
 /datum/outfit/job/engineer/gloved
 	name = "Station Engineer (Gloves)"
 
@@ -72,3 +100,15 @@
 	head = null
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+
+/datum/outfit/job/engineer/enginetech
+	name = "Engine Technician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/enginetech
+
+/datum/outfit/job/engineer/electrician
+	name = "Electrician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/electrician
+
+/datum/outfit/job/engineer/mainttech
+	name = "Maintenance Technician"
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/hazard

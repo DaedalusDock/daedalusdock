@@ -14,8 +14,12 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/security
-	plasmaman_outfit = /datum/outfit/plasmaman/security
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/security,
+			SPECIES_PLASMAMAN = /datum/outfit/job/security/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_HARD
 	paycheck_department = ACCOUNT_SEC
@@ -223,6 +227,15 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 		)
 		//The helmet is necessary because /obj/item/clothing/head/helmet/sec is overwritten in the chameleon list by the standard helmet, which has the same name and icon state
 	implants = list(/obj/item/implant/mindshield)
+
+/datum/outfit/job/security/plasmaman
+	name = "Security Officer (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/security
+	gloves = /obj/item/clothing/gloves/color/plasmaman/black
+	head = /obj/item/clothing/head/helmet/space/plasmaman/security
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/security/mod
 	name = "Security Officer (MODsuit)"

@@ -137,6 +137,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A path to an outfit that is important for species life e.g. plasmaman outfit
 	var/datum/outfit/outfit_important_for_life
 
+	///Used for picking outfits in _job.dm
+	var/job_outfit_type
+
 	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi' if not set
 	var/species_eye_path
 

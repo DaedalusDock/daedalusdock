@@ -15,8 +15,12 @@
 	exp_required_type_department = EXP_TYPE_SUPPLY
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/quartermaster
-	plasmaman_outfit = /datum/outfit/plasmaman/cargo
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/quartermaster,
+			SPECIES_PLASMAMAN = /datum/outfit/job/quartermaster/plasmaman,
+		),
+	)
 
 	// paycheck = PAYCHECK_MEDIUM //ORIGINAL
 	paycheck = PAYCHECK_COMMAND //PARIAH EDIT
@@ -58,3 +62,12 @@
 	l_hand = /obj/item/clipboard
 
 	chameleon_extras = /obj/item/stamp/qm
+
+/datum/outfit/job/quartermaster/plasmaman
+	name = "Quartermaster (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/cargo
+	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
+	head = /obj/item/clothing/head/helmet/space/plasmaman/cargo
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full

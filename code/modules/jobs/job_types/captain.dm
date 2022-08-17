@@ -17,8 +17,12 @@
 	exp_required_type_department = EXP_TYPE_COMMAND
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/captain
-	plasmaman_outfit = /datum/outfit/plasmaman/captain
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/captain,
+			SPECIES_PLASMAMAN = /datum/outfit/job/captain/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SEC
@@ -104,6 +108,15 @@
 	if(!celestial_charter)
 		return
 	celestial_charter.name_type = special_charter
+
+/datum/outfit/job/captain/plasmaman
+	name = "Captain (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/captain
+	gloves = /obj/item/clothing/gloves/color/captain
+	head = /obj/item/clothing/head/helmet/space/plasmaman/captain
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/captain/mod
 	name = "Captain (MODsuit)"

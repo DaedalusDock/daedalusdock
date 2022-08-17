@@ -14,8 +14,20 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/detective
-	plasmaman_outfit = /datum/outfit/plasmaman/detective
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/detective,
+			SPECIES_TESHARI = /datum/outfit/job/detective,
+			SPECIES_VOX = /datum/outfit/job/detective,
+			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
+		),
+		"Forensic Technician" = list(
+			SPECIES_HUMAN = /datum/outfit/job/detective/forensic,
+			SPECIES_TESHARI = /datum/outfit/job/detective/forensic,
+			SPECIES_PLASMAMAN = /datum/outfit/job/detective/forensic/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/security,
 		)
@@ -72,6 +84,15 @@
 		)
 	implants = list(/obj/item/implant/mindshield)
 
+/datum/outfit/job/detective/plasmaman
+	name = "Detective (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
 	var/obj/item/clothing/mask/cigarette/cig = H.wear_mask
@@ -80,3 +101,19 @@
 
 	if(visualsOnly)
 		return
+
+/datum/outfit/job/detective/forensic
+	name = "Forensic Technician"
+
+	uniform = /obj/item/clothing/under/rank/security/detective/noir
+	suit = /obj/item/clothing/suit/toggle/labcoat/forensic
+	gloves = /obj/item/clothing/gloves/color/latex
+	head = /obj/item/clothing/head/flatcap
+	shoes = /obj/item/clothing/shoes/laceup
+
+/datum/outfit/job/detective/forensic/plasmaman
+	name = "Forensic Technician (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/white

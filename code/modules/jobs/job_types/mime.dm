@@ -9,8 +9,12 @@
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/mime
-	plasmaman_outfit = /datum/outfit/plasmaman/mime
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/mime,
+			SPECIES_PLASMAMAN = /datum/outfit/job/mime/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MINIMAL
 	paycheck_department = ACCOUNT_SRV
@@ -65,6 +69,15 @@
 	satchel = /obj/item/storage/backpack/mime
 
 	chameleon_extras = /obj/item/stamp/mime
+
+/datum/outfit/job/mime/plasmaman
+	name = "Mime (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/mime
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/mime
+	mask = /obj/item/clothing/mask/gas/mime/plasmaman
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

@@ -17,8 +17,13 @@
 	exp_required_type_department = EXP_TYPE_ENGINEERING
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/ce
-	plasmaman_outfit = /datum/outfit/plasmaman/chief_engineer
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/ce,
+			SPECIES_PLASMAMAN = /datum/outfit/job/ce/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/engineering,
 		/datum/job_department/command,
@@ -77,6 +82,15 @@
 	chameleon_extras = /obj/item/stamp/ce
 	skillchips = list(/obj/item/skillchip/job/engineer)
 	pda_slot = ITEM_SLOT_LPOCKET
+
+/datum/outfit/job/ce/plasmaman
+	name = "Chief Engineer Plasmaman"
+
+	uniform = /obj/item/clothing/under/plasmaman/chief_engineer
+	gloves = /obj/item/clothing/gloves/color/plasmaman/chief_engineer
+	head = /obj/item/clothing/head/helmet/space/plasmaman/chief_engineer
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/ce/mod
 	name = "Chief Engineer (MODsuit)"

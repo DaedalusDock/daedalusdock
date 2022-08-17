@@ -10,8 +10,12 @@
 	selection_color = "#ffeef0"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/doctor
-	plasmaman_outfit = /datum/outfit/plasmaman/medical
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/doctor,
+			SPECIES_PLASMAMAN = /datum/outfit/job/doctor/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_MED
@@ -59,6 +63,15 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	skillchips = list(/obj/item/skillchip/entrails_reader)
+
+/datum/outfit/job/doctor/plasmaman
+	name = "Medical Doctor (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/medical
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/medical
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/doctor/mod
 	name = "Medical Doctor (MODsuit)"

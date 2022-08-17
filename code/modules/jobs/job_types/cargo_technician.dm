@@ -13,8 +13,12 @@
 	selection_color = "#dcba97"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/cargo_tech
-	plasmaman_outfit = /datum/outfit/plasmaman/cargo
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/cargo_tech,
+			SPECIES_PLASMAMAN = /datum/outfit/job/cargo_tech/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_CAR
@@ -46,6 +50,15 @@
 	belt = /obj/item/modular_computer/tablet/pda/cargo
 	ears = /obj/item/radio/headset/headset_cargo
 	l_hand = /obj/item/export_scanner
+
+/datum/outfit/job/cargo_tech/plasmaman
+	name = "Cargo Technician (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/cargo
+	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
+	head = /obj/item/clothing/head/helmet/space/plasmaman/cargo
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cargo_tech/mod
 	name = "Cargo Technician (MODsuit)"

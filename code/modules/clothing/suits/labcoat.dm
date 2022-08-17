@@ -95,3 +95,10 @@
 	desc = "More like an eccentric coat than a labcoat. Helps pass off bloodstains as part of the aesthetic. Comes with red shoulder pads."
 	icon_state = "labcoat_robo"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/suit/toggle/labcoat/forensic
+	name = "forensic technician's labcoat"
+	desc = "A sterile labcoat to keep the bloodstains off your suit. Lacks any armor, but at least security will know how professional you are."
+	icon_state = "labcoat_det"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+

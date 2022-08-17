@@ -1186,13 +1186,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		winset(src, "ShiftUp", "command=\".winset :map.right-click=false\"")
 		winset(src, "Shift", "command=\".winset :map.right-click=true\"")
 
-/client/proc/checkshit()
-	var/can_click = winget(src, "mapwindow.map", "right-click") == "true"
-	if(!can_click)
-		to_chat(world, "User can open the context menu with normal right click")
-	else
-		to_chat(world, "User cannot open the context menu normally.")
-
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)
 		if(SSambience.ambience_listening_clients[src] > world.time)

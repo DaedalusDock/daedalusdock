@@ -9,8 +9,12 @@
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/clown
-	plasmaman_outfit = /datum/outfit/plasmaman/clown
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/clown,
+			SPECIES_PLASMAMAN = /datum/outfit/job/clown/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MINIMAL
 	paycheck_department = ACCOUNT_SRV
@@ -67,6 +71,15 @@
 	box = /obj/item/storage/box/hug/survival
 	chameleon_extras = /obj/item/stamp/clown
 	implants = list(/obj/item/implant/sad_trombone)
+
+/datum/outfit/job/clown/plasmaman
+	name = "Clown (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/clown
+	gloves = /obj/item/clothing/gloves/color/plasmaman/clown
+	head = /obj/item/clothing/head/helmet/space/plasmaman/clown
+	mask = /obj/item/clothing/mask/gas/clown_hat/plasmaman
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/clown/mod
 	name = "Clown (MODsuit)"

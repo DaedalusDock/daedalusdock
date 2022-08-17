@@ -19,8 +19,13 @@
 	exp_required_type_department = EXP_TYPE_SERVICE
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/hop
-	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/hop,
+			SPECIES_PLASMAMAN = /datum/outfit/job/hop/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/service,
 		/datum/job_department/command,
@@ -70,6 +75,15 @@
 		/obj/item/gun/energy/e_gun,
 		/obj/item/stamp/hop,
 		)
+
+/datum/outfit/job/hop/plasmaman
+	name = "Head of Personnel (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/head_of_personnel
+	gloves = /obj/item/clothing/gloves/color/plasmaman/head_of_personnel
+	head = /obj/item/clothing/head/helmet/space/plasmaman/head_of_personnel
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/hop/pre_equip(mob/living/carbon/human/H)
 	..()

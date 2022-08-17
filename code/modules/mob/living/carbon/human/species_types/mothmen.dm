@@ -29,6 +29,7 @@
 	wings_icons = list("Megamoth", "Mothra")
 	has_innate_wings = TRUE
 	payday_modifier = 0.75
+	job_outfit_type = SPECIES_HUMAN
 	family_heirlooms = list(/obj/item/flashlight/lantern/heirloom_moth)
 
 	bodypart_overrides = list(

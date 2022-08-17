@@ -11,8 +11,13 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/geneticist
-	plasmaman_outfit = /datum/outfit/plasmaman/genetics
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/geneticist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/geneticist/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/science,
 		)
@@ -48,3 +53,12 @@
 	backpack = /obj/item/storage/backpack/genetics
 	satchel = /obj/item/storage/backpack/satchel/gen
 	duffelbag = /obj/item/storage/backpack/duffelbag/genetics
+
+/datum/outfit/job/geneticist/plasmaman
+	name = "Geneticist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/genetics
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/genetics
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full

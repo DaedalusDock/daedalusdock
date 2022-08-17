@@ -12,8 +12,13 @@
 	exp_granted_type = EXP_TYPE_CREW
 	bounty_types = CIV_JOB_ROBO
 
-	outfit = /datum/outfit/job/roboticist
-	plasmaman_outfit = /datum/outfit/plasmaman/robotics
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/roboticist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/roboticist/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/science,
 		)
@@ -55,6 +60,15 @@
 
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/roboticist)
+
+/datum/outfit/job/roboticist/plasmaman
+	name = "Roboticist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/robotics
+	gloves = /obj/item/clothing/gloves/color/plasmaman/robot
+	head = /obj/item/clothing/head/helmet/space/plasmaman/robotics
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/roboticist/mod
 	name = "Roboticist (MODsuit)"

@@ -12,8 +12,14 @@ Assistant
 	supervisors = "absolutely everyone"
 	selection_color = "#dddddd"
 	exp_granted_type = EXP_TYPE_CREW
-	outfit = /datum/outfit/job/assistant
-	plasmaman_outfit = /datum/outfit/plasmaman
+
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/assistant,
+			SPECIES_PLASMAMAN = /datum/outfit/job/assistant/plasmaman,
+		),
+	)
+
 	paycheck = PAYCHECK_ASSISTANT // Get a job. Job reassignment changes your paycheck now. Get over it.
 
 	paycheck_department = ACCOUNT_CIV
@@ -43,6 +49,18 @@ Assistant
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/target)
 	..()
 	give_jumpsuit(target)
+
+/datum/outfit/job/assistant/plasmaman
+	name = "Assistant (Plasmaman)"
+	uniform = /obj/item/clothing/under/plasmaman
+	gloves = /obj/item/clothing/gloves/color/plasmaman
+	head = /obj/item/clothing/head/helmet/space/plasmaman
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+
+/datum/outfit/job/assistant/plasmaman/pre_equip(mob/living/carbon/human/target)
+	uniform = /obj/item/clothing/under/plasmaman
+	return
 
 /datum/outfit/job/assistant/proc/give_jumpsuit(mob/living/carbon/human/target)
 	var/static/jumpsuit_number = 0

@@ -10,8 +10,12 @@
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/psychologist
-	plasmaman_outfit = /datum/outfit/plasmaman/psychologist
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/psychologist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/psychologist/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_SRV
@@ -59,3 +63,12 @@
 
 	pda_slot = ITEM_SLOT_BELT
 	skillchips = list(/obj/item/skillchip/job/psychology)
+
+/datum/outfit/job/psychologist/plasmaman
+	name = "Psychologist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/medical
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full

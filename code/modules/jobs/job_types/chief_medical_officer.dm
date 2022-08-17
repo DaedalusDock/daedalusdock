@@ -17,8 +17,13 @@
 	exp_required_type_department = EXP_TYPE_MEDICAL
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/cmo
-	plasmaman_outfit = /datum/outfit/plasmaman/chief_medical_officer
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/cmo,
+			SPECIES_PLASMAMAN = /datum/outfit/job/cmo/plasmaman,
+		),
+	)
+
 	departments_list = list(
 		/datum/job_department/medical,
 		/datum/job_department/command,
@@ -77,6 +82,15 @@
 		/obj/item/stamp/cmo,
 		)
 	skillchips = list(/obj/item/skillchip/entrails_reader)
+
+/datum/outfit/job/cmo/plasmaman
+	name = "Chief Medical Officer (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/chief_medical_officer
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/chief_medical_officer
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cmo/mod
 	name = "Chief Medical Officer (MODsuit)"

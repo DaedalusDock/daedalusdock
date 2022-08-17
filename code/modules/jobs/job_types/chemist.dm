@@ -12,8 +12,12 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/chemist
-	plasmaman_outfit = /datum/outfit/plasmaman/chemist
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/chemist,
+			SPECIES_PLASMAMAN = /datum/outfit/job/chemist/plasmaman,
+		),
+	)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_MED
@@ -58,3 +62,12 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
+
+/datum/outfit/job/chemist/plasmaman
+	name = "Chemist (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/chemist
+	gloves = /obj/item/clothing/gloves/color/plasmaman/white
+	head = /obj/item/clothing/head/helmet/space/plasmaman/chemist
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full

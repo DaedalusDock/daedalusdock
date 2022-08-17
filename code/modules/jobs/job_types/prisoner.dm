@@ -10,8 +10,12 @@
 	exp_granted_type = EXP_TYPE_CREW
 	paycheck = PAYCHECK_PRISONER
 
-	outfit = /datum/outfit/job/prisoner
-	plasmaman_outfit = /datum/outfit/plasmaman/prisoner
+	outfits = list(
+		"Default" = list(
+			SPECIES_HUMAN = /datum/outfit/job/prisoner,
+			SPECIES_PLASMAMAN = /datum/outfit/job/prisoner/plasmaman,
+		),
+	)
 
 	display_order = JOB_DISPLAY_ORDER_PRISONER
 	department_for_prefs = /datum/job_department/security
@@ -36,6 +40,15 @@
 	belt = null
 	ears = null
 	shoes = /obj/item/clothing/shoes/sneakers/orange
+
+/datum/outfit/job/prisoner/plasmaman
+	name = "Prisoner (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/prisoner
+	gloves = /obj/item/clothing/gloves/color/plasmaman/black
+	head = /obj/item/clothing/head/helmet/space/plasmaman/prisoner
+	mask = /obj/item/clothing/mask/breath
+	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
 	..()

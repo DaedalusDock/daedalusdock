@@ -32,11 +32,13 @@
 /mob/living/simple_animal/hostile/zombie/proc/setup_visuals()
 	var/datum/job/job = SSjob.GetJob(zombiejob)
 
-	var/datum/outfit/outfit = new job.outfit
-	outfit.l_hand = null
-	outfit.r_hand = null
+	var/datum/outfit/outfit = job.outfits["Default"]?[SPECIES_HUMAN]
+	//outfit.l_hand = null
+	//outfit.r_hand = null
 
 	var/mob/living/carbon/human/dummy/dummy = new
+	qdel(dummy.get_item_for_held_index(1))
+	qdel(dummy.get_item_for_held_index(2))
 	dummy.equipOutfit(outfit)
 	dummy.set_species(/datum/species/zombie)
 	COMPILE_OVERLAYS(dummy)

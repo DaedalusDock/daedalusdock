@@ -108,7 +108,7 @@
 		I.play_tool_sound(src)
 		deconstruct()
 		return TRUE
-	else if(cistern && !user.combat_mode)
+	else if(cistern && !user.istate.harm)
 		if(I.w_class > WEIGHT_CLASS_NORMAL)
 			to_chat(user, span_warning("[I] does not fit!"))
 			return
@@ -121,7 +121,7 @@
 		w_items += I.w_class
 		to_chat(user, span_notice("You carefully place [I] into the cistern."))
 
-	else if(istype(I, /obj/item/reagent_containers) && !user.combat_mode)
+	else if(istype(I, /obj/item/reagent_containers) && !user.istate.harm)
 		if (!open)
 			return
 		if(istype(I, /obj/item/food/monkeycube))
@@ -399,7 +399,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(O.item_flags & ABSTRACT) //Abstract items like grabs won't wash. No-drop items will though because it's still technically an item in your hand.
 		return
 
-	if(!user.combat_mode)
+	if(!user.istate.harm)
 		to_chat(user, span_notice("You start washing [O]..."))
 		busy = TRUE
 		if(!do_after(user, 40, target = src))
@@ -593,7 +593,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(O.item_flags & ABSTRACT) //Abstract items like grabs won't wash. No-drop items will though because it's still technically an item in your hand.
 		return
 
-	if(!user.combat_mode)
+	if(!user.istate.harm)
 		to_chat(user, span_notice("You start washing [O]..."))
 		busy = TRUE
 		if(!do_after(user, 4 SECONDS, target = src))

@@ -167,7 +167,7 @@
 		C.Knockdown(20)
 
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/living/user, params)
-	if(istype(W, /obj/item/knife) && !user.combat_mode)
+	if(istype(W, /obj/item/knife) && !user.istate.harm)
 		to_chat(user, span_notice("You start attaching \the [W] to \the [src]..."))
 		if(do_after(user, 25, target = src))
 			deputize(W, user)

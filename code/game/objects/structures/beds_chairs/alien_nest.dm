@@ -86,7 +86,7 @@
 			playsound(loc, 'sound/items/welder.ogg', 100, TRUE)
 
 /obj/structure/bed/nest/attack_alien(mob/living/carbon/alien/user, list/modifiers)
-	if(!user.combat_mode)
+	if(!user.istate.harm)
 		return attack_hand(user, modifiers)
 	else
 		return ..()

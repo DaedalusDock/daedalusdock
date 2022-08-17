@@ -200,7 +200,7 @@
 		set_seed(null, FALSE)
 
 /obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/living/user, params)
-	if (!user.combat_mode)
+	if (!user.istate.harm)
 		// handle opening the panel
 		if(default_deconstruction_screwdriver(user, icon_state, icon_state, I))
 			return

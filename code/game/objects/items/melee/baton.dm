@@ -100,14 +100,14 @@
 		if (active)
 			context[SCREENTIP_CONTEXT_RMB] = context_living_rmb_active
 
-			if (user.combat_mode)
+			if (user.istate.harm)
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_active_combat_mode
 			else
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_active
 		else
 			context[SCREENTIP_CONTEXT_RMB] = context_living_rmb_inactive
 
-			if (user.combat_mode)
+			if (user.istate.harm)
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_inactive_combat_mode
 			else
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_inactive
@@ -657,7 +657,7 @@
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if(active && cooldown_check <= world.time && !check_parried(target, user))
 			finalize_baton_attack(target, user, modifiers, in_attack_chain = FALSE)
-	else if(!user.combat_mode)
+	else if(!user.istate.harm)
 		target.visible_message(span_warning("[user] prods [target] with [src]. Luckily it was off."), \
 			span_warning("[user] prods you with [src]. Luckily it was off."))
 		return BATON_ATTACK_DONE

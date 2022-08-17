@@ -221,7 +221,7 @@
 		return
 	if(!vial.reagents.total_volume)
 		return
-	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.combat_mode)]) (MODE: [mode])</font>")
+	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.istate.harm)]) (MODE: [mode])</font>")
 	if(injectee != user)
 		injectee.visible_message(span_danger("[user] uses the [src] on [injectee]!"), \
 						span_userdanger("[user] uses the [src] on you!"))

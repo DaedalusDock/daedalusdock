@@ -117,7 +117,7 @@
 		qdel(src)
 
 /obj/item/clothing/attack(mob/living/M, mob/living/user, params)
-	if(user.combat_mode || !ismoth(M))
+	if(user.istate.harm || !ismoth(M))
 		return ..()
 	if(isnull(moth_snack))
 		moth_snack = new

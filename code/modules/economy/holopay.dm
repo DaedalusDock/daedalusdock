@@ -44,7 +44,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.combat_mode)
+	if(!user.istate.harm)
 		ui_interact(user)
 		return .
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)

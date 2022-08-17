@@ -65,7 +65,7 @@
 	if(grill)
 		if(istype(used_item, /obj/item/melee/roastingstick))
 			return FALSE
-		if(!user.combat_mode && !(used_item.item_flags & ABSTRACT))
+		if(!user.istate.harm && !(used_item.item_flags & ABSTRACT))
 			if(user.temporarilyRemoveItemFromInventory(used_item))
 				used_item.forceMove(get_turf(src))
 				var/list/modifiers = params2list(params)

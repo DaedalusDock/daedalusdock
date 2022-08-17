@@ -250,7 +250,7 @@
 				to_chat(user, span_danger("You tackle [src] down!"))
 		return TRUE
 
-	if(!user.combat_mode)
+	if(!user.istate.harm)
 		..() //shaking
 		return FALSE
 
@@ -294,7 +294,7 @@
 			to_chat(user, span_danger("You tackle [src] down!"))
 		return TRUE
 
-	if(user.combat_mode)
+	if(user.istate.harm)
 		if (w_uniform)
 			w_uniform.add_fingerprint(user)
 		var/damage = prob(90) ? rand(user.melee_damage_lower, user.melee_damage_upper) : 0

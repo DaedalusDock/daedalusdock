@@ -133,7 +133,7 @@
 /obj/structure/mineral_door/attackby(obj/item/I, mob/living/user)
 	if(pickaxe_door(user, I))
 		return
-	else if(!user.combat_mode)
+	else if(!user.istate.harm)
 		return attack_hand(user)
 	else
 		return ..()
@@ -319,7 +319,7 @@
 		fire_act(I.get_temperature())
 		return
 
-	if((!user.combat_mode) && istype(I, /obj/item/paper) && (atom_integrity < max_integrity))
+	if((!user.istate.harm) && istype(I, /obj/item/paper) && (atom_integrity < max_integrity))
 		user.visible_message(span_notice("[user] starts to patch the holes in [src]."), span_notice("You start patching some of the holes in [src]!"))
 		if(do_after(user, 2 SECONDS, src))
 			atom_integrity = min(atom_integrity+4,max_integrity)

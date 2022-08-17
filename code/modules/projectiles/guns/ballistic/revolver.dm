@@ -169,7 +169,7 @@
 
 	if(flag)
 		if(!(target in user.contents) && ismob(target))
-			if(user.combat_mode) // Flogging action
+			if(user.istate.harm) // Flogging action
 				return
 
 	if(isliving(user))

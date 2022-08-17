@@ -55,7 +55,7 @@
 			oxygentanks++
 		else
 			full = TRUE
-	else if(!user.combat_mode)
+	else if(!user.istate.harm)
 		to_chat(user, span_notice("[I] does not fit into [src]."))
 		return
 	else

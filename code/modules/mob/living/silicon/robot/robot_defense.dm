@@ -43,7 +43,7 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 			to_chat(user, span_warning("You can't reach the wiring!"))
 		return
 
-	if(W.slot_flags & ITEM_SLOT_HEAD && hat_offset != INFINITY && !user.combat_mode && !is_type_in_typecache(W, GLOB.blacklisted_borg_hats))
+	if(W.slot_flags & ITEM_SLOT_HEAD && hat_offset != INFINITY && !user.istate.harm && !is_type_in_typecache(W, GLOB.blacklisted_borg_hats))
 		if(user == src)
 			to_chat(user,  span_notice("You can't seem to manage to place [W] on your head by yourself!") )
 			return
@@ -57,7 +57,7 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 				place_on_head(W)
 		return
 
-	if(istype(W, /obj/item/defibrillator) && !user.combat_mode)
+	if(istype(W, /obj/item/defibrillator) && !user.istate.harm)
 		if(!opened)
 			to_chat(user, span_warning("You must access the cyborg's internals!"))
 			return
@@ -246,7 +246,7 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/_step_away, src, get_turf(user), 15), 3)
 
 /mob/living/silicon/robot/welder_act(mob/living/user, obj/item/tool)
-	if(user.combat_mode && usr != src)
+	if(user.istate.harm && usr != src)
 		return FALSE
 	. = TRUE
 	user.changeNext_move(CLICK_CD_MELEE)

@@ -290,7 +290,7 @@
 		if (user != src)
 			user.disarm(src)
 			return TRUE
-	if (!user.combat_mode)
+	if (!user.istate.harm)
 		return FALSE
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to hurt anyone!"))
@@ -344,7 +344,7 @@
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 		return TRUE
-	if(user.combat_mode)
+	if(user.istate.harm)
 		if(HAS_TRAIT(user, TRAIT_PACIFISM))
 			to_chat(user, span_warning("You don't want to hurt anyone!"))
 			return FALSE

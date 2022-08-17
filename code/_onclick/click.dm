@@ -81,31 +81,31 @@
 
 	if(SEND_SIGNAL(src, COMSIG_MOB_CLICKON, A, modifiers) & COMSIG_MOB_CANCEL_CLICKON)
 		return
-
-	if(LAZYACCESS(modifiers, SHIFT_CLICK))
+	if(!LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(LAZYACCESS(modifiers, SHIFT_CLICK))
+			if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+				ShiftMiddleClickOn(A)
+				return
+			if(LAZYACCESS(modifiers, CTRL_CLICK))
+				CtrlShiftClickOn(A)
+				return
+			ShiftClickOn(A)
+			return
 		if(LAZYACCESS(modifiers, MIDDLE_CLICK))
-			ShiftMiddleClickOn(A)
+			if(LAZYACCESS(modifiers, CTRL_CLICK))
+				CtrlMiddleClickOn(A)
+			else
+				MiddleClickOn(A, params)
+			return
+		if(LAZYACCESS(modifiers, ALT_CLICK)) // alt and alt-gr (rightalt)
+			if(LAZYACCESS(modifiers, RIGHT_CLICK))
+				alt_click_on_secondary(A)
+			else
+				AltClickOn(A)
 			return
 		if(LAZYACCESS(modifiers, CTRL_CLICK))
-			CtrlShiftClickOn(A)
+			CtrlClickOn(A)
 			return
-		ShiftClickOn(A)
-		return
-	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
-		if(LAZYACCESS(modifiers, CTRL_CLICK))
-			CtrlMiddleClickOn(A)
-		else
-			MiddleClickOn(A, params)
-		return
-	if(LAZYACCESS(modifiers, ALT_CLICK)) // alt and alt-gr (rightalt)
-		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			alt_click_on_secondary(A)
-		else
-			AltClickOn(A)
-		return
-	if(LAZYACCESS(modifiers, CTRL_CLICK))
-		CtrlClickOn(A)
-		return
 
 	//PARIAH EDIT ADDITION
 	if(typing_indicator)

@@ -41,7 +41,7 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 
 /datum/interaction_mode/proc/state_changed(datum/interaction_state/state)
 
-/datum/interaction_mode/proc/keybind(type)
+/datum/interaction_mode/proc/keybind_act(type)
 
 /datum/interaction_mode/proc/status()
 

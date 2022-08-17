@@ -27,13 +27,13 @@
 	update_istate(owner.mob, null)
 	UI.update_icon_state()
 
-/datum/interaction_mode/combat_mode/keybind(type)
+/datum/interaction_mode/combat_mode/keybind_act(type)
 	switch (type)
-		if (0)
+		if (1)
 			combat_mode = TRUE
-		if (2)
-			combat_mode = FALSE
 		if (3)
+			combat_mode = FALSE
+		if (4)
 			combat_mode = !combat_mode
 	update_istate(owner.mob, null)
 	UI.update_icon_state()
@@ -46,7 +46,7 @@
 	if(combat_mode == new_state)
 		return
 
-	keybind(3)
+	keybind_act(3)
 	if(silent || !(owner?.prefs.toggles & SOUND_COMBATMODE))
 		return
 

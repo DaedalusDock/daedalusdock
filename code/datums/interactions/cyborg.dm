@@ -10,9 +10,9 @@
 	UI = CT
 	return CT
 
-/datum/interaction_mode/combat_mode/cyborg/keybind(type)
+/datum/interaction_mode/combat_mode/cyborg/keybind_act(type)
 	switch (type)
-		if (3)
+		if (4)
 			combat_mode = !combat_mode
 	update_istate(owner.mob, null)
 	UI.update_icon_state()

@@ -78,7 +78,7 @@
 /datum/keybinding/living/interaction_action1
 	hotkey_keys = list("1")
 	name = "interaction_mode_action_1"
-	full_name = "Help Intent/Combat Off"
+	full_name = "Intent 1/Combat Off"
 	description = "Does interaction mode specific action."
 	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_1
 
@@ -86,12 +86,12 @@
 	. = ..()
 	if(.)
 		return
-	user.imode.keybind(0)
+	user.imode.keybind_act(1)
 
 /datum/keybinding/living/interaction_action2
 	hotkey_keys = list("2")
 	name = "interaction_mode_action_2"
-	full_name = "Grab Intent"
+	full_name = "Intent 2"
 	description = "Does interaction mode specific action."
 	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_2
 
@@ -99,12 +99,12 @@
 	. = ..()
 	if(.)
 		return
-	user.imode.keybind(1)
+	user.imode.keybind_act(2)
 
 /datum/keybinding/living/interaction_action3
 	hotkey_keys = list("3")
 	name = "interaction_mode_action_3"
-	full_name = "Harm Intent/Combat On"
+	full_name = "Intent 3/Combat On"
 	description = "Does interaction mode specific action."
 	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_3
 
@@ -112,12 +112,12 @@
 	. = ..()
 	if(.)
 		return
-	user.imode.keybind(2)
+	user.imode.keybind_act(3)
 
 /datum/keybinding/living/interaction_action4
 	hotkey_keys = list("4", "F")
 	name = "interaction_mode_action_4"
-	full_name = "Cycle Intent/Toggle Combat"
+	full_name = "Intent 4/Toggle Combat"
 	description = "Does interaction mode specific action."
 	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_4
 
@@ -125,4 +125,4 @@
 	. = ..()
 	if(.)
 		return
-	user.imode.keybind(3)
+	user.imode.keybind_act(4)

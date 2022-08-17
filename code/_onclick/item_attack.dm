@@ -200,7 +200,7 @@
 	user.do_attack_animation(M)
 	M.attacked_by(src, user)
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.istate.harm)]) (DAMTYPE: [uppertext(damtype)])")
+	log_combat(user, M, "attacked", src.name, "(ISTATE: [user.istate.logging()]) (DAMTYPE: [uppertext(damtype)])")
 	add_fingerprint(user)
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking

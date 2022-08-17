@@ -278,8 +278,8 @@
 
 /atom/movable/screen/combattoggle/Click()
 	if(isliving(usr))
-		var/mob/living/owner = usr
-		owner.set_combat_mode(!owner.combat_mode, FALSE)
+		combat_mode.combat_mode = !combat_mode.combat_mode
+		combat_mode.update_istate(usr, null)
 		update_appearance()
 
 /atom/movable/screen/combattoggle/update_icon_state()

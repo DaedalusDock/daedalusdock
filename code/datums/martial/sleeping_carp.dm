@@ -213,7 +213,7 @@
 	if(C.stat)
 		to_chat(user, span_warning("It would be dishonorable to attack a foe while they cannot retaliate."))
 		return
-	var/list/modifiers = params2list(params)
+
 	if(user.istate.secondary)
 		if(!wielded)
 			return ..()

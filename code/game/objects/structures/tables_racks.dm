@@ -766,7 +766,6 @@
 		step(O, get_dir(O, src))
 
 /obj/structure/rack/attackby(obj/item/W, mob/living/user, params)
-	var/list/modifiers = params2list(params)
 	if (W.tool_behaviour == TOOL_WRENCH && !(flags_1&NODECONSTRUCT_1) && user.istate.secondary)
 		W.play_tool_sound(src)
 		deconstruct(TRUE)

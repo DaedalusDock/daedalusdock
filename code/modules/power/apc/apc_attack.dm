@@ -199,7 +199,7 @@
 	var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 	if(!((stomach?.drain_time < world.time) && user.istate.secondary))
 		return
-	if(ethereal.combat_mode)
+	if(ethereal.istate.harm)
 		if(cell.charge <= (cell.maxcharge / 2)) // ethereals can't drain APCs under half charge, this is so that they are forced to look to alternative power sources if the station is running low
 			to_chat(ethereal, span_warning("The APC's syphon safeties prevent you from draining power!"))
 			return

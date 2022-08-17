@@ -84,7 +84,7 @@
 
 		var/suicide_message
 
-		if(!combat_mode)
+		if(!istate.harm)
 			var/obj/item/organ/brain/userbrain = getorgan(/obj/item/organ/brain)
 			if(userbrain?.damage >= 75)
 				suicide_message = "[src] pulls both arms outwards in front of [p_their()] chest and pumps them behind [p_their()] back, repeats this motion in a smaller range of motion \

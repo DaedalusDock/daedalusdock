@@ -306,7 +306,7 @@
 	return FALSE
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
-	if(L.combat_mode)
+	if(L.istate.harm)
 		if(HAS_TRAIT(L, TRAIT_PACIFISM))
 			to_chat(L, span_warning("You don't want to hurt anyone!"))
 			return

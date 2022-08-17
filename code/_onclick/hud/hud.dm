@@ -25,7 +25,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/hud_version = HUD_STYLE_STANDARD //Current displayed version of the HUD
 	var/inventory_shown = FALSE //Equipped item inventory
 	var/hotkey_ui_hidden = FALSE //This is to hide the buttons that can be used via hotkeys. (hotkeybuttons list of buttons)
-	var/has_interaction_ui = TRUE
+	var/has_interaction_ui = FALSE
 
 	var/atom/movable/screen/blobpwrdisplay
 
@@ -34,6 +34,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	var/atom/movable/screen/combo/combo_display
 
+	var/atom/movable/screen/action_intent
 	var/atom/movable/screen/zone_select
 	var/atom/movable/screen/pull_icon
 	var/atom/movable/screen/rest_icon

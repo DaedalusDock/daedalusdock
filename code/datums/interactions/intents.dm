@@ -53,9 +53,9 @@
 /datum/interaction_mode/intents3/status()
 	return "Intent: [intent]"
 
-/datum/interaction_mode/set_combat_mode(new_state, silent)
+/datum/interaction_mode/intents3/set_combat_mode(new_state, silent)
 	. = ..()
-	if(intent = INTENT_HARM)
+	if(intent == INTENT_HARM)
 		return
 	intent = INTENT_HARM
 	update_istate(owner.mob)

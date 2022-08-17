@@ -97,7 +97,7 @@
 					to_chat(user, span_notice("[recent_speech[spoken_memory]]"))
 			if(iscarbon(M))
 				var/mob/living/carbon/human/H = M
-				to_chat(user, span_boldnotice("You find that their intent is to [H.combat_mode ? "Harm" : "Help"]..."))
+				to_chat(user, span_boldnotice("You find that their intent is to [H.istate.harm ? "Harm" : "Help"]..."))
 				if(H.mind)
 					to_chat(user, span_boldnotice("You uncover that [H.p_their()] true identity is [H.mind.name]."))
 		else

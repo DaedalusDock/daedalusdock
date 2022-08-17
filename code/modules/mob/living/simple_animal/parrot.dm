@@ -157,7 +157,7 @@
 	. = ..()
 	. += ""
 	. += "Held Item: [held_item]"
-	. += "Combat mode: [combat_mode ? "On" : "Off"]"
+	. += client.imode.status()
 
 /mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list())
 	. = ..()
@@ -871,13 +871,13 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	if(stat || !client)
 		return
 
-	if(combat_mode)
+	if(istate.harm)
 		melee_damage_upper = 0
 		set_combat_mode(FALSE)
 	else
 		melee_damage_upper = parrot_damage_upper
 		set_combat_mode(TRUE)
-	to_chat(src, span_notice("You will now [combat_mode ? "Harm" : "Help"] others."))
+	to_chat(src, span_notice("You will now [istate.harm ? "Harm" : "Help"] others."))
 	return
 
 /*

@@ -322,11 +322,11 @@
 	var/list/paramlist = params2list(params)
 	var/_x = text2num(paramlist["icon-x"])
 	var/_y = text2num(paramlist["icon-y"])
-	if(_y<=16)
+	if(_y<=16 && x<=17)
 		intents.intent = INTENT_HARM
 	else if(_x<=16 && _y>=17)
 		intents.intent = INTENT_HELP
-	else if(_x>=17 && _y>=16)
+	else if(_x>=17 && _y<=16)
 		intents.intent = INTENT_GRAB
 	intents.update_istate(usr, null)
 	icon_state = "[intents.intent]"

@@ -466,7 +466,6 @@
 			to_chat(user, span_warning("[src] are recharging!"))
 		return
 
-	var/list/modifiers = params2list(params)
 	if(user.istate.secondary)
 		do_disarm(M, user)
 		return

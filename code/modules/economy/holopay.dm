@@ -123,7 +123,7 @@
 	if(.)
 		return FALSE
 	var/mob/living/interactor = user
-	if(isliving(interactor) && interactor.combat_mode)
+	if(isliving(interactor) && interactor.istate.harm)
 		return FALSE
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

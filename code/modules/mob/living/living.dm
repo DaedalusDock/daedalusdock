@@ -138,7 +138,7 @@
 			else if(
 				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
 				((HAS_TRAIT(M, TRAIT_RESTRAINED) && !too_strong) || !theyre_blocking) &&\
-				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !combat_mode)
+				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !istate.harm)
 			)
 				mob_swap = TRUE
 		if(mob_swap)
@@ -181,12 +181,12 @@
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M))
 		var/mob/living/carbon/human/human = M
-		if(human.combat_mode)
+		if(human.istate.harm)
 			return TRUE
 	//if they are a cyborg, and they're alive and in combat mode, block pushing
 	if(iscyborg(M))
 		var/mob/living/silicon/robot/borg = M
-		if(borg.combat_mode && borg.stat != DEAD)
+		if(borg.istate.harm && borg.stat != DEAD)
 			return TRUE
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
@@ -401,7 +401,7 @@
 
 	if(istype(AM) && Adjacent(AM))
 		start_pulling(AM)
-	else if(!combat_mode) //Don;'t cancel pulls if misclicking in combat mode.
+	else if(!istate.harm) //Don;'t cancel pulls if misclicking in combat mode.
 		stop_pulling()
 
 /mob/living/stop_pulling()
@@ -2245,7 +2245,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return style.grab_act(src, target)
 	if (istate.secondary)
 		return style.disarm_act(src, target)
-	if(combat_mode)
+	if(istate.harm)
 		if (HAS_TRAIT(src, TRAIT_PACIFISM))
 			return FALSE
 		return style.harm_act(src, target)

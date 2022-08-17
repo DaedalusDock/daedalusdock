@@ -46,7 +46,7 @@
 	return attack_hand(user, modifiers)
 
 /mob/living/silicon/attack_larva(mob/living/carbon/alien/larva/L)
-	if(!L.combat_mode)
+	if(!L.istate.harm)
 		visible_message(span_notice("[L.name] rubs its head against [src]."))
 
 /mob/living/silicon/attack_hulk(mob/living/carbon/human/user)
@@ -81,7 +81,7 @@
 
 
 /mob/living/silicon/attack_drone(mob/living/simple_animal/drone/M)
-	if(M.combat_mode)
+	if(M.istate.harm)
 		return
 	return ..()
 

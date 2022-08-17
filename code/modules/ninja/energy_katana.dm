@@ -42,8 +42,6 @@
 /obj/item/energy_katana/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 
-	var/list/modifiers = params2list(click_parameters)
-
 	if(user.istate.secondary && !target.density)
 		jaunt.teleport(user, target)
 

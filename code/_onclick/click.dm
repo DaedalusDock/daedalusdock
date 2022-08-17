@@ -76,7 +76,8 @@
 
 	var/list/modifiers = params2list(params)
 
-	client?.imode.update_istate(src, modifiers)
+	if(client)
+		client.imode.update_istate(src, modifiers)
 
 	if(SEND_SIGNAL(src, COMSIG_MOB_CLICKON, A, modifiers) & COMSIG_MOB_CANCEL_CLICKON)
 		return
@@ -135,7 +136,7 @@
 	var/obj/item/W = get_active_held_item()
 
 	if(W == A)
-		if(user.istate.secondary)
+		if(istate.secondary)
 			W.attack_self_secondary(src, modifiers)
 			update_inv_hands()
 			return

@@ -98,7 +98,7 @@
 /datum/wound/blunt/proc/attack_with_hurt_hand(mob/M, atom/target, proximity)
 	SIGNAL_HANDLER
 
-	if(victim.get_active_hand() != limb || !victim.combat_mode || !ismob(target) || severity <= WOUND_SEVERITY_MODERATE)
+	if(victim.get_active_hand() != limb || !victim.istate.harm || !ismob(target) || severity <= WOUND_SEVERITY_MODERATE)
 		return
 
 	// With a severe or critical wound, you have a 15% or 30% chance to proc pain on hit

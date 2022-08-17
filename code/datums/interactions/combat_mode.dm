@@ -21,7 +21,7 @@
 
 /datum/interaction_mode/combat_mode/state_changed(datum/interaction_state/state)
 	if (state.harm)
-		istate = new /datum/interaction_state/harm
+		combat_mode = TRUE
 	else
 		combat_mode = FALSE
 	update_istate(owner.mob, null)
@@ -41,9 +41,9 @@
 /datum/interaction_mode/combat_mode/status()
 	return "Combat Mode: [combat_mode ? "On" : "Off"]"
 
-/datum/interaction_mode/set_combat_mode(new_state, silent)
+/datum/interaction_mode/combat_mode/set_combat_mode(new_state, silent)
 	. = ..()
-	if(combat_mode == new_mode)
+	if(combat_mode == new_state)
 		return
 
 	keybind(3)

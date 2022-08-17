@@ -135,7 +135,7 @@
 
 /datum/mutation/human/honorbound/proc/hand_guilt(datum/source, mob/living/attacker)
 	SIGNAL_HANDLER
-	if(attacker.combat_mode)
+	if(attacker.istate.harm)
 		guilty(attacker)
 
 /datum/mutation/human/honorbound/proc/paw_guilt(datum/source, mob/living/attacker)

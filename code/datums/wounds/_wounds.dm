@@ -286,7 +286,7 @@
 
 	if(isliving(user))
 		var/mob/living/tendee = user
-		if(I.force && tendee.combat_mode)
+		if(I.force && tendee.istate.harm)
 			return FALSE
 
 	var/allowed = FALSE

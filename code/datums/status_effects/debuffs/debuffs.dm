@@ -963,7 +963,7 @@
 
 /datum/status_effect/amok/tick()
 	. = ..()
-	var/prev_combat_mode = owner.combat_mode
+	var/prev_combat_mode = owner.istate.harm
 	owner.set_combat_mode(TRUE)
 
 	var/list/mob/living/targets = list()

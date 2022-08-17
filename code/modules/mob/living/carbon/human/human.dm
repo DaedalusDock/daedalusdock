@@ -73,7 +73,7 @@
 
 /mob/living/carbon/human/get_status_tab_items()
 	. = ..()
-	. += "Combat mode: [combat_mode ? "On" : "Off"]"
+	. += client.imode.status()
 	. += "Move Mode: [m_intent]"
 	if (internal)
 		var/datum/gas_mixture/internal_air = internal.return_air()

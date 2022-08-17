@@ -1,7 +1,7 @@
-GLOBAL_LIST_INIT(available_interaction_modes, list(
-	"Combat Mode" = /datum/interaction_mode/combat_mode,
-	"Three Intents" = /datum/interaction_mode/intents3
-))
+GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
+	IMODE_COMBAT_MODE = /datum/interaction_mode/combat_mode,
+	IMODE_INTENTS = /datum/interaction_mode/intents3
+)
 
 /datum/interaction_mode
 	var/shift_to_open_context_menu = FALSE

@@ -85,7 +85,7 @@
 
 	// First disarm, world should now look like:
 	// Attacker --> Empty space --> Victim --> Wall
-	attack.istate.secondary = TRUE
+	attacker.istate.secondary = TRUE
 	victim.attack_hand(attacker, list(RIGHT_CLICK = TRUE))
 
 	TEST_ASSERT_EQUAL(victim.loc.x, run_loc_floor_bottom_left.x + 2, "Victim wasn't moved back after being pushed")

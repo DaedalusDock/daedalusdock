@@ -9,6 +9,7 @@
 	. = ..()
 	light_switch.has_wires = FALSE
 	light_switch.panel_open = TRUE
+	light_switch.set_machine_stat(light_switch.machine_stat | MAINT)
 	light_switch.update_appearance()
 
 /obj/machinery/light_switch

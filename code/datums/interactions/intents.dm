@@ -30,6 +30,8 @@
 		intent = INTENT_HARM
 	else if (state.control)
 		intent = INTENT_GRAB
+	/*else if (state.secondary)
+		intent = INTENT_DISARM*/
 	else
 		intent = INTENT_HELP
 	update_istate(owner.mob, null)

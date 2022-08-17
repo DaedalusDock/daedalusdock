@@ -1257,6 +1257,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return // dont attack after
 	if(M.istate.harm)
 		harm(M, H, attacker_style)
+	else if (M.istate.control)
+		grab(M, H, attacker_style)
 	else
 		help(M, H, attacker_style)
 

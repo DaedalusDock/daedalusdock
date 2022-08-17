@@ -15,11 +15,11 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 		owner.mob.hud_used.static_inventory += procure_hud(owner.mob, owner.mob.hud_used)
 
 /datum/interaction_mode/Destroy(force, ...)
-	. = ..()
 	owner = null
 	if (UI)
-		UI?.hud.static_inventory -= UI
+		UI.hud.static_inventory -= UI
 		QDEL_NULL(UI)
+	return ..()
 
 /datum/interaction_mode/proc/reload_hud(mob/M)
 	if (UI)

@@ -45,7 +45,6 @@
 		else
 			client.imode.reload_hud(src)
 		hud_used.show_hud(hud_used.hud_version)
-		hud_used.show_hud(hud_used.hud_version)
 		hud_used.update_ui_style(ui_style2icon(client.prefs?.read_preference(/datum/preference/choiced/ui_style)))
 
 	next_move = 1

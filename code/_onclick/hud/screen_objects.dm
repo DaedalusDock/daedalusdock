@@ -322,7 +322,7 @@
 	var/list/paramlist = params2list(params)
 	var/_x = text2num(paramlist["icon-x"])
 	var/_y = text2num(paramlist["icon-y"])
-	if(_y<=16 && x<=17)
+	if(_y<=16 && _x<=17)
 		intents.intent = INTENT_HARM
 	else if(_x<=16 && _y>=17)
 		intents.intent = INTENT_HELP

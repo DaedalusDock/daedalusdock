@@ -14,7 +14,12 @@
 	var/datum/interaction_mode/IM
 	IM = host?.forced_interaction_mode
 	IM ||= available_interaction_modes[value]
-	client.imode = new IM(client)
+	if(client.imode)
+		client.imode.replace(IM)
+	else
+		client.imode = new IM(client)
+	if(host)
+		host.hud_used.show_hud(host.hud_used.hud_version, host)
 
 /datum/preference/choiced/interaction_mode/is_valid(value)
 	return value in available_interaction_modes

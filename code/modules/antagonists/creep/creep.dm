@@ -37,12 +37,12 @@
 	. = ..()
 
 /datum/antagonist/obsessed/get_preview_icon()
-	var/mob/living/carbon/human/dummy/consistent/obsessed_dummy = new
-	obsessed_dummy.hair_color = "#bb9966" // Brown
-	obsessed_dummy.hairstyle = "Messy"
-	obsessed_dummy.update_hair(TRUE)
+	var/mob/living/carbon/human/dummy/consistent/victim_dummy = new
+	victim_dummy.hair_color = "#bb9966" // Brown
+	victim_dummy.hairstyle = "Messy"
+	victim_dummy.update_body_parts()
 
-	var/icon/obsessed_icon = render_preview_outfit(preview_outfit, obsessed_dummy)
+	var/icon/obsessed_icon = render_preview_outfit(preview_outfit, victim_dummy)
 	obsessed_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
 
 	var/icon/final_icon = finish_preview_icon(obsessed_icon)

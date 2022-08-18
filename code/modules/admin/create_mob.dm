@@ -46,4 +46,3 @@
 	H.dna.features["tail_teshari"] = pick(GLOB.teshari_tails_list)
 
 	H.update_body(is_creating = TRUE)
-	H.update_hair(is_creating = TRUE)

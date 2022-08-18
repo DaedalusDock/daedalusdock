@@ -79,6 +79,7 @@
 
 	//The following code is literally only to make admin-spawned ethereals not be black.
 	C.dna.mutant_colors[MUTCOLORS_GENERIC_1] = C.dna.features["ethcolor"] //Ethcolor and Mut color are both dogshit and i hate them
+
 	for(var/obj/item/bodypart/limb as anything in C.bodyparts)
 		if(limb.limb_id == SPECIES_ETHEREAL)
 			limb.update_limb(is_creating = TRUE)
@@ -115,7 +116,9 @@
 	else
 		ethereal_light.set_light_on(FALSE)
 		fixed_mut_color = rgb(128,128,128)
-	H.update_body(is_creating = TRUE)
+	H.hair_color = current_color
+	H.facial_hair_color = current_color
+	H.update_body()
 
 /datum/species/ethereal/proc/on_emp_act(mob/living/carbon/human/H, severity)
 	SIGNAL_HANDLER

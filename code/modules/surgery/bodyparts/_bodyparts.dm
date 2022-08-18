@@ -30,8 +30,6 @@
 	var/limb_id = SPECIES_HUMAN
 	//Defines what sprite the limb should use if it is also sexually dimorphic.
 	VAR_PROTECTED/limb_gender = "m"
-	///Does this limb have a greyscale version?
-	var/uses_mutcolor = TRUE
 	///Which mutcolor to use, if mutcolors are used
 	var/mutcolor_used = MUTCOLORS_GENERIC_1
 	///Is there a sprite difference between male and female?
@@ -665,7 +663,7 @@
 		else
 			skin_tone = ""
 
-		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits)) && uses_mutcolor) //Ethereal code. Motherfuckers.
+		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits))) //Ethereal code. Motherfuckers.
 			if(owner_species.fixed_mut_color)
 				species_color = owner_species.fixed_mut_color
 			else

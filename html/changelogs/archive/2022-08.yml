@@ -9,3 +9,6 @@
   Azarak, ElorgRHG, DatBoiTim:
   - rscadd: Added new airlocks, shutter and blast door sprites to better fit the current
       walls.
+2022-08-17:
+  Kapu1178:
+  - rscadd: Firelocks are now color-coded to the threat that caused them to drop.

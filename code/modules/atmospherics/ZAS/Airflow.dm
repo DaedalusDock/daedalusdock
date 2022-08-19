@@ -83,10 +83,7 @@ This entire system is an absolute mess.
 	if(anchored)
 		return FALSE
 	if(n < zas_settings.airflow_dense_pressure)
-		if(airflow_dest)
-			if(!airflow_originally_not_dense)
-				return FALSE
-		else if(density)
+		if(airflow_dest && density && !airflow_originally_not_dense)
 			return FALSE
 	return ..()
 

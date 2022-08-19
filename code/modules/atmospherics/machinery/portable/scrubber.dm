@@ -75,7 +75,9 @@
 
 	var/transfer_moles = min(1, volume_rate/mixture.volume)*mixture.total_moles
 
-	scrub_gas(scrubbing, mixture, air_contents, transfer_moles, power_rating)
+	var/draw = scrub_gas(scrubbing, mixture, air_contents, transfer_moles, power_rating)
+	if(draw > 0)
+		ATMOS_USE_POWER(draw)
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
 	. = ..()
@@ -152,7 +154,7 @@
 	name = "huge air scrubber"
 	icon_state = "hugescrubber"
 	anchored = TRUE
-	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.5
+	power_rating = 100000
 
 	overpressure_m = 200
 	volume_rate = 1500
@@ -175,7 +177,7 @@
 	if((!anchored && !movable) || !is_operational)
 		on = FALSE
 		update_appearance()
-	update_use_power(on ? ACTIVE_POWER_USE : IDLE_POWER_USE)
+
 	if(!on)
 		return ..()
 

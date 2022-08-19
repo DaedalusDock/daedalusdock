@@ -49,14 +49,8 @@
 
 //////////////////// CURRENTLY UNUSED THINGS THAT KAPU NEEDS TO LOOK AT AND IMPLIMENT ASAP ////////////////////
 ///Unused right now, should VERY MUCH LOOK AT. (see: atmos_piping.dm "max output limit")
-#define MAX_PUMP_PRESSURE		15000	// Maximal pressure setting for pumps and vents
 #define MAX_OMNI_PRESSURE		15000	// Maximal output(s) pressure for omni devices (filters/mixers)
 
-// The flow rate/effectiveness of various atmos devices is limited by their internal volume,
-// so for many atmos devices these will control maximum flow rates in L/s.
-#define ATMOS_DEFAULT_VOLUME_PUMP   200 // Liters.
 #define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
 #define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
-#define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

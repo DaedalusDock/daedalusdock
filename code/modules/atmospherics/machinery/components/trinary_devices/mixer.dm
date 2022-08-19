@@ -9,6 +9,8 @@
 	construction_type = /obj/item/pipe/trinary/flippable
 	pipe_state = "mixer"
 
+	power_rating = 15000
+
 	///Output pressure target
 	var/target_pressure = ONE_ATMOSPHERE
 	///Ratio between the node 1 and 2, determines the amount of gas transfered, sums up to 1
@@ -70,50 +72,31 @@
 		//No need to mix if target is already full!
 		return
 
-	//Calculate necessary moles to transfer using PV=nRT
-	var/general_transfer = (target_pressure - output_starting_pressure) * air3.volume / R_IDEAL_GAS_EQUATION
+	var/delta = clamp((air3 ? (MAX_OUTPUT_PRESSURE - air3.returnPressure()) : 0), 0, MAX_OUTPUT_PRESSURE)
+	var/transfer_moles_max = INFINITY
+	var/transfer_moles = 0
+	/// Node 1
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta))
+	transfer_moles += (target_pressure*node1_concentration/air1.volume)*air1.total_moles
+	// Node 2
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta))
+	transfer_moles += (target_pressure*node2_concentration/air2.volume)*air2.total_moles
+	// Finalize
+	transfer_moles = clamp(transfer_moles, 0, transfer_moles_max)
+	if(!transfer_moles)
+		return
 
-	var/transfer_moles1 = air1.temperature ? node1_concentration * general_transfer / air1.temperature : 0
-	var/transfer_moles2 = air2.temperature ? node2_concentration * general_transfer / air2.temperature : 0
+	var/list/mix_and_conc = list()
+	mix_and_conc[air1] = node1_concentration
+	mix_and_conc[air2] = node2_concentration
+	var/draw = mix_gas(mix_and_conc, air3, transfer_moles, power_rating)
+	if(draw > 0)
+		ATMOS_USE_POWER(draw)
 
-	var/air1_moles = air1.get_moles()
-	var/air2_moles = air2.get_moles()
-
-	if(!node2_concentration)
-		if(air1.temperature <= 0)
-			return
-		transfer_moles1 = min(transfer_moles1, air1_moles)
-		transfer_moles2 = 0
-	else if(!node1_concentration)
-		if(air2.temperature <= 0)
-			return
-		transfer_moles2 = min(transfer_moles2, air2_moles)
-		transfer_moles1 = 0
-	else
-		if(air1.temperature <= 0 || air2.temperature <= 0)
-			return
-		if((transfer_moles2 <= 0) || (transfer_moles1 <= 0))
-			return
-		if((air1_moles < transfer_moles1) || (air2_moles < transfer_moles2))
-			var/ratio = 0
-			ratio = min(air1_moles / transfer_moles1, air2_moles / transfer_moles2)
-			transfer_moles1 *= ratio
-			transfer_moles2 *= ratio
-
-	//Actually transfer the gas
-
-	if(transfer_moles1)
-		var/datum/gas_mixture/removed1 = air1.remove(transfer_moles1)
-		air3.merge(removed1)
-		var/datum/pipeline/parent1 = parents[1]
-		parent1.update = TRUE
-
-	if(transfer_moles2)
-		var/datum/gas_mixture/removed2 = air2.remove(transfer_moles2)
-		air3.merge(removed2)
-		var/datum/pipeline/parent2 = parents[2]
-		parent2.update = TRUE
-
+	var/datum/pipeline/parent1 = parents[1]
+	parent1.update = TRUE
+	var/datum/pipeline/parent2 = parents[2]
+	parent2.update = TRUE
 	var/datum/pipeline/parent3 = parents[3]
 	parent3.update = TRUE
 

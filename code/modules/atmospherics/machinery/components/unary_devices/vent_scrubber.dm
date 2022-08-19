@@ -8,7 +8,7 @@
 	desc = "Has a valve and pump attached to it."
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
-	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.15
+
 	can_unwrench = TRUE
 	welded = FALSE
 	layer = GAS_SCRUBBER_LAYER
@@ -18,12 +18,14 @@
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
 
+	power_rating = 30000
+
 	///The mode of the scrubber (SCRUBBING or SIPHONING)
 	var/scrubbing = SCRUBBING //0 = siphoning, 1 = scrubbing
 	///The list of gases we are filtering
 	var/list/filter_types = list(GAS_CO2)
 	///Rate of the scrubber to remove gases from the air
-	var/volume_rate = 200
+	var/volume_rate = MAX_SCRUBBER_FLOWRATE
 	///A fast-siphon toggle, siphons at 9x speed for 9x the power cost.
 	var/quicksucc = FALSE
 
@@ -218,7 +220,7 @@
 	if(scrub(us))
 		should_cooldown = FALSE
 	if(quicksucc)
-		for(var/i in 1 to 9) //quicksucc is actually now just "fast mode"
+		for(var/i in 1 to 8)
 			if(scrub(us))
 				should_cooldown = FALSE
 	if(should_cooldown)
@@ -239,13 +241,9 @@
 	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
 		return FALSE
 
-	if(scrubbing == SCRUBBING)
+	if(scrubbing) // == SCRUBBING
 		if(length(environment.gas & filter_types))
 			. = TRUE
-			///contains all of the gas we're sucking out of the tile, gets put into our parent pipenet
-			var/datum/gas_mixture/filtered_out = new
-			filtered_out.temperature = environment.temperature
-
 			var/total_moles_to_remove = 0
 			for(var/gas in filter_types & environment.gas)
 				total_moles_to_remove += environment.gas[gas]
@@ -256,21 +254,22 @@
 			//take this gases portion of removal_ratio of the turfs air, or all of that gas if less than or equal to MINIMUM_MOLES_TO_SCRUB
 			//var/transfer_moles = min(environment.total_moles, volume_rate/environment.volume)*environment.total_moles
 			var/transfer_moles = min(environment.total_moles, environment.total_moles*volume_rate/environment.volume)
-			if(scrub_gas(filter_types, environment, filtered_out, transfer_moles, INFINITY) == -1)
+			var/draw = scrub_gas(filter_types, environment, air_contents, transfer_moles, power_rating)
+			if(draw == -1)
 				. = FALSE
-
+			else if(draw)
+				ATMOS_USE_POWER(draw)
 			//Remix the resulting gases
-			air_contents.merge(filtered_out)
 			update_parents()
 			return .
 
 	else //Just siphoning all air
 
-		var/transfer_moles = environment.get_moles() * (volume_rate / environment.volume)
+		var/transfer_moles = min(environment.total_moles, environment.total_moles*MAX_SIPHON_FLOWRATE/environment.volume)
 
-		var/datum/gas_mixture/removed = tile.remove_air(transfer_moles)
-
-		air_contents.merge(removed)
+		var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
+		if(draw > 0)
+			ATMOS_USE_POWER(draw)
 		update_parents()
 		return TRUE
 
@@ -330,22 +329,6 @@
 
 	if(length(filter_types) == old_filter_length && old_scrubbing == scrubbing && old_quicksucc == quicksucc)
 		return
-
-	idle_power_usage = initial(idle_power_usage)
-	active_power_usage = initial(idle_power_usage)
-
-	var/new_power_usage = 0
-	if(scrubbing == SCRUBBING)
-		new_power_usage = idle_power_usage + idle_power_usage * length(filter_types)
-		update_use_power(IDLE_POWER_USE)
-	else
-		new_power_usage = active_power_usage
-		update_use_power(ACTIVE_POWER_USE)
-
-	if(quicksucc)
-		new_power_usage += new_power_usage * 9
-
-	update_mode_power_usage(scrubbing == SCRUBBING ? IDLE_POWER_USE : ACTIVE_POWER_USE, new_power_usage)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/power_change()
 	. = ..()

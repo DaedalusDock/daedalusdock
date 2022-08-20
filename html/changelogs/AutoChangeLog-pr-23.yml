@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Atmos pump power load is now based on entropy
-  - tweak: Pipenets are "environmental" power to APCs
-  - tweak: Gas Mixers logic adjusted.

@@ -83,8 +83,7 @@ This entire system is an absolute mess.
 	if(anchored)
 		return FALSE
 	if(density && n < zas_settings.airflow_dense_pressure)
-		if(!airflow_originally_not_dense)
-			return FALSE
+		return FALSE
 	return ..()
 
 /obj/item/check_airflow_movable(n)

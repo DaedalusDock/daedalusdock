@@ -12,6 +12,18 @@
 	light_switch.set_machine_stat(light_switch.machine_stat | MAINT)
 	light_switch.update_appearance()
 
+/datum/design/lightswitch_frame
+	name = "Light Switch (Wallframe)"
+	id = "lightswitch_frame"
+	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	materials = list(
+		/datum/material/iron = 200,
+		/datum/material/glass = 200,
+	)
+	build_path = /obj/item/wallframe/light_switch
+	category = list("initial", "Equipment")
+	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_ENGINEERING
+
 /obj/machinery/light_switch
 	name = "light switch"
 	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'

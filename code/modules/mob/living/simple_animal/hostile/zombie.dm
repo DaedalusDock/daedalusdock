@@ -33,8 +33,6 @@
 	var/datum/job/job = SSjob.GetJob(zombiejob)
 
 	var/datum/outfit/outfit = job.outfits["Default"]?[SPECIES_HUMAN]
-	//outfit.l_hand = null
-	//outfit.r_hand = null
 
 	var/mob/living/carbon/human/dummy/dummy = new
 	qdel(dummy.get_item_for_held_index(1))

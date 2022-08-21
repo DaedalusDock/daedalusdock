@@ -83,7 +83,7 @@
 	gloves = /obj/item/clothing/gloves/color/plasmaman/head_of_personnel
 	head = /obj/item/clothing/head/helmet/space/plasmaman/head_of_personnel
 	mask = /obj/item/clothing/mask/breath
-	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/hop/pre_equip(mob/living/carbon/human/H)
 	..()

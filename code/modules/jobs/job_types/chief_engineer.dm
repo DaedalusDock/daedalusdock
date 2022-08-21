@@ -90,7 +90,7 @@
 	gloves = /obj/item/clothing/gloves/color/plasmaman/chief_engineer
 	head = /obj/item/clothing/head/helmet/space/plasmaman/chief_engineer
 	mask = /obj/item/clothing/mask/breath
-	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/ce/mod
 	name = "Chief Engineer (MODsuit)"

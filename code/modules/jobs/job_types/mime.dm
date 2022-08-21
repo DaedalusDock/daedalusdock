@@ -77,7 +77,7 @@
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
 	head = /obj/item/clothing/head/helmet/space/plasmaman/mime
 	mask = /obj/item/clothing/mask/gas/mime/plasmaman
-	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

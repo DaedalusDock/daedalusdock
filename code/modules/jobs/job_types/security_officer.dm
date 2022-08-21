@@ -235,7 +235,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	gloves = /obj/item/clothing/gloves/color/plasmaman/black
 	head = /obj/item/clothing/head/helmet/space/plasmaman/security
 	mask = /obj/item/clothing/mask/breath
-	r_hand= /obj/item/tank/internals/plasmaman/belt/full
+	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/security/mod
 	name = "Security Officer (MODsuit)"

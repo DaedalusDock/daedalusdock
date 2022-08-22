@@ -73,12 +73,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 /obj/machinery/light_switch/update_overlays()
 	. = ..()
 	if(is_operational)
-		var/target_state = "[base_icon_state]_[(area.lightswitch ? "on" : "off")]"
+		var/target_state = "[base_icon_state]-[(area.lightswitch ? "on" : "off")]"
 		. += mutable_appearance(icon, target_state, alpha = src.alpha)
 		. += emissive_appearance(icon, target_state, alpha = src.alpha)
 	else
 		if(panel_open && has_wires)
-			. += mutable_appearance(icon, "[base_icon_state]_wires")
+			. += mutable_appearance(icon, "[base_icon_state]-wires")
 
 /obj/machinery/light_switch/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!panel_open)
@@ -148,11 +148,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()
+	if(!is_operational)
+		return .
 	playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
 	set_lights(!area.lightswitch)
 
 /obj/machinery/light_switch/proc/set_lights(status)
-	if(area.lightswitch == status)
+	if(area.lightswitch == status || !is_operational)
 		return
 	area.lightswitch = status
 	area.update_appearance()

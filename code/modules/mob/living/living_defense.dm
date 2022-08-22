@@ -277,7 +277,7 @@
 	if (martial_result != MARTIAL_ATTACK_INVALID)
 		return martial_result
 
-	if((user.istate & ISTATE_DISARM))
+	if((user.istate & ISTATE_SECONDARY))
 		if (user != src)
 			user.disarm(src)
 			return TRUE

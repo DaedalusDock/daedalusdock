@@ -199,9 +199,9 @@
 			weapon.melee_attack_chain(living_pawn, target)
 		else
 			if(disarm)
-				living_pawn.istate |= ISTATE_DISARM
+				living_pawn.istate |= ISTATE_SECONDARY
 			living_pawn.UnarmedAttack(target, null) //Fake a right click if we're disarmin
-			living_pawn.istate &= ~ISTATE_DISARM
+			living_pawn.istate &= ~ISTATE_SECONDARY
 		controller.blackboard[BB_MONKEY_GUN_WORKED] = TRUE // We reset their memory of the gun being 'broken' if they accomplish some other attack
 	else if(weapon)
 		var/atom/real_target = target

@@ -5,13 +5,13 @@
 /datum/interaction_mode/intents3/update_istate(mob/M, modifiers)
 	M.istate = NONE
 
-	if(intent == INTENT_HELP && LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		M.istate = ISTATE_SECONDARY
-		UI.icon_state = "[intent]"
 		return
+
 	switch (intent)
 		if (INTENT_DISARM)
-			M.istate |= ISTATE_DISARM
+			M.istate |= ISTATE_SECONDARY
 		if (INTENT_GRAB)
 			M.istate |= ISTATE_CONTROL
 			M.istate |= ISTATE_BLOCKING

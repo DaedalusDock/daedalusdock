@@ -212,7 +212,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// Instantiate tgui panel
 	tgui_panel = new(src)
 
-	set_right_click_menu_mode(TRUE)
+	set_right_click_menu_mode()
 
 	GLOB.ahelp_tickets.ClientLogin(src)
 	GLOB.interviews.client_login(src)
@@ -1172,19 +1172,28 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		holder.filteriffic = new /datum/filter_editor(in_atom)
 		holder.filteriffic.ui_interact(mob)
 
-
-/client/proc/set_right_click_menu_mode(shift_only, ignore_pref)
-	if(!ignore_pref && !isnull(context_menu_requires_shift))
-		shift_only = context_menu_requires_shift
-
-	if(shift_only)
-		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "ShiftUp", "command=\".winset :map.right-click=true\"")
-		winset(src, "Shift", "command=\".winset :map.right-click=false\"")
+///Sets the behavior of rightclick & shift rightclick. See _interaction_modes.dm
+/client/proc/set_right_click_menu_mode()
+	var/mob/M = mob
+	var/rclick_type
+	if(mob?.rclick_always_context_menu)
+		rclick_type = RIGHTCLICK_BOTH
 	else
-		winset(src, "mapwindow.map", "right-click=false")
-		winset(src, "ShiftUp", "command=\".winset :map.right-click=false\"")
-		winset(src, "Shift", "command=\".winset :map.right-click=true\"")
+		rclick_type = context_menu_requires_shift
+
+	switch(rclick_type)
+		if(RIGHTCLICK_NOSHIFT) //Right click opens context menu
+			winset(src, "mapwindow.map", "right-click=false")
+			winset(src, "ShiftUp", "command=\".winset :map.right-click=false\"")
+			winset(src, "Shift", "command=\".winset :map.right-click=true\"")
+		if(RIGHTCLICK_SHIFT) //Shift right click opens context menu
+			winset(src, "mapwindow.map", "right-click=true")
+			winset(src, "ShiftUp", "command=\".winset :map.right-click=true\"")
+			winset(src, "Shift", "command=\".winset :map.right-click=false\"")
+		if(RIGHTCLICK_BOTH) //Both open context menu
+			winset(src, "mapwindow.map", "right-click=false")
+			winset(src, "ShiftUp", "command=\".winset :map.right-click=false\"")
+			winset(src, "Shift", "command=\".winset :map.right-click=false\"")
 
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)

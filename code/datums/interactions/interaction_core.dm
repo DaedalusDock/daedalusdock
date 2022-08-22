@@ -10,7 +10,7 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 
 /datum/interaction_mode/New(client/C)
 	owner = C
-	owner.set_right_click_menu_mode(shift_to_open_context_menu)
+	owner.set_right_click_menu_mode()
 	if (owner?.mob?.hud_used.has_interaction_ui)
 		owner.mob.hud_used.static_inventory += procure_hud(owner.mob, owner.mob.hud_used)
 

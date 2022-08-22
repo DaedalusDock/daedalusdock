@@ -73,7 +73,7 @@
 	/// Player interaction mode, set by preferences.
 	var/datum/interaction_mode/imode
 	///Cache for the prefence value of [/datum/preference/toggle/context_menu_requires_shift]
-	var/context_menu_requires_shift = null
+	var/context_menu_requires_shift = FALSE
 	//PARIAH EDIT ADDITION
 	///last turn of the controlled mob, I think this is only used by mechs?
 	var/last_turn = 0

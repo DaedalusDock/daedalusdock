@@ -21,7 +21,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	light_range = 1
 	light_power = 2
 	light_on = FALSE
-	shift_to_open_context_menu = FALSE
+	rclick_always_context_menu = TRUE
 	simulated = FALSE
 	var/can_reenter_corpse
 	var/datum/hud/living/carbon/hud = null // hud

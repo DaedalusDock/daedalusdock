@@ -20,7 +20,7 @@
 
 	update_icon(ALL, preferred_form)
 	updateghostimages()
-	client.set_right_click_menu_mode(FALSE, TRUE)
+	client.set_right_click_menu_mode()
 	lighting_alpha = default_lighting_alpha()
 	update_sight()
 

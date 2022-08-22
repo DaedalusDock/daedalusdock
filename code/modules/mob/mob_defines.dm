@@ -27,7 +27,8 @@
 	/// HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 	var/client/canon_client
 
-	var/shift_to_open_context_menu = TRUE
+	///If set to true, this mob will have rightclick always act as the context menu
+	var/rclick_always_context_menu = null
 
 	///when this be added to vis_contents of something it inherit something.plane, important for visualisation of mob in openspace.
 	vis_flags = VIS_INHERIT_PLANE

@@ -8,6 +8,7 @@
 		M.istate |= ISTATE_HARM|ISTATE_BLOCKING
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		M.istate |= ISTATE_SECONDARY
+		M.istate |= ISTATE_DISARM
 	if(LAZYACCESS(modifiers, CTRL_CLICK))
 		M.istate |= ISTATE_CONTROL
 
@@ -22,13 +23,21 @@
 	return CT
 
 /datum/interaction_mode/combat_mode/keybind_act(type)
+	var/old_state = combat_mode
 	switch (type)
 		if (1)
-			combat_mode = TRUE
-		if (3)
 			combat_mode = FALSE
+		if (3)
+			combat_mode = TRUE
 		if (4)
 			combat_mode = !combat_mode
+
+	if(old_state != combat_mode)
+		if(combat_mode)
+			SEND_SOUND(src, sound('sound/misc/ui_togglecombat.ogg', volume = 25))
+		else
+			SEND_SOUND(src, sound('sound/misc/ui_toggleoffcombat.ogg', volume = 25))
+
 	update_istate(owner.mob, null)
 	UI.update_icon_state()
 

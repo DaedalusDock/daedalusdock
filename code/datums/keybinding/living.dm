@@ -126,3 +126,16 @@
 	if(.)
 		return
 	user.imode.keybind_act(4)
+
+/datum/keybinding/living/interaction_action5
+	hotkey_keys = null
+	name = "interaction_mode_action_5"
+	full_name = "Intent Cycle"
+	description = "Cycles through intents"
+	keybind_signal = COMSIG_KB_LIVING_INTERACT_ACTION_5
+
+/datum/keybinding/living/interaction_action5/down(client/user)
+	. = ..()
+	if(.)
+		return
+	user.imode.keybind_act(5)

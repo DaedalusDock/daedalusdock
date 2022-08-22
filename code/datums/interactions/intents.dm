@@ -5,11 +5,13 @@
 /datum/interaction_mode/intents3/update_istate(mob/M, modifiers)
 	M.istate = NONE
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) || intent == INTENT_DISARM)
+	if(intent == INTENT_HELP && LAZYACCESS(modifiers, RIGHT_CLICK))
 		M.istate = ISTATE_SECONDARY
 		UI.icon_state = "[intent]"
 		return
 	switch (intent)
+		if (INTENT_DISARM)
+			M.istate |= ISTATE_DISARM
 		if (INTENT_GRAB)
 			M.istate |= ISTATE_CONTROL
 			M.istate |= ISTATE_BLOCKING
@@ -43,7 +45,8 @@
 			intent = INTENT_GRAB
 		if (4)
 			intent = INTENT_HARM
-			//intent = next_intent[intent]
+		if (5)
+			intent = next_intent[intent]
 	update_istate(owner.mob, null)
 
 /datum/interaction_mode/intents3/set_combat_mode(new_state, silent)

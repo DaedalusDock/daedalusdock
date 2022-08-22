@@ -277,7 +277,7 @@
 	if (martial_result != MARTIAL_ATTACK_INVALID)
 		return martial_result
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if((user.istate & ISTATE_DISARM))
 		if (user != src)
 			user.disarm(src)
 			return TRUE

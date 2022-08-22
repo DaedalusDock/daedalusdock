@@ -1252,7 +1252,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
 
-	if((M.istate & ISTATE_SECONDARY))
+	if(M.istate & ISTATE_DISARM)
 		disarm(M, H, attacker_style)
 		return // dont attack after
 	if((M.istate & ISTATE_HARM))

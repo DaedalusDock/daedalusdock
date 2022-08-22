@@ -10,3 +10,4 @@
 #define ISTATE_BLOCKING (1<<1)
 #define ISTATE_SECONDARY (1<<2)
 #define ISTATE_CONTROL (1<<3)
+#define ISTATE_DISARM (1<<4)

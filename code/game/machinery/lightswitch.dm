@@ -27,7 +27,7 @@
 /obj/machinery/light_switch
 	name = "light switch"
 	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
-	icon_state = "lightswitch_base"
+	icon_state = "lightswitch-base"
 	base_icon_state = "lightswitch"
 	desc = "Make dark."
 	power_channel = AREA_USAGE_LIGHT

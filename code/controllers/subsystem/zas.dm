@@ -590,3 +590,8 @@ SUBSYSTEM_DEF(zas)
 
 	lavaland_atmos = mix_real
 	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
+
+	var/log = "Lavaland atmos contains: "
+	for(var/gas in mix_real.gas)
+		log += "[mix_real.gas[gas]], "
+	log_game(log)

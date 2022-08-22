@@ -42,7 +42,7 @@
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, .proc/on_reagents_del)
 
 /obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
-	if (!user.istate.harm)
+	if (!(user.istate & ISTATE_HARM))
 		return
 	return ..()
 
@@ -82,7 +82,7 @@
 /obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
 	if(HAS_TRAIT(target, DO_NOT_SPLASH))
 		return ..()
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		return ..()
 	if (try_splash(user, target))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN

@@ -161,7 +161,7 @@
 
 	for(var/datum/surgery/S in surgeries)
 		if(body_position == LYING_DOWN || !S.lying_required)
-			if(!user.istate.harm)
+			if(!(user.istate & ISTATE_HARM))
 				if(S.next_step(user, modifiers))
 					return TRUE
 
@@ -186,7 +186,7 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		help_shake_act(user)
 		return FALSE
 

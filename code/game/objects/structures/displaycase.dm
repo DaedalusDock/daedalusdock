@@ -131,7 +131,7 @@
 			toggle_lock(user)
 		else
 			to_chat(user, span_alert("Access denied."))
-	else if(W.tool_behaviour == TOOL_WELDER && !user.istate.harm && !broken)
+	else if(W.tool_behaviour == TOOL_WELDER && !(user.istate & ISTATE_HARM) && !broken)
 		if(atom_integrity < max_integrity)
 			if(!W.tool_start_check(user, amount=5))
 				return
@@ -203,7 +203,7 @@
 	    //prevents remote "kicks" with TK
 		if (!Adjacent(user))
 			return
-		if (!user.istate.harm)
+		if (!(user.istate & ISTATE_HARM))
 			if(!user.is_blind())
 				user.examinate(src)
 			return
@@ -308,7 +308,7 @@
 
 	if(!user.Adjacent(src)) //no TK museology
 		return
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 	if(W.tool_behaviour == TOOL_WELDER && !broken)
 		return ..()
@@ -551,7 +551,7 @@
 
 /obj/structure/displaycase/forsale/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(open && !user.istate.harm)
+	if(open && !(user.istate & ISTATE_HARM))
 		if(anchored)
 			to_chat(user, span_notice("You start unsecuring [src]..."))
 		else
@@ -565,7 +565,7 @@
 				to_chat(user, span_notice("You secure [src]."))
 			set_anchored(!anchored)
 			return TRUE
-	else if(!open && !user.istate.harm)
+	else if(!open && !(user.istate & ISTATE_HARM))
 		to_chat(user, span_notice("[src] must be open to move it."))
 		return
 

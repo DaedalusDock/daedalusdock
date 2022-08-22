@@ -85,7 +85,7 @@
 	var/mob/living/living_user = user
 	if(DOING_INTERACTION_WITH_TARGET(user, source))
 		return
-	if(istype(living_user) && !living_user.istate.secondary)
+	if(istype(living_user) && !(living_user.istate & ISTATE_SECONDARY))
 		return
 
 	if(is_tipped)

@@ -18,7 +18,7 @@ In all, this is a lot like the monkey code. /N
 		to_chat(user, "No attacking people at spawn, you jackass.")
 		return
 
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		if(user == src && check_self_for_injuries())
 			return
 		set_resting(FALSE)
@@ -56,8 +56,8 @@ In all, this is a lot like the monkey code. /N
 	if (martial_result != MARTIAL_ATTACK_INVALID)
 		return martial_result
 
-	if(user.istate.harm)
-		if(user.istate.secondary)
+	if((user.istate & ISTATE_HARM))
+		if((user.istate & ISTATE_SECONDARY))
 			user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 			return TRUE
 		user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)

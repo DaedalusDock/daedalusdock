@@ -37,7 +37,7 @@
 		W.play_tool_sound(src)
 		deconstruct(TRUE)
 		return
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 	if(user.transferItemToLoc(W, drop_location()))
 		if(istype(W, /obj/item/gun))

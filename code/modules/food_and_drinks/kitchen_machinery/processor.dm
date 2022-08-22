@@ -108,7 +108,7 @@
 		user.transferItemToLoc(O, src, TRUE)
 		LAZYADD(processor_contents, O)
 		return 1
-	else if(!user.istate.harm)
+	else if(!(user.istate & ISTATE_HARM))
 		to_chat(user, span_warning("That probably won't blend!"))
 		return 1
 	else

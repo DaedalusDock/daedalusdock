@@ -240,7 +240,7 @@
 		wires.interact(user)
 		return TRUE
 
-	if(user.istate.harm) //so we can hit the machine
+	if((user.istate & ISTATE_HARM)) //so we can hit the machine
 		return ..()
 
 	if(machine_stat)

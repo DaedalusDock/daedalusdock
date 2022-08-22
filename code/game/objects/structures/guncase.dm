@@ -44,7 +44,7 @@
 			to_chat(user, span_warning("[src] is full."))
 		return
 
-	else if(!user.istate.harm)
+	else if(!(user.istate & ISTATE_HARM))
 		open = !open
 		update_appearance()
 	else

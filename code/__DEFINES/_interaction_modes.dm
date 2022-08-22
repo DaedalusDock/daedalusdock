@@ -5,3 +5,8 @@
 #define RIGHTCLICK_NOSHIFT 0
 #define RIGHTCLICK_SHIFT 1
 #define RIGHTCLICK_BOTH 2
+
+#define ISTATE_HARM (1<<0)
+#define ISTATE_BLOCKING (1<<1)
+#define ISTATE_SECONDARY (1<<2)
+#define ISTATE_CONTROL (1<<3)

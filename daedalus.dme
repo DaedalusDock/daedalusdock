@@ -1048,7 +1048,6 @@
 #include "code\datums\interactions\cyborg.dm"
 #include "code\datums\interactions\intents.dm"
 #include "code\datums\interactions\interaction_core.dm"
-#include "code\datums\interactions\interaction_state.dm"
 #include "code\datums\keybinding\_defines.dm"
 #include "code\datums\keybinding\_keybindings.dm"
 #include "code\datums\keybinding\admin.dm"

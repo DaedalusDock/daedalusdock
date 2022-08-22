@@ -344,7 +344,7 @@
 				discipline_slime(user)
 	else
 		if(stat == DEAD && surgeries.len)
-			if(!user.istate.harm || user.istate.secondary)
+			if(!(user.istate & ISTATE_HARM) || (user.istate & ISTATE_SECONDARY))
 				for(var/datum/surgery/S in surgeries)
 					if(S.next_step(user, modifiers))
 						return 1
@@ -360,7 +360,7 @@
 /mob/living/simple_animal/slime/attackby(obj/item/W, mob/living/user, params)
 	if(stat == DEAD && surgeries.len)
 		var/list/modifiers = params2list(params)
-		if(!user.istate.harm || user.istate.secondary)
+		if(!(user.istate & ISTATE_HARM) || (user.istate & ISTATE_SECONDARY))
 			for(var/datum/surgery/S in surgeries)
 				if(S.next_step(user, modifiers))
 					return 1

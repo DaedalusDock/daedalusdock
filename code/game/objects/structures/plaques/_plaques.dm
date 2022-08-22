@@ -59,7 +59,7 @@
 
 /obj/structure/plaque/welder_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return FALSE
 	if(atom_integrity == max_integrity)
 		to_chat(user, span_warning("This plaque is already in perfect condition."))
@@ -77,7 +77,7 @@
 
 /obj/item/plaque/welder_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return FALSE
 	if(atom_integrity == max_integrity)
 		to_chat(user, span_warning("This plaque is already in perfect condition."))

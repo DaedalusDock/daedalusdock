@@ -214,7 +214,7 @@
 		to_chat(user, span_warning("It would be dishonorable to attack a foe while they cannot retaliate."))
 		return
 
-	if(user.istate.secondary)
+	if((user.istate & ISTATE_SECONDARY))
 		if(!wielded)
 			return ..()
 		if(!ishuman(target))

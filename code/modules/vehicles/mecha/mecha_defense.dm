@@ -305,7 +305,7 @@
 
 /obj/vehicle/sealed/mecha/welder_act(mob/living/user, obj/item/W)
 	. = ..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return
 	. = TRUE
 	if(atom_integrity < max_integrity)

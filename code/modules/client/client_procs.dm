@@ -1174,7 +1174,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 ///Sets the behavior of rightclick & shift rightclick. See _interaction_modes.dm
 /client/proc/set_right_click_menu_mode()
-	var/mob/M = mob
 	var/rclick_type
 	if(mob?.rclick_always_context_menu)
 		rclick_type = RIGHTCLICK_BOTH

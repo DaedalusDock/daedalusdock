@@ -137,7 +137,7 @@
 		if(add_seed(O))
 			to_chat(user, span_notice("You add [O] to [src.name]."))
 		return
-	else if(!user.istate.harm)
+	else if(!(user.istate & ISTATE_HARM))
 		to_chat(user, span_warning("You can't extract any seeds from \the [O.name]!"))
 	else
 		return ..()

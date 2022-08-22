@@ -33,7 +33,7 @@
 	. = ..()
 	if(.)
 		return TRUE
-	if(!tattoo_artist.mind || tattoo_artist.istate.harm)
+	if(!tattoo_artist.mind || (tattoo_artist.istate & ISTATE_HARM))
 		return
 	if(!uses)
 		balloon_alert(tattoo_artist, "not enough ink!")

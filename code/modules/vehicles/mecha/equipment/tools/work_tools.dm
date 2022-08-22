@@ -92,7 +92,7 @@
 		if(M.stat == DEAD)
 			return
 
-		if(!source.istate.harm)
+		if(!(source.istate & ISTATE_HARM))
 			step_away(M,chassis)
 			if(killer_clamp)
 				target.visible_message(span_danger("[chassis] tosses [target] like a piece of paper!"), \
@@ -102,7 +102,7 @@
 				chassis.visible_message(span_notice("[chassis] pushes [target] out of the way."), \
 				span_notice("[chassis] pushes you aside."))
 			return ..()
-		else if(source.istate.secondary && iscarbon(M))//meme clamp here
+		else if((source.istate & ISTATE_SECONDARY) && iscarbon(M))//meme clamp here
 			if(!killer_clamp)
 				to_chat(source, span_notice("You longingly wish to tear [M]'s arms off."))
 				return
@@ -122,7 +122,7 @@
 			playsound(src, get_dismember_sound(), 80, TRUE)
 			target.visible_message(span_danger("[chassis] rips [target]'s arms off!"), \
 						span_userdanger("[chassis] rips your arms off!"))
-			log_combat(source, M, "removed both arms with a real clamp,", "[name]", "(COMBAT MODE: [uppertext(source.istate.harm)] (DAMTYPE: [uppertext(damtype)])")
+			log_combat(source, M, "removed both arms with a real clamp,", "[name]", "(COMBAT MODE: [uppertext((source.istate & ISTATE_HARM))] (DAMTYPE: [uppertext(damtype)])")
 			return ..()
 
 		M.take_overall_damage(clamp_damage)
@@ -133,7 +133,7 @@
 		target.visible_message(span_danger("[chassis] squeezes [target]!"), \
 							span_userdanger("[chassis] squeezes you!"),\
 							span_hear("You hear something crack."))
-		log_combat(source, M, "attacked", "[name]", "(Combat mode: [source.istate.harm ? "On" : "Off"]) (DAMTYPE: [uppertext(damtype)])")
+		log_combat(source, M, "attacked", "[name]", "(Combat mode: [(source.istate & ISTATE_HARM) ? "On" : "Off"]) (DAMTYPE: [uppertext(damtype)])")
 	return ..()
 
 

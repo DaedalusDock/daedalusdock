@@ -166,7 +166,7 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		user.visible_message(span_notice("[user] knocks on [src]."), \
 			span_notice("You knock on [src]."))
 		playsound(src, knock_sound, 50, TRUE)
@@ -832,7 +832,7 @@
 	. = ..()
 	if(.)
 		return
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		take_damage(4, BRUTE, MELEE, 0)
 		if(!QDELETED(src))
 			update_appearance()
@@ -854,7 +854,7 @@
 	if(W.get_temperature())
 		fire_act(null, W.get_temperature(), null)
 		return
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 	if(istype(W, /obj/item/paper) && atom_integrity < max_integrity)
 		user.visible_message(span_notice("[user] starts to patch the holes in \the [src]."))

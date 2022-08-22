@@ -466,7 +466,7 @@
 			to_chat(user, span_warning("[src] are recharging!"))
 		return
 
-	if(user.istate.secondary)
+	if((user.istate & ISTATE_SECONDARY))
 		do_disarm(M, user)
 		return
 
@@ -482,7 +482,7 @@
 		to_chat(user, span_warning("You need to target your patient's chest with [src]!"))
 		return
 
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		do_harm(H, user)
 		return
 

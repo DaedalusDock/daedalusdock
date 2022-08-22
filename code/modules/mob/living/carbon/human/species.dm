@@ -1243,7 +1243,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return
 	if(M.mind)
 		attacker_style = M.mind.martial_art
-	if((M != H) && M.istate.harm && H.check_shields(M, 0, M.name, attack_type = UNARMED_ATTACK))
+	if((M != H) && (M.istate & ISTATE_HARM) && H.check_shields(M, 0, M.name, attack_type = UNARMED_ATTACK))
 		log_combat(M, H, "attempted to touch")
 		H.visible_message(span_warning("[M] attempts to touch [H]!"), \
 						span_danger("[M] attempts to touch you!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, M)
@@ -1252,12 +1252,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
 
-	if(M.istate.secondary)
+	if((M.istate & ISTATE_SECONDARY))
 		disarm(M, H, attacker_style)
 		return // dont attack after
-	if(M.istate.harm)
+	if((M.istate & ISTATE_HARM))
 		harm(M, H, attacker_style)
-	else if (M.istate.control)
+	else if ((M.istate & ISTATE_CONTROL))
 		grab(M, H, attacker_style)
 	else
 		help(M, H, attacker_style)
@@ -1284,7 +1284,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/Iwound_bonus = I.wound_bonus
 
 	// this way, you can't wound with a surgical tool on help intent if they have a surgery active and are lying down, so a misclick with a circular saw on the wrong limb doesn't bleed them dry (they still get hit tho)
-	if((I.item_flags & SURGICAL_TOOL) && !user.istate.harm && H.body_position == LYING_DOWN && (LAZYLEN(H.surgeries) > 0))
+	if((I.item_flags & SURGICAL_TOOL) && !(user.istate & ISTATE_HARM) && H.body_position == LYING_DOWN && (LAZYLEN(H.surgeries) > 0))
 		Iwound_bonus = CANT_WOUND
 
 	var/weakness = check_species_weakness(I, user)

@@ -70,7 +70,7 @@
 /obj/item/geiger_counter/afterattack(atom/target, mob/living/user, params)
 	. = ..()
 
-	if (user.istate.harm)
+	if ((user.istate & ISTATE_HARM))
 		return
 
 	if (!CAN_IRRADIATE(target))

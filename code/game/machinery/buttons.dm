@@ -101,7 +101,7 @@
 		update_appearance()
 		return
 
-	if(!user.istate.harm && !(W.item_flags & NOBLUDGEON))
+	if(!(user.istate & ISTATE_HARM) && !(W.item_flags & NOBLUDGEON))
 		return attack_hand(user)
 	else
 		return ..()

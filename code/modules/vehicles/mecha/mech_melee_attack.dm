@@ -9,7 +9,7 @@
  */
 /atom/proc/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
 	SHOULD_CALL_PARENT(TRUE)
-	log_combat(user, src, "attacked", mecha_attacker, "(COMBAT MODE: [uppertext(user.istate.harm)] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
+	log_combat(user, src, "attacked", mecha_attacker, "(COMBAT MODE: [uppertext((user.istate & ISTATE_HARM))] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
 	return 0
 
 /turf/closed/wall/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
@@ -49,7 +49,7 @@
 	return ..()
 
 /mob/living/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		step_away(src, mecha_attacker)
 		log_combat(user, src, "pushed", mecha_attacker)
 		visible_message(span_warning("[mecha_attacker] pushes [src] out of the way."), \

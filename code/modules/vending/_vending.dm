@@ -473,7 +473,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 				else
 					to_chat(user, span_warning("There's nothing to restock!"))
 			return
-	if(compartmentLoadAccessCheck(user) && !user.istate.harm)
+	if(compartmentLoadAccessCheck(user) && !(user.istate & ISTATE_HARM))
 		if(canLoadItem(I))
 			loadingAttempt(I,user)
 

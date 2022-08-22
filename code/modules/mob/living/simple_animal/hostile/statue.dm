@@ -8,7 +8,7 @@
 	icon_living = "human_male"
 	icon_dead = "human_male"
 	gender = NEUTER
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	mob_biotypes = MOB_HUMANOID
 
 	response_help_continuous = "touches"

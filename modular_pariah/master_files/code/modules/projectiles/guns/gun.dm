@@ -301,7 +301,7 @@
 	if(flag) //It's adjacent, is the user, or is on the user's person
 		if(target in user.contents) //can't shoot stuff inside us.
 			return
-		if(!ismob(target) || user.istate.harm) //melee attack
+		if(!ismob(target) || (user.istate & ISTATE_HARM)) //melee attack
 			return
 		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
 			return
@@ -335,7 +335,7 @@
 	//DUAL (or more!) WIELDING
 	var/bonus_spread = 0
 	var/loop_counter = 0
-	if(ishuman(user) && user.istate.harm)
+	if(ishuman(user) && (user.istate & ISTATE_HARM))
 		var/mob/living/carbon/human/human_user = user
 		for(var/obj/item/gun/held_gun in human_user.held_items)
 			if(held_gun == src || held_gun.weapon_weight >= WEAPON_MEDIUM)
@@ -481,7 +481,7 @@
 	semicd = FALSE
 
 /obj/item/gun/attack(mob/target, mob/living/user)
-	if(user.istate.harm) //Flogging
+	if((user.istate & ISTATE_HARM)) //Flogging
 		if(bayonet)
 			target.attackby(bayonet, user)
 			return
@@ -490,14 +490,14 @@
 	return
 
 /obj/item/gun/attack_atom(obj/target, mob/living/user, params)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		if(bayonet)
 			target.attackby(bayonet, user)
 			return
 	return ..()
 
 /obj/item/gun/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 	else if(istype(attacking_item, /obj/item/flashlight/seclite))
 		if(!can_flashlight)

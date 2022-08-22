@@ -97,7 +97,7 @@
 		return TRUE
 
 	var/try_to_fail = FALSE
-	if(user.istate.secondary)
+	if((user.istate & ISTATE_SECONDARY))
 		try_to_fail = TRUE
 
 	var/datum/surgery_step/step = get_surgery_step()

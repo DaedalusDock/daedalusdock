@@ -32,7 +32,7 @@
 
 	if(!proximity)
 		return
-	if(!source.istate.harm || source.istate.secondary)
+	if(!(source.istate & ISTATE_HARM) || (source.istate & ISTATE_SECONDARY))
 		return
 	if(target.attack_hulk(owner))
 		if(world.time > (last_scream + scream_delay))

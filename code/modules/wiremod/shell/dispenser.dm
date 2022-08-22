@@ -62,7 +62,7 @@
 
 /obj/structure/dispenser_bot/attackby(obj/item/item, mob/living/user, params)
 	. = ..()
-	if(user.istate.harm || .)
+	if((user.istate & ISTATE_HARM) || .)
 		return
 
 	if(item.w_class > max_weight)

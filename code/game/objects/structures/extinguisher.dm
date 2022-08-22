@@ -69,7 +69,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 			return TRUE
 		else
 			toggle_cabinet(user)
-	else if(!user.istate.harm)
+	else if(!(user.istate & ISTATE_HARM))
 		toggle_cabinet(user)
 	else
 		return ..()

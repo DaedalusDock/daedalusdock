@@ -126,7 +126,7 @@
 		return
 
 	if(!user.is_mouth_covered())
-		if(user.istate.harm)
+		if((user.istate & ISTATE_HARM))
 			dust_mob(user,
 				span_danger("As [user] tries to take a bite out of [src] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash."),
 				span_userdanger("You try to take a bite out of [src], but find [p_them()] far too hard to get anywhere before everything starts burning and your ears fill with ringing!"),
@@ -194,7 +194,7 @@
 			Consume(dust_arm)
 			qdel(item)
 			return
-		if(cig.lit || user.istate.harm)
+		if(cig.lit || (user.istate & ISTATE_HARM))
 			user.visible_message(span_danger("A hideous sound echoes as [item] is ashed out on contact with \the [src]. That didn't seem like a good idea..."))
 			playsound(src, 'sound/effects/supermatter.ogg', 150, TRUE)
 			Consume(item)

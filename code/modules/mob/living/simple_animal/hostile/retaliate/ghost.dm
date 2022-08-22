@@ -9,7 +9,7 @@
 	turns_per_move = 5
 	response_help_continuous = "passes through"
 	response_help_simple = "pass through"
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	healable = 0
 	speed = 0
 	maxHealth = 40

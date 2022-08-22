@@ -135,7 +135,7 @@
 		return cpu.screwdriver_act(user, tool)
 
 /obj/machinery/modular_computer/attackby(obj/item/W as obj, mob/living/user)
-	if (!user.istate.harm && cpu && !(flags_1 & NODECONSTRUCT_1))
+	if (!(user.istate & ISTATE_HARM) && cpu && !(flags_1 & NODECONSTRUCT_1))
 		return cpu.attackby(W, user)
 	return ..()
 

@@ -3,19 +3,19 @@
 	var/intent = INTENT_HELP
 
 /datum/interaction_mode/intents3/update_istate(mob/M, modifiers)
-	M.istate.reset()
+	M.istate = NONE
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK) || intent == INTENT_DISARM)
-		M.istate.secondary = TRUE
+		M.istate = ISTATE_SECONDARY
 		UI.icon_state = "[intent]"
 		return
 	switch (intent)
 		if (INTENT_GRAB)
-			M.istate.control = TRUE
-			M.istate.blocking = TRUE
+			M.istate |= ISTATE_CONTROL
+			M.istate |= ISTATE_BLOCKING
 		if (INTENT_HARM)
-			M.istate.harm = TRUE
-			M.istate.blocking = TRUE
+			M.istate |= ISTATE_HARM
+			M.istate |= ISTATE_BLOCKING
 
 	UI.icon_state = "[intent]"
 
@@ -27,17 +27,6 @@
 	AI.intents = src
 	UI = AI
 	return AI
-
-/datum/interaction_mode/intents3/state_changed(datum/interaction_state/state)
-	if (state.harm)
-		intent = INTENT_HARM
-	else if (state.control)
-		intent = INTENT_GRAB
-	else if (state.secondary)
-		intent = INTENT_DISARM
-	else
-		intent = INTENT_HELP
-	update_istate(owner.mob, null)
 
 /datum/interaction_mode/intents3/keybind_act(type)
 	var/static/next_intent = list(
@@ -56,9 +45,6 @@
 			intent = INTENT_HARM
 			//intent = next_intent[intent]
 	update_istate(owner.mob, null)
-
-/datum/interaction_mode/intents3/status()
-	return "Intent: [intent]"
 
 /datum/interaction_mode/intents3/set_combat_mode(new_state, silent)
 	. = ..()

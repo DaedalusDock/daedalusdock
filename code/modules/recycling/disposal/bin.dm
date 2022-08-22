@@ -101,7 +101,7 @@
 				deconstruct()
 			return
 
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		if((I.item_flags & ABSTRACT) || !user.temporarilyRemoveItemFromInventory(I))
 			return
 		place_item_in_disposal(I, user)

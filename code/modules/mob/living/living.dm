@@ -95,7 +95,7 @@
 
 	if(isliving(M))
 		var/mob/living/L = M
-		theyre_blocking = L.istate.blocking
+		theyre_blocking = L.istate & ISTATE_BLOCKING
 		they_can_move = L.mobility_flags & MOBILITY_MOVE
 		//Also spread diseases
 		for(var/thing in diseases)
@@ -138,7 +138,7 @@
 			else if(
 				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
 				((HAS_TRAIT(M, TRAIT_RESTRAINED) && !too_strong) || !theyre_blocking) &&\
-				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !istate.harm)
+				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !(istate & ISTATE_HARM))
 			)
 				mob_swap = TRUE
 		if(mob_swap)
@@ -181,12 +181,12 @@
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M))
 		var/mob/living/carbon/human/human = M
-		if(human.istate.harm)
+		if((human.istate & ISTATE_HARM))
 			return TRUE
 	//if they are a cyborg, and they're alive and in combat mode, block pushing
 	if(iscyborg(M))
 		var/mob/living/silicon/robot/borg = M
-		if(borg.istate.harm && borg.stat != DEAD)
+		if((borg.istate & ISTATE_HARM) && borg.stat != DEAD)
 			return TRUE
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
@@ -401,7 +401,7 @@
 
 	if(istype(AM) && Adjacent(AM))
 		start_pulling(AM)
-	else if(!istate.harm) //Don;'t cancel pulls if misclicking in combat mode.
+	else if(!(istate & ISTATE_HARM)) //Don;'t cancel pulls if misclicking in combat mode.
 		stop_pulling()
 
 /mob/living/stop_pulling()
@@ -2241,11 +2241,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if (!style)
 		return MARTIAL_ATTACK_INVALID
 	// will return boolean below since it's not invalid
-	if (istate.control)
+	if ((istate & ISTATE_CONTROL))
 		return style.grab_act(src, target)
-	if (istate.secondary)
+	if ((istate & ISTATE_SECONDARY))
 		return style.disarm_act(src, target)
-	if(istate.harm)
+	if((istate & ISTATE_HARM))
 		if (HAS_TRAIT(src, TRAIT_PACIFISM))
 			return FALSE
 		return style.harm_act(src, target)

@@ -76,7 +76,7 @@
 	return ..()
 
 /obj/machinery/biogenerator/attackby(obj/item/O, mob/living/user, params)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 
 	if(processing)

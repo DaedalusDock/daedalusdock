@@ -70,11 +70,11 @@
 	for(var/datum/surgery/S in surgeries)
 		if(body_position == LYING_DOWN || !S.lying_required)
 			var/list/modifiers = params2list(params)
-			if((S.self_operable || user != src) && !user.istate.harm)
+			if((S.self_operable || user != src) && !(user.istate & ISTATE_HARM))
 				if(S.next_step(user, modifiers))
 					return 1
 
-	if(!all_wounds || !(!user.istate.harm || user == src))
+	if(!all_wounds || !(!(user.istate & ISTATE_HARM) || user == src))
 		return ..()
 
 	for(var/i in shuffle(all_wounds))

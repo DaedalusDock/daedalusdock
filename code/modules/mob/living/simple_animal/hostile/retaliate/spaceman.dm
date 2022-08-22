@@ -13,7 +13,7 @@
 	response_disarm_simple = "gently push aside"
 	response_harm_continuous = "punches"
 	response_harm_simple = "punch"
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	maxHealth = 100
 	health = 100
 	speed = 0
@@ -52,7 +52,7 @@
 	faction = list("nanotrasenprivate")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	loot = list(/obj/effect/mob_spawn/corpse/human/nanotrasensoldier)
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 7.5

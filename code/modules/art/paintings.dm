@@ -110,7 +110,7 @@
 		ui.open()
 
 /obj/item/canvas/attackby(obj/item/I, mob/living/user, params)
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		ui_interact(user)
 	else
 		return ..()

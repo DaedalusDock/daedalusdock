@@ -51,14 +51,14 @@
 /// When we attack something, first - try to scan something we hit with left click. Left-clicking uses scans for stats
 /obj/item/plant_analyzer/pre_attack(atom/target, mob/living/user)
 	. = ..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return
 
 	return do_plant_stats_scan(target, user)
 
 /// Same as above, but with right click. Right-clicking scans for chemicals.
 /obj/item/plant_analyzer/pre_attack_secondary(atom/target, mob/living/user)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 	return do_plant_chem_scan(target, user) ? SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN : SECONDARY_ATTACK_CONTINUE_CHAIN
@@ -580,7 +580,7 @@
 		if((location in list(BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_HEAD)) && !pod.get_bodypart(BODY_ZONE_HEAD))
 			to_chat(trimmer, span_warning("[pod] [pod.p_do()]n't have a head!"))
 			return
-		if(location == BODY_ZONE_HEAD && !trimmer.istate.harm)
+		if(location == BODY_ZONE_HEAD && !(trimmer.istate & ISTATE_HARM))
 			if(!trimmer.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 				return
 			var/new_style = tgui_input_list(trimmer, "Select a hairstyle", "Grooming", GLOB.pod_hair_list)

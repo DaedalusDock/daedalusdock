@@ -94,7 +94,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 /obj/structure/mirror/welder_act(mob/living/user, obj/item/I)
 	..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return FALSE
 
 	if(!broken)

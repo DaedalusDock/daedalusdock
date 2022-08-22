@@ -3,11 +3,13 @@
 	var/combat_mode = FALSE
 
 /datum/interaction_mode/combat_mode/update_istate(mob/M, modifiers)
-	M.istate.harm = combat_mode
-	M.istate.blocking = combat_mode
-	M.istate.secondary = LAZYACCESS(modifiers, RIGHT_CLICK)
-	M.istate.alternate = LAZYACCESS(modifiers, SHIFT_CLICK)
-	M.istate.control = LAZYACCESS(modifiers, CTRL_CLICK)
+	M.istate = NONE
+	if(combat_mode)
+		M.istate |= ISTATE_HARM|ISTATE_BLOCKING
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		M.istate |= ISTATE_SECONDARY
+	if(LAZYACCESS(modifiers, CTRL_CLICK))
+		M.istate |= ISTATE_CONTROL
 
 /datum/interaction_mode/combat_mode/procure_hud(mob/M, datum/hud/H)
 	if (!M.hud_used.has_interaction_ui)
@@ -19,14 +21,6 @@
 	UI = CT
 	return CT
 
-/datum/interaction_mode/combat_mode/state_changed(datum/interaction_state/state)
-	if (state.harm)
-		combat_mode = TRUE
-	else
-		combat_mode = FALSE
-	update_istate(owner.mob, null)
-	UI.update_icon_state()
-
 /datum/interaction_mode/combat_mode/keybind_act(type)
 	switch (type)
 		if (1)
@@ -37,9 +31,6 @@
 			combat_mode = !combat_mode
 	update_istate(owner.mob, null)
 	UI.update_icon_state()
-
-/datum/interaction_mode/combat_mode/status()
-	return "Combat Mode: [combat_mode ? "On" : "Off"]"
 
 /datum/interaction_mode/combat_mode/set_combat_mode(new_state, silent)
 	. = ..()

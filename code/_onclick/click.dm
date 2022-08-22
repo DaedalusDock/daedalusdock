@@ -136,7 +136,7 @@
 	var/obj/item/W = get_active_held_item()
 
 	if(W == A)
-		if(istate.secondary)
+		if((istate & ISTATE_SECONDARY))
 			W.attack_self_secondary(src, modifiers)
 			update_inv_hands()
 			return

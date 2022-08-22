@@ -1,6 +1,6 @@
 //Healer
 /mob/living/simple_animal/hostile/guardian/healer
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	friendly_verb_continuous = "heals"
 	friendly_verb_simple = "heal"
 	speed = 0

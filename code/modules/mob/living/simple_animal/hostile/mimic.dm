@@ -310,7 +310,7 @@ GLOBAL_LIST_INIT(mimic_blacklist, list(/obj/structure/table, /obj/structure/cabl
 
 /mob/living/simple_animal/hostile/mimic/xenobio/attack_hand(mob/living/carbon/human/user, list/modifiers)
 	. = ..()
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return
 	toggle_open()
 

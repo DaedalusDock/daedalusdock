@@ -45,7 +45,7 @@
 	qdel(src)
 
 /obj/structure/filingcabinet/attackby(obj/item/P, mob/living/user, params)
-	if(P.tool_behaviour == TOOL_WRENCH && user.istate.secondary)
+	if(P.tool_behaviour == TOOL_WRENCH && (user.istate & ISTATE_SECONDARY))
 		to_chat(user, span_notice("You begin to [anchored ? "unwrench" : "wrench"] [src]."))
 		if(P.use_tool(src, user, 20, volume=50))
 			to_chat(user, span_notice("You successfully [anchored ? "unwrench" : "wrench"] [src]."))
@@ -57,7 +57,7 @@
 		icon_state = "[initial(icon_state)]-open"
 		sleep(5)
 		icon_state = initial(icon_state)
-	else if(!user.istate.harm)
+	else if(!(user.istate & ISTATE_HARM))
 		to_chat(user, span_warning("You can't put [P] in [src]!"))
 	else
 		return ..()

@@ -329,7 +329,7 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/door/crowbar_act(mob/living/user, obj/item/tool)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return
 
 	var/forced_open = FALSE
@@ -340,10 +340,10 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/door/attackby(obj/item/I, mob/living/user, params)
-	if(!user.istate.harm && istype(I, /obj/item/fireaxe))
+	if(!(user.istate & ISTATE_HARM) && istype(I, /obj/item/fireaxe))
 		try_to_crowbar(I, user, FALSE)
 		return TRUE
-	else if(I.item_flags & NOBLUDGEON || user.istate.harm)
+	else if(I.item_flags & NOBLUDGEON || (user.istate & ISTATE_HARM))
 		return ..()
 	else if(try_to_activate_door(user))
 		return TRUE

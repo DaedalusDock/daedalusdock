@@ -84,7 +84,7 @@
 ///LEGACY HELPER
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
 	if(!client?.imode.set_combat_mode(new_mode, silent))
-		istate.harm = TRUE
+		istate = ISTATE_HARM|ISTATE_BLOCKING
 
 /mob/living/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
 	if(isitem(AM))
@@ -281,7 +281,7 @@
 		if (user != src)
 			user.disarm(src)
 			return TRUE
-	if (!user.istate.harm)
+	if (!(user.istate & ISTATE_HARM))
 		return FALSE
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to hurt anyone!"))
@@ -306,7 +306,7 @@
 	return FALSE
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
-	if(L.istate.harm)
+	if((L.istate & ISTATE_HARM))
 		if(HAS_TRAIT(L, TRAIT_PACIFISM))
 			to_chat(L, span_warning("You don't want to hurt anyone!"))
 			return
@@ -335,7 +335,7 @@
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 		return TRUE
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		if(HAS_TRAIT(user, TRAIT_PACIFISM))
 			to_chat(user, span_warning("You don't want to hurt anyone!"))
 			return FALSE

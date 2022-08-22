@@ -50,7 +50,7 @@
 		update_icon()
 
 /obj/item/folder/attack_hand(mob/user, list/modifiers)
-	if(length(contents) && user.istate.secondary)
+	if(length(contents) && (user.istate & ISTATE_SECONDARY))
 		remove_item(contents[1], user)
 		return TRUE
 	. = ..()

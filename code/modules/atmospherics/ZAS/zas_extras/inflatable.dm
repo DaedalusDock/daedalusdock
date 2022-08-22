@@ -123,7 +123,7 @@
 		return //can't do this stuff whilst inside objects and such
 	if(isliving(user))
 		var/mob/living/living_user = user
-		if(living_user.istate.harm)
+		if((living_user.istate & ISTATE_HARM))
 			if (W.sharpness & SHARP_POINTY || W.force > 10)
 				attack_generic(user, W.force, BRUTE)
 			return

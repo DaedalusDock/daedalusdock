@@ -23,7 +23,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	icon_living = "magicbase"
 	icon_dead = "magicbase"
 	speed = 0
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	stop_automated_movement = 1
 	attack_sound = 'sound/weapons/punch1.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)

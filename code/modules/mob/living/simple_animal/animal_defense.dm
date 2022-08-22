@@ -3,7 +3,7 @@
 	if (..())
 		return TRUE
 
-	if(user.istate.secondary)
+	if((user.istate & ISTATE_SECONDARY))
 		if(user.move_force < move_resist)
 			return
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
@@ -21,7 +21,7 @@
 		to_chat(src, span_userdanger("You're pushed by [user.name]!"))
 		return TRUE
 
-	if(!user.istate.harm)
+	if(!(user.istate & ISTATE_HARM))
 		if (stat == DEAD)
 			return
 		visible_message(span_notice("[user] [response_help_continuous] [src]."), \
@@ -58,7 +58,7 @@
 			var/damage = rand(1, 3)
 			attack_threshold_check(damage)
 			return 1
-	if (!user.istate.harm)
+	if (!(user.istate & ISTATE_HARM))
 		if (health > 0)
 			visible_message(span_notice("[user.name] [response_help_continuous] [src]."), \
 							span_notice("[user.name] [response_help_continuous] you."), null, COMBAT_MESSAGE_RANGE, user)
@@ -68,7 +68,7 @@
 
 /mob/living/simple_animal/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
 	if(..()) //if harm or disarm intent.
-		if(user.istate.secondary)
+		if((user.istate & ISTATE_SECONDARY))
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, TRUE, -1)
 			visible_message(span_danger("[user] [response_disarm_continuous] [name]!"), \
 							span_userdanger("[user] [response_disarm_continuous] you!"), null, COMBAT_MESSAGE_RANGE, user)
@@ -112,7 +112,7 @@
 		return attack_threshold_check(damage)
 
 /mob/living/simple_animal/attack_drone(mob/living/simple_animal/drone/M)
-	if(M.istate.harm) //No kicking dogs even as a rogue drone. Use a weapon.
+	if((M.istate & ISTATE_HARM)) //No kicking dogs even as a rogue drone. Use a weapon.
 		return
 	return ..()
 

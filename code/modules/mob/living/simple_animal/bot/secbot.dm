@@ -9,7 +9,7 @@
 	maxHealth = 25
 	damage_coeff = list(BRUTE = 0.5, BURN = 0.7, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	pass_flags = PASSMOB | PASSFLAPS
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 
 	maints_access_required = list(ACCESS_SECURITY)
 	radio_key = /obj/item/encryptionkey/secbot //AI Priv + Security
@@ -198,7 +198,7 @@
 	return
 
 /mob/living/simple_animal/bot/secbot/attack_hand(mob/living/carbon/human/user, list/modifiers)
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		retaliate(user)
 		if(special_retaliate_after_attack(user))
 			return
@@ -218,7 +218,7 @@
 	..()
 	if(!(bot_mode_flags & BOT_MODE_ON)) // Bots won't remember if you hit them while they're off.
 		return
-	if(attacking_item.tool_behaviour == TOOL_WELDER && !user.istate.harm) // Any intent but harm will heal, so we shouldn't get angry.
+	if(attacking_item.tool_behaviour == TOOL_WELDER && !(user.istate & ISTATE_HARM)) // Any intent but harm will heal, so we shouldn't get angry.
 		return
 	if(attacking_item.tool_behaviour != TOOL_SCREWDRIVER && (attacking_item.force) && (!target) && (attacking_item.damtype != STAMINA)) // Added check for welding tool to fix #2432. Welding tool behavior is handled in superclass.
 		retaliate(user)

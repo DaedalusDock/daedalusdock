@@ -161,7 +161,7 @@
 
 				qdel(src)
 				return
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 
 /obj/structure/frame/computer/AltClick(mob/user)

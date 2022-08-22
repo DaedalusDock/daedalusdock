@@ -14,7 +14,7 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	attack_sound = 'sound/weapons/punch1.ogg'
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	faction = list("stickman")
 
 	ai_controller = /datum/ai_controller/basic_controller/stickman

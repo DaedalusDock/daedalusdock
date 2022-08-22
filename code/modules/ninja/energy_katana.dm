@@ -42,7 +42,7 @@
 /obj/item/energy_katana/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 
-	if(user.istate.secondary && !target.density)
+	if((user.istate & ISTATE_SECONDARY) && !target.density)
 		jaunt.teleport(user, target)
 
 /obj/item/energy_katana/pickup(mob/living/user)

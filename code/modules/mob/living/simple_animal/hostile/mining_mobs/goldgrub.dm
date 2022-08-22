@@ -22,7 +22,7 @@
 	attack_verb_continuous = "barrels into"
 	attack_verb_simple = "barrel into"
 	attack_sound = 'sound/weapons/punch1.ogg'
-	istate = new /datum/interaction_state
+	istate = NONE
 	speak_emote = list("screeches")
 	throw_message = "sinks in slowly, before being pushed out of "
 	deathmessage = "stops moving as green liquid oozes from the carcass!"

@@ -1,6 +1,6 @@
 /// Checks for RIGHT_CLICK in modifiers and runs attack_hand_secondary if so. Returns TRUE if normal chain blocked
 /mob/living/proc/right_click_attack_chain(atom/target)
-	if (!istate.secondary)
+	if (!(istate & ISTATE_SECONDARY))
 		return
 	var/secondary_result = target.attack_hand_secondary(src)
 
@@ -225,7 +225,7 @@
 /mob/living/simple_animal/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
-	if(dextrous && (isitem(attack_target) || !istate.harm))
+	if(dextrous && (isitem(attack_target) || !(istate & ISTATE_HARM)))
 		attack_target.attack_hand(src, modifiers)
 		update_inv_hands()
 	else
@@ -240,7 +240,7 @@
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
 	GiveTarget(attack_target)
-	if(dextrous && (isitem(attack_target) || !istate.harm))
+	if(dextrous && (isitem(attack_target) || !(istate & ISTATE_HARM)))
 		..()
 	else
 		AttackingTarget(attack_target)

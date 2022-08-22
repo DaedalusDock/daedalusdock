@@ -3,6 +3,19 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 	IMODE_INTENTS = /datum/interaction_mode/intents3
 )
 
+/mob/proc/log_istate()
+	if(!istate)
+		return "HELP"
+
+	. = list()
+
+	if(istate & ISTATE_HARM)
+		. += "HARM"
+	if(istate & ISTATE_SECONDARY)
+		. += "SECONDARY"
+	if(istate & ISTATE_CONTROL)
+		. += "CONTROL"
+	return jointext(., ", ")
 /datum/interaction_mode
 	var/shift_to_open_context_menu = FALSE
 	var/client/owner
@@ -10,7 +23,6 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 
 /datum/interaction_mode/New(client/C)
 	owner = C
-	owner.set_right_click_menu_mode()
 	if (owner?.mob?.hud_used.has_interaction_ui)
 		owner.mob.hud_used.static_inventory += procure_hud(owner.mob, owner.mob.hud_used)
 
@@ -39,11 +51,8 @@ GLOBAL_REAL_VAR(list/available_interaction_modes) = list(
 /datum/interaction_mode/proc/procure_hud(mob/M, datum/hud/H)
 	return list()
 
-/datum/interaction_mode/proc/state_changed(datum/interaction_state/state)
-
 /datum/interaction_mode/proc/keybind_act(type)
 
-/datum/interaction_mode/proc/status()
 
 /datum/interaction_mode/proc/set_combat_mode(new_state, silent)
 	return TRUE

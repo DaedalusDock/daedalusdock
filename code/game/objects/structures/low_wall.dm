@@ -119,7 +119,7 @@
 		var/obj/item/stack/sheet/my_sheet = weapon
 		if(my_sheet.try_install_window(user, src.loc, src))
 			return TRUE
-	if(!user.istate.harm && !(weapon.item_flags & ABSTRACT))
+	if(!(user.istate & ISTATE_HARM) && !(weapon.item_flags & ABSTRACT))
 		if(user.transferItemToLoc(weapon, loc, silent = FALSE, user_click_modifiers = modifiers))
 			return TRUE
 	return ..()

@@ -15,7 +15,7 @@
 	speak_emote = list("screams")
 	speak_chance = 1
 	speed = 0
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	stop_automated_movement = TRUE
 	AIStatus = AI_OFF
 	see_in_dark = 7

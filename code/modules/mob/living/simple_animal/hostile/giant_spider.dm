@@ -33,7 +33,7 @@
 	obj_damage = 30
 	melee_damage_lower = 20
 	melee_damage_upper = 25
-	istate = new /datum/interaction_state/harm
+	istate = ISTATE_HARM|ISTATE_BLOCKING
 	faction = list("spiders")
 	pass_flags = PASSTABLE
 	move_to_delay = 6

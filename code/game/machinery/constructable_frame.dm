@@ -301,7 +301,7 @@
 						return TRUE
 				to_chat(user, span_warning("You cannot add that to the machine!"))
 				return FALSE
-	if(user.istate.harm)
+	if((user.istate & ISTATE_HARM))
 		return ..()
 
 /obj/structure/frame/machine/deconstruct(disassembled = TRUE)

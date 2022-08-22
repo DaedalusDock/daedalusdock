@@ -276,7 +276,7 @@ effective or pretty fucking useless.
 	new /obj/item/wirecutters(src)
 
 /obj/item/storage/toolbox/emergency/turret/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(attacking_item.tool_behaviour == TOOL_WRENCH && user.istate.harm && attacking_item.use_tool(src, user, 2 SECONDS, volume = 50))
+	if(attacking_item.tool_behaviour == TOOL_WRENCH && (user.istate & ISTATE_HARM) && attacking_item.use_tool(src, user, 2 SECONDS, volume = 50))
 		user.visible_message(span_danger("[user] bashes [src] with [attacking_item]!"), \
 			span_danger("You bash [src] with [attacking_item]!"), null, COMBAT_MESSAGE_RANGE)
 		playsound(src, "sound/items/drill_use.ogg", 80, TRUE, -1)
@@ -327,10 +327,10 @@ effective or pretty fucking useless.
 
 /obj/machinery/porta_turret/syndicate/toolbox/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(istype(attacking_item, /obj/item/wrench/combat))
-		if(user.istate.harm && attacking_item.toolspeed && attacking_item.use_tool(src, user, 5 SECONDS, volume = 20))
+		if((user.istate & ISTATE_HARM) && attacking_item.toolspeed && attacking_item.use_tool(src, user, 5 SECONDS, volume = 20))
 			deconstruct(TRUE)
 			attacking_item.play_tool_sound(src, 50)
-		else if(!user.istate.harm)
+		else if(!(user.istate & ISTATE_HARM))
 			to_chat(user, span_notice("You start repairing [src]..."))
 			while(atom_integrity != max_integrity && attacking_item.toolspeed && attacking_item.use_tool(src, user, 2 SECONDS, volume = 20))
 				repair_damage(10)

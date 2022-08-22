@@ -27,7 +27,7 @@
 	mutcolor_used = MUTCOLORS2
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
-	limb_id = "digitigrade"
+	limb_id = "vox_digitigrade"
 
 /obj/item/bodypart/l_leg/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -41,7 +41,7 @@
 			suit_compatible = TRUE
 
 		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = "digitigrade"
+			limb_id = "vox_digitigrade"
 
 		else
 			limb_id = SPECIES_VOX
@@ -50,7 +50,7 @@
 	mutcolor_used = MUTCOLORS2
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
-	limb_id = "digitigrade"
+	limb_id = "vox_digitigrade"
 
 /obj/item/bodypart/r_leg/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -64,7 +64,7 @@
 			suit_compatible = TRUE
 
 		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = "digitigrade"
+			limb_id = "vox_digitigrade"
 
 		else
 			limb_id = SPECIES_VOX

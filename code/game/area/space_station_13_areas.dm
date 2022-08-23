@@ -1173,6 +1173,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/surgery
 	name = "\improper Operating Room"
 	icon_state = "surgery"
+	ambience_index = AMBIENCE_VIROLOGY
 
 /area/medical/surgery/fore
 	name = "\improper Fore Operating Room"

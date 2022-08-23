@@ -1,6 +1,7 @@
 #define POPCOUNT_SURVIVORS "survivors" //Not dead at roundend
 #define POPCOUNT_ESCAPEES "escapees" //Not dead and on centcom/shuttles marked as escaped
 #define POPCOUNT_SHUTTLE_ESCAPEES "shuttle_escapees" //Emergency shuttle only.
+#define POPCOUNT_ESCAPEES_HUMANONLY "human_escapees"
 #define PERSONAL_LAST_ROUND "personal last round"
 #define SERVER_LAST_ROUND "server last round"
 
@@ -12,7 +13,10 @@
 	var/list/file_data = list("escapees" = list("humans" = list(), "silicons" = list(), "others" = list(), "npcs" = list()), "abandoned" = list("humans" = list(), "silicons" = list(), "others" = list(), "npcs" = list()), "ghosts" = list(), "additional data" = list())
 	var/num_survivors = 0 //Count of non-brain non-camera mobs with mind that are alive
 	var/num_escapees = 0 //Above and on centcom z
+	var/num_human_escapees = 0 //Above but humans only
 	var/num_shuttle_escapees = 0 //Above and on escape shuttle
+	var/list/list_of_human_escapees = list() //References to all escaped humans
+	var/list/list_of_mobs_on_shuttle = list()
 	var/list/area/shuttle_areas
 	if(SSshuttle?.emergency)
 		shuttle_areas = SSshuttle.emergency.shuttle_areas
@@ -30,10 +34,15 @@
 		if(M.mind)
 			count_only = FALSE
 			mob_data["ckey"] = M.mind.key
+			if(M.onCentCom())
+				list_of_mobs_on_shuttle += M
 			if(M.stat != DEAD && !isbrain(M) && !iscameramob(M))
 				num_survivors++
 				if(EMERGENCY_ESCAPED_OR_ENDGAMED && (M.onCentCom() || M.onSyndieBase()))
 					num_escapees++
+					if(ishuman(M))
+						num_human_escapees++
+						list_of_human_escapees += M
 					escape_status = "escapees"
 					if(shuttle_areas[get_area(M)])
 						num_shuttle_escapees++
@@ -87,9 +96,9 @@
 				var/pos = length(file_data["[escape_status]"]) + 1
 				file_data["[escape_status]"]["[pos]"] = mob_data
 
-	var/datum/station_state/end_state = new /datum/station_state()
-	end_state.count()
-	var/station_integrity = min(PERCENT(GLOB.start_state.score(end_state)), 100)
+	GLOB.end_state = new
+	GLOB.end_state.count()
+	var/station_integrity = min(PERCENT(GLOB.start_state.score(GLOB.end_state)), 100)
 	file_data["additional data"]["station integrity"] = station_integrity
 	WRITE_FILE(json_file, json_encode(file_data))
 
@@ -100,7 +109,10 @@
 	. = list()
 	.[POPCOUNT_SURVIVORS] = num_survivors
 	.[POPCOUNT_ESCAPEES] = num_escapees
+	.[POPCOUNT_ESCAPEES_HUMANONLY] = num_human_escapees
 	.[POPCOUNT_SHUTTLE_ESCAPEES] = num_shuttle_escapees
+	.["all_mobs_on_shuttle"] = list_of_mobs_on_shuttle
+	.["human_escapees_list"] = list_of_human_escapees
 	.["station_integrity"] = station_integrity
 
 /datum/controller/subsystem/ticker/proc/gather_antag_data()
@@ -215,6 +227,15 @@
 	if(world.time - SSticker.round_start_time <= 300 SECONDS)
 		speed_round = TRUE
 
+	popcount = gather_roundend_feedback()
+	SScredits.compile_credits() //Must always come after popcount is set
+
+	CHECK_TICK
+
+	display_report(popcount)
+
+	CHECK_TICK
+
 	for(var/client/C in GLOB.clients)
 		if(!C?.credits)
 			C?.RollCredits()
@@ -222,11 +243,6 @@
 		if(speed_round)
 			C?.give_award(/datum/award/achievement/misc/speed_round, C?.mob)
 		HandleRandomHardcoreScore(C)
-
-	var/popcount = gather_roundend_feedback()
-	display_report(popcount)
-
-	CHECK_TICK
 
 	// Add AntagHUD to everyone, see who was really evil the whole time!
 	for(var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antagonist_hud in GLOB.active_alternate_appearances)
@@ -270,6 +286,7 @@
 		log_game("[antag_name]s :[L.Join(", ")].")
 
 	CHECK_TICK
+
 	SSdbcore.SetRoundEnd()
 
 	//Collects persistence features
@@ -278,6 +295,8 @@
 
 	//stop collecting feedback during grifftime
 	SSblackbox.Seal()
+
+	SScredits.play2clients()
 
 	sleep(50)
 	ready_for_reboot = TRUE
@@ -403,6 +422,7 @@
 	roundend_report.stylesheets = list()
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
+
 	roundend_report.open(FALSE)
 
 /datum/controller/subsystem/ticker/proc/personal_report(client/C, popcount)

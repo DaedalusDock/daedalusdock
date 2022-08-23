@@ -46,6 +46,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
 
 	var/news_report
+	///Round end statistics of the population
+	var/list/popcount
 
 
 	var/roundend_check_paused = FALSE
@@ -663,6 +665,8 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
+
+	SScredits?.clear_credits_from_clients()
 
 	world.Reboot()
 

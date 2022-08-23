@@ -526,6 +526,7 @@
 	return ..()
 
 /datum/spacevine_controller/proc/spawn_spacevine_piece(turf/location, obj/structure/spacevine/parent, list/muts)
+	SSblackbox.record_feedback("amount", "spacevines_grown", 1)
 	var/obj/structure/spacevine/vine = new(location)
 	growth_queue += vine
 	vines += vine

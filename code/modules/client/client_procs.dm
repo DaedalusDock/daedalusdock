@@ -519,6 +519,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if (!restricted_mode)
 		initialize_menus()
 
+	//Clear the credits browser if it's left over the from the previous round
+	clear_credits()
+
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
 	view_size.setZoomMode()

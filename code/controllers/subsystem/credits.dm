@@ -1,16 +1,14 @@
 SUBSYSTEM_DEF(credits)
-	name = credits
+	name = "Credits"
 	flags = SS_NO_FIRE|SS_NO_INIT
 
-	var/credits_file
-	var/audio_post_delay = 10 SECONDS //Audio will start playing this many seconds before server shutdown.
-	var/scroll_speed = 20 //Lower is faster.
+	var/scroll_speed = 16 //Lower is faster.
 	var/splash_time = 2000 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
 
 	var/control = "mapwindow.credits" //if updating this, update in credits.html as well
-	var/file = 'code/modules/credits/credits.html'
+	var/file = 'code/modules/credits_roll/credits.html'
 
-	var/director = ""
+	var/director = "Daedalus Productions"
 	var/list/producers = list()
 	var/star = ""
 	var/ss = ""
@@ -35,16 +33,26 @@ SUBSYSTEM_DEF(credits)
 
 	var/drafted = FALSE
 	var/finalized = FALSE
-	var/js_args = list()
+	var/js_args
 
+
+/datum/controller/subsystem/credits/proc/compile_credits()
+	clear_credits_from_clients()
+	draft()
+	finalize()
+	send2clients()
+
+///Clear the existing credits data from clients
+/datum/controller/subsystem/credits/proc/clear_credits_from_clients()
+	for(var/client/C in GLOB.clients)
+		C.clear_credits()
 
 /*
  * draft():
  * Stage 1 of credit assembly. Called as soon as the rock cooks. Picks the episode names, staff, etc.
  * and allows the admins to edit those before the round ends proper and the credits roll.
- * Called by on_round_end() (on normal roundend, otherwise on_world_reboot_start() will call finalize() which will call us)
  */
-/datum/controller/subsystem/credits/proc/draft(var/force = FALSE)
+/datum/controller/subsystem/credits/proc/draft(force)
 	if(drafted && !force)
 		return
 	draft_caststring() //roundend grief not included in the credits
@@ -59,13 +67,12 @@ SUBSYSTEM_DEF(credits)
  * finalize():
  * Stage 2 of credit assembly. Called shortly before the server shuts down.
  * Takes all of our drafted, possibly admin-edited stuff, packages it up into JS arguments, and gets it ready to ship to clients.
- * Called by on_world_reboot_start()
 */
-/datum/controller/subsystem/credits/proc/finalize(var/force = FALSE)
+/datum/controller/subsystem/credits/proc/finalize(force)
 	if(finalized && !force)
 		return
 	if(!drafted) //In case the world is rebooted without the round ending normally.
-		draft()
+		CRASH("Credits attempted to finalize without a draft.")
 
 	finalize_name()
 	finalize_episodestring()
@@ -82,7 +89,6 @@ SUBSYSTEM_DEF(credits)
 /*
  * send2clients():
  * Take our packaged JS arguments and ship them to clients, BUT DON'T PLAY YET.
- * Called by on_world_reboot_start()
 */
 /datum/controller/subsystem/credits/proc/send2clients()
 	if(isnull(finalized))
@@ -93,26 +99,12 @@ SUBSYSTEM_DEF(credits)
 /*
  * play2clients:
  * Okay, roll'em!
- * Called by on_world_reboot_end()
 */
 /datum/controller/subsystem/credits/proc/play2clients()
 	if(isnull(finalized))
 		stack_trace("PANIC! CREDITS ATTEMPTED TO PLAY TO CLIENTS WITHOUT BEING FINALIZED!")
 	for(var/client/C in GLOB.clients)
 		C.play_downloaded_credits()
-
-/*
- * on_round_end:
- * Called by /gameticker/process() (on normal roundend)
- * |-ROUND ENDS--------------------------(60 sec)--------------------------REBOOT STARTS--------(audio_post_delay sec)--------REBOOT ENDS, SERVER SHUTDOWN-|
- *     ^^^^^ we are here
- */
-/datum/controller/subsystem/credits/proc/on_round_end()
-	draft()
-	if(change_credits_song)
-		determine_round_end_song()
-	for(var/client/C in clients)
-		C.clear_credits()
 
 /datum/controller/subsystem/credits/proc/finalize_name()
 	if(customized_name)
@@ -125,15 +117,14 @@ SUBSYSTEM_DEF(credits)
 		drafted_names["[N.thename]"] = N.weight
 		name_reasons["[N.thename]"] = N.reason
 		is_rare_assoc_list["[N.thename]"] = N.rare
-	episode_name = pickweight(drafted_names)
+	episode_name = pick_weight(drafted_names)
 	episode_reason = name_reasons[episode_name]
 	if(is_rare_assoc_list[episode_name] == TRUE)
 		rare_episode_name = TRUE
 
 /datum/controller/subsystem/credits/proc/finalize_episodestring()
 	var/season = time2text(world.timeofday,"YY")
-	var/episode_count_data = SSpersistence_misc.read_data(/datum/persistence_task/round_count)
-	var/episodenum = episode_count_data[season]
+	var/episodenum = GLOB.round_id || 1
 	episode_string = "<h1><span id='episodenumber'>SEASON [season] EPISODE [episodenum]</span><br><span id='episodename' title='[episode_reason]'>[episode_name]</span></h1><br><div style='padding-bottom: 75px;'></div>"
 	log_game("So ends [is_rerun() ? "another rerun of " : ""]SEASON [season] EPISODE [episodenum] - [episode_name] ... [customized_ss]")
 
@@ -146,22 +137,31 @@ SUBSYSTEM_DEF(credits)
 /datum/controller/subsystem/credits/proc/draft_producerstring()
 	var/list/staff = list("<h1>PRODUCTION STAFF</h1><br>")
 	var/list/staffjobs = list("Coffee Fetcher", "Cameraman", "Angry Yeller", "Chair Operator", "Choreographer", "Historical Consultant", "Costume Designer", "Chief Editor", "Executive Assistant", "Key Grip")
-	if(!admins.len)
-		staff += "<h2>PRODUCER - Alan Smithee</h2><br>"
-	for(var/client/C in admins)
+	for(var/client/C in GLOB.clients)
 		if(!C.holder)
 			continue
-		if(C.holder.rights & (R_DEBUG|R_ADMIN))
+		if(check_rights_for(C, R_DEBUG|R_ADMIN))
 			var/observername = ""
 			if(C.mob && istype(C.mob,/mob/dead/observer))
 				var/mob/dead/observer/O = C.mob
 				if(O.started_as_observer)
 					observername = "[O.real_name] a.k.a. "
-			staff += "<h2>[uppertext(pick(staffjobs))] - [observername]'[C.key]'</h2><br>"
+			staff += "<h2>[uppertext(pick(staffjobs))] - [observername]'[uppertext(C.ckey)]'</h2><br>"
+	if(staff.len == 1)
+		staff += "<h2>PRODUCER - Alan Smithee</h2><br>"
 
 	producers = list("<h1>Directed by</br>[uppertext(director)]</h1>","[jointext(staff,"")]")
-	for(var/head in data_core.get_manifest_json()["heads"])
-		producers += "<h1>[head["rank"]]<br>[uppertext(head["name"])]</h1><br>"
+
+	var/list/heads_of_staff = list()
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(H.stat == DEAD)
+			continue
+		if(H.mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+			heads_of_staff += H
+
+	for(var/mob/living/carbon/human/H as anything in heads_of_staff)
+		var/job2show = H.client?.prefs.alt_job_titles[H.mind.assigned_role.title] || H.mind.assigned_role.title
+		producers += "<h1>[job2show]<br>[uppertext(H.real_name)]</h1><br>"
 
 	producers_string = ""
 	for(var/producer in producers)
@@ -169,8 +169,8 @@ SUBSYSTEM_DEF(credits)
 
 /datum/controller/subsystem/credits/proc/draft_star()
 	var/mob/living/carbon/human/most_talked
-	for(var/mob/living/carbon/human/H in mob_list)
-		if(!H.key || H.iscorpse)
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(!H.ckey || H.stat == DEAD)
 			continue
 		if(!most_talked || H.talkcount > most_talked.talkcount)
 			most_talked = H
@@ -179,7 +179,7 @@ SUBSYSTEM_DEF(credits)
 /datum/controller/subsystem/credits/proc/finalize_starstring()
 	if(customized_star == "" && star == "")
 		return
-	star_string = "<h1>Starring<br>[customized_star != "" ? customized_star : star]</h1><br>%<splashbreak>" //%<splashbreak> being an arbitrary "new splash card" char we use to split this string back in the javascript
+	star_string = "<h1>Starring<br>[customized_star != "" ? customized_star : (star ? star : "Nobody!")]</h1><br>%<splashbreak>" //%<splashbreak> being an arbitrary "new splash card" char we use to split this string back in the javascript
 
 /datum/controller/subsystem/credits/proc/finalize_ssstring()
 	if(customized_ss == "" && ss == "")
@@ -189,22 +189,28 @@ SUBSYSTEM_DEF(credits)
 /datum/controller/subsystem/credits/proc/draft_caststring()
 	cast_string = "<h1>CAST:</h1><br><h2>(in order of appearance)</h2><br>"
 	cast_string += "<table class='crewtable'>"
-
+	var/cast_num = 0
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
-		if(!H.key)
+		if(!H.ckey && !(H.stat == DEAD))
 			continue
-		cast_string += "[gender_credits(H)]"
+		cast_string += "[H.get_credits_entry()]"
+		cast_num++
 
 	for(var/mob/living/silicon/S in GLOB.silicon_mobs)
-		if(!S.key)
+		if(!S.ckey)
 			continue
-		cast_string += "[silicon_credits(S)]"
+		cast_string += "[S.get_credits_entry()]"
+		cast_num++
+
+	if(!cast_num)
+		cast_string += "<tr><td class='actorsegue'> Nobody! </td></tr>"
 
 	cast_string += "</table><br>"
 	cast_string += "<div class='disclaimers'>"
+
 	var/list/corpses = list()
-	for(var/mob/living/carbon/human/H in GLOB.dead_player_list)
-		if(!H.key)
+	for(var/mob/living/carbon/human/H in GLOB.dead_mob_list)
+		if(!H.mind)
 			continue
 		if(H.real_name)
 			corpses += H.real_name
@@ -213,30 +219,32 @@ SUBSYSTEM_DEF(credits)
 		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>[english_list(corpses)].<br>"
 	cast_string += "</div><br>"
 
-/mob/living/carbon/human/proc/gender_credits(var/mob/living/carbon/human/H)
-	if(H.mind && H.mind.key)
-		var/assignment = H.get_assignment(if_no_id = "", if_no_job = "")
-		return "<tr><td class='actorname'>[uppertext(H.mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[H.real_name][assignment == "" ? "" : ", [assignment]"]</td></tr>"
-	else
-		return "<tr><td class='actorname'>[uppertext(H.real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themselves" : "[p_them(TRUE)]self"]</td></tr>"
+/mob/living/proc/get_credits_entry()
 
-/mob/living/silicon/proc/silicon_credits()
-	if(S.mind && S.mind.key)
-		return "<tr><td class='actorname'>[uppertext(S.mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[S.name]</td></tr>"
+/mob/living/carbon/human/get_credits_entry()
+	if(client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		var/assignment = get_assignment(if_no_id = "", if_no_job = "")
+		return "<tr><td class='actorname'>[uppertext(mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[real_name][assignment == "" ? "" : ", [assignment]"]</td></tr>"
 	else
-		return "<tr><td class='actorname'>[uppertext(S.name)]</td><td class='actorsegue'> as </td><td class='actorrole'>Itself</td></tr>"
+		return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themselves" : "[p_them(TRUE)]self"]</td></tr>"
 
-/mob/proc/thebigstar(var/star)
+/mob/living/silicon/get_credits_entry()
+	if(client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		return "<tr><td class='actorname'>[uppertext(mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
+	else
+		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>Itself</td></tr>"
+
+/datum/controller/subsystem/credits/proc/thebigstar(var/star)
 	if(istext(star))
 		return star
 	if(ismob(star))
 		var/mob/M = star
-		if(M.mind && M.mind.key)
+		if(M.mind.key && M.client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
 			return "[uppertext(M.mind.key)] as [M.real_name]"
 		else
-			return "[uppertext(M.real_name)] as [p_them(TRUE) == "Them" ? "Themselves" : "[p_them(TRUE)]self"]"
+			return "[uppertext(M.real_name)] as [M.p_them(TRUE) == "Them" ? "Themselves" : "[M.p_them(TRUE)]self"]"
 
-/datum/controller/subsystem/proc/is_rerun()
+/datum/controller/subsystem/credits/proc/is_rerun()
 	if(customized_name != "" || customized_star != "" || customized_ss !="" || rare_episode_name == TRUE || theme != initial(theme))
 		return FALSE
 	else

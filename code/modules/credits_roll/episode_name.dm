@@ -7,7 +7,7 @@
 /datum/episode_name/rare
 	rare = TRUE
 
-/datum/episode_name/New(var/thename, var/reason, var/weight)
+/datum/episode_name/New(thename, reason, weight)
 	if(!thename)
 		return
 	src.thename = thename

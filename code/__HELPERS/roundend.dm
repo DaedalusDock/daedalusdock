@@ -237,9 +237,6 @@
 	CHECK_TICK
 
 	for(var/client/C in GLOB.clients)
-		if(!C?.credits)
-			C?.RollCredits()
-		C?.playtitlemusic(40)
 		if(speed_round)
 			C?.give_award(/datum/award/achievement/misc/speed_round, C?.mob)
 		HandleRandomHardcoreScore(C)
@@ -295,8 +292,6 @@
 
 	//stop collecting feedback during grifftime
 	SSblackbox.Seal()
-
-	SScredits.play2clients()
 
 	sleep(50)
 	ready_for_reboot = TRUE

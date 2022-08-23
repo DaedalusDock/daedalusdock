@@ -9,7 +9,6 @@
 /client/proc/download_credits()
 	if(!SScredits.finalized)
 		CRASH("Tried to download credits before they were finalized!")
-
 	src << output(list2params(SScredits.js_args), "[SScredits.control]:setupCredits")
 	received_credits = TRUE
 
@@ -28,4 +27,3 @@
 
 	//Copy of [client/proc/clear_credits()]
 	winset(src, SScredits.control, "is-visible=false")
-	src << output(SScredits.file, SScredits.control)

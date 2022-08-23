@@ -33,14 +33,18 @@ SUBSYSTEM_DEF(credits)
 
 	var/drafted = FALSE
 	var/finalized = FALSE
-	var/js_args
+	var/js_args = list()
 
 
 /datum/controller/subsystem/credits/proc/compile_credits()
-	clear_credits_from_clients()
+	set waitfor = FALSE
 	draft()
 	finalize()
 	send2clients()
+	sleep(2 SECONDS) //send2clients() is slow and non-blocking, so we need to give it some breathing room to send the data to all clients.
+	play2clients()
+	for(var/client/C in GLOB.clients)
+		C.playtitlemusic(40)
 
 ///Clear the existing credits data from clients
 /datum/controller/subsystem/credits/proc/clear_credits_from_clients()
@@ -91,7 +95,7 @@ SUBSYSTEM_DEF(credits)
  * Take our packaged JS arguments and ship them to clients, BUT DON'T PLAY YET.
 */
 /datum/controller/subsystem/credits/proc/send2clients()
-	if(isnull(finalized))
+	if(!finalized)
 		stack_trace("PANIC! CREDITS ATTEMPTED TO SEND TO CLIENTS WITHOUT BEING FINALIZED!")
 	for(var/client/C in GLOB.clients)
 		C.download_credits()
@@ -101,7 +105,7 @@ SUBSYSTEM_DEF(credits)
  * Okay, roll'em!
 */
 /datum/controller/subsystem/credits/proc/play2clients()
-	if(isnull(finalized))
+	if(!finalized)
 		stack_trace("PANIC! CREDITS ATTEMPTED TO PLAY TO CLIENTS WITHOUT BEING FINALIZED!")
 	for(var/client/C in GLOB.clients)
 		C.play_downloaded_credits()

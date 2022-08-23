@@ -238,7 +238,7 @@ SUBSYSTEM_DEF(credits)
 	else
 		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>Itself</td></tr>"
 
-/datum/controller/subsystem/credits/proc/thebigstar(var/star)
+/datum/controller/subsystem/credits/proc/thebigstar(star)
 	if(istext(star))
 		return star
 	if(ismob(star))

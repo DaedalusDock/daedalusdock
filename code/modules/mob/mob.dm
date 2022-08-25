@@ -472,6 +472,7 @@
 		LAZYINITLIST(client.recent_examines)
 		var/ref_to_atom = ref(examinify)
 		var/examine_time = client.recent_examines[ref_to_atom]
+		usr.visible_message(span_subtle("\The [src] looks at \the [examinify]"))
 		if(examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW))
 			result = examinify.examine_more(src)
 			if(!length(result))

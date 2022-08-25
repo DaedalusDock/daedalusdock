@@ -20,3 +20,6 @@
 2022-08-22:
   BlackDog:
   - soundadd: Server-specific arrival sound
+2022-08-25:
+  Kapu1178:
+  - bugfix: Lizards no longer have a hole in their left-facing legs.

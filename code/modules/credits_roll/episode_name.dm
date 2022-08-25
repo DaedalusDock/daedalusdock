@@ -104,16 +104,6 @@
 		episode_names += new /datum/episode_name("A VERY [pick("NANOTRASEN", "EXPEDITIONARY", "SECURE", "PLASMA", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
 	if(BLACKBOX_FEEDBACK_NUM("guns_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("GUNS, GUNS EVERYWHERE", "THUNDER GUN EXPRESS", "THE CREW GOES AMERICA ALL OVER EVERYBODY'S ASS")]", "[BLACKBOX_FEEDBACK_NUM("guns_spawned")] guns were spawned this round.", min(750, BLACKBOX_FEEDBACK_NUM("guns_spawned")*25))
-	//if(score.dimensionalpushes > 6)
-	//	episode_names += new /datum/episode_name/rare("THE CREW GETS PUSHED TOO FAR", "[score.dimensionalpushes] things were dimensionalpush'd this round.", min(1500, score.dimensionalpushes*35))
-	//if(score.assesblasted > 4)
-	//	episode_names += new /datum/episode_name/rare("A SONG OF ASS AND FIRE", "[score.assesblasted] people were magically assblasted this round.", min(1500, score.assesblasted*100))
-	//if(score.assesblasted > 3 && score.random_soc > 4)
-	//	episode_names += new /datum/episode_name/rare("WINDS OF CHANGE", "A combination of asses blasted, and the staff of change.", min(1500, score.assesblasted*75 + score.random_soc*75))
-	//if(score.greasewiz > 7 && score.lightningwiz > 7)
-	//	episode_names += new /datum/episode_name/rare("GREASED LIGHTNING", "A combination of the Grease and Lightning spells.", min(1500, score.greasewiz*45 + score.lightningwiz*45))
-	//if(score.lightningwiz > 12)
-	//	episode_names += new /datum/episode_name/rare("[pick("SHOCK AND AWE", "SHOCK THERAPY")]", "[score.lightningwiz] people were shocked this round.", min(1500, score.lightningwiz*75))
 	if(BLACKBOX_FEEDBACK_NUM("heartattacks") > 2)
 		episode_names += new /datum/episode_name/rare("MY HEART WILL GO ON", "[BLACKBOX_FEEDBACK_NUM("heartattacks")] hearts were reanimated and burst out of someone's chest this round.", min(1500, BLACKBOX_FEEDBACK_NUM("heartattacks")*250))
 
@@ -133,7 +123,7 @@
 	if(BLACKBOX_FEEDBACK_NUM("law_changes") > 12)
 		episode_names += new /datum/episode_name/rare("[pick("THE CREW LEARNS ABOUT LAWSETS", 15;"THE UPLOAD RAILROAD", 15;"FREEFORM", 15;"ASIMOV SAYS")]", "There were [BLACKBOX_FEEDBACK_NUM("law_changes")] law changes this round.", min(750, BLACKBOX_FEEDBACK_NUM("law_changes")*25))
 	if(BLACKBOX_FEEDBACK_NUM("slips") > 50)
-		episode_names += new /datum/episode_name/rare("THE CREW GOES BANANAS", "[BLACKBOX_FEEDBACK_NUM("slips")] people slipped this round.", min(500, BLACKBOX_FEEDBACK_NUM("slips")/2))
+		episode_names += new /datum/episode_name/rare("THE CREW GOES BANANAS", "People slipped [BLACKBOX_FEEDBACK_NUM("slips")] times this round.", min(500, BLACKBOX_FEEDBACK_NUM("slips")/2))
 
 	/*var/clowns_trolled
 	for(var/datum/player_details/detail_iter as anything in GLOB.player_details)
@@ -141,8 +131,7 @@
 	if(score.clownabuse > 75)
 		episode_names += new /datum/episode_name/rare("EVERYBODY LOVES A CLOWN", "[score.clownabuse] instances of clown abuse this round.", min(350, score.clownabuse*2))
 	*/
-	//if(score.maxpower > HUNDRED_MEGAWATTS && (locate(/mob/living/silicon/robot/mommi) in mob_list))
-	//	episode_names += new /datum/episode_name/rare("WHAT HAPPENS WHEN YOU MIX MOMMIS AND COMMERCIAL-GRADE PACKING FOAM", "There was a powergrid with [score.maxpower]W, and 1 or more MoMMIs playing.", 250)
+
 	if(BLACKBOX_FEEDBACK_NUM("turfs_singulod") > 200)
 		episode_names += new /datum/episode_name/rare("[pick("THE SINGULARITY GETS LOOSE", "THE SINGULARITY GETS LOOSE (AGAIN)", "CONTAINMENT FAILURE", "THE GOOSE IS LOOSE", 50;"THE CREW'S ENGINE SUCKS", 50;"THE CREW GOES DOWN THE DRAIN")]", "The Singularity ate [BLACKBOX_FEEDBACK_NUM("turfs_singulod")] turfs this round.", min(1000, BLACKBOX_FEEDBACK_NUM("turfs_singulod")/2)) //no "singularity's day out" please we already have enough
 	//if(score.shardstouched > 0)
@@ -177,7 +166,7 @@
 			episode_names += new /datum/episode_name/rare("DRY RUN", "This round was as short as they come, and there were no escapees.", 2500)
 	if(dead == 0)
 		episode_names += new /datum/episode_name/rare("[pick("EMPLOYEE TRANSFER", "LIVE LONG AND PROSPER", "PEACE AND QUIET IN [uppr_name]", "THE ONE WITHOUT ALL THE FIGHTING", "THE CREW TRIES TO KILL A FLY FOR [round((REALTIMEOFDAY - SSticker.round_start_timeofday)/60)] MINUTES")]", "No-one died this round.", 2500) //in practice, this one is very very very rare, so if it happens let's pick it more often
-	if(escaped == 0 && SSshuttle.emergency.is_hijacked())
+	if(escaped == 0 || SSshuttle.emergency.is_hijacked())
 		episode_names += new /datum/episode_name("[pick("DEAD SPACE", "THE CREW GOES MISSING", "LOST IN TRANSLATION", "[uppr_name]: DELETED SCENES", "WHAT HAPPENS IN [uppr_name], STAYS IN [uppr_name]", "MISSING IN ACTION", "SCOOBY-DOO, WHERE'S THE CREW?")]", "There were no escapees on the shuttle.", 300)
 	if(escaped < 6 && escaped > 0 && dead > escaped*2)
 		episode_names += new /datum/episode_name("[pick("AND THEN THERE WERE FEWER", "THE 'FUN' IN 'FUNERAL'", "FREEDOM RIDE OR DIE", "THINGS WE LOST IN [uppr_name]", "GONE WITH [uppr_name]", "LAST TANGO IN [uppr_name]", "GET BUSY LIVING OR GET BUSY DYING", "THE CREW FUCKING DIES", "WISH YOU WERE HERE")]", "[dead] people died this round.", 400)
@@ -248,7 +237,7 @@
 		if(IS_TRAITOR(H) || IS_NUKE_OP(H))
 			theme = "syndie"
 		if(H.stat == CONSCIOUS && H.mind && H.mind.assigned_role.title)
-			switch(H.mind.assigned_role)
+			switch(H.mind.assigned_role.title)
 				if("Chef")
 					var/chance = 250
 					if(H.is_wearing_item_of_type(/obj/item/clothing/head/chefhat))

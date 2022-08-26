@@ -13,6 +13,7 @@
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/t_scanner, /obj/item/construction/rcd, /obj/item/pipe_dispenser)
 	siemens_coefficient = 0
 	actions_types = list(/datum/action/item_action/toggle_spacesuit, /datum/action/item_action/toggle_helmet)
+	supports_variations_flags = NONE
 	restricted_bodytypes = BODYTYPE_TESHARI
 
 	var/obj/item/clothing/head/helmet/space/hardsuit/helmet

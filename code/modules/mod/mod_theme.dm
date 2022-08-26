@@ -20,7 +20,7 @@
 	/// Default skin of the MOD.
 	var/default_skin = "standard"
 	/// Armor shared across the MOD pieces.
-	var/armor = list(MELEE = 10, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 0, BIO = 100, FIRE = 25, ACID = 25, WOUND = 5)
+	var/armor = list(MELEE = 30, BULLET = 10, LASER = 25, ENERGY = 10, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	/// Resistance flags shared across the MOD pieces.
 	var/resistance_flags = NONE
 	/// Atom flags shared across the MOD pieces.
@@ -109,7 +109,7 @@
 		a shock-resistant outer layer, making the suit nigh-invulnerable against even the extremes of high-voltage electricity. \
 		However, the capacity for modification remains the same as civilian-grade suits."
 	default_skin = "engineering"
-	armor = list(MELEE = 10, BULLET = 5, LASER = 20, ENERGY = 10, BOMB = 10, BIO = 100, FIRE = 100, ACID = 25, WOUND = 10)
+	armor = list(MELEE = 30, BULLET = 10, LASER = 25, ENERGY = 10, BOMB = 60, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
@@ -156,7 +156,7 @@
 		corrosive gasses and liquids, useful in the world of pipes. \
 		However, the capacity for modification remains the same as civilian-grade suits."
 	default_skin = "atmospheric"
-	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 15, BOMB = 10, BIO = 100, FIRE = 100, ACID = 75, WOUND = 10)
+	armor = list(MELEE = 30, BULLET = 10, LASER = 25, ENERGY = 10, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	slowdown_inactive = 1.5
@@ -204,7 +204,7 @@
 		The paint used is almost entirely immune to corrosives, and certainly looks damn fine. \
 		These come pre-installed with magnetic boots, using an advanced system to toggle them on or off as the user walks."
 	default_skin = "advanced"
-	armor = list(MELEE = 15, BULLET = 5, LASER = 20, ENERGY = 15, BOMB = 50, BIO = 100, FIRE = 100, ACID = 90, WOUND = 10)
+	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
@@ -396,7 +396,7 @@
 		it is incredibly acid-resistant. It is slightly more demanding of power than civilian-grade models, \
 		and weak against fingers tapping the glass."
 	default_skin = "medical"
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 10, BIO = 100, FIRE = 60, ACID = 75, WOUND = 5)
+	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100, WOUND = 20)
 	charge_drain = DEFAULT_CHARGE_DRAIN * 1.5
 	slowdown_inactive = 1
 	slowdown_active = 0.5
@@ -475,7 +475,7 @@
 		all while being entirely immune against chemical and thermal threats. \
 		It is slightly more demanding of power than civilian-grade models, and weak against fingers tapping the glass."
 	default_skin = "rescue"
-	armor = list(MELEE = 10, BULLET = 10, LASER = 5, ENERGY = 5, BOMB = 10, BIO = 100, FIRE = 100, ACID = 100, WOUND = 5)
+	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100, WOUND = 20)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	charge_drain = DEFAULT_CHARGE_DRAIN * 1.5
@@ -536,12 +536,12 @@
 		missiles and artillery, all the explosive resistance is mostly working to keep the user intact, \
 		not alive. The user will also find narrow doorframes nigh-impossible to surmount."
 	default_skin = "research"
-	armor = list(MELEE = 20, BULLET = 15, LASER = 5, ENERGY = 5, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
+	armor = list(MELEE = 40, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 100, BIO = 100, FIRE = 100, ACID = 60, WOUND = 20)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
-	slowdown_inactive = 1.75
+	slowdown_inactive = 0.5
 	slowdown_active = 1.25
 	inbuilt_modules = list(/obj/item/mod/module/reagent_scanner/advanced)
 	allowed_suit_storage = list(
@@ -591,11 +591,9 @@
 		However, the systems used in these suits are more than a few years out of date, \
 		leading to an overall lower capacity for modules."
 	default_skin = "security"
-	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 25, BIO = 100, FIRE = 75, ACID = 75, WOUND = 15)
+	armor = list(MELEE = 30, BULLET = 50, LASER = 45, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 25)
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 5
-	slowdown_inactive = 1
-	slowdown_active = 0.5
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
@@ -643,12 +641,11 @@
 		Heatsinks line the sides of the suit, and greater technology has been used in insulating it against \
 		both corrosive environments and sudden impacts to the user's joints."
 	default_skin = "safeguard"
-	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 40, BIO = 100, FIRE = 100, ACID = 95, WOUND = 15)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 35, ENERGY = 35, BOMB = 60, BIO = 100, FIRE = 100, ACID = 95, WOUND = 20)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 5
-	slowdown_inactive = 0.75
 	slowdown_active = 0.25
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
@@ -698,13 +695,12 @@
 		and bluespace processing to allow for a wide array of onboard modules to be supported, and only the best actuators \
 		have been employed for speed. The resemblance to a Gorlex Marauder helmet is purely coincidental."
 	default_skin = "magnate"
-	armor = list(MELEE = 20, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 50, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 35, ENERGY = 25, BOMB = 60, BIO = 100, FIRE = 100, ACID = 100, WOUND = 20)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
-	slowdown_inactive = 0.75
 	slowdown_active = 0.25
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
@@ -750,7 +746,7 @@
 		this particular model does not employ manganese bipolar capacitor cleaners, thank the Honkmother. \
 		All you know is that this suit is mysteriously power-efficient, and far too colorful for the Mime to steal."
 	default_skin = "cosmohonk"
-	armor = list(MELEE = 5, BULLET = 5, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 60, ACID = 30, WOUND = 5)
+	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	charge_drain = DEFAULT_CHARGE_DRAIN * 0.25
 	slowdown_inactive = 1.75
 	slowdown_active = 1.25
@@ -804,8 +800,6 @@
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
-	slowdown_inactive = 1
-	slowdown_active = 0.5
 	ui_theme = "syndicate"
 	inbuilt_modules = list(/obj/item/mod/module/armor_booster)
 	allowed_suit_storage = list(
@@ -883,8 +877,6 @@
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
-	slowdown_inactive = 1
-	slowdown_active = 0.5
 	ui_theme = "syndicate"
 	inbuilt_modules = list(/obj/item/mod/module/armor_booster)
 	allowed_suit_storage = list(
@@ -991,7 +983,6 @@
 	resistance_flags = FIRE_PROOF
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
 	charge_drain = DEFAULT_CHARGE_DRAIN * 2
-	slowdown_inactive = 2
 	slowdown_active = 1.5
 	ui_theme = "hackerman"
 	inbuilt_modules = list(/obj/item/mod/module/anomaly_locked/kinesis/prebuilt/prototype)
@@ -1213,7 +1204,7 @@
 		and sometimes hilariously painful side effects of jumping timelines, while providing inbuilt equipment for \
 		making timeline adjustments to correct a bad course."
 	default_skin = "chrono"
-	armor = list(MELEE = 60, BULLET = 60, LASER = 60, ENERGY = 60, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
+	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 100)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 10

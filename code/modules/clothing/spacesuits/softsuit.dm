@@ -29,18 +29,20 @@
 	//EVA suit
 /obj/item/clothing/suit/space/eva
 	name = "EVA suit"
-	icon_state = "space"
-	inhand_icon_state = "s_suit"
+	icon_state = "softsuit_suit"
+	worn_icon_state = "softsuit"
+	inhand_icon_state = "softsuit_suit"
 	desc = "A lightweight space suit with the basic ability to protect the wearer from the vacuum of space during emergencies."
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 10, ACID = 65)
 
 /obj/item/clothing/head/helmet/space/eva
 	name = "EVA helmet"
-	icon_state = "space"
-	inhand_icon_state = "space"
+	icon_state = "softsuit_helm"
+	worn_icon_state = "softsuit_h"
+	inhand_icon_state = "softsuit_helm"
 	desc = "A lightweight space helmet with the basic ability to protect the wearer from the vacuum of space during emergencies."
 	flash_protect = FLASH_PROTECTION_NONE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 10, ACID = 65)
 
 /obj/item/clothing/head/helmet/space/eva/examine(mob/user)
 	. = ..()

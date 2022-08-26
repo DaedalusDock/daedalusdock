@@ -882,8 +882,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
 			return FALSE
 
+
 	// if there's an item in the slot we want, fail
 	if(H.get_item_by_slot(slot))
+		return FALSE
+
+	// For whatever reason, this item cannot be equipped by this species
+	if(slot != ITEM_SLOT_HANDS && (bodytype & I.restricted_bodytypes))
 		return FALSE
 
 	// this check prevents us from equipping something to a slot it doesn't support, WITH the exceptions of storage slots (pockets, suit storage, and backpacks)

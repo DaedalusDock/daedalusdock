@@ -1665,9 +1665,6 @@
 "aFZ" = (
 /turf/open/floor/iron/white/corner,
 /area/hallway/primary/starboard)
-"aGk" = (
-/turf/open/floor/iron,
-/area/hallway/primary/central)
 "aGJ" = (
 /obj/item/radio/intercom/directional/north,
 /obj/structure/cable,
@@ -2382,15 +2379,6 @@
 /obj/item/clipboard,
 /turf/open/floor/iron,
 /area/cargo/qm)
-"aRd" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/hallway/secondary/entry)
 "aRD" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
@@ -4536,10 +4524,6 @@
 "bEu" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/co2,
-/turf/open/floor/iron,
-/area/maintenance/disposal/incinerator)
-"bEy" = (
-/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "bEC" = (
@@ -7678,15 +7662,6 @@
 	},
 /turf/open/floor/plating,
 /area/hallway/secondary/entry)
-"cGP" = (
-/obj/machinery/door/firedoor,
-/obj/structure/cable,
-/obj/machinery/door/airlock/engineering/glass{
-	name = "Engineering Storage";
-	req_access_txt = "11"
-	},
-/turf/open/floor/iron,
-/area/engineering/storage)
 "cGW" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
@@ -10220,9 +10195,6 @@
 /obj/effect/turf_decal/tile/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
-"dOw" = (
-/turf/open/floor/iron,
-/area/commons/locker)
 "dOB" = (
 /obj/structure/chair/wood,
 /turf/open/floor/carpet,
@@ -17686,6 +17658,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/siding/yellow,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "hxR" = (
@@ -19036,7 +19009,6 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/aft)
 "igt" = (
-/obj/structure/cable,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
 	},
@@ -19044,6 +19016,7 @@
 /obj/machinery/light_switch/directional/north{
 	pixel_x = -11
 	},
+/obj/machinery/suit_storage_unit/engine,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "igw" = (
@@ -20127,6 +20100,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/main)
 "iIQ" = (
@@ -21791,6 +21765,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/siding/yellow,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "jvW" = (
@@ -22199,13 +22174,13 @@
 /obj/structure/sign/warning/nosmoking{
 	pixel_y = 32
 	},
-/obj/structure/cable,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
+/obj/machinery/suit_storage_unit/engine,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "jGV" = (
@@ -23950,6 +23925,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/siding/yellow/corner,
+/obj/structure/cable,
 /turf/open/floor/iron/large,
 /area/engineering/storage)
 "kBb" = (
@@ -32248,9 +32224,6 @@
 /obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
-"oOi" = (
-/turf/open/floor/iron,
-/area/service/janitor)
 "oOj" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/wood,
@@ -45411,7 +45384,6 @@
 /area/security/medical)
 "vid" = (
 /obj/machinery/firealarm/directional/north,
-/obj/structure/cable,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -46876,6 +46848,7 @@
 /obj/effect/turf_decal/siding/yellow/corner{
 	dir = 8
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "vUc" = (
@@ -47832,9 +47805,6 @@
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
-"wtn" = (
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "wtr" = (
 /obj/structure/plasticflaps,
 /obj/machinery/conveyor{
@@ -50880,16 +50850,14 @@
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
 "xWL" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable,
 /turf/open/floor/iron,
-/area/commons/dorms)
+/area/engineering/main)
 "xXa" = (
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/air_input{
 	dir = 1
@@ -65434,7 +65402,7 @@ aLj
 aNe
 aNe
 aPx
-aRd
+fbK
 ayl
 fbY
 bVW
@@ -65691,7 +65659,7 @@ aLA
 aNf
 aNf
 aLA
-aRd
+fbK
 pNH
 fbY
 qLA
@@ -66205,7 +66173,7 @@ aLC
 aNg
 xTA
 qwI
-aRd
+fbK
 ayl
 fbY
 lyk
@@ -68522,7 +68490,7 @@ nsi
 dkw
 dkw
 kQD
-dOw
+lYu
 xPS
 xmL
 jjv
@@ -77577,7 +77545,7 @@ ncQ
 ncQ
 ncQ
 tkd
-cGP
+tkO
 vUa
 tkO
 tkO
@@ -77835,7 +77803,7 @@ tkd
 tkd
 tkd
 iaH
-kcC
+xWL
 phD
 nHG
 fwu
@@ -78280,7 +78248,7 @@ tjm
 xcv
 bLy
 sgN
-aGk
+aJq
 fLH
 aOE
 aJn
@@ -82682,7 +82650,7 @@ eLS
 sJq
 krq
 pxI
-oOi
+nwP
 lsV
 pSc
 vOh
@@ -83664,7 +83632,7 @@ eMl
 xHC
 uwx
 nCI
-xWL
+hzp
 tqC
 dNW
 jSk
@@ -88624,7 +88592,7 @@ kwD
 bzr
 ocR
 bCf
-bEy
+cjr
 tqU
 dJb
 eTY
@@ -89143,7 +89111,7 @@ cjr
 ggJ
 xEV
 tuf
-wtn
+jEN
 cmd
 jnk
 jnk

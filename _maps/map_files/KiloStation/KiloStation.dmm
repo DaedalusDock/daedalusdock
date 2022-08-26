@@ -8526,7 +8526,7 @@
 "aXN" = (
 /obj/machinery/igniter/incinerator_ordmix,
 /mob/living/simple_animal/chicken{
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0);
+	atmos_requirements = list("min_oxy"=0,"max_oxy"=0,"min_tox"=0,"max_tox"=1,"min_co2"=0,"max_co2"=0,"min_n2"=0,"max_n2"=0);
 	desc = "A timeless classic.";
 	name = "Kentucky"
 	},
@@ -26297,10 +26297,6 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/lobby)
-"etb" = (
-/obj/structure/cable,
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "etH" = (
 /obj/structure/closet/secure_closet/atmospherics,
 /obj/effect/turf_decal/tile/neutral,
@@ -38369,9 +38365,6 @@
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron,
 /area/security/courtroom)
-"iAp" = (
-/turf/open/floor/iron/dark,
-/area/service/chapel/monastery)
 "iAT" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/structure/crate,
@@ -42203,7 +42196,7 @@
 /obj/effect/decal/cleanable/blood/gibs/old,
 /obj/effect/spawner/random/structure/crate,
 /mob/living/simple_animal/chicken{
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0);
+	atmos_requirements = list("min_oxy"=0,"max_oxy"=0,"min_tox"=0,"max_tox"=1,"min_co2"=0,"max_co2"=0,"min_n2"=0,"max_n2"=0);
 	desc = "A timeless classic.";
 	name = "Kentucky"
 	},
@@ -47688,7 +47681,7 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Ordnance Test Lab";
 	name = "science camera";
-	network = list("ss13", "rd")
+	network = list("ss13","rd")
 	},
 /obj/item/radio/intercom/directional/east,
 /obj/structure/sign/poster/random/directional/north,
@@ -54848,7 +54841,6 @@
 /obj/effect/turf_decal/siding/wideplating/dark{
 	dir = 4
 	},
-
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "nVD" = (
@@ -56941,7 +56933,7 @@
 /obj/machinery/camera/directional/south{
 	c_tag = "Ordnance Storage";
 	name = "science camera";
-	network = list("ss13", "rd")
+	network = list("ss13","rd")
 	},
 /turf/open/floor/iron/dark,
 /area/science/storage)
@@ -70229,7 +70221,7 @@
 /area/command/bridge)
 "sSj" = (
 /obj/machinery/computer/atmos_control/noreconnect{
-	atmos_chambers = list("ordnancegas1" = "Burn Chamber", "ordnancegas2" = "Freezer Chamber");
+	atmos_chambers = list("ordnancegas1"="Burn Chamber","ordnancegas2"="Freezer Chamber");
 	dir = 4
 	},
 /obj/machinery/firealarm/directional/west,
@@ -75435,12 +75427,6 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/hydroponics/garden)
-"uLm" = (
-/obj/effect/turf_decal/siding/wideplating/dark{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
-/area/service/chapel/monastery)
 "uLD" = (
 /obj/effect/turf_decal/delivery,
 /obj/effect/turf_decal/tile/neutral{
@@ -77133,13 +77119,9 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
 "voX" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
-/turf/open/floor/iron,
-/area/hallway/primary/central)
+/obj/machinery/suit_storage_unit/toxins,
+/turf/open/floor/iron/showroomfloor,
+/area/science/misc_lab)
 "vpc" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -77892,7 +77874,7 @@
 	},
 /obj/item/reagent_containers/food/drinks/bottle/beer{
 	desc = "A station exclusive. Consumption may result in seizures, blindness, drunkenness, or even death.";
-	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko = 30);
+	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko=30);
 	name = "Kilo-Kocktail";
 	pixel_x = 5;
 	pixel_y = 5
@@ -84261,9 +84243,6 @@
 /obj/machinery/fax_machine,
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hop)
-"xFO" = (
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "xFY" = (
 /obj/structure/table/reinforced,
 /obj/effect/turf_decal/delivery,
@@ -97620,7 +97599,7 @@ hOq
 aUc
 tET
 omf
-iAp
+nUs
 xXY
 rFQ
 dFl
@@ -98905,7 +98884,7 @@ cUZ
 omf
 omf
 rcR
-iAp
+nUs
 tKm
 xXY
 sEn
@@ -98917,7 +98896,7 @@ qaP
 cGU
 vei
 tKm
-iAp
+nUs
 pRo
 snV
 wQw
@@ -99161,8 +99140,8 @@ aeu
 dFl
 ozl
 xEG
-iAp
-iAp
+nUs
+nUs
 rTp
 xXY
 waD
@@ -99419,7 +99398,7 @@ har
 pXo
 jpV
 nUs
-iAp
+nUs
 lda
 xXY
 bsV
@@ -99677,12 +99656,12 @@ dSa
 hZz
 miR
 tCB
-uLm
+nVA
 jEG
 qCQ
 aQe
 udM
-iAp
+nUs
 mdO
 ksq
 lIN
@@ -112662,7 +112641,7 @@ eJR
 myt
 oDX
 wWg
-etb
+lmB
 hFd
 xzv
 aaa
@@ -113689,7 +113668,7 @@ acK
 xzv
 htY
 cpF
-xFO
+qga
 lmB
 qga
 iGH
@@ -115446,7 +115425,7 @@ ovp
 nQy
 gjP
 bZG
-voX
+cbq
 sQQ
 ixs
 gvk
@@ -126457,7 +126436,7 @@ ahO
 ayj
 rGo
 iHM
-oRO
+voX
 nAv
 rmk
 njV
@@ -126714,7 +126693,7 @@ jRd
 ayl
 kuB
 rJF
-jwS
+oRO
 qfT
 cEQ
 aqh

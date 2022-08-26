@@ -116,6 +116,10 @@
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/rescue
 
+/obj/machinery/suit_storage_unit/toxins
+	mask_type = /obj/item/clothing/mask/breath
+	helmet_type = /obj/item/clothing/head/helmet/space/hardsuit/toxins
+	suit_type = /obj/item/clothing/suit/space/hardsuit/toxins
 /obj/machinery/suit_storage_unit/rd
 	mask_type = /obj/item/clothing/mask/breath
 	mod_type = /obj/item/mod/control/pre_equipped/research

@@ -38,9 +38,9 @@
 	/// How much battery power the MOD uses by just being on
 	var/charge_drain = DEFAULT_CHARGE_DRAIN
 	/// Slowdown of the MOD when not active.
-	var/slowdown_inactive = 1.25
+	var/slowdown_inactive = 0
 	/// Slowdown of the MOD when active.
-	var/slowdown_active = 0.75
+	var/slowdown_active = 0
 	/// Theme used by the MOD TGUI.
 	var/ui_theme = "ntos"
 	/// List of inbuilt modules. These are different from the pre-equipped suits, you should mainly use these for unremovable modules with 0 complexity.
@@ -113,8 +113,6 @@
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
-	slowdown_inactive = 1.5
-	slowdown_active = 1
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
@@ -159,8 +157,6 @@
 	armor = list(MELEE = 30, BULLET = 10, LASER = 25, ENERGY = 10, BOMB = 30, BIO = 100, FIRE = 100, ACID = 70, WOUND = 20)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
-	slowdown_inactive = 1.5
-	slowdown_active = 1
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
@@ -208,7 +204,6 @@
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
-	slowdown_inactive = 1
 	slowdown_active = 0.5
 	inbuilt_modules = list(/obj/item/mod/module/magboot/advanced)
 	allowed_suit_storage = list(
@@ -354,8 +349,6 @@
 	permeability_coefficient = 0.5
 	siemens_coefficient = 0.25
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 5
-	slowdown_inactive = 0.5
-	slowdown_active = 0
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
@@ -398,8 +391,6 @@
 	default_skin = "medical"
 	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100, WOUND = 20)
 	charge_drain = DEFAULT_CHARGE_DRAIN * 1.5
-	slowdown_inactive = 1
-	slowdown_active = 0.5
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
@@ -479,8 +470,6 @@
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	charge_drain = DEFAULT_CHARGE_DRAIN * 1.5
-	slowdown_inactive = 0.75
-	slowdown_active = 0.25
 	inbuilt_modules = list(/obj/item/mod/module/quick_carry/advanced)
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
@@ -541,8 +530,6 @@
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
-	slowdown_inactive = 0.5
-	slowdown_active = 1.25
 	inbuilt_modules = list(/obj/item/mod/module/reagent_scanner/advanced)
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
@@ -646,7 +633,7 @@
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 5
-	slowdown_active = 0.25
+	slowdown_active = 0.5
 	allowed_suit_storage = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,

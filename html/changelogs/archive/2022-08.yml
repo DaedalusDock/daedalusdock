@@ -23,3 +23,6 @@
 2022-08-25:
   Kapu1178:
   - bugfix: Lizards no longer have a hole in their left-facing legs.
+2022-08-26:
+  Kapu1178:
+  - rscadd: Title music will now display song name and author.

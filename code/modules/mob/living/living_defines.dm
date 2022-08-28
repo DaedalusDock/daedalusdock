@@ -175,3 +175,6 @@
 
 	///The amount of times we've opened our stupid mouth
 	var/talkcount = 0
+
+	///The talk chime set to use when speaking.
+	var/voice_type

@@ -236,9 +236,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	ticket_interactions = list()
 
 	if(is_bwoink)
-		AddInteraction("<font color='blue'>[key_name_admin(usr)] PM'd [LinkedReplyName()]</font>")
-		AddInteractionPlayer("<font color='blue'>[key_name_admin(usr, FALSE)] PM'd [LinkedReplyName()]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
-		message_admins("<font color='blue'>Ticket [TicketHref("#[id]")] created</font>")
+		AddInteraction("<span class='internal'>[key_name_admin(usr)] PM'd [LinkedReplyName()]</span>")
+		AddInteractionPlayer("<span class='internal'>[key_name_admin(usr, FALSE)] PM'd [LinkedReplyName()]</span>") // PARIAH EDIT ADDITION -- Player ticket viewing
+		message_admins("<span class='internal'>Ticket [TicketHref("#[id]")] created</span>")
 	else
 		MessageNoRecipient(msg_raw, urgent)
 		send_message_to_tgs(msg, urgent)

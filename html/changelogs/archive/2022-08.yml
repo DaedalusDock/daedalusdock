@@ -12,3 +12,17 @@
 2022-08-17:
   Kapu1178:
   - rscadd: Firelocks are now color-coded to the threat that caused them to drop.
+2022-08-20:
+  Kapu1178:
+  - rscadd: Atmos pump power load is now based on entropy
+  - tweak: Pipenets are "environmental" power to APCs
+  - tweak: Gas Mixers logic adjusted.
+2022-08-22:
+  BlackDog:
+  - soundadd: Server-specific arrival sound
+2022-08-25:
+  Kapu1178:
+  - bugfix: Lizards no longer have a hole in their left-facing legs.
+2022-08-26:
+  Kapu1178:
+  - rscadd: Title music will now display song name and author.

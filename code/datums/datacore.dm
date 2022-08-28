@@ -219,7 +219,6 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	dat = replacetext(dat, "\t", "")
 	return dat
 
-
 /datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
 	set waitfor = FALSE
 	var/static/list/show_directions = list(SOUTH, WEST)

@@ -514,6 +514,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(HAS_TRAIT(O, TRAIT_T_RAY_VISIBLE))
 				O.singularity_act()
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
+	SSblackbox.record_feedback("amount", "turfs_singulod", 1)
 	return(2)
 
 /turf/proc/can_have_cabling()

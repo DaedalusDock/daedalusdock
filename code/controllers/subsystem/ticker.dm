@@ -46,6 +46,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
 
 	var/news_report
+	///Round end statistics of the population
+	var/list/popcount
 
 
 	var/roundend_check_paused = FALSE
@@ -267,7 +269,7 @@ SUBSYSTEM_DEF(ticker)
 
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
 	round_start_time = world.time
-	round_start_timeofday = world.timeofday
+	round_start_timeofday = REALTIMEOFDAY
 	SSdbcore.SetRoundStart()
 
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
@@ -665,6 +667,8 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
+
+	SScredits?.clear_credits_from_clients()
 
 	world.Reboot()
 

@@ -8,6 +8,7 @@
 
 	. = ..()
 
+	SSblackbox.record_feedback("amount", "ai_deaths", 1)
 	cut_overlays() //remove portraits
 	var/old_icon = icon_state
 	if("[icon_state]_dead" in icon_states(icon))

@@ -173,5 +173,8 @@
 	/// Lazy list of FOV traits that will apply a FOV view when handled.
 	var/list/fov_traits
 
+	///The amount of times we've opened our stupid mouth
+	var/talkcount = 0
+
 	///The talk chime set to use when speaking.
 	var/voice_type

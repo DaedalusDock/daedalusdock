@@ -144,9 +144,6 @@
 	///Used for limiting the rate of clicks sends by the client to avoid abuse
 	var/list/clicklimiter
 
-	///lazy list of all credit object bound to this client
-	var/list/credits
-
 	///these persist between logins/logouts during the same round.
 	var/datum/player_details/player_details
 

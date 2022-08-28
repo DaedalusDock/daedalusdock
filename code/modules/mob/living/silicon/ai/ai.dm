@@ -109,6 +109,9 @@
 
 	var/atom/movable/screen/ai/modpc/interfaceButton
 
+	///Command report cooldown
+	COOLDOWN_DECLARE(command_report_cd)
+
 /mob/living/silicon/ai/Initialize(mapload, datum/ai_laws/L, mob/target_ai)
 	. = ..()
 	if(!target_ai) //If there is no player/brain inside.
@@ -1054,3 +1057,33 @@
 	if(ai_voicechanger&&ai_voicechanger.changing_voice)
 		return ai_voicechanger.say_name
 	return
+
+/mob/living/silicon/ai/verb/create_report()
+	set category = "AI Commands"
+	set name = "Station Announcement"
+
+	var/mob/living/silicon/ai/me = usr
+	if(!istype(me))
+		return
+	if(me.incapacitated())
+		return
+
+	if(!COOLDOWN_FINISHED(me, command_report_cd))
+		to_chat(me, span_danger("You cannot use this for [COOLDOWN_TIMELEFT(me, command_report_cd)/10] seconds!"))
+		return
+
+	var/message = input(me, "Enter a message (240 characters)", "Station Announcement", "") as null|text
+	if(!message)
+		return
+
+	var/sanitized_message = copytext(message, 1, 240)
+
+	if(length(message) != length(sanitized_message))
+		if(alert(me, "Your message was shortened to \"[sanitized_message]\", continue?", "Message Too Long", "Yes", "No") == "No")
+			return
+		else
+			priority_announce(sanitized_message, null, 'goon/sounds/announcement_1.ogg', "AI", has_important_message = TRUE)
+	else
+		priority_announce(message, null, 'goon/sounds/announcement_1.ogg', "AI", has_important_message = TRUE)
+
+	COOLDOWN_START(me, command_report_cd, 120 SECONDS)

@@ -126,6 +126,17 @@ window "mapwindow"
 		background-color = #222222
 		text-color = #ffffff
 		border = line
+	elem "credits"
+		type = BROWSER
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		text-color = #ffffff
+		background-color = #000000
+		is-visible = false
+		saved-params = ""
+		auto-format = false
 
 window "infowindow"
 	elem "infowindow"

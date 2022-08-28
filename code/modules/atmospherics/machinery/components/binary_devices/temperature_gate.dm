@@ -56,19 +56,17 @@
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
-
+	var/pressure_delta = air1.returnPressure() - air2.returnPressure()
 	if(!inverted)
 		if(air1.temperature < target_temperature)
-			var/transfer_moles = (ATMOS_DEFAULT_VOLUME_PUMP/air1.volume)*air1.total_moles
-			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)))
+			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)))
 				update_parents()
 				is_gas_flowing = TRUE
 		else
 			is_gas_flowing = FALSE
 	else
 		if(air1.temperature > target_temperature)
-			var/transfer_moles = (ATMOS_DEFAULT_VOLUME_PUMP/air1.volume)*air1.total_moles
-			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)))
+			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)))
 				update_parents()
 				is_gas_flowing = TRUE
 		else

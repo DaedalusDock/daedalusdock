@@ -43,6 +43,59 @@
 /mob/living/carbon/human/get_all_worn_items()
 	. = get_head_slots() | get_body_slots()
 
+///Bruteforce check for any type or subtype of an item.
+/mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
+	var/found
+	var/list/my_items = get_all_worn_items()
+	if(islist(type2check))
+		for(var/type_iterator in type2check)
+			found = locate(type_iterator) in my_items
+			if(found)
+				return found
+	else
+		found = locate(type2check) in my_items
+		return found
+
+
+/mob/living/carbon/human/get_slot_by_item(obj/item/looking_for)
+	if(looking_for == belt)
+		return ITEM_SLOT_BELT
+
+	if(looking_for == wear_id)
+		return ITEM_SLOT_ID
+
+	if(looking_for == ears)
+		return ITEM_SLOT_EARS
+
+	if(looking_for == glasses)
+		return ITEM_SLOT_EYES
+
+	if(looking_for == gloves)
+		return ITEM_SLOT_GLOVES
+
+	if(looking_for == head)
+		return ITEM_SLOT_HEAD
+
+	if(looking_for == shoes)
+		return ITEM_SLOT_FEET
+
+	if(looking_for == wear_suit)
+		return ITEM_SLOT_OCLOTHING
+
+	if(looking_for == w_uniform)
+		return ITEM_SLOT_ICLOTHING
+
+	if(looking_for == r_store)
+		return ITEM_SLOT_RPOCKET
+
+	if(looking_for == l_store)
+		return ITEM_SLOT_LPOCKET
+
+	if(looking_for == s_store)
+		return ITEM_SLOT_SUITSTORE
+
+	return ..()
+
 /mob/living/carbon/human/proc/get_body_slots()
 	return list(
 		back,

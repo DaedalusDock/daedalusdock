@@ -14,8 +14,11 @@
 	name = "dual-port air vent"
 	desc = "Has a valve and pump attached to it. There are two ports."
 
-	hide = TRUE
+	use_power = IDLE_POWER_USE
+	power_rating = 30000
 
+	hide = TRUE
+	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP
 	///Variable for radio frequency
 	var/frequency = 0
 	///Variable for radio id
@@ -74,17 +77,15 @@
 			return
 		if(air1.temperature <= 0)
 			return
-		var/transfer_moles = (pressure_delta*environment.volume)/(air1.temperature * R_IDEAL_GAS_EQUATION)
-
-		var/datum/gas_mixture/removed = air1.remove(transfer_moles)
-		//Removed can be null if there is no atmosphere in air1
-		if(!removed)
+		if(!air1.total_moles)
 			return
 
-		loc.assume_air(removed)
-
-		var/datum/pipeline/parent1 = parents[1]
-		parent1.update = TRUE
+		var/transfer_moles = calculate_transfer_moles(air1, environment, pressure_delta)
+		var/draw = pump_gas(air1, environment, transfer_moles, power_rating)
+		if(draw > 0)
+			ATMOS_USE_POWER(draw)
+			var/datum/pipeline/parent1 = parents[1]
+			parent1.update = TRUE
 
 	else //external -> output
 		var/pressure_delta = 10000
@@ -98,17 +99,15 @@
 			return
 		if(environment.temperature <= 0)
 			return
-		var/transfer_moles = (pressure_delta*air2.volume)/(environment.temperature * R_IDEAL_GAS_EQUATION)
-
-		var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
-		//removed can be null if there is no air in the location
-		if(!removed)
+		if(!environment.total_moles)
 			return
+		var/transfer_moles = calculate_transfer_moles(air2, environment, pressure_delta)
 
-		air2.merge(removed)
-
-		var/datum/pipeline/parent2 = parents[2]
-		parent2.update = TRUE
+		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
+		if(draw > 0)
+			ATMOS_USE_POWER(draw)
+			var/datum/pipeline/parent2 = parents[2]
+			parent2.update = TRUE
 
 	//Radio remote control
 
@@ -174,13 +173,13 @@
 		pump_direction = 1
 
 	if("set_input_pressure" in signal.data)
-		input_pressure_min = clamp(text2num(signal.data["set_input_pressure"]),0,ONE_ATMOSPHERE*50)
+		input_pressure_min = clamp(text2num(signal.data["set_input_pressure"]),0,MAX_PUMP_PRESSURE)
 
 	if("set_output_pressure" in signal.data)
-		output_pressure_max = clamp(text2num(signal.data["set_output_pressure"]),0,ONE_ATMOSPHERE*50)
+		output_pressure_max = clamp(text2num(signal.data["set_output_pressure"]),0,MAX_PUMP_PRESSURE)
 
 	if("set_external_pressure" in signal.data)
-		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,ONE_ATMOSPHERE*50)
+		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,MAX_PUMP_PRESSURE)
 
 	addtimer(CALLBACK(src, .proc/broadcast_status), 2)
 
@@ -189,13 +188,8 @@
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume
 	name = "large dual-port air vent"
-
-/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/New()
-	..()
-	var/datum/gas_mixture/air1 = airs[1]
-	var/datum/gas_mixture/air2 = airs[2]
-	air1.volume = 1000
-	air2.volume = 1000
+	initial_volume = 1000
+	power_rating = 45000
 
 // Mapping
 

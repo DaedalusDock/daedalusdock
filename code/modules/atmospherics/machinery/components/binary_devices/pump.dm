@@ -19,6 +19,9 @@
 	construction_type = /obj/item/pipe/directional
 	pipe_state = "pump"
 	vent_movement = NONE
+
+	power_rating = 7500
+
 	///Pressure that the pump will reach when on
 	var/target_pressure = ONE_ATMOSPHERE
 	///Frequency for radio signaling
@@ -66,7 +69,9 @@
 	var/datum/gas_mixture/air2 = airs[2]
 	//var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
 	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure())
-	if(pump_gas(air1, air2, transfer_moles))
+	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
+	if(draw > 0)
+		ATMOS_USE_POWER(draw)
 		update_parents()
 
 /**

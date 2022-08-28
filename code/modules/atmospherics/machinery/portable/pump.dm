@@ -14,6 +14,8 @@
 	icon_state = "siphon"
 	density = TRUE
 	max_integrity = 250
+
+	var/power_rating = 7500
 	///Max amount of heat allowed inside of the canister before it starts to melt (different tiers have different limits)
 	var/heat_limit = 5000
 	///Max amount of pressure allowed inside of the canister before it starts to break (different tiers have different limits)
@@ -79,11 +81,13 @@
 	var/transfer_moles = pressure_delta*output_volume/(air_temperature * R_IDEAL_GAS_EQUATION)
 
 	if (pressure_delta > 0.01)
+		var/draw
 		if (direction == PUMP_OUT)
-			pump_gas(air_contents, environment, transfer_moles)
+			draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
 		else
-			pump_gas(environment, air_contents, transfer_moles)
-	//air_update_turf(FALSE, FALSE) // Update the environment if needed.
+			draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
+		if(draw > 0)
+			ATMOS_USE_POWER(draw)
 
 	return ..()
 

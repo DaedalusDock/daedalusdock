@@ -272,6 +272,18 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	send_speech(message, message_range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 
+	///Play a sound to indicate we just spoke
+	if(client && !HAS_TRAIT(H, TRAIT_SIGN_LANG))
+		var/ending = copytext_char(message, -1)
+		var/sound/speak_sound
+		if(ending == "?")
+			speak_sound = voice_type2sound[voice_type]["?"]
+		else if(ending == "!")
+			speak_sound = voice_type2sound[voice_type]["!"]
+		else
+			speak_sound = voice_type2sound[voice_type][voice_type]
+		playsound(src, speak_sound, 300, 1, SHORT_RANGE_SOUND_EXTRARANGE-2, falloff_exponent = 0, pressure_affected = FALSE, ignore_walls = FALSE, use_reverb = FALSE)
+
 	if(succumbed)
 		succumb(TRUE)
 		to_chat(src, compose_message(src, language, message, , spans, message_mods))
@@ -282,6 +294,11 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	if(!client)
 		return
+
+	if(radio_freq && can_hear())
+		var/atom/movable/virtualspeaker/V = speaker
+		if(isAI(V.source))
+			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
 	var/deaf_message
 	var/deaf_type

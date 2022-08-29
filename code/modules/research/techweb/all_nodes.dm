@@ -1286,6 +1286,7 @@
 		"vacuum",
 		"holobarrier_jani",
 		"light_replacer",
+		"lightswitch_frame",
 		"paint_remover",
 		"spraybottle",
 	)

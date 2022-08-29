@@ -27,6 +27,7 @@
 	var/list/active_alarms = list()
 
 	var/lightswitch = TRUE
+	var/list/light_switches = list()
 
 	/// All beauty in this area combined, only includes indoor area.
 	var/totalbeauty = 0
@@ -142,6 +143,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		GLOB.areas_by_type[type] = src
 	power_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
 	alarm_manager = new(src) //Just in case. Apparently.
+	if(lightswitch && prob(50))
+		lightswitch = FALSE // dont do this in light switch initialize, then its a fucking 50% prob per light switch not for the area in general
 	return ..()
 
 /*
@@ -238,6 +241,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if(GLOB.areas_by_type[type] == src)
 		GLOB.areas_by_type[type] = null
 	GLOB.sortedAreas -= src
+	light_switches.Cut()
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(alarm_manager)
 	return ..()

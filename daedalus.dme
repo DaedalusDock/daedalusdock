@@ -4571,7 +4571,6 @@
 #include "modular_pariah\modules\aesthetics\janitor\janitor.dm"
 #include "modular_pariah\modules\aesthetics\kitchen\kitchen.dm"
 #include "modular_pariah\modules\aesthetics\lights\code\lighting.dm"
-#include "modular_pariah\modules\aesthetics\lightswitch\code\lightswitch.dm"
 #include "modular_pariah\modules\aesthetics\mining_shop\code\mining_shop.dm"
 #include "modular_pariah\modules\aesthetics\morgue\code\morgue.dm"
 #include "modular_pariah\modules\aesthetics\newscaster\code\newscaster.dm"

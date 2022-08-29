@@ -193,31 +193,31 @@ SUBSYSTEM_DEF(credits)
 /datum/controller/subsystem/credits/proc/draft_caststring()
 	cast_string = "<h1>CAST:</h1><br><h2>(in order of appearance)</h2><br>"
 	cast_string += "<table class='crewtable'>"
-	var/cast_num = 0
+	var/list/cast = list()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.ckey && !(H.stat == DEAD))
 			continue
 		cast_string += "[H.get_credits_entry()]"
-		cast_num++
+		cast += H
 
 	for(var/mob/living/silicon/S in GLOB.silicon_mobs)
 		if(!S.ckey)
 			continue
 		cast_string += "[S.get_credits_entry()]"
-		cast_num++
+		cast += S
 
-	if(!cast_num)
+	if(!length(cast))
 		cast_string += "<tr><td class='actorsegue'> Nobody! </td></tr>"
 
 	cast_string += "</table><br>"
 	cast_string += "<div class='disclaimers'>"
 
 	var/list/corpses = list()
-	for(var/mob/living/carbon/human/H in GLOB.dead_mob_list)
-		if(!H.mind)
+	for(var/datum/mind/M as anything in SSticker.minds)
+		if(!M.key || (M.current in cast))
 			continue
-		if(H.real_name)
-			corpses += H.real_name
+		if(M.name)
+			corpses += M.name
 	if(corpses.len)
 		var/true_story_bro = "<br>[pick("BASED ON","INSPIRED BY","A RE-ENACTMENT OF")] [pick("A TRUE STORY","REAL EVENTS","THE EVENTS ABOARD [uppertext(station_name())]")]"
 		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>[english_list(corpses)].<br>"

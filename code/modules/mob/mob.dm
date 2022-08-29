@@ -481,8 +481,19 @@
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, .proc/clear_from_recent_examines, ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
+
+			if(!isobserver(usr) && !(usr == examinify))
+				var/list/can_see_target = viewers(usr)
+				for(var/mob/M as anything in viewers(4, usr))
+					if(!M.client)
+						continue
+					if(M in can_see_target)
+						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
+					else
+						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
+
 
 	//PARIAH EDIT ADDITION
 	if(result.len)

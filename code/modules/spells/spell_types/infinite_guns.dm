@@ -17,6 +17,7 @@
 		C.drop_all_held_items()
 		var/GUN = new summon_path
 		C.put_in_hands(GUN)
+		SSblackbox.record_feedback("amount", "guns_spawned", 1)
 
 /obj/effect/proc_holder/spell/targeted/infinite_guns/gun
 

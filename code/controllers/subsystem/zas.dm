@@ -103,9 +103,11 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
-	var/last_process
 	var/active_zones = 0
 	var/next_id = 1
+
+	///The last process, as a string, before the previous run ended.
+	var/last_process
 
 ///Stops processing while all ZAS-controlled airs and fires are nulled and the subsystem is reinitialized.
 /datum/controller/subsystem/zas/proc/Reboot()
@@ -116,8 +118,7 @@ SUBSYSTEM_DEF(zas)
 	// Make sure we don't rebuild mid-tick.
 	if (state != SS_IDLE)
 		to_chat(world, span_boldannounce("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing."))
-		while (state != SS_IDLE)
-			stoplag()
+		UNTIL(state == SS_IDLE)
 
 	zas_settings = new //Reset the global zas settings
 
@@ -293,7 +294,7 @@ SUBSYSTEM_DEF(zas)
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
 //////////FIRES//////////
-	last_process = "FIRES"
+	last_process = "ZONE FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_fire.len)
@@ -327,6 +328,8 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
+//////////ZONES//////////
+	last_process = "ZONES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_zones.len)
@@ -587,3 +590,8 @@ SUBSYSTEM_DEF(zas)
 
 	lavaland_atmos = mix_real
 	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
+
+	var/log = "Lavaland atmos contains: "
+	for(var/gas in mix_real.gas)
+		log += "[mix_real.gas[gas]], "
+	log_game(log)

@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Nearby players can see when someone examines something.

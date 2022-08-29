@@ -1,0 +1,8 @@
+author: Kapu1178, Lohikar, CrimsonShrike
+delete-after: true
+changes:
+  - code_imp: ZAS runs even better. ZASers stay winning.
+  - rscadd: Rooms that are too spicy for humans are now visibly hot
+  - rscadd: Increased the brightness of emergency lights
+  - code_imp: Rotating light code. Not adding them ingame yet.
+  - balance: Fast Siphon speed reduced from 9x to 3x.

@@ -937,8 +937,6 @@ em {
   border-bottom: 1px dashed #fff;
 }
 
-/* PARIAH DARK MODE CLASSES */
-
 .examine_block {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(55, 55, 55, 0.33);
@@ -952,4 +950,10 @@ em {
   background: #222;
   height: 1px;
   margin: 8px 16px 8px 16px;
+}
+
+.subtle {
+  color: #4343ca;
+  font-size: 75%;
+  font-style: italic;
 }

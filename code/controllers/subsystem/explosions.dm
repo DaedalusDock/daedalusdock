@@ -310,6 +310,9 @@ SUBSYSTEM_DEF(explosions)
 		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
 
 	var/max_range = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
+
+	if(devastation_range)
+		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 	var/started_at = REALTIMEOFDAY
 
 	// Now begins a bit of a logic train to find out whodunnit.

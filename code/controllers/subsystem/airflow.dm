@@ -8,7 +8,7 @@
 	TARGET.airborne_acceleration = 0; \
 	if (TARGET.airflow_originally_not_dense) { \
 		TARGET.set_density(FALSE); \
-	}
+	} \
 
 
 SUBSYSTEM_DEF(airflow)

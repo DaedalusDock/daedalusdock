@@ -246,6 +246,28 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 		else
 			CRASH("Invalid/unsupported color format argument in color_to_full_rgba_matrix()")
 
+//Returns an identity color matrix which does nothing
+/proc/color_identity()
+	return list(1,0,0, 0,1,0, 0,0,1)
+
+//Moves all colors angle degrees around the color wheel while maintaining intensity of the color and not affecting whites
+//TODO: Need a version that only affects one color (ie shift red to blue but leave greens and blues alone)
+/proc/color_rotation(angle)
+	if(angle == 0)
+		return color_identity()
+	angle = clamp(angle, -180, 180)
+	var/cos = cos(angle)
+	var/sin = sin(angle)
+
+	var/constA = 0.143
+	var/constB = 0.140
+	var/constC = -0.283
+	return list(
+		LUMA_R + cos * (1-LUMA_R) + sin * -LUMA_R, LUMA_R + cos * -LUMA_R + sin * constA, LUMA_R + cos * -LUMA_R + sin * -(1-LUMA_R),
+		LUMA_G + cos * -LUMA_G + sin * -LUMA_G, LUMA_G + cos * (1-LUMA_G) + sin * constB, LUMA_G + cos * -LUMA_G + sin * LUMA_G,
+		LUMA_B + cos * -LUMA_B + sin * (1-LUMA_B), LUMA_B + cos * -LUMA_B + sin * constC, LUMA_B + cos * (1-LUMA_B) + sin * LUMA_B
+	)
+
 #undef LUMA_R
 #undef LUMA_G
 #undef LUMA_B

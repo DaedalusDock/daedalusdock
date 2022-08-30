@@ -258,8 +258,9 @@ SUBSYSTEM_DEF(credits)
 		return star
 	if(ismob(star))
 		var/mob/M = star
-		if(M.mind.key && M.client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
-			return "[uppertext(M.mind.key)] as [M.real_name]"
+		var/datum/preferences/prefs = GLOB.preferences_datums[ckey(M.mind.key)]
+		if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+			return "[uppertext(ckey(M.mind.key))] as [M.real_name]"
 		else
 			return "[uppertext(M.real_name)] as [M.p_them(TRUE) == "Them" ? "Themselves" : "[M.p_them(TRUE)]self"]"
 

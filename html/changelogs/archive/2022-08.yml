@@ -29,3 +29,16 @@
 2022-08-29:
   Kapu1178, I-VAPE-VOX-CLOACA-EVERY-DAY-OF-MY-LIFE, boy2mantwicethefam, kane-f,:
   - rscadd: Added new credits roll at end of round
+2022-08-30:
+  Kapu1178:
+  - balance: Diagonal movement is slower than orthogonal movement
+  - rscadd: Nearby players can see when someone examines something.
+  - tweak: Soft Lighting re-enabled.
+  Kapu1178, Lohikar, CrimsonShrike:
+  - code_imp: ZAS runs even better. ZASers stay winning.
+  - rscadd: Rooms that are too spicy for humans are now visibly hot
+  - rscadd: Increased the brightness of emergency lights
+  - code_imp: Rotating light code. Not adding them ingame yet.
+  - balance: Fast Siphon speed reduced from 9x to 3x.
+  ZephyrTFA:
+  - rscadd: Building lightswitches.

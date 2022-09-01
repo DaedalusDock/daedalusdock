@@ -22,7 +22,6 @@
 	assemblytype = /obj/structure/firelock_frame
 	armor = list(MELEE = 10, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
-
 	door_align_type = /obj/machinery/door/firedoor
 
 	align_to_windows = TRUE
@@ -48,15 +47,13 @@
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
-	if(prob(0.004) && icon == 'icons/obj/doors/doorfireglass.dmi')
-		base_icon_state = "sus"
-		desc += " This one looks a bit sus..."
-
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door/firedoor/LateInitialize()
 	. = ..()
 	set_area(get_area(src))
+	if(loc.z == 2 && loc.y == 124 && (loc.x in list(125, 126, 127)))
+		loc:verbose = TRUE
 
 /obj/machinery/door/firedoor/Destroy()
 	set_area(null)

@@ -167,16 +167,18 @@ Class Procs:
 	var/zone/B
 
 /connection_edge/zone/New(zone/A, zone/B)
-
 	src.A = A
 	src.B = B
-	A.edges.Add(src)
-	B.edges.Add(src)
+	A.edges[B] = src
+	B.edges[A] = src
 	//id = edge_id(A,B)
 	#ifdef ZASDBG
 	if(verbose)
 		zas_log("New edge between [A] and [B]")
 	#endif
+
+	SSzas.edges += src
+	recheck()
 
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
@@ -190,8 +192,8 @@ Class Procs:
 	return A == Z || B == Z
 
 /connection_edge/zone/erase()
-	A.edges.Remove(src)
-	B.edges.Remove(src)
+	A.edges -= B
+	B.edges -= A
 	return ..()
 
 /connection_edge/zone/tick()
@@ -216,7 +218,7 @@ Class Procs:
 	SSzas.mark_zone_update(B)
 
 /connection_edge/zone/recheck()
-	if(!A.air.compare(B.air, vacuum_exception = 1))
+	if(!A.air.compare(B.air))
 	// Edges with only one side being vacuum need processing no matter how close.
 		SSzas.mark_edge_active(src)
 
@@ -251,12 +253,15 @@ Class Procs:
 /connection_edge/unsimulated/New(zone/A, turf/B)
 	src.A = A
 	src.B = B
-	A.edges.Add(src)
+	A.edges[B] = src
 	air = B.return_air()
 	#ifdef ZASDBG
 	if(verbose)
-		log_admin("New edge from [A] to [B] ([B.x], [B.y], [B.z]).")
+		zas_log("New edge from [A] to [B] ([B.x], [B.y], [B.z]).")
 	#endif
+
+	SSzas.edges += src
+	recheck()
 
 
 /connection_edge/unsimulated/add_connection(connection/c)
@@ -270,7 +275,7 @@ Class Procs:
 	return ..()
 
 /connection_edge/unsimulated/erase()
-	A.edges.Remove(src)
+	A.edges -= B
 	return ..()
 
 /connection_edge/unsimulated/contains_zone(zone/Z)
@@ -295,7 +300,7 @@ Class Procs:
 	// Edges with only one side being vacuum need processing no matter how close.
 	// Note: This handles the glaring flaw of a room holding pressure while exposed to space, but
 	// does not specially handle the less common case of a simulated room exposed to an unsimulated pressurized turf.
-	if(!A.air.compare(air, vacuum_exception = 1))
+	if(!A.air.compare(air))
 		SSzas.mark_edge_active(src)
 
 /connection_edge/unsimulated/queue_spacewind()

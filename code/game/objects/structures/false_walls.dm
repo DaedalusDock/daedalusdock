@@ -348,6 +348,8 @@
 	name = "wooden wall"
 	desc = "A wall with wooden plating. Stiff."
 	icon = 'icons/turf/walls/wood_wall.dmi'
+	icon_state = "wood_wall-0"
+	base_icon_state = "wood_wall"
 	plating_material = /datum/material/wood
 
 /obj/structure/falsewall/iron

@@ -52,8 +52,6 @@
 /obj/machinery/door/firedoor/LateInitialize()
 	. = ..()
 	set_area(get_area(src))
-	if(loc.z == 2 && loc.y == 124 && (loc.x in list(125, 126, 127)))
-		loc:verbose = TRUE
 
 /obj/machinery/door/firedoor/Destroy()
 	set_area(null)

@@ -70,6 +70,8 @@ Class Procs:
 	ASSERT(!invalid)
 	ASSERT(istype(T))
 	ASSERT(!TURF_HAS_VALID_ZONE(T))
+
+	T.maptext = name
 #endif
 
 	var/datum/gas_mixture/turf_air = T.return_air()
@@ -92,6 +94,8 @@ Class Procs:
 	ASSERT(istype(T))
 	ASSERT(T.zone == src)
 	soft_assert(T in contents, "Lists are weird broseph")
+
+	T.maptext = null
 #endif
 	if(!T.can_safely_remove_from_zone())
 		INVOKE_ASYNC(src, .proc/rebuild)

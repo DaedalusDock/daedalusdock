@@ -113,6 +113,7 @@ SUBSYSTEM_DEF(zas)
 /datum/controller/subsystem/zas/proc/Reboot()
 	// Stop processing while we rebuild.
 	can_fire = FALSE
+	times_fired = 0 // This is done to prevent the geometry bug explained in connect()
 	next_id = 0 //Reset atmos zone count.
 
 	// Make sure we don't rebuild mid-tick.
@@ -408,7 +409,11 @@ SUBSYSTEM_DEF(zas)
 	var/space = !B.simulated
 
 	if(!space)
-		if(min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
+		// Ok. This is super fucking cursed, but, it has to be this way.
+		// Basically, it's possible that during the initial geometry build, a zone can be created in a spot
+		// such that it merges over zone-blocker due to the minimum size requirement being met to merge over blockers.
+		// To fix this, we disable that during the geometry build, which takes place during Initialize()
+		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && equivalent_pressure(A.zone,B.zone)))
 			merge(A.zone,B.zone)
 			return TRUE
 

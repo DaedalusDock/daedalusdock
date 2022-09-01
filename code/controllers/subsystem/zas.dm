@@ -113,6 +113,7 @@ SUBSYSTEM_DEF(zas)
 /datum/controller/subsystem/zas/proc/Reboot()
 	// Stop processing while we rebuild.
 	can_fire = FALSE
+	times_fired = 0 // This is done to prevent the geometry bug explained in connect()
 	next_id = 0 //Reset atmos zone count.
 
 	// Make sure we don't rebuild mid-tick.

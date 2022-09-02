@@ -1,4 +1,3 @@
-author: Kapu1178
-delete-after: true
-changes:
+2022-09-02:
+  Kapu1178:
   - bugfix: Some oddities with ZAS fixed. Notably on Metastation.

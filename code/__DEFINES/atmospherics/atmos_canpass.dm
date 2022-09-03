@@ -1,5 +1,5 @@
 ///Enables profiling ATMOS_CANPASS_TURF. Profile data is stored in SSzas.
-#define PROFILE_ZAS_CANPASS
+//#define PROFILE_ZAS_CANPASS
 
 #ifdef PROFILE_ZAS_CANPASS
 #warn zas_canpass profiling enabled

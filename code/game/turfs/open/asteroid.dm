@@ -123,7 +123,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 /turf/open/misc/asteroid/basalt/lava //lava underneath
 	baseturfs = /turf/open/lava/smooth
 
-/turf/open/misc/asteroid/basalt/safe_air //Used on Centcomm
+/turf/open/misc/asteroid/basalt/safe_air //Used on Centcom
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	temperature = T20C
 

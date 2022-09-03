@@ -12,7 +12,7 @@
 		ret = AIR_BLOCKED|ZONE_BLOCKED; \
 	} \
 	else if (B.z != A.z) { \
-		var/canpass_dir = get_dir_multiz(B, A); \
+		var/canpass_dir = get_dir_multiz_fast(B, A); \
 		if(canpass_dir) { \
 			if (canpass_dir & UP) { \
 				ret = ((A.z_flags & Z_ATMOS_IN_DOWN) && (B.z_flags & Z_ATMOS_OUT_UP)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
@@ -110,7 +110,7 @@
 
 	else if (B.z != A.z)
 		clock = TICK_USAGE
-		var/canpass_dir = get_dir_multiz(B, A)
+		var/canpass_dir = get_dir_multiz_fast(B, A)
 		if(canpass_dir)
 			if (canpass_dir & UP)
 				. = ((A.z_flags & Z_ATMOS_IN_DOWN) && (B.z_flags & Z_ATMOS_OUT_UP)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED

@@ -1,5 +1,5 @@
 ///Enables verbose debugging and the debug overlay. NOTE: Debug Overlay does not report MultiZAS information at this time.
-#define ZASDBG
+//#define ZASDBG
 
 ///Enables multi-Z air movement. Zones do not merge across Z levels.
 #define MULTIZAS
@@ -55,96 +55,18 @@
 #define TURF_HAS_VALID_ZONE(T) (T.simulated && T.zone && !T.zone.invalid)
 
 #ifdef MULTIZAS
+
 ///"Can safely remove from zone"
 GLOBAL_REAL_VAR(list/csrfz_check) = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, NORTHUP, EASTUP, WESTUP, SOUTHUP, NORTHDOWN, EASTDOWN, WESTDOWN, SOUTHDOWN)
 ///"Get zone neighbors"
 GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 
-///Can air move from B to A?
-#define ATMOS_CANPASS_TURF(ret,A,B) \
-	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
-		ret = AIR_BLOCKED|ZONE_BLOCKED; \
-	} \
-	else if (B.z != A.z) { \
-		var/canpass_dir = get_dir_multiz(B, A); \
-		if(canpass_dir) { \
-			if (canpass_dir & UP) { \
-				ret = ((A.z_flags & Z_ATMOS_IN_DOWN) && (B.z_flags & Z_ATMOS_OUT_UP)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
-			} \
-			else { \
-				ret = ((A.z_flags & Z_ATMOS_IN_UP) && (B.z_flags & Z_ATMOS_OUT_DOWN)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
-			} \
-		} \
-		else { \
-			ret = AIR_BLOCKED|ZONE_BLOCKED; \
-		} \
-	} \
-	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
-		ret = (A.z == B.z) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
-	} \
-	else if (A.contents.len) { \
-		ret = 0;\
-		for (var/atom/movable/AM as anything in A) { \
-			switch (AM.can_atmos_pass) { \
-				if (CANPASS_ALWAYS) { \
-					continue; \
-				} \
-				if (CANPASS_DENSITY) { \
-					if (AM.density) { \
-						ret |= AIR_BLOCKED|ZONE_BLOCKED; \
-					} \
-				} \
-				if (CANPASS_PROC) { \
-					ret |= AM.zas_canpass(B); \
-				} \
-				if (CANPASS_NEVER) { \
-					ret = AIR_BLOCKED|ZONE_BLOCKED; \
-				} \
-			} \
-			if (ret & AIR_BLOCKED) { \
-				break;\
-			}\
-		}\
-	}
 #else
 
 ///"Can safely remove from zone"
 GLOBAL_REAL_VAR(list/csrfz_check) = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 ///"Get zone neighbors"
 GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
-
-///Can air move from B to A?
-#define ATMOS_CANPASS_TURF(ret,A,B) \
-	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
-		ret = AIR_BLOCKED|ZONE_BLOCKED; \
-	} \
-	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
-		ret = ZONE_BLOCKED; \
-	} \
-	else if (A.contents.len) { \
-		ret = 0;\
-		for (var/atom/movable/AM as anything in A) { \
-			switch (AM.can_atmos_pass) { \
-				if (CANPASS_ALWAYS) { \
-					continue; \
-				} \
-				if (CANPASS_DENSITY) { \
-					if (AM.density) { \
-						ret |= AIR_BLOCKED|ZONE_BLOCKED; \
-					} \
-				} \
-				if (CANPASS_PROC) { \
-					ret |= AM.zas_canpass(B); \
-				} \
-				if (CANPASS_NEVER) { \
-					ret = AIR_BLOCKED|ZONE_BLOCKED; \
-				} \
-			} \
-			if (ret & AIR_BLOCKED) { \
-				break;\
-			}\
-		}\
-	}
 
 #endif
 

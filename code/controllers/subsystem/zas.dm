@@ -103,7 +103,16 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
+	#ifdef ZASDBG
+	/// Profile data for zone.tick(), in milliseconds
 	var/list/zonetime = list()
+	#endif
+
+	#ifdef PROFILE_ZAS_CANPASS
+	var/list/canpass_step_usage = list()
+	var/list/canpass_time_spent = list()
+	var/list/canpass_time_average = list()
+	#endif
 
 	var/active_zones = 0
 	var/next_id = 1
@@ -419,7 +428,7 @@ SUBSYSTEM_DEF(zas)
 		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && A.zone.air.compare(B.zone.air)))
 			merge(A.zone,B.zone)
 			return TRUE
-	else
+	else if(!B.air)
 		/// The logic around get_edge() requires air to exist at this point, which it probably should.
 		B.make_air()
 
@@ -473,24 +482,24 @@ SUBSYSTEM_DEF(zas)
 	Z.needs_update = 1
 
 ///Sleeps an edge, preventing it from processing.
-/datum/controller/subsystem/zas/proc/mark_edge_sleeping(connection_edge/E)
+/datum/controller/subsystem/zas/proc/sleep_edge(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
-	if(E.sleeping)
+	if(!E.excited)
 		return
 	active_edges -= E
-	E.sleeping = 1
+	E.excited = FALSE
 
 ///Wakes an edge, adding it to the active process list.
-/datum/controller/subsystem/zas/proc/mark_edge_active(connection_edge/E)
+/datum/controller/subsystem/zas/proc/excite_edge(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
-	if(!E.sleeping)
+	if(E.excited)
 		return
 	active_edges += E
-	E.sleeping = FALSE
+	E.excited = TRUE
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
 /datum/controller/subsystem/zas/proc/get_edge(zone/A, datum/B)
@@ -521,7 +530,7 @@ SUBSYSTEM_DEF(zas)
 ///Removes an edge from the subsystem.
 /datum/controller/subsystem/zas/proc/remove_edge(connection_edge/E)
 	edges -= E
-	if(!E.sleeping)
+	if(E.excited)
 		active_edges -= E
 	if(processing_edges)
 		processing_edges -= E

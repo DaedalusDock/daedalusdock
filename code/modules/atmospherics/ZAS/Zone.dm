@@ -185,14 +185,20 @@ Class Procs:
 
 ///Zone's process proc.
 /zone/proc/tick()
+
+	#ifdef ZASDBG
 	var/clock = TICK_USAGE
+	#endif
+
 	// Update fires.
 	if(air.temperature >= PHORON_FLASHPOINT && !length(fire_tiles) && length(contents) && !(src in SSzas.active_fire_zones) && air.check_combustability())
 		var/turf/T = pick(contents)
 		T.create_fire(zas_settings.fire_firelevel_multiplier)
 
+	#ifdef ZASDBG
 	SSzas.zonetime["update fires"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
+	#endif
 
 	// Update gas overlays, with some reference passing tomfoolery.
 	var/list/graphic_add = list()
@@ -201,17 +207,21 @@ Class Procs:
 		for(var/turf/T as anything in contents)
 			T.update_graphic(graphic_add, graphic_remove)
 
+	#ifdef ZASDBG
 	SSzas.zonetime["tile graphic"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
+	#endif
 
 	// Update connected edges.
 	for(var/edge_source in edges)
 		var/connection_edge/E = edges[edge_source]
-		if(E.sleeping)
+		if(!E.excited)
 			E.recheck()
 
+	#ifdef ZASDBG
 	SSzas.zonetime["check edges"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
+	#endif
 	// Handle condensation from the air.
 	/*
 	for(var/g in air.gas)
@@ -237,8 +247,10 @@ Class Procs:
 					QUEUE_TEMPERATURE_ATOMS(checking)
 			CHECK_TICK
 
+	#ifdef ZASDBG
 	SSzas.zonetime["queue temperature"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
+	#endif
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)

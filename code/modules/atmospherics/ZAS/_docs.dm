@@ -17,12 +17,5 @@ Important Functions:
 
 SSair.mark_for_update(turf)
 	When stuff happens, call this. It works on everything. You basically don't need to worry about any other
-	functions besides CanPass().
-
-Notes for people who used ZAS before:
-	There is no connected_zones anymore.
-	To get the zones that are connected to a zone, use this loop:
-	for(var/connection_edge/zone/edge in zone.edges)
-		var/zone/connected_zone = edge.get_connected_zone(zone)
-
+	functions besides the ATMOS_CANPASS_TURF() macro.
 */

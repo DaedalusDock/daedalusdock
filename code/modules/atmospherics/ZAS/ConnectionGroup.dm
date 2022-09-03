@@ -50,21 +50,20 @@ Class Procs:
 		Airflow proc causing all objects in movable to be checked against a pressure differential.
 		If repelled is true, the objects move away from any turf in connecting_turfs, otherwise they approach.
 		A check against zas_settings.lightest_airflow_pressure should generally be performed before calling this.
-
-	get_connected_zone(zone/from)
-		Helper proc that allows getting the other zone of an edge given one of them.
-		Only on /connection_edge/zone, otherwise use A.
-
 */
 
 
 /connection_edge
+	///All connection edges "originate" from a zone. They can connect to either another zone, or an unsimulated turf.
 	var/zone/A
 
 	///An associative list of {turf = TRUE}, containing all the the turfs that make up the connection
 	var/list/connecting_turfs = list()
+	///Indirect connections are connections made by zoneblocking turfs.
 	var/direct = 0
-	var/sleeping = 1
+	///Edges do not process inherently. They must be excited by SSzas.excite_edge().
+	var/excited = FALSE
+	///This is a marker for how many connections are on this edge. Used to determine the ratio of flow.
 	var/coefficient = 0
 
 	///The last time the "woosh" airflow sound played, world.time
@@ -212,7 +211,7 @@ Class Procs:
 			return
 		else
 			A.air.equalize(B.air)
-			SSzas.mark_edge_sleeping(src)
+			SSzas.sleep_edge(src)
 
 	SSzas.mark_zone_update(A)
 	SSzas.mark_zone_update(B)
@@ -220,7 +219,7 @@ Class Procs:
 /connection_edge/zone/recheck()
 	if(!A.air.compare(B.air))
 	// Edges with only one side being vacuum need processing no matter how close.
-		SSzas.mark_edge_active(src)
+		SSzas.excite_edge(src)
 
 /connection_edge/zone/queue_spacewind()
 	var/differential = A.air.returnPressure() - B.air.returnPressure()
@@ -238,14 +237,6 @@ Class Procs:
 
 		flow(attracted, abs(differential), 0)
 		flow(repelled, abs(differential), 1)
-
-///Helper proc to get connections for a zone.
-/connection_edge/zone/proc/get_connected_zone(zone/from)
-	if(A == from)
-		return B
-	else
-		return A
-
 /connection_edge/unsimulated
 	var/turf/B
 	var/datum/gas_mixture/air
@@ -292,7 +283,7 @@ Class Procs:
 
 	if(equiv)
 		A.air.copyFrom(air)
-		SSzas.mark_edge_sleeping(src)
+		SSzas.sleep_edge(src)
 
 	SSzas.mark_zone_update(A)
 
@@ -301,7 +292,7 @@ Class Procs:
 	// Note: This handles the glaring flaw of a room holding pressure while exposed to space, but
 	// does not specially handle the less common case of a simulated room exposed to an unsimulated pressurized turf.
 	if(!A.air.compare(air))
-		SSzas.mark_edge_active(src)
+		SSzas.excite_edge(src)
 
 /connection_edge/unsimulated/queue_spacewind()
 	var/differential = A.air.returnPressure() - air.returnPressure()

@@ -775,7 +775,11 @@
 	density = 0;
 	icon_state = "open";
 	name = "Dormitories";
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /obj/item/stack/rods,
 /obj/item/shard{
@@ -1083,7 +1087,11 @@
 	id_tag = "awaydorm4";
 	name = "Dorm 1";
 	opacity = 0;
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/wood{
@@ -1369,7 +1377,11 @@
 	icon_state = "open";
 	opacity = 0;
 	req_access_txt = "150";
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating{
@@ -1459,7 +1471,11 @@
 	icon_state = "open";
 	opacity = 0;
 	req_access_txt = "150";
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
@@ -2001,7 +2017,11 @@
 	name = "Xenobiology Lab";
 	opacity = 0;
 	req_access_txt = "201";
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /obj/structure/cable,
 /turf/open/floor/iron{
@@ -2984,7 +3004,11 @@
 	name = "Research Director's Office";
 	opacity = 0;
 	req_access_txt = "201";
-	set_obj_flags = "EMAGGED"
+	
+	},
+/obj/effect/mapping_helpers/atom_injector/obj_flag{
+	inject_flags = 1;
+	target_type = /obj/machinery/door/airlock
 	},
 /turf/open/floor/iron/cafeteria{
 	dir = 5

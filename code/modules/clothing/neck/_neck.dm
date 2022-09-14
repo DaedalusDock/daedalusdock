@@ -255,3 +255,45 @@
 	name = "horrific necktie"
 	icon_state = "eldritch_tie"
 	desc = "The necktie is adorned with a garish pattern. It's disturbingly vivid. Somehow you feel as if it would be wrong to ever take it off. It's your friend now. You will betray it if you change it for some boring scarf."
+
+
+//Mantles
+
+/obj/item/clothing/neck/mantle
+	name = "contact a coder if you see this"
+	desc = "I shouldn't exist, not yet atleast."
+
+/obj/item/clothing/neck/mantle/qm
+	name = "quartermaster's mantle"
+	desc = "A snug and comfortable looking shoulder covering garment, it has an air of rebellion and independance. Or annoyance and delusions, your call."
+	icon_state = "qmmantle"
+
+/obj/item/clothing/neck/mantle/rd
+	name = "research director's mantle"
+	desc = "A fancy velvety purple mantle, for all of your weird experiments! It faintly smells of sterile chemicals and has an air burnt dreams."
+	icon_state = "rdmantle"
+
+/obj/item/clothing/neck/mantle/hos
+	name = "head of security's mantle"
+	desc = "A robust and strangely form fitting shoulder garment for those that have taken the mantle of the Head of Security, it has an air of robust authority, or of a powertripping tyrant, your call."
+	icon_state = "hosmantle"
+
+/obj/item/clothing/neck/mantle/cmo
+	name = "chief medical officer's mantle"
+	desc = "A sterile blue mantle, for the boss that needs their arms free during those hectic hours. It faintly smells of alcohol and has an air of apathetic professionalism."
+	icon_state = "cmomantle"
+
+/obj/item/clothing/neck/mantle/ce
+	name = "chief engineer's mantle"
+	desc = "A strangely non lead lined mantle for the boss who stares at a yellow rock for too long. It faintly smells of ruined dreams and has an air of days ended early."
+	icon_state = "cemantle"
+
+/obj/item/clothing/neck/mantle/cap
+	name = "captain's mantle"
+	desc = "A regal blue mantle with a trim made from the dangerously endangered space mammoth's wool, for the station's commander. It faintly smells of a burning station, and has an air of true undivided authority."
+	icon_state = "capmantle"
+
+/obj/item/clothing/neck/mantle/hop
+	name = "head of personnel's mantle"
+	desc = "A spiffy blue mantle for the second banana of the station to look good at their desk. It reeks of stale dog breath, with bits of orange fur stuck to it. It has an air of reliability, or a power abusing lunatic, your call."
+	icon_state = "hopmantle"

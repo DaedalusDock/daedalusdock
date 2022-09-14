@@ -57,6 +57,7 @@
 	new /obj/item/clothing/neck/cloak/cap(src)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/captain(src)
+	new /obj/item/clothing/neck/mantle/cap(src)
 
 
 /obj/item/storage/bag/garment/hop/PopulateContents()
@@ -68,6 +69,7 @@
 	new /obj/item/clothing/neck/cloak/hop(src)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/hop(src)
+	new /obj/item/clothing/neck/mantle/hop(src)
 
 /obj/item/storage/bag/garment/hos/PopulateContents()
 	new /obj/item/clothing/under/rank/security/head_of_security/grey(src)
@@ -85,6 +87,7 @@
 	new /obj/item/clothing/mask/gas/sechailer/swat(src)
 	new /obj/item/clothing/neck/cloak/hos(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/security/hos(src)
+	new /obj/item/clothing/neck/mantle/hos(src)
 
 /obj/item/storage/bag/garment/research_director/PopulateContents()
 	new /obj/item/clothing/under/rank/rnd/research_director(src)
@@ -98,6 +101,7 @@
 	new /obj/item/clothing/neck/cloak/rd(src)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/science/rd(src)
+	new /obj/item/clothing/neck/mantle/rd(src)
 
 /obj/item/storage/bag/garment/chief_medical/PopulateContents()
 	new /obj/item/clothing/head/beret/medical/cmo(src)
@@ -108,6 +112,7 @@
 	new /obj/item/clothing/neck/cloak/cmo(src)
 	new /obj/item/clothing/shoes/sneakers/blue (src)
 	new /obj/item/clothing/suit/hooded/wintercoat/medical/cmo(src)
+	new /obj/item/clothing/neck/mantle/cmo(src)
 
 /obj/item/storage/bag/garment/engineering_chief/PopulateContents()
 	new /obj/item/clothing/under/rank/engineering/chief_engineer(src)
@@ -119,4 +124,5 @@
 	new /obj/item/clothing/neck/cloak/ce(src)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/engineering/ce(src)
+	new /obj/item/clothing/neck/mantle/ce(src)
 

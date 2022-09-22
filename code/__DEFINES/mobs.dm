@@ -67,17 +67,17 @@
 #define BP_BLOCK_CHANGE_SPECIES (1<<0)
 
 //Bodytype defines for how things can be worn, surgery, and other misc things.
-///The limb is organic
+///The limb is organic.
 #define BODYTYPE_ORGANIC (1<<0)
-///The limb is robotic
+///The limb is robotic.
 #define BODYTYPE_ROBOTIC (1<<1)
-///The limb fits the human mold
+///The limb fits the human mold. This is not meant to be literal, if the sprite "fits" on a human, it is "humanoid", regardless of origin.
 #define BODYTYPE_HUMANOID (1<<2)
-///The limb is digitigrade
-#define BODYTYPE_DIGITIGRADE (1<<3) //Cancer
-///The limb fits the monkey mold
+///The limb is digitigrade.
+#define BODYTYPE_DIGITIGRADE (1<<3)
+///The limb fits the monkey mold.
 #define BODYTYPE_MONKEY (1<<4)
-///The limb is snouted
+///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
@@ -91,6 +91,12 @@
 #define BODYTYPE_TESHARI (1<<10)
 
 //Defines for Species IDs
+///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
+#define BODYTYPE_LARVA_PLACEHOLDER (1<<11)
+///The limb is from a xenomorph.
+#define BODYTYPE_ALIEN (1<<12)
+
+// Defines for Species IDs. Used to refer to the name of a species, for things like bodypart names or species preferences.
 #define SPECIES_ABDUCTOR "abductor"
 #define SPECIES_ANDROID "android"
 #define SPECIES_DULLAHAN "dullahan"
@@ -122,6 +128,12 @@
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
 #define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
 
+// Like species IDs, but not specifically attached a species.
+#define BODYPART_ID_ALIEN "alien"
+#define BODYPART_ID_ROBOTIC "robotic"
+#define BODYPART_ID_DIGITIGRADE "digitigrade"
+#define BODYPART_ID_LARVA "larva"
+
 //See: datum/species/var/digitigrade_customization
 ///The species does not have digitigrade legs in generation.
 #define DIGITIGRADE_NEVER 0
@@ -130,13 +142,8 @@
 ///The species is forced to have digitigrade legs in generation.
 #define DIGITIGRADE_FORCED 2
 
-//TODO: Remove entirely in favor of the BODYTYPE system
-///Body type bitfields for allowed_animal_origin used to check compatible surgery body types (use NONE for no matching body type)
-#define HUMAN_BODY (1 << 0)
-#define MONKEY_BODY (1 << 1)
-#define ALIEN_BODY (1 << 2)
-#define LARVA_BODY (1 << 3)
-/*see __DEFINES/inventory.dm for bodypart bitflag defines*/
+///Digitigrade's prefs, used in features for legs if you're meant to be a Digitigrade.
+#define DIGITIGRADE_LEGS "Digitigrade Legs"
 
 // Health/damage defines
 #define MAX_LIVING_HEALTH 100

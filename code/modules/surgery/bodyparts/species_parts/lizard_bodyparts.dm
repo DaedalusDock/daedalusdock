@@ -40,7 +40,7 @@
 
 /obj/item/bodypart/leg/left/digitigrade
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
-	limb_id = "digitigrade"
+	limb_id = BODYPART_ID_DIGITIGRADE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
@@ -55,14 +55,14 @@
 			suit_compatible = TRUE
 
 		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = "digitigrade"
+			limb_id = BODYPART_ID_DIGITIGRADE
 
 		else
 			limb_id = "lizard"
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
-	limb_id = "digitigrade"
+	limb_id = BODYPART_ID_DIGITIGRADE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
@@ -77,7 +77,7 @@
 			suit_compatible = TRUE
 
 		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = "digitigrade"
+			limb_id = BODYPART_ID_DIGITIGRADE
 
 		else
 			limb_id = "lizard"

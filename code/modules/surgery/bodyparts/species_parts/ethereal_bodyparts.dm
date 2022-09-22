@@ -18,6 +18,7 @@
 	icon_greyscale = 'icons/mob/species/ethereal/bodyparts.dmi'
 	limb_id = SPECIES_ETHEREAL
 	is_dimorphic = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/chest/ethereal/update_limb(dropping_limb, is_creating)
 	. = ..()

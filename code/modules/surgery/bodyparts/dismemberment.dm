@@ -3,7 +3,7 @@
 	if(dismemberable)
 		return TRUE
 
-//Dismember a limb
+///Remove target limb from it's owner, with side effects.
 /obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent=TRUE)
 	if(!owner || !dismemberable)
 		return FALSE
@@ -92,10 +92,6 @@
 	update_limb(1)
 	owner.remove_bodypart(src)
 
-	//Clear out traits from the owner
-	for(var/trait in bodypart_traits)
-		REMOVE_TRAIT(owner, trait, bodypart_trait_source)
-
 	if(held_index)
 		if(owner.hand_bodyparts[held_index] == src)
 			// We only want to do this if the limb being removed is the active hand part.
@@ -150,12 +146,14 @@
 	phantom_owner.update_body_parts()
 
 	if(!drop_loc) // drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
-		qdel(src)
+		if(!QDELETED(src))
+			qdel(src)
 		return
 
 	if(is_pseudopart)
 		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
-		qdel(src)
+		if(!QDELETED(src))
+			qdel(src)
 		return
 
 	forceMove(drop_loc)
@@ -241,13 +239,12 @@
 
 /obj/item/bodypart/chest/drop_limb(special)
 	if(special)
-		..()
+		return ..()
 
 /obj/item/bodypart/arm/right/drop_limb(special)
 	. = ..()
 
 	var/mob/living/carbon/arm_owner = owner
-	..()
 	if(arm_owner && !special)
 		if(arm_owner.handcuffed)
 			arm_owner.handcuffed.forceMove(drop_location())
@@ -265,7 +262,7 @@
 
 /obj/item/bodypart/arm/left/drop_limb(special)
 	var/mob/living/carbon/arm_owner = owner
-	..()
+	. = ..()
 	if(arm_owner && !special)
 		if(arm_owner.handcuffed)
 			arm_owner.handcuffed.forceMove(drop_location())
@@ -290,7 +287,7 @@
 			owner.update_worn_legcuffs()
 		if(owner.shoes)
 			owner.dropItemToGround(owner.shoes, TRUE)
-	..()
+	return ..()
 
 /obj/item/bodypart/leg/left/drop_limb(special) //copypasta
 	if(owner && !special)
@@ -301,7 +298,7 @@
 			owner.update_worn_legcuffs()
 		if(owner.shoes)
 			owner.dropItemToGround(owner.shoes, TRUE)
-	..()
+	return ..()
 
 /obj/item/bodypart/head/drop_limb(special)
 	if(!special)
@@ -319,9 +316,9 @@
 			pill.forceMove(src)
 
 	name = "[owner.real_name]'s head"
-	..()
+	return ..()
 
-//Attach a limb to a human and drop any existing limb of that type.
+///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails.
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special)
 	if(!istype(limb_owner))
 		return
@@ -333,6 +330,7 @@
 	if(!.) //If it failed to replace, re-attach their old limb as if nothing happened.
 		old_limb.attach_limb(limb_owner, TRUE)
 
+///Attach src to target mob if able.
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE

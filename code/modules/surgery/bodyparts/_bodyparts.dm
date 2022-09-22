@@ -38,7 +38,7 @@
 	///Is there a sprite difference between male and female?
 	var/is_dimorphic = FALSE
 	///The actual color a limb is drawn as, set by /proc/update_limb()
-	var/variable_color //NEVER. EVER. EDIT THIS VALUE OUTSIDE OF UPDATE_LIMB. I WILL FIND YOU. It ruins the limb icon pipeline.
+	var/draw_color //NEVER. EVER. EDIT THIS VALUE OUTSIDE OF UPDATE_LIMB. I WILL FIND YOU. It ruins the limb icon pipeline.
 	///We always copy the list of mutcolors our owner has incase our organs want it
 	var/list/mutcolors
 
@@ -92,10 +92,8 @@
 	///Limbs need this information as a back-up incase they are generated outside of a carbon (limbgrower)
 	var/should_draw_greyscale = TRUE
 	///An "override" color that can be applied to ANY limb, greyscale or not.
-	var/mutation_color = ""
+	var/variable_color = ""
 
-	///for nonhuman bodypart (e.g. monkey)
-	var/animal_origin
 	///whether it can be dismembered with a weapon.
 	var/dismemberable = 1
 
@@ -104,7 +102,7 @@
 
 	var/species_flags_list = list()
 	///the type of damage overlay (if any) to use when this bodypart is bruised/burned.
-	var/dmg_overlay_type
+	var/dmg_overlay_type = "human"
 	/// If we're bleeding, which icon are we displaying on this part
 	var/bleed_overlay_icon
 
@@ -181,7 +179,7 @@
 
 /obj/item/bodypart/Destroy()
 	if(owner)
-		owner.drop_limb(TRUE)
+		drop_limb(TRUE)
 	for(var/wound in wounds)
 		qdel(wound) // wounds is a lazylist, and each wound removes itself from it on deletion.
 	if(length(wounds))
@@ -225,7 +223,7 @@
 	if(ishuman(victim))
 		var/mob/living/carbon/human/human_victim = victim
 		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
-			if(!human_victim.get_bodypart(body_zone) && !animal_origin)
+			if(!human_victim.get_bodypart(body_zone))
 				user.temporarilyRemoveItemFromInventory(src, TRUE)
 				if(!attach_limb(victim))
 					to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
@@ -328,9 +326,8 @@
 	brute *= wound_damage_multiplier
 	burn *= wound_damage_multiplier
 
-	switch(animal_origin)
-		if(ALIEN_BODYPART,LARVA_BODYPART) //aliens take double burn //nothing can burn with so much snowflake code around
-			burn *= 2
+	if(bodytype & (BODYTYPE_ALIEN|BODYTYPE_LARVA_PLACEHOLDER)) //aliens take double burn //nothing can burn with so much snowflake code around
+		burn *= 2
 
 	/*
 	// START WOUND HANDLING
@@ -657,53 +654,41 @@
 		dmg_overlay_type = initial(dmg_overlay_type)
 		is_husked = FALSE
 
-	if(!dropping_limb && owner.dna?.check_mutation(/datum/mutation/human/hulk))
-		mutation_color = "#00aa00"
-	else
-		mutation_color = null
-
-	if(mutation_color)
-		variable_color = mutation_color
+	if(variable_color)
+		draw_color = variable_color
 	else if(should_draw_greyscale)
 		variable_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
 	else
 		variable_color = null
 
-	if(!is_creating)
+	if(!is_creating || !owner)
 		return
 
-	if(!animal_origin && ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
+	// There should technically to be an ishuman(owner) check here, but it is absent because no basetype carbons use bodyparts
+	// No, xenos don't actually use bodyparts. Don't ask.
+	var/mob/living/carbon/human/human_owner = owner
 
-		var/datum/species/owner_species = human_owner.dna.species
-		species_flags_list = human_owner.dna.species.species_traits
-		mutcolors = human_owner.dna.mutant_colors.Copy()
-		limb_gender = (human_owner.physique == MALE) ? "m" : "f"
+	var/datum/species/owner_species = human_owner.dna.species
+	species_flags_list = human_owner.dna.species.species_traits
+	mutcolors = human_owner.dna.mutant_colors.Copy()
+	limb_gender = (human_owner.physique == MALE) ? "m" : "f"
 
-		if(owner_species.use_skintones)
-			skin_tone = human_owner.skin_tone
+	if(owner_species.use_skintones)
+		skin_tone = human_owner.skin_tone
+	else
+		skin_tone = ""
+
+	if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits))) //Ethereal code. Motherfuckers.
+		if(owner_species.fixed_mut_color)
+			species_color = owner_species.fixed_mut_color
 		else
-			skin_tone = ""
+			species_color = mutcolors[mutcolor_used]
+	else
+		species_color = null
 
-		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits))) //Ethereal code. Motherfuckers.
-			if(owner_species.fixed_mut_color)
-				species_color = owner_species.fixed_mut_color
-			else
-				species_color = mutcolors[mutcolor_used]
-		else
-			species_color = null
-
-		variable_color = mutation_color
-		if(should_draw_greyscale) //Should the limb be colored?
-			variable_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
-
-		dmg_overlay_type = owner_species.damage_overlay_type
-
-	else if(animal_origin == MONKEY_BODYPART) //currently monkeys are the only non human mob to have damage overlays.
-		dmg_overlay_type = animal_origin
-
-	if(!IS_ORGANIC_LIMB(src))
-		dmg_overlay_type = "robotic"
+	draw_color = variable_color
+	if(should_draw_greyscale) //Should the limb be colored?
+		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
 	recolor_external_organs()
 	return TRUE
@@ -736,32 +721,6 @@
 	var/mutable_appearance/limb = mutable_appearance(layer = -BODYPARTS_LAYER)
 	var/image/aux
 
-	if(animal_origin)
-		if(IS_ORGANIC_LIMB(src))
-			limb.icon = 'icons/mob/animal_parts.dmi'
-			if(limb_id == "husk")
-				limb.icon_state = "[animal_origin]_husk_[body_zone]"
-			else
-				limb.icon_state = "[animal_origin]_[body_zone]"
-		else
-			limb.icon = 'icons/mob/augmentation/augments.dmi'
-			limb.icon_state = "[animal_origin]_[body_zone]"
-
-		if(blocks_emissive)
-			var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, alpha = limb.alpha)
-			limb_em_block.dir = image_dir
-			limb.overlays += limb_em_block
-		. += limb
-
-	if(dropped)
-		image_dir = SOUTH
-		if(dmg_overlay_type)
-			if(brutestate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
-			if(burnstate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
-		return
-
 	//HUSK SHIIIIT
 	if(is_husked)
 		limb.icon = icon_husk
@@ -771,6 +730,8 @@
 		if(aux_zone) //Hand shit
 			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -aux_layer, image_dir)
 			. += aux
+		return .
+	//END HUSK SHIIIIT
 
 	////This is the MEAT of limb icon code
 	limb.icon = icon_greyscale
@@ -1029,3 +990,44 @@
 /obj/item/bodypart/proc/recolor_external_organs()
 	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
 		ext_organ.inherit_color(force = TRUE)
+
+///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
+/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
+	var/icon_holder
+	if(greyscale)
+		icon_greyscale = icon
+		icon_holder = icon
+		should_draw_greyscale = TRUE
+	else
+		icon_static = icon
+		icon_holder = icon
+		should_draw_greyscale = FALSE
+
+	if(id) //limb_id should never be falsey
+		limb_id = id
+
+	if(!isnull(dimorphic))
+		is_dimorphic = dimorphic
+
+	if(owner)
+		owner.update_body_parts()
+	else
+		update_icon_dropped()
+
+	//This foot gun needs a safety
+	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
+		reset_appearance()
+		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+
+///Resets the base appearance of a limb to it's default values.
+/obj/item/bodypart/proc/reset_appearance()
+	icon_static = initial(icon_static)
+	icon_greyscale = initial(icon_greyscale)
+	limb_id = initial(limb_id)
+	is_dimorphic = initial(is_dimorphic)
+	should_draw_greyscale = initial(should_draw_greyscale)
+
+	if(owner)
+		owner.update_body_parts()
+	else
+		update_icon_dropped()

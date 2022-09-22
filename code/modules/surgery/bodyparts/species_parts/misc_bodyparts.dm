@@ -60,22 +60,28 @@
 /obj/item/bodypart/head/jelly
 	limb_id = SPECIES_JELLYPERSON
 	is_dimorphic = TRUE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/chest/jelly
 	limb_id = SPECIES_JELLYPERSON
 	is_dimorphic = TRUE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/arm/left/jelly
 	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
 
 /obj/item/bodypart/arm/right/jelly
 	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
 
 /obj/item/bodypart/leg/left/jelly
 	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
 
 /obj/item/bodypart/leg/right/jelly
 	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
 
 ///SLIME
 /obj/item/bodypart/head/slime
@@ -240,27 +246,33 @@
 	limb_id = SPECIES_SKELETON
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/chest/skeleton
 	limb_id = SPECIES_SKELETON
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/arm/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/arm/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/leg/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/leg/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
+	dmg_overlay_type = null
 
 ///MUSHROOM
 /obj/item/bodypart/head/mushroom
@@ -299,10 +311,12 @@
 /obj/item/bodypart/head/golem
 	limb_id = SPECIES_GOLEM
 	is_dimorphic = FALSE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/chest/golem
 	limb_id = SPECIES_GOLEM
 	is_dimorphic = TRUE
+	dmg_overlay_type = null
 
 /obj/item/bodypart/arm/left/golem
 	limb_id = SPECIES_GOLEM

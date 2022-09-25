@@ -17,6 +17,11 @@
 		GLOB.news_network.submit_article(html_encode(text), "Captain's Announcement", "Station Announcements", null)
 	else if(type == "Syndicate Captain")
 		announcement += "<h1 class='alert'>Syndicate Captain Announces</h1>"
+	else if(type == "AI")
+		var/mob/living/silicon/ai/sender = usr
+		if(!istype(sender))
+			CRASH("Non-AI tried to send an AI station announcement")
+		announcement += "<h1 class='alert'>Station Announcement by [sender.name] (AI)</h1>"
 
 	else
 		if(!sender_override)

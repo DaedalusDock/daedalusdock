@@ -1,6 +1,6 @@
-#define CONNECTION_DIRECT 2
-#define CONNECTION_SPACE 4
-#define CONNECTION_INVALID 8
+#define CONNECTION_DIRECT (1<<0)
+#define CONNECTION_UNSIMULATED (1<<1)
+#define CONNECTION_INVALID (1<<3)
 
 /*
 
@@ -67,14 +67,13 @@ Class Procs:
 
 /connection/New(turf/A, turf/B)
 	#ifdef ZASDBG
-	//ASSERT(TURF_HAS_VALID_ZONE(A))
-	//ASSERT(SSzas.has_valid_zone(B))
+	ASSERT(TURF_HAS_VALID_ZONE(A))
 	#endif
 	src.A = A
 	src.B = B
 	zoneA = A.zone
 	if(!B.simulated)
-		mark_space()
+		mark_unsimulated()
 		edge = SSzas.get_edge(A.zone,B)
 		edge.add_connection(src)
 	else
@@ -105,8 +104,8 @@ Class Procs:
 	#endif
 
 ///Marks this connection as unsimulated. Updating the connection will check the validity of this. See file header for more information.
-/connection/proc/mark_space()
-	state |= CONNECTION_SPACE
+/connection/proc/mark_unsimulated()
+	state |= CONNECTION_UNSIMULATED
 
 ///Returns 1 if no doors are in between A and B.
 /connection/proc/direct()
@@ -159,7 +158,7 @@ Class Procs:
 
 	var/b_is_space = !B.simulated
 
-	if(state & CONNECTION_SPACE)
+	if(state & CONNECTION_UNSIMULATED)
 		if(!b_is_space) //If this is an unsimulated connection and B isn't unsimulated, erase.
 			#ifdef ZASDBG
 			if(verbose)

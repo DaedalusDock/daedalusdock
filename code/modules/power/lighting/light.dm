@@ -58,13 +58,13 @@
 	///If true, this light cannot ever have an emergency mode
 	var/no_emergency = FALSE
 	///Multiplier for this light's base brightness in emergency power mode
-	var/bulb_emergency_brightness_mul = 0.25
+	var/bulb_emergency_brightness_mul = 0.6
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
-	var/bulb_emergency_pow_mul = 0.75
+	var/bulb_emergency_pow_mul = 0.4
 	///The minimum value for the light's power in emergency mode
-	var/bulb_emergency_pow_min = 0.5
+	var/bulb_emergency_pow_min = 0.2
 
 /obj/machinery/light/Move()
 	if(status != LIGHT_BROKEN)
@@ -149,38 +149,6 @@
 			on = FALSE
 	emergency_mode = FALSE
 	if(on)
-	/* ORIGINAL
-		var/brightness_set = brightness
-		var/power_set = bulb_power
-		var/color_set = bulb_colour
-		if(color)
-			color_set = color
-		var/area/local_area = get_area(src)
-		if (local_area?.fire)
-			color_set = bulb_emergency_colour
-		else if (nightshift_enabled)
-			brightness_set = nightshift_brightness
-			power_set = nightshift_light_power
-			if(!color)
-				color_set = nightshift_light_color
-		var/matching = light && brightness_set == light.light_range && power_set == light.light_power && color_set == light.light_color
-		if(!matching)
-			switchcount++
-			if(rigged)
-				if(status == LIGHT_OK && trigger)
-					explode()
-			else if( prob( min(60, (switchcount**2)*0.01) ) )
-				if(trigger)
-					burn_out()
-			else
-				use_power = ACTIVE_POWER_USE
-				set_light(
-					l_range = brightness_set,
-					l_power = power_set,
-					l_color = color_set
-					)
-		*/
-		//PARIAH EDIT
 		if(instant)
 			turn_on(trigger, play_sound)
 		else if(maploaded)
@@ -189,7 +157,6 @@
 		else if(!turning_on)
 			turning_on = TRUE
 			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
-		//PARIAH EDIT END
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
 		emergency_mode = TRUE

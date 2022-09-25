@@ -1246,12 +1246,12 @@
 	if(air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		//air_update_turf(TRUE, TRUE)
+		update_nearby_tiles()
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		//air_update_turf(TRUE, TRUE)
+		update_nearby_tiles()
 	sleep(4)
 	if(dangerous_close)
 		crush()

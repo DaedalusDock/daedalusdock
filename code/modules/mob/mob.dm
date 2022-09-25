@@ -38,6 +38,7 @@
 	if(observers?.len)
 		for(var/mob/dead/observe as anything in observers)
 			observe.reset_perspective(null)
+
 	qdel(hud_used)
 	QDEL_LIST(client_colours)
 	ghostize() //False, since we're deleting it currently
@@ -481,8 +482,19 @@
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, .proc/clear_from_recent_examines, ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
+
+			if(!isobserver(usr) && !(usr == examinify))
+				var/list/can_see_target = viewers(usr)
+				for(var/mob/M as anything in viewers(4, usr))
+					if(!M.client)
+						continue
+					if(M in can_see_target)
+						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
+					else
+						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
+
 
 	//PARIAH EDIT ADDITION
 	if(result.len)
@@ -1127,9 +1139,7 @@
 			var/obj/item/modular_computer/tablet/pda/PDA = A
 			if(PDA.saved_identification == oldname)
 				PDA.saved_identification = newname
-				var/obj/item/computer_hardware/identifier/display = PDA.all_components[MC_IDENTIFY]
-				if(display)
-					display.UpdateDisplay()
+				PDA.UpdateDisplay()
 				if(!search_id)
 					break
 				search_pda = 0

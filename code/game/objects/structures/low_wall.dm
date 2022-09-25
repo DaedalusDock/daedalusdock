@@ -103,7 +103,13 @@
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
 		return TRUE
 
+/obj/structure/low_wall/IsObscured()
+	return FALSE //We handle this ourselves. Please dont break <3.
+
 /obj/structure/low_wall/attackby(obj/item/weapon, mob/living/user, params)
+	if(istype(weapon, /obj/item/paint) || istype(weapon, /obj/item/paint_remover))
+		return ..()
+
 	if(is_top_obstructed())
 		return TRUE
 	var/list/modifiers = params2list(params)

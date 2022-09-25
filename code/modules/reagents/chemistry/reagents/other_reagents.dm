@@ -182,12 +182,12 @@
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in exposed_turf)
+	var/obj/effect/hotspot/hotspot = exposed_turf.fire
 	if(hotspot && !isspaceturf(exposed_turf))
 		if(exposed_turf.air)
 			var/datum/gas_mixture/air = exposed_turf.air
 			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
-			air.react(src)
+			air.react()
 			qdel(hotspot)
 
 /*

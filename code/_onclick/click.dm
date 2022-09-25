@@ -68,10 +68,7 @@
 		return
 	next_click = world.time + 1
 
-	if(check_click_intercept(params,A))
-		return
-
-	if(notransform)
+	if(check_click_intercept(params,A) || notransform)
 		return
 
 	var/list/modifiers = params2list(params)
@@ -218,10 +215,12 @@
 		for(var/atom/target in checking)  // will filter out nulls
 			if(closed[target] || isarea(target))  // avoid infinity situations
 				continue
-			closed[target] = TRUE
+
 			if(isturf(target) || isturf(target.loc) || (target in direct_access) || (ismovable(target) && target.flags_1 & IS_ONTOP_1)) //Directly accessible atoms
 				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
 					return TRUE
+
+			closed[target] = TRUE
 
 			if (!target.loc)
 				continue
@@ -411,7 +410,7 @@
 	if(SEND_SIGNAL(src, COMSIG_CLICK_ALT, user) & COMPONENT_CANCEL_CLICK_ALT)
 		return
 	var/turf/T = get_turf(src)
-	if(T && (isturf(loc) || isturf(src)) && user.TurfAdjacent(T))
+	if(T && (isturf(loc) || isturf(src)) && user.TurfAdjacent(T) && !HAS_TRAIT(user, TRAIT_MOVE_VENTCRAWLING))
 		user.listed_turf = T
 		user.client << output("[url_encode(json_encode(T.name))];", "statbrowser:create_listedturf")
 

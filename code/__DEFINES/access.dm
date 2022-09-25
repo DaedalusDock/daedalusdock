@@ -128,11 +128,17 @@
 #define ACCESS_AWAY_SEC 203
 /// Away engineering
 #define ACCESS_AWAY_ENGINE 204
+/// Away science
+#define ACCESS_AWAY_SCIENCE 205
+/// Away supply
+#define ACCESS_AWAY_SUPPLY 206
+/// Away command
+#define ACCESS_AWAY_COMMAND 207
 ///Away generic access
-#define ACCESS_AWAY_GENERIC1 205
-#define ACCESS_AWAY_GENERIC2 206
-#define ACCESS_AWAY_GENERIC3 207
-#define ACCESS_AWAY_GENERIC4 208
+#define ACCESS_AWAY_GENERIC1 208
+#define ACCESS_AWAY_GENERIC2 209
+#define ACCESS_AWAY_GENERIC3 210
+#define ACCESS_AWAY_GENERIC4 211
 
 	//Special, for anything that's basically internal
 #define ACCESS_BLOODCULT 250

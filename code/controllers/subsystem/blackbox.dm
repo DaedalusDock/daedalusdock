@@ -4,7 +4,7 @@ SUBSYSTEM_DEF(blackbox)
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	init_order = INIT_ORDER_BLACKBOX
 
-	var/list/feedback = list() //list of datum/feedback_variable
+	var/list/datum/feedback_variable/feedback = list() //list of datum/feedback_variable
 	var/list/first_death = list() //the first death of this round, assoc. vars keep track of different things
 	var/triggertime = 0
 	var/sealed = FALSE //time to stop tracking stats?
@@ -100,7 +100,8 @@ SUBSYSTEM_DEF(blackbox)
 		"datetime" = "NOW()"
 	)
 	var/list/sqlrowlist = list()
-	for (var/datum/feedback_variable/FV in feedback)
+	for (var/key in feedback)
+		var/datum/feedback_variable/FV = feedback[key]
 		sqlrowlist += list(list(
 			"round_id" = GLOB.round_id,
 			"key_name" = FV.key,
@@ -160,14 +161,14 @@ SUBSYSTEM_DEF(blackbox)
 		else
 			record_feedback("tally", "radio_usage", 1, "other")
 
-/datum/controller/subsystem/blackbox/proc/find_feedback_datum(key, key_type)
-	for(var/datum/feedback_variable/FV in feedback)
-		if(FV.key == key)
-			return FV
-
-	var/datum/feedback_variable/FV = new(key, key_type)
-	feedback += FV
-	return FV
+/datum/controller/subsystem/blackbox/proc/get_feedback(key, key_type)
+	var/datum/feedback_variable/FV = feedback[key]
+	if(FV)
+		return FV
+	else
+		FV = new(key, key_type)
+		feedback[key] = FV
+		return FV
 /*
 feedback data can be recorded in 5 formats:
 "text"
@@ -227,7 +228,7 @@ Versioning
 /datum/controller/subsystem/blackbox/proc/record_feedback(key_type, key, increment, data, overwrite)
 	if(sealed || !key_type || !istext(key) || !isnum(increment || !data))
 		return
-	var/datum/feedback_variable/FV = find_feedback_datum(key, key_type)
+	var/datum/feedback_variable/FV = get_feedback(key, key_type)
 	switch(key_type)
 		if("text")
 			if(!istext(data))

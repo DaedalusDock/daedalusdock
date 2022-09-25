@@ -1,8 +1,9 @@
 /turf/open
 	plane = FLOOR_PLANE
-	var/slowdown = 0 //negative for faster, positive for slower
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
+	///negative for faster, positive for slower
+	var/slowdown = 0
 	var/footstep = null
 	var/barefootstep = null
 	var/clawfootstep = null
@@ -189,10 +190,9 @@
 
 /turf/open/proc/freeze_turf()
 	for(var/obj/I in contents)
-		if(I.resistance_flags & FREEZE_PROOF)
-			continue
-		if(!(I.obj_flags & FROZEN))
-			I.make_frozen_visual()
+		if(!HAS_TRAIT(I, TRAIT_FROZEN) && !(I.obj_flags & FREEZE_PROOF))
+			I.AddElement(/datum/element/frozen)
+
 	for(var/mob/living/L in contents)
 		if(L.bodytemperature <= 50)
 			L.apply_status_effect(/datum/status_effect/freon)
@@ -206,8 +206,7 @@
 		M.apply_water()
 
 	wash(CLEAN_WASH)
-	for(var/am in src)
-		var/atom/movable/movable_content = am
+	for(var/atom/movable/movable_content as anything in src)
 		if(ismopable(movable_content)) // Will have already been washed by the wash call above at this point.
 			continue
 		movable_content.wash(CLEAN_WASH)

@@ -174,8 +174,7 @@
 			if(!distcheck || get_dist(T, location) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 				G.temperature = temperature
 			//T.air_update_turf(FALSE, FALSE)
-			for(var/obj/effect/hotspot/H in T)
-				qdel(H)
+			QDEL_NULL(T.fire)
 			if(G.getGroupGas(GAS_PLASMA))
 				G.adjustGas(GAS_NITROGEN, G.gas[GAS_PLASMA])
 				G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])

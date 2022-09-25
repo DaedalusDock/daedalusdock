@@ -101,7 +101,12 @@
 	var/usable_hands = 2
 
 	var/list/pipes_shown = list()
-	var/last_played_vent
+	var/last_played_vent = 0
+	/// The last direction we moved in a vent. Used to make holding two directions feel nice
+	var/last_vent_dir = 0
+	/// Cell tracker datum we use to manage the pipes around us, for faster ventcrawling
+	/// Should only exist if you're in a pipe
+	var/datum/cell_tracker/pipetracker
 
 	var/smoke_delay = 0 ///used to prevent spam with smoke reagent reaction on mob.
 
@@ -172,6 +177,8 @@
 	var/native_fov = FOV_90_DEGREES
 	/// Lazy list of FOV traits that will apply a FOV view when handled.
 	var/list/fov_traits
+	///what multiplicative slowdown we get from turfs currently.
+	var/current_turf_slowdown = 0
 
 	///The amount of times we've opened our stupid mouth
 	var/talkcount = 0

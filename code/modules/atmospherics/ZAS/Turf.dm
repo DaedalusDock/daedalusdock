@@ -296,15 +296,11 @@
 	if(!simulated)
 		if(air)
 			return air
-		var/datum/gas_mixture/GM = new
+		else
+			make_air()
+			return air
 
-		if(initial_gas)
-			GM.gas = initial_gas.Copy()
-		GM.temperature = temperature
-		AIR_UPDATE_VALUES(GM)
-		air = GM
-
-	if(zone)
+	else if(zone)
 		if(!zone.invalid)
 			SSzas.mark_zone_update(zone)
 			return zone.air
@@ -320,11 +316,39 @@
 
 ///Initializes the turf's "air" datum to it's initial values.
 /turf/proc/make_air()
-	air = new/datum/gas_mixture
-	air.temperature = temperature
-	if(initial_gas)
-		air.gas = initial_gas.Copy()
-	AIR_UPDATE_VALUES(air)
+	if(simulated)
+		air = new/datum/gas_mixture
+		air.temperature = temperature
+		if(initial_gas)
+			air.gas = initial_gas.Copy()
+		AIR_UPDATE_VALUES(air)
+
+	else
+		if(!initial_gas)
+			air = new
+			return
+
+		// Grab an existing mixture from the cache
+		var/gas_key = parse_gas()
+		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
+		if(GM)
+			air = GM
+			return
+
+		// No cache? no problem. make one.
+		GM = new
+		air = GM
+		if(initial_gas)
+			GM.gas = initial_gas.Copy()
+		GM.temperature = temperature
+		AIR_UPDATE_VALUES(GM)
+		SSzas.unsimulated_gas_cache[gas_key] = air
+
+///Parse an unsimulated turf's initial gas mixture into a string
+/turf/proc/parse_gas()
+	. = "[temperature]"
+	for(var/gas in initial_gas)
+		. += "[gas]-[initial_gas[gas]]"
 
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.
 /turf/proc/copy_zone_air()

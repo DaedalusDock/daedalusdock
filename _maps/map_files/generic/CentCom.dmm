@@ -3978,6 +3978,9 @@
 "ll" = (
 /turf/open/floor/plating,
 /area/syndicate_mothership/control)
+"lm" = (
+/turf/open/misc/asteroid/basalt/wasteland/safe_air,
+/area/centcom/holding)
 "ln" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/brown,
@@ -11030,6 +11033,10 @@
 /obj/machinery/recharger,
 /turf/open/floor/iron,
 /area/syndicate_mothership/control)
+"Gd" = (
+/obj/structure/flora/rock/pile,
+/turf/open/misc/asteroid/basalt/safe_air,
+/area/centcom/holding)
 "Gf" = (
 /obj/machinery/firealarm/directional/east,
 /obj/machinery/atmospherics/components/unary/vent_pump{
@@ -11256,6 +11263,10 @@
 /obj/structure/cable,
 /turf/closed/indestructible/syndicate,
 /area/syndicate_mothership/control)
+"GM" = (
+/obj/structure/flora/tree/dead,
+/turf/open/misc/asteroid/basalt/wasteland/safe_air,
+/area/centcom/holding)
 "GN" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/fancy/donut_box,
@@ -11347,7 +11358,7 @@
 /area/syndicate_mothership/control)
 "Hh" = (
 /obj/machinery/computer/atmos_control/noreconnect{
-	atmos_chambers = list("nukiebase" = "Burn Chamber");
+	atmos_chambers = list("nukiebase"="Burn Chamber");
 	desc = "Used to monitor the Syndicate Ordnance Laboratory's burn chamber.";
 	dir = 1;
 	name = "Ordnance Chamber Monitor"
@@ -13764,9 +13775,7 @@
 /area/centcom/holding)
 "OC" = (
 /obj/structure/flora/rock/pile,
-/turf/open/misc/asteroid/basalt/wasteland{
-	temperature = 2.7
-	},
+/turf/open/misc/asteroid/basalt/wasteland/safe_air,
 /area/centcom/holding)
 "OD" = (
 /obj/machinery/microwave{
@@ -15780,6 +15789,9 @@
 /obj/structure/noticeboard/directional/east,
 /turf/open/floor/mineral/plastitanium,
 /area/syndicate_mothership/expansion_bioterrorism)
+"Ud" = (
+/turf/open/misc/asteroid/basalt/safe_air,
+/area/centcom/holding)
 "Ue" = (
 /obj/effect/baseturf_helper/asteroid/snow,
 /turf/closed/indestructible/syndicate,
@@ -39060,10 +39072,10 @@ UU
 YC
 YC
 Nd
-hs
-pJ
-pJ
-pJ
+lm
+Ud
+Ud
+Ud
 OL
 Di
 Qe
@@ -39317,10 +39329,10 @@ fO
 eZ
 YC
 Nd
-pJ
-Zc
-hs
-pJ
+Ud
+Gd
+lm
+Ud
 OL
 Di
 Qe
@@ -39574,10 +39586,10 @@ Rv
 YC
 YC
 Nd
+Ud
+lm
 pJ
-hs
-pJ
-pJ
+Ud
 OL
 Di
 Qe
@@ -39831,10 +39843,10 @@ Rv
 YC
 YC
 Nd
-pJ
-pJ
-pJ
-pJ
+Ud
+Ud
+Ud
+Ud
 OL
 Di
 Qe
@@ -40088,10 +40100,10 @@ fO
 eZ
 YC
 Nd
-pJ
-pJ
-aU
-pJ
+Ud
+Ud
+GM
+Ud
 OL
 Di
 Di
@@ -40345,10 +40357,10 @@ Rv
 YC
 YC
 Nd
-hs
-pJ
-pJ
-hs
+lm
+Ud
+Ud
+lm
 OL
 OL
 OL
@@ -40602,14 +40614,14 @@ Rv
 YC
 YC
 Nd
-pJ
-pJ
+Ud
+Ud
 OC
-pJ
-pJ
-pJ
-pJ
-Zc
+Ud
+Ud
+Ud
+Ud
+Gd
 OL
 OL
 OL
@@ -40859,15 +40871,15 @@ fO
 eZ
 YC
 Nd
-hs
-pJ
-pJ
-pJ
-pJ
-aU
-pJ
-hs
-pJ
+lm
+Ud
+Ud
+Ud
+Ud
+GM
+Ud
+lm
+Ud
 OL
 OL
 aa
@@ -41119,13 +41131,13 @@ Nd
 Nd
 Nd
 Nd
-pJ
-pJ
-pJ
-pJ
-pJ
-Zc
-Zc
+Ud
+Ud
+Ud
+Ud
+Ud
+Gd
+Gd
 OL
 aa
 aa
@@ -42404,13 +42416,13 @@ Nd
 Nd
 Nd
 Nd
-pJ
-pJ
-pJ
-pJ
-Zc
-pJ
-hs
+Ud
+Ud
+Ud
+Ud
+Gd
+Ud
+lm
 OL
 aa
 aa
@@ -42658,16 +42670,16 @@ fO
 YC
 YC
 Nd
-hs
-hs
-pJ
-pJ
-pJ
-pJ
-aU
-pJ
-pJ
-pJ
+lm
+lm
+Ud
+Ud
+Ud
+Ud
+GM
+Ud
+Ud
+Ud
 OL
 aa
 aa
@@ -42915,15 +42927,15 @@ fO
 hy
 hy
 Nd
-hs
-Zc
-pJ
-pJ
-aU
-pJ
-pJ
-pJ
-hs
+lm
+Gd
+Ud
+Ud
+GM
+Ud
+Ud
+Ud
+lm
 OC
 OL
 aa
@@ -43172,8 +43184,8 @@ QL
 YC
 YC
 Oi
-Zc
-pJ
+Gd
+Ud
 Nd
 Nd
 Nd
@@ -43429,8 +43441,8 @@ QL
 YC
 YC
 Oi
-pJ
-pJ
+Ud
+Ud
 Nd
 ev
 Hy
@@ -43686,8 +43698,8 @@ QL
 YC
 YC
 Nd
-pJ
-hs
+Ud
+lm
 Nd
 dh
 CQ

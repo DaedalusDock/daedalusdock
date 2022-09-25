@@ -16,7 +16,7 @@
 				return Bump(L)
 	. = ..()
 
-/obj/projectile/magic/spell/Moved(atom/OldLoc, Dir)
+/obj/projectile/magic/spell/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	if(trail)
 		create_trail()

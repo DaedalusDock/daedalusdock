@@ -75,7 +75,7 @@
 	if(status != FISH_DEAD)
 		START_PROCESSING(SSobj, src)
 
-/obj/item/fish/Moved(atom/OldLoc, Dir)
+/obj/item/fish/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	check_environment_after_movement()
 

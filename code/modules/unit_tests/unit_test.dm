@@ -127,7 +127,7 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	qdel(test)
 
 /proc/RunUnitTests()
-	SSairflow.pause() //Look man, shit's whack. I don't trust airflow to not displace things when it shouldn't.
+	SSairflow.can_fire = 0 //Look man, shit's whack. I don't trust airflow to not displace things when it shouldn't.
 
 	CHECK_TICK
 

@@ -49,6 +49,10 @@
 	if(prob(floor_variance))
 		icon_state = "[base_icon_state][rand(0,6)]"
 
+/turf/open/misc/asteroid/basalt/wasteland/safe_air //Used on Centcom
+	initial_gas = OPENTURF_DEFAULT_ATMOS
+	temperature = T20C
+
 /turf/closed/mineral/strong/wasteland
 	name = "ancient dry rock"
 	color = "#B5651D"

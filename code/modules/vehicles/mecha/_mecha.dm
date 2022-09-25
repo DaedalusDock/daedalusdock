@@ -653,7 +653,7 @@
 		to_chat(occupants, "[icon2html(src, occupants)][span_warning("Air port connection has been severed!")]")
 		log_message("Lost connection to gas port.", LOG_MECHA)
 
-/obj/vehicle/sealed/mecha/Process_Spacemove(movement_dir = 0)
+/obj/vehicle/sealed/mecha/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
 	. = ..()
 	if(.)
 		return

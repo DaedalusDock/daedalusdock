@@ -1,8 +1,7 @@
 /obj/structure/door_assembly
 	name = "airlock assembly"
-	icon = 'icons/obj/doors/airlocks/station/public.dmi'
+	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
 	icon_state = "construction"
-	var/overlays_file = 'icons/obj/doors/airlocks/station/overlays.dmi'
 	anchored = FALSE
 	density = TRUE
 	max_integrity = 200
@@ -20,8 +19,28 @@
 	var/material_type = /obj/item/stack/sheet/iron
 	var/material_amt = 4
 
-/obj/structure/door_assembly/Initialize(mapload)
+	var/overlays_file
+	var/stripe_overlays
+	var/color_overlays
+	var/glass_fill_overlays
+	var/airlock_paint
+	var/stripe_paint
+
+	var/has_fill_overlays = TRUE
+
+/obj/structure/door_assembly/Initialize()
 	. = ..()
+	/// Set overlay and color values from the airlock this assembly is supposed to build
+	var/obj/machinery/door/airlock/airlock_cast = airlock_type
+	icon = initial(airlock_cast.icon)
+	overlays_file = initial(airlock_cast.overlays_file)
+	stripe_overlays = initial(airlock_cast.stripe_overlays)
+	color_overlays = initial(airlock_cast.color_overlays)
+	glass_fill_overlays = initial(airlock_cast.glass_fill_overlays)
+	airlock_paint = initial(airlock_cast.airlock_paint)
+	stripe_paint = initial(airlock_cast.stripe_paint)
+	has_fill_overlays = initial(airlock_cast.has_fill_overlays)
+
 	update_appearance()
 	update_name()
 
@@ -280,10 +299,22 @@
 
 /obj/structure/door_assembly/update_overlays()
 	. = ..()
-	if(!glass)
-		. += get_airlock_overlay("fill_construction", icon, TRUE)
-	else
-		. += get_airlock_overlay("glass_construction", overlays_file, TRUE)
+	if(has_fill_overlays)
+		if(!glass)
+			. += get_airlock_overlay("fill_construction", icon, TRUE)
+		else
+			. += get_airlock_overlay("glass_construction", glass_fill_overlays, TRUE)
+
+	if(airlock_paint && color_overlays)
+		. += get_airlock_overlay("construction", color_overlays, color = airlock_paint)
+		if(!glass && has_fill_overlays)
+			. += get_airlock_overlay("fill_construction", color_overlays, color = airlock_paint)
+
+	if(stripe_paint && stripe_overlays)
+		. += get_airlock_overlay("construction", stripe_overlays, color = stripe_paint)
+		if(!glass && has_fill_overlays)
+			. += get_airlock_overlay("fill_construction", stripe_overlays, color = stripe_paint)
+
 	. += get_airlock_overlay("panel_c[state+1]", overlays_file, TRUE)
 
 /obj/structure/door_assembly/update_name()

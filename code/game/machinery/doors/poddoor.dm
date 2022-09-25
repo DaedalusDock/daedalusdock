@@ -16,6 +16,7 @@
 	can_open_with_hands = FALSE
 	block_air_zones = FALSE
 	smoothing_groups = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	door_align_type = /obj/machinery/door/poddoor
 	var/datum/crafting_recipe/recipe_type = /datum/crafting_recipe/blast_doors
 	var/deconstruction = BLASTDOOR_FINISHED // deconstruction step
 	var/id = 1
@@ -124,10 +125,10 @@
 	switch(animation)
 		if("opening")
 			flick("opening", src)
-			playsound(src, 'sound/machines/blastdoor.ogg', 30, TRUE)
+			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 		if("closing")
 			flick("closing", src)
-			playsound(src, 'sound/machines/blastdoor.ogg', 30, TRUE)
+			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 /obj/machinery/door/poddoor/update_icon_state()
 	. = ..()

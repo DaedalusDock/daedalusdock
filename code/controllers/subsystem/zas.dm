@@ -103,21 +103,23 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
-	var/last_process
 	var/active_zones = 0
 	var/next_id = 1
+
+	///The last process, as a string, before the previous run ended.
+	var/last_process
 
 ///Stops processing while all ZAS-controlled airs and fires are nulled and the subsystem is reinitialized.
 /datum/controller/subsystem/zas/proc/Reboot()
 	// Stop processing while we rebuild.
 	can_fire = FALSE
+	times_fired = 0 // This is done to prevent the geometry bug explained in connect()
 	next_id = 0 //Reset atmos zone count.
 
 	// Make sure we don't rebuild mid-tick.
 	if (state != SS_IDLE)
 		to_chat(world, span_boldannounce("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing."))
-		while (state != SS_IDLE)
-			stoplag()
+		UNTIL(state == SS_IDLE)
 
 	zas_settings = new //Reset the global zas settings
 
@@ -293,7 +295,7 @@ SUBSYSTEM_DEF(zas)
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
 //////////FIRES//////////
-	last_process = "FIRES"
+	last_process = "ZONE FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_fire.len)
@@ -327,6 +329,8 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
+//////////ZONES//////////
+	last_process = "ZONES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_zones.len)
@@ -405,7 +409,11 @@ SUBSYSTEM_DEF(zas)
 	var/space = !B.simulated
 
 	if(!space)
-		if(min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
+		// Ok. This is super fucking cursed, but, it has to be this way.
+		// Basically, it's possible that during the initial geometry build, a zone can be created in a spot
+		// such that it merges over zone-blocker due to the minimum size requirement being met to merge over blockers.
+		// To fix this, we disable that during the geometry build, which takes place during Initialize()
+		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && equivalent_pressure(A.zone,B.zone)))
 			merge(A.zone,B.zone)
 			return TRUE
 
@@ -587,3 +595,8 @@ SUBSYSTEM_DEF(zas)
 
 	lavaland_atmos = mix_real
 	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
+
+	var/log = "Lavaland atmos contains: "
+	for(var/gas in mix_real.gas)
+		log += "[mix_real.gas[gas]], "
+	log_game(log)

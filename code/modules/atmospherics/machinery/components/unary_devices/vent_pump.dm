@@ -22,6 +22,8 @@
 	pipe_state = "uvent"
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 
+	power_rating = 30000
+
 	///Direction of pumping the gas (RELEASING or SIPHONING)
 	var/pump_direction = RELEASING
 	///Should we check internal pressure, external pressure, both or none? (EXT_BOUND, INT_BOUND, NO_BOUND)
@@ -116,8 +118,11 @@
 	if((environment.temperature || air_contents.temperature) && pressure_delta > 0.5)
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
-			if(pump_gas(air_contents, environment, transfer_moles) == -1)
+			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
+			if(draw == -1)
 				COOLDOWN_START(src, hibernating, 15 SECONDS)
+			else if(draw)
+				ATMOS_USE_POWER(draw)
 			update_parents()
 
 		else //external -> internal
@@ -125,8 +130,12 @@
 
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
-			if(pump_gas(environment, air_contents, transfer_moles) == -1)
+			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
+			if(draw == -1)
 				COOLDOWN_START(src, hibernating, 15 SECONDS)
+			else if(draw)
+				ATMOS_USE_POWER(draw)
+
 			update_parents()
 
 	else

@@ -50,10 +50,10 @@
 	switch(animation)
 		if("opening")
 			flick("opening", src)
-			playsound(src, 'sound/machines/blastdoor.ogg', 30, TRUE)
+			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 30, TRUE)
 		if("closing")
 			flick("closing", src)
-			playsound(src, 'sound/machines/blastdoor.ogg', 30, TRUE)
+			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 30, TRUE)
 		if("deny")
 			//Deny animation would be nice to have.
 			playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)

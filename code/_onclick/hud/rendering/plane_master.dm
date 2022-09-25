@@ -243,6 +243,21 @@
 	render_target = GRAVITY_PULSE_RENDER_TARGET
 	render_relay_plane = null
 
+/atom/movable/screen/plane_master/heat
+	name = "heat plane"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = HEAT_PLANE
+	render_target = HEAT_COMPOSITE_RENDER_TARGET
+	render_relay_plane = null
+	var/obj/gas_heat_object = null
+
+/atom/movable/screen/plane_master/heat/New()
+	. = ..()
+	gas_heat_object = new /obj/particle_emitter/heat(null, -1)
+	gas_heat_object.particles?.count = 250
+	gas_heat_object.particles?.spawning = 15
+	vis_contents += gas_heat_object
+
 /atom/movable/screen/plane_master/area
 	name = "area plane"
 	plane = AREA_PLANE

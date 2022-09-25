@@ -14,24 +14,14 @@
 
 */
 
-// These balance how easy or hard it is to create huge pressure gradients with pumps and filters.
-// Lower values means it takes longer to create large pressures differences.
-// Has no effect on pumping gasses from high pressure to low, only from low to high.
-#define ATMOS_PUMP_EFFICIENCY   2.5
-#define ATMOS_FILTER_EFFICIENCY 2.5
 
-// Will not bother pumping or filtering if the gas source as fewer than this amount of moles, to help with performance.
-#define MINIMUM_MOLES_TO_PUMP   0.01
-#define MINIMUM_MOLES_TO_FILTER 0.04 //0.04
+///obj/machinery/atmospherics/var/debug = 0
 
-
-/obj/machinery/atmospherics/var/debug = 0
-
-/client/proc/atmos_toggle_debug(obj/machinery/atmospherics/M in world)
+/*/client/proc/atmos_toggle_debug(obj/machinery/atmospherics/M in world)
 	set name = "Toggle Debug Messages"
 	set category = "Debug"
 	M.debug = !M.debug
-	to_chat(usr, "[M]: Debug messages toggled [M.debug? "on" : "off"].")
+	to_chat(usr, "[M]: Debug messages toggled [M.debug? "on" : "off"].")*/
 
 //Generalized gas pumping proc.
 //Moves gas from one gas_mixture to another and returns the amount of power needed (assuming 1 second), or -1 if no gas was pumped.
@@ -522,8 +512,3 @@
 	// Only would happen if both sides (all 2 square meters of surface area) were exposed to sunlight.  We now assume it aligned edge on.
 	// It currently should stabilise at 129.6K or -143.6C
 	. -= surface * STEFAN_BOLTZMANN_CONSTANT * thermal_conductivity * (surface_temperature - COSMIC_RADIATION_TEMPERATURE) ** 4
-
-#undef MINIMUM_MOLES_TO_PUMP
-#undef MINIMUM_MOLES_TO_FILTER
-#undef ATMOS_PUMP_EFFICIENCY
-#undef ATMOS_FILTER_EFFICIENCY

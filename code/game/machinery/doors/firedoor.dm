@@ -6,14 +6,14 @@
 /obj/machinery/door/firedoor
 	name = "firelock"
 	desc = "Apply crowbar."
-	icon = 'icons/obj/doors/doorfireglass.dmi'
+	icon = 'icons/obj/doors/doorfire.dmi'
 	icon_state = "door_open"
 	opacity = FALSE
 	density = FALSE
 	max_integrity = 300
 	resistance_flags = FIRE_PROOF
 	heat_proof = TRUE
-	glass = TRUE
+	glass = FALSE
 	sub_door = TRUE
 	explosion_block = 1
 	safe = FALSE
@@ -22,7 +22,9 @@
 	assemblytype = /obj/structure/firelock_frame
 	armor = list(MELEE = 10, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
+	door_align_type = /obj/machinery/door/firedoor
 
+	align_to_windows = TRUE
 	///Trick to get the glowing overlay visible from a distance
 	luminosity = 1
 	///X offset for the overlay lights, so that they line up with the thin border firelocks
@@ -36,10 +38,7 @@
 	///Every area a firedoor is listening to.
 	var/list/joined_areas = list()
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
-	var/alarm_type = FIRE_CLEAR
-
-	///Overlay object for the warning lights. This and some plane settings allows the lights to glow in the dark.
-	var/mutable_appearance/warn_lights
+	var/alert_type = FIRE_CLEAR
 
 	var/knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
@@ -48,10 +47,6 @@
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
-	if(prob(0.004) && icon == 'icons/obj/doors/doorfireglass.dmi')
-		base_icon_state = "sus"
-		desc += " This one looks a bit sus..."
-
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door/firedoor/LateInitialize()
@@ -164,22 +159,16 @@
 
 /obj/machinery/door/firedoor/proc/handle_alert(datum/source, code)
 	SIGNAL_HANDLER
-	if(code == alarm_type) //We're already on this alert level.
+
+	if(!!alert_type == !!code)
 		return
 
-	switch(code)
-		if(FIRE_CLEAR)
-			alarm_type = code
-			INVOKE_ASYNC(src, .proc/open)
-		if(FIRE_RAISED_AIRALARM) //Pulls do not override air alarms
-			if(!alarm_type)
-				alarm_type = code
-				INVOKE_ASYNC(src, .proc/close)
-		if(FIRE_RAISED_PULL)
-			if(alarm_type & FIRE_RAISED_AIRALARM)
-				return //We cannot overrule airalarms
-			alarm_type = code
-			INVOKE_ASYNC(src, .proc/close)
+	alert_type = code
+
+	if(code == FIRE_CLEAR)
+		INVOKE_ASYNC(src, .proc/open)
+	else
+		INVOKE_ASYNC(src, .proc/close)
 
 /obj/machinery/door/firedoor/emag_act(mob/user, obj/item/card/emag/doorjack/digital_crowbar)
 	if(obj_flags & EMAGGED)
@@ -325,13 +314,17 @@
 	. = ..()
 	if(welded)
 		. += density ? "welded" : "welded_open"
-	if(alarm_type && powered())
+	if(alert_type && powered())
+		var/iconstate2use
+		switch(alert_type)
+			if(FIRE_RAISED_HOT, FIRE_RAISED_GENERIC)
+				iconstate2use = "firelock_alarm_type_hot"
+			if(FIRE_RAISED_COLD)
+				iconstate2use = "firelock_alarm_type_cold"
+			if(FIRE_RAISED_PRESSURE)
+				iconstate2use = "firelock_alarm_type_pressure"
 		var/mutable_appearance/hazards
-		hazards = mutable_appearance(icon, "[(obj_flags & EMAGGED) ? "firelock_alarm_type_emag" : alarm_type]")
-		hazards.pixel_x = light_xoffset
-		hazards.pixel_y = light_yoffset
-		. += hazards
-		hazards = emissive_appearance(icon, "[(obj_flags & EMAGGED) ? "firelock_alarm_type_emag" : alarm_type]", alpha = src.alpha)
+		hazards = mutable_appearance(icon, iconstate2use, alpha = src.alpha)
 		hazards.pixel_x = light_xoffset
 		hazards.pixel_y = light_yoffset
 		. += hazards
@@ -365,18 +358,19 @@
 /obj/machinery/door/firedoor/closed
 	icon_state = "door_closed"
 	density = TRUE
-	alarm_type = FIRE_RAISED_PULL
+	alert_type = FIRE_RAISED_GENERIC
 
 /obj/machinery/door/firedoor/border_only
 	icon = 'icons/obj/doors/edge_Doorfire.dmi'
 	can_crush = FALSE
 	flags_1 = ON_BORDER_1
-	can_atmos_pass = CANPASS_PROC
+	can_atmos_pass = ATMOS_PASS_PROC
+	auto_dir_align = FALSE
 
 /obj/machinery/door/firedoor/border_only/closed
 	icon_state = "door_closed"
 	density = TRUE
-	alarm_type = FIRE_RAISED_PULL
+	alert_type = FIRE_RAISED_GENERIC
 
 /obj/machinery/door/firedoor/border_only/Initialize(mapload)
 	. = ..()

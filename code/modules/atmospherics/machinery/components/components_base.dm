@@ -15,6 +15,7 @@
 	var/update_parents_after_rebuild = FALSE
 	///Stores the component gas mixture
 	var/list/datum/gas_mixture/airs
+	var/initial_volume = 200
 	///Handles whether the custom reconcilation handling should be used
 	var/custom_reconcilation = FALSE
 
@@ -27,8 +28,7 @@
 	for(var/i in 1 to device_type)
 		if(airs[i])
 			continue
-		var/datum/gas_mixture/component_mixture = new
-		component_mixture.volume = 200
+		var/datum/gas_mixture/component_mixture = new(initial_volume)
 		airs[i] = component_mixture
 
 /obj/machinery/atmospherics/components/Initialize(mapload)

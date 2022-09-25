@@ -9,6 +9,8 @@
 	construction_type = /obj/item/pipe/trinary/flippable
 	pipe_state = "filter"
 
+	power_rating = 15000
+
 	///Rate of transfer of the gases to the outputs
 	var/transfer_rate = MAX_TRANSFER_RATE
 	///What gases are we filtering, by typepath
@@ -98,7 +100,6 @@
 	// Process if we have a filter set.
 	// If no filter is set, we just try to forward everything to air3 to avoid gas being outright lost.
 	if(filtering)
-		var/datum/gas_mixture/filtered_out = new
 		var/datum/gas_mixture/merge_to
 		// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
@@ -106,10 +107,9 @@
 			merge_to = air1
 		else
 			merge_to = air2
-		filter_gas(filter_type, removed, filtered_out, removed)
+		filter_gas(filter_type, removed, merge_to, removed, available_power = power_rating)
 		// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
-		merge_to.merge(filtered_out)
 		// Make sure we don't send any now-empty gas entries to the main output
 
 	// Send things to the main output if we can, return them to the input if we can't.

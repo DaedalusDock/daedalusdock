@@ -4,7 +4,7 @@
 	desc = "Heavy duty mechanical shutters with an atmospheric seal that keeps them airtight once closed."
 	icon = 'icons/obj/doors/shutters.dmi'
 	layer = SHUTTER_LAYER
-	closingLayer = SHUTTER_LAYER
+	closingLayer = SHUTTER_LAYER_CLOSED
 	damage_deflection = 20
 	armor = list(MELEE = 20, BULLET = 20, LASER = 20, ENERGY = 75, BOMB = 25, BIO = 100, FIRE = 100, ACID = 70)
 	max_integrity = 100
@@ -14,6 +14,15 @@
 	icon_state = "open"
 	density = FALSE
 	opacity = FALSE
+
+/obj/machinery/door/poddoor/shutters/do_animate(animation)
+	switch(animation)
+		if("opening")
+			flick("opening", src)
+			playsound(src, 'sound/machines/doors/shutters_open.ogg', 100, TRUE)
+		if("closing")
+			flick("closing", src)
+			playsound(src, 'sound/machines/doors/shutters_close.ogg', 100, TRUE)
 
 /obj/machinery/door/poddoor/shutters/indestructible
 	name = "hardened shutters"

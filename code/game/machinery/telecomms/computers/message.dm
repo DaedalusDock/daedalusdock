@@ -79,7 +79,7 @@
 	//If the computer is being hacked or is emagged, display the reboot message.
 	if(hacking || (obj_flags & EMAGGED))
 		message = rebootmsg
-	var/dat = "<center><font color='blue'[message]</font></center>"
+	var/dat = "<center><span class='internal'>[message]</span></center>"
 
 	if(auth)
 		dat += "<h4><dd><A href='?src=[REF(src)];auth=1'>&#09;<font color='green'>\[Authenticated\]</font></a>&#09;/"
@@ -113,7 +113,7 @@
 					dat += "<dd><A href='?src=[REF(src)];msg=1'>&#09;[++i]. Send Admin Message</a><br></dd>"
 			else
 				for(var/n = ++i; n <= optioncount; n++)
-					dat += "<dd><font color='blue'>&#09;[n]. ---------------</font><br></dd>"
+					dat += "<dd><span class='internal'>&#09;[n]. ---------------</span><br></dd>"
 			var/mob/living/silicon/S = usr
 			if(istype(S) && S.hack_software)
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.

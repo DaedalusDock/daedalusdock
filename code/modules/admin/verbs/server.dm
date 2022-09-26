@@ -123,14 +123,14 @@
 			if(SSticker.current_state == GAME_STATE_STARTUP)
 				msg = " (The server is still setting up, but the round will be \
 					started as soon as possible.)"
-			message_admins("<font color='blue'>[usr.key] has started the game.[msg]</font>")
+			message_admins("<span class='internal'>[usr.key] has started the game.[msg]</span>")
 			SSblackbox.record_feedback("tally", "admin_verb", 1, "Start Now") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 			return TRUE
 		SSticker.start_immediately = FALSE
 		SSticker.SetTimeLeft(1800)
 		to_chat(world, "<span class='infoplain'><b>The game will start in 180 seconds.</b></span>")
 		SEND_SOUND(world, sound('sound/ai/default/attention.ogg'))
-		message_admins("<font color='blue'>[usr.key] has cancelled immediate game start. Game will start in 180 seconds.</font>")
+		message_admins("<span class='internal'>[usr.key] has cancelled immediate game start. Game will start in 180 seconds.</span>")
 		log_admin("[usr.key] has cancelled immediate game start.")
 	else
 		to_chat(usr, "<span class='warningplain'><font color='red'>Error: Start Now: Game has already started.</font></span>")

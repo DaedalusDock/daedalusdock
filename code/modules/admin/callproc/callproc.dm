@@ -284,7 +284,7 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	. = ""
 	if(islist(returnval))
 		var/list/returnedlist = returnval
-		. = "<font color='blue'>"
+		. = "<span class='internal'>"
 		if(returnedlist.len)
 			var/assoc_check = returnedlist[1]
 			if(istext(assoc_check) && (returnedlist[assoc_check] != null))
@@ -298,7 +298,7 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 					. += "\n[elem]"
 		else
 			. = "[procname] returned an empty list"
-		. += "</font>"
+		. += "</span>"
 
 	else
-		. = "<font color='blue'>[procname] returned: [!isnull(returnval) ? html_encode(returnval) : "null"]</font>"
+		. = "<span class='internal'>[procname] returned: [!isnull(returnval) ? html_encode(returnval) : "null"]</span>"

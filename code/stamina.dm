@@ -3,7 +3,7 @@
 ///Time before regen starts when hit with stam damage
 #define STAMINA_REGEN_TIME (2 SECONDS)
 ///The amount of stamina a carbon recovers every 2 seconds
-#define STAMINA_REGEN 20
+#define STAMINA_REGEN 10
 
 #define ATTACK_DO_NOTHING (0<<0)
 #define ATTACK_HANDLED (1<<1)
@@ -14,14 +14,14 @@
 /// STATS
 ////
 
-///The maximum stamina a human has, after adding up all bodyparts.
-#define STAMINA_HUMAN_MAX 250
-///Carbons enter a "weakened" state over [maximum_stamina_loss] plus this value, opening them up to Disorient stuns.
-#define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (-100) //150
+///The default maximum stamina
+#define STAMINA_MAX 250
+///Carbons enter Exhaustion when their stamina drops below this percentage
+#define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (0.4) //40% or less
 ///The slowdown when a mob is exhausted
 #define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
-///Carbons will be exposed to stamina stuns upon reaching or exceeding [maximum_stamina_loss] plus this value
-#define STAMINA_STUN_THRESHOLD_MODIFIER (-50) //-200
+///Carbons will be exposed to stamina stuns upon dropping below this percentage
+#define STAMINA_STUN_THRESHOLD_MODIFIER (0.2) //20% or less
 
 
 
@@ -42,7 +42,7 @@
 ///The multiplier applied to damage on a critical
 #define STAMINA_CRITICAL_MODIFIER 2
 ///The amount of stamina at which point swinging is free.
-#define STAMINA_MAXIMUM_TO_SWING 150
+#define STAMINA_MAXIMUM_TO_SWING 100
 ///The time a mob is stunned when stamina stunned
 #define STAMINA_STUN_TIME 3 SECONDS
 ///The base value of a stamina stun chance

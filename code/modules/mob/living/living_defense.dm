@@ -385,7 +385,7 @@
 	if(!(flags & SHOCK_ILLUSION))
 		adjustFireLoss(shock_damage)
 	else
-		adjustStaminaLoss(shock_damage)
+		stamina.adjust(-shock_damage)
 	visible_message(
 		span_danger("[src] was shocked by \the [source]!"), \
 		span_userdanger("You feel a powerful shock coursing through your body!"), \

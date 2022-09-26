@@ -309,7 +309,7 @@
 
 	var/append_message = ""
 	//Roll disarm chance based on the target's missing stamina
-	var/disarm_success_chance = target.getStaminaLoss() / target.maximum_stamina_loss * 100
+	var/disarm_success_chance = target.stamina.loss_as_percent/2
 	if(prob(disarm_success_chance) && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I as anything in target.held_items)

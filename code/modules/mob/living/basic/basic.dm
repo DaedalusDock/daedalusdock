@@ -94,12 +94,6 @@
 	if(speak_emote)
 		speak_emote = string_list(speak_emote)
 
-/mob/living/basic/Life(delta_time = SSMOBS_DT, times_fired)
-	. = ..()
-	///Automatic stamina re-gain
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * delta_time, FALSE, TRUE)
-
 /mob/living/basic/say_mod(input, list/message_mods = list())
 	if(length(speak_emote))
 		verb_say = pick(speak_emote)

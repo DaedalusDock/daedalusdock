@@ -27,8 +27,8 @@
 /mob/living/silicon/setCloneLoss(amount, updating_health = TRUE, forced = FALSE)
 	return FALSE
 
-/mob/living/silicon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE) //immune to stamina damage.
-	return FALSE
+/mob/living/silicon/pre_stamina_change(diff as num) //immune to stamina damage.
+	return 0
 
 /mob/living/silicon/setStaminaLoss(amount, updating_health = TRUE)
 	return FALSE

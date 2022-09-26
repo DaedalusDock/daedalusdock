@@ -352,12 +352,12 @@
 	..()
 	if(istype(I,/obj/item/pestle))
 		if(grinded)
-			if(user.getStaminaLoss() > 50)
+			if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 				to_chat(user, span_warning("You are too tired to work!"))
 				return
 			to_chat(user, span_notice("You start grinding..."))
 			if((do_after(user, src, 25)) && grinded)
-				user.adjustStaminaLoss(40)
+				user.stamina.adjust(-40)
 				if(grinded.juice_results) //prioritize juicing
 					grinded.on_juice()
 					reagents.add_reagent_list(grinded.juice_results)

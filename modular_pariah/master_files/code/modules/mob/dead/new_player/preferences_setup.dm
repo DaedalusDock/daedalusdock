@@ -20,5 +20,4 @@
 			var/default_outfit = new /datum/outfit()
 			mannequin.equip_outfit_and_loadout(default_outfit, src, TRUE)
 	mannequin.update_body()
-	COMPILE_OVERLAYS(mannequin)
 	return mannequin.appearance

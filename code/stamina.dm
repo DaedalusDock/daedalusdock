@@ -49,3 +49,11 @@
 #define STAMINA_SCALING_STUN_BASE 20
 ///The maximum additional stun chance based on missing stamina
 #define STAMINA_SCALING_STUN_SCALER 60
+
+////
+/// DISARM
+////
+/// How much stamina it costs to Disarm/Shove
+#define STAMINA_DISARM_COST 30
+/// The amount of stamina damage dealt on disarm by default.
+#define STAMINA_DISARM_DMG 18

@@ -65,7 +65,7 @@
 		if(CLONE)
 			return getCloneLoss()
 		if(STAMINA)
-			return getStaminaLoss()
+			CRASH("get_damage_amount tried to get stamina amount!")
 
 /// applies multiple damages at once via [/mob/living/proc/apply_damage]
 /mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, def_zone = null, blocked = FALSE, stamina = 0, brain = 0)
@@ -82,7 +82,7 @@
 	if(clone)
 		apply_damage(clone, CLONE, def_zone, blocked)
 	if(stamina)
-		apply_damage(stamina, STAMINA, def_zone, blocked)
+		CRASH("Something is using apply_damages to apply stamina damage!")
 	if(brain)
 		apply_damage(brain, BRAIN, def_zone, blocked)
 	return 1

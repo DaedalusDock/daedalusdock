@@ -133,7 +133,7 @@
 
 	return .
 
-/obj/machinery/door/firedoor/Moved(atom/oldloc)
+/obj/machinery/door/firedoor/Moved(atom/oldloc, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	var/new_area = get_area(src)
 	if(my_area != new_area)
@@ -151,11 +151,6 @@
 	my_area = new_area
 	if(!my_area)
 		return
-
-	for(var/area/area2join in get_adjacent_open_areas(src) | my_area)
-		LAZYDISTINCTADD(area2join.firedoors, src)
-		joined_areas |= area2join
-
 
 /obj/machinery/door/firedoor/proc/handle_alert(datum/source, code)
 	SIGNAL_HANDLER
@@ -390,7 +385,7 @@
 			light_xoffset = -2
 	update_icon()
 
-/obj/machinery/door/firedoor/border_only/Moved()
+/obj/machinery/door/firedoor/border_only/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	adjust_lights_starting_offset()
 

@@ -356,8 +356,13 @@
 	. = ..()
 
 /obj/structure/window/Move()
-	update_nearby_tiles()
+	var/turf/T = loc
 	. = ..()
+	if(.)
+		if(isturf(loc))
+			SSzas.mark_for_update(loc)
+		if(isturf(loc))
+			SSzas.mark_for_update(T)
 
 /obj/structure/window/zas_canpass(turf/T)
 	if(QDELETED(src))

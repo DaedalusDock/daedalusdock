@@ -323,41 +323,45 @@
 
 
 ///Checks if we are within acceptable range of another gas_mixture to suspend processing or merge.
-/datum/gas_mixture/proc/compare(const/datum/gas_mixture/sample, vacuum_exception = 0)
-	if(!sample) return 0
+/datum/gas_mixture/proc/compare(const/datum/gas_mixture/sample, check_vacuum = TRUE)
+	if(!sample)
+		return FALSE
 
-	if(vacuum_exception)
+	///If check_vacuum is TRUE, if one of the mixtures is a vacuum, return FALSE until both are or neither are.
+	if(check_vacuum)
 		// Special case - If one of the two is zero pressure, the other must also be zero.
 		// This prevents suspending processing when an air-filled room is next to a vacuum,
 		// an edge case which is particually obviously wrong to players
-		if(total_moles == 0 && sample.total_moles != 0 || sample.total_moles == 0 && total_moles != 0)
-			return 0
-
-	var/list/marked = list()
-	for(var/g in gas)
-		if((abs(gas[g] - sample.gas[g]) > MINIMUM_AIR_TO_SUSPEND) && \
-		((gas[g] < (1 - MINIMUM_AIR_RATIO_TO_SUSPEND) * sample.gas[g]) || \
-		(gas[g] > (1 + MINIMUM_AIR_RATIO_TO_SUSPEND) * sample.gas[g])))
-			return 0
-		marked[g] = 1
+		if(!!total_moles != !!sample.total_moles)
+			return FALSE
 
 	if(abs(returnPressure() - sample.returnPressure()) > MINIMUM_PRESSURE_DIFFERENCE_TO_SUSPEND)
-		return 0
+		return FALSE
 
-	for(var/g in sample.gas)
+	var/list/cached_gas = gas
+	var/list/sample_cached_gas = sample.gas
+	var/list/marked = list()
+	for(var/g in cached_gas)
+		if((abs(cached_gas[g] - sample.gas[g]) > MINIMUM_AIR_TO_SUSPEND) && \
+		((cached_gas[g] < (1 - MINIMUM_AIR_RATIO_TO_SUSPEND) * sample_cached_gas[g]) || \
+		(cached_gas[g] > (1 + MINIMUM_AIR_RATIO_TO_SUSPEND) * sample_cached_gas[g])))
+			return FALSE
+		marked[g] = 1
+
+	for(var/g in sample_cached_gas)
 		if(!marked[g])
-			if((abs(gas[g] - sample.gas[g]) > MINIMUM_AIR_TO_SUSPEND) && \
-			((gas[g] < (1 - MINIMUM_AIR_RATIO_TO_SUSPEND) * sample.gas[g]) || \
-			(gas[g] > (1 + MINIMUM_AIR_RATIO_TO_SUSPEND) * sample.gas[g])))
-				return 0
+			if((abs(cached_gas[g] - sample_cached_gas[g]) > MINIMUM_AIR_TO_SUSPEND) && \
+			((cached_gas[g] < (1 - MINIMUM_AIR_RATIO_TO_SUSPEND) * sample_cached_gas[g]) || \
+			(cached_gas[g] > (1 + MINIMUM_AIR_RATIO_TO_SUSPEND) * sample_cached_gas[g])))
+				return FALSE
 
 	if(total_moles > MINIMUM_AIR_TO_SUSPEND)
 		if((abs(temperature - sample.temperature) > MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND) && \
 		((temperature < (1 - MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND)*sample.temperature) || \
 		(temperature > (1 + MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND)*sample.temperature)))
-			return 0
+			return FALSE
 
-	return 1
+	return TRUE
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/checkTileGraphic(list/graphic_add, list/graphic_remove)
@@ -492,7 +496,7 @@
 	AIR_UPDATE_VALUES(src)
 	AIR_UPDATE_VALUES(other)
 
-	return compare(other)
+	return compare(other, FALSE)
 
 
 ///A wrapper around share_ratio for spacing gas at the same rate as if it were going into a large airless room.
@@ -507,6 +511,25 @@
 	var/M = getGroupMoles()
 	if(M)
 		return getMass()/M
+
+//Yeah baby we're sinning today.
+///Compares the contents of two mixtures to see if they are identical.
+/datum/gas_mixture/proc/operator~=(datum/gas_mixture/other)
+	if(src.temperature != other.temperature)
+		return FALSE
+
+	if(length(src.gas) != length(other.gas))
+		return FALSE
+
+	for(var/g in src.gas)
+		if(src.gas[g] != other.gas[g])
+			return FALSE
+
+	for(var/g in other.gas)
+		if(other.gas[g] != src.gas[g])
+			return FALSE
+
+	return TRUE
 
 ///Returns TRUE if the given gas has a volume equal to or greater than the given amount in one group share of gas.
 /datum/gas_mixture/proc/hasGas(gas_id, required_amount)

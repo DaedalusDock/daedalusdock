@@ -50,8 +50,6 @@
 		return
 
 	var/turf/other_turf = get_step(T, direction_list[direction])
-	if(!other_turf.simulated)
-		return
 
 	var/t_block
 	ATMOS_CANPASS_TURF(t_block, T, other_turf)

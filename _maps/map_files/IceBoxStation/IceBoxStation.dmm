@@ -50511,10 +50511,11 @@
 /turf/open/floor/iron,
 /area/cargo/lobby)
 "xKD" = (
-/obj/structure/industrial_lift{
-	id = "publicElevator"
-	},
 /obj/machinery/light/floor,
+/obj/structure/industrial_lift,
+/obj/effect/landmark/lift_id{
+	specific_lift_id = "publicElevator"
+	},
 /turf/open/openspace,
 /area/commons/storage/mining)
 "xKQ" = (

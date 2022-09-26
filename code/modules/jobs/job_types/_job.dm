@@ -326,12 +326,9 @@
 
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)
 	if(istype(PDA))
-		PDA.saved_identification = H.real_name //PARIAH EDIT
-		PDA.saved_job = J.title //PARIAH EDIT
-
-		var/obj/item/computer_hardware/identifier/id = PDA.all_components[MC_IDENTIFY]
-		if(id)
-			id.UpdateDisplay()
+		PDA.saved_identification = H.real_name
+		PDA.saved_job = J.title
+		PDA.UpdateDisplay()
 
 
 /datum/outfit/job/get_chameleon_disguise_info()

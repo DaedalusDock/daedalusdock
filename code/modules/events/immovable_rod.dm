@@ -129,7 +129,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	if(destination.density && isturf(destination))
 		Bump(destination)
 
-/obj/effect/immovablerod/Moved()
+/obj/effect/immovablerod/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	if(!loc)
 		return ..()
 
@@ -196,7 +196,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 /obj/effect/immovablerod/singularity_pull()
 	return
 
-/obj/effect/immovablerod/Process_Spacemove()
+/obj/effect/immovablerod/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
 	return TRUE
 
 /obj/effect/immovablerod/Bump(atom/clong)

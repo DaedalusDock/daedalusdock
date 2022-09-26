@@ -26,7 +26,7 @@
 
 /// If the max of the lighting lumcounts of each spectrum drops below this, disable luminosity on the lighting objects.
 /// Set to zero to disable soft lighting. Luminosity changes then work if it's lit at all.
-#define LIGHTING_SOFT_THRESHOLD 0.05
+#define LIGHTING_SOFT_THRESHOLD 0
 
 ///How many tiles standard fires glow.
 #define LIGHT_RANGE_FIRE 3

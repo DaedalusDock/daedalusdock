@@ -38,6 +38,7 @@
 	if(observers?.len)
 		for(var/mob/dead/observe as anything in observers)
 			observe.reset_perspective(null)
+
 	qdel(hud_used)
 	QDEL_LIST(client_colours)
 	ghostize() //False, since we're deleting it currently
@@ -1138,9 +1139,7 @@
 			var/obj/item/modular_computer/tablet/pda/PDA = A
 			if(PDA.saved_identification == oldname)
 				PDA.saved_identification = newname
-				var/obj/item/computer_hardware/identifier/display = PDA.all_components[MC_IDENTIFY]
-				if(display)
-					display.UpdateDisplay()
+				PDA.UpdateDisplay()
 				if(!search_id)
 					break
 				search_pda = 0

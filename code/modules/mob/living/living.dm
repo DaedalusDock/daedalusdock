@@ -1,6 +1,6 @@
 /mob/living/Initialize(mapload)
 	. = ..()
-	stamina = new
+	stamina = new(src)
 
 	register_init_signals()
 	if(unique_name)
@@ -2352,6 +2352,3 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 ///Called by the stamina holder, passing the change in stamina to modify.
 /mob/living/proc/pre_stamina_change(diff as num, forced)
 	return diff
-
-/mob/living/proc/update_stamina()
-	return

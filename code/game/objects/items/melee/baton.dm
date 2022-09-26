@@ -226,7 +226,7 @@
 			playsound(get_turf(src), 'sound/effects/bang.ogg', 10, TRUE)
 	else
 		user.Knockdown(clumsy_knockdown_time)
-		user.apply_damage(charged_stamina_damage, STAMINA, BODY_ZONE_HEAD)
+		user.stamina.adjust(-charged_stamina_damage)
 		additional_effects_non_cyborg(user, user) // user is the target here
 		if(on_stun_sound)
 			playsound(get_turf(src), on_stun_sound, on_stun_volume, TRUE, -1)
@@ -360,7 +360,7 @@
 	if(upgrade_flags & BATON_FOCUS_UPGRADE)
 		var/datum/contractor_hub/the_hub = GLOB.contractors[user?.mind]
 		if(carbon_target == the_hub?.current_contract?.contract.target?.current) // Pain
-			carbon_target.apply_damage(BONUS_STAMINA_DAM, STAMINA, BODY_ZONE_CHEST)
+			carbon_target.stamina.adjust(-BONUS_STAMINA_DAM)
 			carbon_target.adjust_timed_status_effect(BONUS_STUTTER, /datum/status_effect/speech/stutter)
 
 /obj/item/melee/baton/telescopic/contractor_baton/attack_secondary(mob/living/victim, mob/living/user, params)

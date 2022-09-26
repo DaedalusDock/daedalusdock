@@ -1197,11 +1197,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
 			target.apply_damage(damage*1.5, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
 			log_combat(user, target, "kicked")
-			target.apply_damage(STAMINA_DAMAGE_UNARMED*1.5, STAMINA, null, armor_block, spread_damage = TRUE, wound_bonus = CANT_WOUND, attack_direction = attack_direction) //Kicks do alot of stamina damage
-
+			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*1.5)) //Kicks do alot of stamina damage
 		else//other attacks deal full raw damage + 1.5x in stamina damage
 			target.apply_damage(damage, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.apply_damage(STAMINA_DAMAGE_UNARMED, STAMINA, null, armor_block, spread_damage = TRUE, wound_bonus = CANT_WOUND, attack_direction = attack_direction)
+			target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
 			log_combat(user, target, "punched")
 			. |= ATTACK_CONSUME_STAMINA
 

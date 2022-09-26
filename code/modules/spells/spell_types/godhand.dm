@@ -142,7 +142,7 @@
 
 	duffelvictim.flash_act()
 	duffelvictim.Immobilize(5 SECONDS)
-	duffelvictim.apply_damage(80, STAMINA)
+	duffelvictim.stamina.adjust(-80)
 	duffelvictim.Knockdown(5 SECONDS)
 
 	if(HAS_TRAIT(target, TRAIT_DUFFEL_CURSE_PROOF))

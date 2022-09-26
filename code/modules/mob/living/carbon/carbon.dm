@@ -520,7 +520,7 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
-/mob/living/carbon/update_stamina()
+/mob/living/carbon/on_stamina_update()
 	var/stam = stamina.current
 	var/max = stamina.maximum
 	var/is_exhausted = HAS_TRAIT_FROM(src, TRAIT_EXHAUSTED, STAMINA)

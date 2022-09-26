@@ -150,7 +150,7 @@
 		apply_effect(drowsy, EFFECT_DROWSY, blocked)
 
 	if(stamina)
-		apply_damage(stamina, STAMINA, null, blocked)
+		src.stamina.adjust(-stamina)
 
 	if(jitter && (status_flags & CANSTUN) && !HAS_TRAIT(src, TRAIT_STUNIMMUNE))
 		adjust_timed_status_effect(jitter, /datum/status_effect/jitter)
@@ -287,8 +287,6 @@
 /mob/living/proc/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status = null)
 	adjustBruteLoss(brute, FALSE) //zero as argument for no instant health update
 	adjustFireLoss(burn, FALSE)
-	if(stamina)
-		stack_trace("take_overall_damage tried to deal stamina damage!")
 	if(updating_health)
 		updatehealth()
 

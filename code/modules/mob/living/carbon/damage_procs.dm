@@ -241,9 +241,6 @@
 
 		parts -= picked
 
-	if(stamina)
-		stack_trace("take_overall_damage tried damaging stamina!")
-
 	if(updating_health)
 		updatehealth()
 	if(update)

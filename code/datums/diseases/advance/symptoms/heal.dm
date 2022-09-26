@@ -167,13 +167,13 @@
 
 	M.adjustToxLoss(-(4 * heal_amt)) //most effective on toxins
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return
 
-	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+	for(var/obj/item/bodypart/L as anything in parts)
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 	return 1
 
@@ -305,7 +305,7 @@
 /datum/symptom/heal/darkness/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return
@@ -467,7 +467,7 @@
 /datum/symptom/heal/water/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC) //more effective on burns
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC) //more effective on burns
 
 	if(!parts.len)
 		return
@@ -544,7 +544,7 @@
 
 	M.adjustToxLoss(-heal_amt)
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 	if(!parts.len)
 		return
 	if(prob(5))
@@ -594,7 +594,7 @@
 
 	M.adjustToxLoss(-(2 * heal_amt))
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return

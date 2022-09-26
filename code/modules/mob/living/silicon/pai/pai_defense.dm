@@ -78,11 +78,12 @@
 /mob/living/silicon/pai/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
 	return take_holo_damage(amount)
 
-/mob/living/silicon/pai/adjustStaminaLoss(amount, updating_health, forced = FALSE)
+/mob/living/silicon/pai/pre_stamina_change(diff as num, forced)
 	if(forced)
-		take_holo_damage(amount)
+		take_holo_damage(diff)
 	else
-		take_holo_damage(amount * 0.25)
+		take_holo_damage(diff * 0.25)
+	return 0
 
 /mob/living/silicon/pai/getBruteLoss()
 	return emittermaxhealth - emitterhealth

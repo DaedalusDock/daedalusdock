@@ -237,7 +237,7 @@
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
-	carbon_victim.adjustStaminaLoss(80)
+	carbon_victim.stamina.adjust(-80)
 	carbon_victim.silent += 10
 	carbon_victim.adjust_timed_status_effect(1 MINUTES, /datum/status_effect/speech/stutter)
 	carbon_victim.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)

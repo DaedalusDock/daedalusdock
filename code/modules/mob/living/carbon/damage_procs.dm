@@ -38,11 +38,7 @@
 		if(CLONE)
 			adjustCloneLoss(damage_amount, forced = forced)
 		if(STAMINA)
-			if(BP)
-				if(BP.receive_damage(0, 0, damage_amount))
-					update_damage_overlays()
-			else
-				adjustStaminaLoss(damage_amount, forced = forced)
+			CRASH("apply_damage tried to adjust stamina loss!")
 	return TRUE
 
 
@@ -66,18 +62,18 @@
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(amount, 0, 0, updating_health, required_status)
+		take_overall_damage(amount, 0, updating_health, required_status)
 	else
-		heal_overall_damage(abs(amount), 0, 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
+		heal_overall_damage(abs(amount), 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
 
 /mob/living/carbon/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, required_status)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(0, amount, 0, updating_health, required_status)
+		take_overall_damage(0, amount, updating_health, required_status)
 	else
-		heal_overall_damage(0, abs(amount), 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
+		heal_overall_damage(0, abs(amount), required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
 
 /mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
@@ -93,26 +89,10 @@
 		amount = min(amount, 0)
 	return ..()
 
-/mob/living/carbon/getStaminaLoss()
-	. = 0
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		. += round(BP.stamina_dam, DAMAGE_PRECISION)
-
-/mob/living/carbon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/pre_stamina_change(diff as num, forced)
 	if(!forced && (status_flags & GODMODE))
-		return FALSE
-	if(amount > 0)
-		take_overall_damage(0, 0, amount, updating_health)
-	else
-		heal_overall_damage(0, 0, abs(amount), null, updating_health)
-	return amount
-
-/mob/living/carbon/setStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
-	var/current = getStaminaLoss()
-	var/diff = amount - current
-	if(!diff)
-		return
-	adjustStaminaLoss(diff, updating_health, forced)
+		return 0
+	return diff
 
 /**
  * If an organ exists in the slot requested, and we are capable of taking damage (we don't have [GODMODE] on), call the damage proc on that organ.
@@ -154,13 +134,12 @@
 ////////////////////////////////////////////
 
 ///Returns a list of damaged bodyparts
-/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, stamina = FALSE, status)
+/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, status)
 	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(status && !(BP.bodytype & status))
 			continue
-		if((brute && BP.brute_dam) || (burn && BP.burn_dam) || (stamina && BP.stamina_dam))
+		if((brute && BP.brute_dam) || (burn && BP.burn_dam))
 			parts += BP
 	return parts
 
@@ -192,8 +171,8 @@
  *
  * It automatically updates health status
  */
-/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
-	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn,stamina,required_status)
+/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_status)
+	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn,required_status)
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
@@ -219,33 +198,30 @@
 		update_damage_overlays()
 
 ///Heal MANY bodyparts, in random order
-/mob/living/carbon/heal_overall_damage(brute = 0, burn = 0, stamina = 0, required_status, updating_health = TRUE)
-	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute, burn, stamina, required_status)
+/mob/living/carbon/heal_overall_damage(brute = 0, burn = 0, required_status, updating_health = TRUE)
+	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute, burn, required_status)
 
 	var/update = NONE
-	while(parts.len && (brute > 0 || burn > 0 || stamina > 0))
+	while(parts.len && (brute > 0 || burn > 0))
 		var/obj/item/bodypart/picked = pick(parts)
 
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
-		var/stamina_was = picked.stamina_dam
 
 		update |= picked.heal_damage(brute, burn, stamina, required_status, FALSE)
 
 		brute = round(brute - (brute_was - picked.brute_dam), DAMAGE_PRECISION)
 		burn = round(burn - (burn_was - picked.burn_dam), DAMAGE_PRECISION)
-		stamina = round(stamina - (stamina_was - picked.stamina_dam), DAMAGE_PRECISION)
 
 		parts -= picked
 
 	if(updating_health)
 		updatehealth()
-		update_stamina()
 	if(update)
 		update_damage_overlays()
 
 /// damage MANY bodyparts, in random order
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status)
 	if(status_flags & GODMODE)
 		return //godmode
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_status)
@@ -266,43 +242,11 @@
 
 		parts -= picked
 
-
-	///Okay, so, what the fuck is going on here, you might be asking?
 	if(stamina)
-		//Cut the bodyparts list because its built on false assumptions. It only checks physical damage capacity and not stamina capacity.
-		parts.Cut()
-		//Build our own list of bodyparts which are capable of holding stamina damage still.
-		for(var/obj/item/bodypart/BP as anything in bodyparts)
-			if(BP.stamina_dam < BP.max_stamina_damage)
-				parts += BP
-
-		///We need two lists to ensure a pseudo-even distribution of damage.
-		///This is our list of all parts that can still hold some more stamina damage.
-		var/list/obj/item/bodypart/not_full = parts.Copy()
-		while(stamina)
-			///Copy the total parts list. This is necessary because later we remove instances from this list during the loop.
-			parts = not_full.Copy()
-			///If all of our bodyparts are full on stamina, stop the loop.
-			if(!length(parts))
-				break
-
-			while(length(parts))
-				//Create a "share" of the current stamina damage pool
-				var/damage_share = round(stamina/length(parts), DAMAGE_PRECISION)
-				//Pick and take a part from the eligible parts list.
-				var/obj/item/bodypart/picked = pick_n_take(parts)
-				//If the part is full on stamina damage, remove it from the master list so it doesn't get re-added
-				if(picked.stamina_dam >= picked.max_stamina_damage)
-					not_full -= picked
-					continue
-				///Distribute the damage share to this limb, record how much was actually used.
-				var/stamina_was = picked.stamina_dam
-				update |= picked.receive_damage(0, 0, damage_share, FALSE, required_status, wound_bonus = CANT_WOUND)
-				stamina = round(stamina - (picked.stamina_dam - stamina_was), DAMAGE_PRECISION)
-				parts -= picked
+		stack_trace("take_overall_damage tried damaging stamina!")
 
 	if(updating_health)
 		updatehealth()
 	if(update)
 		update_damage_overlays()
-	update_stamina()
+

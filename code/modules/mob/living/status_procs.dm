@@ -251,9 +251,12 @@
 
 	//You can never be stam-stunned w/o overstam
 	if(overstam)
-		apply_damage(stam2deal, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND)
+		stamina.adjust(-stam2deal)
 	else
-		apply_damage(stam2deal, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND, cap_loss_at = (src.maximum_stamina_loss + STAMINA_EXHAUSTION_THRESHOLD_MODIFIER))
+		var/threshold = (stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
+		stam2deal = stamina.current - stam2deal < threshold ? (stam2deal - threshold) : (stam2deal)
+		if(stam2deal)
+			stamina.adjust(-stam2deal)
 
 	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
 	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)

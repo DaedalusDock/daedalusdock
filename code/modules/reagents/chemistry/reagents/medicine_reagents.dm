@@ -558,7 +558,7 @@
 			M.set_timed_status_effect(20 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 	M.AdjustAllImmobility(-20 * REM * delta_time * normalise_creation_purity())
-	M.adjustStaminaLoss(-1 * REM * delta_time * normalise_creation_purity(), FALSE)
+	M.stamina.adjust(1 * REM * delta_time * normalise_creation_purity())
 	..()
 	return TRUE
 
@@ -820,14 +820,14 @@
 		M.losebreath -= 2 * REM * delta_time
 	if(M.losebreath < 0)
 		M.losebreath = 0
-	M.adjustStaminaLoss(-0.5 * REM * delta_time, 0)
+	M.stamina.adjust(0.5 * REM * delta_time)
 	if(DT_PROB(10, delta_time))
 		M.AdjustAllImmobility(-20)
 	..()
 
 /datum/reagent/medicine/epinephrine/overdose_process(mob/living/M, delta_time, times_fired)
 	if(DT_PROB(18, REM * delta_time))
-		M.adjustStaminaLoss(2.5, 0)
+		M.stamina.adjust(2.5)
 		M.adjustToxLoss(1, 0)
 		M.losebreath++
 		. = TRUE
@@ -1028,13 +1028,13 @@
 		M.adjustBruteLoss(-1 * REM * delta_time, 0)
 		M.adjustFireLoss(-1 * REM * delta_time, 0)
 	M.AdjustAllImmobility(-60  * REM * delta_time)
-	M.adjustStaminaLoss(-5 * REM * delta_time, 0)
+	M.stamina.adjust(5 * REM * delta_time)
 	..()
 	. = TRUE
 
 /datum/reagent/medicine/stimulants/overdose_process(mob/living/M, delta_time, times_fired)
 	if(DT_PROB(18, delta_time))
-		M.adjustStaminaLoss(2.5, 0)
+		M.stamina.adjust(2.5)
 		M.adjustToxLoss(1, 0)
 		M.losebreath++
 		. = TRUE
@@ -1139,7 +1139,7 @@
 		M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
 		M.adjustToxLoss(-0.5 * REM * delta_time, 0)
 		M.adjustCloneLoss(-0.1 * REM * delta_time, 0)
-		M.adjustStaminaLoss(-0.5 * REM * delta_time, 0)
+		M.stamina.adjust(-0.5 * REM * delta_time)
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * REM * delta_time, 150) //This does, after all, come from ambrosia, and the most powerful ambrosia in existence, at that!
 	else
 		M.adjustBruteLoss(-5 * REM * delta_time, 0) //slow to start, but very quick healing once it gets going
@@ -1147,7 +1147,7 @@
 		M.adjustOxyLoss(-3 * REM * delta_time, 0)
 		M.adjustToxLoss(-3 * REM * delta_time, 0)
 		M.adjustCloneLoss(-1 * REM * delta_time, 0)
-		M.adjustStaminaLoss(-3 * REM * delta_time, 0)
+		M.stamina.adjust(3 * REM * delta_time)
 		M.adjust_timed_status_effect(6 SECONDS * REM * delta_time, /datum/status_effect/jitter, max_duration = 1 MINUTES)
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * REM * delta_time, 150)
 		if(DT_PROB(5, delta_time))
@@ -1198,7 +1198,7 @@
 		M.hallucination -= 5 * REM * delta_time
 	if(DT_PROB(10, delta_time))
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50)
-	M.adjustStaminaLoss(2.5 * REM * delta_time, 0)
+	M.stamina.adjust(-2.5 * REM * delta_time)
 	..()
 	return TRUE
 
@@ -1213,7 +1213,7 @@
 /datum/reagent/medicine/changelingadrenaline/on_mob_life(mob/living/carbon/metabolizer, delta_time, times_fired)
 	..()
 	metabolizer.AdjustAllImmobility(-20 * REM * delta_time)
-	metabolizer.adjustStaminaLoss(-10 * REM * delta_time, 0)
+	metabolizer.stamina.adjust(10 * REM * delta_time)
 	metabolizer.set_timed_status_effect(20 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 	metabolizer.set_timed_status_effect(20 SECONDS * REM * delta_time, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	return TRUE
@@ -1326,7 +1326,7 @@
 	if(!overdosed) // We do not want any effects on OD
 		overdose_threshold = overdose_threshold + ((rand(-10, 10) / 10) * REM * delta_time) // for extra fun
 		metabolizer.AdjustAllImmobility(-5 * REM * delta_time)
-		metabolizer.adjustStaminaLoss(-0.5 * REM * delta_time, 0)
+		metabolizer.stamina.adjust(0.5 * REM * delta_time)
 		metabolizer.set_timed_status_effect(1 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 		metabolization_rate = 0.005 * REAGENTS_METABOLISM * rand(5, 20) // randomizes metabolism between 0.02 and 0.08 per second
 		. = TRUE
@@ -1347,7 +1347,7 @@
 				M.losebreath++
 		if(41 to 80)
 			M.adjustOxyLoss(0.1 * REM * delta_time, 0)
-			M.adjustStaminaLoss(0.1 * REM * delta_time, 0)
+			M.stamina.adjust(-0.1 * REM * delta_time)
 			M.adjust_timed_status_effect(2 SECONDS * REM * delta_time, /datum/status_effect/jitter, max_duration = 40 SECONDS)
 			M.adjust_timed_status_effect(2 SECONDS * REM * delta_time, /datum/status_effect/speech/stutter, max_duration = 40 SECONDS)
 			M.set_timed_status_effect(20 SECONDS * REM * delta_time, /datum/status_effect/dizziness, only_if_higher = TRUE)
@@ -1360,11 +1360,11 @@
 		if(81)
 			to_chat(M, span_userdanger("You feel too exhausted to continue!")) // at this point you will eventually die unless you get charcoal
 			M.adjustOxyLoss(0.1 * REM * delta_time, 0)
-			M.adjustStaminaLoss(0.1 * REM * delta_time, 0)
+			M.stamina.adjust(-0.1 * REM * delta_time)
 		if(82 to INFINITY)
 			M.Sleeping(100 * REM * delta_time)
 			M.adjustOxyLoss(1.5 * REM * delta_time, 0)
-			M.adjustStaminaLoss(1.5 * REM * delta_time, 0)
+			M.stamina.adjust(-1.5 * REM * delta_time)
 	..()
 	return TRUE
 

@@ -73,12 +73,6 @@
 		/obj/item/bodypart/r_leg,
 		/obj/item/bodypart/l_leg,
 	)
-	/*
-		Stamina healed per 2 seconds overall. When the mob has taken more than 60 stamina damage
-	*/
-	stamina_recovery = STAMINA_REGEN
-	///Carbon stamina is dynamically changed by bodyparts
-	maximum_stamina_loss = STAMINA_HUMAN_MAX
 
 	/// A collection of arms (or actually whatever the fug /bodyparts you monsters use to wreck my systems)
 	var/list/hand_bodyparts = list()

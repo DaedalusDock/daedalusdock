@@ -371,7 +371,7 @@
 	if(IS_CULTIST(M))
 		M.adjust_drowsyness(-5* REM * delta_time)
 		M.AdjustAllImmobility(-40 *REM* REM * delta_time)
-		M.adjustStaminaLoss(-10 * REM * delta_time, 0)
+		M.stamina.adjust(10 * REM * delta_time)
 		M.adjustToxLoss(-2 * REM * delta_time, 0)
 		M.adjustOxyLoss(-2 * REM * delta_time, 0)
 		M.adjustBruteLoss(-2 * REM * delta_time, 0)
@@ -1441,7 +1441,7 @@
 	return ..()
 
 /datum/reagent/nitrium_high_metabolization/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.adjustToxLoss(0.1 * current_cycle * REM * delta_time, 0) // 1 toxin damage per cycle at cycle 10
 	return ..()
 
@@ -2520,9 +2520,8 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/peaceborg/tire/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	var/healthcomp = (100 - M.health) //DOES NOT ACCOUNT FOR ADMINBUS THINGS THAT MAKE YOU HAVE MORE THAN 200/210 HEALTH, OR SOMETHING OTHER THAN A HUMAN PROCESSING THIS.
-	if(M.getStaminaLoss() < (45 - healthcomp)) //At 50 health you would have 200 - 150 health meaning 50 compensation. 60 - 50 = 10, so would only do 10-19 stamina.)
-		M.adjustStaminaLoss(10 * REM * delta_time)
+	if(M.stamina.loss_as_percent <= 80)
+		M.stamina.adjust(-10 * REM * delta_time)
 	if(DT_PROB(16, delta_time))
 		to_chat(M, "You should sit down and take a rest...")
 	..()
@@ -2713,7 +2712,7 @@
 		for(var/thing in M.all_wounds)
 			var/datum/wound/W = thing
 			stam_crash += (W.severity + 1) * 3 // spike of 3 stam damage per wound severity (moderate = 6, severe = 9, critical = 12) when the determination wears off if it was a combat rush
-		M.adjustStaminaLoss(stam_crash)
+		M.stamina.adjust(-stam_crash)
 	M.remove_status_effect(/datum/status_effect/determined)
 	..()
 
@@ -2729,7 +2728,7 @@
 		var/obj/item/bodypart/wounded_part = W.limb
 		if(wounded_part)
 			wounded_part.heal_damage(0.25 * REM * delta_time, 0.25 * REM * delta_time)
-		M.adjustStaminaLoss(-0.25 * REM * delta_time) // the more wounds, the more stamina regen
+		M.stamina.adjust(0.25 * REM * delta_time) // the more wounds, the more stamina regen
 	..()
 
 // unholy water, but for heretics.
@@ -2750,7 +2749,7 @@
 	if(IS_HERETIC(drinker))
 		drinker.adjust_drowsyness(-5 * REM * delta_time)
 		drinker.AdjustAllImmobility(-40 * REM * delta_time)
-		drinker.adjustStaminaLoss(-10 * REM * delta_time, FALSE)
+		drinker.stamina.adjust(-10 * REM * delta_time)
 		drinker.adjustToxLoss(-2 * REM * delta_time, FALSE, forced = TRUE)
 		drinker.adjustOxyLoss(-2 * REM * delta_time, FALSE)
 		drinker.adjustBruteLoss(-2 * REM * delta_time, FALSE)
@@ -2883,7 +2882,7 @@
 /datum/reagent/kronkus_extract/on_mob_life(mob/living/carbon/kronkus_enjoyer)
 	. = ..()
 	kronkus_enjoyer.adjustOrganLoss(ORGAN_SLOT_HEART, 0.1)
-	kronkus_enjoyer.adjustStaminaLoss(-2, FALSE)
+	kronkus_enjoyer.stamina.adjust(2)
 
 /datum/reagent/brimdust
 	name = "Brimdust"

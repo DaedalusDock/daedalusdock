@@ -735,7 +735,7 @@
 		M.losebreath += 4
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2*REM, 150)
 		M.adjustToxLoss(3*REM,0)
-		M.adjustStaminaLoss(10*REM,0)
+		M.stamina.adjust(-10*REM)
 		M.blur_eyes(5)
 		. = TRUE
 	..()

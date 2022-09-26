@@ -96,9 +96,9 @@
 		else //Otherwise randomize it to make the players guessing.
 			addtimer(cb,rand(1,SSnpcpool.wait))
 
-/mob/living/simple_animal/hostile/update_stamina()
+/mob/living/simple_animal/hostile/on_stamina_update()
 	. = ..()
-	move_to_delay = (initial(move_to_delay) + (staminaloss * 0.06))
+	move_to_delay = (initial(move_to_delay) + (stamina.loss * 0.06))
 
 /mob/living/simple_animal/hostile/proc/sidestep()
 	if(!target || !isturf(target.loc) || !isturf(loc) || stat == DEAD)

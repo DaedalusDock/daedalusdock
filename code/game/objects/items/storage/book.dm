@@ -138,7 +138,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			return 0
 
 	var/heal_amt = 10
-	var/list/hurt_limbs = H.get_damaged_bodyparts(1, 1, null, BODYTYPE_ORGANIC)
+	var/list/hurt_limbs = H.get_damaged_bodyparts(1, 1, BODYTYPE_ORGANIC)
 
 	if(hurt_limbs.len)
 		for(var/X in hurt_limbs)

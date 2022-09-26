@@ -189,7 +189,7 @@
 		if(2)
 			if(high_stress)
 				to_chat(owner, span_warning("You feel weak and scared! If only you weren't alone..."))
-				owner.adjustStaminaLoss(50)
+				owner.stamina.adjust(-50)
 			else
 				to_chat(owner, span_warning("You can't stop shaking..."))
 

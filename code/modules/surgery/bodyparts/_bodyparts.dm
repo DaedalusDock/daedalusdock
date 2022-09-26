@@ -68,10 +68,6 @@
 	var/brute_dam = 0
 	///The current amount of burn damage the limb has
 	var/burn_dam = 0
-	///The current amount of stamina damage the limb has
-	var/stamina_dam = 0
-	///The maximum stamina damage a bodypart can take
-	var/max_stamina_damage = 0
 	///The maximum "physical" damage a bodypart can take. Set by children
 	var/max_damage = 0
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
@@ -276,7 +272,9 @@
 /obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
-	if((!brute && !burn && !stamina) || hit_percent <= 0)
+	if(stamina)
+		stack_trace("Bodypart took stamina damage!")
+	if((!brute && !burn) || hit_percent <= 0)
 		return FALSE
 	if(owner && (owner.status_flags & GODMODE))
 		return FALSE	//godmode
@@ -286,11 +284,10 @@
 	var/dmg_multi = CONFIG_GET(number/damage_multiplier) * hit_percent
 	brute = round(max(brute * dmg_multi, 0),DAMAGE_PRECISION)
 	burn = round(max(burn * dmg_multi, 0),DAMAGE_PRECISION)
-	stamina = round(max(stamina * dmg_multi, 0),DAMAGE_PRECISION)
 	brute = max(0, brute - brute_reduction)
 	burn = max(0, burn - burn_reduction)
 
-	if(!brute && !burn && !stamina)
+	if(!brute && !burn)
 		return FALSE
 
 	brute *= wound_damage_multiplier
@@ -370,19 +367,12 @@
 	if(burn)
 		set_burn_dam(burn_dam + burn)
 
-	//We've dealt the physical damages, if there's room lets apply the stamina damage.
-	if(stamina)
-		set_stamina_dam(stamina_dam + round(clamp(stamina, 0, max_stamina_damage - stamina_dam), DAMAGE_PRECISION))
-
 	if(owner)
 		if(can_be_disabled)
 			update_disabled()
 		if(updating_health)
 			owner.updatehealth()
-			if(stamina > DAMAGE_PRECISION)
-				owner.update_stamina()
-				. = TRUE
-	return update_bodypart_damage_state() || .
+	return update_bodypart_damage_state()
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.
@@ -398,7 +388,7 @@
 	if(burn)
 		set_burn_dam(round(max(burn_dam - burn, 0), DAMAGE_PRECISION))
 	if(stamina)
-		set_stamina_dam(round(max(stamina_dam - stamina, 0), DAMAGE_PRECISION))
+		stack_trace("heal_damage tried to heal stamina damage!")
 
 	if(owner)
 		if(can_be_disabled)
@@ -428,21 +418,11 @@
 	. = burn_dam
 	burn_dam = new_value
 
-
-///Proc to hook behavior associated to the change of the stamina_dam variable's value.
-/obj/item/bodypart/proc/set_stamina_dam(new_value)
-	PROTECTED_PROC(TRUE)
-
-	if(stamina_dam == new_value)
-		return
-	. = stamina_dam
-	stamina_dam = new_value
-
 //Returns total damage.
 /obj/item/bodypart/proc/get_damage(include_stamina = FALSE)
 	var/total = brute_dam + burn_dam
 	if(include_stamina)
-		total = max(total, stamina_dam)
+		stack_trace("get_damage tried to return stamina damage!")
 	return total
 
 //Checks disabled status thresholds
@@ -460,7 +440,7 @@
 		set_disabled(TRUE)
 		return
 
-	var/total_damage = max(brute_dam + burn_dam, stamina_dam)
+	var/total_damage = max(brute_dam + burn_dam)
 
 	// this block of checks is for limbs that can be disabled, but not through pure damage (AKA limbs that suffer wounds, human/monkey parts and such)
 	if(!disable_threshold)

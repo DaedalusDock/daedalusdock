@@ -163,7 +163,7 @@
 	M.AdjustUnconscious(-40 * REM * delta_time)
 	M.AdjustParalyzed(-40 * REM * delta_time)
 	M.AdjustImmobilized(-40 * REM * delta_time)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.set_timed_status_effect(4 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * REM * delta_time)
 	if(DT_PROB(2.5, delta_time))
@@ -218,7 +218,7 @@
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "salted", /datum/mood_event/stimulant_heavy, name)
-	M.adjustStaminaLoss(-5 * REM * delta_time, 0)
+	M.stamina.adjust(5 * REM * delta_time)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * REM * delta_time)
 	M.hallucination += 5 * REM * delta_time
 	if(!HAS_TRAIT(M, TRAIT_IMMOBILIZED) && !ismovable(M.loc))
@@ -250,7 +250,7 @@
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	M.adjustStaminaLoss(-18 * REM * delta_time, 0)
+	M.stamina.adjust(-18 * REM * delta_time)
 	M.adjustToxLoss(0.5 * REM * delta_time, 0)
 	if(DT_PROB(30, delta_time))
 		M.losebreath++
@@ -343,7 +343,7 @@
 		M.emote(pick("twitch","drool"))
 	if(DT_PROB(10, delta_time))
 		M.losebreath++
-		M.adjustStaminaLoss(4, 0)
+		M.stamina.adjust(-4)
 	if(DT_PROB(7.5, delta_time))
 		M.adjustToxLoss(2, 0)
 	..()
@@ -754,7 +754,7 @@
 	if(!iscarbon(kronkaine_receptacle))
 		return
 	var/mob/living/carbon/druggo = kronkaine_receptacle
-	druggo.adjustStaminaLoss(-4 * trans_volume, 0)
+	druggo.stamina.adjust(4 * trans_volume)
 	//I wish i could give it some kind of bonus when smoked, but we don't have an INHALE method.
 
 /datum/reagent/drug/kronkaine/on_mob_life(mob/living/carbon/kronkaine_fiend, delta_time, times_fired)

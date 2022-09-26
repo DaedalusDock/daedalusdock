@@ -82,7 +82,8 @@
 	//Fully heal the zombie's damage the first time they rise
 	target.setToxLoss(0, 0)
 	target.setOxyLoss(0, 0)
-	target.heal_overall_damage(INFINITY, INFINITY, INFINITY, null, TRUE)
+	target.heal_overall_damage(INFINITY, INFINITY, null, TRUE)
+	target.stamina.adjust(INFINITY)
 
 	if(!target.revive())
 		return

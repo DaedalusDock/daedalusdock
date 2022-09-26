@@ -26,7 +26,6 @@ Slimecrossing Items
 	bodypart_type = part.type
 	brute_dam = part.brute_dam
 	burn_dam = part.burn_dam
-	stamina_dam = part.stamina_dam
 
 /mob/living/carbon/proc/apply_saved_bodyparts(list/datum/saved_bodypart/parts)
 	var/list/dont_chop = list()

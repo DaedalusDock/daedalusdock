@@ -32,7 +32,7 @@
 		human_user.adjustFireLoss(-10, FALSE)
 		human_user.adjustToxLoss(-10, FALSE)
 		human_user.adjustOxyLoss(-10, FALSE)
-		human_user.adjustStaminaLoss(-10)
+		human_user.stamina.adjust(10)
 
 /obj/effect/temp_visual/eldritch_smoke
 	icon = 'icons/effects/eldritch.dmi'

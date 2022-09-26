@@ -436,7 +436,7 @@
 	sac_target.blur_eyes(50)
 	sac_target.set_timed_status_effect(1 MINUTES, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	sac_target.AdjustKnockdown(80)
-	sac_target.adjustStaminaLoss(120)
+	sac_target.stamina.adjust(-120)
 
 	// Glad i'm outta there, though!
 	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived", /datum/mood_event/shadow_realm_live)

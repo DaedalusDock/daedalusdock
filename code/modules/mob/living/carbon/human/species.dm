@@ -1195,7 +1195,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	apply_damage(I.force * weakness, I.damtype, def_zone, armor_block, H, sharpness = I.get_sharpness(), attack_direction = attack_direction)
 
 	if(I.stamina_damage)
-		apply_damage(I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1), STAMINA, null, null, H, spread_damage = TRUE, attack_direction = attack_direction)
+		H.stamina.adjust(-I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1))
 
 	if(!I.force)
 		return FALSE //item force is zero

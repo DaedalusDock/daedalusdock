@@ -176,10 +176,10 @@
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
-	var/damage_calculator = picked.get_damage(TRUE) //heal_damage returns update status T/F instead of amount healed so we dance gracefully around this
-	if(picked.heal_damage(brute, burn, stamina, required_status))
+	var/damage_calculator = picked.get_damage() //heal_damage returns update status T/F instead of amount healed so we dance gracefully around this
+	if(picked.heal_damage(brute, burn, required_status))
 		update_damage_overlays()
-	return max(damage_calculator - picked.get_damage(TRUE), 0)
+	return max(damage_calculator - picked.get_damage(), 0)
 
 
 /**
@@ -208,7 +208,7 @@
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
 
-		update |= picked.heal_damage(brute, burn, stamina, required_status, FALSE)
+		update |= picked.heal_damage(brute, burn, required_status, FALSE)
 
 		brute = round(brute - (brute_was - picked.brute_dam), DAMAGE_PRECISION)
 		burn = round(burn - (burn_was - picked.burn_dam), DAMAGE_PRECISION)

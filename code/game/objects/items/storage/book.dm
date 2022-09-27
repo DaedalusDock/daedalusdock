@@ -143,7 +143,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 	if(hurt_limbs.len)
 		for(var/X in hurt_limbs)
 			var/obj/item/bodypart/affecting = X
-			if(affecting.heal_damage(heal_amt, heal_amt, null, BODYTYPE_ORGANIC))
+			if(affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC))
 				H.update_damage_overlays()
 		H.visible_message(span_notice("[user] heals [H] with the power of [deity_name]!"))
 		to_chat(H, span_boldnotice("May the power of [deity_name] compel you to be healed!"))

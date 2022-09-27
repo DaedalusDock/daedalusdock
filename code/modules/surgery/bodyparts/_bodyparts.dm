@@ -377,7 +377,7 @@
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.
 //Cannot remove negative damage (i.e. apply damage)
-/obj/item/bodypart/proc/heal_damage(brute, burn, stamina, required_status, updating_health = TRUE)
+/obj/item/bodypart/proc/heal_damage(brute, burn, required_status, updating_health = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(required_status && !(bodytype & required_status)) //So we can only heal certain kinds of limbs, ie robotic vs organic.
@@ -387,8 +387,6 @@
 		set_brute_dam(round(max(brute_dam - brute, 0), DAMAGE_PRECISION))
 	if(burn)
 		set_burn_dam(round(max(burn_dam - burn, 0), DAMAGE_PRECISION))
-	if(stamina)
-		stack_trace("heal_damage tried to heal stamina damage!")
 
 	if(owner)
 		if(can_be_disabled)
@@ -419,11 +417,8 @@
 	burn_dam = new_value
 
 //Returns total damage.
-/obj/item/bodypart/proc/get_damage(include_stamina = FALSE)
-	var/total = brute_dam + burn_dam
-	if(include_stamina)
-		stack_trace("get_damage tried to return stamina damage!")
-	return total
+/obj/item/bodypart/proc/get_damage()
+	return brute_dam + burn_dam
 
 //Checks disabled status thresholds
 /obj/item/bodypart/proc/update_disabled()

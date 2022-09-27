@@ -33,7 +33,7 @@
 	if(delta_time && decrement)
 		current = max(current + (decrement*delta_time), 0)
 	loss = maximum - current
-	loss_as_percent = (current * 100) / maximum
+	loss_as_percent = loss ? (loss == maximum ? 0 : loss / maximum * 100) : 0
 
 	if(datum_flags & DF_ISPROCESSING)
 		if(delta_time && current == maximum)

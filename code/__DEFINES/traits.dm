@@ -144,6 +144,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EXPERIENCING_AIRFLOW "experiencing_airflow"
 ///User's stamina is over the STAMINA_EXHAUSTION_THRESHOLD
 #define TRAIT_EXHAUSTED "exhausted"
+///User is sprinting, full speed ahead
+#define TRAIT_SPRINTING "sprinting"
+///User cannot sprint
+#define TRAIT_NO_SPRINT "no_sprint"
 /// In some kind of critical condition. Is able to succumb.
 #define TRAIT_CRITICAL_CONDITION "critical-condition"
 /// Whitelist for mobs that can read or write

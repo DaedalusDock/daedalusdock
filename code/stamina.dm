@@ -57,3 +57,15 @@
 #define STAMINA_DISARM_COST 30
 /// The amount of stamina damage dealt on disarm by default.
 #define STAMINA_DISARM_DMG 18
+
+////
+/// SPRINTING
+////
+///The grace period where you can stop sprinting but still be considered sprinting
+#define STAMINA_SUSTAINED_RUN_GRACE 0.5 SECONDS
+///The amount of tiles you need to move to be considered moving in a sustained sprint
+#define STAMINA_SUSTAINED_SPRINT_THRESHOLD 8
+///The amount of stamina required to sprint
+#define STAMINA_MIN2SPRINT_MODIFER 0.4 //Same as exhaustion threshold
+///How much stamina is taken per tile while sprinting
+#define STAMINA_SPRINT_COST 4

@@ -131,6 +131,8 @@
 	var/sleep_chance = 1
 	if(owner.m_intent == MOVE_INTENT_RUN)
 		sleep_chance += 2
+	else if(owner.m_intent == MOVE_INTENT_SPRINT)
+		sleep_chance += 5
 	if(owner.drowsyness)
 		sleep_chance += 3
 	if(DT_PROB(0.5 * sleep_chance, delta_time))

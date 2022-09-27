@@ -86,8 +86,6 @@
 /datum/martial_art/krav_maga/proc/leg_sweep(mob/living/attacker, mob/living/defender)
 	if(defender.stat || defender.IsParalyzed())
 		return FALSE
-	var/obj/item/bodypart/affecting = defender.get_bodypart(BODY_ZONE_CHEST)
-	var/armor_block = defender.run_armor_check(affecting, MELEE)
 	defender.visible_message(span_warning("[attacker] leg sweeps [defender]!"), \
 					span_userdanger("Your legs are sweeped by [attacker]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, attacker)
 	to_chat(attacker, span_danger("You leg sweep [defender]!"))
@@ -154,8 +152,6 @@
 /datum/martial_art/krav_maga/disarm_act(mob/living/attacker, mob/living/defender)
 	if(check_streak(attacker, defender))
 		return TRUE
-	var/obj/item/bodypart/affecting = defender.get_bodypart(ran_zone(attacker.zone_selected))
-	var/armor_block = defender.run_armor_check(affecting, MELEE)
 	if(defender.body_position == STANDING_UP)
 		defender.visible_message(span_danger("[attacker] reprimands [defender]!"), \
 					span_userdanger("You're slapped by [attacker]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, attacker)

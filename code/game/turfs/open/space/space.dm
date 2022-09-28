@@ -153,7 +153,7 @@
 
 		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
-		var/atom/movable/current_pull = arrived.grab.victim
+		var/atom/movable/current_pull = arrived.grab?.victim
 		while (current_pull)
 			var/turf/target_turf = get_step(current_pull.grabbedby.owner.loc, REVERSE_DIR(current_pull.grabbedby.owner.dir)) || current_pull.grabbedby.owner.loc
 			current_pull.zMove(null, target_turf, ZMOVE_ALLOW_BUCKLED)

@@ -369,8 +369,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		to_chat(user, span_warning("[src] is busy!"))
 		return
 
-	if(user.grab && isliving(user.grab.victim))
-		var/mob/living/L = user.grab.victim
+	if(user.grab && isliving(user.grab?.victim))
+		var/mob/living/L = user.grab?.victim
 		if(L.buckled || L.has_buckled_mobs())
 			return
 		if(state_open)

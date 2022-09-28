@@ -130,7 +130,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/throw_wrassle(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.grab || A.grab.victim != D)
+	if(!A.grab || A.grab?.victim != D)
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)
@@ -214,7 +214,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/slam(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.grab || A.grab.victim != D)
+	if(!A.grab || A.grab?.victim != D)
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)

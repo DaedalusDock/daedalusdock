@@ -164,8 +164,8 @@
 	var/neckgrab_throw = FALSE // we can't check for if it's a neckgrab throw when totaling up power_throw since we've already stopped pulling them by then, so get it early
 
 	if(!I)
-		if(grab && isliving(grab.victim) && grab.current_state >= GRAB_LEVEL_CHOKEHOLD)
-			var/mob/living/throwable_mob = grab.victim
+		if(grab && isliving(grab?.victim) && grab.current_state >= GRAB_LEVEL_CHOKEHOLD)
+			var/mob/living/throwable_mob = grab?.victim
 			if(!throwable_mob.buckled)
 				thrown_thing = throwable_mob
 				if(grab.current_state >= GRAB_LEVEL_CHOKEHOLD)

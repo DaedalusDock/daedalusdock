@@ -97,8 +97,8 @@
 	. = ..()
 	if(.)
 		return
-	if(user.grab && isliving(user.grab.victim))
-		var/mob/living/L = user.grab.victim
+	if(user.grab && isliving(user.grab?.victim))
+		var/mob/living/L = user.grab?.victim
 		if(user.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 			to_chat(user, span_warning("You need a better grip to do that!"))
 			return

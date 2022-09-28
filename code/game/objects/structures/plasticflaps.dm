@@ -73,7 +73,7 @@
 			return FALSE
 
 	if(caller?.grab?.victim)
-		return CanAStarPass(ID, to_dir, caller.grab.victim)
+		return CanAStarPass(ID, to_dir, caller.grab?.victim)
 	return TRUE //diseases, stings, etc can pass
 
 

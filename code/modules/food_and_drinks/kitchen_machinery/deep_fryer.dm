@@ -129,11 +129,11 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 			frying_burnt = FALSE
 			fry_loop.stop()
 			return
-	else if(user.grab && iscarbon(user.grab.victim) && reagents.total_volume)
+	else if(user.grab && iscarbon(user.grab?.victim) && reagents.total_volume)
 		if(user.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 			to_chat(user, span_warning("You need a better grip to do that!"))
 			return
-		var/mob/living/carbon/dunking_target = user.grab.victim
+		var/mob/living/carbon/dunking_target = user.grab?.victim
 		log_combat(user, dunking_target, "dunked", null, "into [src]")
 		user.visible_message(span_danger("[user] dunks [dunking_target]'s face in [src]!"))
 		reagents.expose(dunking_target, TOUCH)

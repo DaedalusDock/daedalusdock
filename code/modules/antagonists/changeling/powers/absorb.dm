@@ -16,20 +16,20 @@
 		to_chat(owner, span_warning("We are already absorbing!"))
 		return
 
-	if(!owner.grab || !iscarbon(owner.grab.victim))
+	if(!owner.grab || !iscarbon(owner.grab?.victim))
 		to_chat(owner, span_warning("We must be grabbing a creature to absorb them!"))
 		return
 	if(owner.grab.current_state <= GRAB_LEVEL_CHOKEHOLD)
 		to_chat(owner, span_warning("We must have a tighter grip to absorb this creature!"))
 		return
 
-	var/mob/living/carbon/target = owner.grab.victim
+	var/mob/living/carbon/target = owner.grab?.victim
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
 	return changeling.can_absorb_dna(target)
 
 /datum/action/changeling/absorb_dna/sting_action(mob/owner)
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
-	var/mob/living/carbon/human/target = owner.grab.victim
+	var/mob/living/carbon/human/target = owner.grab?.victim
 	is_absorbing = TRUE
 
 	if(!attempt_absorb(target))

@@ -119,8 +119,8 @@
 			return TRUE
 
 		if(L.grab)
-			if(ismob(L.grab.victim))
-				var/mob/P = L.grab.victim
+			if(ismob(L.grab?.victim))
+				var/mob/P = L.grab?.victim
 				if(HAS_TRAIT(P, TRAIT_RESTRAINED))
 					if(!(world.time % 5))
 						to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))

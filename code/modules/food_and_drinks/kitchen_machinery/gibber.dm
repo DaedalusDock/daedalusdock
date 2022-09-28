@@ -73,8 +73,8 @@
 		to_chat(user, span_warning("[src] cannot be used unless bolted to the ground!"))
 		return
 
-	if(user.grab && isliving(user.grab.victim))
-		var/mob/living/L = user.grab.victim
+	if(user.grab && isliving(user.grab?.victim))
+		var/mob/living/L = user.grab?.victim
 		if(!iscarbon(L))
 			to_chat(user, span_warning("This item is not suitable for the gibber!"))
 			return

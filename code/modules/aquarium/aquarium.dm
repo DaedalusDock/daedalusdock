@@ -142,8 +142,8 @@
 	return NONE
 
 /obj/structure/aquarium/interact(mob/user)
-	if(!broken && user.grab && isliving(user.grab.victim))
-		var/mob/living/living_pulled = user.grab.victim
+	if(!broken && user.grab && isliving(user.grab?.victim))
+		var/mob/living/living_pulled = user.grab?.victim
 		var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
 		if(content_component && content_component.is_ready_to_insert(src))
 			try_to_put_mob_in(user)
@@ -154,14 +154,14 @@
 
 /// Tries to put mob pulled by the user in the aquarium after a delay
 /obj/structure/aquarium/proc/try_to_put_mob_in(mob/user)
-	if(user.grab && isliving(user.grab.victim))
-		var/mob/living/living_pulled = user.grab.victim
+	if(user.grab && isliving(user.grab?.victim))
+		var/mob/living/living_pulled = user.grab?.victim
 		if(living_pulled.buckled || living_pulled.has_buckled_mobs())
 			to_chat(user, span_warning("[living_pulled] is attached to something!"))
 			return
 		user.visible_message(span_danger("[user] starts to put [living_pulled] into [src]!"))
 		if(do_after(user, 10 SECONDS, target = src))
-			if(QDELETED(living_pulled) || user.grab.victim != living_pulled || living_pulled.buckled || living_pulled.has_buckled_mobs())
+			if(QDELETED(living_pulled) || user.grab?.victim != living_pulled || living_pulled.buckled || living_pulled.has_buckled_mobs())
 				return
 			var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
 			if(content_component || content_component.is_ready_to_insert(src))

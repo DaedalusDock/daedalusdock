@@ -373,8 +373,8 @@
 		if(undergoing_cardiac_arrest())
 			set_heartattack(FALSE)
 		var/list/shocking_queue = list()
-		if(iscarbon(grab?.victim) && source != grab.victim)
-			shocking_queue += grab.victim
+		if(iscarbon(grab?.victim) && source != grab?.victim)
+			shocking_queue += grab?.victim
 		if(iscarbon(grabbedby?.owner) && source != grabbedby?.owner)
 			shocking_queue += grabbedby.owner
 		if(iscarbon(buckled) && source != buckled)

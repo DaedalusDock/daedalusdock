@@ -29,9 +29,9 @@
 		log_combat(user, swirlie, "swirlied (brute)")
 		swirlie.adjustBruteLoss(5)
 
-	else if(user.grab && isliving(user.grab.victim))
+	else if(user.grab && isliving(user.grab?.victim))
 		user.changeNext_move(CLICK_CD_MELEE)
-		var/mob/living/GM = user.grab.victim
+		var/mob/living/GM = user.grab?.victim
 		if(user.grab.current_state >= GRAB_LEVEL_AGGRESSIVE)
 			if(GM.loc != get_turf(src))
 				to_chat(user, span_warning("[GM] needs to be on [src]!"))
@@ -169,8 +169,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	. = ..()
 	if(.)
 		return
-	if(user.grab && isliving(user.grab.victim))
-		var/mob/living/GM = user.grab.victim
+	if(user.grab && isliving(user.grab?.victim))
+		var/mob/living/GM = user.grab?.victim
 		if(user.grab.current_state >= GRAB_LEVEL_AGGRESSIVE)
 			if(GM.loc != get_turf(src))
 				to_chat(user, span_notice("[GM.name] needs to be on [src]."))

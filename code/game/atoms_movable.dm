@@ -243,10 +243,10 @@
 	if(!(z_move_flags & ZMOVE_INCLUDE_PULLED))
 		return
 	for(var/mob/living/buckled as anything in buckled_mobs)
-		if(buckled.grab.victim)
-			. |= buckled.grab.victim
+		if(buckled.grab?.victim)
+			. |= buckled.grab?.victim
 	if(grab)
-		. |= grab.victim
+		. |= grab?.victim
 
 /**
  * Checks if the destination turf is elegible for z movement from the start turf to a given direction and returns it if so.
@@ -338,7 +338,7 @@
 
 /atom/movable/proc/grapple(atom/movable/target, state, force = pull_force, supress_message)
 	if(grab)
-		if(grab.victim == target)
+		if(grab?.victim == target)
 			return src.grab.try_set_state(grab.current_state + 1)
 		else
 			grab.release()
@@ -357,20 +357,20 @@
 /atom/movable/proc/Move_Pulled(atom/moving_atom)
 	if(!grab)
 		return FALSE
-	if(grab.victim.anchored || grab.victim.move_resist > move_force || !grab.victim.Adjacent(src, src, grab.victim))
+	if(grab?.victim.anchored || grab?.victim.move_resist > move_force || !grab?.victim.Adjacent(src, src, grab?.victim))
 		grab.release()
 		return FALSE
-	if(isliving(grab.victim))
-		var/mob/living/pulling_mob = grab.victim
+	if(isliving(grab?.victim))
+		var/mob/living/pulling_mob = grab?.victim
 		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
 			grab.release()
 			return FALSE
-	if(moving_atom == loc && grab.victim.density)
+	if(moving_atom == loc && grab?.victim.density)
 		return FALSE
-	var/move_dir = get_dir(grab.victim.loc, moving_atom)
+	var/move_dir = get_dir(grab?.victim.loc, moving_atom)
 	if(!Process_Spacemove(move_dir))
 		return FALSE
-	grab.victim.Move(get_step(grab.victim.loc, move_dir), move_dir, glide_size)
+	grab?.victim.Move(get_step(grab?.victim.loc, move_dir), move_dir, glide_size)
 	return TRUE
 
 /mob/living/Move_Pulled(atom/moving_atom)
@@ -386,14 +386,14 @@
  */
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
 	if(grab)
-		if(get_dist(src, grab.victim) > 1 || (z != grab.victim.z && !z_allowed))
+		if(get_dist(src, grab?.victim) > 1 || (z != grab?.victim.z && !z_allowed))
 			grab.release()
 		else if(!isturf(loc))
 			grab.release()
-		else if(!isturf(grab.victim.loc) && grab.victim.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
-			log_game("DEBUG:[src]'s pull on [grab.victim] wasn't broken despite [grab.victim] being in [grab.victim.loc]. Pull stopped manually.")
+		else if(!isturf(grab?.victim.loc) && grab?.victim.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
+			log_game("DEBUG:[src]'s pull on [grab?.victim] wasn't broken despite [grab?.victim] being in [grab?.victim.loc]. Pull stopped manually.")
 			grab.release()
-		else if(grab.victim.anchored || grab.victim.move_resist > move_force)
+		else if(grab?.victim.anchored || grab?.victim.move_resist > move_force)
 			grab.release()
 	if(!only_pulling && grabbedby && moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, grabbedby.owner) > 1 || z != grabbedby.owner.z)) //separated from our puller and not in the middle of a diagonal move.
 		grabbedby.release()
@@ -568,23 +568,23 @@
 		set_currently_z_moving(FALSE, TRUE)
 		return
 
-	if(. && grab && grab.victim == pullee && grab.victim != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
-		if(grab.victim.anchored)
+	if(. && grab && grab?.victim == pullee && grab?.victim != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
+		if(grab?.victim.anchored)
 			grab.release()
 		else
 			//puller and pullee more than one tile away or in diagonal position and whatever the pullee is pulling isn't already moving from a pull as it'll most likely result in an infinite loop a la ouroborus.
-			if(!grab.victim.grab?.victim.moving_from_pull)
-				var/pull_dir = get_dir(grab.victim, src)
+			if(!grab?.victim.grab?.victim.moving_from_pull)
+				var/pull_dir = get_dir(grab?.victim, src)
 				var/target_turf = current_turf
 
 				// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
 				// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
 				// The answer is simple. forcemoving and regrabbing is ugly and breaks conga lines.
-				if(grab.victim.z != z)
-					target_turf = get_step(grab.victim, get_dir(grab.victim, current_turf))
+				if(grab?.victim.z != z)
+					target_turf = get_step(grab?.victim, get_dir(grab?.victim, current_turf))
 
-				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, grab.victim) > 1)
-					grab.victim.move_from_pull(src, target_turf, glide_size)
+				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, grab?.victim) > 1)
+					grab?.victim.move_from_pull(src, target_turf, glide_size)
 			check_pulling()
 
 
@@ -991,7 +991,7 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_SPACEMOVE, movement_dir, continuous_move) & COMSIG_MOVABLE_STOP_SPACEMOVE)
 		return TRUE
 
-	if((grabbedby && grab) && (grabbedby.owner != grab.victim || moving_from_pull))
+	if((grabbedby && grab) && (grabbedby.owner != grab?.victim || moving_from_pull))
 		return TRUE
 
 	if(throwing)

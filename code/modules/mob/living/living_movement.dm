@@ -47,15 +47,15 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_UPDATING_PULL_MOVESPEED)
 
 	if(grab)
-		if(isliving(grab.victim))
-			var/mob/living/L = grab.victim
+		if(isliving(grab?.victim))
+			var/mob/living/L = grab?.victim
 			if(!slowed_by_drag || L.body_position == STANDING_UP || L.buckled || grab.current_state >= GRAB_LEVEL_AGGRESSIVE)
 				remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
 				return
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bulky_drag, multiplicative_slowdown = PULL_PRONE_SLOWDOWN)
 			return
-		if(isobj(grab.victim))
-			var/obj/structure/S = grab.victim
+		if(isobj(grab?.victim))
+			var/obj/structure/S = grab?.victim
 			if(!slowed_by_drag || !S.drag_slowdown)
 				remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
 				return

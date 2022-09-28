@@ -132,12 +132,18 @@
 	ignite_mob()
 
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
-	if(!user.grab || user.grab.victim != src)
+	if(!user.grab)
 		user.grapple(src, supress_message = supress_message)
 		return
-	else
-		grab.try_set_state(grab.current_state + 1)
 
+	else
+		if(user.grab?.victim == src)
+			if(user.grab.current_state == GRAB_LEVEL_CHOKEHOLD)
+				user.grab.try_set_state(user.grab.current_state-1)
+			else
+				user.grab.try_set_state(user.grab.current_state + 1)
+		else
+			return //Currently you can't grab more than 1 thing at a time :pensive:
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
 	if(!SSticker.HasRoundStarted())

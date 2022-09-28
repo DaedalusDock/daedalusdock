@@ -85,8 +85,8 @@
 
 /obj/structure/table/attack_hand(mob/living/user, list/modifiers)
 	if(Adjacent(user) && user.grab)
-		if(isliving(user.grab.victim))
-			var/mob/living/pushed_mob = user.grab.victim
+		if(isliving(user.grab?.victim))
+			var/mob/living/pushed_mob = user.grab?.victim
 			if(pushed_mob.buckled)
 				to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 				return
@@ -107,11 +107,11 @@
 				else
 					return
 			user.grab.release()
-		else if(user.grab.victim.pass_flags & PASSTABLE)
+		else if(user.grab?.victim.pass_flags & PASSTABLE)
 			user.Move_Pulled(src)
-			if (user.grab.victim.loc == loc)
-				user.visible_message(span_notice("[user] places [user.grab.victim] onto [src]."),
-					span_notice("You place [user.grab.victim] onto [src]."))
+			if (user.grab?.victim.loc == loc)
+				user.visible_message(span_notice("[user] places [user.grab?.victim] onto [src]."),
+					span_notice("You place [user.grab?.victim] onto [src]."))
 				user.grab.release()
 	return ..()
 

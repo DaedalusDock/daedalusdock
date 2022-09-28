@@ -282,7 +282,7 @@
 
 	var/datum/bank_account/account
 	if(istype(AM.grab?.victim, /obj/item/card/id))
-		var/obj/item/card/id/I = AM.grab.victim
+		var/obj/item/card/id/I = AM.grab?.victim
 		if(I.registered_account)
 			account = I.registered_account
 		else if(!check_times[AM] || check_times[AM] < world.time) //Let's not spam the message
@@ -331,18 +331,18 @@
 		payees[AM] += H.credits
 		counted_money += H
 
-	if(payees[AM] < threshold && istype(AM.grab.victim, /obj/item/coin)) //Coins(Pulled).
+	if(payees[AM] < threshold && istype(AM.grab?.victim, /obj/item/coin)) //Coins(Pulled).
 		var/obj/item/coin/C = AM.grab?.victim
 		payees[AM] += C.value
 		counted_money += C
 
-	else if(payees[AM] < threshold && istype(AM?.grab.victim, /obj/item/stack/spacecash)) //Cash(Pulled).
-		var/obj/item/stack/spacecash/S = AM.grab.victim
+	else if(payees[AM] < threshold && istype(AM?.grab?.victim, /obj/item/stack/spacecash)) //Cash(Pulled).
+		var/obj/item/stack/spacecash/S = AM.grab?.victim
 		payees[AM] += S.value * S.amount
 		counted_money += S
 
 	else if(payees[AM] < threshold && istype(AM.grab?.victim, /obj/item/holochip)) //Holocredits(pulled).
-		var/obj/item/holochip/H = AM.grab.victim
+		var/obj/item/holochip/H = AM.grab?.victim
 		payees[AM] += H.credits
 		counted_money += H
 
@@ -356,7 +356,7 @@
 				armless = TRUE
 
 		if(armless)
-			if(!AM.grab || !iscash(AM.grab.victim) && !istype(AM.grab.victim, /obj/item/card/id))
+			if(!AM.grab || !iscash(AM.grab?.victim) && !istype(AM.grab?.victim, /obj/item/card/id))
 				if(!check_times[AM] || check_times[AM] < world.time) //Let's not spam the message
 					to_chat(AM, span_notice("Try pulling a valid ID, space cash, holochip or coin into \the [src]!"))
 					check_times[AM] = world.time + LUXURY_MESSAGE_COOLDOWN

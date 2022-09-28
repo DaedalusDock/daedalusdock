@@ -18,7 +18,7 @@
 	var/static/list/state_grab_time = list(
 		GRAB_LEVEL_PULL = 0,
 		GRAB_LEVEL_AGGRESSIVE = 0,
-		GRAB_LEVEL_CHOKEHOLD = 3 SECONDS,
+		GRAB_LEVEL_CHOKEHOLD = 4 SECONDS,
 	)
 	///Is the victim being pinned to the floor?
 	var/pinned = FALSE
@@ -42,11 +42,13 @@
 ///Release the victim and GC ourselves
 /obj/item/grab/proc/release()
 	. = TRUE
+	if(!victim)
+		stack_trace("Victim is null!")
 
 	SEND_SIGNAL(victim, COMSIG_ATOM_NO_LONGER_PULLED, owner)
 	owner.on_grab_release(victim)
 
-	victim?.grabbedby = null
+	victim.grabbedby = null
 	victim = null
 	owner.grab = null
 	owner = null
@@ -318,7 +320,7 @@
 /obj/item/grab/proc/victim_try_move()
 	var/mob/living/living_victim = victim
 
-	if(living_victim?.grab.victim == owner && victim.grab?.current_state == GRAB_LEVEL_PULL) //Don't autoresist passive grabs if we're grabbing them too.
+	if(living_victim?.grab?.victim == owner && victim.grab?.current_state == GRAB_LEVEL_PULL) //Don't autoresist passive grabs if we're grabbing them too.
 		return FALSE
 
 	if(!ismob(victim))
@@ -341,3 +343,22 @@
 /obj/item/grab/attack_self(mob/user, modifiers)
 	. = ..()
 	try_set_state(current_state+1)
+
+/obj/item/grab/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	if(M == victim)
+		try_set_state(current_state+1)
+
+/*
+/turf/open/floor/attackby(obj/item/C, mob/user, params)
+	. = ..()
+	if(istype(C, /obj/item/grab))
+		var/obj/item/grab/holder = C
+		if(user.Adjacent(src))
+			INVOKE_ASYNC(holder, /obj/item/grab/proc/try_pin_to, src)
+			return TRUE
+
+
+/obj/item/grab/proc/try_pin_to(turf/T)
+	if(!)
+*/

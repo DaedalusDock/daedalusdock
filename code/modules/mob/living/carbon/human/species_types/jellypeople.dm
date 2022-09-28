@@ -725,7 +725,7 @@
 		to_chat(owner, span_warning("You need to aggressively grab someone to link minds!"))
 		return
 
-	var/mob/living/living_target = owner.grab.victim
+	var/mob/living/living_target = owner.grab?.victim
 	if(living_target.stat == DEAD)
 		to_chat(owner, span_warning("They're dead!"))
 		return
@@ -756,7 +756,7 @@
 		return FALSE
 	if(!owner.grab)
 		return FALSE
-	if(owner.grab.victim != linkee)
+	if(owner.grab?.victim != linkee)
 		return FALSE
 	if(owner.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 		return FALSE

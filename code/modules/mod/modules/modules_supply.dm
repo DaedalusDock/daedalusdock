@@ -316,7 +316,7 @@
 	if(!.)
 		return
 	if(istype(mod.wearer.grab?.victim, /obj/structure/closet))
-		var/obj/structure/closet/locker = mod.wearer.grab.victim
+		var/obj/structure/closet/locker = mod.wearer.grab?.victim
 		playsound(locker, 'sound/effects/gravhit.ogg', 75, TRUE)
 		locker.forceMove(mod.wearer.loc)
 		locker.throw_at(target, range = 7, speed = 4, thrower = mod.wearer)

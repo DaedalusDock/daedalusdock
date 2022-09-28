@@ -1906,6 +1906,23 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Returns the species's scream sound.
 /datum/species/proc/get_scream_sound(mob/living/carbon/human/human)
+	if(human.gender == MALE)
+		return pick(
+			'goon/sound/human/mascream4.ogg'
+			'sound/voice/human/malescream_2.ogg',
+			'sound/voice/human/malescream_2.ogg', //He gets two chances to roll because he's special and we love him
+			'goon/sound/human/mascream5.ogg'
+			'goon/sound/human/mascream7.ogg'
+			'sound/voice/human/malescream_5.ogg',
+		)
+
+	return pick(
+		'sound/voice/human/femalescream_1.ogg',
+		'sound/voice/human/femalescream_2.ogg',
+		'sound/voice/human/femalescream_3.ogg',
+		'goon/sound/human/fscream1.ogg',
+		'goon/sound/human/fscream5.ogg',
+	)
 	return
 
 /datum/species/proc/get_types_to_preload()

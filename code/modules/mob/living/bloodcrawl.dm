@@ -32,7 +32,7 @@
 
 	// Keep a reference to whatever we're pulling, because forceMove()
 	// makes us stop pulling
-	var/pullee = pulling
+	var/pullee = grab?.victim
 
 	holder = holder
 	forceMove(holder)

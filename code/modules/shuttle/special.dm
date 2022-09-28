@@ -281,8 +281,8 @@
 		return ..()
 
 	var/datum/bank_account/account
-	if(istype(AM.pulling, /obj/item/card/id))
-		var/obj/item/card/id/I = AM.pulling
+	if(istype(AM.grab?.victim, /obj/item/card/id))
+		var/obj/item/card/id/I = AM.grab.victim
 		if(I.registered_account)
 			account = I.registered_account
 		else if(!check_times[AM] || check_times[AM] < world.time) //Let's not spam the message
@@ -331,18 +331,18 @@
 		payees[AM] += H.credits
 		counted_money += H
 
-	if(payees[AM] < threshold && istype(AM.pulling, /obj/item/coin)) //Coins(Pulled).
-		var/obj/item/coin/C = AM.pulling
+	if(payees[AM] < threshold && istype(AM.grab.victim, /obj/item/coin)) //Coins(Pulled).
+		var/obj/item/coin/C = AM.grab?.victim
 		payees[AM] += C.value
 		counted_money += C
 
-	else if(payees[AM] < threshold && istype(AM.pulling, /obj/item/stack/spacecash)) //Cash(Pulled).
-		var/obj/item/stack/spacecash/S = AM.pulling
+	else if(payees[AM] < threshold && istype(AM?.grab.victim, /obj/item/stack/spacecash)) //Cash(Pulled).
+		var/obj/item/stack/spacecash/S = AM.grab.victim
 		payees[AM] += S.value * S.amount
 		counted_money += S
 
-	else if(payees[AM] < threshold && istype(AM.pulling, /obj/item/holochip)) //Holocredits(pulled).
-		var/obj/item/holochip/H = AM.pulling
+	else if(payees[AM] < threshold && istype(AM.grab?.victim, /obj/item/holochip)) //Holocredits(pulled).
+		var/obj/item/holochip/H = AM.grab.victim
 		payees[AM] += H.credits
 		counted_money += H
 
@@ -356,7 +356,7 @@
 				armless = TRUE
 
 		if(armless)
-			if(!AM.pulling || !iscash(AM.pulling) && !istype(AM.pulling, /obj/item/card/id))
+			if(!AM.grab || !iscash(AM.grab.victim) && !istype(AM.grab.victim, /obj/item/card/id))
 				if(!check_times[AM] || check_times[AM] < world.time) //Let's not spam the message
 					to_chat(AM, span_notice("Try pulling a valid ID, space cash, holochip or coin into \the [src]!"))
 					check_times[AM] = world.time + LUXURY_MESSAGE_COOLDOWN
@@ -375,9 +375,9 @@
 			if(istype(AM, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = AM
 				if(!H.put_in_hands(HC))
-					AM.pulling = HC
+					HC.forceMove(H.drop_location())
 			else
-				AM.pulling = HC
+				AM.grapple(HC)
 			payees[AM] -= payees[AM]
 
 		say("Welcome to first class, [driver_holdout ? "[driver_holdout]" : "[AM]" ]![change ? " Here is your change." : ""]")

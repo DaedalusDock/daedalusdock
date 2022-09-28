@@ -475,8 +475,10 @@
 		transfer = min(transfer, round((target_stack.source.max_energy - target_stack.source.energy) / target_stack.cost))
 	else
 		transfer = min(transfer, (limit ? limit : target_stack.max_amount) - target_stack.amount)
-	if(pulledby)
-		pulledby.start_pulling(target_stack)
+	if(grabbedby)
+		var/atom/movable/grabber = grabbedby.owner
+		qdel(grabbedby)
+		grabber.grapple(src, supress_message = TRUE)
 	target_stack.copy_evidences(src)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)

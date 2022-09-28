@@ -84,20 +84,20 @@
 	return attack_hand(user, modifiers)
 
 /obj/structure/table/attack_hand(mob/living/user, list/modifiers)
-	if(Adjacent(user) && user.pulling)
-		if(isliving(user.pulling))
-			var/mob/living/pushed_mob = user.pulling
+	if(Adjacent(user) && user.grab)
+		if(isliving(user.grab.victim))
+			var/mob/living/pushed_mob = user.grab.victim
 			if(pushed_mob.buckled)
 				to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 				return
 			if(user.combat_mode)
-				switch(user.grab_state)
-					if(GRAB_PASSIVE)
+				switch(user.grab.current_state)
+					if(GRAB_LEVEL_PULL)
 						to_chat(user, span_warning("You need a better grip to do that!"))
 						return
-					if(GRAB_AGGRESSIVE)
+					if(GRAB_LEVEL_AGGRESSIVE)
 						tablepush(user, pushed_mob)
-					if(GRAB_NECK to GRAB_KILL)
+					if(GRAB_LEVEL_CHOKEHOLD)
 						tablelimbsmash(user, pushed_mob)
 			else
 				pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
@@ -106,13 +106,13 @@
 					tableplace(user, pushed_mob)
 				else
 					return
-			user.stop_pulling()
-		else if(user.pulling.pass_flags & PASSTABLE)
+			user.grab.release()
+		else if(user.grab.victim.pass_flags & PASSTABLE)
 			user.Move_Pulled(src)
-			if (user.pulling.loc == loc)
-				user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
-					span_notice("You place [user.pulling] onto [src]."))
-				user.stop_pulling()
+			if (user.grab.victim.loc == loc)
+				user.visible_message(span_notice("[user] places [user.grab.victim] onto [src]."),
+					span_notice("You place [user.grab.victim] onto [src]."))
+				user.grab.release()
 	return ..()
 
 /obj/structure/table/attack_tk(mob/user)

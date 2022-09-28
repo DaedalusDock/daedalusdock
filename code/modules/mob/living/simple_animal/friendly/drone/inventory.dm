@@ -54,8 +54,8 @@
 		held_items[index] = null
 	update_inv_hands()
 
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+	if(I.grabbedby)
+		I.grabbedby.release()
 
 	I.screen_loc = null // will get moved if inventory is visible
 	I.forceMove(src)

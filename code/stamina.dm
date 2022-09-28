@@ -68,3 +68,13 @@
 #define STAMINA_MIN2SPRINT_MODIFER 0.4 //Same as exhaustion threshold
 ///How much stamina is taken per tile while sprinting
 #define STAMINA_SPRINT_COST 6
+
+////
+/// GRAPPLING
+////
+/// Chance to resist out of passive grabs.
+#define STAMINA_GRAB_PASSIVE_RESIST_CHANCE 100
+/// Chance to resist out of a strong grab (i.e. werewolves)
+#define STAMINA_GRAB_AGGRESSIVE_RESIST_CHANCE 60
+/// Chance to resist out of chokeholds grabs.
+#define STAMINA_GRAB_CHOKE_RESIST_CHANCE 45

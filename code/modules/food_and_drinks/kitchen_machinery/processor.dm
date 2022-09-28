@@ -118,15 +118,15 @@
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return TRUE
-	if(ismob(user.pulling) && PROCESSOR_SELECT_RECIPE(user.pulling))
-		if(user.grab_state < GRAB_AGGRESSIVE)
+	if(ismob(user.grab?.victim) && PROCESSOR_SELECT_RECIPE(user.grab.victim))
+		if(user.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 			to_chat(user, span_warning("You need a better grip to do that!"))
 			return
-		var/mob/living/pushed_mob = user.pulling
+		var/mob/living/pushed_mob = user.grab.victim
 		visible_message(span_warning("[user] stuffs [pushed_mob] into [src]!"))
 		pushed_mob.forceMove(src)
 		LAZYADD(processor_contents, pushed_mob)
-		user.stop_pulling()
+		user.grab.release()
 		return
 	if(!LAZYLEN(processor_contents))
 		to_chat(user, span_warning("[src] is empty!"))

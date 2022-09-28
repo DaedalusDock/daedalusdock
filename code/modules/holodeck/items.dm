@@ -97,15 +97,15 @@
 	. = ..()
 	if(.)
 		return
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/L = user.pulling
-		if(user.grab_state < GRAB_AGGRESSIVE)
+	if(user.grab && isliving(user.grab.victim))
+		var/mob/living/L = user.grab.victim
+		if(user.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 			to_chat(user, span_warning("You need a better grip to do that!"))
 			return
 		L.forceMove(loc)
 		L.Paralyze(100)
 		visible_message(span_danger("[user] dunks [L] into \the [src]!"))
-		user.stop_pulling()
+		user.grab.release()
 	else
 		..()
 

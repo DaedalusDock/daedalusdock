@@ -149,7 +149,7 @@
 		return
 	if(!(mod.wearer.movement_type & FLOATING) || mod.wearer.buckled)//You don't want use jet in gravity or while buckled.
 		return
-	if(mod.wearer.pulledby)//You don't must use jet if someone pull you
+	if(mod.wearer.grabbedby)//You don't must use jet if someone pull you
 		return
 	if(mod.wearer.throwing)//You don't must use jet if you thrown
 		return

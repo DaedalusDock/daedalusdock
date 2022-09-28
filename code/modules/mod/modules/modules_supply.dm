@@ -315,8 +315,8 @@
 	. = ..()
 	if(!.)
 		return
-	if(istype(mod.wearer.pulling, /obj/structure/closet))
-		var/obj/structure/closet/locker = mod.wearer.pulling
+	if(istype(mod.wearer.grab?.victim, /obj/structure/closet))
+		var/obj/structure/closet/locker = mod.wearer.grab.victim
 		playsound(locker, 'sound/effects/gravhit.ogg', 75, TRUE)
 		locker.forceMove(mod.wearer.loc)
 		locker.throw_at(target, range = 7, speed = 4, thrower = mod.wearer)
@@ -337,15 +337,15 @@
 	. = ..()
 	if(!.)
 		return
-	if(istype(mod.wearer.pulling, /obj/structure/closet))
-		mod.wearer.stop_pulling()
+	if(istype(mod.wearer.grab?.victim, /obj/structure/closet))
+		mod.wearer.grab.release()
 
 /obj/item/mod/module/magnet/proc/check_locker(obj/structure/closet/locker)
 	if(!mod?.wearer)
 		return
 	if(!locker.Adjacent(mod.wearer) || !isturf(locker.loc) || !isturf(mod.wearer.loc))
 		return
-	mod.wearer.start_pulling(locker)
+	mod.wearer.grapple(locker)
 	locker.strong_grab = TRUE
 	RegisterSignal(locker, COMSIG_ATOM_NO_LONGER_PULLED, .proc/on_stop_pull)
 

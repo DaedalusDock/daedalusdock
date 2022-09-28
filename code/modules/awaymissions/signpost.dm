@@ -20,12 +20,12 @@
 		var/turf/T = find_safe_turf(zlevels=zlevels)
 
 		if(T)
-			var/atom/movable/AM = user.pulling
+			var/atom/movable/AM = user.grab?.victim
 			if(AM)
 				AM.forceMove(T)
 			user.forceMove(T)
 			if(AM)
-				user.start_pulling(AM)
+				user.grapple(AM)
 			to_chat(user, span_notice("You blink and find yourself in [get_area_name(T)]."))
 		else
 			to_chat(user, "Nothing happens. You feel that this is a bad sign.")

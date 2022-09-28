@@ -235,14 +235,14 @@
 		remove_wound()
 
 /datum/wound/blunt/moderate/try_handling(mob/living/carbon/human/user)
-	if(user.pulling != victim || user.zone_selected != limb.body_zone)
+	if(user.grab?.victim != src.victim || user.zone_selected != limb.body_zone)
 		return FALSE
 
-	if(user.grab_state == GRAB_PASSIVE)
+	if(user.grab.current_state == GRAB_LEVEL_PULL)
 		to_chat(user, span_warning("You must have [victim] in an aggressive grab to manipulate [victim.p_their()] [lowertext(name)]!"))
 		return TRUE
 
-	if(user.grab_state >= GRAB_AGGRESSIVE)
+	if(user.grab.current_state >= GRAB_LEVEL_AGGRESSIVE)
 		user.visible_message(span_danger("[user] begins twisting and straining [victim]'s dislocated [limb.plaintext_zone]!"), span_notice("You begin twisting and straining [victim]'s dislocated [limb.plaintext_zone]..."), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] begins twisting and straining your dislocated [limb.plaintext_zone]!"))
 		if(!user.combat_mode)

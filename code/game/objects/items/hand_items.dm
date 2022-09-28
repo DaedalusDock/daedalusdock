@@ -123,7 +123,7 @@
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
 		return
 
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.grab?.victim != target || user.grab?.current_state < GRAB_LEVEL_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	var/obj/item/bodypart/head/the_head = target.get_bodypart(BODY_ZONE_HEAD)
@@ -166,7 +166,7 @@
 
 /// The actual meat and bones of the noogie'ing
 /obj/item/hand_item/noogie/proc/noogie_loop(mob/living/carbon/human/user, mob/living/carbon/target, iteration)
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.grab?.victim != target)
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_EXHAUSTED))

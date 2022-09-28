@@ -258,9 +258,9 @@
 		return
 
 	var/mob/living/L = AM
-	if(L.pulling && istype(L.pulling, /obj/item/bodypart/head))
+	if(L.grab && istype(L.grab.victim, /obj/item/bodypart/head))
 		to_chat(L, span_notice("Your offering is accepted. You may pass."), confidential = TRUE)
-		qdel(L.pulling)
+		qdel(L.grab)
 		var/turf/LA = get_turf(pick(warp_points))
 		L.forceMove(LA)
 		L.hallucination = 0

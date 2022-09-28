@@ -614,10 +614,10 @@
 	dancer.spin(30, 2)
 	if(dancer.disgust < 40)
 		dancer.adjust_disgust(10)
-	if(!dancer.pulledby)
+	if(!dancer.grabbedby)
 		return
 	var/dancer_turf = get_turf(dancer)
-	var/atom/movable/dance_partner = dancer.pulledby
+	var/atom/movable/dance_partner = dancer.grabbedby.owner
 	dance_partner.visible_message(span_danger("[dance_partner] tries to hold onto [dancer], but is thrown back!"), span_danger("You try to hold onto [dancer], but you are thrown back!"), null, COMBAT_MESSAGE_RANGE)
 	var/throwtarget = get_edge_target_turf(dancer_turf, get_dir(dancer_turf, get_step_away(dance_partner, dancer_turf)))
 	if(overdosed)

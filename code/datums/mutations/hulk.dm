@@ -105,10 +105,10 @@
 		return
 	if(!user.throw_mode || user.get_active_held_item() || user.zone_selected != BODY_ZONE_PRECISE_GROIN)
 		return
-	if(user.grab_state < GRAB_NECK || !iscarbon(user.pulling) || user.buckled || user.incapacitated())
+	if(user.grab?.current_state < GRAB_LEVEL_CHOKEHOLD || !iscarbon(user.grab.victim) || user.buckled || user.incapacitated())
 		return
 
-	var/mob/living/carbon/possible_throwable = user.pulling
+	var/mob/living/carbon/possible_throwable = user.grab.victim
 	if(!possible_throwable.getorganslot(ORGAN_SLOT_TAIL))
 		return
 

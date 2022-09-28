@@ -553,7 +553,7 @@ Difficulty: Hard
 	. = ..()
 	if(QDELETED(caster))
 		return FALSE
-	if(mover == caster.pulledby)
+	if(mover == caster.grabbedby?.owner)
 		return
 	if(istype(mover, /obj/projectile))
 		var/obj/projectile/P = mover

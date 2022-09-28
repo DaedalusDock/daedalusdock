@@ -104,7 +104,7 @@
 	if(isAI(mob))
 		return AIMove(new_loc,direct,mob)
 
-	if(Process_Grab()) //are we restrained by someone's grip?
+	if(mob.grabbedby && mob.grabbedby.victim_try_move()) //are we restrained by someone's grip?
 		return
 
 	if(mob.buckled) //if we're buckled to something, tell it we moved.
@@ -162,29 +162,9 @@
 		// as a result of player input and not because they were pulled or any other magic.
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
-	var/atom/movable/P = mob.pulling
+	var/atom/movable/P = mob.grab?.victim
 	if(P && !ismob(P) && P.density)
 		mob.setDir(turn(mob.dir, 180))
-
-/**
- * Checks to see if you're being grabbed and if so attempts to break it
- *
- * Called by client/Move()
- */
-/client/proc/Process_Grab()
-	if(!mob.pulledby)
-		return FALSE
-	if(mob.pulledby == mob.pulling && mob.pulledby.grab_state == GRAB_PASSIVE) //Don't autoresist passive grabs if we're grabbing them too.
-		return FALSE
-	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
-		COOLDOWN_START(src, move_delay, 1 SECONDS)
-		return TRUE
-	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
-		COOLDOWN_START(src, move_delay, 1 SECONDS)
-		to_chat(src, span_warning("You're restrained! You can't move!"))
-		return TRUE
-	return mob.resist_grab(TRUE)
-
 
 /**
  * Allows mobs to ignore density and phase through objects
@@ -329,7 +309,7 @@
 			continue
 		if(rebound.anchored)
 			return rebound
-		if(pulling == rebound)
+		if(grab?.victim == rebound)
 			continue
 		return rebound
 

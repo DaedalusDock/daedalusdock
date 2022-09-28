@@ -99,7 +99,7 @@
 
 	var/olddir = human.dir
 
-	human.stop_pulling()
+	human.grab?.release()
 	if(buckled_obj)
 		buckled_obj.unbuckle_mob(human)
 		step(buckled_obj, olddir)

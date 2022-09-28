@@ -191,7 +191,7 @@ have ways of interacting with a specific mob and control it.
 	SIGNAL_HANDLER
 	var/mob/living/living_pawn = pawn
 	if(!IS_DEAD_OR_INCAP(living_pawn) && prob(MONKEY_PULL_AGGRO_PROB)) // nuh uh you don't pull me!
-		retaliate(living_pawn.pulledby)
+		retaliate(living_pawn.grabbedby.owner)
 		return TRUE
 
 /datum/ai_controller/monkey/proc/on_try_syringe(datum/source, mob/user)

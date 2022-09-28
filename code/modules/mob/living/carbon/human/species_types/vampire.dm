@@ -166,8 +166,8 @@
 		if(!COOLDOWN_FINISHED(V, drain_cooldown))
 			to_chat(H, span_warning("You just drained blood, wait a few seconds!"))
 			return
-		if(H.pulling && iscarbon(H.pulling))
-			var/mob/living/carbon/victim = H.pulling
+		if(H.grab && iscarbon(H.grab.victim))
+			var/mob/living/carbon/victim = H.grab.victim
 			if(H.blood_volume >= BLOOD_VOLUME_MAXIMUM)
 				to_chat(H, span_warning("You're already full!"))
 				return

@@ -56,7 +56,7 @@
 		return
 
 	eat_plants()
-	if(pulledby)
+	if(grabbedby)
 		return
 
 	for(var/direction in shuffle(list(1,2,4,8,5,6,9,10)))

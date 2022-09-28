@@ -34,11 +34,11 @@
 	return new_overlays
 
 /obj/structure/altar_of_gods/attack_hand(mob/living/user, list/modifiers)
-	if(!Adjacent(user) || !user.pulling)
+	if(!Adjacent(user) || !user.grab)
 		return ..()
-	if(!isliving(user.pulling))
+	if(!isliving(user.grab.victim))
 		return ..()
-	var/mob/living/pushed_mob = user.pulling
+	var/mob/living/pushed_mob = user.grab.victim
 	if(pushed_mob.buckled)
 		to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 		return ..()

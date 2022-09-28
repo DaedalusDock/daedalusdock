@@ -185,7 +185,7 @@
 		return
 	if(!(owner.movement_type & FLOATING) || owner.buckled)//You don't want use jet in gravity or while buckled.
 		return
-	if(owner.pulledby)//You don't must use jet if someone pull you
+	if(owner.grabbedby)//You don't must use jet if someone pull you
 		return
 	if(owner.throwing)//You don't must use jet if you thrown
 		return

@@ -67,8 +67,8 @@
 	if(index)
 		held_items[index] = null
 
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+	if(I.grabbedby)
+		I.grabbedby.release()
 
 	I.screen_loc = null
 	if(client)

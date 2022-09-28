@@ -64,7 +64,7 @@
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
 		return TRUE
 	else if(isliving(mover))
-		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/giant_spider))
+		if(istype(mover.grabbedby?.owner, /mob/living/simple_animal/hostile/giant_spider))
 			return TRUE
 		if(prob(50))
 			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))
@@ -92,7 +92,7 @@
 	if(mover == allowed_mob)
 		return TRUE
 	else if(isliving(mover)) //we change the spider to not be able to go through here
-		if(mover.pulledby == allowed_mob)
+		if(mover.grabbedby?.owner == allowed_mob)
 			return TRUE
 		if(prob(50))
 			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))

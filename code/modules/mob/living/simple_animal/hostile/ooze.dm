@@ -213,16 +213,16 @@
 	if(!.)
 		return
 	var/mob/living/simple_animal/hostile/ooze/gelatinous/ooze = owner
-	if(!isliving(ooze.pulling))
+	if(!isliving(ooze.grab?.victim))
 		to_chat(src, span_warning("You need to be pulling a creature for this to work!"))
 		return FALSE
 	if(vored_mob)
 		to_chat(src, span_warning("You are already consuming another creature!"))
 		return FALSE
 	owner.visible_message(span_warning("[ooze] starts attempting to devour [target]!"), span_notice("You start attempting to devour [target]."))
-	if(!do_after(ooze, 15, target = ooze.pulling))
+	if(!do_after(ooze, 15, target = ooze.grab.victim))
 		return FALSE
-	var/mob/living/eat_target = ooze.pulling
+	var/mob/living/eat_target = ooze.grab.victim
 
 	if(!(eat_target.mob_biotypes & MOB_ORGANIC) || eat_target.stat == DEAD)
 		to_chat(src, span_warning("This creature isn't to my tastes!"))
@@ -424,14 +424,14 @@
 ///Try to put the pulled mob in a cocoon
 /datum/action/cooldown/gel_cocoon/proc/gel_cocoon()
 	var/mob/living/simple_animal/hostile/ooze/grapes/ooze = owner
-	if(!iscarbon(ooze.pulling))
+	if(!iscarbon(ooze.grab?.victim))
 		to_chat(src, span_warning("You need to be pulling an intelligent enough creature to assist it with a cocoon!"))
 		return FALSE
 	owner.visible_message(span_nicegreen("[ooze] starts attempting to put [target] into a gel cocoon!"), span_notice("You start attempting to put [target] into a gel cocoon."))
-	if(!do_after(ooze, 1.5 SECONDS, target = ooze.pulling))
+	if(!do_after(ooze, 1.5 SECONDS, target = ooze.grab.victim))
 		return FALSE
 
-	put_in_cocoon(ooze.pulling)
+	put_in_cocoon(ooze.grab.victim)
 	ooze.adjust_ooze_nutrition(-30)
 
 ///Mob needs to have enough nutrition

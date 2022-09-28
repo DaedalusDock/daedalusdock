@@ -240,7 +240,7 @@
 		if(!(lube & SLIDE_ICE))
 			slipper.Knockdown(knockdown_amount)
 			slipper.Paralyze(paralyze_amount)
-			slipper.stop_pulling()
+			slipper.grab?.release()
 		else
 			slipper.Knockdown(20)
 

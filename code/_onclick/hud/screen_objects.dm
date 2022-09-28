@@ -405,10 +405,10 @@
 /atom/movable/screen/pull/Click()
 	if(isobserver(usr))
 		return
-	usr.stop_pulling()
+	usr.grab?.release()
 
 /atom/movable/screen/pull/update_icon_state()
-	icon_state = "[base_icon_state][hud?.mymob?.pulling ? null : 0]"
+	icon_state = "[base_icon_state][hud?.mymob?.grab ? null : 0]"
 	return ..()
 
 /atom/movable/screen/resist

@@ -74,7 +74,7 @@
 	if(modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
 		return
 
-	if(!user.throw_mode || user.get_active_held_item() || user.pulling || user.buckled || user.incapacitated())
+	if(!user.throw_mode || user.get_active_held_item() || user.grab || user.buckled || user.incapacitated())
 		return
 
 	if(!A || !(isturf(A) || isturf(A.loc)))
@@ -213,7 +213,7 @@
 			target.Knockdown(30)
 			if(ishuman(target) && ishuman(user))
 				INVOKE_ASYNC(S.dna.species, /datum/species.proc/grab, S, T)
-				S.setGrabState(GRAB_PASSIVE)
+				INVOKE_ASYNC(S.grab, /obj/item/grab/proc/try_set_state, GRAB_LEVEL_PULL)
 
 		if(5 to INFINITY) // absolutely BODIED
 			user.visible_message(span_warning("[user] lands a monster [tackle_word] on [target], knocking [target.p_them()] senseless and applying an aggressive pin!"), span_userdanger("You land a monster [tackle_word] on [target], knocking [target.p_them()] senseless and applying an aggressive pin!"), ignored_mobs = target)
@@ -227,7 +227,7 @@
 			target.Knockdown(30)
 			if(ishuman(target) && ishuman(user))
 				INVOKE_ASYNC(S.dna.species, /datum/species.proc/grab, S, T)
-				S.setGrabState(GRAB_AGGRESSIVE)
+				INVOKE_ASYNC(S.grab, /obj/item/grab/proc/try_set_state, GRAB_LEVEL_AGGRESSIVE)
 
 
 	return COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH

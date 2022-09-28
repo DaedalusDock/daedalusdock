@@ -62,9 +62,9 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define FALL_RETAIN_PULL (1<<3)
 
 /// Runs check_pulling() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
-#define ZMOVE_CHECK_PULLING (1<<0)
+#define ZMOVE_CHECK_GRABBING (1<<0)
 /// Checks if pulledby is nearby. if not, stop being pulled.
-#define ZMOVE_CHECK_PULLEDBY (1<<1)
+#define ZMOVE_CHECK_GRABBEDBY (1<<1)
 /// flags for different checks done in [/atom/movable/proc/can_z_move]. Should be self-explainatory.
 #define ZMOVE_FALL_CHECKS (1<<2)
 #define ZMOVE_CAN_FLY_CHECKS (1<<3)
@@ -80,12 +80,12 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 /// Includes movables that're either pulled by the source or mobs buckled to it in the list of moving movables.
 #define ZMOVE_INCLUDE_PULLED (1<<9)
 
-#define ZMOVE_CHECK_PULLS (ZMOVE_CHECK_PULLING|ZMOVE_CHECK_PULLEDBY)
+#define ZMOVE_CHECK_PULLS (ZMOVE_CHECK_GRABBING|ZMOVE_CHECK_GRABBEDBY)
 
 /// Flags used in "Move Upwards" and "Move Downwards" verbs.
 #define ZMOVE_FLIGHT_FLAGS (ZMOVE_CAN_FLY_CHECKS|ZMOVE_INCAPACITATED_CHECKS|ZMOVE_CHECK_PULLS|ZMOVE_ALLOW_BUCKLED)
 /// Used when walking upstairs
-#define ZMOVE_STAIRS_FLAGS (ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED)
+#define ZMOVE_STAIRS_FLAGS (ZMOVE_CHECK_GRABBEDBY|ZMOVE_ALLOW_BUCKLED)
 /// Used for falling down open space.
 #define ZMOVE_FALL_FLAGS (ZMOVE_FALL_CHECKS|ZMOVE_ALLOW_BUCKLED)
 

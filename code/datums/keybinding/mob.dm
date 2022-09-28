@@ -14,10 +14,10 @@
 	if(.)
 		return
 	var/mob/M = user.mob
-	if(!M.pulling)
+	if(!M.grab)
 		to_chat(user, span_notice("You are not pulling anything."))
 	else
-		M.stop_pulling()
+		M.grab.release()
 	return TRUE
 
 /datum/keybinding/mob/swap_hands

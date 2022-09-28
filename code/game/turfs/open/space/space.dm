@@ -132,7 +132,7 @@
 	if(!arrived || src != arrived.loc)
 		return
 
-	if(destination_z && destination_x && destination_y && !arrived.pulledby && !arrived.currently_z_moving)
+	if(destination_z && destination_x && destination_y && !arrived.grabbedby && !arrived.currently_z_moving)
 		var/tx = destination_x
 		var/ty = destination_y
 		var/turf/DT = locate(tx, ty, destination_z)
@@ -153,11 +153,11 @@
 
 		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
-		var/atom/movable/current_pull = arrived.pulling
+		var/atom/movable/current_pull = arrived.grab.victim
 		while (current_pull)
-			var/turf/target_turf = get_step(current_pull.pulledby.loc, REVERSE_DIR(current_pull.pulledby.dir)) || current_pull.pulledby.loc
+			var/turf/target_turf = get_step(current_pull.grabbedby.owner.loc, REVERSE_DIR(current_pull.grabbedby.owner.dir)) || current_pull.grabbedby.owner.loc
 			current_pull.zMove(null, target_turf, ZMOVE_ALLOW_BUCKLED)
-			current_pull = current_pull.pulling
+			current_pull = current_pull.grab?.victim
 
 
 /turf/open/space/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)

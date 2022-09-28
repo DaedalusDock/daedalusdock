@@ -93,9 +93,9 @@
 	if(istype(target) && !climber.can_z_move(DOWN, target, z_move_flags = ZMOVE_FALL_FLAGS)) //Don't throw them into a tile that will just dump them back down.
 		climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)
 		/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
-		climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
+		climber.grab?.victim?.move_from_pull(climber, loc, climber.glide_size)
 		for(var/mob/living/buckled as anything in climber.buckled_mobs)
-			buckled.pulling?.move_from_pull(buckled, loc, buckled.glide_size)
+			buckled.grab?.victim?.move_from_pull(buckled, loc, buckled.glide_size)
 
 
 /obj/structure/stairs/vv_edit_var(var_name, var_value)

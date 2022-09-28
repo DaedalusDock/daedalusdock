@@ -306,7 +306,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	// So it doesn't trigger other zFall calls. Cleared on zMove.
 	falling.set_currently_z_moving(CURRENTLY_Z_FALLING)
 
-	falling.zMove(null, target, ZMOVE_CHECK_PULLEDBY)
+	falling.zMove(null, target, ZMOVE_CHECK_GRABBEDBY)
 	target.zImpact(falling, levels, src)
 	return TRUE
 
@@ -329,11 +329,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return FALSE
 	for(var/atom/movable/falling_mov as anything in falling_movables)
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mov.stop_pulling()
+			falling_mov.grab?.release()
 		if(!(flags & FALL_INTERCEPTED))
 			falling_mov.onZImpact(src, levels)
-		if(falling_mov.pulledby && (falling_mov.z != falling_mov.pulledby.z || get_dist(falling_mov, falling_mov.pulledby) > 1))
-			falling_mov.pulledby.stop_pulling()
+		if(falling_mov.grabbedby && (falling_mov.z != falling_mov.grabbedby.owner.z || get_dist(falling_mov, falling_mov.grabbedby.owner) > 1))
+			falling_mov.grabbedby.release()
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/C, mob/user)

@@ -259,9 +259,9 @@
 
 	controller.current_movement_target = target
 
-	if(target.pulledby != living_pawn && !HAS_AI_CONTROLLER_TYPE(target.pulledby, /datum/ai_controller/monkey)) //Dont steal from my fellow monkeys.
+	if(target.grabbedby?.owner != living_pawn && !HAS_AI_CONTROLLER_TYPE(target.grabbedby.owner, /datum/ai_controller/monkey)) //Dont steal from my fellow monkeys.
 		if(living_pawn.Adjacent(target) && isturf(target.loc))
-			target.grabbedby(living_pawn)
+			target.grapple(living_pawn)
 		return //Do the rest next turn
 
 	var/datum/weakref/disposal_ref = controller.blackboard[disposal_target_key]

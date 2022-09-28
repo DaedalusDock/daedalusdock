@@ -90,10 +90,17 @@
 #define INSTANT_CUFFBREAK 2
 
 //Grab levels
+/*
 #define GRAB_PASSIVE 0
 #define GRAB_AGGRESSIVE 1
 #define GRAB_NECK 2
 #define GRAB_KILL 3
+*/
+
+//New Grab levels
+#define GRAB_LEVEL_PULL 1
+#define GRAB_LEVEL_AGGRESSIVE 2
+#define GRAB_LEVEL_CHOKEHOLD 3
 
 //Grab breakout odds
 #define BASE_GRAB_RESIST_CHANCE 60 //base chance for whether or not you can escape from a grab
@@ -136,9 +143,6 @@
 //Shove slowdown
 #define SHOVE_SLOWDOWN_LENGTH 30
 #define SHOVE_SLOWDOWN_STRENGTH 0.85 //multiplier
-//Shove disarming item list
-GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
-	/obj/item/gun)))
 
 
 //Combat object defines

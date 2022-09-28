@@ -73,8 +73,8 @@
 		to_chat(user, span_warning("[src] cannot be used unless bolted to the ground!"))
 		return
 
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/L = user.pulling
+	if(user.grab && isliving(user.grab.victim))
+		var/mob/living/L = user.grab.victim
 		if(!iscarbon(L))
 			to_chat(user, span_warning("This item is not suitable for the gibber!"))
 			return
@@ -94,7 +94,7 @@
 		add_fingerprint(user)
 
 		if(do_after(user, gibtime, target = src))
-			if(C && user.pulling == C && !C.buckled && !C.has_buckled_mobs() && !occupant)
+			if(C && user.grab?.victim == C && !C.buckled && !C.has_buckled_mobs() && !occupant)
 				user.visible_message(span_danger("[user] stuffs [C] into the gibber!"))
 				C.forceMove(src)
 				set_occupant(C)

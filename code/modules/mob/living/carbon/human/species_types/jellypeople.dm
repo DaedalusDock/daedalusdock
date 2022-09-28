@@ -721,11 +721,11 @@
 	return TRUE
 
 /datum/action/innate/link_minds/Activate()
-	if(!isliving(owner.pulling) || owner.grab_state < GRAB_AGGRESSIVE)
+	if(!isliving(owner.grab?.victim) || owner.grab?.current_state < GRAB_LEVEL_AGGRESSIVE)
 		to_chat(owner, span_warning("You need to aggressively grab someone to link minds!"))
 		return
 
-	var/mob/living/living_target = owner.pulling
+	var/mob/living/living_target = owner.grab.victim
 	if(living_target.stat == DEAD)
 		to_chat(owner, span_warning("They're dead!"))
 		return
@@ -754,11 +754,11 @@
 /datum/action/innate/link_minds/proc/while_link_callback(mob/living/linkee)
 	if(!is_species(owner, req_species))
 		return FALSE
-	if(!owner.pulling)
+	if(!owner.grab)
 		return FALSE
-	if(owner.pulling != linkee)
+	if(owner.grab.victim != linkee)
 		return FALSE
-	if(owner.grab_state < GRAB_AGGRESSIVE)
+	if(owner.grab.current_state < GRAB_LEVEL_AGGRESSIVE)
 		return FALSE
 	if(linkee.stat == DEAD)
 		return FALSE

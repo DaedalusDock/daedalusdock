@@ -13,7 +13,6 @@
 	var/throw_range = 7
 	///Max range this atom can be thrown via telekinesis
 	var/tk_throw_range = 10
-	var/mob/pulledby = null
 	var/initial_language_holder = /datum/language_holder
 	var/datum/language_holder/language_holder // Mindless mobs and objects need language too, some times. Mind holder takes prescedence.
 	var/verb_say = "says"
@@ -60,8 +59,11 @@
 	  */
 	var/movement_type = GROUND
 
-	var/atom/movable/pulling
-	var/grab_state = 0
+	///The holder for grabs
+	var/obj/item/grab/grab
+	///The holder that is grabbing us
+	var/obj/item/grab/grabbedby
+
 	var/throwforce = 0
 	var/datum/component/orbiter/orbiting
 
@@ -130,10 +132,10 @@
 
 	invisibility = INVISIBILITY_ABSTRACT
 
-	if(pulledby)
-		pulledby.stop_pulling()
-	if(pulling)
-		stop_pulling()
+	if(grabbedby)
+		grabbedby.release()
+	if(grab)
+		grab.release()
 
 	if(orbiting)
 		orbiting.end_orbit(src)
@@ -227,9 +229,9 @@
 	// This is run after ALL movables have been moved, so pulls don't get broken unless they are actually out of range.
 	if(z_move_flags & ZMOVE_CHECK_PULLS)
 		for(var/atom/movable/moved_mov as anything in moving_movs)
-			if(z_move_flags & ZMOVE_CHECK_PULLEDBY && moved_mov.pulledby && (moved_mov.z != moved_mov.pulledby.z || get_dist(moved_mov, moved_mov.pulledby) > 1))
-				moved_mov.pulledby.stop_pulling()
-			if(z_move_flags & ZMOVE_CHECK_PULLING)
+			if(z_move_flags & ZMOVE_CHECK_GRABBEDBY && moved_mov.grabbedby && (moved_mov.z != moved_mov.grabbedby.owner.z || get_dist(moved_mov, moved_mov.grabbedby.owner) > 1))
+				moved_mov.grabbedby.release()
+			if(z_move_flags & ZMOVE_CHECK_GRABBING)
 				moved_mov.check_pulling(TRUE)
 	return TRUE
 
@@ -241,10 +243,10 @@
 	if(!(z_move_flags & ZMOVE_INCLUDE_PULLED))
 		return
 	for(var/mob/living/buckled as anything in buckled_mobs)
-		if(buckled.pulling)
-			. |= buckled.pulling
-	if(pulling)
-		. |= pulling
+		if(buckled.grab.victim)
+			. |= buckled.grab.victim
+	if(grab)
+		. |= grab.victim
 
 /**
  * Checks if the destination turf is elegible for z movement from the start turf to a given direction and returns it if so.
@@ -324,9 +326,6 @@
 		if(NAMEOF(src, anchored))
 			set_anchored(var_value)
 			. = TRUE
-		if(NAMEOF(src, pulledby))
-			set_pulledby(var_value)
-			. = TRUE
 		if(NAMEOF(src, glide_size))
 			set_glide_size(var_value)
 			. = TRUE
@@ -337,75 +336,41 @@
 
 	return ..()
 
+/atom/movable/proc/grapple(atom/movable/target, state, force = pull_force, supress_message)
+	if(grab)
+		if(grab.victim == target)
+			return src.grab.try_set_state(grab.current_state + 1)
+		else
+			grab.release()
 
-/atom/movable/proc/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
-	if(QDELETED(pulled_atom))
-		return FALSE
-	if(!(pulled_atom.can_be_pulled(src, state, force)))
-		return FALSE
+	var/obj/item/grab/new_grab = new
+	new_grab.setup(src, target, state, force, supress_message)
+	if(new_grab)
+		grab = new_grab
+	return !!grab
 
-	// If we're pulling something then drop what we're currently pulling and pull this instead.
-	if(pulling)
-		if(state == 0)
-			stop_pulling()
-			return FALSE
-		// Are we trying to pull something we are already pulling? Then enter grab cycle and end.
-		if(pulled_atom == pulling)
-			setGrabState(state)
-			if(istype(pulled_atom,/mob/living))
-				var/mob/living/pulled_mob = pulled_atom
-				pulled_mob.grabbedby(src)
-			return TRUE
-		stop_pulling()
-
-	if(pulled_atom.pulledby)
-		log_combat(pulled_atom, pulled_atom.pulledby, "pulled from", src)
-		pulled_atom.pulledby.stop_pulling() //an object can't be pulled by two mobs at once.
-	pulling = pulled_atom
-	pulled_atom.set_pulledby(src)
-	SEND_SIGNAL(src, COMSIG_ATOM_START_PULL, pulled_atom, state, force)
-	setGrabState(state)
-	if(ismob(pulled_atom))
-		var/mob/pulled_mob = pulled_atom
-		log_combat(src, pulled_mob, "grabbed", addition="passive grab")
-		if(!supress_message)
-			pulled_mob.visible_message(span_warning("[src] grabs [pulled_mob] passively."), \
-				span_danger("[src] grabs you passively."))
-	return TRUE
-
-/atom/movable/proc/stop_pulling()
-	if(pulling)
-		SEND_SIGNAL(pulling, COMSIG_ATOM_NO_LONGER_PULLED, src)
-		pulling.set_pulledby(null)
-		setGrabState(GRAB_PASSIVE)
-		pulling = null
-
-
-///Reports the event of the change in value of the pulledby variable.
-/atom/movable/proc/set_pulledby(new_pulledby)
-	if(new_pulledby == pulledby)
-		return FALSE //null signals there was a change, be sure to return FALSE if none happened here.
-	. = pulledby
-	pulledby = new_pulledby
-
+/atom/movable/proc/set_pull_offsets()
+	return
+/atom/movable/proc/update_pull_movespeed()
+	return
 
 /atom/movable/proc/Move_Pulled(atom/moving_atom)
-	if(!pulling)
+	if(!grab)
 		return FALSE
-	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
-		stop_pulling()
+	if(grab.victim.anchored || grab.victim.move_resist > move_force || !grab.victim.Adjacent(src, src, grab.victim))
+		grab.release()
 		return FALSE
-	if(isliving(pulling))
-		var/mob/living/pulling_mob = pulling
+	if(isliving(grab.victim))
+		var/mob/living/pulling_mob = grab.victim
 		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
-			stop_pulling()
+			grab.release()
 			return FALSE
-	if(moving_atom == loc && pulling.density)
+	if(moving_atom == loc && grab.victim.density)
 		return FALSE
-	var/move_dir = get_dir(pulling.loc, moving_atom)
+	var/move_dir = get_dir(grab.victim.loc, moving_atom)
 	if(!Process_Spacemove(move_dir))
 		return FALSE
-	pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
+	grab.victim.Move(get_step(grab.victim.loc, move_dir), move_dir, glide_size)
 	return TRUE
 
 /mob/living/Move_Pulled(atom/moving_atom)
@@ -413,25 +378,25 @@
 	if(!. || !isliving(moving_atom))
 		return
 	var/mob/living/pulled_mob = moving_atom
-	set_pull_offsets(pulled_mob, grab_state)
+	set_pull_offsets(pulled_mob, grab.current_state)
 
 /**
  * Checks if the pulling and pulledby should be stopped because they're out of reach.
  * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
  */
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
-	if(pulling)
-		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
-			stop_pulling()
+	if(grab)
+		if(get_dist(src, grab.victim) > 1 || (z != grab.victim.z && !z_allowed))
+			grab.release()
 		else if(!isturf(loc))
-			stop_pulling()
-		else if(pulling && !isturf(pulling.loc) && pulling.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
-			log_game("DEBUG:[src]'s pull on [pulling] wasn't broken despite [pulling] being in [pulling.loc]. Pull stopped manually.")
-			stop_pulling()
-		else if(pulling.anchored || pulling.move_resist > move_force)
-			stop_pulling()
-	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, pulledby) > 1 || z != pulledby.z)) //separated from our puller and not in the middle of a diagonal move.
-		pulledby.stop_pulling()
+			grab.release()
+		else if(!isturf(grab.victim.loc) && grab.victim.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
+			log_game("DEBUG:[src]'s pull on [grab.victim] wasn't broken despite [grab.victim] being in [grab.victim.loc]. Pull stopped manually.")
+			grab.release()
+		else if(grab.victim.anchored || grab.victim.move_resist > move_force)
+			grab.release()
+	if(!only_pulling && grabbedby && moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, grabbedby.owner) > 1 || z != grabbedby.owner.z)) //separated from our puller and not in the middle of a diagonal move.
+		grabbedby.release()
 
 /atom/movable/proc/set_glide_size(target = 8)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, target)
@@ -529,7 +494,7 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
-	var/atom/movable/pullee = pulling
+	var/atom/movable/pullee = grab?.victim
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
 		check_pulling(z_allowed = TRUE)
@@ -603,23 +568,23 @@
 		set_currently_z_moving(FALSE, TRUE)
 		return
 
-	if(. && pulling && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
-		if(pulling.anchored)
-			stop_pulling()
+	if(. && grab && grab.victim == pullee && grab.victim != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
+		if(grab.victim.anchored)
+			grab.release()
 		else
 			//puller and pullee more than one tile away or in diagonal position and whatever the pullee is pulling isn't already moving from a pull as it'll most likely result in an infinite loop a la ouroborus.
-			if(!pulling.pulling?.moving_from_pull)
-				var/pull_dir = get_dir(pulling, src)
+			if(!grab.victim.grab?.victim.moving_from_pull)
+				var/pull_dir = get_dir(grab.victim, src)
 				var/target_turf = current_turf
 
 				// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
 				// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
 				// The answer is simple. forcemoving and regrabbing is ugly and breaks conga lines.
-				if(pulling.z != z)
-					target_turf = get_step(pulling, get_dir(pulling, current_turf))
+				if(grab.victim.z != z)
+					target_turf = get_step(grab.victim, get_dir(grab.victim, current_turf))
 
-				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
-					pulling.move_from_pull(src, target_turf, glide_size)
+				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, grab.victim) > 1)
+					grab.victim.move_from_pull(src, target_turf, glide_size)
 			check_pulling()
 
 
@@ -931,8 +896,8 @@
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
 	if(destination)
 		///zMove already handles whether a pull from another movable should be broken.
-		if(pulledby && !currently_z_moving)
-			pulledby.stop_pulling()
+		if(grabbedby && !currently_z_moving)
+			grabbedby.release()
 
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)
@@ -1026,7 +991,7 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_SPACEMOVE, movement_dir, continuous_move) & COMSIG_MOVABLE_STOP_SPACEMOVE)
 		return TRUE
 
-	if(pulledby && (pulledby.pulledby != src || moving_from_pull))
+	if((grabbedby && grab) && (grabbedby.owner != grab.victim || moving_from_pull))
 		return TRUE
 
 	if(throwing)
@@ -1088,8 +1053,8 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_THROW, args) & COMPONENT_CANCEL_THROW)
 		return
 
-	if (pulledby)
-		pulledby.stop_pulling()
+	if (grabbedby)
+		grabbedby.release()
 
 	//They are moving! Wouldn't it be cool if we calculated their momentum and added it to the throw?
 	if (thrower && thrower.last_move && thrower.client && thrower.client.move_delay >= world.time + world.tick_lag*2)
@@ -1147,8 +1112,8 @@
 	thrown_thing.diagonal_error = dist_x/2 - dist_y
 	thrown_thing.start_time = world.time
 
-	if(pulledby)
-		pulledby.stop_pulling()
+	if(grabbedby)
+		grabbedby.release()
 	if (quickstart && (throwing || SSthrowing.state == SS_RUNNING)) //Avoid stack overflow edgecases.
 		quickstart = FALSE
 	throwing = thrown_thing
@@ -1357,7 +1322,7 @@
 /atom/movable/proc/get_cell()
 	return
 
-/atom/movable/proc/can_be_pulled(user, grab_state, force)
+/atom/movable/proc/can_be_pulled(user, force)
 	if(src == user || !isturf(loc))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_PULLED, user) & COMSIG_ATOM_CANT_PULL)
@@ -1367,33 +1332,6 @@
 	if(force < (move_resist * MOVE_FORCE_PULL_RATIO))
 		return FALSE
 	return TRUE
-
-/**
- * Updates the grab state of the movable
- *
- * This exists to act as a hook for behaviour
- */
-/atom/movable/proc/setGrabState(newstate)
-	if(newstate == grab_state)
-		return
-	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_GRAB_STATE, newstate)
-	. = grab_state
-	grab_state = newstate
-	switch(grab_state) // Current state.
-		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			REMOVE_TRAIT(pulling, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-			if(. >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		if(GRAB_AGGRESSIVE)
-			if(. >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-				ADD_TRAIT(pulling, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-		if(GRAB_NECK, GRAB_KILL)
-			if(. <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 /**
  * Adds the deadchat_plays component to this atom with simple movement commands.
@@ -1441,3 +1379,7 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+
+///Called by grabs when we stop grabbing our target
+/atom/movable/proc/on_grab_release(target)
+	return

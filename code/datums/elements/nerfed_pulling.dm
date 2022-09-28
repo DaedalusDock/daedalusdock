@@ -37,7 +37,7 @@
 /datum/element/nerfed_pulling/proc/on_updating_pull_movespeed(mob/living/source)
 	SIGNAL_HANDLER
 
-	if (!will_slow_down(source.pulling))
+	if (!will_slow_down(source.grab))
 		source.remove_movespeed_modifier(/datum/movespeed_modifier/nerfed_pull)
 		return
 

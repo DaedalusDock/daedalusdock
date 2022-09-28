@@ -102,11 +102,11 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PREBUCKLE, M, force, buckle_mob_flags) & COMPONENT_BLOCK_BUCKLE)
 		return FALSE
 
-	if(M.pulledby)
+	if(M.grabbedby)
 		if(buckle_prevents_pull)
-			M.pulledby.stop_pulling()
-		else if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
+			M.grabbedby.release()
+		else if(isliving(M.grabbedby.owner))
+			var/mob/living/L = M.grabbedby.owner
 			L.reset_pull_offsets(M, TRUE)
 
 	if(anchored)
@@ -348,7 +348,7 @@
 				span_notice("You unbuckle yourself from [src]."),\
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
-		if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.set_pull_offsets(M, L.grab_state)
+		if(isliving(M.grabbedby?.owner))
+			var/mob/living/L = M.grabbedby.owner
+			L.set_pull_offsets(M, L.grab.current_state)
 	return M

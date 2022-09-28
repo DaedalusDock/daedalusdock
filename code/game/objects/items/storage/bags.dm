@@ -142,8 +142,8 @@
 	var/turf/tile = user.loc
 	if (!isturf(tile))
 		return
-	if (istype(user.pulling, /obj/structure/ore_box))
-		box = user.pulling
+	if (istype(user.grab?.victim, /obj/structure/ore_box))
+		box = user.grab.victim
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	if(STR)
 		for(var/A in tile)

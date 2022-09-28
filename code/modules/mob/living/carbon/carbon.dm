@@ -164,13 +164,13 @@
 	var/neckgrab_throw = FALSE // we can't check for if it's a neckgrab throw when totaling up power_throw since we've already stopped pulling them by then, so get it early
 
 	if(!I)
-		if(pulling && isliving(pulling) && grab_state >= GRAB_AGGRESSIVE)
-			var/mob/living/throwable_mob = pulling
+		if(grab && isliving(grab.victim) && grab.current_state >= GRAB_LEVEL_CHOKEHOLD)
+			var/mob/living/throwable_mob = grab.victim
 			if(!throwable_mob.buckled)
 				thrown_thing = throwable_mob
-				if(grab_state >= GRAB_NECK)
+				if(grab.current_state >= GRAB_LEVEL_CHOKEHOLD)
 					neckgrab_throw = TRUE
-				stop_pulling()
+				grab.release()
 				if(HAS_TRAIT(src, TRAIT_PACIFISM))
 					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
 					return
@@ -848,7 +848,7 @@
 /mob/living/carbon/proc/update_handcuffed()
 	if(handcuffed)
 		drop_all_held_items()
-		stop_pulling()
+		grab?.release()
 		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
 		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "handcuffed", /datum/mood_event/handcuffed)
 	else

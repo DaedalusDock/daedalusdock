@@ -171,8 +171,8 @@
 
 /datum/brain_trauma/special/quantum_alignment/proc/try_entangle()
 	//Check for pulled mobs
-	if(ismob(owner.pulling))
-		entangle(owner.pulling)
+	if(ismob(owner.grab.victim))
+		entangle(owner.grab.victim)
 		return
 	//Check for adjacent mobs
 	for(var/mob/living/L in oview(1, owner))
@@ -180,8 +180,8 @@
 			entangle(L)
 			return
 	//Check for pulled objects
-	if(isobj(owner.pulling))
-		entangle(owner.pulling)
+	if(isobj(owner.grab.victim))
+		entangle(owner.grab.victim)
 		return
 
 	//Check main hand

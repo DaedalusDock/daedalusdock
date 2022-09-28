@@ -41,10 +41,11 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	..(I, cuff_break = INSTANT_CUFFBREAK)
 
 /mob/living/carbon/alien/humanoid/resist_grab(moving_resist)
-	if(pulledby.grab_state)
-		visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-						span_danger("You break free of [pulledby]'s grip!"))
-	pulledby.stop_pulling()
+	if(grabbedby?.current_state > GRAB_LEVEL_PULL)
+		visible_message(
+			span_danger("[src] breaks free of [grabbedby.owner]'s grip!"), \
+			span_danger("You break free of [grabbedby.owner]'s grip!"))
+	grabbedby.release()
 	. = 0
 
 /mob/living/carbon/alien/humanoid/get_permeability_protection(list/target_zones)

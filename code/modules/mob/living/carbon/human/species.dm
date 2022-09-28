@@ -1923,7 +1923,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		'goon/sound/human/fscream1.ogg',
 		'goon/sound/human/fscream5.ogg',
 	)
-	return
 
 /datum/species/proc/get_types_to_preload()
 	var/list/to_store = list()

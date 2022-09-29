@@ -23,7 +23,6 @@
 	var/obj/item/stack/tile/tilestack
 	var/fixfloors = TRUE
 	var/autotile = FALSE
-	var/max_targets = 50
 	var/turf/target
 	var/oldloc = null
 	var/toolbox = /obj/item/storage/toolbox/mechanical
@@ -74,8 +73,6 @@
 /mob/living/simple_animal/bot/floorbot/bot_reset()
 	..()
 	target = null
-	oldloc = null
-	ignore_list = list()
 	toggle_magnet(FALSE)
 
 /mob/living/simple_animal/bot/floorbot/attackby(obj/item/W , mob/user, params)

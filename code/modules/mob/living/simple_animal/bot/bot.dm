@@ -37,8 +37,6 @@
 	var/maints_access_required = list(ACCESS_ROBOTICS)
 	///The Robot arm attached to this robot - has a 50% chance to drop on death.
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
-	///People currently looking into a bot's UI panel.
-	var/list/users = list()
 	///The inserted (if any) pAI in this bot.
 	var/obj/item/paicard/paicard
 	///The type of bot it is, for radio control.
@@ -226,7 +224,7 @@
 
 /mob/living/simple_animal/bot/death(gibbed)
 	explode()
-	..()
+	return ..()
 
 /mob/living/simple_animal/bot/proc/explode()
 	visible_message(span_boldnotice("[src] blows apart!"))
@@ -252,7 +250,7 @@
 		if(user)
 			log_combat(user, src, "emagged")
 		return
-	else //Bot is unlocked, but the maint panel has not been opened with a screwdriver yet.
+	else //Bot is unlocked, but the maint panel has not been opened with a screwdriver (or through the UI) yet.
 		to_chat(user, span_warning("You need to open maintenance panel first!"))
 
 /mob/living/simple_animal/bot/examine(mob/user)
@@ -279,7 +277,7 @@
 /mob/living/simple_animal/bot/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
 	if(amount > 0 && prob(10))
 		new /obj/effect/decal/cleanable/oil(loc)
-	. = ..()
+	return ..()
 
 /mob/living/simple_animal/bot/updatehealth()
 	..()
@@ -518,29 +516,30 @@ Pass the desired type path itself, declaring a temporary var beforehand is not r
 		if(final_result)
 			return final_result
 
-/mob/living/simple_animal/bot/proc/checkscan(scan, scan_type, old_target)
-	if(!istype(scan, scan_type)) //Check that the thing we found is the type we want!
-		return FALSE //If not, keep searching!
-	if((REF(scan) in ignore_list) || (scan == old_target)) //Filter for blacklisted elements, usually unreachable or previously processed oness
-		return FALSE
+/mob/living/simple_animal/bot/proc/checkscan(atom/scan, list/scan_types, old_target)
+	for(var/scan_type in scan_types)
+		if(!istype(scan, scan_type)) //Check that the thing we found is the type we want!
+			continue //If not, keep searching!
+		if((REF(scan) in ignore_list) || (scan == old_target)) //Filter for blacklisted elements, usually unreachable or previously processed oness
+			continue
 
-	var/scan_result = process_scan(scan) //Some bots may require additional processing when a result is selected.
-	if(scan_result)
-		return scan_result
-	else
-		return FALSE //The current element failed assessment, move on to the next.
-
-/mob/living/simple_animal/bot/proc/check_bot(targ)
-	var/turf/T = get_turf(targ)
-	if(T)
-		for(var/C in T.contents)
-			if(istype(C,type) && (C != src)) //Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
-				return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
+		var/scan_result = process_scan(scan) //Some bots may require additional processing when a result is selected.
+		if(!isnull(scan_result))
+			return scan_result
 
 //When the scan finds a target, run bot specific processing to select it for the next step. Empty by default.
 /mob/living/simple_animal/bot/proc/process_scan(scan_target)
 	return scan_target
 
+/mob/living/simple_animal/bot/proc/check_bot(targ)
+	var/turf/target_turf = get_turf(targ)
+	if(!target_turf)
+		return FALSE
+	for(var/turf_contents in target_turf.contents)
+		//Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
+		if(istype(turf_contents, type) && (turf_contents != src))
+			return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
+	return FALSE
 
 /mob/living/simple_animal/bot/proc/add_to_ignore(subject)
 	if(ignore_list.len < 50) //This will help keep track of them, so the bot is always trying to reach a blocked spot.
@@ -646,6 +645,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	access_card.set_access(prev_access)
 	tries = 0
 	mode = BOT_IDLE
+	ignore_list = list()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
 

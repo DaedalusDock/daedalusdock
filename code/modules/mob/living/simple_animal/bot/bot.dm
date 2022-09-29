@@ -518,7 +518,7 @@
 			continue
 
 		var/scan_result = process_scan(scan) //Some bots may require additional processing when a result is selected.
-		if(scan_result)
+		if(!isnull(scan_result))
 			return scan_result
 
 //When the scan finds a target, run bot specific processing to select it for the next step. Empty by default.
@@ -526,11 +526,14 @@
 	return scan_target
 
 /mob/living/simple_animal/bot/proc/check_bot(targ)
-	var/turf/T = get_turf(targ)
-	if(T)
-		for(var/C in T.contents)
-			if(istype(C,type) && (C != src)) //Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
-				return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
+	var/turf/target_turf = get_turf(targ)
+	if(!target_turf)
+		return FALSE
+	for(var/turf_contents in target_turf.contents)
+		//Is there another bot there already? If so, let's skip it so we dont all atack on top of eachother.
+		if(istype(turf_contents, type) && (turf_contents != src))
+			return TRUE //Let's abort if we find a bot so we dont have to keep rechecking
+	return FALSE
 
 /mob/living/simple_animal/bot/proc/add_to_ignore(subject)
 	if(ignore_list.len < 50) //This will help keep track of them, so the bot is always trying to reach a blocked spot.

@@ -72,7 +72,6 @@
 /mob/living/simple_animal/bot/floorbot/bot_reset()
 	..()
 	target = null
-	ignore_list = list()
 	toggle_magnet(FALSE)
 
 /mob/living/simple_animal/bot/floorbot/attackby(obj/item/W , mob/user, params)

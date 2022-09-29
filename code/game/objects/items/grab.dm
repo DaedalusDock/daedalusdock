@@ -281,7 +281,7 @@
 				span_hear("You hear cloth shuffle around."),
 			)
 			log_combat(owner, victim, "grabbed", addition="aggressive grab")
-			i
+
 		if(GRAB_LEVEL_CHOKEHOLD)
 			victim.visible_message(
 				span_danger("[owner] tightens [owner.p_their()] grip on [victim]'s neck!"),

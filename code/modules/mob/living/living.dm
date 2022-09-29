@@ -276,9 +276,9 @@
 	now_pushing = FALSE
 
 
-
+///Called when [src] wants to adjust the pull/grab offset of a victim
 /mob/living/set_pull_offsets(mob/living/M, grab_state = GRAB_LEVEL_PULL)
-	if(M.buckled)
+	if(buckled)
 		return //don't make them change direction or offset them if they're buckled into something.
 	var/offset = 0
 	switch(grab_state)

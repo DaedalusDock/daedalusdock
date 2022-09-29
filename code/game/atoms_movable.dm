@@ -354,31 +354,36 @@
 /atom/movable/proc/update_pull_movespeed()
 	return
 
-/atom/movable/proc/Move_Pulled(atom/moving_atom)
+///Move the grappled target into this atom. Please do your own sanity checks on call so you can't move people into cursed places.
+/atom/movable/proc/MoveGrappled(atom/moving_to)
 	if(!grab)
 		return FALSE
-	if(grab?.victim.anchored || grab?.victim.move_resist > move_force || !grab?.victim.Adjacent(src, src, grab?.victim))
+
+	var/atom/movable/grabbed = grab.victim
+	if(grabbed.anchored || grabbed.move_resist > move_force || !grabbed.Adjacent(src, src, grabbed))
 		grab.release()
 		return FALSE
-	if(isliving(grab?.victim))
-		var/mob/living/pulling_mob = grab?.victim
+
+	if(isliving(grab.victim))
+		var/mob/living/pulling_mob = grab.victim
 		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
 			grab.release()
 			return FALSE
-	if(moving_atom == loc && grab?.victim.density)
+
+	if(moving_to == loc && grab?.victim.density)
 		return FALSE
-	var/move_dir = get_dir(grab?.victim.loc, moving_atom)
+
+	var/move_dir = get_dir(grabbed.loc, moving_to)
 	if(!Process_Spacemove(move_dir))
 		return FALSE
-	grab?.victim.Move(get_step(grab?.victim.loc, move_dir), move_dir, glide_size)
-	return TRUE
 
-/mob/living/Move_Pulled(atom/moving_atom)
-	. = ..()
-	if(!. || !isliving(moving_atom))
-		return
-	var/mob/living/pulled_mob = moving_atom
-	set_pull_offsets(pulled_mob, grab.current_state)
+	///If the grabbed atom is not adjacent, step towards instead.
+	if(!grabbed.Adjacent(moving_to))
+		moving_to = get_step(grabbed.loc, move_dir)
+
+	grabbed.Move(moving_to, move_dir, glide_size)
+	src.set_pull_offsets(grabbed, grab.current_state)
+	return TRUE
 
 /**
  * Checks if the pulling and pulledby should be stopped because they're out of reach.
@@ -584,7 +589,7 @@
 					target_turf = get_step(grab?.victim, get_dir(grab?.victim, current_turf))
 
 				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, grab?.victim) > 1)
-					grab?.victim.move_from_pull(src, target_turf, glide_size)
+					grab?.victim.move_from_pull(src, target_turf, direct, glide_size)
 			check_pulling()
 
 
@@ -608,9 +613,9 @@
 			set_currently_z_moving(FALSE, TRUE)
 
 /// Called when src is being moved to a target turf because another movable (puller) is moving around.
-/atom/movable/proc/move_from_pull(atom/movable/puller, turf/target_turf, glide_size_override)
+/atom/movable/proc/move_from_pull(atom/movable/puller, turf/target_turf, move_dir, glide_size_override)
 	moving_from_pull = puller
-	Move(target_turf, get_dir(src, target_turf), glide_size_override)
+	Move(target_turf, move_dir, glide_size_override)
 	moving_from_pull = null
 
 /**

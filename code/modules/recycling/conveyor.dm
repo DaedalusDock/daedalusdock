@@ -284,7 +284,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 	else if(!user.combat_mode)
 		user.transferItemToLoc(attacking_item, drop_location())
-	
+
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 
@@ -293,7 +293,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	user.MoveGrappled(src)
 
 /obj/machinery/conveyor/power_change()
 	. = ..()

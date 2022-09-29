@@ -108,7 +108,7 @@
 					return
 			user.grab.release()
 		else if(user.grab?.victim.pass_flags & PASSTABLE)
-			user.Move_Pulled(src)
+			user.MoveGrappled(src)
 			if (user.grab?.victim.loc == loc)
 				user.visible_message(span_notice("[user] places [user.grab?.victim] onto [src]."),
 					span_notice("You place [user.grab?.victim] onto [src]."))

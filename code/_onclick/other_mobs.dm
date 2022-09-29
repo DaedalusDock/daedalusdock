@@ -120,7 +120,7 @@
 			return TRUE
 
 	if(isturf(A) && get_dist(src,A) <= 1)
-		Move_Pulled(A)
+		MoveGrappled(A)
 		return TRUE
 
 /*

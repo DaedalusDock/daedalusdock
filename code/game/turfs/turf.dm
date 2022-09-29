@@ -213,7 +213,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+
+/turf/on_grab_attack(obj/item/grab/source, atom/movable/victim, state)
+	. = ..()
+	if(state == GRAB_LEVEL_PULL)
+		source.owner.MoveGrappled(src)
 
 /turf/proc/multiz_turf_del(turf/T, dir)
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)

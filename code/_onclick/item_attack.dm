@@ -122,7 +122,7 @@
 /atom/proc/attackby(obj/item/attacking_item, mob/user, params)
 	if(SEND_SIGNAL(src, COMSIG_PARENT_ATTACKBY, attacking_item, user, params) & COMPONENT_NO_AFTERATTACK)
 		return TRUE
-	return FALSE
+	return attacking_item.attack_atom(src, user, params)
 
 /**
  * Called on an object being right-clicked on by an item

@@ -2208,3 +2208,7 @@
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
+
+///Called whenever you "attack" this atom with a grab holder active.
+/atom/proc/on_grab_attack(atom/movable/user, atom/movable/victim, state)
+	return

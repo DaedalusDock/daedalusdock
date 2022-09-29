@@ -344,10 +344,18 @@
 	. = ..()
 	try_set_state(current_state+1)
 
-/obj/item/grab/attack(mob/living/M, mob/living/user, params)
+/obj/item/grab/pre_attack(mob/living/M, mob/living/user, params)
 	. = ..()
 	if(M == victim)
 		try_set_state(current_state+1)
+
+///Hijack atom attacking completely
+/obj/item/grab/attack_atom(atom/attacked_atom, mob/living/user, params)
+	if(!owner.Adjacent(attacked_atom))
+		return
+
+	attacked_atom.on_grab_attack(src, victim, current_state)
+
 
 /*
 /turf/open/floor/attackby(obj/item/C, mob/user, params)

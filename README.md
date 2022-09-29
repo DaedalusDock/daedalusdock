@@ -1,22 +1,21 @@
-## Pariah Station codebase
+## Daedalus Dock codebase
 
-[![CI Suite](https://github.com/pariahstation/Pariah-Station/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/pariahstation/Pariah-Station/actions/workflows/ci_suite.yml)
-<!-- [![Percentage of issues still open](https://isitmaintained.com/badge/open/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Percentage of issues still open") -->
-<!-- [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Average time to resolve an issue") -->
-<!-- ![Coverage](https://img.shields.io/badge/coverage---3%25-red.svg) -->
+[![CI Suite](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml)
 
 [![resentment](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://www.monkeyuser.com/assets/images/2019/131-bug-free.png) [![resentment](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://user-images.githubusercontent.com/8171642/50290880-ffef5500-043a-11e9-8270-a2e5b697c86c.png) [![forinfinityandbyond](https://user-images.githubusercontent.com/5211576/29499758-4efff304-85e6-11e7-8267-62919c3688a9.gif)](https://www.reddit.com/r/SS13/comments/5oplxp/what_is_the_main_problem_with_byond_as_an_engine/dclbu1a)
 
-* **Website:** https://pariahstation.org
-* **Code:** https://github.com/pariahstation/Pariah-Station
-* **Wiki:** https://wiki.pariahstation.org/index.php/Main_Page
+* **Website:** https://daedalus13.net
+* **Code:** https://github.com/DaedalusDock/Gameserver
+* **Wiki:** https://wiki.daedalus13.net/Main_Page
 <!-- * **Codedocs:** https://codedocs.tgstation13.org/ -->
-* **Pariah Station Discord:** https://discord.gg/pariahstation
+* **Daedalus Dock Discord:** https://discord.gg/bttwJmfznH
 * **Coderbus Discord:** https://discord.gg/Vh8TJp9
 
-This is the codebase for the /tg/station flavoured fork of SpaceStation 13.
+This is the codebase for the nightmare amalgamation of /TG/station, Goonstation, and Baystation12 codebases for the game Space Station 13.
 
 Space Station 13 is a paranoia-laden round-based roleplaying game set against the backdrop of a nonsensical, metal death trap masquerading as a space station, with charming spritework designed to represent the sci-fi setting and its dangerous undertones. Have fun, and survive!
+
+Space Station 13 is a round-based roleplaying game set on a cassette-futuristic station where every job from Clown to Head of Security is played by users. Watch out for shifty individuals, as you may be subject to kidnapping, blood sacrifice, murder, or a dock in pay from a particularly upset Head of Personnel.
 
 ## DOWNLOADING
 [Downloading](.github/guides/DOWNLOADING.md)
@@ -33,16 +32,12 @@ On **2021-01-04**, /TG/station changed the way to compile the codebase.
 
 **The long way**. Find `bin/build.cmd` in this folder, and double click it to initiate the build. It consists of multiple steps and might take around 1-5 minutes to compile. If it closes, it means it has finished its job. You can then [setup the server](.github/guides/RUNNING_A_SERVER.md) normally by opening `daedalus.dmb` in DreamDaemon.
 
-**Building tgstation in DreamMaker directly is now deprecated and might produce errors**, such as `'tgui.bundle.js': cannot find file`.
+**Building in DreamMaker directly is now deprecated and might produce errors**, such as `'tgui.bundle.js': cannot find file`.
 
 **[How to compile in VSCode and other build options](tools/build/README.md).**
 
 ## Contributors
 [Guides for Contributors](.github/CONTRIBUTING.md)
-
-<!-- [/tg/station HACKMD account](https://hackmd.io/@tgstation) - Design documentation here
-
-[Interested in some starting lore?](https://github.com/tgstation/common_core) -->
 
 ## LICENSE
 

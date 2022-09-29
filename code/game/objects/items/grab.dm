@@ -269,7 +269,7 @@
 		if(GRAB_LEVEL_AGGRESSIVE)
 			if(old_state == GRAB_LEVEL_CHOKEHOLD) //Downgraded from chokehold
 				victim.visible_message(
-					span_danger("[owner] loosned their grip on  [victim]!"),
+					span_danger("[owner] loosened their grip on  [victim]!"),
 					span_danger("[owner] loosened their grip on you!"),
 					span_hear("You hear cloth shuffle around."),
 				)

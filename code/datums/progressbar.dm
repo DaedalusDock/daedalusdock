@@ -135,6 +135,69 @@
 
 	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
 
+/obj/effect/world_progressbar
+	///The progress bar visual element.
+	icon = 'icons/effects/progessbar.dmi'
+	icon_state = "prog_bar_0"
+	plane = ABOVE_LIGHTING_PLANE
+	appearance_flags = RESET_ALPHA | RESET_COLOR | RESET_TRANSFORM | KEEP_APART | TILE_BOUND
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	base_pixel_y = 32
+	pixel_y = 32
+	///The target where this progress bar is applied and where it is shown.
+	var/atom/bar_loc
+	///The atom who "created" the bar
+	var/atom/owner
+	///Effectively the number of steps the progress bar will need to do before reaching completion.
+	var/goal = 1
+	///Control check to see if the progress was interrupted before reaching its goal.
+	var/last_progress = 0
+	///Variable to ensure smooth visual stacking on multiple progress bars.
+	var/listindex = 0
+
+/obj/effect/world_progressbar/Initialize(mapload, atom/movable/owner, goal, atom/target, mutable_appearance/additional_image)
+	. = ..()
+	if(!owner || !target || !goal)
+		return INITIALIZE_HINT_QDEL
+
+	src.owner = owner
+	src.goal = goal
+	src.bar_loc = target
+	if(additional_image)
+		src.add_overlay(additional_image)
+
+	src.bar_loc:vis_contents += src
+
+	RegisterSignal(bar_loc, COMSIG_PARENT_QDELETING, .proc/bar_loc_delete)
+	RegisterSignal(owner, COMSIG_PARENT_QDELETING, .proc/owner_delete)
+
+/obj/effect/world_progressbar/Destroy()
+	owner = null
+	bar_loc?:vis_contents -= src
+	cut_overlays()
+	return ..()
+
+/obj/effect/world_progressbar/proc/bar_loc_delete()
+	qdel(src)
+
+/obj/effect/world_progressbar/proc/owner_delete()
+	qdel(src)
+
+///Updates the progress bar image visually.
+/obj/effect/world_progressbar/proc/update(progress)
+	progress = clamp(progress, 0, goal)
+	if(progress == last_progress)
+		return
+	last_progress = progress
+	icon_state = "prog_bar_[round(((progress / goal) * 100), 5)]"
+
+/obj/effect/world_progressbar/proc/end_progress()
+	if(last_progress != goal)
+		icon_state = "[icon_state]_fail"
+
+	animate(src, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
+
+	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
 
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT

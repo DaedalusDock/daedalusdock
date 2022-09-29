@@ -321,8 +321,8 @@
 
 /mob/living/on_grab_release(target)
 	. = ..()
-	if(ismob(target))
-		reset_pull_offsets(target)
+
+	reset_pull_offsets(target)
 	update_pull_movespeed()
 	update_pull_hud_icon()
 	remove_movespeed_modifier(MOVESPEED_ID_MOB_GRAB_STATE) //Yes, this isn't handled by update_pull_movespeed(). lol.

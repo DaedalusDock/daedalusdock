@@ -345,7 +345,7 @@
 
 	var/obj/item/grab/new_grab = new
 	new_grab.setup(src, target, state, force, supress_message)
-	if(new_grab)
+	if(!QDELETED(new_grab))
 		grab = new_grab
 	return !!grab
 
@@ -382,7 +382,8 @@
 		moving_to = get_step(grabbed.loc, move_dir)
 
 	grabbed.Move(moving_to, move_dir, glide_size)
-	src.set_pull_offsets(grabbed, grab.current_state)
+	if(isliving(grabbed))
+		set_pull_offsets(grab.victim, grab.current_state)
 	return TRUE
 
 /**

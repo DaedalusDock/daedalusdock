@@ -295,13 +295,6 @@
 	stamina.hud = src
 	infodisplay += stamina
 
-	pull_icon = new /atom/movable/screen/pull()
-	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_above_intent
-	pull_icon.hud = src
-	static_inventory += pull_icon
-
 	zone_select = new /atom/movable/screen/zone_sel()
 	zone_select.icon = ui_style
 	zone_select.hud = src

@@ -20,8 +20,12 @@
 		GRAB_LEVEL_AGGRESSIVE = 0,
 		GRAB_LEVEL_CHOKEHOLD = 4 SECONDS,
 	)
+	///A list of traits applied to the victim
+	var/list/active_traits = list()
 	///Is the victim being pinned to the floor?
 	var/pinned = FALSE
+	///Is the grab currently in the middle of an action? (Entering chokehold, entering pin, etc)
+	var/acting = FALSE
 
 /obj/item/grab/Destroy(force)
 	if(victim)
@@ -46,6 +50,7 @@
 		stack_trace("Victim is null!")
 
 	SEND_SIGNAL(victim, COMSIG_ATOM_NO_LONGER_PULLED, owner)
+	change_state(0) //Undo all traits and shit
 	owner.on_grab_release(victim)
 
 	victim.grabbedby = null
@@ -109,7 +114,7 @@
 	///By this point, we're locked into this grab happening.
 	return TRUE
 
-/obj/item/grab/proc/setup(atom/movable/owner, atom/movable/target, state, strength, supress_message)
+/obj/item/grab/proc/setup(atom/movable/owner, atom/movable/target, state = GRAB_LEVEL_PULL, strength, supress_message)
 	if(!init_grapple(arglist(args)))
 		qdel(src)
 		return
@@ -184,6 +189,10 @@
 
 
 /obj/item/grab/proc/try_set_state(state as num)
+	if(state < GRAB_LEVEL_PULL)
+		release()
+		return FALSE
+
 	if(state == src.current_state)
 		return FALSE
 
@@ -197,7 +206,9 @@
 		return FALSE
 
 	if(state_grab_time[state])
-		if(!do_mob(owner, victim, state_grab_time[state]))
+		acting = TRUE
+		if(!do_after(owner, state_grab_time[state], show_to_world = TRUE, add_image = mutable_appearance('goon/icons/obj/progressbar/grabstuff.dmi', "neck_over", plane = ABOVE_LIGHTING_PLANE)))
+			acting = FALSE
 			return FALSE
 
 	. = TRUE
@@ -217,31 +228,35 @@
 
 	///Do trait stuff
 	switch(new_state)
-		if(GRAB_LEVEL_PULL)
+		if(0) //Releasing the grab
 			REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			//REMOVE_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-		/*
-			if(old_state >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(victim, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		*/
-		if(GRAB_LEVEL_AGGRESSIVE)
-			/*
-			if(old_state >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(victim, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
-			else // Grab got upgraded from a passive one
-			*/
+		if(GRAB_LEVEL_PULL)
+			if(old_state > GRAB_LEVEL_PULL) //Downgraded to aggressive
+				REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+
+		if(GRAB_LEVEL_AGGRESSIVE)
+			if(old_state > GRAB_LEVEL_AGGRESSIVE) //Downgraded to aggressive
+				REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+
+		if(GRAB_LEVEL_CHOKEHOLD)
 			ADD_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			//ADD_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-		/*if(GRAB_LEVEL_CHOKEHOLD)
-			if(old_state <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(victim, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		*/
+
+	///Do next_move stuff
+	switch(new_state)
+		if(GRAB_LEVEL_PULL)
+			if(!old_state) //New grab
+				if(isliving(owner))
+					owner:changeNext_move(CLICK_CD_GRABBING)
+		if(GRAB_LEVEL_AGGRESSIVE)
+			if(old_state < GRAB_LEVEL_AGGRESSIVE) //We upgraded
+				if(isliving(owner))
+					owner:changeNext_move(CLICK_CD_GRABBING)
 
 	///Do movespeed stuff
 	if(isliving(owner))
 		var/mob/living/living_owner = owner
-		switch(current_state)
+		switch(new_state)
 			if(GRAB_LEVEL_PULL)
 				living_owner.remove_movespeed_modifier(MOVESPEED_ID_MOB_GRAB_STATE)
 			if(GRAB_LEVEL_AGGRESSIVE)
@@ -250,14 +265,23 @@
 				living_owner.add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
 
 	///Do visible message stuff
-	switch(current_state)
+	switch(new_state)
 		if(GRAB_LEVEL_AGGRESSIVE)
+			if(old_state == GRAB_LEVEL_CHOKEHOLD) //Downgraded from chokehold
+				victim.visible_message(
+					span_danger("[owner] loosned their grip on  [victim]!"),
+					span_danger("[owner] loosened their grip on you!"),
+					span_hear("You hear cloth shuffle around."),
+				)
+				log_combat(owner, victim, "released from", addition="chokehold")
+
 			victim.visible_message(
 				span_danger("[owner] has grabbed [victim] aggressively (now hands)!"),
 				span_danger("[owner] has grabbed you aggressively!"),
 				span_hear("You hear cloth shuffle around."),
 			)
 			log_combat(owner, victim, "grabbed", addition="aggressive grab")
+			i
 		if(GRAB_LEVEL_CHOKEHOLD)
 			victim.visible_message(
 				span_danger("[owner] tightens [owner.p_their()] grip on [victim]'s neck!"),
@@ -269,7 +293,7 @@
 				if(!victim:buckled && !victim.density)
 					victim.Move(owner.loc)
 
-	if(isliving(victim))
+	if(isliving(victim) && new_state)
 		owner.set_pull_offsets(victim, current_state)
 
 ///Called when the owner tries to increase the grab level
@@ -278,9 +302,6 @@
 		return FALSE
 
 	var/mob/living/mob_victim = victim
-	if(isliving(owner))
-		var/mob/living/living_owner = owner
-		living_owner.changeNext_move(CLICK_CD_GRABBING)
 
 	var/sound_to_play = 'sound/weapons/thudswoosh.ogg'
 	if(ishuman(owner))
@@ -342,12 +363,30 @@
 
 /obj/item/grab/attack_self(mob/user, modifiers)
 	. = ..()
-	try_set_state(current_state+1)
+	//No instant aggro grabs for you!
+	if(ismob(owner))
+		var/mob/mob_owner = owner
+		if(mob_owner.next_move > world.time)
+			return
+
+	if(acting)
+		return
+
+	if((current_state+1) in possible_states)
+		try_set_state(current_state+1)
+	else
+		try_set_state(current_state-1)
 
 /obj/item/grab/pre_attack(mob/living/M, mob/living/user, params)
 	. = ..()
+	if(acting)
+		return
+
 	if(M == victim)
-		try_set_state(current_state+1)
+		if((current_state+1) in possible_states)
+			try_set_state(current_state+1)
+		else
+			try_set_state(current_state-1)
 
 ///Hijack atom attacking completely
 /obj/item/grab/attack_atom(atom/attacked_atom, mob/living/user, params)

@@ -113,7 +113,6 @@ SUBSYSTEM_DEF(mapping)
 	generate_station_area_list()
 	initialize_reserved_level(transit.z_value)
 	SSticker.OnRoundstart(CALLBACK(src, .proc/spawn_maintenance_loot))
-	generate_z_level_linkages()
 	calculate_default_z_level_gravities()
 
 	return ..()

@@ -180,11 +180,10 @@
 		maptext_width = 160;
 		maptext_height = 48;
 		maptext_x = -64;
-		pixel_y = 28
-	}()
+		maptext_y = 28
+	}
+
 	var/mheight = 2 + (8 * (1 + round(length(message.maptext_width) / 32)))
-	//Give a quick sacrifice to the BYOND gods...
-	animate(message, pixel_y = 28, time = 0.01, flags = ANIMATION_END_NOW)
 
 	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
 	message.maptext = MAPTEXT(complete_text)
@@ -196,10 +195,8 @@
 	if (owned_by.seen_messages)
 		var/idx = 1
 		var/combined_height = approx_lines
-		for(var/msg in owned_by.seen_messages[message_loc])
-			var/datum/chatmessage/m = msg
-
-			animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
+		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
+			animate(m.message, maptext_y = m.message.maptext_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
 			combined_height += m.approx_lines
 
@@ -223,7 +220,7 @@
 	owned_by.images |= message
 
 	message.loc = message_loc
-	animate(message, alpha = 255, pixel_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_END_NOW)
+	animate(message, alpha = 255, maptext_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, ANIMATION_PARALLEL)
 
 	// Register with the runechat SS to handle EOL and destruction
 	var/duration = lifespan - CHAT_MESSAGE_EOL_FADE
@@ -238,7 +235,7 @@
  */
 /datum/chatmessage/proc/end_of_life(fadetime = CHAT_MESSAGE_EOL_FADE)
 	isFading = TRUE
-	animate(message, alpha = 0, pixel_y = message.pixel_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fadetime, flags = ANIMATION_PARALLEL)
+	animate(message, alpha = 0, maptext_y = message.maptext_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fadetime)
 	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, src), fadetime, TIMER_DELETE_ME, SSrunechat)
 
 /**

@@ -1446,3 +1446,7 @@
 	remove_overlay(FIRE_LAYER)
 	apply_overlay(FIRE_LAYER)
 	return null
+
+/mob/living/carbon/released_from_grab(obj/item/grab/holder)
+	if(holder.current_state == GRAB_LEVEL_CHOKEHOLD)
+		INVOKE_ASYNC(src, .proc/emote, "gasp")

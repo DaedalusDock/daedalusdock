@@ -50,8 +50,14 @@
 		stack_trace("Victim is null!")
 
 	SEND_SIGNAL(victim, COMSIG_ATOM_NO_LONGER_PULLED, owner)
-	change_state(0) //Undo all traits and shit
+
 	owner.on_grab_release(victim)
+	victim.released_from_grab(src)
+
+	if(pinned)
+		unpin()
+
+	change_state(0) //Undo all traits and shit
 
 	victim.grabbedby = null
 	victim = null
@@ -230,17 +236,21 @@
 	switch(new_state)
 		if(0) //Releasing the grab
 			REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+			REMOVE_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
 
 		if(GRAB_LEVEL_PULL)
 			if(old_state > GRAB_LEVEL_PULL) //Downgraded to aggressive
 				REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+				REMOVE_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
 
 		if(GRAB_LEVEL_AGGRESSIVE)
 			if(old_state > GRAB_LEVEL_AGGRESSIVE) //Downgraded to aggressive
 				REMOVE_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+				REMOVE_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
 
 		if(GRAB_LEVEL_CHOKEHOLD)
 			ADD_TRAIT(victim, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+			ADD_TRAIT(victim, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
 
 	///Do next_move stuff
 	switch(new_state)
@@ -391,21 +401,92 @@
 ///Hijack atom attacking completely
 /obj/item/grab/attack_atom(atom/attacked_atom, mob/living/user, params)
 	if(!owner.Adjacent(attacked_atom))
-		return
+		return FALSE
 
 	attacked_atom.on_grab_attack(src, victim, current_state)
 
-
-/*
-/turf/open/floor/attackby(obj/item/C, mob/user, params)
-	. = ..()
-	if(istype(C, /obj/item/grab))
-		var/obj/item/grab/holder = C
-		if(user.Adjacent(src))
-			INVOKE_ASYNC(holder, /obj/item/grab/proc/try_pin_to, src)
-			return TRUE
-
-
 /obj/item/grab/proc/try_pin_to(turf/T)
-	if(!)
-*/
+	//Might as well
+	if(get_dist(owner, T) > 1)
+		return
+
+	if(!iscarbon(victim) && !iscarbon(owner))
+		return
+
+	var/mob/living/carbon/carbon_owner = owner
+	var/mob/living/carbon/carbon_victim = victim
+
+	if(!carbon_owner.combat_mode)
+		return
+
+	var/pin_time = 4 SECONDS
+
+	if(HAS_TRAIT(carbon_victim, TRAIT_EXHAUSTED))
+		pin_time -= 2 SECONDS
+
+	if(current_state != GRAB_LEVEL_CHOKEHOLD)
+		pin_time += current_state SECONDS
+
+	acting = TRUE
+
+	var/mutable_appearance/pin_overlay = mutable_appearance('goon/icons/obj/progressbar/grabstuff.dmi', "pin", plane = ABOVE_LIGHTING_PLANE, layer = FLOAT_LAYER)
+	pin_overlay.pixel_y = 6
+
+	if(!do_after(carbon_owner, pin_time, show_to_world = TRUE, add_image = pin_overlay))
+		acting = FALSE
+		return
+
+	var/turf/owner_current_loc = get_turf(owner)
+
+	//If our owner isnt standing on the turf and can't move to it, fail
+	if(owner_current_loc != T && !owner.Move(T, get_dir(owner_current_loc, T)))
+		return FALSE
+
+	acting = FALSE
+
+
+	pinned = TRUE
+	carbon_owner.changeNext_move(CLICK_CD_RESIST)
+
+	carbon_owner.set_lying_down(TRUE)
+	carbon_victim.set_lying_down(TRUE)
+	carbon_victim.layer -= 0.001
+
+	if(T != get_turf(carbon_victim))
+		carbon_victim.Move(owner_current_loc, get_dir(carbon_victim, carbon_owner))
+
+	ADD_TRAIT(carbon_victim, TRAIT_FLOORED, PINNED_TRAIT)
+	ADD_TRAIT(carbon_victim, TRAIT_HANDS_BLOCKED, PINNED_TRAIT)
+	ADD_TRAIT(carbon_victim, TRAIT_IMMOBILIZED, PINNED_TRAIT)
+	ADD_TRAIT(carbon_victim, TRAIT_RESTRAINED, PINNED_TRAIT)
+
+	ADD_TRAIT(carbon_owner, TRAIT_FLOORED, PINNED_TRAIT)
+	ADD_TRAIT(carbon_owner, TRAIT_IMMOBILIZED, PINNED_TRAIT)
+
+	carbon_victim.stamina.regen_rate -= 10
+	carbon_victim.stamina.decrement += 10
+	carbon_victim.stamina.adjust(-10)
+
+	victim.visible_message(
+		span_danger("[owner] pins [victim] to the floor!"),
+		span_danger("[owner] pins you to the floor!"),
+	)
+
+/obj/item/grab/proc/unpin()
+	var/mob/living/carbon/carbon_owner = owner
+	var/mob/living/carbon/carbon_victim = victim
+
+	carbon_victim.stamina.regen_rate += 10
+	carbon_victim.stamina.decrement -= 10
+
+	carbon_victim.layer += 0.001
+
+	REMOVE_TRAIT(carbon_victim, TRAIT_FLOORED, PINNED_TRAIT)
+	REMOVE_TRAIT(carbon_victim, TRAIT_HANDS_BLOCKED, PINNED_TRAIT)
+	REMOVE_TRAIT(carbon_victim, TRAIT_IMMOBILIZED, PINNED_TRAIT)
+	REMOVE_TRAIT(carbon_victim, TRAIT_RESTRAINED, PINNED_TRAIT)
+
+	REMOVE_TRAIT(carbon_owner, TRAIT_FLOORED, PINNED_TRAIT)
+	REMOVE_TRAIT(carbon_owner, TRAIT_IMMOBILIZED, PINNED_TRAIT)
+
+	pinned = FALSE

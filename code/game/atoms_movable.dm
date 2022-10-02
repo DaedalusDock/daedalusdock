@@ -1389,3 +1389,7 @@
 ///Called by grabs when we stop grabbing our target
 /atom/movable/proc/on_grab_release(target)
 	return
+
+///Called by grabs when we stopped being grabbed
+/atom/movable/proc/released_from_grab(obj/item/grab/holder)
+	return

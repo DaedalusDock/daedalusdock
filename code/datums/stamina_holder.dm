@@ -31,7 +31,7 @@
 	if(delta_time && is_regenerating)
 		current = min(current + (regen_rate*delta_time), maximum)
 	if(delta_time && decrement)
-		current = max(current + (decrement*delta_time), 0)
+		current = max(current + (-decrement*delta_time), 0)
 	loss = maximum - current
 	loss_as_percent = loss ? (loss == maximum ? 0 : loss / maximum * 100) : 0
 

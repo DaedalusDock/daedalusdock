@@ -691,6 +691,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define BUCKLED_TRAIT "buckled"
 /// trait associated to being held in a chokehold
 #define CHOKEHOLD_TRAIT "chokehold"
+/// trait associated to being pinned by a grapple
+#define PINNED_TRAIT "pinned"
 /// trait associated to resting
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of

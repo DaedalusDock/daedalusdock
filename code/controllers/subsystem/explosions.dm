@@ -1,6 +1,10 @@
 #define EXPLOSION_THROW_SPEED 4
 GLOBAL_LIST_EMPTY(explosions)
 
+/*
+// Much of the methology in this subsystem was created by Dr Singh, an elder goonstation developer who has passed away.
+// See you, space cowboy.
+*/
 SUBSYSTEM_DEF(explosions)
 	name = "Explosions"
 	init_order = INIT_ORDER_EXPLOSIONS

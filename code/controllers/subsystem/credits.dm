@@ -84,7 +84,13 @@ SUBSYSTEM_DEF(credits)
 	finalize_ssstring()
 	finalize_disclaimerstring() //finalize it after the admins have had time to edit them
 
-	var/scrollytext = ss_string + episode_string + cast_string + disclaimers_string
+	//No dude. Im not wrapping this in a proc and putting it on SScredits. Im not letting people tamper with this. That's weird, bro.
+	var/fallen_string = "<br><br><div class='disclaimers'><h2>THIS EPISODE IS DEDICATED TO OUR FALLEN</h2><br>"
+	for(var/name in global.immortals)
+		fallen_string += "[name]<br>"
+	fallen_string += "</div><br><br><br><br><br>"
+
+	var/scrollytext = ss_string + episode_string + cast_string + disclaimers_string + fallen_string
 	var/splashytext = producers_string + star_string
 
 	js_args = list(scrollytext, splashytext, theme, scroll_speed, splash_time) //arguments for the makeCredits function back in the javascript
@@ -215,7 +221,9 @@ SUBSYSTEM_DEF(credits)
 
 	if(dead_names.len)
 		var/true_story_bro = "<br>[pick("BASED ON","INSPIRED BY","A RE-ENACTMENT OF")] [pick("A TRUE STORY","REAL EVENTS","THE EVENTS ABOARD [uppertext(station_name())]")]"
-		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>[english_list(dead_names)].<br>"
+		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>"
+		for(var/name in dead_names)
+			cast_string += "[name]<br>"
 	cast_string += "</div><br>"
 
 /mob/living/proc/get_credits_entry()

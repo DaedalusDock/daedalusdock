@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Credits now display all characters a player inhabited during the round.
-  - rscadd: Credits now display gibbed characters as dead.

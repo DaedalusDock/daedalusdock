@@ -173,9 +173,10 @@ SUBSYSTEM_DEF(credits)
 
 /datum/controller/subsystem/credits/proc/draft_star()
 	var/mob/living/carbon/human/most_talked
-	for(var/mob/living/carbon/human/H in GLOB.player_list)
-		if(!H.ckey || H.stat == DEAD)
+	for(var/datum/mind/M as anything in SSticker.minds)
+		if(!M.key || (!M.current || M.current.stat == DEAD || !ishuman(M.current)))
 			continue
+		var/mob/living/carbon/human/H = M.current
 		if(!most_talked || H.talkcount > most_talked.talkcount)
 			most_talked = H
 	star = thebigstar(most_talked)
@@ -193,48 +194,62 @@ SUBSYSTEM_DEF(credits)
 /datum/controller/subsystem/credits/proc/draft_caststring()
 	cast_string = "<h1>CAST:</h1><br><h2>(in order of appearance)</h2><br>"
 	cast_string += "<table class='crewtable'>"
-	var/cast_num = 0
-	for(var/mob/living/carbon/human/H in GLOB.player_list)
-		if(!H.ckey && !(H.stat == DEAD))
-			continue
-		cast_string += "[H.get_credits_entry()]"
-		cast_num++
+	var/list/dead_names = list()
+	var/cast_count
+	for(var/datum/mind/M as anything in SSticker.minds)
+		if(M.key && M.name)
+			if(!M.current || (M.current.stat == DEAD)) //Their body was destroyed or they are simply dead
+				dead_names += M.name
+				continue
+		else
+			continue //The mob was never player controlled/didn't have a name (wtf how)
 
-	for(var/mob/living/silicon/S in GLOB.silicon_mobs)
-		if(!S.ckey)
-			continue
-		cast_string += "[S.get_credits_entry()]"
-		cast_num++
+		cast_string += "[M.current.get_credits_entry()]"
+		cast_count++
 
-	if(!cast_num)
+	if(!cast_count)
 		cast_string += "<tr><td class='actorsegue'> Nobody! </td></tr>"
 
 	cast_string += "</table><br>"
 	cast_string += "<div class='disclaimers'>"
 
-	var/list/corpses = list()
-	for(var/mob/living/carbon/human/H in GLOB.dead_mob_list)
-		if(!H.mind)
-			continue
-		if(H.real_name)
-			corpses += H.real_name
-	if(corpses.len)
+	if(dead_names.len)
 		var/true_story_bro = "<br>[pick("BASED ON","INSPIRED BY","A RE-ENACTMENT OF")] [pick("A TRUE STORY","REAL EVENTS","THE EVENTS ABOARD [uppertext(station_name())]")]"
-		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>[english_list(corpses)].<br>"
+		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>[english_list(dead_names)].<br>"
 	cast_string += "</div><br>"
 
 /mob/living/proc/get_credits_entry()
+	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
+	var/gender_text
+	switch(gender)
+		if("male")
+			gender_text = "Himself"
+		if("female")
+			gender_text = "Herself"
+		if("neuter")
+			gender_text = "Themself"
+		if("plural")
+			gender_text = "Themselves"
+		else
+			gender_text = "Itself"
+
+	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
+	else
+		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[gender_text]</td></tr>"
 
 /mob/living/carbon/human/get_credits_entry()
-	if(client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
+	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
 		var/assignment = get_assignment(if_no_id = "", if_no_job = "")
-		return "<tr><td class='actorname'>[uppertext(mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[real_name][assignment == "" ? "" : ", [assignment]"]</td></tr>"
+		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[real_name][assignment == "" ? "" : ", [assignment]"]</td></tr>"
 	else
-		return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themselves" : "[p_them(TRUE)]self"]</td></tr>"
+		return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themself" : "[p_them(TRUE)]self"]</td></tr>"
 
 /mob/living/silicon/get_credits_entry()
-	if(client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
-		return "<tr><td class='actorname'>[uppertext(mind.key)]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
+	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
+	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
 	else
 		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>Itself</td></tr>"
 
@@ -243,8 +258,9 @@ SUBSYSTEM_DEF(credits)
 		return star
 	if(ismob(star))
 		var/mob/M = star
-		if(M.mind.key && M.client?.prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
-			return "[uppertext(M.mind.key)] as [M.real_name]"
+		var/datum/preferences/prefs = GLOB.preferences_datums[ckey(M.mind.key)]
+		if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+			return "[uppertext(ckey(M.mind.key))] as [M.real_name]"
 		else
 			return "[uppertext(M.real_name)] as [M.p_them(TRUE) == "Them" ? "Themselves" : "[M.p_them(TRUE)]self"]"
 

@@ -14,7 +14,7 @@
 				if (istype(preview_job, /datum/job/cyborg))
 					return image('icons/mob/robots.dmi', icon_state = "robot", dir = SOUTH)
 				mannequin.job = preview_job.title
-				mannequin.equip_outfit_and_loadout(preview_job.outfit, src, TRUE)
+				mannequin.dress_up_as_job(preview_job, TRUE, src)
 		if(PREVIEW_PREF_LOADOUT)
 			mannequin.underwear_visibility = NONE
 			var/default_outfit = new /datum/outfit()

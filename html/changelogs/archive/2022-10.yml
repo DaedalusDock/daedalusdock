@@ -7,3 +7,7 @@
   Kapu1178:
   - rscadd: Credits now display all characters a player inhabited during the round.
   - rscadd: Credits now display gibbed characters as dead.
+2022-10-07:
+  Kapu1178:
+  - code_imp: Added Dr Singh/magicmountain to Memorial.dm
+  - code_imp: Added a memorial to our fallen friends to the EOR credits.

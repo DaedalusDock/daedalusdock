@@ -143,8 +143,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		GLOB.areas_by_type[type] = src
 	power_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
 	alarm_manager = new(src) //Just in case. Apparently.
-	if(lightswitch && prob(50))
-		lightswitch = FALSE // dont do this in light switch initialize, then its a fucking 50% prob per light switch not for the area in general
 	return ..()
 
 /*

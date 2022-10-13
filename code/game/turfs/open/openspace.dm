@@ -107,8 +107,8 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 		return TRUE
 	return FALSE
 
-/turf/open/openspace/zPassOut(atom/movable/A, direction, turf/destination)
-	if(A.anchored)
+/turf/open/openspace/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
+	if(A.anchored && !allow_anchored_movement)
 		return FALSE
 	if(direction == DOWN)
 		for(var/obj/contained_object in contents)

@@ -1,4 +1,0 @@
-author: fighterslam
-delete-after: true
-changes:
-  - bugfix: Lights are no longer randomly off at roundstart, for no reason.

@@ -1340,6 +1340,7 @@
 #include "code\game\machinery\computer\prisoner\_prisoner.dm"
 #include "code\game\machinery\computer\prisoner\gulag_teleporter.dm"
 #include "code\game\machinery\computer\prisoner\management.dm"
+#include "code\game\machinery\datanet\_networked.dm"
 #include "code\game\machinery\datanet\data_test.dm"
 #include "code\game\machinery\doors\airlock.dm"
 #include "code\game\machinery\doors\airlock_electronics.dm"

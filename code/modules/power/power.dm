@@ -16,6 +16,8 @@
 	idle_power_usage = 0
 	active_power_usage = 0
 	var/machinery_layer = MACHINERY_LAYER_1 //cable layer to which the machine is connected
+	var/use_data = FALSE //Does this machine transfer packet data? (and exist in powernet.data_nodes)
+
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()

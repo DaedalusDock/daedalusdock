@@ -6,6 +6,7 @@
 	var/number // unique id
 	var/list/cables = list() // all cables & junctions
 	var/list/nodes = list() // all connected machines
+	var/list/data_nodes = list() // all connected network equipment
 
 	var/load = 0 // the current load on the powernet, increased by each machine at processing
 	var/newavail = 0 // what available power was gathered last tick, then becomes...
@@ -57,7 +58,8 @@
 //if the powernet is then empty, delete it
 //Warning : this proc DON'T check if the machine exists
 /datum/powernet/proc/remove_machine(obj/machinery/power/M)
-	nodes -=M
+	nodes -= M
+	data_nodes -= M
 	M.powernet = null
 	if(is_empty())//the powernet is now empty...
 		qdel(src)///... delete it
@@ -72,6 +74,8 @@
 		else
 			M.disconnect_from_network()//..remove it
 	M.powernet = src
+	if(M.use_data)
+		data_nodes[M] = M
 	nodes[M] = M
 
 //handles the power changes in the powernet
@@ -99,3 +103,19 @@
 		return clamp(20 + round(avail/25000), 20, 195) + rand(-5,5)
 	else
 		return 0
+
+////////////////////////////////////////////////
+// Data Passing
+///////////////////////////////////////////////
+// AKA: Honey, it's time to bloat powernet code again!
+
+
+/// Pass a signal through a powernet to all connected data equipment.
+/datum/powernet/proc/pass_signal(datum/signal/signal, obj/machinery/power/poster)
+	if(!poster)
+		CRASH("pass_signal() WITH NO POSTER??")
+	//This is strictly a terrible and expensive way to do this. This should probably be a subsystem. Too bad!
+	for(var/obj/machinery/power/client_machine as anything in src.data_nodes)
+		if(client_machine != poster)
+			client_machine.receive_signal(signal)
+		CHECK_TICK //Are we overticked?

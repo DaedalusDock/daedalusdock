@@ -134,7 +134,6 @@ This entire system is an absolute mess.
 	airflow_speed = 0
 	airflow_dest = null
 	airborne_acceleration = 0
-	A.airflow_hit_act(src)
 
 /mob/living/airflow_hit(atom/A)
 	var/b_loss = AIRBORNE_DAMAGE(src)

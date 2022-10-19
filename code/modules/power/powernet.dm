@@ -111,7 +111,7 @@
 
 
 /// Pass a signal through a powernet to all connected data equipment.
-/datum/powernet/proc/pass_signal(datum/signal/signal, obj/machinery/power/poster)
+/datum/powernet/proc/pass_signal(obj/machinery/power/poster, datum/signal/signal)
 	if(!poster)
 		CRASH("pass_signal() WITH NO POSTER??")
 	//This is strictly a terrible and expensive way to do this. This should probably be a subsystem. Too bad!

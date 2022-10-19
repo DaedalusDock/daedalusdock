@@ -26,4 +26,4 @@
 	if(source != connected_machine)
 		return //WHO THE FUCK IS YOU?
 	signal.transmission_method = TRANSMISSION_WIRE
-	powernet.pass_signal(signal, src)
+	powernet.pass_signal(src, signal)

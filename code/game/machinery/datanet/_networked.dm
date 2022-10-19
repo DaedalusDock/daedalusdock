@@ -5,6 +5,14 @@
 	var/master_id //Are we slaved to any particular device?
 	var/net_class = "PNET_ABSTRACT" //A short string shown to players fingerprinting the device type.
 
+/obj/machinery/networked/Initialize(mapload)
+	. = ..()
+	net_id = SSnetworks.get_next_HID() //Just going to parasite this.
+
+/obj/machinery/networked/LateInitialize()
+	. = ..()
+	link_to_jack()
+
 /obj/machinery/networked/proc/send_data(destination_id, list/datagram)
 	if(!netjack || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
@@ -17,6 +25,10 @@
 	sig.data["d_addr"] = destination_id
 	src.netjack.post_signal(src, sig)
 
+
+
+//Handle the network jack
+
 /obj/machinery/networked/proc/link_to_jack()
 	var/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
 	if(netjack == new_transmission_terminal)
@@ -27,12 +39,11 @@
 	netjack = new_transmission_terminal
 	netjack.connected_machine = src
 
-
 /obj/machinery/networked/proc/unlink_from_jack()
-	netjack.connected_machine = null
+	netjack?.connected_machine = null
 	netjack = null
 
 /obj/machinery/networked/Destroy()
-	. = ..()
 	//Disconnect from the network
 	unlink_from_jack()
+	return ..()

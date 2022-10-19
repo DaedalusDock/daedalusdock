@@ -16,7 +16,7 @@
 	if(!powernet) //Did we somehow receive a signal without a powernet?
 		return //*shrug*
 	if(signal.transmission_method != TRANSMISSION_WIRE)
-		return //We somehow got a non-wire packet? Not sure if this should actually *runtime*
+		CRASH("Data terminal received a non-wire data packet")
 	if(connected_machine)
 		connected_machine.receive_signal(signal) //TODO: Verify the machine hasn't grown legs and walked away!
 
@@ -24,6 +24,6 @@
 	if(!powernet || !signal)
 		return //What do you expect me to transmit on, the fucking air?
 	if(source != connected_machine)
-		return //WHO THE FUCK IS YOU?
+		CRASH("Data terminal was told to pass a signal from something other than it's master machine?")
 	signal.transmission_method = TRANSMISSION_WIRE
 	powernet.pass_signal(src, signal)

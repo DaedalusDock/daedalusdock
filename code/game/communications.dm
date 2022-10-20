@@ -38,14 +38,11 @@
  *       filter - described above.
  *       range - radius of regular byond's square circle on that z-level. null means everywhere, on all z-levels.
  *
- * obj/proc/receive_signal(datum/signal/signal, receive_method as num, receive_param)
+ * obj/proc/receive_signal(datum/signal/signal)
  *   Handler from received signals. By default does nothing. Define your own for your object.
  *   Avoid of sending signals directly from this proc, use spawn(0). Do not use sleep() here please.
  *     parameters:
  *       signal - see description below. Extract all needed data from the signal before doing sleep(), spawn() or return!
- *       receive_method - may be TRANSMISSION_WIRE or TRANSMISSION_RADIO.
- *         TRANSMISSION_WIRE is currently unused.
- *       receive_param - for TRANSMISSION_RADIO here comes frequency.
  *
  * datum/signal
  *   vars:

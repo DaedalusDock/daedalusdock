@@ -105,8 +105,9 @@ This entire system is an absolute mess.
 	return ..()
 
 /atom/movable/Bump(atom/A)
+	. = ..()
 	if(!moving_by_airflow)
-		return ..()
+		return
 
 	if(airflow_speed > 0 && airflow_dest)
 		var/turf/T = get_turf(A)
@@ -133,6 +134,7 @@ This entire system is an absolute mess.
 		airflow_speed = 0
 		airflow_time = 0
 		airborne_acceleration = 0
+
 
 ///Called when src collides with A during airflow
 /atom/movable/proc/airflow_hit(atom/A)

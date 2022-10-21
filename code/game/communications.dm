@@ -151,7 +151,7 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	signal.frequency_datum = src
 	signal.range = range
 
-	SSpackets.radio_packets += signal
+	SSpackets.queued_radio_packets += signal
 
 /datum/radio_frequency/proc/add_listener(obj/device, filter as text|null)
 	if (!filter)

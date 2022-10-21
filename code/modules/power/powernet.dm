@@ -23,7 +23,7 @@
 
 /datum/powernet/New()
 	SSmachines.powernets += src
-	SSpackets.networks += src
+	SSpackets.queued_networks += src
 
 /datum/powernet/Destroy()
 	//Go away references, you suck!
@@ -35,7 +35,7 @@
 		M.powernet = null
 
 	SSmachines.powernets -= src
-	SSpackets.networks -= src
+	SSpackets.queued_networks -= src
 	return ..()
 
 /datum/powernet/proc/is_empty()

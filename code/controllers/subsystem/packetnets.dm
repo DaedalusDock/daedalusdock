@@ -3,18 +3,32 @@ SUBSYSTEM_DEF(packets)
 	wait = 1
 	priority = FIRE_PRIORITY_PACKETS
 	flags = SS_NO_INIT|SS_KEEP_TIMING
+	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/saymodes = list()
 	var/list/datum/radio_frequency/frequencies = list()
 
 	///All the physical networks to process
-	var/list/datum/powernet/networks = list()
+	var/list/datum/powernet/queued_networks = list()
 	///Radio packets to process
-	var/list/radio_packets = list()
+	var/list/queued_radio_packets = list()
+	///Tablet messages to process
+	var/list/queued_tablet_messages = list()
+	///Subspace/vocal packets to process
+	var/list/queued_subspace_vocals = list()
 
 	///The current processing lists
 	var/list/current_networks = list()
 	var/list/current_radio_packets = list()
+	var/list/current_tablet_messages = list()
+	var/list/current_subspace_vocals = list()
+
+	///Tick usage
+	var/cached_cost = 0
+	var/cost_networks = 0
+	var/cost_radios = 0
+	var/cost_tablets = 0
+	var/cost_subspace_vocals = 0
 
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
@@ -26,21 +40,40 @@ SUBSYSTEM_DEF(packets)
 	return ..()
 
 /datum/controller/subsystem/packets/stat_entry(msg)
-	msg += "Processing Packets: [length(current_radio_packets)] | "
-	msg += "Packet Queue: [length(radio_packets)]"
+	msg += "RP: [length(queued_radio_packets)]|"
+	msg += "TM: [length(queued_tablet_messages)]|"
+	msg += "SSV: [length(queued_subspace_vocals)]|"
+	msg += "C:{"
+	msg += "CN:[round(cost_networks, 1)]|"
+	msg += "CR:[round(cost_radios, 1)]|"
+	msg += "CSSV:[round(cost_subspace_vocals, 1)]|"
+	msg += "}"
+
 	return ..()
 
 /datum/controller/subsystem/packets/fire(resumed)
 	if(!resumed)
-		current_networks = networks.Copy()
-		current_radio_packets = radio_packets.Copy()
+		current_networks = queued_networks.Copy()
+		current_radio_packets = queued_radio_packets.Copy()
+		current_tablet_messages = queued_tablet_messages.Copy()
+		current_subspace_vocals = queued_subspace_vocals.Copy()
+
+	var/timer = TICK_USAGE_REAL
 
 	///Network packets
 	if(stage == SSPACKETS_POWERNETS)
+		timer = TICK_USAGE_REAL
+		if(!resumed)
+			cached_cost = 0
+
 		var/datum/powernet/net
 		var/obj/machinery/power/poster
 		while(length(current_networks))
 			net = current_networks[length(current_networks)]
+			if(QDELETED(net))
+				current_networks.len--
+				queued_networks -= net
+				continue
 
 			///Cycle the packet queue
 			if(!length(net.current_packet_queue))
@@ -62,24 +95,86 @@ SUBSYSTEM_DEF(packets)
 
 				///Remove this signal from the queue and see if we're strangling the server
 				net.current_packet_queue -= signal
+
+				cached_cost += TICK_USAGE_REAL - timer
+
 				if(MC_TICK_CHECK)
 					return
 
 			// Only cut it from the current run when it's done
 			current_networks.len--
+
+		cost_networks = MC_AVERAGE(cost_networks, TICK_DELTA_TO_MS(cached_cost))
+		resumed = FALSE
 		// Next up: Radios!
 		stage = SSPACKETS_RADIOS
 
 	if(stage == SSPACKETS_RADIOS)
+		timer = TICK_USAGE_REAL
+		if(!resumed)
+			cached_cost = 0
+
 		var/datum/signal/packet
 		while(length(current_radio_packets))
 			packet = current_radio_packets[1]
 			current_radio_packets.Cut(1)
-			radio_packets -= packet
+			queued_radio_packets -= packet
 
 			ImmediateRadioPacketSend(packet)
+			cached_cost += TICK_USAGE_REAL - timer
 			if(MC_TICK_CHECK)
 				return
+
+		cost_radios = MC_AVERAGE(cost_radios, TICK_DELTA_TO_MS(cached_cost))
+		resumed = FALSE
+		stage = SSPACKETS_TABLETS
+
+	if(stage == SSPACKETS_TABLETS)
+		timer = TICK_USAGE_REAL
+		if(!resumed)
+			cached_cost = 0
+
+		var/datum/signal/subspace/messaging/tablet_msg/packet
+		while(length(current_tablet_messages))
+			packet = current_tablet_messages[1]
+			current_tablet_messages.Cut(1)
+			queued_tablet_messages -= packet
+
+			if (!packet.logged)  // Can only go through if a message server logs it
+				continue
+
+			for (var/obj/item/modular_computer/comp in packet.data["targets"])
+				var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
+				for(var/datum/computer_file/program/messenger/app in drive.stored_files)
+					app.receive_message(packet)
+
+			cached_cost += TICK_USAGE_REAL - timer
+			if(MC_TICK_CHECK)
+				return
+
+		cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
+		resumed = FALSE
+		stage = SSPACKETS_SUBSPACE_VOCAL
+
+	if(stage == SSPACKETS_SUBSPACE_VOCAL)
+		timer = TICK_USAGE_REAL
+		if(!resumed)
+			cached_cost = 0
+
+		var/datum/signal/subspace/vocal/packet
+		while(length(current_subspace_vocals))
+			packet = current_subspace_vocals[1]
+			current_subspace_vocals.Cut(1)
+			queued_subspace_vocals -= packet
+
+			ImmediateSubspaceVocalSend(packet)
+			cached_cost += TICK_USAGE_REAL - timer
+			if(MC_TICK_CHECK)
+				return
+
+
+		cost_subspace_vocals = MC_AVERAGE(cost_subspace_vocals, TICK_DELTA_TO_MS(cached_cost))
+		resumed = FALSE
 
 	///Reset to the first stage
 	stage = SSPACKETS_POWERNETS
@@ -121,6 +216,100 @@ SUBSYSTEM_DEF(packets)
 				if(start_point.z != end_point.z || (packet.range > 0 && get_dist(start_point, end_point) > packet.range))
 					continue
 			device.receive_signal(packet)
+
+/datum/controller/subsystem/packets/proc/ImmediateSubspaceVocalSend(datum/signal/subspace/vocal/packet)
+	// Perform final composition steps on the message.
+	var/message = copytext_char(packet.data["message"], 1, MAX_BROADCAST_LEN)
+	if(!message)
+		return
+	var/compression = packet.data["compression"]
+	if(compression > 0)
+		message = Gibberish(message, compression >= 30)
+
+	var/list/signal_reaches_every_z_level = packet.levels
+
+	var/atom/movable/virtualspeaker/virt = packet.virt
+	var/list/data = packet.data
+	var/datum/language/language = packet.language
+
+	if(0 in packet.levels)
+		signal_reaches_every_z_level = RADIO_NO_Z_LEVEL_RESTRICTION
+
+	var/frequency = packet.frequency
+
+	// Assemble the list of radios
+	var/list/radios = list()
+	switch (packet.transmission_method)
+		if (TRANSMISSION_SUBSPACE)
+			// Reaches any radios on the levels
+			var/list/all_radios_of_our_frequency = GLOB.all_radios["[frequency]"]
+			radios = all_radios_of_our_frequency.Copy()
+
+			for(var/obj/item/radio/subspace_radio in radios)
+				if(!subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
+					radios -= subspace_radio
+
+			// Syndicate radios can hear all well-known radio channels
+			if (num2text(frequency) in GLOB.reverseradiochannels)
+				for(var/obj/item/radio/syndicate_radios in GLOB.all_radios["[FREQ_SYNDICATE]"])
+					if(syndicate_radios.can_receive(FREQ_SYNDICATE, RADIO_NO_Z_LEVEL_RESTRICTION))
+						radios |= syndicate_radios
+
+		if (TRANSMISSION_RADIO)
+			// Only radios not currently in subspace mode
+			for(var/obj/item/radio/non_subspace_radio in GLOB.all_radios["[frequency]"])
+				if(!non_subspace_radio.subspace_transmission && non_subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
+					radios += non_subspace_radio
+
+		if (TRANSMISSION_SUPERSPACE)
+			// Only radios which are independent
+			for(var/obj/item/radio/independent_radio in GLOB.all_radios["[frequency]"])
+				if(independent_radio.independent && independent_radio.can_receive(frequency, signal_reaches_every_z_level))
+					radios += independent_radio
+
+	// From the list of radios, find all mobs who can hear those.
+	var/list/receive = get_hearers_in_radio_ranges(radios)
+
+	// Add observers who have ghost radio enabled.
+	for(var/mob/dead/observer/ghost in GLOB.player_list)
+		if(ghost.client.prefs?.chat_toggles & CHAT_GHOSTRADIO)
+			receive |= ghost
+
+	// Render the message and have everybody hear it.
+	// Always call this on the virtualspeaker to avoid issues.
+	var/spans = data["spans"]
+	var/list/message_mods = data["mods"]
+	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
+
+	for(var/atom/movable/hearer as anything in receive)
+		if(!hearer)
+			stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
+			continue
+
+		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
+
+	// This following recording is intended for research and feedback in the use of department radio channels
+	if(length(receive))
+		SSblackbox.LogBroadcast(frequency)
+
+	var/spans_part = ""
+	if(length(spans))
+		spans_part = "(spans:"
+		for(var/S in spans)
+			spans_part = "[spans_part] [S]"
+		spans_part = "[spans_part] ) "
+
+	var/lang_name = data["language"]
+	var/log_text = "\[[get_radio_name(frequency)]\] [spans_part]\"[message]\" (language: [lang_name])"
+
+	var/mob/source_mob = virt.source
+
+	if(ismob(source_mob))
+		source_mob.log_message(log_text, LOG_TELECOMMS)
+	else
+		log_telecomms("[virt.source] [log_text] [loc_name(get_turf(virt.source))]")
+
+	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
 
 /datum/controller/subsystem/packets/proc/add_object(obj/device, new_frequency as num, filter = null as text|null)
 	var/f_text = num2text(new_frequency)

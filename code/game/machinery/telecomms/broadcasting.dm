@@ -104,7 +104,7 @@
 	spans,  // the list of spans applied to the message
 	list/message_mods // the list of modification applied to the message. Whispering, singing, ect
 )
-	src.author = author
+	src.author = WEAKREF(source)
 	src.frequency = frequency
 	src.language = language
 	virt = speaker
@@ -118,7 +118,9 @@
 		"spans" = spans,
 		"mods" = message_mods
 	)
-	var/turf/T = get_turf(source)
+	var/turf/T = get_turf(author.resolve())
+	if(!T)
+		CRASH("Uh oh, no source!")
 	levels = list(T.z)
 	#warn Hi it's kapu, i didn't convert subspace signals yet
 
@@ -132,7 +134,10 @@
 /// This is the meat function for making radios hear vocal transmissions.
 /datum/signal/subspace/vocal/broadcast()
 	set waitfor = FALSE
+	///MOVED TO SSPACKETS
+	SSpackets.queued_subspace_vocals += src
 
+	/*
 	// Perform final composition steps on the message.
 	var/message = copytext_char(data["message"], 1, MAX_BROADCAST_LEN)
 	if(!message)
@@ -219,3 +224,4 @@
 		log_telecomms("[virt.source] [log_text] [loc_name(get_turf(virt.source))]")
 
 	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
+*/

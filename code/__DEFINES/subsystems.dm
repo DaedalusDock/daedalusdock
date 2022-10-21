@@ -283,6 +283,8 @@
 
 #define SSPACKETS_POWERNETS 1
 #define SSPACKETS_RADIOS 2
+#define SSPACKETS_TABLETS 3
+#define SSPACKETS_SUBSPACE_VOCAL 4
 
 //Air Machine subsystem subtasks
 #define SSAIRMACH_PIPENETS 1

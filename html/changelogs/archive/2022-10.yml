@@ -14,3 +14,6 @@
 2022-10-14:
   fighterslam:
   - bugfix: Lights are no longer randomly off at roundstart, for no reason.
+2022-10-21:
+  francinum:
+  - server: Github Actions Dependency Update

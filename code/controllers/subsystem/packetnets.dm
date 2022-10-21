@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(packets)
 	name = "Packets"
 	wait = 0.5 SECONDS
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT|SS_BACKGROUND|SS_POST_FIRE_TIMING
+	flags = SS_NO_INIT|SS_BACKGROUND|SS_KEEP_TIMING
 
 	var/list/saymodes = list()
 	var/list/datum/radio_frequency/frequencies = list()

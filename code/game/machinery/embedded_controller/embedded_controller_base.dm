@@ -15,7 +15,7 @@
 
 /datum/computer/file/embedded_program/proc/receive_user_command(command)
 
-/datum/computer/file/embedded_program/proc/receive_signal(datum/signal/signal)
+/datum/computer/file/embedded_program/receive_signal(datum/signal/signal)
 	return null
 
 /datum/computer/file/embedded_program/process()
@@ -77,7 +77,7 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/machinery/embedded_controller/radio/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/embedded_controller/radio/Initialize(mapload)
@@ -87,11 +87,11 @@
 /obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal)
 	signal.transmission_method = TRANSMISSION_RADIO
 	if(radio_connection)
-		return radio_connection.post_signal(src, signal)
+		return radio_connection.post_signal(signal)
 	else
 		signal = null
 
 /obj/machinery/embedded_controller/radio/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency)
+	radio_connection = SSpackets.add_object(src, frequency)

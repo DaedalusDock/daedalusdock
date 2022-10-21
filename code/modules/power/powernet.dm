@@ -8,6 +8,11 @@
 	var/list/nodes = list() // all connected machines
 	var/list/data_nodes = list() // all connected network equipment
 
+	///The packet queue.
+	var/list/next_packet_queue = list()
+	/// Only SSpackets should be touching this.
+	var/list/current_packet_queue = list()
+
 	var/load = 0 // the current load on the powernet, increased by each machine at processing
 	var/newavail = 0 // what available power was gathered last tick, then becomes...
 	var/avail = 0 //...the current available power in the powernet
@@ -18,6 +23,7 @@
 
 /datum/powernet/New()
 	SSmachines.powernets += src
+	SSpackets.networks += src
 
 /datum/powernet/Destroy()
 	//Go away references, you suck!
@@ -29,6 +35,7 @@
 		M.powernet = null
 
 	SSmachines.powernets -= src
+	SSpackets.networks -= src
 	return ..()
 
 /datum/powernet/proc/is_empty()
@@ -111,11 +118,6 @@
 
 
 /// Pass a signal through a powernet to all connected data equipment.
-/datum/powernet/proc/pass_signal(obj/machinery/power/poster, datum/signal/signal)
-	if(!poster)
-		CRASH("pass_signal() WITH NO POSTER??")
-	//This is strictly a terrible and expensive way to do this. This should probably be a subsystem. Too bad!
-	for(var/obj/machinery/power/client_machine as anything in src.data_nodes)
-		if(client_machine != poster)
-			client_machine.receive_signal(signal)
-		CHECK_TICK //Are we overticked?
+// SSpackets does this for us!
+/datum/powernet/proc/queue_signal(datum/signal/signal)
+	next_packet_queue += signal

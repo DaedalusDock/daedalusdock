@@ -178,7 +178,7 @@
 
 /obj/machinery/airalarm/Destroy()
 	set_area(null)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	SSairmachines.stop_processing_machine(src)
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
@@ -460,19 +460,19 @@
 		return FALSE
 
 /obj/machinery/airalarm/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/airalarm/proc/send_signal(target, list/command, atom/user)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return FALSE
 
-	var/datum/signal/signal = new(command)
+	var/datum/signal/signal = new(src, command)
 	signal.data["tag"] = target
 	signal.data["sigtype"] = "command"
 	signal.data["user"] = user
-	radio_connection.post_signal(src, signal, RADIO_FROM_AIRALARM)
+	radio_connection.post_signal(signal, RADIO_FROM_AIRALARM)
 
 	return TRUE
 
@@ -750,12 +750,12 @@
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(alarm_frequency)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/alert_signal = new(list(
+	var/datum/signal/alert_signal = new(src, list(
 		"zone" = get_area_name(src, TRUE),
 		"type" = "Atmospheric"
 	))
@@ -766,7 +766,7 @@
 	else if (alert_level==0)
 		alert_signal.data["alert"] = "clear"
 
-	frequency.post_signal(src, alert_signal, range = -1)
+	frequency.post_signal(alert_signal, range = -1)
 
 /obj/machinery/airalarm/proc/apply_danger_level()
 

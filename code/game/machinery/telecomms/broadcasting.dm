@@ -65,7 +65,7 @@
 /datum/signal/subspace/proc/copy()
 	var/datum/signal/subspace/copy = new
 	copy.original = src
-	copy.source = source
+	copy.author = author
 	copy.levels = levels
 	copy.frequency = frequency
 	copy.server_type = server_type
@@ -104,7 +104,7 @@
 	spans,  // the list of spans applied to the message
 	list/message_mods // the list of modification applied to the message. Whispering, singing, ect
 )
-	src.source = source
+	src.author = author
 	src.frequency = frequency
 	src.language = language
 	virt = speaker
@@ -120,9 +120,10 @@
 	)
 	var/turf/T = get_turf(source)
 	levels = list(T.z)
+	#warn Hi it's kapu, i didn't convert subspace signals yet
 
 /datum/signal/subspace/vocal/copy()
-	var/datum/signal/subspace/vocal/copy = new(source, frequency, virt, language)
+	var/datum/signal/subspace/vocal/copy = new(author, frequency, virt, language)
 	copy.original = src
 	copy.data = data.Copy()
 	copy.levels = levels

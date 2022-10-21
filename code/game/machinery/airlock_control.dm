@@ -53,13 +53,13 @@
 
 /obj/machinery/door/airlock/proc/send_status()
 	if(radio_connection)
-		var/datum/signal/signal = new(list(
+		var/datum/signal/signal = new(src, list(
 			"tag" = id_tag,
 			"timestamp" = world.time,
 			"door_status" = density ? "closed" : "open",
 			"lock_status" = locked ? "locked" : "unlocked"
 		))
-		radio_connection.post_signal(src, signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
+		radio_connection.post_signal(signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
 
 
 /obj/machinery/door/airlock/open(surpress_send)
@@ -75,14 +75,14 @@
 
 
 /obj/machinery/door/airlock/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	if(new_frequency)
 		frequency = new_frequency
-		radio_connection = SSradio.add_object(src, frequency, RADIO_AIRLOCK)
+		radio_connection = SSpackets.add_object(src, frequency, RADIO_AIRLOCK)
 
 /obj/machinery/door/airlock/Destroy()
 	if(frequency)
-		SSradio.remove_object(src,frequency)
+		SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/airlock_sensor
@@ -128,12 +128,12 @@
 	. = ..()
 	if(.)
 		return
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = master_tag,
 		"command" = "cycle"
 	))
 
-	radio_connection.post_signal(src, signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
+	radio_connection.post_signal(signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
 	flick("airlock_sensor_cycle", src)
 
 /obj/machinery/airlock_sensor/process()
@@ -142,25 +142,25 @@
 		var/pressure = round(air_sample.returnPressure(),0.1)
 		alert = (pressure < ONE_ATMOSPHERE*0.8)
 
-		var/datum/signal/signal = new(list(
+		var/datum/signal/signal = new(src, list(
 			"tag" = id_tag,
 			"timestamp" = world.time,
 			"pressure" = num2text(pressure)
 		))
 
-		radio_connection.post_signal(src, signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
+		radio_connection.post_signal(signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
 
 	update_appearance()
 
 /obj/machinery/airlock_sensor/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, RADIO_AIRLOCK)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_AIRLOCK)
 
 /obj/machinery/airlock_sensor/Initialize(mapload)
 	. = ..()
 	set_frequency(frequency)
 
 /obj/machinery/airlock_sensor/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()

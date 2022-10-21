@@ -34,7 +34,7 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	if(radio_connection)
 		radio_connection = null
 	return ..()
@@ -72,10 +72,10 @@
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/pressure_valve/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -84,14 +84,14 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = on,
 		"target_output" = target_pressure,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/relaymove(mob/living/user, direction)
 	if(!on || direction != dir)

@@ -20,10 +20,10 @@
 	if(connected_machine)
 		connected_machine.receive_signal(signal) //TODO: Verify the machine hasn't grown legs and walked away!
 
-/obj/machinery/power/data_terminal/proc/post_signal(obj/source, datum/signal/signal)
+/obj/machinery/power/data_terminal/proc/post_signal(datum/signal/signal)
 	if(!powernet || !signal)
 		return //What do you expect me to transmit on, the fucking air?
-	if(source != connected_machine)
+	if(signal.author != connected_machine)
 		CRASH("Data terminal was told to pass a signal from something other than it's master machine?")
 	signal.transmission_method = TRANSMISSION_WIRE
-	powernet.pass_signal(src, signal)
+	powernet.queue_signal(signal)

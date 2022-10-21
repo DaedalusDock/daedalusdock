@@ -154,15 +154,15 @@
 	var/datum/logged
 
 /datum/signal/subspace/messaging/New(init_source, init_data)
-	source = init_source
+	author = init_source
 	data = init_data
-	var/turf/T = get_turf(source)
+	var/turf/T = get_turf(author)
 	levels = list(T.z)
 	if(!("reject" in data))
 		data["reject"] = TRUE
 
 /datum/signal/subspace/messaging/copy()
-	var/datum/signal/subspace/messaging/copy = new type(source, data.Copy())
+	var/datum/signal/subspace/messaging/copy = new type(author, data.Copy())
 	copy.original = src
 	copy.levels = levels
 	return copy

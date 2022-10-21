@@ -19,19 +19,18 @@
 /obj/machinery/networked/proc/post_signal(destination_id, list/datagram)
 	if(!netjack || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
+	var/list/sig_data = datagram.Copy()
+	sig_data["s_addr"] = src.net_id
+	sig_data["d_addr"] = destination_id
+	var/datum/signal/sig = new(src, sig_data, TRANSMISSION_WIRE)
 
-	var/datum/signal/sig = new
-	sig.source = src
-	sig.transmission_method = TRANSMISSION_WIRE
-	sig.data = datagram.Copy()
-	sig.data["s_addr"] = src.net_id
-	sig.data["d_addr"] = destination_id
-	src.netjack.post_signal(src, sig)
+	src.netjack.post_signal(sig)
 
 /obj/machinery/networked/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(TRUE)
 	..() //There's probably a better way to shut this lint up. But I want to get this crap working. FIXME
 	. = TRUE //Should the subtype *probably* stop caring about this packet?
+
 	if(!signal || !src.netjack)
 		return
 	if(signal.transmission_method != TRANSMISSION_WIRE)

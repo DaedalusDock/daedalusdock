@@ -41,7 +41,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 
 /obj/machinery/computer/atmos_control/Destroy()
 	GLOB.atmos_air_controllers -= src
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/computer/atmos_control/receive_signal(datum/signal/signal)
@@ -76,9 +76,9 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 		info_list[tag_data[1]] = null
 
 /obj/machinery/computer/atmos_control/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
 
 /// Reconnect only works for station based chambers.
 /obj/machinery/computer/atmos_control/proc/reconnect(mob/user)
@@ -114,10 +114,10 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	// Ask things around us to update.
 	// Due to how signal datums work this is unoptimized but as long as our freq isnt terribly populated we should be fine.
 	// Also, we dont need to prompt sensors and meters since they already broadcast every process_atmos().
-	var/datum/signal/update_request = new(list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_in"))
-	radio_connection.post_signal(src, update_request, filter = RADIO_ATMOSIA)
-	update_request = new(list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_out"))
-	radio_connection.post_signal(src, update_request, filter = RADIO_ATMOSIA)
+	var/datum/signal/update_request = new(src, list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_in"))
+	radio_connection.post_signal(update_request, filter = RADIO_ATMOSIA)
+	update_request = new(src, list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_out"))
+	radio_connection.post_signal(update_request, filter = RADIO_ATMOSIA)
 
 	return TRUE
 
@@ -191,7 +191,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 			target = clamp(target, 0, MAX_OUTPUT_PRESSURE)
 			signal.data += list("tag" = params["chamber"] + "_out", "set_internal_pressure" = target)
 
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 	return TRUE
 
 /obj/machinery/computer/atmos_control/nocontrol

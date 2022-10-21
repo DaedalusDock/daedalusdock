@@ -322,6 +322,10 @@
 		if(!Node.connect_to_network())
 			Node.disconnect_from_network() //if somehow we can't connect the machine to the new powernet, disconnect it from the old nonetheless
 
+	///Save any queued packets
+	net1.next_packet_queue |= net2.next_packet_queue
+	net1.current_packet_queue |= net2.current_packet_queue
+
 	return net1
 
 /// Extracts the powernet and cell of the provided power source

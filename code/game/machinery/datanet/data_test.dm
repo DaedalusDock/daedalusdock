@@ -33,8 +33,8 @@
 	if(!jsonified_text)
 		return
 	var/list/datablob = json_decode(jsonified_text)
-	var/datum/signal/pretransmission_signal = new(datablob) //This is split out for debugging reasons.
-	transmission_terminal.post_signal(src, pretransmission_signal)
+	var/datum/signal/pretransmission_signal = new(src, datablob) //This is split out for debugging reasons.
+	transmission_terminal.post_signal(pretransmission_signal)
 
 /obj/machinery/development_dataset/receive_signal(datum/signal/signal)
 	var/signal_data = signal.data

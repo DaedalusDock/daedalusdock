@@ -293,14 +293,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /obj/machinery/status_display/evac/Initialize(mapload)
 	. = ..()
 	// register for radio system
-	SSradio.add_object(src, frequency)
+	SSpackets.add_object(src, frequency)
 	// Circuit USB
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/status_display,
 	))
 
 /obj/machinery/status_display/evac/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/status_display/evac/process()
@@ -564,7 +564,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 		return
 
 	var/command_value = command_map[command.value]
-	var/datum/signal/status_signal = new(list("command" = command_value))
+	var/datum/signal/status_signal = new(src, list("command" = command_value))
 	switch(command_value)
 		if("message")
 			status_signal.data["msg1"] = message1.value

@@ -1,8 +1,8 @@
 SUBSYSTEM_DEF(packets)
 	name = "Packets"
-	wait = 0.5 SECONDS
+	wait = 1
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT|SS_BACKGROUND|SS_KEEP_TIMING
+	flags = SS_NO_INIT|SS_KEEP_TIMING
 
 	var/list/saymodes = list()
 	var/list/datum/radio_frequency/frequencies = list()
@@ -26,7 +26,7 @@ SUBSYSTEM_DEF(packets)
 	return ..()
 
 /datum/controller/subsystem/packets/stat_entry(msg)
-	msg += "Processing Packets: [length(current_radio_packets)]"
+	msg += "Processing Packets: [length(current_radio_packets)] | "
 	msg += "Packet Queue: [length(radio_packets)]"
 	return ..()
 
@@ -74,7 +74,8 @@ SUBSYSTEM_DEF(packets)
 		var/datum/signal/packet
 		while(length(current_radio_packets))
 			packet = current_radio_packets[1]
-			current_radio_packets -= packet
+			current_radio_packets.Cut(1)
+			radio_packets -= packet
 
 			ImmediateRadioPacketSend(packet)
 			if(MC_TICK_CHECK)
@@ -82,7 +83,6 @@ SUBSYSTEM_DEF(packets)
 
 	///Reset to the first stage
 	stage = SSPACKETS_POWERNETS
-
 
 
 
@@ -105,7 +105,6 @@ SUBSYSTEM_DEF(packets)
 			return
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
-
 	//Send the data
 	for(var/current_filter in packet.filter_list)
 		for(var/datum/weakref/device_ref as anything in freq.devices[current_filter])

@@ -6,6 +6,7 @@
 	var/net_id //This is probably conflictory with NTNet but FUCK EM
 	var/master_id //Are we slaved to any particular device?
 	var/net_class = "PNET_ABSTRACT" //A short string shown to players fingerprinting the device type.
+	var/ping_addition = null //Additional data stapled to pings, reduces network usage for some machines.
 
 /obj/machinery/networked/Initialize(mapload)
 	. = ..()
@@ -29,17 +30,18 @@
 
 /obj/machinery/networked/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(TRUE)
+	..() //There's probably a better way to shut this lint up. But I want to get this crap working. FIXME
 	. = TRUE //Should the subtype *probably* stop caring about this packet?
 	if(!signal || !src.netjack)
 		return
 	if(signal.transmission_method != TRANSMISSION_WIRE)
 		CRASH("Received signal with invalid transport mode for this media!")
 
-	if(signal.data["d_addr"] != src.net_id)
-		if(signal.data["s_addr"] == "ping")
-			post_signal(signal.data["s_addr"], list("command"="ping_reply","netclass"=net_class,"netaddr"=src.net_id))
-			return
-	return 0 // We are the designated recipient of this packet.
+	if(signal.data["d_addr"] != src.net_id)//This packet doesn't belong to us directly
+		if(signal.data["d_addr"] == "ping")// But it could be a ping, if so, reply
+			post_signal(signal.data["s_addr"], list("command"="ping_reply","netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition)
+		return //regardless, return 1 so that machines don't process packets not intended for them.
+	return FALSE // We are the designated recipient of this packet.
 
 //Handle the network jack
 

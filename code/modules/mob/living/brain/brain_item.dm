@@ -322,14 +322,14 @@
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
 
-/obj/item/organ/brain/vox
+/obj/item/organ/internal/brain/vox
 	name = "cortical stack"
 	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
 	icon_state = "cortical-stack"
 	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
 
-/obj/item/organ/brain/vox/emp_act(severity)
+/obj/item/organ/internal/brain/vox/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -349,7 +349,7 @@
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
 			owner.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/confusion)
 
-/obj/item/organ/brain/skrell
+/obj/item/organ/internal/brain/skrell
 	name = "spongy brain"
 	icon_state = "skrell-brain"
 

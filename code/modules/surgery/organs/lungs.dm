@@ -341,9 +341,10 @@
 	// The air you breathe out should match your body temperature
 	breath.temperature = breather.bodytemperature
 
-/obj/item/organ/internal/lungs/proc/handle_helium_speech(owner, list/speech_args)
+/*/obj/item/organ/internal/lungs/proc/handle_helium_speech(owner, list/speech_args)
 	SIGNAL_HANDLER
 	speech_args[SPEECH_SPANS] |= SPAN_HELIUM
+*/
 
 /obj/item/organ/internal/lungs/on_life(delta_time, times_fired)
 	. = ..()
@@ -412,7 +413,7 @@
 	cold_level_2_threshold = 170
 	cold_level_3_threshold = 90
 
-/obj/item/organ/lungs/cybernetic
+/obj/item/organ/internal/lungs/cybernetic
 	name = "basic cybernetic lungs"
 	desc = "A basic cybernetic version of the lungs found in traditional humanoid entities."
 	icon_state = "lungs-c"

@@ -421,7 +421,7 @@
 
 	stop_crystalization_process(ethereal)
 
-/obj/item/organ/heart/vox
+/obj/item/organ/internal/heart/vox
 	name = "vox heart"
 	icon_state = "vox-heart-on"
 	base_icon_state = "vox-heart"

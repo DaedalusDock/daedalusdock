@@ -130,7 +130,7 @@
 	var/on = FALSE
 	var/datum/effect_system/trail_follow/ion/ion_trail
 
-/obj/item/organ/internal/cyberimp/chest/thrusters/Insert(mob/living/carbon/thruster_owner, special = 0)
+/*/obj/item/organ/internal/cyberimp/chest/thrusters/Insert(mob/living/carbon/thruster_owner, special = 0)
 	. = ..()
 	if(!ion_trail)
 		ion_trail = new
@@ -237,3 +237,5 @@
 
 	toggle(silent = TRUE)
 	return FALSE
+*/
+#warn FINISH CHEST THRUSTERS

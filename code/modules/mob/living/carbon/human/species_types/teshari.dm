@@ -43,7 +43,7 @@
 		/obj/item/organ/external/teshari_body_feathers = "Plain",
 		/obj/item/organ/external/tail/teshari = "Default"
 	)
-	mutantlungs = /obj/item/organ/lungs/teshari
+	mutantlungs = /obj/item/organ/internal/lungs/teshari
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/teshari,

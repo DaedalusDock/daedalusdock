@@ -174,7 +174,7 @@
 					/obj/item/clothing/mask/bandana/skull/black = 2)
 	contraband = list(/obj/item/clothing/suit/hooded/techpriest = 2,
 					  /obj/item/clothing/under/costume/mech_suit = 2,
-					  /obj/item/organ/tongue/internal/robot = 2)
+					  /obj/item/organ/internal/tongue/robot = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
 	extra_price = PAYCHECK_HARD * 1.2
 	payment_department = ACCOUNT_SCI

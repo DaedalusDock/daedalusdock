@@ -80,3 +80,7 @@
 	var/dimension_y = 32
 	/// Should this sprite block emissives?
 	var/em_block = FALSE
+
+/datum/sprite_accessory/blank
+	name = "None"
+	icon_state = "None"

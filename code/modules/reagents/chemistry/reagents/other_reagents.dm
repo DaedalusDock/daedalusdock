@@ -184,8 +184,8 @@
 
 	var/obj/effect/hotspot/hotspot = exposed_turf.fire
 	if(hotspot && !isspaceturf(exposed_turf))
-		if(exposed_turf.air)
-			var/datum/gas_mixture/air = exposed_turf.air
+		if(exposed_turf.return_air())
+			var/datum/gas_mixture/air = exposed_turf.return_air()
 			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
 			air.react()
 			qdel(hotspot)

@@ -140,13 +140,11 @@
 
 	feature_key = "tail_teshari"
 	preference = "tail_teshari"
+	render_key = "tail_teshari"
 
 	dna_block = DNA_TESHARI_TAIL_BLOCK
 
-/obj/item/organ/external/tail/teshari/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
-		return FALSE
-	return TRUE
+	color_source = ORGAN_COLOR_INHERIT
 
 /obj/item/organ/external/tail/teshari/get_global_feature_list()
 	return GLOB.teshari_tails_list

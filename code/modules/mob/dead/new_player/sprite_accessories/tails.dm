@@ -15,6 +15,7 @@
 	name = "Vox Tail"
 	icon_state = "vox"
 	em_block = TRUE
+
 /datum/sprite_accessory/tails
 	icon = 'icons/mob/mutant_bodyparts.dmi'
 	em_block = TRUE

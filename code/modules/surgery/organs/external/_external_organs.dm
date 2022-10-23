@@ -490,8 +490,9 @@
 
 	var/mutable_appearance/inner_ears = mutable_appearance(sprite_datum.icon, "m_teshari_earsinner_[sprite_datum.icon_state]_ADJ", layer = -image_layer)
 	var/mob/living/carbon/human/human_owner = owner
-	inner_ears.color = human_owner.facial_hair_color
-	overlay_list += inner_ears
+	if(owner)
+		inner_ears.color = human_owner.facial_hair_color
+		overlay_list += inner_ears
 
 // Teshari body feathers
 /obj/item/organ/external/teshari_body_feathers

@@ -13,6 +13,7 @@
 	custom_materials = list(/datum/material/glass = 250)
 	gender = PLURAL
 	supports_variations_flags = CLOTHING_VOX_VARIATION
+
 	var/vision_flags = 0
 	var/darkness_view = 2 // Base human is 2
 	var/invis_view = SEE_INVISIBLE_LIVING // Admin only for now
@@ -27,6 +28,43 @@
 	var/glass_colour_type
 	/// Whether or not vision coloring is forcing
 	var/forced_glass_color = FALSE
+	/// Having this default to false means that its easy to make sure this doesnt apply to any pre-existing items.
+	var/can_switch_eye = FALSE
+	/// Added to the end of the icon_state to make this easy code-wise, L and R being the wearer's Left and Right.
+	var/current_eye = "_R"
+
+/obj/item/clothing/glasses/Initialize()
+	. = ..()
+	if(!can_switch_eye)	//Just runs the normal code for any item that we havent manually set this as TRUE for
+		return
+	icon_state += current_eye	//Makes sure the icon initially ends in _R so its a valid sprite (Change current_eye in loadout once thats possible to spawn it on the side of your choice)
+
+/obj/item/clothing/glasses/verb/eyepatch_switcheye()
+	set name = "Switch Eyepatch Side"
+	set category = null
+	set src in usr
+	switcheye()
+
+/obj/item/clothing/glasses/proc/switcheye()
+	if(!can_use(usr))
+		return
+	if(!can_switch_eye)
+		to_chat(usr, span_warning("You cannot wear this any differently!"))
+		return
+	eyepatch_do_switch()
+	if(current_eye == "_L")
+		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your left eye."))
+	else if(current_eye == "_R")
+		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your right eye."))
+	usr.update_inv_glasses()
+	usr.update_overlays()
+
+/obj/item/clothing/glasses/proc/eyepatch_do_switch()
+	if(current_eye == "_L")
+		current_eye = "_R"
+	else if(current_eye == "_R")
+		current_eye = "_L"
+	src.icon_state = "[initial(icon_state)]"+ current_eye
 
 /obj/item/clothing/glasses/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is stabbing \the [src] into [user.p_their()] eyes! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -36,6 +74,11 @@
 	. = ..()
 	if(glass_colour_type && !forced_glass_color && ishuman(user))
 		. += span_notice("Alt-click to toggle [p_their()] colors.")
+	if(can_switch_eye)
+		if(current_eye == "_L")
+			. += "Ctrl-click on [src] to wear it over your right eye."
+		else
+			. += "Ctrl-click on [src] to wear it over your left eye."
 
 /obj/item/clothing/glasses/visor_toggling()
 	..()
@@ -67,6 +110,15 @@
 				H.blind_eyes(3)
 				H.blur_eyes(5)
 				eyes.applyOrganDamage(5)
+
+/obj/item/clothing/glasses/CtrlClick(mob/user)
+	. = ..()
+	if(.)
+		return
+	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+		return
+	else
+		switcheye()
 
 /obj/item/clothing/glasses/AltClick(mob/user)
 	if(glass_colour_type && !forced_glass_color && ishuman(user))
@@ -191,6 +243,19 @@
 	icon_state = "eyepatch"
 	inhand_icon_state = "eyepatch"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	can_switch_eye = TRUE
+
+/obj/item/clothing/glasses/eyepatch/wrap
+	name = "eye wrap"
+	desc = "A glorified bandage. At least this one's actually made for your head..."
+	icon_state = "eyewrap"
+	supports_variations_flags = NONE
+
+/obj/item/clothing/glasses/eyepatch/white
+	name = "white eyepatch"
+	desc = "This is what happens when a pirate gets a PhD."
+	icon_state = "eyepatch_white"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/monocle
 	name = "monocle"
@@ -672,3 +737,32 @@
 	inhand_icon_state = "glasses"
 	glass_colour_type = /datum/client_colour/glass_colour/nightmare
 	forced_glass_color = TRUE
+
+/obj/item/clothing/glasses/thin
+	name = "thin glasses"
+	desc = "Often seen staring down at someone taking a book."
+	icon_state = "glasses_thin"
+	inhand_icon_state = "glasses"
+	vision_correction = TRUE
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/glasses/betterunshit
+	name = "modern glasses"
+	desc = "After Nerd. Co went bankrupt for tax evasion and invasion, they were bought out by Dork.Co, who revamped their classic design."
+	icon_state = "glasses_alt"
+	inhand_icon_state = "glasses_rimless"
+	vision_correction = TRUE
+
+/obj/item/clothing/glasses/kim
+	name = "binoclard lenses"
+	desc = "Stylish round lenses subtly shaded for your protection and criminal discomfort."
+	icon_state = "binoclard_lenses"
+	inhand_icon_state = "glasses_rimless"
+	vision_correction = TRUE
+
+// Like sunglasses, but without any protection
+/obj/item/clothing/glasses/fake_sunglasses
+	name = "low-UV sunglasses"
+	desc = "A cheaper brand of sunglasses rated for much lower UV levels. Offers the user no protection against bright lights."
+	icon_state = "sun"
+	inhand_icon_state = "sunglasses"

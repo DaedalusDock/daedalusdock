@@ -1,5 +1,6 @@
 /datum/job/station_engineer
 	title = JOB_STATION_ENGINEER
+	alt_titles = list("Station Engineer", "Maintenance Technician", "Electrician", "Engine Technician")
 	description = "Start the Supermatter, wire the solars, repair station hull \
 		and wiring damage."
 	department_head = list(JOB_CHIEF_ENGINEER)
@@ -56,6 +57,7 @@
 	rpg_title = "Crystallomancer"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+	banned_quirks = list(TECH_RESTRICTED_QUIRKS)
 
 /datum/outfit/job/engineer
 	name = "Station Engineer"

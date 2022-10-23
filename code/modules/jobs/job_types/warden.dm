@@ -1,5 +1,6 @@
 /datum/job/warden
 	title = JOB_WARDEN
+	alt_titles = list("Warden", "Brig Officer", "Security Sergeant")
 	description = "Watch over the Brig and Prison Wing, release prisoners when \
 		their time is up, issue equipment to security, be a security officer when \
 		they all eventually die."
@@ -47,6 +48,7 @@
 	rpg_title = "Jailor"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+	banned_quirks = list(SEC_RESTRICTED_QUIRKS)
 
 /datum/outfit/job/warden
 	name = "Warden"

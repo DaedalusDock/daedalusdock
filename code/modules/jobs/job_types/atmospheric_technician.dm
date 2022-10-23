@@ -1,5 +1,6 @@
 /datum/job/atmospheric_technician
 	title = JOB_ATMOSPHERIC_TECHNICIAN
+	alt_titles = list("Atmospheric Technician", "Life Support Technician")
 	description = "Ensure the air is breathable on the station, fill oxygen tanks, fight fires, purify the air."
 	department_head = list(JOB_CHIEF_ENGINEER)
 	faction = FACTION_STATION
@@ -44,6 +45,8 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Aeromancer"
+
+	banned_quirks = list(TECH_RESTRICTED_QUIRKS)
 
 /datum/outfit/job/atmos
 	name = "Atmospheric Technician"

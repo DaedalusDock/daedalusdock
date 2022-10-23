@@ -1,5 +1,6 @@
 /datum/job/lawyer
 	title = JOB_LAWYER
+	alt_titles = list("Lawyer", "Human Resources Agent", "Defence Attorney", "Public Defender", "Prosecutor")
 	description = "Advocate for prisoners, create law-binding contracts, \
 		ensure Security is following protocol and Space Law."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)

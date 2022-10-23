@@ -1,4 +1,4 @@
 sound/ambience/title1.mod
 sound/ambience/title2.ogg
 sound/ambience/title3.ogg
-modular_pariah/master_files/sound/ambience/thunderdome.ogg
+sound/ambience/thunderdome.ogg

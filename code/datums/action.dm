@@ -251,8 +251,8 @@
 
 /datum/action/item_action/toggle_firemode
 	name = "Toggle Firemode"
-	icon_icon = 'modular_pariah/master_files/icons/mob/actions/actions_items.dmi' //PARIAH EDIT ADDITION
-	button_icon_state = "fireselect_no" //PARIAH EDIT ADDITION
+	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "fireselect_no"
 
 /datum/action/item_action/rcl_col
 	name = "Change Cable Color"

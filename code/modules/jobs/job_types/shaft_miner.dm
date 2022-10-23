@@ -1,5 +1,6 @@
 /datum/job/shaft_miner
 	title = JOB_SHAFT_MINER
+	alt_titles = list("Shaft Miner", "Spelunker", "Prospector")
 	description = "Travel to strange lands. Mine ores. \
 		Meet strange creatures. Kill them for their gold."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)

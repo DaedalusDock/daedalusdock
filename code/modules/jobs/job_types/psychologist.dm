@@ -1,5 +1,6 @@
 /datum/job/psychologist
 	title = JOB_PSYCHOLOGIST
+	alt_titles = list("Psychologist", "Psychiatrist", "Therapist")
 	description = "Advocate sanity, self-esteem, and teamwork in a station \
 		staffed with headcases."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)

@@ -4,7 +4,7 @@
 /obj/item/clothing/gloves/color/yellow
 	desc = "These gloves provide protection against electric shock. The thickness of the rubber makes your fingers seem bigger."
 	name = "insulated gloves"
-	icon_state = "yellow"
+	icon_state = "ygloves"
 	inhand_icon_state = "ygloves"
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
@@ -69,10 +69,10 @@
 		location.visible_message(span_warning("[src] crumble[p_s()] away into nothing.")) // just like my dreams after working with .dm
 		qdel(src)
 
-/obj/item/clothing/gloves/color/fyellow                             //Cheap Chinese Crap
+/obj/item/clothing/gloves/color/fyellow //Cheap Chinese Crap
 	desc = "These gloves are cheap knockoffs of the coveted ones - no way this can end badly."
 	name = "budget insulated gloves"
-	icon_state = "yellow"
+	icon_state = "ygloves"
 	inhand_icon_state = "ygloves"
 	siemens_coefficient = 1 //Set to a default of 1, gets overridden in Initialize()
 	permeability_coefficient = 0.05
@@ -94,7 +94,7 @@
 /obj/item/clothing/gloves/cut
 	desc = "These gloves would protect the wearer from electric shock... if the fingers were covered."
 	name = "fingerless insulated gloves"
-	icon_state = "yellowcut"
+	icon_state = "yglovescut"
 	inhand_icon_state = "ygloves"
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
@@ -104,7 +104,7 @@
 /obj/item/clothing/gloves/color/black
 	desc = "These gloves are fire-resistant."
 	name = "black gloves"
-	icon_state = "black"
+	icon_state = "blackgloves"
 	inhand_icon_state = "blackgloves"
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
@@ -130,13 +130,13 @@
 /obj/item/clothing/gloves/color/orange
 	name = "orange gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "orange"
+	icon_state = "orangegloves"
 	inhand_icon_state = "orangegloves"
 
 /obj/item/clothing/gloves/color/red
 	name = "red gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "red"
+	icon_state = "redgloves"
 	inhand_icon_state = "redgloves"
 
 
@@ -150,49 +150,49 @@
 /obj/item/clothing/gloves/color/rainbow
 	name = "rainbow gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "rainbow"
+	icon_state = "rainbowgloves"
 	inhand_icon_state = "rainbowgloves"
 
 /obj/item/clothing/gloves/color/blue
 	name = "blue gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "blue"
+	icon_state = "bluegloves"
 	inhand_icon_state = "bluegloves"
 
 /obj/item/clothing/gloves/color/purple
 	name = "purple gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "purple"
+	icon_state = "purplegloves"
 	inhand_icon_state = "purplegloves"
 
 /obj/item/clothing/gloves/color/green
 	name = "green gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "green"
+	icon_state = "greengloves"
 	inhand_icon_state = "greengloves"
 
 /obj/item/clothing/gloves/color/grey
 	name = "grey gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "gray"
+	icon_state = "graygloves"
 	inhand_icon_state = "graygloves"
 
 /obj/item/clothing/gloves/color/light_brown
 	name = "light brown gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "lightbrown"
+	icon_state = "lightbrowngloves"
 	inhand_icon_state = "lightbrowngloves"
 
 /obj/item/clothing/gloves/color/brown
 	name = "brown gloves"
 	desc = "A pair of gloves, they don't look special in any way."
-	icon_state = "brown"
+	icon_state = "browngloves"
 	inhand_icon_state = "browngloves"
 
 /obj/item/clothing/gloves/color/captain
 	desc = "Regal blue gloves, with a nice gold trim, a diamond anti-shock coating, and an integrated thermal barrier. Swanky."
 	name = "captain's gloves"
-	icon_state = "captain"
+	icon_state = "egloves"
 	inhand_icon_state = "egloves"
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
@@ -221,7 +221,7 @@
 /obj/item/clothing/gloves/color/latex
 	name = "latex gloves"
 	desc = "Cheap sterile gloves made from latex. Provides quicker carrying from a good grip."
-	icon_state = "latex"
+	icon_state = "lgloves"
 	inhand_icon_state = "latex"
 	siemens_coefficient = 0.3
 	permeability_coefficient = 0.01
@@ -231,7 +231,7 @@
 /obj/item/clothing/gloves/color/latex/nitrile
 	name = "nitrile gloves"
 	desc = "Pricy sterile gloves that are thicker than latex. Excellent grip ensures very fast carrying of patients along with the faster use time of various chemical related items."
-	icon_state = "nitrile"
+	icon_state = "nitrilegloves"
 	inhand_icon_state = "nitrilegloves"
 	clothing_traits = list(TRAIT_QUICKER_CARRY, TRAIT_FASTMED)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -261,7 +261,7 @@
 /obj/item/clothing/gloves/color/white
 	name = "white gloves"
 	desc = "These look pretty fancy."
-	icon_state = "white"
+	icon_state = "wgloves"
 	inhand_icon_state = "wgloves"
 	custom_price = PAYCHECK_MINIMAL
 

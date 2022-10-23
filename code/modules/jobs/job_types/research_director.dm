@@ -1,5 +1,6 @@
 /datum/job/research_director
 	title = JOB_RESEARCH_DIRECTOR
+	alt_titles = list("Research Director", "Lead Researcher", "Chief Science Officer")
 	description = "Supervise research efforts, ensure Robotics is in working \
 		order, make sure the AI and its Cyborgs aren't rogue, replacing them if \
 		they are"
@@ -50,6 +51,7 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	banned_quirks = list(HEAD_RESTRICTED_QUIRKS)
 
 /datum/job/research_director/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"

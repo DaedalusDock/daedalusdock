@@ -1,5 +1,6 @@
 /datum/job/head_of_security
 	title = JOB_HEAD_OF_SECURITY
+	alt_titles = list("Head of Security", "Security Commander", "Chief of Security")
 	description = "Coordinate security personnel, ensure they are not corrupt, \
 		make sure every department is protected."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
@@ -44,6 +45,7 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	banned_quirks = list(SEC_RESTRICTED_QUIRKS, HEAD_RESTRICTED_QUIRKS)
 
 /datum/job/head_of_security/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"

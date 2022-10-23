@@ -49,6 +49,7 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	banned_quirks = list(HEAD_RESTRICTED_QUIRKS)
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)
 	return "Captain [captain.real_name] on deck!"

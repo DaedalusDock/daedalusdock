@@ -42,6 +42,19 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	///The config type to use for greyscaled belt overlays. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_belt
 
+	/// Icon file for mob worn overlays, if the user is digitigrade.
+	var/icon/worn_icon_digitigrade
+	/// Icon file for mob worn overlays, if the user is snouted.
+	var/icon/worn_icon_snouted
+
+	var/greyscale_config_worn_digitigrade
+
+	//TODO: Remove this for bodytypes or something - @Zandario
+	/// This is somewhat awful, but ¯\_(ツ)_/¯ //! Bro please no. - @Zandario
+	var/greyscale_config_worn_vox
+	/// Icon file for mob worn overlays, if the user is a Vox.
+	var/icon/worn_icon_vox
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 
 		IF YOU ADD MORE ICON CRAP TO THIS

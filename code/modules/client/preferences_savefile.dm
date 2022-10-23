@@ -305,17 +305,22 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		value_cache -= preference_type
 		read_preference(preference_type)
 
-	//Character
+	// Character
 	READ_FILE(S["randomise"],  randomise)
 
-	//Load prefs
+	// Load prefs
 	READ_FILE(S["job_preferences"], job_preferences)
 
-	//Quirks
+	// Quirks
 	READ_FILE(S["all_quirks"], all_quirks)
 
-	//PARIAH EDIT ADDITION
-	load_character_pariah(S)
+	// Loadout
+	READ_FILE(S["loadout_list"], loadout_list)
+
+	// Alt titles
+	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
+	READ_FILE(S["alt_job_titles"], alt_job_titles)
+
 
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
@@ -366,16 +371,21 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
 	#endif
 
-	//Character
+	// Character
 	WRITE_FILE(S["randomise"] , randomise)
 
-	//Write prefs
+	// Write prefs
 	WRITE_FILE(S["job_preferences"] , job_preferences)
 
-	//Quirks
+	// Quirks
 	WRITE_FILE(S["all_quirks"] , all_quirks)
 
-	save_character_pariah(S) //PARIAH EDIT ADDITION
+	// Loadout
+	WRITE_FILE(S["loadout_list"], loadout_list)
+
+	// Alt titles
+	WRITE_FILE(S["alt_job_titles"], alt_job_titles)
+
 
 	return TRUE
 

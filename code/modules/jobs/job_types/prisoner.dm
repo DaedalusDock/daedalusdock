@@ -1,5 +1,6 @@
 /datum/job/prisoner
 	title = JOB_PRISONER
+	alt_titles = list("Prisoner", "Inmate")
 	description = "Keep yourself occupied in permabrig."
 	department_head = list("The Security Team")
 	faction = FACTION_STATION

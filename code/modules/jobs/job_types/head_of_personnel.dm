@@ -1,5 +1,6 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
+	alt_titles = list("Head of Personnel", "Personnel Manager", "Crew Overseer")
 	// description = "Alter access on ID cards, manage civil and supply departments, \ //ORIGINAL
 	description = "Alter access on ID cards, manage the civil departments, \
 		protect Ian, run the station when the captain dies." //PARIAH EDIT
@@ -50,6 +51,7 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	banned_quirks = list(HEAD_RESTRICTED_QUIRKS)
 
 /datum/job/head_of_personnel/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"

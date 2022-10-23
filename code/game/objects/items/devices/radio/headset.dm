@@ -27,6 +27,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	slot_flags = ITEM_SLOT_EARS
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
 	var/obj/item/encryptionkey/keyslot2 = null
 
 /obj/item/radio/headset/suicide_act(mob/living/carbon/user)
@@ -85,6 +86,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	return ..()
 
 /obj/item/radio/headset/syndicate //disguised to look like a normal headset for stealth ops
+	radiosound = 'sound/items/radio/syndie.ogg'
 
 /obj/item/radio/headset/syndicate/alt //undisguised bowman with flash protection
 	name = "syndicate headset"
@@ -116,6 +118,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	desc = "This is used by your elite security force."
 	icon_state = "sec_headset"
 	keyslot = new /obj/item/encryptionkey/headset_sec
+	radiosound = 'sound/items/radio/security.ogg'
 
 /obj/item/radio/headset/headset_sec/alt
 	name = "security bowman headset"
@@ -233,6 +236,12 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	desc = "The headset of the guy who will one day be captain."
 	icon_state = "com_headset"
 	keyslot = new /obj/item/encryptionkey/heads/hop
+
+/obj/item/radio/headset/heads/qm
+	name = "quartermaster's headset"
+	desc = "The headset of the king (or queen) of paperwork."
+	icon_state = "com_headset"
+	keyslot = new /obj/item/encryptionkey/heads/qm
 
 /obj/item/radio/headset/headset_cargo
 	name = "supply radio headset"

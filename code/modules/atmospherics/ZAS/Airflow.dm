@@ -4,8 +4,7 @@ This entire system is an absolute mess.
 */
 #define AIRBORNE_DAMAGE(airborne_thing) (min(airborne_thing.airflow_speed, (airborne_thing.airborne_acceleration*2)) * zas_settings.airflow_damage)
 
-/mob
-	var/tmp/last_airflow_stun = 0
+/mob/var/tmp/last_airflow_stun = 0
 
 /atom/movable
 	///The location the atom is trying to step towards during airflow.

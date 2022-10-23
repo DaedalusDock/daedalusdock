@@ -19,6 +19,8 @@
 		armor plating being installed by default, and their actuators only lead to slightly greater speed than industrial suits."
 	/// Default skin of the MOD.
 	var/default_skin = "standard"
+	/// Tail colors for the tail overlay of the modsuit
+	var/list/modsuit_tail_colors = list("#243A61", "#151515", "#585858")
 	/// Armor shared across the MOD pieces.
 	var/armor = list(MELEE = 10, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 0, BIO = 100, FIRE = 25, ACID = 25, WOUND = 5)
 	/// Resistance flags shared across the MOD pieces.
@@ -109,6 +111,7 @@
 		a shock-resistant outer layer, making the suit nigh-invulnerable against even the extremes of high-voltage electricity. \
 		However, the capacity for modification remains the same as civilian-grade suits."
 	default_skin = "engineering"
+	modsuit_tail_colors = list("#997744", "#AA6622", "#CC9955")
 	armor = list(MELEE = 10, BULLET = 5, LASER = 20, ENERGY = 10, BOMB = 10, BIO = 100, FIRE = 100, ACID = 25, WOUND = 10)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
@@ -147,6 +150,7 @@
 		),
 	)
 
+
 /datum/mod_theme/atmospheric
 	name = "atmospheric"
 	desc = "An atmospheric-resistant suit by Nakamura Engineering, offering extreme heat resistance compared to the engineer suit."
@@ -156,6 +160,7 @@
 		corrosive gasses and liquids, useful in the world of pipes. \
 		However, the capacity for modification remains the same as civilian-grade suits."
 	default_skin = "atmospheric"
+	modsuit_tail_colors = list("#997744", "#448877", "#449988")
 	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 15, BOMB = 10, BIO = 100, FIRE = 100, ACID = 75, WOUND = 10)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
@@ -204,6 +209,7 @@
 		The paint used is almost entirely immune to corrosives, and certainly looks damn fine. \
 		These come pre-installed with magnetic boots, using an advanced system to toggle them on or off as the user walks."
 	default_skin = "advanced"
+	modsuit_tail_colors = list("#332211", "#CCCCBB", "#EEEEEE")
 	armor = list(MELEE = 15, BULLET = 5, LASER = 20, ENERGY = 15, BOMB = 50, BIO = 100, FIRE = 100, ACID = 90, WOUND = 10)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
@@ -268,6 +274,7 @@
 		so much so that it comes default fueled by equally-enigmatic plasma fuel rather than a simple recharge. \
 		Additionally, the systems have been put to near their maximum load, allowing for far less customization than others."
 	default_skin = "mining"
+	modsuit_tail_colors = list("#887777", "#BBAA99", "#665555")
 	armor = list(MELEE = 15, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 30, BIO = 100, FIRE = 100, ACID = 75, WOUND = 15)
 	resistance_flags = FIRE_PROOF|LAVA_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
@@ -396,6 +403,7 @@
 		it is incredibly acid-resistant. It is slightly more demanding of power than civilian-grade models, \
 		and weak against fingers tapping the glass."
 	default_skin = "medical"
+	modsuit_tail_colors = list("#DDDDDD", "#AA7755", "#FFFFFF")
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 10, BIO = 100, FIRE = 60, ACID = 75, WOUND = 5)
 	charge_drain = DEFAULT_CHARGE_DRAIN * 1.5
 	slowdown_inactive = 1
@@ -536,6 +544,7 @@
 		missiles and artillery, all the explosive resistance is mostly working to keep the user intact, \
 		not alive. The user will also find narrow doorframes nigh-impossible to surmount."
 	default_skin = "research"
+	modsuit_tail_colors = list("#1E1E32", "#0D0C19", "#7A0BB7")
 	armor = list(MELEE = 20, BULLET = 15, LASER = 5, ENERGY = 5, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
@@ -591,6 +600,7 @@
 		However, the systems used in these suits are more than a few years out of date, \
 		leading to an overall lower capacity for modules."
 	default_skin = "security"
+	modsuit_tail_colors = list("#222222", "#CC2233", "#333355")
 	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 25, BIO = 100, FIRE = 75, ACID = 75, WOUND = 15)
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY - 5
@@ -643,6 +653,7 @@
 		Heatsinks line the sides of the suit, and greater technology has been used in insulating it against \
 		both corrosive environments and sudden impacts to the user's joints."
 	default_skin = "safeguard"
+	modsuit_tail_colors = list("#221122", "#CC3322", "#223344")
 	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 40, BIO = 100, FIRE = 100, ACID = 95, WOUND = 15)
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
@@ -698,6 +709,7 @@
 		and bluespace processing to allow for a wide array of onboard modules to be supported, and only the best actuators \
 		have been employed for speed. The resemblance to a Gorlex Marauder helmet is purely coincidental."
 	default_skin = "magnate"
+	modsuit_tail_colors = list("#336688", "#CCAA00", "#003300")
 	armor = list(MELEE = 20, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 50, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
@@ -800,6 +812,7 @@
 		A small tag hangs off of it reading; 'Property of the Gorlex Marauders, with assistance from Cybersun Industries. \
 		All rights reserved, tampering with suit will void warranty."
 	default_skin = "syndicate"
+	modsuit_tail_colors = list("#AA1111", "#332222", "#cc4455")
 	armor = list(MELEE = 15, BULLET = 20, LASER = 15, ENERGY = 15, BOMB = 35, BIO = 100, FIRE = 50, ACID = 90, WOUND = 25)
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
@@ -878,6 +891,7 @@
 		'Property of the Gorlex Marauders, with assistance from Cybersun Industries. \
 		All rights reserved, tampering with suit will void life expectancy.'"
 	default_skin = "elite"
+	modsuit_tail_colors = list("#222222", "#445544", "#444433")
 	armor = list(MELEE = 35, BULLET = 30, LASER = 35, ENERGY = 35, BOMB = 55, BIO = 100, FIRE = 100, ACID = 100, WOUND = 25)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
@@ -1037,6 +1051,7 @@
 		it keeps the wearer safe from the harsh void of space while sacrificing no speed whatsoever. \
 		While wearing it you feel an extreme deference to darkness. "
 	default_skin = "responsory"
+	modsuit_tail_colors = list("#111122", "#555533", "#2288FF")
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 100, FIRE = 100, ACID = 90, WOUND = 10)
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	resistance_flags = FIRE_PROOF
@@ -1111,6 +1126,7 @@
 		Whether the wearer uses it or not is up to them. \
 		There seems to be a little inscription on the wrist that reads; \'squiddie', d'aww."
 	default_skin = "apocryphal"
+	modsuit_tail_colors = list("#222222", "#551100", "#444433")
 	armor = list(MELEE = 80, BULLET = 80, LASER = 50, ENERGY = 60, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 25)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
@@ -1257,6 +1273,7 @@
 		Contains an internal self-recharging high-current capacitor for short, powerful bo- \
 		Oh wait, this is not actually a flight suit. Fuck."
 	default_skin = "debug"
+	modsuit_tail_colors = list("#003377", "#222222", "#22AAFF")
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 0)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
@@ -1305,6 +1322,7 @@
 		have all the fun. If this continues to be a pattern for your \"events\" (Admin Abuse) \
 		there will be an admin complaint. You have been warned."
 	default_skin = "debug"
+	modsuit_tail_colors = list("#003377", "#222222", "#22AAFF")
 	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 100)
 	resistance_flags = INDESTRUCTIBLE|LAVA_PROOF|FIRE_PROOF|UNACIDABLE|ACID_PROOF
 	atom_flags = PREVENT_CONTENTS_EXPLOSION_1

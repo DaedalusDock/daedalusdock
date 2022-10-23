@@ -1,5 +1,6 @@
 /datum/job/cargo_technician
 	title = JOB_CARGO_TECHNICIAN
+	alt_titles = list("Cargo Technician", "Deck Worker", "Mailman")
 	description = "Distribute supplies to the departments that ordered them, \
 		collect empty crates, load and unload the supply shuttle, \
 		ship bounty cubes."

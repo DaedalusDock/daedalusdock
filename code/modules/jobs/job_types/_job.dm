@@ -2,6 +2,9 @@
 	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
 
+	/// The list of alternative job titles people can pick from, null by default.
+	var/list/alt_titles = null
+
 	/// The description of the job, used for preferences menu.
 	/// Keep it short and useful. Avoid in-jokes, these are for new players.
 	var/description
@@ -124,6 +127,21 @@
 	///RPG job names, for the memes
 	var/rpg_title
 
+	///With this set to TRUE, the loadout will be applied before a job clothing will be
+	var/no_dresscode
+	//Whether the job can use the loadout system
+	var/loadout = TRUE
+	//List of banned quirks in their names(dont blame me, that's how they're stored), players can't join as the job if they have the quirk. Associative for the purposes of performance
+	var/list/banned_quirks
+	///A list of slots that can't have loadout items assigned to them if no_dresscode is applied, used for important items such as ID, PDA, backpack and headset
+	var/list/blacklist_dresscode_slots
+	//Blacklist of species for this job.
+	var/list/species_blacklist
+	// /// Which languages does the job require, associative to LANGUAGE_UNDERSTOOD or LANGUAGE_SPOKEN
+	// var/list/required_languages = list(/datum/language/common = LANGUAGE_SPOKEN)
+
+	///Is this job veteran only? If so, then this job requires the player to be in the veteran_players.txt
+	var/veteran_only = FALSE
 
 /datum/job/New()
 	. = ..()
@@ -538,3 +556,12 @@
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/datum/job/proc/has_banned_quirk(datum/preferences/pref)
+	if(!pref) //No preferences? We'll let you pass, this time (just a precautionary check,you dont wanna mess up gamemode setting logic)
+		return FALSE
+	if(banned_quirks)
+		for(var/Q in pref.all_quirks)
+			if(banned_quirks[Q])
+				return TRUE
+	return FALSE

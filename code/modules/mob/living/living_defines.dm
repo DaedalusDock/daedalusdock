@@ -185,3 +185,7 @@
 
 	///The talk chime set to use when speaking.
 	var/voice_type
+
+	/// Indicates if this mob's client is SSD or not.
+	var/ssd_indicator = FALSE
+	var/lastclienttime = 0

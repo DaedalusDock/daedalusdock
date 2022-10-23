@@ -1,5 +1,6 @@
 /datum/job/chief_engineer
 	title = JOB_CHIEF_ENGINEER
+	alt_titles = list("Chief Engineer", "Engineering Foreman", "Head of Engineering")
 	description = "Coordinate engineering, ensure equipment doesn't get stolen, \
 		make sure the Supermatter doesn't blow up, maintain telecommunications."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
@@ -52,6 +53,7 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	banned_quirks = list(HEAD_RESTRICTED_QUIRKS, "Paraplegic" = TRUE)
 
 /datum/job/chief_engineer/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"

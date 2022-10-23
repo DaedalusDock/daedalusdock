@@ -364,6 +364,17 @@
 	inhand_icon_state = "duffel"
 	slowdown = 1
 
+//! When I was merging modular_pariah, both of original DMIs are empty. - @Zandario
+/obj/item/storage/backpack/satchel/crusader // Not very special, really just a satchel texture.
+	icon = 'icons/obj/storage.dmi'
+	worn_icon = 'icons/mob/clothing/back.dmi'
+	name = "crusader bandolier"
+	desc = "A bandolier-satchel combination for holding all your dungeon loot."
+	icon_state = "crusader_bandolier"
+	inhand_icon_state = "explorerpack"
+	w_class = WEIGHT_CLASS_BULKY
+	supports_variations_flags = NONE
+
 /obj/item/storage/backpack/duffelbag/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -714,4 +725,3 @@
 	desc = "A large duffel bag for holding extra police gear."
 	slowdown = 0
 	supports_variations_flags = NONE
-

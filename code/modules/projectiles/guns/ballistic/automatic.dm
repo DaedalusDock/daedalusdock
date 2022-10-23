@@ -1,69 +1,27 @@
-/* PARIAH EDIT REMOVAL - moved to modular, master_files automatic.dm
-
 /obj/item/gun/ballistic/automatic
 	w_class = WEIGHT_CLASS_NORMAL
 	can_suppress = TRUE
 	burst_size = 3
 	fire_delay = 2
-	actions_types = list(/datum/action/item_action/toggle_firemode)
 	semi_auto = TRUE
 	fire_sound = 'sound/weapons/gun/smg/shot.ogg'
 	fire_sound_volume = 90
 	vary_fire_sound = FALSE
 	rack_sound = 'sound/weapons/gun/smg/smgrack.ogg'
 	suppressed_sound = 'sound/weapons/gun/smg/shot_suppressed.ogg'
-	var/select = 1 ///fire selector position. 1 = semi, 2 = burst. anything past that can vary between guns.
-	var/selector_switch_icon = FALSE ///if it has an icon for a selector switch indicating current firemode.
-
-/obj/item/gun/ballistic/automatic/update_overlays()
-	. = ..()
-	if(!selector_switch_icon)
-		return
-
-	switch(select)
-		if(0)
-			. += "[initial(icon_state)]_semi"
-		if(1)
-			. += "[initial(icon_state)]_burst"
-
-/obj/item/gun/ballistic/automatic/ui_action_click(mob/user, actiontype)
-	if(istype(actiontype, /datum/action/item_action/toggle_firemode))
-		burst_select()
-	else
-		..()
-
-/obj/item/gun/ballistic/automatic/proc/burst_select()
-	var/mob/living/carbon/human/user = usr
-	select = !select
-	if(!select)
-		burst_size = 1
-		fire_delay = 0
-		to_chat(user, span_notice("You switch to semi-automatic."))
-	else
-		burst_size = initial(burst_size)
-		fire_delay = initial(fire_delay)
-		to_chat(user, span_notice("You switch to [burst_size]-round burst."))
-
-	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
-	update_appearance()
-	update_action_buttons()
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST_SHOT, SELECT_FULLY_AUTOMATIC)
 
 /obj/item/gun/ballistic/automatic/proto
 	name = "\improper Nanotrasen Saber SMG"
-	desc = "A prototype full-auto 9mm submachine gun, designated 'SABR'. Has a threaded barrel for suppressors."
+	desc = "A prototype three-round burst 9mm submachine gun, designated 'SABR'. Has a threaded barrel for suppressors."
 	icon_state = "saber"
-	burst_size = 1
-	actions_types = list()
+	selector_switch_icon = TRUE
 	mag_display = TRUE
 	empty_indicator = TRUE
 	mag_type = /obj/item/ammo_box/magazine/smgm9mm
 	pin = null
 	bolt_type = BOLT_TYPE_LOCKING
 	show_bolt_icon = FALSE
-
-/obj/item/gun/ballistic/automatic/proto/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
 /obj/item/gun/ballistic/automatic/proto/unrestricted
 	pin = /obj/item/firing_pin
@@ -87,13 +45,13 @@
 
 /obj/item/gun/ballistic/automatic/c20r/update_overlays()
 	. = ..()
-	if(!chambered && empty_indicator) //this is duplicated due to a layering issue with the select fire icon.
+	if(!chambered && empty_indicator)
 		. += "[icon_state]_empty"
 
 /obj/item/gun/ballistic/automatic/c20r/unrestricted
 	pin = /obj/item/firing_pin
 
-/obj/item/gun/ballistic/automatic/c20r/Initialize(mapload)
+/obj/item/gun/ballistic/automatic/c20r/Initialize()
 	. = ..()
 	update_appearance()
 
@@ -106,18 +64,14 @@
 	mag_type = /obj/item/ammo_box/magazine/wt550m9
 	fire_delay = 2
 	can_suppress = FALSE
-	burst_size = 1
-	actions_types = list()
+	burst_size = 0
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC)
 	can_bayonet = TRUE
 	knife_x_offset = 25
 	knife_y_offset = 12
 	mag_display = TRUE
 	mag_display_ammo = TRUE
 	empty_indicator = TRUE
-
-/obj/item/gun/ballistic/automatic/wt550/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 
 /obj/item/gun/ballistic/automatic/plastikov
 	name = "\improper PP-95 SMG"
@@ -128,7 +82,6 @@
 	burst_size = 5
 	spread = 25
 	can_suppress = FALSE
-	actions_types = list()
 	projectile_damage_multiplier = 0.35 //It's like 10.5 damage per bullet, it's close enough to 10 shots
 	mag_display = TRUE
 	empty_indicator = TRUE
@@ -163,7 +116,7 @@
 	empty_indicator = TRUE
 	fire_sound = 'sound/weapons/gun/smg/shot_alt.ogg'
 
-/obj/item/gun/ballistic/automatic/m90/Initialize(mapload)
+/obj/item/gun/ballistic/automatic/m90/Initialize()
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher(src)
 	update_appearance()
@@ -171,7 +124,7 @@
 /obj/item/gun/ballistic/automatic/m90/unrestricted
 	pin = /obj/item/firing_pin
 
-/obj/item/gun/ballistic/automatic/m90/unrestricted/Initialize(mapload)
+/obj/item/gun/ballistic/automatic/m90/unrestricted/Initialize()
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
 	update_appearance()
@@ -188,31 +141,6 @@
 	else
 		..()
 
-/obj/item/gun/ballistic/automatic/m90/update_overlays()
-	. = ..()
-	switch(select)
-		if(0)
-			. += "[initial(icon_state)]_semi"
-		if(1)
-			. += "[initial(icon_state)]_burst"
-
-/obj/item/gun/ballistic/automatic/m90/burst_select()
-	var/mob/living/carbon/human/user = usr
-	switch(select)
-		if(0)
-			select = 1
-			burst_size = initial(burst_size)
-			fire_delay = initial(fire_delay)
-			to_chat(user, span_notice("You switch to [burst_size]-rnd burst."))
-		if(1)
-			select = 0
-			burst_size = 1
-			fire_delay = 0
-			to_chat(user, span_notice("You switch to semi-auto."))
-	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
-	update_appearance()
-	return
-
 /obj/item/gun/ballistic/automatic/tommygun
 	name = "\improper Thompson SMG"
 	desc = "Based on the classic 'Chicago Typewriter'."
@@ -223,16 +151,11 @@
 	slot_flags = 0
 	mag_type = /obj/item/ammo_box/magazine/tommygunm45
 	can_suppress = FALSE
-	burst_size = 1
-	actions_types = list()
+	burst_size = 4
 	fire_delay = 1
 	bolt_type = BOLT_TYPE_OPEN
 	empty_indicator = TRUE
 	show_bolt_icon = FALSE
-
-/obj/item/gun/ballistic/automatic/tommygun/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/automatic_fire, 0.1 SECONDS)
 
 /obj/item/gun/ballistic/automatic/ar
 	name = "\improper NT-ARG 'Boarder'"
@@ -259,7 +182,7 @@
 	mag_type = /obj/item/ammo_box/magazine/mm712x82
 	weapon_weight = WEAPON_HEAVY
 	burst_size = 1
-	actions_types = list()
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_FULLY_AUTOMATIC)
 	can_suppress = FALSE
 	spread = 7
 	pin = /obj/item/firing_pin/implant/pindicate
@@ -276,23 +199,23 @@
 /obj/item/gun/ballistic/automatic/l6_saw/unrestricted
 	pin = /obj/item/firing_pin
 
-/obj/item/gun/ballistic/automatic/l6_saw/Initialize(mapload)
+/obj/item/gun/ballistic/automatic/l6_saw/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
-	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
 /obj/item/gun/ballistic/automatic/l6_saw/examine(mob/user)
 	. = ..()
 	. += "<b>alt + click</b> to [cover_open ? "close" : "open"] the dust cover."
 	if(cover_open && magazine)
-		. += span_notice("It seems like you could use an <b>empty hand</b> to remove the magazine.")
+		. += "<span class='notice'>It seems like you could use an <b>empty hand</b> to remove the magazine.</span>"
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/AltClick(mob/user)
+	. = ..()
 	if(!user.canUseTopic(src))
 		return
 	cover_open = !cover_open
-	to_chat(user, span_notice("You [cover_open ? "open" : "close"] [src]'s cover."))
+	to_chat(user, "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>")
 	playsound(src, 'sound/weapons/gun/l6/l6_door.ogg', 60, TRUE)
 	update_appearance()
 
@@ -307,7 +230,7 @@
 
 /obj/item/gun/ballistic/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params)
 	if(cover_open)
-		to_chat(user, span_warning("[src]'s cover is open! Close it before firing!"))
+		to_chat(user, "<span class='warning'>[src]'s cover is open! Close it before firing!</span>")
 		return
 	else
 		. = ..()
@@ -319,17 +242,15 @@
 		..()
 		return
 	if (!cover_open)
-		to_chat(user, span_warning("[src]'s cover is closed! Open it before trying to remove the magazine!"))
+		to_chat(user, "<span class='warning'>[src]'s cover is closed! Open it before trying to remove the magazine!</span>")
 		return
 	..()
 
 /obj/item/gun/ballistic/automatic/l6_saw/attackby(obj/item/A, mob/user, params)
 	if(!cover_open && istype(A, mag_type))
-		to_chat(user, span_warning("[src]'s dust cover prevents a magazine from being fit."))
+		to_chat(user, "<span class='warning'>[src]'s dust cover prevents a magazine from being fit.</span>")
 		return
 	..()
-
-
 
 // SNIPER //
 
@@ -352,15 +273,14 @@
 	fire_delay = 40
 	burst_size = 1
 	w_class = WEIGHT_CLASS_NORMAL
+	zoomable = TRUE
+	zoom_amt = 10 //Long range, enough to see in front of you, but no tiles behind you.
+	zoom_out_amt = 5
 	slot_flags = ITEM_SLOT_BACK
-	actions_types = list()
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC)
 	mag_display = TRUE
 	suppressor_x_offset = 3
 	suppressor_y_offset = 3
-
-/obj/item/gun/ballistic/automatic/sniper_rifle/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/scope, range_modifier = 2)
 
 /obj/item/gun/ballistic/automatic/sniper_rifle/syndicate
 	name = "syndicate sniper rifle"
@@ -373,7 +293,7 @@
 
 /obj/item/gun/ballistic/automatic/surplus
 	name = "Surplus Rifle"
-	desc = "One of countless obsolete ballistic rifles that still sees use as a cheap deterrent. Uses 10mm ammo and its bulky frame prevents one-hand firing."
+	desc = "One of countless obsolete ballistic rifles that still sees use as a cheap deterrent. Uses 10mm Magnum ammo and its bulky frame prevents one-hand firing."
 	icon_state = "surplus"
 	inhand_icon_state = "moistnugget"
 	worn_icon_state = null
@@ -385,7 +305,8 @@
 	can_suppress = TRUE
 	w_class = WEIGHT_CLASS_HUGE
 	slot_flags = ITEM_SLOT_BACK
-	actions_types = list()
+	//actions_types = list() PARIAH EDIT REMOVAL
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC)
 	mag_display = TRUE
 
 // Laser rifle (rechargeable magazine) //
@@ -397,12 +318,11 @@
 	w_class = WEIGHT_CLASS_BULKY
 	inhand_icon_state = "arg"
 	mag_type = /obj/item/ammo_box/magazine/recharge
-	empty_indicator = TRUE
+	mag_display_ammo = TRUE
 	fire_delay = 2
 	can_suppress = FALSE
 	burst_size = 0
-	actions_types = list()
+	//actions_types = list() PARIAH EDIT REMOVAL
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC)
 	fire_sound = 'sound/weapons/laser.ogg'
 	casing_ejector = FALSE
-
-*/

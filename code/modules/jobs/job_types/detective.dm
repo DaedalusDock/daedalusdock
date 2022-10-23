@@ -1,5 +1,6 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
+	alt_titles = list("Detective", "Forensic Technician")
 	description = "Investigate crimes, gather evidence, perform interrogations, \
 		look badass, smoke cigarettes."
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
@@ -55,6 +56,7 @@
 	rpg_title = "Thiefcatcher"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+	banned_quirks = list(SEC_RESTRICTED_QUIRKS)
 
 /datum/outfit/job/detective
 	name = "Detective"

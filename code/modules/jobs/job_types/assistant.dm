@@ -5,6 +5,7 @@ Assistant
 */
 /datum/job/assistant
 	title = JOB_ASSISTANT
+	alt_titles = list("Assistant", "Civilian", "Tourist", "Businessman", "Trader", "Freelancer", "Off-Duty Crew")
 	description = "Get your space legs, assist people, ask the HoP to give you a job."
 	faction = FACTION_STATION
 	total_positions = 5
@@ -40,6 +41,9 @@ Assistant
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Lout"
+
+	no_dresscode = TRUE
+	blacklist_dresscode_slots = list(ITEM_SLOT_EARS,ITEM_SLOT_BELT,ITEM_SLOT_ID,ITEM_SLOT_BACK) //headset, PDA, ID, backpack are important items
 
 /datum/outfit/job/assistant
 	name = JOB_ASSISTANT

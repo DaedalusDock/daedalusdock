@@ -6,10 +6,13 @@
 	var/list/values = list()
 
 	var/icon/vox_head = icon('icons/mob/species/vox/bodyparts.dmi', "vox_head_m")
-	var/icon/eyes = icon('icons/mob/species/vox/eyes.dmi', "eyes")
+	var/icon/eyes = icon('icons/mob/species/vox/eyes.dmi', "eyes_l")
+	var/icon/eyes_r = icon('icons/mob/species/vox/eyes.dmi', "eyes_r")
 
 	vox_head.Blend(VOX_BODY_COLOR, ICON_MULTIPLY)
 	eyes.Blend(COLOR_TEAL, ICON_MULTIPLY)
+	eyes_r.Blend(COLOR_TEAL, ICON_MULTIPLY)
+	eyes.Blend(eyes_r, ICON_OVERLAY)
 	vox_head.Blend(eyes, ICON_OVERLAY)
 
 	if(include_snout)
@@ -22,7 +25,7 @@
 
 		var/icon/final_icon = icon(vox_head)
 
-		if (sprite_accessory.icon_state != "none")
+		if (sprite_accessory.icon_state != "None")
 			var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ")
 			accessory_icon.Blend(accessory_color, ICON_MULTIPLY)
 			final_icon.Blend(accessory_icon, ICON_OVERLAY)
@@ -59,22 +62,31 @@
 /datum/preference/choiced/vox_spines/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["spines_vox"] = value
 
-/datum/preference/choiced/vox_tail
-	savefile_key = "feature_vox_tail"
+/datum/preference/choiced/tail_vox
+	savefile_key = "tail_vox"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	can_randomize = FALSE
-	relevant_mutant_bodypart = "tail_vox"
+	category = PREFERENCE_CATEGORY_FEATURES
+	main_feature_name = "Tail"
+	relevant_external_organ = /obj/item/organ/external/tail/vox
+	should_generate_icons = TRUE
 
-/datum/preference/choiced/vox_tail/init_possible_values()
-	return assoc_to_keys(GLOB.tails_list_vox)
+/datum/preference/choiced/tail_vox/init_possible_values()
+	var/list/values = list()
 
-/datum/preference/choiced/vox_tail/apply_to_human(mob/living/carbon/human/target, value)
+	for(var/name in GLOB.tails_list_vox)
+		var/datum/sprite_accessory/vox_tail = GLOB.tails_list_vox[name]
+
+		var/icon/tail_icon = icon(vox_tail.icon, "m_tail_vox[vox_tail.icon_state]_BEHIND", EAST)
+		tail_icon.Blend("#C4DB1A", ICON_MULTIPLY)
+		tail_icon.Scale(64, 64)
+		tail_icon.Crop(1, 5, 1 + 31, 5 + 31)
+
+		values[vox_tail.name] = tail_icon
+
+	return values
+
+/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_vox"] = value
-
-/datum/preference/choiced/vox_tail/create_default_value()
-	var/datum/sprite_accessory/vox_tails/vox/tail = /datum/sprite_accessory/vox_tails/vox
-	return initial(tail.name)
 
 /datum/preference/choiced/vox_hair
 	savefile_key = "feature_vox_hair"

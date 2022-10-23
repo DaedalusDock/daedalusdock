@@ -5,6 +5,8 @@
 	limb_id = SPECIES_VOX
 	is_dimorphic = TRUE
 
+	eyes_icon_file = 'icons/mob/species/vox/eyes.dmi'
+
 /obj/item/bodypart/chest/vox
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_OTHER

@@ -160,3 +160,18 @@
 
 	overlay_list += tail_secondary
 	overlay_list += tail_tertiary
+
+// Vox tail
+/obj/item/organ/external/tail/vox
+	wag_flags = WAG_ABLE
+
+	feature_key = "tail_vox"
+	preference = "tail_vox"
+	render_key = "tail_vox"
+
+	dna_block = DNA_VOX_TAIL_BLOCK
+
+	color_source = ORGAN_COLOR_INHERIT
+
+/obj/item/organ/external/tail/vox/get_global_feature_list()
+	return GLOB.tails_list_vox

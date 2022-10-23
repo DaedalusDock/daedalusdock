@@ -7,6 +7,8 @@
 	is_dimorphic = FALSE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
 
+	eyes_icon_file = 'icons/mob/species/teshari/eyes.dmi'
+
 /obj/item/bodypart/chest/teshari
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'

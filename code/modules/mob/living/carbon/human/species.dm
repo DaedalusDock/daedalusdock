@@ -237,9 +237,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///List of results you get from knife-butchering. null means you cant butcher it. Associated by resulting type - value of amount
 	var/list/knife_butcher_results
 
-	///List of visual overlays created by handle_body()
-	var/list/body_vis_overlays = list()
-
 	/// Should we preload this species's organs?
 	var/preload = TRUE
 
@@ -568,9 +565,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/mutable_appearance/no_eyeslay
 			var/add_pixel_x = 0
 			var/add_pixel_y = 0
-			//cut any possible vis overlays
-			if(body_vis_overlays.len)
-				SSvis_overlays.remove_vis_overlay(species_human, body_vis_overlays)
+
 
 			if(OFFSET_FACE in species_human.dna.species.offset_features)
 				add_pixel_x = species_human.dna.species.offset_features[OFFSET_FACE][1]

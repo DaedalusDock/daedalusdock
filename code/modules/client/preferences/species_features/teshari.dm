@@ -7,14 +7,18 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Feathers"
 	should_generate_icons = TRUE
+	relevant_external_organ = /obj/item/organ/external/teshari_feathers
 
 /datum/preference/choiced/teshari_feathers/init_possible_values()
 	var/list/values = list()
 
 	var/icon/teshari_head = icon('icons/mob/species/teshari/bodyparts.dmi', "teshari_head")
-	var/icon/eyes = icon('icons/mob/species/teshari/eyes.dmi', "eyes")
+	var/icon/eyes = icon('icons/mob/species/teshari/eyes.dmi', "eyes_l")
+	var/icon/eyes_r = icon('icons/mob/species/teshari/eyes.dmi', "eyes_r")
 	teshari_head.Blend(TESH_BODY_COLOR, ICON_MULTIPLY)
 	eyes.Blend(COLOR_BLACK, ICON_MULTIPLY)
+	eyes_r.Blend(COLOR_BLACK, ICON_MULTIPLY)
+	eyes.Blend(eyes_r, ICON_OVERLAY)
 	teshari_head.Blend(eyes, ICON_OVERLAY)
 
 	for(var/name in GLOB.teshari_feathers_list)
@@ -45,15 +49,19 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ears"
+	relevant_external_organ = /obj/item/organ/external/teshari_ears
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/teshari_ears/init_possible_values()
 	var/list/values = list()
 
 	var/icon/teshari_head = icon('icons/mob/species/teshari/bodyparts.dmi', "teshari_head")
-	var/icon/eyes = icon('icons/mob/species/teshari/eyes.dmi', "eyes")
+	var/icon/eyes = icon('icons/mob/species/teshari/eyes.dmi', "eyes_l")
+	var/icon/eyes_r = icon('icons/mob/species/teshari/eyes.dmi', "eyes_r")
 	teshari_head.Blend(TESH_BODY_COLOR, ICON_MULTIPLY)
 	eyes.Blend(COLOR_BLACK, ICON_MULTIPLY)
+	eyes_r.Blend(COLOR_BLACK, ICON_MULTIPLY)
+	eyes.Blend(eyes_r, ICON_OVERLAY)
 	teshari_head.Blend(eyes, ICON_OVERLAY)
 
 	for(var/name in GLOB.teshari_ears_list)
@@ -83,6 +91,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body feathers"
 	should_generate_icons = TRUE
+	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
 
 /datum/preference/choiced/teshari_body_feathers/init_possible_values()
 	var/list/values = list()
@@ -126,7 +135,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Tails"
-	relevant_mutant_bodypart = "tail_teshari"
+	relevant_external_organ = /obj/item/organ/external/tail/teshari
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_teshari/init_possible_values()

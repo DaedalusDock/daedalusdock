@@ -207,7 +207,7 @@
 	gender = NEUTER
 
 /datum/sprite_accessory/facial_vox_hair
-	icon = 'icons/mob/vox_facial_hair.dmi'
+	icon = 'icons/mob/species/vox/vox_facial_hair.dmi'
 	color_src = FACEHAIR
 
 /datum/sprite_accessory/facial_vox_hair/vox_beard
@@ -230,6 +230,3 @@
 	name = "Vox Mane"
 	icon_state = "mane"
 
-/datum/sprite_accessory/facial_vox_hair/none
-	name = "None"
-	icon_state = "none"

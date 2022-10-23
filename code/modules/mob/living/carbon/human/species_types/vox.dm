@@ -32,7 +32,9 @@
 	external_organs = list(
 		/obj/item/organ/external/snout/vox = "Vox Snout",
 		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_facial_hair = "None")
+		/obj/item/organ/external/vox_facial_hair = "None",
+		/obj/item/organ/external/tail/vox = "Vox Tail"
+	)
 	attack_verb = "slash"
 	attack_effect = ATTACK_EFFECT_CLAW
 	attack_sound = 'sound/weapons/slash.ogg'
@@ -61,11 +63,6 @@
 	human.hair_color = VOX_HAIR_COLOR
 	human.eye_color_right = COLOR_TEAL
 	human.eye_color_left = COLOR_TEAL
-
-	var/obj/item/organ/external/vox_hair/hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_HAIR]
-	hair.set_sprite("Vox Short Quills")
-	var/obj/item/organ/external/vox_facial_hair/facial_hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR]
-	facial_hair.set_sprite("None")
 
 	human.update_body(TRUE)
 

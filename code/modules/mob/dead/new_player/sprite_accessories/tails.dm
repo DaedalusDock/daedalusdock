@@ -10,11 +10,13 @@
 	icon_state = "monkey"
 	color_src = FALSE
 
-/datum/sprite_accessory/vox_tails/vox
-	icon = 'icons/mob/vox_tails.dmi'
-	name = "Vox Tail"
-	icon_state = "vox"
+/datum/sprite_accessory/tails/vox
+	icon = 'icons/mob/species/vox/vox_tails.dmi'
 	em_block = TRUE
+
+/datum/sprite_accessory/tails/vox/default
+	name = "Vox Tail"
+	icon_state = "default"
 
 /datum/sprite_accessory/tails
 	icon = 'icons/mob/mutant_bodyparts.dmi'

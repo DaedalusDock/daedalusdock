@@ -22,8 +22,6 @@
 
 /client/proc/Test_ZAS_Connection(turf/T as turf)
 	set category = "Debug"
-	if(!T.simulated)
-		return
 
 	var/direction_list = list(\
 	"North" = NORTH,\

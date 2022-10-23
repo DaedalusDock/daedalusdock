@@ -56,13 +56,14 @@
 	if(!is_tree || !isopenturf(loc))
 		return
 	var/turf/open/T = src.loc
-	if(!T.air || !T.air.hasGas(GAS_CO2))
+	var/datum/gas_mixture/turf_air = T?.return_air()
+	if(!turf_air || !turf_air.hasGas(GAS_CO2))
 		return
 
-	var/co2 = T.air.gas[GAS_CO2]
+	var/co2 = turf_air.gas[GAS_CO2]
 	if(co2 > 0 && DT_PROB(13, delta_time))
 		var/amt = min(co2, 9)
-		T.air.adjustGas(GAS_CO2, -amt)
+		turf_air.adjustGas(GAS_CO2, -amt)
 		T.atmos_spawn_air(GAS_OXYGEN, amt)
 
 /mob/living/simple_animal/hostile/tree/AttackingTarget()

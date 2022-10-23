@@ -25,10 +25,9 @@
 
 		var/icon/final_icon = icon(vox_head)
 
-		if (sprite_accessory.icon_state != "None")
-			var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ")
-			accessory_icon.Blend(accessory_color, ICON_MULTIPLY)
-			final_icon.Blend(accessory_icon, ICON_OVERLAY)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ")
+		accessory_icon.Blend(accessory_color, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 		final_icon.Crop(10, 19, 22, 31)
 		final_icon.Scale(32, 32)
@@ -61,29 +60,6 @@
 
 /datum/preference/choiced/vox_spines/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["spines_vox"] = value
-
-/datum/preference/choiced/tail_vox
-	savefile_key = "tail_vox"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Tail"
-	relevant_external_organ = /obj/item/organ/external/tail/vox
-	should_generate_icons = TRUE
-
-/datum/preference/choiced/tail_vox/init_possible_values()
-	var/list/values = list()
-
-	for(var/name in GLOB.tails_list_vox)
-		var/datum/sprite_accessory/vox_tail = GLOB.tails_list_vox[name]
-
-		var/icon/tail_icon = icon(vox_tail.icon, "m_tail_vox[vox_tail.icon_state]_BEHIND", EAST)
-		tail_icon.Blend("#C4DB1A", ICON_MULTIPLY)
-		tail_icon.Scale(64, 64)
-		tail_icon.Crop(1, 5, 1 + 31, 5 + 31)
-
-		values[vox_tail.name] = tail_icon
-
-	return values
 
 /datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_vox"] = value
@@ -130,6 +106,28 @@
 
 	return data
 
+/datum/preference/choiced/tail_vox
+	savefile_key = "tail_vox"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	main_feature_name = "Tail"
+	relevant_external_organ = /obj/item/organ/external/tail/vox
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/tail_vox/init_possible_values()
+	var/list/values = list()
+
+	for(var/name in GLOB.tails_list_vox)
+		var/datum/sprite_accessory/vox_tail = GLOB.tails_list_vox[name]
+
+		var/icon/tail_icon = icon(vox_tail.icon, "m_tail_vox_[vox_tail.icon_state]_BEHIND", EAST)
+		tail_icon.Blend("#C4DB1A", ICON_MULTIPLY)
+		tail_icon.Scale(64, 64)
+		tail_icon.Crop(1, 5, 1 + 31, 5 + 31)
+
+		values[vox_tail.name] = tail_icon
+
+	return values
 
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR

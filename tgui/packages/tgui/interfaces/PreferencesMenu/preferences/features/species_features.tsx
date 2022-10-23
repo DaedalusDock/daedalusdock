@@ -1,4 +1,9 @@
-import { FeatureColorInput, Feature, FeatureChoiced, FeatureDropdownInput } from "./base";
+import { FeatureColorInput, FeatureTriColorInput, Feature, FeatureChoiced, FeatureDropdownInput } from "./base";
+
+export const feature_mutant_colors: Feature<string[]> = {
+  name: "Generic Mutant Colors",
+  component: FeatureTriColorInput,
+};
 
 export const eye_color: Feature<string> = {
   name: "Eye color",
@@ -61,21 +66,6 @@ export const feature_lizard_tail: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
-export const feature_mcolor: Feature<string> = {
-  name: "Mutant color",
-  component: FeatureColorInput,
-};
-
-export const feature_mcolor2: Feature<string> = {
-  name: "Secondary Mutant color",
-  component: FeatureColorInput,
-};
-
-export const feature_mcolor3: Feature<string> = {
-  name: "Tertiary Mutant color",
-  component: FeatureColorInput,
-};
-
 export const underwear_color: Feature<string> = {
   name: "Underwear color",
   component: FeatureColorInput,
@@ -134,6 +124,11 @@ export const teshari_body_feathers: Feature<string> = {
 export const tail_teshari: Feature<string> = {
   name: "Tail",
   component: FeatureDropdownInput,
+};
+
+export const teshari_tail_colors: Feature<string[]> = {
+  name: "Teshari Tail Colors",
+  component: FeatureTriColorInput,
 };
 
 export const heterochromatic: Feature<string> = {

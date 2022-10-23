@@ -56,8 +56,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	var/blood_type
 	///The type of mutant race the player is if applicable (i.e. potato-man)
 	var/datum/species/species = new /datum/species/human
-	///first value is mutant color
+	///first value is mutant color //This comment is older than the average tg player
 	var/list/features = list("FFF")
+	///A large list of key:value pairs for mutant colors
+	var/list/mutant_colors = list()
 	///Stores the hashed values of the person's non-human features
 	var/unique_features
 	///Stores the real name of the person who originally got this dna datum. Used primarely for changelings,
@@ -481,6 +483,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(!skip_index) //I hate this
 		generate_dna_blocks()
 	features = random_features()
+	mutant_colors = random_mutant_colors()
 	unique_features = generate_unique_features()
 
 
@@ -500,6 +503,12 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /datum/dna/stored/remove_mutation_group(list/group)
 	return
+
+/datum/dna/proc/set_all_mutant_colors(color)
+	for(var/key in GLOB.all_mutant_colors_keys)
+		mutant_colors["[key]_1"] = color
+		mutant_colors["[key]_2"] = color
+		mutant_colors["[key]_3"] = color
 
 /////////////////////////// DNA MOB-PROCS //////////////////////
 /datum/dna/proc/update_body_size()

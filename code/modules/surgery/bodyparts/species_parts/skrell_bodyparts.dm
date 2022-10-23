@@ -5,6 +5,8 @@
 	uses_mutcolor = TRUE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_SKRELL
 
+	eyes_icon_file = 'icons/mob/species/skrell/eyes.dmi'
+
 /obj/item/bodypart/chest/skrell
 	icon_greyscale = 'icons/mob/species/skrell/bodyparts.dmi'
 	limb_id = SPECIES_SKRELL

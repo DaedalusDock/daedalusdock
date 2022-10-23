@@ -144,7 +144,8 @@
 
 	dna_block = DNA_TESHARI_TAIL_BLOCK
 
-	color_source = ORGAN_COLOR_INHERIT
+	color_source = ORGAN_COLOR_INHERIT_ALL
+	mutcolor_used = MUTCOLORS_TESHARI_TAIL_1
 
 /obj/item/organ/external/tail/teshari/get_global_feature_list()
 	return GLOB.teshari_tails_list
@@ -154,9 +155,9 @@
 	var/mutable_appearance/tail_secondary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_secondary", layer = -image_layer)
 	var/mutable_appearance/tail_tertiary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_tertiary", layer = -image_layer)
 
-	if(owner)
-		tail_secondary.color = owner.dna.features["mcolor2"]
-		tail_tertiary.color = owner.dna.features["mcolor3"]
+
+	tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
+	tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]
 
 	overlay_list += tail_secondary
 	overlay_list += tail_tertiary

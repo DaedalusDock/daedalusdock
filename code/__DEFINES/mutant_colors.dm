@@ -1,0 +1,14 @@
+#define MUTCOLORS_KEY_GENERIC "generic"
+ #define MUTCOLORS_GENERIC_1 "generic_1"
+ #define MUTCOLORS_GENERIC_2 "generic_2"
+ #define MUTCOLORS_GENERIC_3 "generic_3"
+
+#define MUTCOLORS_KEY_TESHARI_TAIL "teshari_tail"
+ #define MUTCOLORS_TESHARI_TAIL_1 "teshari_tail_1"
+ #define MUTCOLORS_TESHARI_TAIL_2 "teshari_tail_2"
+ #define MUTCOLORS_TESHARI_TAIL_3 "teshari_tail_3"
+
+GLOBAL_LIST_INIT(all_mutant_colors_keys, list(
+	MUTCOLORS_KEY_GENERIC,
+	MUTCOLORS_KEY_TESHARI_TAIL,
+))

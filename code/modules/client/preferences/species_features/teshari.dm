@@ -156,6 +156,13 @@
 /datum/preference/choiced/tail_teshari/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	target.dna.features["tail_teshari"] = value
 
+/datum/preference/tri_color/teshari_tail
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "teshari_tail_colors"
+	relevant_external_organ = /obj/item/organ/external/tail/teshari
+
+	color_key = MUTCOLORS_KEY_TESHARI_TAIL
 
 #undef TESH_BODY_COLOR
 #undef TESH_FEATHER_COLOR

@@ -1,7 +1,7 @@
 // voxs!
 /obj/item/bodypart/head/vox
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_BEAK
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
 	limb_id = SPECIES_VOX
 	is_dimorphic = TRUE
 
@@ -14,19 +14,19 @@
 	is_dimorphic = TRUE
 
 /obj/item/bodypart/l_arm/vox
-	mutcolor_used = MUTCOLORS2
+	mutcolor_used = MUTCOLORS_GENERIC_2
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_OTHER
 	limb_id = SPECIES_VOX
 
 /obj/item/bodypart/r_arm/vox
-	mutcolor_used = MUTCOLORS2
+	mutcolor_used = MUTCOLORS_GENERIC_2
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_OTHER
 	limb_id = SPECIES_VOX
 
 /obj/item/bodypart/l_leg/vox
-	mutcolor_used = MUTCOLORS2
+	mutcolor_used = MUTCOLORS_GENERIC_2
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
@@ -49,7 +49,7 @@
 			limb_id = SPECIES_VOX
 
 /obj/item/bodypart/r_leg/vox
-	mutcolor_used = MUTCOLORS2
+	mutcolor_used = MUTCOLORS_GENERIC_2
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"

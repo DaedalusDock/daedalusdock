@@ -32,7 +32,7 @@
 	external_organs = list(
 		/obj/item/organ/external/snout/vox = "Vox Snout",
 		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_facial_hair = "None",
+		/obj/item/organ/external/vox_hair/facial = "None",
 		/obj/item/organ/external/tail/vox = "Vox Tail"
 	)
 	attack_verb = "slash"
@@ -55,12 +55,10 @@
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"
-#define VOX_HAIR_COLOR "#997C28"
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = VOX_BODY_COLOR
 	human.dna.features["mcolor2"] = VOX_SNOUT_COLOR
-	human.hair_color = VOX_HAIR_COLOR
 	human.eye_color_right = COLOR_TEAL
 	human.eye_color_left = COLOR_TEAL
 
@@ -68,7 +66,6 @@
 
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR
-#undef VOX_HAIR_COLOR
 
 /datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
 	. = ..()

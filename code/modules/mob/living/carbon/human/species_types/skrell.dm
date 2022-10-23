@@ -5,7 +5,6 @@
 	default_color = "42F58D"
 	species_traits = list(MUTCOLORS, HAIRCOLOR, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE, BODY_RESIZABLE)
 	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_LIGHT_DRINKER)
-	external_organs = list(/obj/item/organ/external/headtails = "Long")
 	liked_food = VEGETABLES | FRUIT
 	disliked_food = GROSS | MEAT | RAW | DAIRY
 	toxic_food = TOXIC | SEAFOOD
@@ -23,6 +22,10 @@
 	mutantheart = /obj/item/organ/internal/heart/skrell
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
+
+	external_organs = list(
+		/obj/item/organ/external/skrell_headtails = "Long"
+	)
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/skrell,

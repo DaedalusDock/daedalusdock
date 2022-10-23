@@ -42,6 +42,11 @@
 	///Where does this organ inherit it's color from?
 	var/color_source = ORGAN_COLOR_INHERIT
 
+	///Used by ORGAN_COLOR_INHERIT_ALL, allows full control of the owner's mutcolors
+	var/list/mutcolors = list()
+	///See above
+	var/mutcolor_used
+
 	///Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
 
@@ -217,13 +222,24 @@
 	switch(color_source)
 		if(ORGAN_COLOR_OVERRIDE)
 			draw_color = override_color(ownerlimb.draw_color)
+
 		if(ORGAN_COLOR_INHERIT)
 			draw_color = ownerlimb.draw_color
+
 		if(ORGAN_COLOR_HAIR)
 			if(!ishuman(ownerlimb.owner))
 				return
+
 			var/mob/living/carbon/human/human_owner = ownerlimb.owner
 			draw_color = human_owner.hair_color
+
+		if(ORGAN_COLOR_STATIC)
+			color = draw_color //Empty if clauses are linted
+
+		if(ORGAN_COLOR_INHERIT_ALL)
+			mutcolors = ownerlimb.mutcolors.Copy()
+			draw_color = mutcolors[mutcolor_used]
+
 	color = draw_color
 	return TRUE
 
@@ -270,36 +286,6 @@
 
 /obj/item/organ/external/frills/get_global_feature_list()
 	return GLOB.frills_list
-
-///Guess what part of the lizard this is?
-/obj/item/organ/external/snout
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_SNOUT
-	layers = EXTERNAL_ADJACENT
-
-	feature_key = "snout"
-	preference = "feature_lizard_snout"
-	external_bodytypes = BODYTYPE_SNOUTED
-
-	dna_block = DNA_SNOUT_BLOCK
-
-/obj/item/organ/external/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/snout/get_global_feature_list()
-	return GLOB.snouts_list
-
-///Guess what part of the vox is this?
-/obj/item/organ/external/snout/vox
-	feature_key = "vox_snout"
-	preference = "feature_vox_snout"
-
-	dna_block = DNA_VOX_SNOUT_BLOCK
-
-/obj/item/organ/external/snout/vox/get_global_feature_list()
-	return GLOB.vox_snouts_list
 
 ///A moth's antennae
 /obj/item/organ/external/antennae
@@ -381,42 +367,6 @@
 /obj/item/organ/external/pod_hair/override_color(rgb_value)
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
-
-/obj/item/organ/external/vox_hair
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
-
-	dna_block = DNA_VOX_HAIR_BLOCK
-
-	feature_key = "vox_hair"
-	preference = "feature_vox_hair"
-
-/obj/item/organ/external/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/vox_hair/get_global_feature_list()
-	return GLOB.vox_hair_list
-
-/obj/item/organ/external/vox_facial_hair
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
-
-	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
-
-	feature_key = "vox_facial_hair"
-	preference = "feature_vox_facial_hair"
-
-/obj/item/organ/external/vox_facial_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/vox_facial_hair/get_global_feature_list()
-	return GLOB.vox_facial_hair_list
 
 //skrell
 /obj/item/organ/external/headtails

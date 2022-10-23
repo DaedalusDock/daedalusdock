@@ -95,6 +95,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["ethcolor"] = COLOR_WHITE
 	dna.features["frills"] = "None"
 	dna.features["horns"] = "None"
+	dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
 	dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	dna.features["mcolor2"] = COLOR_VIBRANT_LIME
 	dna.features["mcolor3"] = COLOR_VIBRANT_LIME

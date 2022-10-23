@@ -145,6 +145,15 @@
 		"tail_teshari" = pick(GLOB.teshari_tails_list),
 	))
 
+/proc/random_mutant_colors()
+	. = list()
+	for(var/key in GLOB.all_mutant_colors_keys)
+		.["[key]_1"] = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]"
+		.["[key]_2"] = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]"
+		.["[key]_3"] = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]"
+
+	return .
+
 /proc/random_hairstyle(gender)
 	switch(gender)
 		if(MALE)

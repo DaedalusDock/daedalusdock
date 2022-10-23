@@ -16,7 +16,7 @@
 	vox_head.Blend(eyes, ICON_OVERLAY)
 
 	if(include_snout)
-		var/icon/snout = icon('icons/mob/vox_snouts.dmi', "m_snout_vox_ADJ")
+		var/icon/snout = icon('icons/mob/species/vox/vox_snouts.dmi', "m_snout_vox_ADJ")
 		snout.Blend(VOX_SNOUT_COLOR, ICON_MULTIPLY)
 		vox_head.Blend(snout, ICON_OVERLAY)
 

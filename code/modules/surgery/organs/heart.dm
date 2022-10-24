@@ -288,7 +288,7 @@
 	RegisterSignal(owner, COMSIG_PARENT_PREQDELETED, .proc/owner_deleted)
 
 /obj/item/organ/internal/heart/ethereal/Remove(mob/living/carbon/owner, special = 0)
-	UnregisterSignal(owner, list(COMSIG_MOB_STATCHANGE, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_PARENT_QDELETING))
+	UnregisterSignal(owner, list(COMSIG_MOB_STATCHANGE, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_PARENT_PREQDELETED))
 	REMOVE_TRAIT(owner, TRAIT_CORPSELOCKED, SPECIES_TRAIT)
 	stop_crystalization_process(owner)
 	QDEL_NULL(current_crystal)

@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Unsimulated turfs can no longer have their gas mutated.

@@ -193,12 +193,12 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	. = ""
 	var/list/L = new /list(DNA_FEATURE_BLOCKS)
 
-	if(features["mcolor"])
-		L[DNA_MUTANT_COLOR_BLOCK] = sanitize_hexcolor(features["mcolor"], include_crunch = FALSE)
-	if(features["mcolor2"])
-		L[DNA_MUTANT_COLOR_BLOCK_2] = sanitize_hexcolor(features["mcolor2"], include_crunch = FALSE)
-	if(features["mcolor3"])
-		L[DNA_MUTANT_COLOR_BLOCK_3] = sanitize_hexcolor(features["mcolor3"], include_crunch = FALSE)
+	if(mutant_colors[MUTCOLORS_GENERIC_1])
+		L[DNA_MUTANT_COLOR_BLOCK] = sanitize_hexcolor(mutant_colors[MUTCOLORS_GENERIC_1], include_crunch = FALSE)
+	if(mutant_colors[MUTCOLORS_GENERIC_2])
+		L[DNA_MUTANT_COLOR_BLOCK_2] = sanitize_hexcolor(mutant_colors[MUTCOLORS_GENERIC_2], include_crunch = FALSE)
+	if(mutant_colors[MUTCOLORS_GENERIC_3])
+		L[DNA_MUTANT_COLOR_BLOCK_3] = sanitize_hexcolor(mutant_colors[MUTCOLORS_GENERIC_3], include_crunch = FALSE)
 	if(features["ethcolor"])
 		L[DNA_ETHEREAL_COLOR_BLOCK] = sanitize_hexcolor(features["ethcolor"], include_crunch = FALSE)
 	if(features["body_markings"])
@@ -353,11 +353,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		CRASH("Non-human mobs shouldn't have DNA")
 	switch(blocknumber)
 		if(DNA_MUTANT_COLOR_BLOCK)
-			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["mcolor"], include_crunch = FALSE))
+			set_uni_feature_block(blocknumber, sanitize_hexcolor(mutant_colors[MUTCOLORS_GENERIC_1], include_crunch = FALSE))
 		if(DNA_MUTANT_COLOR_BLOCK_2)
-			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["mcolor2"], include_crunch = FALSE))
+			set_uni_feature_block(blocknumber, sanitize_hexcolor(features[MUTCOLORS_GENERIC_2], include_crunch = FALSE))
 		if(DNA_MUTANT_COLOR_BLOCK_3)
-			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["mcolor3"], include_crunch = FALSE))
+			set_uni_feature_block(blocknumber, sanitize_hexcolor(features[MUTCOLORS_GENERIC_3], include_crunch = FALSE))
 		if(DNA_ETHEREAL_COLOR_BLOCK)
 			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["ethcolor"], include_crunch = FALSE))
 		if(DNA_LIZARD_MARKINGS_BLOCK)
@@ -510,6 +510,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		mutant_colors["[key]_2"] = color
 		mutant_colors["[key]_3"] = color
 
+/datum/dna/proc/set_all_mutant_colors_of_key(key, color)
+	mutant_colors["[key]_1"] = color
+	mutant_colors["[key]_2"] = color
+	mutant_colors["[key]_3"] = color
+
 /////////////////////////// DNA MOB-PROCS //////////////////////
 /datum/dna/proc/update_body_size()
 	if(!holder || !features["body_size"])
@@ -642,12 +647,12 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	facial_hairstyle = GLOB.facial_hairstyles_list[deconstruct_block(get_uni_identity_block(structure, DNA_FACIAL_HAIRSTYLE_BLOCK), GLOB.facial_hairstyles_list.len)]
 	hairstyle = GLOB.hairstyles_list[deconstruct_block(get_uni_identity_block(structure, DNA_HAIRSTYLE_BLOCK), GLOB.hairstyles_list.len)]
 	var/features = dna.unique_features
-	if(dna.features["mcolor"])
-		dna.features["mcolor"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK))
-	if(dna.features["mcolor2"])
-		dna.features["mcolor2"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK_2))
-	if(dna.features["mcolor3"])
-		dna.features["mcolor3"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK_3))
+	if(dna.mutant_colors[MUTCOLORS_GENERIC_1])
+		dna.features[MUTCOLORS_GENERIC_1] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK))
+	if(dna.mutant_colors[MUTCOLORS_GENERIC_2])
+		dna.mutant_colors[MUTCOLORS_GENERIC_2] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK_2))
+	if(dna.mutant_colors[MUTCOLORS_GENERIC_3])
+		dna.mutant_colors[MUTCOLORS_GENERIC_3] = sanitize_hexcolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK_3))
 	if(dna.features["ethcolor"])
 		dna.features["ethcolor"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_ETHEREAL_COLOR_BLOCK))
 	if(dna.features["body_markings"])

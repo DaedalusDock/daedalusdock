@@ -174,10 +174,10 @@ Lizard subspecies: SILVER SCALED
 
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	var/mob/living/carbon/human/new_silverscale = C
-	old_mutcolor = C.dna.features["mcolor"]
+	old_mutcolor = C.dna.mutant_colors[MUTCOLORS_GENERIC_1]
 	old_eye_color_left = new_silverscale.eye_color_left
 	old_eye_color_right = new_silverscale.eye_color_right
-	new_silverscale.dna.features["mcolor"] = "#eeeeee"
+	new_silverscale.dna.mutant_colors[MUTCOLORS_GENERIC_1] = "#eeeeee"
 	new_silverscale.eye_color_left = "#0000a0"
 	new_silverscale.eye_color_right = "#0000a0"
 	..()
@@ -185,7 +185,7 @@ Lizard subspecies: SILVER SCALED
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/C)
 	var/mob/living/carbon/human/was_silverscale = C
-	was_silverscale.dna.features["mcolor"] = old_mutcolor
+	was_silverscale.dna.mutant_colors[MUTCOLORS_GENERIC_1] = old_mutcolor
 	was_silverscale.eye_color_left = old_eye_color_left
 	was_silverscale.eye_color_right = old_eye_color_right
 
@@ -193,5 +193,5 @@ Lizard subspecies: SILVER SCALED
 	..()
 
 /datum/species/lizard/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = "#f8f2a4"
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1] = "#f8f2a4"
 	human.update_body(TRUE)

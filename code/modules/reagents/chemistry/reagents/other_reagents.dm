@@ -473,7 +473,7 @@
 
 			if(MUTCOLORS in exposed_human.dna.species.species_traits) //take current alien color and darken it slightly
 				var/newcolor = ""
-				var/string = exposed_human.dna.features["mcolor"]
+				var/string = exposed_human.dna.mutant_colors[MUTCOLORS_GENERIC_1]
 				var/len = length(string)
 				var/char = ""
 				var/ascii = 0
@@ -496,7 +496,7 @@
 						else
 							break
 				if(ReadHSV(newcolor)[3] >= ReadHSV("#7F7F7F")[3])
-					exposed_human.dna.features["mcolor"] = newcolor
+					exposed_human.dna.mutant_colors[MUTCOLORS_GENERIC_1] = newcolor
 			exposed_human.update_body(is_creating = TRUE)
 
 		if((methods & INGEST) && show_message)
@@ -518,7 +518,7 @@
 		if(N.dna.species.use_skintones)
 			N.skin_tone = "orange"
 		else if(MUTCOLORS in N.dna.species.species_traits) //Aliens with custom colors simply get turned orange
-			N.dna.features["mcolor"] = "#ff8800"
+			N.dna.mutant_colors[MUTCOLORS_GENERIC_1] = "#ff8800"
 		N.update_body(is_creating = TRUE)
 		if(DT_PROB(3.5, delta_time))
 			if(N.w_uniform)

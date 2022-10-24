@@ -185,7 +185,6 @@
 	abstract_type = /datum/preference/tri_color
 	///dna.features["mutcolors"][color_key] = input
 	var/color_key = ""
-	var/actually_check = TRUE
 
 /datum/preference/tri_color/deserialize(input, datum/preferences/preferences)
 	var/list/input_colors = input
@@ -196,11 +195,6 @@
 
 /datum/preference/tri_color/is_valid(list/value)
 	return islist(value) && value.len == 3 && (findtext(value[1], GLOB.is_color) && findtext(value[2], GLOB.is_color) && findtext(value[3], GLOB.is_color))
-
-/datum/preference/tri_color/is_accessible(datum/preferences/preferences)
-	if (actually_check)
-		return ..(preferences)
-	return TRUE
 
 /datum/preference/tri_color/apply_to_human(mob/living/carbon/human/target, value)
 	if (type == abstract_type)

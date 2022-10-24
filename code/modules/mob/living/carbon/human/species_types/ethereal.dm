@@ -78,7 +78,7 @@
 	ethereal_heart.ethereal_color = default_color
 
 	//The following code is literally only to make admin-spawned ethereals not be black.
-	C.dna.features["mcolor"] = C.dna.features["ethcolor"] //Ethcolor and Mut color are both dogshit and i hate them
+	C.dna.mutant_colors[MUTCOLORS_GENERIC_1] = C.dna.features["ethcolor"] //Ethcolor and Mut color are both dogshit and i hate them
 	for(var/obj/item/bodypart/limb as anything in C.bodyparts)
 		if(limb.limb_id == SPECIES_ETHEREAL)
 			limb.update_limb(is_creating = TRUE)

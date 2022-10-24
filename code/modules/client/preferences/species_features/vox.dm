@@ -99,13 +99,6 @@
 /datum/preference/choiced/vox_facial_hair/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["vox_facial_hair"] = value
 
-/datum/preference/choiced/vox_facial_hair/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
-
-	return data
-
 /datum/preference/choiced/tail_vox
 	savefile_key = "tail_vox"
 	savefile_identifier = PREFERENCE_CHARACTER

@@ -42,7 +42,7 @@
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 
 /datum/species/skrell/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = COLOR_BLUE_GRAY
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1] = COLOR_BLUE_GRAY
 	human.hair_color = COLOR_BLUE_GRAY
 	human.update_body(TRUE)
 

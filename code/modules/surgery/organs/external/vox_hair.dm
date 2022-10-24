@@ -8,8 +8,8 @@
 	feature_key = "vox_hair"
 	preference = "feature_vox_hair"
 
-	color_source = ORGAN_COLOR_STATIC
-	draw_color = "#997C28"
+	color_source = ORGAN_COLOR_HAIR
+	//draw_color = "#997C28"
 
 /obj/item/organ/external/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))

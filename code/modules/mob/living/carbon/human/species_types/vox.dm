@@ -57,8 +57,7 @@
 #define VOX_SNOUT_COLOR "#E5C04B"
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = VOX_BODY_COLOR
-	human.dna.features["mcolor2"] = VOX_SNOUT_COLOR
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1]= VOX_BODY_COLOR
 	human.eye_color_right = COLOR_TEAL
 	human.eye_color_left = COLOR_TEAL
 

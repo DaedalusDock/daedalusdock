@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - server: Users who connect without a linked discord account will now get a pop-up.

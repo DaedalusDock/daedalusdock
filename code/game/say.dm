@@ -82,7 +82,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(istype(D) && D.display_icon(src))
 			languageicon = "[D.get_icon()] "
 
-	messagepart = " <span class='message'>[say_emphasis(messagepart)]</span></span>"
+	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>"
 
 	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
 

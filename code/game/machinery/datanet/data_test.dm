@@ -12,6 +12,10 @@
 	. = ..()
 	reconnect_dataterm()
 
+/obj/machinery/development_dataset/say_emphasis(input)
+	//Fuck off and don't decorate debug text
+	return input
+
 /obj/machinery/development_dataset/proc/reconnect_dataterm()
 	var/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
 	if(transmission_terminal == new_transmission_terminal)

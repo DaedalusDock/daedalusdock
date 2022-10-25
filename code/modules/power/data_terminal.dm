@@ -23,7 +23,9 @@
 /obj/machinery/power/data_terminal/proc/post_signal(datum/signal/signal)
 	if(!powernet || !signal)
 		return //What do you expect me to transmit on, the fucking air?
-	if(signal.author != connected_machine)
+	if(signal.author.resolve() != connected_machine)
 		CRASH("Data terminal was told to pass a signal from something other than it's master machine?")
 	signal.transmission_method = TRANSMISSION_WIRE
+	//Fuck you, we're the author now bitch.
+	signal.author = WEAKREF(src)
 	powernet.queue_signal(signal)

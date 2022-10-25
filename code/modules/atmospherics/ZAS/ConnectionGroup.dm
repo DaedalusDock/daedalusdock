@@ -222,6 +222,10 @@ Class Procs:
 		SSzas.excite_edge(src)
 
 /connection_edge/zone/queue_spacewind()
+	#ifdef UNIT_TESTS
+	return
+	#endif
+
 	var/differential = A.air.returnPressure() - B.air.returnPressure()
 	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
 		var/list/attracted
@@ -295,6 +299,10 @@ Class Procs:
 		SSzas.excite_edge(src)
 
 /connection_edge/unsimulated/queue_spacewind()
+	#ifdef UNIT_TESTS
+	return
+	#endif
+
 	var/differential = A.air.returnPressure() - air.returnPressure()
 	if(abs(differential) >= zas_settings.airflow_lightest_pressure)
 		var/list/attracted = A.movables()

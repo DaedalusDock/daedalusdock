@@ -1,3 +1,9 @@
+GLOBAL_REAL(immortals, /list) = list(
+	"ArcLumin",
+	"OrdoDictionary",
+	"DrSingh"
+)
+
 /*
 
 At 7:30 AM on March 8th, 2017, ArcLumin died in a fatal car crash on impact.
@@ -43,3 +49,23 @@ That’s how he would have wanted it.
 	icon_state = "medal_paperwork"
 	medaltype = "medal-gold"
 	custom_materials = list(/datum/material/gold=1000)
+
+/*
+
+On September 5th, 2022 Dr Singh, also known as Delari, passed away under unknown circumstances.
+Singh's contributions cannot be understated, in both code and community. Joining the Goonstation community in 2010 under the ckey magicmountain,
+Singh went on to be an incredible person with incredible contributions, from aiding the creation of the Goon Process Scheduler, the creation of qdel(),
+and going as far as to spread his knowledge to other servers, such as helping the creation of Fast Explosions on TG. An incredibly friendly and bright
+mind is no longer with us, but his passing has once more brought us together, with users from all corners of SS13 grieving.
+
+Also, he was gay.
+
+Rest easy, space doctor.
+*/
+
+/datum/emote/living/sigh/select_message_type(mob/user, msg, intentional)
+	. = ..()
+	if(!muzzle_ignore && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
+		return .
+
+	return prob(1) ? "singhs" : .

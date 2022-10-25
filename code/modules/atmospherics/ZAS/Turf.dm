@@ -295,10 +295,10 @@
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
 		if(air)
-			return air
+			return air.copy()
 		else
 			make_air()
-			return air
+			return air.copy()
 
 	else if(zone)
 		if(!zone.invalid)

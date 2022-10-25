@@ -42,8 +42,8 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer
-	desc = "It's an orange high visibility jumpsuit worn by engineers. Made from fire resistant materials."
 	name = "engineer's jumpsuit"
+	desc = "It's an orange high visibility jumpsuit worn by engineers. Made from fire resistant materials."
 	icon_state = "engine"
 	inhand_icon_state = "engi_suit"
 	species_exception = list(/datum/species/golem/uranium)
@@ -65,4 +65,32 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/under/rank/engineering/engineer/enginetech
+	name = "engine technician's jumpsuit"
+	desc = "It's an orange high visibility jumpsuit worn by engineers specialized in maintaining engines. Made from fire resistant materials."
+	icon_state = "enginetech"
+	inhand_icon_state = "engi_suit"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/under/rank/engineering/engineer/enginetech/skirt
+	name = "engine technician's jumpskirt"
+	desc = "It's an orange high visibility jumpskirt worn by engineers specialized in maintaining engines. Made from fire resistant materials."
+	icon_state = "enginetech_skirt"
+	inhand_icon_state = "engi_suit"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/under/rank/engineering/engineer/electrician
+	name = "electrician's jumpsuit"
+	desc = "It's an orange high visibility jumpsuit worn by electricians. Made from fire resistant materials."
+	icon_state = "electrician"
+	inhand_icon_state = "engi_suit"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/under/rank/engineering/engineer/electrician/skirt
+	name = "electrician's jumpskirt"
+	desc = "It's an orange high visibility jumpskirt worn by electricians. Made from fire resistant materials."
+	icon_state = "electrician_skirt"
+	inhand_icon_state = "engi_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

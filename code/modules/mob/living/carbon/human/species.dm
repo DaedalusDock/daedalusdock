@@ -137,6 +137,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A path to an outfit that is important for species life e.g. plasmaman outfit
 	var/datum/outfit/outfit_important_for_life
 
+	///Used for picking outfits in _job.dm
+	var/job_outfit_type
+
 	///Icon file used for eyes, defaults to 'icons/mob/human_face.dmi' if not set
 	var/species_eye_path
 
@@ -1899,7 +1902,23 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Returns the species's scream sound.
 /datum/species/proc/get_scream_sound(mob/living/carbon/human/human)
-	return
+	if(human.gender == MALE)
+		return pick(
+			'goon/sounds/voice/mascream4.ogg',
+			'sound/voice/human/malescream_2.ogg',
+			'sound/voice/human/malescream_2.ogg', //He gets two chances to roll because he's special and we love him
+			'goon/sounds/voice/mascream5.ogg',
+			'goon/sounds/voice/mascream7.ogg',
+			'sound/voice/human/malescream_5.ogg',
+		)
+
+	return pick(
+		'sound/voice/human/femalescream_1.ogg',
+		'sound/voice/human/femalescream_2.ogg',
+		'sound/voice/human/femalescream_3.ogg',
+		'goon/sounds/voice/fescream1.ogg',
+		'goon/sounds/voice/fescream5.ogg',
+	)
 
 /datum/species/proc/get_types_to_preload()
 	var/list/to_store = list()

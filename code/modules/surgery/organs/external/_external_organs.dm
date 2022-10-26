@@ -161,7 +161,7 @@
 /obj/item/organ/external/proc/set_sprite(sprite_name)
 	stored_feature_id = sprite_name
 	sprite_datum = get_sprite_datum(sprite_name)
-	if(!sprite_datum && owner)
+	if(!sprite_datum && stored_feature_id)
 		stack_trace("NON-EXISTANT SPRITE DATUM IN EXTERNAL ORGAN")
 	cache_key = jointext(generate_icon_cache(), "_")
 

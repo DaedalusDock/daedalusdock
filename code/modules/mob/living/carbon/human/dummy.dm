@@ -108,7 +108,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["vox_facial_hair"] = "None"
 	dna.features["spines_vox"] = "None"
 	dna.features["tail_cat"] = "None"
-	dna.features["tail_lizard"] = "Light"
 	dna.features["pod_hair"] = "Ivy"
 	dna.features["teshari_feathers"] = "Mane"
 	dna.features["teshari_body_feathers"] = "Plain"

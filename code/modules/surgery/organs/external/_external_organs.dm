@@ -161,6 +161,8 @@
 /obj/item/organ/external/proc/set_sprite(sprite_name)
 	stored_feature_id = sprite_name
 	sprite_datum = get_sprite_datum(sprite_name)
+	if(!sprite_datum)
+		stack_trace("NON-EXISTANT SPRITE DATUM IN EXTERNAL ORGAN")
 	cache_key = jointext(generate_icon_cache(), "_")
 
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse)
@@ -209,7 +211,7 @@
 ///Update our features after something changed our appearance
 /obj/item/organ/external/proc/mutate_feature(features, mob/living/carbon/human/human)
 	if(!dna_block || !get_global_feature_list())
-		return
+		CRASH("External organ has no dna block/feature_list implimented!")
 
 	var/list/feature_list = get_global_feature_list()
 
@@ -485,3 +487,8 @@
 /obj/item/organ/external/teshari_body_feathers/override_color(rgb_value)
 	var/mob/living/carbon/human/human_owner = owner
 	return human_owner.facial_hair_color
+
+/mob/proc/testliz()
+	var/mob/living/carbon/human/dummy/consistent/lizard2 = new(locate(src:loc:x+1, src:loc:y))
+	lizard2.set_species(/datum/species/lizard)
+	lizard2.forceMove(get_step(src, EAST))

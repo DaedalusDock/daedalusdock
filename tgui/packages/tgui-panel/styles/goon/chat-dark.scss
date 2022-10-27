@@ -210,7 +210,7 @@ a.popt {
 
 
 .motd {
-  color: #a4bad6;
+  color: #dfdfcf;
   font-family: Verdana, sans-serif;
   white-space: normal;
 }
@@ -221,7 +221,7 @@ a.popt {
 .motd h4,
 .motd h5,
 .motd h6 {
-  color: #a4bad6;
+  color: #dfdfcf;
   text-decoration: underline;
 }
 
@@ -230,7 +230,7 @@ a.popt {
 .motd a:visited,
 .motd a:active,
 .motd a:hover {
-  color: #a4bad6;
+  color: #dfdfcf;
 }
 
 
@@ -269,12 +269,12 @@ a.popt {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #a4bad6;
+  color: #dfdfcf;
   font-family: Georgia, Verdana, sans-serif;
 }
 
 h1.alert, h2.alert {
-  color: #a4bad6;
+  color: #dfdfcf;
 }
 
 em {
@@ -302,7 +302,7 @@ em {
 }
 
 .adminsay {
-  color: #ff4500;
+  color: #ecc300;
   font-weight: bold;
 }
 
@@ -406,47 +406,47 @@ em {
 }
 
 .alert {
-  color: #d82020;
+  color: #FF6D6D;
 }
 
 .userdanger {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-weight: bold;
   font-size: 185%;
 }
 
 .bolddanger {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-weight: bold;
 }
 
 .danger {
-  color: #c51e1e;
+  color: #FF6D6D;
 }
 
 .warning {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-style: italic;
 }
 
 .alertwarning {
-  color: #FF0000;
+  color: #FF6D6D;
   font-weight: bold;
 }
 
 .boldwarning {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-style: italic;
   font-weight: bold;
 }
 
 .announce {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-weight: bold;
 }
 
 .boldannounce {
-  color: #c51e1e;
+  color: #FF6D6D;
   font-weight: bold;
 }
 
@@ -469,52 +469,52 @@ em {
 }
 
 .notice {
-  color: #6685f5;
+  color: #7996ff;
 }
 
 .tinynotice {
-  color: #6685f5;
+  color: #7996ff;
   font-size: 85%;
 }
 
 .tinynoticeital {
-  color: #6685f5;
+  color: #7996ff;
   font-style: italic;
   font-size: 85%;
 }
 
 .smallnotice {
-  color: #6685f5;
+  color: #7996ff;
   font-size: 90%;
 }
 
 .smallnoticeital {
-  color: #6685f5;
+  color: #7996ff;
   font-style: italic;
   font-size: 90%;
 }
 
 .boldnotice {
-  color: #6685f5;
+  color: #7996ff;
   font-weight: bold;
 }
 
 .hear {
-  color: #6685f5;
+  color: #7996ff;
   font-style: italic;
 }
 
 .adminnotice {
-  color: #6685f5;
+  color: #6464ff;
 }
 
 .adminhelp {
-  color: #ff0000;
+  color: #ffa135;
   font-weight: bold;
 }
 
 .unconscious {
-  color: #a4bad6;
+  color: #dfdfcf;
   font-weight: bold;
 }
 
@@ -754,7 +754,7 @@ em {
 }
 
 .hypnophrase {
-  color: #202020;
+  color: #23272a;
   font-weight: bold;
   animation: hypnocolor 1500ms infinite;
   animation-direction: alternate;
@@ -762,7 +762,7 @@ em {
 
 @keyframes hypnocolor {
   0% {
-    color: #202020;
+    color: #23272a;
   }
 
   25% {
@@ -900,9 +900,8 @@ em {
   background: green;
 }
 
-.internal.boldnshit {
-  color: #3d5bc3;
-  font-weight: bold;
+.internal {
+  color: #92b4ff;
 }
 
 
@@ -911,6 +910,7 @@ em {
 
 
 .text-normal {
+  color: #dfdfcf;
   font-weight: normal;
   font-style: normal;
 }
@@ -937,8 +937,6 @@ em {
   border-bottom: 1px dashed #fff;
 }
 
-/* PARIAH DARK MODE CLASSES */
-
 .examine_block {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(55, 55, 55, 0.33);
@@ -952,4 +950,9 @@ em {
   background: #222;
   height: 1px;
   margin: 8px 16px 8px 16px;
+}
+
+.subtle {
+  color: #4343ca;
+  font-style: italic;
 }

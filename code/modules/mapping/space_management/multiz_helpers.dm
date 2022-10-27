@@ -32,3 +32,17 @@
 
 /turf/proc/below()
 	return get_step_multiz(src, DOWN)
+
+///A fast version that has no safeties and assumes both turfs exist on different, valid Z levels.
+/proc/get_dir_multiz_fast(turf/us, turf/them)
+	var/turf/T = SSmapping.get_turf_above(us)
+	if(T == them)
+		return UP
+
+	return SSmapping.get_turf_below(us) ? DOWN : null
+
+///Accepts UP or DOWN as directions, ignores cardinals, returns a turf or null.
+/proc/get_step_multiz_fast(turf/us, dir)
+	if(dir & UP)
+		return SSmapping.get_turf_above(us)
+	return SSmapping.get_turf_below(us)

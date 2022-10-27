@@ -56,7 +56,6 @@
 		lmb_text = "Turn on", \
 		rmb_text = "Turn off", \
 	)
-
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/firealarm/LateInitialize()
@@ -67,7 +66,7 @@
 	set_area(null)
 	return ..()
 
-/obj/machinery/firealarm/Moved(atom/OldLoc, Dir)
+/obj/machinery/firealarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	var/new_area = get_area(src)
 	if(my_area != new_area)

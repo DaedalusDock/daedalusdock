@@ -197,6 +197,17 @@ GLOBAL_VAR(restart_counter)
 
 /world/Topic(T, addr, master, key)
 	TGS_TOPIC //redirect to server tools if necessary
+	var/list/response[] = list()
+	if (SSfail2topic?.IsRateLimited(addr))
+		response["statuscode"] = 429
+		response["response"] = "Rate limited."
+		return json_encode(response)
+
+	if (length(T) > CONFIG_GET(number/topic_max_size))
+		response["statuscode"] = 413
+		response["response"] = "Payload too large."
+		return json_encode(response)
+
 
 	var/static/list/topic_handlers = TopicHandlers()
 

@@ -63,7 +63,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 
 	update_explanation_text()
 
-/datum/objective/proc/considered_escaped(datum/mind/M)
+/proc/considered_escaped(datum/mind/M)
 	if(!considered_alive(M))
 		return FALSE
 	if(considered_exiled(M))

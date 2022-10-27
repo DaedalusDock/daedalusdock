@@ -8,7 +8,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 //#define FIREDBG
 
-/turf/var/obj/effect/hotspot/fire = null
+/turf
+	var/obj/effect/hotspot/fire = null
 
 //Some legacy definitions so fires can be started.
 /atom/movable/proc/is_burnable()
@@ -18,14 +19,14 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	return simulated
 
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
+	return
 
-
-/turf/hotspot_expose(exposed_temperature, exposed_volume, soh)
+/turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	if(!simulated)
 		return 0
 	if(fire_protection > world.time-300)
 		return 0
-	if(locate(/obj/effect/hotspot) in src)
+	if(src.fire)
 		return 1
 	var/datum/gas_mixture/air_contents = return_air()
 	if(!air_contents || exposed_temperature < PHORON_MINIMUM_BURN_TEMPERATURE)
@@ -48,16 +49,18 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	air.merge(burn_gas)
 
 	if(firelevel)
-		for(var/turf/T in fire_tiles)
+		for(var/turf/T as anything in fire_tiles)
 			if(T.fire)
 				T.fire.firelevel = firelevel
 			else
 				var/obj/effect/decal/cleanable/oil/fuel = locate() in T
+				if(fuel)
+					UnregisterSignal(fuel, COMSIG_PARENT_QDELETING)
+					fuel_objs -= fuel
 				fire_tiles -= T
-				fuel_objs -= fuel
 	else
-		for(var/turf/T in fire_tiles)
-			if(istype(T.fire))
+		for(var/turf/T as anything in fire_tiles)
+			if(T.fire)
 				qdel(T.fire)
 		fire_tiles.Cut()
 		//Gotta make sure we don't leave any left over signals
@@ -65,11 +68,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			UnregisterSignal(fuel, COMSIG_PARENT_QDELETING)
 		fuel_objs.Cut()
 
-	if(!fire_tiles.len)
+	if(!length(fire_tiles))
 		SSzas.active_fire_zones.Remove(src)
 
 /zone/proc/remove_liquidfuel(used_liquid_fuel, remove_fire=0)
-	if(!fuel_objs.len)
+	if(!length(fuel_objs))
 		return
 
 	//As a simplification, we remove fuel equally from all fuel sources. It might be that some fuel sources have more fuel,
@@ -77,15 +80,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	var/fuel_to_remove = used_liquid_fuel/(fuel_objs.len*LIQUIDFUEL_AMOUNT_TO_MOL) //convert back to liquid volume units
 
-	for(var/O in fuel_objs)
-		var/obj/effect/decal/cleanable/oil/fuel = O
-		if(!istype(fuel))
-			fuel_objs -= fuel
-			continue
-
+	for(var/obj/effect/decal/cleanable/oil/fuel as anything in fuel_objs)
 		fuel.reagent_amount -= fuel_to_remove
-		if(fuel.reagent_amount <= 0)
-			fuel_objs -= fuel
+		if(fuel.reagent_amount <= 0.1) //Precision loss kinda fucks with us here so
 			if(remove_fire)
 				var/turf/T = fuel.loc
 				if(istype(T) && T.fire)
@@ -99,15 +96,15 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf/open/create_fire(fl, create_own_fuel)
 	if(!simulated)
 		return
+
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return
 
-	if(!zone)
-		return
+	new /obj/effect/hotspot(src, fl)
 
-	fire = new(src, fl)
-	SSzas.active_fire_zones |= zone
+	if(!fire) //Could not create a fire on this turf.
+		return
 
 	var/obj/effect/decal/cleanable/oil/fuel = locate() in src
 	if(create_own_fuel)
@@ -117,11 +114,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		else
 			fuel.reagent_amount += create_own_fuel
 
-	zone.fire_tiles |= src
 	if(fuel)
 		zone.fuel_objs += fuel
+		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, /zone/proc/handle_fuel_del)
 
-	return src
+	return fire
 
 /turf/open/space/create_fire()
 	return
@@ -141,6 +138,37 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	var/firelevel = 1 //Calculated by gas_mixture.calculate_firelevel()
 
+/obj/effect/hotspot/Initialize(fl)
+	. = ..()
+	var/turf/T = loc
+	if(!istype(T) || !T.zone)
+		return INITIALIZE_HINT_QDEL
+
+	if(T.fire)
+		T.create_fire(fl) //Add the fire level to the existing fire and fuck off
+		return INITIALIZE_HINT_QDEL
+
+	//setDir(pick(GLOB.cardinals))
+	T.fire = src
+	T.zone.fire_tiles |= T
+	var/datum/gas_mixture/air_contents = T.return_air()
+	color = FIRECOLOR(air_contents.temperature)
+	set_light_range(3)
+	set_light_power(1)
+	set_light_color(color)
+	firelevel = fl
+	SSzas.active_hotspots.Add(src)
+	SSzas.active_fire_zones |= T.zone
+
+/obj/effect/hotspot/Destroy()
+	var/turf/T = loc
+	if (istype(T))
+		set_light(0)
+		if(T.fire == src)
+			T.fire = null
+	SSzas.active_hotspots.Remove(src)
+	return ..()
+
 /obj/effect/hotspot/process()
 	. = 1
 	if(QDELETED(src))
@@ -155,15 +183,15 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	var/datum/gas_mixture/air_contents = my_tile.return_air()
 
-	if(firelevel > 6)
+	if(firelevel > 6 && light_power != 2)
 		icon_state = "3"
 		set_light_power(2)
 		set_light_range(7)
-	else if(firelevel > 2.5)
+	else if(firelevel > 2.5 && light_power != 1.5)
 		icon_state = "2"
 		set_light_power(1.5)
 		set_light_range(5)
-	else
+	else if(light_power != 1)
 		icon_state = "1"
 		set_light_power(1)
 		set_light_range(3)
@@ -178,6 +206,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	//spread
 	for(var/direction in GLOB.cardinals)
 		var/turf/enemy_tile = get_step(my_tile, direction)
+		if(!enemy_tile)
+			continue
 		if(!istype(enemy_tile, /turf/open/space))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
 				if(!enemy_tile.zone || enemy_tile.fire)
@@ -203,37 +233,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			else
 				enemy_tile.adjacent_fire_act(loc, air_contents, air_contents.temperature, air_contents.volume)
 
-	animate(src, color = fire_color(air_contents.temperature), 5)
+	animate(src, color = FIRECOLOR(air_contents.temperature), 5)
 	set_light_color(color)
-
-/obj/effect/hotspot/New(newLoc,fl)
-	..()
-
-	if(!istype(loc, /turf))
-		qdel(src)
-		return
-
-	setDir(pick(GLOB.cardinals))
-
-	var/datum/gas_mixture/air_contents = loc.return_air()
-	color = fire_color(air_contents.temperature)
-	set_light_range(3)
-	set_light_power(1)
-	set_light_color(color)
-	firelevel = fl
-	SSzas.active_hotspots.Add(src)
-
-/obj/effect/hotspot/proc/fire_color(env_temperature)
-	var/temperature = max(4000*sqrt(firelevel/zas_settings.fire_firelevel_multiplier), env_temperature)
-	return heat2color(temperature)
-
-/obj/effect/hotspot/Destroy()
-	var/turf/T = loc
-	if (istype(T))
-		set_light(0)
-		T.fire = null
-	SSzas.active_hotspots.Remove(src)
-	. = ..()
 
 /turf/var/fire_protection = 0
 /turf/proc/apply_fire_protection()
@@ -245,106 +246,108 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 //Returns the firelevel
 /datum/gas_mixture/proc/react(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if(!((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check || check_recombustability(zone? zone.fuel_objs : null))))
+		return
 
-		#ifdef FIREDBG
-		log_admin("***************** FIREDBG *****************")
-		log_admin("Burning [zone? zone.name : "zoneless gas_mixture"]!")
-		#endif
+	#ifdef FIREDBG
+	log_admin("***************** FIREDBG *****************")
+	log_admin("Burning [zone? zone.name : "zoneless gas_mixture"]!")
+	#endif
 
-		var/gas_fuel = 0
-		var/liquid_fuel = 0
-		var/total_fuel = 0
-		var/total_oxidizers = 0
+	var/gas_fuel = 0
+	var/liquid_fuel = 0
+	var/total_fuel = 0
+	var/total_oxidizers = 0
 
-		//*** Get the fuel and oxidizer amounts
-		for(var/g in gas)
-			if(xgm_gas_data.flags[g] & XGM_GAS_FUEL)
-				gas_fuel += gas[g]
-			if(xgm_gas_data.flags[g] & XGM_GAS_OXIDIZER)
-				total_oxidizers += gas[g]
-		gas_fuel *= group_multiplier
-		total_oxidizers *= group_multiplier
+	//*** Get the fuel and oxidizer amounts
+	for(var/g in gas)
+		if(xgm_gas_data.flags[g] & XGM_GAS_FUEL)
+			gas_fuel += gas[g]
+		if(xgm_gas_data.flags[g] & XGM_GAS_OXIDIZER)
+			total_oxidizers += gas[g]
+	gas_fuel *= group_multiplier
+	total_oxidizers *= group_multiplier
 
-		//Liquid Fuel
-		var/fuel_area = 0
-		if(zone)
-			for(var/obj/effect/decal/cleanable/oil/fuel in zone.fuel_objs)
-				liquid_fuel += fuel.reagent_amount*LIQUIDFUEL_AMOUNT_TO_MOL
-				fuel_area++
+	//Liquid Fuel
+	var/fuel_area = 0
+	if(zone)
+		for(var/obj/effect/decal/cleanable/oil/fuel in zone.fuel_objs)
+			liquid_fuel += fuel.reagent_amount*LIQUIDFUEL_AMOUNT_TO_MOL
+			fuel_area++
 
-		total_fuel = gas_fuel + liquid_fuel
-		if(total_fuel <= 0.005)
+	total_fuel = gas_fuel + liquid_fuel
+	if(total_fuel <= 0.005)
+		return 0
+
+	//*** Determine how fast the fire burns
+
+	//get the current thermal energy of the gas mix
+	//this must be taken here to prevent the addition or deletion of energy by a changing heat capacity
+	var/starting_energy = temperature * getHeatCapacity()
+
+	//determine how far the reaction can progress
+	var/reaction_limit = min(total_oxidizers*(FIRE_REACTION_FUEL_AMOUNT/FIRE_REACTION_OXIDIZER_AMOUNT), total_fuel) //stoichiometric limit
+
+	//vapour fuels are extremely volatile! The reaction progress is a percentage of the total fuel (similar to old zburn).)
+	var/gas_firelevel = calculate_firelevel(gas_fuel, total_oxidizers, reaction_limit, volume*group_multiplier) / zas_settings.fire_firelevel_multiplier
+	var/min_burn = 0.30*volume*group_multiplier/CELL_VOLUME //in moles - so that fires with very small gas concentrations burn out fast
+	var/gas_reaction_progress = min(max(min_burn, gas_firelevel*gas_fuel)*FIRE_GAS_BURNRATE_MULT, gas_fuel)
+
+	//liquid fuels are not as volatile, and the reaction progress depends on the size of the area that is burning. Limit the burn rate to a certain amount per area.
+	var/liquid_firelevel = calculate_firelevel(liquid_fuel, total_oxidizers, reaction_limit, 0) / zas_settings.fire_firelevel_multiplier
+	var/liquid_reaction_progress = min((liquid_firelevel*0.2 + 0.05)*fuel_area*FIRE_LIQUID_BURNRATE_MULT, liquid_fuel)
+
+	var/firelevel = (gas_fuel*gas_firelevel + liquid_fuel*liquid_firelevel)/total_fuel
+
+	var/total_reaction_progress = gas_reaction_progress + liquid_reaction_progress
+	var/used_fuel = min(total_reaction_progress, reaction_limit)
+	var/used_oxidizers = used_fuel*(FIRE_REACTION_OXIDIZER_AMOUNT/FIRE_REACTION_FUEL_AMOUNT)
+
+	#ifdef FIREDBG
+	log_admin("gas_fuel = [gas_fuel], liquid_fuel = [liquid_fuel], total_oxidizers = [total_oxidizers]")
+	log_admin("fuel_area = [fuel_area], total_fuel = [total_fuel], reaction_limit = [reaction_limit]")
+	log_admin("firelevel -> [firelevel] (gas: [gas_firelevel], liquid: [liquid_firelevel])")
+	log_admin("liquid_reaction_progress = [liquid_reaction_progress]")
+	log_admin("gas_reaction_progress = [gas_reaction_progress]")
+	log_admin("total_reaction_progress = [total_reaction_progress]")
+	log_admin("used_fuel = [used_fuel], used_oxidizers = [used_oxidizers]; ")
+	#endif
+
+	//if the reaction is progressing too slow then it isn't self-sustaining anymore and burns out
+	if(zone) //be less restrictive with canister and tank reactions
+		if((!liquid_fuel || used_fuel <= FIRE_LIQUD_MIN_BURNRATE) && (!gas_fuel || used_fuel <= FIRE_GAS_MIN_BURNRATE*zone.contents.len))
 			return 0
 
-		//*** Determine how fast the fire burns
 
-		//get the current thermal energy of the gas mix
-		//this must be taken here to prevent the addition or deletion of energy by a changing heat capacity
-		var/starting_energy = temperature * getHeatCapacity()
+	//*** Remove fuel and oxidizer, add carbon dioxide and heat
 
-		//determine how far the reaction can progress
-		var/reaction_limit = min(total_oxidizers*(FIRE_REACTION_FUEL_AMOUNT/FIRE_REACTION_OXIDIZER_AMOUNT), total_fuel) //stoichiometric limit
+	//remove and add gasses as calculated
+	var/used_gas_fuel = min(max(0.25, used_fuel*(gas_reaction_progress/total_reaction_progress)), gas_fuel) //remove in proportion to the relative reaction progress
+	var/used_liquid_fuel = min(max(0.25, used_fuel-used_gas_fuel), liquid_fuel)
 
-		//vapour fuels are extremely volatile! The reaction progress is a percentage of the total fuel (similar to old zburn).)
-		var/gas_firelevel = calculate_firelevel(gas_fuel, total_oxidizers, reaction_limit, volume*group_multiplier) / zas_settings.fire_firelevel_multiplier
-		var/min_burn = 0.30*volume*group_multiplier/CELL_VOLUME //in moles - so that fires with very small gas concentrations burn out fast
-		var/gas_reaction_progress = min(max(min_burn, gas_firelevel*gas_fuel)*FIRE_GAS_BURNRATE_MULT, gas_fuel)
+	//removeByFlag() and adjustGas() handle the group_multiplier for us.
+	removeByFlag(XGM_GAS_OXIDIZER, used_oxidizers)
+	var/datum/gas_mixture/burned_fuel = removeByFlag(XGM_GAS_FUEL, used_gas_fuel)
+	for(var/g in burned_fuel.gas)
+		adjustGas(xgm_gas_data.burn_product[g], burned_fuel.gas[g], FALSE)
 
-		//liquid fuels are not as volatile, and the reaction progress depends on the size of the area that is burning. Limit the burn rate to a certain amount per area.
-		var/liquid_firelevel = calculate_firelevel(liquid_fuel, total_oxidizers, reaction_limit, 0) / zas_settings.fire_firelevel_multiplier
-		var/liquid_reaction_progress = min((liquid_firelevel*0.2 + 0.05)*fuel_area*FIRE_LIQUID_BURNRATE_MULT, liquid_fuel)
+	if(zone && used_liquid_fuel)
+		zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())
+		adjustGas(GAS_CO2, firelevel * 0.07, FALSE)
 
-		var/firelevel = (gas_fuel*gas_firelevel + liquid_fuel*liquid_firelevel)/total_fuel
+	//calculate the energy produced by the reaction and then set the new temperature of the mix
+	temperature = (starting_energy + zas_settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
+	AIR_UPDATE_VALUES(src)
 
-		var/total_reaction_progress = gas_reaction_progress + liquid_reaction_progress
-		var/used_fuel = min(total_reaction_progress, reaction_limit)
-		var/used_oxidizers = used_fuel*(FIRE_REACTION_OXIDIZER_AMOUNT/FIRE_REACTION_FUEL_AMOUNT)
+	#ifdef FIREDBG
+	log_admin("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
+	log_admin("new temperature = [temperature]; new pressure = [returnPressure()]")
+	#endif
 
-		#ifdef FIREDBG
-		log_admin("gas_fuel = [gas_fuel], liquid_fuel = [liquid_fuel], total_oxidizers = [total_oxidizers]")
-		log_admin("fuel_area = [fuel_area], total_fuel = [total_fuel], reaction_limit = [reaction_limit]")
-		log_admin("firelevel -> [firelevel] (gas: [gas_firelevel], liquid: [liquid_firelevel])")
-		log_admin("liquid_reaction_progress = [liquid_reaction_progress]")
-		log_admin("gas_reaction_progress = [gas_reaction_progress]")
-		log_admin("total_reaction_progress = [total_reaction_progress]")
-		log_admin("used_fuel = [used_fuel], used_oxidizers = [used_oxidizers]; ")
-		#endif
+	if (temperature<220)
+		firelevel = 0
 
-		//if the reaction is progressing too slow then it isn't self-sustaining anymore and burns out
-		if(zone) //be less restrictive with canister and tank reactions
-			if((!liquid_fuel || used_fuel <= FIRE_LIQUD_MIN_BURNRATE) && (!gas_fuel || used_fuel <= FIRE_GAS_MIN_BURNRATE*zone.contents.len))
-				return 0
-
-
-		//*** Remove fuel and oxidizer, add carbon dioxide and heat
-
-		//remove and add gasses as calculated
-		var/used_gas_fuel = min(max(0.25, used_fuel*(gas_reaction_progress/total_reaction_progress)), gas_fuel) //remove in proportion to the relative reaction progress
-		var/used_liquid_fuel = min(max(0.25, used_fuel-used_gas_fuel), liquid_fuel)
-
-		//removeByFlag() and adjustGas() handle the group_multiplier for us.
-		removeByFlag(XGM_GAS_OXIDIZER, used_oxidizers)
-		var/datum/gas_mixture/burned_fuel = removeByFlag(XGM_GAS_FUEL, used_gas_fuel)
-		for(var/g in burned_fuel.gas)
-			adjustGas(xgm_gas_data.burn_product[g], burned_fuel.gas[g])
-
-		if(zone)
-			zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())
-
-		//calculate the energy produced by the reaction and then set the new temperature of the mix
-		temperature = (starting_energy + zas_settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
-		AIR_UPDATE_VALUES(src)
-
-		#ifdef FIREDBG
-		log_admin("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
-		log_admin("new temperature = [temperature]; new pressure = [returnPressure()]")
-		#endif
-
-		if (temperature<220)
-			firelevel = 0
-
-		return firelevel
+	return firelevel
 
 /datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
 	. = 0
@@ -356,7 +359,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(!.)
 		return 0
 
-	if(fuel_objs && fuel_objs.len)
+	if(fuel_objs && length(fuel_objs))
 		return 1
 
 	. = 0

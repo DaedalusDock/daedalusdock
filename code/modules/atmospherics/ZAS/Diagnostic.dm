@@ -22,8 +22,6 @@
 
 /client/proc/Test_ZAS_Connection(turf/T as turf)
 	set category = "Debug"
-	if(!T.simulated)
-		return
 
 	var/direction_list = list(\
 	"North" = NORTH,\
@@ -50,8 +48,6 @@
 		return
 
 	var/turf/other_turf = get_step(T, direction_list[direction])
-	if(!other_turf.simulated)
-		return
 
 	var/t_block
 	ATMOS_CANPASS_TURF(t_block, T, other_turf)

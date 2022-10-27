@@ -26,7 +26,7 @@
 	var/list/filter_types = list(GAS_CO2)
 	///Rate of the scrubber to remove gases from the air
 	var/volume_rate = MAX_SCRUBBER_FLOWRATE
-	///A fast-siphon toggle, siphons at 9x speed for 9x the power cost.
+	///A fast-siphon toggle, siphons at 3x speed for 3x the power cost.
 	var/quicksucc = FALSE
 
 	///Frequency id for connecting to the NTNet
@@ -220,7 +220,7 @@
 	if(scrub(us))
 		should_cooldown = FALSE
 	if(quicksucc)
-		for(var/i in 1 to 8)
+		for(var/i in 1 to 2)
 			if(scrub(us))
 				should_cooldown = FALSE
 	if(should_cooldown)

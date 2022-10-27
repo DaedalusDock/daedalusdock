@@ -43,6 +43,8 @@
 
 	preferences.alt_job_titles[job_title] = new_job_title
 
+	preferences.character_preview_view?.update_body()
+
 	return TRUE
 //PARIAH EDIT END
 

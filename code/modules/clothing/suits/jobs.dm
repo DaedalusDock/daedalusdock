@@ -244,3 +244,12 @@
 	icon_state = "jamrock_blazer"
 	inhand_icon_state = "jamrock_blazer"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+//Xenobiologist
+/obj/item/clothing/suit/overalls_sci
+	name = "xenobiologist's overalls"
+	desc = "A tacky set of purple overalls, ideal for wearing while wrangling slimes."
+	icon_state = "overalls_sci"
+	inhand_icon_state = "p_suit"
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION

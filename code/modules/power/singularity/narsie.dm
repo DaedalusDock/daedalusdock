@@ -87,6 +87,9 @@
 			souls_needed[player] = TRUE
 
 	soul_goal = round(1 + LAZYLEN(souls_needed) * 0.75)
+
+	SSblackbox.record_feedback("amount", "narsies_spawned", 1)
+
 	INVOKE_ASYNC(GLOBAL_PROC, .proc/begin_the_end)
 
 /obj/narsie/Destroy()

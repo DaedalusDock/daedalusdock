@@ -116,7 +116,7 @@
 		contract_hub = null
 	return ..()
 
-/obj/structure/closet/supplypod/extractionpod/Moved()
+/obj/structure/closet/supplypod/extractionpod/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
 	if(recieving && (atom_integrity <= 0))
 		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
 		if (contract_hub.current_contract == tied_contract)
@@ -470,7 +470,7 @@
 	rubble.setStyle(rubble_type, src)
 	update_appearance()
 
-/obj/structure/closet/supplypod/Moved()
+/obj/structure/closet/supplypod/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	deleteRubble()
 	return ..()
 

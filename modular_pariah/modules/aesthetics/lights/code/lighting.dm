@@ -67,11 +67,11 @@
 
 /obj/machinery/light/proc/flicker_on()
 	alter_flicker(TRUE)
-	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_off), rand(5, 10))
+	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_off), rand(5, 10), TIMER_STOPPABLE|TIMER_DELETE_ME)
 
 /obj/machinery/light/proc/flicker_off()
 	alter_flicker(FALSE)
-	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_on), rand(5, 50))
+	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_on), rand(5, 50), TIMER_STOPPABLE|TIMER_DELETE_ME)
 
 /obj/machinery/light/proc/firealarm_on()
 	SIGNAL_HANDLER

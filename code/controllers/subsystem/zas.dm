@@ -44,9 +44,6 @@ Class Procs:
 		Adds zone to the update list. Unlike mark_for_update(), this one is called automatically whenever
 		air is returned from a simulated turf.
 
-	equivalent_pressure(zone/A, zone/B)
-		Currently identical to A.air.compare(B.air). Returns 1 when directly connected zones are ready to be merged.
-
 	get_edge(zone/A, zone/B)
 	get_edge(zone/A, turf/B)
 		Gets a valid connection_edge between A and B, creating a new one if necessary.
@@ -85,6 +82,9 @@ SUBSYSTEM_DEF(zas)
 
 	var/datum/gas_mixture/lavaland_atmos
 
+	///A global cache of unsimulated gas mixture singletons, associative by type.
+	var/list/unsimulated_gas_cache = list()
+
 	//Geometry lists
 	var/list/zones = list()
 	var/list/edges = list()
@@ -103,21 +103,34 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
 
-	var/last_process
+	#ifdef ZASDBG
+	/// Profile data for zone.tick(), in milliseconds
+	var/list/zonetime = list()
+	#endif
+
+	#ifdef PROFILE_ZAS_CANPASS
+	var/list/canpass_step_usage = list()
+	var/list/canpass_time_spent = list()
+	var/list/canpass_time_average = list()
+	#endif
+
 	var/active_zones = 0
 	var/next_id = 1
+
+	///The last process, as a string, before the previous run ended.
+	var/last_process
 
 ///Stops processing while all ZAS-controlled airs and fires are nulled and the subsystem is reinitialized.
 /datum/controller/subsystem/zas/proc/Reboot()
 	// Stop processing while we rebuild.
 	can_fire = FALSE
+	times_fired = 0 // This is done to prevent the geometry bug explained in connect()
 	next_id = 0 //Reset atmos zone count.
 
 	// Make sure we don't rebuild mid-tick.
 	if (state != SS_IDLE)
 		to_chat(world, span_boldannounce("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing."))
-		while (state != SS_IDLE)
-			stoplag()
+		UNTIL(state == SS_IDLE)
 
 	zas_settings = new //Reset the global zas settings
 
@@ -165,6 +178,7 @@ SUBSYSTEM_DEF(zas)
 	for(var/turf/S)
 		if(!S.simulated)
 			continue
+
 		simulated_turf_count++
 		S.update_air_properties()
 
@@ -293,7 +307,7 @@ SUBSYSTEM_DEF(zas)
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
 //////////FIRES//////////
-	last_process = "FIRES"
+	last_process = "ZONE FIRES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_fire.len)
@@ -327,6 +341,8 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
+//////////ZONES//////////
+	last_process = "ZONES"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
 	while (curr_zones.len)
@@ -405,9 +421,16 @@ SUBSYSTEM_DEF(zas)
 	var/space = !B.simulated
 
 	if(!space)
-		if(min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
+		// Ok. This is super fucking cursed, but, it has to be this way.
+		// Basically, it's possible that during the initial geometry build, a zone can be created in a spot
+		// such that it merges over zone-blocker due to the minimum size requirement being met to merge over blockers.
+		// To fix this, we disable that during the geometry build, which takes place during Initialize()
+		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && A.zone.air.compare(B.zone.air)))
 			merge(A.zone,B.zone)
 			return TRUE
+	else if(!B.air)
+		/// The logic around get_edge() requires air to exist at this point, which it probably should.
+		B.make_air()
 
 	var/a_to_b = get_dir(A,B)
 	var/b_to_a = get_dir(B,A)
@@ -459,70 +482,55 @@ SUBSYSTEM_DEF(zas)
 	Z.needs_update = 1
 
 ///Sleeps an edge, preventing it from processing.
-/datum/controller/subsystem/zas/proc/mark_edge_sleeping(connection_edge/E)
+/datum/controller/subsystem/zas/proc/sleep_edge(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
-	if(E.sleeping)
+	if(!E.excited)
 		return
 	active_edges -= E
-	E.sleeping = 1
+	E.excited = FALSE
 
 ///Wakes an edge, adding it to the active process list.
-/datum/controller/subsystem/zas/proc/mark_edge_active(connection_edge/E)
+/datum/controller/subsystem/zas/proc/excite_edge(connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
-	if(!E.sleeping)
+	if(E.excited)
 		return
 	active_edges += E
-	E.sleeping = 0
+	E.excited = TRUE
 
-///Wrapper for zoneA.air.compare(zoneB.air)
-/datum/controller/subsystem/zas/proc/equivalent_pressure(zone/A, zone/B)
-	return A.air.compare(B.air)
+///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
+/datum/controller/subsystem/zas/proc/get_edge(zone/A, datum/B)
+	var/connection_edge/edge
 
-///Returns *AN* edge between zones A and B, if one exists. Calls recheck() on it.
-/datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B)
-	if(istype(B))
-		for(var/connection_edge/zone/edge in A.edges)
-			if(edge.contains_zone(B))
-				return edge
-		var/connection_edge/edge = new/connection_edge/zone(A,B)
-		edges += edge
-		edge.recheck()
-		return edge
-	else
-		for(var/connection_edge/unsimulated/edge in A.edges)
-			if(has_same_air(edge.B,B))
-				return edge
-		var/connection_edge/edge = new/connection_edge/unsimulated(A,B)
-		edges += edge
-		edge.recheck()
-		return edge
+	if(B.type == /zone) //Zone-to-zone connection
+		edge = A.edges[B]
+	else //Zone-to-turf connection
+		for(var/turf/T in A.edges)
+			if(B:air ~= T.air) //Operator overloading :)
+				return A.edges[T]
 
-///Compare two turfs to see if they are EXACTLY the same.
-/datum/controller/subsystem/zas/proc/has_same_air(turf/A, turf/B)
-	if(A.initial_gas)
-		if(!B.initial_gas)
-			return 0
-		for(var/g in A.initial_gas)
-			if(A.initial_gas[g] != B.initial_gas[g])
-				return 0
-	if(B.initial_gas)
-		if(!A.initial_gas)
-			return 0
-		for(var/g in B.initial_gas)
-			if(A.initial_gas[g] != B.initial_gas[g])
-				return 0
-	if(A.temperature != B.temperature)
-		return 0
-	return 1
+	edge ||= create_edge(A,B)
+
+	return edge
+
+///Create an edge of the appropriate type between zone A and zone-or-turf B.
+/datum/controller/subsystem/zas/proc/create_edge(zone/A, datum/B)
+	var/connection_edge/edge
+
+	if(B.type == /zone) //Zone-to-zone connection
+		edge = new/connection_edge/zone(A,B)
+	else //Zone-to-turf connection
+		edge = new/connection_edge/unsimulated(A,B)
+
+	return edge
 
 ///Removes an edge from the subsystem.
 /datum/controller/subsystem/zas/proc/remove_edge(connection_edge/E)
 	edges -= E
-	if(!E.sleeping)
+	if(E.excited)
 		active_edges -= E
 	if(processing_edges)
 		processing_edges -= E
@@ -579,11 +587,17 @@ SUBSYSTEM_DEF(zas)
 
 	var/list/lavaland_z_levels = SSmapping.levels_by_trait(ZTRAIT_MINING) //God I hope this is never more than one
 	for(var/zlev in lavaland_z_levels)
-		for(var/turf/T in block(locate(1,1,zlev), locate(world.maxx, world.maxy, zlev)))
+		for(var/turf/T as anything in block(locate(1,1,zlev), locate(world.maxx, world.maxy, zlev)))
 			if(!T.simulated)
 				T.initial_gas = mix_list
 				T.temperature = mix_real.temperature
+				T.make_air()
 			CHECK_TICK
 
 	lavaland_atmos = mix_real
 	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
+
+	var/log = "Lavaland atmos contains: "
+	for(var/gas in mix_real.gas)
+		log += "[mix_real.gas[gas]], "
+	log_game(log)

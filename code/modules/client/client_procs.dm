@@ -348,12 +348,19 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		else
 			if(!discord_is_link_valid(ckey))
 				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-
+				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 				//These need to be immediate because we're disposing of the client the second we're done with this.
-				to_chat_immediate(src, span_danger(CONFIG_GET(string/panic_bunker_discord_register_message)))
+				usr << browse(
+					"<center>[("[CONFIG_GET(string/panic_bunker_discord_register_message)]")] \
+					<br><br><span style='color:red'>Your One-Time-Password is: [discord_otp]</span> \
+					<br><br>To link your Discord account, head to the Discord Server and paste the following message:<hr/></center><code> \
+					[discord_prefix]verify [discord_otp]</code><hr/> \
+					<center><span style='color:red'>discord.daedalus13.net</span> \
+					<br>Due to technical limitations, we cannot embed this link. Love byond.",
+					"window=discordauth;can_resize=0;can_minimize=0",
+				)
 				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
 				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
 
 				if(connecting_admin)
@@ -519,6 +526,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if (!restricted_mode)
 		initialize_menus()
 
+	//Clear the credits browser if it's left over the from the previous round
+	clear_credits()
+
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
 	view_size.setZoomMode()
@@ -553,8 +563,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.interviews.client_logout(src)
 	GLOB.requests.client_logout(src)
 	SSserver_maint.UpdateHubStatus()
-	if(credits)
-		QDEL_LIST(credits)
 	if(holder)
 		adminGreet(1)
 		holder.owner = null

@@ -15,12 +15,12 @@
 	required_organs = list(/obj/item/organ/heart)
 	bypasses_immunity = TRUE // Immunity is based on not having an appendix; this isn't a virus
 	var/sound = FALSE
+	var/recorded = FALSE
 
 /datum/disease/heart_failure/Copy()
 	var/datum/disease/heart_failure/D = ..()
 	D.sound = sound
 	return D
-
 
 /datum/disease/heart_failure/stage_act(delta_time, times_fired)
 	. = ..()
@@ -66,4 +66,5 @@
 			affected_mob.set_heartattack(TRUE)
 			affected_mob.reagents.add_reagent(/datum/reagent/medicine/c2/penthrite, 3) // To give the victim a final chance to shock their heart before losing consciousness
 			cure()
+			SSblackbox.record_feedback("amount", "heartattacks", 1)
 			return FALSE

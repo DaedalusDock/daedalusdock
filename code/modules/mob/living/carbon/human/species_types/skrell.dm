@@ -10,6 +10,7 @@
 	disliked_food = GROSS | MEAT | RAW | DAIRY
 	toxic_food = TOXIC | SEAFOOD
 	payday_modifier = 0.95
+	job_outfit_type = SPECIES_HUMAN
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
 	exotic_bloodtype = "S"

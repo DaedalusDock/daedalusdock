@@ -183,6 +183,7 @@
 		maptext_y = 28
 	}
 
+	animate(message, maptext_y = 28, time = 0.01)
 	var/mheight = 2 + (8 * (1 + round(length(message.maptext_width) / 32)))
 
 	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
@@ -220,7 +221,7 @@
 	owned_by.images |= message
 
 	message.loc = message_loc
-	animate(message, alpha = 255, maptext_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, ANIMATION_PARALLEL)
+	animate(message, alpha = 255, maptext_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, ANIMATION_END_NOW)
 
 	// Register with the runechat SS to handle EOL and destruction
 	var/duration = lifespan - CHAT_MESSAGE_EOL_FADE

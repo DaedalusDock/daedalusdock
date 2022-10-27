@@ -487,8 +487,3 @@
 /obj/item/organ/external/teshari_body_feathers/override_color(rgb_value)
 	var/mob/living/carbon/human/human_owner = owner
 	return human_owner.facial_hair_color
-
-/mob/proc/testliz()
-	var/mob/living/carbon/human/dummy/consistent/lizard2 = new(locate(src:loc:x+1, src:loc:y))
-	lizard2.set_species(/datum/species/lizard)
-	lizard2.forceMove(get_step(src, EAST))

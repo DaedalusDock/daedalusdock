@@ -60,10 +60,11 @@
 	friendly_name = "Test Station 3"
 
 /obj/machinery/networked/telephone/Destroy()
-	if(handset_state == HANDSET_OFFHOOK)
-		var/M = get(handset, /mob)
-		remove_handset(M)
-	QDEL_NULL(handset)
+	if(!QDELETED(handset))
+		if(handset_state == HANDSET_OFFHOOK)
+			var/M = get(handset, /mob)
+			remove_handset(M)
+		QDEL_NULL(handset)
 	return ..()
 
 /obj/machinery/networked/telephone/update_icon()
@@ -344,7 +345,8 @@
 	var/obj/machinery/networked/telephone/callstation
 
 /obj/item/p2p_phone_handset/Destroy()
-	QDEL_NULL(callstation)
+	if(!QDELETED(callstation))
+		QDEL_NULL(callstation)
 	return ..()
 
 /obj/item/p2p_phone_handset/equipped(mob/user, slot)

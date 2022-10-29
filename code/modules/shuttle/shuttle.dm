@@ -1026,6 +1026,9 @@
 /obj/docking_port/mobile/emergency/on_emergency_launch()
 	return
 
+/obj/docking_port/mobile/proc/post_emergency_launch()
+	SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
+
 //Called when emergency shuttle docks at centcom
 /obj/docking_port/mobile/proc/on_emergency_dock()
 	//Mapping a new docking point for each ship mappers could potentially want docking with centcom would take up lots of space, just let them keep flying off into the sunset for their greentext
@@ -1038,4 +1041,5 @@
 		mode = SHUTTLE_ENDGAME
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()
+	SSuniverse.ClearUniversalState()
 	return

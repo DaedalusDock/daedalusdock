@@ -323,7 +323,7 @@ GLOBAL_VAR(restart_counter)
 	if(SSticker.current_state >= GAME_STATE_PLAYING)
 		new_status += "<br>Active Users: <b>[get_active_player_count()]</b>"
 
-	new_status += "<br>\[Round Time: <b>[SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0) : "The round hasn't started yet!"]</b>"
+	new_status += "<br>\[Round Time: <b>[SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm", 0) : "Inactive!"]</b>"
 	status = new_status
 
 /world/proc/update_hub_visibility(new_visibility)

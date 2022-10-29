@@ -323,7 +323,7 @@ GLOBAL_VAR(restart_counter)
 
 	if(SSticker.current_state >= GAME_STATE_PLAYING)
 		new_status += "<br>Active Users: <b>[get_active_player_count()]</b>"
-		new_status += "<br>\[Round Time: <b>[gameTimestamp("hh-mm")]</b>"
+		new_status += "<br>\[Round Time: <b>[gameTimestamp("hh:mm")]</b>"
 
 	else
 		new_status += "<br>\[Round Time: <b>Not Started!</b>"

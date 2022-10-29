@@ -64,7 +64,7 @@ GLOBAL_VAR(command_name)
 	return GLOB.station_name
 
 /proc/set_station_name(newname, bypass_config = TRUE)
-	if(!bypass_config && CONFIG_GET(string/stationname) && GLOB.station_name)
+	if(!bypass_config && CONFIG_GET(string/stationname))
 		return
 
 	GLOB.station_name = newname

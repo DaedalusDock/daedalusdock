@@ -8,7 +8,7 @@
 	// This outfit is used by the assets SS, which is ran before the atoms SS
 	if(SSatoms.initialized == INITIALIZATION_INSSATOMS)
 		prisoner.w_uniform?.update_greyscale()
-		prisoner.update_inv_w_uniform()
+		prisoner.update_worn_undersuit()
 	if(visualsOnly)
 		return
 	prisoner.fully_replace_character_name(null,"NTP #CC-0[rand(111,999)]") //same as the lavaland prisoner transport, but this time they are from CC, or CentCom
@@ -31,10 +31,13 @@
 	glasses = /obj/item/clothing/glasses/regular/circle
 
 /datum/outfit/waldo/post_equip(mob/living/carbon/human/equipped_on, visualsOnly=FALSE)
+	equipped_on.w_uniform?.update_greyscale()
+	equipped_on.update_worn_undersuit()
 	if(visualsOnly)
 		return
 	equipped_on.fully_replace_character_name(null,"Waldo")
-	equipped_on.eye_color = "#000000"
+	equipped_on.eye_color_left = "#000000"
+	equipped_on.eye_color_right = "#000000"
 	equipped_on.gender = MALE
 	equipped_on.skin_tone = "caucasian3"
 	equipped_on.hairstyle = "Business Hair 3"
@@ -61,7 +64,7 @@
 /datum/outfit/synthetic/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
 		return
-	var/obj/item/organ/eyes/robotic/glow/eyes = new()
+	var/obj/item/organ/internal/eyes/robotic/glow/eyes = new()
 	eyes.Insert(H, drop_if_replaced = FALSE)
 
 /datum/outfit/spacepol

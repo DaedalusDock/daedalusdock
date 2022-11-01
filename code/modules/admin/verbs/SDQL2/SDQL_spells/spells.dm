@@ -138,7 +138,7 @@
 			if(attached_hand.vars[V])
 				attached_hand.vv_edit_var(V, hand_var_overrides[V])
 		RegisterSignal(attached_hand, COMSIG_ITEM_AFTERATTACK, .proc/on_touch_attack)
-		user.update_inv_hands()
+		user.update_held_items()
 
 /obj/effect/proc_holder/spell/targeted/touch/sdql/proc/on_touch_attack(source, target, user)
 	SIGNAL_HANDLER

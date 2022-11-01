@@ -1,13 +1,3 @@
-///Enables verbose debugging and the debug overlay. NOTE: Debug Overlay does not report MultiZAS information at this time.
-//#define ZASDBG
-
-///Enables multi-Z air movement. Zones do not merge across Z levels.
-#define MULTIZAS
-
-#ifdef ZASDBG
-#warn ZAS debugging tools are enabled.
-#endif
-
 ///Air and zones freely mingle with this turf under the given conditions
 #define AIR_ALLOWED (0<<0)
 ///Neither air nor zones can interact with this turf under the given conditions

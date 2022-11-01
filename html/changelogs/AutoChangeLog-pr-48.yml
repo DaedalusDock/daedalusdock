@@ -1,0 +1,8 @@
+author: Kapu1178, LemonInTheDark, ZephyrTFA, CoffeeDragon16, BebeYoshi, Microvolnovka19,
+  Ryll-Ryll, SmArtKar, iamgoofball
+delete-after: true
+changes:
+  - rscadd: Added far more robust color choosing to character creation
+  - rscadd: Heterochromia quirk
+  - code_imp: Rewrites a ton of back-end character code.
+  - bugfix: Various jetpack bugs

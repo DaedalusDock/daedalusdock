@@ -348,7 +348,7 @@
 	sword.icon_state = "e_sword_on_red"
 	sword.worn_icon_state = "e_sword_on_red"
 
-	H.update_inv_hands()
+	H.update_held_items()
 
 
 /datum/antagonist/traitor/get_preview_icon()

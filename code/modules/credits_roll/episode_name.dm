@@ -312,12 +312,12 @@
 		if(clowncount == 1 && mimecount == 1)
 			episode_names += new /datum/episode_name/rare("THE DYNAMIC DUO", "The only two survivors were the Clown, and the Mime.", 2500)
 
-	else
+	else if(human_escapees)
 		//more than 0 human escapees
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
-			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/internal/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
 			if(hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage

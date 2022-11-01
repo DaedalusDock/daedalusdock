@@ -19,7 +19,7 @@
 
 /datum/round_event/aurora_caelus/announce()
 	priority_announce("[station_name()]: A harmless cloud of ions is approaching your station, and will exhaust their energy battering the hull. Nanotrasen has approved a short break for all employees to relax and observe this very rare event. During this time, starlight will be bright but gentle, shifting between quiet green and blue colors. Any staff who would like to view these lights for themselves may proceed to the area nearest to them with viewing ports to open space. We hope you enjoy the lights.",
-	sound = 'sound/misc/notice2.ogg',
+	sound = 'goon/sounds/announcement_1.ogg',
 	sender_override = "Nanotrasen Meteorology Division")
 	for(var/V in GLOB.player_list)
 		var/mob/M = V
@@ -50,7 +50,7 @@
 			for(var/turf/open/space/S in A)
 				fade_to_black(S)
 	priority_announce("The aurora caelus event is now ending. Starlight conditions will slowly return to normal. When this has concluded, please return to your workplace and continue work as normal. Have a pleasant shift, [station_name()], and thank you for watching with us.",
-	sound = 'sound/misc/notice2.ogg',
+	sound = 'goon/sounds/announcement_1.ogg',
 	sender_override = "Nanotrasen Meteorology Division")
 
 /datum/round_event/aurora_caelus/proc/fade_to_black(turf/open/space/S)

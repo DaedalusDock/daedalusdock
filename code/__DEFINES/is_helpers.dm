@@ -206,6 +206,10 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isorgan(A) (istype(A, /obj/item/organ))
 
+#define isinternalorgan(A) (istype(A, /obj/item/organ/internal))
+
+#define isexternalorgan(A) (istype(A, /obj/item/organ/external))
+
 #define isclothing(A) (istype(A, /obj/item/clothing))
 
 #define ismobholder(A) (istype(A, /obj/item/mob_holder))

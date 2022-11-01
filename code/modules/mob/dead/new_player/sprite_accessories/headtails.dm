@@ -3,7 +3,7 @@ Skrell Headtails
 */
 
 /datum/sprite_accessory/headtails
-	icon = 'icons/mob/skrell_headtails.dmi'
+	icon = 'icons/mob/species/skrell/skrell_headtails.dmi'
 	color_src = HAIR
 
 /datum/sprite_accessory/headtails/long

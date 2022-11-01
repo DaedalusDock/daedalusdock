@@ -23,6 +23,7 @@
 	. = ..()
 	if(attached_light)
 		alight = new(src)
+	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HEAD)
 
 
 /obj/item/clothing/head/helmet/Destroy()
@@ -170,7 +171,7 @@
 			icon_state = "[initial(icon_state)][up ? "up" : ""]"
 			to_chat(user, span_notice("[up ? alt_toggle_message : toggle_message] \the [src]."))
 
-			user.update_inv_head()
+			user.update_worn_head()
 			if(iscarbon(user))
 				var/mob/living/carbon/C = user
 				C.head_update(src, forced = 1)
@@ -579,7 +580,7 @@
 		update_helmlight()
 		removed_light.update_brightness(user)
 		update_appearance()
-		user.update_inv_head()
+		user.update_worn_head()
 		QDEL_NULL(alight)
 		return TRUE
 

@@ -30,14 +30,14 @@
 	var/limb_id = SPECIES_HUMAN
 	//Defines what sprite the limb should use if it is also sexually dimorphic.
 	VAR_PROTECTED/limb_gender = "m"
-	///Does this limb have a greyscale version?
-	var/uses_mutcolor = TRUE
 	///Which mutcolor to use, if mutcolors are used
-	var/mutcolor_used = MUTCOLORS
+	var/mutcolor_used = MUTCOLORS_GENERIC_1
 	///Is there a sprite difference between male and female?
 	var/is_dimorphic = FALSE
 	///The actual color a limb is drawn as, set by /proc/update_limb()
-	VAR_PROTECTED/draw_color
+	var/draw_color //NEVER. EVER. EDIT THIS VALUE OUTSIDE OF UPDATE_LIMB. I WILL FIND YOU. It ruins the limb icon pipeline.
+	///We always copy the list of mutcolors our owner has incase our organs want it
+	var/list/mutcolors
 
 	/// BODY_ZONE_CHEST, BODY_ZONE_L_ARM, etc , used for def_zone
 	var/body_zone
@@ -158,6 +158,8 @@
 	if(length(wounds))
 		stack_trace("[type] qdeleted with [length(wounds)] uncleared wounds")
 		wounds.Cut()
+	for(var/external_organ in external_organs)
+		qdel(external_organ)
 	return ..()
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
@@ -620,6 +622,7 @@
 
 		var/datum/species/owner_species = human_owner.dna.species
 		species_flags_list = human_owner.dna.species.species_traits
+		mutcolors = human_owner.dna.mutant_colors.Copy()
 		limb_gender = (human_owner.physique == MALE) ? "m" : "f"
 
 		if(owner_species.use_skintones)
@@ -627,17 +630,11 @@
 		else
 			skin_tone = ""
 
-		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits)) && uses_mutcolor) //Ethereal code. Motherfuckers.
+		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits))) //Ethereal code. Motherfuckers.
 			if(owner_species.fixed_mut_color)
 				species_color = owner_species.fixed_mut_color
 			else
-				switch(mutcolor_used)
-					if(MUTCOLORS)
-						species_color = human_owner.dna.features["mcolor"]
-					if(MUTCOLORS2)
-						species_color = human_owner.dna.features["mcolor2"]
-					if(MUTCOLORS3)
-						species_color = human_owner.dna.features["mcolor3"]
+				species_color = mutcolors[mutcolor_used]
 		else
 			species_color = null
 
@@ -653,6 +650,7 @@
 	if(!IS_ORGANIC_LIMB(src))
 		dmg_overlay_type = "robotic"
 
+	recolor_external_organs()
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
@@ -779,8 +777,6 @@
 					image_dir,
 					external_organ.bitflag_to_layer(external_layer),
 					limb_gender,
-					external_organ.overrides_color ? external_organ.override_color(draw_color) : draw_color,
-					owner,
 				)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
@@ -961,11 +957,7 @@
 		QDEL_NULL(current_gauze)
 		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZE_DESTROYED)
 
-
-///Proc to turn bodypart into another.
-/obj/item/bodypart/proc/change_bodypart(obj/item/bodypart/new_type)
-	RETURN_TYPE(/obj/item/bodypart)
-
-	var/mob/living/carbon/our_owner = owner //dropping nulls the limb
-	var/obj/item/bodypart/new_part = new new_type()
-	new_part.replace_limb(our_owner, TRUE)
+///Loops through all of the bodypart's external organs and update's their color.
+/obj/item/bodypart/proc/recolor_external_organs()
+	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
+		ext_organ.inherit_color(force = TRUE)

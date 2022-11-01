@@ -98,3 +98,7 @@ GLOBAL_PROTECT(picture_logging_prefix)
 GLOBAL_LIST_EMPTY(harddel_log)
 GLOBAL_PROTECT(harddel_log)
 #endif
+
+//Debug stuff
+GLOBAL_VAR(is_debug_server)
+GLOBAL_PROTECT(is_debug_server)

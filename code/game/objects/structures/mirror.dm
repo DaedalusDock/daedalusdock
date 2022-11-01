@@ -49,7 +49,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 	hairdresser.hairstyle = new_style
 
-	hairdresser.update_hair(is_creating = TRUE)
+	hairdresser.update_body_parts()
 
 /obj/structure/mirror/examine_status(mob/user)
 	if(broken)
@@ -189,43 +189,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 					amazed_human.dna.update_ui_block(DNA_SKIN_TONE_BLOCK)
 
 			if(MUTCOLORS in amazed_human.dna.species.species_traits)
-				var/new_mutantcolor = input(user, "Choose your primary color:", "Race change", amazed_human.dna.features["mcolor"]) as color|null
+				var/mutcolor2change = input(user, "Choose which mutant color to change", "Color Change", amazed_human.dna.mutant_colors) as text|null
+				if(!mutcolor2change)
+					return TRUE
+
+				var/new_mutantcolor = input(user, "Choose your primary color:", "Race change", amazed_human.dna.mutant_colors[mutcolor2change]) as color|null
 				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 					return TRUE
+
 				if(new_mutantcolor)
 					var/temp_hsv = RGBtoHSV(new_mutantcolor)
 
 					if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
-						amazed_human.dna.features["mcolor"] = sanitize_hexcolor(new_mutantcolor)
-						amazed_human.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
-
-					else
-						to_chat(amazed_human, span_notice("Invalid color. Your color is not bright enough."))
-						return TRUE
-			if(MUTCOLORS2 in amazed_human.dna.species.species_traits)
-				var/new_mutantcolor = input(user, "Choose your secondary color:", "Race change", amazed_human.dna.features["mcolor2"]) as color|null
-				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-					return TRUE
-				if(new_mutantcolor)
-					var/temp_hsv = RGBtoHSV(new_mutantcolor)
-
-					if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
-						amazed_human.dna.features["mcolor2"] = sanitize_hexcolor(new_mutantcolor)
-						amazed_human.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
-
-					else
-						to_chat(amazed_human, span_notice("Invalid color. Your color is not bright enough."))
-						return TRUE
-
-			if(MUTCOLORS3 in amazed_human.dna.species.species_traits)
-				var/new_mutantcolor = input(user, "Choose your tertiary color:", "Race change", amazed_human.dna.features["mcolor3"]) as color|null
-				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-					return TRUE
-				if(new_mutantcolor)
-					var/temp_hsv = RGBtoHSV(new_mutantcolor)
-
-					if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
-						amazed_human.dna.features["mcolor3"] = sanitize_hexcolor(new_mutantcolor)
+						amazed_human.dna.features[mutcolor2change] = sanitize_hexcolor(new_mutantcolor)
 						amazed_human.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
 
 					else
@@ -281,15 +257,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 					if(new_face_color)
 						amazed_human.facial_hair_color = sanitize_hexcolor(new_face_color)
 						amazed_human.dna.update_ui_block(DNA_FACIAL_HAIR_COLOR_BLOCK)
-				amazed_human.update_hair()
+				amazed_human.update_body_parts()
 
 		if(BODY_ZONE_PRECISE_EYES)
-			var/new_eye_color = input(amazed_human, "Choose your eye color", "Eye Color", amazed_human.eye_color) as color|null
+			var/new_eye_color = input(amazed_human, "Choose your eye color", "Eye Color", amazed_human.eye_color_left) as color|null
 			if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 				return TRUE
 			if(new_eye_color)
-				amazed_human.eye_color = sanitize_hexcolor(new_eye_color)
-				amazed_human.dna.update_ui_block(DNA_EYE_COLOR_BLOCK)
+				amazed_human.eye_color_left = sanitize_hexcolor(new_eye_color)
+				amazed_human.eye_color_right = sanitize_hexcolor(new_eye_color)
+				amazed_human.dna.update_ui_block(DNA_EYE_COLOR_LEFT_BLOCK)
+				amazed_human.dna.update_ui_block(DNA_EYE_COLOR_RIGHT_BLOCK)
 				amazed_human.update_body()
 
 /obj/structure/mirror/magic/lesser/Initialize(mapload)

@@ -21,6 +21,9 @@
 	var/motd
 	var/policy
 
+	///IPs allowed through the fail2topic firewall
+	var/list/fail2topic_whitelisted_ips
+
 	/// If the configuration is loaded
 	var/loaded = FALSE
 
@@ -86,6 +89,7 @@
 				break
 	loadmaplist(CONFIG_MAPS_FILE)
 	LoadMOTD()
+	LoadTopicRateWhitelist()
 	LoadPolicy()
 	LoadChatFilter()
 
@@ -372,6 +376,22 @@ Example config:
 				currentmap = null
 			else
 				log_config("Unknown command in map vote config: '[command]'")
+
+/datum/controller/configuration/proc/LoadTopicRateWhitelist()
+	LAZYINITLIST(fail2topic_whitelisted_ips)
+	if(!fexists("[directory]/topic_rate_limit_whitelist.txt"))
+		log_config("Error 404: topic_rate_limit_whitelist.txt not found!")
+		return
+
+	log_config("Loading config file topic_rate_limit_whitelist.txt...")
+
+	for(var/line in world.file2list("[directory]/topic_rate_limit_whitelist.txt"))
+		if(!line)
+			continue
+		if(findtextEx(line,"#",1,2))
+			continue
+
+		fail2topic_whitelisted_ips[line] = 1
 
 /datum/controller/configuration/proc/LoadChatFilter()
 	if(!fexists("[directory]/word_filter.toml"))

@@ -568,9 +568,9 @@
 ///Returns a gas_mixture datum with identical contents.
 /datum/gas_mixture/proc/copy()
 	RETURN_TYPE(/datum/gas_mixture)
-	var/datum/gas_mixture/new_gas = new
 	AIR_UPDATE_VALUES(src)
-	new_gas.gas = src.gas
+	var/datum/gas_mixture/new_gas = new(volume)
+	new_gas.gas = src.gas.Copy()
 	new_gas.temperature = src.temperature
 	new_gas.total_moles = src.total_moles
 	return new_gas

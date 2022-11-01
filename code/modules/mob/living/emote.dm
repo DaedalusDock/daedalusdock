@@ -120,11 +120,16 @@
 		message_simple = S.deathmessage
 	. = ..()
 	message_simple = initial(message_simple)
-	if(. && user.deathsound)
+	if(.)
 		if(isliving(user))
 			var/mob/living/L = user
 			if(!L.can_speak_vocal() || L.oxyloss >= 50)
 				return //stop the sound if oxyloss too high/cant speak
+		if(!user.deathsound)
+			if(!ishuman(user))
+				return
+			playsound(user, pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg'), 100, 0)
+			return
 		playsound(user, user.deathsound, 200, TRUE, TRUE)
 
 /datum/emote/living/drool

@@ -16,9 +16,12 @@
 	///Convert the bitflag define into the actual layer define
 	var/static/list/all_layers = list(EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
 
-	///Defines what kind of 'organ' we're looking at. Sprites have names like 'm_firemoth_mothwings'. 'mothwings' would then be feature_key
+	///Defines what kind of 'organ' we're looking at. Sprites have names like 'm_mothwings_firemoth'. 'mothwings' would then be feature_key
 	var/feature_key = ""
-
+	///Similar to feature key, but overrides it in the case you need more fine control over the iconstate, like with Tails.
+	var/render_key = ""
+	///Stores the dna.features[feature_key], used for external organs that can be surgically removed or inserted.
+	var/stored_feature_id = ""
 	/// The savefile_key of the preference this relates to. Used for the preferences UI.
 	var/preference
 
@@ -33,11 +36,20 @@
 	///Reference to the limb we're inside of
 	var/obj/item/bodypart/ownerlimb
 
-	///Does this organ use it's own color instead of bodypart/var/draw_color?
-	var/overrides_color = FALSE
+	///The color this organ draws with. Updated by bodypart/inherit_color()
+	var/draw_color
+
+	///Where does this organ inherit it's color from?
+	var/color_source = ORGAN_COLOR_INHERIT
+
+	///Used by ORGAN_COLOR_INHERIT_ALL, allows full control of the owner's mutcolors
+	var/list/mutcolors = list()
+	///See above
+	var/mutcolor_used
 
 	///Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
+
 
 /**mob_sprite is optional if you havent set sprite_datums for the object, and is used mostly to generate sprite_datums from a persons DNA
 * For _mob_sprite we make a distinction between "Round Snout" and "round". Round Snout is the name of the sprite datum, while "round" would be part of the sprite
@@ -48,68 +60,97 @@
 	if(mob_sprite)
 		set_sprite(mob_sprite)
 
+	if(!(organ_flags & ORGAN_UNREMOVABLE))
+		color = "#[random_color()]" //A temporary random color that gets overwritten on insertion.
+
+/obj/item/organ/external/Destroy()
+	if(owner)
+		Remove(owner, special=TRUE)
+	else if(ownerlimb)
+		remove_from_limb()
+
+	return ..()
+
 /obj/item/organ/external/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
-	var/obj/item/bodypart/limb = reciever.get_bodypart(zone)
+	var/obj/item/bodypart/limb = reciever.get_bodypart(deprecise_zone(zone))
 
 	if(!limb)
 		return FALSE
-
-	limb.external_organs.Add(src)
-	ownerlimb = limb
-
 	. = ..()
+	if(!.)
+		return
 
-	limb.contents.Add(src)
+	if(!stored_feature_id) //We only want this set *once*
+		stored_feature_id = reciever.dna.features[feature_key]
+
+	reciever.external_organs.Add(src)
+	if(slot)
+		reciever.external_organs_slot[slot] = src
+
+	ownerlimb = limb
+	add_to_limb(ownerlimb)
+
 	if(external_bodytypes)
 		limb.synchronize_bodytypes(reciever)
 
 	reciever.update_body_parts()
 
-/obj/item/organ/external/Remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/external/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
-
 	if(ownerlimb)
-		ownerlimb.external_organs.Remove(src)
-		ownerlimb.contents.Remove(src)
-		if(external_bodytypes) //Happens after removal from contents, and before ownerlimb is null.
-			ownerlimb.synchronize_bodytypes(organ_owner)
-		ownerlimb = null
+		remove_from_limb()
 
-	organ_owner.update_body_parts()
+	if(organ_owner)
+		if(slot)
+			organ_owner.external_organs_slot.Remove(slot)
+		organ_owner.external_organs.Remove(src)
+		organ_owner.update_body_parts()
 
+///Transfers the organ to the limb, and to the limb's owner, if it has one.
 /obj/item/organ/external/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner)
-	. = ..()
+	if(owner)
+		Remove(owner, moving = TRUE)
+	else if(ownerlimb)
+		remove_from_limb()
 
-	bodypart.external_organs.Add(src)
-	bodypart.contents.Add(src)
+	if(bodypart_owner)
+		Insert(bodypart_owner, TRUE)
+	else
+		add_to_limb(bodypart)
+
+/obj/item/organ/external/add_to_limb(obj/item/bodypart/bodypart)
+	ownerlimb = bodypart
+	ownerlimb.external_organs |= src
+	inherit_color()
+	return ..()
+
+/obj/item/organ/external/remove_from_limb()
+	ownerlimb.external_organs -= src
+	if(ownerlimb.owner && external_bodytypes)
+		ownerlimb.synchronize_bodytypes(ownerlimb.owner)
+	ownerlimb = null
+	return ..()
 
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
-/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color, mob/living/carbon/owner)
+/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique)
+	set_sprite(stored_feature_id)
 	if(!sprite_datum)
 		return
 
 	var/gender = (physique == FEMALE) ? "f" : "m"
-	var/finished_icon_state = (sprite_datum.gender_specific ? gender : "m") + "_" + feature_key + "_" + sprite_datum.icon_state + mutant_bodyparts_layertext(image_layer)
+	var/list/icon_state_builder = list()
+	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
+	icon_state_builder += render_key ? render_key : feature_key
+	icon_state_builder += sprite_datum.icon_state
+	icon_state_builder += mutant_bodyparts_layertext(image_layer)
+
+	var/finished_icon_state = icon_state_builder.Join("_")
+
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = -image_layer)
 	appearance.dir = image_dir
 
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		switch(sprite_datum.color_src)
-			if(FACEHAIR)
-				appearance.color = human_owner.facial_hair_color
-			if(HAIR)
-				appearance.color = human_owner.hair_color
-			if(EYECOLOR)
-				appearance.color = human_owner.eye_color
-			if(MUTCOLORS)
-				appearance.color = image_color
-			if(MUTCOLORS2)
-				appearance.color = human_owner?.dna?.features["mcolor2"] ? human_owner.dna.features["mcolor2"] : image_color
-			if(MUTCOLORS3)
-				appearance.color = human_owner?.dna?.features["mcolor3"] ? human_owner.dna.features["mcolor3"] : image_color
-	else if(sprite_datum.color_src)
-		appearance.color = image_color
+	if(sprite_datum.color_src)
+		appearance.color = draw_color
 
 	if(sprite_datum.center)
 		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
@@ -118,12 +159,24 @@
 	return appearance
 
 /obj/item/organ/external/proc/set_sprite(sprite_name)
+	stored_feature_id = sprite_name
 	sprite_datum = get_sprite_datum(sprite_name)
-	cache_key = generate_icon_cache()
+	if(!sprite_datum && stored_feature_id)
+		stack_trace("NON-EXISTANT SPRITE DATUM IN EXTERNAL ORGAN")
+	cache_key = jointext(generate_icon_cache(), "_")
 
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse)
 /obj/item/organ/external/proc/generate_icon_cache()
-	return "[sprite_datum.icon_state]_[feature_key]"
+	. = list()
+	. += "[sprite_datum?.icon_state]"
+	. += "[render_key ? render_key : feature_key]"
+	if(color_source == ORGAN_COLOR_INHERIT_ALL)
+		. += "color1:[mutcolors["[mutcolor_used]_1"]]"
+		. += "color2:[mutcolors["[mutcolor_used]_2"]]"
+		. += "color3:[mutcolors["[mutcolor_used]_3"]]"
+	else
+		. += "[draw_color]"
+	return .
 
 /**This exists so sprite accessories can still be per-layer without having to include that layer's
 *  number in their sprite name, which causes issues when those numbers change.
@@ -131,11 +184,11 @@
 /obj/item/organ/external/proc/mutant_bodyparts_layertext(layer)
 	switch(layer)
 		if(BODY_BEHIND_LAYER)
-			return "_BEHIND"
+			return "BEHIND"
 		if(BODY_ADJ_LAYER)
-			return "_ADJ"
+			return "ADJ"
 		if(BODY_FRONT_LAYER)
-			return "_FRONT"
+			return "FRONT"
 
 ///Converts a bitflag to the right layer. I'd love to make this a static index list, but byond made an attempt on my life when i did
 /obj/item/organ/external/proc/bitflag_to_layer(layer)
@@ -154,7 +207,7 @@
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)
 /obj/item/organ/external/proc/get_global_feature_list()
-	return null
+	CRASH("External organ has no feature list, it will render invisible")
 
 ///Check whether we can draw the overlays. You generally don't want lizard snouts to draw over an EVA suit
 /obj/item/organ/external/proc/can_draw_on_bodypart(mob/living/carbon/human/human)
@@ -163,15 +216,44 @@
 ///Update our features after something changed our appearance
 /obj/item/organ/external/proc/mutate_feature(features, mob/living/carbon/human/human)
 	if(!dna_block || !get_global_feature_list())
-		return
+		CRASH("External organ has no dna block/feature_list implimented!")
 
 	var/list/feature_list = get_global_feature_list()
 
 	set_sprite(feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)])
 
+///Give the organ it's color. Force will override the existing one.
+/obj/item/organ/external/proc/inherit_color(force)
+	if(draw_color && !force)
+		return
+	switch(color_source)
+		if(ORGAN_COLOR_OVERRIDE)
+			draw_color = override_color(ownerlimb.draw_color)
+
+		if(ORGAN_COLOR_INHERIT)
+			draw_color = ownerlimb.draw_color
+
+		if(ORGAN_COLOR_HAIR)
+			if(!ishuman(ownerlimb.owner))
+				return
+
+			var/mob/living/carbon/human/human_owner = ownerlimb.owner
+			draw_color = human_owner.hair_color
+
+		if(ORGAN_COLOR_STATIC)
+			color = draw_color //Empty if clauses are linted
+
+		if(ORGAN_COLOR_INHERIT_ALL)
+			mutcolors = ownerlimb.mutcolors.Copy()
+			draw_color = mutcolors["[mutcolor_used]_1"]
+
+	color = draw_color
+	return TRUE
+
 ///Colorizes the limb it's inserted to, if required.
 /obj/item/organ/external/proc/override_color(rgb_value)
-	return
+	CRASH("External organ color set to override with no override proc.")
+
 
 ///The horns of a lizard!
 /obj/item/organ/external/horns
@@ -212,36 +294,6 @@
 /obj/item/organ/external/frills/get_global_feature_list()
 	return GLOB.frills_list
 
-///Guess what part of the lizard this is?
-/obj/item/organ/external/snout
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_SNOUT
-	layers = EXTERNAL_ADJACENT
-
-	feature_key = "snout"
-	preference = "feature_lizard_snout"
-	external_bodytypes = BODYTYPE_SNOUTED
-
-	dna_block = DNA_SNOUT_BLOCK
-
-/obj/item/organ/external/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/snout/get_global_feature_list()
-	return GLOB.snouts_list
-
-///Guess what part of the vox is this?
-/obj/item/organ/external/snout/vox
-	feature_key = "vox_snout"
-	preference = "feature_vox_snout"
-
-	dna_block = DNA_VOX_SNOUT_BLOCK
-
-/obj/item/organ/external/snout/vox/get_global_feature_list()
-	return GLOB.vox_snouts_list
-
 ///A moth's antennae
 /obj/item/organ/external/antennae
 	zone = BODY_ZONE_HEAD
@@ -264,7 +316,7 @@
 	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, .proc/try_burn_antennae)
 	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, .proc/heal_antennae)
 
-/obj/item/organ/external/antennae/Remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/external/antennae/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
 
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL))
@@ -309,7 +361,7 @@
 
 	dna_block = DNA_POD_HAIR_BLOCK
 
-	overrides_color = TRUE
+	color_source = ORGAN_COLOR_OVERRIDE
 
 /obj/item/organ/external/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
@@ -322,42 +374,6 @@
 /obj/item/organ/external/pod_hair/override_color(rgb_value)
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
-
-/obj/item/organ/external/vox_hair
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
-
-	dna_block = DNA_VOX_HAIR_BLOCK
-
-	feature_key = "vox_hair"
-	preference = "feature_vox_hair"
-
-/obj/item/organ/external/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/vox_hair/get_global_feature_list()
-	return GLOB.vox_hair_list
-
-/obj/item/organ/external/vox_facial_hair
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
-
-	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
-
-	feature_key = "vox_facial_hair"
-	preference = "feature_vox_facial_hair"
-
-/obj/item/organ/external/vox_facial_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return TRUE
-	return FALSE
-
-/obj/item/organ/external/vox_facial_hair/get_global_feature_list()
-	return GLOB.vox_facial_hair_list
 
 //skrell
 /obj/item/organ/external/headtails
@@ -390,7 +406,7 @@
 	preference = "teshari_feathers"
 
 	dna_block = DNA_TESHARI_FEATHERS_BLOCK
-	overrides_color = TRUE
+	color_source = ORGAN_COLOR_OVERRIDE
 
 /obj/item/organ/external/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
@@ -431,8 +447,9 @@
 
 	var/mutable_appearance/inner_ears = mutable_appearance(sprite_datum.icon, "m_teshari_earsinner_[sprite_datum.icon_state]_ADJ", layer = -image_layer)
 	var/mob/living/carbon/human/human_owner = owner
-	inner_ears.color = human_owner.facial_hair_color
-	overlay_list += inner_ears
+	if(owner)
+		inner_ears.color = human_owner.facial_hair_color
+		overlay_list += inner_ears
 
 // Teshari body feathers
 /obj/item/organ/external/teshari_body_feathers
@@ -445,7 +462,7 @@
 	preference = "teshari_body_feathers"
 
 	dna_block = DNA_TESHARI_BODY_FEATHERS_BLOCK
-	overrides_color = TRUE
+	color_source = ORGAN_COLOR_INHERIT_ALL
 
 /obj/item/organ/external/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
@@ -455,55 +472,26 @@
 /obj/item/organ/external/teshari_body_feathers/get_global_feature_list()
 	return GLOB.teshari_body_feathers_list
 
-// TODO: Get this to figure out which limbs are missing, and skip drawing the overlay on those.
 /obj/item/organ/external/teshari_body_feathers/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
 	var/mutable_appearance/chest_feathers = ..()
 	if(sprite_datum.icon_state == "none")
 		return
+	var/static/list/bodypart_color_indexes = list(
+		BODY_ZONE_CHEST = MUTCOLORS_TESHARI_BODY_FEATHERS_1,
+		BODY_ZONE_HEAD = MUTCOLORS_TESHARI_BODY_FEATHERS_2,
+		BODY_ZONE_R_ARM = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_L_ARM = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_R_LEG = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_L_LEG = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+	)
 
-	var/list/limb_overlays = list()
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_head", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_arm", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_arm", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_leg", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_leg", layer = -image_layer)
+	for(var/mutable_appearance/existing_overlay in overlay_list)
+		existing_overlay.color = mutcolors[MUTCOLORS_TESHARI_BODY_FEATHERS_1]
 
-	for(var/mutable_appearance/overlay as anything in limb_overlays)
-		overlay.color = image_color
-		overlay_list += overlay
+	if(!owner)
+		return
 
-/obj/item/organ/external/teshari_body_feathers/override_color(rgb_value)
-	var/mob/living/carbon/human/human_owner = owner
-	return human_owner.facial_hair_color
-
-// Teshari tail
-/obj/item/organ/external/tail/teshari
-	name = "Teshari tail"
-	zone = BODY_ZONE_CHEST // Don't think about this too much
-	slot = ORGAN_SLOT_TAIL
-	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
-
-	feature_key = "tail_teshari"
-	preference = "tail_teshari"
-
-	dna_block = DNA_TESHARI_TAIL_BLOCK
-
-/obj/item/organ/external/tail/teshari/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
-		return FALSE
-	return TRUE
-
-/obj/item/organ/external/tail/teshari/get_global_feature_list()
-	return GLOB.teshari_tails_list
-
-/obj/item/organ/external/tail/teshari/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
-	var/mutable_appearance/tail_primary = ..()
-	var/mutable_appearance/tail_secondary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_secondary", layer = -image_layer)
-	var/mutable_appearance/tail_tertiary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_tertiary", layer = -image_layer)
-
-	if(owner)
-		tail_secondary.color = owner.dna.features["mcolor2"]
-		tail_tertiary.color = owner.dna.features["mcolor3"]
-
-	overlay_list += tail_secondary
-	overlay_list += tail_tertiary
+	for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
+		var/mutable_appearance/new_overlay = mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_[BP.body_zone]", layer = -image_layer)
+		new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
+		overlay_list += new_overlay

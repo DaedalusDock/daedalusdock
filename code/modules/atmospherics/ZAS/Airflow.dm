@@ -101,12 +101,11 @@ This entire system is an absolute mess.
 	return ..()
 
 ///The typecache of objects airflow can't push objects into the same tile of
-GLOBAL_LIST_INIT(airflow_step_blacklist,
-	typecacheof(list(
-		/obj/structure,
-		/obj/machinery/door)
-	),
-)
+GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
+	/obj/structure,
+	/obj/machinery/door
+	)))
+
 /atom/movable/Bump(atom/A)
 	if(airflow_speed > 0 && airflow_dest)
 		var/turf/T = get_turf(A)

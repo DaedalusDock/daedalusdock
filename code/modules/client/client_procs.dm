@@ -347,6 +347,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			message_admins(msg)
 		else
 			if(!discord_is_link_valid(ckey))
+				restricted_mode = TRUE
 				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
 				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 				//These need to be immediate because we're disposing of the client the second we're done with this.
@@ -552,7 +553,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(mob)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_join = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
-		if (!stealth_admin)
+		if (!stealth_admin || restricted_mode)
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
 

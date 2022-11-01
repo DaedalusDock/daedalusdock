@@ -149,8 +149,13 @@
 	if(!new_area)
 		return
 	my_area = new_area
+
 	if(!my_area)
 		return
+
+	for(var/area/area2join in get_adjacent_open_areas(src) | my_area)
+		LAZYDISTINCTADD(area2join.firedoors, src)
+		joined_areas |= area2join
 
 /obj/machinery/door/firedoor/proc/handle_alert(datum/source, code)
 	SIGNAL_HANDLER

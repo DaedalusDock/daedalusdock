@@ -28,7 +28,6 @@
 	sight |= SEE_TURFS
 
 	client.playtitlemusic()
-
 	var/datum/asset/asset_datum = get_asset_datum(/datum/asset/simple/lobby)
 	asset_datum.send(client)
 
@@ -40,6 +39,8 @@
 			client.restricted_mode = TRUE
 			register_for_interview()
 			return
+
+	new_player_panel()
 
 	if(SSticker.current_state < GAME_STATE_SETTING_UP)
 		var/tl = SSticker.GetTimeLeft()

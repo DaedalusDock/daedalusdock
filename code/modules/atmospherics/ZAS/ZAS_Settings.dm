@@ -94,6 +94,10 @@
 	var/max_flash_range_NAME = "Explosion Flash Range"
 	var/max_flash_range_DESC = "By default, 5/4ths of light range."
 
+	var/airflow_speed_for_density = 5
+	var/airflow_speed_for_density_NAME = "Airflow Speed For Density"
+	var/airflow_speed_for_density_DESC = "The speed an object must be moving at to become dense to hit other objects"
+
 /datum/zas_controller/proc/set_bomb_cap(val)
 	if(!isnum(val))
 		CRASH("Non-number given to set_bomb_cap.")

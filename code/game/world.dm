@@ -311,7 +311,7 @@ GLOBAL_VAR(restart_counter)
 		var/website_url = CONFIG_GET(string/forumurl)
 		if(server_name)
 			new_status += "<b>[website_url ? server_name : "<a href=\"[website_url]\">[server_name]</a>"]</b>]"
-			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>) — (<a href =\"https://github.com/DaedalusDock/Gameserver\">Code</a>)"
+			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>|<a href =\"https://github.com/DaedalusDock/Gameserver\">Code</a>)"
 
 	var/players = GLOB.clients.len
 
@@ -320,11 +320,17 @@ GLOBAL_VAR(restart_counter)
 	new_status += "<br><i>Running custom code!</i><br>"
 	if(SSmapping.config)
 		new_status += "<br>Map: <b>[SSmapping.config.map_path == CUSTOM_MAP_PATH ? "Uncharted Territory" : SSmapping.config.map_name]</b>"
+
 	if(SSticker.current_state >= GAME_STATE_PLAYING)
 		new_status += "<br>Active Users: <b>[get_active_player_count()]</b>"
+		new_status += "<br>\[Round Time: <b>[time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0)]</b>"
 
-	new_status += "<br>\[Round Time: <b>[SSticker.round_start_timeofday ? time2text(REALTIMEOFDAY - SSticker.round_start_timeofday, "hh:mm:ss", 0) : "The round hasn't started yet!"]</b>"
+	else
+		new_status += "<br>\[Round Time: <b>Not Started!</b>"
+
 	status = new_status
+	///The usage of "\[" without also using "\]" makes the bracket pair colorizer break, so this is here to make the rest of the file easier to read.
+	var/static/vs_appeaser = "\]\]"
 
 /world/proc/update_hub_visibility(new_visibility)
 	if(new_visibility == GLOB.hub_visibility)

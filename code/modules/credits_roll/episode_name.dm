@@ -312,7 +312,7 @@
 		if(clowncount == 1 && mimecount == 1)
 			episode_names += new /datum/episode_name/rare("THE DYNAMIC DUO", "The only two survivors were the Clown, and the Mime.", 2500)
 
-	else
+	else if(human_escapees)
 		//more than 0 human escapees
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE

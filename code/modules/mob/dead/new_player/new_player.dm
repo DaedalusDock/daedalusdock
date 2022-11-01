@@ -1,9 +1,9 @@
+#define LINKIFY_READY(string, value) "<a href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
 /mob/dead/new_player
 	flags_1 = NONE
 	invisibility = INVISIBILITY_ABSTRACT
 	density = FALSE
 	stat = DEAD
-	hud_type = /datum/hud/new_player
 	hud_possible = list()
 
 	var/ready = FALSE
@@ -50,6 +50,41 @@
 	if(client.restricted_mode)
 		return FALSE
 
+	if(href_list["show_preferences"])
+		var/datum/preferences/preferences = client.prefs
+		preferences.current_window = PREFERENCE_TAB_GAME_PREFERENCES
+		preferences.update_static_data(usr)
+		preferences.ui_interact(usr)
+		return TRUE
+
+	if(href_list["character_setup"])
+		var/datum/preferences/preferences = client.prefs
+		preferences.current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
+		preferences.update_static_data(usr)
+		preferences.ui_interact(usr)
+		return TRUE
+
+	if(href_list["ready"])
+		var/tready = text2num(href_list["ready"])
+		//Avoid updating ready if we're after PREGAME (they should use latejoin instead)
+		//This is likely not an actual issue but I don't have time to prove that this
+		//no longer is required
+		if(SSticker.current_state <= GAME_STATE_PREGAME)
+			ready = tready
+		//if it's post initialisation and they're trying to observe we do the needful
+		if(!SSticker.current_state < GAME_STATE_PREGAME && tready == PLAYER_READY_TO_OBSERVE)
+			ready = tready
+			make_me_an_observer()
+			return
+
+	if(href_list["refresh"])
+		src << browse(null, "window=playersetup") //closes the player setup window
+		new_player_panel()
+
+	if(href_list["manifest"])
+		ViewManifest()
+		return
+
 	if(href_list["late_join"]) //This still exists for queue messages in chat
 		if(!SSticker?.IsRoundInProgress())
 			to_chat(usr, span_boldwarning("The round is either not ready, or has already finished..."))
@@ -85,6 +120,13 @@
 		AttemptLateSpawn(href_list["SelectedJob"])
 		return
 
+	else if(!href_list["late_join"])
+		new_player_panel()
+
+	if(href_list["showpoll"])
+		handle_player_polling()
+		return
+
 	if(href_list["viewpoll"])
 		var/datum/poll_question/poll = locate(href_list["viewpoll"]) in GLOB.polls
 		poll_player(poll)
@@ -92,6 +134,39 @@
 	if(href_list["votepollref"])
 		var/datum/poll_question/poll = locate(href_list["votepollref"]) in GLOB.polls
 		vote_on_poll_handler(poll, href_list)
+
+/**
+ * This proc generates the panel that opens to all newly joining players, allowing them to join, observe, view polls, view the current crew manifest, and open the character customization menu.
+ */
+/mob/dead/new_player/proc/new_player_panel()
+	if (client?.restricted_mode)
+		return
+
+	var/list/output = list("<center><p><a href='byond://?src=[REF(src)];character_setup=1'>Setup Character</a></p>")
+	output += "<p><a href='byond://?src=[REF(src)];show_preferences=1'>Preferences</a></p>"
+
+	if(SSticker.current_state <= GAME_STATE_PREGAME)
+		switch(ready)
+			if(PLAYER_NOT_READY)
+				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | <b>Not Ready</b> | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+			if(PLAYER_READY_TO_PLAY)
+				output += "<p>\[ <b>Ready</b> | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+			if(PLAYER_READY_TO_OBSERVE)
+				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | <b> Observe </b> \]</p>"
+	else
+		output += "<p><a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a></p>"
+		output += "<p><a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a></p>"
+		output += "<p>[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]</p>"
+
+	if(!is_guest_key(src.key))
+		output += playerpolls()
+
+	output += "</center>"
+
+	var/datum/browser/popup = new(src, "playersetup", "<div align='center'>New Player Options</div>", 250, 265)
+	popup.set_window_options("can_close=0")
+	popup.set_content(output.Join())
+	popup.open(FALSE)
 
 //When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer()
@@ -106,6 +181,8 @@
 	var/this_is_like_playing_right = alert(usr, "Are you sure you wish to observe? You will not be able to play this round![less_input_message]", "Observe", "Yes", "No")
 	if(QDELETED(src) || !src.client || this_is_like_playing_right != "Yes")
 		ready = PLAYER_NOT_READY
+		src << browse(null, "window=playersetup") //closes the player setup window
+		new_player_panel()
 		return FALSE
 
 	var/mob/dead/observer/observer = new()
@@ -173,6 +250,41 @@
 	if(latejoin && !job.special_check_latejoin(client))
 		return JOB_UNAVAILABLE_GENERIC
 	return JOB_AVAILABLE
+
+/mob/dead/new_player/proc/playerpolls()
+	var/list/output = list()
+	if (SSdbcore.Connect())
+		var/isadmin = FALSE
+		if(client?.holder)
+			isadmin = TRUE
+		var/datum/db_query/query_get_new_polls = SSdbcore.NewQuery({"
+			SELECT id FROM [format_table_name("poll_question")]
+			WHERE (adminonly = 0 OR :isadmin = 1)
+			AND Now() BETWEEN starttime AND endtime
+			AND deleted = 0
+			AND id NOT IN (
+				SELECT pollid FROM [format_table_name("poll_vote")]
+				WHERE ckey = :ckey
+				AND deleted = 0
+			)
+			AND id NOT IN (
+				SELECT pollid FROM [format_table_name("poll_textreply")]
+				WHERE ckey = :ckey
+				AND deleted = 0
+			)
+		"}, list("isadmin" = isadmin, "ckey" = ckey))
+		var/rs = REF(src)
+		if(!query_get_new_polls.Execute())
+			qdel(query_get_new_polls)
+			return
+		if(query_get_new_polls.NextRow())
+			output += "<p><b><a href='byond://?src=[rs];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
+		else
+			output += "<p><a href='byond://?src=[rs];showpoll=1'>Show Player Polls</A></p>"
+		qdel(query_get_new_polls)
+		if(QDELETED(src))
+			return
+		return output
 
 /mob/dead/new_player/proc/AttemptLateSpawn(rank)
 	var/error = IsJobUnavailable(rank)
@@ -380,6 +492,7 @@
 
 
 /mob/dead/new_player/proc/close_spawn_windows()
+	src << browse(null, "window=playersetup")
 	src << browse(null, "window=latechoices") //closes late choices window (Hey numbnuts go make this tgui)
 
 // Used to make sure that a player has a valid job preference setup, used to knock players out of eligibility for anything if their prefs don't make sense.

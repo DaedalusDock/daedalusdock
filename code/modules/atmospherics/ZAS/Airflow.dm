@@ -21,9 +21,13 @@ This entire system is an absolute mess.
 	var/tmp/airflow_xo
 	var/tmp/airflow_yo
 	///If the movable is dense by default, it won't step into tiles containing other dense objects
-	var/tmp/airflow_originally_not_dense
+	var/tmp/airflow_old_density
 	var/tmp/airflow_process_delay
 	var/tmp/airflow_skip_speedcheck
+	///Bump() magic
+	var/moving_by_airflow = FALSE
+
+
 
 ///Applies the effects of the mob colliding with another movable due to airflow.
 /mob/proc/airflow_stun(delta_p)
@@ -100,13 +104,23 @@ This entire system is an absolute mess.
 			if(n < zas_settings.airflow_dense_pressure) return 0
 	return ..()
 
+///The typecache of objects airflow can't push objects into the same tile of
+GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
+	/obj/structure,
+	/obj/machinery/door
+	)))
+
 /atom/movable/Bump(atom/A)
+	. = ..()
+	if(!moving_by_airflow)
+		return
+
 	if(airflow_speed > 0 && airflow_dest)
 		var/turf/T = get_turf(A)
 		if(airborne_acceleration > 1)
 			airflow_hit(A)
 			A.airflow_hit_act(src)
-		else if(istype(src, /mob/living/carbon/human) && ismovable(A) && !(A:airflow_originally_not_dense))
+		else if(istype(src, /mob/living/carbon/human) && ismovable(A) && (A:airflow_old_density))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
 			src:Stun(1 SECONDS) // :)
 		/*
@@ -116,7 +130,7 @@ This entire system is an absolute mess.
 		enabling us to step into their turf. Then, we set the density back to the way its supposed to be for airflow.
 		*/
 		if(!T.density)
-			if(ismovable(A) && A:airflow_originally_not_dense)
+			if(ismovable(A) && !(GLOB.airflow_step_blacklist[A.type]) && !A:airflow_old_density)
 				set_density(FALSE)
 				A.set_density(FALSE)
 				step_towards(src, airflow_dest)
@@ -126,7 +140,7 @@ This entire system is an absolute mess.
 		airflow_speed = 0
 		airflow_time = 0
 		airborne_acceleration = 0
-		. = ..()
+
 
 ///Called when src collides with A during airflow
 /atom/movable/proc/airflow_hit(atom/A)
@@ -134,7 +148,6 @@ This entire system is an absolute mess.
 	airflow_speed = 0
 	airflow_dest = null
 	airborne_acceleration = 0
-	A.airflow_hit_act(src)
 
 /mob/living/airflow_hit(atom/A)
 	var/b_loss = AIRBORNE_DAMAGE(src)
@@ -179,7 +192,7 @@ This entire system is an absolute mess.
 	var/weak_amt
 	if(istype(flying,/obj/item))
 		weak_amt = flying:w_class*2 ///Heheheh
-	else if(!flying.airflow_originally_not_dense) //If the object is dense by default (this var is stupidly named)
+	else if(flying.airflow_old_density) //If the object is dense by default (this var is stupidly named)
 		weak_amt = 5 //Getting crushed by a flying canister or computer is going to fuck you up
 	else
 		weak_amt = rand(1, 3)
@@ -188,7 +201,7 @@ This entire system is an absolute mess.
 
 /obj/airflow_hit_act(atom/movable/flying)
 	. = ..()
-	if(!flying.airflow_originally_not_dense)
+	if(flying.airflow_old_density)
 		src.visible_message(
 			span_danger("A flying [flying.name] slams into \the [src]!"),
 			null,
@@ -224,7 +237,7 @@ This entire system is an absolute mess.
 /zone/proc/movables()
 	RETURN_TYPE(/list)
 	. = list()
-	for(var/turf/T in contents)
+	for(var/turf/T as anything in contents)
 		for(var/atom/movable/A as anything in T)
 			if(!A.simulated || A.anchored)
 				continue

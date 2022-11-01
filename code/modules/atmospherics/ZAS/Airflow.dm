@@ -104,6 +104,12 @@ This entire system is an absolute mess.
 			if(n < zas_settings.airflow_dense_pressure) return 0
 	return ..()
 
+///The typecache of objects airflow can't push objects into the same tile of
+GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
+	/obj/structure,
+	/obj/machinery/door
+	)))
+
 /atom/movable/Bump(atom/A)
 	. = ..()
 	if(!moving_by_airflow)
@@ -124,7 +130,7 @@ This entire system is an absolute mess.
 		enabling us to step into their turf. Then, we set the density back to the way its supposed to be for airflow.
 		*/
 		if(!T.density)
-			if(ismovable(A) && !A:airflow_old_density)
+			if(ismovable(A) && !(GLOB.airflow_step_blacklist[A.type]) && !A:airflow_old_density)
 				set_density(FALSE)
 				A.set_density(FALSE)
 				step_towards(src, airflow_dest)

@@ -495,4 +495,3 @@
 		var/mutable_appearance/new_overlay = mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_[BP.body_zone]", layer = -image_layer)
 		new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 		overlay_list += new_overlay
-

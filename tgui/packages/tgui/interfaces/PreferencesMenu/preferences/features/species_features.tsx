@@ -131,6 +131,11 @@ export const teshari_tail_colors: Feature<string[]> = {
   component: FeatureTriColorInput,
 };
 
+export const teshari_body_colors: Feature<string[]> = {
+  name: "Teshari Feather Colors",
+  component: FeatureTriColorInput,
+};
+
 export const heterochromatic: Feature<string> = {
   name: "Heterochromatic (Right Eye) color",
   component: FeatureColorInput,

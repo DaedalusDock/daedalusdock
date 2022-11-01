@@ -149,7 +149,7 @@
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = -image_layer)
 	appearance.dir = image_dir
 
-	if(sprite_datum.color_src) //There are multiple flags, but only one is ever used so meh :/ | This comment isn't true.
+	if(sprite_datum.color_src)
 		appearance.color = draw_color
 
 	if(sprite_datum.center)
@@ -170,7 +170,12 @@
 	. = list()
 	. += "[sprite_datum?.icon_state]"
 	. += "[render_key ? render_key : feature_key]"
-	. += "[draw_color]"
+	if(color_source == ORGAN_COLOR_INHERIT_ALL)
+		. += "color1:[mutcolors["[mutcolor_used]_1"]]"
+		. += "color2:[mutcolors["[mutcolor_used]_2"]]"
+		. += "color3:[mutcolors["[mutcolor_used]_3"]]"
+	else
+		. += "[draw_color]"
 	return .
 
 /**This exists so sprite accessories can still be per-layer without having to include that layer's
@@ -240,7 +245,7 @@
 
 		if(ORGAN_COLOR_INHERIT_ALL)
 			mutcolors = ownerlimb.mutcolors.Copy()
-			draw_color = mutcolors[mutcolor_used]
+			draw_color = mutcolors["[mutcolor_used]_1"]
 
 	color = draw_color
 	return TRUE
@@ -457,7 +462,7 @@
 	preference = "teshari_body_feathers"
 
 	dna_block = DNA_TESHARI_BODY_FEATHERS_BLOCK
-	color_source = ORGAN_COLOR_OVERRIDE
+	color_source = ORGAN_COLOR_INHERIT_ALL
 
 /obj/item/organ/external/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
@@ -467,23 +472,27 @@
 /obj/item/organ/external/teshari_body_feathers/get_global_feature_list()
 	return GLOB.teshari_body_feathers_list
 
-// TODO: Get this to figure out which limbs are missing, and skip drawing the overlay on those.
 /obj/item/organ/external/teshari_body_feathers/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
 	var/mutable_appearance/chest_feathers = ..()
 	if(sprite_datum.icon_state == "none")
 		return
+	var/static/list/bodypart_color_indexes = list(
+		BODY_ZONE_CHEST = MUTCOLORS_TESHARI_BODY_FEATHERS_1,
+		BODY_ZONE_HEAD = MUTCOLORS_TESHARI_BODY_FEATHERS_2,
+		BODY_ZONE_R_ARM = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_L_ARM = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_R_LEG = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+		BODY_ZONE_L_LEG = MUTCOLORS_TESHARI_BODY_FEATHERS_3,
+	)
 
-	var/list/limb_overlays = list()
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_head", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_arm", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_arm", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_l_leg", layer = -image_layer)
-	limb_overlays += mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_r_leg", layer = -image_layer)
+	for(var/mutable_appearance/existing_overlay in overlay_list)
+		existing_overlay.color = mutcolors[MUTCOLORS_TESHARI_BODY_FEATHERS_1]
 
-	for(var/mutable_appearance/overlay as anything in limb_overlays)
-		overlay.color = image_color
-		overlay_list += overlay
+	if(!owner)
+		return
 
-/obj/item/organ/external/teshari_body_feathers/override_color(rgb_value)
-	var/mob/living/carbon/human/human_owner = owner
-	return human_owner.facial_hair_color
+	for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
+		var/mutable_appearance/new_overlay = mutable_appearance(chest_feathers.icon, "[chest_feathers.icon_state]_[BP.body_zone]", layer = -image_layer)
+		new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
+		overlay_list += new_overlay
+

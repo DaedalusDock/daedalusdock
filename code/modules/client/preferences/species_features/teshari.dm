@@ -125,11 +125,6 @@
 /datum/preference/choiced/teshari_body_feathers/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	target.dna.features["teshari_body_feathers"] = value
 
-/datum/preference/choiced/teshari_body_feathers/compile_constant_data()
-	var/list/data = ..()
-	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
-	return data
-
 /datum/preference/choiced/tail_teshari
 	savefile_key = "tail_teshari"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -163,6 +158,14 @@
 	relevant_external_organ = /obj/item/organ/external/tail/teshari
 
 	color_key = MUTCOLORS_KEY_TESHARI_TAIL
+
+/datum/preference/tri_color/teshari_body_feathers
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "teshari_body_colors"
+	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+
+	color_key = MUTCOLORS_KEY_TESHARI_BODY_FEATHERS
 
 #undef TESH_BODY_COLOR
 #undef TESH_FEATHER_COLOR

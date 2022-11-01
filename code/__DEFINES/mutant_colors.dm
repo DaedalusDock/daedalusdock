@@ -9,8 +9,14 @@
 	#define MUTCOLORS_TESHARI_TAIL_2 "teshari_tail_2"
 	#define MUTCOLORS_TESHARI_TAIL_3 "teshari_tail_3"
 
+#define MUTCOLORS_KEY_TESHARI_BODY_FEATHERS "teshari_bodyfeathers"
+	#define MUTCOLORS_TESHARI_BODY_FEATHERS_1 "teshari_bodyfeathers_1"
+	#define MUTCOLORS_TESHARI_BODY_FEATHERS_2 "teshari_bodyfeathers_2"
+	#define MUTCOLORS_TESHARI_BODY_FEATHERS_3 "teshari_bodyfeathers_3"
+
 ///ADD NEW ONES TO THIS OR SHIT DOESNT WORK
 GLOBAL_LIST_INIT(all_mutant_colors_keys, list(
 	MUTCOLORS_KEY_GENERIC,
 	MUTCOLORS_KEY_TESHARI_TAIL,
+	MUTCOLORS_KEY_TESHARI_BODY_FEATHERS
 ))

@@ -146,7 +146,7 @@
 	dna_block = DNA_TESHARI_TAIL_BLOCK
 
 	color_source = ORGAN_COLOR_INHERIT_ALL
-	mutcolor_used = MUTCOLORS_TESHARI_TAIL_1
+	mutcolor_used = MUTCOLORS_KEY_TESHARI_TAIL
 
 /obj/item/organ/external/tail/teshari/get_global_feature_list()
 	return GLOB.teshari_tails_list

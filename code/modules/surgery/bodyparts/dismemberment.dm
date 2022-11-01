@@ -136,6 +136,9 @@
 				continue
 			organ.transfer_to_limb(src, phantom_owner)
 
+	for(var/trait in bodypart_traits)
+		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
+
 	update_icon_dropped()
 	synchronize_bodytypes(phantom_owner)
 	phantom_owner.update_health_hud() //update the healthdoll
@@ -236,7 +239,9 @@
 	if(special)
 		..()
 
-/obj/item/bodypart/r_arm/drop_limb(special)
+/obj/item/bodypart/arm/right/drop_limb(special)
+	. = ..()
+
 	var/mob/living/carbon/arm_owner = owner
 	..()
 	if(arm_owner && !special)
@@ -254,7 +259,7 @@
 		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 
-/obj/item/bodypart/l_arm/drop_limb(special)
+/obj/item/bodypart/arm/left/drop_limb(special)
 	var/mob/living/carbon/arm_owner = owner
 	..()
 	if(arm_owner && !special)
@@ -272,7 +277,7 @@
 		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 
-/obj/item/bodypart/r_leg/drop_limb(special)
+/obj/item/bodypart/leg/right/drop_limb(special)
 	if(owner && !special)
 		if(owner.legcuffed)
 			owner.legcuffed.forceMove(owner.drop_location()) //At this point bodypart is still in nullspace
@@ -283,7 +288,7 @@
 			owner.dropItemToGround(owner.shoes, TRUE)
 	..()
 
-/obj/item/bodypart/l_leg/drop_limb(special) //copypasta
+/obj/item/bodypart/leg/left/drop_limb(special) //copypasta
 	if(owner && !special)
 		if(owner.legcuffed)
 			owner.legcuffed.forceMove(owner.drop_location())
@@ -373,6 +378,9 @@
 	update_bodypart_damage_state()
 	if(can_be_disabled)
 		update_disabled()
+
+	for(var/trait in bodypart_traits)
+		ADD_TRAIT(owner, trait, bodypart_trait_source)
 
 	// Bodyparts need to be sorted for leg masking to be done properly. It also will allow for some predictable
 	// behavior within said bodyparts list. We sort it here, as it's the only place we make changes to bodyparts.

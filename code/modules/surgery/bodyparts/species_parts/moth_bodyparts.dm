@@ -16,28 +16,36 @@
 	limb_id = SPECIES_MOTH
 	is_dimorphic = TRUE
 
-/obj/item/bodypart/l_arm/moth
+/obj/item/bodypart/arm/left/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_state = "moth_l_arm"
 	limb_id = SPECIES_MOTH
 	should_draw_greyscale = TRUE
+	unarmed_attack_verb = "slash"
+	unarmed_attack_effect = ATTACK_EFFECT_CLAW
+	unarmed_attack_sound = 'sound/weapons/slash.ogg'
+	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 
-/obj/item/bodypart/r_arm/moth
+/obj/item/bodypart/arm/right/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_state = "moth_r_arm"
 	limb_id = SPECIES_MOTH
 	should_draw_greyscale = TRUE
+	unarmed_attack_verb = "slash"
+	unarmed_attack_effect = ATTACK_EFFECT_CLAW
+	unarmed_attack_sound = 'sound/weapons/slash.ogg'
+	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 
-/obj/item/bodypart/l_leg/moth
+/obj/item/bodypart/leg/left/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_state = "moth_l_leg"
 	limb_id = SPECIES_MOTH
 	should_draw_greyscale = TRUE
 
-/obj/item/bodypart/r_leg/moth
+/obj/item/bodypart/leg/right/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_state = "moth_r_leg"

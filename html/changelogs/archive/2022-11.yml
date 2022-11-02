@@ -1,0 +1,15 @@
+2022-11-02:
+  Kapu1178:
+  - bugfix: Non-verified clients no longer show a disconnect message on logout
+  - bugfix: Holidays no longer bypass the configured station name.
+  - rscadd: Brought back the old new player panel.
+  - tweak: Subsystem Init no longer spams chat on the live server.
+  - bugfix: Firedoors and alarms work again
+  - bugfix: airflow_hit_act() is no longer called twice.
+  - tweak: Overall airflow changes.
+  - bugfix: Airflow no longer pushes objects through windows and doors.
+  Kapu1178, LemonInTheDark, ZephyrTFA, CoffeeDragon16, BebeYoshi, Microvolnovka19, Ryll-Ryll, SmArtKar, iamgoofball:
+  - rscadd: Added far more robust color choosing to character creation
+  - rscadd: Heterochromia quirk
+  - code_imp: Rewrites a ton of back-end character code.
+  - bugfix: Various jetpack bugs

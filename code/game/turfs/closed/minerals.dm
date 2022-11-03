@@ -112,6 +112,18 @@
 	AddElement(/datum/element/bump_click, tool_behaviours = behaviors, allow_unarmed = TRUE)
 	///END MINERAL BEHAVIOR
 
+// Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
+/turf/closed/mineral/Bumped(atom/movable/bumped_atom)
+	. = ..()
+	if(!isliving(bumped_atom))
+		return
+
+	var/mob/living/bumping = bumped_atom
+	var/obj/item/held_item = bumping.get_active_held_item()
+	// !held_item exists to be nice to snow. the other bit is for pickaxes obviously
+	if(!held_item || held_item.tool_behaviour == TOOL_MINING)
+		INVOKE_ASYNC(bumping, /mob.proc/ClickOn, src)
+
 	return INITIALIZE_HINT_NORMAL
 /turf/closed/mineral/proc/Spread_Vein()
 	var/spreadChance = initial(mineralType.spreadChance)

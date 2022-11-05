@@ -191,7 +191,7 @@
 	for(var/movable_content in contents)
 		qdel(movable_content)
 
-	moveToNullspace()
+	loc = null
 
 	//This absolutely must be after moveToNullspace()
 	//We rely on Entered and Exited to manage this list, and the copy of this list that is on any /atom/movable "Containers"

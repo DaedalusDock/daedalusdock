@@ -14,9 +14,9 @@
 	id = "c1vent";
 	name = "c1vent"
 	},
+,
 /turf/open/floor/plating,
-/area/hallway/primary/central,
-)
+/area/hallway/primary/central)
 "ae" = (
 /obj/machinery/door/poddoor{
 	id = "c2vent";

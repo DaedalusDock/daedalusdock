@@ -1,4 +1,4 @@
-/proc/codex_sanitize(var/input)
+/proc/codex_sanitize(input)
 	return lowertext(trim(strip_improper(input)))
 
 /datum/codex_entry

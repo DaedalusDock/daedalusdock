@@ -90,7 +90,7 @@ SUBSYSTEM_DEF(codex)
 	var/datum/codex_category/cat = codex_categories[category]
 	. = cat?.guide_html
 
-/datum/controller/subsystem/codex/proc/retrieve_entries_for_string(var/searching)
+/datum/controller/subsystem/codex/proc/retrieve_entries_for_string(searching)
 
 	if(!initialized)
 		return list()

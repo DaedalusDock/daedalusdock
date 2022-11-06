@@ -65,7 +65,7 @@
 	SScodex.all_entries -= src
 	return ..()
 
-/datum/codex_entry/proc/get_codex_header(var/mob/presenting_to)
+/datum/codex_entry/proc/get_codex_header(mob/presenting_to)
 	RETURN_TYPE(/list)
 
 	. = list()
@@ -77,7 +77,7 @@
 			. += "<a href='?src=\ref[presenting_to.client];codex_index=1'>List All Entries</a>"
 	. += "<hr>"
 
-/datum/codex_entry/proc/get_codex_footer(var/mob/presenting_to)
+/datum/codex_entry/proc/get_codex_footer(mob/presenting_to)
 	. = list()
 	if(length(categories))
 		for(var/datum/codex_category/category in categories)
@@ -85,7 +85,7 @@
 
 // TODO: clean up codex bodies until trimming linebreaks is unnecessary.
 #define TRIM_LINEBREAKS(TEXT) replacetext(replacetext(TEXT, SScodex.trailingLinebreakRegexStart, null), SScodex.trailingLinebreakRegexEnd, null)
-/datum/codex_entry/proc/get_codex_body(var/mob/presenting_to, var/include_header = TRUE, var/include_footer = TRUE)
+/datum/codex_entry/proc/get_codex_body(mob/presenting_to, include_header = TRUE, include_footer = TRUE)
 	RETURN_TYPE(/list)
 
 	. = list()

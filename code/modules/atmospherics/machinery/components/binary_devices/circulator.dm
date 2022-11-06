@@ -4,8 +4,8 @@
 #define CIRCULATOR_COLD 1
 
 /obj/machinery/atmospherics/components/binary/circulator
-	name = "circulator/heat exchanger"
-	desc = "A gas circulator pump and heat exchanger."
+	name = "TEG circulator"
+	desc = "A gas circulator pump and heat exchanger for a thermoelectric generator."
 	icon_state = "circ-off-0"
 
 	var/active = FALSE
@@ -14,6 +14,7 @@
 	pipe_flags = PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY
 
 	density = TRUE
+	move_resist = MOVE_RESIST_DEFAULT
 
 	circuit = /obj/item/circuitboard/machine/circulator
 
@@ -21,12 +22,10 @@
 	var/mode = CIRCULATOR_HOT
 	var/obj/machinery/power/generator/generator
 
-/obj/machinery/atmospherics/components/binary/circulator/Initialize(mapload)
+/obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
+	if(!anchored)
+		return FALSE
 	. = ..()
-	AddComponent(/datum/component/simple_rotation)
-
-/obj/machinery/atmospherics/components/binary/circulator/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 //default cold circ for mappers
 /obj/machinery/atmospherics/components/binary/circulator/cold
@@ -87,15 +86,28 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
+	. = ..()
 	if(!panel_open)
-		return
+		to_chat(user, span_notice("Open [src]'s panel first!"))
+		return TRUE
+	default_change_direction_wrench(user, I)
+	reset_connections()
+	return TRUE
+
+/obj/machinery/atmospherics/components/binary/circulator/wrench_act_secondary(mob/living/user, obj/item/I)
+	. = ..()
+	if(!panel_open)
+		to_chat(user, span_notice("Open [src]'s panel first!"))
+		return TRUE
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
 	if(generator)
 		disconnectFromGenerator()
 	to_chat(user, span_notice("You [anchored?"secure":"unsecure"] [src]."))
+	reset_connections()
+	return TRUE
 
-
+/obj/machinery/atmospherics/components/binary/circulator/proc/reset_connections()
 	var/obj/machinery/atmospherics/node1 = nodes[1]
 	var/obj/machinery/atmospherics/node2 = nodes[2]
 
@@ -150,12 +162,24 @@
 	to_chat(user, span_notice("You set [src] to [mode?"cold":"hot"] mode."))
 	return TRUE
 
-/obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/user, obj/item/I)
+/obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/living/user, obj/item/I)
 	if(..())
 		return TRUE
 	panel_open = !panel_open
 	I.play_tool_sound(src)
 	to_chat(user, span_notice("You [panel_open?"open":"close"] the panel on [src]."))
+	return TRUE
+
+/obj/machinery/atmospherics/components/binary/circulator/welder_act(mob/living/user, obj/item/I)
+	if(atom_integrity >= max_integrity)
+		to_chat(user, span_notice("The [src] does not need any repairs."))
+		return TRUE
+	if(!I.use_tool(src, user, 0, volume=50, amount=1))
+		return TRUE
+	user.visible_message(span_notice("[user] repairs some damage to [src]."), span_notice("You repair some damage to [src]."))
+	atom_integrity += min(10, max_integrity-atom_integrity)
+	if(atom_integrity == max_integrity)
+		to_chat(user, span_notice("The [src] is fully repaired."))
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/crowbar_act(mob/user, obj/item/I)
@@ -194,3 +218,9 @@
 	flipped = !flipped
 	to_chat(usr, span_notice("You flip [src]."))
 	update_appearance()
+
+/obj/machinery/power/generator/examine(mob/user)
+	. = ..()
+	. += span_notice("With the panel open:")
+	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
+	. += span_notice(" -Use a multitool with left-click to refresh circulator links.")

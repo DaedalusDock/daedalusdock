@@ -17,7 +17,6 @@
 
 /obj/machinery/power/generator/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/simple_rotation)
 	find_circs()
 	connect_to_network()
 	SSairmachines.start_processing_machine(src)
@@ -98,6 +97,53 @@
 	lastgen -= power_output
 	..()
 
+//TGUI interaction
+/obj/machinery/power/generator/ui_interact(mob/user, datum/tgui/ui)
+	. = ..()
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Teg")
+		ui.open()
+
+/obj/machinery/power/generator/ui_data(mob/user)
+	var/datum/gas_mixture/cold_circ_air1 = cold_circ.airs[1]
+	var/datum/gas_mixture/cold_circ_air2 = cold_circ.airs[2]
+	var/datum/gas_mixture/hot_circ_air1 = hot_circ.airs[1]
+	var/datum/gas_mixture/hot_circ_air2 = hot_circ.airs[2]
+
+	var/list/data = list()
+	data["has_hot_circ"] = hot_circ
+	data["has_cold_circ"] = cold_circ
+	data["has_powernet"] = powernet
+	data["cold_temp_in"] = round(cold_circ_air2.temperature, 0.1)
+	data["cold_pressure_in"] = round(cold_circ_air2.returnPressure(), 0.1)
+	data["cold_temp_out"] = round(cold_circ_air1.temperature, 0.1)
+	data["cold_pressure_out"] = round(cold_circ_air1.returnPressure(), 0.1)
+	data["hot_temp_in"] = round(hot_circ_air2.temperature, 0.1)
+	data["hot_pressure_in"] = round(hot_circ_air2.returnPressure(), 0.1)
+	data["hot_temp_out"] = round(hot_circ_air1.temperature, 0.1)
+	data["hot_pressure_out"] = round(hot_circ_air1.returnPressure(), 0.1)
+
+	return data
+
+/obj/machinery/power/generator/ui_act(action, params)
+  . = ..()
+  if(.)
+    return
+  if(action == "refresh_parts")
+	link_parts()
+
+/obj/machinery/power/generator/link_parts()
+	if(!anchored)
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
+	find_circs()
+	if(!cold_circ || !hot_circ)
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
+	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
+
+/*
 /obj/machinery/power/generator/proc/get_menu(include_link = TRUE)
 	var/t = ""
 	if(!powernet)
@@ -148,7 +194,7 @@
 		usr.unset_machine()
 		return FALSE
 	return TRUE
-
+*/
 
 
 /obj/machinery/power/generator/proc/find_circs()
@@ -186,7 +232,15 @@
 /obj/machinery/power/generator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(!panel_open)
-		return
+		to_chat(user, span_notice("Open [src]'s panel first!"))
+		return TRUE
+	return default_change_direction_wrench(user, I)
+
+/obj/machinery/power/generator/wrench_act_secondary(mob/living/user, obj/item/I)
+	. = ..()
+	if(!panel_open)
+		to_chat(user, span_notice("Open [src]'s panel first!"))
+		return TRUE
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
 	if(!anchored)
@@ -198,7 +252,7 @@
 /obj/machinery/power/generator/multitool_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(!anchored)
-		return
+		return TRUE
 	find_circs()
 	to_chat(user, span_notice("You update [src]'s circulator links."))
 	return TRUE
@@ -211,12 +265,21 @@
 	to_chat(user, span_notice("You [panel_open?"open":"close"] the panel on [src]."))
 	return TRUE
 
+/obj/machinery/power/generator/welder_act(mob/living/user, obj/item/I)
+	if(atom_integrity >= max_integrity)
+		to_chat(user, span_notice("The [src] does not need any repairs."))
+		return TRUE
+	if(!I.use_tool(src, user, 0, volume=50, amount=1))
+		return TRUE
+	user.visible_message(span_notice("[user] repairs some damage to [src]."), span_notice("You repair some damage to [src]."))
+	atom_integrity += min(10, max_integrity-atom_integrity)
+	if(atom_integrity == max_integrity)
+		to_chat(user, span_notice("The [src] is fully repaired."))
+	return TRUE
+
 /obj/machinery/power/generator/crowbar_act(mob/user, obj/item/I)
 	default_deconstruction_crowbar(I)
 	return TRUE
-
-/obj/machinery/power/generator/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/machinery/power/generator/on_deconstruction()
 	kill_circs()
@@ -228,3 +291,10 @@
 	if(cold_circ)
 		cold_circ.generator = null
 		cold_circ = null
+
+/obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
+	. = ..()
+	. += span_notice("With the panel open:")
+	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
+	. += span_notice(" -Use a multitool with left-click to set hot loop or cold loop mode.")
+	. += span_notice(" Its outlet port is to the [dir2text(dir)].")

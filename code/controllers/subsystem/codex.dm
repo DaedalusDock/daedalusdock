@@ -65,7 +65,7 @@ SUBSYSTEM_DEF(codex)
 		string = replacetextEx(string, linkRegex.match, replacement)
 	return string
 
-/datum/controller/subsystem/codex/proc/get_codex_entry(var/entry)
+/datum/controller/subsystem/codex/proc/get_codex_entry(entry)
 	if(isatom(entry))
 		var/atom/entity = entry
 		if(entity.get_specific_codex_entry())
@@ -76,17 +76,17 @@ SUBSYSTEM_DEF(codex)
 	if(istext(entry))
 		return entries_by_string[codex_sanitize(entry)]
 
-/datum/controller/subsystem/codex/proc/get_entry_by_string(var/string)
+/datum/controller/subsystem/codex/proc/get_entry_by_string(string)
 	return entries_by_string[codex_sanitize(string)]
 
-/datum/controller/subsystem/codex/proc/present_codex_entry(var/mob/presenting_to, var/datum/codex_entry/entry)
+/datum/controller/subsystem/codex/proc/present_codex_entry(mob/presenting_to, datum/codex_entry/entry)
 	if(entry && istype(presenting_to) && presenting_to.client)
 		var/datum/browser/popup = new(presenting_to, "codex", "Codex", nheight=425) //"codex\ref[entry]"
 		var/entry_data = entry.get_codex_body(presenting_to)
 		popup.set_content(parse_links(jointext(entry_data, null), presenting_to))
 		popup.open()
 
-/datum/controller/subsystem/codex/proc/get_guide(var/category)
+/datum/controller/subsystem/codex/proc/get_guide(category)
 	var/datum/codex_category/cat = codex_categories[category]
 	. = cat?.guide_html
 

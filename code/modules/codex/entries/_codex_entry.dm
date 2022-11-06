@@ -11,7 +11,7 @@
 	var/disambiguator
 	var/list/categories
 
-/datum/codex_entry/New(var/_display_name, var/list/_associated_paths, var/list/_associated_strings, var/_lore_text, var/_mechanics_text, var/_antag_text)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text)
 
 	SScodex.all_entries += src
 

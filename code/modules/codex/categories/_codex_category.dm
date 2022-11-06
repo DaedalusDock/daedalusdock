@@ -7,7 +7,7 @@
 	var/guide_html
 	var/link_columns = 2
 
-/datum/codex_category/proc/get_category_link(var/datum/codex_entry/entry)
+/datum/codex_category/proc/get_category_link(datum/codex_entry/entry)
 	return "This page is categorized under <span codexlink='[name] (category)'>[name].</span>"
 
 //Children should call ..() at the end after filling the items list

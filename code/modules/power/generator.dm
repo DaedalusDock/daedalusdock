@@ -127,21 +127,11 @@
 	return data
 
 /obj/machinery/power/generator/ui_act(action, params)
-  . = ..()
-  if(.)
-    return
-  if(action == "refresh_parts")
-	link_parts()
-
-/obj/machinery/power/generator/link_parts()
-	if(!anchored)
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+	. = ..()
+	if(.)
 		return
-	find_circs()
-	if(!cold_circ || !hot_circ)
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
-		return
-	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
+	if(action == "refresh_parts")
+		link_parts(usr)
 
 /*
 /obj/machinery/power/generator/proc/get_menu(include_link = TRUE)
@@ -196,6 +186,17 @@
 	return TRUE
 */
 
+/obj/machinery/power/generator/proc/link_parts(mob/user)
+	if(!anchored)
+		to_chat(user, span_notice("Secure [src] first!"))
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
+	find_circs()
+	if(!cold_circ || !hot_circ)
+		to_chat(user, span_notice("Secure [src] first!"))
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
+	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
 
 /obj/machinery/power/generator/proc/find_circs()
 	kill_circs()
@@ -249,14 +250,6 @@
 	to_chat(user, span_notice("You [anchored?"secure":"unsecure"] [src]."))
 	return TRUE
 
-/obj/machinery/power/generator/multitool_act(mob/living/user, obj/item/I)
-	. = ..()
-	if(!anchored)
-		return TRUE
-	find_circs()
-	to_chat(user, span_notice("You update [src]'s circulator links."))
-	return TRUE
-
 /obj/machinery/power/generator/screwdriver_act(mob/user, obj/item/I)
 	if(..())
 		return TRUE
@@ -296,5 +289,4 @@
 	. = ..()
 	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
-	. += span_notice(" -Use a multitool with left-click to set hot loop or cold loop mode.")
 	. += span_notice(" Its outlet port is to the [dir2text(dir)].")

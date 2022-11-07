@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import { sortBy } from "common/collections";
 import { classes } from "common/react";
 import { InfernoNode, SFC } from "inferno";
 import { useBackend } from "../../backend";
 import { Box, Button, Dropdown, Stack, Tooltip } from "../../components";
 import { logger } from "../../logging";
-import { createSetPreference, Job, JoblessRole, JobPriority, PreferencesMenuData } from "./data";
+import { createSetPreference, Employer, Job, JoblessRole, JobPriority, PreferencesMenuData } from "./data";
 import { ServerPreferencesFetcher } from "./ServerPreferencesFetcher";
 
 const sortJobs = (
@@ -224,6 +225,14 @@ const JobRow = (props: {
         </Stack.Item>
       </Stack>
     );
+  } else if ((job.allowed_employers) && (job.allowed_employers.find((element) => element !== data.character_preferences.misc.employer))) {
+    rightSide = (
+      <Stack align="center" height="100%" pr={1}>
+        <Stack.Item grow textAlign="right">
+          <b>Employer Restricted</b>
+        </Stack.Item>
+      </Stack>
+    );
   } else if (data.job_bans && data.job_bans.indexOf(name) !== -1) {
     rightSide = (
       <Stack align="center" height="100%" pr={1}>
@@ -372,10 +381,66 @@ const JoblessRoleDropdown = (props, context) => {
   );
 };
 
+const EmployerDropdown = (props, context) => {
+  const { act, data } = useBackend<PreferencesMenuData>(context);
+  const selected = data.character_preferences.misc.employer;
+
+  const options = [
+    {
+      displayText: `Freelancer`,
+      value: Employer.Freelancer,
+    },
+    {
+      displayText: `Daedalus Industries`,
+      value: Employer.Daedalus,
+    },
+    {
+      displayText: `Hermes Galactic Freight Company`,
+      value: Employer.Hermes,
+    },
+    {
+      displayText: `Aether Pharmaceuticals`,
+      value: Employer.Aether,
+    },
+    {
+      displayText: `Mars Executive Outcomes`,
+      value: Employer.MarsExec,
+    },
+    {
+      displayText: `Priapus Recreational Solutions`,
+      value: Employer.Priapus,
+    },
+    {
+      displayText: `Ananke Advanced Technology Group`,
+      value: Employer.Ananke,
+    },
+  ];
+
+  return (
+    <Box
+      position="absolute"
+      width="30%"
+    >
+      <Dropdown
+        width="100%"
+        selected={selected}
+        onSelected={createSetPreference(act, "employer")}
+        options={options}
+        displayText={
+          <Box pr={1}>
+            {options.find(option => option.value === selected)!.displayText}
+          </Box>
+        }
+      />
+    </Box>
+  );
+};
+
 export const JobsPage = () => {
   return (
     <>
       <JoblessRoleDropdown />
+      <EmployerDropdown />
 
       <Stack vertical fill>
         <Gap amount={22} />

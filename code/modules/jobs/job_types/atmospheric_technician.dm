@@ -21,6 +21,8 @@
 		),
 	)
 
+	allowed_employers = list(FREELANCER)
+
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_ENG
 

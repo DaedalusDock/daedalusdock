@@ -76,6 +76,7 @@
 			"description" = job.description,
 			"department" = department_name,
 			"alt_titles" = job.alt_titles, //PARIAH EDIT
+			"allowed_employers" = job.allowed_employers,
 		)
 
 	data["departments"] = departments

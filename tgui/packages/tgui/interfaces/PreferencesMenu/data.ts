@@ -75,6 +75,7 @@ export type Job = {
   // PARIAH EDIT
   alt_titles?: string[];
 // PARIAH EDIT END
+  allowed_employer: Employer[];
 };
 
 export type Quirk = {
@@ -100,6 +101,16 @@ export enum JoblessRole {
   BeOverflow = 1,
   BeRandomJob = 2,
   ReturnToLobby = 3,
+}
+
+export enum Employer {
+  Freelancer = 1,
+  Daedalus = 2,
+  Hermes = 3,
+  Aether = 4,
+  MarsExec = 5,
+  Priapus = 6,
+  Ananke = 7,
 }
 
 export enum GamePreferencesSelectedPage {
@@ -147,6 +158,7 @@ export type PreferencesMenuData = {
       gender: Gender;
       joblessrole: JoblessRole;
       species: string;
+      employer: Employer;
     };
 
     randomization: Record<string, RandomSetting>;

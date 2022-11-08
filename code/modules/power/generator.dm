@@ -115,6 +115,7 @@
 	data["has_hot_circ"] = hot_circ
 	data["has_cold_circ"] = cold_circ
 	data["has_powernet"] = powernet
+	data["power_output"] = display_power(lastgenlev)
 	data["cold_temp_in"] = round(cold_circ_air2.temperature, 0.1)
 	data["cold_pressure_in"] = round(cold_circ_air2.returnPressure(), 0.1)
 	data["cold_temp_out"] = round(cold_circ_air1.temperature, 0.1)
@@ -285,8 +286,7 @@
 		cold_circ.generator = null
 		cold_circ = null
 
-/obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
+/obj/machinery/power/generator/examine(mob/user)
 	. = ..()
 	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
-	. += span_notice(" Its outlet port is to the [dir2text(dir)].")

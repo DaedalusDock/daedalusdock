@@ -8,6 +8,7 @@ export const Teg = (props, context) => {
     has_hot_circ,
     has_cold_circ,
     has_powernet,
+    power_output,
     cold_temp_in,
     cold_pressure_in,
     cold_temp_out,
@@ -24,6 +25,7 @@ export const Teg = (props, context) => {
           <Button
             content="Refresh Parts"
             onClick={() => act('refresh_parts')} />
+          <Box>Power Output: {power_output}</Box>
           {has_powernet && (<Box color="good">Connected to the power network</Box>)}
           {(has_hot_circ && has_cold_circ) && (<Box color="good">Circulators connected to generator</Box>)}
           {!has_powernet && (<Box color="bad">Not connected to the power network</Box>)}

@@ -121,8 +121,9 @@
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
 			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
-			if(draw == -1 && can_hibernate)
-				COOLDOWN_START(src, hibernating, 15 SECONDS)
+			if(draw == -1)
+				if(can_hibernate)
+					COOLDOWN_START(src, hibernating, 15 SECONDS)
 			else if(draw)
 				ATMOS_USE_POWER(draw)
 			update_parents()
@@ -133,8 +134,9 @@
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-			if(draw == -1 && can_hibernate)
-				COOLDOWN_START(src, hibernating, 15 SECONDS)
+			if(draw == -1)
+				if(can_hibernate)
+					COOLDOWN_START(src, hibernating, 15 SECONDS)
 			else if(draw)
 				ATMOS_USE_POWER(draw)
 

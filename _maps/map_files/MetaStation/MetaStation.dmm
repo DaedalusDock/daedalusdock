@@ -10499,15 +10499,6 @@
 	dir = 1
 	},
 /area/engineering/atmos)
-"cMV" = (
-/obj/structure/chair{
-	dir = 4
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/hallway/secondary/exit/departure_lounge)
 "cMY" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -28746,7 +28737,8 @@
 /area/maintenance/port/greater)
 "jrn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
-	dir = 1
+	dir = 1;
+	can_hibernate = 0
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
@@ -29913,16 +29905,6 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/starboard/fore)
-"jMF" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/hallway/primary/port)
 "jMP" = (
 /obj/structure/window/reinforced{
 	dir = 1;
@@ -29983,13 +29965,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
-"jOl" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/commons/dorms)
 "jOn" = (
 /obj/structure/chair,
 /obj/effect/landmark/start/assistant,
@@ -33401,14 +33376,6 @@
 	},
 /turf/open/floor/iron,
 /area/service/bar)
-"ldf" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/commons/fitness/recreation)
 "ldP" = (
 /turf/closed/wall/r_wall,
 /area/ai_monitored/command/storage/satellite)
@@ -38426,7 +38393,9 @@
 	},
 /area/maintenance/starboard/greater)
 "mNF" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on{
+	can_hibernate = 0
+	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "mNH" = (
@@ -38898,12 +38867,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/science/mixing)
-"mUK" = (
-/obj/effect/turf_decal/tile/red,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/hallway/primary/fore)
 "mUO" = (
 /obj/structure/reagent_dispensers/wall/peppertank/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -62355,9 +62318,6 @@
 	},
 /turf/open/floor/iron,
 /area/security/prison)
-"vVR" = (
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "vWe" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
@@ -83142,7 +83102,7 @@ rJv
 rJv
 rJv
 bnM
-jMF
+vlz
 tEv
 alK
 alK
@@ -83399,7 +83359,7 @@ rJv
 rJv
 rJv
 bnM
-jMF
+vlz
 qaR
 ikK
 dWo
@@ -84170,7 +84130,7 @@ rJv
 rJv
 rJv
 bnM
-jMF
+vlz
 sQs
 ikK
 ikK
@@ -93740,7 +93700,7 @@ mQS
 cMS
 hpI
 cMg
-cMV
+jIK
 jIK
 eiR
 mSp
@@ -95279,11 +95239,11 @@ eGg
 cAo
 cLr
 cMg
-cMV
-cMV
+jIK
+jIK
 tHb
-cMV
-cMV
+jIK
+jIK
 ouJ
 cMf
 cQK
@@ -96219,17 +96179,17 @@ dmU
 yej
 mZb
 aHA
-mUK
-mUK
+wGX
+wGX
 nQp
-mUK
-mUK
-mUK
-mUK
+wGX
+wGX
+wGX
+wGX
 cfu
 lpV
-mUK
-mUK
+wGX
+wGX
 hrq
 hlv
 jia
@@ -96476,7 +96436,7 @@ ajx
 adY
 aDB
 aHA
-mUK
+wGX
 aHC
 aHD
 nhM
@@ -96733,7 +96693,7 @@ ece
 cFI
 aHF
 aET
-mUK
+wGX
 aHD
 tSf
 iZa
@@ -103650,7 +103610,7 @@ ghU
 vJs
 rvl
 gYT
-ldf
+eMZ
 eMZ
 dls
 pSI
@@ -103669,7 +103629,7 @@ sTJ
 dqy
 iPs
 tDs
-jOl
+bpa
 tYB
 oUt
 fBu
@@ -108354,7 +108314,7 @@ ghG
 hTd
 jGe
 cgz
-vVR
+iKn
 cgz
 cgz
 aaa

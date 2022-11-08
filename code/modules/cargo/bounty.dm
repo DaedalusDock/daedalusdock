@@ -11,7 +11,7 @@
 /// Called when the claim button is clicked. Override to provide fancy rewards.
 /datum/bounty/proc/claim()
 	if(can_claim())
-		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
+		var/datum/bank_account/D = SSeconomy.station_master
 		if(D)
 			D.adjust_money(reward * SSeconomy.bounty_modifier)
 		claimed = TRUE

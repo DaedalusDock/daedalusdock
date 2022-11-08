@@ -16,11 +16,17 @@ SUBSYSTEM_DEF(economy)
 		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
 		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
 	)
-
+	///The station's master account, used for splitting up funds and pooling money.
 	var/datum/bank_account/department/station_master
+	///Used to not spam the payroll announcement
+	var/run_dry = FALSE
+	///Payroll boolean
+	var/payroll_active = TRUE
+
 	///Departmental account datums by ID
 	var/list/department_accounts_by_id = list()
 	var/list/generated_accounts = list()
+
 	/**
 	 * Enables extra money charges for things that normally would be free, such as sleepers/cryo/beepsky.
 	 * Take care when enabling, as players will NOT respond well if the economy is set up for low cash flows.
@@ -89,12 +95,17 @@ SUBSYSTEM_DEF(economy)
 		var/datum/bank_account/bank_account = bank_accounts_by_id[account]
 		required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
 
-	if(required_funds > station_master.account_balance)
-		minor_announce("The station budget appears to have run dry. We regret to inform you that no further wage payments are possible until this situation is rectified.","Payroll Announcement")
-	else
-		for(var/account in bank_accounts_by_id)
-			var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-			bank_account.payday()
+	if(payroll_active)
+		if(required_funds > station_master.account_balance)
+			if(!run_dry)
+				minor_announce("The station budget appears to have run dry. We regret to inform you that no further wage payments are possible until this situation is rectified.","Payroll Announcement")
+				run_dry = TRUE
+		else
+			if(run_dry)
+				run_dry = FALSE
+			for(var/account in bank_accounts_by_id)
+				var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+				bank_account.payday()
 
 	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.
 	var/effective_mailcount = round(living_player_count())

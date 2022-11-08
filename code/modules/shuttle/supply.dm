@@ -212,8 +212,9 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	investigate_log("[purchases] orders in this shipment, worth [value] credits. [cargo_budget.account_balance] credits left.", INVESTIGATE_CARGO)
 
 /obj/docking_port/mobile/supply/proc/sell()
-	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
-	var/presale_points = D.account_balance
+	var/datum/bank_account/cargo_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
+	var/datum/bank_account/master_account = SSeconomy.station_master
+	var/total
 
 	if(!GLOB.exports_list.len) // No exports list? Generate it!
 		setupExports()
@@ -239,11 +240,15 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 			continue
 
 		msg += export_text + "\n"
-		D.adjust_money(ex.total_value[E])
+		total += ex.total_value[E]
 
-	SSeconomy.export_total += (D.account_balance - presale_points)
+	SSeconomy.export_total += total
+	var/cargo_split = round(total/2)
+	cargo_account.adjust_money(cargo_split)
+	master_account.adjust_money(total - cargo_split)
+
 	SSshuttle.centcom_message = msg
-	investigate_log("Shuttle contents sold for [D.account_balance - presale_points] credits. Contents: [ex.exported_atoms ? ex.exported_atoms.Join(",") + "." : "none."] Message: [SSshuttle.centcom_message || "none."]", INVESTIGATE_CARGO)
+	investigate_log("Shuttle contents sold for [total] credits. Contents: [ex.exported_atoms ? ex.exported_atoms.Join(",") + "." : "none."] Message: [SSshuttle.centcom_message || "none."]", INVESTIGATE_CARGO)
 
 /*
 	Generates a box of mail depending on our exports and imports.

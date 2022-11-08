@@ -109,13 +109,15 @@ SUBSYSTEM_DEF(economy)
  */
 /datum/controller/subsystem/economy/proc/departmental_payouts()
 	var/payout_pool = (station_master.account_balance - ECON_STATION_PAYOUT) < 0 ? station_master.account_balance : ECON_STATION_PAYOUT
-	station_master.adjust_money(-payout_pool_amt)
+	if(payout_pool < ECON_STATION_PAYOUT_REQUIREMENT)
+		return
+
 	var/loops = 0
 	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
 		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
 		var/split = round(payout_pool/(ECON_NUM_DEPARTMENT_ACCOUNTS - loops))
 		payout_pool -= split
-		dept_account.adjust_money(split)
+		dept_account.transfer_money(station_master, split)
 		loops++
 
 /**

@@ -22,6 +22,9 @@
 ///The amount of money taken from station master and distributed to all departments every 5 minutes.
 #define ECON_STATION_PAYOUT 6000
 
+///The minimum amount of money in the station master account required for a departmental payout
+#define ECON_STATION_PAYOUT_REQUIREMENT 600
+
 //A multiplier for when you buy from your department.
 #define VENDING_DISCOUNT 0
 

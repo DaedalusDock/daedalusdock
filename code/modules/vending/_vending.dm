@@ -947,8 +947,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 			vend_ready = TRUE
 			return
 		var/datum/bank_account/account = C.registered_account
-		if(account.account_job && account.account_job.paycheck_department == payment_department)
-			price_to_use = max(round(price_to_use * VENDING_DISCOUNT), 1) //No longer free, but signifigantly cheaper.
+		if(account.account_job && account.account_job.paycheck_department == payment_department && !(R in premium))
+			price_to_use = max(round(price_to_use * VENDING_DISCOUNT), 1)
 		if(coin_records.Find(R) || hidden_records.Find(R))
 			price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price
 		if(LAZYLEN(R.returned_products))
@@ -958,7 +958,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
-		var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[payment_department]
 		if(D)
 			D.adjust_money(price_to_use)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)

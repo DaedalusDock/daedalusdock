@@ -539,7 +539,7 @@
 		say("Suspect NAP Violation: Unable to pay.")
 		nap_violation(target)
 		return FALSE
-	var/datum/bank_account/beepsky_department_account = SSeconomy.get_dep_account(payment_department)
+	var/datum/bank_account/beepsky_department_account = SSeconomy.department_accounts_by_id[payment_department]
 	say("Thank you for your compliance. Your account been charged [fair_market_price] credits.")
 	if(beepsky_department_account)
 		beepsky_department_account.adjust_money(fair_market_price)

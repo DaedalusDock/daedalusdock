@@ -698,7 +698,7 @@
 	if(registered_account)
 		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
 		if(registered_account.account_job)
-			var/datum/bank_account/D = SSeconomy.get_dep_account(registered_account.account_job.paycheck_department)
+			var/datum/bank_account/D = SSeconomy.department_accounts_by_id[registered_account.account_job.paycheck_department]
 			if(D)
 				. += "The [D.account_holder] reports a balance of [D.account_balance] cr."
 		. += span_info("Alt-Click the ID to pull money from the linked account in the form of holochips.")
@@ -804,17 +804,16 @@
 	name = "departmental card (ERROR)"
 	desc = "Provides access to the departmental budget."
 	icon_state = "budgetcard"
-	var/department_ID = ACCOUNT_CIV
-	var/department_name = ACCOUNT_CIV_NAME
+	var/department_ID = ACCOUNT_STATION_MASTER
+	var/department_name = ACCOUNT_STATION_MASTER_NAME
 	registered_age = null
 
 /obj/item/card/id/departmental_budget/Initialize(mapload)
 	. = ..()
-	var/datum/bank_account/B = SSeconomy.get_dep_account(department_ID)
+	var/datum/bank_account/B = SSeconomy.department_accounts_by_id[department_ID]
 	if(B)
 		registered_account = B
-		if(!B.bank_cards.Find(src))
-			B.bank_cards += src
+		B.bank_cards |= src
 		name = "departmental card ([department_name])"
 		desc = "Provides access to the [department_name]."
 	SSeconomy.dep_cards += src
@@ -1112,7 +1111,7 @@
 
 /obj/item/card/id/advanced/debug/Initialize(mapload)
 	. = ..()
-	registered_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	registered_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 
 /obj/item/card/id/advanced/prisoner
 	name = "prisoner ID card"

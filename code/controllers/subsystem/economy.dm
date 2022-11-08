@@ -7,13 +7,19 @@ SUBSYSTEM_DEF(economy)
 	var/roundstart_paychecks = 5
 	///How many credits does the in-game economy have in circulation at round start? Divided up by 6 of the 7 department budgets evenly, where cargo starts with nothing.
 	var/budget_pool = 35000
-	var/list/department_accounts = list(ACCOUNT_CIV = ACCOUNT_CIV_NAME,
-										ACCOUNT_ENG = ACCOUNT_ENG_NAME,
-										ACCOUNT_SCI = ACCOUNT_SCI_NAME,
-										ACCOUNT_MED = ACCOUNT_MED_NAME,
-										ACCOUNT_SRV = ACCOUNT_SRV_NAME,
-										ACCOUNT_CAR = ACCOUNT_CAR_NAME,
-										ACCOUNT_SEC = ACCOUNT_SEC_NAME)
+	var/list/department_id2name = list(
+		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
+		ACCOUNT_SCI = ACCOUNT_SCI_NAME,
+		ACCOUNT_MED = ACCOUNT_MED_NAME,
+		ACCOUNT_SRV = ACCOUNT_SRV_NAME,
+		ACCOUNT_CAR = ACCOUNT_CAR_NAME,
+		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
+		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
+	)
+
+	var/datum/bank_account/department/station_master
+	///Departmental account datums by ID
+	var/list/department_accounts_by_id = list()
 	var/list/generated_accounts = list()
 	/**
 	 * Enables extra money charges for things that normally would be free, such as sleepers/cryo/beepsky.
@@ -62,15 +68,16 @@ SUBSYSTEM_DEF(economy)
 	var/mail_blocked = FALSE
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
-	//removes cargo from the split
-	var/budget_to_hand_out = round(budget_pool / department_accounts.len -1)
-	if(time2text(world.timeofday, "DDD") == SUNDAY)
-		mail_blocked = TRUE
-	for(var/dep_id in department_accounts)
-		if(dep_id == ACCOUNT_CAR) //cargo starts with NOTHING
-			new /datum/bank_account/department(dep_id, 0, player_account = FALSE)
-			continue
-		new /datum/bank_account/department(dep_id, budget_to_hand_out, player_account = FALSE)
+	///The master account gets 50% of the roundstart budget
+	var/reserved_for_master = round(budget_pool / 2)
+	station_master = new(ACCOUNT_STATION_MASTER, ACCOUNT_STATION_MASTER_NAME, reserved_for_master)
+	department_accounts_by_id[ACCOUNT_STATION_MASTER] = station_master
+	budget_pool = round(budget_pool/2)
+
+	var/budget_to_hand_out = round(budget_pool / department_id2name.len -1) // -1 is to account for station master existing
+
+	for(var/dep_id in department_id2name - ACCOUNT_STATION_MASTER)
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], budget_to_hand_out)
 	return ..()
 
 /datum/controller/subsystem/economy/Recover()
@@ -97,20 +104,12 @@ SUBSYSTEM_DEF(economy)
 	send_fax_paperwork()
 
 /**
- * Handy proc for obtaining a department's bank account, given the department ID, AKA the define assigned for what department they're under.
- */
-/datum/controller/subsystem/economy/proc/get_dep_account(dep_id)
-	for(var/datum/bank_account/department/D in generated_accounts)
-		if(D.department_id == dep_id)
-			return D
-
-/**
  * Departmental income payments are kept static and linear for every department, and paid out once every 5 minutes, as determined by MAX_GRANT_DPT.
  * Iterates over every department account for the same payment.
  */
 /datum/controller/subsystem/economy/proc/departmental_payouts()
-	for(var/iteration in department_accounts)
-		var/datum/bank_account/dept_account = get_dep_account(iteration)
+	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
+		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
 		if(!dept_account)
 			continue
 		dept_account.adjust_money(MAX_GRANT_DPT)

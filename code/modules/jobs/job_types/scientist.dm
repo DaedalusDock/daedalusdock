@@ -26,7 +26,7 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_SCI
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_BALLMER_SCIENTIST)
 

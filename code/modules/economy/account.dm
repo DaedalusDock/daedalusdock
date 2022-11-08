@@ -129,7 +129,7 @@
 		SSeconomy.station_target += money_to_transfer
 		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from income.")
 	else
-		var/datum/bank_account/D = SSeconomy.get_dep_account(account_job.paycheck_department)
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[account_job.paycheck_department]
 		if(D)
 			if(!transfer_money(D, money_to_transfer))
 				bank_card_talk("ERROR: Payday aborted, departmental funds insufficient.")
@@ -223,10 +223,10 @@
 	var/department_id = "REPLACE_ME"
 	add_to_accounts = FALSE
 
-/datum/bank_account/department/New(dep_id, budget, player_account = FALSE)
+/datum/bank_account/department/New(dep_id, name, budget)
 	department_id = dep_id
 	account_balance = budget
-	account_holder = SSeconomy.department_accounts[dep_id]
+	account_holder = name
 	SSeconomy.generated_accounts += src
 
 /datum/bank_account/remote // Bank account not belonging to the local station

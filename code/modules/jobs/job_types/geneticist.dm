@@ -23,7 +23,7 @@
 		)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_SCI
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	display_order = JOB_DISPLAY_ORDER_GENETICIST
 	bounty_types = CIV_JOB_SCI

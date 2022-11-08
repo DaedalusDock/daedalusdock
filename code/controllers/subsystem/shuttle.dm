@@ -639,7 +639,7 @@ SUBSYSTEM_DEF(shuttle)
 	if (istype(SSshuttle.shuttle_purchase_requirements_met))
 		shuttle_purchase_requirements_met = SSshuttle.shuttle_purchase_requirements_met
 
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 	centcom_message = SSshuttle.centcom_message
 	order_number = SSshuttle.order_number
 	points = D.account_balance

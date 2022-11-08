@@ -17,7 +17,7 @@
 	)
 
 	paycheck = PAYCHECK_MINIMAL
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	display_order = JOB_DISPLAY_ORDER_MIME
 	departments_list = list(

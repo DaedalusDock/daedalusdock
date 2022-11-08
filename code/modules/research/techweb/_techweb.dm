@@ -41,14 +41,14 @@
 	var/list/available_experiments = list()
 	/// Completed experiments
 	var/list/completed_experiments = list()
-	
+
 	/**
 	 * Assoc list of relationships with various partners
 	 * scientific_cooperation[partner_typepath] = relationship
 	 */
 	var/list/scientific_cooperation
 	/**
-	  * Assoc list of papers already published by the crew. 
+	  * Assoc list of papers already published by the crew.
 	  * published_papers[experiment_typepath][tier] = paper
 	  * Filled with nulls on init, populated only on publication.
 	*/
@@ -327,7 +327,7 @@
 		add_design_by_id(id)
 	update_node_status(node)
 	if(get_that_dosh)
-		var/datum/bank_account/science_department_bank_account = SSeconomy.get_dep_account(ACCOUNT_SCI)
+		var/datum/bank_account/science_department_bank_account = SSeconomy.department_accounts_by_id[ACCOUNT_SCI]
 		science_department_bank_account?.adjust_money(SSeconomy.techweb_bounty)
 	return TRUE
 
@@ -511,7 +511,7 @@
 
 	// If we haven't published a paper in the same topic ...
 	if(locate(paper_to_add.experiment_path) in published_papers[paper_to_add.experiment_path])
-		return TRUE	
+		return TRUE
 	// Quickly add and complete it.
 	// PS: It's also possible to use add_experiment() together with a list/available_experiments check
 	// to determine if we need to run all this, but this pretty much does the same while only needing one evaluation.
@@ -526,6 +526,6 @@
 		complete_experiment(experiment)
 		if(length(GLOB.experiment_handlers))
 			var/datum/component/experiment_handler/handler = GLOB.experiment_handlers[1]
-			handler.announce_message_to_all("The [experiment.name] has been completed!")	
-	
+			handler.announce_message_to_all("The [experiment.name] has been completed!")
+
 	return TRUE

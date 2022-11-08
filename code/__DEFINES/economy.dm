@@ -22,7 +22,7 @@
 #define MAX_GRANT_DPT 500
 
 //What should vending machines charge when you buy something in-department.
-#define VENDING_DISCOUNT 0.2
+#define VENDING_DISCOUNT 1
 
 #define ACCOUNT_CIV "CIV"
 #define ACCOUNT_CIV_NAME "Civil Budget"
@@ -38,6 +38,9 @@
 #define ACCOUNT_CAR_NAME "Cargo Budget"
 #define ACCOUNT_SEC "SEC"
 #define ACCOUNT_SEC_NAME "Defense Budget"
+
+#define ACCOUNT_STATION_MASTER "STA"
+#define ACCOUNT_STATION_MASTER_NAME "Station Budget"
 
 #define NO_FREEBIES "commies go home"
 

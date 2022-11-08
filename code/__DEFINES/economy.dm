@@ -19,13 +19,17 @@
 
 #define STATION_TARGET_BUFFER 40
 
-#define MAX_GRANT_DPT 500
+///The amount of money taken from station master and distributed to all departments every 5 minutes.
+#define ECON_STATION_PAYOUT 6000
 
 //A multiplier for when you buy from your department.
 #define VENDING_DISCOUNT 0
 
+///NOT USED FOR ECONOMY
 #define ACCOUNT_CIV "CIV"
 #define ACCOUNT_CIV_NAME "Civil Budget"
+
+
 #define ACCOUNT_ENG "ENG"
 #define ACCOUNT_ENG_NAME "Engineering Budget"
 #define ACCOUNT_SCI "SCI"
@@ -38,6 +42,9 @@
 #define ACCOUNT_CAR_NAME "Cargo Budget"
 #define ACCOUNT_SEC "SEC"
 #define ACCOUNT_SEC_NAME "Defense Budget"
+
+/// The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.
+#define ECON_NUM_DEPARTMENT_ACCOUNTS 6
 
 #define ACCOUNT_STATION_MASTER "STA"
 #define ACCOUNT_STATION_MASTER_NAME "Station Budget"

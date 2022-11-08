@@ -74,7 +74,7 @@ SUBSYSTEM_DEF(economy)
 	department_accounts_by_id[ACCOUNT_STATION_MASTER] = station_master
 	budget_pool = round(budget_pool/2)
 
-	var/budget_to_hand_out = round(budget_pool / department_id2name.len -1) // -1 is to account for station master existing
+	var/budget_to_hand_out = round(budget_pool / ECON_NUM_DEPARTMENT_ACCOUNTS)
 
 	for(var/dep_id in department_id2name - ACCOUNT_STATION_MASTER)
 		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], budget_to_hand_out)
@@ -108,11 +108,15 @@ SUBSYSTEM_DEF(economy)
  * Iterates over every department account for the same payment.
  */
 /datum/controller/subsystem/economy/proc/departmental_payouts()
+	var/payout_pool = (station_master.account_balance - ECON_STATION_PAYOUT) < 0 ? station_master.account_balance : ECON_STATION_PAYOUT
+	station_master.adjust_money(-payout_pool_amt)
+	var/loops = 0
 	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
 		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
-		if(!dept_account)
-			continue
-		dept_account.adjust_money(MAX_GRANT_DPT)
+		var/split = round(payout_pool/(ECON_NUM_DEPARTMENT_ACCOUNTS - loops))
+		payout_pool -= split
+		dept_account.adjust_money(split)
+		loops++
 
 /**
  * Updates the prices of all station vendors with the inflation_value, increasing/decreasing costs across the station, and alerts the crew.

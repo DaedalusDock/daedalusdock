@@ -17102,16 +17102,20 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "biY" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/morgue)
 "bja" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/security/checkpoint/medical)
 "bjc" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/medbay/central)
 "bje" = (
 /obj/structure/sign/departments/medbay/alt,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/medbay/lobby)
 "bjg" = (
@@ -17196,6 +17200,7 @@
 /turf/closed/wall,
 /area/commons/vacant_room/commissary)
 "bjL" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/cryo)
 "bjM" = (
@@ -17418,7 +17423,6 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
 "bkn" = (
@@ -17629,6 +17633,7 @@
 	pixel_y = -5
 	},
 /obj/item/stack/cable_coil,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/cryo)
 "bla" = (
@@ -18785,6 +18790,7 @@
 /area/command/bridge)
 "bpQ" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/paramedic)
 "bpR" = (
@@ -18838,6 +18844,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
 "bpY" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/pharmacy)
 "bqb" = (
@@ -20098,6 +20105,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "bub" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/r_wall,
 /area/command/heads_quarters/cmo)
 "buc" = (
@@ -20107,6 +20115,7 @@
 	name = "CMO Office"
 	},
 /obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/command/heads_quarters/cmo)
 "bug" = (
@@ -21567,7 +21576,6 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
 	},
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron/dark,
 /area/science/research)
 "byY" = (
@@ -21838,13 +21846,9 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "bzX" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron/white,
-/area/medical/medbay/central)
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall,
+/area/maintenance/department/engine)
 "bzZ" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -22984,6 +22988,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "bEr" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/r_wall,
 /area/medical/virology)
 "bEz" = (
@@ -24159,6 +24164,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "bJj" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/r_wall,
 /area/medical/psychology)
 "bJk" = (
@@ -24409,6 +24415,7 @@
 /area/maintenance/department/engine)
 "bKn" = (
 /obj/effect/spawner/structure/window,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "bKo" = (
@@ -24432,6 +24439,7 @@
 "bKq" = (
 /obj/effect/spawner/structure/window,
 /obj/structure/sign/warning/deathsposal,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "bKG" = (
@@ -25421,6 +25429,7 @@
 /area/maintenance/department/engine)
 "bOD" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "bOE" = (
@@ -26145,9 +26154,9 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "bRv" = (
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
-/turf/open/floor/iron,
-/area/engineering/atmos)
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall/r_wall,
+/area/maintenance/department/engine)
 "bRx" = (
 /obj/structure/closet/secure_closet/atmospherics,
 /obj/effect/turf_decal/stripes/line{
@@ -26430,6 +26439,7 @@
 /area/maintenance/department/engine)
 "bSs" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/psychology)
 "bSt" = (
@@ -26908,6 +26918,7 @@
 "bTX" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/space/basic,
 /area/maintenance/department/engine)
 "bUa" = (
@@ -31966,6 +31977,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "ctJ" = (
@@ -33495,6 +33507,7 @@
 /area/science/research)
 "cQN" = (
 /obj/effect/spawner/structure/window,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/medbay/lobby)
 "cRi" = (
@@ -34143,7 +34156,6 @@
 	},
 /obj/structure/cable,
 /obj/machinery/light,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "dBQ" = (
@@ -34592,6 +34604,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/iron/white,
 /area/medical/surgery/theatre)
 "dXU" = (
@@ -34738,9 +34751,9 @@
 	},
 /area/maintenance/department/science)
 "egd" = (
-/obj/machinery/power/turbine/turbine_outlet,
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall,
+/area/medical/psychology)
 "egk" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/oxygen_output{
 	dir = 1
@@ -36144,6 +36157,7 @@
 	name = "Chemistry Shutters"
 	},
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/pharmacy)
 "fmD" = (
@@ -36223,12 +36237,9 @@
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
 "fqJ" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron,
-/area/commons/dorms)
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/open/floor/plating,
+/area/medical/cryo)
 "frn" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -37059,6 +37070,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan,
 /obj/effect/spawner/structure/window,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "ghx" = (
@@ -38331,6 +38343,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan,
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "hop" = (
@@ -38594,6 +38607,7 @@
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "hEC" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/r_wall,
 /area/medical/abandoned)
 "hEX" = (
@@ -38655,13 +38669,10 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "hGY" = (
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/west,
-/turf/open/floor/iron,
-/area/hallway/primary/central)
+/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/open/floor/plating,
+/area/maintenance/department/engine)
 "hHr" = (
 /obj/structure/chair/comfy/black{
 	dir = 4
@@ -38971,6 +38982,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "hXW" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/hallway/secondary/entry)
 "hZL" = (
@@ -39544,10 +39556,9 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "iDX" = (
-/obj/machinery/computer/slot_machine,
-/obj/machinery/bluespace_vendor/directional/north,
-/turf/open/floor/carpet/lone,
-/area/service/bar/atrium)
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall,
+/area/commons/vacant_room/commissary)
 "iEJ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -40095,15 +40106,8 @@
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "jkQ" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
-	dir = 8
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
-	dir = 4
-	},
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron,
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall/r_wall,
 /area/hallway/secondary/entry)
 "jlb" = (
 /obj/structure/disposalpipe/segment{
@@ -40359,6 +40363,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "jze" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/paramedic)
 "jzi" = (
@@ -41417,6 +41422,7 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/visible{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/medbay/central)
 "kya" = (
@@ -41622,9 +41628,6 @@
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "kHY" = (
-/obj/machinery/power/turbine/core_rotor{
-	mapping_id = "main_turbine"
-	},
 /obj/structure/cable,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
@@ -42812,6 +42815,7 @@
 	name = "privacy shutter"
 	},
 /obj/effect/spawner/structure/window,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/surgery/theatre)
 "lRC" = (
@@ -43164,6 +43168,7 @@
 /area/space)
 "mhF" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/chemistry)
 "mhL" = (
@@ -43764,6 +43769,7 @@
 /turf/open/floor/grass,
 /area/medical/psychology)
 "mKE" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/medbay/lobby)
 "mKH" = (
@@ -44284,10 +44290,6 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible/layer2,
-/obj/machinery/computer/turbine_computer{
-	dir = 1;
-	mapping_id = "main_turbine"
-	},
 /turf/open/floor/iron/dark,
 /area/maintenance/disposal/incinerator)
 "njz" = (
@@ -45058,6 +45060,11 @@
 /obj/item/spear,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
+"nWn" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
+/obj/effect/mapping_helpers/paint_wall/medical,
+/turf/closed/wall,
+/area/medical/pharmacy)
 "nWw" = (
 /obj/structure/window/reinforced{
 	dir = 8;
@@ -47261,6 +47268,7 @@
 	id = "chemistry_shutters";
 	name = "Chemistry Shutters"
 	},
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/pharmacy)
 "pTy" = (
@@ -47472,7 +47480,6 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
-/obj/machinery/portable_atmospherics/canister/bz,
 /turf/open/floor/iron/dark,
 /area/science/xenobiology)
 "qcR" = (
@@ -47633,10 +47640,6 @@
 /obj/item/stack/medical/gauze,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
-"qih" = (
-/obj/machinery/holopad,
-/turf/open/floor/iron/white,
-/area/medical/medbay/lobby)
 "qip" = (
 /obj/effect/turf_decal/tile/green{
 	dir = 8
@@ -48735,15 +48738,6 @@
 /area/service/chapel)
 "rfm" = (
 /obj/structure/rack,
-/obj/item/hfr_box/body/fuel_input,
-/obj/item/hfr_box/body/interface,
-/obj/item/hfr_box/body/moderator_input,
-/obj/item/hfr_box/body/waste_output,
-/obj/item/hfr_box/core,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
-/obj/item/hfr_box/corner,
 /obj/machinery/firealarm/directional/east,
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -48754,7 +48748,6 @@
 "rgs" = (
 /obj/structure/table,
 /obj/item/instrument/eguitar,
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/exit/departure_lounge)
 "rgO" = (
@@ -51489,6 +51482,7 @@
 /turf/open/floor/iron/white,
 /area/security/prison)
 "tqC" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/storage)
 "tqM" = (
@@ -51515,7 +51509,6 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/machinery/bluespace_vendor/directional/south,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
@@ -51952,7 +51945,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/holopad,
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "tFt" = (
@@ -56122,6 +56114,7 @@
 "wVV" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
 "wWO" = (
@@ -57183,6 +57176,7 @@
 /turf/open/floor/iron/white,
 /area/medical/paramedic)
 "xIZ" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall,
 /area/medical/surgery/theatre)
 "xJb" = (
@@ -57278,7 +57272,6 @@
 /turf/open/floor/iron,
 /area/engineering/lobby)
 "xMg" = (
-/obj/machinery/power/turbine/inlet_compressor,
 /turf/open/floor/engine,
 /area/maintenance/disposal/incinerator)
 "xMQ" = (
@@ -57355,6 +57348,7 @@
 /area/hallway/primary/central)
 "xQr" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/medbay/lobby)
 "xQM" = (
@@ -57548,6 +57542,7 @@
 "yat" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/security/checkpoint/medical)
 "ybu" = (
@@ -79030,13 +79025,13 @@ bXy
 bFF
 bva
 olY
-bva
+bzX
 bHT
 bJi
-bva
+bzX
 bsn
 bME
-bva
+bzX
 qvx
 bHT
 bNQ
@@ -79287,19 +79282,19 @@ bEk
 bva
 bva
 xtI
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bva
-bva
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bzX
+bzX
 kkF
 bDi
 lrI
@@ -79519,7 +79514,7 @@ jsa
 jsa
 jsa
 lmU
-jkQ
+lmU
 pMG
 qdO
 tfS
@@ -79544,7 +79539,7 @@ bEl
 bva
 bVC
 xtI
-bBX
+bRv
 doo
 hRH
 nCe
@@ -79556,7 +79551,7 @@ ucA
 bNL
 bOD
 aht
-bIZ
+hGY
 olY
 bDi
 ccN
@@ -79781,14 +79776,14 @@ bjK
 bjK
 bjK
 bjK
-bjK
+iDX
 hXW
 bmc
 bnt
 sKe
-aYG
-aYG
-bBX
+jkQ
+jkQ
+bRv
 nta
 bBX
 bBX
@@ -79801,7 +79796,7 @@ bEm
 bva
 bTl
 olY
-bBX
+bRv
 erQ
 oat
 sEN
@@ -79813,7 +79808,7 @@ qMX
 bNM
 bOD
 aht
-bIZ
+hGY
 olY
 bDi
 ftp
@@ -80038,14 +80033,14 @@ bgU
 bhF
 bib
 biK
-bjK
-aYG
-aYG
-aYG
-aYG
-aYG
+iDX
+jkQ
+jkQ
+jkQ
+jkQ
+jkQ
 eUe
-bva
+bzX
 rbu
 bsn
 bws
@@ -80058,7 +80053,7 @@ xtI
 olY
 olY
 olY
-bBX
+bRv
 qIl
 ohH
 jJN
@@ -80070,7 +80065,7 @@ bKn
 bKn
 bEr
 aht
-bva
+bzX
 tAh
 bWZ
 fVi
@@ -80295,7 +80290,7 @@ bgV
 qIf
 bBk
 biL
-bjK
+iDX
 iOj
 cUb
 jMD
@@ -80311,11 +80306,11 @@ bzD
 bAM
 olY
 bDj
-bBX
-bBX
-bBX
-bBX
-bBX
+bRv
+bRv
+bRv
+bRv
+bRv
 kTU
 wMn
 rsd
@@ -80552,23 +80547,23 @@ bgW
 bhK
 bic
 biM
-bjK
+iDX
 iOj
 gvu
 dmI
 oyH
 oyH
 uok
-bva
-bva
-bva
-bva
-bva
+bzX
+bzX
+bzX
+bzX
+bzX
 dOo
-bva
-bva
+bzX
+bzX
 bDi
-bBX
+bRv
 uko
 sSl
 bHS
@@ -80809,7 +80804,7 @@ bgX
 eBf
 omu
 qUe
-bjK
+iDX
 iOj
 oRF
 bos
@@ -80825,7 +80820,7 @@ juh
 bAN
 kvq
 ema
-bBX
+bRv
 gld
 ybu
 tuM
@@ -80841,7 +80836,7 @@ bEr
 bEr
 bEr
 aht
-bva
+bzX
 cFT
 bDi
 bva
@@ -81066,7 +81061,7 @@ biN
 bie
 bie
 biN
-bjK
+iDX
 iOj
 efC
 uwj
@@ -81081,8 +81076,8 @@ kbi
 fDf
 bAO
 tqC
-bva
-bBX
+bzX
+bRv
 tak
 dok
 rus
@@ -81098,7 +81093,7 @@ bFI
 bEr
 aaa
 aaa
-bva
+bzX
 eNy
 vNu
 ixd
@@ -81355,7 +81350,7 @@ bFL
 bEr
 aaa
 aaa
-bva
+bzX
 qXx
 bDi
 bva
@@ -81612,7 +81607,7 @@ bEr
 bEr
 bJj
 aht
-bva
+bzX
 mQV
 bDi
 bva
@@ -81857,7 +81852,7 @@ ulf
 cKQ
 uWC
 boN
-sOB
+egd
 uYF
 pDZ
 qhW
@@ -81867,9 +81862,9 @@ sHH
 hdk
 rXT
 pnF
-sOB
+egd
 aht
-bva
+bzX
 uuC
 bDi
 bva
@@ -82126,7 +82121,7 @@ bOG
 mKz
 bSs
 aht
-bIZ
+hGY
 qXx
 bNQ
 bva
@@ -82353,7 +82348,7 @@ piM
 bij
 bjL
 bkZ
-bmi
+fqJ
 xyK
 bjL
 mgW
@@ -82383,7 +82378,7 @@ uLp
 gkS
 bSs
 aht
-bIZ
+hGY
 qXx
 bDi
 bRF
@@ -82628,7 +82623,7 @@ uMY
 bFK
 cKQ
 boN
-sOB
+egd
 pcH
 vgg
 uFo
@@ -82638,9 +82633,9 @@ nPg
 gsP
 bOI
 rHh
-sOB
+egd
 aht
-bva
+bzX
 xbD
 ewb
 lPe
@@ -82885,7 +82880,7 @@ gZl
 uyg
 cKQ
 aFa
-sOB
+egd
 bKp
 bpz
 uFo
@@ -82897,7 +82892,7 @@ pds
 rhT
 bSs
 aht
-bIZ
+hGY
 xbD
 bDi
 bva
@@ -83142,7 +83137,7 @@ flq
 esz
 qma
 bHY
-sOB
+egd
 wQy
 bpz
 aJY
@@ -83152,9 +83147,9 @@ mMd
 uqs
 lor
 rHh
-sOB
+egd
 aht
-bva
+bzX
 xbD
 bDi
 bva
@@ -83399,19 +83394,19 @@ lRu
 dXv
 lRu
 xIZ
-sOB
-sOB
-sOB
-bva
-bva
-bva
-bva
-bva
+egd
+egd
+egd
+bzX
+bzX
+bzX
+bzX
+bzX
 snZ
-bva
-bva
-bva
-bva
+bzX
+bzX
+bzX
+bzX
 nTt
 bva
 bva
@@ -83659,13 +83654,13 @@ pJc
 lig
 xBk
 uwS
-bva
+bzX
 bNP
 bOE
 dSI
 umd
 bDi
-bva
+bzX
 bsn
 bNX
 bVC
@@ -83922,7 +83917,7 @@ omS
 xtI
 xtI
 olY
-bva
+bzX
 gcn
 bDi
 umd
@@ -84173,13 +84168,13 @@ ptR
 tir
 haB
 cCd
-bva
+bzX
 bNR
 pHN
 fAE
 bsn
 kTn
-bva
+bzX
 sZP
 bDi
 bDi
@@ -84430,11 +84425,11 @@ mKg
 mKg
 mKg
 wcx
-bva
-bva
-bva
-bva
-bva
+bzX
+bzX
+bzX
+bzX
+bzX
 sWN
 iOl
 iOl
@@ -84687,7 +84682,7 @@ fMs
 hkF
 ufk
 eKa
-bva
+bzX
 xhT
 sWN
 bVZ
@@ -84936,15 +84931,15 @@ rHG
 dZb
 uEY
 bEE
-bBX
-bva
-bva
-bva
-bva
-bva
-bva
-bva
-bva
+bRv
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
 snT
 xbD
 bBX
@@ -85450,7 +85445,7 @@ lsr
 hHJ
 bDw
 bEF
-bBX
+bRv
 bEz
 bTl
 bNX
@@ -85707,16 +85702,16 @@ bub
 byo
 bub
 bub
-bBX
-bva
-bva
-bva
-bva
-bva
-bva
-bva
-bva
-bBX
+bRv
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
+bzX
+bRv
 olY
 bBX
 bQo
@@ -85973,7 +85968,7 @@ lFb
 uik
 txK
 bMK
-bBX
+bRv
 olY
 bBX
 bQp
@@ -86475,7 +86470,7 @@ cqd
 bvn
 cqd
 byt
-bzX
+cqd
 bIi
 wLW
 bCp
@@ -86487,7 +86482,7 @@ bum
 bsK
 bwV
 bMM
-bBX
+bRv
 olY
 bBX
 bBX
@@ -86743,8 +86738,8 @@ dMR
 abz
 bsK
 eeb
-bBX
-bBX
+bRv
+bRv
 olY
 bPC
 bBX
@@ -87000,7 +86995,7 @@ dMR
 abz
 bsK
 bAg
-bBX
+bRv
 bNV
 olY
 bPD
@@ -87257,7 +87252,7 @@ dMR
 abz
 bsK
 bLL
-bBX
+bRv
 bNW
 bOH
 bva
@@ -87514,7 +87509,7 @@ dMR
 rLd
 bsK
 anH
-bBX
+bRv
 bNX
 olY
 bva
@@ -87771,8 +87766,8 @@ dMR
 gFf
 bsK
 prD
-bBX
-bBX
+bRv
+bRv
 olY
 bPF
 bTu
@@ -88029,7 +88024,7 @@ gFf
 bsK
 bLM
 bMN
-bBX
+bRv
 olY
 bva
 rYk
@@ -88265,9 +88260,9 @@ bjg
 fmD
 cpZ
 cqc
-qih
+ufo
 boL
-bpY
+nWn
 fms
 bpY
 bpY
@@ -88286,7 +88281,7 @@ gFf
 bsK
 ezC
 jCw
-bBX
+bRv
 olY
 bva
 bQv
@@ -88543,7 +88538,7 @@ eRX
 bwV
 bLO
 bAh
-bBX
+bRv
 olY
 bva
 bQw
@@ -88800,7 +88795,7 @@ bsK
 nnf
 byz
 ooh
-bBX
+bRv
 olY
 bva
 bQx
@@ -89057,7 +89052,7 @@ mqg
 bKG
 byA
 bAi
-bBX
+bRv
 olY
 bva
 bQy
@@ -89304,17 +89299,17 @@ dRj
 hEC
 hEC
 hEC
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
-bBX
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
+bRv
 olY
 bva
 bQz
@@ -89809,16 +89804,16 @@ cQN
 xOq
 bmA
 cQN
-bva
-bBX
-bBX
-bBX
+bzX
+bRv
+bRv
+bRv
 vSL
-bva
+bzX
 hEC
 cIe
 fby
-bva
+bzX
 vNl
 oXV
 bva
@@ -90066,16 +90061,16 @@ bls
 aDm
 dhy
 bmB
-bva
+bzX
 bDi
 bDi
 bDi
 olY
 bDi
-bva
-bva
-bva
-bva
+bzX
+bzX
+bzX
+bzX
 hop
 xDj
 bva
@@ -92363,7 +92358,7 @@ aWq
 aXn
 aYl
 aUf
-iDX
+bap
 bbw
 hHG
 jdA
@@ -93124,7 +93119,7 @@ dNA
 ydu
 nLS
 ydu
-hGY
+ydu
 aRd
 lYE
 rpB
@@ -93430,7 +93425,7 @@ ksv
 bOS
 bLc
 bPQ
-bRv
+bWO
 bSe
 bSU
 bPQ
@@ -96195,7 +96190,7 @@ aym
 wLx
 aav
 aQC
-fqJ
+cHR
 aET
 aET
 bPd
@@ -99359,7 +99354,7 @@ atf
 dmB
 xMg
 kHY
-egd
+xMg
 wbb
 aaa
 aaa

@@ -5,8 +5,7 @@
 /// Probability of using letters of envelope sprites on all letters.
 #define FULL_CRATE_LETTER_ODDS 70
 
-//Experimental change: These are subject to tweaking based on the /tg/ economy overhaul.
-//Current design direction: Higher paying jobs are vastly outnumbered by lower paying jobs, so anything above medium hurts inflation, common jobs help inflation
+//
 #define PAYCHECK_PRISONER 25
 #define PAYCHECK_ASSISTANT 50
 #define PAYCHECK_MINIMAL 55
@@ -16,8 +15,6 @@
 #define PAYCHECK_COMMAND 200
 
 #define PAYCHECK_ZERO 0
-
-#define STATION_TARGET_BUFFER 40
 
 ///The amount of money taken from station master and distributed to all departments every 5 minutes.
 #define ECON_STATION_PAYOUT 6000

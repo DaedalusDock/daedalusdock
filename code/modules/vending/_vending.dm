@@ -58,7 +58,7 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	/// Is the machine active (No sales pitches if off)!
@@ -156,6 +156,8 @@
 	///ID's that can load this vending machine wtih refills
 	var/list/canload_access_list
 
+	///Access that gets the non-premium content for free
+	var/list/discount_access = null
 
 	var/list/vending_machine_input = list()
 	///Display header on the input view
@@ -824,6 +826,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 		else
 			.["user"]["job"] = "No Job"
 			.["user"]["department"] = "No Department"
+
+	if(discount_access && (discount_access in C?.access))
+		.["access"] = TRUE
+
 	.["stock"] = list()
 	for (var/datum/data/vending_product/R in product_records + coin_records + hidden_records)
 		var/list/product_data = list(
@@ -946,19 +952,25 @@ GLOBAL_LIST_EMPTY(vending_products)
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
+
 		var/datum/bank_account/account = C.registered_account
-		if(account.account_job && account.account_job.paycheck_department == payment_department && !(R in premium))
-			price_to_use = max(round(price_to_use * VENDING_DISCOUNT), 1)
+		if((length(C.access&req_access) || (discount_access in C.access)) && !(R in premium))
+			price_to_use = round(price_to_use * VENDING_DISCOUNT)
+
 		if(coin_records.Find(R) || hidden_records.Find(R))
 			price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price
+
 		if(LAZYLEN(R.returned_products))
 			price_to_use = 0 //returned items are free
+
 		if(price_to_use && !account.adjust_money(-price_to_use))
 			say("You do not possess the funds to purchase [R.name].")
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
+
 		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[payment_department]
+
 		if(D)
 			D.adjust_money(price_to_use)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)

@@ -27,7 +27,6 @@
 
 ///NOT USED FOR ECONOMY
 #define ACCOUNT_CIV "CIV"
-#define ACCOUNT_CIV_NAME "Civil Budget"
 
 
 #define ACCOUNT_ENG "ENG"

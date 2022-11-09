@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(universe)
 	var/datum/universal_state/current_state
 
 
-/datum/controller/subsystem/universe/proc/SetUniversalState(var/newstate, list/ztraits, var/on_exit = TRUE, var/on_enter = TRUE)
+/datum/controller/subsystem/universe/proc/SetUniversalState(newstate, list/ztraits, on_exit = TRUE, on_enter = TRUE)
 	if(istype(current_state, newstate))
 		return
 

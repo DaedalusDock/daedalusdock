@@ -196,20 +196,9 @@
 /obj/machinery/power/rtg/debug,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
-"aO" = (
-/turf/open/floor/iron/red,
-/area/hallway/primary/central)
 "aP" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
-"aQ" = (
-/obj/machinery/meter/turf,
-/turf/open/floor/iron/red,
-/area/hallway/primary/central)
-"aR" = (
-/obj/machinery/light/floor,
-/turf/open/floor/iron/red,
 /area/hallway/primary/central)
 "aS" = (
 /obj/machinery/door/airlock/external/glass,
@@ -1896,11 +1885,11 @@ ag
 ag
 ag
 ab
-aO
-aO
-aO
-aO
-aO
+ag
+ag
+ag
+ag
+ag
 ab
 aa
 "}
@@ -1939,11 +1928,11 @@ ag
 ag
 ag
 ac
-aO
-aO
-aO
-aO
-aO
+ag
+ag
+ag
+ag
+ag
 ac
 aa
 "}
@@ -1982,11 +1971,11 @@ ag
 ag
 ag
 bz
-aO
-aO
-aQ
-aO
-aO
+ag
+ag
+aP
+ag
+ag
 aS
 aa
 "}
@@ -2025,11 +2014,11 @@ aq
 ag
 ag
 ac
-aO
-aO
-aR
-aO
-aO
+ag
+ag
+aq
+ag
+ag
 ac
 aa
 "}
@@ -2068,11 +2057,11 @@ ag
 ag
 ag
 ab
-aO
-aO
-aO
-aO
-aO
+ag
+ag
+ag
+ag
+ag
 ab
 aa
 "}

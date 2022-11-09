@@ -197,19 +197,11 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aO" = (
-/turf/open/floor/iron/red,
+/turf/open/floor/iron,
 /area/hallway/primary/central)
 "aP" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
-"aQ" = (
-/obj/machinery/meter/turf,
-/turf/open/floor/iron/red,
-/area/hallway/primary/central)
-"aR" = (
-/obj/machinery/light/floor,
-/turf/open/floor/iron/red,
 /area/hallway/primary/central)
 "aS" = (
 /obj/machinery/door/airlock/external/glass,
@@ -1992,7 +1984,7 @@ ag
 bz
 aO
 aO
-aQ
+aP
 aO
 aO
 aS
@@ -2035,7 +2027,7 @@ ag
 ac
 aO
 aO
-aR
+aq
 aO
 aO
 ac

@@ -111,7 +111,7 @@
 
 /obj/item/crowbar/power/syndicate
 	name = "Syndicate jaws of life"
-	desc = "A re-engineered copy of Nanotrasen's standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
+	desc = "A re-engineered copy of Daedalus' standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
 	icon_state = "jaws_syndie"
 	toolspeed = 0.5
 	force_opens = TRUE

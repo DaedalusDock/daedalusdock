@@ -309,7 +309,7 @@
 		LAZYSET(W.data,"vintage",wine_info)
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/proc/generate_vintage()
-	return "[CURRENT_STATION_YEAR] Nanotrasen Light Red"
+	return "[CURRENT_STATION_YEAR] Daedalus Light Red"
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/unlabeled
 	name = "unlabeled wine bottle"
@@ -319,7 +319,7 @@
 	var/current_year = CURRENT_STATION_YEAR
 	var/year = rand(current_year-50,current_year)
 	var/type = pick("Sparkling","Dry White","Sweet White","Rich White","Rose","Light Red","Medium Red","Bold Red","Dessert")
-	var/origin = pick("Nanotrasen","Syndicate","Local")
+	var/origin = pick("Ananke", "Daedalus","Syndicate","Local")
 	return "[year] [origin] [type]"
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe
@@ -345,7 +345,7 @@
 		if("A&A")
 			fullname = "Ash and Asher"
 		if("Generic")
-			fullname = "Nanotrasen Cheap Imitations"
+			fullname = "Ananke Cheap Imitations"
 	var/removals = list("\[REDACTED\]", "\[EXPLETIVE DELETED\]",
 		"\[EXPUNGED\]", "\[INFORMATION ABOVE YOUR SECURITY CLEARANCE\]",
 		"\[MOVE ALONG CITIZEN\]", "\[NOTHING TO SEE HERE\]")

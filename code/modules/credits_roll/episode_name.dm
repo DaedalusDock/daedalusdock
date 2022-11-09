@@ -101,7 +101,7 @@
 	if(BLACKBOX_FEEDBACK_NUM("narsies_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("NAR-SIE'S DAY OUT", "NAR-SIE'S VACATION", "THE CREW LEARNS ABOUT SACRED GEOMETRY", "REALM OF THE MAD GOD", "THE ONE WITH THE ELDRITCH HORROR", 50;"STUDY HARD, BUT PART-SIE HARDER")]", "Nar-Sie is loose!", 500)
 	if(locate(/datum/holiday/xmas) in SSevents.holidays)
-		episode_names += new /datum/episode_name("A VERY [pick("NANOTRASEN", "EXPEDITIONARY", "SECURE", "PLASMA", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
+		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "NANOTRASEN", "EXPEDITIONARY", "SECURE", "PLASMA", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
 	if(BLACKBOX_FEEDBACK_NUM("guns_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("GUNS, GUNS EVERYWHERE", "THUNDER GUN EXPRESS", "THE CREW GOES AMERICA ALL OVER EVERYBODY'S ASS")]", "[BLACKBOX_FEEDBACK_NUM("guns_spawned")] guns were spawned this round.", min(750, BLACKBOX_FEEDBACK_NUM("guns_spawned")*25))
 	if(BLACKBOX_FEEDBACK_NUM("heartattacks") > 2)

@@ -195,7 +195,7 @@
 
 /obj/machinery/computer/secure_data/laptop
 	name = "security laptop"
-	desc = "A cheap Nanotrasen security laptop, it functions as a security records console. It's bolted to the table."
+	desc = "A cheap Thinktronic security laptop, it functions as a security records console. It's bolted to the table."
 	icon_state = "laptop"
 	icon_screen = "seclaptop"
 	icon_keyboard = "laptop_key"
@@ -596,7 +596,7 @@ What a mess.*/
 				if(!( printing ))
 					var/wanted_name = tgui_input_text(usr, "Enter an alias for the criminal", "Print Wanted Poster", active1.fields["name"])
 					if(wanted_name)
-						var/default_description = "A poster declaring [wanted_name] to be a dangerous individual, wanted by Nanotrasen. Report any sightings to security immediately."
+						var/default_description = "A poster declaring [wanted_name] to be a dangerous individual, wanted by security. Report any sightings to security immediately."
 						var/list/crimes = active2.fields["crim"]
 						if(length(crimes))
 							default_description += "\n[wanted_name] is wanted for the following crimes:\n"

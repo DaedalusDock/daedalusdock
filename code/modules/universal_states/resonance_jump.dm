@@ -38,7 +38,7 @@
 
 	QDEL_LIST(echos)
 
-/datum/universal_state/resonance_jump/proc/apply_bluespaced(var/mob/living/M)
+/datum/universal_state/resonance_jump/proc/apply_bluespaced(mob/living/M)
 	affected_mobs += M
 	if(M.client)
 		to_chat(M,"<span class='notice'>You feel oddly light, and somewhat disoriented as everything around you shimmers and warps ever so slightly.</span>")
@@ -48,7 +48,7 @@
 
 	echos += new/obj/effect/abstract/blueecho(get_turf(M), M)
 
-/datum/universal_state/resonance_jump/proc/clear_bluespaced(var/mob/living/M)
+/datum/universal_state/resonance_jump/proc/clear_bluespaced(mob/living/M)
 	if(M.client)
 		to_chat(M,"<span class='notice'>You feel rooted in material world again.</span>")
 		M.clear_fullscreen("bluespace")
@@ -62,7 +62,7 @@
 	var/atom/movable/virtualspeaker/voice
 	var/reality = 0
 
-/obj/effect/abstract/blueecho/Initialize(loc, var/mob/living/parent)
+/obj/effect/abstract/blueecho/Initialize(loc, mob/living/parent)
 	. = ..()
 	if(!istype(parent))
 		return INITIALIZE_HINT_QDEL

@@ -30,6 +30,8 @@
 	/// Stripe paint of the wall
 	var/stripe_paint
 	var/opening = FALSE
+	/// Material Set Name
+	var/matset_name
 
 	/// Typecache of the neighboring objects that we want to neighbor stripe overlay with
 	var/static/list/neighbor_typecache
@@ -59,10 +61,7 @@
 
 /obj/structure/falsewall/update_name()
 	. = ..()
-	if(reinf_material)
-		name = "reinforced wall"
-	else
-		name = "wall"
+	name = matset_name
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
 	if(opening)

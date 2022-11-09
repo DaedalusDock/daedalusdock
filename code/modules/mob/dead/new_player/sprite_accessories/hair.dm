@@ -1174,7 +1174,7 @@
 // Vox 'hair'
 
 /datum/sprite_accessory/vox_hair
-	icon = 'icons/mob/vox_hair.dmi'
+	icon = 'icons/mob/species/vox/vox_hair.dmi'
 	color_src = HAIR
 
 /datum/sprite_accessory/vox_hair/vox_afro

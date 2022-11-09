@@ -23,20 +23,18 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/lungs/vox
-	mutantbrain = /obj/item/organ/brain/vox
-	mutantheart = /obj/item/organ/heart/vox
-	mutanteyes = /obj/item/organ/eyes/vox
-	mutantliver = /obj/item/organ/liver/vox
+	mutantlungs = /obj/item/organ/internal/lungs/vox
+	mutantbrain = /obj/item/organ/internal/brain/vox
+	mutantheart = /obj/item/organ/internal/heart/vox
+	mutanteyes = /obj/item/organ/internal/eyes/vox
+	mutantliver = /obj/item/organ/internal/liver/vox
 	breathid = "n2"
-	mutant_bodyparts = list(
-		"tail_vox" = "Vox Tail",
-		"spines_vox" = "None"
-	)
 	external_organs = list(
 		/obj/item/organ/external/snout/vox = "Vox Snout",
 		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_facial_hair = "None")
+		/obj/item/organ/external/vox_hair/facial = "None",
+		/obj/item/organ/external/tail/vox = "Vox Tail"
+	)
 	attack_verb = "slash"
 	attack_effect = ATTACK_EFFECT_CLAW
 	attack_sound = 'sound/weapons/slash.ogg'
@@ -57,24 +55,16 @@
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"
-#define VOX_HAIR_COLOR "#997C28"
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = VOX_BODY_COLOR
-	human.dna.features["mcolor2"] = VOX_SNOUT_COLOR
-	human.hair_color = VOX_HAIR_COLOR
-	human.eye_color = COLOR_TEAL
-
-	var/obj/item/organ/external/vox_hair/hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_HAIR]
-	hair.set_sprite("Vox Short Quills")
-	var/obj/item/organ/external/vox_facial_hair/facial_hair = human.internal_organs_slot[ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR]
-	facial_hair.set_sprite("None")
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1]= VOX_BODY_COLOR
+	human.eye_color_right = COLOR_TEAL
+	human.eye_color_left = COLOR_TEAL
 
 	human.update_body(TRUE)
 
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR
-#undef VOX_HAIR_COLOR
 
 /datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
 	. = ..()
@@ -115,25 +105,6 @@
 		Their presence brings some conflict between Ark-Vox and the Free-Vox who have fled from their creators and their homes, living in places such as The Shoal, or any station that will accept them. \
 		Nanotrasen Public Relations takes great care in assuring the public that everything is fine, and that they're working in perfect harmony.",
 	)
-
-/datum/species/vox/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	var/real_tail_type = C.dna.features["tail_vox"]
-	var/real_spines = C.dna.features["spines_vox"]
-
-	. = ..()
-
-	if(pref_load)
-		C.dna.features["tail_vox"] = real_tail_type
-		C.dna.features["spines_vox"] = real_spines
-
-		var/obj/item/organ/tail/vox/new_tail = new /obj/item/organ/tail/vox()
-
-		new_tail.tail_type = C.dna.features["tail_vox"]
-		new_tail.spines = C.dna.features["spines_vox"]
-
-		// organ.Insert will qdel any existing organs in the same slot, so
-		// we don't need to manage that.
-		new_tail.Insert(C, TRUE, FALSE)
 
 /datum/species/vox/get_scream_sound(mob/living/carbon/human/vox)
 	return 'sound/voice/vox/shriek1.ogg'

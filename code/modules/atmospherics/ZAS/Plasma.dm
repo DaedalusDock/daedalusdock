@@ -112,7 +112,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 	return
 
 /mob/living/carbon/human/burn_eyes()
-	var/obj/item/organ/eyes/E = getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/internal/eyes/E = getorganslot(ORGAN_SLOT_EYES)
 	if(E && !E.status == ORGAN_ROBOTIC)
 		if(prob(20))
 			to_chat(src, "<span class='danger'>Your eyes burn!</span>")

@@ -1,4 +1,4 @@
-/proc/priority_announce(text, title = "", sound, type , sender_override, has_important_message, players)
+/proc/priority_announce(text, title = "Station Announcement", sound = 'goon/sounds/announcement_1.ogg', type, sender_override, has_important_message, players)
 	if(!text)
 		return
 
@@ -12,11 +12,14 @@
 		announcement += "<h1 class='alert'>Priority Announcement</h1>"
 		if (title && length(title) > 0)
 			announcement += "<br><h2 class='alert'>[html_encode(title)]</h2>"
+
 	else if(type == "Captain")
-		announcement += "<h1 class='alert'>Captain Announces</h1>"
+		announcement += "<h1 class='alert'>Station Announcement (Bridge)</h1>"
 		GLOB.news_network.submit_article(html_encode(text), "Captain's Announcement", "Station Announcements", null)
+
 	else if(type == "Syndicate Captain")
 		announcement += "<h1 class='alert'>Syndicate Captain Announces</h1>"
+
 	else if(type == "AI")
 		var/mob/living/silicon/ai/sender = usr
 		if(!istype(sender))
@@ -110,11 +113,14 @@
 	if(!players)
 		players = GLOB.player_list
 
+	if(title)
+		message = "<font color = red>[title]</font color><BR>[message]"
+
 	for(var/mob/target in players)
 		if(!isnewplayer(target) && target.can_hear())
-			to_chat(target, "[span_minorannounce("<font color = red>[title]</font color><BR>[message]")]<BR>")
+			to_chat(target, span_minorannounce(message))
 			if(target.client.prefs.toggles & SOUND_ANNOUNCEMENTS)
 				if(alert)
 					SEND_SOUND(target, sound('sound/misc/notice1.ogg'))
 				else
-					SEND_SOUND(target, sound('sound/misc/notice2.ogg'))
+					SEND_SOUND(target, sound('goon/sounds/announcement_1.ogg'))

@@ -6,6 +6,8 @@
 	should_draw_greyscale = TRUE
 	is_dimorphic = FALSE
 
+	eyes_icon_file = 'icons/mob/species/moth/eyes.dmi'
+
 /obj/item/bodypart/chest/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'

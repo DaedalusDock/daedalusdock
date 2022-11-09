@@ -22,13 +22,13 @@
 	H.facial_hairstyle = random_facial_hairstyle(H.gender)
 	H.hair_color = "#[random_color()]"
 	H.facial_hair_color = H.hair_color
-	H.eye_color = random_eye_color()
+	var/random_eye_color = random_eye_color()
+	H.eye_color_left = random_eye_color
+	H.eye_color_right = random_eye_color
 	H.dna.blood_type = random_blood_type()
 
 	// Mutant randomizing, doesn't affect the mob appearance unless it's the specific mutant.
-	H.dna.features["mcolor"] = "#[random_color()]"
-	H.dna.features["mcolor2"] = "#[random_color()]"
-	H.dna.features["mcolor3"] = "#[random_color()]"
+	H.dna.mutant_colors = random_mutant_colors()
 	H.dna.features["ethcolor"] = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
 	H.dna.features["tail_lizard"] = pick(GLOB.tails_list_lizard)
 	H.dna.features["snout"] = pick(GLOB.snouts_list)
@@ -46,4 +46,3 @@
 	H.dna.features["tail_teshari"] = pick(GLOB.teshari_tails_list)
 
 	H.update_body(is_creating = TRUE)
-	H.update_hair(is_creating = TRUE)

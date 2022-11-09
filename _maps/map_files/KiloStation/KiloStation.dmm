@@ -8526,7 +8526,7 @@
 "aXN" = (
 /obj/machinery/igniter/incinerator_ordmix,
 /mob/living/simple_animal/chicken{
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0);
+	atmos_requirements = list("min_oxy"=0,"max_oxy"=0,"min_tox"=0,"max_tox"=1,"min_co2"=0,"max_co2"=0,"min_n2"=0,"max_n2"=0);
 	desc = "A timeless classic.";
 	name = "Kentucky"
 	},
@@ -15352,14 +15352,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/showroomfloor,
 /area/ai_monitored/security/armory)
-"cbq" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
-/turf/open/floor/iron,
-/area/hallway/primary/central)
 "cbr" = (
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
@@ -26189,7 +26181,8 @@
 	dir = 8
 	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on{
-	dir = 8
+	dir = 8;
+	can_hibernate = 0
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
@@ -26297,10 +26290,6 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/lobby)
-"etb" = (
-/obj/structure/cable,
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "etH" = (
 /obj/structure/closet/secure_closet/atmospherics,
 /obj/effect/turf_decal/tile/neutral,
@@ -42203,7 +42192,7 @@
 /obj/effect/decal/cleanable/blood/gibs/old,
 /obj/effect/spawner/random/structure/crate,
 /mob/living/simple_animal/chicken{
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0);
+	atmos_requirements = list("min_oxy"=0,"max_oxy"=0,"min_tox"=0,"max_tox"=1,"min_co2"=0,"max_co2"=0,"min_n2"=0,"max_n2"=0);
 	desc = "A timeless classic.";
 	name = "Kentucky"
 	},
@@ -47688,7 +47677,7 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Ordnance Test Lab";
 	name = "science camera";
-	network = list("ss13", "rd")
+	network = list("ss13","rd")
 	},
 /obj/item/radio/intercom/directional/east,
 /obj/structure/sign/poster/random/directional/north,
@@ -54741,9 +54730,6 @@
 	},
 /turf/open/floor/plating,
 /area/cargo/warehouse)
-"nUs" = (
-/turf/open/floor/iron/dark,
-/area/service/chapel/monastery)
 "nUt" = (
 /obj/machinery/computer/secure_data{
 	dir = 4
@@ -54844,13 +54830,6 @@
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/iron/dark,
 /area/medical/pharmacy)
-"nVA" = (
-/obj/effect/turf_decal/siding/wideplating/dark{
-	dir = 4
-	},
-
-/turf/open/floor/iron/dark,
-/area/service/chapel/monastery)
 "nVD" = (
 /turf/open/floor/engine/n2,
 /area/engineering/atmos)
@@ -56941,7 +56920,7 @@
 /obj/machinery/camera/directional/south{
 	c_tag = "Ordnance Storage";
 	name = "science camera";
-	network = list("ss13", "rd")
+	network = list("ss13","rd")
 	},
 /turf/open/floor/iron/dark,
 /area/science/storage)
@@ -60794,7 +60773,8 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 4;
 	external_pressure_bound = 140;
-	pressure_checks = 0
+	pressure_checks = 0;
+	can_hibernate = 0
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
@@ -70229,7 +70209,7 @@
 /area/command/bridge)
 "sSj" = (
 /obj/machinery/computer/atmos_control/noreconnect{
-	atmos_chambers = list("ordnancegas1" = "Burn Chamber", "ordnancegas2" = "Freezer Chamber");
+	atmos_chambers = list("ordnancegas1"="Burn Chamber","ordnancegas2"="Freezer Chamber");
 	dir = 4
 	},
 /obj/machinery/firealarm/directional/west,
@@ -77892,7 +77872,7 @@
 	},
 /obj/item/reagent_containers/food/drinks/bottle/beer{
 	desc = "A station exclusive. Consumption may result in seizures, blindness, drunkenness, or even death.";
-	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko = 30);
+	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko=30);
 	name = "Kilo-Kocktail";
 	pixel_x = 5;
 	pixel_y = 5
@@ -84261,9 +84241,6 @@
 /obj/machinery/fax_machine,
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hop)
-"xFO" = (
-/turf/open/floor/engine,
-/area/maintenance/disposal/incinerator)
 "xFY" = (
 /obj/structure/table/reinforced,
 /obj/effect/turf_decal/delivery,
@@ -86087,11 +86064,11 @@
 /obj/structure/closet/crate/freezer{
 	name = "organ storage"
 	},
-/obj/item/organ/tail/cat,
-/obj/item/organ/tail/cat,
-/obj/item/organ/ears/cat,
-/obj/item/organ/ears/cat,
-/obj/item/organ/heart,
+/obj/item/organ/external/tail/cat,
+/obj/item/organ/external/tail/cat,
+/obj/item/organ/internal/ears/cat,
+/obj/item/organ/internal/ears/cat,
+/obj/item/organ/internal/heart,
 /obj/structure/sign/poster/contraband/random/directional/east,
 /turf/open/floor/iron/dark,
 /area/maintenance/fore)
@@ -99418,7 +99395,7 @@ aeu
 har
 pXo
 jpV
-nUs
+iAp
 iAp
 lda
 xXY
@@ -99687,7 +99664,7 @@ mdO
 ksq
 lIN
 anJ
-nVA
+uLm
 jpV
 kzH
 oOQ
@@ -112662,7 +112639,7 @@ eJR
 myt
 oDX
 wWg
-etb
+lmB
 hFd
 xzv
 aaa
@@ -113689,7 +113666,7 @@ acK
 xzv
 htY
 cpF
-xFO
+qga
 lmB
 qga
 iGH
@@ -114932,7 +114909,7 @@ imV
 rqY
 rni
 bZG
-cbq
+voX
 fwx
 ohN
 nRg
@@ -115189,7 +115166,7 @@ xbm
 mzi
 nSd
 oTs
-cbq
+voX
 fwx
 tUl
 gvk
@@ -115703,7 +115680,7 @@ prS
 prS
 nMp
 bZG
-cbq
+voX
 xeC
 jiV
 mTX

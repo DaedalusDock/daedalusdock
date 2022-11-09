@@ -73,7 +73,7 @@
 		hitsound = SFX_SWING_HIT
 
 	if(src == user.get_active_held_item()) //update inhands
-		user.update_inv_hands()
+		user.update_held_items()
 	update_action_buttons()
 
 /obj/item/chainsaw/doomslayer

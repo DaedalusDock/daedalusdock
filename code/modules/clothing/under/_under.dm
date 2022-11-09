@@ -68,7 +68,7 @@
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
-		M.update_inv_w_uniform()
+		M.update_worn_undersuit()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		has_sensor = BROKEN_SENSORS
 	else if(damaged_state == CLOTHING_PRISTINE && has_sensor == BROKEN_SENSORS)
@@ -107,14 +107,14 @@
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
-		H.update_inv_w_uniform()
+		H.update_worn_undersuit()
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
 		H.fan_hud_set_fandom()
 		if(attached_accessory.above_suit)
-			H.update_inv_wear_suit()
+			H.update_worn_oversuit()
 
 /obj/item/clothing/under/equipped(mob/user, slot)
 	..()
@@ -129,7 +129,7 @@
 			var/mob/living/carbon/human/H = user
 			H.fan_hud_set_fandom()
 			if(attached_accessory.above_suit)
-				H.update_inv_wear_suit()
+				H.update_worn_oversuit()
 	..()
 
 /mob/living/carbon/human/update_suit_sensors()
@@ -177,8 +177,8 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_inv_w_uniform()
-	holder.update_inv_wear_suit()
+	holder.update_worn_undersuit()
+	holder.update_worn_oversuit()
 	holder.fan_hud_set_fandom()
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
@@ -204,8 +204,8 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_inv_w_uniform()
-	holder.update_inv_wear_suit()
+	holder.update_worn_undersuit()
+	holder.update_worn_oversuit()
 	holder.fan_hud_set_fandom()
 
 
@@ -306,7 +306,7 @@
 		to_chat(usr, span_notice("You adjust the suit back to normal."))
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.update_inv_w_uniform()
+		H.update_worn_undersuit()
 		H.update_body()
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()

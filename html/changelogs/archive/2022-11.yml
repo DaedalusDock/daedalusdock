@@ -13,3 +13,6 @@
   - rscadd: Heterochromia quirk
   - code_imp: Rewrites a ton of back-end character code.
   - bugfix: Various jetpack bugs
+2022-11-09:
+  Kapu1178:
+  - rscadd: Using a multitool on a vent scrubber/pump toggles it's ability to sleep.

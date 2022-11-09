@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Meta, Kilo and Pubby received a new coat of paint.
+  - bugfix: Pubby medbay no longer has extra holopads.

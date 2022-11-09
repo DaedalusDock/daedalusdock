@@ -351,6 +351,8 @@ SUBSYSTEM_DEF(ticker)
 				player.new_player_panel()
 				continue
 			player.create_character(destination)
+		else if(player.ready == PLAYER_READY_TO_OBSERVE)
+			player.make_me_an_observer(TRUE)
 		else
 			player.new_player_panel()
 		CHECK_TICK

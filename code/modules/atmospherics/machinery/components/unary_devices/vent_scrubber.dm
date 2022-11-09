@@ -38,6 +38,9 @@
 	///Radio connection from the air alarm
 	var/radio_filter_in
 
+	///Whether or not this machine can fall asleep. Use a multitool to change.
+	var/can_hibernate = TRUE
+
 /obj/machinery/atmospherics/components/unary/vent_scrubber/New()
 	if(!id_tag)
 		id_tag = SSnetworks.assign_random_name()
@@ -223,7 +226,7 @@
 		for(var/i in 1 to 2)
 			if(scrub(us))
 				should_cooldown = FALSE
-	if(should_cooldown)
+	if(should_cooldown && can_hibernate)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
 	update_icon_nopipes()
 
@@ -376,6 +379,14 @@
 	pipe_vision_img.plane = ABOVE_HUD_PLANE
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, TRUE)
 
+/obj/machinery/atmospherics/components/unary/vent_scrubber/multitool_act(mob/living/user, obj/item/tool)
+	. = ..()
+	can_hibernate = !can_hibernate
+	to_chat(user, span_notice("\The [src] will [can_hibernate ? "now" : "no longer"] sleep to conserve energy."))
+	if(!can_hibernate)
+		COOLDOWN_RESET(src, hibernating)
+
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer2
 	piping_layer = 2

@@ -87,8 +87,10 @@ SUBSYSTEM_DEF(economy)
 
 /datum/controller/subsystem/economy/fire(resumed = 0)
 	var/delta_time = wait / (5 MINUTES)
+
+	//Split the station budget amongst the departments
 	departmental_payouts()
-	station_total = 0
+
 	///See if we even have enough money to pay these idiots
 	var/required_funds = 0
 	for(var/account in bank_accounts_by_id)

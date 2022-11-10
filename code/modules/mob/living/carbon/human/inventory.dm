@@ -41,7 +41,7 @@
 	return null
 
 /mob/living/carbon/human/get_all_worn_items()
-	. = get_head_slots() | get_body_slots()
+	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots()
 
 ///Bruteforce check for any type or subtype of an item.
 /mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
@@ -96,39 +96,36 @@
 
 	return ..()
 
-/mob/living/carbon/human/proc/get_body_slots()
+///Returns a list of worn "clothing" items.
+/mob/living/carbon/human/proc/return_worn_clothing()
 	return list(
-		back,
-		s_store,
-		handcuffed,
-		legcuffed,
 		wear_suit,
 		gloves,
 		shoes,
 		belt,
-		wear_id,
-		l_store,
-		r_store,
-		w_uniform
-		)
-
-/mob/living/carbon/human/proc/get_head_slots()
-	return list(
+		w_uniform,
 		head,
-		wear_mask,
-		wear_neck,
 		glasses,
+		wear_mask,
 		ears,
-		)
+	)
 
-/mob/living/carbon/human/proc/get_storage_slots()
+///Returns a list of items in slots like the ID slot, belt, backpack
+/mob/living/carbon/human/proc/return_extra_wearables()
 	return list(
-		back,
+		wear_id,
 		belt,
+		back
+	)
+
+///Returns a list of items in the "*_store" slots
+/mob/living/carbon/human/proc/return_pocket_slots()
+	return list(
 		l_store,
 		r_store,
-		s_store,
-		)
+		s_store
+	)
+
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 // Initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it

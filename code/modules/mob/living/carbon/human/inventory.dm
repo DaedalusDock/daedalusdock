@@ -40,8 +40,9 @@
 			return s_store
 	return null
 
+///Returns a list of every item slot contents on the user.
 /mob/living/carbon/human/get_all_worn_items()
-	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots()
+	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
 
 ///Bruteforce check for any type or subtype of an item.
 /mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
@@ -108,6 +109,7 @@
 		glasses,
 		wear_mask,
 		ears,
+		wear_neck
 	)
 
 ///Returns a list of items in slots like the ID slot, belt, backpack
@@ -124,6 +126,13 @@
 		l_store,
 		r_store,
 		s_store
+	)
+
+///Returns the cuff slot contents as a list
+/mob/living/carbon/human/proc/return_cuff_slots()
+	return list(
+		legcuffed,
+		handcuffed,
 	)
 
 

@@ -129,7 +129,7 @@
 		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from income.")
 	else
 		var/datum/bank_account/D = SSeconomy.station_master
-		if(D)
+		if(D && transfer_money(D, money_to_transfer))
 			bank_card_talk("Payday processed, account now holds [account_balance] cr.")
 			return TRUE
 	bank_card_talk("ERROR: Payday aborted, unable to contact departmental account.")

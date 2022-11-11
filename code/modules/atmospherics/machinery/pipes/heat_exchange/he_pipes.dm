@@ -30,6 +30,8 @@
 	//If a turf has no gas, it's safe to assume its a pure vacuum. So we should radiate heat instead of doing heat exchange.
 	if(!turf_air || turf_air.total_moles == 0)
 		radiate_heat_to_space(pipe_air, 2, 1) //the magic "2" is the surface area in square meters.
+		if(parent)
+			parent.update = TRUE
 	else
 		if(islava(local_turf))
 			environment_temperature = 5000 //Yuck

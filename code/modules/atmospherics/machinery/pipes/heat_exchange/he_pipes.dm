@@ -23,9 +23,12 @@
 	var/datum/gas_mixture/pipe_air = return_air()
 
 	var/turf/local_turf = loc
+	var/datum/gas_mixture/turf_air = loc.return_air()
 	if(!istype(local_turf))
-		CRASH("Processing HE pipe not in a")
-	if(isspaceturf(local_turf))
+		CRASH("Processing HE pipe not in a turf!")
+
+	//If a turf has no gas, it's safe to assume its a pure vacuum. So we should radiate heat instead of doing heat exchange.
+	if(!turf_air || turf_air.total_moles == 0)
 		radiate_heat_to_space(pipe_air, 2, 1) //the magic "2" is the surface area in square meters.
 	else
 		if(islava(local_turf))

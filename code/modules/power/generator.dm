@@ -28,6 +28,7 @@
 	SSairmachines.start_processing_machine(src)
 	update_appearance()
 	soundloop = new(src, TRUE)
+	soundloop.stop()
 
 /obj/machinery/power/generator/Destroy()
 	kill_circs()
@@ -188,6 +189,10 @@
 			else if(C.mode == CIRCULATOR_HOT && !hot_circ)
 				hot_circ = C
 				C.generator = src
+
+/obj/machinery/power/generator/attack_hand(mob/user, list/modifiers)
+    . = ..()
+    ui_interact(user)
 
 /obj/machinery/power/generator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()

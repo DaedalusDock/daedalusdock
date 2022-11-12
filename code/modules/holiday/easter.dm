@@ -18,7 +18,7 @@
 	max_occurrences = 10
 
 /datum/round_event/rabbitrelease/announce(fake)
-	priority_announce("Unidentified furry objects detected coming aboard [station_name()]. Beware of Adorable-ness.", "Fluffy Alert", ANNOUNCER_ALIENS)
+	priority_announce("Unidentified furry objects detected coming aboard [station_name()]. Beware of Adorable-ness.", FLAVOR_ANANKE_STATION, ANNOUNCER_ALIENS)
 
 
 /datum/round_event/rabbitrelease/start()

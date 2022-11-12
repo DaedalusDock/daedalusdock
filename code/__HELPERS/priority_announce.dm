@@ -1,3 +1,64 @@
+/**
+ * Create an announcement to send globally or to a specified list of players.
+ *
+ *
+ * args:
+ * * text (string) The body of the announcement
+ * * title (string) The title of the announcement. Default: "Staton Announcement"
+ * * sound_type (string OR sound) The sound to play alongside the message. If given a string like PA_COMMAND, it will pick the sound for you.
+ * * send_to_newscaster (boolean) Whether or not to post this to newscasters
+ * * do_not_modify (boolean) Whether or not station announcers can add to this message.
+ * * players (list or null) The players we're sending to. If null, send to all players.
+ */
+/proc/priority_announce(text = "", super_title = "Station Announcement", sub_title = "", sound_type = ANNOUNCER_DEFAULT, send_to_newscaster, do_not_modify = FALSE, list/players)
+	if(!text)
+		return
+
+	if(!players)
+		players = GLOB.player_list
+
+
+	var/announcement = "<h1 class='alert'>[html_encode(super_title)]</h1>"
+
+	if(sub_title)
+		announcement += "<h2 class='alert'>[html_encode(sub_title)]</h2><br>"
+
+	///If the announcer overrides alert messages, use that message.
+	if(SSstation.announcer.custom_alert_message && !do_not_modify)
+		announcement += SSstation.announcer.custom_alert_message
+	else
+		announcement += "<br>[span_alert("[html_encode(text)]")]<br>"
+	announcement += "<br>"
+
+	var/sound/sound2use = SSstation.announcer.event_sounds[sound_type]
+
+	//Find the sound requested if it isn't covered by announcer events already
+	if(isnull(sound_type))
+		switch(sound_type)
+			if(ANNOUNCER_DEFAULT)
+				sound2use = 'goon/sounds/announcement_1.ogg'
+			if(ANNOUNCER_CENTCOMM)
+				sound2use = SSstation.announcer.get_rand_report_sound()
+			if(ANNOUNCER_ATTENTION)
+				sound2use = SSstation.announcer.get_rand_alert_sound()
+			else
+				sound2use = 'goon/sounds/announcement_1.ogg'
+
+
+	sound2use = sound(sound2use)
+
+	for(var/mob/target in players)
+		if(!isnewplayer(target) && target.can_hear())
+			to_chat(target, announcement)
+			if(target.client.prefs.toggles & SOUND_ANNOUNCEMENTS)
+				SEND_SOUND(target, sound2use)
+
+	if(send_to_newscaster)
+		if(sub_title == "")
+			GLOB.news_network.submit_article(text, super_title, "Station Announcements", null)
+		else
+			GLOB.news_network.submit_article(sub_title + "<br><br>" + text, super_title, "Station Announcements", null)
+/*
 /proc/priority_announce(text, title = "Station Announcement", sound = 'goon/sounds/announcement_1.ogg', type, sender_override, has_important_message, players)
 	if(!text)
 		return
@@ -56,7 +117,7 @@
 			to_chat(target, announcement)
 			if(target.client.prefs.toggles & SOUND_ANNOUNCEMENTS)
 				SEND_SOUND(target, sound_to_play)
-
+*/
 /**
  * Summon the crew for an emergency meeting
  *
@@ -94,7 +155,12 @@
 		title = "Classified [command_name()] Update"
 
 	if(announce)
-		priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", SSstation.announcer.get_rand_report_sound(), has_important_message = TRUE)
+		priority_announce(
+			"A report has been downloaded and printed out at all communications consoles.",
+			sub_title = "Incoming Classified Message",
+			sound_type = ANNOUNCER_CENTCOMM,
+			do_not_modify = TRUE
+		)
 
 	var/datum/comm_message/M = new
 	M.title = title
@@ -102,7 +168,7 @@
 
 	SScommunications.send_message(M)
 
-/proc/minor_announce(message, title = "Attention:", alert, html_encode = TRUE, list/players)
+/proc/minor_announce(message, title = "Station Announcement", alert, html_encode = TRUE, list/players)
 	if(!message)
 		return
 

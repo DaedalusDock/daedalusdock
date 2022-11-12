@@ -204,7 +204,7 @@ GLOBAL_VAR(families_override_theme)
 
 /// Internal. Announces the presence of families to the entire station and sets sent_announcement to true to allow other checks to occur.
 /datum/gang_handler/proc/announce_gang_locations()
-	priority_announce(current_theme.description, current_theme.name, 'sound/voice/beepsky/radio.ogg')
+	priority_announce(current_theme.description, current_theme.name, sound_type = 'sound/voice/beepsky/radio.ogg')
 	sent_announcement = TRUE
 
 /// Internal. Checks if our wanted level has changed; calls update_wanted_level. Only updates wanted level post the initial announcement and until the cops show up. After that, it's locked.
@@ -281,7 +281,7 @@ GLOBAL_VAR(families_override_theme)
 		announcement_message += "  They will arrive at the [(end_time - start_time) / (1 MINUTES)] minute mark."
 	if(newlevel == 1) // specific exception to stop the announcement from triggering right after the families themselves are announced because aesthetics
 		return
-	priority_announce(announcement_message, "Station Spaceship Detection Systems")
+	priority_announce(announcement_message)
 
 /// Internal. Updates the end_time and sends out an announcement if the wanted level has decreased. Called by update_wanted_level().
 /datum/gang_handler/proc/on_lower_wanted_level(newlevel)
@@ -305,7 +305,7 @@ GLOBAL_VAR(families_override_theme)
 			announcement_message = "The convoy enroute to [station_name()] seems to no longer consist of national guard personnel."
 	if(!midround_ruleset)
 		announcement_message += "  They will arrive at the [(end_time - start_time) / (1 MINUTES)] minute mark."
-	priority_announce(announcement_message, "Station Spaceship Detection Systems")
+	priority_announce(announcement_message)
 
 /// Internal. Polls ghosts and sends in a team of space cops according to the wanted level, accompanied by an announcement. Will let the shuttle leave 10 minutes after sending. Freezes the wanted level.
 /datum/gang_handler/proc/send_in_the_fuzz()
@@ -368,7 +368,7 @@ GLOBAL_VAR(families_override_theme)
 				announcement_message = "Due to an insane level of civilian casualties aboard [station_name()], we have dispatched the National Guard to curb any and all gang activity on board the station. We have heavy cruisers watching the shuttle. Attempt to leave before we allow you to, and we will obliterate your station and your escape shuttle.\n\nYou brought this on yourselves by murdering so many civilians."
 				announcer = "Spinward Stellar Coalition National Guard"
 
-	priority_announce(announcement_message, announcer, 'sound/effects/families_police.ogg')
+	priority_announce(announcement_message, announcer, sound_type = 'sound/effects/families_police.ogg')
 	var/list/candidates = poll_ghost_candidates("Do you want to help clean up crime on this station?", "deathsquad")
 
 

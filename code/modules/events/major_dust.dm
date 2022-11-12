@@ -12,4 +12,4 @@
 		to external fittings and fixtures.",
 		"A neighbouring station is throwing rocks at you. (Perhaps they've \
 		grown tired of your messages.)")
-	priority_announce(pick(reason), "Collision Alert")
+	priority_announce(pick(reason), sub_title = "Collision Alert")

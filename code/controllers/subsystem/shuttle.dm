@@ -237,7 +237,7 @@ SUBSYSTEM_DEF(shuttle)
 
 /datum/controller/subsystem/shuttle/proc/block_recall(lockout_timer)
 	if(admin_emergency_no_recall)
-		priority_announce("Error!", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
+		priority_announce("Error!", sub_title = "Emergency Shuttle Uplink Alert", sound_type = 'sound/misc/announce_dig.ogg')
 		addtimer(CALLBACK(src, .proc/unblock_recall), lockout_timer)
 		return
 	emergency_no_recall = TRUE
@@ -245,7 +245,7 @@ SUBSYSTEM_DEF(shuttle)
 
 /datum/controller/subsystem/shuttle/proc/unblock_recall()
 	if(admin_emergency_no_recall)
-		priority_announce("Error!", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
+		priority_announce("Error!", sub_title = "Emergency Shuttle Uplink Alert", sound_type = 'sound/misc/announce_dig.ogg')
 		return
 	emergency_no_recall = FALSE
 
@@ -460,13 +460,19 @@ SUBSYSTEM_DEF(shuttle)
 		emergency.sound_played = FALSE
 		priority_announce("Hostile environment detected. \
 			Departure has been postponed indefinitely pending \
-			conflict resolution.", null, 'sound/misc/notice1.ogg', "Priority")
+			conflict resolution.",
+			"LRSV Icarus Announcement",
+			do_not_modify = TRUE
+		)
 	if(!emergency_no_escape && (emergency.mode == SHUTTLE_STRANDED))
 		emergency.mode = SHUTTLE_DOCKED
 		emergency.setTimer(emergency_dock_time)
 		priority_announce("Hostile environment resolved. \
 			You have 3 minutes to board the Emergency Shuttle.",
-			null, ANNOUNCER_SHUTTLEDOCK, "Priority")
+			"LRSV Icarus Announcement",
+			sound_type = ANNOUNCER_SHUTTLEDOCK,
+			do_not_modify = TRUE
+		)
 
 //try to move/request to dock_home if possible, otherwise dock_away. Mainly used for admin buttons
 /datum/controller/subsystem/shuttle/proc/toggleShuttle(shuttle_id, dock_home, dock_away, timed)

@@ -1027,7 +1027,8 @@
 	return
 
 /obj/docking_port/mobile/proc/post_emergency_launch()
-	SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
+	if(prob(10))
+		SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
 
 //Called when emergency shuttle docks at centcom
 /obj/docking_port/mobile/proc/on_emergency_dock()

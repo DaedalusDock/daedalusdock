@@ -1,6 +1,3 @@
-/// The default command report announcement sound.
-#define DEFAULT_ANNOUNCEMENT_SOUND "default_announcement"
-
 /// Preset central command names to chose from for centcom reports.
 #define CENTCOM_PRESET "Central Command"
 #define SYNDICATE_PRESET "The Syndicate"
@@ -47,7 +44,7 @@
 	/// Whether the report's contents are announced.
 	var/announce_contents = TRUE
 	/// The sound that's going to accompany our message.
-	var/played_sound = DEFAULT_ANNOUNCEMENT_SOUND
+	var/played_sound = ANNOUNCER_CENTCOMM
 	/// A static list of preset names that can be chosen.
 	var/list/preset_names = list(CENTCOM_PRESET, SYNDICATE_PRESET, WIZARD_PRESET, CUSTOM_PRESET)
 
@@ -82,7 +79,7 @@
 /datum/command_report_menu/ui_static_data(mob/user)
 	var/list/data = list()
 	data["command_name_presets"] = preset_names
-	data["announcer_sounds"] = list(DEFAULT_ANNOUNCEMENT_SOUND) + GLOB.announcer_keys
+	data["announcer_sounds"] = list(ANNOUNCER_DEFAULT) + GLOB.announcer_keys
 
 	return data
 
@@ -128,11 +125,11 @@
 
 	/// The sound we're going to play on report.
 	var/report_sound = played_sound
-	if(played_sound == DEFAULT_ANNOUNCEMENT_SOUND)
+	if(played_sound == ANNOUNCER_DEFAULT)
 		report_sound = SSstation.announcer.get_rand_report_sound()
 
 	if(announce_contents)
-		priority_announce(command_report_content, null, report_sound, has_important_message = TRUE)
+		priority_announce(command_report_content, PA_TITLE_COMMAND_REPORT, sound_type = report_sound, do_not_modify = TRUE)
 	print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents)
 
 	change_command_name(original_command_name)
@@ -141,7 +138,6 @@
 	message_admins("[key_name_admin(ui_user)] has created a command report, sent from \"[command_name]\" with the sound \"[played_sound]\"")
 
 
-#undef DEFAULT_ANNOUNCEMENT_SOUND
 
 #undef CENTCOM_PRESET
 #undef SYNDICATE_PRESET

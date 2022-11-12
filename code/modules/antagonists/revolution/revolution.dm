@@ -439,7 +439,7 @@
 				rev_head.current.med_hud_set_status()
 
 		priority_announce("It appears the mutiny has been quelled. Please return yourself and your incapacitated colleagues to work. \
-		We have remotely blacklisted the head revolutionaries in your medical records to prevent accidental revival.", sound_type = ANNOUNCER_CENTCOMM)
+		We have remotely blacklisted the head revolutionaries in your medical records to prevent accidental revival.", sound_type = ANNOUNCER_CENTCOM)
 	else
 		for(var/datum/mind/headrev_mind as anything in ex_headrevs)
 			if(charter_given)
@@ -488,7 +488,7 @@
 
 		priority_announce("A recent assessment of your station has marked your station as a severe risk area for high ranking Daedalus officials. \
 		For the safety of our staff, we have blacklisted your station for new employment of security and command. \
-		[pick(world.file2list("strings/anti_union_propaganda.txt"))]", "Daedalus Industries Transmission", sound_type = ANNOUNCER_CENTCOMM)
+		[pick(world.file2list("strings/anti_union_propaganda.txt"))]", "Daedalus Industries Transmission", sound_type = ANNOUNCER_CENTCOM)
 
 /// Mutates the ticker to report that the revs have won
 /datum/team/revolution/proc/round_result(finished)

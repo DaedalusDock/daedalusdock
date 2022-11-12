@@ -20,7 +20,7 @@
 	var/insurance_evaluation = 0
 
 /datum/round_event/shuttle_insurance/announce(fake)
-	priority_announce("Incoming long range communication. Secure channel opened at all communication consoles.", sound_type = ANNOUNCER_CENTCOMM)
+	priority_announce("Incoming long range communication. Secure channel opened at all communication consoles.", sound_type = ANNOUNCER_CENTCOM)
 
 /datum/round_event/shuttle_insurance/setup()
 	ship_name = pick(strings(PIRATE_NAMES_FILE, "rogue_names"))

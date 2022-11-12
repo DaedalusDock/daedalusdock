@@ -37,7 +37,7 @@
 		switch(sound_type)
 			if(ANNOUNCER_DEFAULT)
 				sound2use = 'goon/sounds/announcement_1.ogg'
-			if(ANNOUNCER_CENTCOMM)
+			if(ANNOUNCER_CENTCOM)
 				sound2use = SSstation.announcer.get_rand_report_sound()
 			if(ANNOUNCER_ATTENTION)
 				sound2use = SSstation.announcer.get_rand_alert_sound()
@@ -99,7 +99,7 @@
 		priority_announce(
 			"A report has been downloaded and printed out at all communications consoles.",
 			sub_title = "Incoming Classified Message",
-			sound_type = ANNOUNCER_CENTCOMM,
+			sound_type = ANNOUNCER_CENTCOM,
 			do_not_modify = TRUE
 		)
 

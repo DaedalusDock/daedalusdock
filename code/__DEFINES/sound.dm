@@ -115,7 +115,7 @@
 
 //Special keys passed to priority_announce()
 #define ANNOUNCER_DEFAULT "announce_default"
-#define ANNOUNCER_CENTCOMM "announce_centcom"
+#define ANNOUNCER_CENTCOM "announce_centcom"
 #define ANNOUNCER_ATTENTION "announce_attention"
 
 /// Global list of all of our announcer keys.

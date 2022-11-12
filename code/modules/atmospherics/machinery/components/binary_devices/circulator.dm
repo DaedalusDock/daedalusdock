@@ -6,6 +6,7 @@
 /obj/machinery/atmospherics/components/binary/circulator
 	name = "TEG circulator"
 	desc = "A gas circulator pump and heat exchanger for a thermoelectric generator."
+	icon = 'icons/obj/atmospherics/components/teg.dmi'
 	icon_state = "circ-off-0"
 
 	var/active = FALSE
@@ -15,8 +16,6 @@
 
 	density = TRUE
 	move_resist = MOVE_RESIST_DEFAULT
-
-	circuit = /obj/item/circuitboard/machine/circulator
 
 	var/flipped = 0
 	var/mode = CIRCULATOR_HOT
@@ -30,6 +29,10 @@
 //default cold circ for mappers
 /obj/machinery/atmospherics/components/binary/circulator/cold
 	mode = CIRCULATOR_COLD
+
+//for cargo crates
+/obj/machinery/atmospherics/components/binary/circulator/unwrenched
+	anchored = FALSE
 
 /obj/machinery/atmospherics/components/binary/circulator/Destroy()
 	if(generator)
@@ -182,14 +185,6 @@
 		to_chat(user, span_notice("The [src] is fully repaired."))
 	return TRUE
 
-/obj/machinery/atmospherics/components/binary/circulator/crowbar_act(mob/user, obj/item/I)
-	default_deconstruction_crowbar(I)
-	return TRUE
-
-/obj/machinery/atmospherics/components/binary/circulator/on_deconstruction()
-	if(generator)
-		disconnectFromGenerator()
-
 /obj/machinery/atmospherics/components/binary/circulator/proc/disconnectFromGenerator()
 	if(mode)
 		generator.cold_circ = null
@@ -219,8 +214,9 @@
 	to_chat(usr, span_notice("You flip [src]."))
 	update_appearance()
 
-/obj/machinery/power/generator/examine(mob/user)
+/obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
 	. = ..()
 	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
-	. += span_notice(" -Use a multitool with left-click to refresh circulator links.")
+	. += span_notice(" -Use a multitool to toggle hot or cold mode.")
+	. += span_notice("Its outlet port is to the [dir2text(flipped?(turn(dir, 270)):(turn(dir, 90)))].")

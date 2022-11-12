@@ -1,11 +1,12 @@
 /obj/machinery/power/generator
 	name = "thermoelectric generator"
 	desc = "It's a high efficiency thermoelectric generator."
+	icon = 'icons/obj/atmospherics/components/teg.dmi'
 	icon_state = "teg"
 	density = TRUE
 	use_power = NO_POWER_USE
-
-	circuit = /obj/item/circuitboard/machine/generator
+	obj_flags = USES_TGUI
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
 
 	var/obj/machinery/atmospherics/components/binary/circulator/cold_circ
 	var/obj/machinery/atmospherics/components/binary/circulator/hot_circ
@@ -14,6 +15,11 @@
 	var/lastgenlev = -1
 	var/lastcirc = "00"
 
+	var/datum/looping_sound/teg/soundloop
+
+//for cargo crates
+/obj/machinery/power/generator/unwrenched
+	anchored = FALSE
 
 /obj/machinery/power/generator/Initialize(mapload)
 	. = ..()
@@ -21,10 +27,12 @@
 	connect_to_network()
 	SSairmachines.start_processing_machine(src)
 	update_appearance()
+	soundloop = new(src, TRUE)
 
 /obj/machinery/power/generator/Destroy()
 	kill_circs()
 	SSairmachines.stop_processing_machine(src)
+	QDEL_NULL(soundloop)
 	return ..()
 
 /obj/machinery/power/generator/update_overlays()
@@ -69,6 +77,10 @@
 				hot_air.temperature = hot_air.temperature - energy_transfer/hot_air_heat_capacity
 				cold_air.temperature = cold_air.temperature + heat/cold_air_heat_capacity
 
+				soundloop.start()
+			else
+				soundloop.stop()
+
 				//add_avail(lastgen) This is done in process now
 		// update icon overlays only if displayed level has changed
 
@@ -99,7 +111,6 @@
 
 //TGUI interaction
 /obj/machinery/power/generator/ui_interact(mob/user, datum/tgui/ui)
-	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Teg")
@@ -133,59 +144,6 @@
 		return
 	if(action == "refresh_parts")
 		link_parts(usr)
-
-/*
-/obj/machinery/power/generator/proc/get_menu(include_link = TRUE)
-	var/t = ""
-	if(!powernet)
-		t += "<span class='bad'>Unable to connect to the power network!</span>"
-	else if(cold_circ && hot_circ)
-		var/datum/gas_mixture/cold_circ_air1 = cold_circ.airs[1]
-		var/datum/gas_mixture/cold_circ_air2 = cold_circ.airs[2]
-		var/datum/gas_mixture/hot_circ_air1 = hot_circ.airs[1]
-		var/datum/gas_mixture/hot_circ_air2 = hot_circ.airs[2]
-
-		t += "<div class='statusDisplay'>"
-
-		t += "Output: [display_power(lastgenlev)]"
-
-		t += "<BR>"
-
-		t += "<B><font color='blue'>Cold loop</font></B><BR>"
-		t += "Temperature Inlet: [round(cold_circ_air2.temperature, 0.1)] K / Outlet: [round(cold_circ_air1.temperature, 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(cold_circ_air2.returnPressure(), 0.1)] kPa /  Outlet: [round(cold_circ_air1.returnPressure(), 0.1)] kPa<BR>"
-
-		t += "<B><font color='red'>Hot loop</font></B><BR>"
-		t += "Temperature Inlet: [round(hot_circ_air2.temperature, 0.1)] K / Outlet: [round(hot_circ_air1.temperature, 0.1)] K<BR>"
-		t += "Pressure Inlet: [round(hot_circ_air2.returnPressure(), 0.1)] kPa / Outlet: [round(hot_circ_air1.returnPressure(), 0.1)] kPa<BR>"
-
-		t += "</div>"
-	else if(!hot_circ && cold_circ)
-		t += "<span class='bad'>Unable to locate hot circulator!</span>"
-	else if(hot_circ && !cold_circ)
-		t += "<span class='bad'>Unable to locate cold circulator!</span>"
-	else
-		t += "<span class='bad'>Unable to locate any parts!</span>"
-	if(include_link)
-		t += "<BR><A href='?src=[REF(src)];close=1'>Close</A>"
-
-	return t
-
-/obj/machinery/power/generator/ui_interact(mob/user)
-	. = ..()
-	var/datum/browser/popup = new(user, "teg", "Thermo-Electric Generator", 460, 300)
-	popup.set_content(get_menu())
-	popup.open()
-
-/obj/machinery/power/generator/Topic(href, href_list)
-	if(..())
-		return
-	if( href_list["close"] )
-		usr << browse(null, "window=teg")
-		usr.unset_machine()
-		return FALSE
-	return TRUE
-*/
 
 /obj/machinery/power/generator/proc/link_parts(mob/user)
 	if(!anchored)
@@ -270,13 +228,6 @@
 	if(atom_integrity == max_integrity)
 		to_chat(user, span_notice("The [src] is fully repaired."))
 	return TRUE
-
-/obj/machinery/power/generator/crowbar_act(mob/user, obj/item/I)
-	default_deconstruction_crowbar(I)
-	return TRUE
-
-/obj/machinery/power/generator/on_deconstruction()
-	kill_circs()
 
 /obj/machinery/power/generator/proc/kill_circs()
 	if(hot_circ)

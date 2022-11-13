@@ -18,6 +18,8 @@
 
 ///The amount of money taken from station master and distributed to all departments every 5 minutes.
 #define ECON_STATION_PAYOUT 6000
+///The amount of money in a department account where station master will stop filling it up.
+#define ECON_STATION_PAYOUT_MAX 5000
 
 ///The minimum amount of money in the station master account required for a departmental payout
 #define ECON_STATION_PAYOUT_REQUIREMENT 600

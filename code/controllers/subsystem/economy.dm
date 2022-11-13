@@ -86,6 +86,10 @@ SUBSYSTEM_DEF(economy)
 	dep_cards = SSeconomy.dep_cards
 
 /datum/controller/subsystem/economy/fire(resumed = 0)
+	///The first fire at roundstart is discarded.
+	if(!times_fired)
+		return
+
 	var/delta_time = wait / (5 MINUTES)
 
 	//Split the station budget amongst the departments
@@ -123,13 +127,21 @@ SUBSYSTEM_DEF(economy)
 	if(payout_pool < ECON_STATION_PAYOUT_REQUIREMENT)
 		return
 
-	var/loops = 0
+	var/split = round(payout_pool / (length(department_accounts_by_id) - 1))
+
 	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
 		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
-		var/split = round(payout_pool/(ECON_NUM_DEPARTMENT_ACCOUNTS - loops))
-		payout_pool -= split
-		dept_account.transfer_money(station_master, split)
-		loops++
+		if(dept_account.account_balance >= ECON_STATION_PAYOUT_MAX)
+			continue
+
+		var/real_split = min(ECON_STATION_PAYOUT_MAX - dept_account.account_balance, split)
+
+		if(!dept_account.transfer_money(station_master, real_split))
+			dept_account.transfer_money(station_master, payout_pool)
+			break
+		else
+			payout_pool -= real_split
+
 
 /**
  * Updates the prices of all station vendors.

@@ -142,9 +142,7 @@
 "gD" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
-/area/ai_monitored/turret_protected/aisat{
-	name = "\improper AI Core"
-	})
+/area/ai_monitored/turret_protected/ai/atlas)
 "gT" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
@@ -570,9 +568,7 @@
 /area/science/xenobiology)
 "sA" = (
 /turf/closed/wall,
-/area/ai_monitored/aisat/exterior{
-	name = "\improper AI Core Exterior"
-	})
+/area/ai_monitored/turret_protected/ai/atlas/exterior)
 "sJ" = (
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron/white,
@@ -876,9 +872,7 @@
 /area/medical/cryo)
 "CM" = (
 /turf/open/floor/iron/white,
-/area/medical/medbay{
-	name = "Medical Bay"
-	})
+/area/medical/medbay/atlas)
 "Df" = (
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/eva/upper)
@@ -1035,9 +1029,7 @@
 /area/cargo/warehouse)
 "Ih" = (
 /turf/closed/wall/r_wall,
-/area/ai_monitored/turret_protected/aisat{
-	name = "\improper AI Core"
-	})
+/area/ai_monitored/turret_protected/ai/atlas)
 "Ii" = (
 /turf/open/space/basic,
 /area/space)
@@ -1155,9 +1147,6 @@
 /obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron,
 /area/security/prison)
-"Lo" = (
-/turf/open/floor/iron/smooth,
-/area/ai_monitored/turret_protected/aisat/hallway)
 "Lq" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -1169,9 +1158,7 @@
 /area/hallway/primary/central/aft)
 "LM" = (
 /turf/open/floor/iron/smooth,
-/area/ai_monitored/turret_protected/aisat{
-	name = "\improper AI Core"
-	})
+/area/ai_monitored/turret_protected/ai/atlas)
 "LP" = (
 /turf/closed/wall/r_wall,
 /area/security/brig)
@@ -1180,9 +1167,7 @@
 /area/commons/fitness/locker_room)
 "Mt" = (
 /turf/closed/wall,
-/area/medical/medbay{
-	name = "Medical Bay"
-	})
+/area/medical/medbay/atlas)
 "Mw" = (
 /turf/closed/wall,
 /area/science/research)
@@ -1224,9 +1209,7 @@
 /area/hallway/secondary/entry)
 "Nw" = (
 /turf/open/floor/iron/smooth,
-/area/ai_monitored/turret_protected/aisat/hallway{
-	name = "\improper Telecommunications Hallway"
-	})
+/area/ai_monitored/turret_protected/ai/atlas/hallway)
 "Nx" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
@@ -1394,15 +1377,11 @@
 /area/security/brig)
 "TM" = (
 /turf/closed/wall/r_wall,
-/area/ai_monitored/aisat/exterior{
-	name = "\improper AI Core Exterior"
-	})
+/area/ai_monitored/turret_protected/ai/atlas/exterior)
 "TP" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
-/area/medical/medbay{
-	name = "Medical Bay"
-	})
+/area/medical/medbay/atlas)
 "Ua" = (
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/service/kitchen/coldroom)
@@ -1411,7 +1390,7 @@
 /area/science/mixing/chamber)
 "Uf" = (
 /turf/open/floor/plating,
-/area/ai_monitored/turret_protected/aisat/maint)
+/area/ai_monitored/turret_protected/ai/atlas/maint)
 "Ul" = (
 /turf/closed/wall/r_wall,
 /area/command/heads_quarters/captain/private)
@@ -1468,7 +1447,7 @@
 /area/medical/chemistry)
 "Xf" = (
 /turf/open/floor/plating,
-/area/ai_monitored/turret_protected/aisat/hallway)
+/area/ai_monitored/turret_protected/ai/atlas/hallway)
 "Xg" = (
 /turf/open/floor/iron/dark,
 /area/hallway/primary/starboard)
@@ -1585,9 +1564,7 @@
 /area/science/lower)
 "YY" = (
 /turf/open/floor/plating,
-/area/ai_monitored/turret_protected/aisat{
-	name = "\improper AI Core"
-	})
+/area/ai_monitored/turret_protected/ai/atlas)
 "Zb" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
@@ -1614,9 +1591,7 @@
 "ZU" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
-/area/ai_monitored/aisat/exterior{
-	name = "\improper AI Core Exterior"
-	})
+/area/ai_monitored/turret_protected/ai/atlas/exterior)
 "ZW" = (
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 4
@@ -28993,7 +28968,7 @@ fu
 ZU
 Ii
 TM
-Lo
+Nw
 TM
 Ii
 ZU

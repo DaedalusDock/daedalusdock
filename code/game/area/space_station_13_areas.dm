@@ -126,6 +126,25 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "ai_chamber"
 	ai_will_not_hear_this = null
 
+///AI is on station in Atlas, so it needs special names.
+/area/ai_monitored/turret_protected/ai/atlas
+	name = "\improper AI Core"
+	icon_state = "ai_chamber"
+
+/area/ai_monitored/turret_protected/ai/atlas/exterior
+	name = "\improper AI Core Exterior"
+	icon_state = "ai"
+
+/area/ai_monitored/turret_protected/ai/atlas/hallway
+	name = "\improper AI Entryway"
+	icon_state = "ai"
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+
+/area/ai_monitored/turret_protected/ai/atlas/maint
+	name = "\improper AI Maintenance"
+	icon_state = "ai_maint"
+	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
+
 /area/ai_monitored/turret_protected/aisat
 	name = "\improper AI Satellite"
 	icon_state = "ai"
@@ -1114,6 +1133,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/medbay/aft
 	name = "Medbay Aft"
 	icon_state = "med_aft"
+
+/area/medical/medbay/atlas
+	name = "Medical Bay"
 
 /area/medical/storage
 	name = "Medbay Storage"

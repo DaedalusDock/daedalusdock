@@ -12,10 +12,6 @@
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/engineering/main)
-"ay" = (
-/obj/effect/spawner/structure/window,
-/turf/open/floor/plating,
-/area/commons/dorms/cryo)
 "aA" = (
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
@@ -45,9 +41,6 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/engine_smes)
-"bU" = (
-/turf/open/floor/plating,
-/area/commons/dorms/cryo)
 "cf" = (
 /turf/open/floor/plating,
 /area/medical/storage)
@@ -66,6 +59,9 @@
 "dB" = (
 /turf/closed/wall,
 /area/service/kitchen)
+"dK" = (
+/turf/closed/wall/r_wall,
+/area/commons/dorms/cryo)
 "dY" = (
 /turf/open/floor/iron,
 /area/service/hydroponics)
@@ -228,6 +224,10 @@
 "jo" = (
 /turf/open/floor/iron/white,
 /area/medical/paramedic)
+"js" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/commons/dorms/cryo)
 "jt" = (
 /turf/open/floor/iron/showroomfloor,
 /area/commons/dorms/laundry)
@@ -672,10 +672,6 @@
 "vT" = (
 /turf/open/floor/iron,
 /area/commons/dorms/cryo)
-"vU" = (
-/obj/effect/spawner/structure/window/reinforced,
-/turf/open/floor/plating,
-/area/commons/dorms/cryo)
 "wh" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -903,6 +899,10 @@
 /area/engineering/supermatter/room)
 "DA" = (
 /turf/closed/wall,
+/area/commons/storage/tools)
+"DN" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
 /area/commons/dorms/cryo)
 "DO" = (
 /turf/closed/wall,
@@ -1243,6 +1243,9 @@
 "On" = (
 /turf/open/floor/iron/white,
 /area/science/mixing)
+"Op" = (
+/turf/open/floor/plating,
+/area/commons/dorms/cryo)
 "Oz" = (
 /turf/closed/wall,
 /area/commons/fitness/locker_room)
@@ -1276,9 +1279,6 @@
 "PX" = (
 /turf/closed/wall/r_wall,
 /area/science/research)
-"Qc" = (
-/turf/closed/wall,
-/area/commons/storage/tools)
 "Qo" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -1340,6 +1340,9 @@
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /turf/open/floor/iron/white,
 /area/hallway/secondary/exit/departure_lounge)
+"Sa" = (
+/turf/closed/wall,
+/area/commons/dorms/cryo)
 "Se" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
@@ -1385,9 +1388,6 @@
 	},
 /turf/open/space/basic,
 /area/maintenance/port/central)
-"TG" = (
-/turf/closed/wall/r_wall,
-/area/commons/dorms/cryo)
 "TI" = (
 /obj/effect/turf_decal/tile/red,
 /turf/open/floor/iron,
@@ -29507,7 +29507,7 @@ Xg
 Xg
 Xg
 Sx
-Yd
+aA
 aA
 DO
 mz
@@ -29764,7 +29764,7 @@ Xg
 Xg
 Xg
 SZ
-Yd
+aA
 aA
 mz
 aJ
@@ -30021,7 +30021,7 @@ Xg
 Xg
 Xg
 uz
-Yd
+aA
 aA
 mz
 aJ
@@ -32054,12 +32054,12 @@ rI
 tc
 tc
 Ng
-Qc
-Qc
-Qc
-Qc
-Qc
-Qc
+DA
+DA
+DA
+DA
+DA
+DA
 Yd
 Yd
 TM
@@ -32573,7 +32573,7 @@ uG
 uG
 uG
 uG
-Qc
+DA
 ES
 ES
 TM
@@ -33595,13 +33595,13 @@ Ii
 Ii
 Ii
 Ii
-TG
-TG
-DA
-DA
-DA
-DA
-DA
+dK
+dK
+Sa
+Sa
+Sa
+Sa
+Sa
 qu
 qu
 qu
@@ -33852,13 +33852,13 @@ Ii
 Ii
 Ii
 Ii
-vU
+js
 vT
 vT
 vT
 vT
 vT
-ay
+DN
 qu
 qu
 qu
@@ -34109,13 +34109,13 @@ Ii
 Ii
 Ii
 Ii
-vU
+js
 vT
 vT
 vT
 vT
 vT
-bU
+Op
 qu
 qu
 qu
@@ -34366,13 +34366,13 @@ Ii
 Ii
 Ii
 Ii
-vU
+js
 vT
 vT
 vT
 vT
 vT
-ay
+DN
 qu
 qu
 qu

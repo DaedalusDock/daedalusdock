@@ -1,12 +1,10 @@
-//Convenience function for atoms to update turfs they occupy
-/atom/movable/proc/update_nearby_tiles()
-	for(var/turf/turf in locs)
-		if(!turf.simulated)
-			continue
-		SSzas.mark_for_update(turf)
-
-	return 1
-
+///Tells ZAS to mark the tile the atom is in to update.
+/atom/proc/zas_update_loc()
+	var/turf/T = get_turf(src)
+	if(T.simulated)
+		SSzas.mark_for_update(get_turf(src))
+		return TRUE
+	return FALSE
 
 //Returns:
 // 0 / AIR_ALLOWED - Not blocked. Air and zones can mingle with this turf as they please.

@@ -61,7 +61,7 @@
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()
@@ -75,7 +75,7 @@
 	electronics = null
 	/*var/turf/floor = get_turf(src)
 	floor.air_update_turf(TRUE, FALSE)*/
-	update_nearby_tiles()
+	zas_update_loc()
 	return ..()
 
 /obj/machinery/door/window/update_icon_state()

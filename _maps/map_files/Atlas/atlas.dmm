@@ -12,6 +12,10 @@
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/engineering/main)
+"ay" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/commons/dorms/cryo)
 "aA" = (
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
@@ -41,6 +45,9 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/engine_smes)
+"bU" = (
+/turf/open/floor/plating,
+/area/commons/dorms/cryo)
 "cf" = (
 /turf/open/floor/plating,
 /area/medical/storage)
@@ -306,7 +313,7 @@
 "lK" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
-/area/space)
+/area/commons/storage/tools)
 "lT" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
@@ -361,7 +368,7 @@
 "nY" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
-/area/space)
+/area/commons/storage/tools)
 "oc" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -631,7 +638,7 @@
 /area/engineering/atmos/storage)
 "uG" = (
 /turf/open/floor/iron/dark,
-/area/space)
+/area/commons/storage/tools)
 "uP" = (
 /turf/closed/wall,
 /area/medical/cryo)
@@ -664,7 +671,11 @@
 /area/medical/virology)
 "vT" = (
 /turf/open/floor/iron,
-/area/space)
+/area/commons/dorms/cryo)
+"vU" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/commons/dorms/cryo)
 "wh" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -892,7 +903,7 @@
 /area/engineering/supermatter/room)
 "DA" = (
 /turf/closed/wall,
-/area/space)
+/area/commons/dorms/cryo)
 "DO" = (
 /turf/closed/wall,
 /area/science/server)
@@ -942,7 +953,7 @@
 /area/engineering/atmos/storage)
 "Fl" = (
 /turf/open/floor/plating,
-/area/space)
+/area/commons/storage/tools)
 "Fq" = (
 /obj/effect/turf_decal/tile/green/anticorner/contrasted{
 	dir = 1
@@ -1265,6 +1276,9 @@
 "PX" = (
 /turf/closed/wall/r_wall,
 /area/science/research)
+"Qc" = (
+/turf/closed/wall,
+/area/commons/storage/tools)
 "Qo" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -1371,6 +1385,9 @@
 	},
 /turf/open/space/basic,
 /area/maintenance/port/central)
+"TG" = (
+/turf/closed/wall/r_wall,
+/area/commons/dorms/cryo)
 "TI" = (
 /obj/effect/turf_decal/tile/red,
 /turf/open/floor/iron,
@@ -32037,12 +32054,12 @@ rI
 tc
 tc
 Ng
-DA
-DA
-DA
-DA
-DA
-DA
+Qc
+Qc
+Qc
+Qc
+Qc
+Qc
 Yd
 Yd
 TM
@@ -32556,7 +32573,7 @@ uG
 uG
 uG
 uG
-DA
+Qc
 ES
 ES
 TM
@@ -33578,8 +33595,8 @@ Ii
 Ii
 Ii
 Ii
-qn
-qn
+TG
+TG
 DA
 DA
 DA
@@ -33835,13 +33852,13 @@ Ii
 Ii
 Ii
 Ii
-nY
+vU
 vT
 vT
 vT
 vT
 vT
-lK
+ay
 qu
 qu
 qu
@@ -34092,13 +34109,13 @@ Ii
 Ii
 Ii
 Ii
-nY
+vU
 vT
 vT
 vT
 vT
 vT
-Fl
+bU
 qu
 qu
 qu
@@ -34349,13 +34366,13 @@ Ii
 Ii
 Ii
 Ii
-nY
+vU
 vT
 vT
 vT
 vT
 vT
-lK
+ay
 qu
 qu
 qu

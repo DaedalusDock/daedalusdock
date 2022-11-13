@@ -191,8 +191,8 @@
 				C.generator = src
 
 /obj/machinery/power/generator/attack_hand(mob/user, list/modifiers)
-    . = ..()
-    ui_interact(user)
+	. = ..()
+	ui_interact(user)
 
 /obj/machinery/power/generator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()

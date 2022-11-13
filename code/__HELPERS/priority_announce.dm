@@ -33,7 +33,7 @@
 	var/sound/sound2use = SSstation.announcer.event_sounds[sound_type]
 
 	//Find the sound requested if it isn't covered by announcer events already
-	if(isnull(sound_type))
+	if(isnull(sound2use))
 		switch(sound_type)
 			if(ANNOUNCER_DEFAULT)
 				sound2use = 'goon/sounds/announcement_1.ogg'

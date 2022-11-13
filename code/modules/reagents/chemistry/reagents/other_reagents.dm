@@ -2905,3 +2905,18 @@
 		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
 		if(myseed)
 			myseed.adjust_potency(round(chems.get_reagent_amount(src.type) * 0.5))
+
+/datum/reagent/slug_slime
+	name = "Antibiotic Slime"
+	description = "Cleansing slime extracted from a slug. Great for cleaning surfaces, or sterilization before surgery."
+	reagent_state = LIQUID
+	color = "#c4dfa1"
+	taste_description = "sticky mouthwash"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/slug_slime/expose_turf(turf/open/exposed_turf, reac_volume)
+	. = ..()
+	if(!istype(exposed_turf))
+		return
+	if(reac_volume >= 1)
+		exposed_turf.MakeSlippery(TURF_WET_WATER, 15 SECONDS, min(reac_volume * 1 SECONDS, 40 SECONDS))

@@ -71,14 +71,14 @@
 
 /obj/structure/inflatable/New(location)
 	..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
-	update_nearby_tiles()
+	zas_update_loc()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -248,7 +248,7 @@
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/inflatable/door/proc/Close()
 	// If the inflatable is blocked, don't close
@@ -267,7 +267,7 @@
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/inflatable/door/update_icon()
 	. = ..()

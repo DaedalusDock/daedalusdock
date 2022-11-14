@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - qol: Lighting has been dimmed
-  - code_imp: The wall paint mapping helpers now work for airlocks.
-  - bugfix: Masks no longer poke through hats/helmets they shouldn't

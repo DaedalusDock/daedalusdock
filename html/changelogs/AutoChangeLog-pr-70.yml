@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Heat exchanging pipes are more consistent. Affecting primarily cold loops
-      in space.
-  - bugfix: Windows will now trigger ZAS updates when anchored or unanchored.

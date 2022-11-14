@@ -16,3 +16,15 @@
 2022-11-09:
   Kapu1178:
   - rscadd: Using a multitool on a vent scrubber/pump toggles it's ability to sleep.
+2022-11-10:
+  Kapu1178:
+  - rscadd: Meta, Kilo and Pubby received a new coat of paint.
+  - bugfix: Pubby medbay no longer has extra holopads.
+2022-11-14:
+  Kapu1178:
+  - qol: Lighting has been dimmed
+  - code_imp: The wall paint mapping helpers now work for airlocks.
+  - bugfix: Masks no longer poke through hats/helmets they shouldn't
+  - bugfix: Heat exchanging pipes are more consistent. Affecting primarily cold loops
+      in space.
+  - bugfix: Windows will now trigger ZAS updates when anchored or unanchored.

@@ -124,7 +124,7 @@
 		//Restore air flow if we were blocking it (movables with zas_canpass() will need to do this manually if necessary)
 		if(((can_atmos_pass == CANPASS_DENSITY && density) || can_atmos_pass == CANPASS_NEVER) && isturf(loc))
 			can_atmos_pass = CANPASS_ALWAYS
-			update_nearby_tiles()
+			zas_update_loc()
 
 		loc.handle_atom_del(src)
 

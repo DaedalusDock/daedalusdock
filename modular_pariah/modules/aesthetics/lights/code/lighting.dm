@@ -1,6 +1,4 @@
 /obj/machinery/light
-	icon = 'modular_pariah/modules/aesthetics/lights/icons/lighting.dmi'
-	overlay_icon = 'modular_pariah/modules/aesthetics/lights/icons/lighting_overlay.dmi'
 	var/maploaded = FALSE //So we don't have a lot of stress on startup.
 	var/turning_on = FALSE //More stress stuff.
 	var/constant_flickering = FALSE // Are we always flickering?

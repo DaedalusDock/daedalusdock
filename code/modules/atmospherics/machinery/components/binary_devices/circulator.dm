@@ -24,7 +24,7 @@
 /obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
 	if(!anchored)
 		return FALSE
-	. = ..()
+	return ..()
 
 //default cold circ for mappers
 /obj/machinery/atmospherics/components/binary/circulator/cold
@@ -106,7 +106,7 @@
 	I.play_tool_sound(src)
 	if(generator)
 		disconnectFromGenerator()
-	to_chat(user, span_notice("You [anchored?"secure":"unsecure"] [src]."))
+	to_chat(user, span_notice("You [anchored ? "secure" : "unsecure"] [src]."))
 	reset_connections()
 	return TRUE
 
@@ -177,10 +177,10 @@
 	if(atom_integrity >= max_integrity)
 		to_chat(user, span_notice("The [src] does not need any repairs."))
 		return TRUE
-	if(!I.use_tool(src, user, 0, volume=50, amount=1))
+	if(!I.use_tool(src, user, 0, volume = 50, amount = 1))
 		return TRUE
 	user.visible_message(span_notice("[user] repairs some damage to [src]."), span_notice("You repair some damage to [src]."))
-	atom_integrity += min(10, max_integrity-atom_integrity)
+	atom_integrity += min(10, max_integrity - atom_integrity)
 	if(atom_integrity == max_integrity)
 		to_chat(user, span_notice("The [src] is fully repaired."))
 	return TRUE
@@ -219,4 +219,4 @@
 	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
 	. += span_notice(" -Use a multitool to toggle hot or cold mode.")
-	. += span_notice("Its outlet port is to the [dir2text(flipped?(turn(dir, 270)):(turn(dir, 90)))].")
+	. += span_notice("Its outlet port is to the [dir2text(flipped ? (turn(dir, 270)) : (turn(dir, 90)))].")

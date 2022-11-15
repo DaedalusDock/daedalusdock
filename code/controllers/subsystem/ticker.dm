@@ -98,9 +98,10 @@ SUBSYSTEM_DEF(ticker)
 
 	//Try to set a song json
 	var/use_rare_music = prob(10)
-	if(use_rare_music)
+	if(use_rare_music && length(rare_music_data))
 		login_music = pick(rare_music_data)
-	login_music ||= pick(title_music_data)
+	if(!login_music && length(title_music_data))
+		login_music = pick(title_music_data)
 
 	//If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
 	if(!login_music)

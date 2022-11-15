@@ -24,7 +24,7 @@
 		material_info += "</ul>"
 
 		var/datum/codex_entry/entry = new(
-			_display_name = "[iter_gas.name]",
+			_display_name = "[iter_gas.name] (gas)",
 			_mechanics_text = jointext(material_info, null)
 		)
 

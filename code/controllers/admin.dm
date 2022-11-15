@@ -70,22 +70,43 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 
 	if(!holder)
 		return
-	
+
 	var/list/controllers = list()
 	var/list/controller_choices = list()
-	
+
 	for (var/datum/controller/controller in world)
 		if (istype(controller, /datum/controller/subsystem))
 			continue
 		controllers["[controller] (controller.type)"] = controller //we use an associated list to ensure clients can't hold references to controllers
 		controller_choices += "[controller] (controller.type)"
-	
+
 	var/datum/controller/controller_string = input("Select controller to debug", "Debug Controller") as null|anything in controller_choices
 	var/datum/controller/controller = controllers[controller_string]
-	
+
 	if (!istype(controller))
 		return
 	debug_variables(controller)
-	
+
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Restart Failsafe Controller")
 	message_admins("Admin [key_name_admin(usr)] is debugging the [controller] controller.")
+
+/client/proc/set_title_music()
+	set category = "Admin.Fun"
+	set name = "Change Title Music"
+	set desc = "Set the login music"
+
+	if(!check_rights(R_ADMIN) || !SSticker.initialized)
+		return
+
+	var/list/music_jsons = SSticker.get_login_music_jsons()
+	var/list/name2json = list()
+	for(var/json in music_jsons)
+		name2json[json["name"]] = json
+
+	var/list/selection = input(usr, "Select a track to play", "Change Title Music") as null|anything in name2json
+	if(isnull(selection))
+		return
+	selection = name2json[selection]
+	SSticker.set_login_music(selection)
+	log_admin("[key_name_admin(usr)] changed the title music to [selection["name"]] ([selection["file"]])")
+	message_admins("[key_name_admin(usr)] changed the title music to [selection["name"]] ([selection["file"]])")

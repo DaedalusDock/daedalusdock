@@ -179,7 +179,7 @@
 		SEND_SOUND(src, sound(SSticker.login_music["file"], repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 
 	UNTIL(SSticker.current_state >= GAME_STATE_PREGAME)
-	to_chat(src, span_greenannounce("Music: <i>[SSticker.login_music["name"]]</i>[SSticker.login_music["author"] ? " by [SSticker.login_music["author"]]" : ""]"))
+	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.login_music["name"]]</i>[SSticker.login_music["author"] ? " by [SSticker.login_music["author"]]" : ""]"))
 
 /proc/get_rand_frequency()
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.

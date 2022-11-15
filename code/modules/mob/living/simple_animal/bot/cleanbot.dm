@@ -259,29 +259,25 @@
 			mode = BOT_IDLE
 			return
 
-		if(loc == get_turf(target))
-			if(check_bot(target))
-				shuffle = TRUE //Shuffle the list the next time we scan so we dont both go the same way.
-				path = list()
-			else
-				UnarmedAttack(target) //Rather than check at every step of the way, let's check before we do an action, so we can rescan before the other bot.
-				if(QDELETED(target)) //We done here.
-					target = null
-					mode = BOT_IDLE
-					return
+		if(get_dist(src, target) <= 1)
+			UnarmedAttack(target, proximity_flag = TRUE) //Rather than check at every step of the way, let's check before we do an action, so we can rescan before the other bot.
+			if(QDELETED(target)) //We done here.
+				target = null
+				mode = BOT_IDLE
+				return
 
-		if(!length(path)) //No path, need a new one
-			//Try to produce a path to the target, and ignore airlocks to which it has access.
-			path = get_path_to(src, target, 30, id=access_card)
-			if(!bot_move(target))
+		if(target && path.len == 0 && (get_dist(src,target) > 1))
+			path = get_path_to(src, target, max_distance=30, mintargetdist=1, id=access_card)
+			mode = BOT_MOVING
+			if(!path.len)
 				add_to_ignore(target)
 				target = null
 				path = list()
-				return
-			mode = BOT_MOVING
-		else if(!bot_move(target))
-			target = null
-			mode = BOT_IDLE
+
+		if(path.len > 0 && target)
+			if(!bot_move(path[path.len]))
+				target = null
+				mode = BOT_IDLE
 			return
 
 /mob/living/simple_animal/bot/cleanbot/proc/get_targets()
@@ -300,6 +296,12 @@
 		/obj/effect/decal/cleanable/greenglow,
 		/obj/effect/decal/cleanable/dirt,
 		/obj/effect/decal/cleanable/insectguts,
+		/obj/effect/decal/cleanable/generic,
+		/obj/effect/decal/cleanable/shreds,
+		/obj/effect/decal/cleanable/glass,
+		/obj/effect/decal/cleanable/wrapping,
+		/obj/effect/decal/cleanable/glitter,
+		/obj/effect/decal/cleanable/confetti,
 		/obj/effect/decal/remains,
 	)
 
@@ -314,6 +316,7 @@
 		target_types += list(
 			/mob/living/basic/cockroach,
 			/mob/living/simple_animal/mouse,
+			/obj/effect/decal/cleanable/ants,
 		)
 
 	if(janitor_mode_flags & CLEANBOT_CLEAN_DRAWINGS)

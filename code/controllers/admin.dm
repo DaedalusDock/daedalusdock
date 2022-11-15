@@ -98,7 +98,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	if(!check_rights(R_ADMIN) || !SSticker.initialized)
 		return
 
-	var/list/music_jsons = SSticker.get_login_music_jsons()
+	var/list/music_jsons = SSticker.get_music_jsons()
 	var/list/name2json = list()
 	for(var/json in music_jsons)
 		name2json[json["name"]] = json

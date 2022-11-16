@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - code_imp: Clean up title music code
+  - code_imp: Title Music and Credits Music are now independent concepts
+  - rscadd: Change Title Music verb for admins.

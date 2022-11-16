@@ -1,0 +1,4 @@
+author: Cenrus
+delete-after: true
+changes:
+  - tweak: Letters can now be opened by anyone, not just the recipient.

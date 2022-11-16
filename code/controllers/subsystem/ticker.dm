@@ -15,8 +15,11 @@ SUBSYSTEM_DEF(ticker)
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
+	///JSON for the music played in the lobby
+	var/list/login_music
+	///JSON for the round end music.
+	var/list/credits_music
 
-	var/list/login_music //music played in pregame lobby
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
@@ -66,63 +69,8 @@ SUBSYSTEM_DEF(ticker)
 	var/emergency_reason
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
-	var/list/byond_sound_formats = list(
-		"mid" = TRUE,
-		"midi" = TRUE,
-		"mod" = TRUE,
-		"it" = TRUE,
-		"s3m" = TRUE,
-		"xm" = TRUE,
-		"oxm" = TRUE,
-		"wav" = TRUE,
-		"ogg" = TRUE,
-		"raw" = TRUE,
-		"wma" = TRUE,
-		"aiff" = TRUE,
-	)
-
-	var/list/title_music_data = list()
-	var/use_rare_music = prob(1)
-	for(var/json_entry in flist("[global.config.directory]/title_music/jsons/"))
-		var/list/music_entry = json_decode(file2text("[global.config.directory]/title_music/jsons/[json_entry]"))
-		if(music_entry["rare"])
-			if((use_rare_music && music_entry["rare"]) && (!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
-				title_music_data += list(music_entry)
-		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name) //Not map specific
-			title_music_data += list(music_entry)
-
-
-	var/list/old_login_music
-	if(fexists("data/last_round_lobby_music.json"))
-		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
-	///Ensure the files actually exist
-	for(var/entry in title_music_data)
-		entry["file"] = "[config.directory]/[entry["file"]]"
-		if(!fexists(entry["file"]))
-			title_music_data -= entry
-			continue
-		else if(old_login_music && (length(title_music_data) > 1) && (entry["file"] == old_login_music["file"]))
-			title_music_data -= entry
-
-
-	///Remove any files with illegal extensions.
-	for(var/entry in title_music_data)
-		var/list/directory_split = splittext(entry["file"], "/")
-		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-		if(extension_split.len >= 2)
-			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-			if(byond_sound_formats[ext])
-				continue
-		title_music_data -= entry
-
-	///If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
-	if(!length(title_music_data))
-		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
-		var/list/split_path = splittext(music, "/")
-		login_music = list("name" = split_path[length(split_path)], "author" = null, "file" = music)
-	else
-		login_music = pick(title_music_data)
-
+	pick_login_music()
+	pick_credits_music()
 
 	if(!GLOB.syndicate_code_phrase)
 		GLOB.syndicate_code_phrase = generate_code_phrase(return_list=TRUE)
@@ -689,8 +637,6 @@ SUBSYSTEM_DEF(ticker)
 	for(var/mob/M in GLOB.player_list)
 		if(M.client.prefs?.toggles & SOUND_ENDOFROUND)
 			SEND_SOUND(M.client, end_of_round_sound_ref)
-	fdel("data/last_round_lobby_music.json")
-	WRITE_FILE(file("data/last_round_lobby_music.json"), json_encode(login_music))
 
 /datum/controller/subsystem/ticker/proc/choose_round_end_song()
 	var/list/reboot_sounds = flist("[global.config.directory]/reboot_themes/")
@@ -700,3 +646,142 @@ SUBSYSTEM_DEF(ticker)
 		possible_themes += themes
 	if(possible_themes.len)
 		return "[global.config.directory]/reboot_themes/[pick(possible_themes)]"
+
+/datum/controller/subsystem/ticker/proc/set_login_music(list/json)
+	if(!islist(json))
+		CRASH("Non-list given to set_login_music()!")
+
+	if(credits_music == login_music)
+		credits_music = json
+	login_music = json
+
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.client)
+			continue
+		player.client.playtitlemusic()
+
+/datum/controller/subsystem/ticker/proc/get_music_jsons(get_credits_music)
+	RETURN_TYPE(/list)
+	var/list/byond_sound_formats = list(
+		"mid" = TRUE,
+		"midi" = TRUE,
+		"mod" = TRUE,
+		"it" = TRUE,
+		"s3m" = TRUE,
+		"xm" = TRUE,
+		"oxm" = TRUE,
+		"wav" = TRUE,
+		"ogg" = TRUE,
+		"raw" = TRUE,
+		"wma" = TRUE,
+		"aiff" = TRUE,
+	)
+
+	var/list/music_data = list()
+	var/direct = get_credits_music ? "[global.config.directory]/credits_music/jsons/" : "[global.config.directory]/title_music/jsons/"
+	for(var/json_entry in flist(direct))
+		var/list/music_entry = json_decode(file2text("[direct][json_entry]"))
+		music_data += list(music_entry)
+
+	///Verify that the file actually exists!
+	for(var/entry in music_data)
+		if(entry["name"] == "EXAMPLE")
+			music_data -= list(entry)
+			continue
+
+		entry["file"] = "[config.directory]/[entry["file"]]"
+		if(!fexists(entry["file"]))
+			spawn(0)
+				UNTIL(SSticker.initialized)
+				message_admins("Music file for [entry["name"]] doesn't exist! ([entry["file"]]) call Kapu!")
+
+			music_data -= list(entry)
+			continue
+
+	///Remove any files with illegal extensions.
+	for(var/entry in music_data)
+		var/list/directory_split = splittext(entry["file"], "/")
+		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
+		if(extension_split.len >= 2)
+			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
+			if(byond_sound_formats[ext])
+				continue
+		spawn(0)
+			UNTIL(SSticker.initialized)
+			message_admins("Music file for [entry["name"]] doesn't has an illegal file! ([entry["file"]]) call Kapu!")
+		music_data -= list(entry)
+
+	return music_data
+
+/datum/controller/subsystem/ticker/proc/pick_login_music()
+	var/list/title_music_data = list()
+	var/list/rare_music_data = list()
+	///The json of the song used last round.
+	var/list/old_login_music
+
+	if(fexists("data/last_round_lobby_music.json"))
+		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
+
+	//Remove the previous song.
+	var/list/music_jsons = get_music_jsons()
+	for(var/list/music_entry as anything in music_jsons)
+		if(old_login_music && (music_entry["file"] == old_login_music["file"]))
+			old_login_music = music_entry
+
+		//Find rare sounds that are map-agnostic or belong to our map
+		if(music_entry["rare"])
+			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
+				rare_music_data += list(music_entry)
+
+		//Filter out songs that don't belong to our map, add map-agnostic songs.
+		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
+			title_music_data += list(music_entry)
+
+	//Remove the old login music from the current pool if it wouldn't empty the pool.
+	if(old_login_music)
+		if(old_login_music["rare"] && (length(rare_music_data) > 1))
+			rare_music_data -= list(old_login_music)
+		else if(length(title_music_data) > 1)
+			title_music_data -= list(old_login_music)
+
+	//Try to set a song json
+	var/use_rare_music = prob(10)
+	if(use_rare_music && length(rare_music_data))
+		login_music = pick(rare_music_data)
+	if(!login_music && length(title_music_data))
+		login_music = pick(title_music_data)
+
+	//If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
+	if(!login_music)
+		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
+		var/list/split_path = splittext(music, "/")
+		login_music = list("name" = split_path[length(split_path)], "author" = null, "file" = music)
+
+	//Write the last round file to our current choice
+	rustg_file_write(json_encode(login_music), "data/last_round_lobby_music.json")
+
+/datum/controller/subsystem/ticker/proc/pick_credits_music()
+	var/list/music_data = list()
+	var/list/rare_music_data = list()
+
+	//Remove the previous song.
+	var/list/music_jsons = get_music_jsons(TRUE)
+	for(var/list/music_entry as anything in music_jsons)
+		//Find rare sounds that are map-agnostic or belong to our map
+		if(music_entry["rare"])
+			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
+				rare_music_data += list(music_entry)
+
+		//Filter out songs that don't belong to our map, add map-agnostic songs.
+		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
+			music_data += list(music_entry)
+
+	//Try to set a song json
+	var/use_rare_music = prob(10)
+	if(use_rare_music && length(rare_music_data))
+		credits_music = pick(rare_music_data)
+	if(!credits_music && length(music_data))
+		credits_music = pick(music_data)
+
+	if(!credits_music)
+		credits_music = login_music

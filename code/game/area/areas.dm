@@ -25,6 +25,8 @@
 	var/list/airalarms
 	///Alarm type to count of sources. Not usable for ^ because we handle fires differently
 	var/list/active_alarms = list()
+	///All the lights in this area
+	var/list/obj/machinery/light/lights
 
 	var/lightswitch = TRUE
 	var/list/light_switches = list()
@@ -479,7 +481,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 ///Called by airalarms and firealarms to communicate the status of the area to relevant machines
 /area/proc/communicate_fire_alert(code)
-	for(var/obj/machinery/light/L in src)
+	for(var/obj/machinery/light/L as anything in lights)
 		L.update()
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)

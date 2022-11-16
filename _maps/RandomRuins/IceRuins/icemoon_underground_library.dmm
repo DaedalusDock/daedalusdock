@@ -18,6 +18,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "af" = (
@@ -25,6 +26,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ag" = (
@@ -32,6 +34,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ah" = (
@@ -39,6 +42,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ai" = (
@@ -70,6 +74,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ap" = (
@@ -78,6 +83,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aq" = (
@@ -86,6 +92,7 @@
 	icon_state = "wood-broken";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ar" = (
@@ -96,6 +103,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "au" = (
@@ -118,6 +126,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aA" = (
@@ -129,6 +138,7 @@
 	icon_state = "wood-broken6";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aC" = (
@@ -139,6 +149,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aE" = (
@@ -147,6 +158,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aG" = (
@@ -155,6 +167,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aH" = (
@@ -163,6 +176,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aI" = (
@@ -185,6 +199,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aM" = (
@@ -197,6 +212,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aO" = (
@@ -204,6 +220,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aP" = (
@@ -216,6 +233,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aR" = (
@@ -223,6 +241,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aS" = (
@@ -240,6 +259,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aU" = (
@@ -252,6 +272,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "aW" = (
@@ -273,6 +294,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "ba" = (
@@ -292,6 +314,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bd" = (
@@ -303,6 +326,7 @@
 	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "be" = (
@@ -312,6 +336,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bf" = (
@@ -322,6 +347,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bg" = (
@@ -334,6 +360,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bi" = (
@@ -350,6 +377,7 @@
 	icon_state = "wood-broken4";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bl" = (
@@ -375,6 +403,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "br" = (
@@ -399,6 +428,7 @@
 	icon_state = "wood-broken4";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bw" = (
@@ -406,6 +436,7 @@
 	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bx" = (
@@ -414,6 +445,7 @@
 	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "by" = (
@@ -421,6 +453,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bz" = (
@@ -438,6 +471,7 @@
 /turf/open/floor/carpet/black{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bC" = (
@@ -449,6 +483,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bD" = (
@@ -456,6 +491,7 @@
 	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bE" = (
@@ -464,6 +500,7 @@
 	icon_state = "wood-broken";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bF" = (
@@ -472,6 +509,7 @@
 	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bG" = (
@@ -480,6 +518,7 @@
 	icon_state = "wood-broken6";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bH" = (
@@ -489,6 +528,7 @@
 	icon_state = "wood-broken4";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bI" = (
@@ -497,6 +537,7 @@
 	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bJ" = (
@@ -505,6 +546,7 @@
 	icon_state = "wood-broken2";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bK" = (
@@ -513,6 +555,7 @@
 	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bL" = (
@@ -523,6 +566,7 @@
 	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bM" = (
@@ -533,6 +577,7 @@
 	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bN" = (
@@ -542,6 +587,7 @@
 	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bP" = (
@@ -550,6 +596,7 @@
 	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 "bQ" = (
@@ -557,6 +604,7 @@
 	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/unpowered/buried_library)
 

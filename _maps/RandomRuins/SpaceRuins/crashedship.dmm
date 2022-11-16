@@ -382,9 +382,7 @@
 "pb" = (
 /obj/effect/turf_decal/trimline/neutral/filled/shrink_cw,
 /obj/structure/cable,
-/turf/open/floor/iron/edge{
-	dir = 4
-	},
+/turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "pe" = (
 /obj/machinery/door/firedoor/closed,
@@ -791,9 +789,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/turf/open/floor/iron/edge{
-	dir = 4
-	},
+/turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "BS" = (
 /obj/structure/girder,

@@ -39,13 +39,10 @@ SUBSYSTEM_DEF(credits)
 
 /datum/controller/subsystem/credits/proc/compile_credits()
 	set waitfor = FALSE
-	draft()
 	finalize()
 	send2clients()
 	sleep(2 SECONDS) //send2clients() is slow and non-blocking, so we need to give it some breathing room to send the data to all clients.
 	play2clients()
-	for(var/client/C in GLOB.clients)
-		C.playcreditsmusic(50)
 
 ///Clear the existing credits data from clients
 /datum/controller/subsystem/credits/proc/clear_credits_from_clients()
@@ -66,6 +63,7 @@ SUBSYSTEM_DEF(credits)
 	draft_episode_names() //only selects the possibilities, doesn't pick one yet
 	draft_disclaimers()
 	drafted = TRUE
+	message_admins("SScredits has finished drafting the credits, they can now be editted.")
 
 
 /*

@@ -588,7 +588,7 @@ SUBSYSTEM_DEF(ticker)
 		C.Export("##action=load_rsc", round_end_sound)
 	round_end_sound_sent = TRUE
 
-/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay, roll_credits = TRUE)
 	set waitfor = FALSE
 	if(usr && !check_rights(R_SERVER, TRUE))
 		return
@@ -602,6 +602,13 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+
+	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
+	if(roll_credits)
+		if(roll_credits_in)
+			addtimer(CALLBACK(SScredits, /datum/controller/subsystem/credits/proc/compile_credits), roll_credits_in)
+		else
+			SScredits.compile_credits()
 
 	var/start_wait = world.time
 	UNTIL(round_end_sound_sent || (world.time - start_wait) > (delay * 2)) //don't wait forever
@@ -621,8 +628,6 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
-
-	SScredits?.clear_credits_from_clients()
 
 	world.Reboot()
 

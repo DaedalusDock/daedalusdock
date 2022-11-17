@@ -215,6 +215,7 @@
 /obj/item/food/badrecipe/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_GRILLED, .proc/OnGrill)
+	AddComponent(/datum/component/smell/strong, SCENT_HAZE, "burned garbage", 4)
 
 /obj/item/food/badrecipe/moldy
 	name = "moldy mess"
@@ -224,6 +225,10 @@
 	ant_attracting = TRUE
 	decomp_type = null
 	decomposition_time = 30 SECONDS
+
+/obj/item/food/badrecipe/moldy/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/smell/strong, SCENT_SMELL, "moldy waste", 4)
 
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
@@ -954,6 +959,10 @@
 	icon_state = "ready_donk_warm_mac"
 	tastes = list("cheesy pasta" = 2, "laziness" = 1)
 	foodtypes = GRAIN | DAIRY | JUNKFOOD
+
+/obj/item/food/ready_donk/warm/mac_n_cheese/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/nostalgia, "scent", "nostalgia", 2)
 
 /obj/item/food/ready_donk/donkhiladas
 	name = "\improper Ready-Donk: Donkhiladas"

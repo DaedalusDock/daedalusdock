@@ -78,7 +78,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	//As a simplification, we remove fuel equally from all fuel sources. It might be that some fuel sources have more fuel,
 	//some have less, but whatever. It will mean that sometimes we will remove a tiny bit less fuel then we intended to.
 
-	var/fuel_to_remove = used_liquid_fuel/(fuel_objs.len*LIQUIDFUEL_AMOUNT_TO_MOL) //convert back to liquid volume units
+	var/fuel_to_remove = round(used_liquid_fuel/(fuel_objs.len*LIQUIDFUEL_AMOUNT_TO_MOL), 0.01) //convert back to liquid volume units
 
 	for(var/obj/effect/decal/cleanable/oil/fuel as anything in fuel_objs)
 		fuel.reagent_amount -= fuel_to_remove

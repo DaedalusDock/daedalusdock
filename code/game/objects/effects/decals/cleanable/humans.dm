@@ -8,7 +8,7 @@
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
 	clean_type = CLEAN_TYPE_BLOOD
-	var/smell_type =  /datum/component/smell
+	var/smell_type =  /datum/component/smell/strong
 	var/should_dry = TRUE
 	var/dryname = "dried blood" //when the blood lasts long enough, it becomes dry and gets a new name
 	var/drydesc = "Looks like it's been here a while. Eew." //as above
@@ -71,12 +71,23 @@
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
+	///Absorb the /squirt subtype when it exists on the turf
+	var/absorb_squirts = TRUE
+
+/obj/effect/decal/cleanable/blood/splatter/Initialize(mapload)
+	. = ..()
+	var/obj/effect/decal/cleanable/blood/squirt/existing_squirt = locate() in loc
+	if(existing_squirt)
+		add_blood_DNA(existing_squirt.return_blood_DNA())
+		bloodiness = min((existing_squirt.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
+		qdel(existing_squirt)
 
 /obj/effect/decal/cleanable/blood/splatter/over_window // special layer/plane set to appear on windows
 	layer = ABOVE_WINDOW_LAYER
 	plane = GAME_PLANE
 	turf_loc_check = FALSE
 	alpha = 180
+	absorb_squirts = FALSE
 
 /obj/effect/decal/cleanable/blood/tracks
 	icon_state = "tracks"
@@ -372,17 +383,21 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
 	SIGNAL_HANDLER
-	for(var/atom/iter_atom in get_turf(src))
+	var/turf/T = get_turf(src)
+
+	for(var/atom/movable/iter_atom as anything in T)
 		if(hit_endpoint)
 			return
 		if(splatter_strength <= 0)
 			break
-
 		if(isitem(iter_atom))
 			iter_atom.add_blood_DNA(blood_dna_info)
 			splatter_strength--
 		else if(ishuman(iter_atom))
 			var/mob/living/carbon/human/splashed_human = iter_atom
+			if(!splashed_human.is_eyes_covered())
+				splashed_human.blur_eyes(3)
+				to_chat(splashed_human, span_alert("You're blinded by a spray of blood!"))
 			if(splashed_human.wear_suit)
 				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
 				splashed_human.update_worn_oversuit()    //updates mob overlays to show the new blood (no refresh)
@@ -390,8 +405,12 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
 				splashed_human.update_worn_undersuit()    //updates mob overlays to show the new blood (no refresh)
 			splatter_strength--
+
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
 		qdel(src)
+		return
+
+	new /obj/effect/decal/cleanable/blood/squirt(T, get_dir(prev_loc, loc), blood_dna_info)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
@@ -433,3 +452,25 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
 	qdel(src)
+
+/obj/effect/decal/cleanable/blood/squirt
+	name = "blood trail"
+	icon_state = "squirt"
+	random_icon_states = null
+	color = "#ff0000"
+	smell_type = /datum/component/smell/subtle
+
+/obj/effect/decal/cleanable/blood/squirt/Initialize(mapload, direction, list/blood_dna)
+	. = ..()
+	dir = direction
+	var/obj/effect/decal/cleanable/blood/splatter/existing_blood = locate() in get_turf(src)
+	if(existing_blood?.absorb_squirts)
+		if(blood_dna)
+			existing_blood.add_blood_DNA(blood_dna)
+			existing_blood.bloodiness = min((existing_blood.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
+		return INITIALIZE_HINT_QDEL
+
+/obj/effect/decal/cleanable/blood/dry()
+	. = ..()
+	if(.)
+		color = "#350303"

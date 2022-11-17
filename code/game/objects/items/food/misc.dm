@@ -962,7 +962,7 @@
 
 /obj/item/food/ready_donk/warm/mac_n_cheese/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/nostalgia, "scent", "nostalgia", 2)
+	AddComponent(/datum/component/smell/strong, "scent", "nostalgia", 2)
 
 /obj/item/food/ready_donk/donkhiladas
 	name = "\improper Ready-Donk: Donkhiladas"

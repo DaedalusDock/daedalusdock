@@ -18,12 +18,20 @@
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
 	mob_size = MOB_SIZE_TINY
 	gold_core_spawnable = FRIENDLY_SPAWN
+	var/udder = /obj/item/udder/slug
 
 /mob/living/simple_animal/slug/Initialize(mapload)
-	AddComponent(/datum/component/udder, /obj/item/udder/slug, null, null, /datum/reagent/slug_slime)
+	AddComponent(/datum/component/udder, udder, null, null, /datum/reagent/slug_slime)
 	. = ..()
 
 /mob/living/simple_animal/slug/glubby
 	name = "Glubby"
 	desc = "He's just misunderstood."
+	icon_state = "glubby"
+	icon_living = "glubby"
+	icon_dead = "glubby_dead"
 	gold_core_spawnable = NO_SPAWN
+	udder = /obj/item/udder/slug/glubby
+
+/mob/living/simple_animal/slug/glubby/examine(mob/user)
+	. += span_notice("You could use a syringe to refill [src]'s slime gland.")

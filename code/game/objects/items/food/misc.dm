@@ -14,6 +14,10 @@
 	/// used to determine how much health rats/regal rats recover when they eat it.
 	var/rat_heal = 0
 
+/obj/item/food/cheese/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/smell/subtle, SCENT_SMELL, "cheese", 4)
+
 /obj/item/food/cheese/wedge
 	name = "cheese wedge"
 	desc = "A wedge of delicious Cheddar. The cheese wheel it was cut from can't have gone far."
@@ -982,4 +986,4 @@
 	tastes = list("juicy meat" = 1, "rice" = 1, "cabbage" = 1)
 	foodtypes = MEAT | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
-	
+

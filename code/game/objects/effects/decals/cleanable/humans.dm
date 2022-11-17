@@ -20,7 +20,7 @@
 		return
 	if(bloodiness)
 		start_drying()
-		AddComponent(smell_type, SCENT_ODOR, "blood")
+		AddComponent(smell_type, SCENT_ODOR, "blood", 3)
 	else
 		dry()
 

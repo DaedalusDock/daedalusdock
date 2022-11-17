@@ -34,4 +34,5 @@
 	udder = /obj/item/udder/slug/glubby
 
 /mob/living/simple_animal/slug/glubby/examine(mob/user)
+	. = ..()
 	. += span_notice("You could use a syringe to refill [src]'s slime gland.")

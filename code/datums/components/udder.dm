@@ -197,8 +197,8 @@
 /obj/item/udder/slug/glubby/on_slug_move()
 	if (reagents.total_volume <= 0)
 		return
-	slug_turf.wash(CLEAN_SCRUB)
 	var/turf/slug_turf = get_turf(udder_mob)
+	slug_turf.wash(CLEAN_SCRUB)
 	reagents.expose(slug_turf, TOUCH, 5)
 
 /obj/item/udder/slug/glubby/proc/inject_slug(datum/source, obj/item/I, mob/user)

@@ -180,18 +180,6 @@
 #warn ZAS debugging tools are enabled.
 #endif
 
-#if (DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD) && !defined(SPACEMAN_DMM)
-// Don't forget to update this part
-#error Your version of BYOND is too out-of-date to compile this project. Go to https://secure.byond.com/download and update.
-#error You need version 514.1556 or higher
-#endif
-
-#if (DM_VERSION == 514 && DM_BUILD > 1575 && DM_BUILD <= 1577)
-#error Your version of BYOND currently has a crashing issue that will prevent you from running Dream Daemon test servers.
-#error We require developers to test their content, so an inability to test means we cannot allow the compile.
-#error Please consider downgrading to 514.1575 or lower.
-#endif
-
 #ifdef VERB_STRESS_TEST
 #warn Hey brother, you're running in LAG MODE.
 #warn IF YOU PUT THIS ON LIVE I WILL FIND YOU AND MAKE YOU WISH YOU WERE NEVE-

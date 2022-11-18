@@ -51,14 +51,6 @@
 	MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNKOxdlc:;;;:::;,,,,,;;:cldk0XNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 */
 
-/////////////////////// VERSION REQUIREMENTS
-//Update this whenever you need to take advantage of more recent byond features
-
-#define MIN_COMPILER_VERSION 514
-#define MIN_COMPILER_BUILD 1556
-
-
-
 /////////////////////// DEBUGGING & PROFILING
 
 ///By using the testing("message") proc you can create debug-feedback for people with this

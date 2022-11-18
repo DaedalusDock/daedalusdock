@@ -188,10 +188,10 @@
 	reagents.remove_any(5)
 
 /obj/item/udder/slug/glubby
-//unique slug udder that does not use up it's reagent while spreading it. This is probably not a good idea.
+//unique slug udder that lets you inject your own reagents. Also uses slightly less at a time while cleaning.
 
 /obj/item/udder/slug/glubby/initial_conditions()
-	RegisterSignal(udder_mob, COMSIG_MOVABLE_MOVED, .proc/on_slug_move)
+	. = ..()
 	RegisterSignal(udder_mob, COMSIG_PARENT_ATTACKBY, .proc/inject_slug)
 
 /obj/item/udder/slug/glubby/on_slug_move()
@@ -199,7 +199,8 @@
 		return
 	var/turf/slug_turf = get_turf(udder_mob)
 	slug_turf.wash(CLEAN_SCRUB)
-	reagents.expose(slug_turf, TOUCH, 5)
+	reagents.expose(slug_turf, TOUCH, 1)
+	reagents.remove_any(1)
 
 /obj/item/udder/slug/glubby/proc/inject_slug(datum/source, obj/item/I, mob/user)
 	if (istype(I, /obj/item/reagent_containers/syringe))

@@ -62,7 +62,7 @@
 	if(reinf && anchored)
 		state = RWINDOW_SECURE
 
-	update_nearby_tiles()
+	zas_update_loc()
 
 	if(fulltile)
 		setDir()
@@ -251,7 +251,7 @@
 
 /obj/structure/window/set_anchored(anchorvalue)
 	..()
-	//air_update_turf(TRUE, anchorvalue)
+	zas_update_loc()
 	update_nearby_icons()
 
 /obj/structure/window/proc/check_state(checked_state)
@@ -333,7 +333,7 @@
 		. += new /obj/item/shard(location)
 
 /obj/structure/window/proc/AfterRotation(mob/user, degrees)
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/window/proc/on_painted(obj/structure/window/source, is_dark_color)
 	SIGNAL_HANDLER
@@ -346,7 +346,7 @@
 	set_density(FALSE)
 	update_nearby_icons()
 	can_atmos_pass = CANPASS_ALWAYS //hacky-sacky
-	update_nearby_tiles()
+	zas_update_loc()
 
 	if(!fulltile)
 		var/turf/open/T = get_step(src, dir)

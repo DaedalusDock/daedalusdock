@@ -44,7 +44,7 @@ SUBSYSTEM_DEF(credits)
 	sleep(2 SECONDS) //send2clients() is slow and non-blocking, so we need to give it some breathing room to send the data to all clients.
 	play2clients()
 	for(var/client/C in GLOB.clients)
-		C.playtitlemusic(40)
+		C.playcreditsmusic(50)
 
 ///Clear the existing credits data from clients
 /datum/controller/subsystem/credits/proc/clear_credits_from_clients()

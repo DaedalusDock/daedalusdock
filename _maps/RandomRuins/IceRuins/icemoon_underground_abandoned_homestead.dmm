@@ -8,6 +8,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "dy" = (
@@ -30,6 +31,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "ht" = (
@@ -42,6 +44,7 @@
 	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "kj" = (
@@ -63,6 +66,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "nq" = (
@@ -84,6 +88,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "qd" = (
@@ -110,6 +115,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "uA" = (
@@ -118,6 +124,7 @@
 	icon_state = "wood-broken6";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "uG" = (
@@ -137,6 +144,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "vk" = (
@@ -163,6 +171,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "wl" = (
@@ -174,6 +183,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "wN" = (
@@ -186,6 +196,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "yO" = (
@@ -203,6 +214,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Cv" = (
@@ -210,6 +222,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Ea" = (
@@ -227,6 +240,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "El" = (
@@ -237,6 +251,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Ez" = (
@@ -266,6 +281,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Hy" = (
@@ -274,6 +290,7 @@
 	icon_state = "wood-broken";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "HF" = (
@@ -287,6 +304,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Iz" = (
@@ -300,6 +318,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Mf" = (
@@ -315,6 +334,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "NP" = (
@@ -334,12 +354,14 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "QI" = (
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Rf" = (
@@ -360,6 +382,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Sv" = (
@@ -390,6 +413,7 @@
 	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Vf" = (
@@ -398,6 +422,7 @@
 	icon_state = "wood-broken";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "VV" = (
@@ -411,6 +436,7 @@
 /turf/open/floor/stone{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 "Zg" = (
@@ -422,6 +448,7 @@
 /turf/open/floor/wood/large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/powered/shuttle)
 

@@ -14,15 +14,15 @@
 /obj/structure/emergency_shield/Initialize(mapload)
 	. = ..()
 	setDir(pick(GLOB.cardinals))
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/emergency_shield/Destroy()
-	update_nearby_tiles()
+	zas_update_loc()
 	. = ..()
 
 /obj/structure/emergency_shield/Move()
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/emergency_shield/emp_act(severity)
 	. = ..()
@@ -100,7 +100,7 @@
 */
 /obj/structure/emergency_shield/cult/barrier/proc/Toggle()
 	set_density(!density)
-	//air_update_turf(TRUE, !density)
+	zas_update_loc()
 	invisibility = initial(invisibility)
 	if(!density)
 		invisibility = INVISIBILITY_OBSERVER

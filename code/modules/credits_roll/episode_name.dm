@@ -160,7 +160,7 @@
 	var/escaped = SSticker.popcount[POPCOUNT_ESCAPEES]
 	var/escaped_on_shuttle = SSticker.popcount[POPCOUNT_SHUTTLE_ESCAPEES]
 	var/human_escapees = SSticker.popcount[POPCOUNT_ESCAPEES_HUMANONLY]
-	if(REALTIMEOFDAY - SSticker.round_start_timeofday > 20 MINUTES) //shuttle docked in less than 16 minutes!!
+	if((REALTIMEOFDAY - SSticker.round_start_timeofday) < 20 MINUTES) //shuttle docked in less than 16 minutes!!
 		episode_names += new /datum/episode_name/rare("[pick("THE CAPTAIN STUBS THEIR TOE", "QUICK GETAWAY", "A MOST EFFICIENT APOCALYPSE", "THE CREW'S [round((REALTIMEOFDAY - SSticker.round_start_timeofday)/60)] MINUTES OF FAME", "ON SECOND THOUGHT, LET'S NOT GO TO [uppr_name]. 'TIS A SILLY PLACE.")]", "This round was about as short as they come.", 750)
 		if(escaped_on_shuttle == 0)
 			episode_names += new /datum/episode_name/rare("DRY RUN", "This round was as short as they come, and there were no escapees.", 2500)

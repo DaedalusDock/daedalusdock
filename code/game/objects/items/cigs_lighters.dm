@@ -946,7 +946,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	inhand_icon_state = "[param_color]_vape"
 
 /obj/item/clothing/mask/vape/cigar/set_vape_color()
-  return
+	return
 
 /obj/item/clothing/mask/vape/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is puffin hard on dat vape, [user.p_they()] trying to join the vape life on a whole notha plane!"))//it doesn't give you cancer, it is cancer

@@ -4,16 +4,6 @@
 // Return the item currently in the slot ID
 /mob/living/carbon/human/get_item_by_slot(slot_id)
 	switch(slot_id)
-		if(ITEM_SLOT_BACK)
-			return back
-		if(ITEM_SLOT_MASK)
-			return wear_mask
-		if(ITEM_SLOT_NECK)
-			return wear_neck
-		if(ITEM_SLOT_HANDCUFFED)
-			return handcuffed
-		if(ITEM_SLOT_LEGCUFFED)
-			return legcuffed
 		if(ITEM_SLOT_BELT)
 			return belt
 		if(ITEM_SLOT_ID)
@@ -38,25 +28,8 @@
 			return r_store
 		if(ITEM_SLOT_SUITSTORE)
 			return s_store
-	return null
 
-///Returns a list of every item slot contents on the user.
-/mob/living/carbon/human/get_all_worn_items()
-	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
-
-///Bruteforce check for any type or subtype of an item.
-/mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
-	var/found
-	var/list/my_items = get_all_worn_items()
-	if(islist(type2check))
-		for(var/type_iterator in type2check)
-			found = locate(type_iterator) in my_items
-			if(found)
-				return found
-	else
-		found = locate(type2check) in my_items
-		return found
-
+	return ..()
 
 /mob/living/carbon/human/get_slot_by_item(obj/item/looking_for)
 	if(looking_for == belt)
@@ -96,6 +69,23 @@
 		return ITEM_SLOT_SUITSTORE
 
 	return ..()
+
+///Returns a list of every item slot contents on the user.
+/mob/living/carbon/human/get_all_worn_items()
+	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
+
+///Bruteforce check for any type or subtype of an item.
+/mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
+	var/found
+	var/list/my_items = get_all_worn_items()
+	if(islist(type2check))
+		for(var/type_iterator in type2check)
+			found = locate(type_iterator) in my_items
+			if(found)
+				return found
+	else
+		found = locate(type2check) in my_items
+		return found
 
 ///Returns a list of worn "clothing" items.
 /mob/living/carbon/human/proc/return_worn_clothing()

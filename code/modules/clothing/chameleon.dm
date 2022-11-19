@@ -389,6 +389,7 @@
 	chameleon_action.chameleon_name = "Jumpsuit"
 	chameleon_action.chameleon_blacklist = typecacheof(list(/obj/item/clothing/under, /obj/item/clothing/under/color, /obj/item/clothing/under/rank, /obj/item/clothing/under/changeling), only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/under/chameleon/emp_act(severity)
 	. = ..()
@@ -419,6 +420,7 @@
 	chameleon_action.chameleon_name = "Suit"
 	chameleon_action.chameleon_blacklist = typecacheof(list(/obj/item/clothing/suit/armor/abductor, /obj/item/clothing/suit/changeling), only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/suit/chameleon/emp_act(severity)
 	. = ..()
@@ -448,6 +450,7 @@
 	chameleon_action.chameleon_name = "Glasses"
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/glasses/changeling, only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/glasses/chameleon/emp_act(severity)
 	. = ..()
@@ -478,6 +481,7 @@
 	chameleon_action.chameleon_name = "Gloves"
 	chameleon_action.chameleon_blacklist = typecacheof(list(/obj/item/clothing/gloves, /obj/item/clothing/gloves/color, /obj/item/clothing/gloves/changeling), only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/gloves/chameleon/emp_act(severity)
 	. = ..()
@@ -506,6 +510,7 @@
 	chameleon_action.chameleon_name = "Hat"
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/head/changeling, only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/head/chameleon/emp_act(severity)
 	. = ..()
@@ -557,6 +562,7 @@
 	chameleon_action.chameleon_name = "Mask"
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/mask/changeling, only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/mask/chameleon/emp_act(severity)
 	. = ..()
@@ -612,6 +618,7 @@
 	chameleon_action.chameleon_name = "Shoes"
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/shoes/changeling, only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/shoes/chameleon/emp_act(severity)
 	. = ..()
@@ -637,6 +644,7 @@
 	chameleon_action.chameleon_type = /obj/item/storage/backpack
 	chameleon_action.chameleon_name = "Backpack"
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/storage/backpack/chameleon/emp_act(severity)
 	. = ..()
@@ -661,6 +669,7 @@
 	chameleon_action.chameleon_type = /obj/item/storage/belt
 	chameleon_action.chameleon_name = "Belt"
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/storage/belt/chameleon/ComponentInitialize()
 	. = ..()
@@ -687,6 +696,7 @@
 	chameleon_action.chameleon_type = /obj/item/radio/headset
 	chameleon_action.chameleon_name = "Headset"
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/radio/headset/chameleon/emp_act(severity)
 	. = ..()
@@ -709,6 +719,7 @@
 	chameleon_action.chameleon_name = "tablet"
 	chameleon_action.chameleon_blacklist = typecacheof(list(/obj/item/modular_computer/tablet/pda/heads), only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/modular_computer/tablet/pda/chameleon/emp_act(severity)
 	. = ..()
@@ -729,6 +740,7 @@
 	chameleon_action.chameleon_type = /obj/item/stamp
 	chameleon_action.chameleon_name = "Stamp"
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/stamp/chameleon/broken/Initialize(mapload)
 	. = ..()
@@ -752,6 +764,7 @@
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/neck/cloak/skill_reward)
 	chameleon_action.chameleon_name = "Neck Accessory"
 	chameleon_action.initialize_disguises()
+	add_item_action(chameleon_action)
 
 /obj/item/clothing/neck/chameleon/Destroy()
 	qdel(chameleon_action)

@@ -149,7 +149,7 @@
 	//	episode_names += new /datum/episode_name/rare("ON A WING AND A PRAYER", "The shuttle was bombed but [score.escapees] people escaped anyways.", min(1000, score.shuttlebombed*200))
 
 	for(var/mob/living/simple_animal/pet/dog/corgi/C in GLOB.mob_living_list)
-		if(C.actions.len > 0)
+		if(C.actions?.len)
 			episode_names += new /datum/episode_name/rare("[pick("WHERE NO DOG HAS GONE BEFORE", "IAN SAYS", "IAN'S DAY OUT", "EVERY DOG HAS ITS DAY", "THE ONE WITH THE MAGIC PUPPY")]", "You know what you did.", 1000)
 			break
 

@@ -74,6 +74,7 @@
 	AddComponent(/datum/component/mind_linker, \
 		network_name = "Mansus Link", \
 		chat_color = "#568b00", \
+		linker_action_path = /datum/action/cooldown/spell/pointed/manse_link, \
 		link_message = on_link_message, \
 		unlink_message = on_unlink_message, \
 		post_unlink_callback = CALLBACK(src, .proc/after_unlink), \

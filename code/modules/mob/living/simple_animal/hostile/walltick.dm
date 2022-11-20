@@ -37,14 +37,12 @@
 		return
 	. = ..()
 
-/mob/living/simple_animal/hostile/walltick/Moved()
-	if(!burrowed)
-		return ..()
-	var/turf/T = get_turf(src)
-	if(!istype(T, /turf/closed/wall))
-		unburrow()
-		return ..()
-	return ..()
+/mob/living/simple_animal/hostile/walltick/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	. = ..()
+	if(burrowed)
+		var/turf/T = get_turf(src)
+		if(!istype(T, /turf/closed/wall))
+			unburrow()
 
 /mob/living/simple_animal/hostile/walltick/attacked_by(obj/item/I, mob/living/user)
 	unburrow()

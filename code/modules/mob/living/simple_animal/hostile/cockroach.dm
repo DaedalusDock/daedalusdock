@@ -113,20 +113,18 @@
 		update_icon()
 	return ..()
 
-/mob/living/simple_animal/hostile/cockroach/Moved()
+/mob/living/simple_animal/hostile/cockroach/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
+	. = ..()
 	playsound(src, 'sound/creatures/roach_scuttle.ogg', 50, FALSE)
 	if(burner)
 		//currently on fire.
 		var/turf/fire_turf = get_turf(src)
 		addtimer(CALLBACK(src, .proc/setFire, fire_turf), 0.6 SECONDS)
-		return ..()
 	if(explosive)
 		if(prob(explode_chance))
 			death() //cockroach death triggers the bomb
-			return
 		explode_chance += 1 //+1% chance to explode after every movement
 		playsound(src, 'sound/items/timer.ogg', 50, FALSE)
-	return ..()
 
 /mob/living/simple_animal/hostile/cockroach/proc/setFire(turf/fire_turf)
 	fire_turf.create_fire(1, 0.3)

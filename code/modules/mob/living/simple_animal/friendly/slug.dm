@@ -1,6 +1,6 @@
 /mob/living/simple_animal/slug
 	name = "maintenance slug"
-	desc = "Gigantomilax Robusticus, also known as the Maintenance Slug for their habit of occupying the dark tunnels of space stations. Their slime is known to be a good disinfectant and cleaning fluid."
+	desc = "Gigantomilax Robusticus, also known as the 'Maintenance Slug' for their habit of occupying the dark tunnels of space stations. Their slime is known to be a good disinfectant and cleaning fluid."
 	icon_state = "slug"
 	icon_living = "slug"
 	icon_dead = "slug_dead"

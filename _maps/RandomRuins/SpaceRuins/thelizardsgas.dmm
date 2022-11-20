@@ -34,9 +34,7 @@
 /obj/structure/sign/poster/fluff/lizards_gas_payment{
 	pixel_y = 32
 	},
-/turf/open/floor/iron/dark/smooth_corner{
-	dir = 8
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "bO" = (
 /obj/structure/closet/crate/secure/gear,
@@ -103,9 +101,7 @@
 /obj/machinery/airalarm/directional/north{
 	locked = 0
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 1
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "jN" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -163,9 +159,7 @@
 	name = "Criminal Shutters"
 	},
 /obj/structure/cable,
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "rC" = (
 /obj/effect/spawner/structure/window/reinforced/plasma,
@@ -235,9 +229,7 @@
 "zz" = (
 /obj/machinery/door/window,
 /obj/structure/cable,
-/turf/open/floor/iron/dark/smooth_corner{
-	dir = 4
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "AZ" = (
 /obj/machinery/light/directional/west,
@@ -257,7 +249,7 @@
 /obj/effect/spawner/random/contraband/cannabis/lizardsgas,
 /obj/effect/spawner/random/contraband/cannabis/lizardsgas,
 /obj/effect/spawner/random/contraband/cannabis/lizardsgas,
-/turf/open/floor/iron/dark/smooth_corner,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "Bi" = (
 /obj/structure/closet{
@@ -313,9 +305,7 @@
 	atmos_chambers = list("lizardgas" = "Plasma Supply");
 	dir = 8
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "Gr" = (
 /obj/structure/rack,
@@ -418,7 +408,7 @@
 /area/ruin/space/has_grav/thelizardsgas)
 "Ow" = (
 /obj/structure/table/reinforced,
-/turf/open/floor/iron/dark/smooth_edge,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "OQ" = (
 /obj/machinery/light/small/directional/west,
@@ -521,9 +511,7 @@
 "VP" = (
 /obj/structure/table/reinforced,
 /obj/item/gps/spaceruin,
-/turf/open/floor/iron/dark/smooth_corner{
-	dir = 1
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "VV" = (
 /obj/machinery/light/directional/north,

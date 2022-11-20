@@ -184,7 +184,7 @@
 	name = "Kitchen";
 	req_access_txt = "28"
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/pizzeria/kitchen)
 "fo" = (
 /obj/effect/turf_decal/tile/blue{
@@ -257,9 +257,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "hS" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/on,
@@ -325,7 +323,7 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/pizzeria/kitchen)
 "jY" = (
 /obj/effect/turf_decal/tile/blue{
@@ -422,9 +420,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "mb" = (
 /obj/structure/table,
@@ -771,9 +767,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "Ay" = (
 /obj/effect/turf_decal/tile/blue{
@@ -801,7 +795,7 @@
 	req_access_txt = "28"
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/pizzeria/kitchen)
 "AP" = (
 /obj/structure/table,
@@ -844,9 +838,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Moffuchi's Pizzeria"
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "Cf" = (
 /obj/structure/chair,
@@ -882,9 +874,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Moffuchi's Pizzeria"
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 8
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "Dw" = (
 /obj/effect/turf_decal/tile/blue{
@@ -1246,9 +1236,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Moffuchi's Pizzeria"
 	},
-/turf/open/floor/iron/dark/smooth_edge{
-	dir = 4
-	},
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "OE" = (
 /obj/effect/turf_decal/tile/blue{
@@ -1460,7 +1448,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 1
 	},
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/ruin/pizzeria)
 "TK" = (
 /turf/open/misc/asteroid/snow/icemoon,

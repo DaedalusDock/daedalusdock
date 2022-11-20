@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Firedoors and alarms work again
-  - bugfix: airflow_hit_act() is no longer called twice.
-  - tweak: Overall airflow changes.

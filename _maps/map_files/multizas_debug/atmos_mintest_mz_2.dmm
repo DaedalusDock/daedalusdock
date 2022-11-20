@@ -110,17 +110,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
-"z" = (
-/obj/machinery/light/floor,
-/turf/open/floor/iron/red,
-/area/hallway/primary/upper)
-"A" = (
-/turf/open/floor/iron/red,
-/area/hallway/primary/upper)
-"B" = (
-/obj/machinery/meter/turf,
-/turf/open/floor/iron/red,
-/area/hallway/primary/upper)
 
 (1,1,1) = {"
 a
@@ -1146,11 +1135,11 @@ f
 f
 f
 d
-z
-A
-A
-z
-B
+h
+f
+f
+h
+v
 d
 a
 "}
@@ -1189,11 +1178,11 @@ f
 f
 f
 e
-A
+f
 g
 g
 g
-z
+h
 e
 a
 "}
@@ -1232,11 +1221,11 @@ f
 h
 f
 s
-A
+f
 g
 g
 g
-A
+f
 u
 a
 "}
@@ -1275,11 +1264,11 @@ f
 f
 f
 e
-A
+f
 g
 g
 g
-A
+f
 e
 a
 "}
@@ -1318,11 +1307,11 @@ f
 f
 f
 d
-z
-A
-A
-A
-z
+h
+f
+f
+f
+h
 d
 a
 "}

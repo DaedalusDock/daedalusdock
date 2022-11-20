@@ -81,7 +81,7 @@
 	qdel(fooditem)
 	if(sterile)
 		return
-	var/cap = CONFIG_GET(number/ratcap)
+	var/cap = CONFIG_GET(number/roachcap)
 	if(LAZYLEN(SSmobs.roaches) >= cap)
 		return
 	new /mob/living/simple_animal/hostile/cockroach(get_turf(src))
@@ -146,6 +146,8 @@
 		. += span_danger("...Holy shit, it has [explosive] tied to it!")
 
 /mob/living/simple_animal/hostile/cockroach/death(gibbed)
+	if(GLOB.station_was_nuked) //copied from old roaches. still nuke immune.
+		return
 	if(explosive)
 		//had to add a delayed explosion because roaches were sacrificing themselves on their own bomb
 		var/turf/roach_turf = get_turf(src)

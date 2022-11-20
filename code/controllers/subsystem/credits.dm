@@ -2,8 +2,8 @@ SUBSYSTEM_DEF(credits)
 	name = "Credits"
 	flags = SS_NO_FIRE|SS_NO_INIT
 
-	var/scroll_speed = 7 //Lower is faster.
-	var/splash_time = 4000 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
+	var/scroll_speed = 4 //Lower is faster.
+	var/splash_time = 2750 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
 
 	var/control = "mapwindow.credits" //if updating this, update in credits.html as well
 	var/file = 'code/modules/credits_roll/credits.html'

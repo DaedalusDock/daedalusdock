@@ -17,6 +17,7 @@
 	density = FALSE
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
 	mob_size = MOB_SIZE_TINY
+	mob_biotypes = MOB_ORGANIC
 	gold_core_spawnable = FRIENDLY_SPAWN
 	var/udder = /obj/item/udder/slug
 

@@ -295,7 +295,7 @@
 		target_types += /obj/effect/decal/cleanable/trail_holder
 
 	if(pests)
-		target_types += /mob/living/basic/cockroach
+		target_types += /mob/living/simple_animal/hostile/cockroach
 		target_types += /mob/living/simple_animal/mouse
 
 	if(drawn)

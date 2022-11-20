@@ -8,10 +8,12 @@
 	var/tame_chance
 	///Added success chance after every failed tame attempt.
 	var/bonus_tame_chance
+	///If the mob will copy the tamer's faction
+	var/copy_faction
 	///For effects once soemthing is tamed
 	var/datum/callback/after_tame
 
-/datum/component/tameable/Initialize(food_types, tame_chance, bonus_tame_chance, datum/callback/after_tame)
+/datum/component/tameable/Initialize(food_types, tame_chance, bonus_tame_chance, copy_faction, datum/callback/after_tame)
 	if(!isatom(parent)) //yes, you could make a tameable toolbox.
 		return COMPONENT_INCOMPATIBLE
 
@@ -21,6 +23,8 @@
 		src.tame_chance = tame_chance
 	if(bonus_tame_chance)
 		src.bonus_tame_chance = bonus_tame_chance
+	if(copy_faction)
+		src.copy_faction = copy_faction
 	if(after_tame)
 		src.after_tame = after_tame
 
@@ -42,7 +46,8 @@
 	qdel(food)
 	if(tame)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
-	if (prob(tame_chance)) //note: lack of feedback message is deliberate, keep them guessing!
+	if (prob(tame_chance)) //note: added a tamed message. lack of feedback wasn't great for gameplay.
+		attacker.visible_message(span_notice("[parent] happily eats [food] from [attacker]'s hands."), span_notice("[parent] happily eats [food] from your hands."))
 		on_tame(attacker)
 	else
 		tame_chance += bonus_tame_chance
@@ -57,7 +62,8 @@
 
 	if(ishostile(parent) && isliving(tamer)) //Kinda shit check but this only applies to hostiles atm
 		var/mob/living/simple_animal/hostile/evil_but_now_not_evil = parent
-		evil_but_now_not_evil.friends = tamer
-		evil_but_now_not_evil.faction = tamer.faction.Copy()
+		evil_but_now_not_evil.friends |= tamer
+		if(copy_faction)
+			evil_but_now_not_evil.faction = tamer.faction.Copy()
 
 	qdel(src)

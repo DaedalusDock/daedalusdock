@@ -103,7 +103,7 @@
 	if(istype(I, /obj/item/wirecutters))
 		if(explosive)
 			if(prob(explode_chance + 20))
-				to_chat(user, span_warning("[src] fidgets as you try to disarm it! OH SHIT-"))
+				user.visible_message(span_warning("[src] fidgets as [user] tries to disarm it! OH SHIT-"), span_warning("[src] fidgets as you try to disarm it! OH SHIT-"))
 				death() //cockroach death triggers the bomb
 			to_chat(user, span_notice("You disarm [src]."))
 			var/turf/roach_turf = get_turf(src)
@@ -172,3 +172,23 @@
 /mob/living/simple_animal/hostile/cockroach/bomber/Initialize(mapload)
 	explosive = new /obj/item/grenade/iedcasing/spawned()
 	. = ..()
+
+
+/mob/living/simple_animal/hostile/cockroach/steve
+	name = "Radical Steve"
+	desc = "An exceptionally hungry pest. This one has a label attached that says 'Radical Steve'."
+	faction = list("neutral")
+	var/smokin
+
+/mob/living/simple_animal/hostile/cockroach/steve/attackby(obj/item/I, mob/living/user)
+	if(istype(I, /obj/item/clothing/mask/cigarette))
+		smokin = TRUE //puff that shit little homie
+		update_icon()
+		qdel(I)
+		return
+	return ..()
+
+/mob/living/simple_animal/hostile/cockroach/steve/update_overlays()
+	. = ..()
+	if(smokin)
+		. += mutable_appearance(icon, "cockroach_cig_overlay")

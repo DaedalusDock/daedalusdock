@@ -34,8 +34,6 @@ SUBSYSTEM_DEF(credits)
 	var/drafted = FALSE
 	var/finalized = FALSE
 	var/js_args = list()
-	///A guestimate of how many character names are gonna print.
-	var/rough_lines = 1
 
 /datum/controller/subsystem/credits/proc/compile_credits()
 	set waitfor = FALSE
@@ -92,7 +90,7 @@ SUBSYSTEM_DEF(credits)
 	var/scrollytext = ss_string + episode_string + cast_string + disclaimers_string + fallen_string
 	var/splashytext = producers_string + star_string
 
-	js_args = list(scrollytext, splashytext, theme, scroll_speed, splash_time, rough_lines) //arguments for the makeCredits function back in the javascript
+	js_args = list(scrollytext, splashytext, theme, scroll_speed, splash_time) //arguments for the makeCredits function back in the javascript
 	finalized = TRUE
 
 /*
@@ -224,8 +222,6 @@ SUBSYSTEM_DEF(credits)
 		for(var/name in dead_names)
 			cast_string += "[name]<br>"
 	cast_string += "</div><br>"
-
-	rough_lines = (cast_count || 1) + length(dead_names)
 
 /mob/living/proc/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]

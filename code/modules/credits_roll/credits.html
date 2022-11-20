@@ -105,7 +105,6 @@
 	var splashTime = 2000; //in miliseconds
 	var started = 0;
 	var initialized = 0;
-	var estimated_lines = 0;
 
 	function setScrollingText(text){
 		document.getElementById("marquee").innerHTML = text;
@@ -118,7 +117,6 @@
 	function setupCredits(scrollyString, splashyString, theme, newScrollSpeed, newSplashTime, new_estimated_lines){
 		if(newSplashTime !== undefined) {splashTime = parseInt(newSplashTime)}
 		if(newScrollSpeed !== undefined) {scrollSpeed = parseInt(newScrollSpeed)}
-		if(new_estimated_lines !== undefined) {estimated_lines = parseInt(new_estimated_lines)}
 
 		setScrollingText(scrollyString);
 		setSplashyText(splashyString);

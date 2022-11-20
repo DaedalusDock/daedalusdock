@@ -25,6 +25,8 @@
 	UnregisterSignal(carbon_parent, COMSIG_KB_CARBON_SPRINT_UP)
 
 /datum/component/carbon_sprint/proc/onMobMove(datum/source, list/move_args)
+	SIGNAL_HANDLER
+
 	var/direct = move_args[MOVE_ARG_DIRECTION]
 	if(SEND_SIGNAL(carbon_parent, COMSIG_CARBON_PRE_SPRINT) & INTERRUPT_SPRINT)
 		if(sprinting)
@@ -62,12 +64,16 @@
 		stopSprint()
 
 /datum/component/carbon_sprint/proc/keyDown()
+	SIGNAL_HANDLER
 	sprint_key_down = TRUE
 
 /datum/component/carbon_sprint/proc/keyUp()
+	SIGNAL_HANDLER
 	sprint_key_down = FALSE
 
 /datum/component/carbon_sprint/proc/stopSprint()
+	SIGNAL_HANDLER
+
 	sprinting = FALSE
 	sustained_moves = FALSE
 	last_dust = null

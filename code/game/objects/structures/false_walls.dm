@@ -194,7 +194,7 @@
 	stripe_paint = new_stripe_paint
 	set_materials(plating_mat, reinf_mat)
 
-/// Painfully copypasted from /turf/closed/wall
+/// Painfully copypasted from /turf/closed/wall (Twice!)
 /obj/structure/falsewall/proc/set_materials(plating_mat, reinf_mat)
 	var/datum/material/plating_mat_ref
 	if(plating_mat)
@@ -210,6 +210,14 @@
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
+
+	if(reinf_material)
+		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."
+	else
+		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+	matset_name = name
 
 	update_greyscale()
 	update_appearance()

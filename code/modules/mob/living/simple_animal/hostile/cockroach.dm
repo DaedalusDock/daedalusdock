@@ -123,6 +123,7 @@
 	if(explosive)
 		if(prob(explode_chance))
 			death() //cockroach death triggers the bomb
+			return
 		explode_chance += 1 //+1% chance to explode after every movement
 		playsound(src, 'sound/items/timer.ogg', 50, FALSE)
 
@@ -170,8 +171,8 @@
 /mob/living/simple_animal/hostile/cockroach/bomber
 
 /mob/living/simple_animal/hostile/cockroach/bomber/Initialize(mapload)
-	explosive = new /obj/item/grenade/iedcasing/spawned()
 	. = ..()
+	explosive = new /obj/item/grenade/iedcasing/spawned()
 
 
 /mob/living/simple_animal/hostile/cockroach/steve

@@ -23,8 +23,8 @@
 	COOLDOWN_DECLARE(burrow_cooldown)
 
 /mob/living/simple_animal/hostile/walltick/Initialize(mapload)
-	attempt_burrow()
 	. = ..()
+	attempt_burrow()
 
 /mob/living/simple_animal/hostile/walltick/LosePatience()
 	if(COOLDOWN_FINISHED(src, burrow_cooldown))

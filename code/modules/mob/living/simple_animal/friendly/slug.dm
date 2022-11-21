@@ -22,8 +22,8 @@
 	var/udder = /obj/item/udder/slug
 
 /mob/living/simple_animal/slug/Initialize(mapload)
-	AddComponent(/datum/component/udder, udder, null, null, /datum/reagent/slug_slime)
 	. = ..()
+	AddComponent(/datum/component/udder, udder, null, null, /datum/reagent/slug_slime)
 
 /mob/living/simple_animal/slug/glubby
 	name = "Glubby"

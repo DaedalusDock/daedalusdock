@@ -130,6 +130,12 @@
 			As a result, outer Human space has a high Animalid population.",
 	)
 
+/datum/species/human/felinid/get_scream_sound(mob/living/carbon/human/felinid)
+	return pick(
+		'sound/voice/cat/catscream1.ogg',
+		'sound/voice/cat/catscream2.ogg',
+	)
+
 // Felinids are subtypes of humans.
 // This shouldn't call parent or we'll get a buncha human related perks (though it doesn't have a reason to).
 /datum/species/human/felinid/create_pref_unique_perks()

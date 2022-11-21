@@ -5,7 +5,7 @@
 	anchored = TRUE
 	opacity = FALSE
 	density = TRUE
-	can_atmos_pass = ATMOS_PASS_DENSITY
+	can_atmos_pass = CANPASS_DENSITY
 	/// If set, how long the force field lasts after it's created. Set to 0 to have infinite duration forcefields.
 	var/initial_duration = 30 SECONDS
 
@@ -46,7 +46,7 @@
 	desc = "An unholy shield that blocks all attacks."
 	icon = 'icons/effects/cult/effects.dmi'
 	icon_state = "cultshield"
-	can_atmos_pass = ATMOS_PASS_NO
+	can_atmos_pass = CANPASS_NEVER
 	initial_duration = 20 SECONDS
 
 /// A form of the cult forcefield that lasts permanently.

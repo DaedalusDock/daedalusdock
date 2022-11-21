@@ -2,18 +2,26 @@
 // The proc you should always use to set the light of this atom.
 // Nonesensical value for l_color default, so we can detect if it gets set to null.
 #define NONSENSICAL_VALUE -99999
-/atom/proc/set_light(l_range, l_power, l_color = NONSENSICAL_VALUE, l_on)
+#define DEFAULT_FALLOFF_CURVE 2
+/atom/proc/set_light(l_inner_range, l_outer_range, l_power, l_falloff_curve = DEFAULT_FALLOFF_CURVE l_color = NONSENSICAL_VALUE, l_on)
 	if(l_range > 0 && l_range < MINIMUM_USEFUL_LIGHT_RANGE)
 		l_range = MINIMUM_USEFUL_LIGHT_RANGE //Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
 
-	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT, l_range, l_power, l_color, l_on) & COMPONENT_BLOCK_LIGHT_UPDATE)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT, l_inner_range, l_outer_range, l_power, l_falloff_curve, l_color, l_on) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
 
 	if(!isnull(l_power))
 		set_light_power(l_power)
 
-	if(!isnull(l_range))
-		set_light_range(l_range)
+	if(!isnull(l_inner_range) || !isnull(l_outer_range))
+		if(l_inner_range >= l_outer_range)
+			l_inner_range = l_outer_range / 4
+		set_light_range(l_inner_range, l_outer_range)
+
+	if(l_falloff_curve != NONSENSICAL_VALUE)
+		if(!l_falloff_curve || l_falloff_curve <= 0)
+			l_falloff_curve = DEFAULT_FALLOFF_CURVE
+		set_light_curve(l_falloff_curve)
 
 	if(l_color != NONSENSICAL_VALUE)
 		set_light_color(l_color)
@@ -24,6 +32,7 @@
 	update_light()
 
 #undef NONSENSICAL_VALUE
+#undef DEFAULT_FALLOFF_CURVE
 
 /// Will update the light (duh).
 /// Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
@@ -35,7 +44,7 @@
 	if(light_system != STATIC_LIGHT)
 		CRASH("update_light() for [src] with following light_system value: [light_system]")
 
-	if (!light_power || !light_range || !light_on) // We won't emit light anyways, destroy the light source.
+	if (!light_power || !light_outer_range || !light_on) // We won't emit light anyways, destroy the light source.
 		QDEL_NULL(light)
 	else
 		if (!ismovable(loc)) // We choose what atom should be the top atom of the light here.
@@ -115,14 +124,15 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_POWER, .)
 
 /// Setter for the light range of this atom.
-/atom/proc/set_light_range(new_range)
-	if(new_range == light_range)
+/atom/proc/set_light_range(new_inner_range, new_outer_range)
+	if((new_inner_range == light_inner_range) && (new_outer_range == light_outer_range))
 		return
-	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_RANGE, new_range) & COMPONENT_BLOCK_LIGHT_UPDATE)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_RANGE, new_inner_range, new_outer_range) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
-	. = light_range
-	light_range = new_range
-	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_RANGE, .)
+	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_RANGE, light_inner_range, light_outer_range)
+	light_outer_range = new_outer_range
+	light_inner_name = new_inner_range
+
 
 /// Setter for the light color of this atom.
 /atom/proc/set_light_color(new_color)

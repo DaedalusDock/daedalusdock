@@ -95,7 +95,7 @@
 		cone.transform = cone.transform.Translate(-32, -32)
 		set_direction(movable_parent.dir)
 	if(!isnull(_range))
-		movable_parent.set_light_range(_range)
+		movable_parent.set_light_range(_range,)
 	set_range(parent, movable_parent.light_range)
 	if(!isnull(_power))
 		movable_parent.set_light_power(_power)

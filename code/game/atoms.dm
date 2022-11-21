@@ -89,8 +89,12 @@
 
 	///Light systems, both shouldn't be active at the same time.
 	var/light_system = STATIC_LIGHT
-	///Range of the light in tiles. Zero means no light.
-	var/light_range = 0
+	///Range of the maximum brightness of light in tiles. Zero means no light.
+	var/light_inner_range = 0
+	///Range where light begins to taper into darkness in tiles.
+	var/light_outer_range = 0
+	///Adjusts curve for falloff gradient
+	var/light_falloff_curve
 	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
 	var/light_power = 1
 	///Hexadecimal RGB string representing the colour of the light. White by default.

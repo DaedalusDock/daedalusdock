@@ -11,10 +11,15 @@
 	var/turf/source_turf
 	///The turf the top_atom appears to over.
 	var/turf/pixel_turf
+
 	///Intensity of the emitter light.
 	var/light_power
 	/// The range of the emitted light.
-	var/light_range
+	var/light_inner_range
+	/// Range where light begins to taper into darkness in tiles.
+	var/light_outer_range
+	/// Adjusts curve for falloff gradient
+	var/light_falloff_curve
 	/// The colour of the light, string, decomposed by parse_light_color()
 	var/light_color
 
@@ -49,7 +54,9 @@
 	pixel_turf = get_turf_pixel(top_atom) || source_turf
 
 	light_power = source_atom.light_power
-	light_range = source_atom.light_range
+	light_inner_range = source_atom.light_inner_range
+	light_outer_range = source_atom.light_outer_range
+	light_falloff_curve = source_atom.light_falloff_curve
 	light_color = source_atom.light_color
 
 	PARSE_LIGHT_COLOR(src)
@@ -140,11 +147,17 @@
 // If you're wondering what's with the backslashes, the backslashes cause BYOND to not automatically end the line.
 // As such this all gets counted as a single line.
 // The braces and semicolons are there to be able to do this on a single line.
-#define LUM_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 + LIGHTING_HEIGHT) / max(1, light_range)))
+//#define LUM_FALLOFF(C, T) (1 - CLAMP01(sqrt((C.x - T.x) ** 2 + (C.y - T.y) ** 2 + LIGHTING_HEIGHT) / max(1, light_range)))
+
+// This is the define used to calculate falloff.
+// Assuming a brightness of 1 at range 1, formula should be (brightness = 1 / distance^2)
+// However, due to the weird range factor, brightness = (-(distance - full_dark_start) / (full_dark_start - full_light_end)) ^ light_max_bright
+#define LUM_FALLOFF(C, T)(CLAMP01(-((((C.x - T.x) ** 2 +(C.y - T.y) ** 2) ** 0.5 - light_outer_range) / max(light_outer_range - light_inner_range, 1))) ** light_falloff_curve)
 
 #define APPLY_CORNER(C)                          \
 	. = LUM_FALLOFF(C, pixel_turf);              \
-	. *= light_power;                            \
+	. *= (light_max_bright ** 2);                \
+	. *= light_max_bright < 0 ? -1:1;            \
 	var/OLD = effect_str[C];                     \
 	                                             \
 	C.update_lumcount                            \
@@ -194,15 +207,19 @@
 		light_power = source_atom.light_power
 		update = TRUE
 
-	if (source_atom.light_range != light_range)
-		light_range = source_atom.light_range
+	if (source_atom.light_inner_range != light_inner_range)
+		light_inner_range = source_atom.light_inner_range
+		update = TRUE
+
+	if (source_atom.light_outer_range != light_outer_range)
+		light_outer_range = source_atom.light_outer_range
 		update = TRUE
 
 	if (!top_atom)
 		top_atom = source_atom
 		update = TRUE
 
-	if (!light_range || !light_power)
+	if (!light_outer_range || !light_power)
 		qdel(src)
 		return
 
@@ -226,7 +243,11 @@
 			remove_lum()
 		return
 
-	if (light_range && light_power && !applied)
+	if (source_atom.light_falloff_curve != light_falloff_curve)
+		light_falloff_curve = source_atom.light_falloff_curve
+		update = TRUE
+
+	if (light_outer_range && light_power && !applied)
 		update = TRUE
 
 	if (source_atom.light_color != light_color)

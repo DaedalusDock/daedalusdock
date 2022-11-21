@@ -134,7 +134,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
 	*/
 
-	if (light_power && light_range)
+	if (light_power && light_outer_range)
 		update_light()
 
 	var/turf/T = SSmapping.get_turf_above(src)

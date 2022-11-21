@@ -23,7 +23,7 @@
 		return
 
 	set_light_color(LAZYLEN(SSmapping.nuke_threats) ? LIGHT_COLOR_FLARE : initial(light_color))
-	set_light(1.4, 0.5)
+	set_light(l_outer_range = 1.4, l_power = 0.5)
 
 /turf/open/floor/circuit/update_icon_state()
 	icon_state = on ? (LAZYLEN(SSmapping.nuke_threats) ? "rcircuitanim" : icon_normal) : "[icon_normal]off"

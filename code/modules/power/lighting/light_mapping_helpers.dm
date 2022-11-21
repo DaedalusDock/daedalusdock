@@ -31,13 +31,13 @@
 	bulb_colour = "#FF3232"
 	nightshift_allowed = FALSE
 	no_emergency = TRUE
-	brightness = 4
+	bulb_inner_range = 4
 	bulb_power = 0.7
 
 /obj/machinery/light/blacklight
 	bulb_colour = "#A700FF"
 	nightshift_allowed = FALSE
-	brightness = 4
+	bulb_inner_range = 4
 	bulb_power = 0.8
 
 /obj/machinery/light/dim
@@ -51,8 +51,10 @@
 	icon_state = "bulb"
 	base_state = "bulb"
 	fitting = "bulb"
-	brightness = 4
-	nightshift_brightness = 4
+	bulb_inner_range = 1
+	bulb_outer_range = 5
+	nightshift_inner_range = 0.5
+	nightshift_outer_range = 4
 	bulb_colour = "#FFD6AA"
 	desc = "A small lighting fixture."
 	light_type = /obj/item/light/bulb
@@ -74,13 +76,11 @@
 	bulb_colour = "#FF3232"
 	no_emergency = TRUE
 	nightshift_allowed = FALSE
-	brightness = 2
 	bulb_power = 0.8
 
 /obj/machinery/light/small/blacklight
 	bulb_colour = "#A700FF"
 	nightshift_allowed = FALSE
-	brightness = 2
 	bulb_power = 0.9
 
 // -------- Directional presets

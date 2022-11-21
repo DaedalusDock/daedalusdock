@@ -156,8 +156,8 @@
 
 #define APPLY_CORNER(C)                          \
 	. = LUM_FALLOFF(C, pixel_turf);              \
-	. *= (light_max_bright ** 2);                \
-	. *= light_max_bright < 0 ? -1:1;            \
+	. *= (light_power ** 2);                \
+	. *= light_power < 0 ? -1:1;            \
 	var/OLD = effect_str[C];                     \
 	                                             \
 	C.update_lumcount                            \
@@ -269,8 +269,8 @@
 
 	if (source_turf)
 		var/oldlum = source_turf.luminosity
-		source_turf.luminosity = CEILING(light_range, 1)
-		for(var/turf/T in view(CEILING(light_range, 1), source_turf))
+		source_turf.luminosity = CEILING(light_outer_range, 1)
+		for(var/turf/T in view(CEILING(light_outer_range, 1), source_turf))
 			if(!IS_OPAQUE_TURF(T))
 				if (!T.lighting_corners_initialised)
 					T.generate_missing_corners()

@@ -243,7 +243,7 @@
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_system == STATIC_LIGHT && light_power && light_range)
+	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
 	if (length(smoothing_groups))
@@ -1158,9 +1158,13 @@
  */
 /atom/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, light_range))
+		if(NAMEOF(src, light_inner_range))
 			if(light_system == STATIC_LIGHT)
-				set_light(l_range = var_value)
+				set_light(l_inner_range = var_value)
+				. = TRUE
+		if(NAMEOF(src, light_outer_range))
+			if(light_system == STATIC_LIGHT)
+				set_light(l_outer_range = var_value)
 			else
 				set_light_range(var_value)
 			. = TRUE

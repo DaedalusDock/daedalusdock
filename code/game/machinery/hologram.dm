@@ -511,7 +511,7 @@ Possible to do for anyone motivated enough:
 		Hologram.plane = ABOVE_GAME_PLANE
 		Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 		Hologram.name = "[user.name] (Hologram)"//If someone decides to right click.
-		Hologram.set_light(2) //hologram lighting
+		Hologram.set_light(l_outer_range = 2) //hologram lighting
 		move_hologram()
 
 		set_holo(user, Hologram)
@@ -548,9 +548,9 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	update_use_power(total_users > 0 ? ACTIVE_POWER_USE : IDLE_POWER_USE)
 	update_mode_power_usage(ACTIVE_POWER_USE, active_power_usage + HOLOPAD_PASSIVE_POWER_USAGE + (HOLOGRAM_POWER_USAGE * total_users))
 	if(total_users || replay_mode)
-		set_light(2)
+		set_light(l_outer_range = 2)
 	else
-		set_light(0)
+		set_light(l_outer_range = 2)
 	update_appearance()
 
 /obj/machinery/holopad/update_icon_state()
@@ -689,7 +689,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	Hologram.plane = ABOVE_GAME_PLANE
 	Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 	Hologram.name = "[record.caller_name] (Hologram)"//If someone decides to right click.
-	Hologram.set_light(2) //hologram lighting
+	Hologram.set_light(l_outer_range = 2) //hologram lighting
 	visible_message(span_notice("A holographic image of [record.caller_name] flickers to life before your eyes!"))
 	return Hologram
 

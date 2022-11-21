@@ -131,7 +131,7 @@ Striking a noncultist, however, will tear their flesh."}
 	throw_range = 3
 	sharpness = SHARP_EDGED
 	light_system = MOVABLE_LIGHT
-	light_range = 4
+	light_outer_range = 4
 	light_color = COLOR_RED
 	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
 	attack_verb_simple = list("cleave", "slash", "tear", "lacerate", "hack", "rip", "dice", "carve")
@@ -652,7 +652,7 @@ Striking a noncultist, however, will tear their flesh."}
 	name = "void torch"
 	desc = "Used by veteran cultists to instantly transport items to their needful brethren."
 	w_class = WEIGHT_CLASS_SMALL
-	light_range = 1
+	light_outer_range = 1
 	icon_state = "torch"
 	inhand_icon_state = "torch"
 	color = "#ff0000"

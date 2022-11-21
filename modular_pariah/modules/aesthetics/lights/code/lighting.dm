@@ -12,7 +12,8 @@
 	turning_on = FALSE
 	if(!on)
 		return
-	var/BR = brightness
+	var/OR = bulb_outer_range
+	var/IR = bulb_inner_range
 	var/PO = bulb_power
 	var/CO = bulb_colour
 	if(color)
@@ -20,11 +21,12 @@
 	if (firealarm)
 		CO = bulb_emergency_colour
 	else if (nightshift_enabled)
-		BR = nightshift_brightness
+		OR = nightshift_outer_range
+		IR = nightshift_inner_range
 		PO = nightshift_light_power
 		if(!color)
 			CO = nightshift_light_color
-	var/matching = light && BR == light.light_range && PO == light.light_power && CO == light.light_color
+	var/matching = light && OR == light.light_outer_range && IR == light.light_inner_range && PO == light.light_power && CO == light.light_color
 	if(!matching)
 		switchcount++
 		if(rigged)
@@ -35,7 +37,7 @@
 				burn_out()
 		else
 			use_power = ACTIVE_POWER_USE
-			set_light(BR, PO, CO)
+			set_light(l_outer_range = OR, l_inner_range = IR, l_power = PO, l_color = CO)
 			if(play_sound)
 				playsound(src.loc, 'modular_pariah/modules/aesthetics/lights/sound/light_on.ogg', 65, 1)
 

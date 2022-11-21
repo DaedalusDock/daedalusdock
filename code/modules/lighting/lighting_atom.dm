@@ -3,9 +3,9 @@
 // Nonesensical value for l_color default, so we can detect if it gets set to null.
 #define NONSENSICAL_VALUE -99999
 #define DEFAULT_FALLOFF_CURVE 2
-/atom/proc/set_light(l_inner_range, l_outer_range, l_power, l_falloff_curve = DEFAULT_FALLOFF_CURVE l_color = NONSENSICAL_VALUE, l_on)
-	if(l_range > 0 && l_range < MINIMUM_USEFUL_LIGHT_RANGE)
-		l_range = MINIMUM_USEFUL_LIGHT_RANGE //Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
+/atom/proc/set_light(l_outer_range, l_inner_range, l_power, l_falloff_curve = DEFAULT_FALLOFF_CURVE, l_color = NONSENSICAL_VALUE, l_on)
+	if(l_outer_range > 0 && l_outer_range < MINIMUM_USEFUL_LIGHT_RANGE)
+		l_outer_range = MINIMUM_USEFUL_LIGHT_RANGE //Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
 
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT, l_inner_range, l_outer_range, l_power, l_falloff_curve, l_color, l_on) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
@@ -131,7 +131,7 @@
 		return
 	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_RANGE, light_inner_range, light_outer_range)
 	light_outer_range = new_outer_range
-	light_inner_name = new_inner_range
+	light_inner_range = new_inner_range
 
 
 /// Setter for the light color of this atom.
@@ -155,10 +155,10 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_ON, .)
 
 /// Setter for this atom's light falloff curve.
-/atom/proc/set_light_falloff(new_curve)
+/atom/proc/set_light_curve(new_curve)
 	if(new_curve == light_falloff_curve)
 		return
-	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_CURVE, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_CURVE, new_curve) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
 	. = light_falloff_curve
 	light_falloff_curve = new_curve

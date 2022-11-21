@@ -28,7 +28,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	anchored = FALSE
 	density = TRUE
 	light_system = MOVABLE_LIGHT //Used as a flash here.
-	light_range = FLASH_LIGHT_RANGE
+	light_outer_range = FLASH_LIGHT_RANGE
 	light_on = FALSE
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor

@@ -9,7 +9,7 @@
 	icon_state = "bhole3"
 	density = FALSE
 	anchored = TRUE
-	light_range = 3
+	light_outer_range = 3
 
 	var/obj/item/assembly/signaler/anomaly/aSignal = /obj/item/assembly/signaler/anomaly
 	var/area/impact_area

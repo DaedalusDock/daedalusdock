@@ -154,6 +154,16 @@
 	light_on = new_value
 	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_ON, .)
 
+/// Setter for this atom's light falloff curve.
+/atom/proc/set_light_falloff(new_curve)
+	if(new_curve == light_falloff_curve)
+		return
+	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_CURVE, new_value) & COMPONENT_BLOCK_LIGHT_UPDATE)
+		return
+	. = light_falloff_curve
+	light_falloff_curve = new_curve
+	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_CURVE, .)
+
 /// Setter for the light flags of this atom.
 /atom/proc/set_light_flags(new_value)
 	if(new_value == light_flags)

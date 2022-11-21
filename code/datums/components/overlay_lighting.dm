@@ -96,7 +96,7 @@
 		set_direction(movable_parent.dir)
 	if(!isnull(_range))
 		movable_parent.set_light_range(_range, _range)
-	set_range(parent, movable_parent.light_outer_range)
+	set_range(parent, movable_parent.light_inner_range, movable_parent.light_outer_range)
 	if(!isnull(_power))
 		movable_parent.set_light_power(_power)
 	set_power(parent, movable_parent.light_power)

@@ -94,7 +94,7 @@
 	///Range where light begins to taper into darkness in tiles.
 	var/light_outer_range = 0
 	///Adjusts curve for falloff gradient
-	var/light_falloff_curve
+	var/light_falloff_curve = 2
 	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
 	var/light_power = 1
 	///Hexadecimal RGB string representing the colour of the light. White by default.

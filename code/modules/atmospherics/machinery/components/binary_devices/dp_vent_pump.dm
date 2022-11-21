@@ -85,8 +85,7 @@
 		if(draw > -1)
 			var/datum/pipeline/parent1 = parents[1]
 			parent1.update = TRUE
-			if(draw > 0)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 
 	else //external -> output
 		var/pressure_delta = 10000

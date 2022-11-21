@@ -124,8 +124,7 @@
 			if(draw == -1)
 				if(can_hibernate)
 					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 			update_parents()
 
 		else //external -> internal
@@ -137,8 +136,7 @@
 			if(draw == -1)
 				if(can_hibernate)
 					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 
 			update_parents()
 

@@ -72,8 +72,7 @@
 	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
 	if(draw > -1)
 		update_parents()
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		ATMOS_USE_POWER(draw)
 
 
 /**

@@ -680,6 +680,7 @@ SUBSYSTEM_DEF(ticker)
 		"raw" = TRUE,
 		"wma" = TRUE,
 		"aiff" = TRUE,
+		"mp3" = TRUE,
 	)
 
 	var/list/music_data = list()

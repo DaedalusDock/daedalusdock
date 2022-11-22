@@ -20,6 +20,7 @@
 	var/flipped = 0
 	var/mode = CIRCULATOR_HOT
 	var/obj/machinery/power/generator/generator
+	var/color_index = 1
 
 /obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
 	if(!anchored)
@@ -88,20 +89,28 @@
 	icon_state = "circ-off-[flipped]"
 	return ..()
 
+/obj/machinery/atmospherics/components/binary/circulator/update_overlays()
+	. = ..()
+	if(!initial(icon))
+		return
+	var/mutable_appearance/circ_overlay = new(initial(icon))
+	. += get_pipe_image(circ_overlay, "pipe", turn(dir, 90), pipe_color, piping_layer)
+	switch(mode)
+		if(CIRCULATOR_HOT)
+			. += mutable_appearance(icon, "circ-ohot")
+		if(CIRCULATOR_COLD)
+			. += mutable_appearance(icon, "circ-ocold")
+
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(!panel_open)
-		to_chat(user, span_notice("Open [src]'s panel first!"))
-		return TRUE
-	default_change_direction_wrench(user, I)
+	I.play_tool_sound(src)
+	setDir(turn(dir,-90))
+	to_chat(user, span_notice("You rotate [src]."))
 	reset_connections()
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act_secondary(mob/living/user, obj/item/I)
 	. = ..()
-	if(!panel_open)
-		to_chat(user, span_notice("Open [src]'s panel first!"))
-		return TRUE
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
 	if(generator)
@@ -158,20 +167,31 @@
 		return ..(target)
 	return FALSE
 
-/obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/I)
-	if(generator)
-		disconnectFromGenerator()
-	mode = !mode
-	to_chat(user, span_notice("You set [src] to [mode?"cold":"hot"] mode."))
-	return TRUE
+/obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/multitool/I)
+	piping_layer = (piping_layer >= PIPING_LAYER_MAX) ? PIPING_LAYER_MIN : (piping_layer + 1)
+	to_chat(user, span_notice("You change the circuitboard to layer [piping_layer]."))
+	reset_connections()
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/atmospherics/components/binary/circulator/multitool_act_secondary(mob/living/user, obj/item/I)
+	color_index = (color_index >= GLOB.pipe_paint_colors.len) ? (color_index = 1) : (color_index = 1 + color_index)
+	pipe_color = GLOB.pipe_paint_colors[GLOB.pipe_paint_colors[color_index]]
+	visible_message("<span class='notice'>You set [src]'s pipe color to [GLOB.pipe_color_name[pipe_color]].")
+	reset_connections()
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/living/user, obj/item/I)
 	if(..())
 		return TRUE
-	panel_open = !panel_open
+	if(generator)
+		disconnectFromGenerator()
+	mode = !mode
+	to_chat(user, span_notice("You switch [src] to [mode ? "cold" : "hot"] mode."))
 	I.play_tool_sound(src)
-	to_chat(user, span_notice("You [panel_open?"open":"close"] the panel on [src]."))
-	return TRUE
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/circulator/welder_act(mob/living/user, obj/item/I)
 	if(atom_integrity >= max_integrity)
@@ -216,7 +236,6 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
 	. = ..()
-	. += span_notice("With the panel open:")
 	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
 	. += span_notice(" -Use a multitool to toggle hot or cold mode.")
 	. += span_notice("Its outlet port is to the [dir2text(flipped ? (turn(dir, 270)) : (turn(dir, 90)))].")

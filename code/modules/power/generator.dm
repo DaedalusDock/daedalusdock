@@ -41,11 +41,13 @@
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 
-	var/L = min(round(lastgenlev / 100000), 11)
+	var/L = min(round(lastgenlev / 100000), 8)
 	if(L != 0)
-		. += mutable_appearance('icons/obj/power.dmi', "teg-op[L]")
+		. += mutable_appearance(icon, "teg-op[L]")
+		. += emissive_appearance(icon, "teg-op[L]")
 	if(hot_circ && cold_circ)
-		. += "teg-oc[lastcirc]"
+		. += mutable_appearance(icon, "teg-oc[lastcirc]")
+		. += emissive_appearance(icon, "teg-oc[lastcirc]")
 
 
 #define GENRATE 800 // generator output coefficient from Q
@@ -152,8 +154,12 @@
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
 	find_circs()
-	if(!cold_circ || !hot_circ)
-		to_chat(user, span_notice("Secure [src] first!"))
+	if(!hot_circ)
+		to_chat(user, span_notice("Could not find hot circulator!"))
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
+	if(!cold_circ)
+		to_chat(user, span_notice("Could not find cold circulator!"))
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
 	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
@@ -196,30 +202,20 @@
 
 /obj/machinery/power/generator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(!panel_open)
-		to_chat(user, span_notice("Open [src]'s panel first!"))
-		return TRUE
-	return default_change_direction_wrench(user, I)
+	. = ..()
+	I.play_tool_sound(src)
+	setDir(turn(dir,-90))
+	to_chat(user, span_notice("You rotate [src]."))
+	return TRUE
 
 /obj/machinery/power/generator/wrench_act_secondary(mob/living/user, obj/item/I)
 	. = ..()
-	if(!panel_open)
-		to_chat(user, span_notice("Open [src]'s panel first!"))
-		return TRUE
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
 	if(!anchored)
 		kill_circs()
 	connect_to_network()
 	to_chat(user, span_notice("You [anchored?"secure":"unsecure"] [src]."))
-	return TRUE
-
-/obj/machinery/power/generator/screwdriver_act(mob/user, obj/item/I)
-	if(..())
-		return TRUE
-	panel_open = !panel_open
-	I.play_tool_sound(src)
-	to_chat(user, span_notice("You [panel_open?"open":"close"] the panel on [src]."))
 	return TRUE
 
 /obj/machinery/power/generator/welder_act(mob/living/user, obj/item/I)
@@ -244,5 +240,4 @@
 
 /obj/machinery/power/generator/examine(mob/user)
 	. = ..()
-	. += span_notice("With the panel open:")
-	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
+	. += span_notice("Use a wrench with left-click to rotate [src] and right-click to unanchor it.")

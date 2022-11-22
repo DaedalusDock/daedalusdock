@@ -53,6 +53,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define GAS_PIPE_VISIBLE_LAYER 2.47 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define GAS_FILTER_LAYER 2.48
 #define GAS_PUMP_LAYER 2.49
+#define BOT_PATH_LAYER 2.491
 #define LOW_OBJ_LAYER 2.5
 ///catwalk overlay of /turf/open/floor/plating/catwalk_floor
 #define CATWALK_LAYER 2.51

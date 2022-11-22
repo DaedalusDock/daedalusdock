@@ -95,11 +95,7 @@
 		return
 	var/mutable_appearance/circ_overlay = new(initial(icon))
 	. += get_pipe_image(circ_overlay, "pipe", turn(dir, 90), pipe_color, piping_layer)
-	switch(mode)
-		if(CIRCULATOR_HOT)
-			. += mutable_appearance(icon, "circ-ohot")
-		if(CIRCULATOR_COLD)
-			. += mutable_appearance(icon, "circ-ocold")
+	. += mutable_appearance(icon, (mode ? "circ-ocold" : "circ-ohot"))
 
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
@@ -236,6 +232,8 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
 	. = ..()
-	. += span_notice(" -Use a wrench with left-click to rotate [src] and right-click to unanchor it.")
-	. += span_notice(" -Use a multitool to toggle hot or cold mode.")
+	. += span_notice(" -Use a wrench with left-click to rotate it and right-click to unanchor it.")
+	. += span_notice(" -Use a screwdriver to toggle hot/cold mode.")
+	. += span_notice(" -Use a multitool with left-click to change pipe layer and right-click to change pipe color.")
 	. += span_notice("Its outlet port is to the [dir2text(flipped ? (turn(dir, 270)) : (turn(dir, 90)))].")
+	. += span_notice("It is on [mode ? "cold" : "hot"] mode.")

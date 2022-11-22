@@ -435,7 +435,7 @@
 	icon_state = "rwindow"
 	reinf = TRUE
 	heat_resistance = 1600
-	armor = list(MELEE = 80, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
+	armor = list(MELEE = 30, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 	max_integrity = 75
 	explosion_block = 1
 	damage_deflection = 11
@@ -549,7 +549,7 @@
 	icon_state = "plasmawindow"
 	reinf = FALSE
 	heat_resistance = 25000
-	armor = list(MELEE = 80, BULLET = 5, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
+	armor = list(MELEE = 60, BULLET = 5, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 200
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/plasmaglass

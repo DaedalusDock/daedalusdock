@@ -22,14 +22,16 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 6
+	var/bulb_outer_range = 7
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 2
+	var/bulb_inner_range = 1.5
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 0.8
+	var/bulb_power = 1
+	///The falloff of the emitted light. Adjust until it looks good.
+	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
 
 	///Default colour of the light.
-	var/bulb_colour = "#fffee0"
+	var/bulb_colour = "#f2f9f7"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -51,20 +53,21 @@
 	///Set to FALSE to never let this light get switched to night mode.
 	var/nightshift_allowed = TRUE
 	///Outer radius of the nightshift light
-	var/nightshift_outer_range = 5
+	var/nightshift_outer_range = 6
 	///Inner, brightest radius of the nightshift light
-	var/nightshift_inner_range = 1
+	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.45
+	var/nightshift_light_power = 0.85
 	///Basecolor of the nightshift light
 	var/nightshift_light_color = "#FFDDCC"
+	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
 	///If true, this light cannot ever have an emergency mode
 	var/no_emergency = FALSE
 	///Multiplier for this light's base brightness in emergency power mode
-	var/bulb_emergency_brightness_mul = 0.6
+	var/bulb_emergency_brightness_mul = 0.8
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
@@ -612,5 +615,41 @@
 	light_type = /obj/item/light/bulb
 	fitting = "bulb"
 
-	bulb_inner_range = 4
+	bulb_inner_range = 0.5
 	bulb_outer_range = 5
+
+	bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 0.5
+
+	nightshift_inner_range = 0.5
+	nightshift_outer_range = 5
+	nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 1
+	nightshift_light_power = 1
+	nightshift_light_color = "#f2f9f7"
+
+
+/obj/item/debuglights
+	///The outer radius of the light's... light.
+	var/bulb_outer_range = 7
+	///The inner radius of the bulb's light, where it is at maximum brightness
+	var/bulb_inner_range = 1.5
+	///Basically the alpha of the emitted light source
+	var/bulb_power = 1
+	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	///Default colour of the light.
+	var/bulb_colour = "#f2f9f7"
+
+/obj/item/debuglights/Initialize(mapload)
+	. = ..()
+	var/obj/machinery/light/model_light = /obj/machinery/light
+	bulb_outer_range = initial(model_light.bulb_outer_range)
+	bulb_inner_range = initial(model_light.bulb_inner_range)
+	bulb_power = initial(model_light.bulb_power)
+	bulb_falloff = initial(model_light.bulb_falloff)
+	bulb_colour = initial(model_light.bulb_colour)
+
+/obj/item/debuglights/attack_self(mob/user, modifiers)
+	set waitfor = FALSE
+	for(var/obj/machinery/light/L in range(40, user))
+		L.set_light(bulb_outer_range, bulb_inner_range, bulb_power, bulb_falloff, bulb_colour)
+		CHECK_TICK
+

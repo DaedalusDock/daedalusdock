@@ -19,7 +19,7 @@
 	/// Range where light begins to taper into darkness in tiles.
 	var/light_outer_range
 	/// Adjusts curve for falloff gradient
-	var/light_falloff_curve = 2
+	var/light_falloff_curve = LIGHTING_DEFAULT_FALLOFF_CURVE
 	/// The colour of the light, string, decomposed by parse_light_color()
 	var/light_color
 

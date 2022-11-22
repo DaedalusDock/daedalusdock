@@ -2,8 +2,7 @@
 // The proc you should always use to set the light of this atom.
 // Nonesensical value for l_color default, so we can detect if it gets set to null.
 #define NONSENSICAL_VALUE -99999
-#define DEFAULT_FALLOFF_CURVE 2
-/atom/proc/set_light(l_outer_range, l_inner_range, l_power, l_falloff_curve = DEFAULT_FALLOFF_CURVE, l_color = NONSENSICAL_VALUE, l_on)
+/atom/proc/set_light(l_outer_range, l_inner_range, l_power, l_falloff_curve = LIGHTING_DEFAULT_FALLOFF_CURVE, l_color = NONSENSICAL_VALUE, l_on)
 	if(l_outer_range > 0 && l_outer_range < MINIMUM_USEFUL_LIGHT_RANGE)
 		l_outer_range = MINIMUM_USEFUL_LIGHT_RANGE //Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
 
@@ -20,7 +19,7 @@
 
 	if(l_falloff_curve != NONSENSICAL_VALUE)
 		if(!l_falloff_curve || l_falloff_curve <= 0)
-			l_falloff_curve = DEFAULT_FALLOFF_CURVE
+			l_falloff_curve = LIGHTING_DEFAULT_FALLOFF_CURVE
 		set_light_curve(l_falloff_curve)
 
 	if(l_color != NONSENSICAL_VALUE)
@@ -32,7 +31,6 @@
 	update_light()
 
 #undef NONSENSICAL_VALUE
-#undef DEFAULT_FALLOFF_CURVE
 
 /// Will update the light (duh).
 /// Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
@@ -125,14 +123,21 @@
 
 /// Setter for the light range of this atom.
 /atom/proc/set_light_range(new_inner_range, new_outer_range)
+	if(isnull(new_inner_range) && new_outer_range)
+		new_inner_range = new_outer_range/4
+	if(isnull(new_outer_range) && new_inner_range)
+		new_outer_range = new_inner_range
+
 	if((new_inner_range == light_inner_range) && (new_outer_range == light_outer_range))
 		return
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT_RANGE, new_inner_range, new_outer_range) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
-	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_RANGE, light_inner_range, light_outer_range)
+	var/old_outer_range = light_outer_range
+	var/old_inner_range = light_inner_range
+
 	light_outer_range = new_outer_range
 	light_inner_range = new_inner_range
-
+	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_LIGHT_RANGE, old_inner_range, old_outer_range)
 
 /// Setter for the light color of this atom.
 /atom/proc/set_light_color(new_color)

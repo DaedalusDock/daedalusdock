@@ -10953,7 +10953,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/light/floor,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cST" = (
@@ -51675,6 +51674,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "rJV" = (
@@ -53202,6 +53202,10 @@
 	},
 /turf/open/floor/plating/airless,
 /area/maintenance/space_hut)
+"soh" = (
+/obj/machinery/light/floor,
+/turf/open/floor/iron/white,
+/area/medical/chemistry)
 "soq" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -59935,6 +59939,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "uYL" = (
@@ -67290,6 +67295,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/science/lab)
+"xHm" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted,
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron/white,
+/area/medical/chemistry)
 "xHA" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -93406,7 +93416,7 @@ mVm
 hUr
 cmB
 cmB
-cmB
+soh
 cmB
 cRb
 fJw
@@ -93670,7 +93680,7 @@ lsv
 xde
 bcX
 cmB
-fDw
+xHm
 ueQ
 bNy
 euP
@@ -94434,7 +94444,7 @@ nzJ
 cmB
 cmB
 cmB
-cmB
+soh
 cmB
 nvq
 piR

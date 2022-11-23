@@ -617,7 +617,7 @@
 
 	bulb_inner_range = 0.5
 	bulb_outer_range = 5
-
+	// Floor lights use a steep falloff because they're pointing at the ceiling, they diffuse sharply as a result.
 	bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 0.5
 
 	nightshift_inner_range = 0.5

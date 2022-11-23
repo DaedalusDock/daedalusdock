@@ -45,25 +45,36 @@
 	var/random_color = TRUE
 	/// The chance for a rare color variant
 	var/rarechance = 1
+	// The color of this specific carp
+	var/our_color
+	// If the carp gets a sparkle effect
+	var/shiny = FALSE
 	/// List of usual carp colors
 	var/static/list/carp_colors = list(
-		"lightpurple" = "#aba2ff",
-		"lightpink" = "#da77a8",
-		"green" = "#70ff25",
-		"grape" = "#df0afb",
-		"swamp" = "#e5e75a",
-		"turquoise" = "#04e1ed",
-		"brown" = "#ca805a",
-		"teal" = "#20e28e",
-		"lightblue" = "#4d88cc",
-		"rusty" = "#dd5f34",
-		"lightred" = "#fd6767",
-		"yellow" = "#f3ca4a",
-		"blue" = "#09bae1",
-		"palegreen" = "#7ef099"
+		"light purple" = "#c3a2ff",
+		"light pink" = "#da77a8",
+		"dark pink" = "#aa336a",
+		"mauve" = "#e0b0ff",
+		"puce" = "#a95c68",
+		"periwinkle" = "#aeaef0",
+		"purple" = "#800080",
+		"grape" = "#b339c4",
+		"light violet" = "#cf9fff",
+		"violet" = "#7f00ff",
+		"iris" = "#5d3fd3",
+		"orchid" = "#da70d6",
+		"eggplant" = "#684a68",
+		"plum" = "#673147",
+		"red purple" = "#953553",
+		"burgundy" = "#800020"
 	)
 	/// List of rare carp colors
 	var/static/list/carp_colors_rare = list(
+		"turquoise" = "#04e1ed",
+		"golden" = "#ffc61b",
+		"blue" = "#09bae1",
+		"teal" = "#20e28e",
+		"green" = "#70ff25",
 		"silver" = "#fdfbf3"
 	)
 
@@ -72,6 +83,7 @@
 	if(random_color)
 		set_greyscale(new_config=/datum/greyscale_config/carp)
 		carp_randomify(rarechance)
+		update_icon()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
@@ -107,18 +119,44 @@
  * * rare The chance of the carp receiving color from the rare color variant list
  */
 /mob/living/simple_animal/hostile/carp/proc/carp_randomify(rarechance)
-	var/our_color
 	if(prob(rarechance))
 		our_color = pick(carp_colors_rare)
 		set_greyscale(colors=list(carp_colors_rare[our_color]))
+		name = "shiny [name]"
+		shiny = TRUE
+		particles = new /particles/sparkles
 	else
 		our_color = pick(carp_colors)
 		set_greyscale(colors=list(carp_colors[our_color]))
+
+/mob/living/simple_animal/hostile/carp/death(gibbed)
+	if(shiny)
+		QDEL_NULL(particles)
+	return ..()
+
+
+/particles/sparkles
+	icon = 'icons/effects/particles/sparkles.dmi'
+	icon_state = list("sparkle_1" = 1, "sparkle_2" = 1)
+	width = 100
+	height = 100
+	count = 1000
+	spawning = 0.5
+	lifespan = 1.5 SECONDS
+	fade = 1 SECONDS
+	velocity = generator("circle", -1, 1, NORMAL_RAND)
+	position = generator("box", list(-9, -9, NORMAL_RAND), list(9, 9, NORMAL_RAND))
+	grow = -0.05
 
 /mob/living/simple_animal/hostile/carp/revive(full_heal = FALSE, admin_revive = FALSE)
 	. = ..()
 	if(.)
 		update_icon()
+
+/mob/living/simple_animal/hostile/carp/examine(mob/user)
+	. = ..()
+	if(random_color)
+		. += span_notice("Oh, [p_their()] scales are [our_color][shiny ? "!" : "."]")
 
 /mob/living/simple_animal/hostile/carp/proc/chomp_plastic()
 	var/obj/item/storage/cans/tasty_plastic = locate(/obj/item/storage/cans) in view(1, src)
@@ -134,6 +172,16 @@
 	. = ..()
 	if(stat == CONSCIOUS)
 		chomp_plastic()
+
+/mob/living/simple_animal/hostile/carp/update_overlays()
+	. = ..()
+	if(stat == CONSCIOUS)
+		. += mutable_appearance('icons/mob/carp.dmi', "eyes_overlay")
+
+
+/mob/living/simple_animal/hostile/carp/shiny
+	rarechance = 100//guarenteed rare color
+
 
 /mob/living/simple_animal/hostile/carp/holocarp
 	icon_state = "holocarp"

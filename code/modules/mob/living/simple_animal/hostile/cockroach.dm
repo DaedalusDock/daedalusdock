@@ -118,8 +118,9 @@
 	playsound(src, 'sound/creatures/roach_scuttle.ogg', 50, FALSE)
 	if(burner)
 		//currently on fire.
-		var/turf/fire_turf = get_turf(src)
-		addtimer(CALLBACK(src, .proc/setFire, fire_turf), 0.6 SECONDS)
+		var/turf/fire_turf = get_turf(old_loc)
+		if(fire_turf)
+			setFire(fire_turf)
 	if(explosive)
 		if(prob(explode_chance))
 			death() //cockroach death triggers the bomb

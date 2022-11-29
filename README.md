@@ -7,7 +7,7 @@
 * **Website:** https://daedalus13.net
 * **Code:** https://github.com/DaedalusDock/Gameserver
 * **Wiki:** https://wiki.daedalus13.net/Main_Page
-<!-- * **Codedocs:** https://codedocs.tgstation13.org/ -->
+* **Codedocs:** https://codedoc.daedalus13.net/
 * **Daedalus Dock Discord:** https://discord.gg/bttwJmfznH
 * **Coderbus Discord:** https://discord.gg/Vh8TJp9
 

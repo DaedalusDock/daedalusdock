@@ -169,7 +169,6 @@
 	desc = "A makeshift titanium-infused glass shiv."
 	throwforce = 14
 	throw_range = 7
-	wound_bonus = 10
 	armor = list(MELEE = 25, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	custom_materials = list(/datum/material/glass=400, /datum/material/titanium=200)
 
@@ -182,8 +181,6 @@
 	throwforce = 15
 	throw_speed = 4
 	throw_range = 8
-	wound_bonus = 10
-	bare_wound_bonus = 20
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 0, FIRE = 75, ACID = 75)
 	custom_materials = list(/datum/material/glass=400, /datum/material/alloy/plastitanium=200)
 

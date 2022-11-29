@@ -50,7 +50,6 @@
 			throwforce = 21
 			throw_range = 8
 			throw_speed = 5
-			wound_bonus = -10
 			icon_prefix = "speartitanium"
 			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=18, icon_wielded="[icon_prefix]1")
 		else if (istype(tip, /obj/item/shard/plastitanium))
@@ -58,8 +57,6 @@
 			throwforce = 22
 			throw_range = 9
 			throw_speed = 5
-			wound_bonus = -10
-			bare_wound_bonus = 20
 			icon_prefix = "spearplastitanium"
 			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=20, icon_wielded="[icon_prefix]1")
 		update_appearance()

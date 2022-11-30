@@ -13,8 +13,6 @@
 
 This is the codebase for the nightmare amalgamation of /TG/station, Goonstation, and Baystation12 codebases for the game Space Station 13.
 
-Space Station 13 is a paranoia-laden round-based roleplaying game set against the backdrop of a nonsensical, metal death trap masquerading as a space station, with charming spritework designed to represent the sci-fi setting and its dangerous undertones. Have fun, and survive!
-
 Space Station 13 is a round-based roleplaying game set on a cassette-futuristic station where every job from Clown to Head of Security is played by users. Watch out for shifty individuals, as you may be subject to kidnapping, blood sacrifice, murder, or a dock in pay from a particularly upset Head of Personnel.
 
 ## DOWNLOADING

@@ -37,8 +37,9 @@
 	var/static/list/neighbor_typecache
 
 /obj/structure/falsewall/Initialize()
+	color = null //Clear the mapaid color. This should hopefully not cause problems.
+	//This has to be stripped before the supercall so it doesn't end up in atom_colours.
 	. = ..()
-	color = null //Clear the color that's a mapping aid
 	update_nearby_tiles()
 	set_wall_information(plating_material, reinf_material, wall_paint, stripe_paint)
 

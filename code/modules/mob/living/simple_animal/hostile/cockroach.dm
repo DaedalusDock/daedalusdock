@@ -152,7 +152,7 @@
 		//had to add a delayed explosion because roaches were sacrificing themselves on their own bomb
 		var/turf/roach_turf = get_turf(src)
 		explosive.forceMove(roach_turf)
-		addtimer(CALLBACK(explosive, /obj/item/grenade/.proc/detonate), 0.1 SECONDS)
+		INVOKE_ASYNC(explosive, /obj/item/grenade/.proc/detonate)
 		visible_message(span_warning("[src]'s [explosive] goes off!"))
 		return ..()
 	return ..()
@@ -164,6 +164,9 @@
 	if(explosive)
 		. += mutable_appearance(icon, "cockroach_bomb_overlay")
 
+/mob/living/simple_animal/hostile/cockroach/Destroy()
+	explosive = null
+	. = ..()
 
 /mob/living/simple_animal/hostile/cockroach/sterile
 	sterile = TRUE //won't reproduce
@@ -174,6 +177,7 @@
 /mob/living/simple_animal/hostile/cockroach/bomber/Initialize(mapload)
 	. = ..()
 	explosive = new /obj/item/grenade/iedcasing/spawned()
+	update_icon()
 
 
 /mob/living/simple_animal/hostile/cockroach/steve

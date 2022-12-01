@@ -425,6 +425,12 @@
 			return 'sound/emotes/male/male_sniff.ogg'
 		return 'sound/emotes/female/female_sniff.ogg'
 
+/datum/emote/living/carbon/human/sniff/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(.)
+		var/mob/living/L = user
+		COOLDOWN_RESET(L, smell_time)
+
 /datum/emote/living/snore
 	key = "snore"
 	key_third_person = "snores"

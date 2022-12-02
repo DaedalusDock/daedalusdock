@@ -312,15 +312,16 @@
 	add_fingerprint(user)
 
 /obj/item/storage/briefcase/inflatable
-	name = "inflatable barrier box"
-	desc = "Contains inflatable walls and doors. THE SPRITE IS A PLACEHOLDER, OKAY?"
+	name = "inflatable barrier case"
+	desc = "A carrying case for inflatable walls and doors."
+	icon_state = "inflatable"
 	w_class = WEIGHT_CLASS_NORMAL
 	max_integrity = 150
 	force = 8
 	hitsound = SFX_SWING_HIT
 	throw_speed = 2
 	throw_range = 4
-	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 3)
+	var/startswith = list(/obj/item/inflatable/door = 3, /obj/item/inflatable/wall = 4)
 
 /obj/item/storage/briefcase/inflatable/ComponentInitialize()
 	. = ..()

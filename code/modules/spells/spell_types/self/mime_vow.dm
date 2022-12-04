@@ -2,7 +2,7 @@
 	name = "Speech"
 	desc = "Make (or break) a vow of silence."
 	background_icon_state = "bg_mime"
-	icon_icon = 'icons/mob/actions/actions_mime.dmi'
+	button_icon = 'icons/mob/actions/actions_mime.dmi'
 	button_icon_state = "mime_speech"
 	panel = "Mime"
 
@@ -21,4 +21,4 @@
 	else
 		to_chat(cast_on, span_notice("You break your vow of silence."))
 		SEND_SIGNAL(cast_on, COMSIG_ADD_MOOD_EVENT, "vow", /datum/mood_event/broken_vow)
-	cast_on.update_action_buttons_icon()
+	cast_on?.update_mob_action_buttons()

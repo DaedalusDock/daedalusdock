@@ -297,7 +297,7 @@
 	not_hivemind_talk.Grant(src)
 
 /datum/action/innate/spider
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/spider/lay_web // Todo: Unify this with the genetics power
@@ -306,7 +306,7 @@
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "lay_web"
 
-/datum/action/innate/spider/lay_web/IsAvailable()
+/datum/action/innate/spider/lay_web/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -358,7 +358,7 @@
 	desc = "Wrap something or someone in a cocoon. If it's a human or similar species, \
 		you'll also consume them, allowing you to lay enriched eggs."
 	background_icon_state = "bg_alien"
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	button_icon_state = "wrap_0"
 	check_flags = AB_CHECK_CONSCIOUS
 	click_to_activate = TRUE
@@ -366,7 +366,7 @@
 	/// The time it takes to wrap something.
 	var/wrap_time = 5 SECONDS
 
-/datum/action/cooldown/wrap/IsAvailable()
+/datum/action/cooldown/wrap/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -383,7 +383,7 @@
 
 	to_chat(on_who, span_notice("You prepare to wrap something in a cocoon. <B>Left-click your target to start wrapping!</B>"))
 	button_icon_state = "wrap_0"
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/cooldown/wrap/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
 	. = ..()
@@ -393,7 +393,7 @@
 	if(refund_cooldown)
 		to_chat(on_who, span_notice("You no longer prepare to wrap something in a cocoon."))
 	button_icon_state = "wrap_1"
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/cooldown/wrap/Activate(atom/to_wrap)
 	if(!owner.Adjacent(to_wrap))
@@ -437,7 +437,7 @@
 				var/datum/action/innate/spider/lay_eggs/enriched/egg_power = locate() in owner.actions
 				if(egg_power)
 					egg_power.charges++
-					egg_power.UpdateButtons()
+					egg_power.build_all_button_icons()
 					owner.visible_message(
 						span_danger("[owner] sticks a proboscis into [living_wrapped] and sucks a viscous substance out."),
 						span_notice("You suck the nutriment out of [living_wrapped], feeding you enough to lay a cluster of enriched eggs."),
@@ -464,7 +464,7 @@
 	///The type of egg we create
 	var/egg_type = /obj/effect/mob_spawn/ghost_role/spider
 
-/datum/action/innate/spider/lay_eggs/IsAvailable()
+/datum/action/innate/spider/lay_eggs/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -496,7 +496,7 @@
 			var/obj/effect/mob_spawn/ghost_role/spider/new_eggs = new egg_type(get_turf(spider))
 			new_eggs.directive = spider.directive
 			new_eggs.faction = spider.faction
-			UpdateButtons(TRUE)
+			build_all_button_icons(TRUE)
 
 	spider.stop_automated_movement = FALSE
 
@@ -508,7 +508,7 @@
 	/// How many charges we have to make eggs
 	var/charges = 0
 
-/datum/action/innate/spider/lay_eggs/enriched/IsAvailable()
+/datum/action/innate/spider/lay_eggs/enriched/IsAvailable(feedback = FALSE)
 	return ..() && (charges > 0)
 
 /datum/action/innate/spider/set_directive
@@ -517,7 +517,7 @@
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "directive"
 
-/datum/action/innate/spider/set_directive/IsAvailable()
+/datum/action/innate/spider/set_directive/IsAvailable(feedback = FALSE)
 	return ..() && istype(owner, /mob/living/simple_animal/hostile/giant_spider)
 
 /datum/action/innate/spider/set_directive/Activate()
@@ -537,7 +537,7 @@
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "command"
 
-/datum/action/innate/spider/comm/IsAvailable()
+/datum/action/innate/spider/comm/IsAvailable(feedback = FALSE)
 	return ..() && istype(owner, /mob/living/simple_animal/hostile/giant_spider/midwife)
 
 /datum/action/innate/spider/comm/Trigger(trigger_flags)

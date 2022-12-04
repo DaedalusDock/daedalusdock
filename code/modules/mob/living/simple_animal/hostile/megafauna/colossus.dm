@@ -598,10 +598,10 @@
 /datum/action/exit_possession
 	name = "Exit Possession"
 	desc = "Exits the body you are possessing. They will explode violently when this occurs."
-	icon_icon = 'icons/mob/actions/actions_spells.dmi'
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 	button_icon_state = "exit_possession"
 
-/datum/action/exit_possession/IsAvailable()
+/datum/action/exit_possession/IsAvailable(feedback = FALSE)
 	return ..() && isfloorturf(owner.loc)
 
 /datum/action/exit_possession/Trigger(trigger_flags)

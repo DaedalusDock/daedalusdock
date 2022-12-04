@@ -23,12 +23,12 @@
 	remove_hand(remove_from)
 	return ..()
 
-/datum/action/cooldown/spell/touch/UpdateButton(atom/movable/screen/movable/action_button/button, status_only = FALSE, force = FALSE)
-	. = ..()
-	if(!button)
-		return
-	if(attached_hand)
-		button.color = COLOR_GREEN
+// PreActivate is overridden to not check is_valid_target on the caster, as it makes less sense.
+/datum/action/cooldown/spell/touch/PreActivate(atom/target)
+	return Activate(target)
+
+/datum/action/cooldown/spell/touch/is_action_active(atom/movable/screen/movable/action_button/current_button)
+	return !!attached_hand
 
 /datum/action/cooldown/spell/touch/set_statpanel_format()
 	. = ..()

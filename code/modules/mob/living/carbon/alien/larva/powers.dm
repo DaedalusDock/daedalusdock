@@ -29,7 +29,7 @@
 	button_icon_state = "alien_evolve_larva"
 	plasma_cost = 0
 
-/datum/action/cooldown/alien/larva_evolve/IsAvailable()
+/datum/action/cooldown/alien/larva_evolve/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE

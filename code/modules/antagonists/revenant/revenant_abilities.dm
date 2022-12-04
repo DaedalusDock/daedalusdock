@@ -117,7 +117,7 @@
 	name = "Toggle Darkvision"
 	panel = "Revenant Abilities"
 	background_icon_state = "bg_revenant"
-	icon_icon = 'icons/mob/actions/actions_revenant.dmi'
+	button_icon = 'icons/mob/actions/actions_revenant.dmi'
 	button_icon_state = "r_nightvision"
 	toggle_span = "revennotice"
 
@@ -135,7 +135,7 @@
 /datum/action/cooldown/spell/aoe/revenant
 	panel = "Revenant Abilities (Locked)"
 	background_icon_state = "bg_revenant"
-	icon_icon = 'icons/mob/actions/actions_revenant.dmi'
+	button_icon = 'icons/mob/actions/actions_revenant.dmi'
 
 	antimagic_flags = MAGIC_RESISTANCE_HOLY
 	spell_requirements = NONE

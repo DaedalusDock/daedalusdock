@@ -100,7 +100,6 @@
 
 /datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
 	equipping.internal = equipping.get_item_for_held_index(2)
-	equipping.update_internals_hud_icon(1)
 
 
 /datum/species/plasmaman/random_name(gender,unique,lastname)

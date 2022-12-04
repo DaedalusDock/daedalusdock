@@ -189,12 +189,13 @@
 	var/list/message_mods = data["mods"]
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
-	for(var/atom/movable/hearer as anything in receive)
-		if(!hearer)
-			stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
-			continue
+	for(var/obj/item/radio/radio as anything in receive)
+		for(var/atom/movable/hearer as anything in receive[radio])
+			if(!hearer)
+				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
+				continue
 
-		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
+			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio)
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

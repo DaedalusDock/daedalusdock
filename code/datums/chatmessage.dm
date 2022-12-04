@@ -248,7 +248,7 @@
  * * raw_message - The text content of the message
  * * spans - Additional classes to be added to the message
  */
-/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE)
+/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, atom/movable/sound_loc)
 	if(SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(speaker, TRAIT_BYPASS_MEASURES))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
@@ -262,14 +262,14 @@
 		spans |= "virtual-speaker"
 
 	// Ignore virtual speaker (most often radio messages) from ourself
-	if (originalSpeaker != src && speaker == src)
+	if (get_turf(sound_loc) == get_turf(src))
 		return
 
 	// Display visual above source
 	if(runechat_flags & EMOTE_MESSAGE)
-		new /datum/chatmessage(raw_message, speaker, src, message_language, list("emote", "italics"))
+		new /datum/chatmessage(raw_message, sound_loc || speaker, src, message_language, list("emote", "italics"))
 	else
-		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), speaker, src, message_language, spans)
+		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), sound_loc || speaker, src, message_language, spans)
 
 
 // Tweak these defines to change the available color ranges

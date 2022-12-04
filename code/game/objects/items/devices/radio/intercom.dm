@@ -7,6 +7,7 @@
 	canhear_range = 2
 	dog_fashion = null
 	unscrewed = FALSE
+	//should_be_listening = FALSE
 
 /obj/item/radio/intercom/unscrewed
 	unscrewed = TRUE
@@ -96,7 +97,7 @@
 
 	return TRUE
 
-/obj/item/radio/intercom/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list())
+/obj/item/radio/intercom/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
 	if(message_mods[RADIO_EXTENSION] == MODE_INTERCOM)
 		return  // Avoid hearing the same thing twice
 	return ..()

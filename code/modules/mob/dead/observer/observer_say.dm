@@ -47,7 +47,7 @@
 
 	. = say_dead(message)
 
-/mob/dead/observer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/mob/dead/observer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
 	. = ..()
 	var/atom/movable/to_follow = speaker
 	if(radio_freq)
@@ -63,7 +63,7 @@
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
 		create_chat_message(speaker, message_language, raw_message, spans)
 	// Recompose the message, because it's scrambled by default
-	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)
+	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods, sound_loc)
 	to_chat(src,
 		html = "[link] [message]",
 		avoid_highlighting = speaker == src)

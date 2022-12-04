@@ -21,7 +21,7 @@
 
 	addtimer(CALLBACK(src, .proc/inflate, user), 2 SECONDS)
 
-/obj/item/inflatable/proc/inflate/(mob/user)
+/obj/item/inflatable/proc/inflate(mob/user)
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -308,7 +308,7 @@
 	var/list/exiting = list()
 	var/datum/gas_mixture/cabin_air
 
-/obj/structure/inflatable/shelter/New()
+/obj/structure/inflatable/shelter/Initialize()
 	. = ..()
 	cabin_air = new
 	cabin_air.volume = CELL_VOLUME / 3
@@ -323,7 +323,7 @@
 	var/list/living_contents = list()
 	for(var/mob/living/L in contents)
 		living_contents += L.name
-	if(living_contents.len)
+	if(length(living_contents))
 		. += span_notice("You can see [english_list(living_contents)] inside.")
 
 /obj/structure/inflatable/shelter/attack_hand(mob/user)
@@ -341,12 +341,12 @@
 		return
 
 /obj/structure/inflatable/shelter/Destroy()
-	for(var/atom/movable/AM in src)
+	for(var/atom/movable/AM as anything in src)
 		AM.forceMove(loc)
 	qdel(cabin_air)
 	cabin_air = null
 	exiting = null
-	..()
+	return ..()
 
 /obj/structure/inflatable/shelter/remove_air(amount)
 	return cabin_air.remove(amount)
@@ -364,7 +364,7 @@
 		exiting -= user
 		to_chat(user, span_warning("You cannot climb out of something you aren't even in!"))
 		return
-	if(exiting.Find(user))
+	if(user in exiting)
 		exiting -= user
 		to_chat(user, span_warning("You stop climbing free of \the [src]."))
 		return
@@ -372,7 +372,7 @@
 	exiting += user
 
 	if(do_after(user, 5 SECONDS))
-		if (exiting.Find(user))
+		if (user in exiting)
 			user.forceMove(get_turf(src))
 			update_icon()
 			exiting -= user
@@ -384,7 +384,7 @@
 	vis_contents.Cut()
 	for(var/mob/living/L in contents)
 		vis_contents.Add(L)
-	if(contents.len)
+	if(length(contents))
 		. += mutable_appearance(icon, "shelter_top", ABOVE_MOB_LAYER)
 
 /obj/item/inflatable/torn

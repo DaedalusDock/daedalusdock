@@ -31,6 +31,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ap" = (
@@ -38,6 +39,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ar" = (
@@ -45,6 +47,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "as" = (
@@ -52,6 +55,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "au" = (
@@ -66,6 +70,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "av" = (
@@ -76,6 +81,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aw" = (
@@ -83,6 +89,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ax" = (
@@ -98,6 +105,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "az" = (
@@ -105,6 +113,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aA" = (
@@ -113,6 +122,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aB" = (
@@ -120,6 +130,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aC" = (
@@ -128,6 +139,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aD" = (
@@ -135,6 +147,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aE" = (
@@ -149,6 +162,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aF" = (
@@ -161,6 +175,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aG" = (
@@ -168,6 +183,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aH" = (
@@ -178,6 +194,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aJ" = (
@@ -187,6 +204,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aM" = (
@@ -197,6 +215,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aP" = (
@@ -208,6 +227,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aR" = (
@@ -215,6 +235,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aS" = (
@@ -222,6 +243,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "aV" = (
@@ -238,6 +260,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aX" = (
@@ -253,6 +276,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "aZ" = (
@@ -263,6 +287,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "ba" = (
@@ -271,6 +296,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bf" = (
@@ -278,6 +304,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bl" = (
@@ -285,6 +312,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "bm" = (
@@ -294,6 +322,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bn" = (
@@ -306,6 +335,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bz" = (
@@ -314,6 +344,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bA" = (
@@ -323,12 +354,14 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bC" = (
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bD" = (
@@ -336,6 +369,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bE" = (
@@ -344,6 +378,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bF" = (
@@ -355,6 +390,7 @@
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bK" = (
@@ -393,12 +429,14 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bT" = (
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bU" = (
@@ -414,6 +452,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bY" = (
@@ -421,6 +460,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ca" = (
@@ -428,6 +468,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ce" = (
@@ -438,12 +479,14 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cf" = (
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cg" = (
@@ -457,6 +500,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cm" = (
@@ -466,6 +510,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cp" = (
@@ -473,12 +518,14 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cr" = (
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cs" = (
@@ -486,6 +533,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "ct" = (
@@ -495,6 +543,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cu" = (
@@ -502,6 +551,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cv" = (
@@ -509,6 +559,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cw" = (
@@ -516,12 +567,14 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cx" = (
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "cA" = (
@@ -529,6 +582,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cB" = (
@@ -539,6 +593,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cC" = (
@@ -548,6 +603,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cD" = (
@@ -555,6 +611,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cE" = (
@@ -566,6 +623,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cF" = (
@@ -573,6 +631,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cH" = (
@@ -580,6 +639,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "cK" = (
@@ -595,6 +655,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cO" = (
@@ -605,6 +666,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cP" = (
@@ -612,6 +674,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cR" = (
@@ -619,6 +682,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cS" = (
@@ -630,6 +694,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cT" = (
@@ -642,6 +707,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cV" = (
@@ -649,6 +715,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cW" = (
@@ -658,6 +725,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cX" = (
@@ -666,6 +734,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cY" = (
@@ -673,6 +742,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "cZ" = (
@@ -683,6 +753,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "db" = (
@@ -692,6 +763,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "dd" = (
@@ -699,6 +771,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "df" = (
@@ -711,6 +784,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "dg" = (
@@ -726,6 +800,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "dh" = (
@@ -914,6 +989,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "ed" = (
@@ -922,6 +998,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "ee" = (
@@ -929,6 +1006,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "eg" = (
@@ -967,6 +1045,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "en" = (
@@ -974,6 +1053,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "eo" = (
@@ -981,12 +1061,14 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "ep" = (
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "er" = (
@@ -1006,6 +1088,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "ev" = (
@@ -1166,12 +1249,14 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fy" = (
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fz" = (
@@ -1179,6 +1264,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fA" = (
@@ -1244,6 +1330,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "fY" = (
@@ -1259,6 +1346,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gb" = (
@@ -1270,6 +1358,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gf" = (
@@ -1283,6 +1372,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gh" = (
@@ -1290,6 +1380,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gi" = (
@@ -1298,6 +1389,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gj" = (
@@ -1319,6 +1411,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gp" = (
@@ -1326,6 +1419,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gq" = (
@@ -1375,6 +1469,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gC" = (
@@ -1388,6 +1483,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gG" = (
@@ -1405,12 +1501,14 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gJ" = (
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gK" = (
@@ -1430,6 +1528,7 @@
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gO" = (
@@ -1437,6 +1536,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gP" = (
@@ -1444,6 +1544,7 @@
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gU" = (
@@ -1453,6 +1554,7 @@
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gX" = (
@@ -1484,6 +1586,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "hr" = (
@@ -1491,6 +1594,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "hw" = (
@@ -1498,6 +1602,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "hQ" = (
@@ -1509,6 +1614,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "jH" = (
@@ -1516,6 +1622,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "jU" = (
@@ -1523,6 +1630,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ki" = (
@@ -1536,6 +1644,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "kw" = (
@@ -1545,6 +1654,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "kE" = (
@@ -1567,6 +1677,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "ms" = (
@@ -1574,6 +1685,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "mX" = (
@@ -1583,6 +1695,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "nw" = (
@@ -1598,6 +1711,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "nY" = (
@@ -1605,12 +1719,14 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "oI" = (
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "pc" = (
@@ -1624,6 +1740,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "qD" = (
@@ -1631,6 +1748,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "qE" = (
@@ -1642,6 +1760,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "rl" = (
@@ -1654,12 +1773,14 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "rv" = (
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "rF" = (
@@ -1671,6 +1792,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "sw" = (
@@ -1682,6 +1804,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "sI" = (
@@ -1689,6 +1812,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "sT" = (
@@ -1696,6 +1820,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "tz" = (
@@ -1708,6 +1833,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "uN" = (
@@ -1729,6 +1855,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "wl" = (
@@ -1736,6 +1863,7 @@
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ww" = (
@@ -1746,6 +1874,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "xs" = (
@@ -1753,6 +1882,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "yS" = (
@@ -1770,6 +1900,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "yV" = (
@@ -1778,6 +1909,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "zn" = (
@@ -1785,6 +1917,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zH" = (
@@ -1792,6 +1925,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "zN" = (
@@ -1799,6 +1933,7 @@
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zR" = (
@@ -1806,6 +1941,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "zS" = (
@@ -1813,6 +1949,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Aj" = (
@@ -1820,6 +1957,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "AN" = (
@@ -1830,6 +1968,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "AZ" = (
@@ -1837,6 +1976,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Bd" = (
@@ -1847,6 +1987,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Bo" = (
@@ -1854,6 +1995,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Bs" = (
@@ -1861,6 +2003,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Bz" = (
@@ -1868,6 +2011,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "BH" = (
@@ -1875,12 +2019,14 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "BK" = (
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "BL" = (
@@ -1888,6 +2034,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "BQ" = (
@@ -1895,6 +2042,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Cc" = (
@@ -1902,6 +2050,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "CB" = (
@@ -1912,6 +2061,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ds" = (
@@ -1921,6 +2071,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "DH" = (
@@ -1933,6 +2084,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "DO" = (
@@ -1945,6 +2097,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Fj" = (
@@ -1955,6 +2108,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "FI" = (
@@ -1962,6 +2116,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "FS" = (
@@ -1975,6 +2130,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Gt" = (
@@ -1990,6 +2146,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Ik" = (
@@ -1997,6 +2154,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IN" = (
@@ -2004,6 +2162,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IY" = (
@@ -2011,6 +2170,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "IZ" = (
@@ -2018,6 +2178,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Jp" = (
@@ -2030,6 +2191,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "JD" = (
@@ -2037,6 +2199,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Kh" = (
@@ -2044,6 +2207,7 @@
 /turf/open/floor/wood{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/northblock)
 "KY" = (
@@ -2052,6 +2216,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ls" = (
@@ -2061,6 +2226,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Ly" = (
@@ -2076,6 +2242,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Mk" = (
@@ -2087,6 +2254,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Mw" = (
@@ -2094,6 +2262,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "MB" = (
@@ -2101,6 +2270,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "MC" = (
@@ -2115,6 +2285,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Np" = (
@@ -2125,6 +2296,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "NO" = (
@@ -2134,6 +2306,7 @@
 /turf/open/floor/iron{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "NX" = (
@@ -2141,6 +2314,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "OA" = (
@@ -2148,6 +2322,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "OE" = (
@@ -2155,6 +2330,7 @@
 /turf/open/floor/plating{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/research)
 "OJ" = (
@@ -2165,6 +2341,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "OX" = (
@@ -2188,6 +2365,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Rp" = (
@@ -2200,6 +2378,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ry" = (
@@ -2208,6 +2387,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "RJ" = (
@@ -2215,6 +2395,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "SV" = (
@@ -2222,6 +2403,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "Tj" = (
@@ -2229,6 +2411,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "TT" = (
@@ -2236,6 +2419,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "Uu" = (
@@ -2250,6 +2434,7 @@
 /turf/open/misc/asteroid/basalt/lava{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "VK" = (
@@ -2259,6 +2444,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Wj" = (
@@ -2282,6 +2468,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Xs" = (
@@ -2289,6 +2476,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "XG" = (
@@ -2299,6 +2487,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "XN" = (
@@ -2306,6 +2495,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "XR" = (
@@ -2314,6 +2504,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "YG" = (
@@ -2321,6 +2512,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "YZ" = (
@@ -2328,6 +2520,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "Zj" = (
@@ -2335,6 +2528,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid)
 "ZS" = (
@@ -2342,6 +2536,7 @@
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
+	
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 

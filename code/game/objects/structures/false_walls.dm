@@ -40,7 +40,7 @@
 	color = null //Clear the mapaid color. This should hopefully not cause problems.
 	//This has to be stripped before the supercall so it doesn't end up in atom_colours.
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 	set_wall_information(plating_material, reinf_material, wall_paint, stripe_paint)
 
 /obj/structure/falsewall/update_greyscale()
@@ -86,7 +86,7 @@
 		set_opacity(density)
 		opening = FALSE
 		update_appearance()
-		update_nearby_tiles()
+		zas_update_loc()
 
 /obj/structure/falsewall/zas_canpass(turf/other)
 	if(QDELETED(src))

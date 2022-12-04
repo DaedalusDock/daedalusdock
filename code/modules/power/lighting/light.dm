@@ -22,11 +22,11 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///Luminosity when on, also used in power calculation
-	var/brightness = 8
+	var/brightness = 7
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 1
+	var/bulb_power = 0.8
 	///Default colour of the light.
-	var/bulb_colour = "#f3fffa"
+	var/bulb_colour = "#f3fffac4"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -48,7 +48,7 @@
 	///Set to FALSE to never let this light get switched to night mode.
 	var/nightshift_allowed = TRUE
 	///Brightness of the nightshift light
-	var/nightshift_brightness = 8
+	var/nightshift_brightness = 6
 	///Alpha of the nightshift light
 	var/nightshift_light_power = 0.45
 	///Basecolor of the nightshift light

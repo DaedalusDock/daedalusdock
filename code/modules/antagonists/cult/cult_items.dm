@@ -558,11 +558,10 @@ Striking a noncultist, however, will tear their flesh."}
 
 		switch(security_num)
 			if(SEC_LEVEL_GREEN)
-				set_coefficient = 2
-			if(SEC_LEVEL_BLUE)
 				set_coefficient = 1
 			else
 				set_coefficient = 0.5
+
 		var/surplus = timer - (SSshuttle.emergency_call_time * set_coefficient)
 		SSshuttle.emergency.setTimer(timer)
 		if(surplus > 0)

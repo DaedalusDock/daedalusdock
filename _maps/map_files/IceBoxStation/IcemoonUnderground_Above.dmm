@@ -404,13 +404,13 @@
 /obj/item/stack/license_plates/empty/fifty,
 /obj/item/stack/license_plates/empty/fifty,
 /obj/item/stack/license_plates/empty/fifty,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/security/prison/work)
 "bi" = (
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "bj" = (
@@ -438,9 +438,7 @@
 /obj/structure/bodycontainer/crematorium{
 	id = "crematoriumChapel"
 	},
-/turf/open/floor/iron/dark/smooth_half{
-	dir = 1
-	},
+/turf/open/floor/iron/dark,
 /area/service/chapel/office)
 "bn" = (
 /obj/structure/chair/stool/directional/north,
@@ -905,7 +903,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "cH" = (
@@ -957,7 +955,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "cO" = (
@@ -1660,7 +1658,7 @@
 "eD" = (
 /obj/structure/closet/crate/coffin,
 /obj/effect/decal/cleanable/cobweb/cobweb2,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/service/chapel)
 "eE" = (
 /obj/machinery/vending/wardrobe/law_wardrobe,
@@ -1905,7 +1903,7 @@
 /area/service/chapel)
 "fr" = (
 /obj/machinery/plate_press,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/security/prison/work)
 "fs" = (
 /obj/machinery/door/airlock{
@@ -4139,7 +4137,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "ll" = (
@@ -4435,7 +4433,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/chemistry)
 "mg" = (
 /obj/structure/sign/departments/mait/alt,
@@ -4691,7 +4689,7 @@
 	desc = "A sign that warns of dangerous gasses in the air, instructing you to wear internals.";
 	pixel_y = -32
 	},
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/mine/mechbay)
 "mT" = (
 /obj/structure/table,
@@ -5997,7 +5995,7 @@
 "qy" = (
 /obj/machinery/vending/wardrobe/viro_wardrobe,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "qz" = (
 /obj/effect/turf_decal/trimline/yellow/filled/warning{
@@ -6168,7 +6166,7 @@
 /obj/machinery/light/directional/north,
 /obj/machinery/microwave,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "qX" = (
 /obj/effect/turf_decal/stripes/line{
@@ -6206,7 +6204,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/chemistry)
 "rc" = (
 /obj/effect/spawner/random/trash/caution_sign,
@@ -6698,7 +6696,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "so" = (
@@ -6718,7 +6716,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/chemistry)
 "su" = (
 /obj/machinery/door/airlock/security/glass{
@@ -7841,7 +7839,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "vF" = (
@@ -8959,9 +8957,7 @@
 /obj/structure/reagent_dispensers/watertank/high,
 /obj/effect/turf_decal/stripes/line,
 /obj/item/reagent_containers/glass/bucket,
-/turf/open/floor/iron/half{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/service/hydroponics)
 "zi" = (
 /obj/effect/turf_decal/siding/wood,
@@ -8979,7 +8975,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "zl" = (
@@ -9486,7 +9482,7 @@
 /area/security/prison)
 "AM" = (
 /obj/structure/cable,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/security/prison/work)
 "AN" = (
 /obj/machinery/holopad,
@@ -10072,7 +10068,7 @@
 	dir = 8
 	},
 /obj/structure/window/reinforced,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/security/prison/work)
 "CB" = (
 /obj/effect/turf_decal/trimline/green/filled/corner{
@@ -10092,7 +10088,7 @@
 	},
 /obj/item/storage/secure/safe/directional/south,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "CD" = (
 /turf/closed/wall/r_wall,
@@ -10314,7 +10310,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Df" = (
@@ -10737,7 +10733,7 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/security/prison/work)
 "Em" = (
 /obj/effect/turf_decal/siding/wood{
@@ -10999,7 +10995,7 @@
 /obj/machinery/duct,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/virology)
 "EY" = (
 /obj/effect/decal/cleanable/dirt,
@@ -11111,7 +11107,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "Fu" = (
 /obj/structure/fence,
@@ -11862,7 +11858,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Hv" = (
@@ -12326,7 +12322,7 @@
 "IB" = (
 /obj/structure/closet/crate/coffin,
 /obj/machinery/light/small/red/directional/south,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/service/chapel)
 "IC" = (
 /turf/closed/wall,
@@ -12578,7 +12574,7 @@
 /obj/structure/table,
 /obj/item/radio/intercom/directional/east,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "Jp" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -13262,7 +13258,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/chemistry)
 "Li" = (
 /obj/structure/cable,
@@ -13497,7 +13493,7 @@
 	pixel_y = 7
 	},
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "LL" = (
 /obj/effect/spawner/random/engineering/tracking_beacon,
@@ -14654,7 +14650,7 @@
 /obj/effect/turf_decal/box/white{
 	color = "#52B4E9"
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/chemistry)
 "OZ" = (
 /obj/effect/mapping_helpers/airlock/locked,
@@ -14677,7 +14673,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/virology)
 "Pb" = (
 /obj/machinery/holopad,
@@ -14898,7 +14894,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "PJ" = (
@@ -15086,7 +15082,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/mine/mechbay)
 "Qg" = (
 /obj/effect/turf_decal/tile/blue{
@@ -15400,7 +15396,7 @@
 /area/security/prison/visit)
 "QU" = (
 /obj/structure/closet/crate/coffin,
-/turf/open/floor/iron/dark/smooth_half,
+/turf/open/floor/iron/dark,
 /area/service/chapel)
 "QV" = (
 /obj/structure/window/reinforced{
@@ -15554,7 +15550,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "Rr" = (
 /obj/structure/barricade/wooden,
@@ -15594,7 +15590,7 @@
 	},
 /obj/machinery/newscaster/directional/north,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "Rw" = (
 /obj/structure/rack,
@@ -15756,7 +15752,7 @@
 	pixel_y = 2
 	},
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "RS" = (
 /obj/structure/table/wood,
@@ -16364,7 +16360,7 @@
 /obj/structure/sign/warning/coldtemp{
 	pixel_y = 32
 	},
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/mine/mechbay)
 "Ty" = (
 /obj/effect/turf_decal/siding/white{
@@ -17317,7 +17313,7 @@
 	pixel_x = -32
 	},
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/medical/virology)
 "We" = (
 /obj/structure/cable,
@@ -17763,7 +17759,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Xv" = (
@@ -18320,7 +18316,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "YW" = (
@@ -18618,7 +18614,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply,
 /obj/effect/turf_decal/tile/green/full,
-/turf/open/floor/iron/dark/smooth_large,
+/turf/open/floor/iron/dark,
 /area/medical/virology)
 "ZN" = (
 /obj/effect/turf_decal/weather/snow/corner,

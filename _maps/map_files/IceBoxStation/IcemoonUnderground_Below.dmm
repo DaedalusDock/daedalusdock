@@ -144,6 +144,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen"=82);
 	temperature =293.15;
+	
 	},
 /area/security/prison/rec)
 "bz" = (
@@ -2468,6 +2469,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen"=82);
 	temperature =293.15;
+	
 	},
 /area/security/prison/rec)
 "zD" = (
@@ -4248,6 +4250,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen"=82);
 	temperature =293.15;
+	
 	},
 /area/security/prison/rec)
 "Rs" = (

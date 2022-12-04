@@ -35,12 +35,18 @@
 	var/area/my_area = null
 	///The current alarm state
 	var/alert_type = FIRE_CLEAR
+	///If it has a shelter inside
+	var/shelter = TRUE
+
+/obj/machinery/firealarm/empty
+	shelter = FALSE
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
+		shelter = FALSE
 	if(name == initial(name))
 		name = "[get_area_name(src)] [initial(name)]"
 	update_appearance()
@@ -100,6 +106,9 @@
 
 /obj/machinery/firealarm/update_overlays()
 	. = ..()
+	if(shelter)
+		. += mutable_appearance(icon, "shelter")
+
 	if(machine_stat & NOPOWER)
 		return
 
@@ -189,6 +198,11 @@
 		return
 	SEND_SIGNAL(src, COMSIG_FIREALARM_ON_TRIGGER)
 	update_use_power(ACTIVE_POWER_USE)
+	if(shelter)
+		var/obj/item/inflatable/shelter/S = new /obj/item/inflatable/shelter(loc)
+		S.inflate()
+		visible_message(span_warning("[S] springs free of [src] automatically and inflates!"))
+		shelter = FALSE
 	update_appearance()
 
 
@@ -228,6 +242,17 @@
 	reset(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
+/obj/machinery/firealarm/AltClick(mob/user)
+	. = ..()
+	if(shelter)
+		to_chat(user, span_notice("You remove the shelter from [src]."))
+		var/obj/item/inflatable/shelter/S = new /obj/item/inflatable/shelter(loc)
+		user.put_in_hands(S)
+		shelter = FALSE
+		update_icon()
+	else
+		to_chat(user, span_warning("There is no shelter in [src]."))
+
 /obj/machinery/firealarm/attack_ai(mob/user)
 	return attack_hand(user)
 
@@ -242,6 +267,12 @@
 
 /obj/machinery/firealarm/attackby(obj/item/tool, mob/living/user, params)
 	add_fingerprint(user)
+
+	if(istype(tool, /obj/item/inflatable/shelter))
+		qdel(tool)
+		shelter = TRUE
+		update_icon()
+		return
 
 	if(tool.tool_behaviour == TOOL_SCREWDRIVER && buildstage == 2)
 		tool.play_tool_sound(src)
@@ -381,6 +412,8 @@
 	. = ..()
 	if((alert_type))
 		. += "The local area hazard light is flashing."
+	if(shelter)
+		. += "It has an emergency shelter stored. Alt-Click to remove it."
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

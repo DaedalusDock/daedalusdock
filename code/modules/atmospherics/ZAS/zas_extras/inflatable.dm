@@ -312,20 +312,17 @@
 	. = ..()
 	cabin_air = new
 	cabin_air.volume = CELL_VOLUME / 3
-	cabin_air.temperature = T20C + 20 //Nice and toasty to avoid Celthermia
+	cabin_air.temperature = T20C + 20
 	cabin_air.adjustMultipleGases(
 		GAS_OXYGEN, MOLES_O2STANDARD,
 		GAS_NITROGEN, MOLES_N2STANDARD)
 
 /obj/structure/inflatable/shelter/examine(mob/user)
 	. = ..()
-	if(!(user.loc == src))
-		. += span_notice("Click to enter. Use grab on shelter to force target inside. Click-drag onto firealarm or right click to deflate.")
-	else
-		. += span_notice("Click to package contaminated clothes. Click-drag to an adjacent turf or Resist to exit/cancel exit.")
+	. += span_notice("Click to enter. Use grab on shelter to force target inside. Use resist to exit. Right click to deflate.")
 	var/list/living_contents = list()
 	for(var/mob/living/L in contents)
-		living_contents += L.name //Shelters can frequently end up with dropped items because people fall asleep.
+		living_contents += L.name
 	if(living_contents.len)
 		. += span_notice("You can see [english_list(living_contents)] inside.")
 

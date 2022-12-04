@@ -57,7 +57,7 @@ Class Procs:
 	///All connection edges "originate" from a zone. They can connect to either another zone, or an unsimulated turf.
 	var/zone/A
 
-	///An associative list of {turf = TRUE}, containing all the the turfs that make up the connection
+	///A list containing all the the turfs that make up the connection
 	var/list/connecting_turfs = list()
 	///Indirect connections are connections made by zoneblocking turfs.
 	var/direct = 0
@@ -144,8 +144,8 @@ Class Procs:
 		if(M.check_airflow_movable(differential))
 			//Check for things that are in range of the midpoint turfs.
 			var/list/close_turfs = list()
-			for(var/turf/T as anything in RANGE_TURFS(world.view, M))
-				if(connecting_turfs[T])
+			for(var/turf/T as anything in connecting_turfs)
+				if(get_dist(M, T) < world.view)
 					close_turfs += T
 
 			if(!length(close_turfs))
@@ -181,10 +181,10 @@ Class Procs:
 
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
-	connecting_turfs[c.A] = TRUE
+	connecting_turfs += c.A
 
 /connection_edge/zone/remove_connection(connection/c)
-	connecting_turfs.Remove(c.A)
+	connecting_turfs -= c.A
 	return ..()
 
 /connection_edge/zone/contains_zone(zone/Z)
@@ -257,11 +257,11 @@ Class Procs:
 
 /connection_edge/unsimulated/add_connection(connection/c)
 	. = ..()
-	connecting_turfs[c.B] = TRUE
+	connecting_turfs += c.B
 	air.group_multiplier = coefficient
 
 /connection_edge/unsimulated/remove_connection(connection/c)
-	connecting_turfs.Remove(c.B)
+	connecting_turfs -= c.B
 	air.group_multiplier = coefficient
 	return ..()
 

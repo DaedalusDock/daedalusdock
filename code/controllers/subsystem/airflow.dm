@@ -146,4 +146,5 @@ SUBSYSTEM_DEF(airflow)
 		return
 	airflow_xo = -(airflow_dest.x - x)
 	airflow_yo = -(airflow_dest.y - y)
+	airflow_dest = null
 	SSairflow.Enqueue(src)

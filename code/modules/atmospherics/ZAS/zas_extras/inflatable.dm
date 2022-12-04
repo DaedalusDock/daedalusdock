@@ -358,6 +358,10 @@
 	user.forceMove(src)
 	update_icon()
 	user.visible_message(span_notice("[user] enters \the [src]."), span_notice("You enter \the [src]."))
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/remove_vis)
+
+/obj/structure/inflatable/shelter/proc/remove_vis(mob/user, force)
+	vis_contents.Remove(user)
 
 /obj/structure/inflatable/shelter/container_resist_act(mob/living/user)
 	if (user.loc != src)
@@ -376,6 +380,7 @@
 			user.forceMove(get_turf(src))
 			update_icon()
 			exiting -= user
+			UnregisterSignal(user, COMSIG_PARENT_QDELETING)
 			user.visible_message(span_notice("[user] climbs out of \the [src]."), span_notice("You climb out of \the [src]."))
 
 
@@ -417,7 +422,7 @@
 	hitsound = SFX_SWING_HIT
 	throw_speed = 2
 	throw_range = 4
-	var/startswith = list(/obj/item/inflatable/door = 3, /obj/item/inflatable/wall = 4)
+	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
 
 /obj/item/storage/briefcase/inflatable/ComponentInitialize()
 	. = ..()

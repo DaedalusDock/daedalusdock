@@ -327,7 +327,7 @@
 	signal.levels = list(T.z)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
+/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return

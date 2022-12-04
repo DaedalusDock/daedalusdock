@@ -248,7 +248,7 @@
  * * raw_message - The text content of the message
  * * spans - Additional classes to be added to the message
  */
-/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, atom/movable/sound_loc)
+/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, atom/sound_loc)
 	if(SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(speaker, TRAIT_BYPASS_MEASURES))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
@@ -261,7 +261,8 @@
 		spans |= "virtual-speaker"
 
 	// Ignore sounds that originate from our person (such as radios we are carrying)
-	if (sound_loc?.speaker_location() == src && speaker == src)
+	//if (sound_loc?.speaker_location() == src && speaker == src) //Kapu Note: Correct this later.
+	if(sound_loc?.speaker_location() == src)
 		return
 
 	// Display visual above source

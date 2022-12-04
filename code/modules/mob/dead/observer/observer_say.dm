@@ -47,7 +47,7 @@
 
 	. = say_dead(message)
 
-/mob/dead/observer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
+/mob/dead/observer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	var/atom/movable/to_follow = speaker
 	if(radio_freq)

@@ -291,7 +291,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	talkcount++
 	return TRUE
 
-/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
+/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	if(!client)
 		return

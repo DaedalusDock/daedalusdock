@@ -230,7 +230,7 @@
 	if(user.client.eye == src)
 		return COMPONENT_ALLOW_EXAMINATE
 
-/obj/item/dullahan_relay/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/movable/sound_loc)
+/obj/item/dullahan_relay/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	if(owner)
 		owner.Hear(message, speaker, message_language, raw_message, radio_freq, spans, message_mods)

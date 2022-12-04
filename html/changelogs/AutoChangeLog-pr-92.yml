@@ -1,0 +1,5 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - balance: Reinforced windows are now much less resilient against melee damage and
+      are easier to deconstruct.

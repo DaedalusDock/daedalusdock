@@ -2,7 +2,8 @@
 /obj/effect/heat
 	icon = 'icons/effects/fire.dmi'
 	icon_state = "3"
-	render_target = HEAT_RENDER_TARGET
+	plane = HEAT_PLANE
+	render_source = HEAT_RENDER_TARGET
 
 /particles/heat
 	width = 500
@@ -21,29 +22,29 @@
 	velocity = generator("circle", 0, 3, NORMAL_RAND)
 
 ///This is a special stripped down alternative to a particle_holder. Generally, I don't recommend using it.
-/obj/particle_emitter
+/obj/effect/abstract/particle_emitter
 	name = ""
 	anchored = TRUE
 	mouse_opacity = 0
 	appearance_flags = PIXEL_SCALE
 
-/obj/particle_emitter/Initialize(mapload, time, _color)
+/obj/effect/abstract/particle_emitter/Initialize(mapload, time, _color)
 	. = ..()
 	if(time > 0)
 		QDEL_IN(src, time)
 	color = _color
 
-/obj/particle_emitter/proc/enable(on)
+/obj/effect/abstract/particle_emitter/proc/enable(on)
 	if(on)
 		particles.spawning = initial(particles.spawning)
 	else
 		particles.spawning = 0
 
-/obj/particle_emitter/heat
+/obj/effect/abstract/particle_emitter/heat
 	particles = new/particles/heat
 	render_target = HEAT_RENDER_TARGET
 
-/obj/particle_emitter/heat/Initialize(mapload, time, _color)
+/obj/effect/abstract/particle_emitter/heat/Initialize(mapload, time, _color)
 	. = ..()
 	filters += filter(type = "blur", size = 1)
 

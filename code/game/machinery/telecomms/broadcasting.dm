@@ -177,11 +177,12 @@
 
 	// From the list of radios, find all mobs who can hear those.
 	var/list/receive = get_hearers_in_radio_ranges(radios)
+	var/list/globally_receiving = list()
 
 	// Add observers who have ghost radio enabled.
 	for(var/mob/dead/observer/ghost in GLOB.player_list)
 		if(ghost.client.prefs?.chat_toggles & CHAT_GHOSTRADIO)
-			receive |= ghost
+			globally_receiving |= ghost
 
 	// Render the message and have everybody hear it.
 	// Always call this on the virtualspeaker to avoid issues.
@@ -196,6 +197,10 @@
 				continue
 
 			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio)
+
+	// Let the global hearers (ghosts, etc) hear this message
+	for(var/atom/hearer as anything in globally_receiving)
+		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

@@ -261,10 +261,8 @@
 		speaker = v.source
 		spans |= "virtual-speaker"
 
-	// Ignore virtual speaker (most often radio messages) from ourself
-	//Note2self: make this use some sort of sound_location() proc, akin to drop_location()
-	//So that radios held/worn by mobs can have the sound location be the mob itself.
-	if (get_turf(sound_loc) == get_turf(src))
+	// Ignore sounds that originate from our person (such as radios we are carrying)
+	if (sound_loc?.speaker_location() == src)
 		return
 
 	// Display visual above source

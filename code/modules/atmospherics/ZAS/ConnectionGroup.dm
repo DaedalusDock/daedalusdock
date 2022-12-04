@@ -139,7 +139,7 @@ Class Procs:
 			if(M:status_flags & GODMODE)
 				continue
 			if(!M:airflow_stun())
-				to_chat(M, "<span class='danger'>Air suddenly rushes past you!</span>")
+				to_chat(M, span_notice("A gust of air rushes past you."))
 
 		if(M.check_airflow_movable(differential))
 			//Check for things that are in range of the midpoint turfs.

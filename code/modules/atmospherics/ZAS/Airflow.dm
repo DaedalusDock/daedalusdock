@@ -119,7 +119,7 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 			airflow_hit(A)
 			A.airflow_hit_act(src)
 		else if(istype(src, /mob/living/carbon/human))
-			if(iswall(A) || (ismovable(A) && (A:airflow_old_density)))
+			if((A:density))
 				to_chat(src, "<span class='notice'>You are pinned against \the [A] by airflow!</span>")
 				src:Stun(1 SECONDS) // :)
 				airflow_speed = 0

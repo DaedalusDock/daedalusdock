@@ -119,7 +119,7 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_dest == loc)
 		step_away(src, loc)
 	if (ismob(src))
-		to_chat(src, span_danger("You are pushed away by a rush of air!"))
+		to_chat(src, span_warning("You are pushed away by a rush of air!"))
 
 	last_airflow = world.time
 

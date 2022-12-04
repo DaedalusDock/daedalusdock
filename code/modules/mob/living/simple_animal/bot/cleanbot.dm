@@ -272,7 +272,6 @@
 			if(length(path) == 0)
 				add_to_ignore(target)
 				target = null
-				path = list()
 
 		if(path.len > 0 && target)
 			if(!bot_move(path[path.len]))

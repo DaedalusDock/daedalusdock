@@ -37,26 +37,6 @@
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 	temperature = 80
 
-/turf/open/floor/iron/edge
-	icon_state = "floor_edge"
-	base_icon_state = "floor_edge"
-	floor_tile = /obj/item/stack/tile/iron/edge
-
-/turf/open/floor/iron/half
-	icon_state = "floor_half"
-	base_icon_state = "floor_half"
-	floor_tile = /obj/item/stack/tile/iron/half
-
-/turf/open/floor/iron/corner
-	icon_state = "floor_corner"
-	base_icon_state = "floor_corner"
-	floor_tile = /obj/item/stack/tile/iron/corner
-
-/turf/open/floor/iron/large
-	icon_state = "floor_large"
-	base_icon_state = "floor_large"
-	floor_tile = /obj/item/stack/tile/iron/large
-
 /turf/open/floor/iron/textured
 	icon_state = "textured"
 	base_icon_state = "textured"
@@ -86,26 +66,6 @@
 	icon_state = "darkfull"
 	base_icon_state = "darkfull"
 	floor_tile = /obj/item/stack/tile/iron/dark
-
-/turf/open/floor/iron/dark/smooth_edge
-	icon_state = "dark_edge"
-	base_icon_state = "dark_edge"
-	floor_tile = /obj/item/stack/tile/iron/dark/smooth_edge
-
-/turf/open/floor/iron/dark/smooth_half
-	icon_state = "dark_half"
-	base_icon_state = "dark_half"
-	floor_tile = /obj/item/stack/tile/iron/dark/smooth_half
-
-/turf/open/floor/iron/dark/smooth_corner
-	icon_state = "dark_corner"
-	base_icon_state = "dark_corner"
-	floor_tile = /obj/item/stack/tile/iron/dark/smooth_corner
-
-/turf/open/floor/iron/dark/smooth_large
-	icon_state = "dark_large"
-	base_icon_state = "dark_large"
-	floor_tile = /obj/item/stack/tile/iron/dark/smooth_large
 
 /turf/open/floor/iron/dark/side
 	icon_state = "dark"
@@ -166,26 +126,6 @@
 	icon_state = "white"
 	base_icon_state = "white"
 	floor_tile = /obj/item/stack/tile/iron/white
-
-/turf/open/floor/iron/white/smooth_edge
-	icon_state = "white_edge"
-	base_icon_state = "white_edge"
-	floor_tile = /obj/item/stack/tile/iron/white/smooth_edge
-
-/turf/open/floor/iron/white/smooth_half
-	icon_state = "white_half"
-	base_icon_state = "white_half"
-	floor_tile = /obj/item/stack/tile/iron/white/smooth_half
-
-/turf/open/floor/iron/white/smooth_corner
-	icon_state = "white_corner"
-	base_icon_state = "white_corner"
-	floor_tile = /obj/item/stack/tile/iron/white/smooth_corner
-
-/turf/open/floor/iron/white/smooth_large
-	icon_state = "white_large"
-	base_icon_state = "white_large"
-	floor_tile = /obj/item/stack/tile/iron/white/smooth_large
 
 /turf/open/floor/iron/white/side
 	icon_state = "whitehall"

@@ -183,8 +183,14 @@ Temporary Items
 # Ignore custom music and title screens (amend as appropriate)
 /config/jukebox_music/sounds/*
 !/config/jukebox_music/sounds/exclude
+/config/credits_music/sounds/*
+!/config/credits_music/sounds/exclude
+/config/credits_music/jsons/*
+!/config/credits_music/jsons/EXAMPLE.json
 /config/title_music/sounds/*
 !/config/title_music/sounds/exclude
+/config/title_music/jsons/*
+!/config/title_music/jsons/EXAMPLE.json
 /config/title_screens/images/*
 !/config/title_screens/images/exclude
 

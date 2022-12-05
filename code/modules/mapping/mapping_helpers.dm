@@ -705,7 +705,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	icon = 'icons/effects/paint_helpers.dmi'
 	icon_state = "paint"
 	late = TRUE
-	/// What wall paint this helper will apply
+	/// What wall (or airlock) paint this helper will apply
 	var/wall_paint = null
 	/// What stripe paint this helper will apply
 	var/stripe_paint = null
@@ -744,6 +744,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 				if(!isnull(stripe_paint))
 					falsewall.paint_stripe(stripe_paint)
 				did_anything = TRUE
+
+			else
+				var/obj/machinery/door/airlock/airlock = locate() in loc
+				if(airlock)
+					if(!isnull(wall_paint))
+						airlock.airlock_paint = wall_paint
+					if(!isnull(stripe_paint))
+						airlock.stripe_paint = stripe_paint
+					airlock.update_appearance()
+					did_anything = TRUE
+
 
 	if(!did_anything)
 		WARNING("Redundant paint helper found at [x], [y], [z]")

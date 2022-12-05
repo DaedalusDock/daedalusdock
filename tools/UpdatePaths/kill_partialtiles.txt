@@ -1,0 +1,19 @@
+#comment This replaces all (basic) partial tile classes, istates:(floor, white, dark)
+
+#comment Iron
+/turf/open/floor/iron/edge : /turf/open/floor/iron
+/turf/open/floor/iron/half : /turf/open/floor/iron
+/turf/open/floor/iron/corner : /turf/open/floor/iron
+/turf/open/floor/iron/large : /turf/open/floor/iron
+
+#comment White
+/turf/open/floor/iron/white/smooth_edge : /turf/open/floor/iron/white
+/turf/open/floor/iron/white/smooth_half : /turf/open/floor/iron/white
+/turf/open/floor/iron/white/smooth_corner : /turf/open/floor/iron/white
+/turf/open/floor/iron/white/smooth_large : /turf/open/floor/iron/white
+
+#comment Dark
+/turf/open/floor/iron/dark/smooth_edge : /turf/open/floor/iron/dark
+/turf/open/floor/iron/dark/smooth_half : /turf/open/floor/iron/dark
+/turf/open/floor/iron/dark/smooth_corner : /turf/open/floor/iron/dark
+/turf/open/floor/iron/dark/smooth_large : /turf/open/floor/iron/dark

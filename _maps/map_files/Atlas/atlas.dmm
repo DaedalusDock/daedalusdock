@@ -18,6 +18,13 @@
 "aJ" = (
 /turf/open/floor/iron/white,
 /area/science/server)
+"bi" = (
+/obj/structure/closet/secure_closet{
+	name = "contraband locker";
+	req_access_txt = "3"
+	},
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "bv" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -209,6 +216,9 @@
 /area/security/prison/safe)
 "iE" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
+/obj/machinery/computer/security{
+	dir = 8
+	},
 /turf/open/floor/iron,
 /area/security/brig)
 "iM" = (
@@ -258,6 +268,7 @@
 /area/cargo/storage)
 "ki" = (
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
+/obj/machinery/vending/security,
 /turf/open/floor/iron,
 /area/security/lockers)
 "kk" = (
@@ -291,6 +302,13 @@
 "kX" = (
 /turf/open/floor/iron,
 /area/medical/chemistry)
+"lm" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/machinery/computer/prisoner/management{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "ln" = (
 /turf/open/floor/plating,
 /area/engineering/engine_smes)
@@ -425,6 +443,7 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 1
 	},
+/obj/structure/closet/secure_closet/security/sec,
 /turf/open/floor/iron,
 /area/security/lockers)
 "pl" = (
@@ -762,6 +781,7 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 4
 	},
+/obj/structure/closet/secure_closet/security/sec,
 /turf/open/floor/iron,
 /area/security/lockers)
 "yA" = (
@@ -790,6 +810,17 @@
 "zm" = (
 /turf/open/space/basic,
 /area/science/mixing/launch)
+"zo" = (
+/obj/structure/rack,
+/obj/item/gun/ballistic/shotgun/riot,
+/obj/item/gun/ballistic/shotgun/riot{
+	pixel_y = 6
+	},
+/obj/item/gun/ballistic/shotgun/riot{
+	pixel_y = 3
+	},
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "zs" = (
 /turf/open/floor/iron/chapel{
 	dir = 8
@@ -803,11 +834,21 @@
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "zJ" = (
-/obj/effect/turf_decal/tile/red/half{
-	dir = 1
+/obj/structure/rack,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot{
+	pixel_x = 3;
+	pixel_y = 2
 	},
-/turf/open/floor/iron,
-/area/security/brig)
+/obj/item/clothing/suit/armor/riot{
+	pixel_y = 2
+	},
+/obj/item/clothing/suit/armor/riot{
+	pixel_x = -3;
+	pixel_y = 2
+	},
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "zN" = (
 /turf/open/floor/plating,
 /area/command/heads_quarters/captain)
@@ -880,6 +921,25 @@
 "CM" = (
 /turf/open/floor/iron/white,
 /area/medical/medbay/atlas)
+"CN" = (
+/obj/structure/rack,
+/obj/item/gun/energy/ionrifle,
+/obj/item/gun/energy/temperature/security,
+/obj/item/clothing/suit/hooded/ablative,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
+"CP" = (
+/obj/structure/rack,
+/obj/item/clothing/head/helmet/riot{
+	pixel_y = 2
+	},
+/obj/item/clothing/head/helmet/riot{
+	pixel_x = 3;
+	pixel_y = 2
+	},
+/obj/item/clothing/head/helmet/riot,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "Df" = (
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/eva/upper)
@@ -984,6 +1044,11 @@
 	dir = 8
 	},
 /area/science/xenobiology)
+"FW" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/machinery/computer/secure_data,
+/turf/open/floor/iron,
+/area/security/brig)
 "Ge" = (
 /obj/structure/table/wood,
 /turf/open/floor/carpet/red,
@@ -1086,6 +1151,10 @@
 "Ju" = (
 /turf/closed/wall,
 /area/maintenance/disposal)
+"JA" = (
+/obj/machinery/power/apc/auto_name/directional/west,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "JD" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
@@ -1167,6 +1236,10 @@
 	dir = 4
 	},
 /area/hallway/primary/central/aft)
+"LE" = (
+/obj/structure/closet/secure_closet/lethalshots,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "LM" = (
 /turf/open/floor/iron/smooth,
 /area/ai_monitored/turret_protected/ai/atlas)
@@ -1229,7 +1302,6 @@
 /area/command/heads_quarters/hop)
 "NE" = (
 /obj/effect/turf_decal/tile/dark/opposingcorners,
-/turf/open/floor/iron/dark/yellow,
 /area/hallway/secondary/entry)
 "NL" = (
 /turf/open/floor/plating,
@@ -1249,6 +1321,10 @@
 "Oz" = (
 /turf/closed/wall,
 /area/commons/fitness/locker_room)
+"OH" = (
+/mob/living/simple_animal/bot/secbot/beepsky/armsky,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "OM" = (
 /obj/machinery/door/airlock/external{
 	dir = 4
@@ -1326,6 +1402,19 @@
 "RC" = (
 /turf/closed/wall,
 /area/medical/exam_room)
+"RD" = (
+/obj/structure/rack,
+/obj/item/gun/energy/e_gun,
+/obj/item/gun/energy/e_gun{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/gun/energy/e_gun{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "RF" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -1415,6 +1504,14 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
 	},
+/obj/structure/closet/secure_closet/security/sec,
+/turf/open/floor/iron,
+/area/security/lockers)
+"Uu" = (
+/obj/machinery/door/airlock/security/glass{
+	name = "Gear Room";
+	req_one_access_txt = "1;4"
+	},
 /turf/open/floor/iron,
 /area/security/lockers)
 "Uy" = (
@@ -1443,11 +1540,19 @@
 /turf/closed/wall/r_wall,
 /area/security/detectives_office)
 "Vt" = (
-/turf/open/floor/iron/kitchen,
 /area/service/kitchen)
 "VX" = (
 /turf/open/floor/iron,
 /area/commons/fitness/locker_room)
+"VZ" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/table,
+/turf/open/floor/iron,
+/area/security/brig)
+"Wb" = (
+/obj/item/radio/intercom/directional/east,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/security/armory)
 "Wl" = (
 /obj/machinery/door/airlock/external,
 /turf/open/floor/plating,
@@ -1564,6 +1669,7 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
+/obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/iron,
 /area/security/lockers)
 "YI" = (
@@ -1603,6 +1709,7 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 8
 	},
+/obj/machinery/vending/wardrobe/sec_wardrobe,
 /turf/open/floor/iron,
 /area/security/lockers)
 "ZU" = (
@@ -37967,7 +38074,7 @@ ed
 Uo
 Kv
 sa
-Kv
+Uu
 gq
 MF
 po
@@ -38225,7 +38332,7 @@ ys
 YL
 ki
 Lq
-zJ
+gq
 MF
 oH
 KY
@@ -38482,7 +38589,7 @@ ju
 ju
 ju
 ju
-zJ
+gq
 eG
 GE
 GE
@@ -38735,11 +38842,11 @@ Ii
 ed
 AZ
 ed
-Sh
-Sh
+bi
+JA
 KP
-iE
-iE
+VZ
+lm
 qv
 qv
 qv
@@ -38992,10 +39099,10 @@ ed
 ed
 AZ
 ed
-Sh
-Sh
+zo
+OH
 KP
-iE
+FW
 qv
 qv
 qv
@@ -39249,10 +39356,10 @@ AZ
 AZ
 AZ
 ed
-Sh
+RD
 Sh
 KP
-iE
+VZ
 iE
 qv
 qv
@@ -39506,7 +39613,7 @@ AZ
 ed
 AZ
 ed
-Sh
+zJ
 Sh
 KP
 KP
@@ -39763,7 +39870,7 @@ ed
 ed
 AZ
 ed
-Sh
+CP
 Sh
 Sh
 xE
@@ -40020,9 +40127,9 @@ RS
 RS
 RS
 KP
-Sh
-Sh
-Sh
+CN
+Wb
+LE
 KP
 LP
 MC

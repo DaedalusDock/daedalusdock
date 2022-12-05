@@ -1,8 +1,0 @@
-author: Baystation12, Kapu1178
-delete-after: true
-changes:
-  - rscadd: Smell component
-  - rscadd: Blood has an odor of DOOM!
-  - rscadd: Flying blood splatters leave a trail of blood.
-  - bugfix: N2O tanks now actually contain N2O. Whoops!
-  - tweak: Fires from explosions burn much shorter

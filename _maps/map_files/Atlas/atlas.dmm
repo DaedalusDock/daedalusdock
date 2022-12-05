@@ -51,6 +51,10 @@
 "cf" = (
 /turf/open/floor/plating,
 /area/medical/storage)
+"cE" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/security/office)
 "cR" = (
 /turf/open/floor/iron/white,
 /area/medical/storage)
@@ -113,9 +117,25 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/cargo/miningoffice)
+"fg" = (
+/obj/effect/turf_decal/tile/red/anticorner/contrasted,
+/obj/machinery/door_timer{
+	id = "Cell 1";
+	name = "Cell 1";
+	pixel_y = -32
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "fj" = (
 /turf/open/floor/plating,
 /area/cargo/storage)
+"fm" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/service/bar)
 "fo" = (
 /turf/open/floor/iron/chapel{
 	dir = 4
@@ -149,6 +169,9 @@
 	},
 /turf/open/floor/iron,
 /area/security/brig)
+"gs" = (
+/turf/open/floor/iron/dark,
+/area/service/kitchen)
 "gD" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -173,6 +196,11 @@
 /turf/closed/wall,
 /area/engineering/atmos)
 "hA" = (
+/obj/machinery/door/airlock/security/glass{
+	id_tag = "innerbrig";
+	name = "Brig";
+	req_access_txt = "63"
+	},
 /turf/open/floor/plating,
 /area/security/brig)
 "hC" = (
@@ -212,6 +240,11 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 8
 	},
+/obj/structure/closet/secure_closet/brig{
+	id = "Cell 2";
+	name = "Cell 2 Locker"
+	},
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron,
 /area/security/prison/safe)
 "iE" = (
@@ -279,6 +312,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
 	},
+/obj/structure/table/wood,
 /turf/open/floor/wood,
 /area/service/bar)
 "ky" = (
@@ -338,9 +372,18 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
+"lV" = (
+/obj/machinery/camera/directional/west,
+/turf/open/floor/iron,
+/area/security/office)
 "mf" = (
 /turf/closed/wall,
 /area/engineering/atmos/storage)
+"mw" = (
+/obj/structure/table,
+/obj/item/storage/fancy/donut_box,
+/turf/open/floor/carpet/red,
+/area/security/brig)
 "my" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -359,9 +402,29 @@
 "mN" = (
 /turf/closed/wall,
 /area/engineering/main)
+"mU" = (
+/obj/structure/table,
+/obj/item/storage/box/handcuffs,
+/turf/open/floor/carpet/red,
+/area/security/brig)
+"ne" = (
+/obj/effect/turf_decal/tile/dark/opposingcorners,
+/obj/effect/turf_decal/tile/yellow/opposingcorners{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/hallway/secondary/entry)
 "np" = (
 /turf/closed/wall/r_wall,
 /area/security/prison/toilet)
+"nq" = (
+/obj/structure/table,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/item/paper_bin,
+/turf/open/floor/iron,
+/area/security/office)
 "nr" = (
 /obj/effect/turf_decal/tile/green/half{
 	dir = 8
@@ -459,10 +522,20 @@
 "pM" = (
 /turf/closed/wall,
 /area/commons/lounge)
+"pQ" = (
+/obj/structure/chair/office{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/security/office)
 "pV" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
 /area/command/heads_quarters/captain/private)
+"pW" = (
+/obj/machinery/power/apc/auto_name/directional/west,
+/turf/open/floor/iron,
+/area/security/office)
 "qc" = (
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hop)
@@ -475,6 +548,12 @@
 "qn" = (
 /turf/closed/wall/r_wall,
 /area/space)
+"qo" = (
+/obj/structure/chair/office{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "qt" = (
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
@@ -585,6 +664,15 @@
 /obj/machinery/door/airlock/external,
 /turf/open/floor/plating,
 /area/engineering/atmos)
+"sk" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/closet/secure_closet/brig{
+	id = "Cell 1";
+	name = "Cell 1 Locker"
+	},
+/obj/machinery/camera/directional/north,
+/turf/open/floor/iron,
+/area/security/prison)
 "st" = (
 /turf/closed/wall,
 /area/maintenance/port/central)
@@ -634,9 +722,11 @@
 /turf/open/floor/plating,
 /area/science/mixing)
 "uf" = (
-/obj/effect/spawner/structure/window/reinforced/grille,
-/turf/closed/wall/r_wall,
-/area/security/office)
+/obj/structure/chair/plastic{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "um" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -658,6 +748,13 @@
 "uG" = (
 /turf/open/floor/iron/dark,
 /area/commons/storage/tools)
+"uO" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 1
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/security/brig)
 "uP" = (
 /turf/closed/wall,
 /area/medical/cryo)
@@ -733,11 +830,26 @@
 "xd" = (
 /turf/open/floor/plating,
 /area/science/xenobiology)
+"xB" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/door_timer{
+	id = "Cell 2";
+	name = "Cell 2";
+	pixel_x = -32
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "xD" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/command/meeting_room/council)
 "xE" = (
+/obj/machinery/door/airlock/security{
+	name = "Armory";
+	req_access_txt = "3"
+	},
 /turf/open/floor/iron,
 /area/ai_monitored/security/armory)
 "xG" = (
@@ -757,6 +869,16 @@
 	dir = 4
 	},
 /area/hallway/primary/central/aft)
+"xY" = (
+/obj/structure/table,
+/obj/machinery/door/window/brigdoor{
+	name = "Brig Entry Desk";
+	dir = 4
+	},
+/obj/item/clipboard,
+/obj/item/pen,
+/turf/open/floor/iron,
+/area/security/office)
 "yi" = (
 /obj/machinery/door/airlock/external{
 	name = "Departure Lounge Airlock";
@@ -819,6 +941,7 @@
 /obj/item/gun/ballistic/shotgun/riot{
 	pixel_y = 3
 	},
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "zs" = (
@@ -873,6 +996,11 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+"AJ" = (
+/obj/machinery/light/directional/east,
+/obj/machinery/power/apc/auto_name/directional/north,
+/turf/open/floor/iron/freezer,
+/area/security/prison/toilet)
 "AK" = (
 /turf/open/floor/plating,
 /area/commons/toilet/restrooms)
@@ -887,6 +1015,12 @@
 "AZ" = (
 /turf/open/floor/plating,
 /area/maintenance/port/central)
+"Bl" = (
+/obj/structure/chair/plastic{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "BB" = (
 /turf/open/floor/iron/stairs/left{
 	dir = 8
@@ -938,6 +1072,7 @@
 	pixel_y = 2
 	},
 /obj/item/clothing/head/helmet/riot,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "Df" = (
@@ -984,6 +1119,13 @@
 "DY" = (
 /turf/closed/wall/r_wall,
 /area/security/office)
+"Ef" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron,
+/area/security/brig)
 "Eo" = (
 /obj/machinery/door/airlock/external{
 	dir = 4
@@ -1002,6 +1144,14 @@
 "ET" = (
 /turf/open/floor/plating,
 /area/science/robotics)
+"EX" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/bed{
+	dir = 4
+	},
+/obj/machinery/power/apc/auto_name/directional/north,
+/turf/open/floor/iron,
+/area/security/prison)
 "Fi" = (
 /obj/effect/turf_decal/tile/green/half{
 	dir = 4
@@ -1071,6 +1221,11 @@
 	},
 /turf/open/floor/iron,
 /area/security/brig)
+"GH" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/security/prison)
 "GJ" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -1231,11 +1386,23 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/security/lockers)
+"Lr" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/obj/structure/rack,
+/obj/machinery/power/apc/auto_name/directional/east,
+/turf/open/floor/iron,
+/area/security/brig)
 "Ly" = (
 /turf/open/floor/iron/stairs/medium{
 	dir = 4
 	},
 /area/hallway/primary/central/aft)
+"LC" = (
+/obj/structure/table,
+/turf/open/floor/carpet/red,
+/area/security/brig)
 "LE" = (
 /obj/structure/closet/secure_closet/lethalshots,
 /turf/open/floor/iron/dark,
@@ -1259,6 +1426,7 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 4
 	},
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/security/brig)
 "MD" = (
@@ -1274,6 +1442,13 @@
 "MX" = (
 /turf/open/floor/plating,
 /area/science/server)
+"Nc" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/security/brig)
 "Ng" = (
 /turf/closed/wall/r_wall,
 /area/maintenance/department/cargo)
@@ -1304,6 +1479,11 @@
 /obj/effect/turf_decal/tile/dark/opposingcorners,
 /area/hallway/secondary/entry)
 "NL" = (
+/obj/machinery/door/airlock/security/glass{
+	id_tag = "innerbrig";
+	name = "Brig";
+	req_access_txt = "63"
+	},
 /turf/open/floor/plating,
 /area/security/office)
 "NY" = (
@@ -1331,6 +1511,11 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/science)
+"OQ" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/table,
+/turf/open/floor/iron,
+/area/security/prison)
 "OS" = (
 /turf/closed/wall/r_wall,
 /area/engineering/atmos)
@@ -1386,6 +1571,11 @@
 	},
 /turf/open/floor/wood,
 /area/service/bar)
+"QN" = (
+/obj/structure/table,
+/obj/machinery/recharger,
+/turf/open/floor/carpet/red,
+/area/security/brig)
 "QX" = (
 /obj/machinery/door/window,
 /turf/open/floor/iron/showroomfloor,
@@ -1432,6 +1622,14 @@
 "Sa" = (
 /turf/closed/wall,
 /area/commons/dorms/cryo)
+"Sb" = (
+/obj/structure/table,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/machinery/recharger,
+/turf/open/floor/iron,
+/area/security/office)
 "Se" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
@@ -1445,6 +1643,10 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/engineering/storage)
+"So" = (
+/obj/machinery/computer/secure_data,
+/turf/open/floor/iron,
+/area/security/office)
 "Sx" = (
 /turf/open/floor/iron/stairs/right{
 	dir = 1
@@ -1454,6 +1656,10 @@
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
 /area/ai_monitored/command/storage/eva)
+"SY" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
 "SZ" = (
 /turf/closed/wall,
 /area/hallway/primary/starboard)
@@ -1505,6 +1711,7 @@
 	dir = 1
 	},
 /obj/structure/closet/secure_closet/security/sec,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/security/lockers)
 "Uu" = (
@@ -1540,7 +1747,16 @@
 /turf/closed/wall/r_wall,
 /area/security/detectives_office)
 "Vt" = (
+/obj/structure/table,
+/turf/open/floor/iron/dark,
 /area/service/kitchen)
+"VW" = (
+/obj/effect/turf_decal/tile/red/anticorner/contrasted{
+	dir = 4
+	},
+/obj/machinery/camera/directional/east,
+/turf/open/floor/iron,
+/area/security/brig)
 "VX" = (
 /turf/open/floor/iron,
 /area/commons/fitness/locker_room)
@@ -1551,6 +1767,15 @@
 /area/security/brig)
 "Wb" = (
 /obj/item/radio/intercom/directional/east,
+/obj/structure/rack,
+/obj/item/gun/energy/disabler{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/gun/energy/disabler{
+	pixel_x = 3;
+	pixel_y = -3
+	},
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "Wl" = (
@@ -1582,6 +1807,13 @@
 	},
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
+"XA" = (
+/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/bed{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/security/prison)
 "XH" = (
 /turf/open/floor/plating,
 /area/ai_monitored/command/storage/eva/upper)
@@ -1635,6 +1867,7 @@
 /area/command/heads_quarters/hop)
 "Yt" = (
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
+/obj/structure/bed,
 /turf/open/floor/iron,
 /area/security/prison/safe)
 "Yu" = (
@@ -34996,7 +35229,7 @@ Ht
 Ht
 Ht
 Ht
-Vt
+gs
 Nm
 qu
 qu
@@ -35253,7 +35486,7 @@ Ht
 Ht
 Ht
 Ht
-Vt
+gs
 Nm
 qu
 qu
@@ -35510,7 +35743,7 @@ Ht
 Ht
 Ht
 Ht
-Vt
+gs
 Nm
 qu
 qu
@@ -36013,12 +36246,12 @@ YA
 st
 AZ
 st
-Vt
-Vt
-Vt
-Vt
-Vt
-Vt
+gs
+gs
+gs
+gs
+gs
+gs
 wH
 Fv
 QH
@@ -36270,12 +36503,12 @@ YA
 st
 AZ
 st
-Vt
-Vt
-Vt
-Vt
-Vt
-Vt
+gs
+gs
+gs
+gs
+gs
+gs
 dB
 he
 Zb
@@ -36527,9 +36760,9 @@ gV
 st
 AZ
 AZ
-Vt
-Vt
-Vt
+gs
+gs
+gs
 Vt
 Vt
 Vt
@@ -36784,9 +37017,9 @@ AZ
 st
 AZ
 st
-Vt
-Vt
-Vt
+gs
+gs
+gs
 Vt
 Vt
 Vt
@@ -37041,14 +37274,14 @@ ed
 ed
 AZ
 st
-Vt
-Vt
-Vt
-Vt
-Vt
-Vt
+gs
+gs
+gs
+gs
+gs
+gs
 dB
-he
+fm
 Zb
 Ge
 lH
@@ -37300,10 +37533,10 @@ AZ
 st
 wH
 dB
-Vt
-Vt
-Vt
-Vt
+gs
+gs
+gs
+gs
 dB
 kl
 Se
@@ -37572,7 +37805,7 @@ np
 KI
 KI
 KI
-qu
+SY
 qu
 qu
 jB
@@ -37826,8 +38059,8 @@ iB
 oH
 rJ
 np
-Le
-Le
+EX
+XA
 KI
 qu
 qu
@@ -38081,7 +38314,7 @@ po
 wz
 Yt
 oH
-rJ
+AJ
 XS
 Le
 Le
@@ -38340,7 +38573,7 @@ po
 oH
 np
 np
-Le
+GH
 Le
 rg
 qu
@@ -38589,12 +38822,12 @@ ju
 ju
 ju
 ju
-gq
+uO
 eG
+xB
 GE
 GE
-GE
-GE
+Nc
 Ak
 Yn
 Le
@@ -38849,8 +39082,8 @@ VZ
 lm
 qv
 qv
-qv
-qv
+uf
+uf
 qv
 MF
 rc
@@ -39103,18 +39336,18 @@ zo
 OH
 KP
 FW
+qo
 qv
 qv
-qv
-qv
-qv
+mw
+mU
 TI
-oh
+fg
 KI
-Le
-Le
+sk
+OQ
 KI
-qu
+SY
 qu
 qu
 uP
@@ -39363,12 +39596,12 @@ VZ
 iE
 qv
 qv
-qv
-qv
+QN
+LC
 MF
 LP
 DY
-uf
+DY
 DY
 DY
 qu
@@ -39620,13 +39853,13 @@ KP
 MC
 YB
 qv
-qv
-qv
+Bl
+Bl
 MF
 hA
-UH
-UH
-UH
+pW
+cE
+lV
 NL
 qu
 qu
@@ -39881,8 +40114,8 @@ qv
 qv
 MF
 Ym
-UH
-UH
+So
+pQ
 UH
 wP
 qu
@@ -40132,15 +40365,15 @@ Wb
 LE
 KP
 LP
-MC
-ZW
-ZW
+VW
+Ef
+Lr
 ZW
 oh
 LP
-UH
-UH
-UH
+nq
+xY
+Sb
 DY
 wI
 qP
@@ -40417,11 +40650,11 @@ Rt
 Rt
 Rt
 Rt
-NE
-NE
-NE
-NE
-NE
+ne
+ne
+ne
+ne
+ne
 uS
 RF
 RF
@@ -40674,11 +40907,11 @@ Og
 Og
 Og
 uu
-NE
-NE
-NE
-NE
-NE
+ne
+ne
+ne
+ne
+ne
 Nt
 NE
 NE
@@ -40931,11 +41164,11 @@ Og
 Og
 Og
 oV
-NE
-NE
-NE
-NE
-NE
+ne
+ne
+ne
+ne
+ne
 FF
 NE
 NE
@@ -41188,11 +41421,11 @@ wY
 VX
 Oz
 Oz
-NE
-NE
-NE
-NE
-NE
+ne
+ne
+ne
+ne
+ne
 uS
 RF
 RF

@@ -65,8 +65,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define CONTAMINATED_2 (1<<0)
 ///Temperature does no change
 #define NO_TEMP_CHANGE_2 (1<<1)
-///You can click through this atom
-#define CLICK_THROUGH_2 (1<<2)
 
 
 // Update flags for [/atom/proc/update_appearance]

@@ -199,7 +199,7 @@
 			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio)
 
 	// Let the global hearers (ghosts, etc) hear this message
-	for(var/atom/hearer as anything in globally_receiving)
+	for(var/atom/movable/hearer as anything in globally_receiving)
 		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
 
 	// This following recording is intended for research and feedback in the use of department radio channels

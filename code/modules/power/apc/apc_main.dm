@@ -366,6 +366,7 @@
 				malfvacate()
 		if("reboot")
 			failure_timer = 0
+			force_update = FALSE
 			update_appearance()
 			update()
 		if("main_lights")
@@ -391,8 +392,6 @@
 	if(!area || !area.requires_power)
 		return
 	if(failure_timer)
-		update()
-		queue_icon_update()
 		failure_timer--
 		force_update = TRUE
 		return

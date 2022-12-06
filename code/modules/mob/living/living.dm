@@ -12,6 +12,7 @@
 	SSpoints_of_interest.make_point_of_interest(src)
 	update_fov()
 	voice_type = pick(voice_type2sound)
+	dynamic_ost = new(src)
 
 /mob/living/ComponentInitialize()
 	. = ..()

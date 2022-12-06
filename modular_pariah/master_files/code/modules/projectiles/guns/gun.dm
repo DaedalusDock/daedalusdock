@@ -254,7 +254,7 @@
 	if(suppressed)
 		playsound(user, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 	else
-		playsound(user, fire_sound, fire_sound_volume, vary_fire_sound)
+		var/list/hearers = playsound(user, fire_sound, fire_sound_volume, vary_fire_sound)
 		if(message)
 			if(pointblank)
 				user.visible_message(span_danger("[user] fires [src] point blank at [pbtarget]!"), \
@@ -269,8 +269,16 @@
 				user.visible_message(span_danger("[user] fires [src]!"), \
 								span_danger("You fire [src]!"), \
 								span_hear("You hear a gunshot!"), COMBAT_MESSAGE_RANGE)
+		dispense_action(hearers)
+
 	if(user.resting) //PARIAH EDIT ADD - no crawlshooting
 		user.Immobilize(20, TRUE) //PARIAH EDIT END
+
+/obj/item/gun/proc/dispense_action(list/hearers)
+	set waitfor = FALSE
+	for(var/mob/living/M in hearers)
+		M.dynamic_ost.action.adjust(3)
+		CHECK_TICK
 
 /obj/item/gun/emp_act(severity)
 	. = ..()

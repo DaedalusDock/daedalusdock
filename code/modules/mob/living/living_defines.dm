@@ -188,3 +188,6 @@
 
 	COOLDOWN_DECLARE(smell_time)
 	var/last_smell_intensity = 0
+
+	///The dynamic soundtrack container for this mob :)
+	var/datum/dynost/dynamic_ost

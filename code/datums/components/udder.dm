@@ -199,7 +199,6 @@
 	RegisterSignal(udder_mob, COMSIG_PARENT_ATTACKBY, .proc/inject_slug)
 
 /obj/item/udder/slug/glubby/on_slug_move()
-	SIGNAL_HANDLER
 	if (reagents.total_volume <= 0)
 		return
 	var/turf/slug_turf = get_turf(udder_mob)

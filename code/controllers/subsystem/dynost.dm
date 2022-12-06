@@ -52,9 +52,9 @@ SUBSYSTEM_DEF(dynost)
 	RegisterSignal(parent, COMSIG_MOB_LOGOUT, .proc/on_logout)
 	RegisterSignal(parent, COMSIG_PARENT_QDELETING, .proc/on_parent_del)
 
-	channels[tension.channel] = tension
-	channels[action.channel] = action
-	channels[calm.channel] = calm
+	channels[tension] = tension.channel
+	channels[action] = action.channel
+	channels[calm] = calm.channel
 
 	if(parent.client)
 		on_login()
@@ -114,6 +114,7 @@ SUBSYSTEM_DEF(dynost)
 
 	else if(is_paused)
 		needs_update_flags = UPDATE_UNPAUSE
+		dead_air_time = 0
 		return
 
 	if(current_time - tension.last_event >= 10 SECONDS)
@@ -147,15 +148,12 @@ SUBSYSTEM_DEF(dynost)
 	if(!parent.client)
 		return FALSE
 
-	for(var/sound/S as anything in sounddata)
-		if(!(S.channel in channels))
-			continue
-		if(!(S.status & SOUND_PAUSED))
-			var/datum/dynsound/ost = channels[S.channel]
-			var/sound/sound_update = sound(ost.music_file, repeat = TRUE, channel = S.channel, volume = S.volume)
-			S.status = SOUND_UPDATE | SOUND_PAUSED
-			SEND_SOUND(parent.client, sound_update)
-			ost.paused = TRUE
+	for(var/datum/dynsound/ost as anything in channels)
+		var/sound/sound_update = sound(ost.music_file, repeat = TRUE, channel = ost.channel, volume = ost.current)
+		sound_update.status = SOUND_UPDATE | SOUND_PAUSED
+		SEND_SOUND(parent.client, sound_update)
+		ost.paused = TRUE
+
 	is_paused = TRUE
 	sound_data_ready = FALSE
 	needs_update_flags &= ~UPDATE_PAUSE
@@ -164,15 +162,12 @@ SUBSYSTEM_DEF(dynost)
 /datum/dynost/proc/unpause()
 	if(!parent.client)
 		return FALSE
-	for(var/sound/S as anything in sounddata)
-		if(!(S.channel in channels))
-			continue
-		if(S.status & SOUND_PAUSED)
-			var/datum/dynsound/ost = channels[S.channel]
-			var/sound/sound_update = sound(ost.music_file, repeat = TRUE, channel = S.channel, volume = S.volume)
-			S.status = SOUND_UPDATE | SOUND_PAUSED
-			SEND_SOUND(parent.client, sound_update)
-			ost.paused = FALSE
+	for(var/datum/dynsound/ost as anything in channels)
+		var/sound/sound_update = sound(ost.music_file, repeat = TRUE, channel = ost.channel, volume = ost.current)
+		sound_update.status = SOUND_UPDATE
+		SEND_SOUND(parent.client, sound_update)
+		ost.paused = FALSE
+
 	is_paused = FALSE
 	sound_data_ready = FALSE
 	needs_update_flags &= ~ UPDATE_UNPAUSE
@@ -213,7 +208,8 @@ SUBSYSTEM_DEF(dynost)
 		return
 
 	var/diff = abs(target-current)
-	var/set_to = clamp(abs(target > current ? current + diff : current - diff) * (step/3), 2, 35)
+	var/set_to = clamp(target > current ? current + diff : current - diff * (step/3), 0, 100)
+	current = set_to * 10
 	var/sound/S = sound(music_file, repeat = TRUE, channel = channel, volume = set_to)
 	S.status = SOUND_UPDATE
 	SEND_SOUND(C, S) //1.6

@@ -7,7 +7,7 @@
 	canhear_range = 2
 	dog_fashion = null
 	unscrewed = FALSE
-	//should_be_listening = FALSE
+	should_be_listening = FALSE
 
 /obj/item/radio/intercom/unscrewed
 	unscrewed = TRUE

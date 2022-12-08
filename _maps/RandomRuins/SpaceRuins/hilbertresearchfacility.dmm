@@ -393,7 +393,6 @@
 "iS" = (
 /obj/effect/landmark/tram/middle_part/hilbert,
 /obj/machinery/light/floor{
-	brightness = 2;
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},
@@ -567,7 +566,6 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "mY" = (
 /obj/machinery/light/floor{
-	brightness = 2;
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},
@@ -998,7 +996,6 @@
 	start_showpiece_type = /obj/item/hilbertshotel
 	},
 /obj/machinery/light/floor{
-	brightness = 2;
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},

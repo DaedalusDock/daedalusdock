@@ -2973,7 +2973,6 @@
 /area/service/abandoned_gambling_den)
 "akj" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/item/cigbutt,
@@ -4286,7 +4285,6 @@
 /obj/structure/closet/firecloset,
 /obj/effect/decal/cleanable/cobweb,
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /turf/open/floor/plating{
@@ -28634,7 +28632,6 @@
 /obj/item/wirecutters,
 /obj/effect/spawner/random/maintenance,
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /turf/open/floor/plating,
@@ -29607,7 +29604,6 @@
 	pixel_y = 8
 	},
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /turf/open/floor/iron/showroomfloor,
@@ -29974,7 +29970,6 @@
 	pixel_y = -4
 	},
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/item/bikehorn/rubberducky,
@@ -30346,7 +30341,6 @@
 /area/tcommsat/computer)
 "clD" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/structure/cable,
@@ -30544,7 +30538,6 @@
 /area/tcommsat/computer)
 "cmm" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/yellow{
@@ -33017,7 +33010,6 @@
 /area/maintenance/department/crew_quarters/dorms)
 "cBB" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/structure/cable,

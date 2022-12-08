@@ -3033,6 +3033,12 @@
 	icon_state = "platingdmg1"
 	},
 /area/maintenance/fore/lesser)
+"aIx" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/wood,
+/area/commons/lounge)
 "aIE" = (
 /obj/effect/turf_decal/trimline/brown/filled/corner{
 	dir = 8
@@ -6850,6 +6856,7 @@
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 1
 	},
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/commons/lounge)
 "bIL" = (
@@ -14675,6 +14682,7 @@
 /obj/structure/chair/stool/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/commons/lounge)
 "edp" = (
@@ -26483,6 +26491,14 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
 /area/command/heads_quarters/ce)
+"izJ" = (
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/iron,
+/area/hallway/primary/starboard)
 "izW" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
@@ -39367,6 +39383,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/medical/virology)
+"naU" = (
+/obj/effect/landmark/start/hangover,
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/wood,
+/area/commons/lounge)
 "nbh" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "bridge blast";
@@ -95477,7 +95498,7 @@ ecH
 tzu
 vIp
 vIp
-rAF
+vIp
 vIp
 vIp
 ueQ
@@ -103396,10 +103417,10 @@ bjw
 tFU
 hNV
 rtC
-uQY
+naU
 vTr
 qcj
-taP
+aIx
 fAJ
 mbz
 wTm
@@ -107504,7 +107525,7 @@ qVu
 qVu
 qVu
 rIJ
-rTr
+izJ
 llm
 jvD
 jvD

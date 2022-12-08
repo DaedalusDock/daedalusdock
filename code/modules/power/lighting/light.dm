@@ -258,12 +258,11 @@
 // attack with item - insert light (if right type), otherwise try to break the light
 
 /obj/machinery/light/attackby(obj/item/tool, mob/living/user, params)
-
 	//Light replacer code
 	if(istype(tool, /obj/item/lightreplacer))
 		var/obj/item/lightreplacer/replacer = tool
 		replacer.ReplaceLight(src, user)
-		return
+		return TRUE
 
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
@@ -271,21 +270,21 @@
 		if(do_after(user, 2 SECONDS, src))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
-		return
+		return TRUE
 	//PARIAH EDIT END
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
 		if(status == LIGHT_OK)
 			to_chat(user, span_warning("There is a [fitting] already inserted!"))
-			return
+			return TRUE
 		add_fingerprint(user)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
-			return
+			return TRUE
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
-			return
+			return TRUE
 
 		add_fingerprint(user)
 		if(status != LIGHT_EMPTY)
@@ -305,22 +304,28 @@
 
 		if(on && rigged)
 			explode()
-		return
+		return TRUE
 
-	// attempt to stick weapon into light socket
-	if(status != LIGHT_EMPTY)
-		return ..()
-	if(tool.tool_behaviour == TOOL_SCREWDRIVER) //If it's a screwdriver open it.
-		tool.play_tool_sound(src, 75)
-		user.visible_message(span_notice("[user.name] opens [src]'s casing."), \
-			span_notice("You open [src]'s casing."), span_hear("You hear a noise."))
-		deconstruct()
-		return
+	if(istype(tool, /obj/item/stock_parts/cell))
+		return FALSE
+
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)
 		if (prob(75))
 			electrocute_mob(user, get_area(src), src, (rand(7,10) * 0.1), TRUE)
+
+	return TRUE
+
+
+/obj/machinery/light/screwdriver_act(mob/living/user, obj/item/tool)
+	if(status != LIGHT_EMPTY)
+		return ..()
+
+	tool.play_tool_sound(src, 75)
+	user.visible_message(span_notice("[user.name] opens [src]'s casing."), \
+		span_notice("You open [src]'s casing."), span_hear("You hear a noise."))
+	deconstruct()
 
 /obj/machinery/light/deconstruct(disassembled = TRUE)
 	if(flags_1 & NODECONSTRUCT_1)
@@ -608,31 +613,6 @@
 	var/obj/item/light/tube = drop_light_tube()
 	tube?.burn()
 	return
-
-
-
-
-/obj/machinery/light/floor
-	name = "floor light"
-	icon = 'icons/obj/lighting.dmi'
-	base_state = "floor" // base description and icon_state
-	icon_state = "floor"
-	layer = LOW_OBJ_LAYER
-	plane = FLOOR_PLANE
-	light_type = /obj/item/light/bulb
-	fitting = "bulb"
-
-	bulb_inner_range = 0.5
-	bulb_outer_range = 5
-	// Floor lights use a steep falloff because they're pointing at the ceiling, they diffuse sharply as a result.
-	bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 0.5
-
-	nightshift_inner_range = 0.5
-	nightshift_outer_range = 5
-	nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 1
-	nightshift_light_power = 1
-	nightshift_light_color = "#f2f9f7"
-
 
 /obj/item/debuglights
 	///The outer radius of the light's... light.

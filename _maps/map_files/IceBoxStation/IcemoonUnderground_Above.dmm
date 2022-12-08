@@ -270,7 +270,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/mine/living_quarters)
 "aP" = (
@@ -410,7 +410,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "bj" = (
@@ -903,7 +903,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "cH" = (
@@ -955,7 +955,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "cO" = (
@@ -4137,7 +4137,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "ll" = (
@@ -6696,7 +6696,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "so" = (
@@ -6938,7 +6938,7 @@
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
 "sZ" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -7839,7 +7839,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "vF" = (
@@ -8975,7 +8975,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "zl" = (
@@ -10310,7 +10310,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "Df" = (
@@ -11858,7 +11858,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "Hv" = (
@@ -12846,7 +12846,7 @@
 	},
 /area/service/chapel)
 "Kd" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "Ke" = (
@@ -14894,7 +14894,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "PJ" = (
@@ -15638,7 +15638,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "RD" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/mine/living_quarters)
 "RE" = (
@@ -16504,7 +16504,7 @@
 /area/maintenance/starboard/lesser)
 "TO" = (
 /obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
 "TP" = (
@@ -17759,7 +17759,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "Xv" = (
@@ -18316,7 +18316,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/icemoon/underground/explored)
 "YW" = (

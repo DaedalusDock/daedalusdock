@@ -673,7 +673,7 @@ SUBSYSTEM_DEF(explosions)
 		flameturf = list()
 		for(var/thing in flame_turf)
 			var/turf/T = thing
-			T.create_fire(2, rand(5, 20))
+			T.create_fire(2, rand(2, 10))
 		cost_flameturf = MC_AVERAGE(cost_flameturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
 		if (low_turf.len || med_turf.len || high_turf.len)

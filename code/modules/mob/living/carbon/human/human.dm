@@ -29,6 +29,7 @@
 		COMSIG_ATOM_ENTERED = .proc/on_entered,
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	become_area_sensitive()
 	GLOB.human_list += src
 
 /mob/living/carbon/human/proc/setup_human_dna()

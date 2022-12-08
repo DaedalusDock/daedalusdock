@@ -9,7 +9,7 @@
 	var/total_moles = 0
 	//Volume of this mix.
 	var/volume = CELL_VOLUME
-	//Size of the group this gas_mixture is representing.  1 for singletons.
+	//Size of the group this gas_mixture is representing. 1 for singular turfs.
 	var/group_multiplier = 1
 
 	//List of active tile overlays for this gas_mixture.  Updated by checkTileGraphic()
@@ -373,7 +373,12 @@
 	for(var/g in xgm_gas_data.overlay_limit)
 		//Overlay isn't applied for this gas, check if it's valid and needs to be added.
 		if(gas[g] > xgm_gas_data.overlay_limit[g])
-			var/tile_overlay = getTileOverlay(g)
+			///Inlined getTileOverlay(g)
+			var/tile_overlay = LAZYACCESS(tile_overlay_cache, g)
+			if(!tile_overlay)
+				LAZYSET(tile_overlay_cache, g, new/obj/effect/gas_overlay(null, g))
+				tile_overlay = tile_overlay_cache[g]
+			///End inline
 			if(!(tile_overlay in graphic))
 				LAZYADD(graphic_add, tile_overlay)
 
@@ -563,9 +568,9 @@
 ///Returns a gas_mixture datum with identical contents.
 /datum/gas_mixture/proc/copy()
 	RETURN_TYPE(/datum/gas_mixture)
-	var/datum/gas_mixture/new_gas = new
 	AIR_UPDATE_VALUES(src)
-	new_gas.gas = src.gas
+	var/datum/gas_mixture/new_gas = new(volume)
+	new_gas.gas = src.gas.Copy()
 	new_gas.temperature = src.temperature
 	new_gas.total_moles = src.total_moles
 	return new_gas

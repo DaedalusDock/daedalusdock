@@ -1,3 +1,4 @@
+//This file exists to prevent opening an iconfile parsing the entire code tree.
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR

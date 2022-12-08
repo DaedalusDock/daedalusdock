@@ -57,7 +57,7 @@
 
 	if(air1.returnPressure() > target_pressure)
 		var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-		if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)))
+		if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)) >= 0)
 			update_parents()
 			is_gas_flowing = TRUE
 	else

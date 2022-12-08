@@ -37,11 +37,11 @@
 
 /obj/structure/mineral_door/Destroy()
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/mineral_door/Move()
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/mineral_door/Bumped(atom/movable/AM)
 	..()
@@ -101,7 +101,7 @@
 	set_density(FALSE)
 	door_opened = TRUE
 	layer = OPEN_DOOR_LAYER
-	update_nearby_tiles()
+	zas_update_loc()
 	update_appearance()
 	isSwitchingStates = FALSE
 
@@ -122,7 +122,7 @@
 	set_opacity(TRUE)
 	door_opened = FALSE
 	layer = initial(layer)
-	update_nearby_tiles()
+	zas_update_loc()
 	update_appearance()
 	isSwitchingStates = FALSE
 

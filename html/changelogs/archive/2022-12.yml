@@ -1,0 +1,14 @@
+2022-12-05:
+  Baystation12, Kapu1178:
+  - rscadd: Smell component
+  - rscadd: Blood has an odor of DOOM!
+  - rscadd: Flying blood splatters leave a trail of blood.
+  - bugfix: N2O tanks now actually contain N2O. Whoops!
+  - tweak: Fires from explosions burn much shorter
+  Kapu1178:
+  - bugfix: Humans are now area sensitive regardless of mood config.
+  - bugfix: Semi-rare bug involving pumps not pumping.
+  - code_imp: human examine no longer runtimes
+  Spyroshark:
+  - balance: Reinforced windows are now much less resilient against melee damage and
+      are easier to deconstruct.

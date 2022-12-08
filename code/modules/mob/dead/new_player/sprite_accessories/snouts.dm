@@ -19,7 +19,7 @@
 	icon_state = "roundlight"
 
 /datum/sprite_accessory/vox_snouts/vox
-	icon = 'icons/mob/vox_snouts.dmi'
+	icon = 'icons/mob/species/vox/vox_snouts.dmi'
 	name = "Vox Snout"
 	icon_state = "vox"
 	em_block = TRUE

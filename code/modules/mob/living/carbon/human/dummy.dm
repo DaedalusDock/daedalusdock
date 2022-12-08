@@ -95,9 +95,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["ethcolor"] = COLOR_WHITE
 	dna.features["frills"] = "None"
 	dna.features["horns"] = "None"
-	dna.features["mcolor"] = COLOR_VIBRANT_LIME
-	dna.features["mcolor2"] = COLOR_VIBRANT_LIME
-	dna.features["mcolor3"] = COLOR_VIBRANT_LIME
+	dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
 	dna.features["moth_antennae"] = "Plain"
 	dna.features["moth_markings"] = "None"
 	dna.features["moth_wings"] = "Plain"
@@ -109,6 +107,13 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["vox_hair"] = "None"
 	dna.features["vox_facial_hair"] = "None"
 	dna.features["spines_vox"] = "None"
+	dna.features["tail_cat"] = "None"
+	dna.features["pod_hair"] = "Ivy"
+	dna.features["teshari_feathers"] = "Mane"
+	dna.features["teshari_body_feathers"] = "Plain"
+	dna.features["teshari_ears"] = "None"
+	dna.features["tail_teshari"] = "Default"
+	dna.features["headtails"] = "Long"
 
 //Inefficient pooling/caching way.
 GLOBAL_LIST_EMPTY(human_dummy_list)
@@ -126,6 +131,7 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 		GLOB.dummy_mob_list += D
 	else
 		D.regenerate_icons() //they were cut in wipe_state()
+		D.update_body_parts(update_limb_data = TRUE)
 	D.in_use = TRUE
 	return D
 

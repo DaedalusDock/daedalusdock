@@ -169,7 +169,7 @@
 		return FALSE
 	if(I.pulledby)
 		I.pulledby.stop_pulling()
-	update_inv_hands()
+	update_held_items()
 	I.pixel_x = I.base_pixel_x
 	I.pixel_y = I.base_pixel_y
 	return hand_index
@@ -326,7 +326,7 @@
 	var/hand_index = get_held_index_of_item(I)
 	if(hand_index)
 		held_items[hand_index] = null
-		update_inv_hands()
+		update_held_items()
 	if(I)
 		if(client)
 			client.screen -= I
@@ -387,12 +387,12 @@
 		dropItemToGround(I)
 	drop_all_held_items()
 
-
+///Returns a bitfield of covered item slots.
 /mob/living/carbon/proc/check_obscured_slots(transparent_protection)
 	var/obscured = NONE
 	var/hidden_slots = NONE
 
-	for(var/obj/item/I in get_equipped_items())
+	for(var/obj/item/I in get_all_worn_items()) //This contains nulls
 		hidden_slots |= I.flags_inv
 		if(transparent_protection)
 			hidden_slots |= I.transparent_protection
@@ -421,7 +421,7 @@
 
 /obj/item/proc/equip_to_best_slot(mob/M)
 	if(M.equip_to_appropriate_slot(src))
-		M.update_inv_hands()
+		M.update_held_items()
 		return TRUE
 	else
 		if(equip_delay_self)

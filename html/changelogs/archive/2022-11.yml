@@ -1,0 +1,40 @@
+2022-11-02:
+  Kapu1178:
+  - bugfix: Non-verified clients no longer show a disconnect message on logout
+  - bugfix: Holidays no longer bypass the configured station name.
+  - rscadd: Brought back the old new player panel.
+  - tweak: Subsystem Init no longer spams chat on the live server.
+  - bugfix: Firedoors and alarms work again
+  - bugfix: airflow_hit_act() is no longer called twice.
+  - tweak: Overall airflow changes.
+  - bugfix: Airflow no longer pushes objects through windows and doors.
+  Kapu1178, LemonInTheDark, ZephyrTFA, CoffeeDragon16, BebeYoshi, Microvolnovka19, Ryll-Ryll, SmArtKar, iamgoofball:
+  - rscadd: Added far more robust color choosing to character creation
+  - rscadd: Heterochromia quirk
+  - code_imp: Rewrites a ton of back-end character code.
+  - bugfix: Various jetpack bugs
+2022-11-09:
+  Kapu1178:
+  - rscadd: Using a multitool on a vent scrubber/pump toggles it's ability to sleep.
+2022-11-10:
+  Kapu1178:
+  - rscadd: Meta, Kilo and Pubby received a new coat of paint.
+  - bugfix: Pubby medbay no longer has extra holopads.
+2022-11-14:
+  Kapu1178:
+  - qol: Lighting has been dimmed
+  - code_imp: The wall paint mapping helpers now work for airlocks.
+  - bugfix: Masks no longer poke through hats/helmets they shouldn't
+  - bugfix: Heat exchanging pipes are more consistent. Affecting primarily cold loops
+      in space.
+  - bugfix: Windows will now trigger ZAS updates when anchored or unanchored.
+2022-11-16:
+  Cenrus:
+  - tweak: Letters can now be opened by anyone, not just the recipient.
+  Kapu1178:
+  - tweak: Reduced the emergency shuttle timers.
+  - code_imp: Clean up title music code
+  - code_imp: Title Music and Credits Music are now independent concepts
+  - rscadd: Change Title Music verb for admins.
+  francinum:
+  - imageadd: The floors have been smeared with a thin coating of soul.

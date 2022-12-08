@@ -149,7 +149,7 @@
 	//	episode_names += new /datum/episode_name/rare("ON A WING AND A PRAYER", "The shuttle was bombed but [score.escapees] people escaped anyways.", min(1000, score.shuttlebombed*200))
 
 	for(var/mob/living/simple_animal/pet/dog/corgi/C in GLOB.mob_living_list)
-		if(C.mind?.spell_list.len > 0)
+		if(C.mind && length(C.mind.spell_list))
 			episode_names += new /datum/episode_name/rare("[pick("WHERE NO DOG HAS GONE BEFORE", "IAN SAYS", "IAN'S DAY OUT", "EVERY DOG HAS ITS DAY", "THE ONE WITH THE MAGIC PUPPY")]", "You know what you did.", 1000)
 			break
 
@@ -160,7 +160,7 @@
 	var/escaped = SSticker.popcount[POPCOUNT_ESCAPEES]
 	var/escaped_on_shuttle = SSticker.popcount[POPCOUNT_SHUTTLE_ESCAPEES]
 	var/human_escapees = SSticker.popcount[POPCOUNT_ESCAPEES_HUMANONLY]
-	if(REALTIMEOFDAY - SSticker.round_start_timeofday > 20 MINUTES) //shuttle docked in less than 16 minutes!!
+	if((REALTIMEOFDAY - SSticker.round_start_timeofday) < 20 MINUTES) //shuttle docked in less than 16 minutes!!
 		episode_names += new /datum/episode_name/rare("[pick("THE CAPTAIN STUBS THEIR TOE", "QUICK GETAWAY", "A MOST EFFICIENT APOCALYPSE", "THE CREW'S [round((REALTIMEOFDAY - SSticker.round_start_timeofday)/60)] MINUTES OF FAME", "ON SECOND THOUGHT, LET'S NOT GO TO [uppr_name]. 'TIS A SILLY PLACE.")]", "This round was about as short as they come.", 750)
 		if(escaped_on_shuttle == 0)
 			episode_names += new /datum/episode_name/rare("DRY RUN", "This round was as short as they come, and there were no escapees.", 2500)
@@ -312,12 +312,12 @@
 		if(clowncount == 1 && mimecount == 1)
 			episode_names += new /datum/episode_name/rare("THE DYNAMIC DUO", "The only two survivors were the Clown, and the Mime.", 2500)
 
-	else
+	else if(human_escapees)
 		//more than 0 human escapees
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
-			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/internal/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
 			if(hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage

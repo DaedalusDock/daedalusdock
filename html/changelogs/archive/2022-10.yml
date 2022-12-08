@@ -17,3 +17,18 @@
 2022-10-21:
   francinum:
   - server: Github Actions Dependency Update
+2022-10-22:
+  Kapu1178:
+  - server: Bumped recommended version to 1589
+2022-10-24:
+  Kapu1178:
+  - bugfix: Unsimulated turfs can no longer have their gas mutated.
+  - server: Users who connect without a linked discord account will now get a pop-up.
+2022-10-25:
+  DTraitor:
+  - bugfix: fixed ghosts not hearing some sounds
+  Kapu1178:
+  - code_imp: Adjusted how Runechat appears.
+2022-10-26:
+  francinum:
+  - server: Additional code checks

@@ -45,6 +45,8 @@
 	///Radio connection from the air alarm
 	var/radio_filter_in
 
+	var/can_hibernate = TRUE
+
 /obj/machinery/atmospherics/components/unary/vent_pump/New()
 	if(!id_tag)
 		id_tag = SSnetworks.assign_random_name()
@@ -120,9 +122,9 @@
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
 			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
 			if(draw == -1)
-				COOLDOWN_START(src, hibernating, 15 SECONDS)
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+				if(can_hibernate)
+					COOLDOWN_START(src, hibernating, 15 SECONDS)
+			ATMOS_USE_POWER(draw)
 			update_parents()
 
 		else //external -> internal
@@ -132,14 +134,14 @@
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
 			if(draw == -1)
-				COOLDOWN_START(src, hibernating, 15 SECONDS)
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+				if(can_hibernate)
+					COOLDOWN_START(src, hibernating, 15 SECONDS)
+			ATMOS_USE_POWER(draw)
 
 			update_parents()
 
 	else
-		if(pump_direction && (pressure_checks&EXT_BOUND))
+		if(pump_direction && (pressure_checks&EXT_BOUND) && can_hibernate)
 			COOLDOWN_START(src, hibernating, 15 SECONDS)
 
 	update_icon_nopipes()
@@ -342,8 +344,15 @@
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000
 
-// mapping
+/obj/machinery/atmospherics/components/unary/vent_pump/multitool_act(mob/living/user, obj/item/tool)
+	. = ..()
+	can_hibernate = !can_hibernate
+	to_chat(user, span_notice("\The [src] will [can_hibernate ? "now" : "no longer"] sleep to conserve energy."))
+	if(!can_hibernate)
+		COOLDOWN_RESET(src, hibernating)
 
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+// mapping
 /obj/machinery/atmospherics/components/unary/vent_pump/layer2
 	piping_layer = 2
 	icon_state = "vent_map-2"

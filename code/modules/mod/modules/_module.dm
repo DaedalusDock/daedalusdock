@@ -142,7 +142,7 @@
 			balloon_alert(mod.wearer, "[src] activated, [used_button]-click to use")
 	active = TRUE
 	COOLDOWN_START(src, cooldown_timer, cooldown_time)
-	mod.wearer.update_inv_back()
+	mod.wearer.update_worn_back()
 	SEND_SIGNAL(src, COMSIG_MODULE_ACTIVATED)
 	return TRUE
 
@@ -160,7 +160,7 @@
 		else
 			UnregisterSignal(mod.wearer, used_signal)
 			used_signal = null
-	mod.wearer.update_inv_back()
+	mod.wearer.update_worn_back()
 	SEND_SIGNAL(src, COMSIG_MODULE_DEACTIVATED)
 	return TRUE
 
@@ -179,8 +179,8 @@
 	if(SEND_SIGNAL(src, COMSIG_MODULE_TRIGGERED) & MOD_ABORT_USE)
 		return FALSE
 	COOLDOWN_START(src, cooldown_timer, cooldown_time)
-	addtimer(CALLBACK(mod.wearer, /mob.proc/update_inv_back), cooldown_time+1) //need to run it a bit after the cooldown starts to avoid conflicts
-	mod.wearer.update_inv_back()
+	addtimer(CALLBACK(mod.wearer, /mob.proc/update_worn_back), cooldown_time+1) //need to run it a bit after the cooldown starts to avoid conflicts
+	mod.wearer.update_worn_back()
 	SEND_SIGNAL(src, COMSIG_MODULE_USED)
 	return TRUE
 

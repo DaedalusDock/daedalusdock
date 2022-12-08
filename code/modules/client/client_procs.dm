@@ -347,13 +347,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			message_admins(msg)
 		else
 			if(!discord_is_link_valid(ckey))
+				restricted_mode = TRUE
 				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-
+				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 				//These need to be immediate because we're disposing of the client the second we're done with this.
-				to_chat_immediate(src, span_danger(CONFIG_GET(string/panic_bunker_discord_register_message)))
+				usr << browse(
+					"<center>[("[CONFIG_GET(string/panic_bunker_discord_register_message)]")] \
+					<br><br><span style='color:red'>Your One-Time-Password is: [discord_otp]</span> \
+					<br><br>To link your Discord account, head to the Discord Server and paste the following message:<hr/></center><code> \
+					[discord_prefix]verify [discord_otp]</code><hr/> \
+					<center><span style='color:red'>discord.daedalus13.net</span> \
+					<br>Due to technical limitations, we cannot embed this link. Love byond.",
+					"window=discordauth;can_resize=0;can_minimize=0",
+				)
 				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
 				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
 
 				if(connecting_admin)
@@ -545,7 +553,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(mob)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_join = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
-		if (!stealth_admin)
+		if (!stealth_admin || restricted_mode)
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
 

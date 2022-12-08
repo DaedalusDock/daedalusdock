@@ -7,7 +7,7 @@
 	var/z_flags = NONE
 
 /turf
-	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.update_nearby_tiles())
+	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.zas_update_loc())
 	var/needs_air_update = 0
 	///The local gas mixture of this turf. Use return_air(). This will always exist even if not in use, because GCing air contents would be too expensive.
 	var/datum/gas_mixture/air
@@ -295,10 +295,10 @@
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
 		if(air)
-			return air
+			return air.copy()
 		else
 			make_air()
-			return air
+			return air.copy()
 
 	else if(zone)
 		if(!zone.invalid)

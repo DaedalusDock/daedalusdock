@@ -90,8 +90,7 @@
 	mix_and_conc[air1] = node1_concentration
 	mix_and_conc[air2] = node2_concentration
 	var/draw = mix_gas(mix_and_conc, air3, transfer_moles, power_rating)
-	if(draw > 0)
-		ATMOS_USE_POWER(draw)
+	ATMOS_USE_POWER(draw)
 
 	var/datum/pipeline/parent1 = parents[1]
 	parent1.update = TRUE

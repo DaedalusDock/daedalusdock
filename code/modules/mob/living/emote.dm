@@ -120,11 +120,16 @@
 		message_simple = S.deathmessage
 	. = ..()
 	message_simple = initial(message_simple)
-	if(. && user.deathsound)
+	if(.)
 		if(isliving(user))
 			var/mob/living/L = user
 			if(!L.can_speak_vocal() || L.oxyloss >= 50)
 				return //stop the sound if oxyloss too high/cant speak
+		if(!user.deathsound)
+			if(!ishuman(user))
+				return
+			playsound(user, pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg'), 100, 0)
+			return
 		playsound(user, user.deathsound, 200, TRUE, TRUE)
 
 /datum/emote/living/drool
@@ -419,6 +424,12 @@
 		if(user.gender == MALE)
 			return 'sound/emotes/male/male_sniff.ogg'
 		return 'sound/emotes/female/female_sniff.ogg'
+
+/datum/emote/living/carbon/human/sniff/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(.)
+		var/mob/living/L = user
+		COOLDOWN_RESET(L, smell_time)
 
 /datum/emote/living/snore
 	key = "snore"

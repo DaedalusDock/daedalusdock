@@ -368,7 +368,8 @@
 	playsound(src,'sound/effects/bamf.ogg',100,TRUE)
 	qdel(src)
 
-/obj/effect/resin_container/newtonian_move(direction, instant = FALSE) // Please don't spacedrift thanks
+// Please don't spacedrift thanks
+/obj/effect/resin_container/newtonian_move(direction, instant = FALSE, start_delay = 0)
 	return TRUE
 
 #undef EXTINGUISHER
@@ -467,4 +468,4 @@
 	var/used_amount = inj_am / usage_ratio
 	reagents.trans_to(user, used_amount, multiplier=usage_ratio, methods = INJECT)
 	update_appearance()
-	user.update_inv_back() //for overlays update
+	user.update_worn_back() //for overlays update

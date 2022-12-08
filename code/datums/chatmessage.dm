@@ -1,5 +1,5 @@
 /// How long the chat message's spawn-in animation will occur for
-#define CHAT_MESSAGE_SPAWN_TIME 0.2 SECONDS
+#define CHAT_MESSAGE_SPAWN_TIME 0.4 SECONDS
 /// How long the chat message will exist prior to any exponential decay
 #define CHAT_MESSAGE_LIFESPAN 5 SECONDS
 /// How long the chat message's end of life fading animation will occur for
@@ -168,17 +168,37 @@
 
 	// Approximate text height
 	var/complete_text = "<span class='center [extra_classes.Join(" ")]' style='color: [tgt_color]'>[owner.say_emphasis(text)]</span>"
-	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH))
+	//var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
+
+	message_loc = isturf(target) ? target : get_atom_on_turf(target)
+
+	// Build message image
+	message = new /image{
+		plane = RUNECHAT_PLANE;
+		appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART;
+		alpha = 0;
+		maptext_width = 160;
+		maptext_height = 48;
+		maptext_x = -64;
+		maptext_y = 28
+	}
+
+	animate(message, maptext_y = 28, time = 0.01)
+	var/mheight = 2 + (8 * (1 + round(length(message.maptext_width) / 32)))
+
+	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
+	message.maptext = MAPTEXT(complete_text)
+
+	//var/mheight = (1 + round(length(message.maptext_width) / 32))
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
 	// Translate any existing messages upwards, apply exponential decay factors to timers
-	message_loc = isturf(target) ? target : get_atom_on_turf(target)
 	if (owned_by.seen_messages)
 		var/idx = 1
 		var/combined_height = approx_lines
-		for(var/msg in owned_by.seen_messages[message_loc])
-			var/datum/chatmessage/m = msg
-			animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
+		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
+			animate(m.message, maptext_y = m.message.maptext_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
+
 			combined_height += m.approx_lines
 
 			// When choosing to update the remaining time we have to be careful not to update the
@@ -196,22 +216,12 @@
 	if (current_z_idx >= CHAT_LAYER_MAX_Z)
 		current_z_idx = 0
 
-	// Build message image
-	message = image(loc = message_loc, layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++)
-	message.plane = RUNECHAT_PLANE
-	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
-	message.alpha = 0
-	message.pixel_y = target.maptext_height
-	message.pixel_x = (target.maptext_width * 0.5) - 16
-	message.maptext_width = CHAT_MESSAGE_WIDTH
-	message.maptext_height = mheight
-	message.maptext_x = (CHAT_MESSAGE_WIDTH - owner.bound_width) * -0.5
-	message.maptext = MAPTEXT(complete_text)
-
 	// View the message
 	LAZYADDASSOCLIST(owned_by.seen_messages, message_loc, src)
 	owned_by.images |= message
-	animate(message, alpha = 255, time = CHAT_MESSAGE_SPAWN_TIME)
+
+	message.loc = message_loc
+	animate(message, alpha = 255, maptext_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, ANIMATION_END_NOW)
 
 	// Register with the runechat SS to handle EOL and destruction
 	var/duration = lifespan - CHAT_MESSAGE_EOL_FADE
@@ -226,7 +236,7 @@
  */
 /datum/chatmessage/proc/end_of_life(fadetime = CHAT_MESSAGE_EOL_FADE)
 	isFading = TRUE
-	animate(message, alpha = 0, time = fadetime, flags = ANIMATION_PARALLEL)
+	animate(message, alpha = 0, maptext_y = message.maptext_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fadetime)
 	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, src), fadetime, TIMER_DELETE_ME, SSrunechat)
 
 /**

@@ -346,10 +346,15 @@
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "handset"
 	item_flags = ABSTRACT
+	canhear_range
 	/// Owner phone
 	var/obj/machinery/networked/telephone/callstation
 	/// Have we manually muted the mic?
 	var/mic_muted = FALSE
+
+/*
+ * State handling boilerplate
+ */
 
 /obj/item/p2p_phone_handset/Destroy()
 	if(!QDELETED(callstation))
@@ -419,6 +424,10 @@
 		M.dropItemToGround(src, TRUE)
 	forceMove(callstation)
 	callstation.handset_statechange(HANDSET_ONHOOK)
+
+/*
+ * Audio Data Bullshit
+ */
 
 /obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list())
 	// if(!IN_GIVEN_RANGE(src, speaker_location.speaker_location(), 1))

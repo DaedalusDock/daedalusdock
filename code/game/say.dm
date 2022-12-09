@@ -54,6 +54,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 			continue
 		hearing_movable.Hear(rendered, src, message_language, message, , spans, message_mods)
 
+/// The proc that actually builds the final message. This is built by the object making the noise.
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
 	//This proc uses text() because it is faster than appending strings. Thanks BYOND.
 	//Basic span

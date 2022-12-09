@@ -335,6 +335,11 @@
 #undef CALLER_NETID
 #undef CALLER_NAME
 
+
+/*
+ * Handset
+ */
+
 /obj/item/p2p_phone_handset
 	name = "phone handset"
 	desc = "You talk into this."
@@ -343,6 +348,8 @@
 	item_flags = ABSTRACT
 	/// Owner phone
 	var/obj/machinery/networked/telephone/callstation
+	/// Have we manually muted the mic?
+	var/mic_muted = FALSE
 
 /obj/item/p2p_phone_handset/Destroy()
 	if(!QDELETED(callstation))
@@ -354,15 +361,42 @@
 	if(!callstation)
 		return
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/check_range)
+	become_hearing_sensitive()//Start listening.
 
 /obj/item/p2p_phone_handset/dropped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
+		lose_hearing_sensitivity()//Stop listening.
+		mic_muted = FALSE //And make sure we sync this state.
 	if(callstation)
 		if(user)
-			to_chat(user, span_notice("The handset snaps back to the phone."))
+			to_chat(user, span_notice("[src] snaps back onto [callstation]."))
 		snap_back()
+
+/obj/item/p2p_phone_handset/attack_self(mob/user, modifiers)
+	. = ..()
+	if(.)
+		return
+	if(mic_muted)
+		to_chat(user, span_notice("You press the mute button, the light turns off."))
+		become_hearing_sensitive()
+	else
+		to_chat(user, span_notice("You press the mute button, a small red light glows from under it."))
+		lose_hearing_sensitivity()
+	mic_muted != mic_muted
+
+/obj/item/p2p_phone_handset/examine(mob/user)
+	. = ..()
+	//mic mute
+	if(mic_muted)
+		. += span_warning("The mute button is glowing red.")
+	else
+		. += span_notice("The mute button is dark.")
+	//Are we somehow missing our callstation?
+	if(!callstation)
+		. += span_boldwarning("It isn't connected to anything? Call a coder. Or a priest.")
+		//Definitely a priest.
 
 /obj/item/p2p_phone_handset/proc/check_range()
 	SIGNAL_HANDLER
@@ -386,10 +420,31 @@
 	forceMove(callstation)
 	callstation.handset_statechange(HANDSET_ONHOOK)
 
+/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list())
+	// if(!IN_GIVEN_RANGE(src, speaker_location.speaker_location(), 1))
+	// 	return
+	. = ..() //The return value is never set.
+	if(!IN_GIVEN_RANGE(src, speaker, 2))// Current tile and immediately adjacent.
+		return //Too far away for us to care.
+	//START SHAMELESS RADIO CARGOCULTING
+	var/filtered_mods = list()
+	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
+		filtered_mods[MODE_CUSTOM_SAY_EMOTE] = message_mods[MODE_CUSTOM_SAY_EMOTE]
+		filtered_mods[MODE_CUSTOM_SAY_ERASE_INPUT] = message_mods[MODE_CUSTOM_SAY_ERASE_INPUT]
+	if(message_mods[RADIO_EXTENSION] == MODE_L_HAND || message_mods[RADIO_EXTENSION] == MODE_R_HAND)
+		// try to avoid being heard double
+		if (loc == speaker && ismob(speaker))
+			var/mob/M = speaker
+			var/idx = M.get_held_index_of_item(src)
+			// left hands are odd slots
+			if (idx && (idx % 2) == (message_mods[RADIO_EXTENSION] == MODE_L_HAND))
+				return
+
+	talk_into(speaker, raw_message, , spans, language=message_language, message_mods=filtered_mods)
+	//END SHAMELESS RADIO CARGOCULTING
+
 /obj/item/p2p_phone_handset/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	. = ..()
-	if(!callstation || callstation.state != STATE_CONNECTED)//Doesn't need nullcheck due to || shortcutting
-		return
 
 //TODO: Prevent the user from walking away with the handset.
 

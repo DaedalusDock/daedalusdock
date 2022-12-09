@@ -54,10 +54,13 @@
 
 // Subtype of /datum/signal with additional processing information.
 /datum/signal/subspace
+	// Fuck you. Don't touch these packets. They suck. We'll kill them off later.
+	has_magic_data = TRUE
 	transmission_method = TRANSMISSION_SUBSPACE
 	var/server_type = /obj/machinery/telecomms/server
 	var/datum/signal/subspace/original
 	var/list/levels
+
 
 /datum/signal/subspace/New(data)
 	src.data = data || list()

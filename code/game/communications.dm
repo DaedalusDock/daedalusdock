@@ -197,6 +197,10 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	///Admin logging
 	var/logging_data
 
+	///Does this packet contain anything but standard data?
+	///Anything that captures packets should either generate garbage data or discard these packets.
+	var/has_magic_data = FALSE
+
 /datum/signal/New(author, data, transmission_method = TRANSMISSION_RADIO, logging_data = null)
 	src.author = WEAKREF(author)
 	if(islist(author))

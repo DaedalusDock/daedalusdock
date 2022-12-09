@@ -63,7 +63,7 @@
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
 		create_chat_message(speaker, message_language, raw_message, spans)
 	// Recompose the message, because it's scrambled by default
-	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods, sound_loc)
+	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods, sound_loc = sound_loc)
 	to_chat(src,
 		html = "[link] [message]",
 		avoid_highlighting = speaker == src)

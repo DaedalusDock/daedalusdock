@@ -196,7 +196,7 @@
 				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
 				continue
 
-			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio)
+			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio.speaker_location())
 
 	// Let the global hearers (ghosts, etc) hear this message
 	for(var/atom/movable/hearer as anything in globally_receiving)

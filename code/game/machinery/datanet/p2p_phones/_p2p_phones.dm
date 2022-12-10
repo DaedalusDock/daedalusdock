@@ -2,16 +2,25 @@
 #define CALLER_NETID 1
 #define CALLER_NAME  2
 //states
-#define STATE_WAITING   0 //Idle
-#define STATE_ORIGINATE 1 //Calling remote station
-#define STATE_ANSWER    2 //Being called by remote station
-#define STATE_CONNECTED   3 //Call active
-#define STATE_HANGUP    4 //Far side hung up
-#define STATE_FARBUSY   5 //Far side busy, Temporary state
+///Idle
+#define STATE_WAITING   0
+///Calling remote station
+#define STATE_ORIGINATE 1
+///Being called by remote station
+#define STATE_ANSWER    2
+///Call active
+#define STATE_CONNECTED   3
+///Far side hung up
+#define STATE_HANGUP    4
+///Far side busy, Temporary state
+#define STATE_FARBUSY   5
 //handset states
-#define HANDSET_ONHOOK  0 //Handset is on the phone.
-#define HANDSET_OFFHOOK 1 //Handset is off the phone, but still around
-#define HANDSET_MISSING 2 //Handset missing or in invalid state
+///Handset is on the phone.
+#define HANDSET_ONHOOK  0
+///Handset is off the phone, but still around
+#define HANDSET_OFFHOOK 1
+///Handset missing or in invalid state
+#define HANDSET_MISSING 2
 
 #define X_TELEPHONE_TESTING
 
@@ -22,13 +31,15 @@
 #endif
 
 /obj/machinery/networked/telephone
-	name = "Phone - UNINITIALIZED"
+	name = "phone - UNINITIALIZED"
 	desc = "It's a phone. You pick it up, select from the list of other phones, and scream at the other person. The voice quality isn't all that great."
 	net_class = "PNET_VCSTATION"
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
-	var/list/discovered_phones // friendly_name:netid
-	var/friendly_name = "Invalid Station"
+	///friendly_name:netid
+	var/list/discovered_phones
+	/// The 'common name' of the station. Used in the UI.
+	var/friendly_name = null
 
 	/// list(netaddr,friendly_name) of active call
 	var/list/active_caller
@@ -42,22 +53,25 @@
 
 /obj/machinery/networked/telephone/Initialize(mapload)
 	. = ..()
-	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
-	name = "Phone - [friendly_name]"
 	handset = new(src)
 	handset.callstation = src
 	//Parent these to the handset, but let US manage them.
 	ring_loop = new(handset)
 	busy_loop = new(handset)
 	hup_loop = new(handset)
+	return INITIALIZE_HINT_LATELOAD
 
-#warn TESTING TYPES
-/obj/machinery/networked/telephone/test1
-	friendly_name = "Test Station 1"
-/obj/machinery/networked/telephone/test2
-	friendly_name = "Test Station 2"
-/obj/machinery/networked/telephone/test3
-	friendly_name = "Test Station 3"
+/obj/machinery/networked/telephone/LateInitialize()
+	. = ..()
+	if(!friendly_name)
+		friendly_name = get_area(src)
+		friendly_name = friendly_name:name //~
+	recalculate_name()
+
+///Recalculate our name.
+/obj/machinery/networked/telephone/proc/recalculate_name()
+	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
+	name = "phone - [friendly_name]"
 
 /obj/machinery/networked/telephone/Destroy()
 	if(!QDELETED(handset))
@@ -142,6 +156,21 @@
 			cleanup_residual_call()
 
 
+/obj/machinery/networked/telephone/multitool_act(mob/living/user, obj/item/tool)
+	var/static/list/options_list = list("Rename Station", "Reconnect to terminal")
+	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
+	switch(selected)
+		if("Rename Station")
+			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
+			if(!new_friendly_name)
+				return TOOL_ACT_TOOLTYPE_SUCCESS
+			friendly_name = new_friendly_name
+			recalculate_name()
+
+		if("Reconnect to terminal")
+			link_to_jack() //Just in case something stupid happens to the jack.
+
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 
 
@@ -187,6 +216,11 @@
 						call_dropped()
 					else
 						return // This makes no sense.
+		if("tel_voicedata")
+			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+				if(state != STATE_CONNECTED)
+					return //No.
+				handset.handle_voicedata(signal)
 
 
 // Telephone State Machine Hellscape
@@ -259,7 +293,7 @@
 	if(state != STATE_ORIGINATE)
 		CRASH("Tried to busy-bump a call on a phone that wasn't originating")
 	busy_loop.start()
-	active_caller = null //Drop the call, The other side did too.
+	active_caller = null //Drop the call, The other side never even knew about us.
 	state = STATE_FARBUSY
 
 /// We are listening to the buzzer telling us to hang up.
@@ -289,7 +323,7 @@
 		if(STATE_FARBUSY)
 			return "<span style='color:red'>STATION BUSY</span>"
 		else
-			return "<span style='color:pink'>INVALID STATE</span>"
+			return "<span style='color:pink'>INVALID STATE [state]</span>"
 
 /obj/machinery/networked/telephone/ui_interact(mob/user) //THIS IS GONNA BE RAW HTML FUCKERY, *SUE ME BITCHBOOOYY*
 	. = ..()
@@ -332,8 +366,7 @@
 	if(href_list["scan"])
 		scan_for_stations()
 
-#undef CALLER_NETID
-#undef CALLER_NAME
+
 
 
 /*
@@ -346,7 +379,6 @@
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "handset"
 	item_flags = ABSTRACT
-	canhear_range
 	/// Owner phone
 	var/obj/machinery/networked/telephone/callstation
 	/// Have we manually muted the mic?
@@ -389,7 +421,7 @@
 	else
 		to_chat(user, span_notice("You press the mute button, a small red light glows from under it."))
 		lose_hearing_sensitivity()
-	mic_muted != mic_muted
+	mic_muted = !mic_muted
 
 /obj/item/p2p_phone_handset/examine(mob/user)
 	. = ..()
@@ -429,12 +461,13 @@
  * Audio Data Bullshit
  */
 
-/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list())
-	// if(!IN_GIVEN_RANGE(src, speaker_location.speaker_location(), 1))
-	// 	return
-	. = ..() //The return value is never set.
-	if(!IN_GIVEN_RANGE(src, speaker, 2))// Current tile and immediately adjacent.
-		return //Too far away for us to care.
+/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), sound_loc)
+	if(callstation.state != STATE_CONNECTED || speaker == src) //Either disconnected, or we're hearing ourselves.
+		return //This is far cheaper than a range check.
+	var/atom/movable/checked_thing = sound_loc || speaker //If we have a location, we care about that, otherwise we're speaking directly from something.
+	if(!IN_GIVEN_RANGE(src, checked_thing, 1))
+		return
+	. = ..() //The return value is never set, but we call and keep it anyways.
 	//START SHAMELESS RADIO CARGOCULTING
 	var/filtered_mods = list()
 	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
@@ -449,13 +482,85 @@
 			if (idx && (idx % 2) == (message_mods[RADIO_EXTENSION] == MODE_L_HAND))
 				return
 
-	talk_into(speaker, raw_message, , spans, language=message_language, message_mods=filtered_mods)
+	talk_into(speaker, raw_message, , spans, language=message_langs, message_mods=filtered_mods)
 	//END SHAMELESS RADIO CARGOCULTING
 
-/obj/item/p2p_phone_handset/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
-	. = ..()
+/obj/item/p2p_phone_handset/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	//We can skip radio's restrained check because we aren't push-to-talk.
 
-//TODO: Prevent the user from walking away with the handset.
+	if(callstation.state != STATE_CONNECTED)
+		return //Still no use bothering if we aren't connected.
+
+	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over the phone.
+	//If they're holding the phone, they'll always suck. But someone always can hold it for them.
+		var/mob/living/carbon/mute = talking_movable
+		if(istype(mute))
+			if(!HAS_TRAIT(talking_movable, TRAIT_CAN_SIGN_ON_COMMS))
+				return FALSE
+			switch(mute.check_signables_state())
+				if(SIGN_ONE_HAND) // One hand full
+					message = stars(message)
+				if(SIGN_HANDS_FULL to SIGN_CUFFED)
+					return FALSE
+	if(!spans)
+		spans = list(talking_movable.speech_span)
+	if(!language)
+		language = talking_movable.get_selected_language()
+	INVOKE_ASYNC(src, .proc/talk_into_impl, talking_movable, message, channel, spans.Copy(), language, message_mods)
+	return ITALICS | REDUCE_RANGE
+
+/obj/item/p2p_phone_handset/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(!callstation)
+		return //Nothing but garbage noise.
+	if(!talking_movable || !message)
+		return //But nobody spoke.
+	if(mic_muted)
+		return //One day the voice stopped.
+	if(!talking_movable.IsVocal())
+		return //No voice to order a pizza.
+	if(callstation.state != STATE_CONNECTED)
+		return //Are we . . .   Connected?
+
+	// Yes, we are. Start cramming shit into a radio packet and tell our callstation to post it.
+	// Is it a bad idea for the phone to be handling it? Probably. I think it's best to just have
+	// all the speech related code on the handset, with the callstation dealing with state and shit.
+
+	//The third var is the 'radio'. It's null. Go fuck yourself.
+	var/atom/movable/virtualspeaker/v_speaker = new(null, talking_movable, null)
+
+	//Bundle up what we care about.
+	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
+	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
+	v_signal.data["s_addr"] = null  //(Set by post_crafted_signal), Just setting it to null means it's always first in the list.
+	v_signal.data["d_addr"] = callstation.active_caller[CALLER_NETID]
+	v_signal.data["command"] = "tel_voicedata"
+	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
+	v_signal.data["message"] = message
+	v_signal.data["spans"] = spans
+	v_signal.data["language"] = language
+	v_signal.data["message_mods"] = message_mods
+
+	//Send it off to the next phone.
+	callstation.post_crafted_signal(v_signal)
+//Finally, the last steps...
+
+/// Receive a voice packet from the callstation. These are just transparently passed to us.
+/// This replicates the behaviour of `send_speech`, since we're being passed all the data in a signal.
+/obj/item/p2p_phone_handset/proc/handle_voicedata(datum/signal/v_signal)
+	if(!v_signal)
+		CRASH("Handset was asked to handle a packet that didn't exist.")
+	//cache for sanic speed :3
+	var/list/v_sig_data = v_signal.data
+
+	var/list/radio_bullshit_override = list("span"="radio", "name"=callstation.active_caller[CALLER_NAME])
+
+	var/rendered = compose_message(v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"])
+	for(var/atom/movable/hearing_movable as anything in get_hearers_in_view(2, src)-src)
+		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
+			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
+			continue
+		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location())
+
 
 #undef STATE_WAITING
 #undef STATE_ORIGINATE
@@ -463,3 +568,5 @@
 #undef STATE_CONNECTED
 #undef STATE_HANGUP
 #undef STATE_FARBUSY
+#undef CALLER_NETID
+#undef CALLER_NAME

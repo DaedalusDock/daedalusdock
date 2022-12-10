@@ -250,7 +250,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		spans |= SPAN_ITALICS
 
 
-	var/radio_return = radio(radio_message, message_mods, spans, language)//roughly 27% of living/say()'s total cost
+	//REMEMBER KIDS, LISTS ARE REFERENCES. RADIO PACKETS GET QUEUED.
+	var/radio_return = radio(radio_message, message_mods.Copy(), spans.Copy(), language)//roughly 27% of living/say()'s total cost
 	if(radio_return & ITALICS)
 		spans |= SPAN_ITALICS
 	if(radio_return & REDUCE_RANGE)

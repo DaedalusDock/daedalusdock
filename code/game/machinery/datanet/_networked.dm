@@ -16,6 +16,7 @@
 	. = ..()
 	link_to_jack()
 
+/// A wrapper to send basic, non-complex data packets easily. If you need to customize the signal, use `post_crafted_signal`
 /obj/machinery/networked/proc/post_signal(destination_id, list/datagram)
 	if(!netjack || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
@@ -23,8 +24,18 @@
 	sig_data["s_addr"] = src.net_id
 	sig_data["d_addr"] = destination_id
 	var/datum/signal/sig = new(src, sig_data, TRANSMISSION_WIRE)
-
 	src.netjack.post_signal(sig)
+
+/// Send a signal from a ref. You are expected to have already dereferenced all the data.
+/// If you're sending a forged source address (You should have a good reason for this...) set `preserve_s_addr = TRUE`
+/obj/machinery/networked/proc/post_crafted_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
+	if(!netjack || !sending_signal)
+		return //You need a pipe and something to send down it, though.
+	if(!preserve_s_addr)
+		sending_signal.data["s_addr"] = src.net_id
+	sending_signal.transmission_method = TRANSMISSION_WIRE
+	sending_signal.author = WEAKREF(src) // Override the sending signal author.
+	src.netjack.post_signal(sending_signal)
 
 /obj/machinery/networked/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(TRUE)

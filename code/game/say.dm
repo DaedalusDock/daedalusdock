@@ -54,9 +54,15 @@ GLOBAL_LIST_INIT(freqtospan, list(
 			continue
 		hearing_movable.Hear(rendered, src, message_language, message, , spans, message_mods)
 
-/// The proc that actually builds the final message. This is built by the object making the noise.
+/**  The core proc behind say as a concept. Terrifyingly horrible. Called twice for no good reason.
+ * Arguments:
+ * * `speaker` - Either the mob speaking, or a virtualspeaker if this is a remote message of some kind.
+ * * `message_language` - The language the message is ICly in. For understanding.
+ * * `raw_message` - The actual text of the message.
+ * * `radio_freq` - can be either a numeric radio frequency, or an assoc list of `span` and `name`, to directly override them.
+ * * `face_name` - Do we use the "name" of the speaker, or get it's `real_name`, Used solely for hallucinations.
+*/
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
-	//This proc uses text() because it is faster than appending strings. Thanks BYOND.
 	//Basic span
 	var/spanpart1 = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
 	//Start name span.
@@ -148,12 +154,16 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		return "makes a strange sound."
 
 /proc/get_radio_span(freq)
+	if(islist(freq)) //Heehoo hijack bullshit
+		return freq["span"]
 	var/returntext = GLOB.freqtospan["[freq]"]
 	if(returntext)
 		return returntext
 	return "radio"
 
 /proc/get_radio_name(freq)
+	if(islist(freq)) //Heehoo hijack bullshit
+		return freq["name"]
 	var/returntext = GLOB.reverseradiochannels["[freq]"]
 	if(returntext)
 		return returntext
@@ -206,7 +216,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 	radio = _radio
 	source = M
 	if(istype(M))
-		name = radio.anonymize ? "Unknown" : M.GetVoice()
+		name = radio?.anonymize ? "Unknown" : M.GetVoice()
 		verb_say = M.verb_say
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim

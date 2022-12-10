@@ -174,6 +174,8 @@
 	mid_length = 6.2 SECONDS
 
 /datum/looping_sound/telephone/busy
+	start_sound = 'sound/voice/callstation_unavailable.ogg'
+	start_length = 5.7 SECONDS
 	mid_sounds = 'goon/sounds/phone/phone_busy.ogg'
 	mid_length = 5 SECONDS
 	volume = 30

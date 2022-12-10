@@ -37,6 +37,7 @@
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
 	///friendly_name:netid
+	// var/list/discovered_phones_old
 	var/list/discovered_phones
 	/// The 'common name' of the station. Used in the UI.
 	var/friendly_name = null
@@ -183,7 +184,8 @@
 	set waitfor = FALSE //this is probably bad
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
-	discovered_phones = list() //Trash the existing list.
+	// discovered_phones_old = list() //Trash the existing list.
+	discovered_phones = list()
 	post_signal("ping", list("data"="TEL_DISCOVER"))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
@@ -197,7 +199,8 @@
 	switch(signal.data["command"])
 		if("ping_reply")//Add new phone to database
 			if(signal.data["netclass"] == "PNET_VCSTATION") //Another phone!
-				discovered_phones[signal.data["user_id"]]=signal.data["s_addr"]
+				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
+				// discovered_phones_old[signal.data["user_id"]]=signal.data["s_addr"]
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
 				post_signal(signal.data["s_addr"],list("command"="tel_busy")) //Busy signal, Reject call.
@@ -233,9 +236,10 @@
 /obj/machinery/networked/telephone/proc/place_call(target_phone)
 	if(!target_phone || !discovered_phones[target_phone])
 		return //Who? Or more likely: HREF fuckery.
-	active_caller = list(discovered_phones[target_phone], target_phone)
+	// active_caller = list(discovered_phones_old[target_phone], target_phone)
+	active_caller = list(target_phone, discovered_phones[target_phone])
 	state = STATE_ORIGINATE
-	post_signal(discovered_phones[target_phone], list("command"="tel_ring","caller_id"=friendly_name))
+	post_signal(target_phone, list("command"="tel_ring","caller_id"=friendly_name))
 	outring_loop.start()
 	update_icon()
 
@@ -267,7 +271,7 @@
 		CRASH("Tried to acknowledge a call on a phone that wasn't originating")
 	state = STATE_CONNECTED
 	outring_loop.stop()
-	handset.audible_message("\the [handset] stops ringing. The other side picked up.", hearing_distance=1)
+	handset.audible_message(span_notice("\the [handset] stops ringing. The other side picked up."), hearing_distance=1)
 	update_icon()
 
 /// End call immediately
@@ -294,19 +298,20 @@
 	active_caller = null
 	hup_loop.start()
 	state = STATE_HANGUP
-	handset.audible_message("\the [handset] beeps in annoyance. The other side hung up.", hearing_distance=1)
+	handset.audible_message(span_warning("\the [handset] beeps in annoyance. The other side hung up."), hearing_distance=1)
 	update_icon()
 
 
 /// Remote phone can't answer due to busy, do the sound and wait until the handset is returned to reset.
 /// STATE_ORIGINATE -> STATE_FARBUSY
-/obj/machinery/networked/telephone/proc/fuck_off_im_busy()
+/obj/machinery/networked/telephone/proc/fuck_off_im_busy() //busy_ringback in diagram
 	if(state != STATE_ORIGINATE)
 		CRASH("Tried to busy-bump a call on a phone that wasn't originating")
 	busy_loop.start()
+	outring_loop.stop()
 	active_caller = null //Drop the call, The other side never even knew about us.
 	state = STATE_FARBUSY
-	handset.audible_message("\the [handset] beeps in annoyance. The other side is busy.", hearing_distance=1)
+	handset.audible_message(span_warning("\the [handset] beeps in annoyance. The other side is busy."), hearing_distance=1)
 	update_icon()
 
 /// We are listening to the buzzer telling us to hang up.
@@ -348,12 +353,14 @@
 	dat += "<hr>"
 	dat += "<table>"
 	var/safe_to_call = (state == STATE_WAITING)
-	for(var/station_name in discovered_phones)
-		var/far_id = discovered_phones[station_name]
+	// for(var/station_name in discovered_phones_old)
+	// 	var/far_id = discovered_phones_old[station_name]
+	for(var/far_id in discovered_phones)
+		var/station_name = discovered_phones[far_id]
 		dat += "<tr>"
 		dat += "<th>[station_name]</th><th><span class='statusDisplay' style='font-family: monospace;'>[far_id]</span></th>"
 		if(safe_to_call)
-			dat += "<th><a href='?src=[REF(src)];call=[url_encode(station_name)]'>Call</a></th>"
+			dat += "<th><a href='?src=[REF(src)];call=[url_encode(far_id)]'>Call</a></th>" //This should no longer technically *need* to be url encoded, but we're doing this just to be safe.
 		else
 			dat += "<th><a class='linkOff'>Call</a></th>"
 		dat += "</tr>"

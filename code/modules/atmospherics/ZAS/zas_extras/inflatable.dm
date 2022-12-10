@@ -24,7 +24,14 @@
 /obj/item/inflatable/proc/inflate(mob/user)
 	var/turf/T = get_turf(src)
 	if(!T)
+		anchored = FALSE
+		visible_message(span_notice("\The [src] fails to inflate here."))
 		return
+	if(T.contains_dense_objects())
+		anchored = FALSE
+		visible_message(span_notice("\The [src] is blocked and fails to inflate."))
+		return
+
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
 	var/obj/structure/inflatable/R = new deploy_path(T)
 	transfer_fingerprints_to(R)

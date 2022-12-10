@@ -37,10 +37,11 @@
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
 	///friendly_name:netid
-	// var/list/discovered_phones_old
 	var/list/discovered_phones
 	/// The 'common name' of the station. Used in the UI.
 	var/friendly_name = null
+	/// Do we show netaddrs in the phone UI, or just the names?
+	var/show_netids = FALSE
 
 	/// list(netaddr,friendly_name) of active call
 	var/list/active_caller
@@ -160,7 +161,7 @@
 
 
 /obj/machinery/networked/telephone/multitool_act(mob/living/user, obj/item/tool)
-	var/static/list/options_list = list("Rename Station", "Reconnect to terminal")
+	var/static/list/options_list = list("Rename Station", "Reconnect to terminal", "Toggle Address Display")
 	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
 	switch(selected)
 		if("Rename Station")
@@ -172,7 +173,16 @@
 
 		if("Reconnect to terminal")
 			link_to_jack() //Just in case something stupid happens to the jack.
-
+			if(netjack)
+				to_chat(user, span_notice("Reconnect successful."))
+			else
+				to_chat(user, span_warning("Reconnect failed!"))
+		if("Toggle Address Display")
+			show_netids = !show_netids
+			if(show_netids)
+				to_chat(user, span_notice("You enabled the display of network IDs."))
+			else
+				to_chat(user, span_notice("You disabled the display of network IDs."))
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 
@@ -184,8 +194,7 @@
 	set waitfor = FALSE //this is probably bad
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
-	// discovered_phones_old = list() //Trash the existing list.
-	discovered_phones = list()
+	discovered_phones = list() //Trash the existing list.
 	post_signal("ping", list("data"="TEL_DISCOVER"))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
@@ -200,7 +209,6 @@
 		if("ping_reply")//Add new phone to database
 			if(signal.data["netclass"] == "PNET_VCSTATION") //Another phone!
 				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
-				// discovered_phones_old[signal.data["user_id"]]=signal.data["s_addr"]
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
 				post_signal(signal.data["s_addr"],list("command"="tel_busy")) //Busy signal, Reject call.
@@ -236,7 +244,6 @@
 /obj/machinery/networked/telephone/proc/place_call(target_phone)
 	if(!target_phone || !discovered_phones[target_phone])
 		return //Who? Or more likely: HREF fuckery.
-	// active_caller = list(discovered_phones_old[target_phone], target_phone)
 	active_caller = list(target_phone, discovered_phones[target_phone])
 	state = STATE_ORIGINATE
 	post_signal(target_phone, list("command"="tel_ring","caller_id"=friendly_name))
@@ -353,8 +360,6 @@
 	dat += "<hr>"
 	dat += "<table>"
 	var/safe_to_call = (state == STATE_WAITING)
-	// for(var/station_name in discovered_phones_old)
-	// 	var/far_id = discovered_phones_old[station_name]
 	for(var/far_id in discovered_phones)
 		var/station_name = discovered_phones[far_id]
 		dat += "<tr>"

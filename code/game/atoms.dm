@@ -2216,3 +2216,6 @@
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
+
+/atom/proc/speaker_location()
+	return src

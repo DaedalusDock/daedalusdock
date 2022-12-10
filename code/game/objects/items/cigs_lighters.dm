@@ -931,15 +931,22 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/screw = FALSE
 	/// Whether the vape has been overloaded to spread smoke.
 	var/super = FALSE
+	/// Used to decide what overlay sprites to use.
+	var/overlayname = "vape"
 
 /obj/item/clothing/mask/vape/Initialize(mapload, param_color)
 	. = ..()
 	create_reagents(chem_volume, NO_REACT)
 	reagents.add_reagent(/datum/reagent/drug/nicotine, 50)
-	if(!param_color)
-		param_color = pick("red","blue","black","white","green","purple","yellow","orange")
+	set_vape_color(param_color)
+
+/obj/item/clothing/mask/vape/proc/set_vape_color(param_color)
+	param_color ||= pick("red","blue","black","white","green","purple","yellow","orange")
 	icon_state = "[param_color]_vape"
 	inhand_icon_state = "[param_color]_vape"
+
+/obj/item/clothing/mask/vape/cigar/set_vape_color()
+	return
 
 /obj/item/clothing/mask/vape/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is puffin hard on dat vape, [user.p_they()] trying to join the vape life on a whole notha plane!"))//it doesn't give you cancer, it is cancer
@@ -951,11 +958,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		to_chat(user, span_notice("You open the cap on [src]."))
 		reagents.flags |= OPENCONTAINER
 		if(obj_flags & EMAGGED)
-			add_overlay("vapeopen_high")
+			add_overlay("[overlayname]open_high")
 		else if(super)
-			add_overlay("vapeopen_med")
+			add_overlay("[overlayname]open_med")
 		else
-			add_overlay("vapeopen_low")
+			add_overlay("[overlayname]open_low")
 	else
 		screw = FALSE
 		to_chat(user, span_notice("You close the cap on [src]."))
@@ -969,12 +976,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			cut_overlays()
 			super = TRUE
 			to_chat(user, span_notice("You increase the voltage of [src]."))
-			add_overlay("vapeopen_med")
+			add_overlay("[overlayname]open_med")
 		else
 			cut_overlays()
 			super = FALSE
 			to_chat(user, span_notice("You decrease the voltage of [src]."))
-			add_overlay("vapeopen_low")
+			add_overlay("[overlayname]open_low")
 
 	if(screw && (obj_flags & EMAGGED))
 		to_chat(user, span_warning("[src] can't be modified!"))
@@ -986,7 +993,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			obj_flags |= EMAGGED
 			super = FALSE
 			to_chat(user, span_warning("You maximize the voltage of [src]."))
-			add_overlay("vapeopen_high")
+			add_overlay("[overlayname]open_high")
 			var/datum/effect_system/spark_spread/sp = new /datum/effect_system/spark_spread //for effect
 			sp.set_up(5, 1, src)
 			sp.start()
@@ -1080,3 +1087,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		s.start()
 
 	handle_reagents()
+
+/obj/item/clothing/mask/vape/cigar
+	name = "\improper E-Cigar"
+	desc = "The latest recreational device developed by a small tech startup, Shadow Tech, the E-Cigar has all the uses of a normal E-Cigarette, with the classiness of short fat cigar."
+	icon = 'icons/obj/clothing/masks.dmi'
+	icon_state = "ecigar_vape"
+	overlayname = "ecigar"
+	chem_volume = 150
+	custom_premium_price = 300

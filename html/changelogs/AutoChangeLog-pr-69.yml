@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - qol: Walls are now named based on their material and structure
+  - imageadd: Some material walls now properly use the correct icon base

@@ -35,22 +35,14 @@
 	var/area/my_area = null
 	///The current alarm state
 	var/alert_type = FIRE_CLEAR
-	///Should this spawn with no shelter inside?
-	var/start_empty = FALSE
-
-/obj/machinery/firealarm/empty
-	start_empty = TRUE
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
-		start_empty = TRUE
 	if(name == initial(name))
 		name = "[get_area_name(src)] [initial(name)]"
-	if(!start_empty)
-		new /obj/item/inflatable/shelter(src)
 	update_appearance()
 	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, .proc/check_security_level)
@@ -108,9 +100,6 @@
 
 /obj/machinery/firealarm/update_overlays()
 	. = ..()
-	if(contents.len) //This could be something other then a shelter, but it should still look like the fire alarm is "filled"
-		. += mutable_appearance(icon, "shelter")
-
 	if(machine_stat & NOPOWER)
 		return
 
@@ -200,12 +189,6 @@
 		return
 	SEND_SIGNAL(src, COMSIG_FIREALARM_ON_TRIGGER)
 	update_use_power(ACTIVE_POWER_USE)
-	if(contents.len)
-		for(var/atom/movable/AM as anything in src)
-			AM.forceMove(loc) //this will dump ANYTHING stored in the fire alarm.
-			if(istype(AM, /obj/item/inflatable))
-				var/obj/item/inflatable/S = AM
-				S.inflate() //and if it's an inflatable, inflate it.
 	update_appearance()
 
 
@@ -244,16 +227,6 @@
 	add_fingerprint(user)
 	reset(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
-/obj/machinery/firealarm/AltClick(mob/user)
-	. = ..()
-	if(contents.len)
-		for(var/obj/item/I in src)
-			to_chat(user, span_notice("You empty [src]."))
-			user.put_in_hands(I)
-			update_icon()
-	else
-		to_chat(user, span_warning("[src] is empty."))
 
 /obj/machinery/firealarm/attack_ai(mob/user)
 	return attack_hand(user)
@@ -359,16 +332,6 @@
 					tool.play_tool_sound(src)
 					qdel(src)
 					return
-
-	if((tool.w_class <= WEIGHT_CLASS_NORMAL) && !user.combat_mode) //No, you can't fit a fireaxe inside.
-		if(contents.len)
-			to_chat(user, span_warning("[src] already has something inside."))
-			return
-		to_chat(user, span_warning("You insert [tool] into [src]"))
-		tool.forceMove(src)
-		update_icon()
-		return
-
 	return ..()
 
 /obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
@@ -418,8 +381,6 @@
 	. = ..()
 	if((alert_type))
 		. += "The local area hazard light is flashing."
-	if(contents.len)
-		. += "It has an item stored inside for emergencies. Alt-Click to remove it."
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

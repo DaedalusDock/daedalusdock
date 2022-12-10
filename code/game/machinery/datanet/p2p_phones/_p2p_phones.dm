@@ -49,6 +49,7 @@
 	var/datum/looping_sound/telephone/ring/ring_loop
 	var/datum/looping_sound/telephone/busy/busy_loop
 	var/datum/looping_sound/telephone/busy/hangup/hup_loop
+	var/datum/looping_sound/telephone/ring/outgoing/outring_loop
 	COOLDOWN_DECLARE(scan_cooldown)
 
 /obj/machinery/networked/telephone/Initialize(mapload)
@@ -59,13 +60,14 @@
 	ring_loop = new(handset)
 	busy_loop = new(handset)
 	hup_loop = new(handset)
+	outring_loop = new(handset)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/networked/telephone/LateInitialize()
 	. = ..()
 	if(!friendly_name)
 		friendly_name = get_area(src)
-		friendly_name = friendly_name:name //~
+		friendly_name = format_text(friendly_name:name) //~
 	recalculate_name()
 
 ///Recalculate our name.
@@ -88,7 +90,7 @@
 		else
 			icon_state = "phone"
 	else
-		icon_state = "phone_answer"
+		icon_state = "phone_answered"
 	return ..()
 
 //Handset management
@@ -234,6 +236,8 @@
 	active_caller = list(discovered_phones[target_phone], target_phone)
 	state = STATE_ORIGINATE
 	post_signal(discovered_phones[target_phone], list("command"="tel_ring","caller_id"=friendly_name))
+	outring_loop.start()
+	update_icon()
 
 /// Receive the incoming call
 /// STATE_WAITING -> STATE_ANSWER
@@ -254,6 +258,7 @@
 	ring_loop.stop()
 	post_signal(active_caller[CALLER_NETID], list("command"="tel_ready")) //Inform originator we're ready.
 	state = STATE_CONNECTED
+	update_icon()
 
 /// Acknowledge accepted call
 /// STATE_ORIGINATE -> STATE_CONNECTED
@@ -261,6 +266,9 @@
 	if(state != STATE_ORIGINATE)
 		CRASH("Tried to acknowledge a call on a phone that wasn't originating")
 	state = STATE_CONNECTED
+	outring_loop.stop()
+	handset.audible_message("\the [handset] stops ringing. The other side picked up.", hearing_distance=1)
+	update_icon()
 
 /// End call immediately
 /// STATE_CONNECTED(handset onhook)/STATE_ORIGINATE(handset onhook)/STATE_ANSWER(packet) -> STATE_WAITING
@@ -268,13 +276,14 @@
 	switch(state)
 		if(STATE_CONNECTED,STATE_ORIGINATE) //Handset down, Reset equipment.
 			post_signal(active_caller[CALLER_NETID], list("command"="tel_hup"))
+			outring_loop.stop()
 		if(STATE_ANSWER) // WE got hanged up on, It's cleaner to put it here than use call_dropped
 			ring_loop.stop()
-			update_icon()
 		else
 			CRASH("Tried to drop a call in an invalid state ID#[state]")
 	active_caller = null
 	state = STATE_WAITING
+	update_icon()
 
 
 /// Far side dropped us, Perform hangup stuff and wait until the handset is returned to fully reset and be ready to accept another call
@@ -285,6 +294,8 @@
 	active_caller = null
 	hup_loop.start()
 	state = STATE_HANGUP
+	handset.audible_message("\the [handset] beeps in annoyance. The other side hung up.", hearing_distance=1)
+	update_icon()
 
 
 /// Remote phone can't answer due to busy, do the sound and wait until the handset is returned to reset.
@@ -295,9 +306,11 @@
 	busy_loop.start()
 	active_caller = null //Drop the call, The other side never even knew about us.
 	state = STATE_FARBUSY
+	handset.audible_message("\the [handset] beeps in annoyance. The other side is busy.", hearing_distance=1)
+	update_icon()
 
 /// We are listening to the buzzer telling us to hang up.
-/// STATE_FARBUSY/STATE_CONNECTED -> STATE_WAITING
+/// STATE_FARBUSY/STATE_HANGUP -> STATE_WAITING
 /obj/machinery/networked/telephone/proc/cleanup_residual_call()
 	if(!(state == STATE_FARBUSY || state == STATE_HANGUP))
 		CRASH("Attempted to cleanup a residual (busy ringback/hung up) call that wasn't actually residual!")
@@ -306,6 +319,7 @@
 	//just in case
 	active_caller = null
 	state = STATE_WAITING //Just reset, the phone should be on-hook at this point.
+	update_icon()
 
 /// UI
 /obj/machinery/networked/telephone/proc/get_state_render()
@@ -357,10 +371,10 @@
 		return .
 	if(href_list["call"]) //Start call
 		if(handset_state != HANDSET_OFFHOOK)
-			to_chat(usr, "You can't make a call without holding the phone!")
+			to_chat(usr, span_warning("You can't make a call without holding the phone!"))
 			return .
 		if(state != STATE_WAITING)
-			to_chat(usr, "You can't start a call right now!")
+			to_chat(usr, span_warning("You can't start a call right now!"))
 			return .
 		place_call(url_decode(href_list["call"]))
 	if(href_list["scan"])
@@ -527,6 +541,9 @@
 
 	//The third var is the 'radio'. It's null. Go fuck yourself.
 	var/atom/movable/virtualspeaker/v_speaker = new(null, talking_movable, null)
+	if(isliving(talking_movable))
+		v_speaker.voice_type = talking_movable:voice_type
+
 
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
@@ -551,9 +568,22 @@
 		CRASH("Handset was asked to handle a packet that didn't exist.")
 	//cache for sanic speed :3
 	var/list/v_sig_data = v_signal.data
-
 	var/list/radio_bullshit_override = list("span"="radio", "name"=callstation.active_caller[CALLER_NAME])
 
+	var/atom/movable/virtualspeaker/admission_of_defeat = v_sig_data["virtualspeaker"]
+	var/sound/funnysound
+	if(admission_of_defeat.voice_type)
+		var/funnysound_index = copytext_char(v_sig_data["message"], -1)
+		switch(funnysound_index)
+			if("?")
+				funnysound = voice_type2sound[admission_of_defeat.voice_type]["?"]
+			if("!")
+				funnysound = voice_type2sound[admission_of_defeat.voice_type]["!"]
+			else
+				funnysound = voice_type2sound[admission_of_defeat.voice_type][admission_of_defeat.voice_type]
+
+
+	playsound(src, funnysound || 'modular_pariah/modules/radiosound/sound/radio/syndie.ogg', funnysound ? 300 : 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, falloff_exponent = 0)
 	var/rendered = compose_message(v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"])
 	for(var/atom/movable/hearing_movable as anything in get_hearers_in_view(2, src)-src)
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.

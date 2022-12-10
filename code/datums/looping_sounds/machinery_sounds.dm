@@ -185,3 +185,11 @@
 	//Same as above, but remote hangup sound.
 	start_sound = 'goon/sounds/phone/remote_hangup.ogg'
 	start_length = 0.6 SECONDS
+
+/datum/looping_sound/telephone/ring/outgoing
+	start_sound = 'goon/sounds/phone/dial.ogg'
+	start_length = 3.2 SECONDS
+	mid_sounds = 'goon/sounds/phone/ring_outgoing.ogg'
+	mid_length = 2.1 SECONDS
+	end_sound = 'goon/sounds/phone/remote_pickup.ogg'
+	volume = 10

@@ -55,9 +55,11 @@
 	COOLDOWN_DECLARE(scan_cooldown)
 
 /obj/machinery/networked/telephone/Initialize(mapload)
-	. = ..()
+	//These need to be above the supercall for color reasons
 	handset = new(src)
 	handset.callstation = src
+	handset.add_atom_colour(color, FIXED_COLOUR_PRIORITY)
+	. = ..()
 	//Parent these to the handset, but let US manage them.
 	ring_loop = new(handset)
 	busy_loop = new(handset)
@@ -354,7 +356,10 @@
 /obj/machinery/networked/telephone/ui_interact(mob/user) //THIS IS GONNA BE RAW HTML FUCKERY, *SUE ME BITCHBOOOYY*
 	. = ..()
 	var/list/dat = list()
-	dat += "<center><div>Handset ID \[<span class='statusDisplay' style='font-family: monospace;'>[net_id]</span>|<span class='statusDisplay' style='font-family: monospace;'>[friendly_name]</span>\]</div><br>"
+	dat += "<center><div>Handset ID \["
+	if(show_netids)
+		dat += "<span class='statusDisplay' style='font-family: monospace;'>[net_id]</span>|"
+	dat += "<span class='statusDisplay' style='font-family: monospace;'>[friendly_name]</span>\]</div><br>"
 	dat += "<hr>"
 	dat += "Station State: [get_state_render()]<br>"
 	dat += "<hr>"
@@ -363,7 +368,9 @@
 	for(var/far_id in discovered_phones)
 		var/station_name = discovered_phones[far_id]
 		dat += "<tr>"
-		dat += "<th>[station_name]</th><th><span class='statusDisplay' style='font-family: monospace;'>[far_id]</span></th>"
+		dat += "<th>[station_name]</th>"
+		if(show_netids)
+			dat += "<th><span class='statusDisplay' style='font-family: monospace;'>[far_id]</span></th>"
 		if(safe_to_call)
 			dat += "<th><a href='?src=[REF(src)];call=[url_encode(far_id)]'>Call</a></th>" //This should no longer technically *need* to be url encoded, but we're doing this just to be safe.
 		else

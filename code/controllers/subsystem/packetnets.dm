@@ -86,8 +86,9 @@ SUBSYSTEM_DEF(packets)
 				continue
 
 			for(var/datum/signal/signal as anything in net.current_packet_queue)
-				///Find the poster so we don't send the signal to it's author
-				poster = signal.author.resolve()
+				// Find the poster so we don't send the signal to it's author
+				// A null is fine.
+				poster = signal.author?.resolve()
 
 				for(var/obj/machinery/power/client_machine as anything in net.data_nodes - poster)
 					///This might need [set waitfor = FALSE] alongside a [CHECK_TICK]

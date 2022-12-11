@@ -125,7 +125,6 @@
 	if(!T)
 		CRASH("Uh oh, no source!")
 	levels = list(T.z)
-	#warn Hi it's kapu, i didn't convert subspace signals yet
 
 /datum/signal/subspace/vocal/copy()
 	var/datum/signal/subspace/vocal/copy = new(author, frequency, virt, language)

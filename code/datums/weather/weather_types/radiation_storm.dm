@@ -73,7 +73,4 @@
 	else
 		signal.data["command"] = "shuttle"
 
-	var/atom/movable/virtualspeaker/virt = new(null)
-	#warn This virtual speaker will be garbage collected immediately when the proc ends, this needs to be addressed.
-	signal.author = WEAKREF(virt)
 	frequency.post_signal(signal)

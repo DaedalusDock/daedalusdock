@@ -21,13 +21,13 @@
 	return ..()
 
 /obj/machinery/air_sensor/Destroy()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
-	SSairmachines.stop_processing_machine(src)
 	SSpackets.remove_object(src, frequency)
+	broadcast_destruction(frequency)
+	SSairmachines.stop_processing_machine(src)
 	return ..()
 
 /obj/machinery/air_sensor/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,

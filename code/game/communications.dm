@@ -202,7 +202,7 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	var/has_magic_data = FALSE
 
 /datum/signal/New(author, data, transmission_method = TRANSMISSION_RADIO, logging_data = null)
-	src.author = WEAKREF(author)
+	src.author = isnull(author) ? null : WEAKREF(author)
 	if(islist(author))
 		stack_trace("Something is using the old signal/New() argument order!")
 		src.data = author

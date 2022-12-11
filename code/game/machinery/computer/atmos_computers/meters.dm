@@ -16,10 +16,10 @@
 
 /obj/machinery/meter/monitored/on_deconstruction()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(src.frequency)
 
 /obj/machinery/meter/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,

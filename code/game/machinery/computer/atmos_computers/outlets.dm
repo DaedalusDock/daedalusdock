@@ -15,7 +15,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/on_deconstruction()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(src.frequency)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/set_frequency(new_frequency)
 	SSpackets.remove_object(src, frequency)
@@ -24,7 +24,7 @@
 		radio_connection = SSpackets.add_object(src, new_frequency, RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
@@ -136,13 +136,13 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/Destroy()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(src.frequency)
 	SSpackets.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/on_deconstruction()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(src.frequency)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/set_frequency(new_frequency)
 	SSpackets.remove_object(src, frequency)
@@ -151,7 +151,7 @@
 		radio_connection = SSpackets.add_object(src, new_frequency, RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,

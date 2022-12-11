@@ -21,7 +21,7 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/on_deconstruction()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(frequency)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/ui_act(action, params)
 	. = ..()
@@ -43,7 +43,7 @@
 	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,

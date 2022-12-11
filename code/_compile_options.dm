@@ -92,7 +92,7 @@
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
-#define REFERENCE_TRACKING
+//#define REFERENCE_TRACKING
 
 ///Used for doing dry runs of the reference finder, to test for feature completeness
 ///Slightly slower, higher in memory. Just not optimal
@@ -100,13 +100,13 @@
 // #define REFERENCE_TRACKING_DEBUG
 
 ///Run a lookup on things hard deleting by default.
-#define GC_FAILURE_HARD_LOOKUP
+//#define GC_FAILURE_HARD_LOOKUP
 
 
 
 /// If this is uncommented, we set up the ref tracker to be used in a live environment
 /// And to log events to [log_dir]/harddels.log
-//#define REFERENCE_DOING_IT_LIVE
+#define REFERENCE_DOING_IT_LIVE
 
 
 

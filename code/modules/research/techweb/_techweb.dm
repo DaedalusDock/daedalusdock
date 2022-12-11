@@ -41,14 +41,14 @@
 	var/list/available_experiments = list()
 	/// Completed experiments
 	var/list/completed_experiments = list()
-	
+
 	/**
 	 * Assoc list of relationships with various partners
 	 * scientific_cooperation[partner_typepath] = relationship
 	 */
 	var/list/scientific_cooperation
 	/**
-	  * Assoc list of papers already published by the crew. 
+	  * Assoc list of papers already published by the crew.
 	  * published_papers[experiment_typepath][tier] = paper
 	  * Filled with nulls on init, populated only on publication.
 	*/
@@ -77,11 +77,11 @@
 
 /datum/techweb/science //Global science techweb for RND consoles.
 	id = "SCIENCE"
-	organization = "Nanotrasen"
+	organization = "Ananke Research Group"
 
 /datum/techweb/bepis //Should contain only 1 BEPIS tech selected at random.
 	id = "EXPERIMENTAL"
-	organization = "Nanotrasen R&D"
+	organization = "Ananke Research Group"
 
 /datum/techweb/bepis/New(remove_tech = TRUE)
 	. = ..()
@@ -511,7 +511,7 @@
 
 	// If we haven't published a paper in the same topic ...
 	if(locate(paper_to_add.experiment_path) in published_papers[paper_to_add.experiment_path])
-		return TRUE	
+		return TRUE
 	// Quickly add and complete it.
 	// PS: It's also possible to use add_experiment() together with a list/available_experiments check
 	// to determine if we need to run all this, but this pretty much does the same while only needing one evaluation.
@@ -526,6 +526,6 @@
 		complete_experiment(experiment)
 		if(length(GLOB.experiment_handlers))
 			var/datum/component/experiment_handler/handler = GLOB.experiment_handlers[1]
-			handler.announce_message_to_all("The [experiment.name] has been completed!")	
-	
+			handler.announce_message_to_all("The [experiment.name] has been completed!")
+
 	return TRUE

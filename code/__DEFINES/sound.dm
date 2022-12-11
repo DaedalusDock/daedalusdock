@@ -114,6 +114,11 @@
 #define ANNOUNCER_SHUTTLERECALLED "announcer_shuttlerecalled"
 #define ANNOUNCER_SPANOMALIES "announcer_spanomalies"
 
+//Special keys passed to priority_announce()
+#define ANNOUNCER_DEFAULT "announce_default"
+#define ANNOUNCER_CENTCOM "announce_centcom"
+#define ANNOUNCER_ATTENTION "announce_attention"
+
 /// Global list of all of our announcer keys.
 GLOBAL_LIST_INIT(announcer_keys, list(
 	ANNOUNCER_AIMALF,

@@ -92,7 +92,7 @@
 								"command" = "secure_open"
 							)))
 					else
-						var/datum/signal/signal = new(list(
+						var/datum/signal/signal = new(src, list(
 							"tag" = airpump_tag,
 							"sigtype" = "command"
 						))

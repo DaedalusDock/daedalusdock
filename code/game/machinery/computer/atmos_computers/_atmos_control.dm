@@ -162,7 +162,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	if(. || !radio_connection || !(control || reconnecting))
 		return
 
-	var/datum/signal/signal = new(list("sigtype" = "command", "user" = usr))
+	var/datum/signal/signal = new(src, list("sigtype" = "command", "user" = usr))
 	switch(action)
 		if("reconnect")
 			return reconnect(usr)

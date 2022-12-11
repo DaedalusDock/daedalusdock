@@ -92,7 +92,7 @@
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
-// #define REFERENCE_TRACKING
+#define REFERENCE_TRACKING
 
 ///Used for doing dry runs of the reference finder, to test for feature completeness
 ///Slightly slower, higher in memory. Just not optimal
@@ -100,7 +100,7 @@
 // #define REFERENCE_TRACKING_DEBUG
 
 ///Run a lookup on things hard deleting by default.
-//#define GC_FAILURE_HARD_LOOKUP
+#define GC_FAILURE_HARD_LOOKUP
 
 
 
@@ -218,6 +218,11 @@
 #define DATUMVAR_DEBUGGING_MODE
 #endif
 
+#ifdef GC_FAILURE_HARD_LOOKUP
+// Don't stop when searching, go till you're totally done
+#define FIND_REF_NO_CHECK_TICK
+#endif
+
 #ifdef REFERENCE_DOING_IT_LIVE
 // compile the backend
 #define REFERENCE_TRACKING
@@ -225,7 +230,3 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
-#ifdef GC_FAILURE_HARD_LOOKUP
-// Don't stop when searching, go till you're totally done
-#define FIND_REF_NO_CHECK_TICK
-#endif

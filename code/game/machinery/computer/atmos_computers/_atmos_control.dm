@@ -45,6 +45,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	return ..()
 
 /obj/machinery/computer/atmos_control/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //TODO: RECONCILE TAGS AND NETIDS
 	if(!signal)
 		return
 

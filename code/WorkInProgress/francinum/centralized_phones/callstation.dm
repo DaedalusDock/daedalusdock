@@ -1,4 +1,4 @@
-/obj/machinery/networked/callstation
+/obj/machinery/callstation
 	name = "Phone - UNINITIALIZED"
 	desc = "It's a phone. You pick it up, select from the list of other phones, and scream at the other person. The voice quality isn't all that great."
 	net_class = "PNET_SIPCLIENT"
@@ -37,7 +37,7 @@ Phone registration flow (Post-Roundstart):
 	"data":list2params(directory)
 }
 */
-/obj/machinery/networked/callstation/receive_signal(datum/signal/signal)
+/obj/machinery/callstation/receive_signal(datum/signal/signal)
 	. = ..()
 	if(.)
 		if(!master_id || signal.data["d_addr"] != "MC_[master_id]") //Hacky ugly terrible nasty multicast
@@ -59,5 +59,5 @@ Phone registration flow (Post-Roundstart):
 			directory = params2list(signal.data["data"])
 			last_synchronization_time = world.time
 
-/obj/machinery/networked/callstation/register_with_server(new_master_id)
+/obj/machinery/callstation/register_with_server(new_master_id)
 	post_signal(new_master_id, list("command"="sip_request_adopt"))

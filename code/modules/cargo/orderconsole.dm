@@ -315,8 +315,8 @@
 	if(.)
 		post_signal(cargo_shuttle)
 
-/obj/machinery/computer/cargo/proc/post_signal(command)
-
+/obj/machinery/computer/cargo/post_signal(command)
+	SHOULD_CALL_PARENT(FALSE) // TODO: make not agony
 	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)

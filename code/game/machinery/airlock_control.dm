@@ -9,6 +9,7 @@
 
 
 /obj/machinery/door/airlock/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //TODO: RECONCILE TAGS AND NETIDS
 	if(!signal)
 		return
 
@@ -31,25 +32,33 @@
 			update_appearance()
 
 		if("secure_open")
-			locked = FALSE
-			update_appearance()
-
-			sleep(2)
-			open(TRUE)
-
-			locked = TRUE
-			update_appearance()
+			secure_open()
+			return
 
 		if("secure_close")
-			locked = FALSE
-			close(TRUE)
-
-			locked = TRUE
-			sleep(2)
-			update_appearance()
+			secure_close()
+			return
 
 	send_status()
 
+/obj/machinery/door/airlock/proc/secure_close()
+	set waitfor = FALSE
+	locked = FALSE
+	close(TRUE)
+	locked = TRUE
+	sleep(2)
+	update_appearance()
+	send_status()
+
+/obj/machinery/door/airlock/proc/secure_open()
+	set waitfor = FALSE
+	locked = FALSE
+	update_appearance()
+	sleep(2)
+	open(TRUE)
+	locked = TRUE
+	update_appearance()
+	send_status()
 
 /obj/machinery/door/airlock/proc/send_status()
 	if(radio_connection)

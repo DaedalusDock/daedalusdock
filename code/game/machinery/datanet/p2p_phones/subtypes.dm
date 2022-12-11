@@ -1,20 +1,20 @@
-/obj/machinery/networked/telephone/engineering
+/obj/machinery/telephone/engineering
 	color = CIRCUIT_COLOR_ENGINEERING
 
-/obj/machinery/networked/telephone/security
+/obj/machinery/telephone/security
 	color = CIRCUIT_COLOR_SECURITY
 
-/obj/machinery/networked/telephone/medical
+/obj/machinery/telephone/medical
 	color = CIRCUIT_COLOR_MEDICAL
 
-/obj/machinery/networked/telephone/research
+/obj/machinery/telephone/research
 	color = CIRCUIT_COLOR_SCIENCE
 
-/obj/machinery/networked/telephone/service
+/obj/machinery/telephone/service
 	color = CIRCUIT_COLOR_SERVICE
 
-/obj/machinery/networked/telephone/command
+/obj/machinery/telephone/command
 	color = CIRCUIT_COLOR_COMMAND
 
-/obj/machinery/networked/telephone/cargo
+/obj/machinery/telephone/cargo
 	color = CIRCUIT_COLOR_SUPPLY

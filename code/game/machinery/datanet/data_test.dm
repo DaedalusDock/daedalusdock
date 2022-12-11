@@ -41,5 +41,6 @@
 	transmission_terminal.post_signal(pretransmission_signal)
 
 /obj/machinery/development_dataset/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //This is a dev tool go fuck yourself
 	var/signal_data = signal.data
 	say("[json_encode(signal_data)]")

@@ -282,7 +282,7 @@
 		post_signal(cargo_shuttle)
 
 /datum/computer_file/program/budgetorders/proc/post_signal(command)
-
+	SHOULD_CALL_PARENT(FALSE) //TODO: Tie to cablenet
 	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)

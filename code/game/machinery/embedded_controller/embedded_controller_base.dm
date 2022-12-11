@@ -8,10 +8,10 @@
 	. = ..()
 
 /datum/computer/file/embedded_program/proc/post_signal(datum/signal/signal, comm_line)
+	SHOULD_CALL_PARENT(FALSE) // This is more of a relay than anything else.
 	if(master)
 		master.post_signal(signal, comm_line)
-	else
-		qdel(signal)
+	//Else, drop it. This used to delete signals. That's *b a d*
 
 /datum/computer/file/embedded_program/proc/receive_user_command(command)
 
@@ -43,10 +43,12 @@
 
 /obj/machinery/embedded_controller/proc/return_text()
 
-/obj/machinery/embedded_controller/proc/post_signal(datum/signal/signal, comm_line)
+/obj/machinery/embedded_controller/post_signal(datum/signal/signal, comm_line)
+	SHOULD_CALL_PARENT(FALSE) //This... Probably has a reason... I guess??????
 	return
 
 /obj/machinery/embedded_controller/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) // This is technically a relay so this is okay.
 	if(istype(signal) && program)
 		program.receive_signal(signal)
 

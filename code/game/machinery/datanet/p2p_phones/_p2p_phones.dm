@@ -30,12 +30,14 @@
 #define TEL_TEST(str) //Ignore it.
 #endif
 
-/obj/machinery/networked/telephone
+/obj/machinery/telephone
 	name = "phone - UNINITIALIZED"
 	desc = "It's a phone. You pick it up, select from the list of other phones, and scream at the other person. The voice quality isn't all that great."
-	net_class = "PNET_VCSTATION"
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
+
+	net_class = NETCLASS_P2P_PHONE
+	network_flags = NETWORK_FLAGS_STANDARD_CONNECTION
 	///friendly_name:netid
 	var/list/discovered_phones
 	/// The 'common name' of the station. Used in the UI.
@@ -54,7 +56,7 @@
 	var/datum/looping_sound/telephone/ring/outgoing/outring_loop
 	COOLDOWN_DECLARE(scan_cooldown)
 
-/obj/machinery/networked/telephone/Initialize(mapload)
+/obj/machinery/telephone/Initialize(mapload)
 	//These need to be above the supercall for color reasons
 	handset = new(src)
 	handset.callstation = src
@@ -67,7 +69,7 @@
 	outring_loop = new(handset)
 	return INITIALIZE_HINT_LATELOAD
 
-/obj/machinery/networked/telephone/LateInitialize()
+/obj/machinery/telephone/LateInitialize()
 	. = ..()
 	if(!friendly_name)
 		friendly_name = get_area(src)
@@ -75,11 +77,11 @@
 	recalculate_name()
 
 ///Recalculate our name.
-/obj/machinery/networked/telephone/proc/recalculate_name()
+/obj/machinery/telephone/proc/recalculate_name()
 	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
 	name = "phone - [friendly_name]"
 
-/obj/machinery/networked/telephone/Destroy()
+/obj/machinery/telephone/Destroy()
 	if(!QDELETED(handset))
 		if(handset_state == HANDSET_OFFHOOK)
 			var/M = get(handset, /mob)
@@ -87,7 +89,7 @@
 		QDEL_NULL(handset)
 	return ..()
 
-/obj/machinery/networked/telephone/update_icon()
+/obj/machinery/telephone/update_icon()
 	if(handset_state == HANDSET_ONHOOK)
 		if(state == STATE_ANSWER)
 			icon_state = "phone_ringing"
@@ -99,12 +101,12 @@
 
 //Handset management
 
-/obj/machinery/networked/telephone/attack_hand(mob/living/user, list/modifiers)
+/obj/machinery/telephone/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(handset_state == HANDSET_ONHOOK)
 		toggle_handset(user)
 
-/obj/machinery/networked/telephone/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/telephone/attackby(obj/item/weapon, mob/user, params)
 	. = ..()
 	if(weapon == src.handset)// Impolite hangup.
 		if(handset_state == HANDSET_ONHOOK)
@@ -112,7 +114,7 @@
 		toggle_handset(user) //Can't really happen if handset is on-hook.
 
 /// Toggle the state of the handset.
-/obj/machinery/networked/telephone/proc/toggle_handset(mob/user)
+/obj/machinery/telephone/proc/toggle_handset(mob/user)
 	switch(handset_state)
 		if(HANDSET_ONHOOK)
 			if(!user.put_in_hands(handset))
@@ -128,7 +130,7 @@
 			to_chat(user, span_warning("The handset is completely missing!"))
 			return
 
-/obj/machinery/networked/telephone/proc/remove_handset(mob/user)//this prevent the bug with the handset when the phone move stole the i stole this from defib code is this funny yet
+/obj/machinery/telephone/proc/remove_handset(mob/user)//this prevent the bug with the handset when the phone move stole the i stole this from defib code is this funny yet
 	if(ismob(handset.loc))
 		var/mob/M = handset.loc
 		M.dropItemToGround(handset, TRUE)
@@ -136,7 +138,7 @@
 
 
 /// Process the fact that the handset has changed states.
-/obj/machinery/networked/telephone/proc/handset_statechange(newstate)
+/obj/machinery/telephone/proc/handset_statechange(newstate)
 	if(handset_state == newstate)
 		return //This used to crash, fuck it, it's fine to let it slide.
 	if(handset_state == HANDSET_MISSING)
@@ -162,7 +164,7 @@
 			cleanup_residual_call()
 
 
-/obj/machinery/networked/telephone/multitool_act(mob/living/user, obj/item/tool)
+/obj/machinery/telephone/multitool_act(mob/living/user, obj/item/tool)
 	var/static/list/options_list = list("Rename Station", "Reconnect to terminal", "Toggle Address Display")
 	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
 	switch(selected)
@@ -192,28 +194,28 @@
 
 //Call Network Management
 
-/obj/machinery/networked/telephone/proc/scan_for_stations()
+/obj/machinery/telephone/proc/scan_for_stations()
 	set waitfor = FALSE //this is probably bad
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
 	discovered_phones = list() //Trash the existing list.
-	post_signal("ping", list("data"="TEL_DISCOVER"))
+	post_signal(create_signal("ping", list("data"="TEL_DISCOVER")))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
 	updateUsrDialog()
 
-/obj/machinery/networked/telephone/receive_signal(datum/signal/signal)
+/obj/machinery/telephone/receive_signal(datum/signal/signal)
 	. = ..()
 	if(.)//Handled by default.
 		return
 	//Ping response handled in parent.
 	switch(signal.data["command"])
 		if("ping_reply")//Add new phone to database
-			if(signal.data["netclass"] == "PNET_VCSTATION") //Another phone!
+			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
 				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
-				post_signal(signal.data["s_addr"],list("command"="tel_busy")) //Busy signal, Reject call.
+				post_signal(create_signal(signal.data["s_addr"],list("command"="tel_busy"))) //Busy signal, Reject call.
 				return
 			receive_call(list(signal.data["s_addr"],signal.data["caller_id"]))
 		if("tel_ready")//Remote side pickup
@@ -243,18 +245,18 @@
 
 /// Register a new call
 /// STATE_WAITING -> STATE_ORIGINATE
-/obj/machinery/networked/telephone/proc/place_call(target_phone)
+/obj/machinery/telephone/proc/place_call(target_phone)
 	if(!target_phone || !discovered_phones[target_phone])
 		return //Who? Or more likely: HREF fuckery.
 	active_caller = list(target_phone, discovered_phones[target_phone])
 	state = STATE_ORIGINATE
-	post_signal(target_phone, list("command"="tel_ring","caller_id"=friendly_name))
+	post_signal(create_signal(target_phone, list("command"="tel_ring","caller_id"=friendly_name)))
 	outring_loop.start()
 	update_icon()
 
 /// Receive the incoming call
 /// STATE_WAITING -> STATE_ANSWER
-/obj/machinery/networked/telephone/proc/receive_call(list/incoming_call)
+/obj/machinery/telephone/proc/receive_call(list/incoming_call)
 	if(state != STATE_WAITING)
 		CRASH("Failed to busy-signal a call on a phone that was not waiting.")
 	active_caller = incoming_call
@@ -264,18 +266,18 @@
 
 /// Accept the incoming call, Inform Originator.
 /// STATE_ANSWER -> STATE_CONNECTED
-/obj/machinery/networked/telephone/proc/accept_call()
+/obj/machinery/telephone/proc/accept_call()
 	if(state != STATE_ANSWER)
 		CRASH("Tried to accept a call on a phone that wasn't in STATE_ANSWER")
 	//Handset in-hand, icon's already updated by grabbing the handset...
 	ring_loop.stop()
-	post_signal(active_caller[CALLER_NETID], list("command"="tel_ready")) //Inform originator we're ready.
+	post_signal(create_signal(active_caller[CALLER_NETID], list("command"="tel_ready"))) //Inform originator we're ready.
 	state = STATE_CONNECTED
 	update_icon()
 
 /// Acknowledge accepted call
 /// STATE_ORIGINATE -> STATE_CONNECTED
-/obj/machinery/networked/telephone/proc/call_connected()
+/obj/machinery/telephone/proc/call_connected()
 	if(state != STATE_ORIGINATE)
 		CRASH("Tried to acknowledge a call on a phone that wasn't originating")
 	state = STATE_CONNECTED
@@ -285,10 +287,10 @@
 
 /// End call immediately
 /// STATE_CONNECTED(handset onhook)/STATE_ORIGINATE(handset onhook)/STATE_ANSWER(packet) -> STATE_WAITING
-/obj/machinery/networked/telephone/proc/drop_call()
+/obj/machinery/telephone/proc/drop_call()
 	switch(state)
 		if(STATE_CONNECTED,STATE_ORIGINATE) //Handset down, Reset equipment.
-			post_signal(active_caller[CALLER_NETID], list("command"="tel_hup"))
+			post_signal(create_signal(active_caller[CALLER_NETID], list("command"="tel_hup")))
 			outring_loop.stop()
 		if(STATE_ANSWER) // WE got hanged up on, It's cleaner to put it here than use call_dropped
 			ring_loop.stop()
@@ -301,7 +303,7 @@
 
 /// Far side dropped us, Perform hangup stuff and wait until the handset is returned to fully reset and be ready to accept another call
 /// STATE_CONNECTED -> STATE_HANGUP
-/obj/machinery/networked/telephone/proc/call_dropped()
+/obj/machinery/telephone/proc/call_dropped()
 	if(state != STATE_CONNECTED)
 		CRASH("Tried to drop a call on a phone that wasn't connected")
 	active_caller = null
@@ -313,7 +315,7 @@
 
 /// Remote phone can't answer due to busy, do the sound and wait until the handset is returned to reset.
 /// STATE_ORIGINATE -> STATE_FARBUSY
-/obj/machinery/networked/telephone/proc/fuck_off_im_busy() //busy_ringback in diagram
+/obj/machinery/telephone/proc/fuck_off_im_busy() //busy_ringback in diagram
 	if(state != STATE_ORIGINATE)
 		CRASH("Tried to busy-bump a call on a phone that wasn't originating")
 	busy_loop.start()
@@ -325,7 +327,7 @@
 
 /// We are listening to the buzzer telling us to hang up.
 /// STATE_FARBUSY/STATE_HANGUP -> STATE_WAITING
-/obj/machinery/networked/telephone/proc/cleanup_residual_call()
+/obj/machinery/telephone/proc/cleanup_residual_call()
 	if(!(state == STATE_FARBUSY || state == STATE_HANGUP))
 		CRASH("Attempted to cleanup a residual (busy ringback/hung up) call that wasn't actually residual!")
 	busy_loop.stop()
@@ -336,7 +338,7 @@
 	update_icon()
 
 /// UI
-/obj/machinery/networked/telephone/proc/get_state_render()
+/obj/machinery/telephone/proc/get_state_render()
 	switch(state)
 		if(STATE_WAITING)
 			return "<span style='color:green'>WAITING</span>"
@@ -353,7 +355,7 @@
 		else
 			return "<span style='color:pink'>INVALID STATE [state]</span>"
 
-/obj/machinery/networked/telephone/ui_interact(mob/user) //THIS IS GONNA BE RAW HTML FUCKERY, *SUE ME BITCHBOOOYY*
+/obj/machinery/telephone/ui_interact(mob/user) //THIS IS GONNA BE RAW HTML FUCKERY, *SUE ME BITCHBOOOYY*
 	. = ..()
 	var/list/dat = list()
 	dat += "<center><div>Handset ID \["
@@ -384,7 +386,7 @@
 	popup.set_content(dat.Join())
 	popup.open()
 
-/obj/machinery/networked/telephone/Topic(href, href_list)
+/obj/machinery/telephone/Topic(href, href_list)
 	. = ..()
 	if(.)
 		return .
@@ -413,7 +415,7 @@
 	icon_state = "handset"
 	item_flags = ABSTRACT
 	/// Owner phone
-	var/obj/machinery/networked/telephone/callstation
+	var/obj/machinery/telephone/callstation
 	/// Have we manually muted the mic?
 	var/mic_muted = FALSE
 
@@ -567,7 +569,7 @@
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
 	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
-	v_signal.data["s_addr"] = null  //(Set by post_crafted_signal), Just setting it to null means it's always first in the list.
+	v_signal.data["s_addr"] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
 	v_signal.data["d_addr"] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"
 	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
@@ -577,7 +579,7 @@
 	v_signal.data["message_mods"] = message_mods
 
 	//Send it off to the next phone.
-	callstation.post_crafted_signal(v_signal)
+	callstation.post_signal(v_signal)
 //Finally, the last steps...
 
 /// Receive a voice packet from the callstation. These are just transparently passed to us.

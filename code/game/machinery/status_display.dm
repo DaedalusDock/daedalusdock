@@ -336,6 +336,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 		. += "The display is blank."
 
 /obj/machinery/status_display/evac/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //Not properly networked yet.
 	switch(signal.data["command"])
 		if("blank")
 			current_mode = SD_BLANK
@@ -572,7 +573,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 		if("alert")
 			status_signal.data["picture_state"] = picture_map[picture.value]
 
-	connected_display.receive_signal(status_signal)
+	INVOKE_ASYNC(connected_display, /datum/proc/receive_signal, status_signal)
+	//connected_display.receive_signal(status_signal)
 
 #undef CHARS_PER_LINE
 #undef FONT_SIZE

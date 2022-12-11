@@ -81,7 +81,7 @@
 		else
 			M.disconnect_from_network()//..remove it
 	M.powernet = src
-	if(M.use_data)
+	if(M.network_flags & NETWORK_FLAG_POWERNET_DATANODE)
 		data_nodes[M] = M
 	nodes[M] = M
 

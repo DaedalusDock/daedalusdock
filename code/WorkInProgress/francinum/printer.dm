@@ -2,7 +2,7 @@
 
 //UNFINISHED
 
-/obj/machinery/networked/printer
+/obj/machinery/printer
 	name = "printer"
 	desc = "It's a printer. Data goes in, Paper comes out."
 	net_class = "PNET_LPT"
@@ -12,7 +12,7 @@
 	var/status_message = "CRITICAL ERROR: CONTACT SUPPORT"
 	var/paper_stack = MAX_PAPER
 
-/obj/machinery/networked/printer/proc/recalculate_statmessage()
+/obj/machinery/printer/proc/recalculate_statmessage()
 
 	if(!paper_stack)
 		status_message = "NOT READY - PC LOAD LETTER"
@@ -22,4 +22,4 @@
 		return
 	status_message = "READY - ID:[print_id]"
 
-/obj/machinery/networked/printer/proc/print()
+/obj/machinery/printer/proc/print()

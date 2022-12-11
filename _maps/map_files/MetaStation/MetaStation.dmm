@@ -4434,7 +4434,7 @@
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
 /obj/structure/table/glass,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "bdE" = (
@@ -5605,7 +5605,7 @@
 "bsp" = (
 /obj/structure/table/glass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/networked/telephone/engineering,
+/obj/machinery/telephone/engineering,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -15272,7 +15272,7 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /obj/machinery/power/data_terminal,
 /turf/open/floor/wood,
 /area/command/heads_quarters/hos)
@@ -17101,7 +17101,7 @@
 /obj/machinery/computer/security/telescreen/entertainment/directional/west,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/service,
+/obj/machinery/telephone/service,
 /turf/open/floor/iron,
 /area/service/bar)
 "eSx" = (
@@ -24863,7 +24863,7 @@
 	},
 /obj/structure/table,
 /obj/structure/sign/poster/random/directional/east,
-/obj/machinery/networked/telephone/service,
+/obj/machinery/telephone/service,
 /obj/structure/cable,
 /obj/machinery/power/data_terminal,
 /turf/open/floor/iron/cafeteria,
@@ -33600,7 +33600,7 @@
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/cargo,
+/obj/machinery/telephone/cargo,
 /turf/open/floor/iron,
 /area/cargo/sorting)
 "lgQ" = (
@@ -34509,7 +34509,7 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/cable,
 /obj/machinery/power/data_terminal,
-/obj/machinery/networked/telephone/medical,
+/obj/machinery/telephone/medical,
 /turf/open/floor/iron/white/side{
 	dir = 6
 	},
@@ -39759,7 +39759,7 @@
 /obj/structure/filingcabinet/chestdrawer{
 	pixel_y = 2
 	},
-/obj/machinery/networked/telephone/command{
+/obj/machinery/telephone/command{
 	pixel_y = 10
 	},
 /obj/structure/cable,
@@ -47051,7 +47051,7 @@
 /obj/structure/table/glass,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "pVz" = (
@@ -48390,7 +48390,7 @@
 	name = "Private Channel"
 	},
 /obj/structure/cable,
-/obj/machinery/networked/telephone/security,
+/obj/machinery/telephone/security,
 /obj/machinery/power/data_terminal,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
@@ -49004,7 +49004,7 @@
 /obj/structure/table,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/security,
+/obj/machinery/telephone/security,
 /turf/open/floor/iron/dark,
 /area/security/office)
 "qFe" = (
@@ -51822,7 +51822,7 @@
 /obj/item/radio/intercom/directional/east,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)
 "rOq" = (
@@ -58800,7 +58800,7 @@
 	},
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /turf/open/floor/iron,
 /area/command/heads_quarters/ce)
 "uAh" = (
@@ -61824,7 +61824,7 @@
 	},
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/research,
+/obj/machinery/telephone/research,
 /turf/open/floor/iron,
 /area/science/lab)
 "vKf" = (
@@ -65362,7 +65362,7 @@
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
 /obj/structure/table,
-/obj/machinery/networked/telephone/service,
+/obj/machinery/telephone/service,
 /turf/open/floor/iron,
 /area/service/janitor)
 "xbs" = (
@@ -67976,7 +67976,7 @@
 /obj/structure/table,
 /obj/machinery/power/data_terminal,
 /obj/structure/cable,
-/obj/machinery/networked/telephone/command,
+/obj/machinery/telephone/command,
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/rd)
 "xZo" = (

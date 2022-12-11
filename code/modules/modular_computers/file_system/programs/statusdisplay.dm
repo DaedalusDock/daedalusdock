@@ -21,12 +21,12 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(src, list("command" = "message"))
+	var/datum/signal/status_signal = new(computer, list("command" = "message"))
 
 	status_signal.data["msg1"] = reject_bad_text(upper_text || "", MAX_STATUS_LINE_LENGTH)
 	status_signal.data["msg2"] = reject_bad_text(lower_text || "", MAX_STATUS_LINE_LENGTH)
 
-	frequency.post_signal(computer, status_signal)
+	frequency.post_signal(status_signal)
 
 /datum/computer_file/program/status/proc/SetText(position, text)
 	switch(position)

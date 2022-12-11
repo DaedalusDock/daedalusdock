@@ -149,7 +149,7 @@
 		GLOB.lastsignalers.Add(logging_data)
 
 	var/datum/signal/signal = new(src, list("code" = code), logging_data = logging_data)
-	radio_connection.post_signal(src, signal)
+	radio_connection.post_signal(signal)
 
 /obj/item/assembly/signaler/receive_signal(datum/signal/signal)
 	. = FALSE

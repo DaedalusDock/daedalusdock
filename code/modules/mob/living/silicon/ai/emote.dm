@@ -89,7 +89,7 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(src, list("command" = "friendcomputer"))
+	var/datum/signal/status_signal = new(null, list("command" = "friendcomputer"))
 	frequency.post_signal(status_signal)
 
 /datum/emote/ai/emotion_display/blue_glow

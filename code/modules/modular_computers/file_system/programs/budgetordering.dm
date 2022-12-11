@@ -288,5 +288,5 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(src, list("command" = command))
+	var/datum/signal/status_signal = new(computer, list("command" = command))
 	frequency.post_signal(status_signal)

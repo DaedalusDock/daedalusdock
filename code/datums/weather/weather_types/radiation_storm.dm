@@ -66,7 +66,7 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new(null)
 	if (active)
 		signal.data["command"] = "alert"
 		signal.data["picture_state"] = "radiation"

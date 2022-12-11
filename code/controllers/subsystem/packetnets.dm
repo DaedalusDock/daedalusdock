@@ -192,7 +192,11 @@ SUBSYSTEM_DEF(packets)
 
 /datum/controller/subsystem/packets/proc/ImmediateRadioPacketSend(datum/signal/packet)
 	//If checking range, find the source turf
-	var/source = packet.author.resolve()
+	#ifdef UNIT_TESTS
+	if(!packet.author)
+		stack_trace("Null author radio packet: freq [packet.frequency] | tm [packet.transmission_method] data: [json_encode(packet.data)]")
+	#endif
+	var/source = packet.author?.resolve()
 
 	var/turf/start_point
 	if(packet.range)

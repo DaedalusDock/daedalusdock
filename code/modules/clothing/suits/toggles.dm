@@ -87,7 +87,10 @@
 
 
 /obj/item/clothing/head/hooded/Destroy()
-	suit = null
+	if(suit)
+		suit.RemoveHood()
+		suit.hood = null
+		suit = null
 	return ..()
 
 /obj/item/clothing/head/hooded/dropped()

@@ -13,7 +13,7 @@
 	///Does this tail have a wagging sprite, and is it currently wagging?
 	var/wag_flags = NONE
 	///The original owner of this tail
-	var/original_owner //Yay, snowflake code!
+	var/datum/weakref/original_owner //Yay, snowflake code!
 
 /obj/item/organ/external/tail/Destroy()
 	original_owner = null
@@ -28,12 +28,12 @@
 	. = ..()
 	if(.)
 		RegisterSignal(reciever, COMSIG_ORGAN_WAG_TAIL, .proc/wag)
-		original_owner ||= reciever //One and done
+		original_owner ||= WEAKREF(reciever) //One and done
 
 		SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "tail_lost")
 		SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "tail_balance_lost")
 
-		if(original_owner == reciever)
+		if(original_owner.resolve() == reciever)
 			SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "wrong_tail_regained")
 		else if(type in reciever.dna.species.external_organs)
 			SEND_SIGNAL(reciever, COMSIG_ADD_MOOD_EVENT, "wrong_tail_regained", /datum/mood_event/tail_regained_wrong)

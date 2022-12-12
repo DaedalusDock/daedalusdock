@@ -29,3 +29,6 @@
   francinum:
   - qol: Walls are now named based on their material and structure
   - imageadd: Some material walls now properly use the correct icon base
+2022-12-12:
+  Kapu1178:
+  - code_imp: Injects a fat dose of Lorium

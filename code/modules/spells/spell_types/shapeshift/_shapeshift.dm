@@ -104,7 +104,7 @@
 			new gib_type(get_turf(possible_vent))
 			playsound(possible_vent, 'sound/effects/reee.ogg', 75, TRUE)
 
-	priority_announce("We detected a pipe blockage around [get_area(get_turf(cast_on))], please dispatch someone to investigate.", "Central Command")
+	priority_announce("We detected a pipe blockage around [get_area(get_turf(cast_on))], please dispatch someone to investigate.", FLAVOR_CENTCOM_SHORT)
 	cast_on.death()
 	qdel(cast_on)
 

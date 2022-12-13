@@ -176,11 +176,15 @@
 			recalculate_name()
 
 		if("Reconnect to terminal")
-			link_to_jack() //Just in case something stupid happens to the jack.
-			if(netjack)
-				to_chat(user, span_notice("Reconnect successful."))
-			else
-				to_chat(user, span_warning("Reconnect failed!"))
+			switch(link_to_jack()) //Just in case something stupid happens to the jack.
+				if(DATA_TERMINAL_CONNECT_VALID)
+					to_chat(user, span_notice("Reconnect successful."))
+				if(DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED)
+					to_chat(user, span_warning("Terminal connection conflict, something is already connected!"))
+				if(DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF)
+					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
+				else
+					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))
 		if("Toggle Address Display")
 			show_netids = !show_netids
 			if(show_netids)

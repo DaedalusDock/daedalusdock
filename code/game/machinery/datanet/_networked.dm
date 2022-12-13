@@ -39,23 +39,24 @@
 
 //Handle the network jack
 
+///Attempt to locate a network jack on the same tile and link to it, unlinking from any existing terminal.
+/// Passes through the return code from [/obj/machinery/power/data_terminal/proc/connect_machine()]
 /obj/machinery/proc/link_to_jack()
 	if(!(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to link to network terminal!")
-	var/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
+	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
 	if(netjack == new_transmission_terminal)
 		return
 	unlink_from_jack()//If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
 	if(!new_transmission_terminal)
 		return
-	netjack = new_transmission_terminal
-	netjack.connected_machine = src
-	netjack.RegisterSignal(src, COMSIG_MOVABLE_MOVED, /obj/machinery/power/data_terminal/proc/tear_out)
+	return new_transmission_terminal.connect_machine(src)
 
 /// Unlink from a network terminal
 /// `ignore_check` is used as part of machinery destroy.
 /obj/machinery/proc/unlink_from_jack(ignore_check = FALSE)
 	if(!ignore_check && !(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to unlink to network terminal (outside destroy)!")
-	netjack?.connected_machine = null
-	netjack = null
+	if(!netjack)
+		return
+	netjack.disconnect_machine(src)

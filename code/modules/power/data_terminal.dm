@@ -32,12 +32,31 @@
 	signal.author = WEAKREF(src)
 	powernet.queue_signal(signal)
 
+/// Request to connect this data terminal to a machine
+/// see `_DEFINES/packetnet.dm` for return values
+/// Machines connected to terminals should never move.
+/obj/machinery/power/data_terminal/proc/connect_machine(obj/machinery/new_machine)
+	if(connected_machine) //Ideally shouldn't happen, but just in case.
+		return DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED
+	if(get_turf(src) != get_turf(new_machine)) //REALLY shouldn't happen.
+		return DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF
+	// Be ready to tear ourselves out if they move.
+	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, /obj/machinery/power/data_terminal/proc/tear_out)
+	//Actually link them.
+	connected_machine = new_machine
+	new_machine.netjack = src
+
+/// Attempt to disconnect from a data terminal.
+/obj/machinery/power/data_terminal/proc/disconnect_machine(obj/machinery/leaving_machine)
+	if(leaving_machine != connected_machine)//Let's just be sure.
+		CRASH("[leaving_machine] [REF(leaving_machine)] attempted to disconnect despite not owning the data terminal (owned by [connected_machine] [REF(connected_machine)])!")
+	UnregisterSignal(leaving_machine, COMSIG_MOVABLE_MOVED)
+	leaving_machine.netjack = null
+	connected_machine = null
+
 /// Our connected machine moved. Disconnect and complain at them!
 /obj/machinery/power/data_terminal/proc/tear_out(datum/source)
 	SIGNAL_HANDLER
 	do_sparks(10, FALSE, src)
 	visible_message(span_warning("As [connected_machine] moves, \the [src] violently sparks as it disconnects from the network!")) //Good job fuckface
-
-	connected_machine = null
-
-#error Refactor this so that the data terminal deals with connection/disconnection. Just because goon does it doesn't make it okay. It's generally a sign it's a ""soulful"" idea.
+	disconnect_machine(connected_machine)

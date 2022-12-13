@@ -20,3 +20,16 @@
 
 // Net Classes
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
+
+
+
+// Dataterminal connection/disconnect return values
+
+/// Successfully connected.
+#define DATA_TERMINAL_CONNECT_VALID 0
+
+/// Connection rejected, Already connected to a machine
+#define DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED 1
+
+/// Connection rejected, Not sharing a turf (???)
+#define DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF 2

@@ -26,10 +26,10 @@
 // Dataterminal connection/disconnect return values
 
 /// Successfully connected.
-#define DATA_TERMINAL_CONNECT_VALID 0
+#define NETJACK_CONNECT_SUCCESS 0
 
 /// Connection rejected, Already connected to a machine
-#define DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED 1
+#define NETJACK_CONNECT_CONFLICT 1
 
 /// Connection rejected, Not sharing a turf (???)
-#define DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF 2
+#define NETJACK_CONNECT_NOTSAMETURF 2

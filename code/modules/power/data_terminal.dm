@@ -37,15 +37,15 @@
 /// Machines connected to terminals should never move.
 /obj/machinery/power/data_terminal/proc/connect_machine(obj/machinery/new_machine)
 	if(connected_machine) //Ideally shouldn't happen, but just in case.
-		return DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED
+		return NETJACK_CONNECT_CONFLICT
 	if(get_turf(src) != get_turf(new_machine)) //REALLY shouldn't happen.
-		return DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF
+		return NETJACK_CONNECT_NOTSAMETURF
 	// Be ready to tear ourselves out if they move.
 	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, /obj/machinery/power/data_terminal/proc/tear_out)
 	//Actually link them.
 	connected_machine = new_machine
 	new_machine.netjack = src
-	return DATA_TERMINAL_CONNECT_VALID
+	return NETJACK_CONNECT_SUCCESS
 
 /// Attempt to disconnect from a data terminal.
 /obj/machinery/power/data_terminal/proc/disconnect_machine(obj/machinery/leaving_machine)

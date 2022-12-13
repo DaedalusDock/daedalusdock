@@ -44,7 +44,7 @@
 /obj/machinery/proc/link_to_jack()
 	if(!(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to link to network terminal!")
-	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
+	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate() in get_turf(src)
 	if(netjack == new_transmission_terminal)
 		return
 	unlink_from_jack()//If our new jack is null, then we've somehow lost it? Don't care and just go along with it.

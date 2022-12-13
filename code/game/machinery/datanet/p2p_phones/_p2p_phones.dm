@@ -177,11 +177,11 @@
 
 		if("Reconnect to terminal")
 			switch(link_to_jack()) //Just in case something stupid happens to the jack.
-				if(DATA_TERMINAL_CONNECT_VALID)
+				if(NETJACK_CONNECT_SUCCESS)
 					to_chat(user, span_notice("Reconnect successful."))
-				if(DATA_TERMINAL_CONNECT_REJECT_ALREADYCLAIMED)
+				if(NETJACK_CONNECT_CONFLICT)
 					to_chat(user, span_warning("Terminal connection conflict, something is already connected!"))
-				if(DATA_TERMINAL_CONNECT_REJECT_NOT_SHARING_TURF)
+				if(NETJACK_CONNECT_NOTSAMETURF)
 					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
 				else
 					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))

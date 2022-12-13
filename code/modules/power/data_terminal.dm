@@ -45,6 +45,7 @@
 	//Actually link them.
 	connected_machine = new_machine
 	new_machine.netjack = src
+	return DATA_TERMINAL_CONNECT_VALID
 
 /// Attempt to disconnect from a data terminal.
 /obj/machinery/power/data_terminal/proc/disconnect_machine(obj/machinery/leaving_machine)

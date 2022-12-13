@@ -66,6 +66,9 @@
 	///The minimum value for the light's power in emergency mode
 	var/bulb_emergency_pow_min = 0.2
 
+	///The area this thing is in.
+	var/area/my_area = null
+
 /obj/machinery/light/Move()
 	if(status != LIGHT_BROKEN)
 		break_light_tube(TRUE)
@@ -88,6 +91,9 @@
 
 /obj/machinery/light/LateInitialize()
 	. = ..()
+	my_area = get_area(src)
+	if(my_area)
+		LAZYADD(my_area.lights, src)
 	switch(fitting)
 		if("tube")
 			if(prob(2))
@@ -98,9 +104,10 @@
 	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
 
 /obj/machinery/light/Destroy()
-	var/area/local_area = get_area(src)
-	if(local_area)
+	if(my_area)
 		on = FALSE
+		LAZYREMOVE(my_area.lights, src)
+	my_area = null
 	QDEL_NULL(cell)
 	return ..()
 

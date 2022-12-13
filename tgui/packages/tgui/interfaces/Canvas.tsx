@@ -264,7 +264,7 @@ export const Canvas = (props, context) => {
                 <Box mb={1} fontSize="18px" bold>{decodeHtmlEntities(data.name)}</Box>
                 <Box bold>
                   {data.author}
-                  {!!data.date && `- ${new Date(data.date).getFullYear()+540}`}
+                  {!!data.date && `- ${new Date(data.date).getFullYear()+805}`}
                 </Box>
                 <Box italic>{data.medium}</Box>
                 <Box italic>

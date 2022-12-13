@@ -181,3 +181,6 @@
 
 	///The talk chime set to use when speaking.
 	var/voice_type
+
+	COOLDOWN_DECLARE(smell_time)
+	var/last_smell_intensity = 0

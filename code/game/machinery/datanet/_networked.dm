@@ -44,6 +44,8 @@
 /obj/machinery/proc/link_to_jack()
 	if(!(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to link to network terminal!")
+	if(!loc)
+		CRASH("Attempted to link to a network jack while in nullspace!")
 	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate() in get_turf(src)
 	if(netjack == new_transmission_terminal)
 		return

@@ -6,6 +6,9 @@
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "" //Leave this blank! Bodyparts are built using overlays
+
+	VAR_PRIVATE/current_icon = null
+	VAR_PRIVATE/current_aux_icon = null
 	/// The icon for Organic limbs using greyscale
 	VAR_PROTECTED/icon_greyscale = DEFAULT_BODYPART_ICON_ORGANIC
 	///The icon for non-greyscale limbs
@@ -35,7 +38,7 @@
 	///Is there a sprite difference between male and female?
 	var/is_dimorphic = FALSE
 	///The actual color a limb is drawn as, set by /proc/update_limb()
-	var/draw_color //NEVER. EVER. EDIT THIS VALUE OUTSIDE OF UPDATE_LIMB. I WILL FIND YOU. It ruins the limb icon pipeline.
+	var/variable_color //NEVER. EVER. EDIT THIS VALUE OUTSIDE OF UPDATE_LIMB. I WILL FIND YOU. It ruins the limb icon pipeline.
 	///We always copy the list of mutcolors our owner has incase our organs want it
 	var/list/mutcolors
 
@@ -641,11 +644,11 @@
 		mutation_color = null
 
 	if(mutation_color)
-		draw_color = mutation_color
+		variable_color = mutation_color
 	else if(should_draw_greyscale)
-		draw_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
+		variable_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
 	else
-		draw_color = null
+		variable_color = null
 
 	if(!is_creating)
 		return
@@ -671,9 +674,9 @@
 		else
 			species_color = null
 
-		draw_color = mutation_color
+		variable_color = mutation_color
 		if(should_draw_greyscale) //Should the limb be colored?
-			draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
+			variable_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
 		dmg_overlay_type = owner_species.damage_overlay_type
 
@@ -709,16 +712,9 @@
 
 	. = list()
 
-	var/image_dir = 0
-	if(dropped)
-		image_dir = SOUTH
-		if(dmg_overlay_type)
-			if(brutestate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
-			if(burnstate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+	var/image_dir = dropped ? SOUTH : null
 
-	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
+	var/mutable_appearance/limb = mutable_appearance(layer = -BODYPARTS_LAYER)
 	var/image/aux
 
 	if(animal_origin)
@@ -737,6 +733,14 @@
 			limb_em_block.dir = image_dir
 			limb.overlays += limb_em_block
 		. += limb
+
+	if(dropped)
+		image_dir = SOUTH
+		if(dmg_overlay_type)
+			if(brutestate)
+				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+			if(burnstate)
+				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
 		return
 
 	//HUSK SHIIIIT
@@ -748,8 +752,6 @@
 		if(aux_zone) //Hand shit
 			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -aux_layer, image_dir)
 			. += aux
-		return .
-	//END HUSK SHIIIIT
 
 	////This is the MEAT of limb icon code
 	limb.icon = icon_greyscale
@@ -763,54 +765,68 @@
 
 	icon_exists(limb.icon, limb.icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
-	if(body_zone == BODY_ZONE_R_LEG)
-		var/obj/item/bodypart/r_leg/leg = src
-		var/limb_overlays = limb.overlays
-		var/image/new_limb = leg.generate_masked_right_leg(limb.icon, limb.icon_state, image_dir)
-		if(new_limb)
-			limb = new_limb
-			limb.overlays = limb_overlays
+	if(!is_husked)
+		. += limb
 
-	. += limb
+		if(aux_zone) //Hand shit
+			aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer, image_dir)
+			. += aux
 
-	if(aux_zone) //Hand shit
-		aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer, image_dir)
-		. += aux
+		variable_color = variable_color
+		if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
+			variable_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
-	draw_color = mutation_color
-	if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
-		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
+		if(variable_color)
+			limb.color = "[variable_color]"
+			if(aux_zone)
+				aux.color = "[variable_color]"
 
-	if(draw_color)
-		limb.color = "[draw_color]"
-		if(aux_zone)
-			aux.color = "[draw_color]"
+		//EMISSIVE CODE START
+		// For some reason this was applied as an overlay on the aux image and limb image before.
+		// I am very sure that this is unnecessary, and i need to treat it as part of the return list
+		// to be able to mask it proper in case this limb is a leg.
+		if(blocks_emissive)
+			var/atom/location = loc || owner || src
+			var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, alpha = limb.alpha)
+			limb_em_block.dir = image_dir
+			. += limb_em_block
 
-	//EMISSIVE CODE START
-	if(blocks_emissive)
-		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, alpha = limb.alpha)
-		limb_em_block.dir = image_dir
-		limb.overlays += limb_em_block
+			if(aux_zone)
+				var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, alpha = aux.alpha)
+				aux_em_block.dir = image_dir
+				. += aux_em_block
+		//EMISSIVE CODE END
 
-		if(aux_zone)
-			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, alpha = aux.alpha)
-			aux_em_block.dir = image_dir
-			aux.overlays += aux_em_block
+	//Ok so legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
+	if((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG))
+		var/mutable_appearance/old_appearance = .[1]
+		//remove the old, unmasked image
+		. = . - old_appearance
+		//add two masked images based on the old one
+		. += generate_masked_leg(old_appearance, image_dir)
 
-	//EMISSIVE CODE END
-	//Draw external organs like horns and frills
-	for(var/obj/item/organ/external/external_organ in external_organs)
-		if(!dropped && !external_organ.can_draw_on_bodypart(owner))
-			continue
-		//Some externals have multiple layers for background, foreground and between
-		for(var/external_layer in external_organ.all_layers)
-			if(external_organ.layers & external_layer)
-				external_organ.get_overlays(
-					.,
-					image_dir,
-					external_organ.bitflag_to_layer(external_layer),
-					limb_gender,
-				)
+	if(!is_husked)
+		//Draw external organs like horns and frills
+		for(var/obj/item/organ/external/external_organ in external_organs)
+			if(!dropped && !external_organ.can_draw_on_bodypart(owner))
+				continue
+			//Some externals have multiple layers for background, foreground and between
+			for(var/external_layer in external_organ.all_layers)
+				if(external_organ.layers & external_layer)
+					external_organ.get_overlays(
+						.,
+						image_dir,
+						external_organ.bitflag_to_layer(external_layer),
+						limb_gender,
+					)
+	if(dropped)
+		image_dir = SOUTH
+		if(dmg_overlay_type)
+			if(brutestate)
+				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+			if(burnstate)
+				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+	return .
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)

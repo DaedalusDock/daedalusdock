@@ -541,7 +541,7 @@
 	icon_state = "stoneborder"
 
 /obj/effect/turf_decal/ported/misc/stone/corner
-	icon_state = "stoneborder_corner"
+	icon_state = "stoneborder_c"
 
 /obj/effect/turf_decal/ported/rust
 	icon_state = "rust"
@@ -616,7 +616,7 @@
 	icon_state = "techfloororange_edges"
 
 /obj/effect/turf_decal/ported/techfloor/orange/corner
-	icon_state = "techfloororange_corner"
+	icon_state = "techfloororange_corners"
 
 /obj/effect/turf_decal/ported/techfloor/steel
 	icon_state = "steel_grid"

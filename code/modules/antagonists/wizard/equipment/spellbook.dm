@@ -569,7 +569,7 @@
 /datum/spellbook_entry/summon/guns/IsAvailable()
 	// Summon Guns requires 100 threat.
 	var/datum/game_mode/dynamic/mode = SSticker.mode
-	if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
+	if(istype(mode) && mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 		return FALSE
 	// Also must be config enabled
 	return !CONFIG_GET(flag/no_summon_guns)
@@ -586,7 +586,7 @@
 /datum/spellbook_entry/summon/magic/IsAvailable()
 	// Summon Magic requires 100 threat.
 	var/datum/game_mode/dynamic/mode = SSticker.mode
-	if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
+	if(istype(mode) && mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 		return FALSE
 	// Also must be config enabled
 	return !CONFIG_GET(flag/no_summon_magic)
@@ -605,7 +605,7 @@
 /datum/spellbook_entry/summon/events/IsAvailable()
 	// Summon Events requires 100 threat.
 	var/datum/game_mode/dynamic/mode = SSticker.mode
-	if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
+	if(istype(mode) && mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 		return FALSE
 	// Also, must be config enabled
 	return !CONFIG_GET(flag/no_summon_events)

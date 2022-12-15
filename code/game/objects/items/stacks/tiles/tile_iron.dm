@@ -52,6 +52,10 @@
 		/obj/item/stack/tile/iron/freezer,
 		/obj/item/stack/tile/iron/grimy,
 		/obj/item/stack/tile/iron/sepia,
+		/obj/item/stack/tile/iron/ported/techfloor,
+		/obj/item/stack/tile/iron/ported/techfloor_grid,
+		/obj/item/stack/tile/iron/ported/tcomms,
+		/obj/item/stack/tile/iron/ported/lino,
 	)
 
 /obj/item/stack/tile/iron/attackby(obj/item/W, mob/user, params)
@@ -343,6 +347,55 @@
 	icon_state = "tile_sepia"
 	turf_type = /turf/open/floor/iron/sepia
 	merge_type = /obj/item/stack/tile/iron/sepia
+
+/obj/item/stack/tile/iron/ported //Abstract, this also can't be gotten through reskinning, it's just to hold the subtypes
+	name = "abstract tile"
+	singular_name = "abstract tile"
+	desc = "An abstract floor tile of ported floors. Call a coder!"
+	icon = 'icons/obj/tiles-ported.dmi'
+	icon_state = "tcomms"
+	turf_type = /turf/open/floor/iron/ported
+	merge_type = /obj/item/stack/tile/iron/ported 
+
+/obj/item/stack/tile/iron/ported/techfloor
+	name = "techfloor tile"
+	singular_name = "techfloor tile"
+	desc = "A techy-looking floor tile."
+	icon_state = "techfloor_tile"
+	turf_type = /turf/open/floor/iron/ported/techfloor
+	merge_type = /obj/item/stack/tile/iron/ported/techfloor
+
+/obj/item/stack/tile/iron/ported/techfloor_grid
+	name = "techfloor grid tile"
+	singular_name = "techfloor grid tile"
+	desc = "A techy-looking floor tile, in a grid style."
+	icon_state = "techfloor_grid_tile"
+	turf_type = /turf/open/floor/iron/ported/techfloor_grid
+	merge_type = /obj/item/stack/tile/iron/ported/techfloor_grid
+
+/obj/item/stack/tile/iron/ported/lino
+	name = "linoleum tile"
+	singular_name = "linoleum tile"
+	desc = "A linoleum floor tile."
+	icon_state = "lino_tile"
+	turf_type = /turf/open/floor/iron/ported/lino
+	merge_type = /obj/item/stack/tile/iron/ported/lino
+
+/obj/item/stack/tile/iron/ported/tcomms
+	name = "tcomms floor tile"
+	singular_name = "tcomms floor tile"
+	desc = "A high-tech floor tile with flashing lights."
+	icon_state = "tcomms"
+	turf_type = /turf/open/floor/iron/ported/tcomms
+	merge_type = /obj/item/stack/tile/iron/ported/tcomms
+
+/obj/item/stack/tile/iron/ported/techfloor_rusted
+	name = "rusted techfloor tile"
+	singular_name = "rusted techfloor tile"
+	desc = "A rusted, but still techy, piece of floor tile."
+	icon_state = "techfloor_rusted_tile"
+	turf_type = /turf/open/floor/iron/ported/techfloor_rusted
+	merge_type = /obj/item/stack/tile/iron/ported/techfloor_rusted
 
 //Tiles below can't be gotten through tile reskinning
 

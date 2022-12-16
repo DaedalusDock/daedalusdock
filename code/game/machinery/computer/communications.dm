@@ -849,7 +849,7 @@
 				dynamic.create_threat(HACK_THREAT_INJECTION_AMOUNT, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Communications console hacked by [hacker]")
 
 		if(HACK_SLEEPER) // Trigger one or multiple sleeper agents with the crew (or for latejoining crew)
-			if(istype(SSticker.mode, /datum/game_mode/dynamic))
+			if(IS_DYNAMIC_GAME_MODE)
 				var/datum/game_mode/dynamic/dynamic = SSticker.mode
 				var/datum/dynamic_ruleset/midround/sleeper_agent_type = /datum/dynamic_ruleset/midround/autotraitor
 				var/max_number_of_sleepers = clamp(round(length(GLOB.alive_player_list) / 20), 1, 3)

@@ -10,10 +10,9 @@
 	clawfootstep = FOOTSTEP_HARD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	flags_1 = NO_SCREENTIPS_1
-
-	turf_flags = CAN_BE_DIRTY_1 ///PARIAH EDIT - Overriden in modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
-	canSmoothWith = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
+	turf_flags = CAN_BE_DIRTY_1 | IS_SOLID
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
+	canSmoothWith = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
 
 	heat_capacity = 10000
 	tiled_dirt = TRUE

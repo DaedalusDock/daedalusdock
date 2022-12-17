@@ -7,8 +7,8 @@
 	icon = 'icons/turf/mining.dmi'
 	icon_state = "rock"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_MINERAL_WALLS
+	canSmoothWith = SMOOTH_GROUP_MINERAL_WALLS
 	baseturfs = /turf/open/misc/asteroid/airless
 	initial_gas = AIRLESS_ATMOS
 	opacity = TRUE
@@ -52,20 +52,8 @@
 
 	levelupdate()
 
-	if (!isnull(smoothing_groups))
-		#ifdef UNIT_TESTS
-		assert_sorted(smoothing_groups, "[type].smoothing_groups")
-		#endif
+	SETUP_SMOOTHING()
 
-		SET_BITFLAG_LIST(smoothing_groups)
-	if (!isnull(canSmoothWith))
-		#ifdef UNIT_TESTS
-		assert_sorted(canSmoothWith, "[type].canSmoothWith")
-		#endif
-
-		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
-			smoothing_flags |= SMOOTH_OBJ
-		SET_BITFLAG_LIST(canSmoothWith)
 	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
@@ -350,7 +338,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -411,7 +399,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -533,7 +521,7 @@
 	icon_state = "rock2"
 	base_icon_state = "rock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/ashplanet/wateryrock
 	initial_gas = OPENTURF_LOW_PRESSURE
 	turf_type = /turf/open/misc/ashplanet/rocky
@@ -546,7 +534,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/asteroid/snow
 	temperature = 180
 	turf_type = /turf/open/misc/asteroid/snow

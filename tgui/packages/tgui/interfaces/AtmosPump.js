@@ -1,5 +1,6 @@
 import { useBackend } from '../backend';
-import { Button, LabeledList, NumberInput, Section } from '../components';
+import { formatSiUnit } from '../format';
+import { Button, LabeledList, NumberInput, Section, ProgressBar } from '../components';
 import { Window } from '../layouts';
 
 export const AtmosPump = (props, context) => {
@@ -7,7 +8,7 @@ export const AtmosPump = (props, context) => {
   return (
     <Window
       width={335}
-      height={115}>
+      height={129}>
       <Window.Content>
         <Section>
           <LabeledList>
@@ -60,6 +61,17 @@ export const AtmosPump = (props, context) => {
                   onClick={() => act('pressure', {
                     pressure: 'max',
                   })} />
+              </LabeledList.Item>
+            )}
+            {data.max_power(
+              <LabeledList.Item label="Power Usage">
+                <ProgressBar
+                  value={data.last_draw}
+                  maxValue={data.max_power}
+                  color="yellow"
+                >
+                  {formatSiUnit(data.last_draw, 0, 'W')}
+                </ProgressBar>
               </LabeledList.Item>
             )}
           </LabeledList>

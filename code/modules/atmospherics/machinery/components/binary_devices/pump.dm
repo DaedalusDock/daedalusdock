@@ -30,6 +30,8 @@
 	var/id = null
 	///Connection to the radio processing
 	var/datum/radio_frequency/radio_connection
+	//Last power draw, for the progress bar in the UI
+	var/last_power_draw = 0
 
 /obj/machinery/atmospherics/components/binary/pump/Initialize(mapload)
 	. = ..()
@@ -62,6 +64,8 @@
 	icon_state = (on && is_operational) ? "pump_on-[set_overlay_offset(piping_layer)]" : "pump_off-[set_overlay_offset(piping_layer)]"
 
 /obj/machinery/atmospherics/components/binary/pump/process_atmos()
+	last_power_draw = 0
+
 	if(!on || !is_operational)
 		return
 
@@ -73,6 +77,7 @@
 	if(draw > -1)
 		update_parents()
 		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
 
 /**
@@ -113,6 +118,8 @@
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
 	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["last_draw"] = last_power_draw
+	data["max_power"] = power_rating
 	return data
 
 /obj/machinery/atmospherics/components/binary/pump/ui_act(action, params)

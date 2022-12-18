@@ -19,6 +19,8 @@
 	var/frequency = 0
 	///Reference to the radio datum
 	var/datum/radio_frequency/radio_connection
+	//Last power draw, for the progress bar in the UI
+	var/last_power_draw = 0
 
 /obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user)
 	if(can_interact(user))
@@ -59,6 +61,7 @@
 
 /obj/machinery/atmospherics/components/trinary/filter/process_atmos()
 	..()
+	last_power_draw = 0
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) || !is_operational)
 		return
 
@@ -107,7 +110,12 @@
 			merge_to = air1
 		else
 			merge_to = air2
-		filter_gas(filter_type, removed, merge_to, removed, available_power = power_rating)
+
+		var/draw = filter_gas(filter_type, removed, merge_to, removed, available_power = power_rating)
+		if(draw > -1)
+			ATMOS_USE_POWER(draw)
+			last_power_draw = draw
+
 		// Send things to the side output if we can, return them to the input if we can't.
 		// This means that other gases continue to flow to the main output if the side output is blocked.
 		// Make sure we don't send any now-empty gas entries to the main output
@@ -137,6 +145,8 @@
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
 	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["last_draw"] = last_power_draw
+	data["max_power"] = power_rating
 
 	data["filter_types"] = list()
 	for(var/gas in ASSORTED_GASES)

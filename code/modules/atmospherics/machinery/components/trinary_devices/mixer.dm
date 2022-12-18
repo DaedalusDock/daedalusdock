@@ -18,6 +18,9 @@
 	///Ratio between the node 1 and 2, determines the amount of gas transfered, sums up to 1
 	var/node2_concentration = 0.5
 	//node 3 is the outlet, nodes 1 & 2 are intakes
+	//Last power draw, for the progress bar in the UI
+	var/last_power_draw = 0
+
 
 /obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user)
 	if(can_interact(user))
@@ -54,6 +57,7 @@
 
 /obj/machinery/atmospherics/components/trinary/mixer/process_atmos()
 	..()
+	last_power_draw = 0
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) && !is_operational)
 		return
 
@@ -90,7 +94,9 @@
 	mix_and_conc[air1] = node1_concentration
 	mix_and_conc[air2] = node2_concentration
 	var/draw = mix_gas(mix_and_conc, air3, transfer_moles, power_rating)
-	ATMOS_USE_POWER(draw)
+	if(draw > -1)
+		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
 	var/datum/pipeline/parent1 = parents[1]
 	parent1.update = TRUE
@@ -112,6 +118,8 @@
 	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
 	data["node1_concentration"] = round(node1_concentration*100, 1)
 	data["node2_concentration"] = round(node2_concentration*100, 1)
+	data["last_draw"] = last_power_draw
+	data["max_power"] = power_rating
 	return data
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_act(action, params)

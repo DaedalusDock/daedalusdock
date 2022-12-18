@@ -77,9 +77,10 @@
 	if(output_starting_pressure > MAX_PUMP_PRESSURE)
 		return
 
-	if(air1.temperature > 0)
-		//copied from air injectors
-		var/transfer_moles = (air1.returnPressure() * transfer_rate) / (air1.temperature * R_IDEAL_GAS_EQUATION)
+	if(!(air1.temperature > 0))
+		return
+	//copied from air injectors
+	var/transfer_moles = (air1.returnPressure() * transfer_rate) / (air1.temperature * R_IDEAL_GAS_EQUATION)
 
 		if(!transfer_moles)
 			return

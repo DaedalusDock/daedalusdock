@@ -63,7 +63,7 @@ export const AtmosPump = (props, context) => {
                   })} />
               </LabeledList.Item>
             )}
-            {data.max_power(
+            {data.max_power ? (
               <LabeledList.Item label="Power Usage">
                 <ProgressBar
                   value={data.last_draw}
@@ -73,6 +73,8 @@ export const AtmosPump = (props, context) => {
                   {formatSiUnit(data.last_draw, 0, 'W')}
                 </ProgressBar>
               </LabeledList.Item>
+            ) : (
+              null
             )}
           </LabeledList>
         </Section>

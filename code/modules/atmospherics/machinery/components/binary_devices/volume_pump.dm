@@ -82,14 +82,14 @@
 	//copied from air injectors
 	var/transfer_moles = (air1.returnPressure() * transfer_rate) / (air1.temperature * R_IDEAL_GAS_EQUATION)
 
-		if(!transfer_moles)
-			return
+	if(!transfer_moles)
+		return
 
-		var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
-		if(draw > -1)
-			update_parents()
-			ATMOS_USE_POWER(draw)
-			last_power_draw = draw
+	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
+	if(draw > -1)
+		update_parents()
+		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
 
 /**

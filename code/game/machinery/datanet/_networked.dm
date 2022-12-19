@@ -33,7 +33,7 @@
 	if(signal.data["d_addr"] != src.net_id)//This packet doesn't belong to us directly
 		if(signal.data["d_addr"] == "ping")// But it could be a ping, if so, reply
 			//Blame kapu for how stupid this looks :3
-			post_signal(create_signal(create_signal(signal.data["s_addr"], list("command"="ping_reply","netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition)))
+			post_signal(create_signal(signal.data["s_addr"], list("command"="ping_reply","netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
 		return //regardless, return 1 so that machines don't process packets not intended for them.
 	return FALSE // We are the designated recipient of this packet.
 

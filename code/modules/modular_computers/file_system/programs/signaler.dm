@@ -63,10 +63,9 @@
 		GLOB.lastsignalers.Add(logging_data)
 
 	var/datum/signal/signal = new(computer, list("code" = signal_code), logging_data = logging_data)
-	radio_connection.post_signal(signal)
+	radio_connection.post_signal(signal, RADIO_SIGNALER)
 
 /datum/computer_file/program/signal_commander/proc/set_frequency(new_frequency)
-	SSpackets.remove_object(computer, signal_frequency)
 	signal_frequency = new_frequency
-	radio_connection = SSpackets.add_object(computer, signal_frequency, RADIO_SIGNALER)
+	radio_connection = SSpackets.return_frequency(signal_frequency)
 	return

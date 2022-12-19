@@ -90,7 +90,7 @@ Class Procs:
 	T.update_graphic(air.graphic)
 
 	if(T.atmos_sensitive_contents)
-		LAZYADD(atmos_sensitive_contents, T.atmos_sensitive_contents)
+		LAZYDISTINCTADD(atmos_sensitive_contents, T.atmos_sensitive_contents)
 
 ///Removes the given turf from the zone. Will invalidate the zone if it was the last turf.
 /zone/proc/remove_turf(turf/T)

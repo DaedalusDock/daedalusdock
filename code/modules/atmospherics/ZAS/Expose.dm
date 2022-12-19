@@ -47,25 +47,3 @@
 		LAZYREMOVE(T.atmos_sensitive_contents, src)
 		if(TURF_HAS_VALID_ZONE(T))
 			LAZYREMOVE(T.zone.atmos_sensitive_contents, src)
-
-/turf/become_atmos_sensitive()
-	if(flags_2 & ATMOS_SENSITIVE_2)
-		return
-	flags_2 |= ATMOS_SENSITIVE_2
-
-	if(TURF_HAS_VALID_ZONE(src))
-		LAZYDISTINCTADD(zone.atmos_sensitive_contents, src)
-
-	LAZYDISTINCTADD(atmos_sensitive_contents, src)
-
-///removes temperature sensitivity
-/turf/lose_atmos_sensitivity()
-	if(!(flags_2 & ATMOS_SENSITIVE_2))
-		return
-	flags_2 &= ~ATMOS_SENSITIVE_2
-
-	if(TURF_HAS_VALID_ZONE(src))
-		LAZYREMOVE(zone.atmos_sensitive_contents, src)
-
-	LAZYREMOVE(atmos_sensitive_contents, src)
-

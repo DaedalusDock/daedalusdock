@@ -353,7 +353,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	if(owned_core && owned_core.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
 		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
-			environment.addThermalEnergy(plasma_temperature*20000)
+			environment.adjustThermalEnergy(plasma_temperature*20000)
 	radiation = 0
 
 /obj/effect/reactor_em_field/proc/change_size(newsize = 1)

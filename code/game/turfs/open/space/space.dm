@@ -6,8 +6,6 @@
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
 	temperature = TCMB
-	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	heat_capacity = 700000
 	simulated = FALSE
 
 	var/destination_z

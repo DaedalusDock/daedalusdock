@@ -44,7 +44,7 @@
 	damage_type = BURN
 	nodamage = FALSE
 	armor_flag = ENERGY
-	temperature = -50 // Cools you down! per hit!
+	adj_temperature = -50 // Cools you down! per hit!
 	var/slowdown = TRUE //Determines if the projectile applies a slowdown status effect on carbons or not
 
 /obj/projectile/temp/basilisk/on_hit(atom/target, blocked = 0)
@@ -59,7 +59,7 @@
 	damage = 40
 	damage_type = BRUTE
 	nodamage = FALSE
-	temperature = 0
+	adj_temperature = 0
 	slowdown = FALSE
 
 
@@ -194,7 +194,7 @@
 	damage = 5
 	damage_type = BURN
 	nodamage = FALSE
-	temperature = 200 // Heats you up! per hit!
+	adj_temperature = 200 // Heats you up! per hit!
 	slowdown = FALSE
 
 /obj/projectile/temp/basilisk/magmawing/on_hit(atom/target, blocked = FALSE)

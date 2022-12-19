@@ -9,6 +9,12 @@
 
 /obj/structure/spider/Initialize(mapload)
 	. = ..()
+	become_atmos_sensitive()
+
+/obj/structure/spider/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
+
 
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
@@ -22,9 +28,6 @@
 			if(BRUTE)
 				damage_amount *= 0.25
 	. = ..()
-
-/obj/structure/spider/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 300) ? TRUE : FALSE
 
 /obj/structure/spider/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 300)

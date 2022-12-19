@@ -1,73 +1,71 @@
-#define MIN_TEMPERATURE_COEFFICIENT 1
-#define MAX_TEMPERATURE_COEFFICIENT 10
-
-/atom/var/temperature = T20C
-/atom/var/temperature_coefficient = MAX_TEMPERATURE_COEFFICIENT
-
-/atom/movable/Entered(atom/movable/atom, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	QUEUE_TEMPERATURE_ATOMS(atom)
-
-/obj/temperature_coefficient = null
-
-/mob/temperature_coefficient = null
-
-/turf/temperature_coefficient = MIN_TEMPERATURE_COEFFICIENT
-
-/obj/Initialize()
-	. = ..()
-	temperature_coefficient = isnull(temperature_coefficient) ? clamp(MAX_TEMPERATURE_COEFFICIENT - w_class, MIN_TEMPERATURE_COEFFICIENT, MAX_TEMPERATURE_COEFFICIENT) : temperature_coefficient
-
-/atom/proc/adjust_temperature(adjust_temp, atom/heat_source)
-	if(ATOM_IS_TEMPERATURE_SENSITIVE(src))
-		var/diff_temp = (adjust_temp - temperature)
-		if(diff_temp >= 0)
-			var/altered_temp = max(temperature + (ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT * temperature_coefficient * diff_temp), 0)
-			ADJUST_ATOM_TEMPERATURE(src, min(adjust_temp, altered_temp))
-
-/mob/living/Initialize()
-	. = ..()
-	temperature_coefficient = isnull(temperature_coefficient) ? clamp(MAX_TEMPERATURE_COEFFICIENT - FLOOR(mob_size/4, 1), MIN_TEMPERATURE_COEFFICIENT, MAX_TEMPERATURE_COEFFICIENT) : temperature_coefficient
-
-/atom/proc/process_atmos_exposure(delta_time)
-	// Get our location temperature if possible.
-	// Nullspace is room temperature, clearly.
-	var/adjust_temp
-	var/datum/gas_mixture/local_air
-	if(loc)
-		if(!isturf(loc))
-			adjust_temp = loc.temperature
-		else
-			var/turf/T = get_turf(loc)
-			if(T.zone && T.zone.air)
-				adjust_temp = T.zone.air.temperature
-				SEND_SIGNAL(T, COMSIG_TURF_EXPOSE, T.zone.air, T.zone.air.temperature)
-				atmos_expose(T.zone.air, T.zone.air.temperature)
-				local_air = T.zone.air
-			else
-				adjust_temp = T.temperature
-	else
-		adjust_temp = T20C
-
-	var/diff_temp = adjust_temp - temperature
-	if(abs(diff_temp) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
-		var/altered_temp = max(temperature + (ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT * temperature_coefficient * diff_temp), 0)
-		ADJUST_ATOM_TEMPERATURE(src, (diff_temp > 0) ? min(adjust_temp, altered_temp) : max(adjust_temp, altered_temp))
-
-	else if(local_air && (should_atmos_process(local_air, local_air.temperature)))
-		return
-
-	else
-		temperature = adjust_temp
-		return PROCESS_KILL
-
-#undef MIN_TEMPERATURE_COEFFICIENT
-#undef MAX_TEMPERATURE_COEFFICIENT
+/turf
+	///Atmos sensitive atoms in our contents. lazylist.
+	var/list/atmos_sensitive_contents
 
 ///This is your process() proc
 /atom/proc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	return
 
-///Return TRUE if the atom should keep processing regardless of normal conditions.
-/atom/proc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return
+/turf/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	SEND_SIGNAL(src, COMSIG_TURF_EXPOSE, air, exposed_temperature)
+
+/turf/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	if(arrived.flags_2 & ATMOS_SENSITIVE_2)
+		LAZYDISTINCTADD(atmos_sensitive_contents, arrived)
+		if(TURF_HAS_VALID_ZONE(src))
+			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
+
+/turf/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone.flags_2 & ATMOS_SENSITIVE_2)
+		if(!isnull(atmos_sensitive_contents))
+			LAZYREMOVE(atmos_sensitive_contents, gone)
+		if(TURF_HAS_VALID_ZONE(src))
+			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
+
+///allows this movable to know when it's container's temperature has changed
+/atom/proc/become_atmos_sensitive()
+	if(flags_2 & ATMOS_SENSITIVE_2)
+		return
+	flags_2 |= ATMOS_SENSITIVE_2
+
+	var/turf/T = get_turf(src)
+	if(T)
+		LAZYDISTINCTADD(T.atmos_sensitive_contents, src)
+		if(TURF_HAS_VALID_ZONE(T))
+			LAZYDISTINCTADD(T.zone.atmos_sensitive_contents, src)
+
+///removes temperature sensitivity
+/atom/proc/lose_atmos_sensitivity()
+	if(!(flags_2 & ATMOS_SENSITIVE_2))
+		return
+	flags_2 &= ~ATMOS_SENSITIVE_2
+
+	var/turf/T = get_turf(src)
+	if(T)
+		LAZYREMOVE(T.atmos_sensitive_contents, src)
+		if(TURF_HAS_VALID_ZONE(T))
+			LAZYREMOVE(T.zone.atmos_sensitive_contents, src)
+
+/turf/become_atmos_sensitive()
+	if(flags_2 & ATMOS_SENSITIVE_2)
+		return
+	flags_2 |= ATMOS_SENSITIVE_2
+
+	if(TURF_HAS_VALID_ZONE(src))
+		LAZYDISTINCTADD(zone.atmos_sensitive_contents, src)
+
+	LAZYDISTINCTADD(atmos_sensitive_contents, src)
+
+///removes temperature sensitivity
+/turf/lose_atmos_sensitivity()
+	if(!(flags_2 & ATMOS_SENSITIVE_2))
+		return
+	flags_2 &= ~ATMOS_SENSITIVE_2
+
+	if(TURF_HAS_VALID_ZONE(src))
+		LAZYREMOVE(zone.atmos_sensitive_contents, src)
+
+	LAZYREMOVE(atmos_sensitive_contents, src)
+

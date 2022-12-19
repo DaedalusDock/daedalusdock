@@ -62,6 +62,7 @@
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
+	become_atmos_sensitive()
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()
@@ -74,6 +75,7 @@
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
 	zas_update_loc()
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/door/window/update_icon_state()
@@ -262,11 +264,9 @@
 /obj/machinery/door/window/narsie_act()
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
-/obj/machinery/door/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > T0C + (reinf ? 1600 : 800)) ? TRUE : FALSE
-
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
+	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
+		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)

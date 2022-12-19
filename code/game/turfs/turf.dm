@@ -665,15 +665,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /// Handles exposing a turf to reagents.
-/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
-		. |= R.expose_turf(src, reagents[R])
+		. |= R.expose_turf(src, reagents[R], exposed_temperature)
 
 /**
  * Called when this turf is being washed. Washing a turf will also wash any mopable floor decals

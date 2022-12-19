@@ -12,10 +12,17 @@ SUBSYSTEM_DEF(packets)
 	var/list/datum/powernet/queued_networks = list()
 	///Radio packets to process
 	var/list/queued_radio_packets = list()
+	///Amount of radio packets processed last cycle
+	var/last_processed_radio_packets = 0
 	///Tablet messages to process
 	var/list/queued_tablet_messages = list()
+	///Amount of tabletmessage packets processed last cycle
+	var/last_processed_tablet_message_packets = 0
 	///Subspace/vocal packets to process
 	var/list/queued_subspace_vocals = list()
+	///Amount of subspace vocal packets processed last cycle
+	var/last_processed_ssv_packets = 0
+
 
 	///The current processing lists
 	var/list/current_networks = list()
@@ -40,9 +47,9 @@ SUBSYSTEM_DEF(packets)
 	return ..()
 
 /datum/controller/subsystem/packets/stat_entry(msg)
-	msg += "RP: [length(queued_radio_packets)]|"
-	msg += "TM: [length(queued_tablet_messages)]|"
-	msg += "SSV: [length(queued_subspace_vocals)]|"
+	msg += "RP: [length(queued_radio_packets)]{[last_processed_radio_packets]}|"
+	msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
+	msg += "SSV: [length(queued_subspace_vocals)]{[last_processed_ssv_packets]}|"
 	msg += "C:{"
 	msg += "CN:[round(cost_networks, 1)]|"
 	msg += "CR:[round(cost_radios, 1)]|"
@@ -114,15 +121,17 @@ SUBSYSTEM_DEF(packets)
 		timer = TICK_USAGE_REAL
 		if(!resumed)
 			cached_cost = 0
+			last_processed_radio_packets = 0
 
 		var/datum/signal/packet
 		while(length(current_radio_packets))
 			packet = current_radio_packets[1]
-			current_radio_packets.Cut(1)
+			current_radio_packets.Cut(1,2)
 			queued_radio_packets -= packet
 
 			ImmediateRadioPacketSend(packet)
 			cached_cost += TICK_USAGE_REAL - timer
+			last_processed_radio_packets++
 			if(MC_TICK_CHECK)
 				return
 
@@ -134,11 +143,12 @@ SUBSYSTEM_DEF(packets)
 		timer = TICK_USAGE_REAL
 		if(!resumed)
 			cached_cost = 0
+			last_processed_tablet_message_packets = 0
 
 		var/datum/signal/subspace/messaging/tablet_msg/packet
 		while(length(current_tablet_messages))
 			packet = current_tablet_messages[1]
-			current_tablet_messages.Cut(1)
+			current_tablet_messages.Cut(1,2)
 			queued_tablet_messages -= packet
 
 			if (!packet.logged)  // Can only go through if a message server logs it
@@ -150,6 +160,7 @@ SUBSYSTEM_DEF(packets)
 					app.receive_message(packet)
 
 			cached_cost += TICK_USAGE_REAL - timer
+			last_processed_tablet_message_packets++
 			if(MC_TICK_CHECK)
 				return
 
@@ -161,15 +172,17 @@ SUBSYSTEM_DEF(packets)
 		timer = TICK_USAGE_REAL
 		if(!resumed)
 			cached_cost = 0
+			last_processed_ssv_packets = 0
 
 		var/datum/signal/subspace/vocal/packet
 		while(length(current_subspace_vocals))
 			packet = current_subspace_vocals[1]
-			current_subspace_vocals.Cut(1)
+			current_subspace_vocals.Cut(1,2)
 			queued_subspace_vocals -= packet
 
 			ImmediateSubspaceVocalSend(packet)
 			cached_cost += TICK_USAGE_REAL - timer
+			last_processed_ssv_packets++
 			if(MC_TICK_CHECK)
 				return
 
@@ -319,6 +332,8 @@ SUBSYSTEM_DEF(packets)
 	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
 
 /datum/controller/subsystem/packets/proc/add_object(obj/device, new_frequency as num, filter = null as text|null)
+	if(QDELETED(device))
+		CRASH("Attempted to add a qdeleting or nonexistent object to radio frequency!")
 	var/f_text = num2text(new_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(!frequency)

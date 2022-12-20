@@ -4350,12 +4350,6 @@
 "OU" = (
 /turf/closed/wall/r_wall,
 /area/maintenance/port/aft)
-"Po" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/lattice/catwalk,
-/obj/structure/cable,
-/turf/open/space/basic,
-/area/space)
 "Pp" = (
 /turf/open/floor/iron/stairs/left,
 /area/medical/psychology)
@@ -37494,15 +37488,15 @@ XO
 XO
 zj
 Xr
-Po
+Xr
 Xr
 SJ
 Xr
-Po
+Xr
 Xr
 oo
 Xr
-Po
+Xr
 Xr
 Xr
 cK

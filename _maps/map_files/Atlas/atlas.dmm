@@ -51,10 +51,6 @@
 "av" = (
 /turf/open/floor/engine/vacuum,
 /area/science/xenobiology)
-"az" = (
-/obj/machinery/door/firedoor,
-/turf/open/floor/iron,
-/area/hallway/primary/central/aft)
 "aA" = (
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
@@ -606,6 +602,11 @@
 /obj/structure/closet/secure_closet/engineering_electrical,
 /turf/open/floor/iron/dark,
 /area/engineering/storage)
+"ge" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
+/obj/machinery/firealarm/directional/north,
+/turf/open/floor/iron/dark,
+/area/engineering/supermatter/room)
 "gj" = (
 /turf/open/floor/plating,
 /area/service/chapel)
@@ -692,6 +693,10 @@
 	},
 /turf/open/floor/wood,
 /area/service/bar)
+"hf" = (
+/obj/machinery/door/firedoor,
+/turf/open/floor/iron,
+/area/hallway/primary/central/aft)
 "hg" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
@@ -1218,6 +1223,13 @@
 "lp" = (
 /turf/open/floor/iron/smooth,
 /area/tcommsat/computer)
+"ls" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/firealarm/directional/east,
+/turf/open/floor/iron/dark,
+/area/engineering/atmos/storage)
 "lu" = (
 /obj/machinery/door/airlock/external{
 	req_access_txt = "55";
@@ -1820,11 +1832,6 @@
 	dir = 8
 	},
 /turf/open/floor/iron,
-/area/engineering/supermatter/room)
-"qY" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
-/obj/machinery/firealarm/directional/north,
-/turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
 "rb" = (
 /turf/closed/wall/r_wall,
@@ -2968,13 +2975,6 @@
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
-"By" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/machinery/door/firedoor,
-/turf/open/floor/iron,
-/area/hallway/primary/central/aft)
 "BA" = (
 /obj/machinery/atmospherics/components/binary/volume_pump{
 	dir = 4;
@@ -4576,6 +4576,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/research)
+"Rr" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/machinery/door/firedoor,
+/turf/open/floor/iron,
+/area/hallway/primary/central/aft)
 "Rt" = (
 /turf/closed/wall,
 /area/maintenance/starboard/central)
@@ -5325,13 +5332,6 @@
 "Yu" = (
 /turf/closed/wall,
 /area/command/meeting_room/council)
-"Yv" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/firealarm/directional/east,
-/turf/open/floor/iron/dark,
-/area/engineering/atmos/storage)
 "Yx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -29249,7 +29249,7 @@ Fj
 Fj
 Fj
 Fj
-qY
+ge
 BH
 uh
 BO
@@ -31041,8 +31041,8 @@ eM
 eM
 iR
 fe
-az
-By
+hf
+Rr
 Fj
 kr
 WB
@@ -31303,7 +31303,7 @@ Sf
 Fj
 il
 jb
-Yv
+ls
 Yc
 aP
 Tr

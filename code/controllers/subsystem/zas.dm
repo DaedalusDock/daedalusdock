@@ -546,7 +546,7 @@ SUBSYSTEM_DEF(zas)
 	var/list/viable_gases = xgm_gas_data.gases - restricted_gases - GAS_XENON //TODO: add XGM_GAS_DANGEROUS
 	var/datum/gas_mixture/mix_real = new
 	var/list/mix_list = list()
-	var/num_gases = rand(1, 3) + 1 //Added radon
+	var/num_gases = rand(1, 3)
 	var/list/chosen_gases = list()
 	var/target_pressure = rand(HAZARD_LOW_PRESSURE + 10, LAVALAND_EQUIPMENT_EFFECT_PRESSURE - 1)
 	var/temp = rand(BODYTEMP_COLD_DAMAGE_LIMIT + 1, 350)
@@ -562,8 +562,11 @@ SUBSYSTEM_DEF(zas)
 	for(var/gas in mix_real.gas)
 		mix_real.gas[gas] = 1 //So update values doesn't cull it
 
+	//Radon  sci
 	chosen_gases += GAS_RADON
 	mix_real.gas[GAS_RADON] = 5
+	num_gases++
+
 	mix_real.temperature = temp
 
 	///This is where the fun begins...

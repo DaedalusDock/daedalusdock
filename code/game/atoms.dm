@@ -230,17 +230,17 @@
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
-	if(!isnull(loc))
+	if(loc)
 		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
 
-	if(!isnull(greyscale_config) && (greyscale_colors))
+	if(greyscale_config && greyscale_colors)
 		update_greyscale()
 
 	//atom color stuff
-	if(!isnull(color))
+	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (!isnull(light_power) && !isnull(light_range) && light_system == STATIC_LIGHT)
+	if (light_power && light_range && (light_system == STATIC_LIGHT))
 		update_light()
 
 	if (!isnull(smoothing_groups))

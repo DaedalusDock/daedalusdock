@@ -125,6 +125,7 @@
 		GAS_XENON = new/datum/tlv/dangerous,
 		GAS_TRITIUM = new/datum/tlv/dangerous,
 		GAS_DEUTERIUM = new/datum/tlv/dangerous,
+		GAS_RADON = new/datum/tlv/dangerous,
 		GAS_METHANE = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_HELIUM = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_KRYPTON = new/datum/tlv(-1, -1, 1000, 1000),
@@ -158,17 +159,6 @@
 		/obj/item/circuit_component/air_alarm,
 	))
 	SSairmachines.start_processing_machine(src)
-
-	/*
-	if(mapload)
-		var/turf/my_turf = get_turf(src)
-		if(my_turf && (initial(my_turf.temperature) != T20C))
-			var/difftemp = T20C - initial(my_turf.temperature)
-			TLV["temperature"].warning_min -= difftemp
-			TLV["temperature"].hazard_min -= difftemp
-			TLV["temperature"].warning_max -= difftemp
-			TLV["temperature"].hazard_max -= difftemp
-	*/
 
 	return INITIALIZE_HINT_LATELOAD
 

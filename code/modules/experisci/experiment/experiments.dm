@@ -90,6 +90,14 @@
 	experiment_proper = TRUE
 	required_gas = GAS_PLASMA
 
+/datum/experiment/ordnance/gaseous/radon
+	name = "Radon Gas Shells"
+	description = "The delivery of Radon gas into an area of operation might prove useful. Pack the specified gas into a tank and burst it using a Tank Compressor. Publish the data in a paper."
+	gain = list(20,50,90)
+	target_amount = list(75,150,400)
+	experiment_proper = TRUE
+	required_gas = GAS_RADON
+
 /datum/experiment/scanning/random/material/meat
 	name = "Biological Material Scanning Experiment"
 	description = "They told us we couldn't make chairs out of every material in the world. You're here to prove those nay-sayers wrong."

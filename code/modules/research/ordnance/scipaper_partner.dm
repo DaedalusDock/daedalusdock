@@ -31,7 +31,7 @@
 /datum/scientific_partner/medical
 	name="Biological Research Division"
 	flufftext="A collegiate of the best medical researchers Nanotrason employs. They seem to be interested in the biological effects of some more exotic gases."
-	accepted_experiments=list(/datum/experiment/ordnance/explosive/lowyieldbomb)
+	accepted_experiments=list(/datum/experiment/ordnance/gaseous/radon)
 	boosted_nodes=list("cyber_organs"=750, "cyber_organs_upgraded"=1000, "genetics"=500, "subdermal_implants"=1250, "adv_biotech"=1000)
 
 /datum/scientific_partner/ordnance
@@ -42,6 +42,6 @@
 
 /datum/scientific_partner/cold_physics
 	name="Low Temperature Research"
-	flufftext="A Nanotrasen division researching matter interactions at very low temperatures. Very interested in our hyper-noblium research."
-	accepted_experiments=list(/datum/experiment/ordnance/gaseous/plasma)
+	flufftext="A Nanotrasen division researching matter interactions at very low temperatures. Very interested in our Radon research."
+	accepted_experiments=list(/datum/experiment/ordnance/gaseous/radon)
 	boosted_nodes=list("emp_super" = 3000, "emp_adv"=1250, "cryotech"=1500)

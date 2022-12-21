@@ -230,27 +230,27 @@
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
-	if(loc)
+	if(!isnull(loc))
 		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
 
-	if(greyscale_config && greyscale_colors)
+	if(!isnull(greyscale_config) && (greyscale_colors))
 		update_greyscale()
 
 	//atom color stuff
-	if(color)
+	if(!isnull(color))
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_system == STATIC_LIGHT && light_power && light_range)
+	if (!isnull(light_power) && !isnull(light_range) && light_system == STATIC_LIGHT)
 		update_light()
 
-	if (length(smoothing_groups))
+	if (!isnull(smoothing_groups))
 		#ifdef UNIT_TESTS
 		assert_sorted(smoothing_groups, "[type].smoothing_groups")
 		#endif
 
 		SET_BITFLAG_LIST(smoothing_groups)
 
-	if (length(canSmoothWith))
+	if (!isnull(canSmoothWith))
 		#ifdef UNIT_TESTS
 		assert_sorted(canSmoothWith, "[type].canSmoothWith")
 		#endif
@@ -263,7 +263,7 @@
 	if(uses_integrity)
 		if (islist(armor))
 			armor = getArmor(arglist(armor))
-		else if (!armor)
+		else if (!isnull(armor))
 			armor = getArmor()
 		else if (!istype(armor, /datum/armor))
 			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")

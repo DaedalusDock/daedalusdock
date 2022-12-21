@@ -109,13 +109,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	levelupdate()
 
-	if (length(smoothing_groups))
+	if (!isnull(smoothing_groups))
 		#ifdef UNIT_TESTS
 		assert_sorted(smoothing_groups, "[type].smoothing_groups")
 		#endif
 
 		SET_BITFLAG_LIST(smoothing_groups)
-	if (length(canSmoothWith))
+	if (!isnull(canSmoothWith))
 		#ifdef UNIT_TESTS
 		assert_sorted(canSmoothWith, "[type].canSmoothWith")
 		#endif
@@ -137,11 +137,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(GLOB.fullbright_overlay)
 
-	/*
-	if(requires_activation)
-		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
-	*/
-
 	if (light_power && light_range)
 		update_light()
 
@@ -156,7 +151,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	if (!length(custom_materials))
+	if (isnull(custom_materials))
 		set_custom_materials(custom_materials)
 
 	ComponentInitialize()

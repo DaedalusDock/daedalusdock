@@ -592,6 +592,10 @@
 	suffix = "delta"
 	name = "cargo ferry (Delta)"
 
+/datum/map_template/shuttle/mining/atlas
+	port_id = "atlas"
+	name = "mining shuttle (Atlas)"
+
 /datum/map_template/shuttle/mining/delta
 	suffix = "delta"
 	name = "mining shuttle (Delta)"

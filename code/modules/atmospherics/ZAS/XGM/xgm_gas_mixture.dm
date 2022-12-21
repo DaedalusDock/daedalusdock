@@ -117,6 +117,7 @@
 			gas[g] += giver.gas[g]
 
 	AIR_UPDATE_VALUES(src)
+	SEND_SIGNAL(src, COMSIG_GASMIX_MERGED)
 
 ///Used to equalize the mixture between two zones before sleeping an edge.
 /datum/gas_mixture/proc/equalize(datum/gas_mixture/sharer)

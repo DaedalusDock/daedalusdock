@@ -263,7 +263,7 @@
 	if(uses_integrity)
 		if (islist(armor))
 			armor = getArmor(arglist(armor))
-		else if (!isnull(armor))
+		else if (isnull(armor))
 			armor = getArmor()
 		else if (!istype(armor, /datum/armor))
 			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")

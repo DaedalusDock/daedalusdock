@@ -11,12 +11,10 @@
 
 /obj/item/storage/Initialize(mapload)
 	. = ..()
+	AddComponent(component_type)
 	PopulateContents()
 	for (var/obj/item/item in src)
 		item.item_flags |= IN_STORAGE
-
-/obj/item/storage/ComponentInitialize()
-	AddComponent(component_type)
 
 /obj/item/storage/AllowDrop()
 	return FALSE

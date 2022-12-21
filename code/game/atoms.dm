@@ -243,14 +243,14 @@
 	if (light_power && light_range && (light_system == STATIC_LIGHT))
 		update_light()
 
-	if (!isnull(smoothing_groups))
+	if (length(smoothing_groups))
 		#ifdef UNIT_TESTS
 		assert_sorted(smoothing_groups, "[type].smoothing_groups")
 		#endif
 
 		SET_BITFLAG_LIST(smoothing_groups)
 
-	if (!isnull(canSmoothWith))
+	if (length(canSmoothWith))
 		#ifdef UNIT_TESTS
 		assert_sorted(canSmoothWith, "[type].canSmoothWith")
 		#endif

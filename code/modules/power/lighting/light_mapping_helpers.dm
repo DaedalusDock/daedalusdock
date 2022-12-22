@@ -83,6 +83,18 @@
 	nightshift_allowed = FALSE
 	bulb_power = 0.9
 
+/obj/machinery/light/small/maintenance
+	color = "#FFCC66"
+	bulb_colour = "#e0a142"
+	nightshift_allowed = FALSE
+	bulb_power = 0.8
+
+/obj/machinery/light/small/maintenance/turn_on(trigger, play_sound)
+	var/old_color = color
+	color = bulb_colour
+	. = ..()
+	color = old_color
+
 // -------- Directional presets
 // The directions are backwards on the lights we have now
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light, 21, 0, 10, -10)
@@ -138,3 +150,6 @@ MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small/red, 21, 0, 10, -1
 
 // ---- Blacklight bulbs
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small/blacklight, 21, 0, 10, -10)
+
+// ---- Maintenance bulbs
+MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small/maintenance, 21, 0, 10, -10)

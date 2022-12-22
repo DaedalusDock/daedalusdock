@@ -1,13 +1,15 @@
 //THIS TYPE IS WEIRD. THE BASE TYPE IS ACTUALLY AN EMPTY SHELL. USE /obj/machinery/light/floor/has_bulb FOR A PREBUILT
 /obj/machinery/light/floor
 	name = "floor light"
-	icon = 'icons/obj/lighting.dmi'
+	icon = 'goon/icons/obj/lighting.dmi'
 	base_state = "floor" // base description and icon_state
 	icon_state = "floor"
 	layer = LOW_OBJ_LAYER
 	plane = FLOOR_PLANE
 	light_type = /obj/item/light/bulb
 	fitting = "bulb"
+
+	overlay_icon = null
 
 	status = LIGHT_EMPTY
 	start_with_cell = FALSE
@@ -26,6 +28,11 @@
 /obj/machinery/light/floor/has_bulb
 	status = LIGHT_OK
 	start_with_cell = TRUE
+
+/obj/machinery/light/floor/update_icon_state()
+	. = ..()
+	if(status == LIGHT_OK)
+		icon_state = on ? "floor" : "floor-off"
 
 /obj/machinery/light/floor/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(FALSE)

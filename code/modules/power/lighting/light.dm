@@ -141,17 +141,16 @@
 	if(!on || status != LIGHT_OK)
 		return
 
-	/* ORIGINAL:
-	var/area/local_area = get_area(src)
-	if(emergency_mode || (local_area?.fire))
-	*/
+	if(!overlay_icon)
+		return
+
 	if(emergency_mode || firealarm) //PARIAH EDIT END
-		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
+		. += mutable_appearance(overlay_icon, "[base_state]_emergency", plane = ABOVE_LIGHTING_PLANE, alpha = clamp((bulb_power + 0.15) * 255, 1, 255))
 		return
 	if(nightshift_enabled)
-		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
+		. += mutable_appearance(overlay_icon, "[base_state]_nightshift", plane = ABOVE_LIGHTING_PLANE, alpha = clamp((bulb_power + 0.15) * 255, 1, 255))
 		return
-	. += mutable_appearance(overlay_icon, base_state)
+	. += mutable_appearance(overlay_icon, base_state, plane = ABOVE_LIGHTING_PLANE, alpha = clamp((bulb_power + 0.15) * 255, 1, 255))
 
 //PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS

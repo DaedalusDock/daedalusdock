@@ -15,7 +15,7 @@
 		return
 	. = ..()
 
-	current_underlay = mutable_appearance(LIGHTING_ICON, "transparent", source.z, LIGHTING_PLANE, 255, RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM)
+	current_underlay = mutable_appearance(LIGHTING_ICON, (source.lighting_uses_jen ? "wall-jen-[source.smoothing_junction]" : "transparent"), source.z, LIGHTING_PLANE, 255, RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM)
 
 	affected_turf = source
 	if (affected_turf.lighting_object)
@@ -98,7 +98,7 @@
 		affected_turf.underlays += current_underlay
 	else
 		affected_turf.underlays -= current_underlay
-		current_underlay.icon_state = null
+		current_underlay.icon_state = affected_turf.lighting_uses_jen ? "wall-jen-[affected_turf.smoothing_junction]" : null
 		current_underlay.color = list(
 			rr, rg, rb, 00,
 			gr, gg, gb, 00,

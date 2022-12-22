@@ -12,3 +12,7 @@
   Spyroshark:
   - balance: Reinforced windows are now much less resilient against melee damage and
       are easier to deconstruct.
+2022-12-10:
+  Kapu1178:
+  - rscadd: Runechat now displays over intercoms and non-held radios.
+  - tweak: Intercoms are now OFF by default.

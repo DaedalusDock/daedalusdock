@@ -1409,3 +1409,12 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /obj/item/proc/set_painting_tool_color(chosen_color)
 	SEND_SIGNAL(src, COMSIG_PAINTING_TOOL_SET_COLOR, chosen_color)
+
+/obj/item/speaker_location()
+	var/locthing = loc
+	if(isitem(locthing))
+		var/obj/item/I = loc
+		return I.speaker_location()
+	if(isturf(locthing))
+		return src
+	return loc

@@ -76,8 +76,7 @@
 	var/transfer_moles = min(1, volume_rate/mixture.volume)*mixture.total_moles
 
 	var/draw = scrub_gas(scrubbing, mixture, air_contents, transfer_moles, power_rating)
-	if(draw > 0)
-		ATMOS_USE_POWER(draw)
+	ATMOS_USE_POWER(draw)
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
 	. = ..()

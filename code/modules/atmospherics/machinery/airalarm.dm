@@ -507,7 +507,7 @@
 			for(var/device_id in my_area.air_scrub_info)
 				send_signal(device_id, list(
 					"power" = 1,
-					"set_filters" = ASSORTED_GASES,
+					"set_filters" = ASSORTED_GASES - list(GAS_OXYGEN, GAS_NITROGEN),
 					"scrubbing" = 1,
 					"quicksucc" = 1
 				), signal_source)

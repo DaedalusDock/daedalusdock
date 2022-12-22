@@ -57,7 +57,7 @@
 
 /obj/item/tank/internals/anesthetic/populate_gas()
 	air_contents.adjustGas(GAS_OXYGEN,(3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD)
-	air_contents.adjustGas(GAS_NITROGEN, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD)
+	air_contents.adjustGas(GAS_N2O, (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD)
 
 /*
  * Plasma

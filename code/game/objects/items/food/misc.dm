@@ -14,6 +14,10 @@
 	/// used to determine how much health rats/regal rats recover when they eat it.
 	var/rat_heal = 0
 
+/obj/item/food/cheese/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/smell/subtle, SCENT_SMELL, "cheese", 4)
+
 /obj/item/food/cheese/wedge
 	name = "cheese wedge"
 	desc = "A wedge of delicious Cheddar. The cheese wheel it was cut from can't have gone far."
@@ -211,6 +215,7 @@
 /obj/item/food/badrecipe/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_GRILLED, .proc/OnGrill)
+	AddComponent(/datum/component/smell/strong, SCENT_HAZE, "burned garbage", 4)
 
 /obj/item/food/badrecipe/moldy
 	name = "moldy mess"
@@ -220,6 +225,10 @@
 	ant_attracting = TRUE
 	decomp_type = null
 	decomposition_time = 30 SECONDS
+
+/obj/item/food/badrecipe/moldy/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/smell/strong, SCENT_SMELL, "moldy waste", 4)
 
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
@@ -951,6 +960,10 @@
 	tastes = list("cheesy pasta" = 2, "laziness" = 1)
 	foodtypes = GRAIN | DAIRY | JUNKFOOD
 
+/obj/item/food/ready_donk/warm/mac_n_cheese/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/smell/strong, "scent", "nostalgia", 2)
+
 /obj/item/food/ready_donk/donkhiladas
 	name = "\improper Ready-Donk: Donkhiladas"
 	desc = "Donk Co's signature Donkhiladas with Donk sauce, for an 'authentic' taste of Mexico."
@@ -982,4 +995,4 @@
 	tastes = list("juicy meat" = 1, "rice" = 1, "cabbage" = 1)
 	foodtypes = MEAT | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
-	
+

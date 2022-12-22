@@ -61,7 +61,7 @@ GLOBAL_PROTECT(href_token)
 	target = ckey
 	name = "[ckey]'s admin datum ([R])"
 	rank = R
-	admin_signature = "Nanotrasen Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
+	admin_signature = "Daedalus Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
 	href_token = GenerateToken()
 	if(!CONFIG_GET(flag/forbid_admin_profiling))
 		if(R.rights & R_DEBUG) //grant profile access, assuming admin profile access is enabled

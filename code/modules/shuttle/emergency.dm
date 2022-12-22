@@ -290,7 +290,7 @@
 	. = ..()
 
 /obj/docking_port/mobile/emergency
-	name = "emergency shuttle"
+	name = "LRSV Icarus"
 	id = "emergency"
 
 	dwidth = 9
@@ -344,11 +344,8 @@
 	else
 		SSshuttle.emergency_last_call_loc = null
 
-	//priority_announce("The emergency shuttle has been called. [redAlert ? "Red Alert state confirmed: Dispatching priority shuttle. " : "" ]It will arrive in [timeLeft(600)] minutes.[reason][SSshuttle.emergencyLastCallLoc ? "\n\nCall signal traced. Results can be viewed on any communications console." : "" ][SSshuttle.adminEmergencyNoRecall ? "\n\nWarning: Shuttle recall subroutines disabled; Recall not possible." : ""]", null, 'sound/ai/shuttlecalled.ogg', "Priority") //ORIGINAL
-	//PARIAH EDIT CHANGE BEGIN - AUTOTRANSFER
 	if(!silent)
-		priority_announce("The emergency shuttle has been called. [redAlert ? "Red Alert state confirmed: Dispatching priority shuttle. " : "" ]It will arrive in [timeLeft(600)] minutes.[reason][SSshuttle.emergency_last_call_loc ? "\n\nCall signal traced. Results can be viewed on any communications console." : "" ][SSshuttle.admin_emergency_no_recall ? "\n\nWarning: Shuttle recall subroutines disabled; Recall not possible." : ""]", null, ANNOUNCER_SHUTTLECALLED, "Priority")
-	//PARIAH EDIT CHANGE END - AUTOTRANSFER
+		priority_announce("The emergency shuttle has been called. [redAlert ? "Red Alert state confirmed: Dispatching priority shuttle. " : "" ]It will arrive in [timeLeft(600)] minutes.[reason][SSshuttle.emergency_last_call_loc ? "\n\nCall signal traced. Results can be viewed on any communications console." : "" ][SSshuttle.admin_emergency_no_recall ? "\n\nWarning: Shuttle recall subroutines disabled; Recall not possible." : ""]", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLECALLED)
 
 /obj/docking_port/mobile/emergency/cancel(area/signalOrigin)
 	if(mode != SHUTTLE_CALL)
@@ -363,7 +360,7 @@
 		SSshuttle.emergency_last_call_loc = signalOrigin
 	else
 		SSshuttle.emergency_last_call_loc = null
-	priority_announce("The emergency shuttle has been recalled.[SSshuttle.emergency_last_call_loc ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", null, ANNOUNCER_SHUTTLERECALLED, "Priority")
+	priority_announce("The emergency shuttle has been recalled.[SSshuttle.emergency_last_call_loc ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLERECALLED)
 
 	SSticker.emergency_reason = null
 
@@ -452,9 +449,8 @@
 				mode = SHUTTLE_DOCKED
 				setTimer(SSshuttle.emergency_dock_time)
 				send2adminchat("Server", "The Emergency Shuttle has docked with the station.")
-				priority_announce("[SSshuttle.emergency] has docked with the station. You have [timeLeft(600)] minutes to board the Emergency Shuttle.", null, ANNOUNCER_SHUTTLEDOCK, "Priority")
+				priority_announce("The Icarus has docked with the station. You have [timeLeft(600)] minutes to board before departure.", "LRSV Icarus Announcement", sound_type = ANNOUNCER_SHUTTLEDOCK)
 				ShuttleDBStuff()
-
 
 		if(SHUTTLE_DOCKED)
 			if(time_left <= ENGINES_START_TIME)
@@ -486,6 +482,7 @@
 				var/list/areas = list()
 				for(var/area/shuttle/escape/E in GLOB.sortedAreas)
 					areas += E
+				priority_announce("Engines spooling up. Prepare for resonance jump.", "LRSV Icarus Announcement", do_not_modify = TRUE)
 				hyperspace_sound(HYPERSPACE_WARMUP, areas)
 
 			if(time_left <= 0 && !SSshuttle.emergency_no_escape)
@@ -502,8 +499,10 @@
 				enterTransit()
 				mode = SHUTTLE_ESCAPE
 				launch_status = ENDGAME_LAUNCHED
+				for(var/obj/docking_port/mobile/M in SSshuttle.mobile_docking_ports)
+					M.post_emergency_launch()
 				setTimer(SSshuttle.emergency_escape_time * engine_coeff)
-				priority_announce("The Emergency Shuttle has left the station. Estimate [timeLeft(600)] minutes until the shuttle docks at Central Command.", null, null, "Priority")
+				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
 				INVOKE_ASYNC(SSticker, /datum/controller/subsystem/ticker.proc/poll_hearts)
 				SSmapping.mapvote() //If no map vote has been run yet, start one.
 
@@ -558,7 +557,7 @@
 	mode = SHUTTLE_ESCAPE
 	launch_status = ENDGAME_LAUNCHED
 	setTimer(SSshuttle.emergency_escape_time)
-	priority_announce("The Emergency Shuttle is preparing for direct jump. Estimate [timeLeft(600)] minutes until the shuttle docks at Central Command.", null, null, "Priority")
+	priority_announce("The Emergency Shuttle is preparing for direct jump. Estimate [timeLeft(600)] minutes until the shuttle docks at [FLAVOR_CENTCOM_SHORT].", "LSRV Icarus Announcement")
 
 
 /obj/docking_port/mobile/pod

@@ -260,8 +260,7 @@
 			var/draw = scrub_gas(filter_types, environment, air_contents, transfer_moles, power_rating)
 			if(draw == -1)
 				. = FALSE
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 			//Remix the resulting gases
 			update_parents()
 			return .
@@ -271,8 +270,7 @@
 		var/transfer_moles = min(environment.total_moles, environment.total_moles*MAX_SIPHON_FLOWRATE/environment.volume)
 
 		var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		ATMOS_USE_POWER(draw)
 		update_parents()
 		return TRUE
 

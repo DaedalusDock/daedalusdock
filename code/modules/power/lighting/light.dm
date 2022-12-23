@@ -145,12 +145,12 @@
 		return
 
 	if(emergency_mode || firealarm) //PARIAH EDIT END
-		. += mutable_appearance(overlay_icon, "[base_state]_emergency", plane = ABOVE_LIGHTING_PLANE)
+		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
 	if(nightshift_enabled)
-		. += mutable_appearance(overlay_icon, "[base_state]_nightshift", plane = ABOVE_LIGHTING_PLANE)
+		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
 		return
-	. += mutable_appearance(overlay_icon, base_state, plane = ABOVE_LIGHTING_PLANE)
+	. += mutable_appearance(overlay_icon, base_state)
 
 //PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS

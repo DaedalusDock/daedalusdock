@@ -4567,7 +4567,6 @@
 #include "modular_pariah\modules\aesthetics\airlock_machines\airlock_machines.dm"
 #include "modular_pariah\modules\aesthetics\bureaucracy\bureaucracy.dm"
 #include "modular_pariah\modules\aesthetics\buttons\code\buttons.dm"
-#include "modular_pariah\modules\aesthetics\camera\code\camera.dm"
 #include "modular_pariah\modules\aesthetics\chairs\code\chair.dm"
 #include "modular_pariah\modules\aesthetics\chemical_tanks\chemical_tanks.dm"
 #include "modular_pariah\modules\aesthetics\computer\code\computer.dm"

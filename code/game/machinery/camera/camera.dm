@@ -129,6 +129,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		bug = null
 	return ..()
 
+/obj/machinery/camera/setDir(newdir)
+	. = ..()
+	var/turf/T = get_step(get_turf(src), newdir)
+	if(iswallturf(T))
+		if(dir == NORTH)
+			pixel_y = 21
+		else if(dir == WEST)
+			pixel_x = -10
+		else if(dir == EAST)
+			pixel_x = 10
+
 /obj/machinery/camera/examine(mob/user)
 	. = ..()
 	if(isEmpProof(TRUE)) //don't reveal it's upgraded if was done via MALF AI Upgrade Camera Network ability
@@ -408,6 +419,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	qdel(src)
 
 /obj/machinery/camera/update_icon_state() //TO-DO: Make panel open states, xray camera, and indicator lights overlays instead.
+	var/turf/T = get_step(get_turf(src), dir)
+	if(iswallturf(T))
+		if(dir == NORTH)
+			pixel_y = 21
+		else if(dir == WEST)
+			pixel_x = -10
+		else if(dir == EAST)
+			pixel_x = 10
+
 	var/xray_module
 	if(isXRay(TRUE))
 		xray_module = "xray"

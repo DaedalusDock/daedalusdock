@@ -165,7 +165,7 @@
 	icon_state = "liquidplasma"
 	baseturfs = /turf/open/lava/plasma
 
-	light_range = 3
+	light_outer_range = 3
 	light_power = 0.75
 	light_color = LIGHT_COLOR_PURPLE
 	immunity_trait = TRAIT_SNOWSTORM_IMMUNE

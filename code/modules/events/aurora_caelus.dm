@@ -32,7 +32,7 @@
 		var/area/A = area
 		if(A.area_flags & AREA_USES_STARLIGHT)
 			for(var/turf/open/space/S in A)
-				S.set_light(S.light_range * 3, S.light_power * 0.5)
+				S.set_light(l_outer_range = S.light_outer_range * 3, l_power = S.light_power * 0.5)
 
 /datum/round_event/aurora_caelus/tick()
 	if(activeFor % 5 == 0)
@@ -57,8 +57,8 @@
 
 /datum/round_event/aurora_caelus/proc/fade_to_black(turf/open/space/S)
 	set waitfor = FALSE
-	var/new_light = initial(S.light_range)
-	while(S.light_range > new_light)
-		S.set_light(S.light_range - 0.2)
+	var/new_light = initial(S.light_outer_range)
+	while(S.light_outer_range > new_light)
+		S.set_light(l_outer_range = S.light_outer_range - 0.2)
 		sleep(30)
-	S.set_light(new_light, initial(S.light_power), initial(S.light_color))
+	S.set_light(l_outer_range = new_light, l_power = initial(S.light_power), l_color = initial(S.light_color))

@@ -617,7 +617,7 @@
 		if(2)
 			color = "#DA0205" // red
 
-	set_light(1.4, 1, color)
+	set_light(l_outer_range = 1.4, l_power = 1, l_color = color)
 
 /obj/machinery/airalarm/update_icon_state()
 	if(panel_open)

@@ -410,7 +410,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "bj" = (
@@ -903,7 +903,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "cH" = (
@@ -955,7 +955,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "cO" = (
@@ -4137,7 +4137,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "ll" = (
@@ -6696,7 +6696,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "so" = (
@@ -7839,7 +7839,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "vF" = (
@@ -8975,7 +8975,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "zl" = (
@@ -10310,7 +10310,7 @@
 /turf/open/misc/dirt/dark{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Df" = (
@@ -11858,7 +11858,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Hv" = (
@@ -14894,7 +14894,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "PJ" = (
@@ -17759,7 +17759,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "Xv" = (
@@ -18316,7 +18316,7 @@
 /turf/open/misc/dirt{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-
+	
 	},
 /area/icemoon/underground/explored)
 "YW" = (
@@ -18519,10 +18519,9 @@
 /area/service/hydroponics)
 "ZB" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/highcap/five_k{
-	dir = 1;
+/obj/machinery/power/apc/highcap/five_k/directional/north{
 	name = "Public Mining APC";
-	pixel_y = 25
+	
 	},
 /obj/item/reagent_containers/food/drinks/bottle/hooch,
 /turf/open/floor/plating,

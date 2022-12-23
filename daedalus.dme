@@ -4565,7 +4565,6 @@
 #include "modular_pariah\modules\aesthetics\abductor\abductor.dm"
 #include "modular_pariah\modules\aesthetics\airalarm\code\airalarm.dm"
 #include "modular_pariah\modules\aesthetics\airlock_machines\airlock_machines.dm"
-#include "modular_pariah\modules\aesthetics\apc\code\apc.dm"
 #include "modular_pariah\modules\aesthetics\bureaucracy\bureaucracy.dm"
 #include "modular_pariah\modules\aesthetics\buttons\code\buttons.dm"
 #include "modular_pariah\modules\aesthetics\camera\code\camera.dm"

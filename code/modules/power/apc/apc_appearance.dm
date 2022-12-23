@@ -61,12 +61,29 @@
 	if(!operating)
 		return
 
-	. += mutable_appearance(icon, "apco0-[equipment]")
-	. += emissive_appearance(icon, "apco0-[equipment]")
-	. += mutable_appearance(icon, "apco1-[lighting]")
-	. += emissive_appearance(icon, "apco1-[lighting]")
-	. += mutable_appearance(icon, "apco2-[environ]")
-	. += emissive_appearance(icon, "apco2-[environ]")
+//Heehoo stole this pattern from bay along with their APC sprite -fran
+	var/static/list/map_apc_statcode_to_color = list(
+		COLOR_RED, //APC_CHANNEL_OFF
+		COLOR_ORANGE, //APC_CHANNEL_AUTO_OFF
+		COLOR_LIME, //APC_CHANNEL_ON
+		COLOR_BLUE //APC_CHANNEL_AUTO_ON
+	)
+	var/mutable_appearance/colorbuffer
+
+	colorbuffer = mutable_appearance(icon, "apco0")
+	colorbuffer.color = map_apc_statcode_to_color[equipment+1]
+	. += colorbuffer
+	. += emissive_appearance(icon, "apco0")
+
+	colorbuffer = mutable_appearance(icon, "apco1")
+	colorbuffer.color = map_apc_statcode_to_color[lighting+1]
+	. += colorbuffer
+	. += emissive_appearance(icon, "apco1")
+
+	colorbuffer = mutable_appearance(icon, "apco2")
+	colorbuffer.color = map_apc_statcode_to_color[environ+1]
+	. += colorbuffer
+	. += emissive_appearance(icon, "apco2")
 
 /// Checks for what icon updates we will need to handle
 /obj/machinery/power/apc/proc/check_updates()

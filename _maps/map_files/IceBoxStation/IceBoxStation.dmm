@@ -50392,7 +50392,7 @@
 /turf/open/floor/iron,
 /area/cargo/lobby)
 "xKD" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/industrial_lift,
 /obj/effect/landmark/lift_id{
 	specific_lift_id = "publicElevator"

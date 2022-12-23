@@ -218,7 +218,7 @@
 	overlay_state_inactive = "module_light"
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_color = COLOR_WHITE
-	light_range = 3
+	light_outer_range = 3
 	light_power = 1
 	light_on = FALSE
 	/// Charge drain per range amount.
@@ -234,7 +234,7 @@
 		return
 	set_light_flags(light_flags | LIGHT_ATTACHED)
 	set_light_on(active)
-	active_power_cost = base_power * light_range
+	active_power_cost = base_power * light_outer_range
 
 /obj/item/mod/module/flashlight/on_deactivation(display_message = TRUE, deleting = FALSE)
 	. = ..()
@@ -247,7 +247,7 @@
 	. = ..()
 	if(!.)
 		return
-	active_power_cost = base_power * light_range
+	active_power_cost = base_power * light_outer_range
 
 /obj/item/mod/module/flashlight/generate_worn_overlay(mutable_appearance/standing)
 	. = ..()
@@ -261,7 +261,7 @@
 /obj/item/mod/module/flashlight/get_configuration()
 	. = ..()
 	.["light_color"] = add_ui_configuration("Light Color", "color", light_color)
-	.["light_range"] = add_ui_configuration("Light Range", "number", light_range)
+	.["light_range"] = add_ui_configuration("Light Range", "number", light_outer_range)
 
 /obj/item/mod/module/flashlight/configure_edit(key, value)
 	switch(key)

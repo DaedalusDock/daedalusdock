@@ -78,7 +78,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 	if(machine_stat & NOPOWER)
 		set_light(0)
 		return
-	set_light(1.4,0.7,"#34D352")//green light
+	set_light(l_outer_range = 1.4, l_power = 0.7,l_color ="#34D352")//green light
 
 /obj/machinery/requests_console/update_icon_state()
 	if(open)

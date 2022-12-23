@@ -77,7 +77,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aq" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "ar" = (
@@ -172,7 +172,7 @@
 /area/hallway/primary/central)
 "aI" = (
 /obj/structure/cable,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aJ" = (
@@ -213,15 +213,15 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aU" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/plasma,
 /area/hallway/primary/central)
 "aV" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/airless,
 /area/hallway/primary/central)
 "aW" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/n2o,
 /area/hallway/primary/central)
 "aX" = (
@@ -281,7 +281,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bf" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "bg" = (
@@ -349,7 +349,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bp" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/portable_atmospherics/canister,
 /obj/effect/turf_decal/trimline/yellow/filled,
 /turf/open/floor/iron,
@@ -429,7 +429,7 @@
 "bA" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/arrows,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bB" = (
@@ -511,7 +511,7 @@
 /area/hallway/primary/central)
 "bR" = (
 /obj/machinery/computer/atmos_control/plasma_tank,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bS" = (
@@ -520,7 +520,7 @@
 /area/hallway/primary/central)
 "bT" = (
 /obj/machinery/computer/atmos_control/mix_tank,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bU" = (
@@ -529,7 +529,7 @@
 /area/hallway/primary/central)
 "bV" = (
 /obj/machinery/computer/atmos_control/nitrous_tank,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bW" = (
@@ -558,7 +558,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "ca" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
@@ -784,7 +784,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cI" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
@@ -802,7 +802,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cM" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 1;
 	icon_state = "passive_vent_map-3"

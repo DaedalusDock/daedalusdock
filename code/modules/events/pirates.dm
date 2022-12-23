@@ -26,7 +26,7 @@
 	var/payoff = 0
 	var/initial_send_time = world.time
 	var/response_max_time = 2 MINUTES
-	priority_announce("Incoming subspace communication. Secure channel opened at all communication consoles.", "Incoming Message", SSstation.announcer.get_rand_report_sound())
+	priority_announce("Incoming short range communication. Secure channel opened at all communication consoles.", "Short-Range Telecommunications Array", SSstation.announcer.get_rand_report_sound())
 	var/datum/comm_message/threat = new
 	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
 	if(D)
@@ -56,16 +56,16 @@
 
 /proc/pirates_answered(datum/comm_message/threat, payoff, ship_name, initial_send_time, response_max_time, ship_template)
 	if(world.time > initial_send_time + response_max_time)
-		priority_announce("Too late to beg for mercy!",sender_override = ship_name)
+		priority_announce("Too late to beg for mercy!", FLAVOR_SR_TCOMMS, ship_name, do_not_modify = TRUE)
 		return
 	if(threat && threat.answered == 1)
 		var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
 		if(D)
 			if(D.adjust_money(-payoff))
-				priority_announce("Thanks for the credits, landlubbers.",sender_override = ship_name)
+				priority_announce("Thanks for the credits, landlubbers.", FLAVOR_SR_TCOMMS, ship_name, do_not_modify = TRUE)
 				return
 			else
-				priority_announce("Trying to cheat us? You'll regret this!",sender_override = ship_name)
+				priority_announce("Trying to cheat us? You'll regret this!", FLAVOR_SR_TCOMMS, ship_name, do_not_modify = TRUE)
 				spawn_pirates(threat, ship_template, TRUE)
 
 /proc/spawn_pirates(datum/comm_message/threat, ship_template, skip_answer_check)

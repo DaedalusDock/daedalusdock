@@ -201,3 +201,11 @@
 	plane = LIGHTING_PLANE
 	blend_mode = BLEND_ADD
 	show_when_dead = TRUE
+
+/atom/movable/screen/fullscreen/bluespace_overlay
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "mfoam"
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	alpha = 80
+	color = "#000050"
+	blend_mode = BLEND_ADD

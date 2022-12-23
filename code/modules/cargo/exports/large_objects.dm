@@ -8,7 +8,7 @@
 /datum/export/large/crate/total_printout(datum/export_report/ex, notes = TRUE) // That's why a goddamn metal crate costs that much.
 	. = ..()
 	if(. && notes)
-		. += " Thanks for participating in Nanotrasen Crates Recycling Program."
+		. += " Thanks for participating in the Hermes Crate Recycling Program."
 
 /datum/export/large/crate/wooden
 	cost = CARGO_CRATE_VALUE/5

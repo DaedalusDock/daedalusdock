@@ -659,15 +659,15 @@
 	damage_per_fire_tick = 15
 
 //there is a sub shuttle window in survival_pod.dm for mining pods
-/obj/structure/window/reinforced/shuttle//this is called reinforced because it is reinforced w/titanium
+/obj/structure/window/reinforced/shuttle //this is called reinforced because it is reinforced w/titanium
 	name = "shuttle window"
 	desc = "A reinforced, air-locked pod window."
 	icon = 'icons/obj/smooth_structures/window_reinforced.dmi'
 	icon_state = "window-0"
 	base_icon_state = "window"
-	color = "#D0CBD4"
+	color ="#afb5e6"
 	greyscale_config = /datum/greyscale_config/fulltile_reinforced_window
-	greyscale_colors = "#D0CBD4"
+	greyscale_colors = "#afb5e6"
 	alpha = 180
 	max_integrity = 150
 	wtype = "shuttle"

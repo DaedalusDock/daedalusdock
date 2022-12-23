@@ -10,7 +10,7 @@
 	car_traits = CAN_KIDNAP
 	key_type = /obj/item/bikehorn
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 8
+	light_outer_range = 8
 	light_power = 2
 	light_on = FALSE
 	///list of headlight colors we use to pick through when we have party mode due to emag
@@ -122,7 +122,7 @@
 	to_chat(user, span_danger("You scramble \the [src]'s child safety lock, and a panel with six colorful buttons appears!"))
 	initialize_controller_action_type(/datum/action/vehicle/sealed/roll_the_dice, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/cannon, VEHICLE_CONTROL_DRIVE)
-	AddElement(/datum/element/waddling)
+	ADD_WADDLE(src, WADDLE_SOURCE_CLOWNCAR)
 
 /obj/vehicle/sealed/car/clowncar/atom_destruction(damage_flag)
 	playsound(src, 'sound/vehicles/clowncar_fart.ogg', 100)

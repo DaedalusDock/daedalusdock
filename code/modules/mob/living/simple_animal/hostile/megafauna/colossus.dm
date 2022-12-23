@@ -156,7 +156,7 @@
 	layer = FLY_LAYER
 	plane = ABOVE_GAME_PLANE
 	light_system = MOVABLE_LIGHT
-	light_range = 2
+	light_outer_range = 2
 	duration = 8
 	var/target
 
@@ -215,7 +215,7 @@
 	var/observer_desc = "Anomalous crystals have descriptions that only observers can see. But this one hasn't been changed from the default."
 	icon = 'icons/obj/lavaland/artefacts.dmi'
 	icon_state = "anomaly_crystal"
-	light_range = 8
+	light_outer_range = 8
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	use_power = NO_POWER_USE
 	anchored = FALSE
@@ -245,7 +245,7 @@
 		. += observer_desc
 		. += "It is activated by [activation_method]."
 
-/obj/machinery/anomalous_crystal/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list())
+/obj/machinery/anomalous_crystal/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), atom/sound_loc)
 	..()
 	if(isliving(speaker))
 		ActivationReaction(speaker, ACTIVATE_SPEECH)
@@ -489,7 +489,7 @@
 	verb_yell = "bangs"
 	initial_language_holder = /datum/language_holder/lightbringer
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
-	light_range = 4
+	light_outer_range = 4
 	faction = list("neutral")
 	del_on_death = TRUE
 	unsuitable_atmos_damage = 0

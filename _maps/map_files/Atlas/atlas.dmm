@@ -362,6 +362,11 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/science)
+"du" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "dv" = (
 /obj/machinery/space_heater,
 /turf/open/floor/plating,
@@ -1250,6 +1255,7 @@
 "la" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /obj/machinery/autolathe,
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "ld" = (
@@ -2085,6 +2091,10 @@
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /turf/open/floor/iron,
 /area/security/lockers)
+"sb" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/cargo/office)
 "sd" = (
 /turf/open/floor/iron/stairs/old,
 /area/medical/morgue)
@@ -2161,8 +2171,8 @@
 	dwidth = 3;
 	height = 5;
 	id = "mining_home";
-	name = "mining shuttle bay";
-	roundstart_template = /datum/map_template/shuttle/mining/box;
+	name = "atlas mining shuttle bay";
+	roundstart_template = /datum/map_template/shuttle/mining/atlas;
 	width = 7
 	},
 /turf/open/space/basic,
@@ -2341,6 +2351,13 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/dark,
 /area/engineering/storage)
+"uF" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "uG" = (
 /turf/open/floor/iron/dark,
 /area/commons/storage/tools)
@@ -2737,7 +2754,7 @@
 	name = "Departure Lounge Airlock";
 	space_dir = 1
 	},
-/turf/open/space/basic,
+/turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "yk" = (
 /obj/machinery/rnd/destructive_analyzer,
@@ -2903,7 +2920,7 @@
 /obj/item/gun/ballistic/shotgun/riot{
 	pixel_y = 3
 	},
-/obj/machinery/light/directional/north,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "zq" = (
@@ -3094,8 +3111,8 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "AJ" = (
-/obj/machinery/light/directional/east,
 /obj/machinery/power/apc/auto_name/directional/north,
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/freezer,
 /area/security/prison/toilet)
 "AK" = (
@@ -3316,7 +3333,7 @@
 	pixel_y = 2
 	},
 /obj/item/clothing/head/helmet/riot,
-/obj/machinery/light/directional/north,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "CT" = (
@@ -4261,6 +4278,7 @@
 /area/security/brig)
 "LE" = (
 /obj/structure/closet/secure_closet/lethalshots,
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "LF" = (
@@ -4489,6 +4507,7 @@
 /area/engineering/supermatter/room)
 "NE" = (
 /obj/effect/turf_decal/tile/dark/opposingcorners,
+/turf/open/floor/iron/white,
 /area/hallway/secondary/entry)
 "NG" = (
 /obj/machinery/door/airlock/mining{
@@ -5105,6 +5124,11 @@
 "SM" = (
 /turf/closed/wall,
 /area/engineering/atmos)
+"SU" = (
+/obj/structure/closet/secure_closet/miner,
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/cargo/miningoffice)
 "SV" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -5844,6 +5868,13 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/storage)
+"ZJ" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted{
+	dir = 4
+	},
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "ZQ" = (
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 8
@@ -32698,7 +32729,7 @@ Ii
 Ii
 Ii
 dA
-qE
+SU
 qE
 eh
 eh
@@ -32960,7 +32991,7 @@ HQ
 zy
 pv
 LL
-dL
+sb
 oC
 rN
 hJ
@@ -33986,7 +34017,7 @@ Xl
 HD
 HD
 HD
-HD
+uF
 HD
 HD
 cd
@@ -34505,7 +34536,7 @@ HR
 gP
 gP
 Jw
-Od
+du
 RK
 Yd
 nI
@@ -36042,7 +36073,7 @@ fV
 zi
 zi
 zi
-zi
+ZJ
 zi
 zi
 RU

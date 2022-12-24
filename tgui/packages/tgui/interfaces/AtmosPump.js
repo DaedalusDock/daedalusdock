@@ -76,6 +76,22 @@ export const AtmosPump = (props, context) => {
             ) : (
               null
             )}
+            {data.regulate_mode ? (
+              <LabeledList.Item label="Pressure Regulator">
+                <Button
+                  icon="sign-in-alt"
+                  content="Input"
+                  selected={data.regulate_mode === 1}
+                  onClick={() => act('regulate')} />
+                <Button
+                  icon="sign-out-alt"
+                  content="Output"
+                  selected={data.regulate_mode === 2}
+                  onClick={() => act('regulate')} />
+              </LabeledList.Item>
+            ) : (
+              null
+            )}
           </LabeledList>
         </Section>
       </Window.Content>

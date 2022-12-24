@@ -41,7 +41,7 @@
 
 /datum/supply_pack/goody/Survivalknives_single
 	name = "Survival Knife Single-Pack"
-	desc = "Contains one sharpened survival knive. Guaranteed to fit snugly inside any Nanotrasen-standard boot."
+	desc = "Contains one sharpened survival knive. Guaranteed to fit snugly inside any standard boot."
 	cost = PAYCHECK_HARD * 1.75
 	contains = list(/obj/item/knife/combat/survival)
 

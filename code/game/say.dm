@@ -32,10 +32,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		language = get_selected_language()
 	send_speech(message, range, src, , spans, message_language=language)
 
-/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 
-/mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	if(client && radio_freq)
 		var/atom/movable/virtualspeaker/V = speaker

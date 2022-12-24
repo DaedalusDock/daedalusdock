@@ -25,8 +25,17 @@ SUBSYSTEM_DEF(communications)
 		minor_announce(html_decode(input),"Station Announcement by [user.name] (AI)", players = players)
 		COOLDOWN_START(src, silicon_message_cooldown, COMMUNICATION_COOLDOWN_AI)
 	else
-		priority_announce(html_decode(user.treat_message(input)), null, 'sound/misc/announce.ogg', "[syndicate? "Syndicate " : ""]Captain", has_important_message = TRUE, players = players)
+		priority_announce(
+			html_decode(user.treat_message(input)),
+			"Station Announcement by Captain",
+			sound_type = 'sound/misc/announce.ogg',
+			send_to_newscaster = !syndicate,
+			do_not_modify = TRUE,
+			players = players
+		)
+
 		COOLDOWN_START(src, nonsilicon_message_cooldown, COMMUNICATION_COOLDOWN)
+
 	user.log_talk(input, LOG_SAY, tag="priority announcement")
 	message_admins("[ADMIN_LOOKUPFLW(user)] has made a priority announcement.")
 

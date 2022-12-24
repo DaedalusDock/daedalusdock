@@ -12,7 +12,7 @@
 
 /obj/machinery/shower
 	name = "shower"
-	desc = "The HS-452. Installed in the 2550s by the Nanotrasen Hygiene Division, now with 2560 lead compliance! Passively replenishes itself with water when not in use."
+	desc = "The HS-452. Installed in the 2550s by the Daedalus Hygiene Division, now with 2560 lead compliance! Passively replenishes itself with water when not in use."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "shower"
 	density = FALSE

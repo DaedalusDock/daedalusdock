@@ -2,7 +2,7 @@
 //------------------------------------SUPPLY POD-------------------------------------//
 /obj/structure/closet/supplypod
 	name = "supply pod" //Names and descriptions are normally created with the setStyle() proc during initialization, but we have these default values here as a failsafe
-	desc = "A Nanotrasen supply drop pod."
+	desc = "A Hermes Galactic Freight Company supply drop pod."
 	icon = 'icons/obj/supplypods.dmi'
 	icon_state = "pod" //This is a common base sprite shared by a number of pods
 	pixel_x = SUPPLYPOD_X_OFFSET //2x2 sprite
@@ -593,7 +593,7 @@
 	icon = 'icons/obj/supplypods_32x32.dmi'
 	icon_state = "LZ"
 	layer = PROJECTILE_HIT_THRESHHOLD_LAYER
-	light_range = 2
+	light_outer_range = 2
 	anchored = TRUE
 	alpha = 0
 	var/obj/structure/closet/supplypod/pod //The supplyPod that will be landing ontop of this pod_landingzone

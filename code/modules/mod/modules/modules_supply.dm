@@ -27,7 +27,7 @@
 /obj/item/mod/module/clamp
 	name = "MOD hydraulic clamp module"
 	desc = "A series of actuators installed into both arms of the suit, boasting a lifting capacity of almost a ton. \
-		However, this design has been locked by Nanotrasen to be primarily utilized for lifting various crates. \
+		However, this design has been locked by Hermes Galactic to be primarily utilized for lifting various crates. \
 		A lot of people would say that loading cargo is a dull job, but you could not disagree more."
 	icon_state = "clamp"
 	module_type = MODULE_ACTIVE
@@ -561,7 +561,7 @@
 	suppressed = SUPPRESSED_VERY
 	armor_flag = BOMB
 	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_outer_range = 1
 	light_power = 1
 	light_color = COLOR_LIGHT_ORANGE
 	ammo_type = /obj/structure/mining_bomb
@@ -574,7 +574,7 @@
 	anchored = TRUE
 	resistance_flags = FIRE_PROOF|LAVA_PROOF
 	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_outer_range = 1
 	light_power = 1
 	light_color = COLOR_LIGHT_ORANGE
 	/// Time to prime the explosion

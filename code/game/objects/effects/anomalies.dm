@@ -9,7 +9,7 @@
 	icon_state = "bhole3"
 	density = FALSE
 	anchored = TRUE
-	light_range = 3
+	light_outer_range = 3
 
 	var/obj/item/assembly/signaler/anomaly/aSignal = /obj/item/assembly/signaler/anomaly
 	var/area/impact_area
@@ -277,7 +277,7 @@
 	var/turf/TO = get_turf(chosen) // the turf of origin we're travelling TO
 
 	playsound(TO, 'sound/effects/phasein.ogg', 100, TRUE)
-	priority_announce("Massive bluespace translocation detected.", "Anomaly Alert")
+	priority_announce("Massive bluespace translocation detected.")
 
 	var/list/flashers = list()
 	for(var/mob/living/carbon/C in viewers(TO, null))

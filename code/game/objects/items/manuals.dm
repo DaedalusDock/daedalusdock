@@ -97,10 +97,10 @@
 				<li>Secure the mainboard with a screwdriver.</li>
 				<li>Install the peripherals control module (Not included. Use supplied datadisk to create one).</li>
 				<li>Secure the peripherals control module with a screwdriver</li>
-				<li>Install the internal armor plating (Not included due to Nanotrasen regulations. Can be made using 5 iron sheets.)</li>
+				<li>Install the internal armor plating (Not included due to Daedalus regulations. Can be made using 5 iron sheets.)</li>
 				<li>Secure the internal armor plating with a wrench</li>
 				<li>Weld the internal armor plating to the chassis</li>
-				<li>Install the external reinforced armor plating (Not included due to Nanotrasen regulations. Can be made using 5 reinforced iron sheets.)</li>
+				<li>Install the external reinforced armor plating (Not included due to Daedalus regulations. Can be made using 5 reinforced iron sheets.)</li>
 				<li>Secure the external reinforced armor plating with a wrench</li>
 				<li>Weld the external reinforced armor plating to the chassis</li>
 				</ol>
@@ -108,7 +108,7 @@
 				</html>
 
 				<h2>Operation</h2>
-				Please consult the Nanotrasen compendium "Robotics for Dummies".
+				Please consult the Ananke compendium "Robotics for Dummies".
 			"}
 
 /obj/item/book/manual/chef_recipes

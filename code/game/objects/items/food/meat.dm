@@ -260,7 +260,7 @@
 
 /obj/item/food/patty
 	name = "patty"
-	desc = "The nanotrasen patty is the patty for you and me!"
+	desc = "The Daedalus patty is the patty for you and me!"
 	icon_state = "patty"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2)
 	tastes = list("meat" = 1)
@@ -436,7 +436,7 @@
 
 /obj/item/food/monkeycube/chicken
 	name = "chicken cube"
-	desc = "A new Nanotrasen classic, the chicken cube. Tastes like everything!"
+	desc = "A new Ananke classic, the chicken cube. Tastes like everything!"
 	bite_consumption = 20
 	food_reagents = list(/datum/reagent/consumable/eggyolk = 30, /datum/reagent/medicine/strange_reagent = 1)
 	tastes = list("chicken" = 1, "the country" = 1, "chicken bouillon" = 1)

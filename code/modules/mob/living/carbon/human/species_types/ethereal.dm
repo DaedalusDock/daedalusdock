@@ -189,7 +189,7 @@
 	return list(
 		"Ethereals are a species native to the planet Sprout. \
 		When they were originally discovered, they were at a medieval level of technological progression, \
-		but due to their natural acclimation with electricity, they felt easy among the large NanoTrasen installations.",
+		but due to their natural acclimation with electricity, they felt easy among the large Daedalus installations.",
 	)
 
 /datum/species/ethereal/create_pref_unique_perks()

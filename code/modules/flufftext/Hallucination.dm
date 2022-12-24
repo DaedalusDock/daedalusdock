@@ -1074,8 +1074,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 				/* pressure_affected = */ FALSE
 			), 27)
 		if("shuttle dock")
-			to_chat(target, "<h1 class='alert'>Priority Announcement</h1>")
-			to_chat(target, "<br><br>[span_alert("The Emergency Shuttle has docked with the station. You have 3 minutes to board the Emergency Shuttle.")]<br><br>")
+			to_chat(target, "<h1 class='alert'>LRSV Icarus Announcement</h1>")
+			to_chat(target, "<br><br>[span_alert("The LRSV Icarus has docked with the station. You have 3 minutes to board before departure.")]<br><br>")
 			SEND_SOUND(target, SSstation.announcer.event_sounds[ANNOUNCER_SHUTTLEDOCK])
 		if("malf ai") //AI is doomsdaying!
 			to_chat(target, "<h1 class='alert'>Anomaly Alert</h1>")

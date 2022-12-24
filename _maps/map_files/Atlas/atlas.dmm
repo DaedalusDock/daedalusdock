@@ -485,6 +485,13 @@
 "em" = (
 /turf/open/floor/plating,
 /area/security/detectives_office)
+"en" = (
+/obj/machinery/button/door/directional/north{
+	name = "Unloading Door Control";
+	id = "QMLoaddoor2"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "eq" = (
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
@@ -560,9 +567,6 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/iron,
 /area/cargo/storage)
-"fj" = (
-/turf/open/floor/plating,
-/area/cargo/storage)
 "fm" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -633,6 +637,11 @@
 /obj/structure/closet/secure_closet/engineering_electrical,
 /turf/open/floor/iron/dark,
 /area/engineering/storage)
+"gc" = (
+/obj/machinery/light/small/directional/west,
+/obj/effect/spawner/random/structure/crate_empty,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "ge" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /obj/machinery/firealarm/directional/north,
@@ -1122,8 +1131,25 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/department/science)
+"jT" = (
+/obj/machinery/door/airlock/external{
+	name = "Mining Dock Airlock"
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper,
+/turf/open/floor/iron,
+/area/cargo/miningoffice)
 "ka" = (
 /turf/closed/wall/r_wall,
+/area/cargo/storage)
+"kg" = (
+/obj/machinery/door/airlock/external{
+	name = "Supply Dock Airlock";
+	req_access_txt = "31"
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "cargo-dock-airlock"
+	},
+/turf/open/floor/plating,
 /area/cargo/storage)
 "ki" = (
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
@@ -1306,6 +1332,11 @@
 	},
 /turf/open/floor/plating,
 /area/science/xenobiology)
+"ly" = (
+/obj/structure/table,
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "lz" = (
 /turf/closed/wall,
 /area/medical/surgery)
@@ -1611,6 +1642,17 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/security/brig)
+"ok" = (
+/obj/machinery/conveyor{
+	id = "QMLoad"
+	},
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor2";
+	name = "Supply Dock Loading Door"
+	},
+/obj/structure/plasticflaps,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "oo" = (
 /obj/structure/lattice/catwalk,
 /obj/item/stack/cable_coil,
@@ -1662,6 +1704,10 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/engineering/engine_smes)
+"oF" = (
+/obj/effect/spawner/random/structure/crate_empty,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "oH" = (
 /turf/closed/wall/r_wall,
 /area/security/prison/safe)
@@ -1834,6 +1880,12 @@
 "qj" = (
 /turf/closed/wall/r_wall,
 /area/medical/virology)
+"qm" = (
+/obj/machinery/door/airlock/maintenance{
+	req_one_access_txt = "12;5;39;37;25;28"
+	},
+/turf/open/floor/plating,
+/area/maintenance/department/cargo)
 "qn" = (
 /obj/structure/lattice,
 /turf/open/space/basic,
@@ -1993,6 +2045,10 @@
 	},
 /turf/closed/wall/r_wall,
 /area/engineering/atmos/storage)
+"ru" = (
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "rw" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -2295,6 +2351,12 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/science/research)
+"ud" = (
+/obj/machinery/door/airlock/maintenance{
+	req_one_access_txt = "31; 48"
+	},
+/turf/open/floor/plating,
+/area/cargo/storage)
 "uf" = (
 /obj/structure/chair/plastic{
 	dir = 4
@@ -2321,6 +2383,13 @@
 	},
 /turf/open/floor/iron/solarpanel/airless,
 /area/space)
+"uk" = (
+/obj/machinery/conveyor_switch/oneway{
+	id = "QMLoad";
+	name = "Unloading Conveyor"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "um" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -2416,6 +2485,14 @@
 "vh" = (
 /turf/open/floor/iron/white,
 /area/medical/psychology)
+"vm" = (
+/obj/machinery/conveyor{
+	dir = 1;
+	id = "QMLoad2"
+	},
+/obj/structure/plasticflaps,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "vn" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/space/basic,
@@ -2443,6 +2520,9 @@
 "vy" = (
 /obj/machinery/door/airlock/external{
 	dir = 4
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "port-solars-airlock"
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
@@ -2563,6 +2643,10 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/science/lab)
+"wE" = (
+/obj/machinery/portable_atmospherics/canister/air,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "wF" = (
 /obj/structure/table,
 /obj/effect/spawner/random/maintenance/eight,
@@ -2783,6 +2867,11 @@
 /obj/structure/window,
 /turf/open/floor/iron/showroomfloor,
 /area/commons/dorms/laundry)
+"yq" = (
+/obj/machinery/light/small/directional/east,
+/obj/effect/spawner/random/structure/crate_empty,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "ys" = (
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 4
@@ -2845,7 +2934,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
-	cycle_id = "starboard-solars-airlock"
+	cycle_id = "starboard-solars-airlock"ssssssss
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/science)
@@ -3254,6 +3343,9 @@
 /area/maintenance/department/engine/atmos)
 "Cf" = (
 /obj/machinery/door/airlock/external,
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "port-solars-airlock"
+	},
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
 "Cg" = (
@@ -3289,6 +3381,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/hallway/primary/central/aft)
+"Cw" = (
+/obj/machinery/conveyor{
+	id = "QMLoad"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "CA" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/cable,
@@ -3336,6 +3434,14 @@
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
+"CR" = (
+/obj/machinery/button/door/directional/north{
+	name = "Loading Door Control";
+	id = "QMLoaddoor"
+	},
+/obj/machinery/computer/cargo,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "CT" = (
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /obj/machinery/modular_computer/console/preset/engineering{
@@ -3508,12 +3614,6 @@
 "El" = (
 /turf/open/floor/engine,
 /area/science/xenobiology)
-"Eo" = (
-/obj/machinery/door/airlock/external{
-	dir = 4
-	},
-/turf/open/space/basic,
-/area/cargo/storage)
 "Er" = (
 /obj/effect/turf_decal/trimline/purple/corner{
 	dir = 8
@@ -3725,6 +3825,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
+"Gp" = (
+/obj/machinery/conveyor{
+	dir = 1;
+	id = "QMLoad2"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "Gq" = (
 /obj/structure/sign/warning/explosives/alt,
 /turf/closed/wall/r_wall,
@@ -3936,6 +4043,16 @@
 "IH" = (
 /turf/open/floor/plating,
 /area/medical/chemistry)
+"IL" = (
+/obj/machinery/conveyor{
+	id = "QMLoad"
+	},
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor2";
+	name = "Supply Dock Loading Door"
+	},
+/turf/open/floor/plating,
+/area/cargo/storage)
 "IR" = (
 /turf/closed/wall/r_wall,
 /area/tcommsat/server)
@@ -4057,6 +4174,9 @@
 "JY" = (
 /obj/machinery/door/airlock/external{
 	name = "Mining Dock Airlock"
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/cargo/miningoffice)
@@ -4214,6 +4334,18 @@
 	},
 /turf/open/floor/engine,
 /area/science/xenobiology)
+"Ll" = (
+/obj/machinery/conveyor{
+	dir = 1;
+	id = "QMLoad2"
+	},
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor";
+	name = "Supply Dock Loading Door"
+	},
+/obj/structure/plasticflaps,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "Ln" = (
 /obj/structure/reagent_dispensers/watertank,
 /obj/item/extinguisher{
@@ -4345,6 +4477,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/science/mixing)
+"LW" = (
+/obj/machinery/conveyor{
+	id = "QMLoad"
+	},
+/obj/structure/plasticflaps,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "LZ" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/n2,
 /turf/open/floor/iron,
@@ -4427,6 +4566,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
+"MW" = (
+/obj/machinery/door/airlock/external{
+	name = "Supply Dock Airlock";
+	req_access_txt = "31"
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "cargo-dock-airlock"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "MX" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -4778,6 +4927,14 @@
 /obj/effect/turf_decal/tile/purple/fourcorners,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"Qe" = (
+/obj/machinery/conveyor_switch/oneway{
+	dir = 8;
+	id = "QMLoad2";
+	name = "Loading Conveyor"
+	},
+/turf/open/floor/iron,
+/area/cargo/storage)
 "Qf" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer{
 	dir = 1
@@ -5732,7 +5889,7 @@
 	req_access_txt = "10"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
-	cycle_id = "starboard-solars-airlock"
+	cycle_id = "starboard-solars-airlock"ssssssss
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/science)
@@ -5780,7 +5937,15 @@
 /turf/open/floor/iron,
 /area/security/lockers)
 "YI" = (
-/turf/open/space/basic,
+/obj/machinery/conveyor{
+	dir = 1;
+	id = "QMLoad2"
+	},
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor";
+	name = "Supply Dock Loading Door"
+	},
+/turf/open/floor/plating,
 /area/cargo/storage)
 "YL" = (
 /obj/effect/turf_decal/tile/red/half/contrasted{
@@ -33240,7 +33405,7 @@ Ii
 Ii
 Ii
 sM
-JY
+jT
 HQ
 JY
 HQ
@@ -34264,12 +34429,12 @@ Ii
 Ii
 Ii
 ka
-HR
-HR
-HR
-HR
-HR
-HR
+oF
+gc
+RK
+wE
+RK
+ly
 Sj
 HR
 vt
@@ -34521,13 +34686,13 @@ Ii
 Ii
 Ii
 YI
-HR
-HR
-HR
-HR
-HR
-HR
-HR
+Gp
+Gp
+vm
+Gp
+Ll
+Gp
+Qe
 HR
 Ko
 fi
@@ -34778,12 +34943,12 @@ Ii
 Ii
 Ii
 qO
+fi
+fi
+RK
 HR
-HR
-HR
-HR
-HR
-HR
+fi
+CR
 HR
 HR
 Ko
@@ -35034,15 +35199,15 @@ Ii
 Ii
 Ii
 Ii
-qO
+kg
 HR
 HR
 HR
 HR
-HR
+MW
 BE
 HR
-HR
+ru
 DX
 fi
 gG
@@ -35292,12 +35457,12 @@ Ii
 Ii
 Ii
 qO
+fi
+fi
+RK
 HR
-HR
-HR
-HR
-HR
-HR
+fi
+en
 HR
 HR
 JB
@@ -35548,14 +35713,14 @@ Ii
 Ii
 Ii
 Ii
-YI
-HR
-HR
-HR
-HR
-HR
-HR
-HR
+IL
+Cw
+Cw
+LW
+Cw
+ok
+Cw
+uk
 HR
 Ss
 fi
@@ -35806,12 +35971,12 @@ Ii
 Ii
 Ii
 ka
+oF
+yq
+RK
 HR
-HR
-HR
-HR
-HR
-HR
+RK
+ly
 Eu
 HR
 Ss
@@ -36063,12 +36228,12 @@ Ii
 Ii
 Ii
 ka
-fj
-Ng
-Ng
-Eo
-Ng
-Ng
+ka
+ka
+ka
+ka
+ka
+ka
 fV
 zi
 zi
@@ -36325,12 +36490,12 @@ Ng
 rI
 rI
 rI
-Ng
-Ng
-rI
-tc
-tc
-Ng
+ka
+ka
+ud
+qO
+qO
+ka
 DA
 DA
 DA
@@ -36587,7 +36752,7 @@ rI
 rI
 rI
 rI
-rI
+qm
 uG
 uG
 uG

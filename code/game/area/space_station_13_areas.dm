@@ -41,6 +41,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/space/nearstation
 	icon_state = "space_near"
 	area_flags = UNIQUE_AREA | NO_ALERTS | AREA_USES_STARLIGHT
+	base_lighting_alpha = null
+	base_lighting_color = null
 
 /area/start
 	name = "start area"
@@ -1030,7 +1032,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = 255
+	base_lighting_alpha = null
+	base_lighting_color = null
 
 /area/solars/fore
 	name = "\improper Fore Solar Array"

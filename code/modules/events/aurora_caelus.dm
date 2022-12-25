@@ -32,7 +32,7 @@
 		var/area/A = area
 		if(A.area_flags & AREA_USES_STARLIGHT)
 			for(var/turf/open/space/S in A)
-				S.set_light(l_outer_range = S.light_outer_range * 3, l_power = S.light_power * 0.5)
+				S.set_light(l_outer_range = S.light_outer_range * 3)
 
 /datum/round_event/aurora_caelus/tick()
 	if(activeFor % 5 == 0)

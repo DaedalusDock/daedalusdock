@@ -1,4 +1,4 @@
 author: Kapu1178
 delete-after: true
 changes:
-  - refactor: Redid lighting appearance
+  - bugfix: Starlight does something again

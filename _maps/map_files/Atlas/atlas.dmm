@@ -6055,7 +6055,7 @@
 	req_access_txt = "10"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
-	cycle_id = "starboard-solars-airlock"ssssssss
+	cycle_id = "starboard-solars-airlock"
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/science)

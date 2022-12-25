@@ -122,3 +122,8 @@
 	name = "Ordnance Chamber Monitor"
 	circuit = /obj/item/circuitboard/computer/atmos_control/nocontrol/ordnancemix
 	atmos_chambers = list(ATMOS_GAS_MONITOR_ORDNANCE_LAB = "Ordnance Chamber")
+
+/obj/machinery/computer/atmos_control/atlas //for the atlas map
+	name = "Gas Tank Control"
+	circuit = /obj/item/circuitboard/computer/atmos_control
+	atmos_chambers = list(ATMOS_GAS_MONITOR_O2 = "Oxygen Supply", ATMOS_GAS_MONITOR_N2 = "Nitrogen Supply", ATMOS_GAS_MONITOR_PLAS = "Plasma Supply", ATMOS_GAS_MONITOR_MIX = "Mix Chamber")

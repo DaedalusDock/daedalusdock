@@ -30,7 +30,7 @@
 /datum/round_event/aurora_caelus/start()
 	for(var/turf/open/space/S in world)
 		var/area/A = S.loc
-		if(S.area_flags & AREA_USES_STARLIGHT)
+		if(A.area_flags & AREA_USES_STARLIGHT)
 			S.set_light(l_outer_range = S.light_outer_range * 2, l_power = S.light_power * 1.3)
 
 /datum/round_event/aurora_caelus/tick()
@@ -39,13 +39,13 @@
 		var/aurora_color = aurora_colors[aurora_progress]
 		for(var/turf/open/space/S in world)
 			var/area/A = S.loc
-			if(S.area_flags & AREA_USES_STARLIGHT)
+			if(A.area_flags & AREA_USES_STARLIGHT)
 				S.set_light(l_color = aurora_color)
 
 /datum/round_event/aurora_caelus/end()
 	for(var/turf/open/space/S in world)
 		var/area/A = S.loc
-		if(S.area_flags & AREA_USES_STARLIGHT)
+		if(A.area_flags & AREA_USES_STARLIGHT)
 			fade_to_black(S)
 	priority_announce(
 		"The aurora caelus event is now ending. Starlight conditions will slowly return to normal. When this has concluded, please return to your workplace and continue work as normal. Have a pleasant shift, [station_name()], and thank you for watching with us.",

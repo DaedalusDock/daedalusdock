@@ -168,7 +168,7 @@
 
 	// Approximate text height
 	var/complete_text = "<span class='center [extra_classes.Join(" ")]' style='color: [tgt_color]'>[owner.say_emphasis(text)]</span>"
-	//var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
+	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
 
 	message_loc = isturf(target) ? target : get_atom_on_turf(target)
 
@@ -184,7 +184,6 @@
 	}
 
 	animate(message, maptext_y = 28, time = 0.01)
-	var/mheight = 2 + (8 * (1 + round(length(message.maptext_width) / 32)))
 
 	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
 	message.maptext = MAPTEXT(complete_text)
@@ -196,6 +195,11 @@
 	if (owned_by.seen_messages)
 		var/idx = 1
 		var/combined_height = approx_lines
+		var/datum/chatmessage/old_message = owned_by.seen_messages?[message_loc]?[length(owned_by.seen_messages?[message_loc])]
+		if(old_message?.message.maptext == message.maptext)
+			old_message.message.transform *= 1.1
+			return
+
 		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
 			animate(m.message, maptext_y = m.message.maptext_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
@@ -250,6 +254,8 @@
  * * sound_loc - The atom the message was heard from. Usually a speaker_location().
  */
 /mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, atom/sound_loc)
+	set waitfor = FALSE
+
 	if(SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(speaker, TRAIT_BYPASS_MEASURES))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us

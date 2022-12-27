@@ -163,6 +163,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	if(did_anything)
 		playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
 
+	return TRUE
+
 /obj/machinery/light_switch/proc/set_lights(status)
 	if(area.lightswitch == status || !is_operational)
 		return

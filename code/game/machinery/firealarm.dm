@@ -249,6 +249,7 @@
 			else
 				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
 				log_game("[user] triggered a fire alarm at [COORD(src)]")
+	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)
 	if(buildstage != 2)

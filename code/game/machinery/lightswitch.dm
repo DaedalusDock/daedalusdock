@@ -150,8 +150,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	. = ..()
 	if(!is_operational)
 		return .
-	playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
-	set_lights(!area.lightswitch)
+
+	var/did_anything = FALSE
+	switch(user.simple_binary_radial(src))
+		if(SIMPLE_RADIAL_ACTIVATE)
+			did_anything = set_lights(TRUE)
+		if(SIMPLE_RADIAL_DEACTIVATE)
+			did_anything = set_lights(FALSE)
+		if(SIMPLE_RADIAL_DOESNT_USE)
+			did_anything = set_lights(!area.lightswitch)
+
+	if(did_anything)
+		playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
 
 /obj/machinery/light_switch/proc/set_lights(status)
 	if(area.lightswitch == status || !is_operational)
@@ -164,6 +174,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, status)
 
 	area.power_change()
+	return TRUE
 
 /obj/machinery/light_switch/power_change()
 	SHOULD_CALL_PARENT(FALSE)

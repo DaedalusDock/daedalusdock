@@ -1,4 +1,4 @@
-var/global/list/binary_radial_defaults = list(
+GLOBAL_REAL_VAR(list/binary_radial_defaults) = list(
 	SIMPLE_RADIAL_ACTIVATE = new /image{
 		icon = 'icons/hud/radial.dmi';
 		icon_state = "green";

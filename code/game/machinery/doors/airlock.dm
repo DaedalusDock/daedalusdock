@@ -464,11 +464,6 @@
 
 	. = ..()
 
-	if(hasPower() && unres_sides)
-		set_light(l_outer_range = 0.3, l_power = 0.4)
-	else
-		set_light(0)
-
 /obj/machinery/door/airlock/update_icon_state()
 	. = ..()
 	switch(airlock_state)

@@ -6,4 +6,4 @@
 	default_value = TRUE
 
 /datum/preference/toggle/bloom/apply_to_client(client/client, value)
-	client.mob.update_sight()
+	client.mob?.update_sight()

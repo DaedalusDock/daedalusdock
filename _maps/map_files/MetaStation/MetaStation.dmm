@@ -37815,7 +37815,6 @@
 	pixel_x = 5;
 	pixel_y = -1
 	},
-/obj/machinery/light/directional/north,
 /obj/item/radio/intercom/directional/north,
 /obj/item/reagent_containers/food/drinks/mug{
 	pixel_x = -4;
@@ -65225,6 +65224,13 @@
 /obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron/white,
 /area/science/mixing/hallway)
+"wUj" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron,
+/area/hallway/primary/central)
 "wUr" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -93973,7 +93979,7 @@ sXS
 mIU
 aWf
 bRx
-bXN
+wUj
 wUU
 gXE
 ylA

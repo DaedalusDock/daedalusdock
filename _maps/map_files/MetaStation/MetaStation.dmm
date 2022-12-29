@@ -71,7 +71,6 @@
 	pixel_x = -8
 	},
 /obj/effect/turf_decal/tile/green/half/contrasted,
-/obj/machinery/light/directional/south,
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "abq" = (
@@ -18951,17 +18950,6 @@
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
-"fDM" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 1
-	},
-/obj/structure/disposalpipe/segment,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/hallway/primary/port)
 "fDO" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/structure/cable,
@@ -25540,10 +25528,8 @@
 /obj/structure/cable,
 /obj/structure/chair/office/light,
 /obj/effect/landmark/start/virologist,
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "ieR" = (
@@ -28374,7 +28360,6 @@
 	dir = 4
 	},
 /obj/machinery/airalarm/directional/west,
-/obj/machinery/light/directional/west,
 /obj/machinery/camera/directional/west{
 	c_tag = "Virology Central Hallway";
 	network = list("ss13","medbay")
@@ -39415,6 +39400,7 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "nbh" = (
@@ -43620,6 +43606,9 @@
 /obj/effect/turf_decal/tile/green/half/contrasted{
 	dir = 4
 	},
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "oEW" = (
@@ -44205,6 +44194,14 @@
 	},
 /turf/open/floor/iron,
 /area/commons/locker)
+"oQv" = (
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/port)
 "oQU" = (
 /obj/structure/table,
 /obj/item/storage/medkit/regular,
@@ -44412,6 +44409,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "oTM" = (
@@ -46866,7 +46866,6 @@
 /area/security/prison/safe)
 "pPs" = (
 /obj/structure/table/wood,
-/obj/machinery/light/directional/south,
 /turf/open/floor/wood,
 /area/service/library)
 "pPA" = (
@@ -47833,7 +47832,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
-/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "qhw" = (
@@ -53596,6 +53594,7 @@
 /obj/effect/turf_decal/tile/green/half/contrasted{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "sww" = (
@@ -59043,6 +59042,13 @@
 	},
 /turf/open/floor/plating/airless,
 /area/engineering/atmos)
+"uDr" = (
+/obj/effect/turf_decal/tile/green/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron/white,
+/area/medical/virology)
 "uDt" = (
 /obj/structure/easel,
 /obj/item/canvas/nineteen_nineteen,
@@ -67150,7 +67156,6 @@
 /area/space/nearstation)
 "xCU" = (
 /obj/structure/closet/secure_closet/medical1,
-/obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/green/half/contrasted{
 	dir = 1
 	},
@@ -82942,7 +82947,7 @@ aaa
 aaa
 lST
 vIi
-sSQ
+uDr
 bhm
 lhE
 bTf
@@ -88036,7 +88041,7 @@ kte
 hpk
 ahH
 lkg
-fDM
+gUg
 fhj
 eMW
 nxp
@@ -89064,7 +89069,7 @@ tiE
 vUa
 iFZ
 xJg
-bqo
+oQv
 iMn
 eMW
 sqV

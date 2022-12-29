@@ -1165,6 +1165,9 @@
 		var/atom/movable/screen/plane_master/lighting/L = hud_used.plane_masters["[LIGHTING_PLANE]"]
 		if (L)
 			L.alpha = lighting_alpha
+		var/atom/movable/screen/plane_master/additive_lighting/L = hud_used.plane_masters["[LIGHTING_PLANE_ADDITIVE]"]
+		if(L)
+			L.alpha = lighting_alpha
 
 ///Update the mouse pointer of the attached client in this mob
 /mob/proc/update_mouse_pointer()

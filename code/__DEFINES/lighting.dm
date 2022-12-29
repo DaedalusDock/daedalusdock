@@ -97,4 +97,4 @@ do { \
 } while (FALSE)
 
 /// The default falloff curve for all atoms. It's a magic number you should adjust until it looks good.
-#define LIGHTING_DEFAULT_FALLOFF_CURVE 3
+#define LIGHTING_DEFAULT_FALLOFF_CURVE 2.36

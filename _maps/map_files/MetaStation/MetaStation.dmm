@@ -65214,7 +65214,7 @@
 	},
 /obj/effect/turf_decal/tile/bar,
 /obj/structure/low_wall,
-/turf/open/space/basic,
+/turf/open/floor/iron,
 /area/service/bar)
 "wUi" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{

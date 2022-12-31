@@ -181,8 +181,7 @@
 
 /obj/item/bodypart/Destroy()
 	if(owner)
-		owner.remove_bodypart(src)
-		set_owner(null)
+		owner.drop_limb(TRUE)
 	for(var/wound in wounds)
 		qdel(wound) // wounds is a lazylist, and each wound removes itself from it on deletion.
 	if(length(wounds))
@@ -574,9 +573,6 @@
 
 	refresh_bleed_rate()
 	return old_owner
-/obj/item/bodypart/proc/on_removal()
-	for(var/trait in bodypart_traits)
-		REMOVE_TRAIT(owner, trait, bodypart_trait_source)
 
 ///Proc to change the value of the `can_be_disabled` variable and react to the event of its change.
 /obj/item/bodypart/proc/set_can_be_disabled(new_can_be_disabled)

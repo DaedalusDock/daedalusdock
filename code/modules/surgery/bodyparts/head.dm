@@ -303,13 +303,17 @@
 
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "default_monkey_head"
+	should_draw_greyscale = FALSE
+	is_dimorphic = FALSE
 	limb_id = SPECIES_MONKEY
 	animal_origin = MONKEY_BODYPART
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 
 /obj/item/bodypart/head/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_head"
 	px_x = 0
 	px_y = 0
@@ -319,6 +323,7 @@
 
 /obj/item/bodypart/head/larva
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "larva_head"
 	px_x = 0
 	px_y = 0

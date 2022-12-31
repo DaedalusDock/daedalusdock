@@ -41,6 +41,7 @@
 	icon_state = "default_monkey_chest"
 	limb_id = SPECIES_MONKEY
 	should_draw_greyscale = FALSE
+	is_dimorphic = FALSE
 	animal_origin = MONKEY_BODYPART
 	wound_resistance = -10
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
@@ -48,6 +49,7 @@
 
 /obj/item/bodypart/chest/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_chest"
 	dismemberable = 0
 	max_damage = 500
@@ -55,6 +57,7 @@
 
 /obj/item/bodypart/chest/larva
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "larva_chest"
 	dismemberable = 0
 	max_damage = 50
@@ -169,6 +172,7 @@
 
 /obj/item/bodypart/arm/left/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_l_arm"
 	px_x = 0
 	px_y = 0
@@ -252,6 +256,8 @@
 /obj/item/bodypart/arm/right/monkey
 	icon = 'icons/mob/animal_parts.dmi'
 	icon_state = "default_monkey_r_arm"
+	icon_static = 'icons/mob/animal_parts.dmi'
+	should_draw_greyscale = FALSE
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	animal_origin = MONKEY_BODYPART
@@ -265,6 +271,7 @@
 
 /obj/item/bodypart/arm/right/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_r_arm"
 	px_x = 0
 	px_y = 0
@@ -370,6 +377,7 @@
 
 /obj/item/bodypart/leg/left/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_l_leg"
 	px_x = 0
 	px_y = 0

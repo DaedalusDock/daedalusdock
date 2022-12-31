@@ -92,6 +92,10 @@
 	update_limb(1)
 	owner.remove_bodypart(src)
 
+	//Clear out traits from the owner
+	for(var/trait in bodypart_traits)
+		REMOVE_TRAIT(owner, trait, bodypart_trait_source)
+
 	if(held_index)
 		if(owner.hand_bodyparts[held_index] == src)
 			// We only want to do this if the limb being removed is the active hand part.

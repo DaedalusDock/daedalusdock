@@ -316,15 +316,6 @@
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/sbc_corvette)
-"aU" = (
-/obj/machinery/light/small{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/sbc_corvette)
 "aW" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 4;
@@ -431,7 +422,7 @@ aE
 as
 aT
 aZ
-aU
+aT
 aJ
 aj
 "}

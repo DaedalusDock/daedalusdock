@@ -190,7 +190,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/obj/item/bodypart/head/get_limb_icon(dropped, draw_external_organs)
+/obj/item/bodypart/head/get_limb_overlays(dropped)
 	cut_overlays()
 	. = ..()
 	if(dropped) //certain overlays only appear when the limb is being detached from its owner.

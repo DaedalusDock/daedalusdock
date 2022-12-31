@@ -83,7 +83,6 @@
 
 	///A cache of bodypart = icon to prevent excessive icon creation.
 	var/list/icon_render_keys = list()
-	var/static/list/limb_icon_cache = list()
 
 	//halucination vars
 	var/hal_screwyhud = SCREWYHUD_NONE

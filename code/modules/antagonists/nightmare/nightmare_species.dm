@@ -23,7 +23,6 @@
 	)
 	mutanteyes = /obj/item/organ/internal/eyes/night_vision/nightmare
 	mutantheart = /obj/item/organ/internal/heart/nightmare
-	mutantbrain = /obj/item/organ/internal/brain/shadow/nightmare
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/shadow/nightmare,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/shadow/nightmare,

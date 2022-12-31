@@ -68,7 +68,7 @@
 	attack_verb_simple = list("slap", "punch")
 	max_damage = 50
 	max_stamina_damage = 50
-	aux_layer = HANDS_PART_LAYER
+	aux_layer = BODYPARTS_HIGH_LAYER
 	body_damage_coeff = 0.75
 	can_be_disabled = TRUE
 	unarmed_attack_verb = "punch" /// The classic punch, wonderfully classic and completely random
@@ -186,7 +186,7 @@
 	icon_state = "default_human_r_arm"
 	plaintext_zone = "right arm"
 	aux_zone = BODY_ZONE_PRECISE_R_HAND
-	aux_layer = HANDS_PART_LAYER
+	aux_layer = BODYPARTS_HIGH_LAYER
 	held_index = 2
 	px_x = 6
 	px_y = 0
@@ -250,8 +250,7 @@
 
 
 /obj/item/bodypart/arm/right/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/animal_parts.dmi'
 	icon_state = "default_monkey_r_arm"
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
@@ -265,8 +264,7 @@
 	unarmed_stun_threshold = 3
 
 /obj/item/bodypart/arm/right/alien
-	icon = 'icons/mob/species/alien/bodyparts.dmi'
-	icon_static = 'icons/mob/species/alien/bodyparts.dmi'
+	icon = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_r_arm"
 	px_x = 0
 	px_y = 0
@@ -394,7 +392,7 @@
 	px_y = 12
 	bodypart_trait_source = RIGHT_LEG_TRAIT
 
-/obj/item/bodypart/r_leg/set_owner(new_owner)
+/obj/item/bodypart/leg/right/set_owner(new_owner)
 	. = ..()
 	if(. == FALSE)
 		return

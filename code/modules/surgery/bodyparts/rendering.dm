@@ -130,6 +130,17 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 		if(draw_color)
 			aux_appearance.color = draw_color
 
+
+	//Ok so legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that.
+	if((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG))
+
+		for(var/mutable_appearance/old_appearance as anything in .)
+			//remove the old, unmasked image
+			. -= old_appearance
+			//add two masked images based on the old one
+			. += generate_masked_leg(old_appearance, image_dir)
+
+
 	if(dropped)
 		if(dmg_overlay_type)
 			if(brutestate)
@@ -155,17 +166,6 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 				aux_em_block.dir = image_dir
 				. += aux_em_block
 	//EMISSIVE CODE END
-
-	/*
-	//Ok so legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
-	if((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG))
-
-		for(var/mutable_appearance/old_appearance as anything in .)
-			//remove the old, unmasked image
-			. -= old_appearance
-			//add two masked images based on the old one
-			. += generate_masked_leg(old_appearance, image_dir)
-	*/
 
 	if(!is_husked)
 		//Draw external organs like horns and frills

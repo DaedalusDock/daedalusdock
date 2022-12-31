@@ -185,7 +185,8 @@
 		facial_hairstyle = "Shaved"
 		lip_style = null
 		stored_lipstick_trait = null
-	update_hair_and_lips()
+	if(ishuman(owner))
+		update_hair_and_lips()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

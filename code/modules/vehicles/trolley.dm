@@ -42,7 +42,7 @@
 			if(ran_over_mob)
 				playsound(src, pick('sound/effects/wounds/crack1.ogg', 'sound/effects/wounds/crack2.ogg'), 40)
 				animate(src, pixel_y = -4, time = 0.5 SECONDS, easing = SINE_EASING)
-				animate(occupants[1], pixel_y = -4, time = 0.5 SECONDS, easing = SINE_EASING)
+				animate(occupants[1], pixel_y = 4, time = 0.5 SECONDS, easing = SINE_EASING)
 
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()

@@ -39464,6 +39464,7 @@
 "iRg" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/decal/cleanable/dirt,
+/obj/vehicle/ridden/trolley,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "iRl" = (

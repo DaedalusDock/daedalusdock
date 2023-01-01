@@ -4511,6 +4511,14 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/sorting)
+"bfa" = (
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/vehicle/ridden/trolley,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "bfj" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/effect/mapping_helpers/paint_wall/medical,
@@ -37135,6 +37143,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/vehicle/ridden/trolley,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "mqn" = (
@@ -87326,7 +87335,7 @@ rmY
 kZE
 aJG
 aJG
-lqP
+bfa
 ykd
 lYv
 sAB

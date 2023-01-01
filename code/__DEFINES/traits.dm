@@ -538,6 +538,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_ALLOW_HERETIC_CASTING "allow_heretic_casting"
 /// Designates a heart as a living heart for a heretic.
 #define TRAIT_LIVING_HEART "living_heart"
+// Allows dense objects to keep the player facing their direction of movement while being pulled
+#define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
+// Prevents this item from entering closets/crates entirely via insertion_allowed()
+#define TRAIT_REJECT_INSERTION "reject_insertion"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

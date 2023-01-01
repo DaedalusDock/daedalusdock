@@ -305,3 +305,36 @@
 	base_icon_state = "sepia"
 	desc = "Well, the flow of time is normal on these tiles, weird."
 	floor_tile = /obj/item/stack/tile/iron/sepia
+
+/turf/open/floor/iron/ported
+	icon = 'icons/turf/floors-ported.dmi'
+	icon_state = "tcomms"
+	base_icon_state = "tcomms"
+	desc = "Advanced flooring techniques. Revolutionary."
+	floor_tile = /obj/item/stack/tile/iron/ported
+
+/turf/open/floor/iron/ported/techfloor
+	icon_state = "techfloor"
+	base_icon_state = "techfloor"
+	floor_tile = /obj/item/stack/tile/iron/ported/techfloor
+
+/turf/open/floor/iron/ported/techfloor_rusted
+	icon_state = "techfloor_rusted"
+	base_icon_state = "techfloor_rusted"
+	floor_tile = /obj/item/stack/tile/iron/ported/techfloor_rusted
+
+/turf/open/floor/iron/ported/techfloor_grid
+	icon_state = "techfloor_grid"
+	base_icon_state = "techfloor_grid"
+	floor_tile = /obj/item/stack/tile/iron/ported/techfloor_grid
+
+/turf/open/floor/iron/ported/lino
+	icon_state = "lino"
+	base_icon_state = "lino"
+	floor_tile = /obj/item/stack/tile/iron/ported/lino
+	desc = "Linoleum floor tiling."
+
+/turf/open/floor/iron/ported/tcomms
+	icon_state = "tcomms"
+	base_icon_state = "tcomms"
+	floor_tile = /obj/item/stack/tile/iron/ported/tcomms

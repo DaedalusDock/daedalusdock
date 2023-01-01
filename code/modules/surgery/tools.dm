@@ -73,7 +73,7 @@
 	hitsound = 'sound/items/welder.ogg'
 	toolspeed = 0.7
 	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_outer_range = 1
 	light_color = COLOR_SOFT_RED
 
 /obj/item/cautery/advanced/Initialize(mapload)
@@ -269,7 +269,7 @@
 	force = 16
 	toolspeed = 0.7
 	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_outer_range = 1
 	light_color = LIGHT_COLOR_GREEN
 	sharpness = SHARP_EDGED
 

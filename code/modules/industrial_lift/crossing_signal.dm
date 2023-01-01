@@ -18,7 +18,7 @@
 	// pointless if it only takes 2 seconds to cross but updates every 2 seconds
 	subsystem_type = /datum/controller/subsystem/processing/fastprocess
 
-	light_range = 1.5
+	light_outer_range = 1.5
 	light_power = 1
 	light_color = COLOR_VIBRANT_LIME
 	luminosity = 1

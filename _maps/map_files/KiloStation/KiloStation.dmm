@@ -9694,7 +9694,7 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel/funeral)
 "bfo" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/turf_decal/box,
 /turf/open/floor/engine,
 /area/science/xenobiology)
@@ -32273,6 +32273,7 @@
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/turf_decal/stripes/corner,
+/obj/vehicle/ridden/trolley,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "gzw" = (
@@ -39617,7 +39618,7 @@
 /turf/closed/wall/r_wall,
 /area/maintenance/starboard/fore)
 "iTp" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/o2,
 /area/engineering/atmos)
 "iTA" = (
@@ -58378,7 +58379,7 @@
 /turf/closed/wall/r_wall,
 /area/maintenance/aft)
 "pen" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/co2,
 /area/engineering/atmos)
 "peo" = (
@@ -59770,6 +59771,7 @@
 /turf/open/floor/iron/dark,
 /area/commons/locker)
 "pCD" = (
+/obj/vehicle/ridden/trolley,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "pCV" = (
@@ -71157,7 +71159,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "tkL" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/air,
 /area/engineering/atmos)
 "tld" = (
@@ -73035,7 +73037,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
 "tSH" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/plasma,
 /area/engineering/atmos)
 "tSN" = (
@@ -74019,7 +74021,7 @@
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
 "uhO" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/vacuum,
 /area/engineering/atmos)
 "uid" = (
@@ -78107,7 +78109,7 @@
 	name = "core camera";
 	network = list("aicore")
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine,
 /area/ai_monitored/turret_protected/ai)
 "vFo" = (
@@ -83123,7 +83125,7 @@
 /turf/open/floor/iron/dark,
 /area/security/brig)
 "xnp" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/n2,
 /area/engineering/atmos)
 "xnr" = (
@@ -86015,7 +86017,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat/foyer)
 "yiQ" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/n2o,
 /area/engineering/atmos)
 "yiU" = (

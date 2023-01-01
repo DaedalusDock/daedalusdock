@@ -20,6 +20,7 @@
 	. = ..()
 	create_reagents(100, OPENCONTAINER)
 	GLOB.janitor_devices += src
+	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 
 /obj/structure/janitorialcart/Destroy()
 	GLOB.janitor_devices -= src

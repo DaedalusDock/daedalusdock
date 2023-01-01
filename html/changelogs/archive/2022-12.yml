@@ -29,3 +29,18 @@
   francinum:
   - qol: Walls are now named based on their material and structure
   - imageadd: Some material walls now properly use the correct icon base
+2022-12-12:
+  Kapu1178:
+  - code_imp: Injects a fat dose of Lorium
+2022-12-24:
+  Kapu1178:
+  - refactor: Redid lighting appearance
+  francinum:
+  - imageadd: Perspective Air Alarms
+  - imageadd: Pespective APCs
+2022-12-26:
+  Kapu1178:
+  - bugfix: Starlight does something again
+2022-12-29:
+  fighterslam:
+  - rscadd: Adds a bunch more floor tiles & decals.

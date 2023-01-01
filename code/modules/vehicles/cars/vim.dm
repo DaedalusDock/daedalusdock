@@ -14,7 +14,7 @@
 	movedelay = 0.6
 	engine_sound_length = 0.3 SECONDS
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 4
+	light_outer_range = 4
 	light_power = 2
 	light_on = FALSE
 	engine_sound = 'sound/effects/servostep.ogg'
@@ -137,7 +137,7 @@
 /obj/item/circuit_component/vim/proc/on_headlights_toggle(datum/source, headlights_on)
 	SIGNAL_HANDLER
 	are_headlights_on.set_output(headlights_on)
-	
+
 /obj/item/circuit_component/vim/proc/on_chime_used()
 	SIGNAL_HANDLER
 	chime.set_output(COMPONENT_SIGNAL)

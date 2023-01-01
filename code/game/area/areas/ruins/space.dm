@@ -403,6 +403,8 @@
 	icon_state = "DJ"
 	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
 	has_gravity = STANDARD_GRAVITY
+	base_lighting_alpha = null
+	base_lighting_color = null
 
 /area/ruin/space/djstation/service
 	name = "\improper DJ Station Service"

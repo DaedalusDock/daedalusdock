@@ -18530,7 +18530,7 @@
 "dJh" = (
 /obj/structure/flora/ausbushes/grassybush,
 /obj/structure/flora/rock/jungle,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/misc/grass,
 /area/hallway/primary/fore)
 "dJo" = (
@@ -30182,7 +30182,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 1
 	},
@@ -32173,7 +32173,7 @@
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/rock/pile,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/misc/grass,
 /area/hallway/primary/fore)
 "hgv" = (
@@ -43845,7 +43845,7 @@
 	dir = 10
 	},
 /obj/item/kirbyplants/random,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 8
 	},
@@ -43974,7 +43974,7 @@
 "kEN" = (
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/grassybush,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/misc/grass,
 /area/hallway/primary/fore)
 "kFg" = (
@@ -46034,7 +46034,7 @@
 	dir = 5
 	},
 /obj/item/kirbyplants/random,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 4
 	},
@@ -54856,7 +54856,7 @@
 	dir = 6
 	},
 /obj/item/kirbyplants/random,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
@@ -76244,7 +76244,7 @@
 "udU" = (
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/lavendergrass,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/misc/grass,
 /area/hallway/primary/fore)
 "udZ" = (

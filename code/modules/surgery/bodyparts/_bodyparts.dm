@@ -166,11 +166,6 @@
 	/// The name of the trait source that the organ gives. Should not be altered during the events of gameplay, and will cause problems if it is.
 	var/bodypart_trait_source = BODYPART_TRAIT
 
-/obj/item/bodypart/New(loc, ...)
-	. = ..()
-	if(QDELING(src))
-		stack_trace("Bodypart qdeleting before init, wtf??")
-
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()
 	if(can_be_disabled)

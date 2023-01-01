@@ -48,7 +48,7 @@
  */
 /datum/scar/proc/generate(obj/item/bodypart/BP, datum/wound/W, add_to_scars=TRUE)
 	if(QDELETED(BP))
-		return
+		CRASH("Tried to add a scar to a deleted limb!")
 	limb = BP
 	RegisterSignal(limb, COMSIG_PARENT_QDELETING, .proc/limb_gone)
 

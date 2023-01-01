@@ -52,7 +52,8 @@
 		var/gender = (initial(body_part.is_dimorphic)) ? "_m" : ""
 		moth_body.Blend(icon('icons/mob/species/moth/bodyparts.dmi', "moth_[body_part][gender]"), ICON_OVERLAY)
 
-	moth_body.Blend(icon('icons/mob/human_face.dmi', "motheyes"), ICON_OVERLAY)
+	moth_body.Blend(icon('icons/mob/human_face.dmi', "motheyes_l"), ICON_OVERLAY)
+	moth_body.Blend(icon('icons/mob/human_face.dmi', "motheyes_r"), ICON_OVERLAY)
 
 	for (var/markings_name in GLOB.moth_markings_list)
 		var/datum/sprite_accessory/markings = GLOB.moth_markings_list[markings_name]

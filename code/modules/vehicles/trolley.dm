@@ -33,16 +33,18 @@
 
 /obj/vehicle/ridden/trolley/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
 	. = ..()
-	if(has_gravity())
-		playsound(src, 'sound/effects/roll.ogg', 40, TRUE)
-		if(LAZYLEN(occupants))
-			var/ran_over_mob = 0
-			for(var/mob/living/carbon/victim in loc)
-				ran_over_mob += run_over(victim)
-			if(ran_over_mob)
-				playsound(src, pick('sound/effects/wounds/crack1.ogg', 'sound/effects/wounds/crack2.ogg'), 40)
-				animate(src, pixel_y = -4, time = 0.5 SECONDS, easing = SINE_EASING)
-				animate(occupants[1], pixel_y = 4, time = 0.5 SECONDS, easing = SINE_EASING)
+	if(!has_gravity())
+		return
+
+	playsound(src, 'sound/effects/roll.ogg', 40, TRUE)
+	if(LAZYLEN(occupants))
+		var/ran_over_mob = 0
+		for(var/mob/living/carbon/victim in loc)
+			ran_over_mob += run_over(victim)
+		if(ran_over_mob)
+			playsound(src, pick('sound/effects/wounds/crack1.ogg', 'sound/effects/wounds/crack2.ogg'), 40)
+			animate(src, pixel_y = -4, time = 0.5 SECONDS, easing = SINE_EASING)
+			animate(occupants[1], pixel_y = 4, time = 0.5 SECONDS, easing = SINE_EASING)
 
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()
@@ -109,7 +111,9 @@
 		return
 
 	cargo.forceMove(deposit_turf)
-	to_chat(user, span_notice("You unload \the [cargo] from \the [src]."))
+	user.visible_message(
+		span_notice("[user] unloads \the [cargo] from \the [src]."),
+		span_notice("You unload \the [cargo] from \the [src]."))
 	amount_of_cargo--
 	icon_state = "trolley_[amount_of_cargo]"
 
@@ -119,6 +123,7 @@
 		return
 
 	unload_cargo(user)
+	return TRUE
 
 /obj/vehicle/ridden/trolley/is_user_buckle_possible(mob/living/target, mob/user, check_loc)
 	if(!..())

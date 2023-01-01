@@ -320,7 +320,7 @@ SUBSYSTEM_DEF(garbage)
 ///
 /// Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/D, force=FALSE, ...)
-	if(istype(D, /obj/item/bodypart) && D.gc_destroyed)
+	if(istype(D, /obj/item/bodypart) && !(D:flags_1 & INITIALIZED_1))
 		stack_trace("Give me the fucking stack trace")
 	if(!istype(D))
 		del(D)

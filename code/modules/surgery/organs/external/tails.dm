@@ -5,7 +5,7 @@
 	icon_state = "severedtail"
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
-	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
+	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
 	organ_flags = ORGAN_EDIBLE
 	feature_key = "tail"
 	render_key = "tail"

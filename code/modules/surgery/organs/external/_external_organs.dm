@@ -50,6 +50,9 @@
 	///Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
 
+	//A lazylist of this organ's appearance_modifier datums
+	var/list/appearance_mods
+
 
 /**mob_sprite is optional if you havent set sprite_datums for the object, and is used mostly to generate sprite_datums from a persons DNA
 * For _mob_sprite we make a distinction between "Round Snout" and "round". Round Snout is the name of the sprite datum, while "round" would be part of the sprite
@@ -131,74 +134,12 @@
 	ownerlimb = null
 	return ..()
 
-///Add the overlays we need to draw on a person. Called from _bodyparts.dm
-/obj/item/organ/external/proc/get_overlays(list/overlay_list, image_dir, image_layer, physique)
-	set_sprite(stored_feature_id)
-	if(!sprite_datum)
-		return
-
-	var/gender = (physique == FEMALE) ? "f" : "m"
-	var/list/icon_state_builder = list()
-	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
-	icon_state_builder += render_key ? render_key : feature_key
-	icon_state_builder += sprite_datum.icon_state
-	icon_state_builder += mutant_bodyparts_layertext(image_layer)
-
-	var/finished_icon_state = icon_state_builder.Join("_")
-
-	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = -image_layer)
-	appearance.dir = image_dir
-
-	if(sprite_datum.color_src)
-		appearance.color = draw_color
-
-	if(sprite_datum.center)
-		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
-
-	overlay_list += appearance
-	return appearance
-
 /obj/item/organ/external/proc/set_sprite(sprite_name)
 	stored_feature_id = sprite_name
 	sprite_datum = get_sprite_datum(sprite_name)
 	if(!sprite_datum && stored_feature_id)
 		stack_trace("NON-EXISTANT SPRITE DATUM IN EXTERNAL ORGAN")
 	cache_key = jointext(generate_icon_cache(), "_")
-
-///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse)
-/obj/item/organ/external/proc/generate_icon_cache()
-	. = list()
-	. += "[sprite_datum?.icon_state]"
-	. += "[render_key ? render_key : feature_key]"
-	if(color_source == ORGAN_COLOR_INHERIT_ALL)
-		. += "color1:[mutcolors["[mutcolor_used]_1"]]"
-		. += "color2:[mutcolors["[mutcolor_used]_2"]]"
-		. += "color3:[mutcolors["[mutcolor_used]_3"]]"
-	else
-		. += "[draw_color]"
-	return .
-
-/**This exists so sprite accessories can still be per-layer without having to include that layer's
-*  number in their sprite name, which causes issues when those numbers change.
-*/
-/obj/item/organ/external/proc/mutant_bodyparts_layertext(layer)
-	switch(layer)
-		if(BODY_BEHIND_LAYER)
-			return "BEHIND"
-		if(BODY_ADJ_LAYER)
-			return "ADJ"
-		if(BODY_FRONT_LAYER)
-			return "FRONT"
-
-///Converts a bitflag to the right layer. I'd love to make this a static index list, but byond made an attempt on my life when i did
-/obj/item/organ/external/proc/bitflag_to_layer(layer)
-	switch(layer)
-		if(EXTERNAL_BEHIND)
-			return BODY_BEHIND_LAYER
-		if(EXTERNAL_ADJACENT)
-			return BODY_ADJ_LAYER
-		if(EXTERNAL_FRONT)
-			return BODY_FRONT_LAYER
 
 ///Because all the preferences have names like "Beautiful Sharp Snout" we need to get the sprite datum with the actual important info
 /obj/item/organ/external/proc/get_sprite_datum(sprite)

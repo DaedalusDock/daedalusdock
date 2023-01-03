@@ -7,8 +7,8 @@
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "" //Leave this blank! Bodyparts are built using overlays
 
-	VAR_PRIVATE/current_icon = null
-	VAR_PRIVATE/current_aux_icon = null
+	VAR_PRIVATE/icon/current_icon = null
+	VAR_PRIVATE/icon/current_aux_icon = null
 
 	/// The icon for Organic limbs using greyscale
 	VAR_PROTECTED/icon_greyscale = DEFAULT_BODYPART_ICON_ORGANIC
@@ -165,6 +165,9 @@
 	var/list/bodypart_traits = list()
 	/// The name of the trait source that the organ gives. Should not be altered during the events of gameplay, and will cause problems if it is.
 	var/bodypart_trait_source = BODYPART_TRAIT
+
+	///A lazylist of this bodypart's appearance_modifier datums.
+	var/list/appearance_mods
 
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()

@@ -109,26 +109,31 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	//The icon's information has been settled. Time to create it's icon for manipulation.
 	icon_exists(chosen_icon, chosen_icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
-	var/icon/new_icon = icon(icon(chosen_icon, chosen_icon_state))
+	var/icon/new_icon = icon(chosen_icon, chosen_icon_state)
 	current_icon = new_icon
+	if(body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG)
+		current_icon.Blend(draw_color, ICON_MULTIPLY)
 	if(aux_layer)
-		var/icon/new_aux_icon = icon(icon(chosen_icon, chosen_aux_state))
+		var/icon/new_aux_icon = icon(chosen_icon, chosen_aux_state)
 		current_aux_icon = new_aux_icon
+		if(body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG)
+			current_aux_icon.Blend(draw_color, ICON_MULTIPLY)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_FINALIZE_ICON, current_icon, current_aux_icon)
+
+	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+		mod.BlendOnto(current_icon)
+		if(mod.affects_hands)
+			mod.BlendOnto(current_aux_icon)
 
 	//Icon is greebled. Add overlays.
 
 	var/mutable_appearance/limb_appearance = mutable_appearance(current_icon, chosen_icon_state, -BODYPARTS_LAYER, direction = image_dir)
 	var/mutable_appearance/aux_appearance
 	. += limb_appearance
-	if(draw_color)
-		limb_appearance.color = draw_color
 	if(aux_layer)
 		aux_appearance = mutable_appearance(current_aux_icon, chosen_aux_state, -aux_layer, direction = image_dir)
 		. += aux_appearance
-		if(draw_color)
-			aux_appearance.color = draw_color
 
 
 	//Ok so legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that.
@@ -173,15 +178,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 			if(!dropped && !external_organ.can_draw_on_bodypart(owner))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in external_organ.all_layers)
-				if(external_organ.layers & external_layer)
-					external_organ.get_overlays(
-						.,
-						image_dir,
-						external_organ.bitflag_to_layer(external_layer),
-						limb_gender,
-					)
-
+			. += external_organ.get_overlays(limb_gender, image_dir)
 
 	return .
 
@@ -212,6 +209,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 		if(owner && !external_organ.can_draw_on_bodypart(owner))
 			continue
 		. += "-[jointext(external_organ.generate_icon_cache(), "-")]"
+
+	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+		. += mod.key
 
 	return .
 
@@ -268,7 +268,7 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 		return
 	. = list()
 
-	var/icon_cache_key = "[limb_overlay]-[limb_overlay.icon_state]-[body_zone]"
+	var/icon_cache_key = "[limb_overlay]-[limb_overlay.icon_state]-[body_zone]-[draw_color]"
 	var/icon/new_leg_icon
 	var/icon/new_leg_icon_lower
 
@@ -279,9 +279,11 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 
 		new_leg_icon = icon(limb_overlay.icon, limb_overlay.icon_state)
 		new_leg_icon.Blend(leg_crop_mask, ICON_MULTIPLY)
+		new_leg_icon.Blend(draw_color, ICON_MULTIPLY)
 
 		new_leg_icon_lower = icon(limb_overlay.icon, limb_overlay.icon_state)
 		new_leg_icon_lower.Blend(leg_crop_mask_lower, ICON_MULTIPLY)
+		new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
 
 		GLOB.masked_leg_icons_cache[icon_cache_key] = list(new_leg_icon, new_leg_icon_lower)
 	new_leg_icon = GLOB.masked_leg_icons_cache[icon_cache_key][1]

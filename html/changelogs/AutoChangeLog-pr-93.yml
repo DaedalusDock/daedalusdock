@@ -1,0 +1,7 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - rscadd: Space carp now have more consistent colors and a better greyscale sprite.
+  - rscadd: Rare space carp are now "shiny" and have a special particle effect! Can
+      you find one?
+  - balance: Space carp are slightly easier to tame, and riding them is faster.

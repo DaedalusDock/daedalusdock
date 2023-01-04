@@ -1,0 +1,4 @@
+author: Gonenoculer5
+delete-after: true
+changes:
+  - rscdel: Removes bluespace warning tags system and associated code. Your welcome.

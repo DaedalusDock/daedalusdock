@@ -270,7 +270,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/mine/living_quarters)
 "aP" = (
@@ -6938,7 +6938,7 @@
 /turf/open/floor/iron/smooth,
 /area/mine/eva)
 "sZ" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -12846,7 +12846,7 @@
 	},
 /area/service/chapel)
 "Kd" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "Ke" = (
@@ -15638,7 +15638,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "RD" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/white,
 /area/mine/living_quarters)
 "RE" = (
@@ -16504,7 +16504,7 @@
 /area/maintenance/starboard/lesser)
 "TO" = (
 /obj/effect/turf_decal/tile/dark/fourcorners,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
 "TP" = (
@@ -18519,10 +18519,9 @@
 /area/service/hydroponics)
 "ZB" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/highcap/five_k{
-	dir = 1;
+/obj/machinery/power/apc/highcap/five_k/directional/north{
 	name = "Public Mining APC";
-	pixel_y = 25
+	
 	},
 /obj/item/reagent_containers/food/drinks/bottle/hooch,
 /turf/open/floor/plating,

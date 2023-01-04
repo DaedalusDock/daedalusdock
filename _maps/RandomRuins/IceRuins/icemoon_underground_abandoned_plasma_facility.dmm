@@ -309,7 +309,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "dY" = (
@@ -453,7 +453,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "gD" = (
@@ -506,7 +506,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "hd" = (
@@ -516,7 +516,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "hr" = (
@@ -658,7 +658,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "ja" = (
@@ -688,7 +688,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "jN" = (
@@ -730,7 +730,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "ku" = (
@@ -812,7 +812,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "lG" = (
@@ -864,7 +864,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "ms" = (
@@ -891,7 +891,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "mG" = (
@@ -984,7 +984,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "oe" = (
@@ -1017,7 +1017,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "oE" = (
@@ -1153,7 +1153,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "qP" = (
@@ -1238,7 +1238,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "sq" = (
@@ -1390,7 +1390,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "uq" = (
@@ -1430,7 +1430,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "ve" = (
@@ -1444,7 +1444,7 @@
 /area/ruin/plasma_facility/operations)
 "vz" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "vI" = (
@@ -1465,7 +1465,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "wc" = (
@@ -1489,7 +1489,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "wu" = (
@@ -1635,7 +1635,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Ae" = (
@@ -1718,7 +1718,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "BJ" = (
@@ -1801,7 +1801,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "CJ" = (
@@ -1810,7 +1810,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "CU" = (
@@ -2058,7 +2058,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Id" = (
@@ -2127,7 +2127,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "Jp" = (
@@ -2166,7 +2166,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Jy" = (
@@ -2390,7 +2390,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "MU" = (
@@ -2472,7 +2472,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Ny" = (
@@ -2546,7 +2546,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "OJ" = (
@@ -2558,7 +2558,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "OM" = (
@@ -2681,7 +2681,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "Qn" = (
@@ -2731,7 +2731,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Rf" = (
@@ -3003,7 +3003,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "Xj" = (
@@ -3019,7 +3019,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/operations)
 "XC" = (
@@ -3029,7 +3029,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
-	
+
 	},
 /area/ruin/plasma_facility/commons)
 "XI" = (

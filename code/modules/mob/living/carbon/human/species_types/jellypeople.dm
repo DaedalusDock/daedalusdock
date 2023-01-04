@@ -503,7 +503,7 @@
 	desc = "Tell a coder if you're seeing this."
 	icon_state = "nothing"
 	light_system = MOVABLE_LIGHT
-	light_range = LUMINESCENT_DEFAULT_GLOW
+	light_outer_range = LUMINESCENT_DEFAULT_GLOW
 	light_power = 2.5
 	light_color = COLOR_WHITE
 

@@ -11,7 +11,11 @@ SUBSYSTEM_DEF(ticker)
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
 	var/force_ending = 0 //Round was ended by admin intervention
 	// If true, there is no lobby phase, the game starts immediately.
+	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
+	#else
+	var/start_immediately = TRUE
+	#endif
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null

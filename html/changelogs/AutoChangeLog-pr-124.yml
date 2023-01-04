@@ -1,0 +1,4 @@
+author: Goonstation
+delete-after: true
+changes:
+  - rscadd: Unarmed interactions have particle effects.

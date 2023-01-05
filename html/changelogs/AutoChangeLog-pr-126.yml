@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Consecutive messages now increase font size in chat.
-  - rscadd: Consecutive messages now increase font size in overhead text.

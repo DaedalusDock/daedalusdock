@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Credits is no longer at round end, instead 90 seconds after round end.
-  - code_imp: mp3 is now a valid music format.

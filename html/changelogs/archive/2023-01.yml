@@ -1,0 +1,16 @@
+2023-01-05:
+  Gonenoculer5:
+  - rscdel: Removes bluespace warning tags system and associated code. Your welcome.
+  Goonstation:
+  - rscadd: Unarmed interactions have particle effects.
+  Kapu1178:
+  - rscadd: Preference for binary buttons like light switches using radials instead.
+  - rscadd: Consecutive messages now increase font size in chat.
+  - rscadd: Consecutive messages now increase font size in overhead text.
+  - rscadd: Credits is no longer at round end, instead 90 seconds after round end.
+  - code_imp: mp3 is now a valid music format.
+  Spyroshark:
+  - rscadd: Space carp now have more consistent colors and a better greyscale sprite.
+  - rscadd: Rare space carp are now "shiny" and have a special particle effect! Can
+      you find one?
+  - balance: Space carp are slightly easier to tame, and riding them is faster.

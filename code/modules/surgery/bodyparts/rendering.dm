@@ -279,11 +279,13 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 
 		new_leg_icon = icon(limb_overlay.icon, limb_overlay.icon_state)
 		new_leg_icon.Blend(leg_crop_mask, ICON_MULTIPLY)
-		new_leg_icon.Blend(draw_color, ICON_MULTIPLY)
+		if(draw_color)
+			new_leg_icon.Blend(draw_color, ICON_MULTIPLY)
 
 		new_leg_icon_lower = icon(limb_overlay.icon, limb_overlay.icon_state)
 		new_leg_icon_lower.Blend(leg_crop_mask_lower, ICON_MULTIPLY)
-		new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
+		if(draw_color)
+			new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
 
 		GLOB.masked_leg_icons_cache[icon_cache_key] = list(new_leg_icon, new_leg_icon_lower)
 	new_leg_icon = GLOB.masked_leg_icons_cache[icon_cache_key][1]

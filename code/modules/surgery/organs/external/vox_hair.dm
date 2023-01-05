@@ -1,7 +1,7 @@
 /obj/item/organ/external/vox_hair
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT
 
 	dna_block = DNA_VOX_HAIR_BLOCK
 
@@ -22,7 +22,7 @@
 /obj/item/organ/external/vox_hair/facial
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT
 
 	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
 

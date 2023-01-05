@@ -393,8 +393,32 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					return TRUE
 
 				if("Modify")
-					#warn impliment me
-					return FALSE
+					var/type2modify = tgui_input_list(usr, "Modify Appearance Mod", "Appearance Mods", existing_mods)
+					if(!type2modify)
+						return FALSE
+
+					var/static/list/modifiable_values = list("color", "priority")
+					var/value2modify = tgui_input_list(usr, "Select Var to Modify", "Appearance Mods", modifiable_values)
+					if(!value2modify)
+						return FALSE
+
+					switch(value2modify)
+						if("color")
+							var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
+							if(!color)
+								return FALSE
+
+							prefs[existing_mods[type2modify]]["color"] = color
+
+						if("priority")
+							var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
+							if(isnull(priority))
+								return
+							prefs[existing_mods[type2modify]]["priority"] = "[priority]"
+
+					if(!update_preference(requested_preference, prefs))
+						return FALSE
+					return TRUE
 
 
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)

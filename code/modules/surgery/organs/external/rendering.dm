@@ -24,6 +24,8 @@ GLOBAL_LIST_INIT(bitflag2text, list(
 	set_sprite(stored_feature_id)
 	if(!sprite_datum)
 		CRASH("No sprite datum found for [type]")
+	if(sprite_datum.name == "None")
+		return
 
 	var/icon/finished_icon = build_icon(physique)
 	for(var/image_layer in all_layers)
@@ -98,6 +100,3 @@ GLOBAL_LIST_INIT(bitflag2text, list(
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
 		. += mod.key
 	return .
-
-#undef LAYER2TEXT
-#undef BITFLAG2LAYER

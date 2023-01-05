@@ -121,10 +121,11 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_FINALIZE_ICON, current_icon, current_aux_icon)
 
-	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
-		mod.BlendOnto(current_icon)
-		if(mod.affects_hands)
-			mod.BlendOnto(current_aux_icon)
+	if((body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
+		for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+			mod.BlendOnto(current_icon)
+			if(mod.affects_hands && aux_zone)
+				mod.BlendOnto(current_aux_icon)
 
 	//Icon is greebled. Add overlays.
 
@@ -268,7 +269,7 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 		return
 	. = list()
 
-	var/icon_cache_key = "[limb_overlay]-[limb_overlay.icon_state]-[body_zone]-[draw_color]"
+	var/icon_cache_key = json_encode(generate_icon_key())
 	var/icon/new_leg_icon
 	var/icon/new_leg_icon_lower
 
@@ -288,8 +289,13 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 			new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
 
 		GLOB.masked_leg_icons_cache[icon_cache_key] = list(new_leg_icon, new_leg_icon_lower)
+
 	new_leg_icon = GLOB.masked_leg_icons_cache[icon_cache_key][1]
 	new_leg_icon_lower = GLOB.masked_leg_icons_cache[icon_cache_key][2]
+
+	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+		mod.BlendOnto(new_leg_icon)
+		mod.BlendOnto(new_leg_icon_lower)
 
 	//this could break layering in oddjob cases, but i'm sure it will work fine most of the time... right?
 	var/mutable_appearance/new_leg_appearance = new(limb_overlay)

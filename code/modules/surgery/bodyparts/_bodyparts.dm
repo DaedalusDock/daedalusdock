@@ -869,10 +869,11 @@
 		owner.update_body_parts()
 	else
 		update_icon_dropped()
+
 /obj/item/bodypart/proc/get_offset(direction)
 	return null
 
-/obj/item/bodypart/r_arm/get_offset(direction)
+/obj/item/bodypart/arm/right/get_offset(direction)
 	switch(direction)
 		if(NORTH)
 			return list(6,-3)
@@ -883,7 +884,7 @@
 		if(WEST)
 			return list(0,-3)
 
-/obj/item/bodypart/l_arm/get_offset(direction)
+/obj/item/bodypart/arm/left/get_offset(direction)
 	switch(direction)
 		if(NORTH)
 			return list(-6,-3)

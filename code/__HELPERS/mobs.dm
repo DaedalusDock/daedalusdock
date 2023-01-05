@@ -102,8 +102,6 @@
 
 	if(!GLOB.vox_hair_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
-	if(!GLOB.spines_list_vox.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_spines, GLOB.spines_list_vox)
 	if(!GLOB.vox_facial_hair_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list)
 	if(!GLOB.tails_list_vox.len)
@@ -132,7 +130,6 @@
 		"pod_hair" = pick(GLOB.pod_hair_list),
 		"headtails" = (pick(GLOB.headtails_list)),
 		"vox_snout" = pick(GLOB.vox_snouts_list),
-		"spines_vox" = pick(GLOB.spines_list_vox),
 		"tail_vox" = pick(GLOB.tails_list_vox),
 		"vox_hair" = pick(GLOB.vox_hair_list),
 		"vox_facial_hair" = pick(GLOB.vox_facial_hair_list),

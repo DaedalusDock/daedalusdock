@@ -21,9 +21,13 @@ GLOBAL_LIST_INIT(bitflag2text, list(
 /obj/item/organ/external/proc/get_overlays(physique, image_dir)
 	RETURN_TYPE(/list)
 	. = list()
+	if(!stored_feature_id)
+		return
+
 	set_sprite(stored_feature_id)
 	if(!sprite_datum)
 		CRASH("No sprite datum found for [type]")
+
 	if(sprite_datum.name == "None")
 		return
 

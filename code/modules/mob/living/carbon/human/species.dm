@@ -696,8 +696,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.caps_list[source.dna.features["caps"]]
 				if("headtails")
 					accessory = GLOB.headtails_list[source.dna.features["headtails"]]
-				if("spines_vox")
-					accessory = GLOB.spines_list_vox[source.dna.features["spines_vox"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue

@@ -1,6 +1,8 @@
 /datum/appearance_modifier
 	var/name = "You shouldn't see this!"
 
+	///If you don't want an appearance mod to be usable, use this.
+	var/abstract_type = /datum/appearance_modifier
 	///The icon that gets blended onto the base appearance. Generated in new()
 	var/icon/my_icon = null
 	var/icon2use = ""
@@ -13,7 +15,7 @@
 	///The blend mode used to apply a color
 	var/color_blend_func = ICON_MULTIPLY
 	///The priority of this appearance. Higher priorities are blended before other ones.
-	var/priority = 0
+	VAR_FINAL/priority = 0
 
 
 	///A list of species that can equip this appearance mod in character creation
@@ -22,7 +24,7 @@
 	)
 
 	//The bodytypes this applies to. Generally BODYTYPE_HUMANOID
-	var/bodytypes_affected = BODYTYPE_HUMANOID
+	var/bodytypes_affected = ALL
 	//The bodyzones this applies to, BODY_ZONE_HEAD, etc.
 	var/list/bodyzones_affected = list()
 	//Does this apply to hands? Hate hand code.

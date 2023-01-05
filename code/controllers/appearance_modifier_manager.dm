@@ -32,6 +32,8 @@ list(
 /datum/controller/modmanager/Initialize()
 	for(var/path as anything in subtypesof(/datum/appearance_modifier))
 		var/datum/appearance_modifier/mod = new path
+		if(mod.abstract_type == mod.type)
+			continue
 		mod_singletons += mod
 		mods_by_type[path] = mod
 		mods_by_name[mod.name] = mod

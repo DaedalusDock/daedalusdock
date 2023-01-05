@@ -244,8 +244,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_VOX_HAIR_BLOCK] = construct_block(GLOB.vox_hair_list.Find(features["vox_hair"]), GLOB.vox_hair_list.len)
 	if(features["vox_facial_hair"])
 		L[DNA_VOX_FACIAL_HAIR_BLOCK] = construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len)
-	if(features["spines_vox"])
-		L[DNA_VOX_SPINES_BLOCK] = construct_block(GLOB.spines_list_vox.Find(features["spines_vox"]), GLOB.spines_list_vox.len)
 	if(features["vox_snout"])
 		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
 
@@ -401,8 +399,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_hair_list.Find(features["vox_hair"]), GLOB.vox_hair_list.len))
 		if(DNA_VOX_FACIAL_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len))
-		if(DNA_VOX_SPINES_BLOCK)
-			set_uni_feature_block(blocknumber, construct_block(GLOB.spines_list_vox.Find(features["spines_vox"]), GLOB.spines_list_vox.len))
 		if(DNA_VOX_SNOUT_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len))
 
@@ -702,8 +698,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["vox_hair"] = GLOB.vox_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_HAIR_BLOCK), GLOB.vox_hair_list.len)]
 	if(dna.features["vox_facial_hair"])
 		dna.features["vox_facial_hair"] = GLOB.vox_facial_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_FACIAL_HAIR_BLOCK), GLOB.vox_facial_hair_list.len)]
-	if(dna.features["spines_vox"])
-		dna.features["spines_vox"] = GLOB.spines_list_vox[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SPINES_BLOCK), GLOB.spines_list_vox.len)]
 	if(dna.features["vox_snout"])
 		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
 

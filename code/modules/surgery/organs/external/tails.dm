@@ -151,17 +151,25 @@
 /obj/item/organ/external/tail/teshari/get_global_feature_list()
 	return GLOB.teshari_tails_list
 
-/obj/item/organ/external/tail/teshari/get_overlays(list/overlay_list, image_dir, image_layer, physique, image_color)
-	var/mutable_appearance/tail_primary = ..()
-	var/mutable_appearance/tail_secondary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_secondary", layer = -image_layer)
-	var/mutable_appearance/tail_tertiary = mutable_appearance(tail_primary.icon, "[tail_primary.icon_state]_tertiary", layer = -image_layer)
+/obj/item/organ/external/tail/teshari/get_overlays(physique, image_dir)
+	. = ..()
+	for(var/image_layer in all_layers)
+		if(!(layers & image_layer))
+			continue
+		var/real_layer = GLOB.bitflag2layer["[image_layer]"]
+
+		var/icon2use = sprite_datum.icon
+		var/state2use = build_icon_state(physique, image_layer)
+
+		var/mutable_appearance/tail_secondary = mutable_appearance(icon2use, "[state2use]_secondary", layer = -real_layer)
+		var/mutable_appearance/tail_tertiary = mutable_appearance(icon2use, "[state2use]_tertiary", layer = -real_layer)
 
 
-	tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
-	tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]
+		tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
+		tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]
 
-	overlay_list += tail_secondary
-	overlay_list += tail_tertiary
+		. += tail_secondary
+		. += tail_tertiary
 
 // Vox tail
 /obj/item/organ/external/tail/vox

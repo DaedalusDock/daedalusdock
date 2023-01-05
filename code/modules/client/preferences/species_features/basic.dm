@@ -203,3 +203,67 @@
 	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value[1])
 	target.dna.mutant_colors["[color_key]_2"] = sanitize_hexcolor(value[2])
 	target.dna.mutant_colors["[color_key]_3"] = sanitize_hexcolor(value[3])
+
+/datum/preference/appearance_mods
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "appearance_mods"
+	priority = PREFERENCE_PRIORITY_APPEARANCE_MODS
+
+/datum/preference/appearance_mods/deserialize(input, datum/preferences/preferences)
+	var/list/input_list = input:Copy()
+	var/list/return_list = list()
+	for(var/_type in input_list)
+		var/list/mod_data = global.ModManager.DeserializeSavedMod(input_list[_type])
+		if(!mod_data)
+			continue
+		return_list[_type] = mod_data
+
+	return return_list
+
+/datum/preference/appearance_mods/serialize(input)
+	var/list/input_list = input:Copy()
+	var/list/serialized_mods = list()
+	for(var/_type in input_list)
+		var/list/mod_data = input[_type]
+		if(!mod_data)
+			continue
+		var/list/serial_mod_data = global.ModManager.SerializeModData(mod_data)
+		if(!serial_mod_data)
+			continue
+		serialized_mods[serial_mod_data["path"]] = serial_mod_data
+	return serialized_mods
+
+/datum/preference/appearance_mods/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	var/list/deserialized_mods = value
+	if(!value)
+		return
+
+	QDEL_LIST_ASSOC_VAL(target.appearance_mods)
+	for(var/_type in deserialized_mods)
+		var/list/mod_data = deserialized_mods[_type]
+		var/new_color = mod_data["color"]
+		var/new_priority = mod_data["priority"]
+		var/new_blend_func = mod_data["color_blend"]
+
+		var/datum/appearance_modifier/mod = LAZYACCESS(target.appearance_mods, _type)
+		if(mod)
+			if(!(mod.color == new_color) || !(mod.priority == new_priority) || !(mod.color_blend_func == new_blend_func))
+				mod.SetValues(new_color, new_priority, new_blend_func)
+				continue
+
+		mod = global.ModManager.NewInstance(_type)
+		mod.SetValues(new_color, new_priority, new_blend_func)
+		mod.ApplyToMob(target)
+		LAZYADDASSOC(target.appearance_mods, _type, mod)
+
+	target.update_body_parts()
+
+/datum/preference/appearance_mods/create_default_value()
+	return list()
+
+/datum/preference/appearance_mods/is_valid(value)
+	if(!islist(value))
+		return FALSE
+	return TRUE
+
+

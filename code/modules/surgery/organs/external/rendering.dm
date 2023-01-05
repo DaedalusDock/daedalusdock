@@ -1,16 +1,21 @@
-#define BITFLAG2LAYER(var) \
-	switch(var) {\
-		if(EXTERNAL_BEHIND) {var =  BODY_BEHIND_LAYER;} \
-		if(EXTERNAL_ADJACENT) {var =  BODY_ADJ_LAYER;} \
-		if(EXTERNAL_FRONT) {var = BODY_FRONT_LAYER;} \
-	}
+GLOBAL_LIST_INIT(bitflag2layer, list(
+	"[EXTERNAL_BEHIND]" = BODY_BEHIND_LAYER,
+	"[EXTERNAL_ADJACENT]" = BODY_ADJ_LAYER,
+	"[EXTERNAL_FRONT]" = BODY_FRONT_LAYER,
 
-#define LAYER2TEXT(var) \
-	switch(var) {\
-		if(BODY_BEHIND_LAYER) {var =  "BEHIND";} \
-		if(BODY_ADJ_LAYER) {var =  "ADJ";} \
-		if(BODY_FRONT_LAYER) {var = "FRONT";} \
-	}
+))
+GLOBAL_LIST_INIT(layer2text, list(
+	"[BODY_BEHIND_LAYER]" = "BEHIND",
+	"[BODY_ADJ_LAYER]" = "ADJ",
+	"[BODY_FRONT_LAYER]" = "FRONT",
+))
+
+GLOBAL_LIST_INIT(bitflag2text, list(
+	"[EXTERNAL_BEHIND]" = "BEHIND",
+	"[EXTERNAL_ADJACENT]" = "ADJ",
+	"[EXTERNAL_FRONT]" = "FRONT",
+
+))
 
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
 /obj/item/organ/external/proc/get_overlays(physique, image_dir)
@@ -24,11 +29,8 @@
 	for(var/image_layer in all_layers)
 		if(!(src.layers & image_layer))
 			continue
-		var/true_layer = image_layer
-		BITFLAG2LAYER(true_layer)
-		var/state = true_layer
-		LAYER2TEXT(state)
-
+		var/true_layer = GLOB.bitflag2layer["[image_layer]"]
+		var/state = GLOB.layer2text["[true_layer]"]
 
 		var/mutable_appearance/appearance = mutable_appearance(finished_icon, state, layer = -true_layer)
 		appearance.dir = image_dir
@@ -38,6 +40,16 @@
 
 		. += appearance
 	return .
+
+/obj/item/organ/external/proc/build_icon_state(physique, image_layer)
+	var/ender = GLOB.bitflag2text["[image_layer]"]
+	var/gender = (physique == FEMALE) ? "f" : "m"
+	var/list/icon_state_builder = list()
+	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
+	icon_state_builder += render_key ? render_key : feature_key
+	icon_state_builder += sprite_datum.icon_state
+	icon_state_builder += ender
+	return icon_state_builder.Join("_")
 
 /obj/item/organ/external/proc/build_icon(physique)
 	RETURN_TYPE(/icon)
@@ -49,17 +61,9 @@
 	for(var/image_layer in all_layers)
 		if(!(layers & image_layer))
 			continue
-		var/gender = (physique == FEMALE) ? "f" : "m"
-		var/list/icon_state_builder = list()
-		var/ender = image_layer
-		BITFLAG2LAYER(ender)
-		LAYER2TEXT(ender)
+		var/ender = GLOB.bitflag2text["[image_layer]"]
 
-		icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
-		icon_state_builder += render_key ? render_key : feature_key
-		icon_state_builder += sprite_datum.icon_state
-		icon_state_builder += ender
-		var/finished_icon_state = icon_state_builder.Join("_")
+		var/finished_icon_state = build_icon_state(physique, image_layer)
 
 		if(!icon_exists(sprite_datum.icon, finished_icon_state))
 			stack_trace("Organ state [ender] missing from [sprite_datum.type]!")

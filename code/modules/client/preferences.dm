@@ -321,6 +321,81 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			return TRUE
 
+		if("appearance_mods")
+			var/datum/preference/requested_preference = GLOB.preference_entries_by_key["appearance_mods"]
+			if (isnull(requested_preference))
+				return FALSE
+
+			var/list/prefs = read_preference(/datum/preference/appearance_mods):Copy()
+			var/species_type = read_preference(/datum/preference/choiced/species)
+			var/list/existing_mods = list()
+			//All of pref code is written with the assumption that pref values about to be saved are serialized
+			prefs = requested_preference.serialize(prefs)
+
+			for(var/_type in prefs)
+				var/datum/appearance_modifier/path = prefs[_type]["path"]
+				path = text2path(path)
+				existing_mods[initial(path.name)] = _type
+
+			var/list/options = list("Add", "Remove")
+			if(length(prefs))
+				options += "Modify"
+
+			var/input = input(usr, "Select an action", "Appearance Mods", "Add...") as null|anything in options
+			if(!input)
+				return FALSE
+
+			switch(input)
+				if("Add")
+					var/list/add_new = global.ModManager.modnames_by_species[species_type] ^ existing_mods
+					var/choice = tgui_input_list(usr, "Add Appearance Mod", "Appearance Mods", add_new)
+					if(!choice)
+						return FALSE
+
+					var/datum/appearance_modifier/mod = global.ModManager.mods_by_name[choice]
+					var/list/new_mod_data = list(
+						"path" = "[mod.type]",
+						"color" = "",
+						"priority" = 0,
+						"color_blend" = "[mod.color_blend_func]"
+					)
+
+					if(initial(mod.color_blend_func))
+						var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
+						if(!color)
+							return FALSE
+						new_mod_data["color"] = color
+
+					var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
+					if(isnull(priority))
+						return
+
+					new_mod_data["priority"] = "[priority]"
+
+					if(!global.ModManager.ValidateSerializedList(new_mod_data))
+						return FALSE
+
+					prefs[mod.type] = new_mod_data
+
+					if(!update_preference(requested_preference, prefs))
+						return FALSE
+
+					return TRUE
+
+				if("Remove")
+					var/name2remove = tgui_input_list(usr, "Remove Appearance Mod", "Appearance Mods", existing_mods)
+					if(!name2remove)
+						return FALSE
+
+					prefs -= existing_mods[name2remove]
+					if(!update_preference(requested_preference, prefs))
+						return FALSE
+					return TRUE
+
+				if("Modify")
+					#warn impliment me
+					return FALSE
+
 
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]

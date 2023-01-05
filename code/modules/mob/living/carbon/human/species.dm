@@ -1,4 +1,5 @@
 GLOBAL_LIST_EMPTY(roundstart_races)
+GLOBAL_LIST_EMPTY(roundstart_races_by_type)
 
 /// An assoc list of species types to their features (from get_features())
 GLOBAL_LIST_EMPTY(features_by_species)
@@ -242,9 +243,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	RETURN_TYPE(/list)
 
 	if (!GLOB.roundstart_races.len)
-		GLOB.roundstart_races = generate_selectable_species()
+		generate_selectable_species()
 
 	return GLOB.roundstart_races
+
+/proc/get_selectable_species_by_type()
+	RETURN_TYPE(/list)
+
+	if (!GLOB.roundstart_races_by_type.len)
+		generate_selectable_species()
+
+	return GLOB.roundstart_races_by_type
 
 /**
  * Generates species available to choose in character setup at roundstart
@@ -254,17 +263,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /proc/generate_selectable_species()
 	var/list/selectable_species = list()
+	var/list/species_by_type = list()
 
 	for(var/species_type in subtypesof(/datum/species))
 		var/datum/species/species = new species_type
 		if(species.check_roundstart_eligible())
 			selectable_species += species.id
+			species_by_type += species_type
 			qdel(species)
 
 	if(!selectable_species.len)
 		selectable_species += SPECIES_HUMAN
+		species_by_type += /datum/species/human
 
-	return selectable_species
+	GLOB.roundstart_races = selectable_species
+	GLOB.roundstart_races_by_type = species_by_type
+	return
 
 /**
  * Checks if a species is eligible to be picked at roundstart.

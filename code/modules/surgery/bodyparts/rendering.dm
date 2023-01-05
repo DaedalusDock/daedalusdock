@@ -111,12 +111,12 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	var/icon/new_icon = icon(chosen_icon, chosen_icon_state)
 	current_icon = new_icon
-	if(body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG)
+	if(draw_color && (body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 		current_icon.Blend(draw_color, ICON_MULTIPLY)
 	if(aux_layer)
 		var/icon/new_aux_icon = icon(chosen_icon, chosen_aux_state)
 		current_aux_icon = new_aux_icon
-		if(body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG)
+		if(draw_color && (body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 			current_aux_icon.Blend(draw_color, ICON_MULTIPLY)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_FINALIZE_ICON, current_icon, current_aux_icon)

@@ -46,7 +46,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	draw_color = variable_color
 	if(should_draw_greyscale) //Should the limb be colored?
-		draw_color ||= (sanitize_hexcolor(species_color)) || (skin_tone && skintone2hex(skin_tone))
+		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
 	recolor_external_organs()
 	return TRUE
@@ -118,8 +118,6 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 		current_aux_icon = new_aux_icon
 		if(draw_color && (body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 			current_aux_icon.Blend(draw_color, ICON_MULTIPLY)
-
-	SEND_SIGNAL(src, COMSIG_BODYPART_FINALIZE_ICON, current_icon, current_aux_icon)
 
 	if((body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 		for(var/datum/appearance_modifier/mod as anything in appearance_mods)

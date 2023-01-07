@@ -47,7 +47,7 @@
 	if(priority)
 		src.priority = priority
 
-	key = json_encode(list(icon2use, state2use, priority, color, blend_func, color_blend_func))
+	key = json_encode(list(icon2use, state2use, priority, color, color_blend_func))
 	setup_complete = TRUE
 
 /datum/appearance_modifier/Destroy(force, ...)

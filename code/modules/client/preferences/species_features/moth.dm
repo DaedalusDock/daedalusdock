@@ -9,7 +9,9 @@
 	var/list/values = list()
 
 	var/icon/moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head")
-	moth_head.Blend(icon('icons/mob/human_face.dmi', "motheyes"), ICON_OVERLAY)
+	moth_head.Blend("#F5CF81", ICON_MULTIPLY)
+	moth_head.Blend(icon('icons/mob/species/moth/eyes.dmi', "eyes_l"), ICON_OVERLAY)
+	moth_head.Blend(icon('icons/mob/species/moth/eyes.dmi', "eyes_r"), ICON_OVERLAY)
 
 	for (var/antennae_name in GLOB.moth_antennae_list)
 		var/datum/sprite_accessory/antennae = GLOB.moth_antennae_list[antennae_name]
@@ -39,7 +41,6 @@
 
 	var/icon/moth_body = icon('icons/blanks/32x32.dmi', "nothing")
 
-	moth_body.Blend(icon('icons/mob/moth_wings.dmi', "m_moth_wings_plain_BEHIND"), ICON_OVERLAY)
 
 	var/list/body_parts = list(
 		/obj/item/bodypart/head/moth,
@@ -48,20 +49,23 @@
 		/obj/item/bodypart/arm/right/moth,
 	)
 
-	for (var/obj/item/bodypart/body_part in body_parts)
+	for (var/obj/item/bodypart/body_part as anything in body_parts)
 		var/gender = (initial(body_part.is_dimorphic)) ? "_m" : ""
-		moth_body.Blend(icon('icons/mob/species/moth/bodyparts.dmi', "moth_[body_part][gender]"), ICON_OVERLAY)
+		var/zone = initial(body_part.body_zone)
+		moth_body.Blend(icon('icons/mob/species/moth/bodyparts.dmi', "moth_[zone][gender]"), ICON_OVERLAY)
 
-	moth_body.Blend(icon('icons/mob/human_face.dmi', "motheyes_l"), ICON_OVERLAY)
-	moth_body.Blend(icon('icons/mob/human_face.dmi', "motheyes_r"), ICON_OVERLAY)
+	moth_body.Blend("#F5CF81", ICON_MULTIPLY)
+	moth_body.Blend(icon('icons/mob/moth_wings.dmi', "m_moth_wings_plain_BEHIND"), ICON_UNDERLAY)
+	moth_body.Blend(icon('icons/mob/species/moth/eyes.dmi', "eyes_l"), ICON_OVERLAY)
+	moth_body.Blend(icon('icons/mob/species/moth/eyes.dmi', "eyes_r"), ICON_OVERLAY)
 
 	for (var/markings_name in GLOB.moth_markings_list)
 		var/datum/sprite_accessory/markings = GLOB.moth_markings_list[markings_name]
-		var/icon/icon_with_markings = new(moth_body)
+		var/icon/icon_with_markings = icon(moth_body)
 
 		if (markings_name != "None")
-			for (var/body_part in body_parts)
-				var/icon/body_part_icon = icon(markings.icon, "[markings.icon_state]_[body_part]")
+			for (var/obj/item/bodypart/body_part as anything in body_parts)
+				var/icon/body_part_icon = icon(markings.icon, "[markings.icon_state]_[initial(body_part.body_zone)]")
 				body_part_icon.Crop(1, 1, 32, 32)
 				icon_with_markings.Blend(body_part_icon, ICON_OVERLAY)
 
@@ -101,3 +105,22 @@
 
 /datum/preference/choiced/moth_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["moth_wings"] = value
+
+/datum/preference/choiced/hairstyle_moth
+	savefile_key = "moth_hairstyle_name"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	main_feature_name = "Hairstyle"
+	should_generate_icons = TRUE
+	relevant_species_trait = HAIR
+
+/datum/preference/choiced/hairstyle_moth/init_possible_values()
+	return generate_possible_values_for_sprite_accessories_on_head(GLOB.moth_hairstyles_list, 'icons/mob/species/moth/bodyparts.dmi', "moth_head", "#F5CF81")
+
+/datum/preference/choiced/hairstyle_moth/apply_to_human(mob/living/carbon/human/target, value)
+	target.hairstyle = value
+
+/datum/preference/choiced/hairstyle_moth/is_accessible(datum/preferences/preferences)
+	if(!..(preferences))
+		return FALSE
+	return (preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)

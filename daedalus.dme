@@ -3274,6 +3274,7 @@
 #include "code\modules\mob\dead\new_player\sprite_accessories\horns.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\legs.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\markings.dm"
+#include "code\modules\mob\dead\new_player\sprite_accessories\moth_hair.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\snouts.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\spines.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\tails.dm"

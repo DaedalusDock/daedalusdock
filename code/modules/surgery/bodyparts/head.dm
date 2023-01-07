@@ -50,6 +50,9 @@
 	///An override that cannot be cleared under any circumstances
 	var/fixed_hair_color = null
 
+	///The global list of hairstyles allowed on this head. Populated by proc/set_global_hairstyles.
+	var/list/legal_hairstyles
+
 	var/hair_style = "Bald"
 	var/hair_alpha = 255
 	var/hair_gradient_style = null
@@ -82,6 +85,9 @@
 	var/mutable_appearance/facial_gradient_overlay
 
 
+/obj/item/bodypart/head/Initialize(mapload)
+	. = ..()
+	legal_hairstyles = get_legal_hairstyles()
 
 /obj/item/bodypart/head/Destroy()
 	QDEL_NULL(brainmob) //order is sensitive, see warning in handle_atom_del() below
@@ -298,6 +304,9 @@
 
 /obj/item/bodypart/head/GetVoice()
 	return "The head of [real_name]"
+
+/obj/item/bodypart/head/proc/get_legal_hairstyles()
+	return GLOB.hairstyles_list
 
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/animal_parts.dmi'

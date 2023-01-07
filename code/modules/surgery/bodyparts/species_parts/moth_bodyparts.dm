@@ -8,6 +8,11 @@
 
 	eyes_icon_file = 'icons/mob/species/moth/eyes.dmi'
 
+	hair_color_source = MUTCOLORS_GENERIC_1
+
+/obj/item/bodypart/head/moth/get_legal_hairstyles()
+	return GLOB.moth_hairstyles_list
+
 /obj/item/bodypart/chest/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/moth/bodyparts.dmi'

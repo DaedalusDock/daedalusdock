@@ -5,7 +5,7 @@
 	say_mod = "flutters"
 	scream_verb = "buzzes"
 	default_color = "00FF00"
-	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE, BODY_RESIZABLE)
+	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE, BODY_RESIZABLE, HAIR)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,

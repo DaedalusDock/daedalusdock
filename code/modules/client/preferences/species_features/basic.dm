@@ -1,8 +1,9 @@
-/proc/generate_possible_values_for_sprite_accessories_on_head(accessories)
+/proc/generate_possible_values_for_sprite_accessories_on_head(accessories, base_icon ='icons/mob/human_parts_greyscale.dmi', base_state = "human_head_m", base_color = "#ffe0d1")
 	var/list/values = possible_values_for_sprite_accessory_list(accessories)
 
-	var/icon/head_icon = icon('icons/mob/human_parts_greyscale.dmi', "human_head_m")
-	head_icon.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
+	var/icon/head_icon = icon(base_icon, base_state)
+	if(base_color)
+		head_icon.Blend(base_color, ICON_MULTIPLY)
 
 	for (var/name in values)
 		var/datum/sprite_accessory/accessory = accessories[name]
@@ -141,6 +142,13 @@
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.hairstyle = value
 
+/datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+		return FALSE
+	return TRUE
+
 /datum/preference/choiced/hairstyle/compile_constant_data()
 	var/list/data = ..()
 
@@ -165,6 +173,14 @@
 /datum/preference/choiced/hair_gradient/create_default_value()
 	return "None"
 
+/datum/preference/choiced/hair_gradient/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+		return FALSE
+
+	return TRUE
+
 /datum/preference/color/hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -178,6 +194,8 @@
 
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
+		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
 		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
 

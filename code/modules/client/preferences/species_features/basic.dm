@@ -52,7 +52,7 @@
 	eyes_organ.refresh()
 
 /datum/preference/color/eye_color/create_default_value()
-	return random_eye_color()
+	return "#000000"
 
 /datum/preference/choiced/facial_hairstyle
 	savefile_key = "facial_style_name"
@@ -76,6 +76,9 @@
 
 	return data
 
+/datum/preference/choiced/facial_hairstyle/create_default_value()
+	return "Shaved"
+
 /datum/preference/color/facial_hair_color
 	savefile_key = "facial_hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -85,6 +88,9 @@
 /datum/preference/color/facial_hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.facial_hair_color = value
 	target.update_body_parts()
+
+/datum/preference/color/facial_hair_color/create_default_value()
+	return "#422f03"
 
 /datum/preference/choiced/facial_hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -128,6 +134,9 @@
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.hair_color = value
 
+/datum/preference/color/hair_color/create_default_value()
+	return "#422f03"
+
 /datum/preference/choiced/hairstyle
 	savefile_key = "hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -135,6 +144,7 @@
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
+	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
@@ -155,6 +165,9 @@
 	data[SUPPLEMENTAL_FEATURE_KEY] = "hair_color"
 
 	return data
+
+/datum/preference/choiced/hairstyle/create_default_value()
+	return "Bald"
 
 /datum/preference/choiced/hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -209,7 +222,7 @@
 	return list(sanitize_hexcolor(input_colors[1]), sanitize_hexcolor(input_colors[2]), sanitize_hexcolor(input_colors[3]))
 
 /datum/preference/tri_color/create_default_value()
-	return list("#[random_color()]", "#[random_color()]", "#[random_color()]")
+	return list("#FF0000", "#00FF00", "#0000FF")
 
 /datum/preference/tri_color/is_valid(list/value)
 	return islist(value) && value.len == 3 && (findtext(value[1], GLOB.is_color) && findtext(value[2], GLOB.is_color) && findtext(value[3], GLOB.is_color))

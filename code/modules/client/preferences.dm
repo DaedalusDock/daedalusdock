@@ -355,12 +355,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/datum/appearance_modifier/mod = global.ModManager.mods_by_name[choice]
 					var/list/new_mod_data = list(
 						"path" = "[mod.type]",
-						"color" = "",
+						"color" = "#FFFFFF",
 						"priority" = 0,
-						"color_blend" = "[mod.color_blend_func]"
+						"color_blend" = "[mod.color_blend_func]",
 					)
 
-					if(initial(mod.color_blend_func))
+					if(mod.colorable)
 						var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
 						if(!color)
 							return FALSE
@@ -397,7 +397,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(!type2modify)
 						return FALSE
 
-					var/static/list/modifiable_values = list("color", "priority")
+					var/static/list/modifiable_values = list("priority")
+					var/datum/appearance_modifier/type2check = text2path(existing_mods[type2modify])
+					if(initial(type2check.colorable))
+						modifiable_values += "color"
+
 					var/value2modify = tgui_input_list(usr, "Select Var to Modify", "Appearance Mods", modifiable_values)
 					if(!value2modify)
 						return FALSE
@@ -635,12 +639,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 /// Applies the given preferences to a human mob.
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
-	character.dna.features = list()
+	//character.dna.features = list()
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
-
+		if(preference.requires_accessible && !preference.is_accessible(src))
+			continue
 		preference.apply_to_human(character, read_preference(preference.type))
 
 	character.dna.real_name = character.real_name

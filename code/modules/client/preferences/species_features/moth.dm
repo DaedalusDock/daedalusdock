@@ -113,6 +113,7 @@
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
+	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle_moth/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.moth_hairstyles_list, 'icons/mob/species/moth/bodyparts.dmi', "moth_head", "#F5CF81")
@@ -124,3 +125,6 @@
 	if(!..(preferences))
 		return FALSE
 	return (preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+
+/datum/preference/choiced/hairstyle_moth/create_default_value()
+	return "Bald"

@@ -39,20 +39,6 @@
 
 	// Mutant randomizing, doesn't affect the mob appearance unless it's the specific mutant.
 	H.dna.mutant_colors = random_mutant_colors()
-	H.dna.features["ethcolor"] = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
-	H.dna.features["tail_lizard"] = pick(GLOB.tails_list_lizard)
-	H.dna.features["snout"] = pick(GLOB.snouts_list)
-	H.dna.features["horns"] = pick(GLOB.horns_list)
-	H.dna.features["frills"] = pick(GLOB.frills_list)
-	H.dna.features["spines"] = pick(GLOB.spines_list)
-	H.dna.features["body_markings"] = pick(GLOB.body_markings_list)
-	H.dna.features["moth_wings"] = pick(GLOB.moth_wings_list)
-	H.dna.features["moth_antennae"] = pick(GLOB.moth_antennae_list)
-	H.dna.features["pod_hair"] = pick(GLOB.pod_hair_list)
-	H.dna.features["headtails"] = pick(GLOB.headtails_list)
-	H.dna.features["teshari_feathers"] = pick(GLOB.teshari_feathers_list)
-	H.dna.features["teshari_ears"] = pick(GLOB.teshari_ears_list)
-	H.dna.features["teshari_body_feathers"] = pick(GLOB.teshari_body_feathers_list)
-	H.dna.features["tail_teshari"] = pick(GLOB.teshari_tails_list)
+	H.dna.features = random_features()
 
 	H.update_body(is_creating = TRUE)

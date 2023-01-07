@@ -58,6 +58,6 @@
 		limb.limb_id = SPECIES_HUMAN
 		limb.should_draw_greyscale = TRUE
 		limb.name = "human [limb.plaintext_zone]"
-		limb.update_limb()
+		limb.update_limb(is_creating = TRUE)
 		limb.brute_reduction = 5
 		limb.burn_reduction = 4

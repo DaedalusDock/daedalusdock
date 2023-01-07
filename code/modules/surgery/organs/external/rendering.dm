@@ -76,7 +76,7 @@ GLOBAL_LIST_INIT(bitflag2text, list(
 			dump_error = TRUE
 
 		var/icon/temp_icon = icon(sprite_datum.icon, finished_icon_state)
-		if(sprite_datum.color_src)
+		if(sprite_datum.color_src && draw_color)
 			temp_icon.Blend(draw_color, ICON_MULTIPLY)
 
 		for(var/datum/appearance_modifier/mod as anything in appearance_mods)

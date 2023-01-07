@@ -8,18 +8,15 @@
 	var/icon2use = ""
 	var/state2use = ""
 	var/color = ""
-	///The cache key for this icon
-	var/key = ""
-	///The Blend() function used by this appearance.
-	var/blend_func = ICON_OVERLAY
+
 	///The blend mode used to apply a color
 	var/color_blend_func = ICON_MULTIPLY
 	///A boolean value that determines if this mod is colorable or not.
 	var/colorable = TRUE
-	///The priority of this appearance. Higher priorities are blended before other ones.
+	///The priority of this appearance. Higher priorities are blended before other ones. Set by client prefs.
 	VAR_FINAL/priority = 0
-
-
+	///The cache key for this icon. Dynamically generated on SetValues() call.
+	VAR_FINAL/key = ""
 
 	///A list of species that can equip this appearance mod in character creation
 	var/list/species_can_use = list(
@@ -44,7 +41,7 @@
 
 /datum/appearance_modifier/proc/SetValues(color, priority)
 	my_icon = icon(icon(icon2use, state2use))
-	if(color && color_blend_func)
+	if(color && colorable)
 		src.color = color
 		my_icon.Blend(color, color_blend_func)
 	if(priority)
@@ -69,18 +66,11 @@
 
 ///Blend our icon onto the target. This acts like BLEND_INSET_OVERLAY.
 /datum/appearance_modifier/proc/BlendOnto(icon/I)
-	if(blend_func == ICON_OVERLAY)
-		var/icon/masked_icon = icon(my_icon)
-		var/icon/masker = icon(I)
-		masker.MapColors(0,0,0, 0,0,0, 0,0,0, 1,1,1)
-		masked_icon.Blend(masker, ICON_MULTIPLY)
-		I.Blend(masked_icon, blend_func)
-		return
-
-	else
-		var/icon/my_icon_copy = icon(my_icon)
-		my_icon_copy.Blend(I, blend_func)
-		I.Blend(my_icon_copy, ICON_OVERLAY)
+	var/icon/masked_icon = icon(my_icon)
+	var/icon/masker = icon(I)
+	masker.MapColors(0,0,0, 0,0,0, 0,0,0, 1,1,1)
+	masked_icon.Blend(masker, blend_func)
+	I.Blend(masked_icon, ICON_OVERLAY)
 
 /datum/appearance_modifier/proc/ApplyToMob(mob/living/carbon/C)
 	if(!setup_complete)

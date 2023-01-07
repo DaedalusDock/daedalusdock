@@ -90,7 +90,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
 	create_dna(src)
 	dna.initialize_dna(skip_index = TRUE)
-	dna.features["body_markings"] = "None"
 	dna.features["ears"] = "None"
 	dna.features["ethcolor"] = COLOR_WHITE
 	dna.features["frills"] = "None"

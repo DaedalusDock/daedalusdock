@@ -69,7 +69,7 @@
 	var/icon/masked_icon = icon(my_icon)
 	var/icon/masker = icon(I)
 	masker.MapColors(0,0,0, 0,0,0, 0,0,0, 1,1,1)
-	masked_icon.Blend(masker, blend_func)
+	masked_icon.Blend(masker, ICON_MULTIPLY)
 	I.Blend(masked_icon, ICON_OVERLAY)
 
 /datum/appearance_modifier/proc/ApplyToMob(mob/living/carbon/C)

@@ -15,9 +15,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(variable_color)
 		draw_color = variable_color
 	else if(should_draw_greyscale)
-		variable_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
+		draw_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
 	else
-		variable_color = null
+		draw_color = null
 
 	if(!is_creating || !owner)
 		return
@@ -201,8 +201,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 		. += "[limb_gender]-"
 	. += "[limb_id]"
 	. += "-[body_zone]"
-	if(should_draw_greyscale && variable_color)
-		. += "-[variable_color]"
+	if(should_draw_greyscale && draw_color)
+		. += "-[draw_color]"
 
 	for(var/obj/item/organ/external/external_organ as anything in external_organs)
 		if(owner && !external_organ.can_draw_on_bodypart(owner))

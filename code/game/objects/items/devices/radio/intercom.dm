@@ -8,6 +8,7 @@
 	dog_fashion = null
 	unscrewed = FALSE
 	should_be_listening = FALSE
+	listening = FALSE
 
 /obj/item/radio/intercom/unscrewed
 	unscrewed = TRUE

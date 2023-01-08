@@ -1553,10 +1553,10 @@ GLOBAL_LIST_EMPTY(intento_players)
 		to_chat(user, span_notice("You flip \the [src]."))
 		flick("groan_tube_flip", src)
 		if(flipped)
-			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 8)
+			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 3)
 			say("AAAUUU")
 		else
-			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 8)
+			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 3)
 			say("UUAAAA")
 
 		flipped = !flipped

@@ -1542,8 +1542,9 @@ GLOBAL_LIST_EMPTY(intento_players)
 	desc = "UUAAAA...   AAAUUUU"
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "groan_tube"
+	verb_say = "groans"
 	var/cooldown = FALSE
-	var/cooldown_time = 10
+	var/cooldown_time = 20
 	var/flipped = FALSE
 
 /obj/item/toy/groan_tube/attack_self(mob/user)

@@ -25,6 +25,7 @@
  * Fake heretic codex
  * Fake Pierced Reality
  * Intento
+ * Groan Tube
  */
 /obj/item/toy
 	throwforce = 0
@@ -1532,3 +1533,34 @@ GLOBAL_LIST_EMPTY(intento_players)
 #undef TIME_TO_BEGIN
 #undef TIME_PER_DEMO_STEP
 #undef TIME_TO_RESET_ICON
+
+/*
+ * Groan Tube (thing that goes UUAAAA AAAUUU)
+ */
+/obj/item/toy/groan_tube
+	name = "groan tube"
+	desc = "UUAAAA...   AAAUUUU"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "groan_tube"
+	var/cooldown = FALSE
+	var/cooldown_time = 10
+	var/flipped = FALSE
+
+/obj/item/toy/groan_tube/attack_self(mob/user)
+	if(!cooldown)
+
+		to_chat(user, span_notice("You flip \the [src]."))
+		flick("groan_tube_flip", src)
+		if(flipped)
+			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 8)
+			say("AAAUUU")
+		else
+			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 8)
+			say("UUAAAA")
+
+		flipped = !flipped
+		cooldown = TRUE
+		addtimer(VARSET_CALLBACK(src, cooldown, FALSE), cooldown_time)
+		return
+	..()
+

@@ -86,8 +86,8 @@
 	for(var/ch_name in channels)
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
 
-	set_listening(listening)
-	set_broadcasting(broadcasting)
+	set_listening(should_be_listening)
+	set_broadcasting(should_be_broadcasting)
 	set_frequency(sanitize_frequency(frequency, freerange))
 	set_on(on)
 

@@ -334,6 +334,9 @@
 		. += span_notice("You can see [english_list(living_contents)] inside.")
 
 /obj/structure/inflatable/shelter/attack_hand(mob/user)
+	if(!isturf(user.loc))
+		to_chat(user, span_warning("You can't climb into \the [src] from here!"))
+		return FALSE
 	user.visible_message(span_notice("[user] begins to climb into \the [src]."), span_notice("You begin to climb into \the [src]."))
 	if(do_after(user, 3 SECONDS))
 		enter_shelter(user)
@@ -341,8 +344,10 @@
 /obj/structure/inflatable/shelter/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
 	if(!in_range(user, src) || !in_range(M, src))
 		return FALSE
+	if(!isturf(user.loc) || !isturf(M.loc))
+		return FALSE
 	if(do_after(user, 3 SECONDS))
-		if(!in_range(M, src))
+		if(!in_range(M, src) || !isturf(M.loc))
 			return FALSE //in case the target has moved
 		enter_shelter(M)
 		return

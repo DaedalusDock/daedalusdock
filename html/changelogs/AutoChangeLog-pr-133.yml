@@ -1,0 +1,4 @@
+author: DTraitor
+delete-after: true
+changes:
+  - code_imp: Added signal that is sent when atom changes density

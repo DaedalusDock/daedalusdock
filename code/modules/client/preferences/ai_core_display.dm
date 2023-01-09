@@ -23,3 +23,6 @@
 
 /datum/preference/choiced/ai_core_display/apply_to_human(mob/living/carbon/human/target, value)
 	return
+
+/datum/preference/choiced/ai_core_display/create_default_value()
+	return "Goon"

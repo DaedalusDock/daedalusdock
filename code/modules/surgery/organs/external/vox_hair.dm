@@ -1,7 +1,7 @@
 /obj/item/organ/external/vox_hair
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT
 
 	dna_block = DNA_VOX_HAIR_BLOCK
 
@@ -22,12 +22,14 @@
 /obj/item/organ/external/vox_hair/facial
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT
 
 	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
 
 	feature_key = "vox_facial_hair"
 	preference = "feature_vox_facial_hair"
+
+	color_source = ORGAN_COLOR_HAIR
 
 /obj/item/organ/external/vox_hair/facial/get_global_feature_list()
 	return GLOB.vox_facial_hair_list

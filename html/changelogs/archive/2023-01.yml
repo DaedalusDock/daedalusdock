@@ -17,3 +17,6 @@
 2023-01-08:
   Kapu1178:
   - imagedel: Removed a ton of tau ceti sprites.
+2023-01-09:
+  DTraitor:
+  - code_imp: Added signal that is sent when atom changes density

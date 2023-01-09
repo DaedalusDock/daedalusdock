@@ -27,7 +27,7 @@
 
 	if(!department)
 		//picks a random department if none was given
-		department = pick(list(/datum/job_department/assistant, /datum/job_department/medical, /datum/job_department/engineering, /datum/job_department/science, /datum/job_department/cargo, /datum/job_department/service, /datum/job_department/security) - independent_departments)
+		department = pick(list(/datum/job_department/assistant, /datum/job_department/medical, /datum/job_department/engineering, /datum/job_department/science, /datum/job_department/cargo, /datum/job_department/salvage, /datum/job_department/service, /datum/job_department/security) - independent_departments)
 		if(!department)
 			if(message_admins)
 				message_admins("Department Revolt could not create a nation, as all the departments are independent! You have created nations, you madman!")

@@ -763,6 +763,7 @@
 	var/list/department_types = list(
 		/datum/job_department/silicon, //united nations
 		/datum/job_department/cargo,
+		/datum/job_department/salvage,
 		/datum/job_department/engineering,
 		/datum/job_department/medical,
 		/datum/job_department/science,

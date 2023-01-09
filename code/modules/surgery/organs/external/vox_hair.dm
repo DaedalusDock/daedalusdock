@@ -29,5 +29,7 @@
 	feature_key = "vox_facial_hair"
 	preference = "feature_vox_facial_hair"
 
+	color_source = ORGAN_COLOR_HAIR
+
 /obj/item/organ/external/vox_hair/facial/get_global_feature_list()
 	return GLOB.vox_facial_hair_list

@@ -25,7 +25,7 @@
 	speech_span = SPAN_ROBOT
 	faction = list("neutral", "silicon", "turret")
 	light_system = MOVABLE_LIGHT
-	light_range = 3
+	light_outer_range = 3
 	light_power = 0.9
 
 	///Will other (noncommissioned) bots salute this bot?
@@ -36,7 +36,7 @@
 	///Access required to access this Bot's maintenance protocols
 	var/maints_access_required = list(ACCESS_ROBOTICS)
 	///The Robot arm attached to this robot - has a 50% chance to drop on death.
-	var/robot_arm = /obj/item/bodypart/r_arm/robot
+	var/robot_arm = /obj/item/bodypart/arm/right/robot
 	///People currently looking into a bot's UI panel.
 	var/list/users = list()
 	///The inserted (if any) pAI in this bot.

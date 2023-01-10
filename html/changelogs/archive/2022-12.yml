@@ -1,0 +1,46 @@
+2022-12-05:
+  Baystation12, Kapu1178:
+  - rscadd: Smell component
+  - rscadd: Blood has an odor of DOOM!
+  - rscadd: Flying blood splatters leave a trail of blood.
+  - bugfix: N2O tanks now actually contain N2O. Whoops!
+  - tweak: Fires from explosions burn much shorter
+  Kapu1178:
+  - bugfix: Humans are now area sensitive regardless of mood config.
+  - bugfix: Semi-rare bug involving pumps not pumping.
+  - code_imp: human examine no longer runtimes
+  Spyroshark:
+  - balance: Reinforced windows are now much less resilient against melee damage and
+      are easier to deconstruct.
+2022-12-10:
+  Kapu1178:
+  - rscadd: Runechat now displays over intercoms and non-held radios.
+  - tweak: Intercoms are now OFF by default.
+2022-12-11:
+  Kapu1178:
+  - rscadd: Lockers, crates, and machines no longer block click attempts in adjacency
+      checks. Basically, you can reach tables cornered between lockers/machines.
+  - rscadd: Teshari move funny
+  Kapu1178, RimiNosha, CapybaraExtravagante, DrDiasyl:
+  - refactor: Ambience is now more immersive. Are you afraid of the dark?
+  Lakue-Bit:
+  - imageadd: Added icons for E-Cigar as an item, and when equipped as a mask on the
+      player.
+  francinum:
+  - qol: Walls are now named based on their material and structure
+  - imageadd: Some material walls now properly use the correct icon base
+2022-12-12:
+  Kapu1178:
+  - code_imp: Injects a fat dose of Lorium
+2022-12-24:
+  Kapu1178:
+  - refactor: Redid lighting appearance
+  francinum:
+  - imageadd: Perspective Air Alarms
+  - imageadd: Pespective APCs
+2022-12-26:
+  Kapu1178:
+  - bugfix: Starlight does something again
+2022-12-29:
+  fighterslam:
+  - rscadd: Adds a bunch more floor tiles & decals.

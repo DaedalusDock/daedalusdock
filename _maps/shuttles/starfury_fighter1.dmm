@@ -51,7 +51,6 @@
 /obj/item/storage/toolbox/mechanical,
 /obj/item/multitool,
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium/red,

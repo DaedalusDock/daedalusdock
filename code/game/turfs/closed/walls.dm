@@ -17,6 +17,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL)
+	lighting_uses_jen = TRUE
 
 	rcd_memory = RCD_MEMORY_WALL
 
@@ -42,6 +43,8 @@
 	var/d_state = INTACT
 	/// Whether this wall is rusted or not, to apply the rusted overlay
 	var/rusted
+	/// Material Set Name
+	var/matset_name
 
 	var/list/dent_decals
 
@@ -74,13 +77,10 @@
 
 /turf/closed/wall/update_name()
 	. = ..()
-	name = ""
 	if(rusted)
-		name = "rusted "
-	if(reinf_material)
-		name += "reinforced wall"
+		name = "rusted "+ matset_name
 	else
-		name += "wall"
+		name = matset_name
 
 /turf/closed/wall/Initialize(mapload)
 	. = ..()
@@ -220,6 +220,13 @@
 	plating_material = plating_mat
 	reinf_material = reinf_mat
 
+	if(reinf_material)
+		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."
+	else
+		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+	matset_name = name
 	update_greyscale()
 	update_appearance()
 

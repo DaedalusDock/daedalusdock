@@ -19,13 +19,13 @@
 	. = ..()
 	if(slot == ITEM_SLOT_FEET)
 		if(enabled_waddle)
-			user.AddElement(/datum/element/waddling)
+			ADD_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 		if(is_clown_job(user.mind?.assigned_role))
 			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/clothing/shoes/clown_shoes/dropped(mob/user)
 	. = ..()
-	user.RemoveElement(/datum/element/waddling)
+	REMOVE_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 	if(is_clown_job(user.mind?.assigned_role))
 		SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, "clownshoes")
 

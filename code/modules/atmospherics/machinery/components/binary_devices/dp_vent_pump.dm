@@ -82,10 +82,10 @@
 
 		var/transfer_moles = calculate_transfer_moles(air1, environment, pressure_delta)
 		var/draw = pump_gas(air1, environment, transfer_moles, power_rating)
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		if(draw > -1)
 			var/datum/pipeline/parent1 = parents[1]
 			parent1.update = TRUE
+			ATMOS_USE_POWER(draw)
 
 	else //external -> output
 		var/pressure_delta = 10000
@@ -104,10 +104,11 @@
 		var/transfer_moles = calculate_transfer_moles(air2, environment, pressure_delta)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		if(draw > -1)
 			var/datum/pipeline/parent2 = parents[2]
 			parent2.update = TRUE
+			if(draw > 0)
+				ATMOS_USE_POWER(draw)
 
 	//Radio remote control
 

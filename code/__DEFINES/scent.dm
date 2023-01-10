@@ -1,0 +1,5 @@
+#define SCENT_ODOR "odour"
+#define SCENT_SMELL "smell"
+#define SCENT_FRAGRANCE "fragrance"
+#define SCENT_HAZE "haze"
+#define SCENT_PLUME "plume"

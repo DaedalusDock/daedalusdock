@@ -234,7 +234,7 @@ SUBSYSTEM_DEF(economy)
 		if(2)
 			rand_days = (GLOB.year_integer % 4 == 0) ? 29 : 28
 	// The date the event of paper occured, randomly generated.
-	var/paper_time_period = "[rand(GLOB.year_integer + 400, GLOB.year_integer + 550)]/[rand_month]/[rand(1, rand_days)]"
+	var/paper_time_period = "[rand(GLOB.year_integer + 700, GLOB.year_integer + 900)]/[rand_month]/[rand(1, rand_days)]"
 	// The event that happened in the paper.
 	var/paper_occasion = pick_list_weighted(PAPERWORK_FILE, "occasion")
 	// The contents of the paper. Will eventually not be null.
@@ -316,7 +316,7 @@ SUBSYSTEM_DEF(economy)
 			if("victim")
 				paper_victim = scramble_text(paper_victim, rand(5, 8))
 			if("time")
-				paper_time_period = "[rand(GLOB.year_integer + 400, GLOB.year_integer + 550)]/[rand_month + 6]/[rand(rand_days, 1.5 * rand_days)]"
+				paper_time_period = "[rand(GLOB.year_integer + 700, GLOB.year_integer + 900)]/[rand_month + 6]/[rand(rand_days, 1.5 * rand_days)]"
 			if("occasion")
 				paper_occasion = scramble_text(paper_occasion, rand(4, 8))
 

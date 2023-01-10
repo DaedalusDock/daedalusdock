@@ -147,10 +147,9 @@
 		lastinterval = setInterval(function () {
 			bottom = bottom + 1;
 			div.style.bottom = bottom + "px";
-			if(bottom > 1200){ // Clear the credits screen once the container scrolls past this arbitrary amount of pixels
-				//debugMe()
-				clearInterval(lastinterval);
+			if(!checkVisible(div)){
 				commitSuicide();
+				clearInterval(lastinterval);
 				return;
 			}
 		}, speed);
@@ -172,6 +171,12 @@
 				document.getElementsByTagName("style")[0].innerHTML += ".actorname, .actorrole, #splash, #episodename {color: rgb(230, 209, 64); font-family: Georgia, serif; font-variant: small-caps; font-style: italic; font-weight: 400; text-shadow: rgb(123, 96, 38) 1px 1px 0px, rgb(123, 96, 38) 1px 1px 0.1px; overflow: visible !important;} #episodename {font-size: 175%;}"
 				break;
 		}
+	}
+
+	function checkVisible(elm) {
+		var rect = elm.getBoundingClientRect();
+		var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 	}
 
 	function debugMe(){

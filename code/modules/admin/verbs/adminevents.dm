@@ -213,7 +213,12 @@
 	SSshuttle.admin_emergency_no_recall = TRUE
 	SSshuttle.emergency.setTimer(0)
 	SSshuttle.emergency.mode = SHUTTLE_DISABLED
-	priority_announce("Warning: Emergency Shuttle uplink failure, shuttle disabled until further notice.", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
+	priority_announce(
+		"Warning: Emergency Shuttle uplink failure, shuttle disabled until further notice.",
+		"LRSV Icarus Announcement",
+		"Emergency Shuttle Uplink Alert",
+		'sound/misc/announce_dig.ogg'
+	)
 
 /client/proc/admin_enable_shuttle()
 	set category = "Admin.Events"
@@ -239,7 +244,7 @@
 	if(SSshuttle.last_call_time < 10 SECONDS && SSshuttle.last_mode != SHUTTLE_IDLE)
 		SSshuttle.last_call_time = 10 SECONDS //Make sure no insta departures.
 	SSshuttle.emergency.setTimer(SSshuttle.last_call_time)
-	priority_announce("Warning: Emergency Shuttle uplink reestablished, shuttle enabled.", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
+	priority_announce("Warning: Emergency Shuttle uplink reestablished, shuttle enabled.", "LRSV Icarus Announcement", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
 
 /client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
 	set category = "Admin.Events"

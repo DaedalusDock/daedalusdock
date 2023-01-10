@@ -10,14 +10,6 @@
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"av" = (
-/obj/effect/mapping_helpers/airlock/locked,
-/obj/machinery/door/airlock/vault{
-	name = "secured door";
-	req_access_txt = "207"
-	},
-/turf/open/floor/mineral/plastitanium,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
 "az" = (
 /turf/open/floor/carpet/black,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
@@ -167,7 +159,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "el" = (
@@ -364,7 +356,7 @@
 /obj/structure/spawner/nether{
 	light_color = "#FF0000";
 	light_power = 2;
-	light_range = 2;
+	light_outer_range = 2;
 	max_mobs = 2
 	},
 /obj/effect/gibspawner/human,
@@ -400,8 +392,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "iS" = (
 /obj/effect/landmark/tram/middle_part/hilbert,
-/obj/machinery/light/floor{
-	brightness = 2;
+/obj/machinery/light/floor/has_bulb{
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},
@@ -574,8 +565,7 @@
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "mY" = (
-/obj/machinery/light/floor{
-	brightness = 2;
+/obj/machinery/light/floor/has_bulb{
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},
@@ -789,13 +779,6 @@
 	},
 /turf/open/floor/mineral/titanium/tiled/purple,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"sa" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/space/basic,
-/turf/open/floor/mineral/plastitanium,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "sj" = (
 /turf/open/floor/circuit/green/anim,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
@@ -918,7 +901,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "vz" = (
@@ -1012,8 +995,7 @@
 /obj/structure/displaycase{
 	start_showpiece_type = /obj/item/hilbertshotel
 	},
-/obj/machinery/light/floor{
-	brightness = 2;
+/obj/machinery/light/floor/has_bulb{
 	bulb_colour = "#deefff";
 	bulb_power = 0.6
 	},
@@ -1508,7 +1490,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/siding/wood,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "GP" = (
@@ -1592,9 +1574,6 @@
 	},
 /turf/open/floor/grass/fairy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"Iy" = (
-/turf/closed/indestructible/riveted/plastinum,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
 "ID" = (
 /obj/structure/table/reinforced/rglass,
 /obj/item/grown/bananapeel,
@@ -1856,9 +1835,6 @@
 /obj/machinery/light/warm/directional/south,
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"Ok" = (
-/turf/closed/indestructible/riveted/plastinum,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "OA" = (
 /obj/machinery/door/airlock/titanium,
 /turf/open/floor/mineral/plastitanium,
@@ -1953,7 +1929,7 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/food/tomato_smudge,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "QV" = (
@@ -2320,7 +2296,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/wood,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Yg" = (
@@ -2379,7 +2355,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/wood,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "YG" = (
@@ -2513,7 +2489,7 @@ Ut
 Ut
 Ut
 Bo
-Ok
+Bo
 Ym
 za
 Sc
@@ -2521,7 +2497,7 @@ ie
 UH
 vZ
 Qu
-Ok
+Bo
 Bo
 Ut
 Ut
@@ -2864,7 +2840,7 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
 yZ
 Rj
 CO
@@ -2872,8 +2848,8 @@ Rj
 CO
 Rj
 QA
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 he
@@ -2901,7 +2877,7 @@ Ut
 Bo
 uW
 uW
-Ok
+Bo
 vq
 Bo
 GJ
@@ -2940,17 +2916,17 @@ Ut
 Bo
 La
 La
-Ok
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 CP
 Bo
 CP
-Ok
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -3021,17 +2997,17 @@ qX
 rM
 Bo
 cg
-Ok
-Ok
+Bo
+Bo
 XP
 XP
 XP
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 cg
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -3054,23 +3030,23 @@ Bo
 rb
 eB
 ks
-Ok
+Bo
 Bo
 qR
 Bo
-Ok
 Bo
-Ok
+Bo
+Bo
 CV
 Ru
 Fo
 Ru
 LD
-Ok
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 Hf
 FF
 Gl
@@ -3109,13 +3085,13 @@ Rk
 Bo
 To
 To
-Ok
-Ok
+Bo
+Bo
 hT
 fv
 QV
 ua
-Ok
+Bo
 Rq
 Rq
 Ut
@@ -3193,7 +3169,7 @@ wh
 Gl
 WJ
 ua
-Ok
+Bo
 Rq
 Rq
 Ut
@@ -3211,23 +3187,23 @@ Bo
 AZ
 Dh
 mC
-Ok
+Bo
 Bo
 rQ
-Ok
 Bo
-Ok
+Bo
+Bo
 BH
 hk
 KC
 Xw
 LE
-Ok
 Bo
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 Mh
 Fv
 QV
@@ -3255,13 +3231,13 @@ bi
 sz
 Bo
 cg
-Ok
-Ok
+Bo
+Bo
 Dy
 KC
 Jh
-Ok
-Ok
+Bo
+Bo
 Wg
 Bo
 cg
@@ -3304,13 +3280,13 @@ Hb
 WA
 Bo
 cg
-Ok
+Bo
 Bo
 pI
 eC
 KL
 Bo
-Ok
+Bo
 cg
 cg
 ch
@@ -3329,7 +3305,7 @@ cg
 cg
 cg
 Bo
-Ok
+Bo
 th
 Bo
 cg
@@ -3344,11 +3320,11 @@ Xq
 Bo
 cg
 cg
-Ok
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 ch
@@ -3370,7 +3346,7 @@ cg
 cg
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 Bo
@@ -3535,8 +3511,8 @@ KC
 KC
 Bo
 RL
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -3613,7 +3589,7 @@ KC
 Xw
 Bo
 Bk
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -3640,7 +3616,7 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 cg
@@ -3672,17 +3648,17 @@ Ut
 cg
 cg
 Bo
-Ok
+Bo
 ln
 Uy
 Fn
 gx
 Fn
 nh
-Ok
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 Bo
@@ -3710,7 +3686,7 @@ Ut
 Ut
 cg
 Bo
-Ok
+Bo
 cE
 wo
 VT
@@ -3723,13 +3699,13 @@ La
 ty
 Bo
 cg
-Ok
-Ok
+Bo
+Bo
 Dy
 KC
 Jh
-Ok
-Ok
+Bo
+Bo
 XI
 Bo
 EI
@@ -3760,15 +3736,15 @@ xm
 oi
 ZV
 up
-Ok
 Bo
-Ok
+Bo
+Bo
 BI
 hk
 KC
 Xw
 MD
-Ok
+Bo
 Bo
 Bo
 kw
@@ -3916,15 +3892,15 @@ Sh
 pC
 wo
 uG
-Ok
 Bo
-Ok
+Bo
+Bo
 BI
 hk
 KC
 Xw
 MD
-Ok
+Bo
 Bo
 Bo
 Ze
@@ -3944,7 +3920,7 @@ Ut
 cg
 cg
 Bo
-Ok
+Bo
 cQ
 wo
 Ny
@@ -3957,13 +3933,13 @@ La
 ty
 Bo
 cg
-Ok
-Ok
+Bo
+Bo
 Dy
 KC
 Jh
-Ok
-Ok
+Bo
+Bo
 cg
 Bo
 EI
@@ -3984,17 +3960,17 @@ Ut
 cg
 cg
 Bo
-Ok
+Bo
 dq
 Uy
 SD
 iY
 SD
 np
-Ok
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 Bo
@@ -4030,7 +4006,7 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 cg
@@ -4356,11 +4332,11 @@ Bo
 cg
 cg
 cg
-Ok
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -4403,7 +4379,7 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 Ut
@@ -4425,13 +4401,13 @@ rJ
 Rq
 cg
 cg
-Ok
-Ok
+Bo
+Bo
 Dy
 KC
 Jh
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 Bo
@@ -4464,13 +4440,13 @@ tr
 va
 Rq
 cg
-Ok
+Bo
 BM
 hk
 KC
 Xw
 Nc
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -4620,15 +4596,15 @@ es
 Rq
 cg
 Bo
-Ok
+Bo
 Gy
 zw
 Gs
 zw
 NQ
-Ok
 Bo
-Ok
+Bo
+Bo
 Zk
 sU
 ba
@@ -4659,13 +4635,13 @@ Rq
 cg
 Rq
 cg
-Ok
-Ok
+Bo
+Bo
 XP
 XP
 XP
-Ok
-Ok
+Bo
+Bo
 cg
 Bo
 Zy
@@ -4706,7 +4682,7 @@ on
 Bo
 cg
 cg
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -4714,7 +4690,7 @@ Bo
 EP
 Bo
 jK
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -4776,13 +4752,13 @@ cg
 cg
 cg
 cg
-Ok
-Ok
+Bo
+Bo
 Ee
 sU
 Lr
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -4792,7 +4768,7 @@ JV
 ky
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 Ut
@@ -4814,22 +4790,22 @@ cg
 cg
 cg
 cg
-Ok
-Ok
+Bo
+Bo
 Eu
 EM
 pq
 io
 Eu
-Ok
-Ok
+Bo
+Bo
 cg
 cg
-Ok
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -4970,15 +4946,15 @@ cg
 cg
 cg
 cg
-Ok
-Ok
+Bo
+Bo
 BL
 EY
 BY
 BY
 PL
-Ok
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -5010,13 +4986,13 @@ cg
 cg
 cg
 cg
-Ok
 Bo
-Ok
+Bo
+Bo
 Hu
-Ok
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 cg
@@ -5087,10 +5063,10 @@ Ut
 cg
 cg
 cg
-Ok
 Bo
 Bo
-Ok
+Bo
+Bo
 La
 Bo
 Bo
@@ -5100,7 +5076,7 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
 cg
 cg
 cg
@@ -5139,10 +5115,10 @@ PR
 KC
 KC
 PR
-Ok
-Ok
+Bo
+Bo
 cg
-Iy
+BJ
 BJ
 BJ
 BJ
@@ -5178,10 +5154,10 @@ Ba
 Ba
 Ba
 Ba
-sa
-Ok
+Ba
 Bo
-Iy
+Bo
+BJ
 sj
 sj
 sj
@@ -5243,7 +5219,7 @@ Ut
 Ut
 cg
 cg
-Ok
+Bo
 Bo
 Bo
 Bo
@@ -5257,9 +5233,9 @@ vr
 vr
 vr
 vr
-Ok
 Bo
-Iy
+Bo
+BJ
 sj
 sj
 sj
@@ -5295,10 +5271,10 @@ PR
 KC
 KC
 PR
-Ok
-Ok
+Bo
+Bo
 cg
-Iy
+BJ
 BJ
 BJ
 BJ
@@ -5326,7 +5302,6 @@ cg
 cg
 cg
 cg
-Ok
 Bo
 Bo
 Bo
@@ -5334,7 +5309,8 @@ Bo
 Bo
 Bo
 Bo
-Ok
+Bo
+Bo
 cg
 cg
 cg

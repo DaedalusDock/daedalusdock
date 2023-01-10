@@ -2,7 +2,7 @@
 ///Burdened grants some more mutations upon injuring yourself sufficiently
 /datum/mutation/human/burdened
 	name = "Burdened"
-	desc = "Less of a genome and more of a forceful rewrite of genes. Nothing Nanotrasen supplies allows for a genetic restructure like this... \
+	desc = "Less of a genome and more of a forceful rewrite of genes. Nothing Ananke supplies allows for a genetic restructure like this... \
 	The user feels compelled to injure themselves in various incapacitating and horrific ways. Oddly enough, this gene seems to be connected \
 	to several other ones, possibly ready to trigger more genetic changes in the future."
 	quality = POSITIVE //so it gets carried over on revives

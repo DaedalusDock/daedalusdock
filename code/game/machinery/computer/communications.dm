@@ -302,7 +302,7 @@
 			nuke_request(reason, usr)
 			to_chat(usr, span_notice("Request sent."))
 			usr.log_message("has requested the nuclear codes from CentCom with reason \"[reason]\"", LOG_SAY)
-			priority_announce("The codes for the on-station nuclear self-destruct have been requested by [usr]. Confirmation or denial of this request will be sent shortly.", "Nuclear Self-Destruct Codes Requested", SSstation.announcer.get_rand_report_sound())
+			priority_announce("The codes for the on-station nuclear self-destruct have been requested by [usr]. Confirmation or denial of this request will be sent shortly.", sub_title = "Nuclear Self-Destruct Codes Requested", sound_type = ANNOUNCER_CENTCOM)
 			playsound(src, 'sound/machines/terminal_prompt.ogg', 50, FALSE)
 			COOLDOWN_START(src, important_action_cooldown, IMPORTANT_ACTION_COOLDOWN)
 		if ("restoreBackupRoutingData")
@@ -810,8 +810,9 @@
 	switch(picked_option)
 		if(HACK_PIRATE) // Triggers pirates, which the crew may be able to pay off to prevent
 			priority_announce(
-				"Attention crew, it appears that someone on your station has made unexpected communication with a Syndicate ship in nearby space.",
-				"[command_name()] High-Priority Update"
+					"Attention crew, it appears that someone on your station has made unexpected communication with a Syndicate ship in nearby space.",
+					"[command_name()] High-Priority Update",
+					sound_type = ANNOUNCER_CENTCOM
 				)
 
 			var/datum/round_event_control/pirates/pirate_event = locate() in SSevents.control
@@ -821,8 +822,9 @@
 
 		if(HACK_FUGITIVES) // Triggers fugitives, which can cause confusion / chaos as the crew decides which side help
 			priority_announce(
-				"Attention crew, it appears that someone on your station has established an unexpected orbit with an unmarked ship in nearby space.",
-				"[command_name()] High-Priority Update"
+					"Attention crew, it appears that someone on your station has established an unexpected orbit with an unmarked ship in nearby space.",
+					"[command_name()] High-Priority Update",
+					sound_type = ANNOUNCER_CENTCOM
 				)
 
 			var/datum/round_event_control/fugitives/fugitive_event = locate() in SSevents.control
@@ -832,8 +834,9 @@
 
 		if(HACK_THREAT) // Adds a flat amount of threat to buy a (probably) more dangerous antag later
 			priority_announce(
-				"Attention crew, it appears that someone on your station has shifted your orbit into more dangerous territory.",
-				"[command_name()] High-Priority Update"
+					"Attention crew, it appears that someone on your station has shifted your orbit into more dangerous territory.",
+					"[command_name()] High-Priority Update",
+					sound_type = ANNOUNCER_CENTCOM
 				)
 
 			for(var/mob/crew_member as anything in GLOB.player_list)
@@ -864,8 +867,9 @@
 			else
 				// We spawned some sleeper agents, nice - give them a report to kickstart the paranoia
 				priority_announce(
-					"Attention crew, it appears that someone on your station has hijacked your telecommunications, broadcasting a Syndicate radio signal to your fellow employees.",
-					"[command_name()] High-Priority Update"
+						"Attention crew, it appears that someone on your station has hijacked your telecommunications, broadcasting a Syndicate radio signal to your fellow employees.",
+						"[command_name()] High-Priority Update",
+						sound_type = ANNOUNCER_CENTCOM
 					)
 
 #undef HACK_PIRATE

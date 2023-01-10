@@ -89,9 +89,9 @@
 	time = 25 SECONDS
 	var/list/possible_objectives = list(
 		"You love the Syndicate",
-		"Do not trust Nanotrasen",
+		"Do not trust Daedalus Industries",
 		"The Captain is a unathi",
-		"Nanotrasen isn't real",
+		"Daedalus Industries isn't real",
 		"They put things in the food to make you forget",
 		"You are the only real person on the station"
 	)

@@ -465,7 +465,7 @@
 	. = ..()
 
 	if(hasPower() && unres_sides)
-		set_light(2, 1)
+		set_light(l_outer_range = 2, l_power = 1)
 	else
 		set_light(0)
 
@@ -1201,7 +1201,7 @@
 	sleep(4)
 	set_density(FALSE)
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
-	update_nearby_tiles()
+	zas_update_loc()
 	sleep(1)
 	layer = OPEN_DOOR_LAYER
 	update_icon(ALL, AIRLOCK_OPEN, TRUE)
@@ -1246,12 +1246,12 @@
 	if(air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		update_nearby_tiles()
+		zas_update_loc()
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		update_nearby_tiles()
+		zas_update_loc()
 	sleep(4)
 	if(dangerous_close)
 		crush()

@@ -80,7 +80,7 @@
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 	baseturfs = /turf/open/chasm/lavaland
-	light_range = 1.9 //slightly less range than lava
+	light_outer_range = 1.9 //slightly less range than lava
 	light_power = 0.65 //less bright, too
 	light_color = LIGHT_COLOR_LAVA //let's just say you're falling into lava, that makes sense right
 
@@ -92,7 +92,7 @@
 	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 	baseturfs = /turf/open/chasm/icemoon
-	light_range = 1.9
+	light_outer_range = 1.9
 	light_power = 0.65
 	light_color = LIGHT_COLOR_PURPLE
 

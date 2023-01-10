@@ -20,6 +20,9 @@
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 	light_power = 0.25
+	light_inner_range = 0.1
+	light_outer_range = 10
+	light_falloff_curve = 5
 	always_lit = TRUE
 	bullet_bounce_sound = null
 	vis_flags = VIS_INHERIT_ID //when this be added to vis_contents of something it be associated with something on clicking, important for visualisation of turf in openspace and interraction with openspace that show you turf.
@@ -51,7 +54,7 @@
 	flags_1 |= INITIALIZED_1
 
 	var/area/our_area = loc
-	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(!our_area.area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
 		// Intentionally not add_overlay for performance reasons.
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
@@ -104,9 +107,9 @@
 			if(isspaceturf(t))
 				//let's NOT update this that much pls
 				continue
-			set_light(2)
+			set_light(l_on = TRUE)
 			return
-		set_light(0)
+		set_light(l_on = FALSE)
 
 /turf/open/space/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)

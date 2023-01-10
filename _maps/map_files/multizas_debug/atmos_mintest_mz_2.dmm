@@ -6,7 +6,7 @@
 /turf/open/floor/engine/airless,
 /area/hallway/primary/upper)
 "c" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/airless,
 /area/hallway/primary/upper)
 "d" = (
@@ -23,7 +23,7 @@
 /turf/open/openspace,
 /area/hallway/primary/upper)
 "h" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
 "i" = (
@@ -34,7 +34,7 @@
 /turf/open/openspace,
 /area/hallway/primary/upper)
 "k" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/railing{
 	dir = 1
 	},
@@ -53,7 +53,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
 "n" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/iron,
@@ -73,7 +73,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
 "r" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating,
 /area/hallway/primary/upper)
 "s" = (
@@ -81,7 +81,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
 "t" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent,
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
@@ -103,23 +103,12 @@
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
 "y" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 1;
 	icon_state = "passive_vent_map-3"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/upper)
-"z" = (
-/obj/machinery/light/floor,
-/turf/open/floor/iron/red,
-/area/hallway/primary/upper)
-"A" = (
-/turf/open/floor/iron/red,
-/area/hallway/primary/upper)
-"B" = (
-/obj/machinery/meter/turf,
-/turf/open/floor/iron/red,
 /area/hallway/primary/upper)
 
 (1,1,1) = {"
@@ -1146,11 +1135,11 @@ f
 f
 f
 d
-z
-A
-A
-z
-B
+h
+f
+f
+h
+v
 d
 a
 "}
@@ -1189,11 +1178,11 @@ f
 f
 f
 e
-A
+f
 g
 g
 g
-z
+h
 e
 a
 "}
@@ -1232,11 +1221,11 @@ f
 h
 f
 s
-A
+f
 g
 g
 g
-A
+f
 u
 a
 "}
@@ -1275,11 +1264,11 @@ f
 f
 f
 e
-A
+f
 g
 g
 g
-A
+f
 e
 a
 "}
@@ -1318,11 +1307,11 @@ f
 f
 f
 d
-z
-A
-A
-A
-z
+h
+f
+f
+f
+h
 d
 a
 "}

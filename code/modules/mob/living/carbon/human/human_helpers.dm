@@ -97,12 +97,17 @@
 /mob/living/carbon/human/can_use_guns(obj/item/G)
 	. = ..()
 	if(G.trigger_guard == TRIGGER_GUARD_NORMAL)
-		if(HAS_TRAIT(src, TRAIT_CHUNKYFINGERS))
+		if(check_chunky_fingers())
 			balloon_alert(src, "fingers are too big!")
 			return FALSE
 	if(HAS_TRAIT(src, TRAIT_NOGUNS))
 		to_chat(src, span_warning("You can't bring yourself to use a ranged weapon!"))
 		return FALSE
+
+/mob/living/carbon/human/proc/check_chunky_fingers()
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT) && HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT))
+		return TRUE
+	return (active_hand_index % 2) ? HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT) : HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT)
 
 /mob/living/carbon/human/get_policy_keywords()
 	. = ..()
@@ -236,3 +241,17 @@
 
 		if (preference.is_randomizable())
 			preference.apply_to_human(src, preference.create_random_value(preferences))
+
+/mob/living/carbon/human/can_smell(intensity)
+	var/turf/T = get_turf(src)
+	if(!T)
+		return FALSE
+	if(stat != CONSCIOUS || failed_last_breath || wear_mask || (head && (head?.permeability_coefficient < 1)) || !T.return_air()?.total_moles)
+		return FALSE
+
+	if(!(intensity > last_smell_intensity) && !COOLDOWN_FINISHED(src, smell_time))
+		return FALSE
+
+	return TRUE
+
+

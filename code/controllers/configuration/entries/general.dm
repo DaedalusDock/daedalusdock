@@ -44,7 +44,13 @@
 
 /// Post round murder death kill countdown.
 /datum/config_entry/number/round_end_countdown
-	default = 25
+	default = 90
+	integer = FALSE
+	min_val = 0
+
+/// Time between the round ending and credits beginning to roll
+/datum/config_entry/number/eor_credits_delay
+	default = 40
 	integer = FALSE
 	min_val = 0
 

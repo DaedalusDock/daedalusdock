@@ -86,8 +86,7 @@
 			draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
 		else
 			draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		ATMOS_USE_POWER(draw)
 
 	return ..()
 

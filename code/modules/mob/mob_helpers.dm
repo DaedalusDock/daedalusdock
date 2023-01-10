@@ -426,3 +426,7 @@
 	if(client?.combo_hud_enabled && client?.prefs?.toggles & COMBOHUD_LIGHTING)
 		return LIGHTING_PLANE_ALPHA_INVISIBLE
 	return initial(lighting_alpha)
+
+/// Can this mob SMELL THE SMELLY SMELLS?
+/mob/proc/can_smell(intensity)
+	return FALSE

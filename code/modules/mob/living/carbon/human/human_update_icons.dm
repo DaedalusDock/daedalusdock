@@ -320,7 +320,7 @@ There are several things that need to be remembered:
 	if(wear_neck)
 		var/obj/item/worn_item = wear_neck
 
-		if(!(ITEM_SLOT_NECK in check_obscured_slots()))
+		if(!(check_obscured_slots() & ITEM_SLOT_NECK))
 			var/mutable_appearance/neck_overlay
 			var/icon_file
 			var/handled_by_bodytype = TRUE
@@ -379,7 +379,7 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_VOX_LEGS)
 			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
 				var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
-				if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
+				if(leg.limb_id == "vox_digitigrade")//Snowflakey and bad. But it makes it look consistent.
 					icon_file = worn_item.worn_icon_vox || VOX_SHOES_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
@@ -594,7 +594,7 @@ There are several things that need to be remembered:
 		inv.update_icon()
 
 	if(wear_mask)
-		if(!(ITEM_SLOT_MASK in check_obscured_slots()))
+		if(!(check_obscured_slots() & ITEM_SLOT_MASK))
 			var/obj/item/worn_item = wear_mask
 			update_hud_wear_mask(worn_item)
 			var/mutable_appearance/mask_overlay
@@ -974,7 +974,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	HD.update_limb(is_creating = update_limb_data)
 
-	add_overlay(HD.get_limb_icon())
+	add_overlay(HD.get_limb_overlays())
 	update_damage_overlays()
 
 	if(HD && !(HAS_TRAIT(src, TRAIT_HUSK)))

@@ -332,6 +332,7 @@
 
 
 /datum/component/riding/creature/carp
+	vehicle_move_delay = 1
 	override_allow_spacemove = TRUE
 
 /datum/component/riding/creature/carp/handle_specials()

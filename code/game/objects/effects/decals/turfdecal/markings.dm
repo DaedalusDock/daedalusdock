@@ -416,3 +416,264 @@
 
 /obj/effect/turf_decal/siding/wideplating_new/dark/end
 	icon_state = "siding_wideplating_new_end"
+
+//Ported Markings
+
+/obj/effect/turf_decal/ported
+	icon = 'icons/turf/decals-ported.dmi'
+	icon_state = "outline"
+
+/obj/effect/turf_decal/ported/outline
+	icon_state = "outline"
+
+/obj/effect/turf_decal/ported/border
+	icon_state = "edge"
+
+/obj/effect/turf_decal/ported/border/borderfloor
+	icon_state = "borderfloor"
+
+/obj/effect/turf_decal/ported/border/borderfloor/corner
+	icon_state = "borderfloorcorner"
+
+/obj/effect/turf_decal/ported/border/borderfloor/corner2
+	icon_state = "borderfloorcorner2"
+
+/obj/effect/turf_decal/ported/border/borderfloor/full
+	icon_state = "borderfloorfull"
+
+/obj/effect/turf_decal/ported/border/borderfloor/cee
+	icon_state = "borderfloorcee"
+
+/obj/effect/turf_decal/ported/border/borderfloorblack
+	icon_state = "borderfloor_black"
+
+/obj/effect/turf_decal/ported/border/borderfloorblack/corner
+	icon_state = "borderfloorcorner_black"
+
+/obj/effect/turf_decal/ported/border/borderfloorblack/corner2
+	icon_state = "borderfloorcorner2_black"
+
+/obj/effect/turf_decal/ported/border/borderfloorblack/full
+	icon_state = "borderfloorfull_black"
+
+/obj/effect/turf_decal/ported/border/borderfloorblack/cee
+	icon_state = "borderfloorcee_black"
+
+/obj/effect/turf_decal/ported/border/borderfloorwhite
+	icon_state = "borderfloor_white"
+
+/obj/effect/turf_decal/ported/border/borderfloorwhite/corner
+	icon_state = "borderfloorcorner_white"
+
+/obj/effect/turf_decal/ported/border/borderfloorwhite/corner2
+	icon_state = "borderfloorcorner2_white"
+
+/obj/effect/turf_decal/ported/border/borderfloorwhite/full
+	icon_state = "borderfloorfull_white"
+
+/obj/effect/turf_decal/ported/border/borderfloorwhite/cee
+	icon_state = "borderfloorcee_white"
+
+/obj/effect/turf_decal/ported/border/color
+	icon_state = "bordercolor"
+
+/obj/effect/turf_decal/ported/border/color/corner
+	icon_state = "bordercolorcorner"
+
+/obj/effect/turf_decal/ported/border/color/corner2
+	icon_state = "bordercolorcorner2"
+
+/obj/effect/turf_decal/ported/border/color/full
+	icon_state = "bordercolorfull"
+
+/obj/effect/turf_decal/ported/border/color/cee
+	icon_state = "bordercolorcee"
+
+/obj/effect/turf_decal/ported/border/borderhalf
+	icon_state = "borderhalf"
+
+/obj/effect/turf_decal/ported/border/borderfull
+	icon_state = "borderfull"
+
+/obj/effect/turf_decal/ported/border/bordercorner
+	icon_state = "bordercorner"
+
+/obj/effect/turf_decal/ported/border/bordercornerfull
+	icon_state = "corner_white_full"
+
+/obj/effect/turf_decal/ported/danger
+	icon_state = "danger"
+
+/obj/effect/turf_decal/ported/danger/dangercorner
+	icon_state = "dangercorner"
+
+/obj/effect/turf_decal/ported/danger/dangerfull
+	icon_state = "dangerfull"
+
+/obj/effect/turf_decal/ported/danger/dangercee
+	icon_state = "dangercee"
+
+/obj/effect/turf_decal/ported/misc
+	icon_state = "oldtile"
+
+/obj/effect/turf_decal/ported/misc/kafel
+	icon_state = "corner_kafel"
+
+/obj/effect/turf_decal/ported/misc/kafel/diagonal
+	icon_state = "corner_kafel_diagonal"
+
+/obj/effect/turf_decal/ported/misc/kafel/corner
+	icon_state = "corner_kafel_full"
+
+/obj/effect/turf_decal/ported/misc/grass
+	icon_state = "grass_edge"
+
+/obj/effect/turf_decal/ported/misc/grass/end
+	icon_state = "grass_edge_corner"
+
+/obj/effect/turf_decal/ported/misc/shutoff
+	icon_state = "shutoff"
+
+/obj/effect/turf_decal/ported/misc/delivery
+	icon_state = "delivery"
+
+/obj/effect/turf_decal/ported/misc/stone
+	icon_state = "stoneborder"
+
+/obj/effect/turf_decal/ported/misc/stone/corner
+	icon_state = "stoneborder_c"
+
+/obj/effect/turf_decal/ported/rust
+	icon_state = "rust"
+
+/obj/effect/turf_decal/ported/rust/mono
+	icon_state = "mono_rusted1"
+
+/obj/effect/turf_decal/ported/rust/mono/mono2
+	icon_state = "mono_rusted2"
+
+/obj/effect/turf_decal/ported/rust/mono/mono3
+	icon_state = "mono_rusted3"
+
+/obj/effect/turf_decal/ported/rust/part
+	icon_state = "part_rusted1"
+	
+/obj/effect/turf_decal/ported/rust/part/part2
+	icon_state = "part_rusted2"
+
+/obj/effect/turf_decal/ported/rust/part/part3
+	icon_state = "part_rusted3"
+
+/obj/effect/turf_decal/ported/rust/color
+	icon_state = "color_rusted"
+
+/obj/effect/turf_decal/ported/rust/color/corner
+	icon_state = "color_rustedcorner"
+
+/obj/effect/turf_decal/ported/rust/color/full
+	icon_state = "color_rustedfull"
+
+/obj/effect/turf_decal/ported/rust/color/cee
+	icon_state = "color_rustedcee"
+
+/obj/effect/turf_decal/ported/rust/steel
+	icon_state = "steel_decals_rusted1"
+
+/obj/effect/turf_decal/ported/rust/steel/steel2
+	icon_state = "steel_decals_rusted2"
+
+/obj/effect/turf_decal/ported/techfloor
+	icon_state = "techfloor_grid"
+
+/obj/effect/turf_decal/ported/techfloor/edges
+	icon_state = "techfloor_edges"
+
+/obj/effect/turf_decal/ported/techfloor/corners
+	icon_state = "techfloor_corners"
+
+/obj/effect/turf_decal/ported/techfloor/diagonal
+	icon_state = "corner_techfloor_grid_diagonal"
+
+/obj/effect/turf_decal/ported/techfloor/fullcorner
+	icon_state = "corner_techfloor_grid_full"
+
+/obj/effect/turf_decal/ported/techfloor/lefthole
+	icon_state = "techfloor_hole_left"
+
+/obj/effect/turf_decal/ported/techfloor/righthole
+	icon_state = "techfloor_hole_right"
+
+/obj/effect/turf_decal/ported/techfloor/grey
+	icon_state = "techfloor_grey"
+
+/obj/effect/turf_decal/ported/techfloor/grey/diagonal
+	icon_state = "corner_techfloor_gray_diagonal"
+
+/obj/effect/turf_decal/ported/techfloor/grey/fullcorner
+	icon_state = "corner_techfloor_gray_full"
+
+/obj/effect/turf_decal/ported/techfloor/orange
+	icon_state = "techfloororange_edges"
+
+/obj/effect/turf_decal/ported/techfloor/orange/corner
+	icon_state = "techfloororange_corners"
+
+/obj/effect/turf_decal/ported/techfloor/steel
+	icon_state = "steel_grid"
+
+/obj/effect/turf_decal/ported/techfloor/steel/diagonal
+	icon_state = "steel_grid_diagonal"
+
+/obj/effect/turf_decal/ported/techfloor/steel/fullcorner
+	icon_state = "steel_grid_full"
+
+/obj/effect/turf_decal/ported/steeldecals
+	icon_state = "shutoff"
+
+/obj/effect/turf_decal/ported/steeldecals/one
+	icon_state = "steel_decals1"
+
+/obj/effect/turf_decal/ported/steeldecals/two
+	icon_state = "steel_decals2"
+
+/obj/effect/turf_decal/ported/steeldecals/three
+	icon_state = "steel_decals3"
+
+/obj/effect/turf_decal/ported/steeldecals/four
+	icon_state = "steel_decals4"
+
+/obj/effect/turf_decal/ported/steeldecals/five
+	icon_state = "steel_decals6" //yeah I don't know where 5 went either
+
+/obj/effect/turf_decal/ported/steeldecals/six
+	icon_state = "steel_decals7"
+
+/obj/effect/turf_decal/ported/steeldecals/seven
+	icon_state = "steel_decals8"
+
+/obj/effect/turf_decal/ported/steeldecals/eight
+	icon_state = "steel_decals9"
+
+/obj/effect/turf_decal/ported/steeldecals/nine
+	icon_state = "steel_decals10"
+
+/obj/effect/turf_decal/ported/steeldecals/central
+	icon_state = "steel_decals_central1"
+
+/obj/effect/turf_decal/ported/steeldecals/central/two
+	icon_state = "steel_decals_central2"
+
+/obj/effect/turf_decal/ported/steeldecals/central/three
+	icon_state = "steel_decals_central3"
+
+/obj/effect/turf_decal/ported/steeldecals/central/four
+	icon_state = "steel_decals_central4"
+
+/obj/effect/turf_decal/ported/steeldecals/central/five
+	icon_state = "steel_decals_central5"
+
+/obj/effect/turf_decal/ported/steeldecals/central/six
+	icon_state = "steel_decals_central6"
+
+/obj/effect/turf_decal/ported/steeldecals/central/seven
+	icon_state = "steel_decals_central7"

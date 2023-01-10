@@ -49,13 +49,15 @@ Simple datum which is instanced once per type and is used for every object of sa
 	///Icon for walls which are plated with this material
 	var/wall_greyscale_config = /datum/greyscale_config/solid_wall
 	///Icon for reinforced walls which are plated with this material
-	var/reinforced_wall_greyscale_config = /datum/greyscale_config/reinforced_solid_wall
+	var/reinforced_wall_greyscale_config = /datum/greyscale_config/metal_wall
 	/// Icon for painted stripes on the walls
 	var/wall_stripe_greyscale_config = /datum/greyscale_config/wall_stripe
 	/// Color of walls constructed with this material as their plating
 	var/wall_color
 	/// Type of the wall this material makes when its used as a plating, null means can't make a wall out of it.
 	var/wall_type = /turf/closed/wall
+	/// What do we *call* a 'wall' made out of this stuff?
+	var/wall_name = "wall"
 	/// Type of the false wall this material will make when used as its plating
 	var/false_wall_type
 	/// If true, walls plated with this material that have a reinforcement, will be hard to deconstruct

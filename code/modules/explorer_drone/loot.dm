@@ -132,7 +132,7 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 		to_chat(user,span_danger("This chip is invalid!"))
 		return
 	pack_singleton.special_enabled = TRUE
-	to_chat(user,span_notice("Contract accepted into nanotrasen supply database."))
+	to_chat(user,span_notice("Contract accepted into the Hermes Galactic supply database."))
 	qdel(src)
 
 

@@ -39,7 +39,6 @@
 	qdel(dummy.get_item_for_held_index(2))
 	dummy.equipOutfit(outfit)
 	dummy.set_species(/datum/species/zombie)
-	COMPILE_OVERLAYS(dummy)
 	icon = getFlatIcon(dummy)
 	qdel(dummy)
 

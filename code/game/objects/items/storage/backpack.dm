@@ -153,7 +153,7 @@
 
 /obj/item/storage/backpack/captain
 	name = "captain's backpack"
-	desc = "It's a special backpack made exclusively for Nanotrasen officers."
+	desc = "It's a special backpack made exclusively for Daedalus Industries officers."
 	icon_state = "captainpack"
 	inhand_icon_state = "captainpack"
 
@@ -318,7 +318,7 @@
 
 /obj/item/storage/backpack/satchel/cap
 	name = "captain's satchel"
-	desc = "An exclusive satchel for Nanotrasen officers."
+	desc = "An exclusive satchel for Daedalus Industries officers."
 	icon_state = "satchel-cap"
 	inhand_icon_state = "satchel-cap"
 

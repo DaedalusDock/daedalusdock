@@ -1082,8 +1082,8 @@
 		if(alert(me, "Your message was shortened to \"[sanitized_message]\", continue?", "Message Too Long", "Yes", "No") == "No")
 			return
 		else
-			priority_announce(sanitized_message, null, 'goon/sounds/announcement_1.ogg', "AI", has_important_message = TRUE)
+			priority_announce(sanitized_message, "Station Announcement By [me.name] (AI)", do_not_modify = TRUE)
 	else
-		priority_announce(message, null, 'goon/sounds/announcement_1.ogg', "AI", has_important_message = TRUE)
+		priority_announce(message, "Station Announcement By [me.name] (AI)", do_not_modify = TRUE)
 
 	COOLDOWN_START(me, command_report_cd, 120 SECONDS)

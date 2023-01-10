@@ -379,7 +379,7 @@ There are several things that need to be remembered:
 		if(dna.species.bodytype & BODYTYPE_VOX_LEGS)
 			if(worn_item.supports_variations_flags & CLOTHING_VOX_VARIATION)
 				var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
-				if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
+				if(leg.limb_id == "vox_digitigrade")//Snowflakey and bad. But it makes it look consistent.
 					icon_file = worn_item.worn_icon_vox || VOX_SHOES_FILE
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
@@ -974,7 +974,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	HD.update_limb(is_creating = update_limb_data)
 
-	add_overlay(HD.get_limb_icon())
+	add_overlay(HD.get_limb_overlays())
 	update_damage_overlays()
 
 	if(HD && !(HAS_TRAIT(src, TRAIT_HUSK)))

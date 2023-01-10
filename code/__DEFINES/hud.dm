@@ -214,3 +214,7 @@
 #define SCRN_OBJ_IN_LIST "list"
 /// In the collapseable palette
 #define SCRN_OBJ_IN_PALETTE "palette"
+
+#define SIMPLE_RADIAL_ACTIVATE "activate"
+#define SIMPLE_RADIAL_DEACTIVATE "deactivate"
+#define SIMPLE_RADIAL_DOESNT_USE "NOVAL"

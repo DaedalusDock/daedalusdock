@@ -36,10 +36,13 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_index = AMBIENCE_SPACE
 	flags_1 = CAN_BE_DIRTY_1
 	sound_environment = SOUND_AREA_SPACE
+	ambient_buzz = null //Space is deafeningly quiet
 
 /area/space/nearstation
 	icon_state = "space_near"
 	area_flags = UNIQUE_AREA | NO_ALERTS | AREA_USES_STARLIGHT
+	base_lighting_alpha = null
+	base_lighting_color = null
 
 /area/start
 	name = "start area"
@@ -172,6 +175,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
 	airlock_wires = /datum/wires/airlock/maint
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
+	forced_ambience = TRUE
+	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
+	ambient_buzz_vol = 20
 
 //Maintenance - Departmental
 
@@ -1007,7 +1013,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = 255
+	base_lighting_alpha = null
+	base_lighting_color = null
 
 /area/solars/fore
 	name = "\improper Fore Solar Array"
@@ -1169,6 +1176,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/surgery
 	name = "\improper Operating Room"
 	icon_state = "surgery"
+	ambience_index = AMBIENCE_VIROLOGY
 
 /area/medical/surgery/fore
 	name = "\improper Fore Operating Room"

@@ -53,6 +53,9 @@
 /datum/preference/choiced/backpack/apply_to_human(mob/living/carbon/human/target, value)
 	target.backpack = value
 
+/datum/preference/choiced/backpack/create_default_value()
+	return DBACKPACK
+
 /// Jumpsuit preference
 /datum/preference/choiced/jumpsuit
 	savefile_key = "jumpsuit_style"
@@ -72,6 +75,9 @@
 /datum/preference/choiced/jumpsuit/apply_to_human(mob/living/carbon/human/target, value)
 	target.jumpsuit_style = value
 
+/datum/preference/choiced/jumpsuit/create_default_value()
+	return PREF_SUIT
+
 /// Socks preference
 /datum/preference/choiced/socks
 	savefile_key = "socks"
@@ -85,6 +91,9 @@
 
 /datum/preference/choiced/socks/apply_to_human(mob/living/carbon/human/target, value)
 	target.socks = value
+
+/datum/preference/choiced/socks/create_default_value()
+	return "Nude"
 
 /// Undershirt preference
 /datum/preference/choiced/undershirt
@@ -121,6 +130,9 @@
 /datum/preference/choiced/undershirt/apply_to_human(mob/living/carbon/human/target, value)
 	target.undershirt = value
 
+/datum/preference/choiced/undershirt/create_default_value()
+	return "Nude"
+
 /// Underwear preference
 /datum/preference/choiced/underwear
 	savefile_key = "underwear"
@@ -149,3 +161,7 @@
 	data[SUPPLEMENTAL_FEATURE_KEY] = "underwear_color"
 
 	return data
+
+/datum/preference/choiced/underwear/create_default_value()
+	return "Nude"
+

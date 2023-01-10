@@ -88,18 +88,16 @@
 				hair_gradient_overlay = make_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color)
 
 	//CREATION-ONLY END
+
 	//HAIR COLOR START
 	if(!override_hair_color)
 		if(hair_color_source)
 			if(hair_color_source == "fixedmutcolor")
 				SET_OVERLAY_VALUE(facial_overlay, color, fixed_hair_color)
 				SET_OVERLAY_VALUE(hair_overlay, color, fixed_hair_color)
-			else if(hair_color_source == "mutcolor")
-				SET_OVERLAY_VALUE(facial_overlay, color, facial_hair_color)
-				SET_OVERLAY_VALUE(hair_overlay, color, hair_color)
 			else
-				SET_OVERLAY_VALUE(facial_overlay, color, hair_color_source)
-				SET_OVERLAY_VALUE(hair_overlay, color, hair_color_source)
+				SET_OVERLAY_VALUE(facial_overlay, color, mutcolors[hair_color_source])
+				SET_OVERLAY_VALUE(hair_overlay, color, mutcolors[hair_color_source])
 		else
 			SET_OVERLAY_VALUE(facial_overlay, color, facial_hair_color)
 			SET_OVERLAY_VALUE(hair_overlay, color, hair_color)

@@ -204,7 +204,8 @@
 			target.status = L2.status
 			target.switchcount = L2.switchcount
 			target.rigged = (obj_flags & EMAGGED ? 1 : 0)
-			target.brightness = L2.brightness
+			target.bulb_inner_range = L2.bulb_inner_range
+			target.bulb_outer_range = L2.bulb_outer_range
 			target.on = target.has_power()
 			target.update()
 			qdel(L2)

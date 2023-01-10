@@ -141,4 +141,4 @@
 	icon_state = "sniper_zoom"
 	layer = BELOW_MOB_LAYER
 	plane = GAME_PLANE
-	light_range = 2
+	light_outer_range = 2

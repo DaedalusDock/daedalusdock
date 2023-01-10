@@ -605,7 +605,7 @@
 	icon_state = "soulslash"
 	armor_flag = MELEE //jokair
 	damage = 15
-	light_range = 1
+	light_outer_range = 1
 	light_power = 1
 	light_color = LIGHT_COLOR_BLOOD_MAGIC
 
@@ -721,11 +721,13 @@
 	switch(random)
 		if(1)
 			to_chat(user, span_danger("Your appearance morphs to that of a very small humanoid ash dragon! You get to look like a freak without the cool abilities."))
-			consumer.dna.features = list("tail_lizard" = "Dark Tiger", "tail_human" = "None", "snout" = "Sharp", "horns" = "Curled", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "Long", "body_markings" = "Dark Tiger Body", "legs" = "Digitigrade Legs")
+			consumer.dna.features = list("tail_lizard" = "Dark Tiger", "tail_human" = "None", "snout" = "Sharp", "horns" = "Curled", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "Long", "legs" = "Digitigrade Legs")
 			consumer.dna.set_all_mutant_colors_of_key(MUTCOLORS_KEY_GENERIC, "#A02720")
 			consumer.eye_color_left = "#FEE5A3"
 			consumer.eye_color_right = "#FEE5A3"
 			consumer.set_species(/datum/species/lizard)
+			var/datum/appearance_modifier/lizard_chest_marks/dark/new_mod = new
+			new_mod.ApplyToMob(user)
 		if(2)
 			to_chat(user, span_danger("Your flesh begins to melt! Miraculously, you seem fine otherwise."))
 			consumer.set_species(/datum/species/skeleton)

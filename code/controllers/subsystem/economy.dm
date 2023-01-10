@@ -6,7 +6,7 @@ SUBSYSTEM_DEF(economy)
 	///How many paychecks should players start out the round with?
 	var/roundstart_paychecks = 5
 	///How many credits does the in-game economy have in circulation at round start? Divided up by 6 of the 7 department budgets evenly, where cargo starts with nothing.
-	var/budget_pool = 35000
+	var/budget_pool = 52500
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
 		ACCOUNT_SCI = ACCOUNT_SCI_NAME,

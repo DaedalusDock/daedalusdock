@@ -5,8 +5,8 @@
 	description = "Cut apart decrepit ships and abandoned hulls for profit. Survive."
 	department_head = list(JOB_SALVAGE_FOREMAN)
 	faction = FACTION_STATION
-	total_positions = 3
-	spawn_positions = 3
+	total_positions = 4 //4+1 for the foreman, 5 total at max capacity
+	spawn_positions = 4
 	supervisors = "the company and salvage foreman"
 	selection_color = "#beb752"
 	exp_granted_type = EXP_TYPE_CREW //return to this later - 1/9/23

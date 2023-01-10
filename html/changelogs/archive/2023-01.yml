@@ -20,3 +20,11 @@
 2023-01-09:
   DTraitor:
   - code_imp: Added signal that is sent when atom changes density
+2023-01-10:
+  Kapu1178:
+  - rscadd: Appearance Mods.
+  - rscadd: Lizard Appearance Mods
+  - rscadd: Vox Appearance Mods
+  - bugfix: Vox facial hair is now colored properly
+  - qol: Character creator lists such as hair are now sorted alphabetically.
+  - refactor: Humans.

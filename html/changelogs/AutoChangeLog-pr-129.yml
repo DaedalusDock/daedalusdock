@@ -1,9 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Appearance Mods.
-  - rscadd: Lizard Appearance Mods
-  - rscadd: Vox Appearance Mods
-  - bugfix: Vox facial hair is now colored properly
-  - qol: Character creator lists such as hair are now sorted alphabetically.
-  - refactor: Humans.

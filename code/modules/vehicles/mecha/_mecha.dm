@@ -193,6 +193,7 @@
 
 /obj/item/radio/mech //this has to go somewhere
 	subspace_transmission = TRUE
+	canhear_range = 0
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
 	. = ..()

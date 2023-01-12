@@ -14,21 +14,64 @@
 	grind_results = list(/datum/reagent/cellulose = 5)
 	splint_factor = 0.65
 	merge_type = /obj/item/stack/sticky_tape
+	usesound = 'sound/items/tape.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
+	var/handcuff_delay = 3 SECONDS
+	var/muzzle_delay = 2 SECONDS
+
+/obj/item/stack/sticky_tape/Initialize(mapload)
+	. = ..()
+	register_item_context()
+
+/obj/item/stack/sticky_tape/add_item_context(
+	obj/item/source,
+	list/context,
+	atom/target,
+	mob/living/user
+)
+	switch(user.zone_selected)
+		if (BODY_ZONE_PRECISE_MOUTH)
+			context[SCREENTIP_CONTEXT_RMB] = "Tape mouth"
+		else
+			context[SCREENTIP_CONTEXT_RMB] = "Tie hands"
+
+	context[SCREENTIP_CONTEXT_LMB] = "Tape item"
+	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/stack/sticky_tape/attack_secondary(mob/living/carbon/C, mob/living/user)
+	if((!istype(C)))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(amount < 5)
+		to_chat(user, "<span class='warning'>You don't have enough tape to restrain [C]!</span>")
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if((HAS_TRAIT(user, TRAIT_CLUMSY) && prob(25)))
+		to_chat(user, "<span class='warning'>Uh... where did the tape edge go?!</span>")
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH) //mouth tape
+		if(C.is_mouth_covered() || C.is_muzzled())
+			to_chat(user, "<span class='warning'>There is something covering [C]s mouth!</span>")
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		else
+			MuzzleAttack(C, user)
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	else if (!C.handcuffed) //tapecuffs
+		if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50)))
+			to_chat(user, "<span class='warning'>Uh... which side sticks again?</span>")
+			CuffAttack(user, user)
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		if(C.canBeHandcuffed())
+			CuffAttack(C, user)
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/stack/sticky_tape/afterattack(obj/item/target, mob/living/user, proximity)
 	if(!proximity)
 		return
-
 	if(!istype(target))
 		return
-
 	if(target.embedding && target.embedding == conferred_embed)
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
 		return
-
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
-
 	if(do_after(user, 3 SECONDS, target=target))
 		use(1)
 		if(istype(target, /obj/item/clothing/gloves/fingerless))
@@ -50,6 +93,60 @@
 		if(istype(target, /obj/item/grenade))
 			var/obj/item/grenade/sticky_bomb = target
 			sticky_bomb.sticky = TRUE
+
+/obj/item/clothing/mask/muzzle/tape
+	name = "length of tape"
+	pickup_sound = 'sound/items/poster_ripped.ogg'
+	icon_state = "muzzle_tape"
+	item_flags = DROPDEL
+
+/obj/item/restraints/handcuffs/tape
+	name = "length of tape"
+	desc = "Seems you are in a sticky situation."
+	breakouttime = 15 SECONDS
+	item_flags = DROPDEL
+
+/obj/item/stack/sticky_tape/proc/MuzzleAttack(mob/living/carbon/C, mob/living/user)
+	if(C.is_mouth_covered() || C.is_muzzled())
+		to_chat(user, "<span class='warning'>There is something covering [C]s mouth!</span>")
+		return
+	else
+		playsound(loc, usesound, 30, TRUE, -2)
+		C.visible_message(span_danger("[user] tries to cover [C]s mouth with [src]!"), \
+						span_userdanger("[user] is trying to cover your mouth with [src]!"))
+		if(do_mob(user, C, muzzle_delay))
+			if(!C.is_mouth_covered() || !C.is_muzzled())
+				use(5)
+				C.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(C), ITEM_SLOT_MASK)
+				C.visible_message("<span class='notice'>[user] tapes [C]s mouth shut.</span>", \
+								"<span class='userdanger'>[user] taped your mouth shut!</span>")
+				log_combat(user, C, "gags")
+				return TRUE
+			else
+				to_chat(user, "<span class='warning'>There is something covering [C]s mouth!</span>")
+		else
+			to_chat(user, span_warning("You fail to tape over [C]s mouth."))
+			return
+
+/obj/item/stack/sticky_tape/proc/CuffAttack(mob/living/carbon/C, mob/living/user)
+	if(!C.handcuffed)
+		playsound(loc, usesound, 30, TRUE, -2)
+		C.visible_message(span_danger("[user] begins restraining [C] with [src]!"), \
+								span_userdanger("[user] is trying to wrap [src] around your wrists!"))
+		if(do_mob(user, C, 30))
+			if(!C.handcuffed)
+				use(5)
+				C.set_handcuffed(new /obj/item/restraints/handcuffs/tape(C))
+				C.update_handcuffed()
+				to_chat(user, span_notice("You restrain [C]."))
+				log_combat(user, C, "tapecuffed")
+			else
+				to_chat(user, span_warning("[C] is already bound."))
+		else
+			to_chat(user, span_warning("You fail to restrain [C]."))
+	else
+		to_chat(user, span_warning("[C] is already bound."))
+
 
 /obj/item/stack/sticky_tape/super
 	name = "super sticky tape"

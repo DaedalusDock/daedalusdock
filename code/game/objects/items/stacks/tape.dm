@@ -46,6 +46,8 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) && prob(25)))
 		to_chat(user, "<span class='warning'>Uh... where did the tape edge go?!</span>")
+		user.set_handcuffed(new /obj/item/restraints/handcuffs/tape(C))
+		user.update_handcuffed()
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH) //mouth tape
 		if(C.is_mouth_covered() || C.is_muzzled())

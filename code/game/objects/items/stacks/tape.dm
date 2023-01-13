@@ -23,6 +23,10 @@
 	. = ..()
 	register_item_context()
 
+/obj/item/stack/sticky_tape/examine(mob/user)
+	. = ..()
+	. += span_notice("RMB: Tie hands. Target mouth to gag.")
+
 /obj/item/stack/sticky_tape/add_item_context(
 	obj/item/source,
 	list/context,

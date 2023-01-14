@@ -118,3 +118,41 @@
 			if(istype(Item))
 				usr.examinate(Item)
 				. = TRUE
+
+// thanks chinsky
+/obj/item/folder/envelope
+	name = "envelope"
+	desc = "A thick envelope. You can't see what's inside."
+	icon_state = "envelope_sealed"
+	/// base iconstate, *_sealed, *0, *1 required.
+	var/icon_base = "envelope"
+	/// Are we still bricked up?
+	var/sealed = TRUE
+
+/obj/item/folder/envelope/update_icon(updates)
+	. = ..()
+	if(sealed)
+		icon_state = "[icon_base]_sealed"
+	else
+		icon_state = "[icon_base][contents.len > 0]"
+
+/obj/item/folder/envelope/proc/sealcheck(mob/user)
+	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")
+	if(ripperoni == "Yes")
+		visible_message("[user] breaks the seal on \the [src], and opens it.")
+		sealed = FALSE
+		update_icon()
+
+/obj/item/folder/envelope/attack_self(mob/user)
+	if(sealed)
+		sealcheck(user)
+		return
+	else
+		. = ..()
+
+/obj/item/folder/envelope/attackby(obj/item/weapon, mob/user, params)
+	if(sealed)
+		sealcheck(user)
+		return
+	else
+		. = ..()

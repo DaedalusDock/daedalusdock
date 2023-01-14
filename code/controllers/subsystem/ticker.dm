@@ -265,9 +265,6 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		var/mob/living/carbon/human/iter_human = i
 
-		iter_human.increment_scar_slot()
-		iter_human.load_persistent_scars()
-
 		if(!iter_human.hardcore_survival_score)
 			continue
 		if(iter_human.mind?.special_role)

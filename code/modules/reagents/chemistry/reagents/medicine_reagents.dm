@@ -170,9 +170,12 @@
 			M.adjustFireLoss(-power * REM * delta_time, 0)
 			M.adjustToxLoss(-power * REM * delta_time, 0, TRUE) //heals TOXINLOVERs
 			M.adjustCloneLoss(-power * REM * delta_time, 0)
+			#warn cryoxadone
+			/*
 			for(var/i in M.all_wounds)
 				var/datum/wound/iter_wound = i
 				iter_wound.on_xadone(power * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+			*/
 			REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
 			. = TRUE
 	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (M.bodytemperature ** 2) + 0.5)
@@ -226,9 +229,12 @@
 		M.adjustFireLoss(-1.5 * power * REM * delta_time, FALSE)
 		M.adjustToxLoss(-power * REM * delta_time, FALSE, TRUE)
 		M.adjustCloneLoss(-power * REM * delta_time, FALSE)
+		#warn pyroxadone
+		/*
 		for(var/i in M.all_wounds)
 			var/datum/wound/iter_wound = i
 			iter_wound.on_xadone(power * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+		*/
 		REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC)
 		. = TRUE
 	..()
@@ -1516,7 +1522,8 @@
 		return
 
 	var/datum/wound/bloodiest_wound
-
+	#warn coagulant
+	/*
 	for(var/i in M.all_wounds)
 		var/datum/wound/iter_wound = i
 		if(iter_wound.blood_flow)
@@ -1530,6 +1537,7 @@
 		bloodiest_wound.adjust_blood_flow(-clot_rate * REM * delta_time)
 	else if(was_working)
 		was_working = FALSE
+	*/
 
 /datum/reagent/medicine/coagulant/overdose_process(mob/living/M, delta_time, times_fired)
 	. = ..()

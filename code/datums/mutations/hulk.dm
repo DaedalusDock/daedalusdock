@@ -59,6 +59,8 @@
  *arg1 is the arm to evaluate damage of and possibly break.
  */
 /datum/mutation/human/hulk/proc/break_an_arm(obj/item/bodypart/arm)
+	#warn hulk garbage
+	/*
 	switch(arm.brute_dam)
 		if(45 to 50)
 			arm.force_wound_upwards(/datum/wound/blunt/critical)
@@ -66,6 +68,7 @@
 			arm.force_wound_upwards(/datum/wound/blunt/severe)
 		if(35 to 41)
 			arm.force_wound_upwards(/datum/wound/blunt/moderate)
+	*/
 
 /datum/mutation/human/hulk/on_life(delta_time, times_fired)
 	if(owner.health < owner.crit_threshold)

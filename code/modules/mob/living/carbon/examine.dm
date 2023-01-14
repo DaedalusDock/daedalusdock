@@ -45,9 +45,12 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [BP.name]!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [BP.name]!</B>\n"
+		#warn wound examine
+		/*
 		for(var/i in BP.wounds)
 			var/datum/wound/W = i
 			msg += "[W.get_examine_description(user)]\n"
+		*/
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/BP = X
@@ -104,22 +107,6 @@
 	if(pulledby?.grab_state)
 		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
 
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-
 	msg += "</span>"
 
 	. += msg.Join("")
@@ -165,17 +152,5 @@
 			continue
 		if(part.limb_id != (dna.species.examine_limb_id ? dna.species.examine_limb_id : dna.species.id))
 			. += "[span_info("[p_they(TRUE)] [p_have()] \an [part.name].")]"
-
-	var/list/visible_scars
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			LAZYADD(visible_scars, S)
-
-	for(var/i in visible_scars)
-		var/datum/scar/S = i
-		var/scar_text = S.get_examine_description(user)
-		if(scar_text)
-			. += "[scar_text]"
 
 	return .

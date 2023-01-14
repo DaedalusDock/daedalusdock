@@ -16,8 +16,8 @@
 	target_mobtypes = list(/mob/living/carbon)
 	possible_locs = list(BODY_ZONE_R_ARM,BODY_ZONE_L_ARM,BODY_ZONE_R_LEG,BODY_ZONE_L_LEG,BODY_ZONE_CHEST,BODY_ZONE_HEAD)
 	requires_real_bodypart = TRUE
-	targetable_wound = /datum/wound/pierce
-
+	//targetable_wound = /datum/wound/pierce
+/*
 /datum/surgery/repair_puncture/can_start(mob/living/user, mob/living/carbon/target)
 	if(!istype(target))
 		return FALSE
@@ -28,7 +28,7 @@
 		return(pierce_wound && pierce_wound.blood_flow > 0)
 
 //SURGERY STEPS
-
+*/
 ///// realign the blood vessels so we can reweld them
 /datum/surgery_step/repair_innards
 	name = "realign blood vessels"
@@ -37,7 +37,7 @@
 		TOOL_SCALPEL = 85,
 		TOOL_WIRECUTTER = 40)
 	time = 3 SECONDS
-
+/*
 /datum/surgery_step/repair_innards/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound
 	if(!pierce_wound)
@@ -74,7 +74,7 @@
 		span_notice("[user] jerks apart some of the blood vessels in [target]'s [parse_zone(target_zone)] with [tool]!"),
 		span_notice("[user] jerk apart some of the blood vessels in [target]'s [parse_zone(target_zone)]!"))
 	surgery.operated_bodypart.receive_damage(brute=rand(4,8), sharpness=SHARP_EDGED, wound_bonus = 10)
-
+*/
 ///// Sealing the vessels back together
 /datum/surgery_step/seal_veins
 	name = "weld veins" // if your doctor says they're going to weld your blood vessels back together, you're either A) on SS13, or B) in grave mortal peril
@@ -84,7 +84,7 @@
 		TOOL_WELDER = 70,
 		/obj/item = 30)
 	time = 4 SECONDS
-
+/*
 /datum/surgery_step/seal_veins/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
 		return tool.get_temperature()
@@ -118,6 +118,7 @@
 	else
 		to_chat(user, span_green("You've repaired all the internal damage in [target]'s [parse_zone(target_zone)]!"))
 	return ..()
+*/
 
 #undef REALIGN_INNARDS
 #undef WELD_VEINS

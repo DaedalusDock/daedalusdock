@@ -191,7 +191,6 @@
 	if(!iscarbon(owner))
 		return
 	var/mob/living/carbon/C = owner
-	QDEL_LIST(C.all_scars)
 
 /atom/movable/screen/alert/status_effect/fleshmend
 	name = "Fleshmend"
@@ -405,7 +404,8 @@
 	if(!iscarbon(owner))
 		return
 	var/mob/living/carbon/carbie = owner
-
+	#warn marshal status
+	/*
 	for(var/BP in carbie.bodyparts)
 		var/obj/item/bodypart/part = BP
 		for(var/W in part.wounds)
@@ -424,7 +424,7 @@
 			else
 				carbie.adjustBruteLoss(-heal_amt)
 				carbie.blood_volume += carbie.blood_volume >= BLOOD_VOLUME_NORMAL ? 0 : heal_amt*3
-
+	*/
 
 /atom/movable/screen/alert/status_effect/crucible_soul
 	name = "Blessing of Crucible Soul"

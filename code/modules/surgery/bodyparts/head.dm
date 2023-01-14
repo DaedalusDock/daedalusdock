@@ -16,7 +16,6 @@
 	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
-	scars_covered_by_clothes = FALSE
 	grind_results = null
 	is_dimorphic = TRUE
 	unarmed_attack_verb = "bite"

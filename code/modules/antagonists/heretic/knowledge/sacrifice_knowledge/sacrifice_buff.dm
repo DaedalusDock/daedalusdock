@@ -95,7 +95,8 @@
 
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume = owner.blood_volume + 2
-
+	#warn bleeding
+	/*
 	var/mob/living/carbon/carbon_owner = owner
 	var/datum/wound/bloodiest_wound
 	for(var/datum/wound/iter_wound as anything in carbon_owner.all_wounds)
@@ -104,3 +105,4 @@
 
 	if(bloodiest_wound)
 		bloodiest_wound.set_blood_flow(max(0, bloodiest_wound.blood_flow - 0.5))
+	*/

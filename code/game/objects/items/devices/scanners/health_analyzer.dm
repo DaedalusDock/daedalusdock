@@ -317,6 +317,8 @@
 		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(tdelta)] ago.</b></span>\n"
 
 	// Wounds
+	#warn wound analyzer
+	/*
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		var/list/wounded_parts = carbontarget.get_wounded_bodyparts()
@@ -327,7 +329,7 @@
 				var/datum/wound/W = k
 				render_list += "<div class='ml-2'>[W.name] ([W.severity_text()])\nRecommended treatment: [W.treat_text]</div>" // less lines than in woundscan() so we don't overload people trying to get basic med info
 			render_list += "</span>"
-
+	*/
 	//Diseases
 	for(var/thing in target.diseases)
 		var/datum/disease/D = thing

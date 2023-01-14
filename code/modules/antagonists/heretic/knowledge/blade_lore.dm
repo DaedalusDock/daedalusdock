@@ -218,7 +218,7 @@
 	route = PATH_BLADE
 
 /// The amount of blood flow reduced per level of severity of gained bleeding wounds for Stance of the Scarred Duelist.
-#define BLOOD_FLOW_PER_SEVEIRTY 1
+#define BLOOD_FLOW_PER_SEVERITY 1
 
 /datum/heretic_knowledge/duel_stance
 	name = "Stance of the Scarred Duelist"
@@ -264,10 +264,10 @@
 /datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 
-	if(gained_wound.blood_flow <= 0)
+	if(!gained_wound.max_bleeding_stage)
 		return
-
-	gained_wound.blood_flow -= (gained_wound.severity * BLOOD_FLOW_PER_SEVEIRTY)
+	#warn heretic shit
+	//gained_wound.blood_flow -= (gained_wound.current_stage * BLOOD_FLOW_PER_SEVERITY)
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
 	SIGNAL_HANDLER
@@ -286,7 +286,7 @@
 		ADD_TRAIT(source, TRAIT_STUNRESISTANCE, type)
 		return
 
-#undef BLOOD_FLOW_PER_SEVEIRTY
+#undef BLOOD_FLOW_PER_SEVERITY
 
 /datum/heretic_knowledge/blade_upgrade/blade
 	name = "Swift Blades"

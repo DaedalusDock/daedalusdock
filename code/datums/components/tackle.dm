@@ -269,10 +269,13 @@
 		defense_mod -= 1
 
 	var/leg_wounds = 0 // -1 defense per 2 leg wounds
+	/*
 	for(var/i in target.all_wounds)
 		var/datum/wound/iterwound = i
 		if((iterwound.limb.body_zone in list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)))
 			leg_wounds++
+	*/
+	#warn leg wounds
 	defense_mod -= round(leg_wounds * 0.5)
 
 	if(ishuman(target))

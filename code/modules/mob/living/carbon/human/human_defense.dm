@@ -773,6 +773,8 @@
 				isdisabled += " and"
 		combined_msg += "\t <span class='[no_damage ? "notice" : "warning"]'>Your [body_part.name][isdisabled][self_aware ? " has " : " is "][status].</span>"
 
+		#warn check self for injuries
+		/*
 		for(var/thing in body_part.wounds)
 			var/datum/wound/W = thing
 			var/msg
@@ -786,6 +788,7 @@
 				if(WOUND_SEVERITY_CRITICAL)
 					msg = "\t [span_warning("<b>Your [body_part.name] is suffering [W.a_or_from] [lowertext(W.name)]!!</b>")]"
 			combined_msg += msg
+		*/
 
 		for(var/obj/item/I in body_part.embedded_objects)
 			if(I.isEmbedHarmless())

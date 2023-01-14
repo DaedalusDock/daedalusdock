@@ -306,9 +306,10 @@
 				var/damage_dealt = wound_info_by_part[hit_part][CLOUD_POSITION_DAMAGE]
 				var/w_bonus = wound_info_by_part[hit_part][CLOUD_POSITION_W_BONUS]
 				var/bw_bonus = wound_info_by_part[hit_part][CLOUD_POSITION_BW_BONUS]
-				var/wound_type = (initial(P.damage_type) == BRUTE) ? WOUND_BLUNT : WOUND_BURN // sharpness is handled in the wound rolling
+				var/wound_type = (initial(P.damage_type) == BRUTE) ? WOUND_BRUISE : WOUND_BURN // sharpness is handled in the wound rolling
 				wound_info_by_part -= hit_part
-				hit_part.painless_wound_roll(wound_type, damage_dealt, w_bonus, bw_bonus, initial(P.sharpness))
+				#warn add wound
+				//hit_part.painless_wound_roll(wound_type, damage_dealt, w_bonus, bw_bonus, initial(P.sharpness))
 
 		var/limb_hit_text = ""
 		if(hit_part)

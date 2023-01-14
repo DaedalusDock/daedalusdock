@@ -148,12 +148,16 @@
 		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
 		return
 
+	#warn gauze
 	var/gauzeable_wound = FALSE
+	/*
 	for(var/i in limb.wounds)
 		var/datum/wound/woundies = i
 		if(woundies.wound_flags & ACCEPTS_GAUZE)
 			gauzeable_wound = TRUE
 			break
+	*/
+
 	if(!gauzeable_wound)
 		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
 		return
@@ -391,12 +395,15 @@
 		return (BRUTELOSS)
 
 	C.emote("scream")
-	for(var/i in C.bodyparts)
+	#warn bone gel suicide
+	/*
+	for(var/obj/item/bodypart/BP as anything in C.bodyparts)
 		var/obj/item/bodypart/bone = i
 		var/datum/wound/blunt/severe/oof_ouch = new
 		oof_ouch.apply_wound(bone)
 		var/datum/wound/blunt/critical/oof_OUCH = new
-		oof_OUCH.apply_wound(bone)
+		oof_OUCH.apply_wound(bone
+	*/
 
 	for(var/i in C.bodyparts)
 		var/obj/item/bodypart/bone = i

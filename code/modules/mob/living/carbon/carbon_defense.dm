@@ -164,11 +164,13 @@
 			if(!user.combat_mode)
 				if(S.next_step(user, modifiers))
 					return TRUE
-
+	#warn attack_hand
+	/*
 	for(var/i in all_wounds)
 		var/datum/wound/W = i
 		if(W.try_handling(user))
 			return TRUE
+	*/
 
 	return FALSE
 

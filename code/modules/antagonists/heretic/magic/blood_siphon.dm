@@ -46,6 +46,8 @@
 
 	var/mob/living/carbon/carbon_target = real_target
 	var/mob/living/carbon/carbon_user = living_user
+	#warn heretic shit
+	/*
 	for(var/obj/item/bodypart/bodypart as anything in carbon_user.bodyparts)
 		for(var/datum/wound/iter_wound as anything in bodypart.wounds)
 			if(prob(50))
@@ -55,6 +57,7 @@
 				continue
 			iter_wound.remove_wound()
 			iter_wound.apply_wound(target_bodypart)
+	*/
 
 /obj/effect/proc_holder/spell/pointed/blood_siphon/can_target(atom/target, mob/user, silent)
 	if(!isliving(target))

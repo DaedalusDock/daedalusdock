@@ -11,7 +11,8 @@
 	possible_locs = list(BODY_ZONE_R_ARM,BODY_ZONE_L_ARM,BODY_ZONE_R_LEG,BODY_ZONE_L_LEG,BODY_ZONE_CHEST,BODY_ZONE_HEAD)
 	requires_real_bodypart = TRUE
 	targetable_wound = /datum/wound/burn
-
+#warn burn surgeries
+/*
 /datum/surgery/debride/can_start(mob/living/user, mob/living/carbon/target)
 	if(!istype(target))
 		return FALSE
@@ -19,6 +20,7 @@
 		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
 		var/datum/wound/burn/burn_wound = targeted_bodypart.get_wound_type(targetable_wound)
 		return(burn_wound && burn_wound.infestation > 0)
+*/
 
 //SURGERY STEPS
 
@@ -42,6 +44,8 @@
 
 /// To give the surgeon a heads up how much work they have ahead of them
 /datum/surgery_step/debride/proc/get_progress(mob/user, mob/living/carbon/target, datum/wound/burn/burn_wound)
+	return
+/*
 	if(!burn_wound?.infestation || !infestation_removed)
 		return
 	var/estimated_remaining_steps = burn_wound.infestation / infestation_removed
@@ -105,7 +109,7 @@
 	while(burn_wound && burn_wound.infestation > 0.25)
 		if(!..())
 			break
-
+*/
 ///// Dressing burns
 /datum/surgery_step/dress
 	name = "bandage burns"
@@ -118,7 +122,7 @@
 	/// How much flesh healing is added
 	var/flesh_healing_added = 5
 
-
+/*
 /datum/surgery_step/dress/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/datum/wound/burn/burn_wound = surgery.operated_wound
 	if(burn_wound)
@@ -149,3 +153,4 @@
 	if(istype(tool, /obj/item/stack))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)
+*/

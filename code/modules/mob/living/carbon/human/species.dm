@@ -1593,7 +1593,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// If our body temp is to low for a wound exit
 	if(humi.bodytemperature < BODYTEMP_HEAT_WOUND_LIMIT)
 		return
-
+	#warn species apply_burn_wounds
+	/*
 	// Lets pick a random body part and check for an existing burn
 	var/obj/item/bodypart/bodypart = pick(humi.bodyparts)
 	var/datum/wound/burn/existing_burn = locate(/datum/wound/burn) in bodypart.wounds
@@ -1618,6 +1619,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		burn_damage = HEAT_DAMAGE_LEVEL_3
 
 	humi.apply_damage(burn_damage * delta_time, BURN, bodypart)
+	*/
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(mob/living/carbon/human/H, datum/gas_mixture/environment, delta_time, times_fired)

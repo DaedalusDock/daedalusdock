@@ -11,8 +11,9 @@
 	target_mobtypes = list(/mob/living/carbon/human)
 	possible_locs = list(BODY_ZONE_R_ARM,BODY_ZONE_L_ARM,BODY_ZONE_R_LEG,BODY_ZONE_L_LEG,BODY_ZONE_CHEST,BODY_ZONE_HEAD)
 	requires_real_bodypart = TRUE
-	targetable_wound = /datum/wound/blunt/severe
-
+	//targetable_wound = /datum/wound/blunt/severe
+#warn bone surgeries
+/*
 /datum/surgery/repair_bone_hairline/can_start(mob/living/user, mob/living/carbon/target)
 	if(!istype(target))
 		return FALSE
@@ -20,7 +21,7 @@
 		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
 		return(targeted_bodypart.get_wound_type(targetable_wound))
 
-
+*/
 ///// Repair Compound Fracture (Critical)
 /datum/surgery/repair_bone_compound
 	name = "Repair Compound Fracture"
@@ -34,15 +35,15 @@
 	target_mobtypes = list(/mob/living/carbon/human)
 	possible_locs = list(BODY_ZONE_R_ARM,BODY_ZONE_L_ARM,BODY_ZONE_R_LEG,BODY_ZONE_L_LEG,BODY_ZONE_CHEST,BODY_ZONE_HEAD)
 	requires_real_bodypart = TRUE
-	targetable_wound = /datum/wound/blunt/critical
-
+	//targetable_wound = /datum/wound/blunt/critical
+/*
 /datum/surgery/repair_bone_compound/can_start(mob/living/user, mob/living/carbon/target)
 	if(!istype(target))
 		return FALSE
 	if(..())
 		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
 		return(targeted_bodypart.get_wound_type(targetable_wound))
-
+*/
 //SURGERY STEPS
 
 ///// Repair Hairline Fracture (Severe)
@@ -164,3 +165,4 @@
 	if(istype(tool, /obj/item/stack))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)
+

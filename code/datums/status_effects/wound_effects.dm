@@ -97,6 +97,8 @@
 	limp_chance_left = 0
 	limp_chance_right = 0
 
+	#warn limping
+	/*
 	// technically you can have multiple wounds causing limps on the same limb, even if practically only bone wounds cause it in normal gameplay
 	if(left)
 		for(var/thing in left.wounds)
@@ -109,7 +111,7 @@
 			var/datum/wound/W = thing
 			slowdown_right += W.limp_slowdown
 			limp_chance_right = max(limp_chance_right, W.limp_chance)
-
+	*/
 	// this handles losing your leg with the limp and the other one being in good shape as well
 	if(!slowdown_left && !slowdown_right)
 		C.remove_status_effect(src)
@@ -143,11 +145,13 @@
 
 /datum/status_effect/wound/on_creation(mob/living/new_owner, incoming_wound)
 	. = ..()
+	#warn wound status effect
+	/*
 	linked_wound = incoming_wound
 	linked_limb = linked_wound.limb
-
+	*/
 /datum/status_effect/wound/on_remove()
-	linked_wound = null
+	//linked_wound = null
 	linked_limb = null
 	UnregisterSignal(owner, COMSIG_CARBON_LOSE_WOUND)
 
@@ -160,15 +164,17 @@
 /// check if the wound getting removed is the wound we're tied to
 /datum/status_effect/wound/proc/check_remove(mob/living/L, datum/wound/W)
 	SIGNAL_HANDLER
-
+/*
 	if(W == linked_wound)
 		qdel(src)
-
+*/
 
 // bones
 /datum/status_effect/wound/blunt
 
 /datum/status_effect/wound/blunt/on_apply()
+
+/*
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, .proc/on_swap_hands)
 	on_swap_hands()
@@ -195,7 +201,7 @@
 		return linked_wound.interaction_efficiency_penalty
 
 	return 1
-
+*/
 // blunt
 /datum/status_effect/wound/blunt/moderate
 	id = "disjoint"

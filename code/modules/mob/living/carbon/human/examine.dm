@@ -130,8 +130,7 @@
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/body_part = X
+	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
@@ -141,9 +140,12 @@
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
-		for(var/i in body_part.wounds)
-			var/datum/wound/iter_wound = i
-			msg += "[iter_wound.get_examine_description(user)]\n"
+		#warn reimpliment fake wounds
+		/*if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
+		var/temp
+		if(user == src && src.hal_screwyhud == SCREWYHUD_CRIT)//fake damage
+			temp = 50*/
+		msg += body_part.mob_examine()
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
@@ -177,28 +179,6 @@
 	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
 		msg += "[t_He] [p_do()]n't seem all there.\n"
 
-	if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
-		var/temp
-		if(user == src && src.hal_screwyhud == SCREWYHUD_CRIT)//fake damage
-			temp = 50
-		else
-			temp = getBruteLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor bruising.\n"
-			else if(temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> bruising!\n"
-			else
-				msg += "<B>[t_He] [t_has] severe bruising!</B>\n"
-
-		temp = getFireLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor burns.\n"
-			else if (temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> burns!\n"
-			else
-				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
 
 		temp = getCloneLoss()
 		if(temp)
@@ -336,23 +316,6 @@
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 			else if(!client)
 				msg += "[t_He] [t_has] a blank, absent-minded stare and appears completely unresponsive to anything. [t_He] may snap out of it soon.\n"
-
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")

@@ -394,11 +394,14 @@
 	effect_icon_state = "emark1"
 
 /datum/status_effect/eldritch/flesh/on_effect()
+	#warn add wound
+	/*
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		var/obj/item/bodypart/bodypart = pick(human_owner.bodyparts)
 		var/datum/wound/slash/severe/crit_wound = new()
 		crit_wound.apply_wound(bodypart)
+	*/
 
 	return ..()
 
@@ -550,6 +553,8 @@
 	duration = -1
 
 /datum/status_effect/neck_slice/tick()
+	#warn neck slice
+	/*
 	var/mob/living/carbon/human/H = owner
 	var/obj/item/bodypart/throat = H.get_bodypart(BODY_ZONE_HEAD)
 	if(H.stat == DEAD || !throat)
@@ -566,6 +571,7 @@
 
 	if(prob(10))
 		H.emote(pick("gasp", "gag", "choke"))
+	*/
 
 /mob/living/proc/apply_necropolis_curse(set_curse)
 	var/datum/status_effect/necropolis_curse/C = has_status_effect(/datum/status_effect/necropolis_curse)

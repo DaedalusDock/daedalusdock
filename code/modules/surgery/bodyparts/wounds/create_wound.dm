@@ -63,7 +63,7 @@
 			for(var/datum/wound/other as anything in wounds)
 				if(other.can_merge(W))
 					other.merge_wound(W)
-					return
+					return other
 
 		LAZYADD(wounds, W)
 		return W

@@ -126,6 +126,9 @@
 			qdel(surgery)
 			break
 
+	for(var/datum/wound/W as anything in wounds)
+		W.unregister_from_mob()
+
 	for(var/obj/item/embedded in embedded_objects)
 		embedded.forceMove(src) // It'll self remove via signal reaction, just need to move it
 	if(!phantom_owner.has_embedded_objects())
@@ -376,6 +379,9 @@
 
 	for(var/obj/item/organ/limb_organ in contents)
 		limb_organ.Insert(new_limb_owner, TRUE)
+
+	for(var/datum/wound/W as anything in wounds)
+		W.register_to_mob(new_limb_owner)
 
 	//Remove any stumps that may be present there, since we have a limb now
 	if(mob_chest)

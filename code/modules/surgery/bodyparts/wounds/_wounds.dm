@@ -5,6 +5,8 @@
 /datum/wound
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
+	///The mob this wound belongs to
+	var/mob/living/carbon/mob_parent
 
 	///Number representing the current stage
 	var/current_stage = 0
@@ -16,8 +18,6 @@
 	var/bleed_timer = 0
 	///Above this amount wounds you will need to treat the wound to stop bleeding, regardless of bleed_timer
 	var/bleed_threshold = 30
-	///How much blood is being lost per tick of bleed_timer
-	var/bleed_rate = 2
 	///Amount of damage the current wound type requires(less means we need to apply the next healing stage)
 	var/min_damage = 0
 
@@ -50,7 +50,6 @@
 	var/autoheal_cutoff = 15
 
 	// helper lists
-	var/tmp/list/embedded_objects
 	var/tmp/list/desc_list = list()
 	var/tmp/list/damage_list = list()
 
@@ -73,14 +72,35 @@
 
 	if(istype(BP))
 		parent = BP
+		if(BP.current_gauze)
+			bandage()
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZED, .proc/on_gauze)
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZE_DESTROYED, .proc/on_ungauze)
+		if(parent.owner)
+			register_to_mob(parent.owner)
 
 /datum/wound/Destroy()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
-	LAZYCLEARLIST(embedded_objects)
 	return ..()
+
+/datum/wound/proc/register_to_mob(mob/living/carbon/C)
+	if(mob_parent)
+		unregister_from_mob()
+	mob_parent = C
+	SEND_SIGNAL(mob_parent, COMSIG_CARBON_GAIN_WOUND, src, parent)
+	RegisterSignal(mob_parent, COMSIG_PARENT_QDELETING, .proc/mob_parent_gone)
+
+/datum/wound/proc/unregister_from_mob()
+	SEND_SIGNAL(mob_parent, COMSIG_CARBON_LOSE_WOUND, src, parent)
+	UnregisterSignal(mob_parent, COMSIG_PARENT_QDELETING)
+	mob_parent = null
+
+/datum/wound/proc/mob_parent_gone(datum/source)
+	SIGNAL_HANDLER
+	unregister_from_mob()
 
 ///Returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)
@@ -97,13 +117,10 @@
 	return src.damage / src.amount
 
 /datum/wound/proc/can_autoheal()
-	if(LAZYLEN(embedded_objects))
-		return 0
 	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
-	//if(LAZYLEN(embedded_objects)) return
 	switch(wound_type)
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
 			return bandaged
@@ -125,8 +142,6 @@
 	return 1
 
 /datum/wound/proc/merge_wound(datum/wound/other)
-	if(LAZYLEN(other.embedded_objects))
-		LAZYDISTINCTADD(src.embedded_objects, other.embedded_objects)
 	src.damage += other.damage
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
@@ -177,11 +192,17 @@
 	disinfected = 1
 	return TRUE
 
+/datum/wound/proc/clamp_wound()
+	if(clamped)
+		return FALSE
+	clamped = 1
+	if(parent)
+		parent.refresh_bleed_rate()
+	return TRUE
+
 // heal the given amount of damage, and if the given amount of damage was more
 // than what needed to be healed, return how much heal was left
 /datum/wound/proc/heal_damage(amount)
-	//if(LAZYLEN(embedded_objects))
-		//return amount // heal nothing
 	if(parent)
 		if (wound_type == WOUND_BURN && !(parent.burn_ratio < 1))
 			return amount	//We don't want to heal wounds on irreparable organs.
@@ -232,16 +253,20 @@
 	return 1
 
 /datum/wound/proc/bleeding()
-	for(var/obj/item/thing in embedded_objects)
-		if(thing.w_class > WEIGHT_CLASS_SMALL)
-			return FALSE
-
 	if(bandaged || clamped)
 		return FALSE
 	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
 
 /datum/wound/proc/is_surgical()
 	return 0
+
+/datum/wound/proc/on_gauze(datum/source)
+	SIGNAL_HANDLER
+	bandage()
+
+/datum/wound/proc/on_ungauze(datum/source)
+	SIGNAL_HANDLER
+	bandaged = FALSE
 
 /datum/wound/proc/get_scanner_description()
 	return

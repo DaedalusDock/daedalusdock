@@ -385,8 +385,7 @@
 	var/old_brute = brute_dam
 
 	// sync the bodypart's damage with its wounds
-	update_damage()
-	if(old_brute != brute_dam || old_burn != burn_dam)
+	if(update_damage())
 		return BODYPART_LIFE_UPDATE_HEALTH
 
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
@@ -422,7 +421,6 @@
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
 	var/block_cut = (brute <= 15) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
-
 	if(brute)
 		var/to_create = WOUND_BRUISE
 		if(can_cut)
@@ -441,7 +439,6 @@
 		else
 		*/
 		create_wound(WOUND_BURN, burn)
-
 	//Disturb treated burns
 	if(brute > 5)
 		var/disturbed = 0
@@ -462,6 +459,7 @@
 		set_stamina_dam(stamina_dam + round(clamp(stamina, 0, max_stamina_damage - stamina_dam), DAMAGE_PRECISION))
 
 	update_damage()
+
 	if(owner)
 		if(can_be_disabled)
 			update_disabled()
@@ -545,11 +543,11 @@
 
 ///Proc to update the damage values of the bodypart.
 /obj/item/bodypart/proc/update_damage()
+	var/old_brute = brute_dam
+	var/old_burn = burn_dam
 	real_wound_count = 0
 	brute_dam = 0
 	burn_dam = 0
-	bodypart_flags &= ~BP_BLEEDING
-	var/clamped = 0
 
 	//update damage counts
 	var/bleeds = IS_ORGANIC_LIMB(src)
@@ -564,11 +562,6 @@
 		else
 			brute_dam += W.damage
 
-		if(bleeds && W.bleeding() && owner)
-			W.bleed_timer--
-			bodypart_flags |= BP_BLEEDING
-
-		clamped |= W.clamped
 		real_wound_count += W.amount
 
 	current_damage = round(brute_dam + burn_dam, DAMAGE_PRECISION)
@@ -577,6 +570,11 @@
 	var/limb_loss_threshold = max_damage
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
+
+	. = (old_brute != brute_dam || old_burn != burn_dam)
+	if(.)
+		refresh_bleed_rate()
+
 
 //Checks disabled status thresholds
 /obj/item/bodypart/proc/update_disabled()
@@ -670,8 +668,7 @@
 		if(needs_update_disabled)
 			update_disabled()
 
-
-	refresh_bleed_rate()
+	update_damage()
 	return old_owner
 
 ///Proc to change the value of the `can_be_disabled` variable and react to the event of its change.
@@ -821,11 +818,9 @@
 		if(!embeddies.isEmbedHarmless())
 			cached_bleed_rate += 0.25
 
-	#warn bleed rate
-	/*
 	for(var/datum/wound/iter_wound as anything in wounds)
-		cached_bleed_rate += iter_wound.blood_flow
-	*/
+		if(iter_wound.bleeding())
+			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
 
 	if(!cached_bleed_rate)
 		QDEL_NULL(grasped_by)

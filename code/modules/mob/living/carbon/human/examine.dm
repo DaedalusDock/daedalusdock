@@ -179,15 +179,15 @@
 	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
 		msg += "[t_He] [p_do()]n't seem all there.\n"
 
-
-		temp = getCloneLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor cellular damage.\n"
-			else if(temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
-			else
-				msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
+	var/temp
+	temp = getCloneLoss()
+	if(temp)
+		if(temp < 25)
+			msg += "[t_He] [t_has] minor cellular damage.\n"
+		else if(temp < 50)
+			msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
+		else
+			msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
 
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
@@ -226,45 +226,15 @@
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
 	if(is_bleeding())
-		var/list/obj/item/bodypart/bleeding_limbs = list()
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.get_modified_bleed_rate())
-				bleeding_limbs += body_part
 			if(body_part.grasped_by)
 				grasped_limbs += body_part
 
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
-
-		var/list/bleed_text
-		if(appears_dead)
-			bleed_text = list("<span class='deadsay'><B>Blood is visible in [t_his] open")
-		else
-			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his]")
-
-		switch(num_bleeds)
-			if(1 to 2)
-				bleed_text += " [bleeding_limbs[1].name][num_bleeds == 2 ? " and [bleeding_limbs[2].name]" : ""]"
-			if(3 to INFINITY)
-				for(var/i in 1 to (num_bleeds - 1))
-					var/obj/item/bodypart/body_part = bleeding_limbs[i]
-					bleed_text += " [body_part.name],"
-				bleed_text += " and [bleeding_limbs[num_bleeds].name]"
-
-		if(appears_dead)
-			bleed_text += ", but it has pooled and is not flowing.</span></B>\n"
-		else
-			if(reagents.has_reagent(/datum/reagent/toxin/heparin, needs_metabolizing = TRUE))
-				bleed_text += " incredibly quickly"
-
-			bleed_text += "!</B>\n"
-
 		for(var/i in grasped_limbs)
 			var/obj/item/bodypart/grasped_part = i
-			bleed_text += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
-
-		msg += bleed_text.Join()
+			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
 
 	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
 		msg += "[t_He] [t_is] emitting a gentle blue glow!\n"

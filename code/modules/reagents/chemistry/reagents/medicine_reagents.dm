@@ -1521,23 +1521,15 @@
 	if(!M.blood_volume || !M.all_wounds)
 		return
 
-	var/datum/wound/bloodiest_wound
-	#warn coagulant
-	/*
-	for(var/i in M.all_wounds)
-		var/datum/wound/iter_wound = i
-		if(iter_wound.blood_flow)
-			if(iter_wound.blood_flow > bloodiest_wound?.blood_flow)
-				bloodiest_wound = iter_wound
-
-	if(bloodiest_wound)
-		if(!was_working)
-			to_chat(M, span_green("You can feel your flowing blood start thickening!"))
-			was_working = TRUE
-		bloodiest_wound.adjust_blood_flow(-clot_rate * REM * delta_time)
-	else if(was_working)
-		was_working = FALSE
-	*/
+	for(var/obj/item/bodypart/BP as anything in M.bodyparts)
+		if(BP.bodypart_flags & BP_BLEEDING)
+			if(!prob(20))
+				continue
+			for(var/datum/wound/W as anything in BP.wounds)
+				if(W.bleeding())
+					W.bleed_timer = 0
+					W.clamp_wound()
+					BP.bodypart_flags &= ~BP_BLEEDING
 
 /datum/reagent/medicine/coagulant/overdose_process(mob/living/M, delta_time, times_fired)
 	. = ..()

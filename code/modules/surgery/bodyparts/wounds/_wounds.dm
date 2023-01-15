@@ -80,6 +80,8 @@
 			register_to_mob(parent.owner)
 
 /datum/wound/Destroy()
+	if(mob_parent)
+		unregister_from_mob()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
 		parent = null

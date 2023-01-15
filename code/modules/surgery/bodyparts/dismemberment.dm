@@ -110,6 +110,7 @@
 
 	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, dismembered)
 	update_limb(1)
+
 	owner.remove_bodypart(src)
 
 	if(held_index)
@@ -122,6 +123,9 @@
 	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
 		ext_organ.transfer_to_limb(src, null) //Null is the second arg because the bodypart is being removed from it's owner.
 
+	for(var/datum/wound/W as anything in wounds)
+		W.unregister_from_mob()
+
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
 	for(var/datum/surgery/surgery as anything in phantom_owner.surgeries) //if we had an ongoing surgery on that limb, we stop it.
@@ -129,9 +133,6 @@
 			phantom_owner.surgeries -= surgery
 			qdel(surgery)
 			break
-
-	for(var/datum/wound/W as anything in wounds)
-		W.unregister_from_mob()
 
 	for(var/obj/item/embedded in embedded_objects)
 		embedded.forceMove(src) // It'll self remove via signal reaction, just need to move it

@@ -70,7 +70,7 @@
 	var/datum/surgery/organ_manipulation/surgery_for_one = new(patient_one, BODY_ZONE_CHEST, patient_one.get_bodypart(BODY_ZONE_CHEST))
 
 	// Without waiting for the incision to complete, try to start a new surgery
-	TEST_ASSERT(!surgery_step.try_op(user, patient_one, BODY_ZONE_CHEST, scalpel, surgery_for_one), "Was allowed to start a second surgery without the rod of asclepius")
+	TEST_ASSERT(!surgery_step.initiate(user, patient_one, BODY_ZONE_CHEST, scalpel, surgery_for_one), "Was allowed to start a second surgery without the rod of asclepius")
 	TEST_ASSERT(!surgery_for_one.step_in_progress, "Surgery for patient one is somehow in progress, despite not initiating")
 
 	user.apply_status_effect(/datum/status_effect/hippocratic_oath)

@@ -287,7 +287,6 @@
 		var/num_hits = targets_hit[target]["hits"]
 		var/damage = targets_hit[target]["damage"]
 		UnregisterSignal(target, COMSIG_PARENT_QDELETING)
-		#warn test shotguns and grenadas
 		var/obj/item/bodypart/hit_part
 		if(isbodypart(target))
 			hit_part = target

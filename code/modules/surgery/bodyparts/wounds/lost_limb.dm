@@ -3,7 +3,7 @@
 	var/zone = null
 	var/plaintext_zone = ""
 
-/datum/wound/lost_limb/New(obj/item/bodypart/lost_limb, losstype, clean)
+/datum/wound/lost_limb/New(obj/item/bodypart/lost_limb, losstype, clean, obj/item/bodypart/affected_limb)
 	zone = lost_limb.body_zone
 	plaintext_zone = lost_limb.plaintext_zone
 	var/damage_amt = lost_limb.max_damage
@@ -33,7 +33,7 @@
 				"scarred stump" = 0
 				)
 
-	..(damage_amt)
+	..(damage_amt, affected_limb)
 
 /datum/wound/lost_limb/can_merge(datum/wound/other)
 	return 0 //cannot be merged

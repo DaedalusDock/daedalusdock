@@ -38,8 +38,7 @@
 
 	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
 	if(!QDELETED(parent_chest))
-		var/datum/wound/lost_limb/W = new(src, dismember_type, clean)
-		W.parent = parent_chest
+		var/datum/wound/lost_limb/W = new(src, dismember_type, clean, parent_chest)
 		LAZYADD(parent_chest.wounds, W)
 
 	if(dismember_type == DROPLIMB_BURN)

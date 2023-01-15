@@ -203,13 +203,13 @@
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
-	if(owner)
-		drop_limb(TRUE)
 	for(var/wound in wounds)
 		qdel(wound) // wounds is a lazylist, and each wound removes itself from it on deletion.
 	if(length(wounds))
 		stack_trace("[type] qdeleted with [length(wounds)] uncleared wounds")
 		wounds.Cut()
+	if(owner)
+		drop_limb(TRUE)
 	for(var/external_organ in external_organs)
 		qdel(external_organ)
 	return ..()

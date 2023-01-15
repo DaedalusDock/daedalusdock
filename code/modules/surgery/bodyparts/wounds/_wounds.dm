@@ -93,16 +93,11 @@
 		unregister_from_mob()
 	mob_parent = C
 	SEND_SIGNAL(mob_parent, COMSIG_CARBON_GAIN_WOUND, src, parent)
-	RegisterSignal(mob_parent, COMSIG_PARENT_QDELETING, .proc/mob_parent_gone)
 
 /datum/wound/proc/unregister_from_mob()
 	SEND_SIGNAL(mob_parent, COMSIG_CARBON_LOSE_WOUND, src, parent)
-	UnregisterSignal(mob_parent, COMSIG_PARENT_QDELETING)
 	mob_parent = null
 
-/datum/wound/proc/mob_parent_gone(datum/source)
-	SIGNAL_HANDLER
-	unregister_from_mob()
 
 ///Returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)

@@ -5,13 +5,8 @@
 	var/static/list/interal_wounds_check = list(WOUND_CUT, WOUND_PIERCE, WOUND_BRUISE)
 	var/static/list/fluid_wounds_check = list(WOUND_BURN, WOUND_LASER)
 
-	var/local_damage = brute_dam + burn_dam + damage
-	/* BRAINMED STUFF - arteries, tendons
-	if (!surgical && (damage > 15) && (local_damage > 30) && (wound_type in internal_wounds_check))
-	*/
-
 	//Burn damage can cause fluid loss due to blistering and cook-off
-	if(owner && (damage > 5 || damage + burn_dam >= 15) && IS_ORGANIC_LIMB(src) && (wound_type in fluid_wounds_check))
+	if(owner && (damage > 5 || damage + burn_dam >= 15) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
 		var/fluid_loss_severity
 		switch(wound_type)
 			if (WOUND_BURN)
@@ -67,3 +62,17 @@
 
 		LAZYADD(wounds, W)
 		return W
+
+/obj/item/bodypart/proc/create_wound_easy(type2make, damage)
+	var/datum/wound/W = new type2make(damage, src)
+	var/merged = FALSE
+	for(var/datum/wound/other as anything in wounds)
+		if(other.can_merge(W))
+			other.merge_wound(W)
+			merged = TRUE
+			. = other
+
+	if(!merged)
+		LAZYADD(wounds, W)
+	update_wounds()
+	return W

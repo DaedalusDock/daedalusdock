@@ -140,12 +140,8 @@
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
-		#warn reimpliment fake wounds
-		/*if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
-		var/temp
-		if(user == src && src.hal_screwyhud == SCREWYHUD_CRIT)//fake damage
-			temp = 50*/
-		msg += body_part.mob_examine()
+
+		msg += body_part.mob_examine(hal_screwyhud)
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X

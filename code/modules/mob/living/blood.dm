@@ -133,6 +133,7 @@
 
 	var/bleeding_severity = ""
 	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD
+	var/rate_of_change
 
 	switch(bleed_amt)
 		if(-INFINITY to 0)
@@ -152,27 +153,8 @@
 		if(7 to INFINITY)
 			bleeding_severity = "Your heartbeat thrashes wildly trying to keep up with your bloodloss"
 
-	var/rate_of_change = ", but it's getting better." // if there's no wounds actively getting bloodier or maintaining the same flow, we must be getting better!
 	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
 		rate_of_change = ", but it's clotting up quickly!"
-	//else
-		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		#warn bleed examine
-		/*
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
-			if(!iter_wound.blood_flow)
-				continue
-			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
-			switch(iter_wound_roc)
-				if(BLOOD_FLOW_INCREASING) // assume the worst, if one wound is getting bloodier, we focus on that
-					rate_of_change = ", <b>and it's getting worse!</b>"
-					break
-				if(BLOOD_FLOW_STEADY) // our best case now is that our bleeding isn't getting worse
-					rate_of_change = ", and it's holding steady."
-				if(BLOOD_FLOW_DECREASING) // this only matters if none of the wounds fit the above two cases, included here for completeness
-					continue
-		*/
 
 	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)

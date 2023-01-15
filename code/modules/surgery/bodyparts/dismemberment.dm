@@ -46,24 +46,23 @@
 		burn()
 		return TRUE
 
-	else
-		add_mob_blood(limb_owner)
-		limb_owner.bleed(rand(20, 40))
-		var/direction = pick(GLOB.cardinals)
+	add_mob_blood(limb_owner)
+	limb_owner.bleed(rand(20, 40))
+	var/direction = pick(GLOB.cardinals)
 
-		if(dismember_type == DROPLIMB_BLUNT && !clean)
-			limb_owner.spray_blood(direction, 2)
-		if(!clean)
-			var/t_range = rand(2,max(throw_range/2, 2))
-			var/turf/target_turf = get_turf(src)
-			for(var/i in 1 to t_range-1)
-				var/turf/new_turf = get_step(target_turf, direction)
-				if(!new_turf)
-					break
-				target_turf = new_turf
-				if(new_turf.density)
-					break
-			throw_at(target_turf, throw_range, throw_speed)
+	if(dismember_type == DROPLIMB_BLUNT && !clean)
+		limb_owner.spray_blood(direction, 2)
+	if(!clean)
+		var/t_range = rand(2,max(throw_range/2, 2))
+		var/turf/target_turf = get_turf(src)
+		for(var/i in 1 to t_range-1)
+			var/turf/new_turf = get_step(target_turf, direction)
+			if(!new_turf)
+				break
+			target_turf = new_turf
+			if(new_turf.density)
+				break
+		throw_at(target_turf, throw_range, throw_speed)
 
 	return TRUE
 
@@ -174,25 +173,6 @@
 		return
 
 	forceMove(drop_loc)
-
-/**
- * get_mangled_state() is relevant for flesh and bone bodyparts, and returns whether this bodypart has mangled skin, mangled bone, or both (or neither i guess)
- *
- * Dismemberment for flesh and bone requires the victim to have the skin on their bodypart destroyed (either a critical cut or piercing wound), and at least a hairline fracture
- * (severe bone), at which point we can start rolling for dismembering. The attack must also deal at least 10 damage, and must be a brute attack of some kind (sorry for now, cakehat, maybe later)
- *
- * Returns: BODYPART_MANGLED_NONE if we're fine, BODYPART_MANGLED_FLESH if our skin is broken, BODYPART_MANGLED_BONE if our bone is broken, or BODYPART_MANGLED_BOTH if both are broken and we're up for dismembering
- */
-/obj/item/bodypart/proc/get_mangled_state()
-	. = BODYPART_MANGLED_NONE
-	#warn mangled_state, make a trait
-	/*
-	for(var/datum/wound/iter_wound as anything in wounds)
-		if((iter_wound.wound_flags & MANGLES_BONE))
-			. |= BODYPART_MANGLED_BONE
-		if((iter_wound.wound_flags & MANGLES_FLESH))
-			. |= BODYPART_MANGLED_FLESH
-	*/
 
 ///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner)
@@ -477,12 +457,6 @@
 			qdel(limb)
 			return FALSE
 		limb.update_limb(is_creating = TRUE)
-		#warn regenerate_limb
-		/*
-		var/datum/scar/scaries = new
-		var/datum/wound/loss/phantom_loss = new // stolen valor, really
-		scaries.generate(limb, phantom_loss)
-		*/
 		//Copied from /datum/species/proc/on_species_gain()
 		for(var/obj/item/organ/external/organ_path as anything in dna.species.external_organs)
 			//Load a persons preferences from DNA

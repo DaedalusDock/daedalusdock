@@ -104,7 +104,6 @@
 #include "load_map_security.dm"
 #include "machine_disassembly.dm"
 #include "mapping.dm"
-#include "medical_wounds.dm"
 #include "merge_type.dm"
 #include "metabolizing.dm"
 #include "mob_spawn.dm"

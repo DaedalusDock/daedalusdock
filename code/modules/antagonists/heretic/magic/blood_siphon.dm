@@ -41,24 +41,6 @@
 	if(living_user.blood_volume < BLOOD_VOLUME_MAXIMUM) // we dont want to explode from casting
 		living_user.blood_volume += 20
 
-	if(!iscarbon(real_target))
-		return
-
-	var/mob/living/carbon/carbon_target = real_target
-	var/mob/living/carbon/carbon_user = living_user
-	#warn heretic shit
-	/*
-	for(var/obj/item/bodypart/bodypart as anything in carbon_user.bodyparts)
-		for(var/datum/wound/iter_wound as anything in bodypart.wounds)
-			if(prob(50))
-				continue
-			var/obj/item/bodypart/target_bodypart = locate(bodypart.type) in carbon_target.bodyparts
-			if(!target_bodypart)
-				continue
-			iter_wound.remove_wound()
-			iter_wound.apply_wound(target_bodypart)
-	*/
-
 /obj/effect/proc_holder/spell/pointed/blood_siphon/can_target(atom/target, mob/user, silent)
 	if(!isliving(target))
 		if(!silent)

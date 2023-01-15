@@ -264,10 +264,10 @@
 /datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 
-	if(!gained_wound.max_bleeding_stage)
+	if(!gained_wound.bleed_timer)
 		return
-	#warn heretic shit
-	//gained_wound.blood_flow -= (gained_wound.current_stage * BLOOD_FLOW_PER_SEVERITY)
+
+	gained_wound.bleed_timer -= 15
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
 	SIGNAL_HANDLER

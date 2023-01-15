@@ -2710,12 +2710,8 @@
 /datum/reagent/determination/on_mob_end_metabolize(mob/living/carbon/M)
 	if(significant)
 		var/stam_crash = 0
-		#warn determination
-		/*
-		for(var/thing in M.all_wounds)
-			var/datum/wound/W = thing
-			stam_crash += (W.severity + 1) * 3 // spike of 3 stam damage per wound severity (moderate = 6, severe = 9, critical = 12) when the determination wears off if it was a combat rush
-		*/
+		for(var/datum/wound/W as anything in M.get_wounds())
+			stam_crash += (W.current_stage + 1) * 3 // spike of 3 stam damage per wound severity (moderate = 6, severe = 9, critical = 12) when the determination wears off if it was a combat rush
 		M.adjustStaminaLoss(stam_crash)
 	M.remove_status_effect(/datum/status_effect/determined)
 	..()
@@ -2726,15 +2722,9 @@
 		M.apply_status_effect(/datum/status_effect/determined) // in addition to the slight healing, limping cooldowns are divided by 4 during the combat high
 
 	volume = min(volume, WOUND_DETERMINATION_MAX)
-	#warn determination
-	/*
-	for(var/thing in M.all_wounds)
-		var/datum/wound/W = thing
-		var/obj/item/bodypart/wounded_part = W.limb
-		if(wounded_part)
-			wounded_part.heal_damage(0.25 * REM * delta_time, 0.25 * REM * delta_time)
-		M.adjustStaminaLoss(-0.25 * REM * delta_time) // the more wounds, the more stamina regen
-	*/
+	var/num_wounds = length(M.get_wounds())
+	M.adjustBruteLoss(-0.5 * num_wounds * REM * delta_time)
+	M.adjustStaminaLoss(-0.25 * REM * delta_time) // the more wounds, the more stamina regen
 	..()
 
 // unholy water, but for heretics.

@@ -34,12 +34,6 @@
 			B.decoy_override = TRUE
 			B.Insert(C)
 		C.regenerate_organs()
-		#warn regenerate
-		/*
-		for(var/i in C.all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.remove_wound()
-		*/
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		H.restore_blood()

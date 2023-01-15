@@ -216,8 +216,7 @@
 				var/mob/living/carbon/human/branded = interfering
 				to_chat(interfering, span_warning("[GLOB.deity] brands your flesh for interfering with [chaplain]'s sparring match!!"))
 				var/obj/item/bodypart/branded_limb = pick(branded.bodyparts)
-				#warn wound promote
-				//branded_limb.force_wound_upwards(/datum/wound/burn/severe/brand)
+				branded_limb.create_wound_easy(/datum/wound/burn/large, 30)
 				branded.emote("scream")
 
 	flubs--

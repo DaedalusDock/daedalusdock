@@ -35,8 +35,7 @@
 	var/list/msg = list("<span class='warning'>")
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
 	var/list/disabled = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(BP.bodypart_disabled)
 			disabled += BP
 		missing -= BP.body_zone
@@ -45,15 +44,10 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [BP.name]!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [BP.name]!</B>\n"
-		#warn wound examine
-		/*
-		for(var/i in BP.wounds)
-			var/datum/wound/W = i
-			msg += "[W.get_examine_description(user)]\n"
-		*/
 
-	for(var/X in disabled)
-		var/obj/item/bodypart/BP = X
+		msg += BP.mob_examine()
+
+	for(var/obj/item/bodypart/BP as anything in disabled)
 		var/damage_text
 		if(!(BP.get_damage(include_stamina = FALSE) >= BP.max_damage)) //Stamina is disabling the limb
 			damage_text = "limp and lifeless"

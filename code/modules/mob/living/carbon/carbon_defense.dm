@@ -110,7 +110,6 @@
 	if(!I.force && !length(I.attack_verb_simple) && !length(I.attack_verb_continuous))
 		return
 	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
-	var/message_verb_simple = length(I.attack_verb_simple) ? "[pick(I.attack_verb_simple)]" : "attack"
 
 	var/message_hit_area = ""
 	if(hit_area)
@@ -153,13 +152,6 @@
 			if(!user.combat_mode)
 				if(S.next_step(user, modifiers))
 					return TRUE
-	#warn attack_hand
-	/*
-	for(var/i in all_wounds)
-		var/datum/wound/W = i
-		if(W.try_handling(user))
-			return TRUE
-	*/
 
 	return FALSE
 

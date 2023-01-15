@@ -1533,18 +1533,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required) The mob we will targeting
  */
 /datum/species/proc/body_temperature_damage(mob/living/carbon/human/humi, delta_time, times_fired)
-
-	//If the body temp is above the wound limit start adding exposure stacks
-	if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT)
-		humi.heat_exposure_stacks = min(humi.heat_exposure_stacks + (0.5 * delta_time), 40)
-	else //When below the wound limit, reduce the exposure stacks fast.
-		humi.heat_exposure_stacks = max(humi.heat_exposure_stacks - (2 * delta_time), 0)
-
-	//when exposure stacks are greater then 10 + rand20 try to apply wounds and reset stacks
-	if(humi.heat_exposure_stacks > (10 + rand(0, 20)))
-		apply_burn_wounds(humi, delta_time, times_fired)
-		humi.heat_exposure_stacks = 0
-
 	// Body temperature is too hot, and we do not have resist traits
 	// Apply some burn damage to the body
 	if(humi.coretemperature > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
@@ -1581,49 +1569,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			else
 				humi.apply_damage(COLD_DAMAGE_LEVEL_3 * damage_mod * delta_time, damage_type)
 
-/**
- * Used to apply burn wounds on random limbs
- *
- * This is called from body_temperature_damage when exposure to extream heat adds up and causes a wound.
- * The wounds will increase in severity as the temperature increases.
- * vars:
- * * humi (required) The mob we will targeting
- */
-/datum/species/proc/apply_burn_wounds(mob/living/carbon/human/humi, delta_time, times_fired)
-	// If we are resistant to heat exit
-	if(HAS_TRAIT(humi, TRAIT_RESISTHEAT))
-		return
-
-	// If our body temp is to low for a wound exit
-	if(humi.bodytemperature < BODYTEMP_HEAT_WOUND_LIMIT)
-		return
-	#warn species apply_burn_wounds
-	/*
-	// Lets pick a random body part and check for an existing burn
-	var/obj/item/bodypart/bodypart = pick(humi.bodyparts)
-	var/datum/wound/burn/existing_burn = locate(/datum/wound/burn) in bodypart.wounds
-
-	// If we have an existing burn try to upgrade it
-	if(existing_burn)
-		switch(existing_burn.severity)
-			if(WOUND_SEVERITY_MODERATE)
-				if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT + 400) // 800k
-					bodypart.force_wound_upwards(/datum/wound/burn/severe)
-			if(WOUND_SEVERITY_SEVERE)
-				if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT + 2800) // 3200k
-					bodypart.force_wound_upwards(/datum/wound/burn/critical)
-	else // If we have no burn apply the lowest level burn
-		bodypart.force_wound_upwards(/datum/wound/burn/moderate)
-
-	// always take some burn damage
-	var/burn_damage = HEAT_DAMAGE_LEVEL_1
-	if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT + 400)
-		burn_damage = HEAT_DAMAGE_LEVEL_2
-	if(humi.bodytemperature > BODYTEMP_HEAT_WOUND_LIMIT + 2800)
-		burn_damage = HEAT_DAMAGE_LEVEL_3
-
-	humi.apply_damage(burn_damage * delta_time, BURN, bodypart)
-	*/
 
 /// Handle the air pressure of the environment
 /datum/species/proc/handle_environment_pressure(mob/living/carbon/human/H, datum/gas_mixture/environment, delta_time, times_fired)

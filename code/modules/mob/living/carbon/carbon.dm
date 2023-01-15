@@ -22,8 +22,6 @@
 	QDEL_LIST(internal_organs)
 	QDEL_LIST(bodyparts)
 	QDEL_LIST(implants)
-	for(var/wound in all_wounds) // these LAZYREMOVE themselves when deleted so no need to remove the list here
-		qdel(wound)
 
 	remove_from_all_data_huds()
 	QDEL_NULL(dna)
@@ -73,15 +71,8 @@
 				if(S.next_step(user, modifiers))
 					return 1
 
-	if(!all_wounds || !(!user.combat_mode || user == src))
+	if(!(!user.combat_mode || user == src))
 		return ..()
-	#warn attackby
-	/*
-	for(var/i in shuffle(all_wounds))
-		var/datum/wound/W = i
-		if(W.try_treating(I, user))
-			return 1
-	*/
 
 	return ..()
 
@@ -886,7 +877,7 @@
 		var/datum/disease/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
 			D.cure(FALSE)
-	QDEL_LIST(all_wounds)
+
 	if(admin_revive)
 		suiciding = FALSE
 		regenerate_limbs()
@@ -1416,3 +1407,10 @@
 			return bruteloss < (maxHealth/2)
 		if(BURN)
 			return fireloss < (maxHealth/2)
+
+/mob/living/carbon/proc/get_wounds()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		if(LAZYLEN(BP.wounds))
+			. += BP.wounds

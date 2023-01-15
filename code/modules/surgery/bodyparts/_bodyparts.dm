@@ -232,9 +232,14 @@
 
 
 
-/obj/item/bodypart/proc/mob_examine()
-	if(!current_damage)
+/obj/item/bodypart/proc/mob_examine(hallucinating)
+	if(!current_damage || hallucinating == SCREWYHUD_HEALTHY)
 		return
+	if(hallucinating == SCREWYHUD_CRIT)
+		var/list/flavor_text = list("a")
+		flavor_text += pick(" pair of ", " ton of ", " several ")
+		flavor_text += pick("large cuts", "severe burns")
+		return "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone].<br>"
 
 	var/list/flavor_text = list()
 
@@ -391,9 +396,6 @@
 			dam_type = BURN
 		if(owner.can_autoheal(dam_type))
 			W.heal_damage(heal_amt)
-
-	var/old_burn = burn_dam
-	var/old_brute = brute_dam
 
 	// sync the bodypart's damage with its wounds
 	if(update_damage())
@@ -572,7 +574,6 @@
 	burn_dam = 0
 
 	//update damage counts
-	var/bleeds = IS_ORGANIC_LIMB(src)
 	for(var/datum/wound/W as anything in wounds)
 
 		if(W.damage <= 0)

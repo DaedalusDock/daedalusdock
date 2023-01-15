@@ -317,19 +317,18 @@
 		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(tdelta)] ago.</b></span>\n"
 
 	// Wounds
-	#warn wound analyzer
-	/*
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
-		var/list/wounded_parts = carbontarget.get_wounded_bodyparts()
-		for(var/i in wounded_parts)
-			var/obj/item/bodypart/wounded_part = i
-			render_list += "<span class='alert ml-1'><b>Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.name]</b>"
-			for(var/k in wounded_part.wounds)
-				var/datum/wound/W = k
-				render_list += "<div class='ml-2'>[W.name] ([W.severity_text()])\nRecommended treatment: [W.treat_text]</div>" // less lines than in woundscan() so we don't overload people trying to get basic med info
-			render_list += "</span>"
-	*/
+		for(var/obj/item/bodypart/wounded_part as anything in carbontarget.get_wounded_bodyparts())
+			var/limb_result = "<span class='alert ml-2'>[capitalize(wounded_part.name)][!IS_ORGANIC_LIMB(wounded_part) ? " (Cybernetic)" : ""]:</span>"
+			if(wounded_part.brute_dam > 0)
+				limb_result = "[limb_result] \[[span_color("red", "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]</span>"
+			if(wounded_part.burn_dam > 0)
+				limb_result = "[limb_result] \[[span_color("#ffa500", "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]</span>"
+			if(wounded_part.bodypart_flags & BP_BLEEDING)
+				limb_result = "<span class='alert ml-2'>[limb_result] \[[span_color("red","bleeding")]\]</span>"
+			render_list += limb_result
+
 	//Diseases
 	for(var/thing in target.diseases)
 		var/datum/disease/D = thing
@@ -462,13 +461,15 @@
 		return
 
 	var/render_list = ""
-	for(var/i in patient.get_wounded_bodyparts())
-		var/obj/item/bodypart/wounded_part = i
-		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1? "s" : ""] detected in [wounded_part.name]</b>"
-		for(var/k in wounded_part.wounds)
-			var/datum/wound/W = k
-			render_list += "<div class='ml-2'>[W.get_scanner_description()]</div>\n"
-		render_list += "</span>"
+	for(var/obj/item/bodypart/wounded_part as anything in patient.get_wounded_bodyparts())
+		var/limb_result = "<span class='alert ml-2'>[capitalize(wounded_part.name)][!IS_ORGANIC_LIMB(wounded_part) ? " (Cybernetic)" : ""]:</span>"
+		if(wounded_part.brute_dam > 0)
+			limb_result = "[limb_result] \[[span_color("red", "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]</span>"
+		if(wounded_part.burn_dam > 0)
+			limb_result = "[limb_result] \[[span_color("#ffa500", "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]</span>"
+		if(wounded_part.bodypart_flags & BP_BLEEDING)
+			limb_result = "<span class='alert ml-2'>[limb_result] \[[span_color("red","bleeding")]\]</span>"
+		render_list += limb_result
 
 	if(render_list == "")
 		if(istype(scanner))
@@ -522,3 +523,26 @@
 #undef SCANMODE_COUNT
 #undef SCANNER_CONDENSED
 #undef SCANNER_VERBOSE
+
+// Calculates severity based on the ratios defined external limbs.
+/proc/get_wound_severity(damage_ratio, can_heal_overkill = 0)
+	var/degree
+
+	switch(damage_ratio)
+		if(0 to 0.1)
+			degree = "minor"
+		if(0.1 to 0.25)
+			degree = "moderate"
+		if(0.25 to 0.5)
+			degree = "significant"
+		if(0.5 to 0.75)
+			degree = "severe"
+		if(0.75 to 1)
+			degree = "extreme"
+		else
+			if(can_heal_overkill)
+				degree = "critical"
+			else
+				degree = "irreparable"
+
+	return degree

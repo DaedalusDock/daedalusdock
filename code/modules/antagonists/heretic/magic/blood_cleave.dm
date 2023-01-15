@@ -40,11 +40,7 @@
 		)
 
 		var/obj/item/bodypart/bodypart = pick(victim.bodyparts)
-		#warn heretic shit
-		/*
-		var/datum/wound/slash/critical/crit_wound = new()
-		crit_wound.apply_wound(bodypart)
-		*/
+		bodypart.create_wound_easy(/datum/wound/puncture/massive, 50)
 		victim.adjustFireLoss(20)
 		new /obj/effect/temp_visual/cleave(victim.drop_location())
 

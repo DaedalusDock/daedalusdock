@@ -131,18 +131,3 @@
 	var/mob/living/carbon/carbon_owner = owner
 	carbon_owner.check_self_for_injuries()
 
-// wound status effect base
-/datum/status_effect/wound
-	id = "wound"
-	status_type = STATUS_EFFECT_MULTIPLE
-	var/obj/item/bodypart/linked_limb
-	var/datum/wound/linked_wound
-	alert_type = NONE
-
-/datum/status_effect/wound/on_creation(mob/living/new_owner, incoming_wound)
-	. = ..()
-	#warn wound status effect
-	/*
-	linked_wound = incoming_wound
-	linked_limb = linked_wound.limb
-	*/

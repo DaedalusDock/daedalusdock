@@ -268,9 +268,6 @@
 	SIGNAL_HANDLER
 	bandaged = FALSE
 
-/datum/wound/proc/get_scanner_description()
-	return
-
 /datum/wound/proc/get_examine_desc()
 	var/this_wound_desc = desc
 	if (wound_type == WOUND_BURN && salved)

@@ -113,13 +113,6 @@
 			heal_amt *= 2
 		C.heal_overall_damage(heal_amt * delta_time, heal_amt * delta_time)
 		C.adjustToxLoss(-heal_amt * delta_time)
-		#warn zombie on life
-		/*
-		for(var/i in C.all_wounds)
-			var/datum/wound/iter_wound = i
-			if(DT_PROB(2-(iter_wound.severity/2), delta_time))
-				iter_wound.remove_wound()
-		*/
 	if(!HAS_TRAIT(C, TRAIT_CRITICAL_CONDITION) && DT_PROB(2, delta_time))
 		playsound(C, pick(spooks), 50, TRUE, 10)
 

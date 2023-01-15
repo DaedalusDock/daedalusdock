@@ -597,18 +597,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 						visible_message(span_danger("[C]'s spinal cord is obliterated with a sickening crunch!"), ignored_mobs = list(C))
 						C.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic)
 					if(5) // limb squish!
-						#warn add_wound
-						/*
-						for(var/i in C.bodyparts)
-							var/obj/item/bodypart/squish_part = i
-							if(IS_ORGANIC_LIMB(squish_part))
-								var/type_wound = pick(list(/datum/wound/blunt/critical, /datum/wound/blunt/severe, /datum/wound/blunt/moderate))
-								squish_part.force_wound_upwards(type_wound)
-							else
-								squish_part.receive_damage(brute=30)
+						for(var/obj/item/bodypart/squish_part as anything in C.bodyparts)
+							squish_part.receive_damage(brute=40)
 						C.visible_message(span_danger("[C]'s body is maimed underneath the mass of [src]!"), \
 							span_userdanger("Your body is maimed underneath the mass of [src]!"))
-						*/
 					if(6) // skull squish!
 						var/obj/item/bodypart/head/O = C.get_bodypart(BODY_ZONE_HEAD)
 						if(O)

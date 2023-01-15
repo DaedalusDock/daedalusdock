@@ -66,7 +66,7 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
 		temp_bleed += iter_bleed_rate * delta_time
-		if(!IS_ORGANIC_LIMB(iter_part))
+		if(iter_part.bodypart_flags & BP_HAS_BLOOD)
 			iter_part.bodypart_flags &= ~BP_BLEEDING
 			for(var/datum/wound/W as anything in iter_part.wounds)
 				if(W.bleeding())

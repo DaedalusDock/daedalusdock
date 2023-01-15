@@ -1100,9 +1100,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
-		target.visible_message(span_danger("[user] [atk_verb]ed [target]!"), \
-						span_userdanger("You're [atk_verb]ed by [user]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_danger("You [atk_verb] [target]!"))
+		user.visible_message(
+			span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
+			null,
+			span_hear("You hear a sickening sound of flesh hitting flesh!"),
+			COMBAT_MESSAGE_RANGE,
+			user
+		)
 
 		target.lastattacker = user.real_name
 		target.lastattackerckey = user.ckey
@@ -1309,7 +1313,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			H.damageoverlaytemp = 20
 			var/damage_amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
 			if(BP)
-				if(BP.receive_damage(damage_amount, 0, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness, attack_direction = attack_direction))
+				if(BP.receive_damage(damage_amount, 0, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness))
 					H.update_damage_overlays()
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage_amount)
@@ -1317,7 +1321,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			H.damageoverlaytemp = 20
 			var/damage_amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
 			if(BP)
-				if(BP.receive_damage(0, damage_amount, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness, attack_direction = attack_direction))
+				if(BP.receive_damage(0, damage_amount, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness))
 					H.update_damage_overlays()
 			else
 				H.adjustFireLoss(damage_amount)

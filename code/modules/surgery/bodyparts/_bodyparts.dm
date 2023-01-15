@@ -90,7 +90,10 @@
 	var/brute_ratio = 0
 	///The % of current_damage that is burn
 	var/burn_ratio = 0
+	///The minimum damage a part must have before it's bones may break. Defaults to max_damage * BODYPART_MINIMUM_BREAK_MOD
+	var/minimum_break_damage = 0
 
+	///Bodypart flags, keeps track of blood, bones, arteries, tendons, and the like.
 	var/bodypart_flags = NONE
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
@@ -128,6 +131,9 @@
 	var/light_burn_msg = "numb"
 	var/medium_burn_msg = "blistered"
 	var/heavy_burn_msg = "peeling away"
+
+	///The description used when the bones are broken.
+	var/broken_description
 
 	/// The wounds currently afflicting this body part
 	var/list/wounds
@@ -183,6 +189,9 @@
 
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()
+	if(!minimum_break_damage)
+		minimum_break_damage = max_damage * BODYPART_MINIMUM_BREAK_MOD
+
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), .proc/on_paralysis_trait_gain)
 		RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS), .proc/on_paralysis_trait_loss)
@@ -220,6 +229,8 @@
 		. += span_warning("This limb has [brute_dam > 30 ? "severe" : "minor"] bruising.")
 	if(burn_dam > DAMAGE_PRECISION)
 		. += span_warning("This limb has [burn_dam > 30 ? "severe" : "minor"] burns.")
+
+
 
 /obj/item/bodypart/proc/mob_examine()
 	if(!current_damage)
@@ -391,7 +402,7 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, no_side_effects = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/hit_percent = (100-blocked)/100
@@ -415,11 +426,43 @@
 	if(bodytype & (BODYTYPE_ALIEN|BODYTYPE_LARVA_PLACEHOLDER)) //aliens take double burn //nothing can burn with so much snowflake code around
 		burn *= 2
 
+	var/spillover = 0
+	var/pure_brute = brute
+	var/damagable = (brute_dam + burn_dam) > max_damage
+
+	if(!damagable)
+		spillover = brute_dam + burn_dam + brute - max_damage
+		if(spillover > 0)
+			brute = max(brute - spillover, 0)
+		else
+			spillover = brute_dam + burn_dam + brute + burn - max_damage
+			if(spillover > 0)
+				burn = max(burn - spillover, 0)
+
+	/*
+	// DISMEMBERMENT
+	*/
+	if(owner)
+		var/total_damage = brute_dam + burn_dam + brute + burn + spillover
+		if(total_damage > max_damage)
+			if(attempt_dismemberment(pure_brute, burn, sharpness))
+				return update_bodypart_damage_state() || .
+
+	//blunt damage is gud at fracturing
+	if(!no_side_effects)
+		if(brute)
+			jostle_bones(brute)
+			if(owner && prob(40))
+				INVOKE_ASYNC(owner, /mob/proc/emote, "scream")
+			if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
+				break_bones()
+
+
 	/*
 	// START WOUND HANDLING
 	*/
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
-	var/block_cut = (brute <= 15) || !IS_ORGANIC_LIMB(src)
+	var/block_cut = (pure_brute < 10) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
 	if(brute)
 		var/to_create = WOUND_BRUISE
@@ -503,27 +546,6 @@
 			owner.updatehealth()
 	cremation_progress = min(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
 	return update_bodypart_damage_state()
-
-
-///Proc to hook behavior associated to the change of the brute_dam variable's value.
-/obj/item/bodypart/proc/set_brute_dam(new_value)
-	PROTECTED_PROC(TRUE)
-
-	if(brute_dam == new_value)
-		return
-	. = brute_dam
-	brute_dam = new_value
-
-
-///Proc to hook behavior associated to the change of the burn_dam variable's value.
-/obj/item/bodypart/proc/set_burn_dam(new_value)
-	PROTECTED_PROC(TRUE)
-
-	if(burn_dam == new_value)
-		return
-	. = burn_dam
-	burn_dam = new_value
-
 
 ///Proc to hook behavior associated to the change of the stamina_dam variable's value.
 /obj/item/bodypart/proc/set_stamina_dam(new_value)
@@ -806,13 +828,16 @@
 	if(!owner)
 		return
 
-	if(HAS_TRAIT(owner, TRAIT_NOBLEED) || !IS_ORGANIC_LIMB(src))
+	if(HAS_TRAIT(owner, TRAIT_NOBLEED) || !(bodypart_flags & BP_HAS_BLOOD))
 		if(cached_bleed_rate != old_bleed_rate)
 			update_part_wound_overlay()
 		return
 
 	if(generic_bleedstacks > 0)
 		cached_bleed_rate += 0.5
+
+	if(check_artery() & CHECKARTERY_SEVERED)
+		cached_bleed_rate += 5
 
 	for(var/obj/item/embeddies in embedded_objects)
 		if(!embeddies.isEmbedHarmless())
@@ -991,5 +1016,3 @@
 			return list(0,-3)
 		if(WEST)
 			return list(0,-3)
-
-

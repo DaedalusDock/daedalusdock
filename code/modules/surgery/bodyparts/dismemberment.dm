@@ -4,7 +4,7 @@
 		return TRUE
 
 ///Remove target limb from it's owner, with side effects.
-/obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent=TRUE, clean = FALSE)
+/obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=TRUE, clean = FALSE)
 	if(!owner || !dismemberable)
 		return FALSE
 
@@ -38,28 +38,33 @@
 
 	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
 	if(!QDELETED(parent_chest))
-		var/datum/wound/lost_limb/W = new(src, dam_type, clean)
+		var/datum/wound/lost_limb/W = new(src, dismember_type, clean)
 		W.parent = parent_chest
 		LAZYADD(parent_chest.wounds, W)
 
-	if(dam_type == BURN)
+	if(dismember_type == DROPLIMB_BURN)
 		burn()
 		return TRUE
 
-	add_mob_blood(limb_owner)
-	limb_owner.bleed(rand(20, 40))
+	else
+		add_mob_blood(limb_owner)
+		limb_owner.bleed(rand(20, 40))
+		var/direction = pick(GLOB.cardinals)
 
-	var/direction = pick(GLOB.cardinals)
-	var/t_range = rand(2,max(throw_range/2, 2))
-	var/turf/target_turf = get_turf(src)
-	for(var/i in 1 to t_range-1)
-		var/turf/new_turf = get_step(target_turf, direction)
-		if(!new_turf)
-			break
-		target_turf = new_turf
-		if(new_turf.density)
-			break
-	throw_at(target_turf, throw_range, throw_speed)
+		if(dismember_type == DROPLIMB_BLUNT && !clean)
+			limb_owner.spray_blood(direction, 2)
+		if(!clean)
+			var/t_range = rand(2,max(throw_range/2, 2))
+			var/turf/target_turf = get_turf(src)
+			for(var/i in 1 to t_range-1)
+				var/turf/new_turf = get_step(target_turf, direction)
+				if(!new_turf)
+					break
+				target_turf = new_turf
+				if(new_turf.density)
+					break
+			throw_at(target_turf, throw_range, throw_speed)
+
 	return TRUE
 
 
@@ -187,34 +192,6 @@
 			. |= BODYPART_MANGLED_BONE
 		if((iter_wound.wound_flags & MANGLES_FLESH))
 			. |= BODYPART_MANGLED_FLESH
-	*/
-/**
- * try_dismember() is used, once we've confirmed that a flesh and bone bodypart has both the skin and bone mangled, to actually roll for it
- *
- * Mangling is described in the above proc, [/obj/item/bodypart/proc/get_mangled_state]. This simply makes the roll for whether we actually dismember or not
- * using how damaged the limb already is, and how much damage this blow was for. If we have a critical bone wound instead of just a severe, we add +10% to the roll.
- * Lastly, we choose which kind of dismember we want based on the wounding type we hit with. Note we don't care about all the normal mods or armor for this
- *
- * Arguments:
- * * wounding_type: Either WOUND_BLUNT, WOUND_SLASH, or WOUND_PIERCE, basically only matters for the dismember message
- * * wounding_dmg: The damage of the strike that prompted this roll, higher damage = higher chance
- * * wound_bonus: Not actually used right now, but maybe someday
- * * bare_wound_bonus: ditto above
- */
-/obj/item/bodypart/proc/try_dismember(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus)
-	if(wounding_dmg < DISMEMBER_MINIMUM_DAMAGE)
-		return
-
-	var/base_chance = wounding_dmg
-	base_chance += (get_damage() / max_damage * 50) // how much damage we dealt with this blow, + 50% of the damage percentage we already had on this bodypart
-	#warn dismemberment wound
-	/*
-	if(locate(/datum/wound/blunt/critical) in wounds) // we only require a severe bone break, but if there's a critical bone break, we'll add 15% more
-		base_chance += 15
-
-	if(prob(base_chance))
-		var/datum/wound/loss/dismembering = new
-		return dismembering.apply_dismember(src, wounding_type)
 	*/
 
 ///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
@@ -382,6 +359,9 @@
 
 	for(var/datum/wound/W as anything in wounds)
 		W.register_to_mob(new_limb_owner)
+
+	if(check_bones() & CHECKBONES_BROKEN)
+		apply_bone_break(new_limb_owner)
 
 	//Remove any stumps that may be present there, since we have a limb now
 	if(mob_chest)

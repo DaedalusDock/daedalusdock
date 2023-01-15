@@ -74,9 +74,17 @@
 	var/fail_prob = 0//100 - fail_prob = success_prob
 	var/advance = FALSE
 
-	if(preop(user, target, target_zone, tool, surgery) == -1)
-		surgery.step_in_progress = FALSE
-		return FALSE
+	var/preop_result = preop(user, target, target_zone, tool, surgery)
+	switch(preop_result)
+		if(-1)
+			surgery.step_in_progress = FALSE
+			return FALSE
+		if(1)
+			surgery.step_in_progress = FALSE
+			surgery.status++
+			if(surgery.status > surgery.steps.len)
+				surgery.complete(user)
+			return TRUE
 
 	play_preop_sound(user, target, target_zone, tool, surgery) // Here because most steps overwrite preop
 
@@ -133,11 +141,11 @@
 	if(!preop_sound)
 		return
 	var/sound_file_use
-	if(islist(preop_sound))	
+	if(islist(preop_sound))
 		for(var/typepath in preop_sound)//iterate and assign subtype to a list, works best if list is arranged from subtype first and parent last
 			if(istype(tool, typepath))
-				sound_file_use = preop_sound[typepath]	
-				break	
+				sound_file_use = preop_sound[typepath]
+				break
 	else
 		sound_file_use = preop_sound
 	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)

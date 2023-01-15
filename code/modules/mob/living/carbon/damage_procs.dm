@@ -21,13 +21,13 @@
 	switch(damagetype)
 		if(BRUTE)
 			if(BP)
-				if(BP.receive_damage(damage_amount, 0, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness, attack_direction = attack_direction))
+				if(BP.receive_damage(damage_amount, 0, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness))
 					update_damage_overlays()
 			else //no bodypart, we deal damage with a more general method.
 				adjustBruteLoss(damage_amount, forced = forced)
 		if(BURN)
 			if(BP)
-				if(BP.receive_damage(0, damage_amount, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness, attack_direction = attack_direction))
+				if(BP.receive_damage(0, damage_amount, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness))
 					update_damage_overlays()
 			else
 				adjustFireLoss(damage_amount, forced = forced)

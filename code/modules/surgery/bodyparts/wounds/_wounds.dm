@@ -340,3 +340,20 @@
 				if(0 to 15)
 					return /datum/wound/burn/moderate
 	return null //no wound
+
+/obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness)
+	if((sharpness & SHARP_EDGED) && brute >= max_damage * DROPLIMB_THRESHOLD_EDGE)
+		if(prob(brute))
+			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
+
+	else if(burn >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
+		if(prob(burn))
+			return dismember(DROPLIMB_BURN, FALSE, FALSE)
+
+	else if(brute >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
+		if(prob(brute))
+			return dismember(DROPLIMB_BLUNT, FALSE, FALSE)
+
+	else if(brute >= max_damage * DROPLIMB_THRESHOLD_TEAROFF)
+		if(prob(brute))
+			return dismember(DROPLIMB_EDGE, FALSE, FALSE)

@@ -15,6 +15,9 @@
 	grind_results = null
 	wound_resistance = 10
 	bodypart_trait_source = CHEST_TRAIT
+
+	bodypart_flags = STOCK_BP_FLAGS_CHEST
+
 	///The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
@@ -86,6 +89,8 @@
 	unarmed_damage_high = 10
 	unarmed_stun_threshold = 10
 	body_zone = BODY_ZONE_L_ARM
+
+	bodypart_flags = STOCK_BP_FLAGS_ARMS
 
 /obj/item/bodypart/arm/left
 	name = "left arm"
@@ -307,6 +312,8 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 15
 	unarmed_stun_threshold = 10
+
+	bodypart_flags = STOCK_BP_FLAGS_LEGS
 
 /obj/item/bodypart/leg/left
 	name = "left leg"

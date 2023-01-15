@@ -13,6 +13,11 @@
 	success_sound = 'sound/surgery/scalpel2.ogg'
 
 /datum/surgery_step/incise/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(surgery.operated_bodypart.how_open())
+		var/datum/wound/incision = surgery.operated_bodypart.get_incision()
+		to_chat(user, span_notice("The [incision.desc] provides enough access."))
+		return TRUE
+
 	display_results(user, target, span_notice("You begin to make an incision in [target]'s [parse_zone(target_zone)]..."),
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."))
@@ -34,6 +39,7 @@
 			var/obj/item/bodypart/target_bodypart = target.get_bodypart(target_zone)
 			if(target_bodypart)
 				target_bodypart.adjustBleedStacks(10)
+				target_bodypart.create_wound(WOUND_CUT, target_bodypart.minimum_break_damage/2, TRUE)
 	return ..()
 
 /datum/surgery_step/incise/nobleed/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -66,7 +72,7 @@
 		var/mob/living/carbon/human/human_target = target
 		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
 		if(target_bodypart)
-			target_bodypart.adjustBleedStacks(-3)
+			target_bodypart.clamp_wounds()
 	return ..()
 
 //retract skin
@@ -82,10 +88,30 @@
 	success_sound = 'sound/surgery/retractor2.ogg'
 
 /datum/surgery_step/retract_skin/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	var/obj/item/bodypart/affected = surgery.operated_bodypart
+	if(affected)
+		if(affected.how_open() >= SURGERY_RETRACTED)
+			var/datum/wound/cut/incision = affected.get_incision()
+			to_chat(user, span_notice("The [incision.desc] provides enough access, a larger incision isn't needed."))
+			return TRUE
+
 	display_results(user, target, span_notice("You begin to retract the skin in [target]'s [parse_zone(target_zone)]..."),
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."))
 	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!")
+
+/datum/surgery_step/retract_skin/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
+	surgery.operated_bodypart.open_incision()
+	return ..()
+
+/datum/surgery_step/retract_skin/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob)
+	display_results(user, target,
+		span_warning("Your hand slips, tearing the edges of the incision on [target]'s [surgery.operated_bodypart.name] with [tool]!"),
+		span_warning("[user]'s hand slips, tearing the edges of the incision on [target]'s [surgery.operated_bodypart.name] with [tool]!")
+	)
+	display_pain(target, "You feel a stinging pain on your [parse_zone(target_zone)]")
+	surgery.operated_bodypart.receive_damage(12, sharpness = (SHARP_EDGED|SHARP_POINTY))
+	return ..()
 
 //close incision
 /datum/surgery_step/close
@@ -117,8 +143,13 @@
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
-		if(target_bodypart)
-			target_bodypart.adjustBleedStacks(-3)
+		var/datum/wound/W = target_bodypart.get_incision()
+		if(W)
+			W.close_wound()
+			target_bodypart.refresh_bleed_rate()
+		if(target_bodypart.clamped())
+			target_bodypart.remove_clamps()
+
 	return ..()
 
 

@@ -27,6 +27,8 @@
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
 
+	bodypart_flags = STOCK_BP_FLAGS_HEAD
+
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/internal/brain/brain //The brain organ
 	var/obj/item/organ/internal/eyes/eyes

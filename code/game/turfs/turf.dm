@@ -99,6 +99,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
+	if(mapload && permit_ao)
+		queue_ao()
 	// if(!blocks_air || !simulated)
 		// air = new
 		// air.copyFrom(src.return_air())
@@ -129,11 +131,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/area/our_area = loc
 	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(GLOB.fullbright_overlay)
-
-	/*
-	if(requires_activation)
-		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
-	*/
 
 	if (light_power && light_outer_range)
 		update_light()

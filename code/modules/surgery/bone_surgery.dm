@@ -65,6 +65,7 @@
 		surgery.operated_bodypart.receive_damage(5)
 
 /datum/surgery_step/repair_bone
+	name = "repair bone (gel/tape)"
 	implements = list(
 		/obj/item/stack/medical/bone_gel = 100,
 		/obj/item/stack/sticky_tape/surgical = 100,

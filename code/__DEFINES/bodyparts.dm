@@ -5,6 +5,8 @@
 #define BODYPART_MINIMUM_BREAK_MOD 0.8
 ///A modifier applied to the chance to break bones on a given instance of damage
 #define BODYPART_BONES_BREAK_CHANCE_MOD 1
+///The minimum amount of brute damage for an attack to roll for bone jostle
+#define BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES 8
 
 // Droplimb types.
 #define DROPLIMB_EDGE 1

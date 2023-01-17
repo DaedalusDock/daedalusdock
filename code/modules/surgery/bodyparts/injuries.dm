@@ -76,7 +76,7 @@
 /obj/item/bodypart/proc/jostle_bones(force)
 	if(!(bodypart_flags & BP_BROKEN_BONES)) //intact bones stay still
 		return
-	if(brute_dam + force < minimum_break_damage/5)	//no papercuts moving bones
+	if(brute_dam + force < BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES)	//no papercuts moving bones
 		return
 
 	if(prob(brute_dam + force))

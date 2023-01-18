@@ -14,7 +14,7 @@
 	grind_results = list(/datum/reagent/cellulose = 5)
 	splint_factor = 0.65
 	merge_type = /obj/item/stack/sticky_tape
-	usesound = 'sound/items/tape.ogg'
+	usesound = 'sound/items/duct_tape_rip.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
 	///do_after lengths for handcuff and muzzle attacks
 	var/handcuff_delay = 3 SECONDS
@@ -80,7 +80,7 @@
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
 		return
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
-	playsound(user, 'sound/items/duct_tape_rip.ogg', 50, TRUE)
+	playsound(user, usesound, 50, TRUE)
 	if(do_after(user, 3 SECONDS, target=target))
 		playsound(user, 'sound/items/duct_tape_snap.ogg', 50, TRUE)
 		use(1)

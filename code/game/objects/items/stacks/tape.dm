@@ -1,9 +1,9 @@
 /obj/item/stack/sticky_tape
-	name = "sticky tape"
-	singular_name = "sticky tape"
+	name = "duct tape"
+	singular_name = "duct tape"
 	desc = "Used for sticking to things for sticking said things to people."
 	icon = 'icons/obj/tapes.dmi'
-	icon_state = "tape_w"
+	icon_state = "tape"
 	var/prefix = "sticky"
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
@@ -16,8 +16,14 @@
 	merge_type = /obj/item/stack/sticky_tape
 	usesound = 'sound/items/tape.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
+	///do_after lengths for handcuff and muzzle attacks
 	var/handcuff_delay = 3 SECONDS
 	var/muzzle_delay = 2 SECONDS
+	///The tape type you get when ripping off a piece of tape.
+	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
+	greyscale_config = /datum/greyscale_config/tape
+	greyscale_colors = "#B2B2B2#BD6A62"
+
 
 /obj/item/stack/sticky_tape/Initialize(mapload)
 	. = ..()
@@ -74,7 +80,9 @@
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
 		return
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
+	playsound(user, 'sound/items/duct_tape_rip.ogg', 50, TRUE)
 	if(do_after(user, 3 SECONDS, target=target))
+		playsound(user, 'sound/items/duct_tape_snap.ogg', 50, TRUE)
 		use(1)
 		if(istype(target, /obj/item/clothing/gloves/fingerless))
 			var/obj/item/clothing/gloves/tackler/offbrand/O = new /obj/item/clothing/gloves/tackler/offbrand
@@ -96,12 +104,6 @@
 			var/obj/item/grenade/sticky_bomb = target
 			sticky_bomb.sticky = TRUE
 
-/obj/item/clothing/mask/muzzle/tape
-	name = "length of tape"
-	pickup_sound = 'sound/items/poster_ripped.ogg'
-	icon_state = "muzzle_tape"
-	item_flags = DROPDEL
-
 /obj/item/restraints/handcuffs/tape
 	name = "length of tape"
 	desc = "Seems you are in a sticky situation."
@@ -119,7 +121,7 @@
 		if(do_mob(user, C, muzzle_delay))
 			if(!C.is_mouth_covered() || !C.is_muzzled())
 				use(5)
-				C.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(C), ITEM_SLOT_MASK)
+				C.equip_to_slot_or_del(new tape_gag(C), ITEM_SLOT_MASK)
 				C.visible_message("<span class='notice'>[user] tapes [C]s mouth shut.</span>", \
 								"<span class='userdanger'>[user] taped your mouth shut!</span>")
 				log_combat(user, C, "gags")
@@ -134,7 +136,7 @@
 	if(!C.handcuffed)
 		playsound(loc, usesound, 30, TRUE, -2)
 		C.visible_message(span_danger("[user] begins restraining [C] with [src]!"), \
-								span_userdanger("[user] is trying to wrap [src] around your wrists!"))
+								span_userdanger("[user] begins wrapping [src] around your wrists!"))
 		if(do_mob(user, C, 30))
 			if(!C.handcuffed)
 				use(5)
@@ -154,29 +156,34 @@
 	name = "super sticky tape"
 	singular_name = "super sticky tape"
 	desc = "Quite possibly the most mischevious substance in the galaxy. Use with extreme lack of caution."
-	icon_state = "tape_y"
 	prefix = "super sticky"
 	conferred_embed = EMBED_HARMLESS_SUPERIOR
 	splint_factor = 0.4
 	merge_type = /obj/item/stack/sticky_tape/super
+	greyscale_colors = "#4D4D4D#75433F"
+	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
 /obj/item/stack/sticky_tape/pointy
 	name = "pointy tape"
 	singular_name = "pointy tape"
 	desc = "Used for sticking to things for sticking said things inside people."
-	icon_state = "tape_evil"
+	icon_state = "tape_spikes"
 	prefix = "pointy"
 	conferred_embed = EMBED_POINTY
 	merge_type = /obj/item/stack/sticky_tape/pointy
+	greyscale_config = /datum/greyscale_config/tape/spikes
+	greyscale_colors = "#E64539#808080#AD2F45"
+	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy
 
 /obj/item/stack/sticky_tape/pointy/super
 	name = "super pointy tape"
 	singular_name = "super pointy tape"
 	desc = "You didn't know tape could look so sinister. Welcome to Space Station 13."
-	icon_state = "tape_spikes"
 	prefix = "super pointy"
 	conferred_embed = EMBED_POINTY_SUPERIOR
 	merge_type = /obj/item/stack/sticky_tape/pointy/super
+	greyscale_colors = "#8C0A00#4F4F4F#300008"
+	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy/super
 
 /obj/item/stack/sticky_tape/surgical
 	name = "surgical tape"
@@ -188,3 +195,5 @@
 	splint_factor = 0.5
 	custom_price = PAYCHECK_MEDIUM
 	merge_type = /obj/item/stack/sticky_tape/surgical
+	greyscale_colors = "#70BAE7#BD6A62"
+	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

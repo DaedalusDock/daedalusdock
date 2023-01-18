@@ -23,7 +23,8 @@ const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 const CharacterControls = (props: {
   handleRotate: () => void,
   handleOpenSpecies: () => void,
-  handleLoadout: () => void, // PARIAH EDIT ADDITION
+  handleLoadout: () => void,
+  handleAppearanceMods: () => void,
   gender: Gender,
   setGender: (gender: Gender) => void,
   showGender: boolean,
@@ -66,6 +67,17 @@ const CharacterControls = (props: {
             fontSize="22px"
             icon="suitcase"
             tooltip="Show Loadout Menu"
+            tooltipPosition="top"
+          />
+        </Stack.Item>
+      )}
+      {props.handleAppearanceMods && (
+        <Stack.Item>
+          <Button
+            onClick={props.handleAppearanceMods}
+            fontSize="22px"
+            icon="user-plus"
+            tooltip="Modify Appearance Mods"
             tooltipPosition="top"
           />
         </Stack.Item>
@@ -529,7 +541,9 @@ export const MainPage = (props: {
                     handleLoadout={() => {
                       act("open_loadout");
                     }}
-                    // PARIAH EDIT END
+                    handleAppearanceMods={() => {
+                      act("appearance_mods");
+                    }}
                     setGender={createSetPreference(act, "gender")}
                     showGender={
                       currentSpeciesData ? !!currentSpeciesData.sexes : true

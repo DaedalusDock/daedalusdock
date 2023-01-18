@@ -133,21 +133,6 @@
 	update_appearance()
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, .proc/instant_reload)
 
-/obj/item/gun/ballistic/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = .proc/add_notes_ballistic)
-
-/**
- *
- * Outputs type-specific weapon stats for ballistic weaponry based on its magazine and its caliber.
- * It contains extra breaks for the sake of presentation
- *
- */
-/obj/item/gun/ballistic/proc/add_notes_ballistic()
-	if(magazine) // Make sure you have a magazine, to get the notes from
-		return "\n[magazine.add_notes_box()]"
-	else
-		return "\nThe warning attached to the magazine is missing..."
-
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
 	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt_locked), NAMEOF(src, bolt_type)))

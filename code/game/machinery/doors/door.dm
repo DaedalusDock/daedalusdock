@@ -287,15 +287,18 @@
 	return ..()
 
 /obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+	set waitfor = FALSE
+
 	add_fingerprint(user)
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
 	if(access_bypass || (requiresID() && allowed(user)))
+		. = TRUE
 		if(density)
 			open()
 		else
 			close()
-		return TRUE
+		return .
 	if(density)
 		do_animate("deny")
 

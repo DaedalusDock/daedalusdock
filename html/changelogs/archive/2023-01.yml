@@ -1,0 +1,30 @@
+2023-01-05:
+  Gonenoculer5:
+  - rscdel: Removes bluespace warning tags system and associated code. Your welcome.
+  Goonstation:
+  - rscadd: Unarmed interactions have particle effects.
+  Kapu1178:
+  - rscadd: Preference for binary buttons like light switches using radials instead.
+  - rscadd: Consecutive messages now increase font size in chat.
+  - rscadd: Consecutive messages now increase font size in overhead text.
+  - rscadd: Credits is no longer at round end, instead 90 seconds after round end.
+  - code_imp: mp3 is now a valid music format.
+  Spyroshark:
+  - rscadd: Space carp now have more consistent colors and a better greyscale sprite.
+  - rscadd: Rare space carp are now "shiny" and have a special particle effect! Can
+      you find one?
+  - balance: Space carp are slightly easier to tame, and riding them is faster.
+2023-01-08:
+  Kapu1178:
+  - imagedel: Removed a ton of tau ceti sprites.
+2023-01-09:
+  DTraitor:
+  - code_imp: Added signal that is sent when atom changes density
+2023-01-10:
+  Kapu1178:
+  - rscadd: Appearance Mods.
+  - rscadd: Lizard Appearance Mods
+  - rscadd: Vox Appearance Mods
+  - bugfix: Vox facial hair is now colored properly
+  - qol: Character creator lists such as hair are now sorted alphabetically.
+  - refactor: Humans.

@@ -1917,6 +1917,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	if(density == new_value)
 		return
+	SEND_SIGNAL(src, COMSIG_ATOM_DENSITY_CHANGE, density, new_value)
 	. = density
 	density = new_value
 

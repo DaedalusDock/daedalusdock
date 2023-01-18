@@ -182,7 +182,7 @@
 /datum/wound/proc/remove_wound(ignore_limb, replaced = FALSE)
 	//TODO: have better way to tell if we're getting removed without replacement (full heal) scar stuff
 	set_disabling(FALSE)
-	if(limb && !already_scarred && !replaced)
+	if(!QDELETED(limb) && !already_scarred && !replaced)
 		already_scarred = TRUE
 		var/datum/scar/new_scar = new
 		new_scar.generate(limb, src)

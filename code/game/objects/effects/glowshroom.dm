@@ -112,12 +112,14 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	)
 
 	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
+	become_atmos_sensitive()
 
 /obj/structure/glowshroom/Destroy()
 	if(isatom(myseed))
 		QDEL_NULL(myseed)
 	GLOB.glowshrooms--
 	STOP_PROCESSING(SSobj, src)
+	lose_atmos_sensitivity()
 	return ..()
 
 /**
@@ -240,9 +242,6 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 /obj/structure/glowshroom/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type == BURN && damage_amount)
 		playsound(src.loc, 'sound/items/welder.ogg', 100, TRUE)
-
-/obj/structure/glowshroom/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 300) ? TRUE : FALSE
 
 /obj/structure/glowshroom/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 300)

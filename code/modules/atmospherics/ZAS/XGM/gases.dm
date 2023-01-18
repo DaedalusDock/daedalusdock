@@ -238,6 +238,17 @@
 	purchaseable = TRUE
 	base_value = 7
 
+/datum/xgm_gas/radon
+	id = GAS_RADON
+	name = "Radon"
+	specific_heat = 16 // J/(mol*K)
+	molar_mass = 0.222// kg/mol
+	breathed_product = /datum/reagent/toxin/radon
+	symbol_html = "Rn"
+	symbol = "Rn"
+	purchaseable = FALSE
+	base_value = 0.3
+
 //MISC COMPOUNDS
 /datum/xgm_gas/methyl_bromide
 	id = GAS_METHYL_BROMIDE

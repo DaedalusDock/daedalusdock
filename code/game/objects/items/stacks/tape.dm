@@ -21,8 +21,6 @@
 	var/muzzle_delay = 2 SECONDS
 	///The tape type you get when ripping off a piece of tape.
 	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
-	greyscale_config = /datum/greyscale_config/tape
-	greyscale_colors = "#B2B2B2#BD6A62"
 
 
 /obj/item/stack/sticky_tape/Initialize(mapload)
@@ -31,7 +29,7 @@
 
 /obj/item/stack/sticky_tape/examine(mob/user)
 	. = ..()
-	. += span_notice("RMB: Tie hands. Target mouth to gag.")
+	. += span_notice("<b>Right-click</b> to restrain someone. Target mouth to gag.")
 
 /obj/item/stack/sticky_tape/add_item_context(
 	obj/item/source,
@@ -156,33 +154,31 @@
 	name = "super sticky tape"
 	singular_name = "super sticky tape"
 	desc = "Quite possibly the most mischevious substance in the galaxy. Use with extreme lack of caution."
+	icon_state = "tape_y"
 	prefix = "super sticky"
 	conferred_embed = EMBED_HARMLESS_SUPERIOR
 	splint_factor = 0.4
 	merge_type = /obj/item/stack/sticky_tape/super
-	greyscale_colors = "#4D4D4D#75433F"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
 /obj/item/stack/sticky_tape/pointy
 	name = "pointy tape"
 	singular_name = "pointy tape"
 	desc = "Used for sticking to things for sticking said things inside people."
-	icon_state = "tape_spikes"
+	icon_state = "tape_evil"
 	prefix = "pointy"
 	conferred_embed = EMBED_POINTY
 	merge_type = /obj/item/stack/sticky_tape/pointy
-	greyscale_config = /datum/greyscale_config/tape/spikes
-	greyscale_colors = "#E64539#808080#AD2F45"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy
 
 /obj/item/stack/sticky_tape/pointy/super
 	name = "super pointy tape"
 	singular_name = "super pointy tape"
 	desc = "You didn't know tape could look so sinister. Welcome to Space Station 13."
+	icon_state = "tape_spikes"
 	prefix = "super pointy"
 	conferred_embed = EMBED_POINTY_SUPERIOR
 	merge_type = /obj/item/stack/sticky_tape/pointy/super
-	greyscale_colors = "#8C0A00#4F4F4F#300008"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy/super
 
 /obj/item/stack/sticky_tape/surgical
@@ -195,5 +191,4 @@
 	splint_factor = 0.5
 	custom_price = PAYCHECK_MEDIUM
 	merge_type = /obj/item/stack/sticky_tape/surgical
-	greyscale_colors = "#70BAE7#BD6A62"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

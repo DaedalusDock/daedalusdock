@@ -28,6 +28,8 @@
 
 /obj/item/clothing/mask/muzzle/tape
 	name = "tape piece"
+	icon = 'icons/obj/tapes.dmi'
+	worn_icon = 'icons/obj/tapes.dmi'
 	icon_state = "tape_piece"
 	worn_icon_state = "tape_piece_worn"
 	inhand_icon_state = null
@@ -35,9 +37,7 @@
 	item_flags = DROPDEL
 	equip_delay_other = 40
 	strip_delay = 40
-	greyscale_config = /datum/greyscale_config/tape_piece
-	greyscale_config_worn = /datum/greyscale_config/tape_piece/worn
-	greyscale_colors = "#B2B2B2"
+	color = "#787878"
 	///Dertermines whether the tape piece does damage when ripped off of someone.
 	var/harmful_strip = FALSE
 	///The ammount of damage dealt when the tape piece is ripped off of someone.
@@ -55,31 +55,22 @@
 
 /obj/item/clothing/mask/muzzle/tape/super
 	name = "super tape piece"
-	desc = "A piece of tape that can be put over someone's mouth. This one has extra strengh."
-	greyscale_colors = "#4D4D4D"
+	color = "#f0b541"
 	strip_delay = 80
 
 /obj/item/clothing/mask/muzzle/tape/surgical
 	name = "surgical tape piece"
-	desc = "A piece of tape that can be put over someone's mouth. As long as you apply this to your patient, you won't hear their screams of pain!"
-	greyscale_colors = "#70BAE7"
+	color = null
 	equip_delay_other = 30
 	strip_delay = 30
 
 /obj/item/clothing/mask/muzzle/tape/pointy
 	name = "pointy tape piece"
-	desc = "A piece of tape that can be put over someone's mouth. Looks like it will hurt if this is ripped off."
-	icon_state = "tape_piece_spikes"
-	worn_icon_state = "tape_piece_spikes_worn"
-	greyscale_config = /datum/greyscale_config/tape_piece/spikes
-	greyscale_config_worn = /datum/greyscale_config/tape_piece/worn/spikes
-	greyscale_colors = "#E64539#AD2F45"
+	color = "#ad2f45"
 	harmful_strip = TRUE
 	stripping_damage = 10
 
 /obj/item/clothing/mask/muzzle/tape/pointy/super
 	name = "super pointy tape piece"
-	desc = "A piece of tape that can be put over someone's mouth. This thing could rip your face into a thousand pieces if ripped off."
-	greyscale_colors = "#8C0A00#300008"
 	strip_delay = 60
 	stripping_damage = 20

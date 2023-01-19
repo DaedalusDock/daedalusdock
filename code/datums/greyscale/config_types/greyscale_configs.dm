@@ -559,32 +559,3 @@
 	icon_file = 'icons/obj/smooth_structures/window_reinforced.dmi'
 	json_config = 'code/datums/greyscale/json_configs/structures/fulltile_window.json'
 
-/datum/greyscale_config/tape
-	name = "Tape"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape.json'
-
-/datum/greyscale_config/tape/spikes
-	name = "Spiked Tape"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape_spikes.json'
-
-/datum/greyscale_config/tape_piece
-	name = "Tape Piece"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape_piece.json'
-
-/datum/greyscale_config/tape_piece/spikes
-	name = "Spiked Tape Piece"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape_piece_spikes.json'
-
-/datum/greyscale_config/tape_piece/worn
-	name = "Worn Tape Piece"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape_piece_worn.json'
-
-/datum/greyscale_config/tape_piece/worn/spikes
-	name = "Worn Tape Piece"
-	icon_file = 'icons/obj/tapes.dmi'
-	json_config = 'code/datums/greyscale/json_configs/tape_piece_spikes_worn.json'

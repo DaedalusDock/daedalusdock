@@ -190,17 +190,7 @@
 		return FALSE
 
 	var/mob/dead/observer/observer = new
-	var/mob/living/carbon/human/dummy/consistent/template = new
-	if(client?.prefs)
-		var/real_name = client.prefs.read_preference(/datum/preference/name/real_name)
-		deadchat_name = real_name
-		if(mind)
-			mind.ghostname = real_name
-		name = real_name
-		client.prefs.apply_prefs_to(template)
-	observer.set_ghost_appearance(template)
-	qdel(template)
-
+	observer.restore_ghost_appearance()
 	spawning = TRUE
 
 	observer.started_as_observer = TRUE

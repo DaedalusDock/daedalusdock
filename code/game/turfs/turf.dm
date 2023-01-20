@@ -99,6 +99,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
+	if(mapload && permit_ao)
+		queue_ao()
 	// if(!blocks_air || !simulated)
 		// air = new
 		// air.copyFrom(src.return_air())

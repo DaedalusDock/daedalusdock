@@ -1,0 +1,5 @@
+author: Lohikar, Kapu1178
+delete-after: true
+changes:
+  - refactor: Ambient Occlusion only applies to turfs.
+  - rscdel: AO pref

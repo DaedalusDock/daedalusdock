@@ -1,0 +1,4 @@
+author: DTraitor
+delete-after: true
+changes:
+  - code_imp: dynamic game mode is less hardcoded now

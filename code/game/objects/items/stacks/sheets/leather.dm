@@ -158,6 +158,11 @@ GLOBAL_LIST_INIT(xeno_recipes, list ( \
 	. = ..()
 	AddElement(/datum/element/dryable, /obj/item/stack/sheet/leather)
 	AddComponent(/datum/component/grillable, /obj/item/stack/sheet/leather, rand(1 SECONDS, 3 SECONDS), TRUE)
+	become_atmos_sensitive()
+
+/obj/item/stack/sheet/wethide/Destroy(force)
+	lose_atmos_sensitivity()
+	return ..()
 
 /obj/item/stack/sheet/wethide/burn()
 	visible_message(span_notice("[src] burns up, leaving a sheet of leather behind!"))

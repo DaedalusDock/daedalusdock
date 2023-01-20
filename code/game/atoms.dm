@@ -89,8 +89,12 @@
 
 	///Light systems, both shouldn't be active at the same time.
 	var/light_system = STATIC_LIGHT
-	///Range of the light in tiles. Zero means no light.
-	var/light_range = 0
+	///Range of the maximum brightness of light in tiles. Zero means no light.
+	var/light_inner_range = 0
+	///Range where light begins to taper into darkness in tiles.
+	var/light_outer_range = 0
+	///Adjusts curve for falloff gradient
+	var/light_falloff_curve = LIGHTING_DEFAULT_FALLOFF_CURVE
 	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
 	var/light_power = 1
 	///Hexadecimal RGB string representing the colour of the light. White by default.
@@ -240,7 +244,7 @@
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_power && light_range && (light_system == STATIC_LIGHT))
+	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
 	if (length(smoothing_groups))
@@ -541,15 +545,16 @@
  * - methods: How the atom is being exposed to the reagents. Bitflags.
  * - volume_modifier: Volume multiplier.
  * - show_message: Whether to display anything to mobs when they are exposed.
+ * - exposed_temperature: The temperature of the reagent during exposure
  */
-/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = SEND_SIGNAL(src, COMSIG_ATOM_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/datum/reagent/current_reagent as anything in reagents)
-		. |= current_reagent.expose_atom(src, reagents[current_reagent])
+		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
 /// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
@@ -1164,9 +1169,13 @@
  */
 /atom/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, light_range))
+		if(NAMEOF(src, light_inner_range))
 			if(light_system == STATIC_LIGHT)
-				set_light(l_range = var_value)
+				set_light(l_inner_range = var_value)
+				. = TRUE
+		if(NAMEOF(src, light_outer_range))
+			if(light_system == STATIC_LIGHT)
+				set_light(l_outer_range = var_value)
 			else
 				set_light_range(var_value)
 			. = TRUE
@@ -1919,6 +1928,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	if(density == new_value)
 		return
+	SEND_SIGNAL(src, COMSIG_ATOM_DENSITY_CHANGE, density, new_value)
 	. = density
 	density = new_value
 

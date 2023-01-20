@@ -35,8 +35,6 @@
 // Gas mixture signals
 /// From /datum/gas_mixture/proc/merge: ()
 #define COMSIG_GASMIX_MERGED "comsig_gasmix_merged"
-/// From /datum/gas_mixture/proc/remove: ()
-#define COMSIG_GASMIX_REMOVED "comsig_gasmix_removed"
 /// From /datum/gas_mixture/proc/react: ()
 #define COMSIG_GASMIX_REACTED "comsig_gasmix_reacted"
 

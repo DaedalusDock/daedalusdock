@@ -46,10 +46,9 @@
 /obj/item/wallframe/airalarm
 	name = "air alarm frame"
 	desc = "Used for building Air Alarms."
-	icon = 'icons/obj/monitors.dmi'
 	icon_state = "alarm_bitem"
 	result_path = /obj/machinery/airalarm
-	pixel_shift = 24
+	pixel_shift = 21
 
 #define AALARM_MODE_SCRUBBING 1
 #define AALARM_MODE_VENTING 2 //makes draught
@@ -69,7 +68,7 @@
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
-	icon = 'icons/obj/monitors.dmi'
+	icon = 'icons/obj/airalarm.dmi'
 	icon_state = "alarmp"
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
@@ -125,6 +124,7 @@
 		GAS_XENON = new/datum/tlv/dangerous,
 		GAS_TRITIUM = new/datum/tlv/dangerous,
 		GAS_DEUTERIUM = new/datum/tlv/dangerous,
+		GAS_RADON = new/datum/tlv/dangerous,
 		GAS_METHANE = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_HELIUM = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_KRYPTON = new/datum/tlv(-1, -1, 1000, 1000),
@@ -158,17 +158,6 @@
 		/obj/item/circuit_component/air_alarm,
 	))
 	SSairmachines.start_processing_machine(src)
-
-	/*
-	if(mapload)
-		var/turf/my_turf = get_turf(src)
-		if(my_turf && (initial(my_turf.temperature) != T20C))
-			var/difftemp = T20C - initial(my_turf.temperature)
-			TLV["temperature"].warning_min -= difftemp
-			TLV["temperature"].hazard_min -= difftemp
-			TLV["temperature"].warning_max -= difftemp
-			TLV["temperature"].hazard_max -= difftemp
-	*/
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -618,7 +607,7 @@
 		if(2)
 			color = "#DA0205" // red
 
-	set_light(1.4, 1, color)
+	set_light(l_outer_range = 1.4, l_power = 1, l_color = color)
 
 /obj/machinery/airalarm/update_icon_state()
 	if(panel_open)
@@ -989,7 +978,7 @@
 /obj/machinery/airalarm/away //general away mission access
 	req_access = list(ACCESS_AWAY_GENERAL)
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 
 /obj/item/circuit_component/air_alarm
 	display_name = "Air Alarm"

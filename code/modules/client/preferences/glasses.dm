@@ -14,3 +14,6 @@
 
 /datum/preference/choiced/glasses/apply_to_human(mob/living/carbon/human/target, value)
 	return
+
+/datum/preference/choiced/glasses/create_default_value()
+	return "Regular"

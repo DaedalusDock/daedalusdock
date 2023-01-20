@@ -61,8 +61,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 //OH YEAH BABY FLAGS_2 HERE WE GO
 ///Plasma Contamination
 #define CONTAMINATED_2 (1<<0)
-///Temperature does no change
-#define NO_TEMP_CHANGE_2 (1<<1)
+///Uses atom temperature. Opt-in.
+#define ATMOS_SENSITIVE_2 (1<<1)
 
 // Update flags for [/atom/proc/update_appearance]
 /// Update the atom's name

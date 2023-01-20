@@ -57,6 +57,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/tmp/datum/lighting_corner/lighting_corner_SW
 	var/tmp/datum/lighting_corner/lighting_corner_NW
 
+	var/lighting_uses_jen = FALSE
 
 	///Which directions does this turf block the vision of, taking into account both the turf's opacity and the movable opacity_sources.
 	var/directional_opacity = NONE
@@ -137,7 +138,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(GLOB.fullbright_overlay)
 
-	if (light_power && light_range)
+	if (light_power && light_outer_range)
 		update_light()
 
 	var/turf/T = SSmapping.get_turf_above(src)
@@ -669,15 +670,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /// Handles exposing a turf to reagents.
-/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
-		. |= R.expose_turf(src, reagents[R])
+		. |= R.expose_turf(src, reagents[R], exposed_temperature)
 
 /**
  * Called when this turf is being washed. Washing a turf will also wash any mopable floor decals

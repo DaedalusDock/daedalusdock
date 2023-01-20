@@ -132,7 +132,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	plane = ABOVE_GAME_PLANE
 	blend_mode = BLEND_ADD
 	light_system = MOVABLE_LIGHT
-	light_range = LIGHT_RANGE_FIRE
+	light_outer_range = LIGHT_RANGE_FIRE
 	light_power = 1
 	light_color = LIGHT_COLOR_FIRE
 
@@ -347,6 +347,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if (temperature<220)
 		firelevel = 0
 
+	SEND_SIGNAL(src, COMSIG_GASMIX_REACTED)
+
 	return firelevel
 
 /datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
@@ -497,4 +499,4 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /obj/effect/dummy/lighting_obj/moblight/fire
 	name = "fire"
 	light_color = LIGHT_COLOR_FIRE
-	light_range = LIGHT_RANGE_FIRE
+	light_outer_range = LIGHT_RANGE_FIRE

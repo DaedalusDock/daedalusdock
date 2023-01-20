@@ -9,6 +9,7 @@
 	name = "area power controller"
 	desc = "A control terminal for the area's electrical systems."
 
+	icon = 'icons/obj/apc.dmi'
 	icon_state = "apc0"
 	use_power = NO_POWER_USE
 	req_access = null
@@ -19,7 +20,9 @@
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
 
 	///Range of the light emitted when on
-	var/light_on_range = 1.5
+	var/light_on_inner_range = 0.5
+	var/light_on_outer_range = 2.5
+
 	///Reference to our area
 	var/area/area
 	///Mapper helper to tie an apc to another area
@@ -176,6 +179,8 @@
 	update_appearance()
 
 	make_terminal()
+
+	become_atmos_sensitive()
 
 	addtimer(CALLBACK(src, .proc/update), 5)
 
@@ -556,8 +561,6 @@
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
 		stoplag()
-/obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 2000) ? TRUE : FALSE
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

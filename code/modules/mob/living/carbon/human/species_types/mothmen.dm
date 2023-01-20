@@ -5,7 +5,7 @@
 	say_mod = "flutters"
 	scream_verb = "buzzes"
 	default_color = "00FF00"
-	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE, BODY_RESIZABLE)
+	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, TRAIT_ANTENNAE, BODY_RESIZABLE, HAIR)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
@@ -14,12 +14,8 @@
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 	mutant_bodyparts = list("moth_markings" = "None")
 	external_organs = list(/obj/item/organ/external/wings/moth = "Plain", /obj/item/organ/external/antennae = "Plain")
-	species_eye_path = 'icons/mob/species/moth/eyes.dmi'
-	attack_verb = "slash"
-	attack_effect = ATTACK_EFFECT_CLAW
-	attack_sound = 'sound/weapons/slash.ogg'
-	miss_sound = 'sound/weapons/slashmiss.ogg'
 	meat = /obj/item/food/meat/slab/human/mutant/moth
+	species_eye_path = 'icons/mob/species/moth/eyes.dmi'
 	liked_food = VEGETABLES | DAIRY | CLOTH
 	disliked_food = FRUIT | GROSS
 	toxic_food = MEAT | RAW | SEAFOOD
@@ -35,10 +31,10 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/moth,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/moth,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/moth,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/moth,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/moth,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/moth,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/moth,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/moth,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/moth,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
 
 /datum/species/moth/regenerate_organs(mob/living/carbon/C, datum/species/old_species, replace_current= TRUE, list/excluded_zones, visual_only)

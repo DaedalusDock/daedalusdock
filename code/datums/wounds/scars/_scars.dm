@@ -47,6 +47,8 @@
  * * add_to_scars- Should always be TRUE unless you're just storing a scar for later usage, like how cuts want to store a scar for the highest severity of cut, rather than the severity when the wound is fully healed (probably demoted to moderate)
  */
 /datum/scar/proc/generate(obj/item/bodypart/BP, datum/wound/W, add_to_scars=TRUE)
+	if(QDELETED(BP))
+		CRASH("Tried to add a scar to a deleted limb!")
 	limb = BP
 	RegisterSignal(limb, COMSIG_PARENT_QDELETING, .proc/limb_gone)
 

@@ -87,7 +87,6 @@
 /turf/closed/wall/mineral/plasma
 	name = "plasma wall"
 	desc = "A wall with plasma plating. This is definitely a bad idea."
-	thermal_conductivity = 0.04
 	plating_material = /datum/material/plasma
 	color = "#c162ec" //To display in mapping softwares
 

@@ -21,12 +21,17 @@
 	var/on_gs = FALSE
 	///Amount of power used
 	var/static_power_used = 0
-	///Luminosity when on, also used in power calculation
-	var/brightness = 7
+	///The outer radius of the light's... light.
+	var/bulb_outer_range = 7
+	///The inner radius of the bulb's light, where it is at maximum brightness
+	var/bulb_inner_range = 1.5
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 0.8
+	var/bulb_power = 1
+	///The falloff of the emitted light. Adjust until it looks good.
+	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+
 	///Default colour of the light.
-	var/bulb_colour = "#f3fffac4"
+	var/bulb_colour = "#f2f9f7"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -47,18 +52,22 @@
 	var/nightshift_enabled = FALSE
 	///Set to FALSE to never let this light get switched to night mode.
 	var/nightshift_allowed = TRUE
-	///Brightness of the nightshift light
-	var/nightshift_brightness = 6
+	///Outer radius of the nightshift light
+	var/nightshift_outer_range = 6
+	///Inner, brightest radius of the nightshift light
+	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.45
+	var/nightshift_light_power = 0.85
 	///Basecolor of the nightshift light
 	var/nightshift_light_color = "#FFDDCC"
+	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
 	///If true, this light cannot ever have an emergency mode
 	var/no_emergency = FALSE
 	///Multiplier for this light's base brightness in emergency power mode
-	var/bulb_emergency_brightness_mul = 0.6
+	var/bulb_emergency_brightness_mul = 0.8
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
@@ -87,6 +96,7 @@
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/light/LateInitialize()
@@ -109,6 +119,7 @@
 		LAZYREMOVE(my_area.lights, src)
 	my_area = null
 	QDEL_NULL(cell)
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/light/update_icon_state()
@@ -132,10 +143,9 @@
 	if(!on || status != LIGHT_OK)
 		return
 
-	/* ORIGINAL:
-	var/area/local_area = get_area(src)
-	if(emergency_mode || (local_area?.fire))
-	*/
+	if(!overlay_icon)
+		return
+
 	if(emergency_mode || firealarm) //PARIAH EDIT END
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
@@ -170,13 +180,13 @@
 		START_PROCESSING(SSmachines, src)
 	else
 		use_power = IDLE_POWER_USE
-		set_light(l_range = 0)
+		set_light(0)
 	update_appearance()
 
 	if(on != on_gs)
 		on_gs = on
 		if(on)
-			static_power_used = brightness * 20 //20W per unit luminosity
+			static_power_used = bulb_outer_range * 20 //20W per unit luminosity
 			addStaticPower(static_power_used, AREA_USAGE_STATIC_LIGHT)
 		else
 			removeStaticPower(static_power_used, AREA_USAGE_STATIC_LIGHT)
@@ -214,7 +224,7 @@
 		status = LIGHT_BURNED
 		icon_state = "[base_state]-burned"
 		on = FALSE
-		set_light(l_range = 0)
+		set_light(0)
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
@@ -249,12 +259,11 @@
 // attack with item - insert light (if right type), otherwise try to break the light
 
 /obj/machinery/light/attackby(obj/item/tool, mob/living/user, params)
-
 	//Light replacer code
 	if(istype(tool, /obj/item/lightreplacer))
 		var/obj/item/lightreplacer/replacer = tool
 		replacer.ReplaceLight(src, user)
-		return
+		return TRUE
 
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
@@ -262,21 +271,21 @@
 		if(do_after(user, 2 SECONDS, src))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
-		return
+		return TRUE
 	//PARIAH EDIT END
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
 		if(status == LIGHT_OK)
 			to_chat(user, span_warning("There is a [fitting] already inserted!"))
-			return
+			return TRUE
 		add_fingerprint(user)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
-			return
+			return TRUE
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
-			return
+			return TRUE
 
 		add_fingerprint(user)
 		if(status != LIGHT_EMPTY)
@@ -287,7 +296,8 @@
 		status = light_object.status
 		switchcount = light_object.switchcount
 		rigged = light_object.rigged
-		brightness = light_object.brightness
+		bulb_inner_range = light_object.bulb_inner_range
+		bulb_outer_range = light_object.bulb_outer_range
 		on = has_power()
 		update()
 
@@ -295,22 +305,28 @@
 
 		if(on && rigged)
 			explode()
-		return
+		return TRUE
 
-	// attempt to stick weapon into light socket
-	if(status != LIGHT_EMPTY)
-		return ..()
-	if(tool.tool_behaviour == TOOL_SCREWDRIVER) //If it's a screwdriver open it.
-		tool.play_tool_sound(src, 75)
-		user.visible_message(span_notice("[user.name] opens [src]'s casing."), \
-			span_notice("You open [src]'s casing."), span_hear("You hear a noise."))
-		deconstruct()
-		return
+	if(istype(tool, /obj/item/stock_parts/cell))
+		return FALSE
+
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)
 		if (prob(75))
 			electrocute_mob(user, get_area(src), src, (rand(7,10) * 0.1), TRUE)
+
+	return TRUE
+
+
+/obj/machinery/light/screwdriver_act(mob/living/user, obj/item/tool)
+	if(status != LIGHT_EMPTY)
+		return ..()
+
+	tool.play_tool_sound(src, 75)
+	user.visible_message(span_notice("[user.name] opens [src]'s casing."), \
+		span_notice("You open [src]'s casing."), span_hear("You hear a noise."))
+	deconstruct()
 
 /obj/machinery/light/deconstruct(disassembled = TRUE)
 	if(flags_1 & NODECONSTRUCT_1)
@@ -406,9 +422,10 @@
 		return FALSE
 	cell.use(power_usage_amount)
 	set_light(
-		l_range = brightness * bulb_emergency_brightness_mul,
-		l_power = max(bulb_emergency_pow_min, bulb_emergency_pow_mul * (cell.charge / cell.maxcharge)),
-		l_color = bulb_emergency_colour
+			l_outer_range = bulb_outer_range * bulb_emergency_brightness_mul,
+			l_inner_range = bulb_inner_range * bulb_emergency_brightness_mul,
+			l_power = max(bulb_emergency_pow_min, bulb_emergency_pow_mul * (cell.charge / cell.maxcharge)),
+			l_color = bulb_emergency_colour
 		)
 	return TRUE
 
@@ -506,12 +523,14 @@
 			return
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
+	return TRUE
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
 	var/obj/item/light/light_object = new light_type()
 	light_object.status = status
 	light_object.rigged = rigged
-	light_object.brightness = brightness
+	light_object.bulb_inner_range = bulb_inner_range
+	light_object.bulb_outer_range = bulb_outer_range
 
 	// light item inherits the switchcount, then zero it
 	light_object.switchcount = switchcount
@@ -555,7 +574,8 @@
 	if(status == LIGHT_OK)
 		return
 	status = LIGHT_OK
-	brightness = initial(brightness)
+	bulb_inner_range = initial(bulb_inner_range)
+	bulb_outer_range = initial(bulb_outer_range)
 	on = TRUE
 	update()
 
@@ -596,16 +616,29 @@
 	tube?.burn()
 	return
 
+/obj/item/debuglights
+	///The outer radius of the light's... light.
+	var/bulb_outer_range = 7
+	///The inner radius of the bulb's light, where it is at maximum brightness
+	var/bulb_inner_range = 1.5
+	///Basically the alpha of the emitted light source
+	var/bulb_power = 1
+	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	///Default colour of the light.
+	var/bulb_colour = "#f2f9f7"
 
+/obj/item/debuglights/Initialize(mapload)
+	. = ..()
+	var/obj/machinery/light/model_light = /obj/machinery/light
+	bulb_outer_range = initial(model_light.bulb_outer_range)
+	bulb_inner_range = initial(model_light.bulb_inner_range)
+	bulb_power = initial(model_light.bulb_power)
+	bulb_falloff = initial(model_light.bulb_falloff)
+	bulb_colour = initial(model_light.bulb_colour)
 
+/obj/item/debuglights/attack_self(mob/user, modifiers)
+	set waitfor = FALSE
+	for(var/obj/machinery/light/L in range(40, user))
+		L.set_light(bulb_outer_range, bulb_inner_range, bulb_power, bulb_falloff, bulb_colour)
+		CHECK_TICK
 
-/obj/machinery/light/floor
-	name = "floor light"
-	icon = 'icons/obj/lighting.dmi'
-	base_state = "floor" // base description and icon_state
-	icon_state = "floor"
-	brightness = 4
-	layer = LOW_OBJ_LAYER
-	plane = FLOOR_PLANE
-	light_type = /obj/item/light/bulb
-	fitting = "bulb"

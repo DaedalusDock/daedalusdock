@@ -63,6 +63,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	has_gravity = STANDARD_GRAVITY
 	name = "Test Room"
 	icon_state = "storage"
+	static_lighting = FALSE //The unit test area should always be luminosity = 1
+	base_lighting_alpha = 255
+
 
 //EXTRA
 

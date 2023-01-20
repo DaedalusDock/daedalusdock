@@ -167,8 +167,9 @@
 #define INIT_ORDER_DECAY -61
 #define INIT_ORDER_EXPLOSIONS -69
 #define INIT_ORDER_AIR -70
+#define INIT_ORDER_AO -71
 #define INIT_ORDER_STATPANELS -97
-#define INIT_ORDER_BAN_CACHE -98
+#define INIT_ORDER_STATPANELS -98
 #define INIT_ORDER_INIT_PROFILER -99 //Near the end, logs the costs of initialize
 #define INIT_ORDER_CHAT -100 //Should be last to ensure chat remains smooth during init.
 

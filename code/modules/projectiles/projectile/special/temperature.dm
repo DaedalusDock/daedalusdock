@@ -24,12 +24,12 @@
 
 /obj/projectile/temp/hot
 	name = "heat beam"
-	temperature = 100 // Raise the body temp by 100 points
+	adj_temperature = 100 // Raise the body temp by 100 points
 
 /obj/projectile/temp/cryo
 	name = "cryo beam"
 	range = 3
-	temperature = -240 // Single slow shot reduces temp greatly
+	adj_temperature = -240 // Single slow shot reduces temp greatly
 
 /obj/projectile/temp/cryo/on_range()
 	var/turf/T = get_turf(src)

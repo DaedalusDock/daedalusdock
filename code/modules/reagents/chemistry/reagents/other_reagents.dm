@@ -159,7 +159,6 @@
 	description = "An ubiquitous chemical substance that is composed of hydrogen and oxygen."
 	color = "#AAAAAA77" // rgb: 170, 170, 170, 77 (alpha)
 	taste_description = "water"
-	var/cooling_temperature = 2
 	glass_icon_state = "glass_clear"
 	glass_name = "glass of water"
 	glass_desc = "The father of all refreshments."
@@ -170,25 +169,24 @@
  * Water reaction to turf
  */
 
-/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume)
+/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
 	if(!istype(exposed_turf))
 		return
 
-	var/cool_temp = cooling_temperature
 	if(reac_volume >= 5)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 10 SECONDS, min(reac_volume*1.5 SECONDS, 60 SECONDS))
 
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	var/obj/effect/hotspot/hotspot = exposed_turf.fire
-	if(hotspot && !isspaceturf(exposed_turf))
-		if(exposed_turf.return_air())
-			var/datum/gas_mixture/air = exposed_turf.return_air()
-			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
-			air.react()
-			qdel(hotspot)
+	qdel(exposed_turf.fire)
+	if(exposed_turf.simulated)
+		var/datum/gas_mixture/air = exposed_turf.return_air()
+		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier
+		if(air.temperature > exposed_temperature)
+			adjust_temp *= -1
+		air.temperature = max(air.temperature + adjust_temp, TCMB)
 
 /*
  * Water reaction to an object

@@ -180,6 +180,8 @@
 
 	make_terminal()
 
+	become_atmos_sensitive()
+
 	addtimer(CALLBACK(src, .proc/update), 5)
 
 	///This is how we test to ensure that mappers use the directional subtypes of APCs, rather than use the parent and pixel-shift it themselves.
@@ -559,8 +561,6 @@
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
 		stoplag()
-/obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 2000) ? TRUE : FALSE
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

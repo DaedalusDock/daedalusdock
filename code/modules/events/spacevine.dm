@@ -389,6 +389,7 @@
 		COMSIG_ATOM_ENTERED = .proc/on_entered,
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	become_atmos_sensitive()
 
 /obj/structure/spacevine/examine(mob/user)
 	. = ..()
@@ -412,6 +413,7 @@
 	set_opacity(0)
 	if(has_buckled_mobs())
 		unbuckle_all_mobs(force=1)
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/structure/spacevine/proc/on_chem_effect(datum/reagent/chem)

@@ -96,11 +96,6 @@ export const feature_vox_facial_hair: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
-export const feature_vox_spines: FeatureChoiced = {
-  name: "Spines",
-  component: FeatureDropdownInput,
-};
-
 export const feature_vox_snout: FeatureChoiced = {
   name: "Snout",
   component: FeatureDropdownInput,

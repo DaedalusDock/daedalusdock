@@ -96,6 +96,7 @@
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/light/LateInitialize()
@@ -118,6 +119,7 @@
 		LAZYREMOVE(my_area.lights, src)
 	my_area = null
 	QDEL_NULL(cell)
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/light/update_icon_state()
@@ -521,6 +523,7 @@
 			return
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
+	return TRUE
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
 	var/obj/item/light/light_object = new light_type()

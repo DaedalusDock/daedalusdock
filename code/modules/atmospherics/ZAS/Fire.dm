@@ -347,6 +347,8 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if (temperature<220)
 		firelevel = 0
 
+	SEND_SIGNAL(src, COMSIG_GASMIX_REACTED)
+
 	return firelevel
 
 /datum/gas_mixture/proc/check_recombustability(list/fuel_objs)

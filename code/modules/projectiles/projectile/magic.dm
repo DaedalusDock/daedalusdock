@@ -582,7 +582,7 @@
 	damage_type = BURN
 	nodamage = FALSE
 	armour_penetration = 100
-	temperature = -200 // Cools you down greatly per hit
+	adj_temperature = -200 // Cools you down greatly per hit
 
 /obj/projectile/magic/nothing
 	name = "bolt of nothing"

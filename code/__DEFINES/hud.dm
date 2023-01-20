@@ -216,3 +216,7 @@
 #define SCRN_OBJ_IN_PALETTE "palette"
 ///Inserted first in the list
 #define SCRN_OBJ_INSERT_FIRST "first"
+
+#define SIMPLE_RADIAL_ACTIVATE "activate"
+#define SIMPLE_RADIAL_DEACTIVATE "deactivate"
+#define SIMPLE_RADIAL_DOESNT_USE "NOVAL"

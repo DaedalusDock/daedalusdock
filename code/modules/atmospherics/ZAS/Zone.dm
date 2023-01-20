@@ -54,6 +54,8 @@ Class Procs:
 	var/needs_update = 0
 	///An associative list of edge_source = edge. Will contain instantiated turfs and zones.
 	var/list/edges = list()
+	///Lazylist of atmos sensitive contents
+	var/atmos_sensitive_contents
 	///The zone's gas contents
 	var/datum/gas_mixture/air = new
 	var/last_air_temperature = TCMB
@@ -87,6 +89,9 @@ Class Procs:
 			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, .proc/handle_fuel_del)
 	T.update_graphic(air.graphic)
 
+	if(T.atmos_sensitive_contents)
+		LAZYDISTINCTADD(atmos_sensitive_contents, T.atmos_sensitive_contents)
+
 ///Removes the given turf from the zone. Will invalidate the zone if it was the last turf.
 /zone/proc/remove_turf(turf/T)
 #ifdef ZASDBG
@@ -101,6 +106,7 @@ Class Procs:
 		INVOKE_ASYNC(src, .proc/rebuild)
 		return
 
+	LAZYREMOVE(atmos_sensitive_contents, T.atmos_sensitive_contents)
 	T.copy_zone_air()
 
 	for(var/d in GLOB.cardinals)
@@ -151,6 +157,7 @@ Class Procs:
 /zone/proc/invalidate()
 	invalid = 1
 	SSzas.remove_zone(src)
+	atmos_sensitive_contents = null
 	#ifdef ZASDBG
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
@@ -222,30 +229,9 @@ Class Procs:
 	SSzas.zonetime["check edges"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
 	#endif
-	// Handle condensation from the air.
-	/*
-	for(var/g in air.gas)
-		var/product = xgm_gas_data.condensation_products[g]
-		if(product && air.temperature <= xgm_gas_data.condensation_points[g])
-			var/condensation_area = air.group_multiplier
-			while(condensation_area > 0)
-				condensation_area--
-				var/turf/flooding = pick(contents)
-				var/condense_amt = min(air.gas[g], rand(3,5))
-				if(condense_amt < 1)
-					break
-				air.adjustGas(g, -condense_amt)
-				flooding.add_fluid(condense_amt, product)
-	*/
-
-	// Update atom temperature.
-	if(abs(air.temperature - last_air_temperature) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
-		last_air_temperature = air.temperature
-		for(var/turf/T as anything in contents)
-			for(var/atom/movable/checking as anything in T.contents)
-				if(checking.simulated)
-					QUEUE_TEMPERATURE_ATOMS(checking)
-			CHECK_TICK
+	if(LAZYLEN(atmos_sensitive_contents))
+		for(var/atom/sensitive as anything in atmos_sensitive_contents)
+			sensitive.atmos_expose(air, air.temperature)
 
 	#ifdef ZASDBG
 	SSzas.zonetime["queue temperature"] = TICK_USAGE_TO_MS(clock)

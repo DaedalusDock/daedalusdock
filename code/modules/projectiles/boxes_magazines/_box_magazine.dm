@@ -42,23 +42,6 @@
 	if(!start_empty)
 		top_off(starting=TRUE)
 
-/obj/item/ammo_box/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = .proc/add_notes_box)
-
-/obj/item/ammo_box/proc/add_notes_box()
-	var/list/readout = list()
-
-	if(caliber && max_ammo) // Text references a 'magazine' as only magazines generally have the caliber variable initialized
-		readout += "Up to [span_warning("[max_ammo] [caliber] rounds")] can be found within this magazine. \
-		\nAccidentally discharging any of these projectiles may void your insurance contract."
-
-	var/obj/item/ammo_casing/mag_ammo = get_round(TRUE)
-
-	if(istype(mag_ammo))
-		readout += "\n[mag_ammo.add_notes_ammo()]"
-
-	return readout.Join("\n")
-
 /**
  * top_off is used to refill the magazine to max, in case you want to increase the size of a magazine with VV then refill it at once
  *

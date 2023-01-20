@@ -228,7 +228,9 @@
 		speed_round = TRUE
 
 	popcount = gather_roundend_feedback()
-	SScredits.compile_credits() //Must always come after popcount is set
+	INVOKE_ASYNC(SScredits, /datum/controller/subsystem/credits/proc/draft) //Must always come after popcount is set
+	for(var/client/C in GLOB.clients)
+		C.playcreditsmusic(50)
 
 	CHECK_TICK
 

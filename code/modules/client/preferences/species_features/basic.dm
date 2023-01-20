@@ -1,8 +1,9 @@
-/proc/generate_possible_values_for_sprite_accessories_on_head(accessories)
+/proc/generate_possible_values_for_sprite_accessories_on_head(accessories, base_icon ='icons/mob/human_parts_greyscale.dmi', base_state = "human_head_m", base_color = "#ffe0d1")
 	var/list/values = possible_values_for_sprite_accessory_list(accessories)
 
-	var/icon/head_icon = icon('icons/mob/human_parts_greyscale.dmi', "human_head_m")
-	head_icon.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
+	var/icon/head_icon = icon(base_icon, base_state)
+	if(base_color)
+		head_icon.Blend(base_color, ICON_MULTIPLY)
 
 	for (var/name in values)
 		var/datum/sprite_accessory/accessory = accessories[name]
@@ -51,7 +52,7 @@
 	eyes_organ.refresh()
 
 /datum/preference/color/eye_color/create_default_value()
-	return random_eye_color()
+	return "#000000"
 
 /datum/preference/choiced/facial_hairstyle
 	savefile_key = "facial_style_name"
@@ -75,6 +76,9 @@
 
 	return data
 
+/datum/preference/choiced/facial_hairstyle/create_default_value()
+	return "Shaved"
+
 /datum/preference/color/facial_hair_color
 	savefile_key = "facial_hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -84,6 +88,9 @@
 /datum/preference/color/facial_hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.facial_hair_color = value
 	target.update_body_parts()
+
+/datum/preference/color/facial_hair_color/create_default_value()
+	return "#422f03"
 
 /datum/preference/choiced/facial_hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -127,6 +134,9 @@
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.hair_color = value
 
+/datum/preference/color/hair_color/create_default_value()
+	return "#422f03"
+
 /datum/preference/choiced/hairstyle
 	savefile_key = "hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -134,6 +144,7 @@
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
+	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
@@ -141,12 +152,22 @@
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.hairstyle = value
 
+/datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+		return FALSE
+	return TRUE
+
 /datum/preference/choiced/hairstyle/compile_constant_data()
 	var/list/data = ..()
 
 	data[SUPPLEMENTAL_FEATURE_KEY] = "hair_color"
 
 	return data
+
+/datum/preference/choiced/hairstyle/create_default_value()
+	return "Bald"
 
 /datum/preference/choiced/hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -165,6 +186,14 @@
 /datum/preference/choiced/hair_gradient/create_default_value()
 	return "None"
 
+/datum/preference/choiced/hair_gradient/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+		return FALSE
+
+	return TRUE
+
 /datum/preference/color/hair_gradient
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -179,6 +208,8 @@
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
+	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
 
 /datum/preference/tri_color
@@ -191,7 +222,7 @@
 	return list(sanitize_hexcolor(input_colors[1]), sanitize_hexcolor(input_colors[2]), sanitize_hexcolor(input_colors[3]))
 
 /datum/preference/tri_color/create_default_value()
-	return list("#[random_color()]", "#[random_color()]", "#[random_color()]")
+	return list("#FF0000", "#00FF00", "#0000FF")
 
 /datum/preference/tri_color/is_valid(list/value)
 	return islist(value) && value.len == 3 && (findtext(value[1], GLOB.is_color) && findtext(value[2], GLOB.is_color) && findtext(value[3], GLOB.is_color))
@@ -203,3 +234,67 @@
 	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value[1])
 	target.dna.mutant_colors["[color_key]_2"] = sanitize_hexcolor(value[2])
 	target.dna.mutant_colors["[color_key]_3"] = sanitize_hexcolor(value[3])
+
+/datum/preference/appearance_mods
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "appearance_mods"
+	priority = PREFERENCE_PRIORITY_APPEARANCE_MODS
+
+/datum/preference/appearance_mods/deserialize(input, datum/preferences/preferences)
+	var/list/input_list = input:Copy()
+	var/list/return_list = list()
+	for(var/_type in input_list)
+		var/list/mod_data = global.ModManager.DeserializeSavedMod(input_list[_type])
+		if(!mod_data)
+			continue
+		return_list[_type] = mod_data
+
+	return return_list
+
+/datum/preference/appearance_mods/serialize(input)
+	var/list/input_list = input:Copy()
+	var/list/serialized_mods = list()
+	for(var/_type in input_list)
+		var/list/mod_data = input[_type]
+		if(!mod_data)
+			continue
+		var/list/serial_mod_data = global.ModManager.SerializeModData(mod_data)
+		if(!serial_mod_data)
+			continue
+		serialized_mods[serial_mod_data["path"]] = serial_mod_data
+	return serialized_mods
+
+/datum/preference/appearance_mods/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	var/list/deserialized_mods = value
+	if(!value)
+		return
+
+	QDEL_LIST_ASSOC_VAL(target.appearance_mods)
+	for(var/_type in deserialized_mods)
+		var/list/mod_data = deserialized_mods[_type]
+		var/new_color = mod_data["color"]
+		var/new_priority = mod_data["priority"]
+		var/new_blend_func = mod_data["color_blend"]
+
+		var/datum/appearance_modifier/mod = LAZYACCESS(target.appearance_mods, _type)
+		if(mod)
+			if(!(mod.color == new_color) || !(mod.priority == new_priority) || !(mod.color_blend_func == new_blend_func))
+				mod.SetValues(new_color, new_priority, new_blend_func)
+				continue
+
+		mod = global.ModManager.NewInstance(_type)
+		mod.SetValues(new_color, new_priority, new_blend_func)
+		mod.ApplyToMob(target)
+		LAZYADDASSOC(target.appearance_mods, _type, mod)
+
+	target.update_body_parts()
+
+/datum/preference/appearance_mods/create_default_value()
+	return list()
+
+/datum/preference/appearance_mods/is_valid(value)
+	if(!islist(value))
+		return FALSE
+	return TRUE
+
+

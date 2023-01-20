@@ -35,10 +35,6 @@
 		/obj/item/organ/external/vox_hair/facial = "None",
 		/obj/item/organ/external/tail/vox = "Vox Tail"
 	)
-	attack_verb = "slash"
-	attack_effect = ATTACK_EFFECT_CLAW
-	attack_sound = 'sound/weapons/slash.ogg'
-	miss_sound = 'sound/weapons/slashmiss.ogg'
 	liked_food = MEAT | FRIED
 	payday_modifier = 0.75
 	outfit_important_for_life = /datum/outfit/vox
@@ -47,17 +43,17 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/vox,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/vox,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/vox,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/vox,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/vox,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/vox,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/vox,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/vox,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/vox,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/vox,
 	)
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.mutant_colors[MUTCOLORS_GENERIC_1]= VOX_BODY_COLOR
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1] = VOX_BODY_COLOR
 	human.eye_color_right = COLOR_TEAL
 	human.eye_color_left = COLOR_TEAL
 

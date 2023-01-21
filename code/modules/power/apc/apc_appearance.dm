@@ -15,12 +15,12 @@
 				set_light_color(LIGHT_COLOR_BLUE)
 			if(APC_FULLY_CHARGED)
 				set_light_color(LIGHT_COLOR_GREEN)
-		set_light(l_outer_range = light_on_outer_range, l_inner_range = light_on_inner_range)
+		set_light(l_outer_range = light_on_outer_range, l_inner_range = light_on_inner_range, l_power = light_on_power)
 		return
 
 	if(update_state & UPSTATE_BLUESCREEN)
 		set_light_color(LIGHT_COLOR_BLUE)
-		set_light(l_outer_range = light_on_outer_range, l_inner_range = light_on_inner_range)
+		set_light(l_outer_range = light_on_outer_range, l_inner_range = light_on_inner_range, l_power = light_on_power)
 		return
 
 	set_light(0)

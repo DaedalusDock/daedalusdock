@@ -22,6 +22,7 @@
 	///Range of the light emitted when on
 	var/light_on_inner_range = 0.5
 	var/light_on_outer_range = 2.5
+	var/light_on_power = 0.8
 
 	///Reference to our area
 	var/area/area

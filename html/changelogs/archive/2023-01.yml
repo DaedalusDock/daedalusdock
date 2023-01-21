@@ -34,3 +34,9 @@
   - bugfix: Fire extinguishers are no longer absolutely busted
   - rscdel: SSairatoms
   - rscadd: atmos sensitivity
+2023-01-21:
+  DTraitor:
+  - code_imp: dynamic game mode is less hardcoded now
+  Lohikar, Kapu1178:
+  - refactor: Ambient Occlusion only applies to turfs.
+  - rscdel: AO pref

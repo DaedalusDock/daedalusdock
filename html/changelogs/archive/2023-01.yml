@@ -40,3 +40,6 @@
   Lohikar, Kapu1178:
   - refactor: Ambient Occlusion only applies to turfs.
   - rscdel: AO pref
+2023-01-22:
+  Kapu1178:
+  - rscadd: Spends half our ZAS free performance budget on Bloom

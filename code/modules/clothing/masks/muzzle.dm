@@ -33,7 +33,6 @@
 	icon_state = "tape_piece"
 	worn_icon_state = "tape_piece_worn"
 	inhand_icon_state = null
-	clothing_flags = INEDIBLE_CLOTHING | BLOCKS_SPEECH
 	item_flags = DROPDEL
 	equip_delay_other = 40
 	strip_delay = 40

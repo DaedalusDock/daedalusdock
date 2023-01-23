@@ -29,7 +29,7 @@
 
 /obj/item/stack/sticky_tape/examine(mob/user)
 	. = ..()
-	. += span_notice("<b>Right-click</b> to restrain someone. Target mouth to gag.")
+	. += span_notice("<b>Left-click</b> to restrain someone. Target mouth to gag.")
 
 /obj/item/stack/sticky_tape/add_item_context(
 	obj/item/source,
@@ -37,36 +37,38 @@
 	atom/target,
 	mob/living/user
 )
-	switch(user.zone_selected)
-		if (BODY_ZONE_PRECISE_MOUTH)
-			context[SCREENTIP_CONTEXT_RMB] = "Tape mouth"
-		else
-			context[SCREENTIP_CONTEXT_RMB] = "Tie hands"
-
-	context[SCREENTIP_CONTEXT_LMB] = "Tape item"
+	if(isitem(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Tape item"
+	else if(iscarbon(target))
+		switch(user.zone_selected)
+			if (BODY_ZONE_PRECISE_MOUTH)
+				context[SCREENTIP_CONTEXT_LMB] = "Tape mouth"
+			else
+				context[SCREENTIP_CONTEXT_LMB] = "Tie hands"
+	else
+		return NONE
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/item/stack/sticky_tape/attack_secondary(mob/living/carbon/victim, mob/living/user)
+/obj/item/stack/sticky_tape/attack(mob/living/carbon/victim, mob/living/user)
 	if((!istype(victim)))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 	if(amount < 5)
 		to_chat(user, "<span class='warning'>You don't have enough tape to restrain [victim]!</span>")
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) && prob(25)))
 		to_chat(user, "<span class='warning'>Uh... where did the tape edge go?!</span>")
 		var/obj/item/restraints/handcuffs/tape/handcuffed = new(user)
 		handcuffed.apply_cuffs(user,user)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(victim.wear_mask)
 			to_chat(user, span_notice("[victim] is already wearing somthing on their face."))
 			return
 		MuzzleAttack(victim, user)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	else if (!victim.handcuffed)
 		if(victim.canBeHandcuffed())
 			CuffAttack(victim, user)
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return
 
 /obj/item/stack/sticky_tape/afterattack(obj/item/target, mob/living/user, proximity)
 	if(!proximity)
@@ -100,12 +102,6 @@
 		if(istype(target, /obj/item/grenade))
 			var/obj/item/grenade/sticky_bomb = target
 			sticky_bomb.sticky = TRUE
-
-/obj/item/restraints/handcuffs/tape
-	name = "length of tape"
-	desc = "Seems you are in a sticky situation."
-	breakouttime = 15 SECONDS
-	item_flags = DROPDEL
 
 /obj/item/stack/sticky_tape/proc/MuzzleAttack(mob/living/carbon/victim, mob/living/user)
 	playsound(loc, usesound, 30, TRUE, -2)

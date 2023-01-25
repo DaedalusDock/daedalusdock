@@ -89,6 +89,9 @@
 	var/neighbor_stripe = NONE
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(src, cardinal)
+		var/obj/structure/low_wall/neighbor = locate() in step_turf
+		if(neighbor)
+			continue
 		if(!can_area_smooth(step_turf))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)

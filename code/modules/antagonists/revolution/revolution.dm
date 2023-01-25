@@ -482,7 +482,7 @@
 			job.allow_bureaucratic_error = FALSE
 			job.total_positions = 0
 
-		if (revs_win_injection_amount)
+		if (revs_win_injection_amount && IS_DYNAMIC_GAME_MODE)
 			var/datum/game_mode/dynamic/dynamic = SSticker.mode
 			dynamic.create_threat(revs_win_injection_amount, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Revolution victory")
 

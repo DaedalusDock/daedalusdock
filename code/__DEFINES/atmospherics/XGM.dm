@@ -32,6 +32,7 @@
 #define GAS_CHLORINE			"chlorine"
 #define GAS_SULFUR				"sulfurdioxide"
 #define GAS_METHANE				"methane"
+#define GAS_RADON				"radon"
 
 //Random bullshit: compound edition
 #define GAS_METHYL_BROMIDE		"methyl_bromide"

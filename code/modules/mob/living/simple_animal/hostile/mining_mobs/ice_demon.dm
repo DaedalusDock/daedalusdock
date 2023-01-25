@@ -52,7 +52,7 @@
 	damage = 5
 	speed = 4
 	nodamage = FALSE
-	temperature = -75
+	adj_temperature = -75
 	slowdown = FALSE
 
 /mob/living/simple_animal/hostile/asteroid/ice_demon/OpenFire()

@@ -26,6 +26,13 @@
 	/// Typecache of airlocks to apply a neighboring stripe overlay to
 	var/static/list/airlock_typecache
 
+/obj/structure/low_wall/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		var/turf/T = get_turf(src)
+		if(T)
+			T.regenerate_ao()
+
 /obj/structure/low_wall/update_greyscale()
 	greyscale_colors = get_wall_color()
 	return ..()

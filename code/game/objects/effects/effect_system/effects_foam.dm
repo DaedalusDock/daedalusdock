@@ -94,6 +94,7 @@
 	create_reagents(1000) //limited by the size of the reagent holder anyway.
 	START_PROCESSING(SSfastprocess, src)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
+	become_atmos_sensitive()
 
 /obj/effect/particle_effect/foam/ComponentInitialize()
 	. = ..()
@@ -102,6 +103,7 @@
 
 /obj/effect/particle_effect/foam/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
+	lose_atmos_sensitivity()
 	return ..()
 
 

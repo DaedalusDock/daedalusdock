@@ -1472,11 +1472,7 @@
 	if(!note)
 		return
 	else if(istype(note, /obj/item/paper))
-		var/obj/item/paper/pinned_paper = note
-		if(pinned_paper.info && pinned_paper.show_written_words)
-			return "note_words_[frame_state]"
-		else
-			return "note_[frame_state]"
+		return "note_[frame_state]"
 
 	else if(istype(note, /obj/item/photo))
 		return "photo_[frame_state]"

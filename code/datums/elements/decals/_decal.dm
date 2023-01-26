@@ -109,12 +109,13 @@
 /datum/element/decal/proc/generate_appearance(_icon, _icon_state, _dir, _plane, _layer, _color, _alpha, _smoothing, source)
 	if(!_icon || !_icon_state)
 		return FALSE
-	pic = new
-	pic.icon = _icon
-	pic.icon_state = isnull(_smoothing) ? _icon_state : "[_icon_state]-[_smoothing]"
-	pic.layer = _layer
-	pic.dir = _dir
-	pic.plane = _plane
+	pic = image(
+		_icon,
+		null,
+		isnull(_smoothing) ? _icon_state : "[_icon_state]-[_smoothing]",
+		 _layer,
+		 _dir
+	)
 	pic.color = _color
 	pic.alpha = _alpha
 	return TRUE

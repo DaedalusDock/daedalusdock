@@ -113,8 +113,8 @@
 		_icon,
 		null,
 		isnull(_smoothing) ? _icon_state : "[_icon_state]-[_smoothing]",
-		 _layer,
-		 _dir
+		_layer,
+		_dir
 	)
 	pic.color = _color
 	pic.alpha = _alpha

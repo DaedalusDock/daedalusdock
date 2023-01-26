@@ -43,3 +43,7 @@
 2023-01-22:
   Kapu1178:
   - rscadd: Spends half our ZAS free performance budget on Bloom
+2023-01-26:
+  Cenrus:
+  - bugfix: Fixed blast door/low wall smoothing
+  - bugfix: Paper on airlocks is no longer invisible

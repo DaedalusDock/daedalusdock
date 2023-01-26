@@ -252,7 +252,7 @@
 			. += eye_left
 			. += eye_right
 		else
-			. += image(eyes_icon_file, "eyes_missing", -BODY_LAYER, SOUTH)
+			. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
 		if(!facial_hair_hidden && facial_overlay && (FACEHAIR in species_flags_list))
 			facial_overlay.alpha = hair_alpha

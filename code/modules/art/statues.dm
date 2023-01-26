@@ -114,7 +114,7 @@
 	icon_state = "hop"
 
 /obj/structure/statue/gold/cmo
-	name = "statue of the chief medical officer"
+	name = "statue of the medical director"
 	icon_state = "cmo"
 
 /obj/structure/statue/gold/ce

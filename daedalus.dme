@@ -4562,8 +4562,6 @@
 #include "modular_pariah\master_files\code\datums\components\fullauto.dm"
 #include "modular_pariah\master_files\code\game\sound.dm"
 #include "modular_pariah\master_files\code\game\gamemodes\objective.dm"
-#include "modular_pariah\master_files\code\game\objects\items\devices\radio\encryption_key.dm"
-#include "modular_pariah\master_files\code\game\objects\items\devices\radio\headset.dm"
 #include "modular_pariah\master_files\code\modules\antagonist\_common\antag_datum.dm"
 #include "modular_pariah\master_files\code\modules\client\preferences.dm"
 #include "modular_pariah\master_files\code\modules\client\preferences_savefile.dm"

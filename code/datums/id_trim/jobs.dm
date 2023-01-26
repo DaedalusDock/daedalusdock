@@ -193,8 +193,8 @@
 	job = /datum/job/chief_engineer
 
 /datum/id_trim/job/chief_medical_officer
-	assignment = "Chief Medical Officer"
-	intern_alt_name = "Chief Medical Officer-in-Training"
+	assignment = "Medical Director"
+	intern_alt_name = "Medical Director-in-Training"
 	trim_state = "trim_chiefmedicalofficer"
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)

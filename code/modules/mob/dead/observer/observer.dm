@@ -690,18 +690,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	qdel(template)
 
 /mob/dead/observer/proc/set_ghost_appearance(mob/living/to_copy)
-	if(!to_copy || isbrain(to_copy))
-		icon = initial(icon)
-		icon_state = "ghost"
-		alpha = 255
-		return
-
 	alpha = 127
+
 	if(iscarbon(to_copy))
 		overlays = to_copy.overlays
 		underlays = to_copy.underlays
 		icon = initial(icon)
 		icon_state = "blank"
+	else if(!to_copy || !to_copy.icon)
+		icon = initial(icon)
+		icon_state = "ghost"
+		alpha = 255
 	else
 		icon = to_copy.icon
 		icon_state = to_copy.icon_state

@@ -28,6 +28,7 @@
 
 //Snowflake supreme cuz im lazy as fuuuuuck
 /obj/item/gun/ballistic/rifle/update_overlays()
+	..()
 	return list()
 
 /obj/item/gun/ballistic/rifle/tranqrifle/rack(mob/user)

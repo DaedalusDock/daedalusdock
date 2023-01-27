@@ -4,7 +4,7 @@
 
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 
-	for (var/datum/reagent/reagent_type in subtypesof(/datum/reagent))
+	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
 		if(initial(reagent_type.abstract_type) == reagent_type) //Are we abstract?
 			continue
 		test_reagent(human, reagent_type)

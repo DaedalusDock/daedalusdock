@@ -11,7 +11,7 @@
 
 	var/paths = subtypesof(/datum/reagent)
 
-	for(var/datum/reagent/path in paths)
+	for(var/datum/reagent/path as anything in paths)
 		if(initial(path.abstract_type) == path)//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()

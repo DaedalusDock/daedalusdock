@@ -26,6 +26,10 @@
 	. = ..() //We do not want parent behavior
 	icon_state = "hunting_rifle[magazine ? "" : "0"]"
 
+//Snowflake supreme cuz im lazy as fuuuuuck
+/obj/item/gun/ballistic/rifle/update_overlays()
+	return list()
+
 /obj/item/gun/ballistic/rifle/tranqrifle/rack(mob/user)
 	if(!bolt_locked)
 		if(!magazine && chambered)

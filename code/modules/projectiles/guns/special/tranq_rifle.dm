@@ -1,6 +1,6 @@
 /obj/item/gun/ballistic/rifle/tranqrifle
 	name = "tranquilizer rifle"
-	desc = "A veterinary tranquilizer rifle chambered in .308 caliber."
+	desc = "A veterinary tranquilizer rifle chambered in .308 caliber. The bolt will only open if there's a magazine inserted or the chamber is empty."
 	icon = 'goon/icons/obj/tranqgun.dmi'
 	icon_state = "hunting_rifle0"
 	lefthand_file = 'goon/icons/mob/inhands/guns_left.dmi'

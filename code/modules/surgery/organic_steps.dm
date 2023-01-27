@@ -101,7 +101,8 @@
 	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!")
 
 /datum/surgery_step/retract_skin/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
-	surgery.operated_bodypart.open_incision()
+	if(surgery.operated_bodypart)
+		surgery.operated_bodypart.open_incision()
 	return ..()
 
 /datum/surgery_step/retract_skin/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob)
@@ -110,7 +111,8 @@
 		span_warning("[user]'s hand slips, tearing the edges of the incision on [target]'s [surgery.operated_bodypart.name] with [tool]!")
 	)
 	display_pain(target, "You feel a stinging pain on your [parse_zone(target_zone)]")
-	surgery.operated_bodypart.receive_damage(12, sharpness = (SHARP_EDGED|SHARP_POINTY))
+	if(surgery.operated_bodypart)
+		surgery.operated_bodypart.receive_damage(12, sharpness = (SHARP_EDGED|SHARP_POINTY))
 	return ..()
 
 //close incision

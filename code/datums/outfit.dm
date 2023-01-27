@@ -148,11 +148,6 @@
  */
 /datum/outfit/proc/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	//to be overridden for toggling internals, id binding, access etc
-
-	//Yeah this is really stupid, but, that's the price you pay when you remove verbs.
-	if(ispath(suit, /obj/item/clothing/suit/toggle/labcoat))
-		var/datum/component/toggle_icon/toggle = H.wear_suit.GetComponent(/datum/component/toggle_icon)
-		toggle.do_icon_toggle()
 	return
 
 #define EQUIP_OUTFIT_ITEM(item_path, slot_name) if(##item_path) { \

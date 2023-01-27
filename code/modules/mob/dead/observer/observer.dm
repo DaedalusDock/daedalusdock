@@ -693,8 +693,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	alpha = 127
 
 	if(iscarbon(to_copy))
+		var/is_light_on = to_copy.light_on
+		to_copy.set_light_on(FALSE)
 		overlays = to_copy.overlays
 		underlays = to_copy.underlays
+		if(is_light_on)
+			to_copy.set_light_on(TRUE)
+
 		icon = initial(icon)
 		icon_state = "blank"
 	else if(!to_copy || !to_copy.icon)

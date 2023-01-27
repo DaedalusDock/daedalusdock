@@ -771,7 +771,12 @@
 				isdisabled += " but otherwise"
 			else
 				isdisabled += " and"
-		combined_msg += "\t <span class='[no_damage ? "notice" : "warning"]'>Your [body_part.name][isdisabled][self_aware ? " has " : " is "][status].</span>"
+
+		var/broken = ""
+		if(body_part.check_bones() & CHECKBONES_BROKEN)
+			broken = " has a broken bone and"
+
+		combined_msg += "\t <span class='[no_damage ? "notice" : "warning"]'>Your [body_part.name][isdisabled][broken][self_aware ? " has " : " is "][status].</span>"
 
 		if(body_part.check_bones() & BP_BROKEN_BONES)
 			combined_msg += "\t [span_warning("Your [body_part.plaintext_zone] is broken!")]"

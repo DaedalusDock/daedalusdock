@@ -121,6 +121,7 @@
 #include "projectiles.dm"
 #include "quirks.dm"
 #include "rcd.dm"
+#include "reagent_descriptions.dm"
 #include "reagent_id_typos.dm"
 #include "reagent_mod_expose.dm"
 #include "reagent_mod_procs.dm"

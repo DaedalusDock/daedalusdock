@@ -9,6 +9,7 @@
 	inverse_chem_val = 0
 	inverse_chem = null
 	chemical_flags = REAGENT_SPLITRETAINVOL
+	abstract_type = /datum/reagent/medicine/c2
 
 /******BRUTE******/
 /*Suffix: -bital*/

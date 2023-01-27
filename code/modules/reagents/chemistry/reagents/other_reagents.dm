@@ -1,6 +1,7 @@
 /datum/reagent/blood
 	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
 	name = "Blood"
+	description = "A suspension of organic cells necessary for transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
 	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
 	taste_description = "iron"
@@ -122,6 +123,7 @@
 /datum/reagent/vaccine
 	//data must contain virus type
 	name = "Vaccine"
+	description = "A suspension of degraded viral material suitable for use in inoculation."
 	color = "#C81040" // rgb: 200, 16, 64
 	taste_description = "slime"
 	penetrates_skin = NONE
@@ -143,6 +145,7 @@
 
 /datum/reagent/vaccine/fungal_tb
 	name = "Vaccine (Fungal Tuberculosis)"
+	description = "A suspension of degraded viral material suitable for use in inoculation. Taggants suspended in the solution report it to be targeting Fungal Tuberculosis."
 
 /datum/reagent/vaccine/fungal_tb/New(data)
 	. = ..()
@@ -2488,6 +2491,11 @@
 		if(changeling)
 			changeling.adjust_chemicals(-2 * REM * delta_time)
 	return ..()
+
+//This used to be a blindly implied type. Don't do that.
+/datum/reagent/peaceborg
+	name = "Abstract Peaceborg Chemical"
+	abstract_type = /datum/reagent/peaceborg
 
 /datum/reagent/pax/peaceborg
 	name = "Synthpax"

@@ -9,6 +9,7 @@
 /datum/reagent/medicine
 	taste_description = "bitterness"
 	failed_chem = /datum/reagent/impurity/healing/medicine_failure
+	abstract_type = /datum/reagent/medicine
 
 /datum/reagent/medicine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	current_cycle++

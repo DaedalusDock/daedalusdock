@@ -1,6 +1,6 @@
 /datum/reagent/reaction_agent
 	name = "Reaction Agent"
-	description = "Hello! I am a bugged reagent. Please report me for my crimes. Thank you!!"
+	abstract_type = /datum/reagent/reaction_agent
 
 /datum/reagent/reaction_agent/intercept_reagents_transfer(datum/reagents/target, amount)
 	if(!target)

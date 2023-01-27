@@ -93,6 +93,9 @@
 	new /obj/item/circuitboard/machine/techfab/department/medical(src)
 	new /obj/item/storage/photo_album/cmo(src)
 	new /obj/item/storage/lockbox/medal/med(src)
+	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
+	new /obj/item/ammo_casing/caseless/safari_dart(src)
+	new /obj/item/ammo_casing/caseless/safari_dart/mutadone(src)
 
 
 /obj/structure/closet/secure_closet/animal

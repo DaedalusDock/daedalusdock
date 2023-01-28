@@ -7,7 +7,7 @@
 import { EventEmitter } from 'common/events';
 import { classes } from 'common/react';
 import { createLogger } from 'tgui/logging';
-import { COMBINE_MAX_MESSAGES, COMBINE_MAX_TIME_WINDOW, IMAGE_RETRY_DELAY, IMAGE_RETRY_LIMIT, IMAGE_RETRY_MESSAGE_AGE, MAX_PERSISTED_MESSAGES, MAX_VISIBLE_MESSAGES, MESSAGE_PRUNE_INTERVAL, MESSAGE_TYPES, MESSAGE_TYPE_INTERNAL, MESSAGE_TYPE_OOC, MESSAGE_TYPE_UNKNOWN } from './constants';
+import { COMBINE_MAX_MESSAGES, COMBINE_MAX_TIME_WINDOW, IMAGE_RETRY_DELAY, IMAGE_RETRY_LIMIT, IMAGE_RETRY_MESSAGE_AGE, MAX_PERSISTED_MESSAGES, MAX_VISIBLE_MESSAGES, MESSAGE_PRUNE_INTERVAL, MESSAGE_TYPES, MESSAGE_TYPE_COMBAT, MESSAGE_TYPE_INTERNAL, MESSAGE_TYPE_LOCALCHAT, MESSAGE_TYPE_UNKNOWN } from './constants';
 import { render } from 'inferno';
 import { canPageAcceptType, createMessage, isSameMessage } from './model';
 import { highlightNode, linkifyNode } from './replaceInTextNode';
@@ -291,11 +291,14 @@ class ChatRenderer {
       if (combinable) {
         combinable.times = (combinable.times || 1) + 1;
         updateMessageBadge(combinable);
-        if (!(combinable.type === MESSAGE_TYPE_OOC)) {
+        if ((
+          combinable.type === MESSAGE_TYPE_COMBAT)
+          || combinable.type === MESSAGE_TYPE_LOCALCHAT
+          && combinable.times < 10) {
           let muhstyle = combinable.node.style;
           let fontsize = document.documentElement.style.getPropertyValue('font-size');
           let basesize = parseInt(fontsize.slice(0, -2), 10);
-          muhstyle.setProperty('font-size', basesize + (2*combinable.times) + 'px');
+          muhstyle.setProperty('font-size', basesize + (combinable.times) + 'px');
         }
         continue;
       }

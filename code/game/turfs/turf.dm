@@ -112,18 +112,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	levelupdate()
 
-	if (length(smoothing_groups))
-		sortTim(smoothing_groups) //In case it's not properly ordered, let's avoid duplicate entries with the same values.
+	if (!isnull(smoothing_groups))
+		#ifdef UNIT_TESTS
+		assert_sorted(smoothing_groups, "[type].smoothing_groups")
+		#endif
+
 		SET_BITFLAG_LIST(smoothing_groups)
-	if (length(canSmoothWith))
-		sortTim(canSmoothWith)
+	if (!isnull(canSmoothWith))
+		#ifdef UNIT_TESTS
+		assert_sorted(canSmoothWith, "[type].canSmoothWith")
+		#endif
+
 		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
 			smoothing_flags |= SMOOTH_OBJ
 		SET_BITFLAG_LIST(canSmoothWith)
 	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
-	visibilityChanged()
+	// visibilityChanged() will never hit any path with side effects during mapload
+	if (!mapload)
+		visibilityChanged()
 
 	for(var/atom/movable/content as anything in src)
 		Entered(content, null)
@@ -146,7 +154,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	set_custom_materials(custom_materials)
+	if (isnull(custom_materials))
+		set_custom_materials(custom_materials)
 
 	ComponentInitialize()
 

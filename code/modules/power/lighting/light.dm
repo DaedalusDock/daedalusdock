@@ -104,13 +104,15 @@
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
-			if(prob(2))
+			if(prob(0.5))
 				break_light_tube(TRUE)
 		if("bulb")
-			if(prob(5))
+			if(prob(1))
 				break_light_tube(TRUE)
+	#endif
 	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
 
 /obj/machinery/light/Destroy()

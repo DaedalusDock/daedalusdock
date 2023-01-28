@@ -111,6 +111,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	destination.dna.features = features.Copy()
 	destination.dna.real_name = real_name
 	destination.dna.temporary_mutations = temporary_mutations.Copy()
+	destination.dna.mutant_colors = mutant_colors.Copy()
 	if(transfer_SE)
 		destination.dna.mutation_index = mutation_index
 		destination.dna.default_mutation_genes = default_mutation_genes
@@ -126,6 +127,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	new_dna.species = new species.type
 	new_dna.species.species_traits = species.species_traits
 	new_dna.real_name = real_name
+	new_dna.mutant_colors = mutant_colors.Copy()
 	new_dna.update_body_size() //Must come after features.Copy()
 	// Mutations aren't gc managed, but they still aren't templates
 	// Let's do a proper copy

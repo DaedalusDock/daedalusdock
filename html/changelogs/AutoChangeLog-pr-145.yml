@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - tweak: Text stacking now adds (n) to the font size, instead of (2n).
+  - tweak: Text stacking is now whitelisted to local chat & combat text.

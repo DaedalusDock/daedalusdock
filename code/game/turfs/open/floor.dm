@@ -13,7 +13,7 @@
 
 	turf_flags = CAN_BE_DIRTY_1 ///PARIAH EDIT - Overriden in modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
-	canSmoothWith = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_TURF_OPEN)
+	canSmoothWith = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
 
 	heat_capacity = 10000
 	tiled_dirt = TRUE

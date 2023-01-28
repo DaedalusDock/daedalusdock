@@ -13,7 +13,7 @@
 	success_sound = 'sound/surgery/scalpel2.ogg'
 
 /datum/surgery_step/incise/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	if(surgery.operated_bodypart.how_open())
+	if(surgery.operated_bodypart?.how_open())
 		var/datum/wound/incision = surgery.operated_bodypart.get_incision()
 		to_chat(user, span_notice("The [incision.desc] provides enough access."))
 		return TRUE

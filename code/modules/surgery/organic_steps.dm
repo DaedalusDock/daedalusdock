@@ -66,8 +66,6 @@
 	display_pain(target, "You feel a pinch as the bleeding in your [parse_zone(target_zone)] is slowed.")
 
 /datum/surgery_step/clamp_bleeders/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
-	if(locate(/datum/surgery_step/saw) in surgery.steps)
-		target.heal_bodypart_damage(20,0)
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
@@ -140,17 +138,16 @@
 	return TRUE
 
 /datum/surgery_step/close/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
-	if(locate(/datum/surgery_step/saw) in surgery.steps)
-		target.heal_bodypart_damage(45,0)
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
 		var/datum/wound/W = target_bodypart.get_incision()
 		if(W)
 			W.close_wound()
-			target_bodypart.refresh_bleed_rate()
 		if(target_bodypart.clamped())
 			target_bodypart.remove_clamps()
+
+		target_bodypart.update_damage() //Also calls refresh_bleed_rate()
 
 	return ..()
 
@@ -189,7 +186,7 @@
 	return TRUE
 
 /datum/surgery_step/saw/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
-	target.apply_damage(50, BRUTE, "[target_zone]", wound_bonus=CANT_WOUND)
+	surgery.operated_bodypart.break_bones()
 	display_results(user, target, span_notice("You saw [target]'s [parse_zone(target_zone)] open."),
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"))

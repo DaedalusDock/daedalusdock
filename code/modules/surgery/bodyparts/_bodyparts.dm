@@ -479,7 +479,7 @@
 			//need to check sharp again here so that blunt damage that was strong enough to break skin doesn't give puncture wounds
 			if(sharpness && !(sharpness & SHARP_EDGED))
 				to_create = WOUND_PIERCE
-		create_wound(to_create, brute)
+		create_wound(to_create, brute, update_damage = FALSE)
 
 	if(burn)
 		/* Laser damage isnt a damage type yet
@@ -489,7 +489,7 @@
 				owner.IgniteMob()
 		else
 		*/
-		create_wound(WOUND_BURN, burn)
+		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 	//Disturb treated burns
 	if(brute > 5)
 		var/disturbed = 0

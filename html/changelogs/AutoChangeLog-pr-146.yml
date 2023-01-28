@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Ghosts now appear as your character
+  - rscdel: Most of the ghost preferences have been retired. BYOND members may still
+      choose their rotation type!

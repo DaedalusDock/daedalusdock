@@ -82,7 +82,7 @@
 
 	return values
 
-/datum/preference/choiced/teshari_feathers/compile_constant_data()
+/datum/preference/choiced/teshari_ears/compile_constant_data()
 	var/list/data = ..()
 	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
 	return data

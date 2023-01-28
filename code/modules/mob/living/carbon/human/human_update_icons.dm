@@ -100,7 +100,8 @@ There are several things that need to be remembered:
 		if(!uniform_overlay)
 			//BEGIN SPECIES HANDLING
 			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && (U.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
-				icon_file = DIGITIGRADE_UNIFORM_FILE
+				icon_file = U.worn_icon_digitigrade || DIGITIGRADE_UNIFORM_FILE
+
 			if(dna.species.bodytype & BODYTYPE_TESHARI)
 				if(U.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 					icon_file = TESHARI_UNIFORM_FILE

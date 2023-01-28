@@ -34,3 +34,19 @@
   - bugfix: Fire extinguishers are no longer absolutely busted
   - rscdel: SSairatoms
   - rscadd: atmos sensitivity
+2023-01-21:
+  DTraitor:
+  - code_imp: dynamic game mode is less hardcoded now
+  Lohikar, Kapu1178:
+  - refactor: Ambient Occlusion only applies to turfs.
+  - rscdel: AO pref
+2023-01-22:
+  Kapu1178:
+  - rscadd: Spends half our ZAS free performance budget on Bloom
+2023-01-26:
+  Cenrus:
+  - bugfix: Fixed blast door/low wall smoothing
+  - bugfix: Paper on airlocks is no longer invisible
+2023-01-27:
+  Cenrus:
+  - bugfix: resets firestacks at the end of fake fire hallucination

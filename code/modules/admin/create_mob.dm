@@ -18,31 +18,27 @@
 	H.underwear = random_underwear(H.gender)
 	H.underwear_color = "#[random_color()]"
 	H.skin_tone = random_skin_tone()
-	H.hairstyle = random_hairstyle(H.gender)
+
+	var/obj/item/bodypart/head/myhead = H.get_bodypart(BODY_ZONE_HEAD)
+	if(!myhead)
+		H.hairstyle = "Bald"
+	else if (myhead.legal_hairstyles == GLOB.hairstyles_list)
+		H.hairstyle = random_hairstyle(H.gender)
+	else
+		H.hairstyle = pick(myhead.legal_hairstyles)
+
 	H.facial_hairstyle = random_facial_hairstyle(H.gender)
 	H.hair_color = "#[random_color()]"
 	H.facial_hair_color = H.hair_color
+
 	var/random_eye_color = random_eye_color()
 	H.eye_color_left = random_eye_color
 	H.eye_color_right = random_eye_color
+
 	H.dna.blood_type = random_blood_type()
 
 	// Mutant randomizing, doesn't affect the mob appearance unless it's the specific mutant.
 	H.dna.mutant_colors = random_mutant_colors()
-	H.dna.features["ethcolor"] = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
-	H.dna.features["tail_lizard"] = pick(GLOB.tails_list_lizard)
-	H.dna.features["snout"] = pick(GLOB.snouts_list)
-	H.dna.features["horns"] = pick(GLOB.horns_list)
-	H.dna.features["frills"] = pick(GLOB.frills_list)
-	H.dna.features["spines"] = pick(GLOB.spines_list)
-	H.dna.features["body_markings"] = pick(GLOB.body_markings_list)
-	H.dna.features["moth_wings"] = pick(GLOB.moth_wings_list)
-	H.dna.features["moth_antennae"] = pick(GLOB.moth_antennae_list)
-	H.dna.features["pod_hair"] = pick(GLOB.pod_hair_list)
-	H.dna.features["headtails"] = pick(GLOB.headtails_list)
-	H.dna.features["teshari_feathers"] = pick(GLOB.teshari_feathers_list)
-	H.dna.features["teshari_ears"] = pick(GLOB.teshari_ears_list)
-	H.dna.features["teshari_body_feathers"] = pick(GLOB.teshari_body_feathers_list)
-	H.dna.features["tail_teshari"] = pick(GLOB.teshari_tails_list)
+	H.dna.features = random_features()
 
 	H.update_body(is_creating = TRUE)

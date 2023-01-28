@@ -261,6 +261,14 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0) //It's made of plasma. Of course it's flammable.
 	custom_materials = list(/datum/material/plasma=1000)
 
+/obj/item/clothing/accessory/medal/plasma/Initialize(mapload)
+	. = ..()
+	become_atmos_sensitive()
+
+/obj/item/clothing/accessory/medal/plasma/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
+
 /obj/item/clothing/accessory/medal/plasma/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 300)
 		var/turf/turfloc = get_turf(src)

@@ -26,6 +26,13 @@
 	/// Typecache of airlocks to apply a neighboring stripe overlay to
 	var/static/list/airlock_typecache
 
+/obj/structure/low_wall/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		var/turf/T = get_turf(src)
+		if(T)
+			T.regenerate_ao()
+
 /obj/structure/low_wall/update_greyscale()
 	greyscale_colors = get_wall_color()
 	return ..()
@@ -82,6 +89,9 @@
 	var/neighbor_stripe = NONE
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(src, cardinal)
+		var/obj/structure/low_wall/neighbor = locate() in step_turf
+		if(neighbor)
+			continue
 		if(!can_area_smooth(step_turf))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)

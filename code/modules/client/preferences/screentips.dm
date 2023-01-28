@@ -7,7 +7,7 @@
 	return list(SCREENTIP_PREFERENCE_ENABLED, SCREENTIP_PREFERENCE_CONTEXT_ONLY, SCREENTIP_PREFERENCE_DISABLED)
 
 /datum/preference/choiced/enable_screentips/create_default_value()
-	return SCREENTIP_PREFERENCE_ENABLED
+	return SCREENTIP_PREFERENCE_DISABLED
 
 /datum/preference/choiced/enable_screentips/apply_to_client(client/client, value)
 	client.mob?.hud_used?.screentips_enabled = value

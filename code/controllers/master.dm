@@ -522,6 +522,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			continue
 		if (SS.next_fire > world.time)
 			continue
+		if(SS.suspended)
+			continue
 		SS_flags = SS.flags
 		if (SS_flags & SS_NO_FIRE)
 			subsystemstocheck -= SS
@@ -734,6 +736,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		processing = CONFIG_GET(number/mc_tick_rate/high_pop_mc_tick_rate)
 
 /datum/controller/master/proc/OnConfigLoad()
+	ModManager.Initialize()
 	for (var/thing in subsystems)
 		var/datum/controller/subsystem/SS = thing
 		SS.OnConfigLoad()

@@ -17,3 +17,36 @@
 2023-01-08:
   Kapu1178:
   - imagedel: Removed a ton of tau ceti sprites.
+2023-01-09:
+  DTraitor:
+  - code_imp: Added signal that is sent when atom changes density
+2023-01-10:
+  Kapu1178:
+  - rscadd: Appearance Mods.
+  - rscadd: Lizard Appearance Mods
+  - rscadd: Vox Appearance Mods
+  - bugfix: Vox facial hair is now colored properly
+  - qol: Character creator lists such as hair are now sorted alphabetically.
+  - refactor: Humans.
+2023-01-19:
+  Kapu1178:
+  - bugfix: zas shit (update me later)
+  - bugfix: Fire extinguishers are no longer absolutely busted
+  - rscdel: SSairatoms
+  - rscadd: atmos sensitivity
+2023-01-21:
+  DTraitor:
+  - code_imp: dynamic game mode is less hardcoded now
+  Lohikar, Kapu1178:
+  - refactor: Ambient Occlusion only applies to turfs.
+  - rscdel: AO pref
+2023-01-22:
+  Kapu1178:
+  - rscadd: Spends half our ZAS free performance budget on Bloom
+2023-01-26:
+  Cenrus:
+  - bugfix: Fixed blast door/low wall smoothing
+  - bugfix: Paper on airlocks is no longer invisible
+2023-01-27:
+  Cenrus:
+  - bugfix: resets firestacks at the end of fake fire hallucination

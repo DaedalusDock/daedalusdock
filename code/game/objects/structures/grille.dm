@@ -24,8 +24,13 @@
 	var/rods_amount = 2
 	var/rods_broken = TRUE
 
+/obj/structure/grille/Initialize(mapload)
+	. = ..()
+	become_atmos_sensitive()
+
 /obj/structure/grille/Destroy()
 	update_cable_icons_on_turf(get_turf(src))
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/structure/grille/update_appearance(updates)

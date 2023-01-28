@@ -499,17 +499,6 @@
 
 	safe_co2_max = CO2_pp + GAS_TOLERANCE * 2
 
-	// The lung tolerance against BZ is also increased the amount of BZ in the base air
-	/*
-	BZ_trip_balls_min += bz_pp
-	BZ_brain_damage_min += bz_pp
-	*/
-
-	// Lungs adapted to a high miasma atmosphere do not process it, and breathe it back out
-
-	//if(miasma_pp)
-		//suffers_miasma = FALSE
-
 #undef GAS_TOLERANCE
 
 /obj/item/organ/internal/lungs/ethereal

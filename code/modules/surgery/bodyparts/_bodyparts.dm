@@ -366,9 +366,9 @@
 		heal_damage(0, 0, INFINITY, null, FALSE)
 		. |= BODYPART_LIFE_UPDATE_HEALTH
 
-	. |= update_wounds()
+	. |= wound_life()
 
-/obj/item/bodypart/proc/update_wounds()
+/obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
 		return
 

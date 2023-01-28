@@ -86,7 +86,7 @@
 	. = ..()
 	color = null // Remove the color that was set for mapping clarity
 	set_materials(plating_material, reinf_material)
-	if(is_station_level(src))
+	if(is_station_level(z))
 		GLOB.station_turfs += src
 
 /turf/closed/wall/Destroy()

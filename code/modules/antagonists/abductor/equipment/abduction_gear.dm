@@ -283,7 +283,7 @@
 	var/list/all_items = M.get_all_contents()
 
 	for(var/obj/item/radio/radio in all_items)
-		radio.set_listening(FALSE)
+		radio.set_listening(FALSE, TRUE)
 		if(!istype(radio, /obj/item/radio/headset))
 			radio.set_broadcasting(FALSE) //goddamned headset hacks
 

@@ -231,6 +231,9 @@ Class Procs:
 	#endif
 	if(LAZYLEN(atmos_sensitive_contents))
 		for(var/atom/sensitive as anything in atmos_sensitive_contents)
+			if(isnull(sensitive))
+				stack_trace("Null found in atmos sensitive contents in Zone.")
+				list_clear_nulls(atmos_sensitive_contents)
 			sensitive.atmos_expose(air, air.temperature)
 
 	#ifdef ZASDBG

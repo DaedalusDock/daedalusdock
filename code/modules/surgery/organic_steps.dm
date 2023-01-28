@@ -101,6 +101,7 @@
 /datum/surgery_step/retract_skin/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if(surgery.operated_bodypart)
 		surgery.operated_bodypart.open_incision()
+		surgery.operated_bodypart.update_damage()
 	return ..()
 
 /datum/surgery_step/retract_skin/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob)

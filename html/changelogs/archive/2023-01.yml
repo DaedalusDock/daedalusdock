@@ -47,3 +47,6 @@
   Cenrus:
   - bugfix: Fixed blast door/low wall smoothing
   - bugfix: Paper on airlocks is no longer invisible
+2023-01-27:
+  Cenrus:
+  - bugfix: resets firestacks at the end of fake fire hallucination

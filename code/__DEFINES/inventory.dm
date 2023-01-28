@@ -88,8 +88,8 @@
 #define HIDEMUTWINGS (1<<13)
 
 //bitflags for clothing coverage - also used for limbs
-#define HEAD (1<<0)
-#define CHEST (1<<1)
+#define CHEST (1<<0)
+#define HEAD (1<<1)
 #define GROIN (1<<2)
 #define LEG_LEFT (1<<3)
 #define LEG_RIGHT (1<<4)

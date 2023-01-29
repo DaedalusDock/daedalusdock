@@ -80,6 +80,7 @@
 #include "chat_filter.dm"
 #include "circuit_component_category.dm"
 #include "closets.dm"
+#include "codex.dm"
 #include "combat.dm"
 #include "component_tests.dm"
 #include "confusion.dm"

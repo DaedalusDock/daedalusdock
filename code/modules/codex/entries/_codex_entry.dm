@@ -5,6 +5,8 @@
 	var/name
 	var/list/associated_strings
 	var/list/associated_paths
+	//If TRUE, associated_paths will be passed into typesof first.
+	var/use_typesof = FALSE
 	var/lore_text
 	var/mechanics_text
 	var/antag_text
@@ -27,6 +29,12 @@
 		mechanics_text = _mechanics_text
 	if(_antag_text)
 		antag_text = _antag_text
+
+	if(use_typesof && length(associated_paths))
+		var/new_assoc_paths = list()
+		for(var/path in associated_paths)
+			new_assoc_paths |= typesof(path)
+		associated_paths = new_assoc_paths
 
 	if(length(associated_paths))
 		for(var/tpath in associated_paths)

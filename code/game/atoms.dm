@@ -649,9 +649,8 @@
  */
 /atom/proc/examine(mob/user)
 	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
-
 	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
 
 	. += get_name_chaser(user)
 	if(desc)
@@ -688,6 +687,7 @@
 				. += span_danger("It's empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)
  *

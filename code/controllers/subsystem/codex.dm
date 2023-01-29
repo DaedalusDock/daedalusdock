@@ -68,9 +68,10 @@ SUBSYSTEM_DEF(codex)
 /datum/controller/subsystem/codex/proc/get_codex_entry(entry)
 	if(isatom(entry))
 		var/atom/entity = entry
-		if(entity.get_specific_codex_entry())
-			return entity.get_specific_codex_entry()
-		return get_entry_by_string(entity.name) || entries_by_path[entity.type]
+		. = entity.get_specific_codex_entry()
+		if(.)
+			return
+		return entries_by_path[entity.type] || get_entry_by_string(entity.name)
 	if(ispath(entry))
 		return entries_by_path[entry]
 	if(istext(entry))

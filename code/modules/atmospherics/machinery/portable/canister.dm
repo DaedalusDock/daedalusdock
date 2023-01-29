@@ -98,8 +98,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		air_contents.copyFrom(existing_mixture)
 	else
 		create_gas()
-
-	desc = "[xgm_gas_data.name[gas_type]]."
+	if(gas_type)
+		desc = "[xgm_gas_data.name[gas_type]]."
 
 	update_window()
 

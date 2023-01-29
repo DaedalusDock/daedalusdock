@@ -80,9 +80,11 @@
 	beauty = -100
 	clean_type = CLEAN_TYPE_BLOOD
 	decal_reagent = /datum/reagent/fuel/oil
-	reagent_amount = 30
+	reagent_amount = 10
 
-
+/obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
+	. = ..()
+	AddComponent(/datum/component/smell, SCENT_HAZE, "industrial lubricant", 3)
 
 /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
 	var/attacked_by_hot_thing = I.get_temperature()

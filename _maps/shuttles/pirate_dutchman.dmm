@@ -134,7 +134,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood/airless,
 /area/shuttle/pirate/flying_dutchman)
 "aO" = (
@@ -146,7 +146,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 9
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood/airless,
 /area/shuttle/pirate/flying_dutchman)
 "aZ" = (
@@ -382,7 +382,7 @@
 "ny" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/cable,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/space/basic,
 /area/shuttle/pirate/flying_dutchman)
 "pG" = (
@@ -550,7 +550,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/fluff{
 	density = 1;
 	desc = "Ha ha ha, you fool!";
@@ -585,7 +585,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/rack{
 	icon = 'icons/obj/stationobjs.dmi';
 	icon_state = "minibar";
@@ -749,7 +749,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/docking_port/stationary{
 	dir = 8;
 	dwidth = 11;
@@ -962,7 +962,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood/airless,
 /area/shuttle/pirate/flying_dutchman)
 

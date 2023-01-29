@@ -98,7 +98,7 @@
 		return
 	var/mob/living/simple_animal/hostile/space_dragon/new_dragon = user.change_mob_type(/mob/living/simple_animal/hostile/space_dragon, location = loc, delete_old_mob = TRUE)
 	new_dragon.permanant_empower()
-	priority_announce("A large organic energy flux has been recorded near of [station_name()], please stand-by.", "Lifesign Alert")
+	priority_announce("A large organic energy flux has been recorded near of [station_name()], please stand-by.", FLAVOR_ANANKE_STATION, send_to_newscaster = TRUE)
 	qdel(src)
 
 #undef CARP_MIX_DNA_TIMER

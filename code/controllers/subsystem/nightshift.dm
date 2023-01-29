@@ -24,7 +24,7 @@ SUBSYSTEM_DEF(nightshift)
 	check_nightshift()
 
 /datum/controller/subsystem/nightshift/proc/announce(message)
-	priority_announce(message, sound='goon/sounds/announcement_1.ogg', sender_override="Automated Lighting System Announcement")
+	priority_announce(message, sub_title = "Automated Lighting System", do_not_modify = TRUE)
 
 /datum/controller/subsystem/nightshift/proc/check_nightshift()
 	var/emergency = SSsecurity_level.current_level >= SEC_LEVEL_RED
@@ -45,6 +45,7 @@ SUBSYSTEM_DEF(nightshift)
 		update_nightshift(night_time, announcing)
 
 /datum/controller/subsystem/nightshift/proc/update_nightshift(active, announce = TRUE, resumed = FALSE)
+	set waitfor = FALSE
 	if(!resumed)
 		currentrun = GLOB.apcs_list.Copy()
 		nightshift_active = active
@@ -57,5 +58,4 @@ SUBSYSTEM_DEF(nightshift)
 		currentrun -= APC
 		if (APC.area && (APC.area.type in GLOB.the_station_areas))
 			APC.set_nightshift(active)
-		if(MC_TICK_CHECK)
-			return
+		CHECK_TICK

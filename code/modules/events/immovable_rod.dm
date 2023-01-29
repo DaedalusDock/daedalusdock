@@ -32,7 +32,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	announceWhen = 5
 
 /datum/round_event/immovable_rod/announce(fake)
-	priority_announce("What the fuck was that?!", "General Alert")
+	priority_announce("High-Velocity projectile on collision course with the station. Estimated time of impact: \[0\] seconds.")
 
 /datum/round_event/immovable_rod/start()
 	var/datum/round_event_control/immovable_rod/our_controller = control
@@ -73,6 +73,8 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	var/dnd_style_level_up = TRUE
 	/// Whether the rod can loop across other z-levels. The rod will still loop when the z-level is self-looping even if this is FALSE.
 	var/loopy_rod = FALSE
+	/// Sound played on Bump()
+	var/collision_sound = 'sound/effects/bang.ogg'
 
 /obj/effect/immovablerod/Initialize(mapload, atom/target_atom, atom/specific_target, force_looping = FALSE)
 	. = ..()
@@ -201,7 +203,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 /obj/effect/immovablerod/Bump(atom/clong)
 	if(prob(10))
-		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
+		playsound(src, collision_sound, 50, TRUE)
 		audible_message(span_danger("You hear a CLANG!"))
 
 	if(special_target && clong == special_target)

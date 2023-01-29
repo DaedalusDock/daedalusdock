@@ -23,7 +23,7 @@
 		return
 
 	set_light_color(LAZYLEN(SSmapping.nuke_threats) ? LIGHT_COLOR_FLARE : initial(light_color))
-	set_light(1.4, 0.5)
+	set_light(l_outer_range = 1.4, l_power = 0.5)
 
 /turf/open/floor/circuit/update_icon_state()
 	icon_state = on ? (LAZYLEN(SSmapping.nuke_threats) ? "rcircuitanim" : icon_normal) : "[icon_normal]off"
@@ -176,8 +176,6 @@
 	name = "plastic floor"
 	desc = "Cheap, lightweight flooring. Melts easily."
 	icon_state = "plastic"
-	thermal_conductivity = 0.1
-	heat_capacity = 900
 	custom_materials = list(/datum/material/plastic=500)
 	floor_tile = /obj/item/stack/tile/plastic
 

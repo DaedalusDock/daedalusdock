@@ -420,7 +420,7 @@
 /area/shuttle/escape)
 "mq" = (
 /mob/living/carbon/human/species/monkey,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/flora/ausbushes/sparsegrass,
 /turf/open/floor/grass,
 /area/shuttle/escape)
@@ -683,7 +683,7 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "zs" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/structure/flora/ausbushes/sparsegrass,
 /turf/open/floor/grass,
 /area/shuttle/escape)

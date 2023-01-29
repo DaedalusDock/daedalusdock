@@ -70,9 +70,10 @@
 	//var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
 	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure())
 	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
-	if(draw > 0)
-		ATMOS_USE_POWER(draw)
+	if(draw > -1)
 		update_parents()
+		ATMOS_USE_POWER(draw)
+
 
 /**
  * Called in atmos_init(), used to change or remove the radio frequency from the component

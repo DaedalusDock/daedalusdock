@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Non-verified clients no longer show a disconnect message on logout
-  - bugfix: Holidays no longer bypass the configured station name.
-  - rscadd: Brought back the old new player panel.
-  - tweak: Subsystem Init no longer spams chat on the live server.

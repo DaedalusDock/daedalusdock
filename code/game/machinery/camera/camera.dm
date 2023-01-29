@@ -58,7 +58,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	network = list("rd","ordnance")
 	use_power = NO_POWER_USE //Test site is an unpowered area
 	invuln = TRUE
-	light_range = 10
+	light_outer_range = 10
 	start_active = TRUE
 
 /obj/machinery/camera/Initialize(mapload, obj/structure/camera_assembly/old_assembly)
@@ -128,6 +128,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			bug.current = null
 		bug = null
 	return ..()
+
+/obj/machinery/camera/setDir(newdir)
+	. = ..()
+	var/turf/T = get_step(get_turf(src), newdir)
+	if(iswallturf(T))
+		if(dir == NORTH)
+			pixel_y = 21
+		else if(dir == WEST)
+			pixel_x = -10
+		else if(dir == EAST)
+			pixel_x = 10
 
 /obj/machinery/camera/examine(mob/user)
 	. = ..()
@@ -408,6 +419,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	qdel(src)
 
 /obj/machinery/camera/update_icon_state() //TO-DO: Make panel open states, xray camera, and indicator lights overlays instead.
+	var/turf/T = get_step(get_turf(src), dir)
+	if(iswallturf(T))
+		if(dir == NORTH)
+			pixel_y = 21
+		else if(dir == WEST)
+			pixel_x = -10
+		else if(dir == EAST)
+			pixel_x = 10
+
 	var/xray_module
 	if(isXRay(TRUE))
 		xray_module = "xray"

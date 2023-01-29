@@ -351,11 +351,6 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/planetengi)
-"bT" = (
-/turf/open/floor/iron/corner{
-	dir = 4
-	},
-/area/ruin/planetengi)
 "bU" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	dir = 10
@@ -415,7 +410,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible{
 	dir = 6
 	},
-/turf/open/floor/iron/corner,
+/turf/open/floor/iron,
 /area/ruin/planetengi)
 "cf" = (
 /obj/machinery/atmospherics/components/trinary/filter/flipped{
@@ -455,9 +450,7 @@
 /obj/machinery/atmospherics/components/binary/volume_pump{
 	dir = 4
 	},
-/turf/open/floor/iron/corner{
-	dir = 8
-	},
+/turf/open/floor/iron,
 /area/ruin/planetengi)
 "cl" = (
 /obj/effect/spawner/structure/window/reinforced,
@@ -555,12 +548,6 @@
 "cM" = (
 /turf/open/floor/iron{
 	icon_state = "damaged2"
-	},
-/area/ruin/planetengi)
-"cN" = (
-/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/turf/open/floor/iron/corner{
-	dir = 1
 	},
 /area/ruin/planetengi)
 "cO" = (
@@ -1086,7 +1073,7 @@ bG
 bV
 ce
 cs
-bT
+bd
 cV
 bG
 do
@@ -1170,7 +1157,7 @@ bI
 bZ
 ck
 cu
-cN
+cn
 cg
 dk
 dt

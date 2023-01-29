@@ -884,7 +884,7 @@
 /turf/open/floor/iron,
 /area/centcom/admin/storage)
 "cB" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/mineral/plastitanium,
 /area/syndicate_mothership/control)
 "cC" = (
@@ -4604,7 +4604,7 @@
 /obj/machinery/shower{
 	pixel_y = 12
 	},
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/freezer,
 /area/syndicate_mothership/control)
 "mW" = (
@@ -5384,7 +5384,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/evacuation)
 "ph" = (
-/obj/machinery/light/floor{
+/obj/machinery/light/floor/has_bulb{
 	pixel_x = -4;
 	pixel_y = 4
 	},
@@ -6566,7 +6566,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/supplypod)
 "ta" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/centcom/ferry)
@@ -6927,7 +6927,7 @@
 /turf/open/floor/iron,
 /area/centcom/ferry)
 "uo" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating,
 /area/syndicate_mothership/control)
 "up" = (
@@ -7362,7 +7362,7 @@
 /turf/open/floor/mineral/titanium,
 /area/syndicate_mothership/control)
 "vL" = (
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/dark/textured_half{
 	dir = 4
 	},
@@ -8787,7 +8787,7 @@
 /area/centcom/holding)
 "zT" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating,
 /area/centcom/briefing)
 "zU" = (
@@ -8929,7 +8929,7 @@
 	pixel_x = -12;
 	pixel_y = 15
 	},
-/obj/machinery/light/floor{
+/obj/machinery/light/floor/has_bulb{
 	pixel_x = 4;
 	pixel_y = -4
 	},
@@ -14064,7 +14064,7 @@
 /turf/open/floor/iron/dark,
 /area/tdome/observation)
 "Po" = (
-/obj/machinery/light/floor{
+/obj/machinery/light/floor/has_bulb{
 	pixel_x = -4;
 	pixel_y = -4
 	},
@@ -16063,7 +16063,7 @@
 /turf/open/floor/iron/dark/textured_half,
 /area/syndicate_mothership/control)
 "UL" = (
-/obj/machinery/light/floor{
+/obj/machinery/light/floor/has_bulb{
 	pixel_x = 4;
 	pixel_y = 4
 	},

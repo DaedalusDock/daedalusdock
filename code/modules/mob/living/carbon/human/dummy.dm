@@ -90,7 +90,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
 	create_dna(src)
 	dna.initialize_dna(skip_index = TRUE)
-	dna.features["body_markings"] = "None"
 	dna.features["ears"] = "None"
 	dna.features["ethcolor"] = COLOR_WHITE
 	dna.features["frills"] = "None"
@@ -106,7 +105,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["tail_vox"] = "Vox Tail"
 	dna.features["vox_hair"] = "None"
 	dna.features["vox_facial_hair"] = "None"
-	dna.features["spines_vox"] = "None"
+	dna.features["vox_snout"] = "Vox Snout"
 	dna.features["tail_cat"] = "None"
 	dna.features["pod_hair"] = "Ivy"
 	dna.features["teshari_feathers"] = "Mane"

@@ -495,7 +495,7 @@
 
 	var/heat_gain = get_thermal_radiation(air.temperature, surface, RADIATOR_EXPOSED_SURFACE_AREA_RATIO, thermal_conductivity)
 
-	air.addThermalEnergy(heat_gain)
+	air.adjustThermalEnergy(heat_gain)
 
 //Returns the amount of heat gained while in space due to thermal radiation (usually a negative value)
 //surface - the surface area in m^2

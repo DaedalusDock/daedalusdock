@@ -4040,9 +4040,6 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/engineering)
-"OI" = (
-/turf/open/floor/engine,
-/area/ruin/syndicate_lava_base/engineering)
 "OQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4{
 	dir = 5
@@ -6750,7 +6747,7 @@ Wf
 sl
 eM
 ju
-OI
+AB
 ju
 ab
 ab

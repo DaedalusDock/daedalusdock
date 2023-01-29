@@ -66,7 +66,7 @@
 	else
 		flags_1 &= ~PREVENT_CLICK_UNDER_1
 
-	update_nearby_tiles()
+	zas_update_loc()
 	//doors only block while dense though so we have to use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
@@ -173,7 +173,7 @@
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
-	update_nearby_tiles()
+	zas_update_loc()
 	return ..()
 
 /obj/machinery/door/zas_canpass(turf/other)
@@ -246,7 +246,7 @@
 		return
 
 /obj/machinery/door/Move()
-	update_nearby_tiles()
+	zas_update_loc()
 	. = ..()
 
 
@@ -287,15 +287,18 @@
 	return ..()
 
 /obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+	set waitfor = FALSE
+
 	add_fingerprint(user)
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
 	if(access_bypass || (requiresID() && allowed(user)))
+		. = TRUE
 		if(density)
 			open()
 		else
 			close()
-		return TRUE
+		return .
 	if(density)
 		do_animate("deny")
 
@@ -432,7 +435,7 @@
 	update_appearance()
 	set_opacity(0)
 	operating = FALSE
-	update_nearby_tiles()
+	zas_update_loc()
 	update_freelook_sight()
 	if(autoclose)
 		autoclose_in(DOOR_CLOSE_WAIT)
@@ -462,7 +465,7 @@
 	if(visible && !glass)
 		set_opacity(1)
 	operating = FALSE
-	update_nearby_tiles()
+	zas_update_loc()
 	update_freelook_sight()
 
 	if(!can_crush)

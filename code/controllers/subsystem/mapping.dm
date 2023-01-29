@@ -106,7 +106,7 @@ SUBSYSTEM_DEF(mapping)
 	// Run map generation after ruin generation to prevent issues
 	run_map_generation()
 	// Add the transit level
-	transit = add_new_zlevel("Transit/Reserved", list(ZTRAIT_RESERVED = TRUE))
+	transit = add_new_zlevel("Transit/Reserved", ZTRAITS_TRANSIT)
 	repopulate_sorted_areas()
 	// Set up Z-level transitions.
 	setup_map_transitions()

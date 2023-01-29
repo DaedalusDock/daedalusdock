@@ -121,6 +121,12 @@
 			to_chat(user, span_warning("You need two sheets of [S]!"))
 			return
 		if(state == GIRDER_REINF_STRUTS)
+			//Let's just prevent you from reinforcing with anything that wouldn't already make a wall
+			var/datum/material/reinf_mat_ref = GET_MATERIAL_REF(S.material_type)
+			var/wall_type = reinf_mat_ref.wall_type
+			if(!wall_type)
+				to_chat(user, span_warning("You can't figure out how to reinforce a wall with this!"))
+				return
 			to_chat(user, span_notice("You start reinforcing the girder..."))
 			if(do_after(user, 20*platingmodifier, target = src))
 				if(state != GIRDER_REINF_STRUTS)

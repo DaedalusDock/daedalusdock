@@ -24,7 +24,7 @@
 	resistance_flags = FIRE_PROOF
 
 	light_power = 0
-	light_range = 7
+	light_outer_range = 7
 	light_color = COLOR_VIVID_RED
 
 	//Trick to get the glowing overlay visible from a distance
@@ -35,6 +35,25 @@
 	var/area/my_area = null
 	///The current alarm state
 	var/alert_type = FIRE_CLEAR
+	///Radial menu choice cache
+	var/static/list/radial_choices = list(
+		"activate" = new /image{
+			icon = 'icons/hud/radial.dmi';
+			icon_state = "red";;
+			maptext = "<span class='maptext'>Activate</span>";
+			maptext_y = 30;
+			maptext_x = -1;
+			maptext_width = 40;
+		},
+		"deactivate" = new /image{
+			icon = 'icons/hud/radial.dmi';
+			icon_state = "green";
+			maptext = "<span class='maptext'>Deactivate</span>";
+			maptext_y = -8;
+			maptext_x = -6;
+			maptext_width = 45;
+		}
+	)
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
@@ -103,32 +122,26 @@
 	if(machine_stat & NOPOWER)
 		return
 
-	. += "fire_overlay"
+	. += mutable_appearance(icon, "fire_overlay")
 	if(is_station_level(z))
-		. += "fire_[SSsecurity_level.current_level]"
 		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level]")
 		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = src.alpha)
 	else
-		. += "fire_[SEC_LEVEL_GREEN]"
 		. += mutable_appearance(icon, "fire_[SEC_LEVEL_GREEN]")
 		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = src.alpha)
 
 	if(!alert_type)
 		if(my_area?.fire_detect) //If this is false, leave the green light missing. A good hint to anyone paying attention.
-			. += "fire_off"
 			. += mutable_appearance(icon, "fire_off")
 			. += emissive_appearance(icon, "fire_off", alpha = src.alpha)
 	else if(obj_flags & EMAGGED)
-		. += "fire_emagged"
 		. += mutable_appearance(icon, "fire_emagged")
 		. += emissive_appearance(icon, "fire_emagged", alpha = src.alpha)
 	else
-		. += "fire_on"
 		. += mutable_appearance(icon, "fire_on")
 		. += emissive_appearance(icon, "fire_on", alpha = src.alpha)
 
 	if(!panel_open && alert_type) //It just looks horrible with the panel open
-		. += "fire_detected"
 		. += mutable_appearance(icon, "fire_detected")
 		. += emissive_appearance(icon, "fire_detected", alpha = src.alpha) //Pain
 
@@ -214,12 +227,23 @@
 	if(!is_operational)
 		return
 
-	if(alert_type)
-		my_area.communicate_fire_alert(FIRE_CLEAR)
-		log_game("[user] triggered a fire alarm at [COORD(src)]")
-	else
-		my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
-		log_game("[user] cleared a fire alarm at [COORD(src)]")
+	switch(user.simple_binary_radial(src, radial_choices))
+		if(SIMPLE_RADIAL_ACTIVATE)
+			if(!alert_type)
+				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
+				log_game("[user] triggered a fire alarm at [COORD(src)]")
+		if(SIMPLE_RADIAL_DEACTIVATE)
+			if(alert_type)
+				my_area.communicate_fire_alert(FIRE_CLEAR)
+				log_game("[user] cleared a fire alarm at [COORD(src)]")
+		if(SIMPLE_RADIAL_DOESNT_USE)
+			if(alert_type)
+				my_area.communicate_fire_alert(FIRE_CLEAR)
+				log_game("[user] cleared a fire alarm at [COORD(src)]")
+			else
+				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
+				log_game("[user] triggered a fire alarm at [COORD(src)]")
+	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)
 	if(buildstage != 2)

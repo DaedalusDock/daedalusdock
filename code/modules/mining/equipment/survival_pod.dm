@@ -88,8 +88,8 @@
 	icon_state = "pod_window-0"
 	base_icon_state = "pod_window"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_SHUTTLE_PARTS, SMOOTH_GROUP_SURVIVAL_TIANIUM_POD)
-	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TIANIUM_POD)
+	smoothing_groups = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD)
 
 /obj/structure/window/reinforced/shuttle/survival_pod/spawner/north
 	dir = NORTH
@@ -194,7 +194,7 @@
 	icon_state = "donkvendor"
 	icon = 'icons/obj/lavaland/donkvendor.dmi'
 	base_build_path = /obj/machinery/smartfridge/survival_pod
-	light_range = 5
+	light_outer_range = 5
 	light_power = 1.2
 	light_color = COLOR_VERY_PALE_LIME_GREEN
 	max_n_of_items = 10

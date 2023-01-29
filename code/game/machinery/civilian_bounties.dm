@@ -272,7 +272,7 @@
 	ADD_TRAIT(src, TRAIT_NO_BARCODES, INNATE_TRAIT) // Don't allow anyone to override our pricetag component with a barcode
 	radio = new(src)
 	radio.keyslot = new radio_key
-	radio.set_listening(FALSE)
+	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
 	RegisterSignal(radio, COMSIG_ITEM_PRE_EXPORT, .proc/on_export)
 

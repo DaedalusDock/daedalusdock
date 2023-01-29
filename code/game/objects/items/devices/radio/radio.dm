@@ -86,8 +86,8 @@
 	for(var/ch_name in channels)
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
 
-	set_listening(listening)
-	set_broadcasting(broadcasting)
+	set_listening(should_be_listening)
+	set_broadcasting(should_be_broadcasting)
 	set_frequency(sanitize_frequency(frequency, freerange))
 	set_on(on)
 
@@ -327,7 +327,7 @@
 	signal.levels = list(T.z)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return
@@ -416,10 +416,10 @@
 			if(.)
 				set_frequency(sanitize_frequency(tune, freerange))
 		if("listen")
-			set_listening(!listening)
+			set_listening(!listening, TRUE)
 			. = TRUE
 		if("broadcast")
-			set_broadcasting(!broadcasting)
+			set_broadcasting(!broadcasting, TRUE)
 			. = TRUE
 		if("channel")
 			var/channel = params["channel"]
@@ -502,6 +502,7 @@
 	name = "cyborg radio"
 	subspace_transmission = TRUE
 	subspace_switchable = TRUE
+	canhear_range = 0
 	dog_fashion = null
 
 /obj/item/radio/borg/resetChannels()
@@ -556,7 +557,4 @@
 
 /obj/item/radio/off // Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.
 	dog_fashion = /datum/dog_fashion/back
-
-/obj/item/radio/off/Initialize()
-	. = ..()
-	set_listening(FALSE)
+	should_be_listening = FALSE

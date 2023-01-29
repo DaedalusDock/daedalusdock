@@ -1,0 +1,6 @@
+author: Nebula, Baystation12, Kapu1178
+delete-after: true
+changes:
+  - rscadd: The Codex, an in-game tool to find OOC and IC information on many things
+      in the game.
+  - rscadd: Codex verbs

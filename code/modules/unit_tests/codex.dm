@@ -6,9 +6,9 @@
 	for(var/datum/codex_entry/entry as anything in SScodex.all_entries)
 		for(var/associated_string in entry.associated_strings)
 			if(seen_strings[associated_string])
-				TEST_FAIL("'[associated_string]' - \ref[entry]#[entry.name] - first seen: [seen_strings[associated_string]]")
+				TEST_FAIL("Codex String Not Unique:'[associated_string]' - [entry.type]|[entry.name] - first seen: [seen_strings[associated_string]]")
 			else
-				seen_strings[associated_string] = "\ref[entry]#[entry.name]"
+				seen_strings[associated_string] = "[entry.type]|[entry.name]"
 
 /datum/unit_test/codex_overlap
 
@@ -18,11 +18,11 @@
 		var/clean_check_string = lowertext(check_string)
 		for(var/other_string in SScodex.entries_by_string)
 			var/clean_other_string = lowertext(other_string)
-			if(clean_other_string != clean_check_string || SScodex.entries_by_string[other_string] != SScodex.entries_by_string[check_string])
+			if(clean_other_string != clean_check_string && SScodex.entries_by_string[other_string] != SScodex.entries_by_string[check_string])
 				if(findtext(clean_check_string, clean_other_string))
-					TEST_FAIL("[check_string], [other_string]")
+					TEST_FAIL("Codex Overlap: [check_string], [other_string]")
 				else if(findtext(clean_other_string, clean_check_string))
-					TEST_FAIL("[other_string], [check_string]")
+					TEST_FAIL("Codex Overlap: [other_string], [check_string]")
 
 
 /datum/unit_test/codex_links

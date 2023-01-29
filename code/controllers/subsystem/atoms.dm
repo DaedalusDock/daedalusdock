@@ -22,6 +22,8 @@ SUBSYSTEM_DEF(atoms)
 	/// Atoms that will be deleted once the subsystem is initialized
 	var/list/queued_deletions = list()
 
+	var/init_start_time
+
 	#ifdef PROFILE_MAPLOAD_INIT_ATOM
 	var/list/mapload_init_times = list()
 	#endif
@@ -29,6 +31,7 @@ SUBSYSTEM_DEF(atoms)
 	initialized = INITIALIZATION_INSSATOMS
 
 /datum/controller/subsystem/atoms/Initialize(timeofday)
+	init_start_time = world.time
 	GLOB.fire_overlay.appearance_flags = RESET_COLOR
 	setupGenetics() //to set the mutations' sequence
 
@@ -114,7 +117,9 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/proc/InitAtom(atom/A, from_template = FALSE, list/arguments)
 	var/the_type = A.type
 	if(QDELING(A))
-		BadInitializeCalls[the_type] |= BAD_INIT_QDEL_BEFORE
+		// Check init_start_time to not worry about atoms created before the atoms SS that are cleaned up before this
+		if (A.gc_destroyed > init_start_time)
+			BadInitializeCalls[the_type] |= BAD_INIT_QDEL_BEFORE
 		return TRUE
 
 	var/start_tick = world.time
@@ -213,7 +218,7 @@ SUBSYSTEM_DEF(atoms)
 		if(fails & BAD_INIT_NO_HINT)
 			. += "- Didn't return an Initialize hint\n"
 		if(fails & BAD_INIT_QDEL_BEFORE)
-			. += "- Qdel'd in New()\n"
+			. += "- Destroyed before in Initialize()\n"
 		if(fails & BAD_INIT_SLEPT)
 			. += "- Slept during Initialize()\n"
 

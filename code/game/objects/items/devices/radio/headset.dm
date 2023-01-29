@@ -21,8 +21,10 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	inhand_icon_state = "headset"
 	worn_icon_state = null // So that each subtype uses their own icon state
 	custom_materials = list(/datum/material/iron=75)
+
 	subspace_transmission = TRUE
 	canhear_range = 0 // can't hear headsets from very far away
+	should_be_listening = TRUE
 
 	slot_flags = ITEM_SLOT_EARS
 	dog_fashion = null
@@ -56,7 +58,6 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/Initialize(mapload)
 	. = ..()
-	set_listening(TRUE)
 	recalculateChannels()
 	possibly_deactivate_in_loc()
 

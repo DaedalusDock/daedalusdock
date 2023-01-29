@@ -31,6 +31,7 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 	become_area_sensitive()
 	GLOB.human_list += src
+	become_atmos_sensitive()
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	//initialize dna. for spawned humans; overwritten by other code
@@ -47,6 +48,7 @@
 	QDEL_NULL(physiology)
 	QDEL_LIST(bioware)
 	GLOB.human_list -= src
+	lose_atmos_sensitivity()
 	return ..()
 
 /mob/living/carbon/human/ZImpactDamage(turf/T, levels)
@@ -128,9 +130,9 @@
 				return
 			var/obj/item/photo/P = null
 			if(href_list["photo_front"])
-				P = R.fields["photo_front"]
+				P = R.get_front_photo()
 			else if(href_list["photo_side"])
-				P = R.fields["photo_side"]
+				P = R.get_side_photo()
 			if(P)
 				P.show(H)
 			return
@@ -988,6 +990,11 @@
 
 	if(mind.assigned_role.title in SSjob.name_occupations)
 		.[mind.assigned_role.title] = minutes
+
+/mob/living/carbon/human/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	var/plasma_exposure = air.gas[GAS_PLASMA]
+	if(plasma_exposure)
+		expose_plasma(plasma_exposure)
 
 /mob/living/carbon/human/monkeybrain
 	ai_controller = /datum/ai_controller/monkey

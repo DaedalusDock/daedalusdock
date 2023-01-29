@@ -126,7 +126,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 	GLOB.req_console_ckey_departments[ckey(department)] = department
 
 	Radio = new /obj/item/radio(src)
-	Radio.set_listening(FALSE)
+	Radio.set_listening(FALSE, TRUE)
 
 /obj/machinery/requests_console/Destroy()
 	QDEL_NULL(Radio)

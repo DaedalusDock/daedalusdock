@@ -11,7 +11,11 @@ SUBSYSTEM_DEF(ticker)
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
 	var/force_ending = 0 //Round was ended by admin intervention
 	// If true, there is no lobby phase, the game starts immediately.
+	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
+	#else
+	var/start_immediately = TRUE
+	#endif
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
@@ -219,7 +223,7 @@ SUBSYSTEM_DEF(ticker)
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
 	round_start_time = world.time
 	round_start_timeofday = REALTIMEOFDAY
-	SSdbcore.SetRoundStart()
+	INVOKE_ASYNC(SSdbcore, /datum/controller/subsystem/dbcore/proc/SetRoundStart)
 
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
@@ -588,7 +592,7 @@ SUBSYSTEM_DEF(ticker)
 		C.Export("##action=load_rsc", round_end_sound)
 	round_end_sound_sent = TRUE
 
-/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay, roll_credits = TRUE)
 	set waitfor = FALSE
 	if(usr && !check_rights(R_SERVER, TRUE))
 		return
@@ -602,6 +606,13 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+
+	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
+	if(roll_credits)
+		if(roll_credits_in)
+			addtimer(CALLBACK(SScredits, /datum/controller/subsystem/credits/proc/compile_credits), roll_credits_in)
+		else
+			SScredits.compile_credits()
 
 	var/start_wait = world.time
 	UNTIL(round_end_sound_sent || (world.time - start_wait) > (delay * 2)) //don't wait forever
@@ -621,8 +632,6 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
-
-	SScredits?.clear_credits_from_clients()
 
 	world.Reboot()
 
@@ -675,6 +684,7 @@ SUBSYSTEM_DEF(ticker)
 		"raw" = TRUE,
 		"wma" = TRUE,
 		"aiff" = TRUE,
+		"mp3" = TRUE,
 	)
 
 	var/list/music_data = list()

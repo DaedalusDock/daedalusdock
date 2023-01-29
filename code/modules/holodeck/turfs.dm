@@ -1,7 +1,6 @@
 /turf/open/floor/holofloor
 	icon_state = "floor"
 	holodeck_compatible = TRUE
-	thermal_conductivity = 0
 	flags_1 = NONE
 	var/direction = SOUTH
 

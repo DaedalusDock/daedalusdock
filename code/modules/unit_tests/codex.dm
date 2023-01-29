@@ -13,6 +13,7 @@
 	if(length(failures))
 		TEST_FAIL("Found [length(failures)] non-unique associated strings\s:\n[jointext(failures, "\n")].")
 
+/* KAPU NOTE: This is disabled because I allowed the codex entries to take subtypes as valid pointers to the parent entry.
 /datum/unit_test/codex_overlap
 
 /datum/unit_test/codex_overlap/Run()
@@ -29,7 +30,7 @@
 
 	if(length(failures))
 		TEST_FAIL("Found [length(failures)] overlapping string ID\s:\n[jointext(failures, "\n")].")
-
+*/
 /datum/unit_test/codex_links
 
 /datum/unit_test/codex_links/Run()

@@ -7,13 +7,19 @@
 	var/list/associated_paths
 	//If TRUE, associated_paths will be passed into typesof first.
 	var/use_typesof = FALSE
+	///IC information about the entry
 	var/lore_text
+	///OOC information about the entry.
 	var/mechanics_text
+	///Text for antagonists to utilize.
 	var/antag_text
+	///Text representing in-game controls.
+	var/controls_text
+	///A string appended to the name to disambiguate it's search.
 	var/disambiguator
 	var/list/categories
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 
 	SScodex.all_entries += src
 
@@ -29,6 +35,8 @@
 		mechanics_text = _mechanics_text
 	if(_antag_text)
 		antag_text = _antag_text
+	if(_controls_text)
+		controls_text = _controls_text
 
 	if(use_typesof && length(associated_paths))
 		var/new_assoc_paths = list()
@@ -111,6 +119,8 @@
 		. += "<h3>OOC Information</h3>\n<p><span class='codexMechanics'>[TRIM_LINEBREAKS(mechanics_text)]</span></p>"
 	if(antag_text && (!presenting_to || (presenting_to.mind && !length(presenting_to.mind.antag_datums))))
 		. += "<h3>Antagonist Information</h3>\n<p><span class='codexAntag'>[TRIM_LINEBREAKS(antag_text)]</span></p>"
+	if(controls_text)
+		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[controls_text]</span></p>"
 	. += "</span>"
 
 	if(include_footer)

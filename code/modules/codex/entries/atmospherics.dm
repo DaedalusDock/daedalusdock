@@ -28,8 +28,8 @@
 	name = "Vent Pump"
 	use_typesof = TRUE
 	associated_paths = list(/obj/machinery/atmospherics/components/unary/vent_pump)
-	mechanics_text = "This pumps the contents of the attached pipe out into the atmosphere, if needed.  \
-	Use a multitool to set it to a low-power mode."
+	mechanics_text = "This pumps the contents of the attached pipe out into the atmosphere, if needed."
+	controls_text = "Multitool - Toggle Low-Power mode."
 	disambiguator = "atmospherics"
 
 /datum/codex_entry/atmos_freezer
@@ -45,8 +45,8 @@
 	use_typesof = TRUE
 	associated_paths = list(/obj/machinery/atmospherics/components/unary/vent_scrubber)
 	mechanics_text = "This filters the atmosphere of harmful gas.  Filtered gas goes to the pipes connected to it, typically a scrubber pipe. \
-	It can be controlled from an Air Alarm.  Has a mode to siphon much faster, using much more power in the process. \
-	Use a multitool to set it to a low-power mode."
+	It can be controlled from an Air Alarm.  Has a mode to siphon much faster, using much more power in the process."
+	controls_text = "Multitool - Toggle Low-Power mode."
 	disambiguator = "atmospherics"
 
 /datum/codex_entry/atmos_canister

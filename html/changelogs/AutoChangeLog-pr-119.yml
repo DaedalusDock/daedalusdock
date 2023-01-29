@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscdel: Holidays can no longer affect floor decals
-  - config: DISABLE_HOLIDAY_FLOOR_EFFECTS has been removed.

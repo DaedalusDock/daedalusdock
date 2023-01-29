@@ -50,3 +50,18 @@
 2023-01-27:
   Cenrus:
   - bugfix: resets firestacks at the end of fake fire hallucination
+2023-01-29:
+  Kapu1178:
+  - bugfix: Teshari feather coloration
+  - tweak: Text stacking now adds (n) to the font size, instead of (2n).
+  - tweak: Text stacking is now whitelisted to local chat & combat text.
+  - rscadd: Ghosts now appear as your character
+  - rscdel: Most of the ghost preferences have been retired. BYOND members may still
+      choose their rotation type!
+  - qol: Intercoms start disabled
+  - rscdel: Holidays can no longer affect floor decals
+  - config: DISABLE_HOLIDAY_FLOOR_EFFECTS has been removed.
+  - bugfix: 'Digitigrade lizards now properly wear outfits for: Cargo Tech, Engine
+      Technician, Electrician'
+  francinum:
+  - imageadd: TGUI interfaces have had their corners un-cut.

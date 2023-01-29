@@ -69,7 +69,8 @@
 	codex_cooldown = world.time + 1 SECONDS
 
 	var/datum/browser/popup = new(mob, "codex", "Codex Index") //"codex-index"
-	var/list/codex_data = list("<h2>Codex Entries</h2>")
+	var/datum/codex_entry/nexus = SScodex.get_entry_by_string("nexus")
+	var/list/codex_data = list(nexus.get_codex_header(mob).Join(), "<h2>Codex Entries</h2>")
 	codex_data += "<table width = 100%>"
 
 	var/antag_check = mob && mob.mind && length(mob.mind.antag_datums)
@@ -77,7 +78,7 @@
 	for(var/thing in SScodex.index_file)
 
 		var/datum/codex_entry/entry = SScodex.index_file[thing]
-		if(!antag_check && entry.antag_text && !entry.mechanics_text && !entry.lore_text)
+		if(!antag_check && entry.antag_text && !entry.mechanics_text && !entry.lore_text && !entry.controls_text)
 			continue
 
 		var/first_letter = uppertext(copytext(thing, 1, 2))

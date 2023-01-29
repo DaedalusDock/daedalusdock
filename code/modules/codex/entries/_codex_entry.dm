@@ -91,7 +91,7 @@
 		if(presenting_to.client)
 			. += "<a href='?src=\ref[presenting_to.client];codex_search=1'>Search Codex</a>"
 			. += "<a href='?src=\ref[presenting_to.client];codex_index=1'>List All Entries</a>"
-	. += "<hr>"
+	. += "<hr><h2>[name]</h2>"
 
 /datum/codex_entry/proc/get_codex_footer(mob/presenting_to)
 	. = list()
@@ -120,7 +120,7 @@
 	if(antag_text && (!presenting_to || (presenting_to.mind && !length(presenting_to.mind.antag_datums))))
 		. += "<h3>Antagonist Information</h3>\n<p><span class='codexAntag'>[TRIM_LINEBREAKS(antag_text)]</span></p>"
 	if(controls_text)
-		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[controls_text]</span></p>"
+		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[TRIM_LINEBREAKS(controls_text)]</span></p>"
 	. += "</span>"
 
 	if(include_footer)

@@ -1,2 +1,2 @@
 /mob/living/carbon/human/get_codex_value()
-	return "[lowertext(dna.species.name)] (species)"
+	return  codex_sanitize(dna.species.plural_form)

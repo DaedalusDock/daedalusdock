@@ -52,8 +52,7 @@
 /obj/item/stack/sticky_tape/attack(mob/living/carbon/victim, mob/living/user)
 	if((!istype(victim)))
 		return
-	if(amount < 5)
-		to_chat(user, "<span class='warning'>You don't have enough tape to restrain [victim]!</span>")
+	if(is_zero_amount(delete_if_zero = TRUE))
 		return
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) && prob(25)))
 		to_chat(user, "<span class='warning'>Uh... where did the tape edge go?!</span>")
@@ -109,7 +108,7 @@
 						span_userdanger("[user] is trying to cover your mouth with [src]!"))
 	if(do_mob(user, victim, muzzle_delay))
 		if(!victim.wear_mask)
-			use(5)
+			use(1)
 			victim.equip_to_slot_or_del(new tape_gag(victim), ITEM_SLOT_MASK)
 			victim.visible_message("<span class='notice'>[user] tapes [victim]'s mouth shut.</span>", \
 								"<span class='userdanger'>[user] taped your mouth shut!</span>")
@@ -125,7 +124,7 @@
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
 	if(do_mob(user, victim, 30))
 		if(!victim.handcuffed)
-			use(5)
+			use(1)
 			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))
 			victim.update_handcuffed()
 			victim.visible_message("<span class='notice'>[user] binds [victim]'s hands.</span>", \

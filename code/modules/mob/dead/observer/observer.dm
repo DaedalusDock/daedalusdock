@@ -701,6 +701,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		underlays.Cut()
 		alpha = 127
 
+	set_invisibility(GLOB.observer_default_invisibility)
+
 
 /mob/dead/observer/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
 	return isAdminGhostAI(usr)

@@ -168,7 +168,7 @@
 
 	// Approximate text height
 	var/complete_text = "<span class='center [extra_classes.Join(" ")]' style='color: [tgt_color]'>[owner.say_emphasis(text)]</span>"
-	//var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
+	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
 
 	message_loc = isturf(target) ? target : get_atom_on_turf(target)
 
@@ -184,7 +184,6 @@
 	}
 
 	animate(message, maptext_y = 28, time = 0.01)
-	var/mheight = 2 + (8 * (1 + round(length(message.maptext_width) / 32)))
 
 	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
 	message.maptext = MAPTEXT(complete_text)
@@ -196,6 +195,11 @@
 	if (owned_by.seen_messages)
 		var/idx = 1
 		var/combined_height = approx_lines
+		var/datum/chatmessage/old_message = owned_by.seen_messages?[message_loc]?[length(owned_by.seen_messages?[message_loc])]
+		if(old_message?.message.maptext == message.maptext)
+			old_message.message.transform *= 1.1
+			return
+
 		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
 			animate(m.message, maptext_y = m.message.maptext_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
@@ -247,29 +251,32 @@
  * * message_language - The language that the message is said in
  * * raw_message - The text content of the message
  * * spans - Additional classes to be added to the message
+ * * sound_loc - The atom the message was heard from. Usually a speaker_location().
  */
-/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE)
+/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, atom/sound_loc)
+	set waitfor = FALSE
+
 	if(SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(speaker, TRAIT_BYPASS_MEASURES))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
 	spans = spans ? spans.Copy() : list()
 
 	// Check for virtual speakers (aka hearing a message through a radio)
-	var/atom/movable/originalSpeaker = speaker
 	if (istype(speaker, /atom/movable/virtualspeaker))
 		var/atom/movable/virtualspeaker/v = speaker
 		speaker = v.source
 		spans |= "virtual-speaker"
 
-	// Ignore virtual speaker (most often radio messages) from ourself
-	if (originalSpeaker != src && speaker == src)
+	// Ignore sounds that originate from our person (such as radios we are carrying)
+	//if (sound_loc?.speaker_location() == src && speaker == src) //Kapu Note: Correct this later.
+	if(sound_loc == src)
 		return
 
 	// Display visual above source
 	if(runechat_flags & EMOTE_MESSAGE)
-		new /datum/chatmessage(raw_message, speaker, src, message_language, list("emote", "italics"))
+		new /datum/chatmessage(raw_message, sound_loc || speaker, src, message_language, list("emote", "italics"))
 	else
-		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), speaker, src, message_language, spans)
+		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), sound_loc || speaker, src, message_language, spans)
 
 
 // Tweak these defines to change the available color ranges

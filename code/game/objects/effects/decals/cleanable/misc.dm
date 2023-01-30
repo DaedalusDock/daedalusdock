@@ -56,7 +56,7 @@
 	base_icon_state = "dirt"
 	smoothing_flags = NONE
 	smoothing_groups = list(SMOOTH_GROUP_CLEANABLE_DIRT)
-	canSmoothWith = list(SMOOTH_GROUP_CLEANABLE_DIRT, SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_CLEANABLE_DIRT)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	beauty = -75
 
@@ -83,7 +83,7 @@
 	desc = "Jeez. I hope that's not for lunch."
 	icon_state = "greenglow"
 	light_power = 3
-	light_range = 2
+	light_outer_range = 2
 	light_color = LIGHT_COLOR_GREEN
 	beauty = -300
 
@@ -140,6 +140,10 @@
 	icon_state = "vomit_1"
 	random_icon_states = list("vomit_1", "vomit_2", "vomit_3", "vomit_4")
 	beauty = -150
+
+/obj/effect/cleanable/vomit/Initialize()
+	. = ..()
+	AddComponent(/datum/component/smell/overpowering, SCENT_SMELL, "vomit", 1)
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
 	. = ..()

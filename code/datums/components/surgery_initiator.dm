@@ -58,10 +58,9 @@
 
 	if(!length(available_surgeries))
 		if (target.body_position == LYING_DOWN)
-			target.balloon_alert(user, "no surgeries available!")
+			to_chat(user, span_warning("You can't think of any surgery to perform on [target]"))
 		else
-			target.balloon_alert(user, "make them lie down!")
-
+			to_chat(user, span_warning("You cannot perform surgery on a standing patient!"))
 		return
 
 	unregister_signals()
@@ -118,8 +117,6 @@
 			span_notice("You remove [parent] from [patient]'s [parse_zone(selected_zone)]."),
 		)
 
-		patient.balloon_alert(user, "stopped work on [parse_zone(selected_zone)]")
-
 		qdel(the_surgery)
 		return
 
@@ -136,10 +133,10 @@
 	if(iscyborg(user))
 		close_tool = locate(/obj/item/cautery) in user.held_items
 		if(!close_tool)
-			patient.balloon_alert(user, "need a cautery in an inactive slot to stop the surgery!")
+			to_chat(user, span_warning("You need a cautery in your other hand to stop the surgery!"))
 			return
 	else if(!close_tool || close_tool.tool_behaviour != required_tool_type)
-		patient.balloon_alert(user, "need a [is_robotic ? "screwdriver": "cautery"] in your inactive hand to stop the surgery!")
+		to_chat(user, span_warning("You need a [is_robotic ? "screwdriver": "cautery"] in your other hand to stop the surgery!"))
 		return
 
 	if(the_surgery.operated_bodypart)
@@ -153,7 +150,6 @@
 		span_notice("You close [patient]'s [parse_zone(selected_zone)] with [close_tool] and remove [parent]."),
 	)
 
-	patient.balloon_alert(user, "closed up [parse_zone(selected_zone)]")
 
 	qdel(the_surgery)
 
@@ -281,7 +277,7 @@
 	if (!can_start_surgery(user, target))
 		// This could have a more detailed message, but the UI closes when this is true anyway, so
 		// if it ever comes up, it'll be because of lag.
-		target.balloon_alert(user, "can't start the surgery!")
+		to_chat(user, span_warning("You are unable to perform that surgery right now!"))
 		return
 
 	var/obj/item/bodypart/affecting_limb
@@ -294,34 +290,32 @@
 
 	if (surgery.requires_bodypart == isnull(affecting_limb))
 		if (surgery.requires_bodypart)
-			target.balloon_alert(user, "patient has no [parse_zone(selected_zone)]!")
+			to_chat(user, span_warning("[target] has no [parse_zone(selected_zone)]!"))
 		else
-			target.balloon_alert(user, "patient has \a [parse_zone(selected_zone)]!")
+			to_chat(user, span_warning("[target] has \a [parse_zone(selected_zone)]!"))
 
 		return
 
 	if (!isnull(affecting_limb) && surgery.requires_bodypart_type && !(affecting_limb.bodytype & surgery.requires_bodypart_type))
-		target.balloon_alert(user, "not the right type of limb!")
+		to_chat(user, span_warning("You're not sure how to perform that surgery on this kind of bodypart"))
 		return
 
 	if (surgery.lying_required && target.body_position != LYING_DOWN)
-		target.balloon_alert(user, "patient is not lying down!")
+		to_chat(user, span_warning("You cannot perform surgery on a standing patient!"))
 		return
 
 	if (!surgery.can_start(user, target))
-		target.balloon_alert(user, "can't start the surgery!")
+		to_chat(user, span_warning("You are unable to start the surgery!"))
 		return
 
 	if (surgery_needs_exposure(surgery, target))
-		target.balloon_alert(user, "expose [target.p_their()] [parse_zone(selected_zone)]!")
+		to_chat(user, span_warning("You need to expose [target]'s [parse_zone(selected_zone)] first!"))
 		return
 
 	ui_close()
 
 	var/datum/surgery/procedure = new surgery.type(target, selected_zone, affecting_limb)
 	ADD_TRAIT(target, TRAIT_ALLOWED_HONORBOUND_ATTACK, type)
-
-	target.balloon_alert(user, "starting \"[lowertext(procedure.name)]\"")
 
 	user.visible_message(
 		span_notice("[user] drapes [parent] over [target]'s [parse_zone(selected_zone)] to prepare for surgery."),

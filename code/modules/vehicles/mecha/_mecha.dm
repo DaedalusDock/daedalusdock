@@ -31,7 +31,7 @@
 	COOLDOWN_DECLARE(mecha_bump_smash)
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_on = FALSE
-	light_range = 8
+	light_outer_range = 8
 	generic_canpass = FALSE
 	hud_possible = list(DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD)
 	///What direction will the mech face when entered/powered on? Defaults to South.
@@ -193,6 +193,7 @@
 
 /obj/item/radio/mech //this has to go somewhere
 	subspace_transmission = TRUE
+	canhear_range = 0
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
 	. = ..()
@@ -233,6 +234,7 @@
 	update_appearance()
 
 	become_hearing_sensitive(trait_source = ROUNDSTART_TRAIT)
+	become_atmos_sensitive()
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT) //protects pilots from ashstorms.
 	for(var/key in equip_by_category)
 		if(key == MECHA_L_ARM || key == MECHA_R_ARM)
@@ -272,6 +274,7 @@
 	GLOB.mechas_list -= src //global mech list
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.remove_from_hud(src) //YEET
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/vehicle/sealed/mecha/atom_destruction()

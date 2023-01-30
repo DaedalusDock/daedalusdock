@@ -104,6 +104,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.05
 	beauty_modifier = 0.3 //It shines so beautiful
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.4, LASER = 0.5, ENERGY = 0.5, BOMB = 0, BIO = 0, FIRE = 1, ACID = 1)
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 	wall_type = /turf/closed/wall/mineral/uranium
 	false_wall_type = /obj/structure/falsewall/uranium
 
@@ -142,6 +143,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.1
 	beauty_modifier = 0.15
 	armor_modifiers = list(MELEE = 1.4, BULLET = 0.7, LASER = 0, ENERGY = 1.2, BOMB = 0, BIO = 1.2, FIRE = 0, ACID = 0.5)
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 	wall_type = /turf/closed/wall/mineral/plasma
 	false_wall_type = /obj/structure/falsewall/plasma
 
@@ -193,6 +195,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.5
 	beauty_modifier = 0.5
 	armor_modifiers = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 100, BIO = 0, FIRE = 10, ACID = 0) //Clowns cant be blown away.
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 	wall_type = /turf/closed/wall/mineral/bananium
 	false_wall_type = /obj/structure/falsewall/bananium
 
@@ -321,6 +324,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.25
 	beauty_modifier = 0.4
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 
 /datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
@@ -338,6 +342,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 1.2
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.5, ENERGY = 1.5, BOMB = 1.5, BIO = 1.5, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.5
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 
 /datum/material/mythril/on_applied_obj(atom/source, amount, material_flags)
 	. = ..()
@@ -410,6 +415,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = 0.25
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.adjust_disgust(17)
@@ -510,6 +516,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.003
 	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0, ACID = 1.5)
 	beauty_modifier = -0.1
+	wall_greyscale_config = /datum/greyscale_config/stone_wall
 
 /datum/material/cardboard/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()

@@ -1,5 +1,5 @@
-GLOBAL_LIST_EMPTY(ghost_images_default) //this is a list of the default (non-accessorized, non-dir) images of the ghosts themselves
 GLOBAL_LIST_EMPTY(ghost_images_simple) //this is a list of all ghost images as the simple white ghost
+GLOBAL_LIST_EMPTY(ghost_images_robust) //this is a list of all ghost images as appearance copies
 
 GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
@@ -18,7 +18,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	hud_type = /datum/hud/ghost
 	movement_type = GROUND | FLYING
 	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_outer_range = 1
 	light_power = 2
 	light_on = FALSE
 	shift_to_open_context_menu = FALSE
@@ -31,8 +31,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
 	var/atom/movable/following = null
 	var/fun_verbs = 0
-	var/image/ghostimage_default = null //this mobs ghost image without accessories and dirs
-	var/image/ghostimage_simple = null //this mob with the simple white ghost sprite
+
 	var/ghostvision = 1 //is the ghost able to see things humans can't?
 	var/mob/observetarget = null //The target mob that the ghost is observing. Used as a reference in logout()
 	var/data_huds_on = 0 //Are data HUDs currently enabled?
@@ -42,21 +41,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/list/datahuds = list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED) //list of data HUDs shown to ghosts.
 	var/ghost_orbit = GHOST_ORBIT_CIRCLE
 
-	//These variables store hair data if the ghost originates from a species with head and/or facial hair.
-	var/hairstyle
-	var/hair_color
-	var/mutable_appearance/hair_overlay
-	var/facial_hairstyle
-	var/facial_hair_color
-	var/mutable_appearance/facial_hair_overlay
-
-	var/updatedir = 1 //Do we have to update our dir as the ghost moves around?
-	var/lastsetting = null //Stores the last setting that ghost_others was set to, for a little more efficiency when we update ghost images. Null means no update is necessary
-
-	//We store copies of the ghost display preferences locally so they can be referred to even if no client is connected.
-	//If there's a bug with changing your ghost settings, it's probably related to this.
-	var/ghost_accs = GHOST_ACCS_DEFAULT_OPTION
-	var/ghost_others = GHOST_OTHERS_DEFAULT_OPTION
 	// Used for displaying in ghost chat, without changing the actual name
 	// of the mob
 	var/deadchat_name
@@ -71,19 +55,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		/mob/dead/observer/proc/open_spawners_menu,
 		/mob/dead/observer/proc/tray_view,
 		/mob/dead/observer/proc/open_minigames_menu))
-
-	if(icon_state in GLOB.ghost_forms_with_directions_list)
-		ghostimage_default = image(src.icon,src,src.icon_state + "_nodir")
-	else
-		ghostimage_default = image(src.icon,src,src.icon_state)
-	ghostimage_default.override = TRUE
-	GLOB.ghost_images_default |= ghostimage_default
-
-	ghostimage_simple = image(src.icon,src,"ghost_nodir")
-	ghostimage_simple.override = TRUE
-	GLOB.ghost_images_simple |= ghostimage_simple
-
-	updateallghostimages()
 
 	var/turf/T
 	var/mob/body = loc
@@ -105,17 +76,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		mind = body.mind //we don't transfer the mind but we keep a reference to it.
 
 		set_suicide(body.suiciding) // Transfer whether they committed suicide.
-
-		if(ishuman(body))
-			var/mob/living/carbon/human/body_human = body
-			if(HAIR in body_human.dna.species.species_traits)
-				hairstyle = body_human.hairstyle
-				hair_color = brighten_color(body_human.hair_color)
-			if(FACEHAIR in body_human.dna.species.species_traits)
-				facial_hairstyle = body_human.facial_hairstyle
-				facial_hair_color = brighten_color(body_human.facial_hair_color)
-
-	update_appearance()
+		set_ghost_appearance(body)
 
 	if(!T || is_secret_level(T.z))
 		var/list/turfs = get_area_turfs(/area/shuttle/arrival)
@@ -171,72 +132,9 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	if(mind?.current)
 		mind.current.med_hud_set_status()
 
-	GLOB.ghost_images_default -= ghostimage_default
-	QDEL_NULL(ghostimage_default)
-
-	GLOB.ghost_images_simple -= ghostimage_simple
-	QDEL_NULL(ghostimage_simple)
-
-	updateallghostimages()
-
 	QDEL_NULL(spawners_menu)
 	QDEL_NULL(minigames_menu)
 	return ..()
-
-/*
- * This proc will update the icon of the ghost itself, with hair overlays, as well as the ghost image.
- * Please call update_icon(updates, icon_state) from now on when you want to update the icon_state of the ghost,
- * or you might end up with hair on a sprite that's not supposed to get it.
- * Hair will always update its dir, so if your sprite has no dirs the haircut will go all over the place.
- * |- Ricotez
- */
-/mob/dead/observer/update_icon(updates=ALL, new_form)
-	. = ..()
-
-	if(client) //We update our preferences in case they changed right before update_appearance was called.
-		ghost_accs = client.prefs.read_preference(/datum/preference/choiced/ghost_accessories)
-		ghost_others = client.prefs.read_preference(/datum/preference/choiced/ghost_others)
-
-	if(hair_overlay)
-		cut_overlay(hair_overlay)
-		hair_overlay = null
-
-	if(facial_hair_overlay)
-		cut_overlay(facial_hair_overlay)
-		facial_hair_overlay = null
-
-
-	if(new_form)
-		icon_state = new_form
-		if(icon_state in GLOB.ghost_forms_with_directions_list)
-			ghostimage_default.icon_state = new_form + "_nodir" //if this icon has dirs, the default ghostimage must use its nodir version or clients with the preference set to default sprites only will see the dirs
-		else
-			ghostimage_default.icon_state = new_form
-
-	if((ghost_accs == GHOST_ACCS_DIR || ghost_accs == GHOST_ACCS_FULL) && (icon_state in GLOB.ghost_forms_with_directions_list)) //if this icon has dirs AND the client wants to show them, we make sure we update the dir on movement
-		updatedir = 1
-	else
-		updatedir = 0 //stop updating the dir in case we want to show accessories with dirs on a ghost sprite without dirs
-		setDir(2 )//reset the dir to its default so the sprites all properly align up
-
-	if(ghost_accs == GHOST_ACCS_FULL && (icon_state in GLOB.ghost_forms_with_accessories_list)) //check if this form supports accessories and if the client wants to show them
-		var/datum/sprite_accessory/S
-		if(facial_hairstyle)
-			S = GLOB.facial_hairstyles_list[facial_hairstyle]
-			if(S)
-				facial_hair_overlay = mutable_appearance(S.icon, "[S.icon_state]", -HAIR_LAYER)
-				if(facial_hair_color)
-					facial_hair_overlay.color = facial_hair_color
-				facial_hair_overlay.alpha = 200
-				add_overlay(facial_hair_overlay)
-		if(hairstyle)
-			S = GLOB.hairstyles_list[hairstyle]
-			if(S)
-				hair_overlay = mutable_appearance(S.icon, "[S.icon_state]", -HAIR_LAYER)
-				if(hair_color)
-					hair_overlay.color = hair_color
-				hair_overlay.alpha = 200
-				add_overlay(hair_overlay)
 
 /*
  * Increase the brightness of a color by calculating the average distance between the R, G and B values,
@@ -298,13 +196,14 @@ Works together with spawning an observer, noted above.
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
-	var/mob/dead/observer/ghost = new(src) // Transfer safety to observer spawning proc.
+	var/mob/dead/observer/ghost = new(src, src) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.key = key
 	ghost.client?.init_verbs()
 	if(!can_reenter_corpse)// Disassociates observer mind from the body mind
 		ghost.mind = null
+
 	return ghost
 
 /mob/living/ghostize(can_reenter_corpse = TRUE)
@@ -343,8 +242,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	ghostize(FALSE)
 
 /mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32)
-	if(updatedir)
-		setDir(direct)//only update dir if we actually need it, so overlays won't spin on base sprites that don't have directions of their own
+	setDir(direct)
 
 	if(glide_size_override)
 		set_glide_size(glide_size_override)
@@ -614,44 +512,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	update_sight()
 
 /mob/dead/observer/update_sight()
-	if(client)
-		ghost_others = client.prefs.read_preference(/datum/preference/choiced/ghost_others) //A quick update just in case this setting was changed right before calling the proc
-
 	if (!ghostvision)
 		see_invisible = SEE_INVISIBLE_LIVING
 	else
 		see_invisible = SEE_INVISIBLE_OBSERVER
 
 
-	updateghostimages()
 	..()
-
-/proc/updateallghostimages()
-	list_clear_nulls(GLOB.ghost_images_default)
-	list_clear_nulls(GLOB.ghost_images_simple)
-
-	for (var/mob/dead/observer/O in GLOB.player_list)
-		O.updateghostimages()
-
-/mob/dead/observer/proc/updateghostimages()
-	if (!client)
-		return
-
-	if(lastsetting)
-		switch(lastsetting) //checks the setting we last came from, for a little efficiency so we don't try to delete images from the client that it doesn't have anyway
-			if(GHOST_OTHERS_DEFAULT_SPRITE)
-				client?.images -= GLOB.ghost_images_default
-			if(GHOST_OTHERS_SIMPLE)
-				client?.images -= GLOB.ghost_images_simple
-	lastsetting = client?.prefs.read_preference(/datum/preference/choiced/ghost_others)
-	if(!ghostvision)
-		return
-	if(lastsetting != GHOST_OTHERS_THEIR_SETTING)
-		switch(lastsetting)
-			if(GHOST_OTHERS_DEFAULT_SPRITE)
-				client?.images |= (GLOB.ghost_images_default-ghostimage_default)
-			if(GHOST_OTHERS_SIMPLE)
-				client?.images |= (GLOB.ghost_images_simple-ghostimage_simple)
 
 /mob/dead/observer/verb/possess()
 	set category = "Ghost"
@@ -810,34 +677,32 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		roundstart character."
 	set category = "Ghost"
 
-	set_ghost_appearance()
+	var/mob/living/carbon/human/dummy/consistent/template = new
 	if(client?.prefs)
 		var/real_name = client.prefs.read_preference(/datum/preference/name/real_name)
 		deadchat_name = real_name
 		if(mind)
 			mind.ghostname = real_name
 		name = real_name
+		client.prefs.apply_prefs_to(template)
 
-/mob/dead/observer/proc/set_ghost_appearance()
-	if(!client?.prefs)
-		return
+	set_ghost_appearance(template)
+	qdel(template)
 
-	client.prefs.apply_character_randomization_prefs()
+/mob/dead/observer/proc/set_ghost_appearance(mob/living/to_copy)
+	appearance = null
+	if(!to_copy || !to_copy.icon)
+		icon = initial(icon)
+		icon_state = "ghost"
+		alpha = 255
+		overlays.Cut()
+	else
+		appearance = to_copy.appearance
+		underlays.Cut()
+		alpha = 127
 
-	var/species_type = client.prefs.read_preference(/datum/preference/choiced/species)
-	var/datum/species/species = new species_type
+	set_invisibility(GLOB.observer_default_invisibility)
 
-	if(HAIR in species.species_traits)
-		hairstyle = client.prefs.read_preference(/datum/preference/choiced/hairstyle)
-		hair_color = brighten_color(client.prefs.read_preference(/datum/preference/color/hair_color))
-
-	if(FACEHAIR in species.species_traits)
-		facial_hairstyle = client.prefs.read_preference(/datum/preference/choiced/facial_hairstyle)
-		facial_hair_color = brighten_color(client.prefs.read_preference(/datum/preference/color/facial_hair_color))
-
-	qdel(species)
-
-	update_appearance()
 
 /mob/dead/observer/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
 	return isAdminGhostAI(usr)
@@ -848,12 +713,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/vv_edit_var(var_name, var_value)
 	. = ..()
 	switch(var_name)
-		if(NAMEOF(src, icon))
-			ghostimage_default.icon = icon
-			ghostimage_simple.icon = icon
-		if(NAMEOF(src, icon_state))
-			ghostimage_default.icon_state = icon_state
-			ghostimage_simple.icon_state = icon_state
 		if(NAMEOF(src, fun_verbs))
 			if(fun_verbs)
 				add_verb(src, /mob/dead/observer/verb/boo)

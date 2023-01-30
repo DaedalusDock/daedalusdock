@@ -291,7 +291,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	talkcount++
 	return TRUE
 
-/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	if(!client)
 		return
@@ -321,9 +321,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		// Create map text prior to modifying message for goonchat, sign lang edition
 		if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS || stat == HARD_CRIT || is_blind(src)) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
 			if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
-				create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
+				create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
 			else
-				create_chat_message(speaker, message_language, raw_message, spans)
+				create_chat_message(speaker, message_language, raw_message, spans, sound_loc = sound_loc)
 
 		if(is_blind(src))
 			return FALSE
@@ -345,9 +345,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	// Create map text prior to modifying message for goonchat
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS || stat == HARD_CRIT) && (ismob(speaker) || client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)) && can_hear())
 		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
-			create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
+			create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
 		else
-			create_chat_message(speaker, message_language, raw_message, spans)
+			create_chat_message(speaker, message_language, raw_message, spans, sound_loc = sound_loc)
 
 	// Recompose message for AI hrefs, language incomprehension.
 	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)

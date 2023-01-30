@@ -44,8 +44,6 @@ This entire system is an absolute mess.
 		return FALSE
 	if(buckled)
 		return FALSE
-	if(body_position == LYING_DOWN) //Lying down protects you from Z A S M O M E N T S
-		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
 		return FALSE
 	if(IsKnockdown()) //Uhhh maybe?
@@ -120,9 +118,14 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 		if(airborne_acceleration > 1)
 			airflow_hit(A)
 			A.airflow_hit_act(src)
-		else if(istype(src, /mob/living/carbon/human) && ismovable(A) && (A:airflow_old_density))
-			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
-			src:Stun(1 SECONDS) // :)
+		else if(istype(src, /mob/living/carbon/human))
+			if((A:density))
+				to_chat(src, "<span class='notice'>You are pinned against \the [A] by airflow!</span>")
+				src:Stun(1 SECONDS) // :)
+				airflow_speed = 0
+				airflow_time = 0
+				airborne_acceleration = 0
+				return
 		/*
 		If the turf of the atom we bumped is NOT dense, then we check if the flying object is dense.
 		We check the special var because flying objects gain density so they can Bump() objects.

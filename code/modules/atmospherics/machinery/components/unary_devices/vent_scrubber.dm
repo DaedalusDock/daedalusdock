@@ -23,7 +23,7 @@
 	///The mode of the scrubber (SCRUBBING or SIPHONING)
 	var/scrubbing = SCRUBBING //0 = siphoning, 1 = scrubbing
 	///The list of gases we are filtering
-	var/list/filter_types = list(GAS_CO2)
+	var/list/filter_types = list(GAS_CO2, GAS_RADON, GAS_PLASMA)
 	///Rate of the scrubber to remove gases from the air
 	var/volume_rate = MAX_SCRUBBER_FLOWRATE
 	///A fast-siphon toggle, siphons at 3x speed for 3x the power cost.
@@ -37,6 +37,9 @@
 	var/radio_filter_out
 	///Radio connection from the air alarm
 	var/radio_filter_in
+
+	///Whether or not this machine can fall asleep. Use a multitool to change.
+	var/can_hibernate = TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/New()
 	if(!id_tag)
@@ -223,7 +226,7 @@
 		for(var/i in 1 to 2)
 			if(scrub(us))
 				should_cooldown = FALSE
-	if(should_cooldown)
+	if(should_cooldown && can_hibernate)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
 	update_icon_nopipes()
 
@@ -257,8 +260,7 @@
 			var/draw = scrub_gas(filter_types, environment, air_contents, transfer_moles, power_rating)
 			if(draw == -1)
 				. = FALSE
-			else if(draw)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 			//Remix the resulting gases
 			update_parents()
 			return .
@@ -268,8 +270,7 @@
 		var/transfer_moles = min(environment.total_moles, environment.total_moles*MAX_SIPHON_FLOWRATE/environment.volume)
 
 		var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-		if(draw > 0)
-			ATMOS_USE_POWER(draw)
+		ATMOS_USE_POWER(draw)
 		update_parents()
 		return TRUE
 
@@ -376,6 +377,14 @@
 	pipe_vision_img.plane = ABOVE_HUD_PLANE
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, TRUE)
 
+/obj/machinery/atmospherics/components/unary/vent_scrubber/multitool_act(mob/living/user, obj/item/tool)
+	. = ..()
+	can_hibernate = !can_hibernate
+	to_chat(user, span_notice("\The [src] will [can_hibernate ? "now" : "no longer"] sleep to conserve energy."))
+	if(!can_hibernate)
+		COOLDOWN_RESET(src, hibernating)
+
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer2
 	piping_layer = 2

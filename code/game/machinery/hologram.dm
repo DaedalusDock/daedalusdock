@@ -511,7 +511,7 @@ Possible to do for anyone motivated enough:
 		Hologram.plane = ABOVE_GAME_PLANE
 		Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 		Hologram.name = "[user.name] (Hologram)"//If someone decides to right click.
-		Hologram.set_light(2) //hologram lighting
+		Hologram.set_light(l_outer_range = 2) //hologram lighting
 		move_hologram()
 
 		set_holo(user, Hologram)
@@ -523,7 +523,7 @@ Possible to do for anyone motivated enough:
 
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
-/obj/machinery/holopad/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/obj/machinery/holopad/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
 	if(speaker && LAZYLEN(masters) && !radio_freq)//Master is mostly a safety in case lag hits or something. Radio_freq so AIs dont hear holopad stuff through radios.
 		for(var/mob/living/silicon/ai/master in masters)
@@ -533,7 +533,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	for(var/datum/holocall/holocall_to_update as anything in holo_calls)
 		if(holocall_to_update.connected_holopad == src)//if we answered this call originating from another holopad
 			if(speaker == holocall_to_update.hologram && holocall_to_update.user.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat))
-				holocall_to_update.user.create_chat_message(speaker, message_language, raw_message, spans)
+				holocall_to_update.user.create_chat_message(speaker, message_language, raw_message, spans, sound_loc = sound_loc)
 			else
 				holocall_to_update.user.Hear(message, speaker, message_language, raw_message, radio_freq, spans, message_mods)
 
@@ -548,9 +548,9 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	update_use_power(total_users > 0 ? ACTIVE_POWER_USE : IDLE_POWER_USE)
 	update_mode_power_usage(ACTIVE_POWER_USE, active_power_usage + HOLOPAD_PASSIVE_POWER_USAGE + (HOLOGRAM_POWER_USAGE * total_users))
 	if(total_users || replay_mode)
-		set_light(2)
+		set_light(l_outer_range = 2)
 	else
-		set_light(0)
+		set_light(l_outer_range = 2)
 	update_appearance()
 
 /obj/machinery/holopad/update_icon_state()
@@ -689,7 +689,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	Hologram.plane = ABOVE_GAME_PLANE
 	Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 	Hologram.name = "[record.caller_name] (Hologram)"//If someone decides to right click.
-	Hologram.set_light(2) //hologram lighting
+	Hologram.set_light(l_outer_range = 2) //hologram lighting
 	visible_message(span_notice("A holographic image of [record.caller_name] flickers to life before your eyes!"))
 	return Hologram
 

@@ -9,7 +9,7 @@
 	maxHealth = 25
 	pass_flags = PASSMOB | PASSFLAPS
 	light_system = MOVABLE_LIGHT
-	light_range = 7
+	light_outer_range = 7
 	light_power = 3
 
 	hackables = "vibing scanners"

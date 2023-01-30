@@ -15,7 +15,7 @@
 	max_integrity = 100
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	can_be_unanchored = FALSE
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
@@ -30,14 +30,17 @@
 	/// Stripe paint of the wall
 	var/stripe_paint
 	var/opening = FALSE
+	/// Material Set Name
+	var/matset_name
 
 	/// Typecache of the neighboring objects that we want to neighbor stripe overlay with
 	var/static/list/neighbor_typecache
 
 /obj/structure/falsewall/Initialize()
+	color = null //Clear the mapaid color. This should hopefully not cause problems.
+	//This has to be stripped before the supercall so it doesn't end up in atom_colours.
 	. = ..()
-	color = null //Clear the color that's a mapping aid
-	update_nearby_tiles()
+	zas_update_loc()
 	set_wall_information(plating_material, reinf_material, wall_paint, stripe_paint)
 
 /obj/structure/falsewall/update_greyscale()
@@ -59,10 +62,7 @@
 
 /obj/structure/falsewall/update_name()
 	. = ..()
-	if(reinf_material)
-		name = "reinforced wall"
-	else
-		name = "wall"
+	name = matset_name
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
 	if(opening)
@@ -86,7 +86,7 @@
 		set_opacity(density)
 		opening = FALSE
 		update_appearance()
-		update_nearby_tiles()
+		zas_update_loc()
 
 /obj/structure/falsewall/zas_canpass(turf/other)
 	if(QDELETED(src))
@@ -195,7 +195,7 @@
 	stripe_paint = new_stripe_paint
 	set_materials(plating_mat, reinf_mat)
 
-/// Painfully copypasted from /turf/closed/wall
+/// Painfully copypasted from /turf/closed/wall (Twice!)
 /obj/structure/falsewall/proc/set_materials(plating_mat, reinf_mat)
 	var/datum/material/plating_mat_ref
 	if(plating_mat)
@@ -211,6 +211,14 @@
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
+
+	if(reinf_material)
+		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."
+	else
+		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
+		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+	matset_name = name
 
 	update_greyscale()
 	update_appearance()
@@ -340,6 +348,8 @@
 	name = "wooden wall"
 	desc = "A wall with wooden plating. Stiff."
 	icon = 'icons/turf/walls/wood_wall.dmi'
+	icon_state = "wood_wall-0"
+	base_icon_state = "wood_wall"
 	plating_material = /datum/material/wood
 
 /obj/structure/falsewall/iron
@@ -358,7 +368,7 @@
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/titanium
 	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
 
 /obj/structure/falsewall/plastitanium
 	name = "wall"
@@ -366,4 +376,4 @@
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/alloy/plastitanium
 	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)

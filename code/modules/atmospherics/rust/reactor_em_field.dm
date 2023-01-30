@@ -56,7 +56,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 			)
 		)
 
-	set_light(light_min_range, light_min_power, light_color, TRUE)
+	set_light(l_outer_range = light_min_range, l_power = light_min_power, l_color = light_color, l_on = TRUE)
 	last_range = light_min_range
 	last_power = light_min_power
 
@@ -147,7 +147,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 	if (last_range != use_range || last_power != use_power || color != light_color)
 		color = light_color
-		set_light(use_range, min(use_power, 1), light_color) //cap first arg at 1 to avoid breaking lighting stuff.
+		set_light(l_outer_range = use_range, l_power = min(use_power, 1), l_color = light_color) //cap first arg at 1 to avoid breaking lighting stuff.
 		last_range = use_range
 		last_power = use_power
 
@@ -264,7 +264,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		null,
 		span_hear("You hear a horrifying resonant crash. Oh no.")
 	)
-	set_light(15, 1, "#ccccff")
+	set_light(l_outer_range = 15, l_power = 1, l_color = "#ccccff")
 	empulse(get_turf(src), Ceil(plasma_temperature/1000), Ceil(plasma_temperature/300))
 	addtimer(CALLBACK(src, .proc/kaboom), 5 SECONDS)
 
@@ -353,7 +353,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	if(owned_core && owned_core.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
 		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
-			environment.addThermalEnergy(plasma_temperature*20000)
+			environment.adjustThermalEnergy(plasma_temperature*20000)
 	radiation = 0
 
 /obj/effect/reactor_em_field/proc/change_size(newsize = 1)

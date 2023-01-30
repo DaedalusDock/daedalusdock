@@ -464,11 +464,6 @@
 
 	. = ..()
 
-	if(hasPower() && unres_sides)
-		set_light(2, 1)
-	else
-		set_light(0)
-
 /obj/machinery/door/airlock/update_icon_state()
 	. = ..()
 	switch(airlock_state)
@@ -1201,7 +1196,7 @@
 	sleep(4)
 	set_density(FALSE)
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
-	update_nearby_tiles()
+	zas_update_loc()
 	sleep(1)
 	layer = OPEN_DOOR_LAYER
 	update_icon(ALL, AIRLOCK_OPEN, TRUE)
@@ -1246,12 +1241,12 @@
 	if(air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		update_nearby_tiles()
+		zas_update_loc()
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		update_nearby_tiles()
+		zas_update_loc()
 	sleep(4)
 	if(dangerous_close)
 		crush()
@@ -1477,11 +1472,7 @@
 	if(!note)
 		return
 	else if(istype(note, /obj/item/paper))
-		var/obj/item/paper/pinned_paper = note
-		if(pinned_paper.info && pinned_paper.show_written_words)
-			return "note_words_[frame_state]"
-		else
-			return "note_[frame_state]"
+		return "note_[frame_state]"
 
 	else if(istype(note, /obj/item/photo))
 		return "photo_[frame_state]"

@@ -1,0 +1,4 @@
+/obj/item/bodypart/arm/left/@SUBTYPES : /obj/item/bodypart/arm/left/@SUBTYPES{@OLD}
+/obj/item/bodypart/leg/left/@SUBTYPES : /obj/item/bodypart/leg/left/@SUBTYPES{@OLD}
+/obj/item/bodypart/arm/right/@SUBTYPES : /obj/item/bodypart/arm/right/@SUBTYPES{@OLD}
+/obj/item/bodypart/leg/right/@SUBTYPES : /obj/item/bodypart/leg/right/@SUBTYPES{@OLD}

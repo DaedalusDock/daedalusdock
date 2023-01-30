@@ -5,16 +5,15 @@
 	var/open_directions = NONE
 	///Can atmos pass down through this turf?
 	var/z_flags = NONE
-
-/turf
-	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.update_nearby_tiles())
+	///Does this turf need to be ran through SSzas? (SSzas.mark_for_update(turf) OR turf.zas_update_loc())
 	var/needs_air_update = 0
 	///The local gas mixture of this turf. Use return_air(). This will always exist even if not in use, because GCing air contents would be too expensive.
 	var/datum/gas_mixture/air
-	var/heat_capacity = INFINITY
-	var/thermal_conductivity = 0.05
 	///A gas_mixture gas list to be used as the initial value. Ex: list(GAS_OXYGEN = 50)
 	var/list/initial_gas
+	var/temperature = T20C
+	var/heat_capacity = INFINITY
+
 #ifdef ZASDBG
 	///Set to TRUE during debugging to get chat output on the atmos status of this turf
 	var/tmp/verbose = FALSE

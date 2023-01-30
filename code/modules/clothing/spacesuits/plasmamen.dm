@@ -47,7 +47,7 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 100, ACID = 75)
 	resistance_flags = FIRE_PROOF
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 4
+	light_outer_range = 4
 	light_on = FALSE
 	var/helmet_on = FALSE
 	var/smile = FALSE
@@ -297,7 +297,7 @@
 
 /obj/item/clothing/head/helmet/space/plasmaman/curator
 	name = "curator's plasma envirosuit helmet"
-	desc = "A slight modification on a traditional voidsuit helmet, this helmet was Nanotrasen's first solution to the *logistical problems* that come with employing plasmamen. Despite their limitations, these helmets still see use by historians and old-school plasmamen alike."
+	desc = "A slight modification on a traditional voidsuit helmet, this helmet was Daedalus' first solution to the *logistical problems* that come with employing plasmamen. Despite their limitations, these helmets still see use by historians and old-school plasmamen alike."
 	icon_state = "prototype_envirohelm"
 	inhand_icon_state = "prototype_envirohelm"
 	actions_types = list(/datum/action/item_action/toggle_welding_screen/plasmaman)

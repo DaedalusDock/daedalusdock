@@ -61,7 +61,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "aT" = (
 /obj/structure/window/reinforced/spawner/east,
@@ -113,7 +113,7 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "bD" = (
 /obj/effect/turf_decal/trimline/green/filled/corner{
@@ -126,7 +126,7 @@
 	pixel_y = 7
 	},
 /obj/effect/decal/cleanable/blood/tracks,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/plasma_facility/commons)
 "bM" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -282,7 +282,7 @@
 	},
 /obj/effect/decal/cleanable/plasma,
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/plasma_facility/commons)
 "dR" = (
 /obj/structure/lattice/catwalk,
@@ -309,6 +309,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "dY" = (
@@ -452,6 +453,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "gD" = (
@@ -494,7 +496,7 @@
 	pixel_y = -2
 	},
 /obj/machinery/light/small/directional/north,
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/plasma_facility/commons)
 "hc" = (
 /obj/structure/rack,
@@ -504,6 +506,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "hd" = (
@@ -513,6 +516,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "hr" = (
@@ -572,9 +576,7 @@
 /obj/effect/turf_decal/tile/brown/anticorner,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/broken/directional/south,
-/turf/open/floor/iron/corner{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "ia" = (
 /obj/machinery/light/small/broken/directional/east,
@@ -656,6 +658,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "ja" = (
@@ -663,7 +666,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "jb" = (
 /obj/effect/decal/cleanable/dirt,
@@ -685,6 +688,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "jN" = (
@@ -726,6 +730,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "ku" = (
@@ -736,9 +741,7 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/corner{
-	dir = 4
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "kA" = (
 /obj/structure/closet/crate{
@@ -809,6 +812,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "lG" = (
@@ -860,6 +864,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "ms" = (
@@ -886,6 +891,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "mG" = (
@@ -950,9 +956,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/vehicle/ridden/wheelchair,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "nu" = (
 /obj/effect/turf_decal/tile/brown/half,
@@ -964,7 +968,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "nz" = (
 /obj/machinery/door/airlock/hatch{
@@ -980,13 +984,9 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
-"oc" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/railing,
-/turf/open/lava/plasma/ice_moon,
-/area/icemoon/underground/explored)
 "oe" = (
 /obj/machinery/atmospherics/pipe/smart/simple/general/hidden{
 	dir = 6
@@ -1017,6 +1017,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "oE" = (
@@ -1083,9 +1084,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/north,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "pl" = (
 /obj/effect/turf_decal/tile/brown/half,
@@ -1098,7 +1097,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "pn" = (
 /obj/effect/turf_decal/tile/brown/full,
@@ -1106,7 +1105,7 @@
 	icon_state = "applebush"
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "pt" = (
 /obj/structure/table,
@@ -1154,6 +1153,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "qP" = (
@@ -1227,9 +1227,7 @@
 /obj/item/wallframe/airalarm{
 	pixel_y = 10
 	},
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "rS" = (
 /obj/effect/turf_decal/bot/left,
@@ -1240,6 +1238,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "sq" = (
@@ -1391,6 +1390,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "uq" = (
@@ -1404,7 +1404,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "ux" = (
 /obj/structure/transit_tube/horizontal,
@@ -1430,6 +1430,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "ve" = (
@@ -1443,7 +1444,7 @@
 /area/ruin/plasma_facility/operations)
 "vz" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "vI" = (
@@ -1464,6 +1465,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "wc" = (
@@ -1487,6 +1489,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "wu" = (
@@ -1541,7 +1544,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/south,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "xV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -1572,7 +1575,7 @@
 	dir = 1
 	},
 /obj/machinery/light_switch/directional/south,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "yL" = (
 /obj/structure/girder,
@@ -1606,9 +1609,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge{
-	dir = 4
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "zU" = (
 /obj/structure/fence/end{
@@ -1634,6 +1635,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Ae" = (
@@ -1664,9 +1666,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/blood/tracks,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "Au" = (
 /obj/effect/turf_decal/tile/brown/half,
@@ -1679,7 +1679,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "AG" = (
 /turf/open/genturf,
@@ -1718,6 +1718,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "BJ" = (
@@ -1735,9 +1736,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "BQ" = (
 /obj/structure/lattice/catwalk,
@@ -1802,6 +1801,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "CJ" = (
@@ -1810,6 +1810,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "CU" = (
@@ -1869,7 +1870,7 @@
 /obj/item/kirbyplants{
 	icon_state = "applebush"
 	},
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "DR" = (
 /obj/machinery/light/small/broken/directional/north,
@@ -2057,6 +2058,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Id" = (
@@ -2125,6 +2127,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "Jp" = (
@@ -2163,6 +2166,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Jy" = (
@@ -2341,7 +2345,7 @@
 "Mc" = (
 /obj/effect/turf_decal/tile/brown/full,
 /obj/structure/closet/firecloset,
-/turf/open/floor/iron/large,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "Mi" = (
 /obj/structure/lattice/catwalk,
@@ -2386,6 +2390,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "MU" = (
@@ -2444,9 +2449,7 @@
 	dir = 8
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "No" = (
 /obj/structure/rack,
@@ -2469,6 +2472,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Ny" = (
@@ -2479,9 +2483,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral,
-/turf/open/floor/iron/edge{
-	dir = 8
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "NC" = (
 /obj/structure/sign/warning,
@@ -2544,6 +2546,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "OJ" = (
@@ -2555,6 +2558,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "OM" = (
@@ -2633,9 +2637,7 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "PP" = (
 /obj/structure/dresser,
@@ -2679,6 +2681,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "Qn" = (
@@ -2728,6 +2731,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Rf" = (
@@ -2758,9 +2762,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "RM" = (
 /obj/effect/decal/cleanable/glass,
@@ -2834,9 +2836,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "TD" = (
 /obj/structure/table/reinforced,
@@ -2926,7 +2926,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/turf/open/floor/iron/edge,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "VS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -2982,7 +2982,7 @@
 	},
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron/corner,
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "WU" = (
 /obj/effect/turf_decal/tile/brown,
@@ -3003,6 +3003,7 @@
 /turf/open/floor/iron/smooth_half{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "Xj" = (
@@ -3018,6 +3019,7 @@
 /turf/open/floor/iron/smooth_large{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/operations)
 "XC" = (
@@ -3027,6 +3029,7 @@
 /turf/open/floor/iron/smooth{
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
 	temperature = 180;
+	
 	},
 /area/ruin/plasma_facility/commons)
 "XI" = (
@@ -3130,9 +3133,7 @@
 /obj/item/paper/crumpled/bloody{
 	info = "I've sealed the place off. I'm taking the last snowtreader to look for help. Please, if you find this place, leave. It's not safe here. We made them angry."
 	},
-/turf/open/floor/iron/edge{
-	dir = 1
-	},
+/turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "Zp" = (
 /obj/structure/lattice/catwalk,
@@ -3223,7 +3224,7 @@
 /obj/structure/chair/office/light{
 	dir = 1
 	},
-/turf/open/floor/iron/white/smooth_large,
+/turf/open/floor/iron/white,
 /area/ruin/plasma_facility/commons)
 
 (1,1,1) = {"
@@ -3634,7 +3635,7 @@ Ib
 js
 CJ
 vt
-oc
+fO
 rs
 qk
 ms
@@ -3669,7 +3670,7 @@ Ib
 LD
 iM
 hR
-oc
+fO
 rs
 rs
 LZ
@@ -3704,7 +3705,7 @@ go
 Bi
 Pt
 hR
-oc
+fO
 rs
 rs
 rs
@@ -3739,7 +3740,7 @@ CU
 hR
 vt
 MH
-oc
+fO
 rs
 Hp
 zU
@@ -3809,7 +3810,7 @@ Co
 vt
 Sf
 nz
-oc
+fO
 rs
 az
 hU
@@ -3844,7 +3845,7 @@ vt
 hR
 Sf
 vt
-oc
+fO
 rs
 rs
 Ve
@@ -3879,7 +3880,7 @@ uo
 WC
 Sf
 HG
-oc
+fO
 rs
 rs
 Yl
@@ -3914,7 +3915,7 @@ XI
 cn
 vt
 hR
-oc
+fO
 rs
 rs
 rs
@@ -3949,7 +3950,7 @@ Hv
 SR
 Ak
 hR
-oc
+fO
 rs
 rs
 rs
@@ -4194,7 +4195,7 @@ TY
 ie
 vz
 HS
-oc
+fO
 rs
 rs
 rs
@@ -4229,7 +4230,7 @@ nk
 DZ
 DZ
 bT
-oc
+fO
 rs
 rs
 rs

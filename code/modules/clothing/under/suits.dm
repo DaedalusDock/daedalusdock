@@ -47,7 +47,7 @@
 
 /obj/item/clothing/under/suit/black/skirt
 	name = "black suitskirt"
-	desc = "A professional black suitskirt. Nanotrasen Investigation Bureau approved!"
+	desc = "A professional black suitskirt. Mars Investigation Bureau approved!"
 	icon_state = "blacksuit_skirt"
 	inhand_icon_state = "bar_suit"
 	alt_covers_chest = TRUE

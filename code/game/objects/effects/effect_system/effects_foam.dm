@@ -94,6 +94,7 @@
 	create_reagents(1000) //limited by the size of the reagent holder anyway.
 	START_PROCESSING(SSfastprocess, src)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
+	become_atmos_sensitive()
 
 /obj/effect/particle_effect/foam/ComponentInitialize()
 	. = ..()
@@ -102,6 +103,7 @@
 
 /obj/effect/particle_effect/foam/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
+	lose_atmos_sensitivity()
 	return ..()
 
 
@@ -276,16 +278,16 @@
 
 /obj/structure/foamedmetal/Initialize()
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/foamedmetal/Destroy()
 	set_density(0)
-	update_nearby_tiles()
+	zas_update_loc()
 	. = ..()
 
 /obj/structure/foamedmetal/Move()
 	. = ..()
-	update_nearby_tiles()
+	zas_update_loc()
 
 /obj/structure/foamedmetal/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)

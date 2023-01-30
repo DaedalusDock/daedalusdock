@@ -23,7 +23,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	anchored = TRUE
 	layer = MOB_LAYER
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
-	light_range = 4
+	light_outer_range = 4
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 	critical_machine = TRUE
 	base_icon_state = "darkmatter"
@@ -228,7 +228,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	SSpoints_of_interest.make_point_of_interest(src)
 	radio = new(src)
 	radio.keyslot = new radio_key
-	radio.set_listening(FALSE)
+	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
 	investigate_log("has been created.", INVESTIGATE_ENGINE)
 	if(is_main_engine)

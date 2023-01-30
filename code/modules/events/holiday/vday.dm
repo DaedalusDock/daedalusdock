@@ -56,7 +56,7 @@
 	name = "valentine"
 	desc = "A Valentine's card! Wonder what it says..."
 	icon = 'icons/obj/playing_cards.dmi'
-	icon_state = "sc_Ace of Hearts_syndicate" // shut up // bye felicia 
+	icon_state = "sc_Ace of Hearts_syndicate" // shut up // bye felicia
 	var/message = "A generic message of love or whatever."
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY

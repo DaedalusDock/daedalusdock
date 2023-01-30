@@ -1,7 +1,7 @@
 /*
  *	Atmospherics Machinery.
 */
-#define ATMOS_USE_POWER(num) use_power(num, AREA_USAGE_ENVIRON)
+#define ATMOS_USE_POWER(num) if(num>0) use_power(num, AREA_USAGE_ENVIRON)
 
 #define MAX_SIPHON_FLOWRATE   2500 // L/s. This can be used to balance how fast a room is siphoned. Anything higher than CELL_VOLUME has no effect.
 #define MAX_SCRUBBER_FLOWRATE 200  // L/s. Max flow rate when scrubbing from a turf.

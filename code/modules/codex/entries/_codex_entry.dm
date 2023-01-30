@@ -19,6 +19,9 @@
 	var/disambiguator
 	var/list/categories
 
+	///Allows you to mark a type as "abstract" and to not generate it.
+	var/abstract_type
+
 /datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 
 	SScodex.all_entries += src

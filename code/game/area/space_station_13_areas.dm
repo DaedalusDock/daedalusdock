@@ -65,6 +65,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "storage"
 	static_lighting = FALSE //The unit test area should always be luminosity = 1
 	base_lighting_alpha = 255
+	requires_power = FALSE
+	luminosity = 1
 
 
 //EXTRA

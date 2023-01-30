@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: You can no longer remove magazines from guns that have the bolt closed.
-  - imageadd: Return of the classic labcoats
-  - rscadd: Medical Director now gets a tranquilizer rifle with 10 Haloperidol rounds
-      and 5 Mutadone rounds. Use wisely!

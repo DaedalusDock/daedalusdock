@@ -690,19 +690,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	qdel(template)
 
 /mob/dead/observer/proc/set_ghost_appearance(mob/living/to_copy)
-	appearance = null
 	if(!to_copy || !to_copy.icon)
 		icon = initial(icon)
 		icon_state = "ghost"
 		alpha = 255
 		overlays.Cut()
 	else
-		appearance = to_copy.appearance
-		underlays.Cut()
+		icon = to_copy.icon
+		icon_state = to_copy.icon_state
+		overlays = to_copy.overlays
 		alpha = 127
-
-	set_invisibility(GLOB.observer_default_invisibility)
-
 
 /mob/dead/observer/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
 	return isAdminGhostAI(usr)

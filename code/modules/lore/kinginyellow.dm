@@ -26,8 +26,10 @@
 	if(!length(cursed))
 		return
 
-	var/mob/living/L = pick(cursed):resolve()
+	var/datum/weakref/weakref = pick(cursed)
+	var/mob/living/L = weakref.resolve()
 	if(QDELETED(L))
+		cursed -= weakref
 		return
 
 	var/turf/possible_loc = get_oov_turf(L)

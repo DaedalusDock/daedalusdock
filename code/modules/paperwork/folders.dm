@@ -134,7 +134,7 @@
 	if(sealed)
 		icon_state = "[icon_base]_sealed"
 	else
-		icon_state = "[icon_base][contents.len > 0]"
+		icon_state = "[icon_base][!!length(contents)]" //heehoo boolean magic
 
 /obj/item/folder/envelope/proc/sealcheck(mob/user)
 	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")

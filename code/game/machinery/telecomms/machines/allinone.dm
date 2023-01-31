@@ -22,6 +22,7 @@
 		freq_listening = list(FREQ_SYNDICATE)
 
 /obj/machinery/telecomms/allinone/receive_signal(datum/signal/subspace/signal)
+	set waitfor = FALSE //heehoo TELECOMMS IS HOT GARBAGE
 	if(!istype(signal) || signal.transmission_method != TRANSMISSION_SUBSPACE)  // receives on subspace only
 		return
 	if(!on || !is_freq_listening(signal))  // has to be on to receive messages

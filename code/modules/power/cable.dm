@@ -351,6 +351,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 /obj/structure/cable/proc/auto_propagate_cut_cable(obj/O)
 	if(O && !QDELETED(O))
 		var/datum/powernet/newPN = new()// creates a new powernet...
+		//NOTE: If packets are acting weird during very high SSpackets load (if you somehow manage to overload it to the point that you're losing packets from powernet rebuilds...), start looking here.
 		propagate_network(O, newPN)//... and propagates it to the other side of the cable
 
 //Makes a new network for the cable and propgates it. If we already have one, just die

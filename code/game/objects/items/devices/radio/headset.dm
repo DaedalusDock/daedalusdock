@@ -292,7 +292,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	user.set_machine(src)
 	if(keyslot || keyslot2)
 		for(var/ch_name in channels)
-			SSradio.remove_object(src, GLOB.radiochannels[ch_name])
+			SSpackets.remove_object(src, GLOB.radiochannels[ch_name])
 			secure_radio_connections[ch_name] = null
 
 		if(keyslot)

@@ -16,7 +16,7 @@
 	set_frequency(receive_frequency)
 
 /obj/machinery/computer/atmos_alert/Destroy()
-	SSradio.remove_object(src, receive_frequency)
+	SSpackets.remove_object(src, receive_frequency)
 	return ..()
 
 /obj/machinery/computer/atmos_alert/ui_interact(mob/user, datum/tgui/ui)
@@ -57,11 +57,12 @@
 	update_appearance()
 
 /obj/machinery/computer/atmos_alert/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, receive_frequency)
+	SSpackets.remove_object(src, receive_frequency)
 	receive_frequency = new_frequency
-	radio_connection = SSradio.add_object(src, receive_frequency, RADIO_ATMOSIA)
+	radio_connection = SSpackets.add_object(src, receive_frequency, RADIO_ATMOSIA)
 
 /obj/machinery/computer/atmos_alert/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //TODO: RECONCILE TAGS AND NETIDS
 	if(!signal)
 		return
 

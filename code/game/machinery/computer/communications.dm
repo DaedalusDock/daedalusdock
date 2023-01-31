@@ -736,12 +736,12 @@
 
 /obj/machinery/computer/communications/proc/post_status(command, data1, data2)
 
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = command))
+	var/datum/signal/status_signal = new(src, list("command" = command))
 	switch(command)
 		if("message")
 			status_signal.data["msg1"] = data1
@@ -749,7 +749,7 @@
 		if("alert")
 			status_signal.data["picture_state"] = data1
 
-	frequency.post_signal(src, status_signal)
+	frequency.post_signal(status_signal)
 
 /obj/machinery/computer/communications/Destroy()
 	GLOB.shuttle_caller_list -= src

@@ -2234,3 +2234,8 @@
 
 /atom/proc/speaker_location()
 	return src
+
+///What atom is actually "Hearing".
+//Currently only changed by Observers to be hearing through their orbit target.
+/atom/proc/hear_location()
+	return src

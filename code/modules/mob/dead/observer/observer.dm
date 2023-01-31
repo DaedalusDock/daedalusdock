@@ -917,3 +917,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!prefs || (client?.combo_hud_enabled && prefs.toggles & COMBOHUD_LIGHTING))
 		return ..()
 	return GLOB.ghost_lighting_options[prefs.read_preference(/datum/preference/choiced/ghost_lighting)]
+
+/mob/dead/observer/hear_location()
+	return orbit_target || ..()

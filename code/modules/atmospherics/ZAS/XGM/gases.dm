@@ -106,6 +106,7 @@
 	overlay_limit = MOLES_PHORON_VISIBLE
 	flags = XGM_GAS_FUEL | XGM_GAS_CONTAMINANT | XGM_GAS_FUSION_FUEL | XGM_GAS_COMMON
 	breathed_product = /datum/reagent/toxin/plasma
+	burn_product = GAS_CO2
 	symbol_html = "Ph"
 	symbol = "Ph"
 	base_value = 2

@@ -81,7 +81,7 @@
 	for(var/datum/weakref/weakref in cursed)
 		var/mob/living/L = weakref.resolve()
 		if(!L)
-			cursed -= null
+			cursed -= weakref
 			continue
 		to_chat(L, (weakref in cursed_stage_2) ? span_warning(text) : span_notice(text))
 

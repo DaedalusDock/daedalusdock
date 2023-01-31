@@ -22,6 +22,7 @@
 	///Range of the light emitted when on
 	var/light_on_inner_range = 0.5
 	var/light_on_outer_range = 2.5
+	var/light_on_power = 0.8
 
 	///Reference to our area
 	var/area/area
@@ -179,6 +180,8 @@
 	update_appearance()
 
 	make_terminal()
+
+	become_atmos_sensitive()
 
 	addtimer(CALLBACK(src, .proc/update), 5)
 
@@ -559,8 +562,6 @@
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
 		stoplag()
-/obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 2000) ? TRUE : FALSE
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

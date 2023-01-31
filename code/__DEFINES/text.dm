@@ -55,3 +55,9 @@
 #define CLOWN_NONSENSE_FILE "clown_nonsense.json"
 /// File location for cult shuttle curse descriptions
 #define CULT_SHUTTLE_CURSE "cult_shuttle_curse.json"
+
+/**
+ * Strip out the special beyond characters for \proper and \improper
+ * from text that will be sent to the browser.
+ */
+#define strip_improper(input_text) replacetext(replacetext(input_text, "\proper", ""), "\improper", "")

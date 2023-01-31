@@ -17,6 +17,15 @@
 	TEST_ASSERT_EQUAL(strip_menu.ui_status(user, ui_state), UI_INTERACTIVE, "Lying down was not interactive.")
 
 	user.forceMove(locate(run_loc_floor_bottom_left.x + 2, run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))
+	var/list/_view = view(user)
+	if(!(target in _view))
+		TEST_FAIL("Mob cannot see strippable item")
+		user.see_in_dark = 5
+		user.update_sight()
+		_view = view(user)
+		if(target in _view)
+			TEST_FAIL("Strippable item obscured by darkness.")
+
 	TEST_ASSERT_EQUAL(strip_menu.ui_status(user, ui_state), UI_UPDATE, "Being too far away while lying down was not update-only.")
 
 	user.set_body_position(STANDING_UP)

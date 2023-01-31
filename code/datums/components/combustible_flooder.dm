@@ -17,6 +17,7 @@
 	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_WELDER), .proc/welder_react)
 	if(isturf(parent))
 		RegisterSignal(parent, COMSIG_TURF_EXPOSE, .proc/hotspots_react)
+		parent:become_atmos_sensitive()
 
 /datum/component/combustible_flooder/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_PARENT_ATTACKBY)
@@ -25,6 +26,7 @@
 	UnregisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_WELDER))
 	if(isturf(parent))
 		UnregisterSignal(parent, COMSIG_TURF_EXPOSE)
+		parent:lose_atmos_sensitivity()
 
 /// Do the flooding. Trigger temperature is the temperature we will flood at if we dont have a temp set at the start. Trigger referring to whatever triggered it.
 /datum/component/combustible_flooder/proc/flood(mob/user, trigger_temperature)

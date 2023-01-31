@@ -1538,6 +1538,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		return
 	active = FALSE
 	target.clear_alert(ALERT_FIRE, clear_override = TRUE)
+	target.adjust_fire_stacks(-0.1)
 	if(target.client)
 		target.client.images -= fire_overlay
 	QDEL_NULL(fire_overlay)

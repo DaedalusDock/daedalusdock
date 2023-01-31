@@ -172,7 +172,7 @@
 	if(radio_key)
 		internal_radio.keyslot = new radio_key
 	internal_radio.subspace_transmission = TRUE
-	internal_radio.canhear_range = 0 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
+	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
 	internal_radio.recalculateChannels()
 
 	//Adds bot to the diagnostic HUD system

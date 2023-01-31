@@ -36,7 +36,7 @@
 	///used for tracking what listening should be in the absence of things forcing it off, eg its set to listen but gets emp'd temporarily
 	var/should_be_listening = TRUE
 
-	/// Both the range around the radio in which mobs can hear what it receives and the range the radio can hear
+	/// Both the range around the radio in which mobs can hear what it receives and the range the radio can hear. If it's -1, it will not broadcast sound or listen.
 	var/canhear_range = 3
 	/// Tracks the number of EMPs currently stacked.
 	var/emped = 0

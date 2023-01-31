@@ -2,6 +2,7 @@
 	name = "You shouldn't see this!"
 	icon = 'goon/icons/mob/interact.dmi'
 	icon_state = "interact"
+	mouse_opacity = 0
 	alpha = 180
 	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	layer = ABOVE_ALL_MOB_LAYER

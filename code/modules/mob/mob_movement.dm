@@ -163,7 +163,7 @@
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
 	var/atom/movable/P = mob.pulling
-	if(P && !ismob(P) && P.density)
+	if(P && !ismob(P) && P.density && !HAS_TRAIT(P, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
 		mob.setDir(turn(mob.dir, 180))
 
 /**

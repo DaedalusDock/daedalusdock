@@ -172,7 +172,7 @@
 	return ..()
 
 ///Returns a turf that is barely out of view of the target.
-/proc/get_oov_turf(var/atom/target)
+/proc/get_oov_turf(atom/target)
 	var/list/turfs_in_range = RANGE_TURFS(10, target)
 	var/list/turfs_in_view = list()
 

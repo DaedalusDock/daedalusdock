@@ -136,7 +136,9 @@
 
 /////////////////////// MISC PERFORMANCE
 //uncomment this to load centcom and runtime station and thats it.
-// #define LOWMEMORYMODE
+#define LOWMEMORYMODE
+//force a map for lowmemorymode
+#define FORCE_MAP "atlas"
 
 ///A reasonable number of maximum overlays an object needs
 ///If you think you need more, rethink it
@@ -206,7 +208,9 @@
 #endif
 
 #ifdef LOWMEMORYMODE
+#if !defined(FORCE_MAP)
 #define FORCE_MAP "runtimestation"
+#endif
 #define FORCE_MAP_DIRECTORY "_maps"
 #endif
 

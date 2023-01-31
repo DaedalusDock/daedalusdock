@@ -23,12 +23,13 @@
 	air_contents.volume = volume
 	air_contents.temperature = T20C
 	SSairmachines.start_processing_machine(src)
+	become_atmos_sensitive()
 
 /obj/machinery/portable_atmospherics/Destroy()
 	disconnect()
 	air_contents = null
 	SSairmachines.stop_processing_machine(src)
-
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/portable_atmospherics/ex_act(severity, target)

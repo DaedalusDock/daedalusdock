@@ -48,3 +48,19 @@
 	reagent_state = SOLID
 	color = "#837e79"
 	toxpwr = 7
+
+/datum/reagent/toxin/radon
+	name = "Radon"
+	description = "A chemical that causes acute lung tumors to develop."
+	taste_description = null
+	reagent_state = LIQUID
+	toxpwr = 2
+	taste_mult = 0
+
+/datum/reagent/toxin/radon/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	. = ..()
+	var/obj/item/organ/internal/lungs/lungs = M.getorganslot(ORGAN_SLOT_LUNGS)
+	if(!istype(lungs, /obj/item/organ/internal/lungs/ashwalker))
+		return
+
+	lungs.applyOrganDamage(2 * REAGENTS_EFFECT_MULTIPLIER)

@@ -59,6 +59,9 @@
 	resistance_flags = NONE
 	var/foldabletype = /obj/item/roller
 
+/obj/structure/bed/roller/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 
 /obj/structure/bed/roller/examine(mob/user)
 	. = ..()

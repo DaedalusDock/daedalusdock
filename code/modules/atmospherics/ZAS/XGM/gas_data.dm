@@ -47,7 +47,7 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 	var/overlay_limit = null
 
 	var/flags = 0
-	var/burn_product = GAS_CO2
+	var/burn_product = null
 	var/breathed_product
 	var/condensation_point = INFINITY
 	var/condensation_product

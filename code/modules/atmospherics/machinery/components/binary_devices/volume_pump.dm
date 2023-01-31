@@ -52,7 +52,7 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/update_icon_nopipes()
@@ -105,10 +105,10 @@
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/volume_pump/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -117,14 +117,14 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "APV",
 		"power" = on,
 		"transfer_rate" = transfer_rate,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal)
+	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

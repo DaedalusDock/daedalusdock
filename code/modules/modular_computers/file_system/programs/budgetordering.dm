@@ -282,11 +282,11 @@
 		post_signal(cargo_shuttle)
 
 /datum/computer_file/program/budgetorders/proc/post_signal(command)
-
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	SHOULD_CALL_PARENT(FALSE) //TODO: Tie to cablenet
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = command))
-	frequency.post_signal(src, status_signal)
+	var/datum/signal/status_signal = new(computer, list("command" = command))
+	frequency.post_signal(status_signal)

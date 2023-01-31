@@ -94,7 +94,7 @@
 #define MAX_FREE_FREQ 1599 // -------------------------------------------------
 
 // Transmission types.
-#define TRANSMISSION_WIRE 0  // some sort of wired connection, not used
+#define TRANSMISSION_WIRE 0  // Powernet data_node transport. Only took several years!
 #define TRANSMISSION_RADIO 1  // electromagnetic radiation (default)
 #define TRANSMISSION_SUBSPACE 2  // subspace transmission (headsets only)
 #define TRANSMISSION_SUPERSPACE 3  // reaches independent (CentCom) radios only

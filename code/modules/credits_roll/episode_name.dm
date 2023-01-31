@@ -58,7 +58,7 @@
 		if(4500 to INFINITY)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S DAY OUT", "THIS SIDE OF PARADISE", "[uppr_name]: A SITUATION COMEDY", "THE CREW'S LUNCH BREAK", "THE CREW'S BACK IN BUSINESS", "THE CREW'S BIG BREAK", "THE CREW SAVES THE DAY", "THE CREW RULES THE WORLD", "THE ONE WITH ALL THE SCIENCE AND PROGRESS AND PROMOTIONS AND ALL THE COOL AND GOOD THINGS", "THE TURNING POINT")]", "High score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 
-	if(istype(SSticker.mode, /datum/game_mode/dynamic))
+	if(IS_DYNAMIC_GAME_MODE)
 		var/datum/game_mode/dynamic/dynameme = SSticker.mode
 		switch(dynameme.threat_level)
 			if(0 to 35)

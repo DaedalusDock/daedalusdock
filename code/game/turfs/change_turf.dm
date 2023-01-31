@@ -99,6 +99,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	SSzas.mark_for_update(src) //handle the addition of the new turf.
 
+	if (permit_ao)
+		regenerate_ao()
+
 	// WARNING WARNING
 	// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS
 	// It's possible because turfs are fucked, and if you have one in a list and it's replaced with another one, the list ref points to the new turf

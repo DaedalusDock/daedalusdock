@@ -98,8 +98,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		air_contents.copyFrom(existing_mixture)
 	else
 		create_gas()
-
-	desc = "[xgm_gas_data.name[gas_type]]."
+	if(gas_type)
+		desc = "[xgm_gas_data.name[gas_type]]."
 
 	update_window()
 
@@ -364,9 +364,6 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		window_overlays += new_visual*/
 	window.overlays = window_overlays
 	add_overlay(window)
-
-/obj/machinery/portable_atmospherics/canister/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > temperature_resistance && !shielding_powered)
 
 /obj/machinery/portable_atmospherics/canister/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > temperature_resistance &&!shielding_powered)

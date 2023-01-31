@@ -18,7 +18,6 @@
 	throwforce = 10
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSMOB
-	flags_2 = NO_TEMP_CHANGE_2 //We're going to assume mobs handle their own temperature on life
 
 	/// The current client inhabiting this mob. Managed by login/logout
 	/// This exists so we can do cleanup in logout for occasions where a client was transfere rather then destroyed

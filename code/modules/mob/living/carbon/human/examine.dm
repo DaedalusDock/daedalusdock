@@ -20,6 +20,8 @@
 	var/species_text
 	if(dna.species && !skipface)
 		species_text = ", \a [dna.species.name]"
+		if(SScodex.get_codex_entry(get_codex_value(user)))
+			species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
 
 	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
 

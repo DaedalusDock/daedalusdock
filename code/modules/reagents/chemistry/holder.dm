@@ -1228,7 +1228,7 @@
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		reagents[reagent] = reagent.volume * volume_modifier
 
-	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message)
+	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message, chem_temp)
 
 
 /// Same as [/datum/reagents/proc/expose] but only for one reagent
@@ -1242,7 +1242,7 @@
 		return null
 
 	// Yes, we need the parentheses.
-	return A.expose_reagents(list((R) = R.volume * volume_modifier), src, methods, volume_modifier, show_message)
+	return A.expose_reagents(list((R) = R.volume * volume_modifier), src, methods, volume_modifier, show_message, chem_temp)
 
 /// Is this holder full or not
 /datum/reagents/proc/holder_full()

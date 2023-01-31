@@ -343,6 +343,12 @@ const GASES = [
     'label': 'B',
     'color': 'limegreen',
   },
+  {
+    'id': 'radon',
+    'name': 'Radon',
+    'label': 'Rn',
+    'color': 'grey',
+  },
 ];
 
 export const getGasLabel = (gasId, fallbackValue) => {

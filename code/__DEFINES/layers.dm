@@ -47,6 +47,7 @@
 #define TURF_PLATING_DECAL_LAYER 2.031
 #define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
 #define ABOVE_OPEN_TURF_LAYER 2.04
+#define AO_LAYER 2.045
 #define CLOSED_TURF_LAYER 2.05
 #define BULLET_HOLE_LAYER 2.06
 #define ABOVE_NORMAL_TURF_LAYER 2.08
@@ -99,6 +100,7 @@
 #define LOW_MOB_LAYER 3.75
 #define LYING_MOB_LAYER 3.8
 #define VEHICLE_LAYER 3.9
+#define VEHICLE_RIDING_LAYER 3.92
 #define MOB_BELOW_PIGGYBACK_LAYER 3.94
 //#define MOB_LAYER 4 //For easy recordkeeping; this is a byond define
 #define MOB_SHIELD_LAYER 4.01
@@ -139,6 +141,7 @@
 //---------- LIGHTING -------------
 ///Normal 1 per turf dynamic lighting underlays
 #define LIGHTING_PLANE 100
+#define LIGHTING_PLANE_ADDITIVE 101
 
 ///Lighting objects that are "free floating"
 #define O_LIGHTING_VISUAL_PLANE 110
@@ -174,9 +177,6 @@
 
 ///AI Camera Static
 #define CAMERA_STATIC_PLANE 200
-
-///Debug Atmos Overlays
-#define ATMOS_GROUP_PLANE 450
 
 ///--------------- FULLSCREEN IMAGES ------------
 

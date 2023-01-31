@@ -1,0 +1,8 @@
+author: Funny Leg Jiggle, Soul of Springs
+delete-after: true
+changes:
+  - rscadd: Adds trolleys to Cargo! These can be loaded with upto 3 crates or ridden
+      by 1 person. Additional Trolleys can be purchased by Cargo. Sprites contributed
+      by @Soul_of_Springs on Twitter.
+  - rscadd: Janicarts, roller beds and trolleys will now no longer make you face backwards
+      while pulling them.

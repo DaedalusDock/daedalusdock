@@ -40,6 +40,11 @@
 		COMSIG_ATOM_ENTERED = .proc/on_entered,
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	become_atmos_sensitive()
+
+/obj/item/clothing/mask/facehugger/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
 
 /obj/item/clothing/mask/facehugger/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	..()

@@ -305,6 +305,7 @@
 /obj/item/restraints/handcuffs/tape
 	name = "length of tape"
 	desc = "Seems you are in a sticky situation."
+	icon_state = "handcuffTape"
 	breakouttime = 15 SECONDS
 	item_flags = DROPDEL
 

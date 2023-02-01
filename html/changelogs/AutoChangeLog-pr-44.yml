@@ -1,7 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - rscadd: Powernet packet transport.
-  - rscadd: Voice Phone system.
-  - bugfix: Abstract items can no longer exist in a state of flux where they are in
-      2 superpositions at once.

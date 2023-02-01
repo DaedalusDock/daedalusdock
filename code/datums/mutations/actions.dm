@@ -440,7 +440,7 @@
 		return FALSE
 
 	user.visible_message(span_notice("[user] begins to secrete a sticky substance."),span_notice("You begin to lay a web."))
-	if(!do_after(user, 4 SECONDS, target = T))
+	if(!do_after(user, T, 4 SECONDS))
 		to_chat(user, span_warning("Your web spinning was interrupted!"))
 		return
 	else

@@ -14,7 +14,7 @@
 	max_integrity = 150
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_LOW_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 	greyscale_config = /datum/greyscale_config/low_wall
 	/// Material used in construction
@@ -89,6 +89,9 @@
 	var/neighbor_stripe = NONE
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(src, cardinal)
+		var/obj/structure/low_wall/neighbor = locate() in step_turf
+		if(neighbor)
+			continue
 		if(!can_area_smooth(step_turf))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
@@ -211,7 +214,7 @@
 
 /obj/structure/low_wall/titanium
 	plating_material = /datum/material/titanium
-	canSmoothWith = list(SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
 
 /obj/structure/low_wall/plastitanium
 	plating_material = /datum/material/alloy/plastitanium

@@ -19,6 +19,15 @@
 		FREQ_CTF_BLUE,
 	)
 
+/obj/machinery/telecomms/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //Fuck
+	. = ..()
+
+/obj/machinery/telecomms/post_signal(datum/signal/sending_signal, preserve_s_addr)
+	SHOULD_CALL_PARENT(FALSE) //You
+	. = ..()
+
+
 /obj/machinery/telecomms/attackby(obj/item/P, mob/user, params)
 
 	var/icon_closed = initial(icon_state)

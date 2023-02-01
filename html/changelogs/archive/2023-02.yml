@@ -1,0 +1,16 @@
+2023-02-01:
+  Funny Leg Jiggle, Soul of Springs:
+  - rscadd: Adds trolleys to Cargo! These can be loaded with upto 3 crates or ridden
+      by 1 person. Additional Trolleys can be purchased by Cargo. Sprites contributed
+      by @Soul_of_Springs on Twitter.
+  - rscadd: Janicarts, roller beds and trolleys will now no longer make you face backwards
+      while pulling them.
+  Kapu1178:
+  - bugfix: Ghost transform is reset properly.
+  - rscdel: tg's shit economy
+  - bugfix: Removed Nullium
+  francinum:
+  - rscadd: Powernet packet transport.
+  - rscadd: Voice Phone system.
+  - bugfix: Abstract items can no longer exist in a state of flux where they are in
+      2 superpositions at once.

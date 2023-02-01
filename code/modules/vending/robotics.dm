@@ -28,6 +28,8 @@
 	default_price = PAYCHECK_HARD
 	payment_department = ACCOUNT_SCI
 
+	discount_access = ACCESS_ROBOTICS
+
 /obj/item/vending_refill/robotics
 	machine_name = "Robotech Deluxe"
 	icon_state = "refill_engi"

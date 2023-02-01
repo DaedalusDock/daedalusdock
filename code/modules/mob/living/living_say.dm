@@ -128,7 +128,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/list/message_mods = list()
 	var/original_message = message
 	message = get_message_mods(message, message_mods)
-	var/datum/saymode/saymode = SSradio.saymodes[message_mods[RADIO_KEY]]
+	var/datum/saymode/saymode = SSpackets.saymodes[message_mods[RADIO_KEY]]
 	if (!forced)
 		message = check_for_custom_say_emote(message, message_mods)
 
@@ -250,7 +250,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		spans |= SPAN_ITALICS
 
 
-	var/radio_return = radio(radio_message, message_mods, spans, language)//roughly 27% of living/say()'s total cost
+	//REMEMBER KIDS, LISTS ARE REFERENCES. RADIO PACKETS GET QUEUED.
+	var/radio_return = radio(radio_message, message_mods.Copy(), spans.Copy(), language)//roughly 27% of living/say()'s total cost
 	if(radio_return & ITALICS)
 		spans |= SPAN_ITALICS
 	if(radio_return & REDUCE_RANGE)

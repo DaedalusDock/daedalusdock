@@ -35,6 +35,8 @@
 	extra_price = PAYCHECK_HARD * 1.5
 	payment_department = ACCOUNT_SEC
 
+	discount_access = ACCESS_SECURITY
+
 /obj/machinery/vending/security/pre_throw(obj/item/I)
 	if(istype(I, /obj/item/grenade))
 		var/obj/item/grenade/G = I

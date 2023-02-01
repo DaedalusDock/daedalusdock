@@ -277,3 +277,15 @@
 	var/obj/vehicle/ridden/wheelchair/motorized/our_chair = parent
 	if(istype(our_chair) && our_chair.power_cell)
 		our_chair.power_cell.use(our_chair.power_usage / max(our_chair.power_efficiency, 1) * 0.05)
+
+/datum/component/riding/vehicle/trolley
+
+/datum/component/riding/vehicle/trolley/handle_specials()
+	. = ..()
+	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0, 6), TEXT_SOUTH = list(0, 7), TEXT_EAST = list(3, 9), TEXT_WEST = list(-3, 9)))
+	// Without this, it changes between 3 and 4.1 on directions
+	// This ensures it always is above lying mobs to run over while being beneath the rider
+	set_vehicle_dir_layer(SOUTH, VEHICLE_LAYER)
+	set_vehicle_dir_layer(NORTH, VEHICLE_LAYER)
+	set_vehicle_dir_layer(EAST, VEHICLE_LAYER)
+	set_vehicle_dir_layer(WEST, VEHICLE_LAYER)

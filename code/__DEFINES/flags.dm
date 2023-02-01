@@ -64,7 +64,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 ///Uses atom temperature. Opt-in.
 #define ATMOS_SENSITIVE_2 (1<<1)
 
-
 // Update flags for [/atom/proc/update_appearance]
 /// Update the atom's name
 #define UPDATE_NAME (1<<0)

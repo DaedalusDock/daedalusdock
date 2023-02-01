@@ -8,7 +8,7 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/Initialize(mapload)
 	id_tag = chamber_id + "_in"
-	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/atmos_init()
@@ -16,12 +16,12 @@
 	broadcast_status()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/Destroy()
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/on_deconstruction()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	broadcast_destruction(frequency)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/ui_act(action, params)
 	. = ..()
@@ -32,7 +32,7 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id_tag,
 		"sigtype" = "status",
 		"device" = "AO",
@@ -40,16 +40,16 @@
 		"volume_rate" = volume_rate,
 		"timestamp" = world.time,
 	))
-	radio_connection.post_signal(src, signal)
+	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
 	))
-	var/datum/radio_frequency/connection = SSradio.return_frequency(frequency)
-	connection.post_signal(null, signal, filter = RADIO_ATMOSIA)
+	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
+	connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))

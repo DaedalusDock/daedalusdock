@@ -8,14 +8,14 @@
 	. = ..()
 
 /datum/computer/file/embedded_program/proc/post_signal(datum/signal/signal, comm_line)
+	SHOULD_CALL_PARENT(FALSE) // This is more of a relay than anything else.
 	if(master)
 		master.post_signal(signal, comm_line)
-	else
-		qdel(signal)
+	//Else, drop it. This used to delete signals. That's *b a d*
 
 /datum/computer/file/embedded_program/proc/receive_user_command(command)
 
-/datum/computer/file/embedded_program/proc/receive_signal(datum/signal/signal)
+/datum/computer/file/embedded_program/receive_signal(datum/signal/signal)
 	return null
 
 /datum/computer/file/embedded_program/process()
@@ -43,10 +43,12 @@
 
 /obj/machinery/embedded_controller/proc/return_text()
 
-/obj/machinery/embedded_controller/proc/post_signal(datum/signal/signal, comm_line)
+/obj/machinery/embedded_controller/post_signal(datum/signal/signal, comm_line)
+	SHOULD_CALL_PARENT(FALSE) //This... Probably has a reason... I guess??????
 	return
 
 /obj/machinery/embedded_controller/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) // This is technically a relay so this is okay.
 	if(istype(signal) && program)
 		program.receive_signal(signal)
 
@@ -77,7 +79,7 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/machinery/embedded_controller/radio/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/embedded_controller/radio/Initialize(mapload)
@@ -87,11 +89,11 @@
 /obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal)
 	signal.transmission_method = TRANSMISSION_RADIO
 	if(radio_connection)
-		return radio_connection.post_signal(src, signal)
+		return radio_connection.post_signal(signal)
 	else
 		signal = null
 
 /obj/machinery/embedded_controller/radio/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency)
+	radio_connection = SSpackets.add_object(src, frequency)

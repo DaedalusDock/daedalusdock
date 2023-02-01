@@ -2,6 +2,7 @@
 	// Bird-like humanoids
 	name = "Vox"
 	id = SPECIES_VOX
+	plural_form = "Vox"
 	say_mod = "skrees"
 	scream_verb = "shrieks"
 	default_color = "#1e5404"

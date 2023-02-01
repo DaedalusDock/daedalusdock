@@ -40,3 +40,45 @@
   Lohikar, Kapu1178:
   - refactor: Ambient Occlusion only applies to turfs.
   - rscdel: AO pref
+2023-01-22:
+  Kapu1178:
+  - rscadd: Spends half our ZAS free performance budget on Bloom
+2023-01-26:
+  Cenrus:
+  - bugfix: Fixed blast door/low wall smoothing
+  - bugfix: Paper on airlocks is no longer invisible
+2023-01-27:
+  Cenrus:
+  - bugfix: resets firestacks at the end of fake fire hallucination
+2023-01-29:
+  Kapu1178:
+  - bugfix: Teshari feather coloration
+  - tweak: Text stacking now adds (n) to the font size, instead of (2n).
+  - tweak: Text stacking is now whitelisted to local chat & combat text.
+  - rscadd: Ghosts now appear as your character
+  - rscdel: Most of the ghost preferences have been retired. BYOND members may still
+      choose their rotation type!
+  - qol: Intercoms start disabled
+  - rscdel: Holidays can no longer affect floor decals
+  - config: DISABLE_HOLIDAY_FLOOR_EFFECTS has been removed.
+  - bugfix: 'Digitigrade lizards now properly wear outfits for: Cargo Tech, Engine
+      Technician, Electrician'
+  francinum:
+  - imageadd: TGUI interfaces have had their corners un-cut.
+2023-01-30:
+  Kapu1178:
+  - bugfix: You can no longer remove magazines from guns that have the bolt closed.
+  - imageadd: Return of the classic labcoats
+  - rscadd: Medical Director now gets a tranquilizer rifle with 10 Haloperidol rounds
+      and 5 Mutadone rounds. Use wisely!
+  LemonInTheDark, GoldenAlpharex:
+  - qol: Roundstart takes significantly less time
+  Nebula, Baystation12, Kapu1178:
+  - rscadd: The Codex, an in-game tool to find OOC and IC information on many things
+      in the game.
+  - rscadd: Codex verbs
+2023-01-31:
+  Kapu1178:
+  - qol: Surgery stage messages have been moved to the chat.
+  - rscadd: Codex entries for basic tools.
+  - bugfix: The living no longer see the dead stalk the halls.

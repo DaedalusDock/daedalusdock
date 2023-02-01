@@ -346,7 +346,7 @@
 	preference = "teshari_feathers"
 
 	dna_block = DNA_TESHARI_FEATHERS_BLOCK
-	color_source = ORGAN_COLOR_OVERRIDE
+	color_source = ORGAN_COLOR_HAIR
 
 /obj/item/organ/external/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
@@ -355,11 +355,6 @@
 
 /obj/item/organ/external/teshari_feathers/get_global_feature_list()
 	return GLOB.teshari_feathers_list
-
-/obj/item/organ/external/teshari_feathers/override_color(rgb_value)
-	if(ishuman(ownerlimb?.owner))
-		var/mob/living/carbon/human/human_owner = ownerlimb.owner
-		return human_owner.hair_color
 
 // Teshari ears
 /obj/item/organ/external/teshari_ears

@@ -64,7 +64,7 @@
 		user.visible_message(span_notice("[user.name] adds cables to the APC frame."), \
 							span_notice("You start adding cables to the APC frame..."))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
-		if(!do_after(user, 20, target = src))
+		if(!do_after(user, src, 20))
 			return
 		if(installing_cable.get_amount() < 10 || !installing_cable)
 			return
@@ -94,7 +94,7 @@
 							span_notice("You start to insert the power control board into the frame..."))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 
-		if(!do_after(user, 10, target = src) || has_electronics)
+		if(!do_after(user, src, 10) || has_electronics)
 			return
 
 		has_electronics = APC_ELECTRONICS_INSTALLED
@@ -142,7 +142,7 @@
 		if(!(machine_stat & BROKEN) && opened==APC_COVER_REMOVED) // Cover is the only thing broken, we do not need to remove elctronicks to replace cover
 			user.visible_message(span_notice("[user.name] replaces missing APC's cover."), \
 							span_notice("You begin to replace APC's cover..."))
-			if(do_after(user, 20, target = src)) // replacing cover is quicker than replacing whole frame
+			if(do_after(user, src, 20)) // replacing cover is quicker than replacing whole frame
 				to_chat(user, span_notice("You replace missing APC's cover."))
 				qdel(attacking_object)
 				opened = APC_COVER_OPENED
@@ -153,7 +153,7 @@
 			return
 		user.visible_message(span_notice("[user.name] replaces the damaged APC frame with a new one."), \
 							span_notice("You begin to replace the damaged APC frame..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			to_chat(user, span_notice("You replace the damaged APC frame with a new one."))
 			qdel(attacking_object)
 			set_machine_stat(machine_stat & ~BROKEN)

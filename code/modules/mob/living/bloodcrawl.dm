@@ -142,7 +142,7 @@
 			to_chat(src, span_warning("Finish eating first!"))
 			return FALSE
 		target.visible_message(span_warning("[target] starts to bubble..."))
-		if(!do_after(src, 20, target = target))
+		if(!do_after(src, target, 20))
 			return FALSE
 	forceMove(get_turf(target))
 	client.eye = src

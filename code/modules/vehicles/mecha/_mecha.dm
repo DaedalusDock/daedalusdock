@@ -1061,7 +1061,7 @@
 
 	visible_message(span_notice("[user] starts to insert an MMI into [name]."))
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		to_chat(user, span_notice("You stop inserting the MMI."))
 		return FALSE
 	if(LAZYLEN(occupants) < max_occupants)

@@ -356,7 +356,7 @@
 				to_chat(user, span_warning("You are too tired to work!"))
 				return
 			to_chat(user, span_notice("You start grinding..."))
-			if((do_after(user, 25, target = src)) && grinded)
+			if((do_after(user, src, 25)) && grinded)
 				user.adjustStaminaLoss(40)
 				if(grinded.juice_results) //prioritize juicing
 					grinded.on_juice()

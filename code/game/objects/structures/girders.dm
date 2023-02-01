@@ -317,7 +317,7 @@
 			to_chat(user, span_warning("You need at least one sheet of runed metal to construct a runed wall!"))
 			return
 		user.visible_message(span_notice("[user] begins laying runed metal on [src]..."), span_notice("You begin constructing a runed wall..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			if(R.get_amount() < 1)
 				return
 			user.visible_message(span_notice("[user] plates [src] with runed metal."), span_notice("You construct a runed wall."))
@@ -387,7 +387,7 @@
 			to_chat(user, span_warning("You need at least two bronze sheets to build a bronze wall!"))
 			return
 		user.visible_message(span_notice("[user] begins plating [src] with bronze..."), span_notice("You begin constructing a bronze wall..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			if(B.get_amount() < 2)
 				return
 			user.visible_message(span_notice("[user] plates [src] with bronze!"), span_notice("You construct a bronze wall."))

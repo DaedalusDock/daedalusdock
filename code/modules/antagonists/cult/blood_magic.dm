@@ -597,7 +597,7 @@
 				playsound(T, 'sound/machines/airlock_alien_prying.ogg', 80, TRUE)
 				var/prev_color = candidate.color
 				candidate.color = "black"
-				if(do_after(user, 90, target = candidate))
+				if(do_after(user, candidate, 90))
 					candidate.undeploy()
 					candidate.emp_act(EMP_HEAVY)
 					var/construct_class = show_radial_menu(user, src, GLOB.construct_radial_images, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
@@ -627,7 +627,7 @@
 			channeling = TRUE
 			playsound(T, 'sound/machines/doors/airlock_open_force.ogg', 50, TRUE)
 			do_sparks(5, TRUE, target)
-			if(do_after(user, 50, target = user))
+			if(do_after(user, user, 50))
 				if(QDELETED(target))
 					channeling = FALSE
 					return

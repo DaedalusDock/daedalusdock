@@ -248,13 +248,13 @@
 	if(istype(design_holder, /obj/item/disk/surgery))
 		to_chat(user, span_notice("You load the surgery protocol from [design_holder] into [src]."))
 		var/obj/item/disk/surgery/surgery_disk = design_holder
-		if(do_after(user, 10, target = design_holder))
+		if(do_after(user, design_holder, 10))
 			advanced_surgeries |= surgery_disk.surgeries
 		return TRUE
 	if(istype(design_holder, /obj/machinery/computer/operating))
 		to_chat(user, span_notice("You copy surgery protocols from [design_holder] into [src]."))
 		var/obj/machinery/computer/operating/OC = design_holder
-		if(do_after(user, 10, target = design_holder))
+		if(do_after(user, design_holder, 10))
 			advanced_surgeries |= OC.advanced_surgeries
 		return TRUE
 	return

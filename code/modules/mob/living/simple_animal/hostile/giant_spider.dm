@@ -161,7 +161,7 @@
 		return
 	visible_message(span_notice("[src] begins wrapping the wounds of [hurt_spider]."),span_notice("You begin wrapping the wounds of [hurt_spider]."))
 	is_busy = TRUE
-	if(do_after(src, 20, target = hurt_spider))
+	if(do_after(src, hurt_spider, 20))
 		hurt_spider.heal_overall_damage(20, 20)
 		new /obj/effect/temp_visual/heal(get_turf(hurt_spider), "#80F5FF")
 		visible_message(span_notice("[src] wraps the wounds of [hurt_spider]."),span_notice("You wrap the wounds of [hurt_spider]."))
@@ -329,7 +329,7 @@
 	is_busy = TRUE
 	visible_message(span_notice("[src] begins to secrete a sticky substance around [cocoon_target]."),span_notice("You begin wrapping [cocoon_target] into a cocoon."))
 	stop_automated_movement = TRUE
-	if(do_after(src, 50, target = cocoon_target))
+	if(do_after(src, cocoon_target, 50))
 		if(is_busy)
 			var/obj/structure/spider/cocoon/casing = new(cocoon_target.loc)
 			if(isliving(cocoon_target))
@@ -686,7 +686,7 @@
 			return
 		visible_message(span_notice("[src] begins mending themselves..."),span_notice("You begin mending your wounds..."))
 		is_busy = TRUE
-		if(do_after(src, 20, target = src))
+		if(do_after(src, src, 20))
 			heal_overall_damage(50, 50)
 			new /obj/effect/temp_visual/heal(get_turf(src), "#80F5FF")
 			visible_message(span_notice("[src]'s wounds mend together."),span_notice("You mend your wounds together."))

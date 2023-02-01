@@ -53,7 +53,7 @@ Slimecrossing Potions
 		peace_target.visible_message(span_danger("[user] starts to drink [src]!"),
 			span_danger("You start to drink [src]!"))
 
-	if(!do_after(user, 100, target = peace_target))
+	if(!do_after(user, peace_target, 100))
 		return
 	if(peace_target != user)
 		to_chat(user, span_notice("You feed [peace_target] [src]!"))
@@ -90,7 +90,7 @@ Slimecrossing Potions
 	love_target.visible_message(span_danger("[user] starts to feed [love_target] a love potion!"),
 		span_userdanger("[user] starts to feed you a love potion!"))
 
-	if(!do_after(user, 50, target = love_target))
+	if(!do_after(user, love_target, 50))
 		return
 	to_chat(user, span_notice("You feed [love_target] the love potion!"))
 	to_chat(love_target, span_notice("You develop feelings for [user], and anyone [user.p_they()] like[user.p_s()]."))

@@ -40,7 +40,7 @@
 		playsound(user, 'sound/effects/pope_entry.ogg', 100)
 
 		to_chat(caster, span_green("You begin to focus your very being into [marked_item]..."))
-		if(!do_after(caster, 5 SECONDS, target = marked_item, timed_action_flags = IGNORE_HELD_ITEM))
+		if(!do_after(caster, marked_item, 5 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
 			to_chat(caster, span_warning("Your soul snaps back to your body as you stop ensouling [marked_item]!"))
 			return
 

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Chemicals that were not adding gas to the atmosphere properly, now do
+      so.

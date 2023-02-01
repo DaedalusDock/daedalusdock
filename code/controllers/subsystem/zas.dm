@@ -563,7 +563,7 @@ SUBSYSTEM_DEF(zas)
 		mix_real.gas[gas] = 1 //So update values doesn't cull it
 
 	//Radon  sci
-	if(!GAS_RADON in chosen_gases)
+	if(!(GAS_RADON in chosen_gases))
 		chosen_gases += GAS_RADON
 	mix_real.gas[GAS_RADON] = 5
 	num_gases++

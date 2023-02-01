@@ -26752,7 +26752,6 @@
 /area/hallway/primary/port)
 "eDm" = (
 /obj/structure/table,
-/obj/item/storage/box/deputy,
 /obj/item/stack/package_wrap,
 /obj/item/hand_labeler,
 /obj/machinery/camera/directional/west{
@@ -41828,11 +41827,6 @@
 "jGa" = (
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
 /obj/item/food/donut/plain,
 /obj/item/inspector,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -83718,9 +83712,6 @@
 /area/engineering/atmos)
 "xvm" = (
 /obj/structure/table/wood,
-/obj/item/storage/box/deputy{
-	pixel_y = 5
-	},
 /obj/item/taperecorder{
 	pixel_x = 5;
 	pixel_y = 5

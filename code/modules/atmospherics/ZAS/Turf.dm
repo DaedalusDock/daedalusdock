@@ -357,7 +357,7 @@
 	air.group_multiplier = 1
 
 ///Creates a gas_mixture datum with the given parameters and merges it into the turf's air source.
-/turf/proc/atmos_spawn_air(gas_id, amount, initial_temperature)
+/turf/proc/atmos_spawn_air(gas_id, amount, initial_temperature = T20C)
 	if(!simulated)
 		return
 	var/datum/gas_mixture/new_gas = new

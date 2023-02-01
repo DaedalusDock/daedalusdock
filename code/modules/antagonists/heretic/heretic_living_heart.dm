@@ -43,7 +43,7 @@
 
 	organ_parent.icon = 'icons/obj/eldritch.dmi'
 	organ_parent.icon_state = "living_heart"
-	action.UpdateButtons()
+	action.build_all_button_icons()
 
 /datum/component/living_heart/Destroy(force, silent)
 	QDEL_NULL(action)
@@ -92,7 +92,7 @@
 
 	return ..()
 
-/datum/action/item_action/organ_action/track_target/IsAvailable()
+/datum/action/item_action/organ_action/track_target/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return

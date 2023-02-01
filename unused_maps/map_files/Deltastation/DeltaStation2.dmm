@@ -3002,27 +3002,6 @@
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
-"aMR" = (
-/obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
-	pixel_x = -3;
-	pixel_y = 15
-	},
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
-	pixel_x = -6;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/food/drinks/bottle/beer{
-	desc = "Whatever it is, it reeks of foul, putrid froth.";
-	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing = 15);
-	name = "Delta-Down";
-	pixel_x = 5;
-	pixel_y = 5
-	},
-/turf/open/floor/wood{
-	icon_state = "wood-broken4"
-	},
-/area/commons/dorms)
 "aMT" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -11334,6 +11313,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/grimy,
 /area/service/lawoffice)
+"cKa" = (
+/obj/structure/table/wood,
+/obj/item/taperecorder{
+	pixel_x = 3
+	},
+/obj/item/flashlight/seclite,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/command/heads_quarters/hos)
 "cKc" = (
 /obj/machinery/light_switch/directional/west,
 /turf/open/floor/wood,
@@ -24074,19 +24062,6 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/miningoffice)
-"ePQ" = (
-/obj/structure/table/wood,
-/obj/item/folder/blue,
-/obj/item/clothing/under/rank/centcom/commander,
-/obj/item/clothing/head/centhat{
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0);
-	desc = "A replica hat of a Central Commander's attire. It has a small tag on it saying, 'It's good to be emperor.'";
-	name = "Replica CentCom hat"
-	},
-/obj/machinery/computer/security/telescreen/entertainment/directional/west,
-/obj/structure/cable,
-/turf/open/floor/iron/grimy,
-/area/command/corporate_showroom)
 "ePR" = (
 /obj/structure/flora/ausbushes/genericbush,
 /obj/structure/flora/ausbushes/pointybush,
@@ -27759,16 +27734,6 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos/project)
-"fUy" = (
-/obj/structure/table/wood,
-/obj/item/taperecorder{
-	pixel_x = 3
-	},
-/obj/item/storage/box/deputy,
-/obj/item/flashlight/seclite,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron/dark,
-/area/command/heads_quarters/hos)
 "fUI" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/maintenance_hatch{
@@ -29886,19 +29851,6 @@
 	},
 /turf/open/floor/iron/dark/corner,
 /area/engineering/lobby)
-"gyL" = (
-/obj/structure/table/wood,
-/obj/item/folder/red,
-/obj/item/toy/gun,
-/obj/item/clothing/head/beret/sec{
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0);
-	desc = "A replica beret resembling that of a special operations officer under Nanotrasen.";
-	name = "replica officer's beret"
-	},
-/obj/structure/cable,
-/obj/item/radio/intercom/directional/east,
-/turf/open/floor/iron/grimy,
-/area/command/corporate_showroom)
 "gyP" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -38057,6 +38009,14 @@
 	},
 /turf/open/floor/carpet/red,
 /area/hallway/secondary/service)
+"iPT" = (
+/obj/structure/table/wood/fancy,
+/obj/item/book/granter/action/spell/smoke/lesser,
+/obj/item/nullrod,
+/obj/item/organ/internal/heart,
+/obj/item/reagent_containers/food/drinks/bottle/holywater,
+/turf/open/floor/iron/grimy,
+/area/service/chapel/office)
 "iPX" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -41850,14 +41810,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
-"jXl" = (
-/obj/structure/table/wood/fancy,
-/obj/item/book/granter/spell/smoke/lesser,
-/obj/item/nullrod,
-/obj/item/organ/internal/heart,
-/obj/item/reagent_containers/food/drinks/bottle/holywater,
-/turf/open/floor/iron/grimy,
-/area/service/chapel/office)
 "jXt" = (
 /obj/structure/table/wood,
 /obj/item/folder/red,
@@ -45074,6 +45026,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
+"kVw" = (
+/obj/machinery/computer/atmos_control/noreconnect{
+	atmos_chambers = list("ordnancegas1"="Burn Chamber","ordnancegas2"="Freezer Chamber")
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron/dark,
+/area/science/mixing)
 "kVx" = (
 /obj/structure/table/reinforced,
 /obj/item/folder/white,
@@ -53907,6 +53866,19 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/hidden,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
+"nCH" = (
+/obj/structure/table/wood,
+/obj/item/folder/blue,
+/obj/item/clothing/under/rank/centcom/commander,
+/obj/item/clothing/head/centhat{
+	armor = list("melee"=0,"bullet"=0,"laser"=0,"energy"=0,"bomb"=0,"bio"=0);
+	desc = "A replica hat of a Central Commander's attire. It has a small tag on it saying, 'It's good to be emperor.'";
+	name = "Replica CentCom hat"
+	},
+/obj/machinery/computer/security/telescreen/entertainment/directional/west,
+/obj/structure/cable,
+/turf/open/floor/iron/grimy,
+/area/command/corporate_showroom)
 "nCJ" = (
 /turf/open/floor/iron/dark/corner{
 	dir = 4
@@ -60289,6 +60261,18 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/office)
+"pvI" = (
+/obj/structure/table/reinforced,
+/obj/item/clipboard,
+/obj/item/food/donut/jelly/choco,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/security/office)
 "pvO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment{
@@ -61799,23 +61783,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain)
-"pQY" = (
-/obj/structure/table/reinforced,
-/obj/item/clipboard,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/clothing/accessory/armband/deputy,
-/obj/item/food/donut/jelly/choco,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/tile/red/half/contrasted{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/security/office)
 "pRg" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/turf_decal/stripes/line{
@@ -67202,6 +67169,27 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"rvx" = (
+/obj/structure/table/wood,
+/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
+	pixel_x = -3;
+	pixel_y = 15
+	},
+/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
+	pixel_x = -6;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/food/drinks/bottle/beer{
+	desc = "Whatever it is, it reeks of foul, putrid froth.";
+	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing=15);
+	name = "Delta-Down";
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/turf/open/floor/wood{
+	icon_state = "wood-broken4"
+	},
+/area/commons/dorms)
 "rvE" = (
 /obj/structure/table/reinforced,
 /obj/machinery/camera/directional/west{
@@ -74181,6 +74169,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/circuit/green,
 /area/ai_monitored/turret_protected/ai)
+"trU" = (
+/obj/structure/table/wood,
+/obj/item/folder/red,
+/obj/item/toy/gun,
+/obj/item/clothing/head/beret/sec{
+	armor = list("melee"=0,"bullet"=0,"laser"=0,"energy"=0,"bomb"=0,"bio"=0);
+	desc = "A replica beret resembling that of a special operations officer under Nanotrasen.";
+	name = "replica officer's beret"
+	},
+/obj/structure/cable,
+/obj/item/radio/intercom/directional/east,
+/turf/open/floor/iron/grimy,
+/area/command/corporate_showroom)
 "tsf" = (
 /obj/machinery/light/small/directional/south,
 /obj/machinery/camera/directional/south{
@@ -84777,13 +84778,6 @@
 	},
 /turf/open/floor/iron,
 /area/security/prison/safe)
-"wKA" = (
-/obj/machinery/computer/atmos_control/noreconnect{
-	atmos_chambers = list("ordnancegas1" = "Burn Chamber", "ordnancegas2" = "Freezer Chamber")
-	},
-/obj/machinery/light/directional/north,
-/turf/open/floor/iron/dark,
-/area/science/mixing)
 "wKI" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -122966,7 +122960,7 @@ grw
 gIf
 nQN
 drP
-wKA
+kVw
 imr
 oxW
 mVr
@@ -122996,7 +122990,7 @@ voB
 rEg
 jfi
 nPB
-jXl
+iPT
 nPB
 xxi
 qJg
@@ -127561,7 +127555,7 @@ eBv
 xmS
 kJW
 lAV
-ePQ
+nCH
 eBv
 fbT
 xNK
@@ -130131,7 +130125,7 @@ eBv
 xiK
 jDJ
 lNS
-gyL
+trU
 eBv
 tnm
 xNK
@@ -140668,7 +140662,7 @@ nSp
 rmm
 ffV
 fWz
-aMR
+rvx
 vbb
 oSB
 pET
@@ -143197,7 +143191,7 @@ bki
 nvs
 uAb
 vSA
-pQY
+pvI
 oel
 dhi
 qkD
@@ -144993,7 +144987,7 @@ aad
 aad
 aad
 tKS
-fUy
+cKa
 uCv
 nja
 hll

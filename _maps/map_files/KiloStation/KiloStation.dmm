@@ -6707,6 +6707,19 @@
 	},
 /turf/open/floor/iron/dark,
 /area/maintenance/aft)
+"aMO" = (
+/obj/structure/table/wood,
+/obj/item/taperecorder{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/obj/item/flashlight/seclite,
+/obj/machinery/firealarm/directional/east,
+/obj/machinery/light_switch/directional/north{
+	pixel_x = 26
+	},
+/turf/open/floor/iron/dark,
+/area/command/heads_quarters/hos)
 "aMP" = (
 /obj/structure/chair{
 	dir = 8
@@ -26750,20 +26763,6 @@
 /obj/effect/turf_decal/caution/stand_clear,
 /turf/open/floor/iron/dark,
 /area/hallway/primary/port)
-"eDm" = (
-/obj/structure/table,
-/obj/item/stack/package_wrap,
-/obj/item/hand_labeler,
-/obj/machinery/camera/directional/west{
-	c_tag = "Warden's Office"
-	},
-/obj/structure/reagent_dispensers/wall/peppertank/directional/west,
-/obj/machinery/light/directional/west,
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
-/area/security/warden)
 "eDq" = (
 /obj/structure/table/reinforced,
 /obj/item/paper_bin,
@@ -31256,6 +31255,11 @@
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/dark,
 /area/science/robotics/lab)
+"ggQ" = (
+/obj/item/book/granter/action/spell/smoke/lesser,
+/obj/structure/table/wood,
+/turf/open/floor/cult,
+/area/service/chapel/office)
 "ghj" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -39460,12 +39464,6 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/port)
-"iRg" = (
-/obj/effect/turf_decal/bot,
-/obj/effect/decal/cleanable/dirt,
-/obj/vehicle/ridden/trolley,
-/turf/open/floor/iron,
-/area/cargo/storage)
 "iRl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -41824,16 +41822,6 @@
 /obj/effect/landmark/start/cook,
 /turf/open/floor/iron/dark,
 /area/service/kitchen)
-"jGa" = (
-/obj/structure/table/reinforced,
-/obj/item/clipboard,
-/obj/item/food/donut/plain,
-/obj/item/inspector,
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 1
-	},
-/turf/open/floor/iron/dark,
-/area/security/office)
 "jGv" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -72367,6 +72355,20 @@
 	icon_state = "panelscorched"
 	},
 /area/maintenance/fore)
+"tIH" = (
+/obj/structure/table,
+/obj/item/stack/package_wrap,
+/obj/item/hand_labeler,
+/obj/machinery/camera/directional/west{
+	c_tag = "Warden's Office"
+	},
+/obj/structure/reagent_dispensers/wall/peppertank/directional/west,
+/obj/machinery/light/directional/west,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/security/warden)
 "tIK" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -77946,6 +77948,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/security/prison)
+"vDl" = (
+/obj/structure/table/reinforced,
+/obj/item/clipboard,
+/obj/item/food/donut/plain,
+/obj/item/inspector,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/security/office)
 "vDm" = (
 /obj/structure/table/wood,
 /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
@@ -80091,6 +80103,12 @@
 	},
 /turf/open/floor/engine/hull/reinforced,
 /area/space/nearstation)
+"woA" = (
+/obj/effect/turf_decal/bot,
+/obj/effect/decal/cleanable/dirt,
+/obj/vehicle/ridden/trolley,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "woH" = (
 /mob/living/simple_animal/hostile/carp{
 	environment_smash = 0;
@@ -83094,11 +83112,6 @@
 	},
 /turf/open/floor/iron,
 /area/command/bridge)
-"xmT" = (
-/obj/item/book/granter/spell/smoke/lesser,
-/obj/structure/table/wood,
-/turf/open/floor/cult,
-/area/service/chapel/office)
 "xnf" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -83710,19 +83723,6 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
-"xvm" = (
-/obj/structure/table/wood,
-/obj/item/taperecorder{
-	pixel_x = 5;
-	pixel_y = 5
-	},
-/obj/item/flashlight/seclite,
-/obj/machinery/firealarm/directional/east,
-/obj/machinery/light_switch/directional/north{
-	pixel_x = 26
-	},
-/turf/open/floor/iron/dark,
-/area/command/heads_quarters/hos)
 "xvA" = (
 /obj/machinery/computer/security/telescreen/entertainment/directional/east,
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -95389,7 +95389,7 @@ aeU
 aeU
 aeu
 fjR
-xmT
+ggQ
 kuU
 ott
 kwe
@@ -105003,7 +105003,7 @@ hOw
 jrC
 kmU
 qAz
-jGa
+vDl
 iuQ
 mak
 lVy
@@ -106281,7 +106281,7 @@ ayi
 jrA
 aeg
 nIC
-eDm
+tIH
 kWP
 bcO
 aei
@@ -106551,7 +106551,7 @@ cqx
 aBh
 jCX
 lKu
-xvm
+aMO
 whc
 nhS
 mWF
@@ -125535,11 +125535,11 @@ fgG
 kbq
 lAK
 gwE
-iRg
+woA
 dTG
 tVh
 kvO
-iRg
+woA
 xHo
 hYb
 gcN

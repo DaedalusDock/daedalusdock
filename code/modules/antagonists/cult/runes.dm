@@ -96,7 +96,7 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 	if(!IS_CULTIST(user))
 		to_chat(user, span_warning("You aren't able to understand the words of [src]."))
 		return
-	var/list/invokers = can_invoke(user)
+	var/list/invokers = try_invoke(user)
 	if(length(invokers) >= req_cultists)
 		invoke(invokers)
 	else
@@ -126,14 +126,14 @@ Runes can either be invoked by one's self or with many different cultists. Each 
 /*
 
 There are a few different procs each rune runs through when a cultist activates it.
-can_invoke() is called when a cultist activates the rune with an empty hand. If there are multiple cultists, this rune determines if the required amount is nearby.
+try_invoke() is called when a cultist activates the rune with an empty hand. If there are multiple cultists, this rune determines if the required amount is nearby.
 invoke() is the rune's actual effects.
 fail_invoke() is called when the rune fails, via not enough people around or otherwise. Typically this just has a generic 'fizzle' effect.
 structure_check() searches for nearby cultist structures required for the invocation. Proper structures are pylons, forges, archives, and altars.
 
 */
 
-/obj/effect/rune/proc/can_invoke(mob/living/user=null)
+/obj/effect/rune/proc/try_invoke(mob/living/user=null)
 	//This proc determines if the rune can be invoked at the time. If there are multiple required cultists, it will find all nearby cultists.
 	var/list/invokers = list() //people eligible to invoke the rune
 	if(user)
@@ -800,7 +800,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 	. = ..()
 
 
-/obj/effect/rune/manifest/can_invoke(mob/living/user)
+/obj/effect/rune/manifest/try_invoke(mob/living/user)
 	if(!(user in get_turf(src)))
 		to_chat(user, "<span class='cult italic'>You must be standing on [src]!</span>")
 		fail_invoke()

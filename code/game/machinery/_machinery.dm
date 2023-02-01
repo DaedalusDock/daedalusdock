@@ -595,7 +595,7 @@
 		say("[market_verb] NAP Violation: Unable to pay.")
 		nap_violation(occupant_mob)
 		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.get_dep_account(payment_department)
+	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
 	if(department_account)
 		department_account.adjust_money(fair_market_price)
 	return TRUE

@@ -70,6 +70,8 @@
 	extra_price = PAYCHECK_ASSISTANT
 	payment_department = ACCOUNT_SRV
 
+	discount_access = ACCESS_HYDROPONICS
+
 /obj/item/vending_refill/hydroseeds
 	machine_name = "MegaSeed Servitor"
 	icon_state = "refill_plant"

@@ -19,8 +19,10 @@
 	refill_canister = /obj/item/vending_refill/cart
 	default_price = PAYCHECK_COMMAND
 	extra_price = PAYCHECK_COMMAND * 2.5
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask="cart-light-mask"
+
+	discount_access = ACCESS_CHANGE_IDS
 
 /obj/item/vending_refill/cart
 	machine_name = "PTech"

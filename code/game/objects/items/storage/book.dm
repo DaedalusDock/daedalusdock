@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 	var/new_altar_area = get_turf(bible_smacked)
 
 	balloon_alert(user, "unpacking bible...")
-	if(!do_after(user, 15 SECONDS, new_altar_area))
+	if(!do_after(user, new_altar_area, 15 SECONDS))
 		return
 	new /obj/structure/altar_of_gods(new_altar_area)
 	qdel(src)

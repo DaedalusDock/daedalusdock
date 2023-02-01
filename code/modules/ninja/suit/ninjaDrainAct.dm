@@ -176,7 +176,7 @@
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 	AI_notify_hack()
-	if(!do_after(ninja, 30 SECONDS, src))
+	if(!do_after(ninja, src, 30 SECONDS))
 		return
 	hack_console(ninja)
 	ninja_gloves.communication_console_hack_success = TRUE

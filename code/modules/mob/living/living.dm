@@ -1643,7 +1643,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		user.visible_message(span_warning("[user] starts trying to pick up [src]!"),
 			span_danger("You start trying to pick up [src]..."), ignored_mobs = src)
 		to_chat(src, span_userdanger("[user] starts trying to pick you up!"))
-		if(!do_after(user, 2 SECONDS, src))
+		if(!do_after(user, src, 2 SECONDS))
 			return
 		if(!mob_pickup_checks(user)) // Check everything again after the timer
 			return

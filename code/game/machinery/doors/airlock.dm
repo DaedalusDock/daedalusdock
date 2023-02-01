@@ -929,7 +929,7 @@
 		to_chat(user, span_warning("You need at least [amt_required] sheets of [material] to reinforce [src]."))
 		return FALSE
 	to_chat(user, span_notice("You start reinforcing [src]."))
-	if(!do_after(user, 2 SECONDS, src))
+	if(!do_after(user, src, 2 SECONDS))
 		return FALSE
 	if(!panel_open || !material.use(amt_required))
 		return FALSE

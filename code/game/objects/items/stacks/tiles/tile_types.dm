@@ -1,6 +1,6 @@
 /**
  * TILE STACKS
- * 
+ *
  * Allows us to place a turf on a plating.
  */
 /obj/item/stack/tile
@@ -65,7 +65,7 @@
 
 /**
  * Place our tile on a plating, or replace it.
- * 
+ *
  * Arguments:
  * * target_plating - Instance of the plating we want to place on. Replaced during sucessful executions.
  * * user - The mob doing the placing.
@@ -90,7 +90,7 @@
 		to_chat(user, span_notice("You cannot place this tile here directly!"))
 		return
 	to_chat(user, span_notice("You begin replacing the floor with the tile..."))
-	if(!do_after(user, 3 SECONDS, target_plating))
+	if(!do_after(user, target_plating, 3 SECONDS))
 		return
 	if(!istype(target_plating))
 		return

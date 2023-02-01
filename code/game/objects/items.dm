@@ -495,7 +495,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(grav > STANDARD_GRAVITY)
 		var/grav_power = min(3,grav - STANDARD_GRAVITY)
 		to_chat(user,span_notice("You start picking up [src]..."))
-		if(!do_mob(user,src,30*grav_power))
+		if(!do_after(user,src,30*grav_power))
 			return
 
 
@@ -981,7 +981,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		var/datum/callback/tool_check = CALLBACK(src, .proc/tool_check_callback, user, amount, extra_checks)
 
 		if(ismob(target))
-			if(!do_mob(user, target, delay, extra_checks=tool_check))
+			if(!do_after(user, target, delay, extra_checks=tool_check))
 				return
 
 		else

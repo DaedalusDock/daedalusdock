@@ -24,7 +24,7 @@
 		if(M != user)
 			M.visible_message(span_danger("[user] attempts to feed [M] something from [src]."), \
 						span_userdanger("[user] attempts to feed you something from [src]."))
-			if(!do_mob(user, M))
+			if(!do_after(user, M))
 				return
 			if(!reagents || !reagents.total_volume)
 				return // The drink might be empty after the delay, such as by spam-feeding

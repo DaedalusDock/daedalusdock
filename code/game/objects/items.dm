@@ -980,13 +980,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		// Create a callback with checks that would be called every tick by do_after.
 		var/datum/callback/tool_check = CALLBACK(src, .proc/tool_check_callback, user, amount, extra_checks)
 
-		if(ismob(target))
-			if(!do_after(user, target, delay, extra_checks=tool_check))
-				return
+		if(!do_after(user, target, delay, extra_checks=tool_check))
+			return
 
-		else
-			if(!do_after(user, delay, target=target, extra_checks=tool_check))
-				return
 	else
 		// Invoke the extra checks once, just in case.
 		if(extra_checks && !extra_checks.Invoke())

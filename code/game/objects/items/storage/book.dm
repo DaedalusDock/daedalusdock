@@ -234,7 +234,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		var/obj/item/cult_bastard/sword = bible_smacked
 		to_chat(user, span_notice("You begin to exorcise [sword]."))
 		playsound(src,'sound/hallucinations/veryfar_noise.ogg',40,TRUE)
-		if(do_after(user, 40, target = sword))
+		if(do_after(user, sword, 4 SECONDS))
 			playsound(src,'sound/effects/pray_chaplain.ogg',60,TRUE)
 			for(var/obj/item/soulstone/SS in sword.contents)
 				SS.required_role = null

@@ -476,7 +476,7 @@
 		spider.is_busy = TRUE
 		spider.visible_message(span_notice("[spider] begins to lay a cluster of eggs."),span_notice("You begin to lay a cluster of eggs."))
 		spider.stop_automated_movement = TRUE
-		if(do_after(spider, spider.egg_lay_time, target = get_turf(spider)))
+		if(do_after(spider, get_turf(spider), spider.egg_lay_time))
 			if(spider.is_busy)
 				eggs = locate() in get_turf(spider)
 				if(!eggs || !isturf(spider.loc))

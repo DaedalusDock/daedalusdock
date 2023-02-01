@@ -480,7 +480,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 	if(length(src_object.contents()))
 		to_chat(usr, span_notice("You start dumping out the contents..."))
-		if(!do_after(usr,20,target=src_object.parent))
+		if(!do_after(usr, src_object.parent, 20))
 			return FALSE
 
 	var/list/things = src_object.contents()

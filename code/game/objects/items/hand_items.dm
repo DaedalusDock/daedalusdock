@@ -152,7 +152,7 @@
 	user.visible_message(span_danger("[user] begins giving [target] a [message_others]!"), span_warning("You start giving [target] a [message_others]!"), vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=target)
 	to_chat(target, span_userdanger("[user] starts giving you a [message_target]!"))
 
-	if(!do_after(user, 1.5 SECONDS, target))
+	if(!do_after(user, target, 1.5 SECONDS))
 		to_chat(user, span_warning("You fail to give [target] a noogie!"))
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
 		return
@@ -192,7 +192,7 @@
 		user.visible_message(span_danger("[user] continues noogie'ing [target]!"), span_warning("You continue giving [target] a noogie!"), vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=target)
 		to_chat(target, span_userdanger("[user] continues giving you a noogie!"))
 
-	if(!do_after(user, 1 SECONDS + (iteration * 2), target))
+	if(!do_after(user, target, 1 SECONDS + (iteration * 2)))
 		to_chat(user, span_warning("You fail to give [target] a noogie!"))
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
 		return

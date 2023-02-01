@@ -1,0 +1,4 @@
+author: Cenrus
+delete-after: true
+changes:
+  - bugfix: Interaction hand icon will no longer be visible in the right click menu

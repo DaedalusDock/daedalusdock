@@ -130,8 +130,6 @@
 	return paintable
 
 /obj/machinery/atmospherics/pipe/proc/update_device_type()
-	//device_type = !!(connections & NORTH) + !!(connections & SOUTH) + !!(connections & EAST) + !!(connections & WEST)
-	//device_type = 0
 	var/volume_mod
 	for(var/obj/thing in nodes)
 		volume_mod++

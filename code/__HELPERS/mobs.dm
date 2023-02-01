@@ -325,7 +325,7 @@ GLOBAL_LIST_EMPTY(species_list)
 	var/holding = user.get_active_held_item()
 
 	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		delay *= user.cached_multiplicative_actions_slowdown
+		time *= user.cached_multiplicative_actions_slowdown
 
 	var/datum/progressbar/progbar
 	if(progress)

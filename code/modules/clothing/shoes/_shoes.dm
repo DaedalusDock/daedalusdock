@@ -185,7 +185,7 @@
 		if(HAS_TRAIT(user, TRAIT_CLUMSY)) // based clowns trained their whole lives for this
 			mod_time *= 0.75
 
-		if(do_after(user, mod_time, taraget = our_guy, extra_checks = CALLBACK(src, .proc/still_shoed, our_guy)))
+		if(do_after(user, our_guy, mod_time, extra_checks = CALLBACK(src, .proc/still_shoed, our_guy)))
 			to_chat(user, span_notice("You [tied ? "untie" : "knot"] the laces on [loc]'s [src.name]."))
 			if(tied == SHOES_UNTIED)
 				adjust_laces(SHOES_KNOTTED, user)

@@ -465,7 +465,7 @@
 	. = ..()
 	user.visible_message(span_notice("You see [user] breaking out of [src]!"), \
 		span_notice("You start tearing the soft tissue of the gel cocoon"))
-	if(!do_after(user, 1.5 SECONDS, target = src))
+	if(!do_after(user, src, 1.5 SECONDS))
 		return FALSE
 	dump_inhabitant()
 

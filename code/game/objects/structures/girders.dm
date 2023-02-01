@@ -103,7 +103,7 @@
 				to_chat(user, span_warning("You need two rods to place reinforcement struts!"))
 				return
 			to_chat(user, span_notice("You start placing reinforcement struts..."))
-			if(do_after(user, 20*platingmodifier, target = src))
+			if(do_after(user, src, 20*platingmodifier))
 				if(S.get_amount() < 2)
 					return
 				if(state != GIRDER_NORMAL)
@@ -128,7 +128,7 @@
 				to_chat(user, span_warning("You can't figure out how to reinforce a wall with this!"))
 				return
 			to_chat(user, span_notice("You start reinforcing the girder..."))
-			if(do_after(user, 20*platingmodifier, target = src))
+			if(do_after(user, src, 20*platingmodifier))
 				if(state != GIRDER_REINF_STRUTS)
 					return
 				if(S.get_amount() < 2)
@@ -148,7 +148,7 @@
 				to_chat(user, span_notice("You start adding plating..."))
 			else
 				to_chat(user, span_notice("You start adding plating, creating a false wall..."))
-			if (do_after(user, 40*platingmodifier, target = src))
+			if (do_after(user, src, 40*platingmodifier))
 				if(S.get_amount() < 2)
 					return
 				S.use(2)

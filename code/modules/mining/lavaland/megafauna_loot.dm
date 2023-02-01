@@ -784,7 +784,7 @@
 			animate(L, alpha = 255, time = create_delay)
 			user.visible_message(span_danger("[user] points [src] at [T]!"))
 			timer = world.time + create_delay + 1
-			if(do_after(user, create_delay, target = T))
+			if(do_after(user, T, create_delay))
 				var/old_name = T.name
 				if(T.TerraformTurf(turf_type, flags = CHANGETURF_INHERIT_AIR))
 					user.visible_message(span_danger("[user] turns \the [old_name] into [transform_string]!"))

@@ -160,7 +160,7 @@
 		var/timetotear = 40
 		if(istype(target, /turf/closed/wall/r_wall))
 			timetotear = 120
-		if(do_after(src, timetotear, target = thewall))
+		if(do_after(src, thewall, timetotear))
 			if(istype(thewall, /turf/open))
 				return
 			thewall.dismantle_wall(1)

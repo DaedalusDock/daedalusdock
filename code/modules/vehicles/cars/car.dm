@@ -34,7 +34,7 @@
 		mob_exit(M, silent)
 		return TRUE
 	to_chat(user, span_notice("You push against the back of \the [src]'s trunk to try and get out."))
-	if(!do_after(user, escape_time, target = src))
+	if(!do_after(user, src, escape_time))
 		return FALSE
 	to_chat(user,span_danger("[user] gets out of [src]."))
 	mob_exit(M, silent)

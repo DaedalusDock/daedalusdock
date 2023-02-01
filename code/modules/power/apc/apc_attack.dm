@@ -208,7 +208,7 @@
 			return
 		stomach.drain_time = world.time + APC_DRAIN_TIME
 		to_chat(ethereal, span_notice("You start channeling some power through the APC into your body."))
-		if(do_after(user, APC_DRAIN_TIME, target = src))
+		if(do_after(user, src, APC_DRAIN_TIME))
 			if(cell.charge <= (cell.maxcharge / 2) || (stomach.crystal_charge > charge_limit))
 				return
 			to_chat(ethereal, span_notice("You receive some charge from the APC."))
@@ -224,7 +224,7 @@
 		return
 	stomach.drain_time = world.time + APC_DRAIN_TIME
 	to_chat(ethereal, span_notice("You start channeling power through your body into the APC."))
-	if(!do_after(user, APC_DRAIN_TIME, target = src))
+	if(!do_after(user, src, APC_DRAIN_TIME))
 		return
 	if((cell.charge >= (cell.maxcharge - APC_POWER_GAIN)) || (stomach.crystal_charge < APC_POWER_GAIN))
 		to_chat(ethereal, span_warning("You can't transfer power to the APC!"))

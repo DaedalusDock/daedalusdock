@@ -381,7 +381,7 @@
 		else
 			spider.visible_message(span_notice("[spider] begins to secrete a sticky substance."),span_notice("You begin to lay a web."))
 		spider.stop_automated_movement = TRUE
-		if(do_after(spider, 40 * spider.web_speed, target = spider_turf))
+		if(do_after(spider, spider_turf, 40 * spider.web_speed))
 			if(spider.is_busy && spider.loc == spider_turf)
 				if(web)
 					qdel(web)

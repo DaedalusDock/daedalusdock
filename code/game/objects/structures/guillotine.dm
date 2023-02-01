@@ -97,7 +97,7 @@
 						                 span_warning("You begin to the pull the lever."))
 					current_action = GUILLOTINE_ACTION_INUSE
 
-					if (do_after(user, GUILLOTINE_ACTIVATE_DELAY, target = src) && blade_status == GUILLOTINE_BLADE_RAISED)
+					if (do_after(user, src, GUILLOTINE_ACTIVATE_DELAY) && blade_status == GUILLOTINE_BLADE_RAISED)
 						current_action = GUILLOTINE_BLADE_IDLE
 						blade_status = GUILLOTINE_BLADE_MOVING
 						icon_state = "guillotine_drop"

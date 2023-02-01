@@ -930,7 +930,7 @@
 		return
 
 	visible_message(span_notice("[target] starts to climb onto [src]..."))
-	if(!do_after(target, 1.5 SECONDS, target = src) || !can_piggyback(target))
+	if(!do_after(target, src, 1.5 SECONDS) || !can_piggyback(target))
 		visible_message(span_warning("[target] fails to climb onto [src]!"))
 		return
 

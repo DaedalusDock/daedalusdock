@@ -101,7 +101,7 @@
 	var/skill_modifier = 1
 	skill_modifier = user?.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
 	to_chat(user, span_notice("You start pulling out pieces of [src]..."))
-	if(!do_after(user, hand_mine_speed * skill_modifier, target = src))
+	if(!do_after(user, src, hand_mine_speed * skill_modifier))
 		TIMER_COOLDOWN_END(src, REF(user)) //if we fail we can start again immediately
 		return
 	if(ismineralturf(src))

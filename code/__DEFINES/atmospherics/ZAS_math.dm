@@ -24,6 +24,8 @@
 #define QUANTIZE(variable) (round(variable, ATMOS_PRECISION))
 
 // Determines the exchange ratio of reagents being converted to gas and vice versa.
+// Reagent > gas is division
+// Gas > Reagent is multiplication
 #define REAGENT_GAS_EXCHANGE_FACTOR 10
 
 //where a unit turf is 1 on a side, its diagonal is sqrt(2)

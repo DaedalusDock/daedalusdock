@@ -65,6 +65,15 @@
 #define AALARM_THERMOSTAT_HEATING_POWER 40000 //T2 space heater
 #define AALARM_THERMOSTAT_HEATING_EFFICIENCY 30000 //T2 space heater
 
+// Because I'm not writing this shit out 7 times
+#define AALARM_UIACT_COOLDOWNCHECK \
+	if(ui_cooldown > world.time){ \
+		to_chat(usr, span_warning("\The [src] is still recharging it's broadcast coils.")); \
+		usr.playsound_local(get_turf(src), 'sound/machines/terminal_error.ogg', 50); \
+	return FALSE; \
+	}
+
+
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
@@ -81,6 +90,9 @@
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
+
+	///Cooldown on UI actions, Prevents packet spam
+	var/ui_cooldown = 0
 
 	//Fire alarm related vars//
 
@@ -167,7 +179,7 @@
 
 /obj/machinery/airalarm/Destroy()
 	set_area(null)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	SSairmachines.stop_processing_machine(src)
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
@@ -365,23 +377,35 @@
 				locked = !locked
 				. = TRUE
 		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			send_signal(device_id, list("[action]" = params["val"]), usr)
 			. = TRUE
 		if("excheck")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			send_signal(device_id, list("checks" = text2num(params["val"])^1), usr)
 			. = TRUE
 		if("incheck")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			send_signal(device_id, list("checks" = text2num(params["val"])^2), usr)
 			. = TRUE
 		if("set_external_pressure", "set_internal_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			var/target = params["value"]
 			if(!isnull(target))
 				send_signal(device_id, list("[action]" = target), usr)
 				. = TRUE
 		if("reset_external_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			send_signal(device_id, list("reset_external_pressure"), usr)
 			. = TRUE
 		if("reset_internal_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			ui_cooldown = world.time + 1 SECONDS
 			send_signal(device_id, list("reset_internal_pressure"), usr)
 			. = TRUE
 		if("threshold")
@@ -405,7 +429,9 @@
 				check_air_dangerlevel(environment)
 				. = TRUE
 		if("mode")
-			mode = text2num(params["mode"])
+			AALARM_UIACT_COOLDOWNCHECK
+			//Yes, the modes can match, but this will force a resend of the mode config to equipment.
+			ui_cooldown = world.time + 3 SECONDS
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)
 			. = TRUE
@@ -449,19 +475,19 @@
 		return FALSE
 
 /obj/machinery/airalarm/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/airalarm/proc/send_signal(target, list/command, atom/user)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return FALSE
 
-	var/datum/signal/signal = new(command)
+	var/datum/signal/signal = new(src, command)
 	signal.data["tag"] = target
 	signal.data["sigtype"] = "command"
 	signal.data["user"] = user
-	radio_connection.post_signal(src, signal, RADIO_FROM_AIRALARM)
+	radio_connection.post_signal(signal, RADIO_FROM_AIRALARM)
 
 	return TRUE
 
@@ -739,12 +765,12 @@
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(alarm_frequency)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/alert_signal = new(list(
+	var/datum/signal/alert_signal = new(src, list(
 		"zone" = get_area_name(src, TRUE),
 		"type" = "Atmospheric"
 	))
@@ -755,7 +781,7 @@
 	else if (alert_level==0)
 		alert_signal.data["alert"] = "clear"
 
-	frequency.post_signal(src, alert_signal, range = -1)
+	frequency.post_signal(alert_signal, range = -1)
 
 /obj/machinery/airalarm/proc/apply_danger_level()
 
@@ -1081,3 +1107,5 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 #undef AALARM_MODE_CONTAMINATED
 #undef AALARM_MODE_REFILL
 #undef AALARM_REPORT_TIMEOUT
+
+#undef AALARM_UIACT_COOLDOWNCHECK

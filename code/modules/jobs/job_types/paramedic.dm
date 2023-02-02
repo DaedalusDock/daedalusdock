@@ -18,7 +18,7 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_MED
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 

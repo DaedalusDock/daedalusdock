@@ -18,7 +18,7 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	display_order = JOB_DISPLAY_ORDER_CHAPLAIN
 	departments_list = list(

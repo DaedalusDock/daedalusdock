@@ -6,15 +6,27 @@ SUBSYSTEM_DEF(economy)
 	///How many paychecks should players start out the round with?
 	var/roundstart_paychecks = 5
 	///How many credits does the in-game economy have in circulation at round start? Divided up by 6 of the 7 department budgets evenly, where cargo starts with nothing.
-	var/budget_pool = 35000
-	var/list/department_accounts = list(ACCOUNT_CIV = ACCOUNT_CIV_NAME,
-										ACCOUNT_ENG = ACCOUNT_ENG_NAME,
-										ACCOUNT_SCI = ACCOUNT_SCI_NAME,
-										ACCOUNT_MED = ACCOUNT_MED_NAME,
-										ACCOUNT_SRV = ACCOUNT_SRV_NAME,
-										ACCOUNT_CAR = ACCOUNT_CAR_NAME,
-										ACCOUNT_SEC = ACCOUNT_SEC_NAME)
+	var/budget_pool = 52500
+	var/list/department_id2name = list(
+		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
+		ACCOUNT_SCI = ACCOUNT_SCI_NAME,
+		ACCOUNT_MED = ACCOUNT_MED_NAME,
+		ACCOUNT_SRV = ACCOUNT_SRV_NAME,
+		ACCOUNT_CAR = ACCOUNT_CAR_NAME,
+		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
+		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
+	)
+	///The station's master account, used for splitting up funds and pooling money.
+	var/datum/bank_account/department/station_master
+	///Used to not spam the payroll announcement
+	var/run_dry = FALSE
+	///Payroll boolean
+	var/payroll_active = TRUE
+
+	///Departmental account datums by ID
+	var/list/department_accounts_by_id = list()
 	var/list/generated_accounts = list()
+
 	/**
 	 * Enables extra money charges for things that normally would be free, such as sleepers/cryo/beepsky.
 	 * Take care when enabling, as players will NOT respond well if the economy is set up for low cash flows.
@@ -32,12 +44,6 @@ SUBSYSTEM_DEF(economy)
 	var/list/dep_cards = list()
 	/// A var that collects the total amount of credits owned in player accounts on station, reset and recounted on fire()
 	var/station_total = 0
-	/// A var that tracks how much money is expected to be on station at a given time. If less than station_total prices go up in vendors.
-	var/station_target = 1
-	/// A passively increasing buffer to help alliviate inflation later into the shift, but to a lesser degree.
-	var/station_target_buffer = 0
-	/// A var that displays the result of inflation_value for easier debugging and tracking.
-	var/inflation_value = 1
 	/// How many civilain bounties have been completed so far this shift? Affects civilian budget payout values.
 	var/civ_bounty_tracker = 0
 	/// Contains the message to send to newscasters about price inflation and earnings, updated on price_update()
@@ -62,15 +68,16 @@ SUBSYSTEM_DEF(economy)
 	var/mail_blocked = FALSE
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
-	//removes cargo from the split
-	var/budget_to_hand_out = round(budget_pool / department_accounts.len -1)
-	if(time2text(world.timeofday, "DDD") == SUNDAY)
-		mail_blocked = TRUE
-	for(var/dep_id in department_accounts)
-		if(dep_id == ACCOUNT_CAR) //cargo starts with NOTHING
-			new /datum/bank_account/department(dep_id, 0, player_account = FALSE)
-			continue
-		new /datum/bank_account/department(dep_id, budget_to_hand_out, player_account = FALSE)
+	///The master account gets 50% of the roundstart budget
+	var/reserved_for_master = round(budget_pool / 2)
+	station_master = new(ACCOUNT_STATION_MASTER, ACCOUNT_STATION_MASTER_NAME, reserved_for_master)
+	department_accounts_by_id[ACCOUNT_STATION_MASTER] = station_master
+	budget_pool = round(budget_pool/2)
+
+	var/budget_to_hand_out = round(budget_pool / ECON_NUM_DEPARTMENT_ACCOUNTS)
+
+	for(var/dep_id in department_id2name - ACCOUNT_STATION_MASTER)
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], budget_to_hand_out)
 	return ..()
 
 /datum/controller/subsystem/economy/Recover()
@@ -79,69 +86,80 @@ SUBSYSTEM_DEF(economy)
 	dep_cards = SSeconomy.dep_cards
 
 /datum/controller/subsystem/economy/fire(resumed = 0)
-	var/temporary_total = 0
+	///The first fire at roundstart is discarded.
+	if(!times_fired)
+		return
+
 	var/delta_time = wait / (5 MINUTES)
+
+	//Split the station budget amongst the departments
 	departmental_payouts()
-	station_total = 0
-	station_target_buffer += STATION_TARGET_BUFFER
+
+	///See if we even have enough money to pay these idiots
+	var/required_funds = 0
 	for(var/account in bank_accounts_by_id)
 		var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-		if(bank_account?.account_job && !ispath(bank_account.account_job))
-			temporary_total += (bank_account.account_job.paycheck * STARTING_PAYCHECKS)
-		station_total += bank_account.account_balance
-	station_target = max(round(temporary_total / max(bank_accounts_by_id.len * 2, 1)) + station_target_buffer, 1)
-	if(!HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING))
-		price_update()
-	var/effective_mailcount = round(living_player_count()/(inflation_value - 0.5)) //More mail at low inflation, and vis versa.
+		required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
+
+	if(payroll_active)
+		if(required_funds > station_master.account_balance)
+			if(!run_dry)
+				minor_announce("The station budget appears to have run dry. We regret to inform you that no further wage payments are possible until this situation is rectified.","Payroll Announcement")
+				run_dry = TRUE
+		else
+			if(run_dry)
+				run_dry = FALSE
+			for(var/account in bank_accounts_by_id)
+				var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+				bank_account.payday()
+
+	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.
+	var/effective_mailcount = round(living_player_count())
 	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * delta_time)
 	send_fax_paperwork()
 
 /**
- * Handy proc for obtaining a department's bank account, given the department ID, AKA the define assigned for what department they're under.
- */
-/datum/controller/subsystem/economy/proc/get_dep_account(dep_id)
-	for(var/datum/bank_account/department/D in generated_accounts)
-		if(D.department_id == dep_id)
-			return D
-
-/**
- * Departmental income payments are kept static and linear for every department, and paid out once every 5 minutes, as determined by MAX_GRANT_DPT.
+ * Departmental income payments are kept static and linear for every department, and paid out once every 5 minutes.
  * Iterates over every department account for the same payment.
  */
 /datum/controller/subsystem/economy/proc/departmental_payouts()
-	for(var/iteration in department_accounts)
-		var/datum/bank_account/dept_account = get_dep_account(iteration)
-		if(!dept_account)
+	var/payout_pool = (station_master.account_balance - ECON_STATION_PAYOUT) < 0 ? station_master.account_balance : ECON_STATION_PAYOUT
+	if(payout_pool < ECON_STATION_PAYOUT_REQUIREMENT)
+		return
+
+	var/split = round(payout_pool / (length(department_accounts_by_id) - 1))
+
+	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
+		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
+		if(dept_account.account_balance >= ECON_STATION_PAYOUT_MAX)
 			continue
-		dept_account.adjust_money(MAX_GRANT_DPT)
+
+		var/real_split = min(ECON_STATION_PAYOUT_MAX - dept_account.account_balance, split)
+
+		if(!dept_account.transfer_money(station_master, real_split))
+			dept_account.transfer_money(station_master, payout_pool)
+			break
+		else
+			payout_pool -= real_split
+
 
 /**
- * Updates the prices of all station vendors with the inflation_value, increasing/decreasing costs across the station, and alerts the crew.
+ * Updates the prices of all station vendors.
  *
- * Iterates over the machines list for vending machines, resets their regular and premium product prices (Not contraband), and sends a message to the newscaster network.
+ * Iterates over the machines list for vending machines, resets their regular and premium product prices (Not contraband).
  **/
 /datum/controller/subsystem/economy/proc/price_update()
+	var/multiplier = 1
+
+	if(HAS_TRAIT(src, TRAIT_MARKET_CRASHING))
+		multiplier = 4
+
 	for(var/obj/machinery/vending/V in GLOB.machines)
 		if(istype(V, /obj/machinery/vending/custom))
 			continue
 		if(!is_station_level(V.z))
 			continue
-		V.reset_prices(V.product_records, V.coin_records)
-	earning_report = "<b>Sector Economic Report</b><br><br> Sector vendor prices is currently at <b>[SSeconomy.inflation_value()*100]%</b>.<br><br> The station spending power is currently <b>[station_total] Credits</b>, and the crew's targeted allowance is at <b>[station_target] Credits</b>.<br><br> That's all from the <i>Nanotrasen Economist Division</i>."
-	GLOB.news_network.submit_article(earning_report, "Station Earnings Report", "Station Announcements", null, update_alert = FALSE)
-
-/**
- * Proc that returns a value meant to shift inflation values in vendors, based on how much money exists on the station.
- *
- * If crew are somehow aquiring far too much money, this value will dynamically cause vendables across the station to skyrocket in price until some money is spent.
- * Additionally, civilain bounties will cost less, and cargo goodies will increase in price as well.
- * The goal here is that if you want to spend money, you'll have to get it, and the most efficient method is typically from other players.
- **/
-/datum/controller/subsystem/economy/proc/inflation_value()
-	if(!bank_accounts_by_id.len)
-		return 1
-	inflation_value = max(round(((station_total / bank_accounts_by_id.len) / station_target), 0.1), 1.0)
-	return inflation_value
+		V.reset_prices(V.product_records, V.coin_records, multiplier)
 
 /**
  * Proc that adds a set of strings and ints to the audit log, tracked by the economy SS.
@@ -151,7 +169,7 @@ SUBSYSTEM_DEF(economy)
  * * vendor: The object or structure medium that is charging the user. For Vending machines that's the machine, for payment component that's the parent, cargo that's the crate, etc.
  */
 /datum/controller/subsystem/economy/proc/track_purchase(datum/bank_account/account, price_to_use, vendor)
-	if(!account || !price_to_use || !vendor)
+	if(isnull(account) || isnull(price_to_use) || isnull(vendor))
 		CRASH("Track purchases was missing an argument! (Account, Price, or Vendor.)")
 
 	audit_log += list(list(

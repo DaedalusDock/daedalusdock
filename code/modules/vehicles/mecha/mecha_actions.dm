@@ -8,7 +8,7 @@
 
 
 /datum/action/vehicle/sealed/mecha
-	icon_icon = 'icons/mob/actions/actions_mecha.dmi'
+	button_icon = 'icons/mob/actions/actions_mecha.dmi'
 	var/obj/vehicle/sealed/mecha/chassis
 
 /datum/action/vehicle/sealed/mecha/Destroy()
@@ -38,7 +38,7 @@
 	button_icon_state = "mech_internals_[chassis.use_internal_tank ? "on" : "off"]"
 	chassis.balloon_alert(owner, "taking air from [chassis.use_internal_tank ? "internal airtank" : "environment"]")
 	chassis.log_message("Now taking air from [chassis.use_internal_tank?"internal airtank":"environment"].", LOG_MECHA)
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/vehicle/sealed/mecha/mech_toggle_lights
 	name = "Toggle Lights"
@@ -60,7 +60,7 @@
 	chassis.balloon_alert(owner, "toggled lights [chassis.mecha_flags & LIGHTS_ON ? "on":"off"]")
 	playsound(chassis,'sound/machines/clockcult/brass_skewer.ogg', 40, TRUE)
 	chassis.log_message("Toggled lights [(chassis.mecha_flags & LIGHTS_ON)?"on":"off"].", LOG_MECHA)
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/vehicle/sealed/mecha/mech_view_stats
 	name = "View Stats"
@@ -104,7 +104,7 @@
 
 	for(var/occupant in occupants)
 		var/datum/action/action = LAZYACCESSASSOC(occupant_actions, occupant, /datum/action/vehicle/sealed/mecha/strafe)
-		action?.UpdateButtons()
+		action?.build_all_button_icons()
 
 ///swap seats, for two person mecha
 /datum/action/vehicle/sealed/mecha/swap_seat

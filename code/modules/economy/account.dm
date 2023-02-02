@@ -117,26 +117,22 @@
 
 /**
  * This proc handles passive income gain for players, using their job's paycheck value.
- * Funds are taken from the parent department account to hand out to players. This can result in payment brown-outs if too many people are in one department.
+ * Funds are taken from the station master account to hand out to players. This can result in payment brown-outs if the station is poor.
  */
-/datum/bank_account/proc/payday(amt_of_paychecks, free = FALSE)
+/datum/bank_account/proc/payday(amt_of_paychecks = 1, free = FALSE)
 	if(!account_job)
 		return
 	var/money_to_transfer = round(account_job.paycheck * payday_modifier * amt_of_paychecks)
 	if(free)
 		adjust_money(money_to_transfer)
 		SSblackbox.record_feedback("amount", "free_income", money_to_transfer)
-		SSeconomy.station_target += money_to_transfer
 		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from income.")
+		return TRUE
 	else
-		var/datum/bank_account/D = SSeconomy.get_dep_account(account_job.paycheck_department)
-		if(D)
-			if(!transfer_money(D, money_to_transfer))
-				bank_card_talk("ERROR: Payday aborted, departmental funds insufficient.")
-				return FALSE
-			else
-				bank_card_talk("Payday processed, account now holds [account_balance] cr.")
-				return TRUE
+		var/datum/bank_account/D = SSeconomy.station_master
+		if(D && transfer_money(D, money_to_transfer))
+			bank_card_talk("Payday processed, account now holds [account_balance] cr.")
+			return TRUE
 	bank_card_talk("ERROR: Payday aborted, unable to contact departmental account.")
 	return FALSE
 
@@ -223,10 +219,10 @@
 	var/department_id = "REPLACE_ME"
 	add_to_accounts = FALSE
 
-/datum/bank_account/department/New(dep_id, budget, player_account = FALSE)
+/datum/bank_account/department/New(dep_id, name, budget)
 	department_id = dep_id
 	account_balance = budget
-	account_holder = SSeconomy.department_accounts[dep_id]
+	account_holder = name
 	SSeconomy.generated_accounts += src
 
 /datum/bank_account/remote // Bank account not belonging to the local station

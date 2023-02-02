@@ -63,8 +63,11 @@
 #define BLOCKS_SPEECH (1<<16)
 //prevents from placing on plasmaman helmet
 #define PLASMAMAN_HELMET_EXEMPT (1<<17)
+/// Usable as casting clothes by wizards (only matters for suits and headwear)
+#define CASTING_CLOTHES (1<<18)
 ///Moths can't eat the clothing that has this flag.
-#define INEDIBLE_CLOTHING (1<<18)
+#define INEDIBLE_CLOTHING (1<<19)
+
 /// Flags for the organ_flags var on /obj/item/organ
 
 #define ORGAN_SYNTHETIC (1<<0) //Synthetic organs, or cybernetic organs. Reacts to EMPs and don't deteriorate or heal

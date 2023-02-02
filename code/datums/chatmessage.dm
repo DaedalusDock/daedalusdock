@@ -256,7 +256,7 @@
 	animate(message, alpha = 0, maptext_y = message.maptext_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fadetime)
 	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, src), fadetime, TIMER_DELETE_ME, SSrunechat)
 
-
+/*
 /mob/living/carbon/human/talker
 /mob/living/carbon/human/talker/Initialize(mapload)
 	. = ..()
@@ -264,6 +264,7 @@
 		while(TRUE)
 			say("Hello World, My Name is Nothing")
 			sleep(5 SECONDS)
+*/
 
 /**
  * Creates a message overlay at a defined location for a given speaker

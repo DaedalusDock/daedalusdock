@@ -101,15 +101,17 @@
 	. = ..()
 	if(!.) //Checks if they are dead as a rock.
 		return
-	if(health < maxHealth * 0.5 && rand_tent < world.time)
-		rand_tent = world.time + 30
-		var/tentacle_amount = 5
-		if(health < maxHealth * 0.25)
-			tentacle_amount = 10
-		var/tentacle_loc = spiral_range_turfs(5, get_turf(src))
-		for(var/i in 1 to tentacle_amount)
-			var/turf/t = pick_n_take(tentacle_loc)
-			new /obj/effect/temp_visual/goliath_tentacle/broodmother(t, src)
+	spawn(-1)
+		if(health < maxHealth * 0.5 && rand_tent < world.time)
+			rand_tent = world.time + 30
+			var/tentacle_amount = 5
+			if(health < maxHealth * 0.25)
+				tentacle_amount = 10
+			var/tentacle_loc = spiral_range_turfs(5, get_turf(src))
+			if(!QDELETED(src))
+				for(var/i in 1 to tentacle_amount)
+					var/turf/t = pick_n_take(tentacle_loc)
+					new /obj/effect/temp_visual/goliath_tentacle/broodmother(t, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/tentacle_patch(target)
 	ranged_cooldown = world.time + 15

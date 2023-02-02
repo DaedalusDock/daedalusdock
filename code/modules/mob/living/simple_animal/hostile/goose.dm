@@ -160,7 +160,7 @@
 	if(choking && !stat)
 		do_jitter_animation(50)
 		if(DT_PROB(10, delta_time))
-			emote("gasp")
+			INVOKE_ASYNC(src, .proc/emote, "gasp")
 
 /mob/living/simple_animal/hostile/retaliate/goose/proc/suffocate()
 	if(!choking)

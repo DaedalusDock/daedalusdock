@@ -247,18 +247,19 @@
 	playsound(src, 'sound/effects/screech.ogg', 100, TRUE)
 	visible_message(span_warning("[src] lets out a waning screech as violet mist swirls around its dissolving body!"))
 	icon_state = "revenant_draining"
-	for(var/i = alpha, i > 0, i -= 10)
-		stoplag()
-		alpha = i
-	visible_message(span_danger("[src]'s body breaks apart into a fine pile of blue dust."))
-	var/reforming_essence = essence_regen_cap //retain the gained essence capacity
-	var/obj/item/ectoplasm/revenant/R = new(get_turf(src))
-	R.essence = max(reforming_essence - 15 * perfectsouls, 75) //minus any perfect souls
-	R.old_key = client.key //If the essence reforms, the old revenant is put back in the body
-	R.revenant = src
-	invisibility = INVISIBILITY_ABSTRACT
-	revealed = FALSE
-	ghostize(0)//Don't re-enter invisible corpse
+
+	spawn(-1)
+		animate(src, time = 3 SECONDS, alpha = 0)
+		sleep(3 SECONDS)
+		visible_message(span_danger("[src]'s body breaks apart into a fine pile of blue dust."))
+		var/reforming_essence = essence_regen_cap //retain the gained essence capacity
+		var/obj/item/ectoplasm/revenant/R = new(get_turf(src))
+		R.essence = max(reforming_essence - 15 * perfectsouls, 75) //minus any perfect souls
+		R.old_key = client.key //If the essence reforms, the old revenant is put back in the body
+		R.revenant = src
+		invisibility = INVISIBILITY_ABSTRACT
+		revealed = FALSE
+		ghostize(0)//Don't re-enter invisible corpse
 
 
 //reveal, stun, icon updates, cast checks, and essence changing

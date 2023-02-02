@@ -406,7 +406,8 @@ Difficulty: Hard
 		if(timeout_time <= 0 && !did_reset)
 			did_reset = TRUE
 			visible_message(span_hierophant_warning("\"Vixyvrmrk xs fewi...\""))
-			blink(spawned_beacon)
+			if(!blinking)
+				INVOKE_ASYNC(src, .proc/blink, spawned_beacon)
 			adjustHealth(min((health - maxHealth) * 0.5, -250)) //heal for 50% of our missing health, minimum 10% of maximum health
 			wander = FALSE
 			if(health > maxHealth * 0.9)

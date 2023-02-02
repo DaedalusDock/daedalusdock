@@ -10,7 +10,7 @@
  * - times_fired: The number of times SSmobs has fired
  */
 /mob/living/proc/Life(delta_time = SSMOBS_DT, times_fired)
-	set waitfor = FALSE
+	SHOULD_NOT_SLEEP(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_LIFE, delta_time, times_fired)
 

@@ -484,7 +484,8 @@
 			else if (findtext(phrase, "attack"))
 				if (rabid && prob(20))
 					set_target(who)
-					AIprocess() //Wake up the slime's Target AI, needed otherwise this doesn't work
+					if(!AIproc)
+						INVOKE_ASYNC(src, .proc/AIprocess) //Wake up the slime's Target AI, needed otherwise this doesn't work
 					to_say = "ATTACK!?!?"
 				else if (Friends[who] >= SLIME_FRIENDSHIP_ATTACK)
 					for (var/mob/living/L in view(7,src)-list(src,who))
@@ -507,9 +508,9 @@
 
 	//Speech starts here
 	if (to_say)
-		say (to_say)
+		INVOKE_ASYNC(src, /atom/movable/proc/say, to_say)
 	else if(DT_PROB(0.5, delta_time))
-		emote(pick("bounce","sway","light","vibrate","jiggle"))
+		INVOKE_ASYNC(src, .proc/emote, pick("bounce","sway","light","vibrate","jiggle"))
 	else
 		var/t = 10
 		var/slimes_near = 0
@@ -583,7 +584,7 @@
 				if (nutrition < get_hunger_nutrition())
 					phrases += "[M]... feed me..."
 			if(!stat)
-				say (pick(phrases))
+				INVOKE_ASYNC(src, /atom/movable/proc/say, pick(phrases))
 
 /mob/living/simple_animal/slime/proc/get_max_nutrition() // Can't go above it
 	if (is_adult)

@@ -199,6 +199,7 @@
 		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
 			animate(m.message, maptext_y = m.message.maptext_y + src.mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
+		//if(ismob(message_loc)) // If this proc starts getting $$$, re-add this check
 		var/turf/message_turf = get_turf(message_loc)
 		var/list/turfs2check = block(locate(max(message_turf.x-3, 1), message_turf.y, message_turf.z), locate(min(message_turf.x+3, world.maxx), message_turf.y, message_turf.z)) - message_turf
 		for(var/turf/T as anything in turfs2check)

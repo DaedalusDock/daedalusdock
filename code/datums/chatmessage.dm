@@ -1,11 +1,9 @@
 /// How long the chat message's spawn-in animation will occur for
-#define CHAT_MESSAGE_SPAWN_TIME 0.4 SECONDS
-/// How long the chat message will exist prior to any exponential decay
-#define CHAT_MESSAGE_LIFESPAN 5 SECONDS
+#define CHAT_MESSAGE_SPAWN_TIME 4//0.4 SECONDS
+/// How long the chat message will exist.
+#define CHAT_MESSAGE_LIFESPAN 50 //5 SECONDS
 /// How long the chat message's end of life fading animation will occur for
-#define CHAT_MESSAGE_EOL_FADE 0.7 SECONDS
-/// Factor of how much the message index (number of messages) will account to exponential decay
-#define CHAT_MESSAGE_EXP_DECAY 0.7
+#define CHAT_MESSAGE_EOL_FADE 2 //0.2 SECONDS
 /// Factor of how much height will account to exponential decay
 #define CHAT_MESSAGE_HEIGHT_DECAY 0.9
 /// Approximate height in pixels of an 'average' line, used for height decay
@@ -50,10 +48,8 @@
 	var/datum/chatmessage/prev
 	/// The current index used for adjusting the layer of each sequential chat message such that recent messages will overlay older ones
 	var/static/current_z_idx = 0
-	/// Contains ID of assigned timer for end_of_life fading event
-	var/fadertimer = null
-	/// States if end_of_life is being executed
-	var/isFading = FALSE
+	///The height of this text
+	var/mheight = 0
 
 /**
  * Constructs a chat message overlay
@@ -168,7 +164,8 @@
 
 	// Approximate text height
 	var/complete_text = "<span class='center [extra_classes.Join(" ")]' style='color: [tgt_color]'>[owner.say_emphasis(text)]</span>"
-	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
+	mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, 160))
+
 
 	message_loc = isturf(target) ? target : get_atom_on_turf(target)
 
@@ -183,38 +180,32 @@
 		maptext_y = 28
 	}
 
-	animate(message, maptext_y = 28, time = 0.01)
 
 	message.layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++
 	message.maptext = MAPTEXT(complete_text)
+
+	animate(message, maptext_y = 28, time = 0.01)
 
 	//var/mheight = (1 + round(length(message.maptext_width) / 32))
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
 	// Translate any existing messages upwards, apply exponential decay factors to timers
 	if (owned_by.seen_messages)
-		var/idx = 1
-		var/combined_height = approx_lines
 		var/datum/chatmessage/old_message = owned_by.seen_messages?[message_loc]?[length(owned_by.seen_messages?[message_loc])]
 		if(old_message?.message.maptext == message.maptext)
 			old_message.message.transform *= 1.1
 			return
 
 		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
-			animate(m.message, maptext_y = m.message.maptext_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
+			animate(m.message, maptext_y = m.message.maptext_y + src.mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
-			combined_height += m.approx_lines
-
-			// When choosing to update the remaining time we have to be careful not to update the
-			// scheduled time once the EOL has been executed.
-			if (!m.isFading)
-				var/sched_remaining = timeleft(m.fadertimer, SSrunechat)
-				var/remaining_time = (sched_remaining) * (CHAT_MESSAGE_EXP_DECAY ** idx++) * (CHAT_MESSAGE_HEIGHT_DECAY ** combined_height)
-				if (remaining_time)
-					deltimer(m.fadertimer, SSrunechat)
-					m.fadertimer = addtimer(CALLBACK(m, .proc/end_of_life), remaining_time, TIMER_STOPPABLE|TIMER_DELETE_ME, SSrunechat)
-				else
-					m.end_of_life()
+		var/turf/message_turf = get_turf(message_loc)
+		var/list/turfs2check = block(locate(max(message_turf.x-3, 1), message_turf.y, message_turf.z), locate(min(message_turf.x+3, world.maxx), message_turf.y, message_turf.z)) - message_turf
+		for(var/turf/T as anything in turfs2check)
+			var/mob/living/L = locate() in T
+			if(!isnull(L))
+				for(var/datum/chatmessage/m as anything in owned_by.seen_messages[L])
+					animate(m.message, maptext_y = m.message.maptext_y + src.mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 
 	// Reset z index if relevant
 	if (current_z_idx >= CHAT_LAYER_MAX_Z)
@@ -227,21 +218,27 @@
 	message.loc = message_loc
 	animate(message, alpha = 255, maptext_y = 34, time = CHAT_MESSAGE_SPAWN_TIME, ANIMATION_END_NOW)
 
-	// Register with the runechat SS to handle EOL and destruction
+	//Fade out
 	var/duration = lifespan - CHAT_MESSAGE_EOL_FADE
-	fadertimer = addtimer(CALLBACK(src, .proc/end_of_life), duration, TIMER_STOPPABLE|TIMER_DELETE_ME, SSrunechat)
+	fade_out(duration)
 
-/**
- * Applies final animations to overlay CHAT_MESSAGE_EOL_FADE deciseconds prior to message deletion,
- * sets timer for scheduling deletion
- *
- * Arguments:
- * * fadetime - The amount of time to animate the message's fadeout for
- */
-/datum/chatmessage/proc/end_of_life(fadetime = CHAT_MESSAGE_EOL_FADE)
-	isFading = TRUE
-	animate(message, alpha = 0, maptext_y = message.maptext_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fadetime)
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, src), fadetime, TIMER_DELETE_ME, SSrunechat)
+/datum/chatmessage/proc/fade_out(timer, fade_len = CHAT_MESSAGE_EOL_FADE)
+	set waitfor = FALSE
+
+	sleep(timer)
+	animate(message, alpha = 0, maptext_y = message.maptext_y + (8 * (1 + round(length(message.maptext_width) / 32))), time = fade_len)
+	sleep(fade_len)
+	qdel(src)
+
+/*
+/mob/living/carbon/human/talker
+/mob/living/carbon/human/talker/Initialize(mapload)
+	. = ..()
+	spawn(1)
+		while(TRUE)
+			say("Hello World, My Name is Nothing")
+			sleep(5 SECONDS)
+*/
 
 /**
  * Creates a message overlay at a defined location for a given speaker
@@ -334,7 +331,6 @@
 #undef CHAT_MESSAGE_SPAWN_TIME
 #undef CHAT_MESSAGE_LIFESPAN
 #undef CHAT_MESSAGE_EOL_FADE
-#undef CHAT_MESSAGE_EXP_DECAY
 #undef CHAT_MESSAGE_HEIGHT_DECAY
 #undef CHAT_MESSAGE_APPROX_LHEIGHT
 #undef CHAT_MESSAGE_WIDTH

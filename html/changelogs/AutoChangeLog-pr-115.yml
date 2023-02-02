@@ -1,0 +1,11 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - rscadd: Manual and digital valves have a slightly more visible on/off sprite and
+      make sound when used.
+  - rscdel: Removed passive gates from pipe dispensers/RPDs, since they are identical
+      to pressure valves.
+  - rscadd: Pressure valves can change which side they regulate in their UI
+  - balance: Volume pumps and filters now use power when dealing with entropy, and
+      the overclocking mechanic is removed
+  - qol: Pump UI now has a power meter

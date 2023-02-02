@@ -18,7 +18,7 @@
 #define THERMAL_PROTECTION_HAND_LEFT 0.025
 #define THERMAL_PROTECTION_HAND_RIGHT 0.025
 
-/mob/living/carbon/human/Life(delta_time = SSMOBS_DT, times_fired)
+/mob/living/carbon/human/Life(delta_time = SSCARBONS_DT, times_fired)
 	if(notransform)
 		return
 

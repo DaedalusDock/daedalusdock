@@ -207,6 +207,7 @@
 #define FIRE_PRIORITY_AIR 90
 #define FIRE_PRIORITY_PACKETS 95
 #define FIRE_PRIORITY_MOBS 100
+#define FIRE_PRIORITY_CARBONS 101
 #define FIRE_PRIORITY_ASSETS 105
 #define FIRE_PRIORITY_TGUI 110
 #define FIRE_PRIORITY_TICKER 200
@@ -322,4 +323,5 @@
 #define SSFLUIDS_DT (SSfluids.wait/10)
 #define SSMACHINES_DT (SSmachines.wait/10)
 #define SSMOBS_DT (SSmobs.wait/10)
+#define SSCARBONS_DT (SScarbons.wait/10)
 #define SSOBJ_DT (SSobj.wait/10)

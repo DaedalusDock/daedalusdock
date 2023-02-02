@@ -6,7 +6,7 @@
 	//pressure_resistance = 10
 
 	hud_type = /datum/hud/living
-
+	var/processing_ss = /datum/controller/subsystem/mobs
 	var/resize = 1 ///Badminnery resize
 	var/lastattacker = null
 	var/lastattackerckey = null

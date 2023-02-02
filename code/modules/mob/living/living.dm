@@ -1,5 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
+	var/datum/controller/subsystem/mobs/ss = locate(processing_ss) in Master.subsystems
+	START_PROCESSING(ss, src)
 	register_init_signals()
 	if(unique_name)
 		set_name()
@@ -26,6 +28,8 @@
 	med_hud_set_status()
 
 /mob/living/Destroy()
+	var/datum/controller/subsystem/mobs/ss = locate(processing_ss) in Master.subsystems
+	STOP_PROCESSING(ss, src)
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)

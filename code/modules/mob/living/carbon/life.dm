@@ -1,4 +1,4 @@
-/mob/living/carbon/Life(delta_time = SSMOBS_DT, times_fired)
+/mob/living/carbon/Life(delta_time = SSCARBONS_DT, times_fired)
 
 	if(notransform)
 		return

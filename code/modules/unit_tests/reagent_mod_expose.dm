@@ -12,7 +12,7 @@
 
 /datum/unit_test/reagent_mob_expose/Run()
 	// Life() is handled just by tests
-	SSmobs.pause()
+	SScarbons.pause()
 
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 	var/obj/item/reagent_containers/dropper/dropper = allocate(/obj/item/reagent_containers/dropper)
@@ -25,7 +25,7 @@
 	drink.reagents.add_reagent(/datum/reagent/phlogiston, 10)
 	drink.attack(human, human)
 	TEST_ASSERT_EQUAL(human.fire_stacks, 1, "Human does not have fire stacks after taking phlogiston")
-	human.Life(SSMOBS_DT)
+	human.Life(SSCARBONS_DT)
 	TEST_ASSERT(human.fire_stacks > 1, "Human fire stacks did not increase after life tick")
 
 	// TOUCH
@@ -54,5 +54,5 @@
 	TEST_ASSERT_EQUAL(human.health, 80, "Human health did not update after injection from syringe")
 
 /datum/unit_test/reagent_mob_expose/Destroy()
-	SSmobs.ignite()
+	SScarbons.ignite()
 	return ..()

@@ -30,3 +30,11 @@
 #define WOUND_DISMEMBER_OUTRIGHT_THRESH 250
 /// set wound_bonus on an item or attack to this to disable checking wounding for the attack
 #define CANT_WOUND -100
+
+
+/// While someone has determination in their system, their bleed rate is slightly reduced
+#define WOUND_DETERMINATION_BLEED_MOD 0.85
+
+/// How often can we annoy the player about their bleeding? This duration is extended if it's not serious bleeding
+#define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
+

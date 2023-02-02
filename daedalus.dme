@@ -205,7 +205,6 @@
 #include "code\__DEFINES\wiremod.dm"
 #include "code\__DEFINES\wires.dm"
 #include "code\__DEFINES\wounds.dm"
-#include "code\__DEFINES\wounds_old.dm"
 #include "code\__DEFINES\xenobiology.dm"
 #include "code\__DEFINES\atmospherics\_ZAS.dm"
 #include "code\__DEFINES\atmospherics\atmos_canpass.dm"

@@ -171,7 +171,7 @@
 			user.Paralyze(30)
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=15, updating_health=TRUE, wound_bonus = CANT_WOUND)
+				hed.receive_damage(brute=15, updating_health=TRUE)
 			user.gain_trauma(/datum/brain_trauma/mild/concussion)
 
 		if(-4 to -2) // glancing blow at best
@@ -385,7 +385,7 @@
 			user.visible_message(span_danger("[user] slams face-first into [hit] at an awkward angle, severing [user.p_their()] spinal column with a sickening crack! Fucking shit!"), span_userdanger("You slam face-first into [hit] at an awkward angle, severing your spinal column with a sickening crack! Fucking shit!"))
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=40, updating_health=FALSE, wound_bonus = 40)
+				hed.receive_damage(brute=40, updating_health=FALSE)
 			else
 				user.adjustBruteLoss(40, updating_health=FALSE)
 			user.adjustStaminaLoss(30)
@@ -401,7 +401,7 @@
 			user.visible_message(span_danger("[user] slams skull-first into [hit] with a sound like crumpled paper, revealing a horrifying breakage in [user.p_their()] cranium! Holy shit!"), span_userdanger("You slam skull-first into [hit] and your senses are filled with warm goo flooding across your face! Your skull is open!"))
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=30, updating_health=FALSE, wound_bonus = 25)
+				hed.receive_damage(brute=30, updating_health=FALSE)
 			else
 				user.adjustBruteLoss(40, updating_health=FALSE)
 			user.adjustStaminaLoss(30)

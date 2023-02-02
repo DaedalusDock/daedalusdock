@@ -209,7 +209,7 @@
 	visible_message(span_danger("[user] [hulk_verb]ed [src]!"), \
 					span_userdanger("[user] [hulk_verb]ed [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 	to_chat(user, span_danger("You [hulk_verb] [src]!"))
-	apply_damage(15, BRUTE, wound_bonus=10)
+	apply_damage(15, BRUTE)
 
 /mob/living/carbon/human/attack_hand(mob/user, list/modifiers)
 	if(..()) //to allow surgery to return properly.
@@ -356,7 +356,7 @@
 		affecting = get_bodypart(BODY_ZONE_CHEST)
 	var/armor = run_armor_check(affecting, MELEE, armour_penetration = user.armour_penetration)
 	var/attack_direction = get_dir(user, src)
-	apply_damage(damage, user.melee_damage_type, affecting, armor, wound_bonus = user.wound_bonus, bare_wound_bonus = user.bare_wound_bonus, sharpness = user.sharpness, attack_direction = attack_direction)
+	apply_damage(damage, user.melee_damage_type, affecting, armor, sharpness = user.sharpness, attack_direction = attack_direction)
 
 
 /mob/living/carbon/human/attack_animal(mob/living/simple_animal/user, list/modifiers)
@@ -374,7 +374,7 @@
 		affecting = get_bodypart(BODY_ZONE_CHEST)
 	var/armor = run_armor_check(affecting, MELEE, armour_penetration = user.armour_penetration)
 	var/attack_direction = get_dir(user, src)
-	apply_damage(damage, user.melee_damage_type, affecting, armor, wound_bonus = user.wound_bonus, bare_wound_bonus = user.bare_wound_bonus, sharpness = user.sharpness, attack_direction = attack_direction)
+	apply_damage(damage, user.melee_damage_type, affecting, armor, sharpness = user.sharpness, attack_direction = attack_direction)
 
 
 /mob/living/carbon/human/attack_slime(mob/living/simple_animal/slime/M)
@@ -384,10 +384,8 @@
 	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 	if(!damage)
 		return
-	var/wound_mod = -45 // 25^1.4=90, 90-45=45
 	if(M.is_adult)
 		damage += rand(5, 10)
-		wound_mod = -90 // 35^1.4=145, 145-90=55
 
 	if(check_shields(M, damage, "the [M.name]"))
 		return FALSE
@@ -400,7 +398,7 @@
 	if(!affecting)
 		affecting = get_bodypart(BODY_ZONE_CHEST)
 	var/armor_block = run_armor_check(affecting, MELEE)
-	apply_damage(damage, BRUTE, affecting, armor_block, wound_bonus=wound_mod)
+	apply_damage(damage, BRUTE, affecting, armor_block)
 
 
 /mob/living/carbon/human/ex_act(severity, target, origin)
@@ -480,7 +478,7 @@
 		for(var/X in bodyparts)
 			var/obj/item/bodypart/BP = X
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
-				BP.receive_damage(INFINITY, wound_bonus = CANT_WOUND) //Capped by proc
+				BP.receive_damage(INFINITY) //Capped by proc
 				BP.dismember()
 				max_limb_loss--
 				if(!max_limb_loss)

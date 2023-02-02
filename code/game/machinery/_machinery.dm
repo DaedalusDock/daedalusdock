@@ -645,7 +645,7 @@
 	if(arm.bodypart_disabled)
 		return
 	var/damage = damage_deflection * 0.1
-	arm.receive_damage(brute=damage, wound_bonus = CANT_WOUND)
+	arm.receive_damage(brute=damage)
 
 /obj/machinery/attack_robot(mob/user)
 	if(!(interaction_flags_machine & INTERACT_MACHINE_ALLOW_SILICON) && !isAdminGhostAI(user))

@@ -614,8 +614,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 				if(prob(30))
 					C.apply_damage(max(0, squish_damage - crit_rebate), forced=TRUE, spread_damage=TRUE) // the 30% chance to spread the damage means you escape breaking any bones
 				else
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5)
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5)
 				C.AddElement(/datum/element/squish, 80 SECONDS)
 			else
 				L.visible_message(span_danger("[L] is crushed by [src]!"), \

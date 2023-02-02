@@ -441,7 +441,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	inhand_icon_state = "wonderprod"
 
 	force = 7
-	wound_bonus = FALSE
 
 	actions_types = list(/datum/action/item_action/toggle_mode)
 

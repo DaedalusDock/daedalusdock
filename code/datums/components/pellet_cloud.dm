@@ -1,4 +1,4 @@
-// the following defines are used for [/datum/component/pellet_cloud/var/list/wound_info_by_part] to store the damage, wound_bonus, and bw_bonus for each bodypart hit
+// the following defines are used for [/datum/component/pellet_cloud/var/list/wound_info_by_part] to store the damage, and bw_bonus for each bodypart hit
 #define CLOUD_POSITION_DAMAGE 1
 #define CLOUD_POSITION_W_BONUS 2
 #define CLOUD_POSITION_BW_BONUS 3
@@ -107,9 +107,6 @@
 
 	// things like mouth executions and gunpoints can multiply the damage and wounds of projectiles, so this makes sure those effects are applied to each pellet instead of just one
 	var/original_damage = shell.loaded_projectile.damage
-	var/original_wb = shell.loaded_projectile.wound_bonus
-	var/original_bwb = shell.loaded_projectile.bare_wound_bonus
-
 	for(var/i in 1 to num_pellets)
 		shell.ready_proj(target, user, SUPPRESSED_VERY, zone_override, fired_from)
 		if(distro)
@@ -121,8 +118,6 @@
 		RegisterSignal(shell.loaded_projectile, COMSIG_PROJECTILE_SELF_ON_HIT, .proc/pellet_hit)
 		RegisterSignal(shell.loaded_projectile, list(COMSIG_PROJECTILE_RANGE_OUT, COMSIG_PARENT_QDELETING), .proc/pellet_range)
 		shell.loaded_projectile.damage = original_damage
-		shell.loaded_projectile.wound_bonus = original_wb
-		shell.loaded_projectile.bare_wound_bonus = original_bwb
 		pellets += shell.loaded_projectile
 		var/turf/current_loc = get_turf(fired_from)
 		if (!istype(target_loc) || !istype(current_loc) || !(shell.loaded_projectile))

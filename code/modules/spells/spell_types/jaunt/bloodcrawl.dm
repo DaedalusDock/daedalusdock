@@ -201,7 +201,7 @@
 	jaunter.revive(full_heal = TRUE, admin_revive = FALSE)
 
 	// No defib possible after laughter
-	victim.apply_damage(1000, BRUTE, wound_bonus = CANT_WOUND)
+	victim.apply_damage(1000, BRUTE)
 	victim.death()
 	on_victim_consumed(victim, jaunter)
 

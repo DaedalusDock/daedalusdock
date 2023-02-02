@@ -364,7 +364,7 @@
 	icon = 'icons/obj/doors/edge_Doorfire.dmi'
 	can_crush = FALSE
 	flags_1 = ON_BORDER_1
-	can_atmos_pass = ATMOS_PASS_PROC
+	can_atmos_pass = CANPASS_PROC
 	auto_dir_align = FALSE
 
 /obj/machinery/door/firedoor/border_only/closed

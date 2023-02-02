@@ -20,6 +20,8 @@
 	low_threshold = 45
 	high_threshold = 120
 
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
+
 	var/suicided = FALSE
 	var/mob/living/brain/brainmob = null
 	/// If it's a fake brain with no brainmob assigned. Feedback messages will be faked as if it does have a brainmob. See changelings & dullahans.

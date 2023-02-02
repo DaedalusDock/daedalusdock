@@ -58,7 +58,7 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	/// Is the machine active (No sales pitches if off)!
@@ -156,6 +156,8 @@
 	///ID's that can load this vending machine wtih refills
 	var/list/canload_access_list
 
+	///Access that gets the non-premium content for free
+	var/list/discount_access = null
 
 	var/list/vending_machine_input = list()
 	///Display header on the input view
@@ -317,8 +319,6 @@ GLOBAL_LIST_EMPTY(vending_products)
  * * startempty - should we set vending_product record amount from the product list (so it's prefilled at roundstart)
  */
 /obj/machinery/vending/proc/build_inventory(list/productlist, list/recordlist, start_empty = FALSE)
-	default_price = round(initial(default_price) * SSeconomy.inflation_value())
-	extra_price = round(initial(extra_price) * SSeconomy.inflation_value())
 	for(var/typepath in productlist)
 		var/amount = productlist[typepath]
 		if(isnull(amount))
@@ -333,36 +333,36 @@ GLOBAL_LIST_EMPTY(vending_products)
 			R.amount = amount
 		R.max_amount = amount
 		///Prices of vending machines are all increased uniformly.
-		R.custom_price = round(initial(temp.custom_price) * SSeconomy.inflation_value())
-		R.custom_premium_price = round(initial(temp.custom_premium_price) * SSeconomy.inflation_value())
+		R.custom_price = round(initial(temp.custom_price))
+		R.custom_premium_price = round(initial(temp.custom_premium_price))
 		R.age_restricted = initial(temp.age_restricted)
 		R.colorable = !!(initial(temp.greyscale_config) && initial(temp.greyscale_colors) && (initial(temp.flags_1) & IS_PLAYER_COLORABLE_1))
 		recordlist += R
 
 /**
- * Reassign the prices of the vending machine as a result of the inflation value, as provided by SSeconomy
+ * Reassign the prices of the vending machine using the multiplier argument
  *
  * This rebuilds both /datum/data/vending_products lists for premium and standard products based on their most relevant pricing values.
  * Arguments:
  * * recordlist - the list of standard product datums in the vendor to refresh their prices.
  * * premiumlist - the list of premium product datums in the vendor to refresh their prices.
  */
-/obj/machinery/vending/proc/reset_prices(list/recordlist, list/premiumlist)
-	default_price = round(initial(default_price) * SSeconomy.inflation_value())
-	extra_price = round(initial(extra_price) * SSeconomy.inflation_value())
+/obj/machinery/vending/proc/reset_prices(list/recordlist, list/premiumlist, multiplier)
+	default_price = round(initial(default_price) * multiplier)
+	extra_price = round(initial(extra_price) * multiplier)
 	for(var/R in recordlist)
 		var/datum/data/vending_product/record = R
 		var/obj/item/potential_product = record.product_path
-		record.custom_price = round(initial(potential_product.custom_price) * SSeconomy.inflation_value())
+		record.custom_price = round(initial(potential_product.custom_price) * multiplier)
 	for(var/R in premiumlist)
 		var/datum/data/vending_product/record = R
 		var/obj/item/potential_product = record.product_path
 		var/premium_sanity = round(initial(potential_product.custom_premium_price))
 		if(premium_sanity)
-			record.custom_premium_price = round(premium_sanity * SSeconomy.inflation_value())
+			record.custom_premium_price = round(premium_sanity * multiplier)
 			continue
 		//For some ungodly reason, some premium only items only have a custom_price
-		record.custom_premium_price = round(extra_price + (initial(potential_product.custom_price) * (SSeconomy.inflation_value() - 1)))
+		record.custom_premium_price = round(extra_price + (initial(potential_product.custom_price) * (multiplier)))
 
 /**
  * Refill a vending machine from a refill canister
@@ -824,6 +824,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 		else
 			.["user"]["job"] = "No Job"
 			.["user"]["department"] = "No Department"
+
+	if(discount_access && (discount_access in C?.access))
+		.["access"] = TRUE
+
 	.["stock"] = list()
 	for (var/datum/data/vending_product/R in product_records + coin_records + hidden_records)
 		var/list/product_data = list(
@@ -946,19 +950,25 @@ GLOBAL_LIST_EMPTY(vending_products)
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
+
 		var/datum/bank_account/account = C.registered_account
-		if(account.account_job && account.account_job.paycheck_department == payment_department)
-			price_to_use = max(round(price_to_use * VENDING_DISCOUNT), 1) //No longer free, but signifigantly cheaper.
+		if((length(C.access&req_access) || (discount_access in C.access)) && !(R in premium))
+			price_to_use = round(price_to_use * VENDING_DISCOUNT)
+
 		if(coin_records.Find(R) || hidden_records.Find(R))
 			price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price
+
 		if(LAZYLEN(R.returned_products))
 			price_to_use = 0 //returned items are free
+
 		if(price_to_use && !account.adjust_money(-price_to_use))
 			say("You do not possess the funds to purchase [R.name].")
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
-		var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
+
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[payment_department]
+
 		if(D)
 			D.adjust_money(price_to_use)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)

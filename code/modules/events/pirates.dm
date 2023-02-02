@@ -28,7 +28,7 @@
 	var/response_max_time = 2 MINUTES
 	priority_announce("Incoming short range communication. Secure channel opened at all communication consoles.", "Short-Range Telecommunications Array", SSstation.announcer.get_rand_report_sound())
 	var/datum/comm_message/threat = new
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 	if(D)
 		payoff = max(payoff_min, FLOOR(D.account_balance * 0.80, 1000))
 	switch(pirate_type)
@@ -59,7 +59,7 @@
 		priority_announce("Too late to beg for mercy!", FLAVOR_SR_TCOMMS, ship_name, do_not_modify = TRUE)
 		return
 	if(threat && threat.answered == 1)
-		var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 		if(D)
 			if(D.adjust_money(-payoff))
 				priority_announce("Thanks for the credits, landlubbers.", FLAVOR_SR_TCOMMS, ship_name, do_not_modify = TRUE)
@@ -117,7 +117,7 @@
 /obj/machinery/shuttle_scrambler/process()
 	if(active)
 		if(is_station_level(z))
-			var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+			var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 			if(D)
 				var/siphoned = min(D.account_balance,siphon_per_tick)
 				D.adjust_money(-siphoned)

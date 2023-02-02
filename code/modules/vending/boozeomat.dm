@@ -59,8 +59,10 @@
 	refill_canister = /obj/item/vending_refill/boozeomat
 	default_price = PAYCHECK_ASSISTANT * 0.9
 	extra_price = PAYCHECK_COMMAND
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "boozeomat-light-mask"
+
+	discount_access = ACCESS_BAR
 
 /obj/machinery/vending/boozeomat/all_access
 	desc = "A technological marvel, supposedly able to mix just the mixture you'd like to drink the moment you ask for one. This model appears to have no access restrictions."

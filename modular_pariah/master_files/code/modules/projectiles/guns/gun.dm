@@ -119,7 +119,7 @@
 	if(fire_select_modes.len > 1)
 		firemode_action = new(src)
 		firemode_action.button_icon_state = "fireselect_[fire_select]"
-		firemode_action.UpdateButtons()
+		firemode_action.build_all_button_icons()
 
 /obj/item/gun/ComponentInitialize()
 	. = ..()
@@ -224,7 +224,7 @@
 	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
 	update_appearance()
 	firemode_action.button_icon_state = "fireselect_[fire_select]"
-	firemode_action.UpdateButtons()
+	firemode_action.build_all_button_icons()
 	// SEND_SIGNAL(src, COMSIG_UPDATE_AMMO_HUD)
 	return TRUE
 
@@ -766,7 +766,7 @@
 /datum/action/toggle_scope_zoom
 	name = "Toggle Scope"
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING
-	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "sniper_zoom"
 	var/obj/item/gun/gun = null
 
@@ -776,7 +776,7 @@
 		return
 	gun.zoom(owner, owner.dir)
 
-/datum/action/toggle_scope_zoom/IsAvailable()
+/datum/action/toggle_scope_zoom/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(owner.get_active_held_item() != gun)
 		. = FALSE

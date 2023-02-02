@@ -26,7 +26,7 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)

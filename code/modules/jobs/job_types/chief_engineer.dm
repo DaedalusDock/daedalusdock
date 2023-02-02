@@ -30,7 +30,7 @@
 		)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_ENG
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM, TRAIT_ROYAL_METABOLISM)
 

@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(vote)
 
 	var/list/choices = list()
 	var/list/choice_by_ckey = list()
-	var/list/generated_actions = list()
+	var/list/datum/action/generated_actions = list()
 	var/initiator
 	var/mode
 	var/question
@@ -37,7 +37,7 @@ SUBSYSTEM_DEF(vote)
 	voted.Cut()
 	voting.Cut()
 
-	remove_action_buttons()
+	QDEL_LIST(generated_actions)
 
 /datum/controller/subsystem/vote/proc/get_result()
 	//get the highest number of votes
@@ -103,7 +103,6 @@ SUBSYSTEM_DEF(vote)
 	else
 		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
 	log_vote(text)
-	remove_action_buttons()
 	to_chat(world, "\n<span class='infoplain'><font color='purple'>[text]</font></span>")
 	return .
 
@@ -227,10 +226,10 @@ SUBSYSTEM_DEF(vote)
 		for(var/c in GLOB.clients)
 			var/client/C = c
 			var/datum/action/vote/V = new
+			V.Grant(C.mob)
 			if(question)
 				V.name = "Vote: [question]"
 			C.player_details.player_actions += V
-			V.Grant(C.mob)
 			generated_actions += V
 			if(C.prefs.toggles & SOUND_ANNOUNCEMENTS)
 				SEND_SOUND(C, sound('sound/misc/bloop.ogg'))
@@ -319,14 +318,6 @@ SUBSYSTEM_DEF(vote)
 			submit_vote(round(text2num(params["index"])))
 	return TRUE
 
-/datum/controller/subsystem/vote/proc/remove_action_buttons()
-	for(var/v in generated_actions)
-		var/datum/action/vote/V = v
-		if(!QDELETED(V))
-			V.remove_from_client()
-			V.Remove(V.owner)
-	generated_actions = list()
-
 /datum/controller/subsystem/vote/ui_close(mob/user)
 	voting -= user.client?.ckey
 
@@ -334,21 +325,24 @@ SUBSYSTEM_DEF(vote)
 	name = "Vote!"
 	button_icon_state = "vote"
 
-/datum/action/vote/Trigger(trigger_flags)
-	if(owner)
-		owner.vote()
-		remove_from_client()
-		Remove(owner)
-
-/datum/action/vote/IsAvailable()
+/datum/action/vote/IsAvailable(feedback = FALSE)
 	return TRUE
 
-/datum/action/vote/proc/remove_from_client()
-	if(!owner)
+/datum/action/vote/Trigger(trigger_flags)
+	. = ..()
+	if(!.)
 		return
-	if(owner.client)
-		owner.client.player_details.player_actions -= src
-	else if(owner.ckey)
-		var/datum/player_details/P = GLOB.player_details[owner.ckey]
-		if(P)
-			P.player_actions -= src
+
+	owner.vote()
+	Remove(owner)
+
+// We also need to remove our action from the player actions when we're cleaning up.
+/datum/action/vote/Remove(mob/removed_from)
+	if(removed_from.client)
+		removed_from.client?.player_details.player_actions -= src
+
+	else if(removed_from.ckey)
+		var/datum/player_details/associated_details = GLOB.player_details[removed_from.ckey]
+		associated_details?.player_actions -= src
+
+	return ..()

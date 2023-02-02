@@ -207,13 +207,13 @@
 	desc = "Corrupts this area to be more suitable for your rat army."
 	check_flags = AB_CHECK_CONSCIOUS
 	cooldown_time = 6 SECONDS
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	background_icon_state = "bg_clock"
 	button_icon_state = "coffer"
 
 /datum/action/cooldown/domain/proc/domain()
 	var/turf/T = get_turf(owner)
-	T.atmos_spawn_air("miasma=4;TEMP=[T20C]")
+	T.atmos_spawn_air(GAS_AMMONIA, 4, T20C)
 	switch (rand(1,10))
 		if (8)
 			new /obj/effect/decal/cleanable/vomit(T)
@@ -238,7 +238,7 @@
 	name = "Raise Army"
 	desc = "Raise an army out of the hordes of mice and pests crawling around the maintenance shafts."
 	check_flags = AB_CHECK_CONSCIOUS
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	button_icon_state = "riot"
 	background_icon_state = "bg_clock"
 	cooldown_time = 8 SECONDS

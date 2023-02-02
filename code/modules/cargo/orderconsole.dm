@@ -99,7 +99,7 @@
 /obj/machinery/computer/cargo/ui_data()
 	var/list/data = list()
 	data["location"] = SSshuttle.supply.getStatusText()
-	var/datum/bank_account/D = SSeconomy.get_dep_account(cargo_account)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[cargo_account]
 	if(D)
 		data["points"] = D.account_balance
 	data["grocery"] = SSshuttle.chef_groceries.len

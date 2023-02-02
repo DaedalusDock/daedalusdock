@@ -495,7 +495,8 @@
 								add_friendship(who, -1) //Don't ask a slime to attack its friend
 							else if(!Friends[L] || Friends[L] < 1)
 								set_target(L)
-								AIprocess()//Wake up the slime's Target AI, needed otherwise this doesn't work
+								if(!AIproc)
+									INVOKE_ASYNC(src, .proc/AIprocess)//Wake up the slime's Target AI, needed otherwise this doesn't work
 								to_say = "Ok... I attack [Target]"
 							else
 								to_say = "No... like [L] ..."

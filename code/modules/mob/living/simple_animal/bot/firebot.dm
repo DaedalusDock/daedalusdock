@@ -47,6 +47,11 @@
 	prev_access = access_card.access.Copy()
 
 	create_extinguisher()
+	become_atmos_sensitive()
+
+/mob/living/simple_animal/bot/firebot/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
 
 /mob/living/simple_animal/bot/firebot/bot_reset()
 	create_extinguisher()
@@ -260,9 +265,6 @@
 		result = scan_target
 
 	return result
-/mob/living/simple_animal/bot/firebot/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	if(exposed_temperature > T0C + 200 || exposed_temperature < BODYTEMP_COLD_DAMAGE_LIMIT)
-		return TRUE
 
 /mob/living/simple_animal/bot/firebot/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > T0C + 200 || exposed_temperature < BODYTEMP_COLD_DAMAGE_LIMIT)

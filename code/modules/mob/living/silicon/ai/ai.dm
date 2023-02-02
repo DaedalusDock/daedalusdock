@@ -606,7 +606,7 @@
 					var/list/personnel_list = list()
 
 					for(var/datum/data/record/record_datum in GLOB.data_core.locked)//Look in data core locked.
-						personnel_list["[record_datum.fields["name"]]: [record_datum.fields["rank"]]"] = record_datum.fields["image"]//Pull names, rank, and image.
+						personnel_list["[record_datum.fields["name"]]: [record_datum.fields["rank"]]"] = record_datum.fields["character_appearance"]//Pull names, rank, and image.
 
 					if(!length(personnel_list))
 						tgui_alert(usr,"No suitable records found. Aborting.")
@@ -616,10 +616,12 @@
 						return
 					if(isnull(personnel_list[input]))
 						return
-					var/icon/character_icon = personnel_list[input]
+					var/mutable_appearance/character_icon = personnel_list[input]
 					if(character_icon)
 						qdel(holo_icon)//Clear old icon so we're not storing it in memory.
-						holo_icon = getHologramIcon(icon(character_icon))
+
+						var/icon/icon_for_holo = getFlatIcon(character_icon, SOUTH)
+						holo_icon = getHologramIcon(icon(icon_for_holo))
 
 				if("My Character")
 					switch(tgui_alert(usr,"WARNING: Your AI hologram will take the appearance of your currently selected character ([usr.client.prefs?.read_preference(/datum/preference/name/real_name)]). Are you sure you want to proceed?", "Customize", list("Yes","No")))
@@ -691,7 +693,7 @@
 /datum/action/innate/core_return
 	name = "Return to Main Core"
 	desc = "Leave the APC and resume normal core operations."
-	icon_icon = 'icons/mob/actions/actions_AI.dmi'
+	button_icon = 'icons/mob/actions/actions_AI.dmi'
 	button_icon_state = "ai_malf_core"
 
 /datum/action/innate/core_return/Activate()
@@ -842,7 +844,7 @@
 /datum/action/innate/choose_modules
 	name = "Malfunction Modules"
 	desc = "Choose from a variety of insidious modules to aid you."
-	icon_icon = 'icons/mob/actions/actions_AI.dmi'
+	button_icon = 'icons/mob/actions/actions_AI.dmi'
 	button_icon_state = "modules_menu"
 	var/datum/module_picker/module_picker
 
@@ -962,7 +964,7 @@
 /datum/action/innate/deploy_shell
 	name = "Deploy to AI Shell"
 	desc = "Wirelessly control a specialized cyborg shell."
-	icon_icon = 'icons/mob/actions/actions_AI.dmi'
+	button_icon = 'icons/mob/actions/actions_AI.dmi'
 	button_icon_state = "ai_shell"
 
 /datum/action/innate/deploy_shell/Trigger(trigger_flags)
@@ -974,7 +976,7 @@
 /datum/action/innate/deploy_last_shell
 	name = "Reconnect to shell"
 	desc = "Reconnect to the most recently used AI shell."
-	icon_icon = 'icons/mob/actions/actions_AI.dmi'
+	button_icon = 'icons/mob/actions/actions_AI.dmi'
 	button_icon_state = "ai_last_shell"
 	var/mob/living/silicon/robot/last_used_shell
 

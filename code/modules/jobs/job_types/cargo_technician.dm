@@ -21,7 +21,7 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_CAR
+	paycheck_department = ACCOUNT_STATION_MASTER
 	display_order = JOB_DISPLAY_ORDER_CARGO_TECHNICIAN
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(

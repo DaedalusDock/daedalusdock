@@ -176,8 +176,6 @@
 	name = "plastic floor"
 	desc = "Cheap, lightweight flooring. Melts easily."
 	icon_state = "plastic"
-	thermal_conductivity = 0.1
-	heat_capacity = 900
 	custom_materials = list(/datum/material/plastic=500)
 	floor_tile = /obj/item/stack/tile/plastic
 

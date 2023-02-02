@@ -54,7 +54,6 @@
 	if(H.internal == src)
 		to_chat(H, span_notice("You close [src] valve."))
 		H.internal = null
-		H.update_internals_hud_icon(0)
 	else
 		if(!H.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 			if(!H.wear_mask)
@@ -72,8 +71,7 @@
 		else
 			to_chat(H, span_notice("You open [src] valve."))
 		H.internal = src
-		H.update_internals_hud_icon(1)
-	H.update_action_buttons_icon()
+	H?.update_mob_action_buttons()
 
 
 /obj/item/tank/Initialize(mapload)
@@ -327,8 +325,7 @@
 	var/turf/T = get_turf(src)
 	if(!T)
 		return ..()
-	T.hotspot_expose(air_contents.temperature, 70, 1)
-	T.assume_air(air_contents)
+
 	/// Handle fragmentation
 	var/pressure = air_contents.returnPressure()
 	if(pressure > TANK_FRAGMENT_PRESSURE)
@@ -345,19 +342,24 @@
 		var/mult = ((air_contents.volume/140)**(1/2)) * (air_contents.total_moles**2/3)/((29*0.64) **2/3)
 
 		log_atmos("[type] exploded with a power of [strength * mult] and a mix of ", air_contents)
-		explosion(
+		if(explosion(
 			src,
 			round(mult*strength*0.15),
 			round(mult*strength*0.35),
 			round(mult*strength*0.80),
 			round(mult*strength*1.20),
-		)
+		) & COMSIG_CANCEL_EXPLOSION)
+			return ..()
+
 		var/num_fragments = round(rand(8,10) * sqrt(strength * mult))
 		///Holy. Fucking. Shit. This is AGONIZING. Give me /obj/proc/fragmentate() PLEASE.
 		AddComponent(/datum/component/pellet_cloud, projectile_type = /obj/projectile/bullet/shrapnel, magnitude = num_fragments)
 		SEND_SIGNAL(src, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER)
 
 	else if (pressure > TANK_RUPTURE_PRESSURE)
+		if(explosion(src) & COMSIG_CANCEL_EXPLOSION)
+			return ..()
+
 		playsound(T, 'sound/weapons/gun/shotgun/shot.ogg', 20, 1)
 		visible_message("[icon2html(src, viewers(get_turf(src)))] <span class='danger'>\The [src] flies apart!</span>", "<span class='warning'>You hear a bang!</span>")
 
@@ -368,6 +370,10 @@
 		var/num_fragments = round(rand(6,8) * sqrt(strength * mult)) //Less chunks, but bigger
 		AddComponent(/datum/component/pellet_cloud, projectile_type = /obj/projectile/bullet/shrapnel/mega, magnitude = num_fragments)
 		SEND_SIGNAL(src, COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER)
+
+
+	T.hotspot_expose(air_contents.temperature, 70, 1)
+	T.assume_air(air_contents)
 
 	return ..()
 

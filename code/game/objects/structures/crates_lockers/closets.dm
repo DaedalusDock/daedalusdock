@@ -315,6 +315,8 @@
 			return TRUE
 		else if(!allow_objects && !istype(AM, /obj/effect/dummy/chameleon))
 			return FALSE
+		else if(HAS_TRAIT(AM, TRAIT_REJECT_INSERTION))
+			return FALSE
 	else
 		return FALSE
 

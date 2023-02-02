@@ -15,11 +15,21 @@
 	use_power = NO_POWER_USE
 	idle_power_usage = 0
 	active_power_usage = 0
-	var/machinery_layer = MACHINERY_LAYER_1 //cable layer to which the machine is connected
+
+
+	// This is EXPLICITLY zeroed out. you MUST opt power equipment in to the data net as they underpin the concept.
+	// NETWORK_FLAG_POWERNET_DATANODE will result in being added to powernet.data_nodes.
+	// post_signal() will !!!directly queue signals with SSPackets by default!!!
+	// Address-optimized receiving doesn't exist this far down.
+	// You should know what you're doing if you're messing with stuff at this level anyways.
+	network_flags = NONE
+
+	///cable layer to which the machine is connected
+	var/machinery_layer = MACHINERY_LAYER_1
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/update_cable_icons_on_turf, get_turf(src)), 3)
+	addtimer(CALLBACK(GLOBAL_PROC, .proc/update_cable_icons_on_turf, get_turf(src)), 3) //lol redstone wires
 	return ..()
 
 ///////////////////////////////
@@ -319,6 +329,10 @@
 	for(var/obj/machinery/power/Node in net2.nodes) //merge power machines
 		if(!Node.connect_to_network())
 			Node.disconnect_from_network() //if somehow we can't connect the machine to the new powernet, disconnect it from the old nonetheless
+
+	///Save any queued packets
+	net1.next_packet_queue |= net2.next_packet_queue
+	net1.current_packet_queue |= net2.current_packet_queue
 
 	return net1
 

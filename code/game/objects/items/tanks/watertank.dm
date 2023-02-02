@@ -469,3 +469,6 @@
 	reagents.trans_to(user, used_amount, multiplier=usage_ratio, methods = INJECT)
 	update_appearance()
 	user.update_worn_back() //for overlays update
+
+/datum/action/item_action/activate_injector
+	name = "Activate Injector"

@@ -142,7 +142,7 @@
 	///Whether outside viewers can see the pilot inside
 	var/enclosed = TRUE
 	///In case theres a different iconstate for AI/MMI pilot(currently only used for ripley)
-	var/silicon_icon_state = null
+	var/silbutton_icon_state = null
 	///Currently ejecting, and unable to do things
 	var/is_currently_ejecting = FALSE
 
@@ -193,6 +193,7 @@
 
 /obj/item/radio/mech //this has to go somewhere
 	subspace_transmission = TRUE
+	canhear_range = 0
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
 	. = ..()
@@ -233,6 +234,7 @@
 	update_appearance()
 
 	become_hearing_sensitive(trait_source = ROUNDSTART_TRAIT)
+	become_atmos_sensitive()
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT) //protects pilots from ashstorms.
 	for(var/key in equip_by_category)
 		if(key == MECHA_L_ARM || key == MECHA_R_ARM)
@@ -272,6 +274,7 @@
 	GLOB.mechas_list -= src //global mech list
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.remove_from_hud(src) //YEET
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/vehicle/sealed/mecha/atom_destruction()
@@ -302,8 +305,8 @@
 	initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/strafe, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/mecha/proc/get_mecha_occupancy_state()
-	if((mecha_flags & SILICON_PILOT) && silicon_icon_state)
-		return silicon_icon_state
+	if((mecha_flags & SILICON_PILOT) && silbutton_icon_state)
+		return silbutton_icon_state
 	if(LAZYLEN(occupants))
 		return base_icon_state
 	return "[base_icon_state]-open"

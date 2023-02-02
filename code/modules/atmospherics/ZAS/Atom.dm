@@ -1,3 +1,7 @@
+/atom
+	var/simulated = TRUE
+	var/can_atmos_pass = CANPASS_ALWAYS
+
 ///Tells ZAS to mark the tile the atom is in to update.
 /atom/proc/zas_update_loc()
 	var/turf/T = get_turf(src)
@@ -36,6 +40,3 @@
 		return
 	SSzas.mark_for_update(local_turf)
 
-/atom
-	var/simulated = TRUE
-	var/can_atmos_pass = CANPASS_ALWAYS

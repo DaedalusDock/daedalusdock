@@ -1,7 +1,5 @@
 /**
- * An event which decreases the station target temporarily, causing the inflation var to increase heavily.
- *
- * Done by decreasing the station_target by a high value per crew member, resulting in the station total being much higher than the target, and causing artificial inflation.
+ * An event which increases vendor prices on station by a factor of 4
  */
 /datum/round_event_control/market_crash
 	name = "Market Crash"
@@ -28,13 +26,11 @@
 /datum/round_event/market_crash/start()
 	. = ..()
 	market_dip = rand(1000,10000) * length(SSeconomy.bank_accounts_by_id)
-	SSeconomy.station_target = max(SSeconomy.station_target - market_dip, 1)
-	SSeconomy.price_update()
 	ADD_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING, MARKET_CRASH_EVENT_TRAIT)
+	SSeconomy.price_update()
 
 /datum/round_event/market_crash/end()
 	. = ..()
-	SSeconomy.station_target += market_dip
 	REMOVE_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING, MARKET_CRASH_EVENT_TRAIT)
 	SSeconomy.price_update()
 	priority_announce("Prices for on-station vendors have now stabilized.", "Daedalus Accounting Division")

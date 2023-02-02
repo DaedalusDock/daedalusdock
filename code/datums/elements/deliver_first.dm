@@ -89,7 +89,7 @@
 	SIGNAL_HANDLER
 	if(area_check(target))
 		//noice, delivered!
-		var/datum/bank_account/cargo_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
+		var/datum/bank_account/cargo_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 		cargo_account.adjust_money(payment)
 	remove_lock(target)
 

@@ -69,12 +69,6 @@
 	appearance_flags = PLANE_MASTER //should use client color
 	blend_mode = BLEND_OVERLAY
 
-/atom/movable/screen/plane_master/game_world/backdrop(mob/mymob)
-	. = ..()
-	remove_filter("AO")
-	if(istype(mymob) && mymob.client?.prefs?.read_preference(/datum/preference/toggle/ambient_occlusion))
-		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
-
 /atom/movable/screen/plane_master/game_world_fov_hidden
 	name = "game world fov hidden plane master"
 	plane = GAME_PLANE_FOV_HIDDEN
@@ -167,6 +161,16 @@
 	add_filter("emissives", 1, alpha_mask_filter(render_source = EMISSIVE_RENDER_TARGET, flags = MASK_INVERSE))
 	add_filter("object_lighting", 2, alpha_mask_filter(render_source = O_LIGHTING_VISUAL_RENDER_TARGET, flags = MASK_INVERSE))
 
+/atom/movable/screen/plane_master/additive_lighting
+	name = "additive lighting plane master"
+	plane = LIGHTING_PLANE_ADDITIVE
+	blend_mode_override = BLEND_ADD
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+/atom/movable/screen/plane_master/additive_lighting/Initialize(mapload)
+	. = ..()
+	add_filter("emissives", 1, alpha_mask_filter(render_source = EMISSIVE_RENDER_TARGET, flags = MASK_INVERSE))
+	add_filter("object_lighting", 2, alpha_mask_filter(render_source = O_LIGHTING_VISUAL_RENDER_TARGET, flags = MASK_INVERSE))
 
 /**
  * Handles emissive overlays and emissive blockers.
@@ -219,13 +223,6 @@
 	appearance_flags = PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 
-/atom/movable/screen/plane_master/excited_turfs
-	name = "atmos excited turfs"
-	plane = ATMOS_GROUP_PLANE
-	appearance_flags = PLANE_MASTER
-	blend_mode = BLEND_OVERLAY
-	alpha = 0
-
 /atom/movable/screen/plane_master/o_light_visual
 	name = "overlight light visual plane master"
 	plane = O_LIGHTING_VISUAL_PLANE
@@ -240,12 +237,6 @@
 	appearance_flags = PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 	render_relay_plane = RENDER_PLANE_NON_GAME
-
-/atom/movable/screen/plane_master/runechat/backdrop(mob/mymob)
-	. = ..()
-	remove_filter("AO")
-	if(istype(mymob) && mymob.client?.prefs?.read_preference(/datum/preference/toggle/ambient_occlusion))
-		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
 
 /atom/movable/screen/plane_master/gravpulse
 	name = "gravpulse plane"

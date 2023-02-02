@@ -54,10 +54,13 @@
 
 // Subtype of /datum/signal with additional processing information.
 /datum/signal/subspace
+	// Fuck you. Don't touch these packets. They suck. We'll kill them off later.
+	has_magic_data = TRUE
 	transmission_method = TRANSMISSION_SUBSPACE
 	var/server_type = /obj/machinery/telecomms/server
 	var/datum/signal/subspace/original
 	var/list/levels
+
 
 /datum/signal/subspace/New(data)
 	src.data = data || list()
@@ -65,7 +68,7 @@
 /datum/signal/subspace/proc/copy()
 	var/datum/signal/subspace/copy = new
 	copy.original = src
-	copy.source = source
+	copy.author = author
 	copy.levels = levels
 	copy.frequency = frequency
 	copy.server_type = server_type
@@ -104,7 +107,7 @@
 	spans,  // the list of spans applied to the message
 	list/message_mods // the list of modification applied to the message. Whispering, singing, ect
 )
-	src.source = source
+	src.author = WEAKREF(source)
 	src.frequency = frequency
 	src.language = language
 	virt = speaker
@@ -118,11 +121,13 @@
 		"spans" = spans,
 		"mods" = message_mods
 	)
-	var/turf/T = get_turf(source)
+	var/turf/T = get_turf(author.resolve())
+	if(!T)
+		CRASH("Uh oh, no source!")
 	levels = list(T.z)
 
 /datum/signal/subspace/vocal/copy()
-	var/datum/signal/subspace/vocal/copy = new(source, frequency, virt, language)
+	var/datum/signal/subspace/vocal/copy = new(author, frequency, virt, language)
 	copy.original = src
 	copy.data = data.Copy()
 	copy.levels = levels
@@ -131,7 +136,10 @@
 /// This is the meat function for making radios hear vocal transmissions.
 /datum/signal/subspace/vocal/broadcast()
 	set waitfor = FALSE
+	///MOVED TO SSPACKETS
+	SSpackets.queued_subspace_vocals += src
 
+	/*
 	// Perform final composition steps on the message.
 	var/message = copytext_char(data["message"], 1, MAX_BROADCAST_LEN)
 	if(!message)
@@ -224,3 +232,4 @@
 		log_telecomms("[virt.source] [log_text] [loc_name(get_turf(virt.source))]")
 
 	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
+*/

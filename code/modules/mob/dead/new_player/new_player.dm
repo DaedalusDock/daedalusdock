@@ -72,7 +72,7 @@
 		if(SSticker.current_state <= GAME_STATE_PREGAME)
 			ready = tready
 		//if it's post initialisation and they're trying to observe we do the needful
-		if(!SSticker.current_state < GAME_STATE_PREGAME && tready == PLAYER_READY_TO_OBSERVE)
+		if(SSticker.current_state >= GAME_STATE_SETTING_UP && tready == PLAYER_READY_TO_OBSERVE)
 			ready = tready
 			make_me_an_observer()
 			return
@@ -189,7 +189,7 @@
 		new_player_panel()
 		return FALSE
 
-	var/mob/dead/observer/observer = new()
+	var/mob/dead/observer/observer = new
 	spawning = TRUE
 
 	observer.started_as_observer = TRUE
@@ -203,12 +203,11 @@
 		stack_trace("There's no freaking observer landmark available on this map or you're making observers before the map is initialised")
 	observer.key = key
 	observer.client = client
-	observer.set_ghost_appearance()
+	observer.restore_ghost_appearance()
 	if(observer.client && observer.client.prefs)
 		observer.real_name = observer.client.prefs.read_preference(/datum/preference/name/real_name)
 		observer.name = observer.real_name
 		observer.client.init_verbs()
-	observer.update_appearance()
 	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
@@ -530,19 +529,18 @@
 	// First we detain them by removing all the verbs they have on client
 	for (var/v in client.verbs)
 		var/procpath/verb_path = v
-		if (!(verb_path in GLOB.stat_panel_verbs))
-			remove_verb(client, verb_path)
+		remove_verb(client, verb_path)
 
 	// Then remove those on their mob as well
 	for (var/v in verbs)
 		var/procpath/verb_path = v
-		if (!(verb_path in GLOB.stat_panel_verbs))
-			remove_verb(src, verb_path)
+		remove_verb(src, verb_path)
 
 	// Then we create the interview form and show it to the client
 	var/datum/interview/I = GLOB.interviews.interview_for_client(client)
 	if (I)
 		I.ui_interact(src)
 
-	// Add verb for re-opening the interview panel, and re-init the verbs for the stat panel
+	// Add verb for re-opening the interview panel, fixing chat and re-init the verbs for the stat panel
 	add_verb(src, /mob/dead/new_player/proc/open_interview)
+	add_verb(client, /client/verb/fix_tgui_panel)

@@ -179,7 +179,6 @@
 	text_gain_indication = "You feel unusually monkey-like."
 	text_lose_indication = "You feel like your old self."
 	quality = NEGATIVE
-	time_coeff = 2
 	locked = TRUE //Species specific, keep out of actual gene pool
 	var/datum/species/original_species = /datum/species/human
 	var/original_name
@@ -219,13 +218,12 @@
 	glowth = new(owner)
 	modify()
 
+// Override modify here without a parent call, because we don't actually give an action.
 /datum/mutation/human/glow/modify()
 	if(!glowth)
 		return
-	var/power = GET_MUTATION_POWER(src)
 
-	glowth.set_light_range_power_color(range * power, glow, glow_color)
-
+	glowth.set_light_range_power_color(range * GET_MUTATION_POWER(src), glow, glow_color)
 
 /// Returns the color for the glow effect
 /datum/mutation/human/glow/proc/glow_color()

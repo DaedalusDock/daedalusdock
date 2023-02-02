@@ -168,8 +168,8 @@
 	refill_canister = /obj/item/vending_refill/autodrobe
 	default_price = PAYCHECK_ASSISTANT * 0.8 //Default of 40.
 	extra_price = PAYCHECK_HARD
-	payment_department = ACCOUNT_SRV
-	light_mask="theater-light-mask"
+	payment_department = ACCOUNT_STATION_MASTER
+	light_mask = "theater-light-mask"
 
 /obj/machinery/vending/autodrobe/all_access
 	desc = "A vending machine for costumes. This model appears to have no access restrictions."

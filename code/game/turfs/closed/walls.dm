@@ -8,16 +8,16 @@
 	base_icon_state = "wall"
 	explosion_block = 1
 	blocks_air = AIR_BLOCKED
-	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
-	heat_capacity = 62500 //a little over 5 cm thick , 62500 for 1 m by 2.5 m by 0.25 m iron wall. also indicates the temperature at wich the wall will melt (currently only able to melt with H/E pipes)
 	baseturfs = /turf/open/floor/plating
 
 	flags_ricochet = RICOCHET_HARD
 
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	lighting_uses_jen = TRUE
+
+	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
 
 	rcd_memory = RCD_MEMORY_WALL
 
@@ -86,7 +86,7 @@
 	. = ..()
 	color = null // Remove the color that was set for mapping clarity
 	set_materials(plating_material, reinf_material)
-	if(is_station_level(src))
+	if(is_station_level(z))
 		GLOB.station_turfs += src
 
 /turf/closed/wall/Destroy()

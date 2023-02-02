@@ -423,7 +423,7 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/attack_hand(mob/user, list/modifiers)
-	if(!internal_magazine && loc == user && user.is_holding(src) && magazine)
+	if(!internal_magazine && loc == user && user.is_holding(src) && magazine && ((gun_flags & NEEDS_OPEN_BOLT_TO_UNLOAD) ? bolt_locked : TRUE))
 		eject_magazine(user)
 		return
 	return ..()
@@ -442,7 +442,7 @@
 			user.visible_message(span_notice("[user] spins [src] around [user.p_their()] finger by the trigger. That’s pretty badass."))
 			playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 			return
-	if(!internal_magazine && magazine)
+	if(!internal_magazine && magazine && ((gun_flags & NEEDS_OPEN_BOLT_TO_UNLOAD) ? bolt_locked : TRUE))
 		if(!magazine.ammo_count())
 			eject_magazine(user)
 			return

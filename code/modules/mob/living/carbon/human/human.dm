@@ -910,7 +910,7 @@
 
 	visible_message(span_notice("[src] starts[skills_space] lifting [target] onto [p_their()] back..."),
 		span_notice("You[skills_space] start to lift [target] onto your back..."))
-	if(!do_after(src, carrydelay, target))
+	if(!do_after(src, target, carrydelay))
 		visible_message(span_warning("[src] fails to fireman carry [target]!"))
 		return
 

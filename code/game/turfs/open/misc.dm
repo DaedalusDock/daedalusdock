@@ -35,7 +35,7 @@
 /turf/open/misc/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/turf/open/misc/ex_act(severity, target)
+/turf/open/misc/ex_act(severity)
 	. = ..()
 
 	if(target == src)

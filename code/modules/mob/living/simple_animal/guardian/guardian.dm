@@ -269,7 +269,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 					summoner.adjustCloneLoss(amount * 0.5) //dying hosts take 50% bonus damage as cloneloss
 		update_health_hud()
 
-/mob/living/simple_animal/hostile/guardian/ex_act(severity, target)
+/mob/living/simple_animal/hostile/guardian/ex_act(severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			gib()

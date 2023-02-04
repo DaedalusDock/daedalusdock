@@ -34,7 +34,7 @@
 		STOP_PROCESSING(SSobj, src)
 		qdel(src)
 
-/obj/structure/statue/petrified/contents_explosion(severity, target)
+/obj/structure/statue/petrified/contents_explosion(severity)
 	return
 
 /obj/structure/statue/petrified/handle_atom_del(atom/A)

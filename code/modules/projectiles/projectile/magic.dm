@@ -517,9 +517,7 @@
 
 	explosion(
 		target_turf,
-		devastation_range = -1,
-		heavy_impact_range = exp_heavy,
-		light_impact_range = exp_light,
+		exp_light + exp_heavy,
 		flame_range = exp_fire,
 		flash_range = exp_flash,
 		adminlog = FALSE,

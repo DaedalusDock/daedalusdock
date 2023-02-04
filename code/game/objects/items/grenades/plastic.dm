@@ -63,7 +63,7 @@
 			location = get_turf(target)
 			target.cut_overlay(plastic_overlay, TRUE)
 			if(!ismob(target) || full_damage_on_mobs)
-				EX_ACT(target, EXPLODE_HEAVY, target)
+				EX_ACT(target, EXPLODE_HEAVY)
 	else
 		location = get_turf(src)
 	if(location)

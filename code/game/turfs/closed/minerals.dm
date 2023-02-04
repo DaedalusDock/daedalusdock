@@ -159,7 +159,7 @@
 /turf/closed/mineral/acid_melt()
 	ScrapeAway()
 
-/turf/closed/mineral/ex_act(severity, target)
+/turf/closed/mineral/ex_act(severity)
 	. = ..()
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
@@ -672,7 +672,7 @@
 /turf/closed/mineral/strong/acid_melt()
 	return
 
-/turf/closed/mineral/strong/ex_act(severity, target)
+/turf/closed/mineral/strong/ex_act(severity)
 	return FALSE
 
 #undef MINING_MESSAGE_COOLDOWN

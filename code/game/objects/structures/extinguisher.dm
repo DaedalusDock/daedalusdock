@@ -30,17 +30,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		stored_extinguisher = null
 	return ..()
 
-/obj/structure/extinguisher_cabinet/contents_explosion(severity, target)
+/obj/structure/extinguisher_cabinet/contents_explosion(severity)
 	if(!stored_extinguisher)
 		return
 
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += stored_extinguisher
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += stored_extinguisher
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += stored_extinguisher
+	EX_ACT(stored_extinguisher, severity)
 
 /obj/structure/extinguisher_cabinet/handle_atom_del(atom/A)
 	if(A == stored_extinguisher)

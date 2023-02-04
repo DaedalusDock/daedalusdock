@@ -54,7 +54,7 @@
 /obj/machinery/door/puzzle/emp_act(severity)
 	return
 
-/obj/machinery/door/puzzle/ex_act(severity, target)
+/obj/machinery/door/puzzle/ex_act(severity)
 	return FALSE
 
 /obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE)

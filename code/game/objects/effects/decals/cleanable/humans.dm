@@ -140,7 +140,7 @@
 		return
 	AddComponent(/datum/component/rot, 0, 5 MINUTES, 0.7)
 
-/obj/effect/decal/cleanable/blood/gibs/ex_act(severity, target)
+/obj/effect/decal/cleanable/blood/gibs/ex_act(severity)
 	return FALSE
 
 /obj/effect/decal/cleanable/blood/gibs/on_entered(datum/source, atom/movable/L)

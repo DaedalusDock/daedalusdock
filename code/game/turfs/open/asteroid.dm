@@ -58,7 +58,7 @@
 /turf/open/misc/asteroid/MakeDry()
 	return
 
-/turf/open/misc/asteroid/ex_act(severity, target)
+/turf/open/misc/asteroid/ex_act(severity)
 	return
 
 /turf/open/misc/asteroid/attackby(obj/item/W, mob/user, params)

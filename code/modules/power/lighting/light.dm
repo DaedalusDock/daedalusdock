@@ -605,7 +605,7 @@
 	set waitfor = 0
 	break_light_tube() // break it first to give a warning
 	sleep(2)
-	explosion(src, light_impact_range = 2, flash_range = -1)
+	explosion(src, 2)
 	sleep(1)
 	qdel(src)
 

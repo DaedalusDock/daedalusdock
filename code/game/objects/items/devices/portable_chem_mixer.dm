@@ -35,7 +35,7 @@
 	QDEL_NULL(beaker)
 	return ..()
 
-/obj/item/storage/portable_chem_mixer/ex_act(severity, target)
+/obj/item/storage/portable_chem_mixer/ex_act(severity)
 	if(severity > EXPLODE_LIGHT)
 		return ..()
 

@@ -421,7 +421,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		return
 	emergency_shutdown()
 
-/obj/machinery/computer/holodeck/ex_act(severity, target)
+/obj/machinery/computer/holodeck/ex_act(severity)
 	emergency_shutdown()
 	return ..()
 

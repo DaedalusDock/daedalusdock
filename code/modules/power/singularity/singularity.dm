@@ -133,7 +133,7 @@
 		rip_u.dismember(BURN)
 		qdel(rip_u)
 
-/obj/singularity/ex_act(severity, target)
+/obj/singularity/ex_act(severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(current_size <= STAGE_TWO)
@@ -434,9 +434,7 @@
 	investigate_log("has been destroyed by another singularity.", INVESTIGATE_ENGINE)
 	explosion(
 		src,
-		devastation_range = dist,
-		heavy_impact_range = dist * 2,
-		light_impact_range = dist * 4
+		dist * 2
 	)
 	qdel(src)
 	return gain

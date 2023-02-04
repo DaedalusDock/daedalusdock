@@ -90,17 +90,11 @@
 		after_detach_tank()
 	return ..()
 
-/obj/structure/tank_holder/contents_explosion(severity, target)
+/obj/structure/tank_holder/contents_explosion(severity)
 	if(!tank)
 		return
 
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += tank
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += tank
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += tank
+	EX_ACT(tank, severity)
 
 /// Call this after taking the tank from contents in order to update references, icon
 /// and density.

@@ -362,7 +362,7 @@
 				FB.fire()
 		else if(prob(EFFECT_PROB_LOW-badThingCoeff))
 			visible_message(span_danger("[src] malfunctions, melting [exp_on] and releasing a burst of flame!"))
-			explosion(src, devastation_range = -1, flame_range = 2, adminlog = FALSE)
+			explosion(src, 1, flame_range = 2, adminlog = FALSE)
 			investigate_log("Experimentor started a fire.", INVESTIGATE_EXPERIMENTOR)
 			ejectItem(TRUE)
 		else if(prob(EFFECT_PROB_MEDIUM-badThingCoeff))
@@ -521,7 +521,7 @@
 	addtimer(CALLBACK(src, .proc/reset_exp), resetTime)
 
 /obj/machinery/rnd/experimentor/proc/boom()
-	explosion(src, devastation_range = 1, heavy_impact_range = 5, light_impact_range = 10, flash_range = 5, adminlog = TRUE)
+	explosion(src, 20, flash_range = 5, adminlog = TRUE)
 
 /obj/machinery/rnd/experimentor/proc/honk()
 	playsound(src, 'sound/items/bikehorn.ogg', 500)
@@ -659,7 +659,7 @@
 /obj/item/relic/proc/do_explode(mob/user)
 	if(loc == user)
 		visible_message(span_notice("\The [src]'s top opens, releasing a powerful blast!"))
-		explosion(src, heavy_impact_range = rand(1,5), light_impact_range = rand(1,5), flame_range = 2, flash_range = rand(1,5), adminlog = TRUE)
+		explosion(src, rand(1, 15), adminlog = TRUE)
 		warn_admins(user, "Explosion")
 		qdel(src) //Comment this line to produce a light grenade (the bomb that keeps on exploding when used)!!
 

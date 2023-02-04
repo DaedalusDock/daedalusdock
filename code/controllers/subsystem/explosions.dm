@@ -4,32 +4,11 @@ GLOBAL_LIST_EMPTY(explosions)
 SUBSYSTEM_DEF(explosions)
 	name = "Explosions"
 	init_order = INIT_ORDER_EXPLOSIONS
-	priority = FIRE_PRIORITY_EXPLOSIONS
 	wait = 1
-	flags = SS_TICKER
-	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
+	flags = SS_NO_FIRE
 
-	var/cost_lowturf = 0
-	var/cost_medturf = 0
-	var/cost_highturf = 0
-	var/cost_flameturf = 0
-
-	var/cost_throwturf = 0
-
-	var/cost_low_mov_atom = 0
-	var/cost_med_mov_atom = 0
-	var/cost_high_mov_atom = 0
-
-	var/list/lowturf = list()
-	var/list/medturf = list()
-	var/list/highturf = list()
-	var/list/flameturf = list()
-
-	var/list/throwturf = list()
-
-	var/list/low_mov_atom = list()
-	var/list/med_mov_atom = list()
-	var/list/high_mov_atom = list()
+	//A list of explosion sources
+	var/list/active_explosions = list()
 
 	// Track how many explosions have happened.
 	var/explosion_index = 0
@@ -44,156 +23,12 @@ SUBSYSTEM_DEF(explosions)
 	. = ..()
 	iterative_explosions_z_threshold = CONFIG_GET(number/iterative_explosions_z_threshold)
 	iterative_explosions_z_multiplier = CONFIG_GET(number/iterative_explosions_z_multiplier)
-	using_iterative = CONFIG_GET(flag/iterative_explosions)
-	if(using_iterative)
-		flags |= SS_NO_FIRE
-
-/datum/controller/subsystem/explosions/stat_entry(msg)
-	msg += "C:{"
-	msg += "LT:[round(cost_lowturf,1)]|"
-	msg += "MT:[round(cost_medturf,1)]|"
-	msg += "HT:[round(cost_highturf,1)]|"
-	msg += "FT:[round(cost_flameturf,1)]||"
-
-	msg += "LO:[round(cost_low_mov_atom,1)]|"
-	msg += "MO:[round(cost_med_mov_atom,1)]|"
-	msg += "HO:[round(cost_high_mov_atom,1)]|"
-
-	msg += "TO:[round(cost_throwturf,1)]"
-
-	msg += "} "
-
-	msg += "AMT:{"
-	msg += "LT:[lowturf.len]|"
-	msg += "MT:[medturf.len]|"
-	msg += "HT:[highturf.len]|"
-	msg += "FT:[flameturf.len]||"
-
-	msg += "LO:[low_mov_atom.len]|"
-	msg += "MO:[med_mov_atom.len]|"
-	msg += "HO:[high_mov_atom.len]|"
-
-	msg += "TO:[throwturf.len]"
-
-	msg += "} "
-	return ..()
-
 
 #define SSEX_TURF "turf"
 #define SSEX_OBJ "obj"
 
 /datum/controller/subsystem/explosions/proc/is_exploding()
-	return (lowturf.len || medturf.len || highturf.len || flameturf.len || throwturf.len || low_mov_atom.len || med_mov_atom.len || high_mov_atom.len)
-
-/datum/controller/subsystem/explosions/proc/wipe_turf(turf/T)
-	lowturf -= T
-	medturf -= T
-	highturf -= T
-	flameturf -= T
-	throwturf -= T
-
-/client/proc/check_bomb_impacts()
-	set name = "Check Bomb Impact"
-	set category = "Debug"
-
-	var/newmode = tgui_alert(usr, "Use reactionary explosions?","Check Bomb Impact", list("Yes", "No"))
-	var/turf/epicenter = get_turf(mob)
-	if(!epicenter)
-		return
-
-	var/dev = 0
-	var/heavy = 0
-	var/light = 0
-	var/list/choices = list("Small Bomb","Medium Bomb","Big Bomb","Custom Bomb")
-	var/choice = tgui_input_list(usr, "Pick the bomb size", "Bomb Size?", choices)
-	switch(choice)
-		if(null)
-			return 0
-		if("Small Bomb")
-			dev = 1
-			heavy = 2
-			light = 3
-		if("Medium Bomb")
-			dev = 2
-			heavy = 3
-			light = 4
-		if("Big Bomb")
-			dev = 3
-			heavy = 5
-			light = 7
-		if("Custom Bomb")
-			dev = input("Devastation range (Tiles):") as num
-			heavy = input("Heavy impact range (Tiles):") as num
-			light = input("Light impact range (Tiles):") as num
-
-	var/max_range = max(dev, heavy, light)
-	var/x0 = epicenter.x
-	var/y0 = epicenter.y
-	var/list/wipe_colours = list()
-	for(var/turf/T in spiral_range_turfs(max_range, epicenter))
-		wipe_colours += T
-		var/dist = cheap_hypotenuse(T.x, T.y, x0, y0)
-
-		if(newmode == "Yes")
-			var/turf/TT = T
-			while(TT != epicenter)
-				TT = get_step_towards(TT,epicenter)
-				if(TT.density)
-					dist += TT.explosion_block
-
-				for(var/obj/O in T)
-					dist += GET_EXPLOSION_BLOCK(O)
-
-		if(dist < dev)
-			T.color = "red"
-			T.maptext = MAPTEXT("Dev")
-		else if (dist < heavy)
-			T.color = "yellow"
-			T.maptext = MAPTEXT("Heavy")
-		else if (dist < light)
-			T.color = "blue"
-			T.maptext = MAPTEXT("Light")
-		else
-			continue
-
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/wipe_color_and_text, wipe_colours), 100)
-
-/proc/wipe_color_and_text(list/atom/wiping)
-	for(var/i in wiping)
-		var/atom/A = i
-		A.color = null
-		A.maptext = ""
-
-/**
- * Using default dyn_ex scale:
- *
- * 100 explosion power is a (5, 10, 20) explosion.
- * 75 explosion power is a (4, 8, 17) explosion.
- * 50 explosion power is a (3, 7, 14) explosion.
- * 25 explosion power is a (2, 5, 10) explosion.
- * 10 explosion power is a (1, 3, 6) explosion.
- * 5 explosion power is a (0, 1, 3) explosion.
- * 1 explosion power is a (0, 0, 1) explosion.
- *
- * Arguments:
- * * epicenter: Turf the explosion is centered at.
- * * power - Dyn explosion power. See reference above.
- * * flame_range: Flame range. Equal to the equivalent of the light impact range multiplied by this value.
- * * flash_range: The range at which the explosion flashes people. Equal to the equivalent of the light impact range multiplied by this value.
- * * adminlog: Whether to log the explosion/report it to the administration.
- * * ignorecap: Whether to ignore the relevant bombcap. Defaults to FALSE.
- * * flame_range: The range at which the explosion should produce hotspots.
- * * silent: Whether to generate/execute sound effects.
- * * smoke: Whether to generate a smoke cloud provided the explosion is powerful enough to warrant it.
- * * explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
- */
-/proc/dyn_explosion(turf/epicenter, power, flame_range = 0, flash_range = null, adminlog = TRUE, ignorecap = TRUE, silent = FALSE, smoke = TRUE, atom/explosion_cause = null)
-	if(!power)
-		return
-	var/range = 0
-	range = round((2 * power)**GLOB.DYN_EX_SCALE)
-	return explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
-
+	return length(active_explosions)
 
 
 /**
@@ -212,84 +47,9 @@ SUBSYSTEM_DEF(explosions)
  * - smoke: Whether to generate a smoke cloud provided the explosion is powerful enough to warrant it.
  * - explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
  */
-/proc/explosion(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flame_range = 0, flash_range = 0, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause = null)
-	return SSexplosions.iterative_explode(origin, (devastation_range * 2 + heavy_impact_range + light_impact_range))
-
-/**
- * Makes a given atom explode. Now on the explosions subsystem!
- *
- * Arguments:
- * - [origin][/atom]: The atom that's exploding.
- * - devastation_range: The range at which the effects of the explosion are at their strongest.
- * - heavy_impact_range: The range at which the effects of the explosion are relatively severe.
- * - light_impact_range: The range at which the effects of the explosion are relatively weak.
- * - flash_range: The range at which the explosion flashes people.
- * - adminlog: Whether to log the explosion/report it to the administration.
- * - ignorecap: Whether to ignore the relevant bombcap. Defaults to FALSE.
- * - flame_range: The range at which the explosion should produce hotspots.
- * - silent: Whether to generate/execute sound effects.
- * - smoke: Whether to generate a smoke cloud provided the explosion is powerful enough to warrant it.
- * - explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
- */
-/datum/controller/subsystem/explosions/proc/explode(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flame_range = 0, flash_range = 0, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause = null)
-	var/list/arguments = list(
-		EXARG_KEY_ORIGIN = origin,
-		EXARG_KEY_DEV_RANGE = devastation_range,
-		EXARG_KEY_HEAVY_RANGE = heavy_impact_range,
-		EXARG_KEY_LIGHT_RANGE = light_impact_range,
-		EXARG_KEY_FLAME_RANGE = flame_range,
-		EXARG_KEY_FLASH_RANGE = flash_range,
-		EXARG_KEY_ADMIN_LOG = adminlog,
-		EXARG_KEY_IGNORE_CAP = ignorecap,
-		EXARG_KEY_SILENT = silent,
-		EXARG_KEY_SMOKE = smoke,
-		EXARG_KEY_EXPLOSION_CAUSE = explosion_cause ? explosion_cause : origin,
-	)
-	var/atom/location = isturf(origin) ? origin : origin.loc
-	if(SEND_SIGNAL(origin, COMSIG_ATOM_EXPLODE, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return COMSIG_CANCEL_EXPLOSION // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
-
-	while(location)
-		var/next_loc = location.loc
-		if(SEND_SIGNAL(location, COMSIG_ATOM_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-			return COMSIG_CANCEL_EXPLOSION
-		if(isturf(location))
-			break
-		location = next_loc
-
-	if(!location)
-		return
-
-	var/area/epicenter_area = get_area(location)
-	if(SEND_SIGNAL(epicenter_area, COMSIG_AREA_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
-		return COMSIG_CANCEL_EXPLOSION
-
-	arguments -= EXARG_KEY_ORIGIN
-
-	propagate_blastwave(arglist(list(location) + arguments))
-
-/**
- * Handles the effects of an explosion originating from a given point.
- *
- * Primarily handles popagating the balstwave of the explosion to the relevant turfs.
- * Also handles the fireball from the explosion.
- * Also handles the smoke cloud from the explosion.
- * Also handles sfx and screenshake.
- *
- * Arguments:
- * - [epicenter][/atom]: The location of the explosion rounded to the nearest turf.
- * - devastation_range: The range at which the effects of the explosion are at their strongest.
- * - heavy_impact_range: The range at which the effects of the explosion are relatively severe.
- * - light_impact_range: The range at which the effects of the explosion are relatively weak.
- * - flash_range: The range at which the explosion flashes people.
- * - adminlog: Whether to log the explosion/report it to the administration.
- * - ignorecap: Whether to ignore the relevant bombcap. Defaults to TRUE for some mysterious reason.
- * - flame_range: The range at which the explosion should produce hotspots.
- * - silent: Whether to generate/execute sound effects.
- * - smoke: Whether to generate a smoke cloud provided the explosion is powerful enough to warrant it.
- * - explosion_cause: The atom that caused the explosion. Used for logging.
- */
-
+/proc/explosion(atom/origin, power, flame_range = 0, flash_range = 0, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause = null)
+	return SSexplosions.iterative_explode(origin, power, flash_range, admin_log, ignorecap, silent, smoke, atom/explosion_cause)
+//(devastation_range * 2 + heavy_impact_range + light_impact_range)
 
 // Explosion SFX defines...
 /// The probability that a quaking explosion will make the station creak per unit. Maths!
@@ -412,14 +172,16 @@ SUBSYSTEM_DEF(explosions)
 		power_queue += current_power;\
 	}
 
-/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, atom/explosion_cause, admin_log = TRUE)
+/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, flash_range, admin_log = TRUE, silent = FALSE, smoke = FALSE, atom/explosion_cause)
 	set waitfor = FALSE
 
 	if(power <= 0)
 		return
 
+	explosion_cause ||= epicenter
+
 	if(try_cancel_explosion(epicenter) & COMSIG_CANCEL_EXPLOSION)
-		return
+		return COMSIG_CANCEL_EXPLOSION
 
 	epicenter = get_turf(epicenter)
 	if(!epicenter)
@@ -431,6 +193,11 @@ SUBSYSTEM_DEF(explosions)
 
 	if(power > 12)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
+
+	//flash mobs
+	if(flash_range)
+		for(var/mob/living/L in viewers(flash_range, epicenter))
+			L.flash_act()
 
 	log_game("iexpl: Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
@@ -506,7 +273,6 @@ SUBSYSTEM_DEF(explosions)
 	var/close_dist = round(power + world.view - 2, 1)
 
 	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
-
 	for (var/mob/M as anything in GLOB.player_list)
 		var/reception = EXPLFX_BOTH
 		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
@@ -532,7 +298,7 @@ SUBSYSTEM_DEF(explosions)
 				continue
 
 		var/dist = get_dist(M, epicenter) || 1
-		if ((reception & EXPLFX_SOUND) && M.can_hear())
+		if ((reception & EXPLFX_SOUND) && M.can_hear() && !isnull(silent))
 			if (dist <= close_dist)
 				M.playsound_local(epicenter, explosion_sound, min(100, volume), 1, frequency, falloff_exponent = 5)
 				//You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.

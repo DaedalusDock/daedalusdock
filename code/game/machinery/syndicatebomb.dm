@@ -284,8 +284,7 @@
 	inhand_icon_state = "eshield0"
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
-	w_class = WEIGHT_CLASS_NORMAL
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1 // We detonate upon being exploded.
+	w_class = WEIGHT_CLASS_NORMAL.
 	resistance_flags = FLAMMABLE //Burnable (but the casing isn't)
 	var/adminlog = null
 	var/range_heavy = 3
@@ -293,9 +292,8 @@
 	var/range_light = 17
 	var/range_flame = 17
 
-/obj/item/bombcore/ex_act(severity, target) // Little boom can chain a big boom.
+/obj/item/bombcore/ex_act(severity) // Little boom can chain a big boom.
 	detonate()
-
 
 /obj/item/bombcore/burn()
 	detonate()

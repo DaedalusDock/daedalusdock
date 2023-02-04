@@ -19,7 +19,7 @@
 	var/how_cold_is_target = cold_target.bodytemperature
 	var/danger_zone = cold_target.dna.species.bodytemp_cold_damage_limit - 150
 	if(how_cold_is_target < danger_zone)
-		explosion(cold_target, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = 3) //maybe stand back a bit
+		explosion(cold_target, 2, flame_range = 3) //maybe stand back a bit
 		cold_target.bodytemperature = cold_target.dna.species.bodytemp_normal //avoids repeat explosions, maybe could be used to heat up again?
 		playsound(cold_target, 'sound/weapons/sear.ogg', 30, TRUE, -1)
 

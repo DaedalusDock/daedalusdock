@@ -199,7 +199,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	emped = 0 //Resets the consecutive EMP count
 	addtimer(CALLBACK(src, .proc/cancelCameraAlarm), 100)
 
-/obj/machinery/camera/ex_act(severity, target)
+/obj/machinery/camera/ex_act(severity)
 	if(invuln)
 		return FALSE
 	return ..()

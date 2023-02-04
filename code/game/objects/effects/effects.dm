@@ -35,7 +35,7 @@
 /obj/effect/attack_hulk(mob/living/carbon/human/user)
 	return FALSE
 
-/obj/effect/ex_act(severity, target)
+/obj/effect/ex_act(severity)
 	return FALSE
 
 /obj/effect/singularity_act()

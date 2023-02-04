@@ -1,7 +1,6 @@
 /obj/effect/dummy/phased_mob
 	name = "water"
 	anchored = TRUE
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	invisibility = INVISIBILITY_OBSERVER
 	movement_type = FLOATING

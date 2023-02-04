@@ -35,7 +35,7 @@
 	damage = 40 //set to 30 before first mob impact, but they're gonna be gibbed by the explosion
 
 /obj/projectile/bullet/cannonball/explosive/on_hit(atom/target, blocked = FALSE)
-	explosion(target, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, explosion_cause = src)
+	explosion(target, 9, explosion_cause = src)
 	. = ..()
 
 /obj/projectile/bullet/cannonball/emp
@@ -55,7 +55,7 @@
 
 /obj/projectile/bullet/cannonball/biggest_one/on_hit(atom/target, blocked = FALSE)
 	if(projectile_piercing == NONE)
-		explosion(target,devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flash_range = zas_settings.maxex_flash_range, explosion_cause = src)
+		explosion(src, 100, explosion_cause = src)
 	. = ..()
 
 /obj/projectile/bullet/cannonball/trashball

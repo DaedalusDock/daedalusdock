@@ -136,35 +136,18 @@
 	try_damage_component(run_atom_armor(hitting_projectile.damage, hitting_projectile.damage_type, hitting_projectile.damage_type, 0, REVERSE_DIR(hitting_projectile.dir), hitting_projectile.armour_penetration), hitting_projectile.def_zone)
 	return ..()
 
-/obj/vehicle/sealed/mecha/ex_act(severity, target)
+/obj/vehicle/sealed/mecha/ex_act(severity)
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
 	return ..()
 
-/obj/vehicle/sealed/mecha/contents_explosion(severity, target)
+/obj/vehicle/sealed/mecha/contents_explosion(severity)
 	severity--
-
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			if(flat_equipment)
-				SSexplosions.high_mov_atom += flat_equipment
-			if(trackers)
-				SSexplosions.high_mov_atom += trackers
-			if(occupants)
-				SSexplosions.high_mov_atom += occupants
-		if(EXPLODE_HEAVY)
-			if(flat_equipment)
-				SSexplosions.med_mov_atom += flat_equipment
-			if(trackers)
-				SSexplosions.med_mov_atom += trackers
-			if(occupants)
-				SSexplosions.med_mov_atom += occupants
-		if(EXPLODE_LIGHT)
-			if(flat_equipment)
-				SSexplosions.low_mov_atom += flat_equipment
-			if(trackers)
-				SSexplosions.low_mov_atom += trackers
-			if(occupants)
-				SSexplosions.low_mov_atom += occupants
+	if(flat_equipment)
+		EX_ACT(flat_equipment, severity)
+	if(trackers)
+		EX_ACT(trackers, severity)
+	if(occupants)
+		EX_ACT(occupants, severity)
 
 /obj/vehicle/sealed/mecha/handle_atom_del(atom/A)
 	if(A in occupants) //todo does not work and in wrong file

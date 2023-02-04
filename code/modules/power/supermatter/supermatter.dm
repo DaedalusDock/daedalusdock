@@ -22,7 +22,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	density = TRUE
 	anchored = TRUE
 	layer = MOB_LAYER
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	light_outer_range = 4
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 	critical_machine = TRUE
@@ -444,11 +443,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 			var/obj/energy_ball/created_tesla = new(local_turf)
 			created_tesla.energy = 200 //Gets us about 9 balls
 			is_tesla = TRUE
+
 	//Dear mappers, balance the sm max explosion radius to 17.5, 37, 39, 41
 	explosion(origin = src,
-		devastation_range = explosion_power * max(gasmix_power_ratio, 0.205) * 0.5,
-		heavy_impact_range = explosion_power * max(gasmix_power_ratio, 0.205) + 2,
-		light_impact_range = explosion_power * max(gasmix_power_ratio, 0.205) + 4,
+		power = explosion_power * max(gasmix_power_ratio, 0.205) + 4,
 		flash_range = explosion_power * max(gasmix_power_ratio, 0.205) + 6,
 		adminlog = TRUE,
 		ignorecap = TRUE

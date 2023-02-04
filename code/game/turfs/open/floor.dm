@@ -61,7 +61,7 @@
 		GLOB.station_turfs -= src
 	return ..()
 
-/turf/open/floor/ex_act(severity, target)
+/turf/open/floor/ex_act(severity)
 	if(target == src)
 		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 		return TRUE

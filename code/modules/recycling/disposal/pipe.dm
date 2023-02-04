@@ -116,7 +116,7 @@
 
 
 // pipe affected by explosion
-/obj/structure/disposalpipe/contents_explosion(severity, target)
+/obj/structure/disposalpipe/contents_explosion(severity)
 	var/obj/structure/disposalholder/H = locate() in src
 	H?.contents_explosion(severity, target)
 

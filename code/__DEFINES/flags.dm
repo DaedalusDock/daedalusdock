@@ -38,8 +38,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define INITIALIZED_1 (1<<8)
 /// was this spawned by an admin? used for stat tracking stuff.
 #define ADMIN_SPAWNED_1 (1<<9)
-/// should not get harmed if this gets caught by an explosion?
-#define PREVENT_CONTENTS_EXPLOSION_1 (1<<10)
+/// Should we call `contents_explosion()` when we are subject to `ex_act()`?
+#define EXPLODE_CONTENTS_1 (1<<10)
 /// Should this object be paintable with very dark colors?
 #define ALLOW_DARK_PAINTS_1 (1<<11)
 /// Should this object be unpaintable?

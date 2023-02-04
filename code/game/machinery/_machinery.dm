@@ -182,7 +182,7 @@
 		occupant_typecache = typecacheof(occupant_typecache)
 
 	if((resistance_flags & INDESTRUCTIBLE) && component_parts){ // This is needed to prevent indestructible machinery still blowing up. If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag, /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine, including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted, allowing for INDESTRUCTIBLE machines to be destroyed. (See #62164 for more info)
-		flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
+		flags_1 &=  ~EXPLODE_CONTENTS_1
 	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
@@ -784,17 +784,17 @@
 		update_appearance()
 		return TRUE
 
-/obj/machinery/contents_explosion(severity, target)
+/obj/machinery/contents_explosion(severity)
 	if(!occupant)
 		return
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_LIGHT)
 
 /obj/machinery/handle_atom_del(atom/deleting_atom)
 	if(deleting_atom == occupant)
@@ -981,7 +981,7 @@
 
 /obj/machinery/zap_act(power, zap_flags)
 	if(prob(85) && (zap_flags & ZAP_MACHINE_EXPLOSIVE) && !(resistance_flags & INDESTRUCTIBLE))
-		explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4, flame_range = 2, adminlog = FALSE, smoke = FALSE)
+		explosion(src, 8, flame_range = 2, adminlog = FALSE, smoke = FALSE)
 	else if(zap_flags & ZAP_OBJ_DAMAGE)
 		take_damage(power * 0.0005, BURN, ENERGY)
 		if(prob(40))

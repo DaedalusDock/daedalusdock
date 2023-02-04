@@ -55,7 +55,6 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	pull_force = INFINITY
 	density = TRUE
 	anchored = TRUE
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	movement_type = PHASING | FLYING
 	/// The turf we're looking to coast to.
 	var/turf/destination_turf

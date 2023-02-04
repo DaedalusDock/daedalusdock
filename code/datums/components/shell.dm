@@ -287,7 +287,7 @@
 		return
 
 	if(power_used_in_minute > max_power_use_in_minute)
-		explosion(parent, light_impact_range = 1, explosion_cause = attached_circuit)
+		explosion(parent, 1, explosion_cause = attached_circuit)
 		if(attached_circuit)
 			remove_circuit()
 		return

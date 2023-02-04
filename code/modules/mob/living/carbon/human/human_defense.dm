@@ -421,14 +421,8 @@
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			if(bomb_armor < EXPLODE_GIB_THRESHOLD) //gibs the mob if their bomb armor is lower than EXPLODE_GIB_THRESHOLD
-				for(var/thing in contents)
-					switch(severity)
-						if(EXPLODE_DEVASTATE)
-							SSexplosions.high_mov_atom += thing
-						if(EXPLODE_HEAVY)
-							SSexplosions.med_mov_atom += thing
-						if(EXPLODE_LIGHT)
-							SSexplosions.low_mov_atom += thing
+				contents_explosion(severity)
+				#warn this used to be an ex_act contents loop
 				gib()
 				return
 			else

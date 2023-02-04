@@ -52,7 +52,7 @@
 	. = ..()
 	color = null
 
-/obj/structure/blob/special/core/ex_act(severity, target)
+/obj/structure/blob/special/core/ex_act(severity)
 	var/damage = 10 * (severity + 1) //remember, the core takes half brute damage, so this is 20/15/10 damage based on severity
 	take_damage(damage, BRUTE, BOMB, 0)
 

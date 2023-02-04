@@ -111,4 +111,4 @@
 	if(explosion_message)
 		location.visible_message(span_danger("The solution violently explodes!"), span_hear("You hear an explosion!"))
 
-	dyn_explosion(location, amount, flash_range = flashing_factor, explosion_cause = explosion_source)
+	explosion(location, amount, flash_range = flashing_factor, explosion_cause = explosion_source)

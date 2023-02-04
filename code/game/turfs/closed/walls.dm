@@ -267,7 +267,7 @@
 		var/datum/material/reinf_mat_ref = GET_MATERIAL_REF(reinf_material)
 		new reinf_mat_ref.sheet_type(src, 2)
 
-/turf/closed/wall/ex_act(severity, target)
+/turf/closed/wall/ex_act(severity)
 	if(target == src)
 		dismantle_wall(1,1)
 		return

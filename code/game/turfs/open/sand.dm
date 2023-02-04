@@ -9,7 +9,7 @@
 	clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/open/misc/beach/ex_act(severity, target)
+/turf/open/misc/beach/ex_act(severity)
 	return
 
 /turf/open/misc/beach/sand

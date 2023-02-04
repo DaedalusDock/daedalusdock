@@ -52,7 +52,7 @@
 	acidpwr = min(acidpwr, 50) //we reduce the power so reinf floor never get melted.
 	return ..()
 
-/turf/open/floor/engine/ex_act(severity, target)
+/turf/open/floor/engine/ex_act(severity)
 	if(target == src)
 		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 		return TRUE

@@ -190,7 +190,7 @@
 
 //Immunities
 
-/mob/living/simple_animal/revenant/ex_act(severity, target)
+/mob/living/simple_animal/revenant/ex_act(severity)
 	return FALSE //Immune to the effects of explosions.
 
 /mob/living/simple_animal/revenant/blob_act(obj/structure/blob/B)

@@ -7,7 +7,7 @@
 
 /obj/projectile/bullet/gyro/on_hit(atom/target, blocked = FALSE)
 	..()
-	explosion(target, devastation_range = -1, light_impact_range = 2, explosion_cause = src)
+	explosion(target, 2, explosion_cause = src)
 	return BULLET_ACT_HIT
 
 /// PM9 HEDP rocket
@@ -41,7 +41,7 @@
 
 /// Since some rockets have different booms depending if they hit a living target or not, this is easier than having explosive radius vars
 /obj/projectile/bullet/a84mm/proc/do_boom(atom/target)
-	explosion(target, devastation_range = -1, heavy_impact_range = 1, light_impact_range = 3, flame_range = 4, flash_range = 1, adminlog = FALSE)
+	explosion(target, 4, flame_range = 4, flash_range = 1, adminlog = FALSE)
 
 /// PM9 standard rocket
 /obj/projectile/bullet/a84mm/he
@@ -53,9 +53,9 @@
 
 /obj/projectile/bullet/a84mm/he/do_boom(atom/target, blocked=0)
 	if(!isliving(target)) //if the target isn't alive, so is a wall or something
-		explosion(target, heavy_impact_range = 1, light_impact_range = 2, flame_range = 3, flash_range = 4, explosion_cause = src)
+		explosion(target, 3, flame_range = 3, flash_range = 4, explosion_cause = src)
 	else
-		explosion(target, light_impact_range = 2, flame_range = 3, flash_range = 4,  explosion_cause = src)
+		explosion(target, 2, flame_range = 3, flash_range = 4,  explosion_cause = src)
 
 /// PM9 weak rocket
 /obj/projectile/bullet/a84mm/weak
@@ -66,9 +66,9 @@
 
 /obj/projectile/bullet/a84mm/weak/do_boom(atom/target, blocked=0)
 	if(!isliving(target)) //if the target isn't alive, so is a wall or something
-		explosion(target, heavy_impact_range = 1, light_impact_range = 2, flame_range = 3, flash_range = 4, explosion_cause = src)
+		explosion(target, 3, flame_range = 3, flash_range = 4, explosion_cause = src)
 	else
-		explosion(target, light_impact_range = 2, flame_range = 3, flash_range = 4, explosion_cause = src)
+		explosion(target, 2, flame_range = 3, flash_range = 4, explosion_cause = src)
 
 /// Mech BRM-6 missile
 /obj/projectile/bullet/a84mm_br
@@ -99,7 +99,7 @@
 	..()
 	for(var/i in sturdy)
 		if(istype(target, i))
-			explosion(target, heavy_impact_range = 1, light_impact_range = 1, flash_range = 2, explosion_cause = src)
+			explosion(target, 2, flash_range = 2, explosion_cause = src)
 			return BULLET_ACT_HIT
 	//if(istype(target, /turf/closed) || ismecha(target))
 	new /obj/item/broken_missile(get_turf(src), 1)

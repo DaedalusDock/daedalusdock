@@ -560,7 +560,6 @@
 	default_skin = "research"
 	armor = list(MELEE = 20, BULLET = 15, LASER = 5, ENERGY = 5, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
 	slowdown_inactive = 1.75
@@ -728,7 +727,6 @@
 	default_skin = "magnate"
 	armor = list(MELEE = 20, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 50, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 5
@@ -833,7 +831,6 @@
 		All rights reserved, tampering with suit will void warranty."
 	default_skin = "syndicate"
 	armor = list(MELEE = 15, BULLET = 20, LASER = 15, ENERGY = 15, BOMB = 35, BIO = 100, FIRE = 50, ACID = 90, WOUND = 25)
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	slowdown_inactive = 1
@@ -916,7 +913,6 @@
 	default_skin = "elite"
 	armor = list(MELEE = 35, BULLET = 30, LASER = 35, ENERGY = 35, BOMB = 55, BIO = 100, FIRE = 100, ACID = 100, WOUND = 25)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	slowdown_inactive = 1
@@ -1080,7 +1076,6 @@
 		While wearing it you feel an extreme deference to darkness. "
 	default_skin = "responsory"
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 100, FIRE = 100, ACID = 90, WOUND = 10)
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	resistance_flags = FIRE_PROOF
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
@@ -1159,7 +1154,6 @@
 	default_skin = "apocryphal"
 	armor = list(MELEE = 80, BULLET = 80, LASER = 50, ENERGY = 60, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 25)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	complexity_max = DEFAULT_MAX_COMPLEXITY + 10
@@ -1213,7 +1207,6 @@
 	default_skin = "corporate"
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 100, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	slowdown_inactive = 0.5
@@ -1311,7 +1304,6 @@
 	default_skin = "debug"
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 0)
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	complexity_max = 50
 	siemens_coefficient = 0
@@ -1361,7 +1353,6 @@
 	default_skin = "debug"
 	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100, WOUND = 100)
 	resistance_flags = INDESTRUCTIBLE|LAVA_PROOF|FIRE_PROOF|UNACIDABLE|ACID_PROOF
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	complexity_max = 1000
 	charge_drain = DEFAULT_CHARGE_DRAIN * 0
@@ -1410,7 +1401,6 @@
 		All rights reserved, tampering with suit will void warranty."
 	default_skin = "contractor"
 	armor = list(MELEE = 30, BULLET = 40, LASER = 20, ENERGY = 30, BOMB = 30, BIO = 30, FIRE = 80, ACID = 85, WOUND = 30)
-	atom_flags = PREVENT_CONTENTS_EXPLOSION_1
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	siemens_coefficient = 0
 	slowdown_inactive = 0.5

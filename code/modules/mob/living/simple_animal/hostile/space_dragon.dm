@@ -48,7 +48,6 @@
 	health_doll_icon = "spacedragon"
 	obj_damage = 50
 	environment_smash = ENVIRONMENT_SMASH_NONE
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	melee_damage_upper = 35
 	melee_damage_lower = 35
 	mob_size = MOB_SIZE_LARGE
@@ -595,7 +594,7 @@
 // Carp rifts always take heavy explosion damage. Discourages the use of maxcaps
 // and favours more weaker explosives to destroy the portal
 // as they have the same effect on the portal.
-/obj/structure/carp_rift/ex_act(severity, target)
+/obj/structure/carp_rift/ex_act(severity)
 	return ..(min(EXPLODE_HEAVY, severity))
 
 /obj/structure/carp_rift/examine(mob/user)

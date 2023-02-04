@@ -208,7 +208,7 @@
 			M.take_damage(45, BRUTE, MELEE, 1)
 		sleep(1.5)
 
-/mob/living/simple_animal/hostile/megafauna/dragon/ex_act(severity, target)
+/mob/living/simple_animal/hostile/megafauna/dragon/ex_act(severity)
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 	return ..()

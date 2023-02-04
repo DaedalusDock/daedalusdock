@@ -200,7 +200,7 @@
 	SSblackbox.record_feedback("tally", "mining_voucher_redeemed", 1, selection)
 	qdel(voucher)
 
-/obj/machinery/mineral/equipment_vendor/ex_act(severity, target)
+/obj/machinery/mineral/equipment_vendor/ex_act(severity)
 	do_sparks(5, TRUE, src)
 	if(severity > EXPLODE_LIGHT && prob(17 * severity))
 		qdel(src)

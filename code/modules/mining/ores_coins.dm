@@ -131,7 +131,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	to_chat(C, span_userdanger("\The [src] gets into your eyes! The pain, it burns!"))
 	qdel(src)
 
-/obj/item/stack/ore/glass/ex_act(severity, target)
+/obj/item/stack/ore/glass/ex_act(severity)
 	if(severity)
 		qdel(src)
 
@@ -334,7 +334,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	pixel_x = base_pixel_x + rand(0, 16) - 8
 	pixel_y = base_pixel_y + rand(0, 8) - 8
 
-/obj/item/stack/ore/ex_act(severity, target)
+/obj/item/stack/ore/ex_act(severity)
 	if(severity >= EXPLODE_DEVASTATE)
 		qdel(src)
 

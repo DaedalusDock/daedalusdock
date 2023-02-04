@@ -120,7 +120,7 @@ Difficulty: Medium
 		return FALSE
 	return ..()
 
-/mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/ex_act(severity, target)
+/mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/ex_act(severity)
 	if(dash.Trigger(target = target))
 		return FALSE
 	return ..()

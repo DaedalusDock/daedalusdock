@@ -392,7 +392,6 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	righthand_file = 'icons/mob/inhands/misc/books_righthand.dmi'
 	resistance_flags = FLAMMABLE //burn your enemies' collections, for only you can Collect Them All!
 	w_class = WEIGHT_CLASS_SMALL
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 
 /obj/item/storage/card_binder/Initialize(mapload)
 	. = ..()

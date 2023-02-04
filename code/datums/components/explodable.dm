@@ -148,7 +148,7 @@
 		log = FALSE
 
 	exploding = TRUE
-	explosion(bomb, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, log, uncapped) //epic explosion time
+	explosion(bomb, (2 * devastation_range + heavy_impact_range + light_impact_range), flame_range, flash_range, log, uncapped) //epic explosion time
 
 	switch(delete_after)
 		if(EXPLODABLE_DELETE_SELF)

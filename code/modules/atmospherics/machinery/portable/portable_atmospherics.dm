@@ -32,7 +32,7 @@
 	lose_atmos_sensitivity()
 	return ..()
 
-/obj/machinery/portable_atmospherics/ex_act(severity, target)
+/obj/machinery/portable_atmospherics/ex_act(severity)
 	if(resistance_flags & INDESTRUCTIBLE)
 		return FALSE //Indestructable cans shouldn't release air
 

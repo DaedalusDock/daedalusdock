@@ -296,7 +296,7 @@ Difficulty: Hard
 		return BULLET_ACT_BLOCK
 	return ..()
 
-/mob/living/simple_animal/hostile/megafauna/bubblegum/ex_act(severity, target)
+/mob/living/simple_animal/hostile/megafauna/bubblegum/ex_act(severity)
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 

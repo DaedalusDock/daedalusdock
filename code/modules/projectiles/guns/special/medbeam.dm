@@ -124,7 +124,7 @@
 				return FALSE
 		for(var/obj/effect/ebeam/medical/B in next_step)// Don't cross the str-beams!
 			if(B.owner.origin != current_beam.origin)
-				explosion(B.loc, heavy_impact_range = 3, light_impact_range = 5, flash_range = 8, explosion_cause = src)
+				explosion(B.loc, 8, flash_range = 8, explosion_cause = src)
 				qdel(dummy)
 				return FALSE
 		previous_step = next_step

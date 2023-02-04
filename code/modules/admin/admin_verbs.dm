@@ -543,14 +543,8 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		if("Maxcap (4, 8, 16, 16, 20 by default)")
 			explosion(epicenter, devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flame_range = zas_settings.maxex_fire_range, flash_range = zas_settings.maxex_flash_range, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Custom Bomb")
-			var/range_devastation = input("Devastation range (in tiles):") as null|num
-			if(isnull(range_devastation))
-				return
-			var/range_heavy = input("Heavy impact range (in tiles):") as null|num
-			if(isnull(range_heavy))
-				return
-			var/range_light = input("Light impact range (in tiles):") as null|num
-			if(isnull(range_light))
+			var/power = input("Bomb Power") as null|num
+			if(isnull(power))
 				return
 			var/range_flame = input("Flame range (in tiles):") as null|num
 			if(isnull(range_flame))
@@ -562,58 +556,10 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 				if(tgui_alert(usr, "Bomb is bigger than the maxcap. Continue?",,list("Yes","No")) != "Yes")
 					return
 			epicenter = mob.loc //We need to reupdate as they may have moved again
-			explosion(epicenter, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			explosion(epicenter, power, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 	message_admins("[ADMIN_LOOKUPFLW(usr)] creating an admin explosion at [epicenter.loc].")
 	log_admin("[key_name(usr)] created an admin explosion at [epicenter.loc].")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/drop_dynex_bomb()
-	set category = "Admin.Fun"
-	set name = "Drop DynEx Bomb"
-	set desc = "Cause an explosion of varying strength at your location."
-
-	var/ex_power = input("Explosive Power:") as null|num
-	var/turf/epicenter = mob.loc
-	if(ex_power && epicenter)
-		dyn_explosion(epicenter, ex_power)
-		message_admins("[ADMIN_LOOKUPFLW(usr)] creating an admin explosion at [epicenter.loc].")
-		log_admin("[key_name(usr)] created an admin explosion at [epicenter.loc].")
-		SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Dynamic Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/get_dynex_range()
-	set category = "Debug"
-	set name = "Get DynEx Range"
-	set desc = "Get the estimated range of a bomb, using explosive power."
-
-	var/ex_power = input("Explosive Power:") as null|num
-	if (isnull(ex_power))
-		return
-	var/range = round((2 * ex_power)**GLOB.DYN_EX_SCALE)
-	to_chat(usr, "Estimated Explosive Range: (Devastation: [round(range*0.25)], Heavy: [round(range*0.5)], Light: [round(range)])", confidential = TRUE)
-
-/client/proc/get_dynex_power()
-	set category = "Debug"
-	set name = "Get DynEx Power"
-	set desc = "Get the estimated required power of a bomb, to reach a specific range."
-
-	var/ex_range = input("Light Explosion Range:") as null|num
-	if (isnull(ex_range))
-		return
-	var/power = (0.5 * ex_range)**(1/GLOB.DYN_EX_SCALE)
-	to_chat(usr, "Estimated Explosive Power: [power]", confidential = TRUE)
-
-/client/proc/set_dynex_scale()
-	set category = "Debug"
-	set name = "Set DynEx Scale"
-	set desc = "Set the scale multiplier of dynex explosions. The default is 0.5."
-
-	var/ex_scale = input("New DynEx Scale:") as null|num
-	if(!ex_scale)
-		return
-	GLOB.DYN_EX_SCALE = ex_scale
-	log_admin("[key_name(usr)] has modified Dynamic Explosion Scale: [ex_scale]")
-	message_admins("[key_name_admin(usr)] has  modified Dynamic Explosion Scale: [ex_scale]")
-
 
 /client/proc/reload_cards()
 	set name = "Reload Cards"

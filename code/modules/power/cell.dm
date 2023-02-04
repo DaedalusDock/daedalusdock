@@ -139,7 +139,7 @@
 	log_game("[key_name(usr)] has triggered a rigged/corrupted power cell explosion at [AREACOORD(T)].")
 
 	//explosion(T, 0, 1, 2, 2)
-	explosion(src, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flash_range = range_flash)
+	explosion(src, range_light, flash_range = range_flash)
 	qdel(src)
 
 /obj/item/stock_parts/cell/proc/corrupt()
@@ -157,7 +157,7 @@
 	if (charge < 0)
 		charge = 0
 
-/obj/item/stock_parts/cell/ex_act(severity, target)
+/obj/item/stock_parts/cell/ex_act(severity)
 	. = ..()
 	if(QDELETED(src))
 		return

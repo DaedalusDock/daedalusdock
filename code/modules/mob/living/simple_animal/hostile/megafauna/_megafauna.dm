@@ -27,7 +27,6 @@
 	layer = LARGE_MOB_LAYER //Looks weird with them slipping under mineral walls and cameras and shit otherwise
 	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	mouse_opacity = MOUSE_OPACITY_OPAQUE // Easier to click on in melee, they're giant targets anyway
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	/// Crusher loot dropped when the megafauna is killed with a crusher
 	var/list/crusher_loot
 	/// Achievement given to surrounding players when the megafauna is killed
@@ -143,7 +142,7 @@
 	L.gib()
 	return TRUE
 
-/mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)
+/mob/living/simple_animal/hostile/megafauna/ex_act(severity)
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			adjustBruteLoss(250)

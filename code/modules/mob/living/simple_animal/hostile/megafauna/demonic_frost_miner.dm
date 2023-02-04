@@ -151,7 +151,7 @@ Difficulty: Extremely Hard
 	enraging = FALSE
 	adjustHealth(-maxHealth)
 
-/mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/ex_act(severity, target)
+/mob/living/simple_animal/hostile/megafauna/demonic_frost_miner/ex_act(severity)
 	adjustBruteLoss(-30 * severity)
 	visible_message(span_danger("[src] absorbs the explosion!"), span_userdanger("You absorb the explosion!"))
 

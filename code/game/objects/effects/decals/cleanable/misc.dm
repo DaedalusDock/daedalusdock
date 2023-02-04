@@ -188,7 +188,7 @@
 	gender = PLURAL
 	mergeable_decal = FALSE
 
-/obj/effect/decal/cleanable/shreds/ex_act(severity, target)
+/obj/effect/decal/cleanable/shreds/ex_act(severity)
 	if(severity >= EXPLODE_DEVASTATE) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 

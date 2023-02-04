@@ -654,7 +654,7 @@
 					animate(spawning_vine, pixel_x = 0, time = 1 SECONDS)
 
 /// Destroying an explosive vine sets off a chain reaction
-/obj/structure/spacevine/ex_act(severity, target)
+/obj/structure/spacevine/ex_act(severity)
 	var/index
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		index += mutation.on_explosion(severity, target, src)

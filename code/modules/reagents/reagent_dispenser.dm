@@ -99,7 +99,7 @@
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
+	explosion(src, 6, flame_range = 5)
 	qdel(src)
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
@@ -151,7 +151,7 @@
 	tank_volume = 5000
 
 /obj/structure/reagent_dispensers/fueltank/large/boom()
-	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12)
+	explosion(src, 9, flame_range = 12)
 	qdel(src)
 
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
@@ -210,7 +210,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	reagent_id = /datum/reagent/consumable/ethanol/beer
 
 /obj/structure/reagent_dispensers/beerkeg/blob_act(obj/structure/blob/B)
-	explosion(src, heavy_impact_range = 3, light_impact_range = 5, flame_range = 10, flash_range = 7)
+	explosion(src, 8, flame_range = 10, flash_range = 7)
 	if(!QDELETED(src))
 		qdel(src)
 

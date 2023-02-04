@@ -533,19 +533,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/break_tile()
 	return
 
-/turf/contents_explosion(severity, target)
-	for(var/thing in contents)
-		var/atom/movable/movable_thing = thing
+/turf/contents_explosion(severity)
+	for(var/atom/movable/movable_thing as anything in contents)
 		if(QDELETED(movable_thing))
 			continue
-		switch(severity)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.high_mov_atom += movable_thing
-			if(EXPLODE_HEAVY)
-				SSexplosions.med_mov_atom += movable_thing
-			if(EXPLODE_LIGHT)
-				SSexplosions.low_mov_atom += movable_thing
-
+		EX_ACT(movable_thing, severity)
 
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)

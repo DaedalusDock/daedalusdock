@@ -56,29 +56,17 @@
 	for(var/obj/item/reagent_containers/glass/beaker/B in component_parts)
 		reagents.maximum_volume += B.reagents.maximum_volume
 
-/obj/machinery/chem_master/ex_act(severity, target)
+/obj/machinery/chem_master/ex_act(severity)
 	if(severity <= EXPLODE_LIGHT)
 		return FALSE
 	return ..()
 
-/obj/machinery/chem_master/contents_explosion(severity, target)
+/obj/machinery/chem_master/contents_explosion(severity)
 	. = ..()
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
 			if(beaker)
 				SSexplosions.high_mov_atom += beaker
 			if(bottle)
 				SSexplosions.high_mov_atom += bottle
-		if(EXPLODE_HEAVY)
-			if(beaker)
-				SSexplosions.med_mov_atom += beaker
-			if(bottle)
-				SSexplosions.med_mov_atom += bottle
-		if(EXPLODE_LIGHT)
-			if(beaker)
-				SSexplosions.low_mov_atom += beaker
-			if(bottle)
-				SSexplosions.low_mov_atom += bottle
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
 	..()

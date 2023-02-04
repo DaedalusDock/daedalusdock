@@ -227,7 +227,7 @@
 	..()
 	balanced = 0
 
-/obj/item/melee/supermatter_sword/ex_act(severity, target)
+/obj/item/melee/supermatter_sword/ex_act(severity)
 	visible_message(
 		span_danger("The blast wave smacks into [src] and rapidly flashes to ash."),
 		span_hear("You hear a loud crack as you are washed with a wave of heat.")

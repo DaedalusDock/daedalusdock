@@ -3,7 +3,7 @@
 	..()
 	take_damage(AM.throwforce, BRUTE, MELEE, 1, get_dir(src, AM))
 
-/obj/ex_act(severity, target)
+/obj/ex_act(severity)
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
 

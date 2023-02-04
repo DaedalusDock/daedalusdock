@@ -26,7 +26,7 @@
 		mind.language_holder.selected_language = get_random_spoken_language()
 
 
-/mob/living/silicon/pai/ex_act(severity, target)
+/mob/living/silicon/pai/ex_act(severity)
 	take_holo_damage(50 * severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE) //RIP

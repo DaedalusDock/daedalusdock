@@ -101,8 +101,8 @@
 
 	var/turf/boomspot = get_turf(user)
 	//before ghosting to prevent issues
-	log_combat(user, user, "triggered final plasma explosion with size [plasma_power], [plasma_power*2], [plasma_power*4] (Plasma Fist)")
-	message_admins("[key_name_admin(user)] triggered final plasma explosion with size [plasma_power], [plasma_power*2], [plasma_power*4].")
+	log_combat(user, user, "triggered final plasma explosion with power [plasma_power], (Plasma Fist)")
+	message_admins("[key_name_admin(user)] triggered final plasma explosion with power [power] (Plasma Fist).")
 
 	to_chat(user, span_userdanger("The explosion knocks your soul out of your body!"))
 	user.ghostize(FALSE) //prevents... horrible memes just believe me
@@ -111,7 +111,7 @@
 
 	addtimer(CALLBACK(src,.proc/Apotheosis_end, user), 6 SECONDS)
 	playsound(boomspot, 'sound/weapons/punch1.ogg', 50, TRUE, -1)
-	explosion(user, devastation_range = plasma_power, heavy_impact_range = plasma_power*2, light_impact_range = plasma_power*4, ignorecap = TRUE, explosion_cause = src)
+	explosion(user, plasma_power, ignorecap = TRUE, explosion_cause = src)
 	plasma_power = 1 //just in case there is any clever way to cause it to happen again
 
 /datum/martial_art/plasma_fist/proc/Apotheosis_end(mob/living/dying)

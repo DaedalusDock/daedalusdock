@@ -75,23 +75,11 @@
 		stored_id_card.forceMove(loc)
 		stored_id_card = null
 
-/obj/machinery/pdapainter/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			if(stored_pda)
-				SSexplosions.high_mov_atom += stored_pda
-			if(stored_id_card)
-				SSexplosions.high_mov_atom += stored_id_card
-		if(EXPLODE_HEAVY)
-			if(stored_pda)
-				SSexplosions.med_mov_atom += stored_pda
-			if(stored_id_card)
-				SSexplosions.med_mov_atom += stored_id_card
-		if(EXPLODE_LIGHT)
-			if(stored_pda)
-				SSexplosions.low_mov_atom += stored_pda
-			if(stored_id_card)
-				SSexplosions.low_mov_atom += stored_id_card
+/obj/machinery/pdapainter/contents_explosion(severity)
+	if(stored_pda)
+		EX_ACT(stored_pda, severity)
+	if(stored_id_card)
+		EX_ACT(stored_id_card, severity)
 
 /obj/machinery/pdapainter/handle_atom_del(atom/A)
 	if(A == stored_pda)

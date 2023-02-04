@@ -62,7 +62,7 @@
 
 /obj/vehicle/sealed/car/clowncar/proc/irish_car_bomb()
 	dump_mobs()
-	explosion(src, light_impact_range = 1)
+	explosion(src, 1)
 
 /obj/vehicle/sealed/car/clowncar/after_add_occupant(mob/M, control_flags)
 	. = ..()

@@ -44,7 +44,7 @@
 		user.update_held_items()
 	loc.assume_air(air_contents)
 
-/obj/item/latexballon/ex_act(severity, target)
+/obj/item/latexballon/ex_act(severity)
 	burst()
 	switch(severity)
 		if (EXPLODE_DEVASTATE)

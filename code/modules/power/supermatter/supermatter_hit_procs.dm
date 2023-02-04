@@ -347,6 +347,7 @@
 				span_danger("The unearthly ringing subsides and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
 		else
 			near_mob.show_message(span_hear("An unearthly ringing fills your ears, and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
+
 //Do not blow up our internal radio
-/obj/machinery/power/supermatter_crystal/contents_explosion(severity, target)
+/obj/machinery/power/supermatter_crystal/contents_explosion(severity)
 	return

@@ -12,7 +12,7 @@
 /obj/projectile/meteor/on_hit(atom/target, blocked = FALSE)
 	. = ..()
 	if(. == BULLET_ACT_HIT && isliving(target))
-		explosion(target, devastation_range = -1, light_impact_range = 2, flame_range = 0, flash_range = 1, adminlog = FALSE)
+		explosion(target, 2, flash_range = 1, adminlog = FALSE)
 		playsound(target.loc, 'sound/effects/meteorimpact.ogg', 40, TRUE)
 
 /obj/projectile/meteor/Bump(atom/hit_target)

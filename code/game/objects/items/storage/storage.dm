@@ -22,14 +22,9 @@
 /obj/item/storage/AllowDrop()
 	return FALSE
 
-/obj/item/storage/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
+/obj/item/storage/contents_explosion(severity)
+	for(var/atom/movable/thing as anything in contents)
+		EX_ACT(thing, severity)
 
 /obj/item/storage/canStrip(mob/who)
 	. = ..()
@@ -43,7 +38,7 @@
 		return TRUE
 	return ..()
 
-/obj/item/storage/contents_explosion(severity, target)
+/obj/item/storage/contents_explosion(severity)
 //Cyberboss says: "USE THIS TO FILL IT, NOT INITIALIZE OR NEW"
 
 /obj/item/storage/proc/PopulateContents()

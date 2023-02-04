@@ -111,7 +111,7 @@
 
 /obj/item/weldingtool/proc/explode()
 	var/plasmaAmount = reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
-	dyn_explosion(src, plasmaAmount/5, explosion_cause = src)//20 plasma in a standard welder has a 4 power explosion. no breaches, but enough to kill/dismember holder
+	explosion(src, plasmaAmount/5, explosion_cause = src)//20 plasma in a standard welder has a 4 power explosion. no breaches, but enough to kill/dismember holder
 	qdel(src)
 
 /obj/item/weldingtool/use_tool(atom/target, mob/living/user, delay, amount, volume, datum/callback/extra_checks)

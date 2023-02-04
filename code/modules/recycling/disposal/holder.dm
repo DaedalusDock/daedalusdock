@@ -152,5 +152,5 @@
 /obj/structure/disposalholder/AllowDrop()
 	return TRUE
 
-/obj/structure/disposalholder/ex_act(severity, target)
+/obj/structure/disposalholder/ex_act(severity)
 	return FALSE

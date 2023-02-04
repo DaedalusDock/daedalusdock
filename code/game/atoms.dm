@@ -826,8 +826,8 @@
 	return !(SEND_SIGNAL(src, COMSIG_RIDDEN_DRIVER_MOVE, user, direction) & COMPONENT_DRIVER_BLOCK_MOVE)
 
 /// Handle what happens when your contents are exploded by a bomb
-/atom/proc/contents_explosion(severity, target)
-	return //For handling the effects of explosions on contents that would not normally be effected
+/atom/proc/contents_explosion(severity)
+	CRASH("Contents Explosion called on atom that doesn't use it!")
 
 /**
  * React to being hit by an explosion
@@ -836,7 +836,7 @@
  * The wrapper takes care of the [COMSIG_ATOM_EX_ACT] signal.
  * as well as calling [/atom/proc/contents_explosion].
  */
-/atom/proc/ex_act(severity, target)
+/atom/proc/ex_act(severity)
 	set waitfor = FALSE
 
 /**

@@ -24,18 +24,12 @@
 	QDEL_NULL(beaker)
 	return ..()
 
-/obj/machinery/biogenerator/contents_explosion(severity, target)
+/obj/machinery/biogenerator/contents_explosion(severity)
 	. = ..()
 	if(!beaker)
 		return
 
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += beaker
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += beaker
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += beaker
+	EX_ACT(beaker, severity)
 
 /obj/machinery/biogenerator/handle_atom_del(atom/A)
 	..()

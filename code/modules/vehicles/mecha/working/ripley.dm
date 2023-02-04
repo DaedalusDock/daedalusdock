@@ -173,7 +173,7 @@
 		return FALSE
 	return ..()
 
-/obj/vehicle/sealed/mecha/working/ripley/contents_explosion(severity, target)
+/obj/vehicle/sealed/mecha/working/ripley/contents_explosion(severity)
 	for(var/i in cargo)
 		var/obj/cargoobj = i
 		if(prob(10 * severity))

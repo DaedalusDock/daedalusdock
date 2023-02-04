@@ -11,7 +11,6 @@
 	mob_biotypes = MOB_ROBOTIC
 	deathsound = 'sound/voice/borg_deathsound.ogg'
 	speech_span = SPAN_ROBOT
-	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	examine_cursor_icon = null
 	var/datum/ai_laws/laws = null//Now... THEY ALL CAN ALL HAVE LAWS
 	var/last_lawchange_announce = 0
@@ -108,7 +107,7 @@
 /mob/living/silicon/med_hud_set_status()
 	return //we use a different hud
 
-/mob/living/silicon/contents_explosion(severity, target)
+/mob/living/silicon/contents_explosion(severity)
 	return
 
 /mob/living/silicon/proc/queueAlarm(message, type, incoming = FALSE)

@@ -101,7 +101,7 @@
 	return TRUE
 
 /obj/vehicle/ridden/atv/atom_destruction()
-	explosion(src, devastation_range = -1, light_impact_range = 2, flame_range = 3, flash_range = 4)
+	explosion(src, 2, flash_range = 4)
 	return ..()
 
 /obj/vehicle/ridden/atv/Destroy()

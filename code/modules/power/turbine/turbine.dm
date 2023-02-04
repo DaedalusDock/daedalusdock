@@ -488,16 +488,16 @@
 /obj/machinery/power/turbine/core_rotor/proc/failure()
 	deactivate_parts()
 	if(rpm < 35000)
-		explosion(src, 0, 1, 4)
+		explosion(src, 5)
 		return
 	if(rpm < 87500)
-		explosion(src, 0, 2, 6)
+		explosion(src, 8)
 		return
 	if(rpm < 220000)
-		explosion(src, 1, 3, 7)
+		explosion(src, 12)
 		return
 	if(rpm < 550000)
-		explosion(src, 2, 5, 7)
+		explosion(src, 16)
 
 /obj/machinery/power/turbine/core_rotor/process_atmos()
 

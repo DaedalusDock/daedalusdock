@@ -61,7 +61,7 @@
 /obj/machinery/field/containment/blob_act(obj/structure/blob/B)
 	return FALSE
 
-/obj/machinery/field/containment/ex_act(severity, target)
+/obj/machinery/field/containment/ex_act(severity)
 	return FALSE
 
 /obj/machinery/field/containment/attack_animal(mob/living/simple_animal/user, list/modifiers)

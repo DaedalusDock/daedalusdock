@@ -1543,13 +1543,12 @@ GLOBAL_LIST_EMPTY(intento_players)
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "groan_tube"
 	verb_say = "groans"
-	var/cooldown = FALSE
-	var/cooldown_time = 20
+	COOLDOWN_DECLARE(groan_cooldown)
 	var/flipped = FALSE
+	var/cooldown_time = 20
 
 /obj/item/toy/groan_tube/attack_self(mob/user)
-	if(!cooldown)
-
+	if(COOLDOWN_FINISHED(src, groan_cooldown))
 		to_chat(user, span_notice("You flip \the [src]."))
 		flick("groan_tube_flip", src)
 		if(flipped)
@@ -1560,8 +1559,7 @@ GLOBAL_LIST_EMPTY(intento_players)
 			say("UUAAAA")
 
 		flipped = !flipped
-		cooldown = TRUE
-		addtimer(VARSET_CALLBACK(src, cooldown, FALSE), cooldown_time)
+		COOLDOWN_START(src, groan_cooldown, cooldown_time)
 		return
 	..()
 

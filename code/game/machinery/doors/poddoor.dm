@@ -6,7 +6,7 @@
 	layer = BLASTDOOR_LAYER
 	closingLayer = CLOSED_BLASTDOOR_LAYER
 	sub_door = TRUE
-	explosion_block = 3
+	iterative_explosion_block = 25
 	heat_proof = TRUE
 	safe = FALSE
 	max_integrity = 600

@@ -75,7 +75,6 @@
 /obj/structure/tramwall/titanium
 	name = "wall"
 	desc = "A light-weight titanium wall used in shuttles."
-	explosion_block = 3
 	flags_1 = CAN_BE_DIRTY_1
 	flags_ricochet = RICOCHET_SHINY | RICOCHET_HARD
 	tram_wall_type = /obj/structure/tramwall/titanium

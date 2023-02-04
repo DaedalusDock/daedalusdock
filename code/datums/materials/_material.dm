@@ -62,6 +62,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/false_wall_type
 	/// If true, walls plated with this material that have a reinforcement, will be hard to deconstruct
 	var/hard_wall_decon = FALSE
+	///Only used by walls
+	var/iterative_explosion_block = 5
 
 /** Handles initializing the material.
  *

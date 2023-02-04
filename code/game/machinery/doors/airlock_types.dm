@@ -193,7 +193,7 @@
 	name = "diamond airlock"
 	assemblytype = /obj/structure/door_assembly/door_assembly_diamond
 	normal_integrity = 1000
-	explosion_block = 2
+	iterative_explosion_block = 25
 	airlock_paint = "#4AB4B4"
 
 /obj/machinery/door/airlock/diamond/glass
@@ -410,7 +410,7 @@
 	assemblytype = /obj/structure/door_assembly/door_assembly_centcom
 	normal_integrity = 1000
 	security_level = 6
-	explosion_block = 2
+	iterative_explosion_block = 25
 
 /obj/machinery/door/airlock/grunge
 	icon = 'icons/obj/doors/airlocks/centcom/airlock.dmi'
@@ -426,7 +426,7 @@
 	icon = 'icons/obj/doors/airlocks/vault/airlock.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/vault/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_vault
-	explosion_block = 2
+	iterative_explosion_block = 25
 	normal_integrity = 400 // reverse engieneerd: 400 * 1.5 (sec lvl 6) = 600 = original
 	security_level = 6
 	has_fill_overlays = FALSE
@@ -462,7 +462,7 @@
 	stripe_overlays = null
 	has_fill_overlays = FALSE
 	assemblytype = /obj/structure/door_assembly/door_assembly_highsecurity
-	explosion_block = 2
+	iterative_explosion_block = 15
 	normal_integrity = 500
 	security_level = 1
 	damage_deflection = 30
@@ -486,7 +486,7 @@
 	desc = "With humanity's current technological level, it could take years to hack this advanced airlock... or maybe we should give a screwdriver a try?"
 	assemblytype = /obj/structure/door_assembly/door_assembly_abductor
 	damage_deflection = 30
-	explosion_block = 3
+	iterative_explosion_block = 25
 	hackProof = TRUE
 	aiControlDisabled = AI_WIRE_DISABLED
 	normal_integrity = 700

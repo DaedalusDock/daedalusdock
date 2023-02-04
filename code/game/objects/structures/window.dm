@@ -17,6 +17,8 @@
 	set_dir_on_move = FALSE
 	flags_ricochet = RICOCHET_HARD
 	receive_ricochet_chance_mod = 0.5
+	iterative_explosion_block = 0
+
 	var/state = WINDOW_OUT_OF_FRAME
 	var/reinf = FALSE
 	var/heat_resistance = 800
@@ -26,7 +28,6 @@
 	var/glass_type = /obj/item/stack/sheet/glass
 	var/glass_amount = 1
 	var/mutable_appearance/crack_overlay
-	var/real_explosion_block //ignore this, just use explosion_block
 	var/break_sound = SFX_SHATTER
 	var/knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
@@ -66,10 +67,6 @@
 
 	if(fulltile)
 		setDir()
-
-	//windows only block while reinforced and fulltile, so we'll use the proc
-	real_explosion_block = explosion_block
-	explosion_block = EXPLOSION_BLOCK_PROC
 
 	flags_1 |= ALLOW_DARK_PAINTS_1
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, .proc/on_painted)
@@ -435,9 +432,6 @@
 
 	return TRUE
 
-/obj/structure/window/GetExplosionBlock()
-	return reinf && fulltile ? real_explosion_block : 0
-
 /obj/structure/window/spawner/east
 	dir = EAST
 
@@ -458,7 +452,7 @@
 	heat_resistance = 1600
 	armor = list(MELEE = 30, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 	max_integrity = 75
-	explosion_block = 1
+	iterative_explosion_block = 2
 	damage_deflection = 11
 	state = WINDOW_SCREWED_TO_FRAME
 	glass_type = /obj/item/stack/sheet/rglass
@@ -487,7 +481,7 @@
 	heat_resistance = 25000
 	armor = list(MELEE = 60, BULLET = 5, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 200
-	explosion_block = 1
+	iterative_explosion_block = 5
 	glass_type = /obj/item/stack/sheet/plasmaglass
 	rad_insulation = RAD_NO_INSULATION
 	melting_point = 25000 //Yeah fuck you
@@ -525,7 +519,7 @@
 	armor = list(MELEE = 80, BULLET = 20, LASER = 0, ENERGY = 0, BOMB = 60, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 500
 	damage_deflection = 21
-	explosion_block = 2
+	iterative_explosion_block = 10
 	glass_type = /obj/item/stack/sheet/plasmarglass
 	melting_point = 25000
 
@@ -679,7 +673,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE)
 	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
-	explosion_block = 3
+	iterative_explosion_block = 15
 	glass_type = /obj/item/stack/sheet/titaniumglass
 	glass_amount = 2
 	receive_ricochet_chance_mod = 1.2
@@ -715,7 +709,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
 	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
-	explosion_block = 3
+	iterative_explosion_block = 20
 	damage_deflection = 21 //The same as reinforced plasma windows.3
 	glass_type = /obj/item/stack/sheet/plastitaniumglass
 	glass_amount = 2

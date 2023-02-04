@@ -442,7 +442,7 @@
 	var/id = null
 	max_integrity = 300 //Stronger doors for prison (regular window door health is 200)
 	reinf = 1
-	explosion_block = 1
+	iterative_explosion_block = 1
 
 /obj/machinery/door/window/brigdoor/security/cell
 	name = "cell door"

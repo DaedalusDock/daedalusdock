@@ -6,7 +6,7 @@ SUBSYSTEM_DEF(explosions)
 	init_order = INIT_ORDER_EXPLOSIONS
 	priority = FIRE_PRIORITY_EXPLOSIONS
 	wait = 1
-	flags = SS_TICKER|SS_NO_INIT
+	flags = SS_TICKER
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/cost_lowturf = 0
@@ -36,6 +36,17 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_MOVABLES
 
+	var/iterative_explosions_z_threshold = 0
+	var/iterative_explosions_z_multiplier = 0
+	var/using_iterative = FALSE
+
+/datum/controller/subsystem/explosions/Initialize(start_timeofday)
+	. = ..()
+	iterative_explosions_z_threshold = CONFIG_GET(number/iterative_explosions_z_threshold)
+	iterative_explosions_z_multiplier = CONFIG_GET(number/iterative_explosions_z_multiplier)
+	using_iterative = CONFIG_GET(flag/iterative_explosions)
+	if(using_iterative)
+		flags |= SS_NO_FIRE
 
 /datum/controller/subsystem/explosions/stat_entry(msg)
 	msg += "C:{"
@@ -131,8 +142,7 @@ SUBSYSTEM_DEF(explosions)
 					dist += TT.explosion_block
 
 				for(var/obj/O in T)
-					var/the_block = O.explosion_block
-					dist += the_block == EXPLOSION_BLOCK_PROC ? O.GetExplosionBlock() : the_block
+					dist += GET_EXPLOSION_BLOCK(O)
 
 		if(dist < dev)
 			T.color = "red"
@@ -203,8 +213,7 @@ SUBSYSTEM_DEF(explosions)
  * - explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
  */
 /proc/explosion(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flame_range = 0, flash_range = 0, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause = null)
-	. = SSexplosions.explode(arglist(args))
-
+	return SSexplosions.iterative_explode(origin, (devastation_range * 2 + heavy_impact_range + light_impact_range))
 
 /**
  * Makes a given atom explode. Now on the explosions subsystem!
@@ -280,192 +289,7 @@ SUBSYSTEM_DEF(explosions)
  * - smoke: Whether to generate a smoke cloud provided the explosion is powerful enough to warrant it.
  * - explosion_cause: The atom that caused the explosion. Used for logging.
  */
-/datum/controller/subsystem/explosions/proc/propagate_blastwave(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, adminlog, ignorecap, silent, smoke, atom/explosion_cause)
-	epicenter = get_turf(epicenter)
-	if(!epicenter)
-		return
 
-	if(isnull(flame_range))
-		flame_range = light_impact_range
-	if(isnull(flash_range))
-		flash_range = devastation_range
-
-	// Archive the uncapped explosion for the doppler array
-	var/orig_dev_range = devastation_range
-	var/orig_heavy_range = heavy_impact_range
-	var/orig_light_range = light_impact_range
-
-	var/orig_max_distance = max(devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range)
-
-	//Zlevel specific bomb cap multiplier
-	var/cap_multiplier = SSmapping.level_trait(epicenter.z, ZTRAIT_BOMBCAP_MULTIPLIER)
-	if (isnull(cap_multiplier))
-		cap_multiplier = 1
-
-	if(!ignorecap)
-		devastation_range = min(zas_settings.maxex_devastation_range * cap_multiplier, devastation_range)
-		heavy_impact_range = min(zas_settings.maxex_heavy_range * cap_multiplier, heavy_impact_range)
-		light_impact_range = min(zas_settings.maxex_light_range * cap_multiplier, light_impact_range)
-		flash_range = min(zas_settings.maxex_flash_range * cap_multiplier, flash_range)
-		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
-
-	var/max_range = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
-
-	if(devastation_range)
-		SSblackbox.record_feedback("amount", "devastating_booms", 1)
-	var/started_at = REALTIMEOFDAY
-
-	// Now begins a bit of a logic train to find out whodunnit.
-	var/who_did_it = "N/A"
-	var/who_did_it_game_log = "N/A"
-
-	// Projectiles have special handling. They rely on a firer var and not fingerprints. Check special cases for firer being
-	// mecha, mob or an object such as the gun itself. Handle each uniquely.
-	if(isprojectile(explosion_cause))
-		var/obj/projectile/fired_projectile = explosion_cause
-		if(ismecha(fired_projectile.firer))
-			var/obj/vehicle/sealed/mecha/firing_mecha = fired_projectile.firer
-			var/list/mob/drivers = firing_mecha.return_occupants()
-			if(length(drivers))
-				who_did_it = "\[Mecha drivers:"
-				who_did_it_game_log = "\[Mecha drivers:"
-				for(var/mob/driver in drivers)
-					who_did_it += " [ADMIN_LOOKUPFLW(driver)]"
-					who_did_it_game_log = " [key_name(driver)]"
-				who_did_it += "\]"
-				who_did_it_game_log += "\]"
-		else if(ismob(fired_projectile.firer))
-			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer)]\]"
-			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer)]\]"
-		else
-			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer.fingerprintslast)]\]"
-			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer.fingerprintslast)]\]"
-	// Otherwise if the explosion cause is an atom, try get the fingerprints.
-	else if(istype(explosion_cause))
-		who_did_it = ADMIN_LOOKUPFLW(explosion_cause.fingerprintslast)
-		who_did_it_game_log = key_name(explosion_cause.fingerprintslast)
-
-	if(adminlog)
-		message_admins("Explosion with size (Devast: [devastation_range], Heavy: [heavy_impact_range], Light: [light_impact_range], Flame: [flame_range]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
-		log_game("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range], [flame_range]) in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
-
-	var/x0 = epicenter.x
-	var/y0 = epicenter.y
-	var/z0 = epicenter.z
-	var/area/areatype = get_area(epicenter)
-	SSblackbox.record_feedback("associative", "explosion", 1, list("dev" = devastation_range, "heavy" = heavy_impact_range, "light" = light_impact_range, "flame" = flame_range, "flash" = flash_range, "orig_dev" = orig_dev_range, "orig_heavy" = orig_heavy_range, "orig_light" = orig_light_range, "x" = x0, "y" = y0, "z" = z0, "area" = areatype.type, "time" = time_stamp("YYYY-MM-DD hh:mm:ss", 1), "possible_cause" = explosion_cause, "possible_suspect" = who_did_it_game_log))
-
-	// Play sounds; we want sounds to be different depending on distance so we will manually do it ourselves.
-	// Stereo users will also hear the direction of the explosion!
-
-	// Calculate far explosion sound range. Only allow the sound effect for heavy/devastating explosions.
-	// 3/7/14 will calculate to 80 + 35
-
-	var/far_dist = 0
-	far_dist += heavy_impact_range * 15
-	far_dist += devastation_range * 20
-
-	if(!silent)
-		shake_the_room(epicenter, orig_max_distance, far_dist, devastation_range, heavy_impact_range)
-
-	if(heavy_impact_range > 1)
-		var/datum/effect_system/explosion/E
-		if(smoke)
-			E = new /datum/effect_system/explosion/smoke
-		else
-			E = new
-		E.set_up(epicenter)
-		E.start()
-
-	//flash mobs
-	if(flash_range)
-		for(var/mob/living/L in viewers(flash_range, epicenter))
-			L.flash_act()
-
-	var/list/affected_turfs = GatherSpiralTurfs(max_range, epicenter)
-
-	var/reactionary = CONFIG_GET(flag/reactionary_explosions)
-	var/list/cached_exp_block
-
-	if(reactionary)
-		cached_exp_block = CaculateExplosionBlock(affected_turfs)
-
-	//lists are guaranteed to contain at least 1 turf at this point
-
-	for(var/turf/T as anything in affected_turfs)
-		var/init_dist = cheap_hypotenuse(T.x, T.y, x0, y0)
-		var/dist = init_dist
-
-		if(reactionary)
-			var/turf/Trajectory = T
-			while(Trajectory != epicenter)
-				Trajectory = get_step_towards(Trajectory, epicenter)
-				dist += cached_exp_block[Trajectory]
-
-		var/flame_dist = dist < flame_range
-		var/throw_dist = dist
-
-		if(dist < devastation_range)
-			dist = EXPLODE_DEVASTATE
-		else if(dist < heavy_impact_range)
-			dist = EXPLODE_HEAVY
-		else if(dist < light_impact_range)
-			dist = EXPLODE_LIGHT
-		else
-			dist = EXPLODE_NONE
-
-		if(T == epicenter) // Ensures explosives detonating from bags trigger other explosives in that bag
-			var/list/items = list()
-			for(var/atom/A in T)
-				if (length(A.contents) && !(A.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)) //The atom/contents_explosion() proc returns null if the contents ex_acting has been handled by the atom, and TRUE if it hasn't.
-					items += A.get_all_contents(ignore_flag_1 = PREVENT_CONTENTS_EXPLOSION_1)
-			for(var/atom/movable/movable_thing as anything in items)
-				if(QDELETED(movable_thing))
-					continue
-				switch(dist)
-					if(EXPLODE_DEVASTATE)
-						SSexplosions.high_mov_atom += movable_thing
-					if(EXPLODE_HEAVY)
-						SSexplosions.med_mov_atom += movable_thing
-					if(EXPLODE_LIGHT)
-						SSexplosions.low_mov_atom += movable_thing
-		switch(dist)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.highturf += T
-			if(EXPLODE_HEAVY)
-				SSexplosions.medturf += T
-			if(EXPLODE_LIGHT)
-				SSexplosions.lowturf += T
-		//PARIAH EDIT ADDITION
-		for(var/obj/machinery/light/iterating_light in T)
-			iterating_light.start_flickering()
-		//PARIAH EDIT END
-		if(flame_dist && prob(40) && !isspaceturf(T) && !T.density)
-			flameturf += T
-
-		//--- THROW ITEMS AROUND ---
-		var/throw_dir = get_dir(epicenter,T)
-		var/throw_range = max_range-throw_dist
-		var/list/throwingturf = T.explosion_throw_details
-		if (throwingturf)
-			if (throwingturf[1] < throw_range)
-				throwingturf[1] = throw_range
-				throwingturf[2] = throw_dir
-				throwingturf[3] = max_range
-		else
-			T.explosion_throw_details = list(throw_range, throw_dir, max_range)
-			throwturf += T
-
-
-	var/took = (REALTIMEOFDAY - started_at) / 10
-
-	//You need to press the DebugGame verb to see these now....they were getting annoying and we've collected a fair bit of data. Just -test- changes to explosion code using this please so we can compare
-	if(GLOB.Debug2)
-		log_world("## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds.")
-
-	explosion_index += 1
-
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, epicenter, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
 
 // Explosion SFX defines...
 /// The probability that a quaking explosion will make the station creak per unit. Maths!
@@ -572,168 +396,248 @@ SUBSYSTEM_DEF(explosions)
 #undef FREQ_UPPER
 #undef FREQ_LOWER
 
-/datum/controller/subsystem/explosions/proc/GatherSpiralTurfs(range, turf/epicenter)
-	var/list/outlist = list()
-	var/center = epicenter
-	var/dist = range
-	if(!dist)
-		outlist += center
-		return outlist
 
-	var/turf/t_center = get_turf(center)
-	if(!t_center)
-		return outlist
+#define EXPLFX_BOTH 3
+#define EXPLFX_SOUND 2
+#define EXPLFX_SHAKE 1
+#define EXPLFX_NONE 0
 
-	var/list/L = outlist
-	var/turf/T
-	var/y
-	var/x
-	var/c_dist = 1
-	L += t_center
+// All the vars used on the turf should be on unsimulated turfs too, we just don't care about those generally.
+#define SEARCH_DIR(dir) \
+	search_direction = dir;\
+	search_turf = get_step(current_turf, search_direction);\
+	if (isturf(search_turf)) {\
+		turf_queue += search_turf;\
+		dir_queue += search_direction;\
+		power_queue += current_power;\
+	}
 
-	while( c_dist <= dist )
-		y = t_center.y + c_dist
-		x = t_center.x - c_dist + 1
-		for(x in x to t_center.x+c_dist)
-			T = locate(x,y,t_center.z)
-			if(T)
-				L += T
+/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, atom/explosion_cause, admin_log = TRUE)
+	set waitfor = FALSE
 
-		y = t_center.y + c_dist - 1
-		x = t_center.x + c_dist
-		for(y in t_center.y-c_dist to y)
-			T = locate(x,y,t_center.z)
-			if(T)
-				L += T
-
-		y = t_center.y - c_dist
-		x = t_center.x + c_dist - 1
-		for(x in t_center.x-c_dist to x)
-			T = locate(x,y,t_center.z)
-			if(T)
-				L += T
-
-		y = t_center.y - c_dist + 1
-		x = t_center.x - c_dist
-		for(y in y to t_center.y+c_dist)
-			T = locate(x,y,t_center.z)
-			if(T)
-				L += T
-		c_dist++
-	. = L
-
-/datum/controller/subsystem/explosions/proc/CaculateExplosionBlock(list/affected_turfs)
-	. = list()
-	var/I
-	for(I in 1 to affected_turfs.len) // we cache the explosion block rating of every turf in the explosion area
-		var/turf/T = affected_turfs[I]
-		var/current_exp_block = T.density ? T.explosion_block : 0
-
-		for(var/obj/O in T)
-			var/the_block = O.explosion_block
-			current_exp_block += the_block == EXPLOSION_BLOCK_PROC ? O.GetExplosionBlock() : the_block
-
-		.[T] = current_exp_block
-
-/datum/controller/subsystem/explosions/fire(resumed = 0)
-	if (!is_exploding())
+	if(power <= 0)
 		return
-	var/timer
-	Master.current_ticklimit = TICK_LIMIT_RUNNING //force using the entire tick if we need it.
 
-	if(currentpart == SSEXPLOSIONS_TURFS)
-		currentpart = SSEXPLOSIONS_MOVABLES
+	if(try_cancel_explosion(epicenter) & COMSIG_CANCEL_EXPLOSION)
+		return
 
-		timer = TICK_USAGE_REAL
-		var/list/low_turf = lowturf
-		lowturf = list()
-		for(var/thing in low_turf)
-			var/turf/turf_thing = thing
-			EX_ACT(turf_thing, EXPLODE_LIGHT)
-		cost_lowturf = MC_AVERAGE(cost_lowturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+	epicenter = get_turf(epicenter)
+	if(!epicenter)
+		return
 
-		timer = TICK_USAGE_REAL
-		var/list/med_turf = medturf
-		medturf = list()
-		for(var/thing in med_turf)
-			var/turf/turf_thing = thing
-			EX_ACT(turf_thing, EXPLODE_HEAVY)
-		cost_medturf = MC_AVERAGE(cost_medturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+	if(admin_log)
+		find_and_log_explosion_source(epicenter, explosion_cause, power)
 
-		timer = TICK_USAGE_REAL
-		var/list/high_turf = highturf
-		highturf = list()
-		for(var/thing in high_turf)
-			var/turf/turf_thing = thing
-			EX_ACT(turf_thing, EXPLODE_DEVASTATE)
-		cost_highturf = MC_AVERAGE(cost_highturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
-		timer = TICK_USAGE_REAL
-		var/list/flame_turf = flameturf
-		flameturf = list()
-		for(var/thing in flame_turf)
-			var/turf/T = thing
-			T.create_fire(2, rand(2, 10))
-		cost_flameturf = MC_AVERAGE(cost_flameturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+	if(power > 12)
+		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 
-		if (low_turf.len || med_turf.len || high_turf.len)
-			Master.laggy_byond_map_update_incoming()
+	log_game("iexpl: Beginning discovery phase.")
+	var/time = REALTIMEOFDAY
+	var/list/act_turfs = list()
+	act_turfs[epicenter] = power
 
-	if(currentpart == SSEXPLOSIONS_MOVABLES)
-		currentpart = SSEXPLOSIONS_THROWS
+	power -= GET_ITERATIVE_EXPLOSION_BLOCK(epicenter)
+	for (var/obj/O in epicenter)
+		if (O.iterative_explosion_block)
+			power -= GET_ITERATIVE_EXPLOSION_BLOCK(O)
 
-		timer = TICK_USAGE_REAL
-		var/list/local_high_mov_atom = high_mov_atom
-		high_mov_atom = list()
-		for(var/thing in local_high_mov_atom)
-			var/atom/movable/movable_thing = thing
-			if(QDELETED(movable_thing))
+	if (power >= iterative_explosions_z_threshold)
+		if ((z_transfer & UP))
+			var/turf/above = SSmapping.get_turf_above(epicenter)
+			if(!isnull(above))
+				iterative_explode(above, power * iterative_explosions_z_multiplier, UP)
+		if ((z_transfer & DOWN))
+			var/turf/below = SSmapping.get_turf_below(epicenter)
+			if(!isnull(below))
+				iterative_explode(below, power * iterative_explosions_z_multiplier, DOWN)
+
+	// These three lists must always be the same length.
+	var/list/turf_queue = list(epicenter, epicenter, epicenter, epicenter)
+	var/list/dir_queue = list(NORTH, SOUTH, EAST, WEST)
+	var/list/power_queue = list(power, power, power, power)
+
+	var/turf/current_turf
+	var/turf/search_turf
+	var/origin_direction
+	var/search_direction
+	var/current_power
+	var/index = 1
+	while (index <= turf_queue.len)
+		current_turf = turf_queue[index]
+		origin_direction = dir_queue[index]
+		current_power = power_queue[index]
+		++index
+
+		if (!istype(current_turf) || current_power <= 0)
+			CHECK_TICK
+			continue
+
+		if (act_turfs[current_turf] >= current_power && current_turf != epicenter)
+			CHECK_TICK
+			continue
+
+		act_turfs[current_turf] = current_power
+		current_power -= GET_ITERATIVE_EXPLOSION_BLOCK(current_turf)
+
+		// Attempt to shortcut on empty tiles: if a turf only has a LO on it, we don't need to check object resistance. Some turfs might not have LOs, so we need to check it actually has one.
+		if (length(current_turf.contents))
+			for (var/obj/O as anything in current_turf)
+				if (O.iterative_explosion_block)
+					power -= GET_ITERATIVE_EXPLOSION_BLOCK(O)
+
+		if (current_power <= 0)
+			CHECK_TICK
+			continue
+
+		SEARCH_DIR(origin_direction)
+		SEARCH_DIR(turn(origin_direction, 90))
+		SEARCH_DIR(turn(origin_direction, -90))
+
+		CHECK_TICK
+
+	log_game("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: Beginning SFX phase.")
+	time = REALTIMEOFDAY
+
+	var/volume = 10 + (power * 20)
+
+	var/frequency = get_rand_frequency()
+	var/close_dist = round(power + world.view - 2, 1)
+
+	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
+
+	for (var/mob/M as anything in GLOB.player_list)
+		var/reception = EXPLFX_BOTH
+		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
+
+		if (!T)
+			CHECK_TICK
+			continue
+
+		if (!SSmapping.are_same_zstack(T.z, epicenter.z))
+			CHECK_TICK
+			continue
+
+		if (istype(T, /turf/open/space) || istype(T, /turf/open/openspace))
+			reception = EXPLFX_NONE
+
+			for (var/turf/neighbor as anything in RANGE_TURFS(1, M))
+				if(!(istype(neighbor, /turf/open/space) || istype(neighbor, /turf/open/openspace)))
+					reception |= EXPLFX_SHAKE
+					break
+
+			if (!reception)
+				CHECK_TICK
 				continue
-			EX_ACT(movable_thing, EXPLODE_DEVASTATE)
-		cost_high_mov_atom = MC_AVERAGE(cost_high_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
-		timer = TICK_USAGE_REAL
-		var/list/local_med_mov_atom = med_mov_atom
-		med_mov_atom = list()
-		for(var/thing in local_med_mov_atom)
-			var/atom/movable/movable_thing = thing
-			if(QDELETED(movable_thing))
-				continue
-			EX_ACT(movable_thing, EXPLODE_HEAVY)
-		cost_med_mov_atom = MC_AVERAGE(cost_med_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		var/dist = get_dist(M, epicenter) || 1
+		if ((reception & EXPLFX_SOUND) && M.can_hear())
+			if (dist <= close_dist)
+				M.playsound_local(epicenter, explosion_sound, min(100, volume), 1, frequency, falloff_exponent = 5)
+				//You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
+			else
+				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
 
-		timer = TICK_USAGE_REAL
-		var/list/local_low_mov_atom = low_mov_atom
-		low_mov_atom = list()
-		for(var/thing in local_low_mov_atom)
-			var/atom/movable/movable_thing = thing
-			if(QDELETED(movable_thing))
-				continue
-			EX_ACT(movable_thing, EXPLODE_LIGHT)
-		cost_low_mov_atom = MC_AVERAGE(cost_low_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		if ((reception & EXPLFX_SHAKE) && volume > 0)
+			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
+			//Maximum duration is 3 seconds, and max strength is 3.5
+			//Becuse values higher than those just get really silly
+
+		CHECK_TICK
+
+	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: Beginning application phase.")
+	time = REALTIMEOFDAY
+
+	var/turf_tally = 0
+	var/movable_tally = 0
+	for (var/turf/T as anything in act_turfs)
+		if (act_turfs[T] <= 0)
+			CHECK_TICK
+			continue
+
+		var/severity = 4 - round(max(min( 3, ((act_turfs[T] - T.explosion_block) / (max(3,(power/3)))) ) ,1), 1)
+		//sanity			effective power on tile				divided by either 3 or one third the total explosion power
+		//															One third because there are three power levels and I
+		//															want each one to take up a third of the crater
+		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
+		var/throw_dist = 9/severity
+		if (T.simulated)
+			EX_ACT(T, severity)
+		if (length(T.contents))
+			for (var/atom/movable/AM as anything in T)
+				if (AM.simulated)
+					EX_ACT(AM, severity)
+					if(!QDELETED(AM) && !AM.anchored)
+						addtimer(CALLBACK(AM, /atom/movable/.proc/throw_at, throw_target, throw_dist, throw_dist), 0)
+				movable_tally++
+				CHECK_TICK
+		else
+			CHECK_TICK
+
+		turf_tally++
+
+	//SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, epicenter, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
+	log_game("iexpl: Application completed in [(REALTIMEOFDAY-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 
-	if (currentpart == SSEXPLOSIONS_THROWS)
-		currentpart = SSEXPLOSIONS_TURFS
-		timer = TICK_USAGE_REAL
-		var/list/throw_turf = throwturf
-		throwturf = list()
-		for (var/thing in throw_turf)
-			if (!thing)
-				continue
-			var/turf/T = thing
-			var/list/L = T.explosion_throw_details
-			T.explosion_throw_details = null
-			if (length(L) != 3)
-				continue
-			var/throw_range = L[1]
-			var/throw_dir = L[2]
-			var/max_range = L[3]
-			for(var/atom/movable/A in T)
-				if(!A.anchored && A.move_resist != INFINITY)
-					var/atom_throw_range = rand(throw_range, max_range)
-					var/turf/throw_at = get_ranged_target_turf(A, throw_dir, atom_throw_range)
-					A.throw_at(throw_at, atom_throw_range, EXPLOSION_THROW_SPEED, quickstart = FALSE)
-		cost_throwturf = MC_AVERAGE(cost_throwturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+#undef SEARCH_DIR
+#undef EXPLFX_BOTH
+#undef EXPLFX_SOUND
+#undef EXPLFX_SHAKE
+#undef EXPLFX_NONE
 
-	currentpart = SSEXPLOSIONS_TURFS
+/datum/controller/subsystem/explosions/proc/find_and_log_explosion_source(turf/epicenter, atom/explosion_cause, power)
+	// Now begins a bit of a logic train to find out whodunnit.
+	var/who_did_it = "N/A"
+	var/who_did_it_game_log = "N/A"
+
+	// Projectiles have special handling. They rely on a firer var and not fingerprints. Check special cases for firer being
+	// mecha, mob or an object such as the gun itself. Handle each uniquely.
+	if(isprojectile(explosion_cause))
+		var/obj/projectile/fired_projectile = explosion_cause
+		if(ismecha(fired_projectile.firer))
+			var/obj/vehicle/sealed/mecha/firing_mecha = fired_projectile.firer
+			var/list/mob/drivers = firing_mecha.return_occupants()
+			if(length(drivers))
+				who_did_it = "\[Mecha drivers:"
+				who_did_it_game_log = "\[Mecha drivers:"
+				for(var/mob/driver in drivers)
+					who_did_it += " [ADMIN_LOOKUPFLW(driver)]"
+					who_did_it_game_log = " [key_name(driver)]"
+				who_did_it += "\]"
+				who_did_it_game_log += "\]"
+		else if(ismob(fired_projectile.firer))
+			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer)]\]"
+			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer)]\]"
+		else
+			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer.fingerprintslast)]\]"
+			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer.fingerprintslast)]\]"
+	// Otherwise if the explosion cause is an atom, try get the fingerprints.
+	else if(istype(explosion_cause))
+		who_did_it = ADMIN_LOOKUPFLW(explosion_cause.fingerprintslast)
+		who_did_it_game_log = key_name(explosion_cause.fingerprintslast)
+
+	message_admins("Explosion with size [power]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
+	log_game("Explosion with size [power] in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
+
+/datum/controller/subsystem/explosions/proc/try_cancel_explosion(atom/origin)
+	var/atom/location = isturf(origin) ? origin : origin.loc
+	if(SEND_SIGNAL(origin, COMSIG_ATOM_EXPLODE, arguments) & COMSIG_CANCEL_EXPLOSION)
+		return COMSIG_CANCEL_EXPLOSION // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
+
+	while(location)
+		var/next_loc = location.loc
+		if(SEND_SIGNAL(location, COMSIG_ATOM_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
+			return COMSIG_CANCEL_EXPLOSION
+		if(isturf(location))
+			break
+		location = next_loc
+
+	if(!location)
+		return
+
+	var/area/epicenter_area = get_area(location)
+	if(SEND_SIGNAL(epicenter_area, COMSIG_AREA_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
+		return COMSIG_CANCEL_EXPLOSION

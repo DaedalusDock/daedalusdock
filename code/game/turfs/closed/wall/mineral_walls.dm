@@ -9,7 +9,6 @@
 /turf/closed/wall/mineral/gold
 	name = "gold wall"
 	desc = "A wall with gold plating. Swag!"
-	explosion_block = 0 //gold is a soft metal you dingus.
 	plating_material = /datum/material/gold
 	color = "#dbdd4c" //To display in mapping softwares
 
@@ -23,7 +22,6 @@
 	name = "diamond wall"
 	desc = "A wall with diamond plating. You monster."
 	slicing_duration = 200   //diamond wall takes twice as much time to slice
-	explosion_block = 3
 	plating_material = /datum/material/diamond
 	color = "#71c8f7" //To display in mapping softwares
 
@@ -40,7 +38,6 @@
 	name = "sandstone wall"
 	desc = "A wall with sandstone plating. Rough."
 	icon = 'icons/turf/walls/stone_wall.dmi'
-	explosion_block = 0
 	plating_material = /datum/material/sandstone
 	color = "#B77D31" //To display in mapping softwares
 
@@ -96,7 +93,6 @@
 	icon = 'icons/turf/walls/wood_wall.dmi'
 	hardness = 70
 	turf_flags = IS_SOLID
-	explosion_block = 0
 	plating_material = /datum/material/wood
 	color = "#bb8e53" //To display in mapping softwares
 
@@ -127,7 +123,6 @@
 	desc = "A wall made of densely packed snow blocks."
 	icon = 'icons/turf/walls/stone_wall.dmi'
 	hardness = 80
-	explosion_block = 0
 	slicing_duration = 30
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null
@@ -140,7 +135,6 @@
 	name = "alien wall"
 	desc = "A wall with alien alloy plating."
 	slicing_duration = 200   //alien wall takes twice as much time to slice
-	explosion_block = 3
 	plating_material = /datum/material/alloy/alien
 	color = "#6041aa" //To display in mapping softwares
 
@@ -149,7 +143,6 @@
 /turf/closed/wall/mineral/titanium //has to use this path due to how building walls works
 	name = "wall"
 	desc = "A light-weight titanium wall used in shuttles."
-	explosion_block = 3
 	flags_1 = CAN_BE_DIRTY_1
 	flags_ricochet = RICOCHET_SHINY | RICOCHET_HARD
 	smoothing_groups = list(SMOOTH_GROUP_WALLS)
@@ -188,7 +181,6 @@
 	name = "wall"
 	desc = "A durable wall made of an alloy of plasma and titanium."
 	icon = 'icons/turf/walls/metal_wall.dmi'
-	explosion_block = 4
 	smoothing_groups = list(SMOOTH_GROUP_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 	plating_material = /datum/material/alloy/plastitanium

@@ -19,7 +19,13 @@
 #define GIBTONITE_DETONATE 3
 
 /// For object explosion block calculation
-#define EXPLOSION_BLOCK_PROC -1
+#define EXPLOSION_BLOCK_VAR -1
+#define EXPLOSION_BLOCK_DENSITY -2
+//#define EXPLOSION_BLOCK_PROC -3 //DEPRECATED
+
+#define GET_EXPLOSION_BLOCK(thing) thing.explosion_block_type == EXPLOSION_BLOCK_VAR ? thing.explosion_block : (thing.explosion_block_type == EXPLOSION_BLOCK_DENSITY ? (thing.density ? thing.explosion_block : 0) : 0)
+
+#define GET_ITERATIVE_EXPLOSION_BLOCK(thing) thing.explosion_block_type == EXPLOSION_BLOCK_VAR ? thing.iterative_explosion_block : (thing.explosion_block_type == EXPLOSION_BLOCK_DENSITY ? (thing.density ? thing.iterative_explosion_block : 0) : 0)
 
 /// A wrapper for [/atom/proc/ex_act] to ensure that the explosion propagation and attendant signal are always handled.
 #define EX_ACT(target, args...)\

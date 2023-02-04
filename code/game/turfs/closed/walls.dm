@@ -6,7 +6,6 @@
 	icon = 'icons/turf/walls/solid_wall.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
-	explosion_block = 1
 	blocks_air = AIR_BLOCKED
 	baseturfs = /turf/open/floor/plating
 
@@ -18,6 +17,7 @@
 	lighting_uses_jen = TRUE
 
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
+	iterative_explosion_block = 5
 
 	rcd_memory = RCD_MEMORY_WALL
 
@@ -219,6 +219,11 @@
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
+
+	//Set explosion block power
+	iterative_explosion_block = plating_mat_ref.iterative_explosion_block
+	if(reinf_mat_ref?.iterative_explosion_block > iterative_explosion_block)
+		iterative_explosion_block = reinf_mat_ref.iterative_explosion_block
 
 	if(reinf_material)
 		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"

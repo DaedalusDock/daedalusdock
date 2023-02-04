@@ -7,7 +7,6 @@
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
 
-	. = ..() //contents explosion
 	if(QDELETED(src))
 		return
 	if(target == src)
@@ -186,7 +185,3 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 		burn()
 	else
 		deconstruct(FALSE)
-
-///returns how much the object blocks an explosion. Used by subtypes.
-/obj/proc/GetExplosionBlock()
-	CRASH("Unimplemented GetExplosionBlock()")

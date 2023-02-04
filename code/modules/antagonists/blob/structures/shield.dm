@@ -7,7 +7,7 @@
 	max_integrity = BLOB_STRONG_MAX_HP
 	health_regen = BLOB_STRONG_HP_REGEN
 	brute_resist = BLOB_BRUTE_RESIST * 0.5
-	explosion_block = 3
+	iterative_explosion_block = 10
 	point_return = BLOB_REFUND_STRONG_COST
 	atmosblock = TRUE
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
@@ -45,7 +45,7 @@
 	icon_state = "blob_glow"
 	flags_ricochet = RICOCHET_SHINY
 	point_return = BLOB_REFUND_REFLECTOR_COST
-	explosion_block = 2
+	iterative_explosion_block = 5
 	max_integrity = BLOB_REFLECTOR_MAX_HP
 	health_regen = BLOB_REFLECTOR_HP_REGEN
 

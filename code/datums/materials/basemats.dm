@@ -28,6 +28,7 @@
 	beauty_modifier = 0.05
 	armor_modifiers = list(MELEE = 0.2, BULLET = 0.2, LASER = 0, ENERGY = 1, BOMB = 0, BIO = 0.2, FIRE = 1, ACID = 0.2)
 	wall_type = null
+	iterative_explosion_block = 0 //This is dangerous!
 
 /datum/material/glass/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5, sharpness = TRUE) //cronch
@@ -88,6 +89,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 1.3, BULLET = 1.3, LASER = 0.6, ENERGY = 1, BOMB = 1.2, BIO = 1, FIRE = 1, ACID = 1)
 	wall_type = /turf/closed/wall/mineral/diamond
 	false_wall_type = /obj/structure/falsewall/diamond
+	iterative_explosion_block = 25
 
 /datum/material/diamond/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
@@ -146,6 +148,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_greyscale_config = /datum/greyscale_config/stone_wall
 	wall_type = /turf/closed/wall/mineral/plasma
 	false_wall_type = /obj/structure/falsewall/plasma
+	iterative_explosion_block = 10
 
 /datum/material/plasma/on_applied(atom/source, amount, material_flags)
 	. = ..()
@@ -228,6 +231,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_greyscale_config = /datum/greyscale_config/metal_wall
 	wall_type = /turf/closed/wall/mineral/titanium
 	false_wall_type = /obj/structure/falsewall/titanium
+	iterative_explosion_block = 20
 
 /datum/material/titanium/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
@@ -261,6 +265,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.0125
 	beauty_modifier = -0.01
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
+	iterative_explosion_block = 3
 
 /datum/material/plastic/on_accidental_mat_consumption(mob/living/carbon/eater, obj/item/food)
 	eater.reagents.add_reagent(/datum/reagent/plastic_polymers, rand(6, 8))
@@ -325,6 +330,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = 0.4
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
 	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	iterative_explosion_block = 30
 
 /datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
@@ -416,6 +422,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
 	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	iterative_explosion_block = 1
 
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.adjust_disgust(17)
@@ -434,6 +441,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	turf_sound_override = FOOTSTEP_WOOD
 	texture_layer_icon_state = "brick"
 	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	iterative_explosion_block = 2
 
 /datum/material/snow
 	name = "snow"
@@ -447,6 +455,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
 	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	iterative_explosion_block = 1
 
 /datum/material/snow/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/water, rand(5, 10))

@@ -324,8 +324,7 @@
 		for(var/obj/thing in location)
 			if (thing == src)
 				continue
-			var/the_block = thing.explosion_block
-			decrement += the_block == EXPLOSION_BLOCK_PROC ? thing.GetExplosionBlock() : the_block
+			decrement += GET_EXPLOSION_BLOCK(thing)
 
 	range = max(range - decrement + 1, 0) // Already decremented by 1 in the parent. Exists so that if we pass through something with negative block it extends the range.
 	heavy_ex_range = max(heavy_ex_range - decrement, 0)

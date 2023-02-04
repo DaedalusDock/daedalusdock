@@ -7,14 +7,12 @@
 	hardness = 10
 	reinf_material = /datum/material/iron
 	plating_material = /datum/material/alloy/plasteel
-	explosion_block = 2
 	rad_insulation = RAD_HEAVY_INSULATION
 
 /turf/closed/wall/r_wall/syndicate
 	name = "hull"
 	desc = "The armored hull of an ominous looking ship."
 	icon = 'icons/turf/walls/metal_wall.dmi'
-	explosion_block = 20
 	reinf_material = /datum/material/iron
 	plating_material = /datum/material/alloy/plastitanium
 	color = "#3a313a" //To display in mapping softwares

@@ -533,9 +533,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/break_tile()
 	return
 
-/turf/proc/is_shielded()
-	return
-
 /turf/contents_explosion(severity, target)
 	for(var/thing in contents)
 		var/atom/movable/movable_thing = thing

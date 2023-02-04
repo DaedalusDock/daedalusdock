@@ -212,6 +212,11 @@
 	plating_material = plating_mat
 	reinf_material = reinf_mat
 
+	//Set explosion block power
+	iterative_explosion_block = plating_mat_ref.iterative_explosion_block
+	if(reinf_mat_ref?.iterative_explosion_block > iterative_explosion_block)
+		iterative_explosion_block = reinf_mat_ref.iterative_explosion_block
+
 	if(reinf_material)
 		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."

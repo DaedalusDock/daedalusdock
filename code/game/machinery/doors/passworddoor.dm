@@ -3,7 +3,7 @@
 	desc = "This door only opens when provided a password."
 	icon = 'icons/obj/doors/blastdoor.dmi'
 	icon_state = "closed"
-	explosion_block = 3
+	iterative_explosion_block = 15
 	heat_proof = TRUE
 	max_integrity = 600
 	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)

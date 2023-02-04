@@ -18,7 +18,7 @@
 	name = "wall"
 	desc = "Effectively impervious to conventional methods of destruction."
 	icon = 'icons/turf/walls.dmi'
-	explosion_block = 50
+	iterative_explosion_block = INFINITY
 
 /turf/closed/indestructible/rust_heretic_act()
 	return
@@ -249,7 +249,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	desc = "A seemingly impenetrable wall."
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "necro"
-	explosion_block = 50
 	baseturfs = /turf/closed/indestructible/necropolis
 
 /turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
@@ -277,7 +276,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_BOSS_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_BOSS_WALLS)
-	explosion_block = 50
 	baseturfs = /turf/closed/indestructible/riveted/boss
 
 /turf/closed/indestructible/riveted/boss/see_through

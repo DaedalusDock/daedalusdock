@@ -5,7 +5,7 @@
 	desc = "A huge, pulsating yellow mass."
 	max_integrity = BLOB_CORE_MAX_HP
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 90)
-	explosion_block = 6
+	iterative_explosion_block = 15
 	point_return = -1
 	health_regen = 0 //we regen in Life() instead of when pulsed
 	resistance_flags = LAVA_PROOF

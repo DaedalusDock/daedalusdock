@@ -15,7 +15,7 @@
 	heat_proof = TRUE
 	glass = FALSE
 	sub_door = TRUE
-	explosion_block = 1
+	iterative_explosion_block = 3
 	safe = FALSE
 	layer = BELOW_OPEN_DOOR_LAYER
 	closingLayer = CLOSED_FIREDOOR_LAYER
@@ -425,7 +425,7 @@
 	name = "heavy firelock"
 	icon = 'icons/obj/doors/Doorfire.dmi'
 	glass = FALSE
-	explosion_block = 2
+	iterative_explosion_block = 5
 	assemblytype = /obj/structure/firelock_frame/heavy
 	max_integrity = 550
 

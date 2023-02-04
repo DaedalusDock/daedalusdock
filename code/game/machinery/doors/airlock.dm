@@ -98,7 +98,7 @@
 	secondsElectrified = MACHINE_NOT_ELECTRIFIED //How many seconds remain until the door is no longer electrified. -1/MACHINE_ELECTRIFIED_PERMANENT = permanently electrified until someone fixes it.
 	assemblytype = /obj/structure/door_assembly
 	normalspeed = 1
-	explosion_block = 1
+	iterative_explosion_block = 5
 	hud_possible = list(DIAG_AIRLOCK_HUD)
 	smoothing_groups = list(SMOOTH_GROUP_AIRLOCK)
 

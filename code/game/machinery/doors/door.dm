@@ -17,7 +17,8 @@
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
 	damage_deflection = 10
-
+	explosion_block_type = EXPLOSION_BLOCK_DENSITY
+	iterative_explosion_block = 5
 	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
@@ -40,7 +41,6 @@
 	var/locked = FALSE //whether the door is bolted or not.
 	var/assemblytype //the type of door frame to drop during deconstruction
 	var/datum/effect_system/spark_spread/spark_system
-	var/real_explosion_block //ignore this, just use explosion_block
 	var/red_alert_access = FALSE //if TRUE, this door will always open on red alert
 	var/unres_sides = 0 //Unrestricted sides. A bitflag for which direction (if any) can open the door with no access
 	var/can_crush = TRUE /// Whether or not the door can crush mobs.
@@ -67,9 +67,6 @@
 		flags_1 &= ~PREVENT_CLICK_UNDER_1
 
 	zas_update_loc()
-	//doors only block while dense though so we have to use the proc
-	real_explosion_block = explosion_block
-	explosion_block = EXPLOSION_BLOCK_PROC
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, .proc/check_security_level)
 
 /obj/machinery/door/LateInitialize()
@@ -548,9 +545,6 @@
 /obj/machinery/door/ex_act(severity, target)
 	//if it blows up a wall it should blow up a door
 	return ..(severity ? min(EXPLODE_DEVASTATE, severity + 1) : EXPLODE_NONE, target)
-
-/obj/machinery/door/GetExplosionBlock()
-	return density ? real_explosion_block : 0
 
 /obj/machinery/door/power_change()
 	. = ..()

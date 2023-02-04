@@ -38,8 +38,10 @@
 	///HUD images that this atom can provide.
 	var/list/hud_possible
 
-	///Value used to increment ex_act() if reactionary_explosions is on
-	var/explosion_block = 0
+	///The type of check for explosion block. Defaults to var.
+	var/explosion_block_type = EXPLOSION_BLOCK_VAR
+	//If using the iterative explosion system, use this instead
+	var/iterative_explosion_block = 0
 
 	/**
 	 * used to store the different colors on an atom

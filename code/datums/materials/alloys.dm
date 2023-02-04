@@ -86,6 +86,7 @@
 	false_wall_type = /obj/structure/falsewall/plastitanium
 	hard_wall_decon = TRUE
 	wall_color = "#423b3b"
+	iterative_explosion_block = 35
 
 /** Plasmaglass
  *

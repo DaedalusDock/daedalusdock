@@ -2,6 +2,7 @@
 
 // This code allows for airlocks to be controlled externally by setting an id_tag and comm frequency (disables ID access)
 /obj/machinery/door/airlock
+	iterative_explosion_block = 10
 	/// The current state of the airlock, used to construct the airlock overlays
 	var/airlock_state
 	var/frequency

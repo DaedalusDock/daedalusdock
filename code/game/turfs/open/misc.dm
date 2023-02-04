@@ -36,17 +36,6 @@
 	return attack_hand(user, modifiers)
 
 /turf/open/misc/ex_act(severity)
-	. = ..()
-
-	if(target == src)
-		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-		return TRUE
-	if(severity < EXPLODE_DEVASTATE && is_shielded())
-		return FALSE
-
-	if(target)
-		severity = EXPLODE_LIGHT
-
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)

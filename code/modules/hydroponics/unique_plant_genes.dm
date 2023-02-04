@@ -554,7 +554,7 @@
 	var/flame_reach = clamp(round(our_seed.potency / 20), 1, 5) //Like IEDs - their flame range can get up to 5, but their real boom is small
 
 	our_plant.forceMove(our_plant.drop_location())
-	explosion(our_plant, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = flame_reach)
+	explosion(our_plant, 2, flame_range = flame_reach)
 	qdel(our_plant)
 
 /// Corpseflower's miasma production.

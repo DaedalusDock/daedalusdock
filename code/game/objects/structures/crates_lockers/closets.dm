@@ -12,6 +12,7 @@
 	armor = list(MELEE = 20, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
+	flags_1 = EXPLODE_CONTENTS_1
 
 	/// The overlay for the closet's door
 	var/obj/effect/overlay/closet_door/door_obj

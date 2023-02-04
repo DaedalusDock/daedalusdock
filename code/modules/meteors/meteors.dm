@@ -174,13 +174,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 		thing.visible_message(span_warning("[src] slams into [thing]."), span_userdanger("[src] slams into you!."))
 
 	//then, ram the turf
-	switch(hitpwr)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.highturf += T
-		if(EXPLODE_HEAVY)
-			SSexplosions.medturf += T
-		if(EXPLODE_LIGHT)
-			SSexplosions.lowturf += T
+	EX_ACT(T, hitpwr)
 
 //process getting 'hit' by colliding with a dense object
 //or randomly when ramming turfs
@@ -246,7 +240,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 
 /obj/effect/meteor/medium/meteor_effect()
 	..()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 3, adminlog = FALSE)
+	explosion(src, 3, flash_range = 3, adminlog = FALSE)
 
 //Large-sized
 /obj/effect/meteor/big
@@ -259,7 +253,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 
 /obj/effect/meteor/big/meteor_effect()
 	..()
-	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 4, adminlog = FALSE)
+	explosion(src, 7, flash_range = 4, adminlog = FALSE)
 
 //Flaming meteor
 /obj/effect/meteor/flaming
@@ -273,7 +267,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 
 /obj/effect/meteor/flaming/meteor_effect()
 	..()
-	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flame_range = 5, flash_range = 4, adminlog = FALSE)
+	explosion(src, 6, flame_range = 5, flash_range = 4, adminlog = FALSE)
 
 //Radiation meteor
 /obj/effect/meteor/irradiated
@@ -286,7 +280,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 
 /obj/effect/meteor/irradiated/meteor_effect()
 	..()
-	explosion(src, light_impact_range = 4, flash_range = 3, adminlog = FALSE)
+	explosion(src, 4, flash_range = 3, adminlog = FALSE)
 	new /obj/effect/decal/cleanable/greenglow(get_turf(src))
 	radiation_pulse(src, max_range = 3, threshold = RAD_MEDIUM_INSULATION, chance = 80)
 
@@ -360,12 +354,12 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 
 /obj/effect/meteor/tunguska/meteor_effect()
 	..()
-	explosion(src, devastation_range = 5, heavy_impact_range = 10, light_impact_range = 15, flash_range = 20, adminlog = FALSE)
+	explosion(src, 35, flash_range = 20, adminlog = FALSE)
 
 /obj/effect/meteor/tunguska/Bump()
 	..()
 	if(prob(20))
-		explosion(src, devastation_range = 2, heavy_impact_range = 4, light_impact_range = 6, flash_range = 8, adminlog = FALSE)
+		explosion(src, 14, flash_range = 8, adminlog = FALSE)
 
 //////////////////////////
 //Spookoween meteors

@@ -153,7 +153,9 @@
 		var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()
-		explosion(src, devastation_range = 1, explosion_cause = src)
+		//.explosion(src, devastation_range = 1, explosion_cause = src)
+		EX_ACT(src, EXPLODE_DEVASTATE)
+		#warn meatgrinder
 		qdel(src)
 
 /////For the Wishgranter///////////

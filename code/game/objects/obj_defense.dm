@@ -9,9 +9,7 @@
 
 	if(QDELETED(src))
 		return
-	if(target == src)
-		take_damage(INFINITY, BRUTE, BOMB, 0)
-		return
+
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			take_damage(INFINITY, BRUTE, BOMB, 0)
@@ -99,8 +97,8 @@
 
 
 /obj/singularity_act()
-	SSexplosions.high_mov_atom += src
-	if(src && !QDELETED(src))
+	EX_ACT(src, EXPLODE_DEVASTATE)
+	if(!QDELETED(src))
 		qdel(src)
 	return 2
 

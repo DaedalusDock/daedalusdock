@@ -284,7 +284,7 @@
 	inhand_icon_state = "eshield0"
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
-	w_class = WEIGHT_CLASS_NORMAL.
+	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = FLAMMABLE //Burnable (but the casing isn't)
 	var/adminlog = null
 	var/range_heavy = 3

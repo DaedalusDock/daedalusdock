@@ -115,7 +115,7 @@
 		return
 
 	update_mob()
-	explosion(src, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2)
+	explosion(src, 2)
 	qdel(src)
 
 

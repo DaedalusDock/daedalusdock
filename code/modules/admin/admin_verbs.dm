@@ -89,8 +89,6 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/cmd_select_equipment,
 	/client/proc/cmd_admin_gib_self,
 	/client/proc/drop_bomb,
-	/client/proc/set_dynex_scale,
-	/client/proc/drop_dynex_bomb,
 	/client/proc/cinematic,
 	/client/proc/summon_ert,
 	/client/proc/cmd_admin_add_freeform_ai_law,
@@ -157,12 +155,8 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/test_movable_UI,
 	/client/proc/test_snap_UI,
 	/client/proc/debugNatureMapGenerator,
-	/client/proc/check_bomb_impacts,
 	/proc/machine_upgrade,
 	/client/proc/populate_world,
-	/client/proc/get_dynex_power, //*debug verbs for dynex explosions.
-	/client/proc/get_dynex_range, //*debug verbs for dynex explosions.
-	/client/proc/set_dynex_scale,
 	/client/proc/cmd_display_del_log,
 	/client/proc/outfit_manager,
 	/client/proc/open_colorblind_test,
@@ -243,10 +237,6 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	/client/proc/cmd_select_equipment,
 	/client/proc/cmd_admin_gib_self,
 	/client/proc/drop_bomb,
-	/client/proc/drop_dynex_bomb,
-	/client/proc/get_dynex_range,
-	/client/proc/get_dynex_power,
-	/client/proc/set_dynex_scale,
 	/client/proc/cinematic,
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_create_centcom_report,
@@ -535,13 +525,13 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 	switch(choice)
 		if("Small Bomb (1, 2, 3, 0, 3)")
-			explosion(epicenter, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 3, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			//explosion(epicenter, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 3, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Medium Bomb (1, 2, 3, 0, 3)")
-			explosion(epicenter, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, flash_range = 4, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			//explosion(epicenter, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, flash_range = 4, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Big Bomb (3, 5, 7, 0, 5)")
-			explosion(epicenter, devastation_range = 3, heavy_impact_range = 5, light_impact_range = 7, flash_range = 5, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			//explosion(epicenter, devastation_range = 3, heavy_impact_range = 5, light_impact_range = 7, flash_range = 5, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Maxcap (4, 8, 16, 16, 20 by default)")
-			explosion(epicenter, devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flame_range = zas_settings.maxex_fire_range, flash_range = zas_settings.maxex_flash_range, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			//explosion(epicenter, devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flame_range = zas_settings.maxex_fire_range, flash_range = zas_settings.maxex_flash_range, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
 		if("Custom Bomb")
 			var/power = input("Bomb Power") as null|num
 			if(isnull(power))
@@ -552,7 +542,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			var/range_flash = input("Flash range (in tiles):") as null|num
 			if(isnull(range_flash))
 				return
-			if(range_devastation > zas_settings.maxex_devastation_range || range_heavy > zas_settings.maxex_heavy_range || range_light > zas_settings.maxex_light_range || range_flash > zas_settings.maxex_flash_range || range_flame > zas_settings.maxex_fire_range)
+			if(range_flash > zas_settings.maxex_flash_range || range_flame > zas_settings.maxex_fire_range)
 				if(tgui_alert(usr, "Bomb is bigger than the maxcap. Continue?",,list("Yes","No")) != "Yes")
 					return
 			epicenter = mob.loc //We need to reupdate as they may have moved again

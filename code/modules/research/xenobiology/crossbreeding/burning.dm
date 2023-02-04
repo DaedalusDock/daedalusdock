@@ -268,7 +268,7 @@ Burning extracts:
 	playsound(T, 'sound/effects/explosion2.ogg', 200, TRUE)
 	for(var/mob/living/target in range(2, T))
 		new /obj/effect/temp_visual/explosion(get_turf(target))
-		SSexplosions.med_mov_atom += target
+		EX_ACT(target, EXPLODE_HEAVY)
 	qdel(src)
 
 /obj/item/slimecross/burning/black

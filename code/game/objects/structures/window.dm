@@ -326,7 +326,7 @@
 			playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 
 /obj/structure/window/ex_act(severity)
-	return ..(min(EXPLODE_DEVASTATE, severity + 1), target)
+	return ..(min(EXPLODE_DEVASTATE, severity + 1))
 
 
 /obj/structure/window/deconstruct(disassembled = TRUE)

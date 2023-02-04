@@ -141,7 +141,7 @@
 			continue
 		if(next_turf.Adjacent(charger) && (iswallturf(next_turf) || ismineralturf(next_turf)))
 			if(!isanimal(charger))
-				SSexplosions.medturf += next_turf
+				EX_ACT(next_turf, EXPLODE_HEAVY)
 				continue
 			next_turf.attack_animal(charger)
 			continue
@@ -153,7 +153,7 @@
 			if(!object.density || object.IsObscured())
 				continue
 			if(!isanimal(charger))
-				SSexplosions.med_mov_atom += target
+				EX_ACT(object, EXPLODE_HEAVY)
 				break
 			object.attack_animal(charger)
 			break
@@ -163,9 +163,9 @@
 	if(owner == target)
 		return
 	if(isturf(target))
-		SSexplosions.medturf += target
+		EX_ACT(target, EXPLODE_HEAVY)
 	if(isobj(target) && target.density)
-		SSexplosions.med_mov_atom += target
+		EX_ACT(target, EXPLODE_HEAVY)
 
 	INVOKE_ASYNC(src, .proc/DestroySurroundings, source)
 	hit_target(source, target, charge_damage)

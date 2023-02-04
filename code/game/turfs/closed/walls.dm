@@ -268,23 +268,18 @@
 		new reinf_mat_ref.sheet_type(src, 2)
 
 /turf/closed/wall/ex_act(severity)
-	if(target == src)
-		dismantle_wall(1,1)
-		return
-
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			//SN src = null
 			var/turf/NT = ScrapeAway()
-			NT.contents_explosion(severity, target)
+			EX_ACT(NT, severity)
+			#warn there used to be a contents_explode() here
 			return
 		if(EXPLODE_HEAVY)
 			dismantle_wall(prob(50), TRUE)
 		if(EXPLODE_LIGHT)
 			if (prob(hardness))
 				dismantle_wall(0,1)
-	if(!density)
-		..()
 
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
@@ -600,7 +595,7 @@
 	return null
 
 /turf/closed/wall/acid_act(acidpwr, acid_volume)
-	if(explosion_block >= 2)
+	if(GET_ITERATIVE_EXPLOSION_BLOCK(src) >= 10)
 		acidpwr = min(acidpwr, 50) //we reduce the power so strong walls never get melted.
 	return ..()
 

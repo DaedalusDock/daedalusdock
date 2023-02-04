@@ -107,9 +107,6 @@
 /mob/living/silicon/med_hud_set_status()
 	return //we use a different hud
 
-/mob/living/silicon/contents_explosion(severity)
-	return
-
 /mob/living/silicon/proc/queueAlarm(message, type, incoming = FALSE)
 	var/in_cooldown = (length(alarms_to_show) || length(alarms_to_clear))
 	if(incoming)

@@ -53,12 +53,6 @@
 	return ..()
 
 /turf/open/floor/engine/ex_act(severity)
-	if(target == src)
-		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-		return TRUE
-	if(severity < EXPLODE_DEVASTATE && is_shielded())
-		return FALSE
-
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(prob(80))

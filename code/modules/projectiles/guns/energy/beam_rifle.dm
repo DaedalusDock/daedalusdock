@@ -461,7 +461,7 @@
 				var/turf/closed/wall/W = A
 				W.dismantle_wall(TRUE, TRUE)
 			else
-				SSexplosions.medturf += A
+				EX_ACT(A, EXPLODE_HEAVY)
 		++wall_pierce
 		return PROJECTILE_PIERCE_PHASE // yeah this gun is a snowflakey piece of garbage
 	if(isobj(A) && (structure_pierce < structure_pierce_amount))

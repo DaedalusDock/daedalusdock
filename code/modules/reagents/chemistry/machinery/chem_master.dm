@@ -63,10 +63,10 @@
 
 /obj/machinery/chem_master/contents_explosion(severity)
 	. = ..()
-			if(beaker)
-				SSexplosions.high_mov_atom += beaker
-			if(bottle)
-				SSexplosions.high_mov_atom += bottle
+	if(beaker)
+		EX_ACT(beaker, EXPLODE_DEVASTATE)
+	if(bottle)
+		EX_ACT(bottle, EXPLODE_DEVASTATE)
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
 	..()

@@ -17,7 +17,7 @@
 	var/datum/mind/stored_mind = user.mind
 	var/list/organs = user.getorganszone(BODY_ZONE_HEAD, 1)
 
-	explosion(user, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
+	explosion(user, 2, adminlog = TRUE, explosion_cause = src)
 	for(var/mob/living/carbon/human/blinded_humans in range(2, user))
 		var/obj/item/organ/internal/eyes/eyes = blinded_humans.getorganslot(ORGAN_SLOT_EYES)
 		if(!eyes || blinded_humans.is_blind())

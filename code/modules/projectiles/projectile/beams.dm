@@ -113,9 +113,9 @@
 	. = ..()
 	if (!QDELETED(target) && (isturf(target) || istype(target, /obj/structure/)))
 		if(isobj(target))
-			SSexplosions.med_mov_atom += target
+			EX_ACT(target, EXPLODE_HEAVY)
 		else
-			SSexplosions.medturf += target
+			EX_ACT(target, EXPLODE_HEAVY)
 
 /obj/projectile/beam/pulse/shotgun
 	damage = 30

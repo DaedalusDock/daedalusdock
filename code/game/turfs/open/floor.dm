@@ -62,15 +62,6 @@
 	return ..()
 
 /turf/open/floor/ex_act(severity)
-	if(target == src)
-		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-		return TRUE
-	if(is_shielded() && severity < EXPLODE_DEVASTATE)
-		return FALSE
-
-	if(target)
-		severity = EXPLODE_LIGHT
-
 	switch(severity)
 		if(EXPLODE_LIGHT)
 			src.break_tile()

@@ -85,7 +85,7 @@
 	for(var/obj/structure/industrial_lift/tram/tram_part as anything in lift_platforms)
 		tram_part.set_travelling(FALSE)
 		if(prob(15) || locate(/mob/living) in tram_part.lift_load) //always go boom on people on the track
-			explosion(tram_part, devastation_range = rand(0, 1), heavy_impact_range = 2, light_impact_range = 3) //50% chance of gib
+			explosion(tram_part, rand(4,6)) //50% chance of gib
 		qdel(tram_part)
 
 /**

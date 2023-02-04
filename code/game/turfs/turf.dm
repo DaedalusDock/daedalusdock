@@ -533,12 +533,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/break_tile()
 	return
 
-/turf/contents_explosion(severity)
-	for(var/atom/movable/movable_thing as anything in contents)
-		if(QDELETED(movable_thing))
-			continue
-		EX_ACT(movable_thing, severity)
-
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)
 	for(var/I in src)

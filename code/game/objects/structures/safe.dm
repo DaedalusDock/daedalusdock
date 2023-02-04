@@ -83,7 +83,7 @@ FLOOR SAFES
 	return
 
 /obj/structure/safe/ex_act(severity)
-	if(((severity == EXPLODE_HEAVY && target == src) || severity == EXPLODE_DEVASTATE) && explosion_count < BROKEN_THRESHOLD)
+	if((severity == EXPLODE_DEVASTATE) && explosion_count < BROKEN_THRESHOLD)
 		explosion_count++
 		switch(explosion_count)
 			if(1)

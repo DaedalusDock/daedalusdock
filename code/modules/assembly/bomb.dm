@@ -156,7 +156,7 @@
 	var/strength = 1
 
 	var/turf/ground_zero = get_turf(loc)
-
+	/*
 	if(bomb_mixture.temperature > (T0C + 400))
 		strength = (fuel_moles/15)
 
@@ -195,7 +195,8 @@
 	else
 		ground_zero.assume_air(bomb_mixture)
 		ground_zero.hotspot_expose(1000, 125)
-
+	*/
+	#warn tank ignite
 	if(master)
 		qdel(master)
 	qdel(src)

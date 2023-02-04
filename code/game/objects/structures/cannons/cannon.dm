@@ -128,7 +128,7 @@
 		fires_before_deconstruction--
 	if(prob(explode_chance))
 		visible_message(span_userdanger("[src] explodes!"))
-		explosion(src, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
+		explosion(src, 6, flame_range = 5)
 		return
 	if(fires_before_deconstruction <= 0)
 		visible_message(span_warning("[src] falls apart from operation!"))

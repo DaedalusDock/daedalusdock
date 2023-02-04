@@ -7,6 +7,7 @@
 	anchored = FALSE
 	density = TRUE
 	opacity = FALSE
+	flags_1 = EXPLODE_CONTENTS_1
 	var/case_type = ""
 	var/gun_category = /obj/item/gun
 	var/open = TRUE

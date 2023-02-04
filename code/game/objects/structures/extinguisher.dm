@@ -7,6 +7,7 @@
 	density = FALSE
 	max_integrity = 200
 	integrity_failure = 0.25
+	flags_1 = EXPLODE_CONTENTS_1
 	var/obj/item/extinguisher/stored_extinguisher
 	var/opened = FALSE
 

@@ -544,7 +544,7 @@
 
 /obj/machinery/door/ex_act(severity)
 	//if it blows up a wall it should blow up a door
-	return ..(severity ? min(EXPLODE_DEVASTATE, severity + 1) : EXPLODE_NONE, target)
+	return ..(severity ? min(EXPLODE_DEVASTATE, severity + 1) : EXPLODE_NONE)
 
 /obj/machinery/door/power_change()
 	. = ..()

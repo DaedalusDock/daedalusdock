@@ -142,12 +142,15 @@
 
 /obj/vehicle/sealed/mecha/contents_explosion(severity)
 	severity--
-	if(flat_equipment)
-		EX_ACT(flat_equipment, severity)
-	if(trackers)
-		EX_ACT(trackers, severity)
-	if(occupants)
-		EX_ACT(occupants, severity)
+	if(length(flat_equipment))
+		for(var/atom/movable/AM as anything in flat_equipment)
+			EX_ACT(AM, severity)
+	if(length(trackers))
+		for(var/atom/movable/AM as anything in trackers)
+			EX_ACT(AM, severity)
+	if(length(occupants))
+		for(var/atom/movable/AM as anything in occupants)
+			EX_ACT(AM, severity)
 
 /obj/vehicle/sealed/mecha/handle_atom_del(atom/A)
 	if(A in occupants) //todo does not work and in wrong file

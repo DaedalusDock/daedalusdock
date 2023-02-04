@@ -152,7 +152,7 @@
 		QDEL_IN(holder, 5)
 
 /datum/spacevine_mutation/explosive/on_death(obj/structure/spacevine/holder, mob/hitter, obj/item/item)
-	explosion(holder, light_impact_range = EXPLOSION_MUTATION_IMPACT_RADIUS, adminlog = FALSE)
+	explosion(holder, EXPLOSION_MUTATION_IMPACT_RADIUS, adminlog = FALSE)
 
 /datum/spacevine_mutation/fire_proof
 	name = "Fire proof"
@@ -657,7 +657,7 @@
 /obj/structure/spacevine/ex_act(severity)
 	var/index
 	for(var/datum/spacevine_mutation/mutation in mutations)
-		index += mutation.on_explosion(severity, target, src)
+		index += mutation.on_explosion(severity, , src)
 	if(!index && prob(34 * severity))
 		qdel(src)
 

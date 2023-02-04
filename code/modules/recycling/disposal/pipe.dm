@@ -6,6 +6,7 @@
 	icon = 'icons/obj/atmospherics/pipes/disposal.dmi'
 	anchored = TRUE
 	density = FALSE
+	flags_1 = EXPLODE_CONTENTS_1
 	obj_flags = CAN_BE_HIT | ON_BLUEPRINTS
 	dir = NONE // dir will contain dominant direction for junction pipes
 	max_integrity = 200
@@ -118,7 +119,7 @@
 // pipe affected by explosion
 /obj/structure/disposalpipe/contents_explosion(severity)
 	var/obj/structure/disposalholder/H = locate() in src
-	H?.contents_explosion(severity, target)
+	H?.contents_explosion(severity)
 
 
 //welding tool: unfasten and convert to obj/disposalconstruct

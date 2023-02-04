@@ -7,6 +7,7 @@
 	animate_movement = FORWARD_STEPS
 	anchored = TRUE
 	density = TRUE
+	flags_1 = EXPLODE_CONTENTS_1
 	var/moving = FALSE
 	var/datum/gas_mixture/air_contents = new()
 	var/occupied_icon_state = "pod_occupied"

@@ -205,5 +205,5 @@
 	animate(src, alpha = 30, time = seconds)
 
 /obj/structure/traitor_bug/deconstruct(disassembled)
-	explosion(src, light_impact_range = 2, flame_range = 5, explosion_cause = src) // Pretty god damn dangerous
+	explosion(src, 2, flame_range = 5, explosion_cause = src) // Pretty god damn dangerous
 	return ..()

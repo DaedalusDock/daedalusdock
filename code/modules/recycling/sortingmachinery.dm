@@ -1,5 +1,6 @@
 /obj/item/delivery
 	icon = 'icons/obj/storage.dmi'
+	flags_1 = EXPLODE_CONTENTS_1
 	var/giftwrapped = 0
 	var/sort_tag = 0
 	var/obj/item/paper/note
@@ -39,7 +40,8 @@
 	qdel(src)
 
 /obj/item/delivery/contents_explosion(severity)
-	EX_ACT(contents, severity)
+	for(var/atom/movable/AM as anything in contents)
+		EX_ACT(AM, severity)
 
 /obj/item/delivery/deconstruct()
 	unwrap_contents()

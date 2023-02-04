@@ -174,8 +174,7 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/working/ripley/contents_explosion(severity)
-	for(var/i in cargo)
-		var/obj/cargoobj = i
+	for(var/obj/cargoobj as anything in cargo)
 		if(prob(10 * severity))
 			LAZYREMOVE(cargo, cargoobj)
 			cargoobj.forceMove(drop_location())

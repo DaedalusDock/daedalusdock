@@ -17,6 +17,7 @@
 	appearance_flags = KEEP_TOGETHER | PIXEL_SCALE | LONG_GLIDE
 	density = FALSE
 	divable = FALSE
+	flags_1 = NONE
 	///List of bitflags for supply pods, see: code\__DEFINES\obj_flags.dm
 	var/pod_flags = NONE
 
@@ -221,9 +222,6 @@
 
 /obj/structure/closet/supplypod/ex_act() //Explosions dont do SHIT TO US! This is because supplypods create explosions when they land.
 	return FALSE
-
-/obj/structure/closet/supplypod/contents_explosion() //Supplypods also protect their contents from the harmful effects of fucking exploding.
-	return
 
 /obj/structure/closet/supplypod/toggle(mob/living/user)
 	return

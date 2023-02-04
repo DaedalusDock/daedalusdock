@@ -232,7 +232,7 @@
 
 /obj/effect/anomaly/flux/detonate()
 	if(explosive)
-		explosion(src, devastation_range = 1, heavy_impact_range = 4, light_impact_range = 16, flash_range = 18) //Low devastation, but hits a lot of stuff.
+		explosion(src, 22, flash_range = 18) //Low devastation, but hits a lot of stuff.
 	else
 		new /obj/effect/particle_effect/sparks(loc)
 
@@ -381,7 +381,7 @@
 			if(target && !target.stat)
 				O.throw_at(target, 7, 5)
 		else
-			SSexplosions.med_mov_atom += O
+			EX_ACT(O, EXPLODE_HEAVY)
 
 /obj/effect/anomaly/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
 	for(var/t = -r, t < r, t++)

@@ -205,7 +205,7 @@
 	if(!inserted_core)
 		test_status = "ERROR: No core present during detonation."
 		return COMSIG_CANCEL_EXPLOSION
-
+	/*
 	var/heavy = arguments[EXARG_KEY_DEV_RANGE]
 	var/medium = arguments[EXARG_KEY_HEAVY_RANGE]
 	var/light = arguments[EXARG_KEY_LIGHT_RANGE]
@@ -229,6 +229,8 @@
 	inserted_core = inserted_core.create_core(src, TRUE, TRUE)
 	test_status = "Success. Resultant detonation has theoretical range of [explosion_range]. Required radius was [required_range]. Core production complete."
 	return COMSIG_CANCEL_EXPLOSION
+*/
+#warn anom refinery
 
 /**
  * Handles timing out the test after a while.

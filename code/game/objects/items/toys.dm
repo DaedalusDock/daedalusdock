@@ -740,7 +740,7 @@
 		playsound(src, 'sound/machines/alarm.ogg', 20, FALSE)
 		sleep(140)
 		user.visible_message(span_alert("[src] violently explodes!"))
-		explosion(src, light_impact_range = 1)
+		explosion(src, 1)
 		qdel(src)
 	else if (cooldown < world.time)
 		cooldown = world.time + 600 //1 minute
@@ -782,7 +782,7 @@
 /obj/item/toy/minimeteor/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if (obj_flags & EMAGGED)
 		playsound(src, 'sound/effects/meteorimpact.ogg', 40, TRUE)
-		explosion(src, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 1)
+		explosion(src, 1)
 		for(var/mob/M in urange(10, src))
 			if(!M.stat && !isAI(M))
 				shake_camera(M, 3, 1)

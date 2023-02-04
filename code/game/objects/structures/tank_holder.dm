@@ -4,6 +4,7 @@
 	desc = "A metallic frame that can hold tanks and extinguishers."
 	icon = 'icons/obj/tank.dmi'
 	icon_state = "holder"
+	flags_1 = EXPLODE_CONTENTS_1
 
 	custom_materials = list(/datum/material/iron = 2000)
 

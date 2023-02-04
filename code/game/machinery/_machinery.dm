@@ -90,6 +90,7 @@
 	desc = "Some kind of machine."
 	verb_say = "beeps"
 	verb_yell = "blares"
+	flags_1 = EXPLODE_CONTENTS_1
 	//pressure_resistance = 15
 	pass_flags_self = PASSMACHINE | LETPASSCLICKS
 	max_integrity = 200

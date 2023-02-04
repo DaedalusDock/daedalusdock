@@ -48,7 +48,7 @@ SUBSYSTEM_DEF(explosions)
  * - explosion_cause: [Optional] The atom that caused the explosion, when different to the origin. Used for logging.
  */
 /proc/explosion(atom/origin, power, flame_range = 0, flash_range = 0, adminlog = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause = null)
-	return SSexplosions.iterative_explode(origin, power, flash_range, admin_log, ignorecap, silent, smoke, atom/explosion_cause)
+	return SSexplosions.iterative_explode(origin, power, flash_range, adminlog, ignorecap, silent, smoke, explosion_cause)
 //(devastation_range * 2 + heavy_impact_range + light_impact_range)
 
 // Explosion SFX defines...
@@ -172,7 +172,7 @@ SUBSYSTEM_DEF(explosions)
 		power_queue += current_power;\
 	}
 
-/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, flash_range, admin_log = TRUE, silent = FALSE, smoke = FALSE, atom/explosion_cause)
+/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, flash_range, admin_log = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause)
 	set waitfor = FALSE
 
 	if(power <= 0)
@@ -180,7 +180,17 @@ SUBSYSTEM_DEF(explosions)
 
 	explosion_cause ||= epicenter
 
-	if(try_cancel_explosion(epicenter) & COMSIG_CANCEL_EXPLOSION)
+	var/list/arguments = list(
+		EXARG_KEY_ORIGIN = epicenter,
+		EXARG_KEY_POWER = power,
+		EXARG_KEY_ADMIN_LOG = admin_log,
+		EXARG_KEY_IGNORE_CAP = ignorecap,
+		EXARG_KEY_SILENT = silent,
+		EXARG_KEY_SMOKE = smoke,
+		EXARG_KEY_EXPLOSION_CAUSE = explosion_cause ,
+	)
+
+	if(try_cancel_explosion(epicenter, arguments) & COMSIG_CANCEL_EXPLOSION)
 		return COMSIG_CANCEL_EXPLOSION
 
 	epicenter = get_turf(epicenter)
@@ -323,14 +333,14 @@ SUBSYSTEM_DEF(explosions)
 			CHECK_TICK
 			continue
 
-		var/severity = 4 - round(max(min( 3, ((act_turfs[T] - T.explosion_block) / (max(3,(power/3)))) ) ,1), 1)
+		var/severity = round(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 0, 3),1)
 		//sanity			effective power on tile				divided by either 3 or one third the total explosion power
 		//															One third because there are three power levels and I
 		//															want each one to take up a third of the crater
 		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
 		var/throw_dist = 9/severity
 		if (T.simulated)
-			EX_ACT(T, severity)
+			T.ex_act(severity)
 		if (length(T.contents))
 			for (var/atom/movable/AM as anything in T)
 				if (AM.simulated)
@@ -388,7 +398,7 @@ SUBSYSTEM_DEF(explosions)
 	message_admins("Explosion with size [power]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
 	log_game("Explosion with size [power] in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
 
-/datum/controller/subsystem/explosions/proc/try_cancel_explosion(atom/origin)
+/datum/controller/subsystem/explosions/proc/try_cancel_explosion(atom/origin, list/arguments)
 	var/atom/location = isturf(origin) ? origin : origin.loc
 	if(SEND_SIGNAL(origin, COMSIG_ATOM_EXPLODE, arguments) & COMSIG_CANCEL_EXPLOSION)
 		return COMSIG_CANCEL_EXPLOSION // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,

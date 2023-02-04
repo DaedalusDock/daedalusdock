@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 
 /obj/machinery/deepfryer/proc/blow_up()
 	visible_message(span_userdanger("[src] blows up from the entropic reaction!"))
-	explosion(src, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 5, flame_range = 7)
+	explosion(src, 10, flame_range = 7)
 	qdel(src)
 
 #undef DEEPFRYER_COOKTIME

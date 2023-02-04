@@ -152,9 +152,9 @@
 	SIGNAL_HANDLER
 	. = COMSIG_CANCEL_EXPLOSION
 
-	var/heavy = (arguments[EXARG_KEY_DEV_RANGE]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
-	var/medium = (arguments[EXARG_KEY_HEAVY_RANGE]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
-	var/light = (arguments[EXARG_KEY_LIGHT_RANGE]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
+	var/heavy = 2 * (arguments[EXARG_KEY_POWER]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
+	var/medium = (arguments[EXARG_KEY_POWER]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
+	var/light = (arguments[EXARG_KEY_POWER]**BLASTCANNON_RANGE_EXP) * BLASTCANNON_RANGE_SCALE
 	var/range = max(heavy, medium, light, 0)
 	if(!range)
 		visible_message(span_warning("[src] lets out a little \"phut\"."))
@@ -320,11 +320,11 @@
 	var/atom/location = loc
 	if (reactionary)
 		if(location.density || !isturf(location))
-			decrement += location.explosion_block
+			decrement += GET_ITERATIVE_EXPLOSION_BLOCK(location)
 		for(var/obj/thing in location)
 			if (thing == src)
 				continue
-			decrement += GET_EXPLOSION_BLOCK(thing)
+			decrement += GET_ITERATIVE_EXPLOSION_BLOCK(thing)
 
 	range = max(range - decrement + 1, 0) // Already decremented by 1 in the parent. Exists so that if we pass through something with negative block it extends the range.
 	heavy_ex_range = max(heavy_ex_range - decrement, 0)
@@ -332,11 +332,11 @@
 	light_ex_range = max(light_ex_range - decrement, 0)
 
 	if (heavy_ex_range)
-		SSexplosions.highturf += location
+		EX_ACT(location, EXPLODE_DEVASTATE)
 	else if(medium_ex_range)
-		SSexplosions.medturf += location
+		EX_ACT(location, EXPLODE_HEAVY)
 	else if(light_ex_range)
-		SSexplosions.lowturf += location
+		EX_ACT(location, EXPLODE_LIGHT)
 	else
 		qdel(src)
 		return

@@ -102,7 +102,7 @@
 	var/turf/boomspot = get_turf(user)
 	//before ghosting to prevent issues
 	log_combat(user, user, "triggered final plasma explosion with power [plasma_power], (Plasma Fist)")
-	message_admins("[key_name_admin(user)] triggered final plasma explosion with power [power] (Plasma Fist).")
+	message_admins("[key_name_admin(user)] triggered final plasma explosion with power [plasma_power] (Plasma Fist).")
 
 	to_chat(user, span_userdanger("The explosion knocks your soul out of your body!"))
 	user.ghostize(FALSE) //prevents... horrible memes just believe me

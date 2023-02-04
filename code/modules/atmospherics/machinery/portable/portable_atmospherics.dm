@@ -36,7 +36,7 @@
 	if(resistance_flags & INDESTRUCTIBLE)
 		return FALSE //Indestructable cans shouldn't release air
 
-	if(severity == EXPLODE_DEVASTATE || target == src)
+	if(severity == EXPLODE_DEVASTATE)
 		//This explosion will destroy the can, release its air.
 		var/turf/local_turf = get_turf(src)
 		local_turf.assume_air(air_contents)

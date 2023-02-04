@@ -190,7 +190,7 @@
 
 	if(internal_heat >= max_heat)
 		STOP_PROCESSING(SSobj, src)
-		explosion(src, devastation_range = 4, heavy_impact_range = 8, light_impact_range = 16, flash_range = 32)
+		explosion(src, 32, flash_range = 32)
 		qdel(src)
 
 #undef DISCONNECTED

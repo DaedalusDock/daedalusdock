@@ -17,8 +17,7 @@
 	. = ..()
 	explosion(
 		user,
-		devastation_range = 1,
-		light_impact_range = 2,
+		4,
 		flame_range = 2,
 		flash_range = 3,
 		adminlog = FALSE,

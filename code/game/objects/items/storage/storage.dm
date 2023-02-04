@@ -2,6 +2,7 @@
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
+	flags_1 = EXPLODE_CONTENTS_1
 	var/rummage_if_nodrop = TRUE
 	var/component_type = /datum/component/storage/concrete
 	/// Should we preload the contents of this type?
@@ -37,9 +38,6 @@
 		CP.do_quick_empty()
 		return TRUE
 	return ..()
-
-/obj/item/storage/contents_explosion(severity)
-//Cyberboss says: "USE THIS TO FILL IT, NOT INITIALIZE OR NEW"
 
 /obj/item/storage/proc/PopulateContents()
 

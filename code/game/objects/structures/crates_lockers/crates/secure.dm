@@ -20,7 +20,7 @@
 		to_chat(user, span_danger("The crate's anti-tamper system activates!"))
 		log_bomber(user, "has detonated a", src)
 	dump_contents()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flash_range = 5)
+	explosion(src, 6, flash_range = 5)
 	qdel(src)
 
 /obj/structure/closet/crate/secure/weapon

@@ -88,16 +88,12 @@
 /turf/open/space/RemoveLattice()
 	return
 
-/turf/open/space/AfterChange()
-	..()
-	//atmos_overlay_types = null
-
-/*/turf/open/space/Assimilate_Air()
-	return*/
-
 //IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
 /turf/open/space/remove_air(amount)
 	return null
+
+/turf/open/space/ex_act()
+	return
 
 /turf/open/space/proc/update_starlight()
 	if(CONFIG_GET(flag/starlight))
@@ -268,3 +264,6 @@
 				return FALSE
 		return TRUE
 	return FALSE
+
+/turf/open/space/openspace/ex_act(severity)
+	return

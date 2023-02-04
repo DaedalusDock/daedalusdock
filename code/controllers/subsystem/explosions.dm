@@ -201,7 +201,7 @@ SUBSYSTEM_DEF(explosions)
 		find_and_log_explosion_source(epicenter, explosion_cause, power)
 
 
-	if(power > 12)
+	if(power > 11)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 
 	//flash mobs
@@ -209,7 +209,7 @@ SUBSYSTEM_DEF(explosions)
 		for(var/mob/living/L in viewers(flash_range, epicenter))
 			L.flash_act()
 
-	log_game("iexpl: Beginning discovery phase.")
+	message_admins("iexpl: Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
 	var/list/act_turfs = list()
 	act_turfs[epicenter] = power
@@ -259,9 +259,9 @@ SUBSYSTEM_DEF(explosions)
 
 		// Attempt to shortcut on empty tiles: if a turf only has a LO on it, we don't need to check object resistance. Some turfs might not have LOs, so we need to check it actually has one.
 		if (length(current_turf.contents))
-			for (var/obj/O as anything in current_turf)
+			for (var/obj/O in current_turf)
 				if (O.iterative_explosion_block)
-					power -= GET_ITERATIVE_EXPLOSION_BLOCK(O)
+					current_power -= GET_ITERATIVE_EXPLOSION_BLOCK(O)
 
 		if (current_power <= 0)
 			CHECK_TICK
@@ -273,8 +273,8 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-	log_game("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	log_game("iexpl: Beginning SFX phase.")
+	message_admins("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	message_admins("iexpl: Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
 	var/volume = 10 + (power * 20)
@@ -322,8 +322,8 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	log_game("iexpl: Beginning application phase.")
+	message_admins("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	message_admins("iexpl: Beginning application phase.")
 	time = REALTIMEOFDAY
 
 	var/turf_tally = 0
@@ -333,7 +333,8 @@ SUBSYSTEM_DEF(explosions)
 			CHECK_TICK
 			continue
 
-		var/severity = round(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 0, 3),1)
+		var/severity = Ceil(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 1, 3))
+
 		//sanity			effective power on tile				divided by either 3 or one third the total explosion power
 		//															One third because there are three power levels and I
 		//															want each one to take up a third of the crater
@@ -355,7 +356,7 @@ SUBSYSTEM_DEF(explosions)
 		turf_tally++
 
 	//SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, epicenter, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
-	log_game("iexpl: Application completed in [(REALTIMEOFDAY-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	message_admins("iexpl: Application completed in [(REALTIMEOFDAY-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 
 #undef SEARCH_DIR
@@ -396,7 +397,7 @@ SUBSYSTEM_DEF(explosions)
 		who_did_it_game_log = key_name(explosion_cause.fingerprintslast)
 
 	message_admins("Explosion with size [power]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
-	log_game("Explosion with size [power] in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
+	message_admins("Explosion with size [power] in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
 
 /datum/controller/subsystem/explosions/proc/try_cancel_explosion(atom/origin, list/arguments)
 	var/atom/location = isturf(origin) ? origin : origin.loc

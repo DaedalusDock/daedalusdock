@@ -62,6 +62,8 @@
 	return ..()
 
 /turf/open/floor/ex_act(severity)
+	if(prob(33))
+		shake_animation(severity)
 	switch(severity)
 		if(EXPLODE_LIGHT)
 			src.break_tile()

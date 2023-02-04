@@ -7,6 +7,7 @@
 	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
 	temperature = TCMB
 	simulated = FALSE
+	iterative_explosion_block = 0.5
 
 	var/destination_z
 	var/destination_x

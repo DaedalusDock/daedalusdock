@@ -52,9 +52,6 @@
 	return stripe_color
 
 /obj/structure/low_wall/ex_act(severity)
-	// Obstructed low walls cant be deleted through explosions
-	if(is_top_obstructed())
-		return
 	return ..()
 
 /obj/structure/low_wall/examine(mob/user)

@@ -209,7 +209,7 @@ SUBSYSTEM_DEF(explosions)
 		for(var/mob/living/L in viewers(flash_range, epicenter))
 			L.flash_act()
 
-	message_admins("iexpl: Beginning discovery phase.")
+	log_game("iexpl: Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
 	var/list/act_turfs = list()
 	act_turfs[epicenter] = power
@@ -273,8 +273,8 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-	message_admins("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	message_admins("iexpl: Beginning SFX phase.")
+	log_game("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
 	var/volume = 10 + (power * 20)
@@ -317,13 +317,14 @@ SUBSYSTEM_DEF(explosions)
 
 		if ((reception & EXPLFX_SHAKE) && volume > 0)
 			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
+			#warn disabled shake
 			//Maximum duration is 3 seconds, and max strength is 3.5
 			//Becuse values higher than those just get really silly
 
 		CHECK_TICK
 
-	message_admins("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	message_admins("iexpl: Beginning application phase.")
+	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: Beginning application phase.")
 	time = REALTIMEOFDAY
 
 	var/turf_tally = 0
@@ -356,7 +357,7 @@ SUBSYSTEM_DEF(explosions)
 		turf_tally++
 
 	//SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, epicenter, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
-	message_admins("iexpl: Application completed in [(REALTIMEOFDAY-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	log_game("iexpl: Application completed in [(REALTIMEOFDAY-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 
 #undef SEARCH_DIR
@@ -396,7 +397,7 @@ SUBSYSTEM_DEF(explosions)
 		who_did_it = ADMIN_LOOKUPFLW(explosion_cause.fingerprintslast)
 		who_did_it_game_log = key_name(explosion_cause.fingerprintslast)
 
-	message_admins("Explosion with size [power]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
+	log_game("Explosion with size [power]) in [ADMIN_VERBOSEJMP(epicenter)]. Possible cause: [explosion_cause]. Last fingerprints: [who_did_it].")
 	message_admins("Explosion with size [power] in [loc_name(epicenter)].  Possible cause: [explosion_cause]. Last fingerprints: [who_did_it_game_log].")
 
 /datum/controller/subsystem/explosions/proc/try_cancel_explosion(atom/origin, list/arguments)

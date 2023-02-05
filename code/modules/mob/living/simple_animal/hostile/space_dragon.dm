@@ -160,7 +160,7 @@
 		var/timetotear = 40
 		if(istype(target, /turf/closed/wall/r_wall))
 			timetotear = 120
-		if(do_after(src, timetotear, target = thewall))
+		if(do_after(src, thewall, timetotear))
 			if(istype(thewall, /turf/open))
 				return
 			thewall.dismantle_wall(1)
@@ -171,7 +171,7 @@
 		var/mob/living/L = target
 		if(L.stat == DEAD)
 			to_chat(src, span_warning("You begin to swallow [L] whole..."))
-			if(do_after(src, 30, target = L))
+			if(do_after(src, L, 30))
 				if(eat(L))
 					adjustHealth(-L.maxHealth * 0.25)
 			return
@@ -529,7 +529,7 @@
 			to_chat(S, span_warning("You've already summoned a rift in this area! You have to summon again somewhere else!"))
 			return
 	to_chat(S, span_warning("You begin to open a rift..."))
-	if(do_after(S, 100, target = S))
+	if(do_after(S, S, 100))
 		for(var/obj/structure/carp_rift/c in S.loc.contents)
 			return
 		var/obj/structure/carp_rift/CR = new /obj/structure/carp_rift(S.loc)

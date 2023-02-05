@@ -588,7 +588,7 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
-	if(!instant && !do_mob(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, /mob/living/proc/rest_checks_callback), interaction_key = DOAFTER_SOURCE_GETTING_UP))
+	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, /mob/living/proc/rest_checks_callback), interaction_key = DOAFTER_SOURCE_GETTING_UP))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
@@ -1620,7 +1620,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		user.visible_message(span_warning("[user] starts trying to pick up [src]!"),
 			span_danger("You start trying to pick up [src]..."), ignored_mobs = src)
 		to_chat(src, span_userdanger("[user] starts trying to pick you up!"))
-		if(!do_after(user, 2 SECONDS, src))
+		if(!do_after(user, src, 2 SECONDS))
 			return
 		if(!mob_pickup_checks(user)) // Check everything again after the timer
 			return

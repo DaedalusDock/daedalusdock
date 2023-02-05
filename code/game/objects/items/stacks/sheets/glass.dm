@@ -345,7 +345,7 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	else if(istype(I, /obj/item/stack/sheet/cloth))
 		var/obj/item/stack/sheet/cloth/C = I
 		to_chat(user, span_notice("You begin to wrap the [C] around the [src]..."))
-		if(do_after(user, 35, target = src))
+		if(do_after(user, src, 3.5 SECONDS))
 			var/obj/item/knife/shiv/S = new /obj/item/knife/shiv
 			C.use(1)
 			to_chat(user, span_notice("You wrap the [C] around the [src] forming a makeshift weapon."))

@@ -61,7 +61,7 @@
 		if("repair")
 			ui.close() // allow watching for baddies and the ingame effects
 			chassis.balloon_alert(usr, "starting repair")
-			while(do_after(usr, 1 SECONDS, chassis) && get_integrity() < max_integrity)
+			while(do_after(usr, chassis, 1 SECONDS) && get_integrity() < max_integrity)
 				repair_damage(30)
 			if(get_integrity() == max_integrity)
 				balloon_alert(usr, "repair complete")

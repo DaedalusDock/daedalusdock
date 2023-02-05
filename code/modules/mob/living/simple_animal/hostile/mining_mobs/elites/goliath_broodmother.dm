@@ -50,6 +50,8 @@
 	var/rand_tent = 0
 	var/list/mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/children_list = list()
 
+	var/is_tentacling = FALSE
+
 /datum/action/innate/elite_attack/tentacle_patch
 	name = "Tentacle Patch"
 	button_icon_state = "tentacle_patch"
@@ -101,8 +103,13 @@
 	. = ..()
 	if(!.) //Checks if they are dead as a rock.
 		return
+	//Don't queue multiple goliath tentacle actions at once.
+	if(is_tentacling)
+		return
+
 	spawn(-1)
 		if(health < maxHealth * 0.5 && rand_tent < world.time)
+			is_tentacling = TRUE
 			rand_tent = world.time + 30
 			var/tentacle_amount = 5
 			if(health < maxHealth * 0.25)
@@ -112,6 +119,7 @@
 				for(var/i in 1 to tentacle_amount)
 					var/turf/t = pick_n_take(tentacle_loc)
 					new /obj/effect/temp_visual/goliath_tentacle/broodmother(t, src)
+		is_tentacling = FALSE
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/tentacle_patch(target)
 	ranged_cooldown = world.time + 15

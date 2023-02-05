@@ -33134,7 +33134,6 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/item/storage/box/deputy,
 /obj/item/storage/box/seccarts{
 	pixel_x = 9;
 	pixel_y = 9

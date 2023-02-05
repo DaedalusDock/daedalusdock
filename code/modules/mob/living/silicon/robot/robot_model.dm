@@ -379,7 +379,7 @@
 /datum/action/toggle_buffer
 	name = "Activate Auto-Wash"
 	desc = "Trade speed and water for a clean floor."
-	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
+	button_icon = 'icons/mob/actions/actions_silicon.dmi'
 	button_icon_state = "activate_wash"
 	var/static/datum/callback/allow_buffer_activate
 	var/block_buffer_change	= FALSE
@@ -406,7 +406,7 @@
 	. = ..()
 	wash_audio = new(owner)
 
-/datum/action/toggle_buffer/IsAvailable()
+/datum/action/toggle_buffer/IsAvailable(feedback = FALSE)
 	if(!istype(owner, /mob/living/silicon/robot))
 		return FALSE
 	return ..()
@@ -444,7 +444,7 @@
 			var/y_offset = base_y + rand(-1, 1)
 			animate(pixel_x = x_offset, pixel_y = y_offset, time = 1)
 
-		if(!do_after(robot_owner, 4 SECONDS, interaction_key = "auto_wash_toggle", extra_checks = allow_buffer_activate))
+		if(!do_after(robot_owner, time = 4 SECONDS, interaction_key = "auto_wash_toggle", extra_checks = allow_buffer_activate))
 			wash_audio.stop() // Coward
 			animate(robot_owner, pixel_x = base_x, pixel_y = base_y, time = 1)
 			return FALSE
@@ -484,7 +484,7 @@
 	if(!wash_audio.is_active())
 		wash_audio.start()
 	clean()
-	UpdateButtons()
+	build_all_button_icons()
 
 /// Start the process of disabling the buffer. Plays some effects, waits a bit, then finishes
 /datum/action/toggle_buffer/proc/deactivate_wash()
@@ -514,7 +514,7 @@
 	var/mob/living/silicon/robot/robot_owner = owner
 	buffer_on = FALSE
 	robot_owner.remove_movespeed_modifier(/datum/movespeed_modifier/auto_wash)
-	UpdateButtons()
+	build_all_button_icons()
 
 /// Should we keep trying to activate our buffer, or did you fuck it up somehow
 /datum/action/toggle_buffer/proc/allow_buffer_activate()
@@ -551,7 +551,7 @@
 	// We use more water doing this then mopping
 	reagents.remove_any(2) //reaction() doesn't use up the reagents
 
-/datum/action/toggle_buffer/UpdateButtons(status_only = FALSE, force = FALSE)
+/datum/action/toggle_buffer/build_all_button_icons(status_only = FALSE, force = FALSE)
 	if(buffer_on)
 		name = "De-Activate Auto-Wash"
 		button_icon_state = "deactivate_wash"

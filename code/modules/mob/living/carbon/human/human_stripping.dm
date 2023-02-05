@@ -60,7 +60,7 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if (!istype(jumpsuit))
 		return null
 	to_chat(source, "<span class='notice'>[user] is trying to adjust your [jumpsuit.name].")
-	if (!do_mob(user, source, jumpsuit.strip_delay * 0.5))
+	if (!do_after(user, source, jumpsuit.strip_delay * 0.5))
 		return
 	to_chat(source, "<span class='notice'>[user] successfully adjusted your [jumpsuit.name].")
 	jumpsuit.toggle_jumpsuit_adjust()
@@ -217,18 +217,14 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 
 	to_chat(user, span_notice("You try to [isnull(carbon_source.internal) ? "open": "close"] the valve on [source]'s [item.name]..."))
 
-	if(!do_mob(user, carbon_source, INTERNALS_TOGGLE_DELAY))
+	if(!do_after(user, carbon_source, INTERNALS_TOGGLE_DELAY))
 		return
 
 	if(carbon_source.internal)
 		carbon_source.internal = null
-
-		// This isn't meant to be FALSE, it correlates to the icon's name.
-		carbon_source.update_internals_hud_icon(0)
 	else if (!QDELETED(item))
 		if((carbon_source.wear_mask?.clothing_flags & MASKINTERNALS) || carbon_source.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 			carbon_source.internal = item
-			carbon_source.update_internals_hud_icon(1)
 
 	carbon_source.visible_message(
 		span_danger("[user] [isnull(carbon_source.internal) ? "closes": "opens"] the valve on [source]'s [item.name]."),

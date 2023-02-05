@@ -292,7 +292,7 @@
 
 	// Ignore sounds that originate from our person (such as radios we are carrying)
 	//if (sound_loc?.speaker_location() == src && speaker == src) //Kapu Note: Correct this later.
-	if(sound_loc == src)
+	if(sound_loc == hear_location())
 		return
 
 	// Display visual above source

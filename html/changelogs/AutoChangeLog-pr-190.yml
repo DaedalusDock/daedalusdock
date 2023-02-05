@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: The "Rest" and "Pull" HUD icons no longer lie to users if they logged
+      in after the mob starting resting or pulling.
+  - bugfix: SSwardrobe will now delete held items it fails to equip.
+  - bugfix: Vox no longer have a permanent N2 tank embedded inside them.

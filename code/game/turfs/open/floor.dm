@@ -62,8 +62,6 @@
 	return ..()
 
 /turf/open/floor/ex_act(severity)
-	if(prob(33))
-		shake_animation(severity)
 	switch(severity)
 		if(EXPLODE_LIGHT)
 			src.break_tile()
@@ -92,6 +90,9 @@
 
 		if(EXPLODE_DEVASTATE)
 			ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
+
+	if(prob(33) && istype(src, /turf/open/floor)) //ChangeTurf can change us into space during ScrapeAway()
+		shake_animation(severity)
 
 /turf/open/floor/blob_act(obj/structure/blob/B)
 	return

@@ -52,6 +52,13 @@
 	return stripe_color
 
 /obj/structure/low_wall/ex_act(severity)
+	if(istype(loc, /turf/open/space))
+		if(severity == EXPLODE_DEVASTATE)
+			qdel(src)
+		else
+			deconstruct()
+		return
+
 	return ..()
 
 /obj/structure/low_wall/examine(mob/user)

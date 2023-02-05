@@ -201,7 +201,7 @@ SUBSYSTEM_DEF(explosions)
 		find_and_log_explosion_source(epicenter, explosion_cause, power)
 
 
-	if(power > 11)
+	if(power > 8)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 
 	//flash mobs
@@ -283,6 +283,10 @@ SUBSYSTEM_DEF(explosions)
 	var/close_dist = round(power + world.view - 2, 1)
 
 	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
+
+	if(power > 6)
+		new /obj/effect/temp_visual/shockwave(epicenter, power)
+
 	for (var/mob/M as anything in GLOB.player_list)
 		var/reception = EXPLFX_BOTH
 		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
@@ -316,7 +320,7 @@ SUBSYSTEM_DEF(explosions)
 				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
 
 		if ((reception & EXPLFX_SHAKE) && volume > 0)
-			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
+			//shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
 			#warn disabled shake
 			//Maximum duration is 3 seconds, and max strength is 3.5
 			//Becuse values higher than those just get really silly

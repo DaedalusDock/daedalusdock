@@ -222,8 +222,8 @@
 
 	//Set explosion block power
 	iterative_explosion_block = plating_mat_ref.iterative_explosion_block
-	if(reinf_mat_ref?.iterative_explosion_block > iterative_explosion_block)
-		iterative_explosion_block = reinf_mat_ref.iterative_explosion_block
+	if(reinf_mat_ref?.iterative_explosion_block)
+		iterative_explosion_block += reinf_mat_ref.iterative_explosion_block
 
 	if(reinf_material)
 		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
@@ -281,6 +281,8 @@
 			if (prob(hardness))
 				dismantle_wall(0,1)
 
+	if(prob(33) && istype(src, /turf/closed/wall)) //ChangeTurf can change us into space during dismantle_wall() and ScrapeAway()
+		shake_animation(severity)
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
 	if(prob(50))

@@ -1276,7 +1276,7 @@
 	if(istype(target, /mob/living/carbon/human))
 		to_chat(user, "<span class='notice'>You covertly start to scan [target] with \the [src], hoping to pick up a wireless ID card signal...</span>")
 
-		if(!do_mob(user, target, 2 SECONDS))
+		if(!do_after(user, target, 2 SECONDS))
 			to_chat(user, "<span class='notice'>The scan was interrupted.</span>")
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

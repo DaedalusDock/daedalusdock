@@ -598,7 +598,7 @@
 			return
 	if(istype(I, /obj/item/plunger))
 		to_chat(user, span_notice("You start furiously plunging [name]."))
-		if(do_after(user, 10, target = src))
+		if(do_after(user, src, 1 SECONDS))
 			to_chat(user, span_notice("You finish plunging the [name]."))
 			reagents.clear_reagents()
 		return

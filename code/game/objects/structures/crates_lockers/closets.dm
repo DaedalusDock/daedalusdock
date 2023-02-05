@@ -416,7 +416,7 @@
 			&& !secure && !electronics && !locked && (welded || !can_weld_shut) && !broken)
 		user.visible_message(span_notice("[user] installs the electronics into the [src]."),\
 			span_notice("You start to install electronics into the [src]..."))
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if (electronics || secure)
 			return FALSE
@@ -437,7 +437,7 @@
 			span_notice("You begin to remove the electronics from the [src]..."))
 		var/had_electronics = !!electronics
 		var/was_secure = secure
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if ((had_electronics && !electronics) || (was_secure && !secure))
 			return FALSE

@@ -19,7 +19,7 @@
 		span_notice("You can hear rushing air."),
 		vision_distance = 5
 	)
-	if (!do_after(user, 1 SECONDS))
+	if (!do_after(user, time = 1 SECONDS))
 		return
 
 	user.visible_message(

@@ -270,7 +270,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, 2 SECONDS, src))
+		if(do_after(user, src, 2 SECONDS))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -488,7 +488,7 @@
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))
 			stomach.drain_time = world.time + LIGHT_DRAIN_TIME
-			while(do_after(user, LIGHT_DRAIN_TIME, target = src))
+			while(do_after(user, src, LIGHT_DRAIN_TIME))
 				stomach.drain_time = world.time + LIGHT_DRAIN_TIME
 				if(istype(stomach))
 					to_chat(electrician, span_notice("You receive some charge from the [fitting]."))
@@ -514,7 +514,7 @@
 			electrician.update_damage_overlays()
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
-			if(!do_after(user, 5 SECONDS, target = src))
+			if(!do_after(user, src, 5 SECONDS))
 				return
 			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
 				electrician.update_damage_overlays()

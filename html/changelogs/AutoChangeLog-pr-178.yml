@@ -1,0 +1,4 @@
+author: JohnFulpWillard, out_of_phaze, Kapu1178
+delete-after: true
+changes:
+  - code_imp: Changed every single do_after() call. Bug Kapu if something isn't working

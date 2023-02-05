@@ -368,7 +368,7 @@
 		wait_time *= 3
 
 	if(gang_mode || !instant)
-		if(!do_after(user, 50, target = target))
+		if(!do_after(user, target, 5 SECONDS))
 			return
 
 	var/charges_used = use_charges(user, cost)

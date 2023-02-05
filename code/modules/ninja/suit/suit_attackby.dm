@@ -13,7 +13,7 @@
 		var/obj/item/stock_parts/cell/CELL = I
 		if(CELL.maxcharge > cell.maxcharge)
 			to_chat(ninja, span_notice("Higher maximum capacity detected.\nUpgrading..."))
-			if (do_after(ninja,s_delay, target = src))
+			if (do_after(ninja, src, s_delay))
 				ninja.transferItemToLoc(CELL, src)
 				CELL.charge = min(CELL.charge+cell.charge, CELL.maxcharge)
 				var/obj/item/stock_parts/cell/old_cell = cell
@@ -37,7 +37,7 @@
 				break
 		if(has_research)//If it has something on it.
 			to_chat(ninja, span_notice("Research information detected, processing..."))
-			if(do_after(ninja,s_delay, target = src))
+			if(do_after(ninja, src, s_delay))
 				TD.stored_research.copy_research_to(stored_research)
 				qdel(TD.stored_research)
 				TD.stored_research = new

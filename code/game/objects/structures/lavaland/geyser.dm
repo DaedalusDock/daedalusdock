@@ -61,7 +61,7 @@
 		return
 
 	to_chat(user, span_notice("You start vigorously plunging [src]!"))
-	if(do_after(user, 50 * P.plunge_mod, target = src) && !activated)
+	if(do_after(user, src, 50 * P.plunge_mod) && !activated)
 		start_chemming()
 
 /obj/structure/geyser/attackby(obj/item/item, mob/user, params)

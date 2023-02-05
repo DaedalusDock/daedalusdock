@@ -92,7 +92,7 @@
 			ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 
 	if(prob(33) && istype(src, /turf/open/floor)) //ChangeTurf can change us into space during ScrapeAway()
-		shake_animation(severity)
+		shake_animation(severity+1)
 
 /turf/open/floor/blob_act(obj/structure/blob/B)
 	return

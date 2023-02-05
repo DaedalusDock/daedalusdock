@@ -282,7 +282,7 @@
 				dismantle_wall(0,1)
 
 	if(prob(33) && istype(src, /turf/closed/wall)) //ChangeTurf can change us into space during dismantle_wall() and ScrapeAway()
-		shake_animation(severity)
+		shake_animation(severity+1)
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
 	if(prob(50))

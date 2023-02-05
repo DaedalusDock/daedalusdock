@@ -517,21 +517,21 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	set name = "Drop Bomb"
 	set desc = "Cause an explosion of varying strength at your location."
 
-	var/list/choices = list("Small Bomb (1, 2, 3, 0, 3)", "Medium Bomb (1, 2, 3, 0, 3)", "Big Bomb (3, 5, 7, 0, 5)", "Maxcap (4, 8, 16, 16, 20 by default)", "Custom Bomb")
+	var/list/choices = list("Small Bomb (4)", "Medium Bomb (7)", "Big Bomb (10)", "Maxcap (15)", "Custom Bomb")
 	var/choice = tgui_input_list(src, "What size explosion would you like to produce? NOTE: You can do all this rapidly and in an IC manner (using cruise missiles!) with the Config/Launch Supplypod verb. WARNING: These ignore the maxcap", "Drop Bomb", choices)
 	if(isnull(choice))
 		return
 	var/turf/epicenter = mob.loc
 
 	switch(choice)
-		if("Small Bomb (1, 2, 3, 0, 3)")
-			//explosion(epicenter, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3, flash_range = 3, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Medium Bomb (1, 2, 3, 0, 3)")
-			//explosion(epicenter, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, flash_range = 4, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Big Bomb (3, 5, 7, 0, 5)")
-			//explosion(epicenter, devastation_range = 3, heavy_impact_range = 5, light_impact_range = 7, flash_range = 5, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
-		if("Maxcap (4, 8, 16, 16, 20 by default)")
-			//explosion(epicenter, devastation_range = zas_settings.maxex_devastation_range, heavy_impact_range = zas_settings.maxex_heavy_range, light_impact_range = zas_settings.maxex_light_range, flame_range = zas_settings.maxex_fire_range, flash_range = zas_settings.maxex_flash_range, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+		if("Small Bomb (4)")
+			explosion(epicenter, 4, explosion_cause = mob)
+		if("Medium Bomb (7)")
+			explosion(epicenter, 6, explosion_cause = mob)
+		if("Big Bomb (10)")
+			explosion(epicenter, 10, explosion_cause = mob)
+		if("Maxcap (15)")
+			explosion(epicenter, 15, explosion_cause = mob)
 		if("Custom Bomb")
 			var/power = input("Bomb Power") as null|num
 			if(isnull(power))

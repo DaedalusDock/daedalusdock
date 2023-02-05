@@ -172,7 +172,7 @@ SUBSYSTEM_DEF(explosions)
 		power_queue += current_power;\
 	}
 
-/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, flash_range, admin_log = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause)
+/datum/controller/subsystem/explosions/proc/iterative_explode(turf/epicenter, power, z_transfer, flash_range, flame_range, admin_log = TRUE, ignorecap = FALSE, silent = FALSE, smoke = FALSE, atom/explosion_cause)
 	set waitfor = FALSE
 
 	if(power <= 0)
@@ -199,7 +199,6 @@ SUBSYSTEM_DEF(explosions)
 
 	if(admin_log)
 		find_and_log_explosion_source(epicenter, explosion_cause, power)
-
 
 	if(power > 8)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
@@ -284,9 +283,6 @@ SUBSYSTEM_DEF(explosions)
 
 	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
 
-	if(power > 6)
-		new /obj/effect/temp_visual/shockwave(epicenter, power)
-
 	for (var/mob/M as anything in GLOB.player_list)
 		var/reception = EXPLFX_BOTH
 		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
@@ -326,6 +322,11 @@ SUBSYSTEM_DEF(explosions)
 			//Becuse values higher than those just get really silly
 
 		CHECK_TICK
+
+
+	// Spawn the shockwave effect
+	if(power >= 5) //It's only really visible above 4.
+		new /obj/effect/temp_visual/shockwave(epicenter, min(power, 20)) //Lets be reasonable here.
 
 	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: Beginning application phase.")

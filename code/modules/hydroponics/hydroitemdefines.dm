@@ -462,7 +462,7 @@
 	if(!ishuman(AM))
 		return
 	var/mob/living/carbon/human/H = AM
-	if(has_gravity(loc) && HAS_TRAIT(H, TRAIT_CLUMSY) && !H.resting)
+	if(has_gravity() && HAS_TRAIT(H, TRAIT_CLUMSY) && !H.resting)
 		H.set_timed_status_effect(10 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
 		H.Stun(20)
 		playsound(src, 'sound/weapons/punch4.ogg', 50, TRUE)

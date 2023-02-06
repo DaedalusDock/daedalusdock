@@ -228,6 +228,22 @@
 	info_text = "As a <span class='danger'>Plasteel Golem</span>, you are slower, but harder to stun, and hit very hard when punching. You also magnetically attach to surfaces and so don't float without gravity and cannot have positions swapped with other beings."
 	prefix = "Plasteel"
 	special_names = null
+	inherent_traits = list(
+		TRAIT_ADVANCEDTOOLUSER,
+		TRAIT_CAN_STRIP,
+		TRAIT_RESISTHEAT,
+		TRAIT_NOBREATH,
+		TRAIT_RESISTCOLD,
+		TRAIT_RESISTHIGHPRESSURE,
+		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_NOFIRE,
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_RADIMMUNE,
+		TRAIT_GENELESS,
+		TRAIT_PIERCEIMMUNE,
+		TRAIT_NODISMEMBER,
+		TRAIT_NEGATES_GRAVITY,
+	)
 	examine_limb_id = SPECIES_GOLEM
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/plasteel,
@@ -237,9 +253,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/plasteel,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem,
 	)
-
-/datum/species/golem/plasteel/negates_gravity(mob/living/carbon/human/H)
-	return TRUE
 
 /datum/species/golem/plasteel/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	..()

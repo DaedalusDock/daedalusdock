@@ -57,7 +57,7 @@
 				continue
 			if(isliving(A))
 				var/mob/living/vortexed_mob = A
-				if(vortexed_mob.mob_negates_gravity())
+				if(vortexed_mob.mob_ignores_nograv())
 					continue
 				else
 					vortexed_mob.Paralyze(2 SECONDS)

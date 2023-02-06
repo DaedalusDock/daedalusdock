@@ -1679,11 +1679,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			wings.fly_slip(H)
 	. = stunmod * H.physiology.stun_mod * amount
 
-/datum/species/proc/negates_gravity(mob/living/carbon/human/H)
-	if(H.movement_type & FLYING)
-		return TRUE
-	return FALSE
-
 ////////////////
 //Tail Wagging//
 ////////////////

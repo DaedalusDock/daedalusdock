@@ -83,7 +83,7 @@
 	GLOB.spidermobs -= src
 	return ..()
 
-/mob/living/simple_animal/hostile/giant_spider/mob_negates_gravity()
+/mob/living/simple_animal/hostile/giant_spider/mob_ignores_nograv()
 	if(locate(/obj/structure/spider/stickyweb) in loc)
 		return TRUE
 	return ..()

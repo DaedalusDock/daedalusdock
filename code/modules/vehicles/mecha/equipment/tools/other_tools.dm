@@ -92,7 +92,7 @@
 					return
 				if(ismob(target))
 					var/mob/M = target
-					if(M.mob_negates_gravity())
+					if(M.mob_ignores_nograv())
 						to_chat(source, "[icon2html(src, source)][span_warning("[target] immune to gravitational impulses, unable to lock!")]")
 						return
 				movable_target = target
@@ -119,7 +119,7 @@
 					continue
 				if(ismob(scatter))
 					var/mob/scatter_mob = scatter
-					if(scatter_mob.mob_negates_gravity())
+					if(scatter_mob.mob_ignores_nograv())
 						continue
 				do_scatter(scatter, target)
 			var/turf/targetturf = get_turf(target)

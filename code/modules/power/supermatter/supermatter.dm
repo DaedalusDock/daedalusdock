@@ -475,7 +475,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 			continue
 		if(ismob(movable_atom))
 			var/mob/pulled_mob = movable_atom
-			if(pulled_mob.mob_negates_gravity())
+			if(pulled_mob.mob_ignores_nograv())
 				continue //You can't pull someone nailed to the deck
 		step_towards(movable_atom,center)
 

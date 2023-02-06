@@ -24,7 +24,7 @@
 	can_install_electronics = FALSE
 
 /obj/structure/closet/cardboard/relaymove(mob/living/user, direction)
-	if(opened || move_delay || user.incapacitated() || !isturf(loc) || !has_gravity(loc))
+	if(opened || move_delay || user.incapacitated() || !isturf(loc) || !has_gravity())
 		return
 	move_delay = TRUE
 	var/oldloc = loc

@@ -1971,12 +1971,10 @@
  * * Gravity if the Z level has an SSMappingTrait for ZTRAIT_GRAVITY
  * * otherwise no gravity
  */
-/atom/proc/has_gravity(turf/gravity_turf)
-	if(!isturf(gravity_turf))
-		gravity_turf = get_turf(src)
-
-		if(!gravity_turf)//no gravity in nullspace
-			return 0
+/atom/proc/has_gravity()
+	var/turf/gravity_turf = get_turf(src)
+	if(isnull(gravity_turf))//no gravity in nullspace
+		return 0
 
 	var/list/forced_gravity = list()
 	if(SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity))
@@ -1991,7 +1989,7 @@
 
 	var/area/turf_area = gravity_turf.loc
 
-	return !gravity_turf.force_no_gravity && (SSmapping.gravity_by_z_level["[gravity_turf.z]"] || turf_area.has_gravity)
+	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_z_level["[gravity_turf.z]"])
 
 /**
  * Causes effects when the atom gets hit by a rust effect from heretics

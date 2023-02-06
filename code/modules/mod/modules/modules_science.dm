@@ -74,7 +74,7 @@
 	if(mod.wearer.has_gravity())
 		new /obj/effect/temp_visual/mook_dust(get_turf(src))
 	mod.wearer.AddElement(/datum/element/forced_gravity, 0)
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
+	mod.wearer.update_gravity()
 	playsound(src, 'sound/effects/gravhit.ogg', 50)
 
 /obj/item/mod/module/anomaly_locked/antigrav/on_deactivation(display_message = TRUE, deleting = FALSE)
@@ -82,7 +82,7 @@
 	if(!.)
 		return
 	mod.wearer.RemoveElement(/datum/element/forced_gravity, 0)
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
+	mod.wearer.update_gravity()
 	if(deleting)
 		return
 	if(mod.wearer.has_gravity())

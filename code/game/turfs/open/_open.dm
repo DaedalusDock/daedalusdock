@@ -215,7 +215,7 @@
 /turf/open/handle_slip(mob/living/carbon/slipper, knockdown_amount, obj/O, lube, paralyze_amount, force_drop)
 	if(slipper.movement_type & FLYING)
 		return FALSE
-	if(has_gravity(src))
+	if(has_gravity())
 		var/obj/buckled_obj
 		if(slipper.buckled)
 			buckled_obj = slipper.buckled

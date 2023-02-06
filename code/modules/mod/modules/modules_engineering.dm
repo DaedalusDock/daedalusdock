@@ -60,7 +60,7 @@
 	ADD_TRAIT(mod.wearer, TRAIT_NEGATES_GRAVITY, MOD_TRAIT)
 	ADD_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
 	mod.slowdown += slowdown_active
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
+	mod.wearer.update_gravity()
 	mod.wearer.update_equipment_speed_mods()
 
 /obj/item/mod/module/magboot/on_deactivation(display_message = TRUE, deleting = FALSE)
@@ -70,7 +70,7 @@
 	REMOVE_TRAIT(mod.wearer, TRAIT_NEGATES_GRAVITY, MOD_TRAIT)
 	REMOVE_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
 	mod.slowdown -= slowdown_active
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
+	mod.wearer.update_gravity()
 	mod.wearer.update_equipment_speed_mods()
 
 /obj/item/mod/module/magboot/advanced
@@ -93,7 +93,7 @@
 	cooldown_time = 1.5 SECONDS
 
 /obj/item/mod/module/tether/on_use()
-	if(mod.wearer.has_gravity(get_turf(src)))
+	if(mod.wearer.has_gravity())
 		balloon_alert(mod.wearer, "too much gravity!")
 		playsound(src, 'sound/weapons/gun/general/dry_fire.ogg', 25, TRUE)
 		return FALSE

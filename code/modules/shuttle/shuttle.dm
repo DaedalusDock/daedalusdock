@@ -67,7 +67,7 @@
 	else
 		return QDEL_HINT_LETMELIVE
 
-/obj/docking_port/has_gravity(turf/T)
+/obj/docking_port/has_gravity()
 	return TRUE
 
 /obj/docking_port/take_damage()

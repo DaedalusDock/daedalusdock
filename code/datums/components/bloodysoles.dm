@@ -154,7 +154,7 @@
 		return
 	if(QDELETED(wielder) || is_obscured())
 		return
-	if(wielder.body_position == LYING_DOWN || !wielder.has_gravity(wielder.loc))
+	if(wielder.body_position == LYING_DOWN || !wielder.has_gravity())
 		return
 
 	var/half_our_blood = bloody_shoes[last_blood_state] / 2

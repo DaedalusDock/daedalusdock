@@ -955,37 +955,7 @@
 		return pick("ltrails_1", "ltrails_2")
 	else
 		return pick("trails_1", "trails_2")
-/*
-/mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
-	playsound(src, 'sound/effects/space_wind.ogg', 50, TRUE)
-	if(buckled || mob_negates_gravity())
-		return
 
-	if(client && client.move_delay >= world.time + world.tick_lag*2)
-		pressure_resistance_prob_delta -= 30
-
-	var/list/turfs_to_check = list()
-
-	if(!has_limbs)
-		var/turf/T = get_step(src, angle2dir(dir2angle(direction)+90))
-		if (T)
-			turfs_to_check += T
-
-		T = get_step(src, angle2dir(dir2angle(direction)-90))
-		if(T)
-			turfs_to_check += T
-
-		for(var/t in turfs_to_check)
-			T = t
-			if(T.density)
-				pressure_resistance_prob_delta -= 20
-				continue
-			for (var/atom/movable/AM in T)
-				if (AM.density && AM.anchored)
-					pressure_resistance_prob_delta -= 20
-					break
-	..(pressure_difference, direction, pressure_resistance_prob_delta)
-*/
 /mob/living/can_resist()
 	if(next_move > world.time)
 		return FALSE
@@ -1064,12 +1034,32 @@
 /mob/living/proc/get_visible_name()
 	return name
 
-/mob/living/update_gravity(gravity)
-	. = ..()
-	if(!SSticker.HasRoundStarted())
+GLOBAL_LIST_EMPTY(gravity_cost)
+GLOBAL_LIST_EMPTY(gravity_count)
+
+/mob/living/update_gravity()
+	if(SSticker.current_state < GAME_STATE_PLAYING)
 		return
+	INIT_COST(GLOB.gravity_cost, GLOB.gravity_count)
+
+	. = has_gravity()
+	SET_COST("has_gravity")
+	if(. == cached_gravity)
+		return
+
+	cached_gravity = .
+
+	var/speed_change = max(0, . - STANDARD_GRAVITY)
+	if(!speed_change && gravity_slowdown)
+		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
+		gravity_slowdown = 0
+	else if(gravity_slowdown != speed_change)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, multiplicative_slowdown=speed_change)
+		gravity_slowdown = speed_change
+	SET_COST("Update speed")
+
 	var/atom/movable/screen/alert/gravity_alert = alerts[ALERT_GRAVITY]
-	switch(gravity)
+	switch(.)
 		if(-INFINITY to NEGATIVE_GRAVITY)
 			if(!istype(gravity_alert, /atom/movable/screen/alert/negative))
 				throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/negative)
@@ -1090,9 +1080,11 @@
 		if(GRAVITY_DAMAGE_THRESHOLD to INFINITY)
 			throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/veryhighgravity)
 
+	SET_COST("Update alert")
 	// If we had no gravity alert, or the same alert as before, go home
 	if(!gravity_alert || alerts[ALERT_GRAVITY] == gravity_alert)
 		return
+
 	// By this point we know that we do not have the same alert as we used to
 	if(istype(gravity_alert, /atom/movable/screen/alert/weightless))
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, NO_GRAVITY_TRAIT)
@@ -1102,6 +1094,7 @@
 		flipped_matrix.e = -flipped_matrix.e
 		animate(src, transform = flipped_matrix, pixel_y = pixel_y-4, time = 0.5 SECONDS, easing = EASE_OUT)
 		base_pixel_y -= 4
+	SET_COST("Negative Gravity")
 
 /mob/living/singularity_pull(S, current_size)
 	..()
@@ -1109,7 +1102,7 @@
 		return
 	if(current_size >= STAGE_SIX) //your puny magboots/wings/whatever will not save you against supermatter singularity
 		throw_at(S, 14, 3, src, TRUE)
-	else if(!src.mob_negates_gravity())
+	else if(!src.mob_ignores_nograv())
 		step_towards(src,S)
 
 /mob/living/proc/get_temperature(datum/gas_mixture/environment)

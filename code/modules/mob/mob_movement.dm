@@ -320,7 +320,7 @@
 			var/turf/turf = pushover
 			if(isspaceturf(turf))
 				continue
-			if(!turf.density && !mob_negates_gravity())
+			if(!turf.density && !mob_ignores_nograv())
 				continue
 			return pushover
 
@@ -353,14 +353,16 @@
 		return rebound
 
 /mob/has_gravity()
-	return mob_negates_gravity() || ..()
+	return mob_ignores_nograv() || ..()
 
 /**
- * Does this mob ignore gravity
+ * Is this mob able to move around in zero-gravity?
  */
-/mob/proc/mob_negates_gravity()
-	var/turf/turf = get_turf(src)
-	return !isgroundlessturf(turf) && HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)
+/mob/proc/mob_ignores_nograv()
+	if(movement_type & FLYING)
+		return TRUE
+
+	return HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY) && !isgroundlessturf(get_step(src, 0))
 
 /// Called when this mob slips over, override as needed
 /mob/proc/slip(knockdown_amount, obj/O, lube, paralyze, force_drop)
@@ -370,14 +372,8 @@
 	return
 
 /// Update the gravity status of this mob
-/mob/proc/update_gravity(has_gravity, override=FALSE)
-	var/speed_change = max(0, has_gravity - STANDARD_GRAVITY)
-	if(!speed_change && gravity_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
-		gravity_slowdown = 0
-	else if(gravity_slowdown != speed_change)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, multiplicative_slowdown=speed_change)
-		gravity_slowdown = speed_change
+/mob/proc/update_gravity()
+	return
 
 //bodypart selection verbs - Cyberboss
 //8: repeated presses toggles through head - eyes - mouth

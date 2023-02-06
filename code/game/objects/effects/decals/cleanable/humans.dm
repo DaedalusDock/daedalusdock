@@ -144,7 +144,7 @@
 	return FALSE
 
 /obj/effect/decal/cleanable/blood/gibs/on_entered(datum/source, atom/movable/L)
-	if(isliving(L) && has_gravity(loc))
+	if(isliving(L) && has_gravity())
 		playsound(loc, 'sound/effects/gib_step.ogg', HAS_TRAIT(L, TRAIT_LIGHT_STEP) ? 20 : 50, TRUE)
 	. = ..()
 

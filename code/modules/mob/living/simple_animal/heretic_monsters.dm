@@ -216,7 +216,7 @@
 	return ..()
 
 // We are literally a vessel of otherworldly destruction, we bring our own gravity unto this plane
-/mob/living/simple_animal/hostile/heretic_summon/armsy/has_gravity(turf/T)
+/mob/living/simple_animal/hostile/heretic_summon/armsy/has_gravity()
 	return TRUE
 
 /mob/living/simple_animal/hostile/heretic_summon/armsy/can_be_pulled()

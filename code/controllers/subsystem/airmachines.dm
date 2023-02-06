@@ -147,6 +147,8 @@ SUBSYSTEM_DEF(airmachines)
 			atmos_machinery -= M
 		if(!COOLDOWN_FINISHED(M, hibernating))
 			sleeping_machines++
+			if(MC_TICK_CHECK)
+				return
 			continue
 		if(M.process_atmos() == PROCESS_KILL)
 			stop_processing_machine(M)

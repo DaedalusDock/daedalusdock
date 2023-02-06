@@ -273,6 +273,7 @@
 	return PROCESS_KILL
 
 /obj/machinery/proc/process_atmos()//If you dont use process why are you here
+	SHOULD_NOT_SLEEP(TRUE)
 	return PROCESS_KILL
 
 

@@ -15,8 +15,8 @@
 
 // For use with the set_cost defines
 /proc/stat_tracking_export_to_json_later(filename, costs, counts)
-	if (IsAdminAdvancedProcCall())
-		return
+	//if (IsAdminAdvancedProcCall())
+		//return
 
 	var/list/output = list()
 
@@ -40,3 +40,7 @@
 		output += "[replacetext(key, ",", "")], [replacetext(costs[key], ",", "")], [replacetext(counts[key], ",", "")]"
 
 	rustg_file_write(output.Join("\n"), "[GLOB.log_directory]/[filename]")
+
+/proc/dumplife()
+	stat_tracking_export_to_json_later("life_stats.json", GLOB.life_cost, GLOB.life_count)
+	stat_tracking_export_to_json_later("gravity_stats.json", GLOB.gravity_cost, GLOB.gravity_count)

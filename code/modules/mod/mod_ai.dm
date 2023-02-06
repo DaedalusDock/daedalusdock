@@ -79,7 +79,7 @@
 	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? 2 : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
 	if(wearer && !wearer.Process_Spacemove(direction))
 		return FALSE
-	else if(!wearer && (!has_gravity() || !isturf(loc)))
+	else if(!wearer && (!isturf(loc) || !has_gravity()))
 		return FALSE
 	COOLDOWN_START(src, cooldown_mod_move, movedelay * timemodifier + slowdown_active)
 	subtract_charge(CHARGE_PER_STEP)

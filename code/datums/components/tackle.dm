@@ -280,7 +280,7 @@
 
 		if(isnull(T.wear_suit) && isnull(T.w_uniform)) // who honestly puts all of their effort into tackling a naked guy?
 			defense_mod += 2
-		if(T.mob_negates_gravity())
+		if(T.mob_ignores_nograv())
 			defense_mod += 1
 		if(T.is_shove_knockdown_blocked()) // riot armor and such
 			defense_mod += 5

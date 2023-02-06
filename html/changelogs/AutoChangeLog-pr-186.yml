@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Runechat messages are now bumped up by adjacent messages.

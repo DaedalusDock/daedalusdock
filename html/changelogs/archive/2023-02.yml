@@ -91,3 +91,24 @@
   - balance: Volume pumps and filters now use power when dealing with entropy, and
       the overclocking mechanic is removed
   - qol: Pump UI now has a power meter
+2023-02-06:
+  JohnFulpWillard, out_of_phaze, Kapu1178:
+  - code_imp: Changed every single do_after() call. Bug Kapu if something isn't working
+  Kapu1178:
+  - bugfix: The "Rest" and "Pull" HUD icons no longer lie to users if they logged
+      in after the mob starting resting or pulling.
+  - bugfix: SSwardrobe will now delete held items it fails to equip.
+  - bugfix: Vox no longer have a permanent N2 tank embedded inside them.
+  - bugfix: Character Creator icons will not longer appear invisible during some rounds.
+  - bugfix: Dualport ventpumps no longer get "stuck" siphoning.
+  - bugfix: Pipes no longer have between 2-3x more volume than intended
+  - bugfix: Airalarm mode changing works again
+  - qol: Reduced delay between air alarm UI interactions.
+  - bugfix: Internals action icon isn't an error anymore
+  - rscadd: Runechat messages are now bumped up by adjacent messages.
+  - bugfix: Observers no longer get runechat for the radio of their orbit target
+  - bugfix: Various mech interactions now work again
+  - rscdel: Removed the ability to have impure or failed chems
+  - balance: A number of impurities in chemicals are now inverses
+  - bugfix: Mannitol now has a working inverse
+  - bugfix: Gravity pulses have had their distortion effect restored.

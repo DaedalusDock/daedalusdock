@@ -96,10 +96,8 @@
 /mob/living/proc/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
 	var/loc_temp = get_temperature(environment)
 	var/temp_delta = loc_temp - bodytemperature
-
-	if(ismovable(loc))
-		var/atom/movable/occupied_space = loc
-		temp_delta *= (1 - occupied_space.contents_thermal_insulation)
+	if(temp_delta == 0)
+		return
 
 	if(temp_delta < 0) // it is cold here
 		if(!on_fire) // do not reduce body temp when on fire

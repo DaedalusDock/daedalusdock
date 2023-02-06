@@ -1034,9 +1034,6 @@
 /mob/living/proc/get_visible_name()
 	return name
 
-GLOBAL_LIST_EMPTY(gravity_cost)
-GLOBAL_LIST_EMPTY(gravity_count)
-
 /mob/living/update_gravity()
 	if(SSticker.current_state < GAME_STATE_PLAYING)
 		return
@@ -1105,14 +1102,13 @@ GLOBAL_LIST_EMPTY(gravity_count)
 	if(isobj(loc))
 		var/obj/oloc = loc
 		var/obj_temp = oloc.return_temperature()
-		if(obj_temp != null)
-			loc_temp = obj_temp
-	else if(isspaceturf(get_turf(src)))
-		var/turf/heat_turf = get_turf(src)
-		loc_temp = heat_turf.temperature
-	if(ismovable(loc))
-		var/atom/movable/occupied_space = loc
-		loc_temp = ((1 - occupied_space.contents_thermal_insulation) * loc_temp) + (occupied_space.contents_thermal_insulation * bodytemperature)
+		if(!isnull(obj_temp))
+			loc_temp = ((1 - oloc.contents_thermal_insulation) * obj_temp)
+	else
+		var/turf/my_turf = get_turf(src)
+		if(isspaceturf(my_turf))
+			loc_temp = my_turf.temperature
+
 	return loc_temp
 
 /mob/living/cancel_camera()

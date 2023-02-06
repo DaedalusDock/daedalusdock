@@ -33,7 +33,8 @@
 
 /datum/component/construction/proc/action(datum/source, obj/item/I, mob/living/user)
 	SIGNAL_HANDLER
-	. = INVOKE_ASYNC(src, .proc/check_step, I, user)
+	set waitfor = FALSE
+	. = UNLINT(check_step(I, user))
 	return .
 
 /datum/component/construction/proc/update_index(diff)

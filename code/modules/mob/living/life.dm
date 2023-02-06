@@ -9,15 +9,10 @@
  * - delta_time: The amount of time that has elapsed since this last fired.
  * - times_fired: The number of times SSmobs has fired
  */
-GLOBAL_LIST_EMPTY(life_cost)
-GLOBAL_LIST_EMPTY(life_count)
-
 /mob/living/proc/Life(delta_time = SSMOBS_DT, times_fired)
 	SHOULD_NOT_SLEEP(TRUE)
-	INIT_COST(GLOB.life_cost, GLOB.life_count)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_LIFE, delta_time, times_fired)
-	SET_COST("COMSIG_LIVING_LIFE")
 
 	if (!isnull(client))
 		var/turf/T = get_turf(src)
@@ -44,23 +39,18 @@ GLOBAL_LIST_EMPTY(life_count)
 
 	if(isnull(loc))
 		return
-	SET_COST("Safety Checks")
 	if(!IS_IN_STASIS(src))
 
 		if(stat != DEAD)
 			//Mutations and radiation
 			handle_mutations(delta_time, times_fired)
-			SET_COST("handle_mutations")
 
 		if(stat != DEAD)
 			//Breathing, if applicable
 			handle_breathing(delta_time, times_fired)
-			SET_COST("handle_breathing")
 
 		handle_diseases(delta_time, times_fired)// DEAD check is in the proc itself; we want it to spread even if the mob is dead, but to handle its disease-y properties only if you're not.
-		SET_COST("handle_diseases")
 		handle_wounds(delta_time, times_fired)
-		SET_COST("handle_wounds")
 
 		if (QDELETED(src)) // diseases can qdel the mob via transformations
 			return
@@ -68,21 +58,17 @@ GLOBAL_LIST_EMPTY(life_count)
 		if(stat != DEAD)
 			//Random events (vomiting etc)
 			handle_random_events(delta_time, times_fired)
-			SET_COST("handle_random_events")
 
 		//Handle temperature/pressure differences between body and environment
 		var/datum/gas_mixture/environment = loc.return_air()
 		if(environment)
 			handle_environment(environment, delta_time, times_fired)
-			SET_COST("handle_environment")
 
 		handle_gravity(delta_time, times_fired)
-		SET_COST("handle_gravity")
+
 		if(stat != DEAD)
 			handle_traits(delta_time, times_fired) // eye, ear, brain damages
-			SET_COST("handle_traits")
 			handle_status_effects(delta_time, times_fired) //all special effects, stun, knockdown, jitteryness, hallucination, sleeping, etc
-			SET_COST("handle_status_effects")
 
 	if(machine)
 		machine.check_eye(src)

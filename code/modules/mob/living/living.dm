@@ -1040,10 +1040,8 @@ GLOBAL_LIST_EMPTY(gravity_count)
 /mob/living/update_gravity()
 	if(SSticker.current_state < GAME_STATE_PLAYING)
 		return
-	INIT_COST(GLOB.gravity_cost, GLOB.gravity_count)
 
 	. = has_gravity()
-	SET_COST("has_gravity")
 	if(. == cached_gravity)
 		return
 
@@ -1056,7 +1054,6 @@ GLOBAL_LIST_EMPTY(gravity_count)
 	else if(gravity_slowdown != speed_change)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, multiplicative_slowdown=speed_change)
 		gravity_slowdown = speed_change
-	SET_COST("Update speed")
 
 	var/atom/movable/screen/alert/gravity_alert = alerts[ALERT_GRAVITY]
 	switch(.)
@@ -1080,7 +1077,6 @@ GLOBAL_LIST_EMPTY(gravity_count)
 		if(GRAVITY_DAMAGE_THRESHOLD to INFINITY)
 			throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/veryhighgravity)
 
-	SET_COST("Update alert")
 	// If we had no gravity alert, or the same alert as before, go home
 	if(!gravity_alert || alerts[ALERT_GRAVITY] == gravity_alert)
 		return
@@ -1094,7 +1090,6 @@ GLOBAL_LIST_EMPTY(gravity_count)
 		flipped_matrix.e = -flipped_matrix.e
 		animate(src, transform = flipped_matrix, pixel_y = pixel_y-4, time = 0.5 SECONDS, easing = EASE_OUT)
 		base_pixel_y -= 4
-	SET_COST("Negative Gravity")
 
 /mob/living/singularity_pull(S, current_size)
 	..()

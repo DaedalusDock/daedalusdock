@@ -17,7 +17,7 @@
 	usesound = 'sound/items/duct_tape_rip.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
 	///do_after lengths for handcuff and muzzle attacks
-	var/handcuff_delay = 3 SECONDS
+	var/handcuff_delay = 4 SECONDS
 	var/muzzle_delay = 2 SECONDS
 	///The tape type you get when ripping off a piece of tape.
 	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
@@ -105,7 +105,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to cover [victim]s mouth with [src]!"), \
 						span_userdanger("[user] is trying to cover your mouth with [src]!"))
-	if(do_mob(user, victim, muzzle_delay))
+	if(do_after(user, victim, muzzle_delay))
 		if(!victim.wear_mask)
 			use(1)
 			victim.equip_to_slot_or_del(new tape_gag(victim), ITEM_SLOT_MASK)
@@ -121,7 +121,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to restrain [victim] with [src]!"), \
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
-	if(do_mob(user, victim, 30))
+	if(do_after(user, victim, handcuff_delay))
 		if(!victim.handcuffed)
 			use(1)
 			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))

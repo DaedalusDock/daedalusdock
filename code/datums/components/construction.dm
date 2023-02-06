@@ -33,8 +33,8 @@
 
 /datum/component/construction/proc/action(datum/source, obj/item/I, mob/living/user)
 	SIGNAL_HANDLER
-	set waitfor = FALSE
-	. = UNLINT(check_step(I, user))
+	spawn(-1)
+		. = check_step(I, user)
 	return .
 
 /datum/component/construction/proc/update_index(diff)

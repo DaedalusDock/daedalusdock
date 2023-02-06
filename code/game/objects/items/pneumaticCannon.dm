@@ -37,6 +37,8 @@
 	var/spin_item = TRUE //Do the projectiles spin when launched?
 	trigger_guard = TRIGGER_GUARD_NORMAL
 
+	var/filling = FALSE
+
 
 /obj/item/pneumatic_cannon/Initialize(mapload)
 	. = ..()
@@ -48,7 +50,11 @@
 
 /obj/item/pneumatic_cannon/process()
 	if(++charge_tick >= charge_ticks && charge_type)
-		fill_with_type(charge_type, charge_amount)
+		if(!filling)
+			spawn(-1)
+				filling = TRUE
+				fill_with_type(charge_type, charge_amount)
+				filling = FALSE
 
 /obj/item/pneumatic_cannon/Destroy()
 	STOP_PROCESSING(SSobj, src)

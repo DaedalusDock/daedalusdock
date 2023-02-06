@@ -133,7 +133,7 @@
 			unlock(R)
 			changed = TRUE
 	if(changed)
-		autolock()
+		INVOKE_ASYNC(src, .proc/autolock)
 
 /datum/component/lockon_aiming/proc/autolock()
 	var/mob/M = parent

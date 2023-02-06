@@ -322,7 +322,7 @@
 	if(pulledby && pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
 		. = FALSE //getting choked
 
-	if(isturf(loc) && isopenturf(loc))
+	if(isopenturf(loc))
 		var/turf/open/ST = loc
 		if(ST.air)
 			var/datum/gas_mixture/muhair = ST.return_air().getGases()
@@ -370,7 +370,7 @@
 			else
 				adjust_bodytemperature(clamp(temp_delta * delta_time / 10, 0, temp_delta))
 
-	if(!environment_air_is_safe() && unsuitable_atmos_damage)
+	if(unsuitable_atmos_damage && !environment_air_is_safe())
 		adjustHealth(unsuitable_atmos_damage * delta_time)
 		if(unsuitable_atmos_damage > 0)
 			throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)

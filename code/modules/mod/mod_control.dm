@@ -225,7 +225,7 @@
 	if(seconds_electrified > MACHINE_NOT_ELECTRIFIED)
 		seconds_electrified--
 	if(!get_charge() && active && !activating)
-		power_off()
+		INVOKE_ASYNC(src, .proc/power_off)
 		return PROCESS_KILL
 	var/malfunctioning_charge_drain = 0
 	if(malfunctioning)

@@ -104,6 +104,7 @@
 
 	//Hitscan
 	var/hitscan = FALSE //Whether this is hitscan. If it is, speed is basically ignored.
+	var/processing_hitscan  = FALSE
 	var/list/beam_segments //assoc list of datum/point or datum/point/vector, start = end. Used for hitscan effect generation.
 	/// Last turf an angle was changed in for hitscan projectiles.
 	var/turf/last_angle_set_hitscan_store
@@ -708,8 +709,8 @@
 	fired = TRUE
 	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
-	if(hitscan)
-		process_hitscan()
+	if(hitscan && !processing_hitscan)
+		INVOKE_ASYNC(src, .proc/process_hitscan)
 	if(!(datum_flags & DF_ISPROCESSING))
 		START_PROCESSING(SSprojectiles, src)
 	pixel_move(1, FALSE) //move it now!
@@ -795,6 +796,7 @@
 		beam_segments[beam_index] = null //record start.
 
 /obj/projectile/proc/process_hitscan()
+	processing_hitscan = TRUE
 	var/safety = range * 10
 	record_hitscan_start(RETURN_POINT_VECTOR_INCREMENT(src, Angle, MUZZLE_EFFECT_PIXEL_INCREMENT, 1))
 	while(loc && !QDELETED(src))
@@ -806,6 +808,7 @@
 				Bump(loc)
 			if(!QDELETED(src))
 				qdel(src)
+			processing_hitscan = FALSE
 			return //Kill!
 		pixel_move(1, TRUE)
 

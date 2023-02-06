@@ -42,7 +42,7 @@
 			var/mob/living/occupant = O
 			var/datum/action/action = LAZYACCESSASSOC(occupant_actions, occupant, /datum/action/vehicle/sealed/mecha/mech_defense_mode)
 			if(action)
-				action.Trigger()
+				INVOKE_ASYNC(action, /datum/action/proc/Trigger)
 				break
 
 /obj/vehicle/sealed/mecha/combat/durand/Move(direction)

@@ -13,6 +13,7 @@
 	var/olddir = 0
 	var/turf/listeningTo
 	var/hearing_range = 3
+	var/refreshing_beam = FALSE
 
 /obj/item/assembly/infra/Initialize(mapload)
 	. = ..()
@@ -78,8 +79,13 @@
 		refreshBeam()
 
 /obj/item/assembly/infra/process()
+	if(refreshing_beam)
+		return
 	if(!on || !secured)
-		refreshBeam()
+		spawn(-1)
+			refreshing_beam = TRUE
+			refreshBeam()
+			refreshing_beam = FALSE
 		return
 
 /obj/item/assembly/infra/proc/refreshBeam()

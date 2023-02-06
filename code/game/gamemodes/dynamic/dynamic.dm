@@ -602,6 +602,7 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 	return FALSE
 
 /datum/game_mode/dynamic/process()
+	set waitfor = FALSE
 	for (var/datum/dynamic_ruleset/rule in current_rules)
 		if(rule.rule_process() == RULESET_STOP_PROCESSING) // If rule_process() returns 1 (RULESET_STOP_PROCESSING), stop processing.
 			current_rules -= rule
@@ -633,7 +634,7 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 					// If admins have disabled dynamic from picking from the ghost pool
 					if(rule.ruletype == "Latejoin" && !(GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT))
 						continue
-					rule.trim_candidates()
+					UNLINT(rule.trim_candidates()) //This sleeps, and its a headache to fix.
 					if (rule.ready())
 						drafted_rules[rule] = rule.get_weight()
 			if (drafted_rules.len > 0)

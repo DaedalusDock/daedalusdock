@@ -900,7 +900,7 @@
 /mob/living/silicon/ai/revive(full_heal = FALSE, admin_revive = FALSE)
 	. = ..()
 	if(.) //successfully ressuscitated from death
-		set_core_display_icon(display_icon_override)
+		INVOKE_ASYNC(src, .proc/set_core_display_icon, display_icon_override)
 		set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/malfhacked(obj/machinery/power/apc/apc)

@@ -46,6 +46,9 @@
 	/// The time that has elapsed since our last move/eat call
 	var/time_since_last_eat
 
+	/// Are we currentingly eating?
+	var/eating = FALSE
+
 /datum/component/singularity/Initialize(
 	bsa_targetable = TRUE,
 	consume_range = 0,
@@ -132,11 +135,14 @@
 	if(TICK_CHECK)
 		return
 	if(time_since_last_eat > 1) // Delta time is in seconds for "reasons"
-		time_since_last_eat = 0
-		if (roaming)
-			move()
-		eat()
-		digest() // Try and process as much as you can with the time we have left
+		spawn(-1)
+			eating = TRUE
+			time_since_last_eat = 0
+			if (roaming)
+				move()
+			eat()
+			digest() // Try and process as much as you can with the time we have left
+	eating = FALSE
 
 /datum/component/singularity/proc/block_blob()
 	SIGNAL_HANDLER

@@ -69,7 +69,7 @@
 			if(!length(processing))
 				STOP_PROCESSING(SSobj, src)
 				return PROCESS_KILL
-			if(CHECK_TICK)
+			if(UNLINT(CHECK_TICK))
 				resumed = TRUE
 				return
 			continue
@@ -80,6 +80,6 @@
 				STOP_PROCESSING(SSobj, src)
 				return PROCESS_KILL
 
-		if(CHECK_TICK)
+		if(UNLINT(CHECK_TICK))
 			resumed = TRUE
 			return

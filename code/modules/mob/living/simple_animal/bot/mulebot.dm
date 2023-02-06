@@ -634,7 +634,7 @@
 
 		if(load) // if loaded, unload at target
 			if(report_delivery)
-				speak("Destination <b>[destination]</b> reached. Unloading [load].",radio_channel)
+				INVOKE_ASYNC(src, .proc/speak, "Destination <b>[destination]</b> reached. Unloading [load].", radio_channel)
 			unload(loaddir)
 		else
 			// not loaded
@@ -650,7 +650,7 @@
 				if(AM?.Adjacent(src))
 					load(AM)
 					if(report_delivery)
-						speak("Now loading [load] at <b>[get_area_name(src)]</b>.", radio_channel)
+						INVOKE_ASYNC(src, .proc/speak, "Now loading [load] at <b>[get_area_name(src)]</b>.", radio_channel)
 		// whatever happened, check to see if we return home
 
 		if(auto_return && home_destination && destination != home_destination)

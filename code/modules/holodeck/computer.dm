@@ -345,7 +345,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		return
 
 	if(!floorcheck()) //if any turfs in the floor of the holodeck are broken
-		emergency_shutdown()
+		INVOKE_ASYNC(src, .proc/emergency_shutdown)
 		damaged = TRUE
 		visible_message("The holodeck overloads!")
 		for(var/turf/holo_turf in linked)

@@ -136,12 +136,12 @@
 	if(!processing)
 		return
 	if(!powered() || !occupant || !iscarbon(occupant))
-		open_machine()
+		INVOKE_ASYNC(src, .proc/open_machine)
 		return
 
 	var/mob/living/carbon/C = occupant
 	if(C.nutrition <= stop_at)
-		open_machine()
+		INVOKE_ASYNC(src, .proc/open_machine)
 		playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
 		return
 	C.adjust_nutrition(-bite_size * delta_time)

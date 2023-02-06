@@ -305,6 +305,7 @@
 		/turf/open/lava,
 		/turf/open/chasm
 	))
+	var/spreading = FALSE
 
 /datum/rust_spread/New(loc)
 	centre = get_turf(loc)
@@ -320,17 +321,22 @@
 	return ..()
 
 /datum/rust_spread/process(delta_time)
-	var/spread_amount = round(spread_per_sec * delta_time)
+	if(spreading)
+		return
+	spawn(-1)
+		spreading = TRUE
+		var/spread_amount = round(spread_per_sec * delta_time)
 
-	if(length(edge_turfs) < spread_amount)
-		compile_turfs()
+		if(length(edge_turfs) < spread_amount)
+			compile_turfs()
 
-	for(var/i in 0 to spread_amount)
-		if(!length(edge_turfs))
-			break
-		var/turf/afflicted_turf = pick_n_take(edge_turfs)
-		afflicted_turf.rust_heretic_act()
-		rusted_turfs |= afflicted_turf
+		for(var/i in 0 to spread_amount)
+			if(!length(edge_turfs))
+				break
+			var/turf/afflicted_turf = pick_n_take(edge_turfs)
+			afflicted_turf.rust_heretic_act()
+			rusted_turfs |= afflicted_turf
+		spreading = FALSE
 
 /**
  * Compile turfs

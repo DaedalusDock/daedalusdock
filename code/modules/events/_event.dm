@@ -175,34 +175,36 @@
 //Do not override this proc, instead use the appropiate procs.
 //This proc will handle the calls to the appropiate procs.
 /datum/round_event/process()
+	set waitfor = FALSE
+
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!processing)
 		return
 
 	if(activeFor == startWhen)
 		processing = FALSE
-		start()
+		UNLINT(start())
 		processing = TRUE
 
 	if(activeFor == announceWhen && prob(announceChance))
 		processing = FALSE
-		announce(FALSE)
+		UNLINT(announce(FALSE))
 		processing = TRUE
 
 	if(startWhen < activeFor && activeFor < endWhen)
 		processing = FALSE
-		tick()
+		UNLINT(tick())
 		processing = TRUE
 
 	if(activeFor == endWhen)
 		processing = FALSE
-		end()
+		UNLINT(end())
 		processing = TRUE
 
 	// Everything is done, let's clean up.
 	if(activeFor >= endWhen && activeFor >= announceWhen && activeFor >= startWhen)
 		processing = FALSE
-		kill()
+		UNLINT(kill())
 
 	activeFor++
 

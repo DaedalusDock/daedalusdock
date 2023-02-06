@@ -149,7 +149,7 @@
 
 /obj/structure/transit_tube/station/process()
 	if(!pod_moving)
-		launch_pod()
+		INVOKE_ASYNC(src, .proc/launch_pod)
 
 /obj/structure/transit_tube/station/pod_stopped(obj/structure/transit_tube_pod/pod, from_dir)
 	pod_moving = TRUE

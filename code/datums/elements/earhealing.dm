@@ -1,6 +1,7 @@
 /datum/element/earhealing
 	element_flags = ELEMENT_DETACH
 	var/list/user_by_item = list()
+	var/is_processing = FALSE
 
 /datum/element/earhealing/New()
 	START_PROCESSING(SSdcs, src)
@@ -26,11 +27,16 @@
 		user_by_item -= source
 
 /datum/element/earhealing/process(delta_time)
-	for(var/i in user_by_item)
-		var/mob/living/carbon/user = user_by_item[i]
-		var/obj/item/organ/internal/ears/ears = user.getorganslot(ORGAN_SLOT_EARS)
-		if(!ears || HAS_TRAIT_NOT_FROM(user, TRAIT_DEAF, EAR_DAMAGE))
-			continue
-		ears.deaf = max(ears.deaf - 0.25 * delta_time, (ears.damage < ears.maxHealth ? 0 : 1)) // Do not clear deafness if our ears are too damaged
-		ears.applyOrganDamage(-0.025 * delta_time, 0)
-		CHECK_TICK
+	if(is_processing)
+		return
+	spawn(-1)
+		is_processing = TRUE
+		for(var/i in user_by_item)
+			var/mob/living/carbon/user = user_by_item[i]
+			var/obj/item/organ/internal/ears/ears = user.getorganslot(ORGAN_SLOT_EARS)
+			if(!ears || HAS_TRAIT_NOT_FROM(user, TRAIT_DEAF, EAR_DAMAGE))
+				continue
+			ears.deaf = max(ears.deaf - 0.25 * delta_time, (ears.damage < ears.maxHealth ? 0 : 1)) // Do not clear deafness if our ears are too damaged
+			ears.applyOrganDamage(-0.025 * delta_time, 0)
+			CHECK_TICK
+		is_processing = FALSE

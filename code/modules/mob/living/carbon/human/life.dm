@@ -64,9 +64,9 @@
 
 	if(chest_covered && head_covered)
 		return ONE_ATMOSPHERE
-	if(ismovable(loc))
+	if(isobj(loc))
 		/// If we're in a space with 0.5 content pressure protection, it averages the values, for example.
-		var/atom/movable/occupied_space = loc
+		var/obj/occupied_space = loc
 		return (occupied_space.contents_pressure_protection * ONE_ATMOSPHERE + (1 - occupied_space.contents_pressure_protection) * pressure)
 	return pressure
 
@@ -117,7 +117,43 @@
 	if(istype(loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
 		return
 
-	dna.species.handle_environment(src, environment, delta_time, times_fired)
+	var/pressure = environment.returnPressure()
+	var/adjusted_pressure = calculate_affecting_pressure(pressure)
+
+	// Set alerts and apply damage based on the amount of pressure
+	switch(adjusted_pressure)
+		// Very high pressure, show an alert and take damage
+		if(HAZARD_HIGH_PRESSURE to INFINITY)
+			if(!HAS_TRAIT(src, TRAIT_RESISTHIGHPRESSURE))
+				adjustBruteLoss(min(((adjusted_pressure / HAZARD_HIGH_PRESSURE) - 1) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE) * physiology.pressure_mod * delta_time)
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/highpressure, 2)
+			else
+				clear_alert(ALERT_PRESSURE)
+
+		// High pressure, show an alert
+		if(WARNING_HIGH_PRESSURE to HAZARD_HIGH_PRESSURE)
+			throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/highpressure, 1)
+
+		// No pressure issues here clear pressure alerts
+		if(WARNING_LOW_PRESSURE to WARNING_HIGH_PRESSURE)
+			clear_alert(ALERT_PRESSURE)
+
+		// Low pressure here, show an alert
+		if(HAZARD_LOW_PRESSURE to WARNING_LOW_PRESSURE)
+			// We have low pressure resit trait, clear alerts
+			if(HAS_TRAIT(src, TRAIT_RESISTLOWPRESSURE))
+				clear_alert(ALERT_PRESSURE)
+			else
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 1)
+
+		// Very low pressure, show an alert and take damage
+		else
+			// We have low pressure resit trait, clear alerts
+			if(HAS_TRAIT(src, TRAIT_RESISTLOWPRESSURE))
+				clear_alert(ALERT_PRESSURE)
+			else
+				adjustBruteLoss(LOW_PRESSURE_DAMAGE * physiology.pressure_mod * delta_time)
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 2)
 
 /**
  * Adjust the core temperature of a mob

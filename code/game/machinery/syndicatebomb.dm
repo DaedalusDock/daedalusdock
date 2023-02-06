@@ -55,7 +55,7 @@
 		next_beep = null
 		countdown.stop()
 		if(payload in src)
-			payload.defuse()
+			INVOKE_ASYNC(payload, /obj/item/bombcore/proc/defuse)
 		return
 
 	if(!isnull(next_beep) && (next_beep <= world.time))

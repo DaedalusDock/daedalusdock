@@ -67,7 +67,8 @@
 			return
 	if(boss)
 		if(say_when_triggered)
-			boss.say(say_when_triggered, forced = "boss action")
+			spawn(-1)
+				boss.say(say_when_triggered, forced = "boss action")
 		if(!boss.atb.spend(boss_cost))
 			return
 
@@ -129,7 +130,7 @@
 			abilities = shuffle(abilities)
 			for(var/ab in abilities)
 				var/datum/action/boss/AB = ab
-				if(prob(AB.usage_probability) && AB.Trigger())
+				if(prob(AB.usage_probability) && UNLINT(AB.Trigger()))
 					break
 
 

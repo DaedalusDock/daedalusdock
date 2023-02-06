@@ -27,7 +27,7 @@
 		timing = FALSE
 		// alarm() sleeps, so we want to end processing first and can't rely on return PROCESS_KILL
 		end_processing()
-		alarm()
+		INVOKE_ASYNC(src, .proc/alarm)
 
 /**
  * Initiates launching sequence by checking if all components are functional, opening poddoors, firing mass drivers and then closing poddoors
@@ -42,7 +42,7 @@
 
 	for(var/obj/machinery/door/poddoor/M in range(range, src))
 		if(M.id == id)
-			M.open()
+			INVOKE_ASYNC(M, /obj/machinery/door/proc/open)
 
 	sleep(20)
 	for(var/obj/machinery/mass_driver/M in range(range, src))
@@ -53,7 +53,7 @@
 	sleep(50)
 	for(var/obj/machinery/door/poddoor/M in range(range, src))
 		if(M.id == id)
-			M.close()
+			INVOKE_ASYNC(M, /obj/machinery/door/proc/close)
 
 /obj/machinery/computer/pod/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()

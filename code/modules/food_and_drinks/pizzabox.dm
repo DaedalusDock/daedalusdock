@@ -244,7 +244,7 @@
 			qdel(src)
 	if(!bomb_active || bomb_defused)
 		if(bomb_defused && (bomb in src))
-			bomb.defuse()
+			INVOKE_ASYNC(bomb, /obj/item/bombcore/proc/defuse)
 			bomb_active = FALSE
 			unprocess()
 	return

@@ -99,7 +99,7 @@
 			var/obj/item/grabbed_item = grabbed_atom
 			clear_grab()
 			grabbed_item.pickup(mod.wearer)
-			mod.wearer.put_in_hands(grabbed_item)
+			INVOKE_ASYNC(mod.wearer, /mob/proc/put_in_hands, grabbed_item)
 		return
 	var/pixel_x_change = 0
 	var/pixel_y_change = 0
@@ -126,7 +126,7 @@
 			hitting_atom = movable_content
 			break
 	var/obj/item/grabbed_item = grabbed_atom
-	grabbed_item.melee_attack_chain(mod.wearer, hitting_atom)
+	INVOKE_ASYNC(grabbed_item, /obj/item/proc/melee_attack_chain, mod.wearer, hitting_atom)
 	COOLDOWN_START(src, hit_cooldown, hit_cooldown_time)
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/can_grab(atom/target)

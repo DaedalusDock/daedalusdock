@@ -484,9 +484,9 @@ DEFINE_BITFIELD(turret_flags, list(
 			targets += B
 
 	if(targets.len)
-		tryToShootAt(targets)
+		INVOKE_ASYNC(src, .proc/tryToShootAt, targets)
 	else if(!always_up)
-		popDown() // no valid targets, close the cover
+		INVOKE_ASYNC(src, .proc/popDown) // no valid targets, close the cover
 
 /obj/machinery/porta_turret/proc/tryToShootAt(list/atom/movable/targets)
 	while(targets.len > 0)

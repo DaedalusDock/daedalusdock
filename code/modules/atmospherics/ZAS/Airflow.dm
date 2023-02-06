@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 				span_userdanger("You slam into \the [A] with tremendous force!"),
 				span_hear("You hear a loud thud.")
 			)
-			INVOKE_ASYNC(emote("scream"))
+			INVOKE_ASYNC(src, /mob/proc/emote, "scream")
 		else
 			Stun(round(airflow_speed * zas_settings.airflow_stun/2))
 			visible_message(

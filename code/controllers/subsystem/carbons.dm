@@ -24,7 +24,7 @@ SUBSYSTEM_DEF(carbons)
 		var/mob/living/carbon/C = currentrun[length(currentrun)]
 		currentrun.len--
 		if(QDELETED(C))
-			stack_trace("Qdeleted mob [C.type] {\ref[C]} in currentrun list.")
+			stack_trace("Qdeleted mob [C?.type] {\ref[C]} in currentrun list.")
 			continue
 		C.Life(delta_time, times_fired)
 

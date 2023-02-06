@@ -38,7 +38,7 @@ SUBSYSTEM_DEF(mobs)
 		var/mob/living/L = currentrun[currentrun.len]
 		currentrun.len--
 		if(QDELETED(L))
-			stack_trace("Qdeleted mob [L.type] {\ref[L]} in currentrun list.")
+			stack_trace("Qdeleted mob [L?.type] {\ref[L]} in currentrun list.")
 			continue
 		L.Life(delta_time, times_fired)
 

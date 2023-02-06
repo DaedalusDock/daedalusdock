@@ -65,13 +65,13 @@
 #define AALARM_THERMOSTAT_HEATING_POWER 40000 //T2 space heater
 #define AALARM_THERMOSTAT_HEATING_EFFICIENCY 30000 //T2 space heater
 
-// Because I'm not writing this shit out 7 times
 #define AALARM_UIACT_COOLDOWNCHECK \
-	if(ui_cooldown > world.time){ \
+	if(!COOLDOWN_FINISHED(src, ui_cooldown)){ \
 		to_chat(usr, span_warning("\The [src] is still recharging it's broadcast coils.")); \
 		usr.playsound_local(get_turf(src), 'sound/machines/terminal_error.ogg', 50); \
 	return FALSE; \
 	}
+
 
 
 /obj/machinery/airalarm
@@ -92,7 +92,7 @@
 	var/mode = AALARM_MODE_SCRUBBING
 
 	///Cooldown on UI actions, Prevents packet spam
-	var/ui_cooldown = 0
+	COOLDOWN_DECLARE(ui_cooldown)
 
 	//Fire alarm related vars//
 
@@ -378,34 +378,34 @@
 				. = TRUE
 		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("[action]" = params["val"]), usr)
 			. = TRUE
 		if("excheck")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^1), usr)
 			. = TRUE
 		if("incheck")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^2), usr)
 			. = TRUE
 		if("set_external_pressure", "set_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			var/target = params["value"]
 			if(!isnull(target))
 				send_signal(device_id, list("[action]" = target), usr)
 				. = TRUE
 		if("reset_external_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_external_pressure"), usr)
 			. = TRUE
 		if("reset_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
-			ui_cooldown = world.time + 1 SECONDS
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_internal_pressure"), usr)
 			. = TRUE
 		if("threshold")
@@ -431,7 +431,8 @@
 		if("mode")
 			AALARM_UIACT_COOLDOWNCHECK
 			//Yes, the modes can match, but this will force a resend of the mode config to equipment.
-			ui_cooldown = world.time + 3 SECONDS
+			mode = text2num(params["mode"])
+			COOLDOWN_START(src, ui_cooldown, 3 SECONDS)
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)
 			. = TRUE
@@ -864,7 +865,7 @@
 					return
 				user.visible_message(span_notice("[user.name] wires the air alarm."), \
 									span_notice("You start wiring the air alarm..."))
-				if (do_after(user, 20, target = src))
+				if (do_after(user, src, 20))
 					if (cable.get_amount() >= 5 && buildstage == AIRALARM_BUILD_NO_WIRES)
 						cable.use(5)
 						to_chat(user, span_notice("You wire the air alarm."))

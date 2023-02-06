@@ -800,7 +800,7 @@
 /obj/vehicle/sealed/mecha/proc/try_repair_int_damage(mob/user, flag_to_heal)
 	balloon_alert(user, get_int_repair_fluff_start(flag_to_heal))
 	log_message("[key_name(user)] starting internal damage repair for flag [flag_to_heal]", LOG_MECHA)
-	if(!do_after(user, 10 SECONDS, src))
+	if(!do_after(user, src, 10 SECONDS))
 		balloon_alert(user, get_int_repair_fluff_fail(flag_to_heal))
 		log_message("Internal damage repair for flag [flag_to_heal] failed.", LOG_MECHA, color="red")
 		return
@@ -1061,7 +1061,7 @@
 
 	visible_message(span_notice("[user] starts to insert an MMI into [name]."))
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		to_chat(user, span_notice("You stop inserting the MMI."))
 		return FALSE
 	if(LAZYLEN(occupants) < max_occupants)

@@ -153,7 +153,7 @@
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
+	radio.canhear_range = -1
 	radio.recalculateChannels()
 	spark_system = new
 	spark_system.set_up(4,1,src)

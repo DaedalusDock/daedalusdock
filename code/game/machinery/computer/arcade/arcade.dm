@@ -654,7 +654,7 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 		return
 	to_chat(c_user, span_warning("You move your hand towards the machine, and begin to hesitate as a bloodied guillotine emerges from inside of it..."))
 	usr.played_game()
-	if(do_after(c_user, 50, target = src))
+	if(do_after(c_user, src, 5 SECONDS))
 		to_chat(c_user, span_userdanger("The guillotine drops on your arm, and the machine sucks it in!"))
 		playsound(loc, 'sound/weapons/slice.ogg', 25, TRUE, -1)
 		var/which_hand = BODY_ZONE_L_ARM

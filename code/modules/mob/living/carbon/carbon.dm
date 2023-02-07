@@ -975,15 +975,14 @@
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
 
-	switch(new_bodypart.body_part)
-		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs + 1)
-		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands + 1)
+	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
+		set_num_legs(num_legs + 1)
+		if(!new_bodypart.bodypart_disabled)
+			set_usable_legs(usable_legs + 1)
+	if(new_bodypart.bodypart_flags & BP_IS_GRABBY_LIMB)
+		set_num_hands(num_hands + 1)
+		if(!new_bodypart.bodypart_disabled)
+			set_usable_hands(usable_hands + 1)
 
 
 ///Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].

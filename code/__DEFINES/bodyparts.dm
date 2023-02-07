@@ -29,11 +29,15 @@
 #define BP_TENDON_CUT (1<<5)
 #define BP_HAS_ARTERY (1<<6)
 #define BP_ARTERY_CUT (1<<7)
+/// This limb has a "hand" and contributes to usable_arms
+#define BP_IS_GRABBY_LIMB (1<<8)
+/// This limb is able to be used for movement and contributes to usable_legs
+#define BP_IS_MOVEMENT_LIMB (1<<9)
 
 #define STOCK_BP_FLAGS_CHEST (BP_HAS_BLOOD | BP_HAS_BONES)
 #define STOCK_BP_FLAGS_HEAD (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
-#define STOCK_BP_FLAGS_ARMS (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
-#define STOCK_BP_FLAGS_LEGS (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
+#define STOCK_BP_FLAGS_ARMS (BP_IS_GRABBY_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
+#define STOCK_BP_FLAGS_LEGS (BP_IS_MOVEMENT_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
 
 //check_bones() return values
 #define CHECKBONES_NONE (0<<0)

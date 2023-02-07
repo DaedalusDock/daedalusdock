@@ -659,6 +659,31 @@
 
 	if(!owner)
 		return
+
+	if(bodypart_flags & BP_IS_MOVEMENT_LIMB)
+		if(!.)
+			if(bodypart_disabled)
+				owner.set_usable_legs(owner.usable_legs - 1)
+				if(owner.stat < UNCONSCIOUS)
+					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+		else if(!bodypart_disabled)
+			owner.set_usable_legs(owner.usable_legs + 1)
+
+	if(bodypart_flags & BP_IS_GRABBY_LIMB)
+		if(!.)
+			if(bodypart_disabled)
+				owner.set_usable_hands(owner.usable_hands - 1)
+				if(owner.stat < UNCONSCIOUS)
+					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+				if(held_index)
+					owner.dropItemToGround(owner.get_item_for_held_index(held_index))
+		else if(!bodypart_disabled)
+			owner.set_usable_hands(owner.usable_hands + 1)
+
+		if(owner.hud_used)
+			var/atom/movable/screen/inventory/hand/hand_screen_object = owner.hud_used.hand_slots["[held_index]"]
+			hand_screen_object?.update_appearance()
+
 	owner.update_health_hud() //update the healthdoll
 	owner.update_body()
 

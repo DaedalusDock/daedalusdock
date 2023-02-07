@@ -25,9 +25,13 @@
 #define BP_HAS_BLOOD (1<<1)
 #define BP_HAS_BONES (1<<2)
 #define BP_BROKEN_BONES (1<<3)
+///UNIMPLIMENTED - PLACEHOLDER
 #define BP_HAS_TENDON (1<<4)
+///UNIMPLIMENTED - PLACEHOLDER
 #define BP_TENDON_CUT (1<<5)
+///UNIMPLIMENTED - PLACEHOLDER
 #define BP_HAS_ARTERY (1<<6)
+///UNIMPLIMENTED - PLACEHOLDER
 #define BP_ARTERY_CUT (1<<7)
 /// This limb has a "hand" and contributes to usable_arms
 #define BP_IS_GRABBY_LIMB (1<<8)

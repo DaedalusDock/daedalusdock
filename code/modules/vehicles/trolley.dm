@@ -71,7 +71,7 @@
 		user.visible_message(
 			span_notice("[user] begins to load [new_cargo] onto [src]..."),
 			span_notice("You begin to load [new_cargo] onto [src]..."))
-		if(do_after(user, 2 SECONDS, new_cargo))
+		if(do_after(user, new_cargo, 2 SECONDS))
 			if(LAZYLEN(occupants))
 				to_chat(user, span_warning("You cannot load [new_cargo] whilst someone is riding [src]!"))
 				return FALSE

@@ -305,7 +305,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(istype(attacking_item, /obj/item/shard))
 		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/spear
 		user.balloon_alert(user, "crafting spear...")
-		if(do_after(user, initial(recipe_to_use.time), src)) // we do initial work here to get the correct timer
+		if(do_after(user, src, initial(recipe_to_use.time))) // we do initial work here to get the correct timer
 			var/obj/item/spear/crafted_spear = new /obj/item/spear()
 
 			remove_item_from_storage(user)
@@ -321,7 +321,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(istype(attacking_item, /obj/item/assembly/igniter) && !(HAS_TRAIT(attacking_item, TRAIT_NODROP)))
 		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/stunprod
 		user.balloon_alert(user, "crafting cattleprod...")
-		if(do_after(user, initial(recipe_to_use.time), src))
+		if(do_after(user, src, initial(recipe_to_use.time)))
 			var/obj/item/melee/baton/security/cattleprod/prod = new
 
 			remove_item_from_storage(user)
@@ -678,7 +678,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return
 	to_chat(user, span_warning("You begin gathering strength..."))
 	playsound(get_turf(src), 'sound/magic/lightning_chargeup.ogg', 65, TRUE)
-	if(do_after(user, 90, target = src))
+	if(do_after(user, src, 9 SECONDS))
 		to_chat(user, span_userdanger("You gather power! Time for a home run!"))
 		homerun_ready = 1
 	..()

@@ -42,7 +42,7 @@
 
 /datum/traitor_objective/hack_comm_console/proc/begin_hack(mob/user, obj/machinery/computer/communications/target)
 	target.AI_notify_hack()
-	if(!do_after(user, 30 SECONDS, target))
+	if(!do_after(user, target, 30 SECONDS))
 		return
 	succeed_objective()
 	target.hack_console(user)

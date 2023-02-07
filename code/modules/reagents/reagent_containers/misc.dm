@@ -153,6 +153,6 @@
 
 	else if(istype(A) && (src in user))
 		user.visible_message(span_notice("[user] starts to wipe down [A] with [src]!"), span_notice("You start to wipe down [A] with [src]..."))
-		if(do_after(user,30, target = A))
+		if(do_after(user, A, 30))
 			user.visible_message(span_notice("[user] finishes wiping off [A]!"), span_notice("You finish wiping off [A]."))
 			A.wash(CLEAN_SCRUB)

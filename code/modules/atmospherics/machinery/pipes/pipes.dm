@@ -21,6 +21,7 @@
 	add_atom_colour(pipe_color, FIXED_COLOUR_PRIORITY)
 	volume = ATMOS_DEFAULT_VOLUME_PIPE * device_type
 	. = ..()
+	update_device_type()
 
 ///I have no idea why there's a new and at this point I'm too afraid to ask
 /obj/machinery/atmospherics/pipe/Initialize(mapload)
@@ -127,3 +128,26 @@
 		pipe_color = paint_color
 		update_node_icon()
 	return paintable
+
+/obj/machinery/atmospherics/pipe/proc/update_device_type()
+	var/volume_mod
+	for(var/obj/thing in nodes)
+		volume_mod++
+	var/new_volume = ATMOS_DEFAULT_VOLUME_PIPE * volume_mod
+	if(volume != new_volume)
+		if(parent)
+			parent.air.volume -= volume
+			parent.air.volume += new_volume
+		volume = new_volume
+
+/obj/machinery/atmospherics/pipe/atmos_init(list/node_connects)
+	. = ..()
+	update_device_type()
+
+/obj/machinery/atmospherics/pipe/disconnect(obj/machinery/atmospherics/reference)
+	. = ..()
+	update_device_type()
+
+/obj/machinery/atmospherics/pipe/add_member(obj/machinery/atmospherics/considered_device)
+	. = ..()
+	update_device_type()

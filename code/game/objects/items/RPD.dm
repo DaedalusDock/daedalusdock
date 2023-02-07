@@ -26,7 +26,6 @@ GLOBAL_LIST_INIT(atmos_pipe_recipes, list(
 		new /datum/pipe_info/pipe("Volume Pump", /obj/machinery/atmospherics/components/binary/volume_pump, TRUE),
 		new /datum/pipe_info/pipe("Gas Filter", /obj/machinery/atmospherics/components/trinary/filter, TRUE),
 		new /datum/pipe_info/pipe("Gas Mixer", /obj/machinery/atmospherics/components/trinary/mixer, TRUE),
-		new /datum/pipe_info/pipe("Passive Gate", /obj/machinery/atmospherics/components/binary/passive_gate, TRUE),
 		new /datum/pipe_info/pipe("Injector", /obj/machinery/atmospherics/components/unary/outlet_injector, TRUE),
 		new /datum/pipe_info/pipe("Scrubber", /obj/machinery/atmospherics/components/unary/vent_scrubber, TRUE),
 		new /datum/pipe_info/pipe("Unary Vent", /obj/machinery/atmospherics/components/unary/vent_pump, TRUE),
@@ -446,7 +445,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	if((mode & DESTROY_MODE) && istype(attack_target, /obj/item/pipe) || istype(attack_target, /obj/structure/disposalconstruct) || istype(attack_target, /obj/structure/c_transit_tube) || istype(attack_target, /obj/structure/c_transit_tube_pod) || istype(attack_target, /obj/item/pipe_meter) || istype(attack_target, /obj/structure/disposalpipe/broken))
 		to_chat(user, span_notice("You start destroying a pipe..."))
 		playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
-		if(do_after(user, destroy_speed, target = attack_target))
+		if(do_after(user, attack_target, destroy_speed))
 			activate()
 			qdel(attack_target)
 		return
@@ -470,7 +469,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 
 			to_chat(user, span_notice("You start reprogramming \the [S]..."))
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
-			if(!do_after(user, reprogram_speed, target = S))
+			if(!do_after(user, S, reprogram_speed))
 				return
 
 			// Something else could have changed the target's state while we were waiting in do_after
@@ -530,7 +529,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 				playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
 				if (recipe.type == /datum/pipe_info/meter)
 					to_chat(user, span_notice("You start building a meter..."))
-					if(do_after(user, atmos_build_speed, target = attack_target))
+					if(do_after(user, attack_target, atmos_build_speed))
 						activate()
 						var/obj/item/pipe_meter/PM = new /obj/item/pipe_meter(get_turf(attack_target))
 						PM.setAttachLayer(piping_layer)
@@ -541,7 +540,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 						to_chat(user, span_notice("You can't build this object on the layer..."))
 						return ..()
 					to_chat(user, span_notice("You start building a pipe..."))
-					if(do_after(user, atmos_build_speed, target = attack_target))
+					if(do_after(user, attack_target, atmos_build_speed))
 						if(recipe.all_layers == FALSE && (piping_layer == 1 || piping_layer == 5))//double check to stop cheaters (and to not waste time waiting for something that can't be placed)
 							to_chat(user, span_notice("You can't build this object on the layer..."))
 							return ..()
@@ -577,7 +576,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 					return
 				to_chat(user, span_notice("You start building a disposals pipe..."))
 				playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
-				if(do_after(user, disposal_build_speed, target = attack_target))
+				if(do_after(user, attack_target, disposal_build_speed))
 					var/obj/structure/disposalconstruct/C = new (attack_target, queued_p_type, queued_p_dir, queued_p_flipped)
 
 					if(!C.can_place())
@@ -608,7 +607,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 
 				to_chat(user, span_notice("You start building a transit tube..."))
 				playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
-				if(do_after(user, transit_build_speed, target = attack_target))
+				if(do_after(user, attack_target, transit_build_speed))
 					activate()
 					if(queued_p_type == /obj/structure/c_transit_tube_pod)
 						var/obj/structure/c_transit_tube_pod/pod = new /obj/structure/c_transit_tube_pod(attack_target)

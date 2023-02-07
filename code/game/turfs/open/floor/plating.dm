@@ -1,6 +1,6 @@
 /**
  * PLATINGS
- * 
+ *
  * Handle interaction with tiles and lets you put stuff on top of it.
  */
 /turf/open/floor/plating
@@ -56,7 +56,7 @@
 			return
 		else
 			to_chat(user, span_notice("You begin reinforcing the floor..."))
-			if(do_after(user, 30, target = src))
+			if(do_after(user, src, 30))
 				if (R.get_amount() >= 2 && !istype(src, /turf/open/floor/engine))
 					PlaceOnTop(/turf/open/floor/engine, flags = CHANGETURF_INHERIT_AIR)
 					playsound(src, 'sound/items/deconstruct.ogg', 80, TRUE)

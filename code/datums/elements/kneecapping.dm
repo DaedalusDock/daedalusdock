@@ -79,7 +79,7 @@
 	attacker.visible_message(span_warning("[attacker] carefully aims [attacker.p_their()] [weapon] for a swing at [target]'s kneecaps!"), span_danger("You carefully aim \the [weapon] for a swing at [target]'s kneecaps!"))
 	log_combat(attacker, target, "started aiming a swing to break the kneecaps of", weapon)
 
-	if(do_mob(attacker, target, 3 SECONDS, interaction_key = weapon))
+	if(do_after(attacker, target, 3 SECONDS, interaction_key = weapon))
 		attacker.visible_message(span_warning("[attacker] swings [attacker.p_their()] [weapon] at [target]'s kneecaps!"), span_danger("You swing \the [weapon] at [target]'s kneecaps!"))
 		leg.create_wound_easy(/datum/wound/puncture/gaping, 30)
 		log_combat(attacker, target, "broke the kneecaps of", weapon)

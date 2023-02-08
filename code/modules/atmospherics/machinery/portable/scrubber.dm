@@ -57,8 +57,8 @@
 	excited = TRUE
 
 	var/atom/target = holding || get_turf(src)
-	if(scrub(target.unsafe_return_air()) && isturf(target))
-		SSzas.mark_for_update(target)
+	if(scrub(target.unsafe_return_air()))
+		SAFE_ZAS_UPDATE(target)
 
 
 	return ..()
@@ -187,7 +187,7 @@
 	if(!holding)
 		var/turf/muhturf = get_turf(src)
 		if(scrub(muhturf.unsafe_return_air()))
-			SSzas.mark_for_update(muhturf)
+			SAFE_ZAS_UPDATE(muhturf)
 
 	return ..()
 

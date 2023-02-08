@@ -361,17 +361,20 @@
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/checkTileGraphic(list/graphic_add, list/graphic_remove)
-	for(var/obj/effect/gas_overlay/O as anything in graphic)
-		if(O.type == /obj/effect/gas_overlay/heat)
-			continue
-		if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
-			LAZYADD(graphic_remove, O)
-	for(var/g in xgm_gas_data.overlay_limit)
+	if(length(graphic))
+		for(var/obj/effect/gas_overlay/O as anything in graphic)
+			if(O.type == /obj/effect/gas_overlay/heat)
+				continue
+			if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
+				LAZYADD(graphic_remove, O)
+	var/overlay_limit
+	for(var/g in gas)
+		overlay_limit = xgm_gas_data.overlay_limit[g]
 		//Overlay isn't applied for this gas, check if it's valid and needs to be added.
-		if(gas[g] > xgm_gas_data.overlay_limit[g])
+		if(!isnull(overlay_limit) && gas[g] > overlay_limit)
 			///Inlined getTileOverlay(g)
 			var/tile_overlay = LAZYACCESS(tile_overlay_cache, g)
-			if(!tile_overlay)
+			if(isnull(tile_overlay))
 				LAZYSET(tile_overlay_cache, g, new/obj/effect/gas_overlay(null, g))
 				tile_overlay = tile_overlay_cache[g]
 			///End inline
@@ -382,12 +385,12 @@
 	var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
 	//If it's hot add something
 	if(temperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
-		if(!tile_overlay)
+		if(isnull(tile_overlay))
 			LAZYSET(tile_overlay_cache, "heat", new/obj/effect/gas_overlay/heat(null, "heat"))
 			tile_overlay = tile_overlay_cache["heat"]
 		if(!(tile_overlay in graphic))
 			LAZYADD(graphic_add, tile_overlay)
-	else if(tile_overlay in graphic)
+	else if(length(graphic) && (tile_overlay in graphic))
 		LAZYADD(graphic_remove, tile_overlay)
 
 	//Apply changes

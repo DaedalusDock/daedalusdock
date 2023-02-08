@@ -199,6 +199,7 @@ SUBSYSTEM_DEF(zas)
 
 		starttime = REALTIMEOFDAY
 		fire(FALSE, TRUE)
+		fire(FALSE, TRUE)
 
 		to_chat(world, span_boldannounce("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 

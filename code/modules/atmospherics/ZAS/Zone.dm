@@ -103,7 +103,7 @@ Class Procs:
 	T.maptext = null
 #endif
 	if(!T.can_safely_remove_from_zone())
-		INVOKE_ASYNC(src, .proc/rebuild)
+		rebuild()
 		return
 
 	LAZYREMOVE(atmos_sensitive_contents, T.atmos_sensitive_contents)
@@ -166,6 +166,8 @@ Class Procs:
 
 ///Invalidates the zone and marks all of it's contents for update.
 /zone/proc/rebuild()
+	set waitfor = FALSE
+
 	if(invalid)
 		return //Short circuit for explosions where rebuild is called many times over.
 	invalidate()

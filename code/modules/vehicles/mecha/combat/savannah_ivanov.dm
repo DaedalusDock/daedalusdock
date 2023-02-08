@@ -88,7 +88,7 @@
  * the other way the loop ends is if charge level (var it's ticking up) gets to SKYFALL_CHARGELEVEL_LAUNCH, in which case it ends the loop and does the ability.
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/skyfall_charge_loop()
-	if(!do_after(owner, SKYFALL_SINGLE_CHARGE_TIME, target = chassis))
+	if(!do_after(owner, chassis, SKYFALL_SINGLE_CHARGE_TIME))
 		abort_skyfall()
 		return
 	skyfall_charge_level++
@@ -117,7 +117,7 @@
 		return
 	S_TIMER_COOLDOWN_START(chassis, COOLDOWN_MECHA_SKYFALL, skyfall_cooldown_time)
 	button_icon_state = "mech_savannah_cooldown"
-	UpdateButtons()
+	build_all_button_icons()
 	addtimer(CALLBACK(src, .proc/reset_button_icon), skyfall_cooldown_time)
 	for(var/mob/living/shaken in range(7, chassis))
 		shake_camera(shaken, 3, 3)
@@ -220,7 +220,7 @@
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/reset_button_icon()
 	button_icon_state = "mech_savannah"
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/vehicle/sealed/mecha/ivanov_strike
 	name = "Ivanov Strike"
@@ -255,7 +255,7 @@
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/reset_button_icon()
 	button_icon_state = "mech_ivanov"
-	UpdateButtons()
+	build_all_button_icons()
 
 /**
  * ## start_missile_targeting
@@ -323,7 +323,7 @@
 		"explosionSize" = list(0,0,1,2)
 	))
 	button_icon_state = "mech_ivanov_cooldown"
-	UpdateButtons()
+	build_all_button_icons()
 	addtimer(CALLBACK(src, /datum/action/vehicle/sealed/mecha/ivanov_strike.proc/reset_button_icon), strike_cooldown_time)
 
 //misc effects

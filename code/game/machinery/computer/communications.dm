@@ -270,7 +270,7 @@
 			if (!shuttle.prerequisites_met())
 				to_chat(usr, span_alert("You have not met the requirements for purchasing this shuttle."))
 				return
-			var/datum/bank_account/bank_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
+			var/datum/bank_account/bank_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 			if (bank_account.account_balance < shuttle.credit_cost)
 				return
 			SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_PURCHASED
@@ -572,7 +572,7 @@
 							"possibleAnswers" = message.possible_answers,
 						))
 			if (STATE_BUYING_SHUTTLE)
-				var/datum/bank_account/bank_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
+				var/datum/bank_account/bank_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 				var/list/shuttles = list()
 
 				for (var/shuttle_id in SSmapping.shuttle_templates)
@@ -736,12 +736,12 @@
 
 /obj/machinery/computer/communications/proc/post_status(command, data1, data2)
 
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = command))
+	var/datum/signal/status_signal = new(src, list("command" = command))
 	switch(command)
 		if("message")
 			status_signal.data["msg1"] = data1
@@ -749,7 +749,7 @@
 		if("alert")
 			status_signal.data["picture_state"] = data1
 
-	frequency.post_signal(src, status_signal)
+	frequency.post_signal(status_signal)
 
 /obj/machinery/computer/communications/Destroy()
 	GLOB.shuttle_caller_list -= src

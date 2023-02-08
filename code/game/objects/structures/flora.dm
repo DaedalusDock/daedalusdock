@@ -40,7 +40,7 @@
 	if(attacking_item.hitsound)
 		playsound(my_turf, attacking_item.hitsound, 100, FALSE, FALSE)
 	user.visible_message(span_notice("[user] begins to cut down [src] with [attacking_item]."),span_notice("You begin to cut down [src] with [attacking_item]."), span_hear("You hear sawing."))
-	if(!do_after(user, 1000/attacking_item.force, target = src)) //5 seconds with 20 force, 8 seconds with a hatchet, 20 seconds with a shard.
+	if(!do_after(user, src, 1000/attacking_item.force)) //5 seconds with 20 force, 8 seconds with a hatchet, 20 seconds with a shard.
 		return
 	user.visible_message(span_notice("[user] fells [src] with [attacking_item]."),span_notice("You fell [src] with [attacking_item]."), span_hear("You hear the sound of a tree falling."))
 	playsound(my_turf, 'sound/effects/meteorimpact.ogg', 100 , FALSE, FALSE)
@@ -354,7 +354,7 @@
 	. = ..()
 	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && I.get_sharpness())
 		to_chat(user,span_notice("You start trimming [src]."))
-		if(do_after(user,3 SECONDS,target=src))
+		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming [src]."))
 			change_visual()
 

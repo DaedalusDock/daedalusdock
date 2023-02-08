@@ -30,6 +30,8 @@
 	var/id = null
 	///Connection to the radio processing
 	var/datum/radio_frequency/radio_connection
+	//Last power draw, for the progress bar in the UI
+	var/last_power_draw = 0
 
 /obj/machinery/atmospherics/components/binary/pump/Initialize(mapload)
 	. = ..()
@@ -53,7 +55,7 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/pump/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	if(radio_connection)
 		radio_connection = null
 	return ..()
@@ -62,6 +64,8 @@
 	icon_state = (on && is_operational) ? "pump_on-[set_overlay_offset(piping_layer)]" : "pump_off-[set_overlay_offset(piping_layer)]"
 
 /obj/machinery/atmospherics/components/binary/pump/process_atmos()
+	last_power_draw = 0
+
 	if(!on || !is_operational)
 		return
 
@@ -73,6 +77,7 @@
 	if(draw > -1)
 		update_parents()
 		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
 
 /**
@@ -81,10 +86,10 @@
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/pump/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -93,14 +98,14 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = on,
 		"target_output" = target_pressure,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/pump/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -113,6 +118,8 @@
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
 	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["last_draw"] = last_power_draw
+	data["max_power"] = power_rating
 	return data
 
 /obj/machinery/atmospherics/components/binary/pump/ui_act(action, params)

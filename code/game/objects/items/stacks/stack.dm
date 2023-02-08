@@ -268,7 +268,7 @@
 					adjusted_time = (recipe.time * recipe.trait_modifier)
 				else
 					adjusted_time = recipe.time
-				if(!do_after(usr, adjusted_time, target = usr))
+				if(!do_after(usr, time = adjusted_time))
 					return
 				if(!building_checks(recipe, multiplier))
 					return

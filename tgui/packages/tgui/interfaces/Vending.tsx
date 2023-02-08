@@ -176,7 +176,7 @@ const VendingRow = (props, context) => {
   const free
     = !onstation
     || product.price === 0;
-  const discount = !product.premium && department === user?.department;
+  const discount = !product.premium && access;
   const remaining = custom ? product.amount : productStock.amount;
   const redPrice = Math.round(product.price * jobDiscount);
   const disabled

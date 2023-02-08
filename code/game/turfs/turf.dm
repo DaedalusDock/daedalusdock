@@ -480,12 +480,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 	if(length(src_object.contents()))
 		to_chat(usr, span_notice("You start dumping out the contents..."))
-		if(!do_after(usr,20,target=src_object.parent))
+		if(!do_after(usr, src_object.parent, 20))
 			return FALSE
 
 	var/list/things = src_object.contents()
 	var/datum/progressbar/progress = new(user, things.len, src)
-	while (do_after(usr, 1 SECONDS, src, NONE, FALSE, CALLBACK(src_object, /datum/component/storage.proc/mass_remove_from_storage, src, things, progress)))
+	while (do_after(usr, src, 1 SECONDS, NONE, FALSE, CALLBACK(src_object, /datum/component/storage.proc/mass_remove_from_storage, src, things, progress)))
 		stoplag(1)
 	progress.end_progress()
 

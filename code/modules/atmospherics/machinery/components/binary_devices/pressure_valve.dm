@@ -1,3 +1,6 @@
+#define REGULATE_INPUT	1 //shuts off when input side is below the target pressure
+#define REGULATE_OUTPUT	2 //shuts off when output side is above the target pressure
+
 /obj/machinery/atmospherics/components/binary/pressure_valve
 	icon_state = "pvalve_map-3"
 	name = "pressure valve"
@@ -17,6 +20,8 @@
 	var/datum/radio_frequency/radio_connection
 	///Check if the gas is moving from one pipenet to the other
 	var/is_gas_flowing = FALSE
+	///Which side is the valve regulating?
+	var/regulate_mode = REGULATE_OUTPUT
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/CtrlClick(mob/user)
 	if(can_interact(user))
@@ -34,7 +39,7 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	if(radio_connection)
 		radio_connection = null
 	return ..()
@@ -55,11 +60,19 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	if(air1.returnPressure() > target_pressure)
-		var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-		if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, transfer_moles)) >= 0)
-			update_parents()
-			is_gas_flowing = TRUE
+	var/output_starting_pressure = air2.returnPressure()
+	var/input_starting_pressure = air1.returnPressure()
+
+	var/pressure_delta
+	switch(regulate_mode)
+		if(REGULATE_INPUT)
+			pressure_delta = input_starting_pressure - target_pressure
+		if(REGULATE_OUTPUT)
+			pressure_delta = target_pressure - output_starting_pressure
+
+	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)
+		update_parents()
+		is_gas_flowing = TRUE
 	else
 		is_gas_flowing = FALSE
 	update_icon_nopipes()
@@ -72,10 +85,10 @@
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/pressure_valve/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -84,14 +97,14 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = on,
 		"target_output" = target_pressure,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/relaymove(mob/living/user, direction)
 	if(!on || direction != dir)
@@ -109,6 +122,7 @@
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
 	data["max_pressure"] = round(ONE_ATMOSPHERE*100)
+	data["regulate_mode"] = regulate_mode
 	return data
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/ui_act(action, params)
@@ -131,6 +145,12 @@
 			if(.)
 				target_pressure = clamp(pressure, 0, ONE_ATMOSPHERE*100)
 				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
+		if("regulate")
+			switch(regulate_mode)
+				if(REGULATE_INPUT)
+					regulate_mode = REGULATE_OUTPUT
+				if(REGULATE_OUTPUT)
+					regulate_mode = REGULATE_INPUT
 	update_appearance()
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/atmos_init()

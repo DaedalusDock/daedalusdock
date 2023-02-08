@@ -1744,6 +1744,13 @@
 		var/item = pick(contains)
 		new item(C)
 
+/datum/supply_pack/service/trolley
+	name = "Trolley Crate"
+	desc = "A crate containing a single trolley for transporting upto three crates at once."
+	cost = CARGO_CRATE_VALUE * 2
+	contains = list(/obj/vehicle/ridden/trolley)
+	crate_name = "trolley crate"
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Organic /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

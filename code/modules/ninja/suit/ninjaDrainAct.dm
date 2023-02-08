@@ -34,7 +34,7 @@
 				drain = ninja_suit.cell.maxcharge - ninja_suit.cell.charge
 				maxcapacity = TRUE//Reached maximum battery capacity.
 
-			if (do_after(ninja ,10, target = src))
+			if (do_after(ninja , src, 10))
 				spark_system.start()
 				playsound(loc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 				cell.use(drain)
@@ -75,7 +75,7 @@
 				drain = ninja_suit.cell.maxcharge - ninja_suit.cell.charge
 				maxcapacity = TRUE
 
-			if (do_after(ninja,10, target = src))
+			if (do_after(ninja, src, 10))
 				spark_system.start()
 				playsound(loc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 				charge -= drain
@@ -95,7 +95,7 @@
 	var/drain_total = 0
 
 	if(charge)
-		if(do_after(ninja, 30, target = src))
+		if(do_after(ninja, src, 30))
 			drain_total = charge
 			if(ninja_suit.cell.charge + charge > ninja_suit.cell.maxcharge)
 				ninja_suit.cell.charge = ninja_suit.cell.maxcharge
@@ -121,7 +121,7 @@
 	to_chat(ninja, span_notice("Hacking \the [src]..."))
 	AI_notify_hack()
 	to_chat(ninja, span_notice("Encrypted source code detected. Overloading storage device..."))
-	if(do_after(ninja, 30 SECONDS, target = src))
+	if(do_after(ninja, src, 30 SECONDS))
 		overload_source_code_hdd()
 		to_chat(ninja, span_notice("Sabotage complete. Storage device overloaded."))
 		var/datum/antagonist/ninja/ninja_antag = ninja.mind.has_antag_datum(/datum/antagonist/ninja)
@@ -139,7 +139,7 @@
 
 	to_chat(ninja, span_notice("Research notes detected. Corrupting data..."))
 
-	if(!do_after(ninja, 30 SECONDS, target = src))
+	if(!do_after(ninja, src, 30 SECONDS))
 		return
 
 	SSresearch.science_tech.modify_points_all(0)
@@ -176,7 +176,7 @@
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 	AI_notify_hack()
-	if(!do_after(ninja, 30 SECONDS, src))
+	if(!do_after(ninja, src, 30 SECONDS))
 		return
 	hack_console(ninja)
 	ninja_gloves.communication_console_hack_success = TRUE
@@ -216,7 +216,7 @@
 	while(!maxcapacity && src)
 		drain = (round((rand(ninja_gloves.mindrain, ninja_gloves.maxdrain))/2))
 		var/drained = 0
-		if(wire_powernet && do_after(ninja ,10, target = src))
+		if(wire_powernet && do_after(ninja , src, 10))
 			drained = min(drain, delayed_surplus())
 			add_delayedload(drained)
 			if(drained < drain)//if no power on net, drain apcs
@@ -258,7 +258,7 @@
 			if(ninja_suit.cell.charge + drain > ninja_suit.cell.maxcharge)
 				drain = ninja_suit.cell.maxcharge - ninja_suit.cell.charge
 				maxcapacity = TRUE
-			if (do_after(ninja, 10, target = src))
+			if (do_after(ninja, src, 10))
 				spark_system.start()
 				playsound(loc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 				cell.use(drain)
@@ -275,7 +275,7 @@
 		return INVALID_DRAIN
 
 	to_chat(src, span_danger("Warni-***BZZZZZZZZZRT*** UPLOADING SPYDERPATCHER VERSION 9.5.2..."))
-	if (do_after(ninja, 60, target = src))
+	if (do_after(ninja, src, 60))
 		spark_system.start()
 		playsound(loc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		to_chat(src, span_danger("UPLOAD COMPLETE. NEW CYBORG MODEL DETECTED.  INSTALLING..."))

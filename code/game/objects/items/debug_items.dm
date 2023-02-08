@@ -68,6 +68,9 @@
 		"Blood Filter" = image(icon = 'icons/obj/surgery.dmi', icon_state = "bloodfilter"),
 		"Rolling Pin" = image(icon = 'icons/obj/kitchen.dmi', icon_state = "rolling_pin"),
 		"Wire Brush" = image(icon = 'icons/obj/tools.dmi', icon_state = "wirebrush"),
+		"Salvage Cutter" = image(icon = 'icons/obj/tools.dmi', icon_state = "miniwelder"),
+		"Salvage Boltgun" = image(icon = 'icons/obj/tools.dmi', icon_state = "wrench"),
+		"Salvage Drill" = image(icon = 'icons/obj/tools.dmi', icon_state = "screwdriver")
 		)
 	var/tool_result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
@@ -113,3 +116,9 @@
 			tool_behaviour = TOOL_ROLLINGPIN
 		if("Wire Brush")
 			tool_behaviour = TOOL_RUSTSCRAPER
+		if("Salvage Cutter")
+			tool_behaviour = TOOL_SALVAGECUTTER
+		if("Salvage Boltgun")
+			tool_behaviour = TOOL_SALVAGEBOLTGUN
+		if("Salvage Saw")
+			tool_behaviour = TOOL_SALVAGESAW

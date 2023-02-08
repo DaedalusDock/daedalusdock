@@ -92,8 +92,8 @@
 */
 ///Simple heuristic for determining if removing the turf from it's zone will not partition the zone (A very bad thing).
 /turf/proc/can_safely_remove_from_zone()
-	if(!zone)
-		return 1
+	if(isnull(zone))
+		return TRUE
 
 	var/check_dirs
 	GET_ZONE_NEIGHBOURS(src, check_dirs)
@@ -125,7 +125,7 @@
 	if(!simulated)
 		return ..()
 
-	if(zone && zone.invalid) //this turf's zone is in the process of being rebuilt
+	if(!isnull(zone) && zone.invalid) //this turf's zone is in the process of being rebuilt
 		copy_zone_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
@@ -153,7 +153,7 @@
 	#endif
 		var/turf/target = get_step(src, d)
 
-		if(!target) //edge of map
+		if(isnull(target)) //edge of map
 			continue
 
 		target.open_directions &= ~reverse_dir[d]
@@ -192,7 +192,7 @@
 
 			if(TURF_HAS_VALID_ZONE(target))
 				//Might have assigned a zone, since this happens for each direction.
-				if(!zone)
+				if(isnull(zone))
 					//We do not merge if
 					//    they are blocking us and we are not blocking them, or if
 					//    we are blocking them and not blocking ourselves - this prevents tiny zones from forming on doorways.
@@ -397,7 +397,7 @@
 /turf/open/space/atmos_spawn_air()
 	return
 
-///Checks a turf to see if any of it's contents are dense. Is NOT recursive.
+///Checks a turf to see if any of it's contents are dense. Is NOT recursive. See also is_blocked_turf()
 /turf/proc/contains_dense_objects()
 	if(density)
 		return 1

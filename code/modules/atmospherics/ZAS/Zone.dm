@@ -90,6 +90,8 @@ Class Procs:
 	T.update_graphic(air.graphic)
 
 	if(T.atmos_sensitive_contents)
+		if(isnull(atmos_sensitive_contents))
+			SSzas.zones_with_sensitive_contents += src
 		LAZYDISTINCTADD(atmos_sensitive_contents, T.atmos_sensitive_contents)
 
 ///Removes the given turf from the zone. Will invalidate the zone if it was the last turf.
@@ -107,6 +109,9 @@ Class Procs:
 		return
 
 	LAZYREMOVE(atmos_sensitive_contents, T.atmos_sensitive_contents)
+	if(isnull(atmos_sensitive_contents))
+		SSzas.zones_with_sensitive_contents -= src
+
 	T.copy_zone_air()
 
 	for(var/d in GLOB.cardinals)

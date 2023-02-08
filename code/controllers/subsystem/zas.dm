@@ -98,6 +98,7 @@ SUBSYSTEM_DEF(zas)
 	var/list/active_fire_zones = list()
 	var/list/active_hotspots = list()
 	var/list/active_edges = list()
+	var/list/zones_with_sensitive_contents = list()
 
 	var/tmp/list/deferred = list()
 	var/tmp/list/processing_edges
@@ -199,7 +200,6 @@ SUBSYSTEM_DEF(zas)
 
 		starttime = REALTIMEOFDAY
 		fire(FALSE, TRUE)
-		fire(FALSE, TRUE)
 
 		to_chat(world, span_boldannounce("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 
@@ -211,7 +211,7 @@ SUBSYSTEM_DEF(zas)
 		processing_edges = active_edges.Copy()
 		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
-		processing_exposure = zones.Copy()
+		processing_exposure = zones_with_sensitive_contents.Copy()
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
@@ -220,6 +220,7 @@ SUBSYSTEM_DEF(zas)
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
 	var/list/curr_zones_again = zones_to_update.Copy()
+	var/list/curr_sensitive_zones = processing_exposure
 
 	last_process = "TILES"
 
@@ -309,9 +310,6 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_check_edges = MC_AVERAGE(cost_check_edges, TICK_DELTA_TO_MS(cached_cost))
 
-	if(no_mc_tick) //Initialization doesn't need to process exposure, waste of time
-		return
-
 //////////EDGES//////////
 	last_process = "EDGES"
 	timer = TICK_USAGE_REAL
@@ -369,6 +367,7 @@ SUBSYSTEM_DEF(zas)
 			CHECK_TICK
 		else if (MC_TICK_CHECK)
 			return
+
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
@@ -395,18 +394,13 @@ SUBSYSTEM_DEF(zas)
 		return
 
 /////////ATMOS EXPOSE//////
-/*
+
 	last_process = "ATMOS EXPOSE"
 	timer = TICK_USAGE_REAL
 	cached_cost = 0
-	while(processing_exposure.len)
-		var/zone/Z = processing_exposure[processing_exposure.len]
-		processing_exposure.len--
-
-		if(!LAZYLEN(Z.atmos_sensitive_contents))
-			if(MC_TICK_CHECK)
-				return
-			continue
+	while(curr_sensitive_zones.len)
+		var/zone/Z = curr_sensitive_zones[curr_sensitive_zones.len]
+		curr_sensitive_zones.len--
 
 		for(var/atom/sensitive as anything in Z.atmos_sensitive_contents)
 			sensitive.atmos_expose(Z.air, Z.air.temperature)
@@ -416,7 +410,7 @@ SUBSYSTEM_DEF(zas)
 
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_exposure = MC_AVERAGE(cost_exposure, TICK_DELTA_TO_MS(cached_cost))
-*/
+
 
 ///Adds a zone to the subsystem, gives it's identifer, and marks it for update.
 /datum/controller/subsystem/zas/proc/add_zone(zone/z)
@@ -428,6 +422,7 @@ SUBSYSTEM_DEF(zas)
 /datum/controller/subsystem/zas/proc/remove_zone(zone/z)
 	zones -= z
 	zones_to_update -= z
+	zones_with_sensitive_contents -= z
 	if (processing_zones)
 		processing_zones -= z
 

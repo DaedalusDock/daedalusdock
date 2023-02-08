@@ -70,6 +70,7 @@ SUBSYSTEM_DEF(zas)
 	var/cached_cost = 0
 	var/cost_tiles = 0
 	var/cost_deferred_tiles = 0
+	var/cost_check_edges = 0
 	var/cost_edges = 0
 	var/cost_fires = 0
 	var/cost_hotspots = 0
@@ -217,6 +218,7 @@ SUBSYSTEM_DEF(zas)
 	var/list/curr_fire = processing_fires
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
+	var/list/curr_zones_again = zones_to_update.Copy()
 
 	last_process = "TILES"
 
@@ -283,6 +285,31 @@ SUBSYSTEM_DEF(zas)
 			return
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_deferred_tiles = MC_AVERAGE(cost_deferred_tiles, TICK_DELTA_TO_MS(cached_cost))
+
+//////////CHECK_EDGES/////////
+	last_process = "CHECK EDGES"
+	timer = TICK_USAGE_REAL
+	cached_cost = 0
+	while (curr_zones_again.len)
+		var/zone/Z = curr_zones_again[curr_zones_again.len]
+		curr_zones_again.len--
+
+		var/list/cache_for_speed = Z.edges
+		for(var/edge_source in Z.edges)
+			var/connection_edge/E = cache_for_speed[edge_source]
+			if(!E.excited)
+				E.recheck()
+
+		if (no_mc_tick)
+			CHECK_TICK
+		else if (MC_TICK_CHECK)
+			return
+
+	cached_cost += TICK_USAGE_REAL - timer
+	cost_check_edges = MC_AVERAGE(cost_check_edges, TICK_DELTA_TO_MS(cached_cost))
+
+	if(no_mc_tick) //Initialization doesn't need to process exposure, waste of time
+		return
 
 //////////EDGES//////////
 	last_process = "EDGES"

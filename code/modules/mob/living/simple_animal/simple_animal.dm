@@ -325,7 +325,7 @@
 	if(isturf(loc) && isopenturf(loc))
 		var/turf/open/ST = loc
 		if(ST.air)
-			var/datum/gas_mixture/muhair = ST.unsafe_return_air()
+			var/list/muhair = ST.unsafe_return_air().gas
 
 			var/plas = muhair[GAS_PLASMA]
 			var/oxy = muhair[GAS_OXYGEN]

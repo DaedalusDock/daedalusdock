@@ -43,7 +43,13 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(copy_air)
 			if(TURF_HAS_VALID_ZONE(T))
 				T.zone.remove_turf(T)
-			T.air.copyFrom(unsafe_return_air())
+			if(T.simulated)
+				if(isnull(T.air))
+					T.make_air()
+				T.air.copyFrom(unsafe_return_air())
+			else
+				T.initial_gas = initial_gas
+				T.make_air()
 			SSzas.mark_for_update(T)
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself

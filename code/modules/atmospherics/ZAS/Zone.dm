@@ -219,16 +219,6 @@ Class Procs:
 	clock = TICK_USAGE
 	#endif
 
-	// Update connected edges.
-	for(var/edge_source in edges)
-		var/connection_edge/E = edges[edge_source]
-		if(!E.excited)
-			E.recheck()
-
-	#ifdef ZASDBG
-	SSzas.zonetime["check edges"] = TICK_USAGE_TO_MS(clock)
-	clock = TICK_USAGE
-	#endif
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)

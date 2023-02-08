@@ -561,7 +561,17 @@
 		return
 	if(TURF_HAS_VALID_ZONE(src))
 		zone.remove_turf(src)
-	air.copyFrom(target_turf.return_air())
+
+	if(isnull(target_turf.air))
+		target_turf.make_air()
+
+	if(simulated)
+		if(isnull(air))
+			make_air()
+		air.copyFrom(target_turf.unsafe_return_air())
+	else
+		initial_gas = target_turf.initial_gas
+		make_air()
 	SSzas.mark_for_update(src)
 
 /datum/gas_mixture/proc/leak_to_enviroment(datum/gas_mixture/environment)

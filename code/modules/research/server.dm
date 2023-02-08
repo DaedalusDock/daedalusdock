@@ -92,10 +92,10 @@
 	if(!(machine_stat & (NOPOWER|BROKEN))) //Blatently stolen from space heater.
 		var/turf/L = loc
 		if(istype(L))
-			var/datum/gas_mixture/env = L.return_air()
+			var/datum/gas_mixture/env = L.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 			if(env.temperature < (heat_amt+T0C))
 
-				var/transfer_moles = 0.25 * env.get_moles()
+				var/transfer_moles = 0.25 * env.total_moles
 
 				var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
@@ -107,7 +107,7 @@
 					removed.temperature = min((removed.temperature*heat_capacity + heating_power)/heat_capacity, 1000)
 
 				env.merge(removed)
-				//air_update_turf(FALSE, FALSE)
+				SAFE_ZAS_UPDATE(L)
 
 /proc/fix_noid_research_servers()
 	var/list/no_id_servers = list()

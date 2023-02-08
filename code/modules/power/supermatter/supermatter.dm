@@ -291,7 +291,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 	var/turf/local_turf = get_turf(src)
 
-	var/datum/gas_mixture/air = local_turf.return_air()
+	var/datum/gas_mixture/air = local_turf.unsafe_return_air()
 
 	// singlecrystal set to true eliminates the back sign on the gases breakdown.
 	data["singlecrystal"] = TRUE
@@ -329,7 +329,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	var/turf/local_turf = get_turf(src)
 	if(!local_turf)
 		return SUPERMATTER_ERROR
-	var/datum/gas_mixture/air = local_turf.return_air()
+	var/datum/gas_mixture/air = local_turf.unsafe_return_air()
 	if(!air)
 		return SUPERMATTER_ERROR
 
@@ -620,8 +620,9 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	//This gotdamn variable is a boomer and keeps giving me problems
 	var/turf/target_turf = get_turf(target)
 	var/pressure = 1
-	if(target_turf?.return_air())
-		pressure = max(1,target_turf.return_air().returnPressure())
+	var/datum/gas_mixture/environment = target_turf?.unsafe_return_air()
+	if(environment)
+		pressure = max(1, environment.returnPressure())
 	//We get our range with the strength of the zap and the pressure, the higher the former and the lower the latter the better
 	var/new_range = clamp(zap_str / pressure * 10, 2, 7)
 	var/zap_count = 1

@@ -74,6 +74,7 @@ SUBSYSTEM_DEF(zas)
 	var/cost_fires = 0
 	var/cost_hotspots = 0
 	var/cost_zones = 0
+	var/cost_exposure = 0
 
 	//The variable setting controller
 	var/datum/zas_controller/settings
@@ -102,6 +103,7 @@ SUBSYSTEM_DEF(zas)
 	var/tmp/list/processing_fires
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
+	var/tmp/list/processing_exposure
 
 	#ifdef ZASDBG
 	/// Profile data for zone.tick(), in milliseconds
@@ -175,7 +177,7 @@ SUBSYSTEM_DEF(zas)
 
 	var/simulated_turf_count = 0
 
-	for(var/turf/S)
+	for(var/turf/S as turf in world)
 		if(!S.simulated)
 			continue
 
@@ -207,6 +209,7 @@ SUBSYSTEM_DEF(zas)
 		processing_edges = active_edges.Copy()
 		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
+		processing_exposure = zones.Copy()
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
@@ -359,6 +362,33 @@ SUBSYSTEM_DEF(zas)
 
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_zones = MC_AVERAGE(cost_zones, TICK_DELTA_TO_MS(cached_cost))
+
+	if(no_mc_tick) //Initialization doesn't need to process exposure, waste of time
+		return
+
+/////////ATMOS EXPOSE//////
+/*
+	last_process = "ATMOS EXPOSE"
+	timer = TICK_USAGE_REAL
+	cached_cost = 0
+	while(processing_exposure.len)
+		var/zone/Z = processing_exposure[processing_exposure.len]
+		processing_exposure.len--
+
+		if(!LAZYLEN(Z.atmos_sensitive_contents))
+			if(MC_TICK_CHECK)
+				return
+			continue
+
+		for(var/atom/sensitive as anything in Z.atmos_sensitive_contents)
+			sensitive.atmos_expose(Z.air, Z.air.temperature)
+
+		if(MC_TICK_CHECK)
+			return
+
+	cached_cost += TICK_USAGE_REAL - timer
+	cost_exposure = MC_AVERAGE(cost_exposure, TICK_DELTA_TO_MS(cached_cost))
+*/
 
 ///Adds a zone to the subsystem, gives it's identifer, and marks it for update.
 /datum/controller/subsystem/zas/proc/add_zone(zone/z)

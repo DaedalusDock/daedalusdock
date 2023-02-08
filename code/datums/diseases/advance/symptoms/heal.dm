@@ -515,12 +515,10 @@
 
 /datum/symptom/heal/plasma/CanHeal(datum/disease/advance/A)
 	var/mob/living/M = A.affected_mob
-	var/datum/gas_mixture/environment = M.loc.return_air()
+	var/datum/gas_mixture/environment = M.loc.unsafe_return_air()
 
 	. = 0
 
-	if(M.loc)
-		environment = M.loc.return_air()
 	if(environment && environment.getGroupGas(GAS_PLASMA))
 		. += power * min(0.5, environment.gas[GAS_PLASMA] * HEALING_PER_MOL)
 	if(M.reagents.has_reagent(/datum/reagent/toxin/plasma, needs_metabolizing = TRUE))

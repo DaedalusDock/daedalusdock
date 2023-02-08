@@ -229,14 +229,6 @@ Class Procs:
 	SSzas.zonetime["check edges"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
 	#endif
-	if(LAZYLEN(atmos_sensitive_contents))
-		for(var/atom/sensitive as anything in atmos_sensitive_contents)
-			sensitive.atmos_expose(air, air.temperature)
-
-	#ifdef ZASDBG
-	SSzas.zonetime["queue temperature"] = TICK_USAGE_TO_MS(clock)
-	clock = TICK_USAGE
-	#endif
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)

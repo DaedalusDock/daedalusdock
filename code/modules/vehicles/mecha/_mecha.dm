@@ -435,9 +435,9 @@
 				if(int_tank_air && int_tank_air.get_volume() > 0) //heat the air_contents
 					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(5,7.5)*delta_time)
 			if(cabin_air && cabin_air.get_volume()>0)
-				cabin_air.temperature = min(6000+T0C, cabin_air.get_temperature()+rand(5,7.5)*delta_time)
-				if(cabin_air.get_temperature() > max_temperature/2)
-					take_damage(delta_time*2/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
+				cabin_air.temperature = min(6000+T0C, cabin_air.temperature+rand(5,7.5)*delta_time)
+				if(cabin_air.temperature > max_temperature/2)
+					take_damage(delta_time*2/round(max_temperature/cabin_air.temperature,0.1), BURN, 0, 0)
 
 
 		if(internal_damage & MECHA_INT_TANK_BREACH) //remove some air from internal tank

@@ -266,6 +266,8 @@
 ///Wrapper for [/datum/gas_mixture/proc/remove()]
 /turf/remove_air(amount as num)
 	var/datum/gas_mixture/GM = return_air()
+	if(TURF_HAS_VALID_ZONE(src))
+		SSzas.mark_zone_update(zone)
 	return GM.remove(amount)
 
 ///Merges a given gas mixture with the turf's current air source.
@@ -274,6 +276,8 @@
 		return
 	var/datum/gas_mixture/my_air = return_air()
 	my_air.merge(giver)
+	if(TURF_HAS_VALID_ZONE(src))
+		SSzas.mark_zone_update(zone)
 
 ///Basically adjustGasWithTemp() but a turf proc.
 /turf/proc/assume_gas(gasid, moles, temp = null)
@@ -286,6 +290,9 @@
 		my_air.adjustGas(gasid, moles)
 	else
 		my_air.adjustGasWithTemp(gasid, moles, temp)
+
+	if(TURF_HAS_VALID_ZONE(src))
+		SSzas.mark_zone_update(zone)
 
 	return 1
 
@@ -304,12 +311,31 @@
 			SSzas.mark_zone_update(zone)
 			return zone.air
 		else
-			if(!air)
-				make_air()
 			copy_zone_air()
 			return air
 	else
-		if(!air)
+		if(isnull(air))
+			make_air()
+		return air
+
+///Return the currently used gas_mixture datum. DOES NOT MARK ZONE FOR UPDATE.
+/turf/unsafe_return_air()
+	RETURN_TYPE(/datum/gas_mixture)
+	if(!simulated)
+		if(air)
+			return air.copy()
+		else
+			make_air()
+			return air.copy()
+
+	else if(zone)
+		if(!zone.invalid)
+			return zone.air
+		else
+			copy_zone_air()
+			return air
+	else
+		if(isnull(air))
 			make_air()
 		return air
 
@@ -351,7 +377,7 @@
 
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.
 /turf/proc/copy_zone_air()
-	if(!air)
+	if(isnull(air))
 		air = new/datum/gas_mixture
 	air.copyFrom(zone.air)
 	air.group_multiplier = 1
@@ -396,4 +422,4 @@
 	return length(adjacent_turfs) ? adjacent_turfs : null
 
 /turf/open/return_analyzable_air()
-	return return_air()
+	return unsafe_return_air()

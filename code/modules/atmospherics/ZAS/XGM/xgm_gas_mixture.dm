@@ -124,11 +124,6 @@
 	var/our_heatcap = getHeatCapacity()
 	var/share_heatcap = sharer.getHeatCapacity()
 
-	// Special exception: there isn't enough air around to be worth processing this edge next tick, zap both to zero.
-	if(total_moles + sharer.total_moles <= MINIMUM_AIR_TO_SUSPEND)
-		gas.Cut()
-		sharer.gas.Cut()
-
 	for(var/g in gas|sharer.gas)
 		var/comb = gas[g] + sharer.gas[g]
 		comb /= volume + sharer.volume
@@ -546,21 +541,6 @@
 /datum/gas_mixture/proc/get_volume()
 	return max(0, volume)
 
-/datum/gas_mixture/proc/get_temperature()
-	return temperature
-
-/datum/gas_mixture/proc/get_moles()
-	//updateValues()
-	return total_moles
-
-////END LINDA COMPATABILITY////
-
-///Returns the gas list with an update.
-/datum/gas_mixture/proc/getGases()
-	RETURN_TYPE(/list)
-	//updateValues()
-	return gas
-
 /datum/gas_mixture/proc/returnVisuals()
 	AIR_UPDATE_VALUES(src)
 	checkTileGraphic()
@@ -577,8 +557,12 @@
 	return new_gas
 
 /turf/open/proc/copy_air_with_tile(turf/open/target_turf)
-	if(istype(target_turf))
-		return_air().copyFrom(target_turf.return_air())
+	if(!istype(target_turf))
+		return
+	if(TURF_HAS_VALID_ZONE(src))
+		zone.remove_turf(src)
+	air.copyFrom(target_turf.return_air())
+	SSzas.mark_for_update(src)
 
 /datum/gas_mixture/proc/leak_to_enviroment(datum/gas_mixture/environment)
 	pump_gas_passive(src, environment, calculate_transfer_moles(src, environment, src.returnPressure() - environment.returnPressure()))

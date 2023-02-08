@@ -118,7 +118,7 @@
 	. = ..()
 	if(stat == DEAD || !environment || !environment.getGroupGas(GAS_METHANE))
 		return
-	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.get_moles()
+	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.total_moles
 	if(miasma_percentage>=0.25)
 		heal_bodypart_damage(1)
 

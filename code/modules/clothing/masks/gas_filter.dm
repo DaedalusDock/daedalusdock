@@ -51,7 +51,7 @@
  *
  */
 /obj/item/gas_filter/proc/reduce_filter_status(datum/gas_mixture/breath)
-	var/list/gases = breath.getGases()
+	var/list/gases = breath.gas
 	var/danger_points = 0
 
 	for(var/gas_id in gases)

@@ -5,7 +5,7 @@
 			T.zone.dbg_data(src)
 		else
 			to_chat(mob, span_admin("ZASDBG: No zone here."))
-			var/datum/gas_mixture/mix = T.return_air()
+			var/datum/gas_mixture/mix = T.unsafe_return_air()
 			to_chat(mob,span_admin( "ZASDBG_MAIN: [mix.returnPressure()] kPa [mix.temperature] k"))
 			for(var/g in mix.gas)
 				to_chat(mob, span_admin("ZASDBG_GAS: [g]: [mix.gas[g]]\n"))

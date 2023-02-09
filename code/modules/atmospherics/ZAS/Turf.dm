@@ -47,7 +47,7 @@
 
 		var/turf/target = get_step(src, d)
 
-		if(!target)
+		if(isnull(target) || !target.simulated)
 			continue
 		var/us_blocks_target
 		ATMOS_CANPASS_TURF(us_blocks_target, src, target)
@@ -65,9 +65,8 @@
 
 		open_directions |= d
 
-		if(target.simulated)
-			if(TURF_HAS_VALID_ZONE(target))
-				SSzas.connect(target, src)
+		if(TURF_HAS_VALID_ZONE(target))
+			SSzas.connect(target, src)
 
 // Helper for can_safely_remove_from_zone().
 #define GET_ZONE_NEIGHBOURS(T, ret) \

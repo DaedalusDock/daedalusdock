@@ -112,3 +112,7 @@
   - balance: A number of impurities in chemicals are now inverses
   - bugfix: Mannitol now has a working inverse
   - bugfix: Gravity pulses have had their distortion effect restored.
+2023-02-09:
+  Spyroshark:
+  - rscadd: The Thermoelectric Generator is back! Now featuring a new UI. The parts
+      for it can be bought from cargo.

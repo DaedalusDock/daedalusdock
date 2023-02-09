@@ -481,7 +481,7 @@ SUBSYSTEM_DEF(zas)
 		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && A.zone.air.compare(B.zone.air)))
 			merge(A.zone,B.zone)
 			return TRUE
-	else if(!B.air)
+	else if(isnull(B.air))
 		/// The logic around get_edge() requires air to exist at this point, which it probably should.
 		B.make_air()
 

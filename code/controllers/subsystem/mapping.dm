@@ -143,7 +143,7 @@ SUBSYSTEM_DEF(mapping)
 		multiz_levels[z_level]["[UP]"] = TRUE
 		. = TRUE
 
-	#if defined(MULTIZAS) && !defined(UNIT_TESTS)
+	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
 	if(.)
 		stack_trace("Multi-Z map enabled with MULTIZAS enabled.")
 	#endif

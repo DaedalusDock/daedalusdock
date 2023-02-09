@@ -36,7 +36,7 @@
 	///used for tracking what listening should be in the absence of things forcing it off, eg its set to listen but gets emp'd temporarily
 	var/should_be_listening = TRUE
 
-	/// Both the range around the radio in which mobs can hear what it receives and the range the radio can hear
+	/// Both the range around the radio in which mobs can hear what it receives and the range the radio can hear. If it's -1, it will not broadcast sound or listen.
 	var/canhear_range = 3
 	/// Tracks the number of EMPs currently stacked.
 	var/emped = 0
@@ -86,8 +86,8 @@
 	for(var/ch_name in channels)
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
 
-	set_listening(listening)
-	set_broadcasting(broadcasting)
+	set_listening(should_be_listening)
+	set_broadcasting(should_be_broadcasting)
 	set_frequency(sanitize_frequency(frequency, freerange))
 	set_on(on)
 
@@ -416,10 +416,10 @@
 			if(.)
 				set_frequency(sanitize_frequency(tune, freerange))
 		if("listen")
-			set_listening(!listening)
+			set_listening(!listening, TRUE)
 			. = TRUE
 		if("broadcast")
-			set_broadcasting(!broadcasting)
+			set_broadcasting(!broadcasting, TRUE)
 			. = TRUE
 		if("channel")
 			var/channel = params["channel"]
@@ -502,6 +502,7 @@
 	name = "cyborg radio"
 	subspace_transmission = TRUE
 	subspace_switchable = TRUE
+	canhear_range = 0
 	dog_fashion = null
 
 /obj/item/radio/borg/resetChannels()
@@ -526,7 +527,7 @@
 		return
 
 	for(var/ch_name in channels)
-		SSradio.remove_object(src, GLOB.radiochannels[ch_name])
+		SSpackets.remove_object(src, GLOB.radiochannels[ch_name])
 		secure_radio_connections[ch_name] = null
 
 	if(keyslot)
@@ -556,7 +557,4 @@
 
 /obj/item/radio/off // Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.
 	dog_fashion = /datum/dog_fashion/back
-
-/obj/item/radio/off/Initialize()
-	. = ..()
-	set_listening(FALSE)
+	should_be_listening = FALSE

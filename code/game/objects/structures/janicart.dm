@@ -18,6 +18,7 @@
 
 /obj/structure/janitorialcart/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 	create_reagents(100, OPENCONTAINER)
 	GLOB.janitor_devices += src
 

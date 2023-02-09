@@ -169,7 +169,7 @@
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/living/user, params)
 	if(istype(W, /obj/item/knife) && !user.combat_mode)
 		to_chat(user, span_notice("You start attaching \the [W] to \the [src]..."))
-		if(do_after(user, 25, target = src))
+		if(do_after(user, src, 25))
 			deputize(W, user)
 	else
 		return ..()
@@ -315,7 +315,7 @@
 		update_icon_state()
 
 		var/turf/T = get_turf(A)
-		if(do_after(src, 1, target = T))
+		if(do_after(src, T, 1))
 			T.wash(CLEAN_SCRUB)
 			visible_message(span_notice("[src] cleans \the [T]."))
 			target = null

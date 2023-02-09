@@ -228,7 +228,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	SSpoints_of_interest.make_point_of_interest(src)
 	radio = new(src)
 	radio.keyslot = new radio_key
-	radio.set_listening(FALSE)
+	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
 	investigate_log("has been created.", INVESTIGATE_ENGINE)
 	if(is_main_engine)

@@ -34,7 +34,7 @@
 /obj/item/mod/module/pathfinder/attack(mob/living/target, mob/living/user, params)
 	if(!ishuman(target) || !implant)
 		return
-	if(!do_after(user, 1.5 SECONDS, target = target))
+	if(!do_after(user, target, 1.5 SECONDS))
 		balloon_alert(user, "interrupted!")
 		return
 	if(!implant.implant(target, user))
@@ -146,7 +146,7 @@
 	desc = "Recall a MODsuit anyplace, anytime."
 	check_flags = AB_CHECK_CONSCIOUS
 	background_icon_state = "bg_tech_blue"
-	icon_icon = 'icons/mob/actions/actions_mod.dmi'
+	button_icon = 'icons/mob/actions/actions_mod.dmi'
 	button_icon_state = "recall"
 	/// The cooldown for the recall.
 	COOLDOWN_DECLARE(recall_cooldown)

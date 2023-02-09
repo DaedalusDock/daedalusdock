@@ -14,8 +14,8 @@
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
-	radio.set_listening(FALSE)
+	radio.canhear_range = -1
+	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
 
 /obj/machinery/computer/bank_machine/Destroy()
@@ -31,7 +31,7 @@
 		var/obj/item/holochip/H = I
 		value = H.credits
 	if(value)
-		var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 		if(D)
 			D.adjust_money(value)
 			to_chat(user, span_notice("You deposit [I]. The Cargo Budget is now [D.account_balance] cr."))
@@ -48,7 +48,7 @@
 		end_syphon()
 		return
 	var/siphon_am = 100 * delta_time
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 	if(!D.has_money(siphon_am))
 		say("Cargo budget depleted. Halting siphon.")
 		end_syphon()
@@ -72,7 +72,7 @@
 
 /obj/machinery/computer/bank_machine/ui_data(mob/user)
 	var/list/data = list()
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 
 	if(D)
 		data["current_balance"] = D.account_balance

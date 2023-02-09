@@ -60,7 +60,7 @@
 		scrub_area.air_scrub_info -= id_tag
 		GLOB.air_scrub_names -= id_tag
 
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	radio_connection = null
 	SSairmachines.stop_processing_machine(src)
 	return ..()
@@ -158,9 +158,9 @@
 		icon_state = "scrub_purge"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
+	radio_connection = SSpackets.add_object(src, frequency, radio_filter_in)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/broadcast_status()
 	if(!radio_connection)
@@ -170,7 +170,7 @@
 	for(var/gas_id in ASSORTED_GASES)
 		f_types += list(list("gas_id" = gas_id, "gas_name" = gas_id, "enabled" = (gas_id in filter_types)))
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id_tag,
 		"frequency" = frequency,
 		"device" = "VS",
@@ -190,7 +190,7 @@
 
 	scrub_area.air_scrub_info[id_tag] = signal.data
 
-	radio_connection.post_signal(src, signal, radio_filter_out)
+	radio_connection.post_signal(signal, radio_filter_out)
 
 	return TRUE
 
@@ -368,7 +368,7 @@
 		. += span_notice("It is sleeping to conserve power.")
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user, list/modifiers)
-	if(!welded || !(do_after(user, 20, target = src)))
+	if(!welded || !(do_after(user, src, 20)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the scrubber."), span_hear("You hear loud scraping noises."))
 	welded = FALSE

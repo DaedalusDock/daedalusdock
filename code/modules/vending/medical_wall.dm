@@ -28,6 +28,8 @@
 	tiltable = FALSE
 	light_mask = "wallmed-light-mask"
 
+	discount_access = ACCESS_MEDICAL
+
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vending/wallmed, 32)
 
 /obj/item/vending_refill/wallmed

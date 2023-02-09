@@ -20,8 +20,8 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_CAR
+	paycheck = PAYCHECK_MEDIUM //ORIGINAL
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
 

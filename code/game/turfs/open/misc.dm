@@ -16,7 +16,7 @@
 
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN)
-	canSmoothWith = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_TURF_OPEN)
+	canSmoothWith = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
 
 	tiled_dirt = TRUE
 

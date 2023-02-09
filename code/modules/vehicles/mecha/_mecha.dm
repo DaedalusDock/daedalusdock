@@ -142,7 +142,7 @@
 	///Whether outside viewers can see the pilot inside
 	var/enclosed = TRUE
 	///In case theres a different iconstate for AI/MMI pilot(currently only used for ripley)
-	var/silicon_icon_state = null
+	var/silbutton_icon_state = null
 	///Currently ejecting, and unable to do things
 	var/is_currently_ejecting = FALSE
 
@@ -193,6 +193,7 @@
 
 /obj/item/radio/mech //this has to go somewhere
 	subspace_transmission = TRUE
+	canhear_range = 0
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
 	. = ..()
@@ -304,8 +305,8 @@
 	initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/strafe, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/mecha/proc/get_mecha_occupancy_state()
-	if((mecha_flags & SILICON_PILOT) && silicon_icon_state)
-		return silicon_icon_state
+	if((mecha_flags & SILICON_PILOT) && silbutton_icon_state)
+		return silbutton_icon_state
 	if(LAZYLEN(occupants))
 		return base_icon_state
 	return "[base_icon_state]-open"
@@ -799,7 +800,7 @@
 /obj/vehicle/sealed/mecha/proc/try_repair_int_damage(mob/user, flag_to_heal)
 	balloon_alert(user, get_int_repair_fluff_start(flag_to_heal))
 	log_message("[key_name(user)] starting internal damage repair for flag [flag_to_heal]", LOG_MECHA)
-	if(!do_after(user, 10 SECONDS, src))
+	if(!do_after(user, src, 10 SECONDS))
 		balloon_alert(user, get_int_repair_fluff_fail(flag_to_heal))
 		log_message("Internal damage repair for flag [flag_to_heal] failed.", LOG_MECHA, color="red")
 		return
@@ -1060,7 +1061,7 @@
 
 	visible_message(span_notice("[user] starts to insert an MMI into [name]."))
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		to_chat(user, span_notice("You stop inserting the MMI."))
 		return FALSE
 	if(LAZYLEN(occupants) < max_occupants)

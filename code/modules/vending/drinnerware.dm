@@ -30,8 +30,10 @@
 	refill_canister = /obj/item/vending_refill/dinnerware
 	default_price = PAYCHECK_ASSISTANT * 0.8
 	extra_price = PAYCHECK_HARD
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "dinnerware-light-mask"
+
+	discount_access = ACCESS_KITCHEN
 
 /obj/item/vending_refill/dinnerware
 	machine_name = "Plasteel Chef's Dinnerware Vendor"

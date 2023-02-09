@@ -54,8 +54,15 @@ GLOBAL_LIST_INIT(freqtospan, list(
 			continue
 		hearing_movable.Hear(rendered, src, message_language, message, , spans, message_mods)
 
+/**  The core proc behind say as a concept. Terrifyingly horrible. Called twice for no good reason.
+ * Arguments:
+ * * `speaker` - Either the mob speaking, or a virtualspeaker if this is a remote message of some kind.
+ * * `message_language` - The language the message is ICly in. For understanding.
+ * * `raw_message` - The actual text of the message.
+ * * `radio_freq` - can be either a numeric radio frequency, or an assoc list of `span` and `name`, to directly override them.
+ * * `face_name` - Do we use the "name" of the speaker, or get it's `real_name`, Used solely for hallucinations.
+*/
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
-	//This proc uses text() because it is faster than appending strings. Thanks BYOND.
 	//Basic span
 	var/spanpart1 = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
 	//Start name span.
@@ -82,7 +89,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(istype(D) && D.display_icon(src))
 			languageicon = "[D.get_icon()] "
 
-	messagepart = " <span class='message'>[say_emphasis(messagepart)]</span></span>"
+	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>"
 
 	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
 
@@ -147,12 +154,16 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		return "makes a strange sound."
 
 /proc/get_radio_span(freq)
+	if(islist(freq)) //Heehoo hijack bullshit
+		return freq["span"]
 	var/returntext = GLOB.freqtospan["[freq]"]
 	if(returntext)
 		return returntext
 	return "radio"
 
 /proc/get_radio_name(freq)
+	if(islist(freq)) //Heehoo hijack bullshit
+		return freq["name"]
 	var/returntext = GLOB.reverseradiochannels["[freq]"]
 	if(returntext)
 		return returntext
@@ -198,6 +209,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/job
 	var/atom/movable/source
 	var/obj/item/radio/radio
+	///goon speech sound voice type
+	var/voice_type = ""
 
 INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, _radio)
@@ -205,7 +218,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 	radio = _radio
 	source = M
 	if(istype(M))
-		name = radio.anonymize ? "Unknown" : M.GetVoice()
+		name = radio?.anonymize ? "Unknown" : M.GetVoice()
 		verb_say = M.verb_say
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim

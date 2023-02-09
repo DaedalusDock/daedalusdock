@@ -79,6 +79,8 @@
 	payment_department = ACCOUNT_MED
 	refill_canister = /obj/item/vending_refill/drugs
 
+	discount_access = ACCESS_MEDICAL
+
 /obj/item/vending_refill/drugs
 	machine_name = "NanoDrug Plus"
 	icon_state = "refill_medical"

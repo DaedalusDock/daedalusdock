@@ -31,7 +31,7 @@
 		)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_STATION_MASTER
 	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)

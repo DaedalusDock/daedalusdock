@@ -22,15 +22,60 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 	var/list/fields = list()
 
 /datum/data/record/Destroy()
-	if(src in GLOB.data_core.medical)
-		GLOB.data_core.medical -= src
-	if(src in GLOB.data_core.security)
-		GLOB.data_core.security -= src
-	if(src in GLOB.data_core.general)
-		GLOB.data_core.general -= src
-	if(src in GLOB.data_core.locked)
-		GLOB.data_core.locked -= src
+	GLOB.data_core.medical -= src
+	GLOB.data_core.security -= src
+	GLOB.data_core.general -= src
+	GLOB.data_core.locked -= src
 	. = ..()
+
+/// A helper proc to get the front photo of a character from the record.
+/// Handles calling `get_photo()`, read its documentation for more information.
+/datum/data/record/proc/get_front_photo()
+	return get_photo("photo_front", SOUTH)
+
+/// A helper proc to get the side photo of a character from the record.
+/// Handles calling `get_photo()`, read its documentation for more information.
+/datum/data/record/proc/get_side_photo()
+	return get_photo("photo_side", WEST)
+
+/**
+ * You shouldn't be calling this directly, use `get_front_photo()` or `get_side_photo()`
+ * instead.
+ *
+ * This is the proc that handles either fetching (if it was already generated before) or
+ * generating (if it wasn't) the specified photo from the specified record. This is only
+ * intended to be used by records that used to try to access `fields["photo_front"]` or
+ * `fields["photo_side"]`, and will return an empty icon if there isn't any of the necessary
+ * fields.
+ *
+ * Arguments:
+ * * field_name - The name of the key in the `fields` list, of the record itself.
+ * * orientation - The direction in which you want the character appearance to be rotated
+ * in the outputed photo.
+ *
+ * Returns an empty `/icon` if there was no `character_appearance` entry in the `fields` list,
+ * returns the generated/cached photo otherwise.
+ */
+/datum/data/record/proc/get_photo(field_name, orientation)
+	if(fields[field_name])
+		return fields[field_name]
+
+	if(!fields["character_appearance"])
+		return new /icon()
+
+	var/mutable_appearance/character_appearance = fields["character_appearance"]
+	character_appearance.setDir(orientation)
+
+	var/icon/picture_image = getFlatIcon(character_appearance)
+
+	var/datum/picture/picture = new
+	picture.picture_name = "[fields["name"]]"
+	picture.picture_desc = "This is [fields["name"]]."
+	picture.picture_image = picture_image
+
+	var/obj/item/photo/photo = new(null, picture)
+	fields[field_name] = photo
+	return photo
 
 /datum/data/crime
 	name = "crime"
@@ -76,7 +121,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 			for(var/datum/data/crime/crime in crimes)
 				if(crime.dataId == text2num(cDataId))
 					crime.paid = crime.paid + amount
-					var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_SEC)
+					var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_SEC]
 					D.adjust_money(amount)
 					return
 
@@ -233,17 +278,8 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/id = num2hex(record_id_num++,6)
 		if(!C)
 			C = H.client
-		var/image = get_id_photo(H, C, show_directions)
-		var/datum/picture/pf = new
-		var/datum/picture/ps = new
-		pf.picture_name = "[H]"
-		ps.picture_name = "[H]"
-		pf.picture_desc = "This is [H]."
-		ps.picture_desc = "This is [H]."
-		pf.picture_image = icon(image, dir = SOUTH)
-		ps.picture_image = icon(image, dir = WEST)
-		var/obj/item/photo/photo_front = new(null, pf)
-		var/obj/item/photo/photo_side = new(null, ps)
+
+		var/mutable_appearance/character_appearance = new(H.appearance)
 
 		//These records should ~really~ be merged or something
 		//General Record
@@ -266,8 +302,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 			G.fields["gender"] = "Female"
 		else
 			G.fields["gender"] = "Other"
-		G.fields["photo_front"] = photo_front
-		G.fields["photo_side"] = photo_side
+		G.fields["character_appearance"] = character_appearance
 		general += G
 
 		//Medical Record
@@ -317,7 +352,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		L.fields["identity"] = H.dna.unique_identity
 		L.fields["species"] = H.dna.species.type
 		L.fields["features"] = H.dna.features
-		L.fields["image"] = image
+		L.fields["character_appearance"] = character_appearance
 		L.fields["mindref"] = H.mind
 		locked += L
 	return
@@ -366,17 +401,5 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		crew_record["crimes"] = length(sec_record.fields["crim"])
 		security_records_out += list(crew_record)
 	return security_records_out
-
-/datum/datacore/proc/get_id_photo(mob/living/carbon/human/human, client/client, show_directions = list(SOUTH))
-	var/datum/job/humans_job = human.mind.assigned_role
-	var/datum/preferences/humans_prefs
-	if(!client)
-		client = human.client
-	if(client)
-		humans_prefs = client.prefs
-	if (human.dna.species.roundstart_changed)
-		return get_flat_human_icon(null, humans_job, null, DUMMY_HUMAN_SLOT_MANIFEST, show_directions)
-	else
-		return get_flat_human_icon(null, humans_job, humans_prefs, DUMMY_HUMAN_SLOT_MANIFEST, show_directions)
 
 #undef DUMMY_HUMAN_SLOT_MANIFEST

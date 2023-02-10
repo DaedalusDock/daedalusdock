@@ -21313,6 +21313,12 @@
 /obj/structure/window/reinforced/plasma/spawner/east,
 /turf/open/space/basic,
 /area/space/nearstation)
+"gys" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/commons/lounge)
 "gyB" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Storage Room";
@@ -38236,6 +38242,7 @@
 /area/commons/toilet/auxiliary)
 "mIs" = (
 /obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
 /turf/open/floor/wood,
 /area/commons/lounge)
 "mIB" = (
@@ -49568,7 +49575,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "qPr" = (
-/obj/structure/cable,
 /obj/structure/table/wood,
 /obj/item/clothing/mask/cigarette/pipe,
 /obj/machinery/light/directional/north,
@@ -59516,6 +59522,7 @@
 "uMs" = (
 /obj/structure/chair/stool/directional/east,
 /obj/effect/landmark/start/assistant,
+/obj/structure/cable,
 /turf/open/floor/wood,
 /area/commons/lounge)
 "uMv" = (
@@ -60552,10 +60559,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/command/bridge)
-"vhJ" = (
-/obj/structure/chair/stool/directional/east,
-/turf/open/floor/wood,
-/area/commons/lounge)
 "vhK" = (
 /obj/effect/turf_decal/tile/purple,
 /obj/structure/disposalpipe/segment{
@@ -64295,7 +64298,6 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "wCj" = (
-/obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/start/hangover,
@@ -104811,8 +104813,8 @@ rqH
 nuV
 qPr
 wCj
-iBW
-iBW
+fAJ
+fAJ
 iBW
 uQS
 tnM
@@ -105324,8 +105326,8 @@ aKf
 qYf
 nuV
 mIs
-taP
-vhJ
+gys
+bGE
 uMs
 bGE
 uQS

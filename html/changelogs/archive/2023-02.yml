@@ -116,3 +116,10 @@
   Spyroshark:
   - rscadd: The Thermoelectric Generator is back! Now featuring a new UI. The parts
       for it can be bought from cargo.
+2023-02-10:
+  Kapu1178:
+  - bugfix: You can enter vehicles again.
+  - bugfix: Heretics can draw their rune again
+  Spyroshark:
+  - rscadd: Groan tubes! Find them in the gaming vendor or win them from an arcade
+      machine.

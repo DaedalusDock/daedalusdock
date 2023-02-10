@@ -46,7 +46,8 @@
 	return ..()
 
 /obj/item/wirecutters/attack(mob/living/carbon/attacked_carbon, mob/user)
-	if(istype(attacked_carbon) && attacked_carbon.handcuffed && istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/cable))
+	if(istype(attacked_carbon) && attacked_carbon.handcuffed \
+	&& istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/cable) | istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/tape))
 		user.visible_message(span_notice("[user] cuts [attacked_carbon]'s restraints with [src]!"))
 		qdel(attacked_carbon.handcuffed)
 		return

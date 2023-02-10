@@ -65,8 +65,10 @@
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/restraints/handcuffs/cable))
 			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
+		else if(istype(handcuffed, /obj/item/restraints/handcuffs/tape))
+			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
 		else
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!")
+			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed]!")
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))

@@ -439,6 +439,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(!resolve_parent)
 		return
 
+	resolve_parent.update_appearance(UPDATE_ICON_STATE)
+
 	if(animated)
 		animate_parent()
 

@@ -144,7 +144,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 					price += CRATE_TAX
 					paying_for_this.bank_card_talk("Goody order size exceeds free shipping limit: Assessing [CRATE_TAX] credit S&H fee.")
 			else
-				paying_for_this = SSeconomy.get_dep_account(ACCOUNT_CAR)
+				paying_for_this = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 			if(paying_for_this)
 				if(!paying_for_this.adjust_money(-price))
 					if(spawning_order.paying_account)
@@ -156,7 +156,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 				LAZYADD(goodies_by_buyer[spawning_order.paying_account], spawning_order)
 			paying_for_this.bank_card_talk("Cargo order #[spawning_order.id] has shipped. [price] credits have been charged to your bank account.")
 			SSeconomy.track_purchase(paying_for_this, price, spawning_order.pack.name)
-			var/datum/bank_account/department/cargo = SSeconomy.get_dep_account(ACCOUNT_CAR)
+			var/datum/bank_account/department/cargo = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 			cargo.adjust_money(price - spawning_order.pack.get_cost()) //Cargo gets the handling fee
 		value += spawning_order.pack.get_cost()
 		SSshuttle.shopping_list -= spawning_order
@@ -208,12 +208,13 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		qdel(SO)
 
 	SSeconomy.import_total += value
-	var/datum/bank_account/cargo_budget = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/cargo_budget = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 	investigate_log("[purchases] orders in this shipment, worth [value] credits. [cargo_budget.account_balance] credits left.", INVESTIGATE_CARGO)
 
 /obj/docking_port/mobile/supply/proc/sell()
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
-	var/presale_points = D.account_balance
+	var/datum/bank_account/cargo_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
+	var/datum/bank_account/master_account = SSeconomy.station_master
+	var/total
 
 	if(!GLOB.exports_list.len) // No exports list? Generate it!
 		setupExports()
@@ -239,11 +240,15 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 			continue
 
 		msg += export_text + "\n"
-		D.adjust_money(ex.total_value[E])
+		total += ex.total_value[E]
 
-	SSeconomy.export_total += (D.account_balance - presale_points)
+	SSeconomy.export_total += total
+	var/cargo_split = round(total/2)
+	cargo_account.adjust_money(cargo_split)
+	master_account.adjust_money(total - cargo_split)
+
 	SSshuttle.centcom_message = msg
-	investigate_log("Shuttle contents sold for [D.account_balance - presale_points] credits. Contents: [ex.exported_atoms ? ex.exported_atoms.Join(",") + "." : "none."] Message: [SSshuttle.centcom_message || "none."]", INVESTIGATE_CARGO)
+	investigate_log("Shuttle contents sold for [total] credits. Contents: [ex.exported_atoms ? ex.exported_atoms.Join(",") + "." : "none."] Message: [SSshuttle.centcom_message || "none."]", INVESTIGATE_CARGO)
 
 /*
 	Generates a box of mail depending on our exports and imports.

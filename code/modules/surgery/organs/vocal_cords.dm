@@ -72,7 +72,7 @@
 	..()
 	cords = target
 
-/datum/action/item_action/organ_action/colossus/IsAvailable()
+/datum/action/item_action/organ_action/colossus/IsAvailable(feedback = FALSE)
 	if(world.time < cords.next_command)
 		return FALSE
 	if(!owner)

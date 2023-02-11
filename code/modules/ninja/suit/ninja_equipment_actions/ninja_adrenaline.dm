@@ -6,7 +6,7 @@
 	name = "Adrenaline Boost"
 	desc = "Inject a secret chemical that will counteract all movement-impairing effect."
 	button_icon_state = "repulse"
-	icon_icon = 'icons/mob/actions/actions_spells.dmi'
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 
 /**
  * Proc called to activate space ninja's adrenaline.

@@ -84,13 +84,13 @@
 	if(!.)
 		return
 
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = "friendcomputer"))
-	frequency.post_signal(src, status_signal)
+	var/datum/signal/status_signal = new(null, list("command" = "friendcomputer"))
+	frequency.post_signal(status_signal)
 
 /datum/emote/ai/emotion_display/blue_glow
 	key = "blueglow"

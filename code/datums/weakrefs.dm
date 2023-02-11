@@ -1,7 +1,7 @@
 /// Creates a weakref to the given input.
 /// See /datum/weakref's documentation for more information.
 /proc/WEAKREF(datum/input)
-	if(istype(input) && !QDELETED(input))
+	if(!QDELETED(input) && istype(input))
 		if(istype(input, /datum/weakref))
 			return input
 

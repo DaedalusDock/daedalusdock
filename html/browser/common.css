@@ -409,3 +409,37 @@ ul.sparse {
     display: inline-block;
     vertical-align: middle;
 }
+
+.codexLore
+{
+	color: #abdb9b;
+}
+
+.codexMechanics {
+	color: #9ebcd8;
+}
+
+.codexAntag
+{
+	color: #e5a2a2;
+}
+
+.codexControls
+{
+	color: #f1da73;
+}
+
+.dmCodexBody
+{
+	margin-left: 15px;
+}
+
+.dmCodexBody td
+{
+	vertical-align: top;
+}
+
+.dmCodexHeader
+{
+	text-align: center;
+}

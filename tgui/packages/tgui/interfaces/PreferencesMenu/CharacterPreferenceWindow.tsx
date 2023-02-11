@@ -80,6 +80,7 @@ export const CharacterPreferenceWindow = (props, context) => {
   return (
     <Window
       title="Character Preferences"
+      theme="rounded_base"
       width={920}
       height={770}
     >

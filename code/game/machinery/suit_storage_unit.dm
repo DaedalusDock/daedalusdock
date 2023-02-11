@@ -347,7 +347,7 @@
 	else
 		target.visible_message(span_warning("[user] starts shoving [target] into [src]!"), span_userdanger("[user] starts shoving you into [src]!"))
 
-	if(do_mob(user, target, 30))
+	if(do_after(user, target, 3 SECONDS))
 		if(occupant || helmet || suit || storage)
 			return
 		if(target == user)
@@ -471,7 +471,7 @@
 	user.visible_message(span_notice("You see [user] kicking against the doors of [src]!"), \
 		span_notice("You start kicking against the doors... (this will take about [DisplayTimeText(breakout_time)].)"), \
 		span_hear("You hear a thump from [src]."))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src )
 			return
 		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \

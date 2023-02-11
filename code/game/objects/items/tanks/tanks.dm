@@ -54,7 +54,6 @@
 	if(H.internal == src)
 		to_chat(H, span_notice("You close [src] valve."))
 		H.internal = null
-		H.update_internals_hud_icon(0)
 	else
 		if(!H.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 			if(!H.wear_mask)
@@ -72,8 +71,7 @@
 		else
 			to_chat(H, span_notice("You open [src] valve."))
 		H.internal = src
-		H.update_internals_hud_icon(1)
-	H.update_action_buttons_icon()
+	H?.update_mob_action_buttons()
 
 
 /obj/item/tank/Initialize(mapload)

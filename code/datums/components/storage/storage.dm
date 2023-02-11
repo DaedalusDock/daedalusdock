@@ -65,7 +65,7 @@
 	///altclick interact
 	var/quickdraw = FALSE
 
-	var/datum/action/item_action/storage_gather_mode/modeswitch_action
+	var/datum/weakref/modeswitch_action_ref
 
 	//Screen variables: Do not mess with these vars unless you know what you're doing. They're not defines so storage that isn't in the same location can be supported in the future.
 	var/screen_max_columns = 7 //These two determine maximum screen sizes.
@@ -176,17 +176,17 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /datum/component/storage/proc/update_actions()
 	SIGNAL_HANDLER
 
-	QDEL_NULL(modeswitch_action)
 	if(!isitem(parent) || !allow_quick_gather)
+		QDEL_NULL(modeswitch_action_ref)
 		return
-	var/obj/item/I = parent
-	modeswitch_action = new(I)
+	var/datum/action/existing = modeswitch_action_ref?.resolve()
+	if(!QDELETED(existing))
+		return
+
+	var/obj/item/item_parent = parent
+	var/datum/action/modeswitch_action = item_parent.add_item_action(/datum/action/item_action/storage_gather_mode)
 	RegisterSignal(modeswitch_action, COMSIG_ACTION_TRIGGER, .proc/action_trigger)
-	if(I.item_flags & IN_INVENTORY)
-		var/mob/M = I.loc
-		if(!istype(M))
-			return
-		modeswitch_action.Grant(M)
+	modeswitch_action_ref = WEAKREF(modeswitch_action)
 
 /datum/component/storage/proc/change_master(datum/component/storage/concrete/new_master)
 	if(new_master == src || (!isnull(new_master) && !istype(new_master)))
@@ -265,7 +265,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 	var/datum/progressbar/progress = new(pre_attack_mob, len, attack_item.loc)
 	var/list/rejections = list()
-	while(do_after(pre_attack_mob, 1 SECONDS, parent, NONE, FALSE, CALLBACK(src, .proc/handle_mass_pickup, things, attack_item.loc, rejections, progress)))
+	while(do_after(pre_attack_mob, parent, 1 SECONDS, NONE, FALSE, CALLBACK(src, .proc/handle_mass_pickup, things, attack_item.loc, rejections, progress)))
 		stoplag(1)
 	progress.end_progress()
 	to_chat(pre_attack_mob, span_notice("You put everything you could [insert_preposition] [parent]."))
@@ -323,7 +323,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	var/turf/T = get_turf(A)
 	var/list/things = contents()
 	var/datum/progressbar/progress = new(M, length(things), T)
-	while (do_after(M, 1 SECONDS, T, NONE, FALSE, CALLBACK(src, .proc/mass_remove_from_storage, T, things, progress)))
+	while (do_after(M, T, 1 SECONDS, NONE, FALSE, CALLBACK(src, .proc/mass_remove_from_storage, T, things, progress)))
 		stoplag(1)
 	progress.end_progress()
 

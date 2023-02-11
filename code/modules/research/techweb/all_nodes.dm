@@ -1996,6 +1996,7 @@
 		"largecrossbow",
 		"rapidsyringe",
 		"suppressor",
+		"super_pointy_tape",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 10000)
 	hidden = TRUE

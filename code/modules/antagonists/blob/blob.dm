@@ -62,7 +62,7 @@
 /datum/action/innate/blobpop
 	name = "Pop"
 	desc = "Unleash the blob"
-	icon_icon = 'icons/mob/blob.dmi'
+	button_icon = 'icons/mob/blob.dmi'
 	button_icon_state = "blob"
 
 	/// The time taken before this ability is automatically activated.

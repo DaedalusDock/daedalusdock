@@ -799,7 +799,7 @@
 	. = ..()
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("o2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_OXYGEN, reac_volume/20, temp)
 	return
 
 /datum/reagent/copper
@@ -832,7 +832,7 @@
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("n2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_NITROGEN, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/hydrogen
@@ -1386,7 +1386,7 @@
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("co2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_CO2, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/nitrous_oxide

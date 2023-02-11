@@ -142,6 +142,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EXPERIENCING_AIRFLOW "experiencing_airflow"
 /// In some kind of critical condition. Is able to succumb.
 #define TRAIT_CRITICAL_CONDITION "critical-condition"
+/// Whitelist for mobs that can read or write
+#define TRAIT_LITERATE "literate"
+/// Blacklist for mobs that can't read or write
+#define TRAIT_ILLITERATE "illiterate"
 #define TRAIT_BLIND "blind"
 #define TRAIT_MUTE "mute"
 #define TRAIT_EMOTEMUTE "emotemute"
@@ -298,7 +302,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_GUNFLIP "gunflip"
 /// Increases chance of getting special traumas, makes them harder to cure
 #define TRAIT_SPECIAL_TRAUMA_BOOST "special_trauma_boost"
-#define TRAIT_BLOODCRAWL_EAT "bloodcrawl_eat"
 #define TRAIT_SPACEWALK "spacewalk"
 /// Gets double arcade prizes
 #define TRAIT_GAMERGOD "gamer-god"
@@ -320,6 +323,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MARTIAL_ARTS_IMMUNE "martial_arts_immune"
 /// You've been cursed with a living duffelbag, and can't have more added
 #define TRAIT_DUFFEL_CURSE_PROOF "duffel_cursed"
+/// Immune to being afflicted by time stop (spell)
+#define TRAIT_TIME_STOP_IMMUNE "time_stop_immune"
 /// Revenants draining you only get a very small benefit.
 #define TRAIT_WEAK_SOUL "weak_soul"
 /// This mob has no soul
@@ -410,6 +415,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Whether or not orbiting is blocked or not
 #define TRAIT_ORBITING_FORBIDDEN "orbiting_forbidden"
+/// Whether a spider's consumed this mob
+#define TRAIT_SPIDER_CONSUMED "spider_consumed"
+/// Whether we're sneaking, from the alien sneak ability.
+/// Maybe worth generalizing into a general "is sneaky" / "is stealth" trait in the future.
+#define TRAIT_ALIEN_SNEAK "sneaking_alien"
 
 // METABOLISMS
 // Various jobs on the station have historically had better reactions
@@ -438,8 +448,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 // Normally only present in the mind of a Research Director.
 #define TRAIT_ROD_SUPLEX "rod_suplex"
 
-/// This mob is currently in rod form.
-#define TRAIT_ROD_FORM "rod_form"
+/// This mob is phased out of reality from magic, either a jaunt or rod form
+#define TRAIT_MAGICALLY_PHASED "magically_phased"
 
 //SKILLS
 #define TRAIT_UNDERWATER_BASKETWEAVING_KNOWLEDGE "underwater_basketweaving"
@@ -538,6 +548,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_ALLOW_HERETIC_CASTING "allow_heretic_casting"
 /// Designates a heart as a living heart for a heretic.
 #define TRAIT_LIVING_HEART "living_heart"
+// Allows dense objects to keep the player facing their direction of movement while being pulled
+#define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
+// Prevents this item from entering closets/crates entirely via insertion_allowed()
+#define TRAIT_REJECT_INSERTION "reject_insertion"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

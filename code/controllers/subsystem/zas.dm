@@ -563,7 +563,8 @@ SUBSYSTEM_DEF(zas)
 		mix_real.gas[gas] = 1 //So update values doesn't cull it
 
 	//Radon  sci
-	chosen_gases += GAS_RADON
+	if(!(GAS_RADON in chosen_gases))
+		chosen_gases += GAS_RADON
 	mix_real.gas[GAS_RADON] = 5
 	num_gases++
 
@@ -608,7 +609,6 @@ SUBSYSTEM_DEF(zas)
 	lavaland_atmos = mix_real
 	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
 
-	to_chat(world, span_announce(json_encode(mix_real.gas)))
 	var/log = "Lavaland atmos contains: "
 	for(var/gas in mix_real.gas)
 		log += "[mix_real.gas[gas]], "

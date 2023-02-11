@@ -191,7 +191,7 @@
 	var/datum/data/compressor_record/new_record = new()
 	new_record.name = "Log Recording #[record_number]"
 	new_record.experiment_source = inserted_tank.name
-	new_record.timestamp = station_time_timestamp()
+	new_record.timestamp = stationtime2text()
 	for(var/gas_path in leaked_gas_buffer.gas)
 		new_record.gas_data[gas_path] = leaked_gas_buffer.gas[gas_path]
 

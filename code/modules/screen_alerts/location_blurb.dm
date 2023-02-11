@@ -1,11 +1,9 @@
 /client/proc/show_location_blurb(duration = 3 SECONDS)
 	set waitfor = FALSE
 
-	var/location_name = station_name()
-
 	var/style = "font-family: 'Fixedsys'; -dm-text-outline: 1 black; font-size: 11px;"
 	var/area/A = get_area(mob)
-	var/text = "[stationdate2text()], [stationtime2text()]\n[station_name()], [A.name]"
+	var/text = "[stationdate2text()], [time_to_twelve_hour(stationtime2text())]\n[station_name()], [A.name]"
 	text = uppertext(text)
 
 	var/obj/effect/overlay/T = new()

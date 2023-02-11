@@ -59,6 +59,8 @@ Class Procs:
 	///The zone's gas contents
 	var/datum/gas_mixture/air = new
 	var/last_air_temperature = TCMB
+	///The air list of last tick()
+	VAR_PRIVATE/last_gas_list
 
 /zone/New()
 	SSzas.add_zone(src)
@@ -213,6 +215,12 @@ Class Procs:
 	SSzas.zonetime["update fires"] = TICK_USAGE_TO_MS(clock)
 	clock = TICK_USAGE
 	#endif
+
+	// Anything below this check only needs to be run if the zone's gas composition has changed.
+	if(!isnull(last_gas_list) && last_gas_list ~= air.gas)
+		return
+
+	last_gas_list = air.gas.Copy()
 
 	// Update gas overlays, with some reference passing tomfoolery.
 	var/list/graphic_add = list()

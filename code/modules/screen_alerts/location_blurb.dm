@@ -3,16 +3,18 @@
 
 	var/style = "font-family: 'Fixedsys'; -dm-text-outline: 1 black; font-size: 11px;"
 	var/area/A = get_area(mob)
-	var/text = "[stationdate2text()], [time_to_twelve_hour(station_time(), "hh:mm")]\n[station_name()], [A.name]"
+	var/text = "[stationdate2text()], [time_to_twelve_hour(station_time()-1, "hh:mm")]\n[station_name()], [A.name]"
 	text = uppertext(text)
 
-	var/obj/effect/overlay/T = new()
-	T.maptext_height = 64
-	T.maptext_width = 512
-	T.layer = FLOAT_LAYER
-	T.plane = HUD_PLANE
-	T.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	T.screen_loc = "LEFT+1,BOTTOM+2"
+	var/atom/movable/screen/T = new /atom/movable/screen{
+		maptext_height = 64;
+		maptext_width = 512;
+		layer = FLOAT_LAYER;
+		plane = HUD_PLANE;
+		appearance_flags = APPEARANCE_UI_IGNORE_ALPHA;
+		screen_loc = "LEFT+1,BOTTOM+2";
+		alpha = 0;
+	}
 
 	screen += T
 	animate(T, alpha = 255, time = 10)

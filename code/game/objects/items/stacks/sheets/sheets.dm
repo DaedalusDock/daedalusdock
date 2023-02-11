@@ -74,7 +74,7 @@
 		return TRUE
 	to_chat(user, span_notice("You start placing the window..."))
 	var/atom/target = mounted_on || location
-	if(do_after(user, 2 SECONDS, target = target))
+	if(do_after(user, target, 2 SECONDS))
 		/// Something we were mounting the window on was deleted, or unanchored
 		if(had_mounted_object && (QDELETED(mounted_on) || !mounted_on.anchored))
 			return TRUE

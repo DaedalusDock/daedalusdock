@@ -233,8 +233,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/New()
 	wings_icons = string_list(wings_icons)
 
-	if(!plural_form)
-		plural_form = "[name]\s"
+	//This isn't a simple \s use because it fucks up the codex.
+	plural_form ||= findtext_char(name, "s", -1) ? name : "[name]s"
 
 	return ..()
 
@@ -939,7 +939,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!I.equip_delay_self || bypass_equip_delay_self)
 		return TRUE
 	H.visible_message(span_notice("[H] start putting on [I]..."), span_notice("You start putting on [I]..."))
-	return do_after(H, I.equip_delay_self, target = H)
+	return do_after(H, H, I.equip_delay_self)
 
 
 /// Equips the necessary species-relevant gear before putting on the rest of the uniform.

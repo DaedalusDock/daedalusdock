@@ -45,7 +45,7 @@
 
 /obj/machinery/photocopier/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/payment, 5, SSeconomy.get_dep_account(ACCOUNT_CIV), PAYMENT_CLINICAL)
+	AddComponent(/datum/component/payment, 5, SSeconomy.department_accounts_by_id[ACCOUNT_STATION_MASTER], PAYMENT_CLINICAL)
 	toner_cartridge = new(src)
 
 /obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/ui)
@@ -420,7 +420,7 @@
 	else
 		user.visible_message(span_warning("[user] starts putting [target] onto the photocopier!"), span_notice("You start putting [target] onto the photocopier..."))
 
-	if(do_after(user, 20, target = src))
+	if(do_after(user, src, 20))
 		if(!target || QDELETED(target) || QDELETED(src) || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 

@@ -969,6 +969,16 @@
 	crate_name = "tesla coil crate"
 	crate_type = /obj/structure/closet/crate/engineering/electrical
 
+/datum/supply_pack/engine/teg
+	name = "Thermo-Electric Generator Crate"
+	desc = "All the components for building your own Thermoelectric Generator! Contains a generator and two circulators."
+	cost = CARGO_CRATE_VALUE * 15
+	contains = list(/obj/machinery/power/generator/unwrenched,
+					/obj/machinery/atmospherics/components/binary/circulator/unwrenched,
+					/obj/machinery/atmospherics/components/binary/circulator/unwrenched)
+	crate_name = "thermoelectric generator crate"
+	crate_type = /obj/structure/closet/crate/large
+
 /datum/supply_pack/engine/hypertorus_fusion_reactor
 	name = "HFR Crate"
 	desc = "The new and improved fusion reactor. Requires CE access to open."
@@ -1733,6 +1743,13 @@
 	for(var/i in 1 to 3)
 		var/item = pick(contains)
 		new item(C)
+
+/datum/supply_pack/service/trolley
+	name = "Trolley Crate"
+	desc = "A crate containing a single trolley for transporting upto three crates at once."
+	cost = CARGO_CRATE_VALUE * 2
+	contains = list(/obj/vehicle/ridden/trolley)
+	crate_name = "trolley crate"
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Organic /////////////////////////////////////////

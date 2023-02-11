@@ -144,6 +144,24 @@
 	/// Mobtype of last user. Typecast to [/mob/living] for initial() usage
 	var/mob/living/last_user_mobtype
 
+	//Data Networks
+	/// Do we use packet networks/link to netjacks?
+	/// see _DEFINES/packetnet.dm
+	var/network_flags = NONE
+
+	//Datanet related vars.
+
+	/// Linked Network Terminal
+	var/obj/machinery/power/data_terminal/netjack
+	/// Network ID, automatically generated when `generate_netid` is true on definition.
+	var/net_id
+	/// General purpose 'master' ID for slave machines.
+	var/master_id
+	/// A short string shown to players fingerprinting the device type as part of `command:ping`
+	var/net_class = "PNET_CALL_A_PRIEST"
+	/// Additional data stapled to pings, reduces network usage for some machines.
+	var/ping_addition = null
+
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
@@ -167,6 +185,9 @@
 		flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
 	}
 
+	if(network_flags & NETWORK_FLAG_GEN_ID)
+		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
@@ -177,6 +198,8 @@
 
 	update_current_power_usage()
 	setup_area_power_relationship()
+	if(network_flags & NETWORK_FLAG_USE_DATATERMINAL)
+		link_to_jack()
 
 /obj/machinery/Destroy()
 	GLOB.machines.Remove(src)
@@ -185,6 +208,7 @@
 	QDEL_LIST(component_parts)
 	QDEL_NULL(circuit)
 	unset_static_power()
+	unlink_from_jack(ignore_check = TRUE)
 	return ..()
 
 /**
@@ -571,7 +595,7 @@
 		say("[market_verb] NAP Violation: Unable to pay.")
 		nap_violation(occupant_mob)
 		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.get_dep_account(payment_department)
+	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
 	if(department_account)
 		department_account.adjust_money(fair_market_price)
 	return TRUE

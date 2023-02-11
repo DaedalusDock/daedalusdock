@@ -524,7 +524,7 @@
 		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
 						span_notice("You try to perform CPR on [target.name]... Hold still!"))
 
-		if (!do_mob(src, target, time = panicking ? CPR_PANIC_SPEED : (3 SECONDS)))
+		if (!do_after(src, target, time = panicking ? CPR_PANIC_SPEED : (3 SECONDS)))
 			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
 			return FALSE
 
@@ -768,9 +768,6 @@
 	heat_exposure_stacks = 0
 	return ..()
 
-/mob/living/carbon/human/is_literate()
-	return TRUE
-
 /mob/living/carbon/human/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
 	if(blood && (NOBLOOD in dna.species.species_traits) && !HAS_TRAIT(src, TRAIT_TOXINLOVER))
 		if(message)
@@ -913,7 +910,7 @@
 
 	visible_message(span_notice("[src] starts[skills_space] lifting [target] onto [p_their()] back..."),
 		span_notice("You[skills_space] start to lift [target] onto your back..."))
-	if(!do_after(src, carrydelay, target))
+	if(!do_after(src, target, carrydelay))
 		visible_message(span_warning("[src] fails to fireman carry [target]!"))
 		return
 
@@ -930,7 +927,7 @@
 		return
 
 	visible_message(span_notice("[target] starts to climb onto [src]..."))
-	if(!do_after(target, 1.5 SECONDS, target = src) || !can_piggyback(target))
+	if(!do_after(target, src, 1.5 SECONDS) || !can_piggyback(target))
 		visible_message(span_warning("[target] fails to climb onto [src]!"))
 		return
 

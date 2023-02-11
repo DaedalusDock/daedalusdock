@@ -110,7 +110,7 @@
 
 /obj/item/mail/attack_self(mob/user)
 	to_chat(user, span_notice("You start to unwrap the package..."))
-	if(!do_after(user, 1.5 SECONDS, target = user))
+	if(!do_after(user, time = 1.5 SECONDS))
 		return
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	if(contents.len)

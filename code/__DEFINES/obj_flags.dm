@@ -61,7 +61,12 @@
 #define LARGE_WORN_ICON (1<<15) //Clothes that use large icons, for applying the proper overlays like blood
 /// Clothes that block speech (i.e the muzzle). Can be applied to any clothing piece.
 #define BLOCKS_SPEECH (1<<16)
-#define PLASMAMAN_HELMET_EXEMPT (1<<17) //prevents from placing on plasmaman helmet
+//prevents from placing on plasmaman helmet
+#define PLASMAMAN_HELMET_EXEMPT (1<<17)
+/// Usable as casting clothes by wizards (only matters for suits and headwear)
+#define CASTING_CLOTHES (1<<18)
+///Moths can't eat the clothing that has this flag.
+#define INEDIBLE_CLOTHING (1<<19)
 
 /// Flags for the organ_flags var on /obj/item/organ
 

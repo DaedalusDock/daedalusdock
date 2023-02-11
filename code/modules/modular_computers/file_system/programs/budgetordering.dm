@@ -68,13 +68,13 @@
 	. = ..()
 	var/list/data = get_header_data()
 	data["location"] = SSshuttle.supply.getStatusText()
-	var/datum/bank_account/buyer = SSeconomy.get_dep_account(cargo_account)
+	var/datum/bank_account/buyer = SSeconomy.department_accounts_by_id[cargo_account]
 	var/obj/item/computer_hardware/card_slot/card_slot = computer.all_components[MC_CARD]
 	var/obj/item/card/id/id_card = card_slot?.GetID()
 	if(id_card?.registered_account)
 		if((ACCESS_HEADS in id_card.access) || (ACCESS_QM in id_card.access))
 			requestonly = FALSE
-			buyer = SSeconomy.get_dep_account(id_card.registered_account.account_job.paycheck_department)
+			buyer = SSeconomy.department_accounts_by_id[id_card.registered_account.account_job.paycheck_department]
 			can_approve_requests = TRUE
 		else
 			requestonly = TRUE
@@ -232,7 +232,7 @@
 
 			if(!self_paid && ishuman(usr) && !account)
 				var/obj/item/card/id/id_card = card_slot?.GetID()
-				account = SSeconomy.get_dep_account(id_card?.registered_account?.account_job.paycheck_department)
+				account = SSeconomy.department_accounts_by_id[id_card?.registered_account?.account_job.paycheck_department]
 
 			var/turf/T = get_turf(src)
 			var/datum/supply_order/SO = new(pack, name, rank, ckey, reason, account)
@@ -260,7 +260,7 @@
 				if(SO.id == id)
 					var/obj/item/card/id/id_card = card_slot?.GetID()
 					if(id_card && id_card?.registered_account)
-						SO.paying_account = SSeconomy.get_dep_account(id_card?.registered_account?.account_job.paycheck_department)
+						SO.paying_account = SSeconomy.department_accounts_by_id[id_card?.registered_account?.account_job.paycheck_department]
 					SSshuttle.request_list -= SO
 					SSshuttle.shopping_list += SO
 					. = TRUE
@@ -282,11 +282,11 @@
 		post_signal(cargo_shuttle)
 
 /datum/computer_file/program/budgetorders/proc/post_signal(command)
-
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	SHOULD_CALL_PARENT(FALSE) //TODO: Tie to cablenet
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = command))
-	frequency.post_signal(src, status_signal)
+	var/datum/signal/status_signal = new(computer, list("command" = command))
+	frequency.post_signal(status_signal)

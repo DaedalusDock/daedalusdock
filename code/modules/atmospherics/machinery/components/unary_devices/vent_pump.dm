@@ -58,7 +58,7 @@
 		vent_area.air_vent_info -= id_tag
 		GLOB.air_vent_names -= id_tag
 
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	radio_connection = null
 	return ..()
 
@@ -166,16 +166,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
+		radio_connection = SSpackets.add_object(src, frequency, radio_filter_in)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/broadcast_status()
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id_tag,
 		"frequency" = frequency,
 		"device" = "VP",
@@ -197,7 +197,7 @@
 
 	vent_area.air_vent_info[id_tag] = signal.data
 
-	radio_connection.post_signal(src, signal, radio_filter_out)
+	radio_connection.post_signal(signal, radio_filter_out)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_name()
 	. = ..()
@@ -326,7 +326,7 @@
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attack_alien(mob/user, list/modifiers)
-	if(!welded || !(do_after(user, 20, target = src)))
+	if(!welded || !(do_after(user, src, 20)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the vent."), span_hear("You hear loud scraping noises."))
 	welded = FALSE

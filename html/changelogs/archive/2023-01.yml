@@ -65,3 +65,20 @@
       Technician, Electrician'
   francinum:
   - imageadd: TGUI interfaces have had their corners un-cut.
+2023-01-30:
+  Kapu1178:
+  - bugfix: You can no longer remove magazines from guns that have the bolt closed.
+  - imageadd: Return of the classic labcoats
+  - rscadd: Medical Director now gets a tranquilizer rifle with 10 Haloperidol rounds
+      and 5 Mutadone rounds. Use wisely!
+  LemonInTheDark, GoldenAlpharex:
+  - qol: Roundstart takes significantly less time
+  Nebula, Baystation12, Kapu1178:
+  - rscadd: The Codex, an in-game tool to find OOC and IC information on many things
+      in the game.
+  - rscadd: Codex verbs
+2023-01-31:
+  Kapu1178:
+  - qol: Surgery stage messages have been moved to the chat.
+  - rscadd: Codex entries for basic tools.
+  - bugfix: The living no longer see the dead stalk the halls.

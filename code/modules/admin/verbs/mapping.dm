@@ -433,7 +433,7 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 	message_admins(span_adminnotice("[key_name_admin(usr)] used the Test Atmos Controls debug command."))
 	log_admin("[key_name(usr)] used the Test Atmos Controls debug command.")
 
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_ATMOS_STORAGE)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_ATMOS_STORAGE)
 
 	/// broadcaster[id_tag] = machine
 	var/list/broadcasters = list()

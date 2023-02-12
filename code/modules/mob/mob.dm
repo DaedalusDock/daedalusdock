@@ -457,7 +457,6 @@
  */
 /mob/verb/examinate(atom/examinify as mob|obj|turf in view()) //It used to be oview(12), but I can't really say why
 	set name = "Examine"
-	set category = "IC"
 
 	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
@@ -505,6 +504,30 @@
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
+/mob/verb/click_on(atom/clicked as mob|obj|turf in view())
+	set name = "Click On"
+	set category = "Object"
+
+	if(client && !(clicked in view(client.view, src)))
+		return FALSE
+	client?.Click(clicked, get_turf(clicked))
+
+/mob/verb/right_click_on(atom/clicked as mob|obj|turf in view())
+	set name = "Right Click On"
+	set category = "Object"
+
+	var/static/right_click_param = list2params(list(RIGHT_CLICK = 1))
+
+	if(client && !(clicked in view(client.view, src)))
+		return FALSE
+
+	client?.Click(clicked, get_turf(clicked), params = right_click_param)
+
+/mob/verb/examine_contents(turf/clicked as turf in view())
+	set name = "Examine Contents"
+
+	if(clicked && usr.TurfAdjacent(clicked))
+		usr.set_listed_turf(clicked)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
@@ -614,7 +637,6 @@
  */
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
-	set category = "Object"
 
 	if(client && !(A in view(client.view, src)))
 		return FALSE

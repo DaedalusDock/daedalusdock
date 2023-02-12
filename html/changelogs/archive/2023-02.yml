@@ -128,3 +128,6 @@
   - rscadd: Tape can be used as makeshift handcuffs/muzzle when used on people
   - soundadd: Tape sound
   - rscadd: handcuffed type is now shown on examine
+2023-02-12:
+  Kapu1178:
+  - bugfix: The Bar APC is now wired roundstart.

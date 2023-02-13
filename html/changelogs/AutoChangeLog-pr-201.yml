@@ -1,0 +1,10 @@
+author: Kapu1178, Nebula Coders
+delete-after: true
+changes:
+  - rscadd: Station Time now shows the station's canonical date.
+  - rscadd: Station name, date, and time, are displayed in a sick cool epic way on
+      round join.
+  - rscadd: The station's time is now randomly offset between 0 and 23 hours.
+  - bugfix: A ton of timezone related garbage. Nightshift should notably work properly.
+  - rscdel: The splashscreen fade was removed because it causes a bug that makes planes
+      freak out.

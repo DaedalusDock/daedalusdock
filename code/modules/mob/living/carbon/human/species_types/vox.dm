@@ -65,9 +65,17 @@
 
 /datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
 	. = ..()
-	var/datum/outfit/vox/O = new /datum/outfit/vox
-	equipping.equipOutfit(O, visuals_only)
-	equipping.internal = equipping.get_item_for_held_index(2)
+	give_important_for_life(equipping)
+
+/datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	. = ..()
+	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
+	if(!human_to_equip.internal)
+		var/obj/item/tank/internals/nitrogen/belt/full/new_tank = new(null)
+		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
+			human_to_equip.internal = human_to_equip.belt
+		else
+			stack_trace("Vox going without internals. Uhoh.")
 
 /datum/species/vox/random_name(gender,unique,lastname)
 	if(unique)

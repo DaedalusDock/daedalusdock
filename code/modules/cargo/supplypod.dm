@@ -117,6 +117,7 @@
 	return ..()
 
 /obj/structure/closet/supplypod/extractionpod/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
+	. = ..()
 	if(recieving && (atom_integrity <= 0))
 		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
 		if (contract_hub.current_contract == tied_contract)
@@ -124,7 +125,6 @@
 		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
 		tied_contract = null
 		contract_hub = null
-	return ..()
 
 
 /obj/structure/closet/supplypod/proc/setStyle(chosenStyle) //Used to give the sprite an icon state, name, and description.

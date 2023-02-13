@@ -298,6 +298,18 @@
 	inhand_icon_state = "cuff"
 
 /**
+ * # Tape handcuffs
+ *
+ * Handcuffs applied when restraining someone with tape, easier to escape from than zipties and single use.
+ */
+/obj/item/restraints/handcuffs/tape
+	name = "length of tape"
+	desc = "Seems you are in a sticky situation."
+	icon_state = "handcuffTape"
+	breakouttime = 15 SECONDS
+	item_flags = DROPDEL
+
+/**
  * # Generic leg cuffs
  *
  * Parent class for everything that can legcuff carbons. Can't legcuff anything itself.

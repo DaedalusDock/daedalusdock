@@ -100,6 +100,15 @@
 /datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
 	equipping.internal = equipping.get_item_for_held_index(2)
 
+/datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	. = ..()
+	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
+	if(!human_to_equip.internal)
+		var/obj/item/tank/internals/plasmaman/belt/new_tank = new(null)
+		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
+			human_to_equip.internal = human_to_equip.belt
+		else
+			stack_trace("Plasmaman going without internals. Uhoh.")
 
 /datum/species/plasmaman/random_name(gender,unique,lastname)
 	if(unique)

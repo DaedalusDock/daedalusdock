@@ -1,0 +1,4 @@
+author: TGStation
+delete-after: true
+changes:
+  - refactor: Storage has been completely rewritten.

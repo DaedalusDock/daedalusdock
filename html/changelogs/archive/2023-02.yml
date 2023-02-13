@@ -112,3 +112,31 @@
   - balance: A number of impurities in chemicals are now inverses
   - bugfix: Mannitol now has a working inverse
   - bugfix: Gravity pulses have had their distortion effect restored.
+2023-02-09:
+  Spyroshark:
+  - rscadd: The Thermoelectric Generator is back! Now featuring a new UI. The parts
+      for it can be bought from cargo.
+2023-02-10:
+  Kapu1178:
+  - bugfix: You can enter vehicles again.
+  - bugfix: Heretics can draw their rune again
+  Spyroshark:
+  - rscadd: Groan tubes! Find them in the gaming vendor or win them from an arcade
+      machine.
+2023-02-11:
+  Ebb-Real, Cenrus:
+  - rscadd: Tape can be used as makeshift handcuffs/muzzle when used on people
+  - soundadd: Tape sound
+  - rscadd: handcuffed type is now shown on examine
+2023-02-12:
+  Kapu1178:
+  - bugfix: The Bar APC is now wired roundstart.
+2023-02-13:
+  Kapu1178, Nebula Coders:
+  - rscadd: Station Time now shows the station's canonical date.
+  - rscadd: Station name, date, and time, are displayed in a sick cool epic way on
+      round join.
+  - rscadd: The station's time is now randomly offset between 0 and 23 hours.
+  - bugfix: A ton of timezone related garbage. Nightshift should notably work properly.
+  - rscdel: The splashscreen fade was removed because it causes a bug that makes planes
+      freak out.

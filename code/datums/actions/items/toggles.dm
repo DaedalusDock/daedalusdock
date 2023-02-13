@@ -95,5 +95,6 @@
 /datum/action/item_action/storage_gather_mode
 	name = "Switch gathering mode"
 	desc = "Switches the gathering mode of a storage object."
-	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "storage_gather_switch"
+	background_icon = 'icons/mob/actions/actions_items.dmi'
+	background_icon_state = "storage_gather_switch"
+	overlay_icon_state = "bg_tech_border"

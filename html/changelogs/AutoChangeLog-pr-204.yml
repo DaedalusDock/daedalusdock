@@ -1,0 +1,7 @@
+author: Tastyfish, ChungusGamer666
+delete-after: true
+changes:
+  - bugfix: Flashlights and similar directional light items no longer make you glow
+      forever under certain circumstances.
+  - rscadd: The all-access indicator is now glow in the dark.
+  - bugfix: Some lights that would fail to follow the light source have been fixed.

@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Kidnapped Vox and Plasmamen spawn with their proper equipment
+  - bugfix: Tongueless players
+  - bugfix: Oculine's explosion thingy happens properly.

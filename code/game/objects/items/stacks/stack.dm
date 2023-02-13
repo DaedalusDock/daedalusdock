@@ -35,8 +35,12 @@
 	var/material_type
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
+	/// Keeps a reference of the recipe of the last constructed item
+	var/obj/last_used_recipe = null
+	/// Keeps a reference of the last person to construct with the stack
+	var/mob/last_user = null
 
-		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
+	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_factor
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
@@ -168,7 +172,8 @@
 		. += "There are [get_amount()] in the stack."
 	else
 		. += "There is [get_amount()] in the stack."
-	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+	. += span_notice("<b>Right-click</b> on a turf to construct the last built recipe.")
+	. += span_notice("<b>Alt-Click</b> to take a custom amount.")
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)
@@ -259,55 +264,61 @@
 			var/multiplier = text2num(params["multiplier"])
 			if(!multiplier || (multiplier <= 0)) //href exploit protection
 				return
-			if(!building_checks(recipe, multiplier))
-				return
-			if(recipe.time)
-				var/adjusted_time = 0
-				usr.visible_message(span_notice("[usr] starts building \a [recipe.title]."), span_notice("You start building \a [recipe.title]..."))
-				if(HAS_TRAIT(usr, recipe.trait_booster))
-					adjusted_time = (recipe.time * recipe.trait_modifier)
-				else
-					adjusted_time = recipe.time
-				if(!do_after(usr, time = adjusted_time))
-					return
-				if(!building_checks(recipe, multiplier))
-					return
 
-			var/obj/O
-			if(recipe.max_res_amount > 1) //Is it a stack?
-				O = new recipe.result_type(usr.drop_location(), recipe.res_amount * multiplier)
-			else if(ispath(recipe.result_type, /turf))
-				var/turf/T = usr.drop_location()
-				if(!isturf(T))
-					return
-				T.PlaceOnTop(recipe.result_type, flags = CHANGETURF_INHERIT_AIR)
-			else
-				O = new recipe.result_type(usr.drop_location())
-			if(O)
-				O.setDir(usr.dir)
-			use(recipe.req_amount * multiplier)
-			usr.investigate_log("[key_name(usr)] crafted [recipe.title]", INVESTIGATE_CRAFTING)
+			return attempt_construction(usr, recipe, multiplier, get_turf(usr))
 
-			if(recipe.applies_mats && LAZYLEN(mats_per_unit))
-				if(isstack(O))
-					var/obj/item/stack/crafted_stack = O
-					crafted_stack.set_mats_per_unit(mats_per_unit, recipe.req_amount / recipe.res_amount)
-				else
-					O.set_custom_materials(mats_per_unit, recipe.req_amount / recipe.res_amount)
+/obj/item/stack/proc/attempt_construction(mob/user, datum/stack_recipe/recipe, multiplier, turf/target_turf)
+	if(!building_checks(recipe, multiplier, target_turf))
+		return
+	if(recipe.time)
+		var/adjusted_time = 0
+		user.visible_message(span_notice("[user] starts building \a [recipe.title]."), span_notice("You start building \a [recipe.title]..."))
+		if(HAS_TRAIT(user, recipe.trait_booster))
+			adjusted_time = (recipe.time * recipe.trait_modifier)
+		else
+			adjusted_time = recipe.time
+		if(!do_after(user, time = adjusted_time, interaction_key = DOAFTER_SOURCE_STACKCONSTRUCTION))
+			return
+		if(!building_checks(recipe, multiplier, target_turf))
+			return
 
-			if(QDELETED(O))
-				return //It's a stack and has already been merged
+	var/obj/O
+	if(recipe.max_res_amount > 1) //Is it a stack?
+		O = new recipe.result_type(target_turf, recipe.res_amount * multiplier)
+	else if(ispath(recipe.result_type, /turf))
+		var/turf/T = target_turf
+		if(!isturf(T))
+			return
+		T.PlaceOnTop(recipe.result_type, flags = CHANGETURF_INHERIT_AIR)
+	else
+		O = new recipe.result_type(target_turf)
+	if(O)
+		O.setDir(user.dir)
+	use(recipe.req_amount * multiplier)
+	user.investigate_log("[key_name(user)] crafted [recipe.title]", INVESTIGATE_CRAFTING)
 
-			O.add_fingerprint(usr) //Add fingerprints first, otherwise O might already be deleted because of stack merging
-			if(isitem(O))
-				usr.put_in_hands(O)
+	if(recipe.applies_mats && LAZYLEN(mats_per_unit))
+		if(isstack(O))
+			var/obj/item/stack/crafted_stack = O
+			crafted_stack.set_mats_per_unit(mats_per_unit, recipe.req_amount / recipe.res_amount)
+		else
+			O.set_custom_materials(mats_per_unit, recipe.req_amount / recipe.res_amount)
 
-			//BubbleWrap - so newly formed boxes are empty
-			if(istype(O, /obj/item/storage))
-				for (var/obj/item/I in O)
-					qdel(I)
-			//BubbleWrap END
-			return TRUE
+	if(QDELETED(O))
+		return //It's a stack and has already been merged
+
+	O.add_fingerprint(user) //Add fingerprints first, otherwise O might already be deleted because of stack merging
+	if(isitem(O))
+		user.put_in_hands(O)
+
+	//BubbleWrap - so newly formed boxes are empty
+	if(istype(O, /obj/item/storage))
+		for (var/obj/item/I in O)
+			qdel(I)
+	//BubbleWrap END
+	last_used_recipe = recipe
+	last_user = user
+	return TRUE
 
 /obj/item/stack/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, amount))
@@ -319,37 +330,36 @@
 		return TRUE
 	return ..()
 
-/obj/item/stack/proc/building_checks(datum/stack_recipe/recipe, multiplier)
-	if (get_amount() < recipe.req_amount*multiplier)
-		if (recipe.req_amount*multiplier>1)
+/obj/item/stack/proc/building_checks(datum/stack_recipe/recipe, multiplier, turf/target_turf)
+	if (get_amount() < recipe.req_amount * multiplier)
+		if (recipe.req_amount * multiplier > 1)
 			to_chat(usr, span_warning("You haven't got enough [src] to build \the [recipe.req_amount*multiplier] [recipe.title]\s!"))
 		else
 			to_chat(usr, span_warning("You haven't got enough [src] to build \the [recipe.title]!"))
 		return FALSE
-	var/turf/dest_turf = get_turf(usr)
 
 	// If we're making a window, we have some special snowflake window checks to do.
 	if(ispath(recipe.result_type, /obj/structure/window))
 		var/obj/structure/window/result_path = recipe.result_type
-		if(!valid_window_location(dest_turf, usr.dir, is_fulltile = initial(result_path.fulltile)))
+		if(!valid_window_location(target_turf, usr.dir, is_fulltile = initial(result_path.fulltile)))
 			to_chat(usr, span_warning("The [recipe.title] won't fit here!"))
 			return FALSE
 
-	if(recipe.one_per_turf && (locate(recipe.result_type) in dest_turf))
+	if(recipe.one_per_turf && (locate(recipe.result_type) in target_turf))
 		to_chat(usr, span_warning("There is another [recipe.title] here!"))
 		return FALSE
 
 	if(recipe.on_tram)
-		if(!locate(/obj/structure/industrial_lift/tram) in dest_turf)
+		if(!locate(/obj/structure/industrial_lift/tram) in target_turf)
 			to_chat(usr, span_warning("\The [recipe.title] must be constructed on a tram floor!"))
 			return FALSE
 
 	if(recipe.on_floor)
-		if(!isfloorturf(dest_turf))
+		if(!isfloorturf(target_turf))
 			to_chat(usr, span_warning("\The [recipe.title] must be constructed on the floor!"))
 			return FALSE
 
-		for(var/obj/object in dest_turf)
+		for(var/obj/object in target_turf)
 			if(istype(object, /obj/structure/grille))
 				continue
 			if(istype(object, /obj/structure/table))
@@ -366,12 +376,12 @@
 			if(STACK_CHECK_CARDINALS)
 				var/turf/step
 				for(var/direction in GLOB.cardinals)
-					step = get_step(dest_turf, direction)
+					step = get_step(target_turf, direction)
 					if(locate(recipe.result_type) in step)
 						to_chat(usr, span_warning("\The [recipe.title] must not be built directly adjacent to another!"))
 						return FALSE
 			if(STACK_CHECK_ADJACENT)
-				if(locate(recipe.result_type) in range(1, dest_turf))
+				if(locate(recipe.result_type) in range(1, target_turf))
 					to_chat(usr, span_warning("\The [recipe.title] must be constructed at least one tile away from others of its type!"))
 					return FALSE
 	return TRUE
@@ -521,22 +531,33 @@
 	else
 		. = ..()
 
-/obj/item/stack/attack_hand_secondary(mob/user, modifiers)
-	. = ..()
-	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-		return
-
-	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+/obj/item/stack/sheet/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
+	var/turf/open/build_on = target
+	if(!build_on)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
-	if(is_zero_amount(delete_if_zero = TRUE))
+
+	if(!proximity_flag)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(!last_used_recipe || user != last_user)
+		to_chat(user, span_warning("You haven't built anything yet!"))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	attempt_construction(user, last_used_recipe, 1, build_on)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+
+/obj/item/stack/AltClick(mob/user)
+	. = ..()
+	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+		return
+	if(is_zero_amount(delete_if_zero = TRUE))
+		return
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, !iscyborg(user)))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 	split_stack(user, stackmaterial)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /** Splits the stack into two stacks.
  *

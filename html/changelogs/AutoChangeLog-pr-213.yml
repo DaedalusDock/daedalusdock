@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.

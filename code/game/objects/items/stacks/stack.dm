@@ -531,12 +531,12 @@
 	else
 		. = ..()
 
-/obj/item/stack/sheet/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
+/obj/item/stack/sheet/attack_secondary(atom/target, mob/living/user, params)
 	var/turf/open/build_on = target
 	if(!build_on)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 
-	if(!proximity_flag)
+	if(!user.Adjacent(target))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(!last_used_recipe || user != last_user)
 		to_chat(user, span_warning("You haven't built anything yet!"))

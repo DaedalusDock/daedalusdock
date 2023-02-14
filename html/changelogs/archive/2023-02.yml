@@ -140,3 +140,18 @@
   - bugfix: A ton of timezone related garbage. Nightshift should notably work properly.
   - rscdel: The splashscreen fade was removed because it causes a bug that makes planes
       freak out.
+2023-02-14:
+  Kapu1178:
+  - bugfix: Kidnapped Vox and Plasmamen spawn with their proper equipment
+  - bugfix: Tongueless players
+  - bugfix: Oculine's explosion thingy happens properly.
+  - bugfix: Ghosts look correct.
+  - bugfix: The aurora event is no longer kills the lighting subsystem.
+  - bugfix: The plasmaman helmet "Toggle Welding Screen" button works.
+  TGStation:
+  - refactor: Storage has been completely rewritten.
+  Tastyfish, ChungusGamer666:
+  - bugfix: Flashlights and similar directional light items no longer make you glow
+      forever under certain circumstances.
+  - rscadd: The all-access indicator is now glow in the dark.
+  - bugfix: Some lights that would fail to follow the light source have been fixed.

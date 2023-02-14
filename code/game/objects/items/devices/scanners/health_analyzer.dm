@@ -78,13 +78,9 @@
 		if (SCANMODE_WOUND)
 			woundscan(user, M, src)
 		if (SCANMODE_CHEM)
-			chemscan(user, victim)
+			chemscan(user, M)
 
 	add_fingerprint(user)
-
-/obj/item/healthanalyzer/attack_secondary(mob/living/victim, mob/living/user, params)
-	chemscan(user, victim)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/healthanalyzer/add_item_context(
 	obj/item/source,

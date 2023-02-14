@@ -223,14 +223,8 @@
 
 /obj/item/bodypart/examine(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
-
 	. = ..()
-	if(brute_dam > DAMAGE_PRECISION)
-		. += span_warning("This limb has [brute_dam > 30 ? "severe" : "minor"] bruising.")
-	if(burn_dam > DAMAGE_PRECISION)
-		. += span_warning("This limb has [burn_dam > 30 ? "severe" : "minor"] burns.")
-
-
+	. += mob_examine()
 
 /obj/item/bodypart/proc/mob_examine(hallucinating)
 	if(!current_damage || hallucinating == SCREWYHUD_HEALTHY)
@@ -273,8 +267,10 @@
 					flavor_text += "several [wound]s"
 				if(6 to INFINITY)
 					flavor_text += "a ton of [wound]\s"
-
-	return "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone].<br>"
+	if(owner)
+		return "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone].<br>"
+	else
+		return "it has [english_list(flavor_text)].<br>"
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)

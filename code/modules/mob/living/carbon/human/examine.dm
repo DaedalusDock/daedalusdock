@@ -134,6 +134,7 @@
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
+	var/list/body_zones_covered = get_covered_body_zones(TRUE) //This is a bitfield of the body_zones_covered. Not parts. Yeah. Sucks.
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
@@ -144,8 +145,11 @@
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
-
-		msg += body_part.mob_examine(hal_screwyhud)
+		if(is_bodypart_visibly_covered(body_part, body_zones_covered))
+			msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
+			continue
+		else
+			msg += body_part.mob_examine(hal_screwyhud)
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
@@ -389,3 +393,10 @@
 		if(101 to INFINITY)
 			age_text = "withering away"
 	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
+
+///This proc expects to be passed a list of covered zones, for optimization in loops. Use get_covered_body_zones(exact_only = TRUE) for that..
+/mob/living/carbon/human/proc/is_bodypart_visibly_covered(obj/item/bodypart/BP, covered_zones)
+	var/zone = BP.body_zone
+	if(zone == BODY_ZONE_HEAD)
+		return (head && ((head.flags_inv & HIDEMASK) || (head.flags_inv & HIDEFACE)))
+	return zone in covered_zones

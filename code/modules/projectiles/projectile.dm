@@ -706,6 +706,8 @@
 	last_projectile_move = world.time
 	fired = TRUE
 
+	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
+
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
 	if(hitscan)
 		process_hitscan()

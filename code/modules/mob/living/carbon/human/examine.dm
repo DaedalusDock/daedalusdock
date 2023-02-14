@@ -146,7 +146,14 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
 		if(is_bodypart_visibly_covered(body_part, body_zones_covered))
-			msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
+			var/is_bloody
+			for(var/datum/wound/W as anything in body_part.wounds)
+				if(W.bleeding())
+					msg += span_warning("[t_His] [body_part.plaintext_zone] covering is bloody!\n")
+					is_bloody = TRUE
+					break
+			if(!is_bloody)
+				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
 			continue
 		else
 			msg += body_part.mob_examine(hal_screwyhud)
@@ -395,7 +402,7 @@
 	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
 
 ///This proc expects to be passed a list of covered zones, for optimization in loops. Use get_covered_body_zones(exact_only = TRUE) for that..
-/mob/living/carbon/human/proc/is_bodypart_visibly_covered(obj/item/bodypart/BP, covered_zones)
+/mob/living/carbon/proc/is_bodypart_visibly_covered(obj/item/bodypart/BP, covered_zones)
 	var/zone = BP.body_zone
 	if(zone == BODY_ZONE_HEAD)
 		return (head && ((head.flags_inv & HIDEMASK) || (head.flags_inv & HIDEFACE)))

@@ -880,7 +880,6 @@ GLOBAL_DATUM_INIT(podlauncher, /datum/centcom_podlauncher, new)
 	image_state = "selector"
 	image_layer = FLY_LAYER
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	alpha = 150
 
 /obj/effect/hallucination/simple/dropoff_location
@@ -889,5 +888,4 @@ GLOBAL_DATUM_INIT(podlauncher, /datum/centcom_podlauncher, new)
 	image_state = "dropoff_indicator"
 	image_layer = FLY_LAYER
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	alpha = 0

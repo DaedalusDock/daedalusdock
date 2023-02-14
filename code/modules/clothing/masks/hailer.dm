@@ -56,7 +56,6 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
 	tint = 0
-	has_fov = FALSE
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 	var/aggressiveness = AGGR_BAD_COP
 	var/overuse_cooldown = FALSE
@@ -75,7 +74,6 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	visor_flags_inv = 0
 	flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
-	has_fov = TRUE
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/gas/sechailer/swat/spacepol

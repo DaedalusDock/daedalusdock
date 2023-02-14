@@ -1,7 +1,8 @@
 // Describes the three modes of scanning available for health analyzers
 #define SCANMODE_HEALTH 0
 #define SCANMODE_WOUND 1
-#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
+#define SCANMODE_CHEM 2
+#define SCANMODE_COUNT 3 // Update this to be the number of scan modes if you add more
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
@@ -13,7 +14,7 @@
 	worn_icon_state = "healthanalyzer"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	desc = "A hand-held body scanner capable of distinguishing vital signs of the subject. Has a side button to scan for chemicals, and can be toggled to scan wounds."
+	desc = "A hand-held body scanner capable of distinguishing vital signs of the subject. Can be toggled to scan for chemicals or wounds."
 	flags_1 = CONDUCT_1
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
@@ -47,6 +48,9 @@
 			to_chat(user, span_notice("You switch the health analyzer to check physical health."))
 		if(SCANMODE_WOUND)
 			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
+		if(SCANMODE_CHEM)
+			to_chat(user, span_notice("You switch the health analyzer to scan chemical contents."))
+		//If this list gets any longer please consider a LUT for the latter half of the message.
 
 /obj/item/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
 	flick("[icon_state]-scan", src) //makes it so that it plays the scan animation upon scanning, including clumsy scanning
@@ -73,6 +77,8 @@
 			healthscan(user, M, mode, advanced)
 		if (SCANMODE_WOUND)
 			woundscan(user, M, src)
+		if (SCANMODE_CHEM)
+			chemscan(user, victim)
 
 	add_fingerprint(user)
 
@@ -517,6 +523,7 @@
 
 #undef SCANMODE_HEALTH
 #undef SCANMODE_WOUND
+#undef SCANMODE_CHEM
 #undef SCANMODE_COUNT
 #undef SCANNER_CONDENSED
 #undef SCANNER_VERBOSE

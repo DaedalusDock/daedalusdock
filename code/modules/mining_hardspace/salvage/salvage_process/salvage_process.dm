@@ -46,7 +46,7 @@
 		to_chat(user,span_warning("[target] is just a bare frame. You can scrap it for materials with a <i>cutting implement.</i>"))
 		return
 
-	if(target.remaining_attempts == 0 && tool.tool_behaviour == TOOL_WELDER && tool.tool_behaviour == TOOL_SALVAGECUTTER)
+	if(target.remaining_attempts == 0 && tool.tool_behaviour == TOOL_WELDER || tool.tool_behaviour == TOOL_SALVAGECUTTER)
 		to_chat(user,span_notice("You start cutting [target] apart for materials.."))
 		do_after(user,5 SECONDS, target)
 		to_chat(user,span_notice("You cut [target] apart for materials."))

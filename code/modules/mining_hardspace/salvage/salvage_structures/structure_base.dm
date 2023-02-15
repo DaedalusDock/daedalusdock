@@ -21,11 +21,17 @@
 	///Boolean determining if the salvageable object is empty and can be scrapped for materials. Used in the step hints proc.
 	var/is_empty = FALSE
 	///What junk salvage can drop from this object upon partial success?
-	var/list/junk_salvage = list()
+	var/list/junk_salvage = list(
+		/obj/item/salvage = 1
+	)
 	///What common salvage can drop from this object upon success?
-	var/list/common_salvage = list()
+	var/list/common_salvage = list(
+		/obj/item/salvage = 3
+	)
 	///What rare salvage can drop from this object upon bonus success?
-	var/list/rare_salvage = list()
+	var/list/rare_salvage = list(
+		/obj/item/salvage = 5
+	)
 
 /obj/structure/salvage/examine(mob/user)
 	. += ..()

@@ -1,4 +1,3 @@
-
 SUBSYSTEM_DEF(hardspace)
 	name = "Hardspace"
 	flags = SS_NO_FIRE

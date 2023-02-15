@@ -1435,13 +1435,13 @@
 			if(TOOL_ANALYZER)
 				act_result = analyzer_act_secondary(user, tool)
 			if(TOOL_SALVAGECUTTER) //Hardspace below
-				act_result = salvagecutter_act_secondary(user, tool)
+				act_result = salvagecutter_act(user, tool)
 			if(TOOL_SALVAGEBOLTGUN)
-				act_result = salvageboltgun_act_secondary(user, tool)
+				act_result = salvageboltgun_act(user, tool)
 			if(TOOL_SALVAGESAW)
-				act_result = salvagesaw_act_secondary(user, tool)
+				act_result = salvagesaw_act(user, tool)
 			if(TOOL_SALVAGEWIRETAP)
-				act_result = salvagewiretap_act_secondary(user, tool)
+				act_result = salvagewiretap_act(user, tool)
 	if(act_result) // A tooltype_act has completed successfully
 		log_tool("[key_name(user)] used [tool] on [src][is_right_clicking ? "(right click)" : ""] at [AREACOORD(src)]")
 		return TOOL_ACT_TOOLTYPE_SUCCESS

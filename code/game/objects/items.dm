@@ -214,6 +214,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/offensive_notes
 	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
 	var/override_notes = FALSE
+	///Used in defining if a tool gets a bonus for salvage success rates. //HARDSPACE
+	var/success_modifier = 0
 
 /obj/item/Initialize(mapload)
 

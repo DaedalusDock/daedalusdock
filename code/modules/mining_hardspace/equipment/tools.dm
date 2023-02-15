@@ -7,6 +7,7 @@
 	icon_state = "exwelder"
 	tool_behaviour = TOOL_SALVAGECUTTER
 	w_class = WEIGHT_CLASS_TINY //just for testing
+	success_modifier = 0
 
 /obj/item/salvageboltgun
 	name = "Aeon Pneumatic Boltgun"
@@ -15,6 +16,7 @@
 	icon_state = ""
 	tool_behaviour = TOOL_SALVAGEBOLTGUN
 	w_class = WEIGHT_CLASS_TINY
+	success_modifier = 0
 
 /obj/item/salvagesaw
 	name = "OVERKILL Salvage Driver"
@@ -23,6 +25,7 @@
 	icon_state = "esaw_on"
 	tool_behaviour = TOOL_SALVAGESAW
 	w_class = WEIGHT_CLASS_TINY
+	success_modifier = 0
 
 /obj/item/salvagewiretap
 	name = "Salvation Mark 1 WIR3TAP"
@@ -31,6 +34,7 @@
 	icon_state = "multitool"
 	tool_behaviour = TOOL_SALVAGEWIRETAP
 	w_class = WEIGHT_CLASS_TINY
+	success_modifier = 0
 
 /// Called on an object when a tool with salvage cutter capabilities is used to left click on an object.
 /atom/proc/salvagecutter_act(mob/living/user, obj/item/tool)
@@ -46,20 +50,4 @@
 
 /// Called on an object when a tool with salvage wiretap capabilities is used to left click on an object.
 /atom/proc/salvagewiretap_act(mob/living/user, obj/item/tool)
-	return
-
-/// Called on an object when a tool with salvage cutter capabilities is used to right click on an object.
-/atom/proc/salvagecutter_act_secondary(mob/living/user, obj/item/tool)
-	return
-
-/// Called on an object when a tool with salvage boltgun capabilities is used to right click on an object.
-/atom/proc/salvageboltgun_act_secondary(mob/living/user, obj/item/tool)
-	return
-
-/// Called on an object when a tool with salvage saw capabilities is used to right click on an object.
-/atom/proc/salvagesaw_act_secondary(mob/living/user, obj/item/tool)
-	return
-
-/// Called on an object when a tool with salvage wiretap capabilities is used to right click on an object.
-/atom/proc/salvagewiretap_act_secondary(mob/living/user, obj/item/tool)
 	return

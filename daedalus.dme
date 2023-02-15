@@ -3888,6 +3888,7 @@
 #include "code\modules\power\apc\apc_main.dm"
 #include "code\modules\power\apc\apc_malf.dm"
 #include "code\modules\power\apc\apc_mapping.dm"
+#include "code\modules\power\apc\apc_networking.dm"
 #include "code\modules\power\apc\apc_power_proc.dm"
 #include "code\modules\power\apc\apc_tool_act.dm"
 #include "code\modules\power\lighting\_light_defines.dm"

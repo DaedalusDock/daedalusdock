@@ -155,3 +155,6 @@
       forever under certain circumstances.
   - rscadd: The all-access indicator is now glow in the dark.
   - bugfix: Some lights that would fail to follow the light source have been fixed.
+2023-02-15:
+  Kapu1178:
+  - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.

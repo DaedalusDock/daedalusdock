@@ -1,6 +1,6 @@
 // Station areas and shuttles
 
-/area/station/
+/area/station
 	name = "Station Areas"
 	icon = 'icons/area/areas_station.dmi'
 	icon_state = "station"

@@ -33,3 +33,7 @@
 	has_gravity = STANDARD_GRAVITY
 	name = "Test Room"
 	icon_state = "test_room"
+	// FUCK YOU NEVER CHANGE MY LIGHTING -kapu1178, 2023
+	static_lighting = FALSE //The unit test area should always be luminosity = 1
+	base_lighting_alpha = 255
+	luminosity = 1

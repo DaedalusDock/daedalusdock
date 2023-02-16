@@ -1,7 +1,7 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "aa" = (
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "ab" = (
 /turf/closed/wall/r_wall,
 /area/station/hallway/primary/central)
@@ -637,32 +637,32 @@
 	dir = 6
 	},
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "cn" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	icon_state = "pipe11-3";
 	dir = 10
 	},
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "co" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "cp" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	icon_state = "pipe11-3";
 	dir = 5
 	},
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "cq" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	icon_state = "pipe11-3";
 	dir = 9
 	},
 /turf/open/space/basic,
-/area/misc/space)
+/area/space)
 "cr" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/heater,
 /turf/open/floor/plating,

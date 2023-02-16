@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - qol: Developers can bypass observer checks to watch map generation

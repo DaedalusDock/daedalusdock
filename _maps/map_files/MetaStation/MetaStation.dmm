@@ -2076,7 +2076,7 @@
 /area/station/medical/treatment_center)
 "axB" = (
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "axI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
@@ -9261,7 +9261,7 @@
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "cyx" = (
 /obj/machinery/door/window{
 	name = "Secure Art Exhibition";
@@ -12784,7 +12784,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "dvg" = (
 /obj/machinery/portable_atmospherics/scrubber,
 /obj/structure/window/reinforced{
@@ -14570,7 +14570,7 @@
 /area/station/engineering/atmos)
 "ecz" = (
 /turf/closed/wall,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "ecE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -20514,7 +20514,7 @@
 	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "ghV" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -20917,7 +20917,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "gqa" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction{
 	dir = 4
@@ -39256,7 +39256,7 @@
 	},
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "mXf" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -40393,7 +40393,7 @@
 "nsp" = (
 /obj/structure/cable,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "nsr" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -40945,7 +40945,7 @@
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "nDl" = (
 /obj/machinery/door/morgue{
 	name = "Private Study";
@@ -51157,7 +51157,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "rvo" = (
 /obj/structure/noticeboard/directional/north,
 /obj/effect/turf_decal/tile/neutral{
@@ -59771,7 +59771,7 @@
 "uRY" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "uSH" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -60008,7 +60008,7 @@
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "uWR" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -62041,7 +62041,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "vJt" = (
 /obj/structure/cable,
 /obj/machinery/firealarm/directional/west,
@@ -66643,7 +66643,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/white,
-/area/commons/dorms/cryo)
+/area/station/commons/dorms/cryo)
 "xuw" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/red,

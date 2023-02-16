@@ -545,3 +545,12 @@
 	// Add verb for re-opening the interview panel, fixing chat and re-init the verbs for the stat panel
 	add_verb(src, /mob/dead/new_player/proc/open_interview)
 	add_verb(client, /client/verb/fix_tgui_panel)
+
+//Small verb that allows +DEBUG admins to bypass the observer prep lock
+/mob/dead/new_player/verb/immediate_observe()
+	set desc = "Bypass all safety checks and observe immediately (+DEBUG)"
+	if(!check_rights(R_DEBUG))
+		return
+	//This is bypassing a LOT of safety checks, so we're just going to send this immediately.
+	to_chat_immediate(usr, span_userdanger("Bypassing all safety checks and spawning you in immediately.\nDon't complain on the repo if this breaks shit!"))
+	make_me_an_observer(1)

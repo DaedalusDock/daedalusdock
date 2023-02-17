@@ -7,6 +7,7 @@
 	/datum/surgery_step/saw,
 	/datum/surgery_step/clamp_bleeders,
 	/datum/surgery_step/lobotomize,
+	/datum/surgery_step/repair_bone,
 	/datum/surgery_step/close)
 
 	target_mobtypes = list(/mob/living/carbon/human)

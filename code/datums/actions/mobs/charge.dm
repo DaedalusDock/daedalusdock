@@ -176,7 +176,7 @@
 	var/mob/living/living_target = target
 	living_target.visible_message("<span class='danger'>[source] slams into [living_target]!</span>", "<span class='userdanger'>[source] tramples you into the ground!</span>")
 	source.forceMove(get_turf(living_target))
-	living_target.apply_damage(damage_dealt, BRUTE, wound_bonus = CANT_WOUND)
+	living_target.apply_damage(damage_dealt, BRUTE)
 	playsound(get_turf(living_target), 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	shake_camera(living_target, 4, 3)
 	shake_camera(source, 2, 3)

@@ -1,5 +1,0 @@
-author: ShizCalev
-delete-after: true
-changes:
-  - bugfix: Explosions don't cause runtimes anymore. Atleast not as many. I'd insert
-      a trolleybus emote here but the emoji stripper will remove it.

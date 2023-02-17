@@ -10,7 +10,6 @@
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	movement_type = FLYING
-	wound_bonus = CANT_WOUND // can't wound by default
 	generic_canpass = FALSE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
@@ -178,8 +177,6 @@
 	var/hit_prone_targets = FALSE
 	///For what kind of brute wounds we're rolling for, if we're doing such a thing. Lasers obviously don't care since they do burn instead.
 	var/sharpness = NONE
-	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
-	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
 	var/embed_falloff_tile
 	var/static/list/projectile_connections = list(
@@ -195,9 +192,6 @@
 
 /obj/projectile/proc/Range()
 	range--
-	if(wound_bonus != CANT_WOUND)
-		wound_bonus += wound_falloff_tile
-		bare_wound_bonus = max(0, bare_wound_bonus + wound_falloff_tile)
 	if(embedding)
 		embedding["embed_chance"] += embed_falloff_tile
 	if(range <= 0 && loc)

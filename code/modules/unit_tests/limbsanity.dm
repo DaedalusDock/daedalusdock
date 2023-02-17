@@ -10,3 +10,6 @@
 				Fail("[path] does not have a valid icon for female variants")
 		else if(!icon_exists(UNLINT(part.should_draw_greyscale ? part.icon_greyscale : part.icon_static), "[part.limb_id]_[part.body_zone]"))
 			Fail("[path] does not have a valid icon")
+
+		if((part.bodypart_flags & BP_IS_GRABBY_LIMB) && !BP.held_index)
+			Fail("[path] is set as a hand-having limb without having a held index!")

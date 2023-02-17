@@ -261,7 +261,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		var/mob/living/carbon/smeared_carbon = smeared_mob
 		smeared_carbon.adjustBruteLoss(100)
 		var/obj/item/bodypart/penetrated_chest = smeared_carbon.get_bodypart(BODY_ZONE_CHEST)
-		penetrated_chest?.receive_damage(60, wound_bonus = 20, sharpness=SHARP_POINTY)
+		penetrated_chest?.receive_damage(60, sharpness=SHARP_POINTY)
 
 	if(smeared_mob.density || prob(10))
 		EX_ACT(smeared_mob, EXPLODE_HEAVY)

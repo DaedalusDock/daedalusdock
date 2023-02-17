@@ -305,12 +305,6 @@
 			return
 		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
 			return
-		if(iscarbon(target))
-			var/mob/living/carbon/carbon_target = target
-			for(var/i in carbon_target.all_wounds)
-				var/datum/wound/target_wound = i
-				if(target_wound.try_treating(src, user))
-					return // another coward cured!
 
 	if(istype(user))//Check if the user can use the gun, if the user isn't alive(turrets) assume it can.
 		var/mob/living/living_user = user
@@ -741,14 +735,10 @@
 
 	if(chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage *= 5
-		if(chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			chambered.loaded_projectile.wound_bonus += 5 // much more dramatic on multiple pellet'd projectiles really
 
 	var/fired = process_fire(target, user, TRUE, params, BODY_ZONE_HEAD)
 	if(!fired && chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage /= 5
-		if(chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			chambered.loaded_projectile.wound_bonus -= 5
 
 /obj/item/gun/proc/unlock() //used in summon guns and as a convience for admins
 	if(pin)

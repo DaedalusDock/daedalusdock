@@ -61,7 +61,8 @@
 			var/obj/item/bodypart/target_bodypart = locate(bodypart.type) in carbon_target.bodyparts
 			if(!target_bodypart)
 				continue
-			iter_wound.remove_wound()
-			iter_wound.apply_wound(target_bodypart)
+			target_bodypart.create_wound_easy(iter_wound.type, iter_wound.damage)
+			iter_wound.heal_damage(INFINITY)
+			bodypart.update_damage()
 
 	return TRUE

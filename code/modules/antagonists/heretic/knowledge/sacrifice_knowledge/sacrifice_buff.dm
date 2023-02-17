@@ -96,11 +96,14 @@
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume = owner.blood_volume + 2
 
+
 	var/mob/living/carbon/carbon_owner = owner
 	var/datum/wound/bloodiest_wound
-	for(var/datum/wound/iter_wound as anything in carbon_owner.all_wounds)
-		if(iter_wound.blood_flow && (iter_wound.blood_flow > bloodiest_wound?.blood_flow))
+	for(var/datum/wound/iter_wound as anything in carbon_owner.get_wounds())
+		if(iter_wound.bleed_timer && (iter_wound.bleed_timer > bloodiest_wound?.bleed_timer))
 			bloodiest_wound = iter_wound
 
 	if(bloodiest_wound)
-		bloodiest_wound.set_blood_flow(max(0, bloodiest_wound.blood_flow - 0.5))
+		bloodiest_wound.bleed_timer = max(bloodiest_wound.bleed_timer - 5, 0)
+		bloodiest_wound.parent.refresh_bleed_rate()
+

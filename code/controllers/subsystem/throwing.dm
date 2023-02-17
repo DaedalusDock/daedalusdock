@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(throwing)
 	flags = SS_NO_INIT|SS_KEEP_TIMING|SS_TICKER
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
-	var/list/currentrun
+	var/list/currentrun = list()
 	var/list/processing = list()
 
 /datum/controller/subsystem/throwing/stat_entry(msg)
@@ -37,8 +37,6 @@ SUBSYSTEM_DEF(throwing)
 
 		if (MC_TICK_CHECK)
 			return
-
-	currentrun = null
 
 /datum/thrownthing
 	///Defines the atom that has been thrown (Objects and Mobs, mostly.)

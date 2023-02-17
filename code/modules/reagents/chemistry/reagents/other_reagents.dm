@@ -2694,42 +2694,6 @@
 	taste_mult = 0
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-// "Second wind" reagent generated when someone suffers a wound. Epinephrine, adrenaline, and stimulants are all already taken so here we are
-/datum/reagent/determination
-	name = "Determination"
-	description = "For when you need to push on a little more. Do NOT allow near plants."
-	reagent_state = LIQUID
-	color = "#D2FFFA"
-	metabolization_rate = 0.75 * REAGENTS_METABOLISM // 5u (WOUND_DETERMINATION_CRITICAL) will last for ~34 seconds
-	self_consuming = TRUE
-	/// Whether we've had at least WOUND_DETERMINATION_SEVERE (2.5u) of determination at any given time. No damage slowdown immunity or indication we're having a second wind if it's just a single moderate wound
-	var/significant = FALSE
-
-/datum/reagent/determination/on_mob_end_metabolize(mob/living/carbon/M)
-	if(significant)
-		var/stam_crash = 0
-		for(var/thing in M.all_wounds)
-			var/datum/wound/W = thing
-			stam_crash += (W.severity + 1) * 3 // spike of 3 stam damage per wound severity (moderate = 6, severe = 9, critical = 12) when the determination wears off if it was a combat rush
-		M.adjustStaminaLoss(stam_crash)
-	M.remove_status_effect(/datum/status_effect/determined)
-	..()
-
-/datum/reagent/determination/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	if(!significant && volume >= WOUND_DETERMINATION_SEVERE)
-		significant = TRUE
-		M.apply_status_effect(/datum/status_effect/determined) // in addition to the slight healing, limping cooldowns are divided by 4 during the combat high
-
-	volume = min(volume, WOUND_DETERMINATION_MAX)
-
-	for(var/thing in M.all_wounds)
-		var/datum/wound/W = thing
-		var/obj/item/bodypart/wounded_part = W.limb
-		if(wounded_part)
-			wounded_part.heal_damage(0.25 * REM * delta_time, 0.25 * REM * delta_time)
-		M.adjustStaminaLoss(-0.25 * REM * delta_time) // the more wounds, the more stamina regen
-	..()
-
 // unholy water, but for heretics.
 // why couldn't they have both just used the same reagent?
 // who knows.

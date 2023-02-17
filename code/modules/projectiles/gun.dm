@@ -648,14 +648,10 @@
 
 	if(chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage *= 5
-		if(chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			chambered.loaded_projectile.wound_bonus += 5 // much more dramatic on multiple pellet'd projectiles really
 
 	var/fired = process_fire(target, user, TRUE, params, BODY_ZONE_HEAD)
 	if(!fired && chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage /= 5
-		if(chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			chambered.loaded_projectile.wound_bonus -= 5
 
 /obj/item/gun/proc/unlock() //used in summon guns and as a convience for admins
 	if(pin)

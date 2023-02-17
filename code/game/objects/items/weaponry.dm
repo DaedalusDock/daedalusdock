@@ -642,7 +642,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 12
-	wound_bonus = -10
 	throwforce = 12
 	attack_verb_continuous = list("beats", "smacks")
 	attack_verb_simple = list("beat", "smack")
@@ -839,8 +838,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	force = 10
-	wound_bonus = 25
-	bare_wound_bonus = 50
 	throwforce = 25
 	throw_speed = 4
 	embedding = list("embed_chance" = 100)
@@ -934,7 +931,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	playsound(src, 'sound/weapons/zapbang.ogg', 50, vary = TRUE)
 	if(isliving(target))
 		var/mob/living/living_target = target
-		living_target.apply_damage(force*damage_mod, BRUTE, sharpness = SHARP_EDGED, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, def_zone = user.zone_selected)
+		living_target.apply_damage(force*damage_mod, BRUTE, sharpness = SHARP_EDGED, def_zone = user.zone_selected)
 		log_combat(user, living_target, "slashed", src)
 		if(living_target.stat == DEAD && prob(force*damage_mod*0.5))
 			living_target.visible_message(span_danger("[living_target] explodes in a shower of gore!"), blind_message = span_hear("You hear organic matter ripping and tearing!"))
@@ -977,8 +974,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	desc = "A blade that was mastercrafted by a legendary blacksmith. Its' enchantments let it slash through anything."
 	force = 8
 	throwforce = 20
-	wound_bonus = 20
-	bare_wound_bonus = 25
 
 /obj/item/highfrequencyblade/wizard/attack_self(mob/user, modifiers)
 	if(!IS_WIZARD(user))

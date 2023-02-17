@@ -597,13 +597,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 						visible_message(span_danger("[C]'s spinal cord is obliterated with a sickening crunch!"), ignored_mobs = list(C))
 						C.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic)
 					if(5) // limb squish!
-						for(var/i in C.bodyparts)
-							var/obj/item/bodypart/squish_part = i
-							if(IS_ORGANIC_LIMB(squish_part))
-								var/type_wound = pick(list(/datum/wound/blunt/critical, /datum/wound/blunt/severe, /datum/wound/blunt/moderate))
-								squish_part.force_wound_upwards(type_wound)
-							else
-								squish_part.receive_damage(brute=30)
+						for(var/obj/item/bodypart/squish_part as anything in C.bodyparts)
+							squish_part.receive_damage(brute=40)
 						C.visible_message(span_danger("[C]'s body is maimed underneath the mass of [src]!"), \
 							span_userdanger("Your body is maimed underneath the mass of [src]!"))
 					if(6) // skull squish!
@@ -619,8 +614,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 				if(prob(30))
 					C.apply_damage(max(0, squish_damage - crit_rebate), forced=TRUE, spread_damage=TRUE) // the 30% chance to spread the damage means you escape breaking any bones
 				else
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5)
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5)
 				C.AddElement(/datum/element/squish, 80 SECONDS)
 			else
 				L.visible_message(span_danger("[L] is crushed by [src]!"), \

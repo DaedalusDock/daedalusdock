@@ -74,9 +74,17 @@
 	var/fail_prob = 0//100 - fail_prob = success_prob
 	var/advance = FALSE
 
-	if(preop(user, target, target_zone, tool, surgery) == -1)
-		surgery.step_in_progress = FALSE
-		return FALSE
+	var/preop_result = preop(user, target, target_zone, tool, surgery)
+	switch(preop_result)
+		if(-1)
+			surgery.step_in_progress = FALSE
+			return FALSE
+		if(1)
+			surgery.step_in_progress = FALSE
+			surgery.status++
+			if(surgery.status > surgery.steps.len)
+				surgery.complete(user)
+			return TRUE
 
 	play_preop_sound(user, target, target_zone, tool, surgery) // Here because most steps overwrite preop
 

@@ -169,10 +169,7 @@
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.Knockdown(30)
 	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(user.zone_selected) || pushed_mob.get_bodypart(BODY_ZONE_HEAD)
-	var/extra_wound = 0
-	if(HAS_TRAIT(user, TRAIT_HULK))
-		extra_wound = 20
-	banged_limb?.receive_damage(30, wound_bonus = extra_wound)
+	banged_limb?.receive_damage(30)
 	pushed_mob.apply_damage(60, STAMINA)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))

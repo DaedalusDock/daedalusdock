@@ -491,7 +491,7 @@
 	if(head)
 		owner.visible_message(span_warning("[owner]'s head splatters with a sickening crunch!"), ignored_mobs = list(owner))
 		new /obj/effect/gibspawner/generic(get_turf(owner), owner)
-		head.dismember(BRUTE)
+		head.dismember(DROPLIMB_BLUNT)
 		head.drop_organs()
 		qdel(head)
 		owner.regenerate_icons()

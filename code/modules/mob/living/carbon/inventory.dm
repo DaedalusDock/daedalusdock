@@ -115,7 +115,7 @@
 			put_in_hands(I)
 			update_held_items()
 		if(ITEM_SLOT_BACKPACK)
-			if(!back || !SEND_SIGNAL(back, COMSIG_TRY_STORAGE_INSERT, I, src, TRUE))
+			if(!back || !back.atom_storage?.attempt_insert(I, src, override = TRUE))
 				not_handled = TRUE
 		else
 			not_handled = TRUE
@@ -278,7 +278,7 @@
 	put_in_hands(I)
 
 ///Returns a list of all body_zones covered by clothing
-/mob/living/carbon/proc/get_covered_body_zones()
+/mob/living/carbon/proc/get_covered_body_zones(exact_only)
 	RETURN_TYPE(/list)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -287,7 +287,7 @@
 	for(var/obj/item/worn_item in all_worn_items)
 		covered_flags |= worn_item.body_parts_covered
 
-	return cover_flags2body_zones(covered_flags)
+	return cover_flags2body_zones(covered_flags, exact_only)
 
 ///Returns a bitfield of all zones covered by clothing
 /mob/living/carbon/proc/get_all_covered_flags()

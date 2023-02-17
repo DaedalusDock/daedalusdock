@@ -128,3 +128,41 @@
   - rscadd: Tape can be used as makeshift handcuffs/muzzle when used on people
   - soundadd: Tape sound
   - rscadd: handcuffed type is now shown on examine
+2023-02-12:
+  Kapu1178:
+  - bugfix: The Bar APC is now wired roundstart.
+2023-02-13:
+  Kapu1178, Nebula Coders:
+  - rscadd: Station Time now shows the station's canonical date.
+  - rscadd: Station name, date, and time, are displayed in a sick cool epic way on
+      round join.
+  - rscadd: The station's time is now randomly offset between 0 and 23 hours.
+  - bugfix: A ton of timezone related garbage. Nightshift should notably work properly.
+  - rscdel: The splashscreen fade was removed because it causes a bug that makes planes
+      freak out.
+2023-02-14:
+  Kapu1178:
+  - bugfix: Kidnapped Vox and Plasmamen spawn with their proper equipment
+  - bugfix: Tongueless players
+  - bugfix: Oculine's explosion thingy happens properly.
+  - bugfix: Ghosts look correct.
+  - bugfix: The aurora event is no longer kills the lighting subsystem.
+  - bugfix: The plasmaman helmet "Toggle Welding Screen" button works.
+  TGStation:
+  - refactor: Storage has been completely rewritten.
+  Tastyfish, ChungusGamer666:
+  - bugfix: Flashlights and similar directional light items no longer make you glow
+      forever under certain circumstances.
+  - rscadd: The all-access indicator is now glow in the dark.
+  - bugfix: Some lights that would fail to follow the light source have been fixed.
+2023-02-15:
+  Kapu1178:
+  - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.
+2023-02-17:
+  MrStonedOne:
+  - code_imp: The mc now keeps track of how many times a subsystem has slept in fire()
+  ShizCalev:
+  - bugfix: Explosions don't cause runtimes anymore. Atleast not as many. I'd insert
+      a trolleybus emote here but the emoji stripper will remove it.
+  francinum:
+  - qol: Developers can bypass observer checks to watch map generation

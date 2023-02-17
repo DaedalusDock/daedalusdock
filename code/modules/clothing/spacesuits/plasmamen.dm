@@ -77,6 +77,13 @@
 	if(user.canUseTopic(src, BE_CLOSE))
 		toggle_welding_screen(user)
 
+/obj/item/clothing/head/helmet/space/plasmaman/ui_action_click(mob/user, action)
+	if(istype(action, /datum/action/item_action/toggle_welding_screen))
+		toggle_welding_screen(user)
+		return
+
+	return ..()
+
 /obj/item/clothing/head/helmet/space/plasmaman/proc/toggle_welding_screen(mob/living/user)
 	if(weldingvisortoggle(user))
 		if(helmet_on)
@@ -217,8 +224,8 @@
 	inhand_icon_state = "chemist_envirohelm"
 
 /obj/item/clothing/head/helmet/space/plasmaman/chief_medical_officer
-	name = "chief medical officer's plasma envirosuit helmet"
-	desc = "A special containment helmet designed for the Chief Medical Officer. A gold stripe applied to differentiate them from other medical staff."
+	name = "medical director's plasma envirosuit helmet"
+	desc = "A special containment helmet designed for the Medical Director. A gold stripe applied to differentiate them from other medical staff."
 	icon_state = "cmo_envirohelm"
 	inhand_icon_state = "cmo_envirohelm"
 

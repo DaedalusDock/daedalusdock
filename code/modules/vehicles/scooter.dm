@@ -151,7 +151,7 @@
 		if(victim.body_position == LYING_DOWN)
 			playsound(location, 'sound/items/trayhit2.ogg', 40)
 			var/body_part = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_CHEST)
-			victim.apply_damage(damage = 25, damagetype = BRUTE, def_zone = body_part, wound_bonus = 20)
+			victim.apply_damage(damage = 25, damagetype = BRUTE, def_zone = body_part)
 			victim.Paralyze(1.5 SECONDS)
 			skater.adjustStaminaLoss(instability)
 			victim.visible_message(span_danger("[victim] straight up gets grinded into the ground by [skater]'s [src]! Radical!"))

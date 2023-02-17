@@ -8,6 +8,7 @@
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/incise,
 		/datum/surgery_step/revive,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 
 	target_mobtypes = list(/mob/living/carbon/human)

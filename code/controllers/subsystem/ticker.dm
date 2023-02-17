@@ -39,8 +39,8 @@ SUBSYSTEM_DEF(ticker)
 	var/timeLeft //pregame timer
 	var/start_at
 
-	var/gametime_offset = 432000 //Deciseconds to add to world.time for station time.
-	var/station_time_rate_multiplier = 12 //factor of station time progressal vs real time.
+	//Deciseconds to add to world.time for station time. Set in initialize.
+	var/gametime_offset = 0
 
 	/// Num of players, used for pregame stats on statpanel
 	var/totalPlayers = 0
@@ -73,6 +73,8 @@ SUBSYSTEM_DEF(ticker)
 	var/emergency_reason
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
+	gametime_offset = rand(0, 23) HOURS
+
 	pick_login_music()
 	pick_credits_music()
 
@@ -265,9 +267,6 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		var/mob/living/carbon/human/iter_human = i
 
-		iter_human.increment_scar_slot()
-		iter_human.load_persistent_scars()
-
 		if(!iter_human.hardcore_survival_score)
 			continue
 		if(iter_human.mind?.special_role)
@@ -424,10 +423,7 @@ SUBSYSTEM_DEF(ticker)
 		if(living)
 			qdel(player)
 			living.notransform = TRUE
-			if(living.client)
-				var/atom/movable/screen/splash/S = new(null, living.client, TRUE)
-				S.Fade(TRUE)
-				living.client.init_verbs()
+			living.client?.init_verbs()
 			livings += living
 	if(livings.len)
 		addtimer(CALLBACK(src, .proc/release_characters, livings), 30, TIMER_CLIENT_TIME)

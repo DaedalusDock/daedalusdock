@@ -17,7 +17,7 @@
 	var/mob/living/carbon/human/ninja = affecting
 	var/list/info_list = list()
 	info_list += "[span_info("SpiderOS Status: [s_initialized ? "Initialized" : "Disabled"]")]\n"
-	info_list += "[span_info("Current Time: [station_time_timestamp()]")]\n"
+	info_list += "[span_info("Current Time: [stationtime2text()]")]\n"
 	//Ninja status
 	info_list += "[span_info("Fingerprints: [md5(ninja.dna.unique_identity)]")]\n"
 	info_list += "[span_info("Unique Identity: [ninja.dna.unique_enzymes]")]\n"

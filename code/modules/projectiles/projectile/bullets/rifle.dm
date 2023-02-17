@@ -4,7 +4,6 @@
 	name = "5.56mm bullet"
 	damage = 35
 	armour_penetration = 30
-	wound_bonus = -40
 
 /obj/projectile/bullet/a556/phasic
 	name = "5.56mm phasic bullet"
@@ -19,8 +18,6 @@
 	name = "7.62 bullet"
 	damage = 60
 	armour_penetration = 10
-	wound_bonus = -45
-	wound_falloff_tile = 0
 
 /obj/projectile/bullet/a762/enchanted
 	name = "enchanted 7.62 bullet"
@@ -34,7 +31,4 @@
 	icon_state = "gauss"
 	damage = 60
 	armour_penetration = 50
-	wound_bonus = -20
-	bare_wound_bonus = 80
 	embedding = list(embed_chance=100, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=10)
-	wound_falloff_tile = -5

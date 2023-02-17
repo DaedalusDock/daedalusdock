@@ -30,8 +30,6 @@
 	heat = 3800
 	tool_behaviour = TOOL_WELDER
 	toolspeed = 1
-	wound_bonus = 10
-	bare_wound_bonus = 15
 	custom_materials = list(/datum/material/iron=70, /datum/material/glass=30)
 	///Whether the welding tool is on or off.
 	var/welding = FALSE

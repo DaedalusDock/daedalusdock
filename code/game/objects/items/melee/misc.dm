@@ -21,8 +21,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	force = 10
 	throwforce = 7
-	wound_bonus = 15
-	bare_wound_bonus = 10
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
@@ -72,8 +70,6 @@
 	attack_verb_simple = list("slash", "cut")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 	custom_materials = list(/datum/material/iron = 1000)
-	wound_bonus = 10
-	bare_wound_bonus = 25
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
@@ -84,13 +80,13 @@
 		final_block_chance = 0 //Don't bring a sword to a gunfight
 	return ..()
 
-/obj/item/melee/sabre/on_exit_storage(datum/component/storage/concrete/container)
-	var/obj/item/storage/belt/sabre/sabre = container.real_location()
+/obj/item/melee/sabre/on_exit_storage(datum/storage/container)
+	var/obj/item/storage/belt/sabre/sabre = container.real_location?.resolve()
 	if(istype(sabre))
 		playsound(sabre, 'sound/items/unsheath.ogg', 25, TRUE)
 
-/obj/item/melee/sabre/on_enter_storage(datum/component/storage/concrete/container)
-	var/obj/item/storage/belt/sabre/sabre = container.real_location()
+/obj/item/melee/sabre/on_enter_storage(datum/storage/container)
+	var/obj/item/storage/belt/sabre/sabre = container.real_location?.resolve()
 	if(istype(sabre))
 		playsound(sabre, 'sound/items/sheath.ogg', 25, TRUE)
 

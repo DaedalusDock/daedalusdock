@@ -16,7 +16,6 @@
 	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
-	scars_covered_by_clothes = FALSE
 	grind_results = null
 	is_dimorphic = TRUE
 	unarmed_attack_verb = "bite"
@@ -27,6 +26,8 @@
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
+
+	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/internal/brain/brain //The brain organ
@@ -251,7 +252,7 @@
 			. += eye_left
 			. += eye_right
 		else
-			. += image(eyes_icon_file, "eyes_missing", -BODY_LAYER, SOUTH)
+			. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
 		if(!facial_hair_hidden && facial_overlay && (FACEHAIR in species_flags_list))
 			facial_overlay.alpha = hair_alpha

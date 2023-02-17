@@ -212,6 +212,10 @@
 #define BIOWARE_LIGAMENTS "ligaments"
 #define BIOWARE_CORTEX "cortex"
 
+#define SURGERY_CLOSED 0
+#define SURGERY_OPEN 1
+#define SURGERY_RETRACTED 2
+
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
 #define SCREWYHUD_CRIT 1

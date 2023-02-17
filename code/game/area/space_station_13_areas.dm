@@ -553,7 +553,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "ce_office"
 
 /area/command/heads_quarters/cmo
-	name = "\improper Chief Medical Officer's Office"
+	name = "\improper Medical Director's Office"
 	icon_state = "cmo_office"
 
 /area/command/heads_quarters/hop

@@ -42,10 +42,8 @@
 			span_danger("Your veins burst from within and unholy flame erupts from your blood!")
 		)
 		var/obj/item/bodypart/bodypart = pick(victim.bodyparts)
-		var/datum/wound/slash/critical/crit_wound = new()
-		crit_wound.apply_wound(bodypart)
-		victim.apply_damage(20, BURN, wound_bonus = CANT_WOUND)
-
+		bodypart.create_wound_easy(/datum/wound/puncture/massive, 50)
+		victim.adjustFireLoss(20)
 		new /obj/effect/temp_visual/cleave(victim.drop_location())
 
 	return TRUE

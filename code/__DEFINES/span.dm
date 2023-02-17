@@ -27,6 +27,7 @@
 #define span_centcomradio(str) ("<span class='centcomradio'>" + str + "</span>")
 #define span_changeling(str) ("<span class='changeling'>" + str + "</span>")
 #define span_clown(str) ("<span class='clown'>" + str + "</span>")
+#define span_color(color, text) ("<span style=color: [color]>[text]</span>")
 #define span_colossus(str) ("<span class='colossus'>" + str + "</span>")
 #define span_command_headset(str) ("<span class='command_headset'>" + str + "</span>")
 #define span_comradio(str) ("<span class='comradio'>" + str + "</span>")

@@ -9,7 +9,6 @@
 	light_outer_range = 3
 	light_power = 1
 	light_on = FALSE
-	bare_wound_bonus = 20
 	stealthy_audio = TRUE
 	w_class = WEIGHT_CLASS_SMALL
 

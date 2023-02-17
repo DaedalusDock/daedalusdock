@@ -432,7 +432,7 @@
 
 	var/spillover = 0
 	var/pure_brute = brute
-	var/damagable = (brute_dam + burn_dam) > max_damage
+	var/damagable = ((brute_dam + burn_dam) < max_damage)
 
 	if(!damagable)
 		spillover = brute_dam + burn_dam + brute - max_damage

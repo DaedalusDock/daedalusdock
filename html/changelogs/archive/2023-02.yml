@@ -158,3 +158,11 @@
 2023-02-15:
   Kapu1178:
   - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.
+2023-02-17:
+  MrStonedOne:
+  - code_imp: The mc now keeps track of how many times a subsystem has slept in fire()
+  ShizCalev:
+  - bugfix: Explosions don't cause runtimes anymore. Atleast not as many. I'd insert
+      a trolleybus emote here but the emoji stripper will remove it.
+  francinum:
+  - qol: Developers can bypass observer checks to watch map generation

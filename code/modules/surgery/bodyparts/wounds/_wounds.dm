@@ -201,9 +201,9 @@
 // than what needed to be healed, return how much heal was left
 /datum/wound/proc/heal_damage(amount)
 	if(parent)
-		if (wound_type == WOUND_BURN && !(parent.burn_ratio < 1))
+		if (wound_type == WOUND_BURN && parent.burn_ratio > 1)
 			return amount	//We don't want to heal wounds on irreparable organs.
-		else if(!(parent.brute_ratio < 1))
+		else if(parent.brute_ratio > 1)
 			return amount
 
 	var/healed_damage = min(src.damage, amount)

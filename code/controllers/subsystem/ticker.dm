@@ -804,7 +804,7 @@ SUBSYSTEM_DEF(ticker)
 	return runnable_modes
 
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
-	if(!mode)
+	if(!istype(mode))
 		return "Undecided"
 	if(bypass_secret || hide_mode == GAMEMODE_SHOW_MODE)
 		return mode.name
@@ -812,10 +812,8 @@ SUBSYSTEM_DEF(ticker)
 	return "Secret"
 
 /datum/controller/subsystem/ticker/proc/initialize_gamemode()
-	var/list/datum/game_mode/runnable_modes
 	if(!mode)
-		runnable_modes = draft_gamemodes()
-
+		var/list/datum/game_mode/runnable_modes = draft_gamemodes()
 		if(!runnable_modes.len)
 			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
 			return FALSE
@@ -824,18 +822,16 @@ SUBSYSTEM_DEF(ticker)
 			mode = pick(runnable_modes)
 		mode = new mode
 
-	else
-		mode = new mode
-		if(!mode.can_run_this_round())
-			if(hide_mode == GAMEMODE_SHOW_SECRET)
-				message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
-				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-			else
-				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
+	else if(!mode.can_run_this_round())
+		if(hide_mode == GAMEMODE_SHOW_SECRET)
+			message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
+			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+		else
+			to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
 
-			QDEL_NULL(mode)
-			SSjob.ResetOccupations()
-			return FALSE
+		QDEL_NULL(mode)
+		SSjob.ResetOccupations()
+		return FALSE
 
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff

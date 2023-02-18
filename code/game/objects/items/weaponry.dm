@@ -127,7 +127,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/claymore/highlander/process()
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		loc.plane = GAME_PLANE_UPPER_FOV_HIDDEN //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
+		loc.layer = ABOVE_ALL_MOB_LAYER //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
 		ADD_TRAIT(H, TRAIT_NOBLEED, HIGHLANDER_TRAIT) //AND WE WON'T BLEED OUT LIKE COWARDS
 	else
 		if(!(flags_1 & ADMIN_SPAWNED_1))
@@ -242,7 +242,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/claymore/highlander/robot/process()
-	loc.plane = GAME_PLANE_UPPER_FOV_HIDDEN
+	loc.layer = ABOVE_ALL_MOB_LAYER
 
 /obj/item/katana
 	name = "katana"
@@ -951,7 +951,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	alpha = 150
 	duration = 0.5 SECONDS
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 
 /obj/effect/temp_visual/slash/Initialize(mapload, atom/target, x_slashed, y_slashed, slash_color)
 	. = ..()

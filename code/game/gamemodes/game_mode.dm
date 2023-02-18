@@ -55,6 +55,7 @@
 
 ///Pass in a list of players about to participate in roundstart, receive TRUE or FALSE if this round type is valid for this round.
 /datum/game_mode/proc/can_run_this_round()
+	SHOULD_CALL_PARENT(TRUE)
 	if(length(SSticker.ready_players) < min_pop || length(SSticker.ready_players) > max_pop) //Population is too high or too low to run
 		return FALSE
 
@@ -66,8 +67,11 @@
 
 ///Try to start this gamemode, called by SSticker. Returns FALSE if it fails.
 /datum/game_mode/proc/execute_roundstart()
+	SHOULD_CALL_PARENT(TRUE)
 	if(!pre_setup())
 		return FALSE
+
+	return TRUE
 
 ///Populate the possible_antags list of minds, and any child behavior.
 /datum/game_mode/proc/pre_setup()
@@ -90,6 +94,7 @@
 
 ///Actually send out the antag datums, called after pre_setup
 /datum/game_mode/proc/setup_antags()
+	SHOULD_CALL_PARENT(TRUE)
 	for(var/datum/mind/M as anything in GLOB.pre_setup_antags)
 		M.add_antag_datum(antag_datum)
 		GLOB.pre_setup_antags -= M
@@ -97,6 +102,7 @@
 
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup(report) //Gamemodes can override the intercept report. Passing TRUE as the argument will force a report.
+	SHOULD_CALL_PARENT(TRUE)
 	if(!report)
 		report = !CONFIG_GET(flag/no_intercept_report)
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/display_roundstart_logout_report), ROUNDSTART_LOGOUT_REPORT_TIME)

@@ -231,8 +231,8 @@ SUBSYSTEM_DEF(ticker)
 	else
 		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
 
-	to_chat(world, "The gamemode is: [get_mode_name()]")
-
+	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]"))
+	to_chat(world, "<br><hr><br>")
 	CHECK_TICK
 
 	// There may be various config settings that have been set or modified by this point.
@@ -267,7 +267,6 @@ SUBSYSTEM_DEF(ticker)
 	round_start_timeofday = REALTIMEOFDAY
 	INVOKE_ASYNC(SSdbcore, /datum/controller/subsystem/dbcore/proc/SetRoundStart)
 
-	to_chat(world, "<br><hr><br>")
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
 

@@ -66,12 +66,8 @@
 
 ///Try to start this gamemode, called by SSticker. Returns FALSE if it fails.
 /datum/game_mode/proc/execute_roundstart()
-	. = pre_setup()
-	if(!.)
-		return .
-
-	if(antag_datum)
-		. = setup_antags()
+	if(!pre_setup())
+		return FALSE
 
 ///Populate the possible_antags list of minds, and any child behavior.
 /datum/game_mode/proc/pre_setup()

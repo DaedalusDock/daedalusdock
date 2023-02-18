@@ -177,7 +177,6 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, span_boldannounce("Starting game..."))
-	to_chat(world, "<br><hr><br>")
 	var/init_start = world.timeofday
 
 	for(var/i in GLOB.new_player_list)
@@ -232,6 +231,8 @@ SUBSYSTEM_DEF(ticker)
 	else
 		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
 
+	to_chat(world, "The gamemode is: [get_mode_name()]")
+
 	CHECK_TICK
 
 	// There may be various config settings that have been set or modified by this point.
@@ -266,6 +267,7 @@ SUBSYSTEM_DEF(ticker)
 	round_start_timeofday = REALTIMEOFDAY
 	INVOKE_ASYNC(SSdbcore, /datum/controller/subsystem/dbcore/proc/SetRoundStart)
 
+	to_chat(world, "<br><hr><br>")
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
 
@@ -278,8 +280,9 @@ SUBSYSTEM_DEF(ticker)
 			var/datum/holiday/holiday = SSevents.holidays[holidayname]
 			to_chat(world, "<h4>[holiday.greet()]</h4>")
 
+	//Setup the antags AFTTTTER theyve gotten their jobs
+	mode.setup_antags()
 	PostSetup()
-
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()

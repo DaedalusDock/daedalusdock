@@ -19,6 +19,12 @@ SUBSYSTEM_DEF(ticker)
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
+	///The name of the gamemode to show at roundstart. This is here to admins can give fake gamemodes.
+	var/hide_mode = GAMEMODE_SHOW_MODE
+
+	///All players that are readied up and about to spawn in.
+	var/list/mob/dead/new_player/ready_players = list()
+
 	///JSON for the music played in the lobby
 	var/list/login_music
 	///JSON for the round end music.
@@ -149,6 +155,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_SETTING_UP)
 			if(!setup())
 				//setup failed
+				start_immediately = FALSE //If the game failed to start, don't keep trying
 				current_state = GAME_STATE_STARTUP
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 				timeLeft = null
@@ -173,21 +180,53 @@ SUBSYSTEM_DEF(ticker)
 	to_chat(world, "<br><hr><br>")
 	var/init_start = world.timeofday
 
-	mode = new /datum/game_mode/dynamic
+	for(var/i in GLOB.new_player_list)
+		var/mob/dead/new_player/player = i
+		if(player.ready == PLAYER_READY_TO_PLAY && player.mind && player.check_preferences())
+			ready_players.Add(player)
+
+	CHECK_TICK
+	//Create and announce mode
+	var/list/datum/game_mode/runnable_modes
+	if(!mode)
+		runnable_modes = draft_gamemodes()
+		CHECK_TICK
+
+		if(!runnable_modes.len)
+			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			return FALSE
+		mode = pick_weight(runnable_modes)
+		if(!mode) //too few roundtypes all run too recently
+			mode = pick(runnable_modes)
+		mode = new mode
+
+	else
+		mode = new mode
+		if(!mode.can_run_this_round())
+			if(hide_mode == GAMEMODE_SHOW_SECRET)
+				message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
+				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			else
+				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
+
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
 
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
-	can_continue = src.mode.pre_setup() //Choose antagonists
+	can_continue = src.mode.execute_roundstart() //Choose antagonists
 	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations() //Distribute jobs
+	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
 	CHECK_TICK
 
 	if(!GLOB.Debug2)
 		if(!can_continue)
-			log_game("Game failed pre_setup")
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			message_admins(log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error]."))
+			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
 			QDEL_NULL(mode)
-			to_chat(world, "<B>Error setting up game.</B> Reverting to pre-game lobby.")
 			SSjob.ResetOccupations()
 			return FALSE
 	else
@@ -251,7 +290,7 @@ SUBSYSTEM_DEF(ticker)
 
 	var/list/adm = get_admin_counts()
 	var/list/allmins = adm["present"]
-	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]" : ""] has started[allmins.len ? ".":" with no active admins online!"]")
+	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]:" : "of"] [SSticker.get_mode_name()] has started[allmins.len ? ".":" with no active admins online!"]")
 	setup_done = TRUE
 
 	for(var/i in GLOB.start_landmarks_list)
@@ -794,3 +833,20 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!credits_music)
 		credits_music = login_music
+
+///Generate a list of gamemodes we can play.
+/datum/controller/subsystem/ticker/proc/draft_gamemodes()
+	var/list/datum/game_mode/runnable_modes = list()
+	for(var/path in subtypesof(/datum/game_mode))
+		var/datum/game_mode/M = new path()
+		if(M.can_run_this_round(SSticker.ready_players.Copy()))
+			runnable_modes[path] = M.weight
+	return runnable_modes
+
+/datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
+	if(!mode)
+		return "Undecided"
+	if(bypass_secret || hide_mode == GAMEMODE_SHOW_MODE)
+		return mode.name
+
+	return "Secret"

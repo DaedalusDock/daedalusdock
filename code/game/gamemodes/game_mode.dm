@@ -13,9 +13,90 @@
 
 
 /datum/game_mode
+	var/name = "oh god oh fuck what did you do"
+	/// This is a WEIGHT not a PROBABILITY
+	var/weight = GAMEMODE_WEIGHT_NEVER
+	///Is the gamemode votable? !Not implimented!
+	var/votable = FALSE
 
-///Attempts to select players for special roles the mode might have.
+	///Dynamically set to what the problem was. Or the first problem, anyway.
+	var/setup_error = ""
+
+	///The minimum players this gamemode can roll
+	var/min_pop = 0
+	///The maximum players this gamemode can roll
+	var/max_pop = INFINITY
+	///The number of antag players required for this round type to be considered
+	var/required_enemies = 0
+	///The recommended number of antag players for this round type
+	var/recommended_enemies = 0
+
+	///Typepath of the antagonist datum to hand out at round start
+	var/datum/antagonist/antag_datum
+
+	///A list of jobs cannot physically be this antagonist, typically AI and borgs.
+	var/list/restricted_jobs = null
+	///A list of jobs that should not be this antagonist
+	var/list/protected_jobs = null
+	///Jobs required for this round type to function, k:v list of JOB_TITLE : NUM_JOB. list(list(cap=1),list(hos=1,sec=2)) translates to one captain OR one hos and two secmans
+	var/list/required_jobs = null
+	/// If set, rule will only accept candidates from those roles. If on a roundstart ruleset, requires the player to have the correct antag pref enabled and any of the possible roles enabled.
+	var/list/exclusive_roles = null
+
+	///The antagonist flag to check player prefs for, for example ROLE_WIZARD
+	var/antag_flag = NONE
+	/// If a role is to be considered another for the purpose of banning.
+	var/antag_flag_to_ban_check = NONE
+	/// If set, will check this preference instead of antag_flag.
+	var/antag_preference = null
+
+	///A list of minds that are elligible to be given antagonist at roundstart
+	var/list/datum/mind/possible_antags = list()
+
+///Pass in a list of players about to participate in roundstart, receive TRUE or FALSE if this round type is valid for this round.
+/datum/game_mode/proc/can_run_this_round()
+	if(length(SSticker.ready_players) < min_pop || length(SSticker.ready_players) > max_pop) //Population is too high or too low to run
+		return FALSE
+
+	var/list/antag_candidates = trim_candidates(SSticker.ready_players.Copy())
+	if(length(antag_candidates) < required_enemies) //Not enough antags
+		return FALSE
+
+	return TRUE
+
+///Try to start this gamemode, called by SSticker. Returns FALSE if it fails.
+/datum/game_mode/proc/execute_roundstart()
+	. = pre_setup()
+	if(!.)
+		return .
+
+	if(antag_datum)
+		. = setup_antags()
+
+///Populate the possible_antags list of minds, and any child behavior.
 /datum/game_mode/proc/pre_setup()
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!antag_datum)
+		return TRUE
+
+	if(CONFIG_GET(flag/protect_roles_from_antagonist))
+		restricted_jobs += protected_jobs
+
+	if(CONFIG_GET(flag/protect_assistant_from_antagonist))
+		restricted_jobs += JOB_ASSISTANT
+
+	possible_antags = SSticker.ready_players.Copy()
+
+	// Strip out antag bans/people without this antag as a pref
+	trim_candidates(possible_antags)
+	return TRUE
+
+///Actually send out the antag datums, called after pre_setup
+/datum/game_mode/proc/setup_antags()
+	for(var/datum/mind/M as anything in GLOB.pre_setup_antags)
+		M.add_antag_datum(antag_datum)
+		GLOB.pre_setup_antags -= M
 	return TRUE
 
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
@@ -204,3 +285,49 @@
 /// Mode specific admin panel.
 /datum/game_mode/proc/admin_panel()
 	return
+
+///Return a list of players that have our antag flag checked in prefs and are not banned, among other criteria.
+/datum/game_mode/proc/trim_candidates(list/candidates)
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+
+	for(var/mob/dead/new_player/candidate_player in candidates)
+		var/client/candidate_client = GET_CLIENT(candidate_player)
+		if (!candidate_client || !candidate_player.mind) // Are they connected?
+			candidates.Remove(candidate_player)
+			continue
+
+		// Code for age-gating antags.
+		/*if(candidate_client.get_remaining_days(minimum_required_age) > 0)
+			candidates.Remove(candidate_player)
+			continue*/
+
+		if(candidate_player.mind.special_role) // We really don't want to give antag to an antag.
+			candidates.Remove(candidate_player)
+			continue
+
+		if (!((antag_preference || antag_flag) in candidate_client.prefs.be_special))
+			candidates.Remove(candidate_player)
+			continue
+
+		if (is_banned_from(candidate_player.ckey, list(antag_flag_to_ban_check || antag_flag, ROLE_SYNDICATE)))
+			candidates.Remove(candidate_player)
+			continue
+
+		// If this ruleset has exclusive_roles set, we want to only consider players who have those
+		// job prefs enabled and are eligible to play that job. Otherwise, continue as before.
+		if(length(exclusive_roles))
+			var/exclusive_candidate = FALSE
+			for(var/role in exclusive_roles)
+				var/datum/job/job = SSjob.GetJob(role)
+
+				if((role in candidate_client.prefs.job_preferences) && SSjob.check_job_eligibility(candidate_player, job, "Gamemode Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
+					exclusive_candidate = TRUE
+					break
+
+			// If they didn't have any of the required job prefs enabled or were banned from all enabled prefs,
+			// they're not eligible for this antag type.
+			if(!exclusive_candidate)
+				candidates.Remove(candidate_player)
+
+	return candidates

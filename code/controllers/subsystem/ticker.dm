@@ -184,55 +184,13 @@ SUBSYSTEM_DEF(ticker)
 		if(player.ready == PLAYER_READY_TO_PLAY && player.mind && player.check_preferences())
 			ready_players.Add(player)
 
-	CHECK_TICK
-	//Create and announce mode
-	var/list/datum/game_mode/runnable_modes
-	if(!mode)
-		runnable_modes = draft_gamemodes()
-		CHECK_TICK
-
-		if(!runnable_modes.len)
-			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-			return FALSE
-		mode = pick_weight(runnable_modes)
-		if(!mode) //too few roundtypes all run too recently
-			mode = pick(runnable_modes)
-		mode = new mode
-
-	else
-		mode = new mode
-		if(!mode.can_run_this_round())
-			if(hide_mode == GAMEMODE_SHOW_SECRET)
-				message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
-				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-			else
-				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
-
-			QDEL_NULL(mode)
-			SSjob.ResetOccupations()
-			return FALSE
-
-	CHECK_TICK
-	//Configure mode and assign player to special mode stuff
-	var/can_continue = 0
-	can_continue = src.mode.execute_roundstart() //Choose antagonists
-	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
-	CHECK_TICK
-
-	if(!GLOB.Debug2)
-		if(!can_continue)
-			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
-			message_admins(log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error]."))
-			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
-			QDEL_NULL(mode)
-			SSjob.ResetOccupations()
-			return FALSE
-	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+	// Set up gamemode, divide up jobs.
+	if(!initialize_gamemode())
+		return FALSE
 
 	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]"))
 	to_chat(world, "<br><hr><br>")
+
 	CHECK_TICK
 
 	// There may be various config settings that have been set or modified by this point.
@@ -852,3 +810,50 @@ SUBSYSTEM_DEF(ticker)
 		return mode.name
 
 	return "Secret"
+
+/datum/controller/subsystem/ticker/proc/initialize_gamemode()
+	var/list/datum/game_mode/runnable_modes
+	if(!mode)
+		runnable_modes = draft_gamemodes()
+
+		if(!runnable_modes.len)
+			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			return FALSE
+		mode = pick_weight(runnable_modes)
+		if(!mode) //too few roundtypes all run too recently
+			mode = pick(runnable_modes)
+		mode = new mode
+
+	else
+		mode = new mode
+		if(!mode.can_run_this_round())
+			if(hide_mode == GAMEMODE_SHOW_SECRET)
+				message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
+				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			else
+				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
+
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+
+	CHECK_TICK
+	//Configure mode and assign player to special mode stuff
+	var/can_continue = 0
+	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	CHECK_TICK
+	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	CHECK_TICK
+
+	if(!GLOB.Debug2)
+		if(!can_continue)
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			message_admins(log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error]."))
+			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+	else
+		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+
+	return TRUE

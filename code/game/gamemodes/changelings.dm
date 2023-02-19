@@ -24,7 +24,7 @@
 
 	var/num_ling = 1
 
-	num_ling = max(1, min(round(length(SSticker.ready_players) / (CHANGELING_SCALING_COEFF * 2)) + 2, round(length(SSticker.ready_players) / CHANGELING_SCALING_COEFF)))
+	num_ling = max(1, round(length(SSticker.ready_players) * CHANGELING_SCALING_COEFF))
 
 	for (var/i in 1 to num_ling)
 		if(possible_antags.len <= 0)

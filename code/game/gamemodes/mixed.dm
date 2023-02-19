@@ -34,7 +34,7 @@
 
 	var/list/antag_pool = list()
 
-	var/number_of_antags = max(1, min(round(length(SSticker.ready_players) / (MIXED_ANTAG_COEFF * 2)) + 2, round(length(SSticker.ready_players) / MIXED_ANTAG_COEFF)))
+	var/number_of_antags = max(1, round(length(SSticker.ready_players) * MIXED_ANTAG_COEFF))
 
 	//Setup a list of antags to try to spawn
 	while(number_of_antags)
@@ -70,9 +70,9 @@
 		player2datum[M] = /datum/antagonist/traitor
 
 	for(var/i in 1 to antag_pool[ROLE_CHANGELING])
-		if(!length(role_to_players_map[ROLE_TRAITOR]))
+		if(!length(role_to_players_map[ROLE_CHANGELING]))
 			break
-		var/mob/M = pick_n_take(role_to_players_map[ROLE_TRAITOR])
+		var/mob/M = pick_n_take(role_to_players_map[ROLE_CHANGELING])
 		M.mind.special_role = ROLE_CHANGELING
 		M.mind.restricted_roles = restricted_jobs
 		GLOB.pre_setup_antags += M.mind
@@ -81,7 +81,7 @@
 	for(var/i in 1 to antag_pool[ROLE_HERETIC])
 		if(!length(role_to_players_map[ROLE_HERETIC]))
 			break
-		var/mob/M = pick_n_take(antag_pool[ROLE_HERETIC])
+		var/mob/M = pick_n_take(role_to_players_map[ROLE_HERETIC])
 		M.mind.special_role = ROLE_HERETIC
 		M.mind.restricted_roles = restricted_jobs
 		GLOB.pre_setup_antags += M.mind
@@ -91,7 +91,7 @@
 		for(var/i in 1 to antag_pool[ROLE_WIZARD])
 			if(!length(role_to_players_map[ROLE_WIZARD]))
 				break
-			var/mob/M = pick_n_take(antag_pool[ROLE_WIZARD])
+			var/mob/M = pick_n_take(role_to_players_map[ROLE_WIZARD])
 			M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/space_wizard))
 			M.mind.special_role = ROLE_WIZARD
 			player2datum[M] = /datum/antagonist/wizard

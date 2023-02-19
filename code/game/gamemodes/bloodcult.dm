@@ -31,7 +31,7 @@
 
 	var/num_cultists = 1
 
-	num_cultists = max(1, min(round(length(SSticker.ready_players) / (CULT_SCALING_COEFF * 2)) + 2, round(length(SSticker.ready_players) / CULT_SCALING_COEFF)))
+	num_cultists = max(1, round(length(SSticker.ready_players) * CULT_SCALING_COEFF))
 
 	for (var/i in 1 to num_cultists)
 		if(possible_antags.len <= 0)

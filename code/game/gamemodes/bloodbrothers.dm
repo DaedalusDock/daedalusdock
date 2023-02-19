@@ -30,7 +30,7 @@
 
 	var/num_teams = 1
 
-	num_teams = max(1, min(round(length(SSticker.ready_players) / (BROTHER_SCALING_COEFF * 2)) + 2, round(length(SSticker.ready_players) / BROTHER_SCALING_COEFF)))
+	num_teams = max(1, round(length(SSticker.ready_players) * BROTHER_SCALING_COEFF))
 
 	for(var/j in 1 to num_teams)
 		if(length(SSticker.ready_players) < 2 || length(SSticker.ready_players) < required_enemies)

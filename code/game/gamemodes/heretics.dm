@@ -24,7 +24,7 @@
 
 	var/num_heretics = 1
 
-	num_heretics = max(1, min(round(length(SSticker.ready_players) / (HERETIC_SCALING_COEFF * 2)) + 2, round(length(SSticker.ready_players) / HERETIC_SCALING_COEFF)))
+	num_heretics = max(1, round(length(SSticker.ready_players) * HERETIC_SCALING_COEFF))
 
 	for (var/i in 1 to num_heretics)
 		if(possible_antags.len <= 0)

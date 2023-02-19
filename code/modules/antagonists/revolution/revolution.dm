@@ -417,8 +417,6 @@
 	SSshuttle.clearHostileEnvironment(src)
 	save_members()
 
-	var/charter_given = FALSE
-
 	// Remove everyone as a revolutionary
 	for (var/_rev_mind in members)
 		var/datum/mind/rev_mind = _rev_mind
@@ -438,23 +436,11 @@
 				ADD_TRAIT(rev_head.current, TRAIT_DEFIB_BLACKLISTED, REF(src))
 				rev_head.current.med_hud_set_status()
 
-		priority_announce("It appears the mutiny has been quelled. Please return yourself and your incapacitated colleagues to work. \
-		We have remotely blacklisted the head revolutionaries in your medical records to prevent accidental revival.", sound_type = ANNOUNCER_CENTCOM)
+		priority_announce("We've noticed abnormal vitals patterns reporting from your waystation. \
+		We're dispatching a shuttle to your location, if nothing is wrong, please initiate a recall from your bridge.", "Daedalus Industries Transmission", sound_type = ANNOUNCER_SHUTTLECALLED)
+		SSshuttle.emergency.request(set_coefficient = 1, silent = TRUE)
+
 	else
-		for(var/datum/mind/headrev_mind as anything in ex_headrevs)
-			if(charter_given)
-				break
-			if(!headrev_mind.current || headrev_mind.current.stat != CONSCIOUS)
-				continue
-			charter_given = TRUE
-			podspawn(list(
-				"target" = get_turf(headrev_mind.current),
-				"style" = STYLE_SYNDICATE,
-				"spawn" = /obj/item/station_charter/revolution,
-			))
-			to_chat(headrev_mind.current, span_hear("You hear something crackle in your ears for a moment before a voice speaks. \
-				\"Please stand by for a message from your benefactor. Message as follows, provocateur. \
-				<b>You have been chosen out of your fellow provocateurs to rename the station. Choose wisely.</b> Message ends.\""))
 		for (var/mob/living/player as anything in GLOB.player_list)
 			var/datum/mind/player_mind = player.mind
 
@@ -486,9 +472,10 @@
 			var/datum/game_mode/dynamic/dynamic = SSticker.mode
 			dynamic.create_threat(revs_win_injection_amount, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Revolution victory")
 
-		priority_announce("A recent assessment of your station has marked your station as a severe risk area for high ranking Daedalus officials. \
-		For the safety of our staff, we have blacklisted your station for new employment of security and command. \
-		[pick(world.file2list("strings/anti_union_propaganda.txt"))]", "Daedalus Industries Transmission", sound_type = ANNOUNCER_CENTCOM)
+		priority_announce("We've noticed abnormal vitals patterns reporting from your waystation. \
+		We're dispatching a shuttle to your location incase something as gone wrong.", "Daedalus Industries Transmission", sound_type = ANNOUNCER_SHUTTLECALLED)
+		SSshuttle.emergency.request(set_coefficient = 0.5, silent = TRUE)
+		SSshuttle.emergency_no_recall = TRUE
 
 /// Mutates the ticker to report that the revs have won
 /datum/team/revolution/proc/round_result(finished)

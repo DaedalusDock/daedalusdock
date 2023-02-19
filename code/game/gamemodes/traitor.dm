@@ -24,7 +24,7 @@
 
 	var/num_traitors = 1
 
-	num_traitors = max(1, min(round(length(SSticker.ready_players) / (TRAITOR_SCALING_COEFF * 2)) + 2, round(length(SSticker.ready_players) / TRAITOR_SCALING_COEFF)))
+	num_traitors = max(1, round(length(SSticker.ready_players) * TRAITOR_SCALING_COEFF))
 
 	for (var/i in 1 to num_traitors)
 		if(possible_antags.len <= 0)

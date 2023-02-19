@@ -172,3 +172,8 @@
   - rscadd: Bone resetting surgery
   - rscdel: TG wounds
   - rscdel: scars
+2023-02-19:
+  DTraitor:
+  - code_imp: swapped chest and head order in bodyparts list
+  Kapu1178:
+  - rscdel: Gasmasks no longer inhibit vision.

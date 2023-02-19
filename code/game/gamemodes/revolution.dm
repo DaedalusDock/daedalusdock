@@ -39,7 +39,7 @@
 	. = ..()
 	var/num_revs = clamp(round(length(SSticker.ready_players) * REVOLUTION_SCALING_COEFF), 1, REVOLUTION_MAX_HEADREVS)
 
-	for(var/i = 1 to possible_antags)
+	for(var/i = 1 to num_revs)
 		if(possible_antags.len <= 0)
 			break
 		var/mob/M = pick_n_take(possible_antags)

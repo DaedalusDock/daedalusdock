@@ -7,8 +7,6 @@
 	antag_datum = /datum/antagonist/malf_ai
 	antag_flag = ROLE_MALF
 
-	var/datum/weakref/chosen_malf_player
-
 /datum/game_mode/malf/can_run_this_round()
 	. = ..()
 	if(!.)
@@ -25,12 +23,5 @@
 	var/mob/M = pick_n_take(possible_antags)
 	M.mind.special_role = ROLE_MALF
 	M.mind.restricted_roles = restricted_jobs
+	M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/ai))
 	GLOB.pre_setup_antags += M.mind
-	chosen_malf_player = WEAKREF(M)
-	LAZYADDASSOC(SSjob.dynamic_forced_occupations, M, JOB_AI)
-
-/datum/game_mode/malf/on_failed_execute()
-	. = ..()
-	var/mob/M = chosen_malf_player?.resolve()
-	if(M)
-		LAZYREMOVE(SSjob.dynamic_forced_occupations, M)

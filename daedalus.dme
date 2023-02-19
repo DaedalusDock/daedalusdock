@@ -1262,6 +1262,7 @@
 #include "code\game\gamemodes\game_mode.dm"
 #include "code\game\gamemodes\heretics.dm"
 #include "code\game\gamemodes\malfai.dm"
+#include "code\game\gamemodes\mixed.dm"
 #include "code\game\gamemodes\objective.dm"
 #include "code\game\gamemodes\objective_items.dm"
 #include "code\game\gamemodes\traitor.dm"

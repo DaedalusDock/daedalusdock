@@ -4,8 +4,8 @@
 /datum/game_mode/traitor
 	name = "Traitor"
 
-	weight = GAMEMODE_WEIGHT_NORMAL
-	restricted_jobs = list(JOB_CYBORG)
+	weight = GAMEMODE_WEIGHT_COMMON
+	restricted_jobs = list(JOB_CYBORG, JOB_AI)
 	protected_jobs = list(
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -33,11 +33,3 @@
 		M.mind.special_role = ROLE_TRAITOR
 		M.mind.restricted_roles = restricted_jobs
 		GLOB.pre_setup_antags += M.mind
-
-	var/enough_tators = length(GLOB.pre_setup_antags)
-
-	if(!enough_tators)
-		setup_error = "Not enough traitor candidates"
-		return FALSE
-	else
-		return TRUE

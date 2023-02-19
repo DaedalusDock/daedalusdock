@@ -71,6 +71,11 @@
 	if(!pre_setup())
 		return FALSE
 
+	var/number_of_antags = length(GLOB.pre_setup_antags)
+	if(number_of_antags < required_enemies)
+		setup_error = "Not enough antagonists selected. Required [required_enemies], got [number_of_antags]."
+		return FALSE
+
 	return TRUE
 
 ///Populate the possible_antags list of minds, and any child behavior.
@@ -90,6 +95,9 @@
 
 	// Strip out antag bans/people without this antag as a pref
 	trim_candidates(possible_antags)
+	if(!length(possible_antags))
+		setup_error = "No possible antagonists found"
+		return FALSE
 	return TRUE
 
 ///Actually send out the antag datums, called after pre_setup
@@ -99,6 +107,11 @@
 		M.add_antag_datum(antag_datum)
 		GLOB.pre_setup_antags -= M
 	return TRUE
+
+///Clean up a mess we may have made during set up.
+/datum/game_mode/proc/on_failed_execute()
+	SHOULD_CALL_PARENT(TRUE)
+	GLOB.pre_setup_antags.Cut()
 
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup(report) //Gamemodes can override the intercept report. Passing TRUE as the argument will force a report.

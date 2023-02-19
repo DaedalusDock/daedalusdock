@@ -20,7 +20,7 @@ SUBSYSTEM_DEF(ticker)
 
 	var/datum/game_mode/mode = null
 	///The name of the gamemode to show at roundstart. This is here to admins can give fake gamemodes.
-	var/hide_mode = GAMEMODE_SHOW_MODE
+	var/mode_display_name = null
 
 	///All players that are readied up and about to spawn in.
 	var/list/mob/dead/new_player/ready_players = list()
@@ -806,10 +806,10 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
 	if(!istype(mode))
 		return "Undecided"
-	if(bypass_secret || hide_mode == GAMEMODE_SHOW_MODE)
+	if(bypass_secret || !mode_display_name)
 		return mode.name
 
-	return "Secret"
+	return mode_display_name
 
 /datum/controller/subsystem/ticker/proc/initialize_gamemode()
 	if(!mode)
@@ -823,7 +823,7 @@ SUBSYSTEM_DEF(ticker)
 		mode = new mode
 
 	else if(!mode.can_run_this_round())
-		if(hide_mode == GAMEMODE_SHOW_SECRET)
+		if(mode_display_name)
 			message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
 			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
 		else
@@ -846,6 +846,7 @@ SUBSYSTEM_DEF(ticker)
 			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
 			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
 			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
+			mode.on_failed_execute()
 			QDEL_NULL(mode)
 			SSjob.ResetOccupations()
 			return FALSE

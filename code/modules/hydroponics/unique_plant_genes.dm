@@ -190,7 +190,7 @@
 	to_chat(user, "<span class='danger'>[our_plant] singes your bare hand!</span>")
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
-	if(affecting?.receive_damage(0, our_plant.force, wound_bonus = CANT_WOUND))
+	if(affecting?.receive_damage(0, our_plant.force))
 		user.update_damage_overlays()
 
 /// Normal Nettle hannd burn on backfire
@@ -203,7 +203,7 @@
 	to_chat(user, "<span class='danger'>[our_plant] burns your bare hand!</span>")
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
-	if(affecting?.receive_damage(0, our_plant.force, wound_bonus = CANT_WOUND))
+	if(affecting?.receive_damage(0, our_plant.force))
 		user.update_damage_overlays()
 
 /// Deathnettle hand burn + stun on backfire

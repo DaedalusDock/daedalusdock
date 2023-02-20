@@ -257,7 +257,6 @@
 	light_outer_range = 7
 	light_flags = LIGHT_ATTACHED
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	var/sight_flags = SEE_MOBS
 	var/lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
@@ -442,9 +441,9 @@
 
 /obj/item/shared_storage/red/Initialize(mapload)
 	. = ..()
-	
+
 	create_storage(max_total_storage = 15, max_slots = 21)
-	
+
 	new /obj/item/shared_storage/blue(drop_location(), src)
 
 /obj/item/shared_storage/blue/Initialize(mapload, atom/master)
@@ -823,7 +822,7 @@
 		playsound(owner, 'sound/magic/demon_attack1.ogg', 50, TRUE)
 		var/obj/item/bodypart/part = owner.get_holding_bodypart_of_item(katana)
 		if(part)
-			part.receive_damage(brute = 25, wound_bonus = 10, sharpness = SHARP_EDGED)
+			part.receive_damage(brute = 25, sharpness = SHARP_EDGED)
 	katana.drew_blood = FALSE
 	katana.wash(CLEAN_TYPE_BLOOD)
 	return ..()
@@ -947,7 +946,7 @@
 	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, .proc/strike_throw_impact)
 	var/atom/throw_target = get_edge_target_turf(target, user.dir)
 	target.throw_at(throw_target, 5, 3, user, FALSE, gentle = TRUE)
-	target.apply_damage(damage = 17, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17)
 	to_chat(target, span_userdanger("You've been struck by [user]!"))
 	user.do_attack_animation(target, ATTACK_EFFECT_PUNCH)
 
@@ -977,9 +976,9 @@
 		user.do_attack_animation(turf, ATTACK_EFFECT_SLASH)
 		for(var/mob/living/additional_target in turf)
 			if(user.Adjacent(additional_target) && additional_target.density)
-				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED, bare_wound_bonus = 10)
+				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 				to_chat(additional_target, span_userdanger("You've been sliced by [user]!"))
-	target.apply_damage(damage = 5, sharpness = SHARP_EDGED, wound_bonus = 10)
+	target.apply_damage(damage = 5, sharpness = SHARP_EDGED)
 
 /obj/item/cursed_katana/proc/cloak(mob/living/target, mob/user)
 	user.alpha = 150
@@ -1005,7 +1004,7 @@
 	user.visible_message(span_warning("[user] cuts [target]'s tendons!"),
 		span_notice("You tendon cut [target]!"))
 	to_chat(target, span_userdanger("Your tendons have been cut by [user]!"))
-	target.apply_damage(damage = 15, sharpness = SHARP_EDGED, wound_bonus = 15)
+	target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 	user.do_attack_animation(target, ATTACK_EFFECT_DISARM)
 	playsound(src, 'sound/weapons/rapierhit.ogg', 50, TRUE)
 	var/datum/status_effect/stacking/saw_bleed/bloodletting/status = target.has_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting)
@@ -1019,7 +1018,7 @@
 		span_notice("You dash through [target]!"))
 	to_chat(target, span_userdanger("[user] dashes through you!"))
 	playsound(src, 'sound/magic/blink.ogg', 50, TRUE)
-	target.apply_damage(damage = 17, sharpness = SHARP_POINTY, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17, sharpness = SHARP_POINTY)
 	var/turf/dash_target = get_turf(target)
 	for(var/distance in 0 to 8)
 		var/turf/current_dash_target = dash_target
@@ -1036,7 +1035,7 @@
 	user.visible_message(span_warning("[user] shatters [src] over [target]!"),
 		span_notice("You shatter [src] over [target]!"))
 	to_chat(target, span_userdanger("[user] shatters [src] over you!"))
-	target.apply_damage(damage = ishostile(target) ? 75 : 35, wound_bonus = 20)
+	target.apply_damage(damage = ishostile(target) ? 75 : 35)
 	user.do_attack_animation(target, ATTACK_EFFECT_SMASH)
 	playsound(src, 'sound/effects/glassbr3.ogg', 100, TRUE)
 	shattered = TRUE

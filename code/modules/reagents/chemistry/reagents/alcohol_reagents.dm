@@ -1099,7 +1099,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	. = COMPONENT_STOP_CONSUMPTION
 
 	to_chat(jaunter, span_boldwarning("AAH! THEIR FLESH! IT BURNS!"))
-	jaunter.apply_damage(25, BRUTE, wound_bonus = CANT_WOUND)
+	jaunter.apply_damage(25, BRUTE)
 
 	for(var/obj/effect/decal/cleanable/nearby_blood in range(1, get_turf(source)))
 		if(!nearby_blood.can_bloodcrawl_in())

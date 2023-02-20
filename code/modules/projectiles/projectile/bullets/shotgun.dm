@@ -2,23 +2,19 @@
 	name = "12g shotgun slug"
 	damage = 50
 	sharpness = SHARP_POINTY
-	wound_bonus = 0
 
 /obj/projectile/bullet/shotgun_slug/executioner
 	name = "executioner slug" // admin only, can dismember limbs
 	sharpness = SHARP_EDGED
-	wound_bonus = 80
 
 /obj/projectile/bullet/shotgun_slug/pulverizer
 	name = "pulverizer slug" // admin only, can crush bones
 	sharpness = NONE
-	wound_bonus = 80
 
 /obj/projectile/bullet/shotgun_beanbag
 	name = "beanbag slug"
 	damage = 10
 	stamina = 55
-	wound_bonus = 20
 	sharpness = NONE
 	embedding = null
 
@@ -87,9 +83,6 @@
 /obj/projectile/bullet/pellet/shotgun_buckshot
 	name = "buckshot pellet"
 	damage = 7.5
-	wound_bonus = 5
-	bare_wound_bonus = 5
-	wound_falloff_tile = -2.5 // low damage + additional dropoff will already curb wounding potential anything past point blank
 
 /obj/projectile/bullet/pellet/shotgun_rubbershot
 	name = "rubbershot pellet"
@@ -122,8 +115,6 @@
 /obj/projectile/bullet/pellet/shotgun_improvised
 	tile_dropoff = 0.35 //Come on it does 6 damage don't be like that.
 	damage = 6
-	wound_bonus = 0
-	bare_wound_bonus = 7.5
 
 /obj/projectile/bullet/pellet/shotgun_improvised/Initialize(mapload)
 	. = ..()

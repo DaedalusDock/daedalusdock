@@ -102,7 +102,6 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 	icon = 'modular_pariah/master_files/icons/effects/gas_overlays.dmi'
 	icon_state = "generic"
 	layer = GAS_LAYER
-	plane = ABOVE_GAME_PLANE
 	appearance_flags = RESET_COLOR|PIXEL_SCALE|TILE_BOUND
 	mouse_opacity = 0
 	vis_flags = NONE

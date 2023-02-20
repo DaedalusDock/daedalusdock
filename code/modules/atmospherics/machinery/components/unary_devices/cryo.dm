@@ -17,7 +17,6 @@
 	// and will crop the head off.
 	icon_state = "mask_bg"
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_y = 22
 	appearance_flags = KEEP_TOGETHER
@@ -249,26 +248,14 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	if(mob_occupant.stat == DEAD) // We don't bother with dead people.
 		return
 	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth()) // Don't bother with fully healed people.
-		if(iscarbon(mob_occupant))
-			var/mob/living/carbon/C = mob_occupant
-			if(C.all_wounds)
-				if(!treating_wounds) // if we have wounds and haven't already alerted the doctors we're only dealing with the wounds, let them know
-					treating_wounds = TRUE
-					playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
-					var/msg = "Patient vitals fully recovered, continuing automated wound treatment."
-					radio.talk_into(src, msg, radio_channel)
-			else // otherwise if we were only treating wounds and now we don't have any, turn off treating_wounds so we can boot 'em out
-				treating_wounds = FALSE
-
-		if(!treating_wounds)
-			set_on(FALSE)
-			playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
-			var/msg = "Patient fully restored."
-			if(autoeject) // Eject if configured.
-				msg += " Auto ejecting patient now."
-				open_machine()
-			radio.talk_into(src, msg, radio_channel)
-			return
+		set_on(FALSE)
+		playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
+		var/msg = "Patient fully restored."
+		if(autoeject) // Eject if configured.
+			msg += " Auto ejecting patient now."
+			open_machine()
+		radio.talk_into(src, msg, radio_channel)
+		return
 
 	var/datum/gas_mixture/air1 = airs[1]
 

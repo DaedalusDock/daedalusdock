@@ -166,3 +166,14 @@
       a trolleybus emote here but the emoji stripper will remove it.
   francinum:
   - qol: Developers can bypass observer checks to watch map generation
+2023-02-18:
+  Kapu1178:
+  - rscadd: Baystation wounds
+  - rscadd: Bone resetting surgery
+  - rscdel: TG wounds
+  - rscdel: scars
+2023-02-19:
+  DTraitor:
+  - code_imp: swapped chest and head order in bodyparts list
+  Kapu1178:
+  - rscdel: Gasmasks no longer inhibit vision.

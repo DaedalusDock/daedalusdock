@@ -23,7 +23,7 @@
 	var/setup_error = ""
 
 	///The minimum players this gamemode can roll
-	var/min_pop = 0
+	var/min_pop = 1
 	///The maximum players this gamemode can roll
 	var/max_pop = INFINITY
 	///The number of antag players required for this round type to be considered

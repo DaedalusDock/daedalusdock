@@ -60,34 +60,37 @@
 				role_to_players_map[role] += candidate_player
 				continue
 
-	for(var/i in 1 to antag_pool[ROLE_TRAITOR])
-		if(!length(role_to_players_map[ROLE_TRAITOR]))
-			break
-		var/mob/M = pick_n_take(role_to_players_map[ROLE_TRAITOR])
-		M.mind.special_role = ROLE_TRAITOR
-		M.mind.restricted_roles = restricted_jobs
-		GLOB.pre_setup_antags += M.mind
-		player2datum[M] = /datum/antagonist/traitor
+	if(antag_pool[ROLE_TRAITOR])
+		for(var/i in 1 to antag_pool[ROLE_TRAITOR])
+			if(!length(role_to_players_map[ROLE_TRAITOR]))
+				break
+			var/mob/M = pick_n_take(role_to_players_map[ROLE_TRAITOR])
+			M.mind.special_role = ROLE_TRAITOR
+			M.mind.restricted_roles = restricted_jobs
+			GLOB.pre_setup_antags += M.mind
+			player2datum[M] = /datum/antagonist/traitor
 
-	for(var/i in 1 to antag_pool[ROLE_CHANGELING])
-		if(!length(role_to_players_map[ROLE_CHANGELING]))
-			break
-		var/mob/M = pick_n_take(role_to_players_map[ROLE_CHANGELING])
-		M.mind.special_role = ROLE_CHANGELING
-		M.mind.restricted_roles = restricted_jobs
-		GLOB.pre_setup_antags += M.mind
-		player2datum[M] = /datum/antagonist/changeling
+	if(antag_pool[ROLE_CHANGELING])
+		for(var/i in 1 to antag_pool[ROLE_CHANGELING])
+			if(!length(role_to_players_map[ROLE_CHANGELING]))
+				break
+			var/mob/M = pick_n_take(role_to_players_map[ROLE_CHANGELING])
+			M.mind.special_role = ROLE_CHANGELING
+			M.mind.restricted_roles = restricted_jobs
+			GLOB.pre_setup_antags += M.mind
+			player2datum[M] = /datum/antagonist/changeling
 
-	for(var/i in 1 to antag_pool[ROLE_HERETIC])
-		if(!length(role_to_players_map[ROLE_HERETIC]))
-			break
-		var/mob/M = pick_n_take(role_to_players_map[ROLE_HERETIC])
-		M.mind.special_role = ROLE_HERETIC
-		M.mind.restricted_roles = restricted_jobs
-		GLOB.pre_setup_antags += M.mind
-		player2datum[M] = /datum/antagonist/heretic
+	if(antag_pool[ROLE_HERETIC])
+		for(var/i in 1 to antag_pool[ROLE_HERETIC])
+			if(!length(role_to_players_map[ROLE_HERETIC]))
+				break
+			var/mob/M = pick_n_take(role_to_players_map[ROLE_HERETIC])
+			M.mind.special_role = ROLE_HERETIC
+			M.mind.restricted_roles = restricted_jobs
+			GLOB.pre_setup_antags += M.mind
+			player2datum[M] = /datum/antagonist/heretic
 
-	if(length(GLOB.wizardstart))
+	if(length(GLOB.wizardstart) && antag_pool[ROLE_WIZARD])
 		for(var/i in 1 to antag_pool[ROLE_WIZARD])
 			if(!length(role_to_players_map[ROLE_WIZARD]))
 				break

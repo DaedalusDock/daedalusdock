@@ -27,7 +27,7 @@
 	///The maximum players this gamemode can roll
 	var/max_pop = INFINITY
 	///The number of antag players required for this round type to be considered
-	var/required_enemies = 0
+	var/required_enemies = 1
 	///The recommended number of antag players for this round type
 	var/recommended_enemies = 0
 
@@ -49,6 +49,8 @@
 	var/antag_flag_to_ban_check = NONE
 	/// If set, will check this preference instead of antag_flag.
 	var/antag_preference = null
+	/// Even if the mode has no antag datum, force possible_antags to be built
+	var/force_pre_setup_check = FALSE
 
 	///A list of minds that are elligible to be given antagonist at roundstart
 	var/list/datum/mind/possible_antags = list()
@@ -82,7 +84,7 @@
 /datum/game_mode/proc/pre_setup()
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(!antag_datum)
+	if(!antag_datum && !force_pre_setup_check)
 		return TRUE
 
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))

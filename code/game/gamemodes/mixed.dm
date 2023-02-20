@@ -20,6 +20,8 @@
 		JOB_CHIEF_MEDICAL_OFFICER
 	)
 
+	force_pre_setup_check = TRUE
+
 	var/list/antag_weight_map = list(
 		ROLE_TRAITOR = MIXED_WEIGHT_TRAITOR,
 		ROLE_CHANGELING = MIXED_WEIGHT_CHANGELING,

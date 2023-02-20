@@ -812,16 +812,15 @@ SUBSYSTEM_DEF(ticker)
 	if(!mode)
 		var/list/datum/game_mode/runnable_modes = draft_gamemodes()
 		if(!runnable_modes.len)
-			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-			return FALSE
-		mode = pick_weight(runnable_modes)
-		if(!mode) //too few roundtypes all run too recently
-			mode = pick(runnable_modes)
-		mode = new mode
+			message_admins(world, "<B>No viable gamemodes to play.</B> Running Extended.")
+			mode = new /datum/game_mode/extended
+		else
+			mode = pick_weight(runnable_modes)
+			mode = new mode
 
 	else if(!mode.can_run_this_round())
 		if(mode_display_name)
-			message_admins("<span class='notice'>Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed.</span>")
+			message_admins(span_adminnotice("Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed."))
 			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
 		else
 			to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")

@@ -70,7 +70,7 @@
 			M.mind.special_role = ROLE_TRAITOR
 			M.mind.restricted_roles = restricted_jobs
 			GLOB.pre_setup_antags += M.mind
-			player2datum[M] = /datum/antagonist/traitor
+			player2datum[M.mind] = /datum/antagonist/traitor
 
 	if(antag_pool[ROLE_CHANGELING])
 		for(var/i in 1 to antag_pool[ROLE_CHANGELING])
@@ -80,7 +80,7 @@
 			M.mind.special_role = ROLE_CHANGELING
 			M.mind.restricted_roles = restricted_jobs
 			GLOB.pre_setup_antags += M.mind
-			player2datum[M] = /datum/antagonist/changeling
+			player2datum[M.mind] = /datum/antagonist/changeling
 
 	if(antag_pool[ROLE_HERETIC])
 		for(var/i in 1 to antag_pool[ROLE_HERETIC])
@@ -90,7 +90,7 @@
 			M.mind.special_role = ROLE_HERETIC
 			M.mind.restricted_roles = restricted_jobs
 			GLOB.pre_setup_antags += M.mind
-			player2datum[M] = /datum/antagonist/heretic
+			player2datum[M.mind] = /datum/antagonist/heretic
 
 	if(length(GLOB.wizardstart) && antag_pool[ROLE_WIZARD])
 		for(var/i in 1 to antag_pool[ROLE_WIZARD])
@@ -99,13 +99,13 @@
 			var/mob/M = pick_n_take(role_to_players_map[ROLE_WIZARD])
 			M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/space_wizard))
 			M.mind.special_role = ROLE_WIZARD
-			player2datum[M] = /datum/antagonist/wizard
+			player2datum[M.mind] = /datum/antagonist/wizard
 
 /datum/game_mode/mixed/setup_antags()
 	for(var/datum/mind/M in GLOB.pre_setup_antags)
-		M.add_antag_datum(player2datum[M.current])
+		M.add_antag_datum(player2datum[M])
 		GLOB.pre_setup_antags -= M
-		if(player2datum[M.current] == /datum/antagonist/wizard)
+		if(player2datum[M] == /datum/antagonist/wizard)
 			M.current.forceMove(pick(GLOB.wizardstart))
 	return ..()
 

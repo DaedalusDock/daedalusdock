@@ -1,5 +1,5 @@
 
-#define PARALLAX_ICON_SIZE 736
+#define PARALLAX_ICON_SIZE 672
 
 /datum/hud/proc/create_parallax(mob/viewmob)
 	var/mob/screenmob = viewmob || mymob
@@ -283,7 +283,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 			if(x == 0 && y == 0)
 				continue
 			var/mutable_appearance/texture_overlay = mutable_appearance(icon, icon_state)
-			texture_overlay.transform = matrix().Translate(x*PARALLAX_ICON_SIZE, y*PARALLAX_ICON_SIZE)
+			texture_overlay.transform = matrix(1, 0, x*PARALLAX_ICON_SIZE, 0, 1, y*PARALLAX_ICON_SIZE)
 			new_overlays += texture_overlay
 	cut_overlays()
 	add_overlay(new_overlays)
@@ -292,18 +292,18 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 /atom/movable/screen/parallax_layer/layer_1
 	icon_state = "dyable"
 	blend_mode = BLEND_OVERLAY
-	speed = 0.9
+	speed = 0.5
 	layer = 1
 
 /atom/movable/screen/parallax_layer/layer_1/Initialize(mapload, mob/owner)
 	. = ..()
-	src.add_atom_colour(SSparallax.random_parallax_color, ADMIN_COLOUR_PRIORITY)
+	src.add_atom_colour(global.starlight_color, ADMIN_COLOUR_PRIORITY)
 
 /atom/movable/screen/parallax_layer/stars
 	icon_state = "stars"
 	blend_mode = BLEND_OVERLAY
 	layer = 1
-	speed = 0.9
+	speed = 0.5
 
 /*
 /atom/movable/screen/parallax_layer/planet

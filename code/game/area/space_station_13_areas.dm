@@ -25,9 +25,11 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "space"
 	requires_power = TRUE
 	always_unpowered = TRUE
-	static_lighting = FALSE
 
-	area_has_base_lighting = FALSE
+	base_lighting_alpha = 255
+	base_lighting_color = "#FFFFFF"
+
+	static_lighting = FALSE
 	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
@@ -38,16 +40,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	sound_environment = SOUND_AREA_SPACE
 	ambient_buzz = null //Space is deafeningly quiet
 
-/area/space/Initialize(mapload)
-	. = ..()
-
-	add_overlay(GLOB.fullbright_overlay)
-
 /area/space/nearstation
 	icon_state = "space_near"
 	area_flags = UNIQUE_AREA | NO_ALERTS | AREA_USES_STARLIGHT
-	base_lighting_alpha = null
-	base_lighting_color = null
 
 /area/start
 	name = "start area"
@@ -1023,8 +1018,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = null
-	base_lighting_color = null
+	base_lighting_alpha = 255
 
 /area/solars/fore
 	name = "\improper Fore Solar Array"

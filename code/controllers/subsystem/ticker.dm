@@ -849,4 +849,5 @@ SUBSYSTEM_DEF(ticker)
 	else
 		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
 
+	log_game("Gamemode successfully initialized, chose: [mode.name]")
 	return TRUE

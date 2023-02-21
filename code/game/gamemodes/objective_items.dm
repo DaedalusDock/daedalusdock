@@ -298,7 +298,7 @@
 /datum/objective_item/steal/plasma/check_special_completion(obj/item/tank/T)
 	var/target_amount = text2num(name)
 	var/found_amount = 0
-	var/datum/gas_mixture/mix = T.return_air()
+	var/datum/gas_mixture/mix = T.unsafe_return_air()
 	found_amount += mix.getGroupGas(GAS_PLASMA)
 	return found_amount>=target_amount
 

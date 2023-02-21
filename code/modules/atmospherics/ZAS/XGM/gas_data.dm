@@ -88,12 +88,6 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 		base_value[gas.id] = gas.base_value
 		purchaseable[gas.id] = gas.purchaseable
 
-		if(flags & XGM_GAS_COMMON)
-			GLOB.common_gases += p
-
-		if(flags & XGM_GAS_NOBLE)
-			GLOB.noble_gases += p
-
 	return 1
 
 /obj/effect/gas_overlay

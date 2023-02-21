@@ -290,7 +290,7 @@
 		return FALSE
 
 	var/pressure = air_contents.returnPressure()
-	var/temperature = air_contents.get_temperature()
+	var/temperature = air_contents.temperature
 	if(temperature >= TANK_MELT_TEMPERATURE)
 		var/temperature_damage_ratio = (temperature - TANK_MELT_TEMPERATURE) / temperature
 		take_damage(max_integrity * temperature_damage_ratio * delta_time, BURN, FIRE, FALSE, NONE)

@@ -124,11 +124,6 @@
 	var/our_heatcap = getHeatCapacity()
 	var/share_heatcap = sharer.getHeatCapacity()
 
-	// Special exception: there isn't enough air around to be worth processing this edge next tick, zap both to zero.
-	if(total_moles + sharer.total_moles <= MINIMUM_AIR_TO_SUSPEND)
-		gas.Cut()
-		sharer.gas.Cut()
-
 	for(var/g in gas|sharer.gas)
 		var/comb = gas[g] + sharer.gas[g]
 		comb /= volume + sharer.volume
@@ -366,17 +361,20 @@
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/checkTileGraphic(list/graphic_add, list/graphic_remove)
-	for(var/obj/effect/gas_overlay/O as anything in graphic)
-		if(O.type == /obj/effect/gas_overlay/heat)
-			continue
-		if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
-			LAZYADD(graphic_remove, O)
-	for(var/g in xgm_gas_data.overlay_limit)
+	if(length(graphic))
+		for(var/obj/effect/gas_overlay/O as anything in graphic)
+			if(O.type == /obj/effect/gas_overlay/heat)
+				continue
+			if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
+				LAZYADD(graphic_remove, O)
+	var/overlay_limit
+	for(var/g in gas)
+		overlay_limit = xgm_gas_data.overlay_limit[g]
 		//Overlay isn't applied for this gas, check if it's valid and needs to be added.
-		if(gas[g] > xgm_gas_data.overlay_limit[g])
+		if(!isnull(overlay_limit) && gas[g] > overlay_limit)
 			///Inlined getTileOverlay(g)
 			var/tile_overlay = LAZYACCESS(tile_overlay_cache, g)
-			if(!tile_overlay)
+			if(isnull(tile_overlay))
 				LAZYSET(tile_overlay_cache, g, new/obj/effect/gas_overlay(null, g))
 				tile_overlay = tile_overlay_cache[g]
 			///End inline
@@ -387,12 +385,12 @@
 	var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
 	//If it's hot add something
 	if(temperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
-		if(!tile_overlay)
+		if(isnull(tile_overlay))
 			LAZYSET(tile_overlay_cache, "heat", new/obj/effect/gas_overlay/heat(null, "heat"))
 			tile_overlay = tile_overlay_cache["heat"]
 		if(!(tile_overlay in graphic))
 			LAZYADD(graphic_add, tile_overlay)
-	else if(tile_overlay in graphic)
+	else if(length(graphic) && (tile_overlay in graphic))
 		LAZYADD(graphic_remove, tile_overlay)
 
 	//Apply changes
@@ -546,21 +544,6 @@
 /datum/gas_mixture/proc/get_volume()
 	return max(0, volume)
 
-/datum/gas_mixture/proc/get_temperature()
-	return temperature
-
-/datum/gas_mixture/proc/get_moles()
-	//updateValues()
-	return total_moles
-
-////END LINDA COMPATABILITY////
-
-///Returns the gas list with an update.
-/datum/gas_mixture/proc/getGases()
-	RETURN_TYPE(/list)
-	//updateValues()
-	return gas
-
 /datum/gas_mixture/proc/returnVisuals()
 	AIR_UPDATE_VALUES(src)
 	checkTileGraphic()
@@ -577,8 +560,22 @@
 	return new_gas
 
 /turf/open/proc/copy_air_with_tile(turf/open/target_turf)
-	if(istype(target_turf))
-		return_air().copyFrom(target_turf.return_air())
+	if(!istype(target_turf))
+		return
+	if(TURF_HAS_VALID_ZONE(src))
+		zone.remove_turf(src)
+
+	if(isnull(target_turf.air))
+		target_turf.make_air()
+
+	if(simulated)
+		if(isnull(air))
+			make_air()
+		air.copyFrom(target_turf.unsafe_return_air())
+	else
+		initial_gas = target_turf.initial_gas
+		make_air()
+	SSzas.mark_for_update(src)
 
 /datum/gas_mixture/proc/leak_to_enviroment(datum/gas_mixture/environment)
 	pump_gas_passive(src, environment, calculate_transfer_moles(src, environment, src.returnPressure() - environment.returnPressure()))

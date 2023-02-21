@@ -95,7 +95,7 @@
 
 	for(var/check_dir in GLOB.cardinals)
 		var/turf/T = get_step(src, check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T.unsafe_return_air()
 		var/pressure = env.returnPressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)

@@ -297,5 +297,5 @@
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
 	input_pressure.set_output(air_input.returnPressure())
 	output_pressure.set_output(air_output.returnPressure())
-	input_temperature.set_output(air_input.get_temperature())
-	output_temperature.set_output(air_output.get_temperature())
+	input_temperature.set_output(air_input.temperature)
+	output_temperature.set_output(air_output.temperature)

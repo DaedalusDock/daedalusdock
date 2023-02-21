@@ -138,8 +138,15 @@ SUBSYSTEM_DEF(mapping)
 	multiz_levels[z_level] = list()
 	if(linked_down)
 		multiz_levels[z_level]["[DOWN]"] = TRUE
+		. = TRUE
 	if(linked_up)
 		multiz_levels[z_level]["[UP]"] = TRUE
+		. = TRUE
+
+	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
+	if(.)
+		stack_trace("Multi-Z map enabled with MULTIZAS enabled.")
+	#endif
 
 /datum/controller/subsystem/mapping/proc/calculate_z_level_gravity(z_level_number)
 	if(!isnum(z_level_number) || z_level_number < 1)

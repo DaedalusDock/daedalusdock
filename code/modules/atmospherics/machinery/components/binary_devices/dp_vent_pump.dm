@@ -62,7 +62,7 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	var/environment_pressure = environment.returnPressure()
 
 	if(pump_direction) //input -> external
@@ -109,7 +109,9 @@
 			parent2.update = TRUE
 			ATMOS_USE_POWER(draw)
 
-	//Radio remote control
+	SAFE_ZAS_UPDATE(loc)
+
+//Radio remote control
 
 /**
  * Called in atmos_init(), used to change or remove the radio frequency from the component

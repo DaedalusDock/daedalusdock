@@ -36,9 +36,9 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/engineerin
 			if(break_if_found[checkT.type] || break_if_found[checkT.loc.type])
 				return FALSE
 			var/static/list/cardinal_cache = list("[NORTH]"=TRUE, "[EAST]"=TRUE, "[SOUTH]"=TRUE, "[WEST]"=TRUE)
-			var/canpass
-			ATMOS_CANPASS_TURF(canpass, checkT, sourceT)
-			if(!cardinal_cache["[dir]"] || !canpass)
+			var/blocked
+			ATMOS_CANPASS_TURF(blocked, checkT, sourceT)
+			if(!cardinal_cache["[dir]"] || (blocked & AIR_BLOCKED))
 				continue
 			found_turfs += checkT // Since checkT is connected, add it to the list to be processed
 

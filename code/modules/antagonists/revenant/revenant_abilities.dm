@@ -65,7 +65,7 @@
 					to_chat(src, span_revenboldnotice("Such a feast! [target] will yield much essence to you."))
 				if(90 to INFINITY)
 					to_chat(src, span_revenbignotice("Ah, the perfect soul. [target] will yield massive amounts of essence to you."))
-			if(do_after(src, target, rand(15, 25) timed_action_flags = IGNORE_HELD_ITEM)) //how about now
+			if(do_after(src, target, rand(15, 25), timed_action_flags = IGNORE_HELD_ITEM)) //how about now
 				if(!target.stat)
 					to_chat(src, span_revenwarning("[target.p_theyre(TRUE)] now powerful enough to fight off your draining."))
 					to_chat(target, span_boldannounce("You feel something tugging across your body before subsiding."))

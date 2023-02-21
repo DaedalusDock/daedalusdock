@@ -796,7 +796,7 @@ SUBSYSTEM_DEF(ticker)
 	var/list/datum/game_mode/runnable_modes = list()
 	for(var/path in subtypesof(/datum/game_mode))
 		var/datum/game_mode/M = new path()
-		if(M.can_run_this_round(SSticker.ready_players.Copy()))
+		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && M.can_run_this_round(SSticker.ready_players.Copy()))
 			runnable_modes[path] = M.weight
 	return runnable_modes
 

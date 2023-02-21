@@ -406,7 +406,7 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, no_side_effects = FALSE)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/hit_percent = (100-blocked)/100
@@ -453,11 +453,9 @@
 				return update_bodypart_damage_state() || .
 
 	//blunt damage is gud at fracturing
-	if(!no_side_effects)
+	if(breaks_bones)
 		if(brute)
 			jostle_bones(brute)
-			if(owner && prob(40))
-				INVOKE_ASYNC(owner, /mob/proc/emote, "scream")
 			if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
 				break_bones()
 

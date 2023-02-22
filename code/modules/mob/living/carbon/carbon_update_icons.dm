@@ -305,7 +305,7 @@
 /mob/living/carbon/proc/update_eyes(refresh = TRUE)
 	remove_overlay(EYE_LAYER)
 	var/obj/item/organ/internal/eyes/my_eyes = getorganslot(ORGAN_SLOT_EYES)
-	if(isnull(my_eyes))
+	if(isnull(my_eyes) || (dna && (dna.species && (NOEYESPRITES in dna.species.species_traits))))
 		return
 
 	if(refresh)

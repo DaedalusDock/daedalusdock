@@ -75,8 +75,8 @@
 			lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
 
 	if(update_sight)
-	owner.update_tint()
-	owner.update_sight()
+		owner.update_tint()
+		owner.update_sight()
 
 
 

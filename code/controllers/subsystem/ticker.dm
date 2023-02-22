@@ -241,6 +241,7 @@ SUBSYSTEM_DEF(ticker)
 	//Setup the antags AFTTTTER theyve gotten their jobs
 	mode.setup_antags()
 	PostSetup()
+	SSticker.ready_players = null
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()

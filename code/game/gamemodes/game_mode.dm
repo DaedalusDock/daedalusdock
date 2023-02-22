@@ -71,6 +71,7 @@
 /datum/game_mode/proc/execute_roundstart()
 	SHOULD_CALL_PARENT(TRUE)
 	if(!pre_setup())
+		setup_error ||= "Failed pre_setup."
 		return FALSE
 
 	var/number_of_antags = length(GLOB.pre_setup_antags)

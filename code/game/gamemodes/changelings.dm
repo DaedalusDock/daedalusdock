@@ -20,7 +20,7 @@
 	antag_flag = ROLE_CHANGELING
 
 /datum/game_mode/changeling/pre_setup()
-	..()
+	. = ..()
 
 	var/num_ling = 1
 

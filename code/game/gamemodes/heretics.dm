@@ -20,7 +20,7 @@
 	antag_flag = ROLE_HERETIC
 
 /datum/game_mode/heretic/pre_setup()
-	..()
+	. = ..()
 
 	var/num_heretics = 1
 

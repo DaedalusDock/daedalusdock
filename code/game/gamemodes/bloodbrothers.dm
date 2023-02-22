@@ -26,7 +26,7 @@
 	var/list/datum/team/brother_team/pre_brother_teams = list()
 
 /datum/game_mode/brothers/pre_setup()
-	..()
+	. = ..()
 
 	var/num_teams = 1
 

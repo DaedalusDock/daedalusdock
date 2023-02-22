@@ -20,7 +20,7 @@
 	antag_flag = ROLE_TRAITOR
 
 /datum/game_mode/traitor/pre_setup()
-	..()
+	. = ..()
 
 	var/num_traitors = 1
 

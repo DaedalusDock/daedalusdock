@@ -27,7 +27,7 @@
 	var/datum/team/cult/main_cult
 
 /datum/game_mode/bloodcult/pre_setup()
-	 = ..()
+	. = ..()
 
 	var/num_cultists = 1
 

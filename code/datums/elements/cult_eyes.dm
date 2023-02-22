@@ -3,48 +3,53 @@
  *
  * Applies and removes the glowing cult eyes
  */
-/datum/element/cult_eyes
-	element_flags = ELEMENT_DETACH
+/datum/component/cult_eyes
+	var/initial_right_color = ""
+	var/initial_left_color = ""
 
-/datum/element/cult_eyes/Attach(datum/target, initial_delay = 20 SECONDS)
+/datum/component/cult_eyes/Initialize(initial_delay = 20 SECONDS)
 	. = ..()
-	if (!isliving(target))
-		return ELEMENT_INCOMPATIBLE
+	if (!isliving(parent))
+		return COMPONENT_INCOMPATIBLE
+
+	if(ishuman(parent))
+		var/mob/living/carbon/human/human_parent = parent
+		initial_right_color = human_parent.eye_color_right
+		initial_left_color = human_parent.eye_color_left
 
 	// Register signals for mob transformation to prevent premature halo removal
-	RegisterSignal(target, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_MONKEY_HUMANIZE, COMSIG_HUMAN_MONKEYIZE), .proc/set_eyes)
-	addtimer(CALLBACK(src, .proc/set_eyes, target), initial_delay)
+	RegisterSignal(parent, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_MONKEY_HUMANIZE, COMSIG_HUMAN_MONKEYIZE), .proc/set_eyes)
+	addtimer(CALLBACK(src, .proc/set_eyes), initial_delay)
 
 /**
  * Cult eye setter proc
  *
  * Changes the eye color, and adds the glowing eye trait to the mob.
  */
-/datum/element/cult_eyes/proc/set_eyes(mob/living/target)
+/datum/component/cult_eyes/proc/set_eyes()
 	SIGNAL_HANDLER
 
-	ADD_TRAIT(target, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
-	if (ishuman(target))
-		var/mob/living/carbon/human/human_parent = target
+	ADD_TRAIT(parent, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
+	if (ishuman(parent))
+		var/mob/living/carbon/human/human_parent = parent
 		human_parent.eye_color_left = BLOODCULT_EYE
 		human_parent.eye_color_right = BLOODCULT_EYE
 		human_parent.dna.update_ui_block(DNA_EYE_COLOR_LEFT_BLOCK)
 		human_parent.dna.update_ui_block(DNA_EYE_COLOR_RIGHT_BLOCK)
-		human_parent.update_body()
+		human_parent.update_eyes()
 
 /**
  * Detach proc
  *
  * Removes the eye color, and trait from the mob
  */
-/datum/element/cult_eyes/Detach(mob/living/target, ...)
-	REMOVE_TRAIT(target, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
-	if (ishuman(target))
-		var/mob/living/carbon/human/human_parent = target
-		human_parent.eye_color_left = initial(human_parent.eye_color_left)
-		human_parent.eye_color_right = initial(human_parent.eye_color_right)
+/datum/component/cult_eyes/UnregisterFromParent()
+	REMOVE_TRAIT(parent, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
+	if (ishuman(parent))
+		var/mob/living/carbon/human/human_parent = parent
+		human_parent.eye_color_left = initial_left_color
+		human_parent.eye_color_right = initial_right_color
 		human_parent.dna.update_ui_block(DNA_EYE_COLOR_LEFT_BLOCK)
 		human_parent.dna.update_ui_block(DNA_EYE_COLOR_RIGHT_BLOCK)
-		human_parent.update_body()
-	UnregisterSignal(target, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_HUMAN_MONKEYIZE, COMSIG_MONKEY_HUMANIZE))
-	return ..()
+		human_parent.update_eyes()
+	UnregisterSignal(parent, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_HUMAN_MONKEYIZE, COMSIG_MONKEY_HUMANIZE))

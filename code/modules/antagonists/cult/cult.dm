@@ -144,7 +144,7 @@
 		magic.Grant(current)
 	current.throw_alert("bloodsense", /atom/movable/screen/alert/bloodsense)
 	if(cult_team.cult_risen)
-		current.AddElement(/datum/element/cult_eyes, initial_delay = 0 SECONDS)
+		current.AddComponent(/datum/component/cult_eyes, initial_delay = 0 SECONDS)
 	if(cult_team.cult_ascendent)
 		current.AddElement(/datum/element/cult_halo, initial_delay = 0 SECONDS)
 
@@ -163,7 +163,7 @@
 	magic.Remove(current)
 	current.clear_alert("bloodsense")
 	if (HAS_TRAIT(current, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-		current.RemoveElement(/datum/element/cult_eyes)
+		qdel(current.GetComponent(/datum/component/cult_eyes))
 	if (HAS_TRAIT(current, TRAIT_CULT_HALO))
 		current.RemoveElement(/datum/element/cult_halo)
 
@@ -232,7 +232,7 @@
 	current?.update_mob_action_buttons()
 	current.apply_status_effect(/datum/status_effect/cult_master)
 	if(cult_team.cult_risen)
-		current.AddElement(/datum/element/cult_eyes, initial_delay = 0 SECONDS)
+		current.AddComponent(/datum/component/cult_eyes, initial_delay = 0 SECONDS)
 	if(cult_team.cult_ascendent)
 		current.AddElement(/datum/element/cult_halo, initial_delay = 0 SECONDS)
 	add_team_hud(current, /datum/antagonist/cult)
@@ -290,7 +290,7 @@
 			if(mind.current)
 				SEND_SOUND(mind.current, 'sound/hallucinations/i_see_you2.ogg')
 				to_chat(mind.current, span_cultlarge(span_warning("The veil weakens as your cult grows, your eyes begin to glow...")))
-				mind.current.AddElement(/datum/element/cult_eyes)
+				mind.current.AddComponent(/datum/component/cult_eyes)
 		cult_risen = TRUE
 		log_game("The blood cult has risen with [cultplayers] players.")
 

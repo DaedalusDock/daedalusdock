@@ -264,7 +264,8 @@
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
 	update_damage_overlays()
 	update_wound_overlays()
-	update_eyes(FALSE)
+	update_eyes(update_limb_data)
+
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)

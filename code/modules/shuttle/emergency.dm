@@ -501,6 +501,8 @@
 				launch_status = ENDGAME_LAUNCHED
 				for(var/obj/docking_port/mobile/M in SSshuttle.mobile_docking_ports)
 					M.post_emergency_launch()
+				if(prob(10))
+					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
 				setTimer(SSshuttle.emergency_escape_time * engine_coeff)
 				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
 				INVOKE_ASYNC(SSticker, /datum/controller/subsystem/ticker.proc/poll_hearts)
@@ -714,7 +716,7 @@
 
 /obj/item/storage/pod/attack_hand(mob/user, list/modifiers)
 	if (can_interact(user))
-		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_SHOW, user)
+		atom_storage?.show_contents(user)
 	return TRUE
 
 /obj/item/storage/pod/MouseDrop(over_object, src_location, over_location)

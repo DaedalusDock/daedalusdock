@@ -464,11 +464,6 @@
 
 	. = ..()
 
-	if(hasPower() && unres_sides)
-		set_light(l_outer_range = 2, l_power = 1)
-	else
-		set_light(0)
-
 /obj/machinery/door/airlock/update_icon_state()
 	. = ..()
 	switch(airlock_state)
@@ -549,22 +544,25 @@
 		. += get_airlock_overlay("sealed", overlays_file, em_block = TRUE)
 
 	if(hasPower() && unres_sides)
-		if(unres_sides & NORTH)
-			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_n")
-			I.pixel_y = 32
-			. += I
-		if(unres_sides & SOUTH)
-			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_s")
-			I.pixel_y = -32
-			. += I
-		if(unres_sides & EAST)
-			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_e")
-			I.pixel_x = 32
-			. += I
-		if(unres_sides & WEST)
-			var/image/I = image(icon='icons/obj/doors/airlocks/unrestricted_overlays.dmi', icon_state="unres_w")
-			I.pixel_x = -32
-			. += I
+		for(var/heading in list(NORTH,SOUTH,EAST,WEST))
+			if(!(unres_sides & heading))
+				continue
+			var/image/floorlight = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_[heading]")
+			floorlight.plane = ABOVE_LIGHTING_PLANE
+			switch (heading)
+				if (NORTH)
+					floorlight.pixel_x = 0
+					floorlight.pixel_y = 32
+				if (SOUTH)
+					floorlight.pixel_x = 0
+					floorlight.pixel_y = -32
+				if (EAST)
+					floorlight.pixel_x = 32
+					floorlight.pixel_y = 0
+				if (WEST)
+					floorlight.pixel_x = -32
+					floorlight.pixel_y = 0
+			. += floorlight
 
 /obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)
@@ -934,7 +932,7 @@
 		to_chat(user, span_warning("You need at least [amt_required] sheets of [material] to reinforce [src]."))
 		return FALSE
 	to_chat(user, span_notice("You start reinforcing [src]."))
-	if(!do_after(user, 2 SECONDS, src))
+	if(!do_after(user, src, 2 SECONDS))
 		return FALSE
 	if(!panel_open || !material.use(amt_required))
 		return FALSE
@@ -980,7 +978,7 @@
 			return
 		user.visible_message(span_notice("[user] begins sealing [src]."), span_notice("You begin sealing [src]."))
 		playsound(src, 'sound/items/jaws_pry.ogg', 30, TRUE)
-		if(!do_after(user, airlockseal.seal_time, target = src))
+		if(!do_after(user, src, airlockseal.seal_time))
 			return
 		if(!density)
 			to_chat(user, span_warning("[src] must be closed before you can seal it!"))
@@ -1066,7 +1064,7 @@
 		return TRUE
 	user.visible_message(span_notice("[user] begins removing the seal from [src]."), span_notice("You begin removing [src]'s pneumatic seal."))
 	playsound(src, forcedOpen, 30, TRUE)
-	if(!do_after(user, airlockseal.unseal_time, target = src))
+	if(!do_after(user, src, airlockseal.unseal_time))
 		return TRUE
 	if(!seal)
 		return TRUE
@@ -1132,7 +1130,7 @@
 				var/time_to_open = 50
 				playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE) //is it aliens or just the CE being a dick?
 				prying_so_hard = TRUE
-				if(do_after(user, time_to_open, src))
+				if(do_after(user, src, time_to_open))
 					if(check_electrified && shock(user,100))
 						prying_so_hard = FALSE
 						return
@@ -1348,7 +1346,7 @@
 		playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
 
 
-	if(do_after(user, time_to_open, src))
+	if(do_after(user, src, time_to_open))
 		if(density && !open(2)) //The airlock is still closed, but something prevented it opening. (Another player noticed and bolted/welded the airlock in time!)
 			to_chat(user, span_warning("Despite your efforts, [src] managed to resist your attempts to open it!"))
 
@@ -1477,11 +1475,7 @@
 	if(!note)
 		return
 	else if(istype(note, /obj/item/paper))
-		var/obj/item/paper/pinned_paper = note
-		if(pinned_paper.info && pinned_paper.show_written_words)
-			return "note_words_[frame_state]"
-		else
-			return "note_[frame_state]"
+		return "note_[frame_state]"
 
 	else if(istype(note, /obj/item/photo))
 		return "photo_[frame_state]"

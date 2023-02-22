@@ -39,7 +39,10 @@
 		return FALSE
 
 	if (!(new_job_title in job.alt_titles))
-		return FALSE
+		if(length(job.alt_titles))
+			new_job_title = job.alt_titles[1]
+		else
+			return FALSE
 
 	preferences.alt_job_titles[job_title] = new_job_title
 

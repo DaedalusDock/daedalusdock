@@ -71,7 +71,7 @@
 	if(say_mod && tongue_owner.dna && tongue_owner.dna.species)
 		tongue_owner.dna.species.say_mod = initial(tongue_owner.dna.species.say_mod)
 	UnregisterSignal(tongue_owner, COMSIG_MOB_SAY)
-	RegisterSignal(tongue_owner, COMSIG_MOB_SAY, /mob/living/carbon/.proc/handle_tongueless_speech)
+	RegisterSignal(tongue_owner, COMSIG_MOB_SAY, /mob/living/carbon/proc/handle_tongueless_speech)
 	REMOVE_TRAIT(tongue_owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
 	// Carbons by default start with NO_TONGUE_TRAIT caused TRAIT_AGEUSIA
 	ADD_TRAIT(tongue_owner, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
@@ -246,7 +246,7 @@
 		to_chat(tongue_holder, span_notice("[src] is already attuned to the same channel as your own."))
 
 	tongue_holder.visible_message(span_notice("[tongue_holder] holds [src] in their hands, and concentrates for a moment."), span_notice("You attempt to modify the attenuation of [src]."))
-	if(do_after(tongue_holder, delay=15, target=src))
+	if(do_after(tongue_holder, src, 1.5 SECONDS))
 		to_chat(tongue_holder, span_notice("You attune [src] to your own channel."))
 		mothership = tongue.mothership
 

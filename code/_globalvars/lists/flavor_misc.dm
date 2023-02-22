@@ -8,6 +8,7 @@ GLOBAL_LIST_EMPTY(facial_hairstyles_male_list) //stores only hair names
 GLOBAL_LIST_EMPTY(facial_hairstyles_female_list) //stores only hair names
 GLOBAL_LIST_EMPTY(hair_gradients_list) //stores /datum/sprite_accessory/hair_gradient indexed by name
 GLOBAL_LIST_EMPTY(facial_hair_gradients_list) //stores /datum/sprite_accessory/facial_hair_gradient indexed by name
+GLOBAL_LIST_EMPTY(moth_hairstyles_list)
 	//Underwear
 GLOBAL_LIST_EMPTY(underwear_list) //stores /datum/sprite_accessory/underwear indexed by name
 GLOBAL_LIST_EMPTY(underwear_m) //stores only underwear name
@@ -19,7 +20,6 @@ GLOBAL_LIST_EMPTY(undershirt_f)  //stores only undershirt name
 	//Socks
 GLOBAL_LIST_EMPTY(socks_list) //stores /datum/sprite_accessory/socks indexed by name
 	//Lizard Bits (all datum lists indexed by name)
-GLOBAL_LIST_EMPTY(body_markings_list)
 GLOBAL_LIST_EMPTY(snouts_list)
 GLOBAL_LIST_EMPTY(horns_list)
 GLOBAL_LIST_EMPTY(frills_list)
@@ -87,38 +87,6 @@ GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Seafoam Green" = "#00fa9a",
 	"White" = "#f2f2f2",
 ))
-
-GLOBAL_LIST_INIT(ghost_forms_with_directions_list, list(
-	"catghost",
-	"ghost_black",
-	"ghost_blazeit",
-	"ghost_blue",
-	"ghost_camo",
-	"ghost_cyan",
-	"ghost_dblue",
-	"ghost_dcyan",
-	"ghost_dgreen",
-	"ghost_dpink",
-	"ghost_dred",
-	"ghost_dyellow",
-	"ghost_fire",
-	"ghost_funkypurp",
-	"ghost_green",
-	"ghost_grey",
-	"ghost_mellow",
-	"ghost_pink",
-	"ghost_pinksherbert",
-	"ghost_purpleswirl",
-	"ghost_rainbow",
-	"ghost_red",
-	"ghost_yellow",
-	"ghost",
-	"ghostian",
-	"ghostian2",
-	"ghostking",
-	"skeleghost",
-))
-//stores the ghost forms that support directional sprites
 
 GLOBAL_LIST_INIT(ghost_forms_with_accessories_list, list(
 	"ghost_black",

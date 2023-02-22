@@ -248,7 +248,7 @@
 			break
 	for(var/i in reverse_range(location.get_all_contents()))
 		var/atom/movable/thing = i
-		SEND_SIGNAL(thing, COMSIG_TRY_STORAGE_HIDE_ALL)
+		thing.atom_storage?.close_all()
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE)
 	if(!can_open(user, force))
@@ -314,6 +314,8 @@
 		else if(isitem(AM) && !HAS_TRAIT(AM, TRAIT_NODROP))
 			return TRUE
 		else if(!allow_objects && !istype(AM, /obj/effect/dummy/chameleon))
+			return FALSE
+		else if(HAS_TRAIT(AM, TRAIT_REJECT_INSERTION))
 			return FALSE
 	else
 		return FALSE
@@ -414,7 +416,7 @@
 			&& !secure && !electronics && !locked && (welded || !can_weld_shut) && !broken)
 		user.visible_message(span_notice("[user] installs the electronics into the [src]."),\
 			span_notice("You start to install electronics into the [src]..."))
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if (electronics || secure)
 			return FALSE
@@ -435,7 +437,7 @@
 			span_notice("You begin to remove the electronics from the [src]..."))
 		var/had_electronics = !!electronics
 		var/was_secure = secure
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if ((had_electronics && !electronics) || (was_secure && !secure))
 			return FALSE

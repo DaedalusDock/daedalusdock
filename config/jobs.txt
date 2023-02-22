@@ -7,7 +7,7 @@ Head of Personnel=1,1
 Head of Security=1,1
 Chief Engineer=1,1
 Research Director=1,1
-Chief Medical Officer=1,1
+Medical Director=1,1
 
 Assistant=-1,-1
 Prisoner=0,2

@@ -111,7 +111,7 @@
 			span_hear("You hear the clatter of a floppy drive."))
 		busy = TRUE
 		var/obj/item/disk/design_disk/limbs/limb_design_disk = user_item
-		if(do_after(user, 2 SECONDS, target = src))
+		if(do_after(user, src, 2 SECONDS))
 			for(var/datum/design/found_design in limb_design_disk.blueprints)
 				stored_research.add_design(found_design)
 			update_static_data(user)
@@ -216,7 +216,7 @@
 	limb = new buildpath(loc)
 	limb.name = "\improper synthetic [selected_category] [limb.plaintext_zone]"
 	limb.limb_id = selected_category
-	limb.mutation_color = "#62A262"
+	limb.variable_color = "#62A262"
 	limb.update_icon_dropped()
 
 ///Returns a valid limb typepath based on the selected option

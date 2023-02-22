@@ -104,7 +104,7 @@
 			return 120
 		if(SLIME_ACTIVATE_MAJOR)
 			to_chat(user, span_notice("Your [name] starts pulsing..."))
-			if(do_after(user, 40, target = user))
+			if(do_after(user, user, 40))
 				var/mob/living/simple_animal/slime/S = new(get_turf(user), "grey")
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				to_chat(user, span_notice("You spit out [S]."))
@@ -124,7 +124,7 @@
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			user.visible_message(span_warning("[user] starts shaking!"),span_notice("Your [name] starts pulsing gently..."))
-			if(do_after(user, 40, target = user))
+			if(do_after(user, user, 40))
 				var/mob/living/spawned_mob = create_random_mob(user.drop_location(), FRIENDLY_SPAWN)
 				spawned_mob.faction |= "neutral"
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
@@ -133,7 +133,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			user.visible_message(span_warning("[user] starts shaking violently!"),span_warning("Your [name] starts pulsing violently..."))
-			if(do_after(user, 50, target = user))
+			if(do_after(user, user, 50))
 				var/mob/living/spawned_mob = create_random_mob(user.drop_location(), HOSTILE_SPAWN)
 				if(!user.combat_mode)
 					spawned_mob.faction |= "neutral"
@@ -233,7 +233,7 @@
 		if(SLIME_ACTIVATE_MAJOR)
 			var/turf/open/T = get_turf(user)
 			if(istype(T))
-				T.atmos_spawn_air("plasma=20")
+				T.atmos_spawn_air(GAS_PLASMA, 20)
 			to_chat(user, span_warning("You activate [src], and a cloud of plasma bursts out of your skin!"))
 			return 900
 
@@ -275,7 +275,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			user.visible_message(span_warning("[user]'s skin starts flashing intermittently..."), span_warning("Your skin starts flashing intermittently..."))
-			if(do_after(user, 25, target = user))
+			if(do_after(user, user, 25))
 				empulse(user, 1, 2)
 				user.visible_message(span_warning("[user]'s skin flashes!"), span_warning("Your skin flashes as you emit an electromagnetic pulse!"))
 				return 600
@@ -339,7 +339,7 @@
 		if(SLIME_ACTIVATE_MAJOR)
 			var/turf/open/T = get_turf(user)
 			if(istype(T))
-				T.atmos_spawn_air("nitrogen=40;TEMP=2.7")
+				T.atmos_spawn_air(GAS_NITROGEN, 40, 2.7)
 			to_chat(user, span_warning("You activate [src], and icy air bursts out of your skin!"))
 			return 900
 
@@ -381,7 +381,7 @@
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_warning("You feel yourself reverting to human form..."))
-			if(do_after(user, 120, target = user))
+			if(do_after(user, user, 120))
 				to_chat(user, span_warning("You feel human again!"))
 				user.set_species(/datum/species/human)
 				return
@@ -389,7 +389,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			to_chat(user, span_warning("You feel yourself radically changing your slime type..."))
-			if(do_after(user, 120, target = user))
+			if(do_after(user, user, 120))
 				to_chat(user, span_warning("You feel different!"))
 				user.set_species(pick(/datum/species/jelly/slime, /datum/species/jelly/stargazer))
 				return
@@ -434,7 +434,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			to_chat(user, span_warning("You feel your own light turning dark..."))
-			if(do_after(user, 120, target = user))
+			if(do_after(user, user, 120))
 				to_chat(user, span_warning("You feel a longing for darkness."))
 				user.set_species(pick(/datum/species/shadow))
 				return
@@ -456,7 +456,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			user.visible_message(span_warning("[user]'s skin starts pulsing and glowing ominously..."), span_userdanger("You feel unstable..."))
-			if(do_after(user, 60, target = user))
+			if(do_after(user, user, 60))
 				to_chat(user, span_userdanger("You explode!"))
 				explosion(user, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 6, explosion_cause = src)
 				user.gib()
@@ -482,7 +482,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			to_chat(user, span_warning("You feel your body rapidly crystallizing..."))
-			if(do_after(user, 120, target = user))
+			if(do_after(user, user, 120))
 				to_chat(user, span_warning("You feel solid."))
 				user.set_species(pick(/datum/species/golem/adamantine))
 				return
@@ -506,7 +506,7 @@
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_warning("You feel your body vibrating..."))
-			if(do_after(user, 25, target = user))
+			if(do_after(user, user, 25))
 				to_chat(user, span_warning("You teleport!"))
 				do_teleport(user, get_turf(user), 6, asoundin = 'sound/weapons/emitter2.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 				return 300
@@ -571,7 +571,8 @@
 		if(SLIME_ACTIVATE_MAJOR)
 			var/turf/open/T = get_turf(user)
 			if(istype(T))
-				T.atmos_spawn_air("o2=11;n2=41;TEMP=293.15")
+				T.atmos_spawn_air(GAS_OXYGEN, 11)
+				T.atmos_spawn_air(GAS_NITROGEN, 41)
 				to_chat(user, span_warning("You activate [src], and fresh air bursts out of your skin!"))
 				return 600
 
@@ -593,7 +594,7 @@
 
 		if(SLIME_ACTIVATE_MAJOR)
 			to_chat(user, span_warning("You feel time slow down..."))
-			if(do_after(user, 30, target = user))
+			if(do_after(user, user, 30))
 				new /obj/effect/timestop(get_turf(user), 2, 50, list(user))
 				return 900
 
@@ -903,7 +904,7 @@
 	C.add_atom_colour("#FF0000", FIXED_COLOUR_PRIORITY)
 	qdel(src)
 
-/obj/item/slimepotion/speed/attackby_storage_insert(datum/component/storage, atom/storage_holder, mob/user)
+/obj/item/slimepotion/speed/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	if(!isitem(storage_holder))
 		return TRUE
 	if(istype(storage_holder, /obj/item/mod/control))

@@ -133,21 +133,6 @@
 	update_appearance()
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, .proc/instant_reload)
 
-/obj/item/gun/ballistic/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = .proc/add_notes_ballistic)
-
-/**
- *
- * Outputs type-specific weapon stats for ballistic weaponry based on its magazine and its caliber.
- * It contains extra breaks for the sake of presentation
- *
- */
-/obj/item/gun/ballistic/proc/add_notes_ballistic()
-	if(magazine) // Make sure you have a magazine, to get the notes from
-		return "\n[magazine.add_notes_box()]"
-	else
-		return "\nThe warning attached to the magazine is missing..."
-
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
 	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt_locked), NAMEOF(src, bolt_type)))
@@ -438,7 +423,7 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/attack_hand(mob/user, list/modifiers)
-	if(!internal_magazine && loc == user && user.is_holding(src) && magazine)
+	if(!internal_magazine && loc == user && user.is_holding(src) && magazine && ((gun_flags & NEEDS_OPEN_BOLT_TO_UNLOAD) ? bolt_locked : TRUE))
 		eject_magazine(user)
 		return
 	return ..()
@@ -457,7 +442,7 @@
 			user.visible_message(span_notice("[user] spins [src] around [user.p_their()] finger by the trigger. That’s pretty badass."))
 			playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 			return
-	if(!internal_magazine && magazine)
+	if(!internal_magazine && magazine && ((gun_flags & NEEDS_OPEN_BOLT_TO_UNLOAD) ? bolt_locked : TRUE))
 		if(!magazine.ammo_count())
 			eject_magazine(user)
 			return
@@ -575,7 +560,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		user.visible_message(span_danger("[src] goes off!"), span_danger("[src] goes off in your face!"))
 		return
 
-	if(do_after(user, 30, target = src))
+	if(do_after(user, src, 30))
 		if(sawn_off)
 			return
 		user.visible_message(span_notice("[user] shortens [src]!"), span_notice("You shorten [src]."))
@@ -604,7 +589,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("[user] begins to cleaning [src]."), span_notice("You begin to clean the internals of [src]."))
 
-	if(do_after(user, 100, target = src))
+	if(do_after(user, src, 100))
 		var/original_misfire_value = initial(misfire_probability)
 		if(misfire_probability > original_misfire_value)
 			misfire_probability = original_misfire_value

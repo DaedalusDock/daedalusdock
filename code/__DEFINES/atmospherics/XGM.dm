@@ -32,6 +32,7 @@
 #define GAS_CHLORINE			"chlorine"
 #define GAS_SULFUR				"sulfurdioxide"
 #define GAS_METHANE				"methane"
+#define GAS_RADON				"radon"
 
 //Random bullshit: compound edition
 #define GAS_METHYL_BROMIDE		"methyl_bromide"
@@ -44,7 +45,3 @@
 
 ///All gases that are not placeholders.
 #define ASSORTED_GASES (xgm_gas_data.gases - GAS_ALIEN)
-///All gases that a player will reliably encounter every round or close to it.
-GLOBAL_LIST_EMPTY(common_gases) //Filled in by xgm_gas_data/New()
-///All the noble gases.
-GLOBAL_LIST_EMPTY(noble_gases) //Filled in by xgm_gas_data/New()

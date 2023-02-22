@@ -19,16 +19,19 @@
 	construction_type = /obj/item/pipe/directional
 	pipe_state = "volumepump"
 	vent_movement = NONE
+
+	power_rating = 15000
+
 	///Transfer rate of the component in L/s
 	var/transfer_rate = MAX_TRANSFER_RATE
-	///Check if the component has been overclocked
-	var/overclocked = FALSE
 	///Frequency for radio signaling
 	var/frequency = 0
 	///ID for radio signaling
 	var/id = null
 	///Connection to the radio processing
 	var/datum/radio_frequency/radio_connection
+	//Last power draw, for the progress bar in the UI
+	var/last_power_draw = 0
 
 /obj/machinery/atmospherics/components/binary/volume_pump/Initialize(mapload)
 	. = ..()
@@ -52,52 +55,42 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/update_icon_nopipes()
 	icon_state = on && is_operational ? "volpump_on-[set_overlay_offset(piping_layer)]" : "volpump_off-[set_overlay_offset(piping_layer)]"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/process_atmos()
+	last_power_draw = 0
+
 	if(!on || !is_operational)
 		return
 
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-// Pump mechanism just won't do anything if the pressure is too high/too low unless you overclock it.
-
-	var/input_starting_pressure = air1.returnPressure()
+	//var/input_starting_pressure = air1.returnPressure()
 	var/output_starting_pressure = air2.returnPressure()
 
-	if((input_starting_pressure < 0.01) || ((output_starting_pressure > 9000))&&!overclocked)
+//The pump will do nothing if the output is past the max pump pressure.
+	if(output_starting_pressure > MAX_PUMP_PRESSURE)
 		return
 
-	if(overclocked && (output_starting_pressure-input_starting_pressure > 1000))//Overclocked pumps can only force gas a certain amount.
+	if(!(air1.temperature > 0))
+		return
+	//copied from air injectors
+	var/transfer_moles = (air1.returnPressure() * transfer_rate) / (air1.temperature * R_IDEAL_GAS_EQUATION)
+
+	if(!transfer_moles)
 		return
 
+	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
+	if(draw > -1)
+		update_parents()
+		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
-	var/transfer_ratio = transfer_rate / air1.volume
-
-	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
-
-	if(!removed.get_moles())
-		return
-
-	if(overclocked)//Some of the gas from the mixture leaks to the environment when overclocked
-		var/turf/open/T = loc
-		if(istype(T))
-			var/datum/gas_mixture/leaked = removed.removeRatio(VOLUME_PUMP_LEAK_AMOUNT)
-			T.assume_air(leaked)
-
-	air2.merge(removed)
-
-	update_parents()
-
-/obj/machinery/atmospherics/components/binary/volume_pump/examine(mob/user)
-	. = ..()
-	if(overclocked)
-		. += "Its warning light is on[on ? " and it's spewing gas!" : "."]"
 
 /**
  * Called in atmos_init(), used to change or remove the radio frequency from the component
@@ -105,10 +98,10 @@
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/volume_pump/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -117,14 +110,14 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "APV",
 		"power" = on,
 		"transfer_rate" = transfer_rate,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal)
+	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -137,6 +130,8 @@
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
 	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["last_draw"] = last_power_draw
+	data["max_power"] = power_rating
 	return data
 
 /obj/machinery/atmospherics/components/binary/volume_pump/atmos_init()
@@ -197,15 +192,6 @@
 	if(. && on && is_operational)
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
-
-/obj/machinery/atmospherics/components/binary/volume_pump/multitool_act(mob/living/user, obj/item/I)
-	if(!overclocked)
-		overclocked = TRUE
-		to_chat(user, "The pump makes a grinding noise and air starts to hiss out as you disable its pressure limits.")
-	else
-		overclocked = FALSE
-		to_chat(user, "The pump quiets down as you turn its limiters back on.")
-	return TRUE
 
 // mapping
 
@@ -326,5 +312,5 @@
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
 	input_pressure.set_output(air_input.returnPressure())
 	output_pressure.set_output(air_output.returnPressure())
-	input_temperature.set_output(air_input.get_temperature())
-	output_temperature.set_output(air_output.get_temperature())
+	input_temperature.set_output(air_input.temperature)
+	output_temperature.set_output(air_output.temperature)

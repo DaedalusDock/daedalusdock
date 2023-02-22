@@ -32,7 +32,6 @@
 	buckle_lying = 0
 	buckle_prevents_pull = TRUE
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	var/blade_status = GUILLOTINE_BLADE_RAISED
 	var/blade_sharpness = GUILLOTINE_BLADE_MAX_SHARP // How sharp the blade is
 	var/kill_count = 0
@@ -46,7 +45,7 @@
 	if(istype(I, /obj/item/stack/sheet/plasteel))
 		to_chat(user, span_notice("You start repairing the guillotine with the plasteel..."))
 		if(blade_sharpness<10)
-			if(do_after(user,100,target=user))
+			if(do_after(user, user, 100))
 				blade_sharpness = min(10,blade_sharpness+3)
 				I.use(1)
 				to_chat(user, span_notice("You repair the guillotine with the plasteel."))
@@ -97,7 +96,7 @@
 						                 span_warning("You begin to the pull the lever."))
 					current_action = GUILLOTINE_ACTION_INUSE
 
-					if (do_after(user, GUILLOTINE_ACTIVATE_DELAY, target = src) && blade_status == GUILLOTINE_BLADE_RAISED)
+					if (do_after(user, src, GUILLOTINE_ACTIVATE_DELAY) && blade_status == GUILLOTINE_BLADE_RAISED)
 						current_action = GUILLOTINE_BLADE_IDLE
 						blade_status = GUILLOTINE_BLADE_MOVING
 						icon_state = "guillotine_drop"
@@ -179,7 +178,7 @@
 		if (blade_status == GUILLOTINE_BLADE_RAISED)
 			if (blade_sharpness < GUILLOTINE_BLADE_MAX_SHARP)
 				blade_status = GUILLOTINE_BLADE_SHARPENING
-				if(do_after(user, 7, target = src))
+				if(do_after(user, src, 7))
 					blade_status = GUILLOTINE_BLADE_RAISED
 					user.visible_message(span_notice("[user] sharpens the large blade of the guillotine."),
 						                 span_notice("You sharpen the large blade of the guillotine."))

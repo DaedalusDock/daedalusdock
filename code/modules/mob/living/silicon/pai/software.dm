@@ -235,7 +235,7 @@
 		else
 			to_chat(all_ais, span_boldannounce("Network Alert: Brute-force security override in progress. Unable to pinpoint location."))
 	//Now begin hacking
-	if(!do_after(src, 10 SECONDS, hacking_cable.machine, timed_action_flags = NONE, progress = TRUE))
+	if(!do_after(src, hacking_cable.machine, 10 SECONDS, timed_action_flags = NONE, progress = TRUE))
 		to_chat(src, span_notice("Door Jack: Connection to airlock has been lost. Hack aborted."))
 		hacking_cable.visible_message(
 			span_warning("[hacking_cable] rapidly retracts back into its spool."),\

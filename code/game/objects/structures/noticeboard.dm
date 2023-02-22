@@ -134,8 +134,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 	req_access = list(ACCESS_HOS)
 
 /obj/structure/noticeboard/cmo
-	name = "Chief Medical Officer's Notice Board"
-	desc = "Important notices from the Chief Medical Officer."
+	name = "Medical Director's Notice Board"
+	desc = "Important notices from the Medical Director."
 	req_access = list(ACCESS_CMO)
 
 /obj/structure/noticeboard/rd

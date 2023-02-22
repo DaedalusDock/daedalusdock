@@ -236,7 +236,7 @@
 		to_chat(user, span_warning("You need to be next to the specimen to prepare it for transport!"))
 		return
 	to_chat(user, span_notice("You begin preparing [target] for transport..."))
-	if(do_after(user, 100, target = target))
+	if(do_after(user, target, 100))
 		marked_target_weakref = WEAKREF(target)
 		to_chat(user, span_notice("You finish preparing [target] for transport."))
 
@@ -283,7 +283,7 @@
 	var/list/all_items = M.get_all_contents()
 
 	for(var/obj/item/radio/radio in all_items)
-		radio.set_listening(FALSE)
+		radio.set_listening(FALSE, TRUE)
 		if(!istype(radio, /obj/item/radio/headset))
 			radio.set_broadcasting(FALSE) //goddamned headset hacks
 
@@ -441,7 +441,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	inhand_icon_state = "wonderprod"
 
 	force = 7
-	wound_bonus = FALSE
 
 	actions_types = list(/datum/action/item_action/toggle_mode)
 
@@ -567,7 +566,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			playsound(src, 'sound/weapons/cablecuff.ogg', 30, TRUE, -2)
 			C.visible_message(span_danger("[user] begins restraining [C] with [src]!"), \
 									span_userdanger("[user] begins shaping an energy field around your hands!"))
-			if(do_mob(user, C, time_to_cuff) && C.canBeHandcuffed())
+			if(do_after(user, C, time_to_cuff) && C.canBeHandcuffed())
 				if(!C.handcuffed)
 					C.set_handcuffed(new /obj/item/restraints/handcuffs/energy/used(C))
 					C.update_handcuffed()
@@ -769,7 +768,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			to_chat(user, span_warning("You need one alien alloy sheet to do this!"))
 			return
 		to_chat(user, span_notice("You start adding [P] to [src]..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			P.use(1)
 			new /obj/structure/table/abductor(src.loc)
 			qdel(src)
@@ -780,7 +779,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			to_chat(user, span_warning("You need one sheet of silver to do this!"))
 			return
 		to_chat(user, span_notice("You start adding [P] to [src]..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			P.use(1)
 			new /obj/structure/table/optable/abductor(src.loc)
 			qdel(src)

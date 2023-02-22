@@ -350,7 +350,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/render_preview_outfit(datum/outfit/outfit, mob/living/carbon/human/dummy)
 	dummy = dummy || new /mob/living/carbon/human/dummy/consistent
 	dummy.equipOutfit(outfit, visualsOnly = TRUE)
-	COMPILE_OVERLAYS(dummy)
 	var/icon = getFlatIcon(dummy)
 
 	// We don't want to qdel the dummy right away, since its items haven't initialized yet.
@@ -495,7 +494,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 	target.ui_interact(owner)
 
-/datum/action/antag_info/IsAvailable()
+/datum/action/antag_info/IsAvailable(feedback = FALSE)
 	if(!target)
 		stack_trace("[type] was used without a target antag datum!")
 		return FALSE

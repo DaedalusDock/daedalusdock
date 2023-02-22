@@ -125,7 +125,7 @@
 			active = null
 			refresh()
 			return
-		var/datum/gas_mixture/air = T.return_air()
+		var/datum/gas_mixture/air = T.unsafe_return_air()
 		if(!air)
 			active = null
 			return

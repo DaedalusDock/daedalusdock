@@ -28,37 +28,21 @@
 			M.playsound_local(M, 'sound/ambience/aurora_caelus.ogg', 20, FALSE, pressure_affected = FALSE)
 
 /datum/round_event/aurora_caelus/start()
-	for(var/area in GLOB.sortedAreas)
-		var/area/A = area
+	var/chosen_color = pick(aurora_colors)
+	for(var/turf/open/space/S in world)
+		var/area/A = S.loc
 		if(A.area_flags & AREA_USES_STARLIGHT)
-			for(var/turf/open/space/S in A)
-				S.set_light(l_outer_range = S.light_outer_range * 3)
-
-/datum/round_event/aurora_caelus/tick()
-	if(activeFor % 5 == 0)
-		aurora_progress++
-		var/aurora_color = aurora_colors[aurora_progress]
-		for(var/area in GLOB.sortedAreas)
-			var/area/A = area
-			if(A.area_flags & AREA_USES_STARLIGHT)
-				for(var/turf/open/space/S in A)
-					S.set_light(l_color = aurora_color)
+			S.set_light(l_power = S.light_power * 1.3, l_color = chosen_color)
+		CHECK_TICK
 
 /datum/round_event/aurora_caelus/end()
-	for(var/area in GLOB.sortedAreas)
-		var/area/A = area
+	for(var/turf/open/space/S in world)
+		var/area/A = S.loc
 		if(A.area_flags & AREA_USES_STARLIGHT)
-			for(var/turf/open/space/S in A)
-				fade_to_black(S)
+			S.set_light(l_power = initial(S.light_power), l_color = initial(S.light_color))
+		CHECK_TICK
 	priority_announce(
 		"The aurora caelus event is now ending. Starlight conditions will slowly return to normal. When this has concluded, please return to your workplace and continue work as normal. Have a pleasant shift, [station_name()], and thank you for watching with us.",
 		"Ananke Meteorology Division"
 	)
 
-/datum/round_event/aurora_caelus/proc/fade_to_black(turf/open/space/S)
-	set waitfor = FALSE
-	var/new_light = initial(S.light_outer_range)
-	while(S.light_outer_range > new_light)
-		S.set_light(l_outer_range = S.light_outer_range - 0.2)
-		sleep(30)
-	S.set_light(l_outer_range = new_light, l_power = initial(S.light_power), l_color = initial(S.light_color))

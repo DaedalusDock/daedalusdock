@@ -150,7 +150,7 @@
 		qdel(src)
 		return TRUE
 
-	var/datum/gas_mixture/air = owner.loc.return_air()
+	var/datum/gas_mixture/air = owner.loc.unsafe_return_air()
 	if(!air.gas[GAS_OXYGEN] || air.gas[GAS_OXYGEN] < 1)
 		qdel(src)
 		return TRUE

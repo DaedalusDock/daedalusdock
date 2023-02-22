@@ -195,6 +195,9 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 ///Gun has a bolt, it locks back when empty. It can be released to chamber a round if a magazine is in.
 ///  Example: Pistols with a slide lock, some SMGs
 #define BOLT_TYPE_LOCKING 4
+///This is effectively BOLT_TYPE_STANDARD and NO_BOLT in one.
+#define BOLT_TYPE_NO_BOLT_PLUS 5
+
 //Sawn off nerfs
 ///accuracy penalty of sawn off guns
 #define SAWN_OFF_ACC_PENALTY 25

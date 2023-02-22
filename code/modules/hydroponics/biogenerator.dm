@@ -113,7 +113,7 @@
 			for(var/obj/item/food/grown/G in PB.contents)
 				if(i >= max_items)
 					break
-				if(SEND_SIGNAL(PB, COMSIG_TRY_STORAGE_TAKE, G, src))
+				if(PB.atom_storage.attempt_remove(G, src))
 					i++
 			if(i<max_items)
 				to_chat(user, span_info("You empty the plant bag into the biogenerator."))
@@ -139,7 +139,7 @@
 			span_hear("You hear the chatter of a floppy drive."))
 		processing = TRUE
 		var/obj/item/disk/design_disk/D = O
-		if(do_after(user, 10, target = src))
+		if(do_after(user, src, 10))
 			for(var/B in D.blueprints)
 				if(B)
 					stored_research.add_design(B)

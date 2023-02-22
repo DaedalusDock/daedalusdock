@@ -469,11 +469,11 @@
 
 	var/datum/gas_mixture/mix = SSzas.lavaland_atmos
 
-	if(!mix?.get_moles()) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
+	if(!mix?.total_moles) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
 		return
 
 	// Take a "breath" of the air
-	var/datum/gas_mixture/breath = mix.remove(mix.get_moles() * BREATH_PERCENTAGE)
+	var/datum/gas_mixture/breath = mix.remove(mix.total_moles * BREATH_PERCENTAGE)
 
 	var/list/breath_gases = breath.gas
 	var/O2_moles = breath_gases[GAS_OXYGEN]
@@ -498,17 +498,6 @@
 	// tolerate the base amount plus tolerance*2 (humans tolerate only 10 pp)
 
 	safe_co2_max = CO2_pp + GAS_TOLERANCE * 2
-
-	// The lung tolerance against BZ is also increased the amount of BZ in the base air
-	/*
-	BZ_trip_balls_min += bz_pp
-	BZ_brain_damage_min += bz_pp
-	*/
-
-	// Lungs adapted to a high miasma atmosphere do not process it, and breathe it back out
-
-	//if(miasma_pp)
-		//suffers_miasma = FALSE
 
 #undef GAS_TOLERANCE
 

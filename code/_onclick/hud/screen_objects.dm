@@ -247,8 +247,8 @@
 	master = new_master
 
 /atom/movable/screen/close/Click()
-	var/datum/component/storage/S = master
-	S.hide_from(usr)
+	var/datum/storage/storage = master
+	storage.hide_contents(usr)
 	return TRUE
 
 /atom/movable/screen/drop
@@ -306,66 +306,6 @@
 /atom/movable/screen/combattoggle/robot
 	icon = 'icons/hud/screen_cyborg.dmi'
 	screen_loc = ui_borg_intents
-
-/atom/movable/screen/internals
-	name = "toggle internals"
-	icon_state = "internal0"
-	screen_loc = ui_internal
-
-/atom/movable/screen/internals/Click()
-	if(!iscarbon(usr))
-		return
-	var/mob/living/carbon/C = usr
-	if(C.incapacitated())
-		return
-
-	if(C.internal)
-		C.internal = null
-		to_chat(C, span_notice("You are no longer running on internals."))
-		icon_state = "internal0"
-	else
-		if(!C.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			if(!istype(C.wear_mask, /obj/item/clothing/mask))
-				to_chat(C, span_warning("You are not wearing an internals mask!"))
-				return 1
-			else
-				var/obj/item/clothing/mask/M = C.wear_mask
-				if(M.mask_adjusted) // if mask on face but pushed down
-					M.adjustmask(C) // adjust it back
-				if( !(M.clothing_flags & MASKINTERNALS) )
-					to_chat(C, span_warning("You are not wearing an internals mask!"))
-					return
-
-		var/obj/item/I = C.is_holding_item_of_type(/obj/item/tank)
-		if(I)
-			to_chat(C, span_notice("You are now running on internals from [I] in your [C.get_held_index_name(C.get_held_index_of_item(I))]."))
-			C.internal = I
-		else if(ishuman(C))
-			var/mob/living/carbon/human/H = C
-			if(istype(H.s_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.s_store] on your [H.wear_suit.name]."))
-				H.internal = H.s_store
-			else if(istype(H.belt, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.belt] on your belt."))
-				H.internal = H.belt
-			else if(istype(H.l_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.l_store] in your left pocket."))
-				H.internal = H.l_store
-			else if(istype(H.r_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.r_store] in your right pocket."))
-				H.internal = H.r_store
-
-		//Separate so CO2 jetpacks are a little less cumbersome.
-		if(!C.internal && istype(C.back, /obj/item/tank))
-			to_chat(C, span_notice("You are now running on internals from [C.back] on your back."))
-			C.internal = C.back
-
-		if(C.internal)
-			icon_state = "internal1"
-		else
-			to_chat(C, span_warning("You don't have an oxygen tank!"))
-			return
-	C.update_action_buttons_icon()
 
 /atom/movable/screen/spacesuit
 	name = "Space suit cell status"
@@ -449,16 +389,21 @@
 	master = new_master
 
 /atom/movable/screen/storage/Click(location, control, params)
+	var/datum/storage/storage_master = master
+	if(!istype(storage_master))
+		return FALSE
+
 	if(world.time <= usr.next_move)
 		return TRUE
 	if(usr.incapacitated())
 		return TRUE
-	if (ismecha(usr.loc)) // stops inventory actions in a mech
+	if(ismecha(usr.loc)) // stops inventory actions in a mech
 		return TRUE
-	if(master)
-		var/obj/item/I = usr.get_active_held_item()
-		if(I)
-			master.attackby(null, I, usr, params)
+
+	var/obj/item/inserted = usr.get_active_held_item()
+	if(inserted)
+		storage_master.attempt_insert(inserted, usr)
+
 	return TRUE
 
 /atom/movable/screen/throw_catch
@@ -667,53 +612,6 @@
 
 /atom/movable/screen/mood/attack_tk()
 	return
-
-/atom/movable/screen/splash
-	icon = 'icons/blanks/blank_title.png'
-	icon_state = ""
-	screen_loc = "1,1"
-	plane = SPLASHSCREEN_PLANE
-	var/client/holder
-
-INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
-
-/atom/movable/screen/splash/Initialize(mapload, client/C, visible, use_previous_title)
-	. = ..()
-	if(!istype(C))
-		return
-
-	holder = C
-
-	if(!visible)
-		alpha = 0
-
-	if(!use_previous_title)
-		if(SStitle.icon)
-			icon = SStitle.icon
-	else
-		if(!SStitle.previous_icon)
-			return INITIALIZE_HINT_QDEL
-		icon = SStitle.previous_icon
-
-	holder.screen += src
-
-/atom/movable/screen/splash/proc/Fade(out, qdel_after = TRUE)
-	if(QDELETED(src))
-		return
-	if(out)
-		animate(src, alpha = 0, time = 30)
-	else
-		alpha = 0
-		animate(src, alpha = 255, time = 30)
-	if(qdel_after)
-		QDEL_IN(src, 30)
-
-/atom/movable/screen/splash/Destroy()
-	if(holder)
-		holder.screen -= src
-		holder = null
-	return ..()
-
 
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent

@@ -72,7 +72,7 @@
 	set_stat(DEAD)
 	unset_machine()
 	timeofdeath = world.time
-	tod = station_time_timestamp()
+	tod = stationtime2text()
 	var/turf/T = get_turf(src)
 	if(mind && mind.name && mind.active && !istype(T.loc, /area/ctf))
 		deadchat_broadcast(" has died at <b>[get_area_name(T)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = T, message_type=DEADCHAT_DEATHRATTLE)
@@ -83,7 +83,7 @@
 	SetSleeping(0, 0)
 	reset_perspective(null)
 	reload_fullscreen()
-	update_action_buttons_icon()
+	update_mob_action_buttons()
 	update_damage_hud()
 	update_health_hud()
 	med_hud_set_health()

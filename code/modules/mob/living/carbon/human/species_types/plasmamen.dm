@@ -27,7 +27,6 @@
 	brutemod = 1.5
 	payday_modifier = 0.75
 	breathid = GAS_PLASMA
-	damage_overlay_type = ""//let's not show bloody wounds or burns over bones.
 	disliked_food = FRUIT | CLOTH
 	liked_food = VEGETABLES
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
@@ -36,11 +35,11 @@
 	species_language_holder = /datum/language_holder/skeleton
 
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/plasmaman,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/plasmaman,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/plasmaman,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/plasmaman,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/plasmaman,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/plasmaman,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/plasmaman,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/plasmaman,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/plasmaman,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/plasmaman,
 	)
 
@@ -73,7 +72,7 @@
 		return
 	if(!atmos_sealed && (!istype(H.w_uniform, /obj/item/clothing/under/plasmaman) || !istype(H.head, /obj/item/clothing/head/helmet/space/plasmaman) || !istype(H.gloves, /obj/item/clothing/gloves)))
 		var/datum/gas_mixture/environment = H.loc.return_air()
-		if(environment?.get_moles())
+		if(environment?.total_moles)
 			/*if(environment.gases[/datum/gas/hypernoblium] && (environment.gases[/datum/gas/hypernoblium][MOLES]) >= 5)
 				if(H.on_fire && H.fire_stacks > 0)
 					H.adjust_fire_stacks(-10 * delta_time)*/
@@ -100,8 +99,16 @@
 
 /datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
 	equipping.internal = equipping.get_item_for_held_index(2)
-	equipping.update_internals_hud_icon(1)
 
+/datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	. = ..()
+	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
+	if(!human_to_equip.internal)
+		var/obj/item/tank/internals/plasmaman/belt/new_tank = new(null)
+		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
+			human_to_equip.internal = human_to_equip.belt
+		else
+			stack_trace("Plasmaman going without internals. Uhoh.")
 
 /datum/species/plasmaman/random_name(gender,unique,lastname)
 	if(unique)
@@ -118,10 +125,11 @@
 	. = ..()
 	if(istype(chem, /datum/reagent/toxin/plasma))
 		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		for(var/i in H.all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.on_xadone(4 * REAGENTS_EFFECT_MULTIPLIER * delta_time) // plasmamen use plasma to reform their bones or whatever
+		if(prob(10))
+			for(var/obj/item/bodypart/BP as anything in H.bodyparts)
+				BP.heal_bones()
 		return TRUE
+
 	if(istype(chem, /datum/reagent/toxin/bonehurtingjuice))
 		H.adjustStaminaLoss(7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
 		H.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)

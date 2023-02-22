@@ -43,7 +43,7 @@
 	var/static/list/command = list("Captain" = "Cpt.","Head of Personnel" = "Lt.")
 	var/static/list/security = list("Head of Security" = "Maj.", "Warden" = "Sgt.", "Detective" = "Det.", "Security Officer" = "Officer")
 	var/static/list/engineering = list("Chief Engineer" = "Chief Engineer", "Station Engineer" = "Engineer", "Atmospherics Technician" = "Technician")
-	var/static/list/medical = list("Chief Medical Officer" = "C.M.O.", "Medical Doctor" = "M.D.", "Chemist" = "Pharm.D.")
+	var/static/list/medical = list("Medical Director" = "C.M.O.", "Medical Doctor" = "M.D.", "Chemist" = "Pharm.D.")
 	var/static/list/research = list("Research Director" = "Ph.D.", "Roboticist" = "M.S.", "Scientist" = "B.S.")
 	var/static/list/legal = list("Lawyer" = "Esq.")
 
@@ -169,7 +169,7 @@
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/living/user, params)
 	if(istype(W, /obj/item/knife) && !user.combat_mode)
 		to_chat(user, span_notice("You start attaching \the [W] to \the [src]..."))
-		if(do_after(user, 25, target = src))
+		if(do_after(user, src, 25))
 			deputize(W, user)
 	else
 		return ..()
@@ -315,7 +315,7 @@
 		update_icon_state()
 
 		var/turf/T = get_turf(A)
-		if(do_after(src, 1, target = T))
+		if(do_after(src, T, 1))
 			T.wash(CLEAN_SCRUB)
 			visible_message(span_notice("[src] cleans \the [T]."))
 			target = null

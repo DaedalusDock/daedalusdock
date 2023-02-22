@@ -19,7 +19,7 @@
 	radio = new(src)
 	radio.set_frequency(FREQ_SUPPLY)
 	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
+	radio.canhear_range = -1
 	radio.recalculateChannels()
 
 	if(!order_datums.len)

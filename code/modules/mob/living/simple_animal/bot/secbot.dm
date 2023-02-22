@@ -476,9 +476,9 @@
 			disabler_gun.cell.charge = 0
 			disabler_gun.update_appearance()
 			if(prob(50))
-				new /obj/item/bodypart/l_leg/robot(Tsec)
+				new /obj/item/bodypart/leg/left/robot(Tsec)
 				if(prob(25))
-					new /obj/item/bodypart/r_leg/robot(Tsec)
+					new /obj/item/bodypart/leg/right/robot(Tsec)
 			if(prob(25))//50% chance for a helmet OR vest
 				if(prob(50))
 					new /obj/item/clothing/head/helmet(Tsec)
@@ -539,7 +539,7 @@
 		say("Suspect NAP Violation: Unable to pay.")
 		nap_violation(target)
 		return FALSE
-	var/datum/bank_account/beepsky_department_account = SSeconomy.get_dep_account(payment_department)
+	var/datum/bank_account/beepsky_department_account = SSeconomy.department_accounts_by_id[payment_department]
 	say("Thank you for your compliance. Your account been charged [fair_market_price] credits.")
 	if(beepsky_department_account)
 		beepsky_department_account.adjust_money(fair_market_price)

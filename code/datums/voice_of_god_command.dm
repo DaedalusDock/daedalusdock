@@ -193,7 +193,7 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 
 /datum/voice_of_god_command/brute/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
 	for(var/mob/living/target as anything in listeners)
-		target.apply_damage(15 * power_multiplier, def_zone = BODY_ZONE_CHEST, wound_bonus = CANT_WOUND)
+		target.apply_damage(15 * power_multiplier, def_zone = BODY_ZONE_CHEST)
 
 /// This command makes carbon listeners bleed from a random body part.
 /datum/voice_of_god_command/bleed

@@ -142,9 +142,9 @@
 	var/bottom_left_corner
 	///Smoothing variable
 	var/bottom_right_corner
-	///What smoothing groups does this atom belongs to, to match canSmoothWith. If null, nobody can smooth with it.
+	///What smoothing groups does this atom belongs to, to match canSmoothWith. If null, nobody can smooth with it. Must be sorted.
 	var/list/smoothing_groups = null
-	///List of smoothing groups this atom can smooth with. If this is null and atom is smooth, it smooths only with itself.
+	///List of smoothing groups this atom can smooth with. If this is null and atom is smooth, it smooths only with itself. Must be sorted.
 	var/list/canSmoothWith = null
 	///Reference to atom being orbited
 	var/atom/orbit_target
@@ -162,6 +162,9 @@
 	var/damage_deflection = 0
 
 	var/resistance_flags = NONE // INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ON_FIRE | UNACIDABLE | ACID_PROOF
+
+	/// the datum handler for our contents - see create_storage() for creation method
+	var/datum/storage/atom_storage
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -229,6 +232,7 @@
 /atom/proc/Initialize(mapload, ...)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
+
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
@@ -247,21 +251,30 @@
 		update_light()
 
 	if (length(smoothing_groups))
-		sortTim(smoothing_groups) //In case it's not properly ordered, let's avoid duplicate entries with the same values.
+		#ifdef UNIT_TESTS
+		assert_sorted(smoothing_groups, "[type].smoothing_groups")
+		#endif
+
 		SET_BITFLAG_LIST(smoothing_groups)
+
 	if (length(canSmoothWith))
-		sortTim(canSmoothWith)
+		#ifdef UNIT_TESTS
+		assert_sorted(canSmoothWith, "[type].canSmoothWith")
+		#endif
+
 		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
 			smoothing_flags |= SMOOTH_OBJ
+
 		SET_BITFLAG_LIST(canSmoothWith)
 
 	if(uses_integrity)
 		if (islist(armor))
 			armor = getArmor(arglist(armor))
-		else if (!armor)
+		else if (isnull(armor))
 			armor = getArmor()
 		else if (!istype(armor, /datum/armor))
 			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")
+
 		atom_integrity = max_integrity
 
 	// apply materials properly from the default custom_materials value
@@ -312,6 +325,9 @@
 	if(reagents)
 		QDEL_NULL(reagents)
 
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)
@@ -324,6 +340,43 @@
 		SSicon_smooth.remove_from_queues(src)
 
 	return ..()
+
+/// A quick and easy way to create a storage datum for an atom
+/atom/proc/create_storage(
+	max_slots,
+	max_specific_storage,
+	max_total_storage,
+	numerical_stacking = FALSE,
+	allow_quick_gather = FALSE,
+	allow_quick_empty = FALSE,
+	collection_mode = COLLECT_ONE,
+	attack_hand_interact = TRUE,
+	list/canhold,
+	list/canthold,
+	type = /datum/storage,
+)
+
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
+	atom_storage = new type(src, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, collection_mode, attack_hand_interact)
+
+	if(canhold || canthold)
+		atom_storage.set_holdable(canhold, canthold)
+
+	return atom_storage
+
+/// A quick and easy way to /clone/ a storage datum for an atom (does not copy over contents, only the datum details)
+/atom/proc/clone_storage(datum/storage/cloning)
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
+	atom_storage = new cloning.type(src, cloning.max_slots, cloning.max_specific_storage, cloning.max_total_storage, cloning.numerical_stacking, cloning.allow_quick_gather, cloning.collection_mode, cloning.attack_hand_interact)
+
+	if(cloning.can_hold || cloning.cant_hold)
+		atom_storage.set_holdable(cloning.can_hold, cloning.cant_hold)
+
+	return atom_storage
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
@@ -491,6 +544,11 @@
 	else
 		return null
 
+///Return the current air environment in this atom. If this atom is a turf, it will not automatically update the zone.
+/atom/proc/unsafe_return_air()
+	return return_air()
+
+
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
 	return null
@@ -535,15 +593,16 @@
  * - methods: How the atom is being exposed to the reagents. Bitflags.
  * - volume_modifier: Volume multiplier.
  * - show_message: Whether to display anything to mobs when they are exposed.
+ * - exposed_temperature: The temperature of the reagent during exposure
  */
-/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = SEND_SIGNAL(src, COMSIG_ATOM_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/datum/reagent/current_reagent as anything in reagents)
-		. |= current_reagent.expose_atom(src, reagents[current_reagent])
+		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
 /// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
@@ -638,6 +697,8 @@
  */
 /atom/proc/examine(mob/user)
 	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
+	if(SScodex.get_codex_entry(get_codex_value(user)))
+		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
 
 	. += get_name_chaser(user)
 	if(desc)
@@ -674,6 +735,7 @@
 				. += span_danger("It's empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)
  *
@@ -981,44 +1043,10 @@
 	return
 
 /**
- * Implement the behaviour for when a user click drags a storage object to your atom
+ * If someone's trying to dump items onto our atom, where should they be dumped to?
  *
- * This behaviour is usually to mass transfer, but this is no longer a used proc as it just
- * calls the underyling /datum/component/storage dump act if a component exists
- *
- * TODO these should be purely component items that intercept the atom clicks higher in the
- * call chain
+ * Return a loc to place objects, or null to stop dumping.
  */
-/atom/proc/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
-	if(GetComponent(/datum/component/storage))
-		return component_storage_contents_dump_act(src_object, user)
-	return FALSE
-
-/**
- * Implement the behaviour for when a user click drags another storage item to you
- *
- * In this case we get as many of the tiems from the target items compoent storage and then
- * put everything into ourselves (or our storage component)
- *
- * TODO these should be purely component items that intercept the atom clicks higher in the
- * call chain
- */
-/atom/proc/component_storage_contents_dump_act(datum/component/storage/src_object, mob/user)
-	var/list/things = src_object.contents()
-	var/datum/progressbar/progress = new(user, things.len, src)
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	while (do_after(user, 1 SECONDS, src, NONE, FALSE, CALLBACK(STR, /datum/component/storage.proc/handle_mass_item_insertion, things, src_object, user, progress)))
-		stoplag(1)
-	progress.end_progress()
-	to_chat(user, span_notice("You dump as much of [src_object.parent]'s contents [STR.insert_preposition]to [src] as you can."))
-	STR.orient2hud(user)
-	src_object.orient2hud(user)
-	if(user.active_storage) //refresh the HUD to show the transfered contents
-		user.active_storage.close(user)
-		user.active_storage.show_to(user)
-	return TRUE
-
-///Get the best place to dump the items contained in the source storage item?
 /atom/proc/get_dumping_location()
 	return null
 
@@ -1691,39 +1719,6 @@
 		var/reverse_message = "has been [what_done] by [ssource][postfix]"
 		target.log_message(reverse_message, LOG_VICTIM, color="orange", log_globally=FALSE)
 
-/**
- * log_wound() is for when someone is *attacked* and suffers a wound. Note that this only captures wounds from damage, so smites/forced wounds aren't logged, as well as demotions like cuts scabbing over
- *
- * Note that this has no info on the attack that dealt the wound: information about where damage came from isn't passed to the bodypart's damaged proc. When in doubt, check the attack log for attacks at that same time
- * TODO later: Add logging for healed wounds, though that will require some rewriting of healing code to prevent admin heals from spamming the logs. Not high priority
- *
- * Arguments:
- * * victim- The guy who got wounded
- * * suffered_wound- The wound, already applied, that we're logging. It has to already be attached so we can get the limb from it
- * * dealt_damage- How much damage is associated with the attack that dealt with this wound.
- * * dealt_wound_bonus- The wound_bonus, if one was specified, of the wounding attack
- * * dealt_bare_wound_bonus- The bare_wound_bonus, if one was specified *and applied*, of the wounding attack. Not shown if armor was present
- * * base_roll- Base wounding ability of an attack is a random number from 1 to (dealt_damage ** WOUND_DAMAGE_EXPONENT). This is the number that was rolled in there, before mods
- */
-/proc/log_wound(atom/victim, datum/wound/suffered_wound, dealt_damage, dealt_wound_bonus, dealt_bare_wound_bonus, base_roll)
-	if(QDELETED(victim) || !suffered_wound)
-		return
-	var/message = "has suffered: [suffered_wound][suffered_wound.limb ? " to [suffered_wound.limb.name]" : null]"// maybe indicate if it's a promote/demote?
-
-	if(dealt_damage)
-		message += " | Damage: [dealt_damage]"
-		// The base roll is useful since it can show how lucky someone got with the given attack. For example, dealing a cut
-		if(base_roll)
-			message += " (rolled [base_roll]/[dealt_damage ** WOUND_DAMAGE_EXPONENT])"
-
-	if(dealt_wound_bonus)
-		message += " | WB: [dealt_wound_bonus]"
-
-	if(dealt_bare_wound_bonus)
-		message += " | BWB: [dealt_bare_wound_bonus]"
-
-	victim.log_message(message, LOG_ATTACK, color="blue")
-
 /atom/proc/add_filter(name,priority,list/params)
 	LAZYINITLIST(filter_data)
 	var/list/copied_parameters = params.Copy()
@@ -1917,6 +1912,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	if(density == new_value)
 		return
+	SEND_SIGNAL(src, COMSIG_ATOM_DENSITY_CHANGE, density, new_value)
 	. = density
 	density = new_value
 
@@ -2218,4 +2214,9 @@
 	. = !density
 
 /atom/proc/speaker_location()
+	return src
+
+///What atom is actually "Hearing".
+//Currently only changed by Observers to be hearing through their orbit target.
+/atom/proc/hear_location()
 	return src

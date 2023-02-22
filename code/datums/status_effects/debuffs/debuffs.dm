@@ -209,7 +209,7 @@
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
 		owner.timeofdeath = new_timeofdeath
-		owner.tod = station_time_timestamp(wtime=new_timeofdeath)
+		owner.tod = stationtime2text(reference_time=new_timeofdeath)
 		last_dead_time = null
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
@@ -397,8 +397,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		var/obj/item/bodypart/bodypart = pick(human_owner.bodyparts)
-		var/datum/wound/slash/severe/crit_wound = new()
-		crit_wound.apply_wound(bodypart)
+		bodypart.receive_damage(40, sharpness = (SHARP_EDGED|SHARP_POINTY))
 
 	return ..()
 
@@ -550,17 +549,18 @@
 	duration = -1
 
 /datum/status_effect/neck_slice/tick()
+
 	var/mob/living/carbon/human/H = owner
 	var/obj/item/bodypart/throat = H.get_bodypart(BODY_ZONE_HEAD)
 	if(H.stat == DEAD || !throat)
 		H.remove_status_effect(/datum/status_effect/neck_slice)
 
 	var/still_bleeding = FALSE
-	for(var/thing in throat.wounds)
-		var/datum/wound/W = thing
-		if(W.wound_type == WOUND_SLASH && W.severity > WOUND_SEVERITY_MODERATE)
+	for(var/datum/wound/cut/W in throat.wounds)
+		if(W.current_stage > 3)
 			still_bleeding = TRUE
 			break
+
 	if(!still_bleeding)
 		H.remove_status_effect(/datum/status_effect/neck_slice)
 
@@ -1103,7 +1103,7 @@
 	if(!istype(living) || !living.can_resist() || living != owner)
 		return
 	to_chat(living, span_notice("You start to shake the ants off!"))
-	if(!do_after(living, 2 SECONDS, target = living))
+	if(!do_after(living, time = 2 SECONDS))
 		return
 	for (var/datum/status_effect/ants/ant_covered in living.status_effects)
 		to_chat(living, span_notice("You manage to get some of the ants off!"))

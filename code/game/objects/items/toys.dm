@@ -25,6 +25,7 @@
  * Fake heretic codex
  * Fake Pierced Reality
  * Intento
+ * Groan Tube
  */
 /obj/item/toy
 	throwforce = 0
@@ -875,7 +876,7 @@
 
 /obj/item/toy/clockwork_watch/examine(mob/user)
 	. = ..()
-	. += span_info("Station Time: [station_time_timestamp()]")
+	. += span_info("Station Time: [stationtime2text()]")
 
 /*
  * Toy Dagger
@@ -950,7 +951,7 @@
 		playsound(user, toysound, 20, TRUE)
 
 /obj/item/toy/figure/cmo
-	name = "\improper Chief Medical Officer action figure"
+	name = "\improper Medical Director action figure"
 	icon_state = "cmo"
 	toysay = "Suit sensors!"
 
@@ -1532,3 +1533,33 @@ GLOBAL_LIST_EMPTY(intento_players)
 #undef TIME_TO_BEGIN
 #undef TIME_PER_DEMO_STEP
 #undef TIME_TO_RESET_ICON
+
+/*
+ * Groan Tube (thing that goes UUAAAA AAAUUU)
+ */
+/obj/item/toy/groan_tube
+	name = "groan tube"
+	desc = "UUAAAA...   AAAUUUU"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "groan_tube"
+	verb_say = "groans"
+	COOLDOWN_DECLARE(groan_cooldown)
+	var/flipped = FALSE
+	var/cooldown_time = 20
+
+/obj/item/toy/groan_tube/attack_self(mob/user)
+	if(COOLDOWN_FINISHED(src, groan_cooldown))
+		to_chat(user, span_notice("You flip \the [src]."))
+		flick("groan_tube_flip", src)
+		if(flipped)
+			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 3)
+			say("AAAUUU")
+		else
+			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 3)
+			say("UUAAAA")
+
+		flipped = !flipped
+		COOLDOWN_START(src, groan_cooldown, cooldown_time)
+		return
+	..()
+

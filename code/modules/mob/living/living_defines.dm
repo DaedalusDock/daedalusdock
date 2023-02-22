@@ -124,17 +124,13 @@
 	var/stun_absorption = null ///converted to a list of stun absorption sources this mob has when one is added
 
 	var/blood_volume = 0 ///how much blood the mob has
-	var/obj/effect/proc_holder/ranged_ability ///Any ranged ability the mob has, as a click override
 
 	var/see_override = 0 ///0 for no override, sets see_invisible = see_override in silicon & carbon life process via update_sight()
 
 	var/list/status_effects ///a list of all status effects the mob has
-
 	var/list/implants = null
 
 	var/last_words ///used for database logging
-
-	var/list/obj/effect/proc_holder/abilities = list()
 
 	var/ventcrawl_layer = PIPING_LAYER_DEFAULT
 	var/losebreath = 0
@@ -171,12 +167,6 @@
 	///The x amount a mob's sprite should be offset due to the current position they're in
 	var/body_position_pixel_y_offset = 0
 
-	/// FOV view that is applied from either nativeness or traits
-	var/fov_view
-	/// Native FOV that will be applied if a config is enabled
-	var/native_fov = FOV_90_DEGREES
-	/// Lazy list of FOV traits that will apply a FOV view when handled.
-	var/list/fov_traits
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0
 

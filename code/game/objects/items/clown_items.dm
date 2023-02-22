@@ -140,7 +140,7 @@
 		to_chat(user, span_warning("You need to take that [target.name] off before cleaning it!"))
 	else if(istype(target, /obj/effect/decal/cleanable))
 		user.visible_message(span_notice("[user] begins to scrub \the [target.name] out with [src]."), span_warning("You begin to scrub \the [target.name] out with [src]..."))
-		if(do_after(user, clean_speedies, target = target))
+		if(do_after(user, target, clean_speedies))
 			to_chat(user, span_notice("You scrub \the [target.name] out."))
 			var/obj/effect/decal/cleanable/cleanies = target
 			user.mind?.adjust_experience(/datum/skill/cleaning, max(round(cleanies.beauty/CLEAN_SKILL_BEAUTY_ADJUSTMENT),0)) //again, intentional that this does NOT round but mops do.
@@ -157,7 +157,7 @@
 		return
 	else if(istype(target, /obj/structure/window))
 		user.visible_message(span_notice("[user] begins to clean \the [target.name] with [src]..."), span_notice("You begin to clean \the [target.name] with [src]..."))
-		if(do_after(user, clean_speedies, target = target))
+		if(do_after(user, target, clean_speedies))
 			to_chat(user, span_notice("You clean \the [target.name]."))
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			target.set_opacity(initial(target.opacity))
@@ -171,7 +171,7 @@
 			decreaseUses(user)
 	else
 		user.visible_message(span_notice("[user] begins to clean \the [target.name] with [src]..."), span_notice("You begin to clean \the [target.name] with [src]..."))
-		if(do_after(user, clean_speedies, target = target))
+		if(do_after(user, target, clean_speedies))
 			to_chat(user, span_notice("You clean \the [target.name]."))
 			if(user && isturf(target))
 				for(var/obj/effect/decal/cleanable/cleanable_decal in target)

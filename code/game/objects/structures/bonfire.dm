@@ -87,7 +87,7 @@
 	if(burning)
 		to_chat(user, span_warning("You need to extinguish [src] before removing the logs!"))
 		return
-	if(!has_buckled_mobs() && do_after(user, 50, target = src))
+	if(!has_buckled_mobs() && do_after(user, src, 5 SECONDS))
 		for(var/obj/item/grown/log/bonfire_log in contents)
 			bonfire_log.forceMove(drop_location())
 			bonfire_log.pixel_x += rand(1,4)
@@ -100,10 +100,9 @@
 /obj/structure/bonfire/proc/check_oxygen()
 	if(isopenturf(loc))
 		var/turf/open/bonfire_turf = loc
-		var/datum/gas_mixture/local_gas = bonfire_turf.return_air()
-		if(local_gas)
-			if(local_gas.hasGas(GAS_OXYGEN, 5))
-				return TRUE
+		var/datum/gas_mixture/local_gas = bonfire_turf.unsafe_return_air()
+		if(local_gas.hasGas(GAS_OXYGEN, 5))
+			return TRUE
 	return FALSE
 
 /obj/structure/bonfire/proc/start_burning()

@@ -127,7 +127,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/claymore/highlander/process()
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		loc.plane = GAME_PLANE_UPPER_FOV_HIDDEN //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
+		loc.layer = ABOVE_ALL_MOB_LAYER //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
 		ADD_TRAIT(H, TRAIT_NOBLEED, HIGHLANDER_TRAIT) //AND WE WON'T BLEED OUT LIKE COWARDS
 	else
 		if(!(flags_1 & ADMIN_SPAWNED_1))
@@ -242,7 +242,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/claymore/highlander/robot/process()
-	loc.plane = GAME_PLANE_UPPER_FOV_HIDDEN
+	loc.layer = ABOVE_ALL_MOB_LAYER
 
 /obj/item/katana
 	name = "katana"
@@ -305,7 +305,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(istype(attacking_item, /obj/item/shard))
 		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/spear
 		user.balloon_alert(user, "crafting spear...")
-		if(do_after(user, initial(recipe_to_use.time), src)) // we do initial work here to get the correct timer
+		if(do_after(user, src, initial(recipe_to_use.time))) // we do initial work here to get the correct timer
 			var/obj/item/spear/crafted_spear = new /obj/item/spear()
 
 			remove_item_from_storage(user)
@@ -321,7 +321,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(istype(attacking_item, /obj/item/assembly/igniter) && !(HAS_TRAIT(attacking_item, TRAIT_NODROP)))
 		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/stunprod
 		user.balloon_alert(user, "crafting cattleprod...")
-		if(do_after(user, initial(recipe_to_use.time), src))
+		if(do_after(user, src, initial(recipe_to_use.time)))
 			var/obj/item/melee/baton/security/cattleprod/prod = new
 
 			remove_item_from_storage(user)
@@ -642,7 +642,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 12
-	wound_bonus = -10
 	throwforce = 12
 	attack_verb_continuous = list("beats", "smacks")
 	attack_verb_simple = list("beat", "smack")
@@ -679,7 +678,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return
 	to_chat(user, span_warning("You begin gathering strength..."))
 	playsound(get_turf(src), 'sound/magic/lightning_chargeup.ogg', 65, TRUE)
-	if(do_after(user, 90, target = src))
+	if(do_after(user, src, 9 SECONDS))
 		to_chat(user, span_userdanger("You gather power! Time for a home run!"))
 		homerun_ready = 1
 	..()
@@ -839,8 +838,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	force = 10
-	wound_bonus = 25
-	bare_wound_bonus = 50
 	throwforce = 25
 	throw_speed = 4
 	embedding = list("embed_chance" = 100)
@@ -934,7 +931,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	playsound(src, 'sound/weapons/zapbang.ogg', 50, vary = TRUE)
 	if(isliving(target))
 		var/mob/living/living_target = target
-		living_target.apply_damage(force*damage_mod, BRUTE, sharpness = SHARP_EDGED, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, def_zone = user.zone_selected)
+		living_target.apply_damage(force*damage_mod, BRUTE, sharpness = SHARP_EDGED, def_zone = user.zone_selected)
 		log_combat(user, living_target, "slashed", src)
 		if(living_target.stat == DEAD && prob(force*damage_mod*0.5))
 			living_target.visible_message(span_danger("[living_target] explodes in a shower of gore!"), blind_message = span_hear("You hear organic matter ripping and tearing!"))
@@ -954,7 +951,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	alpha = 150
 	duration = 0.5 SECONDS
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 
 /obj/effect/temp_visual/slash/Initialize(mapload, atom/target, x_slashed, y_slashed, slash_color)
 	. = ..()
@@ -977,8 +973,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	desc = "A blade that was mastercrafted by a legendary blacksmith. Its' enchantments let it slash through anything."
 	force = 8
 	throwforce = 20
-	wound_bonus = 20
-	bare_wound_bonus = 25
 
 /obj/item/highfrequencyblade/wizard/attack_self(mob/user, modifiers)
 	if(!IS_WIZARD(user))

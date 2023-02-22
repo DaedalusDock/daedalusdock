@@ -62,11 +62,10 @@
 		logging_data = "[time] <B>:</B> [usr.key] used [computer] @ location ([T.x],[T.y],[T.z]) <B>:</B> [format_frequency(signal_frequency)]/[signal_code]"
 		GLOB.lastsignalers.Add(logging_data)
 
-	var/datum/signal/signal = new(list("code" = signal_code), logging_data = logging_data)
-	radio_connection.post_signal(computer, signal)
+	var/datum/signal/signal = new(computer, list("code" = signal_code), logging_data = logging_data)
+	radio_connection.post_signal(signal, RADIO_SIGNALER)
 
 /datum/computer_file/program/signal_commander/proc/set_frequency(new_frequency)
-	SSradio.remove_object(computer, signal_frequency)
 	signal_frequency = new_frequency
-	radio_connection = SSradio.add_object(computer, signal_frequency, RADIO_SIGNALER)
+	radio_connection = SSpackets.return_frequency(signal_frequency)
 	return

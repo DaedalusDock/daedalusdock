@@ -5,7 +5,6 @@
 	icon_state = "tube"
 	desc = "A lighting fixture."
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	max_integrity = 100
 	use_power = ACTIVE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.02
@@ -96,6 +95,7 @@
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/light/LateInitialize()
@@ -103,13 +103,15 @@
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
-			if(prob(2))
+			if(prob(0.5))
 				break_light_tube(TRUE)
 		if("bulb")
-			if(prob(5))
+			if(prob(1))
 				break_light_tube(TRUE)
+	#endif
 	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
 
 /obj/machinery/light/Destroy()
@@ -118,6 +120,7 @@
 		LAZYREMOVE(my_area.lights, src)
 	my_area = null
 	QDEL_NULL(cell)
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/light/update_icon_state()
@@ -266,7 +269,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, 2 SECONDS, src))
+		if(do_after(user, src, 2 SECONDS))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -484,7 +487,7 @@
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))
 			stomach.drain_time = world.time + LIGHT_DRAIN_TIME
-			while(do_after(user, LIGHT_DRAIN_TIME, target = src))
+			while(do_after(user, src, LIGHT_DRAIN_TIME))
 				stomach.drain_time = world.time + LIGHT_DRAIN_TIME
 				if(istype(stomach))
 					to_chat(electrician, span_notice("You receive some charge from the [fitting]."))
@@ -510,7 +513,7 @@
 			electrician.update_damage_overlays()
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
-			if(!do_after(user, 5 SECONDS, target = src))
+			if(!do_after(user, src, 5 SECONDS))
 				return
 			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
 				electrician.update_damage_overlays()
@@ -521,6 +524,7 @@
 			return
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
+	return TRUE
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
 	var/obj/item/light/light_object = new light_type()

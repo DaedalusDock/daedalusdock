@@ -15,8 +15,8 @@
 	var/list/turfs_that_boost_us
 	/// A list of all shields surrounding us while drawing certain runes (Nar'sie).
 	var/list/obj/structure/emergency_shield/cult/narsie/shields
-	/// An item action associated with our parent, to quick-draw runes.
-	var/datum/action/item_action/linked_action
+	/// Weakref to an action added to our parent item that allows for quick drawing runes
+	var/datum/weakref/linked_action_ref
 
 /datum/component/cult_ritual_item/Initialize(
 	examine_message,
@@ -35,12 +35,13 @@
 		src.turfs_that_boost_us = list(turfs_that_boost_us)
 
 	if(ispath(action))
-		linked_action = new action(parent)
+		var/obj/item/item_parent = parent
+		var/datum/action/added_action = item_parent.add_item_action(action)
+		linked_action_ref = WEAKREF(added_action)
 
 /datum/component/cult_ritual_item/Destroy(force, silent)
 	cleanup_shields()
-	if(linked_action)
-		QDEL_NULL(linked_action)
+	QDEL_NULL(linked_action_ref)
 	return ..()
 
 /datum/component/cult_ritual_item/RegisterWithParent()
@@ -210,7 +211,7 @@
 			return
 
 	SEND_SOUND(cultist, 'sound/items/sheath.ogg')
-	if(!do_after(cultist, rune.erase_time, target = rune))
+	if(!do_after(cultist, rune, rune.erase_time))
 		return
 
 	if(!can_scrape_rune(rune, cultist))
@@ -303,14 +304,14 @@
 		)
 
 	if(cultist.blood_volume)
-		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), wound_bonus = CANT_WOUND) // *cuts arm* *bone explodes* ever have one of those days?
+		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)) // *cuts arm* *bone explodes* ever have one of those days?
 
 	var/scribe_mod = initial(rune_to_scribe.scribe_delay)
 	if(!initial(rune_to_scribe.no_scribe_boost) && (our_turf.type in turfs_that_boost_us))
 		scribe_mod *= 0.5
 
 	SEND_SOUND(cultist, sound('sound/weapons/slice.ogg', 0, 1, 10))
-	if(!do_after(cultist, scribe_mod, target = get_turf(cultist), timed_action_flags = IGNORE_SLOWDOWNS))
+	if(!do_after(cultist, get_turf(cultist), scribe_mod, timed_action_flags = IGNORE_SLOWDOWNS))
 		cleanup_shields()
 		return FALSE
 	if(!can_scribe_rune(tool, cultist))

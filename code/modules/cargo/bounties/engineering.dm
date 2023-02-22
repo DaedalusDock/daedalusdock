@@ -10,7 +10,7 @@
 	if(!..())
 		return FALSE
 	var/obj/item/tank/T = O
-	var/datum/gas_mixture/our_mix = T.return_air()
+	var/datum/gas_mixture/our_mix = T.unsafe_return_air()
 	if(!our_mix.getGroupGas(gas_type))
 		return FALSE
 	return our_mix.getGroupGas(gas_type) >= moles_required

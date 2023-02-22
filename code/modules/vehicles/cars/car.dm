@@ -34,7 +34,7 @@
 		mob_exit(M, silent)
 		return TRUE
 	to_chat(user, span_notice("You push against the back of \the [src]'s trunk to try and get out."))
-	if(!do_after(user, escape_time, target = src))
+	if(!do_after(user, src, escape_time))
 		return FALSE
 	to_chat(user,span_danger("[user] gets out of [src]."))
 	mob_exit(M, silent)
@@ -45,7 +45,7 @@
 	if(!(car_traits & CAN_KIDNAP))
 		return
 	to_chat(user, span_notice("You start opening [src]'s trunk."))
-	if(!do_after(user, 30))
+	if(!do_after(user, time = 3 SECONDS))
 		return
 	if(return_amount_of_controllers_with_flag(VEHICLE_CONTROL_KIDNAPPED))
 		to_chat(user, span_notice("The people stuck in [src]'s trunk all come tumbling out."))
@@ -58,7 +58,7 @@
 	if(occupant_amount() >= max_occupants)
 		return FALSE
 	var/atom/old_loc = loc
-	if(do_mob(forcer, kidnapped, get_enter_delay(kidnapped), extra_checks=CALLBACK(src, /obj/vehicle/sealed/car.proc/is_car_stationary, old_loc)))
+	if(do_after(forcer, kidnapped, get_enter_delay(kidnapped), extra_checks=CALLBACK(src, /obj/vehicle/sealed/car.proc/is_car_stationary, old_loc)))
 		mob_forced_enter(kidnapped, silent)
 		return TRUE
 	return FALSE

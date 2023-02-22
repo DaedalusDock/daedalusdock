@@ -228,7 +228,9 @@
 		speed_round = TRUE
 
 	popcount = gather_roundend_feedback()
-	SScredits.compile_credits() //Must always come after popcount is set
+	INVOKE_ASYNC(SScredits, /datum/controller/subsystem/credits/proc/draft) //Must always come after popcount is set
+	for(var/client/C in GLOB.clients)
+		C.playcreditsmusic(50)
 
 	CHECK_TICK
 
@@ -356,7 +358,7 @@
 			//ignore this comment, it fixes the broken sytax parsing caused by the " above
 			else
 				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
-	if(istype(SSticker.mode, /datum/game_mode/dynamic))
+	if(IS_DYNAMIC_GAME_MODE)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		parts += "[FOURSPACES]Threat level: [mode.threat_level]"
 		parts += "[FOURSPACES]Threat left: [mode.mid_round_budget]"
@@ -665,7 +667,7 @@
 	if(owner && GLOB.common_report && SSticker.current_state == GAME_STATE_FINISHED)
 		SSticker.show_roundend_report(owner.client)
 
-/datum/action/report/IsAvailable()
+/datum/action/report/IsAvailable(feedback = FALSE)
 	return 1
 
 /datum/action/report/Topic(href,href_list)

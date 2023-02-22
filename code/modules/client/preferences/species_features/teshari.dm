@@ -82,6 +82,11 @@
 
 	return values
 
+/datum/preference/choiced/teshari_ears/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
+	return data
+
 /datum/preference/choiced/teshari_ears/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	target.dna.features["teshari_ears"] = value
 

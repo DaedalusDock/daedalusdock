@@ -10,7 +10,7 @@
 	var/obscured = check_obscured_slots()
 
 	if (handcuffed)
-		. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!")
+		. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed]!")
 	if (head)
 		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head. "
 	if(wear_mask && !(obscured & ITEM_SLOT_MASK))
@@ -35,8 +35,7 @@
 	var/list/msg = list("<span class='warning'>")
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
 	var/list/disabled = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(BP.bodypart_disabled)
 			disabled += BP
 		missing -= BP.body_zone
@@ -45,12 +44,10 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [BP.name]!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [BP.name]!</B>\n"
-		for(var/i in BP.wounds)
-			var/datum/wound/W = i
-			msg += "[W.get_examine_description(user)]\n"
 
-	for(var/X in disabled)
-		var/obj/item/bodypart/BP = X
+		msg += BP.mob_examine()
+
+	for(var/obj/item/bodypart/BP as anything in disabled)
 		var/damage_text
 		if(!(BP.get_damage(include_stamina = FALSE) >= BP.max_damage)) //Stamina is disabling the limb
 			damage_text = "limp and lifeless"
@@ -104,22 +101,6 @@
 	if(pulledby?.grab_state)
 		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
 
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-
 	msg += "</span>"
 
 	. += msg.Join("")
@@ -165,17 +146,5 @@
 			continue
 		if(part.limb_id != (dna.species.examine_limb_id ? dna.species.examine_limb_id : dna.species.id))
 			. += "[span_info("[p_they(TRUE)] [p_have()] \an [part.name].")]"
-
-	var/list/visible_scars
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			LAZYADD(visible_scars, S)
-
-	for(var/i in visible_scars)
-		var/datum/scar/S = i
-		var/scar_text = S.get_examine_description(user)
-		if(scar_text)
-			. += "[scar_text]"
 
 	return .

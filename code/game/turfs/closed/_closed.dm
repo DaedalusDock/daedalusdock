@@ -194,7 +194,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	color = "#5d3369"
 	opacity = FALSE
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_SHUTTLE_PARTS, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM)
+	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_SHUTTLE_PARTS)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM)
 
 /turf/closed/indestructible/opsglass/Initialize(mapload, inherited_virtual_z)

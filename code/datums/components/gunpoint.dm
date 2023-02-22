@@ -4,8 +4,6 @@
 #define GUNPOINT_DELAY_STAGE_2 2.5 SECONDS
 /// How long it takes from stage 2 starting to move up to stage 3
 #define GUNPOINT_DELAY_STAGE_3 7.5 SECONDS
-/// If the projectile doesn't have a wound_bonus of CANT_WOUND, we add (this * the stage mult) to their wound_bonus and bare_wound_bonus upon triggering
-#define GUNPOINT_BASE_WOUND_BONUS 5
 /// How much the damage and wound bonus mod is multiplied when you're on stage 1
 #define GUNPOINT_MULT_STAGE_1 1
 /// As above, for stage 2
@@ -141,9 +139,6 @@
 
 	if(weapon.chambered && weapon.chambered.loaded_projectile)
 		weapon.chambered.loaded_projectile.damage *= damage_mult
-		if(weapon.chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			weapon.chambered.loaded_projectile.wound_bonus += damage_mult * GUNPOINT_BASE_WOUND_BONUS
-			weapon.chambered.loaded_projectile.bare_wound_bonus += damage_mult * GUNPOINT_BASE_WOUND_BONUS
 
 	if(weapon.check_botched(shooter))
 		return
@@ -151,9 +146,6 @@
 	var/fired = weapon.process_fire(target, shooter)
 	if(!fired && weapon.chambered?.loaded_projectile)
 		weapon.chambered.loaded_projectile.damage /= damage_mult
-		if(weapon.chambered.loaded_projectile.wound_bonus != CANT_WOUND)
-			weapon.chambered.loaded_projectile.wound_bonus -= damage_mult * GUNPOINT_BASE_WOUND_BONUS
-			weapon.chambered.loaded_projectile.bare_wound_bonus -= damage_mult * GUNPOINT_BASE_WOUND_BONUS
 
 	qdel(src)
 
@@ -192,7 +184,6 @@
 #undef GUNPOINT_SHOOTER_STRAY_RANGE
 #undef GUNPOINT_DELAY_STAGE_2
 #undef GUNPOINT_DELAY_STAGE_3
-#undef GUNPOINT_BASE_WOUND_BONUS
 #undef GUNPOINT_MULT_STAGE_1
 #undef GUNPOINT_MULT_STAGE_2
 #undef GUNPOINT_MULT_STAGE_3

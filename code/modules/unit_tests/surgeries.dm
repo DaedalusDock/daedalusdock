@@ -62,19 +62,19 @@
 	var/obj/item/scalpel/scalpel = allocate(/obj/item/scalpel)
 
 	var/datum/surgery_step/incise/surgery_step = new
-	var/datum/surgery/organ_manipulation/surgery_for_zero = new
+	var/datum/surgery/organ_manipulation/surgery_for_zero = new(patient_zero, BODY_ZONE_CHEST, patient_zero.get_bodypart(BODY_ZONE_CHEST))
 
-	INVOKE_ASYNC(surgery_step, /datum/surgery_step/proc/initiate, user, patient_zero, BODY_ZONE_CHEST, scalpel, surgery_for_zero)
+	INVOKE_ASYNC(surgery_step, /datum/surgery_step/proc/try_op, user, patient_zero, BODY_ZONE_CHEST, scalpel, surgery_for_zero)
 	TEST_ASSERT(surgery_for_zero.step_in_progress, "Surgery on patient zero was not initiated")
 
-	var/datum/surgery/organ_manipulation/surgery_for_one = new
+	var/datum/surgery/organ_manipulation/surgery_for_one = new(patient_one, BODY_ZONE_CHEST, patient_one.get_bodypart(BODY_ZONE_CHEST))
 
 	// Without waiting for the incision to complete, try to start a new surgery
 	TEST_ASSERT(!surgery_step.initiate(user, patient_one, BODY_ZONE_CHEST, scalpel, surgery_for_one), "Was allowed to start a second surgery without the rod of asclepius")
 	TEST_ASSERT(!surgery_for_one.step_in_progress, "Surgery for patient one is somehow in progress, despite not initiating")
 
 	user.apply_status_effect(/datum/status_effect/hippocratic_oath)
-	INVOKE_ASYNC(surgery_step, /datum/surgery_step/proc/initiate, user, patient_one, BODY_ZONE_CHEST, scalpel, surgery_for_one)
+	INVOKE_ASYNC(surgery_step, /datum/surgery_step/proc/try_op, user, patient_one, BODY_ZONE_CHEST, scalpel, surgery_for_one)
 	TEST_ASSERT(surgery_for_one.step_in_progress, "Surgery on patient one was not initiated, despite having rod of asclepius")
 
 /// Ensures that the tend wounds surgery can be started

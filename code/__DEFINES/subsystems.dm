@@ -119,6 +119,7 @@
 #define INIT_ORDER_BLACKBOX 94
 #define INIT_ORDER_SERVER_MAINT 93
 #define INIT_ORDER_INPUT 85
+#define INIT_ORDER_MODMANAGER 84
 #define INIT_ORDER_SOUNDS 83
 #define INIT_ORDER_INSTRUMENTS 82
 #define INIT_ORDER_GREYSCALE 81
@@ -151,12 +152,12 @@
 #define INIT_ORDER_SKILLS 15
 #define INIT_ORDER_TIMER 1
 #define INIT_ORDER_DEFAULT 0
-//#define INIT_ORDER_AIR -1
 #define INIT_ORDER_PERSISTENCE -2
 #define INIT_ORDER_PERSISTENT_PAINTINGS -3 // Assets relies on this
 #define INIT_ORDER_ASSETS -4
 #define INIT_ORDER_ICON_SMOOTHING -5
 #define INIT_ORDER_OVERLAY -6
+#define INIT_ORDER_CODEX -7
 #define INIT_ORDER_XKEYSCORE -10
 #define INIT_ORDER_STICKY_BAN -10
 #define INIT_ORDER_LIGHTING -20
@@ -166,7 +167,9 @@
 #define INIT_ORDER_DECAY -61
 #define INIT_ORDER_EXPLOSIONS -69
 #define INIT_ORDER_AIR -70
-#define INIT_ORDER_STATPANELS -98
+#define INIT_ORDER_AO -71
+#define INIT_ORDER_STATPANELS -97
+#define INIT_ORDER_BAN_CACHE -98
 #define INIT_ORDER_INIT_PROFILER -99 //Near the end, logs the costs of initialize
 #define INIT_ORDER_CHAT -100 //Should be last to ensure chat remains smooth during init.
 
@@ -198,10 +201,12 @@
 #define FIRE_PRIORITY_AIRMACHINES 45
 #define FIRE_PRIORITY_DEFAULT 50
 #define FIRE_PRIORITY_PARALLAX 65
+#define FIRE_PRIORITY_AIR 70
 #define FIRE_PRIORITY_INSTRUMENTS 80
 #define FIRE_PRIORITY_AIRFLOW 85
-#define FIRE_PRIORITY_AIR 90
+#define FIRE_PRIORITY_PACKETS 95
 #define FIRE_PRIORITY_MOBS 100
+#define FIRE_PRIORITY_ASSETS 105
 #define FIRE_PRIORITY_TGUI 110
 #define FIRE_PRIORITY_TICKER 200
 #define FIRE_PRIORITY_STATPANEL 390
@@ -240,28 +245,22 @@
 
 //! ## Overlays subsystem
 
-///Compile all the overlays for an atom from the cache lists
-// |= on overlays is not actually guaranteed to not add same appearances but we're optimistically using it anyway.
-#define COMPILE_OVERLAYS(A)\
-	do {\
-		var/list/ad = A.add_overlays;\
-		var/list/rm = A.remove_overlays;\
-		if(LAZYLEN(rm)){\
-			A.overlays -= rm;\
-			rm.Cut();\
-		}\
-		if(LAZYLEN(ad)){\
-			A.overlays |= ad;\
-			ad.Cut();\
-		}\
-		for(var/I in A.alternate_appearances){\
-			var/datum/atom_hud/alternate_appearance/AA = A.alternate_appearances[I];\
+#define POST_OVERLAY_CHANGE(changed_on) \
+	if(length(changed_on.overlays) >= MAX_ATOM_OVERLAYS) { \
+		var/text_lays = overlays2text(changed_on.overlays); \
+		stack_trace("Too many overlays on [changed_on.type] - [length(changed_on.overlays)], refusing to update and cutting.\
+			\n What follows is a printout of all existing overlays at the time of the overflow \n[text_lays]"); \
+		changed_on.overlays.Cut(); \
+		changed_on.add_overlay(mutable_appearance('icons/testing/greyscale_error.dmi')); \
+	} \
+	if(alternate_appearances) { \
+		for(var/I in changed_on.alternate_appearances){\
+			var/datum/atom_hud/alternate_appearance/AA = changed_on.alternate_appearances[I];\
 			if(AA.transfer_overlays){\
-				AA.copy_overlays(A, TRUE);\
+				AA.copy_overlays(changed_on, TRUE);\
 			}\
-		}\
-		A.flags_1 &= ~OVERLAY_QUEUED_1;\
-	} while (FALSE)
+		} \
+	}
 
 /**
 	Create a new timer and add it to the queue.
@@ -279,6 +278,11 @@
 #define SSZAS_HOTSPOTS 5
 #define SSZAS_ZONES 6
 #define SSZAS_ATOMS 7
+
+#define SSPACKETS_POWERNETS 1
+#define SSPACKETS_RADIOS 2
+#define SSPACKETS_TABLETS 3
+#define SSPACKETS_SUBSPACE_VOCAL 4
 
 //Air Machine subsystem subtasks
 #define SSAIRMACH_PIPENETS 1

@@ -65,7 +65,7 @@
 				to_chat(C, span_userdanger("You feel someone grab your wrists, the cold metal of [name] starting to dig into your skin!"))
 			playsound(loc, cuffsound, 30, TRUE, -2)
 			log_combat(user, C, "attempted to handcuff")
-			if(do_mob(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS) && C.canBeHandcuffed())
+			if(do_after(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS) && C.canBeHandcuffed())
 				if(iscyborg(user))
 					apply_cuffs(C, user, TRUE)
 				else
@@ -241,7 +241,7 @@
 			to_chat(user, span_warning("You need at least six iron sheets to make good enough weights!"))
 			return
 		to_chat(user, span_notice("You begin to apply [I] to [src]..."))
-		if(do_after(user, 35, target = src))
+		if(do_after(user, src, 3.5 SECONDS))
 			if(M.get_amount() < 6 || !M)
 				return
 			var/obj/item/restraints/legcuffs/bola/S = new /obj/item/restraints/legcuffs/bola
@@ -296,6 +296,18 @@
 	desc = "A pair of broken fake zipties."
 	icon_state = "cuff_used"
 	inhand_icon_state = "cuff"
+
+/**
+ * # Tape handcuffs
+ *
+ * Handcuffs applied when restraining someone with tape, easier to escape from than zipties and single use.
+ */
+/obj/item/restraints/handcuffs/tape
+	name = "length of tape"
+	desc = "Seems you are in a sticky situation."
+	icon_state = "handcuffTape"
+	breakouttime = 15 SECONDS
+	item_flags = DROPDEL
 
 /**
  * # Generic leg cuffs

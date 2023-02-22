@@ -9,6 +9,12 @@
 
 /obj/structure/spider/Initialize(mapload)
 	. = ..()
+	become_atmos_sensitive()
+
+/obj/structure/spider/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
+
 
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
@@ -22,9 +28,6 @@
 			if(BRUTE)
 				damage_amount *= 0.25
 	. = ..()
-
-/obj/structure/spider/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 300) ? TRUE : FALSE
 
 /obj/structure/spider/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 300)
@@ -44,7 +47,7 @@
 	if(!HAS_TRAIT(user,TRAIT_WEB_WEAVER))
 		return
 	user.visible_message(span_notice("[user] begins weaving [src] into cloth."), span_notice("You begin weaving [src] into cloth."))
-	if(!do_after(user, 2 SECONDS))
+	if(!do_after(user, time = 2 SECONDS))
 		return
 	qdel(src)
 	var/obj/item/stack/sheet/cloth/woven_cloth = new /obj/item/stack/sheet/cloth
@@ -242,7 +245,7 @@
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	to_chat(user, span_notice("You struggle against the tight bonds... (This will take about [DisplayTimeText(breakout_time)].)"))
 	visible_message(span_notice("You see something struggling and writhing in \the [src]!"))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src)
 			return
 		qdel(src)

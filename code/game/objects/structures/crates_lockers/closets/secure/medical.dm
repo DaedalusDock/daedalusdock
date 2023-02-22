@@ -67,7 +67,7 @@
 	new /obj/item/clothing/glasses/blindfold(src)
 
 /obj/structure/closet/secure_closet/chief_medical
-	name = "\proper chief medical officer's locker"
+	name = "\proper medical director's locker"
 	req_access = list(ACCESS_CMO)
 	icon_state = "cmo"
 
@@ -93,6 +93,9 @@
 	new /obj/item/circuitboard/machine/techfab/department/medical(src)
 	new /obj/item/storage/photo_album/cmo(src)
 	new /obj/item/storage/lockbox/medal/med(src)
+	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
+	new /obj/item/ammo_box/magazine/tranq_rifle(src)
+	new /obj/item/ammo_box/magazine/tranq_rifle/mutadone(src)
 
 
 /obj/structure/closet/secure_closet/animal

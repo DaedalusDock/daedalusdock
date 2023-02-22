@@ -8,11 +8,6 @@
 	var/damtype = BRUTE
 	var/force = 0
 
-	/// How good a given object is at causing wounds on carbons. Higher values equal better shots at creating serious wounds.
-	var/wound_bonus = 0
-	/// If this attacks a human with no wound armor on the affected body part, add this to the wound mod. Some attacks may be significantly worse at wounding if there's even a slight layer of armor to absorb some of it vs bare flesh
-	var/bare_wound_bonus = 0
-
 	var/current_skin //Has the item been reskinned?
 	var/list/unique_reskin //List of options to reskin.
 
@@ -113,7 +108,7 @@
 	if(breath_request>0)
 		var/datum/gas_mixture/environment = return_air()
 		var/breath_percentage = BREATH_VOLUME / environment.get_volume()
-		return remove_air(environment.get_moles() * breath_percentage)
+		return remove_air(environment.total_moles * breath_percentage)
 	else
 		return null
 
@@ -359,15 +354,15 @@
 		. += custom_fire_overlay ? custom_fire_overlay : GLOB.fire_overlay
 
 /// Handles exposing an object to reagents.
-/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_OBJ, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_OBJ, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
-		. |= R.expose_obj(src, reagents[R])
+		. |= R.expose_obj(src, reagents[R], exposed_temperature)
 
 ///attempt to freeze this obj if possible. returns TRUE if it succeeded, FALSE otherwise.
 /obj/proc/freeze()

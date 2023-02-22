@@ -118,8 +118,6 @@
 
 /area/shuttle/arrival/on_joining_game(mob/living/boarder)
 	if(SSshuttle.arrivals?.mode == SHUTTLE_CALL)
-		var/atom/movable/screen/splash/Spl = new(null, boarder.client, TRUE)
-		Spl.Fade(TRUE)
 		boarder.playsound_local(get_turf(boarder), 'sound/voice/ApproachingDaedalus.ogg', 25)
 	boarder.update_parallax_teleport()
 
@@ -245,7 +243,7 @@
 
 /obj/effect/forcefield/arena_shuttle
 	name = "portal"
-	timeleft = 0
+	initial_duration = 0
 	var/list/warp_points = list()
 
 /obj/effect/forcefield/arena_shuttle/Initialize(mapload)
@@ -282,7 +280,7 @@
 
 /obj/effect/forcefield/arena_shuttle_entrance
 	name = "portal"
-	timeleft = 0
+	initial_duration = 0
 	var/list/warp_points = list()
 
 /obj/effect/forcefield/arena_shuttle_entrance/Bumped(atom/movable/AM)

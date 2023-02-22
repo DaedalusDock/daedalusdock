@@ -45,7 +45,7 @@
 
 	if(!owner)
 		return
-	owner.update_action_buttons_icon()
+	owner?.update_mob_action_buttons()
 	to_chat(owner, span_notice("[src] now has [current_charges]/[max_charges] charges."))
 
 /obj/item/hierophant_club
@@ -131,12 +131,12 @@
 		if(isturf(user.loc))
 			user.visible_message(span_hierophant_warning("[user] starts fiddling with [src]'s pommel..."), \
 			span_notice("You start detaching the hierophant beacon..."))
-			if(do_after(user, 50, target = user) && !beacon)
+			if(do_after(user, user, 50) && !beacon)
 				var/turf/T = get_turf(user)
 				playsound(T,'sound/magic/blind.ogg', 200, TRUE, -4)
 				new /obj/effect/temp_visual/hierophant/telegraph/teleport(T, user)
 				beacon = new/obj/effect/hierophant(T)
-				user.update_action_buttons_icon()
+				user?.update_mob_action_buttons()
 				user.visible_message(span_hierophant_warning("[user] places a strange machine beneath [user.p_their()] feet!"), \
 				"[span_hierophant("You detach the hierophant beacon, allowing you to teleport yourself and any allies to it at any time!")]\n\
 				[span_notice("You can remove the beacon to place it again by striking it with the club.")]")
@@ -154,35 +154,35 @@
 		to_chat(user, span_warning("You don't have enough space to teleport from here!"))
 		return
 	teleporting = TRUE //start channel
-	user.update_action_buttons_icon()
+	user?.update_mob_action_buttons()
 	user.visible_message(span_hierophant_warning("[user] starts to glow faintly..."))
 	beacon.icon_state = "hierophant_tele_on"
 	var/obj/effect/temp_visual/hierophant/telegraph/edge/TE1 = new /obj/effect/temp_visual/hierophant/telegraph/edge(user.loc)
 	var/obj/effect/temp_visual/hierophant/telegraph/edge/TE2 = new /obj/effect/temp_visual/hierophant/telegraph/edge(beacon.loc)
-	if(do_after(user, 40, target = user) && user && beacon)
+	if(do_after(user, user, 40) && user && beacon)
 		var/turf/T = get_turf(beacon)
 		var/turf/source = get_turf(user)
 		if(T.is_blocked_turf(TRUE))
 			teleporting = FALSE
 			to_chat(user, span_warning("The beacon is blocked by something, preventing teleportation!"))
-			user.update_action_buttons_icon()
+			user?.update_mob_action_buttons()
 			beacon.icon_state = "hierophant_tele_off"
 			return
 		new /obj/effect/temp_visual/hierophant/telegraph(T, user)
 		new /obj/effect/temp_visual/hierophant/telegraph(source, user)
 		playsound(T, 'sound/magic/wand_teleport.ogg', 200, TRUE)
 		playsound(source, 'sound/machines/doors/airlock_open.ogg', 200, TRUE)
-		if(!do_after(user, 3, target = user) || !user || !beacon || QDELETED(beacon)) //no walking away shitlord
+		if(!do_after(user, user, 3) || !user || !beacon || QDELETED(beacon)) //no walking away shitlord
 			teleporting = FALSE
 			if(user)
-				user.update_action_buttons_icon()
+				user?.update_mob_action_buttons()
 			if(beacon)
 				beacon.icon_state = "hierophant_tele_off"
 			return
 		if(T.is_blocked_turf(TRUE))
 			teleporting = FALSE
 			to_chat(user, span_warning("The beacon is blocked by something, preventing teleportation!"))
-			user.update_action_buttons_icon()
+			user?.update_mob_action_buttons()
 			beacon.icon_state = "hierophant_tele_off"
 			return
 		user.log_message("teleported self from [AREACOORD(source)] to [beacon]", LOG_GAME)
@@ -204,7 +204,7 @@
 		beacon.icon_state = "hierophant_tele_off"
 	teleporting = FALSE
 	if(user)
-		user.update_action_buttons_icon()
+		user?.update_mob_action_buttons()
 
 /obj/item/hierophant_club/proc/teleport_mob(turf/source, mob/teleporting, turf/target, mob/user)
 	var/turf/turf_to_teleport_to = get_step(target, get_dir(source, teleporting)) //get position relative to caster
@@ -369,7 +369,6 @@
 	throwforce = 17
 	armour_penetration = 50
 	sharpness = SHARP_EDGED
-	bare_wound_bonus = 10
 	layer = MOB_LAYER
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	/// Soulscythe mob in the scythe
@@ -496,7 +495,7 @@
 	if(!use_blood(10))
 		return
 	balloon_alert(soul, "you resist...")
-	if(!do_after(soul, 5 SECONDS, target = src, timed_action_flags = IGNORE_TARGET_LOC_CHANGE))
+	if(!do_after(soul, src, 5 SECONDS, timed_action_flags = IGNORE_TARGET_LOC_CHANGE))
 		balloon_alert(soul, "interrupted!")
 		return
 	balloon_alert(soul, "you break out")
@@ -543,7 +542,7 @@
 		var/mob/living/attacked_mob = attacked_atom
 		if(attacked_mob.stat != DEAD)
 			give_blood(15)
-		attacked_mob.apply_damage(damage = force * (ishostile(attacked_mob) ? 2 : 1), sharpness = SHARP_EDGED, bare_wound_bonus = 5)
+		attacked_mob.apply_damage(damage = force * (ishostile(attacked_mob) ? 2 : 1), sharpness = SHARP_EDGED)
 		to_chat(attacked_mob, span_userdanger("You're slashed by [src]!"))
 	else if((ismachinery(attacked_atom) || isstructure(attacked_atom)) && use_blood(5))
 		var/obj/attacked_obj = attacked_atom
@@ -566,7 +565,7 @@
 	charging = TRUE
 	visible_message(span_danger("[src] starts charging..."))
 	balloon_alert(soul, "you start charging...")
-	if(!do_after(soul, 2 SECONDS, target = src, timed_action_flags = IGNORE_TARGET_LOC_CHANGE))
+	if(!do_after(soul, src, 2 SECONDS, timed_action_flags = IGNORE_TARGET_LOC_CHANGE))
 		balloon_alert(soul, "interrupted!")
 		return
 	visible_message(span_danger("[src] charges at [attacked_atom]!"), span_notice("You charge at [attacked_atom]!"))
@@ -721,19 +720,20 @@
 	switch(random)
 		if(1)
 			to_chat(user, span_danger("Your appearance morphs to that of a very small humanoid ash dragon! You get to look like a freak without the cool abilities."))
-			consumer.dna.features = list("tail_lizard" = "Dark Tiger", "tail_human" = "None", "snout" = "Sharp", "horns" = "Curled", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "Long", "body_markings" = "Dark Tiger Body", "legs" = "Digitigrade Legs")
+			consumer.dna.features = list("tail_lizard" = "Dark Tiger", "tail_human" = "None", "snout" = "Sharp", "horns" = "Curled", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "Long", "legs" = "Digitigrade Legs")
 			consumer.dna.set_all_mutant_colors_of_key(MUTCOLORS_KEY_GENERIC, "#A02720")
 			consumer.eye_color_left = "#FEE5A3"
 			consumer.eye_color_right = "#FEE5A3"
 			consumer.set_species(/datum/species/lizard)
+			var/datum/appearance_modifier/lizard_chest_marks/dark/new_mod = new
+			new_mod.ApplyToMob(user)
 		if(2)
 			to_chat(user, span_danger("Your flesh begins to melt! Miraculously, you seem fine otherwise."))
 			consumer.set_species(/datum/species/skeleton)
 		if(3)
 			to_chat(user, span_danger("Power courses through you! You can now shift your form at will."))
-			if(user.mind)
-				var/obj/effect/proc_holder/spell/targeted/shapeshift/dragon/dragon_shapeshift = new
-				user.mind.AddSpell(dragon_shapeshift)
+			var/datum/action/cooldown/spell/shapeshift/dragon/dragon_shapeshift = new(user.mind || user)
+			dragon_shapeshift.Grant(user)
 		if(4)
 			to_chat(user, span_danger("You feel like you could walk straight through lava now."))
 			ADD_TRAIT(user, TRAIT_LAVA_IMMUNE, type)
@@ -782,7 +782,7 @@
 			animate(L, alpha = 255, time = create_delay)
 			user.visible_message(span_danger("[user] points [src] at [T]!"))
 			timer = world.time + create_delay + 1
-			if(do_after(user, create_delay, target = T))
+			if(do_after(user, T, create_delay))
 				var/old_name = T.name
 				if(T.TerraformTurf(turf_type, flags = CHANGETURF_INHERIT_AIR))
 					user.visible_message(span_danger("[user] turns \the [old_name] into [transform_string]!"))
@@ -946,8 +946,6 @@
 	force = 20
 	damtype = BURN
 	hitsound = 'sound/weapons/taserhit.ogg'
-	wound_bonus = -30
-	bare_wound_bonus = 20
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/max_thunder_charges = 3
 	var/thunder_charges = 3
@@ -982,7 +980,7 @@
 		balloon_alert(user, "already ending!")
 		return
 	balloon_alert(user, "you hold the staff up...")
-	if(!do_after(user, 3 SECONDS, target = src))
+	if(!do_after(user, src, 3 SECONDS))
 		balloon_alert(user, "interrupted!")
 		return
 	user.visible_message(span_warning("[user] holds [src] skywards as an orange beam travels into the sky!"), \

@@ -357,7 +357,7 @@
 			if(MT)
 				visible_message(span_danger("[src] dangerously overheats, launching a flaming fuel orb!"))
 				investigate_log("Experimentor has launched a <font color='red'>fireball</font> at [M]!", INVESTIGATE_EXPERIMENTOR)
-				var/obj/projectile/magic/aoe/fireball/FB = new /obj/projectile/magic/aoe/fireball(start)
+				var/obj/projectile/magic/fireball/FB = new /obj/projectile/magic/fireball(start)
 				FB.preparePixelProjectile(MT, start)
 				FB.fire()
 		else if(prob(EFFECT_PROB_LOW-badThingCoeff))
@@ -368,7 +368,7 @@
 		else if(prob(EFFECT_PROB_MEDIUM-badThingCoeff))
 			visible_message(span_warning("[src] malfunctions, melting [exp_on] and leaking hot air!"))
 			var/datum/gas_mixture/env = loc.return_air()
-			var/transfer_moles = 0.25 * env.get_moles()
+			var/transfer_moles = 0.25 * env.total_moles
 			var/datum/gas_mixture/removed = env.remove(transfer_moles)
 			if(removed)
 				var/heat_capacity = removed.getHeatCapacity()
@@ -376,7 +376,6 @@
 					heat_capacity = 1
 				removed.temperature = min((removed.temperature*heat_capacity + 100000)/heat_capacity, 1000)
 			env.merge(removed)
-			//air_update_turf(FALSE, FALSE)
 			investigate_log("Experimentor has released hot air.", INVESTIGATE_EXPERIMENTOR)
 			ejectItem(TRUE)
 		else if(prob(EFFECT_PROB_MEDIUM-badThingCoeff))
@@ -414,7 +413,7 @@
 		else if(prob(EFFECT_PROB_LOW-badThingCoeff))
 			visible_message(span_warning("[src] malfunctions, shattering [exp_on] and leaking cold air!"))
 			var/datum/gas_mixture/env = loc.return_air()
-			var/transfer_moles = 0.25 * env.get_moles()
+			var/transfer_moles = 0.25 * env.total_moles
 			var/datum/gas_mixture/removed = env.remove(transfer_moles)
 			if(removed)
 				var/heat_capacity = removed.getHeatCapacity()

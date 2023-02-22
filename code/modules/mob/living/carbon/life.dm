@@ -110,7 +110,7 @@
 			else if(isturf(loc)) //Breathe from loc as turf
 				var/breath_moles = 0
 				if(environment)
-					breath_moles = environment.get_moles()*BREATH_PERCENTAGE
+					breath_moles = environment.total_moles*BREATH_PERCENTAGE
 
 				breath = loc.remove_air(breath_moles)
 		else //Breathe from loc as obj again
@@ -327,12 +327,9 @@
 	if(internal)
 		if(internal.loc != src)
 			internal = null
-			update_internals_hud_icon(0)
 		else if ((!wear_mask || !(wear_mask.clothing_flags & MASKINTERNALS)) && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 			internal = null
-			update_internals_hud_icon(0)
 		else
-			update_internals_hud_icon(1)
 			. = internal.remove_air_volume(volume_needed)
 			if(!.)
 				return FALSE //to differentiate between no internals and active, but empty internals
@@ -372,12 +369,6 @@
 
 		if(stat != DEAD || D.process_dead)
 			D.stage_act(delta_time, times_fired)
-
-/mob/living/carbon/handle_wounds(delta_time, times_fired)
-	for(var/thing in all_wounds)
-		var/datum/wound/W = thing
-		if(W.processes) // meh
-			W.handle_process(delta_time, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, delta_time, times_fired)
 	if(!dna?.temporary_mutations.len)

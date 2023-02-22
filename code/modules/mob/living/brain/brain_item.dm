@@ -6,7 +6,6 @@
 	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 	organ_flags = ORGAN_VITAL
@@ -19,6 +18,8 @@
 	maxHealth = BRAIN_DAMAGE_DEATH
 	low_threshold = 45
 	high_threshold = 120
+
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
 
 	var/suicided = FALSE
 	var/mob/living/brain/brainmob = null
@@ -132,7 +133,7 @@
 			return
 
 		user.visible_message(span_notice("[user] starts to pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
-		if(!do_after(user, 6 SECONDS, src))
+		if(!do_after(user, src, 6 SECONDS))
 			to_chat(user, span_warning("You failed to pour [O] onto [src]!"))
 			return
 
@@ -145,7 +146,7 @@
 	// Cutting out skill chips.
 	if(length(skillchips) && O.get_sharpness() == SHARP_EDGED)
 		to_chat(user,span_notice("You begin to excise skillchips from [src]."))
-		if(do_after(user, 15 SECONDS, target = src))
+		if(do_after(user, src, 15 SECONDS))
 			for(var/chip in skillchips)
 				var/obj/item/skillchip/skillchip = chip
 
@@ -467,3 +468,11 @@
 		qdel(X)
 		amount_cured++
 	return amount_cured
+
+/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
+/obj/item/organ/internal/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+	if(target.body_position == LYING_DOWN && owner.usable_legs)
+		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
+		return found_bodypart || active_hand
+	return active_hand

@@ -160,7 +160,7 @@
 	var/list/present_qualities = list()
 
 	for(var/obj/item/contained_item in source.contents)
-		if(contained_item.GetComponent(/datum/component/storage))
+		if(contained_item.atom_storage)
 			for(var/obj/item/subcontained_item in contained_item.contents)
 				available_tools[subcontained_item.type] = TRUE
 				if(subcontained_item.tool_behaviour)
@@ -204,7 +204,7 @@
 					if(istype(content, R.result))
 						return ", object already present."
 			//If we're a mob we'll try a do_after; non mobs will instead instantly construct the item
-			if(ismob(a) && !do_after(a, R.time, target = a))
+			if(ismob(a) && !do_after(a, time = R.time))
 				return "."
 			contents = get_surroundings(a,R.blacklist)
 			if(!check_contents(a, R, contents))

@@ -114,7 +114,7 @@
 	icon_state = "hop"
 
 /obj/structure/statue/gold/cmo
-	name = "statue of the chief medical officer"
+	name = "statue of the medical director"
 	icon_state = "cmo"
 
 /obj/structure/statue/gold/ce
@@ -333,7 +333,7 @@ Moving interrupts
 
 	var/datum/progressbar/total_progress_bar = new(user, sculpting_time, prepared_block )
 	while(remaining_time > 0 && !interrupted)
-		if(do_after(user,sculpting_period, target = prepared_block, progress = FALSE))
+		if(do_after(user, prepared_block, sculpting_period, progress = FALSE))
 			remaining_time -= sculpting_period
 			prepared_block.set_completion((sculpting_time - remaining_time)/sculpting_time)
 			total_progress_bar.update(sculpting_time - remaining_time)
@@ -526,7 +526,7 @@ Moving interrupts
 	content_ma.pixel_y = 0
 	content_ma.alpha = 255
 
-	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, GAME_PLANE_UPPER, GAME_PLANE_FOV_HIDDEN, GAME_PLANE_UPPER, GAME_PLANE_UPPER_FOV_HIDDEN, FLOOR_PLANE)
+	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
 
 	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
 	var/list/overlays_to_remove = list()

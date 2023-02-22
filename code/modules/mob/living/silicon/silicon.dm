@@ -63,6 +63,7 @@
 	add_sensors()
 	ADD_TRAIT(src, TRAIT_ADVANCEDTOOLUSER, ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_MARTIAL_ARTS_IMMUNE, ROUNDSTART_TRAIT)
+	ADD_TRAIT(src, TRAIT_LITERATE, ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_NOFIRE_SPREAD, ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT)
 
@@ -404,9 +405,6 @@
 	if (aicamera)
 		return aicamera.selectpicture(user)
 
-/mob/living/silicon/is_literate()
-	return TRUE
-
 /mob/living/silicon/get_inactive_held_item()
 	return FALSE
 
@@ -450,7 +448,7 @@
 		create_modularInterface()
 	var/mob/living/silicon/robot/robo = modularInterface.borgo
 	if(istype(robo))
-		modularInterface.borglog += "[station_time_timestamp()] - [string]"
+		modularInterface.borglog += "[stationtime2text()] - [string]"
 	var/datum/computer_file/program/robotact/program = modularInterface.get_robotact()
 	if(program)
 		program.force_full_update()

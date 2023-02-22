@@ -102,7 +102,7 @@
 			else
 				pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
 									span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
-				if(do_after(user, 3.5 SECONDS, target = pushed_mob))
+				if(do_after(user, pushed_mob, 3.5 SECONDS))
 					tableplace(user, pushed_mob)
 				else
 					return
@@ -169,10 +169,7 @@
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.Knockdown(30)
 	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(user.zone_selected) || pushed_mob.get_bodypart(BODY_ZONE_HEAD)
-	var/extra_wound = 0
-	if(HAS_TRAIT(user, TRAIT_HULK))
-		extra_wound = 20
-	banged_limb?.receive_damage(30, wound_bonus = extra_wound)
+	banged_limb?.receive_damage(30)
 	pushed_mob.apply_damage(60, STAMINA)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
@@ -209,7 +206,7 @@
 			for(var/x in T.contents)
 				var/obj/item/item = x
 				AfterPutItemOnTable(item, user)
-			SEND_SIGNAL(I, COMSIG_TRY_STORAGE_QUICK_EMPTY, drop_location())
+			I.atom_storage.remove_all(drop_location())
 			user.visible_message(span_notice("[user] empties [I] on [src]."))
 			return
 		// If the tray IS empty, continue on (tray will be placed on the table like other items)
@@ -241,7 +238,7 @@
 				skills_space = " quickly"
 			carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 				span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
-			if(do_after(user, tableplace_delay, target = carried_mob))
+			if(do_after(user, carried_mob, tableplace_delay))
 				user.unbuckle_mob(carried_mob)
 				tableplace(user, carried_mob)
 		return TRUE
@@ -836,7 +833,7 @@
 		return
 	building = TRUE
 	to_chat(user, span_notice("You start constructing a rack..."))
-	if(do_after(user, 50, target = user, progress=TRUE))
+	if(do_after(user, user, 50, progress=TRUE))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		var/obj/structure/rack/R = new /obj/structure/rack(user.loc)

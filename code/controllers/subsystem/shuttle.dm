@@ -318,13 +318,13 @@ SUBSYSTEM_DEF(shuttle)
 		else
 			emergency.request(null, signal_origin, html_decode(emergency_reason), 0)
 
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = "update")) // Start processing shuttle-mode displays to display the timer
-	frequency.post_signal(src, status_signal)
+	var/datum/signal/status_signal = new(src, list("command" = "update")) // Start processing shuttle-mode displays to display the timer
+	frequency.post_signal(status_signal)
 
 	var/area/A = get_area(user)
 
@@ -645,7 +645,7 @@ SUBSYSTEM_DEF(shuttle)
 	if (istype(SSshuttle.shuttle_purchase_requirements_met))
 		shuttle_purchase_requirements_met = SSshuttle.shuttle_purchase_requirements_met
 
-	var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 	centcom_message = SSshuttle.centcom_message
 	order_number = SSshuttle.order_number
 	points = D.account_balance

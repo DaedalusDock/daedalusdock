@@ -398,7 +398,7 @@
 
 /obj/item/food/monkeycube/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is putting [src] in [user.p_their()] mouth! It looks like [user.p_theyre()] trying to commit suicide!"))
-	var/eating_success = do_after(user, 1 SECONDS, src)
+	var/eating_success = do_after(user, src, 1 SECONDS)
 	if(QDELETED(user)) //qdeletion: the nuclear option of self-harm
 		return SHAME
 	if(!eating_success || QDELETED(src)) //checks if src is gone or if they failed to wait for a second

@@ -6,7 +6,7 @@
 	max_occurrences = 1
 
 /datum/round_event_control/shuttle_insurance/canSpawnEvent(players)
-	if(!SSeconomy.get_dep_account(ACCOUNT_CAR))
+	if(!SSeconomy.department_accounts_by_id[ACCOUNT_CAR])
 		return FALSE //They can't pay?
 	if(SSshuttle.shuttle_purchased == SHUTTLEPURCHASE_FORCED)
 		return FALSE //don't do it if there's nothing to insure
@@ -42,7 +42,7 @@
 		priority_announce("You are definitely too late to purchase insurance, my friends. Our agents don't work on site.", ship_name)
 		return
 	if(insurance_message && insurance_message.answered == 1)
-		var/datum/bank_account/station_balance = SSeconomy.get_dep_account(ACCOUNT_CAR)
+		var/datum/bank_account/station_balance = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 		if(!station_balance?.adjust_money(-insurance_evaluation))
 			priority_announce("You didn't send us enough money for shuttle insurance. This, in the space layman's terms, is considered scamming. We're keeping your money, scammers!", ship_name)
 			return

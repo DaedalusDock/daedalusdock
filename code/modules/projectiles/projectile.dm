@@ -10,11 +10,9 @@
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	movement_type = FLYING
-	wound_bonus = CANT_WOUND // can't wound by default
 	generic_canpass = FALSE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
 	simulated = FALSE
 
 	//The sound this plays on impact.
@@ -178,8 +176,6 @@
 	var/hit_prone_targets = FALSE
 	///For what kind of brute wounds we're rolling for, if we're doing such a thing. Lasers obviously don't care since they do burn instead.
 	var/sharpness = NONE
-	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
-	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
 	var/embed_falloff_tile
 	var/static/list/projectile_connections = list(
@@ -195,9 +191,6 @@
 
 /obj/projectile/proc/Range()
 	range--
-	if(wound_bonus != CANT_WOUND)
-		wound_bonus += wound_falloff_tile
-		bare_wound_bonus = max(0, bare_wound_bonus + wound_falloff_tile)
 	if(embedding)
 		embedding["embed_chance"] += embed_falloff_tile
 	if(range <= 0 && loc)
@@ -272,7 +265,7 @@
 	var/mob/living/L = target
 
 	if(blocked != 100) // not completely blocked
-		if(damage && L.blood_volume && damage_type == BRUTE)
+		if((damage > 5) && L.blood_volume && damage_type == BRUTE && prob(10))
 			var/splatter_dir = dir
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
@@ -706,7 +699,9 @@
 	trajectory = new(starting.x, starting.y, starting.z, pixel_x, pixel_y, Angle, SSprojectiles.global_pixel_speed)
 	last_projectile_move = world.time
 	fired = TRUE
+
 	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
+
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
 	if(hitscan)
 		process_hitscan()

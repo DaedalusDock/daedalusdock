@@ -87,22 +87,22 @@
 		return
 	var/failText = span_warning("The snake seems unsatisfied with your incomplete oath and returns to its previous place on the rod, returning to its dormant, wooden state. You must stand still while completing your oath!")
 	to_chat(itemUser, span_notice("The wooden snake that was carved into the rod seems to suddenly come alive and begins to slither down your arm! The compulsion to help others grows abnormally strong..."))
-	if(do_after(itemUser, 40, target = itemUser))
+	if(do_after(itemUser, itemUser, 40))
 		itemUser.say("I swear to fulfill, to the best of my ability and judgment, this covenant:", forced = "hippocratic oath")
 	else
 		to_chat(itemUser, failText)
 		return
-	if(do_after(itemUser, 20, target = itemUser))
+	if(do_after(itemUser, itemUser, 20))
 		itemUser.say("I will apply, for the benefit of the sick, all measures that are required, avoiding those twin traps of overtreatment and therapeutic nihilism.", forced = "hippocratic oath")
 	else
 		to_chat(itemUser, failText)
 		return
-	if(do_after(itemUser, 30, target = itemUser))
+	if(do_after(itemUser, itemUser, 30))
 		itemUser.say("I will remember that I remain a member of society, with special obligations to all my fellow human beings, those sound of mind and body as well as the infirm.", forced = "hippocratic oath")
 	else
 		to_chat(itemUser, failText)
 		return
-	if(do_after(itemUser, 30, target = itemUser))
+	if(do_after(itemUser, itemUser, 30))
 		itemUser.say("If I do not violate this oath, may I enjoy life and art, respected while I live and remembered with affection thereafter. May I always act so as to preserve the finest traditions of my calling and may I long experience the joy of healing those who seek my help.", forced = "hippocratic oath")
 	else
 		to_chat(itemUser, failText)
@@ -146,7 +146,7 @@
 
 /obj/item/clothing/neck/necklace/memento_mori/proc/memento(mob/living/carbon/human/user)
 	to_chat(user, span_warning("You feel your life being drained by the pendant..."))
-	if(do_after(user, 40, target = user))
+	if(do_after(user, user, 40))
 		to_chat(user, span_notice("Your lifeforce is now linked to the pendant! You feel like removing it would kill you, and yet you instinctively know that until then, you won't die."))
 		ADD_TRAIT(user, TRAIT_NODEATH, CLOTHING_TRAIT)
 		ADD_TRAIT(user, TRAIT_NOHARDCRIT, CLOTHING_TRAIT)
@@ -257,7 +257,6 @@
 	light_outer_range = 7
 	light_flags = LIGHT_ATTACHED
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	var/sight_flags = SEE_MOBS
 	var/lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
@@ -442,20 +441,18 @@
 
 /obj/item/shared_storage/red/Initialize(mapload)
 	. = ..()
-	var/datum/component/storage/STR = AddComponent(/datum/component/storage/concrete)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
-	STR.max_combined_w_class = 15
-	STR.max_items = 21
-	new /obj/item/shared_storage/blue(drop_location(), STR)
 
-/obj/item/shared_storage/blue/Initialize(mapload, datum/component/storage/concrete/master)
+	create_storage(max_total_storage = 15, max_slots = 21)
+
+	new /obj/item/shared_storage/blue(drop_location(), src)
+
+/obj/item/shared_storage/blue/Initialize(mapload, atom/master)
 	. = ..()
 	if(!istype(master))
 		return INITIALIZE_HINT_QDEL
-	var/datum/component/storage/STR = AddComponent(/datum/component/storage, master)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
-	STR.max_combined_w_class = 15
-	STR.max_items = 21
+	create_storage(max_total_storage = 15, max_slots = 21)
+
+	atom_storage.set_real_location(master)
 
 //Book of Babel
 
@@ -706,83 +703,74 @@
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	custom_materials = null
-	var/obj/effect/proc_holder/scan/scan
+	var/datum/action/cooldown/scan/scan_ability
 
 /obj/item/clothing/glasses/godeye/Initialize(mapload)
 	. = ..()
-	scan = new(src)
+	scan_ability = new(src)
+
+/obj/item/clothing/glasses/godeye/Destroy()
+	QDEL_NULL(scan_ability)
+	return ..()
 
 /obj/item/clothing/glasses/godeye/equipped(mob/living/user, slot)
 	. = ..()
 	if(ishuman(user) && slot == ITEM_SLOT_EYES)
 		ADD_TRAIT(src, TRAIT_NODROP, EYE_OF_GOD_TRAIT)
 		pain(user)
-		user.AddAbility(scan)
+		scan_ability.Grant(user)
 
 /obj/item/clothing/glasses/godeye/dropped(mob/living/user)
 	. = ..()
 	// Behead someone, their "glasses" drop on the floor
 	// and thus, the god eye should no longer be sticky
 	REMOVE_TRAIT(src, TRAIT_NODROP, EYE_OF_GOD_TRAIT)
-	user.RemoveAbility(scan)
+	scan_ability.Remove(user)
 
 /obj/item/clothing/glasses/godeye/proc/pain(mob/living/victim)
 	to_chat(victim, span_userdanger("You experience blinding pain, as [src] burrows into your skull."))
 	victim.emote("scream")
 	victim.flash_act()
 
-/obj/effect/proc_holder/scan
+/datum/action/cooldown/scan
 	name = "Scan"
 	desc = "Scan an enemy, to get their location and stagger them, increasing their time between attacks."
-	action_background_icon_state = "bg_clock"
-	action_icon = 'icons/mob/actions/actions_items.dmi'
-	action_icon_state = "scan"
+	background_icon_state = "bg_clock"
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "scan"
+
+	click_to_activate = TRUE
+	cooldown_time = 45 SECONDS
 	ranged_mousepointer = 'icons/effects/mouse_pointers/scan_target.dmi'
-	var/cooldown_time = 45 SECONDS
-	COOLDOWN_DECLARE(scan_cooldown)
 
-/obj/effect/proc_holder/scan/on_lose(mob/living/user)
-	remove_ranged_ability()
+/datum/action/cooldown/scan/IsAvailable(feedback = FALSE)
+	return ..() && isliving(owner)
 
-/obj/effect/proc_holder/scan/Click(location, control, params)
-	. = ..()
-	if(!isliving(usr))
-		return TRUE
-	var/mob/living/user = usr
-	fire(user)
+/datum/action/cooldown/scan/Activate(atom/scanned)
+	StartCooldown(15 SECONDS)
 
-/obj/effect/proc_holder/scan/fire(mob/living/carbon/user)
-	if(active)
-		remove_ranged_ability(span_notice("Your eye relaxes."))
-	else
-		add_ranged_ability(user, span_notice("Your eye starts spinning fast. <B>Left-click a creature to scan it!</B>"), TRUE)
+	if(owner.stat != CONSCIOUS)
+		return FALSE
+	if(!isliving(scanned) || scanned == owner)
+		owner.balloon_alert(owner, "invalid scanned!")
+		return FALSE
 
-/obj/effect/proc_holder/scan/InterceptClickOn(mob/living/caller, params, atom/target)
-	. = ..()
-	if(.)
-		return
-	if(ranged_ability_user.stat)
-		remove_ranged_ability()
-		return
-	if(!COOLDOWN_FINISHED(src, scan_cooldown))
-		balloon_alert(ranged_ability_user, "not ready!")
-		return
-	if(!isliving(target) || target == ranged_ability_user)
-		balloon_alert(ranged_ability_user, "invalid target!")
-		return
-	var/mob/living/living_target = target
-	living_target.apply_status_effect(/datum/status_effect/stagger)
-	var/datum/status_effect/agent_pinpointer/scan_pinpointer = ranged_ability_user.apply_status_effect(/datum/status_effect/agent_pinpointer/scan)
-	scan_pinpointer.scan_target = living_target
-	living_target.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
-	to_chat(living_target, span_warning("You've been staggered!"))
-	living_target.add_filter("scan", 2, list("type" = "outline", "color" = COLOR_YELLOW, "size" = 1))
-	addtimer(CALLBACK(living_target, /atom/.proc/remove_filter, "scan"), 30 SECONDS)
-	ranged_ability_user.playsound_local(get_turf(ranged_ability_user), 'sound/magic/smoke.ogg', 50, TRUE)
-	balloon_alert(ranged_ability_user, "[living_target] scanned")
-	COOLDOWN_START(src, scan_cooldown, cooldown_time)
-	addtimer(CALLBACK(src, /atom/.proc/balloon_alert, ranged_ability_user, "scan recharged"), cooldown_time)
-	remove_ranged_ability()
+	var/mob/living/living_owner = owner
+	var/mob/living/living_scanned = scanned
+	living_scanned.apply_status_effect(/datum/status_effect/stagger)
+	var/datum/status_effect/agent_pinpointer/scan_pinpointer = living_owner.apply_status_effect(/datum/status_effect/agent_pinpointer/scan)
+	scan_pinpointer.scan_target = living_scanned
+
+	living_scanned.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
+	to_chat(living_scanned, span_warning("You've been staggered!"))
+	living_scanned.add_filter("scan", 2, list("type" = "outline", "color" = COLOR_YELLOW, "size" = 1))
+	addtimer(CALLBACK(living_scanned, /atom/.proc/remove_filter, "scan"), 30 SECONDS)
+
+	owner.playsound_local(get_turf(owner), 'sound/magic/smoke.ogg', 50, TRUE)
+	owner.balloon_alert(owner, "[living_scanned] scanned")
+	addtimer(CALLBACK(src, /atom/.proc/balloon_alert, owner, "scan recharged"), cooldown_time)
+
+	StartCooldown()
 	return TRUE
 
 /datum/status_effect/agent_pinpointer/scan
@@ -834,7 +822,7 @@
 		playsound(owner, 'sound/magic/demon_attack1.ogg', 50, TRUE)
 		var/obj/item/bodypart/part = owner.get_holding_bodypart_of_item(katana)
 		if(part)
-			part.receive_damage(brute = 25, wound_bonus = 10, sharpness = SHARP_EDGED)
+			part.receive_damage(brute = 25, sharpness = SHARP_EDGED)
 	katana.drew_blood = FALSE
 	katana.wash(CLEAN_TYPE_BLOOD)
 	return ..()
@@ -958,7 +946,7 @@
 	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, .proc/strike_throw_impact)
 	var/atom/throw_target = get_edge_target_turf(target, user.dir)
 	target.throw_at(throw_target, 5, 3, user, FALSE, gentle = TRUE)
-	target.apply_damage(damage = 17, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17)
 	to_chat(target, span_userdanger("You've been struck by [user]!"))
 	user.do_attack_animation(target, ATTACK_EFFECT_PUNCH)
 
@@ -988,9 +976,9 @@
 		user.do_attack_animation(turf, ATTACK_EFFECT_SLASH)
 		for(var/mob/living/additional_target in turf)
 			if(user.Adjacent(additional_target) && additional_target.density)
-				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED, bare_wound_bonus = 10)
+				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 				to_chat(additional_target, span_userdanger("You've been sliced by [user]!"))
-	target.apply_damage(damage = 5, sharpness = SHARP_EDGED, wound_bonus = 10)
+	target.apply_damage(damage = 5, sharpness = SHARP_EDGED)
 
 /obj/item/cursed_katana/proc/cloak(mob/living/target, mob/user)
 	user.alpha = 150
@@ -1016,7 +1004,7 @@
 	user.visible_message(span_warning("[user] cuts [target]'s tendons!"),
 		span_notice("You tendon cut [target]!"))
 	to_chat(target, span_userdanger("Your tendons have been cut by [user]!"))
-	target.apply_damage(damage = 15, sharpness = SHARP_EDGED, wound_bonus = 15)
+	target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 	user.do_attack_animation(target, ATTACK_EFFECT_DISARM)
 	playsound(src, 'sound/weapons/rapierhit.ogg', 50, TRUE)
 	var/datum/status_effect/stacking/saw_bleed/bloodletting/status = target.has_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting)
@@ -1030,7 +1018,7 @@
 		span_notice("You dash through [target]!"))
 	to_chat(target, span_userdanger("[user] dashes through you!"))
 	playsound(src, 'sound/magic/blink.ogg', 50, TRUE)
-	target.apply_damage(damage = 17, sharpness = SHARP_POINTY, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17, sharpness = SHARP_POINTY)
 	var/turf/dash_target = get_turf(target)
 	for(var/distance in 0 to 8)
 		var/turf/current_dash_target = dash_target
@@ -1047,7 +1035,7 @@
 	user.visible_message(span_warning("[user] shatters [src] over [target]!"),
 		span_notice("You shatter [src] over [target]!"))
 	to_chat(target, span_userdanger("[user] shatters [src] over you!"))
-	target.apply_damage(damage = ishostile(target) ? 75 : 35, wound_bonus = 20)
+	target.apply_damage(damage = ishostile(target) ? 75 : 35)
 	user.do_attack_animation(target, ATTACK_EFFECT_SMASH)
 	playsound(src, 'sound/effects/glassbr3.ogg', 100, TRUE)
 	shattered = TRUE

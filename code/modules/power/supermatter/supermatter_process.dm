@@ -118,7 +118,7 @@
 	//((((some value between 0.5 and 1 * temp - ((273.15 + 40) * some values between 1 and 10)) * some number between 0.25 and knock your socks off / 150) * 0.25
 	//Heat and mols account for each other, a lot of hot mols are more damaging then a few
 	//Mols start to have a positive effect on damage after 350
-	damage = max(damage + (max(clamp(removed.get_moles() / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
+	damage = max(damage + (max(clamp(removed.total_moles / 200, 0.5, 1) * removed.temperature - ((T0C + HEAT_PENALTY_THRESHOLD)*dynamic_heat_resistance), 0) * mole_heat_penalty / 150 ) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Power only starts affecting damage when it is above 5000
 	damage = max(damage + (max(power - POWER_PENALTY_THRESHOLD, 0)/500) * DAMAGE_INCREASE_MULTIPLIER, 0)
 	//Molar count only starts affecting damage when it is above 1800
@@ -152,7 +152,7 @@
 /obj/machinery/power/supermatter_crystal/proc/setup_lists(datum/gas_mixture/removed)
 	//calculating gas related values
 	//Wanna know a secret? See that max() to zero? it's used for error checking. If we get a mol count in the negative, we'll get a divide by zero error //Old me, you're insane
-	combined_gas = max(removed.get_moles(), 0)
+	combined_gas = max(removed.total_moles, 0)
 
 	//This is more error prevention, according to all known laws of atmos, gas_mix.remove() should never make negative mol values.
 	//But this is tg

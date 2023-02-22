@@ -97,28 +97,28 @@ Difficulty: Hard
 
 /datum/action/innate/megafauna_attack/blink
 	name = "Blink To Target"
-	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "sniper_zoom"
 	chosen_message = "<span class='colossus'>You are now blinking to your target.</span>"
 	chosen_attack_num = 1
 
 /datum/action/innate/megafauna_attack/chaser_swarm
 	name = "Chaser Swarm"
-	icon_icon = 'icons/effects/effects.dmi'
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "hierophant_squares_indefinite"
 	chosen_message = "<span class='colossus'>You are firing a chaser swarm at your target.</span>"
 	chosen_attack_num = 2
 
 /datum/action/innate/megafauna_attack/cross_blasts
 	name = "Cross Blasts"
-	icon_icon = 'icons/effects/effects.dmi'
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "hierophant_blast_indefinite"
 	chosen_message = "<span class='colossus'>You are now firing cross blasts at your target.</span>"
 	chosen_attack_num = 3
 
 /datum/action/innate/megafauna_attack/blink_spam
 	name = "Blink Chase"
-	icon_icon = 'icons/obj/lavaland/artefacts.dmi'
+	button_icon = 'icons/obj/lavaland/artefacts.dmi'
 	button_icon_state = "hierophant_club_ready_beacon"
 	chosen_message = "<span class='colossus'>You are now repeatedly blinking at your target.</span>"
 	chosen_attack_num = 4
@@ -704,7 +704,7 @@ Difficulty: Hard
 		to_chat(L, span_userdanger("You're struck by a [name]!"))
 		var/limb_to_hit = L.get_bodypart(pick(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
 		var/armor = L.run_armor_check(limb_to_hit, MELEE, "Your armor absorbs [src]!", "Your armor blocks part of [src]!", FALSE, 50, "Your armor was penetrated by [src]!")
-		L.apply_damage(damage, BURN, limb_to_hit, armor, wound_bonus=CANT_WOUND)
+		L.apply_damage(damage, BURN, limb_to_hit, armor)
 		if(ishostile(L))
 			var/mob/living/simple_animal/hostile/H = L //mobs find and damage you...
 			if(H.stat == CONSCIOUS && !H.target && H.AIStatus != AI_OFF && !H.client)
@@ -754,13 +754,13 @@ Difficulty: Hard
 		var/obj/item/hierophant_club/H = I
 		if(H.beacon == src)
 			to_chat(user, span_notice("You start removing your hierophant beacon..."))
-			if(do_after(user, 50, target = src))
+			if(do_after(user, src, 50))
 				playsound(src,'sound/magic/blind.ogg', 200, TRUE, -4)
 				new /obj/effect/temp_visual/hierophant/telegraph/teleport(get_turf(src), user)
 				to_chat(user, span_hierophant_warning("You collect [src], reattaching it to the club!"))
 				H.beacon = null
 				H.update_appearance()
-				user.update_action_buttons_icon()
+				user?.update_mob_action_buttons()
 				qdel(src)
 		else
 			to_chat(user, span_hierophant_warning("You touch the beacon with the club, but nothing happens."))

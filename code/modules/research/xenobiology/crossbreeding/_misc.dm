@@ -38,7 +38,7 @@ Slimecrossing Items
 		if(!already || already != saved_part.old_part)
 			saved_part.old_part.replace_limb(src, TRUE)
 		saved_part.old_part.heal_damage(INFINITY, INFINITY, INFINITY, null, FALSE)
-		saved_part.old_part.receive_damage(saved_part.brute_dam, saved_part.burn_dam, saved_part.stamina_dam, wound_bonus=CANT_WOUND)
+		saved_part.old_part.receive_damage(saved_part.brute_dam, saved_part.burn_dam, saved_part.stamina_dam)
 		dont_chop[zone] = TRUE
 	for(var/_part in bodyparts)
 		var/obj/item/bodypart/part = _part
@@ -136,7 +136,7 @@ Slimecrossing Items
 	icon_state = "slimebarrier_thick"
 	can_atmos_pass = CANPASS_NEVER
 	opacity = TRUE
-	timeleft = 100
+	initial_duration = 10 SECONDS
 
 //Rainbow barrier - Chilling Rainbow
 /obj/effect/forcefield/slimewall/rainbow

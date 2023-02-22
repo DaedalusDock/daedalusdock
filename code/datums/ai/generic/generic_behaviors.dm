@@ -53,7 +53,8 @@
 		for(var/obj/item/bodypart/bodypart_to_break in carbon_batman.bodyparts)
 			if(bodypart_to_break.body_zone == BODY_ZONE_HEAD)
 				continue
-			bodypart_to_break.receive_damage(brute = 15, wound_bonus = 35)
+			bodypart_to_break.receive_damage(brute = 15)
+			bodypart_to_break.break_bones()
 	else
 		batman.adjustBruteLoss(150)
 
@@ -138,7 +139,7 @@
 		span_info("[pawn] starts trying to give [held_item] to [living_target]!"),
 		span_warning("[pawn] tries to give you [held_item]!")
 	)
-	if(!do_mob(pawn, living_target, 1 SECONDS))
+	if(!do_after(pawn, living_target, 1 SECONDS))
 		return
 	if(QDELETED(held_item) || QDELETED(living_target))
 		finish_action(controller, FALSE)

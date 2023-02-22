@@ -43,27 +43,6 @@
 
 /obj/machinery/chem_master/Initialize(mapload)
 	create_reagents(100)
-
-	//Calculate the span tags and ids fo all the available pill icons
-	var/datum/asset/spritesheet/simple/assets = get_asset_datum(/datum/asset/spritesheet/simple/pills)
-	pill_styles = list()
-	for (var/x in 1 to PILL_STYLE_COUNT)
-		var/list/SL = list()
-		SL["id"] = x
-		SL["className"] = assets.icon_class_name("pill[x]")
-		pill_styles += list(SL)
-
-	var/datum/asset/spritesheet/simple/patches_assets = get_asset_datum(/datum/asset/spritesheet/simple/patches)
-	patch_styles = list()
-	for (var/raw_patch_style in PATCH_STYLE_LIST)
-		//adding class_name for use in UI
-		var/list/patch_style = list()
-		patch_style["style"] = raw_patch_style
-		patch_style["class_name"] = patches_assets.icon_class_name(raw_patch_style)
-		patch_styles += list(patch_style)
-
-	condi_styles = strip_condi_styles_to_icons(get_condi_styles())
-
 	. = ..()
 
 /obj/machinery/chem_master/Destroy()
@@ -205,6 +184,27 @@
 		bottle = null
 	return ..()
 
+/obj/machinery/chem_master/proc/load_styles()
+	//Calculate the span tags and ids fo all the available pill icons
+	var/datum/asset/spritesheet/simple/assets = get_asset_datum(/datum/asset/spritesheet/simple/pills)
+	pill_styles = list()
+	for (var/x in 1 to PILL_STYLE_COUNT)
+		var/list/SL = list()
+		SL["id"] = x
+		SL["className"] = assets.icon_class_name("pill[x]")
+		pill_styles += list(SL)
+
+	var/datum/asset/spritesheet/simple/patches_assets = get_asset_datum(/datum/asset/spritesheet/simple/patches)
+	patch_styles = list()
+	for (var/raw_patch_style in PATCH_STYLE_LIST)
+		//adding class_name for use in UI
+		var/list/patch_style = list()
+		patch_style["style"] = raw_patch_style
+		patch_style["class_name"] = patches_assets.icon_class_name(raw_patch_style)
+		patch_styles += list(patch_style)
+
+	condi_styles = strip_condi_styles_to_icons(get_condi_styles())
+
 /obj/machinery/chem_master/ui_assets(mob/user)
 	return list(
 		get_asset_datum(/datum/asset/spritesheet/simple/pills),
@@ -232,9 +232,8 @@
 	data["autoCondiStyle"] = CONDIMASTER_STYLE_AUTO
 	data["isPillBottleLoaded"] = bottle ? 1 : 0
 	if(bottle)
-		var/datum/component/storage/STRB = bottle.GetComponent(/datum/component/storage)
 		data["pillBottleCurrentAmount"] = bottle.contents.len
-		data["pillBottleMaxAmount"] = STRB.max_items
+		data["pillBottleMaxAmount"] = bottle.atom_storage.max_slots
 
 	var/beaker_contents[0]
 	if(beaker)
@@ -248,7 +247,9 @@
 			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, 0.01)))) // ^
 	data["bufferContents"] = buffer_contents
 
-	//Calculated at init time as it never changes
+	//Calculated once since it'll never change
+	if(!pill_styles || !condi_styles || !patch_style || !patch_styles)
+		load_styles()
 	data["pillStyles"] = pill_styles
 	data["condiStyles"] = condi_styles
 	data["patch_style"] = patch_style
@@ -390,10 +391,8 @@
 			var/target_loc = drop_location()
 			var/drop_threshold = INFINITY
 			if(bottle)
-				var/datum/component/storage/STRB = bottle.GetComponent(
-					/datum/component/storage)
-				if(STRB)
-					drop_threshold = STRB.max_items - bottle.contents.len
+				if(bottle.atom_storage)
+					drop_threshold = bottle.atom_storage.max_slots - bottle.contents.len
 					target_loc = bottle
 			for(var/i in 1 to amount)
 				if(i-1 < drop_threshold)

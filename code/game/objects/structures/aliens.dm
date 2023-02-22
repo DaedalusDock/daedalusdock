@@ -143,7 +143,7 @@
 	max_integrity = 15
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_ALIEN_RESIN, SMOOTH_GROUP_ALIEN_WEEDS)
-	canSmoothWith = list(SMOOTH_GROUP_ALIEN_WEEDS, SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_ALIEN_WEEDS)
 	///the range of the weeds going to be affected by the node
 	var/node_range = NODERANGE
 	///the parent node that will determine if we grow or die
@@ -165,11 +165,13 @@
 	. = ..()
 
 	set_base_icon()
+	become_atmos_sensitive()
 
 /obj/structure/alien/weeds/Destroy()
 	if(parent_node)
 		UnregisterSignal(parent_node, COMSIG_PARENT_QDELETING)
 		parent_node = null
+	lose_atmos_sensitivity()
 	return ..()
 
 ///Randomizes the weeds' starting icon, gets redefined by children for them not to share the behavior.
@@ -333,7 +335,6 @@
 	integrity_failure = 0.05
 	var/status = GROWING //can be GROWING, GROWN or BURST; all mutually exclusive
 	layer = MOB_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
 	var/obj/item/clothing/mask/facehugger/child
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor
@@ -348,6 +349,12 @@
 	proximity_monitor = new(src, status == GROWN ? 1 : 0)
 	if(status == BURST)
 		atom_integrity = integrity_failure * max_integrity
+	become_atmos_sensitive()
+
+/obj/structure/alien/egg/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
+
 
 /obj/structure/alien/egg/update_icon_state()
 	switch(status)
@@ -418,9 +425,6 @@
 					if(CanHug(M))
 						child.Leap(M)
 						break
-
-/obj/structure/alien/egg/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return exposed_temperature > 500 ? TRUE : 0
 
 /obj/structure/alien/egg/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 500)

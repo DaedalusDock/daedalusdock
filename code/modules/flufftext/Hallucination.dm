@@ -103,7 +103,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	var/col_mod = null
 	var/image/current_image = null
 	var/image_layer = MOB_LAYER
-	var/image_plane = GAME_PLANE
 	var/active = TRUE //qdelery
 
 /obj/effect/hallucination/singularity_pull()
@@ -124,7 +123,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/simple/proc/GetImage()
 	var/image/I = image(image_icon,src,image_state,image_layer,dir=src.dir)
-	I.plane = image_plane
 	I.pixel_x = px
 	I.pixel_y = py
 	if(col_mod)
@@ -170,7 +168,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	icon_state = "nothing"
 	anchored = TRUE
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /datum/hallucination/fake_flood
@@ -197,7 +194,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	var/obj/effect/plasma_image_holder/pih = new(center)
 	var/image/plasma_image = image(image_icon, pih, image_state, FLY_LAYER)
 	plasma_image.alpha = 50
-	plasma_image.plane = ABOVE_GAME_PLANE
+	plasma_image.plane = GAME_PLANE
 	flood_images += plasma_image
 	flood_image_holders += pih
 	flood_turfs += center
@@ -228,7 +225,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 			var/obj/effect/plasma_image_holder/pih = new(T)
 			var/image/new_plasma = image(image_icon, pih, image_state, FLY_LAYER)
 			new_plasma.alpha = 50
-			new_plasma.plane = ABOVE_GAME_PLANE
 			flood_images += new_plasma
 			flood_image_holders += pih
 			flood_turfs += T
@@ -1538,6 +1534,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		return
 	active = FALSE
 	target.clear_alert(ALERT_FIRE, clear_override = TRUE)
+	target.adjust_fire_stacks(-0.1)
 	if(target.client)
 		target.client.images -= fire_overlay
 	QDEL_NULL(fire_overlay)

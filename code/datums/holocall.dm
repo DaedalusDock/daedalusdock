@@ -203,7 +203,7 @@
 
 /datum/action/innate/end_holocall
 	name = "End Holocall"
-	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
+	button_icon = 'icons/mob/actions/actions_silicon.dmi'
 	button_icon_state = "camera_off"
 	var/datum/holocall/hcall
 
@@ -322,7 +322,6 @@
 		if(outfit_type)
 			mannequin.equipOutfit(outfit_type,TRUE)
 		mannequin.setDir(SOUTH)
-		COMPILE_OVERLAYS(mannequin)
 		. = image(mannequin)
 		unset_busy_human_dummy("HOLODISK_PRESET")
 

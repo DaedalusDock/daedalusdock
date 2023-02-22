@@ -52,7 +52,7 @@
 	playsound(loc, 'sound/machines/click.ogg', 20, TRUE)
 	if(creation_time)
 		force_proj_busy = TRUE
-		if(!do_after(user, creation_time, target = target))
+		if(!do_after(user, target, creation_time))
 			force_proj_busy = FALSE
 			return
 		force_proj_busy = FALSE
@@ -97,7 +97,6 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "forcefield"
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	anchored = TRUE
 	pass_flags_self = PASSGLASS
 	density = TRUE

@@ -21,8 +21,6 @@
 	sharpness = SHARP_EDGED
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	var/bayonet = FALSE //Can this be attached to a gun?
-	wound_bonus = 5
-	bare_wound_bonus = 15
 	tool_behaviour = TOOL_KNIFE
 
 /obj/item/knife/Initialize(mapload)
@@ -90,14 +88,12 @@
 	attack_verb_simple = list("cleave", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_price = PAYCHECK_EASY * 5
-	wound_bonus = 15
 
 /obj/item/knife/hunting
 	name = "hunting knife"
 	desc = "Despite its name, it's mainly used for cutting meat from dead prey rather than actual hunting."
 	inhand_icon_state = "huntingknife"
 	icon_state = "huntingknife"
-	wound_bonus = 10
 
 /obj/item/knife/hunting/set_butchering()
 	AddComponent(/datum/component/butchering, 80 - force, 100, force + 10)

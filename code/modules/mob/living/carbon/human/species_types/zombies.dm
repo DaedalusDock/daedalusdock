@@ -39,10 +39,10 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/zombie,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/zombie,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/zombie
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
 	)
 
 /// Zombies do not stabilize body temperature they are the walking dead and are cold blooded
@@ -96,7 +96,7 @@
 /datum/species/zombie/infectious/spec_stun(mob/living/carbon/human/H,amount)
 	. = min(20, amount)
 
-/datum/species/zombie/infectious/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, spread_damage = FALSE, forced = FALSE, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null)
+/datum/species/zombie/infectious/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, spread_damage = FALSE, forced = FALSE, sharpness = NONE, attack_direction = null)
 	. = ..()
 	if(.)
 		COOLDOWN_START(src, regen_cooldown, REGENERATION_DELAY)
@@ -113,10 +113,6 @@
 			heal_amt *= 2
 		C.heal_overall_damage(heal_amt * delta_time, heal_amt * delta_time)
 		C.adjustToxLoss(-heal_amt * delta_time)
-		for(var/i in C.all_wounds)
-			var/datum/wound/iter_wound = i
-			if(DT_PROB(2-(iter_wound.severity/2), delta_time))
-				iter_wound.remove_wound()
 	if(!HAS_TRAIT(C, TRAIT_CRITICAL_CONDITION) && DT_PROB(2, delta_time))
 		playsound(C, pick(spooks), 50, TRUE, 10)
 
@@ -152,10 +148,10 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/zombie,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/zombie,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/zombie
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
 	)
 
 

@@ -263,7 +263,7 @@
 			span_notice("You press your crowbar between the door and begin to pry it open..."),
 			span_hear("You hear a metal clang, followed by metallic groans.")
 		)
-		if(!do_after(user, 3 SECONDS, src))
+		if(!do_after(user, src, 3 SECONDS))
 			return
 		user.visible_message(
 			span_danger("[user] forces [src] open with a crowbar!"),
@@ -364,7 +364,7 @@
 	icon = 'icons/obj/doors/edge_Doorfire.dmi'
 	can_crush = FALSE
 	flags_1 = ON_BORDER_1
-	can_atmos_pass = ATMOS_PASS_PROC
+	can_atmos_pass = CANPASS_PROC
 	auto_dir_align = FALSE
 
 /obj/machinery/door/firedoor/border_only/closed
@@ -509,7 +509,7 @@
 				user.visible_message(span_notice("[user] begins reinforcing [src]..."), \
 					span_notice("You begin reinforcing [src]..."))
 				playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, TRUE)
-				if(do_after(user, DEFAULT_STEP_TIME, target = src))
+				if(do_after(user, src, DEFAULT_STEP_TIME))
 					if(constructionStep != CONSTRUCTION_PANEL_OPEN || reinforced || plasteel_sheet.get_amount() < 2 || !plasteel_sheet)
 						return
 					user.visible_message(span_notice("[user] reinforces [src]."), \
@@ -523,7 +523,7 @@
 				user.visible_message(span_notice("[user] starts adding [attacking_object] to [src]..."), \
 					span_notice("You begin adding a circuit board to [src]..."))
 				playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, TRUE)
-				if(!do_after(user, DEFAULT_STEP_TIME, target = src))
+				if(!do_after(user, src, DEFAULT_STEP_TIME))
 					return
 				if(constructionStep != CONSTRUCTION_NO_CIRCUIT)
 					return

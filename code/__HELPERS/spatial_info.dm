@@ -137,7 +137,7 @@
 	if(!center_turf)
 		return
 
-	if(view_radius <= 0)//special case for if only source cares
+	if(view_radius == 0)//special case for if only source cares
 		. = list()
 		for(var/atom/movable/target as anything in center_turf)
 			var/list/hearing_contents = target.important_recursive_contents?[RECURSIVE_CONTENTS_HEARING_SENSITIVE]
@@ -180,6 +180,8 @@
 /proc/get_hearers_in_radio_ranges(list/obj/item/radio/radios)
 	. = list()
 	for(var/obj/item/radio/radio as anything in radios)
+		if(radio.canhear_range == -1)
+			continue
 		.[radio] = get_hearers_in_LOS(radio.canhear_range, radio, FALSE)
 
 ///Calculate if two atoms are in sight, returns TRUE or FALSE

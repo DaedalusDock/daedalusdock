@@ -25,14 +25,10 @@
 	payday_modifier = 0.75
 	armor = 55
 	siemens_coeff = 0
-	punchdamagelow = 5
-	punchdamagehigh = 14
-	punchstunthreshold = 11 //about 40% chance to stun
 	no_equip = list(ITEM_SLOT_MASK, ITEM_SLOT_OCLOTHING, ITEM_SLOT_GLOVES, ITEM_SLOT_FEET, ITEM_SLOT_ICLOTHING, ITEM_SLOT_SUITSTORE)
 	nojumpsuit = 1
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	sexes = 1
-	damage_overlay_type = ""
 	meat = /obj/item/food/meat/slab/human/mutant/golem
 	species_language_holder = /datum/language_holder/golem
 	// To prevent golem subtypes from overwhelming the odds when random species
@@ -40,11 +36,11 @@
 	fixed_mut_color = "#aaaaaa"
 
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem,
 	)
 
@@ -207,7 +203,6 @@
 	name = "\improper Silver Golem"
 	id = SPECIES_GOLEM_SILVER
 	fixed_mut_color = "#dddddd"
-	punchstunthreshold = 9 //60% chance, from 40%
 	meat = /obj/item/stack/ore/silver
 	info_text = "As a <span class='danger'>Silver Golem</span>, your attacks have a higher chance of stunning. Being made of silver, your body is immune to most types of magic."
 	prefix = "Silver"
@@ -228,18 +223,20 @@
 	id = SPECIES_GOLEM_PLASTEEL
 	fixed_mut_color = "#bbbbbb"
 	stunmod = 0.4
-	punchdamagelow = 12
-	punchdamagehigh = 21
-	punchstunthreshold = 18 //still 40% stun chance
 	speedmod = 4 //pretty fucking slow
 	meat = /obj/item/stack/ore/iron
 	info_text = "As a <span class='danger'>Plasteel Golem</span>, you are slower, but harder to stun, and hit very hard when punching. You also magnetically attach to surfaces and so don't float without gravity and cannot have positions swapped with other beings."
-	attack_verb = "smash"
-	attack_effect = ATTACK_EFFECT_SMASH
-	attack_sound = 'sound/effects/meteorimpact.ogg' //hits pretty hard
 	prefix = "Plasteel"
 	special_names = null
 	examine_limb_id = SPECIES_GOLEM
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/plasteel,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/plasteel,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/plasteel,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/plasteel,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem,
+	)
 
 /datum/species/golem/plasteel/negates_gravity(mob/living/carbon/human/H)
 	return TRUE
@@ -378,20 +375,22 @@
 	fixed_mut_color = "#77ff00"
 	meat = /obj/item/stack/ore/uranium
 	info_text = "As an <span class='danger'>Uranium Golem</span>, your very touch burns and irradiates organic lifeforms. You don't hit as hard as most golems, but you are far more durable against blunt force trauma."
-	attack_verb = "burn"
-	attack_sound = 'sound/weapons/sear.ogg'
-	attack_type = BURN
 	var/last_event = 0
 	var/active = null
 	armor = 40
 	brutemod = 0.5
-	punchdamagelow = 1
-	punchdamagehigh = 10
-	punchstunthreshold = 9
 	prefix = "Uranium"
 	special_names = list("Oxide", "Rod", "Meltdown", "235")
 	COOLDOWN_DECLARE(radiation_emission_cooldown)
 	examine_limb_id = SPECIES_GOLEM
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/uranium,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/uranium,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem,
+	)
 
 /datum/species/golem/uranium/proc/radiation_emission(mob/living/carbon/human/H)
 	if(!COOLDOWN_FINISHED(src, radiation_emission_cooldown))
@@ -425,7 +424,6 @@
 	burnmod = 3 //melts easily
 	brutemod = 0.25
 	info_text = "As a <span class='danger'>Sand Golem</span>, you are immune to physical bullets and take very little brute damage, but are extremely vulnerable to burn damage and energy weapons. You will also turn to sand when dying, preventing any form of recovery."
-	attack_sound = 'sound/effects/shovel_dig.ogg'
 	prefix = "Sand"
 	special_names = list("Castle", "Bag", "Dune", "Worm", "Storm")
 	examine_limb_id = SPECIES_GOLEM
@@ -457,7 +455,6 @@
 	brutemod = 3 //very fragile
 	burnmod = 0.25
 	info_text = "As a <span class='danger'>Glass Golem</span>, you reflect lasers and energy weapons, and are very resistant to burn damage. However, you are extremely vulnerable to brute damage. On death, you'll shatter beyond any hope of recovery."
-	attack_sound = 'sound/effects/glassbr2.ogg'
 	prefix = "Glass"
 	special_names = list("Lens", "Prism", "Fiber", "Bead")
 	examine_limb_id = SPECIES_GOLEM
@@ -492,8 +489,6 @@
 	fixed_mut_color = "#3333ff"
 	meat = /obj/item/stack/ore/bluespace_crystal
 	info_text = "As a <span class='danger'>Bluespace Golem</span>, you are spatially unstable: You will teleport when hit, and you can teleport manually at a long distance."
-	attack_verb = "bluespace punch"
-	attack_sound = 'sound/effects/phasein.ogg'
 	prefix = "Bluespace"
 	special_names = list("Crystal", "Polycrystal")
 	examine_limb_id = SPECIES_GOLEM
@@ -550,13 +545,13 @@
 	name = "\improper Unstable Teleport"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "jaunt"
-	icon_icon = 'icons/mob/actions/actions_spells.dmi'
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 	var/cooldown = 150
 	var/last_teleport = 0
 	///Set to true upon action activation to prevent spamming teleport callbacks while the first is still occurring.
 	var/is_charging = FALSE
 
-/datum/action/innate/unstable_teleport/IsAvailable()
+/datum/action/innate/unstable_teleport/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
@@ -568,7 +563,7 @@
 	var/mob/living/carbon/human/H = owner
 	H.visible_message(span_warning("[H] starts vibrating!"), span_danger("You start charging your bluespace core..."))
 	is_charging = TRUE
-	UpdateButtons() //action icon looks unavailable
+	build_all_button_icons() //action icon looks unavailable
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, TRUE)
 	addtimer(CALLBACK(src, .proc/teleport, H), 15)
 
@@ -581,7 +576,7 @@
 	do_teleport(H, get_turf(H), 12, asoundin = 'sound/weapons/emitter2.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 	last_teleport = world.time
 	is_charging = FALSE
-	addtimer(CALLBACK(src, .proc/UpdateButtons), cooldown + 5) //action icon looks available again
+	addtimer(CALLBACK(src, .proc/build_all_button_icons), cooldown + 5) //action icon looks available again
 
 
 //honk
@@ -606,16 +601,19 @@
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_NODISMEMBER,
 	)
-	punchdamagelow = 0
-	punchdamagehigh = 1
-	punchstunthreshold = 2 //Harmless and can't stun
 	meat = /obj/item/stack/ore/bananium
 	info_text = "As a <span class='danger'>Bananium Golem</span>, you are made for pranking. Your body emits natural honks, and you can barely even hurt people when punching them. Your skin also bleeds banana peels when damaged."
-	attack_verb = "honk"
-	attack_sound = 'sound/items/airhorn2.ogg'
 	prefix = "Bananium"
 	special_names = null
 	examine_limb_id = SPECIES_GOLEM
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/bananium,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/bananium,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/bananium,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/bananium,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem,
+	)
 
 	/// Cooldown for producing honks
 	COOLDOWN_DECLARE(honkooldown)
@@ -720,17 +718,20 @@
 	inherent_factions = list("cult")
 	species_language_holder = /datum/language_holder/golem/runic
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/cult,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/cult,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/cult,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/cult,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/cult,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/cult,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/cult,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/cult,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/cult,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/cult,
 	)
 
-	var/obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift/golem/phase_shift
-	var/obj/effect/proc_holder/spell/pointed/abyssal_gaze/abyssal_gaze
-	var/obj/effect/proc_holder/spell/pointed/dominate/dominate
+	/// A ref to our jaunt spell that we get on species gain.
+	var/datum/action/cooldown/spell/jaunt/ethereal_jaunt/shift/golem/jaunt
+	/// A ref to our gaze spell that we get on species gain.
+	var/datum/action/cooldown/spell/pointed/abyssal_gaze/abyssal_gaze
+	/// A ref to our dominate spell that we get on species gain.
+	var/datum/action/cooldown/spell/pointed/dominate/dominate
 
 /datum/species/golem/runic/random_name(gender,unique,lastname)
 	var/edgy_first_name = pick("Razor","Blood","Dark","Evil","Cold","Pale","Black","Silent","Chaos","Deadly","Coldsteel")
@@ -738,26 +739,30 @@
 	var/golem_name = "[edgy_first_name] [edgy_last_name]"
 	return golem_name
 
-/datum/species/golem/runic/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+/datum/species/golem/runic/on_species_gain(mob/living/carbon/grant_to, datum/species/old_species)
 	. = ..()
-	phase_shift = new
-	phase_shift.charge_counter = 0
-	C.AddSpell(phase_shift)
-	abyssal_gaze = new
-	abyssal_gaze.charge_counter = 0
-	C.AddSpell(abyssal_gaze)
-	dominate = new
-	dominate.charge_counter = 0
-	C.AddSpell(dominate)
+	// Create our species specific spells here.
+	// Note we link them to the mob, not the mind,
+	// so they're not moved around on mindswaps
+	jaunt = new(grant_to)
+	jaunt.StartCooldown()
+	jaunt.Grant(grant_to)
+
+	abyssal_gaze = new(grant_to)
+	abyssal_gaze.StartCooldown()
+	abyssal_gaze.Grant(grant_to)
+
+	dominate = new(grant_to)
+	dominate.StartCooldown()
+	dominate.Grant(grant_to)
 
 /datum/species/golem/runic/on_species_loss(mob/living/carbon/C)
-	. = ..()
-	if(phase_shift)
-		C.RemoveSpell(phase_shift)
-	if(abyssal_gaze)
-		C.RemoveSpell(abyssal_gaze)
-	if(dominate)
-		C.RemoveSpell(dominate)
+	// Aaand cleanup our species specific spells.
+	// No free rides.
+	QDEL_NULL(jaunt)
+	QDEL_NULL(abyssal_gaze)
+	QDEL_NULL(dominate)
+	return ..()
 
 /datum/species/golem/runic/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
 	if(istype(chem, /datum/reagent/water/holywater))
@@ -785,6 +790,7 @@
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_RADIMMUNE,
 		TRAIT_GENELESS,
+		TRAIT_LITERATE,
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_NODISMEMBER,
 		TRAIT_CHUNKYFINGERS,
@@ -793,17 +799,14 @@
 	armor = 15 //feels no pain, but not too resistant
 	burnmod = 2 // don't get burned
 	speedmod = 1 // not as heavy as stone
-	punchdamagelow = 4
-	punchstunthreshold = 7
-	punchdamagehigh = 8 // not as heavy as stone
 	prefix = "Cloth"
 	special_names = null
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/cloth,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/cloth,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/cloth,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/cloth,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/cloth,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/cloth,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/cloth,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/cloth,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/cloth,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/cloth,
 	)
 
@@ -966,7 +969,7 @@
 	)
 	prefix = "Plastic"
 	special_names = list("Sheet", "Bag", "Bottle")
-	fixed_mut_color = "fffa"
+	fixed_mut_color = "#fffa"
 	info_text = "As a <span class='danger'>Plastic Golem</span>, you are capable of ventcrawling and passing through plastic flaps as long as you are naked."
 	examine_limb_id = SPECIES_GOLEM
 
@@ -1061,23 +1064,17 @@
 		TRAIT_NODISMEMBER,
 		TRAIT_NOFLASH,
 	)
-	attack_verb = "whips"
-	attack_sound = 'sound/weapons/whip.ogg'
-	miss_sound = 'sound/weapons/etherealmiss.ogg'
 	fixed_mut_color = null
 	armor = 25
 	burnmod = 1.25
 	heatmod = 2
 	speedmod = 1.5
-	punchdamagelow = 4
-	punchstunthreshold = 7
-	punchdamagehigh = 8
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/cardboard,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/cardboard,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/cardboard,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/cardboard,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/cardboard,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/cardboard,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/cardboard,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/cardboard,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/cardboard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/cardboard,
 	)
 	var/last_creation = 0
@@ -1095,7 +1092,7 @@
 			to_chat(H, span_warning("You do not have enough cardboard!"))
 			return FALSE
 		to_chat(H, span_notice("You attempt to create a new cardboard brother."))
-		if(do_after(user, 30, target = user))
+		if(do_after(user, user, 30))
 			if(last_creation + brother_creation_cooldown > world.time) //no cheesing dork
 				return
 			if(!C.use(10))
@@ -1130,8 +1127,8 @@
 	fixed_mut_color = "#624a2e"
 	info_text = "As a <span class='danger'>Leather Golem</span>, you are flammable, but you can grab things with incredible ease, allowing all your grabs to start at a strong level."
 	grab_sound = 'sound/weapons/whipgrab.ogg'
-	attack_sound = 'sound/weapons/whip.ogg'
 	examine_limb_id = SPECIES_GOLEM
+
 /datum/species/golem/durathread
 	name = "\improper Durathread Golem"
 	id = SPECIES_GOLEM_DURATHREAD
@@ -1155,11 +1152,11 @@
 	)
 	info_text = "As a <span class='danger'>Durathread Golem</span>, your strikes will cause those your targets to start choking, but your woven body won't withstand fire as well."
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/durathread,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/durathread,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/durathread,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/durathread,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/durathread,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/durathread,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/durathread,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/durathread,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/durathread,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/durathread,
 	)
 
@@ -1201,11 +1198,11 @@
 	species_language_holder = /datum/language_holder/golem/bone
 	info_text = "As a <span class='danger'>Bone Golem</span>, You have a powerful spell that lets you chill your enemies with fear, and milk heals you! Just make sure to watch our for bone-hurting juice."
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/bone,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/bone,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/bone,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/bone,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/bone,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/bone,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/bone,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/bone,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/bone,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/bone,
 	)
 	var/datum/action/innate/bonechill/bonechill
@@ -1253,7 +1250,7 @@
 	name = "Bone Chill"
 	desc = "Rattle your bones and strike fear into your enemies!"
 	check_flags = AB_CHECK_CONSCIOUS
-	icon_icon = 'icons/mob/actions/actions_spells.dmi'
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 	button_icon_state = "bonechill"
 	var/cooldown = 600
 	var/last_use
@@ -1308,15 +1305,18 @@
 		TRAIT_NODISMEMBER,
 	)
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/golem/snow,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/golem/snow,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/snow,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/snow,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/snow,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/golem/snow,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/golem/snow,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/snow,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/snow,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/snow,
 	)
-	var/obj/effect/proc_holder/spell/targeted/conjure_item/snowball/ball
-	var/obj/effect/proc_holder/spell/aimed/cryo/cryo
+
+	/// A ref to our "throw snowball" spell we get on species gain.
+	var/datum/action/cooldown/spell/conjure_item/snowball/snowball
+	/// A ref to our cryobeam spell we get on species gain.
+	var/datum/action/cooldown/spell/pointed/projectile/cryo/cryo
 
 /datum/species/golem/snow/spec_death(gibbed, mob/living/carbon/human/H)
 	H.visible_message(span_danger("[H] turns into a pile of snow!"))
@@ -1327,31 +1327,23 @@
 	new /obj/item/food/grown/carrot(get_turf(H))
 	qdel(H)
 
-/datum/species/golem/snow/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+/datum/species/golem/snow/on_species_gain(mob/living/carbon/grant_to, datum/species/old_species)
 	. = ..()
-	ADD_TRAIT(C, TRAIT_SNOWSTORM_IMMUNE, SPECIES_TRAIT)
-	ball = new
-	ball.charge_counter = 0
-	C.AddSpell(ball)
-	cryo = new
-	cryo.charge_counter = 0
-	C.AddSpell(cryo)
+	ADD_TRAIT(grant_to, TRAIT_SNOWSTORM_IMMUNE, SPECIES_TRAIT)
 
-/datum/species/golem/snow/on_species_loss(mob/living/carbon/C)
-	. = ..()
-	REMOVE_TRAIT(C, TRAIT_SNOWSTORM_IMMUNE, SPECIES_TRAIT)
-	if(ball)
-		C.RemoveSpell(ball)
-	if(cryo)
-		C.RemoveSpell(cryo)
+	snowball = new(grant_to)
+	snowball.StartCooldown()
+	snowball.Grant(grant_to)
 
-/obj/effect/proc_holder/spell/targeted/conjure_item/snowball
-	name = "Snowball"
-	desc = "Concentrates cryokinetic forces to create snowballs, useful for throwing at people."
-	item_type = /obj/item/toy/snowball
-	charge_max = 15
-	action_icon = 'icons/obj/toy.dmi'
-	action_icon_state = "snowball"
+	cryo = new(grant_to)
+	cryo.StartCooldown()
+	cryo.Grant(grant_to)
+
+/datum/species/golem/snow/on_species_loss(mob/living/carbon/remove_from)
+	REMOVE_TRAIT(remove_from, TRAIT_SNOWSTORM_IMMUNE, SPECIES_TRAIT)
+	QDEL_NULL(snowball)
+	QDEL_NULL(cryo)
+	return ..()
 
 /datum/species/golem/mhydrogen
 	name = "\improper Metallic Hydrogen Golem"

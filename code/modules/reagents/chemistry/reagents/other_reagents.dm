@@ -159,7 +159,6 @@
 	description = "An ubiquitous chemical substance that is composed of hydrogen and oxygen."
 	color = "#AAAAAA77" // rgb: 170, 170, 170, 77 (alpha)
 	taste_description = "water"
-	var/cooling_temperature = 2
 	glass_icon_state = "glass_clear"
 	glass_name = "glass of water"
 	glass_desc = "The father of all refreshments."
@@ -170,25 +169,24 @@
  * Water reaction to turf
  */
 
-/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume)
+/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
 	if(!istype(exposed_turf))
 		return
 
-	var/cool_temp = cooling_temperature
 	if(reac_volume >= 5)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 10 SECONDS, min(reac_volume*1.5 SECONDS, 60 SECONDS))
 
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	var/obj/effect/hotspot/hotspot = exposed_turf.fire
-	if(hotspot && !isspaceturf(exposed_turf))
-		if(exposed_turf.return_air())
-			var/datum/gas_mixture/air = exposed_turf.return_air()
-			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
-			air.react()
-			qdel(hotspot)
+	qdel(exposed_turf.fire)
+	if(exposed_turf.simulated)
+		var/datum/gas_mixture/air = exposed_turf.return_air()
+		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier
+		if(air.temperature > exposed_temperature)
+			adjust_temp *= -1
+		air.temperature = max(air.temperature + adjust_temp, TCMB)
 
 /*
  * Water reaction to an object
@@ -798,7 +796,7 @@
 	. = ..()
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("o2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_OXYGEN, reac_volume/20, temp)
 	return
 
 /datum/reagent/copper
@@ -831,7 +829,7 @@
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("n2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_NITROGEN, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/hydrogen
@@ -1385,7 +1383,7 @@
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("co2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_CO2, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/nitrous_oxide
@@ -2695,42 +2693,6 @@
 	color = "#E6E6DA"
 	taste_mult = 0
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-// "Second wind" reagent generated when someone suffers a wound. Epinephrine, adrenaline, and stimulants are all already taken so here we are
-/datum/reagent/determination
-	name = "Determination"
-	description = "For when you need to push on a little more. Do NOT allow near plants."
-	reagent_state = LIQUID
-	color = "#D2FFFA"
-	metabolization_rate = 0.75 * REAGENTS_METABOLISM // 5u (WOUND_DETERMINATION_CRITICAL) will last for ~34 seconds
-	self_consuming = TRUE
-	/// Whether we've had at least WOUND_DETERMINATION_SEVERE (2.5u) of determination at any given time. No damage slowdown immunity or indication we're having a second wind if it's just a single moderate wound
-	var/significant = FALSE
-
-/datum/reagent/determination/on_mob_end_metabolize(mob/living/carbon/M)
-	if(significant)
-		var/stam_crash = 0
-		for(var/thing in M.all_wounds)
-			var/datum/wound/W = thing
-			stam_crash += (W.severity + 1) * 3 // spike of 3 stam damage per wound severity (moderate = 6, severe = 9, critical = 12) when the determination wears off if it was a combat rush
-		M.adjustStaminaLoss(stam_crash)
-	M.remove_status_effect(/datum/status_effect/determined)
-	..()
-
-/datum/reagent/determination/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	if(!significant && volume >= WOUND_DETERMINATION_SEVERE)
-		significant = TRUE
-		M.apply_status_effect(/datum/status_effect/determined) // in addition to the slight healing, limping cooldowns are divided by 4 during the combat high
-
-	volume = min(volume, WOUND_DETERMINATION_MAX)
-
-	for(var/thing in M.all_wounds)
-		var/datum/wound/W = thing
-		var/obj/item/bodypart/wounded_part = W.limb
-		if(wounded_part)
-			wounded_part.heal_damage(0.25 * REM * delta_time, 0.25 * REM * delta_time)
-		M.adjustStaminaLoss(-0.25 * REM * delta_time) // the more wounds, the more stamina regen
-	..()
 
 // unholy water, but for heretics.
 // why couldn't they have both just used the same reagent?

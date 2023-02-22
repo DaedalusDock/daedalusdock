@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - imageadd: TGUI's base theme has been significantly brightened

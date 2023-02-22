@@ -29,6 +29,8 @@
 	extra_price = PAYCHECK_HARD
 	payment_department = ACCOUNT_SCI
 
+	discount_access = ACCESS_ROBOTICS
+
 /obj/item/vending_refill/modularpc
 	machine_name = "Deluxe Silicate Selections"
 	icon_state = "refill_engi"

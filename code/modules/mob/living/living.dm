@@ -10,7 +10,6 @@
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
-	update_fov()
 	voice_type = pick(voice_type2sound)
 
 /mob/living/ComponentInitialize()
@@ -34,8 +33,7 @@
 		else
 			effect.be_replaced()
 
-	if(ranged_ability)
-		ranged_ability.remove_ranged_ability(src)
+
 	if(buckled)
 		buckled.unbuckle_mob(src,force=1)
 
@@ -292,6 +290,7 @@
 		stop_pulling()
 
 	changeNext_move(CLICK_CD_GRABBING)
+	animate_interact(AM, INTERACT_PULL)
 
 	if(AM.pulledby)
 		if(!supress_message)
@@ -406,6 +405,7 @@
 		stop_pulling()
 
 /mob/living/stop_pulling()
+	animate_interact(pulling, INTERACT_UNPULL)
 	if(ismob(pulling))
 		reset_pull_offsets(pulling)
 	..()
@@ -587,7 +587,7 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
-	if(!instant && !do_mob(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, /mob/living/proc/rest_checks_callback), interaction_key = DOAFTER_SOURCE_GETTING_UP))
+	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, /mob/living/proc/rest_checks_callback), interaction_key = DOAFTER_SOURCE_GETTING_UP))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
@@ -634,7 +634,7 @@
 	var/list/ret = list()
 	ret |= contents //add our contents
 	for(var/atom/iter_atom as anything in ret.Copy()) //iterate storage objects
-		SEND_SIGNAL(iter_atom, COMSIG_TRY_STORAGE_RETURN_INVENTORY, ret)
+		iter_atom.atom_storage?.return_inv(ret)
 	for(var/obj/item/folder/F in ret.Copy()) //very snowflakey-ly iterate folders
 		ret |= F.contents
 	return ret
@@ -750,10 +750,6 @@
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
 		. = TRUE
-		if(mind)
-			for(var/S in mind.spell_list)
-				var/obj/effect/proc_holder/spell/spell = S
-				spell.updateButtons()
 		if(excess_healing)
 			INVOKE_ASYNC(src, .proc/emote, "gasp")
 			log_combat(src, src, "revived")
@@ -881,8 +877,8 @@
 		var/mob/living/L = pulledby
 		L.set_pull_offsets(src, pulledby.grab_state)
 
-	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,view_only = TRUE)))
-		active_storage.close(src)
+	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
+		active_storage.hide_contents(src)
 
 	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
 		makeTrail(newloc, T, old_direction)
@@ -944,9 +940,8 @@
 
 /mob/living/carbon/bleedDragAmount()
 	var/bleed_amount = 0
-	for(var/i in all_wounds)
-		var/datum/wound/iter_wound = i
-		bleed_amount += iter_wound.drag_bleed_amount()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		bleed_amount += BP.get_modified_bleed_rate()
 	return bleed_amount
 
 /mob/living/proc/getTrail()
@@ -1553,24 +1548,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/on_fall()
 	return
 
-/mob/living/proc/AddAbility(obj/effect/proc_holder/A)
-	abilities.Add(A)
-	A.on_gain(src)
-	if(A.has_action)
-		A.action.Grant(src)
-
-/mob/living/proc/RemoveAbility(obj/effect/proc_holder/A)
-	abilities.Remove(A)
-	A.on_lose(src)
-	if(A.action)
-		A.action.Remove(src)
-
-/mob/living/proc/add_abilities_to_panel()
-	var/list/L = list()
-	for(var/obj/effect/proc_holder/A in abilities)
-		L[++L.len] = list("[A.panel]",A.get_panel_text(),A.name,"[REF(A)]")
-	return L
-
 /mob/living/forceMove(atom/destination)
 	if(!currently_z_moving)
 		stop_pulling()
@@ -1641,7 +1618,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		user.visible_message(span_warning("[user] starts trying to pick up [src]!"),
 			span_danger("You start trying to pick up [src]..."), ignored_mobs = src)
 		to_chat(src, span_userdanger("[user] starts trying to pick you up!"))
-		if(!do_after(user, 2 SECONDS, src))
+		if(!do_after(user, src, 2 SECONDS))
 			return
 		if(!mob_pickup_checks(user)) // Check everything again after the timer
 			return
@@ -1706,12 +1683,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		client_eye.get_remote_view_fullscreens(src)
 	else
 		clear_fullscreen("remote_view", 0)
-
-/mob/living/update_mouse_pointer()
-	..()
-	if (client && ranged_ability?.ranged_mousepointer)
-		client.mouse_pointer_icon = ranged_ability.ranged_mousepointer
-
 
 /mob/living/vv_edit_var(var_name, var_value)
 	switch(var_name)

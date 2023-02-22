@@ -17,7 +17,6 @@
 	// and will crop the head off.
 	icon_state = "mask_bg"
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_y = 22
 	appearance_flags = KEEP_TOGETHER
@@ -120,7 +119,7 @@
 	radio = new(src)
 	radio.keyslot = new radio_key
 	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
+	radio.canhear_range = -1
 	radio.recalculateChannels()
 
 	occupant_vis = new(null, src)
@@ -249,30 +248,18 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	if(mob_occupant.stat == DEAD) // We don't bother with dead people.
 		return
 	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth()) // Don't bother with fully healed people.
-		if(iscarbon(mob_occupant))
-			var/mob/living/carbon/C = mob_occupant
-			if(C.all_wounds)
-				if(!treating_wounds) // if we have wounds and haven't already alerted the doctors we're only dealing with the wounds, let them know
-					treating_wounds = TRUE
-					playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
-					var/msg = "Patient vitals fully recovered, continuing automated wound treatment."
-					radio.talk_into(src, msg, radio_channel)
-			else // otherwise if we were only treating wounds and now we don't have any, turn off treating_wounds so we can boot 'em out
-				treating_wounds = FALSE
-
-		if(!treating_wounds)
-			set_on(FALSE)
-			playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
-			var/msg = "Patient fully restored."
-			if(autoeject) // Eject if configured.
-				msg += " Auto ejecting patient now."
-				open_machine()
-			radio.talk_into(src, msg, radio_channel)
-			return
+		set_on(FALSE)
+		playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
+		var/msg = "Patient fully restored."
+		if(autoeject) // Eject if configured.
+			msg += " Auto ejecting patient now."
+			open_machine()
+		radio.talk_into(src, msg, radio_channel)
+		return
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
+	if(air1.total_moles > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
 			consume_gas = TRUE
@@ -327,7 +314,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return null
 	var/datum/gas_mixture/air1 = airs[1]
 	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.get_moles() * breath_percentage)
+	return air1.remove(air1.total_moles * breath_percentage)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -359,7 +346,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	user.visible_message(span_notice("You see [user] kicking against the glass of [src]!"), \
 		span_notice("You struggle inside [src], kicking the release with your foot... (this will take about [DisplayTimeText(CRYO_BREAKOUT_TIME)].)"), \
 		span_hear("You hear a thump from [src]."))
-	if(do_after(user, CRYO_BREAKOUT_TIME, target = src))
+	if(do_after(user, src, CRYO_BREAKOUT_TIME))
 		if(!user || user.stat != CONSCIOUS || user.loc != src )
 			return
 		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \
@@ -385,7 +372,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 			close_machine(target)
 	else
 		user.visible_message(span_notice("[user] starts shoving [target] inside [src]."), span_notice("You start shoving [target] inside [src]."))
-		if (do_after(user, 2.5 SECONDS, target=target))
+		if (do_after(user, target, 2.5 SECONDS))
 			close_machine(target)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/screwdriver_act(mob/living/user, obj/item/tool)
@@ -542,7 +529,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.get_moles() > 10)
+	if(G.total_moles > 10)
 		return G.temperature
 	return ..()
 

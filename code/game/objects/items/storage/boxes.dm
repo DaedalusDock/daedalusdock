@@ -36,6 +36,7 @@
 
 /obj/item/storage/box/Initialize(mapload)
 	. = ..()
+	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
 	update_appearance()
 
 /obj/item/storage/box/suicide_act(mob/living/carbon/user)
@@ -468,10 +469,9 @@
 	for(var/i in 1 to 6)
 		new donktype(src)
 
-/obj/item/storage/box/donkpockets/ComponentInitialize()
+/obj/item/storage/box/donkpockets/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/food/donkpocket))
+	atom_storage.set_holdable(list(/obj/item/food/donkpocket))
 
 /obj/item/storage/box/donkpockets/donkpocketspicy
 	name = "box of spicy-flavoured donk-pockets"
@@ -510,11 +510,10 @@
 	illustration = null
 	var/cube_type = /obj/item/food/monkeycube
 
-/obj/item/storage/box/monkeycubes/ComponentInitialize()
+/obj/item/storage/box/monkeycubes/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 7
-	STR.set_holdable(list(/obj/item/food/monkeycube))
+	atom_storage.max_slots = 7
+	atom_storage.set_holdable(list(/obj/item/food/monkeycube))
 
 /obj/item/storage/box/monkeycubes/PopulateContents()
 	for(var/i in 1 to 5)
@@ -530,11 +529,10 @@
 	icon_state = "monkeycubebox"
 	illustration = null
 
-/obj/item/storage/box/gorillacubes/ComponentInitialize()
+/obj/item/storage/box/gorillacubes/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 3
-	STR.set_holdable(list(/obj/item/food/monkeycube))
+	atom_storage.max_slots = 3
+	atom_storage.set_holdable(list(/obj/item/food/monkeycube))
 
 /obj/item/storage/box/gorillacubes/PopulateContents()
 	for(var/i in 1 to 3)
@@ -697,14 +695,14 @@
 	icon_state = "spbox"
 	illustration = ""
 
-/obj/item/storage/box/snappops/ComponentInitialize()
+/obj/item/storage/box/snappops/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/toy/snappop))
-	STR.max_items = 8
+	atom_storage.set_holdable(list(/obj/item/toy/snappop))
+	atom_storage.max_slots = 8
 
 /obj/item/storage/box/snappops/PopulateContents()
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_FILL_TYPE, /obj/item/toy/snappop)
+	for(var/i in 1 to 8)
+		new /obj/item/toy/snappop(src)
 
 /obj/item/storage/box/matches
 	name = "matchbox"
@@ -721,14 +719,14 @@
 	base_icon_state = "matchbox"
 	illustration = null
 
-/obj/item/storage/box/matches/ComponentInitialize()
+/obj/item/storage/box/matches/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 10
-	STR.set_holdable(list(/obj/item/match))
+	atom_storage.max_slots = 10
+	atom_storage.set_holdable(list(/obj/item/match))
 
 /obj/item/storage/box/matches/PopulateContents()
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_FILL_TYPE, /obj/item/match)
+	for(var/i in 1 to 10)
+		new /obj/item/match(src)
 
 /obj/item/storage/box/matches/attackby(obj/item/match/W as obj, mob/user as mob, params)
 	if(istype(W, /obj/item/match))
@@ -756,13 +754,12 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	foldable = /obj/item/stack/sheet/cardboard //BubbleWrap
 
-/obj/item/storage/box/lights/ComponentInitialize()
+/obj/item/storage/box/lights/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 21
-	STR.set_holdable(list(/obj/item/light/tube, /obj/item/light/bulb))
-	STR.max_combined_w_class = 21
-	STR.click_gather = FALSE //temp workaround to re-enable filling the light replacer with the box
+	atom_storage.max_slots = 21
+	atom_storage.set_holdable(list(/obj/item/light/tube, /obj/item/light/bulb))
+	atom_storage.max_total_storage = 21
+	atom_storage.allow_quick_gather = FALSE //temp workaround to re-enable filling the light replacer with the box
 
 /obj/item/storage/box/lights/bulbs/PopulateContents()
 	for(var/i in 1 to 21)
@@ -785,17 +782,6 @@
 		new /obj/item/light/tube(src)
 	for(var/i in 1 to 7)
 		new /obj/item/light/bulb(src)
-
-
-/obj/item/storage/box/deputy
-	name = "box of deputy armbands"
-	desc = "To be issued to those authorized to act as deputy of security."
-	icon_state = "secbox"
-	illustration = "depband"
-
-/obj/item/storage/box/deputy/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/clothing/accessory/armband/deputy(src)
 
 /obj/item/storage/box/metalfoam
 	name = "box of metal foam grenades"
@@ -839,7 +825,7 @@
 	illustration = "clown"
 
 /obj/item/storage/box/clown/attackby(obj/item/I, mob/user, params)
-	if((istype(I, /obj/item/bodypart/l_arm/robot)) || (istype(I, /obj/item/bodypart/r_arm/robot)))
+	if((istype(I, /obj/item/bodypart/arm/left/robot)) || (istype(I, /obj/item/bodypart/arm/right/robot)))
 		if(contents.len) //prevent accidently deleting contents
 			to_chat(user, span_warning("You need to empty [src] out first!"))
 			return
@@ -1240,11 +1226,10 @@
 	foldable = null
 	custom_price = PAYCHECK_EASY
 
-/obj/item/storage/box/gum/ComponentInitialize()
+/obj/item/storage/box/gum/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/food/bubblegum))
-	STR.max_items = 4
+	atom_storage.set_holdable(list(/obj/item/food/bubblegum))
+	atom_storage.max_slots = 4
 
 /obj/item/storage/box/gum/PopulateContents()
 	for(var/i in 1 to 4)

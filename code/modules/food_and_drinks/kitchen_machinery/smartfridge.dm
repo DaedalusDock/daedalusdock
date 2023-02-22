@@ -13,7 +13,7 @@
 	var/base_build_path = /obj/machinery/smartfridge
 	/// Maximum number of items that can be loaded into the machine
 	var/max_n_of_items = 1500
-	/// If the AI is allowed to retrive items within the machine
+	/// If the AI is allowed to retrieve items within the machine
 	var/allow_ai_retrieve = FALSE
 	/// List of items that the machine starts with upon spawn
 	var/list/initial_contents
@@ -155,8 +155,8 @@
 		else
 			return TRUE
 	else
-		if(SEND_SIGNAL(O.loc, COMSIG_CONTAINS_STORAGE))
-			return SEND_SIGNAL(O.loc, COMSIG_TRY_STORAGE_TAKE, O, src)
+		if(O.loc.atom_storage)
+			return O.loc.atom_storage.attempt_remove(O, src, silent = TRUE)
 		else
 			O.forceMove(src)
 			return TRUE

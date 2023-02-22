@@ -80,15 +80,11 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/penetrates_skin = VAPOR
 	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_DONOTSPLIT, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
 	var/chemical_flags = NONE
-	///impure chem values (see fermi_readme.dm for more details on impure/inverse/failed mechanics):
-	/// What chemical path is made when metabolised as a function of purity
-	var/impure_chem = /datum/reagent/impurity
 	/// If the impurity is below 0.5, replace ALL of the chem with inverse_chem upon metabolising
 	var/inverse_chem_val = 0.25
 	/// What chem is metabolised when purity is below inverse_chem_val
 	var/inverse_chem = /datum/reagent/inverse
 	///what chem is made at the end of a reaction IF the purity is below the recipies purity_min at the END of a reaction only
-	var/failed_chem = /datum/reagent/consumable/failed_reaction
 	///Thermodynamic vars
 	///How hot this reagent burns when it's on fire - null means it can't burn
 	var/burning_temperature = null
@@ -116,18 +112,18 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	holder = null
 
 /// Applies this reagent to an [/atom]
-/datum/reagent/proc/expose_atom(atom/exposed_atom, reac_volume)
+/datum/reagent/proc/expose_atom(atom/exposed_atom, reac_volume, exposed_temperature)
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = 0
-	. |= SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_ATOM, exposed_atom, reac_volume)
-	. |= SEND_SIGNAL(exposed_atom, COMSIG_ATOM_EXPOSE_REAGENT, src, reac_volume)
+	. |= SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_ATOM, exposed_atom, reac_volume, exposed_temperature)
+	. |= SEND_SIGNAL(exposed_atom, COMSIG_ATOM_EXPOSE_REAGENT, src, reac_volume, exposed_temperature)
 
 /// Applies this reagent to a [/mob/living]
-/datum/reagent/proc/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
+/datum/reagent/proc/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0, exposed_temperature)
 	SHOULD_CALL_PARENT(TRUE)
 
-	. = SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_MOB, exposed_mob, methods, reac_volume, show_message, touch_protection)
+	. = SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_MOB, exposed_mob, methods, reac_volume, show_message, touch_protection, exposed_temperature)
 	if((methods & penetrates_skin) && exposed_mob.reagents) //smoke, foam, spray
 		var/amount = round(reac_volume*clamp((1 - touch_protection), 0, 1), 0.1)
 		if(amount >= 0.5)

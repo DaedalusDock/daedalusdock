@@ -16,6 +16,7 @@
 	rack_sound = 'sound/weapons/gun/rifle/bolt_out.ogg'
 	bolt_drop_sound = 'sound/weapons/gun/rifle/bolt_in.ogg'
 	tac_reloads = FALSE
+	gun_flags = NEEDS_OPEN_BOLT_TO_UNLOAD
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
@@ -100,7 +101,7 @@
 	if(can_jam)
 		if(bolt_locked)
 			if(istype(item, /obj/item/gun_maintenance_supplies))
-				if(do_after(user, 10 SECONDS, target = src))
+				if(do_after(user, src, 10 SECONDS))
 					user.visible_message(span_notice("[user] finishes maintenance of [src]."))
 					jamming_chance = 10
 					qdel(item)

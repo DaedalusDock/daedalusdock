@@ -157,7 +157,7 @@
 	qdel(P) //delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 	playsound(D.loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 
-	if(do_after(user, PLACE_SPEED, target=src))
+	if(do_after(user, src, PLACE_SPEED))
 		if(!D || QDELETED(D))
 			return
 

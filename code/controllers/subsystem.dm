@@ -48,6 +48,9 @@
 	/// Scheduled world.time for next fire()
 	var/next_fire = 0
 
+	/// If the subsystem is suspended, it cannot be queued. Managed version of can_fire
+	var/suspended
+
 	/// Running average of the amount of milliseconds it takes the subsystem to complete a run (including all resumes but not the time spent paused)
 	var/cost = 0
 
@@ -65,6 +68,9 @@
 
 	/// Tracks the current execution state of the subsystem. Used to handle subsystems that sleep in fire so the mc doesn't run them again while they are sleeping
 	var/state = SS_IDLE
+	
+	/// Tracks how many times a subsystem has ever slept in fire().
+	var/slept_count = 0
 
 	/// Tracks how many fires the subsystem has consecutively paused on in the current run
 	var/paused_ticks = 0
@@ -121,8 +127,10 @@
 	fire(resumed)
 	. = state
 	if (state == SS_SLEEPING)
+		slept_count++
 		state = SS_IDLE
 	if (state == SS_PAUSING)
+		slept_count++
 		var/QT = queued_time
 		enqueue()
 		state = SS_PAUSED
@@ -266,7 +274,11 @@
 	return time
 
 /datum/controller/subsystem/stat_entry(msg)
-	if(can_fire && !(SS_NO_FIRE & flags) && init_stage <= Master.init_stage_completed)
+	if(!can_fire || (flags & SS_NO_FIRE))
+		msg = "NO FIRE"
+	else if(suspended)
+		msg = "SUSPENDED"
+	else if(init_stage <= Master.init_stage_completed)
 		msg = "[round(cost,1)]ms|[round(tick_usage,1)]%([round(tick_overrun,1)]%)|[round(ticks,0.1)]\t[msg]"
 	else
 		msg = "OFFLINE\t[msg]"
@@ -284,6 +296,18 @@
 			. = "S"
 		if (SS_IDLE)
 			. = "  "
+
+// Suspends this subsystem.
+/datum/controller/subsystem/proc/suspend()
+	suspended = TRUE
+
+// Wakes a suspended subsystem.
+/datum/controller/subsystem/proc/wake()
+	if (!suspended)
+		return
+	suspended = FALSE
+	if (can_fire)
+		next_fire = world.time + wait
 
 /// Causes the next "cycle" fires to be missed. Effect is accumulative but can reset by calling update_nextfire(reset_time = TRUE)
 /datum/controller/subsystem/proc/postpone(cycles = 1)

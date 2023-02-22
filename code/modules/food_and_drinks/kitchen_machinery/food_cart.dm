@@ -89,7 +89,7 @@
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
 	to_chat(user, span_notice("You attempt to [unpacked ? "pack up" :"unpack"] [src]..."))
-	if(!do_after(user, 5 SECONDS, src))
+	if(!do_after(user, src, 5 SECONDS))
 		to_chat(user, span_warning("Your [unpacked ? "" :"un"]packing of [src] was interrupted!"))
 		return
 	if(unpacked)
@@ -137,4 +137,3 @@
 	icon = 'icons/obj/3x3.dmi'
 	icon_state = "stand"
 	layer = ABOVE_MOB_LAYER//big mobs will still go over the tent, this is fine and cool
-	plane = GAME_PLANE_UPPER

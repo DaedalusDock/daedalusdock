@@ -82,22 +82,22 @@
 
 	if(LAZYLEN(created_items) >= limit)
 		target.balloon_alert(source, "at ghoul limit!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	if(!IS_VALID_GHOUL_MOB(target))
 		target.balloon_alert(source, "invalid body!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	// Get their ghost in here so we can raise them
 	target.grab_ghost()
 
 	if(!target.mind || !target.client)
 		target.balloon_alert(source, "no soul!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	if(HAS_TRAIT(target, TRAIT_HUSK))
 		target.balloon_alert(source, "husked!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	make_ghoul(source, target)
 
@@ -233,7 +233,7 @@
 	required_atoms = list(
 		/obj/item/organ/internal/eyes = 1,
 		/obj/effect/decal/cleanable/blood = 1,
-		/obj/item/bodypart/l_arm = 1,
+		/obj/item/bodypart/arm/left = 1,
 	)
 	mob_to_summon = /mob/living/simple_animal/hostile/heretic_summon/raw_prophet
 	cost = 1
@@ -253,8 +253,7 @@
 
 	var/mob/living/carbon/carbon_target = target
 	var/obj/item/bodypart/bodypart = pick(carbon_target.bodyparts)
-	var/datum/wound/slash/severe/crit_wound = new()
-	crit_wound.apply_wound(bodypart, attack_direction = get_dir(source, target))
+	bodypart.adjustBleedStacks(10)
 
 /datum/heretic_knowledge/summon/stalker
 	name = "Lonely Ritual"
@@ -297,7 +296,10 @@
 /datum/heretic_knowledge/final/flesh_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
 	priority_announce("[generate_heretic_text()] Ever coiling vortex. Reality unfolded. ARMS OUTREACHED, THE LORD OF THE NIGHT, [user.real_name] has ascended! Fear the ever twisting hand! [generate_heretic_text()]", "[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
-	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shed_human_form)
+
+	var/datum/action/cooldown/spell/shed_human_form/worm_spell = new(user.mind)
+	worm_spell.Grant(user)
+
 	user.client?.give_award(/datum/award/achievement/misc/flesh_ascension, user)
 
 	var/datum/antagonist/heretic/heretic_datum = IS_HERETIC(user)

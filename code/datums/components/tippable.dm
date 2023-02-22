@@ -118,7 +118,7 @@
 			ignored_mobs = tipper
 		)
 
-		if(!do_after(tipper, tip_time, target = tipped_mob))
+		if(!do_after(tipper, tipped_mob, tip_time))
 			to_chat(tipper, span_danger("You fail to tip over [tipped_mob]."))
 			return
 	do_tip(tipped_mob, tipper)
@@ -170,7 +170,7 @@
 			ignored_mobs = untipper
 		)
 
-		if(!do_after(untipper, untip_time, target = tipped_mob))
+		if(!do_after(untipper, tipped_mob, untip_time))
 			to_chat(untipper, span_warning("You fail to right [tipped_mob]."))
 			return
 

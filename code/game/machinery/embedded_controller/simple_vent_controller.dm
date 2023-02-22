@@ -5,14 +5,14 @@
 /datum/computer/file/embedded_program/simple_vent_controller/receive_user_command(command)
 	switch(command)
 		if("vent_inactive")
-			post_signal(new /datum/signal(list(
+			post_signal(new /datum/signal(src, list(
 				"tag" = airpump_tag,
 				"sigtype" = "command",
 				"power" = 0
 			)))
 
 		if("vent_pump")
-			post_signal(new /datum/signal(list(
+			post_signal(new /datum/signal(src, list(
 				"tag" = airpump_tag,
 				"sigtype" = "command",
 				"stabilize" = 1,
@@ -20,7 +20,7 @@
 			)))
 
 		if("vent_clear")
-			post_signal(new /datum/signal(list(
+			post_signal(new /datum/signal(src, list(
 				"tag" = airpump_tag,
 				"sigtype" = "command",
 				"purge" = 1,

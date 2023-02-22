@@ -4,16 +4,6 @@
 // Return the item currently in the slot ID
 /mob/living/carbon/human/get_item_by_slot(slot_id)
 	switch(slot_id)
-		if(ITEM_SLOT_BACK)
-			return back
-		if(ITEM_SLOT_MASK)
-			return wear_mask
-		if(ITEM_SLOT_NECK)
-			return wear_neck
-		if(ITEM_SLOT_HANDCUFFED)
-			return handcuffed
-		if(ITEM_SLOT_LEGCUFFED)
-			return legcuffed
 		if(ITEM_SLOT_BELT)
 			return belt
 		if(ITEM_SLOT_ID)
@@ -38,25 +28,8 @@
 			return r_store
 		if(ITEM_SLOT_SUITSTORE)
 			return s_store
-	return null
 
-///Returns a list of every item slot contents on the user.
-/mob/living/carbon/human/get_all_worn_items()
-	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
-
-///Bruteforce check for any type or subtype of an item.
-/mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
-	var/found
-	var/list/my_items = get_all_worn_items()
-	if(islist(type2check))
-		for(var/type_iterator in type2check)
-			found = locate(type_iterator) in my_items
-			if(found)
-				return found
-	else
-		found = locate(type2check) in my_items
-		return found
-
+	return ..()
 
 /mob/living/carbon/human/get_slot_by_item(obj/item/looking_for)
 	if(looking_for == belt)
@@ -96,6 +69,23 @@
 		return ITEM_SLOT_SUITSTORE
 
 	return ..()
+
+///Returns a list of every item slot contents on the user.
+/mob/living/carbon/human/get_all_worn_items()
+	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
+
+///Bruteforce check for any type or subtype of an item.
+/mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
+	var/found
+	var/list/my_items = get_all_worn_items()
+	if(islist(type2check))
+		for(var/type_iterator in type2check)
+			found = locate(type_iterator) in my_items
+			if(found)
+				return found
+	else
+		found = locate(type2check) in my_items
+		return found
 
 ///Returns a list of worn "clothing" items.
 /mob/living/carbon/human/proc/return_worn_clothing()
@@ -195,7 +185,7 @@
 			if(wear_suit.breakouttime) //when equipping a straightjacket
 				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 				stop_pulling() //can't pull if restrained
-				update_action_buttons_icon() //certain action buttons will no longer be usable.
+				update_mob_action_buttons() //certain action buttons will no longer be usable.
 			update_worn_oversuit()
 		if(ITEM_SLOT_ICLOTHING)
 			if(w_uniform)
@@ -246,7 +236,7 @@
 		if(wear_suit.breakouttime) //when unequipping a straightjacket
 			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items() //suit is restraining
-			update_action_buttons_icon() //certain action buttons may be usable again.
+			update_mob_action_buttons() //certain action buttons may be usable again.
 		wear_suit = null
 		if(!QDELETED(src)) //no need to update we're getting deleted anyway
 			if(I.flags_inv & HIDEJUMPSUIT)
@@ -323,7 +313,6 @@
 	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(I.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
 		update_body_parts()
 	if(toggle_off && internal && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		update_internals_hud_icon(0)
 		internal = null
 	if(I.flags_inv & HIDEEYES)
 		update_worn_glasses()
@@ -376,7 +365,7 @@
 		if(equip_to_slot_if_possible(thing, slot_type))
 			update_held_items()
 		return
-	var/datum/component/storage/storage = equipped_item.GetComponent(/datum/component/storage)
+	var/datum/storage/storage = equipped_item.atom_storage
 	if(!storage)
 		if(!thing)
 			equipped_item.attack_hand(src)
@@ -384,10 +373,10 @@
 			to_chat(src, span_warning("You can't fit [thing] into your [equipped_item.name]!"))
 		return
 	if(thing) // put thing in storage item
-		if(!SEND_SIGNAL(equipped_item, COMSIG_TRY_STORAGE_INSERT, thing, src))
+		if(!equipped_item.atom_storage?.attempt_insert(thing, src))
 			to_chat(src, span_warning("You can't fit [thing] into your [equipped_item.name]!"))
 		return
-	var/atom/real_location = storage.real_location()
+	var/atom/real_location = storage.real_location?.resolve()
 	if(!real_location.contents.len) // nothing to take out
 		to_chat(src, span_warning("There's nothing in your [equipped_item.name] to take out!"))
 		return

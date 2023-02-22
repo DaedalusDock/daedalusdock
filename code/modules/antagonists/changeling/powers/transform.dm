@@ -168,10 +168,6 @@
 		for(var/slot in slot2type)
 			if(istype(user.vars[slot], slot2type[slot]))
 				qdel(user.vars[slot])
-		for(var/i in user.all_scars)
-			var/datum/scar/iter_scar = i
-			if(iter_scar.fake)
-				qdel(iter_scar)
 		return
 
 	var/datum/changeling_profile/prof = get_dna(chosen_name)

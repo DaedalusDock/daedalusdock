@@ -233,10 +233,8 @@
 	taste_description = "icey bitterness"
 	purity = REAGENT_STANDARD_PURITY
 	self_consuming = TRUE
-	impure_chem = /datum/reagent/consumable/ice
 	inverse_chem_val = 0.5
 	inverse_chem = /datum/reagent/inverse/cryostylane
-	failed_chem = null
 	burning_volume = 0.05
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED | REAGENT_DEAD_PROCESS
 
@@ -378,11 +376,10 @@
 			foam.lifetime = initial(foam.lifetime) //reduce object churn a little bit when using smoke by keeping existing foam alive a bit longer
 
 	var/obj/effect/hotspot/hotspot = exposed_turf.fire
-	if(hotspot && !isspaceturf(exposed_turf) && exposed_turf.return_air())
-		var/datum/gas_mixture/air = exposed_turf.return_air()
-		if(air.temperature > T20C)
-			air.temperature = max(air.temperature/2,T20C)
-		air.react(src)
+	var/datum/gas_mixture/environment = exposed_turf.return_air()
+	if(hotspot && !isspaceturf(exposed_turf) && environment)
+		if(environment.temperature > T20C)
+			environment.temperature = max(environment.temperature/2,T20C)
 		qdel(hotspot)
 
 /datum/reagent/firefighting_foam/expose_obj(obj/exposed_obj, reac_volume)

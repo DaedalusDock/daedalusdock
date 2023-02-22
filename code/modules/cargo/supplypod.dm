@@ -117,6 +117,7 @@
 	return ..()
 
 /obj/structure/closet/supplypod/extractionpod/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
+	. = ..()
 	if(recieving && (atom_integrity <= 0))
 		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
 		if (contract_hub.current_contract == tied_contract)
@@ -124,7 +125,6 @@
 		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
 		tied_contract = null
 		contract_hub = null
-	return ..()
 
 
 /obj/structure/closet/supplypod/proc/setStyle(chosenStyle) //Used to give the sprite an icon state, name, and description.
@@ -486,7 +486,6 @@
 	glow_effect.icon_state = "pod_glow_" + GLOB.podstyles[style][POD_GLOW]
 	vis_contents += glow_effect
 	glow_effect.layer = GASFIRE_LAYER
-	glow_effect.plane = ABOVE_GAME_PLANE
 	RegisterSignal(glow_effect, COMSIG_PARENT_QDELETING, .proc/remove_glow)
 
 /obj/structure/closet/supplypod/proc/endGlow()
@@ -525,7 +524,6 @@
 	icon_state = "pod_engineglow"
 	desc = ""
 	layer = GASFIRE_LAYER
-	plane = ABOVE_GAME_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	alpha = 255
 
@@ -651,7 +649,6 @@
 	setupSmoke(rotation)
 	pod.transform = matrix().Turn(rotation)
 	pod.layer = FLY_LAYER
-	pod.plane = ABOVE_GAME_PLANE
 	if (pod.style != STYLE_INVISIBLE)
 		animate(pod, pixel_z = -1 * abs(sin(rotation))*4, pixel_x = SUPPLYPOD_X_OFFSET + (sin(rotation) * 20), time = pod.delays[POD_FALLING], easing = LINEAR_EASING) //Make the pod fall! At an angle!
 	addtimer(CALLBACK(src, .proc/endLaunch), pod.delays[POD_FALLING], TIMER_CLIENT_TIME) //Go onto the last step after a very short falling animation
@@ -663,7 +660,6 @@
 		var/obj/effect/supplypod_smoke/smoke_part = new (drop_location())
 		if (i == 1)
 			smoke_part.layer = FLY_LAYER
-			smoke_part.plane = ABOVE_GAME_PLANE
 			smoke_part.icon_state = "smoke_start"
 		smoke_part.transform = matrix().Turn(rotation)
 		smoke_effects[i] = smoke_part

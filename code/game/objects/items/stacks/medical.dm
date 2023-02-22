@@ -43,12 +43,12 @@
 	if(patient == user)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [user.p_them()]self..."), span_notice("You begin applying [src] on yourself..."))
-		if(!do_mob(user, patient, self_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
+		if(!do_after(user, patient, self_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
 			return
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [patient]."), span_notice("You begin applying [src] on [patient]..."))
-		if(!do_mob(user, patient, other_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
+		if(!do_after(user, patient, other_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
 			return
 
 	if(heal(patient, user))
@@ -149,11 +149,13 @@
 		return
 
 	var/gauzeable_wound = FALSE
-	for(var/i in limb.wounds)
-		var/datum/wound/woundies = i
-		if(woundies.wound_flags & ACCEPTS_GAUZE)
+
+	for(var/datum/wound/W in limb.wounds)
+		if(W.bleeding())
 			gauzeable_wound = TRUE
 			break
+
+
 	if(!gauzeable_wound)
 		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
 		return
@@ -163,7 +165,7 @@
 		return
 
 	user.visible_message(span_warning("[user] begins wrapping the wounds on [M]'s [limb.plaintext_zone] with [src]..."), span_warning("You begin wrapping the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone] with [src]..."))
-	if(!do_after(user, (user == M ? self_delay : other_delay), target=M))
+	if(!do_after(user, M, (user == M ? self_delay : other_delay)))
 		return
 
 	user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] to [M]'s [limb.plaintext_zone].</span></span>", "<span class='infoplain'><span class='green'>You bandage the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone].</span></span>")
@@ -386,17 +388,11 @@
 		return
 	var/mob/living/carbon/C = user
 	C.visible_message(span_suicide("[C] is squirting all of [src] into [C.p_their()] mouth! That's not proper procedure! It looks like [C.p_theyre()] trying to commit suicide!"))
-	if(!do_after(C, 2 SECONDS))
+	if(!do_after(C, time = 2 SECONDS))
 		C.visible_message(span_suicide("[C] screws up like an idiot and still dies anyway!"))
 		return (BRUTELOSS)
 
 	C.emote("scream")
-	for(var/i in C.bodyparts)
-		var/obj/item/bodypart/bone = i
-		var/datum/wound/blunt/severe/oof_ouch = new
-		oof_ouch.apply_wound(bone)
-		var/datum/wound/blunt/critical/oof_OUCH = new
-		oof_OUCH.apply_wound(bone)
 
 	for(var/i in C.bodyparts)
 		var/obj/item/bodypart/bone = i

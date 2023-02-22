@@ -101,7 +101,6 @@
 	image_icon = 'icons/effects/effects.dmi'
 	image_state = "bluestream"
 	image_layer = ABOVE_MOB_LAYER
-	image_plane = GAME_PLANE_UPPER
 	var/obj/effect/hallucination/simple/bluespace_stream/linked_to
 	var/mob/living/carbon/seer
 
@@ -126,7 +125,7 @@
 	var/slip_out_message = pick("silently fades in", "leaps out of thin air","appears", "walks out of an invisible doorway",\
 		"slides out of a fold in spacetime")
 	to_chat(user, span_notice("You try to align with the bluespace stream..."))
-	if(do_after(user, 20, target = src))
+	if(do_after(user, src, 2 SECONDS))
 		var/turf/source_turf = get_turf(src)
 		var/turf/destination_turf = get_turf(linked_to)
 

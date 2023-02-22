@@ -75,21 +75,21 @@ Difficulty: Hard
 
 /datum/action/innate/megafauna_attack/heavy_stomp
 	name = "Heavy Stomp"
-	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "sniper_zoom"
 	chosen_message = "<span class='colossus'>You are now stomping the ground around you.</span>"
 	chosen_attack_num = 1
 
 /datum/action/innate/megafauna_attack/teleport
 	name = "Teleport"
-	icon_icon = 'icons/effects/bubblegum.dmi'
+	button_icon = 'icons/effects/bubblegum.dmi'
 	button_icon_state = "smack ya one"
 	chosen_message = "<span class='colossus'>You are now teleporting at the target you click on.</span>"
 	chosen_attack_num = 2
 
 /datum/action/innate/megafauna_attack/shockwave_scream
 	name = "Shockwave Scream"
-	icon_icon = 'icons/turf/walls/legacy/wall.dmi'
+	button_icon = 'icons/turf/walls/legacy/wall.dmi'
 	button_icon_state = "wall-0"
 	chosen_message = "<span class='colossus'>You are now screeching, disorienting targets around you.</span>"
 	chosen_attack_num = 3
@@ -161,7 +161,7 @@ Difficulty: Hard
 				to_chat(L, span_userdanger("[source]'s ground slam shockwave sends you flying!"))
 				var/turf/thrownat = get_ranged_target_turf_direct(source, L, throw_range, rand(-10, 10))
 				L.throw_at(thrownat, 8, 2, null, TRUE, force = MOVE_FORCE_OVERPOWERING, gentle = TRUE)
-				L.apply_damage(20, BRUTE, wound_bonus=CANT_WOUND)
+				L.apply_damage(20, BRUTE)
 				shake_camera(L, 2, 1)
 			all_turfs -= stomp_turf
 		sleep(delay)
@@ -303,16 +303,10 @@ Difficulty: Hard
 	if(!human_user.mind)
 		return
 	to_chat(human_user, span_danger("Power courses through you! You can now shift your form at will."))
-	var/obj/effect/proc_holder/spell/targeted/shapeshift/polar_bear/transformation_spell = new
-	human_user.mind.AddSpell(transformation_spell)
+	var/datum/action/cooldown/spell/shapeshift/polar_bear/transformation_spell = new(user.mind || user)
+	transformation_spell.Grant(user)
 	playsound(human_user.loc, 'sound/items/drink.ogg', rand(10,50), TRUE)
 	qdel(src)
-
-/obj/effect/proc_holder/spell/targeted/shapeshift/polar_bear
-	name = "Polar Bear Form"
-	desc = "Take on the shape of a polar bear."
-	invocation = "RAAAAAAAAWR!"
-	shapeshift_type = /mob/living/simple_animal/hostile/asteroid/polarbear/lesser
 
 /obj/item/crusher_trophy/wendigo_horn
 	name = "wendigo horn"

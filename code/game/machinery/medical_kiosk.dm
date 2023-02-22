@@ -19,7 +19,6 @@
 	icon_state = "kiosk"
 	base_icon_state = "kiosk"
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/medical_kiosk
 	payment_department = ACCOUNT_MED
@@ -44,7 +43,7 @@
 
 /obj/machinery/medical_kiosk/Initialize(mapload) //loaded subtype for mapping use
 	. = ..()
-	AddComponent(/datum/component/payment, active_price, SSeconomy.get_dep_account(ACCOUNT_MED), PAYMENT_FRIENDLY)
+	AddComponent(/datum/component/payment, active_price, SSeconomy.department_accounts_by_id[ACCOUNT_MED], PAYMENT_FRIENDLY)
 	scanner_wand = new/obj/item/scanner_wand(src)
 
 /obj/machinery/medical_kiosk/proc/inuse()  //Verifies that the user can use the interface, followed by showing medical information.

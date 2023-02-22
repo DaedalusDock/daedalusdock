@@ -244,3 +244,8 @@
 		pipe_color = paint_color
 		update_node_icon()
 	return paintable
+
+/obj/machinery/atmospherics/components/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //This entire tree currently sucks. It can handle itself.
+	//TODO: MAKE IT NOT SUCK. MAYBE.
+	. = ..()

@@ -423,7 +423,8 @@
 		/obj/item/reagent_containers/medigel,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/chem_pack
+		/obj/item/reagent_containers/chem_pack,
+		/obj/item/reagent_containers/pill
 		))
 
 /*

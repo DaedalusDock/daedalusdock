@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(ticker)
 	var/mode_display_name = null
 
 	///All players that are readied up and about to spawn in.
-	var/list/mob/dead/new_player/ready_players = list()
+	var/list/mob/dead/new_player/ready_players
 
 	///JSON for the music played in the lobby
 	var/list/login_music
@@ -179,6 +179,7 @@ SUBSYSTEM_DEF(ticker)
 	to_chat(world, span_boldannounce("Starting game..."))
 	var/init_start = world.timeofday
 
+	ready_players = list() // This needs to be reset every setup, incase the gamemode fails to start.
 	for(var/i in GLOB.new_player_list)
 		var/mob/dead/new_player/player = i
 		if(player.ready == PLAYER_READY_TO_PLAY && player.mind && player.check_preferences())

@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: You will no longer scream repeatedly when taking many small ticks of damage.

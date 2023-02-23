@@ -63,6 +63,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(check_dest && destination) //Nullspace is always a valid location for organs. Because reasons.
 		if(organ_flags & ORGAN_UNREMOVABLE) //If this organ is unremovable, it should delete itself if it tries to be moved to anything besides a bodypart.
 			if(!istype(destination, /obj/item/bodypart) && !iscarbon(destination))
+				stack_trace("Unremovable organ tried to be removed!")
 				qdel(src)
 				return //Don't move it out of nullspace if it's deleted.
 	return ..()

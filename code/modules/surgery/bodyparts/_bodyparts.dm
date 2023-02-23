@@ -334,9 +334,16 @@
 	if(IS_ORGANIC_LIMB(src))
 		playsound(bodypart_turf, 'sound/misc/splort.ogg', 50, TRUE, -1)
 	seep_gauze(9999) // destroy any existing gauze if any exists
+
 	for(var/obj/item/organ/bodypart_organ in get_organs())
 		bodypart_organ.transfer_to_limb(src, owner)
+
 	for(var/obj/item/item_in_bodypart in src)
+		if(istype(item, /obj/item/organ))
+			var/obj/item/organ/O = item
+			if(O.organ_flags & ORGAN_UNREMOVABLE)
+				continue
+
 		item_in_bodypart.forceMove(bodypart_turf)
 
 ///since organs aren't actually stored in the bodypart themselves while attached to a person, we have to query the owner for what we should have

@@ -339,8 +339,8 @@
 		bodypart_organ.transfer_to_limb(src, owner)
 
 	for(var/obj/item/item_in_bodypart in src)
-		if(istype(item, /obj/item/organ))
-			var/obj/item/organ/O = item
+		if(istype(item_in_bodypart, /obj/item/organ))
+			var/obj/item/organ/O = item_in_bodypart
 			if(O.organ_flags & ORGAN_UNREMOVABLE)
 				continue
 

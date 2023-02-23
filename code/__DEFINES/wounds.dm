@@ -14,6 +14,8 @@
 #define FLUIDLOSS_BURN_WIDE 0.15
 ///For concentrated burns, like from lasers
 #define FLUIDLOSS_BURN_CONCENTRATED 0.1
+///The amount of burn damage needed to cause fluid loss.
+#define FLUIDLOSS_BURN_REQUIRED 5
 
 //CONFIG STUFF
 ///A modifier applied to wound auto healing

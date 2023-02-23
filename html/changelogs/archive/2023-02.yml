@@ -184,3 +184,9 @@
   - rscadd: ZAS is faster. We take those.
   francinum:
   - imageadd: TGUI's base theme has been significantly brightened
+2023-02-23:
+  francinum:
+  - bugfix: Autoname cameras can now be selected properly
+  - config: Server owners can now staple text to the new round notice
+  - rscdel: This removes an already unused config entry that was intended to serve
+      the same purpose, CHAT_NEW_GAME_NOTIFICATIONS

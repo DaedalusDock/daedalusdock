@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Autoname cameras can now be selected properly

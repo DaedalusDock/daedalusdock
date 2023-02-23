@@ -3,10 +3,12 @@
 		return
 
 	var/static/list/interal_wounds_check = list(WOUND_CUT, WOUND_PIERCE, WOUND_BRUISE)
+
+	/* TGmed isn't ready for fluid burn off. Notably, body temperature drops cause burn damage.
 	var/static/list/fluid_wounds_check = list(WOUND_BURN, WOUND_LASER)
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
-	if(owner && (damage > 5 || damage + burn_dam >= 15) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
+	if(owner && !surgical && (damage > 5 || damage + burn_dam >= 15) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
 		var/fluid_loss_severity
 		switch(wound_type)
 			if (WOUND_BURN)
@@ -15,6 +17,7 @@
 				fluid_loss_severity = FLUIDLOSS_BURN_CONCENTRATED
 		var/fluid_loss = (damage/(owner.maxHealth)) * BLOOD_VOLUME_NORMAL * fluid_loss_severity
 		owner.bleed(fluid_loss)
+	*/
 
 	//Check whether we can widen an existing wound
 	if(!surgical && LAZYLEN(wounds) && prob(max(50+(real_wound_count-1)*10,90)))

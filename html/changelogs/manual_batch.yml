@@ -1,0 +1,6 @@
+author: "san7890"
+delete-after: True
+changes:
+  - bugfix: "If you ever chance upon Multi-Z Debug Station, rest assured that it now uses the right kind of space."
+  - imageadd: "On the mapping end, we've removed some duplicate names for different icons."
+  - bugfix: "If you haven't been able to see any working space ruins lately, that's our bad. Should be fixed now."

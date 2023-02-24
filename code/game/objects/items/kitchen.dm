@@ -148,4 +148,17 @@
 	. = ..()
 	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
 
+/obj/item/kitchen/spatula
+	name = "spatula"
+	desc = "Used to move hot food from a griddle onto a plate or tray, instead of using your own hands like some sort of animal."
+	icon_state = "spatula"
+	w_class = WEIGHT_CLASS_SMALL
+	force = 2
+	custom_materials = list(/datum/material/iron = 80,
+							/datum/material/plastic = 40)
+	throw_speed = 3
+	throw_range = 5
+	attack_verb_simple = list("smack", "thwack", "slap")
+	attack_verb_continuous = list("smacks", "thwacks", "slaps")
+
 #undef PLASTIC_BREAK_PROBABILITY

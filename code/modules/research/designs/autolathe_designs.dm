@@ -377,6 +377,14 @@
 	build_path = /obj/item/kitchen/fork
 	category = list("initial","Dinnerware")
 
+/datum/design/spatula
+	name = "Spatula"
+	id = "spatula"
+	build_type = AUTOLATHE
+	materials = list(/datum/material/iron = 400, /datum/material/plastic = 200)
+	build_path = /obj/item/kitchen/spatula
+	category = list("initial","Dinnerware")
+
 /datum/design/plastic_fork
 	name = "Plastic Fork"
 	id = "plastic_fork"

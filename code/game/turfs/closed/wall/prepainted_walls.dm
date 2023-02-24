@@ -30,12 +30,12 @@
 	name = "dummy"
 
 /turf/closed/wall/prepainted/daedalus
-	color = "#e9ca9b"
-	wall_paint = "#e9ca9b"
-	stripe_paint = "#7e5c3a"
+	color = PAINT_WALL_DAEDALUS
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS
 
 /turf/closed/wall/r_wall/prepainted/daedalus
-	color = "#e9ca9b"
-	wall_paint = "#e9ca9b"
-	stripe_paint = "#7e5c3a"
+	color = PAINT_WALL_DAEDALUS
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS
 

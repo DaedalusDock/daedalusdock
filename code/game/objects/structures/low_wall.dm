@@ -226,5 +226,5 @@
 /obj/structure/low_wall/prepainted
 
 /obj/structure/low_wall/prepainted/daedalus
-	wall_paint = "#e9ca9b"
-	stripe_paint = "#7e5c3a"
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS

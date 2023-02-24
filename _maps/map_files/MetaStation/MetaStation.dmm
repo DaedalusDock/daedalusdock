@@ -3639,7 +3639,6 @@
 /area/ai_monitored/turret_protected/ai)
 "aTY" = (
 /obj/machinery/smartfridge/chemistry/preloaded,
-/obj/structure/low_wall/prepainted/daedalus,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "aUb" = (
@@ -20840,6 +20839,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "gox" = (
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/prepainted/daedalus,
 /area/medical/coldroom)
 "goE" = (
@@ -51395,9 +51395,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/office)
-"rAF" = (
-/turf/closed/wall/r_wall/prepainted/daedalus,
-/area/medical/chemistry)
 "rAT" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
 /obj/item/toy/plush/beeplushie{
@@ -92262,7 +92259,7 @@ czg
 czg
 czg
 czg
-rAF
+vIp
 lOq
 jnk
 aTY

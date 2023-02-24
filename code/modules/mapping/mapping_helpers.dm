@@ -761,7 +761,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	qdel(src)
 
 /obj/effect/mapping_helpers/paint_wall/bridge
-	name = "Bridge Wall Paint"
+	name = "Command Wall Paint"
+	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
 	icon_state = "paint_bridge"
 

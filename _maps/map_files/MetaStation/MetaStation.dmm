@@ -7425,6 +7425,12 @@
 	icon_state = "platingdmg1"
 	},
 /area/station/maintenance/port/aft)
+"cIX" = (
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
+/obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/open/floor/plating,
+/area/station/hallway/secondary/command)
 "cJw" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -8212,6 +8218,7 @@
 	dir = 1;
 	pixel_y = -8
 	},
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/hallway/secondary/command)
 "cXl" = (
@@ -9502,6 +9509,7 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat_interior)
 "dtb" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/command/heads_quarters/hop)
 "dtl" = (
@@ -10066,6 +10074,7 @@
 /turf/open/floor/iron/white,
 /area/station/science/robotics/lab)
 "dDR" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/command/bridge)
 "dEc" = (
@@ -10886,6 +10895,10 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/white,
 /area/station/science/research)
+"dSV" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/closed/wall/r_wall/prepainted/daedalus,
+/area/station/hallway/secondary/command)
 "dTa" = (
 /obj/structure/window/reinforced{
 	dir = 1;
@@ -17827,6 +17840,10 @@
 	},
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
+"gxG" = (
+/obj/effect/mapping_helpers/paint_wall/priapus,
+/turf/closed/wall/prepainted/daedalus,
+/area/station/maintenance/starboard/greater)
 "gxI" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
@@ -25043,6 +25060,7 @@
 	dir = 8;
 	pixel_y = -8
 	},
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/maintenance/central)
 "iQv" = (
@@ -26673,6 +26691,10 @@
 /obj/structure/sign/poster/contraband/random/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"jtD" = (
+/obj/effect/mapping_helpers/paint_wall/priapus,
+/turf/closed/wall/prepainted/daedalus,
+/area/station/maintenance/starboard/lesser)
 "jtM" = (
 /obj/structure/table/wood,
 /obj/machinery/newscaster/directional/east,
@@ -28123,6 +28145,10 @@
 /obj/effect/spawner/random/maintenance/three,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
+"jVF" = (
+/obj/effect/mapping_helpers/paint_wall/priapus,
+/turf/closed/wall/prepainted/daedalus,
+/area/station/hallway/secondary/service)
 "jVN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -32037,6 +32063,7 @@
 /area/station/commons/vacant_room/commissary)
 "luA" = (
 /obj/machinery/biogenerator,
+/obj/effect/mapping_helpers/paint_wall/priapus,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/hallway/secondary/service)
 "luH" = (
@@ -32550,6 +32577,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
+"lDw" = (
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
+/obj/machinery/door/poddoor/preopen{
+	id = "hop";
+	name = "privacy shutters"
+	},
+/obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/open/floor/plating,
+/area/station/command/heads_quarters/hop)
 "lDL" = (
 /obj/structure/sign/warning/biohazard,
 /turf/closed/wall/prepainted/daedalus,
@@ -33757,6 +33794,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
+"lXS" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/closed/wall/r_wall/prepainted/daedalus,
+/area/station/command/heads_quarters/captain/private)
 "lXU" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -35439,9 +35480,11 @@
 /area/station/ai_monitored/turret_protected/ai)
 "mBi" = (
 /obj/structure/sign/warning/securearea,
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/command/bridge)
 "mBm" = (
+/obj/effect/mapping_helpers/paint_wall/priapus,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/service/hydroponics)
 "mBo" = (
@@ -36939,6 +36982,7 @@
 	name = "bridge blast door"
 	},
 /obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/open/floor/plating,
 /area/station/command/bridge)
 "ndt" = (
@@ -37318,6 +37362,10 @@
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/hallway/primary/port)
+"nkq" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/closed/wall/prepainted/daedalus,
+/area/station/maintenance/central)
 "nkv" = (
 /obj/machinery/holopad,
 /obj/structure/cable,
@@ -46655,6 +46703,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "qCb" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/hallway/secondary/command)
 "qCk" = (
@@ -53392,6 +53441,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/science/xenobiology/hallway)
+"sSs" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/turf/closed/wall/r_wall/prepainted/daedalus,
+/area/station/command/bridge)
 "sSD" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance,
@@ -56193,6 +56246,7 @@
 /obj/structure/sign/directions/engineering{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/hallway/secondary/command)
 "tSc" = (
@@ -57223,6 +57277,7 @@
 /turf/open/floor/iron,
 /area/station/security/prison)
 "ujD" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/command/heads_quarters/captain/private)
 "ujS" = (
@@ -58419,6 +58474,7 @@
 	name = "Council Blast Doors"
 	},
 /obj/structure/cable,
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/open/floor/plating,
 /area/station/command/bridge)
 "uCH" = (
@@ -60322,6 +60378,7 @@
 /area/station/medical/medbay/lobby)
 "vqS" = (
 /obj/effect/spawner/structure/window/prepainted/daedalus,
+/obj/effect/mapping_helpers/paint_wall/priapus,
 /turf/open/floor/plating,
 /area/station/hallway/primary/central)
 "vqW" = (
@@ -64668,6 +64725,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "wNM" = (
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/command/heads_quarters/hop)
 "wOc" = (
@@ -65821,6 +65879,7 @@
 /area/station/hallway/secondary/entry)
 "xgC" = (
 /obj/effect/spawner/structure/window/prepainted/daedalus,
+/obj/effect/mapping_helpers/paint_wall/priapus,
 /turf/open/floor/plating,
 /area/station/service/hydroponics)
 "xhj" = (
@@ -67302,6 +67361,7 @@
 	dir = 1;
 	pixel_y = -8
 	},
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/command/heads_quarters/captain/private)
 "xJW" = (
@@ -92219,7 +92279,7 @@ cJH
 oGC
 dtb
 lRG
-gbv
+cIX
 pTs
 deS
 cjF
@@ -92474,7 +92534,7 @@ kgA
 xHc
 nCP
 bJE
-jzN
+lDw
 hJe
 tYo
 pTs
@@ -92733,7 +92793,7 @@ nCP
 utE
 dtb
 jGv
-gbv
+cIX
 lhB
 deS
 xln
@@ -92990,7 +93050,7 @@ sXL
 goL
 dtb
 tTv
-gbv
+cIX
 pTs
 deS
 rzy
@@ -93247,7 +93307,7 @@ nCP
 lDY
 dtb
 iUS
-gbv
+cIX
 pTs
 yfp
 cjF
@@ -93502,9 +93562,9 @@ cHe
 rua
 uhs
 deh
-jzN
+lDw
 hJe
-gbv
+cIX
 pTs
 imP
 cjF
@@ -94018,7 +94078,7 @@ qXZ
 uol
 dtb
 uzz
-gyY
+dSV
 pTs
 gIL
 heG
@@ -94265,16 +94325,16 @@ jFH
 aaf
 aaf
 aaf
-paL
-paL
+sSs
+sSs
 sfh
-paL
+sSs
 wNM
 wNM
 aYr
 wNM
 dtb
-gyY
+dSV
 cXk
 nkd
 hZU
@@ -94779,7 +94839,7 @@ jFH
 aaf
 ncU
 ncU
-paL
+sSs
 lAq
 bVd
 tjo
@@ -95046,7 +95106,7 @@ dDR
 dDR
 vGz
 dDR
-paL
+sSs
 gzw
 xuM
 gbv
@@ -95303,7 +95363,7 @@ ets
 kGr
 bVd
 sBg
-paL
+sSs
 oOi
 aHH
 gyY
@@ -95805,7 +95865,7 @@ gvU
 diG
 jFH
 aaf
-paL
+sSs
 cXa
 osa
 weF
@@ -96833,7 +96893,7 @@ eCV
 tHL
 jFH
 aaf
-paL
+sSs
 vWy
 osa
 osa
@@ -97359,7 +97419,7 @@ ets
 xtG
 tAL
 xna
-paL
+sSs
 xJx
 avX
 gyY
@@ -97616,7 +97676,7 @@ dDR
 dDR
 pzd
 dDR
-paL
+sSs
 oRa
 cDd
 gbv
@@ -97863,7 +97923,7 @@ jFH
 aaf
 ncU
 ncU
-paL
+sSs
 tXd
 tAL
 tjo
@@ -98377,16 +98437,16 @@ jFH
 aaf
 aaf
 aaf
+sSs
 paL
-paL
-paL
+sSs
 mzN
 ufB
-paL
-qiE
-qiE
+sSs
+lXS
+lXS
 gDN
-qiE
+lXS
 xJH
 mBp
 rdA
@@ -98630,21 +98690,21 @@ oBF
 uIi
 uxk
 fcd
-qiE
-qiE
-qiE
-qiE
-qiE
+lXS
+lXS
+lXS
+lXS
+lXS
 mvr
+lXS
 qiE
 qiE
-qiE
-qiE
+lXS
 aMd
 elY
 qvC
 vgf
-qiE
+lXS
 mBp
 cDd
 uYM
@@ -98887,7 +98947,7 @@ pwm
 iea
 utj
 pDe
-qiE
+lXS
 mvM
 pxf
 oiB
@@ -99144,7 +99204,7 @@ pwm
 hWB
 uxk
 qOZ
-qiE
+lXS
 buY
 iRh
 xxB
@@ -99158,7 +99218,7 @@ kSR
 hXV
 aHW
 jzi
-qiE
+lXS
 noj
 iTz
 uYM
@@ -99401,7 +99461,7 @@ pwm
 iEg
 fzm
 dza
-qiE
+lXS
 bJz
 jzi
 dvK
@@ -99415,7 +99475,7 @@ sle
 psW
 hJN
 oSO
-qiE
+lXS
 mBp
 cDd
 vut
@@ -99658,7 +99718,7 @@ ppF
 hWB
 qNH
 tHL
-qiE
+lXS
 nah
 xrH
 oKT
@@ -99672,7 +99732,7 @@ oKT
 sju
 vVT
 wuJ
-qiE
+lXS
 hpo
 mvd
 hdu
@@ -99915,7 +99975,7 @@ sKo
 uIi
 uxk
 sWS
-qiE
+lXS
 jWZ
 jzi
 dnC
@@ -99929,7 +99989,7 @@ aZW
 pUU
 vEj
 lJG
-qiE
+lXS
 aIV
 cDd
 gcE
@@ -100172,7 +100232,7 @@ jXO
 hWB
 kif
 fcd
-qiE
+lXS
 tRL
 dzT
 iMR
@@ -100180,13 +100240,13 @@ muH
 dkW
 ujD
 ujD
-qiE
-qiE
-qiE
+lXS
+lXS
+lXS
 ygA
-qiE
-qiE
-qiE
+lXS
+lXS
+lXS
 mBp
 oNn
 uYM
@@ -100429,7 +100489,7 @@ ppF
 hWB
 uxk
 bcy
-qiE
+lXS
 wzi
 xSx
 fsa
@@ -100437,7 +100497,7 @@ jis
 cUf
 ujD
 vYa
-qiE
+lXS
 kdn
 ujV
 bao
@@ -100686,20 +100746,20 @@ rFJ
 hWB
 uxk
 hGd
-qiE
-qiE
-qiE
-qiE
-qiE
-qiE
-qiE
-qiE
-qiE
+lXS
+lXS
+lXS
+lXS
+lXS
+lXS
+lXS
+lXS
+lXS
 sco
-hdp
-hdp
-hdp
-hdp
+nkq
+nkq
+nkq
+nkq
 iQj
 juk
 rvp
@@ -100972,11 +101032,11 @@ mMG
 glS
 uxk
 vrt
-fWG
-fWG
-fWG
-fWG
-fWG
+jtD
+jtD
+jtD
+jtD
+jtD
 lQc
 faD
 kOT
@@ -101233,7 +101293,7 @@ vqS
 ikb
 ndt
 lNb
-fWG
+jtD
 aLU
 vtI
 rdt
@@ -101490,7 +101550,7 @@ gHB
 slr
 slr
 jTc
-fWG
+jtD
 lQc
 faD
 qkt
@@ -101747,7 +101807,7 @@ vqS
 bcT
 slr
 vSU
-fWG
+jtD
 kRH
 faD
 xcR
@@ -101996,7 +102056,7 @@ tZV
 hQl
 bOF
 vqY
-pkc
+jVF
 xgC
 hIx
 jGC
@@ -102004,7 +102064,7 @@ mBm
 xgC
 oKN
 xgC
-fWG
+jtD
 lQc
 faD
 bOY
@@ -102253,7 +102313,7 @@ vjI
 hQl
 xGR
 hRb
-pkc
+jVF
 eoF
 wWZ
 hlI
@@ -102261,7 +102321,7 @@ iyR
 lCj
 lRc
 lYD
-fWG
+jtD
 hzf
 kYS
 yaI
@@ -102510,7 +102570,7 @@ emZ
 hQl
 xPq
 iJi
-pkc
+jVF
 tie
 ehc
 aMH
@@ -102767,7 +102827,7 @@ nhz
 hQl
 oRP
 wkm
-pkc
+jVF
 kzh
 vcE
 aDR
@@ -102775,7 +102835,7 @@ aDR
 aDR
 cml
 uMM
-fWG
+jtD
 sXI
 faD
 bwk
@@ -103032,7 +103092,7 @@ xXf
 xXf
 cml
 cfE
-fWG
+jtD
 nXQ
 faD
 rMG
@@ -103289,7 +103349,7 @@ qer
 qer
 obu
 cbA
-fWG
+jtD
 lQc
 faD
 msH
@@ -103546,7 +103606,7 @@ xXf
 xXf
 rsJ
 wuz
-fWG
+jtD
 iBv
 faD
 mpU
@@ -103803,7 +103863,7 @@ aDR
 aDR
 tZS
 uob
-fWG
+jtD
 lQc
 faD
 dGh
@@ -104052,7 +104112,7 @@ bso
 kqZ
 pfY
 nLF
-pkc
+jVF
 mBm
 adj
 cfG
@@ -104060,7 +104120,7 @@ xXf
 rUT
 xCt
 tBu
-fWG
+jtD
 pID
 faD
 faD
@@ -104310,14 +104370,14 @@ bZr
 ddg
 isl
 dzI
-pkc
+jVF
 ycg
 cfG
 qer
 qer
 tSc
 aFj
-fWG
+jtD
 lQc
 tGC
 hqD
@@ -104567,14 +104627,14 @@ tbk
 muw
 hZG
 paR
-pkc
+jVF
 bVq
 cfG
 fnd
 fnd
 ecc
 kzm
-fWG
+jtD
 liv
 fWG
 fWG
@@ -104824,14 +104884,14 @@ tbk
 uDr
 umx
 tdU
-pkc
+jVF
 mBm
 qlO
 ixL
 ixL
 bXj
 wuz
-fWG
+jtD
 fHM
 gnV
 elK
@@ -105088,7 +105148,7 @@ gYS
 uJF
 mmn
 jBG
-fWG
+jtD
 pOK
 tLU
 pAd
@@ -105345,7 +105405,7 @@ ofv
 djo
 bGM
 pUM
-fWG
+jtD
 vQL
 rlE
 kyB
@@ -105602,7 +105662,7 @@ reY
 uzG
 sOX
 wgT
-bAK
+gxG
 uHh
 oid
 jXy
@@ -105856,10 +105916,10 @@ pkc
 mBm
 lmL
 mBm
-bAK
-bAK
-bAK
-bAK
+gxG
+gxG
+gxG
+gxG
 bSC
 yjS
 gkn

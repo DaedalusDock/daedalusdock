@@ -473,7 +473,7 @@
 		if(!check_rights(R_ADMIN))
 			return
 
-		if(SSticker?.mode)
+		if(Master.current_runlevel > RUNLEVEL_LOBBY)
 			return tgui_alert(usr, "The game has already started.")
 
 		dynamic_mode_options(usr)

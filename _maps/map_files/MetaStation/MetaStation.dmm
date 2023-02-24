@@ -23,7 +23,7 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "aax" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/prison)
 "aaC" = (
 /obj/effect/turf_decal/stripes/line{
@@ -60,7 +60,7 @@
 /turf/open/floor/iron/dark,
 /area/security/execution/education)
 "abe" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/prison)
 "abq" = (
 /obj/structure/railing,
@@ -99,7 +99,7 @@
 /turf/open/floor/plating,
 /area/security/prison/safe)
 "abJ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/execution/education)
 "abR" = (
 /obj/structure/showcase/cyborg/old{
@@ -174,7 +174,7 @@
 /turf/open/floor/iron,
 /area/security/courtroom)
 "acv" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/execution/education)
 "acx" = (
 /obj/structure/bed,
@@ -392,10 +392,10 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "adY" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/warden)
 "aee" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/solars/port/fore)
 "aej" = (
@@ -419,15 +419,15 @@
 /turf/open/floor/wood/parquet,
 /area/medical/psychology)
 "aep" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/prison)
 "aeq" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/security/armory)
 "aey" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/range)
 "aeG" = (
 /obj/effect/turf_decal/stripes/line{
@@ -437,7 +437,7 @@
 /turf/open/floor/plating,
 /area/maintenance/solars/port/fore)
 "aeJ" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/prison/safe)
 "aeO" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
@@ -507,7 +507,7 @@
 /turf/open/floor/iron,
 /area/cargo/sorting)
 "afJ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/prison/safe)
@@ -530,7 +530,7 @@
 /area/security/brig)
 "afT" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/brig)
 "afU" = (
 /obj/structure/table,
@@ -543,7 +543,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "agf" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/engine,
 /area/science/cytology)
 "agi" = (
@@ -560,10 +560,10 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/captain/private)
 "agq" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/fore)
 "agA" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/solars/port/fore)
 "agD" = (
 /obj/structure/sign/warning/vacuum/external{
@@ -575,7 +575,7 @@
 	},
 /area/maintenance/solars/port/fore)
 "agH" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/prison/safe)
 "agJ" = (
 /obj/machinery/door/firedoor,
@@ -613,10 +613,10 @@
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "ahp" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/disposal)
 "ahq" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "ahs" = (
@@ -631,7 +631,7 @@
 	},
 /area/security/prison)
 "ahx" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/brig)
 "ahy" = (
 /obj/machinery/door/window/left/directional/north{
@@ -654,7 +654,7 @@
 /area/security/brig)
 "ahH" = (
 /obj/structure/disposalpipe/segment,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/sorting)
 "ahI" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
@@ -740,14 +740,14 @@
 /turf/open/floor/plating,
 /area/maintenance/solars/port/fore)
 "aio" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/port/fore)
 "aip" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "aiq" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/brig)
@@ -777,7 +777,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "aiJ" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/range)
 "aiN" = (
 /obj/effect/spawner/random/entertainment/arcade,
@@ -832,10 +832,10 @@
 /turf/open/space,
 /area/space/nearstation)
 "ajm" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/brig)
 "ajo" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/brig)
 "ajp" = (
@@ -862,13 +862,13 @@
 /turf/open/floor/iron/dark,
 /area/engineering/transit_tube)
 "ajx" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/warden)
 "ajz" = (
 /obj/structure/sign/directions/evac,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/lesser)
 "ajN" = (
 /obj/structure/chair/stool/directional/north,
@@ -910,7 +910,7 @@
 /turf/open/floor/plating,
 /area/service/chapel/funeral)
 "akW" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/range)
@@ -942,14 +942,14 @@
 /turf/open/floor/iron/dark,
 /area/hallway/primary/central)
 "alq" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/department/engine)
 "alr" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "alv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/solars/starboard/fore)
 "alx" = (
@@ -1022,7 +1022,7 @@
 	},
 /area/maintenance/starboard/fore)
 "alK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port)
 "alL" = (
 /turf/open/floor/iron/dark/side{
@@ -1104,7 +1104,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port)
 "anb" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
@@ -1121,7 +1121,7 @@
 	},
 /area/security/prison)
 "anl" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/ai_monitored/security/armory)
@@ -1292,7 +1292,7 @@
 /turf/open/floor/iron/dark,
 /area/hallway/primary/port)
 "apm" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/solars/starboard/fore)
 "apn" = (
 /obj/machinery/power/solar_control{
@@ -1477,7 +1477,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/break_room)
 "ary" = (
@@ -1617,7 +1617,7 @@
 /turf/open/floor/wood,
 /area/commons/lounge)
 "atm" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/department/engine)
 "atp" = (
 /obj/machinery/door/poddoor/shutters{
@@ -1941,7 +1941,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology/hallway)
 "awx" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/disposal/incinerator)
 "awD" = (
@@ -2017,7 +2017,7 @@
 /area/security/warden)
 "axi" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/warden)
 "axj" = (
@@ -2109,7 +2109,7 @@
 /area/maintenance/starboard/lesser)
 "ayc" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/psychology)
 "aye" = (
 /obj/structure/lattice/catwalk,
@@ -2120,7 +2120,7 @@
 /area/space/nearstation)
 "ayC" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/iron,
 /area/security/brig)
 "ayD" = (
@@ -2129,10 +2129,10 @@
 /turf/open/floor/wood,
 /area/maintenance/port/aft)
 "ayF" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/detectives_office)
 "ayG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "detective_shutters";
 	name = "detective's office shutters"
@@ -2141,7 +2141,7 @@
 /turf/open/floor/plating,
 /area/security/detectives_office)
 "ayJ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/detectives_office)
 "ayK" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -2311,7 +2311,7 @@
 /turf/open/floor/iron,
 /area/security/warden)
 "aBc" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "briglockdown";
@@ -2469,7 +2469,7 @@
 /area/commons/fitness/recreation)
 "aBR" = (
 /obj/structure/sign/warning/coldtemp,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/engine,
 /area/science/xenobiology)
 "aBS" = (
@@ -2526,7 +2526,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
 "aCk" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "Secure Gate";
 	name = "brig shutters"
@@ -2561,7 +2561,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/greater)
 "aCp" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "briglockdown";
@@ -2616,13 +2616,13 @@
 /turf/open/floor/plating,
 /area/construction/mining/aux_base)
 "aDb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/construction/mining/aux_base)
 "aDo" = (
 /turf/open/floor/iron/chapel,
 /area/service/chapel)
 "aDv" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/fore)
 "aDw" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -2631,7 +2631,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "aDz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/primary/fore)
 "aDB" = (
@@ -2703,7 +2703,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "aEH" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/construction/storage_wing)
@@ -2880,7 +2880,7 @@
 /area/maintenance/fore/lesser)
 "aGl" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/heads_quarters/cmo)
 "aGu" = (
 /obj/structure/filingcabinet,
@@ -2955,10 +2955,10 @@
 /turf/open/floor/iron,
 /area/construction/storage_wing)
 "aHx" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/primary/fore)
 "aHy" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/primary/fore)
@@ -2971,10 +2971,10 @@
 	dir = 1;
 	pixel_y = 8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/courtroom)
 "aHD" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/courtroom)
 "aHE" = (
 /obj/effect/turf_decal/trimline/red/filled/corner,
@@ -3084,15 +3084,15 @@
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
 "aJG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/checkpoint/supply)
 "aJK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/supply)
 "aJS" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/ai_upload)
 "aJU" = (
 /obj/structure/cable,
@@ -3255,7 +3255,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos/pumproom)
 "aNZ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/ai_upload)
@@ -3282,7 +3282,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "aOy" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/medical)
 "aOI" = (
 /obj/structure/cable,
@@ -3345,7 +3345,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "aPB" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/courtroom)
 "aPI" = (
@@ -3470,7 +3470,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/greater)
 "aRA" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/entry)
 "aRB" = (
 /obj/effect/turf_decal/stripes/line{
@@ -3576,7 +3576,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "aTk" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/courtroom)
 "aTl" = (
@@ -3620,7 +3620,7 @@
 /obj/structure/sign/directions/science{
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/lounge)
 "aTQ" = (
 /obj/structure/window/reinforced{
@@ -3635,16 +3635,16 @@
 /turf/open/floor/iron,
 /area/construction/storage_wing)
 "aTV" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/ai)
 "aTY" = (
 /obj/machinery/smartfridge/chemistry/preloaded,
-/obj/structure/low_wall,
+/obj/structure/low_wall/prepainted/daedalus,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "aUb" = (
 /obj/structure/sign/warning/pods,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/entry)
 "aUj" = (
 /obj/structure/closet/crate{
@@ -3699,15 +3699,15 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/command)
 "aUv" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/primary/central)
 "aUw" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "aUx" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/ai_upload_foyer)
 "aUB" = (
 /obj/structure/sign/directions/security{
@@ -3720,7 +3720,7 @@
 /obj/structure/sign/directions/command{
 	pixel_y = -8
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/primary/fore)
 "aUC" = (
 /obj/machinery/door/window/left/directional/north{
@@ -3757,7 +3757,7 @@
 /obj/structure/sign/directions/science{
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/courtroom)
 "aUG" = (
 /obj/structure/table,
@@ -3842,7 +3842,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
 "aVs" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/secondary/entry)
 "aVt" = (
@@ -4011,7 +4011,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aYu" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/engineering)
 "aYx" = (
 /obj/structure/lattice,
@@ -4021,7 +4021,7 @@
 /turf/open/space,
 /area/space/nearstation)
 "aYz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "AI Core shutters";
 	name = "AI core shutters"
@@ -4046,7 +4046,7 @@
 /area/medical/surgery/theatre)
 "aYC" = (
 /obj/structure/sign/warning/docking,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/entry)
 "aYE" = (
 /obj/effect/turf_decal/stripes/line{
@@ -4187,7 +4187,7 @@
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
 "baE" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/port)
 "baG" = (
 /obj/structure/disposalpipe/segment,
@@ -4261,7 +4261,7 @@
 /turf/open/floor/iron/white,
 /area/science/lobby)
 "bbo" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/solars/port/fore)
 "bbJ" = (
 /obj/effect/turf_decal/tile/blue{
@@ -4270,7 +4270,7 @@
 /turf/open/floor/iron/white/corner,
 /area/hallway/secondary/entry)
 "bbK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/customs)
 "bbL" = (
 /obj/structure/cable,
@@ -4319,10 +4319,10 @@
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "bcg" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/central)
 "bci" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "bcl" = (
@@ -4394,7 +4394,7 @@
 /turf/open/floor/plating,
 /area/maintenance/central)
 "bdG" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/central)
 "bdO" = (
 /obj/machinery/door/firedoor,
@@ -4437,7 +4437,7 @@
 /area/command/teleporter)
 "beq" = (
 /obj/structure/sign/warning/vacuum/external,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/space/nearstation)
 "ber" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -4451,7 +4451,7 @@
 /turf/open/floor/engine/n2o,
 /area/engineering/atmos)
 "beK" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/checkpoint/customs)
@@ -4473,12 +4473,12 @@
 /turf/open/floor/iron,
 /area/cargo/sorting)
 "bfj" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/medbay/central)
 "bfq" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/central)
 "bfA" = (
@@ -4495,7 +4495,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
 "bfN" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/starboard)
 "bfQ" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -4514,7 +4514,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
 "bfX" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/checkpoint/engineering)
@@ -4523,7 +4523,7 @@
 	name = "Mixed Air Tank In"
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "bgn" = (
 /obj/structure/window/reinforced{
@@ -4626,7 +4626,7 @@
 "bhU" = (
 /obj/machinery/meter,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "bhW" = (
 /obj/item/kirbyplants,
@@ -4678,7 +4678,7 @@
 /area/hallway/secondary/entry)
 "biw" = (
 /obj/structure/sign/warning/pods,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/customs)
 "biy" = (
 /obj/machinery/door/airlock/security{
@@ -4813,10 +4813,10 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "bjP" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/aisat/foyer)
 "bjQ" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/aisat_interior)
 "bjR" = (
 /obj/effect/decal/cleanable/dirt,
@@ -4902,7 +4902,7 @@
 /turf/open/space,
 /area/space/nearstation)
 "blx" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/space/nearstation)
 "bly" = (
 /obj/structure/window/reinforced{
@@ -5145,7 +5145,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "bnM" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/primary/port)
 "bnO" = (
@@ -5169,7 +5169,7 @@
 /area/cargo/sorting)
 "bob" = (
 /obj/structure/sign/directions/evac,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/greater)
 "bot" = (
 /obj/machinery/door/firedoor,
@@ -5321,7 +5321,7 @@
 /area/commons/toilet/auxiliary)
 "bpG" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/medbay/central)
 "bpT" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -5662,7 +5662,7 @@
 /turf/open/space,
 /area/space/nearstation)
 "btL" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/tcommsat/computer)
 "btO" = (
 /obj/effect/turf_decal/stripes/line{
@@ -5768,7 +5768,7 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/hos)
 "bvv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/storage/tools)
 "bvw" = (
@@ -5974,7 +5974,7 @@
 /turf/open/floor/iron/white,
 /area/science/cytology)
 "bzJ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/command)
 "bzL" = (
 /obj/effect/turf_decal/bot,
@@ -5987,7 +5987,7 @@
 /turf/open/floor/iron,
 /area/security/holding_cell)
 "bzR" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/secondary/command)
 "bzU" = (
 /obj/structure/window/reinforced,
@@ -6038,7 +6038,7 @@
 /turf/open/floor/iron/dark,
 /area/medical/break_room)
 "bAp" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/mixing/launch)
 "bAr" = (
@@ -6175,10 +6175,10 @@
 /obj/structure/sign/directions/engineering{
 	dir = 4
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/command)
 "bBz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/secondary/command)
@@ -6207,7 +6207,7 @@
 	dir = 1;
 	pixel_y = -8
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/secondary/command)
 "bBP" = (
 /obj/structure/sign/directions/engineering{
@@ -6221,7 +6221,7 @@
 	dir = 8;
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/central)
 "bBR" = (
 /obj/machinery/navbeacon{
@@ -6255,10 +6255,10 @@
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "bCD" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/tcommsat/server)
 "bCE" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/tcommsat/server)
 "bCF" = (
@@ -6276,7 +6276,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "bCG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/sign/warning/vacuum/external,
 /turf/open/floor/plating,
 /area/hallway/secondary/entry)
@@ -6684,7 +6684,7 @@
 /obj/structure/sign/directions/science{
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/central)
 "bHj" = (
 /obj/structure/cable,
@@ -6927,7 +6927,7 @@
 /turf/open/floor/wood,
 /area/service/theater)
 "bJI" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmospherics_engine)
 "bJO" = (
 /obj/structure/chair{
@@ -7329,7 +7329,7 @@
 /area/service/hydroponics)
 "bQW" = (
 /obj/structure/sign/warning/radiation,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmospherics_engine)
 "bRg" = (
 /obj/machinery/computer/security/telescreen/entertainment/directional/east,
@@ -7405,7 +7405,7 @@
 /turf/open/floor/iron/dark,
 /area/science/storage)
 "bSS" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/central)
 "bSU" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -7457,7 +7457,7 @@
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "bTn" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/solars/port/aft)
 "bTq" = (
 /obj/machinery/camera/motion/directional/south{
@@ -7788,17 +7788,17 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bYc" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "bYi" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/hidden{
 	dir = 4
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/mixing)
 "bYC" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/solars/port/aft)
 "bYE" = (
@@ -7852,7 +7852,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
 "bZn" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/research)
 "bZp" = (
 /obj/machinery/door/airlock/maintenance{
@@ -8153,7 +8153,7 @@
 /area/medical/medbay/central)
 "cdz" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "cdI" = (
 /obj/effect/turf_decal/tile/purple,
@@ -8239,7 +8239,7 @@
 /turf/open/floor/iron/white,
 /area/medical/pharmacy)
 "cgd" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/lab)
 "cgg" = (
 /obj/structure/closet/toolcloset,
@@ -8263,13 +8263,13 @@
 /turf/open/floor/iron,
 /area/commons/storage/primary)
 "cgo" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/research)
 "cgq" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/genetics)
 "cgz" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "cgA" = (
 /obj/machinery/computer/security/labor{
@@ -8345,7 +8345,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "ciU" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "cjn" = (
@@ -8410,7 +8410,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "ckN" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
 "ckP" = (
@@ -8558,7 +8558,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "cmP" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/genetics)
 "cmS" = (
 /obj/structure/cable,
@@ -8629,7 +8629,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat/foyer)
 "cor" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "cos" = (
@@ -8855,7 +8855,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "crR" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/storage)
 "crU" = (
 /obj/machinery/camera/directional/west{
@@ -9070,10 +9070,10 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "cva" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/space_hut)
 "cvc" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/storage/primary)
 "cvl" = (
 /obj/structure/closet/crate/freezer/blood,
@@ -9097,7 +9097,7 @@
 /turf/open/floor/iron,
 /area/commons/toilet/auxiliary)
 "cvH" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/robotics/mechbay)
 "cvK" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -9277,7 +9277,7 @@
 /turf/open/floor/wood,
 /area/service/library)
 "cyK" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing)
 "cyR" = (
 /obj/effect/turf_decal/trimline/brown/filled/line{
@@ -9288,7 +9288,7 @@
 /turf/open/floor/iron,
 /area/construction/storage_wing)
 "czg" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chem_lockdown";
 	name = "Chemistry shutters"
@@ -9297,20 +9297,20 @@
 /turf/open/floor/plating,
 /area/medical/chemistry)
 "czh" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/lab)
 "czk" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/heads_quarters/captain/private)
 "czD" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/mixing)
 "czJ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/test_area)
 "czK" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating/airless,
 /area/science/test_area)
 "czL" = (
@@ -9489,7 +9489,7 @@
 	desc = "A warning sign which reads 'BOMB RANGE";
 	name = "BOMB RANGE"
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/test_area)
 "cBN" = (
 /obj/structure/chair,
@@ -9573,10 +9573,10 @@
 /turf/open/floor/iron/dark,
 /area/hallway/primary/aft)
 "cCn" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/robotics/mechbay)
 "cCq" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/robotics/lab)
 "cCy" = (
 /obj/effect/turf_decal/stripes/line,
@@ -9588,7 +9588,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible{
 	dir = 8
 	},
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "cCH" = (
@@ -9677,7 +9677,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "cDi" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/robotics/lab)
 "cDq" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -9712,7 +9712,7 @@
 /turf/open/space/basic,
 /area/space/nearstation)
 "cDE" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -10143,7 +10143,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cIg" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/server)
 "cIh" = (
 /obj/structure/cable,
@@ -10174,7 +10174,7 @@
 /area/hallway/primary/aft)
 "cIH" = (
 /obj/structure/sign/directions/evac,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/hallway/primary/aft)
 "cII" = (
 /obj/effect/turf_decal/box/white{
@@ -10310,7 +10310,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
 "cKP" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/solars/starboard/aft)
 "cLm" = (
 /turf/open/floor/iron,
@@ -10567,7 +10567,7 @@
 /turf/open/floor/grass,
 /area/hallway/secondary/exit/departure_lounge)
 "cNP" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/secondary/exit/departure_lounge)
@@ -10674,7 +10674,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "cPb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/exit/departure_lounge)
 "cPm" = (
 /obj/machinery/conveyor{
@@ -10739,7 +10739,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "cPv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/secondary/exit/departure_lounge)
 "cPO" = (
@@ -10887,7 +10887,7 @@
 /area/hallway/secondary/exit/departure_lounge)
 "cRa" = (
 /obj/structure/sign/warning/biohazard,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/xenobiology)
 "cRb" = (
 /obj/effect/turf_decal/tile/yellow{
@@ -10900,7 +10900,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "cRi" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/xenobiology)
 "cRm" = (
 /obj/structure/extinguisher_cabinet/directional/west,
@@ -10952,7 +10952,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
 "cSd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/xenobiology)
 "cSn" = (
 /turf/open/floor/engine,
@@ -11212,7 +11212,7 @@
 /turf/open/floor/iron/white,
 /area/science/lab)
 "cWK" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/construction/mining/aux_base)
 "cWM" = (
@@ -11254,7 +11254,7 @@
 /area/medical/pharmacy)
 "cXC" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/nuke_storage)
 "cXH" = (
 /obj/machinery/firealarm/directional/east,
@@ -11500,7 +11500,7 @@
 /turf/open/floor/engine,
 /area/science/xenobiology)
 "dbv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/department/science/xenobiology)
 "dby" = (
@@ -11520,14 +11520,14 @@
 /turf/open/floor/iron,
 /area/science/mixing)
 "dbN" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/solars/starboard/aft)
 "dci" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 10
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "dcr" = (
 /obj/structure/disposalpipe/segment{
@@ -11719,7 +11719,7 @@
 /area/security/brig)
 "deP" = (
 /obj/structure/grille,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "deQ" = (
 /obj/machinery/seed_extractor,
@@ -11764,7 +11764,7 @@
 /area/engineering/break_room)
 "dfS" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/virology)
@@ -12169,7 +12169,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "dlV" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/department/science/xenobiology)
 "dlY" = (
 /obj/machinery/light/directional/south,
@@ -12231,13 +12231,13 @@
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "dne" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/fore)
 "dnh" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/fore)
 "dni" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/starboard/fore)
 "dnn" = (
@@ -12458,7 +12458,7 @@
 /turf/open/floor/iron/dark,
 /area/security/lockers)
 "dqy" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/dorms)
 "dqB" = (
 /obj/effect/turf_decal/stripes/line{
@@ -12482,7 +12482,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "dqT" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/fore)
 "dqU" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -12516,7 +12516,7 @@
 /area/science/research)
 "dsd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/chamber)
 "dsh" = (
 /obj/effect/turf_decal/delivery,
@@ -12737,7 +12737,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/break_room)
 "dux" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/aft)
 "duA" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -12781,7 +12781,7 @@
 /turf/open/floor/iron/white,
 /area/science/cytology)
 "duP" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/commons/dorms/cryo)
@@ -12846,7 +12846,7 @@
 	},
 /area/science/test_area)
 "dvY" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/aft)
 "dwv" = (
 /obj/structure/reagent_dispensers/watertank,
@@ -13057,7 +13057,7 @@
 /area/command/bridge)
 "dzX" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/treatment_center)
 "dAc" = (
 /obj/machinery/air_sensor/ordnance_mixing_tank,
@@ -13374,7 +13374,7 @@
 /turf/open/floor/iron,
 /area/engineering/gravity_generator)
 "dFH" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/medbay/lobby)
@@ -13765,7 +13765,7 @@
 /turf/open/floor/wood,
 /area/service/bar)
 "dNC" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "hop";
 	name = "privacy shutters"
@@ -13775,7 +13775,7 @@
 /area/command/heads_quarters/hop)
 "dND" = (
 /obj/structure/sign/warning/fire,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "dNL" = (
 /obj/effect/turf_decal/stripes/line,
@@ -13923,7 +13923,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
 "dQd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/science)
 "dQk" = (
 /obj/structure/table,
@@ -14009,7 +14009,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology/hallway)
 "dRW" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/lockers)
@@ -14147,7 +14147,7 @@
 "dUj" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/hidden,
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port)
 "dUw" = (
 /obj/effect/landmark/event_spawn,
@@ -14503,7 +14503,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos/storage/gas)
 "ebG" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/fitness/recreation)
 "ebL" = (
 /obj/structure/plasticflaps/opaque,
@@ -14569,7 +14569,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "ecz" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/dorms/cryo)
 "ecE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -14691,7 +14691,7 @@
 /turf/open/floor/iron/dark/textured,
 /area/engineering/atmos)
 "edV" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/holding_cell)
@@ -15054,7 +15054,7 @@
 /area/maintenance/port/fore)
 "ejL" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/range)
 "ejO" = (
@@ -15158,7 +15158,7 @@
 /area/maintenance/starboard/fore)
 "eli" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/pharmacy)
 "els" = (
 /obj/machinery/light/directional/south,
@@ -15390,7 +15390,7 @@
 /area/hallway/secondary/entry)
 "eqH" = (
 /obj/structure/sign/directions/evac,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/department/science/central)
 "eqN" = (
 /obj/effect/turf_decal/siding,
@@ -15498,7 +15498,7 @@
 /turf/open/floor/iron,
 /area/maintenance/starboard/lesser)
 "esg" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "main_surgery"
 	},
@@ -15881,7 +15881,7 @@
 /area/hallway/primary/port)
 "eyM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "eyN" = (
 /obj/structure/cable,
@@ -16003,7 +16003,7 @@
 /turf/open/floor/fake_snow,
 /area/maintenance/port/aft)
 "eBK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/xenobiology/hallway)
 "eCd" = (
 /obj/structure/chair/office{
@@ -16065,7 +16065,7 @@
 "eCP" = (
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
 /obj/machinery/meter,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "eDa" = (
 /obj/effect/turf_decal/tile/red{
@@ -16368,7 +16368,7 @@
 /area/medical/morgue)
 "eHY" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/medical)
 "eHZ" = (
 /obj/effect/decal/cleanable/dirt,
@@ -16615,7 +16615,7 @@
 /turf/open/floor/iron,
 /area/engineering/break_room)
 "eLr" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/theater)
 "eLy" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
@@ -16724,7 +16724,7 @@
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "eMW" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/library)
 "eMZ" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -16770,7 +16770,7 @@
 /turf/open/floor/iron/dark,
 /area/medical/medbay/central)
 "eNR" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/ai_monitored/aisat/exterior)
 "eNT" = (
 /obj/effect/turf_decal/arrows/red{
@@ -16998,7 +16998,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/security/armory)
 "eRE" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "pharmacy_shutters";
 	name = "Pharmacy shutters"
@@ -17083,7 +17083,7 @@
 /obj/structure/sign/directions/command{
 	pixel_y = -8
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/commons/storage/tools)
 "eSF" = (
 /obj/structure/sign/poster/contraband/robust_softdrinks{
@@ -17183,7 +17183,7 @@
 /area/engineering/main)
 "eTY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/aft/lesser)
 "eUu" = (
 /obj/structure/transit_tube/crossing/horizontal,
@@ -17254,7 +17254,7 @@
 /turf/open/floor/iron/white,
 /area/science/research)
 "eWd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/lab)
 "eWg" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -17387,7 +17387,7 @@
 /turf/open/floor/wood,
 /area/service/lawoffice)
 "eZU" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/courtroom)
 "fab" = (
 /obj/effect/turf_decal/bot,
@@ -17409,7 +17409,7 @@
 /obj/structure/sign/directions/science{
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/library)
 "fbl" = (
 /obj/structure/table,
@@ -17432,7 +17432,7 @@
 /area/commons/dorms)
 "fby" = (
 /obj/structure/sign/departments/science,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/lobby)
 "fbA" = (
 /obj/machinery/requests_console/directional/south{
@@ -17545,7 +17545,7 @@
 /area/medical/virology)
 "fed" = (
 /obj/structure/cable,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/fore)
 "fee" = (
 /obj/structure/lattice/catwalk,
@@ -17597,7 +17597,7 @@
 /turf/open/floor/engine,
 /area/science/misc_lab/range)
 "feo" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/cargo/sorting)
@@ -17890,7 +17890,7 @@
 /turf/open/floor/iron/white,
 /area/science/robotics/lab)
 "fkR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
 /turf/open/floor/plating,
 /area/engineering/atmos)
@@ -17932,7 +17932,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
 "fmR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /turf/open/floor/plating,
 /area/engineering/atmos)
@@ -18025,7 +18025,7 @@
 /turf/open/floor/engine,
 /area/engineering/atmospherics_engine)
 "fnU" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "ceprivacy";
 	name = "privacy shutter"
@@ -18071,7 +18071,7 @@
 /area/engineering/atmos)
 "foL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -18567,7 +18567,7 @@
 /turf/open/floor/iron,
 /area/commons/lounge)
 "fyZ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
 "fzi" = (
@@ -18761,14 +18761,14 @@
 /turf/open/floor/iron/checker,
 /area/science/research)
 "fCl" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/break_room)
 "fCv" = (
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible/layer5,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "fCy" = (
 /obj/machinery/door/firedoor,
@@ -19156,7 +19156,7 @@
 /area/maintenance/starboard/fore)
 "fHL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/service/janitor)
 "fHS" = (
 /obj/effect/decal/cleanable/dirt,
@@ -19431,7 +19431,7 @@
 /turf/open/floor/iron/white,
 /area/medical/storage)
 "fNA" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/office)
@@ -19522,7 +19522,7 @@
 /turf/open/floor/iron/white,
 /area/security/prison)
 "fPi" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "fPj" = (
 /obj/effect/turf_decal/stripes/line{
@@ -19593,7 +19593,7 @@
 /area/maintenance/port)
 "fQP" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/morgue)
 "fRb" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -19789,7 +19789,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "fTu" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/main)
 "fTw" = (
 /obj/machinery/airalarm/directional/east,
@@ -20108,7 +20108,7 @@
 /turf/open/space/basic,
 /area/maintenance/disposal/incinerator)
 "gaE" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/storage/gas)
 "gaP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -20124,7 +20124,7 @@
 /turf/open/floor/iron/white,
 /area/medical/cryo)
 "gbm" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmos";
@@ -20238,7 +20238,7 @@
 /area/engineering/supermatter/room)
 "gdd" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "gdK" = (
@@ -20359,7 +20359,7 @@
 /turf/open/floor/iron/white,
 /area/security/prison)
 "gfU" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/aisat/exterior)
 "gfV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -20468,7 +20468,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "ghd" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/department/science/xenobiology)
@@ -20498,7 +20498,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "ghL" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/space/nearstation)
 "ghP" = (
 /obj/machinery/firealarm/directional/west,
@@ -20561,7 +20561,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/supply/visible{
 	dir = 4
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/storage/gas)
 "giP" = (
 /obj/structure/bookcase/random/reference,
@@ -20840,7 +20840,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "gox" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/coldroom)
 "goE" = (
 /obj/structure/closet/wardrobe/white,
@@ -21088,7 +21088,7 @@
 /area/medical/morgue)
 "gtT" = (
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "gud" = (
@@ -21454,7 +21454,7 @@
 /area/science/xenobiology)
 "gAP" = (
 /obj/structure/sign/departments/cargo,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/warehouse)
 "gAR" = (
 /obj/structure/flora/junglebush/c,
@@ -22136,7 +22136,7 @@
 /area/space/nearstation)
 "gRn" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "gRv" = (
 /obj/effect/landmark/start/scientist,
@@ -22172,7 +22172,7 @@
 	},
 /area/maintenance/aft/greater)
 "gSe" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/iron/dark,
 /area/service/chapel/office)
 "gSf" = (
@@ -22573,7 +22573,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/aft)
 "gZp" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/greater)
 "gZq" = (
 /obj/effect/turf_decal/siding/wood{
@@ -22613,7 +22613,7 @@
 /area/engineering/main)
 "gZM" = (
 /obj/structure/sign/warning/pods,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/department/engine)
 "hac" = (
 /obj/machinery/status_display/ai/directional/north,
@@ -22729,7 +22729,7 @@
 /turf/open/floor/iron/white,
 /area/science/lobby)
 "hbO" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/captain/private)
 "hco" = (
 /obj/effect/turf_decal/stripes/corner{
@@ -23005,7 +23005,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/checkpoint/engineering)
 "hfv" = (
 /obj/structure/table/glass,
@@ -23272,7 +23272,7 @@
 /turf/open/floor/wood,
 /area/service/theater)
 "hkR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/service/bar)
 "hkS" = (
@@ -23321,7 +23321,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "hlh" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/bridge)
 "hlv" = (
 /obj/effect/turf_decal/tile/red{
@@ -23384,7 +23384,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "hmD" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/sign/warning/vacuum/external,
 /turf/open/floor/plating,
 /area/cargo/storage)
@@ -23508,7 +23508,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "hoy" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/warehouse)
 "hoz" = (
@@ -23994,7 +23994,7 @@
 /turf/open/floor/carpet,
 /area/service/theater)
 "hya" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "hyg" = (
@@ -24069,7 +24069,7 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/hop)
 "hyY" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "hosspace";
@@ -24095,7 +24095,7 @@
 /turf/open/floor/carpet,
 /area/command/bridge)
 "hzu" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/teleporter)
 "hzH" = (
 /obj/structure/table,
@@ -24114,7 +24114,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "hzW" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /turf/open/floor/plating,
@@ -24176,7 +24176,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "hBJ" = (
 /obj/structure/cable,
@@ -24220,7 +24220,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/greater)
 "hCo" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/lesser)
 "hCp" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -24796,7 +24796,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
 "hNV" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/lounge)
 "hNZ" = (
@@ -24949,7 +24949,7 @@
 /turf/open/floor/iron,
 /area/security/courtroom)
 "hRx" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/greater)
 "hRC" = (
 /obj/machinery/camera/directional/east{
@@ -25053,7 +25053,7 @@
 /area/hallway/secondary/entry)
 "hTd" = (
 /obj/machinery/button/ignition/incinerator/atmos,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "hTj" = (
 /obj/structure/table,
@@ -25360,7 +25360,7 @@
 /area/maintenance/disposal)
 "iac" = (
 /obj/machinery/smartfridge/chemistry/preloaded,
-/obj/structure/low_wall,
+/obj/structure/low_wall/prepainted/daedalus,
 /turf/open/floor/iron/white,
 /area/medical/pharmacy)
 "iad" = (
@@ -25421,7 +25421,7 @@
 "ibf" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible/layer5,
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "ibj" = (
 /obj/item/paper_bin{
@@ -25484,7 +25484,7 @@
 "ick" = (
 /obj/structure/sign/departments/chemistry/pharmacy,
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/pharmacy)
 "icu" = (
 /obj/structure/noticeboard/directional/north{
@@ -25534,7 +25534,7 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/captain/private)
 "idw" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "Xenolab";
 	name = "test chamber blast door"
@@ -25576,7 +25576,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/hos)
 "iej" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "rdoffice";
 	name = "Research Director's Shutters"
@@ -25727,7 +25727,7 @@
 /turf/open/floor/iron/white/corner,
 /area/hallway/secondary/entry)
 "ihQ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/heads_quarters/rd)
 "ihT" = (
 /obj/machinery/light/directional/north,
@@ -25851,7 +25851,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/satellite)
 "ikK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/vacant_room/office)
 "ikU" = (
 /obj/machinery/door/airlock/engineering/glass/critical{
@@ -26159,7 +26159,7 @@
 /area/engineering/atmospherics_engine)
 "iqM" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "iqP" = (
 /obj/effect/decal/cleanable/dirt,
@@ -26269,7 +26269,7 @@
 /turf/open/floor/wood,
 /area/service/theater)
 "isG" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmospherics_engine)
 "isH" = (
 /obj/structure/table/glass,
@@ -26377,7 +26377,7 @@
 /turf/open/floor/iron/white,
 /area/medical/office)
 "ium" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/bridge)
 "iuy" = (
 /obj/effect/turf_decal/stripes/line,
@@ -26896,7 +26896,7 @@
 /turf/open/floor/carpet,
 /area/service/theater)
 "iFJ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chapel_shutters_parlour";
 	name = "chapel shutters"
@@ -26918,7 +26918,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "iFZ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/sorting)
 "iGi" = (
 /obj/item/crowbar,
@@ -26929,7 +26929,7 @@
 "iGj" = (
 /obj/structure/sign/directions/evac,
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/chemistry)
 "iGm" = (
 /obj/structure/cable,
@@ -26986,7 +26986,7 @@
 /turf/open/floor/plating,
 /area/medical/abandoned)
 "iHl" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rndlab2";
 	name = "Secondary Research and Development Shutter"
@@ -27202,7 +27202,7 @@
 /turf/open/floor/grass,
 /area/science/research)
 "iLp" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/gateway)
 "iLA" = (
 /obj/machinery/airalarm/directional/east,
@@ -27517,7 +27517,7 @@
 /turf/open/floor/iron/grimy,
 /area/service/chapel/office)
 "iRA" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/chapel/office)
 "iRC" = (
 /obj/structure/chair/stool/directional/west,
@@ -28120,7 +28120,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/greater)
 "jcC" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "council blast";
 	name = "Council Blast Doors"
@@ -28206,7 +28206,7 @@
 /turf/open/floor/iron/white,
 /area/medical/pharmacy)
 "jeM" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/science/research)
@@ -28512,7 +28512,7 @@
 /turf/open/floor/iron,
 /area/construction/mining/aux_base)
 "jmf" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/storage/tech)
 "jmD" = (
 /obj/structure/table/reinforced,
@@ -28572,7 +28572,7 @@
 	id = "rdordnance";
 	name = "Ordnance Lab Shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/firedoor/heavy,
 /turf/open/floor/plating,
 /area/science/mixing)
@@ -28923,7 +28923,7 @@
 /turf/open/floor/iron,
 /area/engineering/main)
 "jrQ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/command/heads_quarters/ce)
@@ -29106,7 +29106,7 @@
 /area/cargo/warehouse)
 "juX" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/aft/greater)
 "jve" = (
 /obj/structure/sign/poster/contraband/random/directional/east,
@@ -29115,7 +29115,7 @@
 	},
 /area/maintenance/port/aft)
 "jvq" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rdordnance";
@@ -29145,7 +29145,7 @@
 /turf/open/floor/iron/white,
 /area/science/research)
 "jvD" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "jvO" = (
 /obj/machinery/ai_slipper{
@@ -29264,7 +29264,7 @@
 /area/science/mixing/launch)
 "jyo" = (
 /obj/machinery/door/firedoor,
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/lobby)
 "jyv" = (
@@ -29649,7 +29649,7 @@
 /area/science/xenobiology)
 "jFr" = (
 /obj/structure/sign/poster/party_game,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/space/nearstation)
 "jFt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
@@ -29724,7 +29724,7 @@
 /area/ai_monitored/turret_protected/ai)
 "jGe" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "jGm" = (
 /obj/structure/filingcabinet/chestdrawer,
@@ -30035,7 +30035,7 @@
 /turf/open/floor/iron/dark,
 /area/security/office)
 "jLT" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/locker)
 "jLU" = (
@@ -30053,7 +30053,7 @@
 /turf/open/floor/wood,
 /area/maintenance/port/aft)
 "jMk" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "jMn" = (
 /obj/effect/turf_decal/bot,
@@ -30085,7 +30085,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/aisat/exterior)
 "jMU" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/robotics/lab)
 "jNp" = (
@@ -30195,7 +30195,7 @@
 /area/service/lawoffice)
 "jPZ" = (
 /obj/structure/sign/warning/explosives,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/storage)
 "jQb" = (
 /obj/structure/cable,
@@ -30412,7 +30412,7 @@
 /area/commons/fitness/recreation)
 "jTh" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "jTk" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/cyan/visible/layer5,
@@ -30509,7 +30509,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "jVV" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/hos)
 "jWa" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -30780,7 +30780,7 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "kaM" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/break_room)
@@ -30806,7 +30806,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
 "kbv" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/break_room)
 "kbB" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -30845,7 +30845,7 @@
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "kcB" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "kcG" = (
 /obj/machinery/door/firedoor,
@@ -30920,7 +30920,7 @@
 /area/command/heads_quarters/ce)
 "kel" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/office)
 "ker" = (
@@ -31059,7 +31059,7 @@
 /area/space/nearstation)
 "kgh" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/aft)
 "kgl" = (
 /obj/effect/turf_decal/bot,
@@ -31156,7 +31156,7 @@
 /area/commons/dorms)
 "khX" = (
 /obj/structure/sign/warning/pods,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/locker)
 "kie" = (
 /obj/structure/window/reinforced,
@@ -31278,7 +31278,7 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel/funeral)
 "kkb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/lounge)
 "kkl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -31381,12 +31381,12 @@
 /obj/structure/sign/warning/securearea{
 	name = "\improper STAY CLEAR HEAVY MACHINERY"
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/fore)
 "kmH" = (
 /obj/structure/sign/warning/fire,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/chamber)
 "kmP" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -31516,7 +31516,7 @@
 /area/service/hydroponics)
 "kpf" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/storage/eva)
 "kph" = (
 /obj/item/newspaper,
@@ -31559,7 +31559,7 @@
 /area/cargo/miningoffice)
 "kqz" = (
 /obj/structure/sign/warning/docking,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/port)
 "kqO" = (
 /obj/effect/landmark/blobstart,
@@ -31919,7 +31919,7 @@
 	},
 /area/maintenance/aft/lesser)
 "kwo" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/office)
@@ -32033,7 +32033,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/commons/dorms)
 "kyF" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "kyN" = (
 /obj/machinery/photocopier{
@@ -32335,7 +32335,7 @@
 /turf/open/floor/iron,
 /area/engineering/break_room)
 "kEv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/gravity_generator)
@@ -32520,7 +32520,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "kIu" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/robotics/lab)
 "kIw" = (
@@ -32604,7 +32604,7 @@
 /area/maintenance/department/science/xenobiology)
 "kJq" = (
 /obj/structure/sign/warning/nosmoking,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter/room)
 "kJt" = (
 /obj/item/radio/intercom/directional/west,
@@ -32939,7 +32939,7 @@
 	name = "Mixed Air Tank Out"
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "kPG" = (
 /obj/effect/turf_decal/tile/blue{
@@ -33114,7 +33114,7 @@
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "kTW" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/storage/tcomms)
 "kTY" = (
 /obj/machinery/light/directional/east,
@@ -33138,7 +33138,7 @@
 /turf/open/floor/iron/white,
 /area/medical/pharmacy)
 "kUu" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/storage)
 "kUD" = (
@@ -33163,7 +33163,7 @@
 /area/medical/abandoned)
 "kVO" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/coldroom)
 "kVU" = (
 /obj/effect/turf_decal/trimline/neutral/filled/corner{
@@ -33416,7 +33416,7 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "lai" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/lockers)
 "lak" = (
 /obj/structure/cable,
@@ -33515,7 +33515,7 @@
 /area/medical/psychology)
 "lby" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "lbP" = (
 /obj/effect/turf_decal/tile/yellow{
@@ -33631,7 +33631,7 @@
 /turf/open/floor/iron,
 /area/service/bar)
 "ldP" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/storage/satellite)
 "led" = (
 /obj/effect/turf_decal/stripes/line,
@@ -33801,7 +33801,7 @@
 /turf/open/floor/carpet,
 /area/service/library)
 "lgz" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/locker)
 "lgD" = (
 /obj/structure/extinguisher_cabinet/directional/west,
@@ -33896,7 +33896,7 @@
 /turf/open/floor/iron/dark,
 /area/tcommsat/server)
 "lhW" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/main)
 "lib" = (
 /obj/structure/closet/secure_closet/hos,
@@ -34244,7 +34244,7 @@
 /turf/open/floor/iron/dark,
 /area/science/genetics)
 "lpg" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/lesser)
 "lps" = (
 /obj/structure/window/reinforced{
@@ -34558,7 +34558,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "luN" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/lawoffice)
 "luT" = (
 /obj/structure/chair,
@@ -34648,7 +34648,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
 "lxb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/gateway)
 "lxh" = (
 /obj/structure/window/reinforced,
@@ -35039,7 +35039,7 @@
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
 "lDQ" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/storage/tools)
 "lDT" = (
 /obj/effect/decal/cleanable/dirt,
@@ -35443,7 +35443,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/storage/tcomms)
 "lLe" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/corporate_showroom)
 "lLi" = (
 /obj/machinery/computer/security/qm{
@@ -35485,7 +35485,7 @@
 /turf/open/floor/grass,
 /area/science/genetics)
 "lLO" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "pharmacy_shutters_2";
 	name = "Pharmacy shutters"
@@ -35627,7 +35627,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "lOb" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/lobby)
 "lOe" = (
@@ -35655,7 +35655,7 @@
 	id = "chem_lockdown";
 	name = "Chemistry shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/chemistry)
@@ -35739,7 +35739,7 @@
 /area/engineering/supermatter/room)
 "lPY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "lQh" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -35842,7 +35842,7 @@
 /area/service/cafeteria)
 "lST" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/virology)
 "lSX" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -35910,7 +35910,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "lUB" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/aft/greater)
 "lUU" = (
@@ -36332,7 +36332,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "mci" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/xenobiology/hallway)
 "mcC" = (
 /obj/machinery/light/directional/south,
@@ -36419,7 +36419,7 @@
 "mdw" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
 /obj/machinery/meter,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "mdB" = (
 /obj/effect/turf_decal/stripes/line,
@@ -36458,7 +36458,7 @@
 /turf/open/floor/iron/dark,
 /area/science/genetics)
 "mdV" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "hosprivacy";
@@ -36635,7 +36635,7 @@
 /turf/open/floor/engine/co2,
 /area/engineering/atmos)
 "mfY" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/qm)
 "mgc" = (
@@ -36680,7 +36680,7 @@
 /area/science/xenobiology)
 "mgT" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/xenobiology/hallway)
 "mgV" = (
 /obj/structure/cable,
@@ -37019,7 +37019,7 @@
 /turf/open/floor/wood,
 /area/commons/lounge)
 "mnP" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/miningoffice)
 "mnX" = (
@@ -37077,7 +37077,7 @@
 /area/commons/toilet/restrooms)
 "moy" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/primary/aft)
 "moM" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -37094,7 +37094,7 @@
 /area/maintenance/department/engine)
 "mpa" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/research)
 "mph" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -37156,7 +37156,7 @@
 /area/security/checkpoint/customs)
 "mpY" = (
 /obj/structure/sign/warning/electricshock,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "mqn" = (
 /obj/structure/table/glass,
@@ -37565,7 +37565,7 @@
 /turf/open/floor/plating,
 /area/service/chapel/funeral)
 "mvS" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "mwa" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -37575,7 +37575,7 @@
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
 "mwd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/toilet/auxiliary)
 "mwG" = (
 /obj/effect/decal/cleanable/dirt,
@@ -37674,7 +37674,7 @@
 	dir = 1;
 	pixel_y = -8
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/captain/private)
 "mzG" = (
 /obj/machinery/holopad,
@@ -38481,7 +38481,7 @@
 /area/engineering/break_room)
 "mLT" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/toilet/auxiliary)
 "mLX" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/purple/visible{
@@ -39101,7 +39101,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "mVk" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/warehouse)
 "mVm" = (
 /obj/machinery/disposal/bin,
@@ -39266,7 +39266,7 @@
 /turf/open/floor/iron,
 /area/ai_monitored/command/storage/eva)
 "mXg" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/science/xenobiology)
@@ -39668,7 +39668,7 @@
 /turf/open/floor/iron,
 /area/cargo/drone_bay)
 "nek" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/vacant_room/commissary)
 "neG" = (
 /obj/structure/cable,
@@ -39706,7 +39706,7 @@
 /area/engineering/storage/tech)
 "nfZ" = (
 /obj/structure/sign/poster/contraband/missing_gloves,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/storage/primary)
 "ngd" = (
 /obj/structure/table,
@@ -39825,7 +39825,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "nhL" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "rdoffice";
 	name = "Research Director's Shutters"
@@ -39992,7 +39992,7 @@
 /turf/open/floor/iron/dark,
 /area/security/brig)
 "njR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmospherics_engine)
 "nkh" = (
@@ -40315,7 +40315,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
 "nqh" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
 /turf/open/floor/plating,
 /area/engineering/atmos)
@@ -40570,7 +40570,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "nuV" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/storage/art)
 "nuZ" = (
 /obj/machinery/door/firedoor,
@@ -40698,7 +40698,7 @@
 /turf/open/floor/engine,
 /area/science/xenobiology)
 "nxX" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/hop)
 "nyf" = (
 /obj/effect/turf_decal/stripes/line{
@@ -40844,7 +40844,7 @@
 /turf/open/floor/iron/dark/corner,
 /area/engineering/atmos/pumproom)
 "nAK" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/command/teleporter)
@@ -41162,7 +41162,7 @@
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/ce)
 "nGT" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/treatment_center)
@@ -41505,7 +41505,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "nMU" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/construction/storage_wing)
 "nMV" = (
@@ -41516,7 +41516,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/command)
 "nMX" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/holding_cell)
 "nNc" = (
 /obj/structure/table/glass,
@@ -41579,7 +41579,7 @@
 /turf/open/floor/iron/dark,
 /area/security/checkpoint/medical)
 "nOc" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/aft)
 "nPg" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -41857,7 +41857,7 @@
 /area/security/detectives_office)
 "nWE" = (
 /obj/structure/sign/warning/testchamber,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "nWF" = (
 /obj/structure/railing{
@@ -41927,7 +41927,7 @@
 /area/service/lawoffice)
 "nXY" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "nYc" = (
 /obj/machinery/door/airlock/public/glass{
@@ -42100,7 +42100,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/supply/visible{
 	dir = 10
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "oaS" = (
 /obj/machinery/power/apc/auto_name/directional/east,
@@ -42407,7 +42407,7 @@
 /area/engineering/atmospherics_engine)
 "ogC" = (
 /obj/structure/sign/warning/biohazard,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/xenobiology/hallway)
 "ogQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -42641,7 +42641,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
 "oma" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter/room)
 "omb" = (
 /obj/item/radio/intercom/directional/west,
@@ -42779,7 +42779,7 @@
 /area/command/heads_quarters/hop)
 "ooO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/chamber)
 "ooS" = (
 /obj/machinery/light/directional/north,
@@ -43030,7 +43030,7 @@
 /turf/open/floor/iron,
 /area/engineering/break_room)
 "otp" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/surgery/aft)
@@ -43043,7 +43043,7 @@
 /area/maintenance/port)
 "ots" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "oug" = (
 /obj/machinery/door/airlock/medical/glass{
@@ -43330,7 +43330,7 @@
 /turf/open/floor/iron/dark,
 /area/command/teleporter)
 "ozo" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/qm)
 "ozq" = (
 /obj/effect/spawner/random/maintenance,
@@ -43389,7 +43389,7 @@
 	dir = 4;
 	pixel_y = -8
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/lobby)
 "oAa" = (
 /obj/effect/turf_decal/stripes/line{
@@ -43412,7 +43412,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/storage/tech)
 "oAC" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "executionfireblast"
 	},
@@ -43584,7 +43584,7 @@
 /area/engineering/atmos)
 "oEx" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/greater)
 "oEz" = (
 /obj/effect/spawner/random/structure/grille,
@@ -44394,7 +44394,7 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "oTC" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rdgene";
 	name = "Genetics Lab Shutters"
@@ -44572,12 +44572,12 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/tcommsat/server)
 "oXy" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/space_hut)
 "oXF" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/supply/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/disposal/incinerator)
 "oXQ" = (
 /obj/structure/cable,
@@ -44699,7 +44699,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/atmospherics_engine)
 "oZV" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/break_room)
 "paf" = (
 /obj/structure/cable,
@@ -44717,7 +44717,7 @@
 /area/security/brig)
 "pan" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/aisat/exterior)
 "pao" = (
 /obj/machinery/computer/operating,
@@ -44911,7 +44911,7 @@
 /area/science/mixing/launch)
 "peC" = (
 /obj/structure/sign/warning/electricshock,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/aft)
 "peE" = (
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible{
@@ -45171,7 +45171,7 @@
 /turf/open/floor/iron/white,
 /area/medical/office)
 "pjE" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chem_lockdown";
@@ -45518,7 +45518,7 @@
 "ppz" = (
 /obj/machinery/vending/boozeomat/all_access,
 /obj/effect/decal/cleanable/cobweb,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/aft)
 "ppA" = (
 /obj/machinery/camera/directional/west{
@@ -45589,7 +45589,7 @@
 /area/maintenance/port/aft)
 "pqU" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/break_room)
 "prh" = (
 /obj/structure/cable,
@@ -45651,7 +45651,7 @@
 	},
 /area/maintenance/port/aft)
 "prN" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "bridge blast";
 	name = "bridge blast door"
@@ -45945,7 +45945,7 @@
 /turf/open/floor/iron,
 /area/commons/storage/art)
 "pxv" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/department/science/central)
 "pxS" = (
 /obj/structure/closet/secure_closet/miner,
@@ -45974,7 +45974,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
 "pyb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/hydroponics/garden)
 "pyr" = (
 /obj/effect/turf_decal/stripes/line{
@@ -45985,7 +45985,7 @@
 "pyC" = (
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /obj/machinery/meter,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "pyN" = (
 /obj/effect/decal/cleanable/dirt,
@@ -46033,7 +46033,7 @@
 	dir = 4
 	},
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/virology)
 "pzv" = (
 /obj/machinery/door/airlock/mining{
@@ -46619,7 +46619,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "pJK" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/structure/sign/warning/electricshock,
 /obj/machinery/door/poddoor/preopen{
@@ -46792,7 +46792,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
 "pNM" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "lawyer_shutters";
 	name = "law office shutters"
@@ -47046,7 +47046,7 @@
 /area/maintenance/starboard/fore)
 "pSv" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter/room)
 "pSB" = (
 /obj/effect/landmark/event_spawn,
@@ -47304,7 +47304,7 @@
 /area/engineering/main)
 "pWO" = (
 /obj/structure/sign/warning/biohazard,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/research)
 "pWR" = (
 /obj/machinery/ai_slipper{
@@ -47348,7 +47348,7 @@
 /turf/open/floor/engine,
 /area/science/misc_lab/range)
 "pYe" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/storage/primary)
 "pYh" = (
@@ -47360,7 +47360,7 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "pYm" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/science/lab)
@@ -47745,14 +47745,14 @@
 /area/ai_monitored/turret_protected/ai)
 "qeW" = (
 /obj/structure/sign/warning/biohazard,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/cytology)
 "qfd" = (
 /obj/machinery/meter,
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
 	dir = 1
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "qfe" = (
 /obj/structure/cable,
@@ -48069,7 +48069,7 @@
 /area/engineering/supermatter/room)
 "qkg" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/disposal/incinerator)
 "qkk" = (
@@ -48352,7 +48352,7 @@
 "qoH" = (
 /obj/machinery/meter,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "qoI" = (
 /obj/structure/railing{
@@ -48482,7 +48482,7 @@
 /area/security/prison)
 "qqP" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/port/aft)
 "qrf" = (
 /obj/machinery/door/firedoor,
@@ -48536,7 +48536,7 @@
 /area/medical/pharmacy)
 "qss" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port)
 "qsw" = (
 /obj/effect/turf_decal/stripes/corner,
@@ -48584,7 +48584,7 @@
 	},
 /area/maintenance/port)
 "qto" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "xenobio1";
@@ -48676,7 +48676,7 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel)
 "quV" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/hydroponics)
 "qvb" = (
 /obj/effect/turf_decal/delivery,
@@ -48740,7 +48740,7 @@
 /area/service/theater)
 "qwJ" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/teleporter)
 "qwP" = (
 /obj/structure/table,
@@ -48961,7 +48961,7 @@
 /turf/open/floor/iron/white,
 /area/medical/abandoned)
 "qBs" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/aft/lesser)
 "qBw" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -49022,7 +49022,7 @@
 "qCJ" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/engineering/atmos/storage/gas)
@@ -49366,7 +49366,7 @@
 /turf/open/floor/iron,
 /area/commons/locker)
 "qKh" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/engine,
 /area/science/xenobiology)
 "qKp" = (
@@ -49461,10 +49461,10 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "qMr" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/kitchen/coldroom)
 "qMG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "xenobio8";
@@ -49762,7 +49762,7 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "qVu" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/ce)
 "qVz" = (
 /obj/structure/window/reinforced,
@@ -49875,7 +49875,7 @@
 /area/science/mixing/launch)
 "qYe" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/storage)
 "qYf" = (
 /obj/structure/table,
@@ -49887,7 +49887,7 @@
 /area/commons/storage/art)
 "qYv" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "qYx" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/purple/visible,
@@ -49999,7 +49999,7 @@
 /area/command/heads_quarters/rd)
 "qZK" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/bridge)
 "qZN" = (
 /obj/effect/landmark/start/scientist,
@@ -50019,7 +50019,7 @@
 /area/security/prison)
 "ram" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/corporate_showroom)
 "raB" = (
 /obj/structure/chair/stool/directional/south,
@@ -50108,7 +50108,7 @@
 /turf/open/floor/iron/chapel,
 /area/service/chapel)
 "rcz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/maintenance/fore/lesser)
@@ -50186,7 +50186,7 @@
 /turf/open/floor/iron/white,
 /area/medical/treatment_center)
 "rdE" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/interrogation)
 "rdX" = (
@@ -50405,7 +50405,7 @@
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "rhT" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/department/science/xenobiology)
 "rhW" = (
 /obj/structure/window/reinforced/plasma,
@@ -50442,7 +50442,7 @@
 /turf/open/floor/plating,
 /area/maintenance/central)
 "ris" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/xenobiology/hallway)
 "riu" = (
@@ -50611,7 +50611,7 @@
 /turf/open/floor/iron,
 /area/cargo/sorting)
 "rkR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/medical/storage)
@@ -50653,7 +50653,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/greater)
 "rlU" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/nuke_storage)
 "rlY" = (
 /obj/structure/chair/office,
@@ -50721,7 +50721,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/hos)
 "rmG" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/security/office)
 "rmY" = (
 /obj/machinery/computer/security/mining{
@@ -50824,7 +50824,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "roI" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chapel_shutters_space";
 	name = "chapel shutters"
@@ -50891,7 +50891,7 @@
 /turf/open/space/basic,
 /area/solars/starboard/fore)
 "rqf" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/storage_shared)
 "rqq" = (
 /obj/item/storage/secure/safe/hos{
@@ -51137,7 +51137,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/hos)
 "ruR" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/kitchen)
 "ruS" = (
 /obj/structure/closet/crate/hydroponics,
@@ -51154,7 +51154,7 @@
 /turf/open/floor/iron/white,
 /area/security/prison)
 "rvl" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/commons/dorms/cryo)
@@ -51386,7 +51386,7 @@
 /turf/open/floor/iron/white,
 /area/science/research)
 "rzR" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/gravity_generator)
 "rAm" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -51396,7 +51396,7 @@
 /turf/open/floor/iron/white,
 /area/medical/office)
 "rAF" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/chemistry)
 "rAT" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
@@ -51469,7 +51469,7 @@
 /area/maintenance/port)
 "rBy" = (
 /obj/machinery/biogenerator,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/service)
 "rBO" = (
 /obj/machinery/atmospherics/components/unary/passive_vent{
@@ -52024,7 +52024,7 @@
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/medical/coldroom)
 "rOa" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/lobby)
 "rOb" = (
 /obj/structure/rack,
@@ -52283,7 +52283,7 @@
 /area/command/heads_quarters/captain/private)
 "rRn" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/office)
 "rRp" = (
 /obj/effect/landmark/event_spawn,
@@ -52404,7 +52404,7 @@
 /turf/open/floor/grass,
 /area/service/hydroponics/garden)
 "rTb" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/teleporter)
 "rTr" = (
 /obj/structure/cable,
@@ -52716,7 +52716,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
 "rZE" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/science/mixing/launch)
 "sak" = (
 /obj/effect/turf_decal/delivery,
@@ -52763,7 +52763,7 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/tcommsat/server)
 "sbm" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/storage/tech)
 "sbG" = (
@@ -52807,7 +52807,7 @@
 	id = "visitation";
 	name = "Visitation Shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/prison)
@@ -52831,7 +52831,7 @@
 /area/science/storage)
 "scS" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/lesser)
 "scT" = (
 /obj/effect/turf_decal/bot_white/left,
@@ -53135,7 +53135,7 @@
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
 "sjd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/storage)
 "sje" = (
 /obj/effect/landmark/start/shaft_miner,
@@ -53327,7 +53327,7 @@
 /area/science/mixing/chamber)
 "sny" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/medbay/lobby)
 "snU" = (
 /obj/structure/disposalpipe/segment,
@@ -53474,7 +53474,7 @@
 /area/security/prison)
 "src" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "hosspace";
 	name = "Space Shutters"
@@ -53727,7 +53727,7 @@
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
 "sxQ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "corporate_privacy";
 	name = "showroom shutters"
@@ -54220,7 +54220,7 @@
 /area/maintenance/port/fore)
 "sIy" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/abandoned)
 "sIA" = (
 /obj/machinery/door/airlock/external{
@@ -54312,7 +54312,7 @@
 /turf/open/floor/iron,
 /area/security/checkpoint/engineering)
 "sLi" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/transit_tube)
 "sLo" = (
 /obj/effect/decal/cleanable/dirt,
@@ -54523,7 +54523,7 @@
 /area/hallway/primary/central)
 "sPn" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/vacant_room/commissary)
 "sPo" = (
 /obj/machinery/conveyor{
@@ -54597,7 +54597,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "sQv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/cytology)
 "sQG" = (
@@ -54636,7 +54636,7 @@
 /area/engineering/atmos)
 "sRV" = (
 /obj/structure/sign/warning/nosmoking,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "sSe" = (
 /obj/machinery/mass_driver/ordnance,
@@ -54941,7 +54941,7 @@
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "sXv" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/fore/lesser)
 "sXK" = (
 /obj/structure/window/reinforced{
@@ -55039,7 +55039,7 @@
 /turf/open/floor/engine,
 /area/science/misc_lab/range)
 "sZz" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/dorms)
 "sZA" = (
@@ -55115,7 +55115,7 @@
 /turf/open/floor/iron,
 /area/commons/storage/tools)
 "tag" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/science/server)
@@ -55296,12 +55296,12 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/fore)
 "tdI" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/fitness/recreation)
 "tdS" = (
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmospherics_engine)
 "tdY" = (
 /obj/structure/rack,
@@ -55315,7 +55315,7 @@
 	},
 /area/maintenance/port/aft)
 "tev" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "Xenolab";
 	name = "test chamber blast door"
@@ -55469,7 +55469,7 @@
 /turf/open/floor/grass,
 /area/medical/virology)
 "thb" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/paint_wall/medical,
@@ -55581,7 +55581,7 @@
 "tiZ" = (
 /obj/machinery/meter,
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos)
 "tje" = (
 /obj/machinery/door/firedoor,
@@ -55723,7 +55723,7 @@
 /area/security/checkpoint/medical)
 "tlE" = (
 /obj/structure/sign/warning/docking,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/space/nearstation)
 "tlN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
@@ -55970,7 +55970,7 @@
 /turf/open/floor/iron/goonplaque,
 /area/hallway/primary/port)
 "tqP" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "executionfireblast"
 	},
@@ -56220,7 +56220,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/lesser)
 "tuv" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/fore/lesser)
 "tuI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -56244,7 +56244,7 @@
 /turf/open/floor/iron,
 /area/cargo/warehouse)
 "tuP" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/miningoffice)
 "tuT" = (
 /obj/machinery/airalarm/directional/west,
@@ -56691,7 +56691,7 @@
 /area/hallway/primary/port)
 "tEz" = (
 /obj/structure/sign/barsign,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/lounge)
 "tED" = (
 /obj/effect/landmark/event_spawn,
@@ -56802,7 +56802,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "tGv" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/command/heads_quarters/hop)
 "tGx" = (
 /obj/machinery/portable_atmospherics/canister/carbon_dioxide,
@@ -56993,7 +56993,7 @@
 /area/science/robotics/lab)
 "tKL" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/gateway)
 "tKT" = (
 /obj/machinery/computer/security/hos{
@@ -57058,7 +57058,7 @@
 /turf/open/floor/iron,
 /area/science/lab)
 "tMd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/drone_bay)
 "tMg" = (
 /obj/structure/bed/roller,
@@ -57136,7 +57136,7 @@
 /turf/open/floor/wood,
 /area/maintenance/port/aft)
 "tOh" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/storage/eva)
 "tOi" = (
 /obj/effect/turf_decal/tile/blue{
@@ -57169,7 +57169,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "tOL" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "PermaLockdown";
@@ -57423,7 +57423,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/fore)
 "tUb" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos/pumproom)
 "tUq" = (
@@ -57638,10 +57638,10 @@
 /obj/machinery/atmospherics/pipe/smart/simple/supply/visible{
 	dir = 5
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "tZe" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/command/gateway)
@@ -57671,7 +57671,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos/pumproom)
 "tZK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/interrogation)
 "tZW" = (
 /obj/machinery/camera/directional/east{
@@ -57741,7 +57741,7 @@
 	pixel_y = 8
 	},
 /obj/structure/sign/directions/evac,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/command/storage/eva)
 "ubj" = (
 /obj/machinery/door/window/brigdoor{
@@ -57985,7 +57985,7 @@
 /area/science/robotics/mechbay)
 "ueQ" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/morgue)
 "ueY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -58070,7 +58070,7 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "ufS" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/checkpoint/science)
@@ -58234,7 +58234,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "ukw" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/structure/sign/warning/electricshock,
 /obj/machinery/door/poddoor/preopen{
@@ -58314,7 +58314,7 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "ult" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
@@ -58473,7 +58473,7 @@
 	pixel_y = -7
 	},
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/pharmacy)
 "upo" = (
 /obj/structure/table/reinforced,
@@ -58486,7 +58486,7 @@
 /area/service/bar)
 "upr" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/lesser)
 "upB" = (
 /obj/structure/disposalpipe/segment{
@@ -58565,7 +58565,7 @@
 /area/security/prison)
 "urv" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/security/prison)
 "urP" = (
@@ -58588,7 +58588,7 @@
 /area/construction/storage_wing)
 "usv" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible/layer2,
 /turf/open/floor/plating,
 /area/maintenance/disposal/incinerator)
@@ -58815,7 +58815,7 @@
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "uwn" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/launch)
 "uwx" = (
 /obj/structure/cable,
@@ -58824,7 +58824,7 @@
 /turf/open/floor/iron,
 /area/construction/storage_wing)
 "uwz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/firedoor,
 /obj/machinery/door/poddoor/preopen{
@@ -58834,7 +58834,7 @@
 /turf/open/floor/plating,
 /area/engineering/storage_shared)
 "uwG" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/medical)
 "uxn" = (
 /obj/machinery/door/window/left/directional/north{
@@ -58901,7 +58901,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)
 "uyG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "medsecprivacy";
@@ -58930,7 +58930,7 @@
 /area/space)
 "uzm" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "uzt" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -59068,7 +59068,7 @@
 /turf/open/floor/iron/white,
 /area/science/storage)
 "uCo" = (
-/obj/effect/spawner/structure/window/reinforced/tinted,
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/service/hydroponics/garden)
 "uCA" = (
@@ -59106,7 +59106,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/science/xenobiology)
 "uDv" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/command/heads_quarters/rd)
 "uDw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -59379,7 +59379,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "uKd" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/lockers)
 "uKh" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -59435,7 +59435,7 @@
 /turf/open/floor/engine/o2,
 /area/engineering/atmos)
 "uKQ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/wood,
 /area/service/library)
 "uLw" = (
@@ -59486,7 +59486,7 @@
 /area/construction/storage_wing)
 "uLH" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/hallway)
 "uLI" = (
 /obj/structure/cable,
@@ -59614,7 +59614,7 @@
 	pixel_y = -8
 	},
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/medbay/lobby)
 "uOT" = (
 /obj/effect/turf_decal/stripes/line{
@@ -59643,7 +59643,7 @@
 /area/hallway/primary/central)
 "uPd" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/lesser)
 "uPf" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -59750,7 +59750,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "uRF" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/bar)
 "uRW" = (
 /obj/effect/turf_decal/stripes/line{
@@ -59769,7 +59769,7 @@
 /turf/open/floor/iron,
 /area/security/brig)
 "uRY" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/dorms/cryo)
 "uSH" = (
@@ -60186,7 +60186,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "vaX" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/pumproom)
 "vaY" = (
 /obj/structure/table,
@@ -60408,7 +60408,7 @@
 /turf/open/floor/iron,
 /area/maintenance/port/aft)
 "vey" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/service/hydroponics)
 "veC" = (
@@ -60514,7 +60514,7 @@
 /area/commons/locker)
 "vgE" = (
 /obj/structure/sign/warning/vacuum/external,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/cargo/miningoffice)
 "vgH" = (
 /obj/machinery/door/firedoor,
@@ -60528,7 +60528,7 @@
 /area/hallway/secondary/service)
 "vgL" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/aft)
 "vgR" = (
 /obj/effect/turf_decal/stripes/line,
@@ -60806,7 +60806,7 @@
 /area/science/robotics/mechbay)
 "vnm" = (
 /obj/structure/cable,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/ai_monitored/turret_protected/ai)
 "vnr" = (
 /obj/structure/disposalpipe/junction/yjunction,
@@ -60975,7 +60975,7 @@
 /turf/open/floor/iron,
 /area/construction/storage_wing)
 "vqh" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/cytology)
 "vql" = (
 /turf/open/floor/wood{
@@ -61247,7 +61247,7 @@
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "vwV" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "cmoprivacy";
 	name = "privacy shutter"
@@ -61353,7 +61353,7 @@
 /area/maintenance/port/fore)
 "vyX" = (
 /obj/structure/sign/warning/biohazard,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/department/science/xenobiology)
 "vzg" = (
 /obj/structure/disposalpipe/segment,
@@ -61729,7 +61729,7 @@
 /area/tcommsat/server)
 "vEr" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "vEv" = (
@@ -61777,7 +61777,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/atmospherics_engine)
 "vEJ" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/storage/tech)
 "vEV" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/heater{
@@ -61830,7 +61830,7 @@
 /turf/open/floor/iron,
 /area/commons/locker)
 "vGk" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/fore)
 "vGr" = (
 /obj/structure/cable,
@@ -62000,7 +62000,7 @@
 /area/maintenance/department/engine)
 "vIp" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/medical/chemistry)
 "vIy" = (
 /obj/structure/cable,
@@ -62113,7 +62113,7 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
 "vKw" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/sorting)
 "vKK" = (
@@ -62174,7 +62174,7 @@
 /turf/open/floor/iron/dark,
 /area/construction/storage_wing)
 "vLz" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
 "vLB" = (
@@ -62223,7 +62223,7 @@
 	id = "roboticsprivacy2";
 	name = "Robotics Shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/science/robotics/lab)
 "vMJ" = (
@@ -62823,13 +62823,13 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/engineering/atmos)
 "vYM" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/checkpoint/engineering)
 "vYX" = (
 /obj/machinery/camera/directional/south{
@@ -62929,7 +62929,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "wbm" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rdrnd";
 	name = "Research and Development Shutters"
@@ -62964,7 +62964,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "wbw" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/maintenance/aft/lesser)
 "wbE" = (
@@ -63039,7 +63039,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "wdB" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /obj/structure/disposalpipe/segment,
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
@@ -63179,7 +63179,7 @@
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/cmo)
 "wgg" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rdgene2";
 	name = "Genetics Lab Shutters"
@@ -63713,7 +63713,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
 "wpL" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/commons/toilet/restrooms)
 "wpP" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -63801,7 +63801,7 @@
 /turf/open/floor/iron/white,
 /area/science/storage)
 "wrP" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/aft/lesser)
 "wsc" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -63987,7 +63987,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/atmos/storage/gas)
 "wwu" = (
 /obj/structure/chair/stool/directional/east,
@@ -64387,7 +64387,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "wDJ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "roboticsprivacy";
 	name = "Robotics Shutters"
@@ -64681,7 +64681,7 @@
 /area/medical/surgery/aft)
 "wIX" = (
 /obj/structure/sign/warning/electricshock,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/port/fore)
 "wJj" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -65125,7 +65125,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "wQA" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/chamber)
 "wQM" = (
 /turf/open/floor/iron/white,
@@ -65152,7 +65152,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "wRK" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/chapel)
 "wRU" = (
 /obj/machinery/camera/directional/east{
@@ -65173,7 +65173,7 @@
 	icon_state = "boozeomat"
 	},
 /obj/effect/turf_decal/tile/bar,
-/obj/structure/low_wall,
+/obj/structure/low_wall/prepainted/daedalus,
 /turf/open/floor/iron,
 /area/service/bar)
 "wSN" = (
@@ -65302,7 +65302,7 @@
 "wUU" = (
 /obj/structure/sign/departments/medbay/alt,
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/medbay/lobby)
 "wVy" = (
 /obj/structure/reagent_dispensers/fueltank,
@@ -65426,7 +65426,7 @@
 /area/service/cafeteria)
 "wWE" = (
 /obj/machinery/smartfridge,
-/obj/structure/low_wall,
+/obj/structure/low_wall/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/hallway/secondary/service)
 "wWH" = (
@@ -65494,7 +65494,7 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
 "wXQ" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/structure/sign/warning/electricshock,
 /turf/open/floor/engine,
@@ -65555,7 +65555,7 @@
 /turf/open/floor/iron,
 /area/commons/fitness/recreation)
 "wZI" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/security/office)
 "wZN" = (
 /obj/effect/decal/cleanable/dirt,
@@ -65698,7 +65698,7 @@
 /area/space)
 "xcQ" = (
 /obj/structure/sign/warning/electricshock,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/maintenance/starboard/fore)
 "xcZ" = (
 /obj/machinery/door/firedoor,
@@ -66149,7 +66149,7 @@
 /area/ai_monitored/turret_protected/ai)
 "xkU" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "xlb" = (
 /obj/effect/turf_decal/tile/yellow{
@@ -66216,7 +66216,7 @@
 /turf/open/floor/circuit/red,
 /area/ai_monitored/turret_protected/ai_upload)
 "xlV" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/service/chapel/funeral)
 "xmm" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -66393,7 +66393,7 @@
 /area/science/research)
 "xpi" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/medbay/central)
 "xpk" = (
 /obj/structure/table/wood,
@@ -66603,7 +66603,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "xtO" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/qm)
 "xtW" = (
@@ -66636,7 +66636,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/command)
 "xuu" = (
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/department/science/central)
 "xuv" = (
 /obj/machinery/cryopod{
@@ -66947,7 +66947,7 @@
 /area/science/storage)
 "xzt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/mixing/chamber)
 "xzA" = (
 /obj/structure/rack,
@@ -67305,7 +67305,7 @@
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "xFh" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
 	dir = 9
 	},
@@ -67441,7 +67441,7 @@
 /turf/open/floor/plating,
 /area/maintenance/starboard/greater)
 "xII" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -67562,7 +67562,7 @@
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "xMa" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/storage_shared)
 "xMA" = (
@@ -67689,7 +67689,7 @@
 /area/medical/storage)
 "xOR" = (
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/hidden,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/maintenance/starboard/greater)
 "xPg" = (
 /obj/structure/table/reinforced,
@@ -67843,7 +67843,7 @@
 "xSf" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/sorting)
 "xSi" = (
@@ -68001,10 +68001,10 @@
 /area/security/checkpoint/engineering)
 "xUK" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/medical/surgery/aft)
 "xUV" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/commons/storage/art)
 "xVb" = (
@@ -68033,7 +68033,7 @@
 /turf/open/floor/plating,
 /area/maintenance/aft/greater)
 "xVl" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/hallway/secondary/service)
 "xVs" = (
 /turf/open/floor/iron,
@@ -68048,7 +68048,7 @@
 /area/engineering/supermatter/room)
 "xWf" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/engineering/supermatter)
 "xWt" = (
 /obj/effect/landmark/start/captain,
@@ -68083,7 +68083,7 @@
 /area/space/nearstation)
 "xXq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/r_wall/prepainted/daedalus,
 /area/science/xenobiology)
 "xXu" = (
 /obj/structure/cable,
@@ -68455,7 +68455,7 @@
 /turf/open/space/basic,
 /area/solars/port/aft)
 "yej" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/poddoor/preopen{
 	id = "briglockdown";
 	name = "brig shutters"
@@ -68571,13 +68571,13 @@
 /turf/open/floor/plating,
 /area/maintenance/port/greater)
 "yfL" = (
-/turf/closed/wall,
+/turf/closed/wall/prepainted/daedalus,
 /area/ai_monitored/command/storage/eva)
 "ygg" = (
 /turf/open/floor/iron/white,
 /area/science/cytology)
 "ygm" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/cargo/drone_bay)
 "ygw" = (
@@ -68800,7 +68800,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "ykb" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -68846,13 +68846,13 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel/funeral)
 "ykR" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable,
 /obj/structure/sign/warning/electricshock,
 /turf/open/floor/engine,
 /area/science/cytology)
 "yln" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/engineering/atmos/storage/gas)
 "ylr" = (

@@ -387,3 +387,25 @@ again.
 		if(NORTHWEST)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma/spawner/north, /obj/structure/window/reinforced/plasma/spawner/west)
 	. = ..()
+
+//Dummy types
+/obj/effect/spawner/structure/window/prepainted
+	name = "dummy"
+
+/obj/effect/spawner/structure/window/reinforced/prepainted
+	name = "dummy"
+
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted
+	name = "dummy"
+
+/obj/effect/spawner/structure/window/prepainted/daedalus
+	name = "reinforced window spawner (daedaelus paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/fulltile)
+
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus
+	name = "window spawner (daedalus paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/fulltile)
+
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus
+	name = "tinted reinforced window spawner (daedalus paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/tinted/fulltile)

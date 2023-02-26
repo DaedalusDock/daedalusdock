@@ -54,6 +54,12 @@
 
 	///A list of minds that are elligible to be given antagonist at roundstart
 	var/list/datum/mind/possible_antags = list()
+	///ALL antagonists, not just the roundstart ones
+	var/list/datum/mind/antagonists = list()
+	///A k:v list of mind:time of death.
+	var/list/datum/mind/death_timers = list()
+	///A list of names of antagonists who are permanantly. This list will be cut down to spend on midrounds.
+	var/list/permadead_antag_pool = list()
 
 ///Pass in a list of players about to participate in roundstart, receive TRUE or FALSE if this round type is valid for this round.
 /datum/game_mode/proc/can_run_this_round()
@@ -74,7 +80,8 @@
 		setup_error ||= "Failed pre_setup."
 		return FALSE
 
-	var/number_of_antags = length(GLOB.pre_setup_antags)
+	antagonists = GLOB.pre_setup_antags.Copy()
+	var/number_of_antags = length(antagonists)
 	if(number_of_antags < required_enemies)
 		setup_error = "Not enough antagonists selected. Required [required_enemies], got [number_of_antags]."
 		return FALSE
@@ -109,6 +116,10 @@
 	for(var/datum/mind/M as anything in GLOB.pre_setup_antags)
 		M.add_antag_datum(antag_datum)
 		GLOB.pre_setup_antags -= M
+
+	for(var/datum/mind/M as anything in antagonists)
+		RegisterSignal(M, COMSIG_MIND_TRANSFERRED, .proc/handle_antagonist_mind_transfer)
+		init_mob_signals(M.current)
 	return TRUE
 
 ///Clean up a mess we may have made during set up.
@@ -358,3 +369,36 @@
 				candidates.Remove(candidate_player)
 
 	return candidates
+
+///Stub for reference that gamemodes do infact, process.
+/datum/game_mode/process(delta_time)
+	return
+
+///Setup signals for the antagonist's mind and mob. Make sure it gets cleared in handle_antagonist_mind_transfer.
+/datum/game_mode/proc/init_mob_signals(mob/M)
+	RegisterSignal(M, COMSIG_LIVING_DEATH, .proc/handle_antagonist_death)
+	RegisterSignal(M, COMSIG_LIVING_REVIVE, .proc/handle_antagonist_revival)
+	RegisterSignal(M, COMSIG_PARENT_PREQDELETED, .proc/handle_antagonist_qdel)
+
+/datum/game_mode/proc/handle_antagonist_death(mob/source)
+	SIGNAL_HANDLER
+	death_timers[source.mind] = world.time
+
+/datum/game_mode/proc/handle_antagonist_revival(mob/source)
+	SIGNAL_HANDLER
+	death_timers -= source.mind
+
+/datum/game_mode/proc/handle_antagonist_mind_transfer(datum/mind/source, mob/old_body)
+	SIGNAL_HANDLER
+	if(isliving(source.current))
+		var/mob/living/L = source.current
+		init_mob_signals(L)
+		if(L.stat != DEAD)
+			death_timers -= source
+
+	if(old_body)
+		UnregisterSignal(old_body, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE, COMSIG_PARENT_PREQDELETED))
+
+/datum/game_mode/proc/handle_antagonist_qdel(mob/source)
+	SIGNAL_HANDLER
+	permadead_antag_pool += source.real_name

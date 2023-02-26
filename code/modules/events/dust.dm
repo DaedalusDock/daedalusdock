@@ -3,7 +3,7 @@
 	typepath = /datum/round_event/space_dust
 	weight = 200
 	max_occurrences = 1000
-	earliest_start = 0 MINUTES
+	earliest_start = 5 MINUTES
 	alert_observers = FALSE
 
 /datum/round_event/space_dust

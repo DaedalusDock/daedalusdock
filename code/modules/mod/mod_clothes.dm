@@ -9,7 +9,10 @@
 	heat_protection = HEAD
 	cold_protection = HEAD
 	obj_flags = IMMUTABLE_SLOW
+
 	var/alternate_layer = NECK_LAYER
+	var/sealed = FALSE
+	var/deployed = FALSE
 
 /obj/item/clothing/suit/mod
 	name = "MOD chestplate"
@@ -24,6 +27,9 @@
 	cold_protection = CHEST|GROIN
 	obj_flags = IMMUTABLE_SLOW
 
+	var/sealed = FALSE
+	var/deployed = FALSE
+
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
 	desc = "A pair of gauntlets for a MODsuit."
@@ -35,6 +41,9 @@
 	heat_protection = HANDS|ARMS
 	cold_protection = HANDS|ARMS
 	obj_flags = IMMUTABLE_SLOW
+
+	var/sealed = FALSE
+	var/deployed = FALSE
 
 /obj/item/clothing/shoes/mod
 	name = "MOD boots"
@@ -49,3 +58,6 @@
 	obj_flags = IMMUTABLE_SLOW
 	item_flags = IGNORE_DIGITIGRADE
 	can_be_tied = FALSE
+
+	var/sealed = FALSE
+	var/deployed = FALSE

@@ -274,7 +274,7 @@
 	if(user != wearer)
 		return ..()
 	for(var/obj/item/part as anything in mod_parts)
-		if(part.loc != src)
+		if(part:deployed)
 			balloon_alert(user, "retract parts first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return FALSE
@@ -283,7 +283,7 @@
 	if(usr != wearer || !istype(over_object, /atom/movable/screen/inventory/hand))
 		return ..()
 	for(var/obj/item/part as anything in mod_parts)
-		if(part.loc != src)
+		if(!part:deployed)
 			balloon_alert(wearer, "retract parts first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return
@@ -434,7 +434,7 @@
 	if(active && !toggle_activate(stripper, force_deactivate = TRUE))
 		return
 	for(var/obj/item/part as anything in mod_parts)
-		if(part.loc == src)
+		if(!part:deployed)
 			continue
 		conceal(null, part)
 	return ..()
@@ -584,6 +584,7 @@
 	if(!core)
 		wearer.throw_alert(ALERT_MODSUIT_CHARGE, /atom/movable/screen/alert/nocore)
 		return
+
 	core.update_charge_alert()
 
 /obj/item/mod/control/proc/update_speed()
@@ -601,21 +602,24 @@
 	for(var/obj/item/part as anything in all_parts)
 		part.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 		part.add_atom_colour(new_color, FIXED_COLOUR_PRIORITY)
-	wearer?.regenerate_icons()
+	wearer?.update_clothing(ALL)
 
 /obj/item/mod/control/proc/set_mod_skin(new_skin)
 	if(active)
 		CRASH("[src] tried to set skin while active!")
+
 	skin = new_skin
 	var/list/used_skin = theme.skins[new_skin]
 	alternate_worn_layer = used_skin[CONTROL_LAYER]
 	var/list/skin_updating = mod_parts.Copy() + src
+
 	for(var/obj/item/part as anything in skin_updating)
 		if(used_skin[MOD_ICON_OVERRIDE])
 			part.icon = used_skin[MOD_ICON_OVERRIDE]
 		if(used_skin[MOD_WORN_ICON_OVERRIDE])
 			part.worn_icon = used_skin[MOD_WORN_ICON_OVERRIDE]
 		part.icon_state = "[skin]-[initial(part.icon_state)]"
+
 	for(var/obj/item/clothing/part as anything in mod_parts)
 		var/used_category
 		if(part == helmet)
@@ -639,12 +643,12 @@
 			overslotting_parts -= part
 			continue
 		overslotting_parts[part] = null
-	wearer?.regenerate_icons()
+	wearer?.update_clothing(ALL)
 
 /obj/item/mod/control/proc/on_exit(datum/source, atom/movable/part, direction)
 	SIGNAL_HANDLER
 
-	if(part.loc == src)
+	if(!part:deployed)
 		return
 	if(part == core)
 		core.uninstall()
@@ -688,6 +692,7 @@
 	if(active)
 		to_chat(user, span_warning("It's too dangerous to smear [speed_potion] on [src] while it's active!"))
 		return SPEED_POTION_STOP
+
 	to_chat(user, span_notice("You slather the red gunk over [src], making it faster."))
 	set_mod_color("#FF0000")
 	slowdown_inactive = 0

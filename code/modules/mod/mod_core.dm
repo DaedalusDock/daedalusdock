@@ -200,11 +200,13 @@
 			mod.balloon_alert(user, "cell already installed!")
 			playsound(mod, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return COMPONENT_NO_AFTERATTACK
+
 		install_cell(attacking_item)
 		mod.balloon_alert(user, "cell installed")
 		playsound(mod, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 		mod.update_charge_alert()
 		return COMPONENT_NO_AFTERATTACK
+
 	return NONE
 
 /obj/item/mod/core/standard/proc/on_wearer_set(datum/source, mob/user)

@@ -5,17 +5,19 @@
 	if(!open) //mod must be open
 		balloon_alert(user, "suit must be open to transfer!")
 		return
+
 	switch(interaction)
 		if(AI_TRANS_TO_CARD)
 			if(!ai)
 				balloon_alert(user, "no AI in suit!")
 				return
 			balloon_alert(user, "transferring to card...")
+
 			if(!do_after(user, src, 5 SECONDS))
-				balloon_alert(user, "interrupted!")
 				return
 			if(!ai)
 				return
+
 			intAI = ai
 			intAI.ai_restore_power()//So the AI initially has power.
 			intAI.control_disabled = TRUE
@@ -23,8 +25,10 @@
 			intAI.disconnect_shell()
 			intAI.forceMove(card)
 			card.AI = intAI
+
 			for(var/datum/action/action as anything in actions)
 				action.Remove(intAI)
+
 			intAI.controlled_equipment = null
 			intAI.remote_control = null
 			balloon_alert(intAI, "transferred to a card")
@@ -39,17 +43,20 @@
 			if(ai)
 				balloon_alert(user, "already has AI!")
 				return
+
 			if(intAI.deployed_shell) //Recall AI if shelled so it can be checked for a client
 				intAI.disconnect_shell()
+
 			if(intAI.stat || !intAI.client)
 				balloon_alert(user, "AI unresponsive!")
 				return
+
 			balloon_alert(user, "transferring to suit...")
 			if(!do_after(user, src, 5 SECONDS))
-				balloon_alert(user, "interrupted!")
 				return
 			if(ai)
 				return
+
 			balloon_alert(user, "AI transferred to suit")
 			ai_enter_mod(intAI)
 			card.AI = null
@@ -64,6 +71,7 @@
 	new_ai.forceMove(src)
 	ai = new_ai
 	balloon_alert(new_ai, "transferred to a suit")
+
 	for(var/datum/action/action as anything in actions)
 		action.Grant(new_ai)
 
@@ -81,9 +89,11 @@
 		return FALSE
 	else if(!wearer && (!has_gravity() || !isturf(loc)))
 		return FALSE
+
 	COOLDOWN_START(src, cooldown_mod_move, movedelay * timemodifier + slowdown_active)
 	subtract_charge(CHARGE_PER_STEP)
 	playsound(src, 'sound/mecha/mechmove01.ogg', 25, TRUE)
+
 	if(ismovable(wearer?.loc))
 		return wearer.loc.relaymove(wearer, direction)
 	else if(wearer)
@@ -137,10 +147,12 @@
 	if(!ai)
 		balloon_alert(user, "no AI!")
 		return
+
 	balloon_alert(user, "transferring to card...")
 	if(!do_after(user, src, 5 SECONDS) || !ai)
 		balloon_alert(user, "interrupted!")
 		return
+
 	icon_state = "minicard"
 	ai.forceMove(card)
 	card.AI = ai

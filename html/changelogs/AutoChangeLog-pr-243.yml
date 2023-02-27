@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Hunger decreases 5x slower.

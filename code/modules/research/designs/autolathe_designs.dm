@@ -381,7 +381,7 @@
 	name = "Spatula"
 	id = "spatula"
 	build_type = AUTOLATHE
-	materials = list(/datum/material/iron = 400, /datum/material/plastic = 200)
+	materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
 	build_path = /obj/item/kitchen/spatula
 	category = list("initial","Dinnerware")
 

@@ -154,8 +154,7 @@
 	icon_state = "spatula"
 	w_class = WEIGHT_CLASS_SMALL
 	force = 2
-	custom_materials = list(/datum/material/iron = 80,
-							/datum/material/plastic = 40)
+	custom_materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
 	throw_speed = 3
 	throw_range = 5
 	attack_verb_simple = list("smack", "thwack", "slap")

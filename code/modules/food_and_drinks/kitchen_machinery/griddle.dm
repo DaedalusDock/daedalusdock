@@ -128,7 +128,7 @@
 
 /obj/machinery/griddle/proc/AddThrownItemToGrill(datum/source, atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SIGNAL_HANDLER
-	if(!isitem(hitting_atom) && griddled_objects.len >= max_items)
+	if(!isitem(hitting_atom) || griddled_objects.len >= max_items)
 		return
 
 	AddToGrill(hitting_atom)

@@ -198,3 +198,6 @@
       icons.
   - bugfix: If you haven't been able to see any working space ruins lately, that's
       our bad. Should be fixed now.
+2023-02-28:
+  Kapu1178:
+  - balance: Hunger decreases 5x slower.

@@ -14,7 +14,7 @@
 ///The rate at which satiation decays per second.
 #define SATIETY_DECAY 0.2 //Max satiety lasts 25 minutes, 600 * 5
 ///The rate at which satiation decays per second.
-#define HUNGER_DECAY 0.05
+#define HUNGER_DECAY 0.04
 
 
 #define ETHEREAL_CHARGE_FACTOR 0.8 //factor at which ethereal's charge decreases per second

@@ -144,9 +144,6 @@
 	QDEL_NULL(magazine)
 	return ..()
 
-/obj/item/gun/ballistic/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ballistic))
-
 /obj/item/gun/ballistic/fire_sounds()
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo())
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
@@ -159,19 +156,6 @@
 		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
 		if(play_click)
 			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
-
-
-/**
- *
- * Outputs type-specific weapon stats for ballistic weaponry based on its magazine and its caliber.
- * It contains extra breaks for the sake of presentation
- *
- **/
-/obj/item/gun/ballistic/proc/add_notes_ballistic()
-	if(magazine) // Make sure you have a magazine, to get the notes from
-		return "\n[magazine.add_notes_box()]"
-	else
-		return "\nThe warning attached to the magazine is missing..."
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()

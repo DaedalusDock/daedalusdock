@@ -218,7 +218,7 @@ GLOBAL_LIST_INIT(mystery_box_extended, list(
 	uses_integrity = FALSE
 
 	/// The currently selected item. Constantly changes while choosing, determines what is spawned if the prize is claimed, and its current icon
-	var/selected_path = /obj/item/gun/ballistic/revolver/detective
+	var/selected_path = /obj/item/gun/ballistic/revolver/c38
 	/// The box that spawned this
 	var/obj/structure/mystery_box/parent_box
 	/// Whether this prize is currently claimable

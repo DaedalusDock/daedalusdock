@@ -3,6 +3,10 @@
 	animate_movement = SLIDE_STEPS
 	speech_span = SPAN_ROBOT
 	var/obj_flags = CAN_BE_HIT
+
+	/// Extra examine line to describe controls, such as right-clicking, left-clicking, etc.
+	var/desc_controls
+
 	var/set_obj_flags // ONLY FOR MAPPING: Sets flags from a string list, handled in Initialize. Usage: set_obj_flags = "EMAGGED;!CAN_BE_HIT" to set EMAGGED and clear CAN_BE_HIT.
 
 	var/damtype = BRUTE
@@ -279,6 +283,8 @@
 
 /obj/examine(mob/user)
 	. = ..()
+	if(desc_controls)
+		. += span_notice(desc_controls)
 	if(obj_flags & UNIQUE_RENAME)
 		. += span_notice("Use a pen on it to rename it or change its description.")
 	if(unique_reskin && !current_skin)

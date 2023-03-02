@@ -477,6 +477,7 @@
 	atom_storage.max_slots = 25
 	atom_storage.set_holdable(list(
 		/obj/item/bodypart,
+		/obj/item/slime_extract,
 		/obj/item/food/deadmouse,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,

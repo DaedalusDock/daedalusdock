@@ -246,8 +246,11 @@
 		return
 
 /obj/machinery/door/Move()
-	zas_update_loc()
+	var/turf/T = loc
 	. = ..()
+	if(.)
+		T.zas_update_loc()
+		zas_update_loc()
 
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)

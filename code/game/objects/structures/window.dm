@@ -379,11 +379,8 @@
 /obj/structure/window/Move()
 	var/turf/T = loc
 	. = ..()
-	if(.)
-		if(isturf(loc))
-			SSzas.mark_for_update(loc)
-		if(isturf(loc))
-			SSzas.mark_for_update(T)
+	T.zas_update_loc()
+	zas_update_loc()
 
 /obj/structure/window/zas_canpass(turf/T)
 	if(QDELETED(src))

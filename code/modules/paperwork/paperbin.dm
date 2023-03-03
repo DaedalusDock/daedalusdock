@@ -17,6 +17,8 @@
 	var/total_paper = 30
 	var/list/papers = list()
 	var/obj/item/pen/bin_pen
+	///Can it hold a pen on top
+	var/holds_pen = TRUE
 	///Overlay of the pen on top of the bin.
 	var/mutable_appearance/pen_overlay
 	///Name of icon that goes over the paper overlays.
@@ -115,7 +117,7 @@
 		LAZYADD(papers, paper)
 		update_appearance()
 		return TRUE
-	else if(istype(I, /obj/item/pen) && !bin_pen)
+	else if(istype(I, /obj/item/pen) && !bin_pen && holds_pen)
 		var/obj/item/pen/pen = I
 		if(!user.transferItemToLoc(pen, src))
 			return

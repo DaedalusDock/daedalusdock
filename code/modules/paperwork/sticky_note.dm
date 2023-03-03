@@ -5,12 +5,14 @@
 	icon_state = "pad"
 	papertype = /obj/item/paper/sticky
 	w_class = WEIGHT_CLASS_SMALL
+	holds_pen = FALSE
 
 /obj/item/paper_bin/pad/examine(mob/user)
 	. = ..()
 	. += span_notice("Write notes on it using a <b>pen</b>.")
 
-/obj/item/paper_bin/pad/afterattack(obj/item/thing, mob/user)
+/obj/item/paper_bin/pad/attackby(obj/item/thing, mob/user)
+	. = ..()
 	if(istype(thing, /obj/item/pen))
 		var/obj/item/paper/top_paper = papers[papers.len]
 		if(top_paper.get_info_length() >= MAX_PAPER_LENGTH)
@@ -26,7 +28,6 @@
 		return
 	if(!istype(thing, papertype))
 		return
-	..()
 
 //Sticky notes
 

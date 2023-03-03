@@ -65,6 +65,7 @@
 
 		to_chat(user, span_notice("You scan \the [W] into \the [src]."))
 		note = paper.info
+		return TRUE
 
 /obj/item/modular_computer/tablet/AltClick(mob/user)
 	. = ..()

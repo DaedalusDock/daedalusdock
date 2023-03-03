@@ -771,7 +771,7 @@
 /obj/machinery/bookbinder/attackby(obj/hitby, mob/user, params)
 	if(istype(hitby, /obj/item/paper))
 		prebind_book(user, hitby)
-		return
+		return TRUE
 	return ..()
 
 /obj/machinery/bookbinder/proc/prebind_book(mob/user, obj/item/paper/draw_from)

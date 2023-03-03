@@ -11267,6 +11267,7 @@
 	id = "kitchen_counter";
 	name = "Kitchen Counter Shutters"
 	},
+/obj/item/paper_bin/pad,
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},
@@ -45634,6 +45635,10 @@
 /obj/item/pen,
 /obj/structure/window/reinforced,
 /obj/structure/table/wood,
+/obj/item/paper_bin/pad{
+	pixel_x = 9;
+	pixel_y = 5
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "prK" = (
@@ -58482,6 +58487,7 @@
 	dir = 1
 	},
 /obj/structure/cable,
+/obj/item/paper_bin/pad,
 /turf/open/floor/iron,
 /area/station/service/bar)
 "upr" = (

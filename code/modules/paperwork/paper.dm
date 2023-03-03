@@ -466,7 +466,6 @@
 /obj/item/paper/crumpled/muddy
 	icon_state = "scrap_mud"
 
-#undef MAX_PAPER_LENGTH
 #undef MAX_PAPER_STAMPS
 #undef MAX_PAPER_STAMPS_OVERLAYS
 #undef MODE_READING

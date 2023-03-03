@@ -90,6 +90,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 			return ..()
 		else if(!frying && user.transferItemToLoc(weapon, src))
 			fry(weapon, user)
+			return TRUE
 
 /obj/machinery/deepfryer/process(delta_time)
 	..()

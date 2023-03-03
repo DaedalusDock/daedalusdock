@@ -370,6 +370,7 @@
 				return
 			paper_copy = O
 			do_insertion(O, user)
+			return TRUE
 		else
 			to_chat(user, span_warning("There is already something in [src]!"))
 

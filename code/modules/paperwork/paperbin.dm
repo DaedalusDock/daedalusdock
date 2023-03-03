@@ -114,6 +114,7 @@
 		to_chat(user, span_notice("You put [paper] in [src]."))
 		LAZYADD(papers, paper)
 		update_appearance()
+		return TRUE
 	else if(istype(I, /obj/item/pen) && !bin_pen)
 		var/obj/item/pen/pen = I
 		if(!user.transferItemToLoc(pen, src))

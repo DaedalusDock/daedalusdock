@@ -2734,7 +2734,10 @@
 /area/station/maintenance/port/greater)
 "amV" = (
 /obj/structure/table,
-/obj/item/paper_bin,
+/obj/item/paper_bin{
+	pixel_x = -4;
+	pixel_y = 4
+	},
 /obj/item/pen,
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
@@ -2750,6 +2753,10 @@
 /obj/machinery/camera/directional/west{
 	c_tag = "Bridge Port";
 	name = "command camera"
+	},
+/obj/item/paper_bin/pad{
+	pixel_x = 7;
+	pixel_y = 5
 	},
 /turf/open/floor/iron,
 /area/station/command/bridge)
@@ -37195,6 +37202,9 @@
 /obj/item/reagent_containers/food/condiment/saltshaker{
 	pixel_x = -3
 	},
+/obj/item/paper_bin/pad{
+	pixel_y = 8
+	},
 /turf/open/floor/iron,
 /area/station/service/kitchen)
 "igV" = (
@@ -59728,6 +59738,10 @@
 	dir = 8;
 	name = "bar sorting disposal pipe";
 	sortType = 19
+	},
+/obj/item/paper_bin/pad{
+	pixel_x = -6;
+	pixel_y = 5
 	},
 /turf/open/floor/wood,
 /area/station/service/bar)

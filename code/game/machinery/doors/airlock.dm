@@ -1005,6 +1005,7 @@
 		user.visible_message(span_notice("[user] pins [C] to [src]."), span_notice("You pin [C] to [src]."), span_hear("You hear a metallic thud."))
 		note = C
 		update_appearance()
+		return TRUE
 	else
 		return ..()
 

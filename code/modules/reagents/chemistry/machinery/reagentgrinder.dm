@@ -196,7 +196,7 @@
 	if(user.transferItemToLoc(I, src))
 		to_chat(user, span_notice("You add [I] to [src]."))
 		holdingitems[I] = TRUE
-		return FALSE
+		return TRUE
 
 /obj/machinery/reagentgrinder/ui_interact(mob/user) // The microwave Menu //I am reasonably certain that this is not a microwave
 	. = ..()

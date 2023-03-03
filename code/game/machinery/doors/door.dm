@@ -173,7 +173,6 @@
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
-	zas_update_loc()
 	return ..()
 
 /obj/machinery/door/zas_canpass(turf/other)

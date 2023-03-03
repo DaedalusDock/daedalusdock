@@ -366,8 +366,6 @@
 /obj/structure/window/Destroy()
 	set_density(FALSE)
 	update_nearby_icons()
-	can_atmos_pass = CANPASS_ALWAYS //hacky-sacky
-	zas_update_loc()
 
 	if(!fulltile)
 		var/turf/open/T = get_step(src, dir)
@@ -379,8 +377,9 @@
 /obj/structure/window/Move()
 	var/turf/T = loc
 	. = ..()
-	T.zas_update_loc()
-	zas_update_loc()
+	if(.)
+		T.zas_update_loc()
+		zas_update_loc()
 
 /obj/structure/window/zas_canpass(turf/T)
 	if(QDELETED(src))

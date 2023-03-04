@@ -5466,7 +5466,7 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "bXH" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
 "bXK" = (
@@ -22193,7 +22193,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "hVT" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
@@ -25836,7 +25836,7 @@
 /turf/open/floor/iron,
 /area/station/commons/lounge)
 "jdC" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /obj/machinery/door/poddoor/shutters/radiation/preopen{
 	id = "atmoshfr"
 	},
@@ -42496,9 +42496,6 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/station/security/office)
-"paL" = (
-/turf/closed/wall/r_wall/prepainted/daedalus,
-/area/station/command/bridge)
 "paO" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -45715,9 +45712,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
-"qiE" = (
-/turf/closed/wall/r_wall/prepainted/daedalus,
-/area/station/command/heads_quarters/captain/private)
 "qiN" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -45819,7 +45813,7 @@
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "qlG" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter)
 "qlL" = (
@@ -50451,7 +50445,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "rUe" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
@@ -51830,7 +51824,7 @@
 /turf/open/floor/carpet,
 /area/station/medical/psychology)
 "sqv" = (
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "sqx" = (
@@ -55440,7 +55434,7 @@
 /area/station/command/heads_quarters/hop)
 "tEV" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction,
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "tFg" = (
@@ -58181,7 +58175,7 @@
 /area/station/hallway/primary/central)
 "uxA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
-/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "uxE" = (
@@ -98438,7 +98432,7 @@ aaf
 aaf
 aaf
 sSs
-paL
+sSs
 sSs
 mzN
 ufB
@@ -98697,8 +98691,8 @@ lXS
 lXS
 mvr
 lXS
-qiE
-qiE
+lXS
+lXS
 lXS
 aMd
 elY

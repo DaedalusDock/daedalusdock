@@ -409,3 +409,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus
 	name = "tinted reinforced window spawner (daedalus paint)"
 	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/tinted/fulltile)
+
+/obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus
+	name = "reinforced plasma window spawner (daedalus paint)"
+	spawn_list = list(/obj/structure/grille, /obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/plasma/fulltile)

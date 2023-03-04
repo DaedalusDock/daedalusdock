@@ -181,7 +181,7 @@
 	force = 0.001
 	armour_penetration = 1000
 	force_string = "INFINITE"
-	var/obj/machinery/power/supermatter_crystal/shard
+	var/obj/machinery/power/supermatter/shard
 	var/balanced = 1
 
 /obj/item/melee/supermatter_sword/Initialize(mapload)
@@ -316,7 +316,7 @@
 /obj/item/melee/roastingstick/Initialize(mapload)
 	. = ..()
 	if (!ovens)
-		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter_crystal, /obj/structure/bonfire))
+		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter, /obj/structure/bonfire))
 	AddComponent(/datum/component/transforming, \
 		hitsound_on = hitsound, \
 		clumsy_check = FALSE)

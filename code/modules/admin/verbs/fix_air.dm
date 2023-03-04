@@ -17,10 +17,9 @@
 	var/current_time = world.timeofday
 
 	// Depower the supermatter, as it would quickly blow up once we remove all gases from the pipes.
-	for(var/obj/machinery/power/supermatter_crystal/S in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
 		S.power = 0
 		S.damage = 0
-		S.powerloss_dynamic_scaling = 0
 
 	to_chat(usr, "\[1/5\] - Supermatter depowered.")
 

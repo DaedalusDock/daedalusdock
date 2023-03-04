@@ -276,16 +276,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	if(isliving(user) && !immune && (get_dist(user, src) < HALLUCINATION_RANGE(power)))
 		. += span_danger("You get headaches just from looking at it.")
 
-// SupermatterMonitor UI for ghosts only. Inherited attack_ghost will call this.
-/obj/machinery/power/supermatter_crystal/ui_interact(mob/user, datum/tgui/ui)
-	if(!isobserver(user))
-		return FALSE
-	. = ..()
-	ui = SStgui.try_update_ui(user, src, ui)
-	if (!ui)
-		ui = new(user, src, "SupermatterMonitor")
-		ui.open()
-
 /obj/machinery/power/supermatter_crystal/ui_data(mob/user)
 	var/list/data = list()
 

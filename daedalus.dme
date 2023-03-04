@@ -1895,6 +1895,7 @@
 #include "code\game\turfs\closed\walls.dm"
 #include "code\game\turfs\closed\wall\mineral_walls.dm"
 #include "code\game\turfs\closed\wall\misc_walls.dm"
+#include "code\game\turfs\closed\wall\prepainted_walls.dm"
 #include "code\game\turfs\closed\wall\reinf_walls.dm"
 #include "code\game\turfs\open\_open.dm"
 #include "code\game\turfs\open\ashplanet.dm"

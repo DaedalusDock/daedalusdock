@@ -24,9 +24,12 @@
 /area/maintenance/port/central)
 "ag" = (
 /obj/structure/cable,
-/obj/machinery/status_display/evac/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
+	},
+/obj/structure/sign/departments/security{
+	color = "#DE3A3A";
+	pixel_y = 32
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central/fore)
@@ -66,9 +69,16 @@
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
 "am" = (
-/obj/structure/filingcabinet,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /obj/machinery/light/directional/north,
+/obj/structure/filingcabinet/chestdrawer{
+	pixel_y = 2
+	},
+/obj/machinery/telephone/command{
+	layer = 2.91;
+	pixel_y = 10
+	},
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/command)
 "an" = (
@@ -1152,6 +1162,7 @@
 /area/security/brig)
 "gs" = (
 /obj/item/radio/intercom/chapel/directional/south,
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/service/kitchen)
 "gu" = (
@@ -1299,6 +1310,9 @@
 	},
 /obj/item/reagent_containers/food/drinks/shaker{
 	pixel_x = -6
+	},
+/obj/structure/sign/picture_frame/portrait/bar{
+	pixel_y = 27
 	},
 /turf/open/floor/wood,
 /area/service/bar)
@@ -3994,6 +4008,11 @@
 "uS" = (
 /turf/closed/wall/r_wall,
 /area/hallway/secondary/entry)
+"uW" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "uY" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -4360,6 +4379,13 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/science/mixing)
+"xh" = (
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/obj/structure/table,
+/obj/machinery/telephone/cargo,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/cargo/storage)
 "xl" = (
 /obj/machinery/light/directional/west,
 /obj/item/kirbyplants/random,
@@ -5284,9 +5310,6 @@
 /area/security/prison/safe)
 "BM" = (
 /obj/structure/table/wood,
-/obj/item/book/granter/spell/smoke/lesser{
-	name = "mysterious old book of cloud-chasing"
-	},
 /obj/item/reagent_containers/food/drinks/bottle/holywater{
 	pixel_x = -2;
 	pixel_y = 2
@@ -5526,6 +5549,7 @@
 /area/hallway/primary/central/fore)
 "De" = (
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/cargo/storage)
 "Df" = (
@@ -5685,6 +5709,11 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
+/obj/machinery/telephone/research{
+	pixel_y = 3;
+	pixel_x = -7
+	},
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/science/lab)
 "DX" = (
@@ -6230,6 +6259,17 @@
 	},
 /turf/open/floor/iron/white,
 /area/hallway/secondary/entry)
+"GD" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+/obj/structure/bookcase/random{
+	pixel_y = 27;
+	density = 0
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
 "GE" = (
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
@@ -8889,6 +8929,8 @@
 /area/science/mixing)
 "Vt" = (
 /obj/structure/table,
+/obj/machinery/telephone/service,
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/service/kitchen)
 "Vu" = (
@@ -9311,6 +9353,12 @@
 	},
 /turf/open/floor/plating,
 /area/cargo/storage)
+"Xz" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/machinery/status_display/evac/directional/south,
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
 "XA" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
 /obj/structure/bed{
@@ -38139,7 +38187,7 @@ hq
 HR
 gP
 gP
-Jw
+uW
 Od
 jH
 Yd
@@ -38396,7 +38444,7 @@ hq
 HR
 gP
 gP
-Jw
+uW
 ji
 RK
 Yd
@@ -38910,7 +38958,7 @@ gG
 Jw
 dO
 CF
-CF
+xh
 Od
 jH
 Yd
@@ -45860,7 +45908,7 @@ np
 EX
 XA
 KI
-yu
+GD
 AX
 Rd
 jB
@@ -47404,7 +47452,7 @@ DY
 DY
 ag
 qu
-Rd
+Xz
 uP
 CG
 CG

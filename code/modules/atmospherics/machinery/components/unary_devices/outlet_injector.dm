@@ -26,7 +26,7 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/AltClick(mob/user)
 	if(can_interact(user))
-		volume_rate = MAX_TRANSFER_RATE
+		volume_rate = ATMOS_DEFAULT_VOLUME_PUMP
 		investigate_log("was set to [volume_rate] L/s by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "volume output set to [volume_rate] L/s")
 		update_appearance()
@@ -76,7 +76,7 @@
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(volume_rate)
-	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_PUMP)
 	return data
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_act(action, params)
@@ -92,13 +92,13 @@
 		if("rate")
 			var/rate = params["rate"]
 			if(rate == "max")
-				rate = MAX_TRANSFER_RATE
+				rate = ATMOS_DEFAULT_VOLUME_PUMP
 				. = TRUE
 			else if(text2num(rate) != null)
 				rate = text2num(rate)
 				. = TRUE
 			if(.)
-				volume_rate = clamp(rate, 0, MAX_TRANSFER_RATE)
+				volume_rate = clamp(rate, 0, ATMOS_DEFAULT_VOLUME_PUMP)
 				investigate_log("was set to [volume_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 

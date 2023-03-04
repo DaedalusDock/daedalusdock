@@ -26,9 +26,9 @@
 
 	// Remove all gases from all pipenets
 	for(var/datum/pipeline/PN as anything in SSairmachines.networks)
-		for(var/datum/gas_mixture/G in list(PN.air) & PN.other_airs)
+		for(var/datum/gas_mixture/G in (list(PN.air) | PN.other_airs))
 			G.gas = list()
-			AIR_UPDATE_VALUES(G)
+			G.total_moles = 0
 
 	to_chat(usr, "\[2/5\] - All pipenets purged of gas.")
 

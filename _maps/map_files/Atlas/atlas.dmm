@@ -1536,9 +1536,10 @@
 /turf/closed/wall/r_wall,
 /area/engineering/engine_smes)
 "ih" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted,
 /obj/structure/cable,
-/turf/open/floor/iron/freezer,
-/area/service/kitchen/coldroom)
+/turf/open/floor/iron,
+/area/cargo/storage)
 "ij" = (
 /obj/machinery/button/ignition/incinerator/ordmix{
 	pixel_x = -6;
@@ -2858,7 +2859,6 @@
 /turf/open/space/basic,
 /area/space/nearstation)
 "pl" = (
-/obj/structure/cable,
 /obj/machinery/door/airlock{
 	name = "Kitchen Cold Room";
 	req_access_txt = "25,35,28"
@@ -3133,12 +3133,10 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/eva/upper)
 "qN" = (
-/obj/structure/cable,
 /obj/structure/sink/kitchen{
 	dir = 8;
 	pixel_x = 14
 	},
-/obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron/freezer,
 /area/service/kitchen/coldroom)
 "qO" = (
@@ -4008,11 +4006,6 @@
 "uS" = (
 /turf/closed/wall/r_wall,
 /area/hallway/secondary/entry)
-"uW" = (
-/obj/effect/turf_decal/tile/yellow/half/contrasted,
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/cargo/storage)
 "uY" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -4379,13 +4372,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/science/mixing)
-"xh" = (
-/obj/effect/turf_decal/tile/yellow/fourcorners,
-/obj/structure/table,
-/obj/machinery/telephone/cargo,
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/cargo/storage)
 "xl" = (
 /obj/machinery/light/directional/west,
 /obj/item/kirbyplants/random,
@@ -6244,6 +6230,17 @@
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
+"Gw" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+/obj/structure/bookcase/random{
+	pixel_y = 27;
+	density = 0
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
 "Gx" = (
 /turf/open/floor/iron/stairs/left{
 	dir = 1
@@ -6259,17 +6256,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/hallway/secondary/entry)
-"GD" = (
-/obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 1
-	},
-/obj/structure/bookcase/random{
-	pixel_y = 27;
-	density = 0
-	},
-/turf/open/floor/iron,
-/area/hallway/primary/central/fore)
 "GE" = (
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
@@ -7403,12 +7389,12 @@
 	},
 /area/service/kitchen)
 "MT" = (
-/obj/effect/turf_decal/tile/neutral/half/contrasted,
-/obj/effect/turf_decal/tile/neutral/half/contrasted,
-/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/obj/structure/table,
+/obj/machinery/telephone/cargo,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central/fore)
+/area/cargo/storage)
 "MV" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -7583,6 +7569,12 @@
 	},
 /turf/open/floor/engine/vacuum,
 /area/science/xenobiology)
+"NQ" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/machinery/status_display/evac/directional/south,
+/turf/open/floor/iron,
+/area/hallway/primary/central/fore)
 "NR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -9353,12 +9345,6 @@
 	},
 /turf/open/floor/plating,
 /area/cargo/storage)
-"Xz" = (
-/obj/effect/turf_decal/tile/neutral/half/contrasted,
-/obj/effect/turf_decal/tile/neutral/half/contrasted,
-/obj/machinery/status_display/evac/directional/south,
-/turf/open/floor/iron,
-/area/hallway/primary/central/fore)
 "XA" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
 /obj/structure/bed{
@@ -38187,7 +38173,7 @@ hq
 HR
 gP
 gP
-uW
+ih
 Od
 jH
 Yd
@@ -38444,7 +38430,7 @@ hq
 HR
 gP
 gP
-uW
+ih
 ji
 RK
 Yd
@@ -38958,7 +38944,7 @@ gG
 Jw
 dO
 CF
-xh
+MT
 Od
 jH
 Yd
@@ -43579,7 +43565,7 @@ em
 ae
 st
 ay
-ih
+Ua
 qN
 sY
 Pz
@@ -45908,7 +45894,7 @@ np
 EX
 XA
 KI
-GD
+Gw
 AX
 Rd
 jB
@@ -47194,8 +47180,8 @@ sk
 OQ
 KI
 SY
-kf
-MT
+qu
+Rd
 uP
 CG
 CG
@@ -47452,7 +47438,7 @@ DY
 DY
 ag
 qu
-Xz
+NQ
 uP
 CG
 CG

@@ -1,0 +1,5 @@
+2023-03-03:
+  Kapu1178:
+  - balance: Hunger decays at a rate of 0.04/s (up from 0.01)
+  - balance: 'Satiation decays at a rate of 0.2/s (before: 1/s). This means being
+      fully satiated will last 25 minutes.'

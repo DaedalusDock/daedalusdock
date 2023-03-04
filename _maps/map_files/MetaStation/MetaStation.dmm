@@ -1807,7 +1807,7 @@
 /area/station/security/brig)
 "avb" = (
 /obj/item/radio/intercom/directional/north,
-/turf/open/floor/iron/dark,
+/turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "avk" = (
 /turf/open/floor/iron/dark,
@@ -31319,7 +31319,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/machinery/atmospherics/components/trinary/filter/flipped/critical,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /turf/open/floor/engine,
 /area/station/engineering/supermatter/room)
 "kkO" = (
@@ -32304,13 +32304,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/science/mixing)
-"kDK" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/machinery/atmospherics/components/trinary/filter/flipped/critical,
-/turf/open/floor/engine,
-/area/station/engineering/supermatter/room)
 "kDL" = (
 /obj/structure/disposalpipe/segment{
 	dir = 9
@@ -52659,6 +52652,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"rYx" = (
+/obj/structure/cable,
+/obj/machinery/power/smes/engineering,
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "rYA" = (
 /obj/machinery/porta_turret/ai,
 /obj/machinery/flasher/directional/north{
@@ -65990,6 +65988,13 @@
 	},
 /turf/open/floor/plating,
 /area/station/medical/medbay/central)
+"xig" = (
+/obj/machinery/power/terminal{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "xih" = (
 /obj/machinery/atmospherics/pipe/smart/simple/orange/hidden{
 	dir = 1
@@ -66161,14 +66166,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark/corner,
 /area/station/engineering/atmos/storage/gas)
-"xle" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/machinery/light/directional/east,
-/obj/machinery/atmospherics/components/trinary/filter/flipped/critical,
-/turf/open/floor/engine,
-/area/station/engineering/supermatter/room)
 "xlh" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/public/glass{
@@ -68778,7 +68775,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/turf/open/floor/iron/dark,
+/turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "yjO" = (
 /obj/machinery/telecomms/server/presets/service,
@@ -113266,9 +113263,9 @@ kKv
 nQq
 wLu
 xGy
-kDK
 tpa
-xle
+tpa
+nsU
 gda
 pNI
 kkL
@@ -114549,8 +114546,8 @@ aaa
 aaa
 aaa
 oma
-bpc
-bpc
+rYx
+xig
 czV
 avr
 bpc

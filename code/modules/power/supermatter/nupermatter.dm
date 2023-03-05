@@ -226,7 +226,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if(exploded)
 		return
 
-	message_admins("Supermatter delaminating!! [ADMIN_LOOKUPFLW(src)]")
+	message_admins("Supermatter delaminating!! [ADMIN_FLW(src)]")
 	anchored = TRUE
 	grav_pulling = 1
 	exploded = 1
@@ -238,9 +238,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	var/list/affected_z = SSmapping.get_zstack(TS.z)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
-	//for(var/z in affected_z)
-		//SSradiation.z_radiate(locate(1, 1, z), DETONATION_RADS, 1)
-	#warn radiation
+	SSweather.run_weather(/datum/weather/rad_storm, affected_z)
 
 	for(var/mob/living/mob in GLOB.mob_living_list)
 		CHECK_TICK
@@ -456,7 +454,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	else if (damage < emergency_point)
 		filters = null
 
-	SSradiation.radiate(src, power * radiation_release_modifier) //Better close those shutters!
+	radiation_pulse(src, round(power/10)) //Better close those shutters!
 	power -= (power/decay_factor)**3		//energy losses due to radiation
 	handle_admin_warnings()
 

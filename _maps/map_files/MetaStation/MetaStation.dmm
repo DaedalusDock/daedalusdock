@@ -8590,7 +8590,7 @@
 /turf/open/floor/plating,
 /area/station/security/checkpoint/engineering)
 "ctk" = (
-/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter,
 /turf/open/floor/engine,
 /area/station/engineering/supermatter)
 "ctm" = (

@@ -164,3 +164,7 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/ordnance_mixing_input
 	name = "ordnance mixing input injector"
 	chamber_id = ATMOS_GAS_MONITOR_ORDNANCE_LAB
+
+/obj/machinery/atmospherics/components/unary/outlet_injector/monitored/engine_input
+	name = "engine input injector"
+	chamber_id = ATMOS_GAS_MONITOR_ENGINE

@@ -8600,6 +8600,12 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
+"csE" = (
+/obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible{
+	dir = 1
+	},
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "csR" = (
 /obj/structure/cable,
 /obj/effect/spawner/random/trash/garbage{
@@ -31942,6 +31948,9 @@
 /obj/machinery/modular_computer/console/preset/engineering{
 	dir = 1
 	},
+/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
+	dir = 10
+	},
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "kBg" = (
@@ -42931,13 +42940,6 @@
 	dir = 1
 	},
 /area/station/command/gateway)
-"owh" = (
-/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
-/obj/machinery/atmospherics/pipe/smart/simple/green/visible{
-	dir = 4
-	},
-/turf/open/floor/plating,
-/area/station/engineering/supermatter/room)
 "owm" = (
 /obj/structure/lattice/catwalk,
 /turf/open/space/basic,
@@ -43631,6 +43633,12 @@
 /obj/structure/closet/l3closet,
 /turf/open/floor/iron/dark,
 /area/station/medical/storage)
+"oJb" = (
+/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
+	dir = 5
+	},
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "oJk" = (
 /obj/machinery/portable_atmospherics/canister/plasma,
 /turf/open/floor/plating,
@@ -49153,12 +49161,6 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
-"qJL" = (
-/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
-	dir = 10
-	},
-/turf/open/floor/iron,
-/area/station/engineering/atmos)
 "qKa" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -53293,6 +53295,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/security/prison)
+"srr" = (
+/obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible{
+	dir = 8
+	},
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "srK" = (
 /obj/effect/turf_decal/trimline/brown/filled/corner{
 	dir = 8
@@ -55486,9 +55494,7 @@
 /area/station/security/prison)
 "tkp" = (
 /obj/machinery/meter,
-/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
-	dir = 1
-	},
+/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/engineering/atmos)
 "tky" = (
@@ -56291,6 +56297,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
+"tyF" = (
+/obj/machinery/meter,
+/obj/machinery/atmospherics/pipe/smart/simple/purple{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/station/engineering/supermatter/room)
 "tyK" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -60911,6 +60924,7 @@
 	dir = 4
 	},
 /obj/machinery/meter,
+/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "vuA" = (
@@ -62805,10 +62819,8 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "weM" = (
-/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
-	dir = 4
-	},
 /obj/machinery/meter,
+/obj/machinery/atmospherics/pipe/smart/manifold/cyan/visible,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "weW" = (
@@ -65256,11 +65268,10 @@
 /turf/open/floor/wood,
 /area/station/maintenance/port/aft)
 "wYA" = (
-/obj/machinery/atmospherics/pipe/smart/manifold/green/visible{
-	icon_state = "manifold-3";
+/obj/machinery/meter,
+/obj/machinery/atmospherics/pipe/smart/manifold/yellow/visible{
 	dir = 8
 	},
-/obj/machinery/meter,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
 "wYL" = (
@@ -65994,9 +66005,7 @@
 /area/station/maintenance/aft/greater)
 "xmT" = (
 /obj/structure/lattice,
-/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
-	dir = 1
-	},
+/obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /turf/open/space,
 /area/space/nearstation)
 "xmX" = (
@@ -111411,9 +111420,9 @@ qcU
 aPa
 aPa
 aPa
-aPa
-owh
-mIi
+dmM
+iAF
+xjt
 fQO
 gNl
 gNl
@@ -111916,7 +111925,7 @@ fZy
 gGZ
 rPl
 xjt
-weM
+tyF
 ohk
 wST
 pHq
@@ -112944,7 +112953,7 @@ hfh
 hfh
 rPl
 xjt
-weM
+tyF
 ohk
 wST
 mVZ
@@ -112956,10 +112965,10 @@ hwS
 fLV
 bpc
 xjt
-qZy
-dgj
+csE
+srr
 wYA
-pHq
+oJb
 azd
 dgB
 gUa
@@ -116073,7 +116082,7 @@ nuU
 wsw
 hwW
 wCh
-qJL
+lye
 hjv
 anN
 pdr

@@ -11,6 +11,13 @@
 	. = ..()
 	. += span_notice("Write notes on it using a <b>pen</b>.")
 
+/obj/item/paper_bin/pad/Initialize()
+	. = ..()
+	var/random_color = pick(COLOR_YELLOW, COLOR_LIME, COLOR_CYAN, COLOR_ORANGE, COLOR_PINK)
+	for(var/obj/item/paper/sticky/note in contents)
+		note.color = random_color
+	update_appearance()
+
 /obj/item/paper_bin/pad/attackby(obj/item/thing, mob/user)
 	. = ..()
 	if(istype(thing, /obj/item/pen))
@@ -24,7 +31,6 @@
 		top_paper.info += text
 		user.visible_message(span_warning("\The [user] jots a note down on \the [src]."))
 		top_paper.update_appearance()
-		update_appearance()
 		return
 	if(!istype(thing, papertype))
 		return
@@ -39,7 +45,6 @@
 	drop_sound = null
 	pickup_sound = null
 	slot_flags = null
-	color = COLOR_YELLOW
 	layer = ABOVE_WINDOW_LAYER
 	throw_range = 6
 	throw_speed = 3

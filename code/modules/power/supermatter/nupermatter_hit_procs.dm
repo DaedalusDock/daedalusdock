@@ -20,7 +20,6 @@
 
 	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
 		power += ((projectile.damage * config_bullet_energy + kiss_power) * charging_factor) / power_factor
-		damage += projectile.damage * config_bullet_energy
 
 		if(!has_been_powered)
 			var/fired_from_str = projectile.fired_from ? " with [projectile.fired_from]" : ""

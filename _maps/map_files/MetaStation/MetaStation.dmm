@@ -27101,15 +27101,6 @@
 "jzr" = (
 /turf/open/floor/iron/white,
 /area/station/science/research)
-"jzN" = (
-/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
-/obj/machinery/door/poddoor/preopen{
-	id = "hop";
-	name = "privacy shutters"
-	},
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/station/command/heads_quarters/hop)
 "jAd" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
@@ -92023,7 +92014,7 @@ rFK
 rJn
 dtb
 dtb
-jzN
+lDw
 dtb
 dtb
 cEn

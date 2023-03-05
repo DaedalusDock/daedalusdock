@@ -37,7 +37,7 @@
 	var/datum/gas_mixture/air_input = airs[1]
 	var/datum/gas_mixture/air_output = airs[2]
 
-	if(!QUANTIZE(air_input.get_moles()) || !QUANTIZE(air_output.get_moles())) //Don't transfer if there's no gas
+	if(!QUANTIZE(air_input.total_moles) || !QUANTIZE(air_output.total_moles)) //Don't transfer if there's no gas
 		return
 	var/datum/gas_mixture/remove_input = air_input.removeRatio(0.9)
 	var/datum/gas_mixture/remove_output = air_output.removeRatio(0.9)

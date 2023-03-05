@@ -97,7 +97,6 @@
 	..()
 	return late ? INITIALIZE_HINT_LATELOAD : INITIALIZE_HINT_QDEL
 
-
 //airlock helpers
 /obj/effect/mapping_helpers/airlock
 	layer = DOOR_HELPER_LAYER
@@ -762,7 +761,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	qdel(src)
 
 /obj/effect/mapping_helpers/paint_wall/bridge
-	name = "Bridge Wall Paint"
+	name = "Command Wall Paint"
+	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
 	icon_state = "paint_bridge"
 
@@ -771,3 +771,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
 	icon_state = "paint_medical"
+
+/obj/effect/mapping_helpers/paint_wall/daedalus
+	name = "Daedalus Wall Paint"
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS
+	icon_state = "paint_daedalus"
+
+/obj/effect/mapping_helpers/paint_wall/priapus
+	name = "Priapus Wall Paint"
+	wall_paint = PAINT_WALL_PRIAPUS
+	stripe_paint = PAINT_STRIPE_PRIAPUS
+	icon_state = "paint_priapus"

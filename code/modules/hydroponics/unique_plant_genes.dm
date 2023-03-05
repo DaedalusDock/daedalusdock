@@ -622,7 +622,7 @@
 		return
 
 	var/turf/tray_turf = get_turf(tray)
-	if(abs(ONE_ATMOSPHERE - tray_turf.return_air().returnPressure()) > (seed.potency / 10 + 10)) // clouds can begin showing at around 50-60 potency in standard atmos
+	if(abs(ONE_ATMOSPHERE - tray_turf.unsafe_return_air().returnPressure()) > (seed.potency / 10 + 10)) // clouds can begin showing at around 50-60 potency in standard atmos
 		return
 
 	var/datum/gas_mixture/stank = new

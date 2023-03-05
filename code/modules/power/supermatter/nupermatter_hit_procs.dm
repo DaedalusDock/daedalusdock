@@ -17,8 +17,11 @@
 		return FALSE
 	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
-	if(projectile.armor_flag != BULLET || kiss_power)
-		power += projectile.damage * config_bullet_energy + kiss_power
+
+	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
+		power += ((projectile.damage * config_bullet_energy + kiss_power) * charging_factor) / power_factor
+		damage += projectile.damage * config_bullet_energy
+
 		if(!has_been_powered)
 			var/fired_from_str = projectile.fired_from ? " with [projectile.fired_from]" : ""
 			investigate_log(
@@ -33,8 +36,6 @@
 					: "[src] [ADMIN_JMP(src)] has been powered for the first time."
 			)
 			has_been_powered = TRUE
-
-	damage += (projectile.damage * config_bullet_energy)
 	return BULLET_ACT_HIT
 
 /obj/machinery/power/supermatter/singularity_act()

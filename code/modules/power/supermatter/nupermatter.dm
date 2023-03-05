@@ -14,7 +14,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	name = "supermatter crystal"
 	desc = "A strangely translucent and iridescent crystal."
 	icon = 'icons/obj/supermatter.dmi'
-	icon_state = "supermatter"
+	icon_state = "darkmatter"
 	density = TRUE
 	anchored = TRUE
 	layer = MOB_LAYER
@@ -171,7 +171,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	// This usually means a core breach or deliberate venting.
 	if(get_status() && (get_epr() < 0.5))
 		if(!aw_EPR)
-			var/area/A = get_area(src)
 			message_admins("WARN: Supermatter EPR value low. Possible core breach detected in [ADMIN_LOOKUPFLW(src)]")
 		aw_EPR = TRUE
 	else
@@ -230,7 +229,9 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	anchored = TRUE
 	grav_pulling = 1
 	exploded = 1
+
 	sleep(pull_time)
+
 	var/turf/TS = get_turf(src) // The turf supermatter is on. SM being in a locker, exosuit, or other container shouldn't block it's effects that way.
 	if(!istype(TS))
 		return
@@ -238,7 +239,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	var/list/affected_z = SSmapping.get_zstack(TS.z)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
-	SSweather.run_weather(/datum/weather/rad_storm, affected_z)
+	SSweather.run_weather(/datum/weather/rad_storm, affected_z, FALSE)
 
 	for(var/mob/living/mob in GLOB.mob_living_list)
 		CHECK_TICK
@@ -322,7 +323,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	else
 		alert_msg = null
 	if(alert_msg)
-		radio.talk_into(src, "WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", common_channel)
+		radio.talk_into(src, "WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", engineering_channel)
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
 			priority_announce("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Station Announcement","Supermatter Monitor", ANNOUNCER_ATTENTION)
@@ -414,8 +415,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		var/thermal_power = thermal_release_modifier * device_energy
 		if (debug)
 			var/heat_capacity_new = removed.getHeatCapacity()
-			visible_message("[src]: Releasing [round(thermal_power)] W.")
-			visible_message("[src]: Releasing additional [round((heat_capacity_new - heat_capacity)*removed.temperature)] W with exhaust gasses.")
+			visible_message("[src]: Releasing [round(thermal_power)] J.")
+			visible_message("[src]: Releasing additional [round((heat_capacity_new - heat_capacity)*removed.temperature)] J with exhaust gasses.")
 
 		removed.adjustThermalEnergy(thermal_power)
 		removed.temperature = clamp(removed.temperature, 0, 10000)
@@ -454,7 +455,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	else if (damage < emergency_point)
 		filters = null
 
-	radiation_pulse(src, round(power/10)) //Better close those shutters!
+	emit_radiation() //Better close those shutters!
 	power -= (power/decay_factor)**3		//energy losses due to radiation
 	handle_admin_warnings()
 
@@ -501,6 +502,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 /proc/supermatter_pull(atom/target, pull_range = 255, pull_power = STAGE_FIVE)
 	for(var/atom/A in range(pull_range, target))
 		A.singularity_pull(target, pull_power)
+		CHECK_TICK
+
 
 /obj/machinery/power/supermatter/GotoAirflowDest(n) //Supermatter not pushed around by airflow
 	return
@@ -520,7 +523,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	message_admins("WARN: Explosion near the Supermatter ([ADMIN_LOOKUPFLW(src)]! New EER: [power].")
 
 // SupermatterMonitor UI for ghosts only. Inherited attack_ghost will call this.
-/obj/machinery/power/supermatter_crystal/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/supermatter/ui_interact(mob/user, datum/tgui/ui)
 	if(!isobserver(user))
 		return FALSE
 	. = ..()
@@ -528,6 +531,45 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if (!ui)
 		ui = new(user, src, "SupermatterMonitor")
 		ui.open()
+
+/obj/machinery/power/supermatter/ui_data(mob/user)
+	var/list/data = list()
+
+	var/turf/local_turf = get_turf(src)
+
+	var/datum/gas_mixture/air = local_turf.unsafe_return_air()
+
+	// singlecrystal set to true eliminates the back sign on the gases breakdown.
+	data["singlecrystal"] = TRUE
+	data["active"] = TRUE
+	data["SM_integrity"] = get_integrity_percentage()
+	data["SM_power"] = power
+	data["SM_ambienttemp"] = air.temperature
+	data["SM_ambientpressure"] = air.returnPressure()
+	data["SM_bad_moles_amount"] = 0
+	data["SM_moles"] = 0
+	data["SM_uid"] = uid
+	var/area/active_supermatter_area = get_area(src)
+	data["SM_area_name"] = active_supermatter_area.name
+
+	var/list/gasdata = list()
+
+	if(air.total_moles)
+		data["SM_moles"] = air.total_moles
+		for(var/gasid in air.gas)
+			gasdata.Add(list(list(
+			"name"= xgm_gas_data.name[gasid],
+			"amount" = round(100*air.gas[gasid]/air.total_moles,0.01))))
+
+	else
+		for(var/gasid in air.gas)
+			gasdata.Add(list(list(
+				"name"= xgm_gas_data.name[gasid],
+				"amount" = 0)))
+
+	data["gases"] = gasdata
+
+	return data
 
 /*
 	data["integrity_percentage"] = round(get_integrity_percentage())

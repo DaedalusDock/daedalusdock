@@ -48,7 +48,7 @@
 	return SSmapping.get_turf_below(us)
 
 ///Checks if 2 levels are in the same Z-stack.
-/datum/controller/subsystem/mapping/proc/are_same_zstack(var/zA, var/zB)
+/datum/controller/subsystem/mapping/proc/are_same_zstack(zA, zB)
 	if (zA <= 0 || zB <= 0 || zA > world.maxz || zB > world.maxz)
 		return FALSE
 	if (zA == zB)
@@ -69,7 +69,7 @@
 	return new_entry[zB]
 
 ///Get a list of Z levels that are in za's Z-stack.
-/datum/controller/subsystem/mapping/proc/get_zstack(var/za)
+/datum/controller/subsystem/mapping/proc/get_zstack(za)
 	var/static/list/zstack_cache[world.maxz]
 	if(isturf(za))
 		za = za:z

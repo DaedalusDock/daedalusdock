@@ -13,7 +13,7 @@
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF //really helpful in building gas chambers for xenomorphs
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.25
-
+	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP + 500
 	///Rate of operation of the device
 	var/volume_rate = 50
 
@@ -53,17 +53,14 @@
 		return
 
 	var/datum/gas_mixture/air_contents = airs[1]
+	var/datum/gas_mixture/environment = loc.return_air()
+	var/draw
+	if(environment && air_contents.temperature > 0)
+		var/transfer_moles = (volume_rate/air_contents.volume)*air_contents.total_moles //apply flow rate limit
+		draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
 
-	if(air_contents.temperature > 0)
-		var/transfer_moles = (air_contents.returnPressure() * volume_rate) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
-
-		if(!transfer_moles)
-			return
-
-		var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
-
-		location.assume_air(removed)
-
+	if(draw >= 0)
+		ATMOS_USE_POWER(draw)
 		update_parents()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_interact(mob/user, datum/tgui/ui)

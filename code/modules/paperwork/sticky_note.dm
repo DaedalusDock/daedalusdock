@@ -25,12 +25,13 @@
 		if(top_paper.get_info_length() >= MAX_PAPER_LENGTH)
 			to_chat(user, span_warning("There is no room left on \the [top_paper]."))
 			return
-		var/text = sanitize(input("What would you like to write?", "Create note") as text|null, MAX_PAPER_LENGTH)
+		var/text = sanitize(input("What would you like to write?", "What's on your mind?") as text|null, MAX_PAPER_LENGTH)
 		if(!text || thing.loc != user || (!Adjacent(user) && loc != user) || user.incapacitated())
 			return
 		top_paper.info += text
-		user.visible_message(span_warning("\The [user] jots a note down on \the [src]."))
+		user.visible_message(span_warning("\The [user] jots a note down on \the [src]."), span_notice("You jot a note down on \the [src]."))
 		top_paper.update_appearance()
+		update_appearance()
 		return
 	if(!istype(thing, papertype))
 		return

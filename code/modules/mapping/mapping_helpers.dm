@@ -770,3 +770,21 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
 	icon_state = "paint_medical"
+
+/obj/effect/mapping_helpers/paint_wall/daedalus
+	name = "Daedalus Wall Paint"
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS
+	icon_state = "paint_daedalus"
+
+/obj/effect/mapping_helpers/paint_wall/priapus
+	name = "Priapus Wall Paint"
+	wall_paint = PAINT_WALL_PRIAPUS
+	stripe_paint = PAINT_STRIPE_PRIAPUS
+	icon_state = "paint_priapus"
+
+/obj/effect/mapping_helpers/paint_wall/centcom
+	name = "Central Comand Wall Paint"
+	wall_paint = PAINT_WALL_CENTCOM
+	stripe_paint = PAINT_STRIPE_CENTCOM
+	icon_state = "paint_centcom"

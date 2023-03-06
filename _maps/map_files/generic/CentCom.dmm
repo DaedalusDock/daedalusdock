@@ -4,7 +4,8 @@
 /area/space)
 "ac" = (
 /turf/closed/indestructible/fakedoor{
-	name = "Sub-Laboratory Elevator"
+	name = "Sub-Laboratory Elevator";
+	dir = 4
 	},
 /area/centcom/syndicate_mothership/control)
 "ad" = (
@@ -41,17 +42,10 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/centcom/syndicate_mothership/control)
 "ap" = (
-/obj/effect/turf_decal/siding/wideplating{
-	dir = 1
-	},
-/obj/effect/turf_decal/siding/wideplating,
-/obj/machinery/door/airlock/hatch{
-	name = "Workout Room"
-	},
-/turf/open/floor/iron/smooth_half{
-	dir = 4
-	},
-/area/centcom/syndicate_mothership/control)
+/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
+/turf/open/floor/plating,
+/area/centcom/central_command_areas/control)
 "ar" = (
 /obj/structure/chair/office{
 	dir = 8
@@ -602,7 +596,7 @@
 /area/centcom/central_command_areas/courtroom)
 "bR" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin/storage)
 "bS" = (
 /obj/structure/closet{
@@ -707,7 +701,7 @@
 /area/centcom/tdome/observation)
 "ce" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/armory)
 "cf" = (
 /obj/effect/turf_decal/siding/wood{
@@ -716,7 +710,7 @@
 /turf/open/floor/carpet/black,
 /area/centcom/central_command_areas/holding)
 "cg" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/evacuation)
 "ch" = (
 /obj/machinery/firealarm/directional/east,
@@ -773,6 +767,7 @@
 /area/centcom/central_command_areas/armory)
 "cn" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/briefing)
 "co" = (
@@ -1255,16 +1250,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "dE" = (
-/obj/effect/turf_decal/siding/wideplating{
-	dir = 1
-	},
-/obj/effect/turf_decal/siding/wideplating,
-/obj/machinery/door/airlock/hatch{
-	name = "Kitchen"
-	},
-/turf/open/floor/iron/smooth_half{
-	dir = 4
-	},
+/turf/open/floor/catwalk_floor/titanium,
 /area/centcom/syndicate_mothership/control)
 "dF" = (
 /obj/machinery/icecream_vat,
@@ -1541,6 +1527,7 @@
 	icon_state = "doors";
 	name = "WARNING: BLAST DOORS"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/courtroom)
 "ev" = (
@@ -1849,6 +1836,7 @@
 /area/centcom/tdome/observation)
 "fm" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/evacuation)
 "fn" = (
@@ -1961,7 +1949,7 @@
 /area/centcom/central_command_areas/fore)
 "fC" = (
 /obj/structure/sign/warning/nosmoking,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/tdome/observation)
 "fD" = (
 /obj/effect/turf_decal/siding/wood{
@@ -2016,7 +2004,8 @@
 /area/centcom/central_command_areas/holding)
 "fM" = (
 /turf/closed/indestructible/fakedoor{
-	name = "Guest House Back Entrance"
+	name = "Guest House Back Entrance";
+	dir = 4
 	},
 /area/centcom/central_command_areas/holding)
 "fN" = (
@@ -2358,7 +2347,7 @@
 /turf/open/floor/wood/tile,
 /area/centcom/syndicate_mothership/control)
 "gO" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/briefing)
 "gQ" = (
 /obj/structure/rack,
@@ -2894,7 +2883,7 @@
 /turf/open/misc/ashplanet/wateryrock,
 /area/awaymission/errorroom)
 "il" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/prison)
 "im" = (
 /obj/effect/turf_decal/stripes/line{
@@ -2905,10 +2894,10 @@
 /area/centcom/central_command_areas/prison)
 "in" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/control)
 "io" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/control)
 "ip" = (
 /obj/effect/turf_decal/stripes/line{
@@ -3010,7 +2999,8 @@
 /area/centcom/syndicate_mothership)
 "iB" = (
 /turf/closed/indestructible/fakedoor{
-	name = "CentCom Cell"
+	name = "CentCom Cell";
+	dir = 4
 	},
 /area/centcom/central_command_areas/prison/cells)
 "iC" = (
@@ -3041,7 +3031,7 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/prison)
 "iF" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/supply)
 "iG" = (
 /turf/closed/indestructible/fakedoor{
@@ -3050,11 +3040,11 @@
 /area/centcom/central_command_areas/supply)
 "iH" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/prison)
 "iI" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/prison/cells)
 "iJ" = (
 /obj/effect/turf_decal/stripes/line{
@@ -3084,7 +3074,7 @@
 /area/centcom/central_command_areas/prison)
 "iN" = (
 /obj/machinery/status_display/supply,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/supply)
 "iO" = (
 /obj/effect/turf_decal/delivery,
@@ -3162,6 +3152,7 @@
 /area/centcom/central_command_areas/prison)
 "iX" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/supply)
 "iY" = (
@@ -3190,6 +3181,7 @@
 "jb" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/sign/warning/vacuum/external,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/supply)
 "jc" = (
@@ -3789,6 +3781,12 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/centcom/central_command_areas/courtroom)
+"kJ" = (
+/obj/structure/mirror/magic{
+	pixel_y = 28
+	},
+/turf/open/floor/engine/cult,
+/area/centcom/wizard_station)
 "kK" = (
 /turf/closed/indestructible/abductor{
 	icon_state = "alien16"
@@ -4317,6 +4315,7 @@
 	icon_state = "doors";
 	name = "WARNING: BLAST DOORS"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/control)
 "ml" = (
@@ -4407,7 +4406,7 @@
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/syndicate_mothership/control)
 "mD" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/ferry)
 "mE" = (
 /obj/structure/chair/comfy/brown{
@@ -4971,6 +4970,7 @@
 /area/centcom/syndicate_mothership/control)
 "oe" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/ferry)
 "of" = (
@@ -5272,8 +5272,8 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/wideplating,
-/obj/machinery/door/airlock/glass_large{
-	name = "Disembarkents"
+/obj/machinery/door/airlock/public/glass{
+	name = "War Room"
 	},
 /turf/open/floor/iron/smooth_half{
 	dir = 4
@@ -5348,7 +5348,7 @@
 /area/centcom/syndicate_mothership/control)
 "pc" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/courtroom)
 "pd" = (
 /obj/item/clipboard,
@@ -5954,7 +5954,7 @@
 /area/centcom/syndicate_mothership/control)
 "qR" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/ferry)
 "qS" = (
 /obj/machinery/door/airlock/centcom{
@@ -6124,7 +6124,7 @@
 /area/centcom/central_command_areas/admin)
 "rz" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/ferry)
 "rB" = (
 /obj/structure/table/reinforced,
@@ -6231,7 +6231,7 @@
 	dir = 8
 	},
 /obj/structure/fans/tiny,
-/turf/open/floor/plating,
+/turf/open/floor/catwalk_floor/titanium,
 /area/centcom/syndicate_mothership/control)
 "rS" = (
 /obj/effect/turf_decal/stripes/line{
@@ -6326,6 +6326,18 @@
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/sepia,
 /area/centcom/central_command_areas/holding)
+"sn" = (
+/obj/effect/turf_decal/siding/wideplating/dark{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wideplating/dark{
+	dir = 4
+	},
+/obj/machinery/door/airlock/public/glass{
+	name = "Disembarkments"
+	},
+/turf/open/floor/iron/textured_large,
+/area/centcom/syndicate_mothership/control)
 "sq" = (
 /obj/machinery/computer/shuttle/white_ship{
 	dir = 4
@@ -6568,6 +6580,7 @@
 "ta" = (
 /obj/machinery/light/floor/has_bulb,
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/ferry)
 "tb" = (
@@ -6598,7 +6611,7 @@
 /area/centcom/central_command_areas/holding)
 "td" = (
 /obj/structure/sign/departments/drop,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/ferry)
 "tg" = (
 /obj/structure/chair{
@@ -6780,6 +6793,7 @@
 	icon_state = "doors";
 	name = "WARNING: BLAST DOORS"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/fore)
 "tJ" = (
@@ -6832,7 +6846,7 @@
 /area/centcom/central_command_areas/control)
 "tP" = (
 /obj/structure/sign/warning/securearea,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/control)
 "tR" = (
 /obj/effect/turf_decal/stripes/line{
@@ -6868,9 +6882,7 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/evacuation)
 "tX" = (
-/obj/machinery/door/airlock{
-	name = "Cockpit"
-	},
+/obj/machinery/door/airlock/uranium/glass/safe,
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
 "tY" = (
@@ -6882,7 +6894,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/control)
 "uf" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/tdome/administration)
 "ug" = (
 /obj/machinery/light/directional/east,
@@ -6928,7 +6940,7 @@
 /area/centcom/central_command_areas/ferry)
 "uo" = (
 /obj/machinery/light/floor/has_bulb,
-/turf/open/floor/plating,
+/turf/open/floor/catwalk_floor/titanium,
 /area/centcom/syndicate_mothership/control)
 "up" = (
 /obj/structure/table/wood,
@@ -7287,6 +7299,7 @@
 	icon_state = "doors";
 	name = "WARNING: EXTERNAL AIRLOCK"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/ferry)
 "vB" = (
@@ -7499,13 +7512,13 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/evacuation)
 "wb" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Observation Room"
 	},
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
 "wc" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Game Room"
 	},
 /turf/open/floor/engine/cult,
@@ -8165,14 +8178,14 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/evacuation)
 "ya" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Study"
 	},
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
 "yb" = (
-/obj/machinery/door/airlock{
-	name = "Break Room"
+/obj/machinery/door/airlock/uranium/safe{
+	name = "Fore Hallway"
 	},
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
@@ -8231,6 +8244,7 @@
 "yn" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/sign/warning/vacuum,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/ferry)
 "yo" = (
@@ -8331,9 +8345,6 @@
 /obj/item/clothing/suit/wizrobe/magusblue,
 /obj/item/clothing/head/wizard/magus,
 /obj/item/staff,
-/obj/structure/mirror/magic{
-	pixel_y = 28
-	},
 /obj/machinery/light/directional/north,
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
@@ -8626,7 +8637,7 @@
 /area/centcom/syndicate_mothership/control)
 "zw" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/tdome/observation)
 "zz" = (
 /obj/structure/table/reinforced,
@@ -8788,6 +8799,7 @@
 "zT" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/light/floor/has_bulb,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/briefing)
 "zU" = (
@@ -9169,7 +9181,7 @@
 /area/centcom/syndicate_mothership/control)
 "AT" = (
 /obj/structure/sign/departments/medbay/alt,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/control)
 "AU" = (
 /obj/machinery/computer/operating{
@@ -9578,7 +9590,7 @@
 /turf/open/floor/plating/abductor,
 /area/centcom/abductor_ship)
 "BS" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Observation Deck"
 	},
 /turf/open/floor/engine/cult,
@@ -10011,6 +10023,12 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/wideplating,
+/obj/machinery/door/airlock/hatch{
+	name = "Bar Counter"
+	},
+/obj/machinery/door/airlock/hatch{
+	name = "Bar Counter"
+	},
 /turf/open/floor/iron/smooth_half{
 	dir = 4
 	},
@@ -10023,11 +10041,11 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/centcom/syndicate_mothership/control)
 "Di" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/ai_multicam_room)
 "Dj" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/prison/cells)
 "Dk" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -10159,19 +10177,19 @@
 /turf/open/floor/mineral/titanium,
 /area/centcom/syndicate_mothership/control)
 "DC" = (
-/obj/machinery/door/airlock{
-	name = "Storage"
+/obj/machinery/door/airlock/uranium/safe{
+	name = "Engine Room"
 	},
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
 "DD" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Personal Quarters"
 	},
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
 "DE" = (
-/obj/machinery/door/airlock{
+/obj/machinery/door/airlock/uranium/safe{
 	name = "Bathroom"
 	},
 /turf/open/floor/engine/cult,
@@ -10762,6 +10780,7 @@
 	icon_state = "doors";
 	name = "WARNING: BLAST DOORS"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/prison)
 "Fp" = (
@@ -11257,6 +11276,7 @@
 	icon_state = "doors";
 	name = "WARNING: BLAST DOORS"
 	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/evacuation)
 "GK" = (
@@ -11340,6 +11360,16 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/courtroom)
+"Hd" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/structure/sign/directions/engineering{
+	desc = "A sign that shows there are doors here. There are doors everywhere!";
+	icon_state = "doors";
+	name = "WARNING: BLAST DOORS"
+	},
+/obj/effect/mapping_helpers/paint_wall/centcom,
+/turf/open/floor/plating,
+/area/centcom/central_command_areas/ferry)
 "He" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/mineral/plastitanium,
@@ -11458,7 +11488,7 @@
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/centcom/syndicate_mothership/control)
 "Hv" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/courtroom)
 "Hy" = (
 /obj/machinery/recharge_station,
@@ -11726,9 +11756,17 @@
 	},
 /turf/open/misc/asteroid/snow/icemoon,
 /area/centcom/syndicate_mothership/control)
+"Io" = (
+/obj/structure/barricade/wooden,
+/obj/machinery/door/airlock/uranium/safe{
+	name = "Storage Room"
+	},
+/turf/open/floor/engine/cult,
+/area/centcom/wizard_station)
 "Ip" = (
 /turf/closed/indestructible/fakedoor{
-	name = "BUNKER 4337"
+	name = "BUNKER 4337";
+	dir = 4
 	},
 /area/centcom/syndicate_mothership)
 "Iq" = (
@@ -12010,7 +12048,7 @@
 /turf/open/floor/iron,
 /area/centcom/tdome/arena)
 "Jb" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/prison/cells)
 "Jc" = (
 /obj/effect/landmark/thunderdome/one,
@@ -12021,6 +12059,7 @@
 /area/centcom/tdome/arena)
 "Jg" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/fore)
 "Jh" = (
@@ -12856,7 +12895,7 @@
 /turf/open/floor/plating/abductor,
 /area/centcom/abductor_ship)
 "LV" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/awaymission/errorroom)
 "LW" = (
 /turf/closed/mineral/ash_rock,
@@ -13039,6 +13078,7 @@
 /area/centcom/central_command_areas/admin)
 "Mz" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/prison)
 "MA" = (
@@ -13206,7 +13246,7 @@
 /area/centcom/central_command_areas/holding)
 "MY" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/briefing)
 "MZ" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
@@ -13656,7 +13696,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/briefing)
 "On" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin)
 "Op" = (
 /obj/structure/table/reinforced,
@@ -13841,7 +13881,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/catwalk_floor/titanium,
 /area/centcom/syndicate_mothership/control)
 "OL" = (
 /turf/closed/indestructible/rock,
@@ -14181,7 +14221,7 @@
 /area/centcom/central_command_areas/armory)
 "PF" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin)
 "PH" = (
 /obj/machinery/firealarm/directional/south,
@@ -14508,7 +14548,7 @@
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/centcom/syndicate_mothership/control)
 "QC" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/tdome/observation)
 "QD" = (
 /obj/structure/closet,
@@ -14931,6 +14971,7 @@
 /area/centcom/central_command_areas/briefing)
 "RI" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/courtroom)
 "RJ" = (
@@ -15100,6 +15141,7 @@
 /area/centcom/central_command_areas/briefing)
 "Sl" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/tdome/observation)
 "Sn" = (
@@ -15177,7 +15219,7 @@
 /area/centcom/central_command_areas/admin)
 "Sx" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin/storage)
 "Sy" = (
 /obj/machinery/light/small/directional/north,
@@ -15604,6 +15646,18 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/tdome/observation)
+"TC" = (
+/obj/effect/turf_decal/siding/wideplating{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wideplating,
+/obj/machinery/door/airlock/hatch{
+	name = "Gym"
+	},
+/turf/open/floor/iron/smooth_half{
+	dir = 4
+	},
+/area/centcom/syndicate_mothership/control)
 "TE" = (
 /obj/structure/chair/comfy/brown{
 	color = "#596479";
@@ -16353,7 +16407,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/supply)
 "Vx" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/fore)
 "Vy" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -16655,6 +16709,7 @@
 /area/centcom/central_command_areas/admin)
 "Wn" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/tdome/administration)
 "Wp" = (
@@ -17337,6 +17392,7 @@
 /area/centcom/syndicate_mothership)
 "XT" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/supplypod)
 "XU" = (
@@ -17354,7 +17410,7 @@
 /turf/open/floor/iron/grimy,
 /area/centcom/central_command_areas/admin)
 "Ya" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/armory)
 "Yc" = (
 /obj/structure/fireplace,
@@ -17430,7 +17486,7 @@
 /turf/open/misc/asteroid,
 /area/centcom/central_command_areas/control)
 "Yn" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/supplypod)
 "Yq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -17550,7 +17606,7 @@
 /area/centcom/syndicate_mothership)
 "YI" = (
 /obj/structure/sign/warning/nosmoking,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin)
 "YJ" = (
 /obj/effect/turf_decal/tile/bar,
@@ -17640,7 +17696,7 @@
 /turf/open/floor/iron/grimy,
 /area/centcom/tdome/observation)
 "YU" = (
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/admin/storage)
 "YV" = (
 /obj/structure/closet/lawcloset,
@@ -17684,7 +17740,7 @@
 /area/centcom/central_command_areas/evacuation/ship)
 "Za" = (
 /obj/structure/sign/nanotrasen,
-/turf/closed/indestructible/riveted,
+/turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/fore)
 "Zb" = (
 /obj/machinery/door/poddoor/shuttledock{
@@ -17710,6 +17766,7 @@
 /area/centcom/tdome/observation)
 "Zf" = (
 /obj/effect/spawner/structure/window/reinforced,
+/obj/effect/mapping_helpers/paint_wall/centcom,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/admin)
 "Zg" = (
@@ -24441,7 +24498,7 @@ DC
 DM
 DM
 Ei
-EC
+Io
 qZ
 qZ
 qE
@@ -25713,7 +25770,7 @@ qZ
 wO
 xx
 qE
-qZ
+kJ
 qZ
 qZ
 qZ
@@ -27207,7 +27264,7 @@ Ff
 nz
 FQ
 HN
-dE
+Dg
 pZ
 pZ
 pZ
@@ -28235,7 +28292,7 @@ nz
 hr
 HN
 HN
-ap
+TC
 Cc
 Cc
 Cc
@@ -28749,7 +28806,7 @@ nz
 hr
 HN
 HN
-ap
+TC
 Yd
 Yd
 Yd
@@ -34144,12 +34201,12 @@ ll
 ll
 ll
 HM
-Dg
+oS
 vL
 uv
 uv
 vL
-Dg
+oS
 HN
 HF
 pH
@@ -35438,7 +35495,7 @@ ng
 ng
 xI
 ng
-gc
+sn
 gc
 ng
 ed
@@ -37493,7 +37550,7 @@ Bz
 Bz
 pw
 nz
-ll
+dE
 nz
 or
 gJ
@@ -37750,7 +37807,7 @@ Bz
 ew
 Bz
 nz
-ll
+dE
 nz
 ng
 nz
@@ -38264,7 +38321,7 @@ Bz
 Bz
 Bz
 nz
-ll
+dE
 nz
 Bz
 WV
@@ -38521,7 +38578,7 @@ Bz
 WV
 pw
 nz
-ll
+dE
 nz
 pw
 Bz
@@ -39047,8 +39104,8 @@ pw
 Bz
 Es
 OL
-pJ
-pJ
+OL
+OL
 pJ
 pJ
 pJ
@@ -39304,7 +39361,7 @@ FR
 Bz
 Es
 OL
-hs
+OL
 pJ
 pJ
 pJ
@@ -39560,8 +39617,8 @@ Bz
 Bz
 Bz
 Es
+Es
 OL
-hs
 pJ
 aU
 pJ
@@ -39816,9 +39873,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
 pJ
 pJ
 pJ
@@ -40073,9 +40130,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
 Zc
 pJ
 pJ
@@ -40330,10 +40387,10 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
-pJ
+aU
 pJ
 pJ
 pJ
@@ -40587,9 +40644,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-aU
 pJ
 pJ
 pJ
@@ -40844,9 +40901,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
 pJ
 hs
 pJ
@@ -41101,9 +41158,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
 pJ
 pJ
 Zc
@@ -41358,9 +41415,9 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
 OL
-pJ
 pJ
 aU
 pJ
@@ -41615,8 +41672,8 @@ Ff
 Ff
 Ff
 Ff
+Ff
 Es
-OL
 OL
 pJ
 pJ
@@ -41873,7 +41930,7 @@ Bz
 Bz
 Bz
 Es
-hh
+Es
 OL
 hs
 Zc
@@ -59088,7 +59145,7 @@ YU
 mD
 mD
 wu
-xh
+Hd
 wu
 mD
 Ya
@@ -59355,11 +59412,11 @@ io
 io
 io
 qw
-iu
+ap
 MF
-iu
+ap
 lN
-iu
+ap
 eM
 Ze
 tG
@@ -59597,8 +59654,8 @@ oM
 iF
 rF
 iF
-iu
-iu
+ap
+ap
 io
 io
 Oj
@@ -59606,16 +59663,16 @@ mk
 Oj
 io
 io
-iu
-iu
+ap
+ap
 io
 mQ
 io
-iu
+ap
 io
 Oz
 io
-iu
+ap
 io
 yc
 bg
@@ -59866,7 +59923,7 @@ mR
 zF
 Am
 tP
-iu
+ap
 io
 gl
 Uo
@@ -60370,17 +60427,17 @@ iX
 iF
 tL
 tL
-iu
-iu
+ap
+ap
 wC
-iu
-iu
-iu
+ap
+ap
+ap
 in
 tL
 tL
 io
-iu
+ap
 io
 rx
 Qf
@@ -60627,23 +60684,23 @@ rH
 Vx
 tK
 Ab
-iu
+ap
 ur
 uc
 zb
 VF
 Ng
-iu
+ap
 Ab
 xT
-iu
+ap
 rK
 io
 io
-iu
+ap
 Dt
 DH
-iu
+ap
 in
 Sl
 RW
@@ -60890,7 +60947,7 @@ uc
 kl
 xV
 hc
-iu
+ap
 Ab
 An
 in
@@ -60901,7 +60958,7 @@ CY
 wH
 np
 oQ
-iu
+ap
 Ms
 Mw
 WD
@@ -61141,7 +61198,7 @@ rI
 tI
 tK
 Ab
-iu
+ap
 GN
 hF
 km
@@ -61150,7 +61207,7 @@ VW
 io
 vt
 xT
-iu
+ap
 BE
 mk
 CJ
@@ -61158,7 +61215,7 @@ Ab
 Ab
 Ab
 DV
-iu
+ap
 WL
 Mu
 Mu
@@ -61398,13 +61455,13 @@ rI
 NU
 tM
 Ab
-iu
+ap
 ea
 oX
 km
 km
 xD
-iu
+ap
 Ab
 Ab
 qT
@@ -61655,7 +61712,7 @@ rI
 Jg
 tN
 Ab
-iu
+ap
 Qf
 bV
 km
@@ -61666,13 +61723,13 @@ vt
 xo
 mk
 BE
-iu
+ap
 CK
 Ab
 Ab
 Ab
 DW
-iu
+ap
 WK
 Mu
 Mu
@@ -61918,7 +61975,7 @@ uc
 kl
 xW
 Oh
-iu
+ap
 Ab
 Ao
 in
@@ -61929,7 +61986,7 @@ CZ
 wH
 np
 nW
-iu
+ap
 Hj
 Mw
 MN
@@ -62169,23 +62226,23 @@ rJ
 Jg
 tN
 Ab
-iu
+ap
 gl
 uc
 SI
 AO
 em
-iu
+ap
 Ab
 xo
-iu
+ap
 mQ
 io
 io
-iu
+ap
 Du
 DI
-iu
+ap
 in
 Sl
 RW
@@ -62426,17 +62483,17 @@ io
 io
 tL
 tL
-iu
-iu
+ap
+ap
 wC
-iu
-iu
-iu
+ap
+ap
+ap
 in
 tL
 tL
 io
-iu
+ap
 io
 el
 Uv
@@ -62950,7 +63007,7 @@ mR
 zG
 Ap
 AT
-iu
+ap
 io
 YN
 OU
@@ -63204,16 +63261,16 @@ mk
 yU
 io
 io
-iu
-iu
+ap
+ap
 io
 rK
 io
-iu
+ap
 io
 NJ
 io
-iu
+ap
 io
 eM
 ZM
@@ -63447,12 +63504,12 @@ iU
 iU
 jx
 jG
-iu
+ap
 Ym
 io
 io
 rK
-iu
+ap
 MF
 io
 vP
@@ -63467,11 +63524,11 @@ io
 io
 io
 zC
-iu
+ap
 uc
-iu
+ap
 Ym
-iu
+ap
 yc
 Bo
 FZ
@@ -63705,10 +63762,10 @@ Mz
 jw
 pm
 io
-iu
+ap
 io
 io
-iu
+ap
 io
 yj
 io
@@ -63718,8 +63775,8 @@ mk
 Oj
 io
 io
-iu
-iu
+ap
+ap
 io
 io
 io
@@ -63961,9 +64018,9 @@ nY
 Mz
 jw
 jG
-iu
+ap
 Ym
-iu
+ap
 xB
 sK
 sz
@@ -63979,9 +64036,9 @@ zH
 Aq
 AU
 BF
-iu
+ap
 zC
-iu
+ap
 uc
 io
 qw
@@ -64218,9 +64275,9 @@ nZ
 il
 jE
 jG
-iu
+ap
 lN
-iu
+ap
 SQ
 sK
 Ts
@@ -64236,13 +64293,13 @@ zI
 Ab
 xN
 BG
-iu
+ap
 qw
-iu
+ap
 uc
 io
-iu
-iu
+ap
+ap
 QC
 HE
 Sl
@@ -64475,27 +64532,27 @@ oa
 Mz
 jw
 jG
-iu
+ap
 Ym
-iu
+ap
 gl
 sK
 OH
 yo
-iu
+ap
 vR
 Ab
 Ab
 Ab
 yz
-iu
+ap
 zI
 xN
 Ab
 BH
-iu
+ap
 Ym
-iu
+ap
 uc
 io
 RR
@@ -64733,7 +64790,7 @@ Mz
 jw
 pm
 io
-iu
+ap
 io
 Mr
 sK
@@ -64989,27 +65046,27 @@ iT
 iT
 jH
 jG
-iu
+ap
 qw
-iu
+ap
 ZS
 sK
 Ca
 ux
-iu
+ap
 vR
 Ab
 Ab
 Ab
 yz
-iu
+ap
 zJ
 xN
 Ab
 BJ
-iu
+ap
 lN
-iu
+ap
 uc
 io
 uc
@@ -65246,9 +65303,9 @@ iU
 iU
 iU
 lt
-iu
+ap
 zC
-iu
+ap
 Cx
 sK
 uc
@@ -65264,9 +65321,9 @@ zJ
 Ab
 xN
 Ry
-iu
+ap
 zC
-iu
+ap
 uc
 io
 io
@@ -65510,20 +65567,20 @@ en
 uc
 SO
 bG
-iu
+ap
 vT
 wI
 xq
 wI
 Bw
-iu
+ap
 zK
 As
 zJ
 YY
-iu
+ap
 lN
-iu
+ap
 uc
 io
 SH

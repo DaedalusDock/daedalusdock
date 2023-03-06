@@ -30,3 +30,6 @@ GLOBAL_LIST_EMPTY(powernets)
 #define SUPERMATTER_DATA_TEMPERATURE "Temperature"
 #define SUPERMATTER_DATA_PRESSURE    "Pressure"
 #define SUPERMATTER_DATA_EPR         "Chamber EPR"
+
+/// How much the bullets damage should be multiplied by when it is added to the internal variables
+#define SUPERMATTER_BULLET_ENERGY 10 //This is 5x greater than Baystation's to account for emitters doing about 5x less damage

@@ -5715,9 +5715,6 @@
 /obj/effect/spawner/random/food_or_drink/cups,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
-"byF" = (
-/turf/open/floor/plating/airless,
-/area/station/solars/starboard/aft)
 "byH" = (
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/freezer,
@@ -6465,24 +6462,6 @@
 /area/station/security/prison)
 "bHB" = (
 /obj/machinery/light/small/directional/east,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/stack/sheet/glass/fifty,
-/obj/structure/closet/crate/engineering/electrical,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/aft)
 "bHH" = (
@@ -25701,6 +25680,10 @@
 /area/station/engineering/monitoring)
 "iit" = (
 /obj/structure/cable,
+/obj/machinery/power/solar{
+	id = "forestarboard";
+	name = "Fore-Starboard Solar Array"
+	},
 /turf/open/floor/iron/solarpanel/airless,
 /area/station/solars/starboard/aft)
 "iiC" = (
@@ -36221,24 +36204,6 @@
 /turf/open/floor/iron,
 /area/station/security/office)
 "mar" = (
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/stack/sheet/glass/fifty,
-/obj/structure/closet/crate/engineering/electrical,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/aft)
 "maC" = (
@@ -38686,19 +38651,6 @@
 /area/station/hallway/secondary/service)
 "mPo" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
-/obj/structure/closet/crate/engineering/electrical,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/stack/cable_coil,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/aft)
 "mPp" = (
@@ -39339,9 +39291,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
-"mYG" = (
-/turf/open/floor/plating/airless,
-/area/station/solars/port/aft)
 "mYO" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/structure/chair/comfy/black{
@@ -41482,9 +41431,6 @@
 /obj/structure/sign/directions/evac,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/maintenance/department/science/central)
-"nKN" = (
-/turf/closed/indestructible/alien,
-/area/station/engineering/supermatter/room)
 "nKY" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -43293,6 +43239,7 @@
 /area/station/command/gateway)
 "owm" = (
 /obj/structure/lattice/catwalk,
+/obj/structure/cable,
 /turf/open/space/basic,
 /area/station/solars/starboard/aft)
 "owq" = (
@@ -43822,25 +43769,6 @@
 /area/station/ai_monitored/turret_protected/ai)
 "oFG" = (
 /obj/machinery/camera/directional/north,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/solar_assembly,
-/obj/item/stack/sheet/glass/fifty,
-/obj/structure/closet/crate/engineering/electrical,
-/obj/item/stack/cable_coil,
 /obj/structure/sign/warning/vacuum/external{
 	pixel_y = 32
 	},
@@ -43860,6 +43788,7 @@
 /turf/open/floor/iron,
 /area/station/security/prison)
 "oGh" = (
+/obj/structure/cable,
 /turf/open/floor/plating/airless{
 	icon_state = "platingdmg1"
 	},
@@ -44507,6 +44436,7 @@
 /turf/open/floor/iron,
 /area/station/construction/mining/aux_base)
 "oSg" = (
+/obj/structure/cable,
 /turf/open/floor/plating/airless{
 	icon_state = "platingdmg2"
 	},
@@ -49684,6 +49614,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "qLW" = (
+/obj/structure/cable,
 /turf/open/floor/plating/airless{
 	icon_state = "panelscorched"
 	},
@@ -51116,11 +51047,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/engineering/supermatter/room)
-"rqc" = (
-/obj/structure/lattice/catwalk,
-/obj/item/stack/cable_coil,
-/turf/open/space/basic,
-/area/station/solars/starboard/fore)
 "rqq" = (
 /obj/item/storage/secure/safe/hos{
 	pixel_x = 36;
@@ -56003,6 +55929,7 @@
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "tkX" = (
+/obj/structure/cable,
 /turf/open/floor/plating/airless{
 	icon_state = "panelscorched"
 	},
@@ -61400,6 +61327,10 @@
 /area/station/security/brig)
 "vsN" = (
 /obj/structure/cable,
+/obj/machinery/power/solar{
+	id = "forestarboard";
+	name = "Fore-Starboard Solar Array"
+	},
 /turf/open/floor/iron/solarpanel/airless,
 /area/station/solars/port/aft)
 "vsP" = (
@@ -68760,10 +68691,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/theater)
-"yef" = (
-/obj/structure/lattice/catwalk,
-/turf/open/space/basic,
-/area/station/solars/port/aft)
 "yes" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
@@ -81778,7 +81705,7 @@ gnA
 sCl
 lMJ
 lMJ
-mYG
+dOy
 aaa
 aaa
 aaa
@@ -82035,7 +81962,7 @@ lMJ
 aaa
 aaa
 aaa
-mYG
+dOy
 aaa
 lMJ
 aaa
@@ -83320,7 +83247,7 @@ aaa
 aaa
 lMJ
 tia
-mYG
+dOy
 tia
 tia
 tia
@@ -83579,7 +83506,7 @@ tia
 fEp
 dOy
 fEp
-yef
+fEp
 fEp
 fEp
 fEp
@@ -83834,7 +83761,7 @@ aaa
 aaa
 lMJ
 tia
-mYG
+dOy
 tia
 tia
 tia
@@ -84348,7 +84275,7 @@ aaa
 aaa
 lMJ
 vsN
-mYG
+dOy
 vsN
 vsN
 vsN
@@ -84604,12 +84531,12 @@ lMJ
 lMJ
 lMJ
 vsN
-yef
-mYG
+fEp
+dOy
 fEp
 fEp
 fEp
-yef
+fEp
 fEp
 fEp
 vsN
@@ -85634,8 +85561,8 @@ lMJ
 vsN
 fEp
 dOy
-yef
-yef
+fEp
+fEp
 fEp
 fEp
 fEp
@@ -107234,7 +107161,7 @@ mIj
 mIj
 mIj
 mIj
-byF
+mIj
 mIj
 mIj
 viT
@@ -113529,7 +113456,6 @@ yaC
 yaC
 qLW
 yaC
-nnT
 yaC
 yaC
 yaC
@@ -113539,8 +113465,9 @@ yaC
 yaC
 yaC
 yaC
-nnT
-nnT
+yaC
+yaC
+yaC
 yaC
 oUF
 amN
@@ -113785,13 +113712,13 @@ aaa
 aaa
 aaa
 aaa
-dUd
+ilj
 aaa
 aaa
 aaa
 aaa
 aaa
-dUd
+ilj
 aaa
 aaa
 aaa
@@ -114813,7 +114740,7 @@ aaa
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa
@@ -115070,13 +114997,13 @@ aaa
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa
@@ -115327,18 +115254,18 @@ lMJ
 lMJ
 dUd
 dUd
-dUd
+ilj
 dUd
 dUd
 lMJ
-rqc
 dUd
 dUd
-yaC
-yaC
-uay
-uay
-uay
+ilj
+nnT
+nnT
+lMJ
+lMJ
+aox
 aaa
 aaa
 aaa
@@ -115364,7 +115291,7 @@ atQ
 fQO
 fQO
 fQO
-nKN
+fQO
 fQO
 fQO
 fQO
@@ -115590,7 +115517,7 @@ xfJ
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa
@@ -116612,13 +116539,13 @@ aaa
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa
 xfJ
 xfJ
-dUd
+ilj
 xfJ
 xfJ
 aaa

@@ -33,7 +33,7 @@
 	///Power rating when the usage is turned up to 100
 	var/max_power_rating = 20000
 	///Percentage of power rating to use
-	var/power_setting = 100
+	var/power_setting = 20 // Start at 20 so we don't obliterate the station power supply.
 
 	var/interactive = TRUE // So mapmakers can disable interaction.
 	var/color_index = 1

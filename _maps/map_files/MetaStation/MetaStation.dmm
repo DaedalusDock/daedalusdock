@@ -17066,12 +17066,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
-"eWL" = (
-/turf/open/floor/plating,
-/turf/open/floor/plating{
-	icon_state = "platingdmg2"
-	},
-/area/station/maintenance/department/engine)
 "eWM" = (
 /obj/effect/turf_decal/trimline/blue/filled/corner{
 	dir = 4
@@ -25629,9 +25623,7 @@
 /area/station/service/theater)
 "igB" = (
 /obj/machinery/light/small/directional/north,
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/connected/one_two,
 /turf/open/floor/plating,
 /area/station/engineering/engine_smes)
 "igG" = (
@@ -50285,6 +50277,9 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/security/prison)
+"ran" = (
+/turf/open/floor/catwalk_floor/iron_dark,
+/area/station/engineering/supermatter/room)
 "ras" = (
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/engineering/atmospherics_engine)
@@ -54402,9 +54397,7 @@
 /area/station/science/xenobiology)
 "sFe" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/connected/one_two,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/engineering/supermatter/room)
 "sFg" = (
@@ -56226,9 +56219,7 @@
 /turf/open/floor/iron/dark,
 /area/station/command/gateway)
 "toS" = (
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/connected/one_two,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
 "toZ" = (
@@ -112065,7 +112056,7 @@ weo
 rVz
 qsV
 qBM
-qBM
+ran
 nwc
 sJp
 fQO
@@ -112852,7 +112843,7 @@ fQO
 qST
 apc
 apc
-eWL
+xih
 nDG
 gUa
 ufx

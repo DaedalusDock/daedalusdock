@@ -33,8 +33,6 @@
 		top_paper.update_appearance()
 		update_appearance()
 		return
-	if(!istype(thing, papertype))
-		return
 
 //Sticky notes
 

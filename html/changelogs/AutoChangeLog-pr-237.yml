@@ -1,0 +1,4 @@
+author: FunnyLegJiggle
+delete-after: true
+changes:
+  - bugfix: Chemistry bags now accept pills and patches

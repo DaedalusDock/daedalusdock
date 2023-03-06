@@ -80,4 +80,3 @@
 	else if(dir_offset & SOUTH)
 		pixel_y -= 32
 
-#undef MAX_PAPER_LENGTH

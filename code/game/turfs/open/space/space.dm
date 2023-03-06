@@ -88,13 +88,6 @@
 /turf/open/space/RemoveLattice()
 	return
 
-/turf/open/space/AfterChange()
-	..()
-	//atmos_overlay_types = null
-
-/*/turf/open/space/Assimilate_Air()
-	return*/
-
 //IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
 /turf/open/space/remove_air(amount)
 	return null

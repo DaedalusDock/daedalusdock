@@ -4,5 +4,3 @@ PROCESSING_SUBSYSTEM_DEF(singuloprocess)
 	wait = 0.5
 	priority = FIRE_PRIORITY_DEFAULT
 	stat_tag = "SIN"
-
-#warn put the sm's pull here

@@ -3,7 +3,7 @@ GLOBAL_LIST_EMPTY(power_codex_entries)
 /datum/codex_category/power
 	name = "Power"
 	desc = "The station's power network and you"
-	guide_name = "the Supermatter Engine"
+	guide_name = "the Supermatter"
 	guide_html = "PLACEHOLDER"
 
 /datum/codex_category/power/Populate()

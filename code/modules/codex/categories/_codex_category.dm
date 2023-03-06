@@ -64,7 +64,7 @@
 	if(guide_html)
 		var/datum/codex_entry/entry = new(
 			_display_name = "Guide to [capitalize(guide_name || name)]",
-			_mechanics_text = guide_html
+			_mechanics_text = guide_html,
 			_disambiguator = "guide"
 		)
 		LAZYDISTINCTADD(entry.categories, src)

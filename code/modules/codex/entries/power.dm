@@ -8,6 +8,6 @@
 	GLOB.power_codex_entries += name
 
 /datum/codex_entry/power/supermatter
-	name = "Supermatter"
+	name = "Supermatter Engine"
 	associated_paths = list(/obj/machinery/power/supermatter)
 	mechanics_text = "A mysterious crystal from deep space which produces a large amount of thermal energy with a small jolt of energy."

@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - qol: the Health Analyzer chem scanner has been readded to the mode cycle loop.

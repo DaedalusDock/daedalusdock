@@ -135,7 +135,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
 
-	src.AddElement(/datum/element/lateral_bound, TRUE)
+	AddElement(/datum/element/lateral_bound, TRUE)
 
 
 /obj/machinery/power/supermatter/Destroy()

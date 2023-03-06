@@ -10,16 +10,16 @@
 	var/kiss_power = 0
 	switch(projectile.type)
 		if(/obj/projectile/kiss)
-			kiss_power = 60
+			kiss_power = 5
 		if(/obj/projectile/kiss/death)
-			kiss_power = 20000
+			kiss_power = 200
 	if(!istype(local_turf))
 		return FALSE
 	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
 
 	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
-		power += ((projectile.damage * config_bullet_energy + kiss_power) * charging_factor) / power_factor
+		power += ((projectile.damage * SUPERMATTER_BULLET_ENERGY + kiss_power) * charging_factor) / power_factor
 
 		if(!has_been_powered)
 			var/fired_from_str = projectile.fired_from ? " with [projectile.fired_from]" : ""
@@ -35,6 +35,8 @@
 					: "[src] [ADMIN_JMP(src)] has been powered for the first time."
 			)
 			has_been_powered = TRUE
+	else
+		damage += projectile.damage
 	return BULLET_ACT_HIT
 
 /obj/machinery/power/supermatter/singularity_act()

@@ -81,11 +81,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	var/power = 0
 	var/oxygen = 0
 
-	//Temporary values so that we can optimize this
-	//How much the bullets damage should be multiplied by when it is added to the internal variables
-	var/config_bullet_energy = 2
-	//How much of the power is left after processing is finished?
-//        var/config_power_reduction_per_tick = 0.5
 	//How much hallucination should it produce per unit of power?
 	var/config_hallucination_power = 0.1
 
@@ -99,13 +94,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	var/aw_emerg = FALSE
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
-
-	var/list/threshholds = list( // List of lists defining the amber/red labeling threshholds in readouts. Numbers are minminum red and amber and maximum amber and red, in that order
-		list("name" = SUPERMATTER_DATA_EER,         "min_h" = -1, "min_l" = -1,  "max_l" = 150,  "max_h" = 300),
-		list("name" = SUPERMATTER_DATA_TEMPERATURE, "min_h" = -1, "min_l" = -1,  "max_l" = 4000, "max_h" = 5000),
-		list("name" = SUPERMATTER_DATA_PRESSURE,    "min_h" = -1, "min_l" = -1,  "max_l" = 5000, "max_h" = 10000),
-		list("name" = SUPERMATTER_DATA_EPR,         "min_h" = -1, "min_l" = 1.0, "max_l" = 2.5,  "max_h" = 4.0)
-	)
 
 	///Our internal radio
 	var/obj/item/radio/radio
@@ -323,10 +311,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	else
 		alert_msg = null
 	if(alert_msg)
-		radio.talk_into(src, "WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", engineering_channel)
+		radio.talk_into(src, alert_msg, engineering_channel)
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			priority_announce("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Station Announcement","Supermatter Monitor", ANNOUNCER_ATTENTION)
+			radio.talk_into(src, alert_msg, engineering_channel)
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)

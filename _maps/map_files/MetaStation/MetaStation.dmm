@@ -829,6 +829,11 @@
 "akn" = (
 /obj/machinery/power/supermatter,
 /obj/structure/cable,
+/obj/machinery/mass_driver{
+	dir = 4;
+	id = "sm_core_eject";
+	resistance_flags = 2
+	},
 /turf/open/floor/engine/airless,
 /area/station/engineering/supermatter/room)
 "ako" = (
@@ -33571,10 +33576,6 @@
 /obj/structure/sign/departments/science,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/science/lobby)
-"lcc" = (
-/obj/structure/marker_beacon/burgundy,
-/turf/open/floor/plating/airless,
-/area/space/nearstation)
 "lci" = (
 /obj/machinery/light_switch/directional/west,
 /obj/structure/table,
@@ -49871,7 +49872,8 @@
 	pixel_y = -4
 	},
 /obj/machinery/button/door{
-	id_tag = "sm_core_vent";
+	id = "sm_core_vent";
+	id_tag = null;
 	name = "Core Vent Control";
 	pixel_y = 6
 	},
@@ -115651,7 +115653,7 @@ bXZ
 aaa
 aaa
 aaa
-aaa
+rrt
 ycg
 ycg
 ycg
@@ -115908,7 +115910,7 @@ bXZ
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -116422,7 +116424,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -116442,7 +116444,7 @@ dgu
 dgu
 dgm
 dgu
-aaa
+rrt
 quc
 aaa
 gFa
@@ -116679,7 +116681,7 @@ lMJ
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -116699,7 +116701,7 @@ dgu
 dgu
 dgm
 dgu
-aaa
+rrt
 lMJ
 aaa
 aaa
@@ -116936,7 +116938,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -116956,7 +116958,7 @@ dgu
 dgu
 dgm
 dgu
-aaa
+rrt
 aaa
 aaa
 aaa
@@ -117450,7 +117452,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -117470,11 +117472,11 @@ dgu
 dgu
 dgm
 dgu
+rrt
 iGq
 bbT
 aaf
 vDl
-lMJ
 lMJ
 oAQ
 lMJ
@@ -117707,7 +117709,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+rrt
 dgu
 dgm
 dgu
@@ -117727,9 +117729,9 @@ dgu
 dgu
 dgm
 dgu
+rrt
 aaa
 out
-aaa
 aaa
 aaa
 aaa
@@ -117964,7 +117966,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+rrt
 pat
 baz
 pat
@@ -117984,7 +117986,7 @@ pat
 baz
 pat
 baz
-aaa
+rrt
 aaa
 aaa
 aaa
@@ -118222,6 +118224,12 @@ aaa
 aaa
 aaa
 aaa
+rrt
+rrt
+rrt
+rrt
+rrt
+rrt
 aaa
 aaa
 aaa
@@ -118229,21 +118237,15 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+rrt
+rrt
+rrt
+rrt
+rrt
+rrt
 aaa
 aaa
 bug
-aaa
 aaa
 aaa
 aaa
@@ -118498,10 +118500,10 @@ aaa
 aaa
 aaa
 aaa
+aaa
 lMJ
 rUb
 iGq
-lMJ
 lMJ
 lMJ
 oAQ
@@ -118756,8 +118758,8 @@ aaa
 aaa
 aaa
 aaa
-lMJ
 aaa
+lMJ
 aaa
 aaa
 aaa
@@ -119013,9 +119015,9 @@ aaa
 aaa
 aaa
 aaa
+aaa
 lMJ
 lKu
-aaa
 aaa
 aaa
 oAQ
@@ -123371,7 +123373,7 @@ aaa
 aaa
 aaa
 aaa
-lcc
+jLw
 lMJ
 azY
 rUb
@@ -127483,7 +127485,7 @@ aaa
 aaa
 aaa
 aaa
-lcc
+jLw
 lMJ
 azY
 rUb

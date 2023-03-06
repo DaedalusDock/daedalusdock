@@ -16,7 +16,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	icon = 'icons/obj/supermatter.dmi'
 	icon_state = "darkmatter"
 	density = TRUE
-	anchored = TRUE
+	anchored = FALSE
 	layer = MOB_LAYER
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
@@ -134,6 +134,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	radio.canhear_range = -1
 	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
+
+	src.AddElement(/datum/element/lateral_bound, TRUE)
 
 
 /obj/machinery/power/supermatter/Destroy()

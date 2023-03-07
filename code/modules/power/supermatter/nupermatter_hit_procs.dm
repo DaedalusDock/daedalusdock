@@ -209,7 +209,7 @@
 			if (scalpel.usesLeft)
 				to_chat(user, span_danger("You extract a sliver from \the [src]. \The [src] begins to react violently!"))
 				new /obj/item/nuke_core/supermatter_sliver(drop_location())
-				power += 800
+				power += 100
 				scalpel.usesLeft--
 				if (!scalpel.usesLeft)
 					to_chat(user, span_notice("A tiny piece of \the [item] falls off, rendering it useless!"))
@@ -314,7 +314,7 @@
 		message_admins("[src] has consumed [key_name_admin(consumed_mob)] [ADMIN_JMP(src)].")
 		investigate_log("has consumed [key_name(consumed_mob)].", INVESTIGATE_ENGINE)
 		consumed_mob.dust(force = TRUE)
-		power += 100 * object_size
+		power += 10 * object_size
 		if(is_clown_job(consumed_mob.mind?.assigned_role))
 			damage += rand(-300, 300) // HONK
 			damage = max(damage, 0)
@@ -333,7 +333,7 @@
 	if(!iseffect(consumed_object) && isitem(consumed_object))
 		var/obj/item/consumed_item = consumed_object
 		object_size = consumed_item.w_class
-		power += 70 * object_size
+		power += 5 * object_size
 
 	//Some poor sod got eaten, go ahead and irradiate people nearby.
 	radiation_pulse(src, max_range = 6, threshold = 1.2 / object_size, chance = 10 * object_size)

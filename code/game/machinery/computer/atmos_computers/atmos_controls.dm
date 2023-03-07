@@ -126,4 +126,4 @@
 /obj/machinery/computer/atmos_control/engine
 	name = "Engine Control"
 	circuit = /obj/item/circuitboard/computer/atmos_control/engine
-	atmos_chambers = list(ATMOS_GAS_MONITOR_ENGINE = "Mixed Air Supply")
+	atmos_chambers = list(ATMOS_GAS_MONITOR_ENGINE = "Engine Core")

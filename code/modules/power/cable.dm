@@ -781,7 +781,6 @@ GLOBAL_LIST(hub_radial_layer_list)
 
 /obj/item/paper/fluff/smartwire_rant
 	name = "Notice: 'Smart Wiring'"
-	icon_state = "paper_words"
 	info = "<p>I don’t know which brilliant fuckwad decided that “Auto-Routing Smart Wiring” was the galaxy’s brightest fucking idea, but they clearly haven’t used the fucking things.</p> \
 		<p>We’ve fried right through 3 pairs of welding goggles due to arc flashes from the “clever” things bridging powernets.</p> \
 		<p>Don’t fuck around in this room in particular if you aren’t INCREDIBLY CONFIDENT IN WHAT YOU ARE DOING.</p> \

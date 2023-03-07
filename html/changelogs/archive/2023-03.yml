@@ -9,3 +9,8 @@
 2023-03-06:
   francinum:
   - code_imp: new ways to make zstack checks not suck
+2023-03-07:
+  FunnyLegJiggle:
+  - bugfix: Chemistry bags now accept pills and patches
+  francinum:
+  - qol: the Health Analyzer chem scanner has been readded to the mode cycle loop.

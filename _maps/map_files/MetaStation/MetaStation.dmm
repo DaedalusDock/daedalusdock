@@ -2549,10 +2549,13 @@
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "aDY" = (
-/obj/machinery/atmospherics/components/binary/valve/digital,
+/obj/machinery/atmospherics/components/binary/valve/digital{
+	name = "Hot Return Secondary Cooling"
+	},
 /obj/machinery/atmospherics/pipe/bridge_pipe/cyan/visible{
 	dir = 4
 	},
+/obj/effect/turf_decal/delivery/white,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
 "aEf" = (
@@ -7075,7 +7078,8 @@
 /obj/structure/closet/emcloset,
 /obj/machinery/light/small/directional/east,
 /obj/machinery/firealarm/directional/north,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/ported/border/borderfloor,
+/turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/monitoring)
 "bQn" = (
 /obj/machinery/power/apc/auto_name/directional/west,
@@ -8281,7 +8285,7 @@
 	cycle_id = "sm-engine-airlock"
 	},
 /obj/machinery/door/firedoor,
-/turf/open/floor/iron,
+/turf/open/floor/catwalk_floor/iron_dark,
 /area/station/engineering/monitoring)
 "clF" = (
 /obj/effect/turf_decal/tile/red{
@@ -9077,6 +9081,12 @@
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
+"cyY" = (
+/obj/machinery/atmospherics/components/binary/volume_pump{
+	name = "Unit 2 Head Pressure Pump"
+	},
+/turf/open/floor/iron/ported/techfloor_grid,
+/area/station/engineering/supermatter/room)
 "czL" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -12804,7 +12814,8 @@
 /area/station/engineering/atmos/pumproom)
 "dAK" = (
 /obj/structure/closet/radiation,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/ported/border/borderfloor,
+/turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/monitoring)
 "dAL" = (
 /obj/machinery/disposal/bin,
@@ -23472,8 +23483,10 @@
 /area/station/engineering/atmospherics_engine)
 "hov" = (
 /obj/machinery/atmospherics/components/binary/valve/digital{
-	dir = 8
+	dir = 8;
+	name = "Emergency Loop Tie"
 	},
+/obj/effect/turf_decal/delivery/white,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
 "hox" = (
@@ -30318,6 +30331,13 @@
 /obj/structure/sign/poster/official/random/directional/south,
 /turf/open/floor/wood,
 /area/station/commons/vacant_room/office)
+"jQY" = (
+/obj/machinery/atmospherics/components/binary/pump/off{
+	dir = 4;
+	name = "Hot Loop Supply"
+	},
+/turf/open/floor/iron/ported/techfloor,
+/area/station/engineering/supermatter/room)
 "jQZ" = (
 /obj/item/storage/box/syringes,
 /obj/item/storage/box/beakers{
@@ -44769,7 +44789,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/caution,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/ported/border/borderfloor,
+/turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/monitoring)
 "oYG" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
@@ -51127,7 +51148,9 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "rpT" = (
-/obj/machinery/atmospherics/components/binary/valve/digital,
+/obj/machinery/atmospherics/components/binary/valve/digital{
+	name = "Exhaust-Return Tie"
+	},
 /obj/effect/turf_decal/trimline/green/line,
 /obj/effect/turf_decal/trimline/green/line{
 	icon_state = "trimline";
@@ -54905,7 +54928,9 @@
 /turf/open/floor/iron/white,
 /area/station/science/xenobiology/hallway)
 "sPO" = (
-/obj/machinery/atmospherics/components/binary/volume_pump,
+/obj/machinery/atmospherics/components/binary/volume_pump{
+	name = "Unit 1 Head Pressure Pump"
+	},
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
 "sQe" = (
@@ -63378,7 +63403,8 @@
 /area/station/engineering/engine_smes)
 "weM" = (
 /obj/machinery/atmospherics/components/binary/pump/off{
-	dir = 4
+	dir = 4;
+	name = "Cold Loop Supply"
 	},
 /turf/open/floor/iron/ported/techfloor,
 /area/station/engineering/supermatter/room)
@@ -112325,7 +112351,7 @@ kBI
 vSt
 cuj
 kBa
-weM
+jQY
 weM
 fQO
 rWr
@@ -114114,7 +114140,7 @@ tdK
 fQO
 kBI
 lDy
-sPO
+cyY
 eZz
 aYj
 qCW

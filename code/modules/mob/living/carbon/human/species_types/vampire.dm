@@ -66,7 +66,7 @@
 			holder.shape.dust() //vampires do not have batform anymore, but this would still lead to very weird stuff with other shapeshift holders
 		vampire.dust()
 	var/area/A = get_area(vampire)
-	if(istype(A, /area/service/chapel))
+	if(istype(A, /area/station/service/chapel))
 		to_chat(vampire, span_warning("You don't belong here!"))
 		vampire.adjustFireLoss(10 * delta_time)
 		vampire.adjust_fire_stacks(3 * delta_time)
@@ -186,7 +186,7 @@
 				victim.show_message(span_warning("[H] tries to bite you, but recoils in disgust!"))
 				to_chat(H, span_warning("[victim] reeks of garlic! you can't bring yourself to drain such tainted blood."))
 				return
-			if(!do_after(H, 3 SECONDS, target = victim))
+			if(!do_after(H, victim, 3 SECONDS))
 				return
 			var/blood_volume_difference = BLOOD_VOLUME_MAXIMUM - H.blood_volume //How much capacity we have left to absorb blood
 			var/drained_blood = min(victim.blood_volume, VAMP_DRAIN_AMOUNT, blood_volume_difference)

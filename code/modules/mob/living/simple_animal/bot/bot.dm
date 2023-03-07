@@ -172,7 +172,7 @@
 	if(radio_key)
 		internal_radio.keyslot = new radio_key
 	internal_radio.subspace_transmission = TRUE
-	internal_radio.canhear_range = 0 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
+	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
 	internal_radio.recalculateChannels()
 
 	//Adds bot to the diagnostic HUD system
@@ -400,7 +400,7 @@
 			to_chat(user, span_warning("Close the access panel before manipulating the personality slot!"))
 		else
 			to_chat(user, span_notice("You attempt to pull [paicard] free..."))
-			if(do_after(user, 30, target = src))
+			if(do_after(user, src, 30))
 				if (paicard)
 					user.visible_message(span_notice("[user] uses [attacking_item] to pull [paicard] out of [initial(src.name)]!"),span_notice("You pull [paicard] out of [initial(src.name)] with [attacking_item]."))
 					ejectpai(user)

@@ -332,7 +332,7 @@
 		toggle_magnet()
 		visible_message(span_notice("[targetdirection ? "[src] begins installing a bridge plating." : "[src] begins to repair the hole."] "))
 		mode = BOT_REPAIRING
-		if(do_after(src, 50, target = target_turf) && mode == BOT_REPAIRING)
+		if(do_after(src, target_turf, 50) && mode == BOT_REPAIRING)
 			if(autotile) //Build the floor and include a tile.
 				if(replacetiles && tilestack)
 					target_turf.PlaceOnTop(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)	//make sure a hull is actually below the floor tile
@@ -354,14 +354,14 @@
 			toggle_magnet()
 			mode = BOT_REPAIRING
 			visible_message(span_notice("[src] begins [(F.broken || F.burnt) ? "repairing the floor" : "placing a floor tile"]."))
-			if(do_after(src, 50, target = F) && mode == BOT_REPAIRING)
+			if(do_after(src, F, 50) && mode == BOT_REPAIRING)
 				success = TRUE
 
 		else if(replacetiles && tilestack && F.type != tilestack.turf_type)
 			toggle_magnet()
 			mode = BOT_REPAIRING
 			visible_message(span_notice("[src] begins replacing the floor tiles."))
-			if(do_after(src, 50, target = target_turf) && mode == BOT_REPAIRING && tilestack)
+			if(do_after(src, target_turf, 50) && mode == BOT_REPAIRING && tilestack)
 				success = TRUE
 
 		if(success)
@@ -375,7 +375,7 @@
 				F.broken = FALSE
 				F.burnt = FALSE
 				F.icon_state = initial(F.icon_state)
-			else if(istype(is_this_maints, /area/maintenance))	//place catwalk if it's plating and we're in maints
+			else if(istype(is_this_maints, /area/station/maintenance))	//place catwalk if it's plating and we're in maints
 				F.PlaceOnTop(/turf/open/floor/catwalk_floor, flags = CHANGETURF_INHERIT_AIR)
 			else	//place normal tile if it's plating anywhere else
 				F = F.make_plating(TRUE) || F

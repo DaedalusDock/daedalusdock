@@ -436,9 +436,9 @@
 				if(int_tank_air && int_tank_air.get_volume() > 0) //heat the air_contents
 					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(5,7.5)*delta_time)
 			if(cabin_air && cabin_air.get_volume()>0)
-				cabin_air.temperature = min(6000+T0C, cabin_air.get_temperature()+rand(5,7.5)*delta_time)
-				if(cabin_air.get_temperature() > max_temperature/2)
-					take_damage(delta_time*2/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
+				cabin_air.temperature = min(6000+T0C, cabin_air.temperature+rand(5,7.5)*delta_time)
+				if(cabin_air.temperature > max_temperature/2)
+					take_damage(delta_time*2/round(max_temperature/cabin_air.temperature,0.1), BURN, 0, 0)
 
 
 		if(internal_damage & MECHA_INT_TANK_BREACH) //remove some air from internal tank
@@ -801,7 +801,7 @@
 /obj/vehicle/sealed/mecha/proc/try_repair_int_damage(mob/user, flag_to_heal)
 	balloon_alert(user, get_int_repair_fluff_start(flag_to_heal))
 	log_message("[key_name(user)] starting internal damage repair for flag [flag_to_heal]", LOG_MECHA)
-	if(!do_after(user, 10 SECONDS, src))
+	if(!do_after(user, src, 10 SECONDS))
 		balloon_alert(user, get_int_repair_fluff_fail(flag_to_heal))
 		log_message("Internal damage repair for flag [flag_to_heal] failed.", LOG_MECHA, color="red")
 		return
@@ -1062,7 +1062,7 @@
 
 	visible_message(span_notice("[user] starts to insert an MMI into [name]."))
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		to_chat(user, span_notice("You stop inserting the MMI."))
 		return FALSE
 	if(LAZYLEN(occupants) < max_occupants)
@@ -1102,7 +1102,7 @@
 			return FALSE
 	to_chat(user, span_notice("You begin the ejection procedure. Equipment is disabled during this process. Hold still to finish ejecting."))
 	is_currently_ejecting = TRUE
-	if(do_after(user, has_gravity() ? exit_delay : 0 , target = src))
+	if(do_after(user, src, has_gravity() ? exit_delay : 0))
 		to_chat(user, span_notice("You exit the mech."))
 		mob_exit(user, TRUE)
 	else

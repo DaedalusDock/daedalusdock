@@ -129,7 +129,7 @@
 
 	// Don't infect if you're chilled (I'd like to link this with the signals, but I can't come up with a good way to pull it off)
 	var/atom/atom_parent = parent
-	var/datum/gas_mixture/our_mix = atom_parent.return_air()
+	var/datum/gas_mixture/our_mix = atom_parent.unsafe_return_air()
 	if(our_mix?.temperature <= T0C-10)
 		return
 

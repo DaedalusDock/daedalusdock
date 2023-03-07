@@ -366,7 +366,6 @@
 	name = "tornado"
 	desc = "This thing sucks!"
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	randomdir = 0
 	duration = 40
 	pixel_x = 500

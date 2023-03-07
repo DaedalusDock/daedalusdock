@@ -10,7 +10,7 @@
 	datum_flags = DF_USE_TAG
 	density = TRUE
 	layer = MOB_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
+	plane = GAME_PLANE
 	animate_movement = SLIDE_STEPS
 	hud_possible = list(ANTAG_HUD)
 	//pressure_resistance = 8
@@ -146,7 +146,7 @@
 	//HUD things
 
 	/// Storage component (for mob inventory)
-	var/datum/component/storage/active_storage
+	var/datum/storage/active_storage
 	/// Active hud
 	var/datum/hud/hud_used = null
 

@@ -3,7 +3,7 @@
 *
 * Items used for sharpening stuff
 *
-* Whetstones can be used to increase an item's force, throw_force and wound_bonus and it's change it's sharpness to SHARP_EDGED. Whetstones do not work with energy weapons. Two-handed weapons will only get the throw_force bonus. A whetstone can only be used once.
+* Whetstones can be used to increase an item's force, throw_force and it's change it's sharpness to SHARP_EDGED. Whetstones do not work with energy weapons. Two-handed weapons will only get the throw_force bonus. A whetstone can only be used once.
 *
 */
 /obj/item/sharpener
@@ -50,7 +50,6 @@
 		return
 	if(!(signal_out & COMPONENT_BLOCK_SHARPEN_APPLIED)) //If the item has a relevant component and COMPONENT_BLOCK_SHARPEN_APPLIED is returned, the item only gets the throw force increase
 		I.force = clamp(I.force + increment, 0, max)
-		I.wound_bonus = I.wound_bonus + increment //wound_bonus has no cap
 	user.visible_message(span_notice("[user] sharpens [I] with [src]!"), span_notice("You sharpen [I], making it much more deadly than before."))
 	playsound(src, 'sound/items/unsheath.ogg', 25, TRUE)
 	I.sharpness = SHARP_EDGED //When you whetstone something, it becomes an edged weapon, even if it was previously dull or pointy

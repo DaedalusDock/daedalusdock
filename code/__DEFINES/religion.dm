@@ -26,7 +26,7 @@
 
 //## where should we fight?
 
-// default value - /area/service/chapel
+// default value - /area/station/service/chapel
 
 //## what are the stakes? people you've beaten before can only fight in no stakes battles, to prevent farming
 

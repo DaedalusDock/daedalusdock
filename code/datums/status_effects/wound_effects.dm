@@ -53,11 +53,11 @@
 	right = C.get_bodypart(BODY_ZONE_R_LEG)
 	update_limp()
 	RegisterSignal(C, COMSIG_MOVABLE_MOVED, .proc/check_step)
-	RegisterSignal(C, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), .proc/update_limp)
+	RegisterSignal(C, list(COMSIG_CARBON_BREAK_BONE, COMSIG_CARBON_HEAL_BONE, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), .proc/update_limp)
 	return TRUE
 
 /datum/status_effect/limp/on_remove()
-	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB))
+	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_BREAK_BONE, COMSIG_CARBON_HEAL_BONE, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB))
 
 /atom/movable/screen/alert/status_effect/limp
 	name = "Limping"
@@ -99,16 +99,14 @@
 
 	// technically you can have multiple wounds causing limps on the same limb, even if practically only bone wounds cause it in normal gameplay
 	if(left)
-		for(var/thing in left.wounds)
-			var/datum/wound/W = thing
-			slowdown_left += W.limp_slowdown
-			limp_chance_left = max(limp_chance_left, W.limp_chance)
+		if(left.check_bones() & CHECKBONES_BROKEN)
+			slowdown_left = 7
+			limp_chance_left = 20
 
 	if(right)
-		for(var/thing in right.wounds)
-			var/datum/wound/W = thing
-			slowdown_right += W.limp_slowdown
-			limp_chance_right = max(limp_chance_right, W.limp_chance)
+		if(right.check_bones() & CHECKBONES_BROKEN)
+			slowdown_right = 7
+			limp_chance_left = 20
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
 	if(!slowdown_left && !slowdown_right)
@@ -133,94 +131,3 @@
 	var/mob/living/carbon/carbon_owner = owner
 	carbon_owner.check_self_for_injuries()
 
-// wound status effect base
-/datum/status_effect/wound
-	id = "wound"
-	status_type = STATUS_EFFECT_MULTIPLE
-	var/obj/item/bodypart/linked_limb
-	var/datum/wound/linked_wound
-	alert_type = NONE
-
-/datum/status_effect/wound/on_creation(mob/living/new_owner, incoming_wound)
-	. = ..()
-	linked_wound = incoming_wound
-	linked_limb = linked_wound.limb
-
-/datum/status_effect/wound/on_remove()
-	linked_wound = null
-	linked_limb = null
-	UnregisterSignal(owner, COMSIG_CARBON_LOSE_WOUND)
-
-/datum/status_effect/wound/on_apply()
-	if(!iscarbon(owner))
-		return FALSE
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_WOUND, .proc/check_remove)
-	return TRUE
-
-/// check if the wound getting removed is the wound we're tied to
-/datum/status_effect/wound/proc/check_remove(mob/living/L, datum/wound/W)
-	SIGNAL_HANDLER
-
-	if(W == linked_wound)
-		qdel(src)
-
-
-// bones
-/datum/status_effect/wound/blunt
-
-/datum/status_effect/wound/blunt/on_apply()
-	. = ..()
-	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, .proc/on_swap_hands)
-	on_swap_hands()
-
-/datum/status_effect/wound/blunt/on_remove()
-	. = ..()
-	UnregisterSignal(owner, COMSIG_MOB_SWAP_HANDS)
-	var/mob/living/carbon/wound_owner = owner
-	wound_owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound)
-
-/datum/status_effect/wound/blunt/proc/on_swap_hands()
-	SIGNAL_HANDLER
-
-	var/mob/living/carbon/wound_owner = owner
-	if(wound_owner.get_active_hand() == linked_limb)
-		wound_owner.add_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound, (linked_wound.interaction_efficiency_penalty - 1))
-	else
-		wound_owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound)
-
-/datum/status_effect/wound/blunt/nextmove_modifier()
-	var/mob/living/carbon/C = owner
-
-	if(C.get_active_hand() == linked_limb)
-		return linked_wound.interaction_efficiency_penalty
-
-	return 1
-
-// blunt
-/datum/status_effect/wound/blunt/moderate
-	id = "disjoint"
-/datum/status_effect/wound/blunt/severe
-	id = "hairline"
-/datum/status_effect/wound/blunt/critical
-	id = "compound"
-// slash
-/datum/status_effect/wound/slash/moderate
-	id = "abrasion"
-/datum/status_effect/wound/slash/severe
-	id = "laceration"
-/datum/status_effect/wound/slash/critical
-	id = "avulsion"
-// pierce
-/datum/status_effect/wound/pierce/moderate
-	id = "breakage"
-/datum/status_effect/wound/pierce/severe
-	id = "puncture"
-/datum/status_effect/wound/pierce/critical
-	id = "rupture"
-// burns
-/datum/status_effect/wound/burn/moderate
-	id = "seconddeg"
-/datum/status_effect/wound/burn/severe
-	id = "thirddeg"
-/datum/status_effect/wound/burn/critical
-	id = "fourthdeg"

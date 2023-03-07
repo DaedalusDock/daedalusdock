@@ -21,8 +21,8 @@
 	. = ..()
 
 	var/atom/parent_atom = parent
-	var/datum/gas_mixture/parent_air = parent_atom?.return_air()
-	if((!istype(parent_atom) || !istype(parent_air)))
+	var/datum/gas_mixture/parent_air = parent_atom?.unsafe_return_air()
+	if((!istype(parent_atom) || isnull(parent_air)))
 		return COMPONENT_INCOMPATIBLE
 
 	if(islist(target_list))

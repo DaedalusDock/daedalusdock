@@ -71,7 +71,7 @@
 			return
 		else
 			to_chat(user, span_notice("You start adding [I] to [src]..."))
-			if(do_after(user, 50, target=src))
+			if(do_after(user, src, 5 SECONDS))
 				W.use(5)
 				var/turf/T = get_turf(src)
 				T.PlaceOnTop(/turf/closed/wall/mineral/wood/nonmetal)

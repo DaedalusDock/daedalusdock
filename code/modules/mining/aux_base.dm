@@ -268,7 +268,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 
 	to_chat(user, span_notice("You begin setting the landing zone parameters..."))
 	setting = TRUE
-	if(!do_after(user, 50, target = user)) //You get a few seconds to cancel if you do not want to drop there.
+	if(!do_after(user, user, 50)) //You get a few seconds to cancel if you do not want to drop there.
 		setting = FALSE
 		return
 	setting = FALSE
@@ -325,7 +325,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/auxiliary_base, 32)
 	dwidth = 3
 	width = 7
 	height = 5
-	area_type = /area/construction/mining/aux_base
+	area_type = /area/station/construction/mining/aux_base
 
 /obj/structure/mining_shuttle_beacon
 	name = "mining shuttle beacon"

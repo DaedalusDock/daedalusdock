@@ -465,10 +465,6 @@
 	// Grab skillchips they have
 	new_profile.skillchips = target.clone_skillchip_list(TRUE)
 
-	// Get any scars they may have
-	for(var/datum/scar/target_scar as anything in target.all_scars)
-		LAZYADD(new_profile.stored_scars, target_scar.format())
-
 	// Make an icon snapshot of what they currently look like
 	var/datum/icon_snapshot/entry = new()
 	entry.name = target.name
@@ -691,12 +687,6 @@
 	user.updateappearance(mutcolor_update = TRUE)
 	user.domutcheck()
 
-	// Get rid of any scars from previous Changeling-ing
-	for(var/datum/scar/old_scar as anything in user.all_scars)
-		if(old_scar.fake)
-			user.all_scars -= old_scar
-			qdel(old_scar)
-
 	// Now, we do skillchip stuff, AFTER DNA code.
 	// (There's a mutation that increases max chip complexity available, even though we force-implant skillchips.)
 
@@ -770,11 +760,6 @@
 			if(!QDELETED(new_flesh_item))
 				ADD_TRAIT(new_flesh_item, TRAIT_NODROP, CHANGELING_TRAIT)
 
-	for(var/stored_scar_line in chosen_profile.stored_scars)
-		var/datum/scar/attempted_fake_scar = user.load_scar(stored_scar_line)
-		if(attempted_fake_scar)
-			attempted_fake_scar.fake = TRUE
-
 	user.regenerate_icons()
 
 // Changeling profile themselves. Store a data to store what every DNA instance looked like.
@@ -811,8 +796,6 @@
 	var/socks
 	/// A list of paths for any skill chips the profile source had installed
 	var/list/skillchips = list()
-	/// What scars the profile sorce had, in string form (like persistent scars)
-	var/list/stored_scars
 	/// Icon snapshot of the profile
 	var/datum/icon_snapshot/profile_snapshot
 	/// ID HUD icon associated with the profile
@@ -820,7 +803,6 @@
 
 /datum/changeling_profile/Destroy()
 	qdel(dna)
-	LAZYCLEARLIST(stored_scars)
 	return ..()
 
 /*
@@ -845,7 +827,6 @@
 	new_profile.worn_icon_list = worn_icon_list.Copy()
 	new_profile.worn_icon_state_list = worn_icon_state_list.Copy()
 	new_profile.skillchips = skillchips.Copy()
-	new_profile.stored_scars = stored_scars.Copy()
 	new_profile.profile_snapshot = profile_snapshot
 	new_profile.id_icon = id_icon
 

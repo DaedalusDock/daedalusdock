@@ -15,7 +15,7 @@
 	desc = "Has a valve and pump attached to it. There are two ports."
 
 	use_power = IDLE_POWER_USE
-	power_rating = 30000
+	power_rating = 45000
 
 	hide = TRUE
 	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP
@@ -62,7 +62,7 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	var/environment_pressure = environment.returnPressure()
 
 	if(pump_direction) //input -> external
@@ -101,16 +101,17 @@
 			return
 		if(!environment.total_moles)
 			return
-		var/transfer_moles = calculate_transfer_moles(air2, environment, pressure_delta)
+		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
 		if(draw > -1)
 			var/datum/pipeline/parent2 = parents[2]
 			parent2.update = TRUE
-			if(draw > 0)
-				ATMOS_USE_POWER(draw)
+			ATMOS_USE_POWER(draw)
 
-	//Radio remote control
+	SAFE_ZAS_UPDATE(loc)
+
+//Radio remote control
 
 /**
  * Called in atmos_init(), used to change or remove the radio frequency from the component

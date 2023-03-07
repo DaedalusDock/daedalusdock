@@ -190,7 +190,7 @@
 	to_chat(user, "<span class='danger'>[our_plant] singes your bare hand!</span>")
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
-	if(affecting?.receive_damage(0, our_plant.force, wound_bonus = CANT_WOUND))
+	if(affecting?.receive_damage(0, our_plant.force))
 		user.update_damage_overlays()
 
 /// Normal Nettle hannd burn on backfire
@@ -203,7 +203,7 @@
 	to_chat(user, "<span class='danger'>[our_plant] burns your bare hand!</span>")
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
-	if(affecting?.receive_damage(0, our_plant.force, wound_bonus = CANT_WOUND))
+	if(affecting?.receive_damage(0, our_plant.force))
 		user.update_damage_overlays()
 
 /// Deathnettle hand burn + stun on backfire
@@ -622,7 +622,7 @@
 		return
 
 	var/turf/tray_turf = get_turf(tray)
-	if(abs(ONE_ATMOSPHERE - tray_turf.return_air().returnPressure()) > (seed.potency / 10 + 10)) // clouds can begin showing at around 50-60 potency in standard atmos
+	if(abs(ONE_ATMOSPHERE - tray_turf.unsafe_return_air().returnPressure()) > (seed.potency / 10 + 10)) // clouds can begin showing at around 50-60 potency in standard atmos
 		return
 
 	var/datum/gas_mixture/stank = new

@@ -10,6 +10,7 @@
 	always_unpowered = FALSE
 	// Loading the same shuttle map at a different time will produce distinct area instances.
 	area_flags = NO_ALERTS
+	icon = 'icons/area/areas_station.dmi'
 	icon_state = "shuttle"
 	flags_1 = CAN_BE_DIRTY_1
 	area_limited_icon_smoothing = /area/shuttle
@@ -118,8 +119,6 @@
 
 /area/shuttle/arrival/on_joining_game(mob/living/boarder)
 	if(SSshuttle.arrivals?.mode == SHUTTLE_CALL)
-		var/atom/movable/screen/splash/Spl = new(null, boarder.client, TRUE)
-		Spl.Fade(TRUE)
 		boarder.playsound_local(get_turf(boarder), 'sound/voice/ApproachingDaedalus.ogg', 25)
 	boarder.update_parallax_teleport()
 
@@ -238,7 +237,7 @@
 	name = "Tiny Freighter"
 
 // ----------- Arena Shuttle
-/area/shuttle_arena
+/area/shuttle/shuttle_arena
 	name = "arena"
 	has_gravity = STANDARD_GRAVITY
 	requires_power = FALSE

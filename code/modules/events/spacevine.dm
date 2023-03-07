@@ -51,7 +51,7 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/hallway/area in world)
+	for(var/area/station/hallway/area in world)
 		for(var/turf/floor in area)
 			if(floor.Enter(vine))
 				turfs += floor
@@ -215,7 +215,7 @@
 		var/armor = victim.run_armor_check(limb, MELEE, null, null) //armor = the armor value of that randomly chosen bodypart. Nulls to not print a message, because it would still print on pierce.
 		var/datum/spacevine_mutation/thorns/thorn = locate() in vine.mutations //Searches for the thorns mutation in the "mutations"-list inside obj/structure/spacevine, and defines T if it finds it.
 		if(thorn && (prob(40))) //If we found the thorns mutation there is now a chance to get stung instead of lashed or smashed.
-			victim.apply_damage(50, BRUTE, def_zone = limb, wound_bonus = rand(-20,10), sharpness = SHARP_POINTY) //This one gets a bit lower damage because it ignores armor.
+			victim.apply_damage(50, BRUTE, def_zone = limb, sharpness = SHARP_POINTY) //This one gets a bit lower damage because it ignores armor.
 			victim.Stun(1 SECONDS) //Stopped in place for a moment.
 			playsound(living_mob, 'sound/weapons/pierce.ogg', 50, TRUE, -1)
 			living_mob.visible_message(span_danger("[living_mob] is nailed by a sharp thorn!"), \
@@ -223,14 +223,14 @@
 			log_combat(vine, living_mob, "aggressively pierced") //"Aggressively" for easy ctrl+F'ing in the attack logs.
 		else
 			if(prob(80))
-				victim.apply_damage(60, BRUTE, def_zone = limb, blocked = armor, wound_bonus = rand(-20,10), sharpness = SHARP_EDGED)
+				victim.apply_damage(60, BRUTE, def_zone = limb, blocked = armor, sharpness = SHARP_EDGED)
 				victim.Knockdown(2 SECONDS)
 				playsound(victim, 'sound/weapons/whip.ogg', 50, TRUE, -1)
 				living_mob.visible_message(span_danger("[living_mob] is lacerated by an outburst of vines!"), \
 				span_userdanger("You are lacerated by an outburst of vines!"))
 				log_combat(vine, living_mob, "aggressively lacerated")
 			else
-				victim.apply_damage(60, BRUTE, def_zone = limb, blocked = armor, wound_bonus = rand(-20,10), sharpness = NONE)
+				victim.apply_damage(60, BRUTE, def_zone = limb, blocked = armor, sharpness = NONE)
 				victim.Knockdown(3 SECONDS)
 				var/atom/throw_target = get_edge_target_turf(living_mob, get_dir(vine, get_step_away(living_mob, vine)))
 				victim.throw_at(throw_target, 3, 6)
@@ -371,7 +371,6 @@
 	anchored = TRUE
 	density = FALSE
 	layer = SPACEVINE_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	mouse_opacity = MOUSE_OPACITY_OPAQUE //Clicking anywhere on the turf is good enough
 	pass_flags = PASSTABLE | PASSGRILLE
 	max_integrity = 50

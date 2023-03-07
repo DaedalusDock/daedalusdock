@@ -12,7 +12,6 @@
 	anchored = TRUE
 	density = FALSE
 	layer = EDGED_TURF_LAYER
-	plane = GAME_PLANE_UPPER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/amount = 3
 	animate_movement = NO_STEPS
@@ -50,7 +49,6 @@
 			absorbed_plasma += plas_amt
 		if(G.temperature > T20C)
 			G.temperature = max(G.temperature/2,T20C)
-		//T.air_update_turf(FALSE, FALSE)
 
 /obj/effect/particle_effect/foam/firefighting/kill_foam()
 	STOP_PROCESSING(SSfastprocess, src)
@@ -323,16 +321,15 @@
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		O.ClearWet()
-		if(O.return_air())
-			var/datum/gas_mixture/G = O.return_air()
-			G.temperature = 293.15
-			QDEL_NULL(O.fire)
-			var/list/G_gases = G.gas
-			for(var/I in G_gases)
-				if(I == GAS_OXYGEN || I == GAS_NITROGEN)
-					continue
-				G_gases[I] = 0
-			AIR_UPDATE_VALUES(G)
+		var/datum/gas_mixture/G = O.return_air()
+		G.temperature = 293.15
+		QDEL_NULL(O.fire)
+		var/list/G_gases = G.gas
+		for(var/I in G_gases)
+			if(I == GAS_OXYGEN || I == GAS_NITROGEN)
+				continue
+			G_gases[I] = 0
+		AIR_UPDATE_VALUES(G)
 		for(var/obj/machinery/atmospherics/components/unary/U in O)
 			if(!U.welded)
 				U.welded = TRUE

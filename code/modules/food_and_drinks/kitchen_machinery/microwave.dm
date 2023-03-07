@@ -164,7 +164,7 @@
 			var/obj/item/soap/used_soap = O
 			cleanspeed = used_soap.cleanspeed
 		user.visible_message(span_notice("[user] starts to clean \the [src]."), span_notice("You start to clean \the [src]..."))
-		if(do_after(user, cleanspeed, target = src))
+		if(do_after(user, src, cleanspeed))
 			user.visible_message(span_notice("[user] cleans \the [src]."), span_notice("You clean \the [src]."))
 			dirty = 0
 			update_appearance()
@@ -183,7 +183,7 @@
 			if(ingredients.len >= max_n_of_items)
 				to_chat(user, span_warning("\The [src] is full, you can't put anything in!"))
 				return TRUE
-			if(SEND_SIGNAL(T, COMSIG_TRY_STORAGE_TAKE, S, src))
+			if(T.atom_storage.attempt_remove(S, src))
 				loaded++
 				ingredients += S
 		if(loaded)

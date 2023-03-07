@@ -10,7 +10,7 @@
 	wall_color = "#57575c"
 
 /datum/material/iron/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
+	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///Breaks extremely easily but is transparent.
@@ -31,7 +31,7 @@
 	iterative_explosion_block = 0 //This is dangerous!
 
 /datum/material/glass/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5, sharpness = TRUE) //cronch
+	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, sharpness = TRUE) //cronch
 	return TRUE
 
 /*
@@ -53,7 +53,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	false_wall_type = /obj/structure/falsewall/silver
 
 /datum/material/silver/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
+	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///Slight force increase
@@ -72,7 +72,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	false_wall_type = /obj/structure/falsewall/gold
 
 /datum/material/gold/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
+	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///Has no special properties
@@ -92,7 +92,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	iterative_explosion_block = 25
 
 /datum/material/diamond/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
+	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///Is slightly radioactive
@@ -234,7 +234,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	iterative_explosion_block = 20
 
 /datum/material/titanium/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
+	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 /datum/material/runite
@@ -250,7 +250,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 1.35, BULLET = 2, LASER = 0.5, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 1.4, ACID = 1) //rune is weak against magic lasers but strong against bullets. This is the combat triangle.
 
 /datum/material/runite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
+	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///Force decrease
@@ -333,7 +333,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	iterative_explosion_block = 30
 
 /datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
+	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///RPG Magic.
@@ -361,7 +361,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 		qdel(source.GetComponent(/datum/component/fantasy))
 
 /datum/material/mythril/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
+	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 //formed when freon react with o2, emits a lot of plasma when heated
@@ -403,7 +403,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 1.35, BULLET = 1.3, LASER = 1.3, ENERGY = 1.25, BOMB = 0.7, BIO = 1, FIRE = 1.3, ACID = 1)
 
 /datum/material/metalhydrogen/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD, wound_bonus = 7)
+	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 //I don't like sand. It's coarse, and rough, and irritating, and it gets everywhere.
@@ -475,7 +475,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 /datum/material/runedmetal/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/fuel/unholywater, rand(8, 12))
-	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
+	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 /datum/material/bronze
@@ -576,6 +576,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = 0.001
 
 /datum/material/zaukerite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(30, BURN, BODY_ZONE_HEAD, wound_bonus = 5)
+	victim.apply_damage(30, BURN, BODY_ZONE_HEAD)
 	source_item?.reagents?.add_reagent(/datum/reagent/toxin/plasma, source_item.reagents.total_volume*5)
 	return TRUE

@@ -226,3 +226,10 @@
 
 /obj/structure/low_wall/wood
 	plating_material = /datum/material/wood
+
+//Dummy type for prepainted walls
+/obj/structure/low_wall/prepainted
+
+/obj/structure/low_wall/prepainted/daedalus
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS

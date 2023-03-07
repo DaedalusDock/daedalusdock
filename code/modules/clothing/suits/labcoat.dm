@@ -31,7 +31,7 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/toggle/labcoat/cmo
-	name = "chief medical officer's labcoat"
+	name = "medical director's labcoat"
 	desc = "Bluer than the standard model."
 	icon_state = "labcoat_cmo"
 	inhand_icon_state = "labcoat_cmo"

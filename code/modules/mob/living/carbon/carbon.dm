@@ -22,10 +22,7 @@
 	QDEL_LIST(internal_organs)
 	QDEL_LIST(bodyparts)
 	QDEL_LIST(implants)
-	for(var/wound in all_wounds) // these LAZYREMOVE themselves when deleted so no need to remove the list here
-		qdel(wound)
-	for(var/scar in all_scars)
-		qdel(scar)
+
 	remove_from_all_data_huds()
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
@@ -74,13 +71,8 @@
 				if(S.next_step(user, modifiers))
 					return 1
 
-	if(!all_wounds || !(!user.combat_mode || user == src))
+	if(!(!user.combat_mode || user == src))
 		return ..()
-
-	for(var/i in shuffle(all_wounds))
-		var/datum/wound/W = i
-		if(W.try_treating(I, user))
-			return 1
 
 	return ..()
 
@@ -102,19 +94,19 @@
 	if(hurt && hit_atom.density)
 		if(isturf(hit_atom))
 			Paralyze(2 SECONDS)
-			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE)
 		else if(isstructure(hit_atom) && extra_speed)
 			Paralyze(1 SECONDS)
-			take_bodypart_damage(5 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			take_bodypart_damage(5 + 5 * extra_speed, check_armor = TRUE)
 		else if(!iscarbon(hit_atom) && extra_speed)
-			take_bodypart_damage(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			take_bodypart_damage(5 * extra_speed, check_armor = TRUE)
 	if(iscarbon(hit_atom) && hit_atom != src)
 		var/mob/living/carbon/victim = hit_atom
 		if(victim.movement_type & FLYING)
 			return
 		if(hurt)
-			victim.take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
-			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			victim.take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE)
+			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE)
 			victim.Paralyze(2 SECONDS)
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
@@ -242,7 +234,7 @@
 			buckle_cd = O.breakouttime
 		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
 					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
-		if(do_after(src, buckle_cd, target = src, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
 			buckled.user_unbuckle_mob(src,src)
@@ -292,7 +284,7 @@
 	if(!cuff_break)
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
-		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to remove [I]!"))
@@ -301,7 +293,7 @@
 		breakouttime = 50
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
-		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to break [I]!"))
@@ -514,8 +506,7 @@
 	var/total_burn = 0
 	var/total_brute = 0
 	var/total_stamina = 0
-	for(var/X in bodyparts) //hardcoded to streamline things a bit
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
 		total_brute += (BP.brute_dam * BP.body_damage_coeff)
 		total_burn += (BP.burn_dam * BP.body_damage_coeff)
 		total_stamina += (BP.stamina_dam * BP.stam_damage_coeff)
@@ -878,9 +869,7 @@
 		var/datum/disease/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
 			D.cure(FALSE)
-	for(var/thing in all_wounds)
-		var/datum/wound/W = thing
-		W.remove_wound()
+
 	if(admin_revive)
 		suiciding = FALSE
 		regenerate_limbs()
@@ -986,15 +975,14 @@
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
 
-	switch(new_bodypart.body_part)
-		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs + 1)
-		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands + 1)
+	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
+		set_num_legs(num_legs + 1)
+		if(!new_bodypart.bodypart_disabled)
+			set_usable_legs(usable_legs + 1)
+	if(new_bodypart.bodypart_flags & BP_IS_GRABBY_LIMB)
+		set_num_hands(num_hands + 1)
+		if(!new_bodypart.bodypart_disabled)
+			set_usable_hands(usable_hands + 1)
 
 
 ///Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].
@@ -1223,44 +1211,8 @@
 
 	return total_bleed_rate
 
-/**
- * generate_fake_scars()- for when you want to scar someone, but you don't want to hurt them first. These scars don't count for temporal scarring (hence, fake)
- *
- * If you want a specific wound scar, pass that wound type as the second arg, otherwise you can pass a list like WOUND_LIST_SLASH to generate a random cut scar.
- *
- * Arguments:
- * * num_scars- A number for how many scars you want to add
- * * forced_type- Which wound or category of wounds you want to choose from, WOUND_LIST_BLUNT, WOUND_LIST_SLASH, or WOUND_LIST_BURN (or some combination). If passed a list, picks randomly from the listed wounds. Defaults to all 3 types
- */
-/mob/living/carbon/proc/generate_fake_scars(num_scars, forced_type)
-	for(var/i in 1 to num_scars)
-		var/datum/scar/scaries = new
-		var/obj/item/bodypart/scar_part = pick(bodyparts)
-
-		var/wound_type
-		if(forced_type)
-			if(islist(forced_type))
-				wound_type = pick(forced_type)
-			else
-				wound_type = forced_type
-		else
-			wound_type = pick(GLOB.global_all_wound_types)
-
-		var/datum/wound/phantom_wound = new wound_type
-		scaries.generate(scar_part, phantom_wound)
-		scaries.fake = TRUE
-		QDEL_NULL(phantom_wound)
-
 /mob/living/carbon/is_face_visible()
 	return !(wear_mask?.flags_inv & HIDEFACE) && !(head?.flags_inv & HIDEFACE)
-
-/**
- * get_biological_state is a helper used to see what kind of wounds we roll for. By default we just assume carbons (read:monkeys) are flesh and bone, but humans rely on their species datums
- *
- * go look at the species def for more info [/datum/species/proc/get_biological_state]
- */
-/mob/living/carbon/proc/get_biological_state()
-	return BIO_FLESH_BONE
 
 /// Returns whether or not the carbon should be able to be shocked
 /mob/living/carbon/proc/should_electrocute(power_source)
@@ -1428,3 +1380,20 @@
 	remove_overlay(FIRE_LAYER)
 	apply_overlay(FIRE_LAYER)
 	return null
+
+/mob/living/carbon/proc/can_autoheal(damtype)
+	if(!damtype)
+		CRASH("No damage type given to can_autoheal")
+
+	switch(damtype)
+		if(BRUTE)
+			return bruteloss < (maxHealth/2)
+		if(BURN)
+			return fireloss < (maxHealth/2)
+
+/mob/living/carbon/proc/get_wounds()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		if(LAZYLEN(BP.wounds))
+			. += BP.wounds

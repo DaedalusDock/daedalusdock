@@ -59,13 +59,8 @@
  *arg1 is the arm to evaluate damage of and possibly break.
  */
 /datum/mutation/human/hulk/proc/break_an_arm(obj/item/bodypart/arm)
-	switch(arm.brute_dam)
-		if(45 to 50)
-			arm.force_wound_upwards(/datum/wound/blunt/critical)
-		if(41 to 45)
-			arm.force_wound_upwards(/datum/wound/blunt/severe)
-		if(35 to 41)
-			arm.force_wound_upwards(/datum/wound/blunt/moderate)
+	arm.receive_damage(20)
+	arm.break_bones()
 
 /datum/mutation/human/hulk/on_life(delta_time, times_fired)
 	if(owner.health < owner.crit_threshold)
@@ -139,7 +134,7 @@
 					span_userdanger("[the_hulk] begins grasping your tail!"), span_hear("You hear aggressive shuffling!"), null, the_hulk)
 	to_chat(the_hulk, span_danger("You start grasping [yeeted_person] by the tail..."))
 
-	if(!do_after(the_hulk, 2 SECONDS, yeeted_person))
+	if(!do_after(the_hulk, yeeted_person, 2 SECONDS))
 		yeeted_person.visible_message(span_danger("[yeeted_person] breaks free of [the_hulk]'s grasp!"), \
 					span_userdanger("You break free from [the_hulk]'s grasp!"), span_hear("You hear aggressive shuffling!"), null, the_hulk)
 		to_chat(the_hulk, span_danger("You lose your grasp on [yeeted_person]'s tail!"))

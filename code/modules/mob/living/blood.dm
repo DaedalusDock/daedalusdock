@@ -29,7 +29,7 @@
 				nutrition_ratio = 1
 		if(satiety > 80)
 			nutrition_ratio *= 1.25
-		adjust_nutrition(-nutrition_ratio * HUNGER_FACTOR * delta_time)
+		adjust_nutrition(-nutrition_ratio * HUNGER_DECAY * delta_time)
 		blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * delta_time), BLOOD_VOLUME_NORMAL)
 
 	//Effects of bloodloss
@@ -61,10 +61,17 @@
 				death()
 
 	var/temp_bleed = 0
+
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
 		temp_bleed += iter_bleed_rate * delta_time
+		if(iter_part.bodypart_flags & BP_HAS_BLOOD)
+			iter_part.bodypart_flags &= ~BP_BLEEDING
+			for(var/datum/wound/W as anything in iter_part.wounds)
+				if(W.bleeding())
+					W.bleed_timer--
+					iter_part.bodypart_flags |= BP_BLEEDING
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
 			iter_part.adjustBleedStacks(-1, 0)
@@ -98,8 +105,7 @@
 	if(!blood_volume)
 		return
 	var/bleed_amt = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/iter_bodypart = X
+	for(var/obj/item/bodypart/iter_bodypart as anything in bodyparts)
 		bleed_amt += iter_bodypart.get_modified_bleed_rate()
 	return bleed_amt
 
@@ -127,6 +133,7 @@
 
 	var/bleeding_severity = ""
 	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD
+	var/rate_of_change
 
 	switch(bleed_amt)
 		if(-INFINITY to 0)
@@ -146,24 +153,8 @@
 		if(7 to INFINITY)
 			bleeding_severity = "Your heartbeat thrashes wildly trying to keep up with your bloodloss"
 
-	var/rate_of_change = ", but it's getting better." // if there's no wounds actively getting bloodier or maintaining the same flow, we must be getting better!
 	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
 		rate_of_change = ", but it's clotting up quickly!"
-	else
-		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
-			if(!iter_wound.blood_flow)
-				continue
-			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
-			switch(iter_wound_roc)
-				if(BLOOD_FLOW_INCREASING) // assume the worst, if one wound is getting bloodier, we focus on that
-					rate_of_change = ", <b>and it's getting worse!</b>"
-					break
-				if(BLOOD_FLOW_STEADY) // our best case now is that our bleeding isn't getting worse
-					rate_of_change = ", and it's holding steady."
-				if(BLOOD_FLOW_DECREASING) // this only matters if none of the wounds fit the above two cases, included here for completeness
-					continue
 
 	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)

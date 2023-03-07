@@ -19,7 +19,7 @@
 		span_notice("You can hear rushing air."),
 		vision_distance = 5
 	)
-	if (!do_after(user, 1 SECONDS))
+	if (!do_after(user, time = 1 SECONDS))
 		return
 
 	user.visible_message(
@@ -95,7 +95,7 @@
 
 	for(var/check_dir in GLOB.cardinals)
 		var/turf/T = get_step(src, check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T.unsafe_return_air()
 		var/pressure = env.returnPressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)
@@ -322,10 +322,9 @@
 	throw_range = 4
 	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 3)
 
-/obj/item/storage/briefcase/inflatable/ComponentInitialize()
+/obj/item/storage/briefcase/inflatable/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/inflatable))
+	atom_storage.set_holdable(list(/obj/item/inflatable))
 
 /obj/item/storage/briefcase/inflatable/PopulateContents()
 	for(var/path in startswith)

@@ -541,8 +541,11 @@ Basically, we fill the time between now and 2s from now with hands based off the
 		return ..()
 	REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
 	//Following is for those brought back from the dead only
-	for(var/datum/wound/iter_wound as anything in owner.all_wounds)
-		iter_wound.adjust_blood_flow(1-creation_purity)
+
+	for(var/datum/wound/iter_wound as anything in owner.get_wounds())
+		if(iter_wound.bleed_timer)
+			iter_wound.bleed_timer--
+
 	owner.adjustBruteLoss(5 * (1-creation_purity) * delta_time)
 	owner.adjustOrganLoss(ORGAN_SLOT_HEART, (1 + (1-creation_purity)) * delta_time)
 	if(owner.health < HEALTH_THRESHOLD_CRIT)

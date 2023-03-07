@@ -93,15 +93,6 @@
 	for(var/gas_to_filter in filter_or_filters)
 		filter_types -= gas_to_filter
 
-	var/turf/our_turf = get_turf(src)
-	var/datum/gas_mixture/turf_gas
-
-	if(our_turf.simulated)
-		turf_gas = our_turf.return_air()
-
-	if(!turf_gas)
-		return FALSE
-
 	COOLDOWN_RESET(src, hibernating)
 	return TRUE
 
@@ -115,15 +106,6 @@
 		else
 			filter_types |= gas_to_filter
 
-	var/turf/our_turf = get_turf(src)
-
-	if(!our_turf.simulated)
-		return FALSE
-
-	var/datum/gas_mixture/turf_gas = our_turf.return_air()
-
-	if(!turf_gas)
-		return FALSE
 	COOLDOWN_RESET(src, hibernating)
 	return TRUE
 
@@ -222,10 +204,13 @@
 	var/should_cooldown = TRUE
 	if(scrub(us))
 		should_cooldown = FALSE
+		SAFE_ZAS_UPDATE(us)
+
 	if(quicksucc)
 		for(var/i in 1 to 2)
 			if(scrub(us))
 				should_cooldown = FALSE
+				SAFE_ZAS_UPDATE(us)
 	if(should_cooldown && can_hibernate)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
 	update_icon_nopipes()
@@ -238,7 +223,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/scrub(turf/tile)
 	if(!istype(tile))
 		return FALSE
-	var/datum/gas_mixture/environment = tile.return_air()
+	var/datum/gas_mixture/environment = tile.unsafe_return_air() // The proc that calls this proc marks the turf for update!
 	var/datum/gas_mixture/air_contents = airs[1]
 
 	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
@@ -285,9 +270,6 @@
 	var/old_quicksucc = quicksucc
 	var/old_scrubbing = scrubbing
 	var/old_filter_length = length(filter_types)
-
-	//var/turf/open/our_turf = get_turf(src)
-	//var/datum/gas_mixture/turf_gas = our_turf?.return_air()
 
 	var/atom/signal_sender = signal.data["user"]
 
@@ -368,7 +350,7 @@
 		. += span_notice("It is sleeping to conserve power.")
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user, list/modifiers)
-	if(!welded || !(do_after(user, 20, target = src)))
+	if(!welded || !(do_after(user, src, 20)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the scrubber."), span_hear("You hear loud scraping noises."))
 	welded = FALSE

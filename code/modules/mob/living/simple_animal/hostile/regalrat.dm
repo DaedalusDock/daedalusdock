@@ -118,7 +118,7 @@
 	. = ..()
 	if(stat == DEAD || !environment || !environment.getGroupGas(GAS_METHANE))
 		return
-	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.get_moles()
+	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.total_moles
 	if(miasma_percentage>=0.25)
 		heal_bodypart_damage(1)
 
@@ -134,7 +134,7 @@
 
 	if (target.reagents && target.is_injectable(src, allowmobs = TRUE) && !istype(target, /obj/item/food/cheese))
 		src.visible_message(span_warning("[src] starts licking [target] passionately!"),span_notice("You start licking [target]..."))
-		if (do_mob(src, target, 2 SECONDS, interaction_key = REGALRAT_INTERACTION))
+		if (do_after(src, target, 2 SECONDS, interaction_key = REGALRAT_INTERACTION))
 			target.reagents.add_reagent(/datum/reagent/rat_spit,rand(1,3),no_react = TRUE)
 			to_chat(src, span_notice("You finish licking [target]."))
 	else

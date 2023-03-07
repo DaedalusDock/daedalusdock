@@ -69,38 +69,6 @@
 	appearance_flags = PLANE_MASTER //should use client color
 	blend_mode = BLEND_OVERLAY
 
-/atom/movable/screen/plane_master/game_world_fov_hidden
-	name = "game world fov hidden plane master"
-	plane = GAME_PLANE_FOV_HIDDEN
-	render_relay_plane = GAME_PLANE
-	appearance_flags = PLANE_MASTER //should use client color
-	blend_mode = BLEND_OVERLAY
-
-/atom/movable/screen/plane_master/game_world_fov_hidden/Initialize()
-	. = ..()
-	add_filter("vision_cone", 1, alpha_mask_filter(render_source = FIELD_OF_VISION_BLOCKER_RENDER_TARGET, flags = MASK_INVERSE))
-
-/atom/movable/screen/plane_master/game_world_upper
-	name = "upper game world plane master"
-	plane = GAME_PLANE_UPPER
-	render_relay_plane = GAME_PLANE
-	appearance_flags = PLANE_MASTER //should use client color
-	blend_mode = BLEND_OVERLAY
-
-/atom/movable/screen/plane_master/game_world_upper_fov_hidden
-	name = "upper game world fov hidden plane master"
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
-	render_relay_plane = GAME_PLANE_FOV_HIDDEN
-	appearance_flags = PLANE_MASTER //should use client color
-	blend_mode = BLEND_OVERLAY
-
-/atom/movable/screen/plane_master/game_world_above
-	name = "above game world plane master"
-	plane = ABOVE_GAME_PLANE
-	render_relay_plane = GAME_PLANE
-	appearance_flags = PLANE_MASTER //should use client color
-	blend_mode = BLEND_OVERLAY
-
 /atom/movable/screen/plane_master/massive_obj
 	name = "massive object plane master"
 	plane = MASSIVE_OBJ_PLANE
@@ -166,11 +134,6 @@
 	plane = LIGHTING_PLANE_ADDITIVE
 	blend_mode_override = BLEND_ADD
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-
-/atom/movable/screen/plane_master/additive_lighting/Initialize(mapload)
-	. = ..()
-	add_filter("emissives", 1, alpha_mask_filter(render_source = EMISSIVE_RENDER_TARGET, flags = MASK_INVERSE))
-	add_filter("object_lighting", 2, alpha_mask_filter(render_source = O_LIGHTING_VISUAL_RENDER_TARGET, flags = MASK_INVERSE))
 
 /**
  * Handles emissive overlays and emissive blockers.
@@ -281,13 +244,6 @@
 	plane = FULLSCREEN_PLANE
 	render_relay_plane = RENDER_PLANE_NON_GAME
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-
-/atom/movable/screen/plane_master/field_of_vision_blocker
-	name = "field of vision blocker plane master"
-	plane = FIELD_OF_VISION_BLOCKER_PLANE
-	render_target = FIELD_OF_VISION_BLOCKER_RENDER_TARGET
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	render_relay_plane = null
 
 /atom/movable/screen/plane_master/hud
 	name = "HUD plane"

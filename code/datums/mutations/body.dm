@@ -377,20 +377,20 @@
 	owner.update_transform()
 	owner.visible_message(span_danger("[owner] suddenly shrinks!"), span_notice("Everything around you seems to grow.."))
 
-/datum/mutation/human/spastic
-	name = "Spastic"
+/datum/mutation/human/spasms
+	name = "Muscle Spasms"
 	desc = "Subject suffers from muscle spasms."
 	quality = NEGATIVE
 	text_gain_indication = "<span class='warning'>You flinch.</span>"
 	text_lose_indication = "<span class='notice'>Your flinching subsides.</span>"
 	difficulty = 16
 
-/datum/mutation/human/spastic/on_acquiring()
+/datum/mutation/human/spasms/on_acquiring()
 	if(..())
 		return
 	owner.apply_status_effect(/datum/status_effect/spasms)
 
-/datum/mutation/human/spastic/on_losing()
+/datum/mutation/human/spasms/on_losing()
 	if(..())
 		return
 	owner.remove_status_effect(/datum/status_effect/spasms)
@@ -491,7 +491,7 @@
 	if(head)
 		owner.visible_message(span_warning("[owner]'s head splatters with a sickening crunch!"), ignored_mobs = list(owner))
 		new /obj/effect/gibspawner/generic(get_turf(owner), owner)
-		head.dismember(BRUTE)
+		head.dismember(DROPLIMB_BLUNT)
 		head.drop_organs()
 		qdel(head)
 		owner.regenerate_icons()

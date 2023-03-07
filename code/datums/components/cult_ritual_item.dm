@@ -211,7 +211,7 @@
 			return
 
 	SEND_SOUND(cultist, 'sound/items/sheath.ogg')
-	if(!do_after(cultist, rune.erase_time, target = rune))
+	if(!do_after(cultist, rune, rune.erase_time))
 		return
 
 	if(!can_scrape_rune(rune, cultist))
@@ -304,14 +304,14 @@
 		)
 
 	if(cultist.blood_volume)
-		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), wound_bonus = CANT_WOUND) // *cuts arm* *bone explodes* ever have one of those days?
+		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)) // *cuts arm* *bone explodes* ever have one of those days?
 
 	var/scribe_mod = initial(rune_to_scribe.scribe_delay)
 	if(!initial(rune_to_scribe.no_scribe_boost) && (our_turf.type in turfs_that_boost_us))
 		scribe_mod *= 0.5
 
 	SEND_SOUND(cultist, sound('sound/weapons/slice.ogg', 0, 1, 10))
-	if(!do_after(cultist, scribe_mod, target = get_turf(cultist), timed_action_flags = IGNORE_SLOWDOWNS))
+	if(!do_after(cultist, get_turf(cultist), scribe_mod, timed_action_flags = IGNORE_SLOWDOWNS))
 		cleanup_shields()
 		return FALSE
 	if(!can_scribe_rune(tool, cultist))

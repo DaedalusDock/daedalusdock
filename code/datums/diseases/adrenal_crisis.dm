@@ -3,7 +3,6 @@
 	name = "Adrenal Crisis"
 	max_stages = 2
 	cure_text = "Trauma"
-	cures = list(/datum/reagent/determination)
 	cure_chance = 10
 	agent = "Shitty Adrenal Glands"
 	viable_mobtypes = list(/mob/living/carbon/human)

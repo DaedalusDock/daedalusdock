@@ -114,26 +114,6 @@
 				hud_list[hud] = I
 
 /**
- * Some kind of debug verb that gives atmosphere environment details
- */
-/mob/proc/Cell()
-	set category = "Admin"
-	set hidden = TRUE
-
-	if(!loc)
-		return
-
-	var/datum/gas_mixture/environment = loc.return_air()
-
-	var/t = "[span_notice("Coordinates: [x],[y] ")]\n"
-	t += "[span_danger("Temperature: [environment.temperature] ")]\n"
-	for(var/id in environment.gas)
-		if(!environment.getGroupGas(id))
-			t+="[span_notice("[xgm_gas_data.name[environment.gas]]: [environment.getGroupGas(id)] ")]\n"
-
-	to_chat(usr, t)
-
-/**
  * Return the desc of this mob for a photo
  */
 /mob/proc/get_photo_description(obj/item/camera/camera)
@@ -546,7 +526,7 @@
 	else if(ismob(examined_thing) && examined_thing != src)
 		examine_delay_length *= 2
 
-	if(examine_delay_length > 0 && !do_after(src, examine_delay_length, target = examined_thing))
+	if(examine_delay_length > 0 && !do_after(src, examined_thing, examine_delay_length))
 		to_chat(src, span_notice("You can't get a good feel for what is there."))
 		return FALSE
 

@@ -189,7 +189,7 @@
 				return
 			to_chat(H, span_notice("You begin clumsily channeling power from [src] into your body."))
 			stomach.drain_time = world.time + CELL_DRAIN_TIME
-			if(do_after(user, CELL_DRAIN_TIME, target = src))
+			if(do_after(user, src, CELL_DRAIN_TIME))
 				if((charge < CELL_POWER_DRAIN) || (stomach.crystal_charge > charge_limit))
 					return
 				if(istype(stomach))
@@ -213,7 +213,7 @@
 /obj/item/stock_parts/cell/get_part_rating()
 	return maxcharge * 10 + charge
 
-/obj/item/stock_parts/cell/attackby_storage_insert(datum/component/storage, atom/storage_holder, mob/user)
+/obj/item/stock_parts/cell/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	var/obj/item/mod/control/mod = storage_holder
 	return !(istype(mod) && mod.open)
 

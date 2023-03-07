@@ -77,6 +77,13 @@
 	if(user.canUseTopic(src, BE_CLOSE))
 		toggle_welding_screen(user)
 
+/obj/item/clothing/head/helmet/space/plasmaman/ui_action_click(mob/user, action)
+	if(istype(action, /datum/action/item_action/toggle_welding_screen))
+		toggle_welding_screen(user)
+		return
+
+	return ..()
+
 /obj/item/clothing/head/helmet/space/plasmaman/proc/toggle_welding_screen(mob/living/user)
 	if(weldingvisortoggle(user))
 		if(helmet_on)
@@ -98,7 +105,7 @@
 		if(smile == FALSE)
 			var/obj/item/toy/crayon/CR = hitting_item
 			to_chat(user, span_notice("You start drawing a smiley face on the helmet's visor.."))
-			if(do_after(user, 25, target = src))
+			if(do_after(user, src, 25))
 				smile = TRUE
 				smile_color = CR.paint_color
 				to_chat(user, "You draw a smiley on the helmet visor.")
@@ -217,8 +224,8 @@
 	inhand_icon_state = "chemist_envirohelm"
 
 /obj/item/clothing/head/helmet/space/plasmaman/chief_medical_officer
-	name = "chief medical officer's plasma envirosuit helmet"
-	desc = "A special containment helmet designed for the Chief Medical Officer. A gold stripe applied to differentiate them from other medical staff."
+	name = "medical director's plasma envirosuit helmet"
+	desc = "A special containment helmet designed for the Medical Director. A gold stripe applied to differentiate them from other medical staff."
 	icon_state = "cmo_envirohelm"
 	inhand_icon_state = "cmo_envirohelm"
 

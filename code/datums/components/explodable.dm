@@ -31,10 +31,13 @@
 		RegisterSignal(parent, COMSIG_MOVABLE_BUMP, .proc/explodable_bump)
 		if(isitem(parent))
 			RegisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_OBJ, COMSIG_ITEM_HIT_REACT), .proc/explodable_attack)
-			RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, .proc/on_equip)
-			RegisterSignal(parent, COMSIG_ITEM_DROPPED, .proc/on_drop)
-	if(SEND_SIGNAL(parent, COMSIG_CONTAINS_STORAGE))
-		RegisterSignal(parent, COMSIG_TRY_STORAGE_INSERT, .proc/explodable_insert_item)
+			if(isclothing(parent))
+				RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, .proc/on_equip)
+				RegisterSignal(parent, COMSIG_ITEM_DROPPED, .proc/on_drop)
+
+	var/atom/atom_parent = parent
+	if(atom_parent.atom_storage)
+		RegisterSignal(parent, COMSIG_ATOM_ENTERED, .proc/explodable_insert_item)
 
 	if (devastation_range)
 		src.devastation_range = devastation_range
@@ -50,8 +53,10 @@
 	src.delete_after = delete_after
 
 /// Explode if our parent is a storage place and something with high heat is inserted in.
-/datum/component/explodable/proc/explodable_insert_item(datum/source, obj/item/I, mob/M, silent = FALSE, force = FALSE)
+/datum/component/explodable/proc/explodable_insert_item(datum/source, obj/item/I)
 	SIGNAL_HANDLER
+	if(!(I.item_flags & IN_STORAGE))
+		return
 
 	check_if_detonate(I)
 

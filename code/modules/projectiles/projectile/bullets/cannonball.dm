@@ -3,7 +3,6 @@
 	icon_state = "cannonball"
 	damage = 110 //gets set to 100 before first mob impact.
 	sharpness = NONE
-	wound_bonus = 0
 	projectile_piercing = ALL
 	dismemberment = 0
 	paralyze = 5 SECONDS

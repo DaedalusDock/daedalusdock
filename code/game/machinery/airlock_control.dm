@@ -148,7 +148,7 @@
 
 /obj/machinery/airlock_sensor/process()
 	if(on)
-		var/datum/gas_mixture/air_sample = return_air()
+		var/datum/gas_mixture/air_sample = loc.unsafe_return_air()
 		var/pressure = round(air_sample.returnPressure(),0.1)
 		alert = (pressure < ONE_ATMOSPHERE*0.8)
 

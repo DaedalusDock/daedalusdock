@@ -10,4 +10,8 @@
 /datum/codex_entry/power/supermatter
 	name = "Supermatter Engine"
 	associated_paths = list(/obj/machinery/power/supermatter)
-	mechanics_text = "A mysterious crystal from deep space which produces a large amount of thermal energy with a small jolt of energy."
+	lore_text = "The Supermatter is a highly unstable fragment of exotic matter, \
+		which reacts with the atmosphere around it relative to it's own internal charge. As part of it's use as a power generator, \
+		the supermatter will release energy in the form of heat and radiation, along with shedding 'waste' gasses from it's mass. \
+		These byproducts must be managed, and the heat captured and converted for use as electrical power."
+

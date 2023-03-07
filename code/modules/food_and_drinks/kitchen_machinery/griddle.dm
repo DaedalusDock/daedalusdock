@@ -33,7 +33,6 @@
 
 /obj/machinery/griddle/Destroy()
 	QDEL_NULL(grill_loop)
-	UnregisterSignal(get_turf(src), COMSIG_ATOM_HITBY)
 	return ..()
 
 /obj/machinery/griddle/crowbar_act(mob/living/user, obj/item/I)
@@ -76,7 +75,7 @@
 		else if(istype(offhand_item, /obj/item/plate))
 			var/obj/item/plate/collecting_plate = offhand_item
 			for(var/obj/grilled_item in griddled_objects)
-				if(collecting_plate.if_can_move(grilled_item))
+				if(collecting_plate.can_accept_item(grilled_item))
 					if(user.transferItemToLoc(grilled_item, src, silent = FALSE))
 						to_chat(user, span_notice("You place [grilled_item] on [collecting_plate]."))
 						collecting_plate.AddToPlate(grilled_item, user)
@@ -122,8 +121,10 @@
 	update_grill_audio()
 
 /obj/machinery/griddle/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
-	UnregisterSignal(get_turf(old_loc), COMSIG_ATOM_HITBY)
-	RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, .proc/AddThrownItemToGrill)
+	if(get_turf(old_loc))
+		UnregisterSignal(get_turf(old_loc), COMSIG_ATOM_HITBY)
+	if(get_turf(src))
+		RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, .proc/AddThrownItemToGrill)
 	. = ..()
 
 /obj/machinery/griddle/proc/AddThrownItemToGrill(datum/source, atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)

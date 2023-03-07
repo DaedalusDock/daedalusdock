@@ -14,7 +14,7 @@
 	var/placement_offset = -15
 
 /obj/item/plate/attackby(obj/item/I, mob/user, params)
-	if(!if_can_move(I, user))
+	if(!can_accept_item(I, user))
 		return
 
 	var/list/modifiers = params2list(params)
@@ -57,7 +57,7 @@
 	SIGNAL_HANDLER
 	ItemRemovedFromPlate(moved_item)
 
-/obj/item/plate/proc/if_can_move(obj/item/I, mob/user)
+/obj/item/plate/proc/can_accept_item(obj/item/I, mob/user)
 	if(!IS_EDIBLE(I))
 		to_chat(user, span_notice("[src] is made for food, and food alone!"))
 		return FALSE

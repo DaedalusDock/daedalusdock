@@ -165,7 +165,7 @@ SUBSYSTEM_DEF(move_manager)
 			return
 		msg += "Move loop failed to gc"
 		for(var/time in controller.buckets)
-			var/list/processing = cpntroller.buckets[time]
+			var/list/processing = controller.buckets[time]
 			if(gay in processing)
 				msg += "Found our moveloop in a bucket!"
 		msg = english_list(gay)

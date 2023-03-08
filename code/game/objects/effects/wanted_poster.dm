@@ -25,7 +25,8 @@
 /obj/item/poster/wanted/Initialize(mapload, icon/person_icon, wanted_name, description, headerText, posterHeaderColor)
 	if(posterHeaderColor)
 		postHeaderColor = posterHeaderColor
-	var/obj/structure/sign/poster/wanted/wanted_poster = new (src, person_icon, wanted_name, description, headerText, postHeaderColor, background, postName, postDesc)
+	var/obj/structure/sign/poster/wanted/wanted_poster = new (
+		src, person_icon, wanted_name, description, headerText, postHeaderColor, background, postName, postDesc)
 	. = ..(mapload, wanted_poster)
 	name = "[postName] ([wanted_name])"
 	desc = "[postDesc] [wanted_name]."

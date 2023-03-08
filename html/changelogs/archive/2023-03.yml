@@ -14,3 +14,6 @@
   - bugfix: Chemistry bags now accept pills and patches
   francinum:
   - qol: the Health Analyzer chem scanner has been readded to the mode cycle loop.
+2023-03-08:
+  Cenrus:
+  - bugfix: Fixed light fixtures having incorrect attack behavior

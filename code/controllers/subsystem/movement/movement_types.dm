@@ -108,6 +108,14 @@
 		qdel(src)
 		return
 
+	if(isnull(controller))
+		var/crashmsg = "Controller type [controller_type] has gone null and is still processing! "
+		if(isnull(owner))
+			crashmsg += "...and it's owner is missing! "
+		else
+			crashmsg += "It's atom parent is a [owner.parent]!"
+		CRASH(crashmsg)
+
 	var/visual_delay = controller.visual_delay
 	var/success = move()
 

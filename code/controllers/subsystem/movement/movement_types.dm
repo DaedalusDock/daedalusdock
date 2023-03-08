@@ -5,6 +5,7 @@
 	///The subsystem we're processing on
 	var/datum/controller/subsystem/movement/controller
 	var/controller_type
+	var/owner_mob_type
 	///An extra reference we pass around
 	///It is on occasion useful to have a reference to some datum without storing it on the moving object
 	///Mostly comes up in high performance senarios where we care about things being singletons
@@ -31,6 +32,7 @@
 	src.owner = owner
 	src.controller = controller
 	controller_type = controller.type
+	owner_mob_type = owner.parent.type
 	src.extra_info = extra_info
 	if(extra_info)
 		RegisterSignal(extra_info, COMSIG_PARENT_QDELETING, .proc/info_deleted)
@@ -115,7 +117,10 @@
 		if(isnull(owner))
 			crashmsg += "...and it's owner is missing! "
 		else
-			crashmsg += "It's atom parent is a [owner.parent.type]!"
+			crashmsg += "It's atom parent is a [owner.parent.type]! "
+		if(QDELETED(src))
+			crashmsg += "...and We are QDELETED! "
+		crashmsg += "My parent's type was [owner_mob_type]"
 		CRASH(crashmsg)
 
 	var/visual_delay = controller.visual_delay

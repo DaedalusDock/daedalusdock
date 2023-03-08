@@ -145,7 +145,7 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_BASIC_MOB, user)
 
 ///Attacked by monkey
-/atom/proc/attack_paw(mob/user, list/modifiers)
+/atom/proc/attack_paw(mob/user, list/modifiers = list())
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_PAW, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	return FALSE

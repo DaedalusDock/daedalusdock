@@ -49,34 +49,6 @@
 		SSsecurity_level.set_level(level)
 
 /proc/get_security_level()
-	switch(SSsecurity_level.current_level)
-		if(SEC_LEVEL_GREEN)
-			return "green"
-		if(SEC_LEVEL_BLUE)
-			return "blue"
-		if(SEC_LEVEL_RED)
-			return "red"
-		if(SEC_LEVEL_DELTA)
-			return "delta"
-
-/proc/num2seclevel(num)
-	switch(num)
-		if(SEC_LEVEL_GREEN)
-			return "green"
-		if(SEC_LEVEL_BLUE)
-			return "blue"
-		if(SEC_LEVEL_RED)
-			return "red"
-		if(SEC_LEVEL_DELTA)
-			return "delta"
-
-/proc/seclevel2num(seclevel)
-	switch( lowertext(seclevel) )
-		if("green")
-			return SEC_LEVEL_GREEN
-		if("blue")
-			return SEC_LEVEL_BLUE
-		if("red")
-			return SEC_LEVEL_RED
-		if("delta")
-			return SEC_LEVEL_DELTA
+	. = SSsecurity_level?.current_level
+	if(!.) //Checked too early, Throw.
+		CRASH("Attempted to retrieve a null security level")

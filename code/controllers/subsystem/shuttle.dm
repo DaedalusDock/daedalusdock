@@ -305,7 +305,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	call_reason = trim(html_encode(call_reason))
 
-	if(length(call_reason) < CALL_SHUTTLE_REASON_LENGTH && seclevel2num(get_security_level()) > SEC_LEVEL_GREEN)
+	if(length(call_reason) < CALL_SHUTTLE_REASON_LENGTH && SSsecurity_level.check_active_feature(SEC_FEATURE_NO_SHUTTLECALL_REASON))
 		to_chat(user, span_alert("You must provide a reason."))
 		return
 

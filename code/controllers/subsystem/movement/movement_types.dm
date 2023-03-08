@@ -80,8 +80,13 @@
 		owner.remove_loop(controller, src)
 	owner = null
 	moving = null
+	var/supposed_controller = controller
 	controller = null
 	extra_info = null
+	for(var/time in controller.buckets)
+		var/list/processing = controller.buckets[time]
+		if(src in processing)
+			stack_trace("Found myself in my controller's processing list after Destroy()!")
 	return ..()
 
 ///Exists as a helper so outside code can modify delay in a sane way

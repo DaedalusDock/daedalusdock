@@ -53,6 +53,9 @@
 	var/align_to_windows = FALSE
 	var/auto_dir_align = TRUE
 
+	///Sound to play when knocked on
+	var/knock_sound = 'goon/sounds/Door_Metal_Knock_1.ogg'
+
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
 	set_init_door_layer()
@@ -154,6 +157,7 @@
 
 	if (isnull(held_item) && Adjacent(user))
 		context[SCREENTIP_CONTEXT_LMB] = "Open"
+		context[SCREENTIP_CONTEXT_RMB] = "Knock"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/check_access_list(list/access_list)
@@ -275,6 +279,9 @@
 	. = ..()
 	if(.)
 		return
+	if(modifiers[RIGHT_CLICK])
+		knock_on(user)
+		return TRUE
 	if(try_remove_seal(user))
 		return
 	if(try_safety_unlock(user))
@@ -561,5 +568,8 @@
 	zap_flags &= ~ZAP_OBJ_DAMAGE
 	. = ..()
 
+/obj/machinery/door/proc/knock_on(mob/user)
+	user.changeNext_move(CLICK_CD_MELEE)
+	playsound(src, knock_sound, 100, TRUE)
 
 #undef DOOR_CLOSE_WAIT

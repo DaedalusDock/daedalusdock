@@ -149,30 +149,12 @@ SUBSYSTEM_DEF(move_manager)
 		running_loop = null
 	if(loop_to_remove.flags & MOVEMENT_LOOP_IGNORE_PRIORITY)
 		remove_from.remove_loop(loop_to_remove)
-	//testref(ref(loop_to_remove), remove_from)
 	if(QDELETED(src))
 		return
 	if(existing_loops[remove_from] == loop_to_remove)
 		existing_loops -= remove_from
 	decide_on_running_loop()
 	return
-
-/*
-/proc/testref(ref, datum/controller/subsystem/movement/controller)
-	spawn(0)
-		var/list/msg = list()
-		var/datum/move_loop/gay = locate(ref)
-		if(isnull(gay))
-			return
-		msg += "Move loop failed to gc"
-		for(var/time in controller.buckets)
-			var/list/processing = controller.buckets[time]
-			if(gay in processing)
-				msg += "Found our moveloop in a bucket!"
-		msg = english_list(gay)
-		CRASH(msg)
-*/
-
 
 /datum/movement_packet/proc/remove_subsystem(datum/controller/subsystem/movement/remove)
 	var/datum/move_loop/our_loop = existing_loops[remove]

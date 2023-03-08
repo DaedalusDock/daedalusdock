@@ -83,8 +83,8 @@
 	var/supposed_controller = controller
 	controller = null
 	extra_info = null
-	for(var/time in supposed_controller.buckets)
-		var/list/processing = supposed_controller.buckets[time]
+	for(var/time in supposed_controller:buckets)
+		var/list/processing = supposed_controller:buckets[time]
 		if(src in processing)
 			stack_trace("Found myself in my controller's processing list after Destroy()!")
 	return ..()

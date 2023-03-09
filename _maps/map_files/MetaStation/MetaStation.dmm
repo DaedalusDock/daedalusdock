@@ -26926,6 +26926,7 @@
 "jwa" = (
 /obj/machinery/smartfridge/chemistry/preloaded,
 /obj/structure/low_wall/prepainted/daedalus,
+/obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "jwz" = (
@@ -43021,7 +43022,9 @@
 	id = "kitchen_counter";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/item/paper_bin/pad,
+/obj/item/paper_bin/pad{
+	color = #FFFF00
+	},
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},
@@ -51236,7 +51239,7 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/carpet,
+/turf/open/floor/wood,
 /area/station/command/heads_quarters/captain/private)
 "sgI" = (
 /obj/structure/window/reinforced,

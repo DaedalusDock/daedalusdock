@@ -117,12 +117,8 @@
 /obj/item/gun/energy/plasmacutter/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
-	AddComponent(/datum/component/butchering, \
-		speed = 2.5 SECONDS, \
-		effectiveness = 105, \
-		bonus_modifier = 0, \
-		butcher_sound = 'sound/weapons/plasma_cutter.ogg', \
-	)
+/datum/component/butchering/Initialize(_speed, _effectiveness, _bonus_modifier, _butcher_sound, disabled, _can_be_blunt, _butcher_callback)
+	AddComponent(/datum/component/butchering, 2.5 SECONDS, 105, 0, 'sound/weapons/plasma_cutter.ogg')
 	AddElement(/datum/element/tool_flash, 1)
 
 /obj/item/gun/energy/plasmacutter/examine(mob/user)

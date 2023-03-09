@@ -35,14 +35,6 @@
 	var/obj/item/suppressor/S = new(src)
 	install_suppressor(S)
 
-/obj/item/gun/ballistic/automatic/pistol/clandestine
-	name = "\improper Ansem pistol"
-	desc = "The spiritual successor of the Makarov, or maybe someone just dropped their gun in a bucket of paint. The gun is chambered in 10mm."
-	icon_state = "pistol_evil"
-	mag_type = /obj/item/ammo_box/magazine/m10mm
-	empty_indicator = TRUE
-	suppressor_x_offset = 12
-
 /obj/item/gun/ballistic/automatic/pistol/m1911
 	name = "\improper M1911"
 	desc = "A classic .45 handgun with a small magazine capacity."

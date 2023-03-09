@@ -138,7 +138,7 @@
 	// nutrition decrease and satiety
 	if (human.nutrition > 0 && human.stat != DEAD)
 		// THEY HUNGER
-		var/hunger_rate = HUNGER_FACTOR
+		var/hunger_rate = HUNGER_DECAY
 		var/datum/component/mood/mood = human.GetComponent(/datum/component/mood)
 		if(mood && mood.sanity > SANITY_DISTURBED)
 			hunger_rate *= max(1 - 0.002 * mood.sanity, 0.5) //0.85 to 0.75
@@ -146,14 +146,14 @@
 		if(human.satiety > MAX_SATIETY)
 			human.satiety = MAX_SATIETY
 		else if(human.satiety > 0)
-			human.satiety--
+			human.satiety = max(human.satiety - (SATIETY_DECAY * delta_time), 0)
 		else if(human.satiety < -MAX_SATIETY)
 			human.satiety = -MAX_SATIETY
 		else if(human.satiety < 0)
-			human.satiety++
+			human.satiety = min(human.satiety + (SATIETY_DECAY * delta_time), 0)
 			if(DT_PROB(round(-human.satiety/77), delta_time))
 				human.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
-			hunger_rate = 3 * HUNGER_FACTOR
+			hunger_rate = 3 * HUNGER_DECAY
 		hunger_rate *= human.physiology.hunger_mod
 		human.adjust_nutrition(-hunger_rate * delta_time)
 

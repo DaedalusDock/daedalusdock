@@ -316,11 +316,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		radio.talk_into(src, alert_msg, engineering_channel)
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			radio.talk_into(src, alert_msg, engineering_channel)
+			radio.talk_into(src, alert_msg, common_channel)
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
-				var/turf/T = get_turf(M)
-				if(T && (is_station_level(T.z)) && !M.can_hear())
+				if((is_station_level(M.z)))
 					M.playsound_local(get_turf(M), 'sound/ambience/matteralarm.ogg')
 
 		else if(safe_warned && public_alert)

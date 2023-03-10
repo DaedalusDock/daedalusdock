@@ -83,10 +83,14 @@
 	var/supposed_controller = controller
 	controller = null
 	extra_info = null
+	var/hits = 0
 	for(var/time in supposed_controller:buckets)
 		var/list/processing = supposed_controller:buckets[time]
-		if(src in processing)
-			stack_trace("Found myself in my controller's processing list after Destroy()!")
+		for(var/thing in processing)
+			if(src == thing)
+				hits++
+	if(hits)
+		stack_trace("Found myself in my controller's processing list [hits] time(s) after Destroy!")
 	return ..()
 
 ///Exists as a helper so outside code can modify delay in a sane way

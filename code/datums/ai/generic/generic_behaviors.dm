@@ -108,7 +108,7 @@
 	if(held_item)
 		held_item.melee_attack_chain(pawn, target)
 	else
-		pawn.UnarmedAttack(target, TRUE, modifiers = list())
+		pawn.UnarmedAttack(target, TRUE)
 
 	finish_action(controller, TRUE)
 

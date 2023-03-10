@@ -88,6 +88,11 @@ SUBSYSTEM_DEF(movement)
 /datum/controller/subsystem/movement/proc/queue_loop(datum/move_loop/loop)
 	var/target_time = loop.timer
 	var/string_time = "[target_time]"
+
+	for(var/time in buckets)
+		if(loop in buckets[time])
+			stack_trace("[loop.owner_mob_type] running off [type] just tried to add itself to a bucket while it's already inside one. We want [target_time] and are queued for [time]")
+
 	// If there's no bucket for this, lets set them up
 	if(!buckets[string_time])
 		buckets[string_time] = list()

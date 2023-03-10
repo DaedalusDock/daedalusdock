@@ -74,7 +74,6 @@
 	if(atom_integrity == 0)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
-	zas_update_loc()
 	lose_atmos_sensitivity()
 	return ..()
 

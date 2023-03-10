@@ -177,7 +177,6 @@
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
-	zas_update_loc()
 	return ..()
 
 /obj/machinery/door/zas_canpass(turf/other)
@@ -250,8 +249,11 @@
 		return
 
 /obj/machinery/door/Move()
-	zas_update_loc()
+	var/turf/T = loc
 	. = ..()
+	if(.)
+		T.zas_update_loc()
+		zas_update_loc()
 
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)

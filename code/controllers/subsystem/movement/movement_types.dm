@@ -76,6 +76,13 @@
 	extra_info = null
 
 /datum/move_loop/Destroy()
+	var/hits = 0
+	for(var/time in supposed_controller:buckets)
+		var/list/processing = supposed_controller:buckets[time]
+		for(var/thing in processing)
+			if(src == thing)
+				hits++
+
 	if(owner)
 		owner.remove_loop(controller, src)
 	owner = null
@@ -83,14 +90,14 @@
 	var/supposed_controller = controller
 	controller = null
 	extra_info = null
-	var/hits = 0
+	var/hits_after = 0
 	for(var/time in supposed_controller:buckets)
 		var/list/processing = supposed_controller:buckets[time]
 		for(var/thing in processing)
 			if(src == thing)
-				hits++
-	if(hits)
-		stack_trace("Found myself in my controller's processing list [hits] time(s) after Destroy!")
+				hits_after++
+	if(hits_after)
+		stack_trace("Found myself in my controller's processing list [hits] time(s) before Destroy, and [hits_after] after!")
 	return ..()
 
 ///Exists as a helper so outside code can modify delay in a sane way

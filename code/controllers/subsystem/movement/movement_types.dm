@@ -77,8 +77,8 @@
 
 /datum/move_loop/Destroy()
 	var/hits = 0
-	for(var/time in supposed_controller:buckets)
-		var/list/processing = supposed_controller:buckets[time]
+	for(var/time in controller:buckets)
+		var/list/processing = controller:buckets[time]
 		for(var/thing in processing)
 			if(src == thing)
 				hits++

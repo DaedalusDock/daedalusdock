@@ -398,9 +398,6 @@
 /obj/effect/turf_decal/tile/green,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/ferry)
-"bn" = (
-/turf/closed/wall/mineral/wood,
-/area/centcom/syndicate_mothership/control)
 "bo" = (
 /obj/effect/landmark/thunderdome/two,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -10023,9 +10020,6 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/wideplating,
-/obj/machinery/door/airlock/hatch{
-	name = "Bar Counter"
-	},
 /obj/machinery/door/airlock/hatch{
 	name = "Bar Counter"
 	},
@@ -29335,7 +29329,7 @@ hU
 ng
 TQ
 ai
-bn
+ng
 Xi
 TQ
 ng
@@ -29592,7 +29586,7 @@ QB
 ng
 Zh
 qQ
-bn
+ng
 MM
 cH
 ng
@@ -29849,7 +29843,7 @@ nP
 ng
 gd
 ES
-bn
+ng
 QN
 gd
 ng

@@ -1,6 +1,6 @@
-/datum/security_level/default/green
+/datum/security_level/standard/green
 	name = "Status Green"
-	id = "green"
+	id = SECLEVEL_GREEN
 	severity = SECLEVEL_SEVERITY_NEUTRAL
 
 	//message_up - Impossible for Severity 0 alert levels

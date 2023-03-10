@@ -268,14 +268,14 @@
 /client/proc/admin_change_sec_level()
 	set category = "Admin.Events"
 	set name = "Set Security Level"
-	set desc = "Changes the security level. Announcement only, i.e. setting to Delta won't activate nuke"
+	set desc = "Changes the security level."
 
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/level = input("Select security level to change to","Set Security Level") as null|anything in list("green","blue","red","delta")
+	var/level = input("Select security level to change to","Set Security Level") as null|anything in SSsecurity_level.possible_levels //Retrieves keys.
 	if(level)
-		set_security_level(level)
+		set_security_level(level, crew_set = FALSE) //Admins can force level change.
 
 		log_admin("[key_name(usr)] changed the security level to [level]")
 		message_admins("[key_name_admin(usr)] changed the security level to [level]")

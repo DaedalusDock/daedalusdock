@@ -304,8 +304,8 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 		priority_announce("Thanks to the tireless efforts of our security and intelligence divisions, there are currently no credible threats to [station_name()]. All station construction projects have been authorized. Have a secure shift!", sub_title = "Security Report", sound_type = ANNOUNCER_CENTCOM, do_not_modify = TRUE)
 	else
 		priority_announce("A summary has been copied and printed to all communications consoles.", sub_title = "Security level elevated.", sound_type = ANNOUNCER_INTERCEPT)
-		if(SSsecurity_level.current_level < SEC_LEVEL_BLUE)
-			set_security_level(SEC_LEVEL_BLUE)
+		if(SSsecurity_level.current_level.severity < SECLEVEL_SEVERITY_MINOR)
+			set_security_level(SECLEVEL_BLUE, crew_set = FALSE)
 
 /datum/game_mode/dynamic/proc/show_threatlog(mob/admin)
 	if(!SSticker.HasRoundStarted())

@@ -21,8 +21,21 @@ SUBSYSTEM_DEF(security_level)
  *
  * Arguments:
  * * new_level The new security level datum that will become our current level
+ * * crew_initiated Was this level change triggered by crew (TRUE), or by the game/admins? (FALSE)
  */
-/datum/controller/subsystem/security_level/proc/set_level(new_level)
+/datum/controller/subsystem/security_level/proc/set_level(datum/security_level/new_level, crew_initiated = TRUE)
+	if(new_level == current_level) //Same level?
+		return FALSE //Can't set to same level.
+	//Is it illegal for crew to leave, or to enter, this level? And is it actually crew setting it?
+	if(crew_initiated && (!current_level.allow_player_changefrom || !new_level.allow_player_set))
+		return FALSE //Decline level change.
+	//This code sucks and there's probably a better way
+	if(new_level.severity > current_level.severity) //New level is higher
+		new_level.switching_up_to()
+	else if (new_level.severity < current_level.severity) //New level is lower
+		new_level.switching_down_to()
+	else //Assume equal. Best guess.
+		new_level.switching_equal_to()
 	SSsecurity_level.current_level = new_level
 	SEND_SIGNAL(src, COMSIG_SECURITY_LEVEL_CHANGED, new_level)
 	SSnightshift.check_nightshift()

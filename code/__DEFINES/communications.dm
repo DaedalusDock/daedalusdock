@@ -15,3 +15,12 @@
 
 // Security level "feature" flags, These are just defined vars for use in SSsecurity_level.check_feature(feature)
 #define SEC_FEATURE_NO_SHUTTLECALL_REASON "allow_reasonless_shuttlecall"
+
+// Default security level IDs
+
+#define SECLEVEL_GREEN "green"
+#define SECLEVEL_BLUE "blue"
+#define SECLEVEL_ORANGE "orange"
+#define SECLEVEL_VIOLET "violet"
+#define SECLEVEL_RED "red"
+#define SECLEVEL_DELTA "delta"

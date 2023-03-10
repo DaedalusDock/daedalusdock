@@ -25,7 +25,11 @@
 	/// Alert level can not be changed from, while active, by players
 	var/allow_player_changefrom = TRUE
 
-// Pretty much just green.
-/datum/security_level/default
-	default = TRUE
-	abstract_type = /datum/security_level/default
+/datum/security_level/proc/switching_up_to()
+	CRASH("Attempted to raise to invalid level")
+
+/datum/security_level/proc/switching_down_to()
+	CRASH("Attempted to lower to invalid level")
+
+/datum/security_level/proc/switching_equal_to()
+	CRASH("Attempted to change equal to invalid level")

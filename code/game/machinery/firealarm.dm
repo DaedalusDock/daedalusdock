@@ -123,12 +123,13 @@
 		return
 
 	. += mutable_appearance(icon, "fire_overlay")
-	if(is_station_level(z))
-		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level]")
-		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = src.alpha)
-	else
-		. += mutable_appearance(icon, "fire_[SEC_LEVEL_GREEN]")
-		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = src.alpha)
+	//Are we on the station Z or are we too early?
+	if(is_station_level(z) || isnull(SSsecurity_level.current_level))
+		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level.id]")
+		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level.id]", alpha = src.alpha)
+	else //Fall back to code green's icon.
+		. += mutable_appearance(icon, "fire_green")
+		. += emissive_appearance(icon, "fire_green", alpha = src.alpha)
 
 	if(!alert_type)
 		if(my_area?.fire_detect) //If this is false, leave the green light missing. A good hint to anyone paying attention.

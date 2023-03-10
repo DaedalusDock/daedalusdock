@@ -631,7 +631,7 @@
 
 /obj/machinery/attack_paw(mob/living/user, list/modifiers)
 	if(!user.combat_mode)
-		return attack_hand(user)
+		return attack_hand(user, modifiers)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	var/damage = take_damage(4, BRUTE, MELEE, 1)

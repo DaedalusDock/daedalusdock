@@ -11,12 +11,10 @@
 	. = ..()
 	. += span_notice("Write notes on top using a <b>pen</b>.")
 
+
 /obj/item/paper_bin/pad/Initialize()
+	papertype = pick(typesof(/obj/item/paper/sticky))
 	. = ..()
-	var/random_color = pick(COLOR_YELLOW, COLOR_LIME, COLOR_CYAN, COLOR_ORANGE, COLOR_PINK)
-	for(var/obj/item/paper/sticky/note in contents)
-		note.color = color ? color : random_color
-	update_appearance()
 
 /obj/item/paper_bin/pad/attackby(obj/item/thing, mob/user)
 	. = ..()
@@ -41,10 +39,11 @@
 	desc = "Note to self: buy more sticky notes."
 	icon = 'icons/obj/stickynotes.dmi'
 	item_flags = NOBLUDGEON
+	layer = ABOVE_WINDOW_LAYER
+	color = COLOR_YELLOW
 	drop_sound = null
 	pickup_sound = null
 	slot_flags = null
-	layer = ABOVE_WINDOW_LAYER
 	throw_range = 6
 	throw_speed = 3
 	embedding = EMBED_HARMLESS
@@ -80,3 +79,14 @@
 	else if(dir_offset & SOUTH)
 		pixel_y -= 32
 
+/obj/item/paper/sticky/lime
+	color = COLOR_LIME
+
+/obj/item/paper/sticky/orange
+	color = COLOR_ORANGE
+
+/obj/item/paper/sticky/cyan
+	color = COLOR_CYAN
+
+/obj/item/paper/sticky/pink
+	color = COLOR_PINK

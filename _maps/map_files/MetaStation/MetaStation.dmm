@@ -43022,9 +43022,7 @@
 	id = "kitchen_counter";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/item/paper_bin/pad{
-	color = #FFFF00
-	},
+/obj/item/paper_bin/pad,
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},

@@ -374,12 +374,6 @@ AI MODULES
 				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 	..()
 
-/******************** Asimov++ *********************/
-
-/obj/item/ai_module/core/full/asimovpp
-	name = "'Asimov++' Core AI Module"
-	law_id = "asimovpp"
-
 /******************** Corporate ********************/
 
 /obj/item/ai_module/core/full/corp

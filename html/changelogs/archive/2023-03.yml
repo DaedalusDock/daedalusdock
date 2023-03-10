@@ -1,0 +1,23 @@
+2023-03-03:
+  Kapu1178:
+  - balance: Hunger decays at a rate of 0.04/s (up from 0.01)
+  - balance: 'Satiation decays at a rate of 0.2/s (before: 1/s). This means being
+      fully satiated will last 25 minutes.'
+2023-03-05:
+  Kapu1178:
+  - qol: Repainted the station.
+2023-03-06:
+  francinum:
+  - code_imp: new ways to make zstack checks not suck
+2023-03-07:
+  FunnyLegJiggle:
+  - bugfix: Chemistry bags now accept pills and patches
+  francinum:
+  - qol: the Health Analyzer chem scanner has been readded to the mode cycle loop.
+2023-03-08:
+  Cenrus:
+  - bugfix: Fixed light fixtures having incorrect attack behavior
+2023-03-09:
+  Kapu1178:
+  - rscadd: You can now knock on doors by right clicking on them.
+  - server: Changed Asimov and Crewsimov laws. Read carefully.

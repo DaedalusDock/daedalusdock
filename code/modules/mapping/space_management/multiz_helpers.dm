@@ -46,3 +46,54 @@
 	if(dir & UP)
 		return SSmapping.get_turf_above(us)
 	return SSmapping.get_turf_below(us)
+
+///Checks if 2 levels are in the same Z-stack.
+/datum/controller/subsystem/mapping/proc/are_same_zstack(zA, zB)
+	if (zA <= 0 || zB <= 0 || zA > world.maxz || zB > world.maxz)
+		return FALSE
+	if (zA == zB)
+		return TRUE
+	if (length(linked_zlevels) >= zA && length(linked_zlevels[zA]) >= zB)
+		return linked_zlevels[zA][zB]
+
+	var/list/levels = get_zstack(zA)
+
+	var/list/new_entry = new(world.maxz)
+
+	for (var/entry in levels)
+		new_entry[entry] = TRUE
+
+	if (length(linked_zlevels) < zA)
+		linked_zlevels.len = zA
+	linked_zlevels[zA] = new_entry
+	return new_entry[zB]
+
+///Get a list of Z levels that are in zA's Z-stack.
+/datum/controller/subsystem/mapping/proc/get_zstack(zA)
+	var/static/list/zstack_cache[world.maxz]
+	if(isturf(zA))
+		zA = zA:z
+
+	if(length(zstack_cache) < world.maxz)
+		zstack_cache.len = world.maxz
+
+	. = zstack_cache[zA]
+	if(islist(.))
+		return .
+
+	. = list(zA)
+	// Traverse up and down to get the multiz stack.
+	for(var/level = zA, multiz_levels[zA]["[UP]"], level--)
+		. |= level-1
+	for(var/level = zA, multiz_levels[zA]["[UP]"], level++)
+		. |= level+1
+
+	// Check stack for any laterally connected neighbors.
+	for(var/tz in .)
+		var/datum/space_level/level = z_list[zA]
+		for(var/datum/space_level/neighbouring in level.neigbours)
+			. |= neighbouring.z_value
+
+	zstack_cache[zA] = .
+
+

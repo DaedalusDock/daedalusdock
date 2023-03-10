@@ -1,0 +1,5 @@
+author: ShizCalev
+delete-after: true
+changes:
+  - bugfix: Wanted/missing posters are no longer broken.
+  - bugfix: Telekinesis no longer teleports removed posters

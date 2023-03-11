@@ -1,6 +1,0 @@
-author: MrMelbert, Kapu1178, ShizCalev
-delete-after: true
-changes:
-  - bugfix: Light switches no longer cause anchored objects over conveyors to move.
-  - bugfix: Doors no longer trigger zone updates if they didn't move.
-  - code_imp: Fixed alot of extra zas_update_loc() calls

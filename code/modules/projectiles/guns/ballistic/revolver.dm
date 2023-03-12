@@ -96,17 +96,12 @@
 	if(last_fire && last_fire + 15 SECONDS > world.time)
 		. = span_notice("[user] touches the end of [src] to \the [A], using the residual heat to ignite it in a puff of smoke. What a badass.")
 
-/obj/item/gun/ballistic/revolver/c38
-	name = "\improper .38 revolver"
-	desc = "A classic, if not outdated, lethal firearm. Uses .38 Special rounds."
+/obj/item/gun/ballistic/revolver/detective
+	name = "\improper Colt Detective Special"
+	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "c38"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
-
-/obj/item/gun/ballistic/revolver/c38/detective
-	name = "\improper Colt Detective Special"
-	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
-
 	can_modify_ammo = TRUE
 	initial_caliber = CALIBER_38
 	initial_fire_sound = 'sound/weapons/gun/revolver/shot.ogg'

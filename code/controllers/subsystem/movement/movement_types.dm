@@ -85,6 +85,8 @@
 
 	if(owner)
 		owner.remove_loop(controller, src)
+	else (hits)
+		stack_trace("tried to remove [src] from [controller's] processing lists, but I had no attached packet")
 	owner = null
 	moving = null
 	var/supposed_controller = controller

@@ -4,7 +4,6 @@
 	var/icon/head_icon = icon(base_icon, base_state)
 	if(base_color)
 		head_icon.Blend(base_color, ICON_MULTIPLY)
-	var/icon/master_icon = icon()
 	for (var/name in values)
 		var/datum/sprite_accessory/accessory = accessories[name]
 		if (accessory == null || accessory.icon_state == null)
@@ -20,11 +19,7 @@
 		final_icon.Scale(32, 32)
 
 		values[name] = final_icon
-		master_icon.Insert(final_icon, name)
 
-	if(base_state == "moth_head")
-		fcopy(master_icon, "data/debug.dmi")
-		var/stub = 1
 	return values
 
 /datum/preference/color/eye_color

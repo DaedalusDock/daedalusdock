@@ -58,7 +58,8 @@ Class Procs:
 	var/atmos_sensitive_contents
 	///The zone's gas contents
 	var/datum/gas_mixture/air = new
-	var/last_air_temperature = TCMB
+	///The air temperature of the last tick()
+	var/last_air_temperature = null
 	///The air list of last tick()
 	VAR_PRIVATE/last_gas_list
 
@@ -217,10 +218,13 @@ Class Procs:
 	#endif
 
 	// Anything below this check only needs to be run if the zone's gas composition has changed.
-	if(!isnull(last_gas_list) && last_gas_list ~= air.gas)
+
+
+	if(!isnull(last_gas_list) && (last_gas_list ~= air.gas) && (last_air_temperature == air.temperature))
 		return
 
 	last_gas_list = air.gas.Copy()
+	last_air_temperature = air.temperature
 
 	// Update gas overlays, with some reference passing tomfoolery.
 	var/list/graphic_add = list()

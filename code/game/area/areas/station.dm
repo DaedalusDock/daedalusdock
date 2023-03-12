@@ -771,6 +771,10 @@
 	name = "\improper Engineering Lobby"
 	icon_state = "engi_lobby"
 
+/area/station/engineering/monitoring
+	name = "\improper Engine Monitoring Room"
+	icon_state = "engine_monitoring"
+
 /area/station/engineering/supermatter
 	name = "\improper Supermatter Engine"
 	icon_state = "engine_sm"

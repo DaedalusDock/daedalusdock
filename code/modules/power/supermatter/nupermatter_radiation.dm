@@ -17,7 +17,7 @@
 #define RADIATION_CHANCE_AT_ZERO_INTEGRITY 0.4
 #define CHANCE_EQUATION_SLOPE (RADIATION_CHANCE_AT_ZERO_INTEGRITY - RADIATION_CHANCE_AT_FULL_INTEGRITY)
 
-/obj/machinery/power/supermatter_crystal/proc/emit_radiation()
+/obj/machinery/power/supermatter/proc/emit_radiation()
 	// As power goes up, rads go up.
 	// A standard N2 SM seems to produce a value of around 1,500.
 	var/power_factor = min(power, MAX_ACCEPTED_POWER_OUTPUT)

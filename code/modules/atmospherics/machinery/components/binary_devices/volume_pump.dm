@@ -23,7 +23,7 @@
 	power_rating = 15000
 
 	///Transfer rate of the component in L/s
-	var/transfer_rate = MAX_TRANSFER_RATE
+	var/transfer_rate = ATMOS_DEFAULT_VOLUME_PUMP
 	///Frequency for radio signaling
 	var/frequency = 0
 	///ID for radio signaling
@@ -48,7 +48,7 @@
 
 /obj/machinery/atmospherics/components/binary/volume_pump/AltClick(mob/user)
 	if(can_interact(user))
-		transfer_rate = MAX_TRANSFER_RATE
+		transfer_rate = ATMOS_DEFAULT_VOLUME_PUMP
 		investigate_log("was set to [transfer_rate] L/s by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "volume output set to [transfer_rate] L/s")
 		update_appearance()
@@ -129,7 +129,7 @@
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
-	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_PUMP)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 	return data
@@ -151,13 +151,13 @@
 		if("rate")
 			var/rate = params["rate"]
 			if(rate == "max")
-				rate = MAX_TRANSFER_RATE
+				rate = ATMOS_DEFAULT_VOLUME_PUMP
 				. = TRUE
 			else if(text2num(rate) != null)
 				rate = text2num(rate)
 				. = TRUE
 			if(.)
-				transfer_rate = clamp(rate, 0, MAX_TRANSFER_RATE)
+				transfer_rate = clamp(rate, 0, ATMOS_DEFAULT_VOLUME_PUMP)
 				investigate_log("was set to [transfer_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 
@@ -205,15 +205,15 @@
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on
 	on = TRUE
-	icon_state = "volpump_on_map"
+	icon_state = "volpump_on_map-3"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on/layer2
 	piping_layer = 2
-	icon_state = "volpump_map-2"
+	icon_state = "volpump_on_map-2"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on/layer4
 	piping_layer = 4
-	icon_state = "volpump_map-4"
+	icon_state = "volpump_on_map-4"
 
 /obj/item/circuit_component/atmos_volume_pump
 	display_name = "Atmospheric Volume Pump"
@@ -274,7 +274,7 @@
 	return ..()
 
 /obj/item/circuit_component/atmos_volume_pump/pre_input_received(datum/port/input/port)
-	transfer_rate.set_value(clamp(transfer_rate.value, 0, MAX_TRANSFER_RATE))
+	transfer_rate.set_value(clamp(transfer_rate.value, 0, ATMOS_DEFAULT_VOLUME_PUMP))
 
 /obj/item/circuit_component/atmos_volume_pump/proc/handle_pump_activation(datum/source, active)
 	SIGNAL_HANDLER

@@ -264,6 +264,8 @@
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
 	update_damage_overlays()
 	update_wound_overlays()
+	update_eyes(update_limb_data)
+
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
@@ -299,3 +301,16 @@
 		overlays_standing[BODYPARTS_LAYER] = new_limbs
 
 	apply_overlay(BODYPARTS_LAYER)
+
+///Update the eye sprite on the carbon. Calling with refresh = TRUE will update the sprite information of the eye organ first.
+/mob/living/carbon/proc/update_eyes(refresh = TRUE)
+	remove_overlay(EYE_LAYER)
+	var/obj/item/organ/internal/eyes/my_eyes = getorganslot(ORGAN_SLOT_EYES)
+	if(isnull(my_eyes) || (dna && (dna.species && (NOEYESPRITES in dna.species.species_traits))))
+		return
+
+	if(refresh)
+		my_eyes.refresh(FALSE)
+	overlays_standing[EYE_LAYER] = my_eyes.generate_body_overlay(src)
+
+	apply_overlay(EYE_LAYER)

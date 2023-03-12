@@ -290,12 +290,11 @@
 /obj/singularity/proc/consume(atom/thing)
 	var/gain = thing.singularity_act(current_size, src)
 	energy += gain
-	/*if(istype(thing, /obj/machinery/power/supermatter_crystal) && !consumed_supermatter)
+	if(istype(thing, /obj/machinery/power/supermatter) && !consumed_supermatter)
 		desc = "[initial(desc)] It glows fiercely with inner fire."
 		name = "supermatter-charged [initial(name)]"
 		consumed_supermatter = TRUE
 		set_light(10)
-		*/
 
 /obj/singularity/proc/check_cardinals_range(steps, retry_with_move = FALSE)
 	. = length(GLOB.cardinals) //Should be 4.

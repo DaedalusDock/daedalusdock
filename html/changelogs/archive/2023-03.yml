@@ -21,3 +21,11 @@
   Kapu1178:
   - rscadd: You can now knock on doors by right clicking on them.
   - server: Changed Asimov and Crewsimov laws. Read carefully.
+2023-03-11:
+  MrMelbert, Kapu1178, ShizCalev:
+  - bugfix: Light switches no longer cause anchored objects over conveyors to move.
+  - bugfix: Doors no longer trigger zone updates if they didn't move.
+  - code_imp: Fixed alot of extra zas_update_loc() calls
+  ShizCalev:
+  - bugfix: Wanted/missing posters are no longer broken.
+  - bugfix: Telekinesis no longer teleports removed posters

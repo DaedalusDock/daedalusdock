@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - soundadd: clown.ogg is now properly played during april fools, and is properly
+      credited to giizismukwa2

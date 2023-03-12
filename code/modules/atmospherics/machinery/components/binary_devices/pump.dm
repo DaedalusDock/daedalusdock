@@ -48,7 +48,7 @@
 
 /obj/machinery/atmospherics/components/binary/pump/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "pressure output set to [target_pressure] kPa")
 		update_appearance()
@@ -117,7 +117,7 @@
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 	return data
@@ -134,13 +134,13 @@
 		if("pressure")
 			var/pressure = params["pressure"]
 			if(pressure == "max")
-				pressure = MAX_OUTPUT_PRESSURE
+				pressure = MAX_PUMP_PRESSURE
 				. = TRUE
 			else if(text2num(pressure) != null)
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				target_pressure = clamp(pressure, 0, MAX_OUTPUT_PRESSURE)
+				target_pressure = clamp(pressure, 0, MAX_PUMP_PRESSURE)
 				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 
@@ -259,7 +259,7 @@
 	return ..()
 
 /obj/item/circuit_component/atmos_pump/pre_input_received(datum/port/input/port)
-	pressure_value.set_value(clamp(pressure_value.value, 0, MAX_OUTPUT_PRESSURE))
+	pressure_value.set_value(clamp(pressure_value.value, 0, MAX_PUMP_PRESSURE))
 
 /obj/item/circuit_component/atmos_pump/proc/handle_pump_activation(datum/source, active)
 	SIGNAL_HANDLER

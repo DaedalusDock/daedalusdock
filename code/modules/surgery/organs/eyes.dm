@@ -58,7 +58,7 @@
 	if(eye_owner.has_dna() && ishuman(eye_owner))
 		eye_owner.dna.species.handle_body(eye_owner) //updates eye icon
 
-/obj/item/organ/internal/eyes/proc/refresh(call_update = TRUE)
+/obj/item/organ/internal/eyes/proc/refresh(update_sight = TRUE)
 	if(ishuman(owner))
 		var/mob/living/carbon/human/affected_human = owner
 		old_eye_color_left = affected_human.eye_color_left
@@ -73,11 +73,11 @@
 			eye_color_right = affected_human.eye_color_right
 		if(HAS_TRAIT(affected_human, TRAIT_NIGHT_VISION) && !lighting_alpha)
 			lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
-	owner.update_tint()
-	owner.update_sight()
-	if(call_update && owner.has_dna() && ishuman(owner))
-		var/mob/living/carbon/human/affected_human = owner
-		affected_human.dna.species.handle_body(affected_human) //updates eye icon
+
+	if(update_sight)
+		owner.update_tint()
+		owner.update_sight()
+
 
 
 /obj/item/organ/internal/eyes/Remove(mob/living/carbon/eye_owner, special = 0)
@@ -105,6 +105,8 @@
 		CRASH("Generating a body overlay for [src] targeting an invalid parent '[parent]'.")
 
 	var/obj/item/bodypart/head/myhead = parent.get_bodypart(BODY_ZONE_HEAD)
+	if(!myhead)
+		return
 
 	var/mutable_appearance/eye_left = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_l", -BODY_LAYER)
 	var/mutable_appearance/eye_right = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_r", -BODY_LAYER)
@@ -121,9 +123,9 @@
 		eye_right.pixel_y += offset[OFFSET_Y]
 
 	var/obscured = parent.check_obscured_slots(TRUE)
-	if(overlay_ignore_lighting && !(obscured & ITEM_SLOT_EYES))
-		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, alpha = eye_left.alpha)
-		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, alpha = eye_right.alpha)
+	if((overlay_ignore_lighting || HAS_TRAIT(parent, TRAIT_UNNATURAL_RED_GLOWY_EYES)) && !(obscured & ITEM_SLOT_EYES))
+		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, -EYE_LAYER, eye_left.alpha)
+		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, -EYE_LAYER, eye_right.alpha)
 
 	return list(eye_left, eye_right)
 

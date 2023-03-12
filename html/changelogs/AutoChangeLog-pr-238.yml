@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Cult eyes are emissive now
+  - rscdel: Cult Ascendance Halos
+  - rscadd: Cult Halos are now their antag HUD icon.

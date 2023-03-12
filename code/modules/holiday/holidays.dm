@@ -199,8 +199,6 @@
 /datum/holiday/april_fools/celebrate()
 	. = ..()
 	SSjob.set_overflow_role(/datum/job/clown)
-	//This exists to assure file existence.
-	var/compiletime_check = 'sound/ambience/clown.ogg'
 	SSticker.set_login_music(list(
 		"name" = "Clown.ogg",
 		"author" = "giizismukwa2",

@@ -4,7 +4,7 @@
 	var/icon/head_icon = icon(base_icon, base_state)
 	if(base_color)
 		head_icon.Blend(base_color, ICON_MULTIPLY)
-
+	var/icon/master_icon = icon()
 	for (var/name in values)
 		var/datum/sprite_accessory/accessory = accessories[name]
 		if (accessory == null || accessory.icon_state == null)
@@ -20,7 +20,11 @@
 		final_icon.Scale(32, 32)
 
 		values[name] = final_icon
+		master_icon.Insert(final_icon, name)
 
+	if(base_state == "moth_head")
+		fcopy(master_icon, "data/debug.dmi")
+		var/stub = 1
 	return values
 
 /datum/preference/color/eye_color
@@ -142,22 +146,15 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Hairstyle"
+	priority = PREFERENCE_PRIORITY_HUMAN_HAIR
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
-	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.hairstyle = value
-
-/datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
-	if (!..(preferences))
-		return FALSE
-	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
-		return FALSE
-	return TRUE
 
 /datum/preference/choiced/hairstyle/compile_constant_data()
 	var/list/data = ..()
@@ -208,9 +205,20 @@
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
-		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
+
+/datum/preference/color/sclera
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "sclera_color"
+	relevant_species_trait = SCLERA
+
+/datum/preference/color/sclera/create_default_value()
+	return "#f8ef9e"
+
+/datum/preference/color/sclera/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	target.sclera_color = value
+	target.update_eyes()
 
 /datum/preference/tri_color
 	abstract_type = /datum/preference/tri_color

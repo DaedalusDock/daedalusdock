@@ -111,6 +111,8 @@
 #define HAIRCOLOR 25
 #define FACEHAIRCOLOR 26
 
+#define SCLERA 27
+
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
 #define ORGAN_SLOT_APPENDIX "appendix"

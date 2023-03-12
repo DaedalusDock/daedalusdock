@@ -1,24 +1,22 @@
 // Priorities must be in order!
 /// The default priority level
 #define PREFERENCE_PRIORITY_DEFAULT 1
-
 /// The priority at which species runs, needed for external organs to apply properly.
 #define PREFERENCE_PRIORITY_SPECIES 2
-
 /// The priority at which gender is determined, needed for proper randomization.
 #define PREFERENCE_PRIORITY_GENDER 3
-
 /// The priority at which body type is decided, applied after gender so we can
 /// support the "use gender" option.
 #define PREFERENCE_PRIORITY_BODY_TYPE 4
-
+/// The priority hair is applied. We apply human hair first, and moth hair after, only if they are a moth. Sorry.
+#define PREFERENCE_PRIORITY_HUMAN_HAIR 5
+/// The priority moth hair is applied
+#define PREFERENCE_PRIORITY_MOTH_HAIR 6
 /// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 5
-
+#define PREFERENCE_PRIORITY_NAMES 7
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 6
-
-#define PREFERENCE_PRIORITY_APPEARANCE_MODS 7
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 8
+#define PREFERENCE_PRIORITY_APPEARANCE_MODS 9
 
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
 #define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_APPEARANCE_MODS

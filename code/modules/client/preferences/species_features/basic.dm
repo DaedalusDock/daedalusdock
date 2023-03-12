@@ -144,12 +144,18 @@
 	priority = PREFERENCE_PRIORITY_HUMAN_HAIR
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
+	exclude_species_traits = list(NONHUMANHAIR)
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.hairstyle = value
+
+/datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
+	if(!..(preferences))
+		return FALSE
+	return !ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/moth)
 
 /datum/preference/choiced/hairstyle/compile_constant_data()
 	var/list/data = ..()

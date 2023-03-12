@@ -228,7 +228,7 @@
 				. += debrain_overlay
 			else
 				var/datum/sprite_accessory/sprite2 = GLOB.hairstyles_list[hair_style]
-				if(sprite2 && (HAIR in species_flags_list))
+				if(sprite2 && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 					var/image/hair_overlay = image(sprite2.icon, "[sprite2.icon_state]", -HAIR_LAYER, SOUTH)
 					hair_overlay.color = hair_color
 					hair_overlay.alpha = hair_alpha
@@ -264,7 +264,7 @@
 		if(show_debrained)
 			. += mutable_appearance('icons/mob/human_face.dmi', "debrained", HAIR_LAYER)
 
-		else if(!hair_hidden && hair_overlay && (HAIR in species_flags_list))
+		else if(!hair_hidden && hair_overlay && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 			hair_overlay.alpha = hair_alpha
 			. += hair_overlay
 			if(hair_gradient_overlay)

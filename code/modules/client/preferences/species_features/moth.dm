@@ -112,7 +112,8 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Moth Hairstyle"
 	should_generate_icons = TRUE
-	priority = PREFERENCE_PRIORITY_MOTH_HAIR
+	priority = PREFERENCE_PRIORITY_NONHUMAN_HAIR
+	relevant_species_trait = NONHUMANHAIR
 	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle_moth/init_possible_values()

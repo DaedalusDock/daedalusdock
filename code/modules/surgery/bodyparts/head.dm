@@ -36,6 +36,8 @@
 	var/obj/item/organ/internal/tongue/tongue
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
+	///Render sclera for this species?
+	var/eye_sclera = FALSE
 
 	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
 	var/show_organs_on_examine = TRUE
@@ -69,8 +71,6 @@
 	var/facial_hair_hidden
 	///Draw this head as "debrained"
 	VAR_PROTECTED/show_debrained = FALSE
-
-
 
 	var/lip_style
 	var/lip_color = "white"

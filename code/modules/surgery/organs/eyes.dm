@@ -56,7 +56,7 @@
 	eye_owner.update_tint()
 	owner.update_sight()
 	if(eye_owner.has_dna() && ishuman(eye_owner))
-		eye_owner.dna.species.handle_body(eye_owner) //updates eye icon
+		eye_owner.update_eyes(FALSE)
 
 /obj/item/organ/internal/eyes/proc/refresh(update_sight = TRUE)
 	if(ishuman(owner))
@@ -110,6 +110,10 @@
 
 	var/mutable_appearance/eye_left = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_l", -BODY_LAYER)
 	var/mutable_appearance/eye_right = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_r", -BODY_LAYER)
+	var/mutable_appearance/sclera
+	if(myhead.eye_sclera)
+		sclera = mutable_appearance(myhead.eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+		sclera.color = "#f8ef9e"
 
 	if(EYECOLOR in parent.dna?.species.species_traits)
 		eye_right.color = eye_color_right
@@ -127,7 +131,10 @@
 		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, -EYE_LAYER, eye_left.alpha)
 		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, -EYE_LAYER, eye_right.alpha)
 
-	return list(eye_left, eye_right)
+	. = list(eye_left, eye_right)
+	if(!isnull(sclera))
+		. += sclera
+	return .
 
 #undef OFFSET_X
 #undef OFFSET_Y

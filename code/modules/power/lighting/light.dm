@@ -311,6 +311,8 @@
 	if(istype(tool, /obj/item/stock_parts/cell))
 		return FALSE
 
+	if(status != LIGHT_EMPTY)
+		return ..()
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)

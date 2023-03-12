@@ -122,7 +122,7 @@
 
 	if(loc)
 		//Restore air flow if we were blocking it (movables with zas_canpass() will need to do this manually if necessary)
-		if(((can_atmos_pass == CANPASS_DENSITY && density) || can_atmos_pass == CANPASS_NEVER) && isturf(loc))
+		if(isturf(loc) && (can_atmos_pass != CANPASS_ALWAYS))
 			can_atmos_pass = CANPASS_ALWAYS
 			zas_update_loc()
 

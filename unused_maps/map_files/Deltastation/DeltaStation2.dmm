@@ -77163,7 +77163,7 @@
 /turf/open/floor/iron,
 /area/medical/virology)
 "uqa" = (
-/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible/layer4,
 /turf/open/floor/engine,

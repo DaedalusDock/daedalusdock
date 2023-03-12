@@ -26,6 +26,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/mob/dview,
 		//Template type
 		/obj/item/bodypart,
+		//Merge conflict marker. It doesn't runtime, but it's not a real object either
+		/obj/merge_conflict_marker,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)

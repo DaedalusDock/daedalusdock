@@ -60,10 +60,6 @@
 	log = list()
 	scanning = FALSE
 
-/obj/item/detective_scanner/pre_attack_secondary(atom/A, mob/user, params)
-	scan(A, user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
 /obj/item/detective_scanner/afterattack(atom/A, mob/user, params)
 	. = ..()
 	scan(A, user)

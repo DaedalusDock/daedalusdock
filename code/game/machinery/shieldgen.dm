@@ -16,13 +16,10 @@
 	setDir(pick(GLOB.cardinals))
 	zas_update_loc()
 
-/obj/structure/emergency_shield/Destroy()
-	zas_update_loc()
-	. = ..()
-
 /obj/structure/emergency_shield/Move()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/emergency_shield/emp_act(severity)
 	. = ..()

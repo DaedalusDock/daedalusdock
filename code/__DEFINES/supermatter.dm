@@ -86,8 +86,6 @@
 /// All humans within this range will be irradiated
 #define DETONATION_RADIATION_RANGE 20
 
-#define WARNING_DELAY 60
-
 #define HALLUCINATION_RANGE(P) (min(7, round(P ** 0.25)))
 
 

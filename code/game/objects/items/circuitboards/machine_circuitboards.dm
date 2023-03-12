@@ -249,7 +249,10 @@
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stock_parts/cell = 5,
 		/obj/item/stock_parts/capacitor = 1)
-	def_components = list(/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/high/empty)
+	def_components = list(
+		/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/high/empty,
+		/obj/item/stock_parts/capacitor = /obj/item/stock_parts/capacitor/adv
+	)
 
 /obj/item/circuitboard/machine/techfab/department/engineering
 	name = "\improper Departmental Techfab - Engineering (Machine Board)"
@@ -263,7 +266,8 @@
 	var/pipe_layer = PIPING_LAYER_DEFAULT
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,
-		/obj/item/stock_parts/micro_laser = 2,
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stock_parts/capacitor = 1,
 		/obj/item/stack/cable_coil = 1,
 		/obj/item/stack/sheet/glass = 1)
 

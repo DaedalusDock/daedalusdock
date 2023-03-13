@@ -15,6 +15,10 @@
 	armor = list(MELEE = 50, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 90, ACID = 50)
 	max_integrity = 100
 	integrity_failure = 0.5
+
+	light_power = 0.6
+	light_outer_range = AI_CAMERA_LUMINOSITY
+
 	var/default_camera_icon = "camera" //the camera's base icon used by update_appearance - icon_state is primarily used for mapping display purposes.
 	var/list/network = list("ss13")
 	var/c_tag = null
@@ -504,13 +508,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		see = get_hear(view_range, pos)
 	return see
 
-/obj/machinery/camera/proc/Togglelight(on=0)
+/obj/machinery/camera/proc/Togglelight(on)
 	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
-		for(var/obj/machinery/camera/cam in A.lit_cameras)
-			if(cam == src)
-				return
+		if(src in A.lit_cameras)
+			return
 	if(on)
-		set_light(AI_CAMERA_LUMINOSITY)
+		set_light(initial(light_outer_range))
 	else
 		set_light(0)
 

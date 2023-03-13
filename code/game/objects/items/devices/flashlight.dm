@@ -232,8 +232,9 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
-	light_outer_range = 5
+	light_outer_range = 3.5
 	light_system = STATIC_LIGHT
+	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
 	custom_materials = null
@@ -245,7 +246,7 @@
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	inhand_icon_state = "lampgreen"
-
+	light_color = LIGHT_COLOR_TUNGSTEN
 
 
 /obj/item/flashlight/lamp/verb/toggle_light()
@@ -262,6 +263,7 @@
 	desc = "Only a clown would think to make a ghetto banana-shaped lamp. Even has a goofy pullstring."
 	icon_state = "bananalamp"
 	inhand_icon_state = "bananalamp"
+	light_color = LIGHT_COLOR_BRIGHT_YELLOW
 
 // FLARES
 
@@ -553,7 +555,7 @@
 
 /obj/item/flashlight/glowstick/yellow
 	name = "yellow glowstick"
-	color = LIGHT_COLOR_YELLOW
+	color = LIGHT_COLOR_DIM_YELLOW
 
 /obj/item/flashlight/glowstick/pink
 	name = "pink glowstick"

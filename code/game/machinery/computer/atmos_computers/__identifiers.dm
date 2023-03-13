@@ -30,6 +30,8 @@
 #define ATMOS_GAS_MONITOR_DISTRO "distro"
 #define ATMOS_GAS_MONITOR_WASTE "waste"
 
+#define ATMOS_GAS_MONITOR_ENGINE "engine"
+
 // Human-readble names of these funny tags.
 GLOBAL_LIST_INIT(station_gas_chambers, list(
 	ATMOS_GAS_MONITOR_O2 = "Oxygen Supply",

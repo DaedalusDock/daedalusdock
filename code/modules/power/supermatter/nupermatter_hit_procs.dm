@@ -1,49 +1,45 @@
 /// Consume things that run into the supermatter from the tram. The tram calls forceMove (doesn't call Bump/ed) and not Move, and I'm afraid changing it will do something chaotic
-/obj/machinery/power/supermatter_crystal/proc/tram_contents_consume(datum/source, list/tram_contents)
+/obj/machinery/power/supermatter/proc/tram_contents_consume(datum/source, list/tram_contents)
 	SIGNAL_HANDLER
 
 	for(var/atom/thing_to_consume as anything in tram_contents)
 		Bumped(thing_to_consume)
 
-/obj/machinery/power/supermatter_crystal/bullet_act(obj/projectile/projectile)
+/obj/machinery/power/supermatter/bullet_act(obj/projectile/projectile)
 	var/turf/local_turf = loc
 	var/kiss_power = 0
 	switch(projectile.type)
 		if(/obj/projectile/kiss)
-			kiss_power = 60
+			kiss_power = 5
 		if(/obj/projectile/kiss/death)
-			kiss_power = 20000
+			kiss_power = 200
 	if(!istype(local_turf))
 		return FALSE
-	if(!istype(projectile.firer, /obj/machinery/power/emitter) && power_changes)
+	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
-	if(projectile.armor_flag != BULLET || kiss_power)
-		if(kiss_power)
-			psyCoeff = 1
-			psy_overlay = TRUE
-		if(power_changes) //This needs to be here I swear
-			power += projectile.damage * bullet_energy + kiss_power
-			if(!has_been_powered)
-				var/fired_from_str = projectile.fired_from ? " with [projectile.fired_from]" : ""
-				investigate_log(
-					projectile.firer \
-						? "has been powered for the first time by [key_name(projectile.firer)][fired_from_str]." \
-						: "has been powered for the first time.",
-					INVESTIGATE_ENGINE
-				)
-				message_admins(
-					projectile.firer \
-						? "[src] [ADMIN_JMP(src)] has been powered for the first time by [ADMIN_FULLMONTY(projectile.firer)][fired_from_str]." \
-						: "[src] [ADMIN_JMP(src)] has been powered for the first time."
-				)
-				has_been_powered = TRUE
-	else if(takes_damage)
-		damage += (projectile.damage * bullet_energy) * clamp((emergency_point - damage) / emergency_point, 0, 1)
-		if(damage > damage_penalty_point)
-			visible_message(span_notice("[src] compresses under stress, resisting further impacts!"))
+
+	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
+		power += ((projectile.damage * SUPERMATTER_BULLET_ENERGY + kiss_power) * charging_factor) / power_factor
+
+		if(!has_been_powered)
+			var/fired_from_str = projectile.fired_from ? " with [projectile.fired_from]" : ""
+			investigate_log(
+				projectile.firer \
+					? "has been powered for the first time by [key_name(projectile.firer)][fired_from_str]." \
+					: "has been powered for the first time.",
+				INVESTIGATE_ENGINE
+			)
+			message_admins(
+				projectile.firer \
+					? "[src] [ADMIN_JMP(src)] has been powered for the first time by [ADMIN_FULLMONTY(projectile.firer)][fired_from_str]." \
+					: "[src] [ADMIN_JMP(src)] has been powered for the first time."
+			)
+			has_been_powered = TRUE
+	else
+		damage += projectile.damage
 	return BULLET_ACT_HIT
 
-/obj/machinery/power/supermatter_crystal/singularity_act()
+/obj/machinery/power/supermatter/singularity_act()
 	var/gain = 100
 	investigate_log("consumed by singularity.", INVESTIGATE_ENGINE)
 	message_admins("Singularity has consumed a supermatter shard and can now become stage six.")
@@ -56,7 +52,7 @@
 	qdel(src)
 	return gain
 
-/obj/machinery/power/supermatter_crystal/blob_act(obj/structure/blob/blob)
+/obj/machinery/power/supermatter/blob_act(obj/structure/blob/blob)
 	if(!blob || isspaceturf(loc)) //does nothing in space
 		return
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
@@ -70,7 +66,7 @@
 			span_hear("You hear a loud crack as you are washed with a wave of heat."))
 		Consume(blob)
 
-/obj/machinery/power/supermatter_crystal/attack_tk(mob/user)
+/obj/machinery/power/supermatter/attack_tk(mob/user)
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/jedi = user
@@ -83,13 +79,13 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 
-/obj/machinery/power/supermatter_crystal/attack_paw(mob/user, list/modifiers)
+/obj/machinery/power/supermatter/attack_paw(mob/user, list/modifiers)
 	dust_mob(user, cause = "monkey attack")
 
-/obj/machinery/power/supermatter_crystal/attack_alien(mob/user, list/modifiers)
+/obj/machinery/power/supermatter/attack_alien(mob/user, list/modifiers)
 	dust_mob(user, cause = "alien attack")
 
-/obj/machinery/power/supermatter_crystal/attack_animal(mob/living/simple_animal/user, list/modifiers)
+/obj/machinery/power/supermatter/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	var/murder
 	if(!user.melee_damage_upper && !user.melee_damage_lower)
 		murder = user.friendly_verb_continuous
@@ -100,20 +96,20 @@
 	span_userdanger("You unwisely touch [src], and your vision glows brightly as your body crumbles to dust. Oops."), \
 	"simple animal attack")
 
-/obj/machinery/power/supermatter_crystal/attack_robot(mob/user)
+/obj/machinery/power/supermatter/attack_robot(mob/user)
 	if(Adjacent(user))
 		dust_mob(user, cause = "cyborg attack")
 
-/obj/machinery/power/supermatter_crystal/attack_ai(mob/user)
+/obj/machinery/power/supermatter/attack_ai(mob/user)
 	return
 
-/obj/machinery/power/supermatter_crystal/attack_hulk(mob/user)
+/obj/machinery/power/supermatter/attack_hulk(mob/user)
 	dust_mob(user, cause = "hulk attack")
 
-/obj/machinery/power/supermatter_crystal/attack_larva(mob/user)
+/obj/machinery/power/supermatter/attack_larva(mob/user)
 	dust_mob(user, cause = "larva attack")
 
-/obj/machinery/power/supermatter_crystal/attack_hand(mob/living/user, list/modifiers)
+/obj/machinery/power/supermatter/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
@@ -158,23 +154,22 @@
 		"failed lick"
 	)
 
-
-/obj/machinery/power/supermatter_crystal/proc/dust_mob(mob/living/nom, vis_msg, mob_msg, cause)
+/obj/machinery/power/supermatter/proc/dust_mob(mob/living/nom, vis_msg, mob_msg, cause)
 	if(nom.incorporeal_move || nom.status_flags & GODMODE) //try to keep supermatter sliver's + hemostat's dust conditions in sync with this too
 		return
 	if(!vis_msg)
-		vis_msg = span_danger("[nom] reaches out and touches [src], inducing a resonance... [nom.p_their()] body starts to glow and burst into flames before flashing into dust!")
+		vis_msg = span_danger("[nom] reaches out and touches [src], inducing a resonance. For a brief instant, [nom.p_their()] body glows brilliantly, then flashes into ash.")
 	if(!mob_msg)
-		mob_msg = span_userdanger("You reach out and touch [src]. Everything starts burning and all you can hear is ringing. Your last thought is \"That was not a wise decision.\"")
+		mob_msg = span_userdanger("You reach out and touch [src]. Instantly, you feel a curious sensation as your body turns into new and exciting forms of plasma. That was not a wise decision.")
 	if(!cause)
 		cause = "contact"
-	nom.visible_message(vis_msg, mob_msg, span_hear("You hear an unearthly noise as a wave of heat washes over you."))
+	nom.visible_message(vis_msg, mob_msg, span_hear("You hear an unearthly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 	investigate_log("has been attacked ([cause]) by [key_name(nom)]", INVESTIGATE_ENGINE)
 	add_memory_in_range(src, 7, MEMORY_SUPERMATTER_DUSTED, list(DETAIL_PROTAGONIST = nom, DETAIL_WHAT_BY = src), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLIND_AND_DEAF)
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
 	Consume(nom)
 
-/obj/machinery/power/supermatter_crystal/attackby(obj/item/item, mob/living/user, params)
+/obj/machinery/power/supermatter/attackby(obj/item/item, mob/living/user, params)
 	if(!istype(item) || (item.item_flags & ABSTRACT) || !istype(user))
 		return
 	if(istype(item, /obj/item/melee/roastingstick))
@@ -214,7 +209,7 @@
 			if (scalpel.usesLeft)
 				to_chat(user, span_danger("You extract a sliver from \the [src]. \The [src] begins to react violently!"))
 				new /obj/item/nuke_core/supermatter_sliver(drop_location())
-				matter_power += 800
+				power += 100
 				scalpel.usesLeft--
 				if (!scalpel.usesLeft)
 					to_chat(user, span_notice("A tiny piece of \the [item] falls off, rendering it useless!"))
@@ -235,32 +230,37 @@
 		var/mob_msg = span_userdanger("You reach out and touch [src] with [item]. Everything starts burning and all you can hear is ringing. Your last thought is \"That was not a wise decision.\"")
 		dust_mob(user, vis_msg, mob_msg)
 
-/obj/machinery/power/supermatter_crystal/wrench_act(mob/user, obj/item/tool)
+/obj/machinery/power/supermatter/wrench_act(mob/user, obj/item/tool)
 	. = ..()
-	if (moveable)
+	if (movable)
 		default_unfasten_wrench(user, tool)
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/power/supermatter_crystal/Bumped(atom/movable/hit_object)
+/obj/machinery/power/supermatter/Bumped(atom/movable/hit_object)
 	if(isliving(hit_object))
-		hit_object.visible_message(span_danger("\The [hit_object] slams into \the [src] inducing a resonance... [hit_object.p_their()] body starts to glow and burst into flames before flashing into dust!"),
-			span_userdanger("You slam into \the [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\""),
-			span_hear("You hear an unearthly noise as a wave of heat washes over you."))
+		hit_object.visible_message(
+			span_danger("[hit_object] slams into [src] inducing a resonance... [hit_object.p_their()] body starts to glow and burst into flames before flashing into dust!"),
+			span_userdanger("You slam into [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\""),
+			span_hear("You hear an unearthly noise as a wave of heat washes over you.")
+		)
 	else if(isobj(hit_object) && !iseffect(hit_object))
-		hit_object.visible_message(span_danger("\The [hit_object] smacks into \the [src] and rapidly flashes to ash."), null,
-			span_hear("You hear a loud crack as you are washed with a wave of heat."))
+		hit_object.visible_message(
+			span_danger("[hit_object] smacks into [src] and rapidly flashes to ash."),
+			null,
+			span_hear("You hear a loud crack as you are washed with a wave of heat.")
+		)
 	else
 		return
 
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
 	Consume(hit_object)
 
-/obj/machinery/power/supermatter_crystal/Bump(atom/bumped_atom)
+/obj/machinery/power/supermatter/Bump(atom/bumped_atom)
 	. = ..()
 	if(isturf(bumped_atom))
 		var/turf/bumped_turf = bumped_atom
 		var/bumped_name = "\the [bumped_atom]"
-		var/bumped_text = span_danger("\The [src] smacks into [bumped_name] and [bumped_atom.p_they()] rapidly flashes to ash!")
+		var/bumped_text = span_danger("[src] smacks into [bumped_name] and [bumped_atom.p_they()] rapidly flashes to ash!")
 		if(!bumped_turf.Melt())
 			return
 
@@ -298,13 +298,13 @@
 	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
 	Consume(bumped_atom)
 
-/obj/machinery/power/supermatter_crystal/intercept_zImpact(list/falling_movables, levels)
+/obj/machinery/power/supermatter/intercept_zImpact(list/falling_movables, levels)
 	. = ..()
 	for(var/atom/movable/hit_object as anything in falling_movables)
 		Bumped(hit_object)
 	. |= FALL_STOP_INTERCEPTING | FALL_INTERCEPTED
 
-/obj/machinery/power/supermatter_crystal/proc/Consume(atom/movable/consumed_object)
+/obj/machinery/power/supermatter/proc/Consume(atom/movable/consumed_object)
 	var/object_size
 	if(isliving(consumed_object))
 		var/mob/living/consumed_mob = consumed_object
@@ -314,13 +314,14 @@
 		message_admins("[src] has consumed [key_name_admin(consumed_mob)] [ADMIN_JMP(src)].")
 		investigate_log("has consumed [key_name(consumed_mob)].", INVESTIGATE_ENGINE)
 		consumed_mob.dust(force = TRUE)
-		if(power_changes)
-			matter_power += 100 * object_size
-		if(takes_damage && is_clown_job(consumed_mob.mind?.assigned_role))
+		power += 10 * object_size
+		if(is_clown_job(consumed_mob.mind?.assigned_role))
 			damage += rand(-300, 300) // HONK
 			damage = max(damage, 0)
+
 	else if(consumed_object.flags_1 & SUPERMATTER_IGNORES_1)
 		return
+
 	else if(isobj(consumed_object))
 		if(!iseffect(consumed_object))
 			var/suspicion = ""
@@ -329,10 +330,10 @@
 				message_admins("[src] has consumed [consumed_object], [suspicion] [ADMIN_JMP(src)].")
 			investigate_log("has consumed [consumed_object] - [suspicion].", INVESTIGATE_ENGINE)
 		qdel(consumed_object)
-	if(!iseffect(consumed_object) && isitem(consumed_object) && power_changes)
+	if(!iseffect(consumed_object) && isitem(consumed_object))
 		var/obj/item/consumed_item = consumed_object
 		object_size = consumed_item.w_class
-		matter_power += 70 * object_size
+		power += 5 * object_size
 
 	//Some poor sod got eaten, go ahead and irradiate people nearby.
 	radiation_pulse(src, max_range = 6, threshold = 1.2 / object_size, chance = 10 * object_size)
@@ -343,10 +344,12 @@
 		if(ishuman(near_mob) && SSradiation.wearing_rad_protected_clothing(near_mob))
 			continue
 		if(near_mob in view())
-			near_mob.show_message(span_danger("As \the [src] slowly stops resonating, you find your skin covered in new radiation burns."), MSG_VISUAL,
+			near_mob.show_message(
+				span_danger("As \the [src] slowly stops resonating, you find your skin covered in new radiation burns."), MSG_VISUAL,
 				span_danger("The unearthly ringing subsides and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
 		else
 			near_mob.show_message(span_hear("An unearthly ringing fills your ears, and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
+
 //Do not blow up our internal radio
-/obj/machinery/power/supermatter_crystal/contents_explosion(severity, target)
+/obj/machinery/power/supermatter/contents_explosion(severity, target)
 	return

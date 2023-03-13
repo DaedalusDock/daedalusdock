@@ -243,7 +243,7 @@
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "yO" = (
-/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter,
 /obj/structure/window/reinforced/plasma/spawner,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)

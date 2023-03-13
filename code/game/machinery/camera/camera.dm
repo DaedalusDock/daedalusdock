@@ -18,6 +18,7 @@
 
 	light_power = 0.6
 	light_outer_range = AI_CAMERA_LUMINOSITY
+	light_on = FALSE
 
 	var/default_camera_icon = "camera" //the camera's base icon used by update_appearance - icon_state is primarily used for mapping display purposes.
 	var/list/network = list("ss13")
@@ -177,7 +178,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			network = list()
 			GLOB.cameranet.removeCamera(src)
 			set_machine_stat(machine_stat | EMPED)
-			set_light(0)
+			set_light(l_on = FALSE)
 			emped = emped+1  //Increase the number of consecutive EMP's
 			update_appearance()
 			addtimer(CALLBACK(src, .proc/post_emp_reset, emped, network), 90 SECONDS)
@@ -454,7 +455,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		else
 			myarea = null
 	else
-		set_light(0)
+		set_light(l_on = FALSE)
 		GLOB.cameranet.removeCamera(src)
 		if (isarea(myarea))
 			LAZYREMOVE(myarea.cameras, src)
@@ -512,10 +513,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
 		if(src in A.lit_cameras)
 			return
-	if(on)
-		set_light(initial(light_outer_range))
-	else
-		set_light(0)
+
+	set_light(l_on = !!on)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
 	if(view_range == short_range) //unfocused

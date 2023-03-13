@@ -88,7 +88,7 @@
 	firealarm = FALSE
 	update()
 
-/obj/machinery/light/Initialize(mapload = TRUE)
+/obj/machinery/light/Initialize(mapload)
 	. = ..()
 	if(on)
 		maploaded = TRUE

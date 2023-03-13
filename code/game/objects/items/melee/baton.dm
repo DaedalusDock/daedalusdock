@@ -10,7 +10,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	force = 12 //9 hit crit
 	w_class = WEIGHT_CLASS_NORMAL
-	wound_bonus = 15
 
 	/// Whether this baton is active or not
 	var/active = TRUE
@@ -288,7 +287,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NONE
 	force = 0
-	bare_wound_bonus = 5
 	clumsy_knockdown_time = 15 SECONDS
 	active = FALSE
 
@@ -497,7 +495,6 @@
 	worn_icon_state = "baton"
 
 	force = 10
-	wound_bonus = 0
 	attack_verb_continuous = list("beats")
 	attack_verb_simple = list("beat")
 

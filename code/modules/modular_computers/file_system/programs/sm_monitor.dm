@@ -13,7 +13,7 @@
 	alert_able = TRUE
 	var/last_status = SUPERMATTER_INACTIVE
 	var/list/supermatters
-	var/obj/machinery/power/supermatter_crystal/active // Currently selected supermatter crystal.
+	var/obj/machinery/power/supermatter/active // Currently selected supermatter crystal.
 
 /datum/computer_file/program/supermatter_monitor/Destroy()
 	clear_signals()
@@ -50,7 +50,7 @@
 	var/turf/user_turf = get_turf(ui_host())
 	if(!user_turf)
 		return
-	for(var/obj/machinery/power/supermatter_crystal/crystal in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/crystal in GLOB.machines)
 		//Exclude Syndicate owned, Delaminating, not within coverage, not on a tile.
 		if (!crystal.include_in_cims || !isturf(crystal.loc) || !(is_station_level(crystal.z) || is_mining_level(crystal.z) || crystal.z == user_turf.z))
 			continue
@@ -59,7 +59,7 @@
 
 /datum/computer_file/program/supermatter_monitor/proc/get_status()
 	. = SUPERMATTER_INACTIVE
-	for(var/obj/machinery/power/supermatter_crystal/S in supermatters)
+	for(var/obj/machinery/power/supermatter/S in supermatters)
 		. = max(., S.get_status())
 
 /**
@@ -125,7 +125,7 @@
 			active = null
 			refresh()
 			return
-		var/datum/gas_mixture/air = T.return_air()
+		var/datum/gas_mixture/air = T.unsafe_return_air()
 		if(!air)
 			active = null
 			return
@@ -135,12 +135,12 @@
 
 	else
 		var/list/SMS = list()
-		for(var/obj/machinery/power/supermatter_crystal/S in supermatters)
+		for(var/obj/machinery/power/supermatter/S in supermatters)
 			var/area/A = get_area(S)
 			if(A)
 				SMS.Add(list(list(
 				"area_name" = A.name,
-				"integrity" = S.get_integrity_percent(),
+				"integrity" = S.get_integrity_percentage(),
 				"uid" = S.uid
 				)))
 
@@ -164,7 +164,7 @@
 			return TRUE
 		if("PRG_set")
 			var/newuid = text2num(params["target"])
-			for(var/obj/machinery/power/supermatter_crystal/S in supermatters)
+			for(var/obj/machinery/power/supermatter/S in supermatters)
 				if(S.uid == newuid)
 					active = S
 					set_signals()

@@ -100,11 +100,6 @@
 	/// Timer id of any transformation
 	var/transformation_timer
 
-	/// All of the wounds a carbon has afflicted throughout their limbs
-	var/list/all_wounds
-	/// All of the scars a carbon has afflicted throughout their limbs
-	var/list/all_scars
-
 	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/human/biotechcompat/ for example.
 	var/skillchip_complexity_modifier = 0
 

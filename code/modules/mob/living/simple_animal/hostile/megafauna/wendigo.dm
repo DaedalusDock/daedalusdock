@@ -161,7 +161,7 @@ Difficulty: Hard
 				to_chat(L, span_userdanger("[source]'s ground slam shockwave sends you flying!"))
 				var/turf/thrownat = get_ranged_target_turf_direct(source, L, throw_range, rand(-10, 10))
 				L.throw_at(thrownat, 8, 2, null, TRUE, force = MOVE_FORCE_OVERPOWERING, gentle = TRUE)
-				L.apply_damage(20, BRUTE, wound_bonus=CANT_WOUND)
+				L.apply_damage(20, BRUTE)
 				shake_camera(L, 2, 1)
 			all_turfs -= stomp_turf
 		sleep(delay)

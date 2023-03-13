@@ -46,7 +46,7 @@
 	if(!open_turf.air && (atmos_requirements["min_oxy"] || atmos_requirements["min_tox"] || atmos_requirements["min_n2"] || atmos_requirements["min_co2"]))
 		return FALSE
 
-	var/list/open_turf_gases = open_turf.return_air().gas
+	var/list/open_turf_gases = open_turf.unsafe_return_air().gas
 
 
 	var/plas = open_turf_gases[GAS_PLASMA]

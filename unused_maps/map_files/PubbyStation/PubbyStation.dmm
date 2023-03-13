@@ -501,7 +501,7 @@
 /area/cargo/warehouse/upper)
 "acq" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai";
+	control_area = "/area/station/ai_monitored/turret_protected/ai";
 	name = "AI Chamber turret control";
 	pixel_x = 5;
 	pixel_y = -24
@@ -7896,7 +7896,7 @@
 /area/command/bridge)
 "azk" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai_upload";
+	control_area = "/area/station/ai_monitored/turret_protected/ai_upload";
 	name = "AI Upload turret control";
 	pixel_y = -25
 	},
@@ -16182,7 +16182,7 @@
 	},
 /obj/machinery/power/apc/highcap/directional/south{
 	name = "Central Primary Hallway APC";
-
+	
 	},
 /obj/structure/cable,
 /obj/machinery/door/firedoor,
@@ -30870,7 +30870,7 @@
 /area/space/nearstation)
 "cnC" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat_interior";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat_interior";
 	name = "AI Satellite turret control";
 	pixel_x = -5;
 	pixel_y = -24
@@ -32220,7 +32220,7 @@
 /obj/structure/cable,
 /obj/machinery/power/apc/highcap/five_k/directional/south{
 	name = "Chapel APC";
-
+	
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
@@ -34928,7 +34928,7 @@
 "ete" = (
 /obj/machinery/power/apc/highcap/ten_k/directional/west{
 	name = "Engineering APC";
-
+	
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -47161,7 +47161,7 @@
 	},
 /obj/machinery/power/apc/highcap/five_k/directional/south{
 	name = "Chapel APC";
-
+	
 	},
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
@@ -53275,7 +53275,7 @@
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
 "uMr" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/supermatter,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/engine,
 /area/engineering/supermatter)

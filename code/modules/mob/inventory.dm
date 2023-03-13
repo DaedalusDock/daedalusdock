@@ -418,7 +418,6 @@
 
 	return obscured
 
-
 /obj/item/proc/equip_to_best_slot(mob/M)
 	if(M.equip_to_appropriate_slot(src))
 		M.update_held_items()

@@ -86,13 +86,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 /turf/open/space/RemoveLattice()
 	return
 
-/turf/open/space/AfterChange()
-	..()
-	//atmos_overlay_types = null
-
-/*/turf/open/space/Assimilate_Air()
-	return*/
-
 //IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
 /turf/open/space/remove_air(amount)
 	return null
@@ -149,6 +142,8 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 				ty--
 			DT = locate(tx, ty, destination_z)
 
+		if(SEND_SIGNAL(arrived, COMSIG_MOVABLE_LATERAL_Z_MOVE) & COMPONENT_BLOCK_MOVEMENT)
+			return
 		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
 		var/atom/movable/current_pull = arrived.pulling

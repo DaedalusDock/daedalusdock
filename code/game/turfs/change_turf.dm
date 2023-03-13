@@ -40,8 +40,17 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(slip)
 			var/datum/component/wet_floor/WF = T.AddComponent(/datum/component/wet_floor)
 			WF.InheritComponent(slip)
-		if (copy_air)
-			T.return_air().copyFrom(return_air())
+		if(copy_air)
+			if(TURF_HAS_VALID_ZONE(T))
+				T.zone.remove_turf(T)
+			if(T.simulated)
+				if(isnull(T.air))
+					T.make_air()
+				T.air.copyFrom(unsafe_return_air())
+			else
+				T.initial_gas = initial_gas
+				T.make_air()
+			SSzas.mark_for_update(T)
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)

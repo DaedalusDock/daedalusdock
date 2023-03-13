@@ -9,18 +9,28 @@
 	icon = 'icons/obj/atmospherics/components/teg.dmi'
 	icon_state = "circ-off-0"
 
-	var/active = FALSE
-
-	var/last_pressure_delta = 0
 	pipe_flags = PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY
 
 	density = TRUE
 	move_resist = MOVE_RESIST_DEFAULT
 
+	initial_volume = 400
+
 	var/flipped = 0
 	var/mode = CIRCULATOR_HOT
 	var/obj/machinery/power/generator/generator
 	var/color_index = 1
+
+	var/kinetic_efficiency = 0.04 //combined kinetic and kinetic-to-electric efficiency
+	var/volume_ratio = 0.2
+
+	var/stored_energy = 0
+	var/last_stored_energy_transferred = 0
+	var/last_pressure_delta = 0
+	var/recent_moles_transferred = 0
+	var/volume_capacity_used = 0
+
+	var/active = FALSE
 
 /obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
 	if(!anchored)
@@ -41,35 +51,39 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/return_transfer_air()
-
+	var/datum/gas_mixture/removed
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/output_starting_pressure = air1.returnPressure()
 	var/input_starting_pressure = air2.returnPressure()
+	var/output_starting_pressure = air1.returnPressure()
+	last_pressure_delta = max(input_starting_pressure - output_starting_pressure - 5, 0)
 
-	if(output_starting_pressure >= input_starting_pressure-10)
-		//Need at least 10 KPa difference to overcome friction in the mechanism
-		last_pressure_delta = 0
-		return null
+	//only circulate air if there is a pressure difference (plus 5kPa kinetic, 10kPa static friction)
+	if(air1.temperature > 0 && last_pressure_delta > 5)
 
-	//Calculate necessary moles to transfer using PV = nRT
-	if(air2.temperature>0)
-		var/pressure_delta = (input_starting_pressure - output_starting_pressure)/2
+		//Calculate necessary moles to transfer using PV = nRT
+		recent_moles_transferred = (last_pressure_delta*air2.volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
+		volume_capacity_used = min( (last_pressure_delta*air2.volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
 
-		var/transfer_moles = calculate_transfer_moles(air2, air1, pressure_delta)
-
-		last_pressure_delta = pressure_delta
+		//Calculate energy generated from kinetic turbine
+		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * air1.volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
 
 		//Actually transfer the gas
-		var/datum/gas_mixture/removed = air2.remove(transfer_moles)
-
-		update_parents()
-
-		return removed
+		removed = air2.remove(recent_moles_transferred)
+		if(removed)
+			//Update the gas networks.
+			update_parents()
 
 	else
 		last_pressure_delta = 0
+
+	return removed
+
+/obj/machinery/atmospherics/components/binary/circulator/proc/return_stored_energy()
+	last_stored_energy_transferred = stored_energy
+	stored_energy = 0
+	return last_stored_energy_transferred
 
 /obj/machinery/atmospherics/components/binary/circulator/process_atmos()
 	..()

@@ -16,7 +16,6 @@
 	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
-	scars_covered_by_clothes = FALSE
 	grind_results = null
 	is_dimorphic = TRUE
 	unarmed_attack_verb = "bite"
@@ -27,6 +26,8 @@
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
+
+	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/internal/brain/brain //The brain organ
@@ -240,18 +241,19 @@
 			lips_overlay.color = lip_color
 			. += lips_overlay
 
-		// eyes
-		if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
-			var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-			var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
-			if(eyes.eye_color_left)
-				eye_left.color = eyes.eye_color_left
-			if(eyes.eye_color_right)
-				eye_right.color = eyes.eye_color_right
-			. += eye_left
-			. += eye_right
-		else
-			. += image(eyes_icon_file, "eyes_missing", -BODY_LAYER, SOUTH)
+		if(dropped) // mob/living/carbon/proc/update_eyes() does this
+			// eyes
+			if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
+				var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+				var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+				if(eyes.eye_color_left)
+					eye_left.color = eyes.eye_color_left
+				if(eyes.eye_color_right)
+					eye_right.color = eyes.eye_color_right
+				. += eye_left
+				. += eye_right
+			else
+				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
 		if(!facial_hair_hidden && facial_overlay && (FACEHAIR in species_flags_list))
 			facial_overlay.alpha = hair_alpha

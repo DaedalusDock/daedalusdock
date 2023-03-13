@@ -10,7 +10,6 @@
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
-	update_fov()
 	voice_type = pick(voice_type2sound)
 
 /mob/living/ComponentInitialize()
@@ -941,9 +940,8 @@
 
 /mob/living/carbon/bleedDragAmount()
 	var/bleed_amount = 0
-	for(var/i in all_wounds)
-		var/datum/wound/iter_wound = i
-		bleed_amount += iter_wound.drag_bleed_amount()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		bleed_amount += BP.get_modified_bleed_rate()
 	return bleed_amount
 
 /mob/living/proc/getTrail()

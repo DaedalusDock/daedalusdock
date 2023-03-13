@@ -34,7 +34,6 @@
 
 	var/mob/living/carbon/dude = target
 	var/list/open_adj_turfs = get_adjacent_open_turfs(dude)
-	var/list/wound_bonuses = list(15, 70, 110, 250)
 
 	var/delay_per_shot = 1
 	var/delay_counter = 1
@@ -46,7 +45,7 @@
 			var/shots_this_limb = 0
 			for (var/_iter_turf in shuffle(open_adj_turfs))
 				var/turf/iter_turf = _iter_turf
-				addtimer(CALLBACK(GLOBAL_PROC, .proc/firing_squad, dude, iter_turf, limb.body_zone, wound_bonuses[wound_bonus_rep], damage), delay_counter)
+				addtimer(CALLBACK(GLOBAL_PROC, .proc/firing_squad, dude, iter_turf, limb.body_zone, damage), delay_counter)
 				delay_counter += delay_per_shot
 				shots_this_limb += 1
 				if (shots_this_limb > shots_per_limb_per_rep)

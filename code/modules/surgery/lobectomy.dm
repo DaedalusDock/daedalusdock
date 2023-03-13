@@ -6,6 +6,7 @@
 		/datum/surgery_step/saw,
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/lobectomy,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 	possible_locs = list(BODY_ZONE_CHEST)
 	organ_to_manipulate = ORGAN_SLOT_LUNGS

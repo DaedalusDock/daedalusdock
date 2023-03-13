@@ -10,6 +10,7 @@
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/incise,
 		/datum/surgery_step/hepatectomy,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 	organ_to_manipulate = ORGAN_SLOT_LIVER
 

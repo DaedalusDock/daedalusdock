@@ -100,8 +100,6 @@
 	hitsound = SFX_SHATTER
 	force = 16
 	sharpness = SHARP_EDGED
-	wound_bonus = -30
-	bare_wound_bonus = 15
 
 /obj/item/risen_hand/Initialize(mapload)
 	. = ..()

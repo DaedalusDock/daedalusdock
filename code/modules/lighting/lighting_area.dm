@@ -1,5 +1,7 @@
 /area
 	luminosity = 1
+	///The mutable appearance we underlay to show light
+	var/mutable_appearance/lighting_effect = null
 	///Whether this area has a currently active base lighting, bool
 	var/area_has_base_lighting = FALSE
 	///alpha 0-255 of lighting_effect and thus baselighting intensity

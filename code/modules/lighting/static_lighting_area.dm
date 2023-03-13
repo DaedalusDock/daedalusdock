@@ -1,6 +1,5 @@
 
 GLOBAL_REAL_VAR(mutable_appearance/fullbright_overlay) = create_fullbright_overlay()
-GLOBAL_REAL_VAR(mutable_appearance/starlight_overlay) = create_fullbright_overlay(global.starlight_color)
 
 /proc/create_fullbright_overlay(color)
 	var/mutable_appearance/lighting_effect = mutable_appearance('icons/effects/alphacolors.dmi', "white")

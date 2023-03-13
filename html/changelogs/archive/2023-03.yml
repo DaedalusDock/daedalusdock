@@ -29,3 +29,24 @@
   ShizCalev:
   - bugfix: Wanted/missing posters are no longer broken.
   - bugfix: Telekinesis no longer teleports removed posters
+2023-03-13:
+  FunnyLegJiggle:
+  - bugfix: Walls can now be scanned for science research once more.
+  Kapu1178:
+  - rscadd: Engineering has been remapped
+  - bugfix: Thermomachines now use thermal energy calculations
+  - bugfix: Filters recoded
+  - balance: Thermomachines cost a shit load of energy to run
+  - qol: Thermomachines now have a "power" setting
+  - balance: Filter max transfer rate from 200 to 500 liters
+  - balance: Pressure pump max transfer rate from 4500 to 15000 kpa
+  - balance: The Supermatter chamber now has it's own SMES unit.
+  - balance: Roundstart SMES unit input/output max from to 200 to 400 kilowatts
+  - refactor: The Supermatter and Thermo-Electric Generator behave entirely differently.
+  - balance: Solars are pre-wired, but not pre-set.
+  - rscadd: Cult eyes are emissive now
+  - rscdel: Cult Ascendance Halos
+  - rscadd: Cult Halos are now their antag HUD icon.
+  francinum:
+  - soundadd: clown.ogg is now properly played during april fools, and is properly
+      credited to giizismukwa2

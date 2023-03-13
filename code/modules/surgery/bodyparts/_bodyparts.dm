@@ -441,23 +441,23 @@
 	var/pure_brute = brute
 	var/damagable = ((brute_dam + burn_dam) < max_damage)
 
-	if(!damagable)
-		spillover = brute_dam + burn_dam + brute - max_damage
+	spillover = brute_dam + burn_dam + brute - max_damage
+	if(spillover > 0)
+		brute = max(brute - spillover, 0)
+	else
+		spillover = brute_dam + burn_dam + brute + burn - max_damage
 		if(spillover > 0)
-			brute = max(brute - spillover, 0)
-		else
-			spillover = brute_dam + burn_dam + brute + burn - max_damage
-			if(spillover > 0)
-				burn = max(burn - spillover, 0)
+			burn = max(burn - spillover, 0)
 
 	/*
 	// DISMEMBERMENT
 	*/
 	if(owner)
-		var/total_damage = brute_dam + burn_dam + brute + burn + spillover
-		if(total_damage > max_damage)
+		var/total_damage = brute_dam + burn_dam + burn + brute
+		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
 			if(attempt_dismemberment(pure_brute, burn, sharpness))
 				return update_bodypart_damage_state() || .
+
 
 	//blunt damage is gud at fracturing
 	if(breaks_bones)
@@ -466,6 +466,9 @@
 			if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
 				break_bones()
 
+
+	if(!damagable)
+		return FALSE
 
 	/*
 	// START WOUND HANDLING
@@ -858,6 +861,7 @@
 
 	var/old_bleed_rate = cached_bleed_rate
 	cached_bleed_rate = 0
+	bodypart_flags &= ~BP_BLEEDING
 	if(!owner)
 		return
 
@@ -879,6 +883,7 @@
 	for(var/datum/wound/iter_wound as anything in wounds)
 		if(iter_wound.bleeding())
 			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
+			bodypart_flags |= BP_BLEEDING
 
 	if(!cached_bleed_rate)
 		QDEL_NULL(grasped_by)

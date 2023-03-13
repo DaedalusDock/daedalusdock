@@ -40,7 +40,7 @@
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
 	var/alert_type = FIRE_CLEAR
 
-	var/knock_sound = 'sound/effects/glassknock.ogg'
+	knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
 
 
@@ -202,14 +202,14 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 
-	if(!user.combat_mode)
-		user.visible_message(span_notice("[user] knocks on [src]."), \
-			span_notice("You knock on [src]."))
-		playsound(src, knock_sound, 50, TRUE)
+	if(!user.combat_mode || modifiers[RIGHT_CLICK])
+		knock_on(user)
+		return TRUE
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))
 		playsound(src, bash_sound, 100, TRUE)
+		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)

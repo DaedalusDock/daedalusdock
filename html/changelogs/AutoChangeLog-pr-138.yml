@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Baystation wounds
-  - rscadd: Bone resetting surgery
-  - rscdel: TG wounds
-  - rscdel: scars

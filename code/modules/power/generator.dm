@@ -11,7 +11,17 @@
 	var/obj/machinery/atmospherics/components/binary/circulator/cold_circ
 	var/obj/machinery/atmospherics/components/binary/circulator/hot_circ
 
-	var/lastgen = 0
+
+	var/max_power = 500000
+	var/thermal_efficiency = 0.65
+
+	var/last_circ1_gen = 0
+	var/last_circ2_gen = 0
+	var/last_thermal_gen = 0
+	var/stored_energy = 0
+	var/lastgen1 = 0
+	var/lastgen2 = 0
+	var/effective_gen = 0
 	var/lastgenlev = -1
 	var/lastcirc = "00"
 
@@ -61,6 +71,12 @@
 		var/datum/gas_mixture/cold_air = cold_circ.return_transfer_air()
 		var/datum/gas_mixture/hot_air = hot_circ.return_transfer_air()
 
+		lastgen2 = lastgen1
+		lastgen1 = 0
+		last_thermal_gen = 0
+		last_circ1_gen = 0
+		last_circ2_gen = 0
+
 		if(cold_air && hot_air)
 
 			var/cold_air_heat_capacity = cold_air.getHeatCapacity()
@@ -70,12 +86,10 @@
 
 
 			if(delta_temperature > 0 && cold_air_heat_capacity > 0 && hot_air_heat_capacity > 0)
-				var/efficiency = 0.65
-
 				var/energy_transfer = delta_temperature*hot_air_heat_capacity*cold_air_heat_capacity/(hot_air_heat_capacity+cold_air_heat_capacity)
 
-				var/heat = energy_transfer*(1-efficiency)
-				lastgen += energy_transfer*efficiency
+				var/heat = energy_transfer*(1-thermal_efficiency)
+				last_thermal_gen = energy_transfer*thermal_efficiency
 
 				hot_air.temperature = hot_air.temperature - energy_transfer/hot_air_heat_capacity
 				cold_air.temperature = cold_air.temperature + heat/cold_air_heat_capacity
@@ -84,16 +98,15 @@
 			else
 				soundloop.stop()
 
-				//add_avail(lastgen) This is done in process now
-		// update icon overlays only if displayed level has changed
-
 		if(hot_air)
 			var/datum/gas_mixture/hot_circ_air1 = hot_circ.airs[1]
 			hot_circ_air1.merge(hot_air)
+			hot_circ.update_parents()
 
 		if(cold_air)
 			var/datum/gas_mixture/cold_circ_air1 = cold_circ.airs[1]
 			cold_circ_air1.merge(cold_air)
+			cold_circ.update_parents()
 
 		update_appearance()
 
@@ -104,13 +117,22 @@
 
 	src.updateDialog()
 
-/obj/machinery/power/generator/process()
-	//Setting this number higher just makes the change in power output slower, it doesnt actualy reduce power output cause **math**
-	var/power_output = round(lastgen / 10)
-	add_avail(power_output)
-	lastgenlev = power_output
-	lastgen -= power_output
-	..()
+	//Power
+	last_circ1_gen = cold_circ.return_stored_energy()
+	last_circ2_gen = hot_circ.return_stored_energy()
+	stored_energy += last_thermal_gen + last_circ1_gen + last_circ2_gen
+	lastgen1 = stored_energy*0.4 //smoothened power generation to prevent slingshotting as pressure is equalized, then restored by pumps
+	stored_energy -= lastgen1
+	effective_gen = (lastgen1 + lastgen2) / 2
+
+	// update icon overlays and power usage only when necessary
+	var/genlev = max(0, min( round(11*effective_gen / max_power), 11))
+	if(effective_gen > 100 && genlev == 0)
+		genlev = 1
+	if(genlev != lastgenlev)
+		lastgenlev = genlev
+	add_avail(effective_gen)
+
 
 //TGUI interaction
 /obj/machinery/power/generator/ui_interact(mob/user, datum/tgui/ui)
@@ -129,7 +151,7 @@
 	data["has_hot_circ"] = hot_circ
 	data["has_cold_circ"] = cold_circ
 	data["has_powernet"] = powernet
-	data["power_output"] = display_power(lastgenlev)
+	data["power_output"] = display_power(lastgen1)
 	data["cold_temp_in"] = round(cold_circ_air2.temperature, 0.1)
 	data["cold_pressure_in"] = round(cold_circ_air2.returnPressure(), 0.1)
 	data["cold_temp_out"] = round(cold_circ_air1.temperature, 0.1)

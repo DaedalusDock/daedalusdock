@@ -149,7 +149,7 @@
 	var/turf/T = get_turf(src)
 	if(!T)
 		return FALSE
-	if(stat != CONSCIOUS || failed_last_breath || wear_mask || (head && (head?.permeability_coefficient < 1)) || !T.return_air()?.total_moles)
+	if(stat != CONSCIOUS || failed_last_breath || wear_mask || (head && (head?.permeability_coefficient < 1)) || !T.unsafe_return_air()?.total_moles)
 		return FALSE
 
 	if(!(intensity > last_smell_intensity) && !COOLDOWN_FINISHED(src, smell_time))

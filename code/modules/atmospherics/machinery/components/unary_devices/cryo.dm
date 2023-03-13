@@ -17,7 +17,6 @@
 	// and will crop the head off.
 	icon_state = "mask_bg"
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_y = 22
 	appearance_flags = KEEP_TOGETHER
@@ -260,7 +259,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
+	if(air1.total_moles > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
 			consume_gas = TRUE
@@ -315,7 +314,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return null
 	var/datum/gas_mixture/air1 = airs[1]
 	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.get_moles() * breath_percentage)
+	return air1.remove(air1.total_moles * breath_percentage)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -530,7 +529,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.get_moles() > 10)
+	if(G.total_moles > 10)
 		return G.temperature
 	return ..()
 

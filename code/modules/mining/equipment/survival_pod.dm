@@ -1,5 +1,5 @@
 /*****************************Survival Pod********************************/
-/area/survivalpod
+/area/misc/survivalpod
 	name = "\improper Emergency Shelter"
 	icon_state = "away"
 	static_lighting = TRUE
@@ -287,7 +287,7 @@
 		/obj/item/ship_in_a_bottle,
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
-		//obj/item/melee/supermatter_sword,
+		/obj/item/melee/supermatter_sword,
 		/obj/item/shield/changeling,
 		/obj/item/lava_staff,
 		/obj/item/energy_katana,

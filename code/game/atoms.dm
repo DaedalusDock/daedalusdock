@@ -469,7 +469,7 @@
 	if(!is_centcom_level(current_turf.z))//if not, don't bother
 		return FALSE
 
-	if(istype(current_turf.loc, /area/shuttle/syndicate) || istype(current_turf.loc, /area/syndicate_mothership) || istype(current_turf.loc, /area/shuttle/assault_pod))
+	if(istype(current_turf.loc, /area/shuttle/syndicate) || istype(current_turf.loc, /area/centcom/syndicate_mothership) || istype(current_turf.loc, /area/shuttle/assault_pod))
 		return TRUE
 
 	return FALSE
@@ -543,6 +543,11 @@
 		return loc.return_air()
 	else
 		return null
+
+///Return the current air environment in this atom. If this atom is a turf, it will not automatically update the zone.
+/atom/proc/unsafe_return_air()
+	return return_air()
+
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()

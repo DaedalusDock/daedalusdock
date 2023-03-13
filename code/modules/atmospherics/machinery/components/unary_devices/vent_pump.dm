@@ -115,9 +115,10 @@
 		return
 
 	var/datum/gas_mixture/air_contents = airs[1]
-	var/datum/gas_mixture/environment = us.return_air()
+	var/datum/gas_mixture/environment = us.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	var/pressure_delta = get_pressure_delta(environment)
 	if((environment.temperature || air_contents.temperature) && pressure_delta > 0.5)
+		SAFE_ZAS_UPDATE(us)
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
 			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)

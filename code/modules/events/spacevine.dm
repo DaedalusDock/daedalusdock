@@ -51,7 +51,7 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/hallway/area in world)
+	for(var/area/station/hallway/area in world)
 		for(var/turf/floor in area)
 			if(floor.Enter(vine))
 				turfs += floor
@@ -371,7 +371,6 @@
 	anchored = TRUE
 	density = FALSE
 	layer = SPACEVINE_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	mouse_opacity = MOUSE_OPACITY_OPAQUE //Clicking anywhere on the turf is good enough
 	pass_flags = PASSTABLE | PASSGRILLE
 	max_integrity = 50

@@ -112,8 +112,8 @@
 		if(pressure_affected)
 			//Atmosphere affects sound
 			var/pressure_factor = 1
-			var/datum/gas_mixture/hearer_env = turf_loc.return_air()
-			var/datum/gas_mixture/source_env = turf_source.return_air()
+			var/datum/gas_mixture/hearer_env = turf_loc.unsafe_return_air()
+			var/datum/gas_mixture/source_env = turf_source.unsafe_return_air()
 
 			if(hearer_env && source_env)
 				var/pressure = min(hearer_env.returnPressure(), source_env.returnPressure())

@@ -69,8 +69,8 @@
 	undeploy_path = /obj/item/inflatable/wall
 	can_atmos_pass = CANPASS_NEVER
 
-/obj/structure/inflatable/New(location)
-	..()
+/obj/structure/inflatable/Initialize()
+	. = ..()
 	zas_update_loc()
 
 /obj/structure/inflatable/Initialize()
@@ -78,7 +78,6 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
-	zas_update_loc()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -95,7 +94,7 @@
 
 	for(var/check_dir in GLOB.cardinals)
 		var/turf/T = get_step(src, check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T.unsafe_return_air()
 		var/pressure = env.returnPressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)

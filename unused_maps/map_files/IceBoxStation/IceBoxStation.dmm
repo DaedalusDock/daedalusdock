@@ -6942,7 +6942,7 @@
 /area/ai_monitored/turret_protected/aisat_interior)
 "cve" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat/hallway";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat/hallway";
 	name = "Chamber Hallway Turret Control";
 	pixel_x = 32;
 	pixel_y = -24;
@@ -20876,7 +20876,7 @@
 /area/engineering/atmos)
 "jaD" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai_upload";
+	control_area = "/area/station/ai_monitored/turret_protected/ai_upload";
 	name = "AI Upload turret control";
 	pixel_y = -25
 	},
@@ -21756,7 +21756,7 @@
 "jwA" = (
 /obj/machinery/light/small/directional/east,
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat/service";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat/service";
 	name = "Service Bay Turret Control";
 	pixel_x = 27;
 	req_access = null;
@@ -32046,7 +32046,7 @@
 	start_active = 1
 	},
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat/atmos";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat/atmos";
 	name = "Atmospherics Turret Control";
 	pixel_x = -27;
 	req_access = null;
@@ -39830,7 +39830,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/security/processing)
 "szM" = (
-/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "szW" = (
@@ -41378,7 +41378,7 @@
 /area/science/robotics/lab)
 "toD" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat_interior";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat_interior";
 	name = "Antechamber Turret Control";
 	pixel_y = -24;
 	req_access = null;

@@ -108,7 +108,7 @@
 	if(breath_request>0)
 		var/datum/gas_mixture/environment = return_air()
 		var/breath_percentage = BREATH_VOLUME / environment.get_volume()
-		return remove_air(environment.get_moles() * breath_percentage)
+		return remove_air(environment.total_moles * breath_percentage)
 	else
 		return null
 

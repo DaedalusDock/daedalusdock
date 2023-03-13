@@ -257,7 +257,6 @@
 	light_outer_range = 7
 	light_flags = LIGHT_ATTACHED
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	var/sight_flags = SEE_MOBS
 	var/lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
@@ -442,9 +441,9 @@
 
 /obj/item/shared_storage/red/Initialize(mapload)
 	. = ..()
-	
+
 	create_storage(max_total_storage = 15, max_slots = 21)
-	
+
 	new /obj/item/shared_storage/blue(drop_location(), src)
 
 /obj/item/shared_storage/blue/Initialize(mapload, atom/master)

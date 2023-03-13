@@ -140,13 +140,11 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	dynamic_lumcount = old_dynamic_lumcount
 
-	if(W.always_lit)
-		W.add_overlay(global.fullbright_overlay)
-	else
-		W.cut_overlay(global.fullbright_overlay)
-
 	if(SSlighting.initialized)
-		W.lighting_object = old_lighting_object
+		if(!always_lit)
+			W.lighting_object = old_lighting_object || new /datum/lighting_object(src)
+		else if(old_lighting_object)
+			qdel(old_lighting_object, force = TRUE)
 
 		directional_opacity = old_directional_opacity
 		recalculate_directional_opacity()
@@ -157,10 +155,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(CONFIG_GET(flag/starlight))
 			for(var/turf/open/space/space_tile in RANGE_TURFS(1, src))
 				space_tile.update_starlight()
-
-	var/area/thisarea = get_area(W)
-	if(thisarea.lighting_effect)
-		W.add_overlay(thisarea.lighting_effect)
 
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	QUEUE_SMOOTH(src)

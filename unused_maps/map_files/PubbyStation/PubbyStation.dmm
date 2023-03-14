@@ -53275,7 +53275,7 @@
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
 "uMr" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/supermatter,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/engine,
 /area/engineering/supermatter)

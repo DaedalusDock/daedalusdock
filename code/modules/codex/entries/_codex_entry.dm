@@ -22,7 +22,7 @@
 	///Allows you to mark a type as "abstract" and to not generate it.
 	var/abstract_type
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
 
 	SScodex.all_entries += src
 
@@ -40,6 +40,9 @@
 		antag_text = _antag_text
 	if(_controls_text)
 		controls_text = _controls_text
+	if(_disambiguator)
+		disambiguator = _disambiguator
+
 
 	if(use_typesof && length(associated_paths))
 		var/new_assoc_paths = list()

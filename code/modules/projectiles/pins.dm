@@ -27,7 +27,7 @@
 			var/obj/item/gun/targetted_gun = target
 			var/obj/item/firing_pin/old_pin = targetted_gun.pin
 			if(old_pin && (force_replace || old_pin.pin_removeable))
-				balloon_alert(user, "firing pin removed")
+				to_chat(user, span_notice("You remove [old_pin] from [G]."))
 				if(Adjacent(user))
 					user.put_in_hands(old_pin)
 				else
@@ -38,7 +38,7 @@
 				if(!user.temporarilyRemoveItemFromInventory(src))
 					return .
 				if(gun_insert(user, targetted_gun))
-					balloon_alert(user, "firing pin inserted.")
+				to_chat(user, span_notice("You insert [src] into [G]."))
 			else
 				to_chat(user, span_notice("This firearm already has a firing pin installed."))
 
@@ -66,7 +66,7 @@
 
 /obj/item/firing_pin/proc/auth_fail(mob/living/user)
 	if(user)
-		balloon_alert(user, fail_message)
+		user.show_message(fail_message, MSG_VISUAL)
 	if(selfdestruct)
 		if(user)
 			user.show_message("[span_danger("SELF-DESTRUCTING...")]<br>", MSG_VISUAL)
@@ -187,7 +187,7 @@
 		var/mob/living/carbon/M = target
 		if(M.dna && M.dna.unique_enzymes)
 			unique_enzymes = M.dna.unique_enzymes
-			balloon_alert(user, "dna lock set")
+			to_chat(user, span_notice("DNA-LOCK SET."))
 
 /obj/item/firing_pin/dna/pin_auth(mob/living/carbon/user)
 	if(user && user.dna && user.dna.unique_enzymes)
@@ -199,7 +199,7 @@
 	if(!unique_enzymes)
 		if(user && user.dna && user.dna.unique_enzymes)
 			unique_enzymes = user.dna.unique_enzymes
-			balloon_alert(user, "dna lock set")
+			to_chat(user, span_notice("DNA-LOCK SET."))
 	else
 		..()
 

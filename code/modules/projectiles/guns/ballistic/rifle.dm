@@ -18,7 +18,7 @@
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
-		balloon_alert(user, "bolt opened")
+		to_chat(user, span_notice("You open the bolt of \the [src]."))
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
 		process_chamber(FALSE, FALSE, FALSE)
 		bolt_locked = TRUE
@@ -33,7 +33,7 @@
 
 /obj/item/gun/ballistic/rifle/attackby(obj/item/A, mob/user, params)
 	if (!bolt_locked && !istype(A, /obj/item/stack/sheet/cloth))
-		balloon_alert(user, "[bolt_wording] is closed!")
+		to_chat(user, span_notice("The bolt is closed!"))
 		return
 	return ..()
 
@@ -80,7 +80,7 @@
 				unjam_chance = 10
 			else
 				unjam_chance += 10
-				balloon_alert(user, "jammed!")
+				to_chat(user, span_warning("[src] is jammed!"))
 				playsound(user,'sound/weapons/jammed.ogg', 75, TRUE)
 				return FALSE
 	..()

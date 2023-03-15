@@ -159,7 +159,7 @@
 	light.on = !light.on
 	light.update_brightness()
 	if(user)
-		user.balloon_alert(user, "[light.name] toggled [light.on ? "on":"off"]")
+		to_chat(user, span_notice("You [light.on ? "turn on":"turn off"] [light]."))
 
 	playsound(light, 'sound/weapons/empty.ogg', 100, TRUE)
 	update_light()
@@ -219,14 +219,14 @@
 		return
 
 	if(light)
-		source.balloon_alert(attacker, "already has \a [light]!")
+		to_chat(attacker, span_warning("There is already a light attached to [source]."))
 		return
 
 	if(!attacker.transferItemToLoc(attacking_item, source))
 		return
 
 	add_light(attacking_item, attacker)
-	source.balloon_alert(attacker, "attached [attacking_item]")
+	to_chat(attacker, span_notice("You attach [attacking_item] to [source]."))
 	return COMPONENT_NO_AFTERATTACK
 
 /// Signal proc for [COMSIG_ATOM_TOOL_ACT] via [TOOL_SCREWDRIVER] that removes any attached seclite.
@@ -242,7 +242,7 @@
 /// Invoked asyncronously from [proc/on_screwdriver]. Handles removing the light from our parent.
 /datum/component/seclite_attachable/proc/unscrew_light(obj/item/source, mob/user, obj/item/tool)
 	tool?.play_tool_sound(source)
-	source.balloon_alert(user, "unscrewed [light]")
+	to_chat(user, span_notice("You unscrew [light] from [source]."))
 
 	var/obj/item/flashlight/seclite/to_remove = light
 

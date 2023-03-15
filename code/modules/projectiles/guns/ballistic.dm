@@ -257,11 +257,11 @@
 	if (bolt_type == BOLT_TYPE_OPEN)
 		if(!bolt_locked) //If it's an open bolt, racking again would do nothing
 			if (user)
-				balloon_alert(user, "[bolt_wording] already cocked!")
+				to_chat(user, span_notice("[src]'s [bolt_wording] is already cocked!"))
 			return
 		bolt_locked = FALSE
 	if (user)
-		balloon_alert(user, "[bolt_wording] racked")
+		to_chat(user, span_notice("You rack the [bolt_wording] of [src]."))
 	process_chamber(!chambered, FALSE)
 	if (bolt_type == BOLT_TYPE_LOCKING && !chambered)
 		bolt_locked = TRUE
@@ -274,7 +274,7 @@
 /obj/item/gun/ballistic/proc/drop_bolt(mob/user = null)
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
 	if (user)
-		balloon_alert(user, "[bolt_wording] dropped")
+		to_chat(user, span_notice("You drop the [bolt_wording] of [src]."))
 	chamber_round()
 	bolt_locked = FALSE
 	update_appearance()
@@ -282,12 +282,12 @@
 ///Handles all the logic needed for magazine insertion
 /obj/item/gun/ballistic/proc/insert_magazine(mob/user, obj/item/ammo_box/magazine/AM, display_message = TRUE)
 	if(!istype(AM, mag_type))
-		balloon_alert(user, "[AM.name] doesn't fit!")
+		to_chat(user, span_warning("[AM] doesn't seem to fit into [src]..."))
 		return FALSE
 	if(user.transferItemToLoc(AM, src))
 		magazine = AM
 		if (display_message)
-			balloon_alert(user, "[magazine_wording] loaded")
+			to_chat(user, span_notice("You load a new [magazine_wording] into [src]."))
 		playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
 			chamber_round(TRUE)
@@ -309,7 +309,7 @@
 	var/obj/item/ammo_box/magazine/old_mag = magazine
 	if (tac_load)
 		if (insert_magazine(user, tac_load, FALSE))
-			balloon_alert(user, "[magazine_wording] swapped")
+			to_chat(user, span_notice("You perform a tactical reload on [src]."))
 		else
 			to_chat(user, span_warning("You dropped the old [magazine_wording], but the new one doesn't fit. How embarassing."))
 			magazine = null
@@ -318,7 +318,7 @@
 	user.put_in_hands(old_mag)
 	old_mag.update_appearance()
 	if (display_message)
-		balloon_alert(user, "[magazine_wording] unloaded")
+		to_chat(user, span_notice("You pull the [magazine_wording] out of [src]."))
 	update_appearance()
 
 /obj/item/gun/ballistic/can_shoot()
@@ -336,7 +336,7 @@
 			if (tac_reloads)
 				eject_magazine(user, FALSE, AM)
 			else
-				balloon_alert(user, "already loaded!")
+				to_chat(user, span_notice("There's already a [magazine_wording] in [src]."))
 		return
 	if (isammocasing(A) || istype(A, /obj/item/ammo_box))
 		if (bolt_type == BOLT_TYPE_NO_BOLT || internal_magazine)
@@ -345,7 +345,7 @@
 				chambered = null
 			var/num_loaded = magazine?.attackby(A, user, params, TRUE)
 			if (num_loaded)
-				balloon_alert(user, "[num_loaded] [cartridge_wording]\s loaded")
+				to_chat(user, span_notice("You load [num_loaded] [cartridge_wording]\s into [src]."))
 				playsound(src, load_sound, load_sound_volume, load_sound_vary)
 				if (chambered == null && bolt_type == BOLT_TYPE_NO_BOLT)
 					chamber_round()
@@ -355,16 +355,16 @@
 	if(istype(A, /obj/item/suppressor))
 		var/obj/item/suppressor/S = A
 		if(!can_suppress)
-			balloon_alert(user, "[S.name] doesn't fit!")
+			to_chat(user, span_warning("You can't seem to figure out how to fit [S] on [src]!"))
 			return
 		if(!user.is_holding(src))
-			balloon_alert(user, "not in hand!")
+			to_chat(user, span_warning("You need be holding [src] to fit [S] to it!"))
 			return
 		if(suppressed)
-			balloon_alert(user, "already has a supressor!")
+			to_chat(user, span_warning("[src] already has a suppressor!"))
 			return
 		if(user.transferItemToLoc(A, src))
-			balloon_alert(user, "[S.name] attached")
+			to_chat(user, span_notice("You attach [S] to [src]."))
 			install_suppressor(A)
 			return
 	if (can_be_sawn_off)
@@ -416,7 +416,7 @@
 			var/obj/item/suppressor/S = suppressed
 			if(!user.is_holding(src))
 				return ..()
-			balloon_alert(user, "[S.name] removed")
+			to_chat(user, span_notice("You unscrew [S] from [src]."))
 			user.put_in_hands(S)
 			clear_suppressor()
 
@@ -478,11 +478,11 @@
 			if(T && is_station_level(T.z))
 				SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
 		if (num_unloaded)
-			balloon_alert(user, "[num_unloaded] [cartridge_wording] unloaded")
+			to_chat(user, span_notice("You unload [num_unloaded] [cartridge_wording]\s from [src]."))
 			playsound(user, eject_sound, eject_sound_volume, eject_sound_vary)
 			update_appearance()
 		else
-			balloon_alert(user, "it's empty!")
+			to_chat(user, span_warning("[src] is empty!"))
 		return
 	if(bolt_type == BOLT_TYPE_LOCKING && bolt_locked)
 		drop_bolt(user)
@@ -570,10 +570,10 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	if(!saw.get_sharpness() || (!is_type_in_typecache(saw, GLOB.gun_saw_types) && saw.tool_behaviour != TOOL_SAW)) //needs to be sharp. Otherwise turned off eswords can cut this.
 		return
 	if(sawn_off)
-		balloon_alert(user, "it's already shortened!")
+		to_chat(user, span_warning("[src] is already shortened!"))
 		return
 	if(bayonet)
-		balloon_alert(user, "[bayonet.name] must be removed!")
+		to_chat(user, span_warning("You cannot saw-off [src] with [bayonet] attached!"))
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("[user] begins to shorten [src]."), span_notice("You begin to shorten [src]..."))
@@ -607,7 +607,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 
 /obj/item/gun/ballistic/proc/guncleaning(mob/user, obj/item/A)
 	if(misfire_probability == 0)
-		balloon_alert(user, "it's already clean!")
+		to_chat(user, span_notice("[src] seems to be already clean of fouling."))
 		return
 
 	user.changeNext_move(CLICK_CD_MELEE)

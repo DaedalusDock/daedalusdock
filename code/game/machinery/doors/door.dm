@@ -281,7 +281,7 @@
 	. = ..()
 	if(.)
 		return
-	if(LAZYACCESS(modifiers[RIGHT_CLICK]))
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		knock_on(user)
 		return TRUE
 	if(try_remove_seal(user))

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Leg wraps, available in the loadout pane
+  - qol: The loadout pane entries list is now alphabetically sorted

@@ -16,7 +16,7 @@
 		required_materials[req_atom] = chosen_material
 
 /datum/experiment/scanning/random/material/final_contributing_index_checks(atom/target, typepath)
-	return ..() && target.custom_materials && target.has_material_type(required_materials[typepath])
+	return ..() && (target.custom_materials || iswall(target)) && target.has_material_type(required_materials[typepath])
 
 /datum/experiment/scanning/random/material/serialize_progress_stage(atom/target, list/seen_instances)
 	var/datum/material/required_material = GET_MATERIAL_REF(required_materials[target])

@@ -50,3 +50,8 @@
   francinum:
   - soundadd: clown.ogg is now properly played during april fools, and is properly
       credited to giizismukwa2
+2023-03-16:
+  Kapu1178:
+  - rscadd: Leg wraps, available in the loadout pane
+  - qol: The loadout pane entries list is now alphabetically sorted
+  - bugfix: monkey runtime

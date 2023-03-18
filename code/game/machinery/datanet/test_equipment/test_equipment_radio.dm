@@ -23,7 +23,7 @@
 	popup.set_content(dat)
 	popup.open()
 
-/obj/machinery/test_equipment/radio/proc/format_range(var/rangeint)
+/obj/machinery/test_equipment/radio/proc/format_range(rangeint)
 	switch(rangeint)
 		if(0)
 			return "GLOBAL"

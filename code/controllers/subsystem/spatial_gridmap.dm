@@ -653,20 +653,17 @@ SUBSYSTEM_DEF(spatial_grid)
 	var/raw_clients = 0
 	var/raw_hearables = 0
 	var/raw_atmos = 0
-	// var/raw_nonatmosradio = 0
-	// var/raw_atmosradio = 0
+	var/raw_atmosradio = 0
 
 	var/cells_with_clients = 0
 	var/cells_with_hearables = 0
 	var/cells_with_atmos = 0
-	// var/cells_with_nonatmos_radio = 0
-	// var/cells_with_atmos_radio = 0
+	var/cells_with_atmos_radio = 0
 
 	var/list/client_list = list()
 	var/list/hearable_list = list()
 	var/list/atmos_list = list()
-	// var/list/naradio_list = list()
-	// var/list/aradio_list = list()
+	var/list/aradio_list = list()
 
 
 	var/x_cell_count = world.maxx / SPATIAL_GRID_CELLSIZE
@@ -676,8 +673,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 	var/average_clients_per_cell = 0
 	var/average_hearables_per_cell = 0
-	var/average_atmos_mech_per_call = 0
-	// var/average_non_atmos_radios_per_cell = 0
+	var/average_atmos_mech_per_cell = 0
+	var/average_atmos_radios_per_cell = 0
 
 
 	var/hearable_min_x = x_cell_count
@@ -698,7 +695,12 @@ SUBSYSTEM_DEF(spatial_grid)
 	var/atmos_min_y = y_cell_count
 	var/atmos_max_y = 1
 
-	#warn FINISH THIS LATER
+	var/atmos_radios_min_x = x_cell_count
+	var/atmos_radios_max_x = 1
+
+	var/atmos_radios_min_y = y_cell_count
+	var/atmos_radios_max_y = 1
+
 
 	var/list/inserted_clients = list()
 
@@ -724,10 +726,12 @@ SUBSYSTEM_DEF(spatial_grid)
 		var/client_length = length(cell.client_contents)
 		var/hearable_length = length(cell.hearing_contents)
 		var/atmos_length = length(cell.atmos_contents)
+		var/atmosradio_length = length(cell.radio_atmos_contents)
 
 		raw_clients += client_length
 		raw_hearables += hearable_length
 		raw_atmos += atmos_length
+		raw_atmosradio += atmosradio_length
 
 		if(client_length)
 			cells_with_clients++
@@ -780,13 +784,33 @@ SUBSYSTEM_DEF(spatial_grid)
 			if(cell.cell_y > atmos_max_y)
 				atmos_max_y = cell.cell_y
 
+		if(raw_atmosradio)
+			cells_with_atmos_radio++
+
+			aradio_list += cell.radio_atmos_contents
+
+			if(cell.cell_x < atmos_radios_min_x)
+				atmos_radios_min_x = cell.cell_x
+
+			if(cell.cell_x > atmos_radios_max_x)
+				atmos_radios_max_x = cell.cell_x
+
+			if(cell.cell_y < atmos_radios_min_y)
+				atmos_radios_min_y = cell.cell_y
+
+			if(cell.cell_y > atmos_radios_max_y)
+				atmos_radios_max_y = cell.cell_y
+
 	var/total_client_distance = 0
 	var/total_hearable_distance = 0
 	var/total_atmos_distance = 0
+	var/total_atmosradio_distance = 0
+
 
 	var/average_client_distance = 0
 	var/average_hearable_distance = 0
 	var/average_atmos_distance = 0
+	var/average_atmosradio_distance = 0
 
 	for(var/hearable in hearable_list)//n^2 btw
 		for(var/other_hearable in hearable_list)
@@ -806,30 +830,54 @@ SUBSYSTEM_DEF(spatial_grid)
 				continue
 			total_atmos_distance += get_dist(atmos, other_atmos)
 
+	for(var/atmosradio in aradio_list)//n^2 btw
+		for(var/other_atmosradio in aradio_list)
+			if(atmosradio == other_atmosradio)
+				continue
+			total_atmosradio_distance += get_dist(atmosradio, other_atmosradio)
+
 	if(length(hearable_list))
 		average_hearable_distance = total_hearable_distance / length(hearable_list)
 	if(length(client_list))
 		average_client_distance = total_client_distance / length(client_list)
 	if(length(atmos_list))
 		average_atmos_distance = total_atmos_distance / length(atmos_list)
+	if(length(aradio_list))
+		average_atmosradio_distance = total_atmosradio_distance / length(aradio_list)
 
 	average_clients_per_cell = raw_clients / total_cells
 	average_hearables_per_cell = raw_hearables / total_cells
-	average_atmos_mech_per_call = raw_atmos / total_cells
+	average_atmos_mech_per_cell = raw_atmos / total_cells
+	average_atmos_radios_per_cell = raw_atmosradio / total_cells
 
 	for(var/mob/inserted_client as anything in inserted_clients)
 		qdel(inserted_client)
 
-	message_admins("on z level [z] there are [raw_clients] clients ([insert_clients] of whom are fakes inserted to random station turfs)\
-	, [raw_hearables] hearables, and [raw_atmos] atmos machines. all of whom are inside the bounding box given by \
+	message_admins("on z level [z] there are \
+	[raw_clients] clients ([insert_clients] of whom are fakes inserted to random station turfs), \
+	[raw_hearables] hearables, \
+	[raw_atmos] atmos machines, \
+	and [raw_atmosradio] atmos radio receivers. \
+	all of whom are inside the bounding box given by \
 	clients: ([client_min_x], [client_min_y]) x ([client_max_x], [client_max_y]), \
 	hearables: ([hearable_min_x], [hearable_min_y]) x ([hearable_max_x], [hearable_max_y]) \
-	and atmos machines: ([atmos_min_x], [atmos_min_y]) x ([atmos_max_x], [atmos_max_y]), \
-	on average there are [average_clients_per_cell] clients per cell, [average_hearables_per_cell] hearables per cell, \
-	and [average_atmos_mech_per_call] per cell, \
-	[cells_with_clients] cells have clients, [cells_with_hearables] have hearables, and [cells_with_atmos] have atmos machines \
-	the average client distance is: [average_client_distance], the average hearable_distance is [average_hearable_distance], \
-	and the average atmos distance is [average_atmos_distance] ")
+	atmos machines: ([atmos_min_x], [atmos_min_y]) x ([atmos_max_x], [atmos_max_y]), \
+	and atmos radio receivers: ([atmos_radios_min_x], [atmos_radios_min_y]) x ([atmos_radios_max_x], [atmos_radios_max_y]) \
+	on average there are \
+	[average_clients_per_cell] clients per cell, \
+	[average_hearables_per_cell] hearables per cell, \
+	[average_atmos_mech_per_cell] atmos machines per cell, \
+	and [average_atmos_radios_per_cell], \
+	out of [total_cells], \
+	[cells_with_clients] cells have clients, \
+	[cells_with_hearables] have hearables, \
+	[cells_with_atmos] have atmos machines, \
+	and [cells_with_atmos_radio] have atmos radio receivers, \
+	the average client distance is: [average_client_distance], \
+	the average hearable_distance is [average_hearable_distance], \
+	the average atmos distance is [average_atmos_distance], \
+	and the average atmos radio receiver distance is [average_atmosradio_distance]\
+	")
 
 #undef GRID_CELL_ADD
 #undef GRID_CELL_REMOVE

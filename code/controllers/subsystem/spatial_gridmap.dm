@@ -28,6 +28,10 @@
 	var/list/client_contents
 	///every atmos machine inside this cell
 	var/list/atmos_contents
+	///every non-atmos radio listener in this cell
+	var/list/radio_nonatmos_contents
+	///every atmos radio listener in this cell
+	var/list/radio_atmos_contents
 
 /datum/spatial_grid_cell/New(cell_x, cell_y, cell_z)
 	. = ..()
@@ -43,6 +47,9 @@
 	hearing_contents = dummy_list
 	client_contents = dummy_list
 	atmos_contents = dummy_list
+	radio_nonatmos_contents = dummy_list
+	radio_atmos_contents = dummy_list
+
 
 /datum/spatial_grid_cell/Destroy(force, ...)
 	if(force)//the response to someone trying to qdel this is a right proper fuck you
@@ -85,7 +92,14 @@ SUBSYSTEM_DEF(spatial_grid)
 	///list of the spatial_grid_cell datums per z level, arranged in the order of y index then x index
 	var/list/grids_by_z_level = list()
 	///everything that spawns before us is added to this list until we initialize
-	var/list/waiting_to_add_by_type = list(SPATIAL_GRID_CONTENTS_TYPE_HEARING = list(), SPATIAL_GRID_CONTENTS_TYPE_CLIENTS = list(), SPATIAL_GRID_CONTENTS_TYPE_ATMOS = list())
+	var/list/waiting_to_add_by_type = list(
+		SPATIAL_GRID_CONTENTS_TYPE_HEARING = list(),
+		SPATIAL_GRID_CONTENTS_TYPE_CLIENTS = list(),
+		SPATIAL_GRID_CONTENTS_TYPE_ATMOS = list(),
+		SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS = list(),
+		SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS = list(),
+	)
+
 	///associative list of the form: movable.spatial_grid_key (string) -> inner list of spatial grid types for that key.
 	///inner lists contain contents channel types such as SPATIAL_GRID_CONTENTS_TYPE_HEARING etc.
 	///we use this to make adding to a cell static cost, and to save on memory
@@ -252,6 +266,16 @@ SUBSYSTEM_DEF(spatial_grid)
 				for(var/x_index in BOUNDING_BOX_MIN(center_x) to BOUNDING_BOX_MAX(center_x, cells_on_x_axis))
 					. += grid_level[row][x_index].atmos_contents
 
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS)
+			for(var/row in BOUNDING_BOX_MIN(center_y) to BOUNDING_BOX_MAX(center_y, cells_on_y_axis))
+				for(var/x_index in BOUNDING_BOX_MIN(center_x) to BOUNDING_BOX_MAX(center_x, cells_on_x_axis))
+					. += grid_level[row][x_index].radio_nonatmos_contents
+
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS)
+			for(var/row in BOUNDING_BOX_MIN(center_y) to BOUNDING_BOX_MAX(center_y, cells_on_y_axis))
+				for(var/x_index in BOUNDING_BOX_MIN(center_x) to BOUNDING_BOX_MAX(center_x, cells_on_x_axis))
+					. += grid_level[row][x_index].radio_atmos_contents
+
 	return .
 
 ///get the grid cell encomapassing targets coordinates
@@ -377,6 +401,16 @@ SUBSYSTEM_DEF(spatial_grid)
 				GRID_CELL_SET(intersecting_cell.atmos_contents, new_target)
 				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_ATMOS), new_target)
 
+			if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS)
+				var/list/new_target_contents = new_target.important_recursive_contents
+				GRID_CELL_SET(intersecting_cell.radio_nonatmos_contents, new_target.important_recursive_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS), new_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+
+			if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS)
+				var/list/new_target_contents = new_target.important_recursive_contents
+				GRID_CELL_SET(intersecting_cell.radio_atmos_contents, new_target.important_recursive_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS), new_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+
 ///acts like enter_cell() but only adds the target to a specified type of grid cell contents list
 /datum/controller/subsystem/spatial_grid/proc/add_single_type(atom/movable/new_target, turf/target_turf, exclusive_type)
 	if(!initialized)
@@ -406,6 +440,16 @@ SUBSYSTEM_DEF(spatial_grid)
 		if(SPATIAL_GRID_CONTENTS_TYPE_ATMOS)
 			GRID_CELL_SET(intersecting_cell.atmos_contents, new_target)
 			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_ATMOS), new_target)
+
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS)
+			var/list/new_target_contents = new_target.important_recursive_contents
+			GRID_CELL_SET(intersecting_cell.radio_nonatmos_contents, new_target.important_recursive_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS), new_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS)
+			var/list/new_target_contents = new_target.important_recursive_contents
+			GRID_CELL_SET(intersecting_cell.radio_atmos_contents, new_target.important_recursive_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS), new_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
 
 	return intersecting_cell
 
@@ -446,6 +490,16 @@ SUBSYSTEM_DEF(spatial_grid)
 				GRID_CELL_REMOVE(intersecting_cell.atmos_contents, old_target)
 				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(SPATIAL_GRID_CONTENTS_TYPE_ATMOS), old_target)
 
+			if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS)
+				var/list/old_target_contents = old_target.important_recursive_contents //cache for sanic speeds (lists are references anyways)
+				GRID_CELL_REMOVE(intersecting_cell.radio_nonatmos_contents, old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS), old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+
+			if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS)
+				var/list/old_target_contents = old_target.important_recursive_contents //cache for sanic speeds (lists are references anyways)
+				GRID_CELL_REMOVE(intersecting_cell.radio_atmos_contents, old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+				SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS), old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+
 	return TRUE
 
 ///acts like exit_cell() but only removes the target from the specified type of grid cell contents list
@@ -478,6 +532,16 @@ SUBSYSTEM_DEF(spatial_grid)
 			GRID_CELL_REMOVE(intersecting_cell.atmos_contents, old_target)
 			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(exclusive_type), old_target)
 
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS)
+			var/list/old_target_contents = old_target.important_recursive_contents //cache for sanic speeds (lists are references anyways)
+			GRID_CELL_REMOVE(intersecting_cell.radio_nonatmos_contents, old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(exclusive_type), old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS])
+
+		if(SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS)
+			var/list/old_target_contents = old_target.important_recursive_contents //cache for sanic speeds (lists are references anyways)
+			GRID_CELL_REMOVE(intersecting_cell.radio_atmos_contents, old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+			SEND_SIGNAL(intersecting_cell, SPATIAL_GRID_CELL_EXITED(exclusive_type), old_target_contents[SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS])
+
 	return TRUE
 
 ///find the cell this movable is associated with and removes it from all lists
@@ -495,6 +559,8 @@ SUBSYSTEM_DEF(spatial_grid)
 	GRID_CELL_REMOVE(input_cell.client_contents, to_remove)
 	GRID_CELL_REMOVE(input_cell.hearing_contents, to_remove)
 	GRID_CELL_REMOVE(input_cell.atmos_contents, to_remove)
+	GRID_CELL_REMOVE(input_cell.radio_atmos_contents, to_remove)
+	GRID_CELL_REMOVE(input_cell.radio_nonatmos_contents, to_remove)
 
 ///if shit goes south, this will find hanging references for qdeleting movables inside the spatial grid
 /datum/controller/subsystem/spatial_grid/proc/find_hanging_cell_refs_for_movable(atom/movable/to_remove, remove_from_cells = TRUE)
@@ -514,7 +580,7 @@ SUBSYSTEM_DEF(spatial_grid)
 	for(var/list/z_level_grid as anything in grids_by_z_level)
 		for(var/list/cell_row as anything in z_level_grid)
 			for(var/datum/spatial_grid_cell/cell as anything in cell_row)
-				if(to_remove in (cell.hearing_contents | cell.client_contents | cell.atmos_contents))
+				if(to_remove in (cell.hearing_contents | cell.client_contents | cell.atmos_contents | cell.radio_nonatmos_contents | cell.radio_atmos_contents))
 					containing_cells += cell
 					if(remove_from_cells)
 						force_remove_from_cell(to_remove, cell)
@@ -587,14 +653,21 @@ SUBSYSTEM_DEF(spatial_grid)
 	var/raw_clients = 0
 	var/raw_hearables = 0
 	var/raw_atmos = 0
+	// var/raw_nonatmosradio = 0
+	// var/raw_atmosradio = 0
 
 	var/cells_with_clients = 0
 	var/cells_with_hearables = 0
 	var/cells_with_atmos = 0
+	// var/cells_with_nonatmos_radio = 0
+	// var/cells_with_atmos_radio = 0
 
 	var/list/client_list = list()
 	var/list/hearable_list = list()
 	var/list/atmos_list = list()
+	// var/list/naradio_list = list()
+	// var/list/aradio_list = list()
+
 
 	var/x_cell_count = world.maxx / SPATIAL_GRID_CELLSIZE
 	var/y_cell_count = world.maxy / SPATIAL_GRID_CELLSIZE
@@ -604,6 +677,8 @@ SUBSYSTEM_DEF(spatial_grid)
 	var/average_clients_per_cell = 0
 	var/average_hearables_per_cell = 0
 	var/average_atmos_mech_per_call = 0
+	// var/average_non_atmos_radios_per_cell = 0
+
 
 	var/hearable_min_x = x_cell_count
 	var/hearable_max_x = 1
@@ -622,6 +697,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 	var/atmos_min_y = y_cell_count
 	var/atmos_max_y = 1
+
+	#warn FINISH THIS LATER
 
 	var/list/inserted_clients = list()
 

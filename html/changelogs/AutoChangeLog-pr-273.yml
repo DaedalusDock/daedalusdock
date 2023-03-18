@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: An internals bug nobody noticed
+  - code_imp: Added debug code to tablet messaging

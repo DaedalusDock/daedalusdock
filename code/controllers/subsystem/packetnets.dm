@@ -212,7 +212,8 @@ SUBSYSTEM_DEF(packets)
 		start_point = get_turf(source)
 		if(!start_point)
 			return
-		if(packet.frequency == FREQ_ATMOS_CONTROL)
+		//Spatial Grids don't like being asked for negative ranges. -1 is valid and doesn't care about range anyways.
+		if(packet.frequency == FREQ_ATMOS_CONTROL && packet.range > 0)
 			_irps_spatialgrid(packet,source,start_point) //heehoo big list.
 			return
 
@@ -252,6 +253,8 @@ SUBSYSTEM_DEF(packets)
 				found = TRUE
 				break
 		if(!found)
+			continue
+		if((get_dist(start_point, listener) > packet.range))
 			continue
 		listener.receive_signal(packet)
 

@@ -49,8 +49,6 @@
 	limb_owner.bleed(rand(20, 40))
 	var/direction = pick(GLOB.cardinals)
 
-	if(dismember_type == DROPLIMB_BLUNT && !clean)
-		limb_owner.spray_blood(direction, 2)
 	if(!clean)
 		var/t_range = rand(2,max(throw_range/2, 2))
 		var/turf/target_turf = get_turf(src)
@@ -62,6 +60,9 @@
 			if(new_turf.density)
 				break
 		throw_at(target_turf, throw_range, throw_speed)
+
+		if(dismember_type == DROPLIMB_BLUNT)
+			limb_owner.spray_blood(direction, 2)
 
 	return TRUE
 

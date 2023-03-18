@@ -93,9 +93,8 @@
 		M.blood_volume = BLOOD_VOLUME_NORMAL
 
 	M.cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
-	for(var/organ in M.internal_organs)
-		var/obj/item/organ/O = organ
-		O.setOrganDamage(0)
+	for(var/obj/item/organ/organ as anything in M.internal_organs)
+		organ.setOrganDamage(0)
 	for(var/thing in M.diseases)
 		var/datum/disease/D = thing
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
@@ -1514,7 +1513,6 @@
 				if(W.bleeding())
 					W.bleed_timer = 0
 					W.clamp_wound()
-					BP.bodypart_flags &= ~BP_BLEEDING
 
 /datum/reagent/medicine/coagulant/overdose_process(mob/living/M, delta_time, times_fired)
 	. = ..()

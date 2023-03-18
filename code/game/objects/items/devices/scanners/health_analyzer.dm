@@ -254,7 +254,7 @@
 				[advanced ? "<td style='width:3em;'><font color='#ff0000'><b>Dmg</b></font></td>" : ""]\
 				<td style='width:12em;'><font color='#ff0000'><b>Status</b></font></td>"
 
-			for(var/obj/item/organ/organ in humantarget.internal_organs)
+			for(var/obj/item/organ/organ as anything in humantarget.internal_organs)
 				var/status = organ.get_status_text()
 				if (status != "")
 					render = TRUE
@@ -324,12 +324,12 @@
 		for(var/obj/item/bodypart/wounded_part as anything in carbontarget.get_wounded_bodyparts())
 			var/limb_result = "<span class='alert ml-2'>[capitalize(wounded_part.name)][!IS_ORGANIC_LIMB(wounded_part) ? " (Cybernetic)" : ""]:</span>"
 			if(wounded_part.brute_dam > 0)
-				limb_result = "[limb_result] \[[span_color("red", "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]</span>"
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE, "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]"
 			if(wounded_part.burn_dam > 0)
-				limb_result = "[limb_result] \[[span_color("#ffa500", "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]</span>"
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BURN, "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]"
 			if(wounded_part.bodypart_flags & BP_BLEEDING)
-				limb_result = "<span class='alert ml-2'>[limb_result] \[[span_color("red","bleeding")]\]</span>"
-			render_list += limb_result
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE,"<b>bleeding</b>")]\]</span>"
+			render_list += "[limb_result]\n"
 
 	//Diseases
 	for(var/thing in target.diseases)

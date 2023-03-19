@@ -55,3 +55,14 @@
   - rscadd: Leg wraps, available in the loadout pane
   - qol: The loadout pane entries list is now alphabetically sorted
   - bugfix: monkey runtime
+2023-03-19:
+  Kapu1178:
+  - bugfix: An internals bug nobody noticed
+  - code_imp: Added debug code to tablet messaging
+  Kapu1178, JohnFulpWillard:
+  - rscdel: Unrepairable limbs (too annoying code-wise, sorry guys)
+  - bugfix: Limbs now respect their maximum damage capacity again
+  - bugfix: Unremovable organs are now more unremovable.
+  - tweak: Simplified burn fluid burnoff.
+  - bugfix: Body temperature damage will never cause fluid burnoff.
+  - code_imp: Cleaned up some organ code

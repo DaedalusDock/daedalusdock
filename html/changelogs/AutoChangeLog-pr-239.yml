@@ -1,9 +1,0 @@
-author: Kapu1178, JohnFulpWillard
-delete-after: true
-changes:
-  - rscdel: Unrepairable limbs (too annoying code-wise, sorry guys)
-  - bugfix: Limbs now respect their maximum damage capacity again
-  - bugfix: Unremovable organs are now more unremovable.
-  - tweak: Simplified burn fluid burnoff.
-  - bugfix: Body temperature damage will never cause fluid burnoff.
-  - code_imp: Cleaned up some organ code

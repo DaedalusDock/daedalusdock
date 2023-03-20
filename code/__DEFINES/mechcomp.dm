@@ -2,17 +2,21 @@
 ///The max range that two devices can be linked.
 #define MC_LINK_RANGE 15
 
-///For use in Initialize(), add inputs to our input list.
-#define MC_ADD_INPUT(name, proc) inputs[name] = PROC_REF(proc)
-#define MC_ADD_CONFIG(name, proc) configs[name] = PROC_REF(proc)
-
-///Turn text into an mcmessage
-#define MC_WRAP_MESSAGE(text) new /datum/mcmessage(text)
 
 //Config entries
 #define MC_CFG_UNLINK_ALL "Unlink All"
 #define MC_CFG_LINK "Link Device"
 #define MC_CFG_OUTPUT_MESSAGE "Set Output Message"
+#define MC_CFG_SET_TRIGGER "Set Trigger"
+
+///For use in Initialize(), add inputs to our input list.
+#define MC_ADD_INPUT(name, proc) inputs[name] = PROC_REF(proc)
+#define MC_ADD_CONFIG(name, proc) configs[name] = PROC_REF(proc)
+#define MC_ADD_TRIGGER MC_ADD_CONFIG(MC_CFG_SET_TRIGGER, set_trigger)
+
+///Turn text into an mcmessage
+#define MC_WRAP_MESSAGE(text) new /datum/mcmessage(text)
+
 
 //Mechcomp signals. These are extremely special and thus dont use the COMSIG prefix.
 

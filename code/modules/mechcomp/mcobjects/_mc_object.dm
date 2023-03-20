@@ -47,6 +47,7 @@
 		if(!create_link(user, link.target))
 			return
 		qdel(link)
+		user.animate_interact(src, INTERACT_GENERIC)
 		return
 
 	var/action = input("Select a config to modify", "Configure Component", null) as null|anything in configs
@@ -85,6 +86,9 @@
 
 	if(get_dist(src, target) > MC_LINK_RANGE)
 		to_chat(user, span_warning("Those devices are too far apart to be linked!"))
+		return
+	if(interface.inputs[target.interface])
+		to_chat(user, span_warning("You cannot have multiple inputs taken by the same device!"))
 		return
 
 	var/list/options = inputs.Copy()

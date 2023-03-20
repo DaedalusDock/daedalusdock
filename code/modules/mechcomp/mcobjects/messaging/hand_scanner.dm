@@ -13,7 +13,7 @@
 	var/mob/living/carbon/human/H = user
 	add_fingerprint(H)
 	//playsoundhere
-	flick("comp_hscan1")
+	flick("comp_hscan1", src)
 	fire(md5(H.dna.unique_identity))
 	return TRUE
 

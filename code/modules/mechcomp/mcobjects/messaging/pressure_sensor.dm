@@ -26,6 +26,6 @@
 		return
 
 	COOLDOWN_START(src, cd, 0.2 SECONDS)
-	fire()
+	fire(stored_message)
 
 

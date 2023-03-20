@@ -12,11 +12,10 @@
 	return newmsg
 
 /datum/mcmessage/proc/Truthy()
-	return (cmd == MC_BOOL_TRUE)
+	return ((lowertext(cmd) == MC_BOOL_TRUE) || (cmd == "1"))
 
 /datum/mcmessage/proc/AddSender(datum/mcinterface/I)
 	senders += I
 
 /datum/mcmessage/proc/CheckSender(datum/mcinterface/I)
 	return (I in senders)
-

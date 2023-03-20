@@ -1,6 +1,6 @@
 //Thank you mark
 /obj/item/mcobject/messaging/regfind
-	name = "RegEx Find Component"
+	name = "regex find component"
 	base_icon_state = "comp_regfind"
 	var/replace_message = FALSE
 	var/expressionpatt = "\[a-zA-Z\]*"
@@ -17,8 +17,8 @@
 
 /obj/item/mcobject/messaging/regfind/examine(mob/user)
 	. = ..()
-	. += {"<br><span class='notice'>Current Expression: [sanitize(html_encode(expressionTT))]<br>
-	Replace Signal is [replace_message ? "on.":"off."]</span>"}
+	. += span_notice("Current Expression: [strip_html(expressionTT))]"
+	. += span_notice("Replace Signal is [replace_message ? "on.":"off."]")
 
 /obj/item/mcobject/messaging/regfind/proc/set_regex(datum/mcmessage/input)
 	expressionpatt = input.cmd

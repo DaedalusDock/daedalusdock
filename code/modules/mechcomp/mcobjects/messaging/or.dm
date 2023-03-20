@@ -15,7 +15,6 @@
 	MC_ADD_INPUT("input 9", _fire)
 	MC_ADD_INPUT("input 10", _fire)
 
-
 /obj/item/mcobject/messaging/or/proc/_fire(datum/mcmessage/input)
 	if(input.Truthy())
 		fire(stored_message, input)

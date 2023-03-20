@@ -7,7 +7,6 @@
 	MC_ADD_TRIGGER
 	MC_ADD_INPUT("split", split)
 
-
 /obj/item/mcobject/messaging/wifi_split/proc/split(datum/mcmessage/input)
 	var/list/data = params2list(input.cmd)
 	if(!length(data))

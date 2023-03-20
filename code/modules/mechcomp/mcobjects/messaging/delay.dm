@@ -14,6 +14,10 @@
 	. = ..()
 	icon_state = on ? "[icon_state]1" : icon_state
 
+/obj/item/mcobject/messaging/delay/examine(mob/user)
+	. = ..()
+	. = span_notice("Delay: [delay] tenths of a second.")
+
 /obj/item/mcobject/messaging/delay/proc/set_delay(mob/user, obj/item/tool)
 	var/time = input(user, "Enter delay in tenths of a second", "Configure Component", delay) as null|num
 	if(!time)

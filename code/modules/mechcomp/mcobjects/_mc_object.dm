@@ -106,5 +106,10 @@
 
 	to_chat(user, span_notice("You link [target] to [src]."))
 	interface.AddInput(target.interface, choice)
-
+	target.linked_to(src, user)
 	return TRUE
+
+///Called by create_link.
+/obj/item/mcobject/proc/linked_to(obj/item/mcobject/output, mob/user)
+	return
+

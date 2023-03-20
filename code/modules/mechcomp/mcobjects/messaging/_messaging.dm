@@ -10,6 +10,11 @@
 	. = ..()
 	MC_ADD_CONFIG(MC_CFG_OUTPUT_MESSAGE, set_output)
 
+/obj/item/mcobject/messaging/examine(mob/user)
+	. = ..()
+	if(config[MC_CFG_OUTPUT_MESSAGE])
+		. += span_notice("Output message: [stored_message]")
+
 /obj/item/mcobject/messaging/proc/set_output(mob/user, obj/item/tool)
 	var/msg = stripped_input(user, "Enter new message:", "Configure Component", stored_message)
 
@@ -32,5 +37,5 @@
 ///Relay a message to our outputs.
 /obj/item/mcobject/messaging/proc/fire(text, datum/mcmessage/relay)
 	SHOULD_CALL_PARENT(TRUE)
-	interface.Send(text, relay)
+	return interface.Send(text, relay)
 

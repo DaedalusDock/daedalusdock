@@ -1,4 +1,6 @@
-#define MC_BOOL_TRUE "true"
+#define MC_BOOL_TRUE "1"
+#define MC_BOOL_FALSE "0"
+
 ///The max range that two devices can be linked.
 #define MC_LINK_RANGE 15
 

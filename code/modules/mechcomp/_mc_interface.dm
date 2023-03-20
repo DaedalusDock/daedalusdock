@@ -57,37 +57,39 @@
 	if(origin == src)
 		return
 	origin ||= src
+	SEND_SIGNAL(src, MCACT_REMOVE_OUTPUT, target)
 	target.RemoveInput(src, origin)
 	outputs -= target
 
 ///Send an mcmessage to our outputs
-/datum/mcinterface/proc/Send(message, datum/mcmessage/cached_message)
+/datum/mcinterface/proc/Send(datum/mcmessage/message, datum/mcmessage/cached_message)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(isnull(message))
 		CRASH("Ahhhhhh null message aaaaaahhhhhh (dies)")
 
-	if(cached_message)
-		cached_message.cmd = message
-		message = cached_message
-	else
-		message = MC_WRAP_MESSAGE(message)
+	if(!istype(message))
+		if(cached_message)
+			cached_message.cmd = message
+			message = cached_message
+		else
+			message = MC_WRAP_MESSAGE(message)
 
 	//By now the message is a proper message datum
-	if(message:CheckSender(src))
+	if(message.CheckSender(src))
 		return FALSE
 
-	message:AddSender(src)
+	message.AddSender(src)
 
 	for(var/datum/mcinterface/I as anything in outputs)
-		var/action = SEND_SIGNAL(I, MCACT_PRE_RECEIVE_MESSAGE, message)
+		var/action = SEND_SIGNAL(src, MCACT_PRE_SEND_MESSAGE, I, message)
 		//Note: a target not handling a signal returns 0.
 		if(action == MCSEND_RETURN) //The component wants signal processing to stop NOW
 			return .
 		if(action == MCSEND_CANCEL) //The component wants this signal to be skipped
 			continue
 		var/obj/item/mcobject/O = I.owner
-		call(O, O.inputs[outputs[I]])(message:Copy())
-		. = 1
+		call(O, O.inputs[outputs[I]])(message.Copy())
+		. = TRUE
 		if(action == MCSEND_RETURN_AFTER) //The component wants signal processing to stop AFTER this signal
 			return .
 	return .

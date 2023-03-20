@@ -17,6 +17,11 @@
 	on = FALSE
 	return ..()
 
+/obj/item/mcobject/graviton_accelerator/on_wrench()
+	. = ..()
+	if(!anchored)
+		on = FALSE
+
 /obj/item/mcobject/graviton_accelerator/update_icon_state()
 	. = ..()
 	icon_state = anchored ? "u[base_icon_state]" : base_icon_state
@@ -45,11 +50,16 @@
 	update_icon_state()
 
 /obj/item/mcobject/graviton_accelerator/proc/on_entered(source, atom/movable/thing)
+	set waitfor = FALSE
+
 	if(!on)
 		return
 	if(thing.anchored)
 		return
+	if(!thing.has_gravity())
+		return
 
+	sleep(0.2 SECONDS)
 	yeet(thing)
 
 /obj/item/mcobject/graviton_accelerator/proc/yeet(atom/movable/thing)

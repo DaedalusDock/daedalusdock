@@ -26,7 +26,6 @@
 		return
 
 	COOLDOWN_START(src, cd, 0.2 SECONDS)
-	sleep(0.2 SECONDS)
 	trigger()
 
 

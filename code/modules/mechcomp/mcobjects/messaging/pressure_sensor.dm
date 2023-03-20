@@ -1,16 +1,16 @@
-/obj/item/mcobject/pressure_sensor
+/obj/item/mcobject/messaging/pressure_sensor
 	name = "pressure sensor"
 	base_icon_state = "comp_pressure"
 	COOLDOWN_DECLARE(cd)
 
-/obj/item/mcobject/pressure_sensor/Initialize(mapload)
+/obj/item/mcobject/messaging/pressure_sensor/Initialize(mapload)
 	. = ..()
 	var/static/list/connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, connections)
 
-/obj/item/mcobject/pressure_sensor/proc/on_entered(datum/source, atom/movable/thing)
+/obj/item/mcobject/messaging/pressure_sensor/proc/on_entered(datum/source, atom/movable/thing)
 	set waitfor = FALSE
 
 	if(!anchored)
@@ -26,6 +26,6 @@
 		return
 
 	COOLDOWN_START(src, cd, 0.2 SECONDS)
-	trigger()
+	fire()
 
 

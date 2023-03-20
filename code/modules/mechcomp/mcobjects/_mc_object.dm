@@ -4,8 +4,6 @@
 
 	///Our interface for communicating with other mcobjects
 	var/datum/mcinterface/interface
-	///The message we're prepared to send
-	var/datum/mcmessage/stored_message
 	///Configuration options
 	var/list/configs
 	///Inputs, basically pre-set acts. use MC_ADD_INPUT() to add.
@@ -14,11 +12,12 @@
 /obj/item/mcobject/Initialize(mapload)
 	. = ..()
 	interface = new(src)
-	RegisterSignal(interface, MCACT_RECEIVE_MESSAGE, PROC_REF(mechcomp_act))
-	stored_message = new(MC_BOOL_TRUE)
-	configs = list(MC_CFG_UNLINK_ALL, MC_CFG_LINK)
+	configs = list()
 	inputs = list()
 	update_icon_state()
+
+	MC_ADD_CONFIG(MC_CFG_UNLINK_ALL, unlink_all)
+	MC_ADD_CONFIG(MC_CFG_LINK, add_linker)
 
 /obj/item/mcobject/Destroy(force)
 	qdel(interface)
@@ -54,26 +53,24 @@
 	if(!action)
 		return
 
-	config_act(user, action, tool)
+	if(call(src, configs[action])(user, tool))
+		user.animate_interact(src, INTERACT_GENERIC)
 
 ///A multitool interaction is happening. Let's act on it.
-/obj/item/mcobject/proc/config_act(mob/user, action, obj/item/tool)
-	SHOULD_CALL_PARENT(TRUE)
-	switch(action)
-		if(MC_CFG_UNLINK_ALL)
-			interface.ClearConnections()
-			to_chat(user, span_notice("You remove all connections from [src]."))
-			return
+/obj/item/mcobject/proc/unlink_all(mob/user, obj/item/tool)
+	interface.ClearConnections()
+	to_chat(user, span_notice("You remove all connections from [src]."))
+	return TRUE
 
-		if(MC_CFG_LINK)
-			if(!tool)
-				CRASH("Something tried to create a multitool linker without a multitool.")
-			if(!anchored)
-				to_chat(user, span_warning("You cannot link an unsecured device!"))
-				return
-			tool.AddComponent(/datum/component/mclinker, src)
-			to_chat(user, span_notice("You prepare to link [src] with another device."))
-			return
+/obj/item/mcobject/proc/add_linker(mob/user, obj/item/tool)
+	if(!tool)
+		CRASH("Something tried to create a multitool linker without a multitool.")
+	if(!anchored)
+		to_chat(user, span_warning("You cannot link an unsecured device!"))
+		return
+	tool.AddComponent(/datum/component/mclinker, src)
+	to_chat(user, span_notice("You prepare to link [src] with another device."))
+	return TRUE
 
 /obj/item/mcobject/proc/create_link(mob/user, obj/item/mcobject/target)
 	SHOULD_CALL_PARENT(TRUE)
@@ -92,8 +89,8 @@
 
 	var/list/options = inputs.Copy()
 
-	for(var/thing in interface.trigger_inputs)
-		options -= interface.trigger_inputs[thing]
+	for(var/thing in interface.inputs)
+		options -= interface.inputs[thing]
 
 	if(!length(options))
 		to_chat(user, span_warning("[src] has no more inputs available!"))
@@ -104,18 +101,6 @@
 		return
 
 	to_chat(user, span_notice("You link [target] to [src]."))
-	interface.AddTriggerInput(target.interface, choice)
+	interface.AddInput(target.interface, choice)
 
 	return TRUE
-
-///Relay our stored_message to all of our outputs
-/obj/item/mcobject/proc/fire_stored_message()
-	SHOULD_CALL_PARENT(TRUE)
-	//interface.Send(stored_message)
-
-///Send out the pre-made commands to our outputs
-/obj/item/mcobject/proc/trigger()
-	interface.SendOutputActs()
-
-/obj/item/mcobject/proc/mechcomp_act(datum/mcmessage/act)
-	SHOULD_NOT_SLEEP(TRUE)

@@ -155,10 +155,7 @@
 	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
 		rate_of_change = ", but it's clotting up quickly!"
 	
-	if(!rate_of_change)
-		bleeding_severity += "."
-
-	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
+	to_chat(src, span_warning("[bleeding_severity][rate_of_change || "."]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
 /mob/living/carbon/human/bleed_warn(bleed_amt = 0, forced = FALSE)

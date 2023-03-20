@@ -5,19 +5,17 @@
 
 /obj/item/mcobject/messaging/Initialize(mapload)
 	. = ..()
-	configs += MC_CFG_OUTPUT_MESSAGE
+	MC_ADD_CONFIG(MC_CFG_OUTPUT_MESSAGE, set_output)
 
-/obj/item/mcobject/messaging/config_act(mob/user, action, obj/item/tool)
-	. = ..()
-	if(action == MC_CFG_OUTPUT_MESSAGE)
-		var/msg = stripped_input(user, "Enter new message:", "Configure Component", message)
+/obj/item/mcobject/messaging/proc/set_output(mob/user, obj/item/tool)
+	var/msg = stripped_input(user, "Enter new message:", "Configure Component", message)
 
-		if(isnull(msg))
-			return
-
-		message = msg
-		to_chat(user, span_notice("Output message set to [message]"))
+	if(isnull(msg))
 		return
+
+	message = msg
+	to_chat(user, span_notice("Output message set to [message]"))
+	return TRUE
 
 ///Relay our stored_message to all of our outputs
 /obj/item/mcobject/messaging/proc/fire()

@@ -1,5 +1,5 @@
 /obj/item/mcobject/synthcomp
-	name = "Sound Synthesizer"
+	name = "sound synthesizer component"
 	base_icon_state = "comp_synth"
 	COOLDOWN_DECLARE(cd)
 

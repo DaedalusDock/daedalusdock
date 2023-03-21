@@ -25,27 +25,28 @@
 	. += span_notice("Current trailing string: [sanitize(end_str)]")
 
 /obj/item/mcobject/messaging/signal_builder/proc/set_prefix(datum/mcmessage/input)
-	start_str = strip_html(input.cmd)
+	start_str = input.cmd
 
 /obj/item/mcobject/messaging/signal_builder/proc/set_suffix(datum/mcmessage/input)
-	end_str = strip_html(input.cmd)
+	end_str = input.cmd
 
 /obj/item/mcobject/messaging/signal_builder/proc/set_prefix_config(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Input a leading string", "Configure Component", start_str)
+	var/msg = input(user, "Input a leading string", "Configure Component", start_str)
 	start_str = msg
-	to_chat(user, span_notice("You set the leading string of [src] to [start_str]."))
+	to_chat(user, span_notice("You set the leading string of [src] to [html_encode(start_str)]."))
+	return TRUE
 
 /obj/item/mcobject/messaging/signal_builder/proc/set_suffix_config(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Input a trailing string", "Configure Component", end_str)
+	var/msg = input(user, "Input a trailing string", "Configure Component", end_str)
 	end_str = msg
-	to_chat(user, span_notice("You set the trailing string of [src] to [end_str]."))
+	to_chat(user, span_notice("You set the trailing string of [src] to [html_encode(start_str)]."))
+	return TRUE
 
 /obj/item/mcobject/messaging/signal_builder/proc/append_to_buffer(datum/mcmessage/input)
 	buffer = "[buffer][input.cmd]"
 
 /obj/item/mcobject/messaging/signal_builder/proc/send(datum/mcmessage/input)
 	var/message = "[start_str][buffer][end_str]"
-	message = strip_html(message)
 	input.cmd = message
 	fire(input)
 	buffer = ""

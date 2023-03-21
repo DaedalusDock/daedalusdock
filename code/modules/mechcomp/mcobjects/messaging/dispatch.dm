@@ -29,11 +29,13 @@
 /obj/item/mcobject/messaging/dispatch/proc/toggle_match(mob/user, obj/item/tool)
 	exact_match = !exact_match
 	to_chat(user, span_notice("You set the exact match mode of [src] to [exact_match ? "TRUE" : "FALSE"]"))
+	log_message("match mode set to [exact_match] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/dispatch/proc/toggle_single_output(mob/user, obj/item/tool)
 	single_output = !single_output
 	to_chat(user, span_notice("You set the single output mode of [src] to [exact_match ? "TRUE" : "FALSE"]"))
+	log_message("single output set to [single_output] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/dispatch/proc/dispatch(datum/mcmessage/input)

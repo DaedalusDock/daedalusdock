@@ -23,6 +23,7 @@
 
 	time_window = time
 	to_chat(user, span_notice("You set the time window of [src] to [time]."))
+	log_message("time window set to [time_window] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/and/proc/check1(datum/mcmessage/input)

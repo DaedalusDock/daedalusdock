@@ -35,27 +35,30 @@
 	expressionflag = input.cmd
 
 /obj/item/mcobject/messaging/regreplace/proc/set_pattern_cfg(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Enter pattern:", "Configure Component", expressionpatt)
+	var/msg = input(user, "Enter pattern:", "Configure Component", expressionpatt)
 	if(!msg)
 		return
 	expressionpatt = msg
-	to_chat(user, span_notice("You set the pattern of [src] to [expressionpatt]."))
+	to_chat(user, span_notice("You set the pattern of [src] to [html_encode(expressionpatt)]."))
+	log_message("pattern set to [expressionpatt] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/regreplace/proc/set_replacement_cfg(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Enter replacement:", "Configure Component", expressionrepl)
+	var/msg = input(user, "Enter replacement:", "Configure Component", expressionrepl)
 	if(!msg)
 		return
 	expressionrepl = msg
-	to_chat(user, span_notice("You set the replacement of [src] to [expressionrepl]."))
+	to_chat(user, span_notice("You set the replacement of [src] to [html_encode(expressionrepl)]."))
+	log_message("replacement set to [expressionrepl] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/regreplace/proc/set_flags_cfg(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Enter flags:", "Configure Component", expressionflag)
+	var/msg = input(user, "Enter flags:", "Configure Component", expressionflag)
 	if(!msg)
 		return
 	expressionflag = msg
-	to_chat(user, span_notice("You set the flags of [src] to [expressionflag]."))
+	to_chat(user, span_notice("You set the flags of [src] to [html_encode(expressionflag)]."))
+	log_message("expression flags set to [expressionflag] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/regreplace/proc/check_str(datum/mcmessage/input)

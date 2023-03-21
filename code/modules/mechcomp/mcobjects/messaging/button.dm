@@ -11,6 +11,7 @@
 		return
 	flick(icon_down, src)
 	fire(stored_message)
+	log_message("triggered by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/button/afterattack(atom/target, mob/user, proximity_flag, click_parameters)

@@ -50,17 +50,17 @@
 	send(input)
 
 /obj/item/mcobject/messaging/toggle/proc/set_on_message(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Input a string:", "Configure Component", on_signal)
+	var/msg = input(user, "Input a string:", "Configure Component", on_signal)
 	if(!msg)
 		return
 	on_signal = msg
-	to_chat(user, span_notice("You set [src]'s ON message to [on_signal]."))
+	to_chat(user, span_notice("You set [src]'s ON message to [html_encode(on_signal)]."))
 	return TRUE
 
 /obj/item/mcobject/messaging/toggle/proc/set_off_message(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Input a string:", "Configure Component", off_signal)
+	var/msg = input(user, "Input a string:", "Configure Component", off_signal)
 	if(!msg)
 		return
 	off_signal = msg
-	to_chat(user, span_notice("You set [src]'s OFF message to [off_signal]."))
+	to_chat(user, span_notice("You set [src]'s OFF message to [html_encode(off_signal)]."))
 	return TRUE

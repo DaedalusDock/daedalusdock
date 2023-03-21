@@ -25,6 +25,7 @@
 
 	delay = time
 	to_chat(user, span_notice("You set the delay on [src] to [delay]."))
+	log_message("delay set tp [delay] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/delay/proc/delay(datum/mcmessage/input)

@@ -15,6 +15,7 @@
 	//playsoundhere
 	flick("comp_hscan1", src)
 	fire(md5(H.dna.unique_identity))
+	log_message("scanned [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/hand_scanner/afterattack(atom/target, mob/user, proximity_flag, click_parameters)

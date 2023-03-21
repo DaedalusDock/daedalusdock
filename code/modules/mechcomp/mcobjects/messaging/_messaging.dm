@@ -16,22 +16,24 @@
 		. += span_notice("Output message: [stored_message]")
 
 /obj/item/mcobject/messaging/proc/set_output(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Enter new message:", "Configure Component", stored_message)
+	var/msg = input(user, "Enter new message:", "Configure Component", stored_message)
 
 	if(isnull(msg))
 		return
 
 	stored_message = msg
-	to_chat(user, span_notice("You set [src]'s output message to [stored_message]"))
+	to_chat(user, span_notice("You set [src]'s output message to [html_encode(stored_message)]"))
+	log_message("output message set to [stored_message] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 /obj/item/mcobject/messaging/proc/set_trigger(mob/user, obj/item/tool)
-	var/msg = stripped_input(user, "Enter trigger field:", "Configure Component", trigger)
+	var/msg = input(user, "Enter trigger field:", "Configure Component", trigger)
 
 	if(isnull(msg))
 		return
 	trigger = msg
-	to_chat(user, span_notice("You set the trigger of [src] to [trigger]."))
+	to_chat(user, span_notice("You set the trigger of [src] to [html_encode(trigger)]."))
+	log_message("trigger message set to [trigger] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 ///Relay a message to our outputs.

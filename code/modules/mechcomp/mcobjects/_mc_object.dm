@@ -29,6 +29,7 @@
 
 /obj/item/mcobject/wrench_act(mob/living/user, obj/item/tool)
 	if(default_unfasten_wrench(user, tool))
+		log_message("[anchored ? "wrenched down" : "unwrenched"] by [key_name(user)]", LOG_MECHCOMP)
 		on_wrench()
 
 ///Called on a successful wrench or unwrench
@@ -107,6 +108,7 @@
 	to_chat(user, span_notice("You link [target] to [src]."))
 	interface.AddInput(target.interface, choice)
 	target.linked_to(src, user)
+	log_message("linked to [target] at [loc_name(src)] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
 ///Called by create_link.

@@ -23,4 +23,5 @@
 /obj/item/mcobject/messaging/relay/proc/toggle_replace(mob/user, obj/item/tool)
 	replace_message = !replace_message
 	to_chat(user, span_notice("You set [src] to [replace_message ? "replace the incoming message" : "relay the incoming message"]."))
+	log_message("replacement set to [replace_message] by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE

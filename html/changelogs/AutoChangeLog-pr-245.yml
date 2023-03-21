@@ -1,0 +1,4 @@
+author: DTraitor
+delete-after: true
+changes:
+  - refactor: Replaced Pariah gun code with tg gun code.

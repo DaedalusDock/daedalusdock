@@ -31,7 +31,7 @@
 ///An input is being added to our interface's input list (target)
 #define MCACT_ADD_INPUT "mc_add_input"
 ///Called before sending a message incase we need to greeble it
-#define MCACT_PRE_RECEIVE_MESSAGE "mc_pre_message_Get"
+#define MCACT_PRE_SEND_MESSAGE "mc_pre_message_send"
 	#define MCSEND_OK 0
 	#define MCSEND_CANCEL (1<<0)
 	#define MCSEND_RETURN (1<<2)

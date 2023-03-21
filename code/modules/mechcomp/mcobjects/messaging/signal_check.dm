@@ -16,7 +16,7 @@
 /obj/item/mcobject/messaging/signal_check/examine(mob/user)
 	. = ..()
 	. += span_notice("[!fire_on_found ? "Component triggers when Signal is NOT found.":"Component triggers when Signal IS found."]")
-	. += span_notice("Message Replacement is [changesig ? "on.":"off."]")
+	. += span_notice("Message Replacement is [replace_message ? "on.":"off."]")
 	. += span_notice("Currently checking for: [strip_html(trigger)]")
 
 /obj/item/mcobject/messaging/signal_check/proc/set_trigger_comp(datum/mcmessage/input)

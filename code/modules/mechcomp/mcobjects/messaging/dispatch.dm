@@ -14,8 +14,8 @@
 /obj/item/mcobject/messaging/dispatch/Initialize(mapload)
 	. = ..()
 	outgoing_filters = list()
-	RegisterSignal(interface, MCACT_PRE_RECEIVE_MESSAGE, run_filter)
-	RegisterSignal(interface, MCACT_REMOVE_INPUT, remove_message_filter)
+	RegisterSignal(interface, MCACT_PRE_SEND_MESSAGE, PROC_REF(run_filter))
+	RegisterSignal(interface, MCACT_REMOVE_INPUT, PROC_REF(remove_message_filter))
 
 	MC_ADD_INPUT("dispatch", dispatch)
 	MC_ADD_CONFIG("Toggle Exact Matching", toggle_match)
@@ -25,7 +25,6 @@
 	. = ..()
 	. += span_notice("Exact match mode: [exact_match ? "on" : "off"]")
 	. += span_notice("Single output mode: [single_output ? "on" : "off"]")
-
 
 /obj/item/mcobject/messaging/dispatch/proc/toggle_match(mob/user, obj/item/tool)
 	exact_match = !exact_match
@@ -48,7 +47,7 @@
 		to_chat(user, span_notice("[src] will pass all messages to [output]."))
 		return
 
-	outgoing_filters[receiver.mcinterface] = splittext(filter, ",")
+	outgoing_filters[output.interface] = splittext(filter, ",")
 	to_chat(user, span_notice("[src] will only pass messages that [exact_match ? "match" : "contain"] [filter] to [output]."))
 
 /obj/item/mcobject/messaging/dispatch/proc/remove_message_filter(datum/mcinterface/source, datum/mcinterface/target)

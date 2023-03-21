@@ -27,7 +27,7 @@
 /obj/item/mcobject/messaging/signal_builder/proc/set_prefix(datum/mcmessage/input)
 	start_str = strip_html(input.cmd)
 
-/obj/item/mcobject/messaging/signal_builder/proc/set_prefix(datum/mcmessage/input)
+/obj/item/mcobject/messaging/signal_builder/proc/set_suffix(datum/mcmessage/input)
 	end_str = strip_html(input.cmd)
 
 /obj/item/mcobject/messaging/signal_builder/proc/set_prefix_config(mob/user, obj/item/tool)

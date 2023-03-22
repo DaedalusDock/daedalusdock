@@ -2,6 +2,10 @@
 	name = "hand scanner"
 	base_icon_state = "comp_hscan"
 
+/obj/item/mcobject/messaging/hand_scanner/Initialize(mapload)
+	. = ..()
+	configs -= MC_CFG_OUTPUT_MESSAGE
+
 /obj/item/mcobject/messaging/hand_scanner/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(!anchored)

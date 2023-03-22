@@ -12,7 +12,7 @@
 
 /obj/item/mcobject/messaging/examine(mob/user)
 	. = ..()
-	if(config[MC_CFG_OUTPUT_MESSAGE])
+	if(configs[MC_CFG_OUTPUT_MESSAGE])
 		. += span_notice("Output message: [stored_message]")
 
 /obj/item/mcobject/messaging/proc/set_output(mob/user, obj/item/tool)

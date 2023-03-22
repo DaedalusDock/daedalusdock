@@ -3280,6 +3280,7 @@
 #include "code\modules\mechcomp\mcobjects\sound_synthesizer.dm"
 #include "code\modules\mechcomp\mcobjects\messaging\_messaging.dm"
 #include "code\modules\mechcomp\mcobjects\messaging\and.dm"
+#include "code\modules\mechcomp\mcobjects\messaging\arithmetic.dm"
 #include "code\modules\mechcomp\mcobjects\messaging\button.dm"
 #include "code\modules\mechcomp\mcobjects\messaging\delay.dm"
 #include "code\modules\mechcomp\mcobjects\messaging\dispatch.dm"

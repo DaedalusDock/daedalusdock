@@ -3,6 +3,7 @@
 	base_icon_state = "comp_accel"
 
 	var/on = FALSE
+	COOLDOWN_DECLARE(cd)
 
 /obj/item/mcobject/graviton_accelerator/Initialize(mapload)
 	. = ..()
@@ -29,7 +30,7 @@
 
 /obj/item/mcobject/graviton_accelerator/proc/turn_on()
 	set waitfor = FALSE
-	if(on)
+	if(on || !COOLDOWN_FINISHED(src, cd))
 		return
 
 	on = TRUE
@@ -40,27 +41,33 @@
 				for(var/atom/movable/AM as anything in loc.contents - src)
 					if(!on)
 						return
+					if(ismob(AM) && !isliving(AM))
+						continue
+					if(iseffect(AM))
+						continue
 					yeet(AM)
 					CHECK_TICK
+				stoplag(1 SECOND)
 			else
 				stoplag()
 
 	sleep(2 SECONDS)
 	on = FALSE
 	update_icon_state()
+	COOLDOWN_START(src, cd, 1 SECOND)
 
 /obj/item/mcobject/graviton_accelerator/proc/on_entered(source, atom/movable/thing)
 	set waitfor = FALSE
 
 	if(!on)
 		return
-	if(thing.anchored)
-		return
-	if(!thing.has_gravity())
-		return
 
 	sleep(0.2 SECONDS)
 	yeet(thing)
 
 /obj/item/mcobject/graviton_accelerator/proc/yeet(atom/movable/thing)
-	thing.throw_at(get_edge_target_turf(src, dir), 8, 6)
+	if(thing.anchored)
+		return
+	if(!thing.has_gravity())
+		return
+	thing.safe_throw_at(get_edge_target_turf(src, dir), 8, 3)

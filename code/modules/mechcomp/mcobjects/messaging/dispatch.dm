@@ -1,6 +1,6 @@
 //THANK YOU VERY MUCH MARKNSTEIN OF GOONSTATION FOR ALLOWING ME TO PILFER THIS CODE
 /obj/item/mcobject/messaging/dispatch
-	name = "simple find component"
+	name = "dispatch component"
 	base_icon_state = "comp_disp"
 
 	var/exact_match = FALSE

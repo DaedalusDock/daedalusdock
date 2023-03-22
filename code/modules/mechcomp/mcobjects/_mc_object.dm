@@ -17,6 +17,7 @@
 	update_icon_state()
 
 	MC_ADD_CONFIG(MC_CFG_UNLINK_ALL, unlink_all)
+	MC_ADD_CONFIG(MC_CFG_UNLINK, unlink)
 	MC_ADD_CONFIG(MC_CFG_LINK, add_linker)
 
 /obj/item/mcobject/Destroy(force)
@@ -57,6 +58,23 @@
 
 	if(call(src, configs[action])(user, tool))
 		user.animate_interact(src, INTERACT_GENERIC)
+
+/obj/item/mcobject/proc/unlink(mob/user, obj/item/tool)
+	var/list/options = list()
+	for(var/_interface in interface.inputs)
+		options[_interface[inputs]] = _interface
+
+	if(!length(options))
+		to_chat(user, span_warning("There are no inputs being used!"))
+		return FALSE
+
+	var/remove = input(user, "Remove an input", "Configure Component") as null|anything in options
+	if(!remove)
+		return
+
+	interface.RemoveInput(options[remove])
+	to_chat(user, span_notice("You clear [options[remove]] from [src]."))
+	return TRUE
 
 ///A multitool interaction is happening. Let's act on it.
 /obj/item/mcobject/proc/unlink_all(mob/user, obj/item/tool)

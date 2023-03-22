@@ -7,6 +7,7 @@
 
 //Config entries
 #define MC_CFG_UNLINK_ALL "Unlink All"
+#define MC_CFG_UNLINK "Unlink Input"
 #define MC_CFG_LINK "Link Device"
 #define MC_CFG_OUTPUT_MESSAGE "Set Output Message"
 #define MC_CFG_SET_TRIGGER "Set Trigger"

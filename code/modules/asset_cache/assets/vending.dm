@@ -12,7 +12,7 @@
 			icon_file = SSgreyscale.GetColoredIconByType(initial(item.greyscale_config), initial(item.greyscale_colors))
 		else
 			icon_file = initial(item.icon)
-		var/icon_state = initial(item.icon_state) || initial(item.base_icon_state)
+		var/icon_state = initial(item.icon_state)
 		var/icon/I
 
 		var/icon_states_list = icon_states(icon_file)

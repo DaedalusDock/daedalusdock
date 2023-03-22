@@ -4,7 +4,7 @@
 
 	light_on = FALSE
 	light_outer_range = 3
-	light_power = 0.6
+	light_power = 0.75
 
 /obj/item/mcobject/led/Initialize(mapload)
 	. = ..()

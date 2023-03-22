@@ -6,7 +6,16 @@
 
 /obj/item/mcobject/messaging/relay/Initialize(mapload)
 	. = ..()
-	MC_ADD_INPUT("relay", relay)
+	MC_ADD_INPUT("input 1", relay)
+	MC_ADD_INPUT("input 2", relay)
+	MC_ADD_INPUT("input 3", relay)
+	MC_ADD_INPUT("input 4", relay)
+	MC_ADD_INPUT("input 5", relay)
+	MC_ADD_INPUT("input 6", relay)
+	MC_ADD_INPUT("input 7", relay)
+	MC_ADD_INPUT("input 8", relay)
+	MC_ADD_INPUT("input 9", relay)
+	MC_ADD_INPUT("input 10", relay)
 	MC_ADD_CONFIG("Toggle Message Replacement", toggle_replace)
 
 /obj/item/mcobject/messaging/relay/examine(mob/user)

@@ -33,13 +33,17 @@
 	return TRUE
 
 /obj/item/mcobject/messaging/signal_check/proc/check_str(datum/mcmessage/input)
-	if(findtext(input.cmd, trigger) && fire_on_found)
-		if(replace_message)
-			fire(stored_message, input)
-		else
-			fire(input)
+	var/found = findtext(input.cmd, trigger)
+	if(found)
+		if(fire_on_found)
+			if(replace_message)
+				fire(stored_message, input)
+			else
+				fire(input)
+
 	else
-		if(replace_message)
-			fire(stored_message, input)
-		else
-			fire(input)
+		if(!fire_on_found)
+			if(replace_message)
+				fire(stored_message, input)
+			else
+				fire(input)

@@ -31,11 +31,9 @@
 /obj/item/mcobject/wrench_act(mob/living/user, obj/item/tool)
 	if(default_unfasten_wrench(user, tool))
 		log_message("[anchored ? "wrenched down" : "unwrenched"] by [key_name(user)]", LOG_MECHCOMP)
-		on_wrench()
 
-///Called on a successful wrench or unwrench
-/obj/item/mcobject/proc/on_wrench()
-	SHOULD_CALL_PARENT(TRUE)
+/obj/item/mcobject/set_anchored(anchorvalue)
+	. = ..()
 	update_icon_state()
 	if(!anchored)
 		interface.ClearConnections()

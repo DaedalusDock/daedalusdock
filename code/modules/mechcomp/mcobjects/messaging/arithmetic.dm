@@ -86,10 +86,14 @@
 		if(ARITH_MULT)
 			. = A * B
 		if(ARITH_DIV)
-			if(B == 0)
-				. = "NaN"
-			else
+			try
 				. = A / B
+			catch
+				. = num2text((~0)**(~0)) //Incase this ever changes
+				spawn(0)
+					say("ERROR, CANNOT INTERPRET VALUE")
+					set_anchored(FALSE)
+					throw_at(get_edge_target_turf(pick(GLOB.cardinals), 3, 1))
 		if(ARITH_MOD)
 			. = A % B
 		if(ARITH_COMPARE_EQUAL)
@@ -109,9 +113,9 @@
 		if(ARITH_RAND)
 			. = rand(A, B)
 
-
 	if(!IS_SAFE(.))
-		. = "NaN"
+		. = num2text((~0)**(~0))
+
 	fire("[.]")
 
 #undef IS_SAFE

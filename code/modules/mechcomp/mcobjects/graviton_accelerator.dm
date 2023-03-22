@@ -18,7 +18,7 @@
 	on = FALSE
 	return ..()
 
-/obj/item/mcobject/graviton_accelerator/on_wrench()
+/obj/item/mcobject/graviton_accelerator/set_anchored(anchorvalue)
 	. = ..()
 	if(!anchored)
 		on = FALSE

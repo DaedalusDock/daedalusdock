@@ -59,8 +59,10 @@
 
 /obj/item/mcobject/proc/unlink(mob/user, obj/item/tool)
 	var/list/options = list()
-	for(var/_interface in interface.inputs)
-		options[_interface[inputs]] = _interface
+
+	for(var/datum/mcinterface/input in interface.inputs)
+		var/input_name = interface.inputs[input]
+		options["[input_name] ([_interface.owner])"] = input
 
 	if(!length(options))
 		to_chat(user, span_warning("There are no inputs being used!"))
@@ -71,7 +73,7 @@
 		return
 
 	interface.RemoveInput(options[remove])
-	to_chat(user, span_notice("You clear [options[remove]] from [src]."))
+	to_chat(user, span_notice("You clear [remove] from [src]."))
 	return TRUE
 
 ///A multitool interaction is happening. Let's act on it.

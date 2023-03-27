@@ -765,7 +765,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	else
 		qdel(target)
 
-/obj/item/proc/can_trigger_gun(mob/living/user)
+/obj/item/proc/can_trigger_gun(mob/living/user, akimbo_usage)
 	if(!user.can_use_guns(src))
 		return FALSE
 	return TRUE

@@ -62,7 +62,7 @@
 
 	for(var/datum/mcinterface/input in interface.inputs)
 		var/input_name = interface.inputs[input]
-		options["[input_name] ([_interface.owner])"] = input
+		options["[input_name] ([input.owner])"] = input
 
 	if(!length(options))
 		to_chat(user, span_warning("There are no inputs being used!"))

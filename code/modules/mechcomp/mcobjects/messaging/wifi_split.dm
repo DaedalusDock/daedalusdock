@@ -1,5 +1,5 @@
 /obj/item/mcobject/messaging/wifi_split
-	name = "wifi signal splitter component"
+	name = "array access component"
 	base_icon_state = "comp_split"
 	icon_state = "comp_split"
 

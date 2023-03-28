@@ -5,6 +5,7 @@
 
 	var/replace_message = FALSE
 	var/fire_on_found = TRUE
+	var/exact = FALSE
 
 /obj/item/mcobject/messaging/signal_check/Initialize(mapload)
 	. = ..()
@@ -13,12 +14,14 @@
 	MC_ADD_INPUT("check string", check_str)
 	MC_ADD_CONFIG("Invert Trigger", invert_trigger)
 	MC_ADD_CONFIG("Toggle Message Replacement", toggle_replace)
+	MC_ADD_CONFIG("Toggle Exact Search", toggle_exact)
 
 /obj/item/mcobject/messaging/signal_check/examine(mob/user)
 	. = ..()
 	. += span_notice("[!fire_on_found ? "Component triggers when Signal is NOT found.":"Component triggers when Signal IS found."]")
 	. += span_notice("Message Replacement is [replace_message ? "on.":"off."]")
 	. += span_notice("Currently checking for: [strip_html(trigger)]")
+	. += span_notice("Exact Search is [exact ? "on" : "off"].")
 
 /obj/item/mcobject/messaging/signal_check/proc/set_trigger_comp(datum/mcmessage/input)
 	trigger = input.cmd
@@ -33,8 +36,13 @@
 	to_chat(user, span_notice("You set [src] to [replace_message ? "forward it's own message":"forward the inputted message"]."))
 	return TRUE
 
+/obj/item/mcobject/messaging/signal_check/proc/toggle_exact(mob/user, obj/item/tool)
+	exact = !exact
+	to_chat(user, span_notice("You set [src] to [exact ? "only look for exact matches":"look for any occurances"]."))
+	return TRUE
+
 /obj/item/mcobject/messaging/signal_check/proc/check_str(datum/mcmessage/input)
-	var/found = findtext(input.cmd, trigger)
+	var/found = exact ? (input.cmd == trigger) : findtext(input.cmd, trigger)
 	if(found)
 		if(fire_on_found)
 			if(replace_message)

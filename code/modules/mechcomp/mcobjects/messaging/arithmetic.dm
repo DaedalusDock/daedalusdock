@@ -14,7 +14,7 @@
 
 #define IS_SAFE(number) (!(isnull(number) || IS_INF_OR_NAN(number)))
 /obj/item/mcobject/messaging/arithmetic
-	name = "AND component"
+	name = "arithmetic component"
 	base_icon_state = "comp_arith"
 	icon_state = "comp_arith"
 

@@ -1,6 +1,7 @@
 /obj/item/mcobject/led
 	name = "LED component"
 	base_icon_state = "comp_led"
+	icon_state = "comp_led"
 
 	light_on = FALSE
 	light_outer_range = 3

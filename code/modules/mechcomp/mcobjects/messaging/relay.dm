@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/relay
 	name = "relay component"
 	base_icon_state = "comp_relay"
+	icon_state = "comp_relay"
 
 	var/replace_message = FALSE
 

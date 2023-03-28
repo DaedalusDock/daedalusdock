@@ -1,6 +1,7 @@
 /obj/item/mcobject/graviton_accelerator
 	name = "graviton accelerator"
 	base_icon_state = "comp_accel"
+	icon_state = "comp_accel"
 
 	var/on = FALSE
 	COOLDOWN_DECLARE(cd)

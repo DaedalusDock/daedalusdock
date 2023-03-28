@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/signal_builder
 	name = "message builder component"
 	base_icon_state = "comp_builder"
+	icon_state = "comp_builder"
 
 	var/buffer = ""
 	var/start_str = ""

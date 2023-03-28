@@ -16,6 +16,7 @@
 /obj/item/mcobject/messaging/arithmetic
 	name = "AND component"
 	base_icon_state = "comp_arith"
+	icon_state = "comp_arith"
 
 	var/A
 	var/B

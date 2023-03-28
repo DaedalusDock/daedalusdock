@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/and
 	name = "AND component"
 	base_icon_state = "comp_and"
+	icon_state = "comp_and"
 
 	var/input1
 	var/input2

@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/signal_check
 	name = "simple find component"
 	base_icon_state = "comp_check"
+	icon_state = "comp_check"
 
 	var/replace_message = FALSE
 	var/fire_on_found = TRUE

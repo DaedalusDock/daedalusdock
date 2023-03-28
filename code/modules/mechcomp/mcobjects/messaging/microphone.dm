@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/microphone
 	name = "microphone component"
 	base_icon_state = "comp_mic"
+	icon_state = "comp_mic"
 
 	var/relay_speaker = FALSE
 /obj/item/mcobject/messaging/microphone/Initialize(mapload)

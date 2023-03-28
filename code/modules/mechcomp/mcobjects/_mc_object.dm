@@ -133,3 +133,7 @@
 /obj/item/mcobject/proc/linked_to(obj/item/mcobject/output, mob/user)
 	return
 
+
+/obj/item/mcobject/proc/flash()
+	animate(src, color = "#00FF00", time = 2)
+	animate(color = "#FFFFFF", time = 5, loop = 2)

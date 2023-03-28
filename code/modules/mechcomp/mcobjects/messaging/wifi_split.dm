@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/wifi_split
 	name = "wifi signal splitter component"
 	base_icon_state = "comp_split"
+	icon_state = "comp_split"
 
 /obj/item/mcobject/messaging/wifi_split/Initialize(mapload)
 	. = ..()

@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/hand_scanner
 	name = "hand scanner"
 	base_icon_state = "comp_hscan"
+	icon_state = "comp_hscan"
 
 /obj/item/mcobject/messaging/hand_scanner/Initialize(mapload)
 	. = ..()

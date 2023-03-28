@@ -2,6 +2,7 @@
 /obj/item/mcobject/messaging/dispatch
 	name = "dispatch component"
 	base_icon_state = "comp_disp"
+	icon_state = "comp_disp"
 
 	var/exact_match = FALSE
 	var/single_output = FALSE
@@ -39,9 +40,7 @@
 	return TRUE
 
 /obj/item/mcobject/messaging/dispatch/proc/dispatch(datum/mcmessage/input)
-	if(fire(input))
-		animate(src, color = "#00FF00", time = 2)
-		animate(color = "#FFFFFF", time = 5, loop = 2)
+	fire(input)
 
 /obj/item/mcobject/messaging/dispatch/linked_to(obj/item/mcobject/output, mob/user)
 	var/filter = input(user, "Add filters for this connection?", "Configure Component") as null|text

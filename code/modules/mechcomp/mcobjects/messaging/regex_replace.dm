@@ -2,6 +2,8 @@
 /obj/item/mcobject/messaging/regreplace
 	name = "RegEx Replace Component"
 	base_icon_state = "comp_regrep"
+	icon_state = "comp_regrep"
+
 	var/expressionpatt = "original"
 	var/expressionrepl = "replacement"
 	var/expressionflag = "g"

@@ -2,6 +2,8 @@
 /obj/item/mcobject/messaging/regfind
 	name = "regex find component"
 	base_icon_state = "comp_regfind"
+	icon_state = "comp_regfind"
+
 	var/replace_message = FALSE
 	var/expressionpatt = "\[a-zA-Z\]*"
 	var/expressionTT = "\[a-zA-Z\]*"

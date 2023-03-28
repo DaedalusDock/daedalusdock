@@ -1,6 +1,8 @@
 /obj/item/mcobject/messaging/pressure_sensor
 	name = "pressure sensor"
 	base_icon_state = "comp_pressure"
+	icon_state = "comp_pressure"
+
 	COOLDOWN_DECLARE(cd)
 
 /obj/item/mcobject/messaging/pressure_sensor/Initialize(mapload)

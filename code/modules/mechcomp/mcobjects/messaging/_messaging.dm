@@ -39,5 +39,7 @@
 ///Relay a message to our outputs.
 /obj/item/mcobject/messaging/proc/fire(text, datum/mcmessage/relay)
 	SHOULD_CALL_PARENT(TRUE)
-	return interface.Send(text, relay)
+	. = interface.Send(text, relay)
+	if(.)
+		flash()
 

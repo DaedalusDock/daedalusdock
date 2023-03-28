@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/toggle
 	name = "toggle component"
 	base_icon_state = "comp_toggle"
+	icon_state = "comp_toggle"
 
 	var/on = FALSE
 	var/on_signal = MC_BOOL_TRUE

@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/delay
 	name = "delay component"
 	base_icon_state = "comp_wait"
+	icon_state = "comp_wait"
 
 	var/on = FALSE
 	var/delay = 1 SECOND

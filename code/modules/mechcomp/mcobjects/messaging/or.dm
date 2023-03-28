@@ -1,6 +1,7 @@
 /obj/item/mcobject/messaging/or
 	name = "OR component"
 	base_icon_state = "comp_or"
+	icon_state = "comp_or"
 
 /obj/item/mcobject/messaging/or/Initialize(mapload)
 	. = ..()

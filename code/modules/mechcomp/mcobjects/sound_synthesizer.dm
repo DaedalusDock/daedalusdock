@@ -1,6 +1,8 @@
 /obj/item/mcobject/synthcomp
 	name = "sound synthesizer component"
 	base_icon_state = "comp_synth"
+	icon_state = "comp_synth"
+
 	COOLDOWN_DECLARE(cd)
 
 /obj/item/mcobject/synthcomp/Initialize(mapload)

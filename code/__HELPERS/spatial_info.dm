@@ -181,6 +181,7 @@
 	. = list()
 	for(var/obj/item/radio/radio as anything in radios)
 		if(radio.canhear_range == -1)
+			.[radio] = list()
 			continue
 		.[radio] = get_hearers_in_LOS(radio.canhear_range, radio, FALSE)
 

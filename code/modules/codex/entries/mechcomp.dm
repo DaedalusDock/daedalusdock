@@ -51,7 +51,7 @@
 	Add Association: Create a new Key:Value pair.<br>\
 	Remove Association: Remove a Key:Value pair.<br>\
 	<br>\
-	<b>Modes</b>\
+	<b>Modes</b><br>\
 	Mutable: A standard <span codexlink='Array (Data Type)'>Array</span>.<br>\
 	Immutable: A standard <span codexlink='Array (Data Type)'>Array</span> where Key:Value pairs cannot be modified once created.<br>\
 	List: Instead of replacing Values when inputting a new one, the new value will be appended to the old one."

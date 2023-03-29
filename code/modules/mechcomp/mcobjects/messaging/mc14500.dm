@@ -1,7 +1,7 @@
 //Everything in this file is owed to Goonstation's AngriestIBM. It is more or less 1:1 with his code, he allowed me to use it for this.
 
-var/list/hex_digit_mask = list("0"=1,"1"=2,"2"=4,"3"=8,"4"=16,"5"=32,"6"=64,"7"=128,"8"=256,"9"=512,"A"=1024,"B"=2048,"C"=4096,"D"=8192,"E"=16384,"F"=32768)
-var/list/hex_digit_values = list("0" = 0, "1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 5, "6" = 6, "7" = 7, "8" = 8, "9" = 9, "A" = 10, "B" = 11, "C" = 12, "D" = 13, "E" = 14, "F" = 15)
+GLOBAL_REAL_VAR(list/hex_digit_mask) = list("0"=1,"1"=2,"2"=4,"3"=8,"4"=16,"5"=32,"6"=64,"7"=128,"8"=256,"9"=512,"A"=1024,"B"=2048,"C"=4096,"D"=8192,"E"=16384,"F"=32768)
+GLOBAL_REAL_VAR(hex_digit_values) = list("0" = 0, "1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 5, "6" = 6, "7" = 7, "8" = 8, "9" = 9, "A" = 10, "B" = 11, "C" = 12, "D" = 13, "E" = 14, "F" = 15)
 
 /*
  *	Toy implementation of MC14500b industrial control unit, a 1970s 1-bit CMOS processor used to replace ladder logic.  It's a little baby PLC.
@@ -22,7 +22,7 @@ var/list/hex_digit_values = list("0" = 0, "1" = 1, "2" = 2, "3" = 3, "4" = 4, "5
  *	C (JMP) will adjust the program counter by up to 32 addresses, forward or backward from the current instruction. Arguments 8+ will subtract 7 and then jump 4x that value forward, less than that will jump back 4x(that value + 1)
  *	D (RTN) skip next instruction.  For some reason.
  *	E (SKZ) skip next instruction if RR is zero.
- */
+*/
 
 #define INSTRUCTIONS_PER_PROCESS 32
 #define MAX_ROM_SIZE 128
@@ -181,9 +181,9 @@ function update_mem_lights(mem)
 		"}
 
 
-		//WIP
-
-	/*desc = {"*	Instructions: Word size in this setup is one byte, one nibble is the instruction and the other is the operand. In that order. A0 is opcode A operand 0.<br>
+//WIP
+/*
+ *desc = {"*	Instructions: Word size in this setup is one byte, one nibble is the instruction and the other is the operand. In that order. A0 is opcode A operand 0.<br>
  *	0 and F are NOPs<br>
  *	1 (LD) loads an input value into the accumulator, RR.  Input 0 is !RR.<br>
  *	2 (LDC) acts like 1, but with the complement of the input<br>
@@ -200,7 +200,8 @@ function update_mem_lights(mem)
  *	D (RTN) skip next instruction.  For some reason.<br>
  *	E (SKZ) skip next instruction if RR is zero.<br>
  Output signals have the value \"PIN:VALUE\" i.e \"2:1\" to output true on pin 2.  You can filter this with OR gate triggers, ok.<br>
- Example program: \"30A0B01181\" Will AND RR with 0 on the first iteration (As IEN is zero) and AND it with !RR on subsequent loops(Both set it to zero), load !RR(1) into IEN and OEN, then load input 1 and send it to output 1.  This will repeat without end."}*/
+ Example program: \"30A0B01181\" Will AND RR with 0 on the first iteration (As IEN is zero) and AND it with !RR on subsequent loops(Both set it to zero), load !RR(1) into IEN and OEN, then load input 1 and send it to output 1.  This will repeat without end."}
+*/
 
 
 /obj/item/mcobject/messaging/mc14500/proc/interpret_instruction(instruction, argument)

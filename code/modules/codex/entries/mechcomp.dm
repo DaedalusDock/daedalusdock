@@ -80,7 +80,7 @@
 	Similar to the <span codexlink='Simple Find Component'>Simple Find Component</span>,
 	but it allows filters to be set on a per-connection basis. When creating an outgoing connection from the Dispatch Component,
 	you have the option to add a comma-delimited list of filters. The incoming signal must contain at least one of these filters
-	or it will not be passed to the connected component. The filter list can be left blank to allow all messages to pass.</p>
+	or it will not be passed to the connected component. The filter list can be left blank to allow all messages to pass.
 
 	<p>There is also an exact mode toggle - when exact mode is on, the incoming signal must match a filter exactly (case insensitive).
 	Connections with no filter will still fire for all messages in exact mode.
@@ -110,13 +110,13 @@
 
 /datum/codex_entry/mechcomp/regreplace
 	name = "RegEx Replace Component"
-	mechanics_text = "Uses <a href='http://www.byond.com/docs/ref/#/{notes}/regex'>Regular Expressions</a> to find-and-replace message contents. \
+	mechanics_text = "Uses <a href='http://www.byond.com/docs/ref/#/{notes}/regex' target='_blank'>Regular Expressions</a> to find-and-replace message contents. \
 	For advanced users!"
 	associated_paths = list(/obj/item/mcobject/messaging/regreplace)
 
 /datum/codex_entry/mechcomp/regfind
 	name = "RegEx Find Component"
-	mechanics_text = "Uses <a href='http://www.byond.com/docs/ref/#/{notes}/regex'>Regular Expressions</a> to find message contents. \
+	mechanics_text = "Uses <a href='http://www.byond.com/docs/ref/#/{notes}/regex' target='_blank'>Regular Expressions</a> to find message contents. \
 	For advanced users!"
 	associated_paths = list(/obj/item/mcobject/messaging/regfind)
 

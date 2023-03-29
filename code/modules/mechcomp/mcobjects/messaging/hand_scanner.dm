@@ -1,5 +1,5 @@
 /obj/item/mcobject/messaging/hand_scanner
-	name = "hand scanner"
+	name = "hand scanner component"
 	base_icon_state = "comp_hscan"
 	icon_state = "comp_hscan"
 

@@ -1,6 +1,6 @@
 //Thank you mark
 /obj/item/mcobject/messaging/regreplace
-	name = "RegEx Replace Component"
+	name = "regex replace component"
 	base_icon_state = "comp_regrep"
 	icon_state = "comp_regrep"
 

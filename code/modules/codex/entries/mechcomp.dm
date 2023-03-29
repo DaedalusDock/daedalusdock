@@ -9,7 +9,7 @@
 /datum/codex_entry/mechcomp/array
 	name = "Array (Data Type)"
 	mechanics_text = {"
-	<p>Components communicate by using text called Messages.Some components will output a special type called and Array, and require a
+	<p>Components communicate by using text called Messages. Some components will output a special type called and Array, and require a
 	<span codexlink='Array Access Component'>special component</span> to make use of.
 	Arrays are messages with a special format to denote they are an Array.</p>
 	<p>The \"=\" symbol creates a Key:Value pair, where accessing the Array using that Key will output the linked Value.</p>
@@ -115,7 +115,7 @@
 	associated_paths = list(/obj/item/mcobject/messaging/regreplace)
 
 /datum/codex_entry/mechcomp/regfind
-	name = "RegEx Replace Component"
+	name = "RegEx Find Component"
 	mechanics_text = "Uses <a href='http://www.byond.com/docs/ref/#/{notes}/regex'>Regular Expressions</a> to find message contents. \
 	For advanced users!"
 	associated_paths = list(/obj/item/mcobject/messaging/regfind)

@@ -667,7 +667,7 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 /datum/objective/capture/check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
 	var/captured_amount = 0
-	var/area/centcom/holding/A = GLOB.areas_by_type[/area/centcom/holding]
+	var/area/centcom/central_command_areas/holding/A = GLOB.areas_by_type[/area/centcom/central_command_areas/holding]
 	for(var/mob/living/carbon/human/M in A)//Humans.
 		if(ismonkey(M))
 			captured_amount+=0.1
@@ -860,14 +860,22 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 		var/list/all_items = M.current.get_all_contents() //this should get things in cheesewheels, books, etc.
 		for(var/obj/I in all_items) //Check for wanted items
 			if(is_type_in_typecache(I, wanted_items))
-				stolen_count++
+				if(check_if_valid_item(I))
+					stolen_count++
 	return stolen_count >= amount
+
+/datum/objective/steal_n_of_type/proc/check_if_valid_item(obj/item/current_item)
+	return TRUE
 
 /datum/objective/steal_n_of_type/summon_guns
 	name = "steal guns"
 	explanation_text = "Steal at least five guns!"
 	wanted_items = list(/obj/item/gun)
 	amount = 5
+
+/datum/objective/steal_n_of_type/summon_guns/check_if_valid_item(obj/item/current_item)
+	var/obj/item/gun/gun = current_item
+	return !(gun.gun_flags & NOT_A_REAL_GUN)
 
 /datum/objective/steal_n_of_type/summon_guns/thief
 	explanation_text = "Steal at least 3 guns!"

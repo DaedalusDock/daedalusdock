@@ -87,7 +87,7 @@
 
 	// We're officially behind them, apply effects
 	target.AdjustParalyzed(1.5 SECONDS)
-	target.apply_damage(10, BRUTE, wound_bonus = CANT_WOUND)
+	target.apply_damage(10, BRUTE)
 	target.balloon_alert(source, "backstab!")
 	playsound(get_turf(target), 'sound/weapons/guillotine.ogg', 100, TRUE)
 
@@ -218,7 +218,7 @@
 	route = PATH_BLADE
 
 /// The amount of blood flow reduced per level of severity of gained bleeding wounds for Stance of the Scarred Duelist.
-#define BLOOD_FLOW_PER_SEVEIRTY 1
+#define BLOOD_FLOW_PER_SEVERITY 1
 
 /datum/heretic_knowledge/duel_stance
 	name = "Stance of the Scarred Duelist"
@@ -264,10 +264,10 @@
 /datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 
-	if(gained_wound.blood_flow <= 0)
+	if(!gained_wound.bleed_timer)
 		return
 
-	gained_wound.blood_flow -= (gained_wound.severity * BLOOD_FLOW_PER_SEVEIRTY)
+	gained_wound.bleed_timer -= 15
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
 	SIGNAL_HANDLER
@@ -286,7 +286,7 @@
 		ADD_TRAIT(source, TRAIT_STUNRESISTANCE, type)
 		return
 
-#undef BLOOD_FLOW_PER_SEVEIRTY
+#undef BLOOD_FLOW_PER_SEVERITY
 
 /datum/heretic_knowledge/blade_upgrade/blade
 	name = "Swift Blades"
@@ -390,7 +390,6 @@
 		damage = bonus_damage,
 		damagetype = BRUTE,
 		spread_damage = TRUE,
-		wound_bonus = 5,
 		sharpness = SHARP_EDGED,
 		attack_direction = get_dir(source, target),
 	)

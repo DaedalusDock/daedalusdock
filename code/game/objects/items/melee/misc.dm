@@ -21,8 +21,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	force = 10
 	throwforce = 7
-	wound_bonus = 15
-	bare_wound_bonus = 10
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
@@ -72,8 +70,6 @@
 	attack_verb_simple = list("slash", "cut")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 	custom_materials = list(/datum/material/iron = 1000)
-	wound_bonus = 10
-	bare_wound_bonus = 25
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
@@ -171,7 +167,7 @@
 	playsound(get_turf(src), hitsound, 75, TRUE, -1)
 	return TOXLOSS
 
-/*
+
 /obj/item/melee/supermatter_sword
 	name = "supermatter sword"
 	desc = "In a station full of bad ideas, this might just be the worst."
@@ -185,14 +181,12 @@
 	force = 0.001
 	armour_penetration = 1000
 	force_string = "INFINITE"
-	var/obj/machinery/power/supermatter_crystal/shard
+	var/obj/machinery/power/supermatter/shard
 	var/balanced = 1
 
 /obj/item/melee/supermatter_sword/Initialize(mapload)
 	. = ..()
-	shard = new /obj/machinery/power/supermatter_crystal(src)
-	qdel(shard.countdown)
-	shard.countdown = null
+	shard = new /obj/machinery/power/supermatter/shard(src)
 	START_PROCESSING(SSobj, src)
 	visible_message(span_warning("[src] appears, balanced ever so perfectly on its hilt. This isn't ominous at all."))
 
@@ -273,7 +267,7 @@
 
 /obj/item/melee/supermatter_sword/add_blood_DNA(list/blood_dna)
 	return FALSE
-*/
+
 /obj/item/melee/curator_whip
 	name = "curator's whip"
 	desc = "Somewhat eccentric and outdated, it still stings like hell to be hit by."
@@ -320,7 +314,7 @@
 /obj/item/melee/roastingstick/Initialize(mapload)
 	. = ..()
 	if (!ovens)
-		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter_crystal, /obj/structure/bonfire))
+		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter, /obj/structure/bonfire))
 	AddComponent(/datum/component/transforming, \
 		hitsound_on = hitsound, \
 		clumsy_check = FALSE)

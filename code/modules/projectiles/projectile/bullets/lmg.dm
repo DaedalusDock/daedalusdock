@@ -30,8 +30,6 @@
 	name = "7.12x82mm bullet"
 	damage = 30
 	armour_penetration = 5
-	wound_bonus = -50
-	wound_falloff_tile = 0
 
 /obj/projectile/bullet/mm712x82/ap
 	name = "7.12x82mm armor-piercing bullet"
@@ -42,9 +40,6 @@
 	damage = 50
 	sharpness = SHARP_EDGED
 	weak_against_armour = TRUE
-	wound_bonus = -40
-	bare_wound_bonus = 30
-	wound_falloff_tile = -8
 
 /obj/projectile/bullet/incendiary/mm712x82
 	name = "7.12x82mm incendiary bullet"

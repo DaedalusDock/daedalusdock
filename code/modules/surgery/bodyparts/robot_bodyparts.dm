@@ -26,6 +26,8 @@
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 	brute_reduction = 5
 	burn_reduction = 4
 
@@ -52,6 +54,8 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
+
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	brute_reduction = 5
 	burn_reduction = 4
@@ -80,6 +84,8 @@
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 	brute_reduction = 5
 	burn_reduction = 4
 
@@ -107,6 +113,8 @@
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 	brute_reduction = 5
 	burn_reduction = 4
 
@@ -132,6 +140,8 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
+
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	brute_reduction = 5
 	burn_reduction = 4
@@ -241,6 +251,8 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
+
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	brute_reduction = 5
 	burn_reduction = 4

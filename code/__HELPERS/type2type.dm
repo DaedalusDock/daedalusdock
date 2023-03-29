@@ -174,54 +174,53 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 
 //Turns a Body_parts_covered bitfield into a list of organ/limb names.
 //(I challenge you to find a use for this) -I found a use for it!! | So did I!.
-/proc/cover_flags2body_zones(bpc)
+/proc/cover_flags2body_zones(bpc, exact_only = FALSE)
 	var/list/covered_parts = list()
 
 	if(!bpc)
 		return 0
 
 	if(bpc == FULL_BODY)
-		covered_parts |= list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM,BODY_ZONE_HEAD,BODY_ZONE_CHEST,BODY_ZONE_L_LEG,BODY_ZONE_R_LEG)
+		return list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM,BODY_ZONE_HEAD,BODY_ZONE_CHEST,BODY_ZONE_L_LEG,BODY_ZONE_R_LEG)
 
+	if(bpc & HEAD)
+		covered_parts |= BODY_ZONE_HEAD
+	if(bpc & CHEST)
+		covered_parts |= BODY_ZONE_CHEST
+	if(bpc & GROIN)
+		covered_parts |= BODY_ZONE_CHEST
+
+	if(bpc & ARMS)
+		covered_parts |= list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM)
 	else
-		if(bpc & HEAD)
-			covered_parts |= list(BODY_ZONE_HEAD)
-		if(bpc & CHEST)
-			covered_parts |= list(BODY_ZONE_CHEST)
-		if(bpc & GROIN)
-			covered_parts |= list(BODY_ZONE_CHEST)
+		if(bpc & ARM_LEFT)
+			covered_parts |= BODY_ZONE_L_ARM
+		if(bpc & ARM_RIGHT)
+			covered_parts |= BODY_ZONE_R_ARM
 
-		if(bpc & ARMS)
-			covered_parts |= list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM)
-		else
-			if(bpc & ARM_LEFT)
-				covered_parts |= list(BODY_ZONE_L_ARM)
-			if(bpc & ARM_RIGHT)
-				covered_parts |= list(BODY_ZONE_R_ARM)
+	if(bpc & LEGS)
+		covered_parts |= list(BODY_ZONE_L_LEG,BODY_ZONE_R_LEG)
+	else
+		if(bpc & LEG_LEFT)
+			covered_parts |= BODY_ZONE_L_LEG
+		if(bpc & LEG_RIGHT)
+			covered_parts |= BODY_ZONE_R_LEG
 
-		if(bpc & HANDS)
-			covered_parts |= list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM)
-		else
-			if(bpc & HAND_LEFT)
-				covered_parts |= list(BODY_ZONE_L_ARM)
-			if(bpc & HAND_RIGHT)
-				covered_parts |= list(BODY_ZONE_R_ARM)
-
-		if(bpc & LEGS)
-			covered_parts |= list(BODY_ZONE_L_LEG,BODY_ZONE_R_LEG)
-		else
-			if(bpc & LEG_LEFT)
-				covered_parts |= list(BODY_ZONE_L_LEG)
-			if(bpc & LEG_RIGHT)
-				covered_parts |= list(BODY_ZONE_R_LEG)
-
+	if(!exact_only)
 		if(bpc & FEET)
 			covered_parts |= list(BODY_ZONE_L_LEG,BODY_ZONE_R_LEG)
 		else
 			if(bpc & FOOT_LEFT)
-				covered_parts |= list(BODY_ZONE_L_LEG)
+				covered_parts |= BODY_ZONE_L_LEG
 			if(bpc & FOOT_RIGHT)
-				covered_parts |= list(BODY_ZONE_R_LEG)
+				covered_parts |= BODY_ZONE_R_LEG
+		if(bpc & HANDS)
+			covered_parts |= list(BODY_ZONE_L_ARM,BODY_ZONE_R_ARM)
+		else
+			if(bpc & HAND_LEFT)
+				covered_parts |= BODY_ZONE_L_ARM
+			if(bpc & HAND_RIGHT)
+				covered_parts |= BODY_ZONE_R_ARM
 
 	return covered_parts
 

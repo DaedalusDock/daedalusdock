@@ -152,7 +152,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			log_admin("[key_name(holder)] reset the thunderdome to default with delete_mobs==[delete_mobs].", 1)
 			message_admins(span_adminnotice("[key_name_admin(holder)] reset the thunderdome to default with delete_mobs==[delete_mobs]."))
 
-			var/area/thunderdome = GLOB.areas_by_type[/area/tdome/arena]
+			var/area/thunderdome = GLOB.areas_by_type[/area/centcom/tdome/arena]
 			if(delete_mobs == "Yes")
 				for(var/mob/living/mob in thunderdome)
 					qdel(mob) //Clear mobs
@@ -332,8 +332,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 				return
 			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Egalitarian Station"))
 			for(var/obj/machinery/door/airlock/W in GLOB.machines)
-				if(is_station_level(W.z) && !istype(get_area(W), /area/command) && !istype(get_area(W), /area/commons) && !istype(get_area(W), /area/service) && !istype(get_area(W), /area/command/heads_quarters) && !istype(get_area(W), /area/security/prison))
-					W.req_access = list()
+				if(is_station_level(W.z) && !istype(get_area(W), /area/station/command) && !istype(get_area(W), /area/station/commons) && !istype(get_area(W), /area/station/service) && !istype(get_area(W), /area/station/command/heads_quarters) && !istype(get_area(W), /area/station/security/prison))					W.req_access = list()
 			message_admins("[key_name_admin(holder)] activated Egalitarian Station mode")
 			priority_announce("CentCom airlock control override activated. Please take this time to get acquainted with your coworkers.")
 		if("ancap")
@@ -428,7 +427,6 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 					portalAnnounce(prefs["announcement"]["value"], (prefs["playlightning"]["value"] == "Yes" ? TRUE : FALSE))
 
 				var/mutable_appearance/storm = mutable_appearance('icons/obj/tesla_engine/energy_ball.dmi', "energy_ball_fast", FLY_LAYER)
-				storm.plane =  ABOVE_GAME_PLANE
 				storm.color = prefs["color"]["value"]
 
 				message_admins("[key_name_admin(holder)] has created a customized portal storm that will spawn [prefs["portalnum"]["value"]] portals, each of them spawning [prefs["amount"]["value"]] of [pathToSpawn]")

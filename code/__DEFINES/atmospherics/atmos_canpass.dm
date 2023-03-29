@@ -63,7 +63,7 @@
 	else if ((A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED)) { \
 		ret = ZONE_BLOCKED; \
 	} \
-	else if (A.contents.len) { \
+	else if (length(A.contents)) { \
 		ret = 0;\
 		for (var/atom/movable/AM as anything in A) { \
 			switch (AM.can_atmos_pass) { \

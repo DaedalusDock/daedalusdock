@@ -198,7 +198,7 @@
 		return FALSE
 
 	// Priority 1: use air from environment.
-	var/datum/gas_mixture/environment = owner_turf.return_air()
+	var/datum/gas_mixture/environment = owner_turf.unsafe_return_air()
 	if(environment && environment.returnPressure() > 30)
 		return TRUE
 
@@ -215,7 +215,7 @@
 		if(!use_fuel)
 			return TRUE
 		var/datum/gas_mixture/removed = internal_mix.remove(num)
-		if(removed.get_moles() > 0.005)
+		if(removed.total_moles > 0.005)
 			owner_turf.assume_air(removed)
 			return TRUE
 		else

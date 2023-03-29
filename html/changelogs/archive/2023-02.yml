@@ -158,3 +158,46 @@
 2023-02-15:
   Kapu1178:
   - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.
+2023-02-17:
+  MrStonedOne:
+  - code_imp: The mc now keeps track of how many times a subsystem has slept in fire()
+  ShizCalev:
+  - bugfix: Explosions don't cause runtimes anymore. Atleast not as many. I'd insert
+      a trolleybus emote here but the emoji stripper will remove it.
+  francinum:
+  - qol: Developers can bypass observer checks to watch map generation
+2023-02-18:
+  Kapu1178:
+  - rscadd: Baystation wounds
+  - rscadd: Bone resetting surgery
+  - rscdel: TG wounds
+  - rscdel: scars
+2023-02-19:
+  DTraitor:
+  - code_imp: swapped chest and head order in bodyparts list
+  Kapu1178:
+  - rscdel: Gasmasks no longer inhibit vision.
+2023-02-22:
+  Kapu1178:
+  - bugfix: Revenant can drain souls again.
+  - bugfix: You will no longer scream repeatedly when taking many small ticks of damage.
+  - rscadd: ZAS is faster. We take those.
+  francinum:
+  - imageadd: TGUI's base theme has been significantly brightened
+2023-02-23:
+  francinum:
+  - bugfix: Autoname cameras can now be selected properly
+  - config: Server owners can now staple text to the new round notice
+  - rscdel: This removes an already unused config entry that was intended to serve
+      the same purpose, CHAT_NEW_GAME_NOTIFICATIONS
+2023-02-25:
+  san7890:
+  - bugfix: If you ever chance upon Multi-Z Debug Station, rest assured that it now
+      uses the right kind of space.
+  - imageadd: On the mapping end, we've removed some duplicate names for different
+      icons.
+  - bugfix: If you haven't been able to see any working space ruins lately, that's
+      our bad. Should be fixed now.
+2023-02-28:
+  Kapu1178:
+  - balance: Hunger decreases 5x slower.

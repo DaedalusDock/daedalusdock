@@ -212,6 +212,10 @@
 #define BIOWARE_LIGAMENTS "ligaments"
 #define BIOWARE_CORTEX "cortex"
 
+#define SURGERY_CLOSED 0
+#define SURGERY_OPEN 1
+#define SURGERY_RETRACTED 2
+
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
 #define SCREWYHUD_CRIT 1
@@ -419,9 +423,6 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define HUNGER_FACTOR 0.05 //factor at which mob nutrition decreases
-#define ETHEREAL_CHARGE_FACTOR 0.8 //factor at which ethereal's charge decreases per second
-#define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
 // Eye protection
@@ -586,17 +587,19 @@
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays
-#define TOTAL_LAYERS 33 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
+#define TOTAL_LAYERS 34 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
 /// Mutations layer - Tk headglows, cold resistance glow, etc
-#define MUTATIONS_LAYER 33
+#define MUTATIONS_LAYER 34
 /// Mutantrace features (tail when looking south) that must appear behind the body parts
-#define BODY_BEHIND_LAYER 32
+#define BODY_BEHIND_LAYER 33
 /// Layer for bodyparts that should appear behind every other bodypart - Mostly, legs when facing WEST or EAST
-#define BODYPARTS_LOW_LAYER 31
+#define BODYPARTS_LOW_LAYER 32
 /// Layer for most bodyparts, appears above BODYPARTS_LOW_LAYER and below BODYPARTS_HIGH_LAYER
-#define BODYPARTS_LAYER 30
+#define BODYPARTS_LAYER 31
 /// Mutantrace features (snout, body markings) that must appear above the body parts
-#define BODY_ADJ_LAYER 29
+#define BODY_ADJ_LAYER 30
+/// Eyes!
+#define EYE_LAYER 29
 /// Underwear, undershirts, socks, eyes, lips(makeup)
 #define BODY_LAYER 28
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)

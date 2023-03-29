@@ -47,7 +47,7 @@
 
 /obj/machinery/portable_atmospherics/pump/process_atmos()
 	var/pressure = air_contents.returnPressure()
-	var/temperature = air_contents.get_temperature()
+	var/temperature = air_contents.temperature
 	///function used to check the limit of the pumps and also set the amount of damage that the pump can receive, if the heat and pressure are way higher than the limit the more damage will be done
 	if(temperature > heat_limit || pressure > pressure_limit)
 		take_damage(clamp((temperature/heat_limit) * (pressure/pressure_limit), 5, 50), BURN, 0)
@@ -67,7 +67,7 @@
 	if(holding)
 		environment = holding.air_contents
 	else
-		environment = local_turf.return_air()
+		environment = local_turf.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 
 	if(direction == PUMP_OUT)
 		pressure_delta = target_pressure - environment.returnPressure()
@@ -87,6 +87,8 @@
 		else
 			draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
 		ATMOS_USE_POWER(draw)
+		if(!holding)
+			SAFE_ZAS_UPDATE(local_turf)
 
 	return ..()
 

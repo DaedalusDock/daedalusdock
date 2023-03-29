@@ -53,7 +53,8 @@
 		for(var/obj/item/bodypart/bodypart_to_break in carbon_batman.bodyparts)
 			if(bodypart_to_break.body_zone == BODY_ZONE_HEAD)
 				continue
-			bodypart_to_break.receive_damage(brute = 15, wound_bonus = 35)
+			bodypart_to_break.receive_damage(brute = 15)
+			bodypart_to_break.break_bones()
 	else
 		batman.adjustBruteLoss(150)
 

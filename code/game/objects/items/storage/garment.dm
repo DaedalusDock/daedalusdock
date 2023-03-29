@@ -23,8 +23,8 @@
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the research director."
 
 /obj/item/storage/bag/garment/chief_medical
-	name = "chief medical officer's garment bag"
-	desc = "A bag for storing extra clothes and shoes. This one belongs to the chief medical officer."
+	name = "medical director's garment bag"
+	desc = "A bag for storing extra clothes and shoes. This one belongs to the medical director."
 
 /obj/item/storage/bag/garment/engineering_chief
 	name = "chief engineer's garment bag"

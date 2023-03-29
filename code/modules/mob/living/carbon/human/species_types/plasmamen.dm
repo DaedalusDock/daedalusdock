@@ -72,7 +72,7 @@
 		return
 	if(!atmos_sealed && (!istype(H.w_uniform, /obj/item/clothing/under/plasmaman) || !istype(H.head, /obj/item/clothing/head/helmet/space/plasmaman) || !istype(H.gloves, /obj/item/clothing/gloves)))
 		var/datum/gas_mixture/environment = H.loc.return_air()
-		if(environment?.get_moles())
+		if(environment?.total_moles)
 			/*if(environment.gases[/datum/gas/hypernoblium] && (environment.gases[/datum/gas/hypernoblium][MOLES]) >= 5)
 				if(H.on_fire && H.fire_stacks > 0)
 					H.adjust_fire_stacks(-10 * delta_time)*/
@@ -125,10 +125,11 @@
 	. = ..()
 	if(istype(chem, /datum/reagent/toxin/plasma))
 		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		for(var/i in H.all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.on_xadone(4 * REAGENTS_EFFECT_MULTIPLIER * delta_time) // plasmamen use plasma to reform their bones or whatever
+		if(prob(10))
+			for(var/obj/item/bodypart/BP as anything in H.bodyparts)
+				BP.heal_bones()
 		return TRUE
+
 	if(istype(chem, /datum/reagent/toxin/bonehurtingjuice))
 		H.adjustStaminaLoss(7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
 		H.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)

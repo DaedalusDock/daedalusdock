@@ -951,7 +951,7 @@
 		playsound(user, toysound, 20, TRUE)
 
 /obj/item/toy/figure/cmo
-	name = "\improper Chief Medical Officer action figure"
+	name = "\improper Medical Director action figure"
 	icon_state = "cmo"
 	toysay = "Suit sensors!"
 

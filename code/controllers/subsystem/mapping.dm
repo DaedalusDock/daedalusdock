@@ -45,6 +45,10 @@ SUBSYSTEM_DEF(mapping)
 	///list of all z level indices that form multiz connections and whether theyre linked up or down.
 	///list of lists, inner lists are of the form: list("up or down link direction" = TRUE)
 	var/list/multiz_levels = list()
+
+	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_z_connected()
+	VAR_PRIVATE/list/linked_zlevels = list()
+
 	var/datum/space_level/transit
 	var/datum/space_level/empty_space
 	var/num_of_res_levels = 1
@@ -138,8 +142,15 @@ SUBSYSTEM_DEF(mapping)
 	multiz_levels[z_level] = list()
 	if(linked_down)
 		multiz_levels[z_level]["[DOWN]"] = TRUE
+		. = TRUE
 	if(linked_up)
 		multiz_levels[z_level]["[UP]"] = TRUE
+		. = TRUE
+
+	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
+	if(.)
+		stack_trace("Multi-Z map enabled with MULTIZAS enabled.")
+	#endif
 
 /datum/controller/subsystem/mapping/proc/calculate_z_level_gravity(z_level_number)
 	if(!isnum(z_level_number) || z_level_number < 1)
@@ -358,7 +369,7 @@ Used by the AI doomsday and the self-destruct nuke.
 GLOBAL_LIST_EMPTY(the_station_areas)
 
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
-	var/static/list/station_areas_blacklist = typecacheof(list(/area/space, /area/mine, /area/ruin, /area/asteroid/nearstation))
+	var/static/list/station_areas_blacklist = typecacheof(list(/area/space, /area/mine, /area/ruin, /area/centcom/asteroid/nearstation))
 	for(var/area/A in world)
 		if (is_type_in_typecache(A, station_areas_blacklist))
 			continue

@@ -109,7 +109,8 @@ SUBSYSTEM_DEF(ticker)
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
 			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
-			send2chat("New round starting on [SSmapping.config.map_name]!", CONFIG_GET(string/chat_announce_new_game))
+			var/newround_staple = CONFIG_GET(string/chat_newgame_staple)
+			send2chat("New round starting on [SSmapping.config.map_name][newround_staple ? ", [newround_staple]" : null]!", CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
@@ -266,9 +267,6 @@ SUBSYSTEM_DEF(ticker)
 		if(!ishuman(i))
 			continue
 		var/mob/living/carbon/human/iter_human = i
-
-		iter_human.increment_scar_slot()
-		iter_human.load_persistent_scars()
 
 		if(!iter_human.hardcore_survival_score)
 			continue

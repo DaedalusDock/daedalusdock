@@ -175,8 +175,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Geneticist"
 
 /obj/effect/landmark/start/chief_medical_officer
-	name = "Chief Medical Officer"
-	icon_state = "Chief Medical Officer"
+	name = "Medical Director"
+	icon_state = "Medical Director"
 
 /obj/effect/landmark/start/virologist
 	name = "Virologist"

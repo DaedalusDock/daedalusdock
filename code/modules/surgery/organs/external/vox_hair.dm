@@ -1,4 +1,5 @@
 /obj/item/organ/external/vox_hair
+	name = "head quills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
 	layers = EXTERNAL_ADJACENT
@@ -20,6 +21,7 @@
 	return GLOB.vox_hair_list
 
 /obj/item/organ/external/vox_hair/facial
+	name = "facial quills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
 	layers = EXTERNAL_ADJACENT

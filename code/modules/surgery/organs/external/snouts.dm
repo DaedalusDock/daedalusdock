@@ -1,4 +1,5 @@
 /obj/item/organ/external/snout
+	name = "snout"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_SNOUT
 	layers = EXTERNAL_ADJACENT
@@ -19,6 +20,7 @@
 
 ///Guess what part of the vox is this?
 /obj/item/organ/external/snout/vox
+	name = "beak"
 	feature_key = "vox_snout"
 	preference = "feature_vox_snout"
 

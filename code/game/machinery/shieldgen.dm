@@ -16,13 +16,10 @@
 	setDir(pick(GLOB.cardinals))
 	zas_update_loc()
 
-/obj/structure/emergency_shield/Destroy()
-	zas_update_loc()
-	. = ..()
-
 /obj/structure/emergency_shield/Move()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/emergency_shield/emp_act(severity)
 	. = ..()
@@ -68,7 +65,6 @@
 	max_integrity = 20
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 
 /obj/structure/emergency_shield/cult/barrier
 	density = FALSE //toggled on right away by the parent rune

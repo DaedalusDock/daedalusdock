@@ -29,6 +29,8 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		GLOB.all_loadout_datums[spawned_type.item_path] = spawned_type
 		. |= spawned_type
 
+	sortTim(., GLOBAL_PROC_REF(cmp_name_asc))
+
 /// Loadout item datum.
 /// Holds all the information about each loadout items.
 /// A list of singleton loadout items are generated on initialize.

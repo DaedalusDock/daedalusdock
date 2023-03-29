@@ -1,5 +1,6 @@
 ///Wing base type. doesn't really do anything
 /obj/item/organ/external/wings
+	name = "wings"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_WINGS
 	layers = ALL_EXTERNAL_OVERLAYS

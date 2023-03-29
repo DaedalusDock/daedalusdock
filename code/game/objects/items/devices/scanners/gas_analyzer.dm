@@ -150,10 +150,10 @@
 			message += span_boldnotice("Node [mix_number]")
 			mix_name += " - Node [mix_number]"
 
-		var/total_moles = air.get_moles()
+		var/total_moles = air.total_moles
 		var/pressure = air.returnPressure()
 		var/volume = air.get_volume() //could just do mixture.volume... but safety, I guess?
-		var/temperature = air.get_temperature()
+		var/temperature = air.temperature
 
 		if(total_moles > 0)
 			message += span_notice("Moles: [round(total_moles, 0.01)] mol")

@@ -4,7 +4,6 @@
 	icon_state = "interact"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	alpha = 180
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	layer = ABOVE_ALL_MOB_LAYER
 
 /mob/proc/animate_interact(atom/target, state)

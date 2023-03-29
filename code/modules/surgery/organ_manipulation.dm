@@ -10,6 +10,7 @@
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/incise,
 		/datum/surgery_step/manipulate_organs, //there should be bone fixing
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 
 /datum/surgery/organ_manipulation/soft
@@ -32,6 +33,8 @@
 		/datum/surgery_step/retract_skin,
 		/datum/surgery_step/saw,
 		/datum/surgery_step/manipulate_organs,
+		/datum/surgery_step/repair_bone,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 
 /datum/surgery/organ_manipulation/mechanic
@@ -112,7 +115,7 @@
 
 	else if(implement_type in implements_extract)
 		current_type = "extract"
-		var/list/organs = target.getorganszone(target_zone)
+		var/list/organs = target.getorganszone(target_zone, FALSE, TRUE)
 		if (target_zone == BODY_ZONE_PRECISE_EYES)
 			target_zone = check_zone(target_zone)
 		if(!length(organs))

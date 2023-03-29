@@ -10,7 +10,6 @@
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
-	update_fov()
 	voice_type = pick(voice_type2sound)
 
 /mob/living/ComponentInitialize()
@@ -729,11 +728,10 @@
 			if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
 				C.blood_volume += (excess_healing*2)//1 excess = 10 blood
 
-			for(var/i in C.internal_organs)
-				var/obj/item/organ/O = i
-				if(O.organ_flags & ORGAN_SYNTHETIC)
+			for(var/obj/item/organ/organ as anything in C.internal_organs)
+				if(organ.organ_flags & ORGAN_SYNTHETIC)
 					continue
-				O.applyOrganDamage(excess_healing*-1)//1 excess = 5 organ damage healed
+				organ.applyOrganDamage(excess_healing * -1)//1 excess = 5 organ damage healed
 
 		adjustOxyLoss(-20, TRUE)
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly
@@ -941,9 +939,8 @@
 
 /mob/living/carbon/bleedDragAmount()
 	var/bleed_amount = 0
-	for(var/i in all_wounds)
-		var/datum/wound/iter_wound = i
-		bleed_amount += iter_wound.drag_bleed_amount()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		bleed_amount += BP.get_modified_bleed_rate()
 	return bleed_amount
 
 /mob/living/proc/getTrail()

@@ -110,10 +110,13 @@
 			else if(isturf(loc)) //Breathe from loc as turf
 				var/breath_moles = 0
 				if(environment)
-					breath_moles = environment.get_moles()*BREATH_PERCENTAGE
+					breath_moles = environment.total_moles*BREATH_PERCENTAGE
 
 				breath = loc.remove_air(breath_moles)
 		else //Breathe from loc as obj again
+			if(breath == 0)
+				breath = null //get_breath_from_internal() returns 0 conditionally, so we need to reset it to null
+
 			if(istype(loc, /obj/))
 				var/obj/loc_as_obj = loc
 				loc_as_obj.handle_internal_lifeform(src,0)
@@ -369,12 +372,6 @@
 
 		if(stat != DEAD || D.process_dead)
 			D.stage_act(delta_time, times_fired)
-
-/mob/living/carbon/handle_wounds(delta_time, times_fired)
-	for(var/thing in all_wounds)
-		var/datum/wound/W = thing
-		if(W.processes) // meh
-			W.handle_process(delta_time, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, delta_time, times_fired)
 	if(!dna?.temporary_mutations.len)

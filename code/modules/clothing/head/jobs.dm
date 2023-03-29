@@ -313,7 +313,7 @@
 	greyscale_colors = "#16313D"
 
 /obj/item/clothing/head/beret/medical/cmo
-	name = "chief medical officer beret"
+	name = "medical director beret"
 	desc = "A beret in a distinct surgical turquoise!"
 	greyscale_colors = "#5EB8B8"
 

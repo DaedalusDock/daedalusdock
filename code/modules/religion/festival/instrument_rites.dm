@@ -109,7 +109,8 @@
 		if(listener.can_block_magic(MAGIC_RESISTANCE_HOLY, charge_cost = 1))
 			continue
 		var/obj/item/bodypart/sliced_limb = pick(listener.bodyparts)
-		sliced_limb.force_wound_upwards(/datum/wound/slash/moderate/many_cuts)
+		for(var/i in 1 to 10)
+			sliced_limb.receive_damage(3, sharpness = SHARP_EDGED)
 
 /datum/religion_rites/song_tuner/lullaby
 	name = "Spiritual Lullaby"

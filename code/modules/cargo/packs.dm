@@ -953,7 +953,7 @@
 	desc = "The power of the heavens condensed into a single crystal. Requires CE access to open."
 	cost = CARGO_CRATE_VALUE * 20
 	access = ACCESS_CE
-	//contains = list(/obj/machinery/power/supermatter_crystal/shard)
+	//contains = list(/obj/machinery/power/supermatter/shard)
 	crate_name = "supermatter shard crate"
 	crate_type = /obj/structure/closet/crate/secure/engineering
 	dangerous = TRUE
@@ -1313,7 +1313,7 @@
 	dangerous = TRUE
 
 /datum/supply_pack/medical/cmoturtlenecks
-	name = "Chief Medical Officer Turtlenecks"
+	name = "Medical Director Turtlenecks"
 	desc = "Contains the CMO's turtleneck and turtleneck skirt. Requires CMO access to open."
 	cost = CARGO_CRATE_VALUE * 2
 	access = ACCESS_CMO

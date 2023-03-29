@@ -4,257 +4,257 @@
 /area/space)
 "ab" = (
 /turf/closed/wall/r_wall,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ac" = (
 /obj/effect/spawner/structure/window/plasma,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ad" = (
 /obj/machinery/door/poddoor{
 	id = "c1vent";
 	name = "c1vent"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ae" = (
 /obj/machinery/door/poddoor{
 	id = "c2vent";
 	name = "c2vent"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "af" = (
 /obj/machinery/door/poddoor{
 	id = "c3vent";
 	name = "c3vent"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ag" = (
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ah" = (
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ai" = (
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aj" = (
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ak" = (
 /obj/item/card/id/advanced/debug,
 /obj/structure/rack,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "al" = (
 /obj/machinery/power/rtg/debug,
 /obj/structure/cable,
 /obj/effect/landmark/blobstart,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "am" = (
 /obj/machinery/door/poddoor{
 	id = "c1toc2";
 	name = "c1toc2"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "an" = (
 /obj/machinery/door/poddoor{
 	id = "c2toc3";
 	name = "c2toc3"
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ao" = (
 /obj/effect/landmark/latejoin,
 /obj/effect/turf_decal/bot_red,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ap" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aq" = (
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ar" = (
 /obj/machinery/atmospherics/miner/plasma,
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "as" = (
 /obj/machinery/atmospherics/miner/n2o,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "at" = (
 /obj/effect/landmark/observer_start,
 /obj/effect/turf_decal/bot_red,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "au" = (
 /obj/effect/turf_decal/trimline,
 /obj/machinery/air_sensor/plasma_tank,
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "av" = (
 /obj/effect/turf_decal/trimline,
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aw" = (
 /obj/effect/turf_decal/trimline,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ax" = (
 /obj/effect/turf_decal/bot_red,
 /obj/effect/landmark/start/assistant,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ay" = (
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "az" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aA" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aB" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aC" = (
 /obj/item/card/id/advanced/gold/captains_spare,
 /obj/item/card/id/advanced/gold/captains_spare,
 /obj/item/card/id/advanced/gold/captains_spare,
 /obj/structure/rack,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aD" = (
 /obj/machinery/button/door{
 	id = "c1toc2";
 	name = "c1toc2"
 	},
 /turf/closed/wall/r_wall,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aE" = (
 /obj/machinery/button/door{
 	id = "c2toc3";
 	name = "c2toc3"
 	},
 /turf/closed/wall/r_wall,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aF" = (
 /obj/machinery/button/door{
 	id = "c1vent";
 	name = "c1vent"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aG" = (
 /obj/machinery/button/door{
 	id = "c2vent";
 	name = "c2vent"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aH" = (
 /obj/machinery/button/door{
 	id = "c3vent";
 	name = "c3vent"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aI" = (
 /obj/structure/cable,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aJ" = (
 /obj/machinery/atmospherics/components/unary/portables_connector,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aK" = (
 /obj/machinery/portable_atmospherics/canister/plasma,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aL" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aM" = (
 /obj/machinery/portable_atmospherics/canister/nitrogen,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aN" = (
 /obj/structure/cable,
 /obj/machinery/power/rtg/debug,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aP" = (
 /obj/machinery/meter/turf,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aS" = (
 /obj/machinery/door/airlock/external/glass,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aT" = (
 /obj/machinery/gravity_generator/main/station,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aU" = (
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aV" = (
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aW" = (
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aX" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aY" = (
 /obj/machinery/atmospherics/components/binary/pump{
 	icon_state = "pump_map-3";
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "aZ" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ba" = (
 /obj/machinery/atmospherics/components/binary/volume_pump{
 	icon_state = "volpump_map-3";
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bb" = (
 /obj/machinery/atmospherics/components/binary/valve{
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bc" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -265,33 +265,33 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bd" = (
 /obj/item/pipe_dispenser,
 /obj/structure/table/reinforced,
 /obj/item/debug/omnitool,
 /obj/item/door_remote/omni,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "be" = (
 /obj/machinery/pipedispenser,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bf" = (
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bg" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bh" = (
 /obj/effect/turf_decal/stripes/red/line,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bi" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/components/unary/portables_connector{
@@ -299,12 +299,12 @@
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bj" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bk" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/components/unary/portables_connector{
@@ -312,7 +312,7 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bl" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/components/binary/valve/digital{
@@ -320,7 +320,7 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bm" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/components/binary/passive_gate{
@@ -328,7 +328,7 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bn" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -339,23 +339,23 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bo" = (
 /obj/machinery/portable_atmospherics/canister,
 /obj/effect/turf_decal/trimline/yellow/filled,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bp" = (
 /obj/machinery/light/floor/has_bulb,
 /obj/machinery/portable_atmospherics/canister,
 /obj/effect/turf_decal/trimline/yellow/filled,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bq" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/effect/turf_decal/trimline/blue/filled,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "br" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -363,7 +363,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bs" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -372,7 +372,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /obj/machinery/meter,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bt" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -380,7 +380,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bu" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -388,7 +388,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bv" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -396,7 +396,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bw" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -404,13 +404,13 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bx" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /obj/machinery/meter,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "by" = (
 /obj/effect/turf_decal/stripes/red/line{
 	icon_state = "warningline_red";
@@ -418,21 +418,21 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bz" = (
 /obj/machinery/door/airlock/public/glass,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bA" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/arrows,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bB" = (
 /obj/structure/cable,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bC" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/arrows{
@@ -440,131 +440,131 @@
 	dir = 4
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bD" = (
 /obj/item/pipe_dispenser,
 /obj/structure/table/reinforced,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bE" = (
 /obj/item/holosign_creator/atmos,
 /obj/structure/table/reinforced,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bF" = (
 /obj/machinery/portable_atmospherics/pump,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bG" = (
 /obj/machinery/portable_atmospherics/scrubber,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bH" = (
 /obj/structure/table/reinforced,
 /obj/item/debug/omnitool,
 /obj/item/door_remote/omni,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bI" = (
 /obj/machinery/air_sensor/mix_tank,
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bJ" = (
 /obj/effect/turf_decal/trimline,
 /obj/machinery/air_sensor/nitrous_tank,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bK" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/plasma_output,
 /turf/open/floor/engine/plasma,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bL" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/mix_output,
 /turf/open/floor/engine/airless,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bM" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/nitrous_output,
 /turf/open/floor/engine/n2o,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bN" = (
 /obj/effect/spawner/structure/window/plasma,
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bO" = (
 /obj/effect/spawner/structure/window/plasma,
 /obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bP" = (
 /obj/effect/spawner/structure/window/plasma,
 /obj/machinery/atmospherics/pipe/smart/simple/pink/visible,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bQ" = (
 /obj/machinery/portable_atmospherics/canister/plasma,
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bR" = (
 /obj/machinery/computer/atmos_control/plasma_tank,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bS" = (
 /obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bT" = (
 /obj/machinery/computer/atmos_control/mix_tank,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bU" = (
 /obj/machinery/atmospherics/pipe/smart/simple/pink/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bV" = (
 /obj/machinery/computer/atmos_control/nitrous_tank,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bW" = (
 /obj/machinery/atmospherics/pipe/smart/simple/orange/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bX" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bY" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/public/glass{
 	name = "Power"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "bZ" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/public/glass{
 	name = "Main Floor"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ca" = (
 /obj/machinery/light/floor/has_bulb,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cb" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Basic Equipment Tests"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cc" = (
 /obj/effect/spawner/structure/window/plasma,
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction{
@@ -572,7 +572,7 @@
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cd" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -580,28 +580,28 @@
 	},
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ce" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/general/visible{
 	icon_state = "manifold-3";
 	dir = 4
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cf" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/co2{
 	icon_state = "filter_on-0_f";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cg" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 8
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ch" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -609,28 +609,28 @@
 	},
 /obj/machinery/portable_atmospherics/canister,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ci" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/h2{
 	icon_state = "filter_on-0_f";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cj" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ck" = (
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cl" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cm" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	icon_state = "pipe11-3";
@@ -666,17 +666,17 @@
 "cr" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/heater,
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cs" = (
 /obj/structure/table/reinforced,
 /obj/item/analyzer,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "ct" = (
 /obj/effect/landmark/start/assistant,
 /obj/effect/turf_decal/bot_red,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cu" = (
 /obj/structure/table/reinforced,
 /obj/item/clothing/glasses/debug,
@@ -685,14 +685,14 @@
 /obj/item/clothing/glasses/debug,
 /obj/item/clothing/glasses/debug,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cv" = (
 /obj/structure/table/reinforced,
 /obj/item/debug/omnitool,
 /obj/item/debug/omnitool,
 /obj/item/debug/omnitool,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cw" = (
 /obj/structure/table/reinforced,
 /obj/item/gun/magic/wand/death/debug,
@@ -701,12 +701,12 @@
 /obj/item/gun/magic/wand/safety/debug,
 /obj/item/gun/magic/wand/safety/debug,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cx" = (
 /obj/structure/table/reinforced,
 /obj/item/mod/control/pre_equipped/debug,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cy" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/box/debugtools,
@@ -715,14 +715,14 @@
 /obj/item/storage/box/debugtools,
 /obj/item/storage/box/debugtools,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cz" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/public/glass{
 	name = "Gravgen"
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cA" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -730,14 +730,14 @@
 	},
 /obj/machinery/portable_atmospherics/canister/nitrogen,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cB" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/n2{
 	icon_state = "filter_on-0_f";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cC" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -745,14 +745,14 @@
 	},
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cD" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/o2{
 	icon_state = "filter_on-0_f";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cE" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -760,18 +760,18 @@
 	},
 /obj/machinery/portable_atmospherics/canister/plasma,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cF" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/plasma{
 	icon_state = "filter_on-0_f";
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cG" = (
 /obj/machinery/atmospherics/components/binary/volume_pump,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cH" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
@@ -779,25 +779,25 @@
 	},
 /obj/machinery/portable_atmospherics/canister,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cI" = (
 /obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cJ" = (
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cK" = (
 /obj/machinery/door/airlock/public/glass,
 /obj/machinery/atmospherics/pipe/smart/simple/general/visible,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cL" = (
 /obj/machinery/atmospherics/components/unary/cryo_cell,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cM" = (
 /obj/machinery/light/floor/has_bulb,
 /obj/machinery/atmospherics/components/unary/passive_vent{
@@ -805,21 +805,21 @@
 	dir = 1
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cN" = (
 /obj/machinery/atmospherics/components/unary/heat_exchanger{
 	icon_state = "he1";
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cO" = (
 /obj/machinery/atmospherics/components/unary/heat_exchanger{
 	icon_state = "he1";
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cP" = (
 /obj/machinery/atmospherics/components/binary/circulator/cold{
 	icon_state = "circ-off-0";
@@ -827,12 +827,12 @@
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cQ" = (
 /obj/machinery/power/generator,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cR" = (
 /obj/machinery/atmospherics/components/binary/circulator{
 	icon_state = "circ-off-0";
@@ -840,26 +840,26 @@
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cS" = (
 /obj/machinery/atmospherics/components/unary/portables_connector{
 	icon_state = "connector_map-3";
 	dir = 4
 	},
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cT" = (
 /obj/machinery/atmospherics/components/trinary/mixer,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cU" = (
 /obj/machinery/atmospherics/components/binary/tank_compressor,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 "cV" = (
 /obj/item/storage/toolbox/mechanical,
 /turf/open/floor/iron,
-/area/hallway/primary/central)
+/area/station/hallway/primary/central)
 
 (1,1,1) = {"
 aa

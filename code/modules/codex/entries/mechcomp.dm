@@ -32,13 +32,13 @@
 	associated_paths = list(/obj/item/mcobject/messaging/radioscanner)
 
 /datum/codex_entry/mechcomp/and
-	name = "AND Component"
+	name = "'AND' Component"
 	mechanics_text = "After receiving a Message in one input, it will wait the duration of it's Time Window. If the other input receives a \
 	message during this window, it will send it's output."
 	associated_paths = list(/obj/item/mcobject/messaging/and)
 
 /datum/codex_entry/mechcomp/or
-	name = "OR Component"
+	name = "'OR' Component"
 	mechanics_text = "After receiving a Message in any input, if it matches the Trigger, the component will send it's output."
 	associated_paths = list(/obj/item/mcobject/messaging/or)
 

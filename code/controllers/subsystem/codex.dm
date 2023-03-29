@@ -22,8 +22,8 @@ SUBSYSTEM_DEF(codex)
 
 	// used to remove trailing linebreaks when retrieving codex body.
 	// TODO: clean up codex page generation so this isn't necessary.
-	trailingLinebreakRegexStart = regex(@"^<\s*\/*\s*br\s*\/*\s*>", "igm")
-	trailingLinebreakRegexEnd = regex(@"<\s*\/*\s*br\s*\/*\s*>$", "igm")
+	trailingLinebreakRegexStart = regex(@"^<\s*\/*\s*br\s*\/*\s*>", "ig")
+	trailingLinebreakRegexEnd = regex(@"<\s*\/*\s*br\s*\/*\s*>$", "ig")
 
 	// Create general hardcoded entries.
 	for(var/ctype in subtypesof(/datum/codex_entry))

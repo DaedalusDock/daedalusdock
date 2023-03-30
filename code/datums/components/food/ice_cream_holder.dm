@@ -54,18 +54,18 @@
 	src.y_offset = y_offset
 	src.sweetener = sweetener
 
-	RegisterSignal(owner, COMSIG_ITEM_ATTACK_OBJ, .proc/on_item_attack_obj)
-	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
+	RegisterSignal(owner, COMSIG_ITEM_ATTACK_OBJ, PROC_REF(on_item_attack_obj))bj))bj))bj))
+	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))ys))ys))ys))
 	if(change_name)
-		RegisterSignal(owner, COMSIG_ATOM_UPDATE_NAME, .proc/on_update_name)
+		RegisterSignal(owner, COMSIG_ATOM_UPDATE_NAME, PROC_REF(on_update_name))me))me))me))
 	if(!change_desc)
-		RegisterSignal(owner, COMSIG_PARENT_EXAMINE_MORE, .proc/on_examine_more)
+		RegisterSignal(owner, COMSIG_PARENT_EXAMINE_MORE, PROC_REF(on_examine_more))re))re))re))
 	else
-		RegisterSignal(owner, COMSIG_ATOM_UPDATE_DESC, .proc/on_update_desc)
+		RegisterSignal(owner, COMSIG_ATOM_UPDATE_DESC, PROC_REF(on_update_desc))sc))sc))sc))
 
-	RegisterSignal(owner, COMSIG_ITEM_IS_CORRECT_CUSTOM_ORDER, .proc/check_food_order)
+	RegisterSignal(owner, COMSIG_ITEM_IS_CORRECT_CUSTOM_ORDER, PROC_REF(check_food_order))er))er))er))
 
-	RegisterSignal(owner, COMSIG_ITEM_SOLD_TO_CUSTOMER, .proc/sell_ice_cream)
+	RegisterSignal(owner, COMSIG_ITEM_SOLD_TO_CUSTOMER, PROC_REF(sell_ice_cream))am))am))am))
 
 	if(prefill_flavours)
 		for(var/entry in prefill_flavours)
@@ -146,7 +146,7 @@
 			if(flavour.add_flavour(src, dispenser.beaker?.reagents.total_volume ? dispenser.beaker.reagents : null))
 				dispenser.visible_message("[icon2html(dispenser, viewers(source))] [span_info("[user] scoops delicious [dispenser.selected_flavour] ice cream into [source].")]")
 				dispenser.product_types[dispenser.selected_flavour]--
-				INVOKE_ASYNC(dispenser, /obj/machinery/icecream_vat.proc/updateDialog)
+				INVOKE_ASYNC(dispenser, TYPE_PROC_REF(/obj/machinery/icecream_vat, updateDialog))
 		else
 			to_chat(user, span_warning("There is not enough ice cream left!"))
 	else

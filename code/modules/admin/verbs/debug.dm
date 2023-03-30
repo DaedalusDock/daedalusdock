@@ -34,7 +34,7 @@
 		tgui_alert(usr,"Wait until the game starts")
 		return
 	log_admin("[key_name(src)] has robotized [M.key].")
-	INVOKE_ASYNC(M, /mob.proc/Robotize)
+	INVOKE_ASYNC(M, TYPE_PROC_REF(/mob, Robotize))
 
 /client/proc/makepAI(turf/T in GLOB.mob_list)
 	set category = "Admin.Fun"
@@ -659,7 +659,7 @@
 	var/list/queries = list()
 	for(var/i in 1 to val)
 		var/datum/db_query/query = SSdbcore.NewQuery("NULL")
-		INVOKE_ASYNC(query, /datum/db_query.proc/Execute)
+		INVOKE_ASYNC(query, TYPE_PROC_REF(/datum/db_query, Execute))
 		queries += query
 
 	for(var/datum/db_query/query as anything in queries)
@@ -808,7 +808,7 @@
 	var/list/sorted = list()
 	for (var/source in per_source)
 		sorted += list(list("source" = source, "count" = per_source[source]))
-	sorted = sortTim(sorted, .proc/cmp_timer_data)
+	sorted = sortTim(sorted, PROC_REF(cmp_timer_data))
 
 	// Now that everything is sorted, compile them into an HTML output
 	var/output = "<table border='1'>"

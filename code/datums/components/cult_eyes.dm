@@ -18,8 +18,8 @@
 		initial_left_color = human_parent.eye_color_left
 
 	// Register signals for mob transformation to prevent premature halo removal
-	RegisterSignal(parent, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_MONKEY_HUMANIZE, COMSIG_HUMAN_MONKEYIZE), .proc/set_eyes)
-	addtimer(CALLBACK(src, .proc/set_eyes), initial_delay)
+	RegisterSignal(parent, list(COMSIG_CHANGELING_TRANSFORM, COMSIG_MONKEY_HUMANIZE, COMSIG_HUMAN_MONKEYIZE), PROC_REF(set_eyes))
+	addtimer(CALLBACK(src, PROC_REF(set_eyes)), initial_delay)
 
 /**
  * Cult eye setter proc

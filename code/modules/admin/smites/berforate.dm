@@ -45,7 +45,7 @@
 			var/shots_this_limb = 0
 			for (var/_iter_turf in shuffle(open_adj_turfs))
 				var/turf/iter_turf = _iter_turf
-				addtimer(CALLBACK(GLOBAL_PROC, .proc/firing_squad, dude, iter_turf, limb.body_zone, damage), delay_counter)
+				addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(firing_squad), dude, iter_turf, limb.body_zone, damage), delay_counter)
 				delay_counter += delay_per_shot
 				shots_this_limb += 1
 				if (shots_this_limb > shots_per_limb_per_rep)

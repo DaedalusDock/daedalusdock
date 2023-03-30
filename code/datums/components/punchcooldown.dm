@@ -11,7 +11,7 @@
 	. = ..()
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/changewarcry)
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(changewarcry))
 
 ///Called on COMSIG_HUMAN_MELEE_UNARMED_ATTACK. Yells the warcry and and reduces punch cooldown.
 /datum/component/wearertargeting/punchcooldown/proc/reducecooldown(mob/living/carbon/M, atom/target)
@@ -23,7 +23,7 @@
 ///Called on COMSIG_ITEM_ATTACK_SELF. Allows you to change the warcry.
 /datum/component/wearertargeting/punchcooldown/proc/changewarcry(datum/source, mob/user)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, .proc/do_changewarcry, user)
+	INVOKE_ASYNC(src, PROC_REF(do_changewarcry), user)
 
 /datum/component/wearertargeting/punchcooldown/proc/do_changewarcry(mob/user)
 	var/input = tgui_input_text(user, "What do you want your battlecry to be?", "Battle Cry", max_length = 6)

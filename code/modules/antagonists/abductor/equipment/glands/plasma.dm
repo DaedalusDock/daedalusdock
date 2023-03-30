@@ -9,8 +9,8 @@
 
 /obj/item/organ/internal/heart/gland/plasma/activate()
 	to_chat(owner, span_warning("You feel bloated."))
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, owner, span_userdanger("A massive stomachache overcomes you.")), 150)
-	addtimer(CALLBACK(src, .proc/vomit_plasma), 200)
+	addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(to_chat),at), owner, span_userdanger("A massive stomachache overcomes you.")), 150)
+	addtimer(CALLBACK(src, PROC_REF(vomit_plasma))ma)), 200)
 
 /obj/item/organ/internal/heart/gland/plasma/proc/vomit_plasma()
 	if(!owner)

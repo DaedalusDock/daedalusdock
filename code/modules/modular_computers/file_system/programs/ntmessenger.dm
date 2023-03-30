@@ -40,7 +40,12 @@
 	/// Whether or not we're in a mime PDA.
 	var/mime_mode = FALSE
 
+	/// Cache of the network card, so we don't need to drag it out of the list every time.
 	var/obj/item/computer_hardware/network_card/packetnet/netcard_cache
+	/// Learned PDA info tuples
+	///
+	///list(d_addr1 = list(d_addr1, name, job), d_addr2=list(d_addr2, name, job)...)
+	var/list/known_cells = list()
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
 	if(istype(user, /mob/living/silicon))
@@ -228,3 +233,64 @@
 	return sanitize(text_message)
 
 /datum/computer_file/program/messenger/proc/send_message(mob/living/user, target_address, everyone = FALSE, rigged = FALSE, fake_name = null, fake_job = null)
+
+/datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("PDA_ringSet")
+			var/t = tgui_input_text(usr, "Enter a new ringtone", "Ringtone", "", 20)
+			var/mob/living/usr_mob = usr
+			//This is uplink shit. If it's not a tablet, we only care about the basic range check.
+			if(in_range(computer, usr_mob) && (computer.hardware_flag == PROGRAM_TABLET && computer.loc == usr_mob) && t)
+				if(SEND_SIGNAL(computer, COMSIG_TABLET_CHANGE_ID, usr_mob, t) & COMPONENT_STOP_RINGTONE_CHANGE)
+					return
+				else
+					ringtone = t
+					return(UI_UPDATE)
+		if("PDA_ringer_status")
+			ringer_status = !ringer_status
+			return(UI_UPDATE)
+		if("PDA_sAndR")
+			sending_and_receiving = !sending_and_receiving
+			netcard_cache.set_radio_state(sending_and_receiving)
+			return(UI_UPDATE)
+		if("PDA_viewMessages")
+			viewing_messages = !viewing_messages
+			return(UI_UPDATE)
+		if("PDA_clearMessages")
+			messages = list()
+			return(UI_UPDATE)
+		if("PDA_changeSortStyle")
+			sort_by_job = !sort_by_job
+			return(UI_UPDATE)
+		if("PDA_sendEveryone")
+			if(!sending_and_receiving)
+				to_chat(usr, span_notice("ERROR: Device has sending disabled."))
+				return
+				//So much easier with GPRS.
+				send_message(usr, null, TRUE)
+
+			return(UI_UPDATE)
+		if("PDA_sendMessage")
+			if(!sending_and_receiving)
+				to_chat(usr, span_notice("ERROR: Device has sending disabled."))
+				return
+			var/list/data_tuple = known_cells[params["target_addr"]]
+			if(!data_tuple)
+				message_admins("PDA [src][ADMIN_VV(src)] attempted to message unlearned GPRS ID [params["target_addr"]]?")
+				log_href("Attempted to PDA unlearned station ID?")
+				return(UI_UPDATE)
+			var/target_addr = data_tuple[1]
+			if(sending_virus)
+				var/obj/item/computer_hardware/hard_drive/role/virus/disk = computer.all_components[MC_HDD_JOB]
+				if(istype(disk))
+					disk.send_virus(target_addr, usr)
+					return(UI_UPDATE)
+			send_message(usr, target_addr)
+			return(UI_UPDATE)
+		if("PDA_toggleVirus")
+			sending_virus = !sending_virus
+			return(UI_UPDATE)

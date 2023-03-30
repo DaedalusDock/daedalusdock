@@ -168,20 +168,24 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	if (partners.len)
 		for (var/obj/item/modular_computer/pda as anything in GLOB.TabletMessengers)
 			if (pda.saved_identification in partners)
-				targets += pda
+				var/obj/item/computer_hardware/network_card/packetnet/rfcard = pda.all_components[MC_NET]
+				if(!istype(rfcard))
+					break //It matches but has no RF card, we can't notify.
+				targets += rfcard.hardware_id
 
-	if (!targets.len)
+	if(!targets.len)
 		return
+	var/datum/radio_frequency/rfconnect = SSpackets.return_frequency(FREQ_COMMON)
+	for (var/next_d_addr in targets)
+		var/datum/signal/signal = new(announcement_system, list(
+			"name" = "Security Department Update",
+			"job" = "Automated Announcement System",
+			"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
+			"d_addr" = next_d_addr,
+			"automated" = TRUE,
+		))
+		rfconnect.post_signal(signal, RADIO_PDAMESSAGE)
 
-	var/datum/signal/subspace/messaging/tablet_msg/signal = new(announcement_system, list(
-		"name" = "Security Department Update",
-		"job" = "Automated Announcement System",
-		"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
-		"targets" = targets,
-		"automated" = TRUE,
-	))
-
-	signal.send_to_receivers()
 
 /datum/job/security_officer/proc/get_my_department(mob/character, preferred_department)
 	var/department = GLOB.security_officer_distribution[REF(character)]

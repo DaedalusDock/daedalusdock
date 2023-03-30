@@ -262,13 +262,6 @@
 			else if(auth)
 				screen = MSG_MON_SCREEN_LOGS
 
-		//Clears the logs - KEY REQUIRED
-		if (href_list["clear_logs"])
-			if(LINKED_SERVER_NONRESPONSIVE)
-				message = noserver
-			else if(auth)
-				linkedServer.pda_msgs = list()
-				message = span_notice("NOTICE: Logs cleared.")
 		//Clears the request console logs - KEY REQUIRED
 		if (href_list["clear_requests"])
 			if(LINKED_SERVER_NONRESPONSIVE)
@@ -308,7 +301,7 @@
 			if(screen == MSG_MON_SCREEN_REQUEST_LOGS)
 				if(LINKED_SERVER_NONRESPONSIVE)
 					message = noserver
-				else if(istype(href_list["delete_logs"], /datum/data_tablet_msg))
+				else if(istype(href_list["delete_logs"], /datum/data_rc_msg))
 					linkedServer.rc_msgs -= locate(href_list["delete_requests"]) in linkedServer.rc_msgs
 					message = span_notice("NOTICE: Log Deleted!")
 

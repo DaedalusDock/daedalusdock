@@ -293,16 +293,20 @@
 				var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", allowed_access, stationtime2text(), fine)
 				for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
 					if(tablet.saved_identification == R.fields["name"])
+						var/obj/item/computer_hardware/network_card/packetnet/rfcard = tablet.all_components[MC_NET]
+						if(!istype(rfcard))
+							break //It matches but has no RF card, we can't notify.
 						var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
-						var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
+						var/datum/signal/signal = new(src, list(
 							"name" = "Security Citation",
 							"job" = "Citation Server",
 							"message" = message,
-							"targets" = list(tablet),
+							"d_addr" = rfcard.hardware_id,
 							"automated" = TRUE
 						))
-						signal.send_to_receivers()
-						usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
+						var/datum/radio_frequency/rf = SSpackets.return_frequency(FREQ_COMMON)
+						rf.post_signal(signal, RADIO_PDAMESSAGE)
+						usr.log_message("(PDA: Citation Server) sent \"[message]\" to [rfcard.hardware_id]", LOG_PDA)
 				GLOB.data_core.addCitation(R.fields["id"], crime)
 				investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [R.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 				SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, R.fields["name"], t1, fine)

@@ -394,11 +394,14 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 /obj/machinery/gravity_generator/main/proc/shake_everyone()
 	var/turf/T = get_turf(src)
 	var/sound/alert_sound = sound('sound/effects/alert.ogg')
-	for(var/i in GLOB.mob_list)
-		var/mob/M = i
+	for(var/mob/M as anything in GLOB.mob_list)
 		if(M.z != z && !(SSmapping.level_trait(z, ZTRAITS_STATION) && SSmapping.level_trait(M.z, ZTRAITS_STATION)))
 			continue
-		M.update_gravity(M.has_gravity())
+
+		if(isliving(M))
+			var/mob/living/grav_update = M
+			grav_update.refresh_gravity()
+
 		if(M.client)
 			shake_camera(M, 15, 1)
 			M.playsound_local(T, null, 100, 1, 0.5, sound_to_use = alert_sound)

@@ -121,8 +121,6 @@
 	tool_behaviour = TOOL_DRILL
 	toolspeed = 1
 	sharpness = SHARP_POINTY
-	wound_bonus = 10
-	bare_wound_bonus = 10
 
 /obj/item/surgicaldrill/Initialize(mapload)
 	. = ..()
@@ -164,8 +162,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SCALPEL
 	toolspeed = 1
-	wound_bonus = 10
-	bare_wound_bonus = 15
 
 /obj/item/scalpel/Initialize(mapload)
 	. = ..()
@@ -203,8 +199,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
-	wound_bonus = 15
-	bare_wound_bonus = 10
 
 /obj/item/circular_saw/Initialize(mapload)
 	. = ..()

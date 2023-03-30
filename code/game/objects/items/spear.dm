@@ -21,8 +21,6 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
-	wound_bonus = -15
-	bare_wound_bonus = 15
 
 /obj/item/spear/ComponentInitialize()
 	. = ..()

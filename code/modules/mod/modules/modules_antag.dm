@@ -410,7 +410,8 @@
 /obj/item/mod/module/chameleon/proc/update_look(mob/living/user, obj/item/picked_item)
 	if(!isliving(user))
 		return
-	if(user.stat != CONSCIOUS)
+	var/datum/storage/holding_storage = mod.loc.atom_storage
+	if(!holding_storage || holding_storage.max_specific_storage >= mod.w_class)
 		return
 
 	update_item(picked_item)

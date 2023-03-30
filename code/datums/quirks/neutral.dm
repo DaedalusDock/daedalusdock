@@ -213,7 +213,7 @@
 
 	eyes_of_the_holder.eye_color_right = color
 	eyes_of_the_holder.old_eye_color_right = color
-	eyes_of_the_holder.refresh()
+	human_holder.update_eyes()
 
 /datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/internal/eyes/removed)
 	SIGNAL_HANDLER

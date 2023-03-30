@@ -17,10 +17,6 @@
 
 
 /mob/dead/new_player/Initialize(mapload)
-	if(client && SSticker.state == GAME_STATE_STARTUP)
-		var/atom/movable/screen/splash/S = new(null, client, TRUE, TRUE)
-		S.Fade(TRUE)
-
 	if(length(GLOB.newplayer_start))
 		forceMove(pick(GLOB.newplayer_start))
 	else
@@ -360,9 +356,6 @@
 		//PARIAH EDIT END
 		AddEmploymentContract(humanc)
 
-		humanc.increment_scar_slot()
-		humanc.load_persistent_scars()
-
 		if(GLOB.curse_of_madness_triggered)
 			give_madness(humanc, GLOB.curse_of_madness_triggered)
 
@@ -457,7 +450,6 @@
 	if(QDELETED(src) || !client)
 		return // Disconnected while checking for the appearance ban.
 	if(!isAI(spawning_mob)) // Unfortunately there's still snowflake AI code out there.
-		mind.original_character_slot_index = client.prefs.default_slot
 		mind.transfer_to(spawning_mob) //won't transfer key since the mind is not active
 		mind.set_original_character(spawning_mob)
 	client.init_verbs()
@@ -471,6 +463,7 @@
 		return
 	new_character.key = key //Manually transfer the key to log them in,
 	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character?.client.show_location_blurb()
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)
@@ -548,3 +541,12 @@
 	// Add verb for re-opening the interview panel, fixing chat and re-init the verbs for the stat panel
 	add_verb(src, /mob/dead/new_player/proc/open_interview)
 	add_verb(client, /client/verb/fix_tgui_panel)
+
+//Small verb that allows +DEBUG admins to bypass the observer prep lock
+/mob/dead/new_player/verb/immediate_observe()
+	set desc = "Bypass all safety checks and observe immediately (+DEBUG)"
+	if(!check_rights(R_DEBUG))
+		return
+	//This is bypassing a LOT of safety checks, so we're just going to send this immediately.
+	to_chat_immediate(usr, span_userdanger("Bypassing all safety checks and spawning you in immediately.\nDon't complain on the repo if this breaks shit!"))
+	make_me_an_observer(1)

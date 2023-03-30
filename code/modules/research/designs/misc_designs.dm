@@ -650,7 +650,14 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 
-
+/datum/design/super_pointy_tape
+	name = "Super Pointy Tape"
+	id = "super_pointy_tape"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/iron = 3000, /datum/material/plastic = 2000)
+	build_path = /obj/item/stack/sticky_tape/pointy/super
+	category = list("Equipment")
+	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 
 /////////////////////////////////////////
 ////////////Tackle Gloves////////////////

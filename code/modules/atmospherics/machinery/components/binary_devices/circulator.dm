@@ -4,33 +4,46 @@
 #define CIRCULATOR_COLD 1
 
 /obj/machinery/atmospherics/components/binary/circulator
-	name = "circulator/heat exchanger"
-	desc = "A gas circulator pump and heat exchanger."
+	name = "TEG circulator"
+	desc = "A gas circulator pump and heat exchanger for a thermoelectric generator."
+	icon = 'icons/obj/atmospherics/components/teg.dmi'
 	icon_state = "circ-off-0"
 
-	var/active = FALSE
-
-	var/last_pressure_delta = 0
 	pipe_flags = PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY
 
 	density = TRUE
+	move_resist = MOVE_RESIST_DEFAULT
 
-	circuit = /obj/item/circuitboard/machine/circulator
+	initial_volume = 400
 
 	var/flipped = 0
 	var/mode = CIRCULATOR_HOT
 	var/obj/machinery/power/generator/generator
+	var/color_index = 1
 
-/obj/machinery/atmospherics/components/binary/circulator/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/simple_rotation)
+	var/kinetic_efficiency = 0.04 //combined kinetic and kinetic-to-electric efficiency
+	var/volume_ratio = 0.2
 
-/obj/machinery/atmospherics/components/binary/circulator/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
+	var/stored_energy = 0
+	var/last_stored_energy_transferred = 0
+	var/last_pressure_delta = 0
+	var/recent_moles_transferred = 0
+	var/volume_capacity_used = 0
+
+	var/active = FALSE
+
+/obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
+	if(!anchored)
+		return FALSE
+	return ..()
 
 //default cold circ for mappers
 /obj/machinery/atmospherics/components/binary/circulator/cold
 	mode = CIRCULATOR_COLD
+
+//for cargo crates
+/obj/machinery/atmospherics/components/binary/circulator/unwrenched
+	anchored = FALSE
 
 /obj/machinery/atmospherics/components/binary/circulator/Destroy()
 	if(generator)
@@ -38,35 +51,39 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/return_transfer_air()
-
+	var/datum/gas_mixture/removed
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/output_starting_pressure = air1.returnPressure()
 	var/input_starting_pressure = air2.returnPressure()
+	var/output_starting_pressure = air1.returnPressure()
+	last_pressure_delta = max(input_starting_pressure - output_starting_pressure - 5, 0)
 
-	if(output_starting_pressure >= input_starting_pressure-10)
-		//Need at least 10 KPa difference to overcome friction in the mechanism
-		last_pressure_delta = 0
-		return null
+	//only circulate air if there is a pressure difference (plus 5kPa kinetic, 10kPa static friction)
+	if(air1.temperature > 0 && last_pressure_delta > 5)
 
-	//Calculate necessary moles to transfer using PV = nRT
-	if(air2.temperature>0)
-		var/pressure_delta = (input_starting_pressure - output_starting_pressure)/2
+		//Calculate necessary moles to transfer using PV = nRT
+		recent_moles_transferred = (last_pressure_delta*air2.volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
+		volume_capacity_used = min( (last_pressure_delta*air2.volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
 
-		var/transfer_moles = (pressure_delta*air1.volume)/(air2.temperature * R_IDEAL_GAS_EQUATION)
-
-		last_pressure_delta = pressure_delta
+		//Calculate energy generated from kinetic turbine
+		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * air1.volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
 
 		//Actually transfer the gas
-		var/datum/gas_mixture/removed = air2.remove(transfer_moles)
-
-		update_parents()
-
-		return removed
+		removed = air2.remove(recent_moles_transferred)
+		if(removed)
+			//Update the gas networks.
+			update_parents()
 
 	else
 		last_pressure_delta = 0
+
+	return removed
+
+/obj/machinery/atmospherics/components/binary/circulator/proc/return_stored_energy()
+	last_stored_energy_transferred = stored_energy
+	stored_energy = 0
+	return last_stored_energy_transferred
 
 /obj/machinery/atmospherics/components/binary/circulator/process_atmos()
 	..()
@@ -86,16 +103,33 @@
 	icon_state = "circ-off-[flipped]"
 	return ..()
 
-/obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
-	if(!panel_open)
+/obj/machinery/atmospherics/components/binary/circulator/update_overlays()
+	. = ..()
+	if(!initial(icon))
 		return
+	var/mutable_appearance/circ_overlay = new(initial(icon))
+	. += get_pipe_image(circ_overlay, "pipe", turn(dir, 90), pipe_color, piping_layer)
+	. += mutable_appearance(icon, (mode ? "circ-ocold" : "circ-ohot"))
+
+/obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
+	. = ..()
+	I.play_tool_sound(src)
+	setDir(turn(dir,-90))
+	to_chat(user, span_notice("You rotate [src]."))
+	reset_connections()
+	return TRUE
+
+/obj/machinery/atmospherics/components/binary/circulator/wrench_act_secondary(mob/living/user, obj/item/I)
+	. = ..()
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
 	if(generator)
 		disconnectFromGenerator()
-	to_chat(user, span_notice("You [anchored?"secure":"unsecure"] [src]."))
+	to_chat(user, span_notice("You [anchored ? "secure" : "unsecure"] [src]."))
+	reset_connections()
+	return TRUE
 
-
+/obj/machinery/atmospherics/components/binary/circulator/proc/reset_connections()
 	var/obj/machinery/atmospherics/node1 = nodes[1]
 	var/obj/machinery/atmospherics/node2 = nodes[2]
 
@@ -143,28 +177,43 @@
 		return ..(target)
 	return FALSE
 
-/obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/I)
+/obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/multitool/I)
+	piping_layer = (piping_layer >= PIPING_LAYER_MAX) ? PIPING_LAYER_MIN : (piping_layer + 1)
+	to_chat(user, span_notice("You change the circuitboard to layer [piping_layer]."))
+	reset_connections()
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/atmospherics/components/binary/circulator/multitool_act_secondary(mob/living/user, obj/item/I)
+	color_index = (color_index >= GLOB.pipe_paint_colors.len) ? (color_index = 1) : (color_index = 1 + color_index)
+	pipe_color = GLOB.pipe_paint_colors[GLOB.pipe_paint_colors[color_index]]
+	visible_message("<span class='notice'>You set [src]'s pipe color to [GLOB.pipe_color_name[pipe_color]].")
+	reset_connections()
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/living/user, obj/item/I)
+	if(..())
+		return TRUE
 	if(generator)
 		disconnectFromGenerator()
 	mode = !mode
-	to_chat(user, span_notice("You set [src] to [mode?"cold":"hot"] mode."))
-	return TRUE
-
-/obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/user, obj/item/I)
-	if(..())
-		return TRUE
-	panel_open = !panel_open
+	to_chat(user, span_notice("You switch [src] to [mode ? "cold" : "hot"] mode."))
 	I.play_tool_sound(src)
-	to_chat(user, span_notice("You [panel_open?"open":"close"] the panel on [src]."))
-	return TRUE
+	update_appearance()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/atmospherics/components/binary/circulator/crowbar_act(mob/user, obj/item/I)
-	default_deconstruction_crowbar(I)
+/obj/machinery/atmospherics/components/binary/circulator/welder_act(mob/living/user, obj/item/I)
+	if(atom_integrity >= max_integrity)
+		to_chat(user, span_notice("The [src] does not need any repairs."))
+		return TRUE
+	if(!I.use_tool(src, user, 0, volume = 50, amount = 1))
+		return TRUE
+	user.visible_message(span_notice("[user] repairs some damage to [src]."), span_notice("You repair some damage to [src]."))
+	atom_integrity += min(10, max_integrity - atom_integrity)
+	if(atom_integrity == max_integrity)
+		to_chat(user, span_notice("The [src] is fully repaired."))
 	return TRUE
-
-/obj/machinery/atmospherics/components/binary/circulator/on_deconstruction()
-	if(generator)
-		disconnectFromGenerator()
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/disconnectFromGenerator()
 	if(mode)
@@ -194,3 +243,11 @@
 	flipped = !flipped
 	to_chat(usr, span_notice("You flip [src]."))
 	update_appearance()
+
+/obj/machinery/atmospherics/components/binary/circulator/examine(mob/user)
+	. = ..()
+	. += span_notice(" -Use a wrench with left-click to rotate it and right-click to unanchor it.")
+	. += span_notice(" -Use a screwdriver to toggle hot/cold mode.")
+	. += span_notice(" -Use a multitool with left-click to change pipe layer and right-click to change pipe color.")
+	. += span_notice("Its outlet port is to the [dir2text(flipped ? (turn(dir, 270)) : (turn(dir, 90)))].")
+	. += span_notice("It is on [mode ? "cold" : "hot"] mode.")

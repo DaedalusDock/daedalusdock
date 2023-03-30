@@ -110,7 +110,7 @@
 	var/burn_dealt = burnhealing * 0.8
 	brute_dealt += round((target.getBruteLoss() * (brute_multiplier * 0.5)),0.1)
 	burn_dealt += round((target.getFireLoss() * (burn_multiplier * 0.5)),0.1)
-	target.take_bodypart_damage(brute_dealt, burn_dealt, wound_bonus=CANT_WOUND)
+	target.take_bodypart_damage(brute_dealt, burn_dealt)
 	return FALSE
 
 /***************************BRUTE***************************/

@@ -56,6 +56,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	cut_overlays()
+	dir = SOUTH
 	var/key = json_encode(generate_icon_key())
 	var/list/standing = GLOB.limb_overlays_cache[key]
 	standing ||= get_limb_overlays(TRUE)
@@ -155,18 +156,14 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 
 	//EMISSIVE CODE START
-	// For some reason this was applied as an overlay on the aux image and limb image before.
-	// I am very sure that this is unnecessary, and i need to treat it as part of the return list
-	// to be able to mask it proper in case this limb is a leg.
 	if(!is_husked)
 		if(blocks_emissive)
-			var/atom/location = loc || owner || src
-			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, location, alpha = limb_appearance.alpha)
+			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, -BODY_LAYER, alpha = limb_appearance.alpha)
 			limb_em_block.dir = image_dir
 			. += limb_em_block
 
 			if(aux_zone)
-				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, location, alpha = aux_appearance.alpha)
+				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, -BODY_LAYER, alpha = aux_appearance.alpha)
 				aux_em_block.dir = image_dir
 				. += aux_em_block
 	//EMISSIVE CODE END

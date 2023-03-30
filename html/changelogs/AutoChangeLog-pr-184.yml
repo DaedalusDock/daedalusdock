@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Dualport ventpumps no longer get "stuck" siphoning.
-  - bugfix: Pipes no longer have between 2-3x more volume than intended
-  - bugfix: Airalarm mode changing works again
-  - qol: Reduced delay between air alarm UI interactions.
-  - bugfix: Internals action icon isn't an error anymore

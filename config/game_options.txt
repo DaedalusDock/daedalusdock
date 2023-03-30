@@ -233,7 +233,6 @@ DEFAULT_LAWS 0
 
 ## standard-ish laws. These are fairly ok to run
 RANDOM_LAWS asimov
-RANDOM_LAWS asimovpp
 RANDOM_LAWS paladin
 RANDOM_LAWS robocop
 RANDOM_LAWS corporate
@@ -266,7 +265,6 @@ LAW_WEIGHT custom,0
 
 ## standard-ish laws. These are fairly ok to run
 LAW_WEIGHT asimov,32
-LAW_WEIGHT asimovpp,12
 LAW_WEIGHT paladin,12
 LAW_WEIGHT robocop,12
 LAW_WEIGHT corporate,12
@@ -472,6 +470,3 @@ MAXFINE 2000
 
 ## How many played hours of DRONE_REQUIRED_ROLE required to be a Maintenance Done
 #DRONE_ROLE_PLAYTIME 14
-
-## Whether native FoV is enabled for all people.
-#NATIVE_FOV

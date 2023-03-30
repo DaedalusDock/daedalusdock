@@ -133,7 +133,6 @@
 	chassis.movedelay = 1
 	chassis.density = FALSE
 	chassis.layer = ABOVE_ALL_MOB_LAYER
-	chassis.plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	animate(chassis, alpha = 0, time = 8, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 	animate(chassis, pixel_z = 400, time = 10, easing = QUAD_EASING|EASE_IN, flags = ANIMATION_PARALLEL) //Animate our rising mech (just like pods hehe)
 	addtimer(CALLBACK(src, .proc/begin_landing), 2 SECONDS)
@@ -164,7 +163,6 @@
 	chassis.movedelay = initial(chassis.movedelay)
 	chassis.density = TRUE
 	chassis.layer = initial(chassis.layer)
-	chassis.plane = initial(chassis.plane)
 	skyfall_charge_level = 0
 	chassis.update_appearance(UPDATE_ICON_STATE)
 	for(var/mob/living/shaken in range(7, chassis))

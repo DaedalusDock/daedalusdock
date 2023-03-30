@@ -953,7 +953,7 @@
 	desc = "The power of the heavens condensed into a single crystal. Requires CE access to open."
 	cost = CARGO_CRATE_VALUE * 20
 	access = ACCESS_CE
-	//contains = list(/obj/machinery/power/supermatter_crystal/shard)
+	//contains = list(/obj/machinery/power/supermatter/shard)
 	crate_name = "supermatter shard crate"
 	crate_type = /obj/structure/closet/crate/secure/engineering
 	dangerous = TRUE
@@ -968,6 +968,16 @@
 					/obj/machinery/power/energy_accumulator/tesla_coil)
 	crate_name = "tesla coil crate"
 	crate_type = /obj/structure/closet/crate/engineering/electrical
+
+/datum/supply_pack/engine/teg
+	name = "Thermo-Electric Generator Crate"
+	desc = "All the components for building your own Thermoelectric Generator! Contains a generator and two circulators."
+	cost = CARGO_CRATE_VALUE * 15
+	contains = list(/obj/machinery/power/generator/unwrenched,
+					/obj/machinery/atmospherics/components/binary/circulator/unwrenched,
+					/obj/machinery/atmospherics/components/binary/circulator/unwrenched)
+	crate_name = "thermoelectric generator crate"
+	crate_type = /obj/structure/closet/crate/large
 
 /datum/supply_pack/engine/hypertorus_fusion_reactor
 	name = "HFR Crate"
@@ -1303,7 +1313,7 @@
 	dangerous = TRUE
 
 /datum/supply_pack/medical/cmoturtlenecks
-	name = "Chief Medical Officer Turtlenecks"
+	name = "Medical Director Turtlenecks"
 	desc = "Contains the CMO's turtleneck and turtleneck skirt. Requires CMO access to open."
 	cost = CARGO_CRATE_VALUE * 2
 	access = ACCESS_CMO

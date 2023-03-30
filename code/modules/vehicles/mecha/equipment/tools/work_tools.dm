@@ -110,11 +110,11 @@
 			var/torn_off = FALSE
 			var/obj/item/bodypart/affected = C.get_bodypart(BODY_ZONE_L_ARM)
 			if(affected != null)
-				affected.dismember(damtype)
+				affected.dismember(DROPLIMB_BLUNT)
 				torn_off = TRUE
 			affected = C.get_bodypart(BODY_ZONE_R_ARM)
 			if(affected != null)
-				affected.dismember(damtype)
+				affected.dismember(DROPLIMB_BLUNT)
 				torn_off = TRUE
 			if(!torn_off)
 				to_chat(source, span_notice("[M]'s arms are already torn off, you must find a challenger worthy of the kill clamp!"))

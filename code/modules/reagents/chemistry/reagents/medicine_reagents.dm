@@ -93,9 +93,8 @@
 		M.blood_volume = BLOOD_VOLUME_NORMAL
 
 	M.cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
-	for(var/organ in M.internal_organs)
-		var/obj/item/organ/O = organ
-		O.setOrganDamage(0)
+	for(var/obj/item/organ/organ as anything in M.internal_organs)
+		organ.setOrganDamage(0)
 	for(var/thing in M.diseases)
 		var/datum/disease/D = thing
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
@@ -169,9 +168,7 @@
 			M.adjustFireLoss(-power * REM * delta_time, 0)
 			M.adjustToxLoss(-power * REM * delta_time, 0, TRUE) //heals TOXINLOVERs
 			M.adjustCloneLoss(-power * REM * delta_time, 0)
-			for(var/i in M.all_wounds)
-				var/datum/wound/iter_wound = i
-				iter_wound.on_xadone(power * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+
 			REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
 			. = TRUE
 	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (M.bodytemperature ** 2) + 0.5)
@@ -225,9 +222,7 @@
 		M.adjustFireLoss(-1.5 * power * REM * delta_time, FALSE)
 		M.adjustToxLoss(-power * REM * delta_time, FALSE, TRUE)
 		M.adjustCloneLoss(-power * REM * delta_time, FALSE)
-		for(var/i in M.all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.on_xadone(power * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+
 		REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC)
 		. = TRUE
 	..()
@@ -1507,24 +1502,17 @@
 
 /datum/reagent/medicine/coagulant/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
-	if(!M.blood_volume || !M.all_wounds)
+	if(!M.blood_volume)
 		return
 
-	var/datum/wound/bloodiest_wound
-
-	for(var/i in M.all_wounds)
-		var/datum/wound/iter_wound = i
-		if(iter_wound.blood_flow)
-			if(iter_wound.blood_flow > bloodiest_wound?.blood_flow)
-				bloodiest_wound = iter_wound
-
-	if(bloodiest_wound)
-		if(!was_working)
-			to_chat(M, span_green("You can feel your flowing blood start thickening!"))
-			was_working = TRUE
-		bloodiest_wound.adjust_blood_flow(-clot_rate * REM * delta_time)
-	else if(was_working)
-		was_working = FALSE
+	for(var/obj/item/bodypart/BP as anything in M.bodyparts)
+		if(BP.bodypart_flags & BP_BLEEDING)
+			if(!prob(20))
+				continue
+			for(var/datum/wound/W as anything in BP.wounds)
+				if(W.bleeding())
+					W.bleed_timer = 0
+					W.clamp_wound()
 
 /datum/reagent/medicine/coagulant/overdose_process(mob/living/M, delta_time, times_fired)
 	. = ..()

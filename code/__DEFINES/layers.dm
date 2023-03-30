@@ -111,11 +111,11 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define LARGE_MOB_LAYER 4.5
 #define SPACEVINE_MOB_LAYER 4.6
 #define ABOVE_ALL_MOB_LAYER 4.7
-#define MIMICKED_LIGHTING_LAYER 4.8
 
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
+#define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1
 
 

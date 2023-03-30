@@ -160,9 +160,11 @@
 
 /atom/movable/openspace/mimic/attackby(obj/item/W, mob/user)
 	to_chat(user, span_notice("\The [src] is too far away."))
+	return TRUE
 
 /atom/movable/openspace/mimic/attack_hand(mob/user)
 	to_chat(user, span_notice("You cannot reach \the [src] from here."))
+	return TRUE
 
 /atom/movable/openspace/mimic/examine(...)
 	SHOULD_CALL_PARENT(FALSE)

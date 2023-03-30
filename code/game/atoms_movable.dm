@@ -544,6 +544,13 @@
 
 	Moved(oldloc, direction, FALSE, old_locs)
 
+	// Z-Mimic hook
+	if (bound_overlay)
+		bound_overlay.forceMove(get_step(src, UP))
+		// forceMove could've deleted our overlay
+		if (bound_overlay && bound_overlay.dir != dir)
+			bound_overlay.setDir(dir)
+
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)

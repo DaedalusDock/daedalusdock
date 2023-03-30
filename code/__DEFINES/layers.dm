@@ -9,6 +9,11 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
+/*
+Z-Mimic uses planes -70 through -80, defined elsewhere.
+Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+*/
+
 #define HEAT_PLANE -12
 #define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
 #define HEAT_COMPOSITE_RENDER_TARGET "*HEAT_RENDER_TARGET_C"
@@ -106,6 +111,7 @@
 #define LARGE_MOB_LAYER 4.5
 #define SPACEVINE_MOB_LAYER 4.6
 #define ABOVE_ALL_MOB_LAYER 4.7
+#define MIMICKED_LIGHTING_LAYER 4.8
 
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5

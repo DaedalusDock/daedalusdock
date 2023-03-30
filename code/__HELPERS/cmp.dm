@@ -175,3 +175,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 ///Orders R-UST fusion by priority
 /proc/cmp_fusion_reaction_des(datum/fusion_reaction/A, datum/fusion_reaction/B)
 	return B.priority - A.priority
+
+/// Sort by plane, then by layer. Approximately BYOND rendering order.
+/proc/cmp_zm_render_order(atom/A, atom/B)
+	return (B.plane - A.plane) || (B.layer - A.layer)

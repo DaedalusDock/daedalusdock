@@ -145,3 +145,6 @@
 		affected_turf.underlays -= additive_underlay
 
 	affected_turf.luminosity = set_luminosity
+
+	if (affected_turf.above?.shadower)
+		affected_turf.above.shadower.copy_lighting(src)

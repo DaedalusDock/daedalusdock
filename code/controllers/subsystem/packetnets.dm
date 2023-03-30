@@ -16,10 +16,6 @@ SUBSYSTEM_DEF(packets)
 	var/list/queued_radio_packets = list()
 	///Amount of radio packets processed last cycle
 	var/last_processed_radio_packets = 0
-	///Tablet messages to process
-	var/list/queued_tablet_messages = list()
-	///Amount of tabletmessage packets processed last cycle
-	var/last_processed_tablet_message_packets = 0
 	///Subspace/vocal packets to process
 	var/list/queued_subspace_vocals = list()
 	///Amount of subspace vocal packets processed last cycle
@@ -29,14 +25,12 @@ SUBSYSTEM_DEF(packets)
 	///The current processing lists
 	var/list/current_networks = list()
 	var/list/current_radio_packets = list()
-	var/list/current_tablet_messages = list()
 	var/list/current_subspace_vocals = list()
 
 	///Tick usage
 	var/cached_cost = 0
 	var/cost_networks = 0
 	var/cost_radios = 0
-	var/cost_tablets = 0
 	var/cost_subspace_vocals = 0
 
 	///What processing stage we're at
@@ -82,7 +76,6 @@ SUBSYSTEM_DEF(packets)
 
 /datum/controller/subsystem/packets/stat_entry(msg)
 	msg += "RP: [length(queued_radio_packets)]{[last_processed_radio_packets]}|"
-	msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
 	msg += "SSV: [length(queued_subspace_vocals)]{[last_processed_ssv_packets]}|"
 	msg += "C:{"
 	msg += "CN:[round(cost_networks, 1)]|"
@@ -96,7 +89,6 @@ SUBSYSTEM_DEF(packets)
 	if(!resumed)
 		current_networks = queued_networks.Copy()
 		current_radio_packets = queued_radio_packets.Copy()
-		current_tablet_messages = queued_tablet_messages.Copy()
 		current_subspace_vocals = queued_subspace_vocals.Copy()
 
 	var/timer = TICK_USAGE_REAL
@@ -171,35 +163,6 @@ SUBSYSTEM_DEF(packets)
 
 		cost_radios = MC_AVERAGE(cost_radios, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
-		stage = SSPACKETS_TABLETS
-
-	// if(stage == SSPACKETS_TABLETS)
-	// 	timer = TICK_USAGE_REAL
-	// 	if(!resumed)
-	// 		cached_cost = 0
-	// 		last_processed_tablet_message_packets = 0
-
-	// 	var/datum/signal/subspace/messaging/tablet_msg/packet
-	// 	while(length(current_tablet_messages))
-	// 		packet = current_tablet_messages[1]
-	// 		current_tablet_messages.Cut(1,2)
-	// 		queued_tablet_messages -= packet
-
-	// 		if (!packet.logged)  // Can only go through if a message server logs it
-	// 			continue
-
-	// 		for (var/obj/item/modular_computer/comp in packet.data["targets"])
-	// 			var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-	// 			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-	// 				app.receive_message(packet)
-
-	// 		cached_cost += TICK_USAGE_REAL - timer
-	// 		last_processed_tablet_message_packets++
-	// 		if(MC_TICK_CHECK)
-	// 			return
-
-	// 	cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
-	// 	resumed = FALSE
 		stage = SSPACKETS_SUBSPACE_VOCAL
 
 	if(stage == SSPACKETS_SUBSPACE_VOCAL)

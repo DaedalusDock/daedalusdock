@@ -878,14 +878,15 @@ What a mess.*/
 							for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
 								if(tablet.saved_identification == active1.fields["name"])
 									var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
-									var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
+									var/datum/signal/signal = new(src, list(
 										"name" = "Security Citation",
 										"job" = "Citation Server",
 										"message" = message,
 										"targets" = list(tablet),
 										"automated" = TRUE
 									))
-									signal.send_to_receivers()
+									var/datum/radio_frequency/rf = SSpackets.return_frequency(FREQ_COMMON)
+									rf.post_signal(signal, RADIO_PDAMESSAGE)
 									usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
 							GLOB.data_core.addCitation(active1.fields["id"], crime)
 							investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)

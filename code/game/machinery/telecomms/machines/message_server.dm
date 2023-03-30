@@ -76,8 +76,6 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/telecomms/message_server
 
-	var/list/datum/data_tablet_msg/pda_msgs = list()
-	var/list/datum/data_tablet_msg/modular_msgs = list()
 	var/list/datum/data_rc_msg/rc_msgs = list()
 	var/decryptkey = "password"
 	var/calibrating = 15 MINUTES //Init reads this and adds world.time, then becomes 0 when that time has passed and the machine works
@@ -169,28 +167,6 @@
 	copy.levels = levels
 	return copy
 
-// Tablet message signal datum
-/datum/signal/subspace/messaging/tablet_msg/proc/format_target()
-	if (length(data["targets"]) > 1)
-		return "Everyone"
-	var/obj/item/modular_computer/target = data["targets"][1]
-	return "[target.saved_identification] ([target.saved_job])"
-
-/datum/signal/subspace/messaging/tablet_msg/proc/format_message()
-	return "\"[data["message"]]\""
-
-/datum/signal/subspace/messaging/tablet_msg/broadcast()
-	SSpackets.queued_tablet_messages += src
-	/// MOVED TO SSPACKETS
-	/*
-	if (!logged)  // Can only go through if a message server logs it
-		return
-	for (var/obj/item/modular_computer/comp in data["targets"])
-		var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-		for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-			app.receive_message(src)
-	*/
-
 // Request Console signal datum
 /datum/signal/subspace/messaging/rc/broadcast()
 	if (!logged)  // Like /pda, only if logged
@@ -201,34 +177,6 @@
 			Console.createmessage(data["sender"], data["send_dpt"], data["message"], data["verified"], data["stamped"], data["priority"], data["notify_freq"])
 
 // Log datums stored by the message server.
-/datum/data_tablet_msg
-	var/sender = "Unspecified"
-	var/recipient = "Unspecified"
-	var/message = "Blank"  // transferred message
-	var/datum/picture/picture  // attached photo
-	var/automated = 0 //automated message
-
-/datum/data_tablet_msg/New(param_rec, param_sender, param_message, param_photo)
-	if(param_rec)
-		recipient = param_rec
-	if(param_sender)
-		sender = param_sender
-	if(param_message)
-		message = param_message
-	if(param_photo)
-		picture = param_photo
-
-/datum/data_tablet_msg/Topic(href,href_list)
-	..()
-	if(href_list["photo"])
-		var/mob/M = usr
-		M << browse_rsc(picture.picture_image, "pda_photo.png")
-		M << browse("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>PDA Photo</title></head>" \
-		+ "<body style='overflow:hidden;margin:0;text-align:center'>" \
-		+ "<img src='pda_photo.png' width='192' style='-ms-interpolation-mode:nearest-neighbor' />" \
-		+ "</body></html>", "window=pdaphoto;size=[picture.psize_x]x[picture.psize_y];can-close=true")
-		onclose(M, "pdaphoto")
-
 /datum/data_rc_msg
 	var/rec_dpt = "Unspecified"  // receiving department
 	var/send_dpt = "Unspecified"  // sending department

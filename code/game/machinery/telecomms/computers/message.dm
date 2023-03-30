@@ -127,19 +127,6 @@
 			else
 				dat += "<br><hr><dd>[span_warning("Reg, #514 forbids sending messages to a Head of Staff containing Erotic Rendering Properties.")]"
 
-		//Message Logs
-		if(MSG_MON_SCREEN_LOGS)
-			var/index = 0
-			dat += "<center><A href='?src=[REF(src)];back=1'>Back</a> - <A href='?src=[REF(src)];refresh=1'>Refresh</a></center><hr>"
-			dat += "<table border='1' width='100%'><tr><th width = '5%'>X</th><th width='15%'>Sender</th><th width='15%'>Recipient</th><th width='300px' word-wrap: break-word>Message</th></tr>"
-			for(var/datum/data_tablet_msg/pda in linkedServer.pda_msgs)
-				index++
-				if(index > 3000)
-					break
-				// Del - Sender   - Recepient - Message
-				// X   - Al Green - Your Mom  - WHAT UP!?
-				dat += "<tr><td width = '5%'><center><A href='?src=[REF(src)];delete_logs=[REF(pda)]' style='color: rgb(255,0,0)'>X</a></center></td><td width='15%'>[pda.sender]</td><td width='15%'>[pda.recipient]</td><td width='300px'>[pda.message][pda.picture ? " <a href='byond://?src=[REF(pda)];photo=1'>(Photo)</a>":""]</td></tr>"
-			dat += "</table>"
 		//Hacking screen.
 		if(MSG_MON_SCREEN_HACKED)
 			if(isAI(user) || iscyborg(user))
@@ -315,15 +302,6 @@
 				//Time it takes to bruteforce is dependant on the password length.
 				addtimer(CALLBACK(src, .proc/finish_bruteforce, usr), 100*length(linkedServer.decryptkey))
 
-		//Delete the log.
-		if (href_list["delete_logs"])
-			//Are they on the view logs screen?
-			if(screen == MSG_MON_SCREEN_LOGS)
-				if(LINKED_SERVER_NONRESPONSIVE)
-					message = noserver
-				else if(istype(href_list["delete_logs"], /datum/data_tablet_msg))
-					linkedServer.pda_msgs -= locate(href_list["delete_logs"]) in linkedServer.pda_msgs
-					message = span_notice("NOTICE: Log Deleted!")
 		//Delete the request console log.
 		if (href_list["delete_requests"])
 			//Are they on the view logs screen?

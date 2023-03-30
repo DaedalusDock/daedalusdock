@@ -112,7 +112,7 @@
 			if(prob(1))
 				break_light_tube(TRUE)
 	#endif
-	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
+	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
 	if(my_area)
@@ -170,7 +170,7 @@
 		if(instant)
 			turn_on(trigger, play_sound)
 		else if(maploaded)
-			turn_on(trigger, play_sound)
+			turn_on(trigger)
 			maploaded = FALSE
 		else if(!turning_on)
 			turning_on = TRUE

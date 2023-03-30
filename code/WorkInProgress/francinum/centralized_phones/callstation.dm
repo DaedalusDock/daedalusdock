@@ -43,7 +43,7 @@ Phone registration flow (Post-Roundstart):
 		if(!master_id || signal.data["d_addr"] != "MC_[master_id]") //Hacky ugly terrible nasty multicast
 			return
 	switch(lowertext(signal.data["command"]))
-		if("ping_reply")// A reply to our ping!
+		if(NETCMD_PINGREPLY)// A reply to our ping!
 			if(signal.data["netclass"] != "PNET_SIPSERVER") //Not who we care about!
 				return
 			register_with_server(signal.data["s_addr"])// It's a server, link!

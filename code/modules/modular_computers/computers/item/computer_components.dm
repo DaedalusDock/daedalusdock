@@ -36,6 +36,7 @@
 	install.holder = src
 	install.forceMove(src)
 	install.on_install(src, user)
+	notify_hardware_change()
 
 
 /// Uninstalls component.
@@ -51,6 +52,7 @@
 	if(enabled && !use_power())
 		shutdown_computer()
 	update_appearance()
+	notify_hardware_change()
 	return TRUE
 
 /// This isn't the "uninstall fully" proc, it just makes the computer lose all its references to the component
@@ -69,3 +71,11 @@
 		if(component.name == name)
 			return component
 	return null
+
+///Notify all programs of hardware changes.
+/obj/item/modular_computer/proc/notify_hardware_change()
+	if(active_program)
+		active_program.event_hardware_changed(0)
+	for(var/datum/computer_file/program/prog as anything in idle_threads)
+		prog.event_hardware_changed(1)
+	return

@@ -55,7 +55,7 @@
 // Subtype of /datum/signal with additional processing information.
 /datum/signal/subspace
 	// Fuck you. Don't touch these packets. They suck. We'll kill them off later.
-	has_magic_data = TRUE
+	has_magic_data = MAGIC_DATA_INVIOLABLE
 	transmission_method = TRANSMISSION_SUBSPACE
 	var/server_type = /obj/machinery/telecomms/server
 	var/datum/signal/subspace/original

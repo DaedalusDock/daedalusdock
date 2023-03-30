@@ -84,7 +84,7 @@ export const NtosMessenger = (props, context) => {
                       onClick={() => act('PDA_sendMessage', {
                         name: message.name,
                         job: message.job,
-                        ref: message.ref,
+                        target_addr: message.target_addr,
                       })}
                     />
                   )}
@@ -190,12 +190,12 @@ export const NtosMessenger = (props, context) => {
             <Stack vertical>
               {messengers.map(messenger => (
                 <Button
-                  key={messenger.ref}
+                  key={messenger.target_addr}
                   fluid
                   onClick={() => act('PDA_sendMessage', {
                     name: messenger.name,
                     job: messenger.job,
-                    ref: messenger.ref,
+                    target_addr: messenger.target_addr,
                   })}>
                   {messenger.name} ({messenger.job})
                 </Button>

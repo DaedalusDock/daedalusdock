@@ -214,7 +214,7 @@
 		return
 	//Ping response handled in parent.
 	switch(signal.data["command"])
-		if("ping_reply")//Add new phone to database
+		if(NETCMD_PINGREPLY)//Add new phone to database
 			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
 				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
 		if("tel_ring")//Incoming ring
@@ -572,7 +572,7 @@
 
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
-	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
+	v_signal.has_magic_data = MAGIC_DATA_MUST_DISCARD | MAGIC_DATA_MUST_OBFUSCATE //We're sending a virtual speaker. This packet MUST be discarded, and MUST be obfuscated.
 	v_signal.data["s_addr"] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
 	v_signal.data["d_addr"] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"

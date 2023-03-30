@@ -628,16 +628,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		to_chat(user, span_notice("You slot \the [attacking_item] into [src]."))
 		return
 
-	// Scan a photo.
-	if(istype(attacking_item, /obj/item/photo))
-		var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
-		var/obj/item/photo/pic = attacking_item
-		if(hdd)
-			for(var/datum/computer_file/program/messenger/messenger in hdd.stored_files)
-				saved_image = pic.picture
-				messenger.ProcessPhoto()
-		return
-
 	// Insert items into the components
 	for(var/h in all_components)
 		var/obj/item/computer_hardware/H = all_components[h]

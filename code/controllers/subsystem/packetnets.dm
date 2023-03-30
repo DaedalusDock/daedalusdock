@@ -5,6 +5,8 @@ SUBSYSTEM_DEF(packets)
 	flags = SS_NO_INIT|SS_KEEP_TIMING
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
+	//Functionary vars
+
 	var/list/saymodes = list()
 	var/list/datum/radio_frequency/frequencies = list()
 
@@ -40,11 +42,43 @@ SUBSYSTEM_DEF(packets)
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
 
+	//Storage Data Vars
+	// -Because bloating GLOB is a crime.
+
+	/// Magic command sent by the Detomatix to cause PDAs to explode
+	var/detomatix_magic_packet
+	/// Magic command sent by the Clown Virus to honkify PDAs
+	var/clownvirus_magic_packet
+	/// Magic command sent by the Mime virus to mute PDAs
+	var/mimevirus_magic_packet
+	/// Magic command sent by the FRAME virus to install an uplink.
+	/// Mostly a formality as this packet MUST be obfuscated.
+	var/framevirus_magic_packet
+
 /datum/controller/subsystem/packets/PreInit(timeofday)
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM
 	return ..()
+
+/datum/controller/subsystem/packets/Initialize(start_timeofday)
+	. = ..()
+	detomatix_magic_packet = random_string(32, GLOB.hex_characters)
+	clownvirus_magic_packet = random_string(32, GLOB.hex_characters)
+	mimevirus_magic_packet = random_string(32, GLOB.hex_characters)
+	framevirus_magic_packet = random_string(32, GLOB.hex_characters)
+
+/datum/controller/subsystem/packets/Recover()
+	. = ..()
+	//Functional vars first
+	frequencies = SSpackets.frequencies
+	queued_radio_packets = SSpackets.queued_radio_packets
+	queued_subspace_vocals = SSpackets.queued_subspace_vocals
+	//Data vars
+	detomatix_magic_packet = SSpackets.detomatix_magic_packet
+	clownvirus_magic_packet = SSpackets.clownvirus_magic_packet
+	mimevirus_magic_packet = SSpackets.mimevirus_magic_packet
+	framevirus_magic_packet = SSpackets.framevirus_magic_packet
 
 /datum/controller/subsystem/packets/stat_entry(msg)
 	msg += "RP: [length(queued_radio_packets)]{[last_processed_radio_packets]}|"
@@ -139,33 +173,33 @@ SUBSYSTEM_DEF(packets)
 		resumed = FALSE
 		stage = SSPACKETS_TABLETS
 
-	if(stage == SSPACKETS_TABLETS)
-		timer = TICK_USAGE_REAL
-		if(!resumed)
-			cached_cost = 0
-			last_processed_tablet_message_packets = 0
+	// if(stage == SSPACKETS_TABLETS)
+	// 	timer = TICK_USAGE_REAL
+	// 	if(!resumed)
+	// 		cached_cost = 0
+	// 		last_processed_tablet_message_packets = 0
 
-		var/datum/signal/subspace/messaging/tablet_msg/packet
-		while(length(current_tablet_messages))
-			packet = current_tablet_messages[1]
-			current_tablet_messages.Cut(1,2)
-			queued_tablet_messages -= packet
+	// 	var/datum/signal/subspace/messaging/tablet_msg/packet
+	// 	while(length(current_tablet_messages))
+	// 		packet = current_tablet_messages[1]
+	// 		current_tablet_messages.Cut(1,2)
+	// 		queued_tablet_messages -= packet
 
-			if (!packet.logged)  // Can only go through if a message server logs it
-				continue
+	// 		if (!packet.logged)  // Can only go through if a message server logs it
+	// 			continue
 
-			for (var/obj/item/modular_computer/comp in packet.data["targets"])
-				var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-				for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-					app.receive_message(packet)
+	// 		for (var/obj/item/modular_computer/comp in packet.data["targets"])
+	// 			var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
+	// 			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
+	// 				app.receive_message(packet)
 
-			cached_cost += TICK_USAGE_REAL - timer
-			last_processed_tablet_message_packets++
-			if(MC_TICK_CHECK)
-				return
+	// 		cached_cost += TICK_USAGE_REAL - timer
+	// 		last_processed_tablet_message_packets++
+	// 		if(MC_TICK_CHECK)
+	// 			return
 
-		cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
-		resumed = FALSE
+	// 	cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
+	// 	resumed = FALSE
 		stage = SSPACKETS_SUBSPACE_VOCAL
 
 	if(stage == SSPACKETS_SUBSPACE_VOCAL)
@@ -331,6 +365,8 @@ SUBSYSTEM_DEF(packets)
 
 	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
 
+/// Add an object to a radio frequency
+/// Returns: /datum/radio_frequency of the connected frequency
 /datum/controller/subsystem/packets/proc/add_object(obj/device, new_frequency as num, filter = null as text|null)
 	if(QDELETED(device))
 		CRASH("Attempted to add a qdeleting or nonexistent object to radio frequency!")

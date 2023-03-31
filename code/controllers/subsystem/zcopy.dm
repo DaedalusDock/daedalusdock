@@ -283,25 +283,27 @@ SUBSYSTEM_DEF(zcopy)
 			// This openturf doesn't care about its icon, so we can just overwrite it.
 			if (T.below.mimic_proxy)
 				QDEL_NULL(T.below.mimic_proxy)
+			var/list/underlay_copy = length(T.underlays) ? T.underlays.Copy() : null
 			T.appearance = T.below
 			T.name = initial(T.name)
 			T.desc = initial(T.desc)
 			T.gender = initial(T.gender)
 			T.opacity = FALSE
-			T.underlays.Cut()
+			T.underlays = underlay_copy
 			T.plane = t_target
 		else
 			// Some openturfs have icons, so we can't overwrite their appearance.
 			if (!T.below.mimic_proxy)
 				T.below.mimic_proxy = new(T)
 			var/atom/movable/openspace/turf_proxy/TO = T.below.mimic_proxy
+			var/list/underlay_copy = length(TO.underlays) ? TO.underlays.Copy() : null
 			TO.appearance = Td
 			TO.name = T.name
 			TO.gender = T.gender	// Need to grab this too so PLURAL works properly in examine.
 			TO.opacity = FALSE
 			TO.plane = t_target
 			TO.mouse_opacity = initial(TO.mouse_opacity)
-			TO.underlays.Cut()
+			TO.underlays = underlay_copy
 
 		T.queue_ao(T.ao_neighbors_mimic == null)	// If ao_neighbors hasn't been set yet, we need to do a rebuild
 

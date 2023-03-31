@@ -206,6 +206,8 @@
 
 	if (source_atom.light_power != light_power)
 		light_power = source_atom.light_power
+		if(!isnum(source_atom.light_power))
+			CRASH("Non-num power value! Source: [source_atom]")
 		update = TRUE
 
 	if (source_atom.light_inner_range != light_inner_range)

@@ -40,7 +40,7 @@
 /obj/item/mcobject/messaging/signal_builder/proc/set_suffix_config(mob/user, obj/item/tool)
 	var/msg = input(user, "Input a trailing string", "Configure Component", end_str)
 	end_str = msg
-	to_chat(user, span_notice("You set the trailing string of [src] to [html_encode(start_str)]."))
+	to_chat(user, span_notice("You set the trailing string of [src] to [html_encode(end_str)]."))
 	return TRUE
 
 /obj/item/mcobject/messaging/signal_builder/proc/append_to_buffer(datum/mcmessage/input)

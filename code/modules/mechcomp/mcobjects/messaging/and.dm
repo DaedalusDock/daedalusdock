@@ -31,8 +31,6 @@
 	set waitfor = FALSE
 	if(input1)
 		return
-	if(!input.Truthy())
-		return
 
 	input1 = TRUE
 
@@ -48,8 +46,6 @@
 /obj/item/mcobject/messaging/and/proc/check2(datum/mcmessage/input)
 	set waitfor = FALSE
 	if(input2)
-		return
-	if(!input.Truthy())
 		return
 
 	input2 = TRUE

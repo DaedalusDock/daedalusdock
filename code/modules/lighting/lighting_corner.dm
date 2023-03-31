@@ -31,7 +31,6 @@
 	var/below_r = 0
 	var/below_g = 0
 	var/below_b = 0
-	var/is_lit_from_below = FALSE
 
 	//additive light values
 	var/add_r = 0
@@ -89,10 +88,6 @@
 		if (NORTHWEST)
 			master_NW = master
 			master.lighting_corner_SE = src
-
-/datum/lighting_corner/proc/self_destruct_if_idle()
-	if (!LAZYLEN(affecting) && !is_lit_from_below)
-		qdel(src, force = TRUE)
 
 /datum/lighting_corner/proc/vis_update()
 	for (var/datum/light_source/light_source as anything in affecting)
@@ -154,7 +149,6 @@
 	below_r += delta_r
 	below_g += delta_g
 	below_b += delta_b
-	is_lit_from_below = below_r || below_g || below_b
 
 	UPDATE_SUM_LUM(r)
 	UPDATE_SUM_LUM(g)
@@ -212,8 +206,6 @@
 	if (lighting_object && !lighting_object.needs_update)
 		lighting_object.needs_update = TRUE
 		SSlighting.objects_queue += lighting_object
-
-	self_destruct_if_idle()
 
 /datum/lighting_corner/dummy/New()
 	return

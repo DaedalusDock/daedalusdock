@@ -279,11 +279,12 @@ SUBSYSTEM_DEF(zcopy)
 			if ((T.below.z_flags & Z_MIMIC_OVERWRITE) || isspaceturf(T.below))
 				t_target = PLANE_SPACE
 
+		var/list/underlay_copy = T.lighting_object?.current_underlay ? list(T.lighting_object.current_underlay) : null
 		if (T.z_flags & Z_MIMIC_OVERWRITE)
 			// This openturf doesn't care about its icon, so we can just overwrite it.
 			if (T.below.mimic_proxy)
 				QDEL_NULL(T.below.mimic_proxy)
-			var/list/underlay_copy = length(T.underlays) ? T.underlays.Copy() : null
+			//var/list/underlay_copy = length(T.underlays) ? T.underlays.Copy() : null
 			T.appearance = T.below
 			T.name = initial(T.name)
 			T.desc = initial(T.desc)
@@ -296,7 +297,7 @@ SUBSYSTEM_DEF(zcopy)
 			if (!T.below.mimic_proxy)
 				T.below.mimic_proxy = new(T)
 			var/atom/movable/openspace/turf_proxy/TO = T.below.mimic_proxy
-			var/list/underlay_copy = length(TO.underlays) ? TO.underlays.Copy() : null
+			//var/list/underlay_copy = length(TO.underlays) ? TO.underlays.Copy() : null
 			TO.appearance = Td
 			TO.name = T.name
 			TO.gender = T.gender	// Need to grab this too so PLURAL works properly in examine.

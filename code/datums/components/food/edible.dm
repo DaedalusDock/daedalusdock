@@ -64,35 +64,35 @@ Behavior that's still missing from this component that original food items had t
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(examine))ne))ne))ne))ne))ne))ne))ne))ne))ne))ne))ne))ne))am)ine))ne))ne))
-	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))al))al))al))al))al))al))al))al))al))al))al))al))ni)mal))al))al))
-	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, PROC_REF(OnCraft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))ft))
-	RegisterSignal(parent, COMSIG_ATOM_CREATEDBY_PROCESSING, PROC_REF(OnProcessed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
-	RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_COOKED, PROC_REF(OnMicrowaveCooked))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
-	RegisterSignal(parent, COMSIG_EDIBLE_INGREDIENT_ADDED, PROC_REF(edible_ingredient_added))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
-	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, PROC_REF(on_ooze_eat))at))at))at))at))at))at))at))at))at))at))at))at))at))at))at))at))
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
+	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))
+	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, PROC_REF(OnCraft))
+	RegisterSignal(parent, COMSIG_ATOM_CREATEDBY_PROCESSING, PROC_REF(OnProcessed))
+	RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_COOKED, PROC_REF(OnMicrowaveCooked))
+	RegisterSignal(parent, COMSIG_EDIBLE_INGREDIENT_ADDED, PROC_REF(edible_ingredient_added))
+	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, PROC_REF(on_ooze_eat))
 
 	if(!isturf(parent))
 		var/static/list/loc_connections = list(
-			COMSIG_ATOM_ENTERED = PROC_REF(on_entered),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),ed),
+			COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 		)
 		AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 	else
-		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
+		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 
 	if(isitem(parent))
-		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(UseFromHand))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))nd))
-		RegisterSignal(parent, COMSIG_ITEM_FRIED, PROC_REF(OnFried))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
-		RegisterSignal(parent, COMSIG_GRILL_FOOD, PROC_REF(GrillFood))od))od))od))od))od))od))od))od))od))od))od))od))od))od))od))od))
-		RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_ACT, PROC_REF(OnMicrowaved))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))ed))
-		RegisterSignal(parent, COMSIG_ITEM_USED_AS_INGREDIENT, PROC_REF(used_to_customize))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))ze))
+		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(UseFromHand))
+		RegisterSignal(parent, COMSIG_ITEM_FRIED, PROC_REF(OnFried))
+		RegisterSignal(parent, COMSIG_GRILL_FOOD, PROC_REF(GrillFood))
+		RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_ACT, PROC_REF(OnMicrowaved))
+		RegisterSignal(parent, COMSIG_ITEM_USED_AS_INGREDIENT, PROC_REF(used_to_customize))
 
 		var/obj/item/item = parent
 		if (!item.grind_results)
 			item.grind_results = list() //If this doesn't already exist, add it as an empty list. This is needed for the grinder to accept it.
 
 	else if(isturf(parent) || isstructure(parent))
-		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(TryToEatIt))It))It))It))It))It))It))It))It))It))It))It))It))It))It))It))It))
+		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(TryToEatIt))
 
 	src.bite_consumption = bite_consumption
 	src.food_flags = food_flags
@@ -376,7 +376,7 @@ Behavior that's still missing from this component that original food items had t
 
 	//If we're not force-feeding and there's an eat delay, try take another bite
 	if(eater == feeder && eat_time)
-		INVOKE_ASYNC(src, PROC_REF(TryToEat),at),at),at),at),at),at),at),at),at),at),at),at),at),at),at),at), eater, feeder)
+		INVOKE_ASYNC(src, PROC_REF(TryToEat), eater, feeder)
 
 
 ///This function lets the eater take a bite and transfers the reagents to the eater.

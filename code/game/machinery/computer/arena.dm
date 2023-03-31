@@ -77,7 +77,7 @@
 	var/list/default_arenas = flist(arena_dir)
 	for(var/arena_file in default_arenas)
 		var/simple_name = replacetext(replacetext(arena_file,arena_dir,""),".dmm","")
-		INVOKE_ASYNC(src, PROC_REF(add_new_arena_template),te), null, arena_dir + arena_file, simple_name)
+		INVOKE_ASYNC(src, PROC_REF(add_new_arena_template), null, arena_dir + arena_file, simple_name)
 
 /obj/machinery/computer/arena/proc/get_landmark_turf(landmark_tag)
 	for(var/obj/effect/landmark/arena/L in GLOB.landmarks_list)
@@ -221,7 +221,7 @@
 	for(var/mob/M in all_contestants())
 		to_chat(M,span_userdanger("The gates will open in [timetext]!"))
 	start_time = world.time + start_delay
-	addtimer(CALLBACK(src,PROC_REF(begin))in)),start_delay)
+	addtimer(CALLBACK(src,PROC_REF(begin)),start_delay)
 	for(var/team in teams)
 		var/obj/machinery/arena_spawn/team_spawn = get_spawn(team)
 		var/obj/effect/countdown/arena/A = new(team_spawn)

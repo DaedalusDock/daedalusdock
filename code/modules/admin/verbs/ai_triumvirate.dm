@@ -11,7 +11,7 @@ GLOBAL_DATUM(triple_ai_controller, /datum/triple_ai_controller)
 
 /datum/triple_ai_controller/New()
 	. = ..()
-	RegisterSignal(SSjob, COMSIG_OCCUPATIONS_DIVIDED, PROC_REF(on_occupations_divided))ed))ed))
+	RegisterSignal(SSjob, COMSIG_OCCUPATIONS_DIVIDED, PROC_REF(on_occupations_divided))
 
 /datum/triple_ai_controller/proc/on_occupations_divided(datum/source)
 	SIGNAL_HANDLER

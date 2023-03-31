@@ -9,14 +9,14 @@
 /datum/element/light_eater/Attach(datum/target)
 	if(isatom(target))
 		if(ismovable(target))
-			RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(on_throw_impact))ct))
+			RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(on_throw_impact))
 			if(isitem(target))
-				RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_afterattack))ck))
-				RegisterSignal(target, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_reaction))on))
+				RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_afterattack))
+				RegisterSignal(target, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_reaction))
 			else if(isprojectile(target))
-				RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, PROC_REF(on_projectile_hit))it))
+				RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, PROC_REF(on_projectile_hit))
 	else if(istype(target, /datum/reagent))
-		RegisterSignal(target, COMSIG_REAGENT_EXPOSE_ATOM, PROC_REF(on_expose_atom))om))
+		RegisterSignal(target, COMSIG_REAGENT_EXPOSE_ATOM, PROC_REF(on_expose_atom))
 	else
 		return ELEMENT_INCOMPATIBLE
 

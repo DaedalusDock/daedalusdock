@@ -580,7 +580,7 @@
 	revealed = TRUE
 	name = realName
 	reset_timer = rand(reset_timer, reset_timer * 5)
-	realProc = pick(.procTYPE_PROC_REF(/teleport,, explode),.procTYPE_PROC_REF(/rapidDupe,, petSpray),.procTYPE_PROC_REF(/flash,, clean),PROC_REF(corgicannon))
+	realProc = pick(PROC_REF(teleport), PROC_REF(explode), PROC_REF(rapidDupe), PROC_REF(petSpray), PROC_REF(flash), PROC_REF(clean), PROC_REF(corgicannon))
 
 /obj/item/relic/attack_self(mob/user)
 	if(!revealed)

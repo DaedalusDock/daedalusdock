@@ -1149,7 +1149,7 @@
 			if(axe && !axe.wielded)
 				to_chat(user, span_warning("You need to be wielding \the [axe] to do that!"))
 				return
-		INVOKE_ASYNC(src, (density ? PROC_REF(open : PROC_REF(close))), 2)
+		INVOKE_ASYNC(src, (density ? PROC_REF(open) : PROC_REF(close)), 2)
 
 /obj/machinery/door/airlock/open(forced=0)
 	if( operating || welded || locked || seal )

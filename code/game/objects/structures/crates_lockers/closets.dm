@@ -71,14 +71,14 @@
 
 /obj/structure/closet/Initialize(mapload)
 	if(mapload && !opened) // if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, PROC_REF(take_contents),ts), TRUE), 0)
+		addtimer(CALLBACK(src, PROC_REF(take_contents), TRUE), 0)
 	. = ..()
 	update_appearance()
 	PopulateContents()
 	if(QDELETED(src)) //It turns out populate contents has a 1 in 100 chance of qdeling src on /obj/structure/closet/emcloset
 		return //Why
 	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),on),
+		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -165,7 +165,7 @@
 			animate(door_obj, transform = door_transform, icon_state = door_state, layer = door_layer, time = world.tick_lag, flags = ANIMATION_END_NOW)
 		else
 			animate(transform = door_transform, icon_state = door_state, layer = door_layer, time = world.tick_lag)
-	addtimer(CALLBACK(src, PROC_REF(end_door_animation))on)), door_anim_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_CLIENT_TIME)
+	addtimer(CALLBACK(src, PROC_REF(end_door_animation)), door_anim_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_CLIENT_TIME)
 
 /// Ends the door animation and removes the animated overlay
 /obj/structure/closet/proc/end_door_animation()

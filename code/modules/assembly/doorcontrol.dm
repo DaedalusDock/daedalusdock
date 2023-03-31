@@ -29,7 +29,7 @@
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
-			INVOKE_ASYNC(M, openclose ? TYPE_PROC_REF(/obj/machinery/door/poddoor, open : /obj/machinery/door/poddoorPROC_REF(close)))
+			INVOKE_ASYNC(M, openclose ? TYPE_PROC_REF(/obj/machinery/door/poddoor, open) : TYPE_PROC_REF(/obj/machinery/door/poddoor, close))
 	addtimer(VARSET_CALLBACK(src, cooldown, FALSE), 10)
 
 /obj/item/assembly/control/curtain
@@ -50,7 +50,7 @@
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
-			INVOKE_ASYNC(M, openclose ? TYPE_PROC_REF(/obj/structure/curtain/cloth/fancy/mechanical, open : /obj/structure/curtain/cloth/fancy/mechanicalPROC_REF(close)))
+			INVOKE_ASYNC(M, openclose ? TYPE_PROC_REF(/obj/structure/curtain/cloth/fancy/mechanical, open) : TYPE_PROC_REF(/obj/structure/curtain/cloth/fancy/mechanical, close))
 	addtimer(VARSET_CALLBACK(src, cooldown, FALSE), 5)
 
 
@@ -94,7 +94,7 @@
 				D.safe = !D.safe
 
 	for(var/D in open_or_close)
-		INVOKE_ASYNC(D, doors_need_closing ? TYPE_PROC_REF(/obj/machinery/door/airlock, close : /obj/machinery/door/airlockPROC_REF(open)))
+		INVOKE_ASYNC(D, doors_need_closing ? TYPE_PROC_REF(/obj/machinery/door/airlock, close) : TYPE_PROC_REF(/obj/machinery/door/airlock, open))
 
 	addtimer(VARSET_CALLBACK(src, cooldown, FALSE), 10)
 

@@ -146,5 +146,8 @@
 
 	affected_turf.luminosity = set_luminosity
 
-	if (affected_turf.above?.shadower)
-		affected_turf.above.shadower.copy_lighting(src)
+	if (affected_turf.above)
+		if(affected_turf.above.shadower)
+			affected_turf.above.shadower.copy_lighting(src)
+		else
+			affected_turf.above.update_mimic()

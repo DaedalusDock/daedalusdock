@@ -28,8 +28,9 @@
 	affected_turf.lighting_object = src
 	affected_turf.luminosity = 0
 
-	for(var/turf/open/space/space_tile in RANGE_TURFS(1, affected_turf))
-		space_tile.update_starlight()
+	if(CONFIG_GET(flag/starlight))
+		for(var/turf/open/space/space_tile in RANGE_TURFS(1, affected_turf))
+			space_tile.update_starlight()
 
 	needs_update = TRUE
 	SSlighting.objects_queue += src

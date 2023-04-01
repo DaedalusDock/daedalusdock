@@ -544,13 +544,6 @@
 
 	Moved(oldloc, direction, FALSE, old_locs)
 
-	// Z-Mimic hook
-	if (bound_overlay)
-		bound_overlay.forceMove(get_step(src, UP))
-		// forceMove could've deleted our overlay
-		if (bound_overlay && bound_overlay.dir != dir)
-			bound_overlay.setDir(dir)
-
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
@@ -719,6 +712,16 @@
 
 		else if(new_turf && !old_turf)
 			SSspatial_grid.enter_cell(src, new_turf)
+
+	// Z-Mimic hook
+	if (bound_overlay)
+		// The overlay will handle cleaning itself up on non-openspace turfs.
+		if (new_turf)
+			bound_overlay.forceMove(get_step(src, UP))
+			if (bound_overlay && dir != bound_overlay.dir)
+				bound_overlay.setDir(dir)
+		else	// Not a turf, so we need to destroy immediately instead of waiting for the destruction timer to proc.
+			qdel(bound_overlay)
 
 	return TRUE
 

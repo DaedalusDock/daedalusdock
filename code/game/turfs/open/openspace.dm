@@ -28,6 +28,10 @@
 	if(istype(our_area, /area/space))
 		force_no_gravity = TRUE
 
+/turf/open/openspace/examine(mob/user)
+	SHOULD_CALL_PARENT(FALSE)
+	return below.examine(user)
+
 /turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
 	UnregisterSignal(src, COMSIG_ATOM_INITIALIZED_ON)
 	return ..()

@@ -4,17 +4,6 @@
 	/// Movable-level Z-Mimic flags. This uses ZMM_* flags, not ZM_* flags.
 	var/zmm_flags = NONE
 
-/atom/movable/forceMove(atom/dest)
-	. = ..(dest)
-	if (. && bound_overlay)
-		// The overlay will handle cleaning itself up on non-openspace turfs.
-		if (isturf(dest))
-			bound_overlay.forceMove(get_step(src, UP))
-			if (bound_overlay && dir != bound_overlay.dir)
-				bound_overlay.setDir(dir)
-		else	// Not a turf, so we need to destroy immediately instead of waiting for the destruction timer to proc.
-			qdel(bound_overlay)
-
 /atom/movable/setDir(ndir)
 	. = ..()
 	if (. && bound_overlay)
@@ -41,12 +30,16 @@
 // -- Openspace movables --
 
 /atom/movable/openspace
-	name = ""
+	name = "spooky debug text oooOOOoooo"
 	simulated = FALSE
 	anchored = TRUE
 	mouse_opacity = FALSE
 
 // Please respect the openspace objects' personal space by not interacting with them, they get spooked.
+
+/atom/movable/openspace/examine(mob/user)
+	SHOULD_CALL_PARENT(FALSE)
+	return loc.examine(user)
 
 /atom/movable/openspace/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
@@ -83,6 +76,7 @@
 	desc = "You shouldn't see this."
 	icon = LIGHTING_ICON
 	icon_state = "lighting_dark"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = ZMIMIC_MAX_PLANE
 	layer = MIMICKED_LIGHTING_LAYER
 	blend_mode = BLEND_MULTIPLY

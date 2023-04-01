@@ -114,7 +114,7 @@
 
 		affected_turf.underlays += current_underlay
 
-	if(red_corner.applying_additive || green_corner.applying_additive || blue_corner.applying_additive || alpha_corner.applying_additive && !(affected_turf.z_flags & Z_MIMIC_OVERWRITE))
+	if((red_corner.applying_additive || green_corner.applying_additive || blue_corner.applying_additive || alpha_corner.applying_additive) && !(affected_turf.z_flags & Z_MIMIC_OVERWRITE))
 		//I'm not ENTIRELY sure why, but turfs of this nature will black out if they get bloom'd
 		affected_turf.underlays -= additive_underlay
 		additive_underlay.icon_state = affected_turf.lighting_uses_jen ? "wall-jen-[affected_turf.smoothing_junction]" : "light"

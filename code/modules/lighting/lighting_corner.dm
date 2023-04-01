@@ -211,30 +211,11 @@
 	return
 
 /datum/lighting_corner/Destroy(force)
-	if (!force)
-		return QDEL_HINT_LETMELIVE
-
-
-	for (var/datum/light_source/light_source as anything in affecting)
-		LAZYREMOVE(light_source.effect_str, src)
-	affecting = null
-
-	if (master_NE)
-		master_NE.lighting_corner_SW = null
-		master_NE.lighting_corners_initialised = FALSE
-	if (master_SE)
-		master_SE.lighting_corner_NW = null
-		master_SE.lighting_corners_initialised = FALSE
-	if (master_SW)
-		master_SW.lighting_corner_NE = null
-		master_SW.lighting_corners_initialised = FALSE
-	if (master_NW)
-		master_NW.lighting_corner_SE = null
-		master_NW.lighting_corners_initialised = FALSE
-	if (needs_update)
-		SSlighting.corners_queue -= src
-
-	return ..()
+	//Welcome back soulful PJB comment.
+	SHOULD_CALL_PARENT(FALSE)
+	stack_trace("Ok, Look, TG, I need you to find whatever fucker decided to call qdel on a fucking lighting corner, \
+	then tell him very nicely and politely that he is 100% retarded and needs his head checked. Thanks. Send them my regards by the way.")
+	return QDEL_HINT_LETMELIVE
 
 #undef UPDATE_ABOVE_LUM
 #undef UPDATE_SUM_LUM

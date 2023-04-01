@@ -30,16 +30,12 @@
 // -- Openspace movables --
 
 /atom/movable/openspace
-	name = "spooky debug text oooOOOoooo"
+	name = ""
 	simulated = FALSE
 	anchored = TRUE
-	mouse_opacity = FALSE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 // Please respect the openspace objects' personal space by not interacting with them, they get spooked.
-
-/atom/movable/openspace/examine(mob/user)
-	SHOULD_CALL_PARENT(FALSE)
-	return loc.examine(user)
 
 /atom/movable/openspace/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
@@ -97,6 +93,7 @@
 	layer = MIMICKED_LIGHTING_LAYER
 	plane = ZMIMIC_MAX_PLANE
 	blend_mode = BLEND_MULTIPLY
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	invisibility = 0
 
 	if (islist(color))

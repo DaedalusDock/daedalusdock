@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Baystation parallax artwork
+  - bugfix: Kilo's asteroid turfs aren't fullbright on production anymore (again)

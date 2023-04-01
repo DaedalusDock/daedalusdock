@@ -115,32 +115,33 @@
 		affected_turf.underlays += current_underlay
 
 	if(red_corner.applying_additive || green_corner.applying_additive || blue_corner.applying_additive || alpha_corner.applying_additive)
-		affected_turf.underlays -= additive_underlay
-		additive_underlay.icon_state = affected_turf.lighting_uses_jen ? "wall-jen-[affected_turf.smoothing_junction]" : "light"
-		var/arr = red_corner.add_r
-		var/arb = red_corner.add_b
-		var/arg = red_corner.add_g
+		if(!(affected_turf.z_flags & Z_MIMIC_OVERWRITE)) //I'm not ENTIRELY sure why, but turfs of this nature will black out if they get bloom'd
+			affected_turf.underlays -= additive_underlay
+			additive_underlay.icon_state = affected_turf.lighting_uses_jen ? "wall-jen-[affected_turf.smoothing_junction]" : "light"
+			var/arr = red_corner.add_r
+			var/arb = red_corner.add_b
+			var/arg = red_corner.add_g
 
-		var/agr = green_corner.add_r
-		var/agb = green_corner.add_b
-		var/agg = green_corner.add_g
+			var/agr = green_corner.add_r
+			var/agb = green_corner.add_b
+			var/agg = green_corner.add_g
 
-		var/abr = blue_corner.add_r
-		var/abb = blue_corner.add_b
-		var/abg = blue_corner.add_g
+			var/abr = blue_corner.add_r
+			var/abb = blue_corner.add_b
+			var/abg = blue_corner.add_g
 
-		var/aarr = alpha_corner.add_r
-		var/aarb = alpha_corner.add_b
-		var/aarg = alpha_corner.add_g
+			var/aarr = alpha_corner.add_r
+			var/aarb = alpha_corner.add_b
+			var/aarg = alpha_corner.add_g
 
-		additive_underlay.color = list(
-			arr, arg, arb, 00,
-			agr, agg, agb, 00,
-			abr, abg, abb, 00,
-			aarr, aarg, aarb, 00,
-			00, 00, 00, 01
-		)
-		affected_turf.underlays += additive_underlay
+			additive_underlay.color = list(
+				arr, arg, arb, 00,
+				agr, agg, agb, 00,
+				abr, abg, abb, 00,
+				aarr, aarg, aarb, 00,
+				00, 00, 00, 01
+			)
+			affected_turf.underlays += additive_underlay
 	else
 		affected_turf.underlays -= additive_underlay
 

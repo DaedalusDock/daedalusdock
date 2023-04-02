@@ -1,0 +1,11 @@
+author: LemonInTheDark, MrMelbert
+delete-after: true
+changes:
+  - balance: Magboots will now protect you from sliding on ice. It will not stop the
+      slip, though.
+  - bugfix: Speed potioned magboots maintain their speed booster after toggling them
+  - refactor: Refactored magboots.
+  - refactor: Refactored noslip mechanics.
+  - qol: Human gravity will react to changes instantly, instead of waiting for the
+      next process tick. Hopefully this feels better and not worse
+  - bugfix: Fixes a bunch of minor gravity bugs, report em if you see more yeah?

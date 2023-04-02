@@ -842,7 +842,7 @@
 		return
 
 	flags_2 |= GREYSCALE_QUEUED_2
-	SSgreyscale.processing += src
+	SSgreyscale_queue.processing += src
 
 /**
  * An atom we are buckled or is contained within us has tried to move

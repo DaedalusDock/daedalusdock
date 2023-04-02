@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(greyscale_queue)
 		current_run.len--
 		if(!QDELETED(thing))
 			thing.update_greyscale()
+			thing.flags_2 &= ~GREYSCALE_QUEUED_2
 		processing -= thing
 		if (MC_TICK_CHECK)
 			return

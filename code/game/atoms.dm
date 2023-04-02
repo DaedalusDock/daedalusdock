@@ -840,9 +840,11 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(flags_2 & GREYSCALE_QUEUED_2)
 		return
-
 	flags_2 |= GREYSCALE_QUEUED_2
-	SSgreyscale_queue.processing += src
+
+	if(!SSgreyscale_queue.can_fire)
+		SSgreyscale_queue.can_fire = TRUE
+	SSgreyscale_queue.update_queue += src
 
 /**
  * An atom we are buckled or is contained within us has tried to move

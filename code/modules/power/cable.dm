@@ -26,6 +26,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	var/machinery_layer = MACHINERY_LAYER_1 //bitflag
 	var/datum/powernet/powernet
 
+	var/is_fully_initialized = FALSE
+
 /obj/structure/cable/layer1
 	color = "red"
 	cable_layer = CABLE_LAYER_1
@@ -51,6 +53,9 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 
+/obj/structure/cable/LateInitialize()
+	update_appearance(UPDATE_ICON)
+	is_fully_initialized = TRUE
 
 /obj/structure/cable/proc/on_rat_eat(datum/source, mob/living/simple_animal/hostile/regalrat/king)
 	SIGNAL_HANDLER
@@ -66,15 +71,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	if(clear_before_updating)
 		linked_dirs = 0
 	var/obj/machinery/power/search_parent
-	for(var/obj/machinery/power/P in loc)
-		if(istype(P, /obj/machinery/power/terminal))
-			under_thing = UNDER_TERMINAL
-			search_parent = P
-			break
-		if(istype(P, /obj/machinery/power/smes))
-			under_thing = UNDER_SMES
-			search_parent = P
-			break
+
+	if((search_parent = locate(/obj/machinery/power/terminal) in loc))
+		under_thing = UNDER_TERMINAL
+
+	else if((search_parent = locate(/obj/machinery/power/smes) in loc))
+		under_thing = UNDER_SMES
+
 	for(var/check_dir in GLOB.cardinals)
 		var/TB = get_step(src, check_dir)
 		//don't link from smes to its terminal
@@ -99,9 +102,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 			if(C.cable_layer & cable_layer)
 				linked_dirs |= check_dir
 				C.linked_dirs |= inverse
-				C.update_appearance()
+				// We will update on LateInitialize otherwise.
+				if (C.is_fully_initialized)
+					C.update_appearance(UPDATE_ICON)
 
-	update_appearance()
+	if (is_fully_initialized)
+		update_appearance(UPDATE_ICON)
+
 
 ///Clear the linked indicator bitflags
 /obj/structure/cable/proc/Disconnect_cable()

@@ -648,6 +648,7 @@ SUBSYSTEM_DEF(spatial_grid)
 
 		. += current_ear
 
+#ifdef SPATIAL_GRID_ZLEVEL_STATS
 ///debug proc for finding how full the cells of src's z level are
 /atom/proc/find_grid_statistics_for_z_level(insert_clients = 0)
 	var/raw_clients = 0
@@ -879,6 +880,7 @@ SUBSYSTEM_DEF(spatial_grid)
 	and the average atmos radio receiver distance is [average_atmosradio_distance]\
 	")
 
+#endif
 #undef GRID_CELL_ADD
 #undef GRID_CELL_REMOVE
 #undef GRID_CELL_SET

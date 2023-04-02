@@ -45,7 +45,8 @@
 		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
-	vis_contents.len = 0
+	if(length(vis_contents))
+		vis_contents.len = 0
 
 	assemble_baseturfs()
 

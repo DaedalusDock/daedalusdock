@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * This is done because it's called so often that any extra code just slows things down too much
  * If you add something relevant here add it there too
  * [/turf/open/space/Initialize]
- * [/turf/closed/minereal/Initialize]
+ * [/turf/closed/mineral/Initialize]
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
@@ -104,7 +104,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
-	if(mapload && permit_ao)
+	if(permit_ao && mapload)
 		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
@@ -163,14 +163,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (!length(custom_materials))
 		set_custom_materials(custom_materials)
 
-	if(uses_integrity)
-		atom_integrity = max_integrity
-
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (!armor)
-			armor = getArmor()
-
+	#ifdef SPATIAL_GRID_ZLEVEL_STATS
+	if((istype(src, /turf/open/floor) || istype(src, /turf/closed/wall)) && isstationlevel(z))
+		GLOB.station_turfs |= src
+	#endif
 	return INITIALIZE_HINT_NORMAL
 
 /*
@@ -214,8 +210,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	///NO MORE ZAS THINGS
 
 	..()
+	#ifdef SPATIAL_GRID_ZLEVEL_STATS
+	if(isstationlevel(z))
+		GLOB.station_turfs += src
+	#endif
 
-	vis_contents.Cut()
+	vis_contents.len = 0
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS

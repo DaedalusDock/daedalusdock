@@ -48,8 +48,10 @@
 		burnt = TRUE
 	if(mapload && prob(33))
 		MakeDirty()
+#ifdef SPATIAL_GRID_ZLEVEL_STATS
 	if(is_station_level(z))
 		GLOB.station_turfs += src
+#endif
 
 /turf/open/floor/proc/setup_broken_states()
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
@@ -57,10 +59,12 @@
 /turf/open/floor/proc/setup_burnt_states()
 	return
 
+#ifdef SPATIAL_GRID_ZLEVEL_STATS
 /turf/open/floor/Destroy()
 	if(is_station_level(z))
 		GLOB.station_turfs -= src
 	return ..()
+#endif
 
 /turf/open/floor/ex_act(severity, target)
 	. = ..()

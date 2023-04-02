@@ -15852,7 +15852,6 @@
 /area/centcom/central_command_areas/evacuation)
 "Ug" = (
 /obj/structure/lattice/catwalk,
-/obj/machinery/atmospherics/components/tank/nitrogen,
 /turf/open/space/basic,
 /area/space/nearstation)
 "Uh" = (

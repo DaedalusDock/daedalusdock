@@ -169,5 +169,8 @@ DEFINE_BITFIELD(smoothing_flags, list(
 	##out.len--;
 
 #define ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_group_variable) \
-	var/list/unwrapped = UNWRAP_SMOOTHING_GROUPS(smoothing_group_variable, unwrapped); \
-	assert_sorted(unwrapped, "[#smoothing_group_variable] ([type])"); \
+	do { \
+		var/list/unwrapped = UNWRAP_SMOOTHING_GROUPS(smoothing_group_variable, unwrapped); \
+		assert_sorted(unwrapped, "[#smoothing_group_variable] ([type])"); \
+	}
+	while(FALSE)

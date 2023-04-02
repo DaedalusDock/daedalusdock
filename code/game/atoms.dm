@@ -261,7 +261,7 @@
 	// The integrity to max_integrity ratio is still preserved.
 	set_custom_materials(custom_materials)
 
-	if(!isnull(ai_controller))
+	if(ispath(ai_controller))
 		ai_controller = new ai_controller(src)
 
 	return INITIALIZE_HINT_NORMAL

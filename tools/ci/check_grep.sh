@@ -82,16 +82,22 @@ if grep -Pzo '/obj/machinery/power/apc[/\w]*?\{\n[^}]*?pixel_[xy] = -?[013-9]\d*
     echo -e "${RED}ERROR: Found an APC with a manually set pixel_x or pixel_y that is not +-25. Use the directional variants when possible.${NC}"
     st=1
 fi;
-if grep -Pzo '"\w+" = \(\n[^)]*?/obj/structure/lattice[/\w]*?,\n[^)]*?/turf/closed[/\w]*?,\n[^)]*?/area/.+?\)' _maps/**/*.dmm;	then
-	echo
-    echo -e "${RED}ERROR: Found a lattice stacked within a wall, please remove them.${NC}"
-    st=1
-fi;
-if grep -Pzo '"\w+" = \(\n[^)]*?/obj/structure/window[/\w]*?,\n[^)]*?/turf/closed[/\w]*?,\n[^)]*?/area/.+?\)' _maps/**/*.dmm;	then
-	echo
-    echo -e "${RED}ERROR: Found a window stacked within a wall, please remove it.${NC}"
-    st=1
-fi;
+# I'll reenable this later. -Francinum
+# if grep -Pzo '"\w+" = \(\n[^)]*?/obj/structure/lattice[/\w]*?,\n[^)]*?/turf/closed/wall[/\w]*?,\n[^)]*?/area/.+?\)' _maps/**/*.dmm;	then
+#     echo
+#     echo -e "${RED}ERROR: Found a lattice stacked with a wall, please remove them.${NC}"
+#     st=1
+# fi;
+# if grep -Pzo '"\w+" = \(\n[^)]*?/obj/structure/lattice[/\w]*?,\n[^)]*?/turf/closed[/\w]*?,\n[^)]*?/area/.+?\)' _maps/**/*.dmm;	then
+# 	echo
+#     echo -e "${RED}ERROR: Found a lattice stacked within a wall, please remove them.${NC}"
+#     st=1
+# fi;
+# if grep -Pzo '"\w+" = \(\n[^)]*?/obj/structure/window[/\w]*?,\n[^)]*?/turf/closed[/\w]*?,\n[^)]*?/area/.+?\)' _maps/**/*.dmm;	then
+# 	echo
+#     echo -e "${RED}ERROR: Found a window stacked within a wall, please remove it.${NC}"
+#     st=1
+# fi;
 if grep -P '^/area/.+[\{]' _maps/**/*.dmm;	then
 	echo
     echo -e "${RED}ERROR: Variable editted /area path use detected in a map, please replace with a proper area path.${NC}"

@@ -114,7 +114,8 @@
 	icon_state = "0"
 
 /turf/open/floor/holofloor/space/Initialize(mapload)
-	icon_state = SPACE_ICON_STATE(x, y, z) // so realistic
+	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1] // so realistic
+	layer = initial(layer)
 	. = ..()
 
 /turf/open/floor/holofloor/hyperspace

@@ -597,9 +597,6 @@
 /obj/machinery/computer/shuttle/pod/Initialize(mapload)
 	. = ..()
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_lock))
-
-/obj/machinery/computer/shuttle/pod/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/machinery/computer/shuttle/pod/emag_act(mob/user)

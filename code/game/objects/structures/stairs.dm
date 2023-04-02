@@ -31,7 +31,7 @@
 /obj/structure/stairs/Initialize(mapload)
 	GLOB.stairs += src
 	if(force_open_above)
-		force_open_above()
+		force_open_GetAbove()
 		build_signal_listener()
 	update_surrounding()
 
@@ -111,7 +111,7 @@
 			listeningTo = null
 	else
 		build_signal_listener()
-		force_open_above()
+		force_open_GetAbove()
 
 /obj/structure/stairs/proc/build_signal_listener()
 	if(listeningTo)
@@ -120,7 +120,7 @@
 	RegisterSignal(T, COMSIG_TURF_MULTIZ_NEW, PROC_REF(on_multiz_new))
 	listeningTo = T
 
-/obj/structure/stairs/proc/force_open_above()
+/obj/structure/stairs/proc/force_open_GetAbove()
 	var/turf/open/openspace/T = get_step_multiz(get_turf(src), UP)
 	if(T && !istype(T))
 		T.ChangeTurf(/turf/open/openspace, flags = CHANGETURF_INHERIT_AIR)

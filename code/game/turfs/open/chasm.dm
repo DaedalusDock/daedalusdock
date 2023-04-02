@@ -52,11 +52,6 @@
 /turf/open/chasm/rust_heretic_act()
 	return FALSE
 
-/turf/open/chasm/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
-
 /turf/open/chasm/attackby(obj/item/C, mob/user, params, area/area_restriction)
 	..()
 	if(istype(C, /obj/item/stack/rods))
@@ -104,8 +99,3 @@
 	initial_gas = OPENTURF_LOW_PRESSURE
 
 	baseturfs = /turf/open/chasm/jungle
-
-/turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "dirt"
-	return TRUE

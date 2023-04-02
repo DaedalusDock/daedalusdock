@@ -80,14 +80,11 @@
 /obj/item/hierophant_club/Initialize(mapload)
 	. = ..()
 	blink = new(src)
+	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hierophant_club/Destroy()
-	. = ..()
 	QDEL_NULL(blink)
-
-/obj/item/hierophant_club/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
+	return ..()
 
 /obj/item/hierophant_club/examine(mob/user)
 	. = ..()

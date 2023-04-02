@@ -399,9 +399,6 @@
 	burnt = TRUE
 	update_appearance()
 
-/turf/open/floor/carpet/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
-
 /// An emissive turf used to test emissive turfs.
 /turf/open/floor/emissive_test
 	name = "emissive test floor"
@@ -767,11 +764,6 @@
 	canSmoothWith = list(SMOOTH_GROUP_TURF_CHASM)
 	tiled_dirt = FALSE
 
-/turf/open/floor/fakepit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
-
 /turf/open/floor/fakespace
 	icon = 'icons/turf/space.dmi'
 	icon_state = "0"
@@ -784,10 +776,5 @@
 
 /turf/open/floor/fakespace/Initialize(mapload)
 	. = ..()
-	icon_state = SPACE_ICON_STATE(x, y, z)
-
-/turf/open/floor/fakespace/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/space.dmi'
-	underlay_appearance.icon_state = SPACE_ICON_STATE(x, y, z)
-	underlay_appearance.plane = PLANE_SPACE
-	return TRUE
+	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
+	layer = initial(layer)

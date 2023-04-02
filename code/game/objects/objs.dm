@@ -74,15 +74,15 @@
 		else
 			log_telecomms("Created [src]([REF(src)] in nullspace, assuming network to be in station")
 			network_id = NETWORK_NAME_COMBINE(STATION_NETWORK_ROOT, network_id) // I regret nothing!!
+
 		AddComponent(/datum/component/ntnet_interface, network_id, id_tag)
-		/// Needs to run before as ComponentInitialize runs after this statement...why do we have ComponentInitialize again?
 
 
 /obj/Destroy(force)
 	if(!ismachinery(src))
 		STOP_PROCESSING(SSobj, src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
 	SStgui.close_uis(src)
-	. = ..()
+	return ..()
 
 
 /obj/assume_air(datum/gas_mixture/giver)

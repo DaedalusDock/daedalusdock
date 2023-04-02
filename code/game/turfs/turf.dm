@@ -161,8 +161,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (isnull(custom_materials))
 		set_custom_materials(custom_materials)
 
-	ComponentInitialize()
-
 	if(uses_integrity)
 		atom_integrity = max_integrity
 
@@ -549,12 +547,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			continue
 		if(ismob(A) || .)
 			A.narsie_act()
-
-/turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = icon
-	underlay_appearance.icon_state = icon_state
-	underlay_appearance.dir = adjacency_dir
-	return TRUE
 
 /turf/proc/add_blueprints(atom/movable/AM)
 	var/image/I = new

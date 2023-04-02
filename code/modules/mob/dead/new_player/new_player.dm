@@ -22,8 +22,6 @@
 	else
 		forceMove(locate(1,1,1))
 
-	ComponentInitialize()
-
 	. = ..()
 
 	GLOB.new_player_list += src

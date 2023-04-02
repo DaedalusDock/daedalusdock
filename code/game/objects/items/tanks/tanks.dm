@@ -92,14 +92,11 @@
 	RegisterSignal(air_contents, COMSIG_GASMIX_MERGED, PROC_REF(merging_information))
 
 	START_PROCESSING(SSobj, src)
+	if(tank_holder_icon_state)
+		AddComponent(/datum/component/container_item/tank_holder, tank_holder_icon_state)
 
 /obj/item/tank/proc/populate_gas()
 	return
-
-/obj/item/tank/ComponentInitialize()
-	. = ..()
-	if(tank_holder_icon_state)
-		AddComponent(/datum/component/container_item/tank_holder, tank_holder_icon_state)
 
 /obj/item/tank/Destroy()
 	UnregisterSignal(air_contents, COMSIG_GASMIX_MERGED)

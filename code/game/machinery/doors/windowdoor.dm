@@ -63,9 +63,6 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
 	become_atmos_sensitive()
-
-/obj/machinery/door/window/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/ntnet_interface)
 
 /obj/machinery/door/window/Destroy()

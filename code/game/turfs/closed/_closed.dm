@@ -5,14 +5,6 @@
 	blocks_air = AIR_BLOCKED
 	rad_insulation = RAD_MEDIUM_INSULATION
 	pass_flags_self = PASSCLOSEDTURF
-/*
-/turf/closed/AfterChange()
-	. = ..()
-	SSair.high_pressure_delta -= src
-*/
-
-/turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/closed/indestructible
 	name = "wall"
@@ -262,11 +254,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	explosion_block = 50
 	baseturfs = /turf/closed/indestructible/necropolis
 
-/turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "necro1"
-	return TRUE
-
 /turf/closed/indestructible/iron
 	name = "impervious iron wall"
 	desc = "A wall with tough iron plating."
@@ -292,11 +279,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 
 /turf/closed/indestructible/riveted/boss/see_through
 	opacity = FALSE
-
-/turf/closed/indestructible/riveted/boss/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
 
 /turf/closed/indestructible/riveted/hierophant
 	name = "wall"

@@ -1,4 +1,5 @@
 GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, COLOR_CYAN, COLOR_ORANGE, COLOR_PURPLE)
+GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 /turf/open/space
 	icon = 'icons/turf/space.dmi'
@@ -47,15 +48,13 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
  */
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	var/static/list/space_appearances = make_space_appearances()
-	appearance = space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
+	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
-	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
+	if(!loc:area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
 		// Intentionally not add_overlay for performance reasons.
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
@@ -69,16 +68,16 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 		if(!isnull(T))
 			T.multiz_turf_new(src, UP)
 
-	ComponentInitialize()
-
 	return INITIALIZE_HINT_NORMAL
 
 /proc/make_space_appearances()
 	. = new /list(26)
 	for (var/i in 0 to 25)
 		var/image/I = new()
-		I.appearance = /turf/space
+		I.appearance = /turf/open/space
 		I.icon_state = "[i]"
+		I.plane = PLANE_SPACE
+		I.layer = SPACE_LAYER
 		.[i+1] = I
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
@@ -181,13 +180,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 
 /turf/open/space/acid_act(acidpwr, acid_volume)
 	return FALSE
-
-/turf/open/space/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/space.dmi'
-	underlay_appearance.icon_state = SPACE_ICON_STATE(x, y, z)
-	underlay_appearance.plane = PLANE_SPACE
-	return TRUE
-
 
 /turf/open/space/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(!CanBuildHere())

@@ -2,17 +2,22 @@ SUBSYSTEM_DEF(greyscale_queue)
 	name = "Greyscale Queue"
 	init_order = INIT_ORDER_GREYSCALE_QUEUE
 	wait = 1
-	priority = FIRE_PRIORITY_SMOOTHING
+	priority = FIRE_PRIORITY_GREYSCALE_QUEUE
+	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/processing = list()
-	var/list/current_run = list()
+	var/list/currentrun = list()
+
+/datum/controller/subsystem/greyscale_queue/stat_entry(msg)
+	. = ..()
+	. += "P:[length(processing)]"
 
 /datum/controller/subsystem/greyscale_queue/fire(resumed)
+	var/list/current_run
 	if(!resumed)
-		current_run = processing.Copy()
+		currentrun = processing.Copy()
 	else
-		current_run = src.current_run //cache4speed
-
+		current_run = currentrun
 
 	while(length(current_run))
 		var/turf/thing = current_run[length(current_run)]

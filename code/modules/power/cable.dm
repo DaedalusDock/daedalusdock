@@ -53,6 +53,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 
+	return INITIALIZE_HINT_LATELOAD
+
 /obj/structure/cable/LateInitialize()
 	update_appearance(UPDATE_ICON)
 	is_fully_initialized = TRUE
@@ -148,7 +150,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	for(var/check_dir in GLOB.cardinals)
 		if(linked_dirs & check_dir)
 			dir_icon_list += "[check_dir]"
-	var/dir_string = dir_icon_list.Join("-")
+	var/dir_string = jointext(dir_icon_list, "-")
 	if(dir_icon_list.len > 1)
 		for(var/obj/O in loc)
 			if(GLOB.wire_node_generating_types[O.type])

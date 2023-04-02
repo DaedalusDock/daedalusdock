@@ -36,6 +36,7 @@
 		return COMPONENT_INCOMPATIBLE
 	holder.forceMove(parent)
 
+INITIALIZE_IMMEDIATE(/obj/effect/abstract/mirage_holder)
 /obj/effect/abstract/mirage_holder
 	name = "Mirage holder"
 	anchored = TRUE

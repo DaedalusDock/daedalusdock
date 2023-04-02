@@ -176,6 +176,12 @@ if grep -P '^/*var/' code/**/*.dm; then
     echo -e "${RED}ERROR: Unmanaged global var use detected in code, please use the helpers.${NC}"
     st=1
 fi;
+if grep -P 'CALLBACK\(GLOBAL_PROC, PROC_REF\(' code/**/*.dm; then
+	echo
+	echo -e "${RED}ERROR: Global callback with non-global proc ref. This will crash!${NC}"
+	st=1
+fi;
+
 for json in _maps/*.json
 do
     map_path=$(jq -r '.map_path' $json)

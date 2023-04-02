@@ -36,7 +36,7 @@
 
 /datum/martial_art/plasma_fist/proc/Tornado(mob/living/A, mob/living/D)
 	A.say("TORNADO SWEEP!", forced="plasma fist")
-	dance_rotate(A, CALLBACK(GLOBAL_PROC, PROC_REF(playsound), A.loc, 'sound/weapons/punch1.ogg', 15, TRUE, -1))
+	dance_rotate(A, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), A.loc, 'sound/weapons/punch1.ogg', 15, TRUE, -1))
 	var/datum/action/cooldown/spell/aoe/repulse/tornado_spell = new(src)
 	tornado_spell.cast(A)
 	qdel(tornado_spell)

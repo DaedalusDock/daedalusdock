@@ -160,10 +160,13 @@
 			calling_arguments = args
 	if(datum_flags & DF_VAR_EDITED)
 		return WrapAdminProcCall(object, delegate, calling_arguments)
-	if (object == GLOBAL_PROC)
-		return call(delegate)(arglist(calling_arguments))
-	return call(object, delegate)(arglist(calling_arguments))
-
+	try
+		if (object == GLOBAL_PROC)
+			return call(delegate)(arglist(calling_arguments))
+		return call(object, delegate)(arglist(calling_arguments))
+	catch(var/exception/e)
+		stack_trace("[e] at callback invokation, obj:[object], proc:[delegate], d_istxt:[istext(delegate)]")
+		return .
 /**
 	Helper datum for the select callbacks proc
  */

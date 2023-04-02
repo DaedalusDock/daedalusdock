@@ -16,7 +16,7 @@
 
 	/// The id for the DEMOCRACY_MODE looping vote timer.
 	var/timerid
-	/// Assoc list of key-chat command string, value-callback pairs. list("right" = CALLBACK(GLOBAL_PROC, PROC_REF(_step), src, EAST))
+	/// Assoc list of key-chat command string, value-callback pairs. list("right" = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step), src, EAST))
 	var/list/datum/callback/inputs = list()
 	/// Assoc list of ckey:value pairings. In DEMOCRACY_MODE, value is the player's vote. In ANARCHY_MODE, value is world.time when their cooldown expires.
 	var/list/ckey_to_cooldown = list()
@@ -216,10 +216,10 @@
 
 	. = ..()
 
-	inputs["up"] = CALLBACK(GLOBAL_PROC, PROC_REF(_step), parent, NORTH)
-	inputs["down"] = CALLBACK(GLOBAL_PROC, PROC_REF(_step), parent, SOUTH)
-	inputs["left"] = CALLBACK(GLOBAL_PROC, PROC_REF(_step), parent, WEST)
-	inputs["right"] = CALLBACK(GLOBAL_PROC, PROC_REF(_step), parent, EAST)
+	inputs["up"] = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step), parent, NORTH)
+	inputs["down"] = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step), parent, SOUTH)
+	inputs["left"] = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step), parent, WEST)
+	inputs["right"] = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step), parent, EAST)
 
 /**
  * Deadchat Moves Things

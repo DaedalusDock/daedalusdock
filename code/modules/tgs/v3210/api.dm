@@ -70,7 +70,7 @@
 			commit = logs[2]
 		else
 			TGS_ERROR_LOG("Error parsing commit logs")
-	
+
 	logs = TGS_FILE2LIST(".git/logs/refs/remotes/origin/master")
 	if(logs.len)
 		logs = splittext(logs[logs.len], " ")
@@ -99,7 +99,7 @@
 	if(skip_compat_check && !fexists(SERVICE_INTERFACE_DLL))
 		TGS_ERROR_LOG("Service parameter present but no interface DLL detected. This is symptomatic of running a service less than version 3.1! Please upgrade.")
 		return
-	call(SERVICE_INTERFACE_DLL, SERVICE_INTERFACE_FUNCTION)(instance_name, command) //trust no retval
+	call_ext(SERVICE_INTERFACE_DLL, SERVICE_INTERFACE_FUNCTION)(instance_name, command) //trust no retval
 	return TRUE
 
 /datum/tgs_api/v3210/OnTopic(T)

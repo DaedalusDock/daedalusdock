@@ -7,7 +7,7 @@
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
-		TRAIT_NOSLIPALL,
+		TRAIT_NO_SLIP_ALL,
 	)
 
 	say_mod = "slurs"

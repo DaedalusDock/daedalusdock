@@ -55,9 +55,9 @@ SUBSYSTEM_DEF(mapping)
 	/// True when in the process of adding a new Z-level, global locking
 	var/adding_new_zlevel = FALSE
 
-	///shows the default gravity value for each z level. recalculated when gravity generators change.
-	///associative list of the form: list("[z level num]" = max generator gravity in that z level OR the gravity level trait)
-	var/list/gravity_by_z_level = list()
+	/// shows the default gravity value for each z level. recalculated when gravity generators change.
+	/// List in the form: list(z level num = max generator gravity in that z level OR the gravity level trait)
+	var/list/gravity_by_zlevel = list()
 
 /datum/controller/subsystem/mapping/New()
 	..()
@@ -162,9 +162,14 @@ SUBSYSTEM_DEF(mapping)
 		max_gravity = max(grav_gen.setting, max_gravity)
 
 	max_gravity = max_gravity || level_trait(z_level_number, ZTRAIT_GRAVITY) || 0//just to make sure no nulls
-	gravity_by_z_level["[z_level_number]"] = max_gravity
+	gravity_by_zlevel[z_level_number] = max_gravity
 	return max_gravity
 
+/// Takes a z level datum, and tells the mapping subsystem to manage it
+/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z)
+	z_list += new_z
+	///Increment all the z level lists (note: not all yet)
+	gravity_by_zlevel.len += 1
 
 /**
  * ##setup_ruins

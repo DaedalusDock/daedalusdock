@@ -47,6 +47,14 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_loss))
 
+	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NEGATES_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_NEGATES_GRAVITY)), PROC_REF(on_negate_gravity))
+	// We hook for forced grav changes from our turf and ourselves
+	var/static/list/loc_connections = list(
+		SIGNAL_ADDTRAIT(TRAIT_FORCED_GRAVITY) = PROC_REF(on_loc_force_gravity),
+		SIGNAL_REMOVETRAIT(TRAIT_FORCED_GRAVITY) = PROC_REF(on_loc_force_gravity),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
 /// Called when [TRAIT_KNOCKEDOUT] is added to the mob.
 /mob/living/proc/on_knockedout_trait_gain(datum/source)
 	SIGNAL_HANDLER
@@ -228,3 +236,27 @@
 	remove_movespeed_modifier(/datum/movespeed_modifier/atmos_pressure, TRUE)
 	if(!resting)
 		get_up(TRUE)
+
+/// Called when [TRAIT_NEGATES_GRAVITY] is gained or lost
+/mob/living/proc/on_negate_gravity(datum/source)
+	SIGNAL_HANDLER
+	if(!isgroundlessturf(loc))
+		if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY))
+			ADD_TRAIT(src, TRAIT_IGNORING_GRAVITY, IGNORING_GRAVITY_NEGATION)
+		else
+			REMOVE_TRAIT(src, TRAIT_IGNORING_GRAVITY, IGNORING_GRAVITY_NEGATION)
+
+/// Called when [TRAIT_IGNORING_GRAVITY] is gained or lost
+/mob/living/proc/on_ignore_gravity(datum/source)
+	SIGNAL_HANDLER
+	refresh_gravity()
+
+/// Called when [TRAIT_FORCED_GRAVITY] is gained or lost
+/mob/living/proc/on_force_gravity(datum/source)
+	SIGNAL_HANDLER
+	refresh_gravity()
+
+/// Called when our loc's [TRAIT_FORCED_GRAVITY] is gained or lost
+/mob/living/proc/on_loc_force_gravity(datum/source)
+	SIGNAL_HANDLER
+	refresh_gravity()

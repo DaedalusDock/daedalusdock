@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - server: Builds are now tested against alt versions, You probably don't care about
-      this.

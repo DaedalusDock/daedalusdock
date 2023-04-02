@@ -16,8 +16,6 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	var/destination_x
 	var/destination_y
 
-	initial_gas = AIRLESS_ATMOS
-
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 	light_power = 0.25
@@ -48,6 +46,10 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
  */
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
+
+	var/static/list/spacegas = list()
+	initial_gas = spacegas //Avoid the nasty (init) call
+
 	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 
 	if(flags_1 & INITIALIZED_1)
@@ -86,10 +88,6 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
-/*
-/turf/open/space/Initalize_Atmos(times_fired)
-	return
-*/
 /turf/open/space/TakeTemperature(temp)
 
 /turf/open/space/RemoveLattice()

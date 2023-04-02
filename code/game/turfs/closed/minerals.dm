@@ -15,6 +15,12 @@
 	density = TRUE
 	base_icon_state = "smoothrocks"
 	temperature = TCMB
+	base_pixel_x = -4
+	base_pixel_y = -4
+	/* Here as a note: these are set in Initialize for the purposes of the map viewer
+	pixel_y = -4
+	pixel_x = -4
+	*/
 	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
 	var/turf/open/floor/plating/turf_type = /turf/open/misc/asteroid/airless
 	var/obj/item/stack/ore/mineralType = null
@@ -28,15 +34,85 @@
 	///How long it takes to mine this turf without tools, if it's weak.
 	var/hand_mine_speed = 15 SECONDS
 
+//We don't call parent for perf reasons. Instead, we copy paste everything. BYOND!
 /turf/closed/mineral/Initialize(mapload)
-	. = ..()
-	var/matrix/M = new
-	M.Translate(-4, -4)
-	transform = M
+	SHOULD_CALL_PARENT(FALSE)
+	if(flags_1 & INITIALIZED_1)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	flags_1 |= INITIALIZED_1
+
+	if(mapload && permit_ao)
+		queue_ao()
+
+	// by default, vis_contents is inherited from the turf that was here before
+	vis_contents.len = 0
+
+	assemble_baseturfs()
+
+	levelupdate()
+
+	if (!isnull(smoothing_groups))
+		#ifdef UNIT_TESTS
+		assert_sorted(smoothing_groups, "[type].smoothing_groups")
+		#endif
+
+		SET_BITFLAG_LIST(smoothing_groups)
+	if (!isnull(canSmoothWith))
+		#ifdef UNIT_TESTS
+		assert_sorted(canSmoothWith, "[type].canSmoothWith")
+		#endif
+
+		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
+			smoothing_flags |= SMOOTH_OBJ
+		SET_BITFLAG_LIST(canSmoothWith)
+	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+		QUEUE_SMOOTH(src)
+
+	// visibilityChanged() will never hit any path with side effects during mapload
+	if (!mapload)
+		visibilityChanged()
+
+	for(var/atom/movable/content as anything in src)
+		Entered(content, null)
+
+	var/area/our_area = loc
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
+
+	if (light_power && light_outer_range)
+		update_light()
+
+	var/turf/T = GetAbove()
+	if(T)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
+	T = GetBelow()
+	if(T)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
+
+	if (opacity)
+		directional_opacity = ALL_CARDINALS
+
+	// apply materials properly from the default custom_materials value
+	if (isnull(custom_materials))
+		set_custom_materials(custom_materials)
+
+	if(uses_integrity)
+		atom_integrity = max_integrity
+
+		if (islist(armor))
+			armor = getArmor(arglist(armor))
+		else if (!armor)
+			armor = getArmor()
+
+	/// UNIQUE MINERAL BEHAVIOR
 	icon = smooth_icon
+	pixel_x = -4
+	pixel_y = -4
 	var/static/list/behaviors = list(TOOL_MINING)
 	AddElement(/datum/element/bump_click, tool_behaviours = behaviors, allow_unarmed = TRUE)
+	///END MINERAL BEHAVIOR
 
+	return INITIALIZE_HINT_NORMAL
 /turf/closed/mineral/proc/Spread_Vein()
 	var/spreadChance = initial(mineralType.spreadChance)
 	if(spreadChance)

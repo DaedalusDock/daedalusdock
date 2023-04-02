@@ -96,6 +96,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * This is done because it's called so often that any extra code just slows things down too much
  * If you add something relevant here add it there too
  * [/turf/open/space/Initialize]
+ * [/turf/closed/minereal/Initialize]
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
@@ -107,7 +108,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
-	vis_contents.Cut()
+	if(length(vis_contents))
+		vis_contents.len = 0
 
 	assemble_baseturfs()
 
@@ -158,7 +160,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	if (isnull(custom_materials))
+	if (!length(custom_materials))
 		set_custom_materials(custom_materials)
 
 	if(uses_integrity)

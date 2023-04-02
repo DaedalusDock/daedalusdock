@@ -255,7 +255,7 @@
 		set_adj_in_dir: { \
 			do { \
 				var/turf/neighbor = get_step(src, direction); \
-				if(neighbor) { \
+				if(neighbor && can_area_smooth(neighbor)) { \
 					var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
 					if(neighbor_smoothing_groups) { \
 						for(var/target in canSmoothWith) { \

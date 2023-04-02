@@ -96,7 +96,7 @@ SUBSYSTEM_DEF(atoms)
 		count = atoms.len
 		#endif
 
-		for(var/I in 1 to count)
+		for(var/I in 1 to length(atoms))
 			var/atom/A = atoms[I]
 			if(!(A.flags_1 & INITIALIZED_1))
 				CHECK_TICK

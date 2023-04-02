@@ -122,8 +122,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	SETUP_SMOOTHING()
 
-	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH(src)
+	QUEUE_SMOOTH(src)
 
 	// visibilityChanged() will never hit any path with side effects during mapload
 	if (!mapload)

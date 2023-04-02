@@ -405,7 +405,7 @@
 	if(QDELETED(src) || !fulltile)
 		return
 
-	if((updates & UPDATE_SMOOTHING) && (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK)))
+	if((updates & UPDATE_SMOOTHING))
 		QUEUE_SMOOTH(src)
 
 	var/ratio = atom_integrity / max_integrity
@@ -784,7 +784,7 @@
 
 /obj/structure/window/paperframe/update_icon(updates=ALL)
 	. = ..()
-	if((updates & UPDATE_SMOOTHING) && (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK)))
+	if((updates & UPDATE_SMOOTHING))
 		QUEUE_SMOOTH(src)
 
 /obj/structure/window/paperframe/update_overlays()

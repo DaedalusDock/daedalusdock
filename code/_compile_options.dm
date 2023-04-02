@@ -130,6 +130,7 @@
 #define ZMIMIC_LIGHT_BLEED
 
 /////////////////////// MISC PERFORMANCE
+
 //uncomment this to load centcom and runtime station and thats it.
 // #define LOWMEMORYMODE
 

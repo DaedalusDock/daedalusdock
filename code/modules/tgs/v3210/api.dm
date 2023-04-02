@@ -103,6 +103,7 @@
 	call_ext(SERVICE_INTERFACE_DLL, SERVICE_INTERFACE_FUNCTION)(instance_name, command) //trust no retval
 	#else
 	call(SERVICE_INTERFACE_DLL, SERVICE_INTERFACE_FUNCTION)(instance_name, command) //trust no retval
+	#endif
 	return TRUE
 
 /datum/tgs_api/v3210/OnTopic(T)

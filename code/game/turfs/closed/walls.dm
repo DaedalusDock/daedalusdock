@@ -91,12 +91,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
 
-#ifdef SPATIAL_GRID_ZLEVEL_STATS
-/turf/closed/wall/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
-#endif
 
 /turf/closed/wall/copyTurf(turf/T)
 	. = ..()
@@ -218,7 +212,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
-	update_greyscale()
+	queue_update_greyscale()
 
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/proc/set_wall_information(plating_mat, reinf_mat, new_paint, new_stripe_paint)

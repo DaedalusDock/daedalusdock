@@ -234,7 +234,7 @@
 	flags_1 |= INITIALIZED_1
 
 	if(greyscale_config && greyscale_colors)
-		update_greyscale()
+		queue_update_greyscale()
 
 	//atom color stuff
 	if(color)
@@ -243,6 +243,10 @@
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
 	SETUP_SMOOTHING()
 
 	if(uses_integrity)
@@ -807,17 +811,20 @@
 /// Handles updates to greyscale value updates.
 /// The colors argument can be either a list or the full color string.
 /// Child procs should call parent last so the update happens after all changes.
-/atom/proc/set_greyscale(list/colors, new_config)
+/atom/proc/set_greyscale(list/colors, new_config, queue = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
-	if(istype(colors))
-		colors = colors.Join("")
+	if(islist(colors))
+		colors = jointext(colors, "")
 	if(!isnull(colors) && greyscale_colors != colors) // If you want to disable greyscale stuff then give a blank string
 		greyscale_colors = colors
 
 	if(!isnull(new_config) && greyscale_config != new_config)
 		greyscale_config = new_config
 
-	update_greyscale()
+	if(!queue)
+		update_greyscale()
+	else
+		queue_update_greyscale()
 
 /// Checks if this atom uses the GAGS system and if so updates the icon
 /atom/proc/update_greyscale()
@@ -828,6 +835,15 @@
 		return
 	update_atom_colour()
 	QUEUE_SMOOTH(src)
+
+/// Let the greyscale subsystem update it next fire. This is used for walls, as they call update_greyscale a ton during init
+/atom/proc/queue_update_greyscale()
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(flags_2 & GREYSCALE_QUEUED_2)
+		return
+
+	flags_2 |= GREYSCALE_QUEUED_2
+	SSgreyscale.processing += src
 
 /**
  * An atom we are buckled or is contained within us has tried to move
@@ -1127,7 +1143,7 @@
 	for(var/checked_color in atom_colours)
 		if(islist(checked_color))
 			var/list/color_list = checked_color
-			if(color_list.len)
+			if(length(color_list))
 				color = color_list
 				return
 		else if(checked_color)

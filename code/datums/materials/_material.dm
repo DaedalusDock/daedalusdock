@@ -102,7 +102,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 	if(material_flags & MATERIAL_GREYSCALE)
 		var/config_path = get_greyscale_config_for(source.greyscale_config)
-		source.set_greyscale(greyscale_colors, config_path)
+		source.set_greyscale(greyscale_colors, config_path, queue = TRUE)
 
 	if(alpha < 255)
 		source.opacity = FALSE
@@ -153,7 +153,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 		item.set_greyscale(
 			new_worn_config = worn_path,
 			new_inhand_left = lefthand_path,
-			new_inhand_right = righthand_path
+			new_inhand_right = righthand_path,
+			queue = TRUE
 		)
 
 	if(!item_sound_override)

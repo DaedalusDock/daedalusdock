@@ -324,7 +324,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/suicide_act(mob/user)
 	return
 
-/obj/item/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+/obj/item/set_greyscale(list/colors, new_config, queue, new_worn_config, new_inhand_left, new_inhand_right)
 	if(new_worn_config)
 		greyscale_config_worn = new_worn_config
 	if(new_inhand_left)

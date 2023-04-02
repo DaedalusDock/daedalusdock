@@ -40,3 +40,15 @@
 	name = "Mirage holder"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+/obj/effect/abstract/mirage_holder/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+	if(flags_1 & INITIALIZED_1)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	flags_1 |= INITIALIZED_1
+	return INITIALIZE_HINT_NORMAL
+
+/obj/effect/abstract/mirage_holder/Destroy(force)
+	SHOULD_CALL_PARENT(FALSE)
+	loc = null
+	return QDEL_HINT_QUEUE

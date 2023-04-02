@@ -82,10 +82,10 @@
 	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = GetAbove()
+	var/turf/T = GetAbove(src)
 	if(T)
 		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-	T = GetBelow()
+	T = GetBelow(src)
 	if(T)
 		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
 
@@ -109,8 +109,9 @@
 	pixel_x = -4
 	pixel_y = -4
 	var/static/list/behaviors = list(TOOL_MINING)
-	AddElement(/datum/element/bump_click, tool_behaviours = behaviors, allow_unarmed = TRUE)
 	///END MINERAL BEHAVIOR
+
+	return INITIALIZE_HINT_NORMAL
 
 // Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
 /turf/closed/mineral/Bumped(atom/movable/bumped_atom)

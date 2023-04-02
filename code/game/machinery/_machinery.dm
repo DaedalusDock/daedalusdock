@@ -165,11 +165,10 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
-GLOBAL_REAL_VAR(machine_cost) = list()
-GLOBAL_REAL_VAR(machine_count) = list()
+GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+		armor = machinery_default_armor
 
 	. = ..()
 

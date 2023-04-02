@@ -87,11 +87,6 @@
 	if(uses_integrity)
 		atom_integrity = max_integrity
 
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (!armor)
-			armor = getArmor()
-
 	/// UNIQUE MINERAL BEHAVIOR
 	icon = smooth_icon
 	pixel_x = -4

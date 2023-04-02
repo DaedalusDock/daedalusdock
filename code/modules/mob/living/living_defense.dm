@@ -62,7 +62,7 @@
 		// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
 		var/armor_check = check_projectile_armor(def_zone, P, is_silent = TRUE)
 		apply_damage(P.damage, P.damage_type, def_zone, armor_check, sharpness = P.sharpness, attack_direction = attack_direction)
-		apply_effects(P.stun, P.knockdown, P.unconscious, P.slur, P.stutter, P.eyeblur, P.drowsy, armor, P.stamina, P.jitter, P.paralyze, P.immobilize)
+		apply_effects(P.stun, P.knockdown, P.unconscious, P.slur, P.stutter, P.eyeblur, P.drowsy, returnArmor(), P.stamina, P.jitter, P.paralyze, P.immobilize)
 		if(P.dismemberment)
 			check_projectile_dismemberment(P, def_zone)
 	return . ? BULLET_ACT_HIT : BULLET_ACT_BLOCK

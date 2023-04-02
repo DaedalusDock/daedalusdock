@@ -202,7 +202,7 @@
 			usr.client.object_say(src)
 	if(href_list[VV_HK_ARMOR_MOD])
 		var/list/pickerlist = list()
-		var/list/armorlist = armor.getList()
+		var/list/armorlist = returnArmor().getList()
 
 		for (var/i in armorlist)
 			pickerlist += list(list("value" = armorlist[i], "name" = i))
@@ -212,14 +212,14 @@
 		if (islist(result))
 			if (result["button"] != 2) // If the user pressed the cancel button
 				// text2num conveniently returns a null on invalid values
-				armor = armor.setRating(melee = text2num(result["values"][MELEE]),\
+				setArmor(returnArmor().setRating(melee = text2num(result["values"][MELEE]),\
 			                  bullet = text2num(result["values"][BULLET]),\
 			                  laser = text2num(result["values"][LASER]),\
 			                  energy = text2num(result["values"][ENERGY]),\
 			                  bomb = text2num(result["values"][BOMB]),\
 			                  bio = text2num(result["values"][BIO]),\
 			                  fire = text2num(result["values"][FIRE]),\
-			                  acid = text2num(result["values"][ACID]))
+			                  acid = text2num(result["values"][ACID])))
 				log_admin("[key_name(usr)] modified the armor on [src] ([type]) to melee: [armor.melee], bullet: [armor.bullet], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]")
 				message_admins(span_notice("[key_name_admin(usr)] modified the armor on [src] ([type]) to melee: [armor.melee], bullet: [armor.bullet], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]"))
 	if(href_list[VV_HK_MASS_DEL_TYPE])

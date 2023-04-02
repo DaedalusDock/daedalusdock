@@ -310,6 +310,7 @@
 		how_cool_are_your_threads += "</span>"
 		. += how_cool_are_your_threads.Join()
 
+	returnArmor() //Ensure armor exists
 	if(armor.bio || armor.bomb || armor.bullet || armor.energy || armor.laser || armor.melee || armor.fire || armor.acid || flags_cover & HEADCOVERSMOUTH || flags_cover & PEPPERPROOF)
 		. += span_notice("It has a <a href='?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
 
@@ -351,6 +352,7 @@
 	. = ..()
 
 	if(href_list["list_armor"])
+		returnArmor() //Ensure armor exists
 		var/list/readout = list("<span class='notice'><u><b>PROTECTION CLASSES</u></b>")
 		if(armor.bio || armor.bomb || armor.bullet || armor.energy || armor.laser || armor.melee)
 			readout += "\n<b>ARMOR (I-X)</b>"

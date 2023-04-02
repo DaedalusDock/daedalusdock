@@ -38,7 +38,6 @@ SUBSYSTEM_DEF(atoms)
 	initialized = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
 	initialized = INITIALIZATION_INNEW_REGULAR
-
 	return ..()
 
 #ifdef PROFILE_MAPLOAD_INIT_ATOM

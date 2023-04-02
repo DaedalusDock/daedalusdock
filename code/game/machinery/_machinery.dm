@@ -165,28 +165,39 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
+GLOBAL_REAL_VAR(machine_cost) = list()
+GLOBAL_REAL_VAR(machine_count) = list()
 /obj/machinery/Initialize(mapload)
+	INIT_COST_GLOBAL(global.machine_cost, global.machine_count)
 	if(!armor)
 		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+	SET_COST("armor")
 	. = ..()
+	SET_COST("parent")
 	GLOB.machines += src
+	SET_COST("inc machines")
 
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
+	SET_COST("circuits")
 
 	if(processing_flags & START_PROCESSING_ON_INIT)
 		begin_processing()
+	SET_COST("start processing")
 
 	if(occupant_typecache)
 		occupant_typecache = typecacheof(occupant_typecache)
+	SET_COST("occupant tcache")
 
 	if((resistance_flags & INDESTRUCTIBLE) && component_parts){ // This is needed to prevent indestructible machinery still blowing up. If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag, /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine, including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted, allowing for INDESTRUCTIBLE machines to be destroyed. (See #62164 for more info)
 		flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
 	}
-
+	SET_COST("flags 1")
 	if(network_flags & NETWORK_FLAG_GEN_ID)
 		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+	SET_COST("setid")
+	EXPORT_STATS_TO_CSV_LATER("machine.csv", global.machine_cost, global.machine_count)
 
 	return INITIALIZE_HINT_LATELOAD
 

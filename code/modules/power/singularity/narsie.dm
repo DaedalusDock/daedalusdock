@@ -90,7 +90,7 @@
 
 	SSblackbox.record_feedback("amount", "narsies_spawned", 1)
 
-	INVOKE_ASYNC(GLOBAL_PROC, PROC_REF(begin_the_end))
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(begin_the_end))
 
 /obj/narsie/Destroy()
 	send_to_playing_players(span_narsie("\"<b>[pick("Nooooo...", "Not die. How-", "Die. Mort-", "Sas tyen re-")]\"</b>"))
@@ -260,7 +260,7 @@
 /proc/narsie_last_second_win()
 	set_security_level("red")
 	SSshuttle.lockdown = FALSE
-	INVOKE_ASYNC(GLOBAL_PROC, PROC_REF(cult_ending_helper), 2)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), 2)
 
 ///Helper to set the round to end asap. Current usage Cult round end code
 /proc/ending_helper()

@@ -47,7 +47,8 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
  */
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	icon_state = SPACE_ICON_STATE(x, y, z)
+	var/static/list/space_appearances = make_space_appearances()
+	appearance = space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
@@ -71,6 +72,14 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 	ComponentInitialize()
 
 	return INITIALIZE_HINT_NORMAL
+
+/proc/make_space_appearances()
+	. = new /list(26)
+	for (var/i in 0 to 25)
+		var/image/I = new()
+		I.appearance = /turf/space
+		I.icon_state = "[i]"
+		.[i+1] = I
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /turf/open/space/attack_ghost(mob/dead/observer/user)

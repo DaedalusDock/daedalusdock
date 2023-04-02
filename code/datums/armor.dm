@@ -5,6 +5,20 @@
 	if (!.)
 		. = new /datum/armor(melee, bullet, laser, energy, bomb, bio, fire, acid, wound, consume)
 
+///Retreive an atom's armor, creating it if it doesn't exist
+/atom/proc/returnArmor() //This is copypasted to physiology/proc/returnArmor()!!! update it too!!!
+	RETURN_TYPE(/datum/armor)
+	if(istype(armor, /datum/armor))
+		return armor
+
+	if(islist(armor) || isnull(armor))
+		armor = getArmor(arglist(armor))
+		return armor
+
+///Setter for armor
+/atom/proc/setArmor(datum/new_armor)
+	armor = new_armor
+
 /datum/armor
 	var/melee
 	var/bullet

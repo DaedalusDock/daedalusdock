@@ -154,6 +154,7 @@
 	///any atom that uses integrity and can be damaged must set this to true, otherwise the integrity procs will throw an error
 	var/uses_integrity = FALSE
 
+	///Atom armor. Use returnArmor()
 	var/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
@@ -250,12 +251,10 @@
 	SETUP_SMOOTHING()
 
 	if(uses_integrity)
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (isnull(armor))
-			armor = getArmor()
-		else if (!istype(armor, /datum/armor))
-			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")
+		#ifdef UNIT_TESTS
+		if (!(islist(armor) || isnull(armor) || istype(armor)))
+			stack_trace("Invalid armor found on atom of type [type] during /atom/Initialize()! Value: [armor]")
+		#endif
 
 		atom_integrity = max_integrity
 

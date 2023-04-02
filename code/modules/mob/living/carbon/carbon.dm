@@ -1,6 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
 	. = ..()
-	create_reagents(1000, REAGENT_HOLDER_ALIVE)
+	create_carbon_reagents(1000, REAGENT_HOLDER_ALIVE)
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	register_context()
 
@@ -26,6 +26,12 @@
 	remove_from_all_data_huds()
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
+
+///Humans need to init these early for species purposes
+/mob/living/carbon/proc/create_carbon_reagents()
+	if(reagents)
+		return
+	create_reagents(1000, REAGENT_HOLDER_ALIVE)
 
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()

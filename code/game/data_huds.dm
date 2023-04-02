@@ -191,7 +191,10 @@ Medical HUD! Basic mode needs suit sensors on.
 		holder.icon_state = "hudhealthy"
 
 /mob/living/carbon/med_hud_set_status()
-	var/image/holder = hud_list[STATUS_HUD]
+	var/image/holder = hud_list?[STATUS_HUD]
+	if(isnull(holder))
+		return
+
 	var/icon/I = icon(icon, icon_state, dir)
 	var/virus_threat = check_virus()
 	holder.pixel_y = I.Height() - world.icon_size

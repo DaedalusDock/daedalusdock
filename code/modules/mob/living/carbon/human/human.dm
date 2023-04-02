@@ -8,6 +8,7 @@
 	dna.species.create_fresh_body(src)
 	setup_human_dna()
 
+	create_carbon_reagents() //Humans init this early as species require it
 	set_species(dna.species.type)
 
 	prepare_huds() //Prevents a nasty runtime on human init

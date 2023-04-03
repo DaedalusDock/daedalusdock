@@ -56,7 +56,7 @@
 
 	// Inject the parameters.
 	param_regex.context = src
-	output.set_output(param_regex.Replace(format_port.value, /regex/format_component/proc/process_format_component_param))
+	output.set_output(param_regex.Replace(format_port.value, TYPE_PROC_REF(/regex/format_component, process_format_component_param)))
 	param_regex.context = null
 
 /**

@@ -66,3 +66,13 @@
   - tweak: Simplified burn fluid burnoff.
   - bugfix: Body temperature damage will never cause fluid burnoff.
   - code_imp: Cleaned up some organ code
+2023-03-22:
+  DTraitor:
+  - refactor: Replaced Pariah gun code with tg gun code.
+2023-03-30:
+  Cenrus:
+  - rscadd: Centcom, operative base, and wizard den now look nicer.
+2023-03-31:
+  francinum:
+  - server: Builds are now tested against alt versions, You probably don't care about
+      this.

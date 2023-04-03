@@ -53,11 +53,11 @@
 /datum/appearance_modifier/Destroy(force, ...)
 	for(var/obj/item/bodypart/BP as anything in affecting_bodyparts)
 		BP.appearance_mods -= src
-		sortTim(BP.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(BP.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 	for(var/obj/item/organ/external/O as anything in affecting_organs)
 		O.appearance_mods -= src
-		sortTim(O.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(O.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 	affecting_bodyparts = null
 	affecting_organs = null
@@ -92,9 +92,9 @@
 			continue
 
 		affecting_bodyparts += BP
-		RegisterSignal(BP, COMSIG_PARENT_QDELETING, .proc/bodypart_deleted)
+		RegisterSignal(BP, COMSIG_PARENT_QDELETING, PROC_REF(bodypart_deleted))
 		LAZYADDASSOC(BP.appearance_mods, src, priority)
-		sortTim(BP.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(BP.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 /datum/appearance_modifier/proc/ApplyToOrgans(list/organs)
 	if(!setup_complete)
@@ -104,9 +104,9 @@
 		if(!(O.slot in eorgan_slots_affected))
 			continue
 		affecting_organs += O
-		RegisterSignal(O, COMSIG_PARENT_QDELETING, .proc/organ_deleted)
+		RegisterSignal(O, COMSIG_PARENT_QDELETING, PROC_REF(organ_deleted))
 		LAZYADDASSOC(O.appearance_mods, src, priority)
-		sortTim(O.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(O.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 /datum/appearance_modifier/proc/bodypart_deleted(datum/source)
 	SIGNAL_HANDLER

@@ -9,7 +9,7 @@
 	if(!ismovable(target))
 		return ELEMENT_INCOMPATIBLE
 	src.throw_only = throw_only
-	RegisterSignal(target, COMSIG_MOVABLE_LATERAL_Z_MOVE, .proc/handle_lateral_movement)
+	RegisterSignal(target, COMSIG_MOVABLE_LATERAL_Z_MOVE, PROC_REF(handle_lateral_movement))
 
 /datum/element/lateral_bound/Detach(datum/source)
 	. = ..()

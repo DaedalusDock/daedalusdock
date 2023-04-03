@@ -20,8 +20,8 @@
 	if(handler.get_completion_progression(/datum/traitor_objective) < progression_objectives_minimum)
 		return FALSE
 	AddComponent(/datum/component/traitor_objective_mind_tracker, generating_for, \
-		signals = list(COMSIG_HUMAN_EARLY_UNARMED_ATTACK = .proc/on_unarmed_attack))
-	RegisterSignal(generating_for, COMSIG_GLOB_TRAITOR_OBJECTIVE_COMPLETED, .proc/on_global_obj_completed)
+		signals = list(COMSIG_HUMAN_EARLY_UNARMED_ATTACK = PROC_REF(on_unarmed_attack)))
+	RegisterSignal(generating_for, COMSIG_GLOB_TRAITOR_OBJECTIVE_COMPLETED, PROC_REF(on_global_obj_completed))
 	return TRUE
 
 /datum/traitor_objective/hack_comm_console/proc/on_global_obj_completed(datum/source, datum/traitor_objective/objective)
@@ -37,7 +37,7 @@
 		return
 	if(!istype(target))
 		return
-	INVOKE_ASYNC(src, .proc/begin_hack, user, target)
+	INVOKE_ASYNC(src, PROC_REF(begin_hack), user, target)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/traitor_objective/hack_comm_console/proc/begin_hack(mob/user, obj/machinery/computer/communications/target)

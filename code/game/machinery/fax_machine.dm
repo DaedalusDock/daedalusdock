@@ -478,7 +478,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	say("Fax received from [source]!")
 	playsound(src, 'sound/machines/terminal_processing.ogg', 50)
-	addtimer(CALLBACK(src, .proc/alert_received_paper, source), FAX_UNREAD_ALERT_TIME)
+	addtimer(CALLBACK(src, PROC_REF(alert_received_paper), source), FAX_UNREAD_ALERT_TIME)
 
 /*
  * Check if [checked_paper] has had its paperwork fulfilled successfully.
@@ -574,7 +574,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	if(received_paperwork[1])
 		eject_select_paperwork(user, received_paperwork[1], FALSE)
-		addtimer(CALLBACK(src, .proc/eject_all_paperwork_with_delay, user), 2 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(eject_all_paperwork_with_delay), user), 2 SECONDS)
 
 /*
  * Remove [paper] from the list of [received_paperwork] and
@@ -693,7 +693,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /obj/item/paper/processed/attackby(obj/item/weapon, mob/living/user, params)
 	if(istype(weapon, /obj/item/pen) || istype(weapon, /obj/item/toy/crayon))
-		INVOKE_ASYNC(src, .proc/answer_question, user)
+		INVOKE_ASYNC(src, PROC_REF(answer_question), user)
 		return TRUE
 
 	return ..()

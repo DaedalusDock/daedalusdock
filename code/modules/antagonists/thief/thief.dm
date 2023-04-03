@@ -69,7 +69,7 @@
 		/area/station/maintenance/department/crew_quarters/bar,
 	)
 	//remove every hideout location that isn't on this map
-	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, .proc/filter_nonexistent_areas))
+	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, PROC_REF(filter_nonexistent_areas)))
 	//for custom maps without any abandoned locations
 	if(!possible_hideout_locations.len)
 		return

@@ -141,7 +141,7 @@ Difficulty: Hard
 	. = ..()
 	stored_move_dirs &= ~movement_dir
 	if(!stored_move_dirs)
-		INVOKE_ASYNC(GLOBAL_PROC, .proc/wendigo_slam, src, stomp_range, 1, 8)
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(wendigo_slam), src, stomp_range, 1, 8)
 
 /// Slams the ground around the source throwing back enemies caught nearby, delay is for the radius increase
 /proc/wendigo_slam(atom/source, range, delay, throw_range)

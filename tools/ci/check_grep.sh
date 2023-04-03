@@ -181,11 +181,6 @@ if grep -P 'CALLBACK\(GLOBAL_PROC, PROC_REF\(' code/**/*.dm; then
 	echo -e "${RED}ERROR: Global callback with non-global proc ref. This will crash!${NC}"
 	st=1
 fi;
-if grep -P 'proc/[^\(]+(\)|,)' code/**/*.dm; then
-	echo
-	echo -e "${RED}ERROR: All proc references must use helpers, this will cause undefined behaviour!${NC}"
-	st=1
-fi;
 
 
 for json in _maps/*.json

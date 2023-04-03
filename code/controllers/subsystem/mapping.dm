@@ -45,15 +45,19 @@ SUBSYSTEM_DEF(mapping)
 	///list of all z level indices that form multiz connections and whether theyre linked up or down.
 	///list of lists, inner lists are of the form: list("up or down link direction" = TRUE)
 	var/list/multiz_levels = list()
+
+	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_z_connected()
+	VAR_PRIVATE/list/linked_zlevels = list()
+
 	var/datum/space_level/transit
 	var/datum/space_level/empty_space
 	var/num_of_res_levels = 1
 	/// True when in the process of adding a new Z-level, global locking
 	var/adding_new_zlevel = FALSE
 
-	///shows the default gravity value for each z level. recalculated when gravity generators change.
-	///associative list of the form: list("[z level num]" = max generator gravity in that z level OR the gravity level trait)
-	var/list/gravity_by_z_level = list()
+	/// shows the default gravity value for each z level. recalculated when gravity generators change.
+	/// List in the form: list(z level num = max generator gravity in that z level OR the gravity level trait)
+	var/list/gravity_by_zlevel = list()
 
 /datum/controller/subsystem/mapping/New()
 	..()
@@ -112,7 +116,7 @@ SUBSYSTEM_DEF(mapping)
 	setup_map_transitions()
 	generate_station_area_list()
 	initialize_reserved_level(transit.z_value)
-	SSticker.OnRoundstart(CALLBACK(src, .proc/spawn_maintenance_loot))
+	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(spawn_maintenance_loot)))
 	generate_z_level_linkages()
 	calculate_default_z_level_gravities()
 
@@ -158,9 +162,14 @@ SUBSYSTEM_DEF(mapping)
 		max_gravity = max(grav_gen.setting, max_gravity)
 
 	max_gravity = max_gravity || level_trait(z_level_number, ZTRAIT_GRAVITY) || 0//just to make sure no nulls
-	gravity_by_z_level["[z_level_number]"] = max_gravity
+	gravity_by_zlevel[z_level_number] = max_gravity
 	return max_gravity
 
+/// Takes a z level datum, and tells the mapping subsystem to manage it
+/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z)
+	z_list += new_z
+	///Increment all the z level lists (note: not all yet)
+	gravity_by_zlevel.len += 1
 
 /**
  * ##setup_ruins
@@ -210,7 +219,7 @@ SUBSYSTEM_DEF(mapping)
 		message_admins("Shuttles in transit detected. Attempting to fast travel. Timeout is [wipe_safety_delay/10] seconds.")
 	var/list/cleared = list()
 	for(var/i in in_transit)
-		INVOKE_ASYNC(src, .proc/safety_clear_transit_dock, i, in_transit[i], cleared)
+		INVOKE_ASYNC(src, PROC_REF(safety_clear_transit_dock), i, in_transit[i], cleared)
 	UNTIL((go_ahead < world.time) || (cleared.len == in_transit.len))
 	do_wipe_turf_reservations()
 	clearing_reserved_turfs = FALSE
@@ -479,7 +488,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	banned += generateMapList("spaceruinblacklist.txt")
 	banned += generateMapList("iceruinblacklist.txt")
 
-	for(var/item in sort_list(subtypesof(/datum/map_template/ruin), /proc/cmp_ruincost_priority))
+	for(var/item in sort_list(subtypesof(/datum/map_template/ruin), GLOBAL_PROC_REF(cmp_ruincost_priority)))
 		var/datum/map_template/ruin/ruin_type = item
 		// screen out the abstract subtypes
 		if(!initial(ruin_type.id))

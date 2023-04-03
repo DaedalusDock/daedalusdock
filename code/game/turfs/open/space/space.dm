@@ -1,3 +1,5 @@
+GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, COLOR_CYAN, COLOR_ORANGE, COLOR_PURPLE)
+
 /turf/open/space
 	icon = 'icons/turf/space.dmi'
 	icon_state = "0"
@@ -14,7 +16,6 @@
 
 	initial_gas = AIRLESS_ATMOS
 
-	// run_later = TRUE
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
 	light_power = 0.25
@@ -56,17 +57,14 @@
 		// Intentionally not add_overlay for performance reasons.
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
-		overlays += GLOB.fullbright_overlay
+		overlays += global.fullbright_overlay
 
 	if (!mapload)
-		// if(requires_activation)
-		// 	SSair.add_to_active(src, TRUE)
-
 		var/turf/T = SSmapping.get_turf_above(src)
-		if(T)
+		if(!isnull(T))
 			T.multiz_turf_new(src, DOWN)
 		T = SSmapping.get_turf_below(src)
-		if(T)
+		if(!isnull(T))
 			T.multiz_turf_new(src, UP)
 
 	ComponentInitialize()
@@ -88,26 +86,18 @@
 /turf/open/space/RemoveLattice()
 	return
 
-/turf/open/space/AfterChange()
-	..()
-	//atmos_overlay_types = null
-
-/*/turf/open/space/Assimilate_Air()
-	return*/
-
 //IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
 /turf/open/space/remove_air(amount)
 	return null
 
 /turf/open/space/proc/update_starlight()
-	if(CONFIG_GET(flag/starlight))
-		for(var/t in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
-			if(isspaceturf(t))
-				//let's NOT update this that much pls
-				continue
-			set_light(l_on = TRUE)
-			return
-		set_light(l_on = FALSE)
+	for(var/t in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
+		if(isspaceturf(t))
+			//let's NOT update this that much pls
+			continue
+		set_light(l_color = global.starlight_color, l_on = TRUE)
+		return
+	set_light(l_on = FALSE)
 
 /turf/open/space/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -152,6 +142,8 @@
 				ty--
 			DT = locate(tx, ty, destination_z)
 
+		if(SEND_SIGNAL(arrived, COMSIG_MOVABLE_LATERAL_Z_MOVE) & COMPONENT_BLOCK_MOVEMENT)
+			return
 		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
 		var/atom/movable/current_pull = arrived.pulling

@@ -15,10 +15,10 @@
 	return ..()
 
 /datum/component/scope/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, .proc/on_move)
-	RegisterSignal(parent, COMSIG_ITEM_AFTERATTACK_SECONDARY, .proc/on_secondary_afterattack)
-	RegisterSignal(parent, COMSIG_GUN_TRY_FIRE, .proc/on_gun_fire)
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(parent, COMSIG_ITEM_AFTERATTACK_SECONDARY, PROC_REF(on_secondary_afterattack))
+	RegisterSignal(parent, COMSIG_GUN_TRY_FIRE, PROC_REF(on_gun_fire))
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/scope/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -57,7 +57,7 @@
 
 	if(!tracker?.given_turf || target == get_target(tracker.given_turf))
 		return NONE
-	INVOKE_ASYNC(source, /obj/item/gun.proc/fire_gun, get_target(tracker.given_turf), user)
+	INVOKE_ASYNC(source, TYPE_PROC_REF(/obj/item/gun, fire_gun), get_target(tracker.given_turf), user)
 	return COMPONENT_CANCEL_GUN_FIRE
 
 /datum/component/scope/proc/on_examine(datum/source, mob/user, list/examine_list)
@@ -110,8 +110,8 @@
 	tracker = user.overlay_fullscreen("scope", /atom/movable/screen/fullscreen/scope, 0)
 	tracker.range_modifier = range_modifier
 	tracker.marksman = user
-	tracker.RegisterSignal(user, COMSIG_MOVABLE_MOVED, /atom/movable/screen/fullscreen/scope.proc/on_move)
-	RegisterSignal(user, COMSIG_MOB_SWAP_HANDS, .proc/stop_zooming)
+	tracker.RegisterSignal(user, COMSIG_MOVABLE_MOVED, TYPE_PROC_REF(/atom/movable/screen/fullscreen/scope, on_move))
+	RegisterSignal(user, COMSIG_MOB_SWAP_HANDS, PROC_REF(stop_zooming))
 	START_PROCESSING(SSfastprocess, src)
 
 /**

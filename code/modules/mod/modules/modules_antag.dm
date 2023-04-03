@@ -114,7 +114,7 @@
 /obj/item/mod/module/energy_shield/on_suit_activation()
 	mod.AddComponent(/datum/component/shielded, max_charges = max_charges, recharge_start_delay = recharge_start_delay, charge_increment_delay = charge_increment_delay, \
 	charge_recovery = charge_recovery, lose_multiple_charges = lose_multiple_charges, recharge_path = recharge_path, starting_charges = charges, shield_icon_file = shield_icon_file, shield_icon = shield_icon)
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, .proc/shield_reaction)
+	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(shield_reaction))
 
 /obj/item/mod/module/energy_shield/on_suit_deactivation(deleting = FALSE)
 	var/datum/component/shielded/shield = mod.GetComponent(/datum/component/shielded)
@@ -231,10 +231,10 @@
 	incompatible_modules = list(/obj/item/mod/module/noslip)
 
 /obj/item/mod/module/noslip/on_suit_activation()
-	ADD_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
+	ADD_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, MOD_TRAIT)
 
 /obj/item/mod/module/noslip/on_suit_deactivation(deleting = FALSE)
-	REMOVE_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
+	REMOVE_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, MOD_TRAIT)
 
 /obj/item/mod/module/springlock/bite_of_87
 
@@ -281,7 +281,7 @@
 	flame.preparePixelProjectile(target, mod.wearer)
 	flame.firer = mod.wearer
 	playsound(src, 'sound/items/modsuit/flamethrower.ogg', 75, TRUE)
-	INVOKE_ASYNC(flame, /obj/projectile.proc/fire)
+	INVOKE_ASYNC(flame, TYPE_PROC_REF(/obj/projectile, fire))
 	drain_power(use_power_cost)
 
 /obj/projectile/bullet/incendiary/backblast/flamethrower
@@ -372,7 +372,7 @@
 
 /obj/item/mod/module/chameleon/on_use()
 	var/obj/item/picked_item
-	var/picked_name = tgui_input_list(mod.wearer, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, /proc/cmp_typepaths_asc))
+	var/picked_name = tgui_input_list(mod.wearer, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(picked_name) || isnull(chameleon_list[picked_name]))
 		return
 	picked_item = chameleon_list[picked_name]
@@ -386,7 +386,7 @@
 	chameleon_worn_icon = initial(mod.worn_icon)
 	chameleon_left = initial(mod.lefthand_file)
 	chameleon_right = initial(mod.righthand_file)
-	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, .proc/reset_chameleon)
+	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(reset_chameleon))
 
 /obj/item/mod/module/chameleon/on_uninstall(deleting = FALSE)
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)

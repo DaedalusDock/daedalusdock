@@ -69,10 +69,10 @@
 	daddy = parent
 	setDir(daddy.dir)
 	appearance = daddy.appearance
-	RegisterSignal(daddy, COMSIG_MOVABLE_MOVED, .proc/mirror)
-	RegisterSignal(daddy, COMSIG_ATOM_DIR_CHANGE, .proc/mirror_dir)
-	RegisterSignal(daddy, COMSIG_PARENT_QDELETING, .proc/kill_me)
-	RegisterSignal(daddy, COMSIG_MOB_SAY, .proc/mimic_speech)
+	RegisterSignal(daddy, COMSIG_MOVABLE_MOVED, PROC_REF(mirror))
+	RegisterSignal(daddy, COMSIG_ATOM_DIR_CHANGE, PROC_REF(mirror_dir))
+	RegisterSignal(daddy, COMSIG_PARENT_QDELETING, PROC_REF(kill_me))
+	RegisterSignal(daddy, COMSIG_MOB_SAY, PROC_REF(mimic_speech))
 
 	verb_ask = daddy.verb_ask
 	verb_say = daddy.verb_say

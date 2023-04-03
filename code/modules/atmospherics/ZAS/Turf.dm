@@ -265,8 +265,6 @@
 ///Wrapper for [/datum/gas_mixture/proc/remove()]
 /turf/remove_air(amount as num)
 	var/datum/gas_mixture/GM = return_air()
-	if(TURF_HAS_VALID_ZONE(src))
-		SSzas.mark_zone_update(zone)
 	return GM.remove(amount)
 
 ///Merges a given gas mixture with the turf's current air source.

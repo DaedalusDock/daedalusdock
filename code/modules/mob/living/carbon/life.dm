@@ -114,6 +114,9 @@
 
 				breath = loc.remove_air(breath_moles)
 		else //Breathe from loc as obj again
+			if(breath == 0)
+				breath = null //get_breath_from_internal() returns 0 conditionally, so we need to reset it to null
+
 			if(istype(loc, /obj/))
 				var/obj/loc_as_obj = loc
 				loc_as_obj.handle_internal_lifeform(src,0)

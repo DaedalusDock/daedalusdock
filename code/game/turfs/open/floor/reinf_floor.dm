@@ -118,70 +118,11 @@
 	name = "\improper N2 floor"
 	initial_gas = ATMOSTANK_NITROGEN
 
-
-/*/turf/open/floor/engine/bz
-	name = "\improper BZ floor"
-	initial_gas = ATMOS_TANK_BZ
-
-/turf/open/floor/engine/freon
-	name = "\improper Freon floor"
-	initial_gas = ATMOS_TANK_FREON
-
-/turf/open/floor/engine/halon
-	name = "\improper Halon floor"
-	initial_gas = ATMOS_TANK_HALON
-
-/turf/open/floor/engine/healium
-	name = "\improper Healium floor"
-	initial_gas = ATMOS_TANK_HEALIUM
-*/
 /turf/open/floor/engine/h2
 	article = "an"
 	name = "\improper H2 floor"
 	initial_gas = ATMOSTANK_HYDROGEN
 
-/*
-/turf/open/floor/engine/hypernoblium
-	name = "\improper Hypernoblium floor"
-	initial_gas = ATMOS_TANK_HYPERNOBLIUM
-
-/turf/open/floor/engine/miasma
-	name = "\improper Miasma floor"
-	initial_gas = ATMOS_TANK_MIASMA
-
-/turf/open/floor/engine/nitrium
-	name = "\improper nitrium floor"
-	initial_gas = ATMOS_TANK_NITRIUM
-
-/turf/open/floor/engine/pluoxium
-	name = "\improper Pluoxium floor"
-	initial_gas = ATMOS_TANK_PLUOXIUM
-
-/turf/open/floor/engine/proto_nitrate
-	name = "\improper Proto-Nitrate floor"
-	initial_gas = ATMOS_TANK_PROTO_NITRATE
-
-/turf/open/floor/engine/tritium
-	name = "\improper Tritium floor"
-	initial_gas = ATMOS_TANK_TRITIUM
-
-/turf/open/floor/engine/h2o
-	article = "an"
-	name = "\improper H2O floor"
-	initial_gas = ATMOS_TANK_H2O
-
-/turf/open/floor/engine/zauker
-	name = "\improper Zauker floor"
-	initial_gas = ATMOS_TANK_ZAUKER
-
-/turf/open/floor/engine/helium
-	name = "\improper Helium floor"
-	initial_gas = ATMOS_TANK_HELIUM
-
-/turf/open/floor/engine/antinoblium
-	name = "\improper Antinoblium floor"
-	initial_gas = ATMOS_TANK_ANTINOBLIUM
-*/
 /turf/open/floor/engine/air
 	name = "air floor"
 	initial_gas = ATMOSTANK_AIRMIX

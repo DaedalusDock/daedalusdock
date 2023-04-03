@@ -54,7 +54,7 @@
 	route = PATH_ASH
 
 /datum/heretic_knowledge/ashen_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/ashen_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)

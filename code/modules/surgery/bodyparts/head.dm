@@ -152,7 +152,7 @@
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
-	for(var/obj/item/head_item in src)
+	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
@@ -241,18 +241,19 @@
 			lips_overlay.color = lip_color
 			. += lips_overlay
 
-		// eyes
-		if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
-			var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-			var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
-			if(eyes.eye_color_left)
-				eye_left.color = eyes.eye_color_left
-			if(eyes.eye_color_right)
-				eye_right.color = eyes.eye_color_right
-			. += eye_left
-			. += eye_right
-		else
-			. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
+		if(dropped) // mob/living/carbon/proc/update_eyes() does this
+			// eyes
+			if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
+				var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+				var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+				if(eyes.eye_color_left)
+					eye_left.color = eyes.eye_color_left
+				if(eyes.eye_color_right)
+					eye_right.color = eyes.eye_color_right
+				. += eye_left
+				. += eye_right
+			else
+				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
 		if(!facial_hair_hidden && facial_overlay && (FACEHAIR in species_flags_list))
 			facial_overlay.alpha = hair_alpha

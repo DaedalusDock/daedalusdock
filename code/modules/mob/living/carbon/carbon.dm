@@ -9,8 +9,8 @@
 
 	GLOB.carbon_list += src
 	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_PRESHOVE = .proc/disarm_precollide,
-		COMSIG_CARBON_DISARM_COLLIDE = .proc/disarm_collision,
+		COMSIG_CARBON_DISARM_PRESHOVE = PROC_REF(disarm_precollide),
+		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(disarm_collision),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -374,7 +374,7 @@
 
 	switch(rand(1,100)+modifier) //91-100=Nothing special happens
 		if(-INFINITY to 0) //attack yourself
-			INVOKE_ASYNC(I, /obj/item.proc/attack, src, src)
+			INVOKE_ASYNC(I, TYPE_PROC_REF(/obj/item, attack), src, src)
 		if(1 to 30) //throw it at yourself
 			I.throw_impact(src)
 		if(31 to 60) //Throw object in facing direction
@@ -862,8 +862,7 @@
 	if(mind)
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
-	for(var/O in internal_organs)
-		var/obj/item/organ/organ = O
+	for(var/obj/item/organ/organ as anything in internal_organs)
 		organ.setOrganDamage(0)
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
@@ -931,12 +930,11 @@
 	if(QDELETED(src))
 		return
 	var/organs_amt = 0
-	for(var/X in internal_organs)
-		var/obj/item/organ/O = X
+	for(var/obj/item/organ/internal_organ as anything in internal_organs)
 		if(prob(50))
 			organs_amt++
-			O.Remove(src)
-			O.forceMove(drop_location())
+			internal_organ.Remove(src)
+			internal_organ.forceMove(drop_location())
 	if(organs_amt)
 		to_chat(user, span_notice("You retrieve some of [src]\'s internal organs!"))
 	remove_all_embedded_objects()
@@ -1002,9 +1000,8 @@
 
 
 /mob/living/carbon/proc/create_internal_organs()
-	for(var/X in internal_organs)
-		var/obj/item/organ/I = X
-		I.Insert(src)
+	for(var/obj/item/organ/internal/internal_organ in internal_organs)
+		internal_organ.Insert(src)
 
 /proc/cmp_organ_slot_asc(slot_a, slot_b)
 	return GLOB.organ_process_order.Find(slot_a) - GLOB.organ_process_order.Find(slot_b)
@@ -1089,7 +1086,7 @@
 		for(var/i in artpaths)
 			var/datum/martial_art/M = i
 			artnames[initial(M.name)] = M
-		var/result = input(usr, "Choose the martial art to teach","JUDO CHOP") as null|anything in sort_list(artnames, /proc/cmp_typepaths_asc)
+		var/result = input(usr, "Choose the martial art to teach","JUDO CHOP") as null|anything in sort_list(artnames, GLOBAL_PROC_REF(cmp_typepaths_asc))
 		if(!usr)
 			return
 		if(QDELETED(src))
@@ -1105,7 +1102,7 @@
 		if(!check_rights(NONE))
 			return
 		var/list/traumas = subtypesof(/datum/brain_trauma)
-		var/result = input(usr, "Choose the brain trauma to apply","Traumatize") as null|anything in sort_list(traumas, /proc/cmp_typepaths_asc)
+		var/result = input(usr, "Choose the brain trauma to apply","Traumatize") as null|anything in sort_list(traumas, GLOBAL_PROC_REF(cmp_typepaths_asc))
 		if(!usr)
 			return
 		if(QDELETED(src))
@@ -1127,7 +1124,7 @@
 		if(!check_rights(NONE))
 			return
 		var/list/hallucinations = subtypesof(/datum/hallucination)
-		var/result = input(usr, "Choose the hallucination to apply","Send Hallucination") as null|anything in sort_list(hallucinations, /proc/cmp_typepaths_asc)
+		var/result = input(usr, "Choose the hallucination to apply","Send Hallucination") as null|anything in sort_list(hallucinations, GLOBAL_PROC_REF(cmp_typepaths_asc))
 		if(!usr)
 			return
 		if(QDELETED(src))

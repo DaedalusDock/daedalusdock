@@ -47,6 +47,10 @@
 #define COMSIG_MOVABLE_THROW_LANDED "movable_throw_landed"
 ///from base of atom/movable/on_changed_z_level(): (turf/old_turf, turf/new_turf)
 #define COMSIG_MOVABLE_Z_CHANGED "movable_ztransit"
+///from /turf/open/space/Entered(), fired on movement across z-level edges, caught by [datum/element/lateral_bound] to clean up atoms that shouldn't spaceloop.
+#define COMSIG_MOVABLE_LATERAL_Z_MOVE "movable_lateral_z_move"
+	#define COMPONENT_BLOCK_MOVEMENT (1<<0)
+
 ///called when the movable is placed in an unaccessible area, used for stationloving: ()
 #define COMSIG_MOVABLE_SECLUDED_LOCATION "movable_secluded"
 ///from base of atom/movable/Hear(): (proc args list(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list()))

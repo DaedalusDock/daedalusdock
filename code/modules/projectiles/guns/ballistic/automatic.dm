@@ -1,5 +1,3 @@
-/* PARIAH EDIT REMOVAL - moved to modular, master_files automatic.dm
-
 /obj/item/gun/ballistic/automatic
 	w_class = WEIGHT_CLASS_NORMAL
 	can_suppress = TRUE
@@ -9,7 +7,6 @@
 	semi_auto = TRUE
 	fire_sound = 'sound/weapons/gun/smg/shot.ogg'
 	fire_sound_volume = 90
-	vary_fire_sound = FALSE
 	rack_sound = 'sound/weapons/gun/smg/smgrack.ogg'
 	suppressed_sound = 'sound/weapons/gun/smg/shot_suppressed.ogg'
 	var/select = 1 ///fire selector position. 1 = semi, 2 = burst. anything past that can vary between guns.
@@ -147,7 +144,8 @@
 
 /obj/item/gun/ballistic/automatic/m90
 	name = "\improper M-90gl Carbine"
-	desc = "A three-round burst 5.56 toploading carbine, designated 'M-90gl'. Has an attached underbarrel grenade launcher which can be fired using right click."
+	desc = "A three-round burst 5.56 toploading carbine, designated 'M-90gl'. Has an attached underbarrel grenade launcher."
+	desc_controls = "Right-click to use grenade launcher."
 	icon_state = "m90"
 	w_class = WEIGHT_CLASS_BULKY
 	inhand_icon_state = "m90"
@@ -168,6 +166,10 @@
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher(src)
 	update_appearance()
 
+/obj/item/gun/ballistic/automatic/m90/Destroy()
+	QDEL_NULL(underbarrel)
+	return ..()
+
 /obj/item/gun/ballistic/automatic/m90/unrestricted
 	pin = /obj/item/firing_pin
 
@@ -181,7 +183,7 @@
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 /obj/item/gun/ballistic/automatic/m90/attackby(obj/item/A, mob/user, params)
-	if(istype(A, /obj/item/ammo_casing))
+	if(isammocasing(A))
 		if(istype(A, underbarrel.magazine.ammo_type))
 			underbarrel.attack_self(user)
 			underbarrel.attackby(A, user, params)
@@ -195,23 +197,6 @@
 			. += "[initial(icon_state)]_semi"
 		if(1)
 			. += "[initial(icon_state)]_burst"
-
-/obj/item/gun/ballistic/automatic/m90/burst_select()
-	var/mob/living/carbon/human/user = usr
-	switch(select)
-		if(0)
-			select = 1
-			burst_size = initial(burst_size)
-			fire_delay = initial(fire_delay)
-			to_chat(user, span_notice("You switch to [burst_size]-rnd burst."))
-		if(1)
-			select = 0
-			burst_size = 1
-			fire_delay = 0
-			to_chat(user, span_notice("You switch to semi-auto."))
-	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
-	update_appearance()
-	return
 
 /obj/item/gun/ballistic/automatic/tommygun
 	name = "\improper Thompson SMG"
@@ -252,7 +237,7 @@
 	name = "\improper L6 SAW"
 	desc = "A heavily modified 7.12x82mm light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the receiver below the designation."
 	icon_state = "l6"
-	inhand_icon_state = "l6"
+	inhand_icon_state = "l6closedmag"
 	base_icon_state = "l6"
 	w_class = WEIGHT_CLASS_HUGE
 	slot_flags = 0
@@ -342,14 +327,13 @@
 	worn_icon_state = null
 	fire_sound = 'sound/weapons/gun/sniper/shot.ogg'
 	fire_sound_volume = 90
-	vary_fire_sound = FALSE
 	load_sound = 'sound/weapons/gun/sniper/mag_insert.ogg'
 	rack_sound = 'sound/weapons/gun/sniper/rack.ogg'
 	suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	recoil = 2
 	weapon_weight = WEAPON_HEAVY
 	mag_type = /obj/item/ammo_box/magazine/sniper_rounds
-	fire_delay = 40
+	fire_delay = 4 SECONDS
 	burst_size = 1
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BACK
@@ -361,6 +345,13 @@
 /obj/item/gun/ballistic/automatic/sniper_rifle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)
+
+/obj/item/gun/ballistic/automatic/sniper_rifle/reset_semicd()
+	. = ..()
+	if(suppressed)
+		playsound(src, 'sound/machines/eject.ogg', 25, TRUE, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
+	else
+		playsound(src, 'sound/machines/eject.ogg', 50, TRUE)
 
 /obj/item/gun/ballistic/automatic/sniper_rifle/syndicate
 	name = "syndicate sniper rifle"
@@ -404,5 +395,3 @@
 	actions_types = list()
 	fire_sound = 'sound/weapons/laser.ogg'
 	casing_ejector = FALSE
-
-*/

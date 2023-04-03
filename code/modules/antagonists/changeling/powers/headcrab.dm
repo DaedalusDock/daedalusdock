@@ -15,7 +15,7 @@
 
 	..()
 	var/datum/mind/stored_mind = user.mind
-	var/list/organs = user.getorganszone(BODY_ZONE_HEAD, 1)
+	var/list/organs = user.getorganszone(BODY_ZONE_HEAD, TRUE, TRUE)
 
 	explosion(user, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
 	for(var/mob/living/carbon/human/blinded_humans in range(2, user))
@@ -35,7 +35,7 @@
 	user.transfer_observers_to(user_turf) // user is about to be deleted, store orbiters on the turf
 	user.gib()
 	. = TRUE
-	addtimer(CALLBACK(src, .proc/spawn_headcrab, stored_mind, user_turf, organs), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(spawn_headcrab), stored_mind, user_turf, organs), 3 SECONDS)
 
 /datum/action/changeling/headcrab/proc/spawn_headcrab(datum/mind/stored_mind, turf/spawn_location, list/organs)
 	var/mob/living/simple_animal/hostile/headcrab/crab = new(spawn_location)

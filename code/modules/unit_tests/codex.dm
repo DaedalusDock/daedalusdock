@@ -1,7 +1,6 @@
 /datum/unit_test/codex_string_uniqueness
 
 /datum/unit_test/codex_string_uniqueness/Run()
-	var/list/failures = list()
 	var/list/seen_strings = list()
 	for(var/datum/codex_entry/entry as anything in SScodex.all_entries)
 		for(var/associated_string in entry.associated_strings)

@@ -152,8 +152,7 @@
 	affected_human.dna?.species.disliked_food = initial(affected_human.dna?.species.disliked_food)
 	affected_human.dna?.species.toxic_food = initial(affected_human.dna?.species.toxic_food)
 	REMOVE_TRAIT(affected_human, TRAIT_NIGHT_VISION, "maint_drug_addiction")
-	var/obj/item/organ/internal/eyes/eyes = affected_human.getorgan(/obj/item/organ/internal/eyes)
-	eyes.refresh()
+	affected_carbon.update_eyes()
 
 ///Makes you a hypochondriac - I'd like to call it hypochondria, but "I could use some hypochondria" doesn't work
 /datum/addiction/medicine

@@ -110,6 +110,7 @@
 			var/y_off = T.y - origin.y
 			I.loc = locate(origin.x + x_off, origin.y + y_off, origin.z) //we have to set this after creating the image because it might be null, and images created in nullspace are immutable.
 			I.layer = ABOVE_NORMAL_TURF_LAYER
+			I.plane = AREA_PLANE
 			I.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 			the_eye.placement_images[I] = list(x_off, y_off)
 
@@ -148,7 +149,7 @@
 	if(designate_time && (landing_clear != SHUTTLE_DOCKER_BLOCKED))
 		to_chat(current_user, span_warning("Targeting transit location, please wait [DisplayTimeText(designate_time)]..."))
 		designating_target_loc = the_eye.loc
-		var/wait_completed = do_after(current_user, designate_time, designating_target_loc, timed_action_flags = IGNORE_HELD_ITEM, extra_checks = CALLBACK(src, /obj/machinery/computer/camera_advanced/shuttle_docker/proc/canDesignateTarget))
+		var/wait_completed = do_after(current_user, designate_time, designating_target_loc, timed_action_flags = IGNORE_HELD_ITEM, extra_checks = CALLBACK(src, TYPE_PROC_REF(/obj/machinery/computer/camera_advanced/shuttle_docker, canDesignateTarget)))
 		designating_target_loc = null
 		if(!current_user)
 			return
@@ -197,6 +198,7 @@
 		var/image/newI = image('icons/effects/alphacolors.dmi', the_eye.loc, "blue")
 		newI.loc = I.loc //It is highly unlikely that any landing spot including a null tile will get this far, but better safe than sorry.
 		newI.layer = ABOVE_OPEN_TURF_LAYER
+		newI.plane = AREA_PLANE
 		newI.mouse_opacity = 0
 		the_eye.placed_images += newI
 

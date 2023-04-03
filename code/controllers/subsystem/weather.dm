@@ -30,7 +30,7 @@ SUBSYSTEM_DEF(weather)
 		run_weather(our_event, list(text2num(z)))
 		eligible_zlevels -= z
 		var/randTime = rand(3000, 6000)
-		next_hit_by_zlevel["[z]"] = addtimer(CALLBACK(src, .proc/make_eligible, z, possible_weather), randTime + initial(our_event.weather_duration_upper), TIMER_UNIQUE|TIMER_STOPPABLE) //Around 5-10 minutes between weathers
+		next_hit_by_zlevel["[z]"] = addtimer(CALLBACK(src, PROC_REF(make_eligible), z, possible_weather), randTime + initial(our_event.weather_duration_upper), TIMER_UNIQUE|TIMER_STOPPABLE) //Around 5-10 minutes between weathers
 
 /datum/controller/subsystem/weather/Initialize(start_timeofday)
 	for(var/V in subtypesof(/datum/weather))
@@ -54,7 +54,7 @@ SUBSYSTEM_DEF(weather)
 			LAZYINITLIST(eligible_zlevels["[z]"])
 			eligible_zlevels["[z]"][weather] = probability
 
-/datum/controller/subsystem/weather/proc/run_weather(datum/weather/weather_datum_type, z_levels)
+/datum/controller/subsystem/weather/proc/run_weather(datum/weather/weather_datum_type, z_levels, telegraph = TRUE)
 	if (istext(weather_datum_type))
 		for (var/V in subtypesof(/datum/weather))
 			var/datum/weather/W = V
@@ -72,7 +72,10 @@ SUBSYSTEM_DEF(weather)
 		CRASH("run_weather called with invalid z_levels: [z_levels || "null"]")
 
 	var/datum/weather/W = new weather_datum_type(z_levels)
-	W.telegraph()
+	if(telegraph)
+		W.telegraph()
+	else
+		W.start()
 
 /datum/controller/subsystem/weather/proc/make_eligible(z, possible_weather)
 	eligible_zlevels[z] = possible_weather

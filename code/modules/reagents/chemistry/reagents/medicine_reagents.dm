@@ -93,9 +93,8 @@
 		M.blood_volume = BLOOD_VOLUME_NORMAL
 
 	M.cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
-	for(var/organ in M.internal_organs)
-		var/obj/item/organ/O = organ
-		O.setOrganDamage(0)
+	for(var/obj/item/organ/organ as anything in M.internal_organs)
+		organ.setOrganDamage(0)
 	for(var/thing in M.diseases)
 		var/datum/disease/D = thing
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
@@ -647,8 +646,8 @@
 /datum/reagent/medicine/oculine/on_mob_add(mob/living/owner)
 	if(!iscarbon(owner))
 		return
-	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, .proc/on_gained_organ)
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, .proc/on_removed_organ)
+	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gained_organ))
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_removed_organ))
 	var/obj/item/organ/internal/eyes/eyes = owner.getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		return
@@ -724,7 +723,7 @@
 /datum/reagent/medicine/inacusiate/on_mob_add(mob/living/owner, amount)
 	. = ..()
 	if(creation_purity >= 1)
-		RegisterSignal(owner, COMSIG_MOVABLE_HEAR, .proc/owner_hear)
+		RegisterSignal(owner, COMSIG_MOVABLE_HEAR, PROC_REF(owner_hear))
 
 //Lets us hear whispers from far away!
 /datum/reagent/medicine/inacusiate/proc/owner_hear(datum/source, message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
@@ -861,9 +860,9 @@
 	exposed_mob.notify_ghost_cloning("Your body is being revived with Strange Reagent!")
 	exposed_mob.do_jitter_animation(10)
 	var/excess_healing = 5*(reac_volume-amount_to_revive) //excess reagent will heal blood and organs across the board
-	addtimer(CALLBACK(exposed_mob, /mob/living/carbon.proc/do_jitter_animation, 10), 40) //jitter immediately, then again after 4 and 8 seconds
-	addtimer(CALLBACK(exposed_mob, /mob/living/carbon.proc/do_jitter_animation, 10), 80)
-	addtimer(CALLBACK(exposed_mob, /mob/living.proc/revive, FALSE, FALSE, excess_healing), 79)
+	addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living/carbon, do_jitter_animation), 10), 40) //jitter immediately, then again after 4 and 8 seconds
+	addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living/carbon, do_jitter_animation), 10), 80)
+	addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living, revive), FALSE, FALSE, excess_healing), 79)
 	..()
 
 /datum/reagent/medicine/strange_reagent/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
@@ -1514,7 +1513,6 @@
 				if(W.bleeding())
 					W.bleed_timer = 0
 					W.clamp_wound()
-					BP.bodypart_flags &= ~BP_BLEEDING
 
 /datum/reagent/medicine/coagulant/overdose_process(mob/living/M, delta_time, times_fired)
 	. = ..()

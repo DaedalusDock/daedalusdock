@@ -36,22 +36,20 @@
 	zas_update_loc()
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = .proc/on_exit,
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM)
-	zas_update_loc()
 
 /obj/structure/windoor_assembly/Destroy()
 	set_density(FALSE)
-	zas_update_loc()
 	return ..()
 
 /obj/structure/windoor_assembly/Move()
-	zas_update_loc()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/windoor_assembly/update_icon_state()
 	icon_state = "[facing]_[secure ? "secure_" : ""]windoor_assembly[state]"

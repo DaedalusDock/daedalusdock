@@ -1,0 +1,78 @@
+2023-03-03:
+  Kapu1178:
+  - balance: Hunger decays at a rate of 0.04/s (up from 0.01)
+  - balance: 'Satiation decays at a rate of 0.2/s (before: 1/s). This means being
+      fully satiated will last 25 minutes.'
+2023-03-05:
+  Kapu1178:
+  - qol: Repainted the station.
+2023-03-06:
+  francinum:
+  - code_imp: new ways to make zstack checks not suck
+2023-03-07:
+  FunnyLegJiggle:
+  - bugfix: Chemistry bags now accept pills and patches
+  francinum:
+  - qol: the Health Analyzer chem scanner has been readded to the mode cycle loop.
+2023-03-08:
+  Cenrus:
+  - bugfix: Fixed light fixtures having incorrect attack behavior
+2023-03-09:
+  Kapu1178:
+  - rscadd: You can now knock on doors by right clicking on them.
+  - server: Changed Asimov and Crewsimov laws. Read carefully.
+2023-03-11:
+  MrMelbert, Kapu1178, ShizCalev:
+  - bugfix: Light switches no longer cause anchored objects over conveyors to move.
+  - bugfix: Doors no longer trigger zone updates if they didn't move.
+  - code_imp: Fixed alot of extra zas_update_loc() calls
+  ShizCalev:
+  - bugfix: Wanted/missing posters are no longer broken.
+  - bugfix: Telekinesis no longer teleports removed posters
+2023-03-13:
+  FunnyLegJiggle:
+  - bugfix: Walls can now be scanned for science research once more.
+  Kapu1178:
+  - rscadd: Engineering has been remapped
+  - bugfix: Thermomachines now use thermal energy calculations
+  - bugfix: Filters recoded
+  - balance: Thermomachines cost a shit load of energy to run
+  - qol: Thermomachines now have a "power" setting
+  - balance: Filter max transfer rate from 200 to 500 liters
+  - balance: Pressure pump max transfer rate from 4500 to 15000 kpa
+  - balance: The Supermatter chamber now has it's own SMES unit.
+  - balance: Roundstart SMES unit input/output max from to 200 to 400 kilowatts
+  - refactor: The Supermatter and Thermo-Electric Generator behave entirely differently.
+  - balance: Solars are pre-wired, but not pre-set.
+  - rscadd: Cult eyes are emissive now
+  - rscdel: Cult Ascendance Halos
+  - rscadd: Cult Halos are now their antag HUD icon.
+  francinum:
+  - soundadd: clown.ogg is now properly played during april fools, and is properly
+      credited to giizismukwa2
+2023-03-16:
+  Kapu1178:
+  - rscadd: Leg wraps, available in the loadout pane
+  - qol: The loadout pane entries list is now alphabetically sorted
+  - bugfix: monkey runtime
+2023-03-19:
+  Kapu1178:
+  - bugfix: An internals bug nobody noticed
+  - code_imp: Added debug code to tablet messaging
+  Kapu1178, JohnFulpWillard:
+  - rscdel: Unrepairable limbs (too annoying code-wise, sorry guys)
+  - bugfix: Limbs now respect their maximum damage capacity again
+  - bugfix: Unremovable organs are now more unremovable.
+  - tweak: Simplified burn fluid burnoff.
+  - bugfix: Body temperature damage will never cause fluid burnoff.
+  - code_imp: Cleaned up some organ code
+2023-03-22:
+  DTraitor:
+  - refactor: Replaced Pariah gun code with tg gun code.
+2023-03-30:
+  Cenrus:
+  - rscadd: Centcom, operative base, and wizard den now look nicer.
+2023-03-31:
+  francinum:
+  - server: Builds are now tested against alt versions, You probably don't care about
+      this.

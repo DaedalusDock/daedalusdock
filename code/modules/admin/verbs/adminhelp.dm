@@ -504,7 +504,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	state = AHELP_RESOLVED
 	GLOB.ahelp_tickets.ListInsert(src)
 
-	addtimer(CALLBACK(initiator, TYPE_PROC_REF(/client, giveadminhelpverb))), 50)
+	addtimer(CALLBACK(initiator, TYPE_PROC_REF(/client, giveadminhelpverb)), 50)
 
 	AddInteraction("<font color='green'>Resolved by [key_name].</font>")
 	AddInteractionPlayer("<font color='green'>Resolved by [key_name_admin(usr, FALSE)].</font>") // PARIAH EDIT ADDITION -- Player ticket viewing

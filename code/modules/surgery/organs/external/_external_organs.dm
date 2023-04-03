@@ -197,6 +197,7 @@
 
 ///The horns of a lizard!
 /obj/item/organ/external/horns
+	name = "horns"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HORNS
 	layers = EXTERNAL_ADJACENT
@@ -216,6 +217,7 @@
 
 ///The frills of a lizard (like weird fin ears)
 /obj/item/organ/external/frills
+	name = "frills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_FRILLS
 	layers = EXTERNAL_ADJACENT
@@ -236,6 +238,7 @@
 
 ///A moth's antennae
 /obj/item/organ/external/antennae
+	name = "antennae"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_ANTENNAE
 	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
@@ -253,8 +256,8 @@
 /obj/item/organ/external/antennae/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
 
-	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, .proc/try_burn_antennae)
-	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, .proc/heal_antennae)
+	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_antennae))
+	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_antennae))
 
 /obj/item/organ/external/antennae/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
@@ -337,7 +340,7 @@
 
 // Teshari head feathers
 /obj/item/organ/external/teshari_feathers
-	name = "Head feathers"
+	name = "head feathers"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS
 	layers = EXTERNAL_ADJACENT
@@ -358,6 +361,7 @@
 
 // Teshari ears
 /obj/item/organ/external/teshari_ears
+	name = "ear feathers"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_EARS
 	layers = EXTERNAL_ADJACENT
@@ -389,7 +393,7 @@
 
 // Teshari body feathers
 /obj/item/organ/external/teshari_body_feathers
-	name = "Body feathers"
+	name = "body feathers"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS
 	layers = EXTERNAL_ADJACENT

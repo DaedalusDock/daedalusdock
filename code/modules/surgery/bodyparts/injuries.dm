@@ -37,7 +37,7 @@
 		)
 
 		jostle_bones()
-		INVOKE_ASYNC(owner, /mob/proc/emote, "scream")
+		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
 	playsound(loc, SFX_BREAK_BONE, 100, 1, -2)
 
@@ -90,7 +90,7 @@
 			2,
 			span_warning("You feel something moving in your [plaintext_zone]!")
 		)
-		INVOKE_ASYNC(owner, /mob/proc/emote, "scream")
+		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)

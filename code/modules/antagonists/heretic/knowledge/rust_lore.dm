@@ -54,8 +54,8 @@
 	route = PATH_RUST
 
 /datum/heretic_knowledge/rust_fist/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, .proc/on_secondary_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, PROC_REF(on_secondary_mansus_grasp))
 
 /datum/heretic_knowledge/rust_fist/on_lose(mob/user)
 	UnregisterSignal(user, list(COMSIG_HERETIC_MANSUS_GRASP_ATTACK, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY))
@@ -88,8 +88,8 @@
 	route = PATH_RUST
 
 /datum/heretic_knowledge/rust_regen/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/on_move)
-	RegisterSignal(user, COMSIG_LIVING_LIFE, .proc/on_life)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/heretic_knowledge/rust_regen/on_lose(mob/user)
 	UnregisterSignal(user, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_LIFE))
@@ -205,7 +205,7 @@
 		TRAIT_SLEEPIMMUNE,
 		TRAIT_PUSHIMMUNE,
 		TRAIT_SHOCKIMMUNE,
-		TRAIT_NOSLIPALL,
+		TRAIT_NO_SLIP_ALL,
 		TRAIT_RADIMMUNE,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
@@ -236,8 +236,8 @@
 	. = ..()
 	priority_announce("[generate_heretic_text()] Fear the decay, for the Rustbringer, [user.real_name] has ascended! None shall escape the corrosion! [generate_heretic_text()]","[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
 	new /datum/rust_spread(loc)
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/on_move)
-	RegisterSignal(user, COMSIG_LIVING_LIFE, .proc/on_life)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 	user.client?.give_award(/datum/award/achievement/misc/rust_ascension, user)
 
 /**

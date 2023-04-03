@@ -20,7 +20,7 @@
 	if(!silent)
 		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
 
-	INVOKE_ASYNC(limb_owner, /mob.proc/emote, "scream")
+	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
 	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
 
 	SEND_SIGNAL(limb_owner, COMSIG_ADD_MOOD_EVENT, "dismembered", /datum/mood_event/dismembered)
@@ -49,8 +49,6 @@
 	limb_owner.bleed(rand(20, 40))
 	var/direction = pick(GLOB.cardinals)
 
-	if(dismember_type == DROPLIMB_BLUNT && !clean)
-		limb_owner.spray_blood(direction, 2)
 	if(!clean)
 		var/t_range = rand(2,max(throw_range/2, 2))
 		var/turf/target_turf = get_turf(src)
@@ -62,6 +60,9 @@
 			if(new_turf.density)
 				break
 		throw_at(target_turf, throw_range, throw_speed)
+
+		if(dismember_type == DROPLIMB_BLUNT)
+			limb_owner.spray_blood(direction, 2)
 
 	return TRUE
 
@@ -360,7 +361,7 @@
 
 	// Bodyparts need to be sorted for leg masking to be done properly. It also will allow for some predictable
 	// behavior within said bodyparts list. We sort it here, as it's the only place we make changes to bodyparts.
-	new_limb_owner.bodyparts = sort_list(new_limb_owner.bodyparts, /proc/cmp_bodypart_by_body_part_asc)
+	new_limb_owner.bodyparts = sort_list(new_limb_owner.bodyparts, GLOBAL_PROC_REF(cmp_bodypart_by_body_part_asc))
 	synchronize_bodytypes(new_limb_owner)
 	new_limb_owner.updatehealth()
 	new_limb_owner.update_body()

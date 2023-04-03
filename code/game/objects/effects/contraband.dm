@@ -30,7 +30,7 @@
 
 		name = "[name] - [poster_structure.original_name]"
 		//If the poster structure is being deleted something has gone wrong, kill yourself off too
-		RegisterSignal(poster_structure, COMSIG_PARENT_QDELETING, .proc/react_to_deletion)
+		RegisterSignal(poster_structure, COMSIG_PARENT_QDELETING, PROC_REF(react_to_deletion))
 
 /obj/item/poster/Destroy()
 	poster_structure = null
@@ -157,7 +157,7 @@
 	playsound(D.loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 
 	var/turf/user_drop_location  = get_turf(user)
-	if(!do_after(user, D, PLACE_SPEED, extra_checks = CALLBACK(D, /obj/structure/sign/poster.proc/snowflake_wall_turf_check, src)))
+	if(!do_after(user, D, PLACE_SPEED, extra_checks = CALLBACK(D, TYPE_PROC_REF(/obj/structure/sign/poster, snowflake_wall_turf_check), src)))
 		to_chat(user, span_notice("The poster falls down!"))
 		D.roll_and_drop(user_drop_location)
 

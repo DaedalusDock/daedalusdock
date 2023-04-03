@@ -250,7 +250,7 @@
 
 	if(!active)
 		return
-	if(part.loc == src)
+	if(!part:deployed)
 		return
 	if(part.loc == mod.wearer)
 		return

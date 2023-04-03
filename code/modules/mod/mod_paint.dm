@@ -35,12 +35,14 @@
 /obj/item/mod/paint/pre_attack_secondary(atom/attacked_atom, mob/living/user, params)
 	if(!istype(attacked_atom, /obj/item/mod/control))
 		return ..()
+
 	var/obj/item/mod/control/mod = attacked_atom
 	if(mod.active || mod.activating)
 		balloon_alert(user, "suit is active!")
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(editing_mod)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	editing_mod = mod
 	proxy_view = new()
 	proxy_view.appearance = editing_mod.appearance
@@ -141,13 +143,16 @@
 	if(length(mod.theme.skins) <= 1)
 		balloon_alert(user, "no alternate skins!")
 		return
+
 	var/list/skins = list()
 	for(var/mod_skin in mod.theme.skins)
 		skins[mod_skin] = image(icon = mod.icon, icon_state = "[mod_skin]-control")
+
 	var/pick = show_radial_menu(user, mod, skins, custom_check = CALLBACK(src, .proc/check_menu, mod, user), require_near = TRUE)
 	if(!pick)
 		balloon_alert(user, "no skin picked!")
 		return
+
 	mod.set_mod_skin(pick)
 
 /obj/item/mod/paint/proc/check_menu(obj/item/mod/control/mod, mob/user)

@@ -362,7 +362,7 @@
 	if(!length(chameleon_list))
 		init_chameleon_list()
 	for(var/obj/item/part as anything in mod.mod_parts)
-		if(!(part.loc == mod.wearer))
+		if(!(part:deployed))
 			continue
 		balloon_alert(mod.wearer, "parts cannot be deployed to use this!")
 		playsound(mod, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)

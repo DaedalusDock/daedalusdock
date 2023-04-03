@@ -131,9 +131,13 @@
 
 /obj/docking_port/mobile/arrivals/proc/SendToStation()
 	var/dockTime = CONFIG_GET(number/arrivals_shuttle_dock_window)
+	var/announce_time = max(dockTime - 8 SECONDS, 0) //Ideally it's played around 8 seconds before dock, it sounds the nicest
 	if(mode == SHUTTLE_CALL && timeLeft(1) > dockTime)
 		if(console)
-			console.say(damaged ? "Initiating emergency docking for repairs!" : "Now approaching: [station_name()].")
+			spawn(announce_time) //Named arguments. This code isn't hot so spawn isnt really a concern
+				console.say(damaged ? "Initiating emergency docking for repairs!" : "Now approaching: [station_name()].")
+				playsound(console, 'sound/voice/ApproachingDaedalus.ogg', 25, FALSE, ignore_walls = TRUE, falloff_exponent = 2)
+
 		hyperspace_sound(HYPERSPACE_LAUNCH, areas) //for the new guy
 		setTimer(dockTime)
 
@@ -156,7 +160,7 @@
 	. = ..()
 	if(!. && !docked && !damaged)
 		if(console)
-			console.say("Welcome to your new life, employees!")
+			console.say("Welcome to [station_name()], have a safe and productive day!")
 		for(var/L in queued_announces)
 			var/datum/callback/C = L
 			C.Invoke()

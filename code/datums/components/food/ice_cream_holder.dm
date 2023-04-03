@@ -163,7 +163,7 @@
 
 	// We don't want to stop ice creams from being sold because of their order. we aren't that finnicky.
 	var/our_scoops = scoops.Copy()
-	sortTim(our_scoops, cmp = /proc/cmp_text_asc)
+	sortTim(our_scoops, cmp = GLOBAL_PROC_REF(cmp_text_asc))
 
 	//Make sure the flavors and number of scoops match.
 	if(compare_list(our_scoops, icecream_order.wanted_flavors))

@@ -228,7 +228,7 @@
 		speed_round = TRUE
 
 	popcount = gather_roundend_feedback()
-	INVOKE_ASYNC(SScredits, /datum/controller/subsystem/credits/proc/draft) //Must always come after popcount is set
+	INVOKE_ASYNC(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, draft)) //Must always come after popcount is set
 	for(var/client/C in GLOB.clients)
 		C.playcreditsmusic(50)
 

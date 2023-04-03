@@ -133,7 +133,7 @@
 			fire_cone.StartCooldown(0)
 			fire_cone.Trigger(target = target)
 			meteors.StartCooldown(0)
-			INVOKE_ASYNC(meteors, /datum/action/proc/Trigger, target)
+			INVOKE_ASYNC(meteors, TYPE_PROC_REF(/datum/action, Trigger), target)
 			return
 	else if(prob(10+anger_modifier) && DRAKE_ENRAGED)
 		mass_fire.Trigger(target = target)

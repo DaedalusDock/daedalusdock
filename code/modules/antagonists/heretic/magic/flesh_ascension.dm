@@ -43,7 +43,7 @@
 
 		// They see the very reality uncoil before their eyes.
 		for(var/mob/living/carbon/human/nearby_human in view(scare_radius, new_armsy))
-			if(IS_HERETIC_OR_MONSTER(nearby_human) || nearby_human == caster)
+			if(IS_HERETIC_OR_MONSTER(nearby_human))
 				continue
 			SEND_SIGNAL(nearby_human, COMSIG_ADD_MOOD_EVENT, "gates_of_mansus", /datum/mood_event/gates_of_mansus)
 

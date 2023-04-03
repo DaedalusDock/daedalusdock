@@ -575,7 +575,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 		if("alert")
 			status_signal.data["picture_state"] = picture_map[picture.value]
 
-	INVOKE_ASYNC(connected_display, /datum/proc/receive_signal, status_signal)
+	INVOKE_ASYNC(connected_display, TYPE_PROC_REF(/datum, receive_signal), status_signal)
 	//connected_display.receive_signal(status_signal)
 
 #undef CHARS_PER_LINE

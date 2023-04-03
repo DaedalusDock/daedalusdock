@@ -19,7 +19,7 @@
 
 /obj/item/clothing/head/chefhat/Initialize(mapload)
 	. = ..()
-	
+
 	create_storage(type = /datum/storage/pockets/chefhat)
 
 /obj/item/clothing/head/chefhat/i_am_assuming_direct_control
@@ -225,7 +225,7 @@
 /obj/item/clothing/head/warden/drill/equipped(mob/M, slot)
 	. = ..()
 	if (slot == ITEM_SLOT_HEAD)
-		RegisterSignal(M, COMSIG_MOB_SAY, .proc/handle_speech)
+		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 

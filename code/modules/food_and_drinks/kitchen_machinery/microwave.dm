@@ -318,7 +318,7 @@
 		return
 	time--
 	use_power(active_power_usage)
-	addtimer(CALLBACK(src, .proc/loop, type, time, wait), wait)
+	addtimer(CALLBACK(src, PROC_REF(loop), type, time, wait), wait)
 
 /obj/machinery/microwave/power_change()
 	. = ..()

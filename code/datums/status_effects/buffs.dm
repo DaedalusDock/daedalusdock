@@ -155,7 +155,7 @@
 	owner.add_stun_absorption("bloody bastard sword", duration, 2, "doesn't even flinch as the sword's power courses through them!", "You shrug off the stun!", " glowing with a blazing red aura!")
 	owner.spin(duration,1)
 	animate(owner, color = oldcolor, time = duration, easing = EASE_IN)
-	addtimer(CALLBACK(owner, /atom/proc/update_atom_colour), duration)
+	addtimer(CALLBACK(owner, TYPE_PROC_REF(/atom, update_atom_colour)), duration)
 	playsound(owner, 'sound/weapons/fwoosh.ogg', 75, FALSE)
 	return ..()
 
@@ -452,13 +452,13 @@
 	return ..()
 
 /datum/status_effect/protective_blades/on_apply()
-	RegisterSignal(owner, COMSIG_HUMAN_CHECK_SHIELDS, .proc/on_shield_reaction)
+	RegisterSignal(owner, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(on_shield_reaction))
 	for(var/blade_num in 1 to max_num_blades)
 		var/time_until_created = (blade_num - 1) * time_between_initial_blades
 		if(time_until_created <= 0)
 			create_blade()
 		else
-			addtimer(CALLBACK(src, .proc/create_blade), time_until_created)
+			addtimer(CALLBACK(src, PROC_REF(create_blade)), time_until_created)
 
 	return TRUE
 
@@ -476,7 +476,7 @@
 	var/obj/effect/floating_blade/blade = new(get_turf(owner))
 	blades += blade
 	blade.orbit(owner, blade_orbit_radius)
-	RegisterSignal(blade, COMSIG_PARENT_QDELETING, .proc/remove_blade)
+	RegisterSignal(blade, COMSIG_PARENT_QDELETING, PROC_REF(remove_blade))
 	playsound(get_turf(owner), 'sound/items/unsheath.ogg', 33, TRUE)
 
 /// Signal proc for [COMSIG_HUMAN_CHECK_SHIELDS].
@@ -546,7 +546,7 @@
 	if(!.)
 		return
 
-	addtimer(CALLBACK(src, .proc/create_blade), blade_recharge_time)
+	addtimer(CALLBACK(src, PROC_REF(create_blade)), blade_recharge_time)
 
 /datum/status_effect/lightningorb
 	id = "Lightning Orb"

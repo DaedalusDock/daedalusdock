@@ -46,7 +46,7 @@
 
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door/firedoor/LateInitialize()
@@ -166,9 +166,9 @@
 	alert_type = code
 
 	if(code == FIRE_CLEAR)
-		INVOKE_ASYNC(src, .proc/open)
+		INVOKE_ASYNC(src, PROC_REF(open))
 	else
-		INVOKE_ASYNC(src, .proc/close)
+		INVOKE_ASYNC(src, PROC_REF(close))
 
 /obj/machinery/door/firedoor/emag_act(mob/user, obj/item/card/emag/doorjack/digital_crowbar)
 	if(obj_flags & EMAGGED)
@@ -178,7 +178,7 @@
 			return
 		digital_crowbar.use_charge(user)
 	obj_flags |= EMAGGED
-	INVOKE_ASYNC(src, .proc/open)
+	INVOKE_ASYNC(src, PROC_REF(open))
 
 /obj/machinery/door/firedoor/Bumped(atom/movable/AM)
 	if(panel_open || operating)

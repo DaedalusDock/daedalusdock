@@ -655,7 +655,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
 /obj/effect/mapping_helpers/circuit_spawner/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/spawn_circuit)
+	INVOKE_ASYNC(src, PROC_REF(spawn_circuit))
 
 /obj/effect/mapping_helpers/circuit_spawner/proc/spawn_circuit()
 	var/list/errors = list()
@@ -783,3 +783,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	wall_paint = PAINT_WALL_PRIAPUS
 	stripe_paint = PAINT_STRIPE_PRIAPUS
 	icon_state = "paint_priapus"
+
+/obj/effect/mapping_helpers/paint_wall/centcom
+	name = "Central Command Wall Paint"
+	wall_paint = PAINT_WALL_CENTCOM
+	stripe_paint = PAINT_STRIPE_CENTCOM
+	icon_state = "paint_centcom"

@@ -522,8 +522,8 @@
 	. = ..()
 
 	SEND_SIGNAL(dancer, COMSIG_ADD_MOOD_EVENT, "vibing", /datum/mood_event/high, name)
-	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), .proc/on_flip)
-	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), .proc/on_spin)
+	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), PROC_REF(on_flip))
+	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), PROC_REF(on_spin))
 
 	if(!dancer.hud_used)
 		return
@@ -645,7 +645,7 @@
 	. = ..()
 	playsound(invisible_man, 'sound/chemistry/saturnx_fade.ogg', 40)
 	to_chat(invisible_man, span_nicegreen("You feel pins and needles all over your skin as your body suddenly becomes transparent!"))
-	addtimer(CALLBACK(src, .proc/turn_man_invisible, invisible_man), 10) //just a quick delay to synch up the sound.
+	addtimer(CALLBACK(src, PROC_REF(turn_man_invisible), invisible_man), 10) //just a quick delay to synch up the sound.
 	if(!invisible_man.hud_used)
 		return
 

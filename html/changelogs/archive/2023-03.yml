@@ -55,3 +55,24 @@
   - rscadd: Leg wraps, available in the loadout pane
   - qol: The loadout pane entries list is now alphabetically sorted
   - bugfix: monkey runtime
+2023-03-19:
+  Kapu1178:
+  - bugfix: An internals bug nobody noticed
+  - code_imp: Added debug code to tablet messaging
+  Kapu1178, JohnFulpWillard:
+  - rscdel: Unrepairable limbs (too annoying code-wise, sorry guys)
+  - bugfix: Limbs now respect their maximum damage capacity again
+  - bugfix: Unremovable organs are now more unremovable.
+  - tweak: Simplified burn fluid burnoff.
+  - bugfix: Body temperature damage will never cause fluid burnoff.
+  - code_imp: Cleaned up some organ code
+2023-03-22:
+  DTraitor:
+  - refactor: Replaced Pariah gun code with tg gun code.
+2023-03-30:
+  Cenrus:
+  - rscadd: Centcom, operative base, and wizard den now look nicer.
+2023-03-31:
+  francinum:
+  - server: Builds are now tested against alt versions, You probably don't care about
+      this.

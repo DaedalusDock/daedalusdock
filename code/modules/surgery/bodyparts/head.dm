@@ -152,7 +152,7 @@
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
-	for(var/obj/item/head_item in src)
+	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))

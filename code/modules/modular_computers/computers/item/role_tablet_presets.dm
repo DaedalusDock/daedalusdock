@@ -86,7 +86,7 @@
 
 /obj/item/modular_computer/tablet/pda/captain/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, .proc/tab_no_detonate)
+	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 
 /obj/item/modular_computer/tablet/pda/cargo
 	name = "cargo technician PDA"
@@ -164,8 +164,8 @@
 
 /obj/item/modular_computer/tablet/pda/clown/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, .proc/AfterSlip), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
-	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, .proc/after_sitcom_laugh))
+	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, PROC_REF(AfterSlip)), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
+	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, PROC_REF(after_sitcom_laugh)))
 
 /obj/item/modular_computer/tablet/pda/clown/update_overlays()
 	. = ..()

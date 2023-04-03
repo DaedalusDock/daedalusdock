@@ -69,7 +69,7 @@
 	route = PATH_FLESH
 
 /datum/heretic_knowledge/limited_amount/flesh_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/limited_amount/flesh_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)
@@ -110,8 +110,8 @@
 		/datum/status_effect/ghoul,
 		GHOUL_MAX_HEALTH,
 		user.mind,
-		CALLBACK(src, .proc/apply_to_ghoul),
-		CALLBACK(src, .proc/remove_from_ghoul),
+		CALLBACK(src, PROC_REF(apply_to_ghoul)),
+		CALLBACK(src, PROC_REF(remove_from_ghoul)),
 	)
 
 /// Callback for the ghoul status effect - Tracking all of our ghouls
@@ -190,8 +190,8 @@
 		/datum/status_effect/ghoul,
 		MUTE_MAX_HEALTH,
 		user.mind,
-		CALLBACK(src, .proc/apply_to_ghoul),
-		CALLBACK(src, .proc/remove_from_ghoul),
+		CALLBACK(src, PROC_REF(apply_to_ghoul)),
+		CALLBACK(src, PROC_REF(remove_from_ghoul)),
 	)
 
 /// Callback for the ghoul status effect - Tracks all of our ghouls and applies effects

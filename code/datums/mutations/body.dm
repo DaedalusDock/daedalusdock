@@ -15,7 +15,7 @@
 		owner.Unconscious(200 * GET_MUTATION_POWER(src))
 		owner.set_timed_status_effect(2000 SECONDS * GET_MUTATION_POWER(src), /datum/status_effect/jitter)
 		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "epilepsy", /datum/mood_event/epilepsy)
-		addtimer(CALLBACK(src, .proc/jitter_less), 90)
+		addtimer(CALLBACK(src, PROC_REF(jitter_less)), 90)
 
 /datum/mutation/human/epilepsy/proc/jitter_less()
 	if(QDELETED(owner))
@@ -407,7 +407,7 @@
 	. = ..()
 	if(.)
 		return
-	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, .proc/on_move)
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 
 /datum/mutation/human/extrastun/on_losing()
 	. = ..()
@@ -438,7 +438,7 @@
 	. = ..()
 	if(.)
 		return TRUE
-	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, .proc/bloody_shower)
+	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(bloody_shower))
 
 /datum/mutation/human/martyrdom/on_losing()
 	. = ..()
@@ -451,7 +451,7 @@
 
 	if(new_stat != HARD_CRIT)
 		return
-	var/list/organs = owner.getorganszone(BODY_ZONE_HEAD, 1)
+	var/list/organs = owner.getorganszone(BODY_ZONE_HEAD, TRUE)
 
 	for(var/obj/item/organ/I in organs)
 		qdel(I)
@@ -495,7 +495,7 @@
 		head.drop_organs()
 		qdel(head)
 		owner.regenerate_icons()
-	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, .proc/abortattachment)
+	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(abortattachment))
 
 /datum/mutation/human/headless/on_losing()
 	. = ..()

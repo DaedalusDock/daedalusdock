@@ -520,7 +520,7 @@ GLOBAL_VAR(station_nuke_source)
 
 /obj/machinery/nuclearbomb/proc/really_actually_explode(off_station)
 	var/turf/bomb_location = get_turf(src)
-	Cinematic(get_cinematic_type(off_station),world,CALLBACK(SSticker,/datum/controller/subsystem/ticker/proc/station_explosion_detonation,src))
+	Cinematic(get_cinematic_type(off_station),world,CALLBACK(SSticker,TYPE_PROC_REF(/datum/controller/subsystem/ticker, station_explosion_detonation),src))
 	if(off_station == STATION_DESTROYED_NUKE)
 		INVOKE_ASYNC(GLOBAL_PROC,GLOBAL_PROC_REF(KillEveryoneOnStation))
 		return

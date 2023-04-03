@@ -124,7 +124,7 @@
 	if(get_turf(old_loc))
 		UnregisterSignal(get_turf(old_loc), COMSIG_ATOM_HITBY)
 	if(get_turf(src))
-		RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, .proc/AddThrownItemToGrill)
+		RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, PROC_REF(AddThrownItemToGrill))
 	. = ..()
 
 /obj/machinery/griddle/proc/AddThrownItemToGrill(datum/source, atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)

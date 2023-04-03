@@ -324,8 +324,8 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Handle below atoms.
 
-		if (Td.lighting_object)
-			T.shadower.copy_lighting(Td.lighting_object)
+		if (T.below.lighting_object)
+			T.shadower.copy_lighting(T.below.lighting_object)
 
 		// Add everything below us to the update queue.
 		for (var/thing in T.below)

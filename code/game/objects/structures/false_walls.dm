@@ -37,7 +37,6 @@
 	var/material_color
 	var/shiny_wall
 
-	var/material_stripe_color
 	var/shiny_stripe
 	var/stripe_icon
 	//Ok you can touch vars again :)
@@ -56,7 +55,7 @@
 	return wall_paint || material_color
 
 /obj/structure/falsewall/proc/get_stripe_color()
-	return stripe_paint || material_stripe_color
+	return stripe_paint || material_color
 
 /obj/structure/falsewall/update_name()
 	. = ..()
@@ -120,10 +119,13 @@
 
 		var/image/smoothed_stripe = image(stripe_icon, icon_state)
 		smoothed_stripe.appearance_flags = RESET_COLOR
-		smoothed_stripe.color = stripe_paint || material_stripe_color
+		smoothed_stripe.color = stripe_paint || material_color
 		new_overlays += smoothed_stripe
 		if(shiny_stripe)
-			new_overlays += image(stripe_icon, "shine-[smoothing_junction]")
+			var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
+			stripe_shine.appearance_flags = RESET_COLOR
+			new_overlays += stripe_shine
+
 
 		var/neighbor_stripe = NONE
 		if(!neighbor_typecache)
@@ -140,10 +142,11 @@
 
 		if(neighbor_stripe)
 			var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
-			neighb_stripe_overlay.color = wall_paint || material_color
 			new_overlays += neighb_stripe_overlay
 			if(shiny_wall)
-				new_overlays += image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+				var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+				shine.appearance_flags = RESET_COLOR
+				new_overlays += shine
 
 		overlays = new_overlays
 		//And letting anything else that may want to render on the wall to work (ie components)
@@ -211,16 +214,15 @@
 		reinf_mat_ref = GET_MATERIAL_REF(reinf_mat)
 
 	if(reinf_mat_ref)
-		icon = reinf_mat_ref.reinforced_wall_icon
-		shiny_wall = reinf_mat_ref.wall_shine & WALL_SHINE_REINFORCED
-		material_color = reinf_mat_ref.wall_color
-	else
 		icon = plating_mat_ref.reinforced_wall_icon
+		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
+		material_color = plating_mat_ref.wall_color
+	else
+		icon = plating_mat_ref.wall_icon
 		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 		material_color = plating_mat_ref.wall_color
 
 	shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
-	material_stripe_color = plating_mat_ref.wall_color
 	stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat

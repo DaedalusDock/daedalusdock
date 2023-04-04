@@ -49,7 +49,6 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 	var/material_color
 	var/shiny_wall
 
-	var/material_stripe_color
 	var/shiny_stripe
 	var/stripe_icon
 	//Ok you can touch vars again :)
@@ -112,7 +111,7 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/update_overlays()
 	var/plating_color = wall_paint || material_color
-	var/stripe_color = stripe_paint || wall_paint || material_stripe_color
+	var/stripe_color = stripe_paint || wall_paint || material_color
 
 	var/neighbor_stripe = NONE
 	for (var/cardinal = NORTH; cardinal <= WEST; cardinal *= 2) //No list copy please good sir
@@ -138,19 +137,22 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 			var/list/new_overlays = list()
 
 			var/image/smoothed_stripe = image(stripe_icon, icon_state)
-			smoothed_stripe.appearance_flags = appearance_flags = RESET_COLOR
+			smoothed_stripe.appearance_flags = RESET_COLOR
 			smoothed_stripe.color = stripe_color
 			new_overlays += smoothed_stripe
 
 			if(shiny_stripe)
-				new_overlays += image(stripe_icon, "shine-[smoothing_junction]")
+				var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
+				stripe_shine.appearance_flags = RESET_COLOR
+				new_overlays += stripe_shine
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
-				neighb_stripe_overlay.color = stripe_color
 				new_overlays += neighb_stripe_overlay
 				if(shiny_wall)
-					new_overlays += image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+					var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+					shine.appearance_flags = RESET_COLOR
+					new_overlays += shine
 
 			if(rusted)
 				var/image/rust_overlay = image('icons/turf/rust_overlay.dmi', "blobby_rust")
@@ -235,16 +237,16 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 		hard_decon = null
 
 	if(reinf_mat_ref)
-		icon = reinf_mat_ref.reinforced_wall_icon
-		shiny_wall = reinf_mat_ref.wall_shine & WALL_SHINE_REINFORCED
-		material_color = reinf_mat_ref.wall_color
-	else
 		icon = plating_mat_ref.reinforced_wall_icon
+		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
+		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
+		material_color = plating_mat_ref.wall_color
+	else
+		icon = plating_mat_ref.wall_icon
 		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
+		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 		material_color = plating_mat_ref.wall_color
 
-	shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
-	material_stripe_color = plating_mat_ref.wall_color
 	stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat

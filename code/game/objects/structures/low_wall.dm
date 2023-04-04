@@ -29,6 +29,7 @@
 	//These are set by the material, do not touch!!!
 	var/material_color
 	var/stripe_icon
+	var/shiny_stripe
 	//Ok you can touch vars again :)
 
 /obj/structure/low_wall/Initialize(mapload)
@@ -83,8 +84,11 @@
 
 	if(neighbor_stripe)
 		var/image/neighb_stripe_overlay = new ('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]", layer = LOW_WALL_STRIPE_LAYER)
-		neighb_stripe_overlay.color = wall_paint || material_color
 		overlays += neighb_stripe_overlay
+		if(stripe_shine)
+			var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+			shine.appearance_flags = RESET_COLOR
+			new_overlays += shine
 
 	return ..()
 
@@ -186,6 +190,7 @@
 
 	material_color = mat_ref.wall_color
 	stripe_icon = mat_ref.wall_stripe_icon
+	stripe_shine = mat_ref.wall_shine
 
 	if(update_appearance)
 		update_appearance()

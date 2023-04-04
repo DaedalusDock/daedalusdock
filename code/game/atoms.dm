@@ -235,7 +235,7 @@
 	flags_1 |= INITIALIZED_1
 
 	if(greyscale_config && greyscale_colors)
-		queue_update_greyscale()
+		update_greyscale()
 
 	//atom color stuff
 	if(color)
@@ -810,7 +810,7 @@
 /// Handles updates to greyscale value updates.
 /// The colors argument can be either a list or the full color string.
 /// Child procs should call parent last so the update happens after all changes.
-/atom/proc/set_greyscale(list/colors, new_config, queue = FALSE)
+/atom/proc/set_greyscale(list/colors, new_config)
 	SHOULD_CALL_PARENT(TRUE)
 	if(islist(colors))
 		colors = jointext(colors, "")
@@ -820,10 +820,7 @@
 	if(!isnull(new_config) && greyscale_config != new_config)
 		greyscale_config = new_config
 
-	if(!queue)
-		update_greyscale()
-	else
-		queue_update_greyscale()
+	update_greyscale()
 
 /// Checks if this atom uses the GAGS system and if so updates the icon
 /atom/proc/update_greyscale()
@@ -834,17 +831,6 @@
 		return
 	update_atom_colour()
 	QUEUE_SMOOTH(src)
-
-/// Let the greyscale subsystem update it next fire. This is used for walls, as they call update_greyscale a ton during init
-/atom/proc/queue_update_greyscale()
-	SHOULD_NOT_OVERRIDE(TRUE)
-	if(flags_2 & GREYSCALE_QUEUED_2)
-		return
-	flags_2 |= GREYSCALE_QUEUED_2
-
-	if(!SSgreyscale_queue.can_fire)
-		SSgreyscale_queue.can_fire = TRUE
-	SSgreyscale_queue.update_queue += src
 
 /**
  * An atom we are buckled or is contained within us has tried to move

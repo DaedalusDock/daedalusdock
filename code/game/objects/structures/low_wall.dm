@@ -184,7 +184,7 @@
 
 /obj/structure/low_wall/proc/set_stripe_paint(new_paint)
 	stripe_paint = new_paint
-	queue_update_greyscale()
+	update_appearance()
 
 /obj/structure/low_wall/proc/set_material(new_material_type, update_appearance = TRUE)
 	plating_material = new_material_type

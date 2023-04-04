@@ -91,7 +91,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
 
-
 /turf/closed/wall/copyTurf(turf/T)
 	. = ..()
 	if(istype(., /turf/closed/wall))
@@ -212,7 +211,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
-	queue_update_greyscale()
+	update_appearance()
 
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/proc/set_wall_information(plating_mat, reinf_mat, new_paint, new_stripe_paint)

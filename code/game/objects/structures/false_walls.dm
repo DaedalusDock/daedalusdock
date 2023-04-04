@@ -203,7 +203,7 @@
 /// Painfully copypasted from /turf/closed/wall
 /obj/structure/falsewall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
-	queue_update_greyscale()
+	update_appearance()
 
 /// Painfully copypasted from /turf/closed/wall
 /obj/structure/falsewall/proc/set_wall_information(plating_mat, reinf_mat, new_paint, new_stripe_paint)

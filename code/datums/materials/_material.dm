@@ -102,7 +102,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 	if(material_flags & MATERIAL_GREYSCALE)
 		var/config_path = get_greyscale_config_for(source.greyscale_config)
-		source.set_greyscale(greyscale_colors, config_path, queue = TRUE)
+		source.set_greyscale(greyscale_colors, config_path)
 
 	if(alpha < 255)
 		source.opacity = FALSE

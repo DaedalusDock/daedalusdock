@@ -64,8 +64,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define CONTAMINATED_2 (1<<0)
 ///Uses atom temperature. Opt-in.
 #define ATMOS_SENSITIVE_2 (1<<1)
-/// Is this atom queued for greyscale processing?
-#define GREYSCALE_QUEUED_2 (1<<2)
 
 // Update flags for [/atom/proc/update_appearance]
 /// Update the atom's name

@@ -29,8 +29,8 @@
 	// It will follow this as the animation goes, but that's no problem as the "mask" icon state
 	// already accounts for this.
 	add_filter("alpha_mask", 1, list("type" = "alpha", "icon" = icon('icons/obj/cryogenics.dmi', "mask"), "y" = -22))
-	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, .proc/on_set_occupant)
-	RegisterSignal(parent, COMSIG_CRYO_SET_ON, .proc/on_set_on)
+	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, PROC_REF(on_set_occupant))
+	RegisterSignal(parent, COMSIG_CRYO_SET_ON, PROC_REF(on_set_on))
 
 /// COMSIG_MACHINERY_SET_OCCUPANT callback
 /atom/movable/visual/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
@@ -259,7 +259,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
+	if(air1.total_moles > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
 			consume_gas = TRUE
@@ -314,7 +314,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return null
 	var/datum/gas_mixture/air1 = airs[1]
 	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.get_moles() * breath_percentage)
+	return air1.remove(air1.total_moles * breath_percentage)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -529,7 +529,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.get_moles() > 10)
+	if(G.total_moles > 10)
 		return G.temperature
 	return ..()
 

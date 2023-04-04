@@ -32,7 +32,7 @@
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "target pressure set to [target_pressure] kPa")
 		update_appearance()

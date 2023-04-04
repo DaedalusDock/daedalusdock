@@ -1,8 +1,8 @@
 /datum/preference_middleware/jobs
 	action_delegations = list(
-		"set_job_preference" = .proc/set_job_preference,
+		"set_job_preference" = PROC_REF(set_job_preference),
 	//PARIAH EDIT
-		"set_job_title" = .proc/set_job_title,
+		"set_job_title" = PROC_REF(set_job_title),
 	//PARIAH EDIT END
 	)
 

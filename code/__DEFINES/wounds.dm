@@ -14,6 +14,8 @@
 #define FLUIDLOSS_BURN_WIDE 0.15
 ///For concentrated burns, like from lasers
 #define FLUIDLOSS_BURN_CONCENTRATED 0.1
+///The amount of burn damage needed to cause fluid loss.
+#define FLUIDLOSS_BURN_REQUIRED 5
 
 //CONFIG STUFF
 ///A modifier applied to wound auto healing
@@ -36,3 +38,5 @@
 /// How often can we annoy the player about their bleeding? This duration is extended if it's not serious bleeding
 #define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
 
+///The percentage of damage at which a bodypart can start to be dismembered.
+#define LIMB_DISMEMBERMENT_PERCENT 0.6

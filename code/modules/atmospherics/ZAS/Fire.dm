@@ -28,7 +28,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		return 0
 	if(src.fire)
 		return 1
-	var/datum/gas_mixture/air_contents = return_air()
+	var/datum/gas_mixture/air_contents = unsafe_return_air()
 	if(!air_contents || exposed_temperature < PHORON_MINIMUM_BURN_TEMPERATURE)
 		return 0
 
@@ -116,7 +116,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	if(fuel)
 		zone.fuel_objs += fuel
-		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, /zone/proc/handle_fuel_del)
+		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/zone, handle_fuel_del))
 
 	return fire
 
@@ -150,7 +150,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	//setDir(pick(GLOB.cardinals))
 	T.fire = src
 	T.zone.fire_tiles |= T
-	var/datum/gas_mixture/air_contents = T.return_air()
+	var/datum/gas_mixture/air_contents = T.unsafe_return_air()
 	color = FIRECOLOR(air_contents.temperature)
 	set_light_range(3)
 	set_light_power(1)
@@ -180,7 +180,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		qdel(src)
 		return PROCESS_KILL
 
-	var/datum/gas_mixture/air_contents = my_tile.return_air()
+	var/datum/gas_mixture/air_contents = my_tile.unsafe_return_air()
 
 	if(firelevel > 6 && light_power != 2)
 		icon_state = "3"
@@ -213,7 +213,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 					continue
 
 				//if(!enemy_tile.zone.fire_tiles.len) TODO - optimize
-				var/datum/gas_mixture/acs = enemy_tile.return_air()
+				var/datum/gas_mixture/acs = enemy_tile.unsafe_return_air()
 				var/obj/effect/decal/cleanable/oil/liquid = locate() in enemy_tile
 				if(!acs || !acs.check_combustability(liquid))
 					continue

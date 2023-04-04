@@ -30,7 +30,7 @@
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/ComponentInitialize()
 	. = ..()
-	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, .proc/explosion_handle)
+	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(explosion_handle))
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/examine()
 	. = ..()
@@ -59,7 +59,7 @@
 			return ..()
 		inserted_tank = tank_item
 		last_recorded_pressure = 0
-		RegisterSignal(inserted_tank, COMSIG_PARENT_QDELETING, .proc/tank_destruction)
+		RegisterSignal(inserted_tank, COMSIG_PARENT_QDELETING, PROC_REF(tank_destruction))
 		update_appearance()
 		return
 	if(istype(item, /obj/item/computer_hardware/hard_drive/portable))
@@ -125,7 +125,7 @@
 /// Glorified volume pump.
 /obj/machinery/atmospherics/components/binary/tank_compressor/process_atmos()
 	var/datum/gas_mixture/input_air = airs[2]
-	if(!input_air?.get_moles() || !active || !transfer_rate || !inserted_tank)
+	if(!input_air?.total_moles || !active || !transfer_rate || !inserted_tank)
 		return
 
 	var/datum/gas_mixture/tank_air = inserted_tank.return_air()
@@ -176,9 +176,9 @@
  * Mole requirements in experiments are tracked by buffer data.
  */
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/flush_buffer()
-	if(!leaked_gas_buffer.get_moles())
+	if(!leaked_gas_buffer.total_moles)
 		return
-	if(leaked_gas_buffer.get_moles() > SIGNIFICANT_AMOUNT_OF_MOLES)
+	if(leaked_gas_buffer.total_moles > SIGNIFICANT_AMOUNT_OF_MOLES)
 		record_data()
 	else
 		say("Buffer data discarded. Required moles for storage: [SIGNIFICANT_AMOUNT_OF_MOLES] moles.")

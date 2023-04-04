@@ -19,7 +19,7 @@
 		if(guide_name && guide_html)
 			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide.</span><hr>"
 
-		items = sortTim(items, /proc/cmp_text_asc, TRUE)
+		items = sortTim(items, GLOBAL_PROC_REF(cmp_text_asc), TRUE)
 		var/list/links = list()
 		for(var/item as anything in items)
 			var/datum/codex_entry/item_entry = SScodex.get_entry_by_string(item)
@@ -64,7 +64,8 @@
 	if(guide_html)
 		var/datum/codex_entry/entry = new(
 			_display_name = "Guide to [capitalize(guide_name || name)]",
-			_mechanics_text = guide_html
+			_mechanics_text = guide_html,
+			_disambiguator = "guide"
 		)
 		LAZYDISTINCTADD(entry.categories, src)
 		// It's a guide so we track it.

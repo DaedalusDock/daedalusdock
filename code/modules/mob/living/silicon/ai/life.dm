@@ -3,8 +3,6 @@
 		return
 	//Being dead doesn't mean your temperature never changes
 
-	update_gravity(has_gravity())
-
 	handle_status_effects(delta_time, times_fired)
 
 	handle_traits(delta_time, times_fired)
@@ -168,4 +166,4 @@
 	blind_eyes(1)
 	update_sight()
 	to_chat(src, span_alert("You've lost power!"))
-	addtimer(CALLBACK(src, .proc/start_RestorePowerRoutine), 20)
+	addtimer(CALLBACK(src, PROC_REF(start_RestorePowerRoutine)), 20)

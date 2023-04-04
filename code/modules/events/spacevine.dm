@@ -51,7 +51,7 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/hallway/area in world)
+	for(var/area/station/hallway/area in world)
 		for(var/turf/floor in area)
 			if(floor.Enter(vine))
 				turfs += floor
@@ -385,7 +385,7 @@
 	. = ..()
 	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	become_atmos_sensitive()

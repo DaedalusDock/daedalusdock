@@ -1,4 +1,6 @@
 
+#define PARALLAX_ICON_SIZE 672
+
 /datum/hud/proc/create_parallax(mob/viewmob)
 	var/mob/screenmob = viewmob || mymob
 	var/client/C = screenmob.client
@@ -8,12 +10,7 @@
 	if(!length(C.parallax_layers_cached))
 		C.parallax_layers_cached = list()
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_1(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_2(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/planet(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/nebula(null, screenmob)
-		if(SSparallax.random_layer)
-			C.parallax_layers_cached += new SSparallax.random_layer(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_3(null, screenmob)
+		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/stars(null, screenmob)
 
 	C.parallax_layers = C.parallax_layers_cached.Copy()
 
@@ -98,8 +95,7 @@
 	var/animatedir = new_parallax_movedir
 	if(new_parallax_movedir == FALSE)
 		var/animate_time = 0
-		for(var/thing in C.parallax_layers)
-			var/atom/movable/screen/parallax_layer/L = thing
+		for(var/atom/movable/screen/parallax_layer/L as anything in C.parallax_layers)
 			L.icon_state = initial(L.icon_state)
 			L.update_o(C.view)
 			var/T = PARALLAX_LOOP_TIME / L.speed
@@ -111,19 +107,17 @@
 	var/matrix/newtransform
 	switch(animatedir)
 		if(NORTH)
-			newtransform = matrix(1, 0, 0, 0, 1, 480)
+			newtransform = matrix(1, 0, 0, 0, 1, PARALLAX_ICON_SIZE)
 		if(SOUTH)
-			newtransform = matrix(1, 0, 0, 0, 1,-480)
+			newtransform = matrix(1, 0, 0, 0, 1,-PARALLAX_ICON_SIZE)
 		if(EAST)
-			newtransform = matrix(1, 0, 480, 0, 1, 0)
+			newtransform = matrix(1, 0, PARALLAX_ICON_SIZE, 0, 1, 0)
 		if(WEST)
-			newtransform = matrix(1, 0,-480, 0, 1, 0)
+			newtransform = matrix(1, 0,-PARALLAX_ICON_SIZE, 0, 1, 0)
 
 	var/shortesttimer
 	if(!skip_windups)
-		for(var/thing in C.parallax_layers)
-			var/atom/movable/screen/parallax_layer/L = thing
-
+		for(var/atom/movable/screen/parallax_layer/L as anything in C.parallax_layers)
 			var/T = PARALLAX_LOOP_TIME / L.speed
 			if (isnull(shortesttimer))
 				shortesttimer = T
@@ -138,7 +132,7 @@
 	C.parallax_movedir = new_parallax_movedir
 	if (C.parallax_animate_timer)
 		deltimer(C.parallax_animate_timer)
-	var/datum/callback/CB = CALLBACK(src, .proc/update_parallax_motionblur, C, animatedir, new_parallax_movedir, newtransform)
+	var/datum/callback/CB = CALLBACK(src, PROC_REF(update_parallax_motionblur), C, animatedir, new_parallax_movedir, newtransform)
 	if(skip_windups)
 		CB.Invoke()
 	else
@@ -212,14 +206,14 @@
 
 			// This is how we tile parralax sprites
 			// It doesn't use change because we really don't want to animate this
-			if(parallax_layer.offset_x - change_x > 240)
-				parallax_layer.offset_x -= 480
-			else if(parallax_layer.offset_x - change_x < -240)
-				parallax_layer.offset_x += 480
-			if(parallax_layer.offset_y - change_y > 240)
-				parallax_layer.offset_y -= 480
-			else if(parallax_layer.offset_y - change_y < -240)
-				parallax_layer.offset_y += 480
+			if(parallax_layer.offset_x - change_x > PARALLAX_ICON_SIZE/2)
+				parallax_layer.offset_x -= PARALLAX_ICON_SIZE
+			else if(parallax_layer.offset_x - change_x < -(PARALLAX_ICON_SIZE/2))
+				parallax_layer.offset_x += PARALLAX_ICON_SIZE
+			if(parallax_layer.offset_y - change_y > PARALLAX_ICON_SIZE/2)
+				parallax_layer.offset_y -= PARALLAX_ICON_SIZE
+			else if(parallax_layer.offset_y - change_y < -(PARALLAX_ICON_SIZE/2))
+				parallax_layer.offset_y += PARALLAX_ICON_SIZE
 
 		// Now that we have our offsets, let's do our positioning
 		parallax_layer.offset_x -= change_x
@@ -246,12 +240,13 @@
 // We need parallax to always pass its args down into initialize, so we immediate init it
 INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 /atom/movable/screen/parallax_layer
-	icon = 'icons/effects/parallax.dmi'
+	icon = 'icons/effects/parallax/skybox.dmi'
 	var/speed = 1
 	var/offset_x = 0
 	var/offset_y = 0
 	var/view_sized
 	var/absolute = FALSE
+	appearance_flags = APPEARANCE_UI | TILE_BOUND
 	blend_mode = BLEND_ADD
 	plane = PLANE_SPACE_PARALLAX
 	screen_loc = "CENTER-7,CENTER-7"
@@ -266,7 +261,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 	// I do not want to know bestie
 	var/view = boss.view || world.view
 	update_o(view)
-	RegisterSignal(boss, COMSIG_VIEW_SET, .proc/on_view_change)
+	RegisterSignal(boss, COMSIG_VIEW_SET, PROC_REF(on_view_change))
 
 /atom/movable/screen/parallax_layer/proc/on_view_change(datum/source, new_size)
 	SIGNAL_HANDLER
@@ -276,7 +271,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 	if (!view)
 		view = world.view
 
-	var/static/parallax_scaler = world.icon_size / 480
+	var/static/parallax_scaler = world.icon_size / PARALLAX_ICON_SIZE
 
 	// Turn the view size into a grid of correctly scaled overlays
 	var/list/viewscales = getviewsize(view)
@@ -288,47 +283,29 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 			if(x == 0 && y == 0)
 				continue
 			var/mutable_appearance/texture_overlay = mutable_appearance(icon, icon_state)
-			texture_overlay.transform = matrix(1, 0, x*480, 0, 1, y*480)
+			texture_overlay.transform = matrix(1, 0, x*PARALLAX_ICON_SIZE, 0, 1, y*PARALLAX_ICON_SIZE)
 			new_overlays += texture_overlay
 	cut_overlays()
 	add_overlay(new_overlays)
 	view_sized = view
 
 /atom/movable/screen/parallax_layer/layer_1
-	icon_state = "layer1"
-	speed = 0.6
+	icon_state = "dyable"
+	blend_mode = BLEND_OVERLAY
+	speed = 0.5
 	layer = 1
 
-/atom/movable/screen/parallax_layer/layer_2
-	icon_state = "layer2"
-	speed = 1
-	layer = 2
-
-/atom/movable/screen/parallax_layer/layer_3
-	icon_state = "layer3"
-	speed = 1.4
-	layer = 3
-
-/atom/movable/screen/parallax_layer/random
-	blend_mode = BLEND_OVERLAY
-	speed = 3
-	layer = 3
-
-/atom/movable/screen/parallax_layer/random/space_gas
-	icon_state = "space_gas"
-
-/atom/movable/screen/parallax_layer/random/space_gas/Initialize(mapload, mob/owner)
+/atom/movable/screen/parallax_layer/layer_1/Initialize(mapload, mob/owner)
 	. = ..()
-	src.add_atom_colour(SSparallax.random_parallax_color, ADMIN_COLOUR_PRIORITY)
+	src.add_atom_colour(global.starlight_color, ADMIN_COLOUR_PRIORITY)
 
-/atom/movable/screen/parallax_layer/random/asteroids
-	icon_state = "asteroids"
+/atom/movable/screen/parallax_layer/stars
+	icon_state = "stars"
+	blend_mode = BLEND_OVERLAY
+	layer = 1
+	speed = 0.5
 
-/atom/movable/screen/parallax_layer/nebula
-	icon_state = "nebula1"
-	speed = 1
-	layer = 3
-
+/*
 /atom/movable/screen/parallax_layer/planet
 	icon_state = "planet"
 	blend_mode = BLEND_OVERLAY
@@ -341,8 +318,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 	if(!owner?.client)
 		return
 	var/static/list/connections = list(
-		COMSIG_MOVABLE_Z_CHANGED = .proc/on_z_change,
-		COMSIG_MOB_LOGOUT = .proc/on_mob_logout,
+		COMSIG_MOVABLE_Z_CHANGED = PROC_REF(on_z_change),
+		COMSIG_MOB_LOGOUT = PROC_REF(on_mob_logout),
 	)
 	AddComponent(/datum/component/connect_mob_behalf, owner.client, connections)
 	on_z_change(owner)
@@ -362,3 +339,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 
 /atom/movable/screen/parallax_layer/planet/update_o()
 	return //Shit won't move
+*/
+
+#undef PARALLAX_ICON_SIZE

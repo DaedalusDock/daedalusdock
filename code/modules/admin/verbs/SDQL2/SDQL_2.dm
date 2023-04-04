@@ -61,7 +61,7 @@
 
 	You can also generate a new list on the fly using a selector array. @[] will generate a list of objects based off the selector provided.
 
-	"SELECT /mob/living IN (@[/area/service/bar MAP contents])[1]"
+	"SELECT /mob/living IN (@[/area/station/service/bar MAP contents])[1]"
 
 	What if some dumbass admin spawned a bajillion spiders and you need to kill them all?
 	Oh yeah you'd rather not delete all the spiders in maintenace. Only that one room the spiders were
@@ -493,7 +493,7 @@ GLOBAL_DATUM_INIT(sdql2_vv_statobj, /obj/effect/statclick/sdql2_vv_all, new(null
 					options |= SDQL2_OPTION_SEQUENTIAL
 
 /datum/sdql2_query/proc/ARun()
-	INVOKE_ASYNC(src, .proc/Run)
+	INVOKE_ASYNC(src, PROC_REF(Run))
 
 /datum/sdql2_query/proc/Run()
 	if(SDQL2_IS_RUNNING)

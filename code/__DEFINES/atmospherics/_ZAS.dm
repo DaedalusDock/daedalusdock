@@ -42,7 +42,10 @@
 	} while(FALSE)
 
 ///Checks is a turf is simulated and has a valid zone.
-#define TURF_HAS_VALID_ZONE(T) (T.simulated && T.zone && !T.zone.invalid)
+#define TURF_HAS_VALID_ZONE(T) (!isnull(T:zone) && !T:zone:invalid)
+
+///Checks if X is a turf, if it is, mark it's zone for update.
+#define SAFE_ZAS_UPDATE(x) if(isturf(##x) && TURF_HAS_VALID_ZONE(##x)) { SSzas.mark_zone_update(##x:zone) }
 
 #ifdef MULTIZAS
 

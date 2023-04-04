@@ -40,8 +40,17 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(slip)
 			var/datum/component/wet_floor/WF = T.AddComponent(/datum/component/wet_floor)
 			WF.InheritComponent(slip)
-		if (copy_air)
-			T.return_air().copyFrom(return_air())
+		if(copy_air)
+			if(TURF_HAS_VALID_ZONE(T))
+				T.zone.remove_turf(T)
+			if(T.simulated)
+				if(isnull(T.air))
+					T.make_air()
+				T.air.copyFrom(unsafe_return_air())
+			else
+				T.initial_gas = initial_gas
+				T.make_air()
+			SSzas.mark_for_update(T)
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)
@@ -131,13 +140,11 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	dynamic_lumcount = old_dynamic_lumcount
 
-	if(W.always_lit)
-		W.add_overlay(GLOB.fullbright_overlay)
-	else
-		W.cut_overlay(GLOB.fullbright_overlay)
-
 	if(SSlighting.initialized)
-		W.lighting_object = old_lighting_object
+		if(!always_lit)
+			W.lighting_object = old_lighting_object || new /datum/lighting_object(src)
+		else if(old_lighting_object)
+			qdel(old_lighting_object, force = TRUE)
 
 		directional_opacity = old_directional_opacity
 		recalculate_directional_opacity()
@@ -145,12 +152,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(lighting_object && !lighting_object.needs_update)
 			lighting_object.update()
 
-		for(var/turf/open/space/space_tile in RANGE_TURFS(1, src))
-			space_tile.update_starlight()
-
-	var/area/thisarea = get_area(W)
-	if(thisarea.lighting_effect)
-		W.add_overlay(thisarea.lighting_effect)
+		if(CONFIG_GET(flag/starlight))
+			for(var/turf/open/space/space_tile in RANGE_TURFS(1, src))
+				space_tile.update_starlight()
 
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	QUEUE_SMOOTH(src)

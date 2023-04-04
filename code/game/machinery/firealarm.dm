@@ -63,8 +63,8 @@
 	if(name == initial(name))
 		name = "[get_area_name(src)] [initial(name)]"
 	update_appearance()
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
-	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, .proc/check_security_level)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
+	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_security_level))
 
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/firealarm,
@@ -454,7 +454,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 		return
 	area.party = TRUE
 	if (!party_overlay)
-		party_overlay = iconstate2appearance('icons/turf/areas.dmi', "party")
+		party_overlay = iconstate2appearance('icons/area/areas_misc.dmi', "party")
 	area.add_overlay(party_overlay)
 
 /obj/item/circuit_component/firealarm
@@ -485,8 +485,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	. = ..()
 	if(istype(parent, /obj/machinery/firealarm))
 		attached_alarm = parent
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER, .proc/on_firealarm_triggered)
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, .proc/on_firealarm_reset)
+		RegisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER, PROC_REF(on_firealarm_triggered))
+		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, PROC_REF(on_firealarm_reset))
 
 /obj/item/circuit_component/firealarm/unregister_usb_parent(atom/movable/parent)
 	attached_alarm = null

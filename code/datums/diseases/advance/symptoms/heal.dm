@@ -262,7 +262,7 @@
 	C.reagents.metabolize(C, metabolic_boost * SSMOBS_DT, 0, can_overdose=TRUE) //this works even without a liver; it's intentional since the virus is metabolizing by itself
 	C.overeatduration = max(C.overeatduration - 4 SECONDS, 0)
 	var/lost_nutrition = 9 - (reduced_hunger * 5)
-	C.adjust_nutrition(-lost_nutrition * HUNGER_FACTOR) //Hunger depletes at 10x the normal speed
+	C.adjust_nutrition(-lost_nutrition * HUNGER_DECAY) //Hunger depletes at 10x the normal speed
 	if(prob(2))
 		to_chat(C, span_notice("You feel an odd gurgle in your stomach, as if it was working much faster than normal."))
 	return 1
@@ -390,12 +390,12 @@
 	if(M.getBruteLoss() + M.getFireLoss() >= 70 && !active_coma)
 		to_chat(M, span_warning("You feel yourself slip into a regenerative coma..."))
 		active_coma = TRUE
-		addtimer(CALLBACK(src, .proc/coma, M), 60)
+		addtimer(CALLBACK(src, PROC_REF(coma), M), 60)
 
 
 /datum/symptom/heal/coma/proc/coma(mob/living/M)
 	M.fakedeath("regenerative_coma", !deathgasp)
-	addtimer(CALLBACK(src, .proc/uncoma, M), 300)
+	addtimer(CALLBACK(src, PROC_REF(uncoma), M), 300)
 
 
 /datum/symptom/heal/coma/proc/uncoma(mob/living/M)
@@ -515,12 +515,10 @@
 
 /datum/symptom/heal/plasma/CanHeal(datum/disease/advance/A)
 	var/mob/living/M = A.affected_mob
-	var/datum/gas_mixture/environment = M.loc.return_air()
+	var/datum/gas_mixture/environment = M.loc.unsafe_return_air()
 
 	. = 0
 
-	if(M.loc)
-		environment = M.loc.return_air()
 	if(environment && environment.getGroupGas(GAS_PLASMA))
 		. += power * min(0.5, environment.gas[GAS_PLASMA] * HEALING_PER_MOL)
 	if(M.reagents.has_reagent(/datum/reagent/toxin/plasma, needs_metabolizing = TRUE))

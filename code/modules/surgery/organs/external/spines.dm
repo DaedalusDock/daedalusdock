@@ -1,4 +1,5 @@
 /obj/item/organ/external/spines
+	name = "spines"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_SPINES
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND

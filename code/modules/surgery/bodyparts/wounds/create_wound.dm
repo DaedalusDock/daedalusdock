@@ -3,10 +3,11 @@
 		return
 
 	var/static/list/interal_wounds_check = list(WOUND_CUT, WOUND_PIERCE, WOUND_BRUISE)
+
 	var/static/list/fluid_wounds_check = list(WOUND_BURN, WOUND_LASER)
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
-	if(owner && (damage > 5 || damage + burn_dam >= 15) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
+	if(owner && !surgical && (damage > FLUIDLOSS_BURN_REQUIRED) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
 		var/fluid_loss_severity
 		switch(wound_type)
 			if (WOUND_BURN)

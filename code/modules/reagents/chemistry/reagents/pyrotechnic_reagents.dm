@@ -105,7 +105,7 @@
 /datum/reagent/gunpowder/on_new(data)
 	. = ..()
 	if(holder?.my_atom)
-		RegisterSignal(holder.my_atom, COMSIG_ATOM_EX_ACT, .proc/on_ex_act)
+		RegisterSignal(holder.my_atom, COMSIG_ATOM_EX_ACT, PROC_REF(on_ex_act))
 
 /datum/reagent/gunpowder/Destroy()
 	if(holder?.my_atom)
@@ -376,11 +376,10 @@
 			foam.lifetime = initial(foam.lifetime) //reduce object churn a little bit when using smoke by keeping existing foam alive a bit longer
 
 	var/obj/effect/hotspot/hotspot = exposed_turf.fire
-	if(hotspot && !isspaceturf(exposed_turf) && exposed_turf.return_air())
-		var/datum/gas_mixture/air = exposed_turf.return_air()
-		if(air.temperature > T20C)
-			air.temperature = max(air.temperature/2,T20C)
-		air.react(src)
+	var/datum/gas_mixture/environment = exposed_turf.return_air()
+	if(hotspot && !isspaceturf(exposed_turf) && environment)
+		if(environment.temperature > T20C)
+			environment.temperature = max(environment.temperature/2,T20C)
 		qdel(hotspot)
 
 /datum/reagent/firefighting_foam/expose_obj(obj/exposed_obj, reac_volume)

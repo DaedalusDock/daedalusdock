@@ -1,7 +1,7 @@
 SUBSYSTEM_DEF(airflow)
 	name = "Air (Airflow)"
 	wait = 1
-	flags = SS_NO_INIT
+	flags = SS_NO_INIT|SS_TICKER
 	priority = FIRE_PRIORITY_AIRFLOW
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
@@ -91,7 +91,7 @@ SUBSYSTEM_DEF(airflow)
 	if(!can_fire)
 		return
 	processing += to_add
-	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, .proc/HandleDel)
+	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, PROC_REF(HandleDel))
 
 /datum/controller/subsystem/airflow/proc/Dequeue(atom/movable/to_remove)
 	processing -= to_remove

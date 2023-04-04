@@ -38,6 +38,12 @@
 	///The amount of heat needed to start damaging the window
 	var/melting_point = T0C + 3000 //See, because some dipass decided to make the station 50% glass, NT opted to infuse all the windows with plasma.
 
+/obj/structure/window/add_atom_colour(coloration, colour_priority)
+	. = ..()
+	if("#000000" in atom_colours)
+		CRASH("Absurd value found in atom colors!")
+		#warn DO NOT MERGE
+
 /obj/structure/window/examine(mob/user)
 	. = ..()
 	if(reinf)

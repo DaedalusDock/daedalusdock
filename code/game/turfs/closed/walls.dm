@@ -11,7 +11,7 @@ GLOBAL_REAL_VAR(neighbor_typecache) = typecacheof(list(
 	/obj/structure/low_wall
 	))
 
-GLOBAL_REAL_VAR(wall_appearance_cache) = list()
+GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 /turf/closed/wall
 	name = "wall"
@@ -124,9 +124,9 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 	cache_key = "[icon]:[smoothing_junction]:[stripe_icon]:[plating_color]:[stripe_color]:[neighbor_stripe]:[shiny_wall]:[shiny_stripe]:[rusted]:[hard_decon && d_state]"
 	if(!(old_cache_key == cache_key))
 
-		var/potential_appearance = global.wall_appearance_cache[cache_key]
-		if(potential_appearance)
-			appearance = potential_appearance
+		var/potential_overlays = global.wall_overlays_cache[cache_key]
+		if(potential_overlays)
+			overlays = potential_overlays
 		else
 			//Updating the unmanaged wall overlays (unmanaged for optimisations)
 			overlays.len = 0
@@ -169,7 +169,7 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 				new_overlays += decon_overlay
 
 			overlays = new_overlays
-			global.wall_appearance_cache[cache_key] = appearance
+			global.wall_overlays_cache[cache_key] = new_overlays
 
 
 	if(dent_decals)

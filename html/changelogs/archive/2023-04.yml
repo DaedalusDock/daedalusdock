@@ -11,3 +11,11 @@
   - qol: Human gravity will react to changes instantly, instead of waiting for the
       next process tick. Hopefully this feels better and not worse
   - bugfix: Fixes a bunch of minor gravity bugs, report em if you see more yeah?
+2023-04-04:
+  Gonenoculer5:
+  - rscadd: Adds a new piece of clothing to the loadout.
+  Kapu1178:
+  - bugfix: Circuit shit nobody uses anyway.
+  - code_imp: More 515 compatibility. Nothing to see here, folks.
+  francinum:
+  - code_imp: More 515 fixes

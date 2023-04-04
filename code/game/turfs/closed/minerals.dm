@@ -50,8 +50,7 @@
 
 	assemble_baseturfs()
 
-	if(!mapload)
-		levelupdate()
+	levelupdate()
 
 	SETUP_SMOOTHING()
 

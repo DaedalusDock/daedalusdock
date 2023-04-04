@@ -186,7 +186,7 @@ All ShuttleMove procs go here
 		other_airlock.air_tight = TRUE
 		spawn(-1)
 			if((other_airlock.close(FALSE, TRUE) || other_airlock.density) && other_airlock == src && moving_dock.bolt_doors) // force crush
-				if(locate(/turf/open/space in orange(1, other_airlock)))
+				if(locate(/turf/open/space) in orange(1, other_airlock))
 					other_airlock.bolt()
 
 /obj/machinery/door/airlock/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)

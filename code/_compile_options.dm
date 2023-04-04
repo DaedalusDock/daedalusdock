@@ -61,7 +61,7 @@
 // #define DATUMVAR_DEBUGGING_MODE
 
 /// If this is uncommented, will profile mapload atom initializations
-#define PROFILE_MAPLOAD_INIT_ATOM
+// #define PROFILE_MAPLOAD_INIT_ATOM
 
 ///Enables debug messages for every single reaction step. This is 1 message per 0.5s for a SINGLE reaction.
 ///Useful for tracking down bugs/asking me for help in the main reaction handiler (equilibrium.dm).
@@ -132,7 +132,7 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-#define LOWMEMORYMODE
+// #define LOWMEMORYMODE
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS

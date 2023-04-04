@@ -1,5 +1,5 @@
 // global datum that will preload variables on atoms instanciation
-GLOBAL_VAR_INIT(use_preloader, FALSE)
+GLOBAL_REAL_VAR(use_preloader) = FALSE
 GLOBAL_LIST_INIT(_preloader_attributes, null)
 GLOBAL_LIST_INIT(_preloader_path, null)
 
@@ -10,12 +10,12 @@ GLOBAL_LIST_INIT(_preloader_path, null)
 
 /world/proc/preloader_setup(list/the_attributes, path)
 	if(the_attributes.len)
-		GLOB.use_preloader = TRUE
+		global.use_preloader = TRUE
 		GLOB._preloader_attributes = the_attributes
 		GLOB._preloader_path = path
 
 /world/proc/preloader_load(atom/what)
-	GLOB.use_preloader = FALSE
+	global.use_preloader = FALSE
 	var/list/attributes = GLOB._preloader_attributes
 	for(var/attribute in attributes)
 		var/value = attributes[attribute]

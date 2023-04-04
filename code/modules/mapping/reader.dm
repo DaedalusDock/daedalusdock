@@ -795,7 +795,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 
 		instance.contents.Add(crds)
 
-		if(GLOB.use_preloader)
+		if(global.use_preloader)
 			world.preloader_load(instance)
 
 	// Index right before /area is /turf
@@ -815,7 +815,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		else
 			instance = crds.ChangeTurf(members[index], null, CHANGETURF_DEFER_CHANGE)
 
-		if(GLOB.use_preloader && instance)//second preloader pass, for those atoms that don't ..() in New()
+		if(global.use_preloader && instance)//second preloader pass, for those atoms that don't ..() in New()
 			world.preloader_load(instance)
 	MAPLOADING_CHECK_TICK
 
@@ -827,7 +827,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		// We make the assertion that only /atom s will be in this portion of the code. if that isn't true, this will fail
 		instance = create_atom(members[atom_index], crds)//first preloader pass
 
-		if(GLOB.use_preloader && instance)//second preloader pass, for those atoms that don't ..() in New()
+		if(global.use_preloader && instance)//second preloader pass, for those atoms that don't ..() in New()
 			world.preloader_load(instance)
 		MAPLOADING_CHECK_TICK
 

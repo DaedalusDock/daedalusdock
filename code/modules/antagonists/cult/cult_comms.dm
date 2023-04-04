@@ -203,7 +203,7 @@
 									S.release_shades(owner)
 								B.current.setDir(SOUTH)
 								new /obj/effect/temp_visual/cult/blood(final)
-								addtimer(CALLBACK(B.current, /mob/.proc/reckon, final), 10)
+								addtimer(CALLBACK(B.current, TYPE_PROC_REF(/mob, reckon), final), 10)
 		else
 			return
 	antag.cult_team.reckoning_complete = TRUE
@@ -271,7 +271,7 @@
 		unset_ranged_ability(caller, span_cult("The marking rite is complete! It will last for [DisplayTimeText(cult_mark_duration)] seconds."))
 		COOLDOWN_START(src, cult_mark_cooldown, cult_mark_cooldown_duration)
 		build_all_button_icons()
-		addtimer(CALLBACK(src, .proc/build_all_button_icons), cult_mark_cooldown_duration + 1)
+		addtimer(CALLBACK(src, PROC_REF(build_all_button_icons)), cult_mark_cooldown_duration + 1)
 		return TRUE
 
 	unset_ranged_ability(caller, span_cult("The marking rite failed!"))
@@ -321,7 +321,7 @@
 		to_chat(owner, span_cultbold("You have marked [mark_target] for the cult! It will last for [DisplayTimeText(cult_mark_duration)]."))
 		COOLDOWN_START(src, cult_mark_cooldown, cult_mark_cooldown_duration)
 		update_button_status()
-		addtimer(CALLBACK(src, .proc/reset_button), cult_mark_cooldown_duration + 1)
+		addtimer(CALLBACK(src, PROC_REF(reset_button)), cult_mark_cooldown_duration + 1)
 		return TRUE
 
 	to_chat(owner, span_cult("The marking failed!"))
@@ -429,7 +429,7 @@
 		caller.click_intercept = null
 		throwee_ref = null
 		build_all_button_icons()
-		addtimer(CALLBACK(src, .proc/build_all_button_icons), pulse_cooldown_duration + 1)
+		addtimer(CALLBACK(src, PROC_REF(build_all_button_icons)), pulse_cooldown_duration + 1)
 
 		return TRUE
 

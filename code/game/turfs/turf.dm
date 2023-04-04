@@ -79,7 +79,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/pathing_pass_method = TURF_PATHING_PASS_DENSITY
 
 /turf/vv_edit_var(var_name, new_value)
-	var/static/list/banned_edits = list(NAMEOF(src, x), NAMEOF(src, y), NAMEOF(src, z))
+	var/static/list/banned_edits = list(
+		NAMEOF_STATIC(src, x),
+		NAMEOF_STATIC(src, y),
+		NAMEOF_STATIC(src, z)
+		)
 	if(var_name in banned_edits)
 		return FALSE
 	. = ..()
@@ -101,9 +105,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	if(mapload && permit_ao)
 		queue_ao()
-	// if(!blocks_air || !simulated)
-		// air = new
-		// air.copyFrom(src.return_air())
 
 	// by default, vis_contents is inherited from the turf that was here before
 	vis_contents.Cut()
@@ -137,8 +138,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		Entered(content, null)
 
 	var/area/our_area = loc
-	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
-		add_overlay(GLOB.fullbright_overlay)
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
 
 	if (light_power && light_outer_range)
 		update_light()

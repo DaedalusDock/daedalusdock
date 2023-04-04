@@ -19,8 +19,8 @@
 		antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY, \
 		inventory_flags = ITEM_SLOT_HANDS, \
 		charges = shield_uses, \
-		drain_antimagic = CALLBACK(src, .proc/drain_antimagic), \
-		expiration = CALLBACK(src, .proc/expire), \
+		drain_antimagic = CALLBACK(src, PROC_REF(drain_antimagic)), \
+		expiration = CALLBACK(src, PROC_REF(expire)), \
 	)
 
 /// When the plant our gene is hosted in is drained of an anti-magic charge.
@@ -47,8 +47,8 @@
 	if(force_multiplier)
 		var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 		our_plant.force = round((5 + our_seed.potency * force_multiplier), 1)
-	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK, .proc/on_plant_attack)
-	RegisterSignal(our_plant, COMSIG_ITEM_AFTERATTACK, .proc/after_plant_attack)
+	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK, PROC_REF(on_plant_attack))
+	RegisterSignal(our_plant, COMSIG_ITEM_AFTERATTACK, PROC_REF(after_plant_attack))
 
 /*
  * Plant effects ON attack.
@@ -149,7 +149,7 @@
 		return
 
 	our_plant.AddElement(/datum/element/plant_backfire, cancel_action_on_backfire, traits_to_check, genes_to_check)
-	RegisterSignal(our_plant, COMSIG_PLANT_ON_BACKFIRE, .proc/backfire_effect)
+	RegisterSignal(our_plant, COMSIG_PLANT_ON_BACKFIRE, PROC_REF(backfire_effect))
 
 /*
  * The backfire effect. Override with plant-specific effects.
@@ -233,7 +233,7 @@
 		return
 
 	our_chili = WEAKREF(our_plant)
-	RegisterSignal(our_plant, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), .proc/stop_backfire_effect)
+	RegisterSignal(our_plant, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(stop_backfire_effect))
 
 /*
  * Begin processing the trait on backfire.
@@ -286,7 +286,7 @@
 
 	if(prob(50))
 		to_chat(user, "<span class='danger'>[our_plant] slips out of your hand!</span>")
-		INVOKE_ASYNC(our_plant, /obj/item/.proc/attack_self, user)
+		INVOKE_ASYNC(our_plant, TYPE_PROC_REF(/obj/item, attack_self), user)
 
 /// Traits for plants that can be activated to turn into a mob.
 /datum/plant_gene/trait/mob_transformation
@@ -312,9 +312,9 @@
 
 	if(dangerous)
 		our_plant.AddElement(/datum/element/plant_backfire, TRUE)
-		RegisterSignal(our_plant, COMSIG_PLANT_ON_BACKFIRE, .proc/early_awakening)
-	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK_SELF, .proc/manual_awakening)
-	RegisterSignal(our_plant, COMSIG_ITEM_PRE_ATTACK, .proc/pre_consumption_check)
+		RegisterSignal(our_plant, COMSIG_PLANT_ON_BACKFIRE, PROC_REF(early_awakening))
+	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK_SELF, PROC_REF(manual_awakening))
+	RegisterSignal(our_plant, COMSIG_ITEM_PRE_ATTACK, PROC_REF(pre_consumption_check))
 
 /*
  * Before we can eat our plant, check to see if it's waking up. Don't eat it if it is.
@@ -379,7 +379,7 @@
  */
 /datum/plant_gene/trait/mob_transformation/proc/begin_awaken(obj/item/our_plant, awaken_time)
 	awakening = TRUE
-	addtimer(CALLBACK(src, .proc/awaken, our_plant), awaken_time)
+	addtimer(CALLBACK(src, PROC_REF(awaken), our_plant), awaken_time)
 
 /*
  * Actually awaken the plant, spawning the mob designated by the [killer_plant] typepath.
@@ -469,9 +469,9 @@
 		return
 
 	our_plant.max_integrity = 40 // Max_integrity is lowered so they explode better, or something like that.
-	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK_SELF, .proc/trigger_detonation)
-	RegisterSignal(our_plant, COMSIG_ATOM_EX_ACT, .proc/explosion_reaction)
-	RegisterSignal(our_plant, COMSIG_OBJ_DECONSTRUCT, .proc/deconstruct_reaction)
+	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK_SELF, PROC_REF(trigger_detonation))
+	RegisterSignal(our_plant, COMSIG_ATOM_EX_ACT, PROC_REF(explosion_reaction))
+	RegisterSignal(our_plant, COMSIG_OBJ_DECONSTRUCT, PROC_REF(deconstruct_reaction))
 
 /*
  * Trigger our plant's detonation.
@@ -547,7 +547,7 @@
 		our_plant.color = COLOR_RED
 
 	playsound(our_plant.drop_location(), 'sound/weapons/armbomb.ogg', 75, TRUE, -3)
-	addtimer(CALLBACK(src, .proc/detonate, our_plant), rand(1 SECONDS, 6 SECONDS))
+	addtimer(CALLBACK(src, PROC_REF(detonate), our_plant), rand(1 SECONDS, 6 SECONDS))
 
 /datum/plant_gene/trait/bomb_plant/potency_based/detonate(obj/item/our_plant)
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
@@ -567,9 +567,9 @@
 	var/datum/weakref/stinky_seed
 
 /datum/plant_gene/trait/gas_production/on_new_seed(obj/item/seeds/new_seed)
-	RegisterSignal(new_seed, COMSIG_SEED_ON_PLANTED, .proc/set_home_tray)
-	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, .proc/try_release_gas)
-	RegisterSignal(new_seed, COMSIG_PARENT_QDELETING, .proc/stop_gas)
+	RegisterSignal(new_seed, COMSIG_SEED_ON_PLANTED, PROC_REF(set_home_tray))
+	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(try_release_gas))
+	RegisterSignal(new_seed, COMSIG_PARENT_QDELETING, PROC_REF(stop_gas))
 	stinky_seed = WEAKREF(new_seed)
 
 /datum/plant_gene/trait/gas_production/on_removed(obj/item/seeds/old_seed)

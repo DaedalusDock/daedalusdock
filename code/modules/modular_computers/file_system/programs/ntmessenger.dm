@@ -351,6 +351,17 @@
 
 
 	if (ringer_status)
+		if(!computer)
+			message_admins("Messenger Program exists with no computer, [ADMIN_VV(src)]");
+			var/message = "Messenger Program with no computer."
+			if(QDELETED(src))
+				message += " \[Messenger is qdeleted!\]"
+			if(QDELETED(holder))
+				if(isnull(holder))
+					message += " \[Messenger is not in a harddrive!\]"
+				else
+					message += " \[Messenger harddrive is qdeleting!\]"
+			CRASH(message)
 		computer.ring(ringtone)
 
 /datum/computer_file/program/messenger/Topic(href, href_list)

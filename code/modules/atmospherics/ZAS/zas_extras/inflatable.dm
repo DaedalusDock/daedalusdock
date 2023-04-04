@@ -154,7 +154,7 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		addtimer(CALLBACK(src, .proc/after_deflate), 5 SECONDS, TIMER_STOPPABLE)
+		addtimer(CALLBACK(src, PROC_REF(after_deflate)), 5 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/proc/after_deflate()
 	if(QDELETED(src))
@@ -239,7 +239,7 @@
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = 1
 	flick("door_opening",src)
-	addtimer(CALLBACK(src, .proc/FinishOpen), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishOpen)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishOpen()
 	set_density(0)
@@ -258,7 +258,7 @@
 
 	isSwitchingStates = 1
 	flick("door_closing",src)
-	addtimer(CALLBACK(src, .proc/FinishClose), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishClose)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishClose()
 	set_density(1)

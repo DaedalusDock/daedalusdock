@@ -89,7 +89,7 @@ Class Procs:
 		SSzas.active_fire_zones |= src
 		if(fuel)
 			fuel_objs += fuel
-			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, .proc/handle_fuel_del)
+			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, PROC_REF(handle_fuel_del))
 	T.update_graphic(air.graphic)
 
 	if(T.atmos_sensitive_contents)

@@ -103,6 +103,21 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 	name = "Green Snakeskin Shoes"
 	item_path = /obj/item/clothing/shoes/discoshoes
 
+/datum/loadout_item/shoes/legwraps
+	name = "Leg Wraps (Golden)"
+	item_path = /obj/item/clothing/shoes/legwraps
+/datum/loadout_item/shoes/legwraps/blue
+	name = "Leg Wraps (Blue)"
+	item_path = /obj/item/clothing/shoes/legwraps/blue
+
+/datum/loadout_item/shoes/legwraps/silver
+	name = "Leg Wraps (Silver)"
+	item_path = /obj/item/clothing/shoes/legwraps/silver
+
+/datum/loadout_item/shoes/legwraps/red
+	name = "Leg Wraps (Red)"
+	item_path = /obj/item/clothing/shoes/legwraps/red
+
 // Job Restricted
 /datum/loadout_item/shoes/jester
 	name = "Jester shoes"

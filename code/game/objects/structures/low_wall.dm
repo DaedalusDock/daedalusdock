@@ -85,10 +85,10 @@
 	if(neighbor_stripe)
 		var/image/neighb_stripe_overlay = new ('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]", layer = LOW_WALL_STRIPE_LAYER)
 		overlays += neighb_stripe_overlay
-		if(stripe_shine)
+		if(shiny_stripe)
 			var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
 			shine.appearance_flags = RESET_COLOR
-			new_overlays += shine
+			overlays += shine
 
 	return ..()
 
@@ -190,7 +190,7 @@
 
 	material_color = mat_ref.wall_color
 	stripe_icon = mat_ref.wall_stripe_icon
-	stripe_shine = mat_ref.wall_shine
+	shiny_stripe = mat_ref.wall_shine
 
 	if(update_appearance)
 		update_appearance()

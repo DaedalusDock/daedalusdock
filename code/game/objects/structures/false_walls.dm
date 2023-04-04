@@ -20,7 +20,6 @@
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
 	material_flags = MATERIAL_EFFECTS
-	greyscale_config = /datum/greyscale_config/low_wall
 	/// Material type of the plating
 	var/plating_material = /datum/material/iron
 	/// Material type of the reinforcement

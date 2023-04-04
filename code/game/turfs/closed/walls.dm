@@ -133,6 +133,11 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 			color = plating_color
 			var/list/new_overlays = list()
 
+			if(shiny_wall)
+				var/image/shine = image(icon, "shine-[smoothing_junction]")
+				shine.appearance_flags = RESET_COLOR
+				new_overlays += shine
+
 			var/image/smoothed_stripe = image(stripe_icon, icon_state)
 			smoothed_stripe.appearance_flags = RESET_COLOR
 			smoothed_stripe.color = stripe_color

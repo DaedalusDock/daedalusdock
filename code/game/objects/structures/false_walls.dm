@@ -116,6 +116,11 @@
 	if(density && !opening)
 		color = wall_paint || material_color
 
+		if(shiny_wall)
+			var/image/shine = image(icon, "shine-[smoothing_junction]")
+			shine.appearance_flags = RESET_COLOR
+			new_overlays += shine
+
 		var/image/smoothed_stripe = image(stripe_icon, icon_state)
 		smoothed_stripe.appearance_flags = RESET_COLOR
 		smoothed_stripe.color = stripe_paint || material_color
@@ -124,7 +129,6 @@
 			var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
 			stripe_shine.appearance_flags = RESET_COLOR
 			new_overlays += stripe_shine
-
 
 		var/neighbor_stripe = NONE
 		if(!neighbor_typecache)

@@ -72,9 +72,6 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 	///Appearance cache key. This is very touchy.
 	VAR_PRIVATE/cache_key
 
-/turf/closed/wall/proc/get_wall_color()
-	return wall_paint || material_color
-
 /turf/closed/wall/has_material_type(datum/material/mat_type, exact=FALSE, mat_amount=0)
 	if(plating_material == mat_type)
 		return TRUE
@@ -90,8 +87,8 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 		name = matset_name
 
 /turf/closed/wall/Initialize(mapload)
-	. = ..()
 	color = null // Remove the color that was set for mapping clarity
+	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
 	if(is_station_level(z))
 		GLOB.station_turfs += src
@@ -148,9 +145,11 @@ GLOBAL_REAL_VAR(wall_appearance_cache) = list()
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
+				neighb_stripe_overlay.appearance_flags = RESET_COLOR
+				neighb_stripe_overlay.color = stripe_color
 				new_overlays += neighb_stripe_overlay
 				if(shiny_wall)
-					var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+					var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[neighbor_stripe]")
 					shine.appearance_flags = RESET_COLOR
 					new_overlays += shine
 

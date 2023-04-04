@@ -33,13 +33,13 @@
 	//Ok you can touch vars again :)
 
 /obj/structure/low_wall/Initialize(mapload)
+	color = null //To remove the mapping preview color
 	. = ..()
 	if(!mapload)
 		var/turf/T = get_turf(src)
 		if(T)
 			T.regenerate_ao()
 
-	color = null //To remove the mapping preview color
 	AddElement(/datum/element/climbable)
 	set_material(plating_material, FALSE)
 
@@ -84,6 +84,8 @@
 
 	if(neighbor_stripe)
 		var/image/neighb_stripe_overlay = new ('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]", layer = LOW_WALL_STRIPE_LAYER)
+		neighb_stripe_overlay.appearance_flags = RESET_COLOR
+		neighb_stripe_overlay.color = stripe_paint || material_color
 		overlays += neighb_stripe_overlay
 		if(shiny_stripe)
 			var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")

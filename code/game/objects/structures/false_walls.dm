@@ -141,6 +141,8 @@
 
 		if(neighbor_stripe)
 			var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
+			neighb_stripe_overlay.appearance_flags = RESET_COLOR
+			neighb_stripe_overlay.color = stripe_paint || material_color
 			new_overlays += neighb_stripe_overlay
 			if(shiny_wall)
 				var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")

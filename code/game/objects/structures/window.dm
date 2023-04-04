@@ -409,8 +409,7 @@ GLOBAL_REAL_VAR(windowcount) = list()
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
 	update_appearance()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 
 //merges adjacent full-tile windows into one
 /obj/structure/window/update_overlays(updates=ALL)

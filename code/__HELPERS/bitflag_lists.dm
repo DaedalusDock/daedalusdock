@@ -1,4 +1,4 @@
-GLOBAL_LIST_EMPTY(bitflag_lists)
+GLOBAL_REAL_VAR(bitflag_lists) = list()
 
 /**
  * System for storing bitflags past the 24 limit, making use of an associative list.
@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(bitflag_lists)
 #define SET_SMOOTHING_GROUPS(target) \
 	do { \
 		var/txt_signature = target; \
-		if(isnull((target = GLOB.bitflag_lists[txt_signature]))) { \
+		if(isnull((target = global.bitflag_lists[txt_signature]))) { \
 			var/list/new_bitflag_list = list(); \
 			var/list/decoded = UNWRAP_SMOOTHING_GROUPS(txt_signature, decoded); \
 			for(var/value in decoded) { \
@@ -23,6 +23,6 @@ GLOBAL_LIST_EMPTY(bitflag_lists)
 				} \
 				new_bitflag_list["[round(value / 24)]"] |= (1 << (value % 24)); \
 			}; \
-			target = GLOB.bitflag_lists[txt_signature] = new_bitflag_list; \
+			target = global.bitflag_lists[txt_signature] = new_bitflag_list; \
 		}; \
 	} while (FALSE)

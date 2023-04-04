@@ -13,17 +13,25 @@
 
 /obj/structure/Initialize(mapload)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+
+	SETUP_SMOOTHING()
+
+	if(!isnull(smoothing_flags))
+		SETUP_SMOOTHING()
+		#ifdef UNIT_TESTS
+		ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+		ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+		#endif
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 		if(smoothing_flags & SMOOTH_CORNERS)
 			icon_state = ""
+
 	GLOB.cameranet.updateVisibility(src)
 
 /obj/structure/Destroy()
 	GLOB.cameranet.updateVisibility(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/structure/ui_act(action, params)

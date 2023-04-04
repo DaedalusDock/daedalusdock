@@ -104,8 +104,8 @@
 /atom/proc/smooth_icon()
 	smoothing_flags &= ~SMOOTH_QUEUED
 	flags_1 |= HTML_USE_INITAL_ICON_1
-	if (!z)
-		CRASH("[type] called smooth_icon() without being on a z-level")
+	if (z == 0) //If something's loc is not a turf, it's Z value is 0. Skip!
+		return
 	if(smoothing_flags & SMOOTH_CORNERS)
 		corners_cardinal_smooth(calculate_adjacencies())
 	else if(smoothing_flags & SMOOTH_BITMASK)
@@ -326,26 +326,6 @@
 	if(broken || burnt)
 		return
 	return ..()
-
-
-//Icon smoothing helpers
-/proc/smooth_zlevel(zlevel, now = FALSE)
-	var/list/away_turfs = block(locate(1, 1, zlevel), locate(world.maxx, world.maxy, zlevel))
-	for(var/V in away_turfs)
-		var/turf/T = V
-		if(T.smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-			if(now)
-				T.smooth_icon()
-			else
-				QUEUE_SMOOTH(T)
-		for(var/R in T)
-			var/atom/A = R
-			if(A.smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-				if(now)
-					A.smooth_icon()
-				else
-					QUEUE_SMOOTH(A)
-
 
 /atom/proc/clear_smooth_overlays()
 	cut_overlay(top_left_corner)

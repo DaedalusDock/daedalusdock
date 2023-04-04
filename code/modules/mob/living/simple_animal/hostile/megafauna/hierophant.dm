@@ -540,13 +540,16 @@ Difficulty: Hard
 
 /obj/effect/temp_visual/hierophant/wall/Initialize(mapload, new_caster)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
-		QUEUE_SMOOTH(src)
+	SETUP_SMOOTHING()
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+	QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH(src)
 
 /obj/effect/temp_visual/hierophant/wall/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/temp_visual/hierophant/wall/CanAllowThrough(atom/movable/mover, border_dir)

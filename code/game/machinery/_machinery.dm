@@ -172,6 +172,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 
 	. = ..()
 
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH(src)
+
 	GLOB.machines += src
 
 	if(ispath(circuit, /obj/item/circuitboard))

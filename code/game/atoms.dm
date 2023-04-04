@@ -230,8 +230,10 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	#ifdef UNIT_TESTS
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	#endif
 	flags_1 |= INITIALIZED_1
 
 	if(greyscale_config && greyscale_colors)
@@ -243,12 +245,6 @@
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
-
-	#ifdef UNIT_TESTS
-	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
-	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
-	#endif
-	SETUP_SMOOTHING()
 
 	if(uses_integrity)
 		#ifdef UNIT_TESTS

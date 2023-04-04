@@ -114,7 +114,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	assemble_baseturfs()
 
 	levelupdate()
-
 	#ifdef UNIT_TESTS
 	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
 	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
@@ -458,8 +457,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
-		if(O.flags_1 & INITIALIZED_1)
-			SEND_SIGNAL(O, COMSIG_OBJ_HIDE, underfloor_accessibility < UNDERFLOOR_VISIBLE)
+		SEND_SIGNAL(O, COMSIG_OBJ_HIDE, underfloor_accessibility < UNDERFLOOR_VISIBLE)
 
 // override for space turfs, since they should never hide anything
 /turf/open/space/levelupdate()

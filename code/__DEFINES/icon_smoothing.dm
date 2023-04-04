@@ -151,11 +151,11 @@ DEFINE_BITFIELD(smoothing_flags, list(
 /// Performs the work to set smoothing_groups and canSmoothWith.
 /// An inlined function used in both turf/Initialize and atom/Initialize.
 #define SETUP_SMOOTHING(...) \
-	if (smoothing_groups) { \
+	if (istext(smoothing_groups)) { \
 		SET_SMOOTHING_GROUPS(smoothing_groups); \
 	} \
 \
-	if (canSmoothWith) { \
+	if (istext(canSmoothWith)) { \
 		/* S_OBJ is always negative, and we are guaranteed to be sorted. */ \
 		if (canSmoothWith[1] == "-") { \
 			smoothing_flags |= SMOOTH_OBJ; \

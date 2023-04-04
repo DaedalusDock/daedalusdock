@@ -93,6 +93,11 @@
 	if(gas_type)
 		fill_to_pressure(gas_type)
 
+	SETUP_SMOOTHING()
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
 	QUEUE_SMOOTH(src)
 	QUEUE_SMOOTH_NEIGHBORS(src)
 

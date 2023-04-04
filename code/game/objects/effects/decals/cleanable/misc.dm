@@ -73,16 +73,15 @@
 
 /obj/effect/decal/cleanable/dirt/Initialize(mapload)
 	. = ..()
+	SETUP_SMOOTHING()
 	var/turf/T = get_turf(src)
 	if(T.tiled_dirt)
 		smoothing_flags = SMOOTH_BITMASK
 		QUEUE_SMOOTH(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/effect/decal/cleanable/dirt/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/decal/cleanable/dirt/dust

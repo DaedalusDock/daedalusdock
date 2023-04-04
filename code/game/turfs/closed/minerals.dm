@@ -50,7 +50,8 @@
 
 	assemble_baseturfs()
 
-	levelupdate()
+	if(!mapload)
+		levelupdate()
 
 	SETUP_SMOOTHING()
 
@@ -81,7 +82,7 @@
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	if (isnull(custom_materials))
+	if (!length(custom_materials))
 		set_custom_materials(custom_materials)
 
 	if(uses_integrity)

@@ -14,6 +14,13 @@ SUBSYSTEM_DEF(circuit_component)
 	var/instant_run_max_cpu_usage = 10
 	var/list/instant_run_callbacks_to_run = list()
 
+/datum/controller/subsystem/circuit_component/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, callbacks_to_invoke),
+		NAMEOF_STATIC(src, currentrun)
+	)
+
 /datum/controller/subsystem/circuit_component/fire(resumed)
 	if(!resumed)
 		currentrun = callbacks_to_invoke.Copy()

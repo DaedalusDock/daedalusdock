@@ -6,19 +6,9 @@ SUBSYSTEM_DEF(explosions)
 	init_order = INIT_ORDER_EXPLOSIONS
 	priority = FIRE_PRIORITY_EXPLOSIONS
 	wait = 0
-	flags = SS_NO_INIT|SS_HIBERNATE
+	flags = SS_HIBERNATE | SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("lowturf"),
-		TYPEDEF_NAMEOF("medturf"),
-		TYPEDEF_NAMEOF("highturf"),
-		TYPEDEF_NAMEOF("flameturf"),
-		TYPEDEF_NAMEOF("throwturf"),
-		TYPEDEF_NAMEOF("low_mov_atom"),
-		TYPEDEF_NAMEOF("med_mov_atom"),
-		TYPEDEF_NAMEOF("high_mov_atom")
-	)
 	var/cost_lowturf = 0
 	var/cost_medturf = 0
 	var/cost_highturf = 0
@@ -46,6 +36,18 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_MOVABLES
 
+/datum/controller/subsystem/explosions/Initialize(start_timeofday)
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, lowturf),
+		NAMEOF_STATIC(src, medturf),
+		NAMEOF_STATIC(src, highturf),
+		NAMEOF_STATIC(src, flameturf),
+		NAMEOF_STATIC(src, throwturf),
+		NAMEOF_STATIC(src, low_mov_atom),
+		NAMEOF_STATIC(src, med_mov_atom),
+		NAMEOF_STATIC(src, high_mov_atom)
+	)
 
 /datum/controller/subsystem/explosions/stat_entry(msg)
 	msg += "C:{"

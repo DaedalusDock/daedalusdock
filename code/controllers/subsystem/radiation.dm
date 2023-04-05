@@ -4,13 +4,15 @@ SUBSYSTEM_DEF(radiation)
 
 	wait = 0.5 SECONDS
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("processing")
-	)
-
 	/// A list of radiation sources (/datum/radiation_pulse_information) that have yet to process.
 	/// Do not interact with this directly, use `radiation_pulse` instead.
 	var/list/datum/radiation_pulse_information/processing = list()
+
+/datum/controller/subsystem/radiation/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, processing)
+	)
 
 /datum/controller/subsystem/radiation/fire(resumed)
 	while (processing.len)

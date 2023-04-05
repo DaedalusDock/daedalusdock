@@ -3,13 +3,16 @@ SUBSYSTEM_DEF(ao)
 	init_order = INIT_ORDER_AO
 	wait = 0
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
-	flags = SS_NO_INIT | SS_HIBERNATE
+	flags = SS_HIBERNATE | SS_NO_INIT
 
-	hibernate_checks = list(
-		"queue",
-	)
 	var/list/queue = list()
 	var/list/cache = list()
+
+/datum/controller/subsystem/ao/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, queue),
+	)
 
 /datum/controller/subsystem/ao/stat_entry(msg)
 	msg += "P:[length(queue)]"

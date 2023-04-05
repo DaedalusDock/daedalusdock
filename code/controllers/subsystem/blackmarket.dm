@@ -3,9 +3,6 @@ SUBSYSTEM_DEF(blackmarket)
 	flags = SS_BACKGROUND | SS_HIBERNATE
 	init_order = INIT_ORDER_DEFAULT
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("queued_purchases")
-	)
 	/// Descriptions for each shipping methods.
 	var/shipping_method_descriptions = list(
 		SHIPPING_METHOD_LAUNCH="Launches the item at the station from space, cheap but you might not receive your item at all.",
@@ -19,6 +16,12 @@ SUBSYSTEM_DEF(blackmarket)
 	var/list/obj/machinery/ltsrbt/telepads = list()
 	/// Currently queued purchases.
 	var/list/queued_purchases = list()
+
+/datum/controller/subsystem/blackmarket/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, queued_purchases)
+	)
 
 /datum/controller/subsystem/blackmarket/Initialize(timeofday)
 	for(var/market in subtypesof(/datum/market))

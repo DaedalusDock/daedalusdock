@@ -1,17 +1,20 @@
 SUBSYSTEM_DEF(airflow)
 	name = "Air (Airflow)"
 	wait = 0
-	flags = SS_NO_INIT|SS_HIBERNATE
+	flags = SS_NO_INIT | SS_HIBERNATE
 	priority = FIRE_PRIORITY_AIRFLOW
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
-	hibernate_checks = list(
-		"processing",
-		"current"
-	)
 	var/static/tmp/list/processing = list()
 	var/static/tmp/list/current = list()
 
+
+/datum/controller/subsystem/airflow/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, processing),
+		NAMEOF_STATIC(src, current)
+	)
 
 /datum/controller/subsystem/airflow/Recover()
 	current.Cut()

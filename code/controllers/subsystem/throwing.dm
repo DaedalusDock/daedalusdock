@@ -4,14 +4,10 @@
 SUBSYSTEM_DEF(throwing)
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
-	wait = 0
-	flags = SS_NO_INIT|SS_KEEP_TIMING|SS_HIBERNATE
+	wait = SS_TICKER
+	flags = SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("currentrun"),
-		TYPEDEF_NAMEOF("processing")
-	)
 	var/list/currentrun = list()
 	var/list/processing = list()
 

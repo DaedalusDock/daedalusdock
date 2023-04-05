@@ -5,10 +5,6 @@ SUBSYSTEM_DEF(icon_smooth)
 	priority = FIRE_PRIOTITY_SMOOTHING
 	flags = SS_HIBERNATE
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("smooth_queue"),
-		TYPEDEF_NAMEOF("deferred")
-	)
 
 	///Blueprints assemble an image of what pipes/manifolds/wires look like on initialization, and thus should be taken after everything's been smoothed
 	var/list/blueprint_queue = list()
@@ -34,6 +30,10 @@ SUBSYSTEM_DEF(icon_smooth)
 		deferred = cached
 
 /datum/controller/subsystem/icon_smooth/Initialize()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, smooth_queue),
+		NAMEOF_STATIC(src, deferred)
+	)
 	smooth_zlevel(1, TRUE)
 	smooth_zlevel(2, TRUE)
 

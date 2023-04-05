@@ -13,9 +13,3 @@
 #else
 #define NAMEOF_STATIC(datum, X) (#X || ##datum.##X)
 #endif
-
-#if DM_VERSION >= 515
-#define TYPEDEF_NAMEOF(X) (nameof(type::##X))
-#else
-#define TYPEDEF_NAMEOF(X) (##X)
-#endif

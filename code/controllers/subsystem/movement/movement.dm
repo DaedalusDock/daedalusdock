@@ -10,9 +10,6 @@ SUBSYSTEM_DEF(movement)
 		This is intentional, as we loop our delays much more often then that ss is designed for
 		We also have much shorter term timers, so we need to worry about redundant buckets much less
 	*/
-	hibernate_checks = list(
-		"sorted_buckets"
-	)
 	///Assoc list of "target time" -> list(things to process). Used for quick lookup
 	var/list/buckets = list()
 	///Sorted list of list(target time, bucket to process)
@@ -21,6 +18,12 @@ SUBSYSTEM_DEF(movement)
 	var/canonical_time = 0
 	///The visual delay of the subsystem
 	var/visual_delay = 1
+
+/datum/controller/subsystem/movement/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, sorted_buckets)
+	)
 
 /datum/controller/subsystem/movement/stat_entry(msg)
 	var/total_len = 0

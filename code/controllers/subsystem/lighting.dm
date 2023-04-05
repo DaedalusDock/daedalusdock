@@ -4,19 +4,21 @@ SUBSYSTEM_DEF(lighting)
 	init_order = INIT_ORDER_LIGHTING
 	flags = SS_HIBERNATE
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("sources_queue"),
-		TYPEDEF_NAMEOF("corners_queue"),
-		TYPEDEF_NAMEOF("objects_queue")
-	)
 	var/static/list/sources_queue = list() // List of lighting sources queued for update.
 	var/static/list/corners_queue = list() // List of lighting corners queued for update.
 	var/static/list/objects_queue = list() // List of lighting objects queued for update.
 
+/datum/controller/subsystem/lighting/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, sources_queue),
+		NAMEOF_STATIC(src, corners_queue),
+		NAMEOF_STATIC(src, objects_queue)
+	)
+
 /datum/controller/subsystem/lighting/stat_entry(msg)
 	msg = "L:[length(sources_queue)]|C:[length(corners_queue)]|O:[length(objects_queue)]"
 	return ..()
-
 
 /datum/controller/subsystem/lighting/Initialize(timeofday)
 	if(!initialized)

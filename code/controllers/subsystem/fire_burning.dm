@@ -4,12 +4,15 @@ SUBSYSTEM_DEF(fire_burning)
 	flags = SS_NO_INIT|SS_BACKGROUND|SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("currentrun"),
-		TYPEDEF_NAMEOF("processing")
-	)
 	var/list/currentrun = list()
 	var/list/processing = list()
+
+/datum/controller/subsystem/fire_burning/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, currentrun),
+		NAMEOF_STATIC(src, processing)
+	)
 
 /datum/controller/subsystem/fire_burning/stat_entry(msg)
 	msg = "P:[length(processing)]"

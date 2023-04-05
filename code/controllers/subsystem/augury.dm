@@ -3,15 +3,17 @@ SUBSYSTEM_DEF(augury)
 	flags = SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME | SS_HIBERNATE
 
-	hibernate_checks= list(
-		TYPEDEF_NAMEOF("watchers"),
-		TYPEDEF_NAMEOF("doombringers")
-	)
-
 	var/list/watchers = list()
 	var/list/doombringers = list()
 
 	var/list/observers_given_action = list()
+
+/datum/controller/subsystem/augury/PreInit()
+	. = ..()
+	hibernate_checks= list(
+		NAMEOF_STATIC(src, watchers),
+		NAMEOF_STATIC(src, doombringers)
+	)
 
 /datum/controller/subsystem/augury/stat_entry(msg)
 	msg = "W:[watchers.len]|D:[length(doombringers)]"

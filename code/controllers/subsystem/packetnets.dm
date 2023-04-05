@@ -2,19 +2,8 @@ SUBSYSTEM_DEF(packets)
 	name = "Packets"
 	wait = 0
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT | SS_KEEP_TIMING | SS_HIBERNATE
+	flags = SS_NO_INIT | SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
-
-	hibernate_checks = list(
-		TYPEDEF_NAMEOF("queued_networks"),
-		TYPEDEF_NAMEOF("queued_radio_packets"),
-		TYPEDEF_NAMEOF("queued_tablet_messages"),
-		TYPEDEF_NAMEOF("queued_subspace_vocals"),
-		TYPEDEF_NAMEOF("current_networks"),
-		TYPEDEF_NAMEOF("current_radio_packets"),
-		TYPEDEF_NAMEOF("current_tablet_messages"),
-		TYPEDEF_NAMEOF("current_subspace_vocals")
-	)
 
 	var/list/saymodes = list()
 	var/list/datum/radio_frequency/frequencies = list()
@@ -52,6 +41,17 @@ SUBSYSTEM_DEF(packets)
 	var/stage = SSPACKETS_POWERNETS
 
 /datum/controller/subsystem/packets/PreInit(timeofday)
+	hibernate_checks = list(
+		NAMEOF_STATIC(src, queued_networks),
+		NAMEOF_STATIC(src, queued_radio_packets),
+		NAMEOF_STATIC(src, queued_tablet_messages),
+		NAMEOF_STATIC(src, queued_subspace_vocals),
+		NAMEOF_STATIC(src, current_networks),
+		NAMEOF_STATIC(src, current_radio_packets),
+		NAMEOF_STATIC(src, current_tablet_messages),
+		NAMEOF_STATIC(src, current_subspace_vocals)
+	)
+
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM

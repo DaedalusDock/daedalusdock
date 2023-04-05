@@ -19,3 +19,6 @@
   - code_imp: More 515 compatibility. Nothing to see here, folks.
   francinum:
   - code_imp: More 515 fixes
+2023-04-05:
+  Kapu1178:
+  - server: Patched a security hole

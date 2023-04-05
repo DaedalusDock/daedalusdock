@@ -107,7 +107,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 /// Most of this code is pasted within /obj/structure/falsewall. Be mindful of this
 /turf/closed/wall/update_overlays()
-	var/plating_color = wall_paint || material_color
+	color = wall_paint || material_color
 	var/stripe_color = stripe_paint || wall_paint || material_color
 
 	var/neighbor_stripe = NONE
@@ -121,7 +121,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 				break
 
 	var/old_cache_key = cache_key
-	cache_key = "[icon]:[smoothing_junction]:[stripe_icon]:[plating_color]:[stripe_color]:[neighbor_stripe]:[shiny_wall]:[shiny_stripe]:[rusted]:[hard_decon && d_state]"
+	cache_key = "[icon]:[smoothing_junction]:[stripe_icon]:[stripe_color]:[neighbor_stripe]:[shiny_wall]:[shiny_stripe]:[rusted]:[hard_decon && d_state]"
 	if(!(old_cache_key == cache_key))
 
 		var/potential_overlays = global.wall_overlays_cache[cache_key]
@@ -130,7 +130,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 		else
 			//Updating the unmanaged wall overlays (unmanaged for optimisations)
 			overlays.len = 0
-			color = plating_color
 			var/list/new_overlays = list()
 
 			if(shiny_wall)

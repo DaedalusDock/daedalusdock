@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(movement)
 	name = "Movement Loops"
-	flags = SS_NO_INIT|SS_BACKGROUND|SS_TICKER
+	flags = SS_NO_INIT|SS_TICKER|SS_HIBERNATE
 	wait = 1 //Fire each tick
 	/*
 		A breif aside about the bucketing system here
@@ -10,6 +10,9 @@ SUBSYSTEM_DEF(movement)
 		This is intentional, as we loop our delays much more often then that ss is designed for
 		We also have much shorter term timers, so we need to worry about redundant buckets much less
 	*/
+	hibernate_checks = list(
+		"sorted_buckets"
+	)
 	///Assoc list of "target time" -> list(things to process). Used for quick lookup
 	var/list/buckets = list()
 	///Sorted list of list(target time, bucket to process)

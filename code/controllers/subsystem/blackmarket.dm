@@ -1,8 +1,11 @@
 SUBSYSTEM_DEF(blackmarket)
 	name = "Blackmarket"
-	flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_HIBERNATE
 	init_order = INIT_ORDER_DEFAULT
 
+	hibernate_checks = list(
+		TYPEDEF_NAMEOF("queued_purchases")
+	)
 	/// Descriptions for each shipping methods.
 	var/shipping_method_descriptions = list(
 		SHIPPING_METHOD_LAUNCH="Launches the item at the station from space, cheap but you might not receive your item at all.",

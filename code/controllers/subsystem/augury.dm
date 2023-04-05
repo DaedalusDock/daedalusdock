@@ -1,7 +1,12 @@
 SUBSYSTEM_DEF(augury)
 	name = "Augury"
 	flags = SS_NO_INIT
-	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
+	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME | SS_HIBERNATE
+
+	hibernate_checks= list(
+		TYPEDEF_NAMEOF("watchers"),
+		TYPEDEF_NAMEOF("doombringers")
+	)
 
 	var/list/watchers = list()
 	var/list/doombringers = list()

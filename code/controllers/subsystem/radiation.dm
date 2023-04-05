@@ -1,8 +1,12 @@
 SUBSYSTEM_DEF(radiation)
 	name = "Radiation"
-	flags = SS_BACKGROUND | SS_NO_INIT
+	flags = SS_BACKGROUND | SS_NO_INIT | SS_HIBERNATE
 
 	wait = 0.5 SECONDS
+
+	hibernate_checks = list(
+		TYPEDEF_NAMEOF("processing")
+	)
 
 	/// A list of radiation sources (/datum/radiation_pulse_information) that have yet to process.
 	/// Do not interact with this directly, use `radiation_pulse` instead.

@@ -1,9 +1,13 @@
 SUBSYSTEM_DEF(fire_burning)
 	name = "Fire Burning"
 	priority = FIRE_PRIOTITY_BURNING
-	flags = SS_NO_INIT|SS_BACKGROUND
+	flags = SS_NO_INIT|SS_BACKGROUND|SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
+	hibernate_checks = list(
+		TYPEDEF_NAMEOF("currentrun"),
+		TYPEDEF_NAMEOF("processing")
+	)
 	var/list/currentrun = list()
 	var/list/processing = list()
 

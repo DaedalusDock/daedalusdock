@@ -6,6 +6,11 @@ SUBSYSTEM_DEF(processing)
 	flags = SS_BACKGROUND|SS_POST_FIRE_TIMING|SS_NO_INIT
 	wait = 1 SECONDS
 
+	hibernate_checks = list(
+		TYPEDEF_NAMEOF("processing"),
+		TYPEDEF_NAMEOF("currentrun")
+	)
+
 	var/stat_tag = "P" //Used for logging
 	var/list/processing = list()
 	var/list/currentrun = list()

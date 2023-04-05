@@ -5,10 +5,20 @@ SUBSYSTEM_DEF(explosions)
 	name = "Explosions"
 	init_order = INIT_ORDER_EXPLOSIONS
 	priority = FIRE_PRIORITY_EXPLOSIONS
-	wait = 1
-	flags = SS_TICKER|SS_NO_INIT
+	wait = 0
+	flags = SS_NO_INIT|SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
+	hibernate_checks = list(
+		TYPEDEF_NAMEOF("lowturf"),
+		TYPEDEF_NAMEOF("medturf"),
+		TYPEDEF_NAMEOF("highturf"),
+		TYPEDEF_NAMEOF("flameturf"),
+		TYPEDEF_NAMEOF("throwturf"),
+		TYPEDEF_NAMEOF("low_mov_atom"),
+		TYPEDEF_NAMEOF("med_mov_atom"),
+		TYPEDEF_NAMEOF("high_mov_atom")
+	)
 	var/cost_lowturf = 0
 	var/cost_medturf = 0
 	var/cost_highturf = 0

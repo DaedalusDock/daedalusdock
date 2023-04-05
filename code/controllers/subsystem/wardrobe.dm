@@ -8,8 +8,13 @@
 SUBSYSTEM_DEF(wardrobe)
 	name = "Wardrobe"
 	wait = 10 // This is more like a queue then anything else
-	flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_HIBERNATE
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT // We're going to fill up our cache while players sit in the lobby
+
+	hibernate_checks = list(
+		"order_list",
+		"canon_minimum"
+	)
 	/// How much to cache outfit items
 	/// Multiplier, 2 would mean cache enough items to stock 1 of each preloaded order twice, etc
 	var/cache_intensity = 2

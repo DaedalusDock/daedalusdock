@@ -1,9 +1,13 @@
 SUBSYSTEM_DEF(ao)
 	name = "Ambient Occlusion"
 	init_order = INIT_ORDER_AO
-	wait = 1
+	wait = 0
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
-	flags = SS_NO_INIT
+	flags = SS_NO_INIT | SS_HIBERNATE
+
+	hibernate_checks = list(
+		"queue",
+	)
 	var/list/queue = list()
 	var/list/cache = list()
 

@@ -31,8 +31,8 @@ SUBSYSTEM_DEF(icon_smooth)
 
 /datum/controller/subsystem/icon_smooth/Initialize()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, smooth_queue),
-		NAMEOF_STATIC(src, deferred)
+		NAMEOF(src, smooth_queue),
+		NAMEOF(src, deferred)
 	)
 	smooth_zlevel(1, TRUE)
 	smooth_zlevel(2, TRUE)

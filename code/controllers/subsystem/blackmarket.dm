@@ -20,7 +20,7 @@ SUBSYSTEM_DEF(blackmarket)
 /datum/controller/subsystem/blackmarket/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, queued_purchases)
+		NAMEOF(src, queued_purchases)
 	)
 
 /datum/controller/subsystem/blackmarket/Initialize(timeofday)

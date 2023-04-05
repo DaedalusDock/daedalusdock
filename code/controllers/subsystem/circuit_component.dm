@@ -17,8 +17,8 @@ SUBSYSTEM_DEF(circuit_component)
 /datum/controller/subsystem/circuit_component/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, callbacks_to_invoke),
-		NAMEOF_STATIC(src, currentrun)
+		NAMEOF(src, callbacks_to_invoke),
+		NAMEOF(src, currentrun)
 	)
 
 /datum/controller/subsystem/circuit_component/fire(resumed)

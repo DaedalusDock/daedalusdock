@@ -12,7 +12,7 @@ SUBSYSTEM_DEF(asset_loading)
 /datum/controller/subsystem/asset_loading/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, generate_queue)
+		NAMEOF(src, generate_queue)
 	)
 
 /datum/controller/subsystem/asset_loading/fire(resumed)

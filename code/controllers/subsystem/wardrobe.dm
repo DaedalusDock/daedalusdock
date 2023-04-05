@@ -42,8 +42,8 @@ SUBSYSTEM_DEF(wardrobe)
 /datum/controller/subsystem/wardrobe/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, order_list),
-		NAMEOF_STATIC(src, canon_minimum)
+		NAMEOF(src, order_list),
+		NAMEOF(src, canon_minimum)
 	)
 
 /datum/controller/subsystem/wardrobe/Initialize(start_timeofday)

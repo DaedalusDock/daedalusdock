@@ -11,9 +11,9 @@ SUBSYSTEM_DEF(lighting)
 /datum/controller/subsystem/lighting/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, sources_queue),
-		NAMEOF_STATIC(src, corners_queue),
-		NAMEOF_STATIC(src, objects_queue)
+		NAMEOF(src, sources_queue),
+		NAMEOF(src, corners_queue),
+		NAMEOF(src, objects_queue)
 	)
 
 /datum/controller/subsystem/lighting/stat_entry(msg)

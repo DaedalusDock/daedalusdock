@@ -22,7 +22,7 @@ SUBSYSTEM_DEF(movement)
 /datum/controller/subsystem/movement/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, sorted_buckets)
+		NAMEOF(src, sorted_buckets)
 	)
 
 /datum/controller/subsystem/movement/stat_entry(msg)

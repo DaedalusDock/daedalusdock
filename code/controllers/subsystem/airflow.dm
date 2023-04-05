@@ -12,8 +12,8 @@ SUBSYSTEM_DEF(airflow)
 /datum/controller/subsystem/airflow/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, processing),
-		NAMEOF_STATIC(src, current)
+		NAMEOF(src, processing),
+		NAMEOF(src, current)
 	)
 
 /datum/controller/subsystem/airflow/Recover()

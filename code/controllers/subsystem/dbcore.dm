@@ -43,7 +43,7 @@ SUBSYSTEM_DEF(dbcore)
 /datum/controller/subsystem/dbcore/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, all_queries),
+		NAMEOF(src, all_queries),
 	)
 
 /datum/controller/subsystem/dbcore/Initialize()

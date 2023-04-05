@@ -42,14 +42,14 @@ SUBSYSTEM_DEF(packets)
 
 /datum/controller/subsystem/packets/PreInit(timeofday)
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, queued_networks),
-		NAMEOF_STATIC(src, queued_radio_packets),
-		NAMEOF_STATIC(src, queued_tablet_messages),
-		NAMEOF_STATIC(src, queued_subspace_vocals),
-		NAMEOF_STATIC(src, current_networks),
-		NAMEOF_STATIC(src, current_radio_packets),
-		NAMEOF_STATIC(src, current_tablet_messages),
-		NAMEOF_STATIC(src, current_subspace_vocals)
+		NAMEOF(src, queued_networks),
+		NAMEOF(src, queued_radio_packets),
+		NAMEOF(src, queued_tablet_messages),
+		NAMEOF(src, queued_subspace_vocals),
+		NAMEOF(src, current_networks),
+		NAMEOF(src, current_radio_packets),
+		NAMEOF(src, current_tablet_messages),
+		NAMEOF(src, current_subspace_vocals)
 	)
 
 	for(var/_SM in subtypesof(/datum/saymode))

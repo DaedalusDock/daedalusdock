@@ -11,8 +11,8 @@ SUBSYSTEM_DEF(augury)
 /datum/controller/subsystem/augury/PreInit()
 	. = ..()
 	hibernate_checks= list(
-		NAMEOF_STATIC(src, watchers),
-		NAMEOF_STATIC(src, doombringers)
+		NAMEOF(src, watchers),
+		NAMEOF(src, doombringers)
 	)
 
 /datum/controller/subsystem/augury/stat_entry(msg)

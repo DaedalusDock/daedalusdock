@@ -36,17 +36,17 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_MOVABLES
 
-/datum/controller/subsystem/explosions/Initialize(start_timeofday)
+/datum/controller/subsystem/explosions/PreInit(start_timeofday)
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, lowturf),
-		NAMEOF_STATIC(src, medturf),
-		NAMEOF_STATIC(src, highturf),
-		NAMEOF_STATIC(src, flameturf),
-		NAMEOF_STATIC(src, throwturf),
-		NAMEOF_STATIC(src, low_mov_atom),
-		NAMEOF_STATIC(src, med_mov_atom),
-		NAMEOF_STATIC(src, high_mov_atom)
+		NAMEOF(src, lowturf),
+		NAMEOF(src, medturf),
+		NAMEOF(src, highturf),
+		NAMEOF(src, flameturf),
+		NAMEOF(src, throwturf),
+		NAMEOF(src, low_mov_atom),
+		NAMEOF(src, med_mov_atom),
+		NAMEOF(src, high_mov_atom)
 	)
 
 /datum/controller/subsystem/explosions/stat_entry(msg)

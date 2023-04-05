@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(ao)
 /datum/controller/subsystem/ao/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, queue),
+		NAMEOF(src, queue),
 	)
 
 /datum/controller/subsystem/ao/stat_entry(msg)

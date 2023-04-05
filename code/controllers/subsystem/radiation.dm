@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(radiation)
 /datum/controller/subsystem/radiation/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, processing)
+		NAMEOF(src, processing)
 	)
 
 /datum/controller/subsystem/radiation/fire(resumed)

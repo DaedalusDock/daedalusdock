@@ -13,8 +13,8 @@ SUBSYSTEM_DEF(processing)
 /datum/controller/subsystem/processing/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, processing),
-		NAMEOF_STATIC(src, currentrun)
+		NAMEOF(src, processing),
+		NAMEOF(src, currentrun)
 	)
 
 /datum/controller/subsystem/processing/stat_entry(msg)

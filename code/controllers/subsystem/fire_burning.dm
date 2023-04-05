@@ -10,8 +10,8 @@ SUBSYSTEM_DEF(fire_burning)
 /datum/controller/subsystem/fire_burning/PreInit()
 	. = ..()
 	hibernate_checks = list(
-		NAMEOF_STATIC(src, currentrun),
-		NAMEOF_STATIC(src, processing)
+		NAMEOF(src, currentrun),
+		NAMEOF(src, processing)
 	)
 
 /datum/controller/subsystem/fire_burning/stat_entry(msg)

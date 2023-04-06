@@ -176,7 +176,7 @@
 	generate_animation(reset = TRUE)
 
 	//Finally add it to to objects vis_contents
-	current_aquarium.vis_contents |= vc_obj
+	current_aquarium.distinct_add_viscontents(vc_obj)
 
 /// Aquarium surface changed in some way, we need to recalculate base position and aninmation
 /datum/component/aquarium_content/proc/on_surface_changed()
@@ -189,7 +189,7 @@
 	generate_animation()
 
 /datum/component/aquarium_content/proc/remove_visual_from_aquarium()
-	current_aquarium.vis_contents -= vc_obj
+	current_aquarium.remove_viscontents(vc_obj)
 	if(base_layer)
 		current_aquarium.free_layer(base_layer)
 

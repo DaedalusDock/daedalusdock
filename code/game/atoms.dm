@@ -2225,3 +2225,19 @@
 //Currently only changed by Observers to be hearing through their orbit target.
 /atom/proc/hear_location()
 	return src
+
+/// Add an atom or list of atoms to our vis_contents
+/atom/proc/add_viscontents(atom/A)
+	vis_contents += A
+
+/// Add an atom or list of atoms to our vis_contents, atoms already present will be ignored
+/atom/proc/distinct_add_viscontents(atom/A)
+	vis_contents |= A
+
+/// Remove an atom or list of atoms from our vis_contents
+/atom/proc/remove_viscontents(atom/A)
+	vis_contents -= A
+
+///Cut our vis_content.
+/atom/proc/cut_viscontents()
+	vis_contents.len = 0

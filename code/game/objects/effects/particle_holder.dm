@@ -29,10 +29,10 @@
 	if(weak_additional)
 		additional_attached = weak_additional.resolve()
 	if(attached)
-		attached.vis_contents -= src
+		attached.remove_viscontents(src)
 		UnregisterSignal(loc, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 	if(additional_attached)
-		additional_attached.vis_contents -= src
+		additional_attached.remove_viscontents(src)
 	QDEL_NULL(particles)
 	return ..()
 
@@ -55,12 +55,12 @@
 	if(weak_additional)
 		var/atom/movable/resolved_location = weak_additional.resolve()
 		if(resolved_location)
-			resolved_location.vis_contents -= src
+			resolved_location.remove_viscontents(src)
 	//add to new
 	if(isitem(attached_to) && ismob(attached_to.loc)) //special case we want to also be emitting from the mob
 		var/mob/particle_mob = attached_to.loc
 		last_attached_location_type = attached_to.loc
 		weak_additional = WEAKREF(particle_mob)
-		particle_mob.vis_contents += src
+		particle_mob.add_viscontents(src)
 	//readd to ourselves
-	attached_to.vis_contents |= src
+	attached_to.distinct_add_viscontents(src)

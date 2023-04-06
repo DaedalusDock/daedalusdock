@@ -132,7 +132,7 @@
 	attached_item = target
 	attached_item.forceMove(src)
 	attached_item.vis_flags |= VIS_INHERIT_ID
-	vis_contents += attached_item
+	add_viscontents(attached_item)
 	RegisterSignal(attached_item, COMSIG_PARENT_QDELETING, PROC_REF(on_attached_delete))
 	handle_density()
 
@@ -144,7 +144,7 @@
 /obj/structure/training_machine/proc/on_attached_delete()
 	SIGNAL_HANDLER
 	UnregisterSignal(attached_item, COMSIG_PARENT_QDELETING)
-	vis_contents -= attached_item
+	remove_viscontents(attached_item)
 	attached_item = null
 	handle_density()
 

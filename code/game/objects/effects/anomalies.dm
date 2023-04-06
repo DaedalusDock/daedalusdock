@@ -123,10 +123,10 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 	warp = new(src)
-	vis_contents += warp
+	add_viscontents(warp)
 
 /obj/effect/anomaly/grav/Destroy()
-	vis_contents -= warp
+	remove_viscontents(warp)
 	warp = null
 	return ..()
 

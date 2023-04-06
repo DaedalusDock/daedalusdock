@@ -182,7 +182,7 @@
 	cam_background.fill_rect(1, 1, size_x, size_y)
 
 /datum/computer_file/program/secureye/proc/show_camera_static()
-	cam_screen.vis_contents.Cut()
+	cam_screen.cut_viscontents()
 	cam_background.icon_state = "scanline2"
 	cam_background.fill_rect(1, 1, DEFAULT_MAP_SIZE, DEFAULT_MAP_SIZE)
 

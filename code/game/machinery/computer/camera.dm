@@ -189,7 +189,7 @@
 		use_power(0)
 
 /obj/machinery/computer/security/proc/show_camera_static()
-	cam_screen.vis_contents.Cut()
+	cam_screen.cut_viscontents()
 	cam_background.icon_state = "scanline2"
 	cam_background.fill_rect(1, 1, DEFAULT_MAP_SIZE, DEFAULT_MAP_SIZE)
 

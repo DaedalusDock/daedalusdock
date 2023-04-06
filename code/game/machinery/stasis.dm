@@ -77,7 +77,7 @@
 	if(!mattress_on)
 		mattress_on = SSvis_overlays.add_vis_overlay(src, icon, mattress_state, BELOW_OBJ_LAYER, plane, dir, alpha = 0, unique = TRUE)
 	else
-		vis_contents += mattress_on
+		add_viscontents(mattress_on)
 		if(managed_vis_overlays)
 			managed_vis_overlays += mattress_on
 		else

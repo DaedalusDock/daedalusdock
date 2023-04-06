@@ -1,8 +1,7 @@
 #define TURF_IS_MIMICKING(T) (isturf(T) && (T:z_flags & Z_MIMIC_BELOW))
 
-// TODO: Death to OO
-#define CHECK_OO_EXISTENCE(OO) if (OO && !MOVABLE_IS_ON_ZTURF(OO) && !OO.destruction_timer) { OO.destruction_timer = QDEL_IN(OO, 10 SECONDS); }
-#define UPDATE_OO_IF_PRESENT CHECK_OO_EXISTENCE(bound_overlay); if (bound_overlay) { update_above(); }
+#define CHECK_OO_EXISTENCE(OO) if (OO && !MOVABLE_IS_ON_ZTURF(OO) && !OO:destruction_timer) { OO:destruction_timer = QDEL_IN(OO, 10 SECONDS); }
+#define UPDATE_OO_IF_PRESENT CHECK_OO_EXISTENCE(src:bound_overlay); if (src:bound_overlay) { update_above(); }
 
 // I do not apologize.
 

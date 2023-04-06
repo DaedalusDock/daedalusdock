@@ -9,10 +9,6 @@
 	if (. && bound_overlay)
 		bound_overlay.setDir(ndir)
 
-/atom/movable/update_appearance(updates)
-	. = ..()
-	UPDATE_OO_IF_PRESENT
-
 /atom/movable/update_above()
 	if (!bound_overlay || !isturf(loc))
 		return

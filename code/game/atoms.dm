@@ -776,6 +776,9 @@
 	if(updates & UPDATE_ICON)
 		. |= update_icon(updates)
 
+	if (ismovable(src))
+		UPDATE_OO_IF_PRESENT
+
 /// Updates the name of the atom
 /atom/proc/update_name(updates=ALL)
 	SHOULD_CALL_PARENT(TRUE)

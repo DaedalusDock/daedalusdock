@@ -14,8 +14,7 @@
 SUBSYSTEM_DEF(zcopy)
 	name = "Z-Copy"
 	wait = 1
-	// init_order = INIT_ORDER_ZMIMIC
-	// priority = FIRE_PRIORITY_ZMIMIC
+	init_order = INIT_ORDER_ZMIMIC
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/queued_turfs = list()
@@ -44,7 +43,6 @@ SUBSYSTEM_DEF(zcopy)
 
 // for admin proc-call
 /datum/controller/subsystem/zcopy/proc/update_all()
-	// disable()
 	can_fire = FALSE
 	log_game("Z-Mimic: update_all() invoked.")
 
@@ -73,7 +71,6 @@ SUBSYSTEM_DEF(zcopy)
 
 	log_game("Z-Mimic: [num_upd + num_amupd] turf updates queued ([num_upd] direct, [num_amupd] indirect), [num_del] orphans destroyed.")
 
-	// enable()
 	if (!can_fire)
 		next_fire = world.time + wait
 		can_fire = TRUE

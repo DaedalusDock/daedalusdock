@@ -21,3 +21,5 @@
 	|| ((M:zmm_flags & ZMM_LOOKAHEAD) && ZM_INTERNAL_SCAN_LOOKAHEAD(M, z_flags, Z_MIMIC_BELOW)) \
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, z_flags, Z_MIMIC_BELOW))) \
 )
+
+#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN; while ((MVAR = MVAR:bound_overlay) && !MVAR:destruction_timer)

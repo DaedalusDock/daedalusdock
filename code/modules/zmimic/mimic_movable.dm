@@ -71,7 +71,7 @@
 	name = "openspace multiplier"
 	desc = "You shouldn't see this."
 	icon = LIGHTING_ICON
-	icon_state = "lighting_dark"
+	icon_state = "lighting_transparent"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = ZMIMIC_MAX_PLANE
 	layer = MIMICKED_LIGHTING_LAYER
@@ -118,6 +118,7 @@
 	else
 		// Not a color matrix, so we can just use the color var ourselves.
 		color = SHADOWER_DARKENING_COLOR
+		icon_state = "lighting_transparent"
 
 	UPDATE_OO_IF_PRESENT
 

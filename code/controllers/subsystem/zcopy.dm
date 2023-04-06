@@ -232,6 +232,7 @@ SUBSYSTEM_DEF(zcopy)
 				break
 			continue
 
+		var/turf/below_turf = T.below
 		if (!T.shadower)	// If we don't have a shadower yet, something has gone horribly wrong.
 			WARNING("Turf [T] at [T.x],[T.y],[T.z] was queued, but had no shadower.")
 			continue
@@ -271,18 +272,18 @@ SUBSYSTEM_DEF(zcopy)
 
 
 		// Handle space parallax & starlight.
-		if (T.below.z_eventually_space)
+		if (below_turf.z_eventually_space)
 			T.z_eventually_space = TRUE
-			if ((T.below.z_flags & Z_MIMIC_OVERWRITE) || isspaceturf(T.below))
+			if ((below_turf.z_flags & Z_MIMIC_OVERWRITE) || isspaceturf(below_turf))
 				t_target = PLANE_SPACE
 
 		var/list/underlay_copy
 		if (T.z_flags & Z_MIMIC_OVERWRITE)
 			// This openturf doesn't care about its icon, so we can just overwrite it.
-			if (T.below.mimic_proxy)
-				QDEL_NULL(T.below.mimic_proxy)
+			if (below_turf.mimic_proxy)
+				QDEL_NULL(below_turf.mimic_proxy)
 			underlay_copy = T.lighting_object?.current_underlay ? list(T.lighting_object.current_underlay) : null
-			T.appearance = T.below
+			T.appearance = below_turf
 			T.name = initial(T.name)
 			T.desc = initial(T.desc)
 			T.gender = initial(T.gender)
@@ -291,10 +292,10 @@ SUBSYSTEM_DEF(zcopy)
 			T.plane = t_target
 		else
 			// Some openturfs have icons, so we can't overwrite their appearance.
-			if (!T.below.mimic_proxy)
-				T.below.mimic_proxy = new(T)
-			var/atom/movable/openspace/turf_proxy/TO = T.below.mimic_proxy
-			underlay_copy = T.below.lighting_object?.current_underlay ? list(T.below.lighting_object.current_underlay) : null
+			if (!below_turf.mimic_proxy)
+				below_turf.mimic_proxy = new(T)
+			var/atom/movable/openspace/turf_proxy/TO = below_turf.mimic_proxy
+			underlay_copy = below_turf.lighting_object?.current_underlay ? list(below_turf.lighting_object.current_underlay) : null
 			TO.appearance = Td
 			TO.name = T.name
 			TO.gender = T.gender	// Need to grab this too so PLURAL works properly in examine.
@@ -307,27 +308,26 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Explicitly copy turf delegates so they show up properly on below levels.
 		//   I think it's possible to get this to work without discrete delegate copy objects, but I'd rather this just work.
-		if ((T.below.z_flags & (Z_MIMIC_BELOW|Z_MIMIC_OVERWRITE)) == Z_MIMIC_BELOW)
+		if ((below_turf.z_flags & (Z_MIMIC_BELOW|Z_MIMIC_OVERWRITE)) == Z_MIMIC_BELOW)
 			// Below is a delegate, gotta explicitly copy it for recursive copy.
-			if (!T.below.mimic_above_copy)
-				T.below.mimic_above_copy = new(T)
-			var/atom/movable/openspace/turf_mimic/DC = T.below.mimic_above_copy
-			DC.appearance = T.below
+			if (!below_turf.mimic_above_copy)
+				below_turf.mimic_above_copy = new(T)
+			var/atom/movable/openspace/turf_mimic/DC = below_turf.mimic_above_copy
+			DC.appearance = below_turf
 			DC.mouse_opacity = initial(DC.mouse_opacity)
 			DC.plane = ZMIMIC_MAX_PLANE - turf_depth - 1
 
-		else if (T.below.mimic_above_copy)
-			QDEL_NULL(T.below.mimic_above_copy)
+		else if (below_turf.mimic_above_copy)
+			QDEL_NULL(below_turf.mimic_above_copy)
 
 		// Handle below atoms.
 
-		if (T.below.lighting_object)
-			T.shadower.copy_lighting(T.below.lighting_object)
+		if (below_turf.lighting_object && !(below_turf.loc:area_has_base_lighting || below_turf.always_lit))
+			T.shadower.copy_lighting(below_turf.lighting_object)
 
 		// Add everything below us to the update queue.
-		for (var/thing in T.below)
-			var/atom/movable/object = thing
-			if (QDELETED(object) || (object.zmm_flags & ZMM_IGNORE) || object.loc != T.below || object.invisibility == INVISIBILITY_ABSTRACT)
+		for (var/atom/movable/object as anything in below_turf)
+			if (QDELETED(object) || (object.zmm_flags & ZMM_IGNORE) || object.loc != below_turf || object.invisibility == INVISIBILITY_ABSTRACT)
 				// Don't queue deleted stuff, stuff that's not visible, blacklisted stuff, or stuff that's centered on another tile but intersects ours.
 				continue
 

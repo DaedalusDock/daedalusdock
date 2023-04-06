@@ -48,15 +48,20 @@
 	return SSmapping.get_turf_below(us)
 
 ///Checks if 2 levels are in the same Z-stack.
-/datum/controller/subsystem/mapping/proc/are_same_zstack(zA, zB)
+/datum/controller/subsystem/mapping/proc/are_same_zstack(zA, zB, include_lateral)
 	if (zA <= 0 || zB <= 0 || zA > world.maxz || zB > world.maxz)
 		return FALSE
 	if (zA == zB)
 		return TRUE
-	if (length(linked_zlevels) >= zA && length(linked_zlevels[zA]) >= zB)
+
+	if(include_lateral)
+		if (length(laterally_linked_zlevels) >= zA && length(laterally_linked_zlevels[zA]) >= zB)
+			return laterally_linked_zlevels[zA][zB]
+
+	else if (length(linked_zlevels) >= zA && length(linked_zlevels[zA]) >= zB)
 		return linked_zlevels[zA][zB]
 
-	var/list/levels = get_zstack(zA)
+	var/list/levels = get_zstack(zA, include_lateral)
 
 	var/list/new_entry = new(world.maxz)
 
@@ -65,19 +70,29 @@
 
 	if (length(linked_zlevels) < zA)
 		linked_zlevels.len = zA
-	linked_zlevels[zA] = new_entry
+
+	if(include_lateral)
+		laterally_linked_zlevels[zA] = new_entry
+	else
+		linked_zlevels[zA] = new_entry
 	return new_entry[zB]
 
 ///Get a list of Z levels that are in zA's Z-stack.
-/datum/controller/subsystem/mapping/proc/get_zstack(zA)
+/datum/controller/subsystem/mapping/proc/get_zstack(zA, include_lateral)
+	var/static/list/lateral_zstack_cache[world.maxz]
 	var/static/list/zstack_cache[world.maxz]
 	if(isturf(zA))
 		zA = zA:z
 
 	if(length(zstack_cache) < world.maxz)
 		zstack_cache.len = world.maxz
+		lateral_zstack_cache.len = world.maxz
 
-	. = zstack_cache[zA]
+	if(include_lateral)
+		. = lateral_zstack_cache[zA]
+	else
+		. = zstack_cache[zA]
+
 	if(islist(.))
 		return .
 
@@ -88,12 +103,16 @@
 	for(var/level = zA, multiz_levels[zA]["[UP]"], level++)
 		. |= level+1
 
+	if(!include_lateral)
+		zstack_cache[zA] = .
+		return .
+
 	// Check stack for any laterally connected neighbors.
 	for(var/tz in .)
 		var/datum/space_level/level = z_list[zA]
 		for(var/datum/space_level/neighbouring in level.neigbours)
 			. |= neighbouring.z_value
 
-	zstack_cache[zA] = .
+	lateral_zstack_cache[zA] = .
 
 

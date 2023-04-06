@@ -134,17 +134,14 @@ SUBSYSTEM_DEF(mapping)
 	if(!isnum(z_level) || z_level <= 0)
 		return FALSE
 
-	if(multiz_levels.len < z_level)
-		multiz_levels.len = z_level
-
 	var/linked_down = level_trait(z_level, ZTRAIT_DOWN)
 	var/linked_up = level_trait(z_level, ZTRAIT_UP)
 	multiz_levels[z_level] = list()
 	if(linked_down)
-		multiz_levels[z_level]["[DOWN]"] = TRUE
+		multiz_levels[z_level-1] = TRUE
 		. = TRUE
 	if(linked_up)
-		multiz_levels[z_level]["[UP]"] = TRUE
+		multiz_levels[z_level] = TRUE
 		. = TRUE
 
 	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
@@ -170,6 +167,7 @@ SUBSYSTEM_DEF(mapping)
 	z_list += new_z
 	///Increment all the z level lists (note: not all yet)
 	gravity_by_zlevel.len += 1
+	multiz_levels.len += 1
 
 /**
  * ##setup_ruins

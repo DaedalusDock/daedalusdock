@@ -601,12 +601,12 @@ SUBSYSTEM_DEF(zcopy)
 	var/turf/parent
 	var/computed_depth
 
-var/list/zmimic_fixed_planes = list(
+GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 	"0" = "World plane (Non-Z)",
-	"-15" = "Cloaked plane (Non-Z)",
-	"-25" = "Mob plane (Non-Z)",
-	"-35" = "Object plane (Non-Z)",
-	"-45" = "Turf plane (Non-Z)"
+	"-6" = "Game plane (Non-Z)",
+	"-7" = "Floor plane (Non-Z)",
+	"-11" = "Gravity pulse plane (Non-Z)",
+	"-12" = "Heat plane (Non-Z)"
 )
 
 /client/proc/analyze_openturf(turf/T)

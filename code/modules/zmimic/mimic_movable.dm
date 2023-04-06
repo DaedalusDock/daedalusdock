@@ -9,6 +9,10 @@
 	if (. && bound_overlay)
 		bound_overlay.setDir(ndir)
 
+/atom/movable/update_appearance(updates)
+	. = ..()
+	UPDATE_OO_IF_PRESENT
+
 /atom/movable/update_above()
 	if (!bound_overlay || !isturf(loc))
 		return
@@ -94,6 +98,9 @@
 	plane = ZMIMIC_MAX_PLANE
 	blend_mode = BLEND_MULTIPLY
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	var/turf/Tloc = loc
+	if (Tloc.ao_overlays_mimic)
+		overlays += Tloc.ao_overlays_mimic
 	invisibility = 0
 
 	if (islist(color))

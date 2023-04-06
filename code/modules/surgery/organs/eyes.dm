@@ -45,7 +45,7 @@
 
 /obj/item/organ/internal/eyes/Insert(mob/living/carbon/eye_owner, special = FALSE, drop_if_replaced = FALSE, initialising)
 	. = ..()
-	refresh()
+	refresh(TRUE)
 	if(eye_owner.has_dna())
 		eye_owner.update_eyes()
 

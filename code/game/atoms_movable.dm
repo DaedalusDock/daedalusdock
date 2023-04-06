@@ -117,7 +117,8 @@
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
-	if (bound_overlay) QDEL_NULL(bound_overlay)
+	if (bound_overlay)
+		QDEL_NULL(bound_overlay)
 
 	unbuckle_all_mobs(force = TRUE)
 

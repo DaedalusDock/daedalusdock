@@ -776,6 +776,7 @@
 	if(updates & UPDATE_ICON)
 		. |= update_icon(updates)
 
+	// This is not an override for performance.
 	if (ismovable(src))
 		UPDATE_OO_IF_PRESENT
 

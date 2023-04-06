@@ -26,7 +26,7 @@ Public API:
 	- MOVABLE_IS_ON_ZTURF(movable)
 		- value: bool -- if any of this movable's locs are on a zturf
 
-	- movable/get_above_oo()
+	- movable/get_associated_mimics()
 		- return: list of movables
 		- get a list of every openspace mimic that's copying this atom for things like animate()
 
@@ -44,24 +44,19 @@ Public API:
 	Vars:
 	- turf/mz_flags
 		- bitfield
-			- MZ_MIMIC_BELOW: copy below atoms
-			- MZ_MIMIC_OVERWRITE: z-mimic can overwrite this turf's appearance
-			- MZ_MIMIC_NO_AO: normal turf AO should be skipped, only do openspace AO (if your turf is not solid, you probably want this)
-			- MZ_MIMIC_BASETURF: Mimic baseturf instead of the below atom. Sometimes useful for elevators.
-
-			- MZ_ALLOW_LIGHTING: lighting should pass through this turf
-			- MZ_NO_OCCLUDE: don't block clicking on below atoms if not OVERWRITE
-
-			- MZ_OPEN_UP: Allow atom movement through top.
-			- MZ_OPEN_DOWN: Allow atom movement through bottom.
-
-			- MZ_ATMOS_UP: Allow atmos passage through top.
-			- MZ_ATMOS_DOWN: Allow atmos passage through bottom.
+			- Z_MIMIC_BELOW: copy below atoms
+			- Z_MIMIC_OVERWRITE: z-mimic can overwrite this turf's appearance
+			- Z_MIMIC_NO_AO: normal turf AO should be skipped, only do openspace AO (if your turf is not solid, you probably want this)
+			- Z_NO_OCCLUDE: don't block clicking on below atoms if not OVERWRITE
+			- Z_MIMIC_BASETURF: Mimic baseturf instead of the below atom. Sometimes useful for elevators.
 
 	- atom/movable/mz_flags
 		- bitfield
 			- ZMM_IGNORE: Do not copy this atom. Atoms with INVISIBILITY_ABSTRACT are automatically not copied.
 			- ZMM_MANGLE_PLANES: Scan this atom's overlays and monkeypatch explicit plane sets. Fixes emissive overlays shining through floors, but expensive -- use only if necessary.
+			- ZMM_LOOKAHEAD: Based on dir, look one tile ahead and one tile behind when considering z-eligibility. Useful for long movables. Cheap, but not free.
+			- ZMM_LOOKBESIDE: Based on dir, look one tile to left and right when considering z-eligibility. Useful for wide movables. Cheap, but not free.
+			- ZMM_WIDE_LOAD: Shortcut for LOOKAHEAD+LOOKASIDE. Look one tile in every cardinal direction, useful for large movables. Cheap, but not free.
 
 Implementation details:
 	Z-Mimic makes some assumptions. While it may continue to work if these are violated, don't be surprised if it behaves strangely, renders things in the incorrect order, or outright breaks.

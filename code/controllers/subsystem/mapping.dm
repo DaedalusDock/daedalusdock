@@ -135,7 +135,6 @@ SUBSYSTEM_DEF(mapping)
 
 	var/linked_down = level_trait(z_level, ZTRAIT_DOWN)
 	var/linked_up = level_trait(z_level, ZTRAIT_UP)
-	multiz_levels[z_level] = list()
 	if(linked_down)
 		multiz_levels[z_level-1] = TRUE
 		. = TRUE

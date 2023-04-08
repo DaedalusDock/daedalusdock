@@ -29,6 +29,10 @@ have ways of interacting with a specific mob and control it.
 	)
 	idle_behavior = /datum/idle_behavior/idle_monkey
 
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
+	)
+
 /datum/ai_controller/monkey/angry
 
 /datum/ai_controller/monkey/angry/TryPossessPawn(atom/new_pawn)
@@ -42,7 +46,8 @@ have ways of interacting with a specific mob and control it.
 		return AI_CONTROLLER_INCOMPATIBLE
 
 	var/mob/living/living_pawn = new_pawn
-	RegisterSignal(new_pawn, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed))
+
+	new_pawn.AddElement(/datum/element/connect_loc, loc_connections)
 	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_PAW, PROC_REF(on_attack_paw))
@@ -61,7 +66,6 @@ have ways of interacting with a specific mob and control it.
 
 /datum/ai_controller/monkey/UnpossessPawn(destroy)
 	UnregisterSignal(pawn, list(
-		COMSIG_MOVABLE_CROSS,
 		COMSIG_PARENT_ATTACKBY,
 		COMSIG_ATOM_ATTACK_HAND,
 		COMSIG_ATOM_ATTACK_PAW,
@@ -75,17 +79,17 @@ have ways of interacting with a specific mob and control it.
 		COMSIG_ATOM_ATTACK_ANIMAL,
 		COMSIG_MOB_ATTACK_ALIEN,
 	))
-
+	pawn.RemoveElement(/datum/element/connect_loc)
 	return ..() //Run parent at end
 
 // Stops sentient monkeys from being knocked over like weak dunces.
 /datum/ai_controller/monkey/on_sentience_gained()
 	. = ..()
-	UnregisterSignal(pawn, COMSIG_MOVABLE_CROSS)
+	pawn.RemoveElement(/datum/element/connect_loc)
 
 /datum/ai_controller/monkey/on_sentience_lost()
 	. = ..()
-	RegisterSignal(pawn, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed))
+	pawn.AddElement(/datum/element/connect_loc, loc_connections)
 
 /datum/ai_controller/monkey/able_to_run()
 	. = ..()
@@ -179,11 +183,11 @@ have ways of interacting with a specific mob and control it.
 			var/mob/living/carbon/human/H = thrown_by
 			retaliate(H)
 
-/datum/ai_controller/monkey/proc/on_crossed(datum/source, atom/movable/crossed)
+/datum/ai_controller/monkey/proc/on_crossed(datum/source, atom/movable/crosser)
 	SIGNAL_HANDLER
 	var/mob/living/living_pawn = pawn
-	if(!IS_DEAD_OR_INCAP(living_pawn) && isliving(crossed))
-		var/mob/living/in_the_way_mob = crossed
+	if(!IS_DEAD_OR_INCAP(living_pawn) && isliving(crosser))
+		var/mob/living/in_the_way_mob = crosser
 		in_the_way_mob.knockOver(living_pawn)
 		return
 

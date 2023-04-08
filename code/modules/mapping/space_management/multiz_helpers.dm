@@ -110,9 +110,9 @@
 	// Check stack for any laterally connected neighbors.
 	for(var/i = 1, i <= length(.), i++)
 		var/datum/space_level/checking = z_list[.[i]]
-		for(var/neighbor_key in level.neighbors)
-			var/datum/space_level/neighbor = level.neighbors[neighbor_key]
-			. |= level.neighbors[neighbor_key].z_value
+		for(var/neighbor_key in checking.neigbours)
+			var/datum/space_level/neighbor = checking.neigbours[neighbor_key]
+			. |= checking.neigbours[neighbor_key].z_value
 
 	lateral_zstack_cache[zA] = .
 

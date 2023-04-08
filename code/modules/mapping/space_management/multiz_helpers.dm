@@ -1,10 +1,10 @@
 /proc/get_step_multiz(ref, dir)
 	if(dir & UP)
 		dir &= ~UP
-		return get_step(SSmapping.get_turf_above(get_turf(ref)), dir)
+		return get_step(GetAbove(ref), dir)
 	if(dir & DOWN)
 		dir &= ~DOWN
-		return get_step(SSmapping.get_turf_below(get_turf(ref)), dir)
+		return get_step(GetBelow(ref), dir)
 	return get_step(ref, dir)
 
 /proc/get_dir_multiz(turf/us, turf/them)
@@ -14,38 +14,18 @@
 		return NONE
 	if(us.z == them.z)
 		return get_dir(us, them)
+
+	var/turf/T = GetAbove(us)
+	var/dir = NONE
+	if(T && (T.z == them.z))
+		dir = UP
 	else
-		var/turf/T = us.above()
-		var/dir = NONE
+		T = GetBelow(us)
 		if(T && (T.z == them.z))
-			dir = UP
+			dir = DOWN
 		else
-			T = us.below()
-			if(T && (T.z == them.z))
-				dir = DOWN
-			else
-				return get_dir(us, them)
-		return (dir | get_dir(us, them))
-
-/turf/proc/above()
-	return get_step_multiz(src, UP)
-
-/turf/proc/below()
-	return get_step_multiz(src, DOWN)
-
-///A fast version that has no safeties and assumes both turfs exist on different, valid Z levels.
-/proc/get_dir_multiz_fast(turf/us, turf/them)
-	var/turf/T = SSmapping.get_turf_above(us)
-	if(T == them)
-		return UP
-
-	return SSmapping.get_turf_below(us) ? DOWN : null
-
-///Accepts UP or DOWN as directions, ignores cardinals, returns a turf or null.
-/proc/get_step_multiz_fast(turf/us, dir)
-	if(dir & UP)
-		return SSmapping.get_turf_above(us)
-	return SSmapping.get_turf_below(us)
+			return get_dir(us, them)
+	return (dir | get_dir(us, them))
 
 ///Checks if 2 levels are in the same Z-stack.
 /datum/controller/subsystem/mapping/proc/are_same_zstack(zA, zB)
@@ -83,9 +63,9 @@
 
 	. = list(zA)
 	// Traverse up and down to get the multiz stack.
-	for(var/level = zA, multiz_levels[zA]["[UP]"], level--)
+	for(var/level = zA, HasAbove(level), level--)
 		. |= level-1
-	for(var/level = zA, multiz_levels[zA]["[UP]"], level++)
+	for(var/level = zA, HasBelow(level), level++)
 		. |= level+1
 
 	// Check stack for any laterally connected neighbors.

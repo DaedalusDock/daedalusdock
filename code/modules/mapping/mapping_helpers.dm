@@ -97,7 +97,7 @@
 	name = "reinforced ceiling plating baseturf editor"
 
 /obj/effect/baseturf_helper/reinforced_plating/ceiling/replace_baseturf(turf/thing)
-	var/turf/ceiling = get_step_multiz(thing, UP)
+	var/turf/ceiling = GetAbove(thing)
 	if(isnull(ceiling))
 		CRASH("baseturf helper is attempting to modify the Z level above but there is no Z level above above it.")
 	if(isspaceturf(ceiling) || istype(ceiling, /turf/open/openspace))

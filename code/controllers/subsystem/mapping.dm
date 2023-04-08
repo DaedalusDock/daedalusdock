@@ -42,8 +42,7 @@ SUBSYSTEM_DEF(mapping)
 	var/space_levels_so_far = 0
 	///list of all z level datums in the order of their z (z level 1 is at index 1, etc.)
 	var/list/datum/space_level/z_list
-	///list of all z level indices that form multiz connections and whether theyre linked up or down.
-	///list of lists, inner lists are of the form: list("up or down link direction" = TRUE)
+	///list of all z level indices that form multiz connections. multi_zlevels[Z] = TRUE indicates there is an above Z-level.
 	var/list/multiz_levels = list()
 
 	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_z_connected()
@@ -134,17 +133,13 @@ SUBSYSTEM_DEF(mapping)
 	if(!isnum(z_level) || z_level <= 0)
 		return FALSE
 
-	if(multiz_levels.len < z_level)
-		multiz_levels.len = z_level
-
 	var/linked_down = level_trait(z_level, ZTRAIT_DOWN)
 	var/linked_up = level_trait(z_level, ZTRAIT_UP)
-	multiz_levels[z_level] = list()
 	if(linked_down)
-		multiz_levels[z_level]["[DOWN]"] = TRUE
+		multiz_levels[z_level-1] = TRUE
 		. = TRUE
 	if(linked_up)
-		multiz_levels[z_level]["[UP]"] = TRUE
+		multiz_levels[z_level] = TRUE
 		. = TRUE
 
 	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
@@ -170,6 +165,7 @@ SUBSYSTEM_DEF(mapping)
 	z_list += new_z
 	///Increment all the z level lists (note: not all yet)
 	gravity_by_zlevel.len += 1
+	multiz_levels.len += 1
 
 /**
  * ##setup_ruins

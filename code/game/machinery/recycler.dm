@@ -110,7 +110,7 @@
 
 /obj/machinery/recycler/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	if(source == src)
+	if(AM == src)
 		return
 	INVOKE_ASYNC(src, PROC_REF(eat), AM)
 

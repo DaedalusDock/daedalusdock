@@ -77,6 +77,9 @@
 
 /obj/machinery/field/containment/proc/on_entered(datum/source, atom/movable/considered_atom)
 	SIGNAL_HANDLER
+	if(considered_atom == src)
+		return
+
 	if(isliving(considered_atom))
 		var/mob/living/living_moving_through_field = considered_atom
 		if(!living_moving_through_field.incorporeal_move)

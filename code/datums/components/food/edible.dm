@@ -509,6 +509,8 @@ Behavior that's still missing from this component that original food items had t
 ///Ability to feed food to puppers
 /datum/component/edible/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	SEND_SIGNAL(parent, COMSIG_FOOD_CROSSED, arrived, bitecount)
 
 ///Response to being used to customize something

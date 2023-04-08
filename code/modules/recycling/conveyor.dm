@@ -217,6 +217,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /obj/machinery/conveyor/proc/conveyable_enter(datum/source, atom/convayable)
 	SIGNAL_HANDLER
+	if(convayable == src)
+		return
 	if(operating == CONVEYOR_OFF)
 		SSmove_manager.stop_looping(convayable, SSconveyors)
 		return

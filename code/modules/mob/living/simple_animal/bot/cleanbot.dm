@@ -152,7 +152,8 @@
 
 /mob/living/simple_animal/bot/cleanbot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-
+	if(AM == src)
+		return
 	zone_selected = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	if(weapon && has_gravity() && ismob(AM))
 		var/mob/living/carbon/C = AM

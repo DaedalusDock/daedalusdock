@@ -26,6 +26,8 @@
 
 /obj/effect/powerup/proc/on_entered(datum/source, atom/movable/movable_atom)
 	SIGNAL_HANDLER
+	if(movable_atom == src)
+		return
 	trigger(movable_atom)
 
 /obj/effect/powerup/Bump(atom/bumped_atom)

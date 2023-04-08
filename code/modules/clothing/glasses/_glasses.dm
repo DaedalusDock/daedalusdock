@@ -250,6 +250,8 @@
 
 /obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		return
 	if(item_flags & IN_INVENTORY)

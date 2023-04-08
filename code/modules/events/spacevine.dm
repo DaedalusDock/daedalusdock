@@ -453,6 +453,8 @@
 
 /obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(!isliving(movable))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)

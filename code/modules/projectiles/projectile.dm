@@ -592,6 +592,8 @@
  */
 /obj/projectile/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	scan_crossed_hit(AM)
 
 /**

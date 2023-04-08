@@ -399,6 +399,8 @@
 
 /obj/structure/table/glass/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(flags_1 & NODECONSTRUCT_1)
 		return
 	if(!isliving(AM))

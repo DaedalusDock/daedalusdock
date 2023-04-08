@@ -139,6 +139,8 @@
 
 /obj/machinery/shower/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(on && reagents.total_volume)
 		wash_atom(AM)
 

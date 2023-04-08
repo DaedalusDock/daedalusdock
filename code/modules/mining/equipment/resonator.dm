@@ -111,8 +111,10 @@
 		name = initial(name)
 	resonance_damage *= damage_multiplier
 
-/obj/effect/temp_visual/resonance/proc/burst()
+/obj/effect/temp_visual/resonance/proc/burst(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(rupturing)
 		return
 	rupturing = TRUE

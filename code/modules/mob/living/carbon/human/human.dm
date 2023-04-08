@@ -369,6 +369,8 @@
 //called when something steps onto a human
 /mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()

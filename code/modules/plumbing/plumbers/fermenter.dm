@@ -31,6 +31,8 @@
 
 /obj/machinery/plumbing/fermenter/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	ferment(AM)
 
 /// uses fermentation proc similar to fermentation barrels

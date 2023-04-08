@@ -128,6 +128,8 @@
 
 /obj/item/assembly/mousetrap/proc/on_entered(datum/source, atom/movable/AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(armed)
 		if(ismob(AM))
 			var/mob/MM = AM

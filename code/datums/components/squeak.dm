@@ -91,6 +91,9 @@
 /datum/component/squeak/proc/play_squeak_crossed(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
 
+	if(arrived == parent)
+		return
+
 	if(isitem(arrived))
 		var/obj/item/I = arrived
 		if(I.item_flags & ABSTRACT)

@@ -146,14 +146,12 @@
 /// Triggered when something enters the component's parent.
 /datum/component/singularity/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	consume(source, arrived)
 
 /datum/component/singularity/proc/consume(datum/source, atom/thing)
 	SIGNAL_HANDLER
-	if (thing == parent)
-		stack_trace("Singularity tried to consume itself.")
-		return
-
 	consume_callback?.Invoke(thing, src)
 
 /datum/component/singularity/proc/consume_attack(datum/source, mob/user)

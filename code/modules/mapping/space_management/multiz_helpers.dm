@@ -112,7 +112,7 @@
 		var/datum/space_level/checking = z_list[.[i]]
 		for(var/neighbor_key in checking.neigbours)
 			var/datum/space_level/neighbor = checking.neigbours[neighbor_key]
-			. |= checking.neigbours[neighbor_key].z_value
+			. |= neighbor.z_value
 
 	lateral_zstack_cache[zA] = .
 

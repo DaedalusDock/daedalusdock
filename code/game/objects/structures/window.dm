@@ -72,11 +72,11 @@
 	explosion_block = EXPLOSION_BLOCK_PROC
 
 	flags_1 |= ALLOW_DARK_PAINTS_1
-	RegisterSignal(src, COMSIG_OBJ_PAINTED, .proc/on_painted)
-	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src,.proc/AfterRotation))
+	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
+	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src,PROC_REF(AfterRotation)))
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = .proc/on_exit,
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
 
 	if (flags_1 & ON_BORDER_1)
@@ -206,7 +206,7 @@
 	if((flags_1 & NODECONSTRUCT_1) || (reinf && state >= WINDOW_IN_FRAME))
 		return
 	to_chat(user, span_notice("You begin to [anchored ? "unscrew [src] from":"screw [src] to"] the floor..."))
-	if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_anchored, anchored)))
+	if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 		set_anchored(!anchored)
 		to_chat(user, span_notice("You [anchored ? "fasten [src] to":"unfasten [src] from"] the floor."))
 	return TOOL_ACT_TOOLTYPE_SUCCESS
@@ -218,19 +218,19 @@
 		switch(state)
 			if(WINDOW_IN_FRAME)
 				to_chat(user, span_notice("You begin to secure the bolts of [src]."))
-				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_anchored, anchored)))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 					state = WINDOW_SCREWED_TO_FRAME
 					to_chat(user, span_notice("You secure the bolts of [src]."))
 				return TOOL_ACT_TOOLTYPE_SUCCESS
 			if(WINDOW_SCREWED_TO_FRAME)
 				to_chat(user, span_notice("You begin loosen the bolts of [src]."))
-				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_anchored, anchored)))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 					state = WINDOW_IN_FRAME
 					to_chat(user, span_notice("You loosen the bolts of [src]."))
 				return TOOL_ACT_TOOLTYPE_SUCCESS
 	if(!anchored)
 		to_chat(user, span_notice("You begin to disassemble [src]..."))
-		if(!tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_state_and_anchored, state, anchored)))
+		if(!tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
 			return TOOL_ACT_TOOLTYPE_SUCCESS
 		var/obj/item/stack/sheet/G = new glass_type(user.loc, glass_amount)
 		if (!QDELETED(G))
@@ -249,13 +249,13 @@
 		switch(state)
 			if(WINDOW_OUT_OF_FRAME)
 				to_chat(user, span_notice("You begin to lever [src] into the frame..."))
-				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_state_and_anchored, state, anchored)))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
 					state = WINDOW_IN_FRAME
 					to_chat(user, span_notice("You pry [src] into the frame."))
 				return TOOL_ACT_TOOLTYPE_SUCCESS
 			if(WINDOW_IN_FRAME)
 				to_chat(user, span_notice("You begin to lever [src] out of the frame..."))
-				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, .proc/check_state_and_anchored, state, anchored)))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
 					state = WINDOW_OUT_OF_FRAME
 					to_chat(user, span_notice("You pry [src] out of the frame."))
 				return TOOL_ACT_TOOLTYPE_SUCCESS
@@ -683,6 +683,15 @@
 	damage_per_fire_tick = 5
 	damage_deflection = 11
 
+/obj/structure/window/reinforced/shuttle/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/titanium(location)
+	. += new /obj/effect/decal/cleanable/glass/titanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/titanium(location)
+
 /obj/structure/window/reinforced/shuttle/narsie_act()
 	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
 
@@ -717,6 +726,15 @@
 	glass_amount = 2
 	rad_insulation = RAD_HEAVY_INSULATION
 	melting_point = 10000000 //Yeah this thing isnt melting
+
+/obj/structure/window/reinforced/plasma/plastitanium/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/plastitanium(location)
+	. += new /obj/effect/decal/cleanable/glass/plastitanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/plastitanium(location)
 
 /obj/structure/window/reinforced/plasma/plastitanium/unanchored
 	anchored = FALSE

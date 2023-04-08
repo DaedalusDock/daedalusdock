@@ -138,7 +138,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		if (picked && is_station_level(picked.z))
 			GLOB.teleportlocs[AR.name] = AR
 
-	sortTim(GLOB.teleportlocs, /proc/cmp_text_asc)
+	sortTim(GLOB.teleportlocs, GLOBAL_PROC_REF(cmp_text_asc))
 
 /**
  * Called when an area loads
@@ -415,7 +415,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	if(old_area)
 		L.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
-	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, /mob/proc/refresh_looping_ambience)
+	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience))
 
 	if(ambient_buzz != old_area.ambient_buzz)
 		L.refresh_looping_ambience()

@@ -188,7 +188,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	if(GLOB.summon_magic)
 		GLOB.summon_magic.survivor_probability = survivor_probability
 	else
-		GLOB.summon_magic = new /datum/summon_things_controller(/proc/give_magic, survivor_probability)
+		GLOB.summon_magic = new /datum/summon_things_controller(GLOBAL_PROC_REF(give_magic), survivor_probability)
 	GLOB.summon_magic.give_out_gear()
 
 /*
@@ -208,7 +208,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	if(GLOB.summon_guns)
 		GLOB.summon_guns.survivor_probability = survivor_probability
 	else
-		GLOB.summon_guns = new /datum/summon_things_controller(/proc/give_guns, survivor_probability)
+		GLOB.summon_guns = new /datum/summon_things_controller(GLOBAL_PROC_REF(give_guns), survivor_probability)
 	GLOB.summon_guns.give_out_gear()
 
 /*
@@ -268,7 +268,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	src.survivor_probability = survivor_probability
 	src.give_proc_path = give_proc_path
 
-	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, .proc/gear_up_new_crew)
+	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(gear_up_new_crew))
 
 /datum/summon_things_controller/Destroy(force, ...)
 	. = ..()

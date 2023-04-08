@@ -416,8 +416,8 @@
 		if((GLOB.cult_narsie.souls == GLOB.cult_narsie.soul_goal) && (GLOB.cult_narsie.resolved == FALSE))
 			GLOB.cult_narsie.resolved = TRUE
 			sound_to_playing_players('sound/machines/alarm.ogg')
-			addtimer(CALLBACK(GLOBAL_PROC, .proc/cult_ending_helper, 1), 120)
-			addtimer(CALLBACK(GLOBAL_PROC, .proc/ending_helper), 270)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), 1), 120)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)), 270)
 	if(client)
 		makeNewConstruct(/mob/living/simple_animal/hostile/construct/harvester, src, cultoverride = TRUE)
 	else
@@ -450,7 +450,7 @@
 		type = /atom/movable/screen/fullscreen/flash/black
 
 	overlay_fullscreen("flash", type)
-	addtimer(CALLBACK(src, .proc/clear_fullscreen, "flash", length), length)
+	addtimer(CALLBACK(src, PROC_REF(clear_fullscreen), "flash", length), length)
 	return TRUE
 
 //called when the mob receives a loud bang

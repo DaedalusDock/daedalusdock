@@ -44,7 +44,7 @@
 	if(get_turf(src) != get_turf(new_machine)) //REALLY shouldn't happen.
 		return NETJACK_CONNECT_NOTSAMETURF
 	// Be ready to tear ourselves out if they move.
-	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, /obj/machinery/power/data_terminal/proc/tear_out)
+	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, TYPE_PROC_REF(/obj/machinery/power/data_terminal, tear_out))
 	//Actually link them.
 	connected_machine = new_machine
 	new_machine.netjack = src

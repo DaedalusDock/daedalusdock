@@ -972,7 +972,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		source.domutcheck()
 
 	if(time_since_irradiated > RAD_MOB_HAIRLOSS && DT_PROB(RAD_MOB_HAIRLOSS_PROB, delta_time))
-		if(!(source.hairstyle == "Bald") && (HAIR in species_traits))
+		if(source.has_hair(TRUE))
 			to_chat(source, span_danger("Your hair starts to fall out in clumps..."))
 			addtimer(CALLBACK(src, PROC_REF(go_bald), source), 5 SECONDS)
 
@@ -1666,6 +1666,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
+
+		if(length(preference.exclude_species_traits & species_traits))
+			continue
 
 		if ( \
 			(preference.relevant_mutant_bodypart in mutant_bodyparts) \

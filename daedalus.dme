@@ -1459,6 +1459,8 @@
 #include "code\game\objects\effects\effect_system\effects_smoke.dm"
 #include "code\game\objects\effects\effect_system\effects_sparks.dm"
 #include "code\game\objects\effects\effect_system\effects_water.dm"
+#include "code\game\objects\effects\particles\fire.dm"
+#include "code\game\objects\effects\particles\water.dm"
 #include "code\game\objects\effects\spawners\costume.dm"
 #include "code\game\objects\effects\spawners\gibspawner.dm"
 #include "code\game\objects\effects\spawners\structure.dm"

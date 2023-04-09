@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The crew now starts on the arrivals shuttle as it is about to take off
+      for the station.

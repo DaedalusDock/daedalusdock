@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Lizards have a sclera, with a choosable color.
-  - bugfix: Hair randomly being... random. I hope.

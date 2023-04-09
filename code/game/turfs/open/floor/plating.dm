@@ -62,7 +62,7 @@
 			return
 		else
 			to_chat(user, span_notice("You begin reinforcing the floor..."))
-			if(do_after(user, src, 30))
+			if(do_after(user, src, 30, DO_PUBLIC, display = C))
 				if (R.get_amount() >= 2 && !istype(src, /turf/open/floor/engine))
 					PlaceOnTop(/turf/open/floor/engine, flags = CHANGETURF_INHERIT_AIR)
 					playsound(src, 'sound/items/deconstruct.ogg', 80, TRUE)
@@ -94,7 +94,7 @@
 			if(sheets.get_amount() < PLATE_REINFORCE_COST)
 				return
 			balloon_alert(user, "reinforcing plating...")
-			if(do_after(user, src, 12 SECONDS))
+			if(do_after(user, src, 12 SECONDS, DO_PUBLIC, display = C))
 				if(sheets.get_amount() < PLATE_REINFORCE_COST)
 					return
 				sheets.use(PLATE_REINFORCE_COST)

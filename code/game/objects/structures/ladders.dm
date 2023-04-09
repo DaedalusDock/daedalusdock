@@ -79,7 +79,7 @@
 
 	if(!is_ghost)
 		ladder.add_fingerprint(user)
-		if(!do_after(user, src, travel_time))
+		if(!do_after(user, src, travel_time, DO_PUBLIC))
 			return
 		show_fluff_message(going_up, user)
 

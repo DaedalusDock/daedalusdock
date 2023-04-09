@@ -211,7 +211,7 @@
 			return
 
 	SEND_SOUND(cultist, 'sound/items/sheath.ogg')
-	if(!do_after(cultist, rune, rune.erase_time))
+	if(!do_after(cultist, rune, rune.erase_time, DO_PUBLIC, display = rune))
 		return
 
 	if(!can_scrape_rune(rune, cultist))

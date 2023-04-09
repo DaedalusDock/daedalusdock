@@ -45,8 +45,10 @@ SUBSYSTEM_DEF(mapping)
 	///list of all z level indices that form multiz connections. multi_zlevels[Z] = TRUE indicates there is an above Z-level.
 	var/list/multiz_levels = list()
 
-	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_z_connected()
+	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_same_zstack()
 	VAR_PRIVATE/list/linked_zlevels = list()
+	///Same as above but includes lateral connections. Dangerous!
+	VAR_PRIVATE/list/laterally_linked_zlevels = list()
 
 	var/datum/space_level/transit
 	var/datum/space_level/empty_space

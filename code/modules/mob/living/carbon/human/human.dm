@@ -486,7 +486,7 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
+#define CPR_PANIC_SPEED (1 SECONDS)
 
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
@@ -533,7 +533,7 @@
 		else if (!target.getorganslot(ORGAN_SLOT_LUNGS))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
 		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
+			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 
 		if (target.health <= target.crit_threshold)

@@ -190,7 +190,7 @@
 		if(QDELETED(moved_object))
 			continue
 		var/turf/oldT = moved_atoms[moved_object]
-		moved_object.afterShuttleMove(oldT, movement_force, dir, preferred_direction, movement_direction, rotation)//atoms
+		moved_object.afterShuttleMove(oldT, movement_force, dir, preferred_direction, movement_direction, rotation, src)//atoms
 
 	// lateShuttleMove (There had better be a really good reason for additional stages beyond this)
 

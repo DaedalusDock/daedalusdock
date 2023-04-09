@@ -184,7 +184,15 @@ All ShuttleMove procs go here
 	for(var/obj/machinery/door/airlock/other_airlock in range(2, src))  // includes src, extended because some escape pods have 1 plating turf exposed to space
 		other_airlock.shuttledocked = FALSE
 		other_airlock.air_tight = TRUE
-		INVOKE_ASYNC(other_airlock, TYPE_PROC_REF(/obj/machinery/door, close), FALSE, TRUE) // force crush
+		spawn(-1)
+			if((other_airlock.close(FALSE, TRUE) || other_airlock.density) && other_airlock == src && moving_dock.bolt_doors) // force crush
+				if(locate(/turf/open/space) in orange(1, other_airlock))
+					other_airlock.bolt()
+
+/obj/machinery/door/airlock/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	. = ..()
+	if(istype(old_dock, /obj/docking_port/stationary/transit) && locked && moving_dock.bolt_doors)
+		unbolt()
 
 /obj/machinery/door/airlock/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()

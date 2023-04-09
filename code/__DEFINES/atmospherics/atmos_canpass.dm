@@ -12,11 +12,14 @@
 		ret = AIR_BLOCKED|ZONE_BLOCKED; \
 	} \
 	else if (B.z != A.z) { \
-		if(B.z < A.z) { \
+		if(GetAbove(B) == A) { \
 			ret = ((A.z_flags & Z_ATMOS_IN_DOWN) && (B.z_flags & Z_ATMOS_OUT_UP)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
 		} \
-		else { \
+		else if(GetBelow(B) == A){ \
 			ret = ((A.z_flags & Z_ATMOS_IN_UP) && (B.z_flags & Z_ATMOS_OUT_DOWN)) ? ZONE_BLOCKED : AIR_BLOCKED|ZONE_BLOCKED; \
+		} \
+		else { \
+			ret = AIR_BLOCKED|ZONE_BLOCKED; \
 		} \
 	} \
 	else if ((A.blocks_air & ZONE_BLOCKED) || (B.blocks_air & ZONE_BLOCKED)) { \

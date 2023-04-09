@@ -1419,12 +1419,12 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		attack_image = image('icons/effects/effects.dmi', attacked_atom, visual_effect_icon, attacked_atom.layer + 0.1)
 	else if(used_item)
 		attack_image = image(icon = used_item, loc = attacked_atom, layer = attacked_atom.layer + 0.1)
-		attack_image.plane = attacked_atom.plane + 1
+		attack_image.plane = attacked_atom.plane
 
 		// Scale the icon.
 		attack_image.transform *= 0.4
 		// The icon should not rotate.
-		attack_image.appearance_flags = APPEARANCE_UI
+		attack_image.appearance_flags = APPEARANCE_UI|KEEP_APART
 
 		// Set the direction of the icon animation.
 		var/direction = get_dir(src, attacked_atom)

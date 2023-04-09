@@ -138,11 +138,9 @@
 
 /datum/world_progressbar
 	///The progress bar visual element.
-	var/image/bar
+	var/obj/effect/abstract/progbar/bar
 	///The atom who "created" the bar
 	var/atom/owner
-	///The additional overlay above the bar
-	var/image/overlay
 	///Effectively the number of steps the progress bar will need to do before reaching completion.
 	var/goal = 1
 	///Control check to see if the progress was interrupted before reaching its goal.
@@ -150,63 +148,33 @@
 	///Variable to ensure smooth visual stacking on multiple progress bars.
 	var/listindex = 0
 
-/datum/world_progressbar/New(atom/movable/_owner, _goal, image/_overlay)
+/datum/world_progressbar/New(atom/movable/_owner, _goal, image/overlay)
 	if(!_owner || !_goal)
 		return
 
 	owner = _owner
 	goal = _goal
 
-	bar = image('icons/effects/progessbar.dmi', owner, "prog_bar_0")
-	bar.plane = ABOVE_HUD_PLANE
-	bar.appearance_flags = APPEARANCE_UI | KEEP_APART
+	bar = new()
 
-	if(_overlay)
-		overlay = image(_overlay, owner, dir = SOUTH, pixel_y = 32)
+	if(overlay)
+		if(!istype(overlay))
+			overlay = image(overlay, dir = SOUTH)
+			overlay.filters += filter(type = "outline", size = 1)
+
 		overlay.plane = ABOVE_HUD_PLANE
 		overlay.appearance_flags = APPEARANCE_UI
 		bar.overlays += overlay
 
-	if(ismob(src.owner))
-		var/mob/user = owner
-		LAZYADDASSOCLIST(user.progressbars, user, src)
-		var/list/bars = user.progressbars[user]
-		listindex = bars.len
-		animate(bar, pixel_y = 32 + (PROGRESSBAR_HEIGHT * (listindex - 1)), alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
+	owner:vis_contents += bar
 
-	else
-		animate(bar, pixel_y = 32, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
-
-	for(var/client/C in GLOB.clients)
-		C.images += overlay
-		C.images += bar
-
+	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 
 	RegisterSignal(owner, COMSIG_PARENT_QDELETING, PROC_REF(owner_delete))
 
 /datum/world_progressbar/Destroy()
-	if(ismob(owner))
-		var/mob/user = owner
-		for(var/pb in user.progressbars[user])
-			var/datum/progressbar/progress_bar = pb
-			if(progress_bar == src || progress_bar.listindex <= listindex)
-				continue
-			progress_bar.listindex--
-
-			progress_bar.bar.pixel_y = 32 + (PROGRESSBAR_HEIGHT * (progress_bar.listindex - 1))
-			var/dist_to_travel = 32 + (PROGRESSBAR_HEIGHT * (progress_bar.listindex - 1)) - PROGRESSBAR_HEIGHT
-			animate(progress_bar.bar, pixel_y = dist_to_travel, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
-
-		LAZYREMOVEASSOC(user.progressbars, user, src)
-
 	owner = null
-
-	for(var/client/C in GLOB.clients)
-		C.images -= overlay
-		C.images -= bar
-
-	bar = null
-	overlay = null
+	QDEL_NULL(bar)
 	return ..()
 
 
@@ -231,3 +199,13 @@
 
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT
+
+/obj/effect/abstract/progbar
+	icon = 'icons/effects/progessbar.dmi'
+	icon_state = "prog_bar_0"
+	plane = ABOVE_HUD_PLANE
+	appearance_flags = APPEARANCE_UI | KEEP_APART
+	pixel_y = 32
+	alpha = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	vis_flags = NONE //We don't want VIS_INHERIT_PLANE

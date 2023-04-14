@@ -155,11 +155,7 @@ SUBSYSTEM_DEF(zcopy)
 	zlev_maximums = new(world.maxz)
 	var/start_zlev = 1
 	for (var/z in 1 to world.maxz)
-		var/offset = SSmapping.multiz_levels[z]["[UP]"]
-		if (offset != 1)
-			if (offset > 1)
-				log_game("Z-Mimic: WARNING: Z-level [z] is nonlinear (offset [offset]), it is being ignored.")
-
+		if (!HasAbove(z))
 			for (var/member_zlev in start_zlev to z)
 				zlev_maximums[member_zlev] = z
 			if (z - start_zlev > ZMIMIC_MAX_DEPTH)

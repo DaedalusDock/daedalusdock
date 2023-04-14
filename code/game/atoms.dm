@@ -704,7 +704,7 @@
 	if(desc)
 		. += desc
 
-	if(user.z != z)
+	if(z && user.z != z)
 		var/diff = abs(user.z - z)
 		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
 

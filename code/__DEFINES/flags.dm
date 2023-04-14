@@ -321,6 +321,7 @@ GLOBAL_LIST_INIT(z_defines, list(
 #define ZMM_MANGLE_PLANES   (1 << 1)	//! Check this movable's overlays/underlays for explicit plane use and mangle for compatibility with Z-Mimic. If you're using emissive overlays, you probably should be using this flag. Expensive, only use if necessary.
 #define ZMM_LOOKAHEAD       (1 << 2)	//! Look one turf ahead and one turf back when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
 #define ZMM_LOOKBESIDE      (1 << 3)	//! Look one turf to the left and right when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
+#define ZMM_NO_CACHE_ROOT   (1 << 4)	//! When performing mangling, do not cache the root (depth=0) appearance. Set this on mangled types that change appearance frequently.
 
 // convenience flags
 

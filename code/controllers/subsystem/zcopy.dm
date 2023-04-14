@@ -40,6 +40,7 @@ SUBSYSTEM_DEF(zcopy)
 	var/fixup_miss = 0
 	var/fixup_noop = 0
 	var/fixup_hit = 0
+	var/fixup_bypass = 0
 
 // for admin proc-call
 /datum/controller/subsystem/zcopy/proc/update_all()
@@ -120,7 +121,7 @@ SUBSYSTEM_DEF(zcopy)
 		"\tQ: { T: [queued_turfs.len - (qt_idex - 1)] O: [queued_overlays.len - (qo_idex - 1)] }",
 		// In order: Total, Skipped
 		"\tT: { T: [openspace_turfs] O: [openspace_overlays] } Sk: { T: [multiqueue_skips_turf] O: [multiqueue_skips_object] }",
-		"\tF: { H: [fixup_hit] M: [fixup_miss] N: [fixup_noop] FC: [fixup_cache.len] FKG: [fixup_known_good.len] }",	// Fixup stats.
+		"\tF: { H: [fixup_hit] M: [fixup_miss] N: [fixup_noop] B: [fixup_bypass] FC: [fixup_cache.len] FKG: [fixup_known_good.len] }",	// Fixup stats.
 	)
 	return ..() + entries.Join("\n")
 
@@ -448,7 +449,8 @@ SUBSYSTEM_DEF(zcopy)
 
 		// If an atom has explicit plane sets on its overlays/underlays, we need to replace the appearance so they can be mangled to work with our planing.
 		if (OO.zmm_flags & ZMM_MANGLE_PLANES)
-			var/new_appearance = fixup_appearance_planes(OO.appearance)
+			var/fixup_cache_depth = (OO.zmm_flags & ZMM_NO_CACHE_ROOT) ? 1 : 0	// this is not a boolean
+			var/new_appearance = fixup_appearance_planes(OO.appearance, fixup_cache_depth)
 			if (new_appearance)
 				OO.appearance = new_appearance
 				OO.have_performed_fixup = TRUE
@@ -499,8 +501,7 @@ SUBSYSTEM_DEF(zcopy)
 // For each of overlay,underlay, call fixup_appearance_planes; if it returns a new appearance, replace self
 
 /// Generate a new appearance from `appearance` with planes mangled to work with Z-Mimic. Do not pass a depth.
-/datum/controller/subsystem/zcopy/proc/fixup_appearance_planes(appearance, depth = 0)
-
+/datum/controller/subsystem/zcopy/proc/fixup_appearance_planes(appearance, cache_minimum_depth = 0, depth = 0)
 	// Adding this to guard against a reported runtime - supposed to be impossible, so cause is unclear.
 	if(!appearance)
 		return null
@@ -588,7 +589,9 @@ SUBSYSTEM_DEF(zcopy)
 	if (fixed_underlays)
 		MA.underlays = fixed_underlays
 
-	fixup_cache[appearance] = MA.appearance
+	// Sometimes you don't want to cache the root appearance.
+	if (depth >= cache_minimum_depth)
+		fixup_cache[appearance] = MA.appearance
 
 	return MA
 

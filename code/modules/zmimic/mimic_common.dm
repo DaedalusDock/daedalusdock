@@ -3,9 +3,9 @@
 	return
 
 /turf/proc/is_above_space()
-	var/turf/T = SSmapping.get_turf_below(src)
+	var/turf/T = GetBelow(src)
 	while (T && (T.z_flags & Z_MIMIC_BELOW))
-		T = SSmapping.get_turf_below(T)
+		T = GetBelow(T)
 	return isspaceturf(T)
 
 /turf/update_appearance(updates)

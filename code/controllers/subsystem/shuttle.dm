@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(shuttle)
 	wait = 1 SECONDS
 	init_order = INIT_ORDER_SHUTTLE
 	flags = SS_KEEP_TIMING
-	runlevels = RUNLEVEL_SETUP | RUNLEVEL_GAME
+	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	/// A list of all the mobile docking ports.
 	var/list/mobile_docking_ports = list()
@@ -164,6 +164,10 @@ SUBSYSTEM_DEF(shuttle)
 		log_mapping("No /obj/docking_port/mobile/emergency/backup placed on the map!")
 	if(!supply)
 		log_mapping("No /obj/docking_port/mobile/supply placed on the map!")
+
+	if(CONFIG_GET(flag/arrivals_shuttle_require_undocked))
+		arrivals.Launch(TRUE)
+
 	return ..()
 
 /datum/controller/subsystem/shuttle/proc/setup_shuttles(list/stationary)

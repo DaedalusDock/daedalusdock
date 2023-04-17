@@ -60,10 +60,10 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 		overlays += global.fullbright_overlay
 
 	if (!mapload)
-		var/turf/T = SSmapping.get_turf_above(src)
+		var/turf/T = GetAbove(src)
 		if(!isnull(T))
 			T.multiz_turf_new(src, DOWN)
-		T = SSmapping.get_turf_below(src)
+		T = GetBelow(src)
 		if(!isnull(T))
 			T.multiz_turf_new(src, UP)
 

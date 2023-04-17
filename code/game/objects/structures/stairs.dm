@@ -84,12 +84,13 @@
 	return ..()
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)
-	var/turf/checking = get_step_multiz(get_turf(src), UP)
+	var/turf/my_turf = get_turf(src)
+	var/turf/checking = GetAbove(my_turf)
 	if(!istype(checking))
 		return
-	if(!checking.zPassIn(climber, UP, get_turf(src)))
+	if(!checking.zPassIn(climber, UP, my_turf))
 		return
-	var/turf/target = get_step_multiz(get_turf(src), (dir|UP))
+	var/turf/target = get_step_multiz(my_turf, (dir|UP))
 	if(istype(target) && !climber.can_z_move(DOWN, target, z_move_flags = ZMOVE_FALL_FLAGS)) //Don't throw them into a tile that will just dump them back down.
 		climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)
 		/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.

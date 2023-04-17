@@ -205,14 +205,11 @@
 					return
 
 			else
-				if(!(HAIR in H.dna.species.species_traits))
+				if(!H.has_hair(TRUE))
 					to_chat(user, span_warning("There is no hair to shave!"))
 					return
 				if(!get_location_accessible(H, location))
 					to_chat(user, span_warning("The headgear is in the way!"))
-					return
-				if(H.hairstyle == "Bald" || H.hairstyle == "Balding Hair" || H.hairstyle == "Skinhead")
-					to_chat(user, span_warning("There is not enough hair left to shave!"))
 					return
 
 				if(H == user) //shaving yourself

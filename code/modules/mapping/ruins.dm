@@ -117,7 +117,7 @@
 					for(var/v in current_pick.always_spawn_with)
 						if(current_pick.always_spawn_with[v] == PLACE_BELOW)
 							var/turf/T = locate(1,1,target_z)
-							if(!SSmapping.get_turf_below(T))
+							if(!GetBelow(T))
 								if(forced_z)
 									continue outer
 								else
@@ -167,7 +167,7 @@
 								if(PLACE_DEFAULT)
 									forced_ruins[linked] = -1
 								if(PLACE_BELOW)
-									forced_ruins[linked] = SSmapping.get_turf_below(placed_turf)
+									forced_ruins[linked] = GetBelow(placed_turf)
 								if(PLACE_ISOLATED)
 									forced_ruins[linked] = SSmapping.get_isolated_ruin_z()
 

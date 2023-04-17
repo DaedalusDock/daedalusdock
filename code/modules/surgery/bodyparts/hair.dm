@@ -63,7 +63,7 @@
 	facial_hairstyle = human_head_owner.facial_hairstyle
 
 
-	if(facial_hairstyle && !facial_hair_hidden && (FACEHAIR in species_flags_list))
+	if(facial_hairstyle && !facial_hair_hidden && ((FACEHAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 		sprite_accessory = GLOB.facial_hairstyles_list[facial_hairstyle]
 		if(sprite_accessory)
 			//Create the overlay
@@ -77,7 +77,7 @@
 
 			facial_overlay.overlays += emissive_blocker(sprite_accessory.icon, sprite_accessory.icon_state, alpha = hair_alpha)
 
-	if(!hair_hidden && !show_debrained && (HAIR in species_flags_list))
+	if(!hair_hidden && !show_debrained && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 		sprite_accessory = GLOB.hairstyles_list[hair_style]
 		if(sprite_accessory)
 			hair_overlay = mutable_appearance(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER)

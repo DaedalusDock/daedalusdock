@@ -556,8 +556,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#AFD3E6"
-	greyscale_config = /datum/greyscale_config/fulltile_window
-	greyscale_colors = "#AFD3E6"
 	alpha = 180
 	max_integrity = 50
 	fulltile = TRUE
@@ -575,8 +573,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#c162ec"
-	greyscale_config = /datum/greyscale_config/fulltile_window
-	greyscale_colors = "#c162ec"
 	alpha = 180
 	max_integrity = 300
 	fulltile = TRUE
@@ -595,8 +591,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#c162ec"
-	greyscale_config = /datum/greyscale_config/fulltile_reinforced_window
-	greyscale_colors = "#c162ec"
 	alpha = 180
 	state = WINDOW_SCREWED_TO_FRAME
 	max_integrity = 500
@@ -617,8 +611,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#829eb5"
-	greyscale_config = /datum/greyscale_config/fulltile_reinforced_window
-	greyscale_colors = "#829eb5"
 	alpha = 180
 	max_integrity = 150
 	fulltile = TRUE
@@ -638,8 +630,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#3b5461"
-	greyscale_config = /datum/greyscale_config/fulltile_reinforced_window
-	greyscale_colors = "#3b5461"
 	alpha = 180
 	fulltile = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
@@ -662,8 +652,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color ="#afb5e6"
-	greyscale_config = /datum/greyscale_config/fulltile_reinforced_window
-	greyscale_colors = "#afb5e6"
 	alpha = 180
 	max_integrity = 150
 	wtype = "shuttle"
@@ -683,6 +671,15 @@
 	damage_per_fire_tick = 5
 	damage_deflection = 11
 
+/obj/structure/window/reinforced/shuttle/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/titanium(location)
+	. += new /obj/effect/decal/cleanable/glass/titanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/titanium(location)
+
 /obj/structure/window/reinforced/shuttle/narsie_act()
 	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
 
@@ -699,8 +696,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#D0CBD4"
-	greyscale_config = /datum/greyscale_config/fulltile_window
-	greyscale_colors = "#D0CBD4"
 	alpha = 180
 	max_integrity = 1200
 	wtype = "shuttle"
@@ -717,6 +712,15 @@
 	glass_amount = 2
 	rad_insulation = RAD_HEAVY_INSULATION
 	melting_point = 10000000 //Yeah this thing isnt melting
+
+/obj/structure/window/reinforced/plasma/plastitanium/spawnDebris(location)
+	. = list()
+	. += new /obj/item/shard/plastitanium(location)
+	. += new /obj/effect/decal/cleanable/glass/plastitanium(location)
+	if (reinf)
+		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
+	if (fulltile)
+		. += new /obj/item/shard/plastitanium(location)
 
 /obj/structure/window/reinforced/plasma/plastitanium/unanchored
 	anchored = FALSE
@@ -820,8 +824,6 @@
 	icon_state = "window-0"
 	base_icon_state = "window"
 	color = "#92661A"
-	greyscale_config = /datum/greyscale_config/fulltile_window
-	greyscale_colors = "#92661A"
 	alpha = 180
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)

@@ -98,7 +98,7 @@ Difficulty: Extremely Hard
 				snowball_machine_gun.Trigger(target = target)
 			else if(ice_shotgun.IsAvailable())
 				ice_shotgun.shot_angles = list(list(-180, -140, -100, -60, -20, 20, 60, 100, 140), list(-160, -120, -80, -40, 0, 40, 80, 120, 160))
-				INVOKE_ASYNC(ice_shotgun, /datum/action/proc/Trigger, target)
+				INVOKE_ASYNC(ice_shotgun, TYPE_PROC_REF(/datum/action, Trigger), target)
 				snowball_machine_gun.shot_count = 5 * 8
 				snowball_machine_gun.default_projectile_spread = 5
 				snowball_machine_gun.StartCooldown(0)

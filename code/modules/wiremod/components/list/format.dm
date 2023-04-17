@@ -67,7 +67,7 @@
  */
 /obj/item/circuit_component/format/assoc
 	display_name = "Format Associative List"
-	desc = "A component that formats associative lists, replacing %key in the format string with corresponding list\[key] item."
+	desc = "A component that formats associative lists, replacing %key in the format string with corresponding list\[key\] item."
 
 	var/static/regex/format_component/assoc_param_regex = new(@"%([a-zA-Z0-9_]+)", "g")
 

@@ -141,11 +141,11 @@
 		if(direction == DOWN && stairs_bro.z != z - 1) //if we're going down, we need to find stairs on the z level beneath us
 			continue
 		if(!target)
-			target = stairs_bro.z == z ? stairs_bro : get_step_multiz(stairs_bro, UP) //if the stairs aren't on our z level, get the turf above them (on our zlevel) to path to instead
+			target = stairs_bro.z == z ? stairs_bro : GetAbove(stairs_bro) //if the stairs aren't on our z level, get the turf above them (on our zlevel) to path to instead
 			continue
 		if(get_dist_euclidian(stairs_bro, src) > get_dist_euclidian(target, src))
 			continue
-		target = stairs_bro.z == z ? stairs_bro : get_step_multiz(stairs_bro, UP)
+		target = stairs_bro.z == z ? stairs_bro : GetAbove(stairs_bro)
 
 	return target
 

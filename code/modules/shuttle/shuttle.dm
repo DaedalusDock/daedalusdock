@@ -409,6 +409,9 @@
 	var/can_move_docking_ports = FALSE
 	var/list/hidden_turfs = list()
 
+	///Bolt doors on take off, unbolt on arrival?
+	var/bolt_doors = FALSE
+
 /obj/docking_port/mobile/register(replace = FALSE)
 	. = ..()
 	if(!id)

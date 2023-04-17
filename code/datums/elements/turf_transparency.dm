@@ -32,7 +32,7 @@
 
 ///Updates the viscontents or underlays below this tile.
 /datum/element/turf_z_transparency/proc/update_multi_z(turf/our_turf)
-	var/turf/below_turf = our_turf.below()
+	var/turf/below_turf = GetBelow(our_turf)
 	if(below_turf) // If we actually have somethign below us, display it.
 		our_turf.vis_contents += below_turf
 	else

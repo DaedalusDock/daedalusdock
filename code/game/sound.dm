@@ -57,8 +57,8 @@
 
 	. = list()//output everything that successfully heard the sound
 
-	var/turf/above_turf = SSmapping.get_turf_above(turf_source)
-	var/turf/below_turf = SSmapping.get_turf_below(turf_source)
+	var/turf/above_turf = GetAbove(turf_source)
+	var/turf/below_turf = GetBelow(turf_source)
 
 	if(ignore_walls)
 

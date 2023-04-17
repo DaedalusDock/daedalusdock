@@ -1,4 +1,4 @@
-/obj/machinery/development_dataset
+/obj/machinery/test_equipment/wired
 	name = "Development Dataset"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "fax0"
@@ -8,15 +8,15 @@
 // This equipment is *incredibly* basic, and there's probably a subtype of machinery that you should use instead.
 // I should probably remove this before pushing, but if not, here it is!
 
-/obj/machinery/development_dataset/CtrlClick(mob/user)
+/obj/machinery/test_equipment/wired/CtrlClick(mob/user)
 	. = ..()
 	reconnect_dataterm()
 
-/obj/machinery/development_dataset/say_emphasis(input)
+/obj/machinery/test_equipment/wired/say_emphasis(input)
 	//Fuck off and don't decorate debug text
 	return input
 
-/obj/machinery/development_dataset/proc/reconnect_dataterm()
+/obj/machinery/test_equipment/wired/proc/reconnect_dataterm()
 	var/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
 	if(transmission_terminal == new_transmission_terminal)
 		say("Already linked to detected terminal. Aborting.")
@@ -29,7 +29,7 @@
 	else
 		say("No terminal found.")
 
-/obj/machinery/development_dataset/attack_hand(mob/living/user, list/modifiers)
+/obj/machinery/test_equipment/wired/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(!transmission_terminal)
 		say("No network connection established!")
@@ -40,7 +40,7 @@
 	var/datum/signal/pretransmission_signal = new(src, datablob) //This is split out for debugging reasons.
 	transmission_terminal.post_signal(pretransmission_signal)
 
-/obj/machinery/development_dataset/receive_signal(datum/signal/signal)
+/obj/machinery/test_equipment/wired/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //This is a dev tool go fuck yourself
 	var/signal_data = signal.data
 	say("[json_encode(signal_data)]")

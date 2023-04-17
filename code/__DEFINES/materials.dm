@@ -68,3 +68,8 @@
 #define MATERIAL_SLOWDOWN_PLASTEEL (0.05)
 /// The slowdown value of one [MINERAL_MATERIAL_AMOUNT] of alien alloy.
 #define MATERIAL_SLOWDOWN_ALIEN_ALLOY (0.1)
+
+// Flags for wall shine
+#define WALL_SHINE_PLATING (1<<0)
+#define WALL_SHINE_REINFORCED (1<<1)
+#define WALL_SHINE_BOTH (WALL_SHINE_REINFORCED|WALL_SHINE_PLATING)

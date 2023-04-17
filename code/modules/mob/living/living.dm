@@ -1874,7 +1874,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/start_look_up()
 	SIGNAL_HANDLER
-	var/turf/ceiling = get_step_multiz(src, UP)
+	var/turf/ceiling = GetAbove(src)
 	if(!ceiling) //We are at the highest z-level.
 		if (prob(0.1))
 			to_chat(src, span_warning("You gaze out into the infinite vastness of deep space, for a moment, you have the impulse to continue travelling, out there, out into the deep beyond, before your conciousness reasserts itself and you decide to stay within travelling distance of the station."))
@@ -1925,7 +1925,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/start_look_down()
 	SIGNAL_HANDLER
 	var/turf/floor = get_turf(src)
-	var/turf/lower_level = get_step_multiz(floor, DOWN)
+	var/turf/lower_level = GetBelow(floor)
 	if(!lower_level) //We are at the lowest z-level.
 		to_chat(src, span_warning("You can't see through the floor below you."))
 		return
@@ -1933,13 +1933,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		var/turf/front_hole = get_step(floor, dir)
 		if(istransparentturf(front_hole))
 			floor = front_hole
-			lower_level = get_step_multiz(front_hole, DOWN)
+			lower_level = GetBelow(front_hole)
 		else
 			var/list/checkturfs = block(locate(x-1,y-1,z),locate(x+1,y+1,z))-floor //Try find hole near of us
 			for(var/turf/checkhole in checkturfs)
 				if(istransparentturf(checkhole))
 					floor = checkhole
-					lower_level = get_step_multiz(checkhole, DOWN)
+					lower_level = GetBelow(checkhole)
 					break
 		if(!istransparentturf(floor))
 			to_chat(src, span_warning("You can't see through the floor below you."))

@@ -118,10 +118,7 @@
 
 
 /area/shuttle/arrival/on_joining_game(mob/living/boarder)
-	if(SSshuttle.arrivals?.mode == SHUTTLE_CALL)
-		boarder.playsound_local(get_turf(boarder), 'sound/voice/ApproachingDaedalus.ogg', 25)
 	boarder.update_parallax_teleport()
-
 
 /area/shuttle/pod_1
 	name = "Escape Pod One"

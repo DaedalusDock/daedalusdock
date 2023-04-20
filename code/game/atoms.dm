@@ -2233,6 +2233,6 @@
 /atom/proc/remove_viscontents(atom/A)
 	src:vis_contents -= A
 
-///Cut our vis_content.
+/// Cut our vis_contents
 /atom/proc/cut_viscontents()
 	src:vis_contents:len = 0

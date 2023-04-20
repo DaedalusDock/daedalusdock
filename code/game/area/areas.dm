@@ -517,3 +517,15 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)
 		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)
+
+/area/add_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/distinct_add_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/remove_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/cut_viscontents()
+	CRASH("Tried to mutate area vis_contents.")

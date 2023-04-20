@@ -205,7 +205,7 @@
 /turf/open/floor/plating,
 /area/station/hallway/primary/central)
 "aT" = (
-/obj/machinery/gravity_generator/main/station,
+/obj/machinery/gravity_generator/main,
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)

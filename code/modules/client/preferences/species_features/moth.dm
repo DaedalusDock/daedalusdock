@@ -110,9 +110,10 @@
 	savefile_key = "moth_hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Hairstyle"
+	main_feature_name = "Moth Hairstyle"
 	should_generate_icons = TRUE
-	relevant_species_trait = HAIR
+	priority = PREFERENCE_PRIORITY_NONHUMAN_HAIR
+	relevant_species_trait = NONHUMANHAIR
 	requires_accessible = TRUE
 
 /datum/preference/choiced/hairstyle_moth/init_possible_values()
@@ -124,7 +125,7 @@
 /datum/preference/choiced/hairstyle_moth/is_accessible(datum/preferences/preferences)
 	if(!..(preferences))
 		return FALSE
-	return (preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
+	return ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/moth)
 
 /datum/preference/choiced/hairstyle_moth/create_default_value()
 	return "Bald"

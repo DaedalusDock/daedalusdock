@@ -185,7 +185,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 
 /turf/open/openspace/icemoon/Initialize(mapload)
 	. = ..()
-	var/turf/T = below()
+	var/turf/T = GetBelow(src)
 	//I wonder if I should error here
 	if(!T)
 		return

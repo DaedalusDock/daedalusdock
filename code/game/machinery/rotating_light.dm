@@ -93,7 +93,7 @@
 
 
 /obj/machinery/rotating_alarm/proc/set_on()
-	add_viscontentsspin_effect)
+	add_viscontents(spin_effect)
 	set_light(1, 0.5, 2, 0.3, l_color = alarm_light_color)
 	on = TRUE
 	low_alarm = FALSE

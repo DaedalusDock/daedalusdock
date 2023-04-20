@@ -46,14 +46,25 @@
 	icon_state = "shieldsparkles"
 	anchored = TRUE
 
+/// If you're wanting to use vis_contents as overlays, use this.
 /obj/effect/overlay/vis
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	anchored = TRUE
-	vis_flags = VIS_INHERIT_DIR
-	///When detected to be unused it gets set to world.time, after a while it gets removed
-	var/unused = 0
-	///overlays which go unused for this amount of time get cleaned up
-	var/cache_expiration = 2 MINUTES
+
+//I don't want to have to write new(null, ...) at every use
+/obj/effect/overlay/vis/New(icon, icon_state, layer, dir, alpha, flags = VIS_INHERIT_DIR|VIS_INHERIT_PLANE)
+	vis_flags = flags
+	src.icon = icon
+	src.icon_state = icon_state
+	if(layer)
+		src.layer = layer
+	if(dir)
+		src.dir = dir
+	if(alpha)
+		src.alpha = alpha
+
+	..(null)
+
 
 /// Door overlay for animating closets
 /obj/effect/overlay/closet_door

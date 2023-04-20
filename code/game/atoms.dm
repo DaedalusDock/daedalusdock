@@ -54,8 +54,6 @@
 	/// a very temporary list of overlays to add
 	var/list/add_overlays
 
-	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
-	var/list/managed_vis_overlays
 	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
 	var/list/managed_overlays
 
@@ -794,9 +792,6 @@
 		. |= UPDATE_ICON_STATE
 
 	if(updates & UPDATE_OVERLAYS)
-		if(LAZYLEN(managed_vis_overlays))
-			SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
-
 		var/list/new_overlays = update_overlays(updates)
 		if(managed_overlays)
 			cut_overlay(managed_overlays)
@@ -2228,16 +2223,16 @@
 
 /// Add an atom or list of atoms to our vis_contents
 /atom/proc/add_viscontents(atom/A)
-	vis_contents += A
+	src:vis_contents += A
 
 /// Add an atom or list of atoms to our vis_contents, atoms already present will be ignored
 /atom/proc/distinct_add_viscontents(atom/A)
-	vis_contents |= A
+	src:vis_contents |= A
 
 /// Remove an atom or list of atoms from our vis_contents
 /atom/proc/remove_viscontents(atom/A)
-	vis_contents -= A
+	src:vis_contents -= A
 
 ///Cut our vis_content.
 /atom/proc/cut_viscontents()
-	vis_contents.len = 0
+	src:vis_contents:len = 0

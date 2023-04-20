@@ -12,6 +12,9 @@
 	connect_to_network()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 
+/obj/machinery/power/data_terminal/should_have_node()
+	return TRUE
+
 /obj/machinery/power/data_terminal/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
 	if(!powernet) //Did we somehow receive a signal without a powernet?

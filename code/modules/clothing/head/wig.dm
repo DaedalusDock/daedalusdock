@@ -75,7 +75,7 @@
 		var/obj/item/clothing/head/wig/wig = target.head
 		selected_hairstyle = wig.hairstyle
 		selected_hairstyle_color = wig.color
-	else if((HAIR in target.dna.species.species_traits) && target.hairstyle != "Bald")
+	else if(target.has_hair(TRUE))
 		selected_hairstyle = target.hairstyle
 		selected_hairstyle_color = "[target.hair_color]"
 

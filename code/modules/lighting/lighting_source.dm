@@ -54,6 +54,9 @@
 	pixel_turf = get_turf_pixel(top_atom) || source_turf
 
 	light_power = source_atom.light_power
+	#warn DO NOT MERGE
+	if(!isnum(light_power))
+		stack_trace("Nonsensical light_power in light_source for atom of type [source_atom.type]")
 	light_inner_range = source_atom.light_inner_range
 	light_outer_range = source_atom.light_outer_range
 	light_falloff_curve = source_atom.light_falloff_curve
@@ -206,8 +209,9 @@
 
 	if (source_atom.light_power != light_power)
 		light_power = source_atom.light_power
-		if(!isnum(source_atom.light_power))
-			CRASH("Non-num power value! Source: [source_atom]")
+		#warn DO NOT MERGE
+		if(!isnum(light_power))
+			stack_trace("Nonsensical light_power in light_source for atom of type [source_atom.type]")
 		update = TRUE
 
 	if (source_atom.light_inner_range != light_inner_range)

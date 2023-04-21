@@ -93,7 +93,7 @@
 
 	var/success = FALSE
 
-	if(do_after(living_pawn, victim, MONKEY_ITEM_SNATCH_DELAY, DO_PUBLIC) && target && living_pawn.CanReach(victim))
+	if(do_after(living_pawn, victim, MONKEY_ITEM_SNATCH_DELAY, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")) && target && living_pawn.CanReach(victim))
 
 		for(var/obj/item/I in victim.held_items)
 			if(I == target)

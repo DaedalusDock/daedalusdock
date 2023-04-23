@@ -26,6 +26,7 @@
 	verb_exclaim = "beeps"
 	density = FALSE
 	layer = ABOVE_WINDOW_LAYER
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/obj/effect/overlay/status_display_text/message1_overlay
 	var/obj/effect/overlay/status_display_text/message2_overlay

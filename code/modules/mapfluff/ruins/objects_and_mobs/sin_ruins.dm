@@ -5,6 +5,8 @@
 	desc = "High stakes, high rewards."
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "slots"
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	var/icon_screen = "slots_screen"
 	var/brightness_on = 1
 	anchored = TRUE

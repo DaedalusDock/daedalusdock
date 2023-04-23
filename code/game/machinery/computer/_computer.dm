@@ -6,6 +6,7 @@
 	max_integrity = 200
 	integrity_failure = 0.5
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_inner_range = 0.1
 	light_outer_range = 2

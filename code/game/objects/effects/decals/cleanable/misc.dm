@@ -287,6 +287,8 @@
 	layer = LOW_OBJ_LAYER
 	decal_reagent = /datum/reagent/ants
 	reagent_amount = 5
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Sound the ants make when biting
 	var/bite_sound = 'sound/weapons/bite.ogg'
 

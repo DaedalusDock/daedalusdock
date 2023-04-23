@@ -12,6 +12,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	power_channel = AREA_USAGE_ENVIRON
 	req_access = list(ACCESS_KEYCARD_AUTH)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/datum/callback/ev
 	var/event = ""

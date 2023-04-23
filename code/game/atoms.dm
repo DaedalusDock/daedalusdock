@@ -704,6 +704,10 @@
 	if(desc)
 		. += desc
 
+	if(z && user.z != z)
+		var/diff = abs(user.z - z)
+		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
+
 	if(custom_materials)
 		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
@@ -771,6 +775,10 @@
 		. |= update_desc(updates)
 	if(updates & UPDATE_ICON)
 		. |= update_icon(updates)
+
+	// This is not an override for performance.
+	if (ismovable(src))
+		UPDATE_OO_IF_PRESENT
 
 /// Updates the name of the atom
 /atom/proc/update_name(updates=ALL)

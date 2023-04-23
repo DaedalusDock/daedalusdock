@@ -1,5 +1,0 @@
-author: Lohikar
-delete-after: true
-changes:
-  - refactor: Z-holes are now rendered using Z-Mimic, which should improve accuracy
-      and performance.

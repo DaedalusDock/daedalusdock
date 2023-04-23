@@ -2349,7 +2349,7 @@
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "If" = (
-/obj/machinery/rnd/production/techfab/department,
+/obj/machinery/rnd/production/fabricator/department,
 /turf/open/floor/iron,
 /area/station/science)
 "Ir" = (
@@ -2451,7 +2451,7 @@
 /turf/open/floor/iron,
 /area/station/medical/medbay)
 "NZ" = (
-/obj/machinery/rnd/production/protolathe/department,
+/obj/machinery/rnd/production/fabricator/omni,
 /turf/open/floor/iron,
 /area/station/science)
 "Ov" = (

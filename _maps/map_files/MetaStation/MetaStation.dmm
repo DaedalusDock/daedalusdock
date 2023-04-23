@@ -12246,7 +12246,7 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "dsi" = (
-/obj/machinery/rnd/production/techfab/department/cargo,
+/obj/machinery/rnd/production/fabricator/department/cargo,
 /obj/structure/disposalpipe/segment,
 /obj/machinery/camera/directional/east{
 	c_tag = "Cargo Bay - Mid"
@@ -21128,7 +21128,7 @@
 /turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
 "gvZ" = (
-/obj/machinery/rnd/production/protolathe/department/engineering,
+/obj/machinery/rnd/production/fabricator/department/engineering,
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -26712,7 +26712,7 @@
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
 "iCa" = (
-/obj/machinery/rnd/production/techfab/department/medical,
+/obj/machinery/rnd/production/fabricator/department/medical,
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/medical/storage)
@@ -34153,7 +34153,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "llr" = (
-/obj/machinery/rnd/production/protolathe/department/science,
+/obj/machinery/rnd/production/fabricator/omni,
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
 "llx" = (
@@ -37715,7 +37715,7 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "mAi" = (
-/obj/machinery/rnd/production/techfab/department/security,
+/obj/machinery/rnd/production/fabricator/department/security,
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "mAt" = (
@@ -41793,7 +41793,7 @@
 	},
 /area/station/science/lobby)
 "nRv" = (
-/obj/machinery/rnd/production/techfab/department/service,
+/obj/machinery/rnd/production/fabricator/department/service,
 /obj/effect/turf_decal/trimline/brown/warning{
 	dir = 6
 	},

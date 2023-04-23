@@ -575,7 +575,6 @@
 		"super_matter_bin",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 7500)
-	discount_experiments = list(/datum/experiment/scanning/points/machinery_tiered_scan/tier2_lathes = 5000)
 
 /datum/techweb_node/adv_power
 	id = "adv_power"

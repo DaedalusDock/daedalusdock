@@ -1035,7 +1035,7 @@
 	illustration = "scicircuit"
 
 /obj/item/storage/box/rndboards/PopulateContents()
-	new /obj/item/circuitboard/machine/protolathe/offstation(src)
+	new /obj/item/circuitboard/machine/fabricator/offstation(src)
 	new /obj/item/circuitboard/machine/destructive_analyzer(src)
 	new /obj/item/circuitboard/machine/circuit_imprinter/offstation(src)
 	new /obj/item/circuitboard/computer/rdconsole(src)
@@ -1066,7 +1066,7 @@
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/holy(src)
 
-/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to an autolathe/protolathe, but still want to make stock parts accessible
+/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to a fabricator, but still want to make stock parts accessible
 	name = "box of stock parts"
 	desc = "Contains a variety of basic stock parts."
 

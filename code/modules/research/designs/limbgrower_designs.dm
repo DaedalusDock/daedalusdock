@@ -233,7 +233,7 @@
 	name = "Limb Design Disk"
 	desc = "Contains designs for various limbs."
 	id = "limbdesign_parent"
-	build_type = PROTOLATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
 	build_path = /obj/item/disk/design_disk/limbs
 	category = list("Medical Designs")

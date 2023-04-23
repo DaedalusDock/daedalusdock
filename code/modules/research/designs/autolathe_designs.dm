@@ -5,7 +5,7 @@
 /datum/design/bucket
 	name = "Bucket"
 	id = "bucket"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 200)
 	build_path = /obj/item/reagent_containers/glass/bucket
 	category = list("initial","Tools","Tool Designs")
@@ -14,7 +14,7 @@
 /datum/design/mop
 	name = "Mop"
 	id = "mop"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 1000)
 	build_path = /obj/item/mop
 	category = list("initial", "Equipment", "Tools", "Tool Designs")
@@ -23,7 +23,7 @@
 /datum/design/broom
 	name="Push Broom"
 	id="pushbroom"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 2000)
 	build_path = /obj/item/pushbroom
 	category = list("initial","Tools","Tool Designs")
@@ -32,7 +32,7 @@
 /datum/design/crowbar
 	name = "Pocket Crowbar"
 	id = "crowbar"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50)
 	build_path = /obj/item/crowbar
 	category = list("initial","Tools","Tool Designs")
@@ -65,7 +65,7 @@
 /datum/design/multitool
 	name = "Multitool"
 	id = "multitool"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 20)
 	build_path = /obj/item/multitool
 	category = list("initial","Tools","Tool Designs")
@@ -74,7 +74,7 @@
 /datum/design/analyzer
 	name = "Gas Analyzer"
 	id = "analyzer"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 30, /datum/material/glass = 20)
 	build_path = /obj/item/analyzer
 	category = list("initial","Tools","Tool Designs")
@@ -92,7 +92,7 @@
 /datum/design/weldingtool
 	name = "Welding Tool"
 	id = "welding_tool"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 70, /datum/material/glass = 20)
 	build_path = /obj/item/weldingtool
 	category = list("initial","Tools","Tool Designs")
@@ -109,7 +109,7 @@
 /datum/design/screwdriver
 	name = "Screwdriver"
 	id = "screwdriver"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 75)
 	build_path = /obj/item/screwdriver
 	category = list("initial","Tools","Tool Designs")
@@ -118,7 +118,7 @@
 /datum/design/wirecutters
 	name = "Wirecutters"
 	id = "wirecutters"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 80)
 	build_path = /obj/item/wirecutters
 	category = list("initial","Tools","Tool Designs")
@@ -127,7 +127,7 @@
 /datum/design/wrench
 	name = "Wrench"
 	id = "wrench"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 150)
 	build_path = /obj/item/wrench
 	category = list("initial","Tools","Tool Designs")
@@ -136,7 +136,7 @@
 /datum/design/plunger
 	name = "Plunger"
 	id = "plunger"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 150)
 	build_path = /obj/item/plunger
 	category = list("initial","Tools","Tool Designs")
@@ -145,7 +145,7 @@
 /datum/design/welding_helmet
 	name = "Welding Helmet"
 	id = "welding_helmet"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 1750, /datum/material/glass = 400)
 	build_path = /obj/item/clothing/head/welding
 	category = list("initial","Tools","Equipment")
@@ -154,7 +154,7 @@
 /datum/design/cable_coil
 	name = "Cable Coil"
 	id = "cable_coil"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 10, /datum/material/glass = 5)
 	build_path = /obj/item/stack/cable_coil
 	category = list("initial","Tools","Tool Designs")
@@ -172,7 +172,7 @@
 /datum/design/apc_board
 	name = "APC Module"
 	id = "power control"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
 	build_path = /obj/item/electronics/apc
 	category = list("initial", "Electronics")
@@ -181,7 +181,7 @@
 /datum/design/airlock_board
 	name = "Airlock Electronics"
 	id = "airlock_board"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/electronics/airlock
 	category = list("initial", "Electronics")
@@ -190,7 +190,7 @@
 /datum/design/firelock_board
 	name = "Firelock Circuitry"
 	id = "firelock_board"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/electronics/firelock
 	category = list("initial", "Electronics")
@@ -199,7 +199,7 @@
 /datum/design/airalarm_electronics
 	name = "Air Alarm Electronics"
 	id = "airalarm_electronics"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/electronics/airalarm
 	category = list("initial", "Electronics")
@@ -208,7 +208,7 @@
 /datum/design/firealarm_electronics
 	name = "Fire Alarm Electronics"
 	id = "firealarm_electronics"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/electronics/firealarm
 	category = list("initial", "Electronics")
@@ -241,7 +241,7 @@
 /datum/design/pipe_painter
 	name = "Pipe Painter"
 	id = "pipe_painter"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2000)
 	build_path = /obj/item/pipe_painter
 	category = list("initial","Tools","Tool Designs")
@@ -250,7 +250,7 @@
 /datum/design/airlock_painter
 	name = "Airlock Painter"
 	id = "airlock_painter"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter
 	category = list("initial","Tools","Tool Designs")
@@ -259,7 +259,7 @@
 /datum/design/airlock_painter/decal
 	name = "Decal Painter"
 	id = "decal_painter"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal
 	category = list("initial","Tools","Tool Designs")
@@ -268,7 +268,7 @@
 /datum/design/airlock_painter/decal/tile
 	name = "Tile Sprayer"
 	id = "tile_sprayer"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal/tile
 	category = list("initial","Tools","Tool Designs")
@@ -277,7 +277,7 @@
 /datum/design/emergency_oxygen
 	name = "Emergency Oxygen Tank"
 	id = "emergency_oxygen"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 500)
 	build_path = /obj/item/tank/internals/emergency_oxygen/empty
 	category = list("initial","Misc","Equipment")
@@ -285,7 +285,7 @@
 /datum/design/emergency_oxygen_engi
 	name = "Extended-Capacity Emergency Oxygen Tank"
 	id = "emergency_oxygen_engi"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 750)
 	build_path = /obj/item/tank/internals/emergency_oxygen/engi/empty
 	category = list("hacked","Misc","Equipment")
@@ -294,7 +294,7 @@
 /datum/design/plasmaman_tank_belt
 	name = "Plasmaman Belt Tank"
 	id = "plasmaman_tank_belt"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 800)
 	build_path = /obj/item/tank/internals/plasmaman/belt/empty
 	category = list("hacked","Misc","Equipment")
@@ -303,7 +303,7 @@
 /datum/design/generic_gas_tank
 	name = "Generic Gas Tank"
 	id = "generic_tank"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 1000)
 	build_path = /obj/item/tank/internals/generic
 	category = list("initial","Misc","Equipment")
@@ -330,7 +330,7 @@
 /datum/design/rglass
 	name = "Reinforced Glass"
 	id = "rglass"
-	build_type = AUTOLATHE | SMELTER | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | SMELTER | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/rglass
 	category = list("initial","Construction","Stock Parts")
@@ -364,7 +364,7 @@
 /datum/design/plastic_knife
 	name = "Plastic Knife"
 	id = "plastic_knife"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 100)
 	build_path = /obj/item/knife/plastic
 	category = list("initial", "Tool Designs","Dinnerware")
@@ -380,7 +380,7 @@
 /datum/design/plastic_fork
 	name = "Plastic Fork"
 	id = "plastic_fork"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 80)
 	build_path = /obj/item/kitchen/fork/plastic
 	category = list("initial", "Tool Designs", "Dinnerware")
@@ -389,7 +389,7 @@
 /datum/design/spoon
 	name = "Spoon"
 	id = "spoon"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 120)
 	build_path = /obj/item/kitchen/spoon
 	category = list("initial", "Tool Designs", "Dinnerware")
@@ -398,7 +398,7 @@
 /datum/design/plastic_spoon
 	name = "Plastic Spoon"
 	id = "plastic_spoon"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 120)
 	build_path = /obj/item/kitchen/spoon/plastic
 	category = list("initial", "Tool Designs", "Dinnerware")
@@ -463,7 +463,7 @@
 /datum/design/cultivator
 	name = "Cultivator"
 	id = "cultivator"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron=50)
 	build_path = /obj/item/cultivator
 	category = list("initial","Misc", "Tool Designs")
@@ -472,7 +472,7 @@
 /datum/design/plant_analyzer
 	name = "Plant Analyzer"
 	id = "plant_analyzer"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 30, /datum/material/glass = 20)
 	build_path = /obj/item/plant_analyzer
 	category = list("initial","Misc", "Tool Designs")
@@ -481,7 +481,7 @@
 /datum/design/shovel
 	name = "Shovel"
 	id = "shovel"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50)
 	build_path = /obj/item/shovel
 	category = list("initial","Misc", "Tool Designs")
@@ -490,7 +490,7 @@
 /datum/design/spade
 	name = "Spade"
 	id = "spade"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50)
 	build_path = /obj/item/shovel/spade
 	category = list("initial","Misc", "Tool Designs")
@@ -499,7 +499,7 @@
 /datum/design/hatchet
 	name = "Hatchet"
 	id = "hatchet"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 15000)
 	build_path = /obj/item/hatchet
 	category = list("initial","Misc", "Tool Designs")
@@ -508,7 +508,7 @@
 /datum/design/secateurs
 	name = "Secateurs"
 	id = "secateurs"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 4000)
 	build_path = /obj/item/secateurs
 	category = list("initial","Misc", "Tool Designs")
@@ -525,7 +525,7 @@
 /datum/design/blood_filter
 	name = "Blood Filter"
 	id = "blood_filter"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1500, /datum/material/silver = 500)
 	build_path = /obj/item/blood_filter
 	category = list("initial", "Medical", "Tool Designs")
@@ -534,7 +534,7 @@
 /datum/design/scalpel
 	name = "Scalpel"
 	id = "scalpel"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1000)
 	build_path = /obj/item/scalpel
 	category = list("initial", "Medical", "Tool Designs")
@@ -543,7 +543,7 @@
 /datum/design/circular_saw
 	name = "Circular Saw"
 	id = "circular_saw"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 6000)
 	build_path = /obj/item/circular_saw
 	category = list("initial", "Medical", "Tool Designs")
@@ -552,7 +552,7 @@
 /datum/design/bonesetter
 	name = "Bonesetter"
 	id = "bonesetter"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 5000,  /datum/material/glass = 2500)
 	build_path = /obj/item/bonesetter
 	category = list("initial", "Medical", "Tool Designs")
@@ -561,7 +561,7 @@
 /datum/design/surgicaldrill
 	name = "Surgical Drill"
 	id = "surgicaldrill"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 6000)
 	build_path = /obj/item/surgicaldrill
 	category = list("initial", "Medical", "Tool Designs")
@@ -570,7 +570,7 @@
 /datum/design/retractor
 	name = "Retractor"
 	id = "retractor"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 6000, /datum/material/glass = 3000)
 	build_path = /obj/item/retractor
 	category = list("initial", "Medical", "Tool Designs")
@@ -579,7 +579,7 @@
 /datum/design/cautery
 	name = "Cautery"
 	id = "cautery"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 750)
 	build_path = /obj/item/cautery
 	category = list("initial", "Medical", "Tool Designs")
@@ -588,7 +588,7 @@
 /datum/design/hemostat
 	name = "Hemostat"
 	id = "hemostat"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2500)
 	build_path = /obj/item/hemostat
 	category = list("initial", "Medical", "Tool Designs")
@@ -597,7 +597,7 @@
 /datum/design/stethoscope
 	name = "Stethoscope"
 	id = "stethoscope"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 1000)
 	build_path = /obj/item/clothing/neck/stethoscope
 	category = list("initial", "Medical", "Tool Designs")
@@ -606,7 +606,7 @@
 /datum/design/beaker
 	name = "Beaker"
 	id = "beaker"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/glass = 500)
 	build_path = /obj/item/reagent_containers/glass/beaker
 	category = list("initial", "Medical", "Medical Designs")
@@ -615,7 +615,7 @@
 /datum/design/large_beaker
 	name = "Large Beaker"
 	id = "large_beaker"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/glass = 2500)
 	build_path = /obj/item/reagent_containers/glass/beaker/large
 	category = list("initial", "Medical", "Medical Designs")
@@ -624,7 +624,7 @@
 /datum/design/pillbottle
 	name = "Pill Bottle"
 	id = "pillbottle"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 20, /datum/material/glass = 100)
 	build_path = /obj/item/storage/pill_bottle
 	category = list("initial", "Medical", "Medical Designs")
@@ -793,7 +793,7 @@
 /datum/design/syringe
 	name = "Syringe"
 	id = "syringe"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 10, /datum/material/glass = 20)
 	build_path = /obj/item/reagent_containers/syringe
 	category = list("initial", "Medical", "Medical Designs")
@@ -802,7 +802,7 @@
 /datum/design/dropper
 	name = "Dropper"
 	id = "dropper"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/glass = 10, /datum/material/plastic = 30)
 	build_path = /obj/item/reagent_containers/dropper
 	category = list("initial", "Medical", "Medical Designs")
@@ -965,7 +965,7 @@
 /datum/design/desttagger
 	name = "Destination Tagger"
 	id = "desttagger"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 125)
 	build_path = /obj/item/dest_tagger
 	category = list("initial", "Electronics")
@@ -973,7 +973,7 @@
 /datum/design/salestagger
 	name = "Sales Tagger"
 	id = "salestagger"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 200)
 	build_path = /obj/item/sales_tagger
 	category = list("initial", "Electronics")
@@ -982,7 +982,7 @@
 /datum/design/handlabeler
 	name = "Hand Labeler"
 	id = "handlabel"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 150, /datum/material/glass = 125)
 	build_path = /obj/item/hand_labeler
 	category = list("initial", "Electronics")
@@ -1006,7 +1006,7 @@
 /datum/design/conveyor_belt
 	name = "Conveyor Belt"
 	id = "conveyor_belt"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 3000)
 	build_path = /obj/item/stack/conveyor
 	category = list("initial", "Construction", "Electronics")
@@ -1016,7 +1016,7 @@
 /datum/design/conveyor_switch
 	name = "Conveyor Belt Switch"
 	id = "conveyor_switch"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 450, /datum/material/glass = 190)
 	build_path = /obj/item/conveyor_switch_construct
 	category = list("initial", "Construction", "Electronics")
@@ -1065,7 +1065,7 @@
 /datum/design/package_wrap
 	name = "Package Wrapping"
 	id = "packagewrap"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200)
 	build_path = /obj/item/stack/package_wrap
 	category = list("initial", "Misc", "Equipment")
@@ -1207,7 +1207,7 @@
 /datum/design/sticky_tape/surgical
 	name = "Surgical Tape"
 	id = "surgical_tape"
-	build_type = PROTOLATHE | AWAY_LATHE
+	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 500)
 	build_path = /obj/item/stack/sticky_tape/surgical
 	category = list("initial", "Medical")
@@ -1216,7 +1216,7 @@
 /datum/design/petridish
 	name = "Petri Dish"
 	id = "petri_dish"
-	build_type = PROTOLATHE | AWAY_LATHE | AUTOLATHE
+	build_type = FABRICATOR | AWAY_LATHE | AUTOLATHE
 	materials = list(/datum/material/glass = 500)
 	build_path = /obj/item/petri_dish
 	category = list("initial","Misc","Equipment")
@@ -1225,7 +1225,7 @@
 /datum/design/swab
 	name = "Sterile Swab"
 	id = "swab"
-	build_type = PROTOLATHE | AWAY_LATHE | AUTOLATHE
+	build_type = FABRICATOR | AWAY_LATHE | AUTOLATHE
 	materials = list(/datum/material/plastic = 200)
 	build_path = /obj/item/swab
 	category = list("initial","Misc","Equipment")
@@ -1250,7 +1250,7 @@
 /datum/design/razor
 	name = "Electric Razor"
 	id = "razor"
-	build_type = PROTOLATHE | AWAY_LATHE | AUTOLATHE
+	build_type = FABRICATOR | AWAY_LATHE | AUTOLATHE
 	materials = list(/datum/material/iron = 75)
 	build_path = /obj/item/razor
 	category = list("initial","Medical")
@@ -1259,7 +1259,7 @@
 /datum/design/paperroll
 	name = "Hand Labeler Paper Roll"
 	id = "roll"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 25)
 	build_path = /obj/item/hand_labeler_refill
 	category = list("initial", "Misc", "Equipment")
@@ -1267,7 +1267,7 @@
 /datum/design/toner
 	name = "Toner Cartridge"
 	id = "toner"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 10, /datum/material/glass = 10)
 	build_path = /obj/item/toner
 	category = list("initial", "Misc", "Equipment")
@@ -1276,7 +1276,7 @@
 /datum/design/toner/large
 	name = "Large Toner Cartridge"
 	id = "toner_large"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 35, /datum/material/glass = 35)
 	build_path = /obj/item/toner/large
 	category = list("initial", "Misc", "Equipment")

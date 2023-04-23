@@ -7,6 +7,7 @@
 	var/list/categories = list()
 	var/datum/component/remote_materials/materials
 	var/allowed_department_flags = ALL
+	#warn REMOVE THIS ^
 	/// What's flick()'d on print.
 	var/production_animation
 	var/allowed_buildtypes = NONE
@@ -41,7 +42,7 @@
 	cached_designs.Cut()
 	for(var/i in stored_research.researched_designs)
 		var/datum/design/d = SSresearch.techweb_design_by_id(i)
-		if((isnull(allowed_department_flags) || (d.departmental_flags & allowed_department_flags)) && (d.build_type & allowed_buildtypes))
+		if((d.build_type & allowed_buildtypes))
 			cached_designs |= d
 
 /obj/machinery/rnd/production/RefreshParts()
@@ -141,9 +142,6 @@
 	var/datum/design/D = stored_research.researched_designs[id] ? SSresearch.techweb_design_by_id(id) : null
 	if(!istype(D))
 		return FALSE
-	if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))
-		say("Warning: Printing failed: This fabricator does not have the necessary keys to decrypt design schematics. Please update the research data with the on-screen button and contact Nanotrasen Support!")
-		return FALSE
 	if(D.build_type && !(D.build_type & allowed_buildtypes))
 		say("This machine does not have the necessary manipulation systems for this design. Please contact Nanotrasen Support!")
 		return FALSE
@@ -186,7 +184,7 @@
 	matching_designs.Cut()
 	for(var/v in stored_research.researched_designs)
 		var/datum/design/D = SSresearch.techweb_design_by_id(v)
-		if(!(D.build_type & allowed_buildtypes) || !(isnull(allowed_department_flags) ||(D.departmental_flags & allowed_department_flags)))
+		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
 			matching_designs.Add(D)
@@ -213,7 +211,7 @@
 
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><b>[stored_research.organization] [department_tag] Department Lathe</b>"
+	l += "<div class='statusDisplay'><b>[stored_research.organization] [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b>"
 	l += "Security protocols: [(obj_flags & EMAGGED)? "<font color='red'>Disabled</font>" : "<font color='green'>Enabled</font>"]"
 	if (materials.mat_container)
 		l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"

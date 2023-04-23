@@ -42,13 +42,12 @@
 #define SAFE (1<<4)
 
 //used in design to specify which machine can build it
-#define IMPRINTER (1<<0) //For circuits. Uses glass/chemicals.
-#define PROTOLATHE (1<<1) //New stuff. Uses various minerals
-#define AUTOLATHE (1<<2) //Prints basic designs without research
-#define MECHFAB (1<<3) //Remember, objects utilising this flag should have construction_time and construction_cost vars.
-#define BIOGENERATOR (1<<4) //Uses biomass
-#define LIMBGROWER (1<<5) //Uses synthetic flesh
-#define SMELTER (1<<6) //uses various minerals
+#define FABRICATOR (1<<0) //For circuits. Uses glass/chemicals.
+#define AUTOLATHE (1<<1) //Prints basic designs without research
+#define MECHFAB (1<<2) //Remember, objects utilising this flag should have construction_time and construction_cost vars.
+#define BIOGENERATOR (1<<3) //Uses biomass
+#define LIMBGROWER (1<<4) //Uses synthetic flesh
+#define SMELTER (1<<5) //uses various minerals
 /// Protolathes for offstation roles. More limited tech tree.
 #define AWAY_LATHE (1<<8)
 /// Imprinters for offstation roles. More limited tech tree.
@@ -56,6 +55,7 @@
 /// For wiremod/integrated circuits. Uses various minerals.
 #define COMPONENT_PRINTER (1<<10)
 //Note: More than one of these can be added to a design but imprinter and lathe designs are incompatable.
+#define IMPRINTER (1<<11)//temp
 
 //Modular computer/NTNet defines
 

@@ -210,10 +210,10 @@
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stack/sheet/iron = 5)
 
-/obj/item/circuitboard/machine/protolathe/department/engineering
-	name = "Departmental Protolathe - Engineering (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/department/engineering
+	name = "Departmental Fabricator - Engineering (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/rnd/production/protolathe/department/engineering
+	build_path = /obj/machinery/rnd/production/fabricator/department/engineering
 
 /obj/item/circuitboard/machine/rtg
 	name = "RTG (Machine Board)"
@@ -253,11 +253,6 @@
 		/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/high/empty,
 		/obj/item/stock_parts/capacitor = /obj/item/stock_parts/capacitor/adv
 	)
-
-/obj/item/circuitboard/machine/techfab/department/engineering
-	name = "\improper Departmental Techfab - Engineering (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/rnd/production/techfab/department/engineering
 
 /obj/item/circuitboard/machine/thermomachine
 	name = "Thermomachine (Machine Board)"
@@ -398,23 +393,27 @@
 		/obj/item/stock_parts/manipulator = 1)
 	def_components = list(/obj/item/stack/ore/bluespace_crystal = /obj/item/stack/ore/bluespace_crystal/artificial)
 
-/obj/item/circuitboard/machine/protolathe
-	name = "Protolathe (Machine Board)"
+/obj/item/circuitboard/machine/fabricator
+	name = "Fabricator (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/rnd/production/protolathe
+	build_path = /obj/machinery/rnd/production/fabricator
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/reagent_containers/glass/beaker = 2)
 
-/obj/item/circuitboard/machine/protolathe/offstation
-	name = "Ancient Protolathe (Machine Board)"
-	build_path = /obj/machinery/rnd/production/protolathe/offstation
+/obj/item/circuitboard/machine/fabricator/omni
+	name = "Omni-Fabricator (Machine Board)"
+	build_path = /obj/machinery/rnd/production/fabricator/omni
 
-/obj/item/circuitboard/machine/protolathe/department
-	name = "Departmental Protolathe (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/offstation
+	name = "Ancient Fabricator (Machine Board)"
+	build_path = /obj/machinery/rnd/production/fabricator/offstation
+
+/obj/item/circuitboard/machine/fabricator/department
+	name = "Departmental Fabricator (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/rnd/production/protolathe/department
+	build_path = /obj/machinery/rnd/production/fabricator/department
 
 /obj/item/circuitboard/machine/reagentgrinder
 	name = "All-In-One Grinder (Machine Board)"
@@ -483,20 +482,6 @@
 		/obj/item/stack/sheet/glass = 1)
 
 	needs_anchored = FALSE
-
-
-/obj/item/circuitboard/machine/techfab
-	name = "\improper Techfab (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/rnd/production/techfab
-	req_components = list(
-		/obj/item/stock_parts/matter_bin = 2,
-		/obj/item/stock_parts/manipulator = 2,
-		/obj/item/reagent_containers/glass/beaker = 2)
-
-/obj/item/circuitboard/machine/techfab/department
-	name = "\improper Departmental Techfab (Machine Board)"
-	build_path = /obj/machinery/rnd/production/techfab/department
 
 /obj/item/circuitboard/machine/vendor
 	name = "Custom Vendor (Machine Board)"
@@ -752,10 +737,10 @@
 		/obj/item/reagent_containers/glass/beaker/bluespace = 2,
 		/obj/item/stack/sheet/glass = 1)
 
-/obj/item/circuitboard/machine/protolathe/department/medical
-	name = "Departmental Protolathe - Medical (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/department/medical
+	name = "Departmental Fabricator - Medical (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/rnd/production/protolathe/department/medical
+	build_path = /obj/machinery/rnd/production/fabricator/department/medical
 
 /obj/item/circuitboard/machine/sleeper
 	name = "Sleeper (Machine Board)"
@@ -808,11 +793,6 @@
 	build_path = /obj/machinery/medipen_refiller
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1)
-
-/obj/item/circuitboard/machine/techfab/department/medical
-	name = "\improper Departmental Techfab - Medical (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/rnd/production/techfab/department/medical
 
 //Science
 
@@ -881,11 +861,6 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/processor/slime
 
-/obj/item/circuitboard/machine/protolathe/department/science
-	name = "Departmental Protolathe - Science (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/rnd/production/protolathe/department/science
-
 /obj/item/circuitboard/machine/quantumpad
 	name = "Quantum Pad (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -904,11 +879,6 @@
 	req_components = list(
 		/obj/item/stack/cable_coil = 2,
 		/obj/item/stock_parts/scanning_module = 1)
-
-/obj/item/circuitboard/machine/techfab/department/science
-	name = "\improper Departmental Techfab - Science (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/rnd/production/techfab/department/science
 
 /obj/item/circuitboard/machine/teleporter_hub
 	name = "Teleporter Hub (Machine Board)"
@@ -948,10 +918,10 @@
 
 //Security
 
-/obj/item/circuitboard/machine/protolathe/department/security
-	name = "Departmental Protolathe - Security (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/department/security
+	name = "Departmental Fabricator - Security (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SECURITY
-	build_path = /obj/machinery/rnd/production/protolathe/department/security
+	build_path = /obj/machinery/rnd/production/fabricator/department/security
 
 /obj/item/circuitboard/machine/recharger
 	name = "Weapon Recharger (Machine Board)"
@@ -959,11 +929,6 @@
 	build_path = /obj/machinery/recharger
 	req_components = list(/obj/item/stock_parts/capacitor = 1)
 	needs_anchored = FALSE
-
-/obj/item/circuitboard/machine/techfab/department/security
-	name = "\improper Departmental Techfab - Security (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SECURITY
-	build_path = /obj/machinery/rnd/production/techfab/department/security
 
 //Service
 
@@ -1110,10 +1075,10 @@
 		to_chat(user, span_notice("Defaulting name protocols."))
 	return TRUE
 
-/obj/item/circuitboard/machine/protolathe/department/service
-	name = "Departmental Protolathe - Service (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/department/service
+	name = "Departmental Fabricator - Service (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
-	build_path = /obj/machinery/rnd/production/protolathe/department/service
+	build_path = /obj/machinery/rnd/production/fabricator/department/service
 
 /obj/item/circuitboard/machine/recycler
 	name = "Recycler (Machine Board)"
@@ -1132,11 +1097,6 @@
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/manipulator = 1)
 	needs_anchored = FALSE
-
-/obj/item/circuitboard/machine/techfab/department/service
-	name = "\improper Departmental Techfab - Service (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SERVICE
-	build_path = /obj/machinery/rnd/production/techfab/department/service
 
 /obj/item/circuitboard/machine/vendatray
 	name = "Vend-A-Tray (Machine Board)"
@@ -1177,10 +1137,10 @@
 	build_path = /obj/machinery/ore_silo
 	req_components = list()
 
-/obj/item/circuitboard/machine/protolathe/department/cargo
-	name = "Departmental Protolathe - Cargo (Machine Board)"
+/obj/item/circuitboard/machine/fabricator/department/cargo
+	name = "Departmental Fabricator - Cargo (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
-	build_path = /obj/machinery/rnd/production/protolathe/department/cargo
+	build_path = /obj/machinery/rnd/production/fabricator/department/cargo
 
 /obj/item/circuitboard/machine/stacking_machine
 	name = "Stacking Machine (Machine Board)"
@@ -1197,11 +1157,6 @@
 	req_components = list(
 		/obj/item/stack/sheet/glass = 2,
 		/obj/item/stack/cable_coil = 5)
-
-/obj/item/circuitboard/machine/techfab/department/cargo
-	name = "\improper Departmental Techfab - Cargo (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SUPPLY
-	build_path = /obj/machinery/rnd/production/techfab/department/cargo
 
 /obj/item/circuitboard/machine/bepis
 	name = "BEPIS Chamber (Machine Board)"

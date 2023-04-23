@@ -29,7 +29,7 @@
 
 /datum/design/unique_modkit
 	category = list("Mining Designs", "Cyborg Upgrade Modules") //can't be normally obtained
-	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO
 
 /datum/design/unique_modkit/offensive_turf_aoe

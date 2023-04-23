@@ -151,20 +151,6 @@
 	total_requirement = 3
 	possible_plant_genes = list(/datum/plant_gene/trait/squash, /datum/plant_gene/trait/cell_charge, /datum/plant_gene/trait/glow/shadow, /datum/plant_gene/trait/teleport, /datum/plant_gene/trait/brewing, /datum/plant_gene/trait/juicing, /datum/plant_gene/trait/eyes, /datum/plant_gene/trait/sticky)
 
-/datum/experiment/scanning/points/machinery_tiered_scan/tier2_lathes
-	name = "Advanced Stock Parts Benchmark"
-	description = "Our newly-designed advanced machinery components require practical application tests for hints at possible further advancements, as well as a general confirmation that we didn't actually design worse parts somehow."
-	required_points = 6
-	required_atoms = list(
-		/obj/machinery/rnd/production/protolathe/department/science = 1,
-		/obj/machinery/rnd/production/protolathe/department/engineering = 1,
-		/obj/machinery/rnd/production/techfab/department/cargo = 1,
-		/obj/machinery/rnd/production/techfab/department/medical = 1,
-		/obj/machinery/rnd/production/techfab/department/security = 1,
-		/obj/machinery/rnd/production/techfab/department/service = 1
-	)
-	required_tier = 2
-
 /datum/experiment/scanning/points/machinery_tiered_scan/tier3_bluespacemachines
 	name = "Bluespace Machinery Attunement"
 	description = "Teleportation technology using bluespace capabilities is a high selling point for our company, but the threat of a critical malfunction in calibration procedures wasn't something we predicted to emerge. Since our RnD department has started a flyperson race riot, maybe your advancements in stock parts could help mitigate the buzzing problem."

@@ -238,21 +238,21 @@
 	category = list("Research Machinery")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_CARGO
 
-/datum/design/board/protolathe
-	name = "Machine Design (Protolathe Board)"
-	desc = "The circuit board for a protolathe."
+/datum/design/board/fabricator
+	name = "Machine Design (Fabricator Board)"
+	desc = "The circuit board for a fabricator."
 	id = "protolathe"
 	build_type = IMPRINTER
-	build_path = /obj/item/circuitboard/machine/protolathe
+	build_path = /obj/item/circuitboard/machine/fabricator
 	category = list("Research Machinery")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
-/datum/design/board/protolathe/offstation
-	name = "Machine Design (Ancient Protolathe Board)"
-	desc = "The circuit board for an ancient protolathe."
+/datum/design/board/fabricator/offstation
+	name = "Machine Design (Ancient Fabricator Board)"
+	desc = "The circuit board for an ancient fabricator."
 	id = "protolathe_offstation"
 	build_type = AWAY_IMPRINTER
-	build_path = /obj/item/circuitboard/machine/protolathe/offstation
+	build_path = /obj/item/circuitboard/machine/fabricator/offstation
 	category = list("Research Machinery")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 

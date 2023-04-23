@@ -325,7 +325,7 @@ Nothing else in the console has ID requirements.
 				return
 			var/datum/design/design = SSresearch.techweb_design_by_id(design_id)
 			if(design)
-				if(design.build_type & (AUTOLATHE|PROTOLATHE|AWAY_LATHE)) // Specifically excludes circuit imprinter and mechfab
+				if(design.build_type & (AUTOLATHE|FABRICATOR|AWAY_LATHE)) // Specifically excludes circuit imprinter and mechfab
 					if(design.autolathe_exportable && !design.reagents_list.len)
 						design.build_type |= AUTOLATHE
 					design.category |= "Imported"

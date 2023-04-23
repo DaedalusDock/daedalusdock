@@ -15,7 +15,7 @@
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
 	id = "lightswitch_frame"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(
 		/datum/material/iron = 200,
 		/datum/material/glass = 200,

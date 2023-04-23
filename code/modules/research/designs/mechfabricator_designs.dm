@@ -1026,7 +1026,7 @@
 	name = "MOD external plating"
 	desc = "External plating for a MODsuit."
 	id = "mod_plating_standard"
-	build_type = MECHFAB|PROTOLATHE
+	build_type = MECHFAB|FABRICATOR
 	materials = list(/datum/material/iron = 6000, /datum/material/glass = 3000, /datum/material/plasma = 1000)
 	construction_time = 15 SECONDS
 	build_path = /obj/item/mod/construction/plating

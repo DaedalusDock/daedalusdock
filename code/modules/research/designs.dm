@@ -27,7 +27,7 @@ other types of metals and chemistry for reagents).
 	var/desc = null
 	/// The ID of the design. Used for quick reference. Alphanumeric, lower-case, no symbols
 	var/id = DESIGN_ID_IGNORE
-	/// Bitflags indicating what machines this design is compatable with. ([IMPRINTER]|[AWAY_IMPRINTER]|[PROTOLATHE]|[AWAY_LATHE]|[AUTOLATHE]|[MECHFAB]|[BIOGENERATOR]|[LIMBGROWER]|[SMELTER])
+	/// Bitflags indicating what machines this design is compatable with. ([IMPRINTER]|[AWAY_IMPRINTER]|[FABRICATOR]|[AWAY_LATHE]|[AUTOLATHE]|[MECHFAB]|[BIOGENERATOR]|[LIMBGROWER]|[SMELTER])
 	var/build_type = null
 	/// List of materials required to create one unit of the product. Format is (typepath or caregory) -> amount
 	var/list/materials = list()
@@ -43,12 +43,14 @@ other types of metals and chemistry for reagents).
 	var/list/reagents_list = list()
 	/// The maximum number of units of whatever is produced by this can be produced in one go.
 	var/maxstack = 1
-	/// How many times faster than normal is this to build on the protolathe
+	/// How many times faster than normal is this to build on the fabricator
 	var/lathe_time_factor = 1
+	#warn ^ Needs addressing
 	/// If this is [TRUE] the admins get notified whenever anyone prints this. Currently only used by the BoH.
 	var/dangerous_construction = FALSE
 	/// Bitflags indicating what departmental lathes should be allowed to process this design.
 	var/departmental_flags = ALL
+	#warn ^ This only exists so I know where to reorganize everything. Axe it when done.
 	/// What techwebs nodes unlock this design. Constructed by SSresearch
 	var/list/datum/techweb_node/unlocked_by = list()
 	/// Override for the automatic icon generation used for the research console.
@@ -61,6 +63,7 @@ other types of metals and chemistry for reagents).
 	var/search_metadata
 	/// For protolathe designs that don't require reagents: If they can be exported to autolathes with a design disk or not.
 	var/autolathe_exportable = TRUE
+	#warn ^ Needs addressing
 
 /datum/design/error_design
 	name = "ERROR"

@@ -148,7 +148,7 @@
 	///Variable to ensure smooth visual stacking on multiple progress bars.
 	var/listindex = 0
 
-/datum/world_progressbar/New(atom/movable/_owner, _goal, image/overlay)
+/datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
 	if(!_owner || !_goal)
 		return
 
@@ -157,14 +157,16 @@
 
 	bar = new()
 
-	if(overlay)
-		if(!istype(overlay))
+	if(underlay)
+		if(!istype(underlay))
 			overlay = image(overlay, dir = SOUTH)
 			overlay.filters += filter(type = "outline", size = 1)
 
-		overlay.plane = ABOVE_HUD_PLANE
-		overlay.appearance_flags = APPEARANCE_UI
-		bar.overlays += overlay
+		underlay.pixel_y += 2
+		underlay.alpha = 200
+		underlay.plane = ABOVE_HUD_PLANE
+		underlay.appearance_flags = APPEARANCE_UI
+		bar.underlays += underlay
 
 	owner:vis_contents += bar
 

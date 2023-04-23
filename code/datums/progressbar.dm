@@ -159,8 +159,8 @@
 
 	if(underlay)
 		if(!istype(underlay))
-			overlay = image(overlay, dir = SOUTH)
-			overlay.filters += filter(type = "outline", size = 1)
+			underlay = image(underlay, dir = SOUTH)
+			underlay.filters += filter(type = "outline", size = 1)
 
 		underlay.pixel_y += 2
 		underlay.alpha = 200

@@ -199,3 +199,9 @@
 #define TLV_OUTSIDE_WARNING_LIMIT 1
 ///the gas is outside the hazard limit, the air alarm will go into hazard mode
 #define TLV_OUTSIDE_HAZARD_LIMIT 2
+
+/// Design categories
+#define DESIGN_COMPUTER "Computer Parts"
+#define DESIGN_WIREMOD "Wiremod"
+#define DESIGN_POWER "Power Management"
+#define DESIGN_AMMO "Ammunition"

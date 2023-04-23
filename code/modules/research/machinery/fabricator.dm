@@ -4,20 +4,32 @@
 	icon_state = "protolathe"
 	circuit = /obj/item/circuitboard/machine/fabricator
 	categories = list(
-								"Power Designs",
-								"Medical Designs",
-								"Bluespace Designs",
-								"Stock Parts",
-								"Equipment",
-								"Tool Designs",
-								"Mining Designs",
-								"Electronics",
-								"Weapons",
-								"Ammo",
-								"Firing Pins",
-								"Computer Parts",
-								"Circuitry"
-								)
+		DESIGN_POWER,
+		"Medical Designs",
+		"Bluespace Designs",
+		"Stock Parts",
+		"Equipment",
+		"Tool Designs",
+		"Mining Designs",
+		"Electronics",
+		"Weapons",
+		"Ammo",
+		"Firing Pins",
+		DESIGN_COMPUTER,
+		"AI Modules",
+		"Computer Boards",
+		"Teleportation Machinery",
+		"Medical Machinery",
+		"Engineering Machinery",
+		"Exosuit Modules",
+		"Hydroponics Machinery",
+		"Subspace Telecomms",
+		"Research Machinery",
+		"Misc. Machinery",
+		DESIGN_COMPUTER,
+		DESIGN_WIREMOD
+	)
+
 	production_animation = "protolathe_n"
 	allowed_buildtypes = FABRICATOR | IMPRINTER
 

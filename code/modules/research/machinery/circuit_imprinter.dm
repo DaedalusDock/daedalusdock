@@ -14,8 +14,8 @@
 								"Subspace Telecomms",
 								"Research Machinery",
 								"Misc. Machinery",
-								"Computer Parts",
-								"Circuitry"
+								DESIGN_COMPUTER,
+								DESIGN_WIREMOD
 								)
 	production_animation = "circuit_imprinter_ani"
 	allowed_buildtypes = IMPRINTER

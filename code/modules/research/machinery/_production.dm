@@ -366,7 +366,7 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += list_categories(categories, RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
 
 	return l
 
@@ -420,3 +420,12 @@
 		stripe.icon_state = "protolathe_stripe_t"
 	stripe.color = stripe_color
 	. += stripe
+
+/obj/machinery/rnd/production/proc/compile_categories()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/datum/design/D as anything in cached_designs)
+		. |= D.category
+
+	. -= "initial"
+	#warn ^ remove after techwebs are gone

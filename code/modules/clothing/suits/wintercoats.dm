@@ -347,6 +347,7 @@
 	desc = "A surprisingly heavy yellow winter coat with reflective orange stripes. It has a small wrench for its zipper tab, and the inside layer is covered with a radiation-resistant silver-nylon blend. Because you're worth it."
 	icon_state = "coatengineer"
 	inhand_icon_state = "coatengineer"
+	zmm_flags = ZMM_MANGLE_PLANES
 	allowed = list(
 		/obj/item/analyzer,
 		/obj/item/construction/rcd,
@@ -368,6 +369,7 @@
 	desc = "A yellow winter coat hood. Definitely not a replacement for a hard hat."
 	icon_state = "hood_engineer"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
+	zmm_flags = ZMM_MANGLE_PLANES
 
 /obj/item/clothing/head/hooded/winterhood/engineering/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()

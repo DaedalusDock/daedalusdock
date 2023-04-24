@@ -17,9 +17,6 @@ other types of metals and chemistry for reagents).
 - Add the AUTOLATHE tag to
 */
 
-//DESIGNS ARE GLOBAL. DO NOT CREATE OR DESTROY THEM AT RUNTIME OUTSIDE OF INIT, JUST REFERENCE THEM TO WHATEVER YOU'RE DOING! //why are you yelling?
-//DO NOT REFERENCE OUTSIDE OF SSRESEARCH. USE THE PROCS IN SSRESEARCH TO OBTAIN A REFERENCE.
-
 /datum/design //Datum for object designs, used in construction
 	/// Name of the created object
 	var/name = "Name"
@@ -70,7 +67,9 @@ other types of metals and chemistry for reagents).
 	desc = "This usually means something in the database has corrupted. If this doesn't go away automatically, inform Central Comamnd so their techs can fix this ASAP(tm)"
 
 /datum/design/Destroy()
-	SSresearch.techweb_designs -= id
+	if(!force)
+		stack_trace("Hey which asshole tried to qdel a design?")
+		return QDEL_HINT_LETMELIVE
 	return ..()
 
 /datum/design/proc/InitializeMaterials()

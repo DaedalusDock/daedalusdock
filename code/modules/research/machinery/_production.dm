@@ -11,8 +11,10 @@
 	/// What's flick()'d on print.
 	var/production_animation
 	var/allowed_buildtypes = NONE
-	var/list/datum/design/cached_designs
+
+	/// Used by the search in the UI.
 	var/list/datum/design/matching_designs
+
 	/// Used for material distribution among other things.
 	var/department_tag = "Unidentified"
 
@@ -26,8 +28,6 @@
 	. = ..()
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
-	cached_designs = list()
-	update_designs()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
@@ -37,13 +37,6 @@
 	cached_designs = null
 	matching_designs = null
 	return ..()
-
-/obj/machinery/rnd/production/proc/update_designs()
-	cached_designs.Cut()
-	for(var/i in stored_research.researched_designs)
-		var/datum/design/d = SSresearch.techweb_design_by_id(i)
-		if((d.build_type & allowed_buildtypes))
-			cached_designs |= d
 
 /obj/machinery/rnd/production/RefreshParts()
 	. = ..()
@@ -139,8 +132,12 @@
 		amount = text2num(amount)
 	if(isnull(amount))
 		amount = 1
-	var/datum/design/D = stored_research.researched_designs[id] ? SSresearch.techweb_design_by_id(id) : null
+	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
+		return FALSE
+	if(!D in stored_designs)
+		CRASH("Tried to print a design we don't have! Potential exploit?")
+		message_admins("[key_name_admin(usr)] may be attempting an href exploit (Production Machine).")
 		return FALSE
 	if(D.build_type && !(D.build_type & allowed_buildtypes))
 		say("This machine does not have the necessary manipulation systems for this design. Please contact Nanotrasen Support!")
@@ -182,8 +179,7 @@
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/datum/design/D as anything in stored_designs)
 		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
@@ -211,7 +207,7 @@
 
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><b>[stored_research.organization] [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b>"
+	l += "<div class='statusDisplay'><b>Ananke Research [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b>"
 	l += "Security protocols: [(obj_flags & EMAGGED)? "<font color='red'>Disabled</font>" : "<font color='green'>Enabled</font>"]"
 	if (materials.mat_container)
 		l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
@@ -376,8 +372,7 @@
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/datum/design/D as anything in stored_designs)
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
 		if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))

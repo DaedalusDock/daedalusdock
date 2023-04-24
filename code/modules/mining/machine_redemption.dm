@@ -21,17 +21,26 @@
 	var/list/ore_values = list(/datum/material/iron = 1, /datum/material/glass = 1,  /datum/material/plasma = 15,  /datum/material/silver = 16, /datum/material/gold = 18, /datum/material/titanium = 30, /datum/material/uranium = 30, /datum/material/diamond = 50, /datum/material/bluespace = 50, /datum/material/bananium = 60)
 	/// Variable that holds a timer which is used for callbacks to `send_console_message()`. Used for preventing multiple calls to this proc while the ORM is eating a stack of ores.
 	var/console_notify_timer
-	var/datum/techweb/stored_research
+
 	var/obj/item/disk/design_disk/inserted_disk
+
 	var/datum/component/remote_materials/materials
+
+	var/list/datum/design/designs
 
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
 	. = ..()
-	stored_research = new /datum/techweb/specialized/autounlocking/smelter
+	var/static/list/design_cache
+	if(!design_cache)
+		design_cache = subtypesof(/datum/design/alloy)
+		for(var/i in 1 to length(design_cache))
+			stored_designs[i] = SStech.designs_by_type[stored_designs[i]]
+
+	designs = design_cache
 	materials = AddComponent(/datum/component/remote_materials, "orm", mapload, mat_container_flags=BREAKDOWN_FLAGS_ORM)
 
+
 /obj/machinery/mineral/ore_redemption/Destroy()
-	QDEL_NULL(stored_research)
 	materials = null
 	return ..()
 
@@ -220,8 +229,8 @@
 			data["materials"] += list(list("name" = M.name, "id" = ref, "amount" = sheet_amount, "value" = ore_values[M.type]))
 
 		data["alloys"] = list()
-		for(var/v in stored_research.researched_designs)
-			var/datum/design/D = SSresearch.techweb_design_by_id(v)
+		for(var/datum/design/D as anything in subtypesof(/datum/design/alloy))
+			D = SStech.designs_by_type[D]
 			data["alloys"] += list(list("name" = D.name, "id" = D.id, "amount" = can_smelt_alloy(D)))
 
 	if (!mat_container)

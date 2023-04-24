@@ -22,8 +22,10 @@
 	///the multiplier for how much materials the created object takes from this machines stored materials
 	var/creation_efficiency = 1.6
 
+	var/list/datum/design/stored_designs
+	#warn Autolathe needs it's designs
+
 	var/datum/design/being_built
-	var/datum/techweb/stored_research
 	var/list/datum/design/matching_designs
 	var/selected_category = "None"
 	var/base_price = 25

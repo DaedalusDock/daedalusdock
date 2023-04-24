@@ -1,6 +1,7 @@
 SUBSYSTEM_DEF(tech)
 	name = "Tech"
 	flags = SS_NO_FIRE
+	init_order = INIT_ORDER_TECH
 
 	var/list/datum/design/designs
 	var/list/datum/design/designs_by_type

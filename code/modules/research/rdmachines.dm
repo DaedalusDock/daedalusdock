@@ -12,21 +12,31 @@
 	var/console_link = TRUE //allow console link.
 	var/disabled = FALSE
 	var/obj/item/loaded_item = null //the item loaded inside the machine (currently only used by experimentor and destructive analyzer)
-	/// Ref to global science techweb.
-	var/datum/techweb/stored_research
+
+	/// Our designs. Defined as a list of types, which get created during mapload.
+	var/list/datum/design/stored_designs
 
 /obj/machinery/rnd/proc/reset_busy()
 	busy = FALSE
 
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
-	stored_research = SSresearch.science_tech
 	wires = new /datum/wires/rnd(src)
+	if(mapload)
+		init_default_designs()
+	else
+		stored_designs = null
 
 /obj/machinery/rnd/Destroy()
-	stored_research = null
+	stored_designs = null
 	QDEL_NULL(wires)
 	return ..()
+
+/// Used to populate stored_designs during mapload
+/obj/machinery/rnd/proc/init_default_designs()
+	for(var/i in 1 to length(stored_designs))
+		stored_designs[i] = SStech.designs_by_type[stored_designs[i]]
+	return
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

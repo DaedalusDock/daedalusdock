@@ -11,14 +11,16 @@
 	var/efficiency = 0
 	var/productivity = 0
 	var/max_items = 40
-	var/datum/techweb/stored_research
+
+	var/list/datum/design/stored_designs
+
 	var/list/show_categories = list("Food", "Botany Chemicals", "Organic Materials")
 	/// Currently selected category in the UI
 	var/selected_cat
 
 /obj/machinery/biogenerator/Initialize(mapload)
 	. = ..()
-	stored_research = new /datum/techweb/specialized/autounlocking/biogenerator
+	#warn biogen stored_designs
 
 /obj/machinery/biogenerator/Destroy()
 	QDEL_NULL(beaker)

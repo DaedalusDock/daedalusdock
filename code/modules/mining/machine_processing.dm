@@ -128,7 +128,8 @@
 	var/on = FALSE
 	var/datum/material/selected_material = null
 	var/selected_alloy = null
-	var/datum/techweb/stored_research
+
+	var/list/datum/design/stored_designs
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor
 
@@ -147,8 +148,11 @@
 									/datum/material/bluespace
 									)
 	AddComponent(/datum/component/material_container, allowed_materials, INFINITY, MATCONTAINER_EXAMINE|BREAKDOWN_FLAGS_ORE_PROCESSOR, allowed_items=/obj/item/stack)
-	stored_research = new /datum/techweb/specialized/autounlocking/smelter
 	selected_material = GET_MATERIAL_REF(/datum/material/iron)
+
+	stored_designs = subtypesof(/datum/design/alloy)
+	for(var/i in 1 to length(stored_designs))
+		stored_designs[i] = SStech.designs_by_type[stored_designs]
 
 /obj/machinery/mineral/processing_unit/Destroy()
 	CONSOLE = null
@@ -235,7 +239,7 @@
 
 
 /obj/machinery/mineral/processing_unit/proc/smelt_alloy(delta_time = 2)
-	var/datum/design/alloy = stored_research.isDesignResearchedID(selected_alloy) //check if it's a valid design
+	var/datum/design/alloy = SStech.designs_by_id[selected_alloy]
 	if(!alloy)
 		on = FALSE
 		return

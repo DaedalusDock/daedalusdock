@@ -132,6 +132,7 @@
 			objective.completed = TRUE
 
 /obj/machinery/rnd/server/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
+	/*
 	if(!ninja_suit || !ninja || !ninja_gloves)
 		return INVALID_DRAIN
 
@@ -150,6 +151,8 @@
 	var/datum/objective/research_secrets/objective = locate() in ninja_antag.objectives
 	if(objective)
 		objective.completed = TRUE
+	*/
+	#warn Ninja needs a new objective to steal designs.
 
 //SECURITY CONSOLE//
 /obj/machinery/computer/secure_data/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)

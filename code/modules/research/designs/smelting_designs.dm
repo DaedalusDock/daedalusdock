@@ -1,6 +1,11 @@
 ///////SMELTABLE ALLOYS///////
 
-/datum/design/plasteel_alloy
+/datum/design/alloy
+	name = "ERROR"
+	id = "ERROR_ALLOY"
+	build_type = NONE
+
+/datum/design/alloy/plasteel_alloy
 	name = "Plasma + Iron alloy"
 	id = "plasteel"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -11,7 +16,7 @@
 	maxstack = 50
 
 
-/datum/design/plastitanium_alloy
+/datum/design/alloy/plastitanium_alloy
 	name = "Plasma + Titanium alloy"
 	id = "plastitanium"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -21,7 +26,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
 	maxstack = 50
 
-/datum/design/plaglass_alloy
+/datum/design/alloy/plaglass_alloy
 	name = "Plasma + Glass alloy"
 	id = "plasmaglass"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -31,7 +36,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
 	maxstack = 50
 
-/datum/design/plasmarglass_alloy
+/datum/design/alloy/plasmarglass_alloy
 	name = "Plasma + Iron + Glass alloy"
 	id = "plasmareinforcedglass"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -41,7 +46,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
 	maxstack = 50
 
-/datum/design/titaniumglass_alloy
+/datum/design/alloy/titaniumglass_alloy
 	name = "Titanium + Glass alloy"
 	id = "titaniumglass"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -51,7 +56,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
 	maxstack = 50
 
-/datum/design/plastitaniumglass_alloy
+/datum/design/alloy/plastitaniumglass_alloy
 	name = "Plasma + Titanium + Glass alloy"
 	id = "plastitaniumglass"
 	build_type = SMELTER | FABRICATOR | AWAY_LATHE
@@ -70,3 +75,5 @@
 	build_path = /obj/item/stack/sheet/mineral/abductor
 	category = list("Stock Parts")
 	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+
+#warn Remove?

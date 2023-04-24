@@ -607,7 +607,7 @@ SUBSYSTEM_DEF(ticker)
 	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
 	if(roll_credits)
 		if(roll_credits_in)
-			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits), roll_credits_in))
+			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits)), roll_credits_in)
 		else
 			SScredits.compile_credits()
 

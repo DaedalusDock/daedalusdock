@@ -18,14 +18,15 @@
 	var/production_speed = 3 SECONDS
 	/// The design we're printing currently.
 	var/datum/design/being_built
-	/// Our internal techweb for limbgrower designs.
-	var/datum/techweb/stored_research
+	/// All of our designs
+	var/list/datum/design/stored_designs = list()
+
 	/// All the categories of organs we can print.
 	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
 
+#warn limbgrower
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
-	stored_research = new /datum/techweb/specialized/autounlocking/limbgrower
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
 
@@ -63,8 +64,8 @@
 	var/species_categories = categories.Copy()
 	for(var/species in species_categories)
 		species_categories[species] = list()
-	for(var/design_id in stored_research.researched_designs)
-		var/datum/design/limb_design = SSresearch.techweb_design_by_id(design_id)
+	for(var/design_id in stored_designs)
+		var/datum/design/limb_design =
 		for(var/found_category in species_categories)
 			if(found_category in limb_design.category)
 				species_categories[found_category] += limb_design
@@ -144,7 +145,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = stored_research.isDesignResearchedID(params["design_id"])
+			being_built = SStech.designs_by_id(params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 
@@ -267,19 +268,25 @@
 
 /obj/machinery/limbgrower/fullupgrade/Initialize(mapload)
 	. = ..()
-	for(var/id in SSresearch.techweb_designs)
+	/*
+	for(var/datum/design/D as anything in SSresearch.techweb_designs)
 		var/datum/design/found_design = SSresearch.techweb_design_by_id(id)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
 			stored_research.add_design(found_design)
+	*/
+	#warn limbgrower design list
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
+	/*
 	for(var/design_id in SSresearch.techweb_designs)
 		var/datum/design/found_design = SSresearch.techweb_design_by_id(design_id)
 		if((found_design.build_type & LIMBGROWER) && ("emagged" in found_design.category))
 			stored_research.add_design(found_design)
+	*/
+	#warn limbgrower emag list
 	to_chat(user, span_warning("Safety overrides have been deactivated!"))
 	obj_flags |= EMAGGED
 	update_static_data(user)

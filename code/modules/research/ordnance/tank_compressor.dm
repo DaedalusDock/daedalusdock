@@ -202,11 +202,7 @@
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/apply_experiments(datum/data/compressor_record/record)
 	var/list/passed_experiments = list()
 	var/list/gas_data = record.gas_data
-
-	for (var/datum/experiment/ordnance/gaseous/experiment in SSresearch.ordnance_experiments)
-		if(experiment.required_gas in gas_data)
-			if(gas_data[experiment.required_gas] > MINIMUM_MOLE_COUNT)
-				passed_experiments += list(experiment.type = gas_data[experiment.required_gas])
+	#warn experiments
 
 	return passed_experiments
 

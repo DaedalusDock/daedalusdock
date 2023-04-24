@@ -55,8 +55,6 @@
 	var/medical_mode_flags = MEDBOT_DECLARE_CRIT | MEDBOT_SPEAK_MODE
 //	Selections:  MEDBOT_DECLARE_CRIT | MEDBOT_STATIONARY_MODE | MEDBOT_SPEAK_MODE
 
-	/// techweb linked to the medbot
-	var/datum/techweb/linked_techweb
 	///Is the medbot currently tending wounds
 	var/tending = FALSE
 	///How panicked we are about being tipped over (why would you do this?)
@@ -138,7 +136,6 @@
 
 	skin = new_skin
 	update_appearance()
-	linked_techweb = SSresearch.science_tech
 
 	AddComponent(/datum/component/tippable, \
 		tip_time = 3 SECONDS, \

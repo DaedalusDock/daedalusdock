@@ -15,6 +15,8 @@
 	/// Whether or not the machine is building the entire queue automagically.
 	var/process_queue = FALSE
 
+	/// All our designs
+	var/list/datum/design/stored_designs = list()
 	/// The current design datum that the machine is building.
 	var/datum/design/being_built
 	/// World time when the build will finish.
@@ -30,9 +32,6 @@
 	var/time_coeff = 1
 	/// Coefficient for the efficiency of material usage in item building. Based on the installed parts.
 	var/component_coeff = 1
-
-	/// Reference to the techweb.
-	var/datum/techweb/stored_research
 
 	/// Whether the Exofab links to the ore silo on init. Special derelict or maintanance variants should set this to FALSE.
 	var/link_on_init = TRUE
@@ -69,7 +68,7 @@
 								)
 
 /obj/machinery/mecha_part_fabricator/Initialize(mapload)
-	stored_research = SSresearch.science_tech
+	#warn mechfab stored designs
 	rmat = AddComponent(/datum/component/remote_materials, "mechfab", mapload && link_on_init, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
 	RefreshParts() //Recalculating local material sizes if the fab isn't linked
 	update_menu_tech()
@@ -210,8 +209,7 @@
 	buildable_parts = list()
 	final_sets += part_sets
 
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/datum/design/D as anything in stored_designs)
 		if(D.build_type & MECHFAB)
 			// This is for us.
 			var/list/part = output_part_info(D, TRUE)
@@ -393,8 +391,7 @@
  * * part_list - List of datum design ids for designs to add to the queue.
  */
 /obj/machinery/mecha_part_fabricator/proc/add_part_set_to_queue(list/part_list)
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/id as anything in stored_designs)
 		if((D.build_type & MECHFAB) && (D.id in part_list))
 			add_to_queue(D)
 
@@ -530,10 +527,9 @@
 		if("add_queue_part")
 			// Add a specific part to queue
 			var/id = params["id"]
-			if(!stored_research.researched_designs.Find(id))
-				stack_trace("ID did not map to a researched datum [id]")
-				return
-			var/datum/design/design = SSresearch.techweb_design_by_id(id)
+			var/datum/design/design = SStech.designs_by_id[id]
+			if(!design || !(design in stored_designs))
+				CRASH("Invalid design ID added to part queue")
 			if(!(design.build_type & MECHFAB) || design.id != id)
 				return
 			add_to_queue(design)
@@ -566,10 +562,9 @@
 				return
 
 			var/id = params["id"]
-			if(!stored_research.researched_designs.Find(id))
-				stack_trace("ID did not map to a researched datum [id]")
-				return
-			var/datum/design/design = SSresearch.techweb_design_by_id(id)
+			var/datum/design/design = SStech.designs_by_id[id]
+			if(!design || !(design in stored_designs))
+				CRASH("Invalid design ID added to part queue")
 			if(!(design.build_type & MECHFAB) || design.id != id)
 				return
 			if(build_part(design))

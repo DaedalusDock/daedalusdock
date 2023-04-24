@@ -10,14 +10,12 @@
 
 	var/obj/structure/table/optable/table
 	var/list/advanced_surgeries = list()
-	var/datum/techweb/linked_techweb
 	light_color = LIGHT_COLOR_BLUE
 
 	var/datum/component/experiment_handler/experiment_handler
 
 /obj/machinery/computer/operating/Initialize(mapload)
 	..()
-	linked_techweb = SSresearch.science_tech
 	find_table()
 	return INITIALIZE_HINT_LATELOAD
 
@@ -49,13 +47,6 @@
 			advanced_surgeries |= D.surgeries
 		return TRUE
 	return ..()
-
-/obj/machinery/computer/operating/proc/sync_surgeries()
-	for(var/i in linked_techweb.researched_designs)
-		var/datum/design/surgery/D = SSresearch.techweb_design_by_id(i)
-		if(!istype(D))
-			continue
-		advanced_surgeries |= D.surgery
 
 /obj/machinery/computer/operating/proc/find_table()
 	for(var/direction in GLOB.alldirs)

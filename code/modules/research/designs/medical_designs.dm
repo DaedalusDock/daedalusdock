@@ -20,7 +20,7 @@
 	construction_time = 75
 	build_path = /obj/item/mmi
 	category = list("Control Interfaces", "Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 /datum/design/posibrain
 	name = "Positronic Brain"
@@ -31,17 +31,7 @@
 	construction_time = 75
 	build_path = /obj/item/mmi/posibrain
 	category = list("Control Interfaces", "Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
-
-/datum/design/bluespacebeaker
-	name = "Bluespace Beaker"
-	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
-	id = "bluespacebeaker"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/glass = 5000, /datum/material/plastic = 3000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
-	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 /datum/design/noreactbeaker
 	name = "Cryostasis Beaker"
@@ -80,16 +70,6 @@
 	build_path = /obj/item/ph_meter
 	category = list("Medical Designs")
 
-/datum/design/bluespacesyringe
-	name = "Bluespace Syringe"
-	desc = "An advanced syringe that can hold 60 units of chemicals"
-	id = "bluespacesyringe"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/glass = 2000, /datum/material/plasma = 1000, /datum/material/diamond = 1000, /datum/material/bluespace = 500)
-	build_path = /obj/item/reagent_containers/syringe/bluespace
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
-
 /datum/design/dna_disk
 	name = "Genetic Data Disk"
 	desc = "Produce additional disks for storing genetic data."
@@ -97,26 +77,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver = 50)
 	build_path = /obj/item/disk/data
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
-
-/datum/design/piercesyringe
-	name = "Piercing Syringe"
-	desc = "A diamond-tipped syringe that pierces armor when launched at high velocity. It can hold up to 10 units."
-	id = "piercesyringe"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/glass = 2000, /datum/material/diamond = 1000)
-	build_path = /obj/item/reagent_containers/syringe/piercing
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-
-/datum/design/bluespacebodybag
-	name = "Bluespace Body Bag"
-	desc = "A bluespace body bag, powered by experimental bluespace technology. It can hold loads of bodies and the largest of creatures."
-	id = "bluespacebodybag"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 3000, /datum/material/plasma = 2000, /datum/material/diamond = 500, /datum/material/bluespace = 500)
-	build_path = /obj/item/bodybag/bluespace
 	category = list("Medical Designs")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL | DEPARTMENTAL_FLAG_SCIENCE
 
@@ -128,17 +88,6 @@
 	materials = list(/datum/material/iron = 4000, /datum/material/plasma = 1000)
 	build_path = /obj/item/extinguisher_refill
 	category = list("Medical Designs")
-
-
-/datum/design/crewpinpointer
-	name = "Crew Pinpointer"
-	desc = "Allows tracking of someone's location if their suit sensors are turned to tracking beacon."
-	id = "crewpinpointer"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 3000, /datum/material/glass = 1500, /datum/material/gold = 500)
-	build_path = /obj/item/pinpointer/crew
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
 /datum/design/crewpinpointerprox
 	name = "Proximity Crew Pinpointer"
@@ -177,17 +126,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000, /datum/material/silver = 500)
 	build_path = /obj/item/wallframe/defib_mount/charging
-	category = list("Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-
-
-/datum/design/defibrillator_compact
-	name = "Compact Defibrillator"
-	desc = "A compact defibrillator that can be worn on a belt."
-	id = "defibrillator_compact"
-	build_type = FABRICATOR | AWAY_LATHE
-	build_path = /obj/item/defibrillator/compact
-	materials = list(/datum/material/iron = 16000, /datum/material/glass = 8000, /datum/material/silver = 6000, /datum/material/gold = 3000)
 	category = list("Medical Designs")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
@@ -289,16 +227,6 @@
 	materials = list(/datum/material/plastic = 1000)
 	build_path = /obj/item/reagent_containers/blood
 	category = list("Medical Designs")
-
-/datum/design/portable_chem_mixer
-	name = "Portable Chemical Mixer"
-	desc = "A portable device that dispenses and mixes chemicals. Reagents have to be supplied with beakers."
-	id = "portable_chem_mixer"
-	build_type = FABRICATOR | AWAY_LATHE
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-	materials = list(/datum/material/plastic = 5000, /datum/material/iron = 10000, /datum/material/glass = 3000)
-	build_path = /obj/item/storage/portable_chem_mixer
-	category = list("Equipment")
 
 /////////////////////////////////////////
 //////////Cybernetic Implants////////////
@@ -414,17 +342,6 @@
 	category = list("Implants", "Medical Designs")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
-/datum/design/cyberimp_antidrop
-	name = "Anti-Drop Implant"
-	desc = "This cybernetic brain implant will allow you to force your hand muscles to contract, preventing item dropping. Twitch ear to toggle."
-	id = "ci-antidrop"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
-	construction_time = 60
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 400, /datum/material/gold = 400)
-	build_path = /obj/item/organ/internal/cyberimp/brain/anti_drop
-	category = list("Implants", "Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-
 /datum/design/cyberimp_antistun
 	name = "CNS Rebooter Implant"
 	desc = "This implant will automatically give you back control over your central nervous system, reducing downtime when stunned."
@@ -466,17 +383,6 @@
 	construction_time = 60
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 800, /datum/material/gold = 300, /datum/material/uranium = 500)
 	build_path = /obj/item/organ/internal/cyberimp/chest/reviver
-	category = list("Implants", "Medical Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-
-/datum/design/cyberimp_thrusters
-	name = "Thrusters Set Implant"
-	desc = "This implant will allow you to use gas from environment or your internals for propulsion in zero-gravity areas."
-	id = "ci-thrusters"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
-	construction_time = 80
-	materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/silver = 1000, /datum/material/diamond = 1000)
-	build_path = /obj/item/organ/internal/cyberimp/chest/thrusters
 	category = list("Implants", "Medical Designs")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
@@ -535,7 +441,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_MEDICAL
 
 //Cybernetic organs
-
+#warn move to science fab robotics fab needs to exist
 /datum/design/cybernetic_liver
 	name = "Basic Cybernetic Liver"
 	desc = "A basic cybernetic liver."
@@ -698,13 +604,6 @@
 	surgery = /datum/surgery/advanced/lobotomy
 	research_icon_state = "surgery_head"
 
-/datum/design/surgery/pacify
-	name = "Pacification"
-	desc = "A surgical procedure which permanently inhibits the aggression center of the brain, making the patient unwilling to cause direct harm."
-	id = "surgery_pacify"
-	surgery = /datum/surgery/advanced/pacify
-	research_icon_state = "surgery_head"
-
 /datum/design/surgery/viral_bonding
 	name = "Viral Bonding"
 	desc = "A surgical procedure that forces a symbiotic relationship between a virus and its host. The patient must be dosed with spaceacillin, virus food, and formaldehyde."
@@ -724,20 +623,10 @@
 	surgery = /datum/surgery/healing/brute/upgraded
 	id = "surgery_heal_brute_upgrade"
 
-/datum/design/surgery/healing/brute_upgrade_2
-	name = "Tend Wounds (Brute) Upgrade"
-	surgery = /datum/surgery/healing/brute/upgraded/femto
-	id = "surgery_heal_brute_upgrade_femto"
-
 /datum/design/surgery/healing/burn_upgrade
 	name = "Tend Wounds (Burn) Upgrade"
 	surgery = /datum/surgery/healing/burn/upgraded
 	id = "surgery_heal_burn_upgrade"
-
-/datum/design/surgery/healing/burn_upgrade_2
-	name = "Tend Wounds (Burn) Upgrade"
-	surgery = /datum/surgery/healing/burn/upgraded/femto
-	id = "surgery_heal_burn_upgrade_femto"
 
 /datum/design/surgery/healing/combo
 	name = "Tend Wounds (Physical)"
@@ -745,83 +634,14 @@
 	surgery = /datum/surgery/healing/combo
 	id = "surgery_heal_combo"
 
-/datum/design/surgery/healing/combo_upgrade
-	name = "Tend Wounds (Physical) Upgrade"
-	surgery = /datum/surgery/healing/combo/upgraded
-	id = "surgery_heal_combo_upgrade"
-
-/datum/design/surgery/healing/combo_upgrade_2
-	name = "Tend Wounds (Physical) Upgrade"
-	desc = "A surgical procedure that repairs both bruises and burns faster than their individual counterparts. It is more effective than both the individual surgeries."
-	surgery = /datum/surgery/healing/combo/upgraded/femto
-	id = "surgery_heal_combo_upgrade_femto"
-
-/datum/design/surgery/brainwashing
+/datum/design/surgery/brainwashing // This is a traitor item
 	name = "Brainwashing"
 	desc = "A surgical procedure which directly implants a directive into the patient's brain, making it their absolute priority. It can be cleared using a mindshield implant."
 	id = "surgery_brainwashing"
 	surgery = /datum/surgery/advanced/brainwashing
 	research_icon_state = "surgery_head"
 
-/datum/design/surgery/nerve_splicing
-	name = "Nerve Splicing"
-	desc = "A surgical procedure which splices the patient's nerves, making them more resistant to stuns."
-	id = "surgery_nerve_splice"
-	surgery = /datum/surgery/advanced/bioware/nerve_splicing
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/nerve_grounding
-	name = "Nerve Grounding"
-	desc = "A surgical procedure which makes the patient's nerves act as grounding rods, protecting them from electrical shocks."
-	id = "surgery_nerve_ground"
-	surgery = /datum/surgery/advanced/bioware/nerve_grounding
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/vein_threading
-	name = "Vein Threading"
-	desc = "A surgical procedure which severely reduces the amount of blood lost in case of injury."
-	id = "surgery_vein_thread"
-	surgery = /datum/surgery/advanced/bioware/vein_threading
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/muscled_veins
-	name = "Vein Muscle Membrane"
-	desc = "A surgical procedure which adds a muscled membrane to blood vessels, allowing them to pump blood without a heart."
-	id = "surgery_muscled_veins"
-	surgery = /datum/surgery/advanced/bioware/muscled_veins
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/ligament_hook
-	name = "Ligament Hook"
-	desc = "A surgical procedure which reshapes the connections between torso and limbs, making it so limbs can be attached manually if severed. \
-	However this weakens the connection, making them easier to detach as well."
-	id = "surgery_ligament_hook"
-	surgery = /datum/surgery/advanced/bioware/ligament_hook
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/ligament_reinforcement
-	name = "Ligament Reinforcement"
-	desc = "A surgical procedure which adds a protective tissue and bone cage around the connections between the torso and limbs, preventing dismemberment. \
-	However, the nerve connections as a result are more easily interrupted, making it easier to disable limbs with damage."
-	id = "surgery_ligament_reinforcement"
-	surgery = /datum/surgery/advanced/bioware/ligament_reinforcement
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/cortex_imprint
-	name = "Cortex Imprint"
-	desc = "A surgical procedure which modifies the cerebral cortex into a redundant neural pattern, making the brain able to bypass damage caused by minor brain traumas."
-	id = "surgery_cortex_imprint"
-	surgery = /datum/surgery/advanced/bioware/cortex_imprint
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/cortex_folding
-	name = "Cortex Folding"
-	desc = "A surgical procedure which modifies the cerebral cortex into a complex fold, giving space to non-standard neural patterns."
-	id = "surgery_cortex_folding"
-	surgery = /datum/surgery/advanced/bioware/cortex_folding
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/necrotic_revival
+/datum/design/surgery/necrotic_revival // While romerol is a thing, this HAS to exist.
 	name = "Necrotic Revival"
 	desc = "An experimental surgical procedure that stimulates the growth of a Romerol tumor inside the patient's brain. Requires zombie powder or rezadone."
 	id = "surgery_zombie"
@@ -830,7 +650,16 @@
 
 /datum/design/surgery/wing_reconstruction
 	name = "Wing Reconstruction"
-	desc = "An experimental surgical procedure that reconstructs the damaged wings of gamuioda. Requires Synthflesh."
+	desc = "An experimental surgical procedure that reconstructs the damaged wings of moths. Requires Synthflesh."
 	id = "surgery_wing_reconstruction"
 	surgery = /datum/surgery/advanced/wing_reconstruction
 	research_icon_state = "surgery_chest"
+
+/datum/design/sticky_tape/surgical
+	name = "Surgical Tape"
+	id = "surgical_tape"
+	build_type = FABRICATOR | AWAY_LATHE
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/sticky_tape/surgical
+	category = list("initial", "Medical")
+	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL

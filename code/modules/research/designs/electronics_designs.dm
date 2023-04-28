@@ -55,13 +55,3 @@
 	build_path = /obj/item/disk/design_disk/adv
 	category = list("Electronics")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
-
-/datum/design/tech_disk
-	name = "Technology Data Storage Disk"
-	desc = "Produce additional disks for storing technology data."
-	id = "tech_disk"
-	build_type = FABRICATOR | AWAY_LATHE | AUTOLATHE
-	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
-	build_path = /obj/item/disk/tech_disk
-	category = list("Electronics")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE

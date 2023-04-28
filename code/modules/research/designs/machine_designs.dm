@@ -230,14 +230,6 @@
 	category = list("Research Machinery")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
-/datum/design/board/bepis
-	name = "Machine Design (B.E.P.I.S. Board)"
-	desc = "The circuit board for a B.E.P.I.S."
-	id = "bepis"
-	build_path = /obj/item/circuitboard/machine/bepis
-	category = list("Research Machinery")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_CARGO
-
 /datum/design/board/fabricator
 	name = "Machine Design (Fabricator Board)"
 	desc = "The circuit board for a fabricator."

@@ -13,16 +13,6 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
-/datum/design/health_hud_night
-	name = "Night Vision Health Scanner HUD"
-	desc = "An advanced medical head-up display that allows doctors to find patients in complete darkness."
-	id = "health_hud_night"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/uranium = 1000, /datum/material/silver = 350)
-	build_path = /obj/item/clothing/glasses/hud/health/night
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
-
 /datum/design/security_hud
 	name = "Security HUD"
 	desc = "A heads-up display that scans the humans in view and provides accurate data about their ID status."
@@ -33,16 +23,6 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
 
-/datum/design/security_hud_night
-	name = "Night Vision Security HUD"
-	desc = "A heads-up display which provides id data and vision in complete darkness."
-	id = "security_hud_night"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/uranium = 1000, /datum/material/gold = 350)
-	build_path = /obj/item/clothing/glasses/hud/security/night
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
 /datum/design/diagnostic_hud
 	name = "Diagnostic HUD"
 	desc = "A HUD used to analyze and determine faults within robotic machinery."
@@ -50,16 +30,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/hud/diagnostic
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
-
-/datum/design/diagnostic_hud_night
-	name = "Night Vision Diagnostic HUD"
-	desc = "Upgraded version of the diagnostic HUD designed to function during a power failure."
-	id = "diagnostic_hud_night"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/uranium = 1000, /datum/material/plasma = 300)
-	build_path = /obj/item/clothing/glasses/hud/diagnostic/night
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
@@ -87,27 +57,7 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
 
-/datum/design/bright_helmet
-	name = "Workplace-Ready Firefighter Helmet"
-	desc = "By applying state of the art lighting technology to a fire helmet with industry standard photo-chemical hardening methods, this hardhat will protect you from robust workplace hazards."
-	id = "bright_helmet"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1000, /datum/material/plastic = 3000, /datum/material/silver = 500)
-	build_path = /obj/item/clothing/head/hardhat/red/upgraded
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_CARGO
-
-/datum/design/mauna_mug
-	name = "Mauna Mug"
-	desc = "This awesome mug will ensure your coffee never stays cold!"
-	id = "mauna_mug"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 1000, /datum/material/glass = 100)
-	build_path = /obj/item/reagent_containers/glass/maunamug
-	category = list("Equipment")
-
-
-/datum/design/rolling_table
+/datum/design/rolling_table //Should probably be craftable..?
 	name = "Rolly poly"
 	desc = "We duct-taped some wheels to the bottom of a table. It's goddamn science alright?"
 	id = "rolling_table"
@@ -115,7 +65,6 @@
 	materials = list(/datum/material/iron = 4000)
 	build_path = /obj/structure/table/rolling
 	category = list("Equipment")
-
 
 /datum/design/portaseeder
 	name = "Portable Seed Extractor"
@@ -135,7 +84,6 @@
 	materials = list(/datum/material/iron = 4000, /datum/material/bananium = 1000)
 	build_path = /obj/item/bikehorn/airhorn
 	category = list("Equipment")
-
 
 /datum/design/mesons
 	name = "Optical Meson Scanners"
@@ -167,16 +115,6 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
 
-/datum/design/nvgmesons
-	name = "Night Vision Optical Meson Scanners"
-	desc = "Prototype meson scanners fitted with an extra sensor which amplifies the visible light spectrum and overlays it to the UHD display."
-	id = "nvgmesons"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/plasma = 350, /datum/material/uranium = 1000)
-	build_path = /obj/item/clothing/glasses/meson/night
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_CARGO
-
 /datum/design/night_vision_goggles
 	name = "Night Vision Goggles"
 	desc = "Goggles that let you see through darkness unhindered."
@@ -197,16 +135,6 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
 
-/datum/design/forcefield_projector
-	name = "Forcefield Projector"
-	desc = "A device which can project temporary forcefields to seal off an area."
-	id = "forcefield_projector"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 2500, /datum/material/glass = 1000)
-	build_path = /obj/item/forcefield_projector
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
-
 /datum/design/sci_goggles
 	name = "Science Goggles"
 	desc = "Goggles fitted with a portable analyzer capable of determining the research worth of an item or components of a machine."
@@ -214,16 +142,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/science
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
-
-/datum/design/nv_sci_goggles
-	name = "Night Vision Science Goggles"
-	desc = "Goggles that lets the user see in the dark and recognize chemical compounds at a glance."
-	id = "nv_scigoggles"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/plasma = 350, /datum/material/uranium = 1000)
-	build_path = /obj/item/clothing/glasses/science/night
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
@@ -238,7 +156,7 @@
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 
 /datum/design/locator
-	name = "Bluespace Locator"
+	name = "Radio Tracker"
 	desc = "Used to track portable teleportation beacons and targets with embedded tracking implants."
 	id = "locator"
 	build_type = FABRICATOR | AWAY_LATHE
@@ -265,16 +183,7 @@
 	materials = list(/datum/material/iron = 2000, /datum/material/gold = 2000, /datum/material/plasma = 5000, /datum/material/uranium = 2000)
 	build_path = /obj/item/anomaly_neutralizer
 	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
-
-/datum/design/donksoft_refill
-	name = "Donksoft Toy Vendor Refill"
-	desc = "A refill canister for Donksoft Toy Vendors."
-	id = "donksoft_refill"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 25000, /datum/material/glass = 15000, /datum/material/plasma = 20000, /datum/material/gold = 10000, /datum/material/silver = 10000)
-	build_path = /obj/item/vending_refill/donksoft
-	category = list("Equipment")
+	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 /datum/design/oxygen_tank
 	name = "Oxygen Tank"
@@ -296,45 +205,7 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_SCIENCE
 
-/datum/design/id
-	name = "Identification Card"
-	desc = "A card used to provide ID and determine access across the station. Has an integrated digital display and advanced microchips."
-	id = "idcard"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron=200, /datum/material/glass = 100)
-	build_path = /obj/item/card/id/advanced
-	category = list("Electronics")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/datum/design/eng_gloves
-	name = "Tinkers Gloves"
-	desc = "Overdesigned engineering gloves that have automated construction subroutines dialed in, allowing for faster construction while worn."
-	id = "eng_gloves"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron=2000, /datum/material/silver=1500, /datum/material/gold = 1000)
-	build_path = /obj/item/clothing/gloves/color/latex/engineering
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
-
-/datum/design/lavarods
-	name = "Lava-Resistant Iron Rods"
-	id = "lava_rods"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron=1000, /datum/material/plasma=500, /datum/material/titanium=2000)
-	build_path = /obj/item/stack/rods/lava
-	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
-
-/datum/design/plasticducky
-	name = "Rubber Ducky"
-	desc = "The classic Nanotrasen design for competitively priced bath based duck toys. No need for fancy Waffle co. rubber, buy Plastic Ducks today!"
-	id = "plasticducky"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/plastic = 1000)
-	build_path = /obj/item/bikehorn/rubberducky/plasticducky
-	category = list("Equipment")
-
-/datum/design/pneumatic_seal
+/datum/design/pneumatic_seal // bay :pleading:
 	name = "Pneumatic Airlock Seal"
 	desc = "A heavy brace used to seal airlocks. Useful for keeping out people without the dexterity to remove it."
 	id = "pneumatic_seal"
@@ -342,7 +213,7 @@
 	materials = list(/datum/material/iron = 20000, /datum/material/plasma = 10000)
 	build_path = /obj/item/door_seal
 	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_SECURITY
 
 /////////////////////////////////////////
 ////////////Janitor Designs//////////////
@@ -365,16 +236,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/plastic = 2000)
 	build_path = /obj/item/storage/bag/trash
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/datum/design/blutrash
-	name = "Trashbag of Holding"
-	desc = "An advanced trash bag with bluespace properties; capable of holding a plethora of garbage."
-	id = "blutrash"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/gold = 1500, /datum/material/uranium = 250, /datum/material/plasma = 1500)
-	build_path = /obj/item/storage/bag/trash/bluespace
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 
@@ -426,16 +287,6 @@
 	build_type = FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 200)
 	build_path = /obj/item/reagent_containers/spray
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/datum/design/beartrap
-	name = "Bear Trap"
-	desc = "A trap used to catch space bears and other legged creatures."
-	id = "beartrap"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 5000, /datum/material/titanium = 1000)
-	build_path = /obj/item/restraints/legcuffs/beartrap
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
 
@@ -562,37 +413,6 @@
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
 
-/datum/design/pepperspray
-	name = "Pepper Spray"
-	desc = "Manufactured by UhangInc, used to blind and down an opponent quickly. Printed pepper sprays do not contain reagents."
-	id = "pepperspray"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000)
-	build_path = /obj/item/reagent_containers/spray/pepper/empty
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
-/datum/design/bola_energy
-	name = "Energy Bola"
-	desc = "A specialized hard-light bola designed to ensnare fleeing criminals and aid in arrests."
-	id = "bola_energy"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/silver = 500, /datum/material/plasma = 500, /datum/material/titanium = 500)
-	build_path = /obj/item/restraints/legcuffs/bola/energy
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-	autolathe_exportable = FALSE
-
-/datum/design/zipties
-	name = "Zipties"
-	desc = "Plastic, disposable zipties that can be used to restrain temporarily but are destroyed after use."
-	id = "zipties"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/plastic = 250)
-	build_path = /obj/item/restraints/handcuffs/cable/zipties
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
 /datum/design/evidencebag
 	name = "Evidence Bag"
 	desc = "An empty evidence bag."
@@ -602,15 +422,6 @@
 	build_path = /obj/item/evidencebag
 	category = list("Equipment")
 	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
-/datum/design/plumbing_rcd
-	name = "Plumbing Constructor"
-	id = "plumbing_rcd"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 75000, /datum/material/glass = 37500, /datum/material/plastic = 1000)
-	build_path = /obj/item/construction/plumbing
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
 /datum/design/gas_filter
 	name = "Gas filter"
@@ -627,61 +438,6 @@
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/gas_filter/plasmaman
 	category = list("Equipment")
-
-/////////////////////////////////////////
-/////////////////Tape////////////////////
-/////////////////////////////////////////
-
-/datum/design/super_sticky_tape
-	name = "Super Sticky Tape"
-	id = "super_sticky_tape"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/plastic = 3000)
-	build_path = /obj/item/stack/sticky_tape/super
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/datum/design/pointy_tape
-	name = "Pointy Tape"
-	id = "pointy_tape"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 1500, /datum/material/plastic = 1000)
-	build_path = /obj/item/stack/sticky_tape/pointy
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/datum/design/super_pointy_tape
-	name = "Super Pointy Tape"
-	id = "super_pointy_tape"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/iron = 3000, /datum/material/plastic = 2000)
-	build_path = /obj/item/stack/sticky_tape/pointy/super
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
-
-/////////////////////////////////////////
-////////////Tackle Gloves////////////////
-/////////////////////////////////////////
-
-/datum/design/tackle_dolphin
-	name = "Dolphin Gloves"
-	id = "tackle_dolphin"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/plastic = 2500)
-	build_path = /obj/item/clothing/gloves/tackler/dolphin
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
-/datum/design/tackle_rocket
-	name = "Rocket Gloves"
-	id = "tackle_rocket"
-	build_type = FABRICATOR | AWAY_LATHE
-	materials = list(/datum/material/plasma = 1000, /datum/material/plastic = 2000)
-	build_path = /obj/item/clothing/gloves/tackler/rocket
-	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
-
 
 /////////////////////////////////////////
 /////////Restaurant Equipment////////////
@@ -714,5 +470,5 @@
 	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
 	materials = list(/datum/material/iron = 500)
 	build_path = /obj/item/plate/oven_tray
-	category = list("initial","Equipment")
+	category = list("initial","Dinnerware")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE

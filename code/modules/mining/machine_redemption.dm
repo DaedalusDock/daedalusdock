@@ -22,21 +22,13 @@
 	/// Variable that holds a timer which is used for callbacks to `send_console_message()`. Used for preventing multiple calls to this proc while the ORM is eating a stack of ores.
 	var/console_notify_timer
 
-	var/obj/item/disk/design_disk/inserted_disk
-
 	var/datum/component/remote_materials/materials
 
-	var/list/datum/design/designs
 
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
 	. = ..()
-	var/static/list/design_cache
-	if(!design_cache)
-		design_cache = subtypesof(/datum/design/alloy)
-		for(var/i in 1 to length(design_cache))
-			stored_designs[i] = SStech.designs_by_type[stored_designs[i]]
 
-	designs = design_cache
+	design_storage.stored_designs = SStech.fetch_designs(subtypesof(/datum/design/alloy))
 	materials = AddComponent(/datum/component/remote_materials, "orm", mapload, mat_container_flags=BREAKDOWN_FLAGS_ORM)
 
 

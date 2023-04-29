@@ -132,7 +132,7 @@
 	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!D in stored_designs)
+	if(!D in design_storage.stored_designs)
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 		message_admins("[key_name_admin(usr)] may be attempting an href exploit (Production Machine).")
 		return FALSE
@@ -176,7 +176,7 @@
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/datum/design/D as anything in stored_designs)
+	for(var/datum/design/D as anything in design_storage.stored_designs)
 		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
@@ -369,7 +369,7 @@
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/datum/design/D as anything in stored_designs)
+	for(var/datum/design/D as anything in design_storage.stored_designs)
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
 		if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))

@@ -22,9 +22,6 @@
 	///the multiplier for how much materials the created object takes from this machines stored materials
 	var/creation_efficiency = 1.6
 
-	var/list/datum/design/stored_designs
-	#warn Autolathe needs it's designs
-
 	var/datum/design/being_built
 	var/list/datum/design/matching_designs
 	var/selected_category = "None"
@@ -50,7 +47,7 @@
 
 	wires = new /datum/wires/autolathe(src)
 	matching_designs = list()
-	stored_designs = SStech.init_design_list(compile_designs())
+	design_storage.set_data(SStech.fetch_designs(compile_designs()))
 
 /obj/machinery/autolathe/Destroy()
 	QDEL_NULL(wires)
@@ -158,9 +155,6 @@
 		/datum/design/circuitred,
 		/datum/design/price_tagger,
 		/datum/design/custom_vendor_refill,
-		/datum/design/capbox,
-		/datum/design/toygun,
-		/datum/design/toy_balloon,
 		/datum/design/plastic_tree,
 		/datum/design/plastic_ring,
 		/datum/design/plastic_box,
@@ -212,18 +206,17 @@
 		)
 		data["materials"] += list(material_data)
 	if(selected_category != "None" && !length(matching_designs))
-		data["designs"] = handle_designs(stored_research.researched_designs, TRUE)
+		data["designs"] = handle_designs(design_storage.copy_data(), TRUE)
 	else
 		data["designs"] = handle_designs(matching_designs, FALSE)
 	return data
 
 /obj/machinery/autolathe/proc/handle_designs(list/designs, categorycheck)
 	var/list/output = list()
-	for(var/v in designs)
-		var/datum/design/D = categorycheck ? SSresearch.techweb_design_by_id(v) : v
-		if(categorycheck)
-			if(!(selected_category in D.category))
-				continue
+	for(var/datum/design/D as anything in designs)
+		if(categorycheck && !(selected_category in D.category))
+			continue
+
 		var/unbuildable = FALSE // we can't build the design currently
 		var/m10 = FALSE // 10x mult
 		var/m25 = FALSE // 25x mult
@@ -286,8 +279,7 @@
 	if(action == "search")
 		matching_designs.Cut()
 
-		for(var/v in stored_research.researched_designs)
-			var/datum/design/D = SSresearch.techweb_design_by_id(v)
+		for(var/datum/design/D as anything in design_storage.stored_designs)
 			if(findtext(D.name,params["to_search"]))
 				matching_designs.Add(D)
 		. = TRUE
@@ -534,15 +526,27 @@
 
 /obj/machinery/autolathe/proc/adjust_hacked(state)
 	hacked = state
-	/*
-	for(var/id in SSresearch.techweb_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(id)
-		if((D.build_type & AUTOLATHE) && ("hacked" in D.category))
-			if(hacked)
-				stored_research.add_design(D)
-			else
-				stored_research.remove_design(D)
-	*/
+	var/static/list/datum/design/hacked_designs
+	if(!hacked_designs)
+		var/list/L = list(
+			/datum/design/plasmaman_tank_belt,
+			/datum/design/electropack,
+			/datum/design/large_welding_tool,
+			/datum/design/handcuffs,
+			/datum/design/receiver,
+			/datum/design/cleaver,
+			/datum/design/toygun,
+			/datum/design/capbox,
+			/datum/design/toy_balloon
+		)
+		hacked_designs = SStech.fetch_designs(L)
+
+	if(hacked)
+		design_storage.add_design_list(hacked_designs)
+	else
+		design_storage.remove_design_list(hacked_designs)
+
+
 
 /obj/machinery/autolathe/hacked/Initialize(mapload)
 	. = ..()

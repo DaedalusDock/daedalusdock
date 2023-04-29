@@ -18,8 +18,6 @@
 	var/production_speed = 3 SECONDS
 	/// The design we're printing currently.
 	var/datum/design/being_built
-	/// All of our designs
-	var/list/datum/design/stored_designs
 
 	/// All the categories of organs we can print.
 	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
@@ -30,7 +28,7 @@
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
 
-	stored_designs = SStech.init_design_list(
+	design_storage.stored_designs = SStech.fetch_designs(
 		list(
 			/datum/design/leftarm,
 			/datum/design/leftleg,
@@ -81,8 +79,7 @@
 	var/species_categories = categories.Copy()
 	for(var/species in species_categories)
 		species_categories[species] = list()
-	for(var/design_id in stored_designs)
-		var/datum/design/limb_design =
+	for(var/datum/design/limb_design as anything in design_storage.stored_designs)
 		for(var/found_category in species_categories)
 			if(found_category in limb_design.category)
 				species_categories[found_category] += limb_design
@@ -121,19 +118,6 @@
 /obj/machinery/limbgrower/attackby(obj/item/user_item, mob/living/user, params)
 	if (busy)
 		to_chat(user, span_warning("The Limb Grower is busy. Please wait for completion of previous operation."))
-		return
-
-	if(istype(user_item, /obj/item/disk/design_disk/limbs))
-		user.visible_message(span_notice("[user] begins to load \the [user_item] in \the [src]..."),
-			span_notice("You begin to load designs from \the [user_item]..."),
-			span_hear("You hear the clatter of a floppy drive."))
-		busy = TRUE
-		var/obj/item/disk/design_disk/limbs/limb_design_disk = user_item
-		if(do_after(user, src, 2 SECONDS))
-			for(var/datum/design/found_design in limb_design_disk.blueprints)
-				stored_designs += found_design
-			update_static_data(user)
-		busy = FALSE
 		return
 
 	if(default_deconstruction_screwdriver(user, "limbgrower_panelopen", "limbgrower_idleoff", user_item))
@@ -287,16 +271,22 @@
 	. = ..()
 	for(var/datum/design/D as anything in SStech.designs)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
-			stored_designs += D
+			design_storage.add_design(D)
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
 
-	stored_designs += newlist(
-		/datum/design/armblade
+	var/list/designs_on_emag = SStech.fetch_designs(
+		list(
+			/datum/design/armblade,
+		)
 	)
+
+	if(!design_storage.add_design_list(designs_on_emag))
+		to_chat(user, span_warning("[src] doesn't have enough storage left!"))
+		return
 
 	to_chat(user, span_warning("Safety overrides have been deactivated!"))
 	obj_flags |= EMAGGED

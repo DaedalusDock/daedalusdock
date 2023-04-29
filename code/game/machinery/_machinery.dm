@@ -119,6 +119,12 @@
 	var/wire_compatible = FALSE
 
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
+
+	/// The place that designs are stored. This will be created by apply_default_parts().
+	var/obj/item/disk/design_disk/design_storage = null
+	/// A design disk that may-or-may-not be inserted into this machine.
+	var/obj/item/disk/design_disk/inserted_disk = null
+
 	var/panel_open = FALSE
 	var/state_open = FALSE
 	var/critical_machine = FALSE //If this machine is critical to station operation and should have the area be excempted from power failures.
@@ -174,6 +180,7 @@
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
+		design_storage = locate() in component_parts
 
 	if(processing_flags & START_PROCESSING_ON_INIT)
 		begin_processing()
@@ -209,6 +216,7 @@
 	QDEL_NULL(circuit)
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
+	QDEL_NULL(inserted_disk)
 	return ..()
 
 /**
@@ -677,6 +685,18 @@
 	. = ..()
 	if(.)
 		return
+
+	if(design_storage && istype(weapon, /obj/item/disk/design_disk))
+		if(isnull(inserted_disk))
+			weapon.forceMove(src)
+			user.visible_message(
+				"[user] inserts a floppy disk into [src].",
+				"You insert [weapon] into [src].",
+			)
+		else
+			to_chat(user, span_warning("The machine already has a design disk inserted!"))
+		return TRUE
+
 	update_last_used(user)
 
 /obj/machinery/attackby_secondary(obj/item/weapon, mob/user, params)
@@ -745,6 +765,10 @@
 	for(var/obj/item/part in component_parts)
 		part.forceMove(loc)
 	LAZYCLEARLIST(component_parts)
+
+	design_storage = null //Component parts removes this.
+	if(inserted_disk)
+		inserted_disk.forceMove(loc)
 	return ..()
 
 /**

@@ -171,7 +171,6 @@
 		data["custom_controls"]["speaker"] = medical_mode_flags & MEDBOT_SPEAK_MODE
 		data["custom_controls"]["crit_alerts"] = medical_mode_flags & MEDBOT_DECLARE_CRIT
 		data["custom_controls"]["stationary_mode"] = medical_mode_flags & MEDBOT_STATIONARY_MODE
-		data["custom_controls"]["sync_tech"] = TRUE
 	return data
 
 // Actions received from TGUI
@@ -195,18 +194,6 @@
 		if("stationary_mode")
 			medical_mode_flags ^= MEDBOT_STATIONARY_MODE
 			path = list()
-		if("sync_tech")
-			var/oldheal_amount = heal_amount
-			var/tech_boosters
-			for(var/index in linked_techweb.researched_designs)
-				var/datum/design/surgery/healing/design = SSresearch.techweb_design_by_id(index)
-				if(!istype(design))
-					continue
-				tech_boosters++
-			if(tech_boosters)
-				heal_amount = (round(tech_boosters/2,0.1)*initial(heal_amount))+initial(heal_amount) //every 2 tend wounds tech gives you an extra 100% healing, adjusting for unique branches (combo is bonus)
-				if(oldheal_amount < heal_amount)
-					speak("New knowledge found! Surgical efficacy improved to [round(heal_amount/initial(heal_amount)*100)]%!")
 
 	update_appearance()
 

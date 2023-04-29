@@ -1158,7 +1158,6 @@
 		/obj/item/card/emag=1,\
 		/obj/item/stack/spacecash/c1000=50,\
 		/obj/item/healthanalyzer/advanced=1,\
-		/obj/item/disk/tech_disk/debug=1,\
 		/obj/item/uplink/debug=1,\
 		/obj/item/uplink/nuclear/debug=1,\
 		/obj/item/storage/box/beakers/bluespace=1,\

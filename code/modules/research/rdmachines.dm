@@ -13,8 +13,6 @@
 	var/disabled = FALSE
 	var/obj/item/loaded_item = null //the item loaded inside the machine (currently only used by experimentor and destructive analyzer)
 
-	/// Our designs. Defined as a list of types, which get created during mapload.
-	var/list/datum/design/stored_designs
 	/// Flags given to designs and machines to populate their design list during mapload.
 	var/mapload_design_flags = ALL
 
@@ -24,19 +22,17 @@
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
 	wires = new /datum/wires/rnd(src)
-	stored_designs = list()
 	if(mapload)
 		populate_designs()
 
 /obj/machinery/rnd/Destroy()
-	stored_designs = null
 	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/rnd/proc/populate_designs()
 	for(var/datum/design/D as anything in SStech.designs)
 		if(design.design_flags & mapload_design_flags)
-			stored_designs += D
+			design_storage.stored_designs += D
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

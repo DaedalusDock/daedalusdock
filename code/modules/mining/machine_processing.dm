@@ -129,34 +129,31 @@
 	var/datum/material/selected_material = null
 	var/selected_alloy = null
 
-	var/list/datum/design/stored_designs
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/machinery/mineral/processing_unit/Initialize(mapload)
 	. = ..()
 	proximity_monitor = new(src, 1)
-	var/list/allowed_materials = list(/datum/material/iron,
-									/datum/material/glass,
-									/datum/material/silver,
-									/datum/material/gold,
-									/datum/material/diamond,
-									/datum/material/plasma,
-									/datum/material/uranium,
-									/datum/material/bananium,
-									/datum/material/titanium,
-									/datum/material/bluespace
-									)
+	var/list/allowed_materials = list(
+		/datum/material/iron,
+		/datum/material/glass,
+		/datum/material/silver,
+		/datum/material/gold,
+		/datum/material/diamond,
+		/datum/material/plasma,
+		/datum/material/uranium,
+		/datum/material/bananium,
+		/datum/material/titanium,
+		/datum/material/bluespace
+	)
 	AddComponent(/datum/component/material_container, allowed_materials, INFINITY, MATCONTAINER_EXAMINE|BREAKDOWN_FLAGS_ORE_PROCESSOR, allowed_items=/obj/item/stack)
 	selected_material = GET_MATERIAL_REF(/datum/material/iron)
 
-	stored_designs = subtypesof(/datum/design/alloy)
-	for(var/i in 1 to length(stored_designs))
-		stored_designs[i] = SStech.designs_by_type[stored_designs]
+	design_storage.stored_designs = SStech.fetch_designs(subtypesof(/datum/design/alloy))
 
 /obj/machinery/mineral/processing_unit/Destroy()
 	CONSOLE = null
-	QDEL_NULL(stored_research)
 	return ..()
 
 /obj/machinery/mineral/processing_unit/proc/process_ore(obj/item/stack/ore/O)

@@ -33,7 +33,7 @@ other types of metals and chemistry for reagents).
 	/// The typepath of the object produced by this design
 	var/build_path = null
 	/// Bitflags indicating what rnd machines should have this design roundstart.
-	var/design_flags = NONE
+	var/mapload_design_flags = NONE
 	/// List of reagents produced by this design. Currently only supported by the biogenerator.
 	var/list/make_reagents = list()
 	/// What category this design falls under. Used for sorting in production machines, mostly the mechfab.
@@ -47,12 +47,12 @@ other types of metals and chemistry for reagents).
 	#warn ^ Needs addressing
 	/// If this is [TRUE] the admins get notified whenever anyone prints this. Currently only used by the BoH.
 	var/dangerous_construction = FALSE
-	/// What techwebs nodes unlock this design. Constructed by SSresearch
-	var/list/datum/techweb_node/unlocked_by = list()
-	/// Override for the automatic icon generation used for the research console.
+
+	/// Override for the automatic icon generation used for some UIs
 	var/research_icon
-	/// Override for the automatic icon state generation used for the research console.
+	/// Override for the automatic icon state generation used for some UIs.
 	var/research_icon_state
+
 	/// Appears to be unused.
 	var/icon_cache
 	/// Optional string that interfaces can use as part of search filters. See- item/borg/upgrade/ai and the Exosuit Fabs.
@@ -99,22 +99,68 @@ other types of metals and chemistry for reagents).
 ////////////////////////////////////////
 
 /obj/item/disk/design_disk
-	name = "Component Design Disk"
-	desc = "A disk for storing device design data for construction in lathes."
+	name = "design disk"
+	desc = "A disk for storing device design data for construction in fabricators."
 	icon_state = "datadisk1"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
-	var/list/blueprints = list()
-	var/max_blueprints = 1
+
+	/// How many designs are allowed to be stored on this disk
+	VAR_PROTECTED/storage = 1
+	var/list/datum/design/stored_designs = list()
 
 /obj/item/disk/design_disk/Initialize(mapload)
 	. = ..()
 	pixel_x = base_pixel_x + rand(-5, 5)
 	pixel_y = base_pixel_y + rand(-5, 5)
-	for(var/i in 1 to max_blueprints)
-		blueprints += null
+
+///Removes a design from the data disk. Returns TRUE on success.
+/obj/item/disk/design_disk/proc/remove_design(datum/design/D)
+	if(!(D in stored_designs))
+		return FALSE
+
+	stored_designs -= D
+	return TRUE
+
+///Adds a design to the data disk. Returns TRUE on success.
+/obj/item/disk/design_disk/proc/add_design(datum/design/D)
+	if(length(stored_designs) >= storage)
+		return FALSE
+
+	if(D in stored_designs)
+		return FALSE
+
+	stored_designs += D
+	return TRUE
+
+/obj/item/disk/design_disk/proc/copy_designs()
+	RETURN_TYPE(/list)
+	return stored_designs.Copy()
+
+/obj/item/disk/design_disk/proc/set_data(list/L)
+	stored_designs = L
+
+/obj/item/disk/design_disk/proc/wipe_data()
+	stored_designs.Cut()
+
+/obj/item/disk/design_disk/proc/add_design_list(list/L)
+	if(length(L) + length(stored_designs) > storage)
+		return FALSE
+
+	stored_designs |= L
+	return TRUE
+
+/obj/item/disk/design_disk/proc/remove_design_list(list/L)
+	stored_designs -= L
+	return TRUE
 
 /obj/item/disk/design_disk/adv
-	name = "Advanced Component Design Disk"
-	desc = "A disk for storing device design data for construction in lathes. This one has extra storage space."
+	name = "advanced design disk"
+	desc = "A disk for storing device design data for construction in fabricators. This one has extra storage space."
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/silver = 50)
-	max_blueprints = 5
+	storage = 5
+
+/obj/item/disk/design_disk/master
+	name = "master design disk"
+	desc = "A disk for storing device design data for construction in fabricators. This one has extremely large storage space."
+	storage = INFINITY
+

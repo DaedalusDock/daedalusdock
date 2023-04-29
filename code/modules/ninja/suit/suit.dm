@@ -24,8 +24,6 @@
 	var/mob/living/carbon/human/affecting = null
 	///The suit's spark system, used for... sparking.
 	var/datum/effect_system/spark_spread/spark_system
-	///The suit's stored research.  Used for the research objective (see antagonist file)
-	var/datum/techweb/stored_research
 	///The katana registered with the suit, used for recalling and catching the katana.  Set when the ninja outfit is created.
 	var/obj/item/energy_katana/energyKatana
 

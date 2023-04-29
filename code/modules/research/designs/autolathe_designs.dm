@@ -247,7 +247,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 800)
 	build_path = /obj/item/tank/internals/plasmaman/belt/empty
-	category = list("hacked","Misc","Equipment")
+	category = list("Misc","Equipment")
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SUPPLY
 
 /datum/design/generic_gas_tank
@@ -735,7 +735,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 2500)
 	build_path = /obj/item/electropack
-	category = list("hacked", "Tools")
+	category = list("Tools")
 
 /datum/design/large_welding_tool
 	name = "Industrial Welding Tool"
@@ -743,7 +743,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 70, /datum/material/glass = 60)
 	build_path = /obj/item/weldingtool/largetank
-	category = list("hacked", "Tools")
+	category = list("Tools")
 
 /datum/design/handcuffs
 	name = "Handcuffs"
@@ -751,7 +751,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 500)
 	build_path = /obj/item/restraints/handcuffs
-	category = list("hacked", "Security")
+	category = list("Security")
 
 /datum/design/receiver
 	name = "Modular Receiver"
@@ -759,7 +759,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 15000)
 	build_path = /obj/item/weaponcrafting/receiver
-	category = list("hacked", "Security")
+	category = list("Security")
 
 /datum/design/cleaver
 	name = "Butcher's Cleaver"
@@ -767,7 +767,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 18000)
 	build_path = /obj/item/knife/butcher
-	category = list("hacked", "Dinnerware")
+	category = list("Dinnerware")
 
 /datum/design/spraycan
 	name = "Spraycan"
@@ -936,7 +936,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/toy/gun
-	category = list("hacked", "Misc")
+	category = list("Misc")
 
 /datum/design/capbox
 	name = "Box of Cap Gun Shots"
@@ -944,7 +944,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 20, /datum/material/glass = 5)
 	build_path = /obj/item/toy/ammo/gun
-	category = list("hacked", "Misc")
+	category = list( "Misc")
 
 /datum/design/toy_balloon
 	name = "Plastic Balloon"
@@ -952,7 +952,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/plastic = 1200)
 	build_path = /obj/item/toy/balloon
-	category = list("hacked", "Misc")
+	category = list("Misc")
 
 /datum/design/plastic_tree
 	name = "Plastic Potted Plant"
@@ -1068,7 +1068,7 @@
 
 /datum/design/plasticducky
 	name = "Rubber Ducky"
-	desc = "We needed to give you a way to waste all that plastic you have.
+	desc = "We needed to give you a way to waste all that plastic you have."
 	id = "plasticducky"
 	build_type = FABRICATOR | AUTOLATHE
 	materials = list(/datum/material/plastic = 1000)

@@ -15,8 +15,6 @@
 	/// Whether or not the machine is building the entire queue automagically.
 	var/process_queue = FALSE
 
-	/// All our designs
-	var/list/datum/design/stored_designs = list()
 	/// The current design datum that the machine is building.
 	var/datum/design/being_built
 	/// World time when the build will finish.
@@ -209,7 +207,7 @@
 	buildable_parts = list()
 	final_sets += part_sets
 
-	for(var/datum/design/D as anything in stored_designs)
+	for(var/datum/design/D as anything in design_storage.stored_designs)
 		if(D.build_type & MECHFAB)
 			// This is for us.
 			var/list/part = output_part_info(D, TRUE)
@@ -391,7 +389,7 @@
  * * part_list - List of datum design ids for designs to add to the queue.
  */
 /obj/machinery/mecha_part_fabricator/proc/add_part_set_to_queue(list/part_list)
-	for(var/id as anything in stored_designs)
+	for(var/id as anything in design_storage.stored_designs)
 		if((D.build_type & MECHFAB) && (D.id in part_list))
 			add_to_queue(D)
 
@@ -528,7 +526,7 @@
 			// Add a specific part to queue
 			var/id = params["id"]
 			var/datum/design/design = SStech.designs_by_id[id]
-			if(!design || !(design in stored_designs))
+			if(!design || !(design in design_storage.stored_designs))
 				CRASH("Invalid design ID added to part queue")
 			if(!(design.build_type & MECHFAB) || design.id != id)
 				return
@@ -563,7 +561,7 @@
 
 			var/id = params["id"]
 			var/datum/design/design = SStech.designs_by_id[id]
-			if(!design || !(design in stored_designs))
+			if(!design || !(design in design_storage.stored_designs))
 				CRASH("Invalid design ID added to part queue")
 			if(!(design.build_type & MECHFAB) || design.id != id)
 				return

@@ -57,8 +57,6 @@
 
 	light_color = LIGHT_COLOR_BLUE
 
-	/// Link to the techweb's stored research. Used to retrieve stored mutations
-	var/datum/techweb/stored_research
 	/// Duration for enzyme genetic damage pulses
 	var/pulse_duration = 2
 	/// Strength for enzyme genetic damage pulses

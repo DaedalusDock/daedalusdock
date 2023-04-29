@@ -11,23 +11,14 @@
 
 	density = TRUE
 
-	/// The techweb the printer will get researched designs from
-	var/datum/techweb/techweb
-
-	/// The current unlocked circuit component designs. Used by integrated circuits to print off circuit components remotely.
-	var/list/current_unlocked_designs = list()
-
 /obj/machinery/component_printer/Initialize(mapload)
 	. = ..()
-	/*
-	for (var/researched_design_id in techweb.researched_designs)
-		var/datum/design/design = SSresearch.techweb_design_by_id(researched_design_id)
+	for (var/datum/design/design in SStech.designs)
 		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
 			continue
 
 		current_unlocked_designs[design.build_path] = design.id
-	*/
-	#warn wiremod designs
+
 
 	materials = AddComponent( \
 		/datum/component/remote_materials, \

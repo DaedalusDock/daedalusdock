@@ -7,6 +7,7 @@
 	materials = list(/datum/material/iron=15000)
 	construction_time = 500
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_chest
 	name = "Cyborg Torso"
@@ -16,6 +17,7 @@
 	materials = list(/datum/material/iron=40000)
 	construction_time = 350
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_head
 	name = "Cyborg Head"
@@ -25,6 +27,7 @@
 	materials = list(/datum/material/iron=5000)
 	construction_time = 350
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_l_arm
 	name = "Cyborg Left Arm"
@@ -34,6 +37,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_r_arm
 	name = "Cyborg Right Arm"
@@ -43,6 +47,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_l_leg
 	name = "Cyborg Left Leg"
@@ -52,6 +57,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_r_leg
 	name = "Cyborg Right Leg"
@@ -61,6 +67,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
 	category = list("Cyborg")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Ripley
 /datum/design/ripley_chassis
@@ -71,6 +78,7 @@
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_torso
 	name = "Exosuit Torso (APLU \"Ripley\")"
@@ -80,6 +88,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 7500)
 	construction_time = 200
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_left_arm
 	name = "Exosuit Left Arm (APLU \"Ripley\")"
@@ -89,6 +98,7 @@
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_right_arm
 	name = "Exosuit Right Arm (APLU \"Ripley\")"
@@ -98,6 +108,7 @@
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_left_leg
 	name = "Exosuit Left Leg (APLU \"Ripley\")"
@@ -107,6 +118,7 @@
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_right_leg
 	name = "Exosuit Right Leg (APLU \"Ripley\")"
@@ -116,6 +128,7 @@
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
 	category = list("Ripley")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Odysseus
 /datum/design/odysseus_chassis
@@ -126,6 +139,7 @@
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_torso
 	name = "Exosuit Torso (\"Odysseus\")"
@@ -135,6 +149,7 @@
 	materials = list(/datum/material/iron=12000)
 	construction_time = 180
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_head
 	name = "Exosuit Head (\"Odysseus\")"
@@ -144,6 +159,7 @@
 	materials = list(/datum/material/iron=6000,/datum/material/glass = 10000)
 	construction_time = 100
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_left_arm
 	name = "Exosuit Left Arm (\"Odysseus\")"
@@ -153,6 +169,7 @@
 	materials = list(/datum/material/iron=6000)
 	construction_time = 120
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_right_arm
 	name = "Exosuit Right Arm (\"Odysseus\")"
@@ -162,6 +179,7 @@
 	materials = list(/datum/material/iron=6000)
 	construction_time = 120
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_left_leg
 	name = "Exosuit Left Leg (\"Odysseus\")"
@@ -171,6 +189,7 @@
 	materials = list(/datum/material/iron=7000)
 	construction_time = 130
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_right_leg
 	name = "Exosuit Right Leg (\"Odysseus\")"
@@ -180,6 +199,7 @@
 	materials = list(/datum/material/iron=7000)
 	construction_time = 130
 	category = list("Odysseus")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Gygax
 /datum/design/gygax_chassis
@@ -190,6 +210,7 @@
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_torso
 	name = "Exosuit Torso (\"Gygax\")"
@@ -199,6 +220,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 10000,/datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 300
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_head
 	name = "Exosuit Head (\"Gygax\")"
@@ -208,6 +230,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 5000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_left_arm
 	name = "Exosuit Left Arm (\"Gygax\")"
@@ -217,6 +240,7 @@
 	materials = list(/datum/material/iron=15000, /datum/material/gold=1000, /datum/material/silver=1000)
 	construction_time = 200
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_right_arm
 	name = "Exosuit Right Arm (\"Gygax\")"
@@ -226,6 +250,7 @@
 	materials = list(/datum/material/iron=15000, /datum/material/gold=1000, /datum/material/silver=1000)
 	construction_time = 200
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_left_leg
 	name = "Exosuit Left Leg (\"Gygax\")"
@@ -235,6 +260,7 @@
 	materials = list(/datum/material/iron=15000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_right_leg
 	name = "Exosuit Right Leg (\"Gygax\")"
@@ -244,6 +270,7 @@
 	materials = list(/datum/material/iron=15000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_armor
 	name = "Exosuit Armor (\"Gygax\")"
@@ -253,6 +280,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/gold=10000, /datum/material/silver=10000, /datum/material/titanium=10000)
 	construction_time = 600
 	category = list("Gygax")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Durand
 /datum/design/durand_chassis
@@ -263,6 +291,7 @@
 	materials = list(/datum/material/iron=25000)
 	construction_time = 100
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_torso
 	name = "Exosuit Torso (\"Durand\")"
@@ -272,6 +301,7 @@
 	materials = list(/datum/material/iron=25000, /datum/material/glass = 10000,/datum/material/silver=10000)
 	construction_time = 300
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_head
 	name = "Exosuit Head (\"Durand\")"
@@ -281,6 +311,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 15000,/datum/material/silver=2000)
 	construction_time = 200
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_left_arm
 	name = "Exosuit Left Arm (\"Durand\")"
@@ -290,6 +321,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_right_arm
 	name = "Exosuit Right Arm (\"Durand\")"
@@ -299,6 +331,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_left_leg
 	name = "Exosuit Left Leg (\"Durand\")"
@@ -308,6 +341,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_right_leg
 	name = "Exosuit Right Leg (\"Durand\")"
@@ -317,6 +351,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_armor
 	name = "Exosuit Armor (\"Durand\")"
@@ -326,6 +361,7 @@
 	materials = list(/datum/material/iron=30000,/datum/material/uranium=25000,/datum/material/titanium=20000)
 	construction_time = 600
 	category = list("Durand")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //H.O.N.K
 /datum/design/honk_chassis
@@ -336,6 +372,7 @@
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_torso
 	name = "Exosuit Torso (\"H.O.N.K\")"
@@ -345,6 +382,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 10000,/datum/material/bananium=10000)
 	construction_time = 300
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_head
 	name = "Exosuit Head (\"H.O.N.K\")"
@@ -354,6 +392,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 5000,/datum/material/bananium=5000)
 	construction_time = 200
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_left_arm
 	name = "Exosuit Left Arm (\"H.O.N.K\")"
@@ -363,6 +402,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/bananium=5000)
 	construction_time = 200
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_right_arm
 	name = "Exosuit Right Arm (\"H.O.N.K\")"
@@ -372,6 +412,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/bananium=5000)
 	construction_time = 200
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_left_leg
 	name = "Exosuit Left Leg (\"H.O.N.K\")"
@@ -381,6 +422,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 200
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_right_leg
 	name = "Exosuit Right Leg (\"H.O.N.K\")"
@@ -390,6 +432,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 200
 	category = list("H.O.N.K")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 
 //Phazon
@@ -401,6 +444,7 @@
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_torso
 	name = "Exosuit Torso (\"Phazon\")"
@@ -410,6 +454,7 @@
 	materials = list(/datum/material/iron=35000,/datum/material/glass = 10000,/datum/material/plasma=20000)
 	construction_time = 300
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_head
 	name = "Exosuit Head (\"Phazon\")"
@@ -419,6 +464,7 @@
 	materials = list(/datum/material/iron=15000,/datum/material/glass = 5000,/datum/material/plasma=10000)
 	construction_time = 200
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_left_arm
 	name = "Exosuit Left Arm (\"Phazon\")"
@@ -428,6 +474,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_right_arm
 	name = "Exosuit Right Arm (\"Phazon\")"
@@ -437,6 +484,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_left_leg
 	name = "Exosuit Left Leg (\"Phazon\")"
@@ -446,6 +494,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_right_leg
 	name = "Exosuit Right Leg (\"Phazon\")"
@@ -455,6 +504,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_armor
 	name = "Exosuit Armor (\"Phazon\")"
@@ -464,6 +514,7 @@
 	materials = list(/datum/material/iron=25000,/datum/material/plasma=20000,/datum/material/titanium=20000)
 	construction_time = 300
 	category = list("Phazon")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Savannah-Ivanov
 /datum/design/savannah_ivanov_chassis
@@ -638,6 +689,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/plasma=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_hydraulic_clamp
 	name = "Exosuit Engineering (Hydraulic Clamp)"
@@ -647,6 +699,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_drill
 	name = "Exosuit Mining (Mining Drill)"
@@ -656,6 +709,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_mining_scanner
 	name = "Exosuit Engineering (Mining Scanner)"
@@ -665,6 +719,7 @@
 	materials = list(/datum/material/iron=5000,/datum/material/glass = 2500)
 	construction_time = 50
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_extinguisher
 	name = "Exosuit Engineering (Extinguisher)"
@@ -674,6 +729,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_generator
 	name = "Exosuit Module (Plasma Generator)"
@@ -683,6 +739,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 1000,/datum/material/silver=2000,/datum/material/plasma=5000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_mousetrap_mortar
 	name = "H.O.N.K Weapon (Mousetrap Mortar)"
@@ -692,6 +749,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 300
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_banana_mortar
 	name = "H.O.N.K Weapon (Banana Mortar)"
@@ -701,6 +759,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 300
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_honker
 	name = "H.O.N.K Weapon (HoNkER BlAsT 5000)"
@@ -710,6 +769,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=10000)
 	construction_time = 500
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_punching_glove
 	name = "H.O.N.K Weapon (Oingo Boingo Punch-face)"
@@ -719,6 +779,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=7500)
 	construction_time = 400
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /////////////////////////////////////////
 //////////////Borg Upgrades//////////////
@@ -732,6 +793,7 @@
 	materials = list(/datum/material/iron = 5000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_restart
 	name = "Cyborg Upgrade (Emergency Reboot Board)"
@@ -741,6 +803,7 @@
 	materials = list(/datum/material/iron = 20000 , /datum/material/glass = 5000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_thrusters
 	name = "Cyborg Upgrade (Ion Thrusters)"
@@ -750,6 +813,7 @@
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 6000, /datum/material/plasma = 5000, /datum/material/uranium = 6000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_disablercooler
 	name = "Cyborg Upgrade (Rapid Disabler Cooling Module)"
@@ -759,6 +823,7 @@
 	materials = list(/datum/material/iron = 20000 , /datum/material/glass = 6000, /datum/material/gold = 2000, /datum/material/diamond = 2000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_diamonddrill
 	name = "Cyborg Upgrade (Diamond Drill)"
@@ -768,6 +833,7 @@
 	materials = list(/datum/material/iron=10000, /datum/material/glass = 6000, /datum/material/diamond = 2000)
 	construction_time = 80
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_holding
 	name = "Cyborg Upgrade (Ore Satchel of Holding)"
@@ -777,6 +843,7 @@
 	materials = list(/datum/material/iron = 10000, /datum/material/gold = 2000, /datum/material/uranium = 1000)
 	construction_time = 40
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_lavaproof
 	name = "Cyborg Upgrade (Lavaproof Tracks)"
@@ -786,6 +853,7 @@
 	materials = list(/datum/material/iron = 10000, /datum/material/plasma = 4000, /datum/material/titanium = 5000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_syndicate_module
 	name = "Cyborg Upgrade (Illegal Modules)"
@@ -795,6 +863,7 @@
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/diamond = 10000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_transform_clown
 	name = "Cyborg Upgrade (Clown Model)"
@@ -804,6 +873,7 @@
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/bananium = 1000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_selfrepair
 	name = "Cyborg Upgrade (Self-repair)"
@@ -813,6 +883,7 @@
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000)
 	construction_time = 80
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_expandedsynthesiser
 	name = "Cyborg Upgrade (Hypospray Expanded Synthesiser)"
@@ -822,6 +893,7 @@
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/plasma = 8000, /datum/material/uranium = 8000)
 	construction_time = 80
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_piercinghypospray
 	name = "Cyborg Upgrade (Piercing Hypospray)"
@@ -831,6 +903,7 @@
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/titanium = 5000, /datum/material/diamond = 3000)
 	construction_time = 80
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_defibrillator
 	name = "Cyborg Upgrade (Defibrillator)"
@@ -840,6 +913,7 @@
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 5000, /datum/material/silver = 4000, /datum/material/gold = 3000)
 	construction_time = 80
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_surgicalprocessor
 	name = "Cyborg Upgrade (Surgical Processor)"
@@ -849,6 +923,7 @@
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 4000, /datum/material/silver = 4000)
 	construction_time = 40
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_trashofholding
 	name = "Cyborg Upgrade (Trash Bag of Holding)"
@@ -858,6 +933,7 @@
 	materials = list(/datum/material/gold = 2000, /datum/material/uranium = 1000)
 	construction_time = 40
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_advancedmop
 	name = "Cyborg Upgrade (Advanced Mop)"
@@ -867,6 +943,7 @@
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 2000)
 	construction_time = 40
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_prt
 	name = "Cyborg Upgrade (Plating Repair Tool)"
@@ -876,6 +953,7 @@
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 750) //same price as a cautery
 	construction_time = 40
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_expand
 	name = "Cyborg Upgrade (Expand)"
@@ -885,6 +963,7 @@
 	materials = list(/datum/material/iron = 200000, /datum/material/titanium = 5000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/boris_ai_controller
 	name = "B.O.R.I.S. AI-Cyborg Remote Control"
@@ -895,6 +974,7 @@
 	construction_time = 50
 	category = list("Control Interfaces")
 	search_metadata = "boris"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_rped
 	name = "Cyborg Upgrade (RPED)"
@@ -904,6 +984,7 @@
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 5000)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_circuit_app
 	name = "Cyborg Upgrade (Circuit Manipulator)"
@@ -913,6 +994,7 @@
 	materials = list(/datum/material/iron = 2000, /datum/material/titanium = 500)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_beaker_app
 	name = "Cyborg Upgrade (Beaker Storage)"
@@ -922,6 +1004,7 @@
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 2250) //Need glass for the new beaker too
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_pinpointer
 	name = "Cyborg Upgrade (Crew pinpointer)"
@@ -931,6 +1014,7 @@
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_broomer
 	name = "Cyborg Upgrade (Experimental Push Broom)"
@@ -940,6 +1024,7 @@
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 500)
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Misc
 /datum/design/mecha_tracking
@@ -950,6 +1035,7 @@
 	materials = list(/datum/material/iron=500)
 	construction_time = 50
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mecha_tracking_ai_control
 	name = "AI Control Beacon"
@@ -959,6 +1045,7 @@
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/silver = 200)
 	construction_time = 50
 	category = list("Control Interfaces")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/synthetic_flash
 	name = "Flash"
@@ -969,6 +1056,7 @@
 	construction_time = 100
 	build_path = /obj/item/assembly/flash/handheld
 	category = list("Misc")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //MODsuit construction
 
@@ -981,6 +1069,7 @@
 	construction_time = 25 SECONDS
 	build_path = /obj/item/mod/construction/shell
 	category = list("MOD Construction")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_helmet
 	name = "MOD helmet"
@@ -991,6 +1080,7 @@
 	construction_time = 10 SECONDS
 	build_path = /obj/item/mod/construction/helmet
 	category = list("MOD Construction")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_chestplate
 	name = "MOD chestplate"
@@ -1001,6 +1091,7 @@
 	construction_time = 10 SECONDS
 	build_path = /obj/item/mod/construction/chestplate
 	category = list("MOD Construction")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_gauntlets
 	name = "MOD gauntlets"
@@ -1011,6 +1102,7 @@
 	construction_time = 10 SECONDS
 	build_path = /obj/item/mod/construction/gauntlets
 	category = list("MOD Construction")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_boots
 	name = "MOD boots"
@@ -1021,6 +1113,7 @@
 	construction_time = 10 SECONDS
 	build_path = /obj/item/mod/construction/boots
 	category = list("MOD Construction")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating
 	name = "MOD external plating"
@@ -1033,6 +1126,7 @@
 	category = list("MOD Construction", "Equipment")
 	research_icon = 'icons/obj/clothing/modsuit/mod_construction.dmi'
 	research_icon_state = "standard-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating/New()
 	. = ..()
@@ -1045,36 +1139,41 @@
 	id = "mod_plating_engineering"
 	build_path = /obj/item/mod/construction/plating/engineering
 	materials = list(/datum/material/iron = 6000, /datum/material/gold = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	research_icon_state = "engineering-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating/atmospheric
 	id = "mod_plating_atmospheric"
 	build_path = /obj/item/mod/construction/plating/atmospheric
 	materials = list(/datum/material/iron = 6000, /datum/material/titanium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	research_icon_state = "atmospheric-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating/medical
 	id = "mod_plating_medical"
 	build_path = /obj/item/mod/construction/plating/medical
 	materials = list(/datum/material/iron = 6000, /datum/material/silver = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
+	mapload_design_flags = DESIGN_FAB_MEDICAL
 	research_icon_state = "medical-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating/security
 	id = "mod_plating_security"
 	build_path = /obj/item/mod/construction/plating/security
 	materials = list(/datum/material/iron = 6000, /datum/material/uranium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 	research_icon_state = "security-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_plating/cosmohonk
 	id = "mod_plating_cosmohonk"
 	build_path = /obj/item/mod/construction/plating/cosmohonk
 	materials = list(/datum/material/iron = 6000, /datum/material/bananium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
+	mapload_design_flags = DESIGN_FAB_SERVICE
 	research_icon_state = "cosmohonk-plating"
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mod_paint_kit
 	name = "MOD paint kit"
@@ -1095,6 +1194,7 @@
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 1000)
 	build_path = /obj/item/mod/module
 	category = list("MOD Modules")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 	var/department_type = MODULE_GENERAL
 
 /datum/design/module/New()
@@ -1348,15 +1448,6 @@
 	materials = list(/datum/material/iron = 1500, /datum/material/glass = 500, /datum/material/silver = 1000, /datum/material/titanium = 1500, /datum/material/uranium = 500)
 	build_path = /obj/item/mod/module/mister/atmos
 	department_type = MODULE_ENGINEERING
-
-//MODsuit bepis modules
-
-/datum/design/module/disposal
-	name = "MOD Module: Disposal Connector"
-	id = "mod_disposal"
-	materials = list(/datum/material/iron = 2500, /datum/material/titanium = 1000)
-	build_path = /obj/item/mod/module/disposal_connector
-	department_type = MODULE_SUPPLY
 
 //MODsuit anomalock modules
 

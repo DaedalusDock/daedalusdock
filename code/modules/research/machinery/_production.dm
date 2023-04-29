@@ -6,8 +6,6 @@
 	var/efficiency_coeff = 1
 	var/list/categories = list()
 	var/datum/component/remote_materials/materials
-	var/allowed_department_flags = ALL
-	#warn REMOVE THIS ^
 	/// What's flick()'d on print.
 	var/production_animation
 	var/allowed_buildtypes = NONE
@@ -34,7 +32,6 @@
 
 /obj/machinery/rnd/production/Destroy()
 	materials = null
-	cached_designs = null
 	matching_designs = null
 	return ..()
 

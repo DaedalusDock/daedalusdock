@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	id = "fax_machine"
 	build_path = /obj/item/circuitboard/machine/fax_machine
 	category = list("Misc. Machinery")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_CARGO
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_SECURITY | DESIGN_FAB_SUPPLY
 
 /// Fax machine circuit.
 /obj/item/circuitboard/machine/fax_machine

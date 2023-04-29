@@ -820,15 +820,6 @@
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stock_parts/micro_laser = 1)
 
-/obj/item/circuitboard/machine/experimentor
-	name = "E.X.P.E.R.I-MENTOR (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/rnd/experimentor
-	req_components = list(
-		/obj/item/stock_parts/scanning_module = 1,
-		/obj/item/stock_parts/manipulator = 2,
-		/obj/item/stock_parts/micro_laser = 2)
-
 /obj/item/circuitboard/machine/mech_recharger
 	name = "Mechbay Recharger (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -915,6 +906,11 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/mechpad
 	req_components = list()
+
+/obj/item/circuitboard/machine/fabricator/department/robotics
+	name = "Departmental Fabricator - Robotics (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_ROBOTICS
+	build_path = /obj/machinery/rnd/production/fabricator/department/robotics
 
 //Security
 

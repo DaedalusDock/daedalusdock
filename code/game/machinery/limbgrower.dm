@@ -30,19 +30,21 @@
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
 
-	stored_designs = newlist(
-		/datum/design/leftarm,
-		/datum/design/leftleg,
-		/datum/design/rightarm,
-		/datum/design/rightleg,
-		/datum/design/heart,
-		/datum/design/lungs,
-		/datum/design/liver,
-		/datum/design/stomach,
-		/datum/design/appendix,
-		/datum/design/eyes,
-		/datum/design/ears,
-		/datum/design/tongue,
+	stored_designs = SStech.init_design_list(
+		list(
+			/datum/design/leftarm,
+			/datum/design/leftleg,
+			/datum/design/rightarm,
+			/datum/design/rightleg,
+			/datum/design/heart,
+			/datum/design/lungs,
+			/datum/design/liver,
+			/datum/design/stomach,
+			/datum/design/appendix,
+			/datum/design/eyes,
+			/datum/design/ears,
+			/datum/design/tongue,
+		)
 	)
 
 /obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/ui)

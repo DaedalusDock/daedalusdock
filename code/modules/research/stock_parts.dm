@@ -362,48 +362,6 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	energy_rating = 5
 	custom_materials = list(/datum/material/iron=80)
 
-//Rating 4
-
-/obj/item/stock_parts/capacitor/quadratic
-	name = "quadratic capacitor"
-	desc = "A capacity capacitor used in the construction of a variety of devices."
-	icon_state = "quadratic_capacitor"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
-
-/obj/item/stock_parts/scanning_module/triphasic
-	name = "triphasic scanning module"
-	desc = "A compact, ultra resolution triphasic scanning module used in the construction of certain devices."
-	icon_state = "triphasic_scan_module"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
-
-/obj/item/stock_parts/manipulator/femto
-	name = "femto-manipulator"
-	desc = "A tiny little manipulator used in the construction of certain devices."
-	icon_state = "femto_mani"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=30)
-
-/obj/item/stock_parts/micro_laser/quadultra
-	name = "quad-ultra micro-laser"
-	icon_state = "quadultra_micro_laser"
-	desc = "A tiny laser used in certain devices."
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=20)
-
-/obj/item/stock_parts/matter_bin/bluespace
-	name = "bluespace matter bin"
-	desc = "A container designed to hold compressed matter awaiting reconstruction."
-	icon_state = "bluespace_matter_bin"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=80)
-
 // Subspace stock parts
 
 /obj/item/stock_parts/subspace/ansible

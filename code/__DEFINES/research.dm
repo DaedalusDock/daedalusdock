@@ -8,13 +8,15 @@
 #define RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW 5
 
 //! Department flags for techwebs. Defines which department can print what from each protolathe so Cargo can't print guns, etc.
-#define DEPARTMENTAL_FLAG_SECURITY (1<<0)
-#define DEPARTMENTAL_FLAG_MEDICAL (1<<1)
-#define DEPARTMENTAL_FLAG_CARGO (1<<2)
-#define DEPARTMENTAL_FLAG_SCIENCE (1<<3)
-#define DEPARTMENTAL_FLAG_ENGINEERING (1<<4)
-#define DEPARTMENTAL_FLAG_SERVICE (1<<5)
-#warn REMOVE THESE ^
+#define DESIGN_FAB_SECURITY (1<<0)
+#define DESIGN_FAB_MEDICAL (1<<1)
+#define DESIGN_FAB_SUPPLY (1<<2)
+#define DESIGN_FAB_OMNI (1<<3)
+#define DESIGN_FAB_ROBOTICS (1<<4)
+#define DESIGN_FAB_ENGINEERING (1<<5)
+#define DESIGN_FAB_SERVICE (1<<6)
+#define DESIGN_BIOGENERATOR (1<<7)
+#define DESIGN_LIMBGROWER (1<<8)
 
 /// For instances where we don't want a design showing up due to it being for debug/sanity purposes
 #define DESIGN_ID_IGNORE "IGNORE_THIS_DESIGN"

@@ -7,68 +7,68 @@
 	name = "Hand Drill"
 	desc = "A small electric hand drill with an interchangeable screwdriver and bolt bit"
 	id = "handdrill"
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3500, /datum/material/silver = 1500, /datum/material/titanium = 2500)
 	build_path = /obj/item/screwdriver/power
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/jawsoflife
 	name = "Jaws of Life"
 	desc = "A small, compact Jaws of Life with an interchangeable pry jaws and cutting jaws"
 	id = "jawsoflife" // added one more requirment since the Jaws of Life are a bit OP
 	build_path = /obj/item/crowbar/power
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4500, /datum/material/silver = 2500, /datum/material/titanium = 3500)
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	autolathe_exportable = FALSE
 
 /datum/design/exwelder
 	name = "Experimental Welding Tool"
 	desc = "An experimental welder capable of self-fuel generation."
 	id = "exwelder"
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 	build_path = /obj/item/weldingtool/experimental
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/rpd
 	name = "Rapid Pipe Dispenser (RPD)"
 	id = "rpd_loaded"
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 75000, /datum/material/glass = 37500)
 	build_path = /obj/item/pipe_dispenser
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_CARGO
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/geneshears
 	name = "Botanogenetic Plant Shears"
 	desc = "A high tech, high fidelity pair of plant shears, capable of cutting genetic traits out of a plant."
 	id = "gene_shears"
 	build_path = /obj/item/geneshears
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron=4000, /datum/material/uranium=1500, /datum/material/silver=500)
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
+	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/biopsy_tool
 	name = "Biopsy Tool"
 	id = "biopsy_tool"
-	build_type = FABRICATOR | AWAY_LATHE
+	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 3000)
 	build_path = /obj/item/biopsy_tool
 	category = list("Tool Designs")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/wirebrush
 	name = "Wirebrush"
 	desc = "A tool to remove rust from walls."
 	id = "wirebrush"
-	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR
 	category = list("initial", "Tools")
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200)
 	build_path = /obj/item/wirebrush
 	category = list("Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING

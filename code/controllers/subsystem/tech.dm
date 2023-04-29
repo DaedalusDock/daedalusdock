@@ -22,3 +22,10 @@ SUBSYSTEM_DEF(tech)
 		designs_by_type[D.type] = D
 		designs_by_id[D.id] = D
 		designs_by_product += typecacheof(D.build_path)
+
+/// Used to populate stored_designs.
+/datum/controller/subsystem/tech/proc/init_design_list(to_init)
+	for(var/i in 1 to length(to_init))
+		to_init[i] = designs_by_type[to_init[i]]
+
+	return to_init

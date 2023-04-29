@@ -8,7 +8,7 @@
 	id = "ripley_main"
 	build_path = /obj/item/circuitboard/mecha/ripley/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/ripley_peri
 	name = "APLU \"Ripley\" Peripherals Control module"
@@ -16,7 +16,7 @@
 	id = "ripley_peri"
 	build_path = /obj/item/circuitboard/mecha/ripley/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/odysseus_main
 	name = "\"Odysseus\" Central Control module"
@@ -24,7 +24,7 @@
 	id = "odysseus_main"
 	build_path = /obj/item/circuitboard/mecha/odysseus/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/odysseus_peri
 	name = "\"Odysseus\" Peripherals Control module"
@@ -32,7 +32,7 @@
 	id = "odysseus_peri"
 	build_path = /obj/item/circuitboard/mecha/odysseus/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_main
 	name = "\"Gygax\" Central Control module"
@@ -40,7 +40,7 @@
 	id = "gygax_main"
 	build_path = /obj/item/circuitboard/mecha/gygax/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_peri
 	name = "\"Gygax\" Peripherals Control module"
@@ -48,7 +48,7 @@
 	id = "gygax_peri"
 	build_path = /obj/item/circuitboard/mecha/gygax/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_targ
 	name = "\"Gygax\" Weapons & Targeting Control module"
@@ -56,7 +56,7 @@
 	id = "gygax_targ"
 	build_path = /obj/item/circuitboard/mecha/gygax/targeting
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_main
 	name = "\"Durand\" Central Control module"
@@ -64,7 +64,7 @@
 	id = "durand_main"
 	build_path = /obj/item/circuitboard/mecha/durand/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_peri
 	name = "\"Durand\" Peripherals Control module"
@@ -72,7 +72,7 @@
 	id = "durand_peri"
 	build_path = /obj/item/circuitboard/mecha/durand/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_targ
 	name = "\"Durand\" Weapons & Targeting Control module"
@@ -80,7 +80,7 @@
 	id = "durand_targ"
 	build_path = /obj/item/circuitboard/mecha/durand/targeting
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_main
 	name = "\"H.O.N.K\" Central Control module"
@@ -88,7 +88,7 @@
 	id = "honker_main"
 	build_path = /obj/item/circuitboard/mecha/honker/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_peri
 	name = "\"H.O.N.K\" Peripherals Control module"
@@ -96,7 +96,7 @@
 	id = "honker_peri"
 	build_path = /obj/item/circuitboard/mecha/honker/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_targ
 	name = "\"H.O.N.K\" Weapons & Targeting Control module"
@@ -104,7 +104,7 @@
 	id = "honker_targ"
 	build_path = /obj/item/circuitboard/mecha/honker/targeting
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_main
 	name = "\"Phazon\" Central Control module"
@@ -113,7 +113,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_peri
 	name = "\"Phazon\" Peripherals Control module"
@@ -122,7 +122,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_targ
 	name = "\"Phazon\" Weapons & Targeting Control module"
@@ -131,7 +131,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/targeting
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/clarke_main
 	name = "\"Clarke\" Central Control module"
@@ -139,7 +139,7 @@
 	id = "clarke_main"
 	build_path = /obj/item/circuitboard/mecha/clarke/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/clarke_peri
 	name = "\"Clarke\" Peripherals Control module"
@@ -147,7 +147,7 @@
 	id = "clarke_peri"
 	build_path = /obj/item/circuitboard/mecha/clarke/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/savannah_ivanov_main
 	name = "\"Savannah-Ivanov\" Central Control module"
@@ -155,7 +155,6 @@
 	id = "savannah_ivanov_main"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/main
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 /datum/design/board/savannah_ivanov_peri
 	name = "\"Savannah-Ivanov\" Peripherals Control module"
@@ -163,7 +162,6 @@
 	id = "savannah_ivanov_peri"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/peripherals
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 /datum/design/board/savannah_ivanov_targ
 	name = "\"Savannah-Ivanov\" Weapons & Targeting Control module"
@@ -171,7 +169,6 @@
 	id = "savannah_ivanov_targ"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/targeting
 	category = list("Exosuit Modules")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
 
 ////////////////////////////////////////
 /////////// Mecha Equpment /////////////
@@ -186,17 +183,18 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_scattershot_ammo
 	name = "LBX AC 10 Scattershot Ammunition"
 	desc = "Ammunition for the LBX AC 10 exosuit weapon."
 	id = "mech_scattershot_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/scattershot
 	materials = list(/datum/material/iron=6000)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/mech_carbine
 	name = "Exosuit Weapon (FNX-99 \"Hades\" Carbine)"
@@ -207,17 +205,18 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_carbine_ammo
 	name = "FNX-99 Carbine Ammunition"
 	desc = "Ammunition for the FNX-99 \"Hades\" Carbine."
 	id = "mech_carbine_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/incendiary
 	materials = list(/datum/material/iron=6000)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/mech_ion
 	name = "Exosuit Weapon (MKIV Ion Heavy Cannon)"
@@ -228,6 +227,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/silver=6000,/datum/material/uranium=2000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_tesla
 	name = "Exosuit Weapon (MKI Tesla Cannon)"
@@ -238,6 +238,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/silver=8000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_laser
 	name = "Exosuit Weapon (CH-PS \"Immolator\" Laser)"
@@ -248,6 +249,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_laser_heavy
 	name = "Exosuit Weapon (CH-LC \"Solaris\" Laser Cannon)"
@@ -258,6 +260,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_disabler
 	name = "Exosuit Weapon (CH-DS \"Peacemaker\" Disabler)"
@@ -268,6 +271,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_grenade_launcher
 	name = "Exosuit Weapon (SGL-6 Grenade Launcher)"
@@ -278,17 +282,18 @@
 	materials = list(/datum/material/iron=22000,/datum/material/gold=6000,/datum/material/silver=8000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_grenade_launcher_ammo
 	name = "SGL-6 Grenade Launcher Ammunition"
 	desc = "Ammunition for the SGL-6 Grenade Launcher."
 	id = "mech_grenade_launcher_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/flashbang
 	materials = list(/datum/material/iron=4000,/datum/material/gold=500,/datum/material/iron=500)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/mech_missile_rack
 	name = "Exosuit Weapon (BRM-6 Missile Rack)"
@@ -299,17 +304,18 @@
 	materials = list(/datum/material/iron=22000,/datum/material/gold=6000,/datum/material/silver=8000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_missile_rack_ammo
 	name = "SRM-8 Missile Rack Ammunition"
 	desc = "Ammunition for the SRM-8 Missile Rack."
 	id = "mech_missile_rack_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/missiles_br
 	materials = list(/datum/material/iron=8000,/datum/material/gold=500,/datum/material/iron=500)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/clusterbang_launcher
 	name = "Exosuit Weapon (SOB-3 Clusterbang Launcher)"
@@ -320,27 +326,18 @@
 	materials = list(/datum/material/iron=20000,/datum/material/gold=10000,/datum/material/uranium=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/clusterbang_launcher_ammo
 	name = "SOB-3 Clusterbang Launcher Ammunition"
 	desc = "Ammunition for the SOB-3 Clusterbang Launcher"
 	id = "clusterbang_launcher_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/clusterbang
 	materials = list(/datum/material/iron=6000,/datum/material/gold=1500,/datum/material/uranium=1500)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-
-/datum/design/mech_wormhole_gen
-	name = "Exosuit Module (Localized Wormhole Generator)"
-	desc = "An exosuit module that allows generating of small quasi-stable wormholes."
-	id = "mech_wormhole_gen"
-	build_type = MECHFAB
-	build_path = /obj/item/mecha_parts/mecha_equipment/wormhole_generator
-	materials = list(/datum/material/iron=10000)
-	construction_time = 100
-	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/mech_teleporter
 	name = "Exosuit Module (Teleporter Module)"
@@ -351,6 +348,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/diamond=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_rcd
 	name = "Exosuit Module (RCD Module)"
@@ -361,6 +359,7 @@
 	materials = list(/datum/material/iron=30000,/datum/material/gold=20000,/datum/material/plasma=25000,/datum/material/silver=20000)
 	construction_time = 1200
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_thrusters
 	name = "Exosuit Module (RCS Thruster Package)"
@@ -371,6 +370,7 @@
 	materials = list(/datum/material/iron=25000,/datum/material/titanium=5000,/datum/material/silver=3000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_gravcatapult
 	name = "Exosuit Module (Gravitational Catapult Module)"
@@ -381,6 +381,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_repair_droid
 	name = "Exosuit Module (Repair Droid Module)"
@@ -391,6 +392,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 5000,/datum/material/gold=1000,/datum/material/silver=2000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_ccw_armor
 	name = "Exosuit Module (Reactive Armor Booster Module)"
@@ -401,6 +403,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/silver=5000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_proj_armor
 	name = "Exosuit Module (Reflective Armor Booster Module)"
@@ -411,6 +414,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/gold=5000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_diamond_drill
 	name = "Exosuit Mining (Diamond Mining Drill)"
@@ -421,6 +425,7 @@
 	materials = list(/datum/material/iron=10000,/datum/material/diamond=6500)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_plasma_cutter
 	name = "Exosuit Mining (217-D Heavy Plasma Cutter)"
@@ -431,6 +436,7 @@
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 1000, /datum/material/plasma = 2000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mecha_kineticgun
 	name = "Exosuit Mining (Proto-kinetic Accelerator)"
@@ -441,6 +447,7 @@
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 1000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_lmg
 	name = "Exosuit Weapon (\"Ultra AC 2\" LMG)"
@@ -451,17 +458,18 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_lmg_ammo
 	name = "Ultra AC 2 Ammunition"
 	desc = "Ammunition for the Ultra AC 2 LMG"
 	id = "mech_lmg_ammo"
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	build_path = /obj/item/mecha_ammo/lmg
 	materials = list(/datum/material/iron=4000)
 	construction_time = 20
 	category = list("Exosuit Ammunition", "Ammo")
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/mech_sleeper
 	name = "Exosuit Medical (Mounted Sleeper)"
@@ -472,6 +480,7 @@
 	materials = list(/datum/material/iron=5000, /datum/material/glass = 10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_syringe_gun
 	name = "Exosuit Medical (Syringe Gun)"
@@ -482,6 +491,7 @@
 	materials = list(/datum/material/iron=3000, /datum/material/glass = 2000)
 	construction_time = 200
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_medical_beamgun
 	name = "Exosuit Medical (Medical Beamgun)"
@@ -492,3 +502,4 @@
 	construction_time = 250
 	build_path = /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam
 	category = list("Exosuit Equipment")
+	mapload_design_flags = DESIGN_FAB_ROBOTICS

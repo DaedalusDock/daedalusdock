@@ -15,6 +15,8 @@
 
 	/// Our designs. Defined as a list of types, which get created during mapload.
 	var/list/datum/design/stored_designs
+	/// Flags given to designs and machines to populate their design list during mapload.
+	var/mapload_design_flags = ALL
 
 /obj/machinery/rnd/proc/reset_busy()
 	busy = FALSE
@@ -22,21 +24,19 @@
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
 	wires = new /datum/wires/rnd(src)
+	stored_designs = list()
 	if(mapload)
-		init_default_designs()
-	else
-		stored_designs = null
+		populate_designs()
 
 /obj/machinery/rnd/Destroy()
 	stored_designs = null
 	QDEL_NULL(wires)
 	return ..()
 
-/// Used to populate stored_designs during mapload
-/obj/machinery/rnd/proc/init_default_designs()
-	for(var/i in 1 to length(stored_designs))
-		stored_designs[i] = SStech.designs_by_type[stored_designs[i]]
-	return
+/obj/machinery/rnd/proc/populate_designs()
+	for(var/datum/design/D as anything in SStech.designs)
+		if(design.design_flags & mapload_design_flags)
+			stored_designs += D
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

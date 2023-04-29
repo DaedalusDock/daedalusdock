@@ -48,14 +48,12 @@
 #define BIOGENERATOR (1<<3) //Uses biomass
 #define LIMBGROWER (1<<4) //Uses synthetic flesh
 #define SMELTER (1<<5) //uses various minerals
-/// Protolathes for offstation roles. More limited tech tree.
-#define AWAY_LATHE (1<<8)
 /// Imprinters for offstation roles. More limited tech tree.
-#define AWAY_IMPRINTER (1<<9)
+#define AWAY_IMPRINTER (1<<6)
 /// For wiremod/integrated circuits. Uses various minerals.
-#define COMPONENT_PRINTER (1<<10)
+#define COMPONENT_PRINTER (1<<7)
 //Note: More than one of these can be added to a design but imprinter and lathe designs are incompatable.
-#define IMPRINTER (1<<11)//temp
+#define IMPRINTER (1<<8)//temp
 
 //Modular computer/NTNet defines
 

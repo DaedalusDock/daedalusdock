@@ -29,8 +29,8 @@
 
 /datum/design/unique_modkit
 	category = list("Mining Designs", "Cyborg Upgrade Modules") //can't be normally obtained
-	build_type = FABRICATOR | AWAY_LATHE | MECHFAB
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO
+	build_type = FABRICATOR  | MECHFAB
+	mapload_design_flags = DESIGN_FAB_SUPPLY
 
 /datum/design/unique_modkit/offensive_turf_aoe
 	name = "Kinetic Accelerator Offensive Mining Explosion Mod"

@@ -8,72 +8,60 @@
 /datum/design/alloy/plasteel_alloy
 	name = "Plasma + Iron alloy"
 	id = "plasteel"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/iron = MINERAL_MATERIAL_AMOUNT, /datum/material/plasma = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/plasteel
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
 
 
 /datum/design/alloy/plastitanium_alloy
 	name = "Plasma + Titanium alloy"
 	id = "plastitanium"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/titanium = MINERAL_MATERIAL_AMOUNT, /datum/material/plasma = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/mineral/plastitanium
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
 
 /datum/design/alloy/plaglass_alloy
 	name = "Plasma + Glass alloy"
 	id = "plasmaglass"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/plasma = MINERAL_MATERIAL_AMOUNT * 0.5, /datum/material/glass = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/plasmaglass
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
 
 /datum/design/alloy/plasmarglass_alloy
 	name = "Plasma + Iron + Glass alloy"
 	id = "plasmareinforcedglass"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/plasma = MINERAL_MATERIAL_AMOUNT * 0.5, /datum/material/iron = MINERAL_MATERIAL_AMOUNT * 0.5,  /datum/material/glass = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/plasmarglass
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
 
 /datum/design/alloy/titaniumglass_alloy
 	name = "Titanium + Glass alloy"
 	id = "titaniumglass"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/titanium = MINERAL_MATERIAL_AMOUNT * 0.5, /datum/material/glass = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/titaniumglass
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
 
 /datum/design/alloy/plastitaniumglass_alloy
 	name = "Plasma + Titanium + Glass alloy"
 	id = "plastitaniumglass"
-	build_type = SMELTER | FABRICATOR | AWAY_LATHE
+	build_type = SMELTER | FABRICATOR
 	materials = list(/datum/material/plasma = MINERAL_MATERIAL_AMOUNT * 0.5, /datum/material/titanium = MINERAL_MATERIAL_AMOUNT * 0.5, /datum/material/glass = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/plastitaniumglass
 	category = list("initial", "Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 	maxstack = 50
-
-/datum/design/alienalloy
-	name = "Alien Alloy"
-	desc = "A sheet of reverse-engineered alien alloy."
-	id = "alienalloy"
-	build_type = FABRICATOR | AWAY_LATHE | SMELTER
-	materials = list(/datum/material/iron = 4000, /datum/material/plasma = 4000)
-	build_path = /obj/item/stack/sheet/mineral/abductor
-	category = list("Stock Parts")
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_ENGINEERING
-
-#warn Remove?

@@ -32,6 +32,8 @@ other types of metals and chemistry for reagents).
 	var/construction_time
 	/// The typepath of the object produced by this design
 	var/build_path = null
+	/// Bitflags indicating what rnd machines should have this design roundstart.
+	var/design_flags = NONE
 	/// List of reagents produced by this design. Currently only supported by the biogenerator.
 	var/list/make_reagents = list()
 	/// What category this design falls under. Used for sorting in production machines, mostly the mechfab.
@@ -45,9 +47,6 @@ other types of metals and chemistry for reagents).
 	#warn ^ Needs addressing
 	/// If this is [TRUE] the admins get notified whenever anyone prints this. Currently only used by the BoH.
 	var/dangerous_construction = FALSE
-	/// Bitflags indicating what departmental lathes should be allowed to process this design.
-	var/departmental_flags = ALL
-	#warn ^ This only exists so I know where to reorganize everything. Axe it when done.
 	/// What techwebs nodes unlock this design. Constructed by SSresearch
 	var/list/datum/techweb_node/unlocked_by = list()
 	/// Override for the automatic icon generation used for the research console.

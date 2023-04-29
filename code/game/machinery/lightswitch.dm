@@ -15,14 +15,14 @@
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
 	id = "lightswitch_frame"
-	build_type = AUTOLATHE | FABRICATOR | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR
 	materials = list(
 		/datum/material/iron = 200,
 		/datum/material/glass = 200,
 	)
 	build_path = /obj/item/wallframe/light_switch
 	category = list("initial", "Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
 /obj/machinery/light_switch
 	name = "light switch"

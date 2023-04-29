@@ -106,11 +106,11 @@
 
 	var/list/designs = list()
 
-	for (var/var/datum/design/design in SStech.designs)
+	for (var/datum/design/design as anything in design_storage.stored_designs)
 		if (!(design.build_type & COMPONENT_PRINTER))
 			continue
 
-		designs[researched_design_id] = list(
+		designs[design.id] = list(
 			"name" = design.name,
 			"description" = design.desc,
 			"materials" = get_material_cost_data(design.materials),

@@ -78,7 +78,7 @@
 		/datum/design/camera,
 		/datum/design/airlock_painter,
 		/datum/design/airlock_painter/decal,
-		/datum/design/airlock_painter/tile,
+		/datum/design/airlock_painter/decal/tile,
 		/datum/design/emergency_oxygen,
 		/datum/design/plasmaman_tank_belt,
 		/datum/design/generic_gas_tank,
@@ -206,7 +206,7 @@
 		)
 		data["materials"] += list(material_data)
 	if(selected_category != "None" && !length(matching_designs))
-		data["designs"] = handle_designs(design_storage.copy_data(), TRUE)
+		data["designs"] = handle_designs(design_storage.stored_designs, TRUE)
 	else
 		data["designs"] = handle_designs(matching_designs, FALSE)
 	return data
@@ -288,8 +288,8 @@
 		if (!busy)
 			/////////////////
 			//href protection
-			being_built = stored_research.isDesignResearchedID(params["id"])
-			if(!being_built)
+			being_built = SStech.designs_by_id(params["id"])
+			if(!being_built || !(being_built in design_storage.stored_designs))
 				return
 
 			var/multiplier = text2num(params["multiplier"])
@@ -363,26 +363,6 @@
 		return ..()
 
 	if(machine_stat)
-		return TRUE
-
-	if(istype(attacking_item, /obj/item/disk/design_disk))
-		user.visible_message(span_notice("[user] begins to load \the [attacking_item] in \the [src]..."),
-			balloon_alert(user, "uploading design..."),
-			span_hear("You hear the chatter of a floppy drive."))
-		busy = TRUE
-		if(do_after(user, src, 14.4)) //This is soul
-			var/obj/item/disk/design_disk/disky = attacking_item
-			var/list/not_imported
-			for(var/datum/design/blueprint as anything in disky.blueprints)
-				if(!blueprint)
-					continue
-				if(blueprint.build_type & AUTOLATHE)
-					stored_research.add_design(blueprint)
-				else
-					LAZYADD(not_imported, blueprint.name)
-			if(not_imported)
-				to_chat(user, span_warning("The following design[length(not_imported) > 1 ? "s" : ""] couldn't be imported: [english_list(not_imported)]"))
-		busy = FALSE
 		return TRUE
 
 	if(panel_open)

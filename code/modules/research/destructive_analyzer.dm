@@ -12,7 +12,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 	base_icon_state = "d_analyzer"
 	circuit = /obj/item/circuitboard/machine/destructive_analyzer
 	var/decon_mod = 0
-	#warn This needs to interface with design disks.
+	#warn needs design disk UI
 
 /obj/machinery/rnd/destructive_analyzer/RefreshParts()
 	. = ..()
@@ -75,10 +75,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 /obj/machinery/rnd/destructive_analyzer/proc/user_try_decon(mob/user)
 	if(!istype(loaded_item))
 		return FALSE
-	var/user_mode_string = ""
-	if(length(point_value))
-		user_mode_string = " for [json_encode(point_value)] points"
-	var/choice = tgui_alert(usr, "Are you sure you want to destroy [loaded_item][user_mode_string]?",, list("Proceed", "Cancel"))
+	var/choice = tgui_alert(usr, "Are you sure you want to destroy [loaded_item]?",, list("Proceed", "Cancel"))
 	if(choice == "Cancel")
 		return FALSE
 	if(QDELETED(loaded_item) || QDELETED(src))
@@ -145,7 +142,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 		if(loaded_item)
 			unload_item()
 	if(ls["deconstruct"])
-		if(!user_try_decon_id(ls["deconstruct"], usr))
+		if(!user_try_decon(ls["deconstruct"], usr))
 			say("Destructive analysis failed!")
 
 	updateUsrDialog()

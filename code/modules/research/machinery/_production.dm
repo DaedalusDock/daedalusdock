@@ -8,7 +8,10 @@
 	var/datum/component/remote_materials/materials
 	/// What's flick()'d on print.
 	var/production_animation
+
 	var/allowed_buildtypes = NONE
+	/// Design flag(s) to add to our design list on mapload.
+	var/design_flags_to_init = NONE
 
 	/// Used by the search in the UI.
 	var/list/datum/design/matching_designs
@@ -30,10 +33,20 @@
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
 
+	if(mapload && design_flags_to_init)
+		design_storage.stored_designs = SStech.fetch_designs(compile_designs())
+
 /obj/machinery/rnd/production/Destroy()
 	materials = null
 	matching_designs = null
 	return ..()
+
+/obj/machinery/rnd/production/proc/compile_designs()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/datum/design/D as anything in SStech.designs)
+		if(design_flags_to_init & D.mapload_design_flags)
+			. += D
 
 /obj/machinery/rnd/production/RefreshParts()
 	. = ..()
@@ -132,10 +145,9 @@
 	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!D in design_storage.stored_designs)
+	if(!(D in design_storage.stored_designs))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 		message_admins("[key_name_admin(usr)] may be attempting an href exploit (Production Machine).")
-		return FALSE
 	if(D.build_type && !(D.build_type & allowed_buildtypes))
 		say("This machine does not have the necessary manipulation systems for this design. Please contact Nanotrasen Support!")
 		return FALSE
@@ -276,9 +288,9 @@
 
 		temp_material += " | "
 		if (enough_mats < 1)
-			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [CallMaterialName(material)]</span>"
+			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [SSmaterials.CallMaterialName(material)]</span>"
 		else
-			temp_material += " [cached_mats[material]/coeff] [CallMaterialName(material)]"
+			temp_material += " [cached_mats[material]/coeff] [SSmaterials.CallMaterialName(material)]"
 
 	var/list/cached_reagents = D.reagents_list
 	for(var/reagent in cached_reagents)
@@ -287,9 +299,9 @@
 
 		temp_material += " | "
 		if (enough_chems < 1)
-			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [CallMaterialName(reagent)]</span>"
+			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [SSmaterials.CallMaterialName(reagent)]</span>"
 		else
-			temp_material += " [cached_reagents[reagent]/coeff] [CallMaterialName(reagent)]"
+			temp_material += " [cached_reagents[reagent]/coeff] [SSmaterials.CallMaterialName(reagent)]"
 
 	if (max_production >= 1)
 		entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=1'>[D.name]</A>[RDSCREEN_NOBREAK]"
@@ -372,7 +384,7 @@
 	for(var/datum/design/D as anything in design_storage.stored_designs)
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
-		if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))
+		if(!(isnull(design_flags_to_init) || (D.departmental_flags & design_flags_to_init)))
 			continue
 		l += design_menu_entry(D, coeff)
 	l += "</div>"

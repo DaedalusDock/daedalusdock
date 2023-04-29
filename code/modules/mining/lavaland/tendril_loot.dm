@@ -3,13 +3,13 @@
 //KA modkit design discs
 /obj/item/disk/design_disk/modkit_disc
 	name = "KA Mod Disk"
-	desc = "A design disc containing the design for a unique kinetic accelerator modkit. It's compatible with a research console."
+	desc = "A design disc containing the design for a unique kinetic accelerator modkit."
 	icon_state = "datadisk1"
 	var/modkit_design = /datum/design/unique_modkit
 
 /obj/item/disk/design_disk/modkit_disc/Initialize(mapload)
 	. = ..()
-	blueprints[1] = new modkit_design
+	stored_designs += SStech.designs_by_type[modkit_design]
 
 /obj/item/disk/design_disk/modkit_disc/mob_and_turf_aoe
 	name = "Offensive Mining Explosion Mod Disk"

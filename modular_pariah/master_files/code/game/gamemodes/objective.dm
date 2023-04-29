@@ -9,18 +9,23 @@
 
 /datum/objective/download
 	name = "download"
+	var/datum/design/target_design
 
-/datum/objective/download/proc/gen_amount_goal()
-	target_amount = rand(20,40)
-	update_explanation_text()
-	return target_amount
+/datum/objective/download/New(text)
+	. = ..()
+	var/list/designs = SStech.designs.Copy()
+	while(!target_design)
+		var/datum/design/D = pick_n_take(designs)
+		if(D.mapload_design_flags & (DESIGN_FAB_ENGINEERING|DESIGN_FAB_MEDICAL|DESIGN_FAB_ROBOTICS|DESIGN_FAB_SECURITY|DESIGN_FAB_SERVICE|DESIGN_FAB_SUPPLY))
+			target_design = D
 
 /datum/objective/download/update_explanation_text()
 	..()
-	explanation_text = "Download [target_amount] research node\s."
+	explanation_text = "Obtain a design for [target_design.name]."
 
 /datum/objective/download/check_completion()
-	var/datum/techweb/checking = new
+	var/obj/item/disk/design_disk/dat_fukken_disk = new(null)
+
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/owner in owners)
 		if(ismob(owner.current))
@@ -29,11 +34,13 @@
 				var/mob/living/carbon/human/human_downloader = mob_owner
 				if(human_downloader && (human_downloader.stat != DEAD) && istype(human_downloader.wear_suit, /obj/item/clothing/suit/space/space_ninja))
 					var/obj/item/clothing/suit/space/space_ninja/ninja_suit = human_downloader.wear_suit
-					ninja_suit.stored_research.copy_research_to(checking)
+					dat_fukken_disk.add_design_list(ninja_suit.stored_designs)
+
 			var/list/otherwise = mob_owner.get_contents()
-			for(var/obj/item/disk/tech_disk/dat_fukken_disk in otherwise)
-				dat_fukken_disk.stored_research.copy_research_to(checking)
-	return checking.researched_nodes.len >= target_amount
+			for(var/obj/item/disk/design_disk/dat_fukken_disk in otherwise)
+				dat_fukken_disk.add_design_list(checking.stored_research)
+
+	return locate(target_design) in dat_fukken_disk.stored_designs
 
 /datum/objective/download/admin_edit(mob/admin)
 	var/count = input(admin,"How many nodes ?","Nodes",target_amount) as num|null

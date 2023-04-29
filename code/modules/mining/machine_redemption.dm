@@ -236,11 +236,10 @@
 	data["hasDisk"] = FALSE
 	if(inserted_disk)
 		data["hasDisk"] = TRUE
-		if(inserted_disk.blueprints.len)
+		if(inserted_disk.stored_designs.len)
 			var/index = 1
-			for (var/datum/design/thisdesign in inserted_disk.blueprints)
-				if(thisdesign)
-					data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
+			for (var/datum/design/thisdesign in inserted_disk.stored_designs)
+				data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
 				index++
 	return data
 
@@ -314,21 +313,28 @@
 			return TRUE
 		if("diskUpload")
 			var/n = text2num(params["design"])
-			if(inserted_disk && inserted_disk.blueprints && inserted_disk.blueprints[n])
-				stored_research.add_design(inserted_disk.blueprints[n])
+			if(inserted_disk && inserted_disk.stored_designs.len && inserted_disk.stored_designs[n])
+				design_storage.add_design(inserted_disk.stored_designs[n])
 			return TRUE
 		if("Smelt")
 			if(!mat_container)
 				return
+
 			if(materials.on_hold())
 				to_chat(usr, span_warning("Mineral access is on hold, please contact the quartermaster."))
 				return
+
 			var/alloy_id = params["id"]
-			var/datum/design/alloy = stored_research.isDesignResearchedID(alloy_id)
+			var/datum/design/alloy = SStech.designs_by_id[alloy_id]
+			if(!alloy in design_storage.stored_designs)
+				CRASH("Attempted to smelt an alloy we don't have a design for. HREF exploit?")
+
 			var/obj/item/card/id/I
+
 			if(isliving(usr))
 				var/mob/living/L = usr
 				I = L.get_idcard(TRUE)
+
 			if((check_access(I) || allowed(usr)) && alloy)
 				var/smelt_amount = can_smelt_alloy(alloy)
 				var/desired = 0

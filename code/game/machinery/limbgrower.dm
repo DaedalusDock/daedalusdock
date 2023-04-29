@@ -267,11 +267,12 @@
 	flags_1 = NODECONSTRUCT_1
 	circuit = /obj/item/circuitboard/machine/limbgrower/fullupgrade
 
-/obj/machinery/limbgrower/fullupgrade/init_default_designs()
+/obj/machinery/limbgrower/fullupgrade/Initialize(mapload)
 	. = ..()
-	for(var/datum/design/D as anything in SStech.designs)
+	design_storage = list()
+	for(var/datum/design/found_design as anything in SStech.designs)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
-			design_storage.add_design(D)
+			design_storage += D
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)

@@ -73,9 +73,6 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	//Research Init
-	stored_research = new()
-
 	//Cell Init
 	cell = new/obj/item/stock_parts/cell/high
 	cell.charge = 9000

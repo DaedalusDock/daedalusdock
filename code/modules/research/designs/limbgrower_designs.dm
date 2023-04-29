@@ -249,10 +249,8 @@
 
 /obj/item/disk/design_disk/limbs/Initialize(mapload)
 	. = ..()
-	max_blueprints = limb_designs.len
-	for(var/design in limb_designs)
-		var/datum/design/new_design = design
-		blueprints += new new_design
+	storage = limb_designs.len
+	stored_designs = SStech.fetch_designs(limb_designs)
 
 /datum/design/limb_disk
 	name = "Limb Design Disk"

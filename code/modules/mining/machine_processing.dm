@@ -184,8 +184,7 @@
 	dat += "<br><br>"
 	dat += "<b>Smelt Alloys</b><br>"
 
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/datum/design/D as anything in design_storage.stored_designs)
 		dat += "<span class=\"res_name\">[D.name] "
 		if (selected_alloy == D.id)
 			dat += " <i>Smelting</i>"

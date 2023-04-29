@@ -14,8 +14,8 @@
 	var/record_number = 1
 	/// List of all explosion records in the form of /datum/data/tachyon_record
 	var/list/records = list()
-	/// Reference to a disk we are going to print to.
-	var/obj/item/computer_hardware/hard_drive/portable/inserted_disk
+	/// Reference to a drive we are going to print to.
+	var/obj/item/computer_hardware/hard_drive/portable/inserted_drive
 
 	// Lighting system to better communicate the directions.
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
@@ -53,7 +53,7 @@
 		var/obj/item/computer_hardware/hard_drive/portable/disk = item
 		eject_disk(user)
 		if(user.transferItemToLoc(disk, src))
-			inserted_disk = disk
+			inserted_drive = disk
 			return
 		else
 			balloon_alert(user, span_warning("[disk] is stuck to your hand."))
@@ -78,7 +78,7 @@
 
 /// Printing of a record into a disk.
 /obj/machinery/doppler_array/proc/print(mob/user, datum/data/tachyon_record/record)
-	if(!record || !inserted_disk)
+	if(!record || !inserted_drive)
 		return
 
 	var/datum/computer_file/data/ordnance/explosive/record_data = new
@@ -86,7 +86,7 @@
 	record_data.explosion_record = record
 	record_data.possible_experiments = apply_experiments(record)
 
-	if(inserted_disk.store_file(record_data))
+	if(inserted_drive.store_file(record_data))
 		playsound(src, 'sound/machines/ping.ogg', 25)
 	else
 		playsound(src, 'sound/machines/terminal_error.ogg', 25)
@@ -146,19 +146,19 @@
 	return TRUE
 
 /obj/machinery/doppler_array/proc/eject_disk(mob/user)
-	if(!inserted_disk)
+	if(!inserted_drive)
 		return FALSE
 	if(user)
-		user.put_in_hands(inserted_disk)
+		user.put_in_hands(inserted_drive)
 	else
-		inserted_disk.forceMove(drop_location())
+		inserted_drive.forceMove(drop_location())
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 	return TRUE
 
 /// We rely on exited to clear references.
 /obj/machinery/doppler_array/Exited(atom/movable/gone, direction)
-	if(gone == inserted_disk)
-		inserted_disk = null
+	if(gone == inserted_drive)
+		inserted_drive = null
 	. = ..()
 
 /obj/machinery/doppler_array/powered()
@@ -183,7 +183,7 @@
 	. = ..()
 
 /obj/machinery/doppler_array/Destroy()
-	inserted_disk = null
+	inserted_drive = null
 	QDEL_NULL(records) //We only want the list nuked, not the contents.
 	. = ..()
 
@@ -203,8 +203,8 @@
 /obj/machinery/doppler_array/ui_data(mob/user)
 	var/list/data = list()
 	data["records"] = list()
-	data["disk"] = inserted_disk?.name
-	data["storage"] = "[inserted_disk?.used_capacity] / [inserted_disk?.max_capacity] GQ"
+	data["disk"] = inserted_drive?.name
+	data["storage"] = "[inserted_drive?.used_capacity] / [inserted_drive?.max_capacity] GQ"
 	for(var/datum/data/tachyon_record/singular_record in records)
 		var/list/record_data = list(
 			"name" = singular_record.name,

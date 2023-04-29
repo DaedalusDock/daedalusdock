@@ -65,7 +65,7 @@ other types of metals and chemistry for reagents).
 	name = "ERROR"
 	desc = "This usually means something in the database has corrupted. If this doesn't go away automatically, inform Central Comamnd so their techs can fix this ASAP(tm)"
 
-/datum/design/Destroy()
+/datum/design/Destroy(force)
 	if(!force)
 		stack_trace("Hey which asshole tried to qdel a design?")
 		return QDEL_HINT_LETMELIVE
@@ -132,7 +132,7 @@ other types of metals and chemistry for reagents).
 	stored_designs += D
 	return TRUE
 
-/obj/item/disk/design_disk/proc/copy_designs()
+/obj/item/disk/design_disk/proc/copy_data()
 	RETURN_TYPE(/list)
 	return stored_designs.Copy()
 

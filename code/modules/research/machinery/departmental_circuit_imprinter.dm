@@ -7,5 +7,5 @@
 /obj/machinery/rnd/production/circuit_imprinter/department/science
 	name = "department circuit imprinter (Science)"
 	circuit = /obj/item/circuitboard/machine/circuit_imprinter/department/science
-	allowed_department_flags = DESIGN_FAB_OMNI
+	design_flags_to_init = DESIGN_FAB_OMNI
 	department_tag = "Science"

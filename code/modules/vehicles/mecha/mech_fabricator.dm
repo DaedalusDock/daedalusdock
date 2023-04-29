@@ -389,7 +389,7 @@
  * * part_list - List of datum design ids for designs to add to the queue.
  */
 /obj/machinery/mecha_part_fabricator/proc/add_part_set_to_queue(list/part_list)
-	for(var/id as anything in design_storage.stored_designs)
+	for(var/datum/design/D as anything in design_storage.stored_designs)
 		if((D.build_type & MECHFAB) && (D.id in part_list))
 			add_to_queue(D)
 

@@ -59,5 +59,5 @@ GLOBAL_LIST_EMPTY(fabs)
 	name = "civilian fabricator"
 	mapload_design_flags = DESIGN_FAB_CIV
 	department_tag = "Civilian"
-	circuit = /obj/item/circuitboard/machine/fabricator/department/civilian
+	circuit = /obj/item/circuitboard/machine/fabricator/department/civvie
 	stripe_color = "#525252ff"

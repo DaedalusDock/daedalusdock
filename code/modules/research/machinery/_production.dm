@@ -361,7 +361,7 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += sortTim(list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW), GLOBAL_PROC_REF(cmp_design_category))
+	l += list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
 
 	return l
 
@@ -371,7 +371,7 @@
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
 		l += design_menu_entry(D, coeff)
@@ -382,6 +382,7 @@
 	if(!categories)
 		return
 
+	sortTim(categories, GLOBAL_PROC_REF(cmp_text_asc))
 	var/line_length = 1
 	var/list/l = "<table style='width:100%' align='center'><tr>"
 
@@ -417,4 +418,5 @@
 	RETURN_TYPE(/list)
 	. = list()
 	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
-		. |= D.category
+		if(!isnull(D.category))
+			. |= D.category

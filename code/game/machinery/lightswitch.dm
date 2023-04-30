@@ -21,7 +21,7 @@
 		/datum/material/glass = 200,
 	)
 	build_path = /obj/item/wallframe/light_switch
-	category = list("initial", "Equipment")
+	category = list(DCAT_FRAME)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
 /obj/machinery/light_switch

@@ -75,7 +75,6 @@
 		/datum/design/firelock_board,
 		/datum/design/airalarm_electronics,
 		/datum/design/firealarm_electronics,
-		/datum/design/camera,
 		/datum/design/airlock_painter,
 		/datum/design/airlock_painter/decal,
 		/datum/design/airlock_painter/decal/tile,
@@ -128,9 +127,6 @@
 		/datum/design/turret_control_frame,
 		/datum/design/conveyor_belt,
 		/datum/design/conveyor_switch,
-		/datum/design/laptop,
-		/datum/design/tablet,
-		/datum/design/pet_carrier,
 		/datum/design/miniature_power_cell,
 		/datum/design/package_wrap,
 		/datum/design/holodisk,
@@ -148,8 +144,6 @@
 		/datum/design/chisel,
 		/datum/design/control,
 		/datum/design/paperroll,
-		/datum/design/toner,
-		/datum/design/toner/large,
 		/datum/design/beacon,
 		/datum/design/plasticducky,
 		/datum/design/gas_filter,
@@ -494,14 +488,12 @@
 	if(!hacked_designs)
 		var/list/L = list(
 			/datum/design/plasmaman_tank_belt,
-			/datum/design/electropack,
 			/datum/design/large_welding_tool,
 			/datum/design/handcuffs,
 			/datum/design/receiver,
 			/datum/design/cleaver,
 			/datum/design/toygun,
 			/datum/design/capbox,
-			/datum/design/toy_balloon
 		)
 		hacked_designs = SStech.fetch_designs(L)
 

@@ -342,7 +342,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000, /datum/material/gold = 1000, /datum/material/silver = 1000)
 	build_path = /obj/item/holosign_creator/atmos
-	category = list(DCAT_EVA)
+	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/holobarrier_med

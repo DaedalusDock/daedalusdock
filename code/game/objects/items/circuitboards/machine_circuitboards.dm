@@ -220,6 +220,11 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/rnd/production/fabricator/department/engineering
 
+/obj/item/circuitboard/machine/fabricator/department/civvie
+	name = "Departmental Fabricator - Civilian (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/rnd/production/fabricator/department/civvie
+
 /obj/item/circuitboard/machine/rtg
 	name = "RTG (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING

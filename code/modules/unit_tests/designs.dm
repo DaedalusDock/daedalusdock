@@ -19,7 +19,7 @@
 			TEST_FAIL("Design [current_design.type] requires NO materials but has build_path or make_reagents set")
 
 	for(var/path in subtypesof(/datum/design/surgery))
-		var/datum/design/surgery/current_design = SStech.designs_by_path[path]
+		var/datum/design/surgery/current_design = SStech.designs_by_type[path]
 
 		if (isnull(current_design.id) || current_design.id == default_design_surgery.id) //Check if ID was not set
 			TEST_FAIL("Surgery Design [current_design.type] has no ID set")

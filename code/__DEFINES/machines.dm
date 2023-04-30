@@ -224,3 +224,5 @@
 #define DCAT_CIRCUIT "Circuit Boards"
 #define DCAT_SUPPLY "Supply Tools"
 #define DCAT_STOCK_PART "Stock Parts"
+#define DCAT_WEARABLE "Wearables"
+#define DCAT_MISC "Miscellaneous"

@@ -2,7 +2,7 @@
 
 /datum/design/alloy
 	name = "ERROR"
-	id = "ERROR_ALLOY"
+	id = DESIGN_ID_IGNORE
 	build_type = NONE
 
 /datum/design/alloy/plasteel_alloy

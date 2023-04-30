@@ -150,6 +150,7 @@
 	AddComponent(/datum/component/material_container, allowed_materials, INFINITY, MATCONTAINER_EXAMINE|BREAKDOWN_FLAGS_ORE_PROCESSOR, allowed_items=/obj/item/stack)
 	selected_material = GET_MATERIAL_REF(/datum/material/iron)
 
+	internal_disk = new /obj/item/disk/data/medium(src)
 	internal_disk.set_data(
 		DATA_IDX_DESIGNS,
 		SStech.fetch_designs(subtypesof(/datum/design/alloy)

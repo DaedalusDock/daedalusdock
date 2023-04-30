@@ -67,9 +67,8 @@
 
 /obj/machinery/mecha_part_fabricator/Initialize(mapload)
 	rmat = AddComponent(/datum/component/remote_materials, "mechfab", mapload && link_on_init, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
-	RefreshParts() //Recalculating local material sizes if the fab isn't linked
+	. = ..()
 	update_menu_tech()
-	return ..()
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
 	. = ..()

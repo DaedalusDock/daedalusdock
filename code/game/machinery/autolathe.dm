@@ -503,7 +503,6 @@
 		internal_disk.remove(DATA_IDX_DESIGNS, hacked_designs, TRUE)
 
 
-
 /obj/machinery/autolathe/hacked/Initialize(mapload)
 	. = ..()
 	adjust_hacked(TRUE)

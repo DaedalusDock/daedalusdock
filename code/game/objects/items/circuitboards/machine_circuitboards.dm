@@ -360,6 +360,10 @@
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/large
 	)
 
 /obj/item/circuitboard/machine/circuit_imprinter/offstation
@@ -1149,7 +1153,12 @@
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/micro_laser = 1,
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/assembly/igniter = 1)
+		/obj/item/assembly/igniter = 1,
+		/obj/item/disk/data = 1,
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/ore_silo

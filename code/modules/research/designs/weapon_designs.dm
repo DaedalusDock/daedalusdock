@@ -5,14 +5,14 @@
 /datum/design/rubbershot/sec
 	id = "sec_rshot"
 	build_type = FABRICATOR
-	category = list("Ammo")
+	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 	autolathe_exportable = FALSE //Redundant
 
 /datum/design/beanbag_slug/sec
 	id = "sec_beanbag_slug"
 	build_type = FABRICATOR
-	category = list("Ammo")
+	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 	autolathe_exportable = FALSE
 
@@ -43,7 +43,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 10000, /datum/material/silver = 10000)
 	build_path = /obj/item/weaponcrafting/gunkit/tesla
-	category = list("Weapons")
+	category = list(DCAT_WEAPON)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 	autolathe_exportable = FALSE
 
@@ -54,7 +54,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 1000)
 	build_path = /obj/item/weaponcrafting/gunkit/nuclear
-	category = list("Weapons")
+	category = list(DCAT_WEAPON)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 	autolathe_exportable = FALSE
 
@@ -65,7 +65,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 500, /datum/material/uranium = 2000)
 	build_path = /obj/item/gun/energy/floragun
-	category = list("Weapons")
+	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/large_grenade
@@ -75,8 +75,8 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000)
 	build_path = /obj/item/grenade/chem_grenade/large
-	category = list("Weapons")
-	mapload_design_flags = DESIGN_FAB_MEDICAL
+	category = list(DCAT_WEAPON)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/pyro_grenade
 	name = "Pyro Grenade"
@@ -85,8 +85,8 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/plasma = 500)
 	build_path = /obj/item/grenade/chem_grenade/pyro
-	category = list("Weapons")
-	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL
+	category = list(DCAT_WEAPON)
+	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cryo_grenade
 	name = "Cryo Grenade"
@@ -95,8 +95,8 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/silver = 500)
 	build_path = /obj/item/grenade/chem_grenade/cryo
-	category = list("Weapons")
-	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL
+	category = list(DCAT_WEAPON)
+	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/adv_grenade
 	name = "Advanced Release Grenade"
@@ -105,8 +105,8 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 500)
 	build_path = /obj/item/grenade/chem_grenade/adv_release
-	category = list("Weapons")
-	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL
+	category = list(DCAT_WEAPON)
+	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/stunshell
 	name = "Stun Shell"
@@ -115,7 +115,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200)
 	build_path = /obj/item/ammo_casing/shotgun/stunslug
-	category = list("Ammo")
+	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/suppressor // Do not add to sec fab
@@ -125,7 +125,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/silver = 500)
 	build_path = /obj/item/suppressor
-	category = list("Weapons")
+	category = list(DCAT_WEAPON)
 
 /datum/design/cleric_mace
 	name = "Cleric Mace"

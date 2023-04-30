@@ -361,7 +361,7 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += sortTim(list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW), GLOBAL_PROC_REF(cmp_design_category))
 
 	return l
 
@@ -418,6 +418,3 @@
 	. = list()
 	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		. |= D.category
-
-	. -= "initial"
-	#warn ^ remove after techwebs are gone

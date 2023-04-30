@@ -51,7 +51,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron=4000, /datum/material/uranium=1500, /datum/material/silver=500)
 	category = list("Tool Designs")
-	mapload_design_flags = DESIGN_FAB_SERVICE
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/biopsy_tool
 	name = "Biopsy Tool"
@@ -67,8 +67,8 @@
 	desc = "A tool to remove rust from walls."
 	id = "wirebrush"
 	build_type = AUTOLATHE | FABRICATOR
-	category = list("initial", "Tools")
+	category = list( "Tools")
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200)
 	build_path = /obj/item/wirebrush
 	category = list("Equipment")
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI

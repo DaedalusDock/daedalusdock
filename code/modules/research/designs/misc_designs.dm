@@ -10,7 +10,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/hud/health
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
 /datum/design/security_hud
@@ -20,7 +20,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/hud/security
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/diagnostic_hud
@@ -30,7 +30,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/hud/diagnostic
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /////////////////////////////////////////
@@ -44,7 +44,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/welding
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/welding_mask
@@ -54,7 +54,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 1000)
 	build_path = /obj/item/clothing/mask/gas/welding
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE, DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/rolling_table //Should probably be craftable..?
@@ -64,7 +64,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000)
 	build_path = /obj/structure/table/rolling
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 
 /datum/design/portaseeder
 	name = "Portable Seed Extractor"
@@ -73,7 +73,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 400)
 	build_path = /obj/item/storage/bag/plants/portaseeder
-	category = list("Equipment")
+	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/air_horn
@@ -83,7 +83,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/bananium = 1000)
 	build_path = /obj/item/bikehorn/airhorn
-	category = list("Equipment")
+	category = list(DCAT_MISC_TOOL)
 
 /datum/design/mesons
 	name = "Optical Meson Scanners"
@@ -92,7 +92,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/meson
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_SUPPLY | DESIGN_FAB_ENGINEERING
 
 /datum/design/engine_goggles
@@ -102,7 +102,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/plasma = 100)
 	build_path = /obj/item/clothing/glasses/meson/engine
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/tray_goggles
@@ -112,7 +112,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/meson/engine/tray
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/night_vision_goggles
@@ -122,7 +122,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/plasma = 350, /datum/material/uranium = 1000)
 	build_path = /obj/item/clothing/glasses/night
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_SECURITY
 
 /datum/design/magboots
@@ -132,7 +132,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4500, /datum/material/silver = 1500, /datum/material/gold = 2500)
 	build_path = /obj/item/clothing/shoes/magboots
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/sci_goggles
@@ -142,7 +142,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/clothing/glasses/science
-	category = list("Equipment")
+	category = list(DCAT_WEARABLE)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/roastingstick
@@ -162,7 +162,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron=1000, /datum/material/glass = 500, /datum/material/silver = 500)
 	build_path = /obj/item/locator
-	category = list("Equipment")
+	category = list(DCAT_RADIO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/quantum_keycard
@@ -172,7 +172,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 500, /datum/material/iron = 500, /datum/material/silver = 500, /datum/material/bluespace = 1000)
 	build_path = /obj/item/quantum_keycard
-	category = list("Equipment")
+	category = list(DCAT_RADIO)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/anomaly_neutralizer
@@ -192,7 +192,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000)
 	build_path = /obj/item/tank/internals/oxygen/empty
-	category = list("Equipment")
+	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/plasma_tank
@@ -202,7 +202,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000)
 	build_path = /obj/item/tank/internals/plasma/empty
-	category = list("Equipment")
+	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/pneumatic_seal // bay :pleading:
@@ -212,7 +212,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 20000, /datum/material/plasma = 10000)
 	build_path = /obj/item/door_seal
-	category = list("Equipment")
+	category = list(DCAT_CONSTRUCTION)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SECURITY
 
 /////////////////////////////////////////
@@ -226,7 +226,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 200)
 	build_path = /obj/item/mop/advanced
-	category = list("Equipment", "Tools", "Tool Designs")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/normtrash
@@ -236,7 +236,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 2000)
 	build_path = /obj/item/storage/bag/trash
-	category = list("Equipment")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/light_replacer
@@ -246,7 +246,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1500, /datum/material/silver = 150, /datum/material/glass = 3000)
 	build_path = /obj/item/lightreplacer
-	category = list("Equipment")
+	category = list(DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
 /datum/design/buffer_upgrade
@@ -256,7 +256,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 200)
 	build_path = /obj/item/janicart_upgrade/buffer
-	category = list("Equipment")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/vacuum_upgrade
@@ -266,7 +266,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 200)
 	build_path = /obj/item/janicart_upgrade/vacuum
-	category = list("Equipment")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/paint_remover
@@ -277,7 +277,7 @@
 	materials = list(/datum/material/iron = 1000)
 	reagents_list = list(/datum/reagent/acetone = 60)
 	build_path = /obj/item/paint_remover
-	category = list("Equipment")
+	category = list(DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/spraybottle
@@ -287,7 +287,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 200)
 	build_path = /obj/item/reagent_containers/spray
-	category = list("Equipment")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /////////////////////////////////////////
@@ -301,7 +301,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000)
 	build_path = /obj/item/holosign_creator
-	category = list("Equipment")
+	category = list(DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/holobarrier_jani
@@ -311,7 +311,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000, /datum/material/silver = 1000)
 	build_path = /obj/item/holosign_creator/janibarrier
-	category = list("Equipment")
+	category = list(DCAT_JANITORIAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 
@@ -322,7 +322,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000, /datum/material/gold = 1000, /datum/material/silver = 1000)
 	build_path = /obj/item/holosign_creator/security
-	category = list("Equipment")
+	category = list(DCAT_SECURITY)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/holosignengi
@@ -342,7 +342,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000, /datum/material/gold = 1000, /datum/material/silver = 1000)
 	build_path = /obj/item/holosign_creator/atmos
-	category = list("Equipment")
+	category = list(DCAT_EVA)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/holobarrier_med
@@ -352,7 +352,7 @@
 	build_path = /obj/item/holosign_creator/medical
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 100) //a hint of silver since it can troll 2 antags (bad viros and sentient disease)
 	id = "holobarrier_med"
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
 /////////////////////////////////////////
@@ -400,7 +400,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2500)
 	build_path = /obj/item/flashlight/seclite
-	category = list("Equipment")
+	category = list(DCAT_SECURITY)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/detective_scanner
@@ -410,7 +410,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000, /datum/material/gold = 2500, /datum/material/silver = 2000)
 	build_path = /obj/item/detective_scanner
-	category = list("Equipment")
+	category = list(DCAT_FORENSICS)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/evidencebag
@@ -420,7 +420,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 100)
 	build_path = /obj/item/evidencebag
-	category = list("Equipment")
+	category = list(DCAT_FORENSICS)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/gas_filter
@@ -429,7 +429,7 @@
 	build_type = FABRICATOR | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/gas_filter
-	category = list("Equipment")
+	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/plasmaman_gas_filter
@@ -438,7 +438,7 @@
 	build_type = FABRICATOR | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/gas_filter/plasmaman
-	category = list("Equipment")
+	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /////////////////////////////////////////
@@ -452,7 +452,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000)
 	build_path = /obj/item/holosign_creator/robot_seat/restaurant
-	category = list("Equipment")
+	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/holosign/bar
@@ -462,7 +462,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000)
 	build_path = /obj/item/holosign_creator/robot_seat/bar
-	category = list("Equipment")
+	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE
 
 /datum/design/oven_tray
@@ -472,5 +472,5 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 500)
 	build_path = /obj/item/plate/oven_tray
-	category = list("initial","Dinnerware")
+	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE

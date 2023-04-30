@@ -6,11 +6,11 @@
 	name = "Basic Power Cell"
 	desc = "A basic power cell that holds 1 MJ of energy."
 	id = "basic_cell"
-	build_type = FABRICATOR  | AUTOLATHE |MECHFAB
+	build_type = FABRICATOR  | AUTOLATHE | MECHFAB
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 50)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/empty
-	category = list("Misc",DESIGN_POWER,"Machinery","initial")
+	category = list("Misc",DCAT_POWER,"Machinery")
 
 /datum/design/high_cell
 	name = "High-Capacity Power Cell"
@@ -20,18 +20,18 @@
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 60)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/high/empty
-	category = list("Misc",DESIGN_POWER)
+	category = list("Misc",DCAT_POWER)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/super_cell
 	name = "Super-Capacity Power Cell"
 	desc = "A power cell that holds 20 MJ of energy."
 	id = "super_cell"
-	build_type = FABRICATOR  | MECHFAB
+	build_type = FABRICATOR | MECHFAB
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 70)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/super/empty
-	category = list("Misc",DESIGN_POWER)
+	category = list("Misc",DCAT_POWER)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/hyper_cell
@@ -42,7 +42,7 @@
 	materials = list(/datum/material/iron = 700, /datum/material/gold = 150, /datum/material/silver = 150, /datum/material/glass = 80)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/hyper/empty
-	category = list("Misc",DESIGN_POWER)
+	category = list("Misc",DCAT_POWER)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/bluespace_cell
@@ -53,8 +53,7 @@
 	materials = list(/datum/material/iron = 800, /datum/material/gold = 120, /datum/material/glass = 160, /datum/material/diamond = 160, /datum/material/titanium = 300, /datum/material/bluespace = 100)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/bluespace/empty
-	category = list("Misc",DESIGN_POWER)
-	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
+	category = list("Misc",DCAT_POWER)
 
 /datum/design/inducer
 	name = "Inducer"
@@ -63,7 +62,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000, /datum/material/glass = 1000)
 	build_path = /obj/item/inducer/sci
-	category = list(DESIGN_POWER)
+	category = list(DCAT_POWER)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/board/pacman

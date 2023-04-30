@@ -8,7 +8,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 400, /datum/material/glass = 100)
 	build_path = /obj/item/computer_hardware/hard_drive
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/disk/advanced
@@ -17,7 +17,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 200)
 	build_path = /obj/item/computer_hardware/hard_drive/advanced
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/disk/super
@@ -26,7 +26,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1600, /datum/material/glass = 400)
 	build_path = /obj/item/computer_hardware/hard_drive/super
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/disk/cluster
@@ -35,7 +35,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3200, /datum/material/glass = 800)
 	build_path = /obj/item/computer_hardware/hard_drive/cluster
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/disk/small
@@ -44,7 +44,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 200)
 	build_path = /obj/item/computer_hardware/hard_drive/small
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/disk/micro
@@ -53,7 +53,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 400, /datum/material/glass = 100)
 	build_path = /obj/item/computer_hardware/hard_drive/micro
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Network cards
@@ -63,7 +63,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 100)
 	build_path = /obj/item/computer_hardware/network_card
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/netcard/advanced
@@ -72,7 +72,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 200)
 	build_path = /obj/item/computer_hardware/network_card/advanced
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/netcard/wired
@@ -81,7 +81,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 400)
 	build_path = /obj/item/computer_hardware/network_card/wired
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Data disks
@@ -91,7 +91,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/glass = 800)
 	build_path = /obj/item/computer_hardware/hard_drive/portable
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/portabledrive/advanced
@@ -100,7 +100,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/glass = 1600)
 	build_path = /obj/item/computer_hardware/hard_drive/portable/advanced
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/portabledrive/super
@@ -109,7 +109,7 @@
 	build_type = IMPRINTER | AWAY_IMPRINTER
 	materials = list(/datum/material/glass = 3200)
 	build_path = /obj/item/computer_hardware/hard_drive/portable/super
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Card slot
@@ -119,7 +119,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 600)
 	build_path = /obj/item/computer_hardware/card_slot
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Intellicard slot
@@ -129,7 +129,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 600)
 	build_path = /obj/item/computer_hardware/ai_slot
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Mini printer
@@ -139,7 +139,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 600)
 	build_path = /obj/item/computer_hardware/printer/mini
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // APC Link
@@ -149,7 +149,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000)
 	build_path = /obj/item/computer_hardware/recharger/apc_recharger
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 // Batteries
@@ -159,7 +159,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 400)
 	build_path = /obj/item/computer_hardware/battery
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/battery/normal
@@ -168,7 +168,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 400)
 	build_path = /obj/item/stock_parts/cell/computer
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/battery/advanced
@@ -177,7 +177,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 800)
 	build_path = /obj/item/stock_parts/cell/computer/advanced
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/battery/super
@@ -186,7 +186,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1600)
 	build_path = /obj/item/stock_parts/cell/computer/super
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/battery/nano
@@ -195,7 +195,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200)
 	build_path = /obj/item/stock_parts/cell/computer/nano
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/battery/micro
@@ -204,5 +204,5 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 400)
 	build_path = /obj/item/stock_parts/cell/computer/micro
-	category = list(DESIGN_COMPUTER)
+	category = list(DCAT_COMPUTER_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI

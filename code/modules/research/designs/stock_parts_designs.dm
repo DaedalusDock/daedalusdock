@@ -20,7 +20,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
 	build_path = /obj/item/stock_parts/capacitor
-	category = list("Stock Parts","Machinery","initial")
+	category = list("Stock Parts")
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -54,7 +54,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/stock_parts/scanning_module
-	category = list("Stock Parts","Machinery","initial")
+	category = list("Stock Parts")
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -88,7 +88,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/stock_parts/manipulator
-	category = list("Stock Parts","Machinery","initial")
+	category = list("Stock Parts")
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -122,7 +122,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/stock_parts/micro_laser
-	category = list("Stock Parts","Machinery","initial")
+	category = list("Stock Parts")
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -155,7 +155,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/stock_parts/matter_bin
-	category = list("Stock Parts","Machinery","initial")
+	category = list("Stock Parts")
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 

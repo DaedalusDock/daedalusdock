@@ -31,4 +31,4 @@
 	materials = list(/datum/material/gold = 250, /datum/material/uranium = 500) //quite cheap, for more convenience
 	build_path = /obj/item/storage/bag/ore/holding
 	category = list("Bluespace Designs")
-	mapload_design_flags = DESIGN_FAB_SUPPLY
+	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_SUPPLY

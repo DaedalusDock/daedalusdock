@@ -53,6 +53,6 @@
 	id = "design_disk_adv"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver=50)
-	build_path = /obj/item/disk/data/adv
+	build_path = /obj/item/disk/data/medium
 	category = list("Electronics")
 	mapload_design_flags = DESIGN_FAB_OMNI

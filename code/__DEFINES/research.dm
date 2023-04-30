@@ -18,6 +18,8 @@
 #define DESIGN_BIOGENERATOR (1<<7)
 #define DESIGN_LIMBGROWER (1<<8)
 #define DESIGN_FAB_OFFSTATION (1<<9)
+#define DESIGN_IMPRINTER (1<<10)
+#define DESIGN_FAB_CIV (1<<11)
 
 /// For instances where we don't want a design showing up due to it being for debug/sanity purposes
 #define DESIGN_ID_IGNORE "IGNORE_THIS_DESIGN"

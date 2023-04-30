@@ -20,7 +20,7 @@
 	construction_time = 75
 	build_path = /obj/item/mmi
 	category = list("Control Interfaces", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/posibrain
 	name = "Positronic Brain"
@@ -31,7 +31,7 @@
 	construction_time = 75
 	build_path = /obj/item/mmi/posibrain
 	category = list("Control Interfaces", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/noreactbeaker
 	name = "Cryostasis Beaker"
@@ -65,10 +65,10 @@
 	name = "Chemical Analyzer"
 	id = "ph_meter"
 	build_type = FABRICATOR
-	mapload_design_flags = DESIGN_FAB_MEDICAL
 	materials = list(/datum/material/glass = 2500, /datum/material/gold = 1000, /datum/material/titanium = 1000)
 	build_path = /obj/item/ph_meter
 	category = list("Medical Designs")
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/dna_disk
 	name = "Genetic Data Disk"
@@ -117,7 +117,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000)
 	build_path = /obj/item/wallframe/defib_mount
-	category = list("Medical Designs")
+	category = list(DCAT_FRAME)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/defibrillator_mount_charging
@@ -127,7 +127,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 1000, /datum/material/silver = 500)
 	build_path = /obj/item/wallframe/defib_mount/charging
-	category = list("Medical Designs")
+	category = list(DCAT_FRAME)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/genescanner
@@ -243,7 +243,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 400)
 	build_path = /obj/item/organ/internal/eyes/robotic/shield
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_gloweyes
 	name = "Luminescent Eyes"
@@ -254,7 +253,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 1000)
 	build_path = /obj/item/organ/internal/eyes/robotic/glow
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_breather
 	name = "Breathing Tube Implant"
@@ -265,7 +263,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 250)
 	build_path = /obj/item/organ/internal/cyberimp/mouth/breathing_tube
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_surgical
 	name = "Surgical Arm Implant"
@@ -276,7 +273,6 @@
 	construction_time = 200
 	build_path = /obj/item/organ/internal/cyberimp/arm/surgery
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_toolset
 	name = "Toolset Arm Implant"
@@ -287,7 +283,6 @@
 	construction_time = 200
 	build_path = /obj/item/organ/internal/cyberimp/arm/toolset
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_medical_hud
 	name = "Medical HUD Implant"
@@ -298,7 +293,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 500)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/medical
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_security_hud
 	name = "Security HUD Implant"
@@ -309,7 +303,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 750, /datum/material/gold = 750)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/security
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_diagnostic_hud
 	name = "Diagnostic HUD Implant"
@@ -320,7 +313,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/diagnostic
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_xray
 	name = "X-ray Eyes"
@@ -331,7 +323,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/uranium = 1000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/organ/internal/eyes/robotic/xray
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_thermals
 	name = "Thermal Eyes"
@@ -342,7 +333,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/diamond = 2000)
 	build_path = /obj/item/organ/internal/eyes/robotic/thermals
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_antistun
 	name = "CNS Rebooter Implant"
@@ -353,7 +343,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 1000)
 	build_path = /obj/item/organ/internal/cyberimp/brain/anti_stun
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_nutriment
 	name = "Nutriment Pump Implant"
@@ -364,7 +353,6 @@
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/gold = 500)
 	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_nutriment_plus
 	name = "Nutriment Pump Implant PLUS"
@@ -375,7 +363,6 @@
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/gold = 500, /datum/material/uranium = 750)
 	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment/plus
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/cyberimp_reviver
 	name = "Reviver Implant"
@@ -386,7 +373,6 @@
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 800, /datum/material/gold = 300, /datum/material/uranium = 500)
 	build_path = /obj/item/organ/internal/cyberimp/chest/reviver
 	category = list("Implants", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /////////////////////////////////////////
 ////////////Regular Implants/////////////
@@ -421,7 +407,6 @@
 	build_path = /obj/item/implantcase/sad_trombone
 	category = list("Medical Designs")
 
-
 /datum/design/implant_chem
 	name = "Chemical Implant Case"
 	desc = "A glass case containing an implant."
@@ -430,7 +415,7 @@
 	materials = list(/datum/material/glass = 700)
 	build_path = /obj/item/implantcase/chem
 	category = list("Medical Designs")
-	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/implant_tracking
 	name = "Tracking Implant Case"
@@ -440,10 +425,9 @@
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/implantcase/tracking
 	category = list("Medical Designs")
-	mapload_design_flags = DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+	mapload_design_flags = DESIGN_FAB_SECURITY
 
 //Cybernetic organs
-#warn move to science fab robotics fab needs to exist
 /datum/design/cybernetic_liver
 	name = "Basic Cybernetic Liver"
 	desc = "A basic cybernetic liver."
@@ -568,7 +552,6 @@
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
 	build_path = /obj/item/organ/internal/ears/cybernetic/upgraded
 	category = list("Cybernetics", "Medical Designs")
-	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_eyes
 	name = "Basic Cybernetic Eyes"
@@ -663,5 +646,5 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 500)
 	build_path = /obj/item/stack/sticky_tape/surgical
-	category = list("initial", "Medical")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI

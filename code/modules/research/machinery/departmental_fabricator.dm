@@ -55,3 +55,9 @@ GLOBAL_LIST_EMPTY(fabs)
 	circuit = /obj/item/circuitboard/machine/fabricator/department/engineering
 	stripe_color = "#EFB341"
 
+/obj/machinery/rnd/production/fabricator/department/civvie
+	name = "civilian fabricator"
+	mapload_design_flags = DESIGN_FAB_CIV
+	department_tag = "Civilian"
+	circuit = /obj/item/circuitboard/machine/fabricator/department/civilian
+	stripe_color = "#525252ff"

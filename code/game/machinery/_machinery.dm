@@ -618,7 +618,7 @@
 	if(.)
 		return
 
-	if(LAZYACCESS(modifiers, ALT_CLICK) && inserted_disk)
+	if(LAZYACCESS(modifiers, RIGHT_CLICK) && inserted_disk) //grumble grumble click code grumble grumble
 		var/obj/item/disk/disk = eject_disk(user)
 		if(disk)
 			user.visible_message(
@@ -1072,8 +1072,8 @@
 
 	if(user && user.transferItemToLoc(disk, src))
 		user.visible_message(
-			"[user] inserts a floppy disk into [src].",
-			"You insert [disk] into [src].",
+			span_notice("[user] inserts a floppy disk into [src]."),
+			span_notice("You insert [disk] into [src]."),
 		)
 		inserted_disk = disk
 		return TRUE
@@ -1083,7 +1083,6 @@
 	return TRUE
 
 /obj/machinery/proc/eject_disk(mob/user)
-	#warn write eject message in attack_hand
 	if(!inserted_disk)
 		return FALSE
 

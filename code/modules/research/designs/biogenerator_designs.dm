@@ -8,7 +8,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 20)
 	make_reagents = list(/datum/reagent/consumable/milk = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/soymilk
@@ -17,7 +17,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 20)
 	make_reagents = list(/datum/reagent/consumable/soymilk = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/ethanol
@@ -26,7 +26,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/consumable/ethanol = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/cream
@@ -35,7 +35,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/consumable/cream = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/black_pepper
@@ -44,7 +44,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 25)
 	make_reagents = list(/datum/reagent/consumable/blackpepper = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/enzyme
@@ -53,7 +53,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/consumable/enzyme = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/flour
@@ -62,7 +62,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/consumable/flour = 10)
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/monkey_cube
@@ -71,7 +71,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 250)
 	build_path = /obj/item/food/monkeycube
-	category = list("initial","Food")
+	category = list("Food")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/ez_nut   //easy nut :)
@@ -80,7 +80,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 10)
 	make_reagents = list(/datum/reagent/plantnutriment/eznutriment = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/l4z_nut
@@ -89,7 +89,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 20)
 	make_reagents = list(/datum/reagent/plantnutriment/left4zednutriment = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/rh_nut
@@ -98,7 +98,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 25)
 	make_reagents = list(/datum/reagent/plantnutriment/robustharvestnutriment = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/end_gro
@@ -107,7 +107,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/plantnutriment/endurogrow = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/liq_earth
@@ -116,7 +116,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 30)
 	make_reagents = list(/datum/reagent/plantnutriment/liquidearthquake = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/weed_killer
@@ -125,7 +125,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 50)
 	make_reagents = list(/datum/reagent/toxin/plantbgone/weedkiller = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/pest_spray
@@ -134,7 +134,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 50)
 	make_reagents = list(/datum/reagent/toxin/pestkiller = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/org_pest_spray
@@ -143,7 +143,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 80)
 	make_reagents = list(/datum/reagent/toxin/pestkiller/organic = 25)
-	category = list("initial","Botany Chemicals")
+	category = list("Botany Chemicals")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/cloth
@@ -152,7 +152,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 50)
 	build_path = /obj/item/stack/sheet/cloth
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/cardboard
@@ -161,7 +161,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 25)
 	build_path = /obj/item/stack/sheet/cardboard
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/rolling_paper_pack
@@ -170,7 +170,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 50)
 	build_path = /obj/item/storage/fancy/rollingpapers
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/leather
@@ -179,7 +179,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 150)
 	build_path = /obj/item/stack/sheet/leather
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/secbelt
@@ -188,7 +188,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 300)
 	build_path = /obj/item/storage/belt/security
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/medbelt
@@ -197,7 +197,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 300)
 	build_path = /obj/item/storage/belt/medical
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/janibelt
@@ -206,7 +206,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 300)
 	build_path = /obj/item/storage/belt/janitor
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/plantbelt
@@ -215,7 +215,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 300)
 	build_path = /obj/item/storage/belt/plant
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/s_holster
@@ -224,7 +224,7 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 400)
 	build_path = /obj/item/storage/belt/holster
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 
 /datum/design/rice_hat
@@ -233,5 +233,5 @@
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 300)
 	build_path = /obj/item/clothing/head/rice_hat
-	category = list("initial","Organic Materials")
+	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR

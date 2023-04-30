@@ -8,7 +8,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 25)
 	build_path = /obj/item/bodypart/arm/left
-	category = list("initial",SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/rightarm
@@ -17,7 +17,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 25)
 	build_path = /obj/item/bodypart/arm/right
-	category = list("initial",SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/leftleg
@@ -26,7 +26,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 25)
 	build_path = /obj/item/bodypart/leg/left
-	category = list("initial",SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/rightleg
@@ -35,7 +35,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 25)
 	build_path = /obj/item/bodypart/leg/right
-	category = list("initial",SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 //Non-limb limb designs
@@ -46,7 +46,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 30)
 	build_path = /obj/item/organ/internal/heart
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/lungs
@@ -55,7 +55,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
 	build_path = /obj/item/organ/internal/lungs
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/liver
@@ -64,7 +64,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
 	build_path = /obj/item/organ/internal/liver
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/stomach
@@ -73,7 +73,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 15)
 	build_path = /obj/item/organ/internal/stomach
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/appendix
@@ -82,7 +82,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 5) //why would you need this
 	build_path = /obj/item/organ/internal/appendix
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/eyes
@@ -91,7 +91,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
 	build_path = /obj/item/organ/internal/eyes
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/ears
@@ -100,7 +100,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
 	build_path = /obj/item/organ/internal/ears
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/tongue
@@ -109,7 +109,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
 	build_path = /obj/item/organ/internal/tongue
-	category = list(SPECIES_HUMAN,"initial")
+	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 // Grows a fake lizard tail - not usable in lizard wine and other similar recipes.
@@ -137,7 +137,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
 	build_path = /obj/item/organ/external/tail/monkey
-	category = list("other","initial")
+	category = list("other")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/cat_tail

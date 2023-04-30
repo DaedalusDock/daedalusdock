@@ -47,7 +47,7 @@
 
 	wires = new /datum/wires/autolathe(src)
 	matching_designs = list()
-	design_storage.set_data(SStech.fetch_designs(compile_designs()))
+	internal_disk.set_data(SStech.fetch_designs(compile_designs()))
 
 /obj/machinery/autolathe/Destroy()
 	QDEL_NULL(wires)
@@ -171,7 +171,7 @@
 		/datum/design/gas_filter,
 		/datum/design/plasmaman_gas_filter,
 		/datum/design/oven_tray,
-		/datum/design/design_disk,
+		/datum/design/data,
 	)
 
 
@@ -206,7 +206,7 @@
 		)
 		data["materials"] += list(material_data)
 	if(selected_category != "None" && !length(matching_designs))
-		data["designs"] = handle_designs(design_storage.stored_designs, TRUE)
+		data["designs"] = handle_designs(internal_disk.read(DATA_IDX_DESIGNS), TRUE)
 	else
 		data["designs"] = handle_designs(matching_designs, FALSE)
 	return data
@@ -279,7 +279,7 @@
 	if(action == "search")
 		matching_designs.Cut()
 
-		for(var/datum/design/D as anything in design_storage.stored_designs)
+		for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 			if(findtext(D.name,params["to_search"]))
 				matching_designs.Add(D)
 		. = TRUE
@@ -288,8 +288,8 @@
 		if (!busy)
 			/////////////////
 			//href protection
-			being_built = SStech.designs_by_id(params["id"])
-			if(!being_built || !(being_built in design_storage.stored_designs))
+			being_built = SStech.designs_by_id[params["id"]]
+			if(!being_built || !(being_built in internal_disk.read(DATA_IDX_DESIGNS)))
 				return
 
 			var/multiplier = text2num(params["multiplier"])
@@ -522,9 +522,9 @@
 		hacked_designs = SStech.fetch_designs(L)
 
 	if(hacked)
-		design_storage.add_design_list(hacked_designs)
+		internal_disk.write(DATA_IDX_DESIGNS, hacked_designs, TRUE)
 	else
-		design_storage.remove_design_list(hacked_designs)
+		internal_disk.remove(DATA_IDX_DESIGNS, hacked_designs, TRUE)
 
 
 

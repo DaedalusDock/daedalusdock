@@ -34,7 +34,10 @@
 	update_icon(UPDATE_OVERLAYS)
 
 	if(mapload && design_flags_to_init)
-		design_storage.stored_designs = SStech.fetch_designs(compile_designs())
+		internal_disk.set_data(
+			DATA_IDX_DESIGNS,
+			SStech.fetch_designs(compile_designs())
+		)
 
 /obj/machinery/rnd/production/Destroy()
 	materials = null
@@ -145,9 +148,8 @@
 	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!(D in design_storage.stored_designs))
+	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
-		message_admins("[key_name_admin(usr)] may be attempting an href exploit (Production Machine).")
 	if(D.build_type && !(D.build_type & allowed_buildtypes))
 		say("This machine does not have the necessary manipulation systems for this design. Please contact Nanotrasen Support!")
 		return FALSE
@@ -188,7 +190,7 @@
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/datum/design/D as anything in design_storage.stored_designs)
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
@@ -329,9 +331,6 @@
 	if(ls["search"]) //Search for designs with name matching pattern
 		search(ls["to_search"])
 		screen = RESEARCH_FABRICATOR_SCREEN_SEARCH
-	if(ls["sync_research"])
-		update_designs()
-		say("Synchronizing research with host technology database.")
 	if(ls["category"])
 		selected_category = ls["category"]
 	if(ls["dispose"])  //Causes the protolathe to dispose of a single reagent (all of it)
@@ -381,10 +380,8 @@
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/datum/design/D as anything in design_storage.stored_designs)
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
-			continue
-		if(!(isnull(design_flags_to_init) || (D.departmental_flags & design_flags_to_init)))
 			continue
 		l += design_menu_entry(D, coeff)
 	l += "</div>"
@@ -428,7 +425,7 @@
 /obj/machinery/rnd/production/proc/compile_categories()
 	RETURN_TYPE(/list)
 	. = list()
-	for(var/datum/design/D as anything in cached_designs)
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		. |= D.category
 
 	. -= "initial"

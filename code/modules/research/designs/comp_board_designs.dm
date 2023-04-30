@@ -193,14 +193,6 @@
 	category = list("Computer Boards")
 	mapload_design_flags = DESIGN_FAB_OMNI
 
-/datum/design/board/rdconsole
-	name = "Circuit Board (R&D Console)"
-	desc = "Allows for the construction of circuit boards used to build a new R&D console."
-	id = "rdconsole"
-	build_path = /obj/item/circuitboard/computer/rdconsole
-	category = list("Computer Boards")
-	mapload_design_flags = DESIGN_FAB_OMNI
-
 /datum/design/board/cargo
 	name = "Circuit Board (Supply Console)"
 	desc = "Allows for the construction of circuit boards used to build a Supply Console."

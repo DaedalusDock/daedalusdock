@@ -37,22 +37,22 @@
 ////////////////////////////////////////
 //////////Disk Construction Disks///////
 ////////////////////////////////////////
-/datum/design/design_disk
-	name = "Design Storage Disk"
-	desc = "Produce additional disks for storing device designs."
+/datum/design/data
+	name = "Data Storage Disk"
+	desc = "Produce additional disks for storing data."
 	id = "design_disk"
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
-	build_path = /obj/item/disk/design_disk
+	build_path = /obj/item/disk/data
 	category = list("Electronics")
 	mapload_design_flags = DESIGN_FAB_OMNI
 
-/datum/design/design_disk_adv
+/datum/design/data_adv
 	name = "Advanced Design Storage Disk"
 	desc = "Produce additional disks for storing device designs."
 	id = "design_disk_adv"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver=50)
-	build_path = /obj/item/disk/design_disk/adv
+	build_path = /obj/item/disk/data/adv
 	category = list("Electronics")
 	mapload_design_flags = DESIGN_FAB_OMNI

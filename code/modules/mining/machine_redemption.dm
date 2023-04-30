@@ -28,7 +28,10 @@
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
 	. = ..()
 
-	design_storage.stored_designs = SStech.fetch_designs(subtypesof(/datum/design/alloy))
+	internal_disk.set_data(
+		DATA_IDX_DESIGNS,
+		SStech.fetch_designs(subtypesof(/datum/design/alloy))
+	)
 	materials = AddComponent(/datum/component/remote_materials, "orm", mapload, mat_container_flags=BREAKDOWN_FLAGS_ORM)
 
 
@@ -175,7 +178,7 @@
 	if(!powered())
 		return ..()
 
-	if(istype(W, /obj/item/disk/design_disk))
+	if(istype(W, /obj/item/disk/data))
 		if(user.transferItemToLoc(W, src))
 			inserted_disk = W
 			return TRUE
@@ -236,11 +239,10 @@
 	data["hasDisk"] = FALSE
 	if(inserted_disk)
 		data["hasDisk"] = TRUE
-		if(inserted_disk.stored_designs.len)
-			var/index = 1
-			for (var/datum/design/thisdesign in inserted_disk.stored_designs)
-				data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
-				index++
+		var/index = 1
+		for (var/datum/design/thisdesign in inserted_disk.read(DATA_IDX_DESIGNS))
+			data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
+			index++
 	return data
 
 /obj/machinery/mineral/ore_redemption/ui_act(action, params)
@@ -297,25 +299,23 @@
 				materials.silo_log(src, "released", -count, "sheets", mats)
 				//Logging deleted for quick coding
 			return TRUE
+
 		if("diskInsert")
-			var/obj/item/disk/design_disk/disk = usr.get_active_held_item()
-			if(istype(disk))
-				if(!usr.transferItemToLoc(disk,src))
-					return
-				inserted_disk = disk
-			else
+			if(!insert_disk(usr, usr.get_active_held_item()))
 				to_chat(usr, span_warning("Not a valid Design Disk!"))
 			return TRUE
+
 		if("diskEject")
 			if(inserted_disk)
-				usr.put_in_hands(inserted_disk)
-				inserted_disk = null
+				eject_disk(usr)
 			return TRUE
+
 		if("diskUpload")
 			var/n = text2num(params["design"])
-			if(inserted_disk && inserted_disk.stored_designs.len && inserted_disk.stored_designs[n])
-				design_storage.add_design(inserted_disk.stored_designs[n])
+			if(inserted_disk)
+				internal_disk.write(DATA_IDX_DESIGNS, inserted_disk.read(DATA_IDX_DESIGNS)[n], TRUE)
 			return TRUE
+
 		if("Smelt")
 			if(!mat_container)
 				return
@@ -326,7 +326,7 @@
 
 			var/alloy_id = params["id"]
 			var/datum/design/alloy = SStech.designs_by_id[alloy_id]
-			if(!alloy in design_storage.stored_designs)
+			if(!(alloy in internal_disk.read(DATA_IDX_DESIGNS)))
 				CRASH("Attempted to smelt an alloy we don't have a design for. HREF exploit?")
 
 			var/obj/item/card/id/I

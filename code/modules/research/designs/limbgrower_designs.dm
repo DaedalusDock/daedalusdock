@@ -240,17 +240,18 @@
 	category = list("other","emagged")
 
 /// Design disks and designs - for adding limbs and organs to the limbgrower.
-/obj/item/disk/design_disk/limbs
-	name = "Limb Design Disk"
+/obj/item/disk/data/limbs
+	name = "limb design data disk"
 	desc = "A disk containing limb and organ designs for a limbgrower."
 	icon_state = "datadisk1"
-	/// List of all limb designs this disk contains.
+	/// List of all limb designs this disk will contain on init.
 	var/list/limb_designs = list()
 
-/obj/item/disk/design_disk/limbs/Initialize(mapload)
+/obj/item/disk/data/limbs/Initialize(mapload)
 	. = ..()
 	storage = limb_designs.len
-	stored_designs = SStech.fetch_designs(limb_designs)
+	set_data(SStech.fetch_designs(limb_designs))
+	limb_designs = null
 
 /datum/design/limb_disk
 	name = "Limb Design Disk"
@@ -258,11 +259,11 @@
 	id = "limbdesign_parent"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
-	build_path = /obj/item/disk/design_disk/limbs
+	build_path = /obj/item/disk/data/limbs
 	category = list("Medical Designs")
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
-/obj/item/disk/design_disk/limbs/felinid
+/obj/item/disk/data/limbs/felinid
 	name = "Felinid Organ Design Disk"
 	limb_designs = list(/datum/design/cat_tail, /datum/design/cat_ears)
 
@@ -270,9 +271,9 @@
 	name = "Felinid Organ Design Disk"
 	desc = "Contains designs for felinid organs for the limbgrower - Felinid ears and tail."
 	id = "limbdesign_felinid"
-	build_path = /obj/item/disk/design_disk/limbs/felinid
+	build_path = /obj/item/disk/data/limbs/felinid
 
-/obj/item/disk/design_disk/limbs/lizard
+/obj/item/disk/data/limbs/lizard
 	name = "Unathi Organ Design Disk"
 	limb_designs = list(/datum/design/lizard_tail, /datum/design/lizard_tongue)
 
@@ -280,9 +281,9 @@
 	name = "Unathi Organ Design Disk"
 	desc = "Contains designs for unathi organs for the limbgrower - Unathi tongue, and tail"
 	id = "limbdesign_unathi"
-	build_path = /obj/item/disk/design_disk/limbs/lizard
+	build_path = /obj/item/disk/data/limbs/lizard
 
-/obj/item/disk/design_disk/limbs/plasmaman
+/obj/item/disk/data/limbs/plasmaman
 	name = "Plasmaman Organ Design Disk"
 	limb_designs = list(/datum/design/plasmaman_stomach, /datum/design/plasmaman_liver, /datum/design/plasmaman_lungs, /datum/design/plasmaman_tongue)
 
@@ -290,9 +291,9 @@
 	name = "Plasmaman Organ Design Disk"
 	desc = "Contains designs for plasmaman organs for the limbgrower - Plasmaman tongue, liver, stomach, and lungs."
 	id = "limbdesign_plasmaman"
-	build_path = /obj/item/disk/design_disk/limbs/plasmaman
+	build_path = /obj/item/disk/data/limbs/plasmaman
 
-/obj/item/disk/design_disk/limbs/ethereal
+/obj/item/disk/data/limbs/ethereal
 	name = "Ethereal Organ Design Disk"
 	limb_designs = list(/datum/design/ethereal_stomach, /datum/design/ethereal_tongue, /datum/design/ethereal_lungs)
 
@@ -300,4 +301,4 @@
 	name = "Ethereal Organ Design Disk"
 	desc = "Contains designs for ethereal organs for the limbgrower - Ethereal tongue and stomach."
 	id = "limbdesign_ethereal"
-	build_path = /obj/item/disk/design_disk/limbs/ethereal
+	build_path = /obj/item/disk/data/limbs/ethereal

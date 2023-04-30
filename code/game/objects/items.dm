@@ -387,11 +387,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			. += "[src] is made of fire-retardant materials."
 		return
 
-/obj/item/examine_more(mob/user)
-	. = ..()
-	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER))
-		. += research_scan(user)
-
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
 	ui_interact(user)

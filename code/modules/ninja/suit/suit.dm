@@ -55,6 +55,9 @@
 	///Whether or not the adrenaline boost ability is available
 	var/a_boost = TRUE
 
+	/// Design theft objective
+	var/list/stored_designs = list()
+
 /obj/item/clothing/suit/space/space_ninja/examine(mob/user)
 	. = ..()
 	if(!s_initialized)

@@ -30,9 +30,11 @@
 	return ..()
 
 /obj/machinery/rnd/proc/populate_designs()
+	var/list/L = list()
 	for(var/datum/design/D as anything in SStech.designs)
-		if(design.design_flags & mapload_design_flags)
-			design_storage.stored_designs += D
+		if(D.mapload_design_flags & mapload_design_flags)
+			L += D
+	internal_disk.set_data(DATA_IDX_DESIGNS)
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

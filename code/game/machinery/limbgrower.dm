@@ -21,27 +21,29 @@
 
 	/// All the categories of organs we can print.
 	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
-
-#warn limbgrower
+#warn needs UI
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
 
-	design_storage.stored_designs = SStech.fetch_designs(
-		list(
-			/datum/design/leftarm,
-			/datum/design/leftleg,
-			/datum/design/rightarm,
-			/datum/design/rightleg,
-			/datum/design/heart,
-			/datum/design/lungs,
-			/datum/design/liver,
-			/datum/design/stomach,
-			/datum/design/appendix,
-			/datum/design/eyes,
-			/datum/design/ears,
-			/datum/design/tongue,
+	internal_disk.set_data(
+		DATA_IDX_DESIGNS,
+		SStech.fetch_designs(
+			list(
+				/datum/design/leftarm,
+				/datum/design/leftleg,
+				/datum/design/rightarm,
+				/datum/design/rightleg,
+				/datum/design/heart,
+				/datum/design/lungs,
+				/datum/design/liver,
+				/datum/design/stomach,
+				/datum/design/appendix,
+				/datum/design/eyes,
+				/datum/design/ears,
+				/datum/design/tongue,
+			)
 		)
 	)
 
@@ -79,7 +81,7 @@
 	var/species_categories = categories.Copy()
 	for(var/species in species_categories)
 		species_categories[species] = list()
-	for(var/datum/design/limb_design as anything in design_storage.stored_designs)
+	for(var/datum/design/limb_design as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		for(var/found_category in species_categories)
 			if(found_category in limb_design.category)
 				species_categories[found_category] += limb_design
@@ -146,7 +148,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = SStech.designs_by_id(params["design_id"])
+			being_built = SStech.sanitize_design_id(params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 
@@ -269,10 +271,11 @@
 
 /obj/machinery/limbgrower/fullupgrade/Initialize(mapload)
 	. = ..()
-	design_storage = list()
+	var/list/L = list()
 	for(var/datum/design/found_design as anything in SStech.designs)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
-			design_storage += D
+			L += found_design
+	internal_disk.set_data(DATA_IDX_DESIGNS, L)
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)
@@ -285,7 +288,7 @@
 		)
 	)
 
-	if(!design_storage.add_design_list(designs_on_emag))
+	if(!internal_disk.write(DATA_IDX_DESIGNS, designs_on_emag, TRUE))
 		to_chat(user, span_warning("[src] doesn't have enough storage left!"))
 		return
 

@@ -49,8 +49,10 @@
 	name = "ancient fabricator"
 	desc = "Converts raw materials into useful objects. Its ancient construction may limit its ability to print all known technology."
 	circuit = /obj/item/circuitboard/machine/fabricator/offstation
+	mapload_design_flags = DESIGN_FAB_OFFSTATION | DESIGN_FAB_OMNI
 
 /obj/machinery/rnd/production/fabricator/omni
 	name = "omni fabricator"
 	desc = "A fabricator pre-loaded with every object design." // "Every" in player context, this is NOT a debug tool.
 	circuit = /obj/item/circuitboard/machine/fabricator/omni
+	mapload_design_flags = DESIGN_FAB_OMNI

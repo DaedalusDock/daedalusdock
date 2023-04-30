@@ -121,9 +121,9 @@
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 
 	/// The place that designs are stored. This will be created by apply_default_parts().
-	var/obj/item/disk/design_disk/design_storage = null
+	var/obj/item/disk/data/internal_disk = null
 	/// A design disk that may-or-may-not be inserted into this machine.
-	var/obj/item/disk/design_disk/inserted_disk = null
+	var/obj/item/disk/data/inserted_disk = null
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -180,7 +180,7 @@
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
-		design_storage = locate() in component_parts
+		internal_disk = locate() in component_parts
 
 	if(processing_flags & START_PROCESSING_ON_INIT)
 		begin_processing()
@@ -686,15 +686,8 @@
 	if(.)
 		return
 
-	if(design_storage && istype(weapon, /obj/item/disk/design_disk))
-		if(isnull(inserted_disk))
-			weapon.forceMove(src)
-			user.visible_message(
-				"[user] inserts a floppy disk into [src].",
-				"You insert [weapon] into [src].",
-			)
-		else
-			to_chat(user, span_warning("The machine already has a design disk inserted!"))
+	if(internal_disk && istype(weapon, /obj/item/disk/data))
+		insert_disk(user, weapon)
 		return TRUE
 
 	update_last_used(user)
@@ -766,7 +759,7 @@
 		part.forceMove(loc)
 	LAZYCLEARLIST(component_parts)
 
-	design_storage = null //Component parts removes this.
+	internal_disk = null //Component parts removes this.
 	if(inserted_disk)
 		inserted_disk.forceMove(loc)
 	return ..()
@@ -1054,3 +1047,38 @@
 	if(isliving(user))
 		last_used_time = world.time
 		last_user_mobtype = user.type
+
+/obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/disk)
+	if(!istype(disk))
+		return FALSE
+
+	if(inserted_disk)
+		to_chat(user, span_warning("The machine already has a design disk inserted!"))
+		return FALSE
+
+	if(user && user.transferItemToLoc(disk, src))
+		user.visible_message(
+			"[user] inserts a floppy disk into [src].",
+			"You insert [disk] into [src].",
+		)
+		inserted_disk = disk
+		return TRUE
+
+	inserted_disk = disk
+	disk.forceMove(src)
+	return TRUE
+
+/obj/machinery/proc/eject_disk(mob/user)
+	#warn write eject message in attack_hand
+	if(!inserted_disk)
+		return FALSE
+
+	if(user)
+		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
+			inserted_disk = null
+			return TRUE
+		else
+			return FALSE
+
+	inserted_disk.forceMove(drop_location())
+	return TRUE

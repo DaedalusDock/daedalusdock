@@ -13,11 +13,13 @@
 
 /obj/machinery/component_printer/Initialize(mapload)
 	. = ..()
-	for (var/datum/design/design in SStech.designs)
+	var/list/designs = list()
+	for (var/datum/design/design as anything in SStech.designs)
 		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
 			continue
+			designs += design
 
-		current_unlocked_designs[design.build_path] = design.id
+	internal_disk.set_data(DATA_IDX_DESIGNS, designs)
 
 
 	materials = AddComponent( \
@@ -39,7 +41,7 @@
 	)
 
 /obj/machinery/component_printer/proc/print_component(typepath)
-	var/design_id = current_unlocked_designs[typepath]
+	var/design_id = SStech.designs_by_type[typepath]
 
 	var/datum/design/design = SStech.designs_by_id[design_id]
 	if (!(design.build_type & COMPONENT_PRINTER))
@@ -63,10 +65,10 @@
 	switch (action)
 		if ("print")
 			var/design_id = params["designId"]
-			if (!techweb.researched_designs[design_id])
-				return TRUE
 
 			var/datum/design/design = SStech.designs_by_id["designId"]
+			if (!SStech.designs_by_id[design_id])
+				return TRUE
 			if (!(design.build_type & COMPONENT_PRINTER))
 				return TRUE
 
@@ -106,7 +108,7 @@
 
 	var/list/designs = list()
 
-	for (var/datum/design/design as anything in design_storage.stored_designs)
+	for (var/datum/design/design as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		if (!(design.build_type & COMPONENT_PRINTER))
 			continue
 

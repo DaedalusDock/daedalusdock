@@ -290,14 +290,6 @@
 	build_path = /obj/item/circuitboard/machine/dnascanner
 	category = list("Research Machinery")
 
-/datum/design/board/destructive_scanner
-	name = "Machine Design (Destructive Scanner Board)"
-	desc = "The circuit board for an experimental destructive scanner."
-	id = "destructive_scanner"
-	build_path = /obj/item/circuitboard/machine/destructive_scanner
-	category = list("Research Machinery")
-	mapload_design_flags = DESIGN_FAB_OMNI
-
 /datum/design/board/doppler_array
 	name = "Machine Design (Tachyon-Doppler Research Array Board)"
 	desc = "The circuit board for a tachyon-doppler research array"

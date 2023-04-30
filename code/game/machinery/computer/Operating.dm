@@ -3,7 +3,7 @@
 
 /obj/machinery/computer/operating
 	name = "operating computer"
-	desc = "Monitors patient vitals and displays surgery steps. Can be loaded with surgery disks to perform experimental procedures. Automatically syncs to operating tables within its line of sight for surgical tech advancement."
+	desc = "Monitors patient vitals and displays surgery steps. Provides doctors with advanced surgeries."
 	icon_screen = "crew"
 	icon_keyboard = "med_key"
 	circuit = /obj/item/circuitboard/computer/operating
@@ -12,12 +12,11 @@
 	var/list/advanced_surgeries = list()
 	light_color = LIGHT_COLOR_BLUE
 
-	var/datum/component/experiment_handler/experiment_handler
-
 /obj/machinery/computer/operating/Initialize(mapload)
-	..()
+	. = ..()
 	find_table()
-	return INITIALIZE_HINT_LATELOAD
+	for(var/datum/design/surgery/D as anything in subtypesof(/datum/design/surgery))
+		advanced_surgeries += initial(D.surgery)
 
 /obj/machinery/computer/operating/Destroy()
 	for(var/direction in GLOB.alldirs)
@@ -57,8 +56,7 @@
 /obj/machinery/computer/operating/ui_data(mob/user)
 	var/list/data = list()
 	var/list/surgeries = list()
-	for(var/X in advanced_surgeries)
-		var/datum/surgery/S = X
+	for(var/datum/surgery/S as anything in advanced_surgeries)
 		var/list/surgery = list()
 		surgery["name"] = initial(S.name)
 		surgery["desc"] = initial(S.desc)
@@ -119,17 +117,6 @@
 				"alt_chems_needed" = alt_chems_needed
 			))
 	return data
-
-
-
-/obj/machinery/computer/operating/ui_act(action, params)
-	. = ..()
-	if(.)
-		return
-	switch(action)
-		if("sync")
-			sync_surgeries()
-	return TRUE
 
 #undef MENU_OPERATION
 #undef MENU_SURGERIES

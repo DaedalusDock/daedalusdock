@@ -23,9 +23,23 @@ SUBSYSTEM_DEF(tech)
 		designs_by_id[D.id] = D
 		designs_by_product += typecacheof(D.build_path)
 
-/// Used to populate stored_designs.
+/// Used to turn a list of design types into instances.
 /datum/controller/subsystem/tech/proc/fetch_designs(to_init)
 	for(var/i in 1 to length(to_init))
 		to_init[i] = designs_by_type[to_init[i]]
 
 	return to_init
+
+/// Used by machinery for UI act sanitization
+/datum/controller/subsystem/tech/proc/sanitize_design_id(obj/machinery/rnd/production/M, id)
+	var/datum/design/found_design = designs_by_id[id]
+	if(!found_design)
+		return FALSE
+
+	if(!(found_design.build_type & M.allowed_buildtypes))
+		return FALSE
+
+	if(!(found_design in M.internal_disk.read(DATA_IDX_DESIGNS)))
+		return FALSE
+
+	return found_design

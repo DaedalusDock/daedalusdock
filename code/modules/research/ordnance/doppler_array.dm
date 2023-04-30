@@ -51,7 +51,7 @@
 /obj/machinery/doppler_array/attackby(obj/item/item, mob/user, params)
 	if(istype(item, /obj/item/computer_hardware/hard_drive/portable))
 		var/obj/item/computer_hardware/hard_drive/portable/disk = item
-		eject_disk(user)
+		eject_drive(user)
 		if(user.transferItemToLoc(disk, src))
 			inserted_drive = disk
 			return
@@ -84,7 +84,6 @@
 	var/datum/computer_file/data/ordnance/explosive/record_data = new
 	record_data.filename = "Doppler Array " + record.name //Doppler Array Log Recording #x
 	record_data.explosion_record = record
-	record_data.possible_experiments = apply_experiments(record)
 
 	if(inserted_drive.store_file(record_data))
 		playsound(src, 'sound/machines/ping.ogg', 25)
@@ -145,7 +144,7 @@
 
 	return TRUE
 
-/obj/machinery/doppler_array/proc/eject_disk(mob/user)
+/obj/machinery/doppler_array/proc/eject_drive(mob/user)
 	if(!inserted_drive)
 		return FALSE
 	if(user)
@@ -179,7 +178,7 @@
 		. += mutable_appearance(icon, "[base_icon_state]_screen-off")
 
 /obj/machinery/doppler_array/on_deconstruction()
-	eject_disk()
+	eject_drive()
 	. = ..()
 
 /obj/machinery/doppler_array/Destroy()
@@ -252,4 +251,4 @@
 			print(usr, record)
 			return TRUE
 		if("eject_disk")
-			eject_disk(usr)
+			eject_drive(usr)

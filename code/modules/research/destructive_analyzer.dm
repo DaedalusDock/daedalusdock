@@ -109,14 +109,13 @@ Note: Must be placed within 3 tiles of the R&D Console
 		var/datum/design/D = SStech.designs_by_product[loaded_item.type]
 		if(D)
 			l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-				l += "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Analysis</A>"
-				l += "This item can be blueprinted!"
+			l += "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Analysis</A>"
+			l += "This item can be blueprinted!"
 			l += "</div>[RDSCREEN_NOBREAK]"
 
 		if(!(loaded_item.resistance_flags & INDESTRUCTIBLE))
 			l += "<div class='statusDisplay'><A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Destroy Item</A>"
 			l += "</div>[RDSCREEN_NOBREAK]"
-			anything = TRUE
 
 		l += "</div>"
 

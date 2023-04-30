@@ -413,6 +413,12 @@
 	name = "DNA Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/scan_consolenew
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/computer/mechpad
 	name = "Mecha Orbital Pad Console (Computer Board)"

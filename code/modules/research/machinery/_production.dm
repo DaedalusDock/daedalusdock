@@ -10,8 +10,6 @@
 	var/production_animation
 
 	var/allowed_buildtypes = NONE
-	/// Design flag(s) to add to our design list on mapload.
-	var/design_flags_to_init = NONE
 
 	/// Used by the search in the UI.
 	var/list/datum/design/matching_designs
@@ -33,23 +31,10 @@
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
 
-	if(mapload && design_flags_to_init)
-		internal_disk.set_data(
-			DATA_IDX_DESIGNS,
-			SStech.fetch_designs(compile_designs())
-		)
-
 /obj/machinery/rnd/production/Destroy()
 	materials = null
 	matching_designs = null
 	return ..()
-
-/obj/machinery/rnd/production/proc/compile_designs()
-	RETURN_TYPE(/list)
-	. = list()
-	for(var/datum/design/D as anything in SStech.designs)
-		if(design_flags_to_init & D.mapload_design_flags)
-			. += D
 
 /obj/machinery/rnd/production/RefreshParts()
 	. = ..()

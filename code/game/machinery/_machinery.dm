@@ -613,6 +613,20 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+/obj/machinery/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(LAZYACCESS(modifiers, ALT_CLICK) && inserted_disk)
+		var/obj/item/disk/disk = eject_disk(user)
+		if(disk)
+			user.visible_message(
+				span_notice("You remove [disk] from [src]."),
+				span_notice("A floppy disk ejects from [src].")
+			)
+		return TRUE
+
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
 	if(interaction_flags_machine & INTERACT_MACHINE_SET_MACHINE)
@@ -1075,10 +1089,13 @@
 
 	if(user)
 		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
+			. = inserted_disk
 			inserted_disk = null
-			return TRUE
+			return .
 		else
 			return FALSE
 
 	inserted_disk.forceMove(drop_location())
-	return TRUE
+	. = inserted_disk
+
+	return .

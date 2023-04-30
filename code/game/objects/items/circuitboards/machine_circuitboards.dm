@@ -50,7 +50,12 @@
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 3,
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/stack/sheet/glass = 1)
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/large
+	)
 
 /obj/item/circuitboard/machine/grounding_rod
 	name = "Grounding Rod (Machine Board)"
@@ -349,7 +354,8 @@
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/reagent_containers/glass/beaker = 2)
+		/obj/item/reagent_containers/glass/beaker = 2,
+	)
 
 /obj/item/circuitboard/machine/circuit_imprinter/offstation
 	name = "Ancient Circuit Imprinter (Machine Board)"
@@ -400,7 +406,12 @@
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/manipulator = 2,
-		/obj/item/reagent_containers/glass/beaker = 2)
+		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/large
+	)
 
 /obj/item/circuitboard/machine/fabricator/omni
 	name = "Omni-Fabricator (Machine Board)"
@@ -726,7 +737,12 @@
 	req_components = list(
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/reagent_containers/glass/beaker = 2,
-		/obj/item/stack/sheet/glass = 1)
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/machine/limbgrower/fullupgrade
 	name = "Limb Grower (Machine Board)"
@@ -735,7 +751,12 @@
 	req_components = list(
 		/obj/item/stock_parts/manipulator/femto  = 1,
 		/obj/item/reagent_containers/glass/beaker/bluespace = 2,
-		/obj/item/stack/sheet/glass = 1)
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/machine/fabricator/department/medical
 	name = "Departmental Fabricator - Medical (Machine Board)"

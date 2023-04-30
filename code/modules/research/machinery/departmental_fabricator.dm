@@ -4,30 +4,39 @@
 	icon_state = "protolathe"
 	circuit = /obj/item/circuitboard/machine/fabricator/department
 
+GLOBAL_LIST_EMPTY(fabs)
+
+/obj/machinery/rnd/production/fabricator/department/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/rnd/production/fabricator/department/LateInitialize()
+	GLOB.fabs[department_tag] = length(internal_disk.read(DATA_IDX_DESIGNS))
+
 /obj/machinery/rnd/production/fabricator/department/service
 	name = "service fabricator"
-	design_flags_to_init = DESIGN_FAB_SERVICE
+	mapload_design_flags = DESIGN_FAB_SERVICE
 	department_tag = "Service"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/service
 	stripe_color = "#83ca41"
 
 /obj/machinery/rnd/production/fabricator/department/medical
 	name = "medical fabricator"
-	design_flags_to_init = DESIGN_FAB_MEDICAL
+	mapload_design_flags = DESIGN_FAB_MEDICAL
 	department_tag = "Medical"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/medical
 	stripe_color = "#52B4E9"
 
 /obj/machinery/rnd/production/fabricator/department/cargo
 	name = "supply fabricator"
-	design_flags_to_init = DESIGN_FAB_SUPPLY
+	mapload_design_flags = DESIGN_FAB_SUPPLY
 	department_tag = "Cargo"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/cargo
 	stripe_color = "#956929"
 
 /obj/machinery/rnd/production/fabricator/department/security
 	name = "security fabricator"
-	design_flags_to_init = DESIGN_FAB_SECURITY
+	mapload_design_flags = DESIGN_FAB_SECURITY
 	department_tag = "Security"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/security
 	stripe_color = "#DE3A3A"
@@ -37,11 +46,11 @@
 	department_tag = "Robotics"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/robotics
 	stripe_color = "#575456"
-	design_flags_to_init = DESIGN_FAB_ROBOTICS
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /obj/machinery/rnd/production/fabricator/department/engineering
 	name = "engineering fabricator"
-	design_flags_to_init = DESIGN_FAB_ENGINEERING
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	department_tag = "Engineering"
 	circuit = /obj/item/circuitboard/machine/fabricator/department/engineering
 	stripe_color = "#EFB341"

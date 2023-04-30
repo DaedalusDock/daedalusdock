@@ -22,19 +22,21 @@
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
 	wires = new /datum/wires/rnd(src)
-	if(mapload)
-		populate_designs()
+	if(mapload && mapload_design_flags)
+		internal_disk.set_data(
+			DATA_IDX_DESIGNS,
+			SStech.fetch_designs(compile_designs())
+		)
 
 /obj/machinery/rnd/Destroy()
 	QDEL_NULL(wires)
 	return ..()
 
-/obj/machinery/rnd/proc/populate_designs()
-	var/list/L = list()
+/obj/machinery/rnd/proc/compile_designs()
+	. = list()
 	for(var/datum/design/D as anything in SStech.designs)
 		if(D.mapload_design_flags & mapload_design_flags)
-			L += D
-	internal_disk.set_data(DATA_IDX_DESIGNS)
+			. += D.type
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

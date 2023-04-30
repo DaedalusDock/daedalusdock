@@ -16,12 +16,16 @@ SUBSYSTEM_DEF(tech)
 	designs_by_product = new /list()
 	designs = list()
 	designs_by_type = list()
+	designs_by_id = list()
+
 	for(var/datum/design/D as anything in subtypesof(/datum/design))
 		D = new D
 		designs += D
 		designs_by_type[D.type] = D
 		designs_by_id[D.id] = D
-		designs_by_product += typecacheof(D.build_path)
+		if(D.build_path)
+			for(var/path in typesof(D.build_path))
+				designs_by_product[D] = path
 
 /// Used to turn a list of design types into instances.
 /datum/controller/subsystem/tech/proc/fetch_designs(to_init)

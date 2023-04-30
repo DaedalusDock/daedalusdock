@@ -31,9 +31,9 @@
 			TEST_FAIL("Surgery Design [current_design.type] has default or null surgery var")
 
 // Make sure all fabricator designs are sane.
-/datum/unit_tests/fab_sanity
+/datum/unit_test/fab_sanity
 
-/datum/unit_tests/fab_sanity/Run()
+/datum/unit_test/fab_sanity/Run()
 	var/obj/machinery/rnd/production/fab
 	for(var/type_of_fab in subtypesof(/obj/machinery/rnd/production))
 		fab = allocate(type_of_fab, run_loc_floor_bottom_left)

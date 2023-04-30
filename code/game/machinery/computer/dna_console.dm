@@ -1052,7 +1052,7 @@
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)
 			inserted_disk.write(DATA_IDX_MUTATIONS, HM, TRUE)
-			span_boldnotice("Success! New mutation has been added to the disk.")
+			to_chat(usr, span_boldnotice("Success! New mutation has been added to the disk."))
 			say("Successfully mutated [HM.name].")
 			connected_scanner.use_power(connected_scanner.active_power_usage)
 			return

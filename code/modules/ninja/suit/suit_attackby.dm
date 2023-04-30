@@ -30,7 +30,6 @@
 
 	else if(istype(I, /obj/item/disk/data))//If it's a data disk, we want to copy the research on to the suit.
 		var/obj/item/disk/data/disky = I
-		var/has_research = FALSE
 		if(disky.read(DATA_IDX_DESIGNS) ~= stored_designs)//If it has something on it.
 			to_chat(ninja, span_notice("Research information detected, processing..."))
 			if(do_after(ninja, src, s_delay))

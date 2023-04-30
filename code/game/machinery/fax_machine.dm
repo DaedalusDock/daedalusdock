@@ -27,7 +27,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /// Fax machine design, for techwebs.
 /datum/design/board/fax_machine
-	name = "Machine Design (Fax Machine Board)"
+	name = "Machine Board (Fax Machine Board)"
 	desc = "The circuit board for a Fax Machine."
 	id = "fax_machine"
 	build_path = /obj/item/circuitboard/machine/fax_machine

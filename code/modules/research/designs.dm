@@ -27,7 +27,7 @@ other types of metals and chemistry for reagents).
 	/// Bitflags indicating what machines this design is compatable with. ([IMPRINTER]|[AWAY_IMPRINTER]|[FABRICATOR]|[AWAY_LATHE]|[AUTOLATHE]|[MECHFAB]|[BIOGENERATOR]|[LIMBGROWER]|[SMELTER])
 	var/build_type = null
 	/// List of materials required to create one unit of the product. Format is (typepath or caregory) -> amount
-	var/list/materials = list()
+	var/list/materials
 	/// The amount of time required to create one unit of the product.
 	var/construction_time
 	/// The typepath of the object produced by this design
@@ -35,11 +35,11 @@ other types of metals and chemistry for reagents).
 	/// Bitflags indicating what rnd machines should have this design roundstart.
 	var/mapload_design_flags = NONE
 	/// List of reagents produced by this design. Currently only supported by the biogenerator.
-	var/list/make_reagents = list()
+	var/list/make_reagents
 	/// What category this design falls under. Used for sorting in production machines, mostly the mechfab.
 	var/list/category = null
 	/// List of reagents required to create one unit of the product.
-	var/list/reagents_list = list()
+	var/list/reagents_list
 	/// The maximum number of units of whatever is produced by this can be produced in one go.
 	var/maxstack = 1
 	/// How many times faster than normal is this to build on the fabricator
@@ -65,22 +65,23 @@ other types of metals and chemistry for reagents).
 	name = "ERROR"
 	desc = "This usually means something in the database has corrupted. If this doesn't go away automatically, inform Central Comamnd so their techs can fix this ASAP(tm)"
 
+/datum/design/New()
+	. = ..()
+	if(length(materials))
+		var/list/temp_list = list()
+		for(var/i in materials) //Go through all of our materials, get the subsystem instance, and then replace the list.
+			var/amount = materials[i]
+			if(!istext(i)) //Not a category, so get the ref the normal way
+				temp_list[GET_MATERIAL_REF(i)] = amount
+			else
+				temp_list[i] = amount
+		materials = temp_list
+
 /datum/design/Destroy(force)
 	if(!force)
 		stack_trace("Hey which asshole tried to qdel a design?")
 		return QDEL_HINT_LETMELIVE
 	return ..()
-
-/datum/design/proc/InitializeMaterials()
-	var/list/temp_list = list()
-	for(var/i in materials) //Go through all of our materials, get the subsystem instance, and then replace the list.
-		var/amount = materials[i]
-		if(!istext(i)) //Not a category, so get the ref the normal way
-			var/datum/material/M = GET_MATERIAL_REF(i)
-			temp_list[M] = amount
-		else
-			temp_list[i] = amount
-	materials = temp_list
 
 /datum/design/proc/icon_html(client/user)
 	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/research_designs)

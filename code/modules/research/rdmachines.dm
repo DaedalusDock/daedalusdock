@@ -35,7 +35,7 @@
 /obj/machinery/rnd/proc/compile_designs()
 	. = list()
 	for(var/datum/design/D as anything in SStech.designs)
-		if(D.mapload_design_flags & mapload_design_flags)
+		if((D.mapload_design_flags & mapload_design_flags))
 			. += D.type
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)

@@ -31,6 +31,12 @@
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
 
+/obj/machinery/rnd/production/compile_designs()
+	. = list()
+	for(var/datum/design/D as anything in SStech.designs)
+		if((D.mapload_design_flags & mapload_design_flags) && (D.build_type & allowed_buildtypes))
+			. += D.type
+
 /obj/machinery/rnd/production/Destroy()
 	materials = null
 	matching_designs = null

@@ -67,7 +67,7 @@
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/board/pacman
-	name = "Machine Design (PACMAN-type Generator Board)"
+	name = "Machine Board (PACMAN-type Generator Board)"
 	desc = "The circuit board that for a PACMAN-type portable generator."
 	id = "pacman"
 	build_path = /obj/item/circuitboard/machine/pacman
@@ -75,7 +75,7 @@
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/board/pacman/super
-	name = "Machine Design (SUPERPACMAN-type Generator Board)"
+	name = "Machine Board (SUPERPACMAN-type Generator Board)"
 	desc = "The circuit board that for a SUPERPACMAN-type portable generator."
 	id = "superpacman"
 	build_path = /obj/item/circuitboard/machine/pacman/super

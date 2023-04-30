@@ -159,7 +159,7 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/large
+		/obj/item/disk/data = /obj/item/disk/data/extra_large
 	)
 
 /obj/machinery/debug_component_printer

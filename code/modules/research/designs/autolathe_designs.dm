@@ -843,6 +843,7 @@
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/modcomp
+	id = DESIGN_ID_IGNORE
 	build_type = FABRICATOR
 	mapload_design_flags = DESIGN_FAB_OMNI
 	category = list(DCAT_COMPUTER_PART)

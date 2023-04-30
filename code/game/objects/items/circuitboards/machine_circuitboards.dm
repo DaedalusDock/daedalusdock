@@ -54,7 +54,7 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/large
+		/obj/item/disk/data = /obj/item/disk/data/extra_large
 	)
 
 /obj/item/circuitboard/machine/grounding_rod
@@ -415,7 +415,7 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/large
+		/obj/item/disk/data = /obj/item/disk/data/extra_large
 	)
 
 /obj/item/circuitboard/machine/fabricator/omni
@@ -847,9 +847,6 @@
 		/obj/item/stock_parts/micro_laser = 1,
 		/obj/item/disk/data = 1
 	)
-	def_components = list(
-		/obj/item/disk/data = 1
-	)
 
 /obj/item/circuitboard/machine/mech_recharger
 	name = "Mechbay Recharger (Machine Board)"
@@ -867,7 +864,12 @@
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stock_parts/micro_laser = 1,
-		/obj/item/stack/sheet/glass = 1)
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/large
+	)
 
 /obj/item/circuitboard/machine/monkey_recycler
 	name = "Monkey Recycler (Machine Board)"

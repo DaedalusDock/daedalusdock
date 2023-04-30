@@ -98,14 +98,20 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/disk/data/medium
-	desc = "A disk for storing device data. This one has extra storage space."
+	desc = "A disk for storing device data."
 	icon_state = "datadisk7"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50)
 	storage = 16
 
 /obj/item/disk/data/large
-	desc = "A disk for storing device data. This one has extremely large storage space."
+	desc = "A disk for storing device data."
+	icon_state = "datadisk7"
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50, /datum/material/diamond = 100)
+	storage = 64
+
+/obj/item/disk/data/extra_large
+	desc = "A disk for storing device data."
 	icon_state = "datadisk8"
-	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 100, /datum/material/diamond = 50)
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 100, /datum/material/diamond = 200)
 	storage = 128
 

@@ -20,6 +20,9 @@ SUBSYSTEM_DEF(tech)
 
 	for(var/datum/design/D as anything in subtypesof(/datum/design))
 		D = new D
+		if(D.id == DESIGN_ID_IGNORE)
+			continue
+
 		designs += D
 		designs_by_type[D.type] = D
 		designs_by_id[D.id] = D
@@ -29,9 +32,16 @@ SUBSYSTEM_DEF(tech)
 
 /// Used to turn a list of design types into instances.
 /datum/controller/subsystem/tech/proc/fetch_designs(to_init)
+	var/datum/design/D
 	for(var/i in 1 to length(to_init))
+		D = designs_by_type[to_init[i]]
+		if(isnull(D))
+			to_init[i] = null
+			continue
+
 		to_init[i] = designs_by_type[to_init[i]]
 
+	list_clear_nulls(to_init)
 	return to_init
 
 /// Used by machinery for UI act sanitization

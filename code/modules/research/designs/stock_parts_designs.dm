@@ -9,7 +9,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 5000) //hardcore
 	build_path = /obj/item/storage/part_replacer
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 //Capacitors
@@ -20,7 +20,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
 	build_path = /obj/item/stock_parts/capacitor
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -31,7 +31,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 150, /datum/material/glass = 150)
 	build_path = /obj/item/stock_parts/capacitor/adv
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -42,7 +42,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200, /datum/material/gold = 100)
 	build_path = /obj/item/stock_parts/capacitor/super
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -54,7 +54,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/stock_parts/scanning_module
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -65,7 +65,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 150, /datum/material/glass = 100)
 	build_path = /obj/item/stock_parts/scanning_module/adv
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -76,7 +76,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 150, /datum/material/silver = 60)
 	build_path = /obj/item/stock_parts/scanning_module/phasic
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -88,7 +88,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/stock_parts/manipulator
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -99,7 +99,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 150)
 	build_path = /obj/item/stock_parts/manipulator/nano
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -110,7 +110,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200)
 	build_path = /obj/item/stock_parts/manipulator/pico
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -122,7 +122,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/stock_parts/micro_laser
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -133,7 +133,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 150, /datum/material/glass = 100)
 	build_path = /obj/item/stock_parts/micro_laser/high
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -144,7 +144,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 150, /datum/material/uranium = 60)
 	build_path = /obj/item/stock_parts/micro_laser/ultra
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -155,7 +155,7 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/stock_parts/matter_bin
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
@@ -166,7 +166,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 150)
 	build_path = /obj/item/stock_parts/matter_bin/adv
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -177,7 +177,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 200)
 	build_path = /obj/item/stock_parts/matter_bin/super
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	lathe_time_factor = 0.2
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -189,7 +189,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 100, /datum/material/silver = 100)
 	build_path = /obj/item/stock_parts/subspace/ansible
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/hyperwave_filter
@@ -199,7 +199,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 100, /datum/material/silver = 100)
 	build_path = /obj/item/stock_parts/subspace/filter
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/subspace_amplifier
@@ -209,7 +209,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 100, /datum/material/gold = 100, /datum/material/uranium = 100)
 	build_path = /obj/item/stock_parts/subspace/amplifier
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/subspace_treatment
@@ -219,7 +219,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 100, /datum/material/silver = 200)
 	build_path = /obj/item/stock_parts/subspace/treatment
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/subspace_analyzer
@@ -229,7 +229,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 100, /datum/material/gold = 100)
 	build_path = /obj/item/stock_parts/subspace/analyzer
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/subspace_crystal
@@ -239,7 +239,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 800, /datum/material/silver = 100, /datum/material/gold = 100)
 	build_path = /obj/item/stock_parts/subspace/crystal
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/subspace_transmitter
@@ -249,7 +249,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 100, /datum/material/silver = 100, /datum/material/uranium = 100)
 	build_path = /obj/item/stock_parts/subspace/transmitter
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
 /datum/design/card_reader
@@ -259,7 +259,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron=50, /datum/material/glass=10)
 	build_path = /obj/item/stock_parts/card_reader
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 
 /datum/design/water_recycler
 	name = "Water Recycler"
@@ -268,5 +268,5 @@
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/plastic = 200, /datum/material/iron = 50)
 	build_path = /obj/item/stock_parts/water_recycler
-	category = list("Stock Parts")
+	category = list(DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI | DESIGN_FAB_MEDICAL

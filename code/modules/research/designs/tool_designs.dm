@@ -10,7 +10,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3500, /datum/material/silver = 1500, /datum/material/titanium = 2500)
 	build_path = /obj/item/screwdriver/power
-	category = list("Tool Designs")
+	category = list(DCAT_BASIC_TOOL)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/jawsoflife
@@ -20,7 +20,7 @@
 	build_path = /obj/item/crowbar/power
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4500, /datum/material/silver = 2500, /datum/material/titanium = 3500)
-	category = list("Tool Designs")
+	category = list(DCAT_BASIC_TOOL)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	autolathe_exportable = FALSE
 
@@ -31,7 +31,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 	build_path = /obj/item/weldingtool/experimental
-	category = list("Tool Designs")
+	category = list(DCAT_BASIC_TOOL)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/rpd
@@ -40,7 +40,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 75000, /datum/material/glass = 37500)
 	build_path = /obj/item/pipe_dispenser
-	category = list("Tool Designs")
+	category = list(DCAT_CONSTRUCTION)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/geneshears
@@ -50,7 +50,7 @@
 	build_path = /obj/item/geneshears
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron=4000, /datum/material/uranium=1500, /datum/material/silver=500)
-	category = list("Tool Designs")
+	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/biopsy_tool
@@ -59,7 +59,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 3000)
 	build_path = /obj/item/biopsy_tool
-	category = list("Tool Designs")
+	category = list(DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/wirebrush
@@ -67,8 +67,7 @@
 	desc = "A tool to remove rust from walls."
 	id = "wirebrush"
 	build_type = AUTOLATHE | FABRICATOR
-	category = list( "Tools")
+	category = list(DCAT_MISC_TOOL)
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200)
 	build_path = /obj/item/wirebrush
-	category = list("Equipment")
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI

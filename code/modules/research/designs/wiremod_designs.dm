@@ -4,7 +4,7 @@
 	id = "integrated_circuit"
 	build_path = /obj/item/integrated_circuit
 	build_type = IMPRINTER | COMPONENT_PRINTER
-	category = list(DCAT_WIREMOD, "Core")
+	category = list(DCAT_WIREMOD)
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -14,7 +14,7 @@
 	id = "circuit_multitool"
 	build_path = /obj/item/multitool/circuit
 	build_type = FABRICATOR | COMPONENT_PRINTER
-	category = list(DCAT_WIREMOD, "Core")
+	category = list(DCAT_WIREMOD)
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -24,7 +24,7 @@
 	id = "usb_cable"
 	build_path = /obj/item/usb_cable
 	build_type = FABRICATOR | COMPONENT_PRINTER
-	category = list(DCAT_WIREMOD, "Core")
+	category = list(DCAT_WIREMOD)
 	// Yes, it would make sense to make them take plastic, but then less people would make them, and I think they're cool
 	materials = list(/datum/material/iron = 2500)
 	mapload_design_flags = DESIGN_FAB_OMNI
@@ -35,7 +35,7 @@
 	build_type = IMPRINTER | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 1000)
 	mapload_design_flags = DESIGN_FAB_OMNI
-	category = list(DCAT_WIREMOD, "Components")
+	category = list(DCAT_WIREMOD)
 
 /datum/design/component/New()
 	. = ..()
@@ -339,7 +339,7 @@
 	build_path = /obj/item/circuit_component/pinpointer
 
 /datum/design/component/bci
-	category = list(DCAT_WIREMOD, "BCI Components")
+	category = list(DCAT_WIREMOD)
 
 /datum/design/component/bci/bci_action
 	name = "BCI Action Component"
@@ -555,7 +555,7 @@
 	id = "bci_implanter"
 	build_path = /obj/item/circuitboard/machine/bci_implanter
 	build_type = IMPRINTER | COMPONENT_PRINTER
-	category = list(DCAT_WIREMOD, "Core")
+	category = list(DCAT_WIREMOD)
 
 /datum/design/assembly_shell
 	name = "Assembly Shell"

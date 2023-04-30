@@ -260,7 +260,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
 	build_path = /obj/item/disk/data/limbs
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
 /obj/item/disk/data/limbs/felinid

@@ -565,7 +565,7 @@
 	build_type = FABRICATOR | AUTOLATHE
 	materials = list(/datum/material/iron = 60, /datum/material/glass = 30)
 	build_path = /obj/item/taperecorder/empty
-	category = list("Misc")
+	category = list(DCAT_MISC)
 	mapload_design_flags = DESIGN_FAB_CIV
 
 /datum/design/tape
@@ -574,7 +574,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 20, /datum/material/glass = 5)
 	build_path = /obj/item/tape/random
-	category = list("Misc")
+	category = list(DCAT_MISC)
 	mapload_design_flags = DESIGN_FAB_CIV
 
 /datum/design/igniter
@@ -939,7 +939,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 100, /datum/material/glass = 50)
 	build_path = /obj/item/toy/gun
-	category = list("Misc")
+	category = list(DCAT_WEAPON)
 
 /datum/design/capbox
 	name = "Box of Cap Gun Shots"
@@ -947,7 +947,7 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 20, /datum/material/glass = 5)
 	build_path = /obj/item/toy/ammo/gun
-	category = list( "Misc")
+	category = list(DCAT_AMMO)
 
 /datum/design/plastic_tree
 	name = "Plastic Potted Plant"
@@ -955,7 +955,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 8000)
 	build_path = /obj/item/kirbyplants/fullysynthetic
-	category = list( "Misc")
+	category = list(DCAT_MISC)
 	mapload_design_flags = DESIGN_FAB_CIV
 
 /datum/design/plastic_ring

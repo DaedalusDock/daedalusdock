@@ -7,7 +7,7 @@
 	desc = "Allows for the construction of a \"Ripley\" Central Control module."
 	id = "ripley_main"
 	build_path = /obj/item/circuitboard/mecha/ripley/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/ripley_peri
@@ -15,7 +15,7 @@
 	desc = "Allows for the construction of a \"Ripley\" Peripheral Control module."
 	id = "ripley_peri"
 	build_path = /obj/item/circuitboard/mecha/ripley/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/odysseus_main
@@ -23,7 +23,7 @@
 	desc = "Allows for the construction of a \"Odysseus\" Central Control module."
 	id = "odysseus_main"
 	build_path = /obj/item/circuitboard/mecha/odysseus/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/odysseus_peri
@@ -31,7 +31,7 @@
 	desc = "Allows for the construction of a \"Odysseus\" Peripheral Control module."
 	id = "odysseus_peri"
 	build_path = /obj/item/circuitboard/mecha/odysseus/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_main
@@ -39,7 +39,7 @@
 	desc = "Allows for the construction of a \"Gygax\" Central Control module."
 	id = "gygax_main"
 	build_path = /obj/item/circuitboard/mecha/gygax/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_peri
@@ -47,7 +47,7 @@
 	desc = "Allows for the construction of a \"Gygax\" Peripheral Control module."
 	id = "gygax_peri"
 	build_path = /obj/item/circuitboard/mecha/gygax/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/gygax_targ
@@ -55,7 +55,7 @@
 	desc = "Allows for the construction of a \"Gygax\" Weapons & Targeting Control module."
 	id = "gygax_targ"
 	build_path = /obj/item/circuitboard/mecha/gygax/targeting
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_main
@@ -63,7 +63,7 @@
 	desc = "Allows for the construction of a \"Durand\" Central Control module."
 	id = "durand_main"
 	build_path = /obj/item/circuitboard/mecha/durand/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_peri
@@ -71,7 +71,7 @@
 	desc = "Allows for the construction of a \"Durand\" Peripheral Control module."
 	id = "durand_peri"
 	build_path = /obj/item/circuitboard/mecha/durand/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/durand_targ
@@ -79,7 +79,7 @@
 	desc = "Allows for the construction of a \"Durand\" Weapons & Targeting Control module."
 	id = "durand_targ"
 	build_path = /obj/item/circuitboard/mecha/durand/targeting
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_main
@@ -87,7 +87,7 @@
 	desc = "Allows for the construction of a \"H.O.N.K\" Central Control module."
 	id = "honker_main"
 	build_path = /obj/item/circuitboard/mecha/honker/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_peri
@@ -95,7 +95,7 @@
 	desc = "Allows for the construction of a \"H.O.N.K\" Peripheral Control module."
 	id = "honker_peri"
 	build_path = /obj/item/circuitboard/mecha/honker/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/honker_targ
@@ -103,7 +103,7 @@
 	desc = "Allows for the construction of a \"H.O.N.K\" Weapons & Targeting Control module."
 	id = "honker_targ"
 	build_path = /obj/item/circuitboard/mecha/honker/targeting
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_main
@@ -112,7 +112,7 @@
 	id = "phazon_main"
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_peri
@@ -121,7 +121,7 @@
 	id = "phazon_peri"
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/phazon_targ
@@ -130,7 +130,7 @@
 	id = "phazon_targ"
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/targeting
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/board/clarke_main
@@ -138,35 +138,35 @@
 	desc = "Allows for the construction of a \"Clarke\" Central Control module."
 	id = "clarke_main"
 	build_path = /obj/item/circuitboard/mecha/clarke/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 
 /datum/design/board/clarke_peri
 	name = "\"Clarke\" Peripherals Control module"
 	desc = "Allows for the construction of a \"Clarke\" Peripheral Control module."
 	id = "clarke_peri"
 	build_path = /obj/item/circuitboard/mecha/clarke/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 
 /datum/design/board/savannah_ivanov_main
 	name = "\"Savannah-Ivanov\" Central Control module"
 	desc = "Allows for the construction of a \"Savannah-Ivanov\" Central Control module."
 	id = "savannah_ivanov_main"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/main
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 
 /datum/design/board/savannah_ivanov_peri
 	name = "\"Savannah-Ivanov\" Peripherals Control module"
 	desc = "Allows for the construction of a \"Savannah-Ivanov\" Peripheral Control module."
 	id = "savannah_ivanov_peri"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/peripherals
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 
 /datum/design/board/savannah_ivanov_targ
 	name = "\"Savannah-Ivanov\" Weapons & Targeting Control module"
 	desc = "Allows for the construction of a \"Savannah-Ivanov\" Weapons & Targeting Control module."
 	id = "savannah_ivanov_targ"
 	build_path = /obj/item/circuitboard/mecha/savannah_ivanov/targeting
-	category = list("Exosuit Modules")
+	category = list(DCAT_EXOSUIT_MOD)
 
 ////////////////////////////////////////
 /////////// Mecha Equpment /////////////

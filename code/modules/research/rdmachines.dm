@@ -22,7 +22,7 @@
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
 	wires = new /datum/wires/rnd(src)
-	if(mapload && mapload_design_flags)
+	if(mapload && mapload_design_flags && internal_disk)
 		internal_disk.set_data(
 			DATA_IDX_DESIGNS,
 			SStech.fetch_designs(compile_designs())

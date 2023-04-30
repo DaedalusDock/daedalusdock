@@ -6,7 +6,7 @@
 	build_path = /obj/item/robot_suit
 	materials = list(/datum/material/iron=15000)
 	construction_time = 500
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_chest
@@ -16,7 +16,7 @@
 	build_path = /obj/item/bodypart/chest/robot
 	materials = list(/datum/material/iron=40000)
 	construction_time = 350
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_head
@@ -26,7 +26,7 @@
 	build_path = /obj/item/bodypart/head/robot
 	materials = list(/datum/material/iron=5000)
 	construction_time = 350
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_l_arm
@@ -36,7 +36,7 @@
 	build_path = /obj/item/bodypart/arm/left/robot
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_r_arm
@@ -46,7 +46,7 @@
 	build_path = /obj/item/bodypart/arm/right/robot
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_l_leg
@@ -56,7 +56,7 @@
 	build_path = /obj/item/bodypart/leg/left/robot
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_r_leg
@@ -66,7 +66,7 @@
 	build_path = /obj/item/bodypart/leg/right/robot
 	materials = list(/datum/material/iron=10000)
 	construction_time = 200
-	category = list("Cyborg")
+	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Ripley
@@ -77,7 +77,7 @@
 	build_path = /obj/item/mecha_parts/chassis/ripley
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_torso
@@ -87,7 +87,7 @@
 	build_path = /obj/item/mecha_parts/part/ripley_torso
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 7500)
 	construction_time = 200
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_left_arm
@@ -97,7 +97,7 @@
 	build_path = /obj/item/mecha_parts/part/ripley_left_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_right_arm
@@ -107,7 +107,7 @@
 	build_path = /obj/item/mecha_parts/part/ripley_right_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_left_leg
@@ -117,7 +117,7 @@
 	build_path = /obj/item/mecha_parts/part/ripley_left_leg
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/ripley_right_leg
@@ -127,7 +127,7 @@
 	build_path = /obj/item/mecha_parts/part/ripley_right_leg
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Ripley")
+	category = list(DCAT_RIPLEY)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Odysseus
@@ -138,7 +138,7 @@
 	build_path = /obj/item/mecha_parts/chassis/odysseus
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_torso
@@ -148,7 +148,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_torso
 	materials = list(/datum/material/iron=12000)
 	construction_time = 180
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_head
@@ -158,7 +158,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_head
 	materials = list(/datum/material/iron=6000,/datum/material/glass = 10000)
 	construction_time = 100
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_left_arm
@@ -168,7 +168,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_left_arm
 	materials = list(/datum/material/iron=6000)
 	construction_time = 120
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_right_arm
@@ -178,7 +178,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_right_arm
 	materials = list(/datum/material/iron=6000)
 	construction_time = 120
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_left_leg
@@ -188,7 +188,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_left_leg
 	materials = list(/datum/material/iron=7000)
 	construction_time = 130
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/odysseus_right_leg
@@ -198,7 +198,7 @@
 	build_path = /obj/item/mecha_parts/part/odysseus_right_leg
 	materials = list(/datum/material/iron=7000)
 	construction_time = 130
-	category = list("Odysseus")
+	category = list(DCAT_ODYSSEUS)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Gygax
@@ -209,7 +209,7 @@
 	build_path = /obj/item/mecha_parts/chassis/gygax
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_torso
@@ -219,7 +219,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_torso
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 10000,/datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 300
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_head
@@ -229,7 +229,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_head
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 5000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_left_arm
@@ -239,7 +239,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_left_arm
 	materials = list(/datum/material/iron=15000, /datum/material/gold=1000, /datum/material/silver=1000)
 	construction_time = 200
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_right_arm
@@ -249,7 +249,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_right_arm
 	materials = list(/datum/material/iron=15000, /datum/material/gold=1000, /datum/material/silver=1000)
 	construction_time = 200
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_left_leg
@@ -259,7 +259,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_left_leg
 	materials = list(/datum/material/iron=15000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_right_leg
@@ -269,7 +269,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_right_leg
 	materials = list(/datum/material/iron=15000, /datum/material/gold=2000, /datum/material/silver=2000)
 	construction_time = 200
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/gygax_armor
@@ -279,7 +279,7 @@
 	build_path = /obj/item/mecha_parts/part/gygax_armor
 	materials = list(/datum/material/iron=15000,/datum/material/gold=10000, /datum/material/silver=10000, /datum/material/titanium=10000)
 	construction_time = 600
-	category = list("Gygax")
+	category = list(DCAT_GYGAX)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Durand
@@ -290,7 +290,7 @@
 	build_path = /obj/item/mecha_parts/chassis/durand
 	materials = list(/datum/material/iron=25000)
 	construction_time = 100
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_torso
@@ -300,7 +300,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_torso
 	materials = list(/datum/material/iron=25000, /datum/material/glass = 10000,/datum/material/silver=10000)
 	construction_time = 300
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_head
@@ -310,7 +310,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_head
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 15000,/datum/material/silver=2000)
 	construction_time = 200
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_left_arm
@@ -320,7 +320,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_left_arm
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_right_arm
@@ -330,7 +330,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_right_arm
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_left_leg
@@ -340,7 +340,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_left_leg
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_right_leg
@@ -350,7 +350,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_right_leg
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/durand_armor
@@ -360,7 +360,7 @@
 	build_path = /obj/item/mecha_parts/part/durand_armor
 	materials = list(/datum/material/iron=30000,/datum/material/uranium=25000,/datum/material/titanium=20000)
 	construction_time = 600
-	category = list("Durand")
+	category = list(DCAT_DURAND)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //H.O.N.K
@@ -371,7 +371,7 @@
 	build_path = /obj/item/mecha_parts/chassis/honker
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_torso
@@ -381,7 +381,7 @@
 	build_path = /obj/item/mecha_parts/part/honker_torso
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 10000,/datum/material/bananium=10000)
 	construction_time = 300
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_head
@@ -391,7 +391,7 @@
 	build_path = /obj/item/mecha_parts/part/honker_head
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 5000,/datum/material/bananium=5000)
 	construction_time = 200
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_left_arm
@@ -401,7 +401,7 @@
 	build_path = /obj/item/mecha_parts/part/honker_left_arm
 	materials = list(/datum/material/iron=15000,/datum/material/bananium=5000)
 	construction_time = 200
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_right_arm
@@ -411,7 +411,7 @@
 	build_path = /obj/item/mecha_parts/part/honker_right_arm
 	materials = list(/datum/material/iron=15000,/datum/material/bananium=5000)
 	construction_time = 200
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_left_leg
@@ -421,7 +421,7 @@
 	build_path =/obj/item/mecha_parts/part/honker_left_leg
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 200
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/honk_right_leg
@@ -431,7 +431,7 @@
 	build_path = /obj/item/mecha_parts/part/honker_right_leg
 	materials = list(/datum/material/iron=20000,/datum/material/bananium=5000)
 	construction_time = 200
-	category = list("H.O.N.K")
+	category = list(DCAT_HONK)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 
@@ -443,7 +443,7 @@
 	build_path = /obj/item/mecha_parts/chassis/phazon
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_torso
@@ -453,7 +453,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_torso
 	materials = list(/datum/material/iron=35000,/datum/material/glass = 10000,/datum/material/plasma=20000)
 	construction_time = 300
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_head
@@ -463,7 +463,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_head
 	materials = list(/datum/material/iron=15000,/datum/material/glass = 5000,/datum/material/plasma=10000)
 	construction_time = 200
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_left_arm
@@ -473,7 +473,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_left_arm
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_right_arm
@@ -483,7 +483,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_right_arm
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_left_leg
@@ -493,7 +493,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_left_leg
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_right_leg
@@ -503,7 +503,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_right_leg
 	materials = list(/datum/material/iron=20000,/datum/material/plasma=10000)
 	construction_time = 200
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/phazon_armor
@@ -513,7 +513,7 @@
 	build_path = /obj/item/mecha_parts/part/phazon_armor
 	materials = list(/datum/material/iron=25000,/datum/material/plasma=20000,/datum/material/titanium=20000)
 	construction_time = 300
-	category = list("Phazon")
+	category = list(DCAT_PHAZON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Savannah-Ivanov
@@ -524,7 +524,7 @@
 	build_path = /obj/item/mecha_parts/chassis/savannah_ivanov
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_torso
 	name = "Exosuit Torso (\"Savannah-Ivanov\")"
@@ -533,7 +533,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_torso
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 7500)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_head
 	name = "Exosuit Head (\"Savannah-Ivanov\")"
@@ -542,7 +542,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_head
 	materials = list(/datum/material/iron=6000,/datum/material/glass = 10000)
 	construction_time = 100
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_left_arm
 	name = "Exosuit Left Arm (\"Savannah-Ivanov\")"
@@ -551,7 +551,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_left_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_right_arm
 	name = "Exosuit Right Arm (\"Savannah-Ivanov\")"
@@ -560,7 +560,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_right_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_chassis
 	name = "Exosuit Chassis (\"Savannah-Ivanov\")"
@@ -569,7 +569,7 @@
 	build_path = /obj/item/mecha_parts/chassis/savannah_ivanov
 	materials = list(/datum/material/iron=25000)
 	construction_time = 100
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_torso
 	name = "Exosuit Torso (\"Savannah-Ivanov\")"
@@ -578,7 +578,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_torso
 	materials = list(/datum/material/iron=25000, /datum/material/glass = 10000,/datum/material/silver=10000)
 	construction_time = 300
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_head
 	name = "Exosuit Head (\"Savannah-Ivanov\")"
@@ -587,7 +587,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_head
 	materials = list(/datum/material/iron=10000,/datum/material/glass = 15000,/datum/material/silver=2000)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_left_arm
 	name = "Exosuit Left Arm (\"Savannah-Ivanov\")"
@@ -596,7 +596,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_left_arm
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_right_arm
 	name = "Exosuit Right Arm (\"Savannah-Ivanov\")"
@@ -605,7 +605,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_right_arm
 	materials = list(/datum/material/iron=10000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_left_leg
 	name = "Exosuit Left Leg (\"Savannah-Ivanov\")"
@@ -614,7 +614,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_left_leg
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_right_leg
 	name = "Exosuit Right Leg (\"Savannah-Ivanov\")"
@@ -623,7 +623,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_right_leg
 	materials = list(/datum/material/iron=15000,/datum/material/silver=4000)
 	construction_time = 200
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 /datum/design/savannah_ivanov_armor
 	name = "Exosuit Armor (\"Savannah-Ivanov\")"
@@ -632,7 +632,7 @@
 	build_path = /obj/item/mecha_parts/part/savannah_ivanov_armor
 	materials = list(/datum/material/iron=30000,/datum/material/uranium=25000,/datum/material/titanium=20000)
 	construction_time = 600
-	category = list("Savannah-Ivanov")
+	category = list(DCAT_SAVANNAH)
 
 //Clarke
 /datum/design/clarke_chassis
@@ -642,7 +642,7 @@
 	build_path = /obj/item/mecha_parts/chassis/clarke
 	materials = list(/datum/material/iron=20000)
 	construction_time = 100
-	category = list("Clarke")
+	category = list(DCAT_CLARKE)
 
 /datum/design/clarke_torso
 	name = "Exosuit Torso (\"Clarke\")"
@@ -651,7 +651,7 @@
 	build_path = /obj/item/mecha_parts/part/clarke_torso
 	materials = list(/datum/material/iron=20000,/datum/material/glass = 7500)
 	construction_time = 200
-	category = list("Clarke")
+	category = list(DCAT_CLARKE)
 
 /datum/design/clarke_head
 	name = "Exosuit Head (\"Clarke\")"
@@ -660,7 +660,7 @@
 	build_path = /obj/item/mecha_parts/part/clarke_head
 	materials = list(/datum/material/iron=6000,/datum/material/glass = 10000)
 	construction_time = 100
-	category = list("Clarke")
+	category = list(DCAT_CLARKE)
 
 /datum/design/clarke_left_arm
 	name = "Exosuit Left Arm (\"Clarke\")"
@@ -669,7 +669,7 @@
 	build_path = /obj/item/mecha_parts/part/clarke_left_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Clarke")
+	category = list(DCAT_CLARKE)
 
 /datum/design/clarke_right_arm
 	name = "Exosuit Right Arm (\"Clarke\")"
@@ -678,7 +678,7 @@
 	build_path = /obj/item/mecha_parts/part/clarke_right_arm
 	materials = list(/datum/material/iron=15000)
 	construction_time = 150
-	category = list("Clarke")
+	category = list(DCAT_CLARKE)
 
 //Exosuit Equipment
 /datum/design/ripleyupgrade
@@ -792,7 +792,7 @@
 	build_path = /obj/item/borg/upgrade/rename
 	materials = list(/datum/material/iron = 5000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_restart
@@ -802,7 +802,7 @@
 	build_path = /obj/item/borg_restart_board
 	materials = list(/datum/material/iron = 20000 , /datum/material/glass = 5000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_thrusters
@@ -812,7 +812,7 @@
 	build_path = /obj/item/borg/upgrade/thrusters
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 6000, /datum/material/plasma = 5000, /datum/material/uranium = 6000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_disablercooler
@@ -822,7 +822,7 @@
 	build_path = /obj/item/borg/upgrade/disablercooler
 	materials = list(/datum/material/iron = 20000 , /datum/material/glass = 6000, /datum/material/gold = 2000, /datum/material/diamond = 2000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_diamonddrill
@@ -832,7 +832,7 @@
 	build_path = /obj/item/borg/upgrade/ddrill
 	materials = list(/datum/material/iron=10000, /datum/material/glass = 6000, /datum/material/diamond = 2000)
 	construction_time = 80
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_holding
@@ -842,7 +842,7 @@
 	build_path = /obj/item/borg/upgrade/soh
 	materials = list(/datum/material/iron = 10000, /datum/material/gold = 2000, /datum/material/uranium = 1000)
 	construction_time = 40
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_lavaproof
@@ -852,7 +852,7 @@
 	build_path = /obj/item/borg/upgrade/lavaproof
 	materials = list(/datum/material/iron = 10000, /datum/material/plasma = 4000, /datum/material/titanium = 5000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_syndicate_module
@@ -862,7 +862,7 @@
 	build_path = /obj/item/borg/upgrade/syndicate
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/diamond = 10000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_transform_clown
@@ -872,7 +872,7 @@
 	build_path = /obj/item/borg/upgrade/transform/clown
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/bananium = 1000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_selfrepair
@@ -882,7 +882,7 @@
 	build_path = /obj/item/borg/upgrade/selfrepair
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000)
 	construction_time = 80
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_expandedsynthesiser
@@ -892,7 +892,7 @@
 	build_path = /obj/item/borg/upgrade/hypospray/expanded
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/plasma = 8000, /datum/material/uranium = 8000)
 	construction_time = 80
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_piercinghypospray
@@ -902,7 +902,7 @@
 	build_path = /obj/item/borg/upgrade/piercing_hypospray
 	materials = list(/datum/material/iron = 15000, /datum/material/glass = 15000, /datum/material/titanium = 5000, /datum/material/diamond = 3000)
 	construction_time = 80
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_defibrillator
@@ -912,7 +912,7 @@
 	build_path = /obj/item/borg/upgrade/defib
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 5000, /datum/material/silver = 4000, /datum/material/gold = 3000)
 	construction_time = 80
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_surgicalprocessor
@@ -922,7 +922,7 @@
 	build_path = /obj/item/borg/upgrade/processor
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 4000, /datum/material/silver = 4000)
 	construction_time = 40
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_trashofholding
@@ -932,7 +932,7 @@
 	build_path = /obj/item/borg/upgrade/tboh
 	materials = list(/datum/material/gold = 2000, /datum/material/uranium = 1000)
 	construction_time = 40
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_advancedmop
@@ -942,7 +942,7 @@
 	build_path = /obj/item/borg/upgrade/amop
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 2000)
 	construction_time = 40
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_prt
@@ -952,7 +952,7 @@
 	build_path = /obj/item/borg/upgrade/prt
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 750) //same price as a cautery
 	construction_time = 40
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_expand
@@ -962,7 +962,7 @@
 	build_path = /obj/item/borg/upgrade/expand
 	materials = list(/datum/material/iron = 200000, /datum/material/titanium = 5000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/boris_ai_controller
@@ -972,7 +972,7 @@
 	build_path = /obj/item/borg/upgrade/ai
 	materials = list(/datum/material/iron = 1200, /datum/material/glass = 1500, /datum/material/gold = 200)
 	construction_time = 50
-	category = list("Control Interfaces")
+	category = list(DCAT_SILICON)
 	search_metadata = "boris"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -983,7 +983,7 @@
 	build_path = /obj/item/borg/upgrade/rped
 	materials = list(/datum/material/iron = 10000, /datum/material/glass = 5000)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_circuit_app
@@ -993,7 +993,7 @@
 	build_path = /obj/item/borg/upgrade/circuit_app
 	materials = list(/datum/material/iron = 2000, /datum/material/titanium = 500)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_beaker_app
@@ -1003,7 +1003,7 @@
 	build_path = /obj/item/borg/upgrade/beaker_app
 	materials = list(/datum/material/iron = 2000, /datum/material/glass = 2250) //Need glass for the new beaker too
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_pinpointer
@@ -1013,7 +1013,7 @@
 	build_path = /obj/item/borg/upgrade/pinpointer
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/borg_upgrade_broomer
@@ -1023,7 +1023,7 @@
 	build_path = /obj/item/borg/upgrade/broomer
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 500)
 	construction_time = 120
-	category = list("Cyborg Upgrade Modules")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //Misc
@@ -1044,18 +1044,18 @@
 	build_path = /obj/item/mecha_parts/mecha_tracking/ai_control
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/silver = 200)
 	construction_time = 50
-	category = list("Control Interfaces")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/synthetic_flash
 	name = "Flash"
 	desc = "When a problem arises, SCIENCE is the solution."
 	id = "sflash"
-	build_type = MECHFAB
+	build_type = MECHFAB | FABRICATOR
 	materials = list(/datum/material/iron = 750, /datum/material/glass = 750)
 	construction_time = 100
 	build_path = /obj/item/assembly/flash/handheld
-	category = list("Misc")
+	category = list(DCAT_WEAPON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 //MODsuit construction
@@ -1123,7 +1123,7 @@
 	materials = list(/datum/material/iron = 6000, /datum/material/glass = 3000, /datum/material/plasma = 1000)
 	construction_time = 15 SECONDS
 	build_path = /obj/item/mod/construction/plating
-	category = list("MOD Construction", "Equipment")
+	category = list("MOD Construction")
 	research_icon = 'icons/obj/clothing/modsuit/mod_construction.dmi'
 	research_icon_state = "standard-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
@@ -1139,7 +1139,6 @@
 	id = "mod_plating_engineering"
 	build_path = /obj/item/mod/construction/plating/engineering
 	materials = list(/datum/material/iron = 6000, /datum/material/gold = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	research_icon_state = "engineering-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -1147,7 +1146,6 @@
 	id = "mod_plating_atmospheric"
 	build_path = /obj/item/mod/construction/plating/atmospheric
 	materials = list(/datum/material/iron = 6000, /datum/material/titanium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	mapload_design_flags = DESIGN_FAB_ENGINEERING
 	research_icon_state = "atmospheric-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -1155,7 +1153,6 @@
 	id = "mod_plating_medical"
 	build_path = /obj/item/mod/construction/plating/medical
 	materials = list(/datum/material/iron = 6000, /datum/material/silver = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	mapload_design_flags = DESIGN_FAB_MEDICAL
 	research_icon_state = "medical-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -1163,7 +1160,6 @@
 	id = "mod_plating_security"
 	build_path = /obj/item/mod/construction/plating/security
 	materials = list(/datum/material/iron = 6000, /datum/material/uranium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	mapload_design_flags = DESIGN_FAB_SECURITY
 	research_icon_state = "security-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -1171,7 +1167,6 @@
 	id = "mod_plating_cosmohonk"
 	build_path = /obj/item/mod/construction/plating/cosmohonk
 	materials = list(/datum/material/iron = 6000, /datum/material/bananium = 2000, /datum/material/glass = 1000, /datum/material/plasma = 1000)
-	mapload_design_flags = DESIGN_FAB_SERVICE
 	research_icon_state = "cosmohonk-plating"
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 

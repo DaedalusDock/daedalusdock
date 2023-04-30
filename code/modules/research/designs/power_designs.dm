@@ -10,7 +10,7 @@
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 50)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/empty
-	category = list("Misc",DCAT_POWER,"Machinery")
+	category = list(DCAT_POWER, DCAT_STOCK_PART)
 
 /datum/design/high_cell
 	name = "High-Capacity Power Cell"
@@ -20,7 +20,7 @@
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 60)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/high/empty
-	category = list("Misc",DCAT_POWER)
+	category = list(DCAT_POWER, DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/super_cell
@@ -31,7 +31,7 @@
 	materials = list(/datum/material/iron = 700, /datum/material/glass = 70)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/super/empty
-	category = list("Misc",DCAT_POWER)
+	category = list(DCAT_POWER, DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/hyper_cell
@@ -42,7 +42,7 @@
 	materials = list(/datum/material/iron = 700, /datum/material/gold = 150, /datum/material/silver = 150, /datum/material/glass = 80)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/hyper/empty
-	category = list("Misc",DCAT_POWER)
+	category = list(DCAT_POWER, DCAT_STOCK_PART)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_ENGINEERING
 
 /datum/design/bluespace_cell
@@ -53,7 +53,7 @@
 	materials = list(/datum/material/iron = 800, /datum/material/gold = 120, /datum/material/glass = 160, /datum/material/diamond = 160, /datum/material/titanium = 300, /datum/material/bluespace = 100)
 	construction_time=100
 	build_path = /obj/item/stock_parts/cell/bluespace/empty
-	category = list("Misc",DCAT_POWER)
+	category = list(DCAT_POWER, DCAT_STOCK_PART)
 
 /datum/design/inducer
 	name = "Inducer"
@@ -70,7 +70,7 @@
 	desc = "The circuit board that for a PACMAN-type portable generator."
 	id = "pacman"
 	build_path = /obj/item/circuitboard/machine/pacman
-	category = list("Engineering Machinery")
+	category = list(DCAT_POWER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/board/pacman/super

@@ -8,7 +8,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 50)
 	build_path = /obj/item/healthanalyzer
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/mmi
@@ -19,7 +19,7 @@
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500)
 	construction_time = 75
 	build_path = /obj/item/mmi
-	category = list("Control Interfaces", "Medical Designs")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/posibrain
@@ -30,7 +30,7 @@
 	materials = list(/datum/material/iron = 1700, /datum/material/glass = 1350, /datum/material/gold = 500) //Gold, because SWAG.
 	construction_time = 75
 	build_path = /obj/item/mmi/posibrain
-	category = list("Control Interfaces", "Medical Designs")
+	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/noreactbeaker
@@ -40,7 +40,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000)
 	build_path = /obj/item/reagent_containers/glass/beaker/noreact
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/xlarge_beaker
@@ -49,7 +49,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/plastic = 3000)
 	build_path = /obj/item/reagent_containers/glass/beaker/plastic
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/meta_beaker
@@ -58,7 +58,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/plastic = 3000, /datum/material/gold = 1000, /datum/material/titanium = 1000)
 	build_path = /obj/item/reagent_containers/glass/beaker/meta
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/ph_meter
@@ -67,7 +67,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/gold = 1000, /datum/material/titanium = 1000)
 	build_path = /obj/item/ph_meter
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/dna_disk
@@ -77,7 +77,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver = 50)
 	build_path = /obj/item/disk/data
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/plasmarefiller
@@ -87,7 +87,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/plasma = 1000)
 	build_path = /obj/item/extinguisher_refill
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/crewpinpointerprox
@@ -97,7 +97,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1200, /datum/material/glass = 300, /datum/material/gold = 200)
 	build_path = /obj/item/pinpointer/crew/prox
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/defibrillator
@@ -107,7 +107,7 @@
 	build_type = FABRICATOR
 	build_path = /obj/item/defibrillator
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 4000, /datum/material/silver = 3000, /datum/material/gold = 1500)
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/defibrillator_mount
@@ -137,7 +137,7 @@
 	build_path = /obj/item/sequence_scanner
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 1000, /datum/material/glass = 500)
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/healthanalyzer_advanced
@@ -147,7 +147,7 @@
 	build_path = /obj/item/healthanalyzer/advanced
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2500, /datum/material/silver = 2000, /datum/material/gold = 1500)
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/medigel
@@ -157,7 +157,7 @@
 	build_path = /obj/item/reagent_containers/medigel
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/surgical_drapes
@@ -166,7 +166,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 2000)
 	build_path = /obj/item/surgical_drapes
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/laserscalpel
@@ -176,7 +176,7 @@
 	build_path = /obj/item/scalpel/advanced
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 6000, /datum/material/glass = 1500, /datum/material/silver = 2000, /datum/material/gold = 1500, /datum/material/diamond = 200, /datum/material/titanium = 4000)
-	category = list("Tool Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/mechanicalpinches
@@ -186,7 +186,7 @@
 	build_path = /obj/item/retractor/advanced
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 12000, /datum/material/glass = 4000, /datum/material/silver = 4000, /datum/material/titanium = 5000)
-	category = list("Tool Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/searingtool
@@ -196,7 +196,7 @@
 	build_path = /obj/item/cautery/advanced
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
-	category = list("Tool Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/medical_spray_bottle
@@ -206,7 +206,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 2000)
 	build_path = /obj/item/reagent_containers/spray/medical
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/chem_pack
@@ -216,7 +216,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 2000)
 	build_path = /obj/item/reagent_containers/chem_pack
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /datum/design/blood_pack
@@ -227,7 +227,7 @@
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 	materials = list(/datum/material/plastic = 1000)
 	build_path = /obj/item/reagent_containers/blood
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
 /////////////////////////////////////////
@@ -242,7 +242,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 400)
 	build_path = /obj/item/organ/internal/eyes/robotic/shield
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_gloweyes
 	name = "Luminescent Eyes"
@@ -252,7 +252,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 1000)
 	build_path = /obj/item/organ/internal/eyes/robotic/glow
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_breather
 	name = "Breathing Tube Implant"
@@ -262,7 +262,7 @@
 	construction_time = 35
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 250)
 	build_path = /obj/item/organ/internal/cyberimp/mouth/breathing_tube
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_surgical
 	name = "Surgical Arm Implant"
@@ -272,7 +272,7 @@
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
 	build_path = /obj/item/organ/internal/cyberimp/arm/surgery
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_toolset
 	name = "Toolset Arm Implant"
@@ -282,7 +282,7 @@
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
 	build_path = /obj/item/organ/internal/cyberimp/arm/toolset
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_medical_hud
 	name = "Medical HUD Implant"
@@ -292,7 +292,7 @@
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 500)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/medical
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_security_hud
 	name = "Security HUD Implant"
@@ -302,7 +302,7 @@
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 750, /datum/material/gold = 750)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/security
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_diagnostic_hud
 	name = "Diagnostic HUD Implant"
@@ -312,7 +312,7 @@
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600)
 	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/diagnostic
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_xray
 	name = "X-ray Eyes"
@@ -322,7 +322,7 @@
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/uranium = 1000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/organ/internal/eyes/robotic/xray
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_thermals
 	name = "Thermal Eyes"
@@ -332,7 +332,7 @@
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/diamond = 2000)
 	build_path = /obj/item/organ/internal/eyes/robotic/thermals
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_antistun
 	name = "CNS Rebooter Implant"
@@ -342,7 +342,7 @@
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 1000)
 	build_path = /obj/item/organ/internal/cyberimp/brain/anti_stun
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment
 	name = "Nutriment Pump Implant"
@@ -352,7 +352,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/gold = 500)
 	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment_plus
 	name = "Nutriment Pump Implant PLUS"
@@ -362,7 +362,7 @@
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/gold = 500, /datum/material/uranium = 750)
 	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment/plus
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_reviver
 	name = "Reviver Implant"
@@ -372,7 +372,7 @@
 	construction_time = 60
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 800, /datum/material/gold = 300, /datum/material/uranium = 500)
 	build_path = /obj/item/organ/internal/cyberimp/chest/reviver
-	category = list("Implants", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /////////////////////////////////////////
 ////////////Regular Implants/////////////
@@ -385,7 +385,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 200)
 	build_path = /obj/item/implanter
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL
 
 /datum/design/implantcase
@@ -395,7 +395,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 500)
 	build_path = /obj/item/implantcase
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_SECURITY | DESIGN_FAB_MEDICAL
 
 /datum/design/implant_sadtrombone
@@ -405,7 +405,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 500, /datum/material/bananium = 500)
 	build_path = /obj/item/implantcase/sad_trombone
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 
 /datum/design/implant_chem
 	name = "Chemical Implant Case"
@@ -414,7 +414,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 700)
 	build_path = /obj/item/implantcase/chem
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 /datum/design/implant_tracking
@@ -424,7 +424,7 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/implantcase/tracking
-	category = list("Medical Designs")
+	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
 //Cybernetic organs
@@ -436,7 +436,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/organ/internal/liver/cybernetic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_liver/tier2
@@ -462,7 +462,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/organ/internal/heart/cybernetic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_heart/tier2
@@ -488,7 +488,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/organ/internal/lungs/cybernetic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_lungs/tier2
@@ -514,7 +514,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
 	build_path = /obj/item/organ/internal/stomach/cybernetic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_stomach/tier2
@@ -540,7 +540,7 @@
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
 	build_path = /obj/item/organ/internal/ears/cybernetic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_ears_u
@@ -551,7 +551,7 @@
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
 	build_path = /obj/item/organ/internal/ears/cybernetic/upgraded
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 
 /datum/design/cybernetic_eyes
 	name = "Basic Cybernetic Eyes"
@@ -561,7 +561,7 @@
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
 	build_path = /obj/item/organ/internal/eyes/robotic/basic
-	category = list("Cybernetics", "Medical Designs")
+	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/cybernetic_eyes/improved

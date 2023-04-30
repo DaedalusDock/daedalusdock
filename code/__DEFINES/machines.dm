@@ -198,7 +198,7 @@
 ///the gas is outside the hazard limit, the air alarm will go into hazard mode
 #define TLV_OUTSIDE_HAZARD_LIMIT 2
 
-/// Design categories
+// Design categories
 #define DCAT_COMPUTER_PART "Computer Parts"
 #define DCAT_WIREMOD "Wiremod"
 #define DCAT_POWER "Power Management"
@@ -226,3 +226,18 @@
 #define DCAT_STOCK_PART "Stock Parts"
 #define DCAT_WEARABLE "Wearables"
 #define DCAT_MISC "Miscellaneous"
+#define DCAT_SILICON "Silicons"
+#define DCAT_MINING "Mining Tools"
+
+// Design categories for the mechfab
+#define DCAT_CYBORG "Cyborg"
+#define DCAT_RIPLEY "Ripley"
+#define DCAT_ODYSSEUS "Odysseus"
+#define DCAT_GYGAX "Gygax"
+#define DCAT_CLARKE "Clarke"
+#define DCAT_DURAND "Durand"
+#define DCAT_HONK "H.O.N.K"
+#define DCAT_PHAZON "Phazon"
+#define DCAT_SAVANNAH "Savannah-Ivanov"
+#define DCAT_EXOSUIT_MOD "Exosuit Modules"
+#define DCAT_AUGMENT "Augmentation"

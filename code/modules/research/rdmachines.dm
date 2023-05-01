@@ -13,30 +13,16 @@
 	var/disabled = FALSE
 	var/obj/item/loaded_item = null //the item loaded inside the machine (currently only used by experimentor and destructive analyzer)
 
-	/// Flags given to designs and machines to populate their design list during mapload.
-	var/mapload_design_flags = ALL
-
 /obj/machinery/rnd/proc/reset_busy()
 	busy = FALSE
 
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
 	wires = new /datum/wires/rnd(src)
-	if(mapload && mapload_design_flags && internal_disk)
-		internal_disk.set_data(
-			DATA_IDX_DESIGNS,
-			SStech.fetch_designs(compile_designs())
-		)
 
 /obj/machinery/rnd/Destroy()
 	QDEL_NULL(wires)
 	return ..()
-
-/obj/machinery/rnd/proc/compile_designs()
-	. = list()
-	for(var/datum/design/D as anything in SStech.designs)
-		if((D.mapload_design_flags & mapload_design_flags))
-			. += D.type
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock

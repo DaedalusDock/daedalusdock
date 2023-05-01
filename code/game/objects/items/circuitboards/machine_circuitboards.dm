@@ -54,7 +54,7 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/extra_large
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/autolathe
 	)
 
 /obj/item/circuitboard/machine/grounding_rod
@@ -191,39 +191,21 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/power/port_gen/pacman/super
 
-/obj/item/circuitboard/machine/turbine_compressor
-	name = "Turbine - Inlet Compressor (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	//build_path = /obj/machinery/power/turbine/inlet_compressor/constructed
-	req_components = list(
-		/obj/item/stack/cable_coil = 5,
-		/obj/item/stack/sheet/iron = 5)
-
-/obj/item/circuitboard/machine/turbine_rotor
-	name = "Turbine - Core Rotor (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	//build_path = /obj/machinery/power/turbine/core_rotor/constructed
-	req_components = list(
-		/obj/item/stack/cable_coil = 5,
-		/obj/item/stack/sheet/iron = 5)
-
-/obj/item/circuitboard/machine/turbine_stator
-	name = "Turbine - Turbine Outlet (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	//build_path = /obj/machinery/power/turbine/turbine_outlet/constructed
-	req_components = list(
-		/obj/item/stack/cable_coil = 5,
-		/obj/item/stack/sheet/iron = 5)
-
 /obj/item/circuitboard/machine/fabricator/department/engineering
 	name = "Departmental Fabricator - Engineering (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/rnd/production/fabricator/department/engineering
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/engineering
+	)
 
 /obj/item/circuitboard/machine/fabricator/department/civvie
 	name = "Departmental Fabricator - Civilian (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
 	build_path = /obj/machinery/rnd/production/fabricator/department/civvie
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/civ
+	)
 
 /obj/item/circuitboard/machine/rtg
 	name = "RTG (Machine Board)"
@@ -363,17 +345,15 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/large
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter
 	)
 
 /obj/item/circuitboard/machine/circuit_imprinter/offstation
 	name = "Ancient Circuit Imprinter (Machine Board)"
 	build_path = /obj/machinery/rnd/production/circuit_imprinter/offstation
-
-/obj/item/circuitboard/machine/circuit_imprinter/department
-	name = "Departmental Circuit Imprinter (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/rnd/production/circuit_imprinter/department
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/offstation
+	)
 
 /obj/item/circuitboard/machine/holopad
 	name = "AI Holopad (Machine Board)"
@@ -419,17 +399,21 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/extra_large
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/omni
 	)
 
 /obj/item/circuitboard/machine/fabricator/omni
 	name = "Omni-Fabricator (Machine Board)"
 	build_path = /obj/machinery/rnd/production/fabricator/omni
-
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/omni
+	)
 /obj/item/circuitboard/machine/fabricator/offstation
 	name = "Ancient Fabricator (Machine Board)"
 	build_path = /obj/machinery/rnd/production/fabricator/offstation
-
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/offstation
+	)
 /obj/item/circuitboard/machine/fabricator/department
 	name = "Departmental Fabricator (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
@@ -771,7 +755,9 @@
 	name = "Departmental Fabricator - Medical (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/rnd/production/fabricator/department/medical
-
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/medical
+	)
 /obj/item/circuitboard/machine/sleeper
 	name = "Sleeper (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -823,13 +809,6 @@
 	build_path = /obj/machinery/medipen_refiller
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1)
-
-//Science
-
-/obj/item/circuitboard/machine/circuit_imprinter/department/science
-	name = "Departmental Circuit Imprinter - Science (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/rnd/production/circuit_imprinter/department/science
 
 /obj/item/circuitboard/machine/cyborgrecharger
 	name = "Cyborg Recharger (Machine Board)"
@@ -940,6 +919,9 @@
 	name = "Departmental Fabricator - Robotics (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_ROBOTICS
 	build_path = /obj/machinery/rnd/production/fabricator/department/robotics
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+	)
 
 //Security
 
@@ -1104,6 +1086,9 @@
 	name = "Departmental Fabricator - Service (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/rnd/production/fabricator/department/service
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/service
+	)
 
 /obj/item/circuitboard/machine/recycler
 	name = "Recycler (Machine Board)"
@@ -1171,6 +1156,9 @@
 	name = "Departmental Fabricator - Cargo (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/rnd/production/fabricator/department/cargo
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/supply
+	)
 
 /obj/item/circuitboard/machine/stacking_machine
 	name = "Stacking Machine (Machine Board)"

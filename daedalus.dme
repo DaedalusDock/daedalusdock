@@ -4129,7 +4129,6 @@
 #include "code\modules\research\designs\wiremod_designs.dm"
 #include "code\modules\research\machinery\_production.dm"
 #include "code\modules\research\machinery\circuit_imprinter.dm"
-#include "code\modules\research\machinery\departmental_circuit_imprinter.dm"
 #include "code\modules\research\machinery\departmental_fabricator.dm"
 #include "code\modules\research\machinery\fabricator.dm"
 #include "code\modules\research\ordnance\doppler_array.dm"

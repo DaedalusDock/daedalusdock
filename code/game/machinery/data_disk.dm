@@ -5,9 +5,9 @@
 	icon_state = "datadisk0"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	/// How many THIIINGGGS can we store in memory
-	VAR_PROTECTED/storage = 8
+	VAR_PROTECTED/storage = 32
 	/// The actual storage of the disk.
-	VAR_PROTECTED/list/memory = list(ALL_DATA_INDEXES)
+	VAR_PROTECTED/list/memory[ALL_DATA_INDEXES]
 
 	var/read_only = FALSE //Well,it's still a floppy disk
 
@@ -98,20 +98,84 @@
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/disk/data/medium
-	desc = "A disk for storing device data."
-	icon_state = "datadisk7"
+	icon_state = "datadisk2"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50)
-	storage = 16
-
-/obj/item/disk/data/large
-	desc = "A disk for storing device data."
-	icon_state = "datadisk7"
-	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50, /datum/material/diamond = 100)
 	storage = 64
 
-/obj/item/disk/data/extra_large
-	desc = "A disk for storing device data."
-	icon_state = "datadisk8"
-	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 100, /datum/material/diamond = 200)
+/obj/item/disk/data/large
+	icon_state = "datadisk6"
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50, /datum/material/diamond = 100)
 	storage = 128
 
+/obj/item/disk/data/extra_large
+	icon_state = "datadisk7"
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 100, /datum/material/diamond = 200)
+	storage = 256
+
+/obj/item/disk/data/hyper
+	icon_state = "datadisk8"
+	storage = 512
+
+/obj/item/disk/data/hyper/preloaded
+
+/obj/item/disk/data/hyper/preloaded/Initialize(mapload)
+	. = ..()
+	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.fetch_designs(compile_designs()))
+
+/obj/item/disk/data/hyper/preloaded/proc/compile_designs()
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+
+/obj/item/disk/data/hyper/preloaded/fabricator
+	var/build_type
+	var/mapload_design_flags
+
+/obj/item/disk/data/hyper/preloaded/fabricator/compile_designs()
+	. = ..()
+	for(var/datum/design/D as anything in SStech.designs)
+		if((D.mapload_design_flags & mapload_design_flags) && (D.build_type & build_type))
+			. += D.type
+
+/obj/item/disk/data/hyper/preloaded/fabricator/omni
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_OMNI
+
+/obj/item/disk/data/hyper/preloaded/fabricator/robotics
+	build_type = MECHFAB
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/obj/item/disk/data/hyper/preloaded/fabricator/civ
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_CIV
+
+/obj/item/disk/data/hyper/preloaded/fabricator/engineering
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_ENGINEERING
+
+/obj/item/disk/data/hyper/preloaded/fabricator/medical
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_MEDICAL
+
+/obj/item/disk/data/hyper/preloaded/fabricator/offstation
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_OFFSTATION
+
+/obj/item/disk/data/hyper/preloaded/fabricator/supply
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_SUPPLY
+
+/obj/item/disk/data/hyper/preloaded/fabricator/security
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_SECURITY
+
+/obj/item/disk/data/hyper/preloaded/fabricator/service
+	build_type = FABRICATOR
+	mapload_design_flags = DESIGN_FAB_SERVICE
+
+/obj/item/disk/data/hyper/preloaded/fabricator/imprinter
+	build_type = IMPRINTER
+	mapload_design_flags = DESIGN_IMPRINTER
+
+/obj/item/disk/data/hyper/preloaded/fabricator/imprinter/offstation
+	build_type = AWAY_IMPRINTER | IMPRINTER

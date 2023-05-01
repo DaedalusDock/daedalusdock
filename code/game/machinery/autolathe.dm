@@ -19,6 +19,8 @@
 
 	var/busy = FALSE
 
+	var/list/categories
+
 	///the multiplier for how much materials the created object takes from this machines stored materials
 	var/creation_efficiency = 1.6
 
@@ -28,130 +30,16 @@
 	var/base_price = 25
 	var/hacked_price = 50
 
-	var/list/categories = list(
-							"Tools",
-							"Electronics",
-							"Construction",
-							"T-Comm",
-							"Security",
-							"Machinery",
-							"Medical",
-							"Misc",
-							"Dinnerware",
-							"Imported"
-							)
-
 /obj/machinery/autolathe/Initialize(mapload)
 	AddComponent(/datum/component/material_container, SSmaterials.materials_by_category[MAT_CATEGORY_ITEM_MATERIAL], 0, MATCONTAINER_EXAMINE, _after_insert = CALLBACK(src, PROC_REF(AfterMaterialInsert)))
 	. = ..()
-
 	wires = new /datum/wires/autolathe(src)
 	matching_designs = list()
-	internal_disk.set_data(SStech.fetch_designs(compile_designs()))
+	compile_categories()
 
 /obj/machinery/autolathe/Destroy()
 	QDEL_NULL(wires)
 	return ..()
-
-/obj/machinery/autolathe/proc/compile_designs()
-	. = list(
-		/datum/design/bucket,
-		/datum/design/mop,
-		/datum/design/broom,
-		/datum/design/crowbar,
-		/datum/design/multitool,
-		/datum/design/weldingtool,
-		/datum/design/wrench,
-		/datum/design/screwdriver,
-		/datum/design/wirecutters,
-		/datum/design/flashlight,
-		/datum/design/extinguisher,
-		/datum/design/analyzer,
-		/datum/design/tscanner,
-		/datum/design/welding_helmet,
-		/datum/design/cable_coil,
-		/datum/design/apc_board,
-		/datum/design/airlock_board,
-		/datum/design/firelock_board,
-		/datum/design/airalarm_electronics,
-		/datum/design/firealarm_electronics,
-		/datum/design/airlock_painter,
-		/datum/design/airlock_painter/decal,
-		/datum/design/airlock_painter/decal/tile,
-		/datum/design/emergency_oxygen,
-		/datum/design/plasmaman_tank_belt,
-		/datum/design/iron,
-		/datum/design/glass,
-		/datum/design/rglass,
-		/datum/design/rods,
-		/datum/design/plant_analyzer,
-		/datum/design/shovel,
-		/datum/design/spade,
-		/datum/design/secateurs,
-		/datum/design/blood_filter,
-		/datum/design/scalpel,
-		/datum/design/circular_saw,
-		/datum/design/bonesetter,
-		/datum/design/surgical_drapes,
-		/datum/design/surgicaldrill,
-		/datum/design/retractor,
-		/datum/design/cautery,
-		/datum/design/hemostat,
-		/datum/design/beaker,
-		/datum/design/large_beaker,
-		/datum/design/pillbottle,
-		/datum/design/igniter,
-		/datum/design/condenser,
-		/datum/design/signaler,
-		/datum/design/radio_headset,
-		/datum/design/bounced_radio,
-		/datum/design/intercom_frame,
-		/datum/design/infrared_emitter,
-		/datum/design/health_sensor,
-		/datum/design/timer,
-		/datum/design/voice_analyzer,
-		/datum/design/light_bulb,
-		/datum/design/light_tube,
-		/datum/design/camera_assembly,
-		/datum/design/newscaster_frame,
-		/datum/design/status_display_frame,
-		/datum/design/syringe,
-		/datum/design/dropper,
-		/datum/design/prox_sensor,
-		/datum/design/foam_dart,
-		/datum/design/spraycan,
-		/datum/design/desttagger,
-		/datum/design/salestagger,
-		/datum/design/handlabeler,
-		/datum/design/geiger,
-		/datum/design/turret_control_frame,
-		/datum/design/conveyor_belt,
-		/datum/design/conveyor_switch,
-		/datum/design/miniature_power_cell,
-		/datum/design/package_wrap,
-		/datum/design/holodisk,
-		/datum/design/circuit,
-		/datum/design/circuitgreen,
-		/datum/design/circuitred,
-		/datum/design/price_tagger,
-		/datum/design/custom_vendor_refill,
-		/datum/design/plastic_tree,
-		/datum/design/plastic_ring,
-		/datum/design/plastic_box,
-		/datum/design/sticky_tape,
-		/datum/design/petridish,
-		/datum/design/swab,
-		/datum/design/chisel,
-		/datum/design/control,
-		/datum/design/paperroll,
-		/datum/design/beacon,
-		/datum/design/plasticducky,
-		/datum/design/gas_filter,
-		/datum/design/plasmaman_gas_filter,
-		/datum/design/oven_tray,
-		/datum/design/data,
-	)
-
 
 /obj/machinery/autolathe/ui_interact(mob/user, datum/tgui/ui)
 	if(!is_operational)
@@ -457,6 +345,13 @@
 			dat += "[D.materials[i] * coeff] [M.name] "
 	return dat
 
+/obj/machinery/autolathe/proc/compile_categories()
+	categories = list()
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+		if(!isnull(D.category))
+			categories |= D.category
+	sortTim(categories, GLOBAL_PROC_REF(cmp_text_asc))
+
 /obj/machinery/autolathe/proc/reset(wire)
 	switch(wire)
 		if(WIRE_HACK)
@@ -511,3 +406,106 @@
 //Has a reference to the autolathe so you can do !!FUN!! things with hacked lathes
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
 	return
+
+/obj/item/disk/data/hyper/preloaded/autolathe
+
+/obj/item/disk/data/hyper/preloaded/autolathe/compile_designs()
+	. = ..()
+	. += list(
+		/datum/design/bucket,
+		/datum/design/mop,
+		/datum/design/broom,
+		/datum/design/crowbar,
+		/datum/design/multitool,
+		/datum/design/weldingtool,
+		/datum/design/wrench,
+		/datum/design/screwdriver,
+		/datum/design/wirecutters,
+		/datum/design/flashlight,
+		/datum/design/extinguisher,
+		/datum/design/analyzer,
+		/datum/design/tscanner,
+		/datum/design/welding_helmet,
+		/datum/design/cable_coil,
+		/datum/design/apc_board,
+		/datum/design/airlock_board,
+		/datum/design/firelock_board,
+		/datum/design/airalarm_electronics,
+		/datum/design/firealarm_electronics,
+		/datum/design/airlock_painter,
+		/datum/design/airlock_painter/decal,
+		/datum/design/airlock_painter/decal/tile,
+		/datum/design/emergency_oxygen,
+		/datum/design/plasmaman_tank_belt,
+		/datum/design/iron,
+		/datum/design/glass,
+		/datum/design/rglass,
+		/datum/design/rods,
+		/datum/design/plant_analyzer,
+		/datum/design/shovel,
+		/datum/design/spade,
+		/datum/design/secateurs,
+		/datum/design/blood_filter,
+		/datum/design/scalpel,
+		/datum/design/circular_saw,
+		/datum/design/bonesetter,
+		/datum/design/surgical_drapes,
+		/datum/design/surgicaldrill,
+		/datum/design/retractor,
+		/datum/design/cautery,
+		/datum/design/hemostat,
+		/datum/design/beaker,
+		/datum/design/large_beaker,
+		/datum/design/pillbottle,
+		/datum/design/igniter,
+		/datum/design/condenser,
+		/datum/design/signaler,
+		/datum/design/radio_headset,
+		/datum/design/bounced_radio,
+		/datum/design/intercom_frame,
+		/datum/design/infrared_emitter,
+		/datum/design/health_sensor,
+		/datum/design/timer,
+		/datum/design/voice_analyzer,
+		/datum/design/light_bulb,
+		/datum/design/light_tube,
+		/datum/design/camera_assembly,
+		/datum/design/newscaster_frame,
+		/datum/design/status_display_frame,
+		/datum/design/syringe,
+		/datum/design/dropper,
+		/datum/design/prox_sensor,
+		/datum/design/foam_dart,
+		/datum/design/spraycan,
+		/datum/design/desttagger,
+		/datum/design/salestagger,
+		/datum/design/handlabeler,
+		/datum/design/geiger,
+		/datum/design/turret_control_frame,
+		/datum/design/conveyor_belt,
+		/datum/design/conveyor_switch,
+		/datum/design/miniature_power_cell,
+		/datum/design/package_wrap,
+		/datum/design/holodisk,
+		/datum/design/circuit,
+		/datum/design/circuitgreen,
+		/datum/design/circuitred,
+		/datum/design/price_tagger,
+		/datum/design/custom_vendor_refill,
+		/datum/design/plastic_tree,
+		/datum/design/plastic_ring,
+		/datum/design/plastic_box,
+		/datum/design/sticky_tape,
+		/datum/design/petridish,
+		/datum/design/swab,
+		/datum/design/chisel,
+		/datum/design/control,
+		/datum/design/paperroll,
+		/datum/design/beacon,
+		/datum/design/plasticducky,
+		/datum/design/gas_filter,
+		/datum/design/plasmaman_gas_filter,
+		/datum/design/oven_tray,
+		/datum/design/data,
+	)
+

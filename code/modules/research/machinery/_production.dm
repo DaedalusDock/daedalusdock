@@ -4,7 +4,6 @@
 	layer = BELOW_OBJ_LAYER
 	/// Materials needed / coeff = actual.
 	var/efficiency_coeff = 1
-	var/list/categories = list()
 	var/datum/component/remote_materials/materials
 	/// What's flick()'d on print.
 	var/production_animation
@@ -18,6 +17,8 @@
 	var/department_tag = "Unidentified"
 
 	var/screen = FABRICATOR_SCREEN_MAIN
+	/// Cache so we don't rebuild this every Topic(), see compile_categories().
+	var/list/categories
 	var/selected_category
 
 	/// Data management in the UI
@@ -34,12 +35,7 @@
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
-
-/obj/machinery/rnd/production/compile_designs()
-	. = list()
-	for(var/datum/design/D as anything in SStech.designs)
-		if((D.mapload_design_flags & mapload_design_flags) && (D.build_type & allowed_buildtypes))
-			. += D.type
+	compile_categories()
 
 /obj/machinery/rnd/production/Destroy()
 	materials = null
@@ -389,7 +385,7 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += list_categories(compile_categories(), FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += list_categories(categories, FABRICATOR_SCREEN_CATEGORYVIEW)
 	l += "</fieldset>"
 
 	return l
@@ -474,7 +470,8 @@
 			alert(user, "Failed to write to device disk!","ERROR", "OK")
 			return
 
-		log_game("[key_name(user)] moved [D.name] from an external disk to [src] ([get_area_name(src)])")
+		log_game("[key_name(user)] copied [D.name] from an external disk to [src] ([get_area_name(src)])")
+		compile_categories()
 
 /obj/machinery/rnd/production/proc/disk_del(mob/user, datum/design/D)
 	if(alert(user, "Are you sure you want to delete [D.name]?", "File Operation", "Yes", "No") != "Yes")
@@ -485,7 +482,8 @@
 			alert(user, "Failed to delete file!","ERROR", "OK")
 			return
 		else
-			log_game("[key_name(user)] delete [D.name] from [src]")
+			log_game("[key_name(user)] deletde [D.name] from [src]")
+			compile_categories()
 			updateUsrDialog()
 	else
 		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
@@ -504,11 +502,13 @@
 			alert(user, "Failed to write to external disk!","ERROR", "OK")
 			return
 		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
+			compile_categories()
 			updateUsrDialog()
 			log_game("[key_name(user)] copied [D.name] from [src] to an external disk ([get_area_name(src)])")
 			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
 			return
 
+		compile_categories()
 		updateUsrDialog()
 		log_game("[key_name(user)] moved [D.name] from [src] to an external disk ([get_area_name(src)])")
 
@@ -517,11 +517,13 @@
 			alert(user, "Failed to write to device disk!","ERROR", "OK")
 			return
 		if(!inserted_disk.remove(DATA_IDX_DESIGNS, D))
+			compile_categories()
 			updateUsrDialog()
 			log_game("[key_name(user)] copied [D.name] from an external disk to [src] ([get_area_name(src)])")
 			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
 			return
 
+		compile_categories()
 		updateUsrDialog()
 		log_game("[key_name(user)] moved [D.name] from an external disk to [src] ([get_area_name(src)])")
 
@@ -543,11 +545,10 @@
 	. += stripe
 
 /obj/machinery/rnd/production/proc/compile_categories()
-	RETURN_TYPE(/list)
-	. = list()
+	categories = list()
 	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		if(!isnull(D.category))
-			. |= D.category
+			categories |= D.category
 
 /obj/machinery/rnd/production/eject_disk()
 	. = ..()

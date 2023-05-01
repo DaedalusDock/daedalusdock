@@ -3028,3 +3028,59 @@
 /datum/supply_pack/exploration/shrubbery/fill(obj/structure/closet/crate/C)
 	for(var/i in 1 to shrub_amount)
 		new /obj/item/grown/shrub(C)
+
+/datum/supply_pack/data_disk
+	group = "Data Disks"
+
+/datum/supply_pack/data_disk/preloaded
+	name = "Data Disk"
+	desc = "Contains an extremely expensive data disk for use in fabricators."
+	cost = CARGO_CRATE_VALUE * 5
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
+	crate_name = "data disk crate"
+	hidden = TRUE
+
+/datum/supply_pack/data_disk/preloaded/omni
+	name = "Data Disk (Omnifab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
+	crate_name = "omnifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/
+	name = "Data Disk (Robofab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/robotics)
+	crate_name = "robofab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/civ
+	name = "Data Disk (Civfab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/civ)
+	crate_name = "civfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/engineering
+	name = "Data Disk (Engifab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/engineering)
+	crate_name = "engifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/medical
+	name = "Data Disk (Medifab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/medical)
+	crate_name = "medifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/supply
+	name = "Data Disk (Supplyfab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/supply)
+	crate_name = "supplyfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/security
+	name = "Data Disk (Secfab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/security)
+	crate_name = "secfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/service
+	name = "Data Disk (Servicefab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/service)
+	crate_name = "servicefab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/imprinter
+	name = "Data Disk (Imprinter)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/imprinter)
+	crate_name = "imprinter disk crate"

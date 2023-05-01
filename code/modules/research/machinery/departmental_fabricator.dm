@@ -31,6 +31,7 @@
 /obj/machinery/rnd/production/fabricator/department/robotics
 	name = "robotics fabricator"
 	department_tag = "Robotics"
+	allowed_buildtypes = FABRICATOR | MECHFAB
 	circuit = /obj/item/circuitboard/machine/fabricator/department/robotics
 	stripe_color = "#575456"
 

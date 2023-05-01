@@ -919,7 +919,7 @@
 	greyscale_colors = CIRCUIT_COLOR_ROBOTICS
 	build_path = /obj/machinery/rnd/production/fabricator/department/robotics
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/robotics
 	)
 
 //Security

@@ -9,7 +9,6 @@
 	use_power = IDLE_POWER_USE
 	var/busy = FALSE
 	var/hacked = FALSE
-	var/console_link = TRUE //allow console link.
 	var/disabled = FALSE
 	var/obj/item/loaded_item = null //the item loaded inside the machine (currently only used by experimentor and destructive analyzer)
 

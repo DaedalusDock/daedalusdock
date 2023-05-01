@@ -3,18 +3,18 @@
 /////////////////////////////////////////
 
 /datum/design/rubbershot/sec
+	name = "Rubber Slug"
 	id = "sec_rshot"
 	build_type = FABRICATOR
 	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
-	autolathe_exportable = FALSE //Redundant
 
 /datum/design/beanbag_slug/sec
+	name = "Beanbag Slug"
 	id = "sec_beanbag_slug"
 	build_type = FABRICATOR
 	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
-	autolathe_exportable = FALSE
 
 /datum/design/pin_testing
 	name = "Test-Range Firing Pin"
@@ -45,7 +45,6 @@
 	build_path = /obj/item/weaponcrafting/gunkit/tesla
 	category = list(DCAT_WEAPON)
 	mapload_design_flags = DESIGN_FAB_SECURITY
-	autolathe_exportable = FALSE
 
 /datum/design/nuclear_gun
 	name = "Advanced Energy Gun Part Kit"
@@ -56,7 +55,6 @@
 	build_path = /obj/item/weaponcrafting/gunkit/nuclear
 	category = list(DCAT_WEAPON)
 	mapload_design_flags = DESIGN_FAB_SECURITY
-	autolathe_exportable = FALSE
 
 /datum/design/flora_gun
 	name = "Floral Somatoray"

@@ -42,9 +42,7 @@ other types of metals and chemistry for reagents).
 	var/list/reagents_list
 	/// The maximum number of units of whatever is produced by this can be produced in one go.
 	var/maxstack = 1
-	/// How many times faster than normal is this to build on the fabricator
-	var/lathe_time_factor = 1
-	#warn ^ Needs addressing
+
 	/// If this is [TRUE] the admins get notified whenever anyone prints this. Currently only used by the BoH.
 	var/dangerous_construction = FALSE
 
@@ -57,9 +55,6 @@ other types of metals and chemistry for reagents).
 	var/icon_cache
 	/// Optional string that interfaces can use as part of search filters. See- item/borg/upgrade/ai and the Exosuit Fabs.
 	var/search_metadata
-	/// For protolathe designs that don't require reagents: If they can be exported to autolathes with a design disk or not.
-	var/autolathe_exportable = TRUE
-	#warn ^ Needs addressing
 
 /datum/design/error_design
 	name = "ERROR"

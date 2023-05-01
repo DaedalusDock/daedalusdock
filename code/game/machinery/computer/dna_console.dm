@@ -143,7 +143,6 @@
 	///Counter for CRISPR charges
 	var/crispr_charges = 0
 
-#warn dna console needs a custom ui and data disk
 /obj/machinery/computer/scan_consolenew/process()
 	. = ..()
 

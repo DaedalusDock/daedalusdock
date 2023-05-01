@@ -2986,7 +2986,6 @@
 /obj/effect/turf_decal/siding{
 	dir = 1
 	},
-/obj/machinery/computer/rdconsole,
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
 "aLo" = (
@@ -8959,10 +8958,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
-"cwZ" = (
-/obj/machinery/rnd/experimentor,
-/turf/open/floor/engine,
-/area/station/science/misc_lab/range)
 "cxe" = (
 /obj/effect/turf_decal/siding/white{
 	dir = 8
@@ -13675,9 +13670,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/machinery/mecha_part_fabricator{
-	dir = 4
-	},
+/obj/machinery/rnd/production/fabricator/department/robotics,
 /turf/open/floor/iron,
 /area/station/science/robotics/lab)
 "dRK" = (
@@ -15852,9 +15845,6 @@
 	},
 /area/station/maintenance/port/aft)
 "eDx" = (
-/obj/machinery/computer/rdconsole{
-	dir = 8
-	},
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 4
 	},
@@ -16751,10 +16741,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/bar)
-"eQp" = (
-/obj/machinery/rnd/production/circuit_imprinter/department/science,
-/turf/open/floor/iron/dark,
-/area/station/science/lab)
 "eQv" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -23575,7 +23561,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
-/obj/machinery/destructive_scanner,
 /obj/effect/turf_decal/tile/purple/half/contrasted{
 	dir = 1
 	},
@@ -26279,9 +26264,6 @@
 /area/station/service/theater)
 "isH" = (
 /obj/structure/table/glass,
-/obj/item/experi_scanner{
-	pixel_x = -4
-	},
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "isJ" = (
@@ -31883,7 +31865,6 @@
 	},
 /area/station/maintenance/port/aft)
 "kvc" = (
-/obj/machinery/rnd/bepis,
 /obj/effect/turf_decal/stripes/end{
 	dir = 4
 	},
@@ -32062,15 +32043,6 @@
 /obj/structure/table,
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
-/obj/item/disk/tech_disk{
-	pixel_x = -6
-	},
-/obj/item/disk/tech_disk{
-	pixel_x = 6
-	},
-/obj/item/disk/tech_disk{
-	pixel_y = 6
-	},
 /turf/open/floor/iron,
 /area/station/science/lab)
 "kyr" = (
@@ -34454,7 +34426,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "lrj" = (
-/obj/machinery/computer/rdconsole,
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 4
 	},
@@ -36084,16 +36055,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
-"lXi" = (
-/obj/structure/table/glass,
-/obj/item/experi_scanner{
-	pixel_x = 4
-	},
-/obj/item/experi_scanner{
-	pixel_x = -15
-	},
-/turf/open/floor/iron/white,
-/area/station/science/research)
 "lXD" = (
 /obj/effect/turf_decal/trimline/blue/filled/corner{
 	dir = 1
@@ -43752,14 +43713,6 @@
 	pixel_x = 9;
 	pixel_y = -1
 	},
-/obj/item/disk/tech_disk{
-	pixel_x = -2;
-	pixel_y = -3
-	},
-/obj/item/disk/design_disk{
-	name = "component design disk";
-	pixel_y = 6
-	},
 /obj/structure/table/wood,
 /obj/item/toy/talking/ai{
 	name = "\improper Nanotrasen-brand toy AI";
@@ -46343,9 +46296,6 @@
 	},
 /area/station/medical/treatment_center)
 "pAG" = (
-/obj/machinery/computer/rdservercontrol{
-	dir = 4
-	},
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -59549,7 +59499,6 @@
 /area/station/medical/treatment_center)
 "uFX" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/machinery/rnd/production/circuit_imprinter/department/science,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -62752,11 +62701,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/science/misc_lab)
-"vRa" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
-/obj/machinery/rnd/server,
-/turf/open/floor/circuit/telecomms/server,
-/area/station/science/server)
 "vRp" = (
 /turf/closed/wall/prepainted/daedalus,
 /area/station/engineering/atmospherics_engine)
@@ -63043,7 +62987,6 @@
 /area/station/security/checkpoint/medical)
 "vWA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
-/obj/machinery/rnd/server/master,
 /turf/open/floor/circuit/telecomms/server,
 /area/station/science/server)
 "vWO" = (
@@ -101090,7 +101033,7 @@ voK
 rPd
 vCn
 ocv
-eQp
+iUN
 tPA
 cHg
 esw
@@ -101355,7 +101298,7 @@ xDn
 kWh
 cos
 ton
-lXi
+isH
 tav
 dvC
 hSZ
@@ -103657,7 +103600,7 @@ jMi
 sWC
 tzi
 uzH
-cwZ
+pcn
 fEk
 jXY
 dGP
@@ -104948,7 +104891,7 @@ isJ
 rah
 vNF
 tzi
-vRa
+vWA
 kOC
 avP
 pot

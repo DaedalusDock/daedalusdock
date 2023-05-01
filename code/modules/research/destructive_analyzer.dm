@@ -103,7 +103,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 	if(!inserted_disk)
 		l += "<legend class='computerLegend'><b>No disk inserted!</b></legend>[RDSCREEN_NOBREAK]"
 	else
-		l += "<legend class='computerLegend'><table><tr><td>[icon2html(inserted_disk, usr)]</td><td><b>[inserted_disk.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<legend class='computerLegend'><table><tr><td>[icon2html(inserted_disk, usr)]</td><td><b>Data Disk</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
 		l += "<A href='?src=[REF(src)];eject_disk=1'>Eject</A>[RDSCREEN_NOBREAK]"
 	l += "</fieldset>[RDSCREEN_NOBREAK]"
 

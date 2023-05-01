@@ -8,7 +8,6 @@
 	. = ..()
 	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[/datum/design/cleric_mace])
 
-
 /obj/item/paper/fluff/ruins/clericsden/contact
 	info = "Father Aurellion, the ritual is complete, and soon our brothers at the bastion will see the error of our ways. After all, a god of clockwork or blood? Preposterous. Only the TRUE GOD should have so much power. Signed, Father Odivallus."
 

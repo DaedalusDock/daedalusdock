@@ -7,7 +7,7 @@
 	/// How many THIIINGGGS can we store in memory
 	VAR_PROTECTED/storage = 8
 	/// The actual storage of the disk.
-	VAR_PROTECTED/list/memory = list()
+	VAR_PROTECTED/list/memory = list(ALL_DATA_INDEXES)
 
 	var/read_only = FALSE //Well,it's still a floppy disk
 

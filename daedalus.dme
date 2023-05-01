@@ -4437,7 +4437,6 @@
 #include "code\modules\vehicles\cars\vim.dm"
 #include "code\modules\vehicles\mecha\_mecha.dm"
 #include "code\modules\vehicles\mecha\mech_bay.dm"
-#include "code\modules\vehicles\mecha\mech_fabricator.dm"
 #include "code\modules\vehicles\mecha\mech_melee_attack.dm"
 #include "code\modules\vehicles\mecha\mecha_actions.dm"
 #include "code\modules\vehicles\mecha\mecha_construction_paths.dm"

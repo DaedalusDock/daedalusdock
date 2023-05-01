@@ -838,21 +838,6 @@
 		/obj/item/stack/cable_coil = 2,
 		/obj/item/stock_parts/capacitor = 5)
 
-/obj/item/circuitboard/machine/mechfab
-	name = "Exosuit Fabricator (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/mecha_part_fabricator
-	req_components = list(
-		/obj/item/stock_parts/matter_bin = 2,
-		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/stock_parts/micro_laser = 1,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/disk/data = 1
-	)
-	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/large
-	)
-
 /obj/item/circuitboard/machine/monkey_recycler
 	name = "Monkey Recycler (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE

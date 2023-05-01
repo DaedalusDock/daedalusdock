@@ -5,9 +5,6 @@
 	/// Materials needed / coeff = actual.
 	var/efficiency_coeff = 1
 	var/datum/component/remote_materials/materials
-	/// What's flick()'d on print.
-	var/production_animation
-
 	var/allowed_buildtypes = NONE
 
 	/// Used by the search in the UI.
@@ -82,6 +79,9 @@
 	for(var/i in 1 to amount)
 		new path(get_turf(src))
 	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
+	busy = FALSE
+	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE)
+	update_appearance(UPDATE_OVERLAYS)
 
 /**
  * Returns how many times over the given material requirement for the given design is satisfied.
@@ -169,10 +169,9 @@
 	for(var/R in D.reagents_list)
 		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
 	busy = TRUE
-	if(production_animation)
-		flick(production_animation, src)
+	playsound(src, 'goon/sounds/button.ogg')
+	update_appearance(UPDATE_OVERLAYS)
 	var/timecoeff = D.lathe_time_factor / efficiency_coeff
-	addtimer(CALLBACK(src, PROC_REF(reset_busy)), (30 * timecoeff * amount) ** 0.5)
 	addtimer(CALLBACK(src, PROC_REF(do_print), D.build_path, amount, efficient_mats, D.dangerous_construction), (32 * timecoeff * amount) ** 0.8)
 	return TRUE
 
@@ -316,7 +315,8 @@
 		if(busy)
 			say("Warning: Fabricators busy!")
 		else
-			user_try_print_id(ls["build"], ls["amount"])
+			if(!user_try_print_id(ls["build"], ls["amount"]))
+				playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
 
 	if(ls["search"]) //Search for designs with name matching pattern
 		search(ls["to_search"])

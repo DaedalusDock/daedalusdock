@@ -226,14 +226,6 @@
 	category = list(DCAT_CIRCUIT)
 	mapload_design_flags = DESIGN_FAB_OFFSTATION
 
-/datum/design/board/mechfab
-	name = "Machine Board (Exosuit Fabricator Board)"
-	desc = "The circuit board for an Exosuit Fabricator."
-	id = "mechfab"
-	build_path = /obj/item/circuitboard/machine/mechfab
-	category = list(DCAT_CIRCUIT)
-	mapload_design_flags = DESIGN_FAB_OMNI
-
 /datum/design/board/cyborgrecharger
 	name = "Machine Board (Cyborg Recharger Board)"
 	desc = "The circuit board for a Cyborg Recharger."

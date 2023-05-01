@@ -7843,12 +7843,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"cby" = (
-/obj/machinery/mecha_part_fabricator/maint{
-	name = "forgotten exosuit fabricator"
-	},
-/turf/open/floor/plating,
-/area/station/maintenance/port/aft)
 "cbI" = (
 /obj/machinery/computer/message_monitor{
 	dir = 4
@@ -87918,7 +87912,7 @@ rDS
 vYs
 vYs
 vYs
-cby
+bXE
 bXE
 ipl
 vYs

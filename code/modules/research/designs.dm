@@ -42,6 +42,8 @@ other types of metals and chemistry for reagents).
 	var/list/reagents_list
 	/// The maximum number of units of whatever is produced by this can be produced in one go.
 	var/maxstack = 1
+	/// Production speed multiplier
+	var/lathe_time_factor = 1
 
 	/// If this is [TRUE] the admins get notified whenever anyone prints this. Currently only used by the BoH.
 	var/dangerous_construction = FALSE

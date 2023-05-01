@@ -21,9 +21,6 @@
 	var/list/categories
 	var/selected_category
 
-	/// Data management in the UI
-	var/obj/item/disk/data/selected_disk = null
-
 	/// What color is this machine's stripe? Leave null to not have a stripe.
 	var/stripe_color = null
 
@@ -161,11 +158,11 @@
 	for(var/MAT in D.materials)
 		efficient_mats[MAT] = D.materials[MAT]/coeff
 	if(!materials.mat_container.has_materials(efficient_mats, amount))
-		say("Not enough materials to complete prototype[amount > 1? "s" : ""].")
+		say("Not enough materials to complete object[amount > 1? "s" : ""].")
 		return FALSE
 	for(var/R in D.reagents_list)
 		if(!reagents.has_reagent(R, D.reagents_list[R]*amount/coeff))
-			say("Not enough reagents to complete prototype[amount > 1? "s" : ""].")
+			say("Not enough reagents to complete object[amount > 1? "s" : ""].")
 			return FALSE
 	materials.mat_container.use_materials(efficient_mats, amount)
 	materials.silo_log(src, "built", -amount, "[D.name]", efficient_mats)
@@ -352,11 +349,11 @@
 
 		switch(ls["mem_act"])
 			if("mem_del")
-				disk_del(usr, target)
+				disk_del(usr, DATA_IDX_DESIGNS, target)
 			if("mem_copy")
-				disk_copy(usr, target)
+				disk_copy(usr, DATA_IDX_DESIGNS, target, TRUE)
 			if("mem_move")
-				disk_move(usr, target)
+				disk_move(usr, DATA_IDX_DESIGNS, target, TRUE)
 
 	updateUsrDialog()
 
@@ -427,7 +424,7 @@
 	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
 	l += "<fieldset class='computerPane'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
 	if(selected_disk)
-		l += "<table class='computerPane'>[RDSCREEN_NOBREAK]"
+		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)
 			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
 			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
@@ -439,93 +436,6 @@
 		l += "<h2>No Disk Inserted!</h2>[RDSCREEN_NOBREAK]"
 	l += "</fieldset>[RDSCREEN_NOBREAK]"
 	return l
-
-/obj/machinery/rnd/production/proc/toggle_disk(mob/user)
-	if(selected_disk == internal_disk)
-		if(inserted_disk)
-			selected_disk = inserted_disk
-			updateUsrDialog()
-			return
-		else if(user)
-			alert(user, "No disk inserted!","ERROR", "OK")
-			return
-
-	if(selected_disk == inserted_disk)
-		selected_disk = internal_disk
-		updateUsrDialog()
-		return
-
-/obj/machinery/rnd/production/proc/disk_copy(mob/user, datum/design/D)
-	if(selected_disk == internal_disk)
-		if(!inserted_disk)
-			alert(user, "No disk to copy to!","ERROR", "OK")
-			return
-		if(!inserted_disk.write(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to write to external disk!","ERROR", "OK")
-			return
-
-		log_game("[key_name(user)] copied [D.name] from [src] to an external disk ([get_area_name(src)])")
-	else
-		if(!internal_disk.write(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to write to device disk!","ERROR", "OK")
-			return
-
-		log_game("[key_name(user)] copied [D.name] from an external disk to [src] ([get_area_name(src)])")
-		compile_categories()
-
-/obj/machinery/rnd/production/proc/disk_del(mob/user, datum/design/D)
-	if(alert(user, "Are you sure you want to delete [D.name]?", "File Operation", "Yes", "No") != "Yes")
-		return
-
-	if(selected_disk == internal_disk)
-		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to delete file!","ERROR", "OK")
-			return
-		else
-			log_game("[key_name(user)] deletde [D.name] from [src]")
-			compile_categories()
-			updateUsrDialog()
-	else
-		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to delete file!","ERROR", "OK")
-			return
-		else
-			log_game("[key_name(user)] deleted [D.name] from an external disk at [src] ([get_area_name(src)])")
-			updateUsrDialog()
-
-/obj/machinery/rnd/production/proc/disk_move(mob/user, datum/design/D)
-	if(selected_disk == internal_disk)
-		if(!inserted_disk)
-			alert(user, "No disk to move to!","ERROR", "OK")
-			return
-		if(!inserted_disk.write(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to write to external disk!","ERROR", "OK")
-			return
-		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
-			compile_categories()
-			updateUsrDialog()
-			log_game("[key_name(user)] copied [D.name] from [src] to an external disk ([get_area_name(src)])")
-			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
-			return
-
-		compile_categories()
-		updateUsrDialog()
-		log_game("[key_name(user)] moved [D.name] from [src] to an external disk ([get_area_name(src)])")
-
-	else
-		if(!internal_disk.write(DATA_IDX_DESIGNS, D))
-			alert(user, "Failed to write to device disk!","ERROR", "OK")
-			return
-		if(!inserted_disk.remove(DATA_IDX_DESIGNS, D))
-			compile_categories()
-			updateUsrDialog()
-			log_game("[key_name(user)] copied [D.name] from an external disk to [src] ([get_area_name(src)])")
-			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
-			return
-
-		compile_categories()
-		updateUsrDialog()
-		log_game("[key_name(user)] moved [D.name] from an external disk to [src] ([get_area_name(src)])")
 
 // Stuff for the stripe on the department machines
 /obj/machinery/rnd/production/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
@@ -550,10 +460,24 @@
 		if(!isnull(D.category))
 			categories |= D.category
 
-/obj/machinery/rnd/production/eject_disk()
+/obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
 	. = ..()
 	if(!.)
 		return
-	if(selected_disk == .)
-		selected_disk = internal_disk
-		updateUsrDialog()
+	compile_categories()
+	updateUsrDialog()
+
+
+/obj/machinery/rnd/production/disk_del(mob/user, index, data)
+	. = ..()
+	if(!.)
+		return
+	compile_categories()
+	updateUsrDialog()
+
+
+/obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
+	. = ..()
+	if(!.)
+		return
+	compile_categories()

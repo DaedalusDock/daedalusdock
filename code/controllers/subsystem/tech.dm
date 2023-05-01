@@ -28,7 +28,7 @@ SUBSYSTEM_DEF(tech)
 		designs_by_id[D.id] = D
 		if(D.build_path)
 			for(var/path in typesof(D.build_path))
-				designs_by_product[D] = path
+				designs_by_product[path] = D
 
 /// Used to turn a list of design types into instances.
 /datum/controller/subsystem/tech/proc/fetch_designs(to_init)

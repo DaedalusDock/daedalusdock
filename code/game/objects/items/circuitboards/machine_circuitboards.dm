@@ -828,7 +828,6 @@
 		/obj/item/stock_parts/scanning_module = 1,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stock_parts/micro_laser = 1,
-		/obj/item/disk/data = 1
 	)
 
 /obj/item/circuitboard/machine/mech_recharger

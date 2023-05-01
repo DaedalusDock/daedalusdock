@@ -11,15 +11,6 @@ Note: Must be placed within 3 tiles of the R&D Console
 	icon_state = "d_analyzer"
 	base_icon_state = "d_analyzer"
 	circuit = /obj/item/circuitboard/machine/destructive_analyzer
-	var/decon_mod = 0
-	#warn needs design disk UI
-
-/obj/machinery/rnd/destructive_analyzer/RefreshParts()
-	. = ..()
-	var/T = 0
-	for(var/obj/item/stock_parts/S in component_parts)
-		T += S.rating
-	decon_mod = T
 
 /obj/machinery/rnd/destructive_analyzer/proc/ConvertReqString2List(list/source_list)
 	var/list/temp_list = params2list(source_list)
@@ -53,6 +44,11 @@ Note: Must be placed within 3 tiles of the R&D Console
 /obj/machinery/rnd/destructive_analyzer/proc/destroy_item(obj/item/thing, innermode = FALSE)
 	if(QDELETED(thing) || QDELETED(src))
 		return FALSE
+
+	if(!inserted_disk.check_memory())
+		return FALSE
+
+	var/datum/design/D = SStech.designs_by_product[loaded_item.type]
 	if(!innermode)
 		flick("d_analyzer_process", src)
 		busy = TRUE
@@ -68,6 +64,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 	qdel(thing)
 	loaded_item = null
+	inserted_disk.write(DATA_IDX_DESIGNS, D, TRUE)
 	if (!innermode)
 		update_appearance()
 	return TRUE
@@ -80,7 +77,9 @@ Note: Must be placed within 3 tiles of the R&D Console
 		return FALSE
 	if(QDELETED(loaded_item) || QDELETED(src))
 		return FALSE
-	destroy_item(loaded_item)
+	if(!destroy_item(loaded_item))
+		return FALSE
+	updateUsrDialog()
 
 	return TRUE
 
@@ -94,37 +93,53 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/rnd/destructive_analyzer/ui_interact(mob/user)
 	. = ..()
-	var/datum/browser/popup = new(user, "destructive_analyzer", name, 900, 600)
-	popup.set_content(ui_deconstruct())
+	var/datum/browser/popup = new(user, "destructive_analyzer", name, 460, 550)
+	popup.set_content(ui_content())
 	popup.open()
 
-/obj/machinery/rnd/destructive_analyzer/proc/ui_deconstruct() //Legacy code
+/obj/machinery/rnd/destructive_analyzer/proc/ui_content()
 	var/list/l = list()
-	if(!loaded_item)
-		l += "<div class='statusDisplay'>No item loaded. Standing-by...</div>"
+	l += "<fieldset class='computerPane'>[RDSCREEN_NOBREAK]"
+	if(!inserted_disk)
+		l += "<legend class='computerLegend'><b>No disk inserted!</b></legend>[RDSCREEN_NOBREAK]"
 	else
-		l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-		l += "<table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b> <A href='?src=[REF(src)];eject_item=1'>Eject</A></td></tr></table>[RDSCREEN_NOBREAK]"
+		l += "<legend class='computerLegend'><table><tr><td>[icon2html(inserted_disk, usr)]</td><td><b>[inserted_disk.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<A href='?src=[REF(src)];eject_disk=1'>Eject</A>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
 
-		var/datum/design/D = SStech.designs_by_product[loaded_item.type]
-		if(D)
-			l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-			l += "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Analysis</A>"
-			l += "This item can be blueprinted!"
-			l += "</div>[RDSCREEN_NOBREAK]"
-
-		if(!(loaded_item.resistance_flags & INDESTRUCTIBLE))
-			l += "<div class='statusDisplay'><A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Destroy Item</A>"
-			l += "</div>[RDSCREEN_NOBREAK]"
-
-		l += "</div>"
-
+	l += ui_deconstruct()
 	for(var/i in 1 to length(l))
 		if(!findtextEx(l[i], RDSCREEN_NOBREAK))
 			l[i] += "<br>"
-
 	. = l.Join("")
 	return replacetextEx(., RDSCREEN_NOBREAK, "")
+
+/obj/machinery/rnd/destructive_analyzer/proc/ui_deconstruct()
+	var/list/l = list()
+	if(!loaded_item)
+		l += "<fieldset class='computerPane'><legend class='computerLegend'><b>No item loaded!</b></legend></fieldset>"
+	else
+		var/analyze_ok
+		var/destroy_link
+		var/datum/design/D = SStech.designs_by_product[loaded_item.type]
+		if(D)
+			analyze_ok = TRUE
+		if(!(loaded_item.resistance_flags & INDESTRUCTIBLE))
+			if(!inserted_disk)
+				destroy_link = "<span class='linkOff'>[analyze_ok ? "Analyze" : "Destroy"]</span>"
+			else
+				destroy_link = "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>[analyze_ok ? "Analyze" : "Destroy"]</A>"
+		else
+			destroy_link = "<span class='linkOff'>Destroy</span>"
+
+		l += "<fieldset class='computerPane'><legend class='computerLegend'><table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<A href='?src=[REF(src)];eject_item=1'>Eject</A>"
+		l += "[destroy_link]"
+		if(analyze_ok)
+			l += "This item can be blueprinted![RDSCREEN_NOBREAK]"
+
+		l += "</fieldset>[RDSCREEN_NOBREAK]"
+	return l
 
 /obj/machinery/rnd/destructive_analyzer/Topic(raw, ls)
 	. = ..()
@@ -143,6 +158,9 @@ Note: Must be placed within 3 tiles of the R&D Console
 	if(ls["deconstruct"])
 		if(!user_try_decon(ls["deconstruct"], usr))
 			say("Destructive analysis failed!")
+
+	if(ls["eject_disk"])
+		eject_disk(usr)
 
 	updateUsrDialog()
 

@@ -124,6 +124,8 @@
 	var/obj/item/disk/data/internal_disk = null
 	/// A design disk that may-or-may-not be inserted into this machine.
 	var/obj/item/disk/data/inserted_disk = null
+	/// Used for data management.
+	var/obj/item/disk/data/selected_disk = null
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -180,7 +182,6 @@
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
-		internal_disk = locate() in component_parts
 
 	if(processing_flags & START_PROCESSING_ON_INIT)
 		begin_processing()
@@ -216,6 +217,7 @@
 	QDEL_NULL(circuit)
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
+	selected_disk = null
 	QDEL_NULL(inserted_disk)
 	return ..()
 
@@ -746,6 +748,9 @@
 	active_power_usage = initial(active_power_usage) * (1 + parts_energy_rating)
 	update_current_power_usage()
 
+	internal_disk = locate() in component_parts
+	selected_disk = internal_disk
+
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
 	. = !(state_open || panel_open || is_operational || (flags_1 & NODECONSTRUCT_1)) && crowbar.tool_behaviour == TOOL_CROWBAR
 	if(!.)
@@ -1075,12 +1080,15 @@
 			span_notice("You insert [disk] into [src]."),
 		)
 		inserted_disk = disk
+		updateUsrDialog()
 		return TRUE
 
 	inserted_disk = disk
 	disk.forceMove(src)
+	updateUsrDialog()
 	return TRUE
 
+/// Eject an inserted disk. Pass a user to put the disk in their hands.
 /obj/machinery/proc/eject_disk(mob/user)
 	if(!inserted_disk)
 		return FALSE
@@ -1089,11 +1097,98 @@
 		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
 			. = inserted_disk
 			inserted_disk = null
-			return .
 		else
 			return FALSE
 
-	inserted_disk.forceMove(drop_location())
-	. = inserted_disk
+	if(!.)
+		inserted_disk.forceMove(drop_location())
+		. = inserted_disk
 
+	if(.)
+		selected_disk = internal_disk
+		updateUsrDialog()
 	return .
+
+/// Toggle the selected disk between internal and inserted.
+/obj/machinery/proc/toggle_disk(mob/user)
+	if(selected_disk == internal_disk)
+		if(inserted_disk)
+			selected_disk = inserted_disk
+			updateUsrDialog()
+			return
+		else if(user)
+			alert(user, "No disk inserted!","ERROR", "OK")
+			return
+
+	if(selected_disk == inserted_disk)
+		selected_disk = internal_disk
+		updateUsrDialog()
+		return
+
+/// Copy data from the internal disk to an inserted one or visa-versa.
+/obj/machinery/proc/disk_copy(mob/user, index, data, unique)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to copy to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(index, data, unique))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
+	else
+		if(!internal_disk.write(index, data, unique))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
+
+/obj/machinery/proc/disk_del(mob/user, index, data)
+	if(alert(user, "Are you sure you want to delete [data]?", "File Operation", "Yes", "No") != "Yes")
+		return
+
+	if(selected_disk == internal_disk)
+		if(!internal_disk.remove(index, data))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] deleted [data] from [src]")
+			return TRUE
+	else
+		if(!internal_disk.remove(index, data))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] deleted [data] from an external disk at [src] ([get_area_name(src)])")
+			return TRUE
+
+/obj/machinery/proc/disk_move(mob/user, index, data, unique)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to move to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(index, data, unique))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+
+		if(!internal_disk.remove(index, data))
+			log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
+			spawn(0)
+				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return TRUE
+
+		log_game("[key_name(user)] moved [data] from [src] to an external disk ([get_area_name(src)])")
+		return TRUE
+
+	else
+		if(!internal_disk.write(index, data, unique))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+		if(!inserted_disk.remove(index, data))
+			log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
+			spawn(0)
+				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return TRUE
+
+		log_game("[key_name(user)] moved [data] from an external disk to [src] ([get_area_name(src)])")
+		return TRUE

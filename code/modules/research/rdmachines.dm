@@ -36,12 +36,15 @@
 		return FALSE
 
 /obj/machinery/rnd/attackby(obj/item/O, mob/user, params)
+	. = ..()
+	if(.)
+		return
 	if(is_refillable() && O.is_drainable())
 		return FALSE //inserting reagents into the machine
+
 	if(Insert_Item(O, user))
 		return TRUE
 
-	return ..()
 
 /obj/machinery/rnd/crowbar_act(mob/living/user, obj/item/tool)
 	return default_deconstruction_crowbar(tool)

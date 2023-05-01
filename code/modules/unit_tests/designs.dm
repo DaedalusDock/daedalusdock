@@ -37,7 +37,11 @@
 	var/obj/machinery/rnd/production/fab
 	for(var/type_of_fab in subtypesof(/obj/machinery/rnd/production))
 		fab = allocate(type_of_fab, run_loc_floor_bottom_left)
-		fab.internal_disk.set_data(DATA_IDX_DESIGNS, SStech.fetch_designs(fab.compile_designs()))
+		var/disk = fab.circuit.def_components?[/obj/item/disk/data]
+		if(!disk)
+			continue
+		fab.internal_disk = new disk
+
 		if(UNLINT(fab.internal_disk.storage) < length(fab.internal_disk.read(DATA_IDX_DESIGNS)))
 			TEST_FAIL("[type_of_fab] has too many designs ([length(fab.internal_disk.read(DATA_IDX_DESIGNS))]) for it's storage type [UNLINT(fab.internal_disk.storage)]")
 		for(var/datum/design/D as anything in fab.internal_disk.read(DATA_IDX_DESIGNS))

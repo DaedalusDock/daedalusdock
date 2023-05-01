@@ -44,26 +44,7 @@
 	var/list/buildable_parts = list()
 
 	/// A list of categories that valid MECHFAB design datums will broadly categorise themselves under.
-	var/list/part_sets = list(
-								"Cyborg",
-								"Ripley",
-								"Odysseus",
-								"Clarke",
-								"Gygax",
-								"Durand",
-								"H.O.N.K",
-								"Phazon",
-								"Savannah-Ivanov",
-								"Exosuit Equipment",
-								"Exosuit Ammunition",
-								"Cyborg Upgrade Modules",
-								"Cybernetics",
-								"Implants",
-								"Control Interfaces",
-								"MOD Construction",
-								"MOD Modules",
-								"Misc"
-								)
+	var/list/part_sets = list()
 
 /obj/machinery/mecha_part_fabricator/Initialize(mapload)
 	rmat = AddComponent(/datum/component/remote_materials, "mechfab", mapload && link_on_init, mat_container_flags=BREAKDOWN_FLAGS_LATHE)

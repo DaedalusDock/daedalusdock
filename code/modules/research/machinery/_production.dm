@@ -17,14 +17,18 @@
 	/// Used for material distribution among other things.
 	var/department_tag = "Unidentified"
 
-	var/screen = RESEARCH_FABRICATOR_SCREEN_MAIN
+	var/screen = FABRICATOR_SCREEN_MAIN
 	var/selected_category
+
+	/// Data management in the UI
+	var/obj/item/disk/data/selected_disk = null
 
 	/// What color is this machine's stripe? Leave null to not have a stripe.
 	var/stripe_color = null
 
 /obj/machinery/rnd/production/Initialize(mapload)
 	. = ..()
+	selected_disk = internal_disk
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
@@ -191,14 +195,16 @@
 	var/list/ui = list()
 	ui += ui_header()
 	switch(screen)
-		if(RESEARCH_FABRICATOR_SCREEN_MATERIALS)
+		if(FABRICATOR_SCREEN_MATERIALS)
 			ui += ui_screen_materials()
-		if(RESEARCH_FABRICATOR_SCREEN_CHEMICALS)
+		if(FABRICATOR_SCREEN_CHEMICALS)
 			ui += ui_screen_chemicals()
-		if(RESEARCH_FABRICATOR_SCREEN_SEARCH)
+		if(FABRICATOR_SCREEN_SEARCH)
 			ui += ui_screen_search()
-		if(RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+		if(FABRICATOR_SCREEN_CATEGORYVIEW)
 			ui += ui_screen_category_view()
+		if(FABRICATOR_SCREEN_MODIFY_MEMORY)
+			ui += ui_screen_modify_memory()
 		else
 			ui += ui_screen_main()
 	for(var/i in 1 to length(ui))
@@ -209,23 +215,22 @@
 
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><b>Ananke Research [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b>"
-	l += "Security protocols: [(obj_flags & EMAGGED)? "<font color='red'>Disabled</font>" : "<font color='green'>Enabled</font>"]"
+	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
 	if (materials.mat_container)
-		l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
+		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
 	else
 		l += "<font color='red'>No material storage connected, please contact the quartermaster.</font>"
-	l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
-	l += "<a href='?src=[REF(src)];sync_research=1'>Synchronize Research</a>"
-	l += "<a href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MAIN]'>Main Screen</a></div>[RDSCREEN_NOBREAK]"
+	l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
+	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MODIFY_MEMORY]'>Manage Data</a>"
+	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MAIN]'>Main Screen</a></fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_materials()
 	if (!materials.mat_container)
-		screen = RESEARCH_FABRICATOR_SCREEN_MAIN
+		screen = FABRICATOR_SCREEN_MAIN
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><h3>Material Storage:</h3>"
+	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Material Storage</b></legend>"
 	for(var/mat_id in materials.mat_container.materials)
 		var/datum/material/M = mat_id
 		var/amount = materials.mat_container.materials[mat_id]
@@ -235,17 +240,16 @@
 		if(amount >= MINERAL_MATERIAL_AMOUNT*5) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=5'>5x</A> [RDSCREEN_NOBREAK]"
 		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=50'>All</A>[RDSCREEN_NOBREAK]"
 		l += ""
-	l += "</div>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_chemicals()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
-	l += "<h3>Chemical Storage:</h3>"
+	l += "<legend>Chemical Storage</legend>"
+	l +="<A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
 	for(var/datum/reagent/R in reagents.reagent_list)
 		l += "[R.name]: [R.volume]"
 		l += "<A href='?src=[REF(src)];dispose=[R.type]'>Purge</A>"
-	l += "</div>"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_search()
@@ -314,27 +318,50 @@
 	usr.set_machine(src)
 	if(ls["switch_screen"])
 		screen = text2num(ls["switch_screen"])
+
 	if(ls["build"]) //Causes the Protolathe to build something.
 		if(busy)
 			say("Warning: Fabricators busy!")
 		else
 			user_try_print_id(ls["build"], ls["amount"])
+
 	if(ls["search"]) //Search for designs with name matching pattern
 		search(ls["to_search"])
-		screen = RESEARCH_FABRICATOR_SCREEN_SEARCH
+		screen = FABRICATOR_SCREEN_SEARCH
+
 	if(ls["category"])
 		selected_category = ls["category"]
+
 	if(ls["dispose"])  //Causes the protolathe to dispose of a single reagent (all of it)
 		var/reagent_path = text2path(ls["dispose"])
 		if(!ispath(reagent_path, /datum/reagent))
 			stack_trace("Invalid reagent typepath - [ls["dispose"]] - returned in reagent disposal topic call")
 		else
 			reagents.del_reagent(reagent_path)
+
 	if(ls["disposeall"]) //Causes the protolathe to dispose of all it's reagents.
 		reagents.clear_reagents()
+
 	if(ls["ejectsheet"]) //Causes the protolathe to eject a sheet of material
 		var/datum/material/M = locate(ls["ejectsheet"])
 		eject_sheets(M, ls["eject_amt"])
+
+	if(ls["toggle_disk"])
+		toggle_disk(usr)
+
+	if(ls["mem_trg"])
+		var/datum/design/target = locate(ls["mem_trg"]) in selected_disk.read(DATA_IDX_DESIGNS)
+		if(!target)
+			CRASH("Tried to perform a data operation on data we don't have. Potential HREF exploit.")
+
+		switch(ls["mem_act"])
+			if("mem_del")
+				disk_del(usr, target)
+			if("mem_copy")
+				disk_copy(usr, target)
+			if("mem_move")
+				disk_move(usr, target)
+
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/eject_sheets(eject_sheet, eject_amt)
@@ -353,6 +380,7 @@
 
 /obj/machinery/rnd/production/proc/ui_screen_main()
 	var/list/l = list()
+	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Designs</b></legend>[RDSCREEN_NOBREAK]"
 	l += "<form name='search' action='?src=[REF(src)]'>\
 	<input type='hidden' name='src' value='[REF(src)]'>\
 	<input type='hidden' name='search' value='to_search'>\
@@ -361,7 +389,8 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += list_categories(compile_categories(), RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += list_categories(compile_categories(), FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += "</fieldset>"
 
 	return l
 
@@ -369,7 +398,7 @@
 	if(!selected_category)
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
+	l += "<div class='computerPane'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
 	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
@@ -397,6 +426,105 @@
 	l += "</tr></table></div>"
 	return l
 
+/obj/machinery/rnd/production/proc/ui_screen_modify_memory()
+	var/list/l = list()
+	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
+	l += "<fieldset class='computerPane'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	if(selected_disk)
+		l += "<table class='computerPane'>[RDSCREEN_NOBREAK]"
+		for(var/datum/design/D as anything in designs)
+			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
+		l += "</table>[RDSCREEN_NOBREAK]"
+
+	else
+		l += "<h2>No Disk Inserted!</h2>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
+	return l
+
+/obj/machinery/rnd/production/proc/toggle_disk(mob/user)
+	if(selected_disk == internal_disk)
+		if(inserted_disk)
+			selected_disk = inserted_disk
+			updateUsrDialog()
+			return
+		else if(user)
+			alert(user, "No disk inserted!","ERROR", "OK")
+			return
+
+	if(selected_disk == inserted_disk)
+		selected_disk = internal_disk
+		updateUsrDialog()
+		return
+
+/obj/machinery/rnd/production/proc/disk_copy(mob/user, datum/design/D)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to copy to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] copied [D.name] from [src] to an external disk ([get_area_name(src)])")
+	else
+		if(!internal_disk.write(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] moved [D.name] from an external disk to [src] ([get_area_name(src)])")
+
+/obj/machinery/rnd/production/proc/disk_del(mob/user, datum/design/D)
+	if(alert(user, "Are you sure you want to delete [D.name]?", "File Operation", "Yes", "No") != "Yes")
+		return
+
+	if(selected_disk == internal_disk)
+		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] delete [D.name] from [src]")
+			updateUsrDialog()
+	else
+		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] deleted [D.name] from an external disk at [src] ([get_area_name(src)])")
+			updateUsrDialog()
+
+/obj/machinery/rnd/production/proc/disk_move(mob/user, datum/design/D)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to move to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+		if(!internal_disk.remove(DATA_IDX_DESIGNS, D))
+			updateUsrDialog()
+			log_game("[key_name(user)] copied [D.name] from [src] to an external disk ([get_area_name(src)])")
+			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return
+
+		updateUsrDialog()
+		log_game("[key_name(user)] moved [D.name] from [src] to an external disk ([get_area_name(src)])")
+
+	else
+		if(!internal_disk.write(DATA_IDX_DESIGNS, D))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+		if(!inserted_disk.remove(DATA_IDX_DESIGNS, D))
+			updateUsrDialog()
+			log_game("[key_name(user)] copied [D.name] from an external disk to [src] ([get_area_name(src)])")
+			alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return
+
+		updateUsrDialog()
+		log_game("[key_name(user)] moved [D.name] from an external disk to [src] ([get_area_name(src)])")
+
 // Stuff for the stripe on the department machines
 /obj/machinery/rnd/production/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	. = ..()
@@ -420,3 +548,11 @@
 	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		if(!isnull(D.category))
 			. |= D.category
+
+/obj/machinery/rnd/production/eject_disk()
+	. = ..()
+	if(!.)
+		return
+	if(selected_disk == .)
+		selected_disk = internal_disk
+		updateUsrDialog()

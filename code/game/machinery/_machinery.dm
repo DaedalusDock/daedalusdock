@@ -774,8 +774,7 @@
 	LAZYCLEARLIST(component_parts)
 
 	internal_disk = null //Component parts removes this.
-	if(inserted_disk)
-		inserted_disk.forceMove(loc)
+	eject_disk()
 	return ..()
 
 /**

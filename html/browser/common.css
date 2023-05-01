@@ -18,12 +18,14 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 {
 	color: #ffffff;
 	text-decoration: none;
-	background: #40628a;
+	background: #3f595e;
 	border: 1px solid #161616;
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
 	cursor:default;
+	white-space:nowrap;
 }
+
 
 a:hover
 {
@@ -204,6 +206,24 @@ h4
 div.notice
 {
 	clear: both;
+}
+
+.computerPane
+{
+	background: #202020;
+	border: 1px solid #757575;
+	padding: 4px;
+	margin: 3px 0;
+}
+
+.computerLegend
+{
+	background: #000000;
+	color: #00ff00;
+	border: 1px solid #757575;
+	padding: 4px;
+	margin: 3px 0;
+	text-align: center
 }
 
 .statusDisplay

@@ -13,12 +13,17 @@
 /datum/salvage_operation
 	var/abstract_type = /datum/salvage_operation ///Defines the abstract type
 	var/name = "Salvage Operation Abstract" ///Name of the step
-	var/list/steps = list(/datum/salvage_operation/random) ///List of steps to complete the salvage. Defaults to random.
-	var/current_step ///Defines what the current step of an operation is. Used for examine hints in /obj/structure/salvage/proc/step_hints().
+	var/list/steps ///List of steps to complete the salvage.
+	var/current_step = 1 ///Defines what the current step of an operation is. Used for examine hints in /obj/structure/salvage/proc/step_hints().
 
 ///Detect the basetype (or sub-basetypes) easily
 /datum/salvage_operation/proc/is_abstract()
 	return abstract_type == type
+
+///Protects against accidentially instantiating abstracts.
+/datum/salvage_operation/New()
+	if(is_abstract())
+		CRASH("Attempted to instantiate abstract salvage operation [src.type]")
 
 ///Default salvage operation for any obj/structure/salvage that does not otherwise have a defined /datum/salvage_operation subtype requrement.
 /datum/salvage_operation/random
@@ -26,9 +31,13 @@
 	var/steps_count = 8 ///Number of random steps. Default is 8, as the minimum number of operations is eight.
 
 /datum/salvage_operation/random/New() //Picks a random step from all available subtypes of /datum/salvage_step stored in SShardspace.steptypes. Might make this a for loop later but this works.
+	steps = list()
 	while(steps_count > steps.len)
 		var/big_steppy = pick(SShardspace.steptypes)
 		steps += big_steppy
+
+/datum/salvage_operation/proc/get_current_step()
+	. = new steps[current_step]
 
 ///Abstract datum for individual steps, which are stored in a list within a /datum/salvage_operation/ subtype.
 /datum/salvage_step
@@ -41,27 +50,14 @@
 	return abstract_type == type
 
 ///Try to salvage something from the structure.
-/datum/salvage_step/proc/try_salvage(mob/user, obj/item/tool, obj/structure/salvage/target)
-	if(target.remaining_attempts == 0 && tool.tool_behaviour != TOOL_WELDER && tool.tool_behaviour != TOOL_SALVAGECUTTER) //Is there anything left to salvage?
-		to_chat(user,span_warning("[target] is just a bare frame. You can scrap it for materials with a <i>cutting implement.</i>"))
-		return
+/datum/salvage_operation/proc/try_salvage(mob/user, obj/item/tool, obj/structure/salvage/target)
 
-	if(target.remaining_attempts == 0 && tool.tool_behaviour == TOOL_WELDER || tool.tool_behaviour == TOOL_SALVAGECUTTER)
-		to_chat(user,span_notice("You start cutting [target] apart for materials.."))
-		do_after(user,5 SECONDS, target)
-		to_chat(user,span_notice("You cut [target] apart for materials."))
-		new /obj/item/stack/sheet(src,5)
-		new /obj/item/stack/sheet/glass(src,2)
-
-	if(!(tool.tool_behaviour in tools)) //Is obj/item/tool a valid tool for the step?
-		to_chat(user,span_warning("[tool] doesn't seem to be suited for salvaging [target].."))
-		return
 
 	do_after(user,time,target)
 	drop_salvage(user, tool, target)
 
 ///Try to drop salvage onto the ground, depending on if the user failed or succeeded in salvaging, depending on the tool = probability list.
-/datum/salvage_step/proc/drop_salvage(mob/user, obj/item/tool, obj/structure/salvage/target)
+/datum/salvage_operation/proc/drop_salvage(mob/user, obj/item/tool, obj/structure/salvage/target)
 	var/difficulty = target.salvage_difficulty //Holds the value of var/salvage_difficulty for math purposes.
 	var/success_chance = tools[tool.tool_behaviour] //Holds the value of what the tools list's respective value is, from the list. I.e TOOL_SALVAGECUTTER = 100 would translate to successrate = 100.
 	var/success_modifier = tool.success_modifier //Holds the value of the tools flat modifier to its success rate, added on after initial calculation.

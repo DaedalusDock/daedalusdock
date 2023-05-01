@@ -14,6 +14,8 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "wall_gear"
 
+	///Operation datum created on init
+	var/datum/salvage_operation/current_operation = /datum/salvage_operation/random
 	///Amount of remaining salvage attempts before the structure is empty and can be deconstructed.
 	var/remaining_attempts = 0
 	///How complex is the given structure, and as a result, how difficult is it to get useful salvage from? Modifies probability of successful salvage.
@@ -33,6 +35,11 @@
 		/obj/item/salvage = 5
 	)
 
+/obj/structure/salvage/Initialize(mapload)
+	. = ..()
+	if(ispath(current_operation))
+		current_operation = new current_operation
+
 /obj/structure/salvage/examine(mob/user)
 	. += ..()
 	. += step_hints(user)
@@ -42,3 +49,23 @@
 		return span_notice("Placeholder")
 	else
 		return span_notice("[src] is just a bare frame. You can scrap it for materials with a <i>cutting implement.</i>")
+
+/obj/structure/salvage/attackby(obj/item/tool, mob/user)
+	if(target.remaining_attempts == 0 && tool.tool_behaviour != TOOL_WELDER && tool.tool_behaviour != TOOL_SALVAGECUTTER) //Is there anything left to salvage?
+		to_chat(user,span_warning("[target] is just a bare frame. You can scrap it for materials with a <i>cutting implement.</i>"))
+		return
+
+	if(target.remaining_attempts == 0 && tool.tool_behaviour == TOOL_WELDER || tool.tool_behaviour == TOOL_SALVAGECUTTER)
+		to_chat(user,span_notice("You start cutting [target] apart for materials.."))
+		do_after(user,5 SECONDS, target)
+		to_chat(user,span_notice("You cut [target] apart for materials."))
+		new /obj/item/stack/sheet(src,5)
+		new /obj/item/stack/sheet/glass(src,2)
+
+	if(!(tool.tool_behaviour in tools)) //Is obj/item/tool a valid tool for the step?
+		to_chat(user,span_warning("[tool] doesn't seem to be suited for salvaging [target].."))
+		return
+	else
+		current_operation.current_step.try_salvage(user,tool,src)
+	else
+		to_chat(user, span_warning("This doesn't look like it would work for this purpose.."))

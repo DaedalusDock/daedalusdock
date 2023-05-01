@@ -3236,6 +3236,7 @@
 #include "code\modules\mining_hardspace\machinery\machine_refining.dm"
 #include "code\modules\mining_hardspace\machinery\machine_RIGTerminal.dm"
 #include "code\modules\mining_hardspace\salvage\salvage.dm"
+#include "code\modules\mining_hardspace\salvage\salvage_process\salvage_basic.dm"
 #include "code\modules\mining_hardspace\salvage\salvage_process\salvage_process.dm"
 #include "code\modules\mining_hardspace\salvage\salvage_structures\structure_base.dm"
 #include "code\modules\mob\emote.dm"

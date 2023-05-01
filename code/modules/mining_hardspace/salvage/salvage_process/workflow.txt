@@ -1,0 +1,18 @@
+structure.AttackBy(usr, tool) -> structure.salvagetree.try_salvage(usr, tool)
+
+
+salvagetree.try_salvage(usr, tool)
+   |
+   |
+   |
+   T---> salvagetree.get_current_step() ?(isnull()) -> Return
+                |
+                |
+                |
+                current_step.prefire(usr,tool,salvagetree) ?(= -1) -> Return
+                | //by this point we are 100% good to start any do_afters
+                current_step.attempt(usr,tool,salvagetree) ?(= -1) -> Return //Either a do after was failed, or some other condition failed
+                |
+                current_step.complete(usr,tool,salvagetree) //Send completion messages, drop salvage.
+                salvagetree.current_step++ //Increment the step counter.
+

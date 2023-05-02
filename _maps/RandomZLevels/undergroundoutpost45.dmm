@@ -7966,9 +7966,6 @@
 	dir = 8;
 	pixel_x = -22
 	},
-/obj/machinery/rnd/server{
-	req_access = null
-	},
 /turf/open/floor/circuit/telecomms/server,
 /area/awaymission/undergroundoutpost45/research)
 "qQ" = (
@@ -8367,9 +8364,6 @@
 	},
 /area/awaymission/undergroundoutpost45/research)
 "rC" = (
-/obj/machinery/computer/rdservercontrol{
-	dir = 1
-	},
 /turf/open/floor/iron/dark{
 	heat_capacity = 1e+006
 	},

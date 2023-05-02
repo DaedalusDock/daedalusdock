@@ -540,11 +540,11 @@ Difficulty: Hard
 
 /obj/effect/temp_visual/hierophant/wall/Initialize(mapload, new_caster)
 	. = ..()
-	SETUP_SMOOTHING()
 	#ifdef UNIT_TESTS
 	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
 	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
 	#endif
+	SETUP_SMOOTHING()
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	QUEUE_SMOOTH(src)
 

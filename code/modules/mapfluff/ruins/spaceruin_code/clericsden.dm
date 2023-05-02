@@ -1,10 +1,10 @@
 /////////// cleric's den items.
 
 //Primary reward: the cleric's mace design disk.
-/obj/item/disk/data/adv/cleric_mace
+/obj/item/disk/data/cleric_mace
 	name = "Enshrined Disc of Smiting"
 
-/obj/item/disk/data/adv/cleric_mace/Initialize(mapload)
+/obj/item/disk/data/cleric_mace/Initialize(mapload)
 	. = ..()
 	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[/datum/design/cleric_mace])
 

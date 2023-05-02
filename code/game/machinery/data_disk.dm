@@ -13,7 +13,8 @@
 
 /obj/item/disk/data/Initialize(mapload)
 	. = ..()
-	name = "[storage] KB [name]"
+	if(name != "data disk")
+		name = "[storage] KB [name]"
 	base_pixel_x = base_pixel_x + rand(-5, 5)
 	base_pixel_y = base_pixel_y + rand(-5, 5)
 	return INITIALIZE_HINT_LATELOAD

@@ -7832,8 +7832,6 @@
 "yj" = (
 /obj/machinery/light/directional/west,
 /obj/structure/closet/crate,
-/obj/item/relic,
-/obj/item/relic,
 /turf/open/floor/plating{
 	icon_state = "platingdmg1"
 	},
@@ -7916,9 +7914,6 @@
 /area/awaymission/snowdin/outside)
 "yx" = (
 /obj/structure/closet/crate,
-/obj/item/relic,
-/obj/item/relic,
-/obj/item/relic,
 /turf/open/floor/plating,
 /area/awaymission/snowdin/post/mining_dock)
 "yy" = (
@@ -11962,14 +11957,6 @@
 	slowdown = 1
 	},
 /area/awaymission/snowdin/cave)
-"Pc" = (
-/obj/structure/closet/crate,
-/obj/item/relic,
-/obj/item/relic,
-/obj/item/relic,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron,
-/area/awaymission/snowdin/post/mining_dock)
 "Pd" = (
 /turf/open/misc/asteroid/snow{
 	floor_variance = 0;
@@ -12681,12 +12668,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/awaymission/snowdin/post/engineering)
-"SN" = (
-/obj/structure/closet/crate,
-/obj/item/relic,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron,
-/area/awaymission/snowdin/post/mining_dock)
 "SQ" = (
 /obj/machinery/light/small/directional/west,
 /obj/item/stack/rods{
@@ -63855,7 +63836,7 @@ wL
 wL
 WB
 yj
-Pc
+Sm
 xW
 eJ
 eJ
@@ -64111,7 +64092,7 @@ xy
 Tn
 xy
 WB
-SN
+Sm
 yx
 wD
 eJ

@@ -1,0 +1,4 @@
+author: Froststahr
+delete-after: true
+changes:
+  - bugfix: The detective's revolver now uses the proper icon.

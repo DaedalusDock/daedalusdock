@@ -3979,7 +3979,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
 /obj/structure/table,
 /obj/item/folder/white,
-/obj/item/disk/tech_disk,
 /obj/item/disk/data,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006

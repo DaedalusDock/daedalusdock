@@ -29,7 +29,8 @@
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
-	compile_categories()
+	if(internal_disk)
+		compile_categories()
 
 /obj/machinery/rnd/production/Destroy()
 	materials = null

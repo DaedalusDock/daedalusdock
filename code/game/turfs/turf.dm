@@ -142,10 +142,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	var/turf/T = GetAbove(src)
 	if(T)
-		T.multiz_turf_new(src, DOWN)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
 	T = GetBelow(src)
 	if(T)
-		T.multiz_turf_new(src, UP)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
 
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
@@ -171,10 +171,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	changing_turf = FALSE
 	var/turf/T = GetAbove(src)
 	if(T)
-		T.multiz_turf_del(src, DOWN)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
 	T = GetBelow(src)
 	if(T)
-		T.multiz_turf_del(src, UP)
+		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
 
 	if (z_flags & Z_MIMIC_BELOW)
 		cleanup_zmimic()
@@ -220,12 +220,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(.)
 		return
 	user.Move_Pulled(src)
-
-/turf/proc/multiz_turf_del(turf/T, dir)
-	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
-
-/turf/proc/multiz_turf_new(turf/T, dir)
-	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.

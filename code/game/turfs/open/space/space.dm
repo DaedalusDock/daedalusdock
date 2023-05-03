@@ -65,10 +65,10 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	if (!mapload)
 		var/turf/T = GetAbove(src)
 		if(!isnull(T))
-			T.multiz_turf_new(src, DOWN)
+			SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
 		T = GetBelow(src)
 		if(!isnull(T))
-			T.multiz_turf_new(src, UP)
+			SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
 
 	return INITIALIZE_HINT_NORMAL
 

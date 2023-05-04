@@ -308,7 +308,6 @@ GLOBAL_VAR(restart_counter)
 	var/new_status = ""
 	if(config)
 		var/server_name = CONFIG_GET(string/servername)
-		var/website_url = CONFIG_GET(string/forumurl)
 		var/hub_subtitle = CONFIG_GET(string/hub_subtitle)
 		if(server_name)
 			new_status += "<b>[server_name]\]</b>"

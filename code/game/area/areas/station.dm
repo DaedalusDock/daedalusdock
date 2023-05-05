@@ -818,6 +818,10 @@
 	icon_state = "tcom_storage"
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
+/area/station/engineering/storage/mech
+	name = "Mechanical Storage"
+	icon_state = "mech_storage"
+
 //Engineering - Construction
 
 /area/station/construction

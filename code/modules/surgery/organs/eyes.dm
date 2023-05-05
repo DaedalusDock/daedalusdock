@@ -25,11 +25,17 @@
 	var/overlay_ignore_lighting = FALSE
 	var/see_in_dark = 2
 	var/tint = 0
+
+	var/sclera_color = ""
+	var/old_sclera_color = ""
+
 	var/eye_color_left = "" //set to a hex code to override a mob's left eye color
 	var/eye_color_right = "" //set to a hex code to override a mob's right eye color
-	var/eye_icon_state = "eyes"
 	var/old_eye_color_left = "fff"
 	var/old_eye_color_right = "fff"
+
+	var/eye_icon_state = "eyes"
+
 	var/flash_protect = FLASH_PROTECTION_NONE
 	var/see_invisible = SEE_INVISIBLE_LIVING
 	var/lighting_alpha
@@ -39,46 +45,38 @@
 
 /obj/item/organ/internal/eyes/Insert(mob/living/carbon/eye_owner, special = FALSE, drop_if_replaced = FALSE, initialising)
 	. = ..()
-	if(ishuman(eye_owner))
-		var/mob/living/carbon/human/human_owner = eye_owner
+	refresh(TRUE)
+	if(eye_owner.has_dna())
+		eye_owner.update_eyes()
+
+/obj/item/organ/internal/eyes/proc/refresh(update_sight = TRUE)
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
 		old_eye_color_left = human_owner.eye_color_left
 		old_eye_color_right = human_owner.eye_color_right
+		old_sclera_color = human_owner.sclera_color
+
 		if(initial(eye_color_left))
 			human_owner.eye_color_left = eye_color_left
 		else
 			eye_color_left = human_owner.eye_color_left
+
 		if(initial(eye_color_right))
 			human_owner.eye_color_right = eye_color_right
 		else
 			eye_color_right = human_owner.eye_color_right
-		if(HAS_TRAIT(human_owner, TRAIT_NIGHT_VISION) && !lighting_alpha)
-			lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
-	eye_owner.update_tint()
-	owner.update_sight()
-	if(eye_owner.has_dna() && ishuman(eye_owner))
-		eye_owner.dna.species.handle_body(eye_owner) //updates eye icon
 
-/obj/item/organ/internal/eyes/proc/refresh(update_sight = TRUE)
-	if(ishuman(owner))
-		var/mob/living/carbon/human/affected_human = owner
-		old_eye_color_left = affected_human.eye_color_left
-		old_eye_color_right = affected_human.eye_color_right
-		if(initial(eye_color_left))
-			affected_human.eye_color_left = eye_color_left
+		if(initial(sclera_color))
+			human_owner.sclera_color = sclera_color
 		else
-			eye_color_left = affected_human.eye_color_left
-		if(initial(eye_color_right))
-			affected_human.eye_color_right = eye_color_right
-		else
-			eye_color_right = affected_human.eye_color_right
-		if(HAS_TRAIT(affected_human, TRAIT_NIGHT_VISION) && !lighting_alpha)
+			sclera_color = human_owner.sclera_color
+
+		if(HAS_TRAIT(human_owner, TRAIT_NIGHT_VISION) && !lighting_alpha)
 			lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
 
 	if(update_sight)
 		owner.update_tint()
 		owner.update_sight()
-
-
 
 /obj/item/organ/internal/eyes/Remove(mob/living/carbon/eye_owner, special = 0)
 	..()
@@ -88,7 +86,11 @@
 			human_owner.eye_color_left = old_eye_color_left
 		if(initial(eye_color_right))
 			human_owner.eye_color_right = old_eye_color_right
-		human_owner.update_body()
+		if(initial(sclera_color))
+			human_owner.sclera_color = old_sclera_color
+
+		human_owner.update_eyes()
+
 	eye_owner.cure_blind(EYE_DAMAGE)
 	eye_owner.cure_nearsighted(EYE_DAMAGE)
 	eye_owner.set_blindness(0)
@@ -110,8 +112,12 @@
 
 	var/mutable_appearance/eye_left = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_l", -BODY_LAYER)
 	var/mutable_appearance/eye_right = mutable_appearance(myhead.eyes_icon_file, "[eye_icon_state]_r", -BODY_LAYER)
+	var/mutable_appearance/sclera
+	if(myhead.eye_sclera)
+		sclera = mutable_appearance(myhead.eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+		sclera.color = sclera_color
 
-	if(EYECOLOR in parent.dna?.species.species_traits)
+	if(EYECOLOR in myhead.species_flags_list)
 		eye_right.color = eye_color_right
 		eye_left.color = eye_color_left
 
@@ -127,7 +133,10 @@
 		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, -EYE_LAYER, eye_left.alpha)
 		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, -EYE_LAYER, eye_right.alpha)
 
-	return list(eye_left, eye_right)
+	. = list(eye_left, eye_right)
+	if(!isnull(sclera))
+		. += sclera
+	return .
 
 #undef OFFSET_X
 #undef OFFSET_Y

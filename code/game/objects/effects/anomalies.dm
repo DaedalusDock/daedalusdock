@@ -193,6 +193,7 @@
 	icon_state = "electricity2"
 	density = TRUE
 	aSignal = /obj/item/assembly/signaler/anomaly/flux
+	zmm_flags = ZMM_MANGLE_PLANES
 	var/canshock = FALSE
 	var/shockdamage = 20
 	var/explosive = TRUE

@@ -237,7 +237,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "bi" = (
-/obj/machinery/gravity_generator/main/station,
+/obj/machinery/gravity_generator/main,
 /turf/open/floor/iron{
 	dir = 8
 	},
@@ -1203,6 +1203,9 @@
 /obj/effect/turf_decal/stripes/asteroid/line,
 /turf/open/floor/plating,
 /area/station/maintenance/department/bridge)
+"pw" = (
+/turf/open/floor/glass,
+/area/station/hallway/secondary/service)
 "pV" = (
 /turf/open/openspace/airless,
 /area/space)
@@ -1228,6 +1231,9 @@
 /obj/machinery/light/directional/west,
 /turf/open/openspace,
 /area/station/engineering/storage)
+"ri" = (
+/turf/open/floor/glass,
+/area/space)
 "rN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
@@ -1554,6 +1560,9 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
+/area/station/engineering/storage)
+"Kb" = (
+/turf/open/floor/glass,
 /area/station/engineering/storage)
 "Kd" = (
 /obj/machinery/door/airlock/external/glass/ruin,
@@ -5760,9 +5769,9 @@ pV
 eO
 dY
 dY
+pw
+pw
 dY
-dY
-sh
 dY
 dY
 dY
@@ -5814,9 +5823,9 @@ pV
 eO
 dY
 dY
+pw
+pw
 dY
-dY
-sh
 dY
 dY
 dY
@@ -5870,7 +5879,7 @@ dY
 dY
 dY
 eF
-sh
+dY
 dY
 dY
 eN
@@ -8569,9 +8578,9 @@ pV
 DK
 Jt
 dS
-dS
-dS
-dS
+Kb
+Kb
+Kb
 dS
 dS
 dS
@@ -8618,14 +8627,14 @@ pV
 pV
 pV
 pV
-pV
-pV
+ri
+ri
 DK
 Jt
 dS
-dS
-dS
-dS
+Kb
+Kb
+Kb
 dS
 dS
 dS
@@ -8672,14 +8681,14 @@ pV
 pV
 pV
 pV
-pV
-pV
+ri
+ri
 DK
 Jt
 dS
-dS
-dS
-dS
+Kb
+Kb
+Kb
 dS
 dS
 nz
@@ -8726,7 +8735,7 @@ pV
 pV
 pV
 pV
-pV
+ri
 dG
 fo
 dS

@@ -19,6 +19,7 @@
 	circuit = /obj/item/circuitboard/machine/oven
 	processing_flags = START_PROCESSING_MANUALLY
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	///The tray inside of this oven, if there is one.
 	var/obj/item/plate/oven_tray/used_tray

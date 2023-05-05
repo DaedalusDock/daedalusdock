@@ -15,6 +15,8 @@
 	attack_verb_continuous = list("connects")
 	attack_verb_simple = list("connect")
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// If we're in the glove slot
 	var/on_wrist = FALSE
 	/// If the GPS is already on

@@ -3,6 +3,7 @@
 	name = "warning cone"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "cone"
+	zmm_flags = ZMM_MANGLE_PLANES
 	inhand_icon_state = "cone"
 	force = 1
 	throwforce = 3

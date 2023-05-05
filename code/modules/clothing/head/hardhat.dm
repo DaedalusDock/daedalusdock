@@ -8,6 +8,7 @@
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
 	clothing_flags = SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_outer_range = 4

@@ -128,8 +128,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 			continue
 		if(!is_unique_objective(possible_target,dupe_search_range))
 			continue
-		if(!HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS) && istype(target_area, /area/shuttle/arrival))
-			continue
 		if(possible_target in blacklist)
 			continue
 		if(is_type_in_typecache(target_area, blacklisted_target_areas))

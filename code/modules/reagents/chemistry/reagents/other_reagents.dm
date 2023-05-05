@@ -511,8 +511,6 @@
 		N.facial_hairstyle = "Shaved"
 		N.facial_hair_color = "#000000"
 		N.hair_color = "#000000"
-		if(!(HAIR in N.dna.species.species_traits)) //No hair? No problem!
-			N.dna.species.species_traits += HAIR
 		if(N.dna.species.use_skintones)
 			N.skin_tone = "orange"
 		else if(MUTCOLORS in N.dna.species.species_traits) //Aliens with custom colors simply get turned orange

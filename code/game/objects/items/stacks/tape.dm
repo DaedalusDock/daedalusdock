@@ -79,7 +79,7 @@
 		return
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
 	playsound(user, usesound, 50, TRUE)
-	if(do_after(user, target, 3 SECONDS))
+	if(do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src))
 		use(1)
 		if(istype(target, /obj/item/clothing/gloves/fingerless))
 			var/obj/item/clothing/gloves/tackler/offbrand/O = new /obj/item/clothing/gloves/tackler/offbrand
@@ -105,7 +105,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to cover [victim]s mouth with [src]!"), \
 						span_userdanger("[user] is trying to cover your mouth with [src]!"))
-	if(do_after(user, victim, muzzle_delay))
+	if(do_after(user, victim, muzzle_delay, DO_PUBLIC, display = src))
 		if(!victim.wear_mask)
 			use(1)
 			victim.equip_to_slot_or_del(new tape_gag(victim), ITEM_SLOT_MASK)
@@ -121,7 +121,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to restrain [victim] with [src]!"), \
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
-	if(do_after(user, victim, handcuff_delay))
+	if(do_after(user, victim, handcuff_delay, DO_PUBLIC, display = src))
 		if(!victim.handcuffed)
 			use(1)
 			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))

@@ -4,7 +4,7 @@
 /// A wrapper to generate basic, minimally-compliant data packets easily.
 /// Returns a `datum/signal` with prefilled `s_addr` and `d_addr` added to `datagram`
 /obj/machinery/proc/create_signal(destination_id, list/datagram)
-	if(!netjack || !destination_id)
+	if(!datagram || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
 	var/list/sig_data = datagram.Copy()
 	sig_data["s_addr"] = src.net_id
@@ -13,7 +13,8 @@
 
 
 /// Send a signal from a ref. Data sent in signals must be dereferenced.
-/// If you're sending a forged source address (You should have a good reason for this...) set `preserve_s_addr = TRUE`
+/// If you're sending a forged source address (You should have a good reason for this...) set `preserve_s_addr = TRUE
+///
 /// NONE OF THE ABOVE IS TRUE IF YOU ARE `machinery/power`, AS THEY DEAL DIRECTLY WITH SSPACKETS INSTEAD OF ABSTRACTED TERMINALS
 /obj/machinery/proc/post_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
 	if(isnull(netjack) || isnull(sending_signal)) //nullcheck for sanic speed
@@ -27,15 +28,18 @@
 /obj/machinery/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..() //Should the subtype *probably* stop caring about this packet?
-	if(!signal)
+	if(isnull(signal))
 		return
-
-	if(signal.data["d_addr"] != src.net_id)//This packet doesn't belong to us directly
-		if(signal.data["d_addr"] == "ping")// But it could be a ping, if so, reply
+	var/sigdat = signal.data //cache for sanic speed this joke is getting old.
+	if(sigdat["d_addr"] != src.net_id)//This packet doesn't belong to us directly
+		if(sigdat["d_addr"] == "ping")// But it could be a ping, if so, reply
+			var/tmp_filter = sigdat["filter"]
+			if(!isnull(tmp_filter) && tmp_filter != net_class)
+				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			post_signal(create_signal(signal.data["s_addr"], list("command"="ping_reply","netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
-		return //regardless, return 1 so that machines don't process packets not intended for them.
-	return FALSE // We are the designated recipient of this packet.
+			post_signal(create_signal(sigdat["s_addr"], list("command"="ping_reply","netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
+		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
+	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
 
 //Handle the network jack
 

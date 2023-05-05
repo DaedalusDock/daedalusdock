@@ -182,7 +182,6 @@
 	if(generating_for.late_joiner)
 		try_target_late_joiners = TRUE
 	for(var/datum/mind/possible_target as anything in get_crewmember_minds())
-		var/target_area = get_area(possible_target.current)
 		if(possible_target == generating_for)
 			continue
 		if(!ishuman(possible_target.current))
@@ -191,8 +190,6 @@
 			continue
 		var/datum/antagonist/traitor/traitor = possible_target.has_antag_datum(/datum/antagonist/traitor)
 		if(traitor && traitor.uplink_handler.telecrystals >= 0)
-			continue
-		if(!HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS) && istype(target_area, /area/shuttle/arrival))
 			continue
 		//removes heads of staff from being targets from non heads of staff assassinations, and vice versa
 		if(heads_of_staff)

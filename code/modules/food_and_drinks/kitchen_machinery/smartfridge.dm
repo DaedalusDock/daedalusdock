@@ -9,6 +9,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/smartfridge
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// What path boards used to construct it should build into when dropped. Needed so we don't accidentally have them build variants with items preloaded in them.
 	var/base_build_path = /obj/machinery/smartfridge
 	/// Maximum number of items that can be loaded into the machine

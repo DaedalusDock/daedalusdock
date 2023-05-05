@@ -668,7 +668,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 			qdel(rcd_effect)
 			return FALSE
-	if(!do_after(user, A, delay))
+	if(!do_after(user, A, delay, DO_PUBLIC, display = src))
 		qdel(rcd_effect)
 		return FALSE
 	if(!checkResource(rcd_results["cost"], user))
@@ -1006,7 +1006,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					to_chat(user, span_notice("You start deconstructing [A]..."))
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
-					if(do_after(user, A, decondelay))
+					if(do_after(user, A, decondelay, DO_PUBLIC, display = src))
 						if(!useResource(deconcost, user))
 							return FALSE
 						activate()
@@ -1021,7 +1021,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 					playsound(src.loc, 'sound/effects/light_flicker.ogg', 50, FALSE)
-					if(do_after(user, A, floordelay))
+					if(do_after(user, A, floordelay, DO_PUBLIC, display = src))
 						if(!istype(W))
 							return FALSE
 						var/list/candidates = list()
@@ -1067,7 +1067,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 					playsound(src.loc, 'sound/effects/light_flicker.ogg', 50, TRUE)
-					if(do_after(user, A, floordelay))
+					if(do_after(user, A, floordelay, DO_PUBLIC, display = src))
 						if(!istype(F))
 							return FALSE
 						if(!useResource(floorcost, user))
@@ -1187,7 +1187,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 
 	if(checkResource(machinery_data["cost"][blueprint], user) && blueprint)
 		//"cost" is relative to delay at a rate of 10 matter/second  (1matter/decisecond) rather than playing with 2 different variables since everyone set it to this rate anyways.
-		if(do_after(user, A, machinery_data["cost"][blueprint]))
+		if(do_after(user, A, machinery_data["cost"][blueprint], DO_PUBLIC, display = src))
 			if(checkResource(machinery_data["cost"][blueprint], user) && canPlace(A))
 				useResource(machinery_data["cost"][blueprint], user)
 				activate()
@@ -1212,7 +1212,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		if(P.anchored)
 			to_chat(user, span_warning("The [P.name] needs to be unanchored!"))
 			return
-		if(do_after(user, P, 2 SECONDS))
+		if(do_after(user, P, 2 SECONDS, DO_PUBLIC, display = src))
 			P.deconstruct() //Let's not substract matter
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE) //this is just such a great sound effect
 	else

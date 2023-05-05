@@ -309,7 +309,7 @@
 	if(you_fucked_up || mod.wearer.has_gravity() != NEGATIVE_GRAVITY)
 		return
 	var/turf/open/current_turf = get_turf(mod.wearer)
-	var/turf/open/openspace/turf_above = get_step_multiz(mod.wearer, UP)
+	var/turf/open/openspace/turf_above = GetAbove(mod.wearer)
 	if(current_turf && istype(turf_above))
 		current_turf.zFall(mod.wearer)
 	else if(!turf_above && istype(current_turf) && !current_turf.simulated) //nothing holding you down

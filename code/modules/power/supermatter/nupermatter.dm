@@ -226,7 +226,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if(!istype(TS))
 		return
 
-	var/list/affected_z = SSmapping.get_zstack(TS.z)
+	var/list/affected_z = SSmapping.get_zstack(TS.z, TRUE)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	SSweather.run_weather(/datum/weather/rad_storm, affected_z, FALSE)

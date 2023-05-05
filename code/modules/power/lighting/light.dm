@@ -269,7 +269,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, src, 2 SECONDS))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE

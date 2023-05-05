@@ -20,7 +20,20 @@
 
 // Net Classes
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
+#define NETCLASS_APC "PNET_AREAPOWER"
 
+// Packet fields
+// not honestly thrilled with having these be defines but kapu wants it that way
+// I believe every coder is empowered with a right to footgun by our lord Dennis Ritchie
+
+/// Source (sender) address of a packet
+#define PACKET_SOURCE_ADDRESS "s_addr"
+/// Destination (receiver) address of a packet
+#define PACKET_DESTINATION_ADDRESS "d_addr"
+/// Command (type) of a packet
+#define PACKET_CMD "command"
+/// Network Class of a device, used as part of ping replies.
+#define PACKET_NETCLASS "netclass"
 
 
 // Dataterminal connection/disconnect return values
@@ -33,3 +46,11 @@
 
 /// Connection rejected, Not sharing a turf (???)
 #define NETJACK_CONNECT_NOTSAMETURF 2
+
+// receive_signal return codes
+
+/// Packet fully handled by parent
+#define RECEIVE_SIGNAL_FINISHED TRUE
+/// Packet needs additional handling
+#define RECEIVE_SIGNAL_CONTINUE FALSE
+

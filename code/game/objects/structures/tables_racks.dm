@@ -102,7 +102,7 @@
 			else
 				pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
 									span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
-				if(do_after(user, pushed_mob, 3.5 SECONDS))
+				if(do_after(user, pushed_mob, 3.5 SECONDS, DO_PUBLIC))
 					tableplace(user, pushed_mob)
 				else
 					return
@@ -238,7 +238,7 @@
 				skills_space = " quickly"
 			carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 				span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
-			if(do_after(user, carried_mob, tableplace_delay))
+			if(do_after(user, carried_mob, tableplace_delay, DO_PUBLIC))
 				user.unbuckle_mob(carried_mob)
 				tableplace(user, carried_mob)
 		return TRUE
@@ -835,7 +835,7 @@
 		return
 	building = TRUE
 	to_chat(user, span_notice("You start constructing a rack..."))
-	if(do_after(user, user, 50, progress=TRUE))
+	if(do_after(user, user, 50, DO_PUBLIC, progress=TRUE, display = src))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		var/obj/structure/rack/R = new /obj/structure/rack(user.loc)

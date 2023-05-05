@@ -1539,6 +1539,9 @@ GLOBAL_LIST_EMPTY(intento_players)
 /*
  * Groan Tube (thing that goes UUAAAA AAAUUU)
  */
+
+#define GROAN_AAAU 1
+#define GROAN_UUUA 2
 /obj/item/toy/groan_tube
 	name = "groan tube"
 	desc = "UUAAAA...   AAAUUUU"
@@ -1548,16 +1551,17 @@ GLOBAL_LIST_EMPTY(intento_players)
 	COOLDOWN_DECLARE(groan_cooldown)
 	var/flipped = FALSE
 	var/cooldown_time = 20
+	var/list/groan_sounds = list('sound/items/aaau.ogg', 'sound/items/uuua.ogg')
 
 /obj/item/toy/groan_tube/attack_self(mob/user)
 	if(COOLDOWN_FINISHED(src, groan_cooldown))
 		to_chat(user, span_notice("You flip \the [src]."))
 		flick("groan_tube_flip", src)
 		if(flipped)
-			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_AAAU], 50, FALSE, 3)
 			say("AAAUUU")
 		else
-			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_UUUA], 50, FALSE, 3)
 			say("UUAAAA")
 
 		flipped = !flipped
@@ -1565,3 +1569,5 @@ GLOBAL_LIST_EMPTY(intento_players)
 		return
 	..()
 
+#undef GROAN_AAAU
+#undef GROAN_UUUA

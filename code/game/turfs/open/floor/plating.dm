@@ -62,7 +62,7 @@
 			return
 		else
 			to_chat(user, span_notice("You begin reinforcing the floor..."))
-			if(do_after(user, src, 30))
+			if(do_after(user, src, 30, DO_PUBLIC, display = C))
 				if (R.get_amount() >= 2 && !istype(src, /turf/open/floor/engine))
 					PlaceOnTop(/turf/open/floor/engine, flags = CHANGETURF_INHERIT_AIR)
 					playsound(src, 'sound/items/deconstruct.ogg', 80, TRUE)
@@ -94,7 +94,7 @@
 			if(sheets.get_amount() < PLATE_REINFORCE_COST)
 				return
 			balloon_alert(user, "reinforcing plating...")
-			if(do_after(user, src, 12 SECONDS))
+			if(do_after(user, src, 12 SECONDS, DO_PUBLIC, display = C))
 				if(sheets.get_amount() < PLATE_REINFORCE_COST)
 					return
 				sheets.use(PLATE_REINFORCE_COST)
@@ -297,9 +297,9 @@
 	return FALSE
 
 /turf/open/floor/plating/reinforced/proc/drop_screws() //When you start dismantling R-Plates they'll drop their bolts on the Z-level below, a little visible warning.
-	var/turf/below_turf = get_step_multiz(src, DOWN)
+	var/turf/below_turf = GetBelow(src)
 	while(istype(below_turf, /turf/open/openspace))
-		below_turf = get_step_multiz(below_turf, DOWN)
+		below_turf = GetBelow(below_turf)
 	if(!isnull(below_turf) && !isspaceturf(below_turf))
 		new /obj/effect/decal/cleanable/glass/plastitanium/screws(below_turf)
 		playsound(src, 'sound/effects/structure_stress/pop3.ogg', 100, vary = TRUE)

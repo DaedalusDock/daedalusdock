@@ -381,8 +381,6 @@
 /// Returns an atom where the mob should spawn in.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS))
-			return get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_RANDOM_ARRIVALS))
 			return get_safe_random_station_turf(typesof(/area/station/hallway)) || get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
@@ -396,10 +394,8 @@
 			return hangover_spawn_point || get_latejoin_spawn_point()
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
-	var/obj/effect/landmark/start/spawn_point = get_default_roundstart_spawn_point()
-	if(!spawn_point) //if there isn't a spawnpoint send them to latejoin, if there's no latejoin go yell at your mapper
-		return get_latejoin_spawn_point()
-	return spawn_point
+
+	return get_latejoin_spawn_point()
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.

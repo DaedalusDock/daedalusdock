@@ -22,6 +22,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_power = 0
 	light_outer_range = 7

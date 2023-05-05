@@ -46,7 +46,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 			to_chat(user, span_warning("You need two glass sheets to fix [src]!"))
 			return
 		to_chat(user, span_notice("You start fixing [src]..."))
-		if(do_after(user, src, 20) && G.use(2))
+		if(do_after(user, src, 20, DO_PUBLIC, display = I) && G.use(2))
 			broken = FALSE
 			atom_integrity = max_integrity
 			update_appearance()

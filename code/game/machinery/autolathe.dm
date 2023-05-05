@@ -251,7 +251,7 @@
 			balloon_alert(user, "uploading design..."),
 			span_hear("You hear the chatter of a floppy drive."))
 		busy = TRUE
-		if(do_after(user, src, 14.4)) //This is soul
+		if(do_after(user, src, 14.4, DO_PUBLIC, display = attacking_item)) //This is soul
 			var/obj/item/disk/design_disk/disky = attacking_item
 			var/list/not_imported
 			for(var/datum/design/blueprint as anything in disky.blueprints)

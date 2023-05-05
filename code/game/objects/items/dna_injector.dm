@@ -65,7 +65,7 @@
 	if(target != user)
 		target.visible_message(span_danger("[user] is trying to inject [target] with [src]!"), \
 			span_userdanger("[user] is trying to inject you with [src]!"))
-		if(!do_after(user, target, 3 SECONDS) || used)
+		if(!do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src) || used)
 			return
 		target.visible_message(span_danger("[user] injects [target] with the syringe with [src]!"), \
 						span_userdanger("[user] injects you with the syringe with [src]!"))

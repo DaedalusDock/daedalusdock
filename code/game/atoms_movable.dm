@@ -101,10 +101,12 @@
 			gen_emissive_blocker.dir = dir
 			gen_emissive_blocker.appearance_flags |= appearance_flags
 			add_overlay(list(gen_emissive_blocker))
+
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
 			em_block = new(src, render_target)
 			add_overlay(list(em_block))
+
 	if(opacity)
 		AddElement(/datum/element/light_blocking)
 	switch(light_system)
@@ -117,6 +119,8 @@
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
+	if (bound_overlay)
+		QDEL_NULL(bound_overlay)
 
 	unbuckle_all_mobs(force = TRUE)
 
@@ -712,6 +716,16 @@
 
 		else if(new_turf && !old_turf)
 			SSspatial_grid.enter_cell(src, new_turf)
+
+	// Z-Mimic hook
+	if (bound_overlay)
+		// The overlay will handle cleaning itself up on non-openspace turfs.
+		if (new_turf)
+			bound_overlay.forceMove(get_step(src, UP))
+			if (bound_overlay && dir != bound_overlay.dir)
+				bound_overlay.setDir(dir)
+		else	// Not a turf, so we need to destroy immediately instead of waiting for the destruction timer to proc.
+			qdel(bound_overlay)
 
 	return TRUE
 

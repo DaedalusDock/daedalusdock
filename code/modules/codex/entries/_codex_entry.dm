@@ -68,7 +68,7 @@
 		else
 			CRASH("Attempted to instantiate unnamed codex entry with no associated strings!")
 
-	LAZYDISTINCTADD(associated_strings, codex_sanitize(name))
+	LAZYDISTINCTADD(associated_strings, "[codex_sanitize(name)]" )
 	for(var/associated_string in associated_strings)
 		var/clean_string = codex_sanitize(associated_string)
 		if(!clean_string)

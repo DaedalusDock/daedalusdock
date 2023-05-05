@@ -62,3 +62,7 @@
   Lohikar:
   - refactor: Z-holes are now rendered using Z-Mimic, which should improve accuracy
       and performance.
+2023-04-26:
+  Kapu1178:
+  - bugfix: Credits run after a delay properly.
+  - tweak: Credits scroll faster.

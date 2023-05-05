@@ -109,7 +109,9 @@
 	return daddy?.examine(user)
 
 /obj/effect/abstract/blueecho/proc/mimic_speech(datum/source, list/arguments)
-	say(arglist(arguments))
+	var/speech_args = arguments.Copy()
+	speech_args[1] = html_decode(speech_args[1])
+	say(arglist(speech_args))
 
 /obj/effect/abstract/blueecho/proc/kill_me()
 	qdel(src)

@@ -101,3 +101,5 @@ do { \
 
 /// Include this to have lights randomly break on initialize.
 #define LIGHTS_RANDOMLY_BROKEN
+
+#define TURF_IS_DYNAMICALLY_LIT(T) (!(T.always_lit || T.loc:area_has_base_lighting))

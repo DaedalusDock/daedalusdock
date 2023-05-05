@@ -7,6 +7,7 @@
 	use_power = NO_POWER_USE
 	obj_flags = USES_TGUI
 	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/obj/machinery/atmospherics/components/binary/circulator/cold_circ
 	var/obj/machinery/atmospherics/components/binary/circulator/hot_circ

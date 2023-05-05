@@ -20,6 +20,7 @@
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
 	net_class = NETCLASS_APC
 	network_flags = NETWORK_FLAG_GEN_ID
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	///Range of the light emitted when on
 	var/light_on_inner_range = 0.5

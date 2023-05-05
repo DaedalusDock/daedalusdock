@@ -100,7 +100,7 @@
 	name = "\improper Colt Detective Special"
 	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
-	icon_state = "c38"
+	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
 	can_modify_ammo = TRUE
 	initial_caliber = CALIBER_38

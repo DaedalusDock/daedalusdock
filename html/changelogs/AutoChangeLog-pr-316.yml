@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Server hub entry will no longer be cut short

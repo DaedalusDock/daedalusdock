@@ -281,6 +281,9 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define IGNORE_INCAPACITATED (1<<3)
 /// Used to prevent important slowdowns from being abused by drugs like kronkaine
 #define IGNORE_SLOWDOWNS (1<<4)
+/// Shown to all mobs not just the user
+#define DO_PUBLIC (1<<5)
+
 
 
 // Spacevine-related flags
@@ -289,12 +292,42 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 /// Is the spacevine / flower bud cold resistant
 #define SPACEVINE_COLD_RESISTANT (1 << 1)
 
-//Z-level flags. Currently only for ZAS
-///Allows air to flow IN from higher Z levels
-#define Z_ATMOS_IN_UP (1<<0)
-///Allows air to flow IN from lower z levels
-#define Z_ATMOS_IN_DOWN (1<<1)
-///Allows air to flow OUT to higher Z levels
-#define Z_ATMOS_OUT_UP (1<<2)
-///Allows air to flow OUT to LOWER z levels
-#define Z_ATMOS_OUT_DOWN (1<<3)
+// Z-level flags, used by ZAS and Z-Mimic.
+
+#define Z_ATMOS_IN_UP      (1 << 0)	//! Allows air to flow IN from higher Z levels
+#define Z_ATMOS_IN_DOWN    (1 << 1)	//! Allows air to flow IN from lower z levels
+#define Z_ATMOS_OUT_UP     (1 << 2)	//! Allows air to flow OUT to higher Z levels
+#define Z_ATMOS_OUT_DOWN   (1 << 3)	//! Allows air to flow OUT to LOWER z levels
+
+#define Z_MIMIC_BELOW      (1 << 4)	//! Should this turf mimic the below turf?
+#define Z_MIMIC_OVERWRITE  (1 << 5)	//! If this turf is mimicking, overwrite its appearance instead of using a mimic object. This is faster, but means the turf cannot have its own appearance.
+#define Z_MIMIC_NO_AO      (1 << 6)	//! Bypass turf AO and only apply Z-AO. You probably want this on visually-empty z-turfs (like openspace).
+#define Z_MIMIC_NO_OCCLUDE (1 << 7)	//! If we're a non-OVERWRITE z-turf, allow clickthrough of this turf.
+#define Z_MIMIC_BASETURF   (1 << 8)	//! Fake-copy baseturf instead of below turf.
+
+GLOBAL_LIST_INIT(z_defines, list(
+	"Z_ATMOS_IN_UP",
+	"Z_ATMOS_IN_DOWN",
+	"Z_ATMOS_OUT_UP",
+	"Z_ATMOS_OUT_DOWN",
+
+	"Z_MIMIC_BELOW",
+	"Z_MIMIC_OVERWRITE",
+	"Z_MIMIC_NO_AO",
+	"Z_MIMIC_NO_OCCLUDE",
+	"Z_MIMIC_BASETURF"
+))
+
+// Z-Mimic movable flags. This is not prefixed with ZM_* to avoid confusion with other codebases that use that prefix for the above flags.
+
+#define ZMM_IGNORE          (1 << 0)	//! Do not copy this movable. Atoms with INVISIBILITY_ABSTRACT implicitly do not copy.
+#define ZMM_MANGLE_PLANES   (1 << 1)	//! Check this movable's overlays/underlays for explicit plane use and mangle for compatibility with Z-Mimic. If you're using emissive overlays, you probably should be using this flag. Expensive, only use if necessary.
+#define ZMM_LOOKAHEAD       (1 << 2)	//! Look one turf ahead and one turf back when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
+#define ZMM_LOOKBESIDE      (1 << 3)	//! Look one turf to the left and right when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
+#define ZMM_NO_CACHE_ROOT   (1 << 4)	//! When performing mangling, do not cache the root (depth=0) appearance. Set this on mangled types that change appearance frequently.
+
+// convenience flags
+
+// This is intended for use on dev-defined openspace turfs, don't put _OVERWRITE in here unless you feel like having people ask why their zturfs are empty
+#define Z_MIMIC_DEFAULTS (Z_MIMIC_BELOW)	//! Common defaults for zturfs.
+#define ZMM_WIDE_LOAD (ZMM_LOOKAHEAD | ZMM_LOOKBESIDE)	//! Atom is big and needs to scan one extra turf in both X and Y. This only extends the range by one turf. Cheap, but not free.

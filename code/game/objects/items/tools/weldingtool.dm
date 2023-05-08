@@ -128,7 +128,7 @@
 			if(user == attacked_humanoid)
 				user.visible_message(span_notice("[user] starts to fix some of the dents on [attacked_humanoid]'s [affecting.name]."),
 					span_notice("You start fixing some of the dents on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
-				if(!do_after(user, attacked_humanoid, 5 SECONDS))
+				if(!do_after(user, attacked_humanoid, 5 SECONDS, DO_PUBLIC, display = src))
 					return
 			item_heal_robotic(attacked_humanoid, user, 15, 0)
 	else

@@ -296,7 +296,7 @@ GLOBAL_LIST_EMPTY(species_list)
  * given `time`. Returns `TRUE` on success or `FALSE` on failure.
  * Interaction_key is the assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
  */
-/proc/do_after(mob/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
+/proc/do_after(mob/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
 	if(!user)
 		return FALSE
 
@@ -329,7 +329,10 @@ GLOBAL_LIST_EMPTY(species_list)
 
 	var/datum/progressbar/progbar
 	if(progress)
-		progbar = new(user, time, target || user)
+		if(timed_action_flags & DO_PUBLIC)
+			progbar = new /datum/world_progressbar(user, time, display)
+		else
+			progbar = new(user, time, target || user)
 
 	var/endtime = world.time + time
 	var/starttime = world.time

@@ -101,10 +101,12 @@
 			gen_emissive_blocker.dir = dir
 			gen_emissive_blocker.appearance_flags |= appearance_flags
 			add_overlay(list(gen_emissive_blocker))
+
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
 			em_block = new(src, render_target)
 			add_overlay(list(em_block))
+
 	if(opacity)
 		AddElement(/datum/element/light_blocking)
 	switch(light_system)
@@ -117,6 +119,8 @@
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
+	if (bound_overlay)
+		QDEL_NULL(bound_overlay)
 
 	unbuckle_all_mobs(force = TRUE)
 
@@ -713,6 +717,16 @@
 		else if(new_turf && !old_turf)
 			SSspatial_grid.enter_cell(src, new_turf)
 
+	// Z-Mimic hook
+	if (bound_overlay)
+		// The overlay will handle cleaning itself up on non-openspace turfs.
+		if (new_turf)
+			bound_overlay.forceMove(get_step(src, UP))
+			if (bound_overlay && dir != bound_overlay.dir)
+				bound_overlay.setDir(dir)
+		else	// Not a turf, so we need to destroy immediately instead of waiting for the destruction timer to proc.
+			qdel(bound_overlay)
+
 	return TRUE
 
 // Make sure you know what you're doing if you call this, this is intended to only be called by byond directly.
@@ -785,7 +799,7 @@
 			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
 			recursive_contents[channel] -= gone.important_recursive_contents[channel]
 			switch(channel)
-				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE, RECURSIVE_CONTENTS_RADIO_NONATMOS, RECURSIVE_CONTENTS_RADIO_ATMOS)
 					if(!length(recursive_contents[channel]))
 						// This relies on a nice property of the linked recursive and gridmap types
 						// They're defined in relation to each other, so they have the same value
@@ -805,13 +819,29 @@
 			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
 			LAZYINITLIST(recursive_contents[channel])
 			switch(channel)
-				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE, RECURSIVE_CONTENTS_RADIO_NONATMOS, RECURSIVE_CONTENTS_RADIO_ATMOS)
 					if(!length(recursive_contents[channel]))
 						SSspatial_grid.add_grid_awareness(location, channel)
 			recursive_contents[channel] |= arrived.important_recursive_contents[channel]
 
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_hearing_sensitive(trait_source = TRAIT_GENERIC)
+	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
+	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+		return
+
+	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
+		LAZYINITLIST(location.important_recursive_contents)
+		var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+		if(!length(recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE]))
+			SSspatial_grid.add_grid_awareness(location, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+		recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE] += list(src)
+
+	var/turf/our_turf = get_turf(src)
+	SSspatial_grid.add_grid_membership(src, our_turf, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+
+///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
+/atom/movable/proc/become_radio_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
 	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
 		return

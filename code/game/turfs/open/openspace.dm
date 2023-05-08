@@ -1,16 +1,3 @@
-GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdrop, new)
-
-/atom/movable/openspace_backdrop
-	name = "openspace_backdrop"
-
-	anchored = TRUE
-
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "grey"
-	plane = OPENSPACE_BACKDROP_PLANE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	vis_flags = VIS_INHERIT_ID
-
 /turf/open/openspace
 	name = "open space"
 	desc = "Watch your step!"
@@ -23,7 +10,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	#endif
 	pathing_pass_method = TURF_PATHING_PASS_PROC
 
-	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
+	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP | Z_MIMIC_BELOW|Z_MIMIC_OVERWRITE|Z_MIMIC_NO_AO
 
 	var/can_cover_up = TRUE
 	var/can_build_on = TRUE
@@ -36,16 +23,14 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()
-	overlays += GLOB.openspace_backdrop_one_for_all //Special grey square for projecting backdrop darkness filter on it.
 	RegisterSignal(src, COMSIG_ATOM_INITIALIZED_ON, PROC_REF(on_atom_created))
 	var/area/our_area = loc
 	if(istype(our_area, /area/space))
 		force_no_gravity = TRUE
-	return INITIALIZE_HINT_LATELOAD
 
-/turf/open/openspace/LateInitialize()
-	. = ..()
-	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
+/turf/open/openspace/examine(mob/user)
+	SHOULD_CALL_PARENT(FALSE)
+	return below.examine(user)
 
 /turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
 	UnregisterSignal(src, COMSIG_ATOM_INITIALIZED_ON)
@@ -185,7 +170,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 
 /turf/open/openspace/icemoon/Initialize(mapload)
 	. = ..()
-	var/turf/T = below()
+	var/turf/T = GetBelow(src)
 	//I wonder if I should error here
 	if(!T)
 		return

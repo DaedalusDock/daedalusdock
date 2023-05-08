@@ -44,7 +44,7 @@
 		span_notice("You begin to lay a web."),
 	)
 
-	if(!do_after(cast_on, web_spot, webbing_time))
+	if(!do_after(cast_on, web_spot, webbing_time, DO_PUBLIC))
 		to_chat(cast_on, span_warning("Your web spinning was interrupted!"))
 		return
 

@@ -4,6 +4,7 @@
 	desc = "Tastes just like the chef's soup."
 	icon_state = "growing_vat"
 	buffer = 300
+	zmm_flags = ZMM_MANGLE_PLANES
 	///List of all microbiological samples in this soup.
 	var/datum/biological_sample/biological_sample
 	///If the vat will restart the sample upon completion

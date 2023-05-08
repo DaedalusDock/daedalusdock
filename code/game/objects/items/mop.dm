@@ -66,7 +66,7 @@
 		var/clean_speedies = 1
 		if(user.mind)
 			clean_speedies = user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)
-		if(do_after(user, T, mopspeed*clean_speedies))
+		if(do_after(user, T, mopspeed*clean_speedies, DO_PUBLIC, display = src))
 			to_chat(user, span_notice("You finish mopping."))
 			clean(T, user)
 

@@ -1038,7 +1038,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		// Create a callback with checks that would be called every tick by do_after.
 		var/datum/callback/tool_check = CALLBACK(src, PROC_REF(tool_check_callback), user, amount, extra_checks)
 
-		if(!do_after(user, target, delay, extra_checks=tool_check))
+		if(!do_after(user, target, delay, DO_PUBLIC, extra_checks=tool_check, display = src))
 			return
 
 	else

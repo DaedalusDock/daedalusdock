@@ -48,6 +48,17 @@
 /obj/effect/decal/cleanable/glass/plasma
 	icon_state = "plasmatiny"
 
+/obj/effect/decal/cleanable/glass/titanium
+	icon_state = "titaniumtiny"
+
+/obj/effect/decal/cleanable/glass/plastitanium
+	icon_state = "plastitaniumtiny"
+
+//Screws that are dropped on the Z level below when deconstructing a reinforced floor plate.
+/obj/effect/decal/cleanable/glass/plastitanium/screws //I don't know how to sprite scattered screws, this can work until a spriter gets their hands on it.
+	name = "pile of screws"
+	desc = "Looks like they fell from the ceiling"
+
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
@@ -276,6 +287,8 @@
 	layer = LOW_OBJ_LAYER
 	decal_reagent = /datum/reagent/ants
 	reagent_amount = 5
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Sound the ants make when biting
 	var/bite_sound = 'sound/weapons/bite.ogg'
 

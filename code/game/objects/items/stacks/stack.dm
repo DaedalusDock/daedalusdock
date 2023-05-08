@@ -268,7 +268,7 @@
 					adjusted_time = (recipe.time * recipe.trait_modifier)
 				else
 					adjusted_time = recipe.time
-				if(!do_after(usr, time = adjusted_time))
+				if(!do_after(usr, time = adjusted_time, timed_action_flags = DO_PUBLIC, display = src))
 					return
 				if(!building_checks(recipe, multiplier))
 					return

@@ -141,13 +141,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
+	if (z_flags & Z_MIMIC_BELOW)
+		setup_zmimic(mapload)
+
 	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_new(src, UP)
 
@@ -179,12 +182,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_del(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_del(src, UP)
+
+	if (z_flags & Z_MIMIC_BELOW)
+		cleanup_zmimic()
+
 	if(force)
 		..()
 		//this will completely wipe turf state

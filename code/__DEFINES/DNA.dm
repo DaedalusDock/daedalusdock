@@ -104,12 +104,14 @@
 #define BLOOD_CLANS 21
 /// Can this species use the 'Body size' preference
 #define BODY_RESIZABLE 22
-
 #define MUTCOLORS2 23
 #define MUTCOLORS3 24
-
+///Haircolor
 #define HAIRCOLOR 25
 #define FACEHAIRCOLOR 26
+#define SCLERA 27
+///Has non-human hair. Used by pref code to hide standard hair options.
+#define NONHUMANHAIR 28
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"

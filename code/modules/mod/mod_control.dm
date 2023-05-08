@@ -59,7 +59,7 @@
 	/// Slowdown of the MOD when not active.
 	var/slowdown_inactive = 0
 	/// Slowdown of the MOD when active.
-	var/slowdown_active = 0
+	var/slowdown_active = 0.75
 	/// How long this MOD takes each part to seal.
 	var/activation_step_time = MOD_ACTIVATION_STEP_TIME
 	/// Extended description of the theme.
@@ -100,7 +100,7 @@
 	theme = GLOB.mod_themes[theme]
 	extended_desc = theme.extended_desc
 	//slowdown_inactive = theme.slowdown_inactive
-	//slowdown_active = theme.slowdown_active
+	slowdown_active = theme.slowdown_active
 	complexity_max = theme.complexity_max
 	ui_theme = theme.ui_theme
 	charge_drain = theme.charge_drain

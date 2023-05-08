@@ -24,6 +24,9 @@ SERVERSQLNAME daedalusdock
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
 STATIONNAME Daedalus Outpost
 
+## Hub subtitle: A line of text inserted under the server name. Should be no greater than 40 characters.
+HUB_SUBTITLE Now with custom lighting!
+
 ## Put on byond hub: Uncomment this to put your server on the byond hub.
 #HUB
 

@@ -35291,6 +35291,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
 /obj/machinery/light/small/directional/west,
+/obj/machinery/rnd/production/circuit_imprinter/robotics,
 /turf/open/floor/iron,
 /area/station/science/robotics/lab)
 "lHL" = (

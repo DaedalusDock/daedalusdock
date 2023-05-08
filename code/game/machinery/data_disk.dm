@@ -125,7 +125,6 @@
 
 /obj/item/disk/data/hyper/preloaded/proc/compile_designs()
 	RETURN_TYPE(/list)
-	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 
 /obj/item/disk/data/hyper/preloaded/fabricator
@@ -180,3 +179,27 @@
 
 /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/offstation
 	build_type = AWAY_IMPRINTER | IMPRINTER
+
+/obj/item/disk/data/hyper/preloaded/fabricator/imprinter/robotics
+	build_type = AWAY_IMPRINTER | IMPRINTER
+
+/obj/item/disk/data/hyper/preloaded/fabricator/imprinter/robotics/compile_designs()
+	. = list(
+		/datum/design/board/ripley_main,
+		/datum/design/board/ripley_peri,
+		/datum/design/board/odysseus_main,
+		/datum/design/board/odysseus_peri,
+		/datum/design/board/gygax_main,
+		/datum/design/board/gygax_peri,
+		/datum/design/board/durand_main,
+		/datum/design/board/durand_peri,
+		/datum/design/board/durand_targ,
+		/datum/design/board/honker_main,
+		/datum/design/board/honker_peri,
+		/datum/design/board/honker_targ,
+		/datum/design/board/phazon_main,
+		/datum/design/board/phazon_peri,
+		/datum/design/board/phazon_targ,
+		/datum/design/board/clarke_main,
+		/datum/design/board/clarke_peri
+	)

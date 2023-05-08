@@ -355,6 +355,13 @@
 		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/offstation
 	)
 
+/obj/item/circuitboard/machine/circuit_imprinter/robotics
+	name = "Circuit Imprinter (Machine Board)"
+	build_path = /obj/machinery/rnd/production/circuit_imprinter/offstation
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/robotics
+	)
+
 /obj/item/circuitboard/machine/holopad
 	name = "AI Holopad (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC

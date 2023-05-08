@@ -24,3 +24,7 @@
 	desc = "Manufactures circuit boards for the construction of machines. Its ancient construction may limit its ability to print all known technology."
 	allowed_buildtypes = AWAY_IMPRINTER | IMPRINTER
 	circuit = /obj/item/circuitboard/machine/circuit_imprinter/offstation
+
+/obj/machinery/rnd/production/circuit_imprinter/robotics
+	name = "robotics circuit imprinter"
+	circuit = /obj/item/circuitboard/machine/circuit_imprinter/robotics

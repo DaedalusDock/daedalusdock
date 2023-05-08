@@ -81,7 +81,7 @@
 		new path(get_turf(src))
 	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
 	busy = FALSE
-	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE)
+	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE, ignore_walls = FALSE)
 	update_appearance(UPDATE_OVERLAYS)
 
 /**

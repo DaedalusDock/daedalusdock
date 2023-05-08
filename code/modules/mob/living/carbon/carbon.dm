@@ -1394,30 +1394,3 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(LAZYLEN(BP.wounds))
 			. += BP.wounds
-
-/mob/living/carbon/Bump(atom/A)
-	. = ..()
-
-	//Alot of this is a reimplimentation of click code.
-	if(!ismob(A))
-		return
-
-	if(!combat_mode)
-		return
-	if(next_move > world.time)
-		return
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
-		return
-	if(incapacitated())
-		return
-
-	var/obj/item/weapon = get_active_held_item()
-
-	if(!CanReach(A, weapon))
-		return
-
-	changeNext_move(CLICK_CD_MELEE)
-	if(weapon)
-		weapon.melee_attack_chain(src, A)
-	else
-		UnarmedAttack(A, 1)

@@ -15,7 +15,7 @@
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_outer_range = 4
-	light_power = 1
+	light_power = 0.3
 	light_on = FALSE
 	var/on = FALSE
 

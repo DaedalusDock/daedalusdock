@@ -11,7 +11,7 @@
 
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_outer_range = 4
-	light_power = 0.8
+	light_power = 0.2
 	light_on = FALSE
 	dog_fashion = /datum/dog_fashion/head
 

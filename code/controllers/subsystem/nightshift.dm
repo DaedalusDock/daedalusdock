@@ -27,7 +27,7 @@ SUBSYSTEM_DEF(nightshift)
 	priority_announce(message, sub_title = "Automated Lighting System", do_not_modify = TRUE)
 
 /datum/controller/subsystem/nightshift/proc/check_nightshift()
-	var/emergency = SSsecurity_level.current_level >= SEC_LEVEL_RED
+	var/emergency = SSsecurity_level.current_level >= SEC_LEVEL_BLUE
 	var/announcing = TRUE
 	var/time = station_time()
 	var/night_time = (time < nightshift_end_time) || (time > nightshift_start_time)

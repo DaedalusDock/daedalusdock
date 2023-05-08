@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Raising the security level to blue will no longer sometimes start nightshifts

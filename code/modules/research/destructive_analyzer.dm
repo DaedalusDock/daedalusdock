@@ -20,12 +20,12 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/rnd/destructive_analyzer/Insert_Item(obj/item/O, mob/living/user)
 	if(!user.combat_mode)
-		. = 1
 		if(!is_insertion_ready(user))
 			return
 		if(!user.transferItemToLoc(O, src))
 			to_chat(user, span_warning("\The [O] is stuck to your hand, you cannot put it in the [src.name]!"))
 			return
+		. = TRUE
 		busy = TRUE
 		loaded_item = O
 		to_chat(user, span_notice("You add the [O.name] to the [src.name]!"))

@@ -6,3 +6,7 @@
   - qol: Many timed actions are now visible to anyone nearby.
   Kapu1178, Keelin, MarkNstein:
   - rscadd: Mechanical Components
+2023-05-09:
+  Kapu1178:
+  - bugfix: Raising the security level to blue will no longer sometimes start nightshifts
+  - bugfix: Server hub entry will no longer be cut short

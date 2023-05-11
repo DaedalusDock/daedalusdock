@@ -315,7 +315,7 @@
 
 /obj/item/organ/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!human)
-		return FALSE
+		return TRUE
 	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
 		return FALSE
 	return TRUE
@@ -346,9 +346,12 @@
 
 /obj/item/organ/teshari_body_feathers/build_cache_key()
 	. = ..()
-	. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
-	. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
-	. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
-	. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
-	. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
-	. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"
+	if(ishuman(owner))
+		. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
+		. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
+		. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
+		. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
+		. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
+		. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"
+	else
+		. += "CHEST_ONLY"

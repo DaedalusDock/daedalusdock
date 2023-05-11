@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 /// Build overlays
 /obj/item/organ/proc/build_overlays(physique, image_dir)
 	RETURN_TYPE(/list)
-
+	. = list()
 	var/icon/finished_icon = build_icon(physique)
 	for(var/image_layer in layers)
 

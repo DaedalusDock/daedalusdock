@@ -284,16 +284,20 @@
 /obj/item/organ/teshari_ears/get_global_feature_list()
 	return GLOB.teshari_ears_list
 
-/obj/item/organ/teshari_ears/get_overlays(physique, image_dir)
+/obj/item/organ/teshari_ears/build_overlays(physique, image_dir)
 	. = ..()
-	if(!length(.))
-		return
 
 	var/mutable_appearance/inner_ears = mutable_appearance(sprite_datum.icon, "m_teshari_earsinner_[sprite_datum.icon_state]_ADJ", layer = -BODY_ADJ_LAYER)
 	var/mob/living/carbon/human/human_owner = owner
 	if(owner)
 		inner_ears.color = human_owner.facial_hair_color
 		. += inner_ears
+
+/obj/item/organ/teshari_ears/build_cache_key()
+	. = ..()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		. += H.facial_hair_color
 
 // Teshari body feathers
 /obj/item/organ/teshari_body_feathers
@@ -310,6 +314,8 @@
 	mutcolor_used = MUTCOLORS_KEY_TESHARI_BODY_FEATHERS
 
 /obj/item/organ/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!human)
+		return FALSE
 	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
 		return FALSE
 	return TRUE
@@ -317,11 +323,8 @@
 /obj/item/organ/teshari_body_feathers/get_global_feature_list()
 	return GLOB.teshari_body_feathers_list
 
-/obj/item/organ/teshari_body_feathers/get_overlays(physique, image_dir)
+/obj/item/organ/teshari_body_feathers/build_overlays(physique, image_dir)
 	. = ..()
-	if(!length(.))
-		return
-
 	var/static/list/bodypart_color_indexes = list(
 		BODY_ZONE_CHEST = MUTCOLORS_TESHARI_BODY_FEATHERS_1,
 		BODY_ZONE_HEAD = MUTCOLORS_TESHARI_BODY_FEATHERS_2,
@@ -340,3 +343,12 @@
 			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -image_layer)
 			new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 			. += new_overlay
+
+/obj/item/organ/teshari_body_feathers/build_cache_key()
+	. = ..()
+	. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
+	. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
+	. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
+	. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
+	. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
+	. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"

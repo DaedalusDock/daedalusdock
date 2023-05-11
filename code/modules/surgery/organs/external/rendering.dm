@@ -49,6 +49,8 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
 /obj/item/organ/proc/get_overlays(physique, image_dir)
 	RETURN_TYPE(/list)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
 	. = list()
 	if(!stored_feature_id)
 		return
@@ -60,9 +62,18 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 	if(sprite_datum.name == "None")
 		return
 
+	. = build_overlays(physique, image_dir)
+
 	var/cache_key = json_encode(build_cache_key())
 	if(GLOB.organ_overlays_cache[cache_key])
 		return GLOB.organ_overlays_cache[cache_key]
+
+	GLOB.organ_overlays_cache[cache_key] = .
+	return .
+
+/// Build overlays
+/obj/item/organ/proc/build_overlays(physique, image_dir)
+	RETURN_TYPE(/list)
 
 	var/icon/finished_icon = build_icon(physique)
 	for(var/image_layer in layers)
@@ -74,7 +85,6 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 
 		. += overlay
 
-	GLOB.organ_overlays_cache[cache_key] = .
 	return .
 
 /obj/item/organ/proc/build_icon_state(physique, image_layer)

@@ -156,10 +156,8 @@
 /obj/item/organ/tail/teshari/get_global_feature_list()
 	return GLOB.teshari_tails_list
 
-/obj/item/organ/tail/teshari/get_overlays(physique, image_dir)
+/obj/item/organ/tail/teshari/build_overlays(physique, image_dir)
 	. = ..()
-	if(!length(.))
-		return
 
 	for(var/image_layer in layers)
 		var/icon2use = sprite_datum.icon

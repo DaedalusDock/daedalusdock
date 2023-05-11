@@ -39,8 +39,9 @@
 	var/reagent_vol = 10
 
 	var/failure_time = 0
+
 	///Do we effect the appearance of our mob. Used to save time in preference code
-	var/visual = TRUE
+	var/visual = FALSE
 	///If the organ is cosmetic only, it loses all organ functionality.
 	var/cosmetic_only = FALSE
 	/// Traits that are given to the holder of the organ. If you want an effect that changes this, don't add directly to this. Use the add_organ_trait() proc

@@ -7,8 +7,47 @@ GLOBAL_REAL_VAR(layer2text) = list(
 
 GLOBAL_LIST_EMPTY(organ_overlays_cache)
 
+/obj/item/organ
+	///Sometimes we need multiple layers, for like the back, middle and front of the person
+	var/list/layers
+
+	///Defines what kind of 'organ' we're looking at. Sprites have names like 'm_mothwings_firemoth'. 'mothwings' would then be feature_key
+	var/feature_key = ""
+	///Similar to feature key, but overrides it in the case you need more fine control over the iconstate, like with Tails.
+	var/render_key = ""
+	///Stores the dna.features[feature_key], used for external organs that can be surgically removed or inserted.
+	var/stored_feature_id = ""
+	/// The savefile_key of the preference this relates to. Used for the preferences UI.
+	var/preference
+
+	///Sprite datum we use to draw on the bodypart
+	var/datum/sprite_accessory/sprite_datum
+
+	///With what DNA block do we mutate in mutate_feature() ? For genetics
+	var/dna_block
+
+	///Reference to the limb we're inside of
+	var/obj/item/bodypart/ownerlimb
+
+	///The color this organ draws with. Updated by bodypart/inherit_color()
+	var/draw_color
+
+	///Where does this organ inherit it's color from?
+	var/color_source = ORGAN_COLOR_INHERIT
+
+	///Used by ORGAN_COLOR_INHERIT_ALL, allows full control of the owner's mutcolors
+	var/list/mutcolors = list()
+	///See above
+	var/mutcolor_used
+
+	///Does this organ have any bodytypes to pass to it's ownerlimb?
+	var/external_bodytypes = NONE
+
+	//A lazylist of this organ's appearance_modifier datums
+	var/list/appearance_mods
+
 ///Add the overlays we need to draw on a person. Called from _bodyparts.dm
-/obj/item/organ/external/proc/get_overlays(physique, image_dir)
+/obj/item/organ/proc/get_overlays(physique, image_dir)
 	RETURN_TYPE(/list)
 	. = list()
 	if(!stored_feature_id)
@@ -38,7 +77,7 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 	GLOB.organ_overlays_cache[cache_key] = .
 	return .
 
-/obj/item/organ/external/proc/build_icon_state(physique, image_layer)
+/obj/item/organ/proc/build_icon_state(physique, image_layer)
 	var/gender = (physique == FEMALE) ? "f" : "m"
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
@@ -47,7 +86,7 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 	icon_state_builder += global.layer2text["[image_layer]"]
 	return icon_state_builder.Join("_")
 
-/obj/item/organ/external/proc/build_icon(physique)
+/obj/item/organ/proc/build_icon(physique)
 	RETURN_TYPE(/icon)
 	PRIVATE_PROC(TRUE)
 
@@ -78,7 +117,7 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 	return return_icon
 
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse)
-/obj/item/organ/external/proc/build_cache_key()
+/obj/item/organ/proc/build_cache_key()
 	. = list()
 	if(owner && !can_draw_on_bodypart(owner))
 		. += "HIDDEN"

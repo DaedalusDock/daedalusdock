@@ -729,7 +729,7 @@
 			if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
 				C.blood_volume += (excess_healing*2)//1 excess = 10 blood
 
-			for(var/obj/item/organ/organ as anything in C.internal_organs)
+			for(var/obj/item/organ/organ as anything in C.processing_organs)
 				if(organ.organ_flags & ORGAN_SYNTHETIC)
 					continue
 				organ.applyOrganDamage(excess_healing * -1)//1 excess = 5 organ damage healed

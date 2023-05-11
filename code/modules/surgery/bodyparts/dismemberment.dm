@@ -81,7 +81,7 @@
 	if(isturf(chest_owner.loc))
 		chest_owner.add_splatter_floor(chest_owner.loc)
 	playsound(get_turf(chest_owner), 'sound/misc/splort.ogg', 80, TRUE)
-	for(var/obj/item/organ/organ as anything in chest_owner.internal_organs)
+	for(var/obj/item/organ/organ as anything in chest_owner.processing_organs)
 		var/org_zone = check_zone(organ.zone)
 		if(org_zone != BODY_ZONE_CHEST)
 			continue
@@ -89,11 +89,12 @@
 		organ.forceMove(chest_owner.loc)
 		. += organ
 
-	for(var/obj/item/organ/external/ext_organ as anything in src.external_organs)
-		if(!(ext_organ.organ_flags & ORGAN_UNREMOVABLE))
-			ext_organ.Remove(chest_owner)
-			ext_organ.forceMove(chest_owner.loc)
-			. += ext_organ
+	for(var/obj/item/organ/O in src)
+		if((O.organ_flags & ORGAN_UNREMOVABLE))
+			continue
+		O.Remove(chest_owner)
+		O.forceMove(chest_owner.loc)
+		. += O
 
 	if(cavity_item)
 		cavity_item.forceMove(chest_owner.loc)
@@ -120,8 +121,8 @@
 			owner.dropItemToGround(owner.get_item_for_held_index(held_index), 1)
 			owner.hand_bodyparts[held_index] = null
 
-	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
-		ext_organ.transfer_to_limb(src, null) //Null is the second arg because the bodypart is being removed from it's owner.
+	for(var/obj/item/organ/ext_organ as anything in cosmetic_organs)
+		ext_organ.transfer_to_limb(src, null)
 
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
@@ -148,11 +149,11 @@
 					to_chat(phantom_owner, span_warning("You feel your [mutation] deactivating from the loss of your [body_zone]!"))
 					phantom_owner.dna.force_lose(mutation)
 
-		for(var/obj/item/organ/organ as anything in phantom_owner.internal_organs) //internal organs inside the dismembered limb are dropped.
+		for(var/obj/item/organ/organ as anything in phantom_owner.processing_organs) //internal organs inside the dismembered limb are dropped.
 			var/org_zone = check_zone(organ.zone)
 			if(org_zone != body_zone)
 				continue
-			organ.transfer_to_limb(src, phantom_owner)
+			organ.transfer_to_limb(src, null)
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
@@ -178,20 +179,39 @@
 
 ///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner)
-	Remove(bodypart_owner)
+	if(bodypart_owner)
+		Remove(bodypart_owner, TRUE)
+	else if(ownerlimb)
+		remove_from_limb()
+
 	add_to_limb(bodypart)
+
+	if(bodypart_owner)
+		Insert(bodypart_owner, TRUE)
+	else
+		add_to_limb(bodypart)
 
 ///Adds the organ to a bodypart, used in transfer_to_limb()
 /obj/item/organ/proc/add_to_limb(obj/item/bodypart/bodypart)
+	if(visual)
+		ownerlimb = bodypart
+		ownerlimb.cosmetic_organs |= src
+		inherit_color()
+
 	forceMove(bodypart)
 
 ///Removes the organ from the limb, placing it into nullspace.
 /obj/item/organ/proc/remove_from_limb()
+	if(visual)
+		ownerlimb.cosmetic_organs -= src
+		if(ownerlimb.owner && external_bodytypes)
+			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
+		ownerlimb = null
+
 	moveToNullspace()
 
-/obj/item/organ/internal/brain/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	Remove(head_owner) //Changeling brain concerns are now handled in Remove
-	forceMove(head)
+/obj/item/organ/brain/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
+	. = ..()
 	head.brain = src
 	if(brainmob)
 		head.brainmob = brainmob
@@ -199,15 +219,15 @@
 		head.brainmob.forceMove(head)
 		head.brainmob.set_stat(DEAD)
 
-/obj/item/organ/internal/eyes/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
+/obj/item/organ/eyes/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
 	head.eyes = src
 	..()
 
-/obj/item/organ/internal/ears/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
+/obj/item/organ/ears/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
 	head.ears = src
 	..()
 
-/obj/item/organ/internal/tongue/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
+/obj/item/organ/tongue/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
 	head.tongue = src
 	..()
 
@@ -428,7 +448,7 @@
 		return
 	var/all_limb_flags
 	for(var/obj/item/bodypart/limb as anything in carbon_owner.bodyparts)
-		for(var/obj/item/organ/external/ext_organ as anything in limb.external_organs)
+		for(var/obj/item/organ/ext_organ as anything in limb.cosmetic_organs)
 			all_limb_flags = all_limb_flags | ext_organ.external_bodytypes
 		all_limb_flags = all_limb_flags | limb.bodytype
 
@@ -460,12 +480,12 @@
 			return FALSE
 		limb.update_limb(is_creating = TRUE)
 		//Copied from /datum/species/proc/on_species_gain()
-		for(var/obj/item/organ/external/organ_path as anything in dna.species.external_organs)
+		for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
 			//Load a persons preferences from DNA
 			var/zone = initial(organ_path.zone)
 			if(zone != limb_zone)
 				continue
-			var/obj/item/organ/external/new_organ = SSwardrobe.provide_type(organ_path)
+			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
 			new_organ.Insert(src)
 
 		update_body_parts()

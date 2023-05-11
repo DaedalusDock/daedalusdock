@@ -14143,7 +14143,7 @@
 /turf/open/floor/plating,
 /area/security/prison)
 "NC" = (
-/obj/item/organ/external/tail/monkey,
+/obj/item/organ/tail/monkey,
 /obj/effect/decal/cleanable/blood/splatter,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)

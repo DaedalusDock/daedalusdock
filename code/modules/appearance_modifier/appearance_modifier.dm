@@ -55,7 +55,7 @@
 		BP.appearance_mods -= src
 		sortTim(BP.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
-	for(var/obj/item/organ/external/O as anything in affecting_organs)
+	for(var/obj/item/organ/O as anything in affecting_organs)
 		O.appearance_mods -= src
 		sortTim(O.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
@@ -79,7 +79,7 @@
 	if(bodytypes_affected && length(bodyzones_affected))
 		ApplyToBodyparts(C.bodyparts)
 	if(length(eorgan_slots_affected))
-		ApplyToOrgans(C.external_organs)
+		ApplyToOrgans(C.cosmetic_organs)
 
 /datum/appearance_modifier/proc/ApplyToBodyparts(list/bodyparts)
 	if(!setup_complete)
@@ -100,7 +100,7 @@
 	if(!setup_complete)
 		CRASH("Tried to apply an incomplete appearance modifier!")
 
-	for(var/obj/item/organ/external/O as anything in organs)
+	for(var/obj/item/organ/O as anything in organs)
 		if(!(O.slot in eorgan_slots_affected))
 			continue
 		affecting_organs += O

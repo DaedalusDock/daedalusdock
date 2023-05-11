@@ -160,8 +160,8 @@
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
 
-	///A list of all the external organs we've got stored to draw horns, wings and stuff with (special because we are actually in the limbs unlike normal organs :/ )
-	var/list/obj/item/organ/external/external_organs = list()
+	///A list of all the cosmetic organs we've got stored to draw horns, wings and stuff with (special because we are actually in the limbs unlike normal organs :/ )
+	var/list/obj/item/organ/cosmetic_organs = list()
 
 	/// Type of an attack from this limb does. Arms will do punches, Legs for kicks, and head for bites. (TO ADD: tactical chestbumps)
 	var/attack_type = BRUTE
@@ -210,7 +210,7 @@
 		wounds.Cut()
 	if(owner)
 		drop_limb(TRUE)
-	for(var/external_organ in external_organs)
+	for(var/external_organ in cosmetic_organs)
 		qdel(external_organ)
 	return ..()
 
@@ -336,7 +336,7 @@
 	seep_gauze(9999) // destroy any existing gauze if any exists
 
 	for(var/obj/item/organ/bodypart_organ in get_organs())
-		bodypart_organ.transfer_to_limb(src, owner)
+		bodypart_organ.transfer_to_limb(src, null)
 
 	for(var/obj/item/item_in_bodypart in src)
 		if(istype(item_in_bodypart, /obj/item/organ))
@@ -355,7 +355,7 @@
 		return FALSE
 
 	var/list/bodypart_organs
-	for(var/obj/item/organ/organ_check as anything in owner.internal_organs) //internal organs inside the dismembered limb are dropped.
+	for(var/obj/item/organ/organ_check as anything in owner.processing_organs) //internal organs inside the dismembered limb are dropped.
 		if(check_zone(organ_check.zone) == body_zone)
 			LAZYADD(bodypart_organs, organ_check) // this way if we don't have any, it'll just return null
 
@@ -985,8 +985,8 @@
 		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZE_DESTROYED)
 
 ///Loops through all of the bodypart's external organs and update's their color.
-/obj/item/bodypart/proc/recolor_external_organs()
-	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
+/obj/item/bodypart/proc/recolor_cosmetic_organs()
+	for(var/obj/item/organ/ext_organ as anything in cosmetic_organs)
 		ext_organ.inherit_color(force = TRUE)
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.

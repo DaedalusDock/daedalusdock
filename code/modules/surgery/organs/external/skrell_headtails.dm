@@ -1,7 +1,7 @@
 /obj/item/organ/external/skrell_headtails
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEADTAILS
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = list(BODY_FRONT_LAYER, BODY_ADJ_LAYER)
 
 	dna_block = DNA_HEADTAILS_BLOCK
 

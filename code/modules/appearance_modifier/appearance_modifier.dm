@@ -31,7 +31,7 @@
 	var/affects_hands = FALSE
 	///The external organ slots this applies to. ORGAN_SLOT_EXTERNAL_TAIL, etc.
 	var/list/eorgan_slots_affected = null
-	var/eorgan_layers_affected = ALL_EXTERNAL_OVERLAYS
+	var/eorgan_layers_affected = list(BODY_ADJ_LAYER, BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
 
 	//Do not touch.
 	VAR_FINAL/list/affecting_bodyparts = list()
@@ -126,7 +126,6 @@
 	bodyzones_affected = list(BODY_ZONE_HEAD)
 	eorgan_slots_affected = list(ORGAN_SLOT_EXTERNAL_SNOUT)
 
-
 /datum/appearance_modifier/goonlizardbody
 	name = "Highlight - Underside"
 	icon2use = 'goon/icons/mob/appearancemods/lizardmarks.dmi'
@@ -137,7 +136,7 @@
 	bodyzones_affected = list(BODY_ZONE_CHEST)
 
 	eorgan_slots_affected = list(ORGAN_SLOT_EXTERNAL_TAIL)
-	eorgan_layers_affected = EXTERNAL_BEHIND
+	eorgan_layers_affected = list(BODY_BEHIND_LAYER)
 
 /mob/living/carbon/proc/goonify()
 	var/datum/appearance_modifier/goonlizardhead/head = new

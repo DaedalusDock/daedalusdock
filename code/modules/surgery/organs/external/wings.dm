@@ -3,7 +3,6 @@
 	name = "wings"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_WINGS
-	layers = ALL_EXTERNAL_OVERLAYS
 
 	feature_key = "wings"
 
@@ -128,7 +127,6 @@
 	feature_key = wings_open_feature_key
 	wings_open = TRUE
 
-	cache_key = generate_icon_cache() //we've changed preference to open, so we only need to update the key and ask for an update to change our sprite
 	owner.update_body_parts()
 
 ///close our wings
@@ -136,7 +134,6 @@
 	feature_key = wings_closed_feature_key
 	wings_open = FALSE
 
-	cache_key = generate_icon_cache()
 	owner.update_body_parts()
 	if(isturf(owner?.loc))
 		var/turf/location = loc
@@ -164,7 +161,7 @@
 /obj/item/organ/external/wings/moth
 	feature_key = "moth_wings"
 	preference = "feature_moth_wings"
-	layers = EXTERNAL_BEHIND | EXTERNAL_FRONT
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
 
 	dna_block = DNA_MOTH_WINGS_BLOCK
 

@@ -2,7 +2,7 @@
 	name = "spines"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_SPINES
-	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
+	layers = list(BODY_ADJ_LAYER, BODY_BEHIND_LAYER)
 	feature_key = "spines"
 	render_key = "spines"
 	preference = "feature_lizard_spines"

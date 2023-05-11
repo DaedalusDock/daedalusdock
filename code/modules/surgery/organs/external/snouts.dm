@@ -2,7 +2,7 @@
 	name = "snout"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_SNOUT
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "snout"
 	preference = "feature_lizard_snout"

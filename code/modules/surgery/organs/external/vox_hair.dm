@@ -2,7 +2,7 @@
 	name = "head quills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_HAIR
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	dna_block = DNA_VOX_HAIR_BLOCK
 
@@ -24,7 +24,7 @@
 	name = "facial quills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	dna_block = DNA_VOX_FACIAL_HAIR_BLOCK
 

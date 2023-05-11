@@ -202,9 +202,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 		. += "-[draw_color]"
 
 	for(var/obj/item/organ/external/external_organ as anything in external_organs)
-		if(owner && !external_organ.can_draw_on_bodypart(owner))
-			continue
-		. += "-[jointext(external_organ.generate_icon_cache(), "-")]"
+		. += "-[json_encode(external_organ.build_cache_key())]"
 
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
 		. += mod.key

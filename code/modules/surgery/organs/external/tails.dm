@@ -5,7 +5,7 @@
 	icon_state = "severedtail"
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
-	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
 	organ_flags = ORGAN_EDIBLE
 	feature_key = "tail"
 	render_key = "tail"
@@ -48,7 +48,7 @@
 		SEND_SIGNAL(organ_owner, COMSIG_ADD_MOOD_EVENT, "tail_lost", /datum/mood_event/tail_lost)
 		SEND_SIGNAL(organ_owner, COMSIG_ADD_MOOD_EVENT, "tail_balance_lost", /datum/mood_event/tail_balance_lost)
 
-/obj/item/organ/external/tail/generate_icon_cache()
+/obj/item/organ/external/tail/build_cache_key()
 	. = ..()
 	if((wag_flags & WAG_WAGGING))
 		. += "wagging"
@@ -137,7 +137,7 @@
 /obj/item/organ/external/tail/teshari
 	name = "Teshari tail"
 	zone = BODY_ZONE_CHEST // Don't think about this too much
-	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
 
 	feature_key = "tail_teshari"
 	preference = "tail_teshari"
@@ -153,17 +153,15 @@
 
 /obj/item/organ/external/tail/teshari/get_overlays(physique, image_dir)
 	. = ..()
-	for(var/image_layer in all_layers)
-		if(!(layers & image_layer))
-			continue
-		var/real_layer = GLOB.bitflag2layer["[image_layer]"]
+	if(!length(.))
+		return
 
+	for(var/image_layer in layers)
 		var/icon2use = sprite_datum.icon
 		var/state2use = build_icon_state(physique, image_layer)
 
-		var/mutable_appearance/tail_secondary = mutable_appearance(icon2use, "[state2use]_secondary", layer = -real_layer)
-		var/mutable_appearance/tail_tertiary = mutable_appearance(icon2use, "[state2use]_tertiary", layer = -real_layer)
-
+		var/mutable_appearance/tail_secondary = mutable_appearance(icon2use, "[state2use]_secondary", layer = -layer)
+		var/mutable_appearance/tail_tertiary = mutable_appearance(icon2use, "[state2use]_tertiary", layer = -layer)
 
 		tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
 		tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]

@@ -12,9 +12,7 @@
 	visual = TRUE
 
 	///Sometimes we need multiple layers, for like the back, middle and front of the person
-	var/layers
-	///Convert the bitflag define into the actual layer define
-	var/static/list/all_layers = list(EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
+	var/list/layers
 
 	///Defines what kind of 'organ' we're looking at. Sprites have names like 'm_mothwings_firemoth'. 'mothwings' would then be feature_key
 	var/feature_key = ""
@@ -27,8 +25,6 @@
 
 	///Sprite datum we use to draw on the bodypart
 	var/datum/sprite_accessory/sprite_datum
-	///Key of the icon states of all the sprite_datums for easy caching
-	var/cache_key = ""
 
 	///With what DNA block do we mutate in mutate_feature() ? For genetics
 	var/dna_block
@@ -136,15 +132,9 @@
 
 /obj/item/organ/external/proc/set_sprite(sprite_name)
 	stored_feature_id = sprite_name
-	sprite_datum = get_sprite_datum(sprite_name)
+	sprite_datum = get_global_feature_list()[sprite_name]
 	if(!sprite_datum && stored_feature_id)
-		stack_trace("NON-EXISTANT SPRITE DATUM IN EXTERNAL ORGAN")
-	cache_key = jointext(generate_icon_cache(), "_")
-
-///Because all the preferences have names like "Beautiful Sharp Snout" we need to get the sprite datum with the actual important info
-/obj/item/organ/external/proc/get_sprite_datum(sprite)
-	var/list/feature_list = get_global_feature_list()
-	return feature_list[sprite]
+		stack_trace("External organ has no valid sprite datum for name [sprite_name]")
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)
 /obj/item/organ/external/proc/get_global_feature_list()
@@ -200,7 +190,7 @@
 	name = "horns"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HORNS
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "horns"
 	preference = "feature_lizard_horns"
@@ -220,7 +210,7 @@
 	name = "frills"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_FRILLS
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "frills"
 	preference = "feature_lizard_frills"
@@ -241,8 +231,7 @@
 	name = "antennae"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_ANTENNAE
-	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
-
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
 	feature_key = "moth_antennae"
 	preference = "feature_moth_antennae"
 
@@ -297,7 +286,7 @@
 /obj/item/organ/external/pod_hair
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_POD_HAIR
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = list(BODY_FRONT_LAYER, BODY_ADJ_LAYER)
 
 	feature_key = "pod_hair"
 	preference = "feature_pod_hair"
@@ -322,7 +311,7 @@
 /obj/item/organ/external/headtails
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEADTAILS
-	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	layers = list(BODY_FRONT_LAYER | BODY_ADJ_LAYER)
 	dna_block = DNA_HEADTAILS_BLOCK
 
 	feature_key = "headtails"
@@ -343,7 +332,7 @@
 	name = "head feathers"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "teshari_feathers"
 	preference = "teshari_feathers"
@@ -364,7 +353,7 @@
 	name = "ear feathers"
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_EARS
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "teshari_ears"
 	preference = "teshari_ears"
@@ -381,8 +370,7 @@
 
 /obj/item/organ/external/teshari_ears/get_overlays(physique, image_dir)
 	. = ..()
-
-	if(sprite_datum.icon_state == "none")
+	if(!length(.))
 		return
 
 	var/mutable_appearance/inner_ears = mutable_appearance(sprite_datum.icon, "m_teshari_earsinner_[sprite_datum.icon_state]_ADJ", layer = -BODY_ADJ_LAYER)
@@ -396,7 +384,7 @@
 	name = "body feathers"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS
-	layers = EXTERNAL_ADJACENT
+	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "teshari_body_feathers"
 	preference = "teshari_body_feathers"
@@ -415,6 +403,9 @@
 
 /obj/item/organ/external/teshari_body_feathers/get_overlays(physique, image_dir)
 	. = ..()
+	if(!length(.))
+		return
+
 	var/static/list/bodypart_color_indexes = list(
 		BODY_ZONE_CHEST = MUTCOLORS_TESHARI_BODY_FEATHERS_1,
 		BODY_ZONE_HEAD = MUTCOLORS_TESHARI_BODY_FEATHERS_2,
@@ -426,13 +417,10 @@
 	if(!owner)
 		return
 
-	for(var/image_layer in all_layers)
-		if(!(layers & image_layer))
-			continue
-		var/real_layer = GLOB.bitflag2layer["[image_layer]"]
+	for(var/image_layer in layers)
 		var/state2use = build_icon_state(physique, image_layer)
 
 		for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
-			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -real_layer)
+			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -image_layer)
 			new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 			. += new_overlay

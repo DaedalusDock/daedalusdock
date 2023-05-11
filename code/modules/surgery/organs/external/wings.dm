@@ -45,6 +45,8 @@
 
 /obj/item/organ/wings/functional/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
 	if(isnull(fly))
 		fly = new
@@ -185,6 +187,8 @@
 
 /obj/item/organ/wings/moth/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
 	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_wings))
 	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_wings))

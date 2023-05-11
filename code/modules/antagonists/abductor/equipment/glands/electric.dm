@@ -8,7 +8,10 @@
 	mind_control_duration = 900
 
 /obj/item/organ/heart/gland/electric/Insert(mob/living/carbon/M, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	ADD_TRAIT(owner, TRAIT_SHOCKIMMUNE, "abductor_gland")
 
 /obj/item/organ/heart/gland/electric/Remove(mob/living/carbon/M, special = 0)

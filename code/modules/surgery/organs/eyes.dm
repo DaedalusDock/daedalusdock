@@ -45,6 +45,8 @@
 
 /obj/item/organ/eyes/Insert(mob/living/carbon/eye_owner, special = FALSE, drop_if_replaced = FALSE, initialising)
 	. = ..()
+	if(!.)
+		return
 	refresh(TRUE)
 	if(eye_owner.has_dna())
 		eye_owner.update_eyes()
@@ -258,6 +260,9 @@
 
 /obj/item/organ/eyes/robotic/xray/Insert(mob/living/carbon/eye_owner, special = FALSE)
 	. = ..()
+	if(!.)
+		return
+
 	ADD_TRAIT(eye_owner, TRAIT_XRAY_VISION, ORGAN_TRAIT)
 
 /obj/item/organ/eyes/robotic/xray/Remove(mob/living/carbon/eye_owner, special = FALSE)
@@ -289,7 +294,10 @@
 	return
 
 /obj/item/organ/eyes/robotic/flashlight/Insert(mob/living/carbon/victim, special = FALSE, drop_if_replaced = FALSE)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	if(!eye)
 		eye = new /obj/item/flashlight/eyelight()
 	eye.on = TRUE
@@ -398,6 +406,9 @@
 
 /obj/item/organ/eyes/robotic/glow/emp_act()
 	. = ..()
+	if(!.)
+		return
+
 	if(!active || . & EMP_PROTECT_SELF)
 		return
 	deactivate(silent = TRUE)
@@ -539,6 +550,9 @@
 
 /obj/item/organ/eyes/fly/Insert(mob/living/carbon/eye_owner, special = FALSE)
 	. = ..()
+	if(!.)
+		return
+
 	ADD_TRAIT(eye_owner, TRAIT_FLASH_SENSITIVE, ORGAN_TRAIT)
 
 /obj/item/organ/eyes/fly/Remove(mob/living/carbon/eye_owner, special = FALSE)
@@ -562,6 +576,9 @@
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/Insert(mob/living/carbon/adapted, special = FALSE)
 	. = ..()
+	if(!.)
+		return
+
 	//add lighting
 	if(!adapt_light)
 		adapt_light = new /obj/item/flashlight/eyelight/adapted()

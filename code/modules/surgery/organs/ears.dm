@@ -68,7 +68,10 @@
 	damage_multiplier = 2
 
 /obj/item/organ/ears/cat/Insert(mob/living/carbon/human/ear_owner, special = 0, drop_if_replaced = TRUE)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	if(istype(ear_owner))
 		color = ear_owner.hair_color
 		ear_owner.dna.features["ears"] = ear_owner.dna.species.mutant_bodyparts["ears"] = "Cat"
@@ -88,6 +91,9 @@
 
 /obj/item/organ/ears/penguin/Insert(mob/living/carbon/human/ear_owner, special = 0, drop_if_replaced = TRUE)
 	. = ..()
+	if(!.)
+		return
+
 	if(istype(ear_owner))
 		to_chat(ear_owner, span_notice("You suddenly feel like you've lost your balance."))
 		ADD_WADDLE(ear_owner, WADDLE_SOURCE_PENGUIN)

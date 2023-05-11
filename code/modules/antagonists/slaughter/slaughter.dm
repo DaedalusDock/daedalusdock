@@ -170,7 +170,10 @@
 	src.Insert(user) //Consuming the heart literally replaces your heart with a demon heart. H A R D C O R E
 
 /obj/item/organ/heart/demon/Insert(mob/living/carbon/M, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	// Gives a non-eat-people crawl to the new owner
 	var/datum/action/cooldown/spell/jaunt/bloodcrawl/crawl = new(M)
 	crawl.Grant(M)

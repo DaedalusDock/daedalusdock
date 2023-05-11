@@ -8,7 +8,10 @@
 	mind_control_duration = 2400
 
 /obj/item/organ/heart/gland/slime/Insert(mob/living/carbon/M, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	owner.faction |= "slime"
 	owner.grant_language(/datum/language/slime, TRUE, TRUE, LANGUAGE_GLAND)
 

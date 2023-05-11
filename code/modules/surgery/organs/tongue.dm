@@ -50,7 +50,10 @@
 	return speech_args[SPEECH_MESSAGE]
 
 /obj/item/organ/tongue/Insert(mob/living/carbon/tongue_owner, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	if(say_mod && tongue_owner.dna && tongue_owner.dna.species)
 		tongue_owner.dna.species.say_mod = say_mod
 	if (modifies_speech)
@@ -450,6 +453,9 @@
 
 /obj/item/organ/tongue/tied/Insert(mob/living/carbon/signer)
 	. = ..()
+	if(!.)
+		return
+
 	signer.verb_ask = "signs"
 	signer.verb_exclaim = "signs"
 	signer.verb_whisper = "subtly signs"

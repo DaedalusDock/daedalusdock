@@ -19,6 +19,8 @@
 
 /obj/item/organ/cyberimp/bci/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
 	// Organs are put in nullspace, but this breaks circuit interactions
 	forceMove(reciever)

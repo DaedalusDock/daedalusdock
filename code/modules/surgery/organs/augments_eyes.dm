@@ -16,7 +16,10 @@
 	var/HUD_trait = null
 
 /obj/item/organ/cyberimp/eyes/hud/Insert(mob/living/carbon/eye_owner, special = 0, drop_if_replaced = FALSE)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	if(HUD_type)
 		var/datum/atom_hud/hud = GLOB.huds[HUD_type]
 		hud.add_hud_to(eye_owner)

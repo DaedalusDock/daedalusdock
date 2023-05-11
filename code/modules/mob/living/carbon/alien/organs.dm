@@ -68,7 +68,10 @@
 		owner.adjustPlasma(0.1 * plasma_rate * delta_time)
 
 /obj/item/organ/alien/plasmavessel/Insert(mob/living/carbon/M, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	if(isalien(M))
 		var/mob/living/carbon/alien/A = M
 		A.updatePlasmaDisplay()
@@ -92,7 +95,10 @@
 	actions_types =list(/datum/action/cooldown/alien/whisper)
 
 /obj/item/organ/alien/hivenode/Insert(mob/living/carbon/M, special = 0)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	M.faction |= ROLE_ALIEN
 	ADD_TRAIT(M, TRAIT_XENO_IMMUNE, ORGAN_TRAIT)
 

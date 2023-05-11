@@ -16,7 +16,10 @@
 		Insert(loc)
 
 /obj/item/organ/body_egg/Insert(mob/living/carbon/M, special = FALSE)
-	..()
+	. = ..()
+	if(!.)
+		return
+
 	ADD_TRAIT(owner, TRAIT_XENO_HOST, ORGAN_TRAIT)
 	ADD_TRAIT(owner, TRAIT_XENO_IMMUNE, ORGAN_TRAIT)
 	owner.med_hud_set_status()

@@ -14,6 +14,9 @@
 
 /obj/item/organ/stomach/ethereal/Insert(mob/living/carbon/carbon, special = 0)
 	. = ..()
+	if(!.)
+		return
+
 	RegisterSignal(owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(charge))
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 	ADD_TRAIT(owner, TRAIT_NOHUNGER, src)

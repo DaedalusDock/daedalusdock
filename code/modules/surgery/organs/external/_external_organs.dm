@@ -139,6 +139,8 @@
 
 /obj/item/organ/antennae/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
 	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_antennae))
 	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_antennae))

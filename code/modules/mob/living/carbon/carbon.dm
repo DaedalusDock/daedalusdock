@@ -1003,8 +1003,8 @@
 	for(var/obj/item/organ/organ in organs)
 		organ.Insert(src)
 
-/proc/cmp_organ_slot_asc(slot_a, slot_b)
-	return GLOB.organ_process_order.Find(slot_a) - GLOB.organ_process_order.Find(slot_b)
+/proc/cmp_organ_slot_asc(obj/item/organ/slot_a, obj/item/organ/slot_b)
+	return GLOB.organ_process_order.Find(slot_a.slot) - GLOB.organ_process_order.Find(slot_b.slot)
 
 /mob/living/carbon/vv_get_dropdown()
 	. = ..()

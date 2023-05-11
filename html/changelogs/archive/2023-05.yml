@@ -10,3 +10,6 @@
   Kapu1178:
   - bugfix: Raising the security level to blue will no longer sometimes start nightshifts
   - bugfix: Server hub entry will no longer be cut short
+2023-05-11:
+  Kapu1178:
+  - code_imp: Fixed an invisible runtime.

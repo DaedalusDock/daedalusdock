@@ -184,8 +184,6 @@
 	else if(ownerlimb)
 		remove_from_limb()
 
-	add_to_limb(bodypart)
-
 	if(bodypart_owner)
 		Insert(bodypart_owner, TRUE)
 	else

@@ -77,7 +77,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
 	else
-		if(cosmetic_only)
+		if(visual)
 			if(ownerlimb)
 				remove_from_limb()
 
@@ -93,6 +93,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 				stack_trace("Unremovable organ tried to be removed!")
 				qdel(src)
 				return //Don't move it out of nullspace if it's deleted.
+	return ..()
+
+/// A little hack to ensure old behavior for now.
+/obj/item/organ/ex_act(severity, target)
+	if(visual && ownerlimb)
+		return
 	return ..()
 
 /*

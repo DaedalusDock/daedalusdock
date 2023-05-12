@@ -351,7 +351,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/organ/oldorgan = C.getorganslot(slot) //used in removing
 		var/obj/item/organ/neworgan = slot_mutantorgans[slot] //used in adding
 
-		if(visual_only && !initial(neworgan.visual))
+		if(visual_only && !initial(neworgan.cosmetic_only))
 			continue
 
 		var/used_neworgan = FALSE

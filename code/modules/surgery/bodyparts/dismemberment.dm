@@ -179,8 +179,8 @@
 
 ///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner)
-	if(bodypart_owner)
-		Remove(bodypart_owner, TRUE)
+	if(owner)
+		Remove(owner, TRUE)
 	else if(ownerlimb)
 		remove_from_limb()
 

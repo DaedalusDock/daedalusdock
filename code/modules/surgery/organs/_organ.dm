@@ -141,7 +141,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		/// Otherwise life processing breaks down
 		sortTim(owner.processing_organs, GLOBAL_PROC_REF(cmp_organ_slot_asc))
 
-	if(visual && reciever.dna?) //Brains are visual and I don't know why. Blame lemon.
+	if(visual && reciever.dna?.features) //Brains are visual and I don't know why. Blame lemon.
 		if(!stored_feature_id) //We only want this set *once*
 			stored_feature_id = reciever.dna.features[feature_key]
 

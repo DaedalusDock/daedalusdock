@@ -401,7 +401,6 @@
 			brain.brainmob = brainmob //Set the brain to use the brainmob
 			brainmob = null //Set head brainmob var to null
 		brain.Insert(new_head_owner) //Now insert the brain proper
-		brain = null //No more brain in the head
 
 	if(tongue)
 		tongue = null

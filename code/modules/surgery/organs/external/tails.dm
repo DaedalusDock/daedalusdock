@@ -163,14 +163,17 @@
 		var/icon2use = sprite_datum.icon
 		var/state2use = build_icon_state(physique, image_layer)
 
-		var/mutable_appearance/tail_secondary = mutable_appearance(icon2use, "[state2use]_secondary", layer = -layer)
-		var/mutable_appearance/tail_tertiary = mutable_appearance(icon2use, "[state2use]_tertiary", layer = -layer)
+		if(icon_exists(icon2use, "[state2use]_secondary"))
+			var/mutable_appearance/tail_secondary = mutable_appearance(icon2use, "[state2use]_secondary", layer = -image_layer)
+			tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
+			. += tail_secondary
 
-		tail_secondary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_2]
-		tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]
+		if(icon_exists(icon2use, "[state2use]_tertiary"))
+			var/mutable_appearance/tail_tertiary = mutable_appearance(icon2use, "[state2use]_tertiary", layer = -image_layer)
 
-		. += tail_secondary
-		. += tail_tertiary
+			tail_tertiary.color = mutcolors[MUTCOLORS_TESHARI_TAIL_3]
+			. += tail_tertiary
+
 
 // Vox tail
 /obj/item/organ/tail/vox

@@ -179,3 +179,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Sort by plane, then by layer. Approximately BYOND rendering order.
 /proc/cmp_zm_render_order(atom/A, atom/B)
 	return (B.plane - A.plane) || (B.layer - A.layer)
+
+/// Sort modules by priority
+/proc/cmp_pref_modules(datum/preference_group/A, datum/preference_group/B)
+	return B.priority - A.priority

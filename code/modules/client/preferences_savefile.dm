@@ -314,6 +314,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Quirks
 	READ_FILE(S["all_quirks"], all_quirks)
 
+	READ_FILE(S["real_name"], character_name)
+
 	//PARIAH EDIT ADDITION
 	load_character_pariah(S)
 

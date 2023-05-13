@@ -34,6 +34,9 @@ GLOBAL_LIST_INIT(preference_entries, init_preference_entries())
 /// An assoc list of preference entries by their `savefile_key`
 GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
+/// A list of preference modules.
+GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
+
 /proc/init_preference_entries()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
@@ -50,6 +53,24 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 		output[initial(preference_type.savefile_key)] = GLOB.preference_entries[preference_type]
 	return output
 
+/proc/init_all_pref_groups()
+	. = list()
+	for(var/datum/preference_group/module as anything in typesof(/datum/preference_group))
+		if(initial(module.abstract_type) == module)
+			continue
+
+		. += new module()
+
+	spawn(0)
+		_setup_cats()
+
+	sortTim(., PROC_REF(cmp_pref_modules))
+
+/proc/_setup_cats()
+	for(var/datum/preference_group/category/P in GLOB.all_pref_groups)
+		for(var/i in 1 to length(P.modules))
+			P.modules[i] = locate(P.modules[i]) in GLOB.all_pref_groups
+
 /// Returns a flat list of preferences in order of their priority
 /proc/get_preferences_in_priority_order()
 	var/list/preferences[MAX_PREFERENCE_PRIORITY]
@@ -65,6 +86,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /// Represents an individual preference.
 /datum/preference
+	/// The display default name when inserted into the chargen
+	var/explanation = "ERROR"
+
 	/// The key inside the savefile to use.
 	/// This is also sent to the UI.
 	/// Once you pick this, don't change it.
@@ -346,6 +370,10 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	var/is_on_character_page = preference_tab == PREFERENCE_TAB_CHARACTER_PREFERENCES
 	var/is_character_preference = savefile_identifier == PREFERENCE_CHARACTER
 	return is_on_character_page == is_character_preference
+
+/datum/preference/proc/clicked(mob/user, datum/preferences/prefs)
+	SHOULD_CALL_PARENT(TRUE)
+	return FALSE
 
 /// A preference that is a choice of one option among a fixed set.
 /// Used for preferences such as clothing.

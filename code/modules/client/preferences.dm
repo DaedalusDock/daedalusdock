@@ -94,6 +94,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))
 		middleware += new middleware_type(src)
 
+	html_new(C)
+
 	if(istype(C))
 		if(!is_guest_key(C.key))
 			load_path(C.ckey)
@@ -447,6 +449,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		update_static_data(usr)
 		ui_interact(usr)
 		return TRUE
+
+	return html_topic(href, href_list)
 
 /datum/preferences/proc/create_character_preview_view(mob/user)
 	character_preview_view = new(null, src, user.client)

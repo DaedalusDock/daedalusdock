@@ -1,0 +1,14 @@
+/datum/preference_group/category/general
+	name = "General"
+	priority = 100
+
+	modules = list(
+		/datum/preference_group/body,
+		/datum/preference_group/religion
+	)
+
+/datum/preference_group/category/general/get_content(datum/preferences/prefs)
+	. = ..()
+	for(var/datum/preference_group/module as anything in modules)
+		. += module.get_content(prefs)
+

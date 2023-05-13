@@ -14,6 +14,12 @@
 	/// If the highest priority job matches this, will prioritize this name in the UI
 	var/relevant_job
 
+/datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
+	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|text
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
+
 /datum/preference/name/apply_to_human(mob/living/carbon/human/target, value)
 	// Only real_name applies directly, everything else is applied by something else
 	return
@@ -146,7 +152,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Bible Name"
+	explanation = "Holy Book Name"
 	group = "religion"
 
 /datum/preference/name/bible/create_default_value()

@@ -372,8 +372,12 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	return is_on_character_page == is_character_preference
 
 /datum/preference/proc/clicked(mob/user, datum/preferences/prefs)
-	SHOULD_CALL_PARENT(TRUE)
+	if(user_edit(user, prefs))
+		return TRUE
 	return FALSE
+
+/datum/preference/proc/user_edit(mob/user, datum/preferences/prefs)
+	CRASH("Unimplimented preference edit!")
 
 /// A preference that is a choice of one option among a fixed set.
 /// Used for preferences such as clothing.
@@ -466,6 +470,12 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		data["name"] = main_feature_name
 
 	return data
+
+/datum/preference/choiced/user_edit(mob/user, datum/preferences/prefs)
+	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|anything in get_choices()
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
 
 /// A preference that represents an RGB color of something.
 /// Will give the value as 6 hex digits, without a hash.
@@ -560,6 +570,12 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		"maximum" = maximum,
 		"step" = step,
 	)
+
+/datum/preference/numeric/user_edit(mob/user, datum/preferences/prefs)
+	var/input = input(user, "Change [explanation] ([minimum] - [maximum][step != 1 ? "increment [step]" : ""])",, prefs.read_preference(type)) as null|num
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
 
 /// A prefernece whose value is always TRUE or FALSE
 /datum/preference/toggle

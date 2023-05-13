@@ -26,7 +26,7 @@
 		. += {"
 			<tr>
 				<td>[pref.explanation]:</td>
-				<td>[button_element(prefs, istext(result) ? capitalize(result) : result, "pref_act=\ref[pref]")]</td>
+				<td>[button_element(prefs, istext(result) ? capitalize(result) : result, "pref_act=[pref.type]")]</td>
 			</tr>
 		"}
 	. += "</table></fieldset>"

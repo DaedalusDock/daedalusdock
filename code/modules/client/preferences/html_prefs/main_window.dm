@@ -27,10 +27,11 @@
 		return TRUE
 
 	if(href_list["pref_act"])
-		var/datum/preference/P = locate(href_list["pref_act"]) in GLOB.preference_entries
+		var/datum/preference/P = GLOB.preference_entries[text2path(href_list["pref_act"])]
 		if(!P)
 			return TRUE
-		if(P.clicked(src, usr))
+		if(P.clicked(usr, src))
+			save_character()
 			update_html()
 		return TRUE
 
@@ -93,7 +94,7 @@
 		if(selected_category == P)
 			. += "<span class='linkOn'>[P.name]</span>"
 		else
-			. += button_element(P, P.name, "select_category=1")
+			. += button_element(src, P.name, "select_category=\ref[P]")
 	. += "</div><HR style='background-color: #202020'>"
 
 	return jointext(., "")

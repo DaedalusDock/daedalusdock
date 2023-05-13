@@ -17,6 +17,15 @@
 		change_character(usr)
 		return TRUE
 
+	if(href_list["select_preview"])
+		var/new_preview = href_list["select_preview"]
+		if(!(new_preview in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)))
+			return TRUE
+
+		preview_pref = new_preview
+		character_preview_view.update_body()
+		update_html()
+		return TRUE
 
 	if(href_list["select_category"])
 		var/datum/preference_group/category/C = locate(href_list["select_category"]) in GLOB.all_pref_groups
@@ -47,6 +56,13 @@
 	if(!user || !user.client)
 		return
 
+	if (isnull(character_preview_view))
+		character_preview_view = create_character_preview_view(user)
+	else if (character_preview_view.client != parent)
+		// The client re-logged, and doing this when they log back in doesn't seem to properly
+		// carry emissives.
+		character_preview_view.register_to_client(parent)
+
 	var/content = {"
 	<script type='text/javascript'>
 		function update_content(data){
@@ -67,6 +83,7 @@
 	. += "<fieldset class='computerPane' style='min-height:900px'>"
 	. += "<legend class='computerLegend' style='margin: 0 auto'>[button_element(src, character_name, "change_slot=1")]</legend>"
 	. += html_create_categories()
+	. += html_create_subheader()
 	. += "<div style='display:flex;flex-wrap:wrap'>"
 	. += selected_category.get_content(src)
 	. += "</div>"
@@ -99,3 +116,13 @@
 
 	return jointext(., "")
 
+/datum/preferences/proc/html_create_subheader()
+	. = list()
+	. += "<div style='text-align: center'>Character Preview<br>"
+	for(var/option in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR))
+		if(preview_pref == option)
+			. += "<span class='linkOn'>[option]</span>"
+		else
+			. += button_element(src, option, "select_preview=[option]")
+	. += "</div><HR style='background-color: #202020'>"
+	return jointext(., "")

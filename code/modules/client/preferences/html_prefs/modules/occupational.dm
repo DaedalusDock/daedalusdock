@@ -21,7 +21,7 @@
 			<b>Occupational</b>
 			<span class='tooltiptext'>A mask will not hide who you are from us.</span>
 		</legend>
-	<table style='border-collapse: collapse'>
+	<table style='border-collapse: collapse;width: 100%'>
 	"}
 	var/i
 	for(var/path in display)

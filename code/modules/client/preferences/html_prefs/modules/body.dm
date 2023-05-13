@@ -15,7 +15,7 @@
 			<b>Who Am I</b>
 			<span class='tooltiptext'>The eternal flame that is the soul.</span>
 		</legend>
-	<table>
+	<table style='width:100%'>
 	"}
 
 	for(var/path in display)

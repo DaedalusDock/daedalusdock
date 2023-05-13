@@ -172,7 +172,7 @@
 	busy = TRUE
 	playsound(src, 'goon/sounds/button.ogg')
 	update_appearance(UPDATE_OVERLAYS)
-	var/timecoeff = D.lathe_time_factor / efficiency_coeff
+	var/timecoeff = D.construction_time * efficiency_coeff
 	addtimer(CALLBACK(src, PROC_REF(do_print), D.build_path, amount, efficient_mats, D.dangerous_construction), (32 * timecoeff * amount) ** 0.8)
 	return TRUE
 

@@ -179,3 +179,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Sort by plane, then by layer. Approximately BYOND rendering order.
 /proc/cmp_zm_render_order(atom/A, atom/B)
 	return (B.plane - A.plane) || (B.layer - A.layer)
+
+/// Orders designs by name
+/proc/cmp_design_name(datum/design/A, datum/design/B)
+	return sorttext(B.name, A.name)

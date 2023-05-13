@@ -300,7 +300,10 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	var/obj/machinery/component_printer/printer = linked_component_printer?.resolve()
 	if(!printer)
 		return
-	.["stored_designs"] = printer.current_unlocked_designs
+	var/list/ids = list()
+	for(var/datum/design/D as anything in printer.internal_disk.read(DATA_IDX_DESIGNS))
+		ids += D.id
+	.["stored_designs"] = ids
 
 /obj/item/integrated_circuit/ui_data(mob/user)
 	. = list()

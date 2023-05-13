@@ -40,7 +40,7 @@
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)
 	new /obj/item/door_remote/civilian(src)
-	new /obj/item/circuitboard/machine/techfab/department/service(src)
+	new /obj/item/circuitboard/machine/fabricator/department/service(src)
 	new /obj/item/storage/photo_album/hop(src)
 	new /obj/item/storage/lockbox/medal/hop(src)
 
@@ -64,7 +64,7 @@
 	new /obj/item/storage/belt/security/full(src)
 	new /obj/item/gun/energy/e_gun/hos(src)
 	new /obj/item/pinpointer/nuke(src)
-	new /obj/item/circuitboard/machine/techfab/department/security(src)
+	new /obj/item/circuitboard/machine/fabricator/department/security(src)
 	new /obj/item/storage/photo_album/hos(src)
 
 

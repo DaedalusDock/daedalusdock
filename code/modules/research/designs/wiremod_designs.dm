@@ -4,38 +4,38 @@
 	id = "integrated_circuit"
 	build_path = /obj/item/integrated_circuit
 	build_type = IMPRINTER | COMPONENT_PRINTER
-	category = list("Circuitry", "Core")
+	category = list(DCAT_WIREMOD)
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/circuit_multitool
 	name = "Circuit Multitool"
 	desc = "A circuit multitool to mark entities and load them into."
 	id = "circuit_multitool"
 	build_path = /obj/item/multitool/circuit
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Core")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD)
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/usb_cable
 	name = "USB Cable"
 	desc = "A cable that allows certain shells to connect to nearby computers and machines."
 	id = "usb_cable"
 	build_path = /obj/item/usb_cable
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Core")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD)
 	// Yes, it would make sense to make them take plastic, but then less people would make them, and I think they're cool
 	materials = list(/datum/material/iron = 2500)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	mapload_design_flags = DESIGN_FAB_OMNI
 
 /datum/design/component
 	name = "Component ( NULL ENTRY )"
 	desc = "A component that goes into an integrated circuit."
 	build_type = IMPRINTER | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
-	category = list("Circuitry", "Components")
+	mapload_design_flags = DESIGN_FAB_OMNI
+	category = list(DCAT_WIREMOD)
 
 /datum/design/component/New()
 	. = ..()
@@ -339,7 +339,7 @@
 	build_path = /obj/item/circuit_component/pinpointer
 
 /datum/design/component/bci
-	category = list("Circuitry", "BCI Components")
+	category = list(DCAT_WIREMOD)
 
 /datum/design/component/bci/bci_action
 	name = "BCI Action Component"
@@ -427,66 +427,66 @@
 	id = "compact_remote_shell"
 	build_path = /obj/item/compact_remote
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 5000)
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/controller_shell
 	name = "Controller Shell"
 	desc = "A handheld shell with several buttons."
 	id = "controller_shell"
 	build_path = /obj/item/controller
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 7000)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/scanner_shell
 	name = "Scanner Shell"
 	desc = "A handheld scanner shell that can scan entities."
 	id = "scanner_shell"
 	build_path = /obj/item/wiremod_scanner
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 7000)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/gun_shell
 	name = "Gun Shell"
 	desc = "A handheld shell that can fire projectiles to output entities."
 	id = "gun_shell"
 	build_path = /obj/item/gun/energy/wiremod_gun
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 10000, /datum/material/plasma = 100)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/bot_shell
 	name = "Bot Shell"
 	desc = "An immobile shell that can store more components. Has a USB port to be able to connect to computers and machines."
 	id = "bot_shell"
 	build_path = /obj/item/shell/bot
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 10000)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/money_bot_shell
 	name = "Money Bot Shell"
 	desc = "An immobile shell that is similar to a regular bot shell, but accepts monetary inputs and can also dispense money."
 	id = "money_bot_shell"
 	build_path = /obj/item/shell/money_bot
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 10000, /datum/material/gold = 50)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/drone_shell
 	name = "Drone Shell"
 	desc = "A shell with the ability to move itself around."
 	id = "drone_shell"
 	build_path = /obj/item/shell/drone
-	build_type = PROTOLATHE | COMPONENT_PRINTER
+	build_type = FABRICATOR | COMPONENT_PRINTER
 	materials = list(
 		/datum/material/glass = 2000,
 		/datum/material/iron = 11000,
 		/datum/material/gold = 500,
 	)
-	category = list("Circuitry", "Shells")
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/server_shell
 	name = "Server Shell"
@@ -498,8 +498,8 @@
 		/datum/material/gold = 1500,
 	)
 	build_path = /obj/item/shell/server
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/airlock_shell
 	name = "Airlock Shell"
@@ -510,8 +510,8 @@
 		/datum/material/iron = 15000,
 	)
 	build_path = /obj/item/shell/airlock
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/dispenser_shell
 	name = "Dispenser Shell"
@@ -522,8 +522,8 @@
 		/datum/material/iron = 15000,
 	)
 	build_path = /obj/item/shell/dispenser
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/bci_shell
 	name = "Brain-Computer Interface Shell"
@@ -534,8 +534,8 @@
 		/datum/material/iron = 8000,
 	)
 	build_path = /obj/item/shell/bci
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/scanner_gate_shell
 	name = "Scanner Gate Shell"
@@ -546,8 +546,8 @@
 		/datum/material/iron = 12000,
 	)
 	build_path = /obj/item/shell/scanner_gate
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/board/bci_implanter
 	name = "Brain-Computer Interface Manipulation Chamber"
@@ -555,7 +555,7 @@
 	id = "bci_implanter"
 	build_path = /obj/item/circuitboard/machine/bci_implanter
 	build_type = IMPRINTER | COMPONENT_PRINTER
-	category = list("Circuitry", "Core")
+	category = list(DCAT_WIREMOD)
 
 /datum/design/assembly_shell
 	name = "Assembly Shell"
@@ -563,8 +563,8 @@
 	id = "assembly_shell"
 	materials = list(/datum/material/glass = 2000, /datum/material/iron = 5000)
 	build_path = /obj/item/assembly/wiremod
-	build_type = PROTOLATHE | COMPONENT_PRINTER
-	category = list("Circuitry", "Shells")
+	build_type = FABRICATOR | COMPONENT_PRINTER
+	category = list(DCAT_WIREMOD, "Shells")
 
 /datum/design/mod_module_shell
 	name = "MOD Module Shell"

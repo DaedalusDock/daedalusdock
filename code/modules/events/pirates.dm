@@ -101,8 +101,8 @@
 //Shuttle equipment
 
 /obj/machinery/shuttle_scrambler
-	name = "Data Siphon"
-	desc = "This heap of machinery steals credits and data from unprotected systems and locks down cargo shuttles."
+	name = "Monetary Siphon"
+	desc = "This heap of machinery steals credits from unprotected systems and locks down cargo shuttles."
 	icon = 'icons/obj/machines/dominator.dmi'
 	icon_state = "dominator"
 	density = TRUE
@@ -122,7 +122,6 @@
 				var/siphoned = min(D.account_balance,siphon_per_tick)
 				D.adjust_money(-siphoned)
 				credits_stored += siphoned
-			interrupt_research()
 		else
 			return
 	else
@@ -148,14 +147,6 @@
 	toggle_on(user)
 	update_appearance()
 	send_notification()
-
-//interrupt_research
-/obj/machinery/shuttle_scrambler/proc/interrupt_research()
-	for(var/obj/machinery/rnd/server/S in GLOB.machines)
-		if(S.machine_stat & (NOPOWER|BROKEN))
-			continue
-		S.emp_act(1)
-		new /obj/effect/temp_visual/emp(get_turf(S))
 
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
 	if(credits_stored) // Prevents spamming empty holochips

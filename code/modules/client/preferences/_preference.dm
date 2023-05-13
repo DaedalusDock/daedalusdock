@@ -139,6 +139,9 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	/// If this preference is not accessible, do not attempt to apply it to mobs.
 	var/requires_accessible = FALSE
 
+	/// A related preference. Used by chargen to create inline buttons.
+	var/child_preference
+
 /// Called on the saved input when retrieving.
 /// Also called by the value sent from the user through UI. Do not trust it.
 /// Input is the value inside the savefile, output is to tell other code
@@ -371,14 +374,16 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	var/is_character_preference = savefile_identifier == PREFERENCE_CHARACTER
 	return is_on_character_page == is_character_preference
 
-/datum/preference/proc/clicked(mob/user, datum/preferences/prefs)
-	if(user_edit(user, prefs))
+/datum/preference/proc/clicked(mob/user, datum/preferences/prefs, list/params)
+	if(user_edit(user, prefs, params))
 		return TRUE
 	return FALSE
 
-/datum/preference/proc/user_edit(mob/user, datum/preferences/prefs)
+/datum/preference/proc/user_edit(mob/user, datum/preferences/prefs, list/params)
 	CRASH("Unimplimented preference edit!")
 
+/datum/preference/proc/get_button(datum/preferences/prefs)
+	CRASH("Unimplimented button!")
 /// A preference that is a choice of one option among a fixed set.
 /// Used for preferences such as clothing.
 /datum/preference/choiced
@@ -477,6 +482,9 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		return
 	return prefs.update_preference(src, input)
 
+/datum/preference/choiced/get_button(datum/preferences/prefs)
+	return button_element(prefs, capitalize(prefs.read_preference(type)), "pref_act=[type]")
+
 /// A preference that represents an RGB color of something.
 /// Will give the value as 6 hex digits, without a hash.
 /datum/preference/color
@@ -493,6 +501,15 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /datum/preference/color/is_valid(value)
 	return findtext(value, GLOB.is_color)
+
+/datum/preference/color/user_edit(mob/user, datum/preferences/prefs, list/params)
+	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|color
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
+
+/datum/preference/color/get_button(datum/preferences/prefs)
+	return color_button_element(prefs, prefs.read_preference(type), "pref_act=[type]")
 
 /// Takes an assoc list of names to /datum/sprite_accessory and returns a value
 /// fit for `/datum/preference/init_possible_values()`
@@ -576,6 +593,9 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	if(!input)
 		return
 	return prefs.update_preference(src, input)
+
+/datum/preference/numeric/get_button(datum/preferences/prefs)
+	return button_element(prefs, prefs.read_preference(type), "pref_act=[type]")
 
 /// A prefernece whose value is always TRUE or FALSE
 /datum/preference/toggle

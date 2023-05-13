@@ -27,6 +27,7 @@
 	return values
 
 /datum/preference/choiced/lizard_frills
+	explanation = "Frills"
 	savefile_key = "feature_lizard_frills"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -40,6 +41,7 @@
 	target.dna.features["frills"] = value
 
 /datum/preference/choiced/lizard_horns
+	explanation = "Horns"
 	savefile_key = "feature_lizard_horns"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -53,6 +55,7 @@
 	target.dna.features["horns"] = value
 
 /datum/preference/choiced/lizard_legs
+	explanation = "Leg Type"
 	savefile_key = "feature_lizard_legs"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -65,6 +68,7 @@
 	target.dna.features["legs"] = value
 
 /datum/preference/choiced/lizard_snout
+	explanation = "Snout"
 	savefile_key = "feature_lizard_snout"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -78,6 +82,7 @@
 	target.dna.features["snout"] = value
 
 /datum/preference/choiced/lizard_spines
+	explanation = "Spines"
 	savefile_key = "feature_lizard_spines"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -90,6 +95,7 @@
 	target.dna.features["spines"] = value
 
 /datum/preference/choiced/lizard_tail
+	explanation = "Tail"
 	savefile_key = "feature_lizard_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES

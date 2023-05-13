@@ -183,3 +183,6 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Sort modules by priority
 /proc/cmp_pref_modules(datum/preference_group/A, datum/preference_group/B)
 	return B.priority - A.priority
+
+/proc/cmp_pref_name(datum/preference/A, datum/preference/B)
+	return sorttext(B.explanation, A.explanation)

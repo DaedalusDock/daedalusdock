@@ -29,11 +29,10 @@
 		var/datum/preference/pref = GLOB.preference_entries[path]
 		if(display[path] && !pref.is_accessible(prefs))
 			continue
-		var/result = prefs.read_preference(pref.type)
 		. += {"
 			<tr>
 				<td style='padding: 4px 8px'>[pref.explanation]:</td>
-				<td style='padding: 4px 8px'>[button_element(prefs, istext(result) ? capitalize(result) : result, "pref_act=[pref.type]")]</td>
+				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}
 		if(i == length(display)) //Insert an <hr> tag at the end
@@ -43,11 +42,10 @@
 		var/datum/preference/pref = GLOB.preference_entries[path]
 		if(display[path] && !pref.is_accessible(prefs))
 			continue
-		var/result = prefs.read_preference(pref.type)
 		. += {"
 			<tr>
 				<td style='padding: 4px 8px'>[pref.explanation]:</td>
-				<td style='padding: 4px 8px'>[button_element(prefs, istext(result) ? capitalize(result) : result, "pref_act=[pref.type]")]</td>
+				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}
 

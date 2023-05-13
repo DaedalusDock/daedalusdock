@@ -2640,6 +2640,7 @@
 #include "code\modules\client\preferences\html_prefs\categories\quirks.dm"
 #include "code\modules\client\preferences\html_prefs\modules\body.dm"
 #include "code\modules\client\preferences\html_prefs\modules\occupational.dm"
+#include "code\modules\client\preferences\html_prefs\modules\species.dm"
 #include "code\modules\client\preferences\middleware\_middleware.dm"
 #include "code\modules\client\preferences\middleware\antags.dm"
 #include "code\modules\client\preferences\middleware\jobs.dm"

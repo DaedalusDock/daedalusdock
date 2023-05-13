@@ -491,3 +491,10 @@ ul.sparse {
 .tooltip:hover .tooltiptext {
 	visibility: visible;
 }
+
+.box
+{
+	border: 3px ridge black !important;
+	padding: 12px !important;
+	display: inline-block;
+}

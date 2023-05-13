@@ -1675,12 +1675,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			|| (preference.relevant_species_trait in species_traits) \
 			|| (preference.relevant_external_organ in external_organs)
 		)
-			features += preference.savefile_key
+			features[preference.savefile_key] = preference
 
 	for (var/obj/item/organ/external/organ_type as anything in external_organs)
 		var/preference = initial(organ_type.preference)
 		if (!isnull(preference))
-			features += preference
+			features[preference] = GLOB.preference_entries_by_key[preference]
+
+	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 
 	GLOB.features_by_species[type] = features
 

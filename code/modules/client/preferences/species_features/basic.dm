@@ -23,6 +23,7 @@
 	return values
 
 /datum/preference/color/eye_color
+	explanation = "Eye Color"
 	savefile_key = "eye_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -54,12 +55,14 @@
 	return "#000000"
 
 /datum/preference/choiced/facial_hairstyle
+	explanation = "Facial Hair"
 	savefile_key = "facial_style_name"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Facial hair"
 	should_generate_icons = TRUE
 	relevant_species_trait = FACEHAIR
+	child_preference = /datum/preference/color/facial_hair_color
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.facial_hairstyles_list)
@@ -79,6 +82,7 @@
 	return "Shaved"
 
 /datum/preference/color/facial_hair_color
+	explanation = "Facial Hair Color"
 	savefile_key = "facial_hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
@@ -92,6 +96,7 @@
 	return "#422f03"
 
 /datum/preference/choiced/facial_hair_gradient
+	explanation = "Facial Hair Gradient"
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient"
@@ -109,7 +114,8 @@
 	return "None"
 
 /datum/preference/color/facial_hair_gradient
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Facial Hair Gradient Color"
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient_color"
 	relevant_species_trait = FACEHAIR
@@ -125,6 +131,7 @@
 	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != "None"
 
 /datum/preference/color/hair_color
+	explanation = "Hair Color"
 	savefile_key = "hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
@@ -137,6 +144,7 @@
 	return "#422f03"
 
 /datum/preference/choiced/hairstyle
+	explanation = "Hairstyle"
 	savefile_key = "hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -145,6 +153,7 @@
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
 	exclude_species_traits = list(NONHUMANHAIR)
+	child_preference = /datum/preference/color/hair_color
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
@@ -168,10 +177,12 @@
 	return "Bald"
 
 /datum/preference/choiced/hair_gradient
+	explanation = "Hairstyle Gradient"
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "hair_gradient"
 	relevant_species_trait = HAIR
+	child_preference = /datum/preference/color/hair_gradient
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
 	return assoc_to_keys(GLOB.hair_gradients_list)
@@ -193,6 +204,7 @@
 	return TRUE
 
 /datum/preference/color/hair_gradient
+	explanation = "Hairstyle Gradient Color"
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "hair_gradient_color"
@@ -209,6 +221,7 @@
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
 
 /datum/preference/color/sclera
+	explanation = "Sclera Color"
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "sclera_color"
@@ -243,6 +256,28 @@
 	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value[1])
 	target.dna.mutant_colors["[color_key]_2"] = sanitize_hexcolor(value[2])
 	target.dna.mutant_colors["[color_key]_3"] = sanitize_hexcolor(value[3])
+
+/datum/preference/tri_color/user_edit(mob/user, datum/preferences/prefs, list/params)
+	var/list/colors = prefs.read_preference(type)
+	var/index = text2num(params["color"])
+
+	if(!index)
+		return
+
+	var/default = colors[index]
+
+	var/input = input(user, "Change [explanation]",, default) as null|color
+	if(!input)
+		return
+	colors[index] = input
+	return prefs.update_preference(src, colors)
+
+/datum/preference/tri_color/get_button(datum/preferences/prefs)
+	var/list/colors = prefs.read_preference(type)
+	. = ""
+	. += color_button_element(prefs, colors[1], "pref_act=[type];color=1")
+	. += color_button_element(prefs, colors[2], "pref_act=[type];color=2")
+	. += color_button_element(prefs, colors[3], "pref_act=[type];color=3")
 
 /datum/preference/appearance_mods
 	savefile_identifier = PREFERENCE_CHARACTER

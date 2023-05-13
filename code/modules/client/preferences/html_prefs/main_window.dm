@@ -39,7 +39,7 @@
 		var/datum/preference/P = GLOB.preference_entries[text2path(href_list["pref_act"])]
 		if(!P)
 			return TRUE
-		if(P.clicked(usr, src))
+		if(P.clicked(usr, src, href_list))
 			save_character()
 			update_html()
 		return TRUE
@@ -92,6 +92,10 @@
 
 /datum/preferences/proc/change_character()
 	var/list/characters = create_character_profiles()
+	for(var/i in 1 to length(characters))
+		var/character = characters[i]
+		if(isnull(character))
+			characters[i] = "New Character"
 
 	var/chosen_slot = input(usr, "Change Character",, characters[default_slot]) as null|anything in characters
 	if(!chosen_slot)

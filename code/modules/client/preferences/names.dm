@@ -14,12 +14,6 @@
 	/// If the highest priority job matches this, will prioritize this name in the UI
 	var/relevant_job
 
-/datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
-	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|text
-	if(!input)
-		return
-	return prefs.update_preference(src, input)
-
 /datum/preference/name/apply_to_human(mob/living/carbon/human/target, value)
 	// Only real_name applies directly, everything else is applied by something else
 	return
@@ -34,6 +28,15 @@
 
 /datum/preference/name/is_valid(value)
 	return istext(value) && !isnull(reject_bad_name(value, allow_numbers))
+
+/datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
+	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|text
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
+
+/datum/preference/name/get_button(datum/preferences/prefs)
+	return button_element(prefs, capitalize(prefs.read_preference(type)), "pref_act=[type]")
 
 /// A character's real name
 /datum/preference/name/real_name

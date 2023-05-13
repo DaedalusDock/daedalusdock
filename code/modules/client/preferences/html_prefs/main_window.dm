@@ -44,10 +44,9 @@
 			update_html()
 		return TRUE
 
-	/*if(href_list["close"])
-		var/client/C = usr.client
-		if(C)
-			C.clear_character_previews()*/
+	if(href_list["close"])
+		save_character()
+		QDEL_NULL(character_preview_view)
 
 /client/verb/dpref()
 	usr.client.prefs.html_show(usr)

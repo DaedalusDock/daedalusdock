@@ -528,7 +528,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 /atom/movable/screen/character_preview_view/Destroy()
 	QDEL_NULL(body)
-	QDEL_LIST(subscreens)
+	QDEL_LIST_ASSOC_VAL(subscreens)
 
 	for (var/plane_master in plane_masters)
 		client?.screen -= plane_master
@@ -551,7 +551,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 	else
 		body.wipe_state()
 	preferences.render_new_preview_appearance(body)
-	for(var/atom/movable/screen/subscreen as anything in subscreens)
+	for(var/index in subscreens)
+		var/atom/movable/screen/subscreen = subscreens[index]
 		var/cache_dir = subscreen.dir
 		subscreen.appearance = body.appearance
 		subscreen.dir = cache_dir

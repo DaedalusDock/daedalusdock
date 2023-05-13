@@ -387,47 +387,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			. += "[src] is made of fire-retardant materials."
 		return
 
-/obj/item/examine_more(mob/user)
-	. = ..()
-	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER))
-		. += research_scan(user)
-
-/obj/item/proc/research_scan(mob/user)
-	/// Research prospects, including boostable nodes and point values. Deliver to a console to know whether the boosts have already been used.
-	var/list/research_msg = list("<font color='purple'>Research prospects:</font> ")
-	///Separator between the items on the list
-	var/sep = ""
-	///Nodes that can be boosted
-	var/list/boostable_nodes = techweb_item_boost_check(src)
-	if (boostable_nodes)
-		for(var/id in boostable_nodes)
-			var/datum/techweb_node/node = SSresearch.techweb_node_by_id(id)
-			if(!node)
-				continue
-			research_msg += sep
-			research_msg += node.display_name
-			sep = ", "
-	var/list/points = techweb_item_point_check(src)
-	if (length(points))
-		sep = ", "
-		research_msg += techweb_point_display_generic(points)
-
-	if (!sep) // nothing was shown
-		research_msg += "None"
-
-	// Extractable materials. Only shows the names, not the amounts.
-	research_msg += ".<br><font color='purple'>Extractable materials:</font> "
-	if (length(custom_materials))
-		sep = ""
-		for(var/mat in custom_materials)
-			research_msg += sep
-			research_msg += CallMaterialName(mat)
-			sep = ", "
-	else
-		research_msg += "None"
-	research_msg += "."
-	return research_msg.Join()
-
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
 	ui_interact(user)
@@ -1417,14 +1376,15 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/image/attack_image
 	if(visual_effect_icon)
 		attack_image = image('icons/effects/effects.dmi', attacked_atom, visual_effect_icon, attacked_atom.layer + 0.1)
+
 	else if(used_item)
 		attack_image = image(icon = used_item, loc = attacked_atom, layer = attacked_atom.layer + 0.1)
-		attack_image.plane = attacked_atom.plane + 1
+		attack_image.plane = attacked_atom.plane
 
 		// Scale the icon.
 		attack_image.transform *= 0.4
 		// The icon should not rotate.
-		attack_image.appearance_flags = APPEARANCE_UI
+		attack_image.appearance_flags = APPEARANCE_UI|KEEP_APART
 
 		// Set the direction of the icon animation.
 		var/direction = get_dir(src, attacked_atom)
@@ -1451,6 +1411,12 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	animate(attack_image, alpha = 175, transform = copy_transform.Scale(0.75), pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 	animate(time = 1)
 	animate(alpha = 0, time = 3, easing = CIRCULAR_EASING|EASE_OUT)
+
+/mob/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item)
+	if(used_item)
+		animate_interact(attacked_atom, INTERACT_GENERIC, used_item)
+		return
+	return ..()
 
 /// Common proc used by painting tools like spraycans and palettes that can access the entire 24 bits color space.
 /obj/item/proc/pick_painting_tool_color(mob/user, default_color)

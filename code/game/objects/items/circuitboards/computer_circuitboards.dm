@@ -389,16 +389,6 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/mecha
 
-/obj/item/circuitboard/computer/rdconsole
-	name = "R&D Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdconsole
-
-/obj/item/circuitboard/computer/rdservercontrol
-	name = "R&D Server Control (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdservercontrol
-
 /obj/item/circuitboard/computer/research
 	name = "Research Monitor (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -423,6 +413,12 @@
 	name = "DNA Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/scan_consolenew
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/computer/mechpad
 	name = "Mecha Orbital Pad Console (Computer Board)"

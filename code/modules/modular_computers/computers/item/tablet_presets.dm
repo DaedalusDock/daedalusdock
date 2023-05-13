@@ -80,7 +80,6 @@
 	var/obj/item/computer_hardware/hard_drive/small/hard_drive = find_hardware_by_name("solid state drive")
 	install_component(new /obj/item/computer_hardware/card_slot/secondary)
 	hard_drive.store_file(new /datum/computer_file/program/budgetorders)
-	hard_drive.store_file(new /datum/computer_file/program/science)
 
 /obj/item/modular_computer/tablet/preset/advanced/command/engineering/Initialize(mapload)
 	. = ..()

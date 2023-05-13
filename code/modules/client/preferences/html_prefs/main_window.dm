@@ -46,6 +46,7 @@
 
 	if(href_list["close"])
 		save_character()
+		save_preferences()
 		QDEL_NULL(character_preview_view)
 
 /client/verb/dpref()
@@ -101,6 +102,14 @@
 
 	default_slot = characters.Find(chosen_slot)
 	character_name = chosen_slot
+
+	save_character()
+
+	// SAFETY: `load_character` performs sanitization the slot number
+	if (!load_character(default_slot))
+		CRASH("Failed to load character for slot [default_slot]!")
+
+	character_preview_view.update_body()
 	update_html()
 
 /datum/preferences/proc/html_create_categories()

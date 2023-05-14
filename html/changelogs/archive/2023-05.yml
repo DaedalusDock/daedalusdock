@@ -16,3 +16,12 @@
 2023-05-13:
   san7890:
   - bugfix: Gravity runtime
+2023-05-14:
+  Kapu1178:
+  - bugfix: Item Attack Animations work again.
+  - bugfix: ZAS Runtime
+  - bugfix: Camera lights are no longer extremely powerful
+  - tweak: A few lights have been slightly changed in color.
+  Kapu1178, DimWhat, Goonstation Spriters:
+  - imageadd: Fabricators courtesy of DimWhat and the other goonstation spriters.
+  - balance: Removed RnD

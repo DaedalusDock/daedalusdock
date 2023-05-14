@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Camera lights are no longer extremely powerful
-  - tweak: A few lights have been slightly changed in color.

@@ -494,7 +494,8 @@ ul.sparse {
 
 .box
 {
-	border: 3px ridge black !important;
-	padding: 12px !important;
-	display: inline-block;
+	border: 2px ridge black !important;
+	padding: 0.5px 9px !important;
+	margin: 2px !important;
+	display: inline;
 }

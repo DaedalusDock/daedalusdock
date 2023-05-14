@@ -5,6 +5,7 @@
 		/datum/preference/numeric/age,
 		/datum/preference/choiced/gender,
 		/datum/preference/choiced/body_type = TRUE,
+		/datum/preference/choiced/species
 	)
 
 /datum/preference_group/body/get_content(datum/preferences/prefs)

@@ -4,8 +4,8 @@
 
 	modules = list(
 		/datum/preference_group/body,
+		/datum/preference_group/species,
 		/datum/preference_group/job_specific,
-		/datum/preference_group/species
 	)
 
 /datum/preference_group/category/general/get_content(datum/preferences/prefs)

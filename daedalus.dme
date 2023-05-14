@@ -2638,6 +2638,7 @@
 #include "code\modules\client\preferences\html_prefs\categories\appearance.dm"
 #include "code\modules\client\preferences\html_prefs\categories\general.dm"
 #include "code\modules\client\preferences\html_prefs\categories\quirks.dm"
+#include "code\modules\client\preferences\html_prefs\modules\appearance_mods.dm"
 #include "code\modules\client\preferences\html_prefs\modules\body.dm"
 #include "code\modules\client\preferences\html_prefs\modules\occupational.dm"
 #include "code\modules\client\preferences\html_prefs\modules\species.dm"

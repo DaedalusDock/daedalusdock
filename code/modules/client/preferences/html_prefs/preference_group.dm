@@ -11,6 +11,9 @@
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 
+/datum/preference_group/proc/should_display(datum/preferences/prefs)
+	return TRUE
+
 /datum/preference_group/category
 	abstract_type = /datum/preference_group/category
 

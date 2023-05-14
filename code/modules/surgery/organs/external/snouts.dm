@@ -22,7 +22,6 @@
 /obj/item/organ/external/snout/vox
 	name = "beak"
 	feature_key = "vox_snout"
-	preference = "feature_vox_snout"
 
 	external_bodytypes = BODYTYPE_VOX_BEAK
 	dna_block = DNA_VOX_SNOUT_BLOCK

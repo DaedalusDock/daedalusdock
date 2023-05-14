@@ -1,4 +1,5 @@
 /datum/preference/choiced/ethereal_color
+	explanation = "Bioluminescence"
 	savefile_key = "feature_ethcolor"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES

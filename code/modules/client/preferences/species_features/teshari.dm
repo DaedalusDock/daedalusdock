@@ -2,12 +2,15 @@
 #define TESH_FEATHER_COLOR "#996633"
 
 /datum/preference/choiced/teshari_feathers
+	explanation = "Head Feathers"
 	savefile_key = "teshari_feathers"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Feathers"
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/external/teshari_feathers
+
+	child_preference = /datum/preference/color/hair_color
 
 /datum/preference/choiced/teshari_feathers/init_possible_values()
 	var/list/values = list()
@@ -45,12 +48,15 @@
 	return data
 
 /datum/preference/choiced/teshari_ears
+	explanation = "Ears"
 	savefile_key = "teshari_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ears"
 	relevant_external_organ = /obj/item/organ/external/teshari_ears
 	should_generate_icons = TRUE
+
+	child_preference = /datum/preference/color/facial_hair_color
 
 /datum/preference/choiced/teshari_ears/init_possible_values()
 	var/list/values = list()
@@ -91,12 +97,15 @@
 	target.dna.features["teshari_ears"] = value
 
 /datum/preference/choiced/teshari_body_feathers
+	explanation = "Body Feathers"
 	savefile_key = "teshari_body_feathers"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body feathers"
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+
+	child_preference = /datum/preference/tri_color/teshari_body_feathers
 
 /datum/preference/choiced/teshari_body_feathers/init_possible_values()
 	var/list/values = list()
@@ -131,12 +140,15 @@
 	target.dna.features["teshari_body_feathers"] = value
 
 /datum/preference/choiced/tail_teshari
+	explanation = "Tail"
 	savefile_key = "tail_teshari"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Tails"
 	relevant_external_organ = /obj/item/organ/external/tail/teshari
 	should_generate_icons = TRUE
+
+	child_preference = /datum/preference/tri_color/teshari_tail
 
 /datum/preference/choiced/tail_teshari/init_possible_values()
 	var/list/values = list()
@@ -157,7 +169,7 @@
 	target.dna.features["tail_teshari"] = value
 
 /datum/preference/tri_color/teshari_tail
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_tail_colors"
 	relevant_external_organ = /obj/item/organ/external/tail/teshari
@@ -165,7 +177,7 @@
 	color_key = MUTCOLORS_KEY_TESHARI_TAIL
 
 /datum/preference/tri_color/teshari_body_feathers
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_body_colors"
 	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers

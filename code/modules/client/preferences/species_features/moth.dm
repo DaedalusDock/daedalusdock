@@ -1,4 +1,5 @@
 /datum/preference/choiced/moth_antennae
+	explanation = "Antennae"
 	savefile_key = "feature_moth_antennae"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -29,6 +30,7 @@
 	target.dna.features["moth_antennae"] = value
 
 /datum/preference/choiced/moth_markings
+	explanation = "Markings"
 	savefile_key = "feature_moth_markings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -84,6 +86,7 @@
 	target.dna.features["moth_markings"] = value
 
 /datum/preference/choiced/moth_wings
+	explanation = "Wings"
 	savefile_key = "feature_moth_wings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -107,6 +110,7 @@
 	target.dna.features["moth_wings"] = value
 
 /datum/preference/choiced/hairstyle_moth
+	explanation = "Furstyle"
 	savefile_key = "moth_hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES

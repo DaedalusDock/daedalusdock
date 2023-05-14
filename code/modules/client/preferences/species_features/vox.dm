@@ -37,12 +37,15 @@
 	return values
 
 /datum/preference/choiced/vox_hair
+	explanation = "Quills"
 	savefile_key = "feature_vox_hair"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	should_generate_icons = TRUE
 	main_feature_name = "Vox Hairstyle"
 	relevant_mutant_bodypart = "vox_hair"
+
+	child_preference = /datum/preference/color/hair_color
 
 /datum/preference/choiced/vox_hair/init_possible_values()
 	return generate_vox_side_shots(GLOB.vox_hair_list, "vox_hair")
@@ -58,6 +61,7 @@
 	return data
 
 /datum/preference/choiced/vox_facial_hair
+	explanation = "Facial Quills"
 	savefile_key = "feature_vox_facial_hair"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
@@ -72,6 +76,7 @@
 	target.dna.features["vox_facial_hair"] = value
 
 /datum/preference/choiced/tail_vox
+	explanation = "Tail"
 	savefile_key = "tail_vox"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES

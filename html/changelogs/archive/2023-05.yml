@@ -25,3 +25,7 @@
   Kapu1178, DimWhat, Goonstation Spriters:
   - imageadd: Fabricators courtesy of DimWhat and the other goonstation spriters.
   - balance: Removed RnD
+2023-05-15:
+  Gamer025:
+  - bugfix: You should no longer receive "Your previous action was ignored..." messages
+      when you join a server

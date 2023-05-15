@@ -98,12 +98,7 @@
 		ATMOS_USE_POWER(draw)
 		last_power_draw = draw
 
-	var/datum/pipeline/parent1 = parents[1]
-	parent1.update = TRUE
-	var/datum/pipeline/parent2 = parents[2]
-	parent2.update = TRUE
-	var/datum/pipeline/parent3 = parents[3]
-	parent3.update = TRUE
+	update_parents()
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

@@ -246,11 +246,12 @@
 
 	update = TRUE
 
-/datum/pipeline/proc/return_air()
+/datum/pipeline/proc/return_airs()
 	. = other_airs + air
 	if(null in .)
 		stack_trace("[src] has one or more null gas mixtures, which may cause bugs. Null mixtures will not be considered in reconcile_air().")
-		return remove_nulls_from_list(.)
+		list_clear_nulls(.)
+		return .
 
 /// Called when the pipenet needs to update and mix together all the air mixes
 /datum/pipeline/proc/reconcile_air()

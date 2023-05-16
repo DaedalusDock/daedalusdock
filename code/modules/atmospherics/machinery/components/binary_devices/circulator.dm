@@ -62,11 +62,6 @@
 	if(!input_pipeline)
 		return
 
-	//This is a pretty big hack
-	var/input_network_volume = 0
-	for(var/datum/gas_mixture/mix as anything in input_pipeline.return_airs())
-		input_network_volume += mix.volume
-
 	var/input_starting_pressure = air2.returnPressure()
 	var/output_starting_pressure = air1.returnPressure()
 	last_pressure_delta = max(input_starting_pressure - output_starting_pressure - 5, 0)
@@ -75,11 +70,11 @@
 	if(air1.temperature > 0 && last_pressure_delta > 5)
 
 		//Calculate necessary moles to transfer using PV = nRT
-		recent_moles_transferred = (last_pressure_delta*input_network_volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
-		volume_capacity_used = min( (last_pressure_delta*input_network_volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
+		recent_moles_transferred = (last_pressure_delta*input_pipeline.combined_volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
+		volume_capacity_used = min( (last_pressure_delta*input_pipeline.combined_volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
 
 		//Calculate energy generated from kinetic turbine
-		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * input_network_volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
+		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * input_pipeline.combined_volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
 
 		//Actually transfer the gas
 		removed = air2.remove(recent_moles_transferred)

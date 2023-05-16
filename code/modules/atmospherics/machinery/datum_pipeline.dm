@@ -5,6 +5,8 @@
 	var/list/obj/machinery/atmospherics/pipe/members
 	var/list/obj/machinery/atmospherics/components/other_atmos_machines
 
+	///The volume of all of the contained airs.
+	var/combined_volume = 0
 	///Should we equalize air amoung all our members?
 	var/update = TRUE
 	///Is this pipeline being reconstructed?
@@ -258,6 +260,7 @@
 	var/list/datum/gas_mixture/gas_mixture_list = list()
 	var/list/datum/pipeline/pipeline_list = list()
 	pipeline_list += src
+	combined_volume = 0
 
 	for(var/i = 1; i <= pipeline_list.len; i++) //can't do a for-each here because we may add to the list within the loop
 		var/datum/pipeline/pipeline = pipeline_list[i]
@@ -278,7 +281,6 @@
 
 	for(var/datum/gas_mixture/gas_mixture as anything in gas_mixture_list)
 		total_gas_mixture.volume += gas_mixture.volume
-
 		// This is sort of a combined merge + heat_capacity calculation
 
 		var/list/giver_gases = gas_mixture.gas
@@ -292,6 +294,7 @@
 	total_heat_capacity = total_gas_mixture.getHeatCapacity()
 	total_gas_mixture.temperature = total_heat_capacity ? (total_thermal_energy / total_heat_capacity) : 0
 
+	combined_volume = total_gas_mixture.volume
 	if(total_gas_mixture.volume > 0)
 		//Update individual gas_mixtures by volume ratio
 		for(var/mixture in gas_mixture_list)

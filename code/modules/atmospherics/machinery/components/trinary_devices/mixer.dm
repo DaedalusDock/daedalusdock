@@ -80,10 +80,10 @@
 	var/transfer_moles_max = INFINITY
 	var/transfer_moles = 0
 	/// Node 1
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node1_concentration/air1.volume)*air1.total_moles
 	// Node 2
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node2_concentration/air2.volume)*air2.total_moles
 	// Finalize
 	transfer_moles = clamp(transfer_moles, 0, transfer_moles_max)

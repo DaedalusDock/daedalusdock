@@ -14,7 +14,7 @@
 	density = TRUE
 	move_resist = MOVE_RESIST_DEFAULT
 
-	initial_volume = 400
+	initial_volume = 200
 
 	var/flipped = 0
 	var/mode = CIRCULATOR_HOT
@@ -32,7 +32,11 @@
 
 	var/active = FALSE
 
-/obj/machinery/atmospherics/components/binary/thermomachine/is_connectable()
+/obj/machinery/atmospherics/components/binary/circulator/New()
+	. = ..()
+	airs[2].volume = 400 //The input has a larger volume than the output
+
+/obj/machinery/atmospherics/components/binary/circulator/is_connectable()
 	if(!anchored)
 		return FALSE
 	return ..()
@@ -54,6 +58,9 @@
 	var/datum/gas_mixture/removed
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
+	var/datum/pipeline/input_pipeline = parents[2]
+	if(!input_pipeline)
+		return
 
 	var/input_starting_pressure = air2.returnPressure()
 	var/output_starting_pressure = air1.returnPressure()
@@ -63,17 +70,16 @@
 	if(air1.temperature > 0 && last_pressure_delta > 5)
 
 		//Calculate necessary moles to transfer using PV = nRT
-		recent_moles_transferred = (last_pressure_delta*air2.volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
-		volume_capacity_used = min( (last_pressure_delta*air2.volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
+		recent_moles_transferred = (last_pressure_delta*input_pipeline.combined_volume/(air2.temperature * R_IDEAL_GAS_EQUATION))/3 //uses the volume of the whole network, not just itself
+		volume_capacity_used = min( (last_pressure_delta*input_pipeline.combined_volume/3)/(input_starting_pressure*air2.volume) , 1) //how much of the gas in the input air volume is consumed
 
 		//Calculate energy generated from kinetic turbine
-		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * air1.volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
+		stored_energy += 1/ADIABATIC_EXPONENT * min(last_pressure_delta * input_pipeline.combined_volume , input_starting_pressure*air2.volume) * (1 - volume_ratio**ADIABATIC_EXPONENT) * kinetic_efficiency
 
 		//Actually transfer the gas
 		removed = air2.remove(recent_moles_transferred)
-		if(removed)
-			//Update the gas networks.
-			update_parents()
+
+		// NOTE: Typically you'd update parents here, but its all handled by the generator itself.
 
 	else
 		last_pressure_delta = 0
@@ -87,7 +93,7 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/process_atmos()
 	..()
-	update_appearance()
+	update_appearance(UPDATE_OVERLAYS|UPDATE_ICON_STATE)
 
 /obj/machinery/atmospherics/components/binary/circulator/update_icon_state()
 	if(!is_operational)
@@ -217,9 +223,9 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/disconnectFromGenerator()
 	if(mode)
-		generator.cold_circ = null
+		generator.circ1 = null
 	else
-		generator.hot_circ = null
+		generator.circ2 = null
 	generator.update_appearance()
 	generator = null
 

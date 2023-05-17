@@ -308,6 +308,11 @@
 	slot = ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS
 	layers = list(BODY_ADJ_LAYER)
 
+	///Unremovable is until the features are completely finished
+	organ_flags = ORGAN_UNREMOVABLE | ORGAN_EDIBLE
+	visual = TRUE
+	cosmetic_only = TRUE
+
 	feature_key = "teshari_body_feathers"
 	preference = "teshari_body_feathers"
 

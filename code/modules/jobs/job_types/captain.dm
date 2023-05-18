@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Nanotrasen officials and Space law"
-	selection_color = "#ccccff"
+	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14
 	exp_requirements = 180
@@ -29,7 +29,6 @@
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_CAPTAIN
 	department_for_prefs = /datum/job_department/captain
 	departments_list = list(
 		/datum/job_department/command,

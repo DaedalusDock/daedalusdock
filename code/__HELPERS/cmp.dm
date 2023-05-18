@@ -117,7 +117,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 		return sorttext(b_name, a_name)
 
 /proc/cmp_job_display_asc(datum/job/A, datum/job/B)
-	return A.display_order - B.display_order
+	return GLOB.job_display_order.Find(A.type) - GLOB.job_display_order.Find(B.type)
 
 /proc/cmp_department_display_asc(datum/job_department/A, datum/job_department/B)
 	return A.display_order - B.display_order

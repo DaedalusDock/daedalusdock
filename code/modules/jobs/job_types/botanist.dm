@@ -6,7 +6,6 @@
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 
 	outfits = list(
@@ -18,7 +17,6 @@
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_STATION_MASTER
-	display_order = JOB_DISPLAY_ORDER_BOTANIST
 	bounty_types = CIV_JOB_GROW
 	departments_list = list(
 		/datum/job_department/service,

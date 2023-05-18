@@ -1,3 +1,46 @@
+GLOBAL_LIST_INIT(job_display_order, list(
+	/datum/job/captain,
+	/datum/job/head_of_personnel,
+	/datum/job/head_of_security,
+	/datum/job/warden,
+	/datum/job/security_officer,
+	/datum/job/detective,
+	/datum/job/prisoner,
+	// Engineeering
+	/datum/job/chief_engineer,
+	/datum/job/station_engineer,
+	/datum/job/atmospheric_technician,
+	// Medical
+	/datum/job/chief_medical_officer,
+	/datum/job/doctor,
+	/datum/job/paramedic,
+	/datum/job/chemist,
+	/datum/job/virologist,
+	/datum/job/psychologist,
+	// Science
+	/datum/job/research_director,
+	/datum/job/scientist,
+	/datum/job/roboticist,
+	/datum/job/geneticist,
+	// Supply
+	/datum/job/quartermaster,
+	/datum/job/cargo_technician,
+	/datum/job/shaft_miner,
+	// Other
+	/datum/job/bartender,
+	/datum/job/botanist,
+	/datum/job/cook,
+	/datum/job/chaplain,
+	/datum/job/curator,
+	/datum/job/janitor,
+	/datum/job/lawyer,
+	/datum/job/clown,
+	/datum/job/mime,
+	/datum/job/assistant,
+	/datum/job/ai,
+	/datum/job/cyborg
+))
+
 /datum/job
 	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
@@ -36,7 +79,7 @@
 	var/supervisors = ""
 
 	/// Selection screen color
-	var/selection_color = "#ffffff"
+	var/selection_color = "#515151"
 
 	/// What kind of mob type joining players with this job as their assigned role are spawned as.
 	var/spawn_type = /mob/living/carbon/human
@@ -71,8 +114,6 @@
 
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
-
-	var/display_order = JOB_DISPLAY_ORDER_DEFAULT
 
 	var/bounty_types = CIV_JOB_BASIC
 

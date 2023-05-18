@@ -6,7 +6,7 @@
 	total_positions = 5
 	spawn_positions = 3
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	selection_color = "#3d273d"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
@@ -30,7 +30,6 @@
 
 	liver_traits = list(TRAIT_BALLMER_SCIENTIST)
 
-	display_order = JOB_DISPLAY_ORDER_SCIENTIST
 	bounty_types = CIV_JOB_SCI
 	departments_list = list(
 		/datum/job_department/science,

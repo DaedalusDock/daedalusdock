@@ -8,7 +8,7 @@
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the quartermaster" //ORIGINAL
-	selection_color = "#dcba97"
+	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
 
 	outfits = list(
@@ -20,7 +20,6 @@
 
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_STATION_MASTER
-	display_order = JOB_DISPLAY_ORDER_CARGO_TECHNICIAN
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,

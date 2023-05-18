@@ -7,7 +7,7 @@
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#dcba97"
+	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
 
 	outfits = list(
@@ -20,7 +20,6 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_SHAFT_MINER
 	bounty_types = CIV_JOB_MINE
 	departments_list = list(
 		/datum/job_department/cargo,

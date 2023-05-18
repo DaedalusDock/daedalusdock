@@ -93,11 +93,6 @@
 #define JP_MEDIUM 3
 #define JP_HIGH 4
 
-//randomised elements
-#define RANDOM_ANTAG_ONLY 1
-#define RANDOM_DISABLED 2
-#define RANDOM_ENABLED 3
-
 //recommened client FPS
 #define RECOMMENDED_FPS 100
 

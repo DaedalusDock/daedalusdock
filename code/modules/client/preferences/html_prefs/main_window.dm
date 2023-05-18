@@ -48,6 +48,16 @@
 		save_preferences()
 		QDEL_NULL(character_preview_view)
 
+	if(href_list["randomize_pref"])
+		var/datum/preference/P = GLOB.preference_entries[text2path(href_list["randomize_pref"])]
+		if(!P || !P.is_randomizable())
+			return
+
+		if(write_preference(P, P.create_random_value(src)))
+			character_preview_view?.update_body()
+			update_html()
+		return TRUE
+
 /client/verb/dpref()
 	usr.client.prefs.html_show(usr)
 

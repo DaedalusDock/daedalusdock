@@ -97,9 +97,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		migrate_preferences_to_tgui_prefs_menu()
 
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
-	if (current_version < 41)
-		migrate_character_to_tgui_prefs_menu()
-
 	if (current_version < 42)
 		migrate_body_types(savefile)
 
@@ -305,9 +302,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		value_cache -= preference_type
 		read_preference(preference_type)
 
-	//Character
-	READ_FILE(S["randomise"],  randomise)
-
 	//Load prefs
 	READ_FILE(S["alt_job_titles"], alt_job_titles)
 
@@ -325,9 +319,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
-
-	//Sanitize
-	randomise = SANITIZE_LIST(randomise)
 
 	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
 	validate_quirks()
@@ -363,9 +354,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	#if SAVEFILE_VERSION_MIN > 40
 	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
 	#endif
-
-	//Character
-	WRITE_FILE(S["randomise"] , randomise)
 
 	//Write prefs
 	WRITE_FILE(S["alt_job_titles"], alt_job_titles)

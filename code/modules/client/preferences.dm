@@ -31,11 +31,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
 	var/ghost_form = "ghost"
 
-	//character preferences
-	var/slot_randomized //keeps track of round-to-round randomization of the character slot, prevents overwriting
-
-	var/list/randomise = list()
-
 	//Quirk list
 	var/list/all_quirks = list()
 
@@ -112,7 +107,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	// give them default keybinds and update their movement keys
 	key_bindings = deep_copy_list(GLOB.default_hotkeys)
 	key_bindings_by_key = get_key_bindings_by_key(key_bindings)
-	randomise = get_default_randomization()
 
 	var/loaded_preferences_successfully = load_preferences()
 	if(loaded_preferences_successfully)
@@ -545,7 +539,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
-	apply_character_randomization_prefs(is_antag)
 	apply_prefs_to(character, icon_updates)
 
 /// Applies the given preferences to a human mob.
@@ -563,18 +556,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 		character.icon_render_keys = list()
 		character.update_body(is_creating = TRUE)
 
-
-/// Returns whether the parent mob should have the random hardcore settings enabled. Assumes it has a mind.
-/datum/preferences/proc/should_be_random_hardcore(datum/job/job, datum/mind/mind)
-	if(!read_preference(/datum/preference/toggle/random_hardcore))
-		return FALSE
-	if(job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND) //No command staff
-		return FALSE
-	for(var/datum/antagonist/antag as anything in mind.antag_datums)
-		if(antag.get_team()) //No team antags
-			return FALSE
-	return TRUE
-
 /// Inverts the key_bindings list such that it can be used for key_bindings_by_key
 /datum/preferences/proc/get_key_bindings_by_key(list/key_bindings)
 	var/list/output = list()
@@ -584,14 +565,3 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 			LAZYADD(output[key], action)
 
 	return output
-
-/// Returns the default `randomise` variable ouptut
-/datum/preferences/proc/get_default_randomization()
-	var/list/default_randomization = list()
-
-	for (var/preference_key in GLOB.preference_entries_by_key)
-		var/datum/preference/preference = GLOB.preference_entries_by_key[preference_key]
-		if (preference.is_randomizable() && preference.randomize_by_default)
-			default_randomization[preference_key] = RANDOM_ENABLED
-
-	return default_randomization

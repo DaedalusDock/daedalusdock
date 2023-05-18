@@ -1,14 +1,15 @@
-/datum/preference_group/body
+/datum/preference_group/meta
 	///Prefs we display. Set TRUE to check if accessible
 	var/list/datum/display = list(
 		/datum/preference/name/real_name,
 		/datum/preference/numeric/age,
 		/datum/preference/choiced/gender,
 		/datum/preference/choiced/body_type = TRUE,
-		/datum/preference/choiced/species
+		/datum/preference/choiced/species,
+		/datum/preference/choiced/underwear = TRUE,
 	)
 
-/datum/preference_group/body/get_content(datum/preferences/prefs)
+/datum/preference_group/meta/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
 	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>

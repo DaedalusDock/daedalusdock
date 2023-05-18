@@ -14,7 +14,7 @@
 		return
 
 	if(prefs.parent != usr && !check_rights())
-		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [prefs.parent?.key])")
+		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [prefs.parent?.key || "NULL"])")
 
 	if(href_list["change_priority"])
 		if(set_job_preference(prefs, href_list["job"]))

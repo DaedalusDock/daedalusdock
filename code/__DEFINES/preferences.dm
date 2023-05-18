@@ -88,9 +88,10 @@
 
 
 //Job preferences levels
-#define JP_LOW 1
-#define JP_MEDIUM 2
-#define JP_HIGH 3
+#define JP_NEVER 1
+#define JP_LOW 2
+#define JP_MEDIUM 3
+#define JP_HIGH 4
 
 //randomised elements
 #define RANDOM_ANTAG_ONLY 1

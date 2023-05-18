@@ -165,6 +165,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	///RPG job names, for the memes
 	var/rpg_title
 
+	/// What company can employ this job? First index is default
+	var/list/employers = list()
+
 
 /datum/job/New()
 	. = ..()

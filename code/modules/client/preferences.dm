@@ -39,9 +39,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//Quirk list
 	var/list/all_quirks = list()
 
-	//Job preferences 2.0 - indexed by job title , no key or value implies never
-	var/list/job_preferences = list()
-
 	/// The current window, PREFERENCE_TAB_* in [`code/__DEFINES/preferences.dm`]
 	var/current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
 
@@ -81,6 +78,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	/// If set to TRUE, will update character_profiles on the next ui_data tick.
 	var/tainted_character_profiles = FALSE
+
+	/// Loadout prefs. Assoc list of [typepaths] to [associated list of item info].
+	var/list/loadout_list
+
+	/// Preference of how the preview should show the character.
+	var/preview_pref = PREVIEW_PREF_JOB
+
+	///Alternative job titles stored in preferences. Assoc list, ie. alt_job_titles["Scientist"] = "Cytologist"
+	var/list/alt_job_titles = list()
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
@@ -519,26 +525,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 		profiles += name
 
 	return profiles
-
-/datum/preferences/proc/set_job_preference_level(datum/job/job, level)
-	if (!job)
-		return FALSE
-
-	if (level == JP_HIGH)
-		var/datum/job/overflow_role = SSjob.overflow_role
-		var/overflow_role_title = initial(overflow_role.title)
-
-		for(var/other_job in job_preferences)
-			if(job_preferences[other_job] == JP_HIGH)
-				// Overflow role needs to go to NEVER, not medium!
-				if(other_job == overflow_role_title)
-					job_preferences[other_job] = null
-				else
-					job_preferences[other_job] = JP_MEDIUM
-
-	job_preferences[job.title] = level
-
-	return TRUE
 
 /datum/preferences/proc/GetQuirkBalance()
 	var/bal = 0

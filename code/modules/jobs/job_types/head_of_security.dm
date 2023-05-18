@@ -17,6 +17,10 @@
 	exp_required_type_department = EXP_TYPE_SECURITY
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/mars_exec
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hos,

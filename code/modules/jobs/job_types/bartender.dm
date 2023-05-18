@@ -8,6 +8,11 @@
 	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/priapus
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/bartender,
@@ -20,7 +25,7 @@
 	bounty_types = CIV_JOB_DRINK
 	departments_list = list(
 		/datum/job_department/service,
-		)
+	)
 
 	family_heirlooms = list(/obj/item/reagent_containers/glass/rag, /obj/item/clothing/head/that, /obj/item/reagent_containers/food/drinks/shaker)
 

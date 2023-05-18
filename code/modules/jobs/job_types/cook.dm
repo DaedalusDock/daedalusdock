@@ -11,6 +11,11 @@
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
 	var/list/kitchen_areas = list(/area/station/service/kitchen)
 
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/priapus
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook,

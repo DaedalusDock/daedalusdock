@@ -10,6 +10,10 @@
 	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/contractor,
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/miner,

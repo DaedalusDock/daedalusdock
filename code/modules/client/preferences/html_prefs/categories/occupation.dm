@@ -16,12 +16,6 @@
 	if(prefs.parent != usr && !check_rights())
 		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [prefs.parent?.key || "NULL"])")
 
-	if(href_list["change_priority"])
-		if(set_job_preference(prefs, href_list["job"]))
-			prefs.update_html()
-			return TRUE
-		return
-
 	if(href_list["change_alt_title"])
 		if(set_job_title(prefs, href_list["job"]))
 			prefs.update_html()
@@ -38,7 +32,13 @@
 	var/static/priority2text = list("Never", "Low", "Medium", "High")
 
 	var/list/job_bans = get_job_bans(prefs.parent?.mob)
+	var/employer = prefs.read_preference(/datum/preference/choiced/employer)
+	employer = SSjob.GetEmployer(employer).type
 
+	. += {"
+
+		<div style='font-size: 20px;text-align:center;width: 100%'>[GLOB.preference_entries[/datum/preference/choiced/employer]:get_button(prefs)]<HR></div>
+	"}
 	// Table within a table for alignment, also allows you to easily add more columns.
 	. += {"
 		<center>
@@ -48,22 +48,24 @@
 				<td width='20%'>
 					<table width='100%' cellpadding='1' cellspacing='0'>
 	"}
-
+	var/list/job_prefs = prefs.read_preference(/datum/preference/blob/job_priority)
 	var/index = 0
 	for(var/datum/job/job in job_data)
 		index++
 		var/is_banned = job_bans[job.title] == "banned"
 		var/is_too_new = job_bans[job.title]?["job_days_left"]
-		var/job_priority = priority2text[(prefs.job_preferences[job.title] || 0) + 1]
-		var/employer = "Daedalus" //This is where employers will go!
-		var/title_link = (length(job.alt_titles)) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs];job=[job.title]") : job.title
+		var/job_priority = priority2text[(job_prefs[job.title] || 1)]
+		var/title_link = length(job.alt_titles) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs];job=[job.title]") : "<span class='linkOn'>[job.title]</span>"
 		var/rejection_reason = ""
+
 		if(is_banned)
 			rejection_reason = "\[BANNED]"
 		else if(is_too_new)
 			rejection_reason = "\[[is_too_new]]"
+		else if(length(job.employers) && !(employer in job.employers))
+			rejection_reason = "\[INVALID EMPLOYER]"
 
-		var/static/vs_appeaser = "\]\]"
+		var/static/vs_appeaser = "\]\]\]"
 		vs_appeaser = vs_appeaser
 
 		if(index > JOBS_PER_COLUMN)
@@ -77,19 +79,16 @@
 
 		. += {"
 		<tr bgcolor='[job.selection_color]'>
-			<td width='10%' align='left'>
-				[employer]
-			</td>
 			<td>
 			</td>
-			<td width='30%' align='left'>
-				[is_banned || is_too_new ? "<del>[job.title]</del>" : title_link]
+			<td width='30%' align='center'>
+				[rejection_reason ? "<span class='linkOn'>[job.title]</span>" : title_link]
 			</td>
 			<td width = '10%' align = 'center'>
-				[button_element(src, "?", "job_info[job.title]")]
+				[button_element(src, "?", "job_info=[job.title]")]
 			</td>
 			<td>
-				<b>[rejection_reason || button_element(src, job_priority, "change_priority=1;prefs=\ref[prefs];job=[job.title]")]</b>
+				<b>[rejection_reason || button_element(prefs, job_priority, "pref_act=[/datum/preference/blob/job_priority];job=[job.title]")]</b>
 			</td>
 		</tr>
 		"}
@@ -160,32 +159,6 @@
 		data["job_required_experience"] = job_required_experience
 
 	return data
-
-/datum/preference_group/category/occupation/proc/set_job_preference(datum/preferences/prefs, job_title)
-	var/list/choices = list("Never", "Low", "Medium", "High")
-	var/level = input(usr, "Change Priority",, choices[prefs.job_preferences[job_title] || 0]) as null|anything in choices
-	if(!level)
-		return
-
-	level = choices.Find(level) - 1
-
-	if(isnull(level))
-		return
-
-	var/datum/job/job = SSjob.GetJob(job_title)
-
-	if (isnull(job))
-		return FALSE
-
-	if (job.faction != FACTION_STATION)
-		return FALSE
-
-	if (!prefs.set_job_preference_level(job, level))
-		return FALSE
-
-	prefs.character_preview_view?.update_body()
-
-	return TRUE
 
 /datum/preference_group/category/occupation/proc/set_job_title(datum/preferences/prefs, job_title)
 	var/datum/job/job = SSjob.GetJob(job_title)

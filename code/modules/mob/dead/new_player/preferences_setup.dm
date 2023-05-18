@@ -80,11 +80,11 @@
 /datum/preferences/proc/get_highest_priority_job()
 	var/datum/job/preview_job
 	var/highest_pref = 0
-
-	for(var/job in job_preferences)
-		if(job_preferences[job] > highest_pref)
+	var/list/job_prefs = read_preference(/datum/preference/blob/job_priority)
+	for(var/job in job_prefs)
+		if(job_prefs[job] > highest_pref)
 			preview_job = SSjob.GetJob(job)
-			highest_pref = job_preferences[job]
+			highest_pref = job_prefs[job]
 
 	return preview_job
 

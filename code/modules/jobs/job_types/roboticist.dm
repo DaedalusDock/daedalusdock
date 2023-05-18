@@ -12,6 +12,11 @@
 	exp_granted_type = EXP_TYPE_CREW
 	bounty_types = CIV_JOB_ROBO
 
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/ananke
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/roboticist,

@@ -309,15 +309,17 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["randomise"],  randomise)
 
 	//Load prefs
-	READ_FILE(S["job_preferences"], job_preferences)
+	READ_FILE(S["alt_job_titles"], alt_job_titles)
 
 	//Quirks
 	READ_FILE(S["all_quirks"], all_quirks)
 
 	READ_FILE(S["real_name"], character_name)
 
-	//PARIAH EDIT ADDITION
-	load_character_pariah(S)
+
+	READ_FILE(S["loadout_list"], loadout_list)
+
+	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
 
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
@@ -326,12 +328,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Sanitize
 	randomise = SANITIZE_LIST(randomise)
-
-
-	//Validate job prefs
-	for(var/j in job_preferences)
-		if(job_preferences[j] != JP_LOW && job_preferences[j] != JP_MEDIUM && job_preferences[j] != JP_HIGH)
-			job_preferences -= j
 
 	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
 	validate_quirks()
@@ -372,12 +368,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["randomise"] , randomise)
 
 	//Write prefs
-	WRITE_FILE(S["job_preferences"] , job_preferences)
+	WRITE_FILE(S["alt_job_titles"], alt_job_titles)
 
 	//Quirks
 	WRITE_FILE(S["all_quirks"] , all_quirks)
 
-	save_character_pariah(S) //PARIAH EDIT ADDITION
+	WRITE_FILE(S["loadout_list"], loadout_list)
 
 	return TRUE
 

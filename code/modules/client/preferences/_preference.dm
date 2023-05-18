@@ -613,8 +613,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/toggle/is_valid(value)
 	return value == TRUE || value == FALSE
 
-//PARIAH EDIT ADDITION
-/// A preference for text and text input.
 /datum/preference/text
 	abstract_type = /datum/preference/text
 
@@ -627,4 +625,18 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/text/is_valid(value)
 	return istext(value)
 
-//PARIAH EDIT END
+///Holds any kind of abstract list data you'd like it to. MUST impliment `is_valid`!
+/datum/preference/blob
+	abstract_type = /datum/preference/blob
+
+/datum/preference/blob/create_default_value()
+	return list()
+
+/datum/preference/blob/deserialize(input, datum/preferences/preferences)
+	if(!islist(input))
+		return list()
+	return input
+
+/datum/preference/blob/is_valid(value)
+	return islist(value)
+

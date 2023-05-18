@@ -31,6 +31,11 @@
 		/datum/job_department/engineering,
 		)
 
+	employers = list(
+		/datum/employer/daedalus,
+		/datum/employer/contractor
+	)
+
 	family_heirlooms = list(/obj/item/lighter, /obj/item/lighter/greyscale, /obj/item/storage/box/matches)
 
 	mail_goodies = list(

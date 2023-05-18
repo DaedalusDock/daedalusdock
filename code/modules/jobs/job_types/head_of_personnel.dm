@@ -18,6 +18,10 @@
 	exp_required_type_department = EXP_TYPE_SERVICE
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/daedalus
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hop,

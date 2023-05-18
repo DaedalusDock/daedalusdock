@@ -13,6 +13,10 @@
 	exp_required_type_department = EXP_TYPE_SUPPLY
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/hermes
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/quartermaster,

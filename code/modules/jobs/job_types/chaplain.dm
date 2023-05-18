@@ -9,6 +9,11 @@
 	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/none
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/chaplain,

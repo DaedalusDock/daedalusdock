@@ -75,6 +75,6 @@
 				else
 					job_prefs[other_job] = JP_MEDIUM
 
-	job_prefs[job] = level
+	job_prefs[job.title] = level
 
 	return prefs.update_preference(src, job_prefs)

@@ -56,7 +56,7 @@
 		var/is_too_new = job_bans[job.title]?["job_days_left"]
 		var/job_priority = priority2text[(prefs.job_preferences[job.title] || 0) + 1]
 		var/employer = "Daedalus" //This is where employers will go!
-		var/title_link = (length(job.alt_titles)) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs]") : job.title
+		var/title_link = (length(job.alt_titles)) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs];job=[job.title]") : job.title
 		var/rejection_reason = ""
 		if(is_banned)
 			rejection_reason = "\[BANNED]"

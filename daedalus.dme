@@ -2635,7 +2635,6 @@
 #include "code\modules\client\preferences\html_prefs\helpers.dm"
 #include "code\modules\client\preferences\html_prefs\main_window.dm"
 #include "code\modules\client\preferences\html_prefs\preference_group.dm"
-#include "code\modules\client\preferences\html_prefs\categories\appearance.dm"
 #include "code\modules\client\preferences\html_prefs\categories\general.dm"
 #include "code\modules\client\preferences\html_prefs\categories\occupation.dm"
 #include "code\modules\client\preferences\html_prefs\categories\quirks.dm"

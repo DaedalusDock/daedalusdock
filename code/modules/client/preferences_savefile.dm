@@ -308,8 +308,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Quirks
 	READ_FILE(S["all_quirks"], all_quirks)
 
-	READ_FILE(S["real_name"], character_name)
-
 
 	READ_FILE(S["loadout_list"], loadout_list)
 

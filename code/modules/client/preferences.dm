@@ -83,6 +83,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	///Alternative job titles stored in preferences. Assoc list, ie. alt_job_titles["Scientist"] = "Cytologist"
 	var/list/alt_job_titles = list()
 
+	/// Stores the instance of the category we are viewing. (CHARACTER CREATOR)
+	var/datum/preference_group/category/selected_category
+
+	var/character_name = ""
+
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
@@ -95,7 +100,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))
 		middleware += new middleware_type(src)
 
-	html_new(C)
+	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
 
 	if(istype(C))
 		if(!is_guest_key(C.key))

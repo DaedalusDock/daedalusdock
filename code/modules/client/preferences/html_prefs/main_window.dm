@@ -1,12 +1,3 @@
-/datum/preferences
-	/// Stores the instance of the category we are viewing.
-	var/datum/preference_group/category/selected_category
-
-	var/character_name = ""
-
-/datum/preferences/proc/html_new(client/C)
-	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
-
 /datum/preferences/proc/html_topic(href, list/href_list)
 	if(href_list["change_slot"])
 		change_character(usr)
@@ -83,7 +74,7 @@
 /datum/preferences/proc/html_create_window()
 	. = list()
 	. += "<fieldset class='computerPane' style='min-height:900px'>"
-	. += "<legend class='computerLegend' style='margin: 0 auto'>[button_element(src, character_name, "change_slot=1")]</legend>"
+	. += "<legend class='computerLegend' style='margin: 0 auto'>[button_element(src, read_preference(/datum/preference/name/real_name), "change_slot=1")]</legend>"
 	. += html_create_subheader()
 	. += html_create_categories()
 	. += "<div style='display:flex;flex-wrap:wrap'>"

@@ -136,28 +136,49 @@
 	if (client?.restricted_mode)
 		return
 
-	var/list/output = list("<center><p><a href='byond://?src=[REF(src)];character_setup=1'>Setup Character</a></p>")
-	output += "<p><a href='byond://?src=[REF(src)];show_preferences=1'>Preferences</a></p>"
+	var/list/output = list()
+	output += {"
+	<center>
+		<div>
+			<a href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
+		</div>
+		<hr>
+		<p>
+			<b>Playing As</b>
+			<br>
+			<a href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
+		</p>
+		<hr>
+	"}
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)
 		switch(ready)
 			if(PLAYER_NOT_READY)
-				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | <b>Not Ready</b> | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+				output += "<div>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | <b>Not Ready</b> | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</div>"
 			if(PLAYER_READY_TO_PLAY)
-				output += "<p>\[ <b>Ready</b> | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+				output += "<div>\[ <b>Ready</b> | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</div>"
 			if(PLAYER_READY_TO_OBSERVE)
-				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | <b> Observe </b> \]</p>"
+				output += "<div>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | <b> Observe </b> \]</div>"
 	else
-		output += "<p><a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a></p>"
-		output += "<p><a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a></p>"
-		output += "<p>[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]</p>"
+		output += {"
+		<p>
+			<a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
+		</p>
+		<p>
+			<a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
+		</p>
+		<p>
+			[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]
+		</p>
+		"}
+
 
 	if(!is_guest_key(src.key))
 		output += playerpolls()
 
 	output += "</center>"
 
-	var/datum/browser/popup = new(src, "playersetup", "<div align='center'>New Player Options</div>", 250, 265)
+	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome to<br>Daedalus Outpost</div></center>", 270, 295)
 	popup.set_window_options("can_close=0")
 	popup.set_content(output.Join())
 	popup.open(FALSE)

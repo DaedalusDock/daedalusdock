@@ -29,21 +29,6 @@
 /datum/preference/choiced/species/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_species(value, icon_update = FALSE, pref_load = TRUE)
 
-/datum/preference/choiced/species/user_edit(mob/user, datum/preferences/prefs)
-	var/datum/species/existing = prefs.read_preference(type)
-	existing = capitalize(initial(existing.id))
-
-	var/list/choices = list()
-	for(var/datum/species/S as anything in get_choices())
-		choices[capitalize(initial(S.id))] = S
-	choices -= existing
-
-	var/input = tgui_input_list(user, "Change [explanation]",, existing, get_choices)
-	if(!choices[input])
-		return
-	return prefs.update_preference(src, choices[input])
-
-/datum/preference/choiced/species/get_button(datum/preferences/prefs)
-	var/datum/species/existing = prefs.read_preference(type)
-	return button_element(prefs, capitalize(initial(existing.id)), "pref_act=[type]")
-
+/datum/preference/choiced/species/value_changed(datum/preferences/prefs, new_value, old_value)
+	var/datum/preference/P = GLOB.preference_entries[/datum/preference/appearance_mods]
+	prefs.update_preference(P, P.create_default_value())

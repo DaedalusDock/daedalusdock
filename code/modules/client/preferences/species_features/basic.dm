@@ -295,7 +295,7 @@
 	return TRUE
 
 
-/datum/preference/appearance_mods/clicked(mob/user, datum/preferences/prefs, list/params)
+/datum/preference/appearance_mods/button_act(mob/user, datum/preferences/prefs, list/params)
 	var/datum/preference/requested_preference = GLOB.preference_entries_by_key["appearance_mods"]
 	if (isnull(requested_preference))
 		return FALSE

@@ -1683,7 +1683,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			features[preference] = GLOB.preference_entries_by_key[preference]
 
 	if(use_skintones)
-		features["skin_tone"] = GLOB.preference_entries_by_key[/datum/preference/choiced/skin_tone]
+		features["skin_tone"] = GLOB.preference_entries[/datum/preference/choiced/skin_tone]
 
 	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 

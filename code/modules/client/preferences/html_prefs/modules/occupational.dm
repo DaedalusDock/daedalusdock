@@ -18,9 +18,8 @@
 		</legend>
 	<table style='border-collapse: collapse;width: 100%'>
 	"}
-	var/i
+
 	for(var/path in display)
-		i++
 		var/datum/preference/pref = GLOB.preference_entries[path]
 		if(display[path] && !pref.is_accessible(prefs))
 			continue

@@ -306,11 +306,15 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	if (!preference.is_accessible(src))
 		return FALSE
 
+	var/old_value = read_preference(preference.type)
 	var/new_value = preference.deserialize(preference_value, src)
 	var/success = preference.write(null, new_value)
 
 	if (!success)
 		return FALSE
+
+	if(old_value != new_value)
+		preference.value_changed(src, new_value, old_value)
 
 	recently_updated_keys |= preference.type
 	value_cache[preference.type] = new_value
@@ -321,6 +325,10 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		character_preview_view?.update_body()
 
 	return TRUE
+
+/// Called when a user updates the value of this preference.
+/datum/preference/proc/value_changed(datum/preferences/prefs, new_value, old_value)
+	return
 
 /// Checks that a given value is valid.
 /// Must be overriden by subtypes.
@@ -360,7 +368,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 	return TRUE
 
-/datum/preference/proc/clicked(mob/user, datum/preferences/prefs, list/params)
+/datum/preference/proc/button_act(mob/user, datum/preferences/prefs, list/params)
 	if(user_edit(user, prefs, params))
 		return TRUE
 	return FALSE
@@ -380,6 +388,8 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	var/should_generate_icons = FALSE
 
 	var/list/cached_values
+
+	var/list/cached_serialized_values
 
 	abstract_type = /datum/preference/choiced
 
@@ -408,18 +418,18 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/choiced/proc/get_choices_serialized()
 	// Override `init_values()` instead.
 	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(cached_serialized_values))
+		cached_serialized_values = list()
+		var/choices = get_choices()
 
-	var/list/serialized_choices = list()
-	var/choices = get_choices()
+		if (should_generate_icons)
+			for (var/choice in choices)
+				cached_serialized_values[serialize(choice)] = choices[choice]
+		else
+			for (var/choice in choices)
+				cached_serialized_values += serialize(choice)
 
-	if (should_generate_icons)
-		for (var/choice in choices)
-			serialized_choices[serialize(choice)] = choices[choice]
-	else
-		for (var/choice in choices)
-			serialized_choices += serialize(choice)
-
-	return serialized_choices
+	return cached_serialized_values
 
 /// Returns a list of every possible value.
 /// This must be overriden by `/datum/preference/choiced` subtypes.
@@ -459,14 +469,33 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 	return data
 
+/datum/preference/choiced/button_act(mob/user, datum/preferences/prefs, list/params)
+	if(params["cycle"])
+		var/list/choices = get_choices()
+		var/new_index = choices.Find(prefs.read_preference(type)) + (params["cycle"] == "down" ? (-1) : 1)
+		if(new_index == 0)
+			new_index = length(choices)
+		else if(new_index > length(choices))
+			new_index = 1
+
+		return prefs.update_preference(src, serialize(choices[new_index]))
+	return ..()
+
 /datum/preference/choiced/user_edit(mob/user, datum/preferences/prefs)
-	var/input = tgui_input_list(user, "Change [explanation]",, prefs.read_preference(type), get_choices())
+	var/input = tgui_input_list(user, "Change [explanation]",, get_choices_serialized(), serialize(prefs.read_preference(type)))
 	if(!input)
 		return
 	return prefs.update_preference(src, input)
 
 /datum/preference/choiced/get_button(datum/preferences/prefs)
-	return button_element(prefs, capitalize(prefs.read_preference(type)), "pref_act=[type]")
+	if(!cyclable)
+		return button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")
+	else
+		return {"
+			[button_element(prefs, "<", "pref_act=[type];cycle=down")]
+			[button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")]
+			[button_element(prefs, ">", "pref_act=[type];cycle=up")]
+		"}
 
 /// A preference that represents an RGB color of something.
 /// Will give the value as 6 hex digits, without a hash.

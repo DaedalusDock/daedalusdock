@@ -3,6 +3,7 @@
 	explanation = "Employer"
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "employer"
+	cyclable = FALSE
 
 /datum/preference/choiced/employer/apply_to_human(mob/living/carbon/human/target, value)
 	return
@@ -16,11 +17,7 @@
 	for(var/datum/employer/E as anything in subtypesof(/datum/employer))
 		. += initial(E.name)
 
-/datum/preference/choiced/employer/user_edit(mob/user, datum/preferences/prefs)
-	. = ..()
-	if(!.)
-		return FALSE
-	// This is kind of stupid but it ensures code changes won't allow illegal jobs.
+/datum/preference/choiced/employer/value_changed(datum/preferences/prefs, new_value, old_value)
 	var/datum/preference/P = GLOB.preference_entries[/datum/preference/blob/job_priority]
 	prefs.update_preference(P, P.create_default_value())
 
@@ -36,6 +33,9 @@
 	return
 
 /datum/preference/blob/job_priority/deserialize(input, datum/preferences/preferences)
+	if(!islist(input))
+		return create_default_value()
+
 	for(var/thing in input)
 		if(!istext(thing))
 			input -= thing

@@ -30,13 +30,13 @@
 	return istext(value) && !isnull(reject_bad_name(value, allow_numbers))
 
 /datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
-	var/input = tgui_input_text(user, "Change [explanation]",, prefs.read_preference(type))
+	var/input = tgui_input_text(user, "Change [explanation]",, serialize(prefs.read_preference(type)))
 	if(!input)
 		return
 	return prefs.update_preference(src, input)
 
 /datum/preference/name/get_button(datum/preferences/prefs)
-	return button_element(prefs, capitalize(prefs.read_preference(type)), "pref_act=[type]")
+	return button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")
 
 /// A character's real name
 /datum/preference/name/real_name
@@ -143,7 +143,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Deity Name"
+	explanation = "(Chaplain) Deity Name"
 	group = "religion"
 
 /datum/preference/name/deity/create_default_value()
@@ -155,7 +155,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Holy Book Name"
+	explanation = "(Chaplain) Book Name"
 	group = "religion"
 
 /datum/preference/name/bible/create_default_value()

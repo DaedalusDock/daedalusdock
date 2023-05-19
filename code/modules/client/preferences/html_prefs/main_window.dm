@@ -38,7 +38,7 @@
 		var/datum/preference/P = GLOB.preference_entries[text2path(href_list["pref_act"])]
 		if(!P)
 			return TRUE
-		if(P.clicked(usr, src, href_list))
+		if(P.button_act(usr, src, href_list))
 			save_character()
 			update_html()
 		return TRUE

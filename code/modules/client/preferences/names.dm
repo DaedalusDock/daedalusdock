@@ -30,7 +30,7 @@
 	return istext(value) && !isnull(reject_bad_name(value, allow_numbers))
 
 /datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
-	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|text
+	var/input = tgui_input_text(user, "Change [explanation]",, prefs.read_preference(type))
 	if(!input)
 		return
 	return prefs.update_preference(src, input)

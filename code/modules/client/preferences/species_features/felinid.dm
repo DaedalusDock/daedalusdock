@@ -2,7 +2,6 @@
 	explanation = "Tail"
 	savefile_key = "feature_human_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_external_organ = /obj/item/organ/external/tail/cat
 
@@ -20,7 +19,6 @@
 	explanation = "Ears"
 	savefile_key = "feature_human_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_mutant_bodypart = "ears"
 

@@ -55,9 +55,7 @@
 
 	if(href_list["character_setup"])
 		var/datum/preferences/preferences = client.prefs
-		preferences.current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
-		preferences.update_static_data(usr)
-		preferences.ui_interact(usr)
+		preferences.html_show(usr)
 		return TRUE
 
 	if(href_list["ready"])

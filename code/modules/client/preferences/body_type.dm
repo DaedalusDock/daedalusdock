@@ -2,7 +2,6 @@
 
 /datum/preference/choiced/body_type
 	explanation = "Body Type"
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	priority = PREFERENCE_PRIORITY_BODY_TYPE
 	savefile_key = "body_type"
 	savefile_identifier = PREFERENCE_CHARACTER

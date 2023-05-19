@@ -16,6 +16,7 @@
 		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
+		NO_UNDERWEAR,
 	)
 	inherent_traits = list(
 		TRAIT_RESISTCOLD,

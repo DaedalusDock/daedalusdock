@@ -1,5 +1,5 @@
 /datum/preference/choiced/loadout_override_preference
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	explanation = "Loadout Items"
 	priority = PREFERENCE_PRIORITY_DEFAULT
 	savefile_key = "loadout_override_preference"
 	savefile_identifier = PREFERENCE_CHARACTER

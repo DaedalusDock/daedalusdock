@@ -1,4 +1,4 @@
-/datum/preference_group/body
+/datum/preference_group/meta
 	var/list/datum/display = list(
 		/datum/preference/name/religion,
 		/datum/preference/name/bible,
@@ -6,7 +6,7 @@
 		/datum/preference/choiced/uplink_location,
 	)
 
-/datum/preference_group/body/get_content(datum/preferences/prefs)
+/datum/preference_group/meta/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
 	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>

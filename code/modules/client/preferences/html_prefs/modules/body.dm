@@ -1,15 +1,22 @@
-/datum/preference_group/meta
+/datum/preference_group/body
 	///Prefs we display. Set TRUE to check if accessible
-	var/list/datum/display = list(
+	var/list/display = list(
 		/datum/preference/name/real_name,
 		/datum/preference/numeric/age,
 		/datum/preference/choiced/gender,
 		/datum/preference/choiced/body_type = TRUE,
 		/datum/preference/choiced/species,
-		/datum/preference/choiced/underwear = TRUE,
 	)
 
-/datum/preference_group/meta/get_content(datum/preferences/prefs)
+	var/list/clothing = list(
+		/datum/preference/choiced/jumpsuit,
+		/datum/preference/choiced/backpack,
+		/datum/preference/choiced/undershirt = TRUE,
+		/datum/preference/choiced/underwear = TRUE,
+		/datum/preference/choiced/socks = TRUE,
+	)
+
+/datum/preference_group/body/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
 	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
@@ -30,4 +37,17 @@
 				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}
+	. += "<tr><td colspan='2'><HR></td></tr>"
+
+	for(var/path in clothing)
+		var/datum/preference/pref = GLOB.preference_entries[path]
+		if(clothing[path] && !pref.is_accessible(prefs))
+			continue
+		. += {"
+			<tr>
+				<td style='padding: 4px 8px'>[pref.explanation]</td>
+				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
+			</tr>
+		"}
+
 	. += "</table></fieldset>"

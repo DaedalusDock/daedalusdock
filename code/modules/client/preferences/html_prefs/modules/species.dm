@@ -16,12 +16,11 @@
 
 	for(var/datum/preference/pref as anything in pref_species.get_features())
 		pref = GLOB.preference_entries_by_key[pref]
-		if(!pref.is_accessible(prefs) || (pref.category == PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES))
+		if(!pref.is_accessible(prefs) || (pref.is_sub_preference))
 			continue
-		#warn fix supplemental features
 
 		var/button = pref.get_button(prefs)
-		var/datum/preference/sub_pref = GLOB.preference_entries[pref.child_preference]
+		var/datum/preference/sub_pref = GLOB.preference_entries[pref.sub_preference]
 		if(sub_pref)
 			button += sub_pref.get_button(prefs)
 

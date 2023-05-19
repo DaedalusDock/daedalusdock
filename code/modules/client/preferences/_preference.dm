@@ -24,10 +24,6 @@
 /// For choiced preferences, this key will be used to set display names in constant data.
 #define CHOICED_PREFERENCE_DISPLAY_NAMES "display_names"
 
-/// For main feature preferences, this key refers to a feature considered supplemental.
-/// For instance, hair color being supplemental to hair.
-#define SUPPLEMENTAL_FEATURE_KEY "supplemental_feature"
-
 /// An assoc list list of types to instantiated `/datum/preference` instances
 GLOBAL_LIST_INIT(preference_entries, init_preference_entries())
 
@@ -115,12 +111,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	/// is for PREFERENCE_CHARACTER.
 	var/can_randomize = TRUE
 
-	/// If randomizable (PREFERENCE_CHARACTER and can_randomize), whether
-	/// or not to enable randomization by default.
-	/// This doesn't mean it'll always be random, but rather if a player
-	/// DOES have random body on, will this already be randomized?
-	var/randomize_by_default = TRUE
-
 	/// If the selected species has this in its /datum/species/mutant_bodyparts,
 	/// will show the feature as selectable.
 	var/relevant_mutant_bodypart = null
@@ -139,8 +129,11 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	/// If this preference is not accessible, do not attempt to apply it to mobs.
 	var/requires_accessible = FALSE
 
-	/// A related preference. Used by chargen to create inline buttons.
-	var/child_preference
+	/// A typepath for a sub preference. Ex: Hair Style's sub_preference is /datum/preference/color/hair_color
+	var/sub_preference
+
+	/// Is this type a sub preference?
+	var/is_sub_preference = FALSE
 
 /// Called on the saved input when retrieving.
 /// Also called by the value sent from the user through UI. Do not trust it.
@@ -362,17 +355,10 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		if (!(savefile_key in species.get_features()))
 			return FALSE
 
-	if (!should_show_on_page(preferences.current_window))
+	if (!(savefile_identifier == PREFERENCE_CHARACTER)) //Character preferences are in another castle
 		return FALSE
 
 	return TRUE
-
-/// Returns whether or not, given the PREFERENCE_TAB_*, this preference should
-/// appear.
-/datum/preference/proc/should_show_on_page(preference_tab)
-	var/is_on_character_page = preference_tab == PREFERENCE_TAB_CHARACTER_PREFERENCES
-	var/is_character_preference = savefile_identifier == PREFERENCE_CHARACTER
-	return is_on_character_page == is_character_preference
 
 /datum/preference/proc/clicked(mob/user, datum/preferences/prefs, list/params)
 	if(user_edit(user, prefs, params))
@@ -384,6 +370,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /datum/preference/proc/get_button(datum/preferences/prefs)
 	CRASH("Unimplimented button!")
+
 /// A preference that is a choice of one option among a fixed set.
 /// Used for preferences such as clothing.
 /datum/preference/choiced
@@ -394,11 +381,10 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 	var/list/cached_values
 
-	/// If the preference is a main feature (PREFERENCE_CATEGORY_FEATURES or PREFERENCE_CATEGORY_CLOTHING)
-	/// this is the name of the feature that will be presented.
-	var/main_feature_name
-
 	abstract_type = /datum/preference/choiced
+
+	///Defines whether get_button() should include cycle arrows
+	var/cyclable = TRUE
 
 /// Returns a list of every possible value.
 /// The first time this is called, will run `init_values()`.
@@ -471,13 +457,10 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 		data["icons"] = icons
 
-	if (!isnull(main_feature_name))
-		data["name"] = main_feature_name
-
 	return data
 
 /datum/preference/choiced/user_edit(mob/user, datum/preferences/prefs)
-	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|anything in get_choices()
+	var/input = tgui_input_list(user, "Change [explanation]",, prefs.read_preference(type), get_choices())
 	if(!input)
 		return
 	return prefs.update_preference(src, input)
@@ -510,49 +493,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /datum/preference/color/get_button(datum/preferences/prefs)
 	return color_button_element(prefs, prefs.read_preference(type), "pref_act=[type]")
-
-/// Takes an assoc list of names to /datum/sprite_accessory and returns a value
-/// fit for `/datum/preference/init_possible_values()`
-/proc/possible_values_for_sprite_accessory_list(list/datum/sprite_accessory/sprite_accessories)
-	var/list/possible_values = list()
-	for (var/name in sprite_accessories)
-		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
-		if (istype(sprite_accessory))
-			possible_values[name] = icon(sprite_accessory.icon, sprite_accessory.icon_state)
-		else
-			// This means it didn't have an icon state
-			possible_values[name] = icon('icons/mob/landmarks.dmi', "x")
-	return possible_values
-
-/// Takes an assoc list of names to /datum/sprite_accessory and returns a value
-/// fit for `/datum/preference/init_possible_values()`
-/// Different from `possible_values_for_sprite_accessory_list` in that it takes a list of layers
-/// such as BEHIND, FRONT, and ADJ.
-/// It also takes a "body part name", such as body_markings, moth_wings, etc
-/// They are expected to be in order from lowest to top.
-/proc/possible_values_for_sprite_accessory_list_for_body_part(
-	list/datum/sprite_accessory/sprite_accessories,
-	body_part,
-	list/layers,
-)
-	var/list/possible_values = list()
-
-	for (var/name in sprite_accessories)
-		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
-
-		var/icon/final_icon
-
-		for (var/layer in layers)
-			var/icon/icon = icon(sprite_accessory.icon, "m_[body_part]_[sprite_accessory.icon_state]_[layer]")
-
-			if (isnull(final_icon))
-				final_icon = icon
-			else
-				final_icon.Blend(icon, ICON_OVERLAY)
-
-		possible_values[name] = final_icon
-
-	return possible_values
 
 /// A numeric preference with a minimum and maximum value
 /datum/preference/numeric
@@ -589,7 +529,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	)
 
 /datum/preference/numeric/user_edit(mob/user, datum/preferences/prefs)
-	var/input = input(user, "Change [explanation] ([minimum] - [maximum][step != 1 ? "increment [step]" : ""])",, prefs.read_preference(type)) as null|num
+	var/input = tgui_input_number(user, "Change [explanation] ([minimum] - [maximum][step != 1 ? "increment [step]" : ""])",, prefs.read_preference(type), maximum, minimum, round_value = step)
 	if(!input)
 		return
 	return prefs.update_preference(src, input)

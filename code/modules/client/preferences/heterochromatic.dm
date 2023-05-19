@@ -1,5 +1,4 @@
 /datum/preference/color/heterochromatic
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_key = "heterochromatic"
 	savefile_identifier = PREFERENCE_CHARACTER
 

@@ -35,7 +35,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/all_quirks = list()
 
 	/// The current window, PREFERENCE_TAB_* in [`code/__DEFINES/preferences.dm`]
-	var/current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
+	var/current_window = PREFERENCE_TAB_GAME_PREFERENCES
 
 	var/unlock_content = 0
 

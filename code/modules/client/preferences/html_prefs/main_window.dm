@@ -91,8 +91,8 @@
 	. = list()
 	. += "<fieldset class='computerPane' style='min-height:900px'>"
 	. += "<legend class='computerLegend' style='margin: 0 auto'>[button_element(src, character_name, "change_slot=1")]</legend>"
-	. += html_create_categories()
 	. += html_create_subheader()
+	. += html_create_categories()
 	. += "<div style='display:flex;flex-wrap:wrap'>"
 	. += selected_category.get_content(src)
 	. += "</div>"

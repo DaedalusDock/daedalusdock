@@ -1,5 +1,4 @@
 /datum/preference/text/flavor_text
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "flavor_text"
 
@@ -7,7 +6,6 @@
 	target.dna.features["flavor_text"] = value
 
 /datum/preference/text/ooc_notes
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "ooc_notes"
 

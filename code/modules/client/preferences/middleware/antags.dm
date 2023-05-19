@@ -4,8 +4,6 @@
 	)
 
 /datum/preference_middleware/antags/get_ui_static_data(mob/user)
-	if (preferences.current_window != PREFERENCE_TAB_CHARACTER_PREFERENCES)
-		return list()
 
 	var/list/data = list()
 

@@ -54,7 +54,7 @@
 
 	var/list/job_prefs = prefs.read_preference(type)
 	var/list/choices = list("Never", "Low", "Medium", "High")
-	var/level = input(usr, "Change Priority",, choices[job_prefs[job] || 1]) as null|anything in choices
+	var/level = tgui_input_list(usr, "Change Priority",, choices[job_prefs[job] || 1], choices)
 	if(!level)
 		return
 

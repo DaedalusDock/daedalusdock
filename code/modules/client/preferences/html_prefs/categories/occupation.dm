@@ -9,6 +9,15 @@
 	if(.)
 		return
 
+	if(href_list["job_info"])
+		var/datum/job/J = SSjob.GetJob(href_list["job_info"])
+		if(!J)
+			return
+		var/datum/browser/window = new(usr, "JobInfo", J.title, 400, 120)
+		window.set_content(J.description)
+		window.open()
+		return TRUE
+
 	var/datum/preferences/prefs = locate(href_list["prefs"])
 	if(!prefs)
 		return
@@ -21,15 +30,6 @@
 			prefs.update_html()
 			return TRUE
 		return
-
-	if(href_list["job_help"])
-		var/datum/job/J = SSjob.GetJob(href_list["job_info"])
-		if(!J)
-			return
-		var/datum/browser/window = new(usr, "JobInfo", J.title, 100, 400)
-		window.set_content(J.description)
-		window.open()
-		return TRUE
 
 
 /datum/preference_group/category/occupation/get_content(datum/preferences/prefs)

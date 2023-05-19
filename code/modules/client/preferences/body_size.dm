@@ -1,6 +1,5 @@
 /datum/preference/choiced/body_size
 	explanation = "Body Size"
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	priority = PREFERENCE_PRIORITY_BODY_TYPE
 	savefile_key = "body_size"

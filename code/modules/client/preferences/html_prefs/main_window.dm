@@ -8,10 +8,6 @@
 	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
 
 /datum/preferences/proc/html_topic(href, list/href_list)
-
-	if(parent != usr && !check_rights())
-		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [parent?.key || "NULL"])")
-
 	if(href_list["change_slot"])
 		change_character(usr)
 		return TRUE
@@ -57,9 +53,6 @@
 			character_preview_view?.update_body()
 			update_html()
 		return TRUE
-
-/client/verb/dpref()
-	usr.client.prefs.html_show(usr)
 
 /datum/preferences/proc/html_show(mob/user)
 	if(!user || !user.client)

@@ -340,6 +340,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if (.)
 		return
 
+	if(parent != usr && !check_rights())
+		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [parent?.key || "NULL"])")
+
 	if (href_list["open_keybindings"])
 		current_window = PREFERENCE_TAB_KEYBINDINGS
 		update_static_data(usr)

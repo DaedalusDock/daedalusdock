@@ -38,9 +38,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!usr || usr != mob) //stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
 
-#ifndef TESTING	
+#ifndef TESTING
 	if (lowertext(hsrc_command) == "_debug") //disable the integrated byond vv in the client side debugging tools since it doesn't respect vv read protections
-		return 
+		return
 #endif
 
 	// asset_cache
@@ -619,7 +619,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
 	QDEL_NULL(tooltips)
-	QDEL_NULL(open_loadout_ui) //PARIAH EDIT ADDITION
 	seen_messages = null
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening

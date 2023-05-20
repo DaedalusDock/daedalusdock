@@ -5,7 +5,7 @@
 
 	if(href_list["select_preview"])
 		var/new_preview = href_list["select_preview"]
-		if(!(new_preview in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)))
+		if(!(new_preview in list(PREVIEW_PREF_JOB, PREVIEW_PREF_UNDERWEAR)))
 			return TRUE
 
 		preview_pref = new_preview
@@ -124,7 +124,7 @@
 /datum/preferences/proc/html_create_subheader()
 	. = list()
 	. += "<div style='text-align: center'>Character Preview<br>"
-	for(var/option in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR))
+	for(var/option in list(PREVIEW_PREF_JOB, PREVIEW_PREF_UNDERWEAR))
 		if(preview_pref == option)
 			. += "<span class='linkOn'>[option]</span>"
 		else

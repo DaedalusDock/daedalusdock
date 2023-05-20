@@ -39,9 +39,6 @@
 					return image('icons/mob/robots.dmi', icon_state = "robot", dir = SOUTH)
 				mannequin.job = preview_job.title
 				mannequin.dress_up_as_job(preview_job, TRUE, src)
-		if(PREVIEW_PREF_LOADOUT)
-			var/default_outfit = new /datum/outfit()
-			mannequin.equip_outfit_and_loadout(default_outfit, src, TRUE)
 	mannequin.update_body()
 	mannequin.add_overlay(mutable_appearance('icons/turf/floors.dmi', icon_state = "floor", layer = SPACE_LAYER))
 	return mannequin.appearance

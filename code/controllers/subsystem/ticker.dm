@@ -374,11 +374,6 @@ SUBSYSTEM_DEF(ticker)
 			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
 		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
 			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		//PARIAH EDIT ADDITION
-		if(ishuman(new_player_living))
-			for(var/datum/loadout_item/item as anything in loadout_list_to_datums(new_player_mob.client?.prefs?.loadout_list))
-				item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
-		//PARIAH EDIT END
 		CHECK_TICK
 
 	if(captainless)

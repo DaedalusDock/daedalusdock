@@ -309,10 +309,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["all_quirks"], all_quirks)
 
 
-	READ_FILE(S["loadout_list"], loadout_list)
-
-	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
-
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
@@ -358,8 +354,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Quirks
 	WRITE_FILE(S["all_quirks"] , all_quirks)
-
-	WRITE_FILE(S["loadout_list"], loadout_list)
 
 	return TRUE
 

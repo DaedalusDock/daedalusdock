@@ -555,7 +555,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	return rand(minimum, maximum)
 
 /datum/preference/numeric/is_valid(value)
-	return isnum(value) && value >= minimum && value <= maximum
+	return isnum(value) && value >= round(minimum, step) && value <= round(maximum, step)
 
 /datum/preference/numeric/compile_constant_data()
 	return list(

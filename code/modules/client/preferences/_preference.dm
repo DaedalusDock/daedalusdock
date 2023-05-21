@@ -616,3 +616,5 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/blob/is_valid(value)
 	return islist(value)
 
+/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	return

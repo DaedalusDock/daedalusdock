@@ -26,10 +26,10 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "job_priority"
 
-/datum/preference/blob/create_default_value()
+/datum/preference/blob/job_priority/create_default_value()
 	return list()
 
-/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/blob/job_priority/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	return
 
 /datum/preference/blob/job_priority/deserialize(input, datum/preferences/preferences)
@@ -40,7 +40,7 @@
 		if(!istext(thing))
 			input -= thing
 			continue
-		if(!isnum(input[thing]) || (!input[thing] in 1 to 3))
+		if(!isnum(input[thing]) || !(input[thing] in list(1, 2, 3)))
 			input -= thing
 	return input
 

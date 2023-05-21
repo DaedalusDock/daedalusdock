@@ -210,7 +210,8 @@
 			candidates.Remove(candidate_player)
 			continue
 
-		if (!((antag_preference || antag_flag) in candidate_client.prefs.be_special))
+		var/list/client_antags = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if (!client_antags[antag_preference || antag_flag])
 			candidates.Remove(candidate_player)
 			continue
 

@@ -15,9 +15,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//game-preferences
 	var/lastchangelog = "" //Saved changlog filesize to detect if there was a change
 
-	//Antag preferences
-	var/list/be_special = list() //Special role selection
-
 	/// Custom keybindings. Map of keybind names to keyboard inputs.
 	/// For example, by default would have "swap_hands" -> list("X")
 	var/list/key_bindings = list()

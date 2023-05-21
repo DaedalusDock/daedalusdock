@@ -513,18 +513,24 @@
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
 	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
+
 	// If they have antags enabled, they're potentially doing this on purpose instead of by accident. Notify admins if so.
 	var/has_antags = FALSE
-	if(client.prefs.be_special.len > 0)
-		has_antags = TRUE
+	var/num_antags = 0
+	var/list/client_antags = client.prefs.read_preference(/datum/preference/blob/antagonists)
+	for(var/antagonist in client_antags)
+		if(client_antags[antagonist])
+			has_antags = TRUE
+			num_antags++
+
 	if(client.prefs.read_preference(/datum/preference/blob/job_priority):len == 0)
 		if(!ineligible_for_roles)
 			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. This makes you ineligible for any round start role, please update your job preferences."))
 		ineligible_for_roles = TRUE
 		ready = PLAYER_NOT_READY
 		if(has_antags)
-			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. The player has been forcefully returned to the lobby.")
-			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
+			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [num_antags] antag preferences enabled. The player has been forcefully returned to the lobby.")
+			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [num_antags] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
 		return FALSE //This is the only case someone should actually be completely blocked from antag rolling as well
 	return TRUE
 

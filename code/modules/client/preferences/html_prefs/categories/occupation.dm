@@ -22,7 +22,7 @@
 	if(!prefs)
 		return
 
-	if(prefs.parent != usr && !check_rights())
+	if(prefs.parent != usr.client && !check_rights())
 		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [prefs.parent?.key || "NULL"])")
 
 	if(href_list["change_alt_title"])
@@ -63,8 +63,8 @@
 		index++
 		var/is_banned = job_bans[job.title] == "banned"
 		var/is_too_new = job_bans[job.title]?["job_days_left"]
-		var/job_priority = priority2text[(job_prefs[job.title] || 1)]
-		var/title_link = length(job.alt_titles) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs];job=[job.title]") : "<span class='linkOn'>[job.title]</span>"
+		var/job_priority = priority2text[(job_prefs[job.title] + 1)]
+		var/title_link = length(job.alt_titles) ? button_element(src, prefs.alt_job_titles?[job.title] || job.title, "change_alt_title=1;prefs=\ref[prefs];job=[job.title]") : "[job.title]"
 		var/rejection_reason = ""
 
 		if(is_banned)
@@ -91,7 +91,7 @@
 			<td>
 			</td>
 			<td width='30%' align='center'>
-				[rejection_reason ? "<span class='linkOn'>[job.title]</span>" : title_link]
+				[rejection_reason ? "<span class='linkOff'>[job.title]</span>" : title_link]
 			</td>
 			<td width = '10%' align = 'center'>
 				[button_element(src, "?", "job_info=[job.title]")]

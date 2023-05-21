@@ -38,7 +38,9 @@
 				if (istype(preview_job, /datum/job/cyborg))
 					return image('icons/mob/robots.dmi', icon_state = "robot", dir = SOUTH)
 				mannequin.job = preview_job.title
-				mannequin.dress_up_as_job(preview_job, TRUE, src)
+				mannequin.dress_up_as_job(preview_job, TRUE, src, TRUE)
+		if(PREVIEW_PREF_LOADOUT)
+			mannequin.equip_outfit_and_loadout(new /datum/outfit, src, TRUE)
 	mannequin.update_body()
 	mannequin.add_overlay(mutable_appearance('icons/turf/floors.dmi', icon_state = "floor", layer = SPACE_LAYER))
 	return mannequin.appearance

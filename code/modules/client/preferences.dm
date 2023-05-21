@@ -75,15 +75,18 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/tainted_character_profiles = FALSE
 
 	/// Preference of how the preview should show the character.
-	var/preview_pref = PREVIEW_PREF_JOB
+	var/tmp/preview_pref = PREVIEW_PREF_JOB
 
 	///Alternative job titles stored in preferences. Assoc list, ie. alt_job_titles["Scientist"] = "Cytologist"
 	var/list/alt_job_titles = list()
 
 	/// Stores the instance of the category we are viewing. (CHARACTER CREATOR)
-	var/datum/preference_group/category/selected_category
+	var/tmp/datum/preference_group/category/selected_category
 
-	var/character_name = ""
+	/// Used by the loadout UI
+	var/tmp/loadout_show_equipped = FALSE
+	var/tmp/loadout_category = LOADOUT_CATEGORY_BACKPACK
+	var/tmp/loadout_subcategory = LOADOUT_SUBCATEGORY_MISC
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
@@ -146,7 +149,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 // they had the ref to Topic to.
 /datum/preferences/ui_status(mob/user, datum/ui_state/state)
 	return user.client == parent ? UI_INTERACTIVE : UI_CLOSE
-
 /datum/preferences/ui_data(mob/user)
 	var/list/data = list()
 
@@ -160,6 +162,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if (tainted_character_profiles)
 		data["character_profiles"] = create_character_profiles()
 		tainted_character_profiles = FALSE
+
+	//PARIAH EDIT BEGIN
+	data["preview_options"] = list(PREVIEW_PREF_JOB,PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)
+	data["preview_selection"] = preview_pref
+	//PARIAH EDIT END
+
+	data["character_preferences"] = compile_character_preferences(user)
 
 	data["active_slot"] = default_slot
 
@@ -320,7 +329,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if (.)
 		return
 
-	if(parent != usr && !check_rights())
+	if(parent != usr.client && !check_rights(show_msg = FALSE))
 		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [parent?.key || "NULL"])")
 
 	if (href_list["open_keybindings"])

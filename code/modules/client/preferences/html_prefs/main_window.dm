@@ -5,7 +5,7 @@
 
 	if(href_list["select_preview"])
 		var/new_preview = href_list["select_preview"]
-		if(!(new_preview in list(PREVIEW_PREF_JOB, PREVIEW_PREF_UNDERWEAR)))
+		if(!(new_preview in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)))
 			return TRUE
 
 		preview_pref = new_preview
@@ -77,6 +77,9 @@
 	. += "<legend class='computerLegend' style='margin: 0 auto'>[button_element(src, read_preference(/datum/preference/name/real_name), "change_slot=1")]</legend>"
 	. += html_create_subheader()
 	. += html_create_categories()
+	var/header = selected_category.get_header(src)
+	if(header)
+		. += header
 	. += "<div style='display:flex;flex-wrap:wrap'>"
 	. += selected_category.get_content(src)
 	. += "</div>"
@@ -98,7 +101,6 @@
 		return
 
 	default_slot = characters.Find(chosen_slot)
-	character_name = chosen_slot
 
 	save_character()
 
@@ -123,8 +125,8 @@
 
 /datum/preferences/proc/html_create_subheader()
 	. = list()
-	. += "<div style='text-align: center'>Character Preview<br>"
-	for(var/option in list(PREVIEW_PREF_JOB, PREVIEW_PREF_UNDERWEAR))
+	. += "<div style='text-align: center'><b>Character Preview</b><br>"
+	for(var/option in list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR))
 		if(preview_pref == option)
 			. += "<span class='linkOn'>[option]</span>"
 		else

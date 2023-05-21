@@ -11,6 +11,10 @@
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 
+/datum/preference_group/proc/get_header(datum/preferences/prefs)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+
 /datum/preference_group/proc/should_display(datum/preferences/prefs)
 	return TRUE
 

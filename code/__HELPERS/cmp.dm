@@ -186,3 +186,6 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 
 /proc/cmp_pref_name(datum/preference/A, datum/preference/B)
 	return sorttext(B.explanation, A.explanation)
+
+/proc/cmp_loadout_name(datum/loadout_item/A, datum/loadout_item/B)
+	return sorttext(B.name, A.name)

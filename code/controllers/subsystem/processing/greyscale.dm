@@ -27,6 +27,10 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 		var/datum/greyscale_config/config = configurations[greyscale_type]
 		config.CrossVerify()
 
+	for(var/datum/loadout_item/loadout_item as anything in GLOB.loadout_items)
+		CHECK_TICK
+		loadout_item.parse_gags()
+
 	return ..()
 
 /datum/controller/subsystem/processing/greyscale/proc/RefreshConfigsFromFile()

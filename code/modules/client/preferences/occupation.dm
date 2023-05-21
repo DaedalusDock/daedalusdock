@@ -40,7 +40,7 @@
 		if(!istext(thing))
 			input -= thing
 			continue
-		if(!isnum(input[thing]) && !(input[thing] - 4)) // It's always an integer between 1 and 4
+		if(!isnum(input[thing]) || (!input[thing] in 1 to 3))
 			input -= thing
 	return input
 
@@ -54,14 +54,11 @@
 
 	var/list/job_prefs = prefs.read_preference(type)
 	var/list/choices = list("Never", "Low", "Medium", "High")
-	var/level = tgui_input_list(usr, "Change Priority",, choices[job_prefs[job] || 1], choices)
+	var/level = tgui_input_list(usr, "Change Priority",, choices, choices[job_prefs[job] + 1])
 	if(!level)
 		return
 
-	level = choices.Find(level)
-
-	if(!level)
-		return
+	level = choices.Find(level) - 1
 
 	if (level == JP_HIGH)
 		var/datum/job/overflow_role = SSjob.overflow_role

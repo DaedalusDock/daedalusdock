@@ -499,3 +499,11 @@ ul.sparse {
 	margin: 2px !important;
 	display: inline;
 }
+
+span.color_holder_box{
+	display: inline-block;
+	width: 20px;
+	height: 8px;
+	border:1px solid #000;
+	padding: 0px;
+}

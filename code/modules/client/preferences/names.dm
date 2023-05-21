@@ -33,7 +33,13 @@
 	var/input = tgui_input_text(user, "Change [explanation]",, serialize(prefs.read_preference(type)))
 	if(!input)
 		return
-	return prefs.update_preference(src, input)
+	. = prefs.update_preference(src, input)
+
+	if(istype(user, /mob/dead/new_player))
+		var/mob/dead/new_player/player = user
+		player.new_player_panel()
+
+	return .
 
 /datum/preference/name/get_button(datum/preferences/prefs)
 	return button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")

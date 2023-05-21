@@ -239,24 +239,21 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /mob/living/proc/on_job_equipping(datum/job/equipping)
 	return
 
-/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref) //PARIAH EDIT CHANGE
+/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
 	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
 	bank_account.payday(STARTING_PAYCHECKS, TRUE)
 	account_id = bank_account.account_id
-
-	dress_up_as_job(equipping, FALSE, used_pref) //PARIAH EDIT CHANGE
-
 	bank_account.replaceable = FALSE
-	dress_up_as_job(equipping)
 
+	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
 
-/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) //PARIAH EDIT CHANGE
+/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref, use_loadout = FALSE)
 	//Find job title in the first list, then pick the outfit based on species.
 	if(!equipping.outfits)
-		dna.species.pre_equip_species_outfit(equipping, src, visual_only)
+		dna.species.pre_equip_species_outfit(null, src, visual_only)
 		return//for jobs that don't come with any equipment or load outfits differently
 
 	var/species2try = dna.species.job_outfit_type || dna.species.id //Uses the job_outfit_type of the species, if possible.
@@ -267,8 +264,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		outfit2wear = /datum/outfit/job//Emergency fallback that equips the generic "job outfit". This shouldn't happen unless something is wrong.
 		stack_trace("[equipping] has no valid outfits in its list.")
 
-	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equipOutfit(outfit2wear, visual_only)
+	outfit2wear = new outfit2wear()
+	dna.species.pre_equip_species_outfit(outfit2wear, src, visual_only)
+	if(use_loadout)
+		equip_outfit_and_loadout(outfit2wear, used_pref, visual_only, equipping)
+	else
+		equipOutfit(outfit2wear, visual_only)
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.

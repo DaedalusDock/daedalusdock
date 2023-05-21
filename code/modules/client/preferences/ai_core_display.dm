@@ -4,7 +4,7 @@
 	savefile_key = "preferred_ai_core_display"
 
 /datum/preference/choiced/ai_core_display/init_possible_values()
-	return list(GLOB.ai_core_display_screens - "Portrait")
+	return GLOB.ai_core_display_screens - "Portrait"
 
 /datum/preference/choiced/ai_core_display/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))

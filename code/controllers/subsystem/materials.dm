@@ -163,3 +163,12 @@ SUBSYSTEM_DEF(materials)
 			combo[GET_MATERIAL_REF(mat)] = materials_declaration[mat] * multiplier
 		material_combos[combo_index] = combo
 	return combo
+
+/datum/controller/subsystem/materials/proc/CallMaterialName(ID)
+	if (istype(ID, /datum/material))
+		var/datum/material/material = ID
+		return material.name
+	else if(GLOB.chemical_reagents_list[ID])
+		var/datum/reagent/reagent = GLOB.chemical_reagents_list[ID]
+		return reagent.name
+	return ID

@@ -189,3 +189,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 
 /proc/cmp_loadout_name(datum/loadout_item/A, datum/loadout_item/B)
 	return sorttext(B.name, A.name)
+
+/// Orders designs by name
+/proc/cmp_design_name(datum/design/A, datum/design/B)
+	return sorttext(B.name, A.name)

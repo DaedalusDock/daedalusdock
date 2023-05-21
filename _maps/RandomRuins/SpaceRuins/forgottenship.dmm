@@ -335,13 +335,12 @@
 	req_one_access_txt = "150"
 	},
 /obj/item/circuitboard/machine/circuit_imprinter/offstation,
-/obj/item/circuitboard/machine/protolathe/offstation,
+/obj/item/circuitboard/machine/fabricator/offstation,
 /obj/item/stack/sheet/iron/twenty,
 /obj/item/stack/sheet/glass{
 	amount = 10
 	},
 /obj/item/stack/cable_coil,
-/obj/item/circuitboard/computer/rdconsole,
 /obj/item/storage/box/stockparts/deluxe,
 /obj/item/storage/box/stockparts/deluxe,
 /obj/item/storage/box/beakers,

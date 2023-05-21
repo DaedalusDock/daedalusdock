@@ -15,7 +15,7 @@
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "riflestock"
 
-///These gun kits are printed from the security protolathe to then be used in making new weapons
+///These gun kits are printed from the security fabricator to then be used in making new weapons
 
 // GUN PART KIT //
 

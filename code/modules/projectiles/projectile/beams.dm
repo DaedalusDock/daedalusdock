@@ -146,10 +146,10 @@
 	hitscan_light_range = 0.75
 	hitscan_light_color_override = COLOR_LIME
 	muzzle_flash_intensity = 6
-	muzzle_flash_range = 2
+	muzzle_flash_range = 3
 	muzzle_flash_color_override = COLOR_LIME
 	impact_light_intensity = 7
-	impact_light_range = 2.5
+	impact_light_range = 3
 	impact_light_color_override = COLOR_LIME
 
 /obj/projectile/beam/lasertag

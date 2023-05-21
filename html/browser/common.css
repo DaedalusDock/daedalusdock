@@ -32,6 +32,7 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 	text-shadow: none !important;
 }
 
+
 a:hover
 {
 	color: #ffffff;
@@ -242,6 +243,14 @@ div.notice
 	box-shadow: 0 0 10px #FFCC00;
 }
 
+.computerPaneSimple /*Do not mix simple and non simple computerPanes*/
+{
+	background: #202020;
+	border: 1px solid #757575;
+	padding: 4px;
+	margin: 3px 0;
+	color: #ffffff;
+}
 .computerLegend
 {
 	background-color: black;

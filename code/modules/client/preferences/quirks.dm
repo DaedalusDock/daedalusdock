@@ -40,5 +40,8 @@
 		if(quirk in user_quirks)
 			user_quirks -= quirk
 		else
+			if(!GetQuirkBalance(user_quirks) >= SSquirks.quirk_points[quirk])
+				to_chat(user, span_warning("You do not have enough points to take this quirk!"))
+				return FALSE
 			user_quirks += quirk
 		return prefs.update_preference(src, user_quirks)

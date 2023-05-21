@@ -3,7 +3,7 @@
 /datum/preference_group/species/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
-	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Phenotype</b>
 			<span class='tooltiptext'>Physiology drives psychology.</span>
@@ -26,7 +26,7 @@
 
 		. += {"
 			<tr>
-				<td style='padding: 4px 8px'>[pref.explanation]</td>
+				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]</span></td>
 				<td style='padding: 4px 8px'>[button]</td>
 			</tr>
 		"}

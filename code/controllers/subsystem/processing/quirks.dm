@@ -61,14 +61,16 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 
 /datum/controller/subsystem/processing/quirks/proc/AssignQuirks(mob/living/user, client/cli)
 	var/badquirk = FALSE
-	for(var/quirk_name in cli.prefs.all_quirks)
+	var/datum/preference/P = GLOB.preference_entries[/datum/preference/blob/quirks]
+	var/list/client_quirks = cli.prefs.read_preference(P.type)
+	for(var/quirk_name in client_quirks)
 		var/datum/quirk/Q = quirks[quirk_name]
 		if(Q)
 			if(user.add_quirk(Q))
 				SSblackbox.record_feedback("nested tally", "quirks_taken", 1, list("[quirk_name]"))
 		else
 			stack_trace("Invalid quirk \"[quirk_name]\" in client [cli.ckey] preferences")
-			cli.prefs.all_quirks -= quirk_name
+			cli.prefs.update_preference(P, client_quirks - P)
 			badquirk = TRUE
 	if(badquirk)
 		cli.prefs.save_character()

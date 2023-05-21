@@ -9,7 +9,7 @@
 	if (!..(preferences))
 		return FALSE
 
-	return "Nearsighted" in preferences.all_quirks
+	return "Nearsighted" in preferences.read_preference(/datum/preference/blob/quirks)
 
 /datum/preference/choiced/glasses/apply_to_human(mob/living/carbon/human/target, value)
 	return

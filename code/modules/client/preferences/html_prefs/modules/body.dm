@@ -19,7 +19,7 @@
 /datum/preference_group/body/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
-	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Who Am I</b>
 			<span class='tooltiptext'>The eternal flame that is the soul.</span>
@@ -33,7 +33,7 @@
 			continue
 		. += {"
 			<tr>
-				<td style='padding: 4px 8px'>[pref.explanation]</td>
+				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]</span></td>
 				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}
@@ -45,7 +45,7 @@
 			continue
 		. += {"
 			<tr>
-				<td style='padding: 4px 8px'>[pref.explanation]</td>
+				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]</span></td>
 				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}

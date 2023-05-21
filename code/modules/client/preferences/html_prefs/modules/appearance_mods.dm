@@ -10,7 +10,7 @@
 	. = ..()
 	var/datum/preference/mod_pref = GLOB.preference_entries[/datum/preference/appearance_mods]
 	. += {"
-	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Appearance Mods</b>
 			<span class='tooltiptext'>Reality is yours, and yours alone.</span>
@@ -34,10 +34,12 @@
 	for(var/name in existing_mods)
 		. += {"
 		<tr>
-			<td style='padding: 4px 8px;border-right: 2px solid white;border-top: 2px solid white'>[name]</td>
-			<td style='padding: 4px 8px;border-left: 2px solid white;border-top: 2px solid white'>
+			<td style='padding: 4px 8px;border-right: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'><span class='computerText'>[name]</span></td>
+			<td style='padding: 4px 8px;border-left: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>
+				<span class='computerText'>
 				[button_element(prefs, "Modify", "pref_act=[mod_pref];mod_name=[name];modify=1")]
 				[button_element(prefs, "Remove", "pref_act=[mod_pref];mod_name=[name];remove=1")]
+				</span>
 			</td>
 		</tr>
 		"}

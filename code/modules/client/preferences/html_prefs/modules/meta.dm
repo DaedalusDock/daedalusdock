@@ -10,7 +10,7 @@
 /datum/preference_group/meta/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
-	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Meta</b>
 			<span class='tooltiptext'>Do not peer beyond the veil. You will not like what you see.</span>
@@ -24,7 +24,7 @@
 			continue
 		. += {"
 			<tr>
-				<td style='padding: 4px 8px'>[pref.explanation]</td>
+				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]</span></td>
 				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}

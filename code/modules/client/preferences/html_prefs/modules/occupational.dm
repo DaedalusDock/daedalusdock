@@ -11,7 +11,7 @@
 /datum/preference_group/job_specific/get_content(datum/preferences/prefs)
 	. = ..()
 	. += {"
-	<fieldset class='computerPane' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Aliases</b>
 			<span class='tooltiptext'>A mask will not hide who you are from us.</span>
@@ -25,7 +25,7 @@
 			continue
 		. += {"
 			<tr>
-				<td style='padding: 4px 8px'>[pref.explanation]:</td>
+				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]:</span></td>
 				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
 			</tr>
 		"}

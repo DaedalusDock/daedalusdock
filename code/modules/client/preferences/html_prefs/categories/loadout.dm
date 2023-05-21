@@ -8,7 +8,7 @@
 	<div style='width: 100%; text-align: center'>
 			[button_element(prefs, prefs.loadout_show_equipped ? "Showing Equipped Items" : "Showing All Items", "pref_act=[/datum/preference/blob/loadout];toggle_show_equipped=1")]
 			<br>
-			<b>Remaining Points: [prefs.calculate_loadout_points()]</b>
+			<b><span class='computerText'>Remaining Points: [prefs.calculate_loadout_points()]</span></b>
 	</div>
 	<hr>
 	"}

@@ -23,12 +23,13 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 {
 	color: #ffffff;
 	text-decoration: none;
-	background: #3f595e;
+	background: #3f595e ;
 	border: 1px solid #161616;
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
-	cursor:default;
-	white-space:nowrap;
+	cursor: default;
+	white-space: nowrap !important;
+	text-shadow: none !important;
 }
 
 a:hover
@@ -214,23 +215,65 @@ div.notice
 
 .computerPane
 {
-	background: #202020;
-	border: 1px solid #757575;
+	border: 4px ridge #000000;
 	padding: 4px;
 	margin: 3px 0;
 	color: #ffffff;
+	overflow: hidden;
+	background-color: black;
+	background-origin: border-box;
+	background-image:
+		repeating-linear-gradient(
+			0deg,
+			rgba(0, 0, 0, 0.15),
+			rgba(0, 0, 0, 0.15) 1px,
+			transparent 1px,
+			transparent 2px
+		),
+		radial-gradient(
+			rgba(185, 134, 4, 0.75),
+			black 120%
+		);
+}
+
+.computerPane hr{
+	background-color: rgba(255, 183, 0, 0.5);
+	border: 1px solid rgba(255, 183, 0, 0.5);
+	box-shadow: 0 0 10px #FFCC00;
 }
 
 .computerLegend
 {
-	background: #000000;
-	color: #00ff00;
-	border: 1px solid #757575;
+	background-color: black;
+	color: #FFCC00;
+	border: 2px solid #000000;
 	padding: 4px;
 	margin: 3px 0;
-	text-align: center
+	text-align: center;
+	text-shadow: 0 0 5px #FFCC00;
+	overflow: hidden;
 }
 
+.computerPaneNested
+{
+	border: 1px solid rgba(255, 183, 0, 0.5);
+	padding: 4px;
+	margin: 3px 0;
+	color: #ffffff;
+	overflow: hidden;
+	background-image: inherit;
+	box-shadow: 0 0 10px #FFCC00
+}
+
+.computerPaneNested::selection {
+	background: #0080FF;
+	text-shadow: none;
+}
+
+.computerText{
+	text-shadow: 0 0 5px #C8C8C8;
+	color: #ffffff;
+}
 
 .statusDisplay
 {
@@ -486,6 +529,7 @@ ul.sparse {
 	position: absolute;
 	z-index: 1;
 	font-style: italic;
+	text-shadow: none !important;
 }
 
 .tooltip:hover .tooltiptext {
@@ -506,4 +550,12 @@ span.color_holder_box{
 	height: 8px;
 	border:1px solid #000;
 	padding: 0px;
+}
+
+.zebraTable tr:nth-child(even){
+	background-color: #17191C;
+}
+
+.zebraTable tr:nth-child(odd){
+	background-color: #23273C;
 }

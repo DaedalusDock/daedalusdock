@@ -300,16 +300,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Load prefs
 	READ_FILE(S["alt_job_titles"], alt_job_titles)
 
-	//Quirks
-	READ_FILE(S["all_quirks"], all_quirks)
-
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
-
-	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
-	validate_quirks()
 
 	var/mob/dead/new_player/body = parent?.mob
 	if(istype(body))
@@ -351,9 +345,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Write prefs
 	WRITE_FILE(S["alt_job_titles"], alt_job_titles)
-
-	//Quirks
-	WRITE_FILE(S["all_quirks"] , all_quirks)
 
 	return TRUE
 

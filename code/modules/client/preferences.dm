@@ -28,9 +28,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
 	var/ghost_form = "ghost"
 
-	//Quirk list
-	var/list/all_quirks = list()
-
 	/// The current window, PREFERENCE_TAB_* in [`code/__DEFINES/preferences.dm`]
 	var/current_window = PREFERENCE_TAB_GAME_PREFERENCES
 
@@ -84,6 +81,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/tmp/loadout_show_equipped = FALSE
 	var/tmp/loadout_category = LOADOUT_CATEGORY_BACKPACK
 	var/tmp/loadout_subcategory = LOADOUT_SUBCATEGORY_MISC
+	/// Used by the quirk UI
+	var/tmp/selected_quirk = ""
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
@@ -508,23 +507,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 		profiles += name
 
 	return profiles
-
-/datum/preferences/proc/GetQuirkBalance()
-	var/bal = 0
-	for(var/V in all_quirks)
-		var/datum/quirk/T = SSquirks.quirks[V]
-		bal -= initial(T.value)
-	return bal
-
-/datum/preferences/proc/GetPositiveQuirkCount()
-	. = 0
-	for(var/q in all_quirks)
-		if(SSquirks.quirk_points[q] > 0)
-			.++
-
-/datum/preferences/proc/validate_quirks()
-	if(GetQuirkBalance() < 0)
-		all_quirks = list()
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)

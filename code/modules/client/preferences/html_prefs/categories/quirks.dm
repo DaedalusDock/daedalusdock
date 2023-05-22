@@ -7,6 +7,21 @@
 		"Heterochromia" = /datum/preference/color/heterochromatic
 	)
 
+/datum/preference_group/category/quirks/get_header(datum/preferences/prefs)
+	. = ..()
+	var/datum/preference/blob/quirks/P = GLOB.preference_entries[/datum/preference/blob/quirks]
+	var/balance = P.GetQuirkBalance(prefs.read_preference(P.type))
+	. += {"
+	<div style='width: 100%; text-align: center'>
+		<span class='computerText'>
+			<b>Balance</b>
+			<br>
+			[balance] Points
+		</span>
+	</div>
+	<hr>
+	"}
+
 /datum/preference_group/category/quirks/get_content(datum/preferences/prefs)
 	. = ..()
 	var/datum/preference/P = GLOB.preference_entries[/datum/preference/blob/quirks]
@@ -36,9 +51,9 @@
 	for(var/quirk in all_quirks)
 		if(quirk in user_quirks || (quirk_info[quirk]["mood"] && CONFIG_GET(flag/disable_human_mood)))
 			continue
-		var/quirk_type ="<span style='font-color: #AAAAFF'>Neuteral</span>"
+		var/quirk_type ="<span style='color: #AAAAFF'>Neuteral</span>"
 		if(quirk_info[quirk]["value"])
-			quirk_type = quirk_info[quirk]["value"] > 0 ? "<span style='font-color: #AAFFAA'>Positive</span>" : "<span style='color: #FFAAAA'>Negative</span>"
+			quirk_type = quirk_info[quirk]["value"] > 0 ? "<span style='color: #AAFFAA'>Positive</span>" : "<span style='color: #FFAAAA'>Negative</span>"
 
 		. += {"
 		<tr style='min-width=100%'>

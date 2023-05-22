@@ -52,7 +52,7 @@
 		loadout_items_in_page = GLOB.loadout_category_to_subcategory_to_items[prefs.loadout_category]?[prefs.loadout_subcategory]
 
 	. += {"
-	<table align='center'; width='100%'; height='100%'; style='background-color:#13171C'>
+	<table class='zebraTable' align='center'; width='100%'; height='100%'; style='background-color:#13171C'>
 		<tr style='vertical-align:top'>
 			<td width=28%><font size=2><b>Name</b></font></td>
 			<td width=20%><font size=2><b>Customization</b></font></td>
@@ -63,7 +63,6 @@
 
 	var/even = FALSE
 	for(var/datum/loadout_item/loadout_item as anything in loadout_items_in_page)
-		var/background_cl = even ? "#17191C" : "#23273C"
 		even = !even
 		var/datum/loadout_entry/loadout_entry = prefs.get_loadout_entry_for_loadout_item(loadout_item, loadout)
 		var/item_button
@@ -124,7 +123,7 @@
 			if (loadout_item.customization_flags & CUSTOMIZE_COLOR_ROTATION)
 				if(first_line)
 					color_button += " | "
-				color_button += "Color rotation "
+				color_button += "Color Rotation "
 			color_button += "</font></i>"
 
 		if(length(loadout_item.restricted_roles))
@@ -136,7 +135,7 @@
 			item_button = "<span class='linkOff'>[displayed_name]</span>"
 
 		. += {"
-			<tr style='vertical-align:top; background-color: [background_cl];'>
+			<tr style='vertical-align:top'>
 				<td>[item_button][change_name_button]</td>
 				<td>[color_button]</td>
 				<td>[restricted_to]<i>[displayed_desc]</i>[change_desc_button]</td>

@@ -226,8 +226,8 @@ div.notice
 	background-image:
 		repeating-linear-gradient(
 			0deg,
-			rgba(0, 0, 0, 0.15),
-			rgba(0, 0, 0, 0.15) 1px,
+			rgba(0, 0, 0, 0.25),
+			rgba(0, 0, 0, 0.25) 1px,
 			transparent 1px,
 			transparent 2px
 		),
@@ -255,7 +255,7 @@ div.notice
 {
 	background-color: black;
 	color: #FFCC00;
-	border: 2px solid #000000;
+	border: 2px solid rgba(255, 183, 0, 0.5);
 	padding: 4px;
 	margin: 3px 0;
 	text-align: center;
@@ -561,10 +561,14 @@ span.color_holder_box{
 	padding: 0px;
 }
 
+.zebraTable{
+	border: 1px solid rgba(255, 183, 0, 0.5);
+}
+
 .zebraTable tr:nth-child(even){
-	background-color: #17191C;
+	background-color: #7c5500;
 }
 
 .zebraTable tr:nth-child(odd){
-	background-color: #23273C;
+	background-color: #533200;
 }

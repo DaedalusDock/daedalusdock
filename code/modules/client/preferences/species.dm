@@ -35,19 +35,20 @@
 		var/datum/species/S = prefs.read_preference(type)
 		S = new S
 		var/list/diet = S.get_species_diet()
+		var/list/perks = S.get_species_perks()
 		var/list/content = list("<div style='text-align:center'>")
 		content += S.get_species_description()
 		content += {"
 		<br><br>
-		<table style='width: 90%; margin 0 auto; border: 2px solid white'>
-			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid whit'>
-				Liked Food
+		<table style='min-width: 90%; margin 0 auto; border: 2px solid white'>
+			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid white'>
+				<span style='color: #AAFFAA'>Liked Food</span>
 			</th>
-			<th style='text-align: center;vertical-align: middle; width: 33.33%'; border: 2px solid whit>
-				Disliked Food
+			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid white'>
+				<span style='color: #AAAAFF'>Disliked Food</span>
 			</th>
-			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid whit'>
-				Toxic Food
+			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid white'>
+				<span style='color: #FFAAAA'>Toxic Food</span>
 			</th>
 		"}
 		content += "</tr><tr>"
@@ -58,9 +59,36 @@
 					[english_list(diet[thing], "Nothing")]
 				</td>
 			"}
+		content += {"
+		</table>
+		<table class='zebraTable' style='min-width: 90%; margin 0 auto'>
+		"}
+
+		for(var/list/perk as anything in perks[SPECIES_NEUTRAL_PERK] + perks[SPECIES_POSITIVE_PERK] + perks[SPECIES_NEGATIVE_PERK])
+			var/perk_type = ""
+			switch(perk[SPECIES_PERK_TYPE])
+				if(SPECIES_NEUTRAL_PERK)
+					perk_type = "<span style='color: #AAAAFF'>Neutral</span>"
+				if(SPECIES_POSITIVE_PERK)
+					perk_type = "<span style='color: #AAFFAA'>Positive</span>"
+				if(SPECIES_NEGATIVE_PERK)
+					perk_type = "<span style='color: #FFAAAA'>Negative</span>"
+			content += {"
+				<tr>
+					<td style='text-align: center'>
+						[perk[SPECIES_PERK_NAME]]
+						<br>
+						[perk_type]
+						<br>
+						[perk[SPECIES_PERK_DESC]]
+					</td>
+				</tr>
+			"}
+
+
 
 		content += "</tr></table></div>"
-		var/datum/browser/window = new(user, "SpeciesInfo", S.name, 400, 280)
+		var/datum/browser/window = new(user, "SpeciesInfo", S.name, 400, 600)
 		window.set_content(jointext(content, ""))
 		window.open()
 		return FALSE

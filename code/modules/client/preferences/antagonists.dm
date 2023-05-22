@@ -17,6 +17,16 @@
 
 /datum/preference/blob/antagonists/user_edit(mob/user, datum/preferences/prefs, list/params)
 	var/list/client_antags = prefs.read_preference(type)
+	if(params["select_all"])
+		for(var/antag in client_antags)
+			client_antags[antag] = TRUE
+		return prefs.update_preference(src, client_antags)
+
+	if(params["deselect_all"])
+		for(var/antag in client_antags)
+			client_antags[antag] = FALSE
+		return prefs.update_preference(src, client_antags)
+
 	var/antag = params["toggle_antag"]
 	if(!(antag in client_antags))
 		return

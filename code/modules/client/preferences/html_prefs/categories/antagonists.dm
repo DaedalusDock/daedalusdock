@@ -21,6 +21,10 @@
 			<b>Antagonists</b>
 			<span class='tooltiptext'>Trouble lurks in the tunnels... you.</span>
 		</legend>
+		<div style='text-align: center'>
+			[button_element(prefs, "Select All", "pref_act=[/datum/preference/blob/antagonists];select_all=1")]
+			[button_element(prefs, "Deselect All", "pref_act=[/datum/preference/blob/antagonists];deselect_all=1")]
+		</div>
 	<table style='width:100%'>
 	"}
 	var/list/client_antags = prefs.read_preference(/datum/preference/blob/antagonists)

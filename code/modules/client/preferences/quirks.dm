@@ -30,9 +30,14 @@
 			.++
 
 /datum/preference/blob/quirks/user_edit(mob/user, datum/preferences/prefs, list/params)
-	if(params["select"])
-		prefs.selected_quirk = params["select"]
-		return TRUE
+	if(params["info"])
+		var/datum/quirk/Q = SSquirks.quirks[params["info"]]
+		if(!Q)
+			return
+		var/datum/browser/window = new(usr, "QuirkInfo", initial(Q.name), 400, 120)
+		window.set_content(initial(Q.desc))
+		window.open()
+		return FALSE
 
 	if(params["toggle_quirk"]) //Deserialize sanitizes this fine so we can accept junk data
 		var/quirk = params["toggle_quirk"]
@@ -40,7 +45,7 @@
 		if(quirk in user_quirks)
 			user_quirks -= quirk
 		else
-			if(!GetQuirkBalance(user_quirks) >= SSquirks.quirk_points[quirk])
+			if(!(GetQuirkBalance(user_quirks) >= SSquirks.quirk_points[quirk]))
 				to_chat(user, span_warning("You do not have enough points to take this quirk!"))
 				return FALSE
 			user_quirks += quirk

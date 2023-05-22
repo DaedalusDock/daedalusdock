@@ -60,7 +60,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	spawn(0)
 		_setup_cats()
 
-	sortTim(., PROC_REF(cmp_pref_modules))
+	sortTim(., GLOBAL_PROC_REF(cmp_pref_modules))
 
 /proc/_setup_cats()
 	for(var/datum/preference_group/category/P in GLOB.all_pref_groups)

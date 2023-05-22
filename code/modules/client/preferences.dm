@@ -81,8 +81,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/tmp/loadout_show_equipped = FALSE
 	var/tmp/loadout_category = LOADOUT_CATEGORY_BACKPACK
 	var/tmp/loadout_subcategory = LOADOUT_SUBCATEGORY_MISC
-	/// Used by the quirk UI
-	var/tmp/selected_quirk = ""
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)

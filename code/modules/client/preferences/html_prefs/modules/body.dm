@@ -43,10 +43,14 @@
 		var/datum/preference/pref = GLOB.preference_entries[path]
 		if(clothing[path] && !pref.is_accessible(prefs))
 			continue
+		var/button = pref.get_button(prefs)
+		var/datum/preference/sub_pref = GLOB.preference_entries[pref.sub_preference]
+		if(sub_pref)
+			button += sub_pref.get_button(prefs)
 		. += {"
 			<tr>
 				<td style='padding: 4px 8px'><span class='computerText'>[pref.explanation]</span></td>
-				<td style='padding: 4px 8px'>[pref.get_button(prefs)]</td>
+				<td style='padding: 4px 8px'>[button]</td>
 			</tr>
 		"}
 

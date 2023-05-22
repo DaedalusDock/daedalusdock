@@ -26,6 +26,46 @@
 
 	return values
 
+/datum/preference/choiced/species/get_button(datum/preferences/prefs)
+	. = ..()
+	. += button_element(prefs, "?", "pref_act=[type];info=1")
+
+/datum/preference/choiced/species/button_act(mob/user, datum/preferences/prefs, list/params)
+	if(params["info"])
+		var/datum/species/S = prefs.read_preference(type)
+		S = new S
+		var/list/diet = S.get_species_diet()
+		var/list/content = list("<div style='text-align:center'>")
+		content += S.get_species_description()
+		content += {"
+		<br><br>
+		<table style='width: 90%; margin 0 auto; border: 2px solid white'>
+			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid whit'>
+				Liked Food
+			</th>
+			<th style='text-align: center;vertical-align: middle; width: 33.33%'; border: 2px solid whit>
+				Disliked Food
+			</th>
+			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid whit'>
+				Toxic Food
+			</th>
+		"}
+		content += "</tr><tr>"
+
+		for(var/thing in diet)
+			content += {"
+				<td style='text-align: center;vertical-align: middle; border: 2px solid whit'>
+					[english_list(diet[thing], "Nothing")]
+				</td>
+			"}
+
+		content += "</tr></table></div>"
+		var/datum/browser/window = new(user, "SpeciesInfo", S.name, 400, 280)
+		window.set_content(jointext(content, ""))
+		window.open()
+		return FALSE
+
+
 /datum/preference/choiced/species/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_species(value, icon_update = FALSE, pref_load = TRUE)
 

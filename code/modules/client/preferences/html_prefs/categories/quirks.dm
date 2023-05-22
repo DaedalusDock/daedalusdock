@@ -40,25 +40,13 @@
 		if(quirk_info[quirk]["value"])
 			quirk_type = quirk_info[quirk]["value"] > 0 ? "<span style='font-color: #AAFFAA'>Positive</span>" : "<span style='color: #FFAAAA'>Negative</span>"
 
-		if(!(prefs.selected_quirk == quirk))
-			. += {"
-			<tr style='min-width=100%'>
-				<td>
-					[button_element(prefs, "[quirk] ([quirk_info[quirk]["value"]] pts)", "pref_act=[P.type];select=[quirk]")] - [quirk_type]
-				</td>
-			</tr>
-			"}
-		else
-			. += {"
-			<tr style='min-width=100%'>
-				<td>
-					<span class='linkOn'><b>[quirk]</b></span>
-					[button_element(prefs, "TAKE ([quirk_info[quirk]["value"]] pts)", "pref_act=[P.type];toggle_quirk=[quirk]")]
-					<br>
-					[quirk_info[quirk]["description"]]
-				</td>
-			</tr>
-			"}
+		. += {"
+		<tr style='min-width=100%'>
+			<td>
+				[button_element(prefs, "[quirk] ([quirk_info[quirk]["value"]] pts)", "pref_act=[P.type];toggle_quirk=[quirk]")] - [button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")] - [quirk_type]
+			</td>
+		</tr>
+		"}
 
 
 	. += "</table></fieldset>"

@@ -379,7 +379,7 @@
 
 /obj/item/organ/internal/lungs/slime/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather_slime)
 	. = ..()
-	if (breath.getGroupGas(GAS_PLASMA))
+	if (breath?.getGroupGas(GAS_PLASMA))
 		var/plasma_pp = breath.getBreathPartialPressure(breath.getGroupGas(GAS_PLASMA))
 		owner.blood_volume += (0.2 * plasma_pp) // 10/s when breathing literally nothing but plasma, which will suffocate you.
 

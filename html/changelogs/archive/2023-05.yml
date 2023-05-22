@@ -1,0 +1,37 @@
+2023-05-03:
+  Froststahr:
+  - bugfix: The detective's revolver now uses the proper icon.
+2023-05-06:
+  Kapu1178, Goonstation Spriters:
+  - qol: Many timed actions are now visible to anyone nearby.
+  Kapu1178, Keelin, MarkNstein:
+  - rscadd: Mechanical Components
+2023-05-09:
+  Kapu1178:
+  - bugfix: Raising the security level to blue will no longer sometimes start nightshifts
+  - bugfix: Server hub entry will no longer be cut short
+2023-05-11:
+  Kapu1178:
+  - code_imp: Fixed an invisible runtime.
+2023-05-13:
+  san7890:
+  - bugfix: Gravity runtime
+2023-05-14:
+  Kapu1178:
+  - bugfix: Item Attack Animations work again.
+  - bugfix: ZAS Runtime
+  - bugfix: Camera lights are no longer extremely powerful
+  - tweak: A few lights have been slightly changed in color.
+  Kapu1178, DimWhat, Goonstation Spriters:
+  - imageadd: Fabricators courtesy of DimWhat and the other goonstation spriters.
+  - balance: Removed RnD
+2023-05-15:
+  Gamer025:
+  - bugfix: You should no longer receive "Your previous action was ignored..." messages
+      when you join a server
+2023-05-18:
+  Kapu1178:
+  - bugfix: ZAS Bugs, pumps should be notably stronger.
+2023-05-22:
+  francinum:
+  - refactor: Added CRT theme in yellow, green and blue

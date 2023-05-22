@@ -42,20 +42,18 @@
 #define SAFE (1<<4)
 
 //used in design to specify which machine can build it
-#define IMPRINTER (1<<0) //For circuits. Uses glass/chemicals.
-#define PROTOLATHE (1<<1) //New stuff. Uses various minerals
-#define AUTOLATHE (1<<2) //Prints basic designs without research
-#define MECHFAB (1<<3) //Remember, objects utilising this flag should have construction_time and construction_cost vars.
-#define BIOGENERATOR (1<<4) //Uses biomass
-#define LIMBGROWER (1<<5) //Uses synthetic flesh
-#define SMELTER (1<<6) //uses various minerals
-/// Protolathes for offstation roles. More limited tech tree.
-#define AWAY_LATHE (1<<8)
+#define FABRICATOR (1<<0) //For circuits. Uses glass/chemicals.
+#define AUTOLATHE (1<<1) //Prints basic designs without research
+#define MECHFAB (1<<2) //Remember, objects utilising this flag should have construction_time and construction_cost vars.
+#define BIOGENERATOR (1<<3) //Uses biomass
+#define LIMBGROWER (1<<4) //Uses synthetic flesh
+#define SMELTER (1<<5) //uses various minerals
 /// Imprinters for offstation roles. More limited tech tree.
-#define AWAY_IMPRINTER (1<<9)
+#define AWAY_IMPRINTER (1<<6)
 /// For wiremod/integrated circuits. Uses various minerals.
-#define COMPONENT_PRINTER (1<<10)
+#define COMPONENT_PRINTER (1<<7)
 //Note: More than one of these can be added to a design but imprinter and lathe designs are incompatable.
+#define IMPRINTER (1<<8)//temp
 
 //Modular computer/NTNet defines
 
@@ -199,3 +197,47 @@
 #define TLV_OUTSIDE_WARNING_LIMIT 1
 ///the gas is outside the hazard limit, the air alarm will go into hazard mode
 #define TLV_OUTSIDE_HAZARD_LIMIT 2
+
+// Design categories
+#define DCAT_COMPUTER_PART "Computer Parts"
+#define DCAT_WIREMOD "Wiremod"
+#define DCAT_POWER "Power Management"
+#define DCAT_AMMO "Ammunition"
+#define DCAT_BASIC_TOOL "Basic Tools"
+#define DCAT_AI_LAW "Law Boards"
+#define DCAT_JANITORIAL "Janitorial"
+#define DCAT_MISC_TOOL "Misc. Tools"
+#define DCAT_MATERIAL "Materials"
+#define DCAT_BOTANICAL "Botanical"
+#define DCAT_MEDICAL "Medical"
+#define DCAT_REAGENTS "Reagents"
+#define DCAT_ASSEMBLY "Assemblies"
+#define DCAT_RADIO "Radio"
+#define DCAT_FRAME "Wallframes"
+#define DCAT_CONSTRUCTION "Construction"
+#define DCAT_ATMOS "EVA"
+#define DCAT_DINNERWARE "Dining"
+#define DCAT_FORENSICS "Forensics"
+#define DCAT_SECURITY "Security Tools"
+#define DCAT_WEAPON "Weaponry"
+#define DCAT_MECHA_OBJ "Exosuit Equipment"
+#define DCAT_CIRCUIT "Circuit Boards"
+#define DCAT_SUPPLY "Supply Tools"
+#define DCAT_STOCK_PART "Stock Parts"
+#define DCAT_WEARABLE "Wearables"
+#define DCAT_MISC "Miscellaneous"
+#define DCAT_SILICON "Silicons"
+#define DCAT_MINING "Mining Tools"
+
+// Design categories for the mechfab
+#define DCAT_CYBORG "Cyborg"
+#define DCAT_RIPLEY "Ripley"
+#define DCAT_ODYSSEUS "Odysseus"
+#define DCAT_GYGAX "Gygax"
+#define DCAT_CLARKE "Clarke"
+#define DCAT_DURAND "Durand"
+#define DCAT_HONK "H.O.N.K"
+#define DCAT_PHAZON "Phazon"
+#define DCAT_SAVANNAH "Savannah-Ivanov"
+#define DCAT_EXOSUIT_MOD "Exosuit Modules"
+#define DCAT_AUGMENT "Augmentation"

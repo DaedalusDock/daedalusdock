@@ -36,6 +36,9 @@
 /// station name (the name of the station in-game)
 /datum/config_entry/string/stationname
 
+/// the line of text under server name on the hub
+/datum/config_entry/string/hub_subtitle
+
 /// Countdown between lobby and the round starting.
 /datum/config_entry/number/lobby_countdown
 	default = 120

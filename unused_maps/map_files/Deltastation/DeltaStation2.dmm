@@ -4682,7 +4682,7 @@
 "bhx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/rnd/production/protolathe/department/engineering,
+/obj/machinery/rnd/production/fabricator/department/engineering,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -14297,7 +14297,7 @@
 "dcK" = (
 /obj/machinery/status_display/ai/directional/east,
 /obj/machinery/light/directional/east,
-/obj/machinery/rnd/production/protolathe/department/science,
+/obj/machinery/rnd/production/fabricator/department/science,
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},

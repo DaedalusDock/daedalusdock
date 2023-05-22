@@ -107,49 +107,6 @@
 
 	return drain_total
 
-//RD SERVER//
-/obj/machinery/rnd/server/master/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
-	if(!ninja_suit || !ninja || !ninja_gloves)
-		return INVALID_DRAIN
-
-	. = DRAIN_RD_HACK_FAILED
-
-	// If the traitor theft objective is still present, this will destroy it...
-	if(!source_code_hdd)
-		return ..()
-
-	to_chat(ninja, span_notice("Hacking \the [src]..."))
-	AI_notify_hack()
-	to_chat(ninja, span_notice("Encrypted source code detected. Overloading storage device..."))
-	if(do_after(ninja, src, 30 SECONDS))
-		overload_source_code_hdd()
-		to_chat(ninja, span_notice("Sabotage complete. Storage device overloaded."))
-		var/datum/antagonist/ninja/ninja_antag = ninja.mind.has_antag_datum(/datum/antagonist/ninja)
-		if(!ninja_antag)
-			return
-		var/datum/objective/research_secrets/objective = locate() in ninja_antag.objectives
-		if(objective)
-			objective.completed = TRUE
-
-/obj/machinery/rnd/server/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
-	if(!ninja_suit || !ninja || !ninja_gloves)
-		return INVALID_DRAIN
-
-	. = DRAIN_RD_HACK_FAILED
-
-	to_chat(ninja, span_notice("Research notes detected. Corrupting data..."))
-
-	if(!do_after(ninja, src, 30 SECONDS))
-		return
-
-	SSresearch.science_tech.modify_points_all(0)
-	to_chat(ninja, span_notice("Sabotage complete. Research notes corrupted."))
-	var/datum/antagonist/ninja/ninja_antag = ninja.mind.has_antag_datum(/datum/antagonist/ninja)
-	if(!ninja_antag)
-		return
-	var/datum/objective/research_secrets/objective = locate() in ninja_antag.objectives
-	if(objective)
-		objective.completed = TRUE
 
 //SECURITY CONSOLE//
 /obj/machinery/computer/secure_data/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)

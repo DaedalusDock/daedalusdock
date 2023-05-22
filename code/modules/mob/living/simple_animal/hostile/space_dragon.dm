@@ -670,7 +670,7 @@
 		priority_announce("Spatial object has reached peak energy charge in [initial(A.name)], please stand-by.", FLAVOR_ANANKE_STATION)
 		atom_integrity = INFINITY
 		icon_state = "carp_rift_charged"
-		set_light_color(LIGHT_COLOR_YELLOW)
+		set_light_color(LIGHT_COLOR_DIM_YELLOW)
 		update_light()
 		setArmor(getArmor(arglist(list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100))))
 		resistance_flags = INDESTRUCTIBLE

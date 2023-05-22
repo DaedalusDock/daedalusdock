@@ -182,7 +182,7 @@
 /obj/item/storage/medkit/brute,
 /obj/structure/table/wood,
 /obj/item/storage/medkit/brute,
-/obj/item/disk/design_disk/golem_shell,
+/obj/item/disk/data/golem_shell,
 /turf/open/floor/mineral/titanium/purple,
 /area/ruin/powered/golem_ship)
 "E" = (

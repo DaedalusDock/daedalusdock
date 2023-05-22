@@ -12,7 +12,6 @@
 /datum/unit_test/codex_overlap
 
 /datum/unit_test/codex_overlap/Run()
-	var/list/failures = list()
 	for(var/check_string in SScodex.entries_by_string)
 		var/clean_check_string = lowertext(check_string)
 		for(var/other_string in SScodex.entries_by_string)

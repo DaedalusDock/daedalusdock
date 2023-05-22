@@ -209,7 +209,7 @@
 	amount_per_transfer_from_this = 5
 	list_reagents = list(/datum/reagent/consumable/condensedcapsaicin = 50)
 
-/obj/item/reagent_containers/spray/pepper/empty //for protolathe printing
+/obj/item/reagent_containers/spray/pepper/empty //for fabricator printing
 	list_reagents = null
 
 /obj/item/reagent_containers/spray/pepper/suicide_act(mob/living/carbon/user)

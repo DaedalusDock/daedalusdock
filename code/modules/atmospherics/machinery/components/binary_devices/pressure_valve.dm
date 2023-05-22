@@ -70,7 +70,19 @@
 		if(REGULATE_OUTPUT)
 			pressure_delta = target_pressure - output_starting_pressure
 
-	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)
+	//-1 if pump_gas() did not move any gas, >= 0 otherwise
+	var/returnval = -1
+	var/transfer_moles
+	//Figure out how much gas to transfer to meet the target pressure.
+	switch (regulate_mode)
+		if (REGULATE_INPUT)
+			transfer_moles = min(transfer_moles, calculate_transfer_moles(air2, air1, pressure_delta, parents[1]?.combined_volume || 0))
+		if (REGULATE_OUTPUT)
+			transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0))
+
+	returnval = pump_gas_passive(air1, air2, transfer_moles)
+
+	if(returnval >= 0)
 		update_parents()
 		is_gas_flowing = TRUE
 	else

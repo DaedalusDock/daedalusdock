@@ -37,7 +37,7 @@
 	else
 		M.visible_message(span_danger("[user] attempts to force [M] to [apply_method] [src]."), \
 							span_userdanger("[user] attempts to force you to [apply_method] [src]."))
-		if(!do_after(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user)))
+		if(!do_after(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, display = src))
 			return FALSE
 		M.visible_message(span_danger("[user] forces [M] to [apply_method] [src]."), \
 							span_userdanger("[user] forces you to [apply_method] [src]."))

@@ -481,52 +481,45 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
+#define CPR_PANIC_SPEED (1 SECONDS)
 
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(target == src)
 		return
 
+	CHECK_DNA_AND_SPECIES(target)
+
+	if (DOING_INTERACTION_WITH_TARGET(src,target))
+		return
+
+	if(!can_perform_cpr(target, silent = FALSE))
+		return
+
+	visible_message(
+		span_notice("[src] places their hands on [target.name]'s chest!"),
+		span_notice("You try to perform CPR on [target.name]... Hold still!")
+	)
+
+	var/image/cpr_image = image('goon/icons/actions.dmi', "cpr", pixel_y = 40)
+	cpr_image.appearance_flags = APPEARANCE_UI | KEEP_APART
+	cpr_image.plane = ABOVE_HUD_PLANE
+	add_overlay(cpr_image)
+
 	var/panicking = FALSE
-
 	do
-		CHECK_DNA_AND_SPECIES(target)
-
-		if (DOING_INTERACTION_WITH_TARGET(src,target))
-			return FALSE
-
-		if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-			to_chat(src, span_warning("[target.name] is dead!"))
-			return FALSE
-
-		if (is_mouth_covered())
-			to_chat(src, span_warning("Remove your mask first!"))
-			return FALSE
-
-		if (target.is_mouth_covered())
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-			return FALSE
-
-		if (!getorganslot(ORGAN_SLOT_LUNGS))
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-			return FALSE
-
-		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-			return FALSE
-
-		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
-						span_notice("You try to perform CPR on [target.name]... Hold still!"))
-
-		if (!do_after(src, target, time = panicking ? CPR_PANIC_SPEED : (3 SECONDS)))
+		if (!do_after(src, target, panicking ? CPR_PANIC_SPEED : (3 SECONDS), DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			return FALSE
+			break
 
 		if (target.health > target.crit_threshold)
-			return FALSE
+			break
 
-		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
+		visible_message(
+			span_notice("[src] pushes down on [target.name]'s chest!"),
+			span_notice("You perform CPR on [target.name].")
+		)
+
 		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
 		log_combat(src, target, "CPRed")
 
@@ -535,7 +528,7 @@
 		else if (!target.getorganslot(ORGAN_SLOT_LUNGS))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
 		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
+			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 
 		if (target.health <= target.crit_threshold)
@@ -544,9 +537,40 @@
 			panicking = TRUE
 		else
 			panicking = FALSE
+
 	while (panicking)
 
+	cut_overlay(cpr_image)
+
 #undef CPR_PANIC_SPEED
+
+/mob/living/carbon/human/proc/can_perform_cpr(mob/living/carbon/target, silent = TRUE)
+	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
+		if(!silent)
+			to_chat(src, span_warning("[target.name] is dead!"))
+		return FALSE
+
+	if (is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove your mask first!"))
+		return FALSE
+
+	if (target.is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove [p_their()] mask first!"))
+		return FALSE
+
+	if (!getorganslot(ORGAN_SLOT_LUNGS))
+		if(!silent)
+			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
+		return FALSE
+
+	if (HAS_TRAIT(src, TRAIT_NOBREATH))
+		if(!silent)
+			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
+		return FALSE
+
+	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
@@ -904,7 +928,7 @@
 
 	visible_message(span_notice("[src] starts[skills_space] lifting [target] onto [p_their()] back..."),
 		span_notice("You[skills_space] start to lift [target] onto your back..."))
-	if(!do_after(src, target, carrydelay))
+	if(!do_after(src, target, carrydelay, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
 		visible_message(span_warning("[src] fails to fireman carry [target]!"))
 		return
 

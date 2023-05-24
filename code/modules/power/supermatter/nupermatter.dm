@@ -413,7 +413,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		env.merge(removed)
 
 	for(var/mob/living/carbon/human/subject in view(src, min(7, round(sqrt(power/6)))))
-		var/obj/item/organ/internal/eyes/eyes = subject.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = subject.getorganslot(ORGAN_SLOT_EYES)
 		if (!eyes)
 			continue
 		if (eyes.organ_flags & ORGAN_SYNTHETIC)

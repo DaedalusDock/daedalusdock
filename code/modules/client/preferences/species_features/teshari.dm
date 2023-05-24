@@ -7,7 +7,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Feathers"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/external/teshari_feathers
+	relevant_external_organ = /obj/item/organ/teshari_feathers
 
 /datum/preference/choiced/teshari_feathers/init_possible_values()
 	var/list/values = list()
@@ -49,7 +49,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ears"
-	relevant_external_organ = /obj/item/organ/external/teshari_ears
+	relevant_external_organ = /obj/item/organ/teshari_ears
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/teshari_ears/init_possible_values()
@@ -96,7 +96,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body feathers"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+	relevant_external_organ = /obj/item/organ/teshari_body_feathers
 
 /datum/preference/choiced/teshari_body_feathers/init_possible_values()
 	var/list/values = list()
@@ -135,7 +135,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Tails"
-	relevant_external_organ = /obj/item/organ/external/tail/teshari
+	relevant_external_organ = /obj/item/organ/tail/teshari
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_teshari/init_possible_values()
@@ -160,7 +160,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_tail_colors"
-	relevant_external_organ = /obj/item/organ/external/tail/teshari
+	relevant_external_organ = /obj/item/organ/tail/teshari
 
 	color_key = MUTCOLORS_KEY_TESHARI_TAIL
 
@@ -168,7 +168,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_body_colors"
-	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+	relevant_external_organ = /obj/item/organ/teshari_body_feathers
 
 	color_key = MUTCOLORS_KEY_TESHARI_BODY_FEATHERS
 

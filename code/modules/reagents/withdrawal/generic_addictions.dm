@@ -124,7 +124,7 @@
 		return
 	to_chat(affected_carbon, span_warning("You feel yourself adapt to the darkness."))
 	var/mob/living/carbon/human/affected_human = affected_carbon
-	var/obj/item/organ/internal/eyes/empowered_eyes = affected_human.getorgan(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/empowered_eyes = affected_human.getorgan(/obj/item/organ/eyes)
 	if(empowered_eyes)
 		ADD_TRAIT(affected_human, TRAIT_NIGHT_VISION, "maint_drug_addiction")
 		empowered_eyes?.refresh()
@@ -180,7 +180,7 @@
 		possibilities += ALERT_TEMPERATURE_HOT
 	if(!HAS_TRAIT(affected_carbon, TRAIT_RESISTCOLD))
 		possibilities += ALERT_TEMPERATURE_COLD
-	var/obj/item/organ/internal/lungs/lungs = affected_carbon.getorganslot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = affected_carbon.getorganslot(ORGAN_SLOT_LUNGS)
 	if(lungs)
 		if(lungs.safe_oxygen_min)
 			possibilities += ALERT_NOT_ENOUGH_OXYGEN
@@ -214,7 +214,7 @@
 	if(affected_carbon.stat >= SOFT_CRIT)
 		return
 
-	var/obj/item/organ/organ = pick(affected_carbon.internal_organs)
+	var/obj/item/organ/organ = pick(affected_carbon.processing_organs)
 	if(organ.low_threshold)
 		to_chat(affected_carbon, organ.low_threshold_passed)
 		return

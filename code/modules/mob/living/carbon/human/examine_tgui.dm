@@ -22,7 +22,7 @@
 				outfit_ref.equip(dummy_holder, visualsOnly=TRUE)
 
 		examine_panel_screen = new
-		examine_panel_screen.vis_contents += dummy_holder
+		examine_panel_screen.add_viscontents(dummy_holder)
 		examine_panel_screen.name = "screen"
 		examine_panel_screen.assigned_map = "examine_panel_[REF(holder)]_map"
 		examine_panel_screen.del_on_map_removal = FALSE

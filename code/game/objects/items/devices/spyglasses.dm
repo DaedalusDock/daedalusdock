@@ -90,9 +90,9 @@
 	. = ..()
 
 /obj/item/clothing/accessory/spy_bug/proc/update_view()//this doesn't do anything too crazy, just updates the vis_contents of its screen obj
-	cam_screen.vis_contents.Cut()
+	cam_screen.cut_viscontents()
 	for(var/turf/visible_turf in view(1,get_turf(src)))//fuck you usr
-		cam_screen.vis_contents += visible_turf
+		cam_screen.add_viscontents(visible_turf)
 
 //it needs to be linked, hence a kit.
 /obj/item/storage/box/rxglasses/spyglasskit

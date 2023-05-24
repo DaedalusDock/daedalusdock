@@ -107,8 +107,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
-	vis_contents.Cut()
-
+	if(length(vis_contents))
+		cut_viscontents()
 	assemble_baseturfs()
 
 	levelupdate()
@@ -215,7 +215,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	..()
 
-	vis_contents.Cut()
+	if(length(vis_contents))
+		cut_viscontents()
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS

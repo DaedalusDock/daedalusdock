@@ -127,7 +127,7 @@
 		qdel(overlay)
 
 	var/obj/effect/overlay/status_display_text/new_status_display_text = new(src, line_y, message)
-	vis_contents += new_status_display_text
+	add_viscontents(new_status_display_text)
 	return new_status_display_text
 
 /obj/machinery/status_display/update_appearance(updates=ALL)

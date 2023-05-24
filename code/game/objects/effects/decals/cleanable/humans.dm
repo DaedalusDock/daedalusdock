@@ -449,7 +449,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
 	final_splatter.forceMove(the_window)
-	the_window.vis_contents += final_splatter
+	the_window.add_viscontents(final_splatter)
 	the_window.bloodied = TRUE
 	qdel(src)
 

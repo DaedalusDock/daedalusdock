@@ -682,13 +682,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 		auto_propagate_cut_cable(src)
 
 	machinery_node = new /obj/effect/node()
-	vis_contents += machinery_node
+	add_viscontents(machinery_node)
 	cable_node_1 = new /obj/effect/node/layer1()
-	vis_contents += cable_node_1
+	add_viscontents(cable_node_1)
 	cable_node_2 = new /obj/effect/node/layer2()
-	vis_contents += cable_node_2
+	add_viscontents(cable_node_2)
 	cable_node_3 = new /obj/effect/node/layer3()
-	vis_contents += cable_node_3
+	add_viscontents(cable_node_3)
 	update_appearance()
 
 /obj/structure/cable/multilayer/Destroy() // called when a cable is deleted

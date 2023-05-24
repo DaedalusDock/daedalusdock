@@ -178,7 +178,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	generate_destination()
 	update_appearance()
 	portal_visuals = new
-	vis_contents += portal_visuals
+	add_viscontents(portal_visuals)
 	return ..()
 
 /obj/machinery/gateway/Destroy()
@@ -372,4 +372,4 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	animate(get_filter("portal_ripple"), time = 1.3 SECONDS, loop = -1, easing = LINEAR_EASING, radius = 32)
 
 	var/turf/center_turf = our_destination.get_target_turf()
-	vis_contents += block(locate(center_turf.x - 1, center_turf.y - 1, center_turf.z), locate(center_turf.x + 1, center_turf.y + 1, center_turf.z))
+	add_viscontents(block(locate(center_turf.x - 1, center_turf.y - 1, center_turf.z), locate(center_turf.x + 1, center_turf.y + 1, center_turf.z)))

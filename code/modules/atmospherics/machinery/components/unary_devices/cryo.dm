@@ -37,7 +37,7 @@
 	SIGNAL_HANDLER
 
 	if(occupant)
-		vis_contents -= occupant
+		remove_viscontents(occupant)
 		REMOVE_TRAIT(occupant, TRAIT_IMMOBILIZED, CRYO_TRAIT)
 		REMOVE_TRAIT(occupant, TRAIT_FORCED_STANDING, CRYO_TRAIT)
 
@@ -46,7 +46,7 @@
 		return
 
 	occupant.setDir(SOUTH)
-	vis_contents += occupant
+	add_viscontents(occupant)
 	pixel_y = 22
 	ADD_TRAIT(occupant, TRAIT_IMMOBILIZED, CRYO_TRAIT)
 	// Keep them standing! They'll go sideways in the tube when they fall asleep otherwise.
@@ -123,7 +123,7 @@
 	radio.recalculateChannels()
 
 	occupant_vis = new(null, src)
-	vis_contents += occupant_vis
+	add_viscontents(occupant_vis)
 	if(airs[1])
 		airs[1].volume = CELL_VOLUME * 0.5
 
@@ -152,7 +152,7 @@
 		. += span_notice("The status display reads: Efficiency at <b>[efficiency*100]%</b>.")
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/Destroy()
-	vis_contents.Cut()
+	cut_viscontents()
 
 	QDEL_NULL(occupant_vis)
 	QDEL_NULL(radio)

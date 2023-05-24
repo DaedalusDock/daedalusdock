@@ -43,7 +43,7 @@
 	overlay.icon_state = icon_state
 	overlay.layer = FLY_LAYER
 	overlay.pixel_y = y_offset
-	vis_contents += overlay
+	add_viscontents(overlay)
 	return overlay
 
 /obj/machinery/power/tracker/proc/set_control(obj/machinery/power/solar_control/SC)

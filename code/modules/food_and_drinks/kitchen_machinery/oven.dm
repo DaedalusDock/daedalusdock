@@ -100,7 +100,7 @@
 
 	if(!open)
 		oven_tray.vis_flags |= VIS_HIDE
-	vis_contents += oven_tray
+	add_viscontents(oven_tray)
 	oven_tray.flags_1 |= IS_ONTOP_1
 	oven_tray.pixel_y = OVEN_TRAY_Y_OFFSET
 	oven_tray.pixel_x = OVEN_TRAY_X_OFFSET
@@ -117,7 +117,7 @@
 /obj/machinery/oven/proc/tray_removed_from_oven(obj/item/oven_tray)
 	SIGNAL_HANDLER
 	oven_tray.flags_1 &= ~IS_ONTOP_1
-	vis_contents -= oven_tray
+	remove_viscontents(oven_tray)
 	used_tray = null
 	UnregisterSignal(oven_tray, COMSIG_MOVABLE_MOVED)
 	update_baking_audio()

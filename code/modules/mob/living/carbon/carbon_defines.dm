@@ -13,14 +13,15 @@
 	blocks_emissive = NONE
 	zmm_flags = ZMM_MANGLE_PLANES //Emissive eyes :holding_back_tears:
 
-	///List of [/obj/item/organ/internal] in the mob. They don't go in the contents for some reason I don't want to know.
-	var/list/obj/item/organ/internal/internal_organs = list()
-	///Same as [above][/mob/living/carbon/var/internal_organs], but stores "slot ID" - "organ" pairs for easy access.
-	var/list/internal_organs_slot = list()
-	///List of [/obj/item/organ/external] in the mob, similarly used as internal_organs.
-	var/list/obj/item/organ/external/external_organs = list()
-	///Same as [above][/mob/living/carbon/var/external_organs], but stores "ID" = "organ" pairs.
-	var/list/external_organs_slot = list()
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/organs = list()
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/cosmetic_organs = list()
+	///Stores "slot ID" - "organ" pairs for easy access. Contains both functional and cosmetic organs
+	var/list/organs_by_slot = list()
+	///A list of organs that process, used to keep life() fast!
+	var/list/obj/item/organ/processing_organs = list()
+
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
 	///How many dream images we have left to send

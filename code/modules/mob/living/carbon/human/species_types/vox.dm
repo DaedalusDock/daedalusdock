@@ -25,17 +25,17 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/internal/lungs/vox
-	mutantbrain = /obj/item/organ/internal/brain/vox
-	mutantheart = /obj/item/organ/internal/heart/vox
-	mutanteyes = /obj/item/organ/internal/eyes/vox
-	mutantliver = /obj/item/organ/internal/liver/vox
+	mutantlungs = /obj/item/organ/lungs/vox
+	mutantbrain = /obj/item/organ/brain/vox
+	mutantheart = /obj/item/organ/heart/vox
+	mutanteyes = /obj/item/organ/eyes/vox
+	mutantliver = /obj/item/organ/liver/vox
 	breathid = "n2"
-	external_organs = list(
-		/obj/item/organ/external/snout/vox = "Vox Snout",
-		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_hair/facial = "None",
-		/obj/item/organ/external/tail/vox = "Vox Tail"
+	cosmetic_organs = list(
+		/obj/item/organ/snout/vox = "Vox Snout",
+		/obj/item/organ/vox_hair = "None",
+		/obj/item/organ/vox_hair/facial = "None",
+		/obj/item/organ/tail/vox = "Vox Tail"
 	)
 	liked_food = MEAT | FRIED
 	payday_modifier = 0.75

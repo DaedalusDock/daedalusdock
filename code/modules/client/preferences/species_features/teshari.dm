@@ -5,7 +5,7 @@
 	explanation = "Head Feathers"
 	savefile_key = "teshari_feathers"
 	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/external/teshari_feathers
+	relevant_external_organ = /obj/item/organ/teshari_feathers
 
 	sub_preference = /datum/preference/color/hair_color
 
@@ -19,7 +19,7 @@
 	explanation = "Ears"
 	savefile_key = "teshari_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/external/teshari_ears
+	relevant_external_organ = /obj/item/organ/teshari_ears
 
 	sub_preference = /datum/preference/color/facial_hair_color
 
@@ -33,7 +33,7 @@
 	explanation = "Body Feathers"
 	savefile_key = "teshari_body_feathers"
 	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+	relevant_external_organ = /obj/item/organ/teshari_body_feathers
 
 	sub_preference = /datum/preference/tri_color/teshari_body_feathers
 
@@ -47,7 +47,7 @@
 	explanation = "Tail"
 	savefile_key = "tail_teshari"
 	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/external/tail/teshari
+	relevant_external_organ = /obj/item/organ/tail/teshari
 
 	sub_preference = /datum/preference/tri_color/teshari_tail
 
@@ -61,7 +61,7 @@
 	is_sub_preference = TRUE
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_tail_colors"
-	relevant_external_organ = /obj/item/organ/external/tail/teshari
+	relevant_external_organ = /obj/item/organ/tail/teshari
 
 	color_key = MUTCOLORS_KEY_TESHARI_TAIL
 
@@ -69,7 +69,7 @@
 	is_sub_preference = TRUE
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "teshari_body_colors"
-	relevant_external_organ = /obj/item/organ/external/teshari_body_feathers
+	relevant_external_organ = /obj/item/organ/teshari_body_feathers
 
 	color_key = MUTCOLORS_KEY_TESHARI_BODY_FEATHERS
 

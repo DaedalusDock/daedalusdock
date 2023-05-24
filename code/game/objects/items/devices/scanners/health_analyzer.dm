@@ -194,7 +194,7 @@
 		var/mob/living/carbon/carbontarget = target
 
 		// Ear status
-		var/obj/item/organ/internal/ears/ears = carbontarget.getorganslot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = carbontarget.getorganslot(ORGAN_SLOT_EARS)
 		if(istype(ears))
 			if(HAS_TRAIT_FROM(carbontarget, TRAIT_DEAF, GENETIC_MUTATION))
 				render_list = "<span class='alert ml-2'>Subject is genetically deaf.\n</span>"
@@ -209,7 +209,7 @@
 					render_list += "<span class='alert ml-2'>Subject is [ears.damage > ears.maxHealth ? "permanently ": "temporarily "] deaf.\n</span>"
 
 		// Eye status
-		var/obj/item/organ/internal/eyes/eyes = carbontarget.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = carbontarget.getorganslot(ORGAN_SLOT_EYES)
 		if(istype(eyes))
 			if(carbontarget.is_blind())
 				render_list += "<span class='alert ml-2'>Subject is blind.\n</span>"
@@ -246,7 +246,7 @@
 		var/mob/living/carbon/human/humantarget = target
 
 		// Organ damage, missing organs
-		if(humantarget.internal_organs && humantarget.internal_organs.len)
+		if(length(humantarget.processing_organs))
 			var/render = FALSE
 			var/toReport = "<span class='info ml-1'>Organs:</span>\
 				<table class='ml-2'><tr>\
@@ -254,7 +254,7 @@
 				[advanced ? "<td style='width:3em;'><font color='#ff0000'><b>Dmg</b></font></td>" : ""]\
 				<td style='width:12em;'><font color='#ff0000'><b>Status</b></font></td>"
 
-			for(var/obj/item/organ/organ as anything in humantarget.internal_organs)
+			for(var/obj/item/organ/organ as anything in humantarget.processing_organs)
 				var/status = organ.get_status_text()
 				if (status != "")
 					render = TRUE
@@ -364,7 +364,7 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		var/cyberimp_detect
-		for(var/obj/item/organ/internal/cyberimp/CI in carbontarget.internal_organs)
+		for(var/obj/item/organ/cyberimp/CI in carbontarget.processing_organs)
 			if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
 				cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
 		if(cyberimp_detect)
@@ -400,7 +400,7 @@
 			render_list += "<span class='notice ml-1'>Subject contains no reagents in their blood.</span>\n"
 
 		// Stomach reagents
-		var/obj/item/organ/internal/stomach/belly = target.getorganslot(ORGAN_SLOT_STOMACH)
+		var/obj/item/organ/stomach/belly = target.getorganslot(ORGAN_SLOT_STOMACH)
 		if(belly)
 			if(belly.reagents.reagent_list.len)
 				render_list += "<span class='notice ml-1'>Subject contains the following reagents in their stomach:</span>\n"

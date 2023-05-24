@@ -3,7 +3,7 @@
 	savefile_key = "feature_human_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/tail/cat
+	relevant_external_organ = /obj/item/organ/tail/cat
 
 /datum/preference/choiced/tail_human/init_possible_values()
 	return assoc_to_keys(GLOB.tails_list_human)

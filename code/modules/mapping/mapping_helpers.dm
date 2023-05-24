@@ -476,7 +476,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/bodycontainer/morgue/j = pick(trays)
 		var/mob/living/carbon/human/h = new /mob/living/carbon/human(j, 1)
 		h.death()
-		for (var/part in h.internal_organs) //randomly remove organs from each body, set those we keep to be in stasis
+		for (var/part in h.processing_organs) //randomly remove organs from each body, set those we keep to be in stasis
 			if (prob(40))
 				qdel(part)
 			else

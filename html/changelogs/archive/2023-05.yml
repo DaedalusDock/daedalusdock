@@ -32,3 +32,6 @@
 2023-05-18:
   Kapu1178:
   - bugfix: ZAS Bugs, pumps should be notably stronger.
+2023-05-22:
+  francinum:
+  - refactor: Added CRT theme in yellow, green and blue

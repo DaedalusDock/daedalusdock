@@ -4,8 +4,8 @@
 	say_mod = "chimpers"
 	scream_verb = "screeches"
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_MONKEY
-	external_organs = list(
-		/obj/item/organ/external/tail/monkey = "Monkey"
+	cosmetic_organs = list(
+		/obj/item/organ/tail/monkey = "Monkey"
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/monkey
 	meat = /obj/item/food/meat/slab/monkey

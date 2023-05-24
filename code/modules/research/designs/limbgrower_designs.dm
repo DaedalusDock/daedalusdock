@@ -45,7 +45,7 @@
 	id = "heart"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 30)
-	build_path = /obj/item/organ/internal/heart
+	build_path = /obj/item/organ/heart
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -54,7 +54,7 @@
 	id = "lungs"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/internal/lungs
+	build_path = /obj/item/organ/lungs
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -63,7 +63,7 @@
 	id = "liver"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/internal/liver
+	build_path = /obj/item/organ/liver
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -72,7 +72,7 @@
 	id = "stomach"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 15)
-	build_path = /obj/item/organ/internal/stomach
+	build_path = /obj/item/organ/stomach
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -81,7 +81,7 @@
 	id = "appendix"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 5) //why would you need this
-	build_path = /obj/item/organ/internal/appendix
+	build_path = /obj/item/organ/appendix
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -90,7 +90,7 @@
 	id = "eyes"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
-	build_path = /obj/item/organ/internal/eyes
+	build_path = /obj/item/organ/eyes
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -99,7 +99,7 @@
 	id = "ears"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
-	build_path = /obj/item/organ/internal/ears
+	build_path = /obj/item/organ/ears
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -108,7 +108,7 @@
 	id = "tongue"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
-	build_path = /obj/item/organ/internal/tongue
+	build_path = /obj/item/organ/tongue
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -118,7 +118,7 @@
 	id = "liztail"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/lizard/fake
+	build_path = /obj/item/organ/tail/lizard/fake
 	category = list(SPECIES_LIZARD)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -127,7 +127,7 @@
 	id = "liztongue"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/internal/tongue/lizard
+	build_path = /obj/item/organ/tongue/lizard
 	category = list(SPECIES_LIZARD)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -136,7 +136,7 @@
 	id = "monkeytail"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/monkey
+	build_path = /obj/item/organ/tail/monkey
 	category = list("other")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -145,7 +145,7 @@
 	id = "cattail"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/cat
+	build_path = /obj/item/organ/tail/cat
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -154,7 +154,7 @@
 	id = "catears"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10)
-	build_path = /obj/item/organ/internal/ears/cat
+	build_path = /obj/item/organ/ears/cat
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -163,7 +163,7 @@
 	id = "plasmamanlungs"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/internal/lungs/plasmaman
+	build_path = /obj/item/organ/lungs/plasmaman
 	category = list(SPECIES_PLASMAMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -172,7 +172,7 @@
 	id = "plasmamantongue"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/internal/tongue/bone/plasmaman
+	build_path = /obj/item/organ/tongue/bone/plasmaman
 	category = list(SPECIES_PLASMAMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -181,7 +181,7 @@
 	id = "plasmamanliver"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/internal/liver/plasmaman
+	build_path = /obj/item/organ/liver/plasmaman
 	category = list(SPECIES_PLASMAMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -190,7 +190,7 @@
 	id = "plasmamanstomach"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/internal/stomach/bone/plasmaman
+	build_path = /obj/item/organ/stomach/bone/plasmaman
 	category = list(SPECIES_PLASMAMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -199,7 +199,7 @@
 	id = "etherealstomach"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/consumable/liquidelectricity/enriched = 20)
-	build_path = /obj/item/organ/internal/stomach/ethereal
+	build_path = /obj/item/organ/stomach/ethereal
 	category = list(SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -208,7 +208,7 @@
 	id = "etherealtongue"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/consumable/liquidelectricity/enriched = 20)
-	build_path = /obj/item/organ/internal/tongue/ethereal
+	build_path = /obj/item/organ/tongue/ethereal
 	category = list(SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -217,7 +217,7 @@
 	id = "ethereallungs"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/consumable/liquidelectricity/enriched = 20)
-	build_path = /obj/item/organ/internal/lungs/ethereal
+	build_path = /obj/item/organ/lungs/ethereal
 	category = list(SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
@@ -227,7 +227,7 @@
 	id = "etherealheart"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 10, /datum/reagent/consumable/liquidelectricity/enriched = 20)
-	build_path = /obj/item/organ/internal/heart/ethereal
+	build_path = /obj/item/organ/heart/ethereal
 	category = list(SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 

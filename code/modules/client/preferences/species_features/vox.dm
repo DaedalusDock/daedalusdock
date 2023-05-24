@@ -32,7 +32,7 @@
 	explanation = "Tail"
 	savefile_key = "tail_vox"
 	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/external/tail/vox
+	relevant_external_organ = /obj/item/organ/tail/vox
 
 /datum/preference/choiced/tail_vox/init_possible_values()
 	return GLOB.tails_list_vox

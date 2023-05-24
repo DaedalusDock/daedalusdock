@@ -41,7 +41,7 @@
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.internal_organs)
+			for(var/organ in mob_to_check.processing_organs)
 				found_organ = organ
 				found_organ.organ_flags ^= ORGAN_FROZEN
 

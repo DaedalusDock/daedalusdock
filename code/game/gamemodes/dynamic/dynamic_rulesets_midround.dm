@@ -947,7 +947,7 @@
 	for(var/mob/living/carbon/human/candidate in candidates)
 		var/list/client_antags = candidate.client?.prefs.read_preference(/datum/preference/blob/antagonists)
 		if( \
-			!candidate.getorgan(/obj/item/organ/internal/brain) \
+			!candidate.getorgan(/obj/item/organ/brain) \
 			|| candidate.mind.has_antag_datum(/datum/antagonist/obsessed) \
 			|| candidate.stat == DEAD \
 			|| !(client_antags?[ROLE_OBSESSED]) \

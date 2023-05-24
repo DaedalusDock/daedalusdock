@@ -10,8 +10,8 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_PLANT_SAFE,
 	)
-	external_organs = list(
-		/obj/item/organ/external/pod_hair = "None",
+	cosmetic_organs = list(
+		/obj/item/organ/pod_hair = "None",
 	)
 	inherent_biotypes = MOB_ORGANIC | MOB_HUMANOID | MOB_PLANT
 	inherent_factions = list("plants", "vines")
@@ -69,6 +69,6 @@
 	human_mob.update_body()
 
 /datum/species/pod/proc/change_hairstyle(mob/living/carbon/human/human_mob, new_style)
-	var/obj/item/organ/external/organ = human_mob.getorganslot(ORGAN_SLOT_EXTERNAL_POD_HAIR)
+	var/obj/item/organ/organ = human_mob.getorganslot(ORGAN_SLOT_EXTERNAL_POD_HAIR)
 	organ.set_sprite(new_style)
 	human_mob.update_body_parts()

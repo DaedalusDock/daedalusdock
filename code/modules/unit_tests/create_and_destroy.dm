@@ -154,7 +154,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 
 	sleep(time_needed)
 	while(!garbage_queue_processed)
-				var/oldest_packet_creation = INFINITY
+		var/oldest_packet_creation = INFINITY
 		for(var/index in queues_we_care_about)
 			var/list/queue_to_check = SSgarbage.queues[index]
 			if(!length(queue_to_check))

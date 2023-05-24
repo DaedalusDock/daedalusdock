@@ -12779,6 +12779,10 @@
 "dAK" = (
 /obj/structure/closet/radiation,
 /obj/effect/turf_decal/ported/border/borderfloor,
+/obj/structure/sign/warning/radiation/rad_area{
+	dir = 1;
+	pixel_y = 32
+	},
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/monitoring)
 "dAL" = (
@@ -29476,6 +29480,13 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"jDU" = (
+/obj/structure/lattice,
+/obj/structure/sign/warning/radiation/rad_area{
+	pixel_x = -32
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "jEj" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/line,
@@ -30247,6 +30258,9 @@
 "jRc" = (
 /obj/structure/table,
 /obj/item/storage/toolbox/electrical,
+/obj/structure/sign/warning/radiation/rad_area{
+	pixel_y = -32
+	},
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/engine_smes)
 "jRm" = (
@@ -39406,6 +39420,9 @@
 	cycle_id = "sm-engine-airlock"
 	},
 /obj/machinery/door/firedoor,
+/obj/structure/sign/warning/radiation/rad_area{
+	pixel_y = -32
+	},
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/engineering/supermatter/room)
 "nbu" = (
@@ -54806,6 +54823,12 @@
 "sQw" = (
 /turf/closed/wall/prepainted/daedalus,
 /area/station/engineering/atmos/pumproom)
+"sQy" = (
+/obj/structure/sign/warning/radiation/rad_area{
+	pixel_x = -32
+	},
+/turf/open/space/basic,
+/area/space)
 "sQG" = (
 /obj/machinery/disposal/bin,
 /obj/machinery/light_switch/directional/north,
@@ -62763,6 +62786,17 @@
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"vVC" = (
+/obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/sign/warning/radiation/rad_area{
+	pixel_y = -32
+	},
+/turf/open/floor/iron/ported/techfloor_grid,
+/area/station/engineering/supermatter/room)
 "vVE" = (
 /obj/machinery/camera/motion/directional/east{
 	c_tag = "MiniSat Maintenance";
@@ -113469,7 +113503,7 @@ nsU
 pgy
 kBI
 mVZ
-jgT
+vVC
 fQO
 fQO
 fQO
@@ -115510,7 +115544,7 @@ vBr
 bXZ
 aaa
 aaa
-aaa
+sQy
 rrt
 ycg
 ycg
@@ -115519,11 +115553,11 @@ ycg
 ycg
 ycg
 aaa
-aaa
+sQy
 aaa
 aox
 aaa
-aaa
+sQy
 aaa
 ycg
 ycg
@@ -115532,7 +115566,7 @@ ycg
 ycg
 ycg
 fwP
-lMJ
+jDU
 aaa
 aaa
 aaa
@@ -122729,9 +122763,9 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
+jMp
+jMp
+jMp
 aNw
 aNw
 aNw

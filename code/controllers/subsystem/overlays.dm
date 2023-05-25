@@ -89,7 +89,6 @@ SUBSYSTEM_DEF(overlays)
 		else
 			overlays = null
 		POST_OVERLAY_CHANGE(src)
-		STAT_LOG_ENTRY(SSoverlays.stats, type)
 	else if(cached_other)
 		overlays += cached_other
 		POST_OVERLAY_CHANGE(src)

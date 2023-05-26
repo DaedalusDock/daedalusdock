@@ -241,7 +241,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/eyes/robotic/shield
+	build_path = /obj/item/organ/eyes/robotic/shield
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_gloweyes
@@ -251,7 +251,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 1000)
-	build_path = /obj/item/organ/internal/eyes/robotic/glow
+	build_path = /obj/item/organ/eyes/robotic/glow
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_breather
@@ -261,7 +261,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 35
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 250)
-	build_path = /obj/item/organ/internal/cyberimp/mouth/breathing_tube
+	build_path = /obj/item/organ/cyberimp/mouth/breathing_tube
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_surgical
@@ -271,7 +271,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
-	build_path = /obj/item/organ/internal/cyberimp/arm/surgery
+	build_path = /obj/item/organ/cyberimp/arm/surgery
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_toolset
@@ -281,7 +281,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
-	build_path = /obj/item/organ/internal/cyberimp/arm/toolset
+	build_path = /obj/item/organ/cyberimp/arm/toolset
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_medical_hud
@@ -291,7 +291,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 500)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/medical
+	build_path = /obj/item/organ/cyberimp/eyes/hud/medical
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_security_hud
@@ -301,7 +301,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 750, /datum/material/gold = 750)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/security
+	build_path = /obj/item/organ/cyberimp/eyes/hud/security
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_diagnostic_hud
@@ -311,7 +311,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/diagnostic
+	build_path = /obj/item/organ/cyberimp/eyes/hud/diagnostic
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_xray
@@ -321,7 +321,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/uranium = 1000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
-	build_path = /obj/item/organ/internal/eyes/robotic/xray
+	build_path = /obj/item/organ/eyes/robotic/xray
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_thermals
@@ -331,7 +331,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/diamond = 2000)
-	build_path = /obj/item/organ/internal/eyes/robotic/thermals
+	build_path = /obj/item/organ/eyes/robotic/thermals
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_antistun
@@ -341,7 +341,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 1000)
-	build_path = /obj/item/organ/internal/cyberimp/brain/anti_stun
+	build_path = /obj/item/organ/cyberimp/brain/anti_stun
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment
@@ -351,7 +351,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/gold = 500)
-	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment
+	build_path = /obj/item/organ/cyberimp/chest/nutriment
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment_plus
@@ -361,7 +361,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/gold = 500, /datum/material/uranium = 750)
-	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment/plus
+	build_path = /obj/item/organ/cyberimp/chest/nutriment/plus
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_reviver
@@ -371,7 +371,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 800, /datum/material/gold = 300, /datum/material/uranium = 500)
-	build_path = /obj/item/organ/internal/cyberimp/chest/reviver
+	build_path = /obj/item/organ/cyberimp/chest/reviver
 	category = list(DCAT_AUGMENT)
 
 /////////////////////////////////////////
@@ -435,7 +435,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/liver/cybernetic
+	build_path = /obj/item/organ/liver/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -444,7 +444,7 @@
 	desc = "A cybernetic liver."
 	id = "cybernetic_liver_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/liver/cybernetic/tier2
+	build_path = /obj/item/organ/liver/cybernetic/tier2
 
 /datum/design/cybernetic_liver/tier3
 	name = "Upgraded Cybernetic Liver"
@@ -452,7 +452,7 @@
 	id = "cybernetic_liver_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver=500)
-	build_path = /obj/item/organ/internal/liver/cybernetic/tier3
+	build_path = /obj/item/organ/liver/cybernetic/tier3
 
 /datum/design/cybernetic_heart
 	name = "Basic Cybernetic Heart"
@@ -461,7 +461,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/heart/cybernetic
+	build_path = /obj/item/organ/heart/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -470,7 +470,7 @@
 	desc = "A cybernetic heart."
 	id = "cybernetic_heart_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/heart/cybernetic/tier2
+	build_path = /obj/item/organ/heart/cybernetic/tier2
 
 /datum/design/cybernetic_heart/tier3
 	name = "Upgraded Cybernetic Heart"
@@ -478,7 +478,7 @@
 	id = "cybernetic_heart_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver=500)
-	build_path = /obj/item/organ/internal/heart/cybernetic/tier3
+	build_path = /obj/item/organ/heart/cybernetic/tier3
 
 /datum/design/cybernetic_lungs
 	name = "Basic Cybernetic Lungs"
@@ -487,7 +487,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic
+	build_path = /obj/item/organ/lungs/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -496,7 +496,7 @@
 	desc = "A pair of cybernetic lungs."
 	id = "cybernetic_lungs_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic/tier2
+	build_path = /obj/item/organ/lungs/cybernetic/tier2
 
 /datum/design/cybernetic_lungs/tier3
 	name = "Upgraded Cybernetic Lungs"
@@ -504,7 +504,7 @@
 	id = "cybernetic_lungs_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic/tier3
+	build_path = /obj/item/organ/lungs/cybernetic/tier3
 
 /datum/design/cybernetic_stomach
 	name = "Basic Cybernetic Stomach"
@@ -513,7 +513,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic
+	build_path = /obj/item/organ/stomach/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -522,7 +522,7 @@
 	desc = "A cybernetic stomach."
 	id = "cybernetic_stomach_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic/tier2
+	build_path = /obj/item/organ/stomach/cybernetic/tier2
 
 /datum/design/cybernetic_stomach/tier3
 	name = "Upgraded Cybernetic Stomach"
@@ -530,7 +530,7 @@
 	id = "cybernetic_stomach_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic/tier3
+	build_path = /obj/item/organ/stomach/cybernetic/tier3
 
 /datum/design/cybernetic_ears
 	name = "Cybernetic Ears"
@@ -539,7 +539,7 @@
 	build_type = MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/ears/cybernetic
+	build_path = /obj/item/organ/ears/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -550,7 +550,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/ears/cybernetic/upgraded
+	build_path = /obj/item/organ/ears/cybernetic/upgraded
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cybernetic_eyes
@@ -560,7 +560,7 @@
 	build_type = MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/eyes/robotic/basic
+	build_path = /obj/item/organ/eyes/robotic/basic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -568,7 +568,7 @@
 	name = "Cybernetic Eyes"
 	desc = "A pair of cybernetic eyes."
 	id = "cybernetic_eyes_improved"
-	build_path = /obj/item/organ/internal/eyes/robotic
+	build_path = /obj/item/organ/eyes/robotic
 
 /////////////////////
 ///Surgery Designs///

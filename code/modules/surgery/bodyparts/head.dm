@@ -30,10 +30,10 @@
 	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
 	var/mob/living/brain/brainmob //The current occupant.
-	var/obj/item/organ/internal/brain/brain //The brain organ
-	var/obj/item/organ/internal/eyes/eyes
-	var/obj/item/organ/internal/ears/ears
-	var/obj/item/organ/internal/tongue/tongue
+	var/obj/item/organ/brain/brain //The brain organ
+	var/obj/item/organ/eyes/eyes
+	var/obj/item/organ/ears/ears
+	var/obj/item/organ/tongue/tongue
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?

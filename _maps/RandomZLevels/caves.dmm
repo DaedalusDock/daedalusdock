@@ -66,7 +66,7 @@
 	},
 /obj/item/veilrender/honkrender,
 /obj/item/clothing/mask/gas/clown_hat,
-/obj/item/organ/internal/heart/demon,
+/obj/item/organ/heart/demon,
 /turf/open/floor/engine/cult{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;
@@ -1638,7 +1638,7 @@
 	icon_state = "crateopen"
 	},
 /obj/item/paper/fluff/awaymissions/caves/shipment_receipt,
-/obj/item/organ/internal/eyes/robotic/thermals,
+/obj/item/organ/eyes/robotic/thermals,
 /obj/item/gun/energy/laser/captain/scattershot,
 /obj/item/slimepotion/fireproof,
 /turf/open/misc/asteroid/basalt{
@@ -2508,7 +2508,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "YG" = (
-/obj/item/organ/internal/brain/alien,
+/obj/item/organ/brain/alien,
 /turf/open/misc/asteroid/basalt{
 	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
 	temperature = 2.7;

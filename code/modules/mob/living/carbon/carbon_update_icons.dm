@@ -305,7 +305,7 @@
 ///Update the eye sprite on the carbon. Calling with refresh = TRUE will update the sprite information of the eye organ first.
 /mob/living/carbon/proc/update_eyes(refresh = TRUE)
 	remove_overlay(EYE_LAYER)
-	var/obj/item/organ/internal/eyes/my_eyes = getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/my_eyes = getorganslot(ORGAN_SLOT_EYES)
 	if(isnull(my_eyes) || (dna && (dna.species && (NOEYESPRITES in dna.species.species_traits))))
 		return
 

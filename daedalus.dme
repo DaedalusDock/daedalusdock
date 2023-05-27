@@ -4454,6 +4454,7 @@
 #include "code\modules\tgui_panel\tgui_panel.dm"
 #include "code\modules\tooltip\tooltip.dm"
 #include "code\modules\unit_tests\_unit_tests.dm"
+#include "code\modules\unit_tests\screenshots\screenshot_antag_icons.dm"
 #include "code\modules\universal_states\resonance_jump.dm"
 #include "code\modules\universal_states\universal_state.dm"
 #include "code\modules\uplink\uplink_devices.dm"

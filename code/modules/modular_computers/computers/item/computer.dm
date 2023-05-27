@@ -369,7 +369,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			soundloop.start()
 		enabled = 1
 		update_appearance()
-		ui_interact(user)
+		if(user)
+			ui_interact(user)
 		return TRUE
 	else // Unpowered
 		if(issynth)

@@ -158,7 +158,7 @@
 	var/stored_index = 1
 	var/list/regexOutput
 	//multiz lool
-	while(dmm_regex.Find(tfile, stored_index))
+	while(findtext(tfile, dmm_regex, stored_index))
 		stored_index = dmm_regex.next
 		// Datum var lookup is expensive, this isn't
 		regexOutput = dmm_regex.group
@@ -597,7 +597,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 					// Var edits look like \tname = value;
 					// I'm gonna try capturing them with regex, since it ought to be the fastest here
 					// Should hand back key = value
-					var_edits.Find(line)
+					findtext(line, var_edits)
 					var/value = parse_constant(var_edits.group[2])
 					if(istext(value))
 						value = apply_text_macros(value)
@@ -625,7 +625,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 						// Var edits look like \tname = value;
 						// I'm gonna try capturing them with regex, since it ought to be the fastest here
 						// Should hand back key = value
-						var_edits.Find(line)
+						findtext(line, var_edits)
 						var/value = parse_constant(var_edits.group[2])
 						if(istext(value))
 							value = apply_text_macros(value)
@@ -698,7 +698,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		////////////////////////////////////////////////////////
 
 		var/model_index = 1
-		while(model_path.Find(model, model_index))
+		while(findtext(model,model_path, model_index))
 			var/variables_start = 0
 			var/member_string = model_path.group[1]
 			model_index = model_path.next

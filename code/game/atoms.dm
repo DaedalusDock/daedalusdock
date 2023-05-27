@@ -1128,7 +1128,7 @@
 			continue
 		if(islist(checked_color) && length(checked_color))
 			color = checked_color
-		return
+			return
 
 		color = checked_color
 		return

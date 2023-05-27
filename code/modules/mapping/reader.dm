@@ -563,6 +563,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	var/static/list/wrapped_default_list = list(default_list) // It's stupid, but it saves += list(list)
 	var/static/regex/var_edits = var_edits_tgm
 
+	var/static/magic_var // Really cursed, but we use it to silence a compiler warning thrown by it not understanding findtext() and regex
+
 	var/path_to_init = ""
 	// Reference to the attributes list we're currently filling, if any
 	var/list/current_attributes
@@ -597,7 +599,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 					// Var edits look like \tname = value;
 					// I'm gonna try capturing them with regex, since it ought to be the fastest here
 					// Should hand back key = value
-					findtext(line, var_edits)
+					magic_var = findtext(line, var_edits) //Regex is magic
 					var/value = parse_constant(var_edits.group[2])
 					if(istext(value))
 						value = apply_text_macros(value)
@@ -625,7 +627,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 						// Var edits look like \tname = value;
 						// I'm gonna try capturing them with regex, since it ought to be the fastest here
 						// Should hand back key = value
-						findtext(line, var_edits)
+						magic_var = findtext(line, var_edits)
 						var/value = parse_constant(var_edits.group[2])
 						if(istext(value))
 							value = apply_text_macros(value)
@@ -698,7 +700,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		////////////////////////////////////////////////////////
 
 		var/model_index = 1
-		while(findtext(model,model_path, model_index))
+		while(findtext(model, model_path, model_index))
 			var/variables_start = 0
 			var/member_string = model_path.group[1]
 			model_index = model_path.next

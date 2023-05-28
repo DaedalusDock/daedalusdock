@@ -1,8 +1,13 @@
 /obj/item/bodypart
 	name = "limb"
 	desc = "Why is it detached..."
-	force = 3
+
+	force = 6
 	throwforce = 3
+	stamina_damage = 40
+	stamina_cost = 23
+	stamina_crit_chance = 5
+
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "" //Leave this blank! Bodyparts are built using overlays

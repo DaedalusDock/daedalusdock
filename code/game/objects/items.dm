@@ -915,7 +915,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		. += "CUT"
 	if(sharpness & SHARP_POINTY)
 		. += "PUNCTURE"
-	if(!sharpness)
+	if(!sharpness && damtype == BRUTE)
 		. += "CRUSH"
 	return english_list(.)
 

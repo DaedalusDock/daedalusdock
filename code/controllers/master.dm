@@ -540,6 +540,18 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			SS.postponed_fires--
 			SS.update_nextfire()
 			continue
+
+		if(SS_flags & SS_HIBERNATE)
+			var/list/check_vars = SS.hibernate_checks
+			var/enter_queue
+			for(var/i in 1 to length(check_vars))
+				if(LAZYLEN(SS.vars[check_vars[i]]))
+					enter_queue = TRUE
+					break
+			if(!enter_queue)
+				SS.hibernating = TRUE
+				continue
+
 		SS.enqueue()
 	. = 1
 

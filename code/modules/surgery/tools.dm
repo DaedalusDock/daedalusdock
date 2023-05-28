@@ -158,7 +158,7 @@
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
-	stamina_crit_chance = 35
+	stamina_critical_chance = 35
 
 	custom_materials = list(/datum/material/iron=4000, /datum/material/glass=1000)
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
@@ -201,7 +201,7 @@
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
-	stamina_crit_chance = 35
+	stamina_critical_chance = 35
 
 	custom_materials = list(/datum/material/iron=1000)
 	attack_verb_continuous = list("attacks", "slashes", "saws", "cuts")

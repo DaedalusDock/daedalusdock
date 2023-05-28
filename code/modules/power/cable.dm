@@ -425,7 +425,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
-	stamina_crit_chance = 10
+	stamina_critical_chance = 10
 
 	mats_per_unit = list(/datum/material/iron=10, /datum/material/glass=5)
 	flags_1 = CONDUCT_1

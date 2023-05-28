@@ -8,7 +8,7 @@
 
 	stamina_damage = 0
 	stamina_cost = 0
-	stamina_crit_chance = 0
+	stamina_critical_chance = 0
 
 	var/damaged_clothes = CLOTHING_PRISTINE //similar to machine's BROKEN stat and structure's broken var
 

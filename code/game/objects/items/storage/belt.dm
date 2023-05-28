@@ -4,7 +4,7 @@
 	icon = 'icons/obj/clothing/belts.dmi'
 	stamina_damage = 10
 	stamina_cost = 5
-	stamina_crit_chance = 5
+	stamina_critical_chance = 5
 
 	icon_state = "utility"
 	inhand_icon_state = "utility"

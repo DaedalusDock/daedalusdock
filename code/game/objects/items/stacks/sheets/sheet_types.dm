@@ -301,7 +301,7 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	//BONK
 	stamina_damage = 50
 	stamina_cost = 25
-	stamina_crit_chance = 10
+	stamina_critical_chance = 10
 
 	mats_per_unit = list(/datum/material/wood=MINERAL_MATERIAL_AMOUNT)
 	sheettype = "wood"

@@ -11,7 +11,7 @@
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
-	stamina_crit_chance = 0
+	stamina_critical_chance = 0
 
 	resistance_flags = FLAMMABLE
 	max_integrity = 40

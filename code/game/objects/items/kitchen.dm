@@ -110,7 +110,7 @@
 	throw_range = 7
 	stamina_damage = 40
 	stamina_cost = 15
-	stamina_crit_chance = 2
+	stamina_critical_chance = 2
 
 	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.5)
 	w_class = WEIGHT_CLASS_NORMAL

@@ -6,7 +6,7 @@
 	throwforce = 3
 	stamina_damage = 40
 	stamina_cost = 23
-	stamina_crit_chance = 5
+	stamina_critical_chance = 5
 
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/mob/human_parts.dmi'

@@ -25,7 +25,7 @@
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
-	stamina_crit_chance = 0
+	stamina_critical_chance = 0
 
 	custom_materials = list(/datum/material/iron=10)
 	//pressure_resistance = 2

@@ -11,7 +11,7 @@
 	throw_range = 3
 	stamina_damage = 42
 	stamina_cost = 23
-	stamina_crit_chance = 10
+	stamina_critical_chance = 10
 
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")

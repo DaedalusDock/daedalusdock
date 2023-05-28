@@ -13,7 +13,7 @@
 	throwforce = 7
 	stamina_damage = 35
 	stamina_cost = 12
-	stamina_crit_chance = 10
+	stamina_critical_chance = 10
 
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=50)

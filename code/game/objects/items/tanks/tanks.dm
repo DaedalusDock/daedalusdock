@@ -25,7 +25,7 @@
 	throw_range = 4
 	stamina_damage = 55
 	stamina_cost = 23
-	stamina_crit_chance = 10
+	stamina_critical_chance = 10
 
 	custom_materials = list(/datum/material/iron = 500)
 	actions_types = list(/datum/action/item_action/set_internals)

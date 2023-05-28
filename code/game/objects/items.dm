@@ -903,7 +903,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/on_juice()
 	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
 
-/obj/item/proc/damage_type_to_text()
+/obj/item/proc/damagetype2text()
 	. += list()
 	if(damtype == BURN)
 		. += "BURN"
@@ -919,6 +919,57 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		. += "CRUSH"
 	return english_list(., "NONE")
 
+/obj/item/proc/force2text()
+	switch(force)
+		if(-INFINITY to 0)
+			return "Harmless"
+		if(0 to 2)
+			return "Very Low"
+		if(2 to 6)
+			return "Low"
+		if(6 to 12)
+			return "Average"
+		if(12 to 16)
+			return "High"
+		if(16 to 30)
+			return "Very High"
+		if(30 to INFINITY)
+			return "You could really hurt somebody with this thing!"
+
+/obj/item/proc/staminadamage2text()
+	switch(stamina_damage)
+		if(-INFINITY to 0)
+			return "Harmless"
+		if(0 to 5)
+			return "Very Low"
+		if(5 to 10)
+			return "Low"
+		if(10 to 20)
+			return "Average"
+		if(20 to 25)
+			return "High"
+		if(25 to 35)
+			return "Very High"
+		if(35 to INFINITY)
+			return "This will take the wind out of your sails."
+
+/obj/item/proc/staminacost2text()
+	switch(stamina_cost)
+		if(-INFINITY to 0)
+			return "None"
+		if(0 to 5)
+			return "Very Low"
+		if(5 to 10)
+			return "Low"
+		if(10 to 15)
+			return "Average"
+		if(15 to 25)
+			return "High"
+		if(25 to 35)
+			return "Very High"
+		if(35 to INFINITY)
+			return "This will take the wind out of your sails."
+
 /obj/item/proc/tooltipContent(list/url_mappings)
 	RETURN_TYPE(/list)
 	. = list()
@@ -927,11 +978,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		return
 	. += "<hr>"
 	if(item_flags & FORCE_STRING_OVERRIDE)
-		. += "<img src='[url_mappings["attack.png"]]'>Damage: [force_string]<br>"
+		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force_string]<br>"
 	else
-		. += "<img src='[url_mappings["attack.png"]]'>Damage: [force], type: [damage_type_to_text()]<br>"
-	. += "<img src='[url_mappings["stamina.png"]]'>Stamina: [stamina_damage]<br>"
-	. += "<img src='[url_mappings["stamcost.png"]]'>Stamina Cost: [stamina_cost]<br>"
+		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force2text()], type: [damagetype2text()]<br>"
+	. += "<img src='[url_mappings["stamina.png"]]'>Stamina: [staminadamage2text()]<br>"
+	. += "<img src='[url_mappings["stamcost.png"]]'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
 	var/content = jointext(tooltipContent(get_asset_datum(/datum/asset/simple/namespaced/common).get_url_mappings()), "")

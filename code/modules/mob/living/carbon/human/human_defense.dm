@@ -520,7 +520,7 @@
 	if(undergoing_cardiac_arrest() && can_heartattack() && !(flags & SHOCK_ILLUSION))
 		if(shock_damage * siemens_coeff >= 1 && prob(25))
 			var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-			if(heart.Restart() && stat == CONSCIOUS)
+			if(heart.Restart() && stat <= SOFT_CRIT)
 				to_chat(src, span_notice("You feel your heart beating again!"))
 	electrocution_animation(40)
 

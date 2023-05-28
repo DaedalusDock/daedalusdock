@@ -89,7 +89,7 @@
 			beat = BEAT_NONE
 
 	if(organ_flags & ORGAN_FAILING && owner.can_heartattack() && !(HAS_TRAIT(src, TRAIT_STABLEHEART))) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
-		if(owner.stat == CONSCIOUS)
+		if(owner.stat <= SOFT_CRIT)
 			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"), \
 				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
 		owner.set_heartattack(TRUE)

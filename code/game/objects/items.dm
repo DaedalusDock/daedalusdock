@@ -368,7 +368,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	set category = "Object"
 	set src in oview(1)
 
-	if(!isturf(loc) || usr.stat != CONSCIOUS || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
+	if(!isturf(loc) || usr.stat > SOFT_CRIT || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
 		return
 
 	if(isliving(usr))

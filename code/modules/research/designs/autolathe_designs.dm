@@ -322,7 +322,8 @@
 	build_type = AUTOLATHE
 	materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
 	build_path = /obj/item/kitchen/spatula
-	category = list("initial","Dinnerware")
+	category = list(DCAT_DINNERWARE)
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/plastic_fork
 	name = "Plastic Fork"

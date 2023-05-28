@@ -662,3 +662,13 @@
 	name = "stamina"
 	icon_state = "stamina0"
 	screen_loc = ui_stamina
+
+/atom/movable/screen/stamina/Click(location, control, params)
+	if (iscarbon(usr))
+		var/mob/living/carbon/C = usr
+		var/content = {"
+		<div class='examine_block'>
+			[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
+		</div>
+		"}
+		to_chat(C, content)

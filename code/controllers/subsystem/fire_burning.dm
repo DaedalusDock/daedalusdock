@@ -1,11 +1,18 @@
 SUBSYSTEM_DEF(fire_burning)
 	name = "Fire Burning"
 	priority = FIRE_PRIOTITY_BURNING
-	flags = SS_NO_INIT|SS_BACKGROUND
+	flags = SS_NO_INIT|SS_BACKGROUND|SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/list/currentrun = list()
 	var/list/processing = list()
+
+/datum/controller/subsystem/fire_burning/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, currentrun),
+		NAMEOF(src, processing)
+	)
 
 /datum/controller/subsystem/fire_burning/stat_entry(msg)
 	msg = "P:[length(processing)]"

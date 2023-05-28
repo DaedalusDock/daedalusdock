@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - imagedel: prevents nearly 300 icon states from getting built and pushed to clients.
-      You probably won't care about this.

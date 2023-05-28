@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: AI camera light toggle will no longer break camera lights forever.

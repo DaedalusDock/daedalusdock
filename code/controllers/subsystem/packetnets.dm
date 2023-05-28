@@ -1,8 +1,8 @@
 SUBSYSTEM_DEF(packets)
 	name = "Packets"
-	wait = 1
+	wait = 0
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT|SS_KEEP_TIMING
+	flags = SS_NO_INIT | SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/saymodes = list()
@@ -41,6 +41,17 @@ SUBSYSTEM_DEF(packets)
 	var/stage = SSPACKETS_POWERNETS
 
 /datum/controller/subsystem/packets/PreInit(timeofday)
+	hibernate_checks = list(
+		NAMEOF(src, queued_networks),
+		NAMEOF(src, queued_radio_packets),
+		NAMEOF(src, queued_tablet_messages),
+		NAMEOF(src, queued_subspace_vocals),
+		NAMEOF(src, current_networks),
+		NAMEOF(src, current_radio_packets),
+		NAMEOF(src, current_tablet_messages),
+		NAMEOF(src, current_subspace_vocals)
+	)
+
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM

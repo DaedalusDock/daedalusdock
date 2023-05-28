@@ -26,7 +26,7 @@
 	parent = null
 	return ..()
 
-/datum/stamina_container/proc/process(delta_time)
+/datum/stamina_container/process(delta_time)
 
 	if(is_regenerating)
 		current = max(current + (regen_rate*delta_time))

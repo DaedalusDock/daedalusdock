@@ -917,13 +917,13 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		. += "PUNCTURE"
 	if(!sharpness && damtype == BRUTE)
 		. += "CRUSH"
-	return english_list(.)
+	return english_list(., "NONE")
 
 /obj/item/proc/tooltipContent(list/url_mappings)
 	RETURN_TYPE(/list)
 	. = list()
 	. += desc
-	if(!stamina_damage || !force)
+	if(!stamina_damage && !force)
 		return
 	. += "<hr>"
 	if(item_flags & FORCE_STRING_OVERRIDE)

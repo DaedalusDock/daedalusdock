@@ -18,6 +18,8 @@
 #define STAMINA_MAX 250
 ///Carbons enter Exhaustion when their stamina drops below this percentage
 #define STAMINA_EXHAUSTION_THRESHOLD_MODIFIER (0.4) //40% or less
+/// Carbons will recover from Exhaustion above this point
+#define STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER (0.7) //70% or more
 ///The slowdown when a mob is exhausted
 #define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
 ///Carbons will be exposed to stamina stuns upon dropping below this percentage

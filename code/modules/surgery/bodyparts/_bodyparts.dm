@@ -296,7 +296,7 @@
 /obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(weapon.get_sharpness())
+	if(weapon.sharpness)
 		add_fingerprint(user)
 		if(!contents.len)
 			to_chat(user, span_warning("There is nothing left inside [src]!"))

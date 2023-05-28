@@ -64,10 +64,6 @@
 	STOP_PROCESSING(SSobj, src)
 	set_light_on(FALSE)
 
-
-/obj/item/dualsaber/get_sharpness()
-	return wielded * sharpness
-
 /obj/item/dualsaber/update_icon_state()
 	icon_state = wielded ? "dualsaber[saber_color][wielded]" : "dualsaber0"
 	return ..()

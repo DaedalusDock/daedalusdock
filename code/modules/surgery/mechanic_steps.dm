@@ -17,7 +17,7 @@
 	display_pain(target, "You can feel your [parse_zone(target_zone)] grow numb as the sensory panel is unscrewed.", TRUE)
 
 /datum/surgery_step/mechanic_open/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !tool.sharpness)
 		return FALSE
 	if(tool.usesound)
 		preop_sound = tool.usesound
@@ -43,7 +43,7 @@
 	display_pain(target, "You feel the faint pricks of sensation return as your [parse_zone(target_zone)]'s panel is screwed in.", TRUE)
 
 /datum/surgery_step/mechanic_close/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !tool.sharpness)
 		return FALSE
 	if(tool.usesound)
 		preop_sound = tool.usesound

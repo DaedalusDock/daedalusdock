@@ -59,8 +59,8 @@
 
 /datum/reagent/toxin/radon/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/lungs/lungs = M.getorganslot(ORGAN_SLOT_LUNGS)
-	if(!istype(lungs, /obj/item/organ/internal/lungs/ashwalker))
+	var/obj/item/organ/lungs/lungs = M.getorganslot(ORGAN_SLOT_LUNGS)
+	if(!istype(lungs, /obj/item/organ/lungs/ashwalker))
 		return
 
 	lungs.applyOrganDamage(2 * REAGENTS_EFFECT_MULTIPLIER)

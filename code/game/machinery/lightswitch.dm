@@ -15,14 +15,14 @@
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
 	id = "lightswitch_frame"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR
 	materials = list(
 		/datum/material/iron = 200,
 		/datum/material/glass = 200,
 	)
 	build_path = /obj/item/wallframe/light_switch
-	category = list("initial", "Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_ENGINEERING
+	category = list(DCAT_FRAME)
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
 /obj/machinery/light_switch
 	name = "light switch"
@@ -32,6 +32,8 @@
 	desc = "Make dark."
 	power_channel = AREA_USAGE_LIGHT
 	use_power = NO_POWER_USE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Set this to a string, path, or area instance to control that area
 	/// instead of the switch's location.
 	var/area/area = null

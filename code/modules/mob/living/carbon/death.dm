@@ -43,12 +43,12 @@
 	var/atom/Tsec = drop_location()
 	if(!no_bodyparts)
 		if(no_organs)//so the organs don't get transfered inside the bodyparts we'll drop.
-			for(var/X in internal_organs)
-				if(no_brain || !istype(X, /obj/item/organ/internal/brain))
+			for(var/X in processing_organs)
+				if(no_brain || !istype(X, /obj/item/organ/brain))
 					qdel(X)
 		else //we're going to drop all bodyparts except chest, so the only organs that needs spilling are those inside it.
-			for(var/obj/item/organ/organs as anything in internal_organs)
-				if(no_brain && istype(organs, /obj/item/organ/internal/brain))
+			for(var/obj/item/organ/organs as anything in processing_organs)
+				if(no_brain && istype(organs, /obj/item/organ/brain))
 					qdel(organs) //so the brain isn't transfered to the head when the head drops.
 					continue
 				var/org_zone = check_zone(organs.zone) //both groin and chest organs.
@@ -57,11 +57,11 @@
 					organs.forceMove(Tsec)
 					organs.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),5)
 	else
-		for(var/obj/item/organ/organs as anything in internal_organs)
-			if(no_brain && istype(organs, /obj/item/organ/internal/brain))
+		for(var/obj/item/organ/organs as anything in processing_organs)
+			if(no_brain && istype(organs, /obj/item/organ/brain))
 				qdel(organs)
 				continue
-			if(no_organs && !istype(organs, /obj/item/organ/internal/brain))
+			if(no_organs && !istype(organs, /obj/item/organ/brain))
 				qdel(organs)
 				continue
 			organs.Remove(src)

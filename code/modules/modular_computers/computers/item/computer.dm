@@ -87,6 +87,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(!physical)
 		physical = src
 	set_light_color(comp_light_color)
+	set_light_power(0.1)
 	set_light_range(comp_light_luminosity)
 	idle_threads = list()
 	if(looping_sound)

@@ -367,10 +367,6 @@
 "bA" = (
 /turf/closed/wall/r_wall,
 /area/station/science)
-"bB" = (
-/obj/machinery/mecha_part_fabricator,
-/turf/open/floor/iron,
-/area/station/science)
 "bC" = (
 /obj/machinery/computer/prisoner/gulag_teleporter_computer{
 	dir = 4
@@ -383,10 +379,6 @@
 "bE" = (
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
-"bF" = (
-/obj/machinery/computer/rdconsole,
-/turf/open/floor/iron,
-/area/station/science)
 "bG" = (
 /obj/machinery/airalarm/unlocked{
 	dir = 1;
@@ -2024,6 +2016,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
+"ma" = (
+/obj/machinery/rnd/production/fabricator/omni,
+/turf/open/floor/iron,
+/area/station/science)
 "mE" = (
 /obj/structure/cable,
 /obj/machinery/chem_mass_spec,
@@ -2299,6 +2295,12 @@
 /obj/structure/rack,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
+"DA" = (
+/obj/machinery/light/directional/north,
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/science)
 "DW" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -2348,10 +2350,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
-"If" = (
-/obj/machinery/rnd/production/techfab/department,
-/turf/open/floor/iron,
-/area/station/science)
 "Ir" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2450,8 +2448,8 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/medical/medbay)
-"NZ" = (
-/obj/machinery/rnd/production/protolathe/department,
+"Oo" = (
+/obj/machinery/rnd/production/fabricator/department/robotics,
 /turf/open/floor/iron,
 /area/station/science)
 "Ov" = (
@@ -2462,8 +2460,8 @@
 /obj/item/stock_parts/cell/bluespace,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
-"OU" = (
-/obj/item/disk/tech_disk/debug,
+"OD" = (
+/obj/machinery/rnd/production/fabricator/department,
 /turf/open/floor/iron,
 /area/station/science)
 "Qi" = (
@@ -2480,6 +2478,19 @@
 /obj/machinery/door/airlock/external/glass/ruin,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
+"QY" = (
+/obj/structure/table,
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/misc_lab)
 "Rb" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2611,19 +2622,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/science)
-"XN" = (
-/obj/structure/table,
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/turf/open/floor/iron/dark,
-/area/station/science/misc_lab)
 "XR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 9
@@ -2650,13 +2648,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
-"Yy" = (
-/obj/machinery/light/directional/north,
-/obj/machinery/rnd/production/circuit_imprinter/department,
-/obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/station/science)
 "ZD" = (
 /obj/machinery/suit_storage_unit/ce,
 /turf/open/floor/iron,
@@ -5999,9 +5990,9 @@ aw
 Kx
 ah
 bs
-bB
+Oo
 ca
-If
+OD
 bA
 kn
 ES
@@ -6182,7 +6173,7 @@ bb
 bl
 zo
 ah
-Yy
+DA
 bD
 XC
 gY
@@ -6206,7 +6197,7 @@ dL
 cN
 AE
 kp
-XN
+QY
 Ym
 Ir
 aa
@@ -6274,8 +6265,8 @@ bc
 bm
 ZD
 ah
-bF
-OU
+bD
+bD
 XC
 Ct
 gd
@@ -6366,7 +6357,7 @@ aP
 XR
 Xp
 ah
-NZ
+ma
 bD
 XC
 co

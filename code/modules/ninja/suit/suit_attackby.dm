@@ -28,19 +28,13 @@
 				to_chat(ninja, span_danger("Procedure interrupted. Protocol terminated."))
 		return
 
-	else if(istype(I, /obj/item/disk/tech_disk))//If it's a data disk, we want to copy the research on to the suit.
-		var/obj/item/disk/tech_disk/TD = I
-		var/has_research = FALSE
-		for(var/node in TD.stored_research.researched_nodes)
-			if(!stored_research.researched_nodes[node])
-				has_research = TRUE
-				break
-		if(has_research)//If it has something on it.
+	else if(istype(I, /obj/item/disk/data))//If it's a data disk, we want to copy the research on to the suit.
+		var/obj/item/disk/data/disky = I
+		if(disky.read(DATA_IDX_DESIGNS) ~= stored_designs)//If it has something on it.
 			to_chat(ninja, span_notice("Research information detected, processing..."))
 			if(do_after(ninja, src, s_delay))
-				TD.stored_research.copy_research_to(stored_research)
-				qdel(TD.stored_research)
-				TD.stored_research = new
+				stored_designs |= disky.read(DATA_IDX_DESIGNS)
+				disky.clear(DATA_IDX_DESIGNS)
 				to_chat(ninja, span_notice("Data analyzed and updated. Disk erased."))
 			else
 				to_chat(ninja, "[span_userdanger("ERROR")]: Procedure interrupted. Process terminated.")

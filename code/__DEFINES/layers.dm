@@ -9,18 +9,17 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
+/*
+Z-Mimic uses planes -70 through -80, defined elsewhere.
+Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+*/
+
 #define HEAT_PLANE -12
 #define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
 #define HEAT_COMPOSITE_RENDER_TARGET "*HEAT_RENDER_TARGET_C"
 
 #define GRAVITY_PULSE_PLANE -11
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
-
-#define OPENSPACE_LAYER 600 //Openspace layer over all
-
-#define TRANSPARENT_FLOOR_PLANE -10 //Transparent plane that shows openspace underneath the floor
-#define OPENSPACE_PLANE -9 //Openspace plane below all turfs
-#define OPENSPACE_BACKDROP_PLANE -8 //Black square just over openspace plane to guaranteed cover all in openspace turf
 
 
 #define FLOOR_PLANE -7
@@ -110,6 +109,7 @@
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
+#define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1
 
 

@@ -141,6 +141,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
+	if (z_flags & Z_MIMIC_BELOW)
+		setup_zmimic(mapload)
+
 	if (light_power && light_outer_range)
 		update_light()
 
@@ -185,6 +188,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_del(src, UP)
+
+	if (z_flags & Z_MIMIC_BELOW)
+		cleanup_zmimic()
+
 	if(force)
 		..()
 		//this will completely wipe turf state
@@ -635,7 +642,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/internal/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly?.reagents.total_volume)
 		return
 	var/chemicals_lost = belly.reagents.total_volume * purge_ratio

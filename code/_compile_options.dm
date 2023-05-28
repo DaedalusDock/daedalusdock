@@ -124,7 +124,10 @@
 ///Enables multi-Z air movement. Zones do not merge across Z levels.
 #define MULTIZAS
 
+/////////////////////// ZMIMIC
 
+///Enables Multi-Z lighting
+#define ZMIMIC_LIGHT_BLEED
 
 /////////////////////// MISC PERFORMANCE
 //uncomment this to load centcom and runtime station and thats it.

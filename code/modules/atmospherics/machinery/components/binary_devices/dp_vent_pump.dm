@@ -101,7 +101,7 @@
 			return
 		if(!environment.total_moles)
 			return
-		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta)
+		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta, parents[2]?.combined_volume || 0)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
 		if(draw > -1)

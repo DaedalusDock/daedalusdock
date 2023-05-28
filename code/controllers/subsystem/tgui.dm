@@ -11,7 +11,7 @@
  */
 
 SUBSYSTEM_DEF(tgui)
-	name = "tgui"
+	name = "TGUI"
 	wait = 9
 	flags = SS_NO_INIT
 	priority = FIRE_PRIORITY_TGUI

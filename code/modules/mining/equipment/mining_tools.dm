@@ -144,8 +144,8 @@
 	icon_state = "spade"
 	lefthand_file = 'icons/mob/inhands/equipment/hydroponics_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
-	force = 5
-	throwforce = 7
+	force = 1
+	throwforce = 1
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/shovel/serrated

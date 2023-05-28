@@ -269,7 +269,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, src, 2 SECONDS))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -482,9 +482,9 @@
 	var/mob/living/carbon/human/electrician = user
 
 	if(istype(electrician))
-		var/obj/item/organ/internal/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))

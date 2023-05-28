@@ -58,3 +58,11 @@
       for the station.
   - bugfix: The gravity generator properly updates gravity during init.
   - code_imp: Walls are no longer GAGs-compatable
+2023-04-23:
+  Lohikar:
+  - refactor: Z-holes are now rendered using Z-Mimic, which should improve accuracy
+      and performance.
+2023-04-26:
+  Kapu1178:
+  - bugfix: Credits run after a delay properly.
+  - tweak: Credits scroll faster.

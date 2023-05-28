@@ -174,7 +174,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 			O.clawfootstep = turf_sound_override
 			O.heavyfootstep = turf_sound_override
 	if(alpha < 255)
-		T.AddElement(/datum/element/turf_z_transparency)
+		T.enable_zmimic()
 	return
 
 /datum/material/proc/get_greyscale_config_for(datum/greyscale_config/config_path)
@@ -228,7 +228,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 /datum/material/proc/on_removed_turf(turf/T, amount, material_flags)
 	if(alpha < 255)
-		T.RemoveElement(/datum/element/turf_z_transparency)
+		T.disable_zmimic()
 
 /**
  * This proc is called when the mat is found in an item that's consumed by accident. see /obj/item/proc/on_accidental_consumption.

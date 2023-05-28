@@ -28,8 +28,8 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutanttongue = /obj/item/organ/internal/tongue/bone
-	mutantstomach = /obj/item/organ/internal/stomach/bone
+	mutanttongue = /obj/item/organ/tongue/bone
+	mutantstomach = /obj/item/organ/stomach/bone
 	disliked_food = NONE
 	liked_food = GROSS | MEAT | RAW
 	wings_icons = list("Skeleton")

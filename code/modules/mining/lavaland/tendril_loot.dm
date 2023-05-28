@@ -1,36 +1,36 @@
 //This file contains loot you can obtain from tendril chests.
 
 //KA modkit design discs
-/obj/item/disk/design_disk/modkit_disc
+/obj/item/disk/data/modkit_disc
 	name = "KA Mod Disk"
-	desc = "A design disc containing the design for a unique kinetic accelerator modkit. It's compatible with a research console."
+	desc = "A design disc containing the design for a unique kinetic accelerator modkit."
 	icon_state = "datadisk1"
 	var/modkit_design = /datum/design/unique_modkit
 
-/obj/item/disk/design_disk/modkit_disc/Initialize(mapload)
+/obj/item/disk/data/modkit_disc/Initialize(mapload)
 	. = ..()
-	blueprints[1] = new modkit_design
+	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[modkit_design])
 
-/obj/item/disk/design_disk/modkit_disc/mob_and_turf_aoe
+/obj/item/disk/data/modkit_disc/mob_and_turf_aoe
 	name = "Offensive Mining Explosion Mod Disk"
 	modkit_design = /datum/design/unique_modkit/offensive_turf_aoe
 
-/obj/item/disk/design_disk/modkit_disc/rapid_repeater
+/obj/item/disk/data/modkit_disc/rapid_repeater
 	name = "Rapid Repeater Mod Disk"
 	modkit_design = /datum/design/unique_modkit/rapid_repeater
 
-/obj/item/disk/design_disk/modkit_disc/resonator_blast
+/obj/item/disk/data/modkit_disc/resonator_blast
 	name = "Resonator Blast Mod Disk"
 	modkit_design = /datum/design/unique_modkit/resonator_blast
 
-/obj/item/disk/design_disk/modkit_disc/bounty
+/obj/item/disk/data/modkit_disc/bounty
 	name = "Death Syphon Mod Disk"
 	modkit_design = /datum/design/unique_modkit/bounty
 
 /datum/design/unique_modkit
 	category = list("Mining Designs", "Cyborg Upgrade Modules") //can't be normally obtained
-	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO
+	build_type = FABRICATOR  | MECHFAB
+	mapload_design_flags = DESIGN_FAB_SUPPLY
 
 /datum/design/unique_modkit/offensive_turf_aoe
 	name = "Kinetic Accelerator Offensive Mining Explosion Mod"
@@ -789,7 +789,7 @@
 	name = "Scan Target"
 	desc = "Contact may or may not be close."
 
-/obj/item/organ/internal/cyberimp/arm/katana
+/obj/item/organ/cyberimp/arm/katana
 	name = "dark shard"
 	desc = "An eerie metal shard surrounded by dark energies."
 	icon = 'icons/obj/lavaland/artefacts.dmi'
@@ -800,7 +800,7 @@
 	extend_sound = 'sound/items/unsheath.ogg'
 	retract_sound = 'sound/items/sheath.ogg'
 
-/obj/item/organ/internal/cyberimp/arm/katana/attack_self(mob/user, modifiers)
+/obj/item/organ/cyberimp/arm/katana/attack_self(mob/user, modifiers)
 	. = ..()
 	to_chat(user, span_userdanger("The mass goes up your arm and goes inside it!"))
 	playsound(user, 'sound/magic/demon_consume.ogg', 50, TRUE)
@@ -810,10 +810,10 @@
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	Insert(user)
 
-/obj/item/organ/internal/cyberimp/arm/katana/screwdriver_act(mob/living/user, obj/item/screwtool)
+/obj/item/organ/cyberimp/arm/katana/screwdriver_act(mob/living/user, obj/item/screwtool)
 	return
 
-/obj/item/organ/internal/cyberimp/arm/katana/Retract()
+/obj/item/organ/cyberimp/arm/katana/Retract()
 	var/obj/item/cursed_katana/katana = active_item
 	if(!katana || katana.shattered)
 		return FALSE

@@ -38,3 +38,9 @@
 2023-05-25:
   Kapu1178:
   - refactor: Rewrote organs and rendering. Again.
+2023-05-28:
+  Kapu1178:
+  - bugfix: AI camera light toggle will no longer break camera lights forever.
+  francinum:
+  - imagedel: prevents nearly 300 icon states from getting built and pushed to clients.
+      You probably won't care about this.

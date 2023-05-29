@@ -28,6 +28,9 @@
 	///When the mob enters hard critical state and is fully incapacitated.
 	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT
 
+	/// Rate at which fire stacks should decay from this mob
+	var/fire_stack_decay_rate = -0.05
+
 	//Damage dealing vars! These are meaningless outside of specific instances where it's checked and defined.
 	// Lower bound of damage done by unarmed melee attacks. Mob code is a mess, only works where this is checked for.
 	var/melee_damage_lower = 0

@@ -105,7 +105,11 @@
 	else
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
-			if(!lun.check_breath(breath,src) && prob(20))
+			if(lun.check_breath(breath,src))
+				return
+			// Failed a breath for one reason or another.
+			set_blurriness(max(3, eye_blurry))
+			if(prob(20))
 				spawn(-1)
 					emote("gasp")
 

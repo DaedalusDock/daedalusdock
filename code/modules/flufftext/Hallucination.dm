@@ -1467,9 +1467,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	var/increasing_stages = TRUE
 	var/time_spent = 0
 
-/mob/living/verb/haltest()
-	new /datum/hallucination/fire(usr)
-
 /datum/hallucination/fire/New(mob/living/carbon/C, forced = TRUE)
 	set waitfor = FALSE
 	..()

@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - server: The Master Controller now allocates tick time based on the work required
-      for the tick.

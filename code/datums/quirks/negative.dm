@@ -481,7 +481,7 @@
 	processing_quirk = TRUE
 
 /datum/quirk/insanity/process(delta_time)
-	if(quirk_holder.stat != CONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
+	if(quirk_holder.stat >= UNCONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
 		return
 
 	if(DT_PROB(2, delta_time))

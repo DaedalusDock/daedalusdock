@@ -521,7 +521,7 @@ SUBSYSTEM_DEF(zcopy)
 	if (depth > 0)
 		switch (appearance:plane)
 			if (GAME_PLANE, FLOOR_PLANE, FLOAT_PLANE)
-				// fine
+				//Continue
 			if (EMISSIVE_PLANE)
 				obliterate = TRUE
 			else

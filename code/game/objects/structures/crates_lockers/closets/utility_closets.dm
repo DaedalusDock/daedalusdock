@@ -46,7 +46,7 @@
 			new /obj/item/tank/internals/emergency_oxygen(src)
 			new /obj/item/clothing/mask/breath(src)
 
-		if ("nothing")
+		//if ("nothing") //Do nothing and fall through.
 			// doot
 
 		// teehee //Fuck you

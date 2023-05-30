@@ -68,8 +68,8 @@
 	M.adjust_blurriness(-1 * REM * delta_time)
 	M.adjust_blindness(-1 * REM * delta_time)
 	switch(current_cycle)
-		if(1 to 20)
-			//nothing
+		//if(1 to 20)
+			//nothing, just pass.
 		if(21 to 110)
 			if(DT_PROB(100 * (1 - (sqrt(110 - current_cycle) / 10)), delta_time))
 				M.cure_nearsighted(list(EYE_DAMAGE))

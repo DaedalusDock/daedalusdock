@@ -39,7 +39,7 @@
 			if (SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 				return TRUE
 			if (SECONDARY_ATTACK_CONTINUE_CHAIN)
-				// Normal behavior
+				//Normal behavior, Continue
 			else
 				CRASH("attackby_secondary must return an SECONDARY_ATTACK_* define, please consult code/__DEFINES/combat.dm")
 	else

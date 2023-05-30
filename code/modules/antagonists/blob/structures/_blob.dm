@@ -279,6 +279,7 @@
 		if(BURN)
 			damage_amount *= fire_resist
 		if(CLONE)
+			//Continue
 		else
 			return 0
 	var/armor_protection = 0

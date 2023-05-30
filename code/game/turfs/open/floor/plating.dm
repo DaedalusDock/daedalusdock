@@ -7,6 +7,9 @@
 	name = "plating"
 	icon_state = "plating"
 	base_icon_state = "plating"
+	broken_blend = BLEND_MULTIPLY
+	burned_blend = BLEND_DEFAULT
+
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	baseturfs = /turf/baseturf_bottom
@@ -27,10 +30,10 @@
 	var/allow_replacement = TRUE
 
 /turf/open/floor/plating/setup_broken_states()
-	return list("platingdmg1", "platingdmg2", "platingdmg3")
+	return list("damaged1", "damaged2", "damaged4")
 
 /turf/open/floor/plating/setup_burnt_states()
-	return list("panelscorched")
+	return list("burned0", "burned1")
 
 /turf/open/floor/plating/examine(mob/user)
 	. = ..()

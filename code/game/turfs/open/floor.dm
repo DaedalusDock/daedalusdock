@@ -20,6 +20,12 @@
 
 
 	overfloor_placed = TRUE
+	/// Icon path for the damaged states
+	var/damaged_icon = 'icons/turf/damage.dmi'
+	/// blend_mode for broken overlays
+	var/broken_blend = BLEND_DEFAULT
+	/// blend_mode for burned overlays
+	var/burned_blend = BLEND_MULTIPLY
 
 	var/broken = FALSE
 	var/burnt = FALSE
@@ -55,12 +61,30 @@
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/proc/setup_burnt_states()
-	return
+	return list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/Destroy()
 	if(is_station_level(z))
 		GLOB.station_turfs -= src
 	return ..()
+
+/turf/open/floor/update_overlays()
+	. = ..()
+	var/mutable_appearance/overlay
+	if(broken)
+		overlay = mutable_appearance(damaged_icon, pick(broken_states))
+		overlay.blend_mode = broken_blend
+		. += overlay
+
+	else if(burnt)
+		if(LAZYLEN(burnt_states))
+			overlay = mutable_appearance(damaged_icon, pick(burnt_states))
+			overlay.blend_mode = burned_blend
+			. += overlay
+		else
+			overlay = mutable_appearance(damaged_icon, pick(broken_states))
+			overlay.blend_mode = broken_blend
+			. += overlay
 
 /turf/open/floor/ex_act(severity, target)
 	. = ..()
@@ -128,17 +152,16 @@
 /turf/open/floor/break_tile()
 	if(broken)
 		return
-	icon_state = pick(broken_states)
-	broken = 1
+	RemoveElement(/datum/element/decal)
+	broken = TRUE
+	update_appearance(UPDATE_OVERLAYS)
 
 /turf/open/floor/burn_tile()
 	if(broken || burnt)
 		return
-	if(LAZYLEN(burnt_states))
-		icon_state = pick(burnt_states)
-	else
-		icon_state = pick(broken_states)
-	burnt = 1
+	RemoveElement(/datum/element/decal)
+	burnt = TRUE
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Things seem to rely on this actually returning plating. Override it if you have other baseturfs.
 /turf/open/floor/proc/make_plating(force = FALSE)

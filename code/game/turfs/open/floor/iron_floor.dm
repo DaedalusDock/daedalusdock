@@ -1,12 +1,15 @@
 /turf/open/floor/iron
 	icon_state = "floor"
+	broken_blend = BLEND_MULTIPLY
+	burned_blend = BLEND_DEFAULT
+
 	floor_tile = /obj/item/stack/tile/iron/base
 
 /turf/open/floor/iron/setup_broken_states()
-	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
+	return list("broken0", "broken1", "broken2", "broken3", "broken4")
 
 /turf/open/floor/iron/setup_burnt_states()
-	return list("floorscorched1", "floorscorched2")
+	return list("burned0", "burned1")
 
 
 /turf/open/floor/iron/examine(mob/user)

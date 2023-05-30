@@ -208,3 +208,7 @@ Temporary Items
 
 # Screenshot tests
 /artifacts
+
+# OpenDream residuals
+OpenDream
+daedalus.json

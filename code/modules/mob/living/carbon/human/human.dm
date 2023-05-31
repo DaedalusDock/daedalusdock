@@ -360,7 +360,7 @@
 				var/counter = 1
 				while(R.fields[text("com_[]", counter)])
 					counter++
-				R.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, stationtime2text(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
+				R.fields[text("com_[]", counter)] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
 				to_chat(usr, span_notice("Successfully added comment."))
 				return
 

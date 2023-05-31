@@ -52,6 +52,6 @@
 /obj/effect/turf_decal/Destroy()
 	if(GLOB.running_create_and_destroy)
 		var/turf/T = loc
-		T.RemoveElement(/datum/element/decal, icon, icon_state, dir, null, null, alpha, color, null, FALSE, null)
+		T.RemoveElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return ..()
 #endif

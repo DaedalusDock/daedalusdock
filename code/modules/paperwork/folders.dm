@@ -125,6 +125,7 @@
 	name = "envelope"
 	desc = "A thick envelope. You can't see what's inside."
 	icon_state = "envelope_sealed"
+	bg_color = "#B5912B"
 	// *_sealed, *0, *1 required.
 	base_icon_state = "envelope"
 	/// Are we still bricked up?

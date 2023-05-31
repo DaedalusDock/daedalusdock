@@ -11,9 +11,9 @@
 
 // Consider these images/atoms as part of the UI/HUD (apart of the appearance_flags)
 /// Used for progress bars and chat messages
-#define APPEARANCE_UI_IGNORE_ALPHA (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|RESET_ALPHA|PIXEL_SCALE)
+#define APPEARANCE_UI_IGNORE_ALPHA (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|RESET_ALPHA|PIXEL_SCALE|TILE_BOUND)
 /// Used for HUD objects
-#define APPEARANCE_UI (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|PIXEL_SCALE)
+#define APPEARANCE_UI (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|PIXEL_SCALE|TILE_BOUND)
 
 /*
 	These defines specificy screen locations.  For more information, see the byond documentation on the screen_loc var.
@@ -93,12 +93,12 @@
 #define ui_palette_scroll_offset(north_offset) ("WEST+1:8,NORTH-[6+north_offset]:28")
 
 //Middle right (status indicators)
-#define ui_healthdoll "EAST-1:28,CENTER-2:13"
-#define ui_health "EAST-1:28,CENTER-1:15"
-#define ui_internal "EAST-1:28,CENTER+1:17"
-#define ui_mood "EAST-1:28,CENTER:17"
-#define ui_spacesuit "EAST-1:28,CENTER-4:10"
-#define ui_stamina "EAST-1:28,CENTER-3:10"
+#define ui_healthdoll "EAST-1:28,CENTER-2:17"
+#define ui_health "EAST-1:28,CENTER-1:19"
+#define ui_internal "EAST-1:28,CENTER+1:21"
+#define ui_mood "EAST-1:28,CENTER:21"
+#define ui_spacesuit "EAST-1:28,CENTER-4:14"
+#define ui_stamina "EAST-1:28,CENTER-3:14"
 
 //Pop-up inventory
 #define ui_shoes "WEST+1:8,SOUTH:5"
@@ -214,7 +214,18 @@
 #define SCRN_OBJ_IN_LIST "list"
 /// In the collapseable palette
 #define SCRN_OBJ_IN_PALETTE "palette"
+///Inserted first in the list
+#define SCRN_OBJ_INSERT_FIRST "first"
 
 #define SIMPLE_RADIAL_ACTIVATE "activate"
 #define SIMPLE_RADIAL_DEACTIVATE "deactivate"
 #define SIMPLE_RADIAL_DOESNT_USE "NOVAL"
+
+//Fullscreen overlay resolution in tiles for the clients view.
+/// The fullscreen overlay in tiles for x axis
+#define FULLSCREEN_OVERLAY_RESOLUTION_X 15
+/// The fullscreen overlay in tiles for y axis
+#define FULLSCREEN_OVERLAY_RESOLUTION_Y 15
+
+///The default see_in_dark given to mobs
+#define NIGHTVISION_FOV_RANGE 2

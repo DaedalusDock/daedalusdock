@@ -500,7 +500,6 @@ Comment here because it really doesn't like them anywhere else here
 	/obj/item/modular_computer/tablet/pda/heads/cmo = list(REGION_COMMAND), \
 	/obj/item/modular_computer/tablet/pda/heads/ce = list(REGION_COMMAND), \
 	/obj/item/modular_computer/tablet/pda/heads/rd = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/heads/quartermaster = list(REGION_COMMAND), \
 	/obj/item/modular_computer/tablet/pda/captain = list(REGION_COMMAND), \
 	/obj/item/modular_computer/tablet/pda/cargo = list(REGION_SUPPLY), \
 	/obj/item/modular_computer/tablet/pda/shaftminer = list(REGION_SUPPLY), \

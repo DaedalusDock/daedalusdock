@@ -26,7 +26,7 @@
 	spark_system.attach(src)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -153,7 +153,7 @@
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
+	radio.canhear_range = -1
 	radio.recalculateChannels()
 	spark_system = new
 	spark_system.set_up(4,1,src)

@@ -45,7 +45,7 @@
 
 /obj/machinery/photocopier/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/payment, 5, SSeconomy.get_dep_account(ACCOUNT_CIV), PAYMENT_CLINICAL)
+	AddComponent(/datum/component/payment, 5, SSeconomy.department_accounts_by_id[ACCOUNT_STATION_MASTER], PAYMENT_CLINICAL)
 	toner_cartridge = new(src)
 
 /obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/ui)
@@ -108,19 +108,19 @@
 					return FALSE
 				// Basic paper
 				if(istype(paper_copy, /obj/item/paper))
-					do_copy_loop(CALLBACK(src, .proc/make_paper_copy), usr)
+					do_copy_loop(CALLBACK(src, PROC_REF(make_paper_copy)), usr)
 					return TRUE
 			// Copying photo.
 			if(photo_copy)
-				do_copy_loop(CALLBACK(src, .proc/make_photo_copy), usr)
+				do_copy_loop(CALLBACK(src, PROC_REF(make_photo_copy)), usr)
 				return TRUE
 			// Copying Documents.
 			if(document_copy)
-				do_copy_loop(CALLBACK(src, .proc/make_document_copy), usr)
+				do_copy_loop(CALLBACK(src, PROC_REF(make_document_copy)), usr)
 				return TRUE
 			// ASS COPY. By Miauw
 			if(ass)
-				do_copy_loop(CALLBACK(src, .proc/make_ass_copy), usr)
+				do_copy_loop(CALLBACK(src, PROC_REF(make_ass_copy)), usr)
 				return TRUE
 
 		// Remove the paper/photo/document from the photocopier.
@@ -182,7 +182,7 @@
 			if (toner_cartridge.charges - PAPER_TONER_USE < 0)
 				to_chat(usr, span_warning("There is not enough toner in [src] to print the form, please replace the cartridge."))
 				return FALSE
-			do_copy_loop(CALLBACK(src, .proc/make_blank_print), usr)
+			do_copy_loop(CALLBACK(src, PROC_REF(make_blank_print)), usr)
 			var/obj/item/paper/printblank = new /obj/item/paper (loc)
 			var/printname = params["name"]
 			var/list/printinfo
@@ -221,7 +221,7 @@
 		if(attempt_charge(src, user) & COMPONENT_OBJ_CANCEL_CHARGE)
 			break
 		addtimer(copy_cb, i SECONDS)
-	addtimer(CALLBACK(src, .proc/reset_busy), i SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(reset_busy)), i SECONDS)
 
 /**
  * Sets busy to `FALSE`. Created as a proc so it can be used in callbacks.
@@ -420,7 +420,7 @@
 	else
 		user.visible_message(span_warning("[user] starts putting [target] onto the photocopier!"), span_notice("You start putting [target] onto the photocopier..."))
 
-	if(do_after(user, 20, target = src))
+	if(do_after(user, src, 20))
 		if(!target || QDELETED(target) || QDELETED(src) || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 

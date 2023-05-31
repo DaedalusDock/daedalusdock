@@ -6,6 +6,7 @@
 	/datum/surgery_step/saw,
 	/datum/surgery_step/clamp_bleeders,
 	/datum/surgery_step/fix_brain,
+	/datum/surgery_step/repair_bone,
 	/datum/surgery_step/close)
 
 	target_mobtypes = list(/mob/living/carbon/human)
@@ -25,7 +26,7 @@
 	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery/brain_surgery/can_start(mob/user, mob/living/carbon/target)
-	var/obj/item/organ/internal/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
 	if(!target_brain)
 		return FALSE
 	return TRUE

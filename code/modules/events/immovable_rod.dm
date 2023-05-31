@@ -87,7 +87,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	SSpoints_of_interest.make_point_of_interest(src)
 
-	RegisterSignal(src, COMSIG_ATOM_ENTERING, .proc/on_entering_atom)
+	RegisterSignal(src, COMSIG_ATOM_ENTERING, PROC_REF(on_entering_atom))
 
 	if(special_target)
 		SSmove_manager.home_onto(src, special_target)
@@ -261,7 +261,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		var/mob/living/carbon/smeared_carbon = smeared_mob
 		smeared_carbon.adjustBruteLoss(100)
 		var/obj/item/bodypart/penetrated_chest = smeared_carbon.get_bodypart(BODY_ZONE_CHEST)
-		penetrated_chest?.receive_damage(60, wound_bonus = 20, sharpness=SHARP_POINTY)
+		penetrated_chest?.receive_damage(60, sharpness=SHARP_POINTY)
 
 	if(smeared_mob.density || prob(10))
 		EX_ACT(smeared_mob, EXPLODE_HEAVY)

@@ -32,7 +32,7 @@
 	refill_canister = /obj/item/vending_refill/cola
 	default_price = PAYCHECK_ASSISTANT * 0.7
 	extra_price = PAYCHECK_MEDIUM
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 
 
 /obj/item/vending_refill/cola

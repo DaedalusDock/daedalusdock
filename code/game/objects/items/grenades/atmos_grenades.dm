@@ -21,7 +21,7 @@
 	SEND_SIGNAL(src, COMSIG_GRENADE_ARMED, det_time, delayoverride)
 	if(user)
 		SEND_SIGNAL(src, COMSIG_MOB_GRENADE_ARMED, user, src, det_time, delayoverride)
-	addtimer(CALLBACK(src, .proc/detonate), isnull(delayoverride)? det_time : delayoverride)
+	addtimer(CALLBACK(src, PROC_REF(detonate)), isnull(delayoverride)? det_time : delayoverride)
 
 /obj/item/grenade/gas_crystal/healium_crystal
 	name = "Healium crystal"
@@ -69,9 +69,8 @@
 			continue
 		var/distance_from_center = max(get_dist(turf_loc, loc), 1)
 		var/turf/open/floor_loc = turf_loc
-		//floor_loc.atmos_spawn_air("n2=[n2_gas_amount / distance_from_center];o2=[o2_gas_amount / distance_from_center];TEMP=273")
-		floor_loc.atmos_spawn_air(GAS_NITROGEN, n2_gas_amount/distance_from_center, 273)
-		floor_loc.atmos_spawn_air(GAS_OXYGEN, o2_gas_amount/distance_from_center, 273)
+		floor_loc.atmos_spawn_air(GAS_NITROGEN, n2_gas_amount/distance_from_center, T0C)
+		floor_loc.atmos_spawn_air(GAS_OXYGEN, o2_gas_amount/distance_from_center, T0C)
 	qdel(src)
 
 /obj/item/grenade/gas_crystal/nitrous_oxide_crystal
@@ -95,7 +94,6 @@
 			continue
 		var/distance_from_center = max(get_dist(turf_loc, loc), 1)
 		var/turf/open/floor_loc = turf_loc
-		//floor_loc.atmos_spawn_air("n2o=[n2o_gas_amount / distance_from_center];TEMP=273")
 		floor_loc.atmos_spawn_air(GAS_N2O, n2o_gas_amount/distance_from_center, 273)
 	qdel(src)
 

@@ -1,5 +1,5 @@
 /*****************************Survival Pod********************************/
-/area/survivalpod
+/area/misc/survivalpod
 	name = "\improper Emergency Shelter"
 	icon_state = "away"
 	static_lighting = TRUE
@@ -88,8 +88,8 @@
 	icon_state = "pod_window-0"
 	base_icon_state = "pod_window"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_SHUTTLE_PARTS, SMOOTH_GROUP_SURVIVAL_TIANIUM_POD)
-	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TIANIUM_POD)
+	smoothing_groups = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD)
 
 /obj/structure/window/reinforced/shuttle/survival_pod/spawner/north
 	dir = NORTH
@@ -287,7 +287,7 @@
 		/obj/item/ship_in_a_bottle,
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
-		//obj/item/melee/supermatter_sword,
+		/obj/item/melee/supermatter_sword,
 		/obj/item/shield/changeling,
 		/obj/item/lava_staff,
 		/obj/item/energy_katana,

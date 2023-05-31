@@ -16,3 +16,17 @@
 #define GET_UI_BLOCK_LEN(blocknum) (GLOB.identity_block_lengths["[blocknum]"] || DNA_BLOCK_SIZE)
 ///Ditto, but for a feature.
 #define GET_UF_BLOCK_LEN(blocknum) (GLOB.features_block_lengths["[blocknum]"] || DNA_BLOCK_SIZE)
+
+/mob/proc/has_hair(include_bald = TRUE)
+	return FALSE
+
+///Does this mob have hair? Pass bald_is_false = TRUE to have "Bald" count as FALSE
+/mob/living/carbon/human/has_hair(bald_is_false)
+	var/obj/item/bodypart/head/myhead = get_bodypart(BODY_ZONE_HEAD)
+	if(!myhead)
+		return FALSE
+
+	if(bald_is_false && (myhead.hair_style == "Bald"))
+		return FALSE
+
+	return (HAIR in myhead.species_flags_list) || (NONHUMANHAIR in myhead.species_flags_list)

@@ -34,9 +34,9 @@
 
 /datum/component/riding/creature/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_MOB_EMOTE, .proc/check_emote)
+	RegisterSignal(parent, COMSIG_MOB_EMOTE, PROC_REF(check_emote))
 	if(can_be_driven)
-		RegisterSignal(parent, COMSIG_RIDDEN_DRIVER_MOVE, .proc/driver_move) // this isn't needed on riding humans or cyborgs since the rider can't control them
+		RegisterSignal(parent, COMSIG_RIDDEN_DRIVER_MOVE, PROC_REF(driver_move)) // this isn't needed on riding humans or cyborgs since the rider can't control them
 
 /// Creatures need to be logged when being mounted
 /datum/component/riding/creature/proc/log_riding(mob/living/living_parent, mob/living/rider)
@@ -137,11 +137,8 @@
 
 	var/mob/living/ridden_creature = parent
 
-	for(var/ability in ridden_creature.abilities)
-		var/obj/effect/proc_holder/proc_holder = ability
-		if(!proc_holder.action)
-			return
-		proc_holder.action.GiveAction(rider)
+	for(var/datum/action/action as anything in ridden_creature.actions)
+		action.GiveAction(rider)
 
 /// Takes away the riding parent's abilities from the rider
 /datum/component/riding/creature/proc/remove_abilities(mob/living/rider)
@@ -150,13 +147,11 @@
 
 	var/mob/living/ridden_creature = parent
 
-	for(var/ability in ridden_creature.abilities)
-		var/obj/effect/proc_holder/proc_holder = ability
-		if(!proc_holder.action)
-			return
-		if(rider == proc_holder.ranged_ability_user)
-			proc_holder.remove_ranged_ability()
-		proc_holder.action.HideFrom(rider)
+	for(var/datum/action/action as anything in ridden_creature.actions)
+		if(istype(action, /datum/action/cooldown) && rider.click_intercept == action)
+			var/datum/action/cooldown/cooldown_action = action
+			cooldown_action.unset_click_ability(rider, refund_cooldown = TRUE)
+		action.HideFrom(rider)
 
 /datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
@@ -191,8 +186,8 @@
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, .proc/on_host_unarmed_melee)
-	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, .proc/check_carrier_fall_over)
+	RegisterSignal(parent, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
+	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_carrier_fall_over))
 
 /datum/component/riding/creature/human/log_riding(mob/living/living_parent, mob/living/rider)
 	if(!istype(living_parent) || !istype(rider))

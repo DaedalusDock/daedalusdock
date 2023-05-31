@@ -11,14 +11,17 @@
 	usable_hands = 0 //Populated on init through list/bodyparts
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	blocks_emissive = NONE
-	///List of [/obj/item/organ] in the mob. They don't go in the contents for some reason I don't want to know.
-	var/list/internal_organs = list()
-	///Same as [above][/mob/living/carbon/var/internal_organs], but stores "slot ID" - "organ" pairs for easy access.
-	var/list/internal_organs_slot = list()
-	///External organs. This is mostly here for the purposes of mass-updating organ colors.
-	var/list/external_organs = list()
-	///Same as [above][/mob/living/carbon/var/external_organs], but stores "ID" = "organ" pairs.
-	var/list/external_organs_slot = list()
+	zmm_flags = ZMM_MANGLE_PLANES //Emissive eyes :holding_back_tears:
+
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/organs = list()
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/cosmetic_organs = list()
+	///Stores "slot ID" - "organ" pairs for easy access. Contains both functional and cosmetic organs
+	var/list/organs_by_slot = list()
+	///A list of organs that process, used to keep life() fast!
+	var/list/obj/item/organ/processing_organs = list()
+
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
 	///How many dream images we have left to send
@@ -99,11 +102,6 @@
 
 	/// Timer id of any transformation
 	var/transformation_timer
-
-	/// All of the wounds a carbon has afflicted throughout their limbs
-	var/list/all_wounds
-	/// All of the scars a carbon has afflicted throughout their limbs
-	var/list/all_scars
 
 	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/human/biotechcompat/ for example.
 	var/skillchip_complexity_modifier = 0

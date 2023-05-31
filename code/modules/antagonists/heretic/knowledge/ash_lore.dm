@@ -54,7 +54,7 @@
 	route = PATH_ASH
 
 /datum/heretic_knowledge/ashen_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/ashen_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)
@@ -82,7 +82,7 @@
 		/datum/heretic_knowledge/essence,
 		/datum/heretic_knowledge/medallion,
 	)
-	spell_to_add = /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift/ash
+	spell_to_add = /datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash
 	cost = 1
 	route = PATH_ASH
 
@@ -104,8 +104,10 @@
 		return
 
 	// Also refunds 75% of charge!
-	for(var/obj/effect/proc_holder/spell/targeted/touch/mansus_grasp/grasp in source.mind.spell_list)
-		grasp.charge_counter = min(round(grasp.charge_counter + grasp.charge_max * 0.75), grasp.charge_max)
+	var/datum/action/cooldown/spell/touch/mansus_grasp/grasp = locate() in source.actions
+	if(grasp)
+		grasp.next_use_time = min(round(grasp.next_use_time - grasp.cooldown_time * 0.75, 0), 0)
+		grasp.build_all_button_icons()
 
 /datum/heretic_knowledge/knowledge_ritual/ash
 	next_knowledge = list(/datum/heretic_knowledge/mad_mask)
@@ -124,7 +126,7 @@
 		/datum/heretic_knowledge/curse/paralysis,
 	)
 	required_atoms = list(
-		/obj/item/organ/internal/liver = 1,
+		/obj/item/organ/liver = 1,
 		/obj/item/melee/baton/security = 1,  // Technically means a cattleprod is valid
 		/obj/item/clothing/mask = 1,
 		/obj/item/candle = 4,
@@ -160,7 +162,7 @@
 		/datum/heretic_knowledge/summon/ashy,
 		/datum/heretic_knowledge/summon/rusty,
 	)
-	spell_to_add = /obj/effect/proc_holder/spell/targeted/fiery_rebirth
+	spell_to_add = /datum/action/cooldown/spell/aoe/fiery_rebirth
 	cost = 1
 	route = PATH_ASH
 
@@ -200,8 +202,13 @@
 /datum/heretic_knowledge/final/ash_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
 	priority_announce("[generate_heretic_text()] Fear the blaze, for the Ashlord, [user.real_name] has ascended! The flames shall consume all! [generate_heretic_text()]","[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
-	user.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/fire_cascade/big)
-	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/fire_sworn)
+
+	var/datum/action/cooldown/spell/fire_sworn/circle_spell = new(user.mind)
+	circle_spell.Grant(user)
+
+	var/datum/action/cooldown/spell/fire_cascade/big/screen_wide_fire_spell = new(user.mind)
+	screen_wide_fire_spell.Grant(user)
+
 	user.client?.give_award(/datum/award/achievement/misc/ash_ascension, user)
 	for(var/trait in traits_to_apply)
 		ADD_TRAIT(user, trait, MAGIC_TRAIT)

@@ -8,8 +8,8 @@
 	src.allowed_slot = allowed_slot
 
 /datum/component/tactical/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, .proc/modify)
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, .proc/unmodify)
+	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(modify))
+	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(unmodify))
 
 /datum/component/tactical/UnregisterFromParent()
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
@@ -28,7 +28,6 @@
 
 	var/obj/item/master = parent
 	var/image/I = image(icon = master.icon, icon_state = master.icon_state, loc = user)
-	I.plane = GAME_PLANE_FOV_HIDDEN
 	I.copy_overlays(master)
 	I.override = TRUE
 	source.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "sneaking_mission", I)

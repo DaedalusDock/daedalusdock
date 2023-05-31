@@ -24,6 +24,9 @@ SERVERSQLNAME daedalusdock
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
 STATIONNAME Daedalus Outpost
 
+## Hub subtitle: A line of text inserted under the server name. Should be no greater than 40 characters.
+HUB_SUBTITLE Now with custom lighting!
+
 ## Put on byond hub: Uncomment this to put your server on the byond hub.
 #HUB
 
@@ -306,8 +309,6 @@ POPUP_ADMIN_PM
 ## Uncomment to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
 ALLOW_HOLIDAYS
 
-##Uncomment to disable specifically the ability for holidays to alter the color of floor decals. (April Fools and Pride Week)
-#DISABLE_HOLIDAY_FLOOR_EFFECTS
 
 ## Uncomment to show the names of the admin sending a pm from IRC instead of showing as a stealthmin.
 #SHOW_IRC_NAME
@@ -505,8 +506,8 @@ MINUTE_CLICK_LIMIT 400
 ## Send a message with the station name starting a new game.
 #CHAT_ANNOUNCE_NEW_GAME
 
-## Ping users who use the `notify` command when a new game starts.
-#CHAT_NEW_GAME_NOTIFICATIONS
+## Text to staple to the new game announcement message, Usually a discord role ping.
+#CHAT_NEWGAME_STAPLE <@DISCORD_ROLE_ID_HERE>
 
 ## Allow admin hrefs that don't use the new token system, will eventually be removed
 #DEBUG_ADMIN_HREFS

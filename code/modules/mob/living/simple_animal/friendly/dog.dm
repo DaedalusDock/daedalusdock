@@ -70,10 +70,10 @@
 
 /mob/living/simple_animal/pet/dog/corgi/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(
-		"speak" = CALLBACK(src, .proc/handle_automated_speech, TRUE),
-		"wear_hat" = CALLBACK(src, .proc/find_new_hat),
-		"drop_hat" = CALLBACK(src, .proc/drop_hat),
-		"spin" = CALLBACK(src, /mob.proc/emote, "spin")), cooldown, CALLBACK(src, .proc/stop_deadchat_plays))
+		"speak" = CALLBACK(src, PROC_REF(handle_automated_speech), TRUE),
+		"wear_hat" = CALLBACK(src, PROC_REF(find_new_hat)),
+		"drop_hat" = CALLBACK(src, PROC_REF(drop_hat)),
+		"spin" = CALLBACK(src, TYPE_PROC_REF(/mob, emote), "spin")), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
@@ -176,7 +176,7 @@
 /mob/living/simple_animal/pet/dog/corgi/Initialize(mapload)
 	. = ..()
 	regenerate_icons()
-	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, /mob/living/.proc/should_strip)
+	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, TYPE_PROC_REF(/mob/living, should_strip))
 
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/Initialize(mapload)
 		. = ..()
@@ -372,7 +372,7 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 			to_chat(user, span_warning("You can't shave this corgi, [p_they()] [p_do()]n't have a fur coat!"))
 			return
 		user.visible_message(span_notice("[user] starts to shave [src] using \the [O]."), span_notice("You start to shave [src] using \the [O]..."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 50))
 			user.visible_message(span_notice("[user] shaves [src]'s hair using \the [O]."))
 			playsound(loc, 'sound/items/welder2.ogg', 20, TRUE)
 			shaved = TRUE

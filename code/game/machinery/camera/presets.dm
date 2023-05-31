@@ -66,7 +66,7 @@
 			if(CA.type == A.type)
 				if(C.number)
 					number = max(number, C.number+1)
-		c_tag = "[A.name] #[number]"
+		c_tag = "[strip_improper(A.name)] #[number]" //...How long was this a bug?????
 
 
 // UPGRADE PROCS

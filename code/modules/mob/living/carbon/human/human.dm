@@ -11,7 +11,7 @@
 	prepare_huds() //Prevents a nasty runtime on human init
 
 	if(dna.species)
-		INVOKE_ASYNC(src, .proc/set_species, dna.species.type)
+		INVOKE_ASYNC(src, PROC_REF(set_species), dna.species.type)
 
 	//initialise organs
 	create_internal_organs() //most of it is done in set_species now, this is only for parent call
@@ -19,18 +19,19 @@
 
 	. = ..()
 
-	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, .proc/clean_face)
+	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
 	AddComponent(/datum/component/personal_crafting)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
-	AddElement(/datum/element/strippable, GLOB.strippable_human_items, /mob/living/carbon/human/.proc/should_strip)
+	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	become_area_sensitive()
 	GLOB.human_list += src
+	become_atmos_sensitive()
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	//initialize dna. for spawned humans; overwritten by other code
@@ -47,12 +48,13 @@
 	QDEL_NULL(physiology)
 	QDEL_LIST(bioware)
 	GLOB.human_list -= src
+	lose_atmos_sensitivity()
 	return ..()
 
 /mob/living/carbon/human/ZImpactDamage(turf/T, levels)
 	if(stat != CONSCIOUS || levels > 1) // you're not The One
 		return ..()
-	var/obj/item/organ/external/wings/gliders = getorgan(/obj/item/organ/external/wings)
+	var/obj/item/organ/wings/gliders = getorgan(/obj/item/organ/wings)
 	if(HAS_TRAIT(src, TRAIT_FREERUNNING) || gliders?.can_soften_fall()) // the power of parkour or wings allows falling short distances unscathed
 		visible_message(span_danger("[src] makes a hard landing on [T] but remains unharmed from the fall."), \
 						span_userdanger("You brace for the fall. You make a hard landing on [T] but remain unharmed."))
@@ -128,9 +130,9 @@
 				return
 			var/obj/item/photo/P = null
 			if(href_list["photo_front"])
-				P = R.fields["photo_front"]
+				P = R.get_front_photo()
 			else if(href_list["photo_side"])
-				P = R.fields["photo_side"]
+				P = R.get_side_photo()
 			if(P)
 				P.show(H)
 			return
@@ -288,7 +290,7 @@
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
 
-				var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", allowed_access, station_time_timestamp(), fine)
+				var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", allowed_access, stationtime2text(), fine)
 				for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
 					if(tablet.saved_identification == R.fields["name"])
 						var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
@@ -314,7 +316,7 @@
 					return
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
-				var/crime = GLOB.data_core.createCrimeEntry(t1, null, allowed_access, station_time_timestamp())
+				var/crime = GLOB.data_core.createCrimeEntry(t1, null, allowed_access, stationtime2text())
 				GLOB.data_core.addCrime(R.fields["id"], crime)
 				investigate_log("New Crime: <strong>[t1]</strong> | Added to [R.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 				to_chat(usr, span_notice("Successfully added a crime."))
@@ -358,7 +360,7 @@
 				var/counter = 1
 				while(R.fields[text("com_[]", counter)])
 					counter++
-				R.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, station_time_timestamp(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
+				R.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, stationtime2text(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
 				to_chat(usr, span_notice("Successfully added comment."))
 				return
 
@@ -484,52 +486,45 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
+#define CPR_PANIC_SPEED (1 SECONDS)
 
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(target == src)
 		return
 
+	CHECK_DNA_AND_SPECIES(target)
+
+	if (DOING_INTERACTION_WITH_TARGET(src,target))
+		return
+
+	if(!can_perform_cpr(target, silent = FALSE))
+		return
+
+	visible_message(
+		span_notice("[src] places their hands on [target.name]'s chest!"),
+		span_notice("You try to perform CPR on [target.name]... Hold still!")
+	)
+
+	var/image/cpr_image = image('goon/icons/actions.dmi', "cpr", pixel_y = 40)
+	cpr_image.appearance_flags = APPEARANCE_UI | KEEP_APART
+	cpr_image.plane = ABOVE_HUD_PLANE
+	add_overlay(cpr_image)
+
 	var/panicking = FALSE
-
 	do
-		CHECK_DNA_AND_SPECIES(target)
-
-		if (DOING_INTERACTION_WITH_TARGET(src,target))
-			return FALSE
-
-		if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-			to_chat(src, span_warning("[target.name] is dead!"))
-			return FALSE
-
-		if (is_mouth_covered())
-			to_chat(src, span_warning("Remove your mask first!"))
-			return FALSE
-
-		if (target.is_mouth_covered())
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-			return FALSE
-
-		if (!getorganslot(ORGAN_SLOT_LUNGS))
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-			return FALSE
-
-		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-			return FALSE
-
-		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
-						span_notice("You try to perform CPR on [target.name]... Hold still!"))
-
-		if (!do_mob(src, target, time = panicking ? CPR_PANIC_SPEED : (3 SECONDS)))
+		if (!do_after(src, target, panicking ? CPR_PANIC_SPEED : (3 SECONDS), DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			return FALSE
+			break
 
 		if (target.health > target.crit_threshold)
-			return FALSE
+			break
 
-		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
+		visible_message(
+			span_notice("[src] pushes down on [target.name]'s chest!"),
+			span_notice("You perform CPR on [target.name].")
+		)
+
 		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
 		log_combat(src, target, "CPRed")
 
@@ -538,7 +533,7 @@
 		else if (!target.getorganslot(ORGAN_SLOT_LUNGS))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
 		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
+			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 
 		if (target.health <= target.crit_threshold)
@@ -547,9 +542,40 @@
 			panicking = TRUE
 		else
 			panicking = FALSE
+
 	while (panicking)
 
+	cut_overlay(cpr_image)
+
 #undef CPR_PANIC_SPEED
+
+/mob/living/carbon/human/proc/can_perform_cpr(mob/living/carbon/target, silent = TRUE)
+	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
+		if(!silent)
+			to_chat(src, span_warning("[target.name] is dead!"))
+		return FALSE
+
+	if (is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove your mask first!"))
+		return FALSE
+
+	if (target.is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove [p_their()] mask first!"))
+		return FALSE
+
+	if (!getorganslot(ORGAN_SLOT_LUNGS))
+		if(!silent)
+			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
+		return FALSE
+
+	if (HAS_TRAIT(src, TRAIT_NOBREATH))
+		if(!silent)
+			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
+		return FALSE
+
+	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
@@ -663,7 +689,7 @@
 			electrocution_skeleton_anim = mutable_appearance(icon, "electrocuted_base")
 			electrocution_skeleton_anim.appearance_flags |= RESET_COLOR|KEEP_APART
 		add_overlay(electrocution_skeleton_anim)
-		addtimer(CALLBACK(src, .proc/end_electrocution_animation, electrocution_skeleton_anim), anim_duration)
+		addtimer(CALLBACK(src, PROC_REF(end_electrocution_animation), electrocution_skeleton_anim), anim_duration)
 
 	else //or just do a generic animation
 		flick_overlay_view(image(icon,src,"electrocuted_generic",ABOVE_MOB_LAYER), src, anim_duration)
@@ -763,11 +789,7 @@
 		if(HM.quality != POSITIVE)
 			dna.remove_mutation(HM.name)
 	set_coretemperature(get_body_temp_normal(apply_change=FALSE))
-	heat_exposure_stacks = 0
 	return ..()
-
-/mob/living/carbon/human/is_literate()
-	return TRUE
 
 /mob/living/carbon/human/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
 	if(blood && (NOBLOOD in dna.species.species_traits) && !HAS_TRAIT(src, TRAIT_TOXINLOVER))
@@ -911,7 +933,7 @@
 
 	visible_message(span_notice("[src] starts[skills_space] lifting [target] onto [p_their()] back..."),
 		span_notice("You[skills_space] start to lift [target] onto your back..."))
-	if(!do_after(src, carrydelay, target))
+	if(!do_after(src, target, carrydelay, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
 		visible_message(span_warning("[src] fails to fireman carry [target]!"))
 		return
 
@@ -928,7 +950,7 @@
 		return
 
 	visible_message(span_notice("[target] starts to climb onto [src]..."))
-	if(!do_after(target, 1.5 SECONDS, target = src) || !can_piggyback(target))
+	if(!do_after(target, src, 1.5 SECONDS) || !can_piggyback(target))
 		visible_message(span_warning("[target] fails to climb onto [src]!"))
 		return
 
@@ -989,6 +1011,11 @@
 	if(mind.assigned_role.title in SSjob.name_occupations)
 		.[mind.assigned_role.title] = minutes
 
+/mob/living/carbon/human/atmos_expose(datum/gas_mixture/air, exposed_temperature)
+	var/plasma_exposure = air.gas[GAS_PLASMA]
+	if(plasma_exposure)
+		expose_plasma(plasma_exposure)
+
 /mob/living/carbon/human/monkeybrain
 	ai_controller = /datum/ai_controller/monkey
 
@@ -998,7 +1025,7 @@
 
 /mob/living/carbon/human/species/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/set_species, race)
+	INVOKE_ASYNC(src, PROC_REF(set_species), race)
 
 /mob/living/carbon/human/species/set_species(datum/species/mrace, icon_update, pref_load)
 	. = ..()

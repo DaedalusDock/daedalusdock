@@ -21,17 +21,21 @@
 	var/list/ore_values = list(/datum/material/iron = 1, /datum/material/glass = 1,  /datum/material/plasma = 15,  /datum/material/silver = 16, /datum/material/gold = 18, /datum/material/titanium = 30, /datum/material/uranium = 30, /datum/material/diamond = 50, /datum/material/bluespace = 50, /datum/material/bananium = 60)
 	/// Variable that holds a timer which is used for callbacks to `send_console_message()`. Used for preventing multiple calls to this proc while the ORM is eating a stack of ores.
 	var/console_notify_timer
-	var/datum/techweb/stored_research
-	var/obj/item/disk/design_disk/inserted_disk
+
 	var/datum/component/remote_materials/materials
+
 
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
 	. = ..()
-	stored_research = new /datum/techweb/specialized/autounlocking/smelter
+
+	internal_disk.set_data(
+		DATA_IDX_DESIGNS,
+		SStech.fetch_designs(subtypesof(/datum/design/alloy))
+	)
 	materials = AddComponent(/datum/component/remote_materials, "orm", mapload, mat_container_flags=BREAKDOWN_FLAGS_ORM)
 
+
 /obj/machinery/mineral/ore_redemption/Destroy()
-	QDEL_NULL(stored_research)
 	materials = null
 	return ..()
 
@@ -73,7 +77,7 @@
 
 /obj/machinery/mineral/ore_redemption/proc/can_smelt_alloy(datum/design/D)
 	var/datum/component/material_container/mat_container = materials.mat_container
-	if(!mat_container || D.make_reagents.len)
+	if(!mat_container || length(D.make_reagents))
 		return FALSE
 
 	var/build_amount = 0
@@ -149,7 +153,7 @@
 
 	if(!console_notify_timer)
 		// gives 5 seconds for a load of ores to be sucked up by the ORM before it sends out request console notifications. This should be enough time for most deposits that people make
-		console_notify_timer = addtimer(CALLBACK(src, .proc/send_console_message), 5 SECONDS)
+		console_notify_timer = addtimer(CALLBACK(src, PROC_REF(send_console_message)), 5 SECONDS)
 
 /obj/machinery/mineral/ore_redemption/default_unfasten_wrench(mob/user, obj/item/I)
 	. = ..()
@@ -174,7 +178,7 @@
 	if(!powered())
 		return ..()
 
-	if(istype(W, /obj/item/disk/design_disk))
+	if(istype(W, /obj/item/disk/data))
 		if(user.transferItemToLoc(W, src))
 			inserted_disk = W
 			return TRUE
@@ -220,8 +224,8 @@
 			data["materials"] += list(list("name" = M.name, "id" = ref, "amount" = sheet_amount, "value" = ore_values[M.type]))
 
 		data["alloys"] = list()
-		for(var/v in stored_research.researched_designs)
-			var/datum/design/D = SSresearch.techweb_design_by_id(v)
+		for(var/datum/design/D as anything in subtypesof(/datum/design/alloy))
+			D = SStech.designs_by_type[D]
 			data["alloys"] += list(list("name" = D.name, "id" = D.id, "amount" = can_smelt_alloy(D)))
 
 	if (!mat_container)
@@ -235,12 +239,10 @@
 	data["hasDisk"] = FALSE
 	if(inserted_disk)
 		data["hasDisk"] = TRUE
-		if(inserted_disk.blueprints.len)
-			var/index = 1
-			for (var/datum/design/thisdesign in inserted_disk.blueprints)
-				if(thisdesign)
-					data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
-				index++
+		var/index = 1
+		for (var/datum/design/thisdesign in inserted_disk.read(DATA_IDX_DESIGNS))
+			data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
+			index++
 	return data
 
 /obj/machinery/mineral/ore_redemption/ui_act(action, params)
@@ -297,37 +299,42 @@
 				materials.silo_log(src, "released", -count, "sheets", mats)
 				//Logging deleted for quick coding
 			return TRUE
+
 		if("diskInsert")
-			var/obj/item/disk/design_disk/disk = usr.get_active_held_item()
-			if(istype(disk))
-				if(!usr.transferItemToLoc(disk,src))
-					return
-				inserted_disk = disk
-			else
+			if(!insert_disk(usr, usr.get_active_held_item()))
 				to_chat(usr, span_warning("Not a valid Design Disk!"))
 			return TRUE
+
 		if("diskEject")
 			if(inserted_disk)
-				usr.put_in_hands(inserted_disk)
-				inserted_disk = null
+				eject_disk(usr)
 			return TRUE
+
 		if("diskUpload")
 			var/n = text2num(params["design"])
-			if(inserted_disk && inserted_disk.blueprints && inserted_disk.blueprints[n])
-				stored_research.add_design(inserted_disk.blueprints[n])
+			if(inserted_disk)
+				internal_disk.write(DATA_IDX_DESIGNS, inserted_disk.read(DATA_IDX_DESIGNS)[n], TRUE)
 			return TRUE
+
 		if("Smelt")
 			if(!mat_container)
 				return
+
 			if(materials.on_hold())
 				to_chat(usr, span_warning("Mineral access is on hold, please contact the quartermaster."))
 				return
+
 			var/alloy_id = params["id"]
-			var/datum/design/alloy = stored_research.isDesignResearchedID(alloy_id)
+			var/datum/design/alloy = SStech.designs_by_id[alloy_id]
+			if(!(alloy in internal_disk.read(DATA_IDX_DESIGNS)))
+				CRASH("Attempted to smelt an alloy we don't have a design for. HREF exploit?")
+
 			var/obj/item/card/id/I
+
 			if(isliving(usr))
 				var/mob/living/L = usr
 				I = L.get_idcard(TRUE)
+
 			if((check_access(I) || allowed(usr)) && alloy)
 				var/smelt_amount = can_smelt_alloy(alloy)
 				var/desired = 0

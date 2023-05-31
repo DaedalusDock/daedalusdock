@@ -7,6 +7,8 @@
 	anchored = FALSE
 	pass_flags = PASSTABLE
 	circuit = /obj/item/circuitboard/machine/ecto_sniffer
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	///determines if the device if the power switch is turned on or off. Useful if the ghosts are too annoying.
 	var/on = TRUE
 	///If this var set to false the ghosts will not be able interact with the machine, say if the machine is silently disabled by cutting the internal wire.
@@ -35,7 +37,7 @@
 	say("Reporting [pick(world.file2list("strings/spook_levels.txt"))] levels of paranormal activity!")
 	if(activator?.ckey)
 		ectoplasmic_residues += activator.ckey
-		addtimer(CALLBACK(src, .proc/clear_residue, activator.ckey), 15 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(clear_residue), activator.ckey), 15 SECONDS)
 
 /obj/machinery/ecto_sniffer/attack_hand(mob/living/user, list/modifiers)
 	. = ..()

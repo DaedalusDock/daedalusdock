@@ -26,7 +26,7 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_SCI
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_BALLMER_SCIENTIST)
 
@@ -40,7 +40,6 @@
 
 	mail_goodies = list(
 		/obj/item/raw_anomaly_core/random = 10,
-		/obj/item/disk/tech_disk/spaceloot = 2,
 		/obj/item/camera_bug = 1
 	)
 	rpg_title = "Thaumaturgist"

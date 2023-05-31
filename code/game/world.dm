@@ -100,11 +100,11 @@ GLOBAL_VAR(restart_counter)
 	CONFIG_SET(number/round_end_countdown, 0)
 	var/datum/callback/cb
 #ifdef UNIT_TESTS
-	cb = CALLBACK(GLOBAL_PROC, /proc/RunUnitTests)
+	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
 	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
 #endif
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, /proc/_addtimer, cb, 10 SECONDS))
+	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
 
 /world/proc/SetupLogs()
@@ -308,16 +308,17 @@ GLOBAL_VAR(restart_counter)
 	var/new_status = ""
 	if(config)
 		var/server_name = CONFIG_GET(string/servername)
-		var/website_url = CONFIG_GET(string/forumurl)
+		var/hub_subtitle = CONFIG_GET(string/hub_subtitle)
 		if(server_name)
-			new_status += "<b>[website_url ? server_name : "<a href=\"[website_url]\">[server_name]</a>"]</b>]"
-			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>|<a href =\"https://github.com/DaedalusDock/Gameserver\">Code</a>)"
+			new_status += "<b>[server_name]\]</b>"
+			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>)<br>"
+		if(hub_subtitle)
+			new_status += "<i>[hub_subtitle]</i><br>"
+
 
 	var/players = GLOB.clients.len
 
 	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
-
-	new_status += "<br><i>Running custom code!</i><br>"
 	if(SSmapping.config)
 		new_status += "<br>Map: <b>[SSmapping.config.map_path == CUSTOM_MAP_PATH ? "Uncharted Territory" : SSmapping.config.map_name]</b>"
 
@@ -331,6 +332,7 @@ GLOBAL_VAR(restart_counter)
 	status = new_status
 	///The usage of "\[" without also using "\]" makes the bracket pair colorizer break, so this is here to make the rest of the file easier to read.
 	var/static/vs_appeaser = "\]\]"
+	return status
 
 /world/proc/update_hub_visibility(new_visibility)
 	if(new_visibility == GLOB.hub_visibility)

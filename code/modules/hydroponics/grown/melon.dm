@@ -77,7 +77,7 @@
 		bite_consumption = bite_consumption, \
 		microwaved_type = microwaved_type, \
 		junkiness = junkiness, \
-		check_liked = CALLBACK(src, .proc/check_holyness))
+		check_liked = CALLBACK(src, PROC_REF(check_holyness)))
 
 /*
  * Callback to be used with the edible component.

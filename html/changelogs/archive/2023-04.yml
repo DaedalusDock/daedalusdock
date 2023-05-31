@@ -1,0 +1,68 @@
+2023-04-02:
+  Kapu1178:
+  - rscadd: Baystation parallax artwork
+  - bugfix: Kilo's asteroid turfs aren't fullbright on production anymore (again)
+  LemonInTheDark, MrMelbert:
+  - balance: Magboots will now protect you from sliding on ice. It will not stop the
+      slip, though.
+  - bugfix: Speed potioned magboots maintain their speed booster after toggling them
+  - refactor: Refactored magboots.
+  - refactor: Refactored noslip mechanics.
+  - qol: Human gravity will react to changes instantly, instead of waiting for the
+      next process tick. Hopefully this feels better and not worse
+  - bugfix: Fixes a bunch of minor gravity bugs, report em if you see more yeah?
+2023-04-04:
+  Gonenoculer5:
+  - rscadd: Adds a new piece of clothing to the loadout.
+  Kapu1178:
+  - bugfix: Circuit shit nobody uses anyway.
+  - code_imp: More 515 compatibility. Nothing to see here, folks.
+  francinum:
+  - code_imp: More 515 fixes
+2023-04-05:
+  Kapu1178:
+  - server: Patched a security hole
+2023-04-07:
+  Comxy:
+  - bugfix: When holding plasma glass, the sprite of normal glass was shown in hand
+      since plasma glass in hand didn't exist.
+  - rscadd: Added titanium and plastitanium glass shards as well as spears and shivs
+      for their types, including plasma glass shivs.
+  - imageadd: Sprites for plasma, titanium and plastitanium glass shards when hold
+      in hand.
+  - qol: titanium and plastitanium glass having their own shards makes sense, and
+      is a quality feature.
+  NamelessFairy:
+  - rscadd: You can now reinforce plating to protect your department from the troublemakers
+      upstairs. Station builders might find these useful to put the stations most
+      secure locations on the lower floors.
+  - imageadd: added sprites for reinforced plating
+  - code_imp: RCD proofing has been variablized and can now be applied to any floor
+      type instead of just reinforced floors.
+2023-04-09:
+  Francinum, Kapu1178:
+  - refactor: Radio is faster now. Don't ask questions you don't want the answer to...
+  Kapu1178:
+  - rscadd: Lizards have a sclera, with a choosable color.
+  - bugfix: Hair randomly being... random. I hope.
+  - code_imp: Sped up Multi-Z code.
+  francinum:
+  - rscadd: Daedalus Industries has upgraded all station power controllers to the
+      new 500 Baud SmartMeter Standard. Reports of cancer or spontaneous cat-ear generation
+      from exposure to data networks are complete conspiracy theories.
+2023-04-10:
+  Kapu1178:
+  - qol: The station holds air again.
+  - bugfix: The station holds air again.
+  - rscadd: The crew now starts on the arrivals shuttle as it is about to take off
+      for the station.
+  - bugfix: The gravity generator properly updates gravity during init.
+  - code_imp: Walls are no longer GAGs-compatable
+2023-04-23:
+  Lohikar:
+  - refactor: Z-holes are now rendered using Z-Mimic, which should improve accuracy
+      and performance.
+2023-04-26:
+  Kapu1178:
+  - bugfix: Credits run after a delay properly.
+  - tweak: Credits scroll faster.

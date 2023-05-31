@@ -32,7 +32,7 @@
 	action.Grant(organ_parent.owner)
 
 	ADD_TRAIT(parent, TRAIT_LIVING_HEART, REF(src))
-	RegisterSignal(parent, COMSIG_ORGAN_REMOVED, .proc/on_organ_removed)
+	RegisterSignal(parent, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
 	// It's not technically visible,
 	// but the organ sprite shows up in the action
@@ -43,7 +43,7 @@
 
 	organ_parent.icon = 'icons/obj/eldritch.dmi'
 	organ_parent.icon_state = "living_heart"
-	action.UpdateButtons()
+	action.build_all_button_icons()
 
 /datum/component/living_heart/Destroy(force, silent)
 	QDEL_NULL(action)
@@ -92,7 +92,7 @@
 
 	return ..()
 
-/datum/action/item_action/organ_action/track_target/IsAvailable()
+/datum/action/item_action/organ_action/track_target/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
@@ -130,7 +130,7 @@
 			owner,
 			owner,
 			targets_to_choose,
-			custom_check = CALLBACK(src, .proc/check_menu),
+			custom_check = CALLBACK(src, PROC_REF(check_menu)),
 			radius = 40,
 			require_near = TRUE,
 			tooltips = TRUE,

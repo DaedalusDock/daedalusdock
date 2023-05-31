@@ -23,12 +23,15 @@
 	. = ..()
 	if(!length(case_designs))
 		populate_case_designs()
-	var/datum/component/storage/stored = GetComponent(/datum/component/storage)
-	stored.max_items = 12
-	stored.can_hold = typecacheof(list(
-		/obj/item/hypospray/mkii,
-		/obj/item/reagent_containers/glass/vial
-	))
+	create_storage(
+		12,
+		canhold = typecacheof(
+			list(
+				/obj/item/hypospray/mkii,
+				/obj/item/reagent_containers/glass/vial
+			)
+		)
+	)
 	update_icon_state()
 	update_icon()
 
@@ -64,7 +67,7 @@
 	var/casetype = cmo_case_designs
 	if(!src.cmo_case)
 		casetype = case_designs
-	var/choice = show_radial_menu(user, src , casetype, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 42, require_near = TRUE)
+	var/choice = show_radial_menu(user, src , casetype, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 42, require_near = TRUE)
 	if(!choice)
 		return FALSE
 	current_case = choice

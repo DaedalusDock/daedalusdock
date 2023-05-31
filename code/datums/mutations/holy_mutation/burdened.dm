@@ -15,20 +15,20 @@
 /datum/mutation/human/burdened/on_acquiring(mob/living/carbon/human/owner)
 	if(..())
 		return
-	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, .proc/organ_added_burden)
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, .proc/organ_removed_burden)
+	RegisterSignal(owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(organ_added_burden))
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(organ_removed_burden))
 
-	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, .proc/limbs_added_burden)
-	RegisterSignal(owner, COMSIG_CARBON_REMOVE_LIMB, .proc/limbs_removed_burden)
+	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limbs_added_burden))
+	RegisterSignal(owner, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(limbs_removed_burden))
 
-	RegisterSignal(owner, COMSIG_CARBON_GAIN_ADDICTION, .proc/addict_added_burden)
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_ADDICTION, .proc/addict_removed_burden)
+	RegisterSignal(owner, COMSIG_CARBON_GAIN_ADDICTION, PROC_REF(addict_added_burden))
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_ADDICTION, PROC_REF(addict_removed_burden))
 
-	RegisterSignal(owner, COMSIG_CARBON_GAIN_MUTATION, .proc/mutation_added_burden)
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_MUTATION, .proc/mutation_removed_burden)
+	RegisterSignal(owner, COMSIG_CARBON_GAIN_MUTATION, PROC_REF(mutation_added_burden))
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_MUTATION, PROC_REF(mutation_removed_burden))
 
-	RegisterSignal(owner, COMSIG_CARBON_GAIN_TRAUMA, .proc/trauma_added_burden)
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_TRAUMA, .proc/trauma_removed_burden)
+	RegisterSignal(owner, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(trauma_added_burden))
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_TRAUMA, PROC_REF(trauma_removed_burden))
 
 /datum/mutation/human/burdened/on_losing(mob/living/carbon/human/owner)
 	. = ..()
@@ -107,8 +107,8 @@
 	if(special) //aheals
 		return
 
-	if(istype(new_organ, /obj/item/organ/internal/eyes))
-		var/obj/item/organ/internal/eyes/new_eyes = new_organ
+	if(istype(new_organ, /obj/item/organ/eyes))
+		var/obj/item/organ/eyes/new_eyes = new_organ
 		if(new_eyes.tint < TINT_BLIND) //unless you added unworking eyes (flashlight eyes), this is removing burden
 			update_burden(FALSE)
 		return
@@ -121,8 +121,8 @@
 	if(special) //aheals
 		return
 
-	if(istype(old_organ, /obj/item/organ/internal/eyes))
-		var/obj/item/organ/internal/eyes/old_eyes = old_organ
+	if(istype(old_organ, /obj/item/organ/eyes))
+		var/obj/item/organ/eyes/old_eyes = old_organ
 		if(old_eyes.tint < TINT_BLIND) //unless you were already blinded by them (flashlight eyes), this is adding burden!
 			update_burden(TRUE)
 

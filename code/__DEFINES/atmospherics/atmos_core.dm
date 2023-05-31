@@ -161,14 +161,6 @@
 ///N2O value for anesthetic canister
 #define N2O_ANESTHETIC 0.35
 
-//CANATMOSPASS
-#define ATMOS_PASS_YES 1
-#define ATMOS_PASS_NO 0
-/// ask can_atmos_pass()
-#define ATMOS_PASS_PROC -1
-/// just check density
-#define ATMOS_PASS_DENSITY -2
-
 //Adjacent turf related defines, they dictate what to do with a turf once it's been recalculated
 //Used as "state" in CALCULATE_ADJACENT_TURFS
 ///Normal non-active turf

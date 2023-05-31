@@ -143,7 +143,7 @@
 /obj/structure/punji_sticks/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/caltrop, min_damage = 20, max_damage = 30, flags = CALTROP_BYPASS_SHOES)
-	stab_overlay = mutable_appearance(icon, "[icon_state]_stab", layer = ABOVE_MOB_LAYER, plane = GAME_PLANE_FOV_HIDDEN)
+	stab_overlay = mutable_appearance(icon, "[icon_state]_stab", layer = ABOVE_MOB_LAYER, plane = GAME_PLANE)
 
 /obj/structure/punji_sticks/intercept_zImpact(list/falling_movables, levels)
 	. = ..()
@@ -165,7 +165,7 @@
 		return ..()
 	to_chat(buckled_mob, span_warning("You begin climbing out of [src]."))
 	buckled_mob.apply_damage(5, BRUTE, sharpness = SHARP_POINTY)
-	if(!do_after(buckled_mob, 5 SECONDS, target = src))
+	if(!do_after(buckled_mob, src, 5 SECONDS))
 		to_chat(buckled_mob, span_userdanger("You fail to detach yourself from [src]."))
 		return
 	cut_overlay(stab_overlay)

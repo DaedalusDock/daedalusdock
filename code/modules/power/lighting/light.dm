@@ -5,7 +5,6 @@
 	icon_state = "tube"
 	desc = "A lighting fixture."
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	max_integrity = 100
 	use_power = ACTIVE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.02
@@ -95,7 +94,8 @@
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
-	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
+	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/light/LateInitialize()
@@ -103,14 +103,16 @@
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
-			if(prob(2))
+			if(prob(0.5))
 				break_light_tube(TRUE)
 		if("bulb")
-			if(prob(5))
+			if(prob(1))
 				break_light_tube(TRUE)
-	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
+	#endif
+	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
 	if(my_area)
@@ -118,6 +120,7 @@
 		LAZYREMOVE(my_area.lights, src)
 	my_area = null
 	QDEL_NULL(cell)
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/light/update_icon_state()
@@ -167,11 +170,11 @@
 		if(instant)
 			turn_on(trigger, play_sound)
 		else if(maploaded)
-			turn_on(trigger, play_sound)
+			turn_on(trigger)
 			maploaded = FALSE
 		else if(!turning_on)
 			turning_on = TRUE
-			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
@@ -205,7 +208,7 @@
 		if(!start_only)
 			do_sparks(3, TRUE, src)
 		var/delay = rand(BROKEN_SPARKS_MIN, BROKEN_SPARKS_MAX)
-		addtimer(CALLBACK(src, .proc/broken_sparks), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
+		addtimer(CALLBACK(src, PROC_REF(broken_sparks)), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
 /obj/machinery/light/process()
 	if (!cell)
@@ -266,7 +269,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, 2 SECONDS, src))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -308,6 +311,8 @@
 	if(istype(tool, /obj/item/stock_parts/cell))
 		return FALSE
 
+	if(status != LIGHT_EMPTY)
+		return ..()
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)
@@ -477,14 +482,14 @@
 	var/mob/living/carbon/human/electrician = user
 
 	if(istype(electrician))
-		var/obj/item/organ/internal/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))
 			stomach.drain_time = world.time + LIGHT_DRAIN_TIME
-			while(do_after(user, LIGHT_DRAIN_TIME, target = src))
+			while(do_after(user, src, LIGHT_DRAIN_TIME))
 				stomach.drain_time = world.time + LIGHT_DRAIN_TIME
 				if(istype(stomach))
 					to_chat(electrician, span_notice("You receive some charge from the [fitting]."))
@@ -510,7 +515,7 @@
 			electrician.update_damage_overlays()
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
-			if(!do_after(user, 5 SECONDS, target = src))
+			if(!do_after(user, src, 5 SECONDS))
 				return
 			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
 				electrician.update_damage_overlays()

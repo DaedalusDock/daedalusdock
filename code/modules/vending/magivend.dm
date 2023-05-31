@@ -21,5 +21,5 @@
 	resistance_flags = FIRE_PROOF
 	default_price = 0 //Just in case, since it's primary use is storage.
 	extra_price = PAYCHECK_COMMAND
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "magivend-light-mask"

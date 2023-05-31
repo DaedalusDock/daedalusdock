@@ -186,7 +186,7 @@
 
 /datum/map_template/proc/generate_ceiling(affected_turfs)
 	for (var/turf/turf in affected_turfs)
-		var/turf/ceiling = get_step_multiz(turf, UP)
+		var/turf/ceiling = GetAbove(turf)
 		if (ceiling)
 			if (istype(ceiling, /turf/open/openspace) || istype(ceiling, /turf/open/space/openspace))
 				ceiling.ChangeTurf(ceiling_turf, ceiling_baseturfs, CHANGETURF_INHERIT_AIR)

@@ -50,6 +50,20 @@ export const ThermoMachine = (props, context) => {
                   target: value,
                 })} />
             </LabeledList.Item>
+            <LabeledList.Item label="Power">
+              <NumberInput
+                animated
+                value={Math.round(data.power)}
+                unit="%"
+                width="62px"
+                minValue={Math.round(data.min_power)}
+                maxValue={Math.round(data.max_power)}
+                step={5}
+                stepPixelSize={3}
+                onDrag={(e, value) => act('set_power', {
+                  target: value,
+                })} />
+            </LabeledList.Item>
             <LabeledList.Item label="Presets">
               <Button
                 icon="fast-backward"

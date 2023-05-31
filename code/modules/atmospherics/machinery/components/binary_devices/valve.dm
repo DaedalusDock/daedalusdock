@@ -20,6 +20,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	var/valve_type = MANUAL_VALVE
 	///Bool to stop interactions while the opening/closing animation is going
 	var/switching = FALSE
+	var/on_sound = 'sound/machines/valveopen.ogg'
+	var/off_sound = 'sound/machines/valveclose.ogg'
 
 /obj/machinery/atmospherics/components/binary/valve/update_icon_nopipes(animation = FALSE)
 	normalize_cardinal_directions()
@@ -64,7 +66,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 		return
 	update_icon_nopipes(TRUE)
 	switching = TRUE
-	addtimer(CALLBACK(src, .proc/finish_interact), 1 SECONDS)
+	playsound(src, (on ? on_sound : off_sound), 50, TRUE)
+	addtimer(CALLBACK(src, PROC_REF(finish_interact)), 1 SECONDS)
 
 /**
  * Called by iteract() after a 1 second timer, calls toggle(), allows another interaction with the component.
@@ -80,6 +83,8 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	desc = "A digitally controlled valve."
 	valve_type = DIGITAL_VALVE
 	pipe_state = "dvalve"
+	on_sound = 'sound/machines/creak.ogg'
+	off_sound = 'sound/machines/creak.ogg'
 
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OFFLINE | INTERACT_MACHINE_OPEN | INTERACT_MACHINE_OPEN_SILICON
 
@@ -117,7 +122,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/valve/digital))
 		attached_valve = shell
-		RegisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN, .proc/handle_valve_toggled)
+		RegisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN, PROC_REF(handle_valve_toggled))
 
 /obj/item/circuit_component/digital_valve/unregister_usb_parent(atom/movable/shell)
 	UnregisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN)

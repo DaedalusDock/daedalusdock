@@ -68,13 +68,13 @@
 						state = AIRLOCK_STATE_CLOSED
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = interior_door_tag,
 							"command" = "secure_close"
 						)))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"
@@ -87,12 +87,12 @@
 							state = AIRLOCK_STATE_INOPEN
 							process_again = 1
 						else
-							post_signal(new /datum/signal(list(
+							post_signal(new /datum/signal(src, list(
 								"tag" = interior_door_tag,
 								"command" = "secure_open"
 							)))
 					else
-						var/datum/signal/signal = new(list(
+						var/datum/signal/signal = new(src, list(
 							"tag" = airpump_tag,
 							"sigtype" = "command"
 						))
@@ -111,7 +111,7 @@
 						state = AIRLOCK_STATE_DEPRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = interior_door_tag,
 							"command" = "secure_close"
 						)))
@@ -120,14 +120,14 @@
 						state = AIRLOCK_STATE_PRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = exterior_door_tag,
 							"command" = "secure_close"
 						)))
 
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"
@@ -143,7 +143,7 @@
 						if(memory["exterior_status"] == "open")
 							state = AIRLOCK_STATE_OUTOPEN
 						else
-							post_signal(new /datum/signal(list(
+							post_signal(new /datum/signal(src, list(
 								"tag" = exterior_door_tag,
 								"command" = "secure_open"
 							)))
@@ -154,7 +154,7 @@
 					state = AIRLOCK_STATE_CLOSED
 					process_again = 1
 				else
-					var/datum/signal/signal = new(list(
+					var/datum/signal/signal = new(src, list(
 						"tag" = airpump_tag,
 						"sigtype" = "command"
 					))
@@ -174,13 +174,13 @@
 							state = AIRLOCK_STATE_CLOSED
 							process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = exterior_door_tag,
 							"command" = "secure_close"
 						)))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"

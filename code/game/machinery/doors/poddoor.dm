@@ -146,7 +146,7 @@
 		if(hasPower())
 			time_to_open = 15 SECONDS
 
-		if(do_after(user, time_to_open, src))
+		if(do_after(user, src, time_to_open))
 			if(density && !open(TRUE)) //The airlock is still closed, but something prevented it opening. (Another player noticed and bolted/welded the airlock in time!)
 				to_chat(user, span_warning("Despite your efforts, [src] managed to resist your attempts to open it!"))
 
@@ -171,9 +171,9 @@
 /obj/machinery/door/poddoor/shuttledock/proc/check()
 	var/turf/turf = get_step(src, checkdir)
 	if(!istype(turf, turftype))
-		INVOKE_ASYNC(src, .proc/open)
+		INVOKE_ASYNC(src, PROC_REF(open))
 	else
-		INVOKE_ASYNC(src, .proc/close)
+		INVOKE_ASYNC(src, PROC_REF(close))
 
 /obj/machinery/door/poddoor/incinerator_ordmix
 	name = "combustion chamber vent"

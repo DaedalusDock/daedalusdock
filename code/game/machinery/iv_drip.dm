@@ -176,8 +176,7 @@
 		to_chat(attached, span_userdanger("The IV drip needle is ripped out of you, leaving an open bleeding wound!"))
 		var/list/arm_zones = shuffle(list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM))
 		var/obj/item/bodypart/chosen_limb = attached.get_bodypart(arm_zones[1]) || attached.get_bodypart(arm_zones[2]) || attached.get_bodypart(BODY_ZONE_CHEST)
-		chosen_limb.receive_damage(3)
-		chosen_limb.force_wound_upwards(/datum/wound/pierce/moderate)
+		chosen_limb.receive_damage(7, sharpness = SHARP_POINTY)
 		detach_iv()
 		return PROCESS_KILL
 
@@ -230,7 +229,7 @@
 ///called when an IV is attached
 /obj/machinery/iv_drip/proc/attach_iv(mob/living/target, mob/user)
 	user.visible_message(span_warning("[usr] begins attaching [src] to [target]..."), span_warning("You begin attaching [src] to [target]."))
-	if(!do_after(usr, 1 SECONDS, target))
+	if(!do_after(usr, target, 1 SECONDS))
 		return
 	usr.visible_message(span_warning("[usr] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
 	var/datum/reagents/container = get_reagent_holder()

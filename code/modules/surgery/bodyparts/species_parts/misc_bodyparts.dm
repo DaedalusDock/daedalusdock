@@ -33,28 +33,40 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~BP_HAS_BLOOD
+
 /obj/item/bodypart/chest/abductor
 	limb_id = SPECIES_ABDUCTOR
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/arm/left/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~BP_HAS_BLOOD
+
 /obj/item/bodypart/arm/right/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~BP_HAS_BLOOD
+
 /obj/item/bodypart/leg/left/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~BP_HAS_BLOOD
+
 /obj/item/bodypart/leg/right/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
+
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~BP_HAS_BLOOD
 
 ///JELLY
 /obj/item/bodypart/head/jelly
@@ -62,47 +74,65 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/chest/jelly
 	limb_id = SPECIES_JELLYPERSON
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/arm/left/jelly
 	limb_id = SPECIES_JELLYPERSON
 	dmg_overlay_type = null
+
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/right/jelly
 	limb_id = SPECIES_JELLYPERSON
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/leg/left/jelly
 	limb_id = SPECIES_JELLYPERSON
 	dmg_overlay_type = null
+
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/right/jelly
 	limb_id = SPECIES_JELLYPERSON
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 ///SLIME
 /obj/item/bodypart/head/slime
 	limb_id = SPECIES_SLIMEPERSON
 	is_dimorphic = FALSE
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/chest/slime
 	limb_id = SPECIES_SLIMEPERSON
 	is_dimorphic = TRUE
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/left/slime
 	limb_id = SPECIES_SLIMEPERSON
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/right/slime
 	limb_id = SPECIES_SLIMEPERSON
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/left/slime
 	limb_id = SPECIES_SLIMEPERSON
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/right/slime
 	limb_id = SPECIES_SLIMEPERSON
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 ///LUMINESCENT
 /obj/item/bodypart/head/luminescent
@@ -248,31 +278,43 @@
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD)
+
 /obj/item/bodypart/chest/skeleton
 	limb_id = SPECIES_SKELETON
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD)
+
 /obj/item/bodypart/arm/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
+
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/arm/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
+
 /obj/item/bodypart/leg/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
+
 /obj/item/bodypart/leg/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
+
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
 
 ///MUSHROOM
 /obj/item/bodypart/head/mushroom
@@ -313,10 +355,14 @@
 	is_dimorphic = FALSE
 	dmg_overlay_type = null
 
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/chest/golem
 	limb_id = SPECIES_GOLEM
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
+
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/left/golem
 	limb_id = SPECIES_GOLEM
@@ -326,6 +372,8 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/arm/right/golem
 	limb_id = SPECIES_GOLEM
 	dmg_overlay_type = null
@@ -334,6 +382,8 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
 
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/leg/left/golem
 	limb_id = SPECIES_GOLEM
 	dmg_overlay_type = null
@@ -341,12 +391,16 @@
 	unarmed_damage_high = 21
 	unarmed_stun_threshold = 11
 
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+
 /obj/item/bodypart/leg/right/golem
 	limb_id = SPECIES_GOLEM
 	dmg_overlay_type = null
 	unarmed_damage_low = 7
 	unarmed_damage_high = 21
 	unarmed_stun_threshold = 11
+
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 ///
 /obj/item/bodypart/head/golem/cult

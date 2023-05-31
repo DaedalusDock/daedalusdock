@@ -11,11 +11,12 @@
 		/datum/surgery_step/incise,
 		/datum/surgery_step/gastrectomy,
 		/datum/surgery_step/clamp_bleeders,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 	organ_to_manipulate = ORGAN_SLOT_STOMACH
 
 /datum/surgery/gastrectomy/can_start(mob/user, mob/living/carbon/target)
-	var/obj/item/organ/internal/stomach/target_stomach = target.getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/target_stomach = target.getorganslot(ORGAN_SLOT_STOMACH)
 	if(target_stomach?.damage > 50 && !(target_stomach.organ_flags & ORGAN_FAILING))
 		return TRUE
 

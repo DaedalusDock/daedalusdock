@@ -63,8 +63,9 @@
 /obj/item/folder/attackby(obj/item/weapon, mob/user, params)
 	if(burn_paper_product_attackby_check(weapon, user))
 		return
-	if(istype(weapon, /obj/item/paper) || istype(weapon, /obj/item/photo) || istype(weapon, /obj/item/documents))
-		//Add paper, photo or documents into the folder
+	if(istype(weapon, /obj/item/paper) || istype(weapon, /obj/item/photo) || istype(weapon, /obj/item/documents) || istype(weapon, /obj/item/disk))
+		//If this check gets any longer kill me.
+		//Add paper, photo, documents, or disks into the folder
 		if(!user.transferItemToLoc(weapon, src))
 			return
 		to_chat(user, span_notice("You put [weapon] into [src]."))
@@ -124,17 +125,17 @@
 	name = "envelope"
 	desc = "A thick envelope. You can't see what's inside."
 	icon_state = "envelope_sealed"
-	/// base iconstate, *_sealed, *0, *1 required.
-	var/icon_base = "envelope"
+	// *_sealed, *0, *1 required.
+	base_icon_state = "envelope"
 	/// Are we still bricked up?
 	var/sealed = TRUE
 
 /obj/item/folder/envelope/update_icon(updates)
 	. = ..()
 	if(sealed)
-		icon_state = "[icon_base]_sealed"
+		icon_state = "[base_icon_state]_sealed"
 	else
-		icon_state = "[icon_base][!!length(contents)]" //heehoo boolean magic
+		icon_state = "[base_icon_state][!!length(contents)]" //heehoo boolean magic
 
 /obj/item/folder/envelope/proc/sealcheck(mob/user)
 	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")

@@ -32,6 +32,9 @@
 /turf/open/floor/iron/airless
 	initial_gas = AIRLESS_ATMOS
 
+/turf/open/floor/iron/norn
+	icon_state = "floor_norn"
+
 /turf/open/floor/iron/telecomms
 	initial_gas = TCOMMS_ATMOS
 	temperature = 80

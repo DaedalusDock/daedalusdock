@@ -30,14 +30,14 @@
 	if(_butcher_callback)
 		butcher_callback = _butcher_callback
 	if(isitem(parent))
-		RegisterSignal(parent, COMSIG_ITEM_ATTACK, .proc/onItemAttack)
+		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(onItemAttack))
 
 /datum/component/butchering/proc/onItemAttack(obj/item/source, mob/living/M, mob/living/user)
 	SIGNAL_HANDLER
 
 	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results)) //can we butcher it?
 		if(butchering_enabled && (can_be_blunt || source.get_sharpness()))
-			INVOKE_ASYNC(src, .proc/startButcher, source, M, user)
+			INVOKE_ASYNC(src, PROC_REF(startButcher), source, M, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 	if(ishuman(M) && source.force && source.get_sharpness())
@@ -47,13 +47,13 @@
 				user.show_message(span_warning("[H]'s neck has already been already cut, you can't make the bleeding any worse!"), MSG_VISUAL, \
 								span_warning("Their neck has already been already cut, you can't make the bleeding any worse!"))
 				return COMPONENT_CANCEL_ATTACK_CHAIN
-			INVOKE_ASYNC(src, .proc/startNeckSlice, source, H, user)
+			INVOKE_ASYNC(src, PROC_REF(startNeckSlice), source, H, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/component/butchering/proc/startButcher(obj/item/source, mob/living/M, mob/living/user)
 	to_chat(user, span_notice("You begin to butcher [M]..."))
 	playsound(M.loc, butcher_sound, 50, TRUE, -1)
-	if(do_after(user, M, speed) && M.Adjacent(source))
+	if(do_after(user, M, speed, DO_PUBLIC, display = parent) && M.Adjacent(source))
 		Butcher(user, M)
 
 /datum/component/butchering/proc/startNeckSlice(obj/item/source, mob/living/carbon/human/H, mob/living/user)
@@ -69,7 +69,7 @@
 	log_combat(user, H, "attempted throat slitting", source)
 
 	playsound(H.loc, butcher_sound, 50, TRUE, -1)
-	if(do_after(user, H, clamp(500 / source.force, 30, 100)) && H.Adjacent(source))
+	if(do_after(user, H, clamp(500 / source.force, 30, 100), DO_PUBLIC, display = parent) && H.Adjacent(source))
 		if(H.has_status_effect(/datum/status_effect/neck_slice))
 			user.show_message(span_warning("[H]'s neck has already been already cut, you can't make the bleeding any worse!"), MSG_VISUAL, \
 							span_warning("Their neck has already been already cut, you can't make the bleeding any worse!"))
@@ -78,11 +78,9 @@
 		H.visible_message(span_danger("[user] slits [H]'s throat!"), \
 					span_userdanger("[user] slits your throat..."))
 		log_combat(user, H, "wounded via throat slitting", source)
-		H.apply_damage(source.force, BRUTE, BODY_ZONE_HEAD, wound_bonus=CANT_WOUND) // easy tiger, we'll get to that in a sec
 		var/obj/item/bodypart/slit_throat = H.get_bodypart(BODY_ZONE_HEAD)
-		if(slit_throat)
-			var/datum/wound/slash/critical/screaming_through_a_slit_throat = new
-			screaming_through_a_slit_throat.apply_wound(slit_throat)
+
+		slit_throat.create_wound_easy(/datum/wound/cut/flesh, 30)
 		H.apply_status_effect(/datum/status_effect/neck_slice)
 
 /**
@@ -146,7 +144,7 @@
 		return
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 

@@ -74,9 +74,17 @@
 	var/fail_prob = 0//100 - fail_prob = success_prob
 	var/advance = FALSE
 
-	if(preop(user, target, target_zone, tool, surgery) == -1)
-		surgery.step_in_progress = FALSE
-		return FALSE
+	var/preop_result = preop(user, target, target_zone, tool, surgery)
+	switch(preop_result)
+		if(-1)
+			surgery.step_in_progress = FALSE
+			return FALSE
+		if(1)
+			surgery.step_in_progress = FALSE
+			surgery.status++
+			if(surgery.status > surgery.steps.len)
+				surgery.complete(user)
+			return TRUE
 
 	play_preop_sound(user, target, target_zone, tool, surgery) // Here because most steps overwrite preop
 
@@ -99,7 +107,7 @@
 
 	var/was_sleeping = (target.stat != DEAD && target.IsSleeping())
 
-	if(do_after(user, target, modded_time, interaction_key = user.has_status_effect(/datum/status_effect/hippocratic_oath) ? target : DOAFTER_SOURCE_SURGERY)) //If we have the hippocratic oath, we can perform one surgery on each target, otherwise we can only do one surgery in total.
+	if(do_after(user, target, modded_time, DO_PUBLIC, interaction_key = user.has_status_effect(/datum/status_effect/hippocratic_oath) ? target : DOAFTER_SOURCE_SURGERY, display = (tool || image('icons/hud/do_after.dmi', "help")))) //If we have the hippocratic oath, we can perform one surgery on each target, otherwise we can only do one surgery in total.
 
 		var/chem_check_result = chem_check(target)
 		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && chem_check_result && !try_to_fail)

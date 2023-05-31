@@ -27,8 +27,8 @@
 	src.thing_to_be_deployed = thing_to_be_deployed
 	src.delete_on_use = delete_on_use
 
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/examine)
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/on_attack_hand)
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_hand))
 
 	var/obj/item/typecast = thing_to_be_deployed
 	deployed_name = initial(typecast.name)
@@ -40,7 +40,7 @@
 
 /datum/component/deployable/proc/on_attack_hand(datum/source, mob/user, location, direction)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, .proc/deploy, source, user, location, direction)
+	INVOKE_ASYNC(src, PROC_REF(deploy), source, user, location, direction)
 
 /datum/component/deployable/proc/deploy(obj/source, mob/user, location, direction) //If there's no user, location and direction are used
 	var/obj/deployed_object //Used for spawning the deployed object
@@ -57,7 +57,7 @@
 		new_direction = user.dir //Gets the direction for thing_to_be_deployed if there is a user
 		source.balloon_alert(user, "deploying...")
 		playsound(source, 'sound/items/ratchet.ogg', 50, TRUE)
-		if(!do_after(user, time = deploy_time))
+		if(!do_after(user, time = deploy_time, timed_action_flags = DO_PUBLIC))
 			return
 	else //If there is for some reason no user, then the location and direction are set here
 		deploy_location = location

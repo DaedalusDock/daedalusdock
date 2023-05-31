@@ -236,7 +236,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
 
-
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 	if(LAZYLEN(embedding))
 		updateEmbedding()
@@ -281,7 +280,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		CRASH("item add_item_action got a type or instance of something that wasn't an action.")
 
 	LAZYADD(actions, action)
-	RegisterSignal(action, COMSIG_PARENT_QDELETING, .proc/on_action_deleted)
+	RegisterSignal(action, COMSIG_PARENT_QDELETING, PROC_REF(on_action_deleted))
 	if(ismob(loc))
 		// We're being held or are equipped by someone while adding an action?
 		// Then they should also probably be granted the action, given it's in a correct slot
@@ -387,47 +386,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		if(resistance_flags & FIRE_PROOF)
 			. += "[src] is made of fire-retardant materials."
 		return
-
-/obj/item/examine_more(mob/user)
-	. = ..()
-	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER))
-		. += research_scan(user)
-
-/obj/item/proc/research_scan(mob/user)
-	/// Research prospects, including boostable nodes and point values. Deliver to a console to know whether the boosts have already been used.
-	var/list/research_msg = list("<font color='purple'>Research prospects:</font> ")
-	///Separator between the items on the list
-	var/sep = ""
-	///Nodes that can be boosted
-	var/list/boostable_nodes = techweb_item_boost_check(src)
-	if (boostable_nodes)
-		for(var/id in boostable_nodes)
-			var/datum/techweb_node/node = SSresearch.techweb_node_by_id(id)
-			if(!node)
-				continue
-			research_msg += sep
-			research_msg += node.display_name
-			sep = ", "
-	var/list/points = techweb_item_point_check(src)
-	if (length(points))
-		sep = ", "
-		research_msg += techweb_point_display_generic(points)
-
-	if (!sep) // nothing was shown
-		research_msg += "None"
-
-	// Extractable materials. Only shows the names, not the amounts.
-	research_msg += ".<br><font color='purple'>Extractable materials:</font> "
-	if (length(custom_materials))
-		sep = ""
-		for(var/mat in custom_materials)
-			research_msg += sep
-			research_msg += CallMaterialName(mat)
-			sep = ", "
-	else
-		research_msg += "None"
-	research_msg += "."
-	return research_msg.Join()
 
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
@@ -541,7 +499,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 
 	//If the item is in a storage item, take it out
-	SEND_SIGNAL(loc, COMSIG_TRY_STORAGE_TAKE, src, user.loc, TRUE)
+	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
 	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
 		return
 
@@ -576,7 +534,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		return
 
 	//If the item is in a storage item, take it out
-	SEND_SIGNAL(loc, COMSIG_TRY_STORAGE_TAKE, src, user.loc, TRUE)
+	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
 	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
 		return
 
@@ -765,9 +723,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	else
 		return
 
-/obj/item/on_exit_storage(datum/component/storage/concrete/master_storage)
+/obj/item/on_exit_storage(datum/storage/master_storage)
 	. = ..()
-	var/atom/location = master_storage.real_location()
+	var/atom/location = master_storage.real_location?.resolve()
 	do_drop_animation(location)
 
 /obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -799,7 +757,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		return
 	thrownby = WEAKREF(thrower)
-	callback = CALLBACK(src, .proc/after_throw, callback) //replace their callback with our own
+	callback = CALLBACK(src, PROC_REF(after_throw), callback) //replace their callback with our own
 	. = ..(target, range, speed, thrower, spin, diagonals_first, callback, force, gentle, quickstart = quickstart)
 
 /obj/item/proc/after_throw(datum/callback/callback)
@@ -814,8 +772,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/remove_item_from_storage(atom/newLoc) //please use this if you're going to snowflake an item out of a obj/item/storage
 	if(!newLoc)
 		return FALSE
-	if(SEND_SIGNAL(loc, COMSIG_CONTAINS_STORAGE))
-		return SEND_SIGNAL(loc, COMSIG_TRY_STORAGE_TAKE, src, newLoc, TRUE)
+	if(loc.atom_storage)
+		return loc.atom_storage.attempt_remove(src, newLoc, silent = TRUE)
 	return FALSE
 
 /// Returns the icon used for overlaying the object on a belt
@@ -966,11 +924,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /obj/item/MouseEntered(location, control, params)
 	. = ..()
-	if(get(src, /mob) == usr && !QDELETED(src))
+	if(((get(src, /mob) == usr) || loc?.atom_storage || (src.item_flags & IN_STORAGE)) && !QDELETED(src))
 		var/mob/living/L = usr
 		if(usr.client.prefs.read_preference(/datum/preference/toggle/enable_tooltips))
 			var/timedelay = usr.client.prefs.read_preference(/datum/preference/numeric/tooltip_delay) / 100
-			tip_timer = addtimer(CALLBACK(src, .proc/openTip, location, control, params, usr), timedelay, TIMER_STOPPABLE)//timer takes delay in deciseconds, but the pref is in milliseconds. dividing by 100 converts it.
+			tip_timer = addtimer(CALLBACK(src, PROC_REF(openTip), location, control, params, usr), timedelay, TIMER_STOPPABLE)//timer takes delay in deciseconds, but the pref is in milliseconds. dividing by 100 converts it.
 		if(usr.client.prefs.read_preference(/datum/preference/toggle/item_outlines))
 			if(istype(L) && L.incapacitated())
 				apply_outline(COLOR_RED_GRAY) //if they're dead or handcuffed, let's show the outline as red to indicate that they can't interact with that right now
@@ -987,8 +945,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	remove_filter("hover_outline")
 
 /obj/item/proc/apply_outline(outline_color = null)
-	if(get(src, /mob) != usr || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)
-		return
+	if(((get(src, /mob) != usr) && !src.loc.atom_storage && !(src.item_flags & IN_STORAGE)) || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)
+		return FALSE
 	var/theme = lowertext(usr.client?.prefs?.read_preference(/datum/preference/choiced/ui_style))
 	if(!outline_color) //if we weren't provided with a color, take the theme's color
 		switch(theme) //yeah it kinda has to be this way
@@ -1037,9 +995,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 	if(delay)
 		// Create a callback with checks that would be called every tick by do_after.
-		var/datum/callback/tool_check = CALLBACK(src, .proc/tool_check_callback, user, amount, extra_checks)
+		var/datum/callback/tool_check = CALLBACK(src, PROC_REF(tool_check_callback), user, amount, extra_checks)
 
-		if(!do_after(user, target, delay, extra_checks=tool_check))
+		if(!do_after(user, target, delay, DO_PUBLIC, extra_checks=tool_check, display = src))
 			return
 
 	else
@@ -1214,14 +1172,14 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
  */
 /obj/item/proc/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
 	if(get_sharpness() && force >= 5) //if we've got something sharp with a decent force (ie, not plastic)
-		INVOKE_ASYNC(victim, /mob.proc/emote, "scream")
+		INVOKE_ASYNC(victim, TYPE_PROC_REF(/mob, emote), "scream")
 		victim.visible_message(span_warning("[victim] looks like [victim.p_theyve()] just bit something they shouldn't have!"), \
 							span_boldwarning("OH GOD! Was that a crunch? That didn't feel good at all!!"))
 
-		victim.apply_damage(max(15, force), BRUTE, BODY_ZONE_HEAD, wound_bonus = 10, sharpness = TRUE)
+		victim.apply_damage(max(15, force), BRUTE, BODY_ZONE_HEAD, sharpness = TRUE)
 		victim.losebreath += 2
 		if(tryEmbed(victim.get_bodypart(BODY_ZONE_CHEST), TRUE, TRUE)) //and if it embeds successfully in their chest, cause a lot of pain
-			victim.apply_damage(max(25, force*1.5), BRUTE, BODY_ZONE_CHEST, wound_bonus = 7, sharpness = TRUE)
+			victim.apply_damage(max(25, force*1.5), BRUTE, BODY_ZONE_CHEST, sharpness = TRUE)
 			victim.losebreath += 6
 			discover_after = FALSE
 		if(QDELETED(src)) // in case trying to embed it caused its deletion (say, if it's DROPDEL)
@@ -1336,7 +1294,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	return
 
 /// Whether or not this item can be put into a storage item through attackby
-/obj/item/proc/attackby_storage_insert(datum/component/storage, atom/storage_holder, mob/user)
+/obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	return TRUE
 
 /obj/item/proc/do_pickup_animation(atom/target)
@@ -1374,6 +1332,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /obj/item/proc/do_drop_animation(atom/moving_from)
 	if(!istype(loc, /turf))
+		return
+
+	if(!istype(moving_from))
 		return
 
 	var/turf/current_turf = get_turf(src)
@@ -1415,14 +1376,15 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/image/attack_image
 	if(visual_effect_icon)
 		attack_image = image('icons/effects/effects.dmi', attacked_atom, visual_effect_icon, attacked_atom.layer + 0.1)
+
 	else if(used_item)
 		attack_image = image(icon = used_item, loc = attacked_atom, layer = attacked_atom.layer + 0.1)
-		attack_image.plane = attacked_atom.plane + 1
+		attack_image.plane = attacked_atom.plane
 
 		// Scale the icon.
 		attack_image.transform *= 0.4
 		// The icon should not rotate.
-		attack_image.appearance_flags = APPEARANCE_UI
+		attack_image.appearance_flags = APPEARANCE_UI|KEEP_APART
 
 		// Set the direction of the icon animation.
 		var/direction = get_dir(src, attacked_atom)
@@ -1449,6 +1411,12 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	animate(attack_image, alpha = 175, transform = copy_transform.Scale(0.75), pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 	animate(time = 1)
 	animate(alpha = 0, time = 3, easing = CIRCULAR_EASING|EASE_OUT)
+
+/mob/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item)
+	if(used_item)
+		animate_interact(attacked_atom, INTERACT_GENERIC, used_item)
+		return
+	return ..()
 
 /// Common proc used by painting tools like spraycans and palettes that can access the entire 24 bits color space.
 /obj/item/proc/pick_painting_tool_color(mob/user, default_color)

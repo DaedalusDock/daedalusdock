@@ -19,8 +19,8 @@
 		TRAIT_NODISMEMBER,
 	)
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
-	mutant_organs = list(/obj/item/organ/internal/adamantine_resonator)
-	mutanttongue = /obj/item/organ/internal/vocal_cords/adamantine
+	mutant_organs = list(/obj/item/organ/adamantine_resonator)
+	mutanttongue = /obj/item/organ/vocal_cords/adamantine
 	speedmod = 2
 	payday_modifier = 0.75
 	armor = 55
@@ -84,8 +84,8 @@
 	name = "\improper Adamantine Golem"
 	id = SPECIES_GOLEM_ADAMANTINE
 	meat = /obj/item/food/meat/slab/human/mutant/golem/adamantine
-	mutant_organs = list(/obj/item/organ/internal/adamantine_resonator)
-	mutanttongue = /obj/item/organ/internal/vocal_cords/adamantine
+	mutant_organs = list(/obj/item/organ/adamantine_resonator)
+	mutanttongue = /obj/item/organ/vocal_cords/adamantine
 	fixed_mut_color = "#44eedd"
 	info_text = "As an <span class='danger'>Adamantine Golem</span>, you possess special vocal cords allowing you to \"resonate\" messages to all golems. Your unique mineral makeup makes you immune to most types of magic."
 	prefix = "Adamantine"
@@ -297,7 +297,7 @@
 	id = SPECIES_GOLEM_ALIEN
 	fixed_mut_color = "#333333"
 	meat = /obj/item/stack/sheet/mineral/abductor
-	mutanttongue = /obj/item/organ/internal/tongue/abductor
+	mutanttongue = /obj/item/organ/tongue/abductor
 	speedmod = 1 //faster
 	info_text = "As an <span class='danger'>Alloy Golem</span>, you are made of advanced alien materials: you are faster and regenerate over time. You are, however, only able to be heard by other alloy golems."
 	prefix = "Alien"
@@ -565,7 +565,7 @@
 	is_charging = TRUE
 	build_all_button_icons() //action icon looks unavailable
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, TRUE)
-	addtimer(CALLBACK(src, .proc/teleport, H), 15)
+	addtimer(CALLBACK(src, PROC_REF(teleport), H), 15)
 
 /datum/action/innate/unstable_teleport/proc/teleport(mob/living/carbon/human/H)
 	H.visible_message(span_warning("[H] disappears in a shower of sparks!"), span_danger("You teleport!"))
@@ -576,7 +576,7 @@
 	do_teleport(H, get_turf(H), 12, asoundin = 'sound/weapons/emitter2.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 	last_teleport = world.time
 	is_charging = FALSE
-	addtimer(CALLBACK(src, .proc/build_all_button_icons), cooldown + 5) //action icon looks available again
+	addtimer(CALLBACK(src, PROC_REF(build_all_button_icons)), cooldown + 5) //action icon looks available again
 
 
 //honk
@@ -628,8 +628,8 @@
 	..()
 	COOLDOWN_START(src, honkooldown, 0)
 	COOLDOWN_START(src, banana_cooldown, banana_delay)
-	RegisterSignal(C, COMSIG_MOB_SAY, .proc/handle_speech)
-	var/obj/item/organ/internal/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
+	RegisterSignal(C, COMSIG_MOB_SAY, PROC_REF(handle_speech))
+	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		ADD_TRAIT(liver, TRAIT_COMEDY_METABOLISM, SPECIES_TRAIT)
 
@@ -637,7 +637,7 @@
 	. = ..()
 	UnregisterSignal(C, COMSIG_MOB_SAY)
 
-	var/obj/item/organ/internal/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		REMOVE_TRAIT(liver, TRAIT_COMEDY_METABOLISM, SPECIES_TRAIT)
 
@@ -907,7 +907,7 @@
 		H.forceMove(src)
 		cloth_golem = H
 		to_chat(cloth_golem, span_notice("You start gathering your life energy, preparing to rise again..."))
-		addtimer(CALLBACK(src, .proc/revive), revive_time)
+		addtimer(CALLBACK(src, PROC_REF(revive)), revive_time)
 	else
 		return INITIALIZE_HINT_QDEL
 
@@ -981,7 +981,7 @@
 	fixed_mut_color = "#cd7f32"
 	info_text = "As a <span class='danger'>Bronze Golem</span>, you are very resistant to loud noises, and make loud noises if something hard hits you, however this ability does hurt your hearing."
 	special_step_sounds = list('sound/machines/clockcult/integration_cog_install.ogg', 'sound/magic/clockwork/fellowship_armory.ogg' )
-	mutantears = /obj/item/organ/internal/ears/bronze
+	mutantears = /obj/item/organ/ears/bronze
 	examine_limb_id = SPECIES_GOLEM
 	var/last_gong_time = 0
 	var/gong_cooldown = 150
@@ -1174,8 +1174,8 @@
 	toxic_food = null
 	species_traits = list(NOBLOOD,NO_UNDERWEAR,NOEYESPRITES,HAS_BONE)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutanttongue = /obj/item/organ/internal/tongue/bone
-	mutantstomach = /obj/item/organ/internal/stomach/bone
+	mutanttongue = /obj/item/organ/tongue/bone
+	mutantstomach = /obj/item/organ/stomach/bone
 	sexes = FALSE
 	fixed_mut_color = null
 	inherent_traits = list(
@@ -1270,7 +1270,7 @@
 			badtime.appearance_flags = RESET_COLOR
 			H.overlays_standing[FIRE_LAYER+0.5] = badtime
 			H.apply_overlay(FIRE_LAYER+0.5)
-			addtimer(CALLBACK(H, /mob/living/carbon/.proc/remove_overlay, FIRE_LAYER+0.5), 25)
+			addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon, remove_overlay), FIRE_LAYER+0.5), 25)
 	else
 		playsound(get_turf(owner),'sound/magic/RATTLEMEBONES.ogg', 100)
 	for(var/mob/living/L in orange(7, get_turf(owner)))

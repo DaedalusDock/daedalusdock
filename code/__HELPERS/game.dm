@@ -41,7 +41,7 @@
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.internal_organs)
+			for(var/organ in mob_to_check.processing_organs)
 				found_organ = organ
 				found_organ.organ_flags ^= ORGAN_FROZEN
 
@@ -126,7 +126,7 @@
 /proc/flick_overlay(image/image_to_show, list/show_to, duration)
 	for(var/client/add_to in show_to)
 		add_to.images += image_to_show
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_images_from_clients, image_to_show, show_to), duration, TIMER_CLIENT_TIME)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_images_from_clients), image_to_show, show_to), duration, TIMER_CLIENT_TIME)
 
 ///wrapper for flick_overlay(), flicks to everyone who can see the target atom
 /proc/flick_overlay_view(image/image_to_show, atom/target, duration)
@@ -347,8 +347,8 @@
 	. = FALSE
 	if(!istype(turf_to_check))
 		return
-	var/datum/gas_mixture/environment = turf_to_check.return_air()
-	if(!istype(environment))
+	var/datum/gas_mixture/environment = turf_to_check.unsafe_return_air()
+	if(isnull(environment))
 		return
 	var/pressure = environment.returnPressure()
 	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)

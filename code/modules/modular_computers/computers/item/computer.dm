@@ -87,6 +87,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(!physical)
 		physical = src
 	set_light_color(comp_light_color)
+	set_light_power(0.1)
 	set_light_range(comp_light_luminosity)
 	idle_threads = list()
 	if(looping_sound)
@@ -122,7 +123,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(active_program?.tap(A, user, params))
 		user.do_attack_animation(A) //Emulate this animation since we kill the attack in three lines
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1) //Likewise for the tap sound
-		addtimer(CALLBACK(src, .proc/play_ping), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
+		addtimer(CALLBACK(src, PROC_REF(play_ping)), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
@@ -498,7 +499,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 		data["PC_programheaders"] = program_headers
 
-	data["PC_stationtime"] = station_time_timestamp()
+	data["PC_stationtime"] = stationtime2text()
 	data["PC_hasheader"] = 1
 	data["PC_showexitprogram"] = active_program ? 1 : 0 // Hides "Exit Program" button on mainscreen
 	return data
@@ -516,7 +517,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/mob/user = usr
 	if(user && istype(user))
 		//Here to prevent programs sleeping in destroy
-		INVOKE_ASYNC(src, /datum/proc/ui_interact, user) // Re-open the UI on this computer. It should show the main screen now.
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum, ui_interact), user) // Re-open the UI on this computer. It should show the main screen now.
 	update_appearance()
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)

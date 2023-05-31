@@ -317,7 +317,7 @@
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
-			var/obj/item/organ/internal/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
 			if(hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
@@ -353,7 +353,7 @@
 		var/turf/location = alarm.loc
 		if(!istype(location) || !is_station_level(alarm.z))
 			continue
-		var/datum/gas_mixture/environment = location.return_air()
+		var/datum/gas_mixture/environment = location.unsafe_return_air()
 		if(!environment)
 			continue
 		avg_temp += environment.temperature

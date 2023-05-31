@@ -70,10 +70,10 @@
 
 /mob/living/simple_animal/pet/dog/corgi/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(
-		"speak" = CALLBACK(src, .proc/handle_automated_speech, TRUE),
-		"wear_hat" = CALLBACK(src, .proc/find_new_hat),
-		"drop_hat" = CALLBACK(src, .proc/drop_hat),
-		"spin" = CALLBACK(src, /mob.proc/emote, "spin")), cooldown, CALLBACK(src, .proc/stop_deadchat_plays))
+		"speak" = CALLBACK(src, PROC_REF(handle_automated_speech), TRUE),
+		"wear_hat" = CALLBACK(src, PROC_REF(find_new_hat)),
+		"drop_hat" = CALLBACK(src, PROC_REF(drop_hat)),
+		"spin" = CALLBACK(src, TYPE_PROC_REF(/mob, emote), "spin")), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
@@ -176,7 +176,7 @@
 /mob/living/simple_animal/pet/dog/corgi/Initialize(mapload)
 	. = ..()
 	regenerate_icons()
-	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, /mob/living/.proc/should_strip)
+	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, TYPE_PROC_REF(/mob/living, should_strip))
 
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/Initialize(mapload)
 		. = ..()

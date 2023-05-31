@@ -31,7 +31,7 @@
 	var/affects_hands = FALSE
 	///The external organ slots this applies to. ORGAN_SLOT_EXTERNAL_TAIL, etc.
 	var/list/eorgan_slots_affected = null
-	var/eorgan_layers_affected = ALL_EXTERNAL_OVERLAYS
+	var/eorgan_layers_affected = list(BODY_ADJ_LAYER, BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
 
 	//Do not touch.
 	VAR_FINAL/list/affecting_bodyparts = list()
@@ -53,11 +53,11 @@
 /datum/appearance_modifier/Destroy(force, ...)
 	for(var/obj/item/bodypart/BP as anything in affecting_bodyparts)
 		BP.appearance_mods -= src
-		sortTim(BP.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(BP.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
-	for(var/obj/item/organ/external/O as anything in affecting_organs)
+	for(var/obj/item/organ/O as anything in affecting_organs)
 		O.appearance_mods -= src
-		sortTim(O.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(O.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 	affecting_bodyparts = null
 	affecting_organs = null
@@ -79,7 +79,7 @@
 	if(bodytypes_affected && length(bodyzones_affected))
 		ApplyToBodyparts(C.bodyparts)
 	if(length(eorgan_slots_affected))
-		ApplyToOrgans(C.external_organs)
+		ApplyToOrgans(C.cosmetic_organs)
 
 /datum/appearance_modifier/proc/ApplyToBodyparts(list/bodyparts)
 	if(!setup_complete)
@@ -92,21 +92,21 @@
 			continue
 
 		affecting_bodyparts += BP
-		RegisterSignal(BP, COMSIG_PARENT_QDELETING, .proc/bodypart_deleted)
+		RegisterSignal(BP, COMSIG_PARENT_QDELETING, PROC_REF(bodypart_deleted))
 		LAZYADDASSOC(BP.appearance_mods, src, priority)
-		sortTim(BP.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(BP.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 /datum/appearance_modifier/proc/ApplyToOrgans(list/organs)
 	if(!setup_complete)
 		CRASH("Tried to apply an incomplete appearance modifier!")
 
-	for(var/obj/item/organ/external/O as anything in organs)
+	for(var/obj/item/organ/O as anything in organs)
 		if(!(O.slot in eorgan_slots_affected))
 			continue
 		affecting_organs += O
-		RegisterSignal(O, COMSIG_PARENT_QDELETING, .proc/organ_deleted)
+		RegisterSignal(O, COMSIG_PARENT_QDELETING, PROC_REF(organ_deleted))
 		LAZYADDASSOC(O.appearance_mods, src, priority)
-		sortTim(O.appearance_mods, /proc/cmp_numeric_asc, TRUE)
+		sortTim(O.appearance_mods, GLOBAL_PROC_REF(cmp_numeric_asc), TRUE)
 
 /datum/appearance_modifier/proc/bodypart_deleted(datum/source)
 	SIGNAL_HANDLER
@@ -126,7 +126,6 @@
 	bodyzones_affected = list(BODY_ZONE_HEAD)
 	eorgan_slots_affected = list(ORGAN_SLOT_EXTERNAL_SNOUT)
 
-
 /datum/appearance_modifier/goonlizardbody
 	name = "Highlight - Underside"
 	icon2use = 'goon/icons/mob/appearancemods/lizardmarks.dmi'
@@ -137,7 +136,7 @@
 	bodyzones_affected = list(BODY_ZONE_CHEST)
 
 	eorgan_slots_affected = list(ORGAN_SLOT_EXTERNAL_TAIL)
-	eorgan_layers_affected = EXTERNAL_BEHIND
+	eorgan_layers_affected = list(BODY_BEHIND_LAYER)
 
 /mob/living/carbon/proc/goonify()
 	var/datum/appearance_modifier/goonlizardhead/head = new

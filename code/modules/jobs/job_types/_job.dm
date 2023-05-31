@@ -159,7 +159,7 @@
 	for(var/trait in mind_traits)
 		ADD_TRAIT(spawned.mind, trait, JOB_TRAIT)
 
-	var/obj/item/organ/internal/liver/liver = spawned.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = spawned.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		for(var/trait in liver_traits)
 			ADD_TRAIT(liver, trait, JOB_TRAIT)
@@ -230,7 +230,7 @@
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(H && GLOB.announcement_systems.len)
 		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/_addtimer, CALLBACK(pick(GLOB.announcement_systems), /obj/machinery/announcement_system/proc/announce, "NEWHEAD", H.real_name, H.job, channels), 1))
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -381,10 +381,8 @@
 /// Returns an atom where the mob should spawn in.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS))
-			return get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_RANDOM_ARRIVALS))
-			return get_safe_random_station_turf(typesof(/area/hallway)) || get_latejoin_spawn_point()
+			return get_safe_random_station_turf(typesof(/area/station/hallway)) || get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
 			var/obj/effect/landmark/start/hangover_spawn_point
 			for(var/obj/effect/landmark/start/hangover/hangover_landmark in GLOB.start_landmarks_list)
@@ -396,10 +394,8 @@
 			return hangover_spawn_point || get_latejoin_spawn_point()
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
-	var/obj/effect/landmark/start/spawn_point = get_default_roundstart_spawn_point()
-	if(!spawn_point) //if there isn't a spawnpoint send them to latejoin, if there's no latejoin go yell at your mapper
-		return get_latejoin_spawn_point()
-	return spawn_point
+
+	return get_latejoin_spawn_point()
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.

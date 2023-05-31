@@ -51,7 +51,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		// Volume, power, and server alcohol rate effect how quickly one gets drunk
 		drinker.adjust_drunk_effect(sqrt(volume) * booze_power * ALCOHOL_RATE * REM * delta_time)
 		if(boozepwr > 0)
-			var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+			var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 			if (istype(liver))
 				liver.applyOrganDamage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * delta_time, 0))/150))
 	return ..()
@@ -251,7 +251,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		to_chat(drinker, span_notice("[pick("You have a really bad headache.", "Your eyes hurt.", "You find it hard to stay still.", "You feel your heart practically beating out of your chest.")]"))
 
 	if(DT_PROB(2.5, delta_time) && iscarbon(drinker))
-		var/obj/item/organ/internal/eyes/eyes = drinker.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = drinker.getorganslot(ORGAN_SLOT_EYES)
 		if(drinker.is_blind())
 			if(istype(eyes))
 				eyes.Remove(drinker)
@@ -658,7 +658,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM))
 		ADD_TRAIT(drinker, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
 		if (HAS_TRAIT(drinker, TRAIT_IRRADIATED))
@@ -790,7 +790,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(HAS_TRAIT(drinker, TRAIT_ALCOHOL_TOLERANCE))
 		metabolization_rate = 0.8
 	// if you don't have a liver, or your liver isn't an officer's liver
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		beepsky_hallucination = new()
 		drinker.gain_trauma(beepsky_hallucination, TRAUMA_RESILIENCE_ABSOLUTE)
@@ -798,7 +798,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
 	drinker.set_timed_status_effect(4 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	// if you have a liver and that liver is an officer's liver
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		drinker.adjustStaminaLoss(-10 * REM * delta_time, 0)
@@ -815,7 +815,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/beepsky_smash/overdose_start(mob/living/carbon/drinker)
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	// if you don't have a liver, or your liver isn't an officer's liver
 	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		drinker.gain_trauma(/datum/brain_trauma/mild/phobia/security, TRAUMA_RESILIENCE_BASIC)
@@ -1042,7 +1042,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 /datum/reagent/consumable/ethanol/demonsblood/on_mob_metabolize(mob/living/metabolizer)
 	. = ..()
-	RegisterSignal(metabolizer, COMSIG_LIVING_BLOOD_CRAWL_PRE_CONSUMED, .proc/pre_bloodcrawl_consumed)
+	RegisterSignal(metabolizer, COMSIG_LIVING_BLOOD_CRAWL_PRE_CONSUMED, PROC_REF(pre_bloodcrawl_consumed))
 
 /datum/reagent/consumable/ethanol/demonsblood/on_mob_end_metabolize(mob/living/metabolizer)
 	. = ..()
@@ -1081,7 +1081,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/devilskiss/on_mob_metabolize(mob/living/metabolizer)
 	. = ..()
-	RegisterSignal(metabolizer, COMSIG_LIVING_BLOOD_CRAWL_CONSUMED, .proc/on_bloodcrawl_consumed)
+	RegisterSignal(metabolizer, COMSIG_LIVING_BLOOD_CRAWL_CONSUMED, PROC_REF(on_bloodcrawl_consumed))
 
 /datum/reagent/consumable/ethanol/devilskiss/on_mob_end_metabolize(mob/living/metabolizer)
 	. = ..()
@@ -1099,7 +1099,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	. = COMPONENT_STOP_CONSUMPTION
 
 	to_chat(jaunter, span_boldwarning("AAH! THEIR FLESH! IT BURNS!"))
-	jaunter.apply_damage(25, BRUTE, wound_bonus = CANT_WOUND)
+	jaunter.apply_damage(25, BRUTE)
 
 	for(var/obj/effect/decal/cleanable/nearby_blood in range(1, get_turf(source)))
 		if(!nearby_blood.can_bloodcrawl_in())
@@ -1394,7 +1394,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/bananahonk/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || ismonkey(drinker))
 		drinker.heal_bodypart_damage(1 * REM * delta_time, 1 * REM * delta_time)
 		. = TRUE
@@ -1753,7 +1753,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/quadruple_sec/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		drinker.heal_bodypart_damage(1 * REM * delta_time, 1 * REM * delta_time)
 		. = TRUE
@@ -1773,7 +1773,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/quintuple_sec/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes but STRONG..
-	var/obj/item/organ/internal/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		drinker.heal_bodypart_damage(2 * REM * delta_time, 2 * REM *  delta_time, 2 * REM * delta_time)
 		. = TRUE
@@ -2232,7 +2232,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	var/minimum_name_percent = 0.35
 	name = ""
-	var/list/names_in_order = sortTim(names, /proc/cmp_numeric_dsc, TRUE)
+	var/list/names_in_order = sortTim(names, GLOBAL_PROC_REF(cmp_numeric_dsc), TRUE)
 	var/named = FALSE
 	for(var/fruit_name in names)
 		if(names[fruit_name] >= minimum_name_percent)

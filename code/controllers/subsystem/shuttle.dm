@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(shuttle)
 	wait = 1 SECONDS
 	init_order = INIT_ORDER_SHUTTLE
 	flags = SS_KEEP_TIMING
-	runlevels = RUNLEVEL_SETUP | RUNLEVEL_GAME
+	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	/// A list of all the mobile docking ports.
 	var/list/mobile_docking_ports = list()
@@ -164,6 +164,10 @@ SUBSYSTEM_DEF(shuttle)
 		log_mapping("No /obj/docking_port/mobile/emergency/backup placed on the map!")
 	if(!supply)
 		log_mapping("No /obj/docking_port/mobile/supply placed on the map!")
+
+	if(CONFIG_GET(flag/arrivals_shuttle_require_undocked))
+		arrivals.Launch(TRUE)
+
 	return ..()
 
 /datum/controller/subsystem/shuttle/proc/setup_shuttles(list/stationary)
@@ -238,10 +242,10 @@ SUBSYSTEM_DEF(shuttle)
 /datum/controller/subsystem/shuttle/proc/block_recall(lockout_timer)
 	if(admin_emergency_no_recall)
 		priority_announce("Error!", sub_title = "Emergency Shuttle Uplink Alert", sound_type = 'sound/misc/announce_dig.ogg')
-		addtimer(CALLBACK(src, .proc/unblock_recall), lockout_timer)
+		addtimer(CALLBACK(src, PROC_REF(unblock_recall)), lockout_timer)
 		return
 	emergency_no_recall = TRUE
-	addtimer(CALLBACK(src, .proc/unblock_recall), lockout_timer)
+	addtimer(CALLBACK(src, PROC_REF(unblock_recall)), lockout_timer)
 
 /datum/controller/subsystem/shuttle/proc/unblock_recall()
 	if(admin_emergency_no_recall)

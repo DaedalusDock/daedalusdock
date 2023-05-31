@@ -50,8 +50,8 @@
 			threat.title = "Business proposition"
 			threat.content = "Ahoy! This be the [ship_name]. Cough up [payoff] credits or you'll walk the plank."
 			threat.possible_answers = list("We'll pay.","We will not be extorted.")
-	threat.answer_callback = CALLBACK(GLOBAL_PROC, .proc/pirates_answered, threat, payoff, ship_name, initial_send_time, response_max_time, ship_template)
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/spawn_pirates, threat, ship_template, FALSE), response_max_time)
+	threat.answer_callback = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pirates_answered), threat, payoff, ship_name, initial_send_time, response_max_time, ship_template)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(spawn_pirates), threat, ship_template, FALSE), response_max_time)
 	SScommunications.send_message(threat,unique = TRUE)
 
 /proc/pirates_answered(datum/comm_message/threat, payoff, ship_name, initial_send_time, response_max_time, ship_template)
@@ -101,8 +101,8 @@
 //Shuttle equipment
 
 /obj/machinery/shuttle_scrambler
-	name = "Data Siphon"
-	desc = "This heap of machinery steals credits and data from unprotected systems and locks down cargo shuttles."
+	name = "Monetary Siphon"
+	desc = "This heap of machinery steals credits from unprotected systems and locks down cargo shuttles."
 	icon = 'icons/obj/machines/dominator.dmi'
 	icon_state = "dominator"
 	density = TRUE
@@ -122,7 +122,6 @@
 				var/siphoned = min(D.account_balance,siphon_per_tick)
 				D.adjust_money(-siphoned)
 				credits_stored += siphoned
-			interrupt_research()
 		else
 			return
 	else
@@ -148,14 +147,6 @@
 	toggle_on(user)
 	update_appearance()
 	send_notification()
-
-//interrupt_research
-/obj/machinery/shuttle_scrambler/proc/interrupt_research()
-	for(var/obj/machinery/rnd/server/S in GLOB.machines)
-		if(S.machine_stat & (NOPOWER|BROKEN))
-			continue
-		S.emp_act(1)
-		new /obj/effect/temp_visual/emp(get_turf(S))
 
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
 	if(credits_stored) // Prevents spamming empty holochips
@@ -429,7 +420,7 @@
 	status_report = "Sending... "
 	pad.visible_message(span_notice("[pad] starts charging up."))
 	pad.icon_state = pad.warmup_state
-	sending_timer = addtimer(CALLBACK(src,.proc/send),warmup_time, TIMER_STOPPABLE)
+	sending_timer = addtimer(CALLBACK(src,PROC_REF(send)),warmup_time, TIMER_STOPPABLE)
 
 /obj/machinery/computer/piratepad_control/proc/stop_sending(custom_report)
 	if(!sending)

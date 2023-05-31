@@ -13,7 +13,6 @@
 	initial_gas = AIRLESS_ATMOS
 	opacity = TRUE
 	density = TRUE
-	plane = GAME_PLANE_UPPER
 	base_icon_state = "smoothrocks"
 	temperature = TCMB
 	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
@@ -132,7 +131,7 @@
 		flags = CHANGETURF_DEFER_CHANGE
 	ScrapeAway(null, flags)
 	SSzas.mark_for_update(src)
-	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(AfterChange), flags, old_type), 1, TIMER_UNIQUE)
 	playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE) //beautiful destruction
 	//mined.update_visuals()
 
@@ -534,7 +533,7 @@
 /turf/closed/mineral/gibtonite/proc/explosive_reaction(mob/user = null, triggered_by_explosion = 0)
 	if(stage == GIBTONITE_UNSTRUCK)
 		activated_overlay = mutable_appearance('icons/turf/smoothrocks.dmi', "rock_Gibtonite_inactive", ON_EDGED_TURF_LAYER) //shows in gaps between pulses if there are any
-		activated_overlay.plane = GAME_PLANE_UPPER
+		activated_overlay.plane = GAME_PLANE
 		add_overlay(activated_overlay)
 		name = "gibtonite deposit"
 		desc = "An active gibtonite reserve. Run!"
@@ -599,7 +598,7 @@
 		flags = CHANGETURF_DEFER_CHANGE
 	ScrapeAway(null, flags)
 	SSzas.mark_for_update(src)
-	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(AfterChange), flags, old_type), 1, TIMER_UNIQUE)
 	//mined.update_visuals()
 
 /turf/closed/mineral/gibtonite/volcanic
@@ -658,7 +657,7 @@
 		flags = CHANGETURF_DEFER_CHANGE
 	ScrapeAway(null, flags)
 	SSzas.mark_for_update(src)
-	addtimer(CALLBACK(src, .proc/AfterChange, flags, old_type), 1, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(AfterChange), flags, old_type), 1, TIMER_UNIQUE)
 	playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE) //beautiful destruction
 	//mined.update_visuals()
 	H.mind?.adjust_experience(/datum/skill/mining, 100) //yay!

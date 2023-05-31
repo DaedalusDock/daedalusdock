@@ -43,7 +43,7 @@
 	var/static/list/command = list("Captain" = "Cpt.","Head of Personnel" = "Lt.")
 	var/static/list/security = list("Head of Security" = "Maj.", "Warden" = "Sgt.", "Detective" = "Det.", "Security Officer" = "Officer")
 	var/static/list/engineering = list("Chief Engineer" = "Chief Engineer", "Station Engineer" = "Engineer", "Atmospherics Technician" = "Technician")
-	var/static/list/medical = list("Chief Medical Officer" = "C.M.O.", "Medical Doctor" = "M.D.", "Chemist" = "Pharm.D.")
+	var/static/list/medical = list("Medical Director" = "C.M.O.", "Medical Doctor" = "M.D.", "Chemist" = "Pharm.D.")
 	var/static/list/research = list("Research Director" = "Ph.D.", "Roboticist" = "M.S.", "Scientist" = "B.S.")
 	var/static/list/legal = list("Lawyer" = "Esq.")
 
@@ -121,7 +121,7 @@
 	prefixes = list(command, security, engineering)
 	suffixes = list(research, medical, legal)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	GLOB.janitor_devices += src
@@ -163,7 +163,7 @@
 			stolen_valor += C.job
 		update_titles()
 
-		INVOKE_ASYNC(weapon, /obj/item.proc/attack, C, src)
+		INVOKE_ASYNC(weapon, TYPE_PROC_REF(/obj/item, attack), C, src)
 		C.Knockdown(20)
 
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/living/user, params)

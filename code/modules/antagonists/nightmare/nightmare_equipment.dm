@@ -15,8 +15,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_MINING
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	wound_bonus = -30
-	bare_wound_bonus = 20
 
 /obj/item/light_eater/Initialize(mapload)
 	. = ..()

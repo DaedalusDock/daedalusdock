@@ -13,8 +13,6 @@
 	hitsound = 'sound/hallucinations/growl1.ogg'
 	force = 21 // Just enough to break airlocks with melee attacks
 	sharpness = SHARP_EDGED
-	wound_bonus = -30
-	bare_wound_bonus = 15
 	damtype = BRUTE
 
 /obj/item/zombie_hand/Initialize(mapload)
@@ -48,7 +46,7 @@
 		// zombies)
 		return
 
-	var/obj/item/organ/internal/zombie_infection/infection
+	var/obj/item/organ/zombie_infection/infection
 	infection = target.getorganslot(ORGAN_SLOT_ZOMBIE)
 	if(!infection)
 		infection = new()

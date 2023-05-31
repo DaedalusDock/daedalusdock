@@ -28,7 +28,7 @@
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 /obj/item/clothing/neck/cloak/cmo
-	name = "chief medical officer's cloak"
+	name = "medical director's cloak"
 	desc = "Worn by Meditopia, the valiant men and women keeping pestilence at bay."
 	icon_state = "cmocloak"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
@@ -150,7 +150,7 @@
 /obj/item/clothing/suit/hooded/cloak/godslayer/equipped(mob/user, slot)
 	. = ..()
 	if(slot & ITEM_SLOT_OCLOTHING)
-		RegisterSignal(user, COMSIG_MOB_STATCHANGE, .proc/resurrect)
+		RegisterSignal(user, COMSIG_MOB_STATCHANGE, PROC_REF(resurrect))
 		return
 	UnregisterSignal(user, COMSIG_MOB_STATCHANGE)
 

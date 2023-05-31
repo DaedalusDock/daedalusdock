@@ -46,12 +46,16 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/cached_texture_filter_icon
 	///What type of shard the material will shatter to
 	var/obj/item/shard_type
+
+	///Snowflake for walls. Will be removed when materials are redone
+	var/wall_shine = WALL_SHINE_PLATING
+
 	///Icon for walls which are plated with this material
-	var/wall_greyscale_config = /datum/greyscale_config/solid_wall
+	var/wall_icon = 'icons/turf/walls/solid_wall.dmi'
 	///Icon for reinforced walls which are plated with this material
-	var/reinforced_wall_greyscale_config = /datum/greyscale_config/metal_wall
+	var/reinforced_wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	/// Icon for painted stripes on the walls
-	var/wall_stripe_greyscale_config = /datum/greyscale_config/wall_stripe
+	var/wall_stripe_icon = 'icons/turf/walls/wall_stripe.dmi'
 	/// Color of walls constructed with this material as their plating
 	var/wall_color
 	/// Type of the wall this material makes when its used as a plating, null means can't make a wall out of it.
@@ -170,7 +174,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 			O.clawfootstep = turf_sound_override
 			O.heavyfootstep = turf_sound_override
 	if(alpha < 255)
-		T.AddElement(/datum/element/turf_z_transparency)
+		T.enable_zmimic()
 	return
 
 /datum/material/proc/get_greyscale_config_for(datum/greyscale_config/config_path)
@@ -224,7 +228,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 /datum/material/proc/on_removed_turf(turf/T, amount, material_flags)
 	if(alpha < 255)
-		T.RemoveElement(/datum/element/turf_z_transparency)
+		T.disable_zmimic()
 
 /**
  * This proc is called when the mat is found in an item that's consumed by accident. see /obj/item/proc/on_accidental_consumption.

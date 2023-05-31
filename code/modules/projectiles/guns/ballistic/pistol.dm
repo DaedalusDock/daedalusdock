@@ -1,5 +1,5 @@
 /obj/item/gun/ballistic/automatic/pistol
-	name = "makarov pistol"
+	name = "\improper Makarov pistol"
 	desc = "A small, easily concealable 9mm handgun. Has a threaded barrel for suppressors."
 	icon_state = "pistol"
 	w_class = WEIGHT_CLASS_SMALL
@@ -7,8 +7,7 @@
 	can_suppress = TRUE
 	burst_size = 1
 	fire_delay = 0
-	//actions_types = list() Original
-	fire_select_modes = list(SELECT_SEMI_AUTOMATIC) //PARIAH EDIT
+	actions_types = list()
 	bolt_type = BOLT_TYPE_LOCKING
 	fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	dry_fire_sound = 'sound/weapons/gun/pistol/dry_fire.ogg'
@@ -17,16 +16,19 @@
 	load_empty_sound = 'sound/weapons/gun/pistol/mag_insert.ogg'
 	eject_sound = 'sound/weapons/gun/pistol/mag_release.ogg'
 	eject_empty_sound = 'sound/weapons/gun/pistol/mag_release.ogg'
-	vary_fire_sound = FALSE
 	rack_sound = 'sound/weapons/gun/pistol/rack_small.ogg'
 	lock_back_sound = 'sound/weapons/gun/pistol/lock_small.ogg'
 	bolt_drop_sound = 'sound/weapons/gun/pistol/drop_small.ogg'
 	fire_sound_volume = 90
 	bolt_wording = "slide"
-	suppressor_x_offset = 4
+	suppressor_x_offset = 10
+	suppressor_y_offset = -1
 
 /obj/item/gun/ballistic/automatic/pistol/no_mag
 	spawnwithmagazine = FALSE
+
+/obj/item/gun/ballistic/automatic/pistol/fire_mag
+	mag_type = /obj/item/ammo_box/magazine/m9mm/fire
 
 /obj/item/gun/ballistic/automatic/pistol/suppressed/Initialize(mapload)
 	. = ..()
@@ -72,7 +74,7 @@
 	inhand_icon_state = "deagleg"
 
 /obj/item/gun/ballistic/automatic/pistol/aps
-	name = "stechkin APS machine pistol"
+	name = "\improper Stechkin APS machine pistol"
 	desc = "An old Soviet machine pistol. It fires quickly, but kicks like a mule. Uses 9mm ammo. Has a threaded barrel for suppressors."
 	icon_state = "aps"
 	w_class = WEIGHT_CLASS_NORMAL
@@ -81,7 +83,7 @@
 	burst_size = 3
 	fire_delay = 1
 	spread = 10
-	//actions_types = list(/datum/action/item_action/toggle_firemode) //PARIAH EDIT REMOVAL
+	actions_types = list(/datum/action/item_action/toggle_firemode)
 	suppressor_x_offset = 6
 
 /obj/item/gun/ballistic/automatic/pistol/stickman

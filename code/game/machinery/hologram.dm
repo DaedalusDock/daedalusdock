@@ -508,7 +508,6 @@ Possible to do for anyone motivated enough:
 
 		Hologram.mouse_opacity = MOUSE_OPACITY_TRANSPARENT//So you can't click on it.
 		Hologram.layer = FLY_LAYER //Above all the other objects/mobs. Or the vast majority of them.
-		Hologram.plane = ABOVE_GAME_PLANE
 		Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 		Hologram.name = "[user.name] (Hologram)"//If someone decides to right click.
 		Hologram.set_light(l_outer_range = 2) //hologram lighting
@@ -686,7 +685,6 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	holder.selected_language = record.language
 	Hologram.mouse_opacity = MOUSE_OPACITY_TRANSPARENT//So you can't click on it.
 	Hologram.layer = FLY_LAYER//Above all the other objects/mobs. Or the vast majority of them.
-	Hologram.plane = ABOVE_GAME_PLANE
 	Hologram.set_anchored(TRUE)//So space wind cannot drag it.
 	Hologram.name = "[record.caller_name] (Hologram)"//If someone decides to right click.
 	Hologram.set_light(l_outer_range = 2) //hologram lighting
@@ -764,7 +762,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		if(HOLORECORD_SOUND)
 			playsound(src,entry[2],50,TRUE)
 		if(HOLORECORD_DELAY)
-			addtimer(CALLBACK(src,.proc/replay_entry,entry_number+1),entry[2])
+			addtimer(CALLBACK(src,PROC_REF(replay_entry),entry_number+1),entry[2])
 			return
 		if(HOLORECORD_LANGUAGE)
 			var/datum/language_holder/holder = replay_holo.get_language_holder()
@@ -813,7 +811,6 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	icon = 'icons/effects/96x96.dmi'
 	icon_state = "holoray"
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	density = FALSE
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT

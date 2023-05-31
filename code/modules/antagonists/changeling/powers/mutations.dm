@@ -163,8 +163,6 @@
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
-	wound_bonus = -20
-	bare_wound_bonus = 20
 	var/can_drop = FALSE
 	var/fake = FALSE
 
@@ -378,11 +376,11 @@
 						return BULLET_ACT_HIT
 				if(firer_combat_mode)
 					C.visible_message(span_danger("[L] is thrown towards [H] by a tentacle!"),span_userdanger("A tentacle grabs you and throws you towards [H]!"))
-					C.throw_at(get_step_towards(H,C), 8, 2, H, TRUE, TRUE, callback=CALLBACK(src, .proc/tentacle_stab, H, C))
+					C.throw_at(get_step_towards(H,C), 8, 2, H, TRUE, TRUE, callback=CALLBACK(src, PROC_REF(tentacle_stab), H, C))
 					return BULLET_ACT_HIT
 				else
 					C.visible_message(span_danger("[L] is grabbed by [H]'s tentacle!"),span_userdanger("A tentacle grabs you and pulls you towards [H]!"))
-					C.throw_at(get_step_towards(H,C), 8, 2, H, TRUE, TRUE, callback=CALLBACK(src, .proc/tentacle_grab, H, C))
+					C.throw_at(get_step_towards(H,C), 8, 2, H, TRUE, TRUE, callback=CALLBACK(src, PROC_REF(tentacle_grab), H, C))
 					return BULLET_ACT_HIT
 
 			else

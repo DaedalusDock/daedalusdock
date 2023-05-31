@@ -1,28 +1,24 @@
 //If you're looking for spawners like ash walker eggs, check ghost_role_spawners.dm
 
 ///Wizard tower item
-/obj/item/disk/design_disk/adv/knight_gear
+/obj/item/disk/data/knight_gear
 	name = "Magic Disk of Smithing"
 
-/obj/item/disk/design_disk/adv/knight_gear/Initialize(mapload)
+/obj/item/disk/data/knight_gear/Initialize(mapload)
 	. = ..()
-	var/datum/design/knight_armour/A = new
-	var/datum/design/knight_helmet/H = new
-	blueprints[1] = A
-	blueprints[2] = H
+	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[/datum/design/knight_armour])
+	LAZYADD(memory[DATA_IDX_DESIGNS],SStech.designs_by_type[/datum/design/knight_helmet])
 
 //Free Golems
 
-/obj/item/disk/design_disk/golem_shell
+/obj/item/disk/data/golem_shell
 	name = "Golem Creation Disk"
 	desc = "A gift from the Liberator."
 	icon_state = "datadisk1"
-	max_blueprints = 1
 
-/obj/item/disk/design_disk/golem_shell/Initialize(mapload)
+/obj/item/disk/data/golem_shell/Initialize(mapload)
 	. = ..()
-	var/datum/design/golem_shell/G = new
-	blueprints[1] = G
+	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[/datum/design/golem_shell])
 
 /datum/design/golem_shell
 	name = "Golem Shell Construction"

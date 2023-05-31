@@ -10,10 +10,9 @@
 	resistance_flags = FLAMMABLE
 	var/title = "book"
 
-/obj/item/storage/book/ComponentInitialize()
+/obj/item/storage/book/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 1
+	atom_storage.max_slots = 1
 
 /obj/item/storage/book/attack_self(mob/user)
 	to_chat(user, span_notice("The pages of [title] have been cut out!"))
@@ -70,7 +69,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		var/image/bible_image = image(icon = 'icons/obj/storage.dmi', icon_state = GLOB.biblestates[i])
 		skins += list("[GLOB.biblenames[i]]" = bible_image)
 
-	var/choice = show_radial_menu(user, src, skins, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 40, require_near = TRUE)
+	var/choice = show_radial_menu(user, src, skins, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 40, require_near = TRUE)
 	if(!choice)
 		return FALSE
 	var/bible_index = GLOB.biblenames.Find(choice)
@@ -205,7 +204,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 	if(isfloorturf(bible_smacked))
 		if(user.mind && (user.mind.holy_role))
 			var/area/current_area = get_area(bible_smacked)
-			if(!GLOB.chaplain_altars.len && istype(current_area, /area/service/chapel))
+			if(!GLOB.chaplain_altars.len && istype(current_area, /area/station/service/chapel))
 				make_new_altar(bible_smacked, user)
 				return
 			for(var/obj/effect/rune/nearby_runes in orange(2,user))

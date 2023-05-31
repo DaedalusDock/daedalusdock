@@ -133,7 +133,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 		// HACK: Without this the character starts out really tiny because of some BYOND bug.
 		// You can fix it by changing a preference, so let's just forcably update the body to emulate this.
-		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/character_preview_view/proc/update_body), 1 SECONDS)
+		addtimer(CALLBACK(character_preview_view, TYPE_PROC_REF(/atom/movable/screen/character_preview_view, update_body)), 1 SECONDS)
 
 /datum/preferences/ui_state(mob/user)
 	return GLOB.always_state
@@ -639,8 +639,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 /// Applies the given preferences to a human mob.
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
-	//character.dna.features = list()
-
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue

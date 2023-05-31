@@ -31,7 +31,7 @@
 	if(enraged)
 		swoop_attack(target, TRUE)
 		return
-	INVOKE_ASYNC(src, .proc/lava_pools, target)
+	INVOKE_ASYNC(src, PROC_REF(lava_pools), target)
 	swoop_attack(target)
 
 /datum/action/cooldown/mob_cooldown/lava_swoop/proc/swoop_attack(atom/target, lava_arena = FALSE)
@@ -194,7 +194,6 @@
 	icon = 'icons/effects/96x96.dmi'
 	icon_state = "landing"
 	layer = BELOW_MOB_LAYER
-	plane = GAME_PLANE
 	pixel_x = -32
 	pixel_y = -32
 	color = "#FF0000"
@@ -204,14 +203,13 @@
 	icon = 'icons/mob/lavaland/64x64megafauna.dmi'
 	icon_state = "dragon"
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	pixel_x = -16
 	duration = 10
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dragon_flight/Initialize(mapload, negative)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/flight, negative)
+	INVOKE_ASYNC(src, PROC_REF(flight), negative)
 
 /obj/effect/temp_visual/dragon_flight/proc/flight(negative)
 	if(negative)

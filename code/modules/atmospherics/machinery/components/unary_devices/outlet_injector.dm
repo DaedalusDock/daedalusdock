@@ -13,6 +13,9 @@
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF //really helpful in building gas chambers for xenomorphs
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.25
+	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP + 500
+
+	power_rating = 45000
 
 	///Rate of operation of the device
 	var/volume_rate = 50
@@ -26,7 +29,7 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/AltClick(mob/user)
 	if(can_interact(user))
-		volume_rate = MAX_TRANSFER_RATE
+		volume_rate = ATMOS_DEFAULT_VOLUME_PUMP
 		investigate_log("was set to [volume_rate] L/s by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "volume output set to [volume_rate] L/s")
 		update_appearance()
@@ -53,17 +56,14 @@
 		return
 
 	var/datum/gas_mixture/air_contents = airs[1]
+	var/datum/gas_mixture/environment = loc.return_air()
+	var/draw
+	if(environment && air_contents.temperature > 0)
+		var/transfer_moles = (volume_rate/air_contents.volume)*air_contents.total_moles //apply flow rate limit
+		draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
 
-	if(air_contents.temperature > 0)
-		var/transfer_moles = (air_contents.returnPressure() * volume_rate) / (air_contents.temperature * R_IDEAL_GAS_EQUATION)
-
-		if(!transfer_moles)
-			return
-
-		var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
-
-		location.assume_air(removed)
-
+	if(draw >= 0)
+		ATMOS_USE_POWER(draw)
 		update_parents()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_interact(mob/user, datum/tgui/ui)
@@ -76,7 +76,7 @@
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(volume_rate)
-	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_PUMP)
 	return data
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_act(action, params)
@@ -92,13 +92,13 @@
 		if("rate")
 			var/rate = params["rate"]
 			if(rate == "max")
-				rate = MAX_TRANSFER_RATE
+				rate = ATMOS_DEFAULT_VOLUME_PUMP
 				. = TRUE
 			else if(text2num(rate) != null)
 				rate = text2num(rate)
 				. = TRUE
 			if(.)
-				volume_rate = clamp(rate, 0, MAX_TRANSFER_RATE)
+				volume_rate = clamp(rate, 0, ATMOS_DEFAULT_VOLUME_PUMP)
 				investigate_log("was set to [volume_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 

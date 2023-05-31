@@ -885,7 +885,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/sentient_disease/generate_ruleset_body(mob/applicant)
 	var/mob/camera/disease/virus = new /mob/camera/disease(SSmapping.get_station_center())
 	virus.key = applicant.key
-	INVOKE_ASYNC(virus, /mob/camera/disease/proc/pick_name)
+	INVOKE_ASYNC(virus, TYPE_PROC_REF(/mob/camera/disease, pick_name))
 	message_admins("[ADMIN_LOOKUPFLW(virus)] has been made into a sentient disease by the midround ruleset.")
 	log_game("[key_name(virus)] was spawned as a sentient disease by the midround ruleset.")
 	return virus
@@ -945,7 +945,7 @@
 	candidates = living_players
 	for(var/mob/living/carbon/human/candidate in candidates)
 		if( \
-			!candidate.getorgan(/obj/item/organ/internal/brain) \
+			!candidate.getorgan(/obj/item/organ/brain) \
 			|| candidate.mind.has_antag_datum(/datum/antagonist/obsessed) \
 			|| candidate.stat == DEAD \
 			|| !(ROLE_OBSESSED in candidate.client?.prefs?.be_special) \

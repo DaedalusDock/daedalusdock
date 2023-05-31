@@ -13,7 +13,7 @@
 		set_light_power(l_power)
 
 	if(!isnull(l_inner_range) || !isnull(l_outer_range))
-		if(l_inner_range >= l_outer_range)
+		if(isnull(l_inner_range))
 			l_inner_range = l_outer_range / 4
 		set_light_range(l_inner_range, l_outer_range)
 

@@ -41,7 +41,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	should_generate_icons = TRUE
-	main_feature_name = "Hairstyle"
+	main_feature_name = "Vox Hairstyle"
 	relevant_mutant_bodypart = "vox_hair"
 
 /datum/preference/choiced/vox_hair/init_possible_values()
@@ -76,7 +76,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Tail"
-	relevant_external_organ = /obj/item/organ/external/tail/vox
+	relevant_external_organ = /obj/item/organ/tail/vox
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_vox/init_possible_values()

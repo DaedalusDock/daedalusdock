@@ -65,7 +65,7 @@
 	greyscale_colors = "#D99A2E#69DBF3#FAFAFA"
 
 /obj/item/modular_computer/tablet/pda/heads/cmo
-	name = "chief medical officer PDA"
+	name = "medical director PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/cmo
 	greyscale_config = /datum/greyscale_config/tablet/stripe_thick/head
 	greyscale_colors = "#FAFAFA#000099#3F96CC"
@@ -86,7 +86,7 @@
 
 /obj/item/modular_computer/tablet/pda/captain/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, .proc/tab_no_detonate)
+	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 
 /obj/item/modular_computer/tablet/pda/cargo
 	name = "cargo technician PDA"
@@ -96,15 +96,6 @@
 /obj/item/modular_computer/tablet/pda/quartermaster/Initialize(mapload)
 	. = ..()
 	install_component(new /obj/item/computer_hardware/printer/mini)
-
-/obj/item/modular_computer/tablet/pda/heads/quartermaster //PARIAH EDIT
-	name = "quartermaster PDA"
-	default_disk = /obj/item/computer_hardware/hard_drive/role/quartermaster
-	greyscale_config = /datum/greyscale_config/tablet/stripe_thick/head //PARIAH EDIT
-	greyscale_colors = "#D6B328#6506ca#927444"
-	insert_type = /obj/item/pen/fountain //PARIAH EDIT ADDITION
-	greyscale_config = /datum/greyscale_config/tablet/stripe_thick
-	greyscale_colors = "#D6B328#6506CA#927444"
 
 /obj/item/modular_computer/tablet/pda/quartermaster/Initialize(mapload)
 	. = ..()
@@ -173,8 +164,8 @@
 
 /obj/item/modular_computer/tablet/pda/clown/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, .proc/AfterSlip), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
-	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, .proc/after_sitcom_laugh))
+	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, PROC_REF(AfterSlip)), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
+	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, PROC_REF(after_sitcom_laugh)))
 
 /obj/item/modular_computer/tablet/pda/clown/update_overlays()
 	. = ..()

@@ -1,36 +1,36 @@
 //This file contains loot you can obtain from tendril chests.
 
 //KA modkit design discs
-/obj/item/disk/design_disk/modkit_disc
+/obj/item/disk/data/modkit_disc
 	name = "KA Mod Disk"
-	desc = "A design disc containing the design for a unique kinetic accelerator modkit. It's compatible with a research console."
+	desc = "A design disc containing the design for a unique kinetic accelerator modkit."
 	icon_state = "datadisk1"
 	var/modkit_design = /datum/design/unique_modkit
 
-/obj/item/disk/design_disk/modkit_disc/Initialize(mapload)
+/obj/item/disk/data/modkit_disc/Initialize(mapload)
 	. = ..()
-	blueprints[1] = new modkit_design
+	LAZYADD(memory[DATA_IDX_DESIGNS], SStech.designs_by_type[modkit_design])
 
-/obj/item/disk/design_disk/modkit_disc/mob_and_turf_aoe
+/obj/item/disk/data/modkit_disc/mob_and_turf_aoe
 	name = "Offensive Mining Explosion Mod Disk"
 	modkit_design = /datum/design/unique_modkit/offensive_turf_aoe
 
-/obj/item/disk/design_disk/modkit_disc/rapid_repeater
+/obj/item/disk/data/modkit_disc/rapid_repeater
 	name = "Rapid Repeater Mod Disk"
 	modkit_design = /datum/design/unique_modkit/rapid_repeater
 
-/obj/item/disk/design_disk/modkit_disc/resonator_blast
+/obj/item/disk/data/modkit_disc/resonator_blast
 	name = "Resonator Blast Mod Disk"
 	modkit_design = /datum/design/unique_modkit/resonator_blast
 
-/obj/item/disk/design_disk/modkit_disc/bounty
+/obj/item/disk/data/modkit_disc/bounty
 	name = "Death Syphon Mod Disk"
 	modkit_design = /datum/design/unique_modkit/bounty
 
 /datum/design/unique_modkit
 	category = list("Mining Designs", "Cyborg Upgrade Modules") //can't be normally obtained
-	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
-	departmental_flags = DEPARTMENTAL_FLAG_CARGO
+	build_type = FABRICATOR  | MECHFAB
+	mapload_design_flags = DESIGN_FAB_SUPPLY
 
 /datum/design/unique_modkit/offensive_turf_aoe
 	name = "Kinetic Accelerator Offensive Mining Explosion Mod"
@@ -151,7 +151,7 @@
 		ADD_TRAIT(user, TRAIT_NODEATH, CLOTHING_TRAIT)
 		ADD_TRAIT(user, TRAIT_NOHARDCRIT, CLOTHING_TRAIT)
 		ADD_TRAIT(user, TRAIT_NOCRITDAMAGE, CLOTHING_TRAIT)
-		RegisterSignal(user, COMSIG_CARBON_HEALTH_UPDATE, .proc/check_health)
+		RegisterSignal(user, COMSIG_CARBON_HEALTH_UPDATE, PROC_REF(check_health))
 		icon_state = "memento_mori_active"
 		active_owner = user
 
@@ -257,14 +257,13 @@
 	light_outer_range = 7
 	light_flags = LIGHT_ATTACHED
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	var/sight_flags = SEE_MOBS
 	var/lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 
 /obj/effect/wisp/orbit(atom/thing, radius, clockwise, rotation_speed, rotation_segments, pre_rotation, lockinorbit)
 	. = ..()
 	if(ismob(thing))
-		RegisterSignal(thing, COMSIG_MOB_UPDATE_SIGHT, .proc/update_user_sight)
+		RegisterSignal(thing, COMSIG_MOB_UPDATE_SIGHT, PROC_REF(update_user_sight))
 		var/mob/being = thing
 		being.update_sight()
 		to_chat(thing, span_notice("The wisp enhances your vision."))
@@ -399,7 +398,7 @@
 
 	can_destroy = FALSE
 
-	addtimer(CALLBACK(src, .proc/unvanish, user), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(unvanish), user), 10 SECONDS)
 
 /obj/effect/immortality_talisman/proc/unvanish(mob/user)
 	user.status_flags &= ~GODMODE
@@ -442,20 +441,18 @@
 
 /obj/item/shared_storage/red/Initialize(mapload)
 	. = ..()
-	var/datum/component/storage/STR = AddComponent(/datum/component/storage/concrete)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
-	STR.max_combined_w_class = 15
-	STR.max_items = 21
-	new /obj/item/shared_storage/blue(drop_location(), STR)
 
-/obj/item/shared_storage/blue/Initialize(mapload, datum/component/storage/concrete/master)
+	create_storage(max_total_storage = 15, max_slots = 21)
+
+	new /obj/item/shared_storage/blue(drop_location(), src)
+
+/obj/item/shared_storage/blue/Initialize(mapload, atom/master)
 	. = ..()
 	if(!istype(master))
 		return INITIALIZE_HINT_QDEL
-	var/datum/component/storage/STR = AddComponent(/datum/component/storage, master)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
-	STR.max_combined_w_class = 15
-	STR.max_items = 21
+	create_storage(max_total_storage = 15, max_slots = 21)
+
+	atom_storage.set_real_location(master)
 
 //Book of Babel
 
@@ -561,8 +558,8 @@
 	. = ..()
 	if(slot == ITEM_SLOT_GLOVES)
 		tool_behaviour = TOOL_MINING
-		RegisterSignal(user, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, .proc/rocksmash)
-		RegisterSignal(user, COMSIG_MOVABLE_BUMP, .proc/rocksmash)
+		RegisterSignal(user, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(rocksmash))
+		RegisterSignal(user, COMSIG_MOVABLE_BUMP, PROC_REF(rocksmash))
 	else
 		stopmining(user)
 
@@ -767,11 +764,11 @@
 	living_scanned.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	to_chat(living_scanned, span_warning("You've been staggered!"))
 	living_scanned.add_filter("scan", 2, list("type" = "outline", "color" = COLOR_YELLOW, "size" = 1))
-	addtimer(CALLBACK(living_scanned, /atom/.proc/remove_filter, "scan"), 30 SECONDS)
+	addtimer(CALLBACK(living_scanned, TYPE_PROC_REF(/atom, remove_filter), "scan"), 30 SECONDS)
 
 	owner.playsound_local(get_turf(owner), 'sound/magic/smoke.ogg', 50, TRUE)
 	owner.balloon_alert(owner, "[living_scanned] scanned")
-	addtimer(CALLBACK(src, /atom/.proc/balloon_alert, owner, "scan recharged"), cooldown_time)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, balloon_alert), owner, "scan recharged"), cooldown_time)
 
 	StartCooldown()
 	return TRUE
@@ -792,7 +789,7 @@
 	name = "Scan Target"
 	desc = "Contact may or may not be close."
 
-/obj/item/organ/internal/cyberimp/arm/katana
+/obj/item/organ/cyberimp/arm/katana
 	name = "dark shard"
 	desc = "An eerie metal shard surrounded by dark energies."
 	icon = 'icons/obj/lavaland/artefacts.dmi'
@@ -803,7 +800,7 @@
 	extend_sound = 'sound/items/unsheath.ogg'
 	retract_sound = 'sound/items/sheath.ogg'
 
-/obj/item/organ/internal/cyberimp/arm/katana/attack_self(mob/user, modifiers)
+/obj/item/organ/cyberimp/arm/katana/attack_self(mob/user, modifiers)
 	. = ..()
 	to_chat(user, span_userdanger("The mass goes up your arm and goes inside it!"))
 	playsound(user, 'sound/magic/demon_consume.ogg', 50, TRUE)
@@ -813,10 +810,10 @@
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	Insert(user)
 
-/obj/item/organ/internal/cyberimp/arm/katana/screwdriver_act(mob/living/user, obj/item/screwtool)
+/obj/item/organ/cyberimp/arm/katana/screwdriver_act(mob/living/user, obj/item/screwtool)
 	return
 
-/obj/item/organ/internal/cyberimp/arm/katana/Retract()
+/obj/item/organ/cyberimp/arm/katana/Retract()
 	var/obj/item/cursed_katana/katana = active_item
 	if(!katana || katana.shattered)
 		return FALSE
@@ -825,7 +822,7 @@
 		playsound(owner, 'sound/magic/demon_attack1.ogg', 50, TRUE)
 		var/obj/item/bodypart/part = owner.get_holding_bodypart_of_item(katana)
 		if(part)
-			part.receive_damage(brute = 25, wound_bonus = 10, sharpness = SHARP_EDGED)
+			part.receive_damage(brute = 25, sharpness = SHARP_EDGED)
 	katana.drew_blood = FALSE
 	katana.wash(CLEAN_TYPE_BLOOD)
 	return ..()
@@ -864,12 +861,12 @@
 	var/list/input_list = list()
 	var/list/combo_strings = list()
 	var/static/list/combo_list = list(
-		ATTACK_STRIKE = list(COMBO_STEPS = list(LEFT_SLASH, LEFT_SLASH, RIGHT_SLASH), COMBO_PROC = .proc/strike),
-		ATTACK_SLICE = list(COMBO_STEPS = list(RIGHT_SLASH, LEFT_SLASH, LEFT_SLASH), COMBO_PROC = .proc/slice),
-		ATTACK_DASH = list(COMBO_STEPS = list(LEFT_SLASH, RIGHT_SLASH, RIGHT_SLASH), COMBO_PROC = .proc/dash),
-		ATTACK_CUT = list(COMBO_STEPS = list(RIGHT_SLASH, RIGHT_SLASH, LEFT_SLASH), COMBO_PROC = .proc/cut),
-		ATTACK_CLOAK = list(COMBO_STEPS = list(LEFT_SLASH, RIGHT_SLASH, LEFT_SLASH, RIGHT_SLASH), COMBO_PROC = .proc/cloak),
-		ATTACK_SHATTER = list(COMBO_STEPS = list(RIGHT_SLASH, LEFT_SLASH, RIGHT_SLASH, LEFT_SLASH), COMBO_PROC = .proc/shatter),
+		ATTACK_STRIKE = list(COMBO_STEPS = list(LEFT_SLASH, LEFT_SLASH, RIGHT_SLASH), COMBO_PROC = PROC_REF(strike)),
+		ATTACK_SLICE = list(COMBO_STEPS = list(RIGHT_SLASH, LEFT_SLASH, LEFT_SLASH), COMBO_PROC = PROC_REF(slice)),
+		ATTACK_DASH = list(COMBO_STEPS = list(LEFT_SLASH, RIGHT_SLASH, RIGHT_SLASH), COMBO_PROC = PROC_REF(dash)),
+		ATTACK_CUT = list(COMBO_STEPS = list(RIGHT_SLASH, RIGHT_SLASH, LEFT_SLASH), COMBO_PROC = PROC_REF(cut)),
+		ATTACK_CLOAK = list(COMBO_STEPS = list(LEFT_SLASH, RIGHT_SLASH, LEFT_SLASH, RIGHT_SLASH), COMBO_PROC = PROC_REF(cloak)),
+		ATTACK_SHATTER = list(COMBO_STEPS = list(RIGHT_SLASH, LEFT_SLASH, RIGHT_SLASH, LEFT_SLASH), COMBO_PROC = PROC_REF(shatter)),
 		)
 
 /obj/item/cursed_katana/Initialize(mapload)
@@ -918,7 +915,7 @@
 		reset_inputs(null, TRUE)
 		return TRUE
 	else
-		timerid = addtimer(CALLBACK(src, .proc/reset_inputs, user, FALSE), 5 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+		timerid = addtimer(CALLBACK(src, PROC_REF(reset_inputs), user, FALSE), 5 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 		return ..()
 
 /obj/item/cursed_katana/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
@@ -946,10 +943,10 @@
 		span_notice("You hilt strike [target]!"))
 	to_chat(target, span_userdanger("You've been struck by [user]!"))
 	playsound(src, 'sound/weapons/genhit3.ogg', 50, TRUE)
-	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, .proc/strike_throw_impact)
+	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(strike_throw_impact))
 	var/atom/throw_target = get_edge_target_turf(target, user.dir)
 	target.throw_at(throw_target, 5, 3, user, FALSE, gentle = TRUE)
-	target.apply_damage(damage = 17, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17)
 	to_chat(target, span_userdanger("You've been struck by [user]!"))
 	user.do_attack_animation(target, ATTACK_EFFECT_PUNCH)
 
@@ -979,9 +976,9 @@
 		user.do_attack_animation(turf, ATTACK_EFFECT_SLASH)
 		for(var/mob/living/additional_target in turf)
 			if(user.Adjacent(additional_target) && additional_target.density)
-				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED, bare_wound_bonus = 10)
+				additional_target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 				to_chat(additional_target, span_userdanger("You've been sliced by [user]!"))
-	target.apply_damage(damage = 5, sharpness = SHARP_EDGED, wound_bonus = 10)
+	target.apply_damage(damage = 5, sharpness = SHARP_EDGED)
 
 /obj/item/cursed_katana/proc/cloak(mob/living/target, mob/user)
 	user.alpha = 150
@@ -993,7 +990,7 @@
 	if(ishostile(target))
 		var/mob/living/simple_animal/hostile/hostile_target = target
 		hostile_target.LoseTarget()
-	addtimer(CALLBACK(src, .proc/uncloak, user), 5 SECONDS, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(uncloak), user), 5 SECONDS, TIMER_UNIQUE)
 
 /obj/item/cursed_katana/proc/uncloak(mob/user)
 	user.alpha = 255
@@ -1007,7 +1004,7 @@
 	user.visible_message(span_warning("[user] cuts [target]'s tendons!"),
 		span_notice("You tendon cut [target]!"))
 	to_chat(target, span_userdanger("Your tendons have been cut by [user]!"))
-	target.apply_damage(damage = 15, sharpness = SHARP_EDGED, wound_bonus = 15)
+	target.apply_damage(damage = 15, sharpness = SHARP_EDGED)
 	user.do_attack_animation(target, ATTACK_EFFECT_DISARM)
 	playsound(src, 'sound/weapons/rapierhit.ogg', 50, TRUE)
 	var/datum/status_effect/stacking/saw_bleed/bloodletting/status = target.has_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting)
@@ -1021,7 +1018,7 @@
 		span_notice("You dash through [target]!"))
 	to_chat(target, span_userdanger("[user] dashes through you!"))
 	playsound(src, 'sound/magic/blink.ogg', 50, TRUE)
-	target.apply_damage(damage = 17, sharpness = SHARP_POINTY, bare_wound_bonus = 10)
+	target.apply_damage(damage = 17, sharpness = SHARP_POINTY)
 	var/turf/dash_target = get_turf(target)
 	for(var/distance in 0 to 8)
 		var/turf/current_dash_target = dash_target
@@ -1038,13 +1035,13 @@
 	user.visible_message(span_warning("[user] shatters [src] over [target]!"),
 		span_notice("You shatter [src] over [target]!"))
 	to_chat(target, span_userdanger("[user] shatters [src] over you!"))
-	target.apply_damage(damage = ishostile(target) ? 75 : 35, wound_bonus = 20)
+	target.apply_damage(damage = ishostile(target) ? 75 : 35)
 	user.do_attack_animation(target, ATTACK_EFFECT_SMASH)
 	playsound(src, 'sound/effects/glassbr3.ogg', 100, TRUE)
 	shattered = TRUE
 	moveToNullspace()
 	balloon_alert(user, "katana shattered")
-	addtimer(CALLBACK(src, .proc/coagulate, user), 45 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(coagulate), user), 45 SECONDS)
 
 /obj/item/cursed_katana/proc/coagulate(mob/user)
 	balloon_alert(user, "katana coagulated")

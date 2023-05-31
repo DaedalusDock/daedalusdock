@@ -50,7 +50,7 @@
 	route = PATH_BLADE
 
 /datum/heretic_knowledge/blade_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/blade_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)
@@ -87,7 +87,7 @@
 
 	// We're officially behind them, apply effects
 	target.AdjustParalyzed(1.5 SECONDS)
-	target.apply_damage(10, BRUTE, wound_bonus = CANT_WOUND)
+	target.apply_damage(10, BRUTE)
 	target.balloon_alert(source, "backstab!")
 	playsound(get_turf(target), 'sound/weapons/guillotine.ogg', 100, TRUE)
 
@@ -112,7 +112,7 @@
 	var/riposte_ready = TRUE
 
 /datum/heretic_knowledge/blade_dance/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HUMAN_CHECK_SHIELDS, .proc/on_shield_reaction)
+	RegisterSignal(user, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(on_shield_reaction))
 
 /datum/heretic_knowledge/blade_dance/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HUMAN_CHECK_SHIELDS)
@@ -164,11 +164,11 @@
 		return
 
 	// If we made it here, deliver the strike
-	INVOKE_ASYNC(src, .proc/counter_attack, source, attacker, striking_with, attack_text)
+	INVOKE_ASYNC(src, PROC_REF(counter_attack), source, attacker, striking_with, attack_text)
 
 	// And reset after a bit
 	riposte_ready = FALSE
-	addtimer(CALLBACK(src, .proc/reset_riposte, source), BLADE_DANCE_COOLDOWN)
+	addtimer(CALLBACK(src, PROC_REF(reset_riposte), source), BLADE_DANCE_COOLDOWN)
 
 /datum/heretic_knowledge/blade_dance/proc/counter_attack(mob/living/carbon/human/source, mob/living/target, obj/item/melee/sickly_blade/weapon, attack_text)
 	playsound(get_turf(source), 'sound/weapons/parry.ogg', 100, TRUE)
@@ -218,7 +218,7 @@
 	route = PATH_BLADE
 
 /// The amount of blood flow reduced per level of severity of gained bleeding wounds for Stance of the Scarred Duelist.
-#define BLOOD_FLOW_PER_SEVEIRTY 1
+#define BLOOD_FLOW_PER_SEVERITY 1
 
 /datum/heretic_knowledge/duel_stance
 	name = "Stance of the Scarred Duelist"
@@ -240,9 +240,9 @@
 
 /datum/heretic_knowledge/duel_stance/on_gain(mob/user)
 	ADD_TRAIT(user, TRAIT_NODISMEMBER, type)
-	RegisterSignal(user, COMSIG_PARENT_EXAMINE, .proc/on_examine)
-	RegisterSignal(user, COMSIG_CARBON_GAIN_WOUND, .proc/on_wound_gain)
-	RegisterSignal(user, COMSIG_CARBON_HEALTH_UPDATE, .proc/on_health_update)
+	RegisterSignal(user, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(user, COMSIG_CARBON_GAIN_WOUND, PROC_REF(on_wound_gain))
+	RegisterSignal(user, COMSIG_CARBON_HEALTH_UPDATE, PROC_REF(on_health_update))
 
 	on_health_update(user) // Run this once, so if the knowledge is learned while hurt it activates properly
 
@@ -264,10 +264,10 @@
 /datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 
-	if(gained_wound.blood_flow <= 0)
+	if(!gained_wound.bleed_timer)
 		return
 
-	gained_wound.blood_flow -= (gained_wound.severity * BLOOD_FLOW_PER_SEVEIRTY)
+	gained_wound.bleed_timer -= 15
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
 	SIGNAL_HANDLER
@@ -286,7 +286,7 @@
 		ADD_TRAIT(source, TRAIT_STUNRESISTANCE, type)
 		return
 
-#undef BLOOD_FLOW_PER_SEVEIRTY
+#undef BLOOD_FLOW_PER_SEVERITY
 
 /datum/heretic_knowledge/blade_upgrade/blade
 	name = "Swift Blades"
@@ -310,7 +310,7 @@
 		return
 
 	// Give it a short delay (for style, also lets people dodge it I guess)
-	addtimer(CALLBACK(src, .proc/follow_up_attack, source, target, off_hand), 0.25 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(follow_up_attack), source, target, off_hand), 0.25 SECONDS)
 
 /datum/heretic_knowledge/blade_upgrade/blade/proc/follow_up_attack(mob/living/source, mob/living/target, obj/item/melee/sickly_blade/blade)
 	if(QDELETED(source) || QDELETED(target) || QDELETED(blade))
@@ -371,7 +371,7 @@
 	user.client?.give_award(/datum/award/achievement/misc/blade_ascension, user)
 	ADD_TRAIT(user, TRAIT_STUNIMMUNE, name)
 	ADD_TRAIT(user, TRAIT_NEVER_WOUNDED, name)
-	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, .proc/on_eldritch_blade)
+	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))
 	user.apply_status_effect(/datum/status_effect/protective_blades/recharging, null, 8, 30, 0.25 SECONDS, 1 MINUTES)
 
 	var/datum/action/cooldown/spell/pointed/projectile/furious_steel/steel_spell = locate() in user.actions
@@ -390,7 +390,6 @@
 		damage = bonus_damage,
 		damagetype = BRUTE,
 		spread_damage = TRUE,
-		wound_bonus = 5,
 		sharpness = SHARP_EDGED,
 		attack_direction = get_dir(source, target),
 	)

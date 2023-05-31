@@ -35,7 +35,7 @@
 
 /obj/item/organ/regenerative_core/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/inert_check), 2400)
+	addtimer(CALLBACK(src, PROC_REF(inert_check)), 2400)
 
 /obj/item/organ/regenerative_core/proc/inert_check()
 	if(!preserved)
@@ -102,6 +102,9 @@
 
 /obj/item/organ/regenerative_core/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)
 	. = ..()
+	if(!.)
+		return
+
 	if(!preserved && !inert)
 		preserved(TRUE)
 		owner.visible_message(span_notice("[src] stabilizes as it's inserted."))

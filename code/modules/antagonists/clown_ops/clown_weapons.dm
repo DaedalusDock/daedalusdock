@@ -15,13 +15,16 @@
 /obj/item/clothing/shoes/clown_shoes/combat
 	name = "combat clown shoes"
 	desc = "advanced clown shoes that protect the wearer and render them nearly immune to slipping on their own peels. They also squeak at 100% capacity."
-	clothing_flags = NOSLIP
+	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	slowdown = SHOES_SLOWDOWN
 	armor = list(MELEE = 25, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
-	permeability_coefficient = 0.05
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
+
+/obj/item/clothing/shoes/clown_shoes/combat/Initialize(mapload)
+	. = ..()
+
+	create_storage(type = /datum/storage/pockets/shoes)
 
 /// Recharging rate in PPS (peels per second)
 #define BANANA_SHOES_RECHARGE_RATE 17
@@ -35,12 +38,13 @@
 	armor = list(MELEE = 25, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
-	permeability_coefficient = 0.05
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
 	always_noslip = TRUE
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat/Initialize(mapload)
 	. = ..()
+
+	create_storage(type = /datum/storage/pockets/shoes)
+
 	var/datum/component/material_container/bananium = GetComponent(/datum/component/material_container)
 	bananium.insert_amount_mat(BANANA_SHOES_MAX_CHARGE, /datum/material/bananium)
 	START_PROCESSING(SSobj, src)
@@ -80,7 +84,7 @@
 		attack_verb_continuous_on = list("slips"), \
 		attack_verb_simple_on = list("slip"), \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /obj/item/melee/energy/sword/bananium/on_transform(obj/item/source, mob/user, active)
 	. = ..()
@@ -232,7 +236,7 @@
 /obj/item/clothing/mask/fakemoustache/sticky/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, STICKY_MOUSTACHE_TRAIT)
-	addtimer(CALLBACK(src, .proc/unstick), unstick_time)
+	addtimer(CALLBACK(src, PROC_REF(unstick)), unstick_time)
 
 /obj/item/clothing/mask/fakemoustache/sticky/proc/unstick()
 	REMOVE_TRAIT(src, TRAIT_NODROP, STICKY_MOUSTACHE_TRAIT)

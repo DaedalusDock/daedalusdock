@@ -11,7 +11,7 @@
 	var/zone = BODY_ZONE_CHEST
 	///The organ slot this organ is supposed to inhabit. This should be unique by type. (Lungs, Appendix, Stomach, etc)
 	var/slot
-	// DO NOT add slots with matching names to different zones - it will break internal_organs_slot list!
+	// DO NOT add slots with matching names to different zones - it will break organs_by_slot list!
 	var/organ_flags = ORGAN_EDIBLE
 	var/maxHealth = STANDARD_ORGAN_THRESHOLD
 	/// Total damage this organ has sustained
@@ -39,8 +39,11 @@
 	var/reagent_vol = 10
 
 	var/failure_time = 0
+
 	///Do we effect the appearance of our mob. Used to save time in preference code
-	var/visual = TRUE
+	var/visual = FALSE
+	///If the organ is cosmetic only, it loses all organ functionality.
+	var/cosmetic_only = FALSE
 	/// Traits that are given to the holder of the organ. If you want an effect that changes this, don't add directly to this. Use the add_organ_trait() proc
 	var/list/organ_traits = list()
 
@@ -50,21 +53,52 @@
 // any nonhumans created in that time would experience the same effect.
 INITIALIZE_IMMEDIATE(/obj/item/organ)
 
-/obj/item/organ/Initialize(mapload)
+/obj/item/organ/Initialize(mapload, mob_sprite)
 	. = ..()
 	if(organ_flags & ORGAN_EDIBLE)
 		AddComponent(/datum/component/edible,\
 			initial_reagents = food_reagents,\
 			foodtypes = RAW | MEAT | GROSS,\
 			volume = reagent_vol,\
-			after_eat = CALLBACK(src, .proc/OnEatFrom))
+			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
+
+	if(cosmetic_only) //Cosmetic organs don't process.
+		if(mob_sprite)
+			set_sprite(mob_sprite)
+
+		if(!(organ_flags & ORGAN_UNREMOVABLE))
+			color = "#[random_color()]" //A temporary random color that gets overwritten on insertion.
+	else
+		START_PROCESSING(SSobj, src)
+
+/obj/item/organ/Destroy(force)
+	if(owner)
+		// The special flag is important, because otherwise mobs can die
+		// while undergoing transformation into different mobs.
+		Remove(owner, special=TRUE)
+	else
+		if(visual)
+			if(ownerlimb)
+				remove_from_limb()
+
+		else
+			STOP_PROCESSING(SSobj, src)
+
+	return ..()
 
 /obj/item/organ/forceMove(atom/destination, check_dest = TRUE)
 	if(check_dest && destination) //Nullspace is always a valid location for organs. Because reasons.
 		if(organ_flags & ORGAN_UNREMOVABLE) //If this organ is unremovable, it should delete itself if it tries to be moved to anything besides a bodypart.
 			if(!istype(destination, /obj/item/bodypart) && !iscarbon(destination))
+				stack_trace("Unremovable organ tried to be removed!")
 				qdel(src)
 				return //Don't move it out of nullspace if it's deleted.
+	return ..()
+
+/// A little hack to ensure old behavior for now.
+/obj/item/organ/ex_act(severity, target)
+	if(visual && ownerlimb)
+		return
 	return ..()
 
 /*
@@ -77,6 +111,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/Insert(mob/living/carbon/reciever, special = FALSE, drop_if_replaced = TRUE)
 	if(!iscarbon(reciever) || owner == reciever)
 		return FALSE
+
+	var/obj/item/bodypart/limb
+	if(visual)
+		limb = reciever.get_bodypart(deprecise_zone(zone))
+		if(!limb)
+			return FALSE
 
 	var/obj/item/organ/replaced = reciever.getorganslot(slot)
 	if(replaced)
@@ -91,10 +131,35 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	owner = reciever
 	moveToNullspace()
-	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, .proc/on_owner_examine)
+	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, PROC_REF(on_owner_examine))
 	update_organ_traits(reciever)
 	for(var/datum/action/action as anything in actions)
 		action.Grant(reciever)
+
+	//Add to internal organs
+	owner.organs |= src
+	owner.organs_by_slot[slot] = src
+
+	if(!cosmetic_only)
+		STOP_PROCESSING(SSobj, src)
+		owner.processing_organs |= src
+		/// processing_organs must ALWAYS be ordered in the same way as organ_process_order
+		/// Otherwise life processing breaks down
+		sortTim(owner.processing_organs, GLOBAL_PROC_REF(cmp_organ_slot_asc))
+
+	if(visual) //Brains are visual and I don't know why. Blame lemon.
+		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
+			stored_feature_id = reciever.dna.features[feature_key]
+
+		reciever.cosmetic_organs.Add(src)
+
+		ownerlimb = limb
+		add_to_limb(ownerlimb)
+
+		if(external_bodytypes)
+			limb.synchronize_bodytypes(reciever)
+
+		reciever.update_body_parts()
 	return TRUE
 
 
@@ -116,6 +181,26 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
+
+	if(organ_owner)
+		organ_owner.organs -= src
+		if(organ_owner.organs_by_slot[slot] == src)
+			organ_owner.organs_by_slot.Remove(slot)
+		if(!cosmetic_only)
+			if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
+				organ_owner.death()
+			organ_owner.processing_organs -= src
+
+	if(!cosmetic_only)
+		START_PROCESSING(SSobj, src)
+
+	if(visual)
+		if(ownerlimb)
+			remove_from_limb()
+
+		if(organ_owner)
+			organ_owner.cosmetic_organs.Remove(src)
+			organ_owner.update_body_parts()
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.
 /obj/item/organ/proc/update_organ_traits()
@@ -140,13 +225,44 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return
 
 /obj/item/organ/process(delta_time, times_fired)
-	return
+	if(cosmetic_only)
+		CRASH("Cosmetic organ processing!")
+	on_death(delta_time, times_fired) //Kinda hate doing it like this, but I really don't want to call process directly.
 
+
+/// This is on_life() but for when the organ is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
-	return
+	if(organ_flags & (ORGAN_SYNTHETIC | ORGAN_FROZEN))
+		return
+	applyOrganDamage(decay_factor * maxHealth * delta_time)
 
+/// Called once every life tick on every organ in a carbon's body
+/// NOTE: THIS IS VERY HOT. Be careful what you put in here
+/// To give you some scale, if there's 100 carbons in the game, they each have maybe 9 organs
+/// So that's 900 calls to this proc every life process. Please don't be dumb
 /obj/item/organ/proc/on_life(delta_time, times_fired)
-	CRASH("Oh god oh fuck something is calling parent organ life")
+	if(cosmetic_only)
+		CRASH("Cosmetic organ processing!")
+
+	if(organ_flags & ORGAN_FAILING)
+		handle_failing_organs(delta_time)
+		return
+
+	if(failure_time > 0)
+		failure_time--
+
+	if(organ_flags & ORGAN_SYNTHETIC_EMP) //Synthetic organ has been emped, is now failing.
+		applyOrganDamage(decay_factor * maxHealth * delta_time)
+		return
+
+	if(!damage) // No sense healing if you're not even hurt bro
+		return
+
+	///Damage decrements by a percent of its maxhealth
+	var/healing_amount = healing_factor
+	///Damage decrements again by a percent of its maxhealth, up to a total of 4 extra times depending on the owner's health
+	healing_amount += (owner.satiety > 0) ? (4 * healing_factor * owner.satiety / MAX_SATIETY) : 0
+	applyOrganDamage(-healing_amount * maxHealth * delta_time, damage) // pass curent damage incase we are over cap
 
 /obj/item/organ/examine(mob/user)
 	. = ..()
@@ -165,11 +281,13 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
-	return
+	if(!cosmetic_only)
+		START_PROCESSING(SSobj, src)
 
 //See above
 /obj/item/organ/proc/enter_wardrobe()
-	return
+	if(!cosmetic_only)
+		STOP_PROCESSING(SSobj, src)
 
 /obj/item/organ/proc/OnEatFrom(eater, feeder)
 	useable = FALSE //You can't use it anymore after eating it you spaztic
@@ -238,38 +356,42 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	else
-		var/obj/item/organ/internal/lungs/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+		var/obj/item/organ/lungs/lungs = getorganslot(ORGAN_SLOT_LUNGS)
 		if(!lungs)
 			lungs = new()
 			lungs.Insert(src)
 		lungs.setOrganDamage(0)
 
-		var/obj/item/organ/internal/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+		var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 		if(!heart)
 			heart = new()
 			heart.Insert(src)
 		heart.setOrganDamage(0)
 
-		var/obj/item/organ/internal/tongue/tongue = getorganslot(ORGAN_SLOT_TONGUE)
+		var/obj/item/organ/tongue/tongue = getorganslot(ORGAN_SLOT_TONGUE)
 		if(!tongue)
 			tongue = new()
 			tongue.Insert(src)
 		tongue.setOrganDamage(0)
 
-		var/obj/item/organ/internal/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
 		if(!eyes)
 			eyes = new()
 			eyes.Insert(src)
 		eyes.setOrganDamage(0)
 
-		var/obj/item/organ/internal/ears/ears = getorganslot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 		if(!ears)
 			ears = new()
 			ears.Insert(src)
 		ears.setOrganDamage(0)
 
 /obj/item/organ/proc/handle_failing_organs(delta_time)
-	return
+	if(owner.stat == DEAD)
+		return
+
+	failure_time += delta_time
+	organ_failure(delta_time)
 
 /** organ_failure
  * generic proc for handling dying organs

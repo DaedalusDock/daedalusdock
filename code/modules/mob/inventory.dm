@@ -98,9 +98,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	for(var/obj/item/I in held_items)
-		if(istype(I, typepath))
-			return I
+	if(locate(typepath) in held_items)
+		return TRUE
 	return FALSE
 
 //Checks if we're holding a tool that has given quality
@@ -418,7 +417,6 @@
 
 	return obscured
 
-
 /obj/item/proc/equip_to_best_slot(mob/M)
 	if(M.equip_to_appropriate_slot(src))
 		M.update_held_items()
@@ -427,7 +425,7 @@
 		if(equip_delay_self)
 			return
 
-	if(M.active_storage && M.active_storage.parent && SEND_SIGNAL(M.active_storage.parent, COMSIG_TRY_STORAGE_INSERT, src,M))
+	if(M.active_storage?.attempt_insert(src, M))
 		return TRUE
 
 	var/list/obj/item/possible = list(M.get_inactive_held_item(), M.get_item_by_slot(ITEM_SLOT_BELT), M.get_item_by_slot(ITEM_SLOT_DEX_STORAGE), M.get_item_by_slot(ITEM_SLOT_BACK))
@@ -435,7 +433,7 @@
 		if(!i)
 			continue
 		var/obj/item/I = i
-		if(SEND_SIGNAL(I, COMSIG_TRY_STORAGE_INSERT, src, M))
+		if(I.atom_storage?.attempt_insert(src, M))
 			return TRUE
 
 	to_chat(M, span_warning("You are unable to equip that!"))
@@ -510,8 +508,8 @@
 	var/i = 0
 	while(i < length(processing_list) )
 		var/atom/A = processing_list[++i]
-		if(SEND_SIGNAL(A, COMSIG_CONTAINS_STORAGE))
+		if(A.atom_storage)
 			var/list/item_stuff = list()
-			SEND_SIGNAL(A, COMSIG_TRY_STORAGE_RETURN_INVENTORY, item_stuff)
+			A.atom_storage.return_inv(item_stuff)
 			processing_list += item_stuff
 	return processing_list

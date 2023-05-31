@@ -5,7 +5,6 @@
 	icon_state = "tube"
 	desc = "A lighting fixture."
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	max_integrity = 100
 	use_power = ACTIVE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.02
@@ -95,7 +94,7 @@
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
-	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
@@ -113,7 +112,7 @@
 			if(prob(1))
 				break_light_tube(TRUE)
 	#endif
-	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
+	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
 	if(my_area)
@@ -171,11 +170,11 @@
 		if(instant)
 			turn_on(trigger, play_sound)
 		else if(maploaded)
-			turn_on(trigger, play_sound)
+			turn_on(trigger)
 			maploaded = FALSE
 		else if(!turning_on)
 			turning_on = TRUE
-			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
@@ -209,7 +208,7 @@
 		if(!start_only)
 			do_sparks(3, TRUE, src)
 		var/delay = rand(BROKEN_SPARKS_MIN, BROKEN_SPARKS_MAX)
-		addtimer(CALLBACK(src, .proc/broken_sparks), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
+		addtimer(CALLBACK(src, PROC_REF(broken_sparks)), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
 /obj/machinery/light/process()
 	if (!cell)
@@ -270,7 +269,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, src, 2 SECONDS))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -312,6 +311,8 @@
 	if(istype(tool, /obj/item/stock_parts/cell))
 		return FALSE
 
+	if(status != LIGHT_EMPTY)
+		return ..()
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)
@@ -481,9 +482,9 @@
 	var/mob/living/carbon/human/electrician = user
 
 	if(istype(electrician))
-		var/obj/item/organ/internal/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))

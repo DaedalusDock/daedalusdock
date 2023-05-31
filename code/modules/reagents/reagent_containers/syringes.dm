@@ -67,7 +67,7 @@
 		if(living_target != user)
 			living_target.visible_message(span_danger("[user] is trying to inject [living_target]!"), \
 									span_userdanger("[user] is trying to inject you!"))
-			if(!do_after(user, living_target, CHEM_INTERACT_DELAY(3 SECONDS, user), extra_checks = CALLBACK(living_target, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags)))
+			if(!do_after(user, living_target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), display = src))
 				return
 			if(!reagents.total_volume)
 				return
@@ -97,7 +97,7 @@
 		if(target != user)
 			target.visible_message(span_danger("[user] is trying to take a blood sample from [target]!"), \
 							span_userdanger("[user] is trying to take a blood sample from you!"))
-			if(!do_after(user, target, CHEM_INTERACT_DELAY(3 SECONDS, user), extra_checks = CALLBACK(living_target, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags)))
+			if(!do_after(user, target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), display = src))
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
 			if(reagents.total_volume >= reagents.maximum_volume)
 				return SECONDARY_ATTACK_CONTINUE_CHAIN

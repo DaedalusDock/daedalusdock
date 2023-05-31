@@ -30,7 +30,7 @@
 
 	Make(S)
 	connect_to_network()
-	RegisterSignal(SSsun, COMSIG_SUN_MOVED, .proc/sun_update)
+	RegisterSignal(SSsun, COMSIG_SUN_MOVED, PROC_REF(sun_update))
 
 /obj/machinery/power/tracker/Destroy()
 	unset_control() //remove from control computer
@@ -42,7 +42,6 @@
 	overlay.appearance_flags = TILE_BOUND
 	overlay.icon_state = icon_state
 	overlay.layer = FLY_LAYER
-	overlay.plane = ABOVE_GAME_PLANE
 	overlay.pixel_y = y_offset
 	vis_contents += overlay
 	return overlay

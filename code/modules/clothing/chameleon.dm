@@ -84,7 +84,7 @@
 		for(var/path in subtypesof(/datum/outfit/job))
 			var/datum/outfit/O = path
 			standard_outfit_options[initial(O.name)] = path
-		sortTim(standard_outfit_options, /proc/cmp_text_asc)
+		sortTim(standard_outfit_options, GLOBAL_PROC_REF(cmp_text_asc))
 	outfit_options = standard_outfit_options
 
 /datum/action/chameleon_outfit/Trigger(trigger_flags)
@@ -179,7 +179,7 @@
 
 /datum/action/item_action/chameleon/change/proc/select_look(mob/user)
 	var/obj/item/picked_item
-	var/picked_name = tgui_input_list(user, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, /proc/cmp_typepaths_asc))
+	var/picked_name = tgui_input_list(user, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(picked_name))
 		return
 	if(isnull(chameleon_list[picked_name]))
@@ -606,13 +606,15 @@
 	desc = "A pair of black shoes."
 	permeability_coefficient = 0.05
 	resistance_flags = NONE
-	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
+	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 50, ACID = 50)
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/shoes/chameleon/Initialize(mapload)
 	. = ..()
+
+	create_storage(type = /datum/storage/pockets/shoes)
+
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/shoes
 	chameleon_action.chameleon_name = "Shoes"
@@ -627,7 +629,7 @@
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/shoes/chameleon/noslip
-	clothing_flags = NOSLIP
+	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	can_be_bloody = FALSE
 
 /obj/item/clothing/shoes/chameleon/noslip/broken/Initialize(mapload)
@@ -671,10 +673,7 @@
 	chameleon_action.initialize_disguises()
 	add_item_action(chameleon_action)
 
-/obj/item/storage/belt/chameleon/ComponentInitialize()
-	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.silent = TRUE
+	atom_storage.silent = TRUE
 
 /obj/item/storage/belt/chameleon/emp_act(severity)
 	. = ..()

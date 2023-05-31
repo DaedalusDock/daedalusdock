@@ -8,6 +8,7 @@
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/incise,
 		/datum/surgery_step/revive,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 
 	target_mobtypes = list(/mob/living/carbon/human)
@@ -23,7 +24,7 @@
 		return FALSE
 	if(HAS_TRAIT(target, TRAIT_DEFIB_BLACKLISTED))
 		return FALSE
-	var/obj/item/organ/internal/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
 	if(!target_brain)
 		return FALSE
 	return TRUE

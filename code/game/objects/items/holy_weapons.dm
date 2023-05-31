@@ -142,7 +142,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_TINY
 	obj_flags = UNIQUE_RENAME
-	wound_bonus = -10
 	/// boolean on whether it's allowed to be picked from the nullrod's transformation ability
 	var/chaplain_spawnable = TRUE
 	/// Short description of what this item is capable of, for radial menu uses.
@@ -155,7 +154,7 @@
 		success_feedback = "You disrupt the magic of %THEEFFECT with %THEWEAPON.", \
 		success_forcesay = "BEGONE FOUL MAGIKS!!", \
 		tip_text = "Clear rune", \
-		on_clear_callback = CALLBACK(src, .proc/on_cult_rune_removed), \
+		on_clear_callback = CALLBACK(src, PROC_REF(on_cult_rune_removed)), \
 		effects_we_clear = list(/obj/effect/rune, /obj/effect/heretic_rune))
 
 	AddElement(/datum/element/bane, /mob/living/simple_animal/revenant, 0, 25, FALSE)
@@ -165,7 +164,7 @@
 			if(!initial(nullrod_type.chaplain_spawnable))
 				continue
 			rods[nullrod_type] = initial(nullrod_type.menu_description)
-		AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, .proc/on_holy_weapon_picked))
+		AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
 
 /obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/holy_weapon_type)
 	GLOB.holy_weapon_type = holy_weapon_type
@@ -566,8 +565,6 @@
 	item_flags = ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
 	sharpness = SHARP_EDGED
-	wound_bonus = -20
-	bare_wound_bonus = 25
 	menu_description = "An undroppable sharp armblade capable of inflicting deep wounds. Capable of an ineffective butchering of bodies. Disappears if the arm holding it is cut off."
 
 /obj/item/nullrod/armblade/Initialize(mapload)

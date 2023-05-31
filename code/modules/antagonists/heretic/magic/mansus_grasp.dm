@@ -34,7 +34,7 @@
 	if(SEND_SIGNAL(caster, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, victim) & COMPONENT_BLOCK_HAND_USE)
 		return FALSE
 
-	living_hit.apply_damage(10, BRUTE, wound_bonus = CANT_WOUND)
+	living_hit.apply_damage(10, BRUTE)
 	if(iscarbon(victim))
 		var/mob/living/carbon/carbon_hit = victim
 		carbon_hit.adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/slurring/heretic)
@@ -65,7 +65,7 @@
 	AddComponent(/datum/component/effect_remover, \
 		success_feedback = "You remove %THEEFFECT.", \
 		tip_text = "Clear rune", \
-		on_clear_callback = CALLBACK(src, .proc/after_clear_rune), \
+		on_clear_callback = CALLBACK(src, PROC_REF(after_clear_rune)), \
 		effects_we_clear = list(/obj/effect/heretic_rune))
 /*
  * Callback for effect_remover component.

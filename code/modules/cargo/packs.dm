@@ -953,7 +953,7 @@
 	desc = "The power of the heavens condensed into a single crystal. Requires CE access to open."
 	cost = CARGO_CRATE_VALUE * 20
 	access = ACCESS_CE
-	//contains = list(/obj/machinery/power/supermatter_crystal/shard)
+	//contains = list(/obj/machinery/power/supermatter/shard)
 	crate_name = "supermatter shard crate"
 	crate_type = /obj/structure/closet/crate/secure/engineering
 	dangerous = TRUE
@@ -1313,7 +1313,7 @@
 	dangerous = TRUE
 
 /datum/supply_pack/medical/cmoturtlenecks
-	name = "Chief Medical Officer Turtlenecks"
+	name = "Medical Director Turtlenecks"
 	desc = "Contains the CMO's turtleneck and turtleneck skirt. Requires CMO access to open."
 	cost = CARGO_CRATE_VALUE * 2
 	access = ACCESS_CMO
@@ -1942,7 +1942,7 @@
 				anomalous_box_provided = TRUE
 				log_game("An anomalous pizza box was provided in a pizza crate at during cargo delivery")
 				if(prob(50))
-					addtimer(CALLBACK(src, .proc/anomalous_pizza_report), rand(300, 1800))
+					addtimer(CALLBACK(src, PROC_REF(anomalous_pizza_report)), rand(300, 1800))
 				else
 					message_admins("An anomalous pizza box was silently created with no command report in a pizza crate delivery.")
 				continue
@@ -2993,9 +2993,10 @@
 	name = "Scrapyard Crate"
 	desc = "Outsourced crate containing various junk."
 	cost = CARGO_CRATE_VALUE * 5
-	contains = list(/obj/item/relic,
-					/obj/item/broken_bottle,
-					/obj/item/pickaxe/rusted)
+	contains = list(
+		/obj/item/broken_bottle,
+		/obj/item/pickaxe/rusted
+	)
 	crate_name = "scrapyard crate"
 
 /datum/supply_pack/exploration/catering
@@ -3027,3 +3028,67 @@
 /datum/supply_pack/exploration/shrubbery/fill(obj/structure/closet/crate/C)
 	for(var/i in 1 to shrub_amount)
 		new /obj/item/grown/shrub(C)
+
+/datum/supply_pack/data_disk
+	group = "Data Disks"
+
+/datum/supply_pack/data_disk/preloaded
+	name = "Data Disk"
+	desc = "Contains an extremely expensive data disk for use in fabricators."
+	cost = CARGO_CRATE_VALUE * 5
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
+	crate_name = "data disk crate"
+	hidden = TRUE
+
+/datum/supply_pack/data_disk/preloaded/omni
+	name = "Data Disk (Omnifab)"
+	access = ACCESS_RESEARCH
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
+	crate_name = "omnifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded
+	name = "Data Disk (Robofab)"
+	access = ACCESS_MECH_SCIENCE
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/robotics)
+	crate_name = "robofab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/civ
+	name = "Data Disk (Civfab)"
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/civ)
+	crate_name = "civfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/engineering
+	name = "Data Disk (Engifab)"
+	access = ACCESS_ENGINE
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/engineering)
+	crate_name = "engifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/medical
+	name = "Data Disk (Medifab)"
+	access = ACCESS_MEDICAL
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/medical)
+	crate_name = "medifab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/supply
+	name = "Data Disk (Supplyfab)"
+	access = ACCESS_CARGO
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/supply)
+	crate_name = "supplyfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/security
+	name = "Data Disk (Secfab)"
+	access = ACCESS_SECURITY
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/security)
+	crate_name = "secfab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/service
+	name = "Data Disk (Servicefab)"
+	access = ACCESS_SERVICE
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/service)
+	crate_name = "servicefab disk crate"
+
+/datum/supply_pack/data_disk/preloaded/imprinter
+	name = "Data Disk (Imprinter)"
+	access = ACCESS_ENGINE
+	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/imprinter)
+	crate_name = "imprinter disk crate"

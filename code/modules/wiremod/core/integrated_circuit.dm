@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	GLOB.integrated_circuits += src
 
-	RegisterSignal(src, COMSIG_ATOM_USB_CABLE_TRY_ATTACH, .proc/on_atom_usb_cable_try_attach)
+	RegisterSignal(src, COMSIG_ATOM_USB_CABLE_TRY_ATTACH, PROC_REF(on_atom_usb_cable_try_attach))
 
 /obj/item/integrated_circuit/loaded/Initialize(mapload)
 	. = ..()
@@ -182,7 +182,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	set_on(TRUE)
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_SHELL, new_shell)
 	shell = new_shell
-	RegisterSignal(shell, COMSIG_PARENT_QDELETING, .proc/remove_current_shell)
+	RegisterSignal(shell, COMSIG_PARENT_QDELETING, PROC_REF(remove_current_shell))
 	for(var/obj/item/circuit_component/attached_component as anything in attached_components)
 		attached_component.register_shell(shell)
 		// Their input ports may be updated with user values, but the outputs haven't updated
@@ -243,7 +243,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	to_add.parent = src
 	attached_components += to_add
 	current_size += to_add.circuit_size
-	RegisterSignal(to_add, COMSIG_MOVABLE_MOVED, .proc/component_move_handler)
+	RegisterSignal(to_add, COMSIG_MOVABLE_MOVED, PROC_REF(component_move_handler))
 	SStgui.update_uis(src)
 
 	if(shell)
@@ -300,7 +300,10 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	var/obj/machinery/component_printer/printer = linked_component_printer?.resolve()
 	if(!printer)
 		return
-	.["stored_designs"] = printer.current_unlocked_designs
+	var/list/ids = list()
+	for(var/datum/design/D as anything in printer.internal_disk.read(DATA_IDX_DESIGNS))
+		ids += D.id
+	.["stored_designs"] = ids
 
 /obj/item/integrated_circuit/ui_data(mob/user)
 	. = list()
@@ -603,7 +606,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			component.variable_name.set_input(params["variable"])
 			component.rel_x = text2num(params["rel_x"])
 			component.rel_y = text2num(params["rel_y"])
-			RegisterSignal(component, COMSIG_CIRCUIT_COMPONENT_REMOVED, .proc/clear_setter_or_getter)
+			RegisterSignal(component, COMSIG_CIRCUIT_COMPONENT_REMOVED, PROC_REF(clear_setter_or_getter))
 			setter_and_getter_count++
 			return TRUE
 		if("move_screen")

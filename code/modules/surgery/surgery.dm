@@ -13,7 +13,6 @@
 	var/mob/living/carbon/target //Operation target mob
 	var/obj/item/bodypart/operated_bodypart //Operable body part
 	var/datum/wound/operated_wound //The actual wound datum instance we're targeting
-	var/datum/wound/targetable_wound //The wound type this surgery targets
 	var/requires_bodypart = TRUE //Surgery available only when a bodypart is present, or only when it is missing.
 	var/speed_modifier = 0 //Step speed modifier
 	var/requires_real_bodypart = FALSE //Some surgeries don't work on limbs that don't really exist
@@ -35,16 +34,10 @@
 	if(!surgery_bodypart)
 		return
 	operated_bodypart = surgery_bodypart
-	if(targetable_wound)
-		operated_wound = operated_bodypart.get_wound_type(targetable_wound)
-		operated_wound.attached_surgery = src
 
 	SEND_SIGNAL(surgery_target, COMSIG_MOB_SURGERY_STARTED, src, surgery_location, surgery_bodypart)
 
 /datum/surgery/Destroy()
-	if(operated_wound)
-		operated_wound.attached_surgery = null
-		operated_wound = null
 	if(target)
 		target.surgeries -= src
 	target = null

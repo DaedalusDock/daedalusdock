@@ -247,8 +247,8 @@
 	master = new_master
 
 /atom/movable/screen/close/Click()
-	var/datum/component/storage/S = master
-	S.hide_from(usr)
+	var/datum/storage/storage = master
+	storage.hide_contents(usr)
 	return TRUE
 
 /atom/movable/screen/drop
@@ -389,16 +389,21 @@
 	master = new_master
 
 /atom/movable/screen/storage/Click(location, control, params)
+	var/datum/storage/storage_master = master
+	if(!istype(storage_master))
+		return FALSE
+
 	if(world.time <= usr.next_move)
 		return TRUE
 	if(usr.incapacitated())
 		return TRUE
-	if (ismecha(usr.loc)) // stops inventory actions in a mech
+	if(ismecha(usr.loc)) // stops inventory actions in a mech
 		return TRUE
-	if(master)
-		var/obj/item/I = usr.get_active_held_item()
-		if(I)
-			master.attackby(null, I, usr, params)
+
+	var/obj/item/inserted = usr.get_active_held_item()
+	if(inserted)
+		storage_master.attempt_insert(inserted, usr)
+
 	return TRUE
 
 /atom/movable/screen/throw_catch
@@ -608,53 +613,6 @@
 /atom/movable/screen/mood/attack_tk()
 	return
 
-/atom/movable/screen/splash
-	icon = 'icons/blanks/blank_title.png'
-	icon_state = ""
-	screen_loc = "1,1"
-	plane = SPLASHSCREEN_PLANE
-	var/client/holder
-
-INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
-
-/atom/movable/screen/splash/Initialize(mapload, client/C, visible, use_previous_title)
-	. = ..()
-	if(!istype(C))
-		return
-
-	holder = C
-
-	if(!visible)
-		alpha = 0
-
-	if(!use_previous_title)
-		if(SStitle.icon)
-			icon = SStitle.icon
-	else
-		if(!SStitle.previous_icon)
-			return INITIALIZE_HINT_QDEL
-		icon = SStitle.previous_icon
-
-	holder.screen += src
-
-/atom/movable/screen/splash/proc/Fade(out, qdel_after = TRUE)
-	if(QDELETED(src))
-		return
-	if(out)
-		animate(src, alpha = 0, time = 30)
-	else
-		alpha = 0
-		animate(src, alpha = 255, time = 30)
-	if(qdel_after)
-		QDEL_IN(src, 30)
-
-/atom/movable/screen/splash/Destroy()
-	if(holder)
-		holder.screen -= src
-		holder = null
-	return ..()
-
-
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent
 
@@ -675,7 +633,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 
 /atom/movable/screen/combo/proc/clear_streak()
 	animate(src, alpha = 0, 2 SECONDS, SINE_EASING)
-	timerid = addtimer(CALLBACK(src, .proc/reset_icons), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(reset_icons)), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /atom/movable/screen/combo/proc/reset_icons()
 	cut_overlays()
@@ -688,7 +646,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 	alpha = 255
 	if(!streak)
 		return ..()
-	timerid = addtimer(CALLBACK(src, .proc/clear_streak), time, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(clear_streak)), time, TIMER_UNIQUE | TIMER_STOPPABLE)
 	icon_state = "combo"
 	for(var/i = 1; i <= length(streak); ++i)
 		var/intent_text = copytext(streak, i, i + 1)

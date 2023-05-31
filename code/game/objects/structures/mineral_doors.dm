@@ -33,10 +33,6 @@
 	var/obj/item/stack/initialized_mineral = new sheetType // Okay this kinda sucks.
 	set_custom_materials(initialized_mineral.mats_per_unit, sheetAmount)
 	qdel(initialized_mineral)
-	//air_update_turf(TRUE, TRUE)
-
-/obj/structure/mineral_door/Destroy()
-	. = ..()
 	zas_update_loc()
 
 /obj/structure/mineral_door/Move()
@@ -106,7 +102,7 @@
 	isSwitchingStates = FALSE
 
 	if(close_delay != -1)
-		addtimer(CALLBACK(src, .proc/Close), close_delay)
+		addtimer(CALLBACK(src, PROC_REF(Close)), close_delay)
 
 /obj/structure/mineral_door/proc/Close()
 	if(isSwitchingStates || !door_opened)

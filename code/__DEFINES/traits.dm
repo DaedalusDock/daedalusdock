@@ -229,8 +229,17 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DEPRESSION "depression"
 #define TRAIT_JOLLY "jolly"
 #define TRAIT_NOCRITDAMAGE "no_crit"
-#define TRAIT_NOSLIPWATER "noslip_water"
-#define TRAIT_NOSLIPALL "noslip_all"
+
+// Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
+#define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
+/// Stops the mob from slipping on permafrost ice (not any other ice) (but anything with [SLIDE_ICE] set)
+#define TRAIT_NO_SLIP_ICE "noslip_ice"
+/// Stop the mob from sliding around from being slipped, but not the slip part.
+/// DOES NOT include ice slips.
+#define TRAIT_NO_SLIP_SLIDE "noslip_slide"
+/// Stops all slipping and sliding from ocurring
+#define TRAIT_NO_SLIP_ALL "noslip_all"
+
 #define TRAIT_NODEATH "nodeath"
 #define TRAIT_NOHARDCRIT "nohardcrit"
 #define TRAIT_NOSOFTCRIT "nosoftcrit"
@@ -260,8 +269,16 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MESON_VISION "meson_vision"
 /// Gives us Night vision
 #define TRAIT_TRUE_NIGHT_VISION "true_night_vision"
+
 /// Negates our gravity, letting us move normally on floors in 0-g
 #define TRAIT_NEGATES_GRAVITY "negates_gravity"
+/// We are ignoring gravity
+#define TRAIT_IGNORING_GRAVITY "ignores_gravity"
+/// Sources for TRAIT_IGNORING_GRAVITY
+#define IGNORING_GRAVITY_NEGATION "ignoring_gravity_negation"
+/// We have some form of forced gravity acting on us
+#define TRAIT_FORCED_GRAVITY "forced_gravity"
+
 /// Lets us scan reagents
 #define TRAIT_REAGENT_SCANNER "reagent_scanner"
 /// Lets us scan machine parts and tech unlocks
@@ -349,8 +366,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PLASMABURNT "plasma_burnt"
 /// Addictions don't tick down, basically they're permanently addicted
 #define TRAIT_HOPELESSLY_ADDICTED "hopelessly_addicted"
-/// This mob has a cult halo.
-#define TRAIT_CULT_HALO "cult_halo"
 /// Their eyes glow an unnatural red colour. Currently used to set special examine text on humans. Does not guarantee the mob's eyes are coloured red, nor that there is any visible glow on their character sprite.
 #define TRAIT_UNNATURAL_RED_GLOWY_EYES "unnatural_red_glowy_eyes"
 /// Their eyes are bloodshot. Currently used to set special examine text on humans. Examine text is overridden by TRAIT_UNNATURAL_RED_GLOWY_EYES.
@@ -380,7 +395,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// This mobs bodyparts are invisible but still clickable.
 #define TRAIT_INVISIBLE_MAN "invisible_man"
 /// Don't draw external organs/species features like wings, horns, frills and stuff
-#define TRAIT_HIDE_EXTERNAL_ORGANS "hide_external_organs"
+#define TRAIT_HIDE_COSMETIC_ORGANS "hide_cosmetic_organs"
 ///When people are floating from zero-grav or something, we can move around freely!
 #define TRAIT_FREE_FLOAT_MOVEMENT "free_float_movement"
 // You can stare into the abyss, but it does not stare back.
@@ -427,7 +442,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 // example. Through years of training/abuse, their livers have taken
 // a liking to those substances. Steal a sec officer's liver, eat donuts good.
 
-// These traits are applied to /obj/item/organ/internal/liver
+// These traits are applied to /obj/item/organ/liver
 #define TRAIT_LAW_ENFORCEMENT_METABOLISM "law_enforcement_metabolism"
 #define TRAIT_CULINARY_METABOLISM "culinary_metabolism"
 #define TRAIT_COMEDY_METABOLISM "comedy_metabolism"
@@ -498,6 +513,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HEARING_SENSITIVE "hearing_sensitive"
 ///every object that is currently the active storage of some client mob has this trait
 #define TRAIT_ACTIVE_STORAGE "active_storage"
+///Non-atmos radio listeners
+#define TRAIT_RADIO_LISTENER_NONATMOS "radio_listener_nonatmos"
+///Atmos (FREQ_ATMOS_CONTROL) listeners
+#define TRAIT_RADIO_LISTENER_ATMOS "radio_listener_atmos"
 
 /// Climbable trait, given and taken by the climbable element when added or removed. Exists to be easily checked via HAS_TRAIT().
 #define TRAIT_CLIMBABLE "trait_climbable"
@@ -785,8 +804,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define HANDCUFFED_TRAIT "handcuffed"
 /// Trait granted by [/obj/item/warpwhistle]
 #define WARPWHISTLE_TRAIT "warpwhistle"
-///Turf trait for when a turf is transparent
-#define TURF_Z_TRANSPARENT_TRAIT "turf_z_transparent"
 /// Trait applied by [/datum/component/soulstoned]
 #define SOULSTONE_TRAIT "soulstone"
 /// Trait applied to slimes by low temperature
@@ -824,7 +841,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
-* granted/removed by [/obj/item/organ/internal/tongue]
+* granted/removed by [/obj/item/organ/tongue]
 * Used for ensuring that carbons without tongues cannot taste anything
 * so it is added in Initialize, and then removed when a tongue is inserted
 * and readded when a tongue is removed.
@@ -849,7 +866,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define STATION_TRAIT_UNIQUE_AI "station_trait_unique_ai"
 #define STATION_TRAIT_CARP_INFESTATION "station_trait_carp_infestation"
 #define STATION_TRAIT_PREMIUM_INTERNALS "station_trait_premium_internals"
-#define STATION_TRAIT_LATE_ARRIVALS "station_trait_late_arrivals"
 #define STATION_TRAIT_RANDOM_ARRIVALS "station_trait_random_arrivals"
 #define STATION_TRAIT_HANGOVER "station_trait_hangover"
 #define STATION_TRAIT_FILLED_MAINT "station_trait_filled_maint"
@@ -926,3 +942,4 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define LEFT_ARM_TRAIT "left_arm"
 #define RIGHT_LEG_TRAIT "right_leg"
 #define LEFT_LEG_TRAIT "left_leg"
+

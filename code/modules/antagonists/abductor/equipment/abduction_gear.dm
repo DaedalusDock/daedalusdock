@@ -321,7 +321,7 @@
 /obj/item/abductor/mind_device/proc/mind_control(atom/target, mob/living/user)
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
-		var/obj/item/organ/internal/heart/gland/G = C.getorganslot("heart")
+		var/obj/item/organ/heart/gland/G = C.getorganslot("heart")
 		if(!istype(G))
 			to_chat(user, span_warning("Your target does not have an experimental gland!"))
 			return
@@ -441,7 +441,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	inhand_icon_state = "wonderprod"
 
 	force = 7
-	wound_bonus = FALSE
 
 	actions_types = list(/datum/action/item_action/toggle_mode)
 
@@ -590,7 +589,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		species = span_notice("[H.dna.species.name]")
 		if(L.mind && L.mind.has_antag_datum(/datum/antagonist/changeling))
 			species = span_warning("Changeling lifeform")
-		var/obj/item/organ/internal/heart/gland/temp = locate() in H.internal_organs
+		var/obj/item/organ/heart/gland/temp = locate() in H.organs
 		if(temp)
 			helptext = span_warning("Experimental gland detected!")
 		else
@@ -670,7 +669,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	user.visible_message(span_notice("[user] places down [src] and activates it."), span_notice("You place down [src] and activate it."))
 	user.dropItemToGround(src)
 	playsound(src, 'sound/machines/terminal_alert.ogg', 50)
-	addtimer(CALLBACK(src, .proc/try_spawn_machine), 30)
+	addtimer(CALLBACK(src, PROC_REF(try_spawn_machine)), 30)
 
 /obj/item/abductor_machine_beacon/proc/try_spawn_machine()
 	var/viable = FALSE
@@ -819,7 +818,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 /obj/structure/table/optable/abductor/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 

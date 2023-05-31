@@ -20,7 +20,6 @@
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
 	material_flags = MATERIAL_EFFECTS
-	greyscale_config = /datum/greyscale_config/low_wall
 	/// Material type of the plating
 	var/plating_material = /datum/material/iron
 	/// Material type of the reinforcement
@@ -33,6 +32,14 @@
 	/// Material Set Name
 	var/matset_name
 
+	//These are set by the material, do not touch!!!
+	var/material_color
+	var/shiny_wall
+
+	var/shiny_stripe
+	var/stripe_icon
+	//Ok you can touch vars again :)
+
 	/// Typecache of the neighboring objects that we want to neighbor stripe overlay with
 	var/static/list/neighbor_typecache
 
@@ -41,24 +48,13 @@
 	//This has to be stripped before the supercall so it doesn't end up in atom_colours.
 	. = ..()
 	zas_update_loc()
-	set_wall_information(plating_material, reinf_material, wall_paint, stripe_paint)
-
-/obj/structure/falsewall/update_greyscale()
-	greyscale_colors = get_wall_color()
-	return ..()
+	set_materials(plating_material, reinf_material)
 
 /obj/structure/falsewall/proc/get_wall_color()
-	var/wall_color = wall_paint
-	if(!wall_color)
-		var/datum/material/plating_mat_ref = GET_MATERIAL_REF(plating_material)
-		wall_color = plating_mat_ref.wall_color
-	return wall_color
+	return wall_paint || material_color
 
 /obj/structure/falsewall/proc/get_stripe_color()
-	var/stripe_color = stripe_paint
-	if(!stripe_color)
-		stripe_color = get_wall_color()
-	return stripe_color
+	return stripe_paint || material_color
 
 /obj/structure/falsewall/update_name()
 	. = ..()
@@ -78,7 +74,7 @@
 		for(var/mob/living/obstacle in srcturf) //Stop people from using this as a shield
 			opening = FALSE
 			return
-	addtimer(CALLBACK(src, /obj/structure/falsewall/proc/toggle_open), 5)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/falsewall, toggle_open)), 5)
 
 /obj/structure/falsewall/proc/toggle_open()
 	if(!QDELETED(src))
@@ -115,16 +111,29 @@
 /// Partially copypasted from /turf/closed/wall
 /obj/structure/falsewall/update_overlays()
 	//Updating the unmanaged wall overlays (unmanaged for optimisations)
-	overlays.Cut()
+	overlays.len = 0
+	var/list/new_overlays = list()
 	if(density && !opening)
-		if(stripe_paint)
-			var/datum/material/plating_mat_ref = GET_MATERIAL_REF(plating_material)
-			var/icon/stripe_icon = SSgreyscale.GetColoredIconByType(plating_mat_ref.wall_stripe_greyscale_config, get_stripe_color())
-			var/mutable_appearance/smoothed_stripe = mutable_appearance(stripe_icon, icon_state)
-			overlays += smoothed_stripe
+		color = wall_paint || material_color
+
+		if(shiny_wall)
+			var/image/shine = image(icon, "shine-[smoothing_junction]")
+			shine.appearance_flags = RESET_COLOR
+			new_overlays += shine
+
+		var/image/smoothed_stripe = image(stripe_icon, icon_state)
+		smoothed_stripe.appearance_flags = RESET_COLOR
+		smoothed_stripe.color = stripe_paint || material_color
+		new_overlays += smoothed_stripe
+		if(shiny_stripe)
+			var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
+			stripe_shine.appearance_flags = RESET_COLOR
+			new_overlays += stripe_shine
+
 		var/neighbor_stripe = NONE
 		if(!neighbor_typecache)
 			neighbor_typecache = typecacheof(list(/obj/machinery/door/airlock, /obj/structure/window/reinforced/fulltile, /obj/structure/window/fulltile, /obj/structure/window/reinforced/shuttle, /obj/machinery/door/poddoor))
+
 		for(var/cardinal in GLOB.cardinals)
 			var/turf/step_turf = get_step(src, cardinal)
 			if(!can_area_smooth(step_turf))
@@ -133,10 +142,18 @@
 				if(neighbor_typecache[movable_thing.type])
 					neighbor_stripe ^= cardinal
 					break
+
 		if(neighbor_stripe)
-			var/icon/neighbor_icon = SSgreyscale.GetColoredIconByType(/datum/greyscale_config/wall_neighbor_stripe, get_stripe_color())
-			var/mutable_appearance/neighb_stripe_appearace = mutable_appearance(neighbor_icon, "stripe-[neighbor_stripe]")
-			overlays += neighb_stripe_appearace
+			var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
+			neighb_stripe_overlay.appearance_flags = RESET_COLOR
+			neighb_stripe_overlay.color = stripe_paint || material_color
+			new_overlays += neighb_stripe_overlay
+			if(shiny_wall)
+				var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
+				shine.appearance_flags = RESET_COLOR
+				new_overlays += shine
+
+		overlays = new_overlays
 		//And letting anything else that may want to render on the wall to work (ie components)
 	return ..()
 
@@ -181,7 +198,6 @@
 /// Painfully copypasted from /turf/closed/wall
 /obj/structure/falsewall/proc/paint_wall(new_paint)
 	wall_paint = new_paint
-	update_greyscale()
 	update_appearance()
 
 /// Painfully copypasted from /turf/closed/wall
@@ -196,18 +212,23 @@
 	set_materials(plating_mat, reinf_mat)
 
 /// Painfully copypasted from /turf/closed/wall (Twice!)
-/obj/structure/falsewall/proc/set_materials(plating_mat, reinf_mat)
-	var/datum/material/plating_mat_ref
-	if(plating_mat)
-		plating_mat_ref = GET_MATERIAL_REF(plating_mat)
+/obj/structure/falsewall/proc/set_materials(plating_mat, reinf_mat, update_appearance = TRUE)
+	var/datum/material/plating_mat_ref = GET_MATERIAL_REF(plating_mat)
 	var/datum/material/reinf_mat_ref
 	if(reinf_mat)
 		reinf_mat_ref = GET_MATERIAL_REF(reinf_mat)
 
 	if(reinf_mat_ref)
-		greyscale_config = plating_mat_ref.reinforced_wall_greyscale_config
+		icon = plating_mat_ref.reinforced_wall_icon
+		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
+		material_color = plating_mat_ref.wall_color
 	else
-		greyscale_config = plating_mat_ref.wall_greyscale_config
+		icon = plating_mat_ref.wall_icon
+		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
+		material_color = plating_mat_ref.wall_color
+
+	shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
+	stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
@@ -220,8 +241,8 @@
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
 	matset_name = name
 
-	update_greyscale()
-	update_appearance()
+	if(update_appearance)
+		update_appearance()
 
 /obj/structure/falsewall/attackby(obj/item/W, mob/user, params)
 	if(opening)

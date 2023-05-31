@@ -49,7 +49,7 @@
 
 /datum/lift_master/tram/add_lift_platforms(obj/structure/industrial_lift/new_lift_platform)
 	. = ..()
-	RegisterSignal(new_lift_platform, COMSIG_MOVABLE_BUMP, .proc/gracefully_break)
+	RegisterSignal(new_lift_platform, COMSIG_MOVABLE_BUMP, PROC_REF(gracefully_break))
 
 /datum/lift_master/tram/check_for_landmarks(obj/structure/industrial_lift/tram/new_lift_platform)
 	. = ..()
@@ -119,7 +119,7 @@
 
 /datum/lift_master/tram/process(delta_time)
 	if(!travel_distance)
-		addtimer(CALLBACK(src, .proc/unlock_controls), 3 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(unlock_controls)), 3 SECONDS)
 		return PROCESS_KILL
 	else if(world.time >= next_move)
 		var/start_time = TICK_USAGE

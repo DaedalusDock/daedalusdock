@@ -84,7 +84,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -121,8 +121,6 @@
 	tool_behaviour = TOOL_DRILL
 	toolspeed = 1
 	sharpness = SHARP_POINTY
-	wound_bonus = 10
-	bare_wound_bonus = 10
 
 /obj/item/surgicaldrill/Initialize(mapload)
 	. = ..()
@@ -130,7 +128,7 @@
 
 /obj/item/surgicaldrill/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] rams [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
-	addtimer(CALLBACK(user, /mob/living/carbon.proc/gib, null, null, TRUE, TRUE), 25)
+	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), null, null, TRUE, TRUE), 25)
 	user.SpinAnimation(3, 10)
 	playsound(user, 'sound/machines/juicer.ogg', 20, TRUE)
 	return (MANUAL_SUICIDE)
@@ -164,8 +162,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SCALPEL
 	toolspeed = 1
-	wound_bonus = 10
-	bare_wound_bonus = 15
 
 /obj/item/scalpel/Initialize(mapload)
 	. = ..()
@@ -203,8 +199,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
-	wound_bonus = 15
-	bare_wound_bonus = 10
 
 /obj/item/circular_saw/Initialize(mapload)
 	. = ..()
@@ -283,7 +277,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -324,7 +318,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -376,7 +370,7 @@
 		return
 
 	var/candidate_name
-	var/obj/item/organ/external/tail_snip_candidate
+	var/obj/item/organ/tail_snip_candidate
 	var/obj/item/bodypart/limb_snip_candidate
 
 	if(user.zone_selected == BODY_ZONE_PRECISE_GROIN)
@@ -417,8 +411,8 @@
 	for(var/obj/item/bodypart/thing in user.bodyparts)
 		if(thing.body_part == CHEST)
 			continue
-		addtimer(CALLBACK(thing, /obj/item/bodypart/.proc/dismember), timer)
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/playsound, user, 'sound/weapons/bladeslice.ogg', 70), timer)
+		addtimer(CALLBACK(thing, TYPE_PROC_REF(/obj/item/bodypart, dismember)), timer)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), user, 'sound/weapons/bladeslice.ogg', 70), timer)
 		timer += 1 SECONDS
 	sleep(timer)
 	return BRUTELOSS

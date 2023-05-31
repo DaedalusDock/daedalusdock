@@ -27,8 +27,6 @@
 	obj_damage = 60
 	melee_damage_lower = 15 // i know it's like half what it used to be, but bears cause bleeding like crazy now so it works out
 	melee_damage_upper = 15
-	wound_bonus = -5
-	bare_wound_bonus = 10 // BEAR wound bonus am i right
 	sharpness = SHARP_EDGED
 	attack_verb_continuous = "claws"
 	attack_verb_simple = "claw"
@@ -94,7 +92,6 @@
 	butcher_results = list(/obj/item/food/meat/slab/bear = 5, /obj/item/clothing/head/bearpelt = 1, /obj/item/bear_armor = 1)
 	melee_damage_lower = 18
 	melee_damage_upper = 20
-	wound_bonus = 0
 	armour_penetration = 20
 	health = 120
 	maxHealth = 120
@@ -121,7 +118,6 @@
 		A.armour_penetration += 20
 		A.melee_damage_lower += 3
 		A.melee_damage_upper += 5
-		A.wound_bonus += 5
 		A.update_icons()
 		to_chat(user, span_info("You strap the armor plating to [A] and sharpen [A.p_their()] claws with the nail filer. This was a great idea."))
 		qdel(src)
@@ -142,7 +138,7 @@
 	response_harm_simple = "take a bite out of"
 	attacked_sound = 'sound/items/eatfood.ogg'
 	deathmessage = "loses its false life and collapses!"
-	butcher_results = list(/obj/item/food/butter = 6, /obj/item/food/meat/slab = 3, /obj/item/organ/internal/brain = 1, /obj/item/organ/internal/heart = 1)
+	butcher_results = list(/obj/item/food/butter = 6, /obj/item/food/meat/slab = 3, /obj/item/organ/brain = 1, /obj/item/organ/heart = 1)
 	attack_sound = 'sound/weapons/slap.ogg'
 	attack_vis_effect = ATTACK_EFFECT_DISARM
 	attack_verb_simple = "slap"
@@ -165,7 +161,7 @@
 
 /mob/living/simple_animal/hostile/bear/butter/CheckParts(list/parts) //Borrowed code from Cak, allows the brain used to actually control the bear.
 	..()
-	var/obj/item/organ/internal/brain/B = locate(/obj/item/organ/internal/brain) in contents
+	var/obj/item/organ/brain/B = locate(/obj/item/organ/brain) in contents
 	if(!B || !B.brainmob || !B.brainmob.mind)
 		return
 	B.brainmob.mind.transfer_to(src)

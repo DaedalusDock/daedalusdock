@@ -4,11 +4,11 @@
 SUBSYSTEM_DEF(throwing)
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
-	wait = 1
-	flags = SS_NO_INIT|SS_KEEP_TIMING|SS_TICKER
+	wait = SS_TICKER
+	flags = SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
-	var/list/currentrun
+	var/list/currentrun = list()
 	var/list/processing = list()
 
 /datum/controller/subsystem/throwing/stat_entry(msg)
@@ -37,8 +37,6 @@ SUBSYSTEM_DEF(throwing)
 
 		if (MC_TICK_CHECK)
 			return
-
-	currentrun = null
 
 /datum/thrownthing
 	///Defines the atom that has been thrown (Objects and Mobs, mostly.)
@@ -92,7 +90,7 @@ SUBSYSTEM_DEF(throwing)
 /datum/thrownthing/New(thrownthing, target, init_dir, maxrange, speed, thrower, diagonals_first, force, gentle, callback, target_zone)
 	. = ..()
 	src.thrownthing = thrownthing
-	RegisterSignal(thrownthing, COMSIG_PARENT_QDELETING, .proc/on_thrownthing_qdel)
+	RegisterSignal(thrownthing, COMSIG_PARENT_QDELETING, PROC_REF(on_thrownthing_qdel))
 	src.target_turf = get_turf(target)
 	if(target_turf != target)
 		src.initial_target = WEAKREF(target)

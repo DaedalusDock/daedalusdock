@@ -263,7 +263,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	//No screams in space, unless you're next to someone.
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/environment = T.return_air()
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
 	var/pressure = (environment)? environment.returnPressure() : 0
 	if(pressure < SOUND_MINIMUM_PRESSURE && !HAS_TRAIT(H, TRAIT_SIGN_LANG))
 		message_range = 1
@@ -418,10 +418,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(M.client && (!M.client.prefs.read_preference(/datum/preference/toggle/enable_runechat) || (SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES))))
 			speech_bubble_recipients.Add(M.client)
 	var/image/I = image('icons/mob/talk.dmi', src, "[bubble_type][say_test(message)]", FLY_LAYER)
-	I.plane = ABOVE_GAME_PLANE
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	//INVOKE_ASYNC(GLOBAL_PROC, /.proc/flick_overlay, I, speech_bubble_recipients, 30) //ORIGINAL
-	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speechbubble, I, speech_bubble_recipients, 30) //PARIAH EDIT
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(animate_speechbubble), I, speech_bubble_recipients, 30)
 
 /mob/proc/binarycheck()
 	return FALSE

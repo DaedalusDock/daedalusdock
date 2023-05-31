@@ -12,7 +12,7 @@
 /datum/ai_behavior/battle_screech/perform(delta_time, datum/ai_controller/controller)
 	. = ..()
 	var/mob/living/living_pawn = controller.pawn
-	INVOKE_ASYNC(living_pawn, /mob.proc/emote, pick(screeches))
+	INVOKE_ASYNC(living_pawn, TYPE_PROC_REF(/mob, emote), pick(screeches))
 	finish_action(controller, TRUE)
 
 ///Moves to target then finishes
@@ -53,7 +53,8 @@
 		for(var/obj/item/bodypart/bodypart_to_break in carbon_batman.bodyparts)
 			if(bodypart_to_break.body_zone == BODY_ZONE_HEAD)
 				continue
-			bodypart_to_break.receive_damage(brute = 15, wound_bonus = 35)
+			bodypart_to_break.receive_damage(brute = 15)
+			bodypart_to_break.break_bones()
 	else
 		batman.adjustBruteLoss(150)
 

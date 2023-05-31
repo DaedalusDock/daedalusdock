@@ -190,10 +190,6 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 		/obj/item/storage/belt/utility = 1,
 		) = 8,
 
-	list(//strange objects
-		/obj/item/relic = 5,
-		) = 8,
-
 	list(//construction and crafting
 		/obj/item/beacon = 1,
 		/obj/item/paper/fluff/stations/soap = 1, //recipes count as crafting.

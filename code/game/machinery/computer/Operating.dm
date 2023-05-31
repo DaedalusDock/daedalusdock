@@ -3,40 +3,26 @@
 
 /obj/machinery/computer/operating
 	name = "operating computer"
-	desc = "Monitors patient vitals and displays surgery steps. Can be loaded with surgery disks to perform experimental procedures. Automatically syncs to operating tables within its line of sight for surgical tech advancement."
+	desc = "Monitors patient vitals and displays surgery steps. Provides doctors with advanced surgeries."
 	icon_screen = "crew"
 	icon_keyboard = "med_key"
 	circuit = /obj/item/circuitboard/computer/operating
 
 	var/obj/structure/table/optable/table
 	var/list/advanced_surgeries = list()
-	var/datum/techweb/linked_techweb
 	light_color = LIGHT_COLOR_BLUE
 
-	var/datum/component/experiment_handler/experiment_handler
-
 /obj/machinery/computer/operating/Initialize(mapload)
-	..()
-	linked_techweb = SSresearch.science_tech
-	find_table()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/machinery/computer/operating/LateInitialize()
 	. = ..()
-
-	experiment_handler = AddComponent( \
-		/datum/component/experiment_handler, \
-		allowed_experiments = list(/datum/experiment/dissection), \
-		config_flags = EXPERIMENT_CONFIG_ALWAYS_ACTIVE, \
-		config_mode = EXPERIMENT_CONFIG_ALTCLICK, \
-	)
+	find_table()
+	for(var/datum/design/surgery/D as anything in subtypesof(/datum/design/surgery))
+		advanced_surgeries += initial(D.surgery)
 
 /obj/machinery/computer/operating/Destroy()
 	for(var/direction in GLOB.alldirs)
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table && table.computer == src)
 			table.computer = null
-	QDEL_NULL(experiment_handler)
 	. = ..()
 
 /obj/machinery/computer/operating/attackby(obj/item/O, mob/user, params)
@@ -45,17 +31,10 @@
 			span_notice("You begin to load a surgery protocol from \the [O]..."), \
 			span_hear("You hear the chatter of a floppy drive."))
 		var/obj/item/disk/surgery/D = O
-		if(do_after(user, src, 1 SECONDS))
+		if(do_after(user, src, 1 SECONDS, DO_PUBLIC, display = O))
 			advanced_surgeries |= D.surgeries
 		return TRUE
 	return ..()
-
-/obj/machinery/computer/operating/proc/sync_surgeries()
-	for(var/i in linked_techweb.researched_designs)
-		var/datum/design/surgery/D = SSresearch.techweb_design_by_id(i)
-		if(!istype(D))
-			continue
-		advanced_surgeries |= D.surgery
 
 /obj/machinery/computer/operating/proc/find_table()
 	for(var/direction in GLOB.alldirs)
@@ -77,8 +56,7 @@
 /obj/machinery/computer/operating/ui_data(mob/user)
 	var/list/data = list()
 	var/list/surgeries = list()
-	for(var/X in advanced_surgeries)
-		var/datum/surgery/S = X
+	for(var/datum/surgery/S as anything in advanced_surgeries)
 		var/list/surgery = list()
 		surgery["name"] = initial(S.name)
 		surgery["desc"] = initial(S.desc)
@@ -139,19 +117,6 @@
 				"alt_chems_needed" = alt_chems_needed
 			))
 	return data
-
-
-
-/obj/machinery/computer/operating/ui_act(action, params)
-	. = ..()
-	if(.)
-		return
-	switch(action)
-		if("sync")
-			sync_surgeries()
-		if("open_experiments")
-			experiment_handler.ui_interact(usr)
-	return TRUE
 
 #undef MENU_OPERATION
 #undef MENU_SURGERIES

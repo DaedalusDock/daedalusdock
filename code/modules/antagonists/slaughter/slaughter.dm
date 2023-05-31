@@ -55,13 +55,11 @@
 	obj_damage = 50
 	melee_damage_lower = 15 // reduced from 30 to 15 with wounds since they get big buffs to slicing wounds
 	melee_damage_upper = 15
-	wound_bonus = -10
-	bare_wound_bonus = 0
 	sharpness = SHARP_EDGED
 
 	loot = list(/obj/effect/decal/cleanable/blood, \
 				/obj/effect/decal/cleanable/blood/innards, \
-				/obj/item/organ/internal/heart/demon)
+				/obj/item/organ/heart/demon)
 	del_on_death = 1
 
 	var/crawl_type = /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon
@@ -71,16 +69,14 @@
 	var/slam_cooldown = 0
 	/// How many times we have hit humanoid targets since we last bloodcrawled, scaling wounding power
 	var/current_hitstreak = 0
-	/// How much both our wound_bonus and bare_wound_bonus go up per hitstreak hit
-	var/wound_bonus_per_hit = 5
-	/// How much our wound_bonus hitstreak bonus caps at (peak demonry)
-	var/wound_bonus_hitstreak_max = 12
+	/// THe max hitstreak
+	var/hitstreak_max = 10
 
 /mob/living/simple_animal/hostile/imp/slaughter/Initialize(mapload)
 	. = ..()
 	var/datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/crawl = new crawl_type(src)
 	crawl.Grant(src)
-	RegisterSignal(src, list(COMSIG_MOB_ENTER_JAUNT, COMSIG_MOB_AFTER_EXIT_JAUNT), .proc/on_crawl)
+	RegisterSignal(src, list(COMSIG_MOB_ENTER_JAUNT, COMSIG_MOB_AFTER_EXIT_JAUNT), PROC_REF(on_crawl))
 
 /// Whenever we enter or exit blood crawl, reset our bonus and hitstreaks.
 /mob/living/simple_animal/hostile/imp/slaughter/proc/on_crawl(datum/source)
@@ -89,12 +85,10 @@
 	// Grant us a speed boost if we're on the mortal plane
 	if(isturf(loc))
 		add_movespeed_modifier(/datum/movespeed_modifier/slaughter)
-		addtimer(CALLBACK(src, .proc/remove_movespeed_modifier, /datum/movespeed_modifier/slaughter), 6 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, PROC_REF(remove_movespeed_modifier), /datum/movespeed_modifier/slaughter), 6 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
 
 	// Reset our streaks
 	current_hitstreak = 0
-	wound_bonus = initial(wound_bonus)
-	bare_wound_bonus = initial(bare_wound_bonus)
 
 /// Performs the classic slaughter demon bodyslam on the attack_target. Yeets them a screen away.
 /mob/living/simple_animal/hostile/imp/slaughter/proc/bodyslam(atom/attack_target)
@@ -111,7 +105,7 @@
 
 	face_atom(attack_target)
 	var/mob/living/victim = attack_target
-	victim.take_bodypart_damage(brute=20, wound_bonus=wound_bonus) // don't worry, there's more punishment when they hit something
+	victim.take_bodypart_damage(brute=20) // don't worry, there's more punishment when they hit something
 	visible_message(span_danger("[src] slams into [victim] with monstrous strength!"), span_danger("You slam into [victim] with monstrous strength!"), ignored_mobs=victim)
 	to_chat(victim, span_userdanger("[src] slams into you with monstrous strength, sending you flying like a ragdoll!"))
 	var/turf/yeet_target = get_edge_target_turf(victim, dir)
@@ -129,10 +123,8 @@
 
 	if(iscarbon(attack_target))
 		var/mob/living/carbon/target = attack_target
-		if(target.stat != DEAD && target.mind && current_hitstreak < wound_bonus_hitstreak_max)
+		if(target.stat != DEAD && target.mind && current_hitstreak < hitstreak_max)
 			current_hitstreak++
-			wound_bonus += wound_bonus_per_hit
-			bare_wound_bonus += wound_bonus_per_hit
 
 	return ..()
 
@@ -145,18 +137,18 @@
 	random_icon_states = null
 
 //The loot from killing a slaughter demon - can be consumed to allow the user to blood crawl
-/obj/item/organ/internal/heart/demon
+/obj/item/organ/heart/demon
 	name = "demon heart"
 	desc = "Still it beats furiously, emanating an aura of utter hate."
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "demon_heart-on"
 	decay_factor = 0
 
-/obj/item/organ/internal/heart/demon/ComponentInitialize()
+/obj/item/organ/heart/demon/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
-/obj/item/organ/internal/heart/demon/attack(mob/M, mob/living/carbon/user, obj/target)
+/obj/item/organ/heart/demon/attack(mob/M, mob/living/carbon/user, obj/target)
 	if(M != user)
 		return ..()
 	user.visible_message(span_warning(
@@ -177,18 +169,21 @@
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	src.Insert(user) //Consuming the heart literally replaces your heart with a demon heart. H A R D C O R E
 
-/obj/item/organ/internal/heart/demon/Insert(mob/living/carbon/M, special = 0)
-	..()
+/obj/item/organ/heart/demon/Insert(mob/living/carbon/M, special = 0)
+	. = ..()
+	if(!.)
+		return
+
 	// Gives a non-eat-people crawl to the new owner
 	var/datum/action/cooldown/spell/jaunt/bloodcrawl/crawl = new(M)
 	crawl.Grant(M)
 
-/obj/item/organ/internal/heart/demon/Remove(mob/living/carbon/M, special = 0)
+/obj/item/organ/heart/demon/Remove(mob/living/carbon/M, special = 0)
 	..()
 	var/datum/action/cooldown/spell/jaunt/bloodcrawl/crawl = locate() in M.actions
 	qdel(crawl)
 
-/obj/item/organ/internal/heart/demon/Stop()
+/obj/item/organ/heart/demon/Stop()
 	return 0 // Always beating.
 
 /mob/living/simple_animal/hostile/imp/slaughter/laughter

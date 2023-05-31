@@ -29,7 +29,7 @@
 		if(FOOTSTEP_MOB_HUMAN)
 			if(!ishuman(target))
 				return ELEMENT_INCOMPATIBLE
-			RegisterSignal(target, COMSIG_MOVABLE_MOVED, .proc/play_humanstep)
+			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_humanstep))
 			steps_for_living[target] = 0
 			return
 		if(FOOTSTEP_MOB_CLAW)
@@ -44,13 +44,13 @@
 			footstep_sounds = 'sound/effects/footstep/slime1.ogg'
 		if(FOOTSTEP_OBJ_MACHINE)
 			footstep_sounds = 'sound/effects/bang.ogg'
-			RegisterSignal(target, COMSIG_MOVABLE_MOVED, .proc/play_simplestep_machine)
+			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep_machine))
 			return
 		if(FOOTSTEP_OBJ_ROBOT)
 			footstep_sounds = 'sound/effects/tank_treads.ogg'
-			RegisterSignal(target, COMSIG_MOVABLE_MOVED, .proc/play_simplestep_machine)
+			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep_machine))
 			return
-	RegisterSignal(target, COMSIG_MOVABLE_MOVED, .proc/play_simplestep)
+	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep))
 	steps_for_living[target] = 0
 
 /datum/element/footstep/Detach(atom/movable/source)
@@ -134,9 +134,9 @@
 	if(!source_loc)
 		return
 
+
 	//cache for sanic speed (lists are references anyways)
 	var/static/list/footstep_sounds = GLOB.footstep
-	///list returned by playsound() filled by client mobs who heard the footstep. given to play_fov_effect()
 	var/list/heard_clients
 
 	if ((source.wear_suit?.body_parts_covered | source.w_uniform?.body_parts_covered | source.shoes?.body_parts_covered) & FEET)
@@ -159,7 +159,6 @@
 
 	if(heard_clients)
 		play_fov_effect(source, 5, "footstep", direction, ignore_self = TRUE, override_list = heard_clients)
-
 
 ///Prepares a footstep for machine walking
 /datum/element/footstep/proc/play_simplestep_machine(atom/movable/source)

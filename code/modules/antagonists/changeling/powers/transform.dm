@@ -160,7 +160,7 @@
 		disguise_image.overlays = snap.overlays
 		disguises[current_profile.name] = disguise_image
 
-	var/chosen_name = show_radial_menu(user, user, disguises, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 40, require_near = TRUE, tooltips = TRUE)
+	var/chosen_name = show_radial_menu(user, user, disguises, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 40, require_near = TRUE, tooltips = TRUE)
 	if(!chosen_name)
 		return
 
@@ -168,10 +168,6 @@
 		for(var/slot in slot2type)
 			if(istype(user.vars[slot], slot2type[slot]))
 				qdel(user.vars[slot])
-		for(var/i in user.all_scars)
-			var/datum/scar/iter_scar = i
-			if(iter_scar.fake)
-				qdel(iter_scar)
 		return
 
 	var/datum/changeling_profile/prof = get_dna(chosen_name)

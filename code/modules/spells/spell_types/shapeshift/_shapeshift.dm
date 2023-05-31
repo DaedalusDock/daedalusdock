@@ -45,7 +45,7 @@
 		cast_on,
 		cast_on,
 		shape_names_to_image,
-		custom_check = CALLBACK(src, .proc/check_menu, cast_on),
+		custom_check = CALLBACK(src, PROC_REF(check_menu), cast_on),
 		radius = 38,
 	)
 
@@ -166,11 +166,11 @@
 		var/damage_percent = (stored.maxHealth - stored.health) / stored.maxHealth;
 		var/damapply = damage_percent * shape.maxHealth;
 
-		shape.apply_damage(damapply, source.convert_damage_type, forced = TRUE, wound_bonus = CANT_WOUND);
+		shape.apply_damage(damapply, source.convert_damage_type, forced = TRUE);
 		shape.blood_volume = stored.blood_volume;
 
-	RegisterSignal(shape, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), .proc/shape_death)
-	RegisterSignal(stored, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), .proc/caster_death)
+	RegisterSignal(shape, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(shape_death))
+	RegisterSignal(stored, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(caster_death))
 
 /obj/shapeshift_holder/Destroy()
 	// restore_form manages signal unregistering. If restoring is TRUE, we've already unregistered the signals and we're here
@@ -231,7 +231,7 @@
 		var/damage_percent = (shape.maxHealth - shape.health)/shape.maxHealth;
 		var/damapply = stored.maxHealth * damage_percent
 
-		stored.apply_damage(damapply, source.convert_damage_type, forced = TRUE, wound_bonus=CANT_WOUND)
+		stored.apply_damage(damapply, source.convert_damage_type, forced = TRUE)
 	if(source.convert_damage)
 		stored.blood_volume = shape.blood_volume;
 

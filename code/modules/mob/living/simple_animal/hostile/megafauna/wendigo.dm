@@ -141,7 +141,7 @@ Difficulty: Hard
 	. = ..()
 	stored_move_dirs &= ~movement_dir
 	if(!stored_move_dirs)
-		INVOKE_ASYNC(GLOBAL_PROC, .proc/wendigo_slam, src, stomp_range, 1, 8)
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(wendigo_slam), src, stomp_range, 1, 8)
 
 /// Slams the ground around the source throwing back enemies caught nearby, delay is for the radius increase
 /proc/wendigo_slam(atom/source, range, delay, throw_range)
@@ -161,7 +161,7 @@ Difficulty: Hard
 				to_chat(L, span_userdanger("[source]'s ground slam shockwave sends you flying!"))
 				var/turf/thrownat = get_ranged_target_turf_direct(source, L, throw_range, rand(-10, 10))
 				L.throw_at(thrownat, 8, 2, null, TRUE, force = MOVE_FORCE_OVERPOWERING, gentle = TRUE)
-				L.apply_damage(20, BRUTE, wound_bonus=CANT_WOUND)
+				L.apply_damage(20, BRUTE)
 				shake_camera(L, 2, 1)
 			all_turfs -= stomp_turf
 		sleep(delay)

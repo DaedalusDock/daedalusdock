@@ -94,8 +94,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /turf/closed/indestructible/reinforced
-	name = "reinforced wall"
-	desc = "A huge chunk of reinforced metal used to separate rooms. Effectively impervious to conventional methods of destruction."
 	icon = 'icons/turf/walls/legacy/reinforced_wall.dmi'
 	icon_state = "reinforced_wall-0"
 	base_icon_state = "reinforced_wall"
@@ -103,6 +101,12 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_WALLS)
 
+/turf/closed/indestructible/reinforced/centcom
+	icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
+	icon_state = "wall-0"
+	base_icon_state = "wall"
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	color = "#3a3a4f"
 
 /turf/closed/indestructible/riveted
 	icon = 'icons/turf/walls/legacy/riveted.dmi'
@@ -113,18 +117,22 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
 
 /turf/closed/indestructible/syndicate
-	icon = 'icons/turf/walls/legacy/plastitanium_wall.dmi'
-	icon_state = "plastitanium_wall-0"
-	base_icon_state = "plastitanium_wall"
+	icon = 'icons/turf/walls/wood_wall.dmi'
+	icon_state = "wall-0"
+	base_icon_state = "wall"
+	color = "#423b3b"
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 
 /turf/closed/indestructible/riveted/uranium
-	icon = 'icons/turf/walls/legacy/uranium_wall.dmi'
-	icon_state = "uranium_wall-0"
-	base_icon_state = "uranium_wall"
+	icon = 'icons/turf/walls/cult_wall.dmi'
+	icon_state = "wall-0"
+	base_icon_state = "wall"
+	color = "#174207"
 	smoothing_flags = SMOOTH_BITMASK
+	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 
 /turf/closed/indestructible/riveted/plastinum
 	name = "plastinum wall"
@@ -134,12 +142,13 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	base_icon_state = "plastinum_wall"
 
 /turf/closed/indestructible/wood
-	icon = 'icons/turf/walls/legacy/wood_wall.dmi'
-	icon_state = "wood_wall-0"
-	base_icon_state = "wood_wall"
+	icon = 'icons/turf/walls/wood_wall.dmi'
+	icon_state = "wall-0"
+	base_icon_state = "wall"
+	color = "#93662C"
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 
 
 /turf/closed/indestructible/alien
@@ -175,11 +184,11 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon = 'icons/obj/smooth_structures/window.dmi'
 	icon_state = "window-0"
 	base_icon_state = "window"
-	color = "#c162ec"
+	color = "#a885b8"
 	opacity = FALSE
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 
 /turf/closed/indestructible/fakeglass/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -191,11 +200,11 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon = 'icons/obj/smooth_structures/window.dmi'
 	icon_state = "window-0"
 	base_icon_state = "window"
-	color = "#5d3369"
+	color = "#a2a2a2"
 	opacity = FALSE
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM)
+	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
 
 /turf/closed/indestructible/opsglass/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -207,6 +216,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	name = "CentCom Access"
 	icon = 'icons/obj/doors/airlocks/centcom/airlock.dmi'
 	icon_state = "fake_door"
+	smoothing_groups = list(SMOOTH_GROUP_AIRLOCK)
 
 /turf/closed/indestructible/rock
 	name = "dense rock"

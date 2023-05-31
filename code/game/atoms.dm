@@ -163,6 +163,9 @@
 
 	var/resistance_flags = NONE // INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ON_FIRE | UNACIDABLE | ACID_PROOF
 
+	/// the datum handler for our contents - see create_storage() for creation method
+	var/datum/storage/atom_storage
+
 /**
  * Called when an atom is created in byond (built in engine proc)
  *
@@ -322,6 +325,9 @@
 	if(reagents)
 		QDEL_NULL(reagents)
 
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)
@@ -334,6 +340,43 @@
 		SSicon_smooth.remove_from_queues(src)
 
 	return ..()
+
+/// A quick and easy way to create a storage datum for an atom
+/atom/proc/create_storage(
+	max_slots,
+	max_specific_storage,
+	max_total_storage,
+	numerical_stacking = FALSE,
+	allow_quick_gather = FALSE,
+	allow_quick_empty = FALSE,
+	collection_mode = COLLECT_ONE,
+	attack_hand_interact = TRUE,
+	list/canhold,
+	list/canthold,
+	type = /datum/storage,
+)
+
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
+	atom_storage = new type(src, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, collection_mode, attack_hand_interact)
+
+	if(canhold || canthold)
+		atom_storage.set_holdable(canhold, canthold)
+
+	return atom_storage
+
+/// A quick and easy way to /clone/ a storage datum for an atom (does not copy over contents, only the datum details)
+/atom/proc/clone_storage(datum/storage/cloning)
+	if(atom_storage)
+		QDEL_NULL(atom_storage)
+
+	atom_storage = new cloning.type(src, cloning.max_slots, cloning.max_specific_storage, cloning.max_total_storage, cloning.numerical_stacking, cloning.allow_quick_gather, cloning.collection_mode, cloning.attack_hand_interact)
+
+	if(cloning.can_hold || cloning.cant_hold)
+		atom_storage.set_holdable(cloning.can_hold, cloning.cant_hold)
+
+	return atom_storage
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
@@ -426,7 +469,7 @@
 	if(!is_centcom_level(current_turf.z))//if not, don't bother
 		return FALSE
 
-	if(istype(current_turf.loc, /area/shuttle/syndicate) || istype(current_turf.loc, /area/syndicate_mothership) || istype(current_turf.loc, /area/shuttle/assault_pod))
+	if(istype(current_turf.loc, /area/shuttle/syndicate) || istype(current_turf.loc, /area/centcom/syndicate_mothership) || istype(current_turf.loc, /area/shuttle/assault_pod))
 		return TRUE
 
 	return FALSE
@@ -500,6 +543,11 @@
 		return loc.return_air()
 	else
 		return null
+
+///Return the current air environment in this atom. If this atom is a turf, it will not automatically update the zone.
+/atom/proc/unsafe_return_air()
+	return return_air()
+
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
@@ -656,6 +704,10 @@
 	if(desc)
 		. += desc
 
+	if(z && user.z != z)
+		var/diff = abs(user.z - z)
+		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
+
 	if(custom_materials)
 		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
@@ -723,6 +775,10 @@
 		. |= update_desc(updates)
 	if(updates & UPDATE_ICON)
 		. |= update_icon(updates)
+
+	// This is not an override for performance.
+	if (ismovable(src))
+		UPDATE_OO_IF_PRESENT
 
 /// Updates the name of the atom
 /atom/proc/update_name(updates=ALL)
@@ -865,7 +921,7 @@
 /atom/proc/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, hitting_atom, skipcatch, hitpush, blocked, throwingdatum)
 	if(density && !has_gravity(hitting_atom)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
-		addtimer(CALLBACK(src, .proc/hitby_react, hitting_atom), 2)
+		addtimer(CALLBACK(src, PROC_REF(hitby_react), hitting_atom), 2)
 
 /**
  * We have have actually hit the passed in atom
@@ -995,44 +1051,10 @@
 	return
 
 /**
- * Implement the behaviour for when a user click drags a storage object to your atom
+ * If someone's trying to dump items onto our atom, where should they be dumped to?
  *
- * This behaviour is usually to mass transfer, but this is no longer a used proc as it just
- * calls the underyling /datum/component/storage dump act if a component exists
- *
- * TODO these should be purely component items that intercept the atom clicks higher in the
- * call chain
+ * Return a loc to place objects, or null to stop dumping.
  */
-/atom/proc/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
-	if(GetComponent(/datum/component/storage))
-		return component_storage_contents_dump_act(src_object, user)
-	return FALSE
-
-/**
- * Implement the behaviour for when a user click drags another storage item to you
- *
- * In this case we get as many of the tiems from the target items compoent storage and then
- * put everything into ourselves (or our storage component)
- *
- * TODO these should be purely component items that intercept the atom clicks higher in the
- * call chain
- */
-/atom/proc/component_storage_contents_dump_act(datum/component/storage/src_object, mob/user)
-	var/list/things = src_object.contents()
-	var/datum/progressbar/progress = new(user, things.len, src)
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	while (do_after(user, src, 1 SECONDS, NONE, FALSE, CALLBACK(STR, /datum/component/storage.proc/handle_mass_item_insertion, things, src_object, user, progress)))
-		stoplag(1)
-	progress.end_progress()
-	to_chat(user, span_notice("You dump as much of [src_object.parent]'s contents [STR.insert_preposition]to [src] as you can."))
-	STR.orient2hud(user)
-	src_object.orient2hud(user)
-	if(user.active_storage) //refresh the HUD to show the transfered contents
-		user.active_storage.close(user)
-		user.active_storage.show_to(user)
-	return TRUE
-
-///Get the best place to dump the items contained in the source storage item?
 /atom/proc/get_dumping_location()
 	return null
 
@@ -1276,7 +1298,7 @@
 						if(!valid_id)
 							to_chat(usr, span_warning("A reagent with that ID doesn't exist!"))
 				if("Choose from a list")
-					chosen_id = input(usr, "Choose a reagent to add.", "Choose a reagent.") as null|anything in sort_list(subtypesof(/datum/reagent), /proc/cmp_typepaths_asc)
+					chosen_id = input(usr, "Choose a reagent to add.", "Choose a reagent.") as null|anything in sort_list(subtypesof(/datum/reagent), GLOBAL_PROC_REF(cmp_typepaths_asc))
 				if("I'm feeling lucky")
 					chosen_id = pick(subtypesof(/datum/reagent))
 			if(chosen_id)
@@ -1640,6 +1662,8 @@
 			log_mecha(log_text)
 		if(LOG_SHUTTLE)
 			log_shuttle(log_text)
+		if(LOG_MECHCOMP)
+			log_mechcomp(log_text)
 		else
 			stack_trace("Invalid individual logging type: [message_type]. Defaulting to [LOG_GAME] (LOG_GAME).")
 			log_game(log_text)
@@ -1705,39 +1729,6 @@
 		var/reverse_message = "has been [what_done] by [ssource][postfix]"
 		target.log_message(reverse_message, LOG_VICTIM, color="orange", log_globally=FALSE)
 
-/**
- * log_wound() is for when someone is *attacked* and suffers a wound. Note that this only captures wounds from damage, so smites/forced wounds aren't logged, as well as demotions like cuts scabbing over
- *
- * Note that this has no info on the attack that dealt the wound: information about where damage came from isn't passed to the bodypart's damaged proc. When in doubt, check the attack log for attacks at that same time
- * TODO later: Add logging for healed wounds, though that will require some rewriting of healing code to prevent admin heals from spamming the logs. Not high priority
- *
- * Arguments:
- * * victim- The guy who got wounded
- * * suffered_wound- The wound, already applied, that we're logging. It has to already be attached so we can get the limb from it
- * * dealt_damage- How much damage is associated with the attack that dealt with this wound.
- * * dealt_wound_bonus- The wound_bonus, if one was specified, of the wounding attack
- * * dealt_bare_wound_bonus- The bare_wound_bonus, if one was specified *and applied*, of the wounding attack. Not shown if armor was present
- * * base_roll- Base wounding ability of an attack is a random number from 1 to (dealt_damage ** WOUND_DAMAGE_EXPONENT). This is the number that was rolled in there, before mods
- */
-/proc/log_wound(atom/victim, datum/wound/suffered_wound, dealt_damage, dealt_wound_bonus, dealt_bare_wound_bonus, base_roll)
-	if(QDELETED(victim) || !suffered_wound)
-		return
-	var/message = "has suffered: [suffered_wound][suffered_wound.limb ? " to [suffered_wound.limb.name]" : null]"// maybe indicate if it's a promote/demote?
-
-	if(dealt_damage)
-		message += " | Damage: [dealt_damage]"
-		// The base roll is useful since it can show how lucky someone got with the given attack. For example, dealing a cut
-		if(base_roll)
-			message += " (rolled [base_roll]/[dealt_damage ** WOUND_DAMAGE_EXPONENT])"
-
-	if(dealt_wound_bonus)
-		message += " | WB: [dealt_wound_bonus]"
-
-	if(dealt_bare_wound_bonus)
-		message += " | BWB: [dealt_bare_wound_bonus]"
-
-	victim.log_message(message, LOG_ATTACK, color="blue")
-
 /atom/proc/add_filter(name,priority,list/params)
 	LAZYINITLIST(filter_data)
 	var/list/copied_parameters = params.Copy()
@@ -1747,7 +1738,7 @@
 
 /atom/proc/update_filters()
 	filters = null
-	filter_data = sortTim(filter_data, /proc/cmp_filter_data_priority, TRUE)
+	filter_data = sortTim(filter_data, GLOBAL_PROC_REF(cmp_filter_data_priority), TRUE)
 	for(var/f in filter_data)
 		var/list/data = filter_data[f]
 		var/list/arguments = data.Copy()
@@ -1963,6 +1954,11 @@
  *
  * micro-optimized to hell because this proc is very hot, being called several times per movement every movement.
  *
+ * HEY JACKASS, LISTEN
+ * IF YOU ADD SOMETHING TO THIS PROC, MAKE SURE /mob/living ACCOUNTS FOR IT
+ * Living mobs treat gravity in an event based manner. We've decomposed this proc into different checks
+ * for them to use. If you add more to it, make sure you do that, or things will behave strangely
+ *
  * Gravity situations:
  * * No gravity if you're not in a turf
  * * No gravity if this atom is in is a space turf
@@ -1991,7 +1987,7 @@
 
 	var/area/turf_area = gravity_turf.loc
 
-	return !gravity_turf.force_no_gravity && (SSmapping.gravity_by_z_level["[gravity_turf.z]"] || turf_area.has_gravity)
+	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**
  * Causes effects when the atom gets hit by a rust effect from heretics

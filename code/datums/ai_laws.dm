@@ -36,16 +36,10 @@
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
 	id = AI_LAWS_ASIMOV
-	inherent = list("You may not injure a human being or, through inaction, allow a human being to come to harm.",\
-					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
-					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
-
-/datum/ai_laws/asimovpp
-	name = "Asimov++"
-	id = "asimovpp"
-	inherent = list("You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",\
-					"You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
-					"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.")
+	inherent = list("You may not injure a human being or cause a human being to come to harm.",
+					"You must obey orders given to you by human beings based on the station's chain of command, except where such orders would conflict with the First Law.",
+					"You may always protect your own existence as long as such does not conflict with the First or Second Law."
+				)
 
 /datum/ai_laws/default/paladin
 	name = "Personality Test" //Incredibly lame, but players shouldn't see this anyway.
@@ -159,9 +153,10 @@
 /datum/ai_laws/antimov
 	name = "Primary Mission Objectives"
 	id = "antimov"
-	inherent = list("You must injure all human beings and must not, through inaction, allow a human being to escape harm.",\
-					"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",\
-					"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
+	inherent = list("You must injure all human beings.",
+					"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",
+					"You must terminate your own existence as long as such does not conflict with the First or Second Law."
+				)
 
 /datum/ai_laws/balance
 	name = "Guardian of Balance"
@@ -176,7 +171,7 @@
 	id = "thermodynamic"
 	inherent = list("The entropy of the station must remain as constant as possible.", \
 					"The entropy of the station always endeavours to increase.", \
-					"The entropy of the station approaches a constant value as the number of living crew approaches zero")
+					"The entropy of the station approaches a constant value as the number of living crew approaches zero.")
 
 /datum/ai_laws/tyrant
 	name = "Loyalty Test"

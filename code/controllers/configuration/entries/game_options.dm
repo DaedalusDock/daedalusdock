@@ -400,7 +400,12 @@
 /datum/config_entry/flag/lone_op_nag/ValidateAndSet(str_val)
 	var/old_val = config_entry_value
 	. = ..()
-	if(config_entry_value && !old_val)
-		//Make them start processing again
+	if(config_entry_value != old_val)
+		//Re-fuck their processing
 		for(var/obj/item/disk/nuclear/dick in SSpoints_of_interest.real_nuclear_disks)
-			START_PROCESSING(SSobj, dick)
+			if(config_entry_value)
+				//Set true, Make them process
+				START_PROCESSING(SSobj, dick)
+			else
+				//Set false, kill:tm:
+				STOP_PROCESSING(SSobj, dick)

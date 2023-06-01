@@ -692,7 +692,8 @@ This is here to make the tiles around the station mininuke change when it's arme
 	if(!fake)
 		SSpoints_of_interest.make_point_of_interest(src)
 		last_disk_move = world.time
-		START_PROCESSING(SSobj, src)
+		if(CONFIG_GET(flag/lone_op_nag))
+			START_PROCESSING(SSobj, src)
 
 /obj/item/disk/nuclear/ComponentInitialize()
 	. = ..()

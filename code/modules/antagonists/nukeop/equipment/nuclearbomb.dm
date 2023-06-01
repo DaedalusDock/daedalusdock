@@ -703,6 +703,10 @@ This is here to make the tiles around the station mininuke change when it's arme
 		STOP_PROCESSING(SSobj, src)
 		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
 
+	if(!CONFIG_GET(flag/lone_op_nag))
+		STOP_PROCESSING(SSobj, src)
+		return
+
 	var/turf/new_turf = get_turf(src)
 
 	if (is_secured())

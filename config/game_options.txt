@@ -470,3 +470,6 @@ MAXFINE 2000
 
 ## How many played hours of DRONE_REQUIRED_ROLE required to be a Maintenance Done
 #DRONE_ROLE_PLAYTIME 14
+
+## Enabling this config will cause an unsecured nuke disk to increase the chance of a Lone Nuclear Operative spawning.
+#LONE_OP_NAG

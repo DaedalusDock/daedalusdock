@@ -1254,7 +1254,7 @@
 	},
 /obj/structure/table/reinforced/rglass,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/disk/design_disk/modkit_disc/resonator_blast,
+/obj/item/disk/data/modkit_disc/resonator_blast,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "sr" = (
@@ -1444,7 +1444,7 @@
 /area/ruin/plasma_facility/operations)
 "vz" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/floor,
+/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "vI" = (

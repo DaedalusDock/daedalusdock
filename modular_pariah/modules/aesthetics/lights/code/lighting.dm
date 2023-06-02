@@ -12,19 +12,24 @@
 	turning_on = FALSE
 	if(!on)
 		return
-	var/BR = brightness
+	var/OR = bulb_outer_range
+	var/IR = bulb_inner_range
 	var/PO = bulb_power
 	var/CO = bulb_colour
+	var/FC = bulb_falloff
 	if(color)
 		CO = color
 	if (firealarm)
 		CO = bulb_emergency_colour
 	else if (nightshift_enabled)
-		BR = nightshift_brightness
+		OR = nightshift_outer_range
+		IR = nightshift_inner_range
 		PO = nightshift_light_power
 		if(!color)
 			CO = nightshift_light_color
-	var/matching = light && BR == light.light_range && PO == light.light_power && CO == light.light_color
+		FC = nightshift_falloff
+
+	var/matching = light && OR == light.light_outer_range && IR == light.light_inner_range && PO == light.light_power && CO == light.light_color && FC == light.light_falloff_curve
 	if(!matching)
 		switchcount++
 		if(rigged)
@@ -35,7 +40,7 @@
 				burn_out()
 		else
 			use_power = ACTIVE_POWER_USE
-			set_light(BR, PO, CO)
+			set_light(l_outer_range = OR, l_inner_range = IR, l_power = PO, l_falloff_curve = FC, l_color = CO)
 			if(play_sound)
 				playsound(src.loc, 'modular_pariah/modules/aesthetics/lights/sound/light_on.ogg', 65, 1)
 
@@ -45,7 +50,7 @@
 
 	constant_flickering = TRUE
 
-	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_on), rand(5, 10))
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 10))
 
 /obj/machinery/light/proc/stop_flickering()
 	constant_flickering = FALSE
@@ -65,11 +70,11 @@
 
 /obj/machinery/light/proc/flicker_on()
 	alter_flicker(TRUE)
-	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_off), rand(5, 10), TIMER_STOPPABLE|TIMER_DELETE_ME)
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_off)), rand(5, 10), TIMER_STOPPABLE|TIMER_DELETE_ME)
 
 /obj/machinery/light/proc/flicker_off()
 	alter_flicker(FALSE)
-	flicker_timer = addtimer(CALLBACK(src, .proc/flicker_on), rand(5, 50), TIMER_STOPPABLE|TIMER_DELETE_ME)
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 50), TIMER_STOPPABLE|TIMER_DELETE_ME)
 
 /obj/machinery/light/proc/firealarm_on()
 	SIGNAL_HANDLER
@@ -83,7 +88,7 @@
 	firealarm = FALSE
 	update()
 
-/obj/machinery/light/Initialize(mapload = TRUE)
+/obj/machinery/light/Initialize(mapload)
 	. = ..()
 	if(on)
 		maploaded = TRUE

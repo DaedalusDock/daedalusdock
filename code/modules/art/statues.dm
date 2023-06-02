@@ -64,7 +64,7 @@
 
 /obj/structure/statue/uranium
 	max_integrity = 300
-	light_range = 2
+	light_outer_range = 2
 	custom_materials = list(/datum/material/uranium=MINERAL_MATERIAL_AMOUNT*5)
 	impressiveness = 25 // radiation makes an impression
 	abstract_type = /obj/structure/statue/uranium
@@ -114,7 +114,7 @@
 	icon_state = "hop"
 
 /obj/structure/statue/gold/cmo
-	name = "statue of the chief medical officer"
+	name = "statue of the medical director"
 	icon_state = "cmo"
 
 /obj/structure/statue/gold/ce
@@ -333,7 +333,7 @@ Moving interrupts
 
 	var/datum/progressbar/total_progress_bar = new(user, sculpting_time, prepared_block )
 	while(remaining_time > 0 && !interrupted)
-		if(do_after(user,sculpting_period, target = prepared_block, progress = FALSE))
+		if(do_after(user, prepared_block, sculpting_period, progress = FALSE))
 			remaining_time -= sculpting_period
 			prepared_block.set_completion((sculpting_time - remaining_time)/sculpting_time)
 			total_progress_bar.update(sculpting_time - remaining_time)
@@ -348,7 +348,7 @@ Moving interrupts
 /obj/item/chisel/proc/set_block(obj/structure/carving_block/B,mob/living/user)
 	prepared_block = B
 	tracked_user = user
-	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,.proc/break_sculpting)
+	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,PROC_REF(break_sculpting))
 	to_chat(user,span_notice("You prepare to work on [B]."),type=MESSAGE_TYPE_INFO)
 
 /obj/item/chisel/dropped(mob/user, silent)
@@ -526,7 +526,7 @@ Moving interrupts
 	content_ma.pixel_y = 0
 	content_ma.alpha = 255
 
-	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, GAME_PLANE_UPPER, GAME_PLANE_FOV_HIDDEN, GAME_PLANE_UPPER, GAME_PLANE_UPPER_FOV_HIDDEN, FLOOR_PLANE)
+	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
 
 	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
 	var/list/overlays_to_remove = list()

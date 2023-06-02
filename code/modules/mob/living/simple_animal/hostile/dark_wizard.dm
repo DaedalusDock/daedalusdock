@@ -39,4 +39,4 @@
 	damage = 4
 	damage_type = BURN
 	armor_flag = ENERGY
-	temperature = -100 // closer to the old temp loss
+	adj_temperature = -100 // closer to the old temp loss

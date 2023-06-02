@@ -16,24 +16,24 @@
 
 	species_eye_path = 'icons/mob/species/skrell/eyes.dmi'
 
-	mutantbrain = /obj/item/organ/internal/brain/skrell
-	mutanteyes = /obj/item/organ/internal/eyes/skrell
-	mutantlungs = /obj/item/organ/internal/lungs/skrell
-	mutantheart = /obj/item/organ/internal/heart/skrell
-	mutantliver = /obj/item/organ/internal/liver/skrell
-	mutanttongue = /obj/item/organ/internal/tongue/skrell
+	mutantbrain = /obj/item/organ/brain/skrell
+	mutanteyes = /obj/item/organ/eyes/skrell
+	mutantlungs = /obj/item/organ/lungs/skrell
+	mutantheart = /obj/item/organ/heart/skrell
+	mutantliver = /obj/item/organ/liver/skrell
+	mutanttongue = /obj/item/organ/tongue/skrell
 
-	external_organs = list(
-		/obj/item/organ/external/skrell_headtails = "Long"
+	cosmetic_organs = list(
+		/obj/item/organ/skrell_headtails = "Long"
 	)
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/skrell,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/skrell,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/skrell,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/skrell,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/skrell,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/skrell,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/skrell,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/skrell,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/skrell,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/skrell,
 	)
 
 /datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, delta_time, times_fired)

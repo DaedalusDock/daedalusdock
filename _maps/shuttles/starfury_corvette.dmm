@@ -113,7 +113,6 @@
 /area/shuttle/sbc_corvette)
 "ao" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/structure/chair/comfy/shuttle{
@@ -288,7 +287,6 @@
 /area/shuttle/sbc_corvette)
 "aR" = (
 /obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/structure/chair/comfy/shuttle{
@@ -311,16 +309,6 @@
 /area/shuttle/sbc_corvette)
 "aT" = (
 /obj/machinery/light/small{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/sbc_corvette)
-"aU" = (
-/obj/machinery/light/small{
-	brightness = 3;
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
@@ -434,7 +422,7 @@ aE
 as
 aT
 aZ
-aU
+aT
 aJ
 aj
 "}

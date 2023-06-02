@@ -15,8 +15,8 @@
 	var/list/turfs_that_boost_us
 	/// A list of all shields surrounding us while drawing certain runes (Nar'sie).
 	var/list/obj/structure/emergency_shield/cult/narsie/shields
-	/// An item action associated with our parent, to quick-draw runes.
-	var/datum/action/item_action/linked_action
+	/// Weakref to an action added to our parent item that allows for quick drawing runes
+	var/datum/weakref/linked_action_ref
 
 /datum/component/cult_ritual_item/Initialize(
 	examine_message,
@@ -35,22 +35,23 @@
 		src.turfs_that_boost_us = list(turfs_that_boost_us)
 
 	if(ispath(action))
-		linked_action = new action(parent)
+		var/obj/item/item_parent = parent
+		var/datum/action/added_action = item_parent.add_item_action(action)
+		linked_action_ref = WEAKREF(added_action)
 
 /datum/component/cult_ritual_item/Destroy(force, silent)
 	cleanup_shields()
-	if(linked_action)
-		QDEL_NULL(linked_action)
+	QDEL_NULL(linked_action_ref)
 	return ..()
 
 /datum/component/cult_ritual_item/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/try_scribe_rune)
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK, .proc/try_purge_holywater)
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_OBJ, .proc/try_hit_object)
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_EFFECT, .proc/try_clear_rune)
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(try_scribe_rune))
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(try_purge_holywater))
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_OBJ, PROC_REF(try_hit_object))
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_EFFECT, PROC_REF(try_clear_rune))
 
 	if(examine_message)
-		RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+		RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
 /datum/component/cult_ritual_item/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -91,7 +92,7 @@
 		to_chat(user, span_warning("You are already drawing a rune."))
 		return
 
-	INVOKE_ASYNC(src, .proc/start_scribe_rune, source, user)
+	INVOKE_ASYNC(src, PROC_REF(start_scribe_rune), source, user)
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -111,7 +112,7 @@
 	if(!target.has_reagent(/datum/reagent/water/holywater))
 		return
 
-	INVOKE_ASYNC(src, .proc/do_purge_holywater, target, user)
+	INVOKE_ASYNC(src, PROC_REF(do_purge_holywater), target, user)
 
 /*
  * Signal proc for [COMSIG_ITEM_ATTACK_OBJ].
@@ -124,11 +125,11 @@
 		return
 
 	if(istype(target, /obj/structure/girder/cult))
-		INVOKE_ASYNC(src, .proc/do_destroy_girder, target, cultist)
+		INVOKE_ASYNC(src, PROC_REF(do_destroy_girder), target, cultist)
 		return COMPONENT_NO_AFTERATTACK
 
 	if(istype(target, /obj/structure/destructible/cult))
-		INVOKE_ASYNC(src, .proc/do_unanchor_structure, target, cultist)
+		INVOKE_ASYNC(src, PROC_REF(do_unanchor_structure), target, cultist)
 		return COMPONENT_NO_AFTERATTACK
 
 /*
@@ -142,7 +143,7 @@
 		return
 
 	if(istype(target, /obj/effect/rune))
-		INVOKE_ASYNC(src, .proc/do_scrape_rune, target, cultist)
+		INVOKE_ASYNC(src, PROC_REF(do_scrape_rune), target, cultist)
 		return COMPONENT_NO_AFTERATTACK
 
 
@@ -160,7 +161,7 @@
 	// For carbonss we also want to clear out the stomach of any holywater
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
-		var/obj/item/organ/internal/stomach/belly = carbon_target.getorganslot(ORGAN_SLOT_STOMACH)
+		var/obj/item/organ/stomach/belly = carbon_target.getorganslot(ORGAN_SLOT_STOMACH)
 		if(belly)
 			holy_to_unholy += belly.reagents.get_reagent_amount(/datum/reagent/water/holywater)
 			belly.reagents.del_reagent(/datum/reagent/water/holywater)
@@ -210,7 +211,7 @@
 			return
 
 	SEND_SOUND(cultist, 'sound/items/sheath.ogg')
-	if(!do_after(cultist, rune.erase_time, target = rune))
+	if(!do_after(cultist, rune, rune.erase_time, DO_PUBLIC, display = rune))
 		return
 
 	if(!can_scrape_rune(rune, cultist))
@@ -303,14 +304,14 @@
 		)
 
 	if(cultist.blood_volume)
-		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), wound_bonus = CANT_WOUND) // *cuts arm* *bone explodes* ever have one of those days?
+		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)) // *cuts arm* *bone explodes* ever have one of those days?
 
 	var/scribe_mod = initial(rune_to_scribe.scribe_delay)
 	if(!initial(rune_to_scribe.no_scribe_boost) && (our_turf.type in turfs_that_boost_us))
 		scribe_mod *= 0.5
 
 	SEND_SOUND(cultist, sound('sound/weapons/slice.ogg', 0, 1, 10))
-	if(!do_after(cultist, scribe_mod, target = get_turf(cultist), timed_action_flags = IGNORE_SLOWDOWNS))
+	if(!do_after(cultist, get_turf(cultist), scribe_mod, timed_action_flags = IGNORE_SLOWDOWNS))
 		cleanup_shields()
 		return FALSE
 	if(!can_scribe_rune(tool, cultist))

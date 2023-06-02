@@ -32,7 +32,6 @@
 	ricochet_incidence_leeway = 60
 	hit_prone_targets = TRUE
 	sharpness = SHARP_EDGED
-	wound_bonus = 30
 	embedding = list(embed_chance=70, ignore_throwspeed_threshold=TRUE, fall_chance=1)
 
 /obj/projectile/bullet/shrapnel/mega
@@ -73,13 +72,10 @@
 	damage = 8
 	stamina = 8
 	sharpness = SHARP_EDGED
-	wound_bonus = 5
-	bare_wound_bonus = 5
 	ricochets_max = 2
 	ricochet_chance = 140
 	shrapnel_type = /obj/item/shrapnel/capmine
 	embedding = list(embed_chance=90, fall_chance=3, jostle_chance=7, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.7, pain_mult=5, jostle_pain_mult=6, rip_time=15)
-	wound_falloff_tile = 0
 	embed_falloff_tile = 0
 
 /obj/item/shrapnel/capmine

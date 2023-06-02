@@ -114,26 +114,6 @@
 				hud_list[hud] = I
 
 /**
- * Some kind of debug verb that gives atmosphere environment details
- */
-/mob/proc/Cell()
-	set category = "Admin"
-	set hidden = TRUE
-
-	if(!loc)
-		return
-
-	var/datum/gas_mixture/environment = loc.return_air()
-
-	var/t = "[span_notice("Coordinates: [x],[y] ")]\n"
-	t += "[span_danger("Temperature: [environment.temperature] ")]\n"
-	for(var/id in environment.gas)
-		if(!environment.getGroupGas(id))
-			t+="[span_notice("[xgm_gas_data.name[environment.gas]]: [environment.getGroupGas(id)] ")]\n"
-
-	to_chat(usr, t)
-
-/**
  * Return the desc of this mob for a photo
  */
 /mob/proc/get_photo_description(obj/item/camera/camera)
@@ -300,7 +280,6 @@
 ///Get the item on the mob in the storage slot identified by the id passed in
 /mob/proc/get_item_by_slot(slot_id)
 	return null
-
 
 ///Is the mob incapacitated
 /mob/proc/incapacitated(flags)
@@ -480,7 +459,7 @@
 		else
 			result = examinify.examine(src)
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
-			addtimer(CALLBACK(src, .proc/clear_from_recent_examines, ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
+			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
 
 			if(!isobserver(usr) && !(usr == examinify))
@@ -547,7 +526,7 @@
 	else if(ismob(examined_thing) && examined_thing != src)
 		examine_delay_length *= 2
 
-	if(examine_delay_length > 0 && !do_after(src, examine_delay_length, target = examined_thing))
+	if(examine_delay_length > 0 && !do_after(src, examined_thing, examine_delay_length))
 		to_chat(src, span_notice("You can't get a good feel for what is there."))
 		return FALSE
 
@@ -555,7 +534,7 @@
 	/// our current intent, so we can go back to it after touching
 	var/previous_combat_mode = combat_mode
 	set_combat_mode(FALSE)
-	INVOKE_ASYNC(examined_thing, /atom/proc/attack_hand, src)
+	INVOKE_ASYNC(examined_thing, TYPE_PROC_REF(/atom, attack_hand), src)
 	set_combat_mode(previous_combat_mode)
 	return TRUE
 
@@ -594,11 +573,11 @@
 	// check to see if their face is blocked or, if not, a signal blocks it
 	if(examined_mob.is_face_visible() && SEND_SIGNAL(src, COMSIG_MOB_EYECONTACT, examined_mob, TRUE) != COMSIG_BLOCK_EYECONTACT)
 		var/msg = span_smallnotice("You make eye contact with [examined_mob].")
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, src, msg), 3) // so the examine signal has time to fire and this will print after
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), src, msg), 3) // so the examine signal has time to fire and this will print after
 
 	if(!imagined_eye_contact && is_face_visible() && SEND_SIGNAL(examined_mob, COMSIG_MOB_EYECONTACT, src, FALSE) != COMSIG_BLOCK_EYECONTACT)
 		var/msg = span_smallnotice("[src] makes eye contact with you.")
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, examined_mob, msg), 3)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), examined_mob, msg), 3)
 
 /**
  * Point at an atom
@@ -792,30 +771,33 @@
 /mob/proc/get_status_tab_items()
 	. = list()
 
-/// Gets all relevant proc holders for the browser statpenl
-/mob/proc/get_proc_holders()
-	. = list()
-	if(mind)
-		. += get_spells_for_statpanel(mind.spell_list)
-	. += get_spells_for_statpanel(mob_spell_list)
-
 /**
  * Convert a list of spells into a displyable list for the statpanel
  *
  * Shows charge and other important info
  */
-/mob/proc/get_spells_for_statpanel(list/spells)
-	var/list/L = list()
-	for(var/obj/effect/proc_holder/spell/S in spells)
-		if(S.can_be_cast_by(src))
-			switch(S.charge_type)
-				if("recharge")
-					L[++L.len] = list("[S.panel]", "[S.charge_counter/10.0]/[S.charge_max/10]", S.name, REF(S))
-				if("charges")
-					L[++L.len] = list("[S.panel]", "[S.charge_counter]/[S.charge_max]", S.name, REF(S))
-				if("holdervar")
-					L[++L.len] = list("[S.panel]", "[S.holder_var_type] [S.holder_var_amount]", S.name, REF(S))
-	return L
+/mob/proc/get_actions_for_statpanel()
+	var/list/data = list()
+	for(var/datum/action/cooldown/action in actions)
+		var/list/action_data = action.set_statpanel_format()
+		if(!length(action_data))
+			return
+
+		data += list(list(
+			// the panel the action gets displayed to
+			// in the future, this could probably be replaced with subtabs (a la admin tabs)
+			action_data[PANEL_DISPLAY_PANEL],
+			// the status of the action, - cooldown, charges, whatever
+			action_data[PANEL_DISPLAY_STATUS],
+			// the name of the action
+			action_data[PANEL_DISPLAY_NAME],
+			// a ref to the action button of this action for this mob
+			// it's a ref to the button specifically, instead of the action itself,
+			// because statpanel href calls click(), which the action button (not the action itself) handles
+			REF(action.viewers[hud_used]),
+		))
+
+	return data
 
 //PARIAH EDIT ADDITION
 #define MOB_FACE_DIRECTION_DELAY 1
@@ -919,32 +901,6 @@
 	if(ghost)
 		ghost.notify_cloning(message, sound, source, flashwindow)
 		return ghost
-
-///Add a spell to the mobs spell list
-/mob/proc/AddSpell(obj/effect/proc_holder/spell/S)
-	// HACK: Preferences menu creates one of every selectable species.
-	// Some species, like vampires, create spells when they're made.
-	// The "action" is created when those spells Initialize.
-	// Preferences menu can create these assets at *any* time, primarily before
-	// the atoms SS initializes.
-	// That means "action" won't exist.
-	if (isnull(S.action))
-		return
-
-	LAZYADD(mob_spell_list, S)
-	S.action.Grant(src)
-
-///Remove a spell from the mobs spell list
-/mob/proc/RemoveSpell(obj/effect/proc_holder/spell/spell)
-	if(!spell)
-		return
-	for(var/X in mob_spell_list)
-		var/obj/effect/proc_holder/spell/S = X
-		if(istype(S, spell))
-			LAZYREMOVE(mob_spell_list, S)
-			qdel(S)
-	if(client)
-		client << output(null, "statbrowser:check_spells")
 
 /**
  * Checks to see if the mob can cast normal magic spells.
@@ -1158,6 +1114,7 @@
 /mob/proc/update_sight()
 	SEND_SIGNAL(src, COMSIG_MOB_UPDATE_SIGHT)
 	sync_lighting_plane_alpha()
+	//sync_ao_plane_alpha()
 
 ///Set the lighting plane hud alpha to the mobs lighting_alpha var
 /mob/proc/sync_lighting_plane_alpha()
@@ -1165,6 +1122,25 @@
 		var/atom/movable/screen/plane_master/lighting/L = hud_used.plane_masters["[LIGHTING_PLANE]"]
 		if (L)
 			L.alpha = lighting_alpha
+		var/atom/movable/screen/plane_master/additive_lighting/LA = hud_used.plane_masters["[LIGHTING_PLANE_ADDITIVE]"]
+		if(LA)
+			//If this ever doesn't work for some reason add update_sight() to /mob/living/Login()
+			if(client && !client.prefs.read_preference(/datum/preference/toggle/bloom))
+				LA.alpha = 0
+				return
+			LA.alpha = lighting_alpha
+
+/*
+/mob/proc/sync_ao_plane_alpha()
+	if(!hud_used)
+		return
+	var/datum/preferences/prefs = client?.prefs
+	if(!prefs)
+		return
+
+	var/atom/movable/screen/plane_master/lighting/L = hud_used.plane_masters["[AO_PLANE]"]
+	if (L)
+		L.alpha = prefs.read_preference(/datum/preference/toggle/ambient_occlusion) ? WALL_AO_ALPHA : 0*/
 
 ///Update the mouse pointer of the attached client in this mob
 /mob/proc/update_mouse_pointer()
@@ -1191,7 +1167,7 @@
 
 /// This mob is abile to read books
 /mob/proc/is_literate()
-	return FALSE
+	return HAS_TRAIT(src, TRAIT_LITERATE) && !HAS_TRAIT(src, TRAIT_ILLITERATE)
 
 /**
  * Checks if there is enough light where the mob is located
@@ -1237,7 +1213,6 @@
 	VV_DROPDOWN_OPTION(VV_HK_DIRECT_CONTROL, "Assume Direct Control")
 	VV_DROPDOWN_OPTION(VV_HK_GIVE_DIRECT_CONTROL, "Give Direct Control")
 	VV_DROPDOWN_OPTION(VV_HK_OFFER_GHOSTS, "Offer Control to Ghosts")
-	VV_DROPDOWN_OPTION(VV_HK_SDQL_SPELL, "Give SDQL Spell")
 
 /mob/vv_do_topic(list/href_list)
 	. = ..()
@@ -1289,10 +1264,7 @@
 		if(!check_rights(NONE))
 			return
 		offer_control(src)
-	if(href_list[VV_HK_SDQL_SPELL])
-		if(!check_rights(R_DEBUG))
-			return
-		usr.client.cmd_sdql_spell_menu(src)
+
 /**
  * extra var handling for the logging var
  */
@@ -1310,7 +1282,6 @@
 /mob/verb/open_language_menu()
 	set name = "Open Language Menu"
 	set category = "IC"
-
 	var/datum/language_holder/H = get_language_holder()
 	H.open_language_menu(usr)
 
@@ -1388,7 +1359,7 @@
 		UnregisterSignal(active_storage, COMSIG_PARENT_QDELETING)
 	active_storage = new_active_storage
 	if(active_storage)
-		RegisterSignal(active_storage, COMSIG_PARENT_QDELETING, .proc/active_storage_deleted)
+		RegisterSignal(active_storage, COMSIG_PARENT_QDELETING, PROC_REF(active_storage_deleted))
 
 /mob/proc/active_storage_deleted(datum/source)
 	SIGNAL_HANDLER

@@ -139,22 +139,22 @@ SUBSYSTEM_DEF(job)
 					new_joinable_departments_by_type[department_type] = department
 				department.add_job(job)
 
-	sortTim(new_all_occupations, /proc/cmp_job_display_asc)
+	sortTim(new_all_occupations, GLOBAL_PROC_REF(cmp_job_display_asc))
 	for(var/datum/job/job as anything in new_all_occupations)
 		if(!job.exp_granted_type)
 			continue
 		new_experience_jobs_map[job.exp_granted_type] += list(job)
 
-	sortTim(new_joinable_departments_by_type, /proc/cmp_department_display_asc, associative = TRUE)
+	sortTim(new_joinable_departments_by_type, GLOBAL_PROC_REF(cmp_department_display_asc), associative = TRUE)
 	for(var/department_type in new_joinable_departments_by_type)
 		var/datum/job_department/department = new_joinable_departments_by_type[department_type]
-		sortTim(department.department_jobs, /proc/cmp_job_display_asc)
+		sortTim(department.department_jobs, GLOBAL_PROC_REF(cmp_job_display_asc))
 		new_joinable_departments += department
 		if(department.department_experience_type)
 			new_experience_jobs_map[department.department_experience_type] = department.department_jobs.Copy()
 
 	all_occupations = new_all_occupations
-	joinable_occupations = sortTim(new_joinable_occupations, /proc/cmp_job_display_asc)
+	joinable_occupations = sortTim(new_joinable_occupations, GLOBAL_PROC_REF(cmp_job_display_asc))
 	joinable_departments = new_joinable_departments
 	joinable_departments_by_type = new_joinable_departments_by_type
 	experience_jobs_map = new_experience_jobs_map
@@ -675,7 +675,7 @@ SUBSYSTEM_DEF(job)
 	var/oldjobs = SSjob.all_occupations
 	sleep(20)
 	for (var/datum/job/job as anything in oldjobs)
-		INVOKE_ASYNC(src, .proc/RecoverJob, job)
+		INVOKE_ASYNC(src, PROC_REF(RecoverJob), job)
 
 /datum/controller/subsystem/job/proc/RecoverJob(datum/job/J)
 	var/datum/job/newjob = GetJob(J.title)
@@ -743,8 +743,7 @@ SUBSYSTEM_DEF(job)
 
 ///Lands specified mob at a random spot in the hallways
 /datum/controller/subsystem/job/proc/DropLandAtRandomHallwayPoint(mob/living/living_mob)
-	var/turf/spawn_turf = get_safe_random_station_turf(typesof(/area/hallway))
-
+	var/turf/spawn_turf = get_safe_random_station_turf(typesof(/area/station/hallway))
 	if(!spawn_turf)
 		SendToLateJoin(living_mob)
 	else

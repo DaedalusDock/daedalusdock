@@ -66,7 +66,7 @@
 	invisibility = 0
 	visible_message(span_danger("[src] suddenly appears!"))
 	alpha = initial(alpha)
-	set_light_range(initial(light_range))
+	set_light_range(initial(light_outer_range))
 	set_light_power(initial(light_power))
 	update_light()
 
@@ -150,7 +150,7 @@
 		user,
 		src,
 		choices,
-		custom_check = CALLBACK(src, .proc/check_menu, user),
+		custom_check = CALLBACK(src, PROC_REF(check_menu), user),
 		require_near = TRUE,
 		tooltips = TRUE,
 		)

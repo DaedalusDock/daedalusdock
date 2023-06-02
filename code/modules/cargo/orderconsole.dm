@@ -99,7 +99,7 @@
 /obj/machinery/computer/cargo/ui_data()
 	var/list/data = list()
 	data["location"] = SSshuttle.supply.getStatusText()
-	var/datum/bank_account/D = SSeconomy.get_dep_account(cargo_account)
+	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[cargo_account]
 	if(D)
 		data["points"] = D.account_balance
 	data["grocery"] = SSshuttle.chef_groceries.len
@@ -315,12 +315,12 @@
 	if(.)
 		post_signal(cargo_shuttle)
 
-/obj/machinery/computer/cargo/proc/post_signal(command)
-
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
+/obj/machinery/computer/cargo/post_signal(command)
+	SHOULD_CALL_PARENT(FALSE) // TODO: make not agony
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(list("command" = command))
-	frequency.post_signal(src, status_signal)
+	var/datum/signal/status_signal = new(src, list("command" = command))
+	frequency.post_signal(status_signal)

@@ -69,7 +69,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 5
 	pixel_x = -32
 	pixel_y = -64
-	light_range = 3
+	light_outer_range = 3
 	light_power = 1.5
 	light_color = LIGHT_COLOR_CYAN
 
@@ -193,8 +193,8 @@
 	switch(upgrade_type)
 		if(VAULT_TOXIN)
 			to_chat(H, span_notice("You feel resistant to airborne toxins."))
-			if(locate(/obj/item/organ/internal/lungs) in H.internal_organs)
-				var/obj/item/organ/internal/lungs/L = H.internal_organs_slot[ORGAN_SLOT_LUNGS]
+			if(locate(/obj/item/organ/lungs) in H.processing_organs)
+				var/obj/item/organ/lungs/L = H.organs_by_slot[ORGAN_SLOT_LUNGS]
 				L.plas_breath_dam_min = 0
 				L.plas_breath_dam_max = 0
 			ADD_TRAIT(H, TRAIT_VIRUSIMMUNE, "dna_vault")

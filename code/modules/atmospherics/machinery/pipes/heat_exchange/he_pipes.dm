@@ -1,10 +1,11 @@
 /obj/machinery/atmospherics/pipe/heat_exchanging
-	var/minimum_temperature_difference = 20
-	var/thermal_conductivity = WINDOW_HEAT_TRANSFER_COEFFICIENT
 	color = "#404040"
 	buckle_lying = NO_BUCKLE_LYING
-	var/icon_temperature = T20C //stop small changes in temperature causing icon refresh
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
+
+	var/minimum_temperature_difference = 20
+	var/thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
+	var/icon_temperature = T20C //stop small changes in temperature causing icon refresh
 
 	hide = FALSE
 
@@ -29,9 +30,7 @@
 
 	//If a turf has no gas, it's safe to assume its a pure vacuum. So we should radiate heat instead of doing heat exchange.
 	if(!turf_air || turf_air.total_moles == 0)
-		radiate_heat_to_space(pipe_air, 2, 1) //the magic "2" is the surface area in square meters.
-		if(parent)
-			parent.update = TRUE
+		radiate_heat_to_space(pipe_air, 3, 1) //the magic "3" is the surface area in square meters.
 	else
 		if(islava(local_turf))
 			environment_temperature = 5000 //Yuck
@@ -54,6 +53,9 @@
 		for(var/mob/living/buckled_mob as anything in buckled_mobs)
 			buckled_mob.bodytemperature = avg_temp
 		pipe_air.temperature = avg_temp
+
+	if(parent)
+		parent.update = TRUE
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process(delta_time)
 	if(!parent)

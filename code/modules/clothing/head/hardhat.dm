@@ -8,10 +8,11 @@
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
 	clothing_flags = SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 4
-	light_power = 0.8
+	light_outer_range = 4
+	light_power = 0.2
 	light_on = FALSE
 	dog_fashion = /datum/dog_fashion/head
 
@@ -69,7 +70,7 @@
 	desc = "By applying state of the art lighting technology to a fire helmet, and using photo-chemical hardening methods, this hardhat will protect you from robust workplace hazards."
 	icon_state = "hardhat0_purple"
 	inhand_icon_state = "hardhat0_purple"
-	light_range = 5
+	light_outer_range = 5
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	custom_materials = list(/datum/material/iron = 4000, /datum/material/glass = 1000, /datum/material/plastic = 3000, /datum/material/silver = 500)
 	hat_type = "purple"
@@ -114,7 +115,7 @@
 /obj/item/clothing/head/hardhat/weldhat
 	name = "welding hard hat"
 	desc = "A piece of headgear used in dangerous working conditions to protect the head. Comes with a built-in flashlight AND welding shield! The bulb seems a little smaller though."
-	light_range = 3 //Needs a little bit of tradeoff
+	light_outer_range = 3 //Needs a little bit of tradeoff
 	dog_fashion = null
 	actions_types = list(/datum/action/item_action/toggle_helmet_light, /datum/action/item_action/toggle_welding_screen)
 	flash_protect = FLASH_PROTECTION_WELDER
@@ -135,6 +136,13 @@
 /obj/item/clothing/head/hardhat/weldhat/AltClick(mob/user)
 	if(user.canUseTopic(src, BE_CLOSE))
 		toggle_welding_screen(user)
+
+/obj/item/clothing/head/hardhat/weldhat/ui_action_click(mob/user, actiontype)
+	if(istype(actiontype, /datum/action/item_action/toggle_welding_screen))
+		toggle_welding_screen(user)
+		return
+
+	return ..()
 
 /obj/item/clothing/head/hardhat/weldhat/proc/toggle_welding_screen(mob/living/user)
 	if(weldingvisortoggle(user))
@@ -164,7 +172,7 @@
 	desc = "A piece of headgear used in dangerous working conditions to protect the head. Comes with a built-in flashlight AND welding shield!" //This bulb is not smaller
 	icon_state = "hardhat0_white"
 	inhand_icon_state = "hardhat0_white"
-	light_range = 4 //Boss always takes the best stuff
+	light_outer_range = 4 //Boss always takes the best stuff
 	hat_type = "white"
 	clothing_flags = STOPSPRESSUREDAMAGE | PLASMAMAN_HELMET_EXEMPT
 	heat_protection = HEAD
@@ -186,7 +194,7 @@
 	clothing_flags = SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-	light_range = 2 //luminosity when on
+	light_outer_range = 2 //luminosity when on
 	flags_cover = HEADCOVERSEYES
 	light_color = "#fff2bf"
 	worn_y_offset = 1
@@ -241,7 +249,7 @@
 	hat_type = "reindeer"
 	flags_inv = 0
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-	light_range = 1 //luminosity when on
+	light_outer_range = 1 //luminosity when on
 
 
 	dog_fashion = /datum/dog_fashion/head/reindeer

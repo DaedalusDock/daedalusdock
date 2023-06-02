@@ -14,7 +14,7 @@
 	icon_state = "boh_tear"
 	plane = MASSIVE_OBJ_PLANE
 	plane = ABOVE_LIGHTING_PLANE
-	light_range = 6
+	light_outer_range = 6
 	move_resist = INFINITY
 	obj_flags = CAN_BE_HIT | DANGEROUS_POSSESSION
 	pixel_x = -32
@@ -41,7 +41,7 @@
 	to_chat(jedi, span_userdanger("You don't feel like you are real anymore."))
 	jedi.dust_animation()
 	jedi.spawn_dust()
-	addtimer(CALLBACK(src, /atom/proc/attack_hand, jedi), 0.5 SECONDS)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, attack_hand), jedi), 0.5 SECONDS)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 #undef BOH_TEAR_CONSUME_RANGE

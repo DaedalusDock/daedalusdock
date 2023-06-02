@@ -101,12 +101,12 @@
 
 /obj/machinery/door/puzzle/light/Initialize(mapload)
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_LIGHT_MECHANISM_COMPLETED, .proc/check_mechanism)
+	RegisterSignal(SSdcs, COMSIG_GLOB_LIGHT_MECHANISM_COMPLETED, PROC_REF(check_mechanism))
 
 /obj/machinery/door/puzzle/light/proc/check_mechanism(datum/source, try_id)
 	SIGNAL_HANDLER
 
-	INVOKE_ASYNC(src, .proc/try_puzzle_open, try_id)
+	INVOKE_ASYNC(src, PROC_REF(try_puzzle_open), try_id)
 
 //*************************
 //***Box Pushing Puzzles***
@@ -175,7 +175,7 @@
 	explosion_block = 3
 	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
-	light_range = MINIMUM_USEFUL_LIGHT_RANGE
+	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	light_power = 3
 	light_color = LIGHT_COLOR_ORANGE
 	var/powered = FALSE

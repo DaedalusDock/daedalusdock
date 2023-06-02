@@ -18,7 +18,7 @@ GLOBAL_LIST(labor_sheet_values)
 /obj/machinery/mineral/labor_claim_console/Initialize(mapload)
 	. = ..()
 	Radio = new /obj/item/radio(src)
-	Radio.set_listening(FALSE)
+	Radio.set_listening(FALSE, TRUE)
 	locate_stacking_machine()
 	//If we can't find a stacking machine end it all ok?
 	if(!stacking_machine)
@@ -31,7 +31,7 @@ GLOBAL_LIST(labor_sheet_values)
 			if(!initial(sheet.point_value) || (initial(sheet.merge_type) && initial(sheet.merge_type) != sheet_type)) //ignore no-value sheets and x/fifty subtypes
 				continue
 			sheet_list += list(list("ore" = initial(sheet.name), "value" = initial(sheet.point_value)))
-		GLOB.labor_sheet_values = sort_list(sheet_list, /proc/cmp_sheet_list)
+		GLOB.labor_sheet_values = sort_list(sheet_list, GLOBAL_PROC_REF(cmp_sheet_list))
 
 /obj/machinery/mineral/labor_claim_console/Destroy()
 	QDEL_NULL(Radio)

@@ -48,6 +48,12 @@
 	if(add_blank)
 		L["None"] = new /datum/sprite_accessory/blank
 
+	sortTim(L, GLOBAL_PROC_REF(cmp_text_asc), FALSE)
+	if(male)
+		sortTim(male, GLOBAL_PROC_REF(cmp_text_asc), FALSE)
+	if(female)
+		sortTim(female, GLOBAL_PROC_REF(cmp_text_asc), FALSE)
+
 	return L
 
 /datum/sprite_accessory

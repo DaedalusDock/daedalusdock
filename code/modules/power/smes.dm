@@ -130,7 +130,7 @@
 		to_chat(user, span_notice("You start building the power terminal..."))
 		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 
-		if(do_after(user, 20, target = src))
+		if(do_after(user, src, 20))
 			if(C.get_amount() < 10 || !C)
 				return
 			var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
@@ -408,6 +408,7 @@
 	log_smes()
 
 /obj/machinery/power/smes/engineering
+	input_attempt = FALSE //Don't drain the private loop by default
 	charge = 5e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
 	output_level = 90000
 

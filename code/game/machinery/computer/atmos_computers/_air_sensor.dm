@@ -17,23 +17,23 @@
 /obj/machinery/air_sensor/Initialize(mapload)
 	id_tag = chamber_id + "_sensor"
 	SSairmachines.start_processing_machine(src)
-	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
 	return ..()
 
 /obj/machinery/air_sensor/Destroy()
-	INVOKE_ASYNC(src, .proc/broadcast_destruction, src.frequency)
+	SSpackets.remove_object(src, frequency)
+	broadcast_destruction(frequency)
 	SSairmachines.stop_processing_machine(src)
-	SSradio.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/air_sensor/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(null, list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
 	))
-	var/datum/radio_frequency/connection = SSradio.return_frequency(frequency)
-	connection.post_signal(null, signal, filter = RADIO_ATMOSIA)
+	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
+	connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/air_sensor/update_icon_state()
 	icon_state = "gsensor[on]"
@@ -43,11 +43,11 @@
 	if(!on)
 		return
 
-	var/datum/gas_mixture/air_sample = return_air()
-	var/datum/signal/signal = new(list(
+	var/datum/gas_mixture/air_sample = unsafe_return_air()
+	var/datum/signal/signal = new(src, list(
 		"sigtype" = "status",
 		"tag" = id_tag,
 		"timestamp" = world.time,
 		"gasmix" = gas_mixture_parser(air_sample),
 	))
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)

@@ -16,17 +16,28 @@
 	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
-	scars_covered_by_clothes = FALSE
 	grind_results = null
 	is_dimorphic = TRUE
+	unarmed_attack_verb = "bite"
+	unarmed_attack_effect = ATTACK_EFFECT_BITE
+	unarmed_attack_sound = 'sound/weapons/bite.ogg'
+	unarmed_miss_sound = 'sound/weapons/bite.ogg'
+	unarmed_damage_low = 1 // Yeah, biteing is pretty weak, blame the monkey super-nerf
+	unarmed_damage_high = 3
+	unarmed_stun_threshold = 4
+	bodypart_trait_source = HEAD_TRAIT
+
+	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
 	var/mob/living/brain/brainmob //The current occupant.
-	var/obj/item/organ/internal/brain/brain //The brain organ
-	var/obj/item/organ/internal/eyes/eyes
-	var/obj/item/organ/internal/ears/ears
-	var/obj/item/organ/internal/tongue/tongue
+	var/obj/item/organ/brain/brain //The brain organ
+	var/obj/item/organ/eyes/eyes
+	var/obj/item/organ/ears/ears
+	var/obj/item/organ/tongue/tongue
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
+	///Render sclera for this species?
+	var/eye_sclera = FALSE
 
 	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
 	var/show_organs_on_examine = TRUE
@@ -41,6 +52,9 @@
 	var/override_hair_color = null
 	///An override that cannot be cleared under any circumstances
 	var/fixed_hair_color = null
+
+	///The global list of hairstyles allowed on this head. Populated by proc/set_global_hairstyles.
+	var/list/legal_hairstyles
 
 	var/hair_style = "Bald"
 	var/hair_alpha = 255
@@ -58,8 +72,6 @@
 	///Draw this head as "debrained"
 	VAR_PROTECTED/show_debrained = FALSE
 
-
-
 	var/lip_style
 	var/lip_color = "white"
 
@@ -74,7 +86,9 @@
 	var/mutable_appearance/facial_gradient_overlay
 
 
-
+/obj/item/bodypart/head/Initialize(mapload)
+	. = ..()
+	legal_hairstyles = get_legal_hairstyles()
 
 /obj/item/bodypart/head/Destroy()
 	QDEL_NULL(brainmob) //order is sensitive, see warning in handle_atom_del() below
@@ -138,7 +152,7 @@
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
-	for(var/obj/item/head_item in src)
+	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
@@ -178,14 +192,13 @@
 		facial_hairstyle = "Shaved"
 		lip_style = null
 		stored_lipstick_trait = null
-
-	if(!animal_origin && ishuman(owner))
+	if(ishuman(owner))
 		update_hair_and_lips()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/obj/item/bodypart/head/get_limb_icon(dropped, draw_external_organs)
+/obj/item/bodypart/head/get_limb_overlays(dropped)
 	cut_overlays()
 	. = ..()
 	if(dropped) //certain overlays only appear when the limb is being detached from its owner.
@@ -203,10 +216,10 @@
 			//Applies the debrained overlay if there is no brain
 			if(!brain)
 				var/image/debrain_overlay = image(layer = -HAIR_LAYER, dir = SOUTH)
-				if(animal_origin == ALIEN_BODYPART)
+				if(bodytype & BODYTYPE_ALIEN)
 					debrain_overlay.icon = 'icons/mob/animal_parts.dmi'
 					debrain_overlay.icon_state = "debrained_alien"
-				else if(animal_origin == LARVA_BODYPART)
+				else if(bodytype & BODYTYPE_LARVA_PLACEHOLDER)
 					debrain_overlay.icon = 'icons/mob/animal_parts.dmi'
 					debrain_overlay.icon_state = "debrained_larva"
 				else if(!(NOBLOOD in species_flags_list))
@@ -215,7 +228,7 @@
 				. += debrain_overlay
 			else
 				var/datum/sprite_accessory/sprite2 = GLOB.hairstyles_list[hair_style]
-				if(sprite2 && (HAIR in species_flags_list))
+				if(sprite2 && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 					var/image/hair_overlay = image(sprite2.icon, "[sprite2.icon_state]", -HAIR_LAYER, SOUTH)
 					hair_overlay.color = hair_color
 					hair_overlay.alpha = hair_alpha
@@ -228,18 +241,19 @@
 			lips_overlay.color = lip_color
 			. += lips_overlay
 
-		// eyes
-		if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
-			var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-			var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
-			if(eyes.eye_color_left)
-				eye_left.color = eyes.eye_color_left
-			if(eyes.eye_color_right)
-				eye_right.color = eyes.eye_color_right
-			. += eye_left
-			. += eye_right
-		else
-			. += image(eyes_icon_file, "eyes_missing", -BODY_LAYER, SOUTH)
+		if(dropped) // mob/living/carbon/proc/update_eyes() does this
+			// eyes
+			if(eyes) // This is a bit of copy/paste code from eyes.dm:generate_body_overlay
+				var/image/eye_left = image(eyes_icon_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+				var/image/eye_right = image(eyes_icon_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+				if(eyes.eye_color_left)
+					eye_left.color = eyes.eye_color_left
+				if(eyes.eye_color_right)
+					eye_right.color = eyes.eye_color_right
+				. += eye_left
+				. += eye_right
+			else
+				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
 		if(!facial_hair_hidden && facial_overlay && (FACEHAIR in species_flags_list))
 			facial_overlay.alpha = hair_alpha
@@ -250,7 +264,7 @@
 		if(show_debrained)
 			. += mutable_appearance('icons/mob/human_face.dmi', "debrained", HAIR_LAYER)
 
-		else if(!hair_hidden && hair_overlay && (HAIR in species_flags_list))
+		else if(!hair_hidden && hair_overlay && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 			hair_overlay.alpha = hair_alpha
 			. += hair_overlay
 			if(hair_gradient_overlay)
@@ -293,27 +307,43 @@
 /obj/item/bodypart/head/GetVoice()
 	return "The head of [real_name]"
 
+/obj/item/bodypart/head/proc/get_legal_hairstyles()
+	return GLOB.hairstyles_list
+
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "default_monkey_head"
+	should_draw_greyscale = FALSE
+	is_dimorphic = FALSE
 	limb_id = SPECIES_MONKEY
-	animal_origin = MONKEY_BODYPART
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
+	should_draw_greyscale = FALSE
+	dmg_overlay_type = SPECIES_MONKEY
+	is_dimorphic = FALSE
 
 /obj/item/bodypart/head/alien
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "alien_head"
+	limb_id = BODYPART_ID_ALIEN
+	is_dimorphic = FALSE
+	should_draw_greyscale = FALSE
 	px_x = 0
 	px_y = 0
 	dismemberable = 0
 	max_damage = 500
-	animal_origin = ALIEN_BODYPART
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN | BODYTYPE_ORGANIC
 
 /obj/item/bodypart/head/larva
 	icon = 'icons/mob/animal_parts.dmi'
+	icon_static = 'icons/mob/animal_parts.dmi'
 	icon_state = "larva_head"
+	limb_id = BODYPART_ID_LARVA
+	is_dimorphic = FALSE
+	should_draw_greyscale = FALSE
 	px_x = 0
 	px_y = 0
 	dismemberable = 0
 	max_damage = 50
-	animal_origin = LARVA_BODYPART
+	bodytype = BODYTYPE_LARVA_PLACEHOLDER | BODYTYPE_ORGANIC

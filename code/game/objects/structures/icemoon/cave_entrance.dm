@@ -77,7 +77,7 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	desc = "A portal that goes to another world, normal creatures couldn't survive there."
 	icon_state = "nether"
 	mob_types = list(/mob/living/simple_animal/hostile/asteroid/ice_demon)
-	light_range = 1
+	light_outer_range = 1
 	light_color = COLOR_SOFT_RED
 
 /obj/structure/spawner/ice_moon/demonic_portal/Initialize(mapload)
@@ -118,7 +118,7 @@ GLOBAL_LIST_INIT(ore_probability, list(
 	playsound(loc,'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	visible_message(span_boldannounce("[src] begins to collapse, cutting it off from this world!"))
 	animate(src, transform = matrix().Scale(0, 1), alpha = 50, time = 5 SECONDS)
-	addtimer(CALLBACK(src, .proc/collapse), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(collapse)), 5 SECONDS)
 
 /**
  * Handles portal deletion
@@ -143,7 +143,7 @@ GLOBAL_LIST_INIT(ore_probability, list(
 		if(3)
 			new /obj/item/reagent_containers/glass/bottle/potion/flight(loc)
 		if(4)
-			new /obj/item/organ/internal/heart/cursed/wizard(loc)
+			new /obj/item/organ/heart/cursed/wizard(loc)
 		if(5)
 			new /obj/item/jacobs_ladder(loc)
 		if(6)
@@ -155,16 +155,16 @@ GLOBAL_LIST_INIT(ore_probability, list(
 		if(9)
 			new /obj/item/immortality_talisman(loc)
 		if(10)
-			new /obj/item/book/granter/spell/summonitem(loc)
+			new /obj/item/book/granter/action/spell/summonitem(loc)
 		if(11)
 			new /obj/item/clothing/neck/necklace/memento_mori(loc)
 		if(12)
 			new /obj/item/borg/upgrade/modkit/lifesteal(loc)
 			new /obj/item/bedsheet/cult(loc)
 		if(13)
-			new /obj/item/disk/design_disk/modkit_disc/mob_and_turf_aoe(loc)
+			new /obj/item/disk/data/modkit_disc/mob_and_turf_aoe(loc)
 		if(14)
-			new /obj/item/disk/design_disk/modkit_disc/bounty(loc)
+			new /obj/item/disk/data/modkit_disc/bounty(loc)
 		if(15)
 			new /obj/item/ship_in_a_bottle(loc)
 			new /obj/item/oar(loc)
@@ -175,9 +175,9 @@ GLOBAL_LIST_INIT(ore_probability, list(
 		if(18)
 			new /obj/item/soulstone/anybody(loc)
 		if(19)
-			new /obj/item/disk/design_disk/modkit_disc/resonator_blast(loc)
+			new /obj/item/disk/data/modkit_disc/resonator_blast(loc)
 		if(20)
-			new /obj/item/disk/design_disk/modkit_disc/rapid_repeater(loc)
+			new /obj/item/disk/data/modkit_disc/rapid_repeater(loc)
 		if(21)
 			new /obj/item/slimepotion/transference(loc)
 		if(22)
@@ -191,6 +191,6 @@ GLOBAL_LIST_INIT(ore_probability, list(
 		if(26)
 			new /obj/item/clothing/shoes/winterboots/ice_boots(loc)
 		if(27)
-			new /obj/item/book/granter/spell/sacredflame(loc)
+			new /obj/item/book/granter/action/spell/sacredflame(loc)
 		if(28)
 			new /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/doom(loc)

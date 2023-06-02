@@ -167,3 +167,41 @@
 	volume = 20
 	falloff_distance = 2
 	falloff_exponent = 5
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/datum/looping_sound/teg
+	volume = 40
+	extra_range = 8
+	mid_sounds = list('sound/machines/gendrone.ogg' = 1)
+	mid_length = 3 SECONDS
+	ignore_walls = FALSE
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/datum/looping_sound/telephone/ring
+	mid_sounds = 'goon/sounds/phone/ring_incoming.ogg'
+	mid_length = 6.2 SECONDS
+
+/datum/looping_sound/telephone/busy
+	start_sound = 'sound/voice/callstation_unavailable.ogg'
+	start_length = 5.7 SECONDS
+	mid_sounds = 'goon/sounds/phone/phone_busy.ogg'
+	mid_length = 5 SECONDS
+	volume = 30
+	falloff_exponent = 5 //Ultra quiet very fast
+	extra_range = -12
+	falloff_distance = 1 //Instant falloff after initial tile
+
+/datum/looping_sound/telephone/busy/hangup
+	//Same as above, but remote hangup sound.
+	start_sound = 'goon/sounds/phone/remote_hangup.ogg'
+	start_length = 0.6 SECONDS
+
+/datum/looping_sound/telephone/ring/outgoing
+	start_sound = 'goon/sounds/phone/dial.ogg'
+	start_length = 3.2 SECONDS
+	mid_sounds = 'goon/sounds/phone/ring_outgoing.ogg'
+	mid_length = 2.1 SECONDS
+	end_sound = 'goon/sounds/phone/remote_pickup.ogg'
+	volume = 10

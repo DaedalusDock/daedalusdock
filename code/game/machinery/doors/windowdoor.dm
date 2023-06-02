@@ -54,14 +54,15 @@
 	src.unres_sides = unres_sides
 	update_appearance(UPDATE_ICON)
 
-	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, .proc/ntnet_receive)
+	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, PROC_REF(ntnet_receive))
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = .proc/on_exit,
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
+	become_atmos_sensitive()
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()
@@ -73,7 +74,7 @@
 	if(atom_integrity == 0)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
-	zas_update_loc()
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/machinery/door/window/update_icon_state()
@@ -81,10 +82,10 @@
 	icon_state = "[base_state][density ? null : "open"]"
 
 	if(hasPower() && unres_sides)
-		set_light(l_range = 2, l_power = 1)
+		set_light(l_outer_range = 2, l_power = 1)
 		return
 
-	set_light(l_range = 0)
+	set_light(l_outer_range = 0)
 
 /obj/machinery/door/window/update_overlays()
 	. = ..()
@@ -262,11 +263,9 @@
 /obj/machinery/door/window/narsie_act()
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
-/obj/machinery/door/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > T0C + (reinf ? 1600 : 800)) ? TRUE : FALSE
-
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
+	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
+		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
@@ -414,11 +413,11 @@
 				return
 
 			if(density)
-				INVOKE_ASYNC(src, .proc/open)
+				INVOKE_ASYNC(src, PROC_REF(open))
 			else
-				INVOKE_ASYNC(src, .proc/close)
+				INVOKE_ASYNC(src, PROC_REF(close))
 		if("touch")
-			INVOKE_ASYNC(src, .proc/open_and_close)
+			INVOKE_ASYNC(src, PROC_REF(open_and_close))
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

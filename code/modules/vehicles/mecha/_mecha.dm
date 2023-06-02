@@ -31,7 +31,7 @@
 	COOLDOWN_DECLARE(mecha_bump_smash)
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_on = FALSE
-	light_range = 8
+	light_outer_range = 8
 	generic_canpass = FALSE
 	hud_possible = list(DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD)
 	///What direction will the mech face when entered/powered on? Defaults to South.
@@ -142,7 +142,7 @@
 	///Whether outside viewers can see the pilot inside
 	var/enclosed = TRUE
 	///In case theres a different iconstate for AI/MMI pilot(currently only used for ripley)
-	var/silicon_icon_state = null
+	var/silbutton_icon_state = null
 	///Currently ejecting, and unable to do things
 	var/is_currently_ejecting = FALSE
 
@@ -193,15 +193,16 @@
 
 /obj/item/radio/mech //this has to go somewhere
 	subspace_transmission = TRUE
+	canhear_range = 0
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
 	. = ..()
 	ui_view = new(null, src)
 	if(enclosed)
 		internal_tank = new (src)
-		RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE , .proc/disconnect_air)
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, .proc/play_stepsound)
-	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+		RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE , PROC_REF(disconnect_air))
+	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(play_stepsound))
+	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 
 	spark_system.set_up(2, 0, src)
 	spark_system.attach(src)
@@ -233,6 +234,7 @@
 	update_appearance()
 
 	become_hearing_sensitive(trait_source = ROUNDSTART_TRAIT)
+	become_atmos_sensitive()
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT) //protects pilots from ashstorms.
 	for(var/key in equip_by_category)
 		if(key == MECHA_L_ARM || key == MECHA_R_ARM)
@@ -272,6 +274,7 @@
 	GLOB.mechas_list -= src //global mech list
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.remove_from_hud(src) //YEET
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/vehicle/sealed/mecha/atom_destruction()
@@ -302,8 +305,8 @@
 	initialize_controller_action_type(/datum/action/vehicle/sealed/mecha/strafe, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/mecha/proc/get_mecha_occupancy_state()
-	if((mecha_flags & SILICON_PILOT) && silicon_icon_state)
-		return silicon_icon_state
+	if((mecha_flags & SILICON_PILOT) && silbutton_icon_state)
+		return silbutton_icon_state
 	if(LAZYLEN(occupants))
 		return base_icon_state
 	return "[base_icon_state]-open"
@@ -432,9 +435,9 @@
 				if(int_tank_air && int_tank_air.get_volume() > 0) //heat the air_contents
 					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(5,7.5)*delta_time)
 			if(cabin_air && cabin_air.get_volume()>0)
-				cabin_air.temperature = min(6000+T0C, cabin_air.get_temperature()+rand(5,7.5)*delta_time)
-				if(cabin_air.get_temperature() > max_temperature/2)
-					take_damage(delta_time*2/round(max_temperature/cabin_air.get_temperature(),0.1), BURN, 0, 0)
+				cabin_air.temperature = min(6000+T0C, cabin_air.temperature+rand(5,7.5)*delta_time)
+				if(cabin_air.temperature > max_temperature/2)
+					take_damage(delta_time*2/round(max_temperature/cabin_air.temperature,0.1), BURN, 0, 0)
 
 
 		if(internal_damage & MECHA_INT_TANK_BREACH) //remove some air from internal tank
@@ -549,7 +552,7 @@
 	for(var/mob/M in speech_bubble_recipients)
 		if(M.client)
 			speech_bubble_recipients.Add(M.client)
-	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, image('icons/mob/talk.dmi', src, "machine[say_test(speech_args[SPEECH_MESSAGE])]",MOB_LAYER+1), speech_bubble_recipients, 30)
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(flick_overlay), image('icons/mob/talk.dmi', src, "machine[say_test(speech_args[SPEECH_MESSAGE])]",MOB_LAYER+1), speech_bubble_recipients, 30)
 
 ////////////////////////////
 ///// Action processing ////
@@ -600,7 +603,7 @@
 			return
 		if(SEND_SIGNAL(src, COMSIG_MECHA_EQUIPMENT_CLICK, livinguser, target) & COMPONENT_CANCEL_EQUIPMENT_CLICK)
 			return
-		INVOKE_ASYNC(selected, /obj/item/mecha_parts/mecha_equipment.proc/action, user, target, modifiers)
+		INVOKE_ASYNC(selected, TYPE_PROC_REF(/obj/item/mecha_parts/mecha_equipment, action), user, target, modifiers)
 		return
 	if((selected.range & MECHA_MELEE) && Adjacent(target))
 		if(isliving(target) && selected.harmful && HAS_TRAIT(livinguser, TRAIT_PACIFISM))
@@ -608,7 +611,7 @@
 			return
 		if(SEND_SIGNAL(src, COMSIG_MECHA_EQUIPMENT_CLICK, livinguser, target) & COMPONENT_CANCEL_EQUIPMENT_CLICK)
 			return
-		INVOKE_ASYNC(selected, /obj/item/mecha_parts/mecha_equipment.proc/action, user, target, modifiers)
+		INVOKE_ASYNC(selected, TYPE_PROC_REF(/obj/item/mecha_parts/mecha_equipment, action), user, target, modifiers)
 		return
 	if(!(livinguser in return_controllers_with_flag(VEHICLE_CONTROL_MELEE)))
 		to_chat(livinguser, span_warning("You're in the wrong seat to interact with your hands."))
@@ -797,7 +800,7 @@
 /obj/vehicle/sealed/mecha/proc/try_repair_int_damage(mob/user, flag_to_heal)
 	balloon_alert(user, get_int_repair_fluff_start(flag_to_heal))
 	log_message("[key_name(user)] starting internal damage repair for flag [flag_to_heal]", LOG_MECHA)
-	if(!do_after(user, 10 SECONDS, src))
+	if(!do_after(user, src, 10 SECONDS))
 		balloon_alert(user, get_int_repair_fluff_fail(flag_to_heal))
 		log_message("Internal damage repair for flag [flag_to_heal] failed.", LOG_MECHA, color="red")
 		return
@@ -1058,7 +1061,7 @@
 
 	visible_message(span_notice("[user] starts to insert an MMI into [name]."))
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		to_chat(user, span_notice("You stop inserting the MMI."))
 		return FALSE
 	if(LAZYLEN(occupants) < max_occupants)
@@ -1098,7 +1101,7 @@
 			return FALSE
 	to_chat(user, span_notice("You begin the ejection procedure. Equipment is disabled during this process. Hold still to finish ejecting."))
 	is_currently_ejecting = TRUE
-	if(do_after(user, has_gravity() ? exit_delay : 0 , target = src))
+	if(do_after(user, src, has_gravity() ? exit_delay : 0))
 		to_chat(user, span_notice("You exit the mech."))
 		mob_exit(user, TRUE)
 	else
@@ -1154,10 +1157,10 @@
 
 
 /obj/vehicle/sealed/mecha/add_occupant(mob/M, control_flags)
-	RegisterSignal(M, COMSIG_LIVING_DEATH, .proc/mob_exit)
-	RegisterSignal(M, COMSIG_MOB_CLICKON, .proc/on_mouseclick)
-	RegisterSignal(M, COMSIG_MOB_MIDDLECLICKON, .proc/on_middlemouseclick) //For AIs
-	RegisterSignal(M, COMSIG_MOB_SAY, .proc/display_speech_bubble)
+	RegisterSignal(M, COMSIG_LIVING_DEATH, PROC_REF(mob_exit))
+	RegisterSignal(M, COMSIG_MOB_CLICKON, PROC_REF(on_mouseclick))
+	RegisterSignal(M, COMSIG_MOB_MIDDLECLICKON, PROC_REF(on_middlemouseclick)) //For AIs
+	RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(display_speech_bubble))
 	. = ..()
 	update_appearance()
 

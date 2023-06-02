@@ -67,17 +67,17 @@
 #define BP_BLOCK_CHANGE_SPECIES (1<<0)
 
 //Bodytype defines for how things can be worn, surgery, and other misc things.
-///The limb is organic
+///The limb is organic.
 #define BODYTYPE_ORGANIC (1<<0)
-///The limb is robotic
+///The limb is robotic.
 #define BODYTYPE_ROBOTIC (1<<1)
-///The limb fits the human mold
+///The limb fits the human mold. This is not meant to be literal, if the sprite "fits" on a human, it is "humanoid", regardless of origin.
 #define BODYTYPE_HUMANOID (1<<2)
-///The limb is digitigrade
-#define BODYTYPE_DIGITIGRADE (1<<3) //Cancer
-///The limb fits the monkey mold
+///The limb is digitigrade.
+#define BODYTYPE_DIGITIGRADE (1<<3)
+///The limb fits the monkey mold.
 #define BODYTYPE_MONKEY (1<<4)
-///The limb is snouted
+///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
 ///The limb has skrelly bits
 #define BODYTYPE_SKRELL (1<<6)
@@ -91,6 +91,12 @@
 #define BODYTYPE_TESHARI (1<<10)
 
 //Defines for Species IDs
+///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
+#define BODYTYPE_LARVA_PLACEHOLDER (1<<11)
+///The limb is from a xenomorph.
+#define BODYTYPE_ALIEN (1<<12)
+
+// Defines for Species IDs. Used to refer to the name of a species, for things like bodypart names or species preferences.
 #define SPECIES_ABDUCTOR "abductor"
 #define SPECIES_ANDROID "android"
 #define SPECIES_DULLAHAN "dullahan"
@@ -122,6 +128,12 @@
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
 #define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
 
+// Like species IDs, but not specifically attached a species.
+#define BODYPART_ID_ALIEN "alien"
+#define BODYPART_ID_ROBOTIC "robotic"
+#define BODYPART_ID_DIGITIGRADE "digitigrade"
+#define BODYPART_ID_LARVA "larva"
+
 //See: datum/species/var/digitigrade_customization
 ///The species does not have digitigrade legs in generation.
 #define DIGITIGRADE_NEVER 0
@@ -130,13 +142,8 @@
 ///The species is forced to have digitigrade legs in generation.
 #define DIGITIGRADE_FORCED 2
 
-//TODO: Remove entirely in favor of the BODYTYPE system
-///Body type bitfields for allowed_animal_origin used to check compatible surgery body types (use NONE for no matching body type)
-#define HUMAN_BODY (1 << 0)
-#define MONKEY_BODY (1 << 1)
-#define ALIEN_BODY (1 << 2)
-#define LARVA_BODY (1 << 3)
-/*see __DEFINES/inventory.dm for bodypart bitflag defines*/
+///Digitigrade's prefs, used in features for legs if you're meant to be a Digitigrade.
+#define DIGITIGRADE_LEGS "Digitigrade Legs"
 
 // Health/damage defines
 #define MAX_LIVING_HEALTH 100
@@ -205,6 +212,10 @@
 #define BIOWARE_LIGAMENTS "ligaments"
 #define BIOWARE_CORTEX "cortex"
 
+#define SURGERY_CLOSED 0
+#define SURGERY_OPEN 1
+#define SURGERY_RETRACTED 2
+
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
 #define SCREWYHUD_CRIT 1
@@ -214,10 +225,10 @@
 //Health doll screws for human mobs
 #define SCREWYDOLL_HEAD /obj/item/bodypart/head
 #define SCREWYDOLL_CHEST /obj/item/bodypart/chest
-#define SCREWYDOLL_L_ARM /obj/item/bodypart/l_arm
-#define SCREWYDOLL_R_ARM /obj/item/bodypart/r_arm
-#define SCREWYDOLL_L_LEG /obj/item/bodypart/l_leg
-#define SCREWYDOLL_R_LEG /obj/item/bodypart/r_leg
+#define SCREWYDOLL_L_ARM /obj/item/bodypart/arm/left
+#define SCREWYDOLL_R_ARM /obj/item/bodypart/arm/right
+#define SCREWYDOLL_L_LEG /obj/item/bodypart/leg/left
+#define SCREWYDOLL_R_LEG /obj/item/bodypart/leg/right
 
 //Threshold levels for beauty for humans
 #define BEAUTY_LEVEL_HORRID -66
@@ -331,11 +342,18 @@
 #define ENVIRONMENT_SMASH_WALLS (1<<1)  //walls
 #define ENVIRONMENT_SMASH_RWALLS (1<<2) //rwalls
 
+// Slip flags, also known as lube flags
+/// The mob will not slip if they're walking intent
 #define NO_SLIP_WHEN_WALKING (1<<0)
+/// Slipping on this will send them sliding a few tiles down
 #define SLIDE (1<<1)
-#define GALOSHES_DONT_HELP (1<<2)
-#define SLIDE_ICE (1<<3)
-#define SLIP_WHEN_CRAWLING (1<<4) //clown planet ruin
+/// Ice slides only go one tile and don't knock you over, they're intended to cause a "slip chain"
+/// where you slip on ice until you reach a non-slippable tile (ice puzzles)
+#define SLIDE_ICE (1<<2)
+/// [TRAIT_NO_SLIP_WATER] does not work on this slip. ONLY [TRAIT_NO_SLIP_ALL] will
+#define GALOSHES_DONT_HELP (1<<3)
+/// Slip works even if you're already on the ground
+#define SLIP_WHEN_CRAWLING (1<<4)
 
 #define MAX_CHICKENS 50
 
@@ -412,9 +430,6 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define HUNGER_FACTOR 0.05 //factor at which mob nutrition decreases
-#define ETHEREAL_CHARGE_FACTOR 0.8 //factor at which ethereal's charge decreases per second
-#define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
 // Eye protection
@@ -552,6 +567,9 @@
 #define AI_EMOTION_BLUE_GLOW "Blue Glow"
 #define AI_EMOTION_RED_GLOW "Red Glow"
 
+/// Icon state to use for ai displays that just turns them off
+#define AI_DISPLAY_DONT_GLOW "ai_off"
+
 /// Throw modes, defines whether or not to turn off throw mode after
 #define THROW_MODE_DISABLED 0
 #define THROW_MODE_TOGGLE 1
@@ -579,15 +597,19 @@
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays
-#define TOTAL_LAYERS 32 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
+#define TOTAL_LAYERS 34 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
 /// Mutations layer - Tk headglows, cold resistance glow, etc
-#define MUTATIONS_LAYER 32
+#define MUTATIONS_LAYER 34
 /// Mutantrace features (tail when looking south) that must appear behind the body parts
-#define BODY_BEHIND_LAYER 31
-/// Initially "AUGMENTS", this was repurposed to be a catch-all bodyparts flag
-#define BODYPARTS_LAYER 30
+#define BODY_BEHIND_LAYER 33
+/// Layer for bodyparts that should appear behind every other bodypart - Mostly, legs when facing WEST or EAST
+#define BODYPARTS_LOW_LAYER 32
+/// Layer for most bodyparts, appears above BODYPARTS_LOW_LAYER and below BODYPARTS_HIGH_LAYER
+#define BODYPARTS_LAYER 31
 /// Mutantrace features (snout, body markings) that must appear above the body parts
-#define BODY_ADJ_LAYER 29
+#define BODY_ADJ_LAYER 30
+/// Eyes!
+#define EYE_LAYER 29
 /// Underwear, undershirts, socks, eyes, lips(makeup)
 #define BODY_LAYER 28
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
@@ -600,8 +622,8 @@
 #define ID_LAYER 24
 /// ID card layer
 #define ID_CARD_LAYER 23
-/// Hands body part layer (or is this for the arm? not sure...)
-#define HANDS_PART_LAYER 22
+/// Layer for bodyparts that should appear above every other bodypart - Currently only used for hands
+#define BODYPARTS_HIGH_LAYER 22
 /// Gloves layer
 #define GLOVES_LAYER 21
 /// Shoes layer
@@ -644,16 +666,6 @@
 #define HALO_LAYER 2
 /// Fire layer when you're on fire
 #define FIRE_LAYER 1
-
-//Bitflags for the layers an external organ can draw on (organs can be drawn on multiple layers)
-/// Draws organ on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 1)
-/// Draws organ on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 2)
-/// Draws organ on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 3)
-/// Draws organ on all EXTERNAL layers
-#define ALL_EXTERNAL_OVERLAYS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
 
 //Mob Overlay Index Shortcuts for alternate_worn_layer, layers
 //Because I *KNOW* somebody will think layer+1 means "above"

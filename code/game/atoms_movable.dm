@@ -101,10 +101,12 @@
 			gen_emissive_blocker.dir = dir
 			gen_emissive_blocker.appearance_flags |= appearance_flags
 			add_overlay(list(gen_emissive_blocker))
+
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
 			em_block = new(src, render_target)
 			add_overlay(list(em_block))
+
 	if(opacity)
 		AddElement(/datum/element/light_blocking)
 	switch(light_system)
@@ -117,12 +119,14 @@
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
+	if (bound_overlay)
+		QDEL_NULL(bound_overlay)
 
 	unbuckle_all_mobs(force = TRUE)
 
 	if(loc)
 		//Restore air flow if we were blocking it (movables with zas_canpass() will need to do this manually if necessary)
-		if(((can_atmos_pass == CANPASS_DENSITY && density) || can_atmos_pass == CANPASS_NEVER) && isturf(loc))
+		if(isturf(loc) && (can_atmos_pass != CANPASS_ALWAYS))
 			can_atmos_pass = CANPASS_ALWAYS
 			zas_update_loc()
 
@@ -197,7 +201,7 @@
 		if(isobj(hurt_atom) || ismob(hurt_atom))
 			if(hurt_atom.layer > highest.layer)
 				highest = hurt_atom
-	INVOKE_ASYNC(src, .proc/SpinAnimation, 5, 2)
+	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
 
 /*
@@ -290,9 +294,22 @@
 	return destination //used by some child types checks and zMove()
 
 /atom/movable/vv_edit_var(var_name, var_value)
-	var/static/list/banned_edits = list(NAMEOF(src, step_x) = TRUE, NAMEOF(src, step_y) = TRUE, NAMEOF(src, step_size) = TRUE, NAMEOF(src, bounds) = TRUE)
-	var/static/list/careful_edits = list(NAMEOF(src, bound_x) = TRUE, NAMEOF(src, bound_y) = TRUE, NAMEOF(src, bound_width) = TRUE, NAMEOF(src, bound_height) = TRUE)
-	var/static/list/not_falsey_edits = list(NAMEOF(src, bound_width) = TRUE, NAMEOF(src, bound_height) = TRUE)
+	var/static/list/banned_edits = list(
+		NAMEOF_STATIC(src, step_x) = TRUE,
+		NAMEOF_STATIC(src, step_y) = TRUE,
+		NAMEOF_STATIC(src, step_size) = TRUE,
+		NAMEOF_STATIC(src, bounds) = TRUE
+		)
+	var/static/list/careful_edits = list(
+		NAMEOF_STATIC(src, bound_x) = TRUE,
+		NAMEOF_STATIC(src, bound_y) = TRUE,
+		NAMEOF_STATIC(src, bound_width) = TRUE,
+		NAMEOF_STATIC(src, bound_height) = TRUE
+		)
+	var/static/list/not_falsey_edits = list(
+		NAMEOF_STATIC(src, bound_width) = TRUE,
+		NAMEOF_STATIC(src, bound_height) = TRUE
+		)
 	if(banned_edits[var_name])
 		return FALSE //PLEASE no.
 	if(careful_edits[var_name] && (var_value % world.icon_size) != 0)
@@ -700,6 +717,16 @@
 		else if(new_turf && !old_turf)
 			SSspatial_grid.enter_cell(src, new_turf)
 
+	// Z-Mimic hook
+	if (bound_overlay)
+		// The overlay will handle cleaning itself up on non-openspace turfs.
+		if (new_turf)
+			bound_overlay.forceMove(get_step(src, UP))
+			if (bound_overlay && dir != bound_overlay.dir)
+				bound_overlay.setDir(dir)
+		else	// Not a turf, so we need to destroy immediately instead of waiting for the destruction timer to proc.
+			qdel(bound_overlay)
+
 	return TRUE
 
 // Make sure you know what you're doing if you call this, this is intended to only be called by byond directly.
@@ -772,7 +799,7 @@
 			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
 			recursive_contents[channel] -= gone.important_recursive_contents[channel]
 			switch(channel)
-				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE, RECURSIVE_CONTENTS_RADIO_NONATMOS, RECURSIVE_CONTENTS_RADIO_ATMOS)
 					if(!length(recursive_contents[channel]))
 						// This relies on a nice property of the linked recursive and gridmap types
 						// They're defined in relation to each other, so they have the same value
@@ -792,13 +819,29 @@
 			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
 			LAZYINITLIST(recursive_contents[channel])
 			switch(channel)
-				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE, RECURSIVE_CONTENTS_RADIO_NONATMOS, RECURSIVE_CONTENTS_RADIO_ATMOS)
 					if(!length(recursive_contents[channel]))
 						SSspatial_grid.add_grid_awareness(location, channel)
 			recursive_contents[channel] |= arrived.important_recursive_contents[channel]
 
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_hearing_sensitive(trait_source = TRAIT_GENERIC)
+	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
+	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+		return
+
+	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
+		LAZYINITLIST(location.important_recursive_contents)
+		var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+		if(!length(recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE]))
+			SSspatial_grid.add_grid_awareness(location, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+		recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE] += list(src)
+
+	var/turf/our_turf = get_turf(src)
+	SSspatial_grid.add_grid_membership(src, our_turf, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+
+///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
+/atom/movable/proc/become_radio_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
 	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
 		return
@@ -885,17 +928,17 @@
 		UNSETEMPTY(movable_loc.important_recursive_contents)
 
 ///called when this movable becomes the parent of a storage component that is currently being viewed by a player. uses important_recursive_contents
-/atom/movable/proc/become_active_storage(datum/component/storage/component_source)
+/atom/movable/proc/become_active_storage(datum/storage/source)
 	if(!HAS_TRAIT(src, TRAIT_ACTIVE_STORAGE))
 		for(var/atom/movable/location as anything in get_nested_locs(src) + src)
 			LAZYADDASSOCLIST(location.important_recursive_contents, RECURSIVE_CONTENTS_ACTIVE_STORAGE, src)
-	ADD_TRAIT(src, TRAIT_ACTIVE_STORAGE, component_source)
+	ADD_TRAIT(src, TRAIT_ACTIVE_STORAGE, REF(source))
 
 ///called when this movable's storage component is no longer viewed by any players, unsets important_recursive_contents
-/atom/movable/proc/lose_active_storage(datum/component/storage/component_source)
+/atom/movable/proc/lose_active_storage(datum/storage/source)
 	if(!HAS_TRAIT(src, TRAIT_ACTIVE_STORAGE))
 		return
-	REMOVE_TRAIT(src, TRAIT_ACTIVE_STORAGE, component_source)
+	REMOVE_TRAIT(src, TRAIT_ACTIVE_STORAGE, REF(source))
 	if(HAS_TRAIT(src, TRAIT_ACTIVE_STORAGE))
 		return
 
@@ -1203,12 +1246,12 @@
 	return blocker_opinion
 
 /// called when this atom is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
-/atom/movable/proc/on_exit_storage(datum/component/storage/concrete/master_storage)
-	SEND_SIGNAL(src, COMSIG_STORAGE_EXITED, master_storage)
+/atom/movable/proc/on_exit_storage(datum/storage/master_storage)
+	return
 
 /// called when this atom is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
-/atom/movable/proc/on_enter_storage(datum/component/storage/concrete/master_storage)
-	SEND_SIGNAL(src, COMSIG_STORAGE_ENTERED, master_storage)
+/atom/movable/proc/on_enter_storage(datum/storage/master_storage)
+	return
 
 /atom/movable/proc/get_spacemove_backup()
 	for(var/checked_range in orange(1, get_turf(src)))

@@ -19,7 +19,7 @@
 	if (!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 
-	RegisterSignal(target, COMSIG_MOUSEDROP_ONTO, .proc/mouse_drop_onto)
+	RegisterSignal(target, COMSIG_MOUSEDROP_ONTO, PROC_REF(mouse_drop_onto))
 
 	src.items = items
 	src.should_strip_proc_path = should_strip_proc_path
@@ -57,7 +57,7 @@
 		strip_menu = new(source, src)
 		LAZYSET(strip_menus, source, strip_menu)
 
-	INVOKE_ASYNC(strip_menu, /datum/.proc/ui_interact, user)
+	INVOKE_ASYNC(strip_menu, TYPE_PROC_REF(/datum, ui_interact), user)
 
 /// A representation of an item that can be stripped down
 /datum/strippable_item
@@ -238,7 +238,7 @@
 	if (!ismob(source))
 		return FALSE
 
-	if (!do_mob(user, source, get_equip_delay(equipping)))
+	if (!do_after(user, source, get_equip_delay(equipping)))
 		return FALSE
 
 	if (!equipping.mob_can_equip(
@@ -294,7 +294,7 @@
 
 /// A utility function for `/datum/strippable_item`s to start unequipping an item from a mob.
 /proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
-	if (!do_mob(user, source, strip_delay || item.strip_delay, interaction_key = REF(item)))
+	if (!do_after(user, source, strip_delay || item.strip_delay, DO_PUBLIC, interaction_key = REF(item), display = image('icons/hud/do_after.dmi', "pickpocket")))
 		return FALSE
 
 	return TRUE
@@ -496,14 +496,21 @@
 	return GLOB.always_state
 
 /datum/strip_menu/ui_status(mob/user, datum/ui_state/state)
+	var/only_living = ui_status_only_living(user, owner)
+	var/user_has_free_hands = ui_status_user_has_free_hands(user, owner)
+	var/user_is_adjacent = ui_status_user_is_adjacent(user, owner, allow_tk = FALSE)
+	var/user_can_strip = HAS_TRAIT(user, TRAIT_CAN_STRIP) ? UI_INTERACTIVE : UI_UPDATE
+
+	var/user_is_conscious_and_lying_down = ui_status_user_is_conscious_and_lying_down(user)
+	var/user_is_abled = ui_status_user_is_abled(user, owner)
 	return min(
-		ui_status_only_living(user, owner),
-		ui_status_user_has_free_hands(user, owner),
-		ui_status_user_is_adjacent(user, owner, allow_tk = FALSE),
-		HAS_TRAIT(user, TRAIT_CAN_STRIP) ? UI_INTERACTIVE : UI_UPDATE,
+		only_living,
+		user_has_free_hands,
+		user_is_adjacent,
+		user_can_strip,
 		max(
-			ui_status_user_is_conscious_and_lying_down(user),
-			ui_status_user_is_abled(user, owner),
+			user_is_conscious_and_lying_down,
+			user_is_abled,
 		),
 	)
 

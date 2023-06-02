@@ -9,14 +9,14 @@
 /datum/element/light_eater/Attach(datum/target)
 	if(isatom(target))
 		if(ismovable(target))
-			RegisterSignal(target, COMSIG_MOVABLE_IMPACT, .proc/on_throw_impact)
+			RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(on_throw_impact))
 			if(isitem(target))
-				RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, .proc/on_afterattack)
-				RegisterSignal(target, COMSIG_ITEM_HIT_REACT, .proc/on_hit_reaction)
+				RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_afterattack))
+				RegisterSignal(target, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_reaction))
 			else if(isprojectile(target))
-				RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, .proc/on_projectile_hit)
+				RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, PROC_REF(on_projectile_hit))
 	else if(istype(target, /datum/reagent))
-		RegisterSignal(target, COMSIG_REAGENT_EXPOSE_ATOM, .proc/on_expose_atom)
+		RegisterSignal(target, COMSIG_REAGENT_EXPOSE_ATOM, PROC_REF(on_expose_atom))
 	else
 		return ELEMENT_INCOMPATIBLE
 
@@ -78,7 +78,7 @@
  * - [eater][/datum]: The light eater eating the morsel. This is the datum that the element is attached to that started this chain.
  */
 /datum/element/light_eater/proc/devour(atom/morsel, datum/eater)
-	if(morsel.light_power <= 0 || morsel.light_range <= 0 || !morsel.light_on)
+	if(morsel.light_power <= 0 || morsel.light_outer_range <= 0 || !morsel.light_on)
 		return FALSE
 	if(SEND_SIGNAL(morsel, COMSIG_LIGHT_EATER_ACT, eater) & COMPONENT_BLOCK_LIGHT_EATER)
 		return FALSE // Either the light eater can't eat it or it had special behaviors.

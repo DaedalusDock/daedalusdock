@@ -1,7 +1,7 @@
 //The contant in the rate of reagent transfer on life ticks
 #define STOMACH_METABOLISM_CONSTANT 0.25
 
-/obj/item/organ/internal/stomach
+/obj/item/organ/stomach
 	name = "stomach"
 	icon_state = "stomach"
 	visual = FALSE
@@ -31,7 +31,7 @@
 	var/metabolism_efficiency = 0.05 // the lowest we should go is 0.05
 
 
-/obj/item/organ/internal/stomach/Initialize(mapload)
+/obj/item/organ/stomach/Initialize(mapload)
 	. = ..()
 	//None edible organs do not get a reagent holder by default
 	if(!reagents)
@@ -39,7 +39,7 @@
 	else
 		reagents.flags |= REAGENT_HOLDER_ALIVE
 
-/obj/item/organ/internal/stomach/on_life(delta_time, times_fired)
+/obj/item/organ/stomach/on_life(delta_time, times_fired)
 	. = ..()
 
 	//Manage species digestion
@@ -115,7 +115,7 @@
 		body.vomit(damage)
 		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
 
-/obj/item/organ/internal/stomach/proc/handle_hunger(mob/living/carbon/human/human, delta_time, times_fired)
+/obj/item/organ/stomach/proc/handle_hunger(mob/living/carbon/human/human, delta_time, times_fired)
 	if(HAS_TRAIT(human, TRAIT_NOHUNGER))
 		return //hunger is for BABIES
 
@@ -138,7 +138,7 @@
 	// nutrition decrease and satiety
 	if (human.nutrition > 0 && human.stat != DEAD)
 		// THEY HUNGER
-		var/hunger_rate = HUNGER_FACTOR
+		var/hunger_rate = HUNGER_DECAY
 		var/datum/component/mood/mood = human.GetComponent(/datum/component/mood)
 		if(mood && mood.sanity > SANITY_DISTURBED)
 			hunger_rate *= max(1 - 0.002 * mood.sanity, 0.5) //0.85 to 0.75
@@ -146,14 +146,14 @@
 		if(human.satiety > MAX_SATIETY)
 			human.satiety = MAX_SATIETY
 		else if(human.satiety > 0)
-			human.satiety--
+			human.satiety = max(human.satiety - (SATIETY_DECAY * delta_time), 0)
 		else if(human.satiety < -MAX_SATIETY)
 			human.satiety = -MAX_SATIETY
 		else if(human.satiety < 0)
-			human.satiety++
+			human.satiety = min(human.satiety + (SATIETY_DECAY * delta_time), 0)
 			if(DT_PROB(round(-human.satiety/77), delta_time))
 				human.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
-			hunger_rate = 3 * HUNGER_FACTOR
+			hunger_rate = 3 * HUNGER_DECAY
 		hunger_rate *= human.physiology.hunger_mod
 		human.adjust_nutrition(-hunger_rate * delta_time)
 
@@ -198,17 +198,17 @@
 			human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/starving)
 
 ///for when mood is disabled and hunger should handle slowdowns
-/obj/item/organ/internal/stomach/proc/handle_hunger_slowdown(mob/living/carbon/human/human)
+/obj/item/organ/stomach/proc/handle_hunger_slowdown(mob/living/carbon/human/human)
 	var/hungry = (500 - human.nutrition) / 5 //So overeat would be 100 and default level would be 80
 	if(hungry >= 70)
 		human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (hungry / 50))
 	else
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/hunger)
 
-/obj/item/organ/internal/stomach/get_availability(datum/species/owner_species)
+/obj/item/organ/stomach/get_availability(datum/species/owner_species)
 	return !(NOSTOMACH in owner_species.inherent_traits)
 
-/obj/item/organ/internal/stomach/proc/handle_disgust(mob/living/carbon/human/disgusted, delta_time, times_fired)
+/obj/item/organ/stomach/proc/handle_disgust(mob/living/carbon/human/disgusted, delta_time, times_fired)
 	var/old_disgust = disgusted.old_disgust
 	var/disgust = disgusted.disgust
 
@@ -254,7 +254,7 @@
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/disgusted)
 			SEND_SIGNAL(disgusted, COMSIG_ADD_MOOD_EVENT, "disgust", /datum/mood_event/disgusted)
 
-/obj/item/organ/internal/stomach/Remove(mob/living/carbon/stomach_owner, special = 0)
+/obj/item/organ/stomach/Remove(mob/living/carbon/stomach_owner, special = 0)
 	if(ishuman(stomach_owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.clear_alert(ALERT_DISGUST)
@@ -263,7 +263,7 @@
 
 	return ..()
 
-/obj/item/organ/internal/stomach/bone
+/obj/item/organ/stomach/bone
 	desc = "You have no idea what this strange ball of bones does."
 	metabolism_efficiency = 0.025 //very bad
 	/// How much [BRUTE] damage milk heals every second
@@ -271,7 +271,7 @@
 	/// How much [BURN] damage milk heals every second
 	var/milk_burn_healing = 2.5
 
-/obj/item/organ/internal/stomach/bone/on_life(delta_time, times_fired)
+/obj/item/organ/stomach/bone/on_life(delta_time, times_fired)
 	var/datum/reagent/consumable/milk/milk = locate(/datum/reagent/consumable/milk) in reagents.reagent_list
 	if(milk)
 		var/mob/living/carbon/body = owner
@@ -279,20 +279,20 @@
 			reagents.remove_reagent(milk.type, milk.volume - 5)
 			to_chat(owner, span_warning("The excess milk is dripping off your bones!"))
 		body.heal_bodypart_damage(milk_brute_healing * REAGENTS_EFFECT_MULTIPLIER * delta_time, milk_burn_healing * REAGENTS_EFFECT_MULTIPLIER * delta_time)
-
-		for(var/datum/wound/iter_wound as anything in body.all_wounds)
-			iter_wound.on_xadone(1 * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+		if(prob(10))
+			for(var/obj/item/bodypart/BP as anything in body.bodyparts)
+				BP.heal_bones()
 		reagents.remove_reagent(milk.type, milk.metabolization_rate * delta_time)
 	return ..()
 
-/obj/item/organ/internal/stomach/bone/plasmaman
+/obj/item/organ/stomach/bone/plasmaman
 	name = "digestive crystal"
 	icon_state = "stomach-p"
 	desc = "A strange crystal that is responsible for metabolizing the unseen energy force that feeds plasmamen."
 	metabolism_efficiency = 0.06
 	milk_burn_healing = 0
 
-/obj/item/organ/internal/stomach/cybernetic
+/obj/item/organ/stomach/cybernetic
 	name = "basic cybernetic stomach"
 	icon_state = "stomach-c"
 	desc = "A basic device designed to mimic the functions of a human stomach"
@@ -301,7 +301,7 @@
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 	metabolism_efficiency = 0.35 // not as good at digestion
 
-/obj/item/organ/internal/stomach/cybernetic/tier2
+/obj/item/organ/stomach/cybernetic/tier2
 	name = "cybernetic stomach"
 	icon_state = "stomach-c-u"
 	desc = "An electronic device designed to mimic the functions of a human stomach. Handles disgusting food a bit better."
@@ -310,7 +310,7 @@
 	emp_vulnerability = 40
 	metabolism_efficiency = 0.07
 
-/obj/item/organ/internal/stomach/cybernetic/tier3
+/obj/item/organ/stomach/cybernetic/tier3
 	name = "upgraded cybernetic stomach"
 	icon_state = "stomach-c-u2"
 	desc = "An upgraded version of the cybernetic stomach, designed to improve further upon organic stomachs. Handles disgusting food very well."
@@ -319,7 +319,7 @@
 	emp_vulnerability = 20
 	metabolism_efficiency = 0.1
 
-/obj/item/organ/internal/stomach/cybernetic/emp_act(severity)
+/obj/item/organ/stomach/cybernetic/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

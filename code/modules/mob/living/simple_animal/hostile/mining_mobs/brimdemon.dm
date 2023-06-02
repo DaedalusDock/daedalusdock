@@ -37,7 +37,7 @@
 	deathsound = 'sound/magic/demon_dies.ogg'
 	light_color = LIGHT_COLOR_BLOOD_MAGIC
 	light_power = 5
-	light_range = 1.4
+	light_outer_range = 1.4
 	crusher_loot = /obj/item/crusher_trophy/brimdemon_fang
 	/// Are we charging/firing? If yes stops our movement.
 	var/firing = FALSE
@@ -96,7 +96,7 @@
 	add_overlay("brimdemon_telegraph_dir")
 	visible_message(span_danger("[src] starts charging!"))
 	balloon_alert(src, "charging...")
-	addtimer(CALLBACK(src, .proc/fire_laser), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(fire_laser)), 1 SECONDS)
 	COOLDOWN_START(src, ranged_cooldown, ranged_cooldown_time)
 
 /mob/living/simple_animal/hostile/asteroid/brimdemon/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
@@ -141,7 +141,7 @@
 		last_brimbeam.icon_state = "brimbeam_end"
 		var/atom/first_brimbeam = beamparts[1]
 		first_brimbeam.icon_state = "brimbeam_start"
-	addtimer(CALLBACK(src, .proc/end_laser), 2 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(end_laser)), 2 SECONDS)
 
 /// Deletes all the brimbeam parts and sets variables back to their initial ones.
 /mob/living/simple_animal/hostile/asteroid/brimdemon/proc/end_laser()
@@ -160,11 +160,10 @@
 	icon = 'icons/mob/brimdemon.dmi'
 	icon_state = "brimbeam_mid"
 	layer = ABOVE_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	light_color = LIGHT_COLOR_BLOOD_MAGIC
 	light_power = 3
-	light_range = 2
+	light_outer_range = 2
 
 /obj/effect/brimbeam/Initialize()
 	. = ..()

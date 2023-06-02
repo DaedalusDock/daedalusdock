@@ -30,7 +30,7 @@
 
 		name = "[name] - [poster_structure.original_name]"
 		//If the poster structure is being deleted something has gone wrong, kill yourself off too
-		RegisterSignal(poster_structure, COMSIG_PARENT_QDELETING, .proc/react_to_deletion)
+		RegisterSignal(poster_structure, COMSIG_PARENT_QDELETING, PROC_REF(react_to_deletion))
 
 /obj/item/poster/Destroy()
 	poster_structure = null
@@ -107,7 +107,7 @@
 			qdel(src)
 		else
 			to_chat(user, span_notice("You carefully remove the poster from the wall."))
-			roll_and_drop(user.loc)
+			roll_and_drop(Adjacent(user) ? get_turf(user) : loc)
 
 /obj/structure/sign/poster/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -124,10 +124,10 @@
 	R.add_fingerprint(user)
 	qdel(src)
 
-/obj/structure/sign/poster/proc/roll_and_drop(loc)
+/obj/structure/sign/poster/proc/roll_and_drop(atom/location)
 	pixel_x = 0
 	pixel_y = 0
-	var/obj/item/poster/P = new poster_item_type(loc, src)
+	var/obj/item/poster/P = new poster_item_type(location, src)
 	forceMove(P)
 	return P
 
@@ -151,22 +151,18 @@
 
 	var/obj/structure/sign/poster/D = P.poster_structure
 
-	var/temp_loc = get_turf(user)
 	flick("poster_being_set",D)
 	D.forceMove(src)
 	qdel(P) //delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 	playsound(D.loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 
-	if(do_after(user, PLACE_SPEED, target=src))
-		if(!D || QDELETED(D))
-			return
+	var/turf/user_drop_location  = get_turf(user)
+	if(!do_after(user, D, PLACE_SPEED, extra_checks = CALLBACK(D, TYPE_PROC_REF(/obj/structure/sign/poster, snowflake_wall_turf_check), src)))
+		to_chat(user, span_notice("The poster falls down!"))
+		D.roll_and_drop(user_drop_location)
 
-		if(iswallturf(src) && user && user.loc == temp_loc) //Let's check if everything is still there
-			to_chat(user, span_notice("You place the poster!"))
-			return
-
-	to_chat(user, span_notice("The poster falls down!"))
-	D.roll_and_drop(get_turf(user))
+/obj/structure/sign/poster/proc/snowflake_wall_turf_check(atom/hopefully_still_a_wall_turf)
+	return iswallturf(hopefully_still_a_wall_turf)
 
 // Various possible posters follow
 

@@ -14,8 +14,8 @@
 	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_range = 4
-	light_power = 1
+	light_outer_range = 4
+	light_power = 0.3
 	light_on = FALSE
 	var/on = FALSE
 
@@ -75,7 +75,7 @@
 					to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
 					return
 
-				var/obj/item/organ/internal/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
+				var/obj/item/organ/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
 				if(!E)
 					to_chat(user, span_warning("[M] doesn't have any eyes!"))
 					return
@@ -104,9 +104,9 @@
 				var/their = M.p_their()
 
 				var/list/mouth_organs = new
-				for(var/obj/item/organ/O in M.internal_organs)
-					if(O.zone == BODY_ZONE_PRECISE_MOUTH)
-						mouth_organs.Add(O)
+				for(var/obj/item/organ/organ as anything in M.organs)
+					if(organ.zone == BODY_ZONE_PRECISE_MOUTH)
+						mouth_organs.Add(organ)
 				var/organ_list = ""
 				var/organ_count = LAZYLEN(mouth_organs)
 				if(organ_count)
@@ -171,7 +171,7 @@
 	worn_icon_state = "pen"
 	w_class = WEIGHT_CLASS_TINY
 	flags_1 = CONDUCT_1
-	light_range = 2
+	light_outer_range = 2
 	var/holo_cooldown = 0
 
 /obj/item/flashlight/pen/afterattack(atom/target, mob/user, proximity_flag)
@@ -220,7 +220,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	force = 9 // Not as good as a stun baton.
-	light_range = 5 // A little better than the standard flashlight.
+	light_outer_range = 5 // A little better than the standard flashlight.
 	hitsound = 'sound/weapons/genhit1.ogg'
 
 // the desk lamps are a bit special
@@ -232,8 +232,9 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
-	light_range = 5
+	light_outer_range = 3.5
 	light_system = STATIC_LIGHT
+	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
 	custom_materials = null
@@ -245,7 +246,7 @@
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	inhand_icon_state = "lampgreen"
-
+	light_color = LIGHT_COLOR_TUNGSTEN
 
 
 /obj/item/flashlight/lamp/verb/toggle_light()
@@ -262,6 +263,7 @@
 	desc = "Only a clown would think to make a ghetto banana-shaped lamp. Even has a goofy pullstring."
 	icon_state = "bananalamp"
 	inhand_icon_state = "bananalamp"
+	light_color = LIGHT_COLOR_BRIGHT_YELLOW
 
 // FLARES
 
@@ -269,7 +271,7 @@
 	name = "flare"
 	desc = "A red Daedalus issued flare. There are instructions on the side, it reads 'pull cord, make light'."
 	w_class = WEIGHT_CLASS_SMALL
-	light_range = 7 // Pretty bright.
+	light_outer_range = 7 // Pretty bright.
 	icon_state = "flare"
 	inhand_icon_state = "flare"
 	worn_icon_state = "flare"
@@ -341,7 +343,7 @@
 	name = "torch"
 	desc = "A torch fashioned from some leaves and a log."
 	w_class = WEIGHT_CLASS_SMALL
-	light_range = 4
+	light_outer_range = 4
 	icon_state = "torch"
 	inhand_icon_state = "torch"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
@@ -357,20 +359,20 @@
 	lefthand_file = 'icons/mob/inhands/equipment/mining_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/mining_righthand.dmi'
 	desc = "A mining lantern."
-	light_range = 6 // luminosity when on
+	light_outer_range = 6 // luminosity when on
 	light_system = MOVABLE_LIGHT
 
 /obj/item/flashlight/lantern/heirloom_moth
 	name = "old lantern"
 	desc = "An old lantern that has seen plenty of use."
-	light_range = 4
+	light_outer_range = 4
 
 /obj/item/flashlight/lantern/syndicate
 	name = "suspicious lantern"
 	desc = "A suspicious looking lantern."
 	icon_state = "syndilantern"
 	inhand_icon_state = "syndilantern"
-	light_range = 10
+	light_outer_range = 10
 
 /obj/item/flashlight/lantern/jade
 	name = "jade lantern"
@@ -388,7 +390,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = null
-	light_range = 7 //luminosity when on
+	light_outer_range = 7 //luminosity when on
 	light_system = MOVABLE_LIGHT
 
 /obj/item/flashlight/emp
@@ -452,7 +454,7 @@
 	desc = "A military-grade glowstick."
 	custom_price = PAYCHECK_PRISONER
 	w_class = WEIGHT_CLASS_SMALL
-	light_range = 4
+	light_outer_range = 4
 	light_system = MOVABLE_LIGHT
 	color = LIGHT_COLOR_GREEN
 	icon_state = "glowstick"
@@ -527,7 +529,7 @@
 	if(!fuel)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
-	var/obj/item/organ/internal/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but [user.p_they()] don't have any!"))
 		return SHAME
@@ -553,7 +555,7 @@
 
 /obj/item/flashlight/glowstick/yellow
 	name = "yellow glowstick"
-	color = LIGHT_COLOR_YELLOW
+	color = LIGHT_COLOR_DIM_YELLOW
 
 /obj/item/flashlight/glowstick/pink
 	name = "pink glowstick"
@@ -564,7 +566,7 @@
 	desc = "Groovy..."
 	icon_state = null
 	light_system = MOVABLE_LIGHT
-	light_range = 4
+	light_outer_range = 4
 	light_power = 10
 	alpha = 0
 	plane = FLOOR_PLANE
@@ -594,7 +596,7 @@
 	icon_state = "flashdark"
 	inhand_icon_state = "flashdark"
 	light_system = STATIC_LIGHT //The overlay light component is not yet ready to produce darkness.
-	light_range = 0
+	light_outer_range = 0
 	///Variable to preserve old lighting behavior in flashlights, to handle darkness.
 	var/dark_light_range = 2.5
 	///Variable to preserve old lighting behavior in flashlights, to handle darkness.
@@ -604,7 +606,7 @@
 /obj/item/flashlight/flashdark/update_brightness(mob/user)
 	. = ..()
 	if(on)
-		set_light(dark_light_range, dark_light_power)
+		set_light(l_outer_range = dark_light_range, l_power = dark_light_power)
 	else
 		set_light(0)
 
@@ -613,7 +615,7 @@
 	name = "eyelight"
 	desc = "This shouldn't exist outside of someone's head, how are you seeing this?"
 	light_system = MOVABLE_LIGHT
-	light_range = 15
+	light_outer_range = 15
 	light_power = 1
 	flags_1 = CONDUCT_1
 	item_flags = DROPDEL
@@ -624,5 +626,5 @@
 	desc = "There is no possible way for a player to see this, so I can safely talk at length about why this exists. Adapted eyes come \
 	with icons that go above the lighting layer so to make sure the red eyes that pierce the darkness are always visible we make the \
 	human emit the smallest amount of light possible. Thanks for reading :)"
-	light_range = 1
+	light_outer_range = 1
 	light_power = 0.07

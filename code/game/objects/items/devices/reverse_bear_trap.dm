@@ -50,7 +50,7 @@
 	soundloop.stop()
 	soundloop2.stop()
 	to_chat(loc, span_userdanger("*ding*"))
-	addtimer(CALLBACK(src, .proc/snap), 0.2 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(snap)), 0.2 SECONDS)
 	COOLDOWN_RESET(src, kill_countdown) // reset the countdown in case it wasn't finished
 
 /obj/item/reverse_bear_trap/attack_hand(mob/user, list/modifiers)
@@ -77,7 +77,7 @@
 
 	carbon_user.visible_message(span_danger("[carbon_user] fiddles with and pulls at [src]..."), \
 		span_danger("You[isnull(fear_string) ? "" : " [fear_string]"] try to pull at [src]..."), "<i>You hear clicking and ticking.</i>")
-	if(!do_after(user, 2 SECONDS, target = src))
+	if(!do_after(user, src, 2 SECONDS))
 		struggling = FALSE
 		return
 	if(!prob(escape_chance))
@@ -97,7 +97,7 @@
 		span_userdanger("[target] starts forcing [src] onto your head!"), "<i>You hear clanking.</i>")
 	to_chat(user, span_danger("You start forcing [src] onto [target]'s head..."))
 
-	if(!do_after(user, 3 SECONDS, target = target) || target.get_item_by_slot(ITEM_SLOT_HEAD))
+	if(!do_after(user, target, 3 SECONDS) || target.get_item_by_slot(ITEM_SLOT_HEAD))
 		return
 	target.visible_message(span_warning("[user] forces and locks [src] onto [target]'s head!"), \
 		span_userdanger("[target] locks [src] onto your head!"), "<i>You hear a click, and then a timer ticking down.</i>")

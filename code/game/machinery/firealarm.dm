@@ -22,9 +22,10 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_power = 0
-	light_range = 7
+	light_outer_range = 7
 	light_color = COLOR_VIVID_RED
 
 	//Trick to get the glowing overlay visible from a distance
@@ -35,6 +36,25 @@
 	var/area/my_area = null
 	///The current alarm state
 	var/alert_type = FIRE_CLEAR
+	///Radial menu choice cache
+	var/static/list/radial_choices = list(
+		"activate" = new /image{
+			icon = 'icons/hud/radial.dmi';
+			icon_state = "red";;
+			maptext = "<span class='maptext'>Activate</span>";
+			maptext_y = 30;
+			maptext_x = -1;
+			maptext_width = 40;
+		},
+		"deactivate" = new /image{
+			icon = 'icons/hud/radial.dmi';
+			icon_state = "green";
+			maptext = "<span class='maptext'>Deactivate</span>";
+			maptext_y = -8;
+			maptext_x = -6;
+			maptext_width = 45;
+		}
+	)
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
@@ -44,8 +64,8 @@
 	if(name == initial(name))
 		name = "[get_area_name(src)] [initial(name)]"
 	update_appearance()
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
-	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, .proc/check_security_level)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
+	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_security_level))
 
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/firealarm,
@@ -103,32 +123,26 @@
 	if(machine_stat & NOPOWER)
 		return
 
-	. += "fire_overlay"
+	. += mutable_appearance(icon, "fire_overlay")
 	if(is_station_level(z))
-		. += "fire_[SSsecurity_level.current_level]"
 		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level]")
 		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = src.alpha)
 	else
-		. += "fire_[SEC_LEVEL_GREEN]"
 		. += mutable_appearance(icon, "fire_[SEC_LEVEL_GREEN]")
 		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = src.alpha)
 
 	if(!alert_type)
 		if(my_area?.fire_detect) //If this is false, leave the green light missing. A good hint to anyone paying attention.
-			. += "fire_off"
 			. += mutable_appearance(icon, "fire_off")
 			. += emissive_appearance(icon, "fire_off", alpha = src.alpha)
 	else if(obj_flags & EMAGGED)
-		. += "fire_emagged"
 		. += mutable_appearance(icon, "fire_emagged")
 		. += emissive_appearance(icon, "fire_emagged", alpha = src.alpha)
 	else
-		. += "fire_on"
 		. += mutable_appearance(icon, "fire_on")
 		. += emissive_appearance(icon, "fire_on", alpha = src.alpha)
 
 	if(!panel_open && alert_type) //It just looks horrible with the panel open
-		. += "fire_detected"
 		. += mutable_appearance(icon, "fire_detected")
 		. += emissive_appearance(icon, "fire_detected", alpha = src.alpha) //Pain
 
@@ -214,12 +228,23 @@
 	if(!is_operational)
 		return
 
-	if(alert_type)
-		my_area.communicate_fire_alert(FIRE_CLEAR)
-		log_game("[user] triggered a fire alarm at [COORD(src)]")
-	else
-		my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
-		log_game("[user] cleared a fire alarm at [COORD(src)]")
+	switch(user.simple_binary_radial(src, radial_choices))
+		if(SIMPLE_RADIAL_ACTIVATE)
+			if(!alert_type)
+				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
+				log_game("[user] triggered a fire alarm at [COORD(src)]")
+		if(SIMPLE_RADIAL_DEACTIVATE)
+			if(alert_type)
+				my_area.communicate_fire_alert(FIRE_CLEAR)
+				log_game("[user] cleared a fire alarm at [COORD(src)]")
+		if(SIMPLE_RADIAL_DOESNT_USE)
+			if(alert_type)
+				my_area.communicate_fire_alert(FIRE_CLEAR)
+				log_game("[user] cleared a fire alarm at [COORD(src)]")
+			else
+				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
+				log_game("[user] triggered a fire alarm at [COORD(src)]")
+	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)
 	if(buildstage != 2)
@@ -430,7 +455,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 		return
 	area.party = TRUE
 	if (!party_overlay)
-		party_overlay = iconstate2appearance('icons/turf/areas.dmi', "party")
+		party_overlay = iconstate2appearance('icons/area/areas_misc.dmi', "party")
 	area.add_overlay(party_overlay)
 
 /obj/item/circuit_component/firealarm
@@ -461,8 +486,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	. = ..()
 	if(istype(parent, /obj/machinery/firealarm))
 		attached_alarm = parent
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER, .proc/on_firealarm_triggered)
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, .proc/on_firealarm_reset)
+		RegisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER, PROC_REF(on_firealarm_triggered))
+		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, PROC_REF(on_firealarm_reset))
 
 /obj/item/circuit_component/firealarm/unregister_usb_parent(atom/movable/parent)
 	attached_alarm = null

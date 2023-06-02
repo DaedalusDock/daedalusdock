@@ -62,7 +62,7 @@
 			set_occupant(null)
 			return
 		to_chat(occupant, span_notice("You enter [src]."))
-		addtimer(CALLBACK(src, .proc/start_extracting), 20, TIMER_OVERRIDE|TIMER_UNIQUE)
+		addtimer(CALLBACK(src, PROC_REF(start_extracting)), 20, TIMER_OVERRIDE|TIMER_UNIQUE)
 		update_appearance()
 
 /obj/machinery/fat_sucker/open_machine(mob/user)
@@ -80,7 +80,7 @@
 		user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
 			span_notice("You lean on the back of [src] and start pushing the door open... (this will take about [DisplayTimeText(breakout_time)].)"), \
 			span_hear("You hear a metallic creaking from [src]."))
-		if(do_after(user, breakout_time, target = src))
+		if(do_after(user, src, breakout_time))
 			if(!user || user.stat != CONSCIOUS || user.loc != src || state_open)
 				return
 			free_exit = TRUE
@@ -164,7 +164,7 @@
 			processing = TRUE
 			soundloop.start()
 			update_appearance()
-			set_light(2, 1, "#ff0000")
+			set_light(l_outer_range = 2, l_power = 1, l_color = "#ff0000")
 		else
 			say("Subject not fat enough.")
 			playsound(src, 'sound/machines/buzz-sigh.ogg', 40, FALSE)
@@ -173,7 +173,7 @@
 /obj/machinery/fat_sucker/proc/stop()
 	processing = FALSE
 	soundloop.stop()
-	set_light(0, 0)
+	set_light(l_inner_range = 0, l_outer_range = 0, l_power = 0)
 
 /obj/machinery/fat_sucker/proc/make_meat()
 	if(occupant && iscarbon(occupant))

@@ -15,14 +15,14 @@
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
 	id = "lightswitch_frame"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR
 	materials = list(
 		/datum/material/iron = 200,
 		/datum/material/glass = 200,
 	)
 	build_path = /obj/item/wallframe/light_switch
-	category = list("initial", "Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_ENGINEERING
+	category = list(DCAT_FRAME)
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
 /obj/machinery/light_switch
 	name = "light switch"
@@ -32,6 +32,8 @@
 	desc = "Make dark."
 	power_channel = AREA_USAGE_LIGHT
 	use_power = NO_POWER_USE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Set this to a string, path, or area instance to control that area
 	/// instead of the switch's location.
 	var/area/area = null
@@ -150,8 +152,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	. = ..()
 	if(!is_operational)
 		return .
-	playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
-	set_lights(!area.lightswitch)
+
+	var/did_anything = FALSE
+	switch(user.simple_binary_radial(src))
+		if(SIMPLE_RADIAL_ACTIVATE)
+			did_anything = set_lights(TRUE)
+		if(SIMPLE_RADIAL_DEACTIVATE)
+			did_anything = set_lights(FALSE)
+		if(SIMPLE_RADIAL_DOESNT_USE)
+			did_anything = set_lights(!area.lightswitch)
+
+	if(did_anything)
+		playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
+
+	return TRUE
 
 /obj/machinery/light_switch/proc/set_lights(status)
 	if(area.lightswitch == status || !is_operational)
@@ -164,6 +178,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, status)
 
 	area.power_change()
+	return TRUE
 
 /obj/machinery/light_switch/power_change()
 	SHOULD_CALL_PARENT(FALSE)
@@ -197,7 +212,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	. = ..()
 	if(istype(parent, /obj/machinery/light_switch))
 		attached_switch = parent
-		RegisterSignal(parent, COMSIG_LIGHT_SWITCH_SET, .proc/on_light_switch_set)
+		RegisterSignal(parent, COMSIG_LIGHT_SWITCH_SET, PROC_REF(on_light_switch_set))
 
 /obj/item/circuit_component/light_switch/unregister_usb_parent(atom/movable/parent)
 	attached_switch = null

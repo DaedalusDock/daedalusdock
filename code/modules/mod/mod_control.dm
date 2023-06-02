@@ -132,15 +132,15 @@
 		part.permeability_coefficient = theme.permeability_coefficient
 		part.siemens_coefficient = theme.siemens_coefficient
 	for(var/obj/item/part as anything in mod_parts)
-		RegisterSignal(part, COMSIG_ATOM_DESTRUCTION, .proc/on_part_destruction)
-		RegisterSignal(part, COMSIG_PARENT_QDELETING, .proc/on_part_deletion)
+		RegisterSignal(part, COMSIG_ATOM_DESTRUCTION, PROC_REF(on_part_destruction))
+		RegisterSignal(part, COMSIG_PARENT_QDELETING, PROC_REF(on_part_deletion))
 	set_mod_skin(new_skin || theme.default_skin)
 	update_speed()
 	for(var/obj/item/mod/module/module as anything in initial_modules)
 		module = new module(src)
 		install(module)
-	RegisterSignal(src, COMSIG_ATOM_EXITED, .proc/on_exit)
-	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, .proc/on_potion)
+	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
+	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_potion))
 	movedelay = CONFIG_GET(number/movedelay/run_delay)
 
 /obj/item/mod/control/Destroy()
@@ -460,7 +460,7 @@
 /obj/item/mod/control/proc/set_wearer(mob/user)
 	wearer = user
 	SEND_SIGNAL(src, COMSIG_MOD_WEARER_SET, wearer)
-	RegisterSignal(wearer, COMSIG_ATOM_EXITED, .proc/on_exit)
+	RegisterSignal(wearer, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
 	update_charge_alert()
 	for(var/obj/item/mod/module/module as anything in modules)
 		module.on_equip()
@@ -537,13 +537,6 @@
 	new_module.on_install()
 	if(wearer)
 		new_module.on_equip()
-		var/datum/action/item_action/mod/pinned_module/action = new_module.pinned_to[REF(wearer)]
-		if(action)
-			action.Grant(wearer)
-	if(ai)
-		var/datum/action/item_action/mod/pinned_module/action = new_module.pinned_to[REF(ai)]
-		if(action)
-			action.Grant(ai)
 	if(user)
 		balloon_alert(user, "[new_module] added")
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -556,7 +549,7 @@
 		if(old_module.active)
 			old_module.on_deactivation(display_message = !deleting, deleting = deleting)
 	old_module.on_uninstall(deleting = deleting)
-	QDEL_LIST(old_module.pinned_to)
+	QDEL_LIST_ASSOC_VAL(old_module.pinned_to)
 	old_module.mod = null
 
 /obj/item/mod/control/proc/update_access(mob/user, obj/item/card/id/card)
@@ -665,7 +658,7 @@
 	if(part in mod_parts)
 		conceal(wearer, part)
 		if(active)
-			INVOKE_ASYNC(src, .proc/toggle_activate, wearer, TRUE)
+			INVOKE_ASYNC(src, PROC_REF(toggle_activate), wearer, TRUE)
 		return
 
 /obj/item/mod/control/proc/on_part_destruction(obj/item/part, damage_flag)

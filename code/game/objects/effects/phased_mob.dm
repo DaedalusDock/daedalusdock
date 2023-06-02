@@ -5,9 +5,58 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	invisibility = INVISIBILITY_OBSERVER
 	movement_type = FLOATING
+	/// The movable which's jaunting in this dummy
+	var/atom/movable/jaunter
+	/// The delay between moves while jaunted
 	var/movedelay = 0
+	/// The speed of movement while jaunted
 	var/movespeed = 0
 
+/obj/effect/dummy/phased_mob/Initialize(mapload, atom/movable/jaunter)
+	. = ..()
+	if(jaunter)
+		set_jaunter(jaunter)
+
+/// Sets [new_jaunter] as our jaunter, forcemoves them into our contents
+/obj/effect/dummy/phased_mob/proc/set_jaunter(atom/movable/new_jaunter)
+	jaunter = new_jaunter
+	jaunter.forceMove(src)
+	if(ismob(jaunter))
+		var/mob/mob_jaunter = jaunter
+		mob_jaunter.reset_perspective(src)
+
+/obj/effect/dummy/phased_mob/Destroy()
+	jaunter = null // If a mob was left in the jaunter on qdel, they'll be dumped into nullspace
+	return ..()
+
+/// Removes [jaunter] from our phased mob
+/obj/effect/dummy/phased_mob/proc/eject_jaunter()
+	if(!jaunter)
+		CRASH("Phased mob ([type]) attempted to eject null jaunter.")
+	var/turf/eject_spot = get_turf(src)
+	if(!eject_spot) //You're in nullspace you clown!
+		return
+
+	var/area/destination_area = get_area(eject_spot)
+	if(destination_area.area_flags & NOTELEPORT)
+		// this ONLY happens if someone uses a phasing effect
+		// to try to land in a NOTELEPORT zone after it is created, AKA trying to exploit.
+		if(isliving(jaunter))
+			var/mob/living/living_cheaterson = jaunter
+			to_chat(living_cheaterson, span_userdanger("This area has a heavy universal force occupying it, and you are scattered to the cosmos!"))
+			if(ishuman(living_cheaterson))
+				shake_camera(living_cheaterson, 20, 1)
+				addtimer(CALLBACK(living_cheaterson, TYPE_PROC_REF(/mob/living/carbon, vomit)), 2 SECONDS)
+			jaunter.forceMove(find_safe_turf(z))
+
+	else
+		jaunter.forceMove(eject_spot)
+	qdel(src)
+
+/obj/effect/dummy/phased_mob/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone == jaunter)
+		jaunter = null
 /obj/effect/dummy/phased_mob/Destroy()
 	// Eject contents if deleted somehow
 	var/atom/dest = drop_location()
@@ -27,7 +76,7 @@
 				to_chat(living_cheaterson, span_userdanger("This area has a heavy universal force occupying it, and you are scattered to the cosmos!"))
 				if(ishuman(living_cheaterson))
 					shake_camera(living_cheaterson, 20, 1)
-					addtimer(CALLBACK(living_cheaterson, /mob/living/carbon.proc/vomit), 2 SECONDS)
+					addtimer(CALLBACK(living_cheaterson, TYPE_PROC_REF(/mob/living/carbon, vomit)), 2 SECONDS)
 			phasing_in.forceMove(find_safe_turf(z))
 	return ..()
 

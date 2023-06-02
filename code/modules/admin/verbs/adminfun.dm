@@ -143,7 +143,7 @@
 
 	for(var/i in GLOB.human_list)
 		var/mob/living/carbon/human/H = i
-		new /obj/item/organ/internal/zombie_infection/nodamage(H)
+		new /obj/item/organ/zombie_infection/nodamage(H)
 
 	message_admins("[key_name_admin(usr)] added a latent zombie infection to all humans.")
 	log_admin("[key_name(usr)] added a latent zombie infection to all humans.")
@@ -160,7 +160,7 @@
 	if(confirm != "Yes")
 		return
 
-	for(var/obj/item/organ/internal/zombie_infection/nodamage/I in GLOB.zombie_infection_list)
+	for(var/obj/item/organ/zombie_infection/nodamage/I in GLOB.zombie_infection_list)
 		qdel(I)
 
 	message_admins("[key_name_admin(usr)] cured all zombies.")
@@ -230,16 +230,14 @@
  * * target- guy we're shooting obviously
  * * source_turf- where the bullet begins, preferably on a turf next to the target
  * * body_zone- which bodypart we're aiming for, if there is one there
- * * wound_bonus- the wounding power we're assigning to the bullet, since we don't care about the base one
  * * damage- the damage we're assigning to the bullet, since we don't care about the base one
  */
-/proc/firing_squad(mob/living/carbon/target, turf/source_turf, body_zone, wound_bonus, damage)
+/proc/firing_squad(mob/living/carbon/target, turf/source_turf, body_zone, damage)
 	if(!target.get_bodypart(body_zone))
 		return
 	playsound(target, 'sound/weapons/gun/revolver/shot.ogg', 100)
 	var/obj/projectile/bullet/smite/divine_wrath = new(source_turf)
 	divine_wrath.damage = damage
-	divine_wrath.wound_bonus = wound_bonus
 	divine_wrath.original = target
 	divine_wrath.def_zone = body_zone
 	divine_wrath.spread = 0

@@ -11,7 +11,11 @@ SUBSYSTEM_DEF(ticker)
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
 	var/force_ending = 0 //Round was ended by admin intervention
 	// If true, there is no lobby phase, the game starts immediately.
+	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
+	#else
+	var/start_immediately = TRUE
+	#endif
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
@@ -35,8 +39,8 @@ SUBSYSTEM_DEF(ticker)
 	var/timeLeft //pregame timer
 	var/start_at
 
-	var/gametime_offset = 432000 //Deciseconds to add to world.time for station time.
-	var/station_time_rate_multiplier = 12 //factor of station time progressal vs real time.
+	//Deciseconds to add to world.time for station time. Set in initialize.
+	var/gametime_offset = 0
 
 	/// Num of players, used for pregame stats on statpanel
 	var/totalPlayers = 0
@@ -69,6 +73,8 @@ SUBSYSTEM_DEF(ticker)
 	var/emergency_reason
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
+	gametime_offset = rand(0, 23) HOURS
+
 	pick_login_music()
 	pick_credits_music()
 
@@ -103,7 +109,8 @@ SUBSYSTEM_DEF(ticker)
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
 			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
-			send2chat("New round starting on [SSmapping.config.map_name]!", CONFIG_GET(string/chat_announce_new_game))
+			var/newround_staple = CONFIG_GET(string/chat_newgame_staple)
+			send2chat("New round starting on [SSmapping.config.map_name][newround_staple ? ", [newround_staple]" : null]!", CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
@@ -219,7 +226,7 @@ SUBSYSTEM_DEF(ticker)
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
 	round_start_time = world.time
 	round_start_timeofday = REALTIMEOFDAY
-	SSdbcore.SetRoundStart()
+	INVOKE_ASYNC(SSdbcore, TYPE_PROC_REF(/datum/controller/subsystem/dbcore,SetRoundStart))
 
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
@@ -260,9 +267,6 @@ SUBSYSTEM_DEF(ticker)
 		if(!ishuman(i))
 			continue
 		var/mob/living/carbon/human/iter_human = i
-
-		iter_human.increment_scar_slot()
-		iter_human.load_persistent_scars()
 
 		if(!iter_human.hardcore_survival_score)
 			continue
@@ -367,7 +371,7 @@ SUBSYSTEM_DEF(ticker)
 			captainless = FALSE
 			var/acting_captain = !is_captain_job(player_assigned_role)
 			SSjob.promote_to_captain(new_player_living, acting_captain)
-			OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/minor_announce, player_assigned_role.get_captaincy_announcement(new_player_living), ""))
+			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
 		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
 			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
 				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
@@ -420,13 +424,10 @@ SUBSYSTEM_DEF(ticker)
 		if(living)
 			qdel(player)
 			living.notransform = TRUE
-			if(living.client)
-				var/atom/movable/screen/splash/S = new(null, living.client, TRUE)
-				S.Fade(TRUE)
-				living.client.init_verbs()
+			living.client?.init_verbs()
 			livings += living
 	if(livings.len)
-		addtimer(CALLBACK(src, .proc/release_characters, livings), 30, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)
@@ -471,7 +472,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 	if(world.time - SSticker.round_start_time < 10 MINUTES) //Not forcing map rotation for very short rounds.
 		return
-	INVOKE_ASYNC(SSmapping, /datum/controller/subsystem/mapping/.proc/maprotate)
+	INVOKE_ASYNC(SSmapping, TYPE_PROC_REF(/datum/controller/subsystem/mapping, maprotate))
 
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
 	return current_state >= GAME_STATE_PLAYING
@@ -588,7 +589,7 @@ SUBSYSTEM_DEF(ticker)
 		C.Export("##action=load_rsc", round_end_sound)
 	round_end_sound_sent = TRUE
 
-/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay, roll_credits = TRUE)
 	set waitfor = FALSE
 	if(usr && !check_rights(R_SERVER, TRUE))
 		return
@@ -602,6 +603,13 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+
+	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
+	if(roll_credits)
+		if(roll_credits_in)
+			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits)), roll_credits_in)
+		else
+			SScredits.compile_credits()
 
 	var/start_wait = world.time
 	UNTIL(round_end_sound_sent || (world.time - start_wait) > (delay * 2)) //don't wait forever
@@ -621,8 +629,6 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
 	log_game(span_boldannounce("Rebooting World. [reason]"))
-
-	SScredits?.clear_credits_from_clients()
 
 	world.Reboot()
 
@@ -675,6 +681,7 @@ SUBSYSTEM_DEF(ticker)
 		"raw" = TRUE,
 		"wma" = TRUE,
 		"aiff" = TRUE,
+		"mp3" = TRUE,
 	)
 
 	var/list/music_data = list()

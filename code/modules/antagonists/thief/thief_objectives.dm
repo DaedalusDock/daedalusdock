@@ -70,7 +70,7 @@ GLOBAL_LIST_INIT(hoarder_targets, list(
 /datum/action/declare_hoard
 	name = "Declare Hoard"
 	desc = "Declare a new hoarding spot on the ground you're standing on. Items on this floor will count for your objective."
-	icon_icon = 'icons/mob/actions/actions_minor_antag.dmi'
+	button_icon = 'icons/mob/actions/actions_minor_antag.dmi'
 	button_icon_state = "hoard"
 	///weak reference to the objective this action targets, set by hoarder objective
 	var/datum/weakref/weak_objective
@@ -80,7 +80,7 @@ GLOBAL_LIST_INIT(hoarder_targets, list(
 		owner.balloon_alert(owner, "not while incapacitated!")
 		return
 	var/area/owner_area = get_area(owner)
-	if(!istype(owner_area, /area/maintenance))
+	if(!istype(owner_area, /area/station/maintenance))
 		owner.balloon_alert(owner, "hoard must be in maintenance!")
 		return
 	var/datum/objective/hoarder/objective = weak_objective.resolve()

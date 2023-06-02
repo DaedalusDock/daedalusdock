@@ -1,0 +1,1 @@
+/area/commons/dorms/cryo : /area/station/commons/dorms/cryo

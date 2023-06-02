@@ -10,7 +10,7 @@
 /obj/machinery/power/apc/proc/make_terminal()
 	// create a terminal object at the same position as original turf loc
 	// wires will attach to this
-	terminal = new/obj/machinery/power/terminal(loc)
+	terminal = new(loc)
 	terminal.setDir(dir)
 	terminal.master = src
 
@@ -127,7 +127,7 @@
 /obj/machinery/power/apc/proc/set_nightshift(on)
 	set waitfor = FALSE
 	nightshift_lights = on
-	for(var/obj/machinery/light/night_light in area)
+	for(var/obj/machinery/light/night_light in area.lights)
 		if(night_light.nightshift_allowed)
 			night_light.nightshift_enabled = nightshift_lights
 			night_light.update(FALSE)

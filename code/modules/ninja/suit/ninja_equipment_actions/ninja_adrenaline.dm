@@ -6,7 +6,7 @@
 	name = "Adrenaline Boost"
 	desc = "Inject a secret chemical that will counteract all movement-impairing effect."
 	button_icon_state = "repulse"
-	icon_icon = 'icons/mob/actions/actions_spells.dmi'
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 
 /**
  * Proc called to activate space ninja's adrenaline.
@@ -31,7 +31,7 @@
 	a_boost = FALSE
 	to_chat(ninja, span_notice("You have used the adrenaline boost."))
 	s_coold = 6
-	addtimer(CALLBACK(src, .proc/ninjaboost_after), 70)
+	addtimer(CALLBACK(src, PROC_REF(ninjaboost_after)), 70)
 
 /**
  * Proc called to inject the ninja with radium.

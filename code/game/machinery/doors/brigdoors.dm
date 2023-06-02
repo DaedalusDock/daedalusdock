@@ -48,7 +48,7 @@
 	. = ..()
 
 	Radio = new/obj/item/radio(src)
-	Radio.set_listening(FALSE)
+	Radio.set_listening(FALSE, TRUE)
 
 /obj/machinery/door_timer/Initialize(mapload)
 	. = ..()
@@ -98,7 +98,7 @@
 			continue
 		if(door.density)
 			continue
-		INVOKE_ASYNC(door, /obj/machinery/door/window/brigdoor.proc/close)
+		INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/machinery/door/window/brigdoor, close))
 
 	for(var/datum/weakref/closet_ref as anything in closets)
 		var/obj/structure/closet/secure_closet/brig/closet = closet_ref.resolve()
@@ -135,7 +135,7 @@
 			continue
 		if(!door.density)
 			continue
-		INVOKE_ASYNC(door, /obj/machinery/door/window/brigdoor.proc/open)
+		INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/machinery/door/window/brigdoor, open))
 
 	for(var/datum/weakref/closet_ref as anything in closets)
 		var/obj/structure/closet/secure_closet/brig/closet = closet_ref.resolve()

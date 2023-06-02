@@ -2,8 +2,8 @@ SUBSYSTEM_DEF(credits)
 	name = "Credits"
 	flags = SS_NO_FIRE|SS_NO_INIT
 
-	var/scroll_speed = 16 //Lower is faster.
-	var/splash_time = 2000 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
+	var/scroll_speed = 1 //Lower is faster.
+	var/splash_time = 2750 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
 
 	var/control = "mapwindow.credits" //if updating this, update in credits.html as well
 	var/file = 'code/modules/credits_roll/credits.html'
@@ -35,16 +35,12 @@ SUBSYSTEM_DEF(credits)
 	var/finalized = FALSE
 	var/js_args = list()
 
-
 /datum/controller/subsystem/credits/proc/compile_credits()
 	set waitfor = FALSE
-	draft()
 	finalize()
 	send2clients()
 	sleep(2 SECONDS) //send2clients() is slow and non-blocking, so we need to give it some breathing room to send the data to all clients.
 	play2clients()
-	for(var/client/C in GLOB.clients)
-		C.playcreditsmusic(50)
 
 ///Clear the existing credits data from clients
 /datum/controller/subsystem/credits/proc/clear_credits_from_clients()
@@ -65,6 +61,7 @@ SUBSYSTEM_DEF(credits)
 	draft_episode_names() //only selects the possibilities, doesn't pick one yet
 	draft_disclaimers()
 	drafted = TRUE
+	message_admins("SScredits has finished drafting the credits, they can now be editted.")
 
 
 /*
@@ -219,7 +216,7 @@ SUBSYSTEM_DEF(credits)
 	cast_string += "</table><br>"
 	cast_string += "<div class='disclaimers'>"
 
-	if(dead_names.len)
+	if(length(dead_names))
 		var/true_story_bro = "<br>[pick("BASED ON","INSPIRED BY","A RE-ENACTMENT OF")] [pick("A TRUE STORY","REAL EVENTS","THE EVENTS ABOARD [uppertext(station_name())]")]"
 		cast_string += "<h3>[true_story_bro]</h3><br>In memory of those that did not make it.<br>"
 		for(var/name in dead_names)
@@ -228,7 +225,8 @@ SUBSYSTEM_DEF(credits)
 
 /mob/living/proc/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
-	var/gender_text
+	/// initial(name) is used over this now.
+	/*var/gender_text
 	switch(gender)
 		if("male")
 			gender_text = "Himself"
@@ -239,20 +237,21 @@ SUBSYSTEM_DEF(credits)
 		if("plural")
 			gender_text = "Themselves"
 		else
-			gender_text = "Itself"
+			gender_text = "Itself"*/
 
 	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
 		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
 	else
-		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[gender_text]</td></tr>"
+		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[initial(name)]</td></tr>"
 
 /mob/living/carbon/human/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
+	var/assignment = get_assignment(if_no_id = "", if_no_job = "")
 	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
-		var/assignment = get_assignment(if_no_id = "", if_no_job = "")
 		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[real_name][assignment == "" ? "" : ", [assignment]"]</td></tr>"
 	else
-		return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themself" : "[p_them(TRUE)]self"]</td></tr>"
+		//return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[p_them(TRUE) == "Them" ? "Themself" : "[p_them(TRUE)]self"]</td></tr>" OLD
+		return "<tr><td class='actorname'>[uppertext(real_name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[assignment || "Background Actor"]</td></tr>"
 
 /mob/living/silicon/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]

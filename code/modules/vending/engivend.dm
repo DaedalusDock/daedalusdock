@@ -32,6 +32,8 @@
 	payment_department = ACCOUNT_ENG
 	light_mask = "engivend-light-mask"
 
+	discount_access = ACCESS_ENGINE
+
 /obj/item/vending_refill/engivend
 	machine_name = "Engi-Vend"
 	icon_state = "refill_engi"

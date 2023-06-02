@@ -9,6 +9,12 @@
 
 /obj/structure/spider/Initialize(mapload)
 	. = ..()
+	become_atmos_sensitive()
+
+/obj/structure/spider/Destroy()
+	lose_atmos_sensitivity()
+	return ..()
+
 
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
@@ -22,9 +28,6 @@
 			if(BRUTE)
 				damage_amount *= 0.25
 	. = ..()
-
-/obj/structure/spider/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 300) ? TRUE : FALSE
 
 /obj/structure/spider/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 300)
@@ -44,7 +47,7 @@
 	if(!HAS_TRAIT(user,TRAIT_WEB_WEAVER))
 		return
 	user.visible_message(span_notice("[user] begins weaving [src] into cloth."), span_notice("You begin weaving [src] into cloth."))
-	if(!do_after(user, 2 SECONDS))
+	if(!do_after(user, time = 2 SECONDS))
 		return
 	qdel(src)
 	var/obj/item/stack/sheet/cloth/woven_cloth = new /obj/item/stack/sheet/cloth
@@ -157,7 +160,7 @@
 
 	forceMove(exit_vent)
 	var/travel_time = round(get_dist(loc, exit_vent.loc) / 2)
-	addtimer(CALLBACK(src, .proc/do_vent_move, exit_vent, travel_time), travel_time)
+	addtimer(CALLBACK(src, PROC_REF(do_vent_move), exit_vent, travel_time), travel_time)
 
 /obj/structure/spider/spiderling/proc/do_vent_move(obj/machinery/atmospherics/components/unary/vent_pump/exit_vent, travel_time)
 	if(QDELETED(exit_vent) || exit_vent.welded)
@@ -167,7 +170,7 @@
 	if(prob(50))
 		audible_message(span_hear("You hear something scampering through the ventilation ducts."))
 
-	addtimer(CALLBACK(src, .proc/finish_vent_move, exit_vent), travel_time)
+	addtimer(CALLBACK(src, PROC_REF(finish_vent_move), exit_vent), travel_time)
 
 /obj/structure/spider/spiderling/proc/finish_vent_move(obj/machinery/atmospherics/components/unary/vent_pump/exit_vent)
 	if(QDELETED(exit_vent) || exit_vent.welded)
@@ -195,7 +198,7 @@
 				visible_message("<B>[src] scrambles into the ventilation ducts!</B>", \
 								span_hear("You hear something scampering through the ventilation ducts."))
 
-			addtimer(CALLBACK(src, .proc/vent_move, exit_vent), rand(20,60))
+			addtimer(CALLBACK(src, PROC_REF(vent_move), exit_vent), rand(20,60))
 
 	//=================
 
@@ -242,7 +245,7 @@
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	to_chat(user, span_notice("You struggle against the tight bonds... (This will take about [DisplayTimeText(breakout_time)].)"))
 	visible_message(span_notice("You see something struggling and writhing in \the [src]!"))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src)
 			return
 		qdel(src)

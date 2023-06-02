@@ -109,7 +109,7 @@
 	desc = "Shake loose a few banana peels."
 	cooldown_time = 8 SECONDS
 	button_icon_state = "rustle"
-	icon_icon = 'icons/mob/actions/actions_clown.dmi'
+	button_icon = 'icons/mob/actions/actions_clown.dmi'
 	background_icon_state = "bg_nature"
 	///which type of peel to spawn
 	var/banana_type = /obj/item/grown/bananapeel
@@ -137,7 +137,7 @@
 /datum/action/cooldown/exquisite_bunch
 	name = "Exquisite Bunch"
 	desc = "Pluck your finest bunch of bananas from your head. This bunch is especially nutrious to monkeykind. A gentle tap will trigger an explosive ripening process."
-	icon_icon = 'icons/obj/hydroponics/harvest.dmi'
+	button_icon = 'icons/obj/hydroponics/harvest.dmi'
 	cooldown_time = 60 SECONDS
 	button_icon_state = "banana_bunch"
 	background_icon_state = "bg_nature"
@@ -168,7 +168,7 @@
 	. = ..()
 	new /obj/item/food/grown/banana/bunch(get_step(owner.loc, owner.dir))
 	playsound(owner, 'sound/items/bikehorn.ogg', 60)
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/playsound, owner, 'sound/creatures/clown/hohoho.ogg', 100, 1), 1 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), owner, 'sound/creatures/clown/hohoho.ogg', 100, 1), 1 SECONDS)
 	StartCooldown()
 
 /mob/living/simple_animal/hostile/retaliate/clown/honkling
@@ -393,14 +393,14 @@
 	///This is the list of items we are ready to regurgitate,
 	var/list/prank_pouch = list()
 	///This ability lets you fire a single random item from your pouch.
-	var/obj/effect/proc_holder/regurgitate/my_regurgitate
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/Initialize(mapload)
 	. = ..()
-	my_regurgitate = new
-	AddAbility(my_regurgitate)
+	var/datum/action/cooldown/regurgitate/spit = new(src)
+	spit.Grant(src)
+
 	add_cell_sample()
-	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, .proc/tamed))
+	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
 
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/attacked_by(obj/item/I, mob/living/user)
@@ -468,48 +468,56 @@
 	prank_pouch -= gone
 
 ///This ability will let you fire one random item from your pouch,
-/obj/effect/proc_holder/regurgitate
+/datum/action/cooldown/regurgitate
 	name = "Regurgitate"
 	desc = "Regurgitates a single item from the depths of your pouch."
-	action_background_icon_state = "bg_changeling"
-	action_icon = 'icons/mob/actions/actions_animal.dmi'
-	action_icon_state = "regurgitate"
-	active = FALSE
+	background_icon_state = "bg_changeling"
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon_state = "regurgitate"
+	check_flags = AB_CHECK_CONSCIOUS
+	click_to_activate = TRUE
 
-/obj/effect/proc_holder/regurgitate/Click(location, control, params)
+/datum/action/cooldown/regurgitate/set_click_ability(mob/on_who)
 	. = ..()
-	if(!isliving(usr))
+	if(!.)
+		return
+
+	to_chat(on_who, span_notice("Your throat muscles tense up. <B>Left-click to regurgitate a funny morsel!</B>"))
+	on_who.icon_state = "glutton_tongue"
+	on_who.update_appearance(UPDATE_ICON)
+
+/datum/action/cooldown/regurgitate/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
+	. = ..()
+	if(!.)
+		return
+
+	if(refund_cooldown)
+		to_chat(on_who, span_notice("Your throat muscles relax."))
+	on_who.icon_state = initial(on_who.icon_state)
+	on_who.update_appearance(UPDATE_ICON)
+
+/datum/action/cooldown/regurgitate/IsAvailable(feedback = FALSE)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	// Hardcoded to only work with gluttons. Come back next year
+	return istype(owner, /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton)
+
+/datum/action/cooldown/regurgitate/Activate(atom/spit_at)
+	StartCooldown(cooldown_time / 4)
+
+	var/mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/pouch_owner = owner
+	if(!length(pouch_owner.prank_pouch))
+		pouch_owner.icon_state = initial(pouch_owner.icon_state)
+		to_chat(pouch_owner, span_notice("Your prank pouch is empty."))
 		return TRUE
-	var/mob/living/user = usr
-	fire(user)
-
-/obj/effect/proc_holder/regurgitate/fire(mob/living/carbon/user)
-	if(active)
-		user.icon_state = initial(user.icon_state)
-		remove_ranged_ability(span_notice("Your throat muscles relax."))
-	else
-		user.icon_state = "glutton_tongue"
-		add_ranged_ability(user, span_notice("Your throat muscles tense up. <B>Left-click to regurgitate a funny morsel!</B>"), TRUE)
-
-/obj/effect/proc_holder/regurgitate/InterceptClickOn(mob/living/caller, params, atom/target)
-	. = ..()
-
-	if(.)
-		return
-
-	if(!istype(ranged_ability_user, /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton) || ranged_ability_user.stat)
-		remove_ranged_ability()
-		return
-
-	var/mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/pouch_owner = ranged_ability_user
-	if(!pouch_owner.prank_pouch.len)
-		//active = FALSE
-		pouch_owner.icon_state = "glutton"
-		remove_ranged_ability(span_notice("Your prank pouch is empty,."))
-		return
 
 	var/obj/item/projected_morsel = pick(pouch_owner.prank_pouch)
 	projected_morsel.forceMove(pouch_owner.loc)
-	projected_morsel.throw_at(target, 8, 2, pouch_owner)
+	projected_morsel.throw_at(spit_at, 8, 2, pouch_owner)
 	flick("glutton_mouth", pouch_owner)
 	playsound(pouch_owner, 'sound/misc/soggy.ogg', 75)
+
+	StartCooldown()
+	return TRUE

@@ -100,7 +100,7 @@
 			span_userdanger("[user]'s punch strikes with force!"))
 		return
 	*/
-	target.apply_damage(force * fisto_setting, BRUTE, wound_bonus = CANT_WOUND)
+	target.apply_damage(force * fisto_setting, BRUTE)
 	target.visible_message(span_danger("[user]'s powerfist lets out a loud hiss as [user.p_they()] punch[user.p_es()] [target.name]!"), \
 		span_userdanger("You cry out in pain as [user]'s punch flings you backwards!"))
 	new /obj/effect/temp_visual/kinetic_blast(target.loc)

@@ -48,3 +48,17 @@
 
 /obj/projectile/bullet/dart/piercing
 	inject_flags = INJECT_CHECK_PENETRATE_THICK
+
+/obj/projectile/bullet/dart/haloperidol
+	damage = 0
+
+/obj/projectile/bullet/dart/haloperidol/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/haloperidol, 10)
+
+/obj/projectile/bullet/dart/mutadone
+	damage = 0
+
+/obj/projectile/bullet/dart/mutadone/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/mutadone, 10)

@@ -44,7 +44,7 @@
 	damage_type = BURN
 	nodamage = FALSE
 	armor_flag = ENERGY
-	temperature = -50 // Cools you down! per hit!
+	adj_temperature = -50 // Cools you down! per hit!
 	var/slowdown = TRUE //Determines if the projectile applies a slowdown status effect on carbons or not
 
 /obj/projectile/temp/basilisk/on_hit(atom/target, blocked = 0)
@@ -59,7 +59,7 @@
 	damage = 40
 	damage_type = BRUTE
 	nodamage = FALSE
-	temperature = 0
+	adj_temperature = 0
 	slowdown = FALSE
 
 
@@ -82,14 +82,14 @@
 	. = ..()
 	if(lava_drinker && !warmed_up && istype(target, /turf/open/lava))
 		visible_message(span_warning("[src] begins to drink from [target]..."))
-		if(do_after(src, 70, target = target))
+		if(do_after(src, target, 70))
 			visible_message(span_warning("[src] begins to fire up!"))
 			fully_heal()
 			icon_state = "Basilisk_alert"
 			set_varspeed(0)
 			warmed_up = TRUE
 			projectiletype = /obj/projectile/temp/basilisk/heated
-			addtimer(CALLBACK(src, .proc/cool_down), 3000)
+			addtimer(CALLBACK(src, PROC_REF(cool_down)), 3000)
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/proc/cool_down()
 	visible_message(span_warning("[src] appears to be cooling down..."))
@@ -167,7 +167,7 @@
 	maxHealth = 215 //Compensate for the lack of slowdown on projectiles with a bit of extra health
 	health = 215
 	light_system = MOVABLE_LIGHT
-	light_range = 3
+	light_outer_range = 3
 	light_power = 2.5
 	light_color = LIGHT_COLOR_LAVA
 	projectiletype = /obj/projectile/temp/basilisk/magmawing
@@ -194,7 +194,7 @@
 	damage = 5
 	damage_type = BURN
 	nodamage = FALSE
-	temperature = 200 // Heats you up! per hit!
+	adj_temperature = 200 // Heats you up! per hit!
 	slowdown = FALSE
 
 /obj/projectile/temp/basilisk/magmawing/on_hit(atom/target, blocked = FALSE)

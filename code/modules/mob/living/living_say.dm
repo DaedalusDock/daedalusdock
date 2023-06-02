@@ -128,7 +128,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/list/message_mods = list()
 	var/original_message = message
 	message = get_message_mods(message, message_mods)
-	var/datum/saymode/saymode = SSradio.saymodes[message_mods[RADIO_KEY]]
+	var/datum/saymode/saymode = SSpackets.saymodes[message_mods[RADIO_KEY]]
 	if (!forced)
 		message = check_for_custom_say_emote(message, message_mods)
 
@@ -250,7 +250,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		spans |= SPAN_ITALICS
 
 
-	var/radio_return = radio(radio_message, message_mods, spans, language)//roughly 27% of living/say()'s total cost
+	//REMEMBER KIDS, LISTS ARE REFERENCES. RADIO PACKETS GET QUEUED.
+	var/radio_return = radio(radio_message, message_mods.Copy(), spans.Copy(), language)//roughly 27% of living/say()'s total cost
 	if(radio_return & ITALICS)
 		spans |= SPAN_ITALICS
 	if(radio_return & REDUCE_RANGE)
@@ -262,7 +263,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	//No screams in space, unless you're next to someone.
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/environment = T.return_air()
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
 	var/pressure = (environment)? environment.returnPressure() : 0
 	if(pressure < SOUND_MINIMUM_PRESSURE && !HAS_TRAIT(H, TRAIT_SIGN_LANG))
 		message_range = 1
@@ -417,10 +418,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(M.client && (!M.client.prefs.read_preference(/datum/preference/toggle/enable_runechat) || (SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES))))
 			speech_bubble_recipients.Add(M.client)
 	var/image/I = image('icons/mob/talk.dmi', src, "[bubble_type][say_test(message)]", FLY_LAYER)
-	I.plane = ABOVE_GAME_PLANE
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	//INVOKE_ASYNC(GLOBAL_PROC, /.proc/flick_overlay, I, speech_bubble_recipients, 30) //ORIGINAL
-	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speechbubble, I, speech_bubble_recipients, 30) //PARIAH EDIT
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(animate_speechbubble), I, speech_bubble_recipients, 30)
 
 /mob/proc/binarycheck()
 	return FALSE
@@ -512,7 +511,21 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	else
 		. = ..()
 
-/mob/living/whisper(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof)
+/**
+ * Living level whisper.
+ *
+ * Living mobs which whisper have their message only appear to people very close.
+ *
+ * message - the message to display
+ * bubble_type - the type of speech bubble that shows up when they speak (currently does nothing)
+ * spans - a list of spans to apply around the message
+ * sanitize - whether we sanitize the message
+ * language - typepath language to force them to speak / whisper in
+ * ignore_spam - whether we ignore the spam filter
+ * forced - string source of what forced this speech to happen, also bypasses spam filter / mutes if supplied
+ * filterproof - whether we ignore the word filter
+ */
+/mob/living/whisper(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language, ignore_spam = FALSE, forced, filterproof)
 	if(!message)
 		return
 	say("#[message]", bubble_type, spans, sanitize, language, ignore_spam, forced, filterproof)

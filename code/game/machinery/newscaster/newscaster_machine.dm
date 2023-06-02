@@ -12,6 +12,8 @@
 	armor = list(MELEE = 50, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	max_integrity = 200
 	integrity_failure = 0.25
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	///Reference to the currently logged in user.
 	var/datum/bank_account/current_user
 	///How much paper is contained within the newscaster?
@@ -73,7 +75,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	if(machine_stat & (NOPOWER|BROKEN))
 		set_light(0)
 		return
-	set_light(1.4,0.7,"#34D352") // green light
+	set_light(l_outer_range = 1.4, l_power = 0.7,l_color = "#34D352") // green light
 
 /obj/machinery/newscaster/update_overlays()
 	. = ..()
@@ -596,7 +598,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			playsound(loc, 'sound/machines/twobeep_high.ogg', 75, TRUE)
 		alert = TRUE
 		update_appearance()
-		addtimer(CALLBACK(src, .proc/remove_alert), ALERT_DELAY, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, PROC_REF(remove_alert)), ALERT_DELAY, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	else if(!channel && update_alert)
 		say("Attention! Wanted issue distributed!")
@@ -637,7 +639,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	var/datum/feed_comment/new_feed_comment = new/datum/feed_comment
 	new_feed_comment.author = current_user.account_holder
 	new_feed_comment.body = comment_text
-	new_feed_comment.time_stamp = station_time_timestamp()
+	new_feed_comment.time_stamp = stationtime2text()
 	current_message.comments += new_feed_comment
 	usr.log_message("(as [current_user.account_holder]) commented on message [current_message.return_body(-1)] -- [current_message.body]", LOG_COMMENT)
 	creating_comment = FALSE

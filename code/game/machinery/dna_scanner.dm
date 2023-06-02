@@ -6,7 +6,7 @@
 	base_icon_state = "scanner"
 	density = TRUE
 	obj_flags = NO_BUILD // Becomes undense when the door is open
-	occupant_typecache = list(/mob/living, /obj/item/bodypart/head, /obj/item/organ/internal/brain)
+	occupant_typecache = list(/mob/living, /obj/item/bodypart/head, /obj/item/organ/brain)
 	circuit = /obj/item/circuitboard/machine/dnascanner
 	var/locked = FALSE
 	var/damage_coeff
@@ -76,7 +76,7 @@
 	user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
 		span_notice("You lean on the back of [src] and start pushing the door open... (this will take about [DisplayTimeText(breakout_time)].)"), \
 		span_hear("You hear a metallic creaking from [src]."))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src || state_open || !locked)
 			return
 		locked = FALSE
@@ -151,31 +151,8 @@
 		UnregisterSignal(linked_console, COMSIG_PARENT_QDELETING)
 	linked_console = new_console
 	if(linked_console)
-		RegisterSignal(linked_console, COMSIG_PARENT_QDELETING, .proc/react_to_console_del)
+		RegisterSignal(linked_console, COMSIG_PARENT_QDELETING, PROC_REF(react_to_console_del))
 
 /obj/machinery/dna_scannernew/proc/react_to_console_del(datum/source)
 	SIGNAL_HANDLER
 	set_linked_console(null)
-
-
-//Just for transferring between genetics machines.
-/obj/item/disk/data
-	name = "DNA data disk"
-	icon_state = "datadisk0" //Gosh I hope syndies don't mistake them for the nuke disk.
-	var/list/genetic_makeup_buffer = list()
-	var/list/mutations = list()
-	var/max_mutations = 6
-	var/read_only = FALSE //Well,it's still a floppy disk
-
-/obj/item/disk/data/Initialize(mapload)
-	. = ..()
-	icon_state = "datadisk[rand(0,6)]"
-	add_overlay("datadisk_gene")
-
-/obj/item/disk/data/attack_self(mob/user)
-	read_only = !read_only
-	to_chat(user, span_notice("You flip the write-protect tab to [read_only ? "protected" : "unprotected"]."))
-
-/obj/item/disk/data/examine(mob/user)
-	. = ..()
-	. += "The write-protect tab is set to [read_only ? "protected" : "unprotected"]."

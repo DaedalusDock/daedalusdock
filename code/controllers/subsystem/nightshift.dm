@@ -3,8 +3,8 @@ SUBSYSTEM_DEF(nightshift)
 	wait = 10 MINUTES
 
 	var/nightshift_active = FALSE
-	var/nightshift_start_time = 702000 //7:30 PM, station time
-	var/nightshift_end_time = 270000 //7:30 AM, station time
+	var/nightshift_start_time = 19 HOURS + 30 MINUTES //7:30 PM, station time
+	var/nightshift_end_time = 7 HOURS + 30 MINUTES //7:30 AM, station time
 	var/nightshift_first_check = 30 SECONDS
 
 	var/high_security_mode = FALSE
@@ -27,7 +27,7 @@ SUBSYSTEM_DEF(nightshift)
 	priority_announce(message, sub_title = "Automated Lighting System", do_not_modify = TRUE)
 
 /datum/controller/subsystem/nightshift/proc/check_nightshift()
-	var/emergency = SSsecurity_level.current_level >= SEC_LEVEL_RED
+	var/emergency = SSsecurity_level.current_level >= SEC_LEVEL_BLUE
 	var/announcing = TRUE
 	var/time = station_time()
 	var/night_time = (time < nightshift_end_time) || (time > nightshift_start_time)
@@ -45,6 +45,7 @@ SUBSYSTEM_DEF(nightshift)
 		update_nightshift(night_time, announcing)
 
 /datum/controller/subsystem/nightshift/proc/update_nightshift(active, announce = TRUE, resumed = FALSE)
+	set waitfor = FALSE
 	if(!resumed)
 		currentrun = GLOB.apcs_list.Copy()
 		nightshift_active = active
@@ -57,5 +58,4 @@ SUBSYSTEM_DEF(nightshift)
 		currentrun -= APC
 		if (APC.area && (APC.area.type in GLOB.the_station_areas))
 			APC.set_nightshift(active)
-		if(MC_TICK_CHECK)
-			return
+		CHECK_TICK

@@ -3,7 +3,6 @@
 	icon = 'icons/obj/guns/projectiles.dmi'
 	icon_state = "nothing"
 	layer = HITSCAN_PROJECTILE_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	appearance_flags = LONG_GLIDE
@@ -58,5 +57,5 @@
 
 /obj/effect/projectile_lighting/Initialize(mapload, color, range, intensity, owner_key)
 	. = ..()
-	set_light(range, intensity, color)
+	set_light(l_outer_range = range, l_power = intensity, l_color = color)
 	owner = owner_key

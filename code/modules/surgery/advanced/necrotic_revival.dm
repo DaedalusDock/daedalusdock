@@ -7,13 +7,14 @@
 		/datum/surgery_step/saw,
 		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/bionecrosis,
+		/datum/surgery_step/repair_bone,
 		/datum/surgery_step/close)
 
 	possible_locs = list(BODY_ZONE_HEAD)
 
 /datum/surgery/advanced/necrotic_revival/can_start(mob/user, mob/living/carbon/target)
 	. = ..()
-	var/obj/item/organ/internal/zombie_infection/z_infection = target.getorganslot(ORGAN_SLOT_ZOMBIE)
+	var/obj/item/organ/zombie_infection/z_infection = target.getorganslot(ORGAN_SLOT_ZOMBIE)
 	if(z_infection)
 		return FALSE
 
@@ -38,6 +39,6 @@
 		span_notice("[user] completes the surgery on [target]'s brain."))
 	display_pain(target, "Your head goes totally numb for a moment, the pain is overwhelming!")
 	if(!target.getorganslot(ORGAN_SLOT_ZOMBIE))
-		var/obj/item/organ/internal/zombie_infection/z_infection = new()
+		var/obj/item/organ/zombie_infection/z_infection = new()
 		z_infection.Insert(target)
 	return ..()

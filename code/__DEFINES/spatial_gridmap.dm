@@ -12,6 +12,10 @@
 #define SPATIAL_GRID_CONTENTS_TYPE_HEARING RECURSIVE_CONTENTS_HEARING_SENSITIVE
 ///every movable that has a client in it is stored in this channel
 #define SPATIAL_GRID_CONTENTS_TYPE_CLIENTS RECURSIVE_CONTENTS_CLIENT_MOBS
+///objects listening to radio channels besides FREQ_ATMOS_CONTROL(Atmospheric gets it's own due to being thicc)
+#define SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS RECURSIVE_CONTENTS_RADIO_NONATMOS
+///objects listening to radio channel FREQ_ATMOS_CONTROL. There's a lot. That's why they get their own bucket.
+#define SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS RECURSIVE_CONTENTS_RADIO_ATMOS
 ///all atmos machines are stored in this channel (I'm sorry kyler)
 #define SPATIAL_GRID_CONTENTS_TYPE_ATMOS "spatial_grid_contents_type_atmos"
 

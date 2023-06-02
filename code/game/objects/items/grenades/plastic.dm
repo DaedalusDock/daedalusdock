@@ -96,7 +96,7 @@
 
 	to_chat(user, span_notice("You start planting [src]. The timer is set to [det_time]..."))
 
-	if(do_after(user, 30, target = bomb_target))
+	if(do_after(user, bomb_target, 3 SECONDS))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		target = bomb_target
@@ -120,7 +120,7 @@
 
 		target.add_overlay(plastic_overlay)
 		to_chat(user, span_notice("You plant the bomb. Timer counting down from [det_time]."))
-		addtimer(CALLBACK(src, .proc/detonate), det_time*10)
+		addtimer(CALLBACK(src, PROC_REF(detonate)), det_time*10)
 
 /obj/item/grenade/c4/proc/shout_syndicate_crap(mob/player)
 	if(!player)

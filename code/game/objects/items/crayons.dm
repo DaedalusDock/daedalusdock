@@ -368,7 +368,7 @@
 		wait_time *= 3
 
 	if(gang_mode || !instant)
-		if(!do_after(user, 50, target = target))
+		if(!do_after(user, target, 5 SECONDS, DO_PUBLIC, display = src))
 			return
 
 	var/charges_used = use_charges(user, cost)
@@ -599,9 +599,7 @@
 
 /obj/item/storage/crayons/Initialize(mapload)
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 7
-	STR.set_holdable(list(/obj/item/toy/crayon))
+	create_storage(canhold = list(/obj/item/toy/crayon))
 
 /obj/item/storage/crayons/PopulateContents()
 	new /obj/item/toy/crayon/red(src)
@@ -804,12 +802,14 @@
 			var/list/skins = list()
 			var/static/list/style_list_icons = list("standard" = 'icons/mob/augmentation/augments.dmi', "engineer" = 'icons/mob/augmentation/augments_engineer.dmi', "security" = 'icons/mob/augmentation/augments_security.dmi', "mining" = 'icons/mob/augmentation/augments_mining.dmi')
 			for(var/skin_option in style_list_icons)
-				var/image/part_image = image(icon = style_list_icons[skin_option], icon_state = limb.icon_state)
+				var/image/part_image = image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
+				if(limb.aux_zone) //Hands
+					part_image.overlays += image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.aux_zone]")
 				skins += list("[skin_option]" = part_image)
 			var/choice = show_radial_menu(user, src, skins, require_near = TRUE)
 			if(choice && (use_charges(user, 5, requires_full = FALSE) == 5))
 				playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
-				limb.icon = style_list_icons[choice]
+				limb.change_appearance(style_list_icons[choice], greyscale = FALSE)
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(target.color)
 		paint_color = target.color
@@ -821,7 +821,7 @@
 
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
-/obj/item/toy/crayon/spraycan/attackby_storage_insert(datum/component/storage, atom/storage_holder, mob/user)
+/obj/item/toy/crayon/spraycan/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	return is_capped
 
 /obj/item/toy/crayon/spraycan/update_icon_state()

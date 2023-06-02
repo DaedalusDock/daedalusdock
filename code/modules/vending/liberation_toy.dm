@@ -32,5 +32,5 @@
 	refill_canister = /obj/item/vending_refill/donksoft
 	default_price = PAYCHECK_HARD
 	extra_price = PAYCHECK_COMMAND
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "donksoft-light-mask"

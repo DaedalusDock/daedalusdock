@@ -18,7 +18,7 @@
 	// pointless if it only takes 2 seconds to cross but updates every 2 seconds
 	subsystem_type = /datum/controller/subsystem/processing/fastprocess
 
-	light_range = 1.5
+	light_outer_range = 1.5
 	light_power = 1
 	light_color = COLOR_VIBRANT_LIME
 	luminosity = 1
@@ -44,7 +44,7 @@
 
 	var/datum/lift_master/tram/tram_part = tram_ref?.resolve()
 	if(tram_part)
-		RegisterSignal(tram_part, COMSIG_TRAM_SET_TRAVELLING, .proc/on_tram_travelling)
+		RegisterSignal(tram_part, COMSIG_TRAM_SET_TRAVELLING, PROC_REF(on_tram_travelling))
 
 /obj/machinery/crossing_signal/Destroy()
 	. = ..()

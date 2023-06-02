@@ -8,8 +8,6 @@
 	icon_state = "storage"
 	complexity = 3
 	incompatible_modules = list(/obj/item/mod/module/storage)
-	/// The storage component of the module.
-	var/datum/component/storage/concrete/storage
 	/// Max weight class of items in the storage.
 	var/max_w_class = WEIGHT_CLASS_NORMAL
 	/// Max combined weight of all items in the storage.
@@ -19,34 +17,28 @@
 
 /obj/item/mod/module/storage/Initialize(mapload)
 	. = ..()
-	storage = AddComponent(/datum/component/storage/concrete)
-	storage.max_w_class = max_w_class
-	storage.max_combined_w_class = max_combined_w_class
-	storage.max_items = max_items
-	storage.allow_big_nesting = TRUE
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_SET_LOCKSTATE, TRUE)
+	create_storage(max_specific_storage = max_w_class, max_total_storage = max_combined_w_class, max_slots = max_items)
+	atom_storage.allow_big_nesting = TRUE
+	atom_storage.locked = TRUE
 
 /obj/item/mod/module/storage/on_install()
-	var/datum/component/storage/modstorage = mod.AddComponent(/datum/component/storage, storage)
-	modstorage.max_w_class = max_w_class
-	modstorage.max_combined_w_class = max_combined_w_class
-	modstorage.max_items = max_items
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_SET_LOCKSTATE, FALSE)
-	RegisterSignal(mod.chestplate, COMSIG_ITEM_PRE_UNEQUIP, .proc/on_chestplate_unequip)
+	var/datum/storage/modstorage = mod.create_storage(max_specific_storage = max_w_class, max_total_storage = max_combined_w_class, max_slots = max_items)
+	modstorage.set_real_location(src)
+	atom_storage.locked = FALSE
 
 /obj/item/mod/module/storage/on_uninstall(deleting = FALSE)
-	var/datum/component/storage/modstorage = mod.GetComponent(/datum/component/storage)
-	storage.slaves -= modstorage
+	var/datum/storage/modstorage = mod.atom_storage
+	atom_storage.locked = TRUE
 	qdel(modstorage)
-	UnregisterSignal(mod.chestplate, COMSIG_ITEM_PRE_UNEQUIP)
 	if(!deleting)
-		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_QUICK_EMPTY, drop_location())
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_SET_LOCKSTATE, TRUE)
+		atom_storage.remove_all(get_turf(src))
+	UnregisterSignal(mod.chestplate, COMSIG_ITEM_PRE_UNEQUIP)
+
 /obj/item/mod/module/storage/proc/on_chestplate_unequip(obj/item/source, force, atom/newloc, no_move, invdrop, silent)
 	if(QDELETED(source) || newloc == mod.wearer || !mod.wearer.s_store)
 		return
 	to_chat(mod.wearer, span_notice("[src] tries to store [mod.wearer.s_store] inside itself."))
-	SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, mod.wearer.s_store, mod.wearer, TRUE)
+	atom_storage?.attempt_insert(mod.wearer.s_store, mod.wearer, override = TRUE)
 
 /obj/item/mod/module/storage/large_capacity
 	name = "MOD expanded storage module"
@@ -101,8 +93,8 @@
 
 /obj/item/mod/module/jetpack/Initialize(mapload)
 	. = ..()
-	get_mover = CALLBACK(src, .proc/get_user)
-	check_on_move = CALLBACK(src, .proc/allow_thrust)
+	get_mover = CALLBACK(src, PROC_REF(get_user))
+	check_on_move = CALLBACK(src, PROC_REF(allow_thrust))
 	refresh_jetpack()
 
 /obj/item/mod/module/jetpack/Destroy()
@@ -218,7 +210,7 @@
 	overlay_state_inactive = "module_light"
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_color = COLOR_WHITE
-	light_range = 3
+	light_outer_range = 3
 	light_power = 1
 	light_on = FALSE
 	/// Charge drain per range amount.
@@ -234,7 +226,7 @@
 		return
 	set_light_flags(light_flags | LIGHT_ATTACHED)
 	set_light_on(active)
-	active_power_cost = base_power * light_range
+	active_power_cost = base_power * light_outer_range
 
 /obj/item/mod/module/flashlight/on_deactivation(display_message = TRUE, deleting = FALSE)
 	. = ..()
@@ -247,7 +239,7 @@
 	. = ..()
 	if(!.)
 		return
-	active_power_cost = base_power * light_range
+	active_power_cost = base_power * light_outer_range
 
 /obj/item/mod/module/flashlight/generate_worn_overlay(mutable_appearance/standing)
 	. = ..()
@@ -261,7 +253,7 @@
 /obj/item/mod/module/flashlight/get_configuration()
 	. = ..()
 	.["light_color"] = add_ui_configuration("Light Color", "color", light_color)
-	.["light_range"] = add_ui_configuration("Light Range", "number", light_range)
+	.["light_range"] = add_ui_configuration("Light Range", "number", light_outer_range)
 
 /obj/item/mod/module/flashlight/configure_edit(key, value)
 	switch(key)
@@ -299,7 +291,7 @@
 	. = ..()
 	if(!.)
 		return
-	if(dispense_time && !do_after(mod.wearer, dispense_time, target = mod))
+	if(dispense_time && !do_after(mod.wearer, mod, dispense_time))
 		balloon_alert(mod.wearer, "interrupted!")
 		return FALSE
 	var/obj/item/dispensed = new dispense_type(mod.wearer.loc)
@@ -321,7 +313,7 @@
 	incompatible_modules = list(/obj/item/mod/module/longfall)
 
 /obj/item/mod/module/longfall/on_suit_activation()
-	RegisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT, .proc/z_impact_react)
+	RegisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT, PROC_REF(z_impact_react))
 
 /obj/item/mod/module/longfall/on_suit_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT)
@@ -381,10 +373,10 @@
 	var/dna = null
 
 /obj/item/mod/module/dna_lock/on_install()
-	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, .proc/on_mod_activation)
-	RegisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL, .proc/on_mod_removal)
-	RegisterSignal(mod, COMSIG_ATOM_EMP_ACT, .proc/on_emp)
-	RegisterSignal(mod, COMSIG_ATOM_EMAG_ACT, .proc/on_emag)
+	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(on_mod_activation))
+	RegisterSignal(mod, COMSIG_MOD_MODULE_REMOVAL, PROC_REF(on_mod_removal))
+	RegisterSignal(mod, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp))
+	RegisterSignal(mod, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag))
 
 /obj/item/mod/module/dna_lock/on_uninstall(deleting = FALSE)
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
@@ -507,9 +499,9 @@
 			//Need to subtract the beret because its annoying
 
 /obj/item/mod/module/hat_stabilizer/on_suit_activation()
-	RegisterSignal(mod.helmet, COMSIG_PARENT_EXAMINE, .proc/add_examine)
-	RegisterSignal(mod.helmet, COMSIG_PARENT_ATTACKBY, .proc/place_hat)
-	RegisterSignal(mod.helmet, COMSIG_ATOM_ATTACK_HAND_SECONDARY, .proc/remove_hat)
+	RegisterSignal(mod.helmet, COMSIG_PARENT_EXAMINE, PROC_REF(add_examine))
+	RegisterSignal(mod.helmet, COMSIG_PARENT_ATTACKBY, PROC_REF(place_hat))
+	RegisterSignal(mod.helmet, COMSIG_ATOM_ATTACK_HAND_SECONDARY, PROC_REF(remove_hat))
 
 /obj/item/mod/module/hat_stabilizer/on_suit_deactivation(deleting = FALSE)
 	if(deleting)

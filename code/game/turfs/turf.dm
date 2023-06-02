@@ -57,6 +57,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/tmp/datum/lighting_corner/lighting_corner_SW
 	var/tmp/datum/lighting_corner/lighting_corner_NW
 
+	var/lighting_uses_jen = FALSE
 
 	///Which directions does this turf block the vision of, taking into account both the turf's opacity and the movable opacity_sources.
 	var/directional_opacity = NONE
@@ -78,7 +79,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/pathing_pass_method = TURF_PATHING_PASS_DENSITY
 
 /turf/vv_edit_var(var_name, new_value)
-	var/static/list/banned_edits = list(NAMEOF(src, x), NAMEOF(src, y), NAMEOF(src, z))
+	var/static/list/banned_edits = list(
+		NAMEOF_STATIC(src, x),
+		NAMEOF_STATIC(src, y),
+		NAMEOF_STATIC(src, z)
+		)
 	if(var_name in banned_edits)
 		return FALSE
 	. = ..()
@@ -98,9 +103,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 
-	// if(!blocks_air || !simulated)
-		// air = new
-		// air.copyFrom(src.return_air())
+	if(mapload && permit_ao)
+		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
 	vis_contents.Cut()
@@ -109,38 +113,44 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	levelupdate()
 
-	if (length(smoothing_groups))
-		sortTim(smoothing_groups) //In case it's not properly ordered, let's avoid duplicate entries with the same values.
+	if (!isnull(smoothing_groups))
+		#ifdef UNIT_TESTS
+		assert_sorted(smoothing_groups, "[type].smoothing_groups")
+		#endif
+
 		SET_BITFLAG_LIST(smoothing_groups)
-	if (length(canSmoothWith))
-		sortTim(canSmoothWith)
+	if (!isnull(canSmoothWith))
+		#ifdef UNIT_TESTS
+		assert_sorted(canSmoothWith, "[type].canSmoothWith")
+		#endif
+
 		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
 			smoothing_flags |= SMOOTH_OBJ
 		SET_BITFLAG_LIST(canSmoothWith)
 	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
-	visibilityChanged()
+	// visibilityChanged() will never hit any path with side effects during mapload
+	if (!mapload)
+		visibilityChanged()
 
 	for(var/atom/movable/content as anything in src)
 		Entered(content, null)
 
 	var/area/our_area = loc
-	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
-		add_overlay(GLOB.fullbright_overlay)
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
 
-	/*
-	if(requires_activation)
-		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
-	*/
+	if (z_flags & Z_MIMIC_BELOW)
+		setup_zmimic(mapload)
 
-	if (light_power && light_range)
+	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_new(src, UP)
 
@@ -148,7 +158,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	set_custom_materials(custom_materials)
+	if (isnull(custom_materials))
+		set_custom_materials(custom_materials)
 
 	ComponentInitialize()
 
@@ -171,12 +182,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_del(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_del(src, UP)
+
+	if (z_flags & Z_MIMIC_BELOW)
+		cleanup_zmimic()
+
 	if(force)
 		..()
 		//this will completely wipe turf state
@@ -467,23 +482,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/Bless()
 	new /obj/effect/blessing(src)
 
-/turf/storage_contents_dump_act(datum/component/storage/src_object, mob/user)
-	. = ..()
-	if(.)
-		return
-	if(length(src_object.contents()))
-		to_chat(usr, span_notice("You start dumping out the contents..."))
-		if(!do_after(usr,20,target=src_object.parent))
-			return FALSE
-
-	var/list/things = src_object.contents()
-	var/datum/progressbar/progress = new(user, things.len, src)
-	while (do_after(usr, 1 SECONDS, src, NONE, FALSE, CALLBACK(src_object, /datum/component/storage.proc/mass_remove_from_storage, src, things, progress)))
-		stoplag(1)
-	progress.end_progress()
-
-	return TRUE
-
 //////////////////////////////
 //Distance procs
 //////////////////////////////
@@ -644,7 +642,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/internal/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly?.reagents.total_volume)
 		return
 	var/chemicals_lost = belly.reagents.total_volume * purge_ratio
@@ -665,15 +663,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /// Handles exposing a turf to reagents.
-/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
-		. |= R.expose_turf(src, reagents[R])
+		. |= R.expose_turf(src, reagents[R], exposed_temperature)
 
 /**
  * Called when this turf is being washed. Washing a turf will also wash any mopable floor decals

@@ -2,14 +2,13 @@
 /obj/structure/blob
 	name = "blob"
 	icon = 'icons/mob/blob.dmi'
-	light_range = 2
+	light_outer_range = 2
 	desc = "A thick wall of writhing tendrils."
 	density = TRUE
 	opacity = FALSE
 	anchored = TRUE
 	layer = BELOW_MOB_LAYER
 	pass_flags_self = PASSBLOB
-	can_atmos_pass = CANPASS_PROC
 	obj_flags = CAN_BE_HIT|BLOCK_Z_OUT_DOWN // stops blob mobs from falling on multiz.
 	/// How many points the blob gets back when it removes a blob of that type. If less than 0, blob cannot be removed.
 	var/point_return = 0
@@ -42,7 +41,9 @@
 	setDir(pick(GLOB.cardinals))
 	update_appearance()
 	if(atmosblock)
+		can_atmos_pass = CANPASS_NEVER
 		zas_update_loc()
+
 	ConsumeTile()
 	if(!QDELETED(src)) //Consuming our tile can in rare cases cause us to del
 		AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOB, CELL_VIRUS_TABLE_GENERIC, 2, 2)
@@ -67,9 +68,6 @@
 	return
 
 /obj/structure/blob/Destroy()
-	if(atmosblock)
-		atmosblock = FALSE
-		zas_update_loc()
 	if(overmind)
 		overmind.all_blobs -= src
 		overmind.blobs_legit -= src  //if it was in the legit blobs list, it isn't now
@@ -97,11 +95,6 @@
 
 /obj/structure/blob/block_superconductivity()
 	return atmosblock
-
-/obj/structure/blob/zas_canpass(turf/T)
-	if(QDELETED(src))
-		return AIR_ALLOWED
-	return atmosblock ? (AIR_BLOCKED|ZONE_BLOCKED) : AIR_ALLOWED
 
 /obj/structure/blob/update_icon() //Updates color based on overmind color if we have an overmind.
 	. = ..()
@@ -343,7 +336,7 @@
 /obj/structure/blob/normal
 	name = "normal blob"
 	icon_state = "blob"
-	light_range = 0
+	light_outer_range = 0
 	max_integrity = BLOB_REGULAR_MAX_HP
 	var/initial_integrity = BLOB_REGULAR_HP_INIT
 	health_regen = BLOB_REGULAR_HP_REGEN

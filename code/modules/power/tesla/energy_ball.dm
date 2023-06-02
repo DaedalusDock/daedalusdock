@@ -21,7 +21,7 @@
 	density = TRUE
 	plane = MASSIVE_OBJ_PLANE
 	plane = ABOVE_LIGHTING_PLANE
-	light_range = 6
+	light_outer_range = 6
 	move_resist = INFINITY
 	obj_flags = CAN_BE_HIT | DANGEROUS_POSSESSION
 	pixel_x = -32
@@ -46,7 +46,7 @@
 	START_PROCESSING(SSobj, src)
 
 	if (!is_miniball)
-		set_light(10, 7, "#5e5edd")
+		set_light(l_outer_range = 10, l_power = 7, l_color= "#5e5edd")
 
 		var/turf/spawned_turf = get_turf(src)
 		message_admins("A tesla has been created at [ADMIN_VERBOSEJMP(spawned_turf)].")
@@ -127,7 +127,7 @@
 		energy_to_raise = energy_to_raise * 1.25
 
 		playsound(src.loc, 'sound/magic/lightning_chargeup.ogg', 100, TRUE, extrarange = 30)
-		addtimer(CALLBACK(src, .proc/new_mini_ball), 100)
+		addtimer(CALLBACK(src, PROC_REF(new_mini_ball)), 100)
 	else if(energy < energy_to_lower && orbiting_balls.len)
 		energy_to_raise = energy_to_raise / 1.25
 		energy_to_lower = (energy_to_raise / 1.25) - 20
@@ -164,7 +164,7 @@
 		return
 	var/mob/living/carbon/jedi = user
 	to_chat(jedi, span_userdanger("That was a shockingly dumb idea."))
-	var/obj/item/organ/internal/brain/rip_u = locate(/obj/item/organ/internal/brain) in jedi.internal_organs
+	var/obj/item/organ/brain/rip_u = locate(/obj/item/organ/brain) in jedi.processing_organs
 	jedi.ghostize(jedi)
 	if(rip_u)
 		qdel(rip_u)
@@ -335,7 +335,7 @@
 	if(closest_type == LIVING)
 		var/mob/living/closest_mob = closest_atom
 		closest_mob.set_shocked()
-		addtimer(CALLBACK(closest_mob, /mob/living/proc/reset_shocked), 10)
+		addtimer(CALLBACK(closest_mob, TYPE_PROC_REF(/mob/living, reset_shocked), 10))
 		var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? (min(round(power/600), 90) + rand(-5, 5)) : 0
 		closest_mob.electrocute_act(shock_damage, source, 1, SHOCK_TESLA | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
 		if(issilicon(closest_mob))

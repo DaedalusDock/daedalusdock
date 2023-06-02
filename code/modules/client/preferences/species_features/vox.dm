@@ -36,40 +36,12 @@
 
 	return values
 
-/datum/preference/choiced/vox_snout
-	savefile_key = "feature_vox_snout"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Snout"
-	should_generate_icons = TRUE
-
-/datum/preference/choiced/vox_snout/init_possible_values()
-	return generate_vox_side_shots(GLOB.vox_snouts_list, "snout", FALSE, VOX_SNOUT_COLOR)
-
-/datum/preference/choiced/vox_snout/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["vox_snout"] = value
-
-/datum/preference/choiced/vox_spines
-	savefile_key = "feature_vox_spines"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_mutant_bodypart = "spines_vox"
-
-/datum/preference/choiced/vox_spines/init_possible_values()
-	return assoc_to_keys(GLOB.spines_list_vox)
-
-/datum/preference/choiced/vox_spines/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["spines_vox"] = value
-
-/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["tail_vox"] = value
-
 /datum/preference/choiced/vox_hair
 	savefile_key = "feature_vox_hair"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	should_generate_icons = TRUE
-	main_feature_name = "Hairstyle"
+	main_feature_name = "Vox Hairstyle"
 	relevant_mutant_bodypart = "vox_hair"
 
 /datum/preference/choiced/vox_hair/init_possible_values()
@@ -104,7 +76,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Tail"
-	relevant_external_organ = /obj/item/organ/external/tail/vox
+	relevant_external_organ = /obj/item/organ/tail/vox
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_vox/init_possible_values()
@@ -121,6 +93,9 @@
 		values[vox_tail.name] = tail_icon
 
 	return values
+
+/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	target.dna.features["tail_vox"] = value
 
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR

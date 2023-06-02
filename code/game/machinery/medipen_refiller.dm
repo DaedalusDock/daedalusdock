@@ -58,7 +58,7 @@
 		if(reagents.has_reagent(allowed[P.type], 10))
 			busy = TRUE
 			add_overlay("active")
-			addtimer(CALLBACK(src, .proc/refill, P, user), 20)
+			addtimer(CALLBACK(src, PROC_REF(refill), P, user), 20)
 			qdel(P)
 			return
 		to_chat(user, span_danger("There aren't enough reagents to finish this operation."))
@@ -67,7 +67,7 @@
 
 /obj/machinery/medipen_refiller/plunger_act(obj/item/plunger/P, mob/living/user, reinforced)
 	to_chat(user, span_notice("You start furiously plunging [name]."))
-	if(do_after(user, 30, target = src))
+	if(do_after(user, src, 3 SECONDS))
 		to_chat(user, span_notice("You finish plunging the [name]."))
 		reagents.expose(get_turf(src), TOUCH)
 		reagents.clear_reagents()

@@ -27,7 +27,7 @@
 
 /mob/living/simple_animal/hostile/zombie/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/setup_visuals)
+	INVOKE_ASYNC(src, PROC_REF(setup_visuals))
 
 /mob/living/simple_animal/hostile/zombie/proc/setup_visuals()
 	var/datum/job/job = SSjob.GetJob(zombiejob)
@@ -39,7 +39,6 @@
 	qdel(dummy.get_item_for_held_index(2))
 	dummy.equipOutfit(outfit)
 	dummy.set_species(/datum/species/zombie)
-	COMPILE_OVERLAYS(dummy)
 	icon = getFlatIcon(dummy)
 	qdel(dummy)
 

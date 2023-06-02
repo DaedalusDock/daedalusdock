@@ -30,14 +30,14 @@
 	if(M == user)
 		M.visible_message(span_notice("[user] attempts to [apply_method] [src]."))
 		if(self_delay)
-			if(!do_mob(user, M, self_delay))
+			if(!do_after(user, M, self_delay))
 				return FALSE
 		to_chat(M, span_notice("You [apply_method] [src]."))
 
 	else
 		M.visible_message(span_danger("[user] attempts to force [M] to [apply_method] [src]."), \
 							span_userdanger("[user] attempts to force you to [apply_method] [src]."))
-		if(!do_mob(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user)))
+		if(!do_after(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, display = src))
 			return FALSE
 		M.visible_message(span_danger("[user] forces [M] to [apply_method] [src]."), \
 							span_userdanger("[user] forces you to [apply_method] [src]."))
@@ -47,7 +47,7 @@
 ///Runs the consumption code, can be overriden for special effects
 /obj/item/reagent_containers/pill/proc/on_consumption(mob/M, mob/user)
 	if(icon_state == "pill4" && prob(5)) //you take the red pill - you stay in Wonderland, and I show you how deep the rabbit hole goes
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, M, span_notice("[pick(strings(REDPILL_FILE, "redpill_questions"))]")), 50)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), M, span_notice("[pick(strings(REDPILL_FILE, "redpill_questions"))]")), 50)
 
 	if(reagents.total_volume)
 		reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = apply_type)

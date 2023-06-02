@@ -5,8 +5,7 @@
 /// Probability of using letters of envelope sprites on all letters.
 #define FULL_CRATE_LETTER_ODDS 70
 
-//Experimental change: These are subject to tweaking based on the /tg/ economy overhaul.
-//Current design direction: Higher paying jobs are vastly outnumbered by lower paying jobs, so anything above medium hurts inflation, common jobs help inflation
+//
 #define PAYCHECK_PRISONER 25
 #define PAYCHECK_ASSISTANT 50
 #define PAYCHECK_MINIMAL 55
@@ -17,15 +16,21 @@
 
 #define PAYCHECK_ZERO 0
 
-#define STATION_TARGET_BUFFER 40
+///The amount of money taken from station master and distributed to all departments every 5 minutes.
+#define ECON_STATION_PAYOUT 6000
+///The amount of money in a department account where station master will stop filling it up.
+#define ECON_STATION_PAYOUT_MAX 5000
 
-#define MAX_GRANT_DPT 500
+///The minimum amount of money in the station master account required for a departmental payout
+#define ECON_STATION_PAYOUT_REQUIREMENT 600
 
-//What should vending machines charge when you buy something in-department.
-#define VENDING_DISCOUNT 0.2
+//A multiplier for when you buy from your department.
+#define VENDING_DISCOUNT 0
 
+///NOT USED FOR ECONOMY
 #define ACCOUNT_CIV "CIV"
-#define ACCOUNT_CIV_NAME "Civil Budget"
+
+
 #define ACCOUNT_ENG "ENG"
 #define ACCOUNT_ENG_NAME "Engineering Budget"
 #define ACCOUNT_SCI "SCI"
@@ -38,6 +43,12 @@
 #define ACCOUNT_CAR_NAME "Cargo Budget"
 #define ACCOUNT_SEC "SEC"
 #define ACCOUNT_SEC_NAME "Defense Budget"
+
+/// The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.
+#define ECON_NUM_DEPARTMENT_ACCOUNTS 6
+
+#define ACCOUNT_STATION_MASTER "STA"
+#define ACCOUNT_STATION_MASTER_NAME "Station Budget"
 
 #define NO_FREEBIES "commies go home"
 

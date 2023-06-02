@@ -38,6 +38,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	integrity_failure = 0.4
 	//pressure_resistance = 7 * ONE_ATMOSPHERE
 	req_access = list()
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/icon/canister_overlay_file = 'icons/obj/atmospherics/canisters.dmi'
 
@@ -98,8 +99,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		air_contents.copyFrom(existing_mixture)
 	else
 		create_gas()
-
-	desc = "[xgm_gas_data.name[gas_type]]."
+	if(gas_type)
+		desc = "[xgm_gas_data.name[gas_type]]."
 
 	update_window()
 
@@ -365,9 +366,6 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	window.overlays = window_overlays
 	add_overlay(window)
 
-/obj/machinery/portable_atmospherics/canister/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > temperature_resistance && !shielding_powered)
-
 /obj/machinery/portable_atmospherics/canister/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > temperature_resistance &&!shielding_powered)
 		take_damage(5, BURN, 0)
@@ -474,9 +472,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
  */
 /obj/machinery/portable_atmospherics/canister/proc/canister_break()
 	disconnect()
-	var/datum/gas_mixture/expelled_gas = air_contents.remove(air_contents.get_moles())
 	var/turf/T = get_turf(src)
-	T.assume_air(expelled_gas)
+	T.assume_air(air_contents)
 
 	atom_break()
 
@@ -504,7 +501,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 /obj/machinery/portable_atmospherics/canister/process(delta_time)
 
 	var/our_pressure = air_contents.returnPressure()
-	var/our_temperature = air_contents.get_temperature()
+	var/our_temperature = air_contents.temperature
 
 	protected_contents = FALSE
 	if(shielding_powered)
@@ -551,7 +548,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	air_contents.react()
 
 	var/our_pressure = air_contents.returnPressure()
-	var/our_temperature = air_contents.get_temperature()
+	var/our_temperature = air_contents.temperature
 
 	///function used to check the limit of the canisters and also set the amount of damage that the canister can receive, if the heat and pressure are way higher than the limit the more damage will be done
 	if(!protected_contents && (our_temperature > heat_limit || our_pressure > pressure_limit))

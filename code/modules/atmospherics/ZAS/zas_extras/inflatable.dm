@@ -81,8 +81,8 @@
 	undeploy_path = /obj/item/inflatable/wall
 	can_atmos_pass = CANPASS_NEVER
 
-/obj/structure/inflatable/New(location)
-	..()
+/obj/structure/inflatable/Initialize()
+	. = ..()
 	zas_update_loc()
 
 /obj/structure/inflatable/Initialize()
@@ -90,7 +90,6 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
-	zas_update_loc()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -107,7 +106,7 @@
 
 	for(var/check_dir in GLOB.cardinals)
 		var/turf/T = get_step(src, check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T.unsafe_return_air()
 		var/pressure = env.returnPressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)
@@ -167,7 +166,7 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		addtimer(CALLBACK(src, .proc/after_deflate), 5 SECONDS, TIMER_STOPPABLE)
+		addtimer(CALLBACK(src, PROC_REF(after_deflate)), 5 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/proc/after_deflate()
 	if(QDELETED(src))
@@ -252,7 +251,7 @@
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = 1
 	flick("door_opening",src)
-	addtimer(CALLBACK(src, .proc/FinishOpen), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishOpen)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishOpen()
 	set_density(0)
@@ -271,7 +270,7 @@
 
 	isSwitchingStates = 1
 	flick("door_closing",src)
-	addtimer(CALLBACK(src, .proc/FinishClose), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishClose)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishClose()
 	set_density(1)
@@ -436,10 +435,9 @@
 	throw_range = 4
 	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
 
-/obj/item/storage/briefcase/inflatable/ComponentInitialize()
+/obj/item/storage/briefcase/inflatable/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.set_holdable(list(/obj/item/inflatable))
+	atom_storage.set_holdable(list(/obj/item/inflatable))
 
 /obj/item/storage/briefcase/inflatable/PopulateContents()
 	for(var/path in startswith)

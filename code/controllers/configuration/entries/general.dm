@@ -36,6 +36,9 @@
 /// station name (the name of the station in-game)
 /datum/config_entry/string/stationname
 
+/// the line of text under server name on the hub
+/datum/config_entry/string/hub_subtitle
+
 /// Countdown between lobby and the round starting.
 /datum/config_entry/number/lobby_countdown
 	default = 120
@@ -44,7 +47,13 @@
 
 /// Post round murder death kill countdown.
 /datum/config_entry/number/round_end_countdown
-	default = 25
+	default = 90
+	integer = FALSE
+	min_val = 0
+
+/// Time between the round ending and credits beginning to roll
+/datum/config_entry/number/eor_credits_delay
+	default = 40
 	integer = FALSE
 	min_val = 0
 
@@ -220,9 +229,6 @@
 		sync_validate = FALSE
 
 /datum/config_entry/flag/allow_holidays
-
-/datum/config_entry/flag/disable_holiday_floor_effects //For when you need consistency or don't enjoy garish vomit.
-
 
 /datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 	protection = CONFIG_ENTRY_LOCKED
@@ -522,7 +528,7 @@
 /datum/config_entry/string/chat_announce_new_game
 	default = null
 
-/datum/config_entry/string/chat_new_game_notifications
+/datum/config_entry/string/chat_newgame_staple
 	default = null
 
 /datum/config_entry/flag/debug_admin_hrefs

@@ -40,26 +40,26 @@
 	trigger_output = add_output_port("Received", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/radio/Destroy()
-	SSradio.remove_object(src, current_freq)
+	SSpackets.remove_object(src, current_freq)
 	return ..()
 
 /obj/item/circuit_component/radio/pre_input_received(datum/port/input/port)
 	freq.set_value(sanitize_frequency(freq.value, TRUE))
 
 /obj/item/circuit_component/radio/input_received(datum/port/input/port)
-	INVOKE_ASYNC(src, .proc/handle_radio_input, port)
+	INVOKE_ASYNC(src, PROC_REF(handle_radio_input), port)
 
 /obj/item/circuit_component/radio/proc/handle_radio_input(datum/port/input/port)
 	var/frequency = freq.value
 
 	if(frequency != current_freq)
-		SSradio.remove_object(src, current_freq)
-		radio_connection = SSradio.add_object(src, frequency, RADIO_SIGNALER)
+		SSpackets.remove_object(src, current_freq)
+		radio_connection = SSpackets.add_object(src, frequency, RADIO_SIGNALER)
 		current_freq = frequency
 
 	if(COMPONENT_TRIGGERED_BY(trigger_input, port))
-		var/datum/signal/signal = new(list("code" = round(code.value) || 0, "key" = parent?.owner_id))
-		radio_connection.post_signal(src, signal)
+		var/datum/signal/signal = new(src, list("code" = round(code.value) || 0, "key" = parent?.owner_id))
+		radio_connection.post_signal(signal)
 
 /obj/item/circuit_component/radio/receive_signal(datum/signal/signal)
 	. = FALSE

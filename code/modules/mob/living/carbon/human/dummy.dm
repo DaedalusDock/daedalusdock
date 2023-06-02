@@ -38,11 +38,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			current_organ.Remove(src, special = TRUE) //Please don't somehow kill our dummy
 			SSwardrobe.stash_object(current_organ)
 
-	for(var/obj/item/organ/external/organ in internal_organs)
-		if(organ.type in current_species.external_organs)
-			organ.Remove(src)
-			SSwardrobe.stash_object(organ)
-
 //Instead of just deleting our equipment, we save what we can and reinsert it into SSwardrobe's store
 //Hopefully this makes preference reloading not the worst thing ever
 /mob/living/carbon/human/dummy/delete_equipment()
@@ -90,7 +85,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
 	create_dna(src)
 	dna.initialize_dna(skip_index = TRUE)
-	dna.features["body_markings"] = "None"
 	dna.features["ears"] = "None"
 	dna.features["ethcolor"] = COLOR_WHITE
 	dna.features["frills"] = "None"
@@ -106,7 +100,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["tail_vox"] = "Vox Tail"
 	dna.features["vox_hair"] = "None"
 	dna.features["vox_facial_hair"] = "None"
-	dna.features["spines_vox"] = "None"
+	dna.features["vox_snout"] = "Vox Snout"
 	dna.features["tail_cat"] = "None"
 	dna.features["pod_hair"] = "Ivy"
 	dna.features["teshari_feathers"] = "Mane"

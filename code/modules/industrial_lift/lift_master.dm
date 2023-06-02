@@ -10,7 +10,7 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 
 	/// Typepath list of what to ignore smashing through, controls all lifts
 	var/static/list/ignored_smashthroughs = list(
-		/obj/machinery/power/supermatter_crystal,
+		/obj/machinery/power/supermatter,
 		/obj/structure/holosign,
 		/obj/machinery/field,
 	)
@@ -70,7 +70,7 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 
 	new_lift_platform.lift_master_datum = src
 	LAZYADD(lift_platforms, new_lift_platform)
-	RegisterSignal(new_lift_platform, COMSIG_PARENT_QDELETING, .proc/remove_lift_platforms)
+	RegisterSignal(new_lift_platform, COMSIG_PARENT_QDELETING, PROC_REF(remove_lift_platforms))
 
 	check_for_landmarks(new_lift_platform)
 

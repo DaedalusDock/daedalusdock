@@ -78,7 +78,7 @@
 		user.changeNext_move(CLICK_CD_BREAKOUT)
 		user.last_special = world.time + CLICK_CD_BREAKOUT
 		to_chat(user, span_notice("You start trying to escape from the pod..."))
-		if(do_after(user, 1 MINUTES, target = src))
+		if(do_after(user, src, 1 MINUTES))
 			to_chat(user, span_notice("You manage to open the pod."))
 			empty_pod()
 
@@ -97,9 +97,9 @@
 	current_tube = tube
 
 	var/datum/move_loop/engine = SSmove_manager.force_move_dir(src, dir, 0, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
-	RegisterSignal(engine, COMSIG_MOVELOOP_PREPROCESS_CHECK, .proc/before_pipe_transfer)
-	RegisterSignal(engine, COMSIG_MOVELOOP_POSTPROCESS, .proc/after_pipe_transfer)
-	RegisterSignal(engine, COMSIG_PARENT_QDELETING, .proc/engine_finish)
+	RegisterSignal(engine, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(before_pipe_transfer))
+	RegisterSignal(engine, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(after_pipe_transfer))
+	RegisterSignal(engine, COMSIG_PARENT_QDELETING, PROC_REF(engine_finish))
 	calibrate_engine(engine)
 
 /obj/structure/transit_tube_pod/proc/before_pipe_transfer(datum/move_loop/move/source)

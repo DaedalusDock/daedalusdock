@@ -12,7 +12,8 @@
 	///True if rigged to explode
 	var/rigged = FALSE
 	///How much light it gives off
-	var/brightness = 2
+	var/bulb_outer_range = 3
+	var/bulb_inner_range = 2
 	///LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/status = LIGHT_OK
 	///Base icon state for each bulb types
@@ -35,7 +36,8 @@
 	icon_state = "ltube"
 	base_state = "ltube"
 	inhand_icon_state = "c_tube"
-	brightness = 8
+	bulb_outer_range = 6
+	bulb_inner_range = 2
 	custom_price = PAYCHECK_EASY * 0.5
 
 /obj/item/light/tube/broken
@@ -49,7 +51,8 @@
 	inhand_icon_state = "contvapour"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	brightness = 4
+	bulb_outer_range = 5
+	bulb_inner_range = 1
 	custom_price = PAYCHECK_EASY * 0.4
 
 /obj/item/light/bulb/broken
@@ -79,7 +82,7 @@
 	AddComponent(/datum/component/caltrop, min_damage = force)
 	update()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -95,8 +98,8 @@
 
 /obj/item/light/create_reagents(max_vol, flags)
 	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), .proc/on_reagent_change)
-	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, .proc/on_reagents_del)
+	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
+	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
 /**
  * Handles rigging the cell if it contains enough plasma.

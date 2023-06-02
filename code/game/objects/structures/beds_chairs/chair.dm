@@ -25,7 +25,7 @@
 /obj/structure/chair/Initialize(mapload)
 	. = ..()
 	if(!anchored) //why would you put these on the shuttle?
-		addtimer(CALLBACK(src, .proc/RemoveFromLatejoin), 0)
+		addtimer(CALLBACK(src, PROC_REF(RemoveFromLatejoin)), 0)
 	if(prob(0.2))
 		name = "tactical [name]"
 	MakeRotate()
@@ -114,10 +114,8 @@
 /obj/structure/chair/proc/handle_layer()
 	if(has_buckled_mobs() && dir == NORTH)
 		layer = ABOVE_MOB_LAYER
-		plane = GAME_PLANE_UPPER
 	else
 		layer = OBJ_LAYER
-		plane = GAME_PLANE
 
 /obj/structure/chair/post_buckle_mob(mob/living/M)
 	. = ..()
@@ -172,7 +170,7 @@
 /obj/structure/chair/comfy/Initialize(mapload)
 	armrest = GetArmrest()
 	armrest.layer = ABOVE_MOB_LAYER
-	armrest.plane = GAME_PLANE_UPPER
+	armrest.plane = GAME_PLANE
 	return ..()
 
 /obj/structure/chair/comfy/proc/GetArmrest()
@@ -512,7 +510,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	Mob.pixel_y += 2
 	.=..()
 	if(iscarbon(Mob))
-		INVOKE_ASYNC(src, .proc/snap_check, Mob)
+		INVOKE_ASYNC(src, PROC_REF(snap_check), Mob)
 
 /obj/structure/chair/plastic/post_unbuckle_mob(mob/living/Mob)
 	Mob.pixel_y -= 2

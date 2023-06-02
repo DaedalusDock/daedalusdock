@@ -3,7 +3,7 @@
 	name = "\improper APLU MK-I \"Ripley\""
 	icon_state = "ripley"
 	base_icon_state = "ripley"
-	silicon_icon_state = "ripley-empty"
+	silbutton_icon_state = "ripley-empty"
 	movedelay = 1.5 //Move speed, lower is faster.
 	max_temperature = 20000
 	max_integrity = 200
@@ -79,7 +79,7 @@
 	wreckage = /obj/structure/mecha_wreckage/ripley/mk2
 	enclosed = TRUE
 	enter_delay = 40
-	silicon_icon_state = null
+	silbutton_icon_state = null
 
 /obj/vehicle/sealed/mecha/working/ripley/mk2/generate_actions()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/mecha/mech_eject)
@@ -101,7 +101,7 @@
 	step_energy_drain = 0
 	enclosed = TRUE
 	enter_delay = 40
-	silicon_icon_state = null
+	silbutton_icon_state = null
 	equip_by_category = list(
 		MECHA_L_ARM = /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/kill/fake,
 		MECHA_R_ARM = null,
@@ -216,7 +216,7 @@
 
 /obj/vehicle/sealed/mecha/working/ripley/relay_container_resist_act(mob/living/user, obj/O)
 	to_chat(user, span_notice("You lean on the back of [O] and start pushing so it falls out of [src]."))
-	if(do_after(user, 300, target = O))
+	if(do_after(user, O, 300))
 		if(!user || user.stat != CONSCIOUS || user.loc != src || O.loc != src )
 			return
 		to_chat(user, span_notice("You successfully pushed [O] out of [src]!"))

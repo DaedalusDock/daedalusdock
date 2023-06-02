@@ -45,7 +45,7 @@
 	var/mob/P = parent
 	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw intent, and clicking on your target with an empty hand."))
 
-	addtimer(CALLBACK(src, .proc/resetTackle), base_knockdown, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 
 /datum/component/tackler/Destroy()
 	var/mob/P = parent
@@ -53,9 +53,9 @@
 	return ..()
 
 /datum/component/tackler/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_MOB_CLICKON, .proc/checkTackle)
-	RegisterSignal(parent, COMSIG_MOVABLE_IMPACT, .proc/sack)
-	RegisterSignal(parent, COMSIG_MOVABLE_POST_THROW, .proc/registerTackle)
+	RegisterSignal(parent, COMSIG_MOB_CLICKON, PROC_REF(checkTackle))
+	RegisterSignal(parent, COMSIG_MOVABLE_IMPACT, PROC_REF(sack))
+	RegisterSignal(parent, COMSIG_MOVABLE_POST_THROW, PROC_REF(registerTackle))
 
 /datum/component/tackler/UnregisterFromParent()
 	UnregisterSignal(parent, list(COMSIG_MOB_CLICKON, COMSIG_MOVABLE_IMPACT, COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_POST_THROW))
@@ -104,7 +104,7 @@
 
 
 	tackling = TRUE
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/checkObstacle)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(checkObstacle))
 	playsound(user, 'sound/weapons/thudswoosh.ogg', 40, TRUE, -1)
 
 	var/leap_word = isfelinid(user) ? "pounce" : "leap" //If cat, "pounce" instead of "leap".
@@ -119,7 +119,7 @@
 	user.Knockdown(base_knockdown, ignore_canstun = TRUE)
 	user.adjustStaminaLoss(stamina_cost)
 	user.throw_at(A, range, speed, user, FALSE)
-	addtimer(CALLBACK(src, .proc/resetTackle), base_knockdown, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 	return(COMSIG_MOB_CANCEL_CLICKON)
 
 /**
@@ -151,7 +151,7 @@
 	user.toggle_throw_mode()
 	if(!iscarbon(hit))
 		if(hit.density)
-			INVOKE_ASYNC(src, .proc/splat, user, hit)
+			INVOKE_ASYNC(src, PROC_REF(splat), user, hit)
 		return
 
 	var/mob/living/carbon/target = hit
@@ -171,7 +171,7 @@
 			user.Paralyze(30)
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=15, updating_health=TRUE, wound_bonus = CANT_WOUND)
+				hed.receive_damage(brute=15, updating_health=TRUE)
 			user.gain_trauma(/datum/brain_trauma/mild/concussion)
 
 		if(-4 to -2) // glancing blow at best
@@ -181,7 +181,7 @@
 			user.Knockdown(30)
 			if(ishuman(target) && !T.has_movespeed_modifier(/datum/movespeed_modifier/shove))
 				T.add_movespeed_modifier(/datum/movespeed_modifier/shove) // maybe define a slightly more severe/longer slowdown for this
-				addtimer(CALLBACK(T, /mob/living/carbon/proc/clear_shove_slowdown), SHOVE_SLOWDOWN_LENGTH * 2)
+				addtimer(CALLBACK(T, TYPE_PROC_REF(/mob/living/carbon, clear_shove_slowdown)), SHOVE_SLOWDOWN_LENGTH * 2)
 
 		if(-1 to 0) // decent hit, both parties are about equally inconvenienced
 			user.visible_message(span_warning("[user] lands a passable [tackle_word] on [target], sending them both tumbling!"), span_userdanger("You land a passable [tackle_word] on [target], sending you both tumbling!"), ignored_mobs = target)
@@ -212,7 +212,7 @@
 			target.Paralyze(5)
 			target.Knockdown(30)
 			if(ishuman(target) && ishuman(user))
-				INVOKE_ASYNC(S.dna.species, /datum/species.proc/grab, S, T)
+				INVOKE_ASYNC(S.dna.species, TYPE_PROC_REF(/datum/species, grab), S, T)
 				S.setGrabState(GRAB_PASSIVE)
 
 		if(5 to INFINITY) // absolutely BODIED
@@ -226,7 +226,7 @@
 			target.Paralyze(5)
 			target.Knockdown(30)
 			if(ishuman(target) && ishuman(user))
-				INVOKE_ASYNC(S.dna.species, /datum/species.proc/grab, S, T)
+				INVOKE_ASYNC(S.dna.species, TYPE_PROC_REF(/datum/species, grab), S, T)
 				S.setGrabState(GRAB_AGGRESSIVE)
 
 
@@ -269,10 +269,11 @@
 		defense_mod -= 1
 
 	var/leg_wounds = 0 // -1 defense per 2 leg wounds
-	for(var/i in target.all_wounds)
-		var/datum/wound/iterwound = i
-		if((iterwound.limb.body_zone in list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)))
+	var/static/list/check_areas = list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	for(var/datum/wound/iterwound in target.get_wounds())
+		if((iterwound.parent.body_zone in check_areas))
 			leg_wounds++
+
 	defense_mod -= round(leg_wounds * 0.5)
 
 	if(ishuman(target))
@@ -288,7 +289,7 @@
 			defense_mod += 2
 
 		if(islizard(T))
-			var/obj/item/organ/external/tail/el_tail = T.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
+			var/obj/item/organ/tail/el_tail = T.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
 			if(!el_tail) // lizards without tails are off-balance
 				defense_mod -= 1
 			else if(el_tail.wag_flags & WAG_WAGGING) // lizard tail wagging is robust and can swat away assailants!
@@ -384,7 +385,7 @@
 			user.visible_message(span_danger("[user] slams face-first into [hit] at an awkward angle, severing [user.p_their()] spinal column with a sickening crack! Fucking shit!"), span_userdanger("You slam face-first into [hit] at an awkward angle, severing your spinal column with a sickening crack! Fucking shit!"))
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=40, updating_health=FALSE, wound_bonus = 40)
+				hed.receive_damage(brute=40, updating_health=FALSE)
 			else
 				user.adjustBruteLoss(40, updating_health=FALSE)
 			user.adjustStaminaLoss(30)
@@ -400,7 +401,7 @@
 			user.visible_message(span_danger("[user] slams skull-first into [hit] with a sound like crumpled paper, revealing a horrifying breakage in [user.p_their()] cranium! Holy shit!"), span_userdanger("You slam skull-first into [hit] and your senses are filled with warm goo flooding across your face! Your skull is open!"))
 			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
 			if(hed)
-				hed.receive_damage(brute=30, updating_health=FALSE, wound_bonus = 25)
+				hed.receive_damage(brute=30, updating_health=FALSE)
 			else
 				user.adjustBruteLoss(40, updating_health=FALSE)
 			user.adjustStaminaLoss(30)

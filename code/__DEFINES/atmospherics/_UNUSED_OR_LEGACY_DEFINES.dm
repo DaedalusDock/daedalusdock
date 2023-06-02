@@ -45,12 +45,3 @@
 // Fire damage. (Unused in ZAS Reforged right now)
 #define CARBON_LIFEFORM_FIRE_RESISTANCE (T0C + 200)
 #define CARBON_LIFEFORM_FIRE_DAMAGE     4
-
-
-//////////////////// CURRENTLY UNUSED THINGS THAT KAPU NEEDS TO LOOK AT AND IMPLIMENT ASAP ////////////////////
-///Unused right now, should VERY MUCH LOOK AT. (see: atmos_piping.dm "max output limit")
-#define MAX_OMNI_PRESSURE		15000	// Maximal output(s) pressure for omni devices (filters/mixers)
-
-#define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
-#define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////

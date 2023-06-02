@@ -1,4 +1,5 @@
-#define THERMOMACHINE_POWER_CONVERSION 0.01
+///Magic number to boost the power of heating/cooling without touching power consumption
+#define THERMOMACHINE_PERF_MULT 2.5
 
 /obj/machinery/atmospherics/components/unary/thermomachine
 	icon = 'icons/obj/atmospherics/components/thermomachine.dmi'
@@ -24,13 +25,17 @@
 
 	set_dir_on_move = FALSE
 
-	var/min_temperature = T20C //actual temperature will be defined by RefreshParts()
-	var/max_temperature = T20C //actual temperature will be defined by RefreshParts()
+	var/min_temperature = 0
+	var/max_temperature = T20C + 500
+
 	var/target_temperature = T20C
-	var/heat_capacity = 0
+	var/heatsink_temperature = T20C // The constant temperature reservoir into which the freezer pumps heat. Probably the hull of the station or something.
+	///Power rating when the usage is turned up to 100
+	var/max_power_rating = 20000
+	///Percentage of power rating to use
+	var/power_setting = 20 // Start at 20 so we don't obliterate the station power supply.
+
 	var/interactive = TRUE // So mapmakers can disable interaction.
-	var/base_heating = 140
-	var/base_cooling = 170
 	var/color_index = 1
 
 /obj/machinery/atmospherics/components/unary/thermomachine/Initialize(mapload)
@@ -56,16 +61,21 @@
 
 /obj/machinery/atmospherics/components/unary/thermomachine/RefreshParts()
 	. = ..()
-	var/calculated_bin_rating = 0
-	for(var/obj/item/stock_parts/matter_bin/bin in component_parts)
-		calculated_bin_rating += bin.rating
-	heat_capacity = 5000 * ((calculated_bin_rating - 1) ** 2)
+	var/cap_rating = 0
+	for(var/obj/item/stock_parts/capacitor/cap in component_parts)
+		cap_rating += cap.rating
 
-	var/calculated_laser_rating = 0
-	for(var/obj/item/stock_parts/micro_laser/laser in component_parts)
-		calculated_laser_rating += laser.rating
-	min_temperature = max(T0C - (base_cooling + calculated_laser_rating * 15), TCMB) //73.15K with T1 stock parts
-	max_temperature = T20C + (base_heating * calculated_laser_rating) //573.15K with T1 stock parts
+	var/bin_rating = 0
+	for(var/obj/item/stock_parts/matter_bin/bin in component_parts)
+		cap_rating += bin.rating
+
+	var/manip_rating = 0
+	for(var/obj/item/stock_parts/manipulator/man in component_parts)
+		manip_rating += man.rating
+
+	max_power_rating = initial(max_power_rating) * cap_rating / 2 //more powerful
+	heatsink_temperature = initial(heatsink_temperature) / ((manip_rating + bin_rating) / 2) //more efficient
+	set_power_level(power_setting)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon_state()
 	var/colors_to_use = ""
@@ -112,7 +122,7 @@
 	. += span_notice("The thermostat is set to [target_temperature]K ([(T0C-target_temperature)*-1]C).")
 
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("Heat capacity at <b>[heat_capacity] Joules per Kelvin</b>.")
+		. += span_notice("Heatsink temperature at <b>[heatsink_temperature]K</b>.")
 		. += span_notice("Temperature range <b>[min_temperature]K - [max_temperature]K ([(T0C-min_temperature)*-1]C - [(T0C-max_temperature)*-1]C)</b>.")
 
 /obj/machinery/atmospherics/components/unary/thermomachine/AltClick(mob/living/user)
@@ -123,12 +133,6 @@
 	balloon_alert(user, "temperature reset to [target_temperature] K")
 	update_appearance()
 
-/** Performs heat calculation for the freezer. The full equation for this whole process is:
- * T3 = (C1 * T1 + (C1 * C2) / (C1 + C2) * (T2 - T1)) / C1.
- * C1 is main port heat capacity, T1 is the temp.
- * C2 and T2 is for the heat capacity of the freezer and temperature that we desire respectively.
- * T3 is the temperature we get
- */
 /obj/machinery/atmospherics/components/unary/thermomachine/process_atmos()
 	if(!on)
 		return
@@ -143,25 +147,22 @@
 	// The gas we want to cool/heat
 	var/datum/gas_mixture/port = airs[1]
 
-	if(!port.get_moles()) // Nothing to cool? go home lad
+	if(!port.total_moles || port.temperature == target_temperature) // Nothing to cool? go home lad
 		return
+	if(port.temperature > target_temperature) //We chillin'
+		var/heat_transfer = max( -port.getThermalEnergyChange(target_temperature - 5), 0 )
 
-	var/port_capacity = port.getHeatCapacity()
+		//Assume the heat is being pumped into the hull which is fixed at heatsink_temperature
+		//not /really/ proper thermodynamics but whatever
+		var/cop = THERMOMACHINE_PERF_MULT * (port.temperature/heatsink_temperature)	//heatpump coefficient of performance from thermodynamics -> power used = heat_transfer/cop
+		heat_transfer = min(heat_transfer, cop * power_rating) //limit heat transfer by available power
 
-	// The difference between target and what we need to heat/cool. Positive if heating, negative if cooling.
-	var/temperature_target_delta = target_temperature - port.temperature
+		port.adjustThermalEnergy(-heat_transfer) //remove the heat
 
-	// This variable holds the (C1*C2) / (C1+C2) * (T2-T1) part of the equation.
-	var/heat_amount = temperature_target_delta * (port_capacity * heat_capacity / (port_capacity + heat_capacity))
+	else //We heatin'
+		port.adjustThermalEnergy(power_rating * THERMOMACHINE_PERF_MULT)
 
-	port.temperature = max(((port.temperature * port_capacity) + heat_amount) / port_capacity, TCMB)
-
-	heat_amount = min(abs(heat_amount), 1e8) * THERMOMACHINE_POWER_CONVERSION
-
-	// This produces a nice curve that scales decently well for really hot stuff, and is nice to not fusion. It'll do
-	var/power_usage = idle_power_usage + (heat_amount * 0.05) ** (1.05 - (5e7 * 0.16 / max(heat_amount, 5e7)))
-
-	use_power(power_usage)
+	use_power(power_rating)
 	update_parents()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/screwdriver_act(mob/living/user, obj/item/tool)
@@ -266,6 +267,9 @@
 	data["max"] = max_temperature
 	data["target"] = target_temperature
 	data["initial"] = initial(target_temperature)
+	data["min_power"] = 1 //No im not making a var for this
+	data["max_power"] = 100 //See above
+	data["power"] = power_setting
 
 	var/datum/gas_mixture/port = airs[1]
 	data["temperature"] = port.temperature
@@ -299,6 +303,23 @@
 			if(.)
 				target_temperature = clamp(target, min_temperature, max_temperature)
 				investigate_log("was set to [target_temperature] K by [key_name(usr)]", INVESTIGATE_ATMOS)
+		if("set_power")
+			var/target = params["target"]
+			var/adjust = text2num(params["adjust"])
+			if(target == "input")
+				target = input("Set new target (1-100 Watts):", name, power_setting) as num|null
+				if(!isnull(target))
+					. = TRUE
+			else if(adjust)
+				target = power_setting + adjust
+				. = TRUE
+			else if(text2num(target) != null)
+				target = text2num(target)
+				. = TRUE
+			if(.)
+				set_power_level(target)
+				investigate_log("was set to [power_setting] watts by [key_name(usr)]", INVESTIGATE_ATMOS)
+
 
 	update_appearance()
 
@@ -322,6 +343,7 @@
 	. = ..()
 	if(target_temperature == initial(target_temperature))
 		target_temperature = min_temperature
+
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer/on/coldroom
 	name = "Cold room temperature control unit"
 	icon_state = "thermo_base_1"
@@ -337,4 +359,6 @@
 	on = TRUE
 	icon_state = "thermo_base_1"
 
-#undef THERMOMACHINE_POWER_CONVERSION
+/obj/machinery/atmospherics/components/unary/thermomachine/proc/set_power_level(new_power_setting)
+	power_setting = new_power_setting
+	power_rating = round(max_power_rating * (power_setting / 100))

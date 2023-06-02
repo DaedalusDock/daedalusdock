@@ -29,7 +29,6 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 	icon = 'modular_pariah/master_files/icons/testing/Zone.dmi'
 	invisibility = INVISIBILITY_OBSERVER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	plane = ABOVE_GAME_PLANE
 	layer = FLY_LAYER
 	vis_flags = NONE
 

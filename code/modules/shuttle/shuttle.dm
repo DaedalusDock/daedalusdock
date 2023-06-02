@@ -409,6 +409,9 @@
 	var/can_move_docking_ports = FALSE
 	var/list/hidden_turfs = list()
 
+	///Bolt doors on take off, unbolt on arrival?
+	var/bolt_doors = FALSE
+
 /obj/docking_port/mobile/register(replace = FALSE)
 	. = ..()
 	if(!id)
@@ -1027,8 +1030,7 @@
 	return
 
 /obj/docking_port/mobile/proc/post_emergency_launch()
-	if(prob(10))
-		SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
+	return
 
 //Called when emergency shuttle docks at centcom
 /obj/docking_port/mobile/proc/on_emergency_dock()

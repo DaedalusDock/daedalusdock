@@ -46,10 +46,9 @@
 /obj/item/wallframe/airalarm
 	name = "air alarm frame"
 	desc = "Used for building Air Alarms."
-	icon = 'icons/obj/monitors.dmi'
 	icon_state = "alarm_bitem"
 	result_path = /obj/machinery/airalarm
-	pixel_shift = 24
+	pixel_shift = 21
 
 #define AALARM_MODE_SCRUBBING 1
 #define AALARM_MODE_VENTING 2 //makes draught
@@ -66,10 +65,19 @@
 #define AALARM_THERMOSTAT_HEATING_POWER 40000 //T2 space heater
 #define AALARM_THERMOSTAT_HEATING_EFFICIENCY 30000 //T2 space heater
 
+#define AALARM_UIACT_COOLDOWNCHECK \
+	if(!COOLDOWN_FINISHED(src, ui_cooldown)){ \
+		to_chat(usr, span_warning("\The [src] is still recharging it's broadcast coils.")); \
+		usr.playsound_local(get_turf(src), 'sound/machines/terminal_error.ogg', 50); \
+	return FALSE; \
+	}
+
+
+
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
-	icon = 'icons/obj/monitors.dmi'
+	icon = 'icons/obj/airalarm.dmi'
 	icon_state = "alarmp"
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
@@ -79,9 +87,13 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
+
+	///Cooldown on UI actions, Prevents packet spam
+	COOLDOWN_DECLARE(ui_cooldown)
 
 	//Fire alarm related vars//
 
@@ -125,6 +137,7 @@
 		GAS_XENON = new/datum/tlv/dangerous,
 		GAS_TRITIUM = new/datum/tlv/dangerous,
 		GAS_DEUTERIUM = new/datum/tlv/dangerous,
+		GAS_RADON = new/datum/tlv/dangerous,
 		GAS_METHANE = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_HELIUM = new/datum/tlv(-1, -1, 1000, 1000),
 		GAS_KRYPTON = new/datum/tlv(-1, -1, 1000, 1000),
@@ -150,7 +163,7 @@
 
 	alarm_manager = new(src)
 	soundloop = new(src, FALSE)
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	update_appearance()
 
 	set_frequency(frequency)
@@ -158,17 +171,6 @@
 		/obj/item/circuit_component/air_alarm,
 	))
 	SSairmachines.start_processing_machine(src)
-
-	/*
-	if(mapload)
-		var/turf/my_turf = get_turf(src)
-		if(my_turf && (initial(my_turf.temperature) != T20C))
-			var/difftemp = T20C - initial(my_turf.temperature)
-			TLV["temperature"].warning_min -= difftemp
-			TLV["temperature"].hazard_min -= difftemp
-			TLV["temperature"].warning_max -= difftemp
-			TLV["temperature"].hazard_max -= difftemp
-	*/
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -178,7 +180,7 @@
 
 /obj/machinery/airalarm/Destroy()
 	set_area(null)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	SSairmachines.stop_processing_machine(src)
 	QDEL_NULL(wires)
 	QDEL_NULL(alarm_manager)
@@ -238,7 +240,7 @@
 	data["fire_alarm"] = !!alert_type //Same here
 
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/environment = T.return_air()
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
 	var/datum/tlv/cur_tlv
 
 	data["environment_data"] = list()
@@ -258,7 +260,7 @@
 							"unit" = "K ([round(temperature - T0C, 0.1)]C)",
 							"danger_level" = cur_tlv.get_danger_level(temperature)
 	))
-	var/total_moles = environment.get_moles()
+	var/total_moles = environment.total_moles
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume
 	for(var/gas_id in environment.gas)
 		if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
@@ -376,23 +378,35 @@
 				locked = !locked
 				. = TRUE
 		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("[action]" = params["val"]), usr)
 			. = TRUE
 		if("excheck")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^1), usr)
 			. = TRUE
 		if("incheck")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^2), usr)
 			. = TRUE
 		if("set_external_pressure", "set_internal_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			var/target = params["value"]
 			if(!isnull(target))
 				send_signal(device_id, list("[action]" = target), usr)
 				. = TRUE
 		if("reset_external_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_external_pressure"), usr)
 			. = TRUE
 		if("reset_internal_pressure")
+			AALARM_UIACT_COOLDOWNCHECK
+			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_internal_pressure"), usr)
 			. = TRUE
 		if("threshold")
@@ -412,11 +426,14 @@
 					tlv.vars[name] = round(value, 0.01)
 				investigate_log(" treshold value for [env]:[name] was set to [value] by [key_name(usr)]",INVESTIGATE_ATMOS)
 				var/turf/our_turf = get_turf(src)
-				var/datum/gas_mixture/environment = our_turf.return_air()
+				var/datum/gas_mixture/environment = our_turf.unsafe_return_air()
 				check_air_dangerlevel(environment)
 				. = TRUE
 		if("mode")
+			AALARM_UIACT_COOLDOWNCHECK
+			//Yes, the modes can match, but this will force a resend of the mode config to equipment.
 			mode = text2num(params["mode"])
+			COOLDOWN_START(src, ui_cooldown, 3 SECONDS)
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)
 			. = TRUE
@@ -460,19 +477,19 @@
 		return FALSE
 
 /obj/machinery/airalarm/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
+	radio_connection = SSpackets.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/airalarm/proc/send_signal(target, list/command, atom/user)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return FALSE
 
-	var/datum/signal/signal = new(command)
+	var/datum/signal/signal = new(src, command)
 	signal.data["tag"] = target
 	signal.data["sigtype"] = "command"
 	signal.data["user"] = user
-	radio_connection.post_signal(src, signal, RADIO_FROM_AIRALARM)
+	radio_connection.post_signal(signal, RADIO_FROM_AIRALARM)
 
 	return TRUE
 
@@ -618,7 +635,7 @@
 		if(2)
 			color = "#DA0205" // red
 
-	set_light(1.4, 1, color)
+	set_light(l_outer_range = 1.4, l_power = 0.8, l_color = color)
 
 /obj/machinery/airalarm/update_icon_state()
 	if(panel_open)
@@ -659,15 +676,15 @@
 /obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume)
 	. = ..()
 	if(!danger_level)
-		check_air_dangerlevel(loc.return_air())
+		check_air_dangerlevel(loc.unsafe_return_air())
 
 /obj/machinery/airalarm/process_atmos()
 	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
 		return
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.unsafe_return_air() //Later in the proc we update the zone if we modified it.
 
-	check_air_dangerlevel(loc.return_air())
+	check_air_dangerlevel(environment)
 
 	if(!my_area.apc?.terminal)
 		COOLDOWN_START(src, hibernating, 5 SECONDS)
@@ -701,6 +718,11 @@
 	local_term.use_power(energy2use)
 	environment.temperature += delta_temperature
 
+	if(isturf(loc))
+		var/turf/T = loc
+		if(TURF_HAS_VALID_ZONE(T))
+			SSzas.mark_zone_update(T.zone)
+
 /**
  * main proc for throwing a shitfit if the air isnt right.
  * goes into warning mode if gas parameters are beyond the tlv warning bounds, goes into hazard mode if gas parameters are beyond tlv hazard bounds
@@ -732,7 +754,7 @@
 	danger_level = max(pressure_dangerlevel, temperature_dangerlevel, gas_dangerlevel)
 
 	if(old_danger_level != danger_level)
-		INVOKE_ASYNC(src, .proc/apply_danger_level)
+		INVOKE_ASYNC(src, PROC_REF(apply_danger_level))
 		if(alert_type)
 			if(!danger_level)
 				my_area.communicate_fire_alert(FIRE_CLEAR)
@@ -746,16 +768,16 @@
 
 	if(mode == AALARM_MODE_REPLACEMENT && environment_pressure < ONE_ATMOSPHERE * 0.05)
 		mode = AALARM_MODE_SCRUBBING
-		INVOKE_ASYNC(src, .proc/apply_mode, src)
+		INVOKE_ASYNC(src, PROC_REF(apply_mode), src)
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
+	var/datum/radio_frequency/frequency = SSpackets.return_frequency(alarm_frequency)
 
 	if(!frequency)
 		return
 
-	var/datum/signal/alert_signal = new(list(
+	var/datum/signal/alert_signal = new(src, list(
 		"zone" = get_area_name(src, TRUE),
 		"type" = "Atmospheric"
 	))
@@ -766,7 +788,7 @@
 	else if (alert_level==0)
 		alert_signal.data["alert"] = "clear"
 
-	frequency.post_signal(src, alert_signal, range = -1)
+	frequency.post_signal(alert_signal, range = -1)
 
 /obj/machinery/airalarm/proc/apply_danger_level()
 
@@ -849,7 +871,7 @@
 					return
 				user.visible_message(span_notice("[user.name] wires the air alarm."), \
 									span_notice("You start wiring the air alarm..."))
-				if (do_after(user, 20, target = src))
+				if (do_after(user, src, 20))
 					if (cable.get_amount() >= 5 && buildstage == AIRALARM_BUILD_NO_WIRES)
 						cable.use(5)
 						to_chat(user, span_notice("You wire the air alarm."))
@@ -989,7 +1011,7 @@
 /obj/machinery/airalarm/away //general away mission access
 	req_access = list(ACCESS_AWAY_GENERAL)
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 
 /obj/item/circuit_component/air_alarm
 	display_name = "Air Alarm"
@@ -1053,7 +1075,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 
 	if(COMPONENT_TRIGGERED_BY(request_data, port))
 		var/turf/alarm_turf = get_turf(connected_alarm)
-		var/datum/gas_mixture/environment = alarm_turf.return_air()
+		var/datum/gas_mixture/environment = alarm_turf.unsafe_return_air()
 		pressure.set_output(round(environment.returnPressure()))
 		my_temperature.set_output(round(environment.temperature))
 		if(ispath(options_map[current_option]))
@@ -1092,3 +1114,5 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 24)
 #undef AALARM_MODE_CONTAMINATED
 #undef AALARM_MODE_REFILL
 #undef AALARM_REPORT_TIMEOUT
+
+#undef AALARM_UIACT_COOLDOWNCHECK

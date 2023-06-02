@@ -63,7 +63,7 @@
 	facial_hairstyle = human_head_owner.facial_hairstyle
 
 
-	if(facial_hairstyle && !facial_hair_hidden && (FACEHAIR in species_flags_list))
+	if(facial_hairstyle && !facial_hair_hidden && ((FACEHAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 		sprite_accessory = GLOB.facial_hairstyles_list[facial_hairstyle]
 		if(sprite_accessory)
 			//Create the overlay
@@ -77,7 +77,7 @@
 
 			facial_overlay.overlays += emissive_blocker(sprite_accessory.icon, sprite_accessory.icon_state, alpha = hair_alpha)
 
-	if(!hair_hidden && !show_debrained && (HAIR in species_flags_list))
+	if(!hair_hidden && !show_debrained && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 		sprite_accessory = GLOB.hairstyles_list[hair_style]
 		if(sprite_accessory)
 			hair_overlay = mutable_appearance(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER)
@@ -88,18 +88,16 @@
 				hair_gradient_overlay = make_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color)
 
 	//CREATION-ONLY END
+
 	//HAIR COLOR START
 	if(!override_hair_color)
 		if(hair_color_source)
 			if(hair_color_source == "fixedmutcolor")
 				SET_OVERLAY_VALUE(facial_overlay, color, fixed_hair_color)
 				SET_OVERLAY_VALUE(hair_overlay, color, fixed_hair_color)
-			else if(hair_color_source == "mutcolor")
-				SET_OVERLAY_VALUE(facial_overlay, color, facial_hair_color)
-				SET_OVERLAY_VALUE(hair_overlay, color, hair_color)
 			else
-				SET_OVERLAY_VALUE(facial_overlay, color, hair_color_source)
-				SET_OVERLAY_VALUE(hair_overlay, color, hair_color_source)
+				SET_OVERLAY_VALUE(facial_overlay, color, mutcolors[hair_color_source])
+				SET_OVERLAY_VALUE(hair_overlay, color, mutcolors[hair_color_source])
 		else
 			SET_OVERLAY_VALUE(facial_overlay, color, facial_hair_color)
 			SET_OVERLAY_VALUE(hair_overlay, color, hair_color)

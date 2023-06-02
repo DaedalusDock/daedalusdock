@@ -93,7 +93,7 @@
 	icon = 'icons/turf/floors.dmi'
 	desc = "A receiving zone for bluespace teleportations."
 	icon_state = "light_on-8"
-	light_range = MINIMUM_USEFUL_LIGHT_RANGE
+	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	density = FALSE
 	anchored = TRUE
 	layer = ABOVE_OPEN_TURF_LAYER
@@ -133,7 +133,7 @@
 	span_userdanger("You start to faintly glow, and you feel strangely weightless!"))
 	do_attack_animation(A)
 
-	if(!do_mob(src, A, 60)) //now start the channel
+	if(!do_after(src, A, 60)) //now start the channel
 		to_chat(src, "[span_danger("<B>You need to hold still!")]</B>")
 		return
 

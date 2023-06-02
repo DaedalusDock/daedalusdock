@@ -8,8 +8,9 @@
 SUBSYSTEM_DEF(wardrobe)
 	name = "Wardrobe"
 	wait = 10 // This is more like a queue then anything else
-	flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_HIBERNATE
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT // We're going to fill up our cache while players sit in the lobby
+
 	/// How much to cache outfit items
 	/// Multiplier, 2 would mean cache enough items to stock 1 of each preloaded order twice, etc
 	var/cache_intensity = 2
@@ -37,6 +38,13 @@ SUBSYSTEM_DEF(wardrobe)
 	var/stock_hit = 0
 	/// How many items would we make just by loading the master list once?
 	var/one_go_master = 0
+
+/datum/controller/subsystem/wardrobe/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, order_list),
+		NAMEOF(src, canon_minimum)
+	)
 
 /datum/controller/subsystem/wardrobe/Initialize(start_timeofday)
 	. = ..()
@@ -305,12 +313,12 @@ SUBSYSTEM_DEF(wardrobe)
 	var/list/play_with = new /list(WARDROBE_CALLBACK_REMOVE) // Turns out there's a global list of pdas. Let's work around that yeah?
 
 	play_with = new /list(WARDROBE_CALLBACK_REMOVE) // Don't want organs rotting on the job
-	play_with[WARDROBE_CALLBACK_INSERT] = CALLBACK(null, /obj/item/organ/proc/enter_wardrobe)
-	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, /obj/item/organ/proc/exit_wardrobe)
+	play_with[WARDROBE_CALLBACK_INSERT] = CALLBACK(null, TYPE_PROC_REF(/obj/item/organ,enter_wardrobe))
+	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, TYPE_PROC_REF(/obj/item/organ,exit_wardrobe))
 	initial_callbacks[/obj/item/organ] = play_with
 
 	play_with = new /list(WARDROBE_CALLBACK_REMOVE)
-	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, /obj/item/storage/box/survival/proc/wardrobe_removal)
+	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, TYPE_PROC_REF(/obj/item/storage/box/survival,wardrobe_removal))
 	initial_callbacks[/obj/item/storage/box/survival] = play_with
 
 /datum/controller/subsystem/wardrobe/proc/load_outfits()

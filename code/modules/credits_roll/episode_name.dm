@@ -58,7 +58,7 @@
 		if(4500 to INFINITY)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S DAY OUT", "THIS SIDE OF PARADISE", "[uppr_name]: A SITUATION COMEDY", "THE CREW'S LUNCH BREAK", "THE CREW'S BACK IN BUSINESS", "THE CREW'S BIG BREAK", "THE CREW SAVES THE DAY", "THE CREW RULES THE WORLD", "THE ONE WITH ALL THE SCIENCE AND PROGRESS AND PROMOTIONS AND ALL THE COOL AND GOOD THINGS", "THE TURNING POINT")]", "High score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 
-	if(istype(SSticker.mode, /datum/game_mode/dynamic))
+	if(IS_DYNAMIC_GAME_MODE)
 		var/datum/game_mode/dynamic/dynameme = SSticker.mode
 		switch(dynameme.threat_level)
 			if(0 to 35)
@@ -149,7 +149,7 @@
 	//	episode_names += new /datum/episode_name/rare("ON A WING AND A PRAYER", "The shuttle was bombed but [score.escapees] people escaped anyways.", min(1000, score.shuttlebombed*200))
 
 	for(var/mob/living/simple_animal/pet/dog/corgi/C in GLOB.mob_living_list)
-		if(C.mind && length(C.mind.spell_list))
+		if(C.actions?.len)
 			episode_names += new /datum/episode_name/rare("[pick("WHERE NO DOG HAS GONE BEFORE", "IAN SAYS", "IAN'S DAY OUT", "EVERY DOG HAS ITS DAY", "THE ONE WITH THE MAGIC PUPPY")]", "You know what you did.", 1000)
 			break
 
@@ -317,7 +317,7 @@
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
-			var/obj/item/organ/internal/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
 			if(hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
@@ -353,7 +353,7 @@
 		var/turf/location = alarm.loc
 		if(!istype(location) || !is_station_level(alarm.z))
 			continue
-		var/datum/gas_mixture/environment = location.return_air()
+		var/datum/gas_mixture/environment = location.unsafe_return_air()
 		if(!environment)
 			continue
 		avg_temp += environment.temperature

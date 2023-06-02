@@ -10,10 +10,10 @@
 
 	. = ..()
 	var/atom/atom_target = target
-	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_POWER, .proc/block_light_power)
-	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_RANGE, .proc/block_light_range)
-	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_ON, .proc/block_light_on)
-	RegisterSignal(atom_target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_POWER, PROC_REF(block_light_power))
+	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_RANGE, PROC_REF(block_light_range))
+	RegisterSignal(atom_target, COMSIG_ATOM_SET_LIGHT_ON, PROC_REF(block_light_on))
+	RegisterSignal(atom_target, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
 	/// Because the lighting system does not like movable lights getting set_light() called.
 	switch(atom_target.light_system)
@@ -43,9 +43,9 @@
 	return NONE
 
 /// Prevents the light range of the target atom from exceeding 0 while the light power is greater than 0.
-/datum/element/light_eaten/proc/block_light_range(atom/eaten_light, new_range)
+/datum/element/light_eaten/proc/block_light_range(atom/eaten_light, new_inner_range, new_outer_range)
 	SIGNAL_HANDLER
-	if(new_range <= 0)
+	if(new_outer_range <= 0)
 		return NONE
 	if(eaten_light.light_power <= 0)
 		return NONE

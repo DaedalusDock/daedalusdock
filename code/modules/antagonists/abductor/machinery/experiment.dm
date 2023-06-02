@@ -52,7 +52,7 @@
 	user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
 		span_notice("You lean on the back of [src] and start pushing the door open... (this will take about [DisplayTimeText(breakout_time)].)"), \
 		span_hear("You hear a metallic creaking from [src]."))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src || state_open)
 			return
 		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \
@@ -132,7 +132,7 @@
 	if(H.stat == DEAD)
 		say("Specimen deceased - please provide fresh sample.")
 		return "Specimen deceased."
-	var/obj/item/organ/internal/heart/gland/GlandTest = locate() in H.internal_organs
+	var/obj/item/organ/heart/gland/GlandTest = locate() in H.organs
 	if(!GlandTest)
 		say("Experimental dissection not detected!")
 		return "No glands detected!"
@@ -153,7 +153,7 @@
 		user_abductor.team.abductees += H.mind
 		H.mind.add_antag_datum(/datum/antagonist/abductee)
 
-		for(var/obj/item/organ/internal/heart/gland/G in H.internal_organs)
+		for(var/obj/item/organ/heart/gland/G in H.organs)
 			G.Start()
 			point_reward++
 		if(point_reward > 0)

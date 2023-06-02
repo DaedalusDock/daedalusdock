@@ -9,22 +9,17 @@
 	use_power = IDLE_POWER_USE
 	var/busy = FALSE
 	var/hacked = FALSE
-	var/console_link = TRUE //allow console link.
 	var/disabled = FALSE
 	var/obj/item/loaded_item = null //the item loaded inside the machine (currently only used by experimentor and destructive analyzer)
-	/// Ref to global science techweb.
-	var/datum/techweb/stored_research
 
 /obj/machinery/rnd/proc/reset_busy()
 	busy = FALSE
 
 /obj/machinery/rnd/Initialize(mapload)
 	. = ..()
-	stored_research = SSresearch.science_tech
 	wires = new /datum/wires/rnd(src)
 
 /obj/machinery/rnd/Destroy()
-	stored_research = null
 	QDEL_NULL(wires)
 	return ..()
 
@@ -40,12 +35,15 @@
 		return FALSE
 
 /obj/machinery/rnd/attackby(obj/item/O, mob/user, params)
+	. = ..()
+	if(.)
+		return
 	if(is_refillable() && O.is_drainable())
 		return FALSE //inserting reagents into the machine
+
 	if(Insert_Item(O, user))
 		return TRUE
 
-	return ..()
 
 /obj/machinery/rnd/crowbar_act(mob/living/user, obj/item/tool)
 	return default_deconstruction_crowbar(tool)
@@ -121,4 +119,4 @@
 		stack_name = S.name
 		use_power(min(active_power_usage, (amount_inserted / 100)))
 	add_overlay("protolathe_[stack_name]")
-	addtimer(CALLBACK(src, /atom/proc/cut_overlay, "protolathe_[stack_name]"), 10)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, cut_overlay), "protolathe_[stack_name]"), 10)

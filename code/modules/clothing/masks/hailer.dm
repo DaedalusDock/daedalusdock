@@ -56,7 +56,6 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
 	tint = 0
-	has_fov = FALSE
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION
 	var/aggressiveness = AGGR_BAD_COP
 	var/overuse_cooldown = FALSE
@@ -75,7 +74,6 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	visor_flags_inv = 0
 	flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
-	has_fov = TRUE
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/gas/sechailer/swat/spacepol
@@ -143,7 +141,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	if(!overuse_cooldown) // check if we can reset recent uses
 		recent_uses = 0
 		overuse_cooldown = TRUE
-		addtimer(CALLBACK(src, /obj/item/clothing/mask/gas/sechailer/proc/reset_overuse_cooldown), OVERUSE_COOLDOWN)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/clothing/mask/gas/sechailer, reset_overuse_cooldown)), OVERUSE_COOLDOWN)
 
 	switch(recent_uses)
 		if(3)
@@ -179,7 +177,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 		usr.audible_message("[usr]'s Compli-o-Nator: <font color='red' size='4'><b>[initial(phrase.phrase_text)]</b></font>")
 		playsound(src, "sound/runtime/complionator/[initial(phrase.phrase_sound)].ogg", 100, FALSE, 4)
 		cooldown = TRUE
-		addtimer(CALLBACK(src, /obj/item/clothing/mask/gas/sechailer/proc/reset_cooldown), PHRASE_COOLDOWN)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/clothing/mask/gas/sechailer, reset_cooldown), PHRASE_COOLDOWN))
 		. = TRUE
 
 /obj/item/clothing/mask/gas/sechailer/proc/reset_cooldown()
@@ -202,6 +200,9 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 		usr.audible_message("<font color='red' size='5'><b>HALT!</b></font>")
 		playsound(src, 'sound/misc/whistle.ogg', 75, FALSE, 4)
 		cooldown = world.time
+
+/datum/action/item_action/halt
+	name = "HALT!"
 
 #undef PHRASE_COOLDOWN
 #undef OVERUSE_COOLDOWN

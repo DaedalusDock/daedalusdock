@@ -65,7 +65,7 @@
 		to_chat(user, span_notice("You activate \the [src]."))
 		playsound(src, 'sound/effects/seedling_chargeup.ogg', 100, TRUE, -6)
 		apply_wibbly_filters(user)
-		if (do_after(user, 50, target=user) && user.cell.use(activationCost))
+		if (do_after(user, user, 50) && user.cell.use(activationCost))
 			playsound(src, 'sound/effects/bamf.ogg', 100, TRUE, -6)
 			to_chat(user, span_notice("You are now disguised as the Nanotrasen engineering borg \"[friendlyName]\"."))
 			activate(user)
@@ -96,7 +96,7 @@
 		return
 	if(listeningTo)
 		UnregisterSignal(listeningTo, signalCache)
-	RegisterSignal(user, signalCache, .proc/disrupt)
+	RegisterSignal(user, signalCache, PROC_REF(disrupt))
 	listeningTo = user
 
 /obj/item/borg_chameleon/proc/deactivate(mob/living/silicon/robot/user)

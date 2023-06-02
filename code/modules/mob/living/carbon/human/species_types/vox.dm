@@ -2,6 +2,7 @@
 	// Bird-like humanoids
 	name = "Vox"
 	id = SPECIES_VOX
+	plural_form = "Vox"
 	say_mod = "skrees"
 	scream_verb = "shrieks"
 	default_color = "#1e5404"
@@ -23,22 +24,18 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/internal/lungs/vox
-	mutantbrain = /obj/item/organ/internal/brain/vox
-	mutantheart = /obj/item/organ/internal/heart/vox
-	mutanteyes = /obj/item/organ/internal/eyes/vox
-	mutantliver = /obj/item/organ/internal/liver/vox
+	mutantlungs = /obj/item/organ/lungs/vox
+	mutantbrain = /obj/item/organ/brain/vox
+	mutantheart = /obj/item/organ/heart/vox
+	mutanteyes = /obj/item/organ/eyes/vox
+	mutantliver = /obj/item/organ/liver/vox
 	breathid = "n2"
-	external_organs = list(
-		/obj/item/organ/external/snout/vox = "Vox Snout",
-		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_hair/facial = "None",
-		/obj/item/organ/external/tail/vox = "Vox Tail"
+	cosmetic_organs = list(
+		/obj/item/organ/snout/vox = "Vox Snout",
+		/obj/item/organ/vox_hair = "None",
+		/obj/item/organ/vox_hair/facial = "None",
+		/obj/item/organ/tail/vox = "Vox Tail"
 	)
-	attack_verb = "slash"
-	attack_effect = ATTACK_EFFECT_CLAW
-	attack_sound = 'sound/weapons/slash.ogg'
-	miss_sound = 'sound/weapons/slashmiss.ogg'
 	liked_food = MEAT | FRIED
 	payday_modifier = 0.75
 	outfit_important_for_life = /datum/outfit/vox
@@ -47,17 +44,17 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/vox,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/vox,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/vox,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/vox,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/vox,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/vox,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/vox,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/vox,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/vox,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/vox,
 	)
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"
 
 /datum/species/vox/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.mutant_colors[MUTCOLORS_GENERIC_1]= VOX_BODY_COLOR
+	human.dna.mutant_colors[MUTCOLORS_GENERIC_1] = VOX_BODY_COLOR
 	human.eye_color_right = COLOR_TEAL
 	human.eye_color_left = COLOR_TEAL
 
@@ -68,10 +65,17 @@
 
 /datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
 	. = ..()
-	var/datum/outfit/vox/O = new /datum/outfit/vox
-	equipping.equipOutfit(O, visuals_only)
-	equipping.internal = equipping.get_item_for_held_index(2)
-	equipping.update_internals_hud_icon(1)
+	give_important_for_life(equipping)
+
+/datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	. = ..()
+	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
+	if(!human_to_equip.internal)
+		var/obj/item/tank/internals/nitrogen/belt/full/new_tank = new(null)
+		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
+			human_to_equip.internal = human_to_equip.belt
+		else
+			stack_trace("Vox going without internals. Uhoh.")
 
 /datum/species/vox/random_name(gender,unique,lastname)
 	if(unique)

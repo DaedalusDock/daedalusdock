@@ -80,8 +80,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	/// Stored pAI in the computer
 	var/obj/item/paicard/inserted_pai = null
 
-	var/datum/action/item_action/toggle_computer_light/light_butt
-
 /obj/item/modular_computer/Initialize(mapload)
 	. = ..()
 
@@ -89,13 +87,14 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(!physical)
 		physical = src
 	set_light_color(comp_light_color)
+	set_light_power(0.1)
 	set_light_range(comp_light_luminosity)
 	idle_threads = list()
 	if(looping_sound)
 		soundloop = new(src, enabled)
 	UpdateDisplay()
 	if(has_light)
-		light_butt = new(src)
+		add_item_action(/datum/action/item_action/toggle_computer_light)
 	update_appearance()
 	register_context()
 	Add_Messenger()
@@ -116,24 +115,15 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	if(istype(inserted_pai))
 		QDEL_NULL(inserted_pai)
-	if(istype(light_butt))
-		QDEL_NULL(light_butt)
 
 	physical = null
 	return ..()
-
-/obj/item/modular_computer/ui_action_click(mob/user, actiontype)
-	if(istype(actiontype, light_butt))
-		toggle_flashlight()
-	else
-		..()
-
 
 /obj/item/modular_computer/pre_attack_secondary(atom/A, mob/living/user, params)
 	if(active_program?.tap(A, user, params))
 		user.do_attack_animation(A) //Emulate this animation since we kill the attack in three lines
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1) //Likewise for the tap sound
-		addtimer(CALLBACK(src, .proc/play_ping), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
+		addtimer(CALLBACK(src, PROC_REF(play_ping)), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
@@ -509,7 +499,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 		data["PC_programheaders"] = program_headers
 
-	data["PC_stationtime"] = station_time_timestamp()
+	data["PC_stationtime"] = stationtime2text()
 	data["PC_hasheader"] = 1
 	data["PC_showexitprogram"] = active_program ? 1 : 0 // Hides "Exit Program" button on mainscreen
 	return data
@@ -527,7 +517,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/mob/user = usr
 	if(user && istype(user))
 		//Here to prevent programs sleeping in destroy
-		INVOKE_ASYNC(src, /datum/proc/ui_interact, user) // Re-open the UI on this computer. It should show the main screen now.
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum, ui_interact), user) // Re-open the UI on this computer. It should show the main screen now.
 	update_appearance()
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)
@@ -556,6 +546,13 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		physical.visible_message(span_notice("\The [src] shuts down."))
 	enabled = 0
 	update_appearance()
+
+/obj/item/modular_computer/ui_action_click(mob/user, actiontype)
+	if(istype(actiontype, /datum/action/item_action/toggle_computer_light))
+		toggle_flashlight()
+		return
+
+	return ..()
 
 /**
  * Toggles the computer's flashlight, if it has one.

@@ -69,7 +69,7 @@
 	route = PATH_FLESH
 
 /datum/heretic_knowledge/limited_amount/flesh_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/limited_amount/flesh_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)
@@ -82,22 +82,22 @@
 
 	if(LAZYLEN(created_items) >= limit)
 		target.balloon_alert(source, "at ghoul limit!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	if(!IS_VALID_GHOUL_MOB(target))
 		target.balloon_alert(source, "invalid body!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	// Get their ghost in here so we can raise them
 	target.grab_ghost()
 
 	if(!target.mind || !target.client)
 		target.balloon_alert(source, "no soul!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	if(HAS_TRAIT(target, TRAIT_HUSK))
 		target.balloon_alert(source, "husked!")
-		return COMPONENT_BLOCK_CHARGE_USE
+		return COMPONENT_BLOCK_HAND_USE
 
 	make_ghoul(source, target)
 
@@ -110,8 +110,8 @@
 		/datum/status_effect/ghoul,
 		GHOUL_MAX_HEALTH,
 		user.mind,
-		CALLBACK(src, .proc/apply_to_ghoul),
-		CALLBACK(src, .proc/remove_from_ghoul),
+		CALLBACK(src, PROC_REF(apply_to_ghoul)),
+		CALLBACK(src, PROC_REF(remove_from_ghoul)),
 	)
 
 /// Callback for the ghoul status effect - Tracking all of our ghouls
@@ -190,8 +190,8 @@
 		/datum/status_effect/ghoul,
 		MUTE_MAX_HEALTH,
 		user.mind,
-		CALLBACK(src, .proc/apply_to_ghoul),
-		CALLBACK(src, .proc/remove_from_ghoul),
+		CALLBACK(src, PROC_REF(apply_to_ghoul)),
+		CALLBACK(src, PROC_REF(remove_from_ghoul)),
 	)
 
 /// Callback for the ghoul status effect - Tracks all of our ghouls and applies effects
@@ -231,9 +231,9 @@
 		/datum/heretic_knowledge/curse/paralysis,
 	)
 	required_atoms = list(
-		/obj/item/organ/internal/eyes = 1,
+		/obj/item/organ/eyes = 1,
 		/obj/effect/decal/cleanable/blood = 1,
-		/obj/item/bodypart/l_arm = 1,
+		/obj/item/bodypart/arm/left = 1,
 	)
 	mob_to_summon = /mob/living/simple_animal/hostile/heretic_summon/raw_prophet
 	cost = 1
@@ -253,8 +253,7 @@
 
 	var/mob/living/carbon/carbon_target = target
 	var/obj/item/bodypart/bodypart = pick(carbon_target.bodyparts)
-	var/datum/wound/slash/severe/crit_wound = new()
-	crit_wound.apply_wound(bodypart, attack_direction = get_dir(source, target))
+	bodypart.adjustBleedStacks(10)
 
 /datum/heretic_knowledge/summon/stalker
 	name = "Lonely Ritual"
@@ -268,9 +267,9 @@
 		/datum/heretic_knowledge/spell/cleave,
 	)
 	required_atoms = list(
-		/obj/item/organ/external/tail = 1,
-		/obj/item/organ/internal/stomach = 1,
-		/obj/item/organ/internal/tongue = 1,
+		/obj/item/organ/tail = 1,
+		/obj/item/organ/stomach = 1,
+		/obj/item/organ/tongue = 1,
 		/obj/item/pen = 1,
 		/obj/item/paper = 1,
 	)
@@ -297,7 +296,10 @@
 /datum/heretic_knowledge/final/flesh_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
 	priority_announce("[generate_heretic_text()] Ever coiling vortex. Reality unfolded. ARMS OUTREACHED, THE LORD OF THE NIGHT, [user.real_name] has ascended! Fear the ever twisting hand! [generate_heretic_text()]", "[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
-	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shed_human_form)
+
+	var/datum/action/cooldown/spell/shed_human_form/worm_spell = new(user.mind)
+	worm_spell.Grant(user)
+
 	user.client?.give_award(/datum/award/achievement/misc/flesh_ascension, user)
 
 	var/datum/antagonist/heretic/heretic_datum = IS_HERETIC(user)

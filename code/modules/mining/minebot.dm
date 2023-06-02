@@ -36,7 +36,7 @@
 	loot = list(/obj/effect/decal/cleanable/robot_debris)
 	del_on_death = TRUE
 	light_system = MOVABLE_LIGHT
-	light_range = 6
+	light_outer_range = 6
 	light_on = FALSE
 	var/mode = MINEDRONE_COLLECT
 	var/obj/item/gun/energy/recharge/kinetic_accelerator/minebot/stored_gun
@@ -228,7 +228,7 @@
 
 /datum/action/innate/minedrone
 	check_flags = AB_CHECK_CONSCIOUS
-	icon_icon = 'icons/mob/actions/actions_mecha.dmi'
+	button_icon = 'icons/mob/actions/actions_mecha.dmi'
 	background_icon_state = "bg_default"
 
 /datum/action/innate/minedrone/toggle_light

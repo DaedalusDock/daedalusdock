@@ -56,4 +56,6 @@
 #define GRID_CELL_REMOVE_ALL(cell, movable) \
 	GRID_CELL_REMOVE(cell.hearing_contents, movable) \
 	GRID_CELL_REMOVE(cell.client_contents, movable) \
-	GRID_CELL_REMOVE(cell.atmos_contents, movable)
+	GRID_CELL_REMOVE(cell.atmos_contents, movable) \
+	GRID_CELL_REMOVE(cell.radio_nonatmos_contents, movable) \
+	GRID_CELL_REMOVE(cell.radio_atmos_contents, movable)

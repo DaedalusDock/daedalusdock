@@ -21,7 +21,7 @@
 ///all atmos machines are stored in this channel (I'm sorry kyler)
 #define SPATIAL_GRID_CONTENTS_TYPE_ATMOS "spatial_grid_contents_type_atmos"
 
-#define ALL_CONTENTS_OF_CELL(cell) (cell.hearing_contents | cell.client_contents | cell.atmos_contents)
+#define ALL_CONTENTS_OF_CELL(cell) (cell.hearing_contents | cell.client_contents | cell.atmos_contents | cell.radio_nonatmos_contents | cell.radio_atmos_contents)
 
 ///whether movable is itself or containing something which should be in one of the spatial grid channels.
 #define HAS_SPATIAL_GRID_CONTENTS(movable) (movable.spatial_grid_key)

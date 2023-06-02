@@ -337,16 +337,17 @@ SUBSYSTEM_DEF(packets)
 
 	for(var/obj/item/radio/radio as anything in receive)
 		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency)
+		var/atom/radio_speaker_loc = radio.speaker_location()
 		for(var/atom/movable/hearer as anything in receive[radio])
 			if(!hearer)
 				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
 				continue
 
-			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio.speaker_location())
+			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio_speaker_loc)
 
 	// Let the global hearers (ghosts, etc) hear this message
 	for(var/atom/movable/hearer as anything in globally_receiving)
-		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = virt.source?.speaker_location())
+		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

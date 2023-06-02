@@ -337,7 +337,7 @@
 		to_chat(user, span_warning("You can't climb into \the [src] from here!"))
 		return FALSE
 	user.visible_message(span_notice("[user] begins to climb into \the [src]."), span_notice("You begin to climb into \the [src]."))
-	if(do_after(user, 3 SECONDS))
+	if(do_after(user, src, 3 SECONDS))
 		enter_shelter(user)
 
 /obj/structure/inflatable/shelter/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
@@ -345,7 +345,7 @@
 		return FALSE
 	if(!isturf(user.loc) || !isturf(M.loc))
 		return FALSE
-	if(do_after(user, 3 SECONDS))
+	if(do_after(user, src, 3 SECONDS, DO_PUBLIC, display = src))
 		if(!in_range(M, src) || !isturf(M.loc))
 			return FALSE //in case the target has moved
 		enter_shelter(M)
@@ -386,7 +386,7 @@
 	user.visible_message(span_notice("[user] starts climbing out of \the [src]."), span_notice("You start climbing out of \the [src]."))
 	exiting += user
 
-	if(do_after(user, 5 SECONDS))
+	if(do_after(user, src, 5 SECONDS))
 		if (user in exiting)
 			user.forceMove(get_turf(src))
 			update_icon()

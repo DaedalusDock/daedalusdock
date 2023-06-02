@@ -284,16 +284,19 @@
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
 	spans = spans ? spans.Copy() : list()
 
+	// Ignore sounds that originate from our person, but are not ourself (such as radios we are carrying)
+	// This **does** rely on the fact virtualspeakers exist, if they are removed, remove "&& speaker != src"
+	if(sound_loc == hear_location() && speaker != src)
+		return
+
 	// Check for virtual speakers (aka hearing a message through a radio)
 	if (istype(speaker, /atom/movable/virtualspeaker))
 		var/atom/movable/virtualspeaker/v = speaker
 		speaker = v.source
 		spans |= "virtual-speaker"
-
-	// Ignore sounds that originate from our person (such as radios we are carrying)
-	//if (sound_loc?.speaker_location() == src && speaker == src) //Kapu Note: Correct this later.
-	if(sound_loc == hear_location())
-		return
+		// Ignore sounds from speakers speaking into their own radio.
+		if(speaker == sound_loc)
+			return
 
 	// Display visual above source
 	if(runechat_flags & EMOTE_MESSAGE)

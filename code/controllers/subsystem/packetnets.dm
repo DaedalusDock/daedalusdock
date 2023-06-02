@@ -346,7 +346,7 @@ SUBSYSTEM_DEF(packets)
 
 	// Let the global hearers (ghosts, etc) hear this message
 	for(var/atom/movable/hearer as anything in globally_receiving)
-		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
+		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = virt.source?.speaker_location())
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

@@ -243,6 +243,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	ghostize(FALSE)
 
 /mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32)
+	if(observetarget)
+		reset_perspective(null)
+
 	setDir(direct)
 
 	if(glide_size_override)
@@ -922,4 +925,4 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return GLOB.ghost_lighting_options[prefs.read_preference(/datum/preference/choiced/ghost_lighting)]
 
 /mob/dead/observer/hear_location()
-	return orbit_target || ..()
+	return orbit_target || observetarget || ..()

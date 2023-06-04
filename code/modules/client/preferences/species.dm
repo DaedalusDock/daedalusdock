@@ -93,6 +93,7 @@
 		window.open()
 		return FALSE
 
+	return ..()
 
 /datum/preference/choiced/species/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_species(value, icon_update = FALSE, pref_load = TRUE)

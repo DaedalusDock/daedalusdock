@@ -161,12 +161,9 @@
 	spec_updatehealth(H)
 	H.visible_message(span_danger("[H] stops flickering and goes back to their normal state!"))
 
-/datum/species/ethereal/get_features()
-	var/list/features = ..()
-
-	features += "feature_ethcolor"
-
-	return features
+/datum/species/ethereal/populate_features()
+	. = ..()
+	.["features_ethcolor"] = GLOB.preference_entries_by_key["features_ethcolor"]
 
 /datum/species/ethereal/get_scream_sound(mob/living/carbon/human/ethereal)
 	return pick(

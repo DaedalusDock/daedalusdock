@@ -1661,6 +1661,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
 /datum/species/proc/get_features()
+	SHOULD_NOT_OVERRIDE(TRUE)
 	var/cached_features = GLOB.features_by_species[type]
 	if (!isnull(cached_features))
 		return cached_features
@@ -1688,12 +1689,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(use_skintones)
 		features["skin_tone"] = GLOB.preference_entries[/datum/preference/choiced/skin_tone]
 
+	features += populate_features()
 	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 
 	GLOB.features_by_species[type] = features
 
 	return features
 
+/datum/species/proc/populate_features()
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	return
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)

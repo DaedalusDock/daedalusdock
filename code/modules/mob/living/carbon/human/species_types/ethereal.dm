@@ -163,7 +163,7 @@
 
 /datum/species/ethereal/populate_features()
 	. = ..()
-	.["features_ethcolor"] = GLOB.preference_entries_by_key["features_ethcolor"]
+	.["feature_ethcolor"] = GLOB.preference_entries_by_key["feature_ethcolor"]
 
 /datum/species/ethereal/get_scream_sound(mob/living/carbon/human/ethereal)
 	return pick(

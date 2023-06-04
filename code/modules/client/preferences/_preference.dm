@@ -370,9 +370,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		if (!(savefile_key in species.get_features()))
 			return FALSE
 
-	if (!(savefile_identifier == PREFERENCE_CHARACTER)) //Character preferences are in another castle
-		return FALSE
-
 	return TRUE
 
 /datum/preference/proc/button_act(mob/user, datum/preferences/prefs, list/params)

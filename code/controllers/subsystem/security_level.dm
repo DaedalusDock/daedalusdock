@@ -1,8 +1,18 @@
 SUBSYSTEM_DEF(security_level)
 	name = "Security Level"
 	flags = SS_NO_FIRE
-	/// Currently set security level
-	var/current_level = SEC_LEVEL_GREEN
+	/// Pre-baked package of default security levels to load
+	var/datum/security_state/info_package = /datum/security_state/default
+
+
+/datum/controller/subsystem/security_level/Initialize(start_timeofday)
+	/*
+	//Commented out because I don't want to support this yet.
+		if(SSmapping.config.securitystate) //If overriding the default order of things, load it.
+			info_package = SSmapping.config.securitystate
+	*/
+	. = ..()
+
 
 /**
  * Sets a new security level as our current level

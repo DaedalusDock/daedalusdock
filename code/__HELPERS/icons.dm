@@ -1397,3 +1397,25 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 		if(scream)
 			stack_trace("Icon Lookup for state: [state] in file [file] failed.")
 		return FALSE
+
+/atom/proc/save_icon()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = icon(icon, icon_state)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/atom/proc/save_icon_hard()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = getFlatIcon(src)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")

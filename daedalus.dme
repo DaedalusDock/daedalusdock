@@ -63,6 +63,7 @@
 #include "code\__DEFINES\credits.dm"
 #include "code\__DEFINES\cult.dm"
 #include "code\__DEFINES\database.dm"
+#include "code\__DEFINES\decal_defines.dm"
 #include "code\__DEFINES\devices.dm"
 #include "code\__DEFINES\direction_junctions.dm"
 #include "code\__DEFINES\directional.dm"

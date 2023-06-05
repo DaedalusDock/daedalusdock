@@ -12,15 +12,22 @@
 	desc = "Stylish dark wood."
 	icon_state = "wood"
 	floor_tile = /obj/item/stack/tile/wood
+	broken_blend = BLEND_DEFAULT
+	burned_blend = BLEND_MULTIPLY
+
 	footstep = FOOTSTEP_WOOD
 	turf_flags = NO_RUST
 	barefootstep = FOOTSTEP_WOOD_BAREFOOT
 	clawfootstep = FOOTSTEP_WOOD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
+
 	tiled_dirt = FALSE
 
 /turf/open/floor/wood/setup_broken_states()
 	return list("wood-broken", "wood-broken2", "wood-broken3", "wood-broken4", "wood-broken5", "wood-broken6", "wood-broken7")
+
+/turf/open/floor/wood/setup_burnt_states()
+	return list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/wood/examine(mob/user)
 	. = ..()
@@ -101,6 +108,7 @@
 	icon_state = "mat-0"
 	base_icon_state = "mat"
 	floor_tile = /obj/item/stack/tile/bamboo
+	broken_blend = BLEND_DEFAULT
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_BAMBOO_FLOOR)
 	canSmoothWith = list(SMOOTH_GROUP_BAMBOO_FLOOR)
@@ -111,13 +119,16 @@
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/open/floor/bamboo/setup_broken_states()
-	return list("damaged")
+	return list("bamboodamaged")
 
 /turf/open/floor/grass
 	name = "grass patch"
 	desc = "You can't tell if this is real grass or just cheap plastic imitation."
 	icon_state = "grass0"
 	floor_tile = /obj/item/stack/tile/grass
+	damaged_icon = 'icons/turf/floors.dmi'
+	broken_blend = BLEND_DEFAULT
+
 	flags_1 = NONE
 	bullet_bounce_sound = null
 	footstep = FOOTSTEP_GRASS
@@ -155,6 +166,9 @@
 	icon = 'icons/turf/snow.dmi'
 	desc = "Looks cold."
 	icon_state = "snow"
+	damaged_icon = 'icons/turf/floors.dmi'
+	broken_blend = BLEND_DEFAULT
+
 	flags_1 = NONE
 	floor_tile = null
 	temperature = 180
@@ -219,9 +233,6 @@
 	clawfootstep = FOOTSTEP_CARPET_BAREFOOT
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	tiled_dirt = FALSE
-
-/turf/open/floor/carpet/setup_broken_states()
-	return list("damaged")
 
 /turf/open/floor/carpet/examine(mob/user)
 	. = ..()
@@ -778,9 +789,6 @@
 	floor_tile = /obj/item/stack/tile/fakespace
 	plane = PLANE_SPACE
 	tiled_dirt = FALSE
-
-/turf/open/floor/fakespace/setup_broken_states()
-	return list("damaged")
 
 /turf/open/floor/fakespace/Initialize(mapload)
 	. = ..()

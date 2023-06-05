@@ -7,8 +7,11 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/contractor,
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -31,7 +34,6 @@
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_LAWYER
 	departments_list = list(
 		/datum/job_department/service,
 		)

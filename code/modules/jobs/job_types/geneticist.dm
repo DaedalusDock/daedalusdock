@@ -6,10 +6,16 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	selection_color = "#3d273d"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/ananke,
+		/datum/employer/aether
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -25,7 +31,6 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_GENETICIST
 	bounty_types = CIV_JOB_SCI
 
 	mail_goodies = list(

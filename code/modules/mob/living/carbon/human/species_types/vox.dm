@@ -16,6 +16,7 @@
 		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
+		NO_UNDERWEAR,
 	)
 	inherent_traits = list(
 		TRAIT_RESISTCOLD,
@@ -63,9 +64,24 @@
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR
 
-/datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
-	. = ..()
-	give_important_for_life(equipping)
+/datum/species/vox/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only)
+	if(!O)
+		give_important_for_life(equipping)
+		return
+
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath/vox, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	var/obj/item/tank/internals/nitrogen/belt/full/tank = new
+	if(!O.r_hand)
+		equipping.put_in_r_hand(tank)
+	else if(!O.l_hand)
+		equipping.put_in_l_hand(tank)
+	else
+		equipping.put_in_r_hand(tank)
+
+	equipping.internal = tank
 
 /datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()

@@ -9,13 +9,17 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
-	selection_color = "#ffeeaa"
+	selection_color = "#7f6e2c"
 	req_admin_notify = 1
 	minimal_player_age = 7
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_ENGINEERING
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus,
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -34,7 +38,6 @@
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_CHIEF_ENGINEER
 	bounty_types = CIV_JOB_ENG
 
 	family_heirlooms = list(/obj/item/clothing/head/hardhat/white, /obj/item/screwdriver, /obj/item/wrench, /obj/item/weldingtool, /obj/item/crowbar, /obj/item/wirecutters)

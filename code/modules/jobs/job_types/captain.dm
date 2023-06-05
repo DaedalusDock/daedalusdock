@@ -4,18 +4,22 @@
 		keep the crew alive, be prepared to do anything and everything or die \
 		horribly trying."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
-	department_head = list("CentCom")
+	department_head = list("Daedalus Industries")
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "Nanotrasen officials and Space law"
-	selection_color = "#ccccff"
+	supervisors = "Daedalus Industries executives & the local regulations."
+	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_COMMAND
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus //Captains cannot be contracted.
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -29,11 +33,11 @@
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_CAPTAIN
 	department_for_prefs = /datum/job_department/captain
 	departments_list = list(
 		/datum/job_department/command,
 	)
+
 
 	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/flask/gold, /obj/item/toy/captainsaid/collector)
 

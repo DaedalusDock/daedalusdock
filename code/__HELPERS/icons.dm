@@ -1062,8 +1062,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		prefs.apply_prefs_to(body, TRUE)
 
 	var/datum/outfit/outfit = outfit_override || job?.outfit
+	outfit = new outfit()
 	if(job)
-		body.dna.species.pre_equip_species_outfit(job, body, TRUE)
+		body.dna.species.pre_equip_species_outfit(outfit, body, TRUE)
+
 	if(outfit)
 		body.equipOutfit(outfit, TRUE)
 

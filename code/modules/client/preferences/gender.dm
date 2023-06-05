@@ -1,5 +1,6 @@
 /// Gender preference
 /datum/preference/choiced/gender
+	explanation = "Gender"
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "gender"
 	priority = PREFERENCE_PRIORITY_GENDER

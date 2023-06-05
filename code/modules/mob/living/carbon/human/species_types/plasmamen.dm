@@ -97,8 +97,33 @@
 		no_protection = TRUE
 	. = ..()
 
-/datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
-	equipping.internal = equipping.get_item_for_held_index(2)
+/datum/species/plasmaman/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only = FALSE)
+	if(!O)
+		give_important_for_life(equipping)
+		return
+
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	if(!ispath(O.uniform, /obj/item/clothing/under/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/under/plasmaman, ITEM_SLOT_ICLOTHING, TRUE, FALSE)
+
+	if(!ispath(O.head, /obj/item/clothing/head/helmet/space/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/head/helmet/space/plasmaman, ITEM_SLOT_HEAD, TRUE, FALSE)
+
+	if(!ispath(O.gloves, /obj/item/clothing/gloves/color/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/gloves/color/plasmaman, ITEM_SLOT_GLOVES, TRUE, FALSE)
+
+	if(!ispath(O.r_hand, /obj/item/tank/internals/plasmaman) && !ispath(ispath(O.l_hand, /obj/item/tank/internals/plasmaman)))
+		var/obj/item/tank/internals/plasmaman/belt/full/tank = new
+		if(!O.r_hand)
+			equipping.put_in_r_hand(tank)
+		else if(!O.l_hand)
+			equipping.put_in_l_hand(tank)
+		else
+			equipping.put_in_r_hand(tank)
+		equipping.internal = tank
 
 /datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()

@@ -174,7 +174,7 @@
 	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
 
 /datum/quirk/heterochromatic
-	name = "Heterochromatic"
+	name = "Heterochromia"
 	desc = "One of your eyes is a different color than the other!"
 	icon = "eye-low-vision" // Ignore the icon name, its actually a fairly good representation of different color eyes
 	value = 0

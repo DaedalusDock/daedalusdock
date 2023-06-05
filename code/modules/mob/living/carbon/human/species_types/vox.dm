@@ -16,6 +16,7 @@
 		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
+		NO_UNDERWEAR,
 	)
 	inherent_traits = list(
 		TRAIT_RESISTCOLD,
@@ -24,17 +25,17 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/internal/lungs/vox
-	mutantbrain = /obj/item/organ/internal/brain/vox
-	mutantheart = /obj/item/organ/internal/heart/vox
-	mutanteyes = /obj/item/organ/internal/eyes/vox
-	mutantliver = /obj/item/organ/internal/liver/vox
+	mutantlungs = /obj/item/organ/lungs/vox
+	mutantbrain = /obj/item/organ/brain/vox
+	mutantheart = /obj/item/organ/heart/vox
+	mutanteyes = /obj/item/organ/eyes/vox
+	mutantliver = /obj/item/organ/liver/vox
 	breathid = "n2"
-	external_organs = list(
-		/obj/item/organ/external/snout/vox = "Vox Snout",
-		/obj/item/organ/external/vox_hair = "None",
-		/obj/item/organ/external/vox_hair/facial = "None",
-		/obj/item/organ/external/tail/vox = "Vox Tail"
+	cosmetic_organs = list(
+		/obj/item/organ/snout/vox = "Vox Snout",
+		/obj/item/organ/vox_hair = "None",
+		/obj/item/organ/vox_hair/facial = "None",
+		/obj/item/organ/tail/vox = "Vox Tail"
 	)
 	liked_food = MEAT | FRIED
 	payday_modifier = 0.75
@@ -63,9 +64,24 @@
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR
 
-/datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
-	. = ..()
-	give_important_for_life(equipping)
+/datum/species/vox/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only)
+	if(!O)
+		give_important_for_life(equipping)
+		return
+
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath/vox, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	var/obj/item/tank/internals/nitrogen/belt/full/tank = new
+	if(!O.r_hand)
+		equipping.put_in_r_hand(tank)
+	else if(!O.l_hand)
+		equipping.put_in_l_hand(tank)
+	else
+		equipping.put_in_r_hand(tank)
+
+	equipping.internal = tank
 
 /datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()

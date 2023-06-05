@@ -46,7 +46,8 @@
 		if(M.client.get_remaining_days(minimum_required_age) > 0)
 			trimmed_list.Remove(M)
 			continue
-		if (!((antag_preference || antag_flag) in M.client.prefs.be_special))
+		var/list/client_antags = M.client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if (!client_antags[antag_preference || antag_flag])
 			trimmed_list.Remove(M)
 			continue
 		if (is_banned_from(M.ckey, list(antag_flag_override || antag_flag, ROLE_SYNDICATE)))
@@ -885,7 +886,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/sentient_disease/generate_ruleset_body(mob/applicant)
 	var/mob/camera/disease/virus = new /mob/camera/disease(SSmapping.get_station_center())
 	virus.key = applicant.key
-	INVOKE_ASYNC(virus, /mob/camera/disease/proc/pick_name)
+	INVOKE_ASYNC(virus, TYPE_PROC_REF(/mob/camera/disease, pick_name))
 	message_admins("[ADMIN_LOOKUPFLW(virus)] has been made into a sentient disease by the midround ruleset.")
 	log_game("[key_name(virus)] was spawned as a sentient disease by the midround ruleset.")
 	return virus
@@ -944,11 +945,12 @@
 	..()
 	candidates = living_players
 	for(var/mob/living/carbon/human/candidate in candidates)
+		var/list/client_antags = candidate.client?.prefs.read_preference(/datum/preference/blob/antagonists)
 		if( \
-			!candidate.getorgan(/obj/item/organ/internal/brain) \
+			!candidate.getorgan(/obj/item/organ/brain) \
 			|| candidate.mind.has_antag_datum(/datum/antagonist/obsessed) \
 			|| candidate.stat == DEAD \
-			|| !(ROLE_OBSESSED in candidate.client?.prefs?.be_special) \
+			|| !(client_antags?[ROLE_OBSESSED]) \
 			|| !candidate.mind.assigned_role \
 		)
 			candidates -= candidate
@@ -991,13 +993,14 @@
 	..()
 	candidates = living_players
 	for(var/mob/living/carbon/human/candidate in candidates)
+		var/list/client_antags = candidate.client?.prefs.read_preference(/datum/preference/blob/antagonists)
 		if( \
 			//no bigger antagonists getting smaller role
 			candidate.mind && (candidate.mind.special_role || candidate.mind.antag_datums?.len > 0) \
 			//no dead people
 			|| candidate.stat == DEAD \
 			//no people who don't want it
-			|| !(ROLE_OPPORTUNIST in candidate.client?.prefs?.be_special) \
+			|| !(client_antags?[ROLE_OPPORTUNIST]) \
 			//no non-station crew
 			|| candidate.mind.assigned_role.faction != FACTION_STATION \
 			//stops thief being added to admins messing around on centcom

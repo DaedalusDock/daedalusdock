@@ -104,12 +104,14 @@
 #define BLOOD_CLANS 21
 /// Can this species use the 'Body size' preference
 #define BODY_RESIZABLE 22
-
 #define MUTCOLORS2 23
 #define MUTCOLORS3 24
-
+///Haircolor
 #define HAIRCOLOR 25
 #define FACEHAIRCOLOR 26
+#define SCLERA 27
+///Has non-human hair. Used by pref code to hide standard hair options.
+#define NONHUMANHAIR 28
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
@@ -176,7 +178,7 @@
 #define G_FEMALE 2
 #define G_PLURAL 3
 
-/// Defines how a mob's internal_organs_slot is ordered
+/// Defines how a mob's processing_organs is ordered
 /// Exists so Life()'s organ process order is consistent
 GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_BRAIN,

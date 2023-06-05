@@ -216,19 +216,9 @@
 	},
 /turf/open/floor/plating,
 /area/awaymission/research/interior/engineering)
-"aS" = (
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
-/area/awaymission/research/interior/engineering)
 "aT" = (
 /mob/living/simple_animal/hostile/syndicate/melee/sword,
 /turf/open/floor/plating,
-/area/awaymission/research/interior/engineering)
-"aU" = (
-/turf/open/floor/iron{
-	icon_state = "damaged1"
-	},
 /area/awaymission/research/interior/engineering)
 "aW" = (
 /obj/machinery/light/directional/east,
@@ -250,30 +240,11 @@
 	},
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/engineering)
-"bb" = (
-/obj/item/shard{
-	icon_state = "small"
-	},
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
-/area/awaymission/research/interior/engineering)
-"bc" = (
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
-/area/awaymission/research/interior/engineering)
-"bd" = (
-/turf/open/floor/iron{
-	icon_state = "damaged3"
-	},
-/area/awaymission/research/interior/engineering)
 "be" = (
 /obj/item/stack/rods,
 /obj/item/ammo_casing/c45,
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior/engineering)
 "bf" = (
 /turf/closed/wall/mineral/plastitanium{
@@ -282,9 +253,8 @@
 /area/awaymission/research/interior/engineering)
 "bg" = (
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior/engineering)
 "bi" = (
 /obj/structure/table,
@@ -318,20 +288,11 @@
 	},
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/engineering)
-"br" = (
-/obj/item/shard{
-	icon_state = "small"
-	},
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
-/area/awaymission/research/interior/engineering)
 "bs" = (
 /obj/item/ammo_casing/c45,
 /obj/effect/decal/cleanable/blood/drip,
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior/engineering)
 "bw" = (
 /obj/structure/table,
@@ -579,9 +540,8 @@
 /obj/effect/mob_spawn/corpse/human/syndicatesoldier{
 	brute_damage = 200
 	},
-/turf/open/floor/iron{
-	icon_state = "damaged3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior/engineering)
 "ch" = (
 /obj/machinery/light/small/directional/east,
@@ -637,9 +597,8 @@
 	brute_damage = 200
 	},
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior)
 "cs" = (
 /obj/machinery/door/airlock/engineering{
@@ -676,9 +635,8 @@
 /area/awaymission/research/interior/maint)
 "cA" = (
 /obj/item/ammo_casing/c46x30mm,
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior)
 "cC" = (
 /obj/effect/turf_decal/tile/yellow{
@@ -707,16 +665,14 @@
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "cM" = (
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior)
 "cN" = (
 /obj/item/ammo_casing/c9mm,
 /obj/effect/decal/cleanable/blood/drip,
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior)
 "cP" = (
 /obj/effect/mob_spawn/corpse/human/nanotrasensoldier{
@@ -806,7 +762,7 @@
 /obj/structure/closet/crate,
 /obj/item/disk/data{
 	desc = "A data disk used to store cloning and genetic records. The name on the label appears to be scratched off.";
-	genetic_makeup_buffer = list("label" = "Buffer1:Kr-$$@##", "UI" = "f8f603857000f930127c4", "SE" = "414401462231053131010241514651403453121613263463440351136366", "UE" = "340008485c321e542aed4df7032ac04d", "name" = "Krystal Symers", "blood_type" = "A+");
+	memory = list(3 = list("label" = "Buffer1:Kr-$$@##", "UI" = "f8f603857000f930127c4", "SE" = "414401462231053131010241514651403453121613263463440351136366", "UE" = "340008485c321e542aed4df7032ac04d", "name" = "Krystal Symers", "blood_type" = "A+"));
 	name = "dusty genetics data disk";
 	read_only = 1
 	},
@@ -898,7 +854,7 @@
 /obj/structure/closet/crate,
 /obj/item/disk/data{
 	desc = "A data disk used to store cloning and genetic records. The name on the label appears to be scratched off with the words 'DO NOT CLONE' hastily written over it.";
-	genetic_makeup_buffer = list("label" = "Buffer1:George Melons", "UI" = "3c300f11b5421ca7014d8", "SE" = "430431205660551642142504334461413202111310233445620533134255", "UE" = "6893e6a0b0076a41897776b10cc2b324", "name" = "George Melons", "blood_type" = "B+");
+	memory = list("label" = "Buffer1:George Melons", "UI" = "3c300f11b5421ca7014d8", "SE" = "430431205660551642142504334461413202111310233445620533134255", "UE" = "6893e6a0b0076a41897776b10cc2b324", "name" = "George Melons", "blood_type" = "B+");
 	name = "old genetics data disk"
 	},
 /obj/item/disk/data{
@@ -1136,9 +1092,8 @@
 /area/awaymission/research/interior/cryo)
 "eD" = (
 /obj/structure/barricade/security,
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/research/interior/cryo)
 "eE" = (
 /obj/structure/reagent_dispensers/fueltank,
@@ -3756,6 +3711,13 @@
 /obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron,
 /area/awaymission/research/interior/security)
+"sl" = (
+/obj/item/shard{
+	icon_state = "small"
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
+/area/awaymission/research/interior/engineering)
 "sn" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
 /mob/living/simple_animal/hostile/syndicate/ranged/smg,
@@ -4027,6 +3989,10 @@
 /obj/effect/turf_decal/tile/purple/fourcorners,
 /turf/open/floor/iron,
 /area/awaymission/research/interior/genetics)
+"Ct" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
+/area/awaymission/research/interior/engineering)
 "CF" = (
 /obj/item/stack/rods,
 /obj/effect/turf_decal/tile/purple/fourcorners,
@@ -41879,8 +41845,8 @@ al
 al
 al
 al
-aS
-bb
+Ct
+sl
 gL
 bG
 ar
@@ -42137,7 +42103,7 @@ ap
 an
 aJ
 nf
-bc
+Ct
 EV
 bH
 ar
@@ -42394,7 +42360,7 @@ an
 an
 an
 aT
-bd
+Ct
 Mo
 bI
 bV
@@ -42652,7 +42618,7 @@ an
 aK
 au
 be
-br
+sl
 XU
 EC
 cg
@@ -42912,7 +42878,7 @@ bf
 bs
 bK
 bX
-bd
+Ct
 cs
 cC
 cP
@@ -43164,7 +43130,7 @@ al
 al
 al
 al
-aU
+Ct
 bg
 QI
 bL

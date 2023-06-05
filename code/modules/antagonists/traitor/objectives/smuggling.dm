@@ -54,7 +54,7 @@
 			contraband = new contraband_type(user.drop_location())
 			user.put_in_hands(contraband)
 			user.balloon_alert(user, "[contraband] materializes in your hand")
-			RegisterSignal(contraband, COMSIG_ITEM_PICKUP, .proc/on_contraband_pickup)
+			RegisterSignal(contraband, COMSIG_ITEM_PICKUP, PROC_REF(on_contraband_pickup))
 			AddComponent(/datum/component/traitor_objective_register, contraband, \
 				succeed_signals = COMSIG_ITEM_EXPORTED, \
 				fail_signals = list(COMSIG_PARENT_QDELETING), \
@@ -74,7 +74,7 @@
 	var/list/possible_areas = GLOB.the_station_areas.Copy()
 	for(var/area/possible_area as anything in possible_areas)
 		//remove areas too close to the destination, too obvious for our poor shmuck, or just unfair
-		if(istype(possible_area, /area/cargo) || istype(possible_area, /area/hallway) || istype(possible_area, /area/security))
+		if(istype(possible_area, /area/station/cargo) || istype(possible_area, /area/station/hallway) || istype(possible_area, /area/station/security))
 			possible_areas -= possible_area
 	for(var/datum/traitor_objective/smuggle/smuggle_objective as anything in possible_duplicates)
 		possible_areas -= smuggle_objective.smuggle_spawn_type

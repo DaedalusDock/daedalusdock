@@ -203,31 +203,35 @@
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
 	discovered_phones = list() //Trash the existing list.
-	post_signal(create_signal("ping", list("data"="TEL_DISCOVER")))
+	post_signal(create_signal("ping", list("filter"=net_class)))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
 	updateUsrDialog()
 
 /obj/machinery/telephone/receive_signal(datum/signal/signal)
 	. = ..()
-	if(.)//Handled by default.
+	if(. == RECEIVE_SIGNAL_FINISHED)//Handled by default.
 		return
 	//Ping response handled in parent.
 	switch(signal.data["command"])
 		if("ping_reply")//Add new phone to database
 			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
 				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
+				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
 				post_signal(create_signal(signal.data["s_addr"],list("command"="tel_busy"))) //Busy signal, Reject call.
-				return
+				return RECEIVE_SIGNAL_FINISHED
 			receive_call(list(signal.data["s_addr"],signal.data["caller_id"]))
+			return RECEIVE_SIGNAL_FINISHED
 		if("tel_ready")//Remote side pickup
 			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				call_connected()
+				return RECEIVE_SIGNAL_FINISHED
 		if("tel_busy")//Answering station busy
 			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				fuck_off_im_busy()
+				return RECEIVE_SIGNAL_FINISHED
 		if("tel_hup")//Remote side hangup
 			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				switch(state)
@@ -236,12 +240,13 @@
 					if(STATE_CONNECTED)
 						call_dropped()
 					else
-						return // This makes no sense.
+						return RECEIVE_SIGNAL_FINISHED// This makes no sense.
 		if("tel_voicedata")
 			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				if(state != STATE_CONNECTED)
-					return //No.
+					return RECEIVE_SIGNAL_FINISHED//No.
 				handset.handle_voicedata(signal)
+				return RECEIVE_SIGNAL_FINISHED
 
 
 // Telephone State Machine Hellscape
@@ -436,7 +441,7 @@
 	. = ..()
 	if(!callstation)
 		return
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/check_range)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 	become_hearing_sensitive()//Start listening.
 
 /obj/item/p2p_phone_handset/dropped(mob/user)
@@ -545,7 +550,7 @@
 		spans = list(talking_movable.speech_span)
 	if(!language)
 		language = talking_movable.get_selected_language()
-	INVOKE_ASYNC(src, .proc/talk_into_impl, talking_movable, message, channel, spans.Copy(), language, message_mods)
+	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/p2p_phone_handset/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)

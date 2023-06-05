@@ -2,6 +2,7 @@
 
 /datum/reagent/method_patch_test
 	name = "method patch test"
+	description = "Exposure Method Test Reagent"
 
 /datum/reagent/method_patch_test/expose_mob(mob/living/target, methods = PATCH, reac_volume, show_message = TRUE)
 	. = ..()

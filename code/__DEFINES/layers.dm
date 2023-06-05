@@ -9,18 +9,17 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
+/*
+Z-Mimic uses planes -70 through -80, defined elsewhere.
+Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+*/
+
 #define HEAT_PLANE -12
 #define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
 #define HEAT_COMPOSITE_RENDER_TARGET "*HEAT_RENDER_TARGET_C"
 
 #define GRAVITY_PULSE_PLANE -11
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
-
-#define OPENSPACE_LAYER 600 //Openspace layer over all
-
-#define TRANSPARENT_FLOOR_PLANE -10 //Transparent plane that shows openspace underneath the floor
-#define OPENSPACE_PLANE -9 //Openspace plane below all turfs
-#define OPENSPACE_BACKDROP_PLANE -8 //Black square just over openspace plane to guaranteed cover all in openspace turf
 
 
 #define FLOOR_PLANE -7
@@ -37,7 +36,8 @@
 #define MID_TURF_LAYER 2.02
 #define HIGH_TURF_LAYER 2.03
 #define TURF_PLATING_DECAL_LAYER 2.031
-#define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_LAYER 2.032 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_HIGH_LAYER 2.033
 #define ABOVE_OPEN_TURF_LAYER 2.04
 #define AO_LAYER 2.045
 #define CLOSED_TURF_LAYER 2.05
@@ -110,6 +110,7 @@
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
+#define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1
 
 
@@ -167,10 +168,11 @@
 #define FULLSCREEN_PLANE 500
 #define FLASH_LAYER 1
 #define FULLSCREEN_LAYER 2
-#define UI_DAMAGE_LAYER 3
-#define BLIND_LAYER 4
-#define CRIT_LAYER 5
-#define CURSE_LAYER 6
+#define DITHER_LAYER 3
+#define UI_DAMAGE_LAYER 4
+#define BLIND_LAYER 5
+#define CRIT_LAYER 6
+#define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
 
 ///--------------- FULLSCREEN RUNECHAT BUBBLES ------------

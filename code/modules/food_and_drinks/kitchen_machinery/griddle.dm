@@ -27,8 +27,9 @@
 	grill_loop = new(src, FALSE)
 	if(isnum(variant))
 		variant = rand(1,3)
-	RegisterSignal(src, COMSIG_ATOM_EXPOSE_REAGENT, .proc/on_expose_reagent)
-	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, .proc/on_storage_dump)
+	RegisterSignal(src, COMSIG_ATOM_EXPOSE_REAGENT, PROC_REF(on_expose_reagent))
+	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, PROC_REF(on_storage_dump))
+	RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, PROC_REF(AddThrownItemToGrill))
 
 /obj/machinery/griddle/Destroy()
 	QDEL_NULL(grill_loop)
@@ -62,21 +63,50 @@
 	. = ..()
 	return default_deconstruction_crowbar(I, ignore_panel = TRUE)
 
-
 /obj/machinery/griddle/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/kitchen/spatula))
+		var/obj/item/offhand_item = user.get_inactive_held_item()
+
+		if(istype(offhand_item, /obj/item/storage/bag/tray))
+			var/obj/item/storage/bag/tray/collecting_tray = offhand_item
+			for(var/obj/grilled_item in griddled_objects)
+				collecting_tray.atom_storage.attempt_insert(grilled_item, user, TRUE)
+
+		else if(istype(offhand_item, /obj/item/plate))
+			var/obj/item/plate/collecting_plate = offhand_item
+			for(var/obj/grilled_item in griddled_objects)
+				if(collecting_plate.can_accept_item(grilled_item))
+					if(user.transferItemToLoc(grilled_item, src, silent = FALSE))
+						to_chat(user, span_notice("You place [grilled_item] on [collecting_plate]."))
+						collecting_plate.AddToPlate(grilled_item, user)
+						break
+
+		else
+			if(griddled_objects.len)
+				to_chat(user, span_notice("You don't have a tray or plate to put the food on!"))
+		return
+
 	if(griddled_objects.len >= max_items)
 		to_chat(user, span_notice("[src] can't fit more items!"))
 		return
+
+	if(istype(I, /obj/item/storage/bag/tray))
+		var/obj/item/storage/bag/tray/dumping_tray = I
+		if(dumping_tray.contents.len)
+			dumping_tray.atom_storage.dump_content_at(src, user)
+			return
+
 	var/list/modifiers = params2list(params)
 	//Center the icon where the user clicked.
 	if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 		return
+
 	if(user.transferItemToLoc(I, src, silent = FALSE))
 		//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
 		I.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
 		I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
 		to_chat(user, span_notice("You place [I] on [src]."))
-		AddToGrill(I, user)
+		AddToGrill(I)
 	else
 		return ..()
 
@@ -90,14 +120,29 @@
 	update_appearance()
 	update_grill_audio()
 
+/obj/machinery/griddle/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	if(get_turf(old_loc))
+		UnregisterSignal(get_turf(old_loc), COMSIG_ATOM_HITBY)
+	if(get_turf(src))
+		RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, PROC_REF(AddThrownItemToGrill))
+	. = ..()
 
-/obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill, mob/user)
+/obj/machinery/griddle/proc/AddThrownItemToGrill(datum/source, atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	SIGNAL_HANDLER
+	if(!isitem(hitting_atom) || griddled_objects.len >= max_items)
+		return
+
+	AddToGrill(hitting_atom)
+	if(throwingdatum.thrower)
+		to_chat(throwingdatum.thrower, span_notice("You throw [hitting_atom] onto [src]."))
+
+/obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill)
 	vis_contents += item_to_grill
 	griddled_objects += item_to_grill
 	item_to_grill.flags_1 |= IS_ONTOP_1
-	RegisterSignal(item_to_grill, COMSIG_MOVABLE_MOVED, .proc/ItemMoved)
-	RegisterSignal(item_to_grill, COMSIG_GRILL_COMPLETED, .proc/GrillCompleted)
-	RegisterSignal(item_to_grill, COMSIG_PARENT_QDELETING, .proc/ItemRemovedFromGrill)
+	RegisterSignal(item_to_grill, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
+	RegisterSignal(item_to_grill, COMSIG_GRILL_COMPLETED, PROC_REF(GrillCompleted))
+	RegisterSignal(item_to_grill, COMSIG_PARENT_QDELETING, PROC_REF(ItemRemovedFromGrill))
 	update_grill_audio()
 	update_appearance()
 
@@ -142,7 +187,7 @@
 
 		to_dump.pixel_x = to_dump.base_pixel_x + rand(-5, 5)
 		to_dump.pixel_y = to_dump.base_pixel_y + rand(-5, 5)
-		AddToGrill(to_dump, user)
+		AddToGrill(to_dump)
 
 	to_chat(user, span_notice("You dump out [storage_source] onto [src]."))
 	return STORAGE_DUMP_HANDLED

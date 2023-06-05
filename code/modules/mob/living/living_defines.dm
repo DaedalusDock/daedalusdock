@@ -17,16 +17,22 @@
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
+	///The holder for stamina handling
+	var/datum/stamina_container/stamina
+
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	var/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
 	var/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
 	var/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
 	var/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
 	var/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
-	var/staminaloss = 0 ///Stamina damage, or exhaustion. You recover it slowly naturally, and are knocked down if it gets too high. Holodeck and hallucinations deal this.
+
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.
 	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT
+
+	/// Rate at which fire stacks should decay from this mob
+	var/fire_stack_decay_rate = -0.05
 
 	//Damage dealing vars! These are meaningless outside of specific instances where it's checked and defined.
 	// Lower bound of damage done by unarmed melee attacks. Mob code is a mess, only works where this is checked for.
@@ -178,3 +184,6 @@
 
 	COOLDOWN_DECLARE(smell_time)
 	var/last_smell_intensity = 0
+
+	/// What our current gravity state is. Used to avoid duplicate animates and such
+	var/gravity_state = null

@@ -30,7 +30,7 @@
 		to_chat(cast_on, span_notice("You concentrate really hard, but nothing happens."))
 		return
 
-	var/obj/item/organ/internal/tongue/to_fire = locate() in cast_on.internal_organs
+	var/obj/item/organ/tongue/to_fire = locate() in cast_on.organs
 	if(!to_fire)
 		to_chat(cast_on, span_notice("You don't have a tongue to shoot!"))
 		return
@@ -64,7 +64,7 @@
 /obj/item/hardened_spike/Initialize(mapload, mob/living/carbon/source)
 	. = ..()
 	src.fired_by_ref = WEAKREF(source)
-	addtimer(CALLBACK(src, .proc/check_embedded), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(check_embedded)), 5 SECONDS)
 
 /obj/item/hardened_spike/proc/check_embedded()
 	if(missed)

@@ -37,7 +37,7 @@
 		)
 
 		jostle_bones()
-		INVOKE_ASYNC(owner, /mob/proc/emote, "scream")
+		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
 	playsound(loc, SFX_BREAK_BONE, 100, 1, -2)
 
@@ -79,15 +79,18 @@
 	if(brute_dam + force < BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES)	//no papercuts moving bones
 		return
 
-	if(prob(brute_dam + force))
-		receive_damage(force, no_side_effects = TRUE) //NO RECURSIVE BONE JOSTLING
-		if(owner)
-			owner.audible_message(
-				span_warning("A sickening noise comes from [owner]'s [plaintext_zone]!"),
-				null,
-				2,
-				span_warning("You feel something moving in your [plaintext_zone]!")
-			)
+	if(!prob(brute_dam + force))
+		return
+
+	receive_damage(force, breaks_bones = FALSE) //NO RECURSIVE BONE JOSTLING
+	if(owner)
+		owner.audible_message(
+			span_warning("A sickening noise comes from [owner]'s [plaintext_zone]!"),
+			null,
+			2,
+			span_warning("You feel something moving in your [plaintext_zone]!")
+		)
+		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)

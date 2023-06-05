@@ -114,7 +114,7 @@
 
 /datum/brain_trauma/mild/healthy/on_life(delta_time, times_fired)
 	owner.set_screwyhud(SCREWYHUD_HEALTHY) //just in case of hallucinations
-	owner.adjustStaminaLoss(-2.5 * delta_time) //no pain, no fatigue
+	owner.stamina.adjust(2.5 * delta_time) //no pain, no fatigue
 	..()
 
 /datum/brain_trauma/mild/healthy/on_lose()
@@ -145,7 +145,7 @@
 
 	else if(DT_PROB(1.5, delta_time))
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
-		owner.adjustStaminaLoss(50)
+		owner.stamina.adjust(-50)
 	..()
 
 /datum/brain_trauma/mild/muscle_spasms
@@ -176,8 +176,8 @@
 			to_chat(owner, span_warning("[pick("You have a coughing fit!", "You can't stop coughing!")]"))
 			owner.Immobilize(20)
 			owner.emote("cough")
-			addtimer(CALLBACK(owner, /mob/.proc/emote, "cough"), 6)
-			addtimer(CALLBACK(owner, /mob/.proc/emote, "cough"), 12)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob, emote), "cough"), 6)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob, emote), "cough"), 12)
 		owner.emote("cough")
 	..()
 

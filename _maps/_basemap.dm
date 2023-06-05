@@ -6,7 +6,6 @@
 		#include "map_files\debug\runtimestation.dmm"
 		#include "map_files\debug\multiz.dmm"
 		#include "map_files\Atlas\atlas.dmm"
-		#include "map_files\KiloStation\KiloStation.dmm"
 		#include "map_files\MetaStation\MetaStation.dmm"
 
 		#ifdef CIBUILDING

@@ -97,9 +97,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		migrate_preferences_to_tgui_prefs_menu()
 
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
-	if (current_version < 41)
-		migrate_character_to_tgui_prefs_menu()
-
 	if (current_version < 42)
 		migrate_body_types(savefile)
 
@@ -132,7 +129,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			notadded += kb
 	save_preferences() //Save the players pref so that new keys that were set to Unbound as default are permanently stored
 	if(length(notadded))
-		addtimer(CALLBACK(src, .proc/announce_conflict, notadded), 5 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(announce_conflict), notadded), 5 SECONDS)
 
 /datum/preferences/proc/announce_conflict(list/notadded)
 	to_chat(parent, "<span class='warningplain'><b><u>Keybinding Conflict</u></b></span>\n\
@@ -171,9 +168,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	READ_FILE(S["lastchangelog"], lastchangelog)
 
-	READ_FILE(S["be_special"] , be_special)
-
-
 	READ_FILE(S["default_slot"], default_slot)
 	READ_FILE(S["chat_toggles"], chat_toggles)
 	READ_FILE(S["toggles"], toggles)
@@ -211,7 +205,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
-	be_special = sanitize_be_special(SANITIZE_LIST(be_special))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
 
@@ -260,7 +253,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//general preferences
 	WRITE_FILE(S["lastchangelog"], lastchangelog)
-	WRITE_FILE(S["be_special"], be_special)
 	WRITE_FILE(S["default_slot"], default_slot)
 	WRITE_FILE(S["toggles"], toggles)
 	WRITE_FILE(S["chat_toggles"], chat_toggles)
@@ -305,34 +297,19 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		value_cache -= preference_type
 		read_preference(preference_type)
 
-	//Character
-	READ_FILE(S["randomise"],  randomise)
-
 	//Load prefs
-	READ_FILE(S["job_preferences"], job_preferences)
-
-	//Quirks
-	READ_FILE(S["all_quirks"], all_quirks)
-
-	//PARIAH EDIT ADDITION
-	load_character_pariah(S)
+	READ_FILE(S["alt_job_titles"], alt_job_titles)
 
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
 
-	//Sanitize
-	randomise = SANITIZE_LIST(randomise)
+	var/mob/dead/new_player/body = parent?.mob
+	if(istype(body))
+		spawn(-1)
+			body.new_player_panel()
 
-
-	//Validate job prefs
-	for(var/j in job_preferences)
-		if(job_preferences[j] != JP_LOW && job_preferences[j] != JP_MEDIUM && job_preferences[j] != JP_HIGH)
-			job_preferences -= j
-
-	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
-	validate_quirks()
 
 	return TRUE
 
@@ -366,27 +343,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
 	#endif
 
-	//Character
-	WRITE_FILE(S["randomise"] , randomise)
-
 	//Write prefs
-	WRITE_FILE(S["job_preferences"] , job_preferences)
-
-	//Quirks
-	WRITE_FILE(S["all_quirks"] , all_quirks)
-
-	save_character_pariah(S) //PARIAH EDIT ADDITION
+	WRITE_FILE(S["alt_job_titles"], alt_job_titles)
 
 	return TRUE
-
-/datum/preferences/proc/sanitize_be_special(list/input_be_special)
-	var/list/output = list()
-
-	for (var/role in input_be_special)
-		if (role in GLOB.special_roles)
-			output += role
-
-	return output.len == input_be_special.len ? input_be_special : output
 
 /proc/sanitize_keybindings(value)
 	var/list/base_bindings = sanitize_islist(value,list())

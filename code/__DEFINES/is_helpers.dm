@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define iswall(A) (istype(A, /turf/closed/wall))
 
-#define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
+#define istransparentturf(A) (TURF_IS_MIMICKING(A))
 
 //Mobs
 #define isliving(A) (istype(A, /mob/living))
@@ -209,9 +209,9 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isorgan(A) (istype(A, /obj/item/organ))
 
-#define isinternalorgan(A) (istype(A, /obj/item/organ/internal))
+#define isinternalorgan(A) (istype(A, /obj/item/organ))
 
-#define isexternalorgan(A) (istype(A, /obj/item/organ/external))
+#define isexternalorgan(A) (istype(A, /obj/item/organ))
 
 #define isclothing(A) (istype(A, /obj/item/clothing))
 

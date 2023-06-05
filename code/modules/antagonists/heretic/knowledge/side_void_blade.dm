@@ -65,8 +65,8 @@
 		/datum/status_effect/ghoul,
 		RISEN_MAX_HEALTH,
 		user.mind,
-		CALLBACK(src, .proc/apply_to_risen),
-		CALLBACK(src, .proc/remove_from_risen),
+		CALLBACK(src, PROC_REF(apply_to_risen)),
+		CALLBACK(src, PROC_REF(remove_from_risen)),
 	)
 
 /// Callback for the ghoul status effect - what effects are applied to the ghoul.
@@ -165,7 +165,7 @@
 		/obj/item/stack/sheet/mineral/titanium = 5,
 		/obj/item/clothing/suit/armor = 1,
 		/obj/item/assembly/flash = 1,
-		/obj/item/organ/internal/lungs = 1,
+		/obj/item/organ/lungs = 1,
 	)
 	cost = 1
 	route = PATH_SIDE

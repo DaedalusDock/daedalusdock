@@ -102,7 +102,7 @@
 	// We can't add the timer without the timer ID, but we can't get the timer ID without the timer!
 	// To solve this, we just use a list that we mutate later.
 	var/list/data = list("input" = input)
-	var/timer_id = addtimer(CALLBACK(src, .proc/receive_cross_comms_message, data), CROSS_SECTOR_CANCEL_TIME, TIMER_STOPPABLE)
+	var/timer_id = addtimer(CALLBACK(src, PROC_REF(receive_cross_comms_message), data), CROSS_SECTOR_CANCEL_TIME, TIMER_STOPPABLE)
 	data["timer_id"] = timer_id
 
 	LAZYADD(timers, timer_id)

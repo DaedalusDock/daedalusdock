@@ -94,6 +94,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/list/addiction_types = null
 	///The amount a robot will pay for a glass of this (20 units but can be higher if you pour more, be frugal!)
 	var/glass_price
+	///The closest abstract type this reagent belongs to. Used to detect creation of abstract chemicals.
+	var/abstract_type = /datum/reagent
 
 
 /datum/reagent/New()
@@ -106,6 +108,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 		AddElement(/datum/element/venue_price, glass_price)
 	if(!mass)
 		mass = rand(10, 800)
+	if(abstract_type == type)//Are we trying to instantiate an abstract reagent?
+		stack_trace("ATTEMPTED TO CREATE ABSTRACT REAGENT!")
 
 /datum/reagent/Destroy() // This should only be called by the holder, so it's already handled clearing its references
 	. = ..()

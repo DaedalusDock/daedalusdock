@@ -118,7 +118,7 @@
 		to_chat(user, span_notice("You try to pet [src], but it has no stuffing. Aww..."))
 
 /obj/item/toy/plush/attackby(obj/item/I, mob/living/user, params)
-	if(I.get_sharpness())
+	if(I.sharpness)
 		if(!grenade)
 			if(!stuffed)
 				to_chat(user, span_warning("You already murdered it!"))
@@ -604,7 +604,7 @@
 /obj/item/toy/plush/goatplushie/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_TURF_INDUSTRIAL_LIFT_ENTER = .proc/splat,
+		COMSIG_TURF_INDUSTRIAL_LIFT_ENTER = PROC_REF(splat),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 

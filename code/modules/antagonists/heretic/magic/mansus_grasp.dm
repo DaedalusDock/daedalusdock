@@ -39,7 +39,7 @@
 		var/mob/living/carbon/carbon_hit = victim
 		carbon_hit.adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/slurring/heretic)
 		carbon_hit.AdjustKnockdown(5 SECONDS)
-		carbon_hit.adjustStaminaLoss(80)
+		carbon_hit.stamina.adjust(-80)
 
 	return TRUE
 
@@ -65,7 +65,7 @@
 	AddComponent(/datum/component/effect_remover, \
 		success_feedback = "You remove %THEEFFECT.", \
 		tip_text = "Clear rune", \
-		on_clear_callback = CALLBACK(src, .proc/after_clear_rune), \
+		on_clear_callback = CALLBACK(src, PROC_REF(after_clear_rune)), \
 		effects_we_clear = list(/obj/effect/heretic_rune))
 /*
  * Callback for effect_remover component.

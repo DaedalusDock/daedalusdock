@@ -2,6 +2,10 @@
 	name = "belt"
 	desc = "Can hold various things."
 	icon = 'icons/obj/clothing/belts.dmi'
+	stamina_damage = 10
+	stamina_cost = 5
+	stamina_critical_chance = 5
+
 	icon_state = "utility"
 	inhand_icon_state = "utility"
 	worn_icon_state = "utility"
@@ -76,7 +80,6 @@
 		/obj/item/inducer,
 		/obj/item/plunger,
 		/obj/item/airlock_painter,
-		/obj/item/pipe_painter
 		))
 
 /obj/item/storage/belt/utility/chief

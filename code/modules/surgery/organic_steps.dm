@@ -24,7 +24,7 @@
 	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].")
 
 /datum/surgery_step/incise/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !tool.sharpness)
 		return FALSE
 
 	return TRUE
@@ -182,7 +182,7 @@
 	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!")
 
 /datum/surgery_step/saw/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !(tool.get_sharpness() && (tool.force >= 10)))
+	if(implement_type == /obj/item && !(tool.sharpness && (tool.force >= 10)))
 		return FALSE
 	return TRUE
 

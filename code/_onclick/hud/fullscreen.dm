@@ -25,7 +25,7 @@
 
 	if(animated)
 		animate(screen, alpha = 0, time = animated)
-		addtimer(CALLBACK(src, .proc/clear_fullscreen_after_animate, screen), animated, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(clear_fullscreen_after_animate), screen), animated, TIMER_CLIENT_TIME)
 	else
 		if(client)
 			client.screen -= screen
@@ -209,3 +209,10 @@
 	alpha = 80
 	color = "#000050"
 	blend_mode = BLEND_ADD
+
+/atom/movable/screen/fullscreen/dither
+	icon = 'goon/icons/hud/dither.dmi'
+	icon_state = "dither"
+	layer = DITHER_LAYER
+	show_when_dead = TRUE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"

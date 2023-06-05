@@ -8,6 +8,7 @@
 	inverse_chem_val = 0
 	inverse_chem = null
 	chemical_flags = REAGENT_SPLITRETAINVOL
+	abstract_type = /datum/reagent/medicine/c2
 
 /******BRUTE******/
 /*Suffix: -bital*/
@@ -117,30 +118,30 @@
 /datum/reagent/medicine/c2/probital/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	M.adjustBruteLoss(-2.25 * REM * normalise_creation_purity() * delta_time, FALSE)
 	var/ooo_youaregettingsleepy = 3.5
-	switch(round(M.getStaminaLoss()))
+	switch(M.stamina.loss_as_percent)
 		if(10 to 40)
 			ooo_youaregettingsleepy = 3
 		if(41 to 60)
 			ooo_youaregettingsleepy = 2.5
-		if(61 to 200) //you really can only go to 120
+		if(61 to 100) //you really can only go to 120
 			ooo_youaregettingsleepy = 2
-	M.adjustStaminaLoss(ooo_youaregettingsleepy * REM * delta_time, FALSE)
+	M.stamina.adjust(-ooo_youaregettingsleepy * REM * delta_time, FALSE)
 	..()
 	. = TRUE
 
 /datum/reagent/medicine/c2/probital/overdose_process(mob/living/M, delta_time, times_fired)
-	M.adjustStaminaLoss(3 * REM * delta_time, 0)
-	if(M.getStaminaLoss() >= 80)
+	M.stamina.adjust(-3 * REM * delta_time, 0)
+	if(M.stamina.loss_as_percent >= 30)
 		M.adjust_drowsyness(1 * REM * delta_time)
-	if(M.getStaminaLoss() >= 100)
+	if(M.stamina.loss_as_percent >= 50)
 		to_chat(M,span_warning("You feel more tired than you usually do, perhaps if you rest your eyes for a bit..."))
-		M.adjustStaminaLoss(-100, TRUE)
+		M.stamina.adjust(100)
 		M.Sleeping(10 SECONDS)
 	..()
 	. = TRUE
 
 /datum/reagent/medicine/c2/probital/on_transfer(atom/A, methods=INGEST, trans_volume)
-	if(!(methods & INGEST) || (!iscarbon(A) && !istype(A, /obj/item/organ/internal/stomach)) )
+	if(!(methods & INGEST) || (!iscarbon(A) && !istype(A, /obj/item/organ/stomach)) )
 		return
 
 	A.reagents.remove_reagent(/datum/reagent/medicine/c2/probital, trans_volume * 0.05)
@@ -273,7 +274,7 @@
 
 /datum/reagent/medicine/c2/tirimol/on_mob_life(mob/living/carbon/human/M, delta_time, times_fired)
 	M.adjustOxyLoss(-3 * REM * delta_time * normalise_creation_purity())
-	M.adjustStaminaLoss(2 * REM * delta_time)
+	M.stamina.adjust(-2 * REM * delta_time)
 	if(drowsycd && COOLDOWN_FINISHED(src, drowsycd))
 		M.adjust_drowsyness(10)
 		COOLDOWN_START(src, drowsycd, 45 SECONDS)
@@ -385,7 +386,7 @@
 	var/mob/living/carbon/C = A
 	if(trans_volume >= 0.6) //prevents cheesing with ultralow doses.
 		C.adjustToxLoss((-1.5 * min(2, trans_volume) * REM) * normalise_creation_purity(), 0)	  //This is to promote iv pole use for that chemotherapy feel.
-	var/obj/item/organ/internal/liver/L = C.internal_organs_slot[ORGAN_SLOT_LIVER]
+	var/obj/item/organ/liver/L = C.organs_by_slot[ORGAN_SLOT_LIVER]
 	if((L.organ_flags & ORGAN_FAILING) || !L)
 		return
 	conversion_amount = (trans_volume * (min(100 -C.getOrganLoss(ORGAN_SLOT_LIVER), 80) / 100)*normalise_creation_purity()) //the more damaged the liver the worse we metabolize.
@@ -511,7 +512,7 @@
 
 /datum/reagent/medicine/c2/penthrite/on_mob_life(mob/living/carbon/human/H, delta_time, times_fired)
 	H.adjustOrganLoss(ORGAN_SLOT_STOMACH, 0.25 * REM * delta_time)
-	if(H.health <= HEALTH_THRESHOLD_CRIT && H.health > (H.crit_threshold + HEALTH_THRESHOLD_FULLCRIT * (2 * normalise_creation_purity()))) //we cannot save someone below our lowered crit threshold.
+	if(H.health <= H.crit_threshold && H.health > (H.crit_threshold + H.hardcrit_threshold * (2 * normalise_creation_purity()))) //we cannot save someone below our lowered crit threshold.
 
 		H.adjustToxLoss(-2 * REM * delta_time, 0)
 		H.adjustBruteLoss(-2 * REM * delta_time, 0)
@@ -546,7 +547,7 @@
 
 /datum/reagent/medicine/c2/penthrite/overdose_process(mob/living/carbon/human/H, delta_time, times_fired)
 	REMOVE_TRAIT(H, TRAIT_STABLEHEART, type)
-	H.adjustStaminaLoss(10 * REM * delta_time)
+	H.stamina.adjust(-10 * REM * delta_time)
 	H.adjustOrganLoss(ORGAN_SLOT_HEART, 10 * REM * delta_time)
 	H.set_heartattack(TRUE)
 

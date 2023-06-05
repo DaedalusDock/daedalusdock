@@ -16,15 +16,15 @@
 
 	species_eye_path = 'icons/mob/species/skrell/eyes.dmi'
 
-	mutantbrain = /obj/item/organ/internal/brain/skrell
-	mutanteyes = /obj/item/organ/internal/eyes/skrell
-	mutantlungs = /obj/item/organ/internal/lungs/skrell
-	mutantheart = /obj/item/organ/internal/heart/skrell
-	mutantliver = /obj/item/organ/internal/liver/skrell
-	mutanttongue = /obj/item/organ/internal/tongue/skrell
+	mutantbrain = /obj/item/organ/brain/skrell
+	mutanteyes = /obj/item/organ/eyes/skrell
+	mutantlungs = /obj/item/organ/lungs/skrell
+	mutantheart = /obj/item/organ/heart/skrell
+	mutantliver = /obj/item/organ/liver/skrell
+	mutanttongue = /obj/item/organ/tongue/skrell
 
-	external_organs = list(
-		/obj/item/organ/external/skrell_headtails = "Long"
+	cosmetic_organs = list(
+		/obj/item/organ/skrell_headtails = "Long"
 	)
 
 	bodypart_overrides = list(

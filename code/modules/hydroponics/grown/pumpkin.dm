@@ -29,7 +29,7 @@
 	var/carved_type = /obj/item/clothing/head/hardhat/pumpkinhead
 
 /obj/item/food/grown/pumpkin/attackby(obj/item/W as obj, mob/user as mob, params)
-	if(W.get_sharpness())
+	if(W.sharpness & SHARP_EDGED)
 		user.show_message(span_notice("You carve a face into [src]!"), MSG_VISUAL)
 		new carved_type(user.loc)
 		qdel(src)

@@ -13,6 +13,8 @@
 
 	movement_force = list("KNOCKDOWN" = 3, "THROW" = 0)
 
+	bolt_doors = TRUE
+
 	var/sound_played
 	var/damaged //too damaged to undock?
 	var/list/areas //areas in our shuttle
@@ -131,9 +133,12 @@
 
 /obj/docking_port/mobile/arrivals/proc/SendToStation()
 	var/dockTime = CONFIG_GET(number/arrivals_shuttle_dock_window)
+	var/announce_time = max(dockTime - 8 SECONDS, 0) //Ideally it's played around 8 seconds before dock, it sounds the nicest
 	if(mode == SHUTTLE_CALL && timeLeft(1) > dockTime)
 		if(console)
-			console.say(damaged ? "Initiating emergency docking for repairs!" : "Now approaching: [station_name()].")
+			spawn(announce_time)
+				console.say(damaged ? "Initiating emergency docking for repairs!" : "Now approaching: [station_name()].")
+
 		hyperspace_sound(HYPERSPACE_LAUNCH, areas) //for the new guy
 		setTimer(dockTime)
 
@@ -156,7 +161,8 @@
 	. = ..()
 	if(!. && !docked && !damaged)
 		if(console)
-			console.say("Welcome to your new life, employees!")
+			console.say("Welcome to [station_name()], have a safe and productive day!")
+			playsound(console, 'sound/voice/ApproachingDaedalus.ogg', 50, FALSE, extrarange = 4)
 		for(var/L in queued_announces)
 			var/datum/callback/C = L
 			C.Invoke()
@@ -178,7 +184,7 @@
 		force_depart = TRUE
 	if(mode == SHUTTLE_IDLE)
 		if(console)
-			console.say(pickingup ? "Departing immediately for new employee pickup." : "Shuttle departing.")
+			console.say(pickingup ? "Departing for new employee pickup." : "Shuttle departing.")
 		var/obj/docking_port/stationary/target = target_dock
 		if(QDELETED(target))
 			target = SSshuttle.getDock("arrivals_stationary")
@@ -188,9 +194,20 @@
 	if(mode == SHUTTLE_CALL || damaged)
 		return
 
+	if(PersonCheck() || NukeDiskCheck())
+		to_chat(user, span_notice(span_big("The shuttle is currently dropping off crewmembers. It will leave momentarily.")))
+		for(var/i in 1 to 3)
+			var/grace = world.time + 5 SECONDS
+			console?.say("Please exit the shuttle so it may depart.")
+			if(!(PersonCheck() || NukeDiskCheck()))
+				break
+			while(grace > world.time)
+				stoplag()
+
+	to_chat(user, span_notice("The transfer shuttle is now arriving..."))
+
 	Launch(TRUE)
 
-	to_chat(user, span_notice("Calling your shuttle. One moment..."))
 	while(mode != SHUTTLE_CALL && !damaged)
 		stoplag()
 
@@ -205,7 +222,7 @@
 	if(mode != SHUTTLE_CALL)
 		announce_arrival(mob, rank)
 	else
-		LAZYADD(queued_announces, CALLBACK(GLOBAL_PROC, .proc/announce_arrival, mob, rank))
+		LAZYADD(queued_announces, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(announce_arrival), mob, rank))
 
 /obj/docking_port/mobile/arrivals/vv_edit_var(var_name, var_value)
 	switch(var_name)

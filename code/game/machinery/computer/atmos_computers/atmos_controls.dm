@@ -127,3 +127,8 @@
 	name = "Gas Tank Control"
 	circuit = /obj/item/circuitboard/computer/atmos_control
 	atmos_chambers = list(ATMOS_GAS_MONITOR_O2 = "Oxygen Supply", ATMOS_GAS_MONITOR_N2 = "Nitrogen Supply", ATMOS_GAS_MONITOR_PLAS = "Plasma Supply", ATMOS_GAS_MONITOR_MIX = "Mix Chamber")
+
+/obj/machinery/computer/atmos_control/engine
+	name = "Engine Control"
+	circuit = /obj/item/circuitboard/computer/atmos_control/engine
+	atmos_chambers = list(ATMOS_GAS_MONITOR_ENGINE = "Engine Core")

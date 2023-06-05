@@ -35,13 +35,15 @@
 	icon = 'icons/turf/decals.dmi'
 	icon_state = "warningline"
 	layer = TURF_DECAL_LAYER
+	/// The layer to generate the decal. Should be some kind of float layer
+	var/decal_layer = DECAL_NORMAL_LAYER
 
 /obj/effect/turf_decal/Initialize(mapload)
 	..()
 	var/turf/T = loc
 	if(!istype(T)) //you know this will happen somehow
 		CRASH("Turf decal initialized in an object/nullspace")
-	T.AddElement(/datum/element/decal, icon, icon_state, dir, null, null, alpha, color, null, FALSE, null)
+	T.AddElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return INITIALIZE_HINT_QDEL
 
 #ifdef UNIT_TESTS
@@ -50,6 +52,6 @@
 /obj/effect/turf_decal/Destroy()
 	if(GLOB.running_create_and_destroy)
 		var/turf/T = loc
-		T.RemoveElement(/datum/element/decal, icon, icon_state, dir, null, null, alpha, color, null, FALSE, null)
+		T.RemoveElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return ..()
 #endif

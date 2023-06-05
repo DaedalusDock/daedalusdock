@@ -27,7 +27,7 @@
 	var/appears_dead = FALSE
 	if (stat == DEAD)
 		appears_dead = TRUE
-		if(getorgan(/obj/item/organ/internal/brain))
+		if(getorgan(/obj/item/organ/brain))
 			. += span_deadsay("[t_He] [t_is] limp and unresponsive, with no signs of life.")
 		else if(get_bodypart(BODY_ZONE_HEAD))
 			. += span_deadsay("It appears that [t_his] brain is missing...")
@@ -49,7 +49,7 @@
 
 	for(var/obj/item/bodypart/BP as anything in disabled)
 		var/damage_text
-		if(!(BP.get_damage(include_stamina = FALSE) >= BP.max_damage)) //Stamina is disabling the limb
+		if(!(BP.get_damage() >= BP.max_damage)) //Stamina is disabling the limb
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (BP.brute_dam >= BP.burn_dam) ? BP.heavy_brute_msg : BP.heavy_burn_msg

@@ -1677,6 +1677,11 @@
 	},
 /turf/open/floor/plating,
 /area/engineering/lobby)
+"eG" = (
+/obj/item/organ/tail/monkey,
+/obj/effect/decal/cleanable/blood/splatter,
+/turf/open/misc/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "eH" = (
 /obj/structure/table,
 /obj/item/taperecorder{
@@ -1814,13 +1819,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/white,
 /area/medical/virology)
-"fg" = (
-/obj/structure/rack,
-/obj/item/poster/random_official,
-/obj/effect/spawner/random/maintenance,
-/obj/item/relic,
-/turf/open/floor/plating,
-/area/maintenance/department/medical/morgue)
 "fh" = (
 /obj/structure/extinguisher_cabinet/directional/north,
 /obj/machinery/airalarm/directional/east,
@@ -14142,11 +14140,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/prison)
-"NC" = (
-/obj/item/organ/external/tail/monkey,
-/obj/effect/decal/cleanable/blood/splatter,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/underground/explored)
 "ND" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
@@ -14432,6 +14425,12 @@
 /obj/structure/sign/poster/official/random/directional/north,
 /turf/open/floor/iron/textured,
 /area/mine/mechbay)
+"Ov" = (
+/obj/structure/rack,
+/obj/item/poster/random_official,
+/obj/effect/spawner/random/maintenance,
+/turf/open/floor/plating,
+/area/maintenance/department/medical/morgue)
 "Ow" = (
 /obj/effect/spawner/random/trash,
 /obj/machinery/light/directional/south,
@@ -51267,7 +51266,7 @@ KB
 GC
 GV
 pW
-fg
+Ov
 Su
 Su
 Su
@@ -56664,7 +56663,7 @@ RW
 Et
 kK
 DC
-NC
+eG
 Fm
 Et
 Et

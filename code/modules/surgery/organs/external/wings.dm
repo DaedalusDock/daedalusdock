@@ -1,12 +1,17 @@
 ///Wing base type. doesn't really do anything
-/obj/item/organ/external/wings
+/obj/item/organ/wings
+	name = "wings"
+	///Unremovable is until the features are completely finished
+	organ_flags = ORGAN_UNREMOVABLE | ORGAN_EDIBLE
+	visual = TRUE
+	cosmetic_only = TRUE
+
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_WINGS
-	layers = ALL_EXTERNAL_OVERLAYS
 
 	feature_key = "wings"
 
-/obj/item/organ/external/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
+/obj/item/organ/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!human.wear_suit)
 		return TRUE
 	if(!(human.wear_suit.flags_inv & HIDEJUMPSUIT))
@@ -16,11 +21,11 @@
 	return FALSE
 
 ///Checks if the wings can soften short falls
-/obj/item/organ/external/wings/proc/can_soften_fall()
+/obj/item/organ/wings/proc/can_soften_fall()
 	return TRUE
 
 ///The true wings that you can use to fly and shit (you cant actually shit with them)
-/obj/item/organ/external/wings/functional
+/obj/item/organ/wings/functional
 	///The flight action object
 	var/datum/action/innate/flight/fly
 
@@ -32,31 +37,33 @@
 	///Are our wings open or closed?
 	var/wings_open = FALSE
 
-/obj/item/organ/external/wings/functional/get_global_feature_list()
+/obj/item/organ/wings/functional/get_global_feature_list()
 	if(wings_open)
 		return GLOB.wings_open_list
 	else
 		return GLOB.wings_list
 
-/obj/item/organ/external/wings/functional/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
+/obj/item/organ/wings/functional/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
 	if(isnull(fly))
 		fly = new
 		fly.Grant(reciever)
 
-/obj/item/organ/external/wings/functional/Remove(mob/living/carbon/organ_owner, special, moving)
+/obj/item/organ/wings/functional/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
 
 	fly.Remove(organ_owner)
 
-/obj/item/organ/external/wings/functional/on_life(delta_time, times_fired)
+/obj/item/organ/wings/functional/on_life(delta_time, times_fired)
 	. = ..()
 
 	handle_flight(owner)
 
 ///Called on_life(). Handle flight code and check if we're still flying
-/obj/item/organ/external/wings/functional/proc/handle_flight(mob/living/carbon/human/human)
+/obj/item/organ/wings/functional/proc/handle_flight(mob/living/carbon/human/human)
 	if(human.movement_type & ~FLYING)
 		return FALSE
 	if(!can_fly(human))
@@ -66,7 +73,7 @@
 
 
 ///Check if we're still eligible for flight (wings covered, atmosphere too thin, etc)
-/obj/item/organ/external/wings/functional/proc/can_fly(mob/living/carbon/human/human)
+/obj/item/organ/wings/functional/proc/can_fly(mob/living/carbon/human/human)
 	if(human.stat || human.body_position == LYING_DOWN)
 		return FALSE
 	//Jumpsuits have tail holes, so it makes sense they have wing holes too
@@ -85,7 +92,7 @@
 		return TRUE
 
 ///Slipping but in the air?
-/obj/item/organ/external/wings/functional/proc/fly_slip(mob/living/carbon/human/human)
+/obj/item/organ/wings/functional/proc/fly_slip(mob/living/carbon/human/human)
 	var/obj/buckled_obj
 	if(human.buckled)
 		buckled_obj = human.buckled
@@ -108,7 +115,7 @@
 	return TRUE
 
 ///UNSAFE PROC, should only be called through the Activate or other sources that check for CanFly
-/obj/item/organ/external/wings/functional/proc/toggle_flight(mob/living/carbon/human/human)
+/obj/item/organ/wings/functional/proc/toggle_flight(mob/living/carbon/human/human)
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT))
 		human.physiology.stun_mod *= 2
 		ADD_TRAIT(human, TRAIT_NO_FLOATING_ANIM, SPECIES_FLIGHT_TRAIT)
@@ -123,19 +130,17 @@
 		close_wings()
 
 ///SPREAD OUR WINGS AND FLLLLLYYYYYY
-/obj/item/organ/external/wings/functional/proc/open_wings()
+/obj/item/organ/wings/functional/proc/open_wings()
 	feature_key = wings_open_feature_key
 	wings_open = TRUE
 
-	cache_key = generate_icon_cache() //we've changed preference to open, so we only need to update the key and ask for an update to change our sprite
 	owner.update_body_parts()
 
 ///close our wings
-/obj/item/organ/external/wings/functional/proc/close_wings()
+/obj/item/organ/wings/functional/proc/close_wings()
 	feature_key = wings_closed_feature_key
 	wings_open = FALSE
 
-	cache_key = generate_icon_cache()
 	owner.update_body_parts()
 	if(isturf(owner?.loc))
 		var/turf/location = loc
@@ -150,7 +155,7 @@
 
 /datum/action/innate/flight/Activate()
 	var/mob/living/carbon/human/human = owner
-	var/obj/item/organ/external/wings/functional/wings = human.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+	var/obj/item/organ/wings/functional/wings = human.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 	if(wings && wings.can_fly(human))
 		wings.toggle_flight(human)
 		if(!(human.movement_type & FLYING))
@@ -160,10 +165,10 @@
 			human.set_resting(FALSE, TRUE)
 
 ///Moth wings! They can flutter in low-grav and burn off in heat
-/obj/item/organ/external/wings/moth
+/obj/item/organ/wings/moth
 	feature_key = "moth_wings"
 	preference = "feature_moth_wings"
-	layers = EXTERNAL_BEHIND | EXTERNAL_FRONT
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
 
 	dna_block = DNA_MOTH_WINGS_BLOCK
 
@@ -172,32 +177,34 @@
 	///Store our old sprite here for if our burned wings are healed
 	var/original_sprite = ""
 
-/obj/item/organ/external/wings/moth/get_global_feature_list()
+/obj/item/organ/wings/moth/get_global_feature_list()
 	return GLOB.moth_wings_list
 
-/obj/item/organ/external/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
+/obj/item/organ/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
 		return TRUE
 	return FALSE
 
-/obj/item/organ/external/wings/moth/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
+/obj/item/organ/wings/moth/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()
+	if(!.)
+		return
 
-	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, .proc/try_burn_wings)
-	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, .proc/heal_wings)
-	RegisterSignal(reciever, COMSIG_MOVABLE_PRE_MOVE, .proc/update_float_move)
+	RegisterSignal(reciever, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_wings))
+	RegisterSignal(reciever, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_wings))
+	RegisterSignal(reciever, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(update_float_move))
 
-/obj/item/organ/external/wings/moth/Remove(mob/living/carbon/organ_owner, special, moving)
+/obj/item/organ/wings/moth/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
 
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_MOVABLE_PRE_MOVE))
 	REMOVE_TRAIT(organ_owner, TRAIT_FREE_FLOAT_MOVEMENT, src)
 
-/obj/item/organ/external/wings/moth/can_soften_fall()
+/obj/item/organ/wings/moth/can_soften_fall()
 	return !burnt
 
 ///Check if we can flutter around
-/obj/item/organ/external/wings/moth/proc/update_float_move()
+/obj/item/organ/wings/moth/proc/update_float_move()
 	SIGNAL_HANDLER
 
 	if(!isspaceturf(owner.loc) && !burnt)
@@ -209,7 +216,7 @@
 	REMOVE_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, src)
 
 ///check if our wings can burn off ;_;
-/obj/item/organ/external/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
+/obj/item/organ/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
 	SIGNAL_HANDLER
 
 	if(!burnt && human.bodytemperature >= 800 && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
@@ -220,14 +227,14 @@
 		human.update_body_parts()
 
 ///burn the wings off
-/obj/item/organ/external/wings/moth/proc/burn_wings()
+/obj/item/organ/wings/moth/proc/burn_wings()
 	burnt = TRUE
 
 	original_sprite = sprite_datum.name
 	set_sprite("Burnt Off")
 
 ///heal our wings back up!!
-/obj/item/organ/external/wings/moth/proc/heal_wings()
+/obj/item/organ/wings/moth/proc/heal_wings()
 	SIGNAL_HANDLER
 
 	if(burnt)

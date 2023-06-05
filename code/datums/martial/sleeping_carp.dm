@@ -56,13 +56,13 @@
 	playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	if(D.body_position == STANDING_UP)
 		D.apply_damage(10, A.get_attack_type(), BODY_ZONE_HEAD)
-		D.apply_damage(40, STAMINA, BODY_ZONE_HEAD)
+		D.stamina.adjust(-40)
 		D.Knockdown(40)
 		D.visible_message(span_warning("[A] kicks [D] in the head, sending them face first into the floor!"), \
 					span_userdanger("You are kicked in the head by [A], sending you crashing to the floor!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 	else
 		D.apply_damage(5, A.get_attack_type(), BODY_ZONE_HEAD)
-		D.apply_damage(40, STAMINA, BODY_ZONE_HEAD)
+		D.stamina.adjust(-40)
 		D.drop_all_held_items()
 		D.visible_message(span_warning("[A] kicks [D] in the head!"), \
 					span_userdanger("You are kicked in the head by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
@@ -171,8 +171,8 @@
 
 /obj/item/staff/bostaff/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, .proc/on_wield)
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, .proc/on_unwield)
+	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
+	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 
 /obj/item/staff/bostaff/ComponentInitialize()
 	. = ..()
@@ -225,14 +225,14 @@
 						span_userdanger("[user] [pick(fluffmessages)]s you with [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 		to_chat(user, span_danger("You [pick(fluffmessages)] [H] with [src]!"))
 		playsound(get_turf(user), 'sound/effects/woodhit.ogg', 75, TRUE, -1)
-		H.adjustStaminaLoss(rand(13,20))
+		H.stamina.adjust(-rand(13,20))
 		if(prob(10))
 			H.visible_message(span_warning("[H] collapses!"), \
 							span_userdanger("Your legs give out!"))
 			H.Paralyze(80)
-		if(H.staminaloss && !H.IsSleeping())
-			var/total_health = (H.health - H.staminaloss)
-			if(total_health <= HEALTH_THRESHOLD_CRIT && !H.stat)
+		if(H.stamina.loss && !H.IsSleeping())
+			var/total_health = (H.health - H.stamina.loss_as_percent)
+			if(total_health <= H.crit_threshold && !H.stat)
 				H.visible_message(span_warning("[user] delivers a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"), \
 								span_userdanger("You're knocked unconscious by [user]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 				to_chat(user, span_danger("You deliver a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"))

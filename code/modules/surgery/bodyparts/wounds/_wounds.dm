@@ -74,8 +74,8 @@
 		parent = BP
 		if(BP.current_gauze)
 			bandage()
-		RegisterSignal(parent, COMSIG_BODYPART_GAUZED, .proc/on_gauze)
-		RegisterSignal(parent, COMSIG_BODYPART_GAUZE_DESTROYED, .proc/on_ungauze)
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZED, PROC_REF(on_gauze))
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZE_DESTROYED, PROC_REF(on_ungauze))
 		if(parent.owner)
 			register_to_mob(parent.owner)
 

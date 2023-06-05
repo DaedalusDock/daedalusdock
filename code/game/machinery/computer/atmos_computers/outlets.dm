@@ -162,3 +162,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/air_output
 	name = "air mix tank output inlet"
 	chamber_id = ATMOS_GAS_MONITOR_AIR
+
+/obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/engine_output
+	name = "engine output inlet"
+	chamber_id = ATMOS_GAS_MONITOR_ENGINE

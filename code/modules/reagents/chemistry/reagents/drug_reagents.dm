@@ -3,6 +3,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	taste_description = "bitterness"
 	var/trippy = TRUE //Does this drug make you trip?
+	abstract_type = /datum/reagent/drug
 
 /datum/reagent/drug/on_mob_end_metabolize(mob/living/M)
 	if(trippy)
@@ -351,6 +352,7 @@
 /datum/reagent/drug/maint
 	name = "Maintenance Drugs"
 	chemical_flags = NONE
+	abstract_type = /datum/reagent/drug/maint
 
 /datum/reagent/drug/maint/powder
 	name = "Maintenance Powder"

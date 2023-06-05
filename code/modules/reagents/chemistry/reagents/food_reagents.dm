@@ -13,6 +13,7 @@
 	taste_mult = 4
 	inverse_chem_val = 0.1
 	inverse_chem = null
+	abstract_type = /datum/reagent/consumable
 	/// How much nutrition this reagent supplies
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'

@@ -8,6 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
+	abstract_type = /datum/reagent/medicine
 
 /datum/reagent/medicine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	current_cycle++

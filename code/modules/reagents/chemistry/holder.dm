@@ -11,8 +11,8 @@
 
 	var/paths = subtypesof(/datum/reagent)
 
-	for(var/path in paths)
-		if(path in GLOB.fake_reagent_blacklist)
+	for(var/datum/reagent/path as anything in paths)
+		if(initial(path.abstract_type) == path)//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()
 		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!

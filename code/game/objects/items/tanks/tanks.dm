@@ -17,11 +17,16 @@
 	slot_flags = ITEM_SLOT_BACK
 	worn_icon = 'icons/mob/clothing/back.dmi' //since these can also get thrown into suit storage slots. if something goes on the belt, set this to null.
 	hitsound = 'sound/weapons/smash.ogg'
-	//pressure_resistance = ONE_ATMOSPHERE * 5
+
+
 	force = 5
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 4
+	stamina_damage = 55
+	stamina_cost = 23
+	stamina_critical_chance = 10
+
 	custom_materials = list(/datum/material/iron = 500)
 	actions_types = list(/datum/action/item_action/set_internals)
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)

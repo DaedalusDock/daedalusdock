@@ -216,7 +216,7 @@
 		. += span_warning("They're dripping with fuel and smells terrible.")
 
 /obj/item/food/deadmouse/attackby(obj/item/I, mob/living/user, params)
-	if(I.get_sharpness() && user.combat_mode)
+	if((I.sharpness & SHARP_EDGED) && user.combat_mode)
 		if(isturf(loc))
 			new /obj/item/food/meat/slab/mouse(loc)
 			to_chat(user, span_notice("You butcher [src]."))

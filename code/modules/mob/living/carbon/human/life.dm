@@ -105,7 +105,13 @@
 	else
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
-			lun.check_breath(breath,src)
+			if(lun.check_breath(breath,src))
+				return
+			// Failed a breath for one reason or another.
+			set_blurriness(max(3, eye_blurry))
+			if(prob(20))
+				spawn(-1)
+					emote("gasp")
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)

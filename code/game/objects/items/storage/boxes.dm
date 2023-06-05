@@ -980,7 +980,7 @@
 		icon_state = "paperbag_[choice]"
 		inhand_icon_state = "paperbag_[choice]"
 		return FALSE
-	else if(W.get_sharpness())
+	else if(W.sharpness)
 		if(!contents.len)
 			if(inhand_icon_state == "paperbag_None")
 				user.show_message(span_notice("You cut eyeholes into [src]."), MSG_VISUAL)

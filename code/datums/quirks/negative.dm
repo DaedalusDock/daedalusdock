@@ -346,9 +346,9 @@
 		SEND_SIGNAL(quirk_holder, COMSIG_CLEAR_MOOD_EVENT, "nyctophobia")
 		return
 
-	if(quirk_holder.m_intent == MOVE_INTENT_RUN)
+	if(quirk_holder.m_intent != MOVE_INTENT_WALK)
 		to_chat(quirk_holder, span_warning("Easy, easy, take it slow... you're in the dark..."))
-		quirk_holder.toggle_move_intent()
+		quirk_holder.set_move_intent(MOVE_INTENT_WALK)
 	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "nyctophobia", /datum/mood_event/nyctophobia)
 
 /datum/quirk/nonviolent
@@ -481,7 +481,7 @@
 	processing_quirk = TRUE
 
 /datum/quirk/insanity/process(delta_time)
-	if(quirk_holder.stat != CONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
+	if(quirk_holder.stat >= UNCONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
 		return
 
 	if(DT_PROB(2, delta_time))

@@ -36,6 +36,11 @@
 	icon_state = "crowbar_red"
 	force = 8
 
+/obj/item/crowbar/red/suicide_act(mob/user)
+	user.visible_message(span_suicide("[user]'s body turns limp and collapses to the ground as [user.p_they()] smashes [user.p_their()] head in with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	playsound(loc, 'sound/health/flatline.ogg', 50, FALSE, -1)
+	return (BRUTELOSS)
+
 /obj/item/crowbar/abductor
 	name = "alien crowbar"
 	desc = "A hard-light crowbar. It appears to pry by itself, without any effort required."

@@ -142,6 +142,8 @@
 
 /obj/effect/particle_effect/smoke/bad/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == src)
+		return
 	if(istype(arrived, /obj/projectile/beam))
 		var/obj/projectile/beam/beam = arrived
 		beam.damage *= 0.5

@@ -1344,6 +1344,8 @@
 	if(!isturf(loc))
 		return
 	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc)
+	if(QDELETED(our_splatter))
+		return
 	our_splatter.add_blood_DNA(return_blood_DNA())
 	our_splatter.blood_dna_info = get_blood_dna_list()
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)

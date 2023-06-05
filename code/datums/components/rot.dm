@@ -119,6 +119,8 @@
 /// Triggered when something enters the component's parent.
 /datum/component/rot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	rot_react(source, arrived)
 
 ///The main bit of logic for the rot component, does a temperature check and has a chance to infect react_to

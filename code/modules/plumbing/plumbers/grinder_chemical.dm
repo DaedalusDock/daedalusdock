@@ -30,6 +30,8 @@
 
 /obj/machinery/plumbing/grinder_chemical/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	grind(AM)
 
 /obj/machinery/plumbing/grinder_chemical/proc/grind(atom/AM)

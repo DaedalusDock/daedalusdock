@@ -31,6 +31,8 @@
 
 /obj/machinery/teambuilder/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!ishuman(AM) && humans_only)
 		return
 	if(AM.get_filter("teambuilder"))

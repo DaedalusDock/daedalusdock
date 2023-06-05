@@ -60,6 +60,8 @@
 
 /datum/component/caltrop/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 
 	if(!prob(probability))
 		return

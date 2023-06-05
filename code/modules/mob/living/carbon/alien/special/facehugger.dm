@@ -87,6 +87,8 @@
 
 /obj/item/clothing/mask/facehugger/proc/on_entered(datum/source, atom/target)
 	SIGNAL_HANDLER
+	if(target == src)
+		return
 	HasProximity(target)
 
 /obj/item/clothing/mask/facehugger/on_found(mob/finder)

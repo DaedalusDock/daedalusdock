@@ -373,6 +373,9 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 
 /obj/item/shard/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
+
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!(L.movement_type & (FLYING|FLOATING)) || L.buckled)

@@ -1359,6 +1359,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/lava/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
 		target.stamina.adjust(-20)
 		new /datum/hallucination/fire(target)
@@ -1381,6 +1383,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/chasm/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
 		if(istype(target, /obj/effect/dummy/phased_mob))
 			return
@@ -1415,6 +1419,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/anomaly/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
 		new /datum/hallucination/shock(target)
 

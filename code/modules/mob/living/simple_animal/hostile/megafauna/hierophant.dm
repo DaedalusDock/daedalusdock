@@ -688,6 +688,8 @@ Difficulty: Hard
 
 /obj/effect/temp_visual/hierophant/blast/damaging/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(bursting)
 		do_damage(get_turf(src))
 

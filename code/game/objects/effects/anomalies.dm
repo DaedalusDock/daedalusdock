@@ -118,7 +118,7 @@
 /obj/effect/anomaly/grav/Initialize(mapload, new_lifespan, drops_core)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -157,6 +157,8 @@
 
 /obj/effect/anomaly/grav/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/Bump(atom/A)
@@ -177,7 +179,7 @@
 
 /obj/effect/anomaly/grav/high/Initialize(mapload, new_lifespan)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/setup_grav_field)
+	INVOKE_ASYNC(src, PROC_REF(setup_grav_field))
 
 /obj/effect/anomaly/grav/high/proc/setup_grav_field()
 	grav_field = new(src, 7, TRUE, rand(0, 3))
@@ -193,6 +195,7 @@
 	icon_state = "electricity2"
 	density = TRUE
 	aSignal = /obj/item/assembly/signaler/anomaly/flux
+	zmm_flags = ZMM_MANGLE_PLANES
 	var/canshock = FALSE
 	var/shockdamage = 20
 	var/explosive = TRUE
@@ -201,7 +204,7 @@
 	. = ..()
 	explosive = _explosive
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -217,6 +220,8 @@
 
 /obj/effect/anomaly/flux/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/Bump(atom/A)
@@ -305,7 +310,7 @@
 
 /obj/effect/anomaly/bluespace/proc/blue_effect(mob/make_sparkle)
 	make_sparkle.overlay_fullscreen("bluespace_flash", /atom/movable/screen/fullscreen/bluespace_sparkle, 1)
-	addtimer(CALLBACK(make_sparkle, /mob/.proc/clear_fullscreen, "bluespace_flash"), 2 SECONDS)
+	addtimer(CALLBACK(make_sparkle, TYPE_PROC_REF(/mob, clear_fullscreen), "bluespace_flash"), 2 SECONDS)
 
 /////////////////////
 
@@ -330,7 +335,7 @@
 		T.atmos_spawn_air(GAS_PLASMA, 5, 1000)
 
 /obj/effect/anomaly/pyro/detonate()
-	INVOKE_ASYNC(src, .proc/makepyroslime)
+	INVOKE_ASYNC(src, PROC_REF(makepyroslime))
 
 /obj/effect/anomaly/pyro/proc/makepyroslime()
 	var/turf/open/T = get_turf(src)

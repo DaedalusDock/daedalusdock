@@ -58,7 +58,7 @@
 	if(is_type_in_typecache(target, blacklisted_turfs))
 		return
 
-	INVOKE_ASYNC(src, .proc/try_carve_rune, target, user)
+	INVOKE_ASYNC(src, PROC_REF(try_carve_rune), target, user)
 
 /*
  * Begin trying to carve a rune. Go through a few checks, then call do_carve_rune if successful.
@@ -236,7 +236,7 @@
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
-	carbon_victim.adjustStaminaLoss(80)
+	carbon_victim.stamina.adjust(-80)
 	carbon_victim.silent += 10
 	carbon_victim.adjust_timed_status_effect(1 MINUTES, /datum/status_effect/speech/stutter)
 	carbon_victim.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)

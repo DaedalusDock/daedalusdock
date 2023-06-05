@@ -1,7 +1,8 @@
 // Describes the three modes of scanning available for health analyzers
 #define SCANMODE_HEALTH 0
 #define SCANMODE_WOUND 1
-#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
+#define SCANMODE_CHEM 2
+#define SCANMODE_COUNT 3 // Update this to be the number of scan modes if you add more
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
@@ -13,7 +14,7 @@
 	worn_icon_state = "healthanalyzer"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	desc = "A hand-held body scanner capable of distinguishing vital signs of the subject. Has a side button to scan for chemicals, and can be toggled to scan wounds."
+	desc = "A hand-held body scanner capable of distinguishing vital signs of the subject. Can be toggled to scan for chemicals or wounds."
 	flags_1 = CONDUCT_1
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
@@ -47,6 +48,9 @@
 			to_chat(user, span_notice("You switch the health analyzer to check physical health."))
 		if(SCANMODE_WOUND)
 			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
+		if(SCANMODE_CHEM)
+			to_chat(user, span_notice("You switch the health analyzer to scan chemical contents."))
+		//If this list gets any longer please consider a LUT for the latter half of the message.
 
 /obj/item/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
 	flick("[icon_state]-scan", src) //makes it so that it plays the scan animation upon scanning, including clumsy scanning
@@ -73,12 +77,10 @@
 			healthscan(user, M, mode, advanced)
 		if (SCANMODE_WOUND)
 			woundscan(user, M, src)
+		if (SCANMODE_CHEM)
+			chemscan(user, M)
 
 	add_fingerprint(user)
-
-/obj/item/healthanalyzer/attack_secondary(mob/living/victim, mob/living/user, params)
-	chemscan(user, victim)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/healthanalyzer/add_item_context(
 	obj/item/source,
@@ -145,9 +147,9 @@
 		else
 			render_list += "<span class='alert ml-1'>Subject has been husked.</span>\n"
 
-	if(target.getStaminaLoss())
+	if(target.stamina.loss_as_percent)
 		if(advanced)
-			render_list += "<span class='alert ml-1'>Fatigue level: [target.getStaminaLoss()]%.</span>\n"
+			render_list += "<span class='alert ml-1'>Fatigue level: [target.stamina.loss_as_percent]%.</span>\n"
 		else
 			render_list += "<span class='alert ml-1'>Subject appears to be suffering from fatigue.</span>\n"
 	if (target.getCloneLoss())
@@ -192,7 +194,7 @@
 		var/mob/living/carbon/carbontarget = target
 
 		// Ear status
-		var/obj/item/organ/internal/ears/ears = carbontarget.getorganslot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = carbontarget.getorganslot(ORGAN_SLOT_EARS)
 		if(istype(ears))
 			if(HAS_TRAIT_FROM(carbontarget, TRAIT_DEAF, GENETIC_MUTATION))
 				render_list = "<span class='alert ml-2'>Subject is genetically deaf.\n</span>"
@@ -207,7 +209,7 @@
 					render_list += "<span class='alert ml-2'>Subject is [ears.damage > ears.maxHealth ? "permanently ": "temporarily "] deaf.\n</span>"
 
 		// Eye status
-		var/obj/item/organ/internal/eyes/eyes = carbontarget.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = carbontarget.getorganslot(ORGAN_SLOT_EYES)
 		if(istype(eyes))
 			if(carbontarget.is_blind())
 				render_list += "<span class='alert ml-2'>Subject is blind.\n</span>"
@@ -244,7 +246,7 @@
 		var/mob/living/carbon/human/humantarget = target
 
 		// Organ damage, missing organs
-		if(humantarget.internal_organs && humantarget.internal_organs.len)
+		if(length(humantarget.processing_organs))
 			var/render = FALSE
 			var/toReport = "<span class='info ml-1'>Organs:</span>\
 				<table class='ml-2'><tr>\
@@ -252,7 +254,7 @@
 				[advanced ? "<td style='width:3em;'><font color='#ff0000'><b>Dmg</b></font></td>" : ""]\
 				<td style='width:12em;'><font color='#ff0000'><b>Status</b></font></td>"
 
-			for(var/obj/item/organ/organ in humantarget.internal_organs)
+			for(var/obj/item/organ/organ as anything in humantarget.processing_organs)
 				var/status = organ.get_status_text()
 				if (status != "")
 					render = TRUE
@@ -322,12 +324,12 @@
 		for(var/obj/item/bodypart/wounded_part as anything in carbontarget.get_wounded_bodyparts())
 			var/limb_result = "<span class='alert ml-2'>[capitalize(wounded_part.name)][!IS_ORGANIC_LIMB(wounded_part) ? " (Cybernetic)" : ""]:</span>"
 			if(wounded_part.brute_dam > 0)
-				limb_result = "[limb_result] \[[span_color("red", "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]</span>"
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE, "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]"
 			if(wounded_part.burn_dam > 0)
-				limb_result = "[limb_result] \[[span_color("#ffa500", "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]</span>"
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BURN, "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]"
 			if(wounded_part.bodypart_flags & BP_BLEEDING)
-				limb_result = "<span class='alert ml-2'>[limb_result] \[[span_color("red","bleeding")]\]</span>"
-			render_list += limb_result
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE,"<b>bleeding</b>")]\]</span>"
+			render_list += "[limb_result]\n"
 
 	//Diseases
 	for(var/thing in target.diseases)
@@ -362,7 +364,7 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		var/cyberimp_detect
-		for(var/obj/item/organ/internal/cyberimp/CI in carbontarget.internal_organs)
+		for(var/obj/item/organ/cyberimp/CI in carbontarget.processing_organs)
 			if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
 				cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
 		if(cyberimp_detect)
@@ -398,7 +400,7 @@
 			render_list += "<span class='notice ml-1'>Subject contains no reagents in their blood.</span>\n"
 
 		// Stomach reagents
-		var/obj/item/organ/internal/stomach/belly = target.getorganslot(ORGAN_SLOT_STOMACH)
+		var/obj/item/organ/stomach/belly = target.getorganslot(ORGAN_SLOT_STOMACH)
 		if(belly)
 			if(belly.reagents.reagent_list.len)
 				render_list += "<span class='notice ml-1'>Subject contains the following reagents in their stomach:</span>\n"
@@ -520,6 +522,7 @@
 
 #undef SCANMODE_HEALTH
 #undef SCANMODE_WOUND
+#undef SCANMODE_CHEM
 #undef SCANMODE_COUNT
 #undef SCANNER_CONDENSED
 #undef SCANNER_VERBOSE

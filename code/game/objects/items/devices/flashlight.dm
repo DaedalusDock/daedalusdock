@@ -15,7 +15,7 @@
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_outer_range = 4
-	light_power = 1
+	light_power = 0.3
 	light_on = FALSE
 	var/on = FALSE
 
@@ -75,7 +75,7 @@
 					to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
 					return
 
-				var/obj/item/organ/internal/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
+				var/obj/item/organ/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
 				if(!E)
 					to_chat(user, span_warning("[M] doesn't have any eyes!"))
 					return
@@ -104,9 +104,9 @@
 				var/their = M.p_their()
 
 				var/list/mouth_organs = new
-				for(var/obj/item/organ/O in M.internal_organs)
-					if(O.zone == BODY_ZONE_PRECISE_MOUTH)
-						mouth_organs.Add(O)
+				for(var/obj/item/organ/organ as anything in M.organs)
+					if(organ.zone == BODY_ZONE_PRECISE_MOUTH)
+						mouth_organs.Add(organ)
 				var/organ_list = ""
 				var/organ_count = LAZYLEN(mouth_organs)
 				if(organ_count)
@@ -232,8 +232,10 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
-	light_outer_range = 5
+	light_outer_range = 3.5
+	light_power = 0.9
 	light_system = STATIC_LIGHT
+	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
 	custom_materials = null
@@ -245,7 +247,7 @@
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	inhand_icon_state = "lampgreen"
-
+	light_color = LIGHT_COLOR_TUNGSTEN
 
 
 /obj/item/flashlight/lamp/verb/toggle_light()
@@ -262,6 +264,7 @@
 	desc = "Only a clown would think to make a ghetto banana-shaped lamp. Even has a goofy pullstring."
 	icon_state = "bananalamp"
 	inhand_icon_state = "bananalamp"
+	light_color = LIGHT_COLOR_BRIGHT_YELLOW
 
 // FLARES
 
@@ -527,7 +530,7 @@
 	if(!fuel)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
-	var/obj/item/organ/internal/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but [user.p_they()] don't have any!"))
 		return SHAME
@@ -553,7 +556,7 @@
 
 /obj/item/flashlight/glowstick/yellow
 	name = "yellow glowstick"
-	color = LIGHT_COLOR_YELLOW
+	color = LIGHT_COLOR_DIM_YELLOW
 
 /obj/item/flashlight/glowstick/pink
 	name = "pink glowstick"

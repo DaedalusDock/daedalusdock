@@ -105,7 +105,7 @@
 /datum/reagent/gunpowder/on_new(data)
 	. = ..()
 	if(holder?.my_atom)
-		RegisterSignal(holder.my_atom, COMSIG_ATOM_EX_ACT, .proc/on_ex_act)
+		RegisterSignal(holder.my_atom, COMSIG_ATOM_EX_ACT, PROC_REF(on_ex_act))
 
 /datum/reagent/gunpowder/Destroy()
 	if(holder?.my_atom)
@@ -348,7 +348,7 @@
 	if(isjellyperson(M))
 		shock_timer = 0 //immune to shocks
 		M.AdjustAllImmobility(-40  *REM * delta_time)
-		M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+		M.stamina.adjust(2 * REM * delta_time)
 		if(isluminescent(M))
 			var/mob/living/carbon/human/H = M
 			var/datum/species/jelly/luminescent/L = H.dna.species

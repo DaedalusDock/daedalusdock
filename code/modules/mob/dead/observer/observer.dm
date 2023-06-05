@@ -123,7 +123,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/old_color = color
 	color = "#960000"
 	animate(src, color = old_color, time = 10, flags = ANIMATION_PARALLEL)
-	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 10)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 10)
 
 /mob/dead/observer/Destroy()
 	if(data_huds_on)
@@ -192,8 +192,8 @@ Works together with spawning an observer, noted above.
 		if(ishuman(usr)) //following code only applies to those capable of having an ethereal heart, ie humans
 			var/mob/living/carbon/human/crystal_fella = usr
 			var/our_heart = crystal_fella.getorganslot(ORGAN_SLOT_HEART)
-			if(istype(our_heart, /obj/item/organ/internal/heart/ethereal)) //so you got the heart?
-				var/obj/item/organ/internal/heart/ethereal/ethereal_heart = our_heart
+			if(istype(our_heart, /obj/item/organ/heart/ethereal)) //so you got the heart?
+				var/obj/item/organ/heart/ethereal/ethereal_heart = our_heart
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
@@ -781,7 +781,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		client.perspective = EYE_PERSPECTIVE
 		if(is_secret_level(mob_eye.z) && !client?.holder)
 			sight = null //we dont want ghosts to see through walls in secret areas
-		RegisterSignal(mob_eye, COMSIG_MOVABLE_Z_CHANGED, .proc/on_observing_z_changed)
+		RegisterSignal(mob_eye, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_observing_z_changed))
 		if(mob_eye.hud_used)
 			client.screen = list()
 			LAZYOR(mob_eye.observers, src)

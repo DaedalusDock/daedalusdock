@@ -79,7 +79,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/pathing_pass_method = TURF_PATHING_PASS_DENSITY
 
 /turf/vv_edit_var(var_name, new_value)
-	var/static/list/banned_edits = list(NAMEOF(src, x), NAMEOF(src, y), NAMEOF(src, z))
+	var/static/list/banned_edits = list(
+		NAMEOF_STATIC(src, x),
+		NAMEOF_STATIC(src, y),
+		NAMEOF_STATIC(src, z)
+		)
 	if(var_name in banned_edits)
 		return FALSE
 	. = ..()
@@ -101,9 +105,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	if(mapload && permit_ao)
 		queue_ao()
-	// if(!blocks_air || !simulated)
-		// air = new
-		// air.copyFrom(src.return_air())
 
 	// by default, vis_contents is inherited from the turf that was here before
 	vis_contents.Cut()
@@ -137,16 +138,19 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		Entered(content, null)
 
 	var/area/our_area = loc
-	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
-		add_overlay(GLOB.fullbright_overlay)
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
+
+	if (z_flags & Z_MIMIC_BELOW)
+		setup_zmimic(mapload)
 
 	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_new(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_new(src, UP)
 
@@ -178,12 +182,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
-	var/turf/T = SSmapping.get_turf_above(src)
+	var/turf/T = GetAbove(src)
 	if(T)
 		T.multiz_turf_del(src, DOWN)
-	T = SSmapping.get_turf_below(src)
+	T = GetBelow(src)
 	if(T)
 		T.multiz_turf_del(src, UP)
+
+	if (z_flags & Z_MIMIC_BELOW)
+		cleanup_zmimic()
+
 	if(force)
 		..()
 		//this will completely wipe turf state
@@ -277,7 +285,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return FALSE
 
 //direction is direction of travel of air
-/turf/proc/zPassOut(atom/movable/A, direction, turf/destination)
+/turf/proc/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
 	return FALSE
 
 //direction is direction of travel of air
@@ -634,7 +642,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/internal/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly?.reagents.total_volume)
 		return
 	var/chemicals_lost = belly.reagents.total_volume * purge_ratio

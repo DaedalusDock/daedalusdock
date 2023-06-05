@@ -1062,8 +1062,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		prefs.apply_prefs_to(body, TRUE)
 
 	var/datum/outfit/outfit = outfit_override || job?.outfit
+	outfit = new outfit()
 	if(job)
-		body.dna.species.pre_equip_species_outfit(job, body, TRUE)
+		body.dna.species.pre_equip_species_outfit(outfit, body, TRUE)
+
 	if(outfit)
 		body.equipOutfit(outfit, TRUE)
 
@@ -1305,7 +1307,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	for(var/A in transformation_objects)
 		vis_contents += A
 	if(reset_after)
-		addtimer(CALLBACK(src,.proc/_reset_transformation_animation,filter_index),time)
+		addtimer(CALLBACK(src, PROC_REF(_reset_transformation_animation), filter_index),time)
 
 /*
  * Resets filters and removes transformation animations helper objects from vis contents.
@@ -1397,3 +1399,25 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 		if(scream)
 			stack_trace("Icon Lookup for state: [state] in file [file] failed.")
 		return FALSE
+
+/atom/proc/save_icon()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = icon(icon, icon_state)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/atom/proc/save_icon_hard()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = getFlatIcon(src)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")

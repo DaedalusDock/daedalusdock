@@ -1254,7 +1254,7 @@
 	},
 /obj/structure/table/reinforced/rglass,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/disk/design_disk/modkit_disc/resonator_blast,
+/obj/item/disk/data/modkit_disc/resonator_blast,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "sr" = (

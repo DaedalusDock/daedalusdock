@@ -117,7 +117,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 		return sorttext(b_name, a_name)
 
 /proc/cmp_job_display_asc(datum/job/A, datum/job/B)
-	return A.display_order - B.display_order
+	return GLOB.job_display_order.Find(A.type) - GLOB.job_display_order.Find(B.type)
 
 /proc/cmp_department_display_asc(datum/job_department/A, datum/job_department/B)
 	return A.display_order - B.display_order
@@ -175,3 +175,21 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 ///Orders R-UST fusion by priority
 /proc/cmp_fusion_reaction_des(datum/fusion_reaction/A, datum/fusion_reaction/B)
 	return B.priority - A.priority
+
+/// Sort by plane, then by layer. Approximately BYOND rendering order.
+/proc/cmp_zm_render_order(atom/A, atom/B)
+	return (B.plane - A.plane) || (B.layer - A.layer)
+
+/// Sort modules by priority
+/proc/cmp_pref_modules(datum/preference_group/A, datum/preference_group/B)
+	return B.priority - A.priority
+
+/proc/cmp_pref_name(datum/preference/A, datum/preference/B)
+	return sorttext(B.explanation, A.explanation)
+
+/proc/cmp_loadout_name(datum/loadout_item/A, datum/loadout_item/B)
+	return sorttext(B.name, A.name)
+
+/// Orders designs by name
+/proc/cmp_design_name(datum/design/A, datum/design/B)
+	return sorttext(B.name, A.name)

@@ -42,7 +42,7 @@
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -80,6 +80,8 @@
 
 /mob/living/simple_animal/mouse/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(ishuman(AM))
 		if(!stat)
 			var/mob/M = AM
@@ -147,7 +149,7 @@
 /mob/living/simple_animal/mouse/proc/evolve()
 	var/mob/living/simple_animal/hostile/regalrat/regalrat = new /mob/living/simple_animal/hostile/regalrat/controlled(loc)
 	visible_message(span_warning("[src] devours the cheese! They morph into something... greater!"))
-	INVOKE_ASYNC(regalrat, /atom/movable/proc/say, "RISE, MY SUBJECTS! SCREEEEEEE!")
+	INVOKE_ASYNC(regalrat, TYPE_PROC_REF(/atom/movable, say), "RISE, MY SUBJECTS! SCREEEEEEE!")
 	if(mind)
 		mind.transfer_to(regalrat)
 	qdel(src)
@@ -216,7 +218,7 @@
 		. += span_warning("They're dripping with fuel and smells terrible.")
 
 /obj/item/food/deadmouse/attackby(obj/item/I, mob/living/user, params)
-	if(I.get_sharpness() && user.combat_mode)
+	if((I.sharpness & SHARP_EDGED) && user.combat_mode)
 		if(isturf(loc))
 			new /obj/item/food/meat/slab/mouse(loc)
 			to_chat(user, span_notice("You butcher [src]."))

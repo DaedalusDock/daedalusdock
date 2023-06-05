@@ -50,7 +50,7 @@
 	name = harvested_name
 	desc = harvested_desc
 	harvested = TRUE
-	addtimer(CALLBACK(src, .proc/regrow), rand(regrowth_time_low, regrowth_time_high))
+	addtimer(CALLBACK(src, PROC_REF(regrow)), rand(regrowth_time_low, regrowth_time_high))
 	return TRUE
 
 /obj/structure/flora/ash/proc/regrow()
@@ -60,7 +60,7 @@
 	harvested = FALSE
 
 /obj/structure/flora/ash/attackby(obj/item/W, mob/user, params)
-	if(!harvested && needs_sharp_harvest && W.get_sharpness())
+	if(!harvested && needs_sharp_harvest && W.sharpness)
 		user.visible_message(span_notice("[user] starts to harvest from [src] with [W]."),span_notice("You begin to harvest from [src] with [W]."))
 		if(do_after(user, src, harvest_time))
 			harvest(user)

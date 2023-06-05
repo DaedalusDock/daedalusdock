@@ -23,10 +23,10 @@
 	if(!.)
 		return
 	if(bumpoff)
-		RegisterSignal(mod.wearer, COMSIG_LIVING_MOB_BUMP, .proc/unstealth)
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, .proc/on_unarmed_attack)
-	RegisterSignal(mod.wearer, COMSIG_ATOM_BULLET_ACT, .proc/on_bullet_act)
-	RegisterSignal(mod.wearer, list(COMSIG_ITEM_ATTACK, COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_HITBY, COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_PAW, COMSIG_CARBON_CUFF_ATTEMPTED), .proc/unstealth)
+		RegisterSignal(mod.wearer, COMSIG_LIVING_MOB_BUMP, PROC_REF(unstealth))
+	RegisterSignal(mod.wearer, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
+	RegisterSignal(mod.wearer, COMSIG_ATOM_BULLET_ACT, PROC_REF(on_bullet_act))
+	RegisterSignal(mod.wearer, list(COMSIG_ITEM_ATTACK, COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_HITBY, COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_PAW, COMSIG_CARBON_CUFF_ATTEMPTED), PROC_REF(unstealth))
 	animate(mod.wearer, alpha = stealth_alpha, time = 1.5 SECONDS)
 	drain_power(use_power_cost)
 
@@ -105,7 +105,7 @@
 	mod.chestplate.allowed -= (guns_typecache - already_allowed_guns)
 
 /obj/item/mod/module/magnetic_harness/on_suit_activation()
-	RegisterSignal(mod.wearer, COMSIG_MOB_UNEQUIPPED_ITEM, .proc/check_dropped_item)
+	RegisterSignal(mod.wearer, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(check_dropped_item))
 
 /obj/item/mod/module/magnetic_harness/on_suit_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, COMSIG_MOB_UNEQUIPPED_ITEM)
@@ -117,7 +117,7 @@
 		return
 	if(new_location != get_turf(src))
 		return
-	addtimer(CALLBACK(src, .proc/pick_up_item, dropped_item), magnet_delay)
+	addtimer(CALLBACK(src, PROC_REF(pick_up_item), dropped_item), magnet_delay)
 
 /obj/item/mod/module/magnetic_harness/proc/pick_up_item(obj/item/item)
 	if(!isturf(item.loc) || !item.Adjacent(mod.wearer))
@@ -142,7 +142,7 @@
 	overlay_state_use = "module_pepper_used"
 
 /obj/item/mod/module/pepper_shoulders/on_suit_activation()
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, .proc/on_check_shields)
+	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(on_check_shields))
 
 /obj/item/mod/module/pepper_shoulders/on_suit_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS)

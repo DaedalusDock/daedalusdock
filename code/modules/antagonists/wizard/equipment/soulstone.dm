@@ -20,12 +20,12 @@
 /obj/item/soulstone/Initialize(mapload)
 	. = ..()
 	if(theme != THEME_HOLY)
-		RegisterSignal(src, COMSIG_BIBLE_SMACKED, .proc/on_bible_smacked)
+		RegisterSignal(src, COMSIG_BIBLE_SMACKED, PROC_REF(on_bible_smacked))
 
 ///signal called whenever a soulstone is smacked by a bible
 /obj/item/soulstone/proc/on_bible_smacked(datum/source, mob/living/user, direction)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, .proc/attempt_exorcism, user)
+	INVOKE_ASYNC(src, PROC_REF(attempt_exorcism), user)
 
 /**
  * attempt_exorcism: called from on_bible_smacked, takes time and if successful
@@ -140,7 +140,7 @@
 
 /obj/item/soulstone/Destroy() //Stops the shade from being qdel'd immediately and their ghost being sent back to the arrival shuttle.
 	for(var/mob/living/simple_animal/shade/shade in src)
-		INVOKE_ASYNC(shade, /mob/living/proc/death)
+		INVOKE_ASYNC(shade, TYPE_PROC_REF(/mob/living, death))
 	return ..()
 
 /obj/item/soulstone/proc/hot_potato(mob/living/user)
@@ -297,7 +297,7 @@
 		return TRUE
 	else
 		to_chat(user, "[span_userdanger("Capture failed!")]: The soul has already fled its mortal frame. You attempt to bring it back...")
-		INVOKE_ASYNC(src, .proc/getCultGhost, victim, user)
+		INVOKE_ASYNC(src, PROC_REF(getCultGhost), victim, user)
 		return TRUE //it'll probably get someone ;)
 
 ///captures a shade that was previously released from a soulstone.
@@ -325,7 +325,7 @@
 	if(!shade)
 		to_chat(user, "[span_userdanger("Creation failed!")]: [src] is empty! Go kill someone!")
 		return FALSE
-	var/construct_class = show_radial_menu(user, src, GLOB.construct_radial_images, custom_check = CALLBACK(src, .proc/check_menu, user, shell), require_near = TRUE, tooltips = TRUE)
+	var/construct_class = show_radial_menu(user, src, GLOB.construct_radial_images, custom_check = CALLBACK(src, PROC_REF(check_menu), user, shell), require_near = TRUE, tooltips = TRUE)
 	if(!shell || !construct_class)
 		return FALSE
 	make_new_construct_from_class(construct_class, theme, shade, user, FALSE, shell.loc)

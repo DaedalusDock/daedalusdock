@@ -408,6 +408,7 @@
 	log_smes()
 
 /obj/machinery/power/smes/engineering
+	input_attempt = FALSE //Don't drain the private loop by default
 	charge = 5e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
 	output_level = 90000
 

@@ -106,7 +106,7 @@
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	small_sprite = new
 	small_sprite.Grant(src)
-	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, .proc/add_dragon_overlay)
+	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, PROC_REF(add_dragon_overlay))
 
 /mob/living/simple_animal/hostile/space_dragon/Login()
 	. = ..()
@@ -209,7 +209,7 @@
 /mob/living/simple_animal/hostile/space_dragon/revive(full_heal, admin_revive)
 	. = ..()
 	add_dragon_overlay()
-	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, .proc/add_dragon_overlay)
+	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, PROC_REF(add_dragon_overlay))
 
 /mob/living/simple_animal/hostile/space_dragon/wabbajack_act(mob/living/new_mob)
 	empty_contents()
@@ -320,7 +320,7 @@
 			if(D.density)
 				return
 		delayFire += 1.5
-		addtimer(CALLBACK(src, .proc/dragon_fire_line, T), delayFire)
+		addtimer(CALLBACK(src, PROC_REF(dragon_fire_line), T), delayFire)
 
 /**
  * What occurs on each tile to actually create the fire.
@@ -401,7 +401,7 @@
 	fully_heal()
 	add_filter("anger_glow", 3, list("type" = "outline", "color" = "#ff330030", "size" = 5))
 	add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
-	addtimer(CALLBACK(src, .proc/rift_depower), 30 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(rift_depower)), 30 SECONDS)
 
 /**
  * Gives Space Dragon their the rift speed buff permanantly.
@@ -457,7 +457,7 @@
 /mob/living/simple_animal/hostile/space_dragon/proc/useGust(timer)
 	if(timer != 10)
 		pixel_y = pixel_y + 2;
-		addtimer(CALLBACK(src, .proc/useGust, timer + 1), 1.5)
+		addtimer(CALLBACK(src, PROC_REF(useGust), timer + 1), 1.5)
 		return
 	pixel_y = 0
 	icon_state = "spacedragon_gust_2"
@@ -479,7 +479,7 @@
 			var/throwtarget = get_edge_target_turf(target, dir_to_target)
 			L.safe_throw_at(throwtarget, 10, 1, src)
 			L.Paralyze(50)
-	addtimer(CALLBACK(src, .proc/reset_status), 4 + ((tiredness * tiredness_mult) / 10))
+	addtimer(CALLBACK(src, PROC_REF(reset_status)), 4 + ((tiredness * tiredness_mult) / 10))
 	tiredness = tiredness + (gust_tiredness * tiredness_mult)
 
 /**
@@ -670,7 +670,7 @@
 		priority_announce("Spatial object has reached peak energy charge in [initial(A.name)], please stand-by.", FLAVOR_ANANKE_STATION)
 		atom_integrity = INFINITY
 		icon_state = "carp_rift_charged"
-		set_light_color(LIGHT_COLOR_YELLOW)
+		set_light_color(LIGHT_COLOR_DIM_YELLOW)
 		update_light()
 		armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 		resistance_flags = INDESTRUCTIBLE

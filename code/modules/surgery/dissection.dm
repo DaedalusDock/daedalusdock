@@ -83,4 +83,4 @@
 	return FALSE
 
 /datum/surgery_step/dissection/tool_check(mob/user, obj/item/tool)
-	return implement_type != /obj/item || tool.get_sharpness() > 0
+	return implement_type != /obj/item || tool.sharpness

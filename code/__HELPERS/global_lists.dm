@@ -48,12 +48,12 @@
 	for(var/spath in subtypesof(/datum/species))
 		var/datum/species/S = new spath()
 		GLOB.species_list[S.id] = spath
-	sort_list(GLOB.species_list, /proc/cmp_typepaths_asc)
+	sort_list(GLOB.species_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	//Surgeries
 	for(var/path in subtypesof(/datum/surgery))
 		GLOB.surgeries_list += new path()
-	sort_list(GLOB.surgeries_list, /proc/cmp_typepaths_asc)
+	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	// Hair Gradients - Initialise all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name
 	for(var/path in subtypesof(/datum/sprite_accessory/gradient))
@@ -69,12 +69,13 @@
 	GLOB.emote_list = init_emote_list()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+	init_loadout_references()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
 	for(var/path in subtypesof(/datum/crafting_recipe))
 		var/datum/crafting_recipe/recipe = new path()
-		recipe.reqs = sort_list(recipe.reqs, /proc/cmp_crafting_req_priority)
+		recipe.reqs = sort_list(recipe.reqs, GLOBAL_PROC_REF(cmp_crafting_req_priority))
 		crafting_recipes += recipe
 	return crafting_recipes
 
@@ -150,3 +151,21 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	/obj/structure/camera_assembly,
 	/obj/structure/light_construct
 	)))
+
+/proc/init_loadout_references()
+	// Here we build the global loadout lists
+	for(var/datum/loadout_item/L as anything in subtypesof(/datum/loadout_item))
+		if(!initial(L.path))
+			continue
+		L = new L()
+		GLOB.loadout_items += L
+		GLOB.item_path_to_loadout_item[L.path] = L
+		if(!GLOB.loadout_category_to_subcategory_to_items[L.category])
+			GLOB.loadout_category_to_subcategory_to_items[L.category] = list()
+		if(!GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory])
+			GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory] = list()
+		GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory] += L
+
+	for(var/category as anything in GLOB.loadout_category_to_subcategory_to_items)
+		for(var/subcategory as anything in GLOB.loadout_category_to_subcategory_to_items[category])
+			GLOB.loadout_category_to_subcategory_to_items[category][subcategory] = sortTim(GLOB.loadout_category_to_subcategory_to_items[category][subcategory], GLOBAL_PROC_REF(cmp_loadout_name))

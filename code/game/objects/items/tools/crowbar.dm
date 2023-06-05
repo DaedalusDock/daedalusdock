@@ -8,8 +8,13 @@
 	usesound = 'sound/items/crowbar.ogg'
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	force = 5
+
+	force = 7
 	throwforce = 7
+	stamina_damage = 35
+	stamina_cost = 12
+	stamina_critical_chance = 10
+
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=50)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
@@ -94,7 +99,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].

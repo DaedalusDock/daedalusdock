@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(dbcore)
 	name = "Database"
-	flags = SS_TICKER
+	flags = SS_TICKER | SS_HIBERNATE
 	wait = 10 // Not seconds because we're running on SS_TICKER
 	runlevels = RUNLEVEL_INIT|RUNLEVEL_LOBBY|RUNLEVELS_DEFAULT
 	init_order = INIT_ORDER_DBCORE
@@ -39,6 +39,12 @@ SUBSYSTEM_DEF(dbcore)
 	var/list/datum/db_query/queries_current
 
 	var/connection  // Arbitrary handle returned from rust_g.
+
+/datum/controller/subsystem/dbcore/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, all_queries),
+	)
 
 /datum/controller/subsystem/dbcore/Initialize()
 	//We send warnings to the admins during subsystem init, as the clients will be New'd and messages
@@ -327,9 +333,9 @@ SUBSYSTEM_DEF(dbcore)
 	for (var/thing in querys)
 		var/datum/db_query/query = thing
 		if (warn)
-			INVOKE_ASYNC(query, /datum/db_query.proc/warn_execute)
+			INVOKE_ASYNC(query, TYPE_PROC_REF(/datum/db_query, warn_execute))
 		else
-			INVOKE_ASYNC(query, /datum/db_query.proc/Execute)
+			INVOKE_ASYNC(query, TYPE_PROC_REF(/datum/db_query, Execute))
 
 	for (var/thing in querys)
 		var/datum/db_query/query = thing

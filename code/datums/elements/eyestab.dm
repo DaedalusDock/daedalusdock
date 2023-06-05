@@ -18,7 +18,7 @@
 	if (!isnull(damage))
 		src.damage = damage
 
-	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/on_item_attack)
+	RegisterSignal(target, COMSIG_ITEM_ATTACK, PROC_REF(on_item_attack))
 
 /datum/element/eyestab/Detach(datum/source, ...)
 	. = ..()
@@ -80,7 +80,7 @@
 
 	log_combat(user, target, "attacked", "[item.name]", "(Combat mode: [user.combat_mode ? "On" : "Off"])")
 
-	var/obj/item/organ/internal/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
 

@@ -45,9 +45,9 @@
 		user_client = user.client
 		add_prog_bar_image_to_client()
 
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/on_user_delete)
-	RegisterSignal(user, COMSIG_MOB_LOGOUT, .proc/clean_user_client)
-	RegisterSignal(user, COMSIG_MOB_LOGIN, .proc/on_user_login)
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(on_user_delete))
+	RegisterSignal(user, COMSIG_MOB_LOGOUT, PROC_REF(clean_user_client))
+	RegisterSignal(user, COMSIG_MOB_LOGIN, PROC_REF(on_user_login))
 
 
 /datum/progressbar/Destroy()
@@ -136,5 +136,78 @@
 	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
 
 
+/datum/world_progressbar
+	///The progress bar visual element.
+	var/obj/effect/abstract/progbar/bar
+	///The atom who "created" the bar
+	var/atom/owner
+	///Effectively the number of steps the progress bar will need to do before reaching completion.
+	var/goal = 1
+	///Control check to see if the progress was interrupted before reaching its goal.
+	var/last_progress = 0
+	///Variable to ensure smooth visual stacking on multiple progress bars.
+	var/listindex = 0
+
+/datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
+	if(!_owner || !_goal)
+		return
+
+	owner = _owner
+	goal = _goal
+
+	bar = new()
+
+	if(underlay)
+		if(!istype(underlay))
+			underlay = image(underlay, dir = SOUTH)
+			underlay.filters += filter(type = "outline", size = 1)
+
+		underlay.pixel_y += 2
+		underlay.alpha = 200
+		underlay.plane = ABOVE_HUD_PLANE
+		underlay.appearance_flags = APPEARANCE_UI
+		bar.underlays += underlay
+
+	owner:vis_contents += bar
+
+	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
+
+	RegisterSignal(owner, COMSIG_PARENT_QDELETING, PROC_REF(owner_delete))
+
+/datum/world_progressbar/Destroy()
+	owner = null
+	QDEL_NULL(bar)
+	return ..()
+
+
+/datum/world_progressbar/proc/owner_delete()
+	qdel(src)
+
+///Updates the progress bar image visually.
+/datum/world_progressbar/proc/update(progress)
+	progress = clamp(progress, 0, goal)
+	if(progress == last_progress)
+		return
+	last_progress = progress
+	bar.icon_state = "prog_bar_[round(((progress / goal) * 100), 5)]"
+
+/datum/world_progressbar/proc/end_progress()
+	if(last_progress != goal)
+		bar.icon_state = "[bar.icon_state]_fail"
+
+	animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
+
+	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
+
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT
+
+/obj/effect/abstract/progbar
+	icon = 'icons/effects/progessbar.dmi'
+	icon_state = "prog_bar_0"
+	plane = ABOVE_HUD_PLANE
+	appearance_flags = APPEARANCE_UI | KEEP_APART
+	pixel_y = 32
+	alpha = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	vis_flags = NONE //We don't want VIS_INHERIT_PLANE

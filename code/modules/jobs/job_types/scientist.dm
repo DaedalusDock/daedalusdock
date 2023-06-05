@@ -6,10 +6,15 @@
 	total_positions = 5
 	spawn_positions = 3
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	selection_color = "#3d273d"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/ananke,
+		/datum/employer/contractor
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -30,7 +35,6 @@
 
 	liver_traits = list(TRAIT_BALLMER_SCIENTIST)
 
-	display_order = JOB_DISPLAY_ORDER_SCIENTIST
 	bounty_types = CIV_JOB_SCI
 	departments_list = list(
 		/datum/job_department/science,
@@ -40,7 +44,6 @@
 
 	mail_goodies = list(
 		/obj/item/raw_anomaly_core/random = 10,
-		/obj/item/disk/tech_disk/spaceloot = 2,
 		/obj/item/camera_bug = 1
 	)
 	rpg_title = "Thaumaturgist"

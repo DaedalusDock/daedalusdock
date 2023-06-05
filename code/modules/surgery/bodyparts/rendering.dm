@@ -48,7 +48,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
-	recolor_external_organs()
+	recolor_cosmetic_organs()
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
@@ -156,29 +156,25 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 
 	//EMISSIVE CODE START
-	// For some reason this was applied as an overlay on the aux image and limb image before.
-	// I am very sure that this is unnecessary, and i need to treat it as part of the return list
-	// to be able to mask it proper in case this limb is a leg.
 	if(!is_husked)
 		if(blocks_emissive)
-			var/atom/location = loc || owner || src
-			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, location, alpha = limb_appearance.alpha)
+			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, -BODY_LAYER, alpha = limb_appearance.alpha)
 			limb_em_block.dir = image_dir
 			. += limb_em_block
 
 			if(aux_zone)
-				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, location, alpha = aux_appearance.alpha)
+				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, -BODY_LAYER, alpha = aux_appearance.alpha)
 				aux_em_block.dir = image_dir
 				. += aux_em_block
 	//EMISSIVE CODE END
 
 	if(!is_husked)
 		//Draw external organs like horns and frills
-		for(var/obj/item/organ/external/external_organ in external_organs)
-			if(!dropped && !external_organ.can_draw_on_bodypart(owner))
+		for(var/obj/item/organ/visual_organ in cosmetic_organs)
+			if(!dropped && !visual_organ.can_draw_on_bodypart(owner))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			. += external_organ.get_overlays(limb_gender, image_dir)
+			. += visual_organ.get_overlays(limb_gender, image_dir)
 
 	return .
 
@@ -205,10 +201,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
 
-	for(var/obj/item/organ/external/external_organ as anything in external_organs)
-		if(owner && !external_organ.can_draw_on_bodypart(owner))
-			continue
-		. += "-[jointext(external_organ.generate_icon_cache(), "-")]"
+	for(var/obj/item/organ/O as anything in cosmetic_organs)
+		. += "-[json_encode(O.build_cache_key())]"
 
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
 		. += mod.key

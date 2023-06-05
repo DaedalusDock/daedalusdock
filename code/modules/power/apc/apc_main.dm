@@ -18,6 +18,9 @@
 	damage_deflection = 10
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
+	net_class = NETCLASS_APC
+	network_flags = NETWORK_FLAG_GEN_ID
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	///Range of the light emitted when on
 	var/light_on_inner_range = 0.5
@@ -59,7 +62,7 @@
 	///Is the AI locked from using the APC
 	var/aidisabled = FALSE
 	///Reference to our cable terminal
-	var/obj/machinery/power/terminal/terminal = null
+	var/obj/machinery/power/terminal/datanet/terminal = null
 	///Amount of power used by the lighting channel
 	var/lastused_light = 0
 	///Amount of power used by the equipment channel
@@ -129,7 +132,7 @@
 		name = "\improper [get_area_name(area, TRUE)] APC"
 		set_machine_stat(machine_stat | MAINT)
 		update_appearance()
-		addtimer(CALLBACK(src, .proc/update), 5)
+		addtimer(CALLBACK(src, PROC_REF(update)), 5)
 		dir = ndir
 
 	switch(dir)
@@ -183,7 +186,7 @@
 
 	become_atmos_sensitive()
 
-	addtimer(CALLBACK(src, .proc/update), 5)
+	addtimer(CALLBACK(src, PROC_REF(update)), 5)
 
 	///This is how we test to ensure that mappers use the directional subtypes of APCs, rather than use the parent and pixel-shift it themselves.
 	if(abs(offset_old) != APC_PIXEL_OFFSET)
@@ -388,7 +391,7 @@
 			for(var/obj/machinery/light/L in area)
 				if(!initial(L.no_emergency)) //If there was an override set on creation, keep that override
 					L.no_emergency = emergency_lights
-					INVOKE_ASYNC(L, /obj/machinery/light/.proc/update, FALSE)
+					INVOKE_ASYNC(L, TYPE_PROC_REF(/obj/machinery/light, update), FALSE)
 				CHECK_TICK
 	return TRUE
 
@@ -557,7 +560,7 @@
 		return
 	if(cell && cell.charge >= 20)
 		cell.use(20)
-		INVOKE_ASYNC(src, .proc/break_lights)
+		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
 	for(var/obj/machinery/light/breaked_light in area)

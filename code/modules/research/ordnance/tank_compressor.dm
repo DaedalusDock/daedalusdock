@@ -19,7 +19,7 @@
 	var/record_number = 1
 	var/obj/item/tank/inserted_tank
 	/// Reference to a disk we are going to print to.
-	var/obj/item/computer_hardware/hard_drive/portable/inserted_disk
+	var/obj/item/computer_hardware/hard_drive/portable/inserted_drive
 
 	pipe_flags = PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY
 
@@ -30,7 +30,7 @@
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/ComponentInitialize()
 	. = ..()
-	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, .proc/explosion_handle)
+	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(explosion_handle))
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/examine()
 	. = ..()
@@ -59,14 +59,14 @@
 			return ..()
 		inserted_tank = tank_item
 		last_recorded_pressure = 0
-		RegisterSignal(inserted_tank, COMSIG_PARENT_QDELETING, .proc/tank_destruction)
+		RegisterSignal(inserted_tank, COMSIG_PARENT_QDELETING, PROC_REF(tank_destruction))
 		update_appearance()
 		return
 	if(istype(item, /obj/item/computer_hardware/hard_drive/portable))
 		var/obj/item/computer_hardware/hard_drive/portable/attacking_disk = item
-		eject_disk(user)
+		eject_drive(user)
 		if(user.transferItemToLoc(attacking_disk, src))
-			inserted_disk = attacking_disk
+			inserted_drive = attacking_disk
 		else
 			balloon_alert(user, span_warning("[attacking_disk] is stuck to your hand."))
 		return
@@ -199,27 +199,15 @@
 	record_number += 1
 	say("Buffer data stored.")
 
-/obj/machinery/atmospherics/components/binary/tank_compressor/proc/apply_experiments(datum/data/compressor_record/record)
-	var/list/passed_experiments = list()
-	var/list/gas_data = record.gas_data
-
-	for (var/datum/experiment/ordnance/gaseous/experiment in SSresearch.ordnance_experiments)
-		if(experiment.required_gas in gas_data)
-			if(gas_data[experiment.required_gas] > MINIMUM_MOLE_COUNT)
-				passed_experiments += list(experiment.type = gas_data[experiment.required_gas])
-
-	return passed_experiments
-
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/print(mob/user, datum/data/compressor_record/record)
-	if(!record || !inserted_disk)
+	if(!record || !inserted_drive)
 		return
 
 	var/datum/computer_file/data/ordnance/gaseous/record_data = new
 	record_data.filename = "Gas Compressor " + record.name //Gas Compressor Log Recording #x
 	record_data.gas_record = record
-	record_data.possible_experiments = apply_experiments(record)
 
-	if(inserted_disk.store_file(record_data))
+	if(inserted_drive.store_file(record_data))
 		playsound(src, 'sound/machines/ping.ogg', 25)
 	else
 		playsound(src, 'sound/machines/terminal_error.ogg', 25)
@@ -239,20 +227,20 @@
 	active = FALSE
 	return TRUE
 
-/obj/machinery/atmospherics/components/binary/tank_compressor/proc/eject_disk(mob/user)
-	if(!inserted_disk)
+/obj/machinery/atmospherics/components/binary/tank_compressor/proc/eject_drive(mob/user)
+	if(!inserted_drive)
 		return FALSE
 	if(user)
-		user.put_in_hands(inserted_disk)
+		user.put_in_hands(inserted_drive)
 	else
-		inserted_disk.forceMove(drop_location())
+		inserted_drive.forceMove(drop_location())
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 	return TRUE
 
 /// We rely on exited to clear references.
 /obj/machinery/atmospherics/components/binary/tank_compressor/Exited(atom/movable/gone, direction)
-	if(gone == inserted_disk)
-		inserted_disk = null
+	if(gone == inserted_drive)
+		inserted_drive = null
 	if(gone == inserted_tank)
 		UnregisterSignal(inserted_tank, COMSIG_PARENT_QDELETING)
 		inserted_tank = null
@@ -261,12 +249,12 @@
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/on_deconstruction()
 	eject_tank()
-	eject_disk()
+	eject_drive()
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/Destroy()
 	inserted_tank = null
-	inserted_disk = null
+	inserted_drive = null
 	leaked_gas_buffer = null
 	QDEL_NULL(compressor_record) //We only want the list nuked, not the contents.
 	return ..()
@@ -308,7 +296,7 @@
 		if("eject_tank")
 			eject_tank(usr)
 		if("eject_disk")
-			eject_disk(usr)
+			eject_drive(usr)
 		if("delete_record")
 			var/datum/data/compressor_record/record = locate(params["ref"]) in compressor_record
 			if(!compressor_record || !(record in compressor_record))
@@ -346,8 +334,8 @@
 	data["outputData"] = gas_mixture_parser(airs[1], "Ouput Port")
 	data["bufferData"] = gas_mixture_parser(leaked_gas_buffer, "Gas Buffer")
 
-	data["disk"] = inserted_disk?.name
-	data["storage"] = "[inserted_disk?.used_capacity] / [inserted_disk?.max_capacity] GQ"
+	data["disk"] = inserted_drive?.name
+	data["storage"] = "[inserted_drive?.used_capacity] / [inserted_drive?.max_capacity] GQ"
 	data["records"] = list()
 	for (var/datum/data/compressor_record/record in compressor_record)
 		var/list/single_record_data = list(

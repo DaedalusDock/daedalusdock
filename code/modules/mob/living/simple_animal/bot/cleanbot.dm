@@ -121,7 +121,7 @@
 	prefixes = list(command, security, engineering)
 	suffixes = list(research, medical, legal)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	GLOB.janitor_devices += src
@@ -152,7 +152,8 @@
 
 /mob/living/simple_animal/bot/cleanbot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-
+	if(AM == src)
+		return
 	zone_selected = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	if(weapon && has_gravity() && ismob(AM))
 		var/mob/living/carbon/C = AM
@@ -163,7 +164,7 @@
 			stolen_valor += C.job
 		update_titles()
 
-		INVOKE_ASYNC(weapon, /obj/item.proc/attack, C, src)
+		INVOKE_ASYNC(weapon, TYPE_PROC_REF(/obj/item, attack), C, src)
 		C.Knockdown(20)
 
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/living/user, params)

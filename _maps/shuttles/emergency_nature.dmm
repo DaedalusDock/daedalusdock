@@ -98,22 +98,12 @@
 /obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"dT" = (
-/obj/effect/turf_decal/stripes/line,
-/obj/structure/chair/comfy/shuttle{
-	dir = 1
-	},
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/shuttle/escape)
 "eq" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "ev" = (
 /obj/effect/turf_decal/trimline/green/filled/corner,
@@ -371,9 +361,8 @@
 	dir = 8
 	},
 /obj/structure/grille/broken,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "lS" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -476,6 +465,14 @@
 /obj/item/storage/medkit/regular,
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"pr" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "qD" = (
 /obj/structure/flora/ausbushes/sparsegrass,
@@ -878,18 +875,8 @@
 /obj/effect/turf_decal/trimline/blue/filled/corner{
 	dir = 1
 	},
-/turf/open/floor/iron{
-	icon_state = "floorscorched1"
-	},
-/area/shuttle/escape)
-"Hi" = (
-/obj/effect/turf_decal/stripes/line,
-/obj/structure/chair/comfy/shuttle{
-	dir = 1
-	},
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/iron,
 /area/shuttle/escape)
 "Hq" = (
 /obj/structure/flora/rock/pile,
@@ -1085,9 +1072,8 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "QO" = (
 /obj/effect/turf_decal/weather/dirt{
@@ -1606,7 +1592,7 @@ HV
 Kx
 Yu
 dP
-dT
+pr
 Jw
 gu
 WE
@@ -1738,7 +1724,7 @@ HV
 Zd
 Yu
 Um
-Hi
+pr
 Jw
 gx
 gx

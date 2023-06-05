@@ -3,6 +3,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	taste_description = "bitterness"
 	var/trippy = TRUE //Does this drug make you trip?
+	abstract_type = /datum/reagent/drug
 
 /datum/reagent/drug/on_mob_end_metabolize(mob/living/M)
 	if(trippy)
@@ -163,7 +164,7 @@
 	M.AdjustUnconscious(-40 * REM * delta_time)
 	M.AdjustParalyzed(-40 * REM * delta_time)
 	M.AdjustImmobilized(-40 * REM * delta_time)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.set_timed_status_effect(4 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * REM * delta_time)
 	if(DT_PROB(2.5, delta_time))
@@ -218,7 +219,7 @@
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "salted", /datum/mood_event/stimulant_heavy, name)
-	M.adjustStaminaLoss(-5 * REM * delta_time, 0)
+	M.stamina.adjust(5 * REM * delta_time)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * REM * delta_time)
 	M.hallucination += 5 * REM * delta_time
 	if(!HAS_TRAIT(M, TRAIT_IMMOBILIZED) && !ismovable(M.loc))
@@ -250,7 +251,7 @@
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	M.adjustStaminaLoss(-18 * REM * delta_time, 0)
+	M.stamina.adjust(-18 * REM * delta_time)
 	M.adjustToxLoss(0.5 * REM * delta_time, 0)
 	if(DT_PROB(30, delta_time))
 		M.losebreath++
@@ -343,7 +344,7 @@
 		M.emote(pick("twitch","drool"))
 	if(DT_PROB(10, delta_time))
 		M.losebreath++
-		M.adjustStaminaLoss(4, 0)
+		M.stamina.adjust(-4)
 	if(DT_PROB(7.5, delta_time))
 		M.adjustToxLoss(2, 0)
 	..()
@@ -351,6 +352,7 @@
 /datum/reagent/drug/maint
 	name = "Maintenance Drugs"
 	chemical_flags = NONE
+	abstract_type = /datum/reagent/drug/maint
 
 /datum/reagent/drug/maint/powder
 	name = "Maintenance Powder"
@@ -522,8 +524,8 @@
 	. = ..()
 
 	SEND_SIGNAL(dancer, COMSIG_ADD_MOOD_EVENT, "vibing", /datum/mood_event/high, name)
-	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), .proc/on_flip)
-	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), .proc/on_spin)
+	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), PROC_REF(on_flip))
+	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), PROC_REF(on_spin))
 
 	if(!dancer.hud_used)
 		return
@@ -645,7 +647,7 @@
 	. = ..()
 	playsound(invisible_man, 'sound/chemistry/saturnx_fade.ogg', 40)
 	to_chat(invisible_man, span_nicegreen("You feel pins and needles all over your skin as your body suddenly becomes transparent!"))
-	addtimer(CALLBACK(src, .proc/turn_man_invisible, invisible_man), 10) //just a quick delay to synch up the sound.
+	addtimer(CALLBACK(src, PROC_REF(turn_man_invisible), invisible_man), 10) //just a quick delay to synch up the sound.
 	if(!invisible_man.hud_used)
 		return
 
@@ -685,7 +687,7 @@
 		return
 
 	ADD_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN, name)
-	ADD_TRAIT(invisible_man, TRAIT_HIDE_EXTERNAL_ORGANS, name)
+	ADD_TRAIT(invisible_man, TRAIT_HIDE_COSMETIC_ORGANS, name)
 
 	var/datum/dna/druggy_dna = invisible_man.has_dna()
 	if(druggy_dna?.species)
@@ -701,7 +703,7 @@
 	if(HAS_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN))
 		invisible_man.add_to_all_human_data_huds() //Is this safe, what do you think, Floyd?
 		REMOVE_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN, name)
-		REMOVE_TRAIT(invisible_man, TRAIT_HIDE_EXTERNAL_ORGANS, name)
+		REMOVE_TRAIT(invisible_man, TRAIT_HIDE_COSMETIC_ORGANS, name)
 		to_chat(invisible_man, span_notice("As you sober up, opacity once again returns to your body meats."))
 
 		var/datum/dna/druggy_dna = invisible_man.has_dna()
@@ -753,7 +755,7 @@
 	if(!iscarbon(kronkaine_receptacle))
 		return
 	var/mob/living/carbon/druggo = kronkaine_receptacle
-	druggo.adjustStaminaLoss(-4 * trans_volume, 0)
+	druggo.stamina.adjust(4 * trans_volume)
 	//I wish i could give it some kind of bonus when smoked, but we don't have an INHALE method.
 
 /datum/reagent/drug/kronkaine/on_mob_life(mob/living/carbon/kronkaine_fiend, delta_time, times_fired)

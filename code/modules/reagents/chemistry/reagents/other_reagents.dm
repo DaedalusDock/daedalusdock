@@ -1,6 +1,7 @@
 /datum/reagent/blood
 	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
 	name = "Blood"
+	description = "A suspension of organic cells necessary for the transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
 	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
 	taste_description = "iron"
@@ -122,6 +123,7 @@
 /datum/reagent/vaccine
 	//data must contain virus type
 	name = "Vaccine"
+	description = "A suspension of degraded viral material suitable for use in inoculation."
 	color = "#C81040" // rgb: 200, 16, 64
 	taste_description = "slime"
 	penetrates_skin = NONE
@@ -143,6 +145,7 @@
 
 /datum/reagent/vaccine/fungal_tb
 	name = "Vaccine (Fungal Tuberculosis)"
+	description = "A suspension of degraded viral material suitable for use in inoculation. Taggants suspended in the solution report it to be targeting Fungal Tuberculosis."
 
 /datum/reagent/vaccine/fungal_tb/New(data)
 	. = ..()
@@ -369,7 +372,7 @@
 	if(IS_CULTIST(M))
 		M.adjust_drowsyness(-5* REM * delta_time)
 		M.AdjustAllImmobility(-40 *REM* REM * delta_time)
-		M.adjustStaminaLoss(-10 * REM * delta_time, 0)
+		M.stamina.adjust(10 * REM * delta_time)
 		M.adjustToxLoss(-2 * REM * delta_time, 0)
 		M.adjustOxyLoss(-2 * REM * delta_time, 0)
 		M.adjustBruteLoss(-2 * REM * delta_time, 0)
@@ -511,8 +514,6 @@
 		N.facial_hairstyle = "Shaved"
 		N.facial_hair_color = "#000000"
 		N.hair_color = "#000000"
-		if(!(HAIR in N.dna.species.species_traits)) //No hair? No problem!
-			N.dna.species.species_traits += HAIR
 		if(N.dna.species.use_skintones)
 			N.skin_tone = "orange"
 		else if(MUTCOLORS in N.dna.species.species_traits) //Aliens with custom colors simply get turned orange
@@ -1112,7 +1113,7 @@
 		to_chat(M, span_warning("You feel unstable..."))
 		M.set_timed_status_effect(2 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 		current_cycle = 1
-		addtimer(CALLBACK(M, /mob/living/proc/bluespace_shuffle), 30)
+		addtimer(CALLBACK(M, TYPE_PROC_REF(/mob/living, bluespace_shuffle)), 30)
 	..()
 
 /mob/living/proc/bluespace_shuffle()
@@ -1439,7 +1440,7 @@
 	return ..()
 
 /datum/reagent/nitrium_high_metabolization/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.adjustToxLoss(0.1 * current_cycle * REM * delta_time, 0) // 1 toxin damage per cycle at cycle 10
 	return ..()
 
@@ -1886,7 +1887,7 @@
 
 /datum/reagent/carpet/royal/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		// Heads of staff and the captain have a "royal metabolism"
 		if(HAS_TRAIT(liver, TRAIT_ROYAL_METABOLISM))
@@ -2116,7 +2117,7 @@
 	var/datum/callback/color_callback
 
 /datum/reagent/colorful_reagent/New()
-	color_callback = CALLBACK(src, .proc/UpdateColor)
+	color_callback = CALLBACK(src, PROC_REF(UpdateColor))
 	SSticker.OnRoundstart(color_callback)
 	return ..()
 
@@ -2151,7 +2152,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/hair_dye/New()
-	SSticker.OnRoundstart(CALLBACK(src,.proc/UpdateColor))
+	SSticker.OnRoundstart(CALLBACK(src,PROC_REF(UpdateColor)))
 	return ..()
 
 /datum/reagent/hair_dye/proc/UpdateColor()
@@ -2366,7 +2367,7 @@
 	. = ..()
 	// Silently add the zombie infection organ to be activated upon death
 	if(!exposed_mob.getorganslot(ORGAN_SLOT_ZOMBIE))
-		var/obj/item/organ/internal/zombie_infection/nodamage/ZI = new()
+		var/obj/item/organ/zombie_infection/nodamage/ZI = new()
 		ZI.Insert(exposed_mob)
 
 /datum/reagent/magillitis
@@ -2489,6 +2490,11 @@
 			changeling.adjust_chemicals(-2 * REM * delta_time)
 	return ..()
 
+//This used to be a blindly implied type. Don't do that.
+/datum/reagent/peaceborg
+	name = "Abstract Peaceborg Chemical"
+	abstract_type = /datum/reagent/peaceborg
+
 /datum/reagent/pax/peaceborg
 	name = "Synthpax"
 	description = "A colorless liquid that suppresses violence in its subjects. Cheaper to synthesize than normal Pax, but wears off faster."
@@ -2518,9 +2524,8 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/peaceborg/tire/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	var/healthcomp = (100 - M.health) //DOES NOT ACCOUNT FOR ADMINBUS THINGS THAT MAKE YOU HAVE MORE THAN 200/210 HEALTH, OR SOMETHING OTHER THAN A HUMAN PROCESSING THIS.
-	if(M.getStaminaLoss() < (45 - healthcomp)) //At 50 health you would have 200 - 150 health meaning 50 compensation. 60 - 50 = 10, so would only do 10-19 stamina.)
-		M.adjustStaminaLoss(10 * REM * delta_time)
+	if(M.stamina.loss_as_percent <= 80)
+		M.stamina.adjust(-10 * REM * delta_time)
 	if(DT_PROB(16, delta_time))
 		to_chat(M, "You should sit down and take a rest...")
 	..()
@@ -2677,7 +2682,7 @@
 /datum/reagent/gravitum/expose_obj(obj/exposed_obj, volume)
 	. = ..()
 	exposed_obj.AddElement(/datum/element/forced_gravity, 0)
-	addtimer(CALLBACK(exposed_obj, .proc/_RemoveElement, list(/datum/element/forced_gravity, 0)), volume * time_multiplier)
+	addtimer(CALLBACK(exposed_obj, PROC_REF(_RemoveElement), list(/datum/element/forced_gravity, 0)), volume * time_multiplier)
 
 /datum/reagent/gravitum/on_mob_metabolize(mob/living/L)
 	L.AddElement(/datum/element/forced_gravity, 0) //0 is the gravity, and in this case weightless
@@ -2712,7 +2717,7 @@
 	if(IS_HERETIC(drinker))
 		drinker.adjust_drowsyness(-5 * REM * delta_time)
 		drinker.AdjustAllImmobility(-40 * REM * delta_time)
-		drinker.adjustStaminaLoss(-10 * REM * delta_time, FALSE)
+		drinker.stamina.adjust(-10 * REM * delta_time)
 		drinker.adjustToxLoss(-2 * REM * delta_time, FALSE, forced = TRUE)
 		drinker.adjustOxyLoss(-2 * REM * delta_time, FALSE)
 		drinker.adjustBruteLoss(-2 * REM * delta_time, FALSE)
@@ -2845,7 +2850,7 @@
 /datum/reagent/kronkus_extract/on_mob_life(mob/living/carbon/kronkus_enjoyer)
 	. = ..()
 	kronkus_enjoyer.adjustOrganLoss(ORGAN_SLOT_HEART, 0.1)
-	kronkus_enjoyer.adjustStaminaLoss(-2, FALSE)
+	kronkus_enjoyer.stamina.adjust(2)
 
 /datum/reagent/brimdust
 	name = "Brimdust"

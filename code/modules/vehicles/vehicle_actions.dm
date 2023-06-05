@@ -299,8 +299,8 @@
 		return
 	var/mob/living/rider = owner
 	var/turf/landing_turf = get_step(vehicle.loc, vehicle.dir)
-	rider.adjustStaminaLoss(vehicle.instability* 0.75)
-	if (rider.getStaminaLoss() >= 100)
+	rider.stamina.adjust(-vehicle.instability* 0.75)
+	if (HAS_TRAIT(rider, TRAIT_EXHAUSTED))
 		vehicle.obj_flags &= ~CAN_BE_HIT
 		playsound(src, 'sound/effects/bang.ogg', 20, TRUE)
 		vehicle.unbuckle_mob(rider)
@@ -313,7 +313,7 @@
 			rider.client.give_award(/datum/award/achievement/misc/tram_surfer, rider)
 		vehicle.grinding = TRUE
 		vehicle.icon_state = "[initial(vehicle.icon_state)]-grind"
-		addtimer(CALLBACK(vehicle, /obj/vehicle/ridden/scooter/skateboard/.proc/grind), 2)
+		addtimer(CALLBACK(vehicle, TYPE_PROC_REF(/obj/vehicle/ridden/scooter/skateboard, grind)), 2)
 	else
 		vehicle.obj_flags &= ~BLOCK_Z_OUT_DOWN
 	rider.spin(4, 1)

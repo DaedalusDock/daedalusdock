@@ -18,16 +18,34 @@
 	var/production_speed = 3 SECONDS
 	/// The design we're printing currently.
 	var/datum/design/being_built
-	/// Our internal techweb for limbgrower designs.
-	var/datum/techweb/stored_research
+
 	/// All the categories of organs we can print.
 	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
 
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
-	stored_research = new /datum/techweb/specialized/autounlocking/limbgrower
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand)
+
+	internal_disk.set_data(
+		DATA_IDX_DESIGNS,
+		SStech.fetch_designs(
+			list(
+				/datum/design/leftarm,
+				/datum/design/leftleg,
+				/datum/design/rightarm,
+				/datum/design/rightleg,
+				/datum/design/heart,
+				/datum/design/lungs,
+				/datum/design/liver,
+				/datum/design/stomach,
+				/datum/design/appendix,
+				/datum/design/eyes,
+				/datum/design/ears,
+				/datum/design/tongue,
+			)
+		)
+	)
 
 /obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -63,8 +81,7 @@
 	var/species_categories = categories.Copy()
 	for(var/species in species_categories)
 		species_categories[species] = list()
-	for(var/design_id in stored_research.researched_designs)
-		var/datum/design/limb_design = SSresearch.techweb_design_by_id(design_id)
+	for(var/datum/design/limb_design as anything in internal_disk.read(DATA_IDX_DESIGNS))
 		for(var/found_category in species_categories)
 			if(found_category in limb_design.category)
 				species_categories[found_category] += limb_design
@@ -105,19 +122,6 @@
 		to_chat(user, span_warning("The Limb Grower is busy. Please wait for completion of previous operation."))
 		return
 
-	if(istype(user_item, /obj/item/disk/design_disk/limbs))
-		user.visible_message(span_notice("[user] begins to load \the [user_item] in \the [src]..."),
-			span_notice("You begin to load designs from \the [user_item]..."),
-			span_hear("You hear the clatter of a floppy drive."))
-		busy = TRUE
-		var/obj/item/disk/design_disk/limbs/limb_design_disk = user_item
-		if(do_after(user, src, 2 SECONDS))
-			for(var/datum/design/found_design in limb_design_disk.blueprints)
-				stored_research.add_design(found_design)
-			update_static_data(user)
-		busy = FALSE
-		return
-
 	if(default_deconstruction_screwdriver(user, "limbgrower_panelopen", "limbgrower_idleoff", user_item))
 		ui_close(user)
 		return
@@ -144,7 +148,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = stored_research.isDesignResearchedID(params["design_id"])
+			being_built = SStech.sanitize_design_id(params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 
@@ -167,7 +171,7 @@
 			flick("limbgrower_fill",src)
 			icon_state = "limbgrower_idleon"
 			selected_category = params["active_tab"]
-			addtimer(CALLBACK(src, .proc/build_item, consumed_reagents_list), production_speed * production_coefficient)
+			addtimer(CALLBACK(src, PROC_REF(build_item), consumed_reagents_list), production_speed * production_coefficient)
 			. = TRUE
 
 	return
@@ -267,19 +271,27 @@
 
 /obj/machinery/limbgrower/fullupgrade/Initialize(mapload)
 	. = ..()
-	for(var/id in SSresearch.techweb_designs)
-		var/datum/design/found_design = SSresearch.techweb_design_by_id(id)
+	var/list/L = list()
+	for(var/datum/design/found_design as anything in SStech.designs)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
-			stored_research.add_design(found_design)
+			L += found_design
+	internal_disk.set_data(DATA_IDX_DESIGNS, L)
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
-	for(var/design_id in SSresearch.techweb_designs)
-		var/datum/design/found_design = SSresearch.techweb_design_by_id(design_id)
-		if((found_design.build_type & LIMBGROWER) && ("emagged" in found_design.category))
-			stored_research.add_design(found_design)
+
+	var/list/designs_on_emag = SStech.fetch_designs(
+		list(
+			/datum/design/armblade,
+		)
+	)
+
+	if(!internal_disk.write(DATA_IDX_DESIGNS, designs_on_emag, TRUE))
+		to_chat(user, span_warning("[src] doesn't have enough storage left!"))
+		return
+
 	to_chat(user, span_warning("Safety overrides have been deactivated!"))
 	obj_flags |= EMAGGED
 	update_static_data(user)

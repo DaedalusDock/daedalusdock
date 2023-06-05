@@ -105,8 +105,8 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	atom_storage.max_total_storage = 800
 	atom_storage.max_specific_storage = WEIGHT_CLASS_GIGANTIC
 
-	RegisterSignal(src, COMSIG_ATOM_ENTERED, .proc/on_part_entered)
-	RegisterSignal(src, COMSIG_ATOM_EXITED, .proc/on_part_exited)
+	RegisterSignal(src, COMSIG_ATOM_ENTERED, PROC_REF(on_part_entered))
+	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_part_exited))
 
 /**
  * Signal handler for when a part has been inserted into the BRPED.
@@ -123,7 +123,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		if(length(inserted_component.reagents.reagent_list))
 			inserted_component.reagents.clear_reagents()
 			to_chat(usr, span_notice("[src] churns as [inserted_component] has its reagents emptied into bluespace."))
-		RegisterSignal(inserted_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, .proc/on_insered_component_reagent_pre_add)
+		RegisterSignal(inserted_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, PROC_REF(on_insered_component_reagent_pre_add))
 
 
 	if(!istype(inserted_component, /obj/item/stock_parts/cell))
@@ -360,48 +360,6 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	icon_state = "super_matter_bin"
 	rating = 3
 	energy_rating = 5
-	custom_materials = list(/datum/material/iron=80)
-
-//Rating 4
-
-/obj/item/stock_parts/capacitor/quadratic
-	name = "quadratic capacitor"
-	desc = "A capacity capacitor used in the construction of a variety of devices."
-	icon_state = "quadratic_capacitor"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
-
-/obj/item/stock_parts/scanning_module/triphasic
-	name = "triphasic scanning module"
-	desc = "A compact, ultra resolution triphasic scanning module used in the construction of certain devices."
-	icon_state = "triphasic_scan_module"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
-
-/obj/item/stock_parts/manipulator/femto
-	name = "femto-manipulator"
-	desc = "A tiny little manipulator used in the construction of certain devices."
-	icon_state = "femto_mani"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=30)
-
-/obj/item/stock_parts/micro_laser/quadultra
-	name = "quad-ultra micro-laser"
-	icon_state = "quadultra_micro_laser"
-	desc = "A tiny laser used in certain devices."
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=20)
-
-/obj/item/stock_parts/matter_bin/bluespace
-	name = "bluespace matter bin"
-	desc = "A container designed to hold compressed matter awaiting reconstruction."
-	icon_state = "bluespace_matter_bin"
-	rating = 4
-	energy_rating = 10
 	custom_materials = list(/datum/material/iron=80)
 
 // Subspace stock parts

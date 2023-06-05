@@ -116,7 +116,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	if(fuel)
 		zone.fuel_objs += fuel
-		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, /zone/proc/handle_fuel_del)
+		zone.RegisterSignal(fuel, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/zone, handle_fuel_del))
 
 	return fire
 

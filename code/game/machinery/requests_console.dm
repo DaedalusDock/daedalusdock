@@ -31,6 +31,8 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	icon_state = "req_comp_off"
 	base_icon_state = "req_comp"
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.15
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	var/department = "Unknown" //The list of all departments on the station (Determined from this variable on each unit) Set this to the same thing if you want several consoles in one department
 	var/list/messages = list() //List of all messages
 	var/departmentType = 0 //bitflag
@@ -305,7 +307,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 				Radio.set_frequency(radio_freq)
 				Radio.talk_into(src,"[emergency] emergency in [department]!!",radio_freq)
 				update_appearance()
-				addtimer(CALLBACK(src, .proc/clear_emergency), 5 MINUTES)
+				addtimer(CALLBACK(src, PROC_REF(clear_emergency)), 5 MINUTES)
 
 	if(href_list["send"] && message && to_department && priority)
 

@@ -87,6 +87,7 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
@@ -162,7 +163,7 @@
 
 	alarm_manager = new(src)
 	soundloop = new(src, FALSE)
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	update_appearance()
 
 	set_frequency(frequency)
@@ -753,7 +754,7 @@
 	danger_level = max(pressure_dangerlevel, temperature_dangerlevel, gas_dangerlevel)
 
 	if(old_danger_level != danger_level)
-		INVOKE_ASYNC(src, .proc/apply_danger_level)
+		INVOKE_ASYNC(src, PROC_REF(apply_danger_level))
 		if(alert_type)
 			if(!danger_level)
 				my_area.communicate_fire_alert(FIRE_CLEAR)
@@ -767,7 +768,7 @@
 
 	if(mode == AALARM_MODE_REPLACEMENT && environment_pressure < ONE_ATMOSPHERE * 0.05)
 		mode = AALARM_MODE_SCRUBBING
-		INVOKE_ASYNC(src, .proc/apply_mode, src)
+		INVOKE_ASYNC(src, PROC_REF(apply_mode), src)
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)

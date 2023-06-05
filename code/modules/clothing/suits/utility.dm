@@ -13,6 +13,7 @@
 	name = "emergency firesuit"
 	desc = "A suit that helps protect against fire and heat."
 	icon_state = "fire"
+	zmm_flags = ZMM_MANGLE_PLANES
 	inhand_icon_state = "ro_suit"
 	w_class = WEIGHT_CLASS_BULKY
 	permeability_coefficient = 0.5
@@ -138,6 +139,7 @@
 	name = "radiation suit"
 	desc = "A suit that protects against radiation. The label reads, 'Made with lead. Please do not consume insulation.'"
 	icon_state = "rad"
+	zmm_flags = ZMM_MANGLE_PLANES
 	inhand_icon_state = "rad_suit"
 	w_class = WEIGHT_CLASS_BULKY
 	permeability_coefficient = 0.5

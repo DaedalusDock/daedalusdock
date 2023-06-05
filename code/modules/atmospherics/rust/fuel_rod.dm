@@ -51,7 +51,7 @@
 		CRASH("Fuel rod remove() called with no parent")
 
 	if(user)
-		INVOKE_ASYNC(user, /mob.proc/put_in_hands, src)
+		INVOKE_ASYNC(user, TYPE_PROC_REF(/mob, put_in_hands), src)
 	else
 		forceMove(get_turf(parent))
 

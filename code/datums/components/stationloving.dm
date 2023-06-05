@@ -10,11 +10,11 @@
 /datum/component/stationloving/Initialize(inform_admins = FALSE, allow_item_destruction = FALSE)
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE
-	RegisterSignal(parent, COMSIG_MOVABLE_Z_CHANGED, .proc/on_parent_z_change)
-	RegisterSignal(parent, COMSIG_MOVABLE_SECLUDED_LOCATION, .proc/on_parent_unreachable)
-	RegisterSignal(parent, COMSIG_PARENT_PREQDELETED, .proc/on_parent_pre_qdeleted)
-	RegisterSignal(parent, COMSIG_ITEM_IMBUE_SOUL, .proc/check_soul_imbue)
-	RegisterSignal(parent, COMSIG_ITEM_MARK_RETRIEVAL, .proc/check_mark_retrieval)
+	RegisterSignal(parent, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_parent_z_change))
+	RegisterSignal(parent, COMSIG_MOVABLE_SECLUDED_LOCATION, PROC_REF(on_parent_unreachable))
+	RegisterSignal(parent, COMSIG_PARENT_PREQDELETED, PROC_REF(on_parent_pre_qdeleted))
+	RegisterSignal(parent, COMSIG_ITEM_IMBUE_SOUL, PROC_REF(check_soul_imbue))
+	RegisterSignal(parent, COMSIG_ITEM_MARK_RETRIEVAL, PROC_REF(check_mark_retrieval))
 	src.inform_admins = inform_admins
 	src.allow_item_destruction = allow_item_destruction
 
@@ -77,7 +77,7 @@
 /// Checks whether a given atom's turf is within bounds. Returns TRUE if it is, FALSE if it isn't.
 /datum/component/stationloving/proc/atom_in_bounds(atom/atom_to_check)
 	var/static/list/allowed_shuttles = typecacheof(list(/area/shuttle/syndicate, /area/shuttle/escape, /area/shuttle/pod_1, /area/shuttle/pod_2, /area/shuttle/pod_3, /area/shuttle/pod_4))
-	var/static/list/disallowed_centcom_areas = typecacheof(list(/area/abductor_ship, /area/awaymission/errorroom))
+	var/static/list/disallowed_centcom_areas = typecacheof(list(/area/centcom/abductor_ship, /area/awaymission/errorroom))
 	var/turf/destination_turf = get_turf(atom_to_check)
 	if (!destination_turf)
 		return FALSE

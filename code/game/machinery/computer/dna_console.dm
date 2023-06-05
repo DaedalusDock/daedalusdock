@@ -29,8 +29,8 @@
 #define SEARCH_OCCUPANT 1
 /// Flag for the mutation ref search system. Search will include console storage
 #define SEARCH_STORED 2
-/// Flag for the mutation ref search system. Search will include diskette storage
-#define SEARCH_DISKETTE 4
+/// Flag for the mutation ref search system. Search will include inserted_disk storage
+#define SEARCH_inserted_disk 4
 /// Flag for the mutation ref search system. Search will include advanced injector mutations
 #define SEARCH_ADV_INJ 8
 
@@ -57,8 +57,6 @@
 
 	light_color = LIGHT_COLOR_BLUE
 
-	/// Link to the techweb's stored research. Used to retrieve stored mutations
-	var/datum/techweb/stored_research
 	/// Duration for enzyme genetic damage pulses
 	var/pulse_duration = 2
 	/// Strength for enzyme genetic damage pulses
@@ -84,9 +82,6 @@
 	var/jokerready = 0
 	/// World time when Scramble can be used in DNA Consoles
 	var/scrambleready = 0
-
-	/// Currently stored genetic data diskette
-	var/obj/item/disk/data/diskette = null
 
 	/// Current delayed action, used for delayed enzyme transfer on scanner door close
 	var/list/delayed_action = null
@@ -132,8 +127,8 @@
 	var/list/tgui_occupant_mutations = list()
 	/// Used for setting tgui data - List of DNA Console stored mutations
 	var/list/tgui_console_mutations = list()
-	/// Used for setting tgui data - List of diskette stored mutations
-	var/list/tgui_diskette_mutations = list()
+	/// Used for setting tgui data - List of inserted_disk stored mutations
+	var/list/tgui_inserted_disk_mutations = list()
 	/// Used for setting tgui data - List of DNA Console chromosomes
 	var/list/tgui_console_chromosomes = list()
 	/// Used for setting tgui data - List of occupant mutations
@@ -162,20 +157,6 @@
 	if (istype(item, /obj/item/chromosome))
 		item.forceMove(src)
 		stored_chromosomes += item
-		to_chat(user, span_notice("You insert [item]."))
-		return
-
-	// Insert data disk if console disk slot is empty
-	// Swap data disk if there is one already a disk in the console
-	if (istype(item, /obj/item/disk/data)) //INSERT SOME DISKETTES
-		// Insert disk into DNA Console
-		if (!user.transferItemToLoc(item,src))
-			return
-		// If insertion was successful and there's already a diskette in the console, eject the old one.
-		if(diskette)
-			eject_disk(user)
-		// Set the new diskette.
-		diskette = item
 		to_chat(user, span_notice("You insert [item]."))
 		return
 
@@ -227,10 +208,6 @@
 
 	// Set the default tgui state
 	set_default_state()
-
-	// Link machine with research techweb. Used for discovering and accessing
-	//  already discovered mutations
-	stored_research = SSresearch.science_tech
 
 /obj/machinery/computer/scan_consolenew/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -349,14 +326,14 @@
 	data["timeToPulse"] = time_to_pulse
 	data["geneticMakeupCooldown"] = COOLDOWN_TIMELEFT(src, enzyme_copy_timer) / 10
 
-	if(diskette != null)
+	if(inserted_disk != null)
 		data["hasDisk"] = TRUE
-		data["diskCapacity"] = diskette.max_mutations - LAZYLEN(diskette.mutations)
-		data["diskReadOnly"] = diskette.read_only
-		//data["diskMutations"] = tgui_diskette_mutations
-		data["storage"]["disk"] = tgui_diskette_mutations
-		data["diskHasMakeup"] = (LAZYLEN(diskette.genetic_makeup_buffer) > 0)
-		data["diskMakeupBuffer"] = diskette.genetic_makeup_buffer.Copy()
+		data["diskCapacity"] = inserted_disk.check_memory()
+		data["diskReadOnly"] = inserted_disk.read_only
+		//data["diskMutations"] = tgui_inserted_disk_mutations
+		data["storage"]["disk"] = tgui_inserted_disk_mutations
+		data["diskHasMakeup"] = (LAZYLEN(inserted_disk.read(DATA_IDX_GENE_BUFFER)) > 0)
+		data["diskMakeupBuffer"] = inserted_disk.read(DATA_IDX_GENE_BUFFER).Copy()
 	else
 		data["hasDisk"] = FALSE
 		data["diskCapacity"] = 0
@@ -612,7 +589,7 @@
 		// Expected results:
 		//   "occupant" - From genetic sequencer
 		//   "console" - From DNA Console storage
-		//   "disk" - From inserted diskette
+		//   "disk" - From inserted inserted_disk
 		if("crispr")
 			// GUARD CHECK - Can we genetically modify the occupant? Includes scanner
 			//  operational guard checks.
@@ -639,7 +616,7 @@
 					search_flags |= SEARCH_STORED
 					return
 				if("disk")
-					search_flags |= SEARCH_DISKETTE
+					search_flags |= SEARCH_inserted_disk
 					return
 
 			//Currently selected mutation
@@ -750,7 +727,7 @@
 		// Expected results:
 		//   "occupant" - From genetic sequencer
 		//   "console" - From DNA Console storage
-		//   "disk" - From inserted diskette
+		//   "disk" - From inserted inserted_disk
 		if("print_injector")
 			// Because printing mutators and activators share a bunch of code,
 			//  it makes sense to keep them both together and set unique vars
@@ -777,7 +754,7 @@
 				if("console")
 					search_flags |= SEARCH_STORED
 				if("disk")
-					search_flags |= SEARCH_DISKETTE
+					search_flags |= SEARCH_inserted_disk
 
 			var/bref = params["mutref"]
 			var/datum/mutation/human/HM = get_mut_by_ref(bref, search_flags)
@@ -823,7 +800,7 @@
 		// params["source"] - The source the request came from.
 		// Expected results:
 		//   "occupant" - From genetic sequencer
-		//   "disk" - From inserted diskette
+		//   "disk" - From inserted inserted_disk
 		if("save_console")
 			var/search_flags = 0
 
@@ -836,7 +813,7 @@
 					if(can_modify_occupant())
 						search_flags |= SEARCH_OCCUPANT
 				if("disk")
-					search_flags |= SEARCH_DISKETTE
+					search_flags |= SEARCH_inserted_disk
 
 			var/bref = params["mutref"]
 			var/datum/mutation/human/HM = get_mut_by_ref(bref, search_flags)
@@ -855,7 +832,7 @@
 			to_chat(usr,span_notice("Mutation successfully stored."))
 			return
 
-		// Save a mutation to the diskette's storage buffer.
+		// Save a mutation to the inserted_disk's storage buffer.
 		// ---------------------------------------------------------------------- //
 		// params["mutref"] - ATOM Ref of specific mutation to store
 		// params["source"] - The source the request came from
@@ -863,19 +840,19 @@
 		//   "occupant" - From genetic sequencer
 		//   "console" - From DNA Console storage
 		if("save_disk")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
 			// GUARD CHECK - Make sure the disk is not full
-			if(LAZYLEN(diskette.mutations) >= diskette.max_mutations)
+			if(!inserted_disk.check_memory())
 				to_chat(usr,span_warning("Disk storage is full."))
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write to it
-			if(diskette.read_only)
+			if(!inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
@@ -900,7 +877,7 @@
 				return
 
 			var/datum/mutation/human/A = new HM.type(MUT_EXTRA, null, HM)
-			diskette.mutations += A
+			inserted_disk.write(DATA_IDX_MUTATIONS, A, TRUE)
 			to_chat(usr,span_notice("Mutation successfully stored to disk."))
 			return
 
@@ -946,22 +923,22 @@
 		// ---------------------------------------------------------------------- //
 		// params["mutref"] - ATOM Ref of specific mutation to delete
 		if("delete_disk_mut")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write to it (via deletion)
-			if(diskette.read_only)
+			if(inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
 			var/bref = params["mutref"]
-			var/datum/mutation/human/HM = get_mut_by_ref(bref, SEARCH_DISKETTE)
+			var/datum/mutation/human/HM = get_mut_by_ref(bref, SEARCH_inserted_disk)
 
 			if(HM)
-				diskette.mutations.Remove(HM)
+				inserted_disk.remove(DATA_IDX_MUTATIONS, HM)
 				qdel(HM)
 
 			return
@@ -987,22 +964,17 @@
 		// params["secondref"] - ATOM Ref of second mutation for combination
 		//  mutation
 		if("combine_console")
-			// GUARD CHECK - We're running a research-type operation. If, for some
-			//  reason, somehow the DNA Console has been disconnected from the research
-			//  network - Or was never in it to begin with - don't proceed
-			if(!stored_research)
-				return
 
 			var/first_bref = params["firstref"]
 			var/second_bref = params["secondref"]
 
 			// GUARD CHECK - Find the source and destination mutations on the console
 			// and make sure they actually exist.
-			var/datum/mutation/human/source_mut = get_mut_by_ref(first_bref, SEARCH_STORED | SEARCH_DISKETTE)
+			var/datum/mutation/human/source_mut = get_mut_by_ref(first_bref, SEARCH_STORED | SEARCH_inserted_disk)
 			if(!source_mut)
 				return
 
-			var/datum/mutation/human/dest_mut = get_mut_by_ref(second_bref, SEARCH_STORED | SEARCH_DISKETTE)
+			var/datum/mutation/human/dest_mut = get_mut_by_ref(second_bref, SEARCH_STORED | SEARCH_inserted_disk)
 			if(!dest_mut)
 				return
 
@@ -1012,18 +984,15 @@
 			if(!result_path)
 				return
 
-			// If we got a new type, add it to our storage
-			stored_mutations += new result_path()
-			to_chat(usr, span_boldnotice("Success! New mutation has been added to console storage."))
-
 			// If it's already discovered, end here. Otherwise, add it to the list of
 			//  discovered mutations.
-			// We've already checked for stored_research earlier
-			if(result_path in stored_research.discovered_mutations)
+			// We've already checked for stored_designs earlier
+			if(locate(result_path) in internal_disk.read(DATA_IDX_MUTATIONS))
 				return
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)
-			stored_research.discovered_mutations += result_path
+			internal_disk.write(DATA_IDX_MUTATIONS, HM)
+			to_chat(usr, span_boldnotice("Success! New mutation has been added to console storage."))
 			say("Successfully mutated [HM.name].")
 			connected_scanner.use_power(connected_scanner.active_power_usage)
 			return
@@ -1034,26 +1003,25 @@
 		// params["secondref"] - ATOM Ref of second mutation for combination
 		//  mutation
 		if("combine_disk")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
 			// GUARD CHECK - Make sure the disk is not full.
-			if(LAZYLEN(diskette.mutations) >= diskette.max_mutations)
+			if(!inserted_disk.check_memory())
 				to_chat(usr,span_warning("Disk storage is full."))
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write to it
-			if(diskette.read_only)
+			if(inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
 			// GUARD CHECK - We're running a research-type operation. If, for some
-			// reason, somehow the DNA Console has been disconnected from the research
-			// network - Or was never in it to begin with - don't proceed
-			if(!stored_research)
+			// reason, the internal disk has gone missing, don't proceed
+			if(!internal_disk)
 				return
 
 			var/first_bref = params["firstref"]
@@ -1061,11 +1029,11 @@
 
 			// GUARD CHECK - Find the source and destination mutations on the console
 			// and make sure they actually exist.
-			var/datum/mutation/human/source_mut = get_mut_by_ref(first_bref, SEARCH_STORED | SEARCH_DISKETTE)
+			var/datum/mutation/human/source_mut = get_mut_by_ref(first_bref, SEARCH_STORED | SEARCH_inserted_disk)
 			if(!source_mut)
 				return
 
-			var/datum/mutation/human/dest_mut = get_mut_by_ref(second_bref, SEARCH_STORED | SEARCH_DISKETTE)
+			var/datum/mutation/human/dest_mut = get_mut_by_ref(second_bref, SEARCH_STORED | SEARCH_inserted_disk)
 			if(!dest_mut)
 				return
 
@@ -1075,18 +1043,15 @@
 			if(!result_path)
 				return
 
-			// If we got a new type, add it to our storage
-			diskette.mutations += new result_path()
-			to_chat(usr, span_boldnotice("Success! New mutation has been added to the disk."))
-
 			// If it's already discovered, end here. Otherwise, add it to the list of
 			//  discovered mutations
-			// We've already checked for stored_research earlier
-			if(result_path in stored_research.discovered_mutations)
+			// We've already checked for stored_designs earlier
+			if(result_path in internal_disk.read(DATA_IDX_MUTATIONS))
 				return
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)
-			stored_research.discovered_mutations += result_path
+			inserted_disk.write(DATA_IDX_MUTATIONS, HM, TRUE)
+			to_chat(usr, span_boldnotice("Success! New mutation has been added to the disk."))
 			say("Successfully mutated [HM.name].")
 			connected_scanner.use_power(connected_scanner.active_power_usage)
 			return
@@ -1114,14 +1079,14 @@
 		// params["index"] - The BYOND index of the console genetic makeup buffer to
 		//  copy to disk
 		if("save_makeup_disk")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write to it
-			if(diskette.read_only)
+			if(inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
@@ -1136,7 +1101,7 @@
 			if(!istype(buffer_slot))
 				return
 
-			diskette.genetic_makeup_buffer = buffer_slot.Copy()
+			inserted_disk.set_data(DATA_IDX_GENE_BUFFER, buffer_slot.Copy())
 			return
 
 		// Loads Genetic Makeup from disk to a console buffer
@@ -1144,37 +1109,37 @@
 		// params["index"] - The BYOND index of the console genetic makeup buffer to
 		//  copy to. Expected as text string, converted to number later
 		if("load_makeup_disk")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
-			// GUARD CHECK - This should not be possible to activate on a diskette
-			//  that doesn't have any genetic data. Unexpected result
-			if(LAZYLEN(diskette.genetic_makeup_buffer) == 0)
+			// GUARD CHECK - This should not be possible to activate on a inserted_disk
+			//that doesn't have any genetic data. Unexpected result
+			if(LAZYLEN(inserted_disk.read(DATA_IDX_GENE_BUFFER)) == 0)
 				return
 
 			// Convert the index to a number and clamp within the array range, then
 			//  copy the data from the disk to that buffer
 			var/buffer_index = text2num(params["index"])
 			buffer_index = clamp(buffer_index, 1, NUMBER_OF_BUFFERS)
-			genetic_makeup_buffer[buffer_index] = diskette.genetic_makeup_buffer.Copy()
+			genetic_makeup_buffer[buffer_index] = inserted_disk.read(DATA_IDX_GENE_BUFFER).Copy()
 			return
 
-		// Deletes genetic makeup buffer from the inserted diskette
+		// Deletes genetic makeup buffer from the inserted inserted_disk
 		if("del_makeup_disk")
-			// GUARD CHECK - This code shouldn't even be callable without a diskette
+			// GUARD CHECK - This code shouldn't even be callable without a inserted_disk
 			//  inserted. Unexpected result
-			if(!diskette)
+			if(!inserted_disk)
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write (via deletion) to it
-			if(diskette.read_only)
+			if(inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
-			diskette.genetic_makeup_buffer.Cut()
+			inserted_disk.clear(DATA_IDX_GENE_BUFFER)
 			return
 
 		// Saves the scanner occupant's genetic makeup to a given console buffer
@@ -1224,7 +1189,7 @@
 			genetic_makeup_buffer[buffer_index] = null
 			return
 
-		// Eject stored diskette from console
+		// Eject stored inserted_disk from console
 		if("eject_disk")
 			eject_disk(usr)
 			return
@@ -1550,7 +1515,7 @@
 
 			switch(mut_source)
 				if("disk")
-					search_flag = SEARCH_DISKETTE
+					search_flag = SEARCH_inserted_disk
 				if("occupant")
 					search_flag = SEARCH_OCCUPANT
 				if("console")
@@ -1825,13 +1790,13 @@
  * Builds the genetic makeup list which will be sent to tgui interface.
 	*
 	* Will iterate over the connected scanner occupant, DNA Console, inserted
-	* diskette and chromosomes and any advanced injectors, building the main data
+	* inserted_disk and chromosomes and any advanced injectors, building the main data
 	* structures which get passed to the tgui interface.
  */
 /obj/machinery/computer/scan_consolenew/proc/build_mutation_list(can_modify_occ)
 	// No code will ever null these lists. We can safely Cut them.
 	tgui_occupant_mutations.Cut()
-	tgui_diskette_mutations.Cut()
+	tgui_inserted_disk_mutations.Cut()
 	tgui_console_mutations.Cut()
 	tgui_console_chromosomes.Cut()
 	tgui_advinjector_mutations.Cut()
@@ -1849,7 +1814,7 @@
 			var/list/mutation_data = list()
 			var/text_sequence = scanner_occupant.dna.mutation_index[mutation_type]
 			var/default_sequence = scanner_occupant.dna.default_mutation_genes[mutation_type]
-			var/discovered = (stored_research && (mutation_type in stored_research.discovered_mutations))
+			var/discovered = (internal_disk && (locate(mutation_type) in internal_disk.read(DATA_IDX_MUTATIONS)))
 
 			mutation_data["Alias"] = HM.alias
 			mutation_data["Sequence"] = text_sequence
@@ -1988,9 +1953,9 @@
 		++chrom_index
 
 	// ------------------------------------------------------------------------ //
-	// Build the list of mutations stored on any inserted diskettes
-	if(diskette)
-		for(var/datum/mutation/human/HM in diskette.mutations)
+	// Build the list of mutations stored on any inserted inserted_disks
+	if(inserted_disk)
+		for(var/datum/mutation/human/HM as anything in inserted_disk.read(DATA_IDX_MUTATIONS))
 			var/list/mutation_data = list()
 
 			var/datum/mutation/human/A = GET_INITIALIZED_MUTATION(HM.type)
@@ -2011,7 +1976,7 @@
 				mutation_data["AppliedChromo"] = HM.chromosome_name
 				mutation_data["ValidStoredChromos"] = build_chrom_list(HM)
 
-			tgui_diskette_mutations += list(mutation_data)
+			tgui_inserted_disk_mutations += list(mutation_data)
 
 	// ------------------------------------------------------------------------ //
 	// Build the list of mutations stored within any Advanced Injectors
@@ -2091,9 +2056,9 @@
 		return FALSE
 	if(M.scrambled)
 		return FALSE
-	if(stored_research && !(path in stored_research.discovered_mutations))
+	if(internal_disk && !(locate(path) in internal_disk.read(DATA_IDX_MUTATIONS)))
 		var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(path)
-		stored_research.discovered_mutations += path
+		internal_disk.write(DATA_IDX_MUTATIONS, HM, TRUE)
 		say("Successfully discovered [HM.name].")
 		return TRUE
 
@@ -2124,8 +2089,8 @@
 		if(mutation)
 			return mutation
 
-	if(diskette && (target_flags & SEARCH_DISKETTE))
-		mutation = (locate(ref) in diskette.mutations)
+	if(inserted_disk && (target_flags & SEARCH_inserted_disk))
+		mutation = (locate(ref) in inserted_disk.read(DATA_IDX_MUTATIONS))
 		if(mutation)
 			return mutation
 
@@ -2232,22 +2197,15 @@
 	* console's location.
 	*
 	* Arguments:
- * * user - The mob that is attempting to eject the diskette.
+ * * user - The mob that is attempting to eject the inserted_disk.
  */
-/obj/machinery/computer/scan_consolenew/proc/eject_disk(mob/user)
-	// Check for diskette.
-	if(!diskette)
+/obj/machinery/computer/scan_consolenew/eject_disk(mob/user)
+	. = ..()
+	if(!.)
 		return
-
-	to_chat(user, span_notice("You eject [diskette] from [src]."))
 
 	// Reset the state to console storage.
 	tgui_view_state["storageMode"] = "console"
-
-	// If the disk shouldn't pop into the user's hand for any reason, drop it on the console instead.
-	if(!istype(user) || !Adjacent(user) || !user.put_in_active_hand(diskette))
-		diskette.forceMove(drop_location())
-	diskette = null
 
 /obj/machinery/computer/scan_consolenew/proc/set_connected_scanner(new_scanner)
 	if(connected_scanner)
@@ -2256,7 +2214,7 @@
 			connected_scanner.set_linked_console(null)
 	connected_scanner = new_scanner
 	if(connected_scanner)
-		RegisterSignal(connected_scanner, COMSIG_PARENT_QDELETING, .proc/react_to_scanner_del)
+		RegisterSignal(connected_scanner, COMSIG_PARENT_QDELETING, PROC_REF(react_to_scanner_del))
 		connected_scanner.set_linked_console(src)
 
 /obj/machinery/computer/scan_consolenew/proc/react_to_scanner_del(datum/source)
@@ -2282,7 +2240,7 @@
 
 #undef SEARCH_OCCUPANT
 #undef SEARCH_STORED
-#undef SEARCH_DISKETTE
+#undef SEARCH_inserted_disk
 #undef SEARCH_ADV_INJ
 
 #undef CLEAR_GENE

@@ -469,7 +469,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		"SOUTH" = image(icon = 'icons/hud/radial.dmi', icon_state = "csouth"),
 		"WEST" = image(icon = 'icons/hud/radial.dmi', icon_state = "cwest")
 		)
-	var/computerdirs = show_radial_menu(user, src, computer_dirs, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/computerdirs = show_radial_menu(user, src, computer_dirs, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
 		return
 	switch(computerdirs)
@@ -535,11 +535,11 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		"External Maintenance" = get_airlock_image(/obj/machinery/door/airlock/maintenance/external/glass)
 	)
 
-	var/airlockcat = show_radial_menu(user, remote_anchor || src, solid_or_glass_choices, custom_check = CALLBACK(src, .proc/check_menu, user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
+	var/airlockcat = show_radial_menu(user, remote_anchor || src, solid_or_glass_choices, custom_check = CALLBACK(src, PROC_REF(check_menu), user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
 	switch(airlockcat)
 		if("Solid")
 			if(advanced_airlock_setting == 1)
-				var/airlockpaint = show_radial_menu(user, remote_anchor || src, solid_choices, radius = 42, custom_check = CALLBACK(src, .proc/check_menu, user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
+				var/airlockpaint = show_radial_menu(user, remote_anchor || src, solid_choices, radius = 42, custom_check = CALLBACK(src, PROC_REF(check_menu), user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
 				switch(airlockpaint)
 					if("Standard")
 						airlock_type = /obj/machinery/door/airlock
@@ -580,7 +580,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 
 		if("Glass")
 			if(advanced_airlock_setting == 1)
-				var/airlockpaint = show_radial_menu(user, remote_anchor || src, glass_choices, radius = 42, custom_check = CALLBACK(src, .proc/check_menu, user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
+				var/airlockpaint = show_radial_menu(user, remote_anchor || src, glass_choices, radius = 42, custom_check = CALLBACK(src, PROC_REF(check_menu), user, remote_anchor), require_near = remote_anchor ? FALSE : TRUE, tooltips = TRUE)
 				switch(airlockpaint)
 					if("Standard")
 						airlock_type = /obj/machinery/door/airlock/glass
@@ -632,7 +632,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		"Table" = image(icon = 'icons/hud/radial.dmi', icon_state = "table"),
 		"Glass Table" = image(icon = 'icons/hud/radial.dmi', icon_state = "glass_table")
 		)
-	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
 		return
 	switch(choice)
@@ -668,7 +668,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 			qdel(rcd_effect)
 			return FALSE
-	if(!do_after(user, A, delay))
+	if(!do_after(user, A, delay, DO_PUBLIC, display = src))
 		qdel(rcd_effect)
 		return FALSE
 	if(!checkResource(rcd_results["cost"], user))
@@ -730,7 +730,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			choices += list(
 			"Change Furnishing Type" = image(icon = 'icons/hud/radial.dmi', icon_state = "chair")
 			)
-	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
 		return
 	switch(choice)
@@ -799,7 +799,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		buzz loudly!</b></span>","<span class='danger'><b>[src] begins \
 		vibrating violently!</b></span>")
 	// 5 seconds to get rid of it
-	addtimer(CALLBACK(src, .proc/detonate_pulse_explode), 50)
+	addtimer(CALLBACK(src, PROC_REF(detonate_pulse_explode)), 50)
 
 /obj/item/construction/rcd/proc/detonate_pulse_explode()
 	explosion(src, light_impact_range = 3, flame_range = 1, flash_range = 1)
@@ -1006,7 +1006,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					to_chat(user, span_notice("You start deconstructing [A]..."))
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
-					if(do_after(user, A, decondelay))
+					if(do_after(user, A, decondelay, DO_PUBLIC, display = src))
 						if(!useResource(deconcost, user))
 							return FALSE
 						activate()
@@ -1021,7 +1021,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 					playsound(src.loc, 'sound/effects/light_flicker.ogg', 50, FALSE)
-					if(do_after(user, A, floordelay))
+					if(do_after(user, A, floordelay, DO_PUBLIC, display = src))
 						if(!istype(W))
 							return FALSE
 						var/list/candidates = list()
@@ -1067,7 +1067,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 					user.Beam(A,icon_state="light_beam", time = 15)
 					playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 					playsound(src.loc, 'sound/effects/light_flicker.ogg', 50, TRUE)
-					if(do_after(user, A, floordelay))
+					if(do_after(user, A, floordelay, DO_PUBLIC, display = src))
 						if(!istype(F))
 							return FALSE
 						if(!useResource(floorcost, user))
@@ -1148,7 +1148,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			name_to_type[initial(M.name)] = M
 			machinery_data["cost"][A] = plumbing_design_types[A]
 
-	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
 		return
 
@@ -1187,7 +1187,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 
 	if(checkResource(machinery_data["cost"][blueprint], user) && blueprint)
 		//"cost" is relative to delay at a rate of 10 matter/second  (1matter/decisecond) rather than playing with 2 different variables since everyone set it to this rate anyways.
-		if(do_after(user, A, machinery_data["cost"][blueprint]))
+		if(do_after(user, A, machinery_data["cost"][blueprint], DO_PUBLIC, display = src))
 			if(checkResource(machinery_data["cost"][blueprint], user) && canPlace(A))
 				useResource(machinery_data["cost"][blueprint], user)
 				activate()
@@ -1212,7 +1212,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		if(P.anchored)
 			to_chat(user, span_warning("The [P.name] needs to be unanchored!"))
 			return
-		if(do_after(user, P, 2 SECONDS))
+		if(do_after(user, P, 2 SECONDS, DO_PUBLIC, display = src))
 			P.deconstruct() //Let's not substract matter
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE) //this is just such a great sound effect
 	else

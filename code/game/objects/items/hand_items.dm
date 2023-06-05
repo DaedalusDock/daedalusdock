@@ -20,7 +20,7 @@
 	var/mob/living/owner = loc
 	if(!istype(owner))
 		return
-	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, .proc/ownerExamined)
+	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, PROC_REF(ownerExamined))
 
 /obj/item/hand_item/circlegame/Destroy()
 	var/mob/owner = loc
@@ -39,7 +39,7 @@
 
 	if(!istype(sucker) || !in_range(owner, sucker))
 		return
-	addtimer(CALLBACK(src, .proc/waitASecond, owner, sucker), 4)
+	addtimer(CALLBACK(src, PROC_REF(waitASecond), owner, sucker), 4)
 
 /// Stage 2: Fear sets in
 /obj/item/hand_item/circlegame/proc/waitASecond(mob/living/owner, mob/living/sucker)
@@ -48,10 +48,10 @@
 
 	if(owner == sucker) // big mood
 		to_chat(owner, span_danger("Wait a second... you just looked at your own [src.name]!"))
-		addtimer(CALLBACK(src, .proc/selfGottem, owner), 10)
+		addtimer(CALLBACK(src, PROC_REF(selfGottem), owner), 10)
 	else
 		to_chat(sucker, span_danger("Wait a second... was that a-"))
-		addtimer(CALLBACK(src, .proc/GOTTEM, owner, sucker), 6)
+		addtimer(CALLBACK(src, PROC_REF(GOTTEM), owner, sucker), 6)
 
 /// Stage 3A: We face our own failures
 /obj/item/hand_item/circlegame/proc/selfGottem(mob/living/owner)
@@ -63,7 +63,7 @@
 		span_hear("You hear a dull thud!"))
 	log_combat(owner, owner, "bopped", src.name, "(self)")
 	owner.do_attack_animation(owner)
-	owner.apply_damage(100, STAMINA)
+	owner.stamina.adjust(-100)
 	owner.Knockdown(10)
 	qdel(src)
 
@@ -94,7 +94,7 @@
 		owner.visible_message(span_danger("[owner] bops [sucker] with [owner.p_their()] [src.name] much harder than intended, sending [sucker.p_them()] flying!"), \
 			span_danger("You bop [sucker] with your [src.name] much harder than intended, sending [sucker.p_them()] flying!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), ignored_mobs=list(sucker))
 		to_chat(sucker, span_userdanger("[owner] bops you incredibly hard with [owner.p_their()] [src.name], sending you flying!"))
-		sucker.apply_damage(50, STAMINA)
+		sucker.stamina.adjust(-50)
 		sucker.Knockdown(50)
 		log_combat(owner, sucker, "bopped", src.name, "(setup- Hulk)")
 		var/atom/throw_target = get_edge_target_turf(sucker, owner.dir)
@@ -102,7 +102,7 @@
 	else
 		owner.visible_message(span_danger("[owner] bops [sucker] with [owner.p_their()] [src.name]!"), span_danger("You bop [sucker] with your [src.name]!"), \
 			span_hear("You hear a dull thud!"), ignored_mobs=list(sucker))
-		sucker.apply_damage(15, STAMINA)
+		sucker.stamina.adjust(-15)
 		log_combat(owner, sucker, "bopped", src.name, "(setup)")
 		to_chat(sucker, span_userdanger("[owner] bops you with [owner.p_their()] [src.name]!"))
 	qdel(src)
@@ -123,7 +123,7 @@
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
 		return
 
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || user.getStaminaLoss() > 80)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!
@@ -147,7 +147,7 @@
 	user.visible_message(span_danger("[user] begins giving [target] a [message_others]!"), span_warning("You start giving [target] a [message_others]!"), vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=target)
 	to_chat(target, span_userdanger("[user] starts giving you a [message_target]!"))
 
-	if(!do_after(user, target, 1.5 SECONDS))
+	if(!do_after(user, target, 1.5 SECONDS, DO_PUBLIC, display = src))
 		to_chat(user, span_warning("You fail to give [target] a noogie!"))
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
 		return
@@ -164,7 +164,7 @@
 	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
 		return FALSE
 
-	if(user.getStaminaLoss() > 80)
+	if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		to_chat(user, span_warning("You're too tired to continue giving [target] a noogie!"))
 		to_chat(target, span_danger("[user] is too tired to continue giving you a noogie!"))
 		return
@@ -180,14 +180,14 @@
 
 	log_combat(user, target, "given a noogie to", addition = "([damage] brute before armor)")
 	target.apply_damage(damage, BRUTE, BODY_ZONE_HEAD)
-	user.adjustStaminaLoss(iteration + 5)
+	user.stamina.adjust(-iteration + 5)
 	playsound(get_turf(user), pick('sound/effects/rustle1.ogg','sound/effects/rustle2.ogg','sound/effects/rustle3.ogg','sound/effects/rustle4.ogg','sound/effects/rustle5.ogg'), 50)
 
 	if(prob(33))
 		user.visible_message(span_danger("[user] continues noogie'ing [target]!"), span_warning("You continue giving [target] a noogie!"), vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=target)
 		to_chat(target, span_userdanger("[user] continues giving you a noogie!"))
 
-	if(!do_after(user, target, 1 SECONDS + (iteration * 2)))
+	if(!do_after(user, target, 1 SECONDS + (iteration * 2), DO_PUBLIC, display = src))
 		to_chat(user, span_warning("You fail to give [target] a noogie!"))
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
 		return
@@ -230,7 +230,7 @@
 		shake_camera(slapped, 2, 2)
 		slapped.Paralyze(2.5 SECONDS)
 		slapped.adjust_timed_status_effect(7 SECONDS, /datum/status_effect/confusion)
-		slapped.adjustStaminaLoss(40)
+		slapped.stamina.adjust(-40)
 	else if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(user == slapped)
 			user.visible_message(
@@ -534,7 +534,7 @@
 		if(2)
 			other_msg = "stammers softly for a moment before choking on something!"
 			self_msg = "You feel your tongue disappear down your throat as you fight to remember how to make words!"
-			addtimer(CALLBACK(living_target, /atom/movable.proc/say, pick("Uhhh...", "O-oh, uhm...", "I- uhhhhh??", "You too!!", "What?")), rand(0.5 SECONDS, 1.5 SECONDS))
+			addtimer(CALLBACK(living_target, TYPE_PROC_REF(/atom/movable, say), pick("Uhhh...", "O-oh, uhm...", "I- uhhhhh??", "You too!!", "What?")), rand(0.5 SECONDS, 1.5 SECONDS))
 			living_target.adjust_timed_status_effect(rand(10 SECONDS, 30 SECONDS), /datum/status_effect/speech/stutter)
 		if(3)
 			other_msg = "locks up with a stunned look on [living_target.p_their()] face, staring at [firer ? firer : "the ceiling"]!"
@@ -563,7 +563,7 @@
 	if(!iscarbon(target))
 		return
 	var/mob/living/carbon/heartbreakee = target
-	var/obj/item/organ/internal/heart/dont_go_breakin_my_heart = heartbreakee.getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/dont_go_breakin_my_heart = heartbreakee.getorganslot(ORGAN_SLOT_HEART)
 	dont_go_breakin_my_heart.applyOrganDamage(999)
 
 

@@ -120,7 +120,7 @@
 	var/t_his = p_their()
 	var/t_is = p_are()
 	//This checks to see if the body is revivable
-	if(key || !getorgan(/obj/item/organ/internal/brain) || ghost?.can_reenter_corpse)
+	if(key || !getorgan(/obj/item/organ/brain) || ghost?.can_reenter_corpse)
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
 	else
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
@@ -135,11 +135,13 @@
 
 
 /// Fully randomizes everything according to the given flags.
-/mob/living/carbon/human/proc/randomize_human_appearance(randomize_flags = ALL)
+/mob/living/carbon/human/proc/randomize_human_appearance(flags = ALL)
 	var/datum/preferences/preferences = new
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (!preference.included_in_randomization_flags(randomize_flags))
+		if(istype(preference, /datum/preference/name/real_name) && !(flags & RANDOMIZE_NAME))
+			continue
+		if(istype(preference, /datum/preference/choiced/species) && !(flags & RANDOMIZE_SPECIES))
 			continue
 
 		if (preference.is_randomizable())

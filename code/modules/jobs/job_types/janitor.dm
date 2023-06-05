@@ -6,8 +6,11 @@
 	total_positions = 2
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/contractor,
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -19,7 +22,6 @@
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_JANITOR
 	departments_list = list(
 		/datum/job_department/service,
 		)

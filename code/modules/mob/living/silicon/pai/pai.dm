@@ -177,7 +177,7 @@
 	create_modularInterface()
 
 	emittersemicd = TRUE
-	addtimer(CALLBACK(src, .proc/emittercool), 600)
+	addtimer(CALLBACK(src, PROC_REF(emittercool)), 600)
 
 	if(!holoform)
 		ADD_TRAIT(src, TRAIT_IMMOBILIZED, PAI_FOLDED)

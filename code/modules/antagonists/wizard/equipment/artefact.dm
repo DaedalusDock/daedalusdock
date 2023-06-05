@@ -146,7 +146,7 @@
 	insaneinthemembrane.sanity = 0
 	for(var/lore in typesof(/datum/brain_trauma/severe))
 		jedi.gain_trauma(lore)
-	addtimer(CALLBACK(src, .proc/deranged, jedi), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(deranged), jedi), 10 SECONDS)
 
 /obj/tear_in_reality/proc/deranged(mob/living/carbon/C)
 	if(!C || C.stat == DEAD)
@@ -293,7 +293,7 @@
 	H.equip_to_slot_or_del(new /obj/item/spear(H), ITEM_SLOT_BACK)
 
 //Provides a decent heal, need to pump every 6 seconds
-/obj/item/organ/internal/heart/cursed/wizard
+/obj/item/organ/heart/cursed/wizard
 	pump_delay = 60
 	heal_brute = 25
 	heal_burn = 25

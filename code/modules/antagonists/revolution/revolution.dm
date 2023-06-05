@@ -99,7 +99,7 @@
 
 /datum/antagonist/rev/get_admin_commands()
 	. = ..()
-	.["Promote"] = CALLBACK(src,.proc/admin_promote)
+	.["Promote"] = CALLBACK(src,PROC_REF(admin_promote))
 
 /datum/antagonist/rev/proc/admin_promote(mob/admin)
 	var/datum/mind/O = owner
@@ -119,10 +119,10 @@
 /datum/antagonist/rev/head/get_admin_commands()
 	. = ..()
 	. -= "Promote"
-	.["Take flash"] = CALLBACK(src,.proc/admin_take_flash)
-	.["Give flash"] = CALLBACK(src,.proc/admin_give_flash)
-	.["Repair flash"] = CALLBACK(src,.proc/admin_repair_flash)
-	.["Demote"] = CALLBACK(src,.proc/admin_demote)
+	.["Take flash"] = CALLBACK(src,PROC_REF(admin_take_flash))
+	.["Give flash"] = CALLBACK(src,PROC_REF(admin_give_flash))
+	.["Repair flash"] = CALLBACK(src,PROC_REF(admin_repair_flash))
+	.["Demote"] = CALLBACK(src,PROC_REF(admin_demote))
 
 /datum/antagonist/rev/head/proc/admin_take_flash(mob/admin)
 	var/list/L = owner.current.get_contents()
@@ -176,7 +176,7 @@
 /datum/antagonist/rev/head/on_removal()
 	if(give_hud)
 		var/mob/living/carbon/C = owner.current
-		var/obj/item/organ/internal/cyberimp/eyes/hud/security/syndicate/S = C.getorganslot(ORGAN_SLOT_HUD)
+		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = C.getorganslot(ORGAN_SLOT_HUD)
 		if(S)
 			S.Remove(C)
 	return ..()
@@ -325,7 +325,7 @@
 			to_chat(C, "The flash in your [where] will help you to persuade the crew to join your cause.")
 
 	if(give_hud)
-		var/obj/item/organ/internal/cyberimp/eyes/hud/security/syndicate/S = new()
+		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = new()
 		S.Insert(C)
 		to_chat(C, "Your eyes have been implanted with a cybernetic security HUD which will help you keep track of who is mindshield-implanted, and therefore unable to be recruited.")
 
@@ -349,7 +349,7 @@
 		var/datum/antagonist/rev/R = M.has_antag_datum(/datum/antagonist/rev)
 		R.objectives |= objectives
 
-	addtimer(CALLBACK(src,.proc/update_objectives),HEAD_UPDATE_PERIOD,TIMER_UNIQUE)
+	addtimer(CALLBACK(src,PROC_REF(update_objectives)),HEAD_UPDATE_PERIOD,TIMER_UNIQUE)
 
 /datum/team/revolution/proc/head_revolutionaries()
 	. = list()
@@ -369,7 +369,8 @@
 			var/list/datum/mind/nonhuman_promotable = list()
 			for(var/datum/mind/khrushchev in non_heads)
 				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_RESTRAINED) && khrushchev.current.client)
-					if((ROLE_REV_HEAD in khrushchev.current.client.prefs.be_special) || (ROLE_PROVOCATEUR in khrushchev.current.client.prefs.be_special))
+					var/list/client_antags = khrushchev.current.client.prefs.read_preference(/datum/preference/blob/antagonists)
+					if((client_antags[ROLE_REV_HEAD]) || (client_antags[ROLE_PROVOCATEUR]))
 						if(ishuman(khrushchev.current))
 							promotable += khrushchev
 						else
@@ -381,7 +382,7 @@
 				var/datum/antagonist/rev/rev = new_leader.has_antag_datum(/datum/antagonist/rev)
 				rev.promote()
 
-	addtimer(CALLBACK(src,.proc/update_heads),HEAD_UPDATE_PERIOD,TIMER_UNIQUE)
+	addtimer(CALLBACK(src,PROC_REF(update_heads)),HEAD_UPDATE_PERIOD,TIMER_UNIQUE)
 
 /datum/team/revolution/proc/save_members()
 	ex_headrevs = get_antag_minds(/datum/antagonist/rev/head, TRUE)

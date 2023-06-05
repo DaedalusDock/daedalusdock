@@ -10,13 +10,17 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
-	selection_color = "#ddddff"
+	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SERVICE
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -35,8 +39,6 @@
 	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
-
-	display_order = JOB_DISPLAY_ORDER_HEAD_OF_PERSONNEL
 
 	mail_goodies = list(
 		/obj/item/card/id/advanced/silver = 10,

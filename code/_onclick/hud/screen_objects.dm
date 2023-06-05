@@ -324,14 +324,17 @@
 	switch(hud?.mymob?.m_intent)
 		if(MOVE_INTENT_WALK)
 			icon_state = "walking"
-		if(MOVE_INTENT_RUN)
+		if(MOVE_INTENT_RUN, MOVE_INTENT_SPRINT)
 			icon_state = "running"
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/user)
 	if(isobserver(user))
 		return
-	user.toggle_move_intent(user)
+	if(user.m_intent != MOVE_INTENT_WALK)
+		user.set_move_intent(MOVE_INTENT_WALK)
+	else
+		user.set_move_intent(MOVE_INTENT_RUN)
 
 /atom/movable/screen/pull
 	name = "stop pulling"
@@ -633,7 +636,7 @@
 
 /atom/movable/screen/combo/proc/clear_streak()
 	animate(src, alpha = 0, 2 SECONDS, SINE_EASING)
-	timerid = addtimer(CALLBACK(src, .proc/reset_icons), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(reset_icons)), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /atom/movable/screen/combo/proc/reset_icons()
 	cut_overlays()
@@ -646,7 +649,7 @@
 	alpha = 255
 	if(!streak)
 		return ..()
-	timerid = addtimer(CALLBACK(src, .proc/clear_streak), time, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(clear_streak)), time, TIMER_UNIQUE | TIMER_STOPPABLE)
 	icon_state = "combo"
 	for(var/i = 1; i <= length(streak); ++i)
 		var/intent_text = copytext(streak, i, i + 1)
@@ -659,3 +662,31 @@
 	name = "stamina"
 	icon_state = "stamina0"
 	screen_loc = ui_stamina
+
+/atom/movable/screen/stamina/Click(location, control, params)
+	if (iscarbon(usr))
+		var/mob/living/carbon/C = usr
+		var/content = {"
+		<div class='examine_block'>
+			[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
+		</div>
+		"}
+		to_chat(C, content)
+
+/atom/movable/screen/stamina/MouseEntered(location, control, params)
+	. = ..()
+	var/mob/living/L = usr
+	if(!istype(L))
+		return
+
+	if(QDELETED(src))
+		return
+	var/_content = {"
+		Stamina: [L.stamina.current]/[L.stamina.maximum]<br>
+		Regen: [L.stamina.regen_rate]
+	"}
+	openToolTip(usr, src, params, title = "Stamina", content = _content)
+
+/atom/movable/screen/stamina/MouseExited(location, control, params)
+	. = ..()
+	closeToolTip(usr)

@@ -101,7 +101,7 @@
 			return
 		if(!environment.total_moles)
 			return
-		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta)
+		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta, parents[2]?.combined_volume || 0)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
 		if(draw > -1)
@@ -183,7 +183,7 @@
 	if("set_external_pressure" in signal.data)
 		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,MAX_PUMP_PRESSURE)
 
-	addtimer(CALLBACK(src, .proc/broadcast_status), 2)
+	addtimer(CALLBACK(src, PROC_REF(broadcast_status)), 2)
 
 	if(!("status" in signal.data)) //do not update_appearance
 		update_appearance()

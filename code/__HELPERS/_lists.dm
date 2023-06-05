@@ -517,20 +517,20 @@
 
 ///for sorting clients or mobs by ckey
 /proc/sort_key(list/ckey_list, order=1)
-	return sortTim(ckey_list, order >= 0 ? /proc/cmp_ckey_asc : /proc/cmp_ckey_dsc)
+	return sortTim(ckey_list, order >= 0 ? GLOBAL_PROC_REF(cmp_ckey_asc ): GLOBAL_PROC_REF(cmp_ckey_dsc))
 
 ///Specifically for record datums in a list.
 /proc/sort_record(list/record_list, field = "name", order = 1)
 	GLOB.cmp_field = field
-	return sortTim(record_list, order >= 0 ? /proc/cmp_records_asc : /proc/cmp_records_dsc)
+	return sortTim(record_list, order >= 0 ? GLOBAL_PROC_REF(cmp_records_asc) : GLOBAL_PROC_REF(cmp_records_dsc))
 
 ///sort any value in a list
-/proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
+/proc/sort_list(list/list_to_sort, cmp=GLOBAL_PROC_REF(cmp_text_asc))
 	return sortTim(list_to_sort.Copy(), cmp)
 
 ///uses sort_list() but uses the var's name specifically. This should probably be using mergeAtom() instead
 /proc/sort_names(list/list_to_sort, order=1)
-	return sortTim(list_to_sort.Copy(), order >= 0 ? /proc/cmp_name_asc : /proc/cmp_name_dsc)
+	return sortTim(list_to_sort.Copy(), order >= 0 ? GLOBAL_PROC_REF(cmp_name_asc) : GLOBAL_PROC_REF(cmp_name_dsc))
 
 ///Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield_to_list(bitfield = 0, list/wordlist)
@@ -803,7 +803,7 @@
 		else
 			. += list(recursive_list_resolve_element(element))
 
-///Helper for /proc/recursive_list_resolve
+///Helper for recursive_list_resolve()
 /proc/recursive_list_resolve_element(element)
 	if(islist(element))
 		var/list/inner_list = element
@@ -1006,7 +1006,7 @@
 	return ret
 
 /// Runtimes if the passed in list is not sorted
-/proc/assert_sorted(list/list, name, cmp = /proc/cmp_numeric_asc)
+/proc/assert_sorted(list/list, name, cmp = GLOBAL_PROC_REF(cmp_numeric_asc))
 	var/last_value = list[1]
 
 	for (var/index in 2 to list.len)
@@ -1016,3 +1016,20 @@
 			stack_trace("[name] is not sorted. value at [index] ([value]) is in the wrong place compared to the previous value of [last_value] (when compared to by [cmp])")
 
 		last_value = value
+
+/// Turns a color string such as "#FFFFFF#00FFFF" into a list of ("#FFFFFF", #00FFFF)
+/proc/color_string_to_list(color_string)
+	if(!color_string)
+		return null
+	. = list()
+	var/list/split_colors = splittext(color_string, "#")
+	for(var/color in 2 to length(split_colors))
+		. += "#[split_colors[color]]"
+
+/// Turns a list such as ("#FFFFFF", #00FFFF) into a color string of "#FFFFFF#00FFFF"
+/proc/color_list_to_string(list/color_list)
+	if(!islist(color_list))
+		return null
+	. = ""
+	for(var/color in color_list)
+		. += color

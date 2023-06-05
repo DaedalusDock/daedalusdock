@@ -71,7 +71,7 @@
 			return
 		else
 			to_chat(user, span_notice("You start adding [I] to [src]..."))
-			if(do_after(user, src, 5 SECONDS))
+			if(do_after(user, src, 5 SECONDS, DO_PUBLIC))
 				W.use(5)
 				var/turf/T = get_turf(src)
 				T.PlaceOnTop(/turf/closed/wall/mineral/wood/nonmetal)
@@ -131,7 +131,7 @@
 
 /obj/structure/barricade/security/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/deploy), deploy_time)
+	addtimer(CALLBACK(src, PROC_REF(deploy)), deploy_time)
 
 /obj/structure/barricade/security/proc/deploy()
 	icon_state = "barrier1"

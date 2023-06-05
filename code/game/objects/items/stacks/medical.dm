@@ -6,8 +6,13 @@
 	max_amount = 6
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
+
 	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	resistance_flags = FLAMMABLE
 	max_integrity = 40
 	novariants = FALSE
@@ -43,12 +48,13 @@
 	if(patient == user)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [user.p_them()]self..."), span_notice("You begin applying [src] on yourself..."))
-		if(!do_after(user, patient, self_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
+		if(!do_after(user, patient, self_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
+
 			return
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [patient]."), span_notice("You begin applying [src] on [patient]..."))
-		if(!do_after(user, patient, other_delay, extra_checks=CALLBACK(patient, /mob/living/proc/try_inject, user, null, INJECT_TRY_SHOW_ERROR_MESSAGE)))
+		if(!do_after(user, patient, other_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
 			return
 
 	if(heal(patient, user))
@@ -165,7 +171,7 @@
 		return
 
 	user.visible_message(span_warning("[user] begins wrapping the wounds on [M]'s [limb.plaintext_zone] with [src]..."), span_warning("You begin wrapping the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone] with [src]..."))
-	if(!do_after(user, M, (user == M ? self_delay : other_delay)))
+	if(!do_after(user, M, (user == M ? self_delay : other_delay), DO_PUBLIC, display = src))
 		return
 
 	user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] to [M]'s [limb.plaintext_zone].</span></span>", "<span class='infoplain'><span class='green'>You bandage the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone].</span></span>")
@@ -175,7 +181,7 @@
 	amount = 12
 
 /obj/item/stack/medical/gauze/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_WIRECUTTER || I.get_sharpness())
+	if(I.tool_behaviour == TOOL_WIRECUTTER || (I.sharpness & SHARP_EDGED))
 		if(get_amount() < 2)
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
 			return
@@ -388,7 +394,7 @@
 		return
 	var/mob/living/carbon/C = user
 	C.visible_message(span_suicide("[C] is squirting all of [src] into [C.p_their()] mouth! That's not proper procedure! It looks like [C.p_theyre()] trying to commit suicide!"))
-	if(!do_after(C, time = 2 SECONDS))
+	if(!do_after(C, time = 2 SECONDS, timed_action_flags = DO_PUBLIC, display = src))
 		C.visible_message(span_suicide("[C] screws up like an idiot and still dies anyway!"))
 		return (BRUTELOSS)
 

@@ -38,14 +38,14 @@
 	var/obj/structure/ladder/L
 
 	if (!down)
-		L = locate() in SSmapping.get_turf_below(T)
+		L = locate() in GetBelow(T)
 		if (L)
 			if(crafted == L.crafted)
 				down = L
 				L.up = src  // Don't waste effort looping the other way
 				L.update_appearance()
 	if (!up)
-		L = locate() in SSmapping.get_turf_above(T)
+		L = locate() in GetAbove(T)
 		if (L)
 			if(crafted == L.crafted)
 				up = L
@@ -79,7 +79,7 @@
 
 	if(!is_ghost)
 		ladder.add_fingerprint(user)
-		if(!do_after(user, src, travel_time))
+		if(!do_after(user, src, travel_time, DO_PUBLIC))
 			return
 		show_fluff_message(going_up, user)
 
@@ -100,7 +100,7 @@
 		to_chat(user, span_warning("[src] doesn't seem to lead anywhere!"))
 		return
 
-	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user, is_ghost), require_near = !is_ghost, tooltips = TRUE)
+	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, PROC_REF(check_menu), user, is_ghost), require_near = !is_ghost, tooltips = TRUE)
 	if (!is_ghost && !in_range(src, user))
 		return  // nice try
 	switch(result)

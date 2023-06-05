@@ -61,6 +61,8 @@
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Is the machine active (No sales pitches if off)!
 	var/active = 1
 	///Are we ready to vend?? Is it time??
@@ -872,7 +874,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			allowed_configs += "[initial(item.greyscale_config_inhand_right)]"
 
 	var/datum/greyscale_modify_menu/menu = new(
-		src, usr, allowed_configs, CALLBACK(src, .proc/vend_greyscale, params),
+		src, usr, allowed_configs, CALLBACK(src, PROC_REF(vend_greyscale), params),
 		starting_icon_state=initial(fake_atom.icon_state),
 		starting_config=initial(fake_atom.greyscale_config),
 		starting_colors=initial(fake_atom.greyscale_colors)

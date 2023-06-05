@@ -56,8 +56,6 @@
 	var/force_threshold = 0
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///Minimal body temperature without receiving damage
 	var/minbodytemp = 250
@@ -204,11 +202,6 @@
 	if(isnull(unsuitable_heat_damage))
 		unsuitable_heat_damage = unsuitable_atmos_damage
 
-/mob/living/simple_animal/Life(delta_time = SSMOBS_DT, times_fired)
-	. = ..()
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * delta_time, FALSE, TRUE)
-
 /mob/living/simple_animal/Destroy()
 	GLOB.simple_animals[AIStatus] -= src
 	if (LAZYLEN(SSnpcpool.currentrun))
@@ -250,8 +243,9 @@
  * Updates the speed and staminaloss of a given simplemob.
  * Reduces the stamina loss by stamina_recovery
  */
-/mob/living/simple_animal/update_stamina()
-	set_varspeed(initial(speed) + (staminaloss * 0.06))
+/mob/living/simple_animal/on_stamina_update()
+	. = ..()
+	set_varspeed(initial(speed) + (stamina.loss * 0.06))
 
 /mob/living/simple_animal/proc/handle_automated_action()
 	set waitfor = FALSE
@@ -673,7 +667,7 @@
 	return relaydrive(user, direction)
 
 /mob/living/simple_animal/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
-	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(), cooldown, CALLBACK(src, .proc/stop_deadchat_plays))
+	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
 		return

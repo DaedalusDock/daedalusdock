@@ -31,6 +31,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/datum/looping_sound/computer/soundloop
 	///Whether or not this modular computer uses the looping sound
 	var/looping_sound = TRUE
+	///Last world.time a beep played.
+	var/last_ambient_sound = 0
 
 	var/base_active_power_usage = 50 // Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
 	var/base_idle_power_usage = 5 // Power usage when the computer is idle and screen is off (currently only applies to laptops)
@@ -87,6 +89,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(!physical)
 		physical = src
 	set_light_color(comp_light_color)
+	set_light_power(0.1)
 	set_light_range(comp_light_luminosity)
 	idle_threads = list()
 	if(looping_sound)
@@ -122,7 +125,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(active_program?.tap(A, user, params))
 		user.do_attack_animation(A) //Emulate this animation since we kill the attack in three lines
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1) //Likewise for the tap sound
-		addtimer(CALLBACK(src, .proc/play_ping), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
+		addtimer(CALLBACK(src, PROC_REF(play_ping)), 0.5 SECONDS, TIMER_UNIQUE) //Slightly delayed ping to indicate success
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
@@ -366,7 +369,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			soundloop.start()
 		enabled = 1
 		update_appearance()
-		ui_interact(user)
+		if(user)
+			ui_interact(user)
 		return TRUE
 	else // Unpowered
 		if(issynth)
@@ -409,7 +413,11 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			idle_threads.Remove(P)
 
 	handle_power(delta_time) // Handles all computer power interaction
-	//check_update_ui_need()
+
+	var/static/list/beepsounds = list('sound/items/compbeep1.ogg','sound/items/compbeep2.ogg','sound/items/compbeep3.ogg','sound/items/compbeep4.ogg','sound/items/compbeep5.ogg')
+	if(world.time > last_ambient_sound + 60 SECONDS && prob(1))
+		last_ambient_sound = world.time
+		playsound(src.loc, pick(beepsounds), 15, TRUE,10)
 
 /**
  * Displays notification text alongside a soundbeep when requested to by a program.
@@ -516,7 +524,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/mob/user = usr
 	if(user && istype(user))
 		//Here to prevent programs sleeping in destroy
-		INVOKE_ASYNC(src, /datum/proc/ui_interact, user) // Re-open the UI on this computer. It should show the main screen now.
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/datum, ui_interact), user) // Re-open the UI on this computer. It should show the main screen now.
 	update_appearance()
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)

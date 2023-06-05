@@ -280,12 +280,12 @@
 
 /obj/structure/foamedmetal/Destroy()
 	set_density(0)
-	zas_update_loc()
 	. = ..()
 
 /obj/structure/foamedmetal/Move()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/foamedmetal/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)

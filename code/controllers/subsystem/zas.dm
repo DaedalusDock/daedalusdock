@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(zas)
 	name = "Air Core"
 	priority = FIRE_PRIORITY_AIR
 	init_order = INIT_ORDER_AIR
-	flags = SS_POST_FIRE_TIMING
+	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	wait = 2 SECONDS
 
@@ -402,7 +402,7 @@ SUBSYSTEM_DEF(zas)
 		var/zone/Z = curr_sensitive_zones[curr_sensitive_zones.len]
 		curr_sensitive_zones.len--
 
-		for(var/atom/sensitive as anything in Z.atmos_sensitive_contents)
+		for(var/atom/sensitive as area|turf|obj|mob in Z.atmos_sensitive_contents)
 			sensitive.atmos_expose(Z.air, Z.air.temperature)
 
 		if(MC_TICK_CHECK)

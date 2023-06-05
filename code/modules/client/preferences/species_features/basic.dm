@@ -1,32 +1,9 @@
-/proc/generate_possible_values_for_sprite_accessories_on_head(accessories, base_icon ='icons/mob/human_parts_greyscale.dmi', base_state = "human_head_m", base_color = "#ffe0d1")
-	var/list/values = possible_values_for_sprite_accessory_list(accessories)
 
-	var/icon/head_icon = icon(base_icon, base_state)
-	if(base_color)
-		head_icon.Blend(base_color, ICON_MULTIPLY)
-
-	for (var/name in values)
-		var/datum/sprite_accessory/accessory = accessories[name]
-		if (accessory == null || accessory.icon_state == null)
-			continue
-
-		var/icon/final_icon = new(head_icon)
-
-		var/icon/beard_icon = values[name]
-		beard_icon.Blend(COLOR_DARK_BROWN, ICON_MULTIPLY)
-		final_icon.Blend(beard_icon, ICON_OVERLAY)
-
-		final_icon.Crop(10, 19, 22, 31)
-		final_icon.Scale(32, 32)
-
-		values[name] = final_icon
-
-	return values
 
 /datum/preference/color/eye_color
+	explanation = "Eye Color"
 	savefile_key = "eye_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_species_trait = EYECOLOR
 
 /datum/preference/color/eye_color/apply_to_human(mob/living/carbon/human/target, value)
@@ -35,7 +12,7 @@
 	if(!hetero)
 		target.eye_color_right = value
 
-	var/obj/item/organ/internal/eyes/eyes_organ = target.getorgan(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes_organ = target.getorgan(/obj/item/organ/eyes)
 	if (!eyes_organ || !istype(eyes_organ))
 		return
 
@@ -55,34 +32,27 @@
 	return "#000000"
 
 /datum/preference/choiced/facial_hairstyle
+	explanation = "Facial Hair"
 	savefile_key = "facial_style_name"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Facial hair"
-	should_generate_icons = TRUE
 	relevant_species_trait = FACEHAIR
+	sub_preference = /datum/preference/color/facial_hair_color
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
-	return generate_possible_values_for_sprite_accessories_on_head(GLOB.facial_hairstyles_list)
+	return GLOB.facial_hairstyles_list
 
 /datum/preference/choiced/facial_hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.facial_hairstyle = value
 	target.update_body_parts()
 
-/datum/preference/choiced/facial_hairstyle/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
-
-	return data
-
 /datum/preference/choiced/facial_hairstyle/create_default_value()
 	return "Shaved"
 
 /datum/preference/color/facial_hair_color
+	explanation = "Facial Hair Color"
 	savefile_key = "facial_hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	is_sub_preference = TRUE
 	relevant_species_trait = FACEHAIRCOLOR
 
 /datum/preference/color/facial_hair_color/apply_to_human(mob/living/carbon/human/target, value)
@@ -93,7 +63,7 @@
 	return "#422f03"
 
 /datum/preference/choiced/facial_hair_gradient
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Facial Hair Gradient"
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient"
 	relevant_species_trait = FACEHAIR
@@ -110,7 +80,8 @@
 	return "None"
 
 /datum/preference/color/facial_hair_gradient
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Facial Hair Gradient Color"
+	is_sub_preference = TRUE
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient_color"
 	relevant_species_trait = FACEHAIR
@@ -126,9 +97,10 @@
 	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != "None"
 
 /datum/preference/color/hair_color
+	explanation = "Hair Color"
 	savefile_key = "hair_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	is_sub_preference = TRUE
 	relevant_species_trait = HAIRCOLOR
 
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
@@ -138,42 +110,34 @@
 	return "#422f03"
 
 /datum/preference/choiced/hairstyle
+	explanation = "Hairstyle"
 	savefile_key = "hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Hairstyle"
-	should_generate_icons = TRUE
+	priority = PREFERENCE_PRIORITY_HUMAN_HAIR
 	relevant_species_trait = HAIR
-	requires_accessible = TRUE
+	exclude_species_traits = list(NONHUMANHAIR)
+	sub_preference = /datum/preference/color/hair_color
 
 /datum/preference/choiced/hairstyle/init_possible_values()
-	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
+	return GLOB.hairstyles_list
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.hairstyle = value
 
 /datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
-	if (!..(preferences))
+	if(!..(preferences))
 		return FALSE
-	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
-		return FALSE
-	return TRUE
-
-/datum/preference/choiced/hairstyle/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "hair_color"
-
-	return data
+	return !ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/moth)
 
 /datum/preference/choiced/hairstyle/create_default_value()
 	return "Bald"
 
 /datum/preference/choiced/hair_gradient
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Hairstyle Gradient"
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "hair_gradient"
 	relevant_species_trait = HAIR
+	sub_preference = /datum/preference/color/hair_gradient
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
 	return assoc_to_keys(GLOB.hair_gradients_list)
@@ -195,10 +159,11 @@
 	return TRUE
 
 /datum/preference/color/hair_gradient
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Hairstyle Gradient Color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "hair_gradient_color"
 	relevant_species_trait = HAIR
+	is_sub_preference = TRUE
 
 /datum/preference/color/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	LAZYSETLEN(target.grad_color, GRADIENTS_LEN)
@@ -208,10 +173,20 @@
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	if(preferences.read_preference(/datum/preference/choiced/species) == /datum/species/moth)
-		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
 
+/datum/preference/color/sclera
+	explanation = "Sclera Color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	savefile_key = "sclera_color"
+	relevant_species_trait = SCLERA
+
+/datum/preference/color/sclera/create_default_value()
+	return "#f8ef9e"
+
+/datum/preference/color/sclera/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+	target.sclera_color = value
+	target.update_eyes()
 /datum/preference/tri_color
 	abstract_type = /datum/preference/tri_color
 	///dna.features["mutcolors"][color_key] = input
@@ -234,6 +209,28 @@
 	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value[1])
 	target.dna.mutant_colors["[color_key]_2"] = sanitize_hexcolor(value[2])
 	target.dna.mutant_colors["[color_key]_3"] = sanitize_hexcolor(value[3])
+
+/datum/preference/tri_color/user_edit(mob/user, datum/preferences/prefs, list/params)
+	var/list/colors = prefs.read_preference(type)
+	var/index = text2num(params["color"])
+
+	if(!index)
+		return
+
+	var/default = colors[index]
+
+	var/input = input(user, "Change [explanation]",, default) as null|color
+	if(!input)
+		return
+	colors[index] = input
+	return prefs.update_preference(src, colors)
+
+/datum/preference/tri_color/get_button(datum/preferences/prefs)
+	var/list/colors = prefs.read_preference(type)
+	. = ""
+	. += color_button_element(prefs, colors[1], "pref_act=[type];color=1")
+	. += color_button_element(prefs, colors[2], "pref_act=[type];color=2")
+	. += color_button_element(prefs, colors[3], "pref_act=[type];color=3")
 
 /datum/preference/appearance_mods
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -297,4 +294,102 @@
 		return FALSE
 	return TRUE
 
+
+/datum/preference/appearance_mods/button_act(mob/user, datum/preferences/prefs, list/params)
+	var/datum/preference/requested_preference = GLOB.preference_entries_by_key["appearance_mods"]
+	if (isnull(requested_preference))
+		return FALSE
+
+	var/list/pref_mods = prefs.read_preference(/datum/preference/appearance_mods):Copy()
+	var/species_type = prefs.read_preference(/datum/preference/choiced/species)
+	var/list/existing_mods = list()
+	//All of pref code is written with the assumption that pref values about to be saved are serialized
+	pref_mods = requested_preference.serialize(pref_mods)
+
+	for(var/_type in pref_mods)
+		var/datum/appearance_modifier/path = pref_mods[_type]["path"]
+		path = text2path(path)
+		existing_mods[initial(path.name)] = _type
+
+
+	if(params["add"])
+		var/list/add_new = global.ModManager.modnames_by_species[species_type] ^ existing_mods
+		var/choice = tgui_input_list(usr, "Add Appearance Mod", "Appearance Mods", add_new)
+		if(!choice)
+			return FALSE
+
+		var/datum/appearance_modifier/mod = global.ModManager.mods_by_name[choice]
+		var/list/new_mod_data = list(
+			"path" = "[mod.type]",
+			"color" = "#FFFFFF",
+			"priority" = 0,
+			"color_blend" = "[mod.color_blend_func]",
+		)
+
+		if(mod.colorable)
+			var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
+			if(!color)
+				return FALSE
+			new_mod_data["color"] = color
+
+		var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
+		if(isnull(priority))
+			return
+
+		new_mod_data["priority"] = "[priority]"
+
+		if(!global.ModManager.ValidateSerializedList(new_mod_data))
+			return FALSE
+
+		pref_mods[mod.type] = new_mod_data
+
+		if(!prefs.update_preference(requested_preference, pref_mods))
+			return FALSE
+
+		return TRUE
+
+	else if(params["remove"])
+		var/index_to_remove = params["mod_name"]
+		if(!index_to_remove)
+			return FALSE
+		var/safety = alert(user, "Are you sure you want to remove [index_to_remove]?", "Remove Appearance Mod", "Yes", "No")
+		if(safety != "Yes")
+			return FALSE
+
+		pref_mods -= existing_mods[index_to_remove]
+		if(!prefs.update_preference(requested_preference, pref_mods))
+			return FALSE
+		return TRUE
+
+	else if(params["modify"])
+		var/index_to_modify = params["mod_name"]
+		if(!index_to_modify)
+			return FALSE
+
+		var/static/list/modifiable_values = list("priority")
+		var/datum/appearance_modifier/type2check = text2path(existing_mods[index_to_modify])
+		if(initial(type2check.colorable))
+			modifiable_values += "color"
+
+		var/value2modify = tgui_input_list(usr, "Select Var to Modify", "Appearance Mods", modifiable_values)
+		if(!value2modify)
+			return FALSE
+
+		switch(value2modify)
+			if("color")
+				var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
+				if(!color)
+					return FALSE
+
+				pref_mods[existing_mods[index_to_modify]]["color"] = color
+
+			if("priority")
+				var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
+				if(isnull(priority))
+					return
+				pref_mods[existing_mods[index_to_modify]]["priority"] = "[priority]"
+
+		if(!prefs.update_preference(requested_preference, pref_mods))
+			return FALSE
+		return TRUE
 

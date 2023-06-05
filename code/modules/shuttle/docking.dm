@@ -171,14 +171,14 @@
 		var/turf/old_turf = old_turfs[i]
 		var/turf/new_turf = new_turfs[i]
 		new_turf.afterShuttleMove(old_turf, rotation) //turfs
-		var/turf/new_ceiling = get_step_multiz(new_turf, UP) // check if a ceiling is needed
+		var/turf/new_ceiling = GetAbove(new_turf) // check if a ceiling is needed
 		if(new_ceiling)
 			// generate ceiling
 			if(istype(new_ceiling, /turf/open/openspace)) // why is this needed? because we have 2 different typepaths for openspace
 				new_ceiling.ChangeTurf(/turf/open/floor/engine/hull/ceiling, list(/turf/open/openspace))
 			else if (istype(new_ceiling, /turf/open/space/openspace))
 				new_ceiling.ChangeTurf(/turf/open/floor/engine/hull/ceiling, list(/turf/open/space/openspace))
-		var/turf/old_ceiling = get_step_multiz(old_turf, UP)
+		var/turf/old_ceiling = GetAbove(old_turf)
 		if(old_ceiling && istype(old_ceiling, /turf/open/floor/engine/hull/ceiling)) // check if a ceiling was generated previously
 			// remove old ceiling
 			var/turf/open/floor/engine/hull/ceiling/old_shuttle_ceiling = old_ceiling
@@ -190,7 +190,7 @@
 		if(QDELETED(moved_object))
 			continue
 		var/turf/oldT = moved_atoms[moved_object]
-		moved_object.afterShuttleMove(oldT, movement_force, dir, preferred_direction, movement_direction, rotation)//atoms
+		moved_object.afterShuttleMove(oldT, movement_force, dir, preferred_direction, movement_direction, rotation, src)//atoms
 
 	// lateShuttleMove (There had better be a really good reason for additional stages beyond this)
 

@@ -203,7 +203,7 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 
 /obj/machinery/ore_silo/examine(mob/user)
 	. = ..()
-	. += span_notice("[src] can be linked to techfabs, circuit printers and protolathes with a multitool.")
+	. += span_notice("[src] can be linked to techfabs, circuit printers and fabricators with a multitool.")
 
 /datum/ore_silo_log
 	var/name  // for VV

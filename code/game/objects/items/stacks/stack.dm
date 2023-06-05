@@ -72,7 +72,7 @@
 			if(item_stack == src)
 				continue
 			if(can_merge(item_stack))
-				INVOKE_ASYNC(src, .proc/merge_without_del, item_stack)
+				INVOKE_ASYNC(src, PROC_REF(merge_without_del), item_stack)
 				if(is_zero_amount(delete_if_zero = FALSE))
 					return INITIALIZE_HINT_QDEL
 	var/list/temp_recipes = get_main_recipes()
@@ -90,7 +90,7 @@
 	update_weight()
 	update_appearance()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_movable_entered_occupied_turf,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_movable_entered_occupied_turf),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -268,7 +268,7 @@
 					adjusted_time = (recipe.time * recipe.trait_modifier)
 				else
 					adjusted_time = recipe.time
-				if(!do_after(usr, time = adjusted_time))
+				if(!do_after(usr, time = adjusted_time, timed_action_flags = DO_PUBLIC, display = src))
 					return
 				if(!building_checks(recipe, multiplier))
 					return
@@ -505,7 +505,7 @@
 		return
 
 	if(!arrived.throwing && can_merge(arrived))
-		INVOKE_ASYNC(src, .proc/merge, arrived)
+		INVOKE_ASYNC(src, PROC_REF(merge), arrived)
 
 /obj/item/stack/hitby(atom/movable/hitting, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(can_merge(hitting, inhand = TRUE))

@@ -5,13 +5,17 @@
 	inhand_icon_state = null //so the human update icon uses the icon_state instead.
 	worn_icon_state = null
 	shaded_charge = TRUE
-	can_flashlight = TRUE
 	w_class = WEIGHT_CLASS_HUGE
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
 	ammo_type = list(/obj/item/ammo_casing/energy/ion)
-	flight_x_offset = 17
-	flight_y_offset = 9
+
+/obj/item/gun/energy/ionrifle/add_seclight_point()
+	AddComponent(/datum/component/seclite_attachable, \
+		light_overlay_icon = 'icons/obj/guns/flashlights.dmi', \
+		light_overlay = "flight", \
+		overlay_x = 17, \
+		overlay_y = 9)
 
 /obj/item/gun/energy/ionrifle/emp_act(severity)
 	return
@@ -20,10 +24,14 @@
 	name = "ion carbine"
 	desc = "The MK.II Prototype Ion Projector is a lightweight carbine version of the larger ion rifle, built to be ergonomic and efficient."
 	icon_state = "ioncarbine"
+	worn_icon_state = "gun"
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BELT
-	flight_x_offset = 18
-	flight_y_offset = 11
+
+/obj/item/gun/energy/ionrifle/carbine/add_seclight_point()
+	. = ..()
+	// We use the same overlay as the parent, so we can just let the component inherit the correct offsets here
+	AddComponent(/datum/component/seclite_attachable, overlay_x = 18, overlay_y = 11)
 
 /obj/item/gun/energy/decloner
 	name = "biological demolecularisor"
@@ -51,6 +59,7 @@
 	modifystate = 1
 	ammo_x_offset = 1
 	selfcharge = 1
+	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/meteorgun
 	name = "meteor gun"
@@ -97,6 +106,7 @@
 	force = 12
 	sharpness = SHARP_EDGED
 	can_charge = FALSE
+	gun_flags = NOT_A_REAL_GUN
 
 	heat = 3800
 	usesound = list('sound/items/welder.ogg', 'sound/items/welder2.ogg')
@@ -104,10 +114,10 @@
 	toolspeed = 0.7 //plasmacutters can be used as welders, and are faster than standard welders
 	var/charge_weld = 25 //amount of charge used up to start action (multiplied by amount) and per progress_flash_divisor ticks of welding
 
-/obj/item/gun/energy/plasmacutter/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/butchering, 25, 105, 0, 'sound/weapons/plasma_cutter.ogg')
+/obj/item/gun/energy/plasmacutter/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)
+	. = ..()
+	AddComponent(/datum/component/butchering, 2.5 SECONDS, 105, 0, 'sound/weapons/plasma_cutter.ogg')
 	AddElement(/datum/element/tool_flash, 1)
 
 /obj/item/gun/energy/plasmacutter/examine(mob/user)
@@ -123,7 +133,7 @@
 		charge_multiplier = 1
 	if(charge_multiplier)
 		if(cell.charge == cell.maxcharge)
-			to_chat(user, span_notice("You try to insert [I] into [src], but it's fully charged.")) //my cell is round and full
+			to_chat(user, span_notice("You try to insert [I] into [src], but it's fully charged."))
 			return
 		I.use(1)
 		cell.give(500*charge_multiplier)
@@ -160,8 +170,12 @@
 	return (!QDELETED(cell) && cell.use(amount ? amount * charge_weld : charge_weld))
 
 /obj/item/gun/energy/plasmacutter/use_tool(atom/target, mob/living/user, delay, amount=1, volume=0, datum/callback/extra_checks)
+
 	if(amount)
+		var/mutable_appearance/sparks = mutable_appearance('icons/effects/welding_effect.dmi', "welding_sparks", GASFIRE_LAYER, src, ABOVE_LIGHTING_PLANE)
+		target.add_overlay(sparks)
 		. = ..()
+		target.cut_overlay(sparks)
 	else
 		. = ..(amount=1)
 
@@ -188,6 +202,7 @@
 	var/obj/effect/portal/p_blue
 	var/obj/effect/portal/p_orange
 	var/firing_core = FALSE
+	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/wormhole_projector/examine(mob/user)
 	. = ..()
@@ -266,7 +281,7 @@
 
 /obj/item/gun/energy/wormhole_projector/proc/create_portal(obj/projectile/beam/wormhole/W, turf/target)
 	var/obj/effect/portal/P = new /obj/effect/portal(target, 300, null, FALSE, null)
-	RegisterSignal(P, COMSIG_PARENT_QDELETING, .proc/on_portal_destroy)
+	RegisterSignal(P, COMSIG_PARENT_QDELETING, PROC_REF(on_portal_destroy))
 	if(istype(W, /obj/projectile/beam/wormhole/orange))
 		qdel(p_orange)
 		p_orange = P
@@ -289,14 +304,14 @@
 	desc = "An LMG that fires 3D-printed flechettes. They are slowly resupplied using the cyborg's internal power source."
 	icon_state = "l6_cyborg"
 	icon = 'icons/obj/guns/ballistic.dmi'
-	cell_type = "/obj/item/stock_parts/cell/secborg"
+	cell_type = /obj/item/stock_parts/cell/secborg
 	ammo_type = list(/obj/item/ammo_casing/energy/c3dbullet)
 	can_charge = FALSE
 	use_cyborg_cell = TRUE
 
-/obj/item/gun/energy/printer/ComponentInitialize()
-	. = ..()
+/obj/item/gun/energy/printer/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)
+	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 
 /obj/item/gun/energy/printer/emp_act()
@@ -316,6 +331,12 @@
 	desc = "A weapon that can only be used to its full potential by the truly robust."
 	pin = /obj/item/firing_pin
 
+/obj/item/gun/energy/temperature/freeze
+	name = "cryogenic temperature gun"
+	desc = "A gun that reduces temperatures. Only for those with ice in their veins."
+	pin = /obj/item/firing_pin
+	ammo_type = list(/obj/item/ammo_casing/energy/temp)
+
 /obj/item/gun/energy/gravity_gun
 	name = "one-point gravitational manipulator"
 	desc = "An experimental, multi-mode device that fires bolts of Zero-Point Energy, causing local distortions in gravity. Requires a gravitational anomaly core to function."
@@ -326,6 +347,7 @@
 	automatic_charge_overlays = FALSE
 	var/power = 4
 	var/firing_core = FALSE
+	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/energy/gravity_gun/attackby(obj/item/C, mob/user)
 	if(istype(C, /obj/item/assembly/signaler/anomaly/grav))
@@ -352,4 +374,4 @@
 
 /obj/item/gun/energy/tesla_cannon/Initialize(mapload)
 	. = ..()
-	//AddComponent(/datum/component/automatic_fire, 0.1 SECONDS) PARIAH EDIT REMOVAL
+	AddComponent(/datum/component/automatic_fire, 0.1 SECONDS)

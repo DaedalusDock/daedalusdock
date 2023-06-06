@@ -66,9 +66,6 @@
 	uniform = /obj/item/clothing/under/rank/medical/chief_medical_officer
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
 	suit_store = /obj/item/flashlight/pen/paramedic
-	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
-		)
 	belt = /obj/item/modular_computer/tablet/pda/heads/cmo
 	ears = /obj/item/radio/headset/heads/cmo
 	shoes = /obj/item/clothing/shoes/sneakers/blue

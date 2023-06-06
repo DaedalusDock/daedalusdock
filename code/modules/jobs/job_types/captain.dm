@@ -67,7 +67,6 @@
 	uniform = /obj/item/clothing/under/rank/captain
 	suit = /obj/item/clothing/suit/armor/vest/capcarapace
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
 		/obj/item/station_charter = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/captain

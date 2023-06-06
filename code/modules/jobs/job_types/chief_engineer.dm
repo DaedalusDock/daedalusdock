@@ -67,9 +67,6 @@
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/chief_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/chief_engineer
-	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
-		)
 	belt = /obj/item/storage/belt/utility/chief/full
 	ears = /obj/item/radio/headset/heads/ce
 	gloves = /obj/item/clothing/gloves/color/black

@@ -36,12 +36,6 @@
 	icon_state = "labcoat_cmo"
 	inhand_icon_state = "labcoat_cmo"
 
-/obj/item/clothing/suit/toggle/labcoat/cmo/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/melee/baton/telescopic,
-	)
-
 /obj/item/clothing/suit/toggle/labcoat/paramedic
 	name = "paramedic's jacket"
 	desc = "A dark blue jacket for paramedics with reflective stripes."

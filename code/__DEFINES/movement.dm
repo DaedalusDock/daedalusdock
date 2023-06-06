@@ -69,7 +69,7 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define ZMOVE_FALL_CHECKS (1<<2)
 #define ZMOVE_CAN_FLY_CHECKS (1<<3)
 #define ZMOVE_INCAPACITATED_CHECKS (1<<4)
-/// Doesn't call zPassIn() and zPassOut()
+/// Doesn't call CanZPass()
 #define ZMOVE_IGNORE_OBSTACLES (1<<5)
 /// Gives players chat feedbacks if they're unable to move through z levels.
 #define ZMOVE_FEEDBACK (1<<6)

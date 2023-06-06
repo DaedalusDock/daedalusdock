@@ -279,22 +279,29 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			return TRUE
 	return FALSE
 
-//zPassIn doesn't necessarily pass an atom!
-//direction is direction of travel of air
-/turf/proc/zPassIn(atom/movable/A, direction, turf/source)
-	return FALSE
+/turf/proc/CanZPass(atom/movable/A, direction, z_move_flags)
+	if(z == A.z) //moving FROM this turf
+		//Check contents
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_OUT_UP)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
+				return FALSE
 
-//direction is direction of travel of air
-/turf/proc/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	return FALSE
+		return direction == UP //can't go below
+	else
+		if(density) //No fuck off
+			return FALSE
 
-//direction is direction of travel of air
-/turf/proc/zAirIn(direction, turf/source)
-	return FALSE
+		if(direction == UP) //on a turf below, trying to enter
+			return 0
 
-//direction is direction of travel of air
-/turf/proc/zAirOut(direction, turf/source)
-	return FALSE
+		if(direction == DOWN) //on a turf above, trying to enter
+			for(var/obj/O in contents)
+				if(O.obj_flags & BLOCK_Z_IN_DOWN)
+					return FALSE
+			return TRUE
 
 /// Precipitates a movable (plus whatever buckled to it) to lower z levels if possible and then calls zImpact()
 /turf/proc/zFall(atom/movable/falling, levels = 1, force = FALSE, falling_from_move = FALSE)

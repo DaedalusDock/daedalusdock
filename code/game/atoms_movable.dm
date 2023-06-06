@@ -265,32 +265,43 @@
 	if(!start)
 		start = get_turf(src)
 		if(!start)
-			return FALSE
+			CRASH("Something tried to zMove from nullspace.")
+
 	if(!direction)
 		if(!destination)
 			return FALSE
 		direction = get_dir_multiz(start, destination)
+
 	if(direction != UP && direction != DOWN)
-		return FALSE
+		CRASH("Tried to zMove on the same Z Level.")
+
 	if(!destination)
 		destination = get_step_multiz(start, direction)
 		if(!destination)
 			if(z_move_flags & ZMOVE_FEEDBACK)
-				to_chat(rider || src, span_warning("There's nowhere to go in that direction!"))
+				to_chat(rider || src, span_notice("There is nothing of interest in this direction."))
 			return FALSE
-	if(z_move_flags & ZMOVE_FALL_CHECKS && (throwing || (movement_type & (FLYING|FLOATING)) || !has_gravity(start)))
-		return FALSE
-	if(z_move_flags & ZMOVE_CAN_FLY_CHECKS && !(movement_type & (FLYING|FLOATING)) && has_gravity(start))
-		if(z_move_flags & ZMOVE_FEEDBACK)
-			if(rider)
-				to_chat(rider, span_warning("[src] is is not capable of flight."))
-			else
-				to_chat(src, span_warning("You are not Superman."))
-		return FALSE
-	if(!(z_move_flags & ZMOVE_IGNORE_OBSTACLES) && !(start.zPassOut(src, direction, destination, (z_move_flags & ZMOVE_ALLOW_ANCHORED)) && destination.zPassIn(src, direction, start)))
-		if(z_move_flags & ZMOVE_FEEDBACK)
-			to_chat(rider || src, span_warning("You couldn't move there!"))
-		return FALSE
+
+	if(z_move_flags & ZMOVE_FALL_CHECKS)
+		if((throwing || (movement_type & (FLYING|FLOATING)) || !has_gravity(start)))
+			return FALSE
+
+	// Check flight
+	if(z_move_flags & ZMOVE_CAN_FLY_CHECKS)
+		if(!(movement_type & (FLYING|FLOATING)) && has_gravity(start))
+				if(z_move_flags & ZMOVE_FEEDBACK)
+					if(rider)
+						to_chat(rider, span_warning("[src] is is not capable of flight."))
+					else
+						to_chat(src, span_warning("You are not Superman."))
+			return FALSE
+
+	// Check CanZPass
+	if(!(z_move_flags & ZMOVE_IGNORE_OBSTACLES))
+		if(!start.CanZPass(src, direction, z_move_flags) && destination.CanZPass(src, direction, z_move_flags))
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				to_chat(rider || src, span_warning("You couldn't move there!"))
+			return FALSE
 	return destination //used by some child types checks and zMove()
 
 /atom/movable/vv_edit_var(var_name, var_value)

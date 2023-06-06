@@ -219,36 +219,24 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 	simulated = TRUE
 	z_flags = Z_ATMOS_IN_DOWN | Z_ATMOS_IN_UP | Z_ATMOS_OUT_DOWN | Z_ATMOS_OUT_UP | Z_MIMIC_BELOW | Z_MIMIC_OVERWRITE | Z_MIMIC_NO_AO
 
-/turf/open/space/openspace/zAirIn()
-	return TRUE
 
-/turf/open/space/openspace/zAirOut()
-	return TRUE
+/turf/open/space/CanZPass(atom/movable/A, direction, z_move_flags)
+	if(z == A.z) //moving FROM this turf
+		//Check contents
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_OUT_UP)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
+				return FALSE
 
-/turf/open/space/openspace/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_IN_DOWN)
+		return direction == UP //can't go below
+	else
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_IN_DOWN)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_IN_UP)
 				return FALSE
-		return TRUE
-	if(direction == UP)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_IN_UP)
-				return FALSE
-		return TRUE
-	return FALSE
 
-/turf/open/space/openspace/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	if(A.anchored && !allow_anchored_movement)
-		return FALSE
-	if(direction == DOWN)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_OUT_DOWN)
-				return FALSE
 		return TRUE
-	if(direction == UP)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE

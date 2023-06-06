@@ -68,6 +68,7 @@
 	suit = /obj/item/clothing/suit/armor/vest/capcarapace
 	backpack_contents = list(
 		/obj/item/station_charter = 1,
+		/obj/item/assembly/flash/handheld
 		)
 	belt = /obj/item/modular_computer/tablet/pda/captain
 	ears = /obj/item/radio/headset/heads/captain/alt

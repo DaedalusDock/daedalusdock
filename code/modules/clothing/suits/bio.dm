@@ -83,6 +83,10 @@
 /obj/item/clothing/suit/bio_suit/cmo
 	icon_state = "bio_cmo"
 
+/obj/item/clothing/suit/bio_suit/cmo/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/assembly/flash/handheld
+
 //Plague Dr mask can be found in clothing/masks/gasmask.dm
 /obj/item/clothing/suit/bio_suit/plaguedoctorsuit
 	name = "plague doctor suit"

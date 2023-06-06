@@ -41,6 +41,17 @@
 				mannequin.dress_up_as_job(preview_job, TRUE, src, TRUE)
 		if(PREVIEW_PREF_LOADOUT)
 			mannequin.equip_outfit_and_loadout(new /datum/outfit, src, TRUE)
+
+	// Yes we do it every time because it needs to be done after job gear
+	if(length(SSquirks.quirks))
+		// And yes we need to clean all the quirk datums every time
+		mannequin.cleanse_quirk_datums()
+		for(var/quirk_name as anything in read_preference(/datum/preference/blob/quirks))
+			var/datum/quirk/quirk_type = SSquirks.quirks[quirk_name]
+			if(!(initial(quirk_type.quirk_flags) & QUIRK_CHANGES_APPEARANCE))
+				continue
+			mannequin.add_quirk(quirk_type, parent)
+
 	mannequin.update_body()
 	mannequin.add_overlay(mutable_appearance('icons/turf/floors.dmi', icon_state = "floor", layer = SPACE_LAYER))
 	return mannequin.appearance

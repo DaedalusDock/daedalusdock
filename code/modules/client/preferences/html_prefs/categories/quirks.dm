@@ -36,7 +36,7 @@
 			"icon" = initial(quirk.icon),
 			"name" = quirk_name,
 			"value" = initial(quirk.value),
-			"mood" = initial(quirk.mood_quirk)
+			"mood" = !!(initial(quirk.quirk_flags) & QUIRK_MOODLET_BASED)
 		)
 
 	. += {"

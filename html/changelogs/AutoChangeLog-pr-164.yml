@@ -1,7 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - rscadd: Some reagents have gotten a new description
-  - refactor: Abstract reagents are no longer detected via a magic list
-  - code_imp: Instantiating an abstract reagent is now illegal and will error
-  - admin: Some reagents have disappeared from admin lists due to not being real

@@ -46,12 +46,12 @@
 /turf/open/openspace/Entered(atom/movable/movable)
 	. = ..()
 	if(movable.set_currently_z_moving(CURRENTLY_Z_FALLING))
-		zFall(movable, falling_from_move = TRUE)
+		movable.zFall(falling_from_move = TRUE)
 
 /turf/open/openspace/proc/zfall_if_on_turf(atom/movable/movable)
 	if(QDELETED(movable) || movable.loc != src)
 		return
-	zFall(movable)
+	movable.zFall()
 
 /turf/open/openspace/can_have_cabling()
 	if(locate(/obj/structure/lattice/catwalk, src))
@@ -68,7 +68,6 @@
 			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
 				return FALSE
 
-		return direction == UP //can't go below
 	else
 		for(var/obj/O in contents)
 			if(direction == UP)
@@ -77,7 +76,7 @@
 			else if(O.obj_flags & BLOCK_Z_IN_UP)
 				return FALSE
 
-		return TRUE
+	return TRUE
 
 /turf/open/openspace/proc/CanCoverUp()
 	return can_cover_up
@@ -124,7 +123,7 @@
 	return FALSE
 
 /turf/open/openspace/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
-	if(caller && !caller.can_z_move(DOWN, src, null , ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
+	if(caller && !caller.can_z_move(DOWN, src, ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE
 	return FALSE
 

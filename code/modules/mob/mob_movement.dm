@@ -540,13 +540,6 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, UP)
 
-	if(can_z_move(DOWN, above_turf, current_turf, ZMOVE_FALL_FLAGS|ventcrawling_flag)) //Will we fall down if we go up?
-		if(buckled)
-			to_chat(src, span_warning("[buckled] is is not capable of flight."))
-		else
-			to_chat(src, span_warning("You are not Superman."))
-		return
-
 	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
 		to_chat(src, span_notice("You move upwards."))
 

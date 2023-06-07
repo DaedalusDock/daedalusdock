@@ -230,7 +230,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
 				return FALSE
 
-		return direction == UP //can't go below
 	else
 		for(var/obj/O in contents)
 			if(direction == UP)
@@ -239,4 +238,4 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 			else if(O.obj_flags & BLOCK_Z_IN_UP)
 				return FALSE
 
-		return TRUE
+	return TRUE

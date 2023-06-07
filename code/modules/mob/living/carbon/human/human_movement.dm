@@ -22,7 +22,12 @@
 	return ..()
 
 /mob/living/carbon/human/mob_negates_gravity()
-	return dna.species.negates_gravity(src) || ..()
+	if(dna.species.negates_gravity(src) || ..())
+		return TRUE
+
+	for(var/atom/a in src.loc)
+		if(HAS_TRAIT(a, TRAIT_CLIMBABLE))
+			return TRUE
 
 /mob/living/carbon/human/Move(NewLoc, direct)
 	. = ..()

@@ -64,6 +64,9 @@
 /atom/movable/openspace/has_gravity(turf/T)
 	return FALSE
 
+/atom/movable/openspace/CanZFall(turf/from, direction, anchor_bypass)
+	return FALSE
+
 // -- MULTIPLIER / SHADOWER --
 
 // Holder object used for dimming openspaces & copying lighting of below turf.

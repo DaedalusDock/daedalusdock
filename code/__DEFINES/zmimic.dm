@@ -26,6 +26,7 @@
 
 #define z_animate(thing, args...) \
 	do { \
+		animate(thing, ##args); \
 		var/atom/movable/openspace/mimic/__mimic; \
 		FOR_MIMIC_OF(thing, __mimic){ \
 			animate(__mimic, ##args); \

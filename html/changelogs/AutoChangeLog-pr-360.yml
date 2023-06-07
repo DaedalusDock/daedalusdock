@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscdel: H.A.R.S mutation
-  - bugfix: Force feeding works again

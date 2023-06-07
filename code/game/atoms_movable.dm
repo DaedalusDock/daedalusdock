@@ -416,7 +416,7 @@
 	if(!above || !above.Adjacent(destination, mover = src) || !above.CanZPass(src, UP))
 		return FALSE
 
-	if(has_gravity())
+	if(has_gravity() > 0)
 		var/can_overcome
 		for(var/atom/A in loc)
 			if(HAS_TRAIT(A, TRAIT_CLIMBABLE))

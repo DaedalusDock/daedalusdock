@@ -188,6 +188,17 @@
 	if (!destruction_timer)
 		destruction_timer = QDEL_IN(src, 10 SECONDS)
 
+/atom/movable/openspace/mimic/proc/z_shift()
+	if (istype(associated_atom, type) && associated_atom:override_depth)
+		depth = associated_atom:override_depth
+	else if (isturf(associated_atom.loc))
+		depth = min(SSzcopy.zlev_maximums[associated_atom.z] - associated_atom.z, ZMIMIC_MAX_DEPTH)
+		override_depth = depth
+
+	plane = ZMIMIC_MAX_PLANE - depth
+
+	bound_overlay?.z_shift()
+
 // -- TURF PROXY --
 
 // This thing holds the mimic appearance for non-OVERWRITE turfs.

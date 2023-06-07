@@ -135,5 +135,3 @@
 	if(merger.reagents && reagents)
 		reagents.trans_to(merger, reagents.total_volume)
 
-/obj/effect/decal/cleanable/CanZFall(turf/from, direction, anchor_bypass)
-	return ..()

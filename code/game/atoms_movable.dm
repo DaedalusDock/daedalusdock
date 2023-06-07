@@ -1244,6 +1244,8 @@
 /atom/movable/proc/on_changed_z_level(turf/old_turf, turf/new_turf, notify_contents = TRUE)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_Z_CHANGED, old_turf, new_turf)
 
+	bound_overlay?.z_shift()
+
 	if(!notify_contents)
 		return
 

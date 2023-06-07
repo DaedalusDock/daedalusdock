@@ -140,7 +140,7 @@
 	///The progress bar visual element.
 	var/obj/effect/abstract/progbar/bar
 	///The atom who "created" the bar
-	var/atom/owner
+	var/atom/movable/owner
 	///Effectively the number of steps the progress bar will need to do before reaching completion.
 	var/goal = 1
 	///Control check to see if the progress was interrupted before reaching its goal.
@@ -164,7 +164,7 @@
 
 		underlay.pixel_y += 2
 		underlay.alpha = 200
-		underlay.plane = ABOVE_HUD_PLANE
+		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 

@@ -11,15 +11,23 @@
 
 /// Is this movable visible from a turf that is mimicking below? Note: this does not necessarily mean *directly* below.
 #define MOVABLE_IS_BELOW_ZTURF(M) (\
-	isturf(loc) && (TURF_IS_MIMICKING(loc:above) \
+	isturf(M:loc) && (TURF_IS_MIMICKING(M:loc:above) \
 	|| ((M:zmm_flags & ZMM_LOOKAHEAD) && ZM_INTERNAL_SCAN_LOOKAHEAD(M, above?:z_flags, Z_MIMIC_BELOW))  \
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, above?:z_flags, Z_MIMIC_BELOW))) \
 )
 /// Is this movable located on a turf that is mimicking below? Note: this does not necessarily mean *directly* on.
 #define MOVABLE_IS_ON_ZTURF(M) (\
-	isturf(loc) && (TURF_IS_MIMICKING(loc:above) \
+	isturf(M:loc) && (TURF_IS_MIMICKING(M:loc) \
 	|| ((M:zmm_flags & ZMM_LOOKAHEAD) && ZM_INTERNAL_SCAN_LOOKAHEAD(M, z_flags, Z_MIMIC_BELOW)) \
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, z_flags, Z_MIMIC_BELOW))) \
 )
 
 #define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN; while ((MVAR = MVAR:bound_overlay) && !MVAR:destruction_timer)
+
+#define z_animate(thing, args...) \
+	do { \
+		var/atom/movable/openspace/mimic/__mimic; \
+		FOR_MIMIC_OF(thing, __mimic){ \
+			animate(__mimic, ##args); \
+		} \
+	} while(FALSE)

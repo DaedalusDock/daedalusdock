@@ -6,8 +6,8 @@
 
 /atom/movable/setDir(ndir)
 	. = ..()
-	if (. && bound_overlay)
-		bound_overlay.setDir(ndir)
+	if (bound_overlay)
+		bound_overlay.setDir(dir)
 
 /atom/movable/update_above()
 	if (!bound_overlay || !isturf(loc))
@@ -176,6 +176,12 @@
 			destruction_timer = null
 	else if (!destruction_timer)
 		destruction_timer = QDEL_IN(src, 10 SECONDS)
+
+/atom/movable/openspace/mimic/newtonian_move(direction, instant, start_delay) // No.
+	return TRUE
+
+/atom/movable/openspace/mimic/set_glide_size(target)
+	return
 
 // Called when the turf we're on is deleted/changed.
 /atom/movable/openspace/mimic/proc/owning_turf_changed()

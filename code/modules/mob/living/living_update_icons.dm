@@ -13,5 +13,7 @@
 		ntransform.Scale(resize)
 		resize = RESIZE_DEFAULT_SIZE
 
+		UPDATE_OO_IF_PRESENT
+
 	if(changed)
-		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+		z_animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)

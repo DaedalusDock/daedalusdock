@@ -405,7 +405,7 @@
 				break
 
 	if(climb_target)
-		return get_turf(climb_target)
+		return climb_target
 
 /atom/movable/proc/ClimbUp(atom/onto)
 	if(!isturf(loc))
@@ -600,6 +600,9 @@
 
 	for(var/mob/buckled_mob as anything in buckled_mobs)
 		buckled_mob.set_glide_size(target)
+
+	if(bound_overlay)
+		bound_overlay.glide_size = 8
 
 /**
  * meant for movement with zero side effects. only use for objects that are supposed to move "invisibly" (like camera mobs or ghosts)
@@ -859,7 +862,7 @@
 	if (bound_overlay)
 		// The overlay will handle cleaning itself up on non-openspace turfs.
 		if (new_turf)
-			var/turf/target = get_step(src, UP)
+			var/turf/target = GetAbove(src)
 			if (target)
 				bound_overlay.forceMove(target)
 				if (bound_overlay && dir != bound_overlay.dir)

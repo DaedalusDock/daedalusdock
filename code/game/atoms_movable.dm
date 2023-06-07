@@ -416,6 +416,26 @@
 	if(!above || !above.Adjacent(destination, mover = src) || !above.CanZPass(src, UP))
 		return FALSE
 
+	if(has_gravity())
+		var/can_overcome
+		for(var/atom/A in loc)
+			if(HAS_TRAIT(A, TRAIT_CLIMBABLE))
+				can_overcome = TRUE
+				break;
+
+		if(!can_overcome)
+			var/list/objects_to_stand_on = list(
+				/obj/item/chair,
+				/obj/structure/bed,
+			)
+			for(var/path in objects_to_stand_on)
+				if(locate(path) in loc)
+					can_overcome = TRUE
+					break;
+		if(!can_overcome)
+			to_chat(src, span_warning("Gravity stops you from moving upward."))
+			return FALSE
+
 	visible_message(
 		span_notice("[src] starts climbing onto \the [onto]."),
 		span_notice("You start climbing onto \the [onto].")

@@ -25,10 +25,6 @@
 	if(dna.species.negates_gravity(src) || ..())
 		return TRUE
 
-	for(var/atom/a in src.loc)
-		if(HAS_TRAIT(a, TRAIT_CLIMBABLE))
-			return TRUE
-
 /mob/living/carbon/human/Move(NewLoc, direct)
 	. = ..()
 	if(shoes && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))

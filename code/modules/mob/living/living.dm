@@ -49,6 +49,20 @@
 	return ..()
 
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
+	if(m_intent == MOVE_INTENT_WALK && levels <= 1 && !throwing && !incapacitated())
+		visible_message(
+			span_notice("<b>[src]</b> climbs down from the floor above.")
+		)
+		Stun(1 SECOND, TRUE)
+		setDir(global.reverse_dir[dir])
+		var/old_pixel_y = pixel_y
+		var/old_alpha = alpha
+		pixel_y = pixel_y + 32
+		alpha = 90
+		animate(src, time = 1 SECONDS, pixel_y = old_pixel_y)
+		animate(src, time = 1 SECONDS, alpha = old_alpha, flags = ANIMATION_PARALLEL)
+		return
+
 	if(!isgroundlessturf(T))
 		ZImpactDamage(T, levels)
 		message = FALSE
@@ -59,7 +73,8 @@
 		return
 	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
 	adjustBruteLoss((levels * 5) ** 1.5)
-	Knockdown(levels * 50)
+	Knockdown(levels * 5 SECONDS)
+	Stun(levels * 2 SECONDS)
 
 //Generic Bump(). Override MobBump() and ObjBump() instead of this.
 /mob/living/Bump(atom/A)
@@ -2237,7 +2252,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return !(incapacitated(IGNORE_RESTRAINTS))
 
 /mob/living/carbon/human/verb/lookup()
-	set name = "Look up"
+	set name = "Look Upwards"
 	set desc = "If you want to know what's above."
 	set category = "IC"
 
@@ -2245,7 +2260,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	do_look_up()
 
 /mob/living/verb/lookdown()
-	set name = "Look Down"
+	set name = "Look Downwards"
 	set desc = "If you want to know what's below."
 	set category = "IC"
 

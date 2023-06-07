@@ -413,6 +413,10 @@
 		return TRUE
 	return !density
 
+/// A version of CanPass() that accounts for vertical movement.
+/atom/proc/CanMoveOnto(atom/movable/mover, border_dir)
+	return ((border_dir & DOWN) && HAS_TRAIT(src, TRAIT_CLIMBABLE)) || CanPass(mover, border_dir)
+
 /**
  * Is this atom currently located on centcom
  *

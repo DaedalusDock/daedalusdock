@@ -112,7 +112,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	. = ..()
 	if(!.)
 		return
-	var/turf/target_turf = .
+	var/turf/target_turf = get_step(src, dir)
 	if(!is_valid_turf(target_turf)) // Allows unplaced blobs to travel through station z-levels
 		if(z_move_flags & ZMOVE_FEEDBACK)
 			to_chat(src, "Your destination is invalid. Move somewhere else and try again.")

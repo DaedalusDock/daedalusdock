@@ -136,7 +136,7 @@
 			return buckled.zMove(dir, target, z_move_flags) // Return value is a loc.
 	return ..()
 
-/mob/living/can_z_move(direction, turf/start, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
+/mob/living/can_z_move(direction, turf/start, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK, mob/living/rider)
 	// Check physical climbing ability
 	if((z_move_flags & ZMOVE_INCAPACITATED_CHECKS))
 		if(incapacitated())
@@ -148,7 +148,7 @@
 			if(!(has_right_hand() && has_left_hand()))
 				if(z_move_flags & ZMOVE_FEEDBACK)
 					to_chat(rider || src, span_notice("Sorry pal, that just isn't going to work..."))
-			return FALSE
+				return FALSE
 
 	if(!buckled || !(z_move_flags & ZMOVE_ALLOW_BUCKLED))
 		if(!(z_move_flags & ZMOVE_FALL_CHECKS) && incorporeal_move && (!rider || rider.incorporeal_move))

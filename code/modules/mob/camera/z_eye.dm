@@ -20,7 +20,7 @@
 	parent = null
 	return ..()
 
-/mob/camera/z_eye/can_z_move(direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/mob/camera/z_eye/can_z_move(direction, turf/start, z_move_flags, mob/living/rider)
 	return FALSE
 
 /mob/camera/z_eye/proc/kill()

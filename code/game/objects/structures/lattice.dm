@@ -51,6 +51,11 @@
 		new build_material(get_turf(src), number_of_mats)
 	qdel(src)
 
+/obj/structure/lattice/intercept_zImpact(list/falling_movables, levels)
+	. = ..()
+	if(levels == 1 && !istype(src, /obj/structure/lattice/catwalk))
+		. |= FALL_INTERCEPTED | FALL_NO_MESSAGE | FALL_RETAIN_PULL
+
 /obj/structure/lattice/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(the_rcd.mode == RCD_FLOORWALL)
 		return list("mode" = RCD_FLOORWALL, "delay" = 0, "cost" = 2)

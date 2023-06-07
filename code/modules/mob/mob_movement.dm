@@ -531,7 +531,6 @@
 	var/turf/current_turf = get_turf(src)
 	var/turf/above_turf = GetAbove(current_turf)
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
 	if(!above_turf)
 		to_chat(src, span_warning("There's nowhere to go in that direction!"))
 		return
@@ -540,7 +539,7 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, UP)
 
-	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
 
 ///Moves a mob down a z level
@@ -552,8 +551,7 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, DOWN)
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
-	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 	return FALSE
 

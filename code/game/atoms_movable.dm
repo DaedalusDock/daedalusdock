@@ -197,14 +197,6 @@
 			span_danger("[src] slams into [impacted_turf]!"),
 			blind_message = span_hear("You hear something slam into the deck.")
 		)
-	var/atom/highest = impacted_turf
-	for(var/atom/hurt_atom as anything in impacted_turf.contents)
-		if(!hurt_atom.density)
-			continue
-		if(isobj(hurt_atom) || ismob(hurt_atom))
-			if(hurt_atom.layer > highest.layer)
-				highest = hurt_atom
-	#warn impliment crushing people
 
 	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
@@ -224,15 +216,20 @@
  * * z_move_flags: bitflags used for various checks in both this proc and can_z_move(). See __DEFINES/movement.dm.
  */
 /atom/movable/proc/zMove(dir, turf/target, z_move_flags = ZMOVE_FLIGHT_FLAGS)
+	var/able_to_climb = (!currently_z_moving && (dir == UP) && isliving(src))
 	if(!target)
-		target = can_z_move(dir, get_turf(src), z_move_flags)
+		// We remove feedback if the mover is able to climb to prevent feedback from playing if they end up climbing.
+		target = can_z_move(dir, get_turf(src), able_to_climb ? z_move_flags & ~ZMOVE_FEEDBACK : z_move_flags)
 		if(!target)
 			set_currently_z_moving(FALSE, TRUE)
 
-	if(!target && !currently_z_moving && (dir == UP))
+	if(!target && able_to_climb)
 		var/obj/climbable = check_zclimb()
 		if(!climbable)
-			return
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				// This is kind of stupid, but we do this *again* to properly get feedback
+				can_z_move(dir, get_turf(src), z_move_flags)
+			return FALSE
 
 		return ClimbUp(climbable)
 
@@ -245,6 +242,7 @@
 		movable.currently_z_moving = currently_z_moving || CURRENTLY_Z_MOVING_GENERIC
 		movable.forceMove(target)
 		movable.set_currently_z_moving(FALSE, TRUE)
+
 	// This is run after ALL movables have been moved, so pulls don't get broken unless they are actually out of range.
 	if(z_move_flags & ZMOVE_CHECK_PULLS)
 		for(var/atom/movable/moved_mov as anything in moving_movs)
@@ -293,27 +291,43 @@
 			to_chat(rider || src, span_notice("There is nothing of interest in this direction."))
 		return FALSE
 
-	// Check CanZPass
-	if(!(z_move_flags & ZMOVE_IGNORE_OBSTACLES))
-		if(!start.CanZPass(src, direction, z_move_flags) && destination.CanZPass(src, direction, z_move_flags))
-			if(z_move_flags & ZMOVE_FEEDBACK)
-				to_chat(rider || src, span_warning("You couldn't move there!"))
-			return FALSE
-
-	if(z_move_flags & ZMOVE_FALL_CHECKS)
-		if((throwing || (movement_type & (FLYING|FLOATING)) || !has_gravity(start)))
-			return FALSE
-
 	// Check flight
 	if(z_move_flags & ZMOVE_CAN_FLY_CHECKS)
-		if(!(movement_type & (FLYING|FLOATING)) && has_gravity(start))
+		if(!(movement_type & (FLYING|FLOATING)) && has_gravity(start) && (direction == UP))
 			if(z_move_flags & ZMOVE_FEEDBACK)
 				if(rider)
 					to_chat(rider, span_warning("[src] is is not capable of flight."))
 				else
-					to_chat(src, span_warning("You are not Superman."))
+					to_chat(src, span_warning("You stare at [destination]."))
 			return FALSE
 
+	// Check CanZPass
+	if(!(z_move_flags & ZMOVE_IGNORE_OBSTACLES))
+		// Check exit
+		if(!start.CanZPass(src, direction, z_move_flags))
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				to_chat(rider || src, span_warning("[start] is in the way."))
+			return FALSE
+
+		// Check enter
+		if(!destination.CanZPass(src, direction, z_move_flags))
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				to_chat(rider || src, span_warning("You bump against [destination]."))
+			return FALSE
+
+		// Check destination movable CanPass
+		for(var/atom/movable/A as anything in destination)
+			if(!A.CanMoveOnto(src, direction))
+				if(z_move_flags & ZMOVE_FEEDBACK)
+					to_chat(rider || src, span_warning("You are blocked by [A]."))
+				return FALSE
+
+	// Check if we would fall.
+	if(z_move_flags & ZMOVE_FALL_CHECKS)
+		if((throwing || (movement_type & (FLYING|FLOATING)) || !has_gravity(start)))
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				to_chat(rider || src, span_warning("You see nothing to hold onto."))
+			return FALSE
 
 	return destination //used by some child types checks and zMove()
 
@@ -341,7 +355,7 @@
 		var/mob/living/falling_living = src
 		//relay this mess to whatever the mob is buckled to.
 		if(falling_living.buckled)
-			return zFall(falling_living.buckled)
+			return falling_living.buckled.zFall()
 
 	if(!falling_from_move && currently_z_moving)
 		return
@@ -381,6 +395,8 @@
 /// Returns an object we can climb onto
 /atom/movable/proc/check_zclimb()
 	var/turf/above = GetAbove(src)
+	if(!above?.CanZPass(src, UP))
+		return
 
 	var/list/all_turfs_above = get_adjacent_open_turfs(above)
 
@@ -399,8 +415,10 @@
 		if(.)
 			return
 
-/proc/get_climbable_surface(turf/T)
+/atom/movable/proc/get_climbable_surface(turf/T)
 	var/climb_target
+	if(!T.Enter(src))
+		return
 	if(!isopenspaceturf(T) && isfloorturf(T))
 		climb_target = T
 	else
@@ -418,7 +436,7 @@
 
 	var/turf/above = GetAbove(src)
 	var/turf/destination = get_turf(onto)
-	if(!above || !above.Adjacent(destination, mover = src) || !above.CanZPass(src, UP))
+	if(!above || !above.Adjacent(destination, mover = src))
 		return FALSE
 
 	if(has_gravity() > 0)
@@ -430,15 +448,16 @@
 
 		if(!can_overcome)
 			var/list/objects_to_stand_on = list(
-				/obj/item/chair,
+				/obj/structure/chair,
 				/obj/structure/bed,
+				/obj/structure/lattice
 			)
 			for(var/path in objects_to_stand_on)
 				if(locate(path) in loc)
 					can_overcome = TRUE
 					break;
 		if(!can_overcome)
-			to_chat(src, span_warning("Gravity stops you from moving upward."))
+			to_chat(src, span_warning("You cannot reach [onto] from here!"))
 			return FALSE
 
 	visible_message(
@@ -453,9 +472,14 @@
 		span_notice("[src] climbs onto \the [onto]."),
 		span_notice("You climb onto \the [onto].")
 	)
+
+	var/oldloc = loc
 	setDir(get_dir(above, destination))
 	set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-	return zMove(UP, destination, ZMOVE_CHECK_PULLS|ZMOVE_INCAPACITATED_CHECKS)
+	. = zMove(UP, destination, ZMOVE_CHECK_PULLS|ZMOVE_INCAPACITATED_CHECKS)
+	if(.)
+		playsound(oldloc, 'sound/effects/stairs_step.ogg', 50)
+		playsound(destination, 'sound/effects/stairs_step.ogg', 50)
 
 /atom/movable/vv_edit_var(var_name, var_value)
 	var/static/list/banned_edits = list(
@@ -632,7 +656,7 @@
 /**
  * meant for movement with zero side effects. only use for objects that are supposed to move "invisibly" (like camera mobs or ghosts)
  * if you want something to move onto a tile with a beartrap or recycler or tripmine or mouse without that object knowing about it at all, use this
- * most of the time you want forceMove()
+ * most of the time you want forceMove()FALS
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
 	var/atom/old_loc = loc

@@ -88,16 +88,25 @@
 	var/turf/checking = GetAbove(my_turf)
 	if(!istype(checking))
 		return
-	if(!checking.CanZPass(climber, UP, ZMOVE_STAIRS_FLAGS))
-		return
+
 	var/turf/target = get_step_multiz(my_turf, (dir|UP))
 	if(!target)
+		to_chat(climber, span_notice("There is nothing of interest in that direction."))
+		return
+
+	if(!checking.CanZPass(climber, UP, ZMOVE_STAIRS_FLAGS))
+		to_chat(climber, span_warning("Something blocks the path."))
 		return
 
 	if(!target.Enter(climber))
+		to_chat(climber, span_warning("Something blocks the path."))
 		return
 
 	climber.forceMove(target)
+	if(!(climber.throwing || (climber.movement_type & (VENTCRAWLING | FLYING)) || HAS_TRAIT(climber, TRAIT_IMMOBILIZED)))
+		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
+		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
+
 	/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
 	climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
 	for(var/mob/living/buckled as anything in climber.buckled_mobs)

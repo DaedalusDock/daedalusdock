@@ -193,7 +193,10 @@
 
 /atom/movable/proc/onZImpact(turf/impacted_turf, levels, message = TRUE)
 	if(message)
-		visible_message(span_danger("[src] crashes into [impacted_turf]!"))
+		visible_message(
+			span_danger("[src] slams into [impacted_turf]!"),
+			blind_message = span_hear("You hear something slam into the deck.")
+		)
 	var/atom/highest = impacted_turf
 	for(var/atom/hurt_atom as anything in impacted_turf.contents)
 		if(!hurt_atom.density)
@@ -201,6 +204,8 @@
 		if(isobj(hurt_atom) || ismob(hurt_atom))
 			if(hurt_atom.layer > highest.layer)
 				highest = hurt_atom
+	#warn impliment crushing people
+
 	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
 

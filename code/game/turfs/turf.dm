@@ -307,9 +307,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
 	var/flags = NONE
 	var/list/falling_movables = falling.get_z_move_affected()
-	var/list/falling_mov_names
-	for(var/atom/movable/falling_mov as anything in falling_movables)
-		falling_mov_names += falling_mov.name
+	var/list/falling_mob_names
+
+	for(var/atom/movable/falling_mob as anything in falling_movables)
+		if(ishuman(falling_mob))
+			var/mob/living/carbon/human/H = falling_mob
+			falling_mob_names += H.get_face_name()
+			continue
+		falling_mob_names += falling_mob.name
 
 	for(var/i in contents)
 		var/atom/thing = i
@@ -318,19 +323,27 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			break
 
 	if(prev_turf && !(flags & FALL_NO_MESSAGE))
-		for(var/mov_name in falling_mov_names)
-			prev_turf.visible_message(span_danger("[mov_name] falls through [prev_turf]!"))
+		for(var/mov_name in falling_mob_names)
+			prev_turf.visible_message(
+				span_warning("<b>[name]</b> falls through [prev_turf]!"),,
+				span_hear("You hear a whoosh of displaced air.")
+			)
 
 	if(!(flags & FALL_INTERCEPTED) && falling.zFall(levels + 1))
 		return FALSE
 
-	for(var/atom/movable/falling_mov as anything in falling_movables)
+	for(var/atom/movable/falling_mob as anything in falling_movables)
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mov.stop_pulling()
+			falling_mob.stop_pulling()
+
 		if(!(flags & FALL_INTERCEPTED))
-			falling_mov.onZImpact(src, levels)
-		if(falling_mov.pulledby && (falling_mov.z != falling_mov.pulledby.z || get_dist(falling_mov, falling_mov.pulledby) > 1))
-			falling_mov.pulledby.stop_pulling()
+			falling_mob.onZImpact(src, levels)
+
+			if(!(flags & FALL_NO_MESSAGE))
+				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
+
+		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
+			falling_mob.pulledby.stop_pulling()
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/C, mob/user)

@@ -146,6 +146,8 @@
 /atom/movable/openspace/mimic/Destroy()
 	SSzcopy.openspace_overlays -= 1
 	queued = 0
+	if(HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+		lose_hearing_sensitivity()
 
 	if (associated_atom)
 		associated_atom.bound_overlay = null
@@ -182,6 +184,27 @@
 
 /atom/movable/openspace/mimic/set_glide_size(target)
 	return
+
+/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+	if(speaker == associated_atom)
+		return
+
+	if(speaker.z != src.z)
+		return
+
+	//Mimics of mimics aren't supposed to become hearing sensitive.
+	associated_atom.Hear(arglist(args))
+
+/atom/movable/openspace/mimic/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
+	if(ismob(associated_atom))
+		associated_atom:show_message(arglist(args))
+
+/atom/movable/openspace/mimic/proc/get_root()
+	RETURN_TYPE(/atom/movable)
+
+	. = associated_atom
+	while (istype(., /atom/movable/openspace/mimic))
+		. = (.):associated_atom
 
 // Called when the turf we're on is deleted/changed.
 /atom/movable/openspace/mimic/proc/owning_turf_changed()

@@ -339,8 +339,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		if(!(flags & FALL_INTERCEPTED))
 			falling_mob.onZImpact(src, levels)
 
+			#ifndef ZMIMIC_MULTIZ_SPEECH //Multiz speech handles this otherwise
 			if(!(flags & FALL_NO_MESSAGE))
 				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
+			#endif
 
 		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
 			falling_mob.pulledby.stop_pulling()

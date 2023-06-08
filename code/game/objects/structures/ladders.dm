@@ -10,7 +10,7 @@
 	var/obj/structure/ladder/up     //the ladder above this one
 	var/crafted = FALSE
 	/// Optional travel time for ladder in deciseconds
-	var/travel_time = 0
+	var/travel_time = 3 SECONDS
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
@@ -76,15 +76,20 @@
 	var/response = SEND_SIGNAL(user, COMSIG_LADDER_TRAVEL, src, ladder, going_up)
 	if(response & LADDER_TRAVEL_BLOCK)
 		return
-
+	var/turf/target = get_turf(ladder)
 	if(!is_ghost)
 		ladder.add_fingerprint(user)
+		if(!user.can_z_move(UP, target, ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED|ZMOVE_FEEDBACK))
+			return
 		if(!do_after(user, src, travel_time, DO_PUBLIC))
 			return
 		show_fluff_message(going_up, user)
 
-	var/turf/target = get_turf(ladder)
-	user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED)
+	if(!user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED))
+		return
+	if(!is_ghost)
+		show_fluff_message(going_up, user, loc)
+		show_fluff_message(going_up, user, target)
 	ladder.use(user) //reopening ladder radial menu ahead
 
 /obj/structure/ladder/proc/use(mob/user, is_ghost=FALSE)
@@ -152,11 +157,11 @@
 	use(user, TRUE)
 	return ..()
 
-/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user)
+/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user, atom/dest)
 	if(going_up)
-		user.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
+		dest.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
 	else
-		user.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
+		dest.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
 
 
 // Indestructible away mission ladders which link based on a mapped ID and height value rather than X/Y/Z.

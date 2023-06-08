@@ -122,7 +122,7 @@
 /**
  * Show a message to this mob (visual or audible)
  */
-/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)
 		return
 
@@ -177,6 +177,13 @@
 	if(!islist(ignored_mobs))
 		ignored_mobs = list(ignored_mobs)
 	var/list/hearers = get_hearers_in_view(vision_distance, src) //caches the hearers and then removes ignored mobs.
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(blind_message && ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(vision_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	hearers -= ignored_mobs
 
 	if(self_message)
@@ -232,15 +239,27 @@
  */
 /atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
 	var/list/hearers = get_hearers_in_view(hearing_distance, src)
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(hearing_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	if(self_message)
 		hearers -= src
+
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
 		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
-	for(var/mob/M in hearers)
-		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
-			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
-		M.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
+	for(var/atom/movable/AM as anything in hearers)
+		if(istype(AM, /obj))
+			continue
+		if(ismob(AM))
+			var/mob/M = AM
+			if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
+				M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
+		AM.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
 
 /**
  * Show a message to all mobs in earshot of this one
@@ -468,7 +487,7 @@
 					if(!M.client)
 						continue
 					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
+						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]."))
 					else
 						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else

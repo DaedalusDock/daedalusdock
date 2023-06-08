@@ -330,6 +330,11 @@ SUBSYSTEM_DEF(zcopy)
 			if (!object.bound_overlay)	// Generate a new overlay if the atom doesn't already have one.
 				object.bound_overlay = new(T)
 				object.bound_overlay.associated_atom = object
+				#ifdef ZMIMIC_MULTIZ_SPEECH
+				//This typecheck permits 1 Z-level of hearing
+				if(!istype(object, /atom/movable/openspace/mimic) && HAS_TRAIT(object, TRAIT_HEARING_SENSITIVE))
+					object.bound_overlay.become_hearing_sensitive()
+				#endif
 
 			var/override_depth
 			var/original_type = object.type

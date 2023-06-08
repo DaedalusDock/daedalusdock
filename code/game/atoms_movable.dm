@@ -364,7 +364,7 @@
 		set_currently_z_moving(FALSE, TRUE)
 		return FALSE
 
-	spawn(0)
+	spawn(-1)
 		_doZFall(target, levels, get_turf(src))
 	return TRUE
 
@@ -1681,3 +1681,10 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+
+/**
+ * Show a message to this mob (visual or audible)
+ * This is /atom/movable so mimics can get these and relay them to their parent.
+ */
+/atom/movable/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
+	return

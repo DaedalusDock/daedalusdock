@@ -127,11 +127,7 @@
 	/mob/living/simple_animal/hostile/asteroid/fugu = "growing",
 	/mob/living/simple_animal/slime = "gelatinous",
 	/mob/living/simple_animal/hostile/hivebot = "robotic",
-	/mob/living/simple_animal/hostile/asteroid/wolf = "canine",
 	/mob/living/simple_animal/hostile/bear = "ursine",
-	/mob/living/simple_animal/hostile/asteroid/goliath = "hulking",
-	/mob/living/simple_animal/hostile/asteroid/basilisk = "gazing",
-	/mob/living/simple_animal/hostile/asteroid/hivelord = "splitting",
 	)
 
 /datum/round_event/animal_infestation/dangerous/announce(fake)

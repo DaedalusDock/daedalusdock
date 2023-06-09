@@ -228,6 +228,74 @@
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
 
+/* DISORIENTED */
+/**
+ * Applies the "disoriented" status effect to the mob, among other potential statuses.
+ * Args:
+ * * amount : duration for src to be disoriented
+ * * stamina_amount : stamina damage to deal before LERP
+ * * ignore_canstun : ignore stun immunities, if using a secondary form of status
+ * * knockdown : duration to knock src down
+ * * stun : duration to stun src
+ * * paralyze : duration to paralyze src
+ * * overstam : If TRUE, stamina_amount will be able to deal stamina damage over the waekened threshold, allowing it to also stamina stun.
+ * * stack_status : Should the given status value(s) stack ontop of existing status values?
+ */
+/mob/living/proc/Disorient(amount, stamina_amount, ignore_canstun, knockdown, stun, paralyze, overstam, stack_status = TRUE)
+	var/protection_amt = 0
+	///placeholder
+	var/disorient_multiplier = 1 - (protection_amt/100)
+	var/stamina_multiplier = LERP(disorient_multiplier, 1, 0.25)
+
+	var/stam2deal = stamina_amount * stamina_multiplier
+
+	//You can never be stam-stunned w/o overstam
+	if(overstam)
+		stamina.adjust(-stam2deal)
+	else
+		var/threshold = (stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
+		stam2deal = stamina.current - stam2deal < threshold ? (stam2deal - threshold) : (stam2deal)
+		if(stam2deal)
+			stamina.adjust(-stam2deal)
+
+	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
+	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)
+
+	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
+		if(knockdown)
+			if(stack_status)
+				AdjustKnockdown(knockdown, ignore_canstun)
+			else
+				Knockdown(knockdown, ignore_canstun)
+
+		if(paralyze)
+			if(stack_status)
+				AdjustParalyzed(paralyze, ignore_canstun)
+			else
+				Paralyze(paralyze, ignore_canstun)
+
+		if(stun)
+			if(stack_status)
+				AdjustStun(stun, ignore_canstun)
+			else
+				Stun(stun, ignore_canstun)
+
+	if(amount > 0)
+		adjust_timed_status_effect(amount, /datum/status_effect/incapacitating/disoriented, 15 SECONDS)
+
+	return
+
+
+/mob/living/proc/IsDisoriented() //If we're paralyzed
+	return has_status_effect(/datum/status_effect/incapacitating/disoriented)
+
+/mob/living/proc/AmountDisoriented() //How many deciseconds remain in our Paralyzed status effect
+	var/datum/status_effect/incapacitating/disoriented/P = IsDisoriented()
+	if(P)
+		return P.duration - world.time
+	return 0
+
+
 /* INCAPACITATED */
 
 
@@ -483,17 +551,26 @@
 			priority_absorb_key["stuns_absorbed"] += amount
 		return TRUE
 
-/mob/living/proc/add_quirk(quirktype) //separate proc due to the way these ones are handled
-	if(HAS_TRAIT(src, quirktype))
-		return
-	var/datum/quirk/quirk = quirktype
-	var/qname = initial(quirk.name)
+/**
+ * Adds the passed quirk to the mob
+ *
+ * Arguments
+ * * quirktype - Quirk typepath to add to the mob
+ * * override_client - optional, allows a client to be passed to the quirks on add procs.
+ * If not passed, defaults to this mob's client.
+ *
+ * Returns TRUE on success, FALSE on failure (already has the quirk, etc)
+ */
+/mob/living/proc/add_quirk(datum/quirk/quirktype, client/override_client)
+	if(has_quirk(quirktype))
+		return FALSE
+	var/qname = initial(quirktype.name)
 	if(!SSquirks || !SSquirks.quirks[qname])
-		return
-	quirk = new quirktype()
-	if(quirk.add_to_holder(src))
+		return FALSE
+
+	var/datum/quirk/quirk = new quirktype()
+	if(quirk.add_to_holder(new_holder = src, client_source = override_client))
 		return TRUE
-	qdel(quirk)
 	return FALSE
 
 /mob/living/proc/remove_quirk(quirktype)

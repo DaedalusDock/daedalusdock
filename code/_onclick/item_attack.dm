@@ -85,6 +85,7 @@
 /obj/item/proc/pre_attack(atom/A, mob/living/user, params) //do stuff before attackby!
 	if(SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, A, user, params) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
+
 	return FALSE //return TRUE to avoid calling attackby after this proc does stuff
 
 /**
@@ -150,7 +151,7 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	user.changeNext_move(CLICK_CD_MELEE)
+	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
@@ -196,6 +197,8 @@
 
 	if(force && M == user && user.client)
 		user.client.give_award(/datum/award/achievement/misc/selfouch, user)
+
+	user.stamina_swing(src.stamina_cost)
 
 	user.do_attack_animation(M)
 	M.attacked_by(src, user)

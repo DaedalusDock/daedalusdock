@@ -334,7 +334,10 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /datum/antagonist/proc/enabled_in_preferences(datum/mind/M)
 	if(job_rank)
-		if(M.current && M.current.client && (job_rank in M.current.client.prefs.be_special))
+		var/list/client_antags = M.current?.client?.prefs.read_preference(/datum/preference/blob/antagonists)
+		if(!client_antags)
+			return FALSE
+		if(client_antags[job_rank])
 			return TRUE
 		else
 			return FALSE

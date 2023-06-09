@@ -46,7 +46,7 @@
 	max_integrity = 80
 
 /obj/structure/hedge/attacked_by(obj/item/I, mob/living/user)
-	if(opacity && HAS_TRAIT(user, TRAIT_BONSAI) && I.get_sharpness())
+	if(opacity && HAS_TRAIT(user, TRAIT_BONSAI) && (I.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You start trimming \the [src]."))
 		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming \the [src]."))

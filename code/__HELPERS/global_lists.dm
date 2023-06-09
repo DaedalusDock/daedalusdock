@@ -69,6 +69,7 @@
 	GLOB.emote_list = init_emote_list()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+	init_loadout_references()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -150,3 +151,21 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	/obj/structure/camera_assembly,
 	/obj/structure/light_construct
 	)))
+
+/proc/init_loadout_references()
+	// Here we build the global loadout lists
+	for(var/datum/loadout_item/L as anything in subtypesof(/datum/loadout_item))
+		if(!initial(L.path))
+			continue
+		L = new L()
+		GLOB.loadout_items += L
+		GLOB.item_path_to_loadout_item[L.path] = L
+		if(!GLOB.loadout_category_to_subcategory_to_items[L.category])
+			GLOB.loadout_category_to_subcategory_to_items[L.category] = list()
+		if(!GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory])
+			GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory] = list()
+		GLOB.loadout_category_to_subcategory_to_items[L.category][L.subcategory] += L
+
+	for(var/category as anything in GLOB.loadout_category_to_subcategory_to_items)
+		for(var/subcategory as anything in GLOB.loadout_category_to_subcategory_to_items[category])
+			GLOB.loadout_category_to_subcategory_to_items[category][subcategory] = sortTim(GLOB.loadout_category_to_subcategory_to_items[category][subcategory], GLOBAL_PROC_REF(cmp_loadout_name))

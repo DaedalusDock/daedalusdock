@@ -41,7 +41,7 @@
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.internal_organs)
+			for(var/organ in mob_to_check.processing_organs)
 				found_organ = organ
 				found_organ.organ_flags ^= ORGAN_FROZEN
 
@@ -210,7 +210,8 @@
 		if(!candidate_mob.key || !candidate_mob.client || (ignore_category && GLOB.poll_ignore[ignore_category] && (candidate_mob.ckey in GLOB.poll_ignore[ignore_category])))
 			continue
 		if(be_special_flag)
-			if(!(candidate_mob.client.prefs) || !(be_special_flag in candidate_mob.client.prefs.be_special))
+			var/list/client_antags = candidate_mob.client?.prefs?.read_preference(/datum/preference/blob/antagonists)
+			if(!(client_antags?[be_special_flag]))
 				continue
 
 			var/required_time = GLOB.special_roles[be_special_flag] || 0

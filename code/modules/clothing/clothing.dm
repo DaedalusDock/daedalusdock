@@ -5,6 +5,11 @@
 	resistance_flags = FLAMMABLE
 	max_integrity = 200
 	integrity_failure = 0.4
+
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	var/damaged_clothes = CLOTHING_PRISTINE //similar to machine's BROKEN stat and structure's broken var
 
 	///What level of bright light protection item has.

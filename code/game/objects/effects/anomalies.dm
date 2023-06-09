@@ -157,6 +157,8 @@
 
 /obj/effect/anomaly/grav/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/Bump(atom/A)
@@ -218,6 +220,8 @@
 
 /obj/effect/anomaly/flux/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/Bump(atom/A)

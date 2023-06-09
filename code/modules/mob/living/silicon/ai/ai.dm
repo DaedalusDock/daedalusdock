@@ -708,10 +708,10 @@
 
 	if (!camera_light_on)
 		to_chat(src, "Camera lights deactivated.")
-
-		for (var/obj/machinery/camera/C in lit_cameras)
-			C.set_light(0)
-			lit_cameras = list()
+		var/list/old_cams = lit_cameras.Copy() //Togglelight will fail if the camera is in a lit_cameras list.
+		lit_cameras.Cut()
+		for (var/obj/machinery/camera/C in old_cams)
+			C.Togglelight(0)
 
 		return
 

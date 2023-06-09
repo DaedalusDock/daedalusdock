@@ -1,0 +1,33 @@
+2023-06-06:
+  Jacquerel:
+  - bugfix: Changing z-level while jaunting will no longer reveal you.
+  - bugfix: If a shuttle lands on you while jaunting you will die rather than be stuck
+      in a weird purgatory state.
+  - bugfix: Mirror Walk will not appear tinted as if it can be cast when it can't,
+      and vice versa.
+  - qol: Blood Crawl and Shadow Walk will now display whether you can use them or
+      not in the same manner as Mirror Walk.
+  - refactor: Jaunt code which adds and removes temporary traits or effects should
+      hopefully be easier to work with in the future.
+  Kapu1178:
+  - rscadd: HTML Prefs.
+  - rscadd: Loadout 2!
+  - code_imp: Nothin' to see here folks
+  - rscadd: Stamina regeration
+  - rscadd: Sprinting
+  - rscadd: Stamina damage during combat
+  - rscadd: Goon Softcrit
+  - imageadd: Retiled Metastation
+  VexingRaven:
+  - bugfix: Multi-Z Ruins work again (Ice Moon Mining Site spawns again with the Demonic
+      Frost Miner)
+  - bugfix: Soul Scythes can no longer phase through the floor into Centcom.
+  francinum:
+  - rscadd: Some reagents have gotten a new description
+  - refactor: Abstract reagents are no longer detected via a magic list
+  - code_imp: Instantiating an abstract reagent is now illegal and will error
+  - admin: Some reagents have disappeared from admin lists due to not being real
+2023-06-07:
+  Kapu1178:
+  - rscdel: H.A.R.S mutation
+  - bugfix: Force feeding works again

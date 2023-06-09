@@ -1,6 +1,6 @@
 PROCESSING_SUBSYSTEM_DEF(greyscale)
 	name = "Greyscale"
-	flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_HIBERNATE
 	init_order = INIT_ORDER_GREYSCALE
 	wait = 3 SECONDS
 
@@ -26,6 +26,10 @@ PROCESSING_SUBSYSTEM_DEF(greyscale)
 		CHECK_TICK
 		var/datum/greyscale_config/config = configurations[greyscale_type]
 		config.CrossVerify()
+
+	for(var/datum/loadout_item/loadout_item as anything in GLOB.loadout_items)
+		CHECK_TICK
+		loadout_item.parse_gags()
 
 	return ..()
 

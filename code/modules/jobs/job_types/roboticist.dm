@@ -6,11 +6,16 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	selection_color = "#3d273d"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 	bounty_types = CIV_JOB_ROBO
+
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/ananke
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -26,7 +31,6 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_ROBOTICIST
 
 	mail_goodies = list(
 		/obj/item/storage/box/flashes = 20,

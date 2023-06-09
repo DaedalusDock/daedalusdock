@@ -41,7 +41,7 @@
 /**
 	Base proc for all `/mineral` subtype machines to use. Place your item pickup behavior in this proc when you override it for your specific machine.
 
-	Called when the COMSIG_ATOM_ENTERED  signal is sent.
+	Called when the COMSIG_ATOM_ENTERED signal is sent.
 
 	Arguments:
 	* source - the turf that is listening for the signals.

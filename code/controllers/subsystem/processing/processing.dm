@@ -10,6 +10,13 @@ SUBSYSTEM_DEF(processing)
 	var/list/processing = list()
 	var/list/currentrun = list()
 
+/datum/controller/subsystem/processing/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, processing),
+		NAMEOF(src, currentrun)
+	)
+
 /datum/controller/subsystem/processing/stat_entry(msg)
 	msg = "[stat_tag]:[length(processing)]"
 	return ..()

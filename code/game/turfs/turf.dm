@@ -270,7 +270,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return FALSE
 
 //direction is direction of travel of air
-/turf/proc/zPassOut(atom/movable/A, direction, turf/destination)
+/turf/proc/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
 	return FALSE
 
 //direction is direction of travel of air
@@ -620,7 +620,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/internal/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly?.reagents.total_volume)
 		return
 	var/chemicals_lost = belly.reagents.total_volume * purge_ratio

@@ -390,6 +390,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			return
 		if(splatter_strength <= 0)
 			break
+		if(QDELETED(iter_atom))
+			return
 		if(isitem(iter_atom))
 			iter_atom.add_blood_DNA(blood_dna_info)
 			splatter_strength--

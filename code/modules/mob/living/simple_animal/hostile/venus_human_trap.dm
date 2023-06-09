@@ -91,6 +91,8 @@
 
 /obj/effect/ebeam/vine/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!isvineimmune(L))

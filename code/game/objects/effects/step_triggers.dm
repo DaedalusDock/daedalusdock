@@ -19,6 +19,8 @@
 
 /obj/effect/step_trigger/proc/on_entered(datum/source, H as mob|obj)
 	SIGNAL_HANDLER
+	if(H == src)
+		return
 	if(!H)
 		return
 	if(isobserver(H) && !affect_ghosts)

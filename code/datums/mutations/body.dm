@@ -451,14 +451,14 @@
 
 	if(new_stat != HARD_CRIT)
 		return
-	var/list/organs = owner.getorganszone(BODY_ZONE_HEAD, TRUE)
+	var/list/organs = owner.getorgansofzone(BODY_ZONE_HEAD, TRUE)
 
 	for(var/obj/item/organ/I in organs)
 		qdel(I)
 
 	explosion(owner, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
 	for(var/mob/living/carbon/human/H in view(2,owner))
-		var/obj/item/organ/internal/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
 		if(eyes)
 			to_chat(H, span_userdanger("You are blinded by a shower of blood!"))
 		else
@@ -471,52 +471,3 @@
 		to_chat(S, span_userdanger("Your sensors are disabled by a shower of blood!"))
 		S.Paralyze(60)
 	owner.gib()
-
-/datum/mutation/human/headless
-	name = "H.A.R.S."
-	desc = "A mutation that makes the body reject the head, the brain receding into the chest. Stands for Head Allergic Rejection Syndrome. Warning: Removing this mutation is very dangerous, though it will regenerate non-vital head organs."
-	difficulty = 12 //pretty good for traitors
-	quality = NEGATIVE //holy shit no eyes or tongue or ears
-	text_gain_indication = "<span class='warning'>Something feels off.</span>"
-
-/datum/mutation/human/headless/on_acquiring()
-	. = ..()
-	if(.)//cant add
-		return TRUE
-	var/obj/item/organ/internal/brain/brain = owner.getorganslot(ORGAN_SLOT_BRAIN)
-	if(brain)
-		brain.zone = BODY_ZONE_CHEST
-
-	var/obj/item/bodypart/head/head = owner.get_bodypart(BODY_ZONE_HEAD)
-	if(head)
-		owner.visible_message(span_warning("[owner]'s head splatters with a sickening crunch!"), ignored_mobs = list(owner))
-		new /obj/effect/gibspawner/generic(get_turf(owner), owner)
-		head.dismember(DROPLIMB_BLUNT)
-		head.drop_organs()
-		qdel(head)
-		owner.regenerate_icons()
-	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(abortattachment))
-
-/datum/mutation/human/headless/on_losing()
-	. = ..()
-	if(.)
-		return TRUE
-	var/obj/item/organ/internal/brain/brain = owner.getorganslot(ORGAN_SLOT_BRAIN)
-	if(brain) //so this doesn't instantly kill you. we could delete the brain, but it lets people cure brain issues they /really/ shouldn't be
-		brain.zone = BODY_ZONE_HEAD
-	UnregisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB)
-	var/successful = owner.regenerate_limb(BODY_ZONE_HEAD)
-	if(!successful)
-		stack_trace("HARS mutation head regeneration failed! (usually caused by headless syndrome having a head)")
-		return TRUE
-	owner.dna.species.regenerate_organs(owner, replace_current = FALSE, excluded_zones = list(BODY_ZONE_CHEST)) //replace_current needs to be FALSE to prevent weird adding and removing mutation healing
-	owner.apply_damage(damage = 50, damagetype = BRUTE, def_zone = BODY_ZONE_HEAD) //and this to DISCOURAGE organ farming, or at least not make it free.
-	owner.visible_message(span_warning("[owner]'s head returns with a sickening crunch!"), span_warning("Your head regrows with a sickening crack! Ouch."))
-	new /obj/effect/gibspawner/generic(get_turf(owner), owner)
-
-
-/datum/mutation/human/headless/proc/abortattachment(datum/source, obj/item/bodypart/new_limb, special) //you aren't getting your head back
-	SIGNAL_HANDLER
-
-	if(istype(new_limb, /obj/item/bodypart/head))
-		return COMPONENT_NO_ATTACH

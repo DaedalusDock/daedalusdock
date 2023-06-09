@@ -14,6 +14,7 @@
 	name = "alien floor"
 	icon_state = "alienpod1"
 	base_icon_state = "alienpod1"
+	damaged_icon = 'icons/turf/floors.dmi'
 	tiled_dirt = FALSE
 
 /turf/open/floor/plating/abductor/setup_broken_states()

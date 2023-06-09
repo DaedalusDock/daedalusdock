@@ -33,7 +33,7 @@
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()
-	if(!attacking_item.get_sharpness() || attacking_item.force <= 0)
+	if(!(attacking_item.sharpness & SHARP_EDGED) || attacking_item.force <= 0)
 		return ..()
 	var/my_turf = get_turf(src)
 	if(attacking_item.hitsound)
@@ -350,7 +350,7 @@
 
 /obj/item/kirbyplants/attackby(obj/item/I, mob/living/user, params)
 	. = ..()
-	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && I.get_sharpness())
+	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && (I.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You start trimming [src]."))
 		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming [src]."))

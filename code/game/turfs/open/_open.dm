@@ -20,7 +20,7 @@
 	return FALSE
 
 //direction is direction of travel of A
-/turf/open/zPassOut(atom/movable/A, direction, turf/destination)
+/turf/open/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
 	if(direction == UP)
 		for(var/obj/O in contents)
 			if(O.obj_flags & BLOCK_Z_OUT_UP)
@@ -35,10 +35,6 @@
 //direction is direction of travel of air
 /turf/open/zAirOut(direction, turf/source)
 	return (direction == UP)
-
-/turf/open/update_icon()
-	. = ..()
-	//update_visuals()
 
 /turf/open/indestructible
 	name = "floor"

@@ -1256,7 +1256,7 @@
 				create_reagents(amount)
 
 		if(reagents)
-			var/chosen_id
+			var/datum/reagent/chosen_id
 			switch(tgui_alert(usr, "Choose a method.", "Add Reagents", list("Search", "Choose from a list", "I'm feeling lucky")))
 				if("Search")
 					var/valid_id
@@ -1266,7 +1266,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id))
+							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
 								valid_id = TRUE
 						else
 							valid_id = TRUE

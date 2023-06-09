@@ -208,7 +208,7 @@
 
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
-	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
 	if (materials.mat_container)
 		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
 	else
@@ -223,7 +223,7 @@
 		screen = FABRICATOR_SCREEN_MAIN
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Material Storage</b></legend>"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Material Storage</b></legend>"
 	for(var/mat_id in materials.mat_container.materials)
 		var/datum/material/M = mat_id
 		var/amount = materials.mat_container.materials[mat_id]
@@ -374,7 +374,7 @@
 
 /obj/machinery/rnd/production/proc/ui_screen_main()
 	var/list/l = list()
-	l += "<fieldset class='computerPane'><legend class='computerLegend'><b>Designs</b></legend>[RDSCREEN_NOBREAK]"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Designs</b></legend>[RDSCREEN_NOBREAK]"
 	l += "<form name='search' action='?src=[REF(src)]'>\
 	<input type='hidden' name='src' value='[REF(src)]'>\
 	<input type='hidden' name='search' value='to_search'>\
@@ -392,7 +392,7 @@
 	if(!selected_category)
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<div class='computerPane'><h3>Browsing [selected_category]:</h3>"
+	l += "<div class='computerPaneSimple'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
 	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
@@ -423,7 +423,7 @@
 /obj/machinery/rnd/production/proc/ui_screen_modify_memory()
 	var/list/l = list()
 	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
-	l += "<fieldset class='computerPane'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
 	if(selected_disk)
 		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)

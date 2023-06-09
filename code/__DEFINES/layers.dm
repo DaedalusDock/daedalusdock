@@ -36,7 +36,8 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define MID_TURF_LAYER 2.02
 #define HIGH_TURF_LAYER 2.03
 #define TURF_PLATING_DECAL_LAYER 2.031
-#define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_LAYER 2.032 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_HIGH_LAYER 2.033
 #define ABOVE_OPEN_TURF_LAYER 2.04
 #define AO_LAYER 2.045
 #define CLOSED_TURF_LAYER 2.05
@@ -167,10 +168,11 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define FULLSCREEN_PLANE 500
 #define FLASH_LAYER 1
 #define FULLSCREEN_LAYER 2
-#define UI_DAMAGE_LAYER 3
-#define BLIND_LAYER 4
-#define CRIT_LAYER 5
-#define CURSE_LAYER 6
+#define DITHER_LAYER 3
+#define UI_DAMAGE_LAYER 4
+#define BLIND_LAYER 5
+#define CRIT_LAYER 6
+#define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
 
 ///--------------- FULLSCREEN RUNECHAT BUBBLES ------------

@@ -62,7 +62,7 @@ LINEN BINS
 	return
 
 /obj/item/bedsheet/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_WIRECUTTER || I.get_sharpness())
+	if(I.tool_behaviour == TOOL_WIRECUTTER || (I.sharpness & SHARP_EDGED))
 		if (!(flags_1 & HOLOGRAM_1))
 			var/obj/item/stack/sheet/cloth/shreds = new (get_turf(src), stack_amount)
 			if(!QDELETED(shreds)) //stacks merged

@@ -72,7 +72,7 @@
 	var/mob/living/carbon/jedi = user
 	to_chat(jedi, span_userdanger("That was a really dense idea."))
 	jedi.ghostize()
-	var/obj/item/organ/internal/brain/rip_u = locate(/obj/item/organ/internal/brain) in jedi.internal_organs
+	var/obj/item/organ/brain/rip_u = locate(/obj/item/organ/brain) in jedi.processing_organs
 	if(rip_u)
 		rip_u.Remove(jedi)
 		qdel(rip_u)
@@ -130,7 +130,7 @@
 			)
 			return
 
-		var/obj/item/organ/internal/tongue/licking_tongue = user.getorganslot(ORGAN_SLOT_TONGUE)
+		var/obj/item/organ/tongue/licking_tongue = user.getorganslot(ORGAN_SLOT_TONGUE)
 		if(licking_tongue)
 			dust_mob(user,
 				span_danger("As [user] hesitantly leans in and licks [src] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash!"),

@@ -9,6 +9,8 @@
 	light_outer_range = 5
 	icon_state = "light_on-1"
 	floor_tile = /obj/item/stack/tile/light
+	broken_blend = BLEND_OVERLAY
+
 	///var to see if its on or off
 	var/on = TRUE
 	///defines on top

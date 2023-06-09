@@ -210,6 +210,17 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
 	var/override_notes = FALSE
 
+	/*___________*/
+	/*Goon Combat*/
+	/*‾‾‾‾‾‾‾‾‾‾‾*/
+	var/stamina_cost = STAMINA_SWING_COST_ITEM
+	var/stamina_damage = STAMINA_DAMAGE_ITEM
+	var/stamina_critical_chance = STAMINA_CRITICAL_RATE_ITEM
+	var/stamina_critical_modifier = STAMINA_CRITICAL_MODIFIER
+
+	var/combat_click_delay = CLICK_CD_MELEE
+
+
 /obj/item/Initialize(mapload)
 
 	if(attack_verb_continuous)
@@ -354,7 +365,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	set category = "Object"
 	set src in oview(1)
 
-	if(!isturf(loc) || usr.stat != CONSCIOUS || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
+	if(!isturf(loc) || usr.stat > SOFT_CRIT || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
 		return
 
 	if(isliving(usr))
@@ -814,10 +825,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/get_temperature()
 	return heat
 
-///Returns the sharpness of src. If you want to get the sharpness of an item use this.
-/obj/item/proc/get_sharpness()
-	return sharpness
-
 /obj/item/proc/get_dismember_sound()
 	if(damtype == BURN)
 		. = 'sound/weapons/sear.ogg'
@@ -893,31 +900,90 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/on_juice()
 	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
 
-/obj/item/proc/set_force_string()
+/obj/item/proc/damagetype2text()
+	. += list()
+	if(damtype == BURN)
+		. += "BURN"
+	if(damtype == BRUTE)
+		. += "BRUTE"
+	if(damtype == TOX)
+		. += "TOXIN"
+	if(sharpness & SHARP_EDGED)
+		. += "CUT"
+	if(sharpness & SHARP_POINTY)
+		. += "PUNCTURE"
+	if(!sharpness && damtype == BRUTE)
+		. += "CRUSH"
+	return english_list(., "NONE")
+
+/obj/item/proc/force2text()
 	switch(force)
-		if(0 to 4)
-			force_string = "very low"
-		if(4 to 7)
-			force_string = "low"
-		if(7 to 10)
-			force_string = "medium"
-		if(10 to 11)
-			force_string = "high"
-		if(11 to 20) //12 is the force of a toolbox
-			force_string = "robust"
+		if(-INFINITY to 0)
+			return "Harmless"
+		if(0 to 2)
+			return "Very Low"
+		if(2 to 6)
+			return "Low"
+		if(6 to 12)
+			return "Average"
+		if(12 to 16)
+			return "High"
+		if(16 to 30)
+			return "Very High"
+		if(30 to INFINITY)
+			return "You could really hurt somebody with this thing!"
+
+/obj/item/proc/staminadamage2text()
+	switch(stamina_damage)
+		if(-INFINITY to 0)
+			return "Harmless"
+		if(0 to 5)
+			return "Very Low"
+		if(5 to 10)
+			return "Low"
+		if(10 to 20)
+			return "Average"
 		if(20 to 25)
-			force_string = "very robust"
-		else
-			force_string = "exceptionally robust"
-	last_force_string_check = force
+			return "High"
+		if(25 to 35)
+			return "Very High"
+		if(35 to INFINITY)
+			return "This will take the wind out of your sails."
+
+/obj/item/proc/staminacost2text()
+	switch(stamina_cost)
+		if(-INFINITY to 0)
+			return "None"
+		if(0 to 5)
+			return "Very Low"
+		if(5 to 10)
+			return "Low"
+		if(10 to 15)
+			return "Average"
+		if(15 to 25)
+			return "High"
+		if(25 to 35)
+			return "Very High"
+		if(35 to INFINITY)
+			return "This will take the wind out of your sails."
+
+/obj/item/proc/tooltipContent(list/url_mappings)
+	RETURN_TYPE(/list)
+	. = list()
+	. += desc
+	if(!stamina_damage && !force)
+		return
+	. += "<hr>"
+	if(item_flags & FORCE_STRING_OVERRIDE)
+		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force_string]<br>"
+	else
+		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force2text()], type: [damagetype2text()]<br>"
+	. += "<img src='[url_mappings["stamina.png"]]'>Stamina: [staminadamage2text()]<br>"
+	. += "<img src='[url_mappings["stamcost.png"]]'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
-	if(last_force_string_check != force && !(item_flags & FORCE_STRING_OVERRIDE))
-		set_force_string()
-	if(!(item_flags & FORCE_STRING_OVERRIDE))
-		openToolTip(user,src,params,title = name,content = "[desc]<br>[force ? "<b>Force:</b> [force_string]" : ""]",theme = "")
-	else
-		openToolTip(user,src,params,title = name,content = "[desc]<br><b>Force:</b> [force_string]",theme = "")
+	var/content = jointext(tooltipContent(get_asset_datum(/datum/asset/simple/namespaced/common).get_url_mappings()), "")
+	openToolTip(user,src,params,title = name,content = content,theme = "")
 
 /obj/item/MouseEntered(location, control, params)
 	. = ..()
@@ -1168,7 +1234,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
  * * discover_after - if the item will be discovered after being chomped (FALSE will usually mean it was swallowed, TRUE will usually mean it was bitten into and discovered)
  */
 /obj/item/proc/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
-	if(get_sharpness() && force >= 5) //if we've got something sharp with a decent force (ie, not plastic)
+	if(sharpness && force >= 5) //if we've got something sharp with a decent force (ie, not plastic)
 		INVOKE_ASYNC(victim, TYPE_PROC_REF(/mob, emote), "scream")
 		victim.visible_message(span_warning("[victim] looks like [victim.p_theyve()] just bit something they shouldn't have!"), \
 							span_boldwarning("OH GOD! Was that a crunch? That didn't feel good at all!!"))

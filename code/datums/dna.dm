@@ -700,8 +700,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(dna.features["vox_snout"])
 		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
 
-	for(var/obj/item/organ/external/external_organ as anything in external_organs)
-		external_organ.mutate_feature(features, src)
+	for(var/obj/item/organ/O as anything in cosmetic_organs)
+		O.mutate_feature(features, src)
 
 	if(icon_update)
 		dna.species.handle_body(src) // We want 'update_body_parts(update_limb_data = TRUE)' to be called only if mutcolor_update is TRUE, so no 'update_body()' here.
@@ -916,8 +916,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				ForceContractDisease(new/datum/disease/decloning()) //slow acting, non-viral clone damage based GBS
 			if(8)
 				var/list/elligible_organs = list()
-				for(var/obj/item/organ/internal/internal_organ as anything in internal_organs) //make sure we dont get an implant or cavity item
-					elligible_organs += internal_organ
+				for(var/obj/item/organ/organ as anything in processing_organs) //make sure we dont get an implant or cavity item
+					elligible_organs += organ
 				vomit(20, TRUE)
 				if(elligible_organs.len)
 					var/obj/item/organ/O = pick(elligible_organs)
@@ -960,7 +960,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /mob/living/carbon/human/proc/something_horrible_mindmelt()
 	if(!is_blind())
-		var/obj/item/organ/internal/eyes/eyes = locate(/obj/item/organ/internal/eyes) in internal_organs
+		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes) in processing_organs
 		if(!eyes)
 			return
 		eyes.Remove(src)

@@ -42,6 +42,7 @@
 		return
 	var/mob/living/carbon/carbon_user = user.mob
 	carbon_user.throw_mode_off(THROW_MODE_HOLD)
+
 /datum/keybinding/carbon/give
 	hotkey_keys = list("G")
 	name = "Give_Item"
@@ -56,3 +57,23 @@
 	var/mob/living/carbon/carbon_user = user.mob
 	carbon_user.give()
 	return TRUE
+
+/datum/keybinding/carbon/sprint
+	hotkey_keys = list("Shift")
+	name = "Sprint"
+	full_name = "Sprint"
+	description = "Move fast at the cost of stamina"
+	keybind_signal = COMSIG_KB_CARBON_SPRINT_DOWN
+
+/datum/keybinding/carbon/sprint/down(client/user)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/carbon/C = user.mob
+	C.sprint_key_down = TRUE
+
+/datum/keybinding/carbon/sprint/up(client/user)
+	. = ..()
+	if(.)
+		return
+	SEND_SIGNAL(user.mob, COMSIG_KB_CARBON_SPRINT_UP)

@@ -1,9 +1,10 @@
 SUBSYSTEM_DEF(icon_smooth)
 	name = "Icon Smoothing"
 	init_order = INIT_ORDER_ICON_SMOOTHING
-	wait = 1
-	priority = FIRE_PRIORITY_SMOOTHING
-	flags = SS_TICKER
+	wait = 0
+	priority = FIRE_PRIOTITY_SMOOTHING
+	flags = SS_HIBERNATE
+
 
 	///Blueprints assemble an image of what pipes/manifolds/wires look like on initialization, and thus should be taken after everything's been smoothed
 	var/list/blueprint_queue = list()
@@ -24,14 +25,16 @@ SUBSYSTEM_DEF(icon_smooth)
 		if (MC_TICK_CHECK)
 			return
 
-	if (!cached.len)
-		if (deferred.len)
-			smooth_queue = deferred
-			deferred = cached
-		else
-			can_fire = FALSE
+	if (!cached.len && deferred.len)
+		smooth_queue = deferred
+		deferred = cached
 
 /datum/controller/subsystem/icon_smooth/Initialize()
+	hibernate_checks = list(
+		NAMEOF(src, smooth_queue),
+		NAMEOF(src, deferred)
+	)
+
 	var/list/queue = smooth_queue
 	smooth_queue = list()
 

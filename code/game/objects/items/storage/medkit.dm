@@ -569,24 +569,24 @@
 /obj/item/storage/organbox/proc/freeze_contents(datum/source, obj/item/I)
 	SIGNAL_HANDLER
 	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+		var/obj/item/organ/int_organ = I
 		int_organ.organ_flags |= ORGAN_FROZEN
 		return
 	if(istype(I, /obj/item/bodypart))
 		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags |= ORGAN_FROZEN
 
 ///unfreezes the organ and loops bodyparts like heads
 /obj/item/storage/organbox/proc/unfreeze_contents(datum/source, obj/item/I)
 	SIGNAL_HANDLER
 	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+		var/obj/item/organ/int_organ = I
 		int_organ.organ_flags &= ~ORGAN_FROZEN
 		return
 	if(istype(I, /obj/item/bodypart))
 		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags &= ~ORGAN_FROZEN
 
 /obj/item/storage/organbox/attackby(obj/item/I, mob/user, params)

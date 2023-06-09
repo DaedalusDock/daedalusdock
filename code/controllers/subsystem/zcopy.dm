@@ -11,8 +11,9 @@
 
 SUBSYSTEM_DEF(zcopy)
 	name = "Z-Copy"
-	wait = 1
+	wait = 0
 	init_order = INIT_ORDER_ZMIMIC
+	flags = SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/queued_turfs = list()
@@ -143,6 +144,11 @@ SUBSYSTEM_DEF(zcopy)
 	return jointext(zmx, ", ")
 
 /datum/controller/subsystem/zcopy/Initialize(timeofday)
+	hibernate_checks = list(
+		NAMEOF(queued_turfs),
+		NAMEOF(queued_overlays)
+	)
+
 	calculate_zstack_limits()
 	// Flush the queue.
 	fire(FALSE, TRUE)

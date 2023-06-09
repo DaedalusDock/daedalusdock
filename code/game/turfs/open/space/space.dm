@@ -49,9 +49,9 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 	SHOULD_CALL_PARENT(FALSE)
 	icon_state = SPACE_ICON_STATE(x, y, z)
 
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 
 	var/area/our_area = loc
 	if(!our_area.area_has_base_lighting) //Only provide your own lighting if the area doesn't for you

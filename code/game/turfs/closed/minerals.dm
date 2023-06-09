@@ -37,9 +37,11 @@
 //We don't call parent for perf reasons. Instead, we copy paste everything. BYOND!
 /turf/closed/mineral/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+
+	initialized = TRUE
 
 	if(mapload && permit_ao)
 		queue_ao()

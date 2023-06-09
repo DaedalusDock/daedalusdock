@@ -85,6 +85,10 @@
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
 	. = ..()
+
+	if(ispath(ai_controller))
+		ai_controller = new ai_controller(src)
+
 	update_config_movespeed()
 	initialize_actionspeed()
 	update_movespeed(TRUE)

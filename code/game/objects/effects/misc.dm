@@ -23,9 +23,9 @@
 
 /obj/effect/spawner/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 
 	return INITIALIZE_HINT_QDEL
 

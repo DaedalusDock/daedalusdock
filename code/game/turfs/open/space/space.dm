@@ -52,9 +52,10 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+
+	initialized = TRUE
 
 	if(!loc:area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
 		// Intentionally not add_overlay for performance reasons.

@@ -9,6 +9,8 @@
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
+	/// Has this atom's constructor ran?
+	var/initialized = null
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
@@ -148,7 +150,8 @@
 	var/list/canSmoothWith = null
 	///Reference to atom being orbited
 	var/atom/orbit_target
-	///AI controller that controls this atom. type on init, then turned into an instance during runtime
+	///AI controller that controls this atom. type on init, then turned into an instance during runtime.
+	///Note: If you are for some reason giving this to a non-mob, it needs to create it's own in Initialize()
 	var/datum/ai_controller/ai_controller
 
 	///any atom that uses integrity and can be damaged must set this to true, otherwise the integrity procs will throw an error
@@ -178,7 +181,7 @@
  */
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
-	if(use_preloader && (type == GLOB._preloader_path))//in case the instanciated atom is creating other atoms in New()
+	if(use_preloader && (type == global._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)
 
 	var/do_initialize = SSatoms.initialized
@@ -230,17 +233,16 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	#ifdef UNIT_TESTS
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	#endif
-	flags_1 |= INITIALIZED_1
 
-	if(greyscale_config && greyscale_colors)
+	initialized = TRUE
+
+	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
 		update_greyscale()
 
 	//atom color stuff
-	if(color)
+	if(!isnull(color))
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
@@ -260,9 +262,6 @@
 	// The integrity to max_integrity ratio is still preserved.
 	if(length(custom_materials))
 		set_custom_materials(custom_materials)
-
-	if(ispath(ai_controller))
-		ai_controller = new ai_controller(src)
 
 	return INITIALIZE_HINT_NORMAL
 

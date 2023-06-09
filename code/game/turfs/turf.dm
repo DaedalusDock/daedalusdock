@@ -100,9 +100,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+
+	initialized = TRUE
 
 	if(permit_ao && mapload)
 		queue_ao()
@@ -160,10 +162,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	#endif
 	return INITIALIZE_HINT_NORMAL
 
-/*
-/turf/proc/Initalize_Atmos(times_fired)
-	CALCULATE_ADJACENT_TURFS(src, NORMAL_TURF)
-*/
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC
 	if(!changing_turf)
@@ -189,7 +187,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	visibilityChanged()
 	QDEL_LIST(blueprint_data)
-	flags_1 &= ~INITIALIZED_1
+	initialized = null
 	requires_activation = FALSE
 
 	///ZAS THINGS
@@ -460,7 +458,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
 	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-	if(L && (L.flags_1 & INITIALIZED_1))
+	if(L && L.initialized)
 		qdel(L)
 
 /turf/proc/Bless()

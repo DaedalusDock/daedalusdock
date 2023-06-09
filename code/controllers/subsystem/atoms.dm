@@ -65,7 +65,7 @@ SUBSYSTEM_DEF(atoms)
 			if(QDELETED(A))
 				continue
 			A.LateInitialize()
-		testing("Late initialized [late_loaders.len] atoms")
+		to_chat(world, span_boldannounce("Atoms: [late_loaders.len] atoms marked for Late Initialize."))
 		late_loaders.Cut()
 
 	if (created_atoms)

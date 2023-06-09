@@ -115,7 +115,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	assemble_baseturfs()
 
-	levelupdate()
+	if(length(contents))
+		levelupdate()
+
 	#ifdef UNIT_TESTS
 	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
 	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
@@ -128,9 +130,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	// visibilityChanged() will never hit any path with side effects during mapload
 	if (!mapload)
 		visibilityChanged()
-
-	for(var/atom/movable/content as anything in src)
-		Entered(content, null)
+		if(length(contents))
+			for(var/atom/movable/AM as anything in src)
+				Entered(AM, null)
 
 	var/area/our_area = loc
 	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
@@ -141,13 +143,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	if (light_power && light_outer_range)
 		update_light()
-
-	var/turf/T = GetAbove(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-	T = GetBelow(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
 
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
@@ -167,12 +162,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
-	var/turf/T = GetAbove(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-	T = GetBelow(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
 
 	if (z_flags & Z_MIMIC_BELOW)
 		cleanup_zmimic()

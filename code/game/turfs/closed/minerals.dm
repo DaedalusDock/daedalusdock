@@ -72,13 +72,6 @@
 	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = GetAbove(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-	T = GetBelow(src)
-	if(T)
-		SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
 

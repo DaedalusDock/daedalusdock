@@ -63,14 +63,6 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
 		overlays += global.fullbright_overlay
 
-	if (!mapload)
-		var/turf/T = GetAbove(src)
-		if(!isnull(T))
-			SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, DOWN)
-		T = GetBelow(src)
-		if(!isnull(T))
-			SEND_SIGNAL(T, COMSIG_TURF_MULTIZ_NEW, src, UP)
-
 	return INITIALIZE_HINT_NORMAL
 
 /proc/make_space_appearances()

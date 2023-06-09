@@ -110,7 +110,7 @@ SUBSYSTEM_DEF(atoms)
 				++count
 				CHECK_TICK
 
-	testing("Initialized [count] atoms")
+	to_chat(world, span_boldannounce("Atoms: Initialized [count] atoms."))
 	pass(count)
 
 /// Init this specific atom

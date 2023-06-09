@@ -145,8 +145,8 @@ SUBSYSTEM_DEF(zcopy)
 
 /datum/controller/subsystem/zcopy/Initialize(timeofday)
 	hibernate_checks = list(
-		NAMEOF(queued_turfs),
-		NAMEOF(queued_overlays)
+		NAMEOF(src, queued_turfs),
+		NAMEOF(src, queued_overlays)
 	)
 
 	calculate_zstack_limits()

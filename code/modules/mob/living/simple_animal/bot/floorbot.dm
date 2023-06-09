@@ -241,7 +241,7 @@
 				toggle_magnet()
 				mode = BOT_REPAIRING
 				if(isplatingturf(F))
-					F.ReplaceWithLattice()
+					F.TryScrapeToLattice()
 				else
 					F.ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 				audible_message(span_danger("[src] makes an excited booping sound."))

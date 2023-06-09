@@ -204,7 +204,7 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 /turf/open/space/rust_heretic_act()
 	return FALSE
 
-/turf/open/space/ReplaceWithLattice()
+/turf/open/space/TryScrapeToLattice()
 	var/dest_x = destination_x
 	var/dest_y = destination_y
 	var/dest_z = destination_z

@@ -9,6 +9,9 @@
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
+	/// Has this atom's constructor ran?
+	var/initialized = FALSE
+
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
@@ -233,9 +236,9 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 
 	if(greyscale_config && greyscale_colors)
 		update_greyscale()
@@ -1119,13 +1122,13 @@
 
 ///Adds an instance of colour_type to the atom's atom_colours list
 /atom/proc/add_atom_colour(coloration, colour_priority)
-	if(!atom_colours || !atom_colours.len)
-		atom_colours = list()
-		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
-	if(!coloration)
+	if(!length(atom_colours))
+		atom_colours = new /list(COLOUR_PRIORITY_AMOUNT)
+	if(isnull(coloration))
 		return
-	if(colour_priority > atom_colours.len)
-		return
+	if(colour_priority > length(atom_colours))
+		CRASH("Invalid color priority supplied to add_atom_color!")
+
 	atom_colours[colour_priority] = coloration
 	update_atom_colour()
 
@@ -1144,19 +1147,19 @@
 
 ///Resets the atom's color to null, and then sets it to the highest priority colour available
 /atom/proc/update_atom_colour()
-	color = null
-	if(!atom_colours)
+	if(!length(atom_colours))
 		return
 	for(var/checked_color in atom_colours)
-		if(islist(checked_color))
-			var/list/color_list = checked_color
-			if(color_list.len)
-				color = color_list
-				return
-		else if(checked_color)
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
 			color = checked_color
 			return
 
+		color = checked_color
+		return
+
+	color = null
 
 /**
  * Wash this atom

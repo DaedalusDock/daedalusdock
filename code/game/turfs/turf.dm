@@ -99,9 +99,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 
 	if(mapload && permit_ao)
 		queue_ao()
@@ -202,7 +202,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	visibilityChanged()
 	QDEL_LIST(blueprint_data)
-	flags_1 &= ~INITIALIZED_1
+	initialized = FALSE
 	requires_activation = FALSE
 
 	///ZAS THINGS
@@ -466,7 +466,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
-		if(O.flags_1 & INITIALIZED_1)
+		if(O.initialized)
 			SEND_SIGNAL(O, COMSIG_OBJ_HIDE, underfloor_accessibility < UNDERFLOOR_VISIBLE)
 
 // override for space turfs, since they should never hide anything
@@ -476,7 +476,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
 	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-	if(L && (L.flags_1 & INITIALIZED_1))
+	if(L && (L.initialized))
 		qdel(L)
 
 /turf/proc/Bless()

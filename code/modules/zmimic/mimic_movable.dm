@@ -137,7 +137,7 @@
 	var/have_performed_fixup = FALSE
 
 /atom/movable/openspace/mimic/New()
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	SSzcopy.openspace_overlays += 1
 
 /atom/movable/openspace/mimic/Destroy()

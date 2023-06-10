@@ -98,7 +98,7 @@
 ///type and all subtypes should always immediately call Initialize in New()
 #define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\
 	..();\
-	if(!(flags_1 & INITIALIZED_1)) {\
+	if(!(initialized)) {\
 		var/previous_initialized_value = SSatoms.initialized;\
 		SSatoms.initialized = INITIALIZATION_INNEW_MAPLOAD;\
 		args[1] = TRUE;\

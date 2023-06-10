@@ -98,9 +98,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	if(locate(typepath) in held_items)
-		return TRUE
-	return FALSE
+	return locate(typepath) in held_items
+
 
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality

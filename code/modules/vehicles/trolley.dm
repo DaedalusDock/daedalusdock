@@ -106,7 +106,7 @@
 	var/obj/structure/closet/crate/cargo = contents[amount_of_cargo]
 	var/turf/deposit_turf = get_turf(get_step(src, dir))
 
-	if(!deposit_turf.Enter(cargo))
+	if(!deposit_turf.Enter(cargo, TRUE))
 		to_chat(user, span_warning("There's no space to unload from [src]!"))
 		return
 

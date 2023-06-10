@@ -384,7 +384,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return FALSE
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
-/turf/Enter(atom/movable/mover)
+/// Test if a movable can enter this turf. Send no_side_effects = TRUE to prevent bumping.
+/turf/Enter(atom/movable/mover, no_side_effects = FALSE)
 	// Do not call ..()
 	// Byond's default turf/Enter() doesn't have the behaviour we want with Bump()
 	// By default byond will call Bump() on the first dense object in contents
@@ -396,6 +397,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(thing == mover || thing == mover.loc) // Multi tile objects and moving out of other objects
 				continue
 			if(!thing.Cross(mover))
+				if(no_side_effects)
+					return FALSE
 				if(QDELETED(mover)) //deleted from Cross() (CanPass is pure so it cant delete, Cross shouldnt be doing this either though, but it can happen)
 					return FALSE
 				if((mover.movement_type & PHASING))

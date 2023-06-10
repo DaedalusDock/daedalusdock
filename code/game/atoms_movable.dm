@@ -479,6 +479,7 @@
 // All this work to prevent a second bump
 /atom/movable/Move(atom/newloc, direction, glide_size_override = 0)
 	. = FALSE
+
 	if(!newloc || newloc == loc)
 		return
 
@@ -731,14 +732,12 @@
 
 // Make sure you know what you're doing if you call this, this is intended to only be called by byond directly.
 // You probably want CanPass()
-/atom/movable/Cross(atom/movable/crossed_atom)
+/atom/movable/Cross(atom/movable/crosser)
 	. = TRUE
-	SEND_SIGNAL(src, COMSIG_MOVABLE_CROSS, crossed_atom)
-	SEND_SIGNAL(crossed_atom, COMSIG_MOVABLE_CROSS_OVER, src)
-	return CanPass(crossed_atom, get_dir(src, crossed_atom))
+	return CanPass(crosser, get_dir(src, crosser))
 
 ///default byond proc that is deprecated for us in lieu of signals. do not call
-/atom/movable/Crossed(atom/movable/crossed_atom, oldloc)
+/atom/movable/Crossed(atom/movable/crossed_by, oldloc)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("atom/movable/Crossed() was called!")
 

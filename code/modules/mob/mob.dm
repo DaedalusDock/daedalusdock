@@ -468,7 +468,7 @@
 					if(!M.client)
 						continue
 					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
+						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]."))
 					else
 						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else

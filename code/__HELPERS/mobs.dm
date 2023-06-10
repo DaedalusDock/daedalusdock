@@ -296,7 +296,7 @@ GLOBAL_LIST_EMPTY(species_list)
  * given `time`. Returns `TRUE` on success or `FALSE` on failure.
  * Interaction_key is the assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
  */
-/proc/do_after(mob/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
+/proc/do_after(atom/movable/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
 	if(!user)
 		return FALSE
 
@@ -322,10 +322,14 @@ GLOBAL_LIST_EMPTY(species_list)
 	if(SSmove_manager.processing_on(user, SSspacedrift))
 		drifting = TRUE
 
-	var/holding = user.get_active_held_item()
-
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		time *= user.cached_multiplicative_actions_slowdown
+	var/holding
+	if(ismob(user))
+		var/mob/mobuser = user
+		holding = mobuser.get_active_held_item()
+		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
+			time *= mobuser.cached_multiplicative_actions_slowdown
+	else
+		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS
 
 	var/datum/progressbar/progbar
 	if(progress)
@@ -350,7 +354,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(
 			QDELETED(user) \
 			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
+			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
 			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
 			|| (extra_checks && !extra_checks.Invoke()) \
 		)

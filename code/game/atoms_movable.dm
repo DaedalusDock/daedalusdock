@@ -92,6 +92,9 @@
 	/// The degree of pressure protection that mobs in list/contents have from the external environment, between 0 and 1
 	var/contents_pressure_protection = 0
 
+	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
+	var/list/do_afters
+
 /atom/movable/Initialize(mapload)
 	. = ..()
 	switch(blocks_emissive)

@@ -1502,3 +1502,32 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(isturf(locthing))
 		return src
 	return loc
+
+/obj/item/onZImpact(turf/impacted_turf, levels, message)
+	. = ..()
+	if(!force)
+		return
+
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage((w_class * 5) * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

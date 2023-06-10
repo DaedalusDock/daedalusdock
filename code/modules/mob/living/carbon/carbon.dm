@@ -1391,3 +1391,32 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(LAZYLEN(BP.wounds))
 			. += BP.wounds
+
+/mob/living/carbon/ZImpactDamage(turf/impacted_turf, levels, message)
+	. = ..()
+	if(!.)
+		return
+
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage(30 * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

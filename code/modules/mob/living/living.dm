@@ -71,10 +71,12 @@
 /mob/living/proc/ZImpactDamage(turf/T, levels)
 	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
 		return
+
 	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)
+	return TRUE
 
 //Generic Bump(). Override MobBump() and ObjBump() instead of this.
 /mob/living/Bump(atom/A)

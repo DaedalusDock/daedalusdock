@@ -1505,6 +1505,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /obj/item/onZImpact(turf/impacted_turf, levels, message)
 	. = ..()
+	playsound(impacted_turf, hitsound, 50)
+
 	if(!force)
 		return
 
@@ -1529,5 +1531,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		var/mob/living/L = highest
 		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
 		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
 
 	visible_message(span_warning("[src] slams into [highest] from above!"))

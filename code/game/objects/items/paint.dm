@@ -13,7 +13,6 @@
 	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_NORMAL
 	flags_1 = CONDUCT_1
-	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	/// With what color will we paint with
 	var/wall_color = COLOR_WHITE

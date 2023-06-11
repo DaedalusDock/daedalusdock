@@ -435,6 +435,7 @@
 		/datum/design/airlock_painter,
 		/datum/design/airlock_painter/decal,
 		/datum/design/airlock_painter/decal/tile,
+		/datum/design/paint_sprayer,
 		/datum/design/emergency_oxygen,
 		/datum/design/plasmaman_tank_belt,
 		/datum/design/iron,

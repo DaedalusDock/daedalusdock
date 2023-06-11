@@ -80,6 +80,7 @@
 		/obj/item/inducer,
 		/obj/item/plunger,
 		/obj/item/airlock_painter,
+		/obj/item/paint_sprayer,
 		))
 
 /obj/item/storage/belt/utility/chief

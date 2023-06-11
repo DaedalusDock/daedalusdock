@@ -216,7 +216,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 /turf/open/space/openspace
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "invisible"
-	simulated = TRUE
 	z_flags = Z_ATMOS_IN_DOWN | Z_ATMOS_IN_UP | Z_ATMOS_OUT_DOWN | Z_ATMOS_OUT_UP | Z_MIMIC_BELOW | Z_MIMIC_OVERWRITE | Z_MIMIC_NO_AO
 
 

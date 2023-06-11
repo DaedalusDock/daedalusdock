@@ -532,7 +532,7 @@
 	var/turf/above_turf = GetAbove(current_turf)
 
 	if(!above_turf)
-		to_chat(src, span_warning("There's nowhere to go in that direction!"))
+		to_chat(src, span_warning("There's nothing of interest in that direction."))
 		return
 
 	if(ismovable(loc)) //Inside an object, tell it we moved

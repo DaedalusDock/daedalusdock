@@ -13,5 +13,16 @@
 		"cook": {
 			"additional_cqc_areas": ["/area/station/service/bar", "/area/station/service/kitchen/coldroom", "/area/station/commons/lounge"]
 		}
-	}
+	},
+	"traits": [
+		{
+			"Up": 1,
+			"Linkage": "Cross"
+		},
+		{
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace",
+			"Linkage": "Cross"
+		}
+	]
 }

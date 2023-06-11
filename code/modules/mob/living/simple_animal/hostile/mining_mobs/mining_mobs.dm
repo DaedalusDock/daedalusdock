@@ -33,7 +33,7 @@
 		return
 	icon_state = icon_living
 
-/mob/living/simple_animal/hostile/asteroid/bullet_act()
+/mob/living/simple_animal/hostile/asteroid/bullet_act(obj/projectile/P)
 	if(!stat)
 		Aggro()
 	..()

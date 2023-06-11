@@ -31,3 +31,13 @@
   Kapu1178:
   - rscdel: H.A.R.S mutation
   - bugfix: Force feeding works again
+2023-06-11:
+  Kapu1178:
+  - balance: Heads lost Telebatons and gained Flashes
+  - balance: Reduced the blast speed of heirophant's blasts.
+  - balance: Reduced the stamina cost of sprinting
+  - balance: Reduced the speed of sprinting
+  - qol: Sprinting no longer drains stamina if you aren't able to move in that direction.
+  - qol: The code initializes faster.
+  francinum:
+  - rscdel: Airlock controller UIs are reverted to HTML

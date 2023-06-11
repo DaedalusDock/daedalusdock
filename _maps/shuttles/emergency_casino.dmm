@@ -905,7 +905,7 @@
 /area/shuttle/escape)
 "yH" = (
 /obj/structure/closet/crate,
-/obj/item/wall_sprayer,
+/obj/item/paint_sprayer,
 /turf/open/floor/sepia,
 /area/shuttle/escape)
 "yJ" = (

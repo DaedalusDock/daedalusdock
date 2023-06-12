@@ -646,6 +646,7 @@
 			locked = !locked
 			user.visible_message(span_notice("[user] [locked ? null : "un"]locks [src]."),
 							span_notice("You [locked ? null : "un"]lock [src]."))
+			playsound(src, 'sound/machines/click.ogg', 15, 1, -3)
 			update_appearance()
 		else if(!silent)
 			to_chat(user, span_alert("Access Denied."))

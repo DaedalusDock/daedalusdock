@@ -345,6 +345,7 @@
 		return FALSE
 
 	if(!CanZFall(get_turf(src), direction))
+		set_currently_z_moving(FALSE, TRUE)
 		return FALSE
 
 	var/isliving = isliving(src)

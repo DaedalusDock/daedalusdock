@@ -1399,6 +1399,8 @@
 
 	var/atom/highest
 	for(var/atom/movable/hurt_atom as anything in T)
+		if(hurt_atom == src)
+			continue
 		if(!hurt_atom.density)
 			continue
 		if(isobj(hurt_atom) || ismob(hurt_atom))

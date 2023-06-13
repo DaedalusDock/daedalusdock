@@ -315,7 +315,8 @@
 		vehicle.icon_state = "[initial(vehicle.icon_state)]-grind"
 		addtimer(CALLBACK(vehicle, TYPE_PROC_REF(/obj/vehicle/ridden/scooter/skateboard, grind)), 2)
 	else
-		vehicle.obj_flags &= ~BLOCK_Z_OUT_DOWN
+		vehicle.lose_block_z_out(BLOCK_Z_OUT_DOWN)
+
 	rider.spin(4, 1)
 	animate(rider, pixel_y = -6, time = 4)
 	animate(vehicle, pixel_y = -6, time = 3)

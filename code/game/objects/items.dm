@@ -1512,6 +1512,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 	var/atom/highest
 	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(hurt_atom == src)
+			continue
 		if(!hurt_atom.density)
 			continue
 		if(isobj(hurt_atom) || ismob(hurt_atom))

@@ -194,9 +194,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(visual)
 		organ_owner.cosmetic_organs.Remove(src)
-		organ_owner.update_body_parts()
 		if(ownerlimb)
 			remove_from_limb()
+		organ_owner.update_body_parts()
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.
 /obj/item/organ/proc/update_organ_traits()

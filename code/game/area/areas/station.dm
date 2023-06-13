@@ -547,9 +547,6 @@
 	name = "\improper Cafeteria"
 	icon_state = "cafeteria"
 
-/area/station/service/cafeteria/under
-	name = "\improper Dance Floor"
-
 /area/station/service/kitchen
 	name = "\improper Kitchen"
 	icon_state = "kitchen"

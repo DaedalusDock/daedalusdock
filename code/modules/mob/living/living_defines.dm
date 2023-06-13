@@ -187,3 +187,6 @@
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null
+
+	///Used for lookup/lookdown verbs
+	var/mob/camera/z_eye/z_eye

@@ -76,13 +76,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
-	else
-		if(visual)
-			if(ownerlimb)
-				remove_from_limb()
 
-		else
-			STOP_PROCESSING(SSobj, src)
+	if(ownerlimb)
+		remove_from_limb()
+
+	if(!cosmetic_only)
+		STOP_PROCESSING(SSobj, src)
 
 	return ..()
 

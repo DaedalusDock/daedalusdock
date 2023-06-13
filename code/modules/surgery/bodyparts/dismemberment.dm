@@ -175,7 +175,8 @@
 			qdel(src)
 		return
 
-	forceMove(drop_loc)
+	if(!QDELETED(src))
+		forceMove(drop_loc)
 
 ///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner, special)
@@ -191,8 +192,8 @@
 
 ///Adds the organ to a bodypart, used in transfer_to_limb()
 /obj/item/organ/proc/add_to_limb(obj/item/bodypart/bodypart, move)
+	ownerlimb = bodypart
 	if(visual)
-		ownerlimb = bodypart
 		ownerlimb.cosmetic_organs |= src
 		if(ownerlimb.owner && external_bodytypes)
 			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
@@ -203,11 +204,11 @@
 
 ///Removes the organ from the limb, placing it into nullspace.
 /obj/item/organ/proc/remove_from_limb(move)
+	ownerlimb = null
 	if(visual)
 		ownerlimb.cosmetic_organs -= src
 		if(ownerlimb.owner && external_bodytypes)
 			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
-		ownerlimb = null
 
 	if(move)
 		moveToNullspace()

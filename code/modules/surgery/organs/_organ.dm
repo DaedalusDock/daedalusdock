@@ -152,12 +152,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			stored_feature_id = reciever.dna.features[feature_key]
 
 		reciever.cosmetic_organs.Add(src)
+		limb.cosmetic_organs.Add(src)
 
-		ownerlimb = limb
-		add_to_limb(ownerlimb)
-
-		if(external_bodytypes)
-			limb.synchronize_bodytypes(reciever)
+		add_to_limb(limb)
 
 		reciever.update_body_parts()
 	return TRUE
@@ -170,6 +167,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
  */
 /obj/item/organ/proc/Remove(mob/living/carbon/organ_owner, special = FALSE)
+	if(!istype(organ_owner))
+		CRASH("Tried to remove an organ with no owner argument.")
 
 	UnregisterSignal(owner, COMSIG_PARENT_EXAMINE)
 
@@ -182,25 +181,22 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
 
-	if(organ_owner)
-		organ_owner.organs -= src
-		if(organ_owner.organs_by_slot[slot] == src)
-			organ_owner.organs_by_slot.Remove(slot)
-		if(!cosmetic_only)
-			if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
-				organ_owner.death()
-			organ_owner.processing_organs -= src
+	organ_owner.organs -= src
+	if(organ_owner.organs_by_slot[slot] == src)
+		organ_owner.organs_by_slot.Remove(slot)
+	if(!cosmetic_only)
+		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
+			organ_owner.death()
+		organ_owner.processing_organs -= src
 
 	if(!cosmetic_only)
 		START_PROCESSING(SSobj, src)
 
 	if(visual)
+		organ_owner.cosmetic_organs.Remove(src)
+		organ_owner.update_body_parts()
 		if(ownerlimb)
 			remove_from_limb()
-
-		if(organ_owner)
-			organ_owner.cosmetic_organs.Remove(src)
-			organ_owner.update_body_parts()
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.
 /obj/item/organ/proc/update_organ_traits()

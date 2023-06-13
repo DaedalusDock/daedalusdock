@@ -153,7 +153,7 @@
 			cooldown_action.unset_click_ability(rider, refund_cooldown = TRUE)
 		action.HideFrom(rider)
 
-/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, z_move_flags, mob/living/rider)
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 	if(!can_be_driven)

@@ -88,15 +88,29 @@
 	var/turf/checking = GetAbove(my_turf)
 	if(!istype(checking))
 		return
-	if(!checking.zPassIn(climber, UP, my_turf))
-		return
+
 	var/turf/target = get_step_multiz(my_turf, (dir|UP))
-	if(istype(target) && !climber.can_z_move(DOWN, target, z_move_flags = ZMOVE_FALL_FLAGS)) //Don't throw them into a tile that will just dump them back down.
-		climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)
-		/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
-		climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
-		for(var/mob/living/buckled as anything in climber.buckled_mobs)
-			buckled.pulling?.move_from_pull(buckled, loc, buckled.glide_size)
+	if(!target)
+		to_chat(climber, span_notice("There is nothing of interest in that direction."))
+		return
+
+	if(!checking.CanZPass(climber, UP, ZMOVE_STAIRS_FLAGS))
+		to_chat(climber, span_warning("Something blocks the path."))
+		return
+
+	if(!target.Enter(climber))
+		to_chat(climber, span_warning("Something blocks the path."))
+		return
+
+	climber.forceMove(target)
+	if(!(climber.throwing || (climber.movement_type & (VENTCRAWLING | FLYING)) || HAS_TRAIT(climber, TRAIT_IMMOBILIZED)))
+		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
+		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
+
+	/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
+	climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
+	for(var/mob/living/buckled as anything in climber.buckled_mobs)
+		buckled.pulling?.move_from_pull(buckled, loc, buckled.glide_size)
 
 
 /obj/structure/stairs/vv_edit_var(var_name, var_value)

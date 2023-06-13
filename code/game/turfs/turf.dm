@@ -279,76 +279,73 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			return TRUE
 	return FALSE
 
-//zPassIn doesn't necessarily pass an atom!
-//direction is direction of travel of air
-/turf/proc/zPassIn(atom/movable/A, direction, turf/source)
-	return FALSE
+/turf/proc/CanZPass(atom/movable/A, direction, z_move_flags)
+	if(z == A.z) //moving FROM this turf
+		//Check contents
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_OUT_UP)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
+				return FALSE
 
-//direction is direction of travel of air
-/turf/proc/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	return FALSE
+		return direction == UP //can't go below
+	else
+		if(density) //No fuck off
+			return FALSE
 
-//direction is direction of travel of air
-/turf/proc/zAirIn(direction, turf/source)
-	return FALSE
+		if(direction == UP) //on a turf below, trying to enter
+			return 0
 
-//direction is direction of travel of air
-/turf/proc/zAirOut(direction, turf/source)
-	return FALSE
-
-/// Precipitates a movable (plus whatever buckled to it) to lower z levels if possible and then calls zImpact()
-/turf/proc/zFall(atom/movable/falling, levels = 1, force = FALSE, falling_from_move = FALSE)
-	var/direction = DOWN
-	if(falling.has_gravity() == NEGATIVE_GRAVITY)
-		direction = UP
-	var/turf/target = get_step_multiz(src, direction)
-	if(!target)
-		return FALSE
-	var/isliving = isliving(falling)
-	if(!isliving && !isobj(falling))
-		return
-	if(isliving)
-		var/mob/living/falling_living = falling
-		//relay this mess to whatever the mob is buckled to.
-		if(falling_living.buckled)
-			falling = falling_living.buckled
-	if(!falling_from_move && falling.currently_z_moving)
-		return
-	if(!force && !falling.can_z_move(direction, src, target, ZMOVE_FALL_FLAGS))
-		falling.set_currently_z_moving(FALSE, TRUE)
-		return FALSE
-
-	// So it doesn't trigger other zFall calls. Cleared on zMove.
-	falling.set_currently_z_moving(CURRENTLY_Z_FALLING)
-
-	falling.zMove(null, target, ZMOVE_CHECK_PULLEDBY)
-	target.zImpact(falling, levels, src)
-	return TRUE
+		if(direction == DOWN) //on a turf above, trying to enter
+			for(var/obj/O in contents)
+				if(O.obj_flags & BLOCK_Z_IN_DOWN)
+					return FALSE
+			return TRUE
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
 	var/flags = NONE
 	var/list/falling_movables = falling.get_z_move_affected()
-	var/list/falling_mov_names
-	for(var/atom/movable/falling_mov as anything in falling_movables)
-		falling_mov_names += falling_mov.name
+	var/list/falling_mob_names
+
+	for(var/atom/movable/falling_mob as anything in falling_movables)
+		if(ishuman(falling_mob))
+			var/mob/living/carbon/human/H = falling_mob
+			falling_mob_names += H.get_face_name()
+			continue
+		falling_mob_names += falling_mob.name
+
 	for(var/i in contents)
 		var/atom/thing = i
 		flags |= thing.intercept_zImpact(falling_movables, levels)
 		if(flags & FALL_STOP_INTERCEPTING)
 			break
+
 	if(prev_turf && !(flags & FALL_NO_MESSAGE))
-		for(var/mov_name in falling_mov_names)
-			prev_turf.visible_message(span_danger("[mov_name] falls through [prev_turf]!"))
-	if(!(flags & FALL_INTERCEPTED) && zFall(falling, levels + 1))
+		for(var/mov_name in falling_mob_names)
+			prev_turf.visible_message(
+				span_warning("<b>[name]</b> falls through [prev_turf]!"),,
+				span_hear("You hear a whoosh of displaced air.")
+			)
+
+	if(!(flags & FALL_INTERCEPTED) && falling.zFall(levels + 1))
 		return FALSE
-	for(var/atom/movable/falling_mov as anything in falling_movables)
+
+	for(var/atom/movable/falling_mob as anything in falling_movables)
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mov.stop_pulling()
+			falling_mob.stop_pulling()
+
 		if(!(flags & FALL_INTERCEPTED))
-			falling_mov.onZImpact(src, levels)
-		if(falling_mov.pulledby && (falling_mov.z != falling_mov.pulledby.z || get_dist(falling_mov, falling_mov.pulledby) > 1))
-			falling_mov.pulledby.stop_pulling()
+			falling_mob.onZImpact(src, levels)
+
+			#ifndef ZMIMIC_MULTIZ_SPEECH //Multiz speech handles this otherwise
+			if(!(flags & FALL_NO_MESSAGE))
+				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
+			#endif
+
+		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
+			falling_mob.pulledby.stop_pulling()
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/C, mob/user)

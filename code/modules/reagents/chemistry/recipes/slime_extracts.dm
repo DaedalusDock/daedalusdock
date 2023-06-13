@@ -530,14 +530,13 @@
 	..()
 
 //Pyrite
-/datum/chemical_reaction/slime/slimepaint
+/datum/chemical_reaction/slime/slimespraycan
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	required_container = /obj/item/slime_extract/pyrite
 	required_other = TRUE
 
-/datum/chemical_reaction/slime/slimepaint/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	var/chosen = pick(subtypesof(/obj/item/paint))
-	new chosen(get_turf(holder.my_atom))
+/datum/chemical_reaction/slime/slimespraycan/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	new /obj/item/toy/crayon/spraycan/infinite(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/slime/slimecrayon

@@ -11,10 +11,12 @@
 	sight = SEE_SELF
 	move_on_shuttle = FALSE
 	simulated = FALSE
+	zmm_flags = ZMM_IGNORE
 
 /mob/camera/Initialize(mapload)
 	. = ..()
-	SSpoints_of_interest.make_point_of_interest(src)
+	if(!istype(src, /mob/camera/z_eye))
+		SSpoints_of_interest.make_point_of_interest(src)
 /*
 /mob/camera/experience_pressure_difference()
 	return

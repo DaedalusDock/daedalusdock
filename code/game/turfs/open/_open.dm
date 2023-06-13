@@ -9,33 +9,6 @@
 	var/clawfootstep = null
 	var/heavyfootstep = null
 
-
-//direction is direction of travel of A
-/turf/open/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_IN_DOWN)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of A
-/turf/open/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	if(direction == UP)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of air
-/turf/open/zAirIn(direction, turf/source)
-	return (direction == DOWN)
-
-//direction is direction of travel of air
-/turf/open/zAirOut(direction, turf/source)
-	return (direction == UP)
-
 /turf/open/indestructible
 	name = "floor"
 	icon = 'icons/turf/floors.dmi'

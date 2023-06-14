@@ -42,4 +42,5 @@
 /datum/loadout_item/mask/security_hailer
 	path = /obj/item/clothing/mask/gas/sechailer
 	restricted_roles = list(JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY,JOB_WARDEN)
+	customization_flags = CUSTOMIZE_NAME_DESC //has no parts to recolor
 

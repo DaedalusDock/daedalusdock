@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - config: Lone Op disk security nagging can now be configured.

@@ -41,18 +41,23 @@
 /datum/loadout_item/backpack/lipstick
 	path = /obj/item/lipstick
 	customization_flags = CUSTOMIZE_NAME_DESC
+	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_FRAGRANCE
 /datum/loadout_item/backpack/lipstick_purple
 	path = /obj/item/lipstick/purple
 	customization_flags = CUSTOMIZE_NAME_DESC
+	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_FRAGRANCE
 /datum/loadout_item/backpack/lipstick_jade
 	path = /obj/item/lipstick/jade
 	customization_flags = CUSTOMIZE_NAME_DESC
+	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_FRAGRANCE
 /datum/loadout_item/backpack/lipstick_black
 	path = /obj/item/lipstick/black
 	customization_flags = CUSTOMIZE_NAME_DESC
+	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_FRAGRANCE
 /datum/loadout_item/backpack/lipstick_random
 	path = /obj/item/lipstick/random
 	customization_flags = CUSTOMIZE_NAME_DESC
+	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_FRAGRANCE
 /datum/loadout_item/backpack/lizard_plushie
 	path = /obj/item/toy/plush/lizard_plushie
 	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_TOYS

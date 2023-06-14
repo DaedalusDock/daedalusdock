@@ -127,7 +127,7 @@
 			color_button += "</font></i>"
 
 		if(length(loadout_item.restricted_roles))
-			restricted_to = "<i><font color='#773b3b'>RESTRICTED: [english_list(restricted_to)]</i></font><br>"
+			restricted_to = "<i><font color='#773b3b'>RESTRICTED: [english_list(loadout_item.restricted_roles)]</i></font><br>"
 
 		if(loadout_entry || prefs.can_purchase_loadout_item(loadout_item)) //We have this item purchased, but we can sell it
 			item_button = button_element(prefs, displayed_name, "pref_act=[/datum/preference/blob/loadout];change_loadout=1;item=[loadout_item.type];")

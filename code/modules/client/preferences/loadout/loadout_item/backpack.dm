@@ -38,6 +38,36 @@
 /datum/loadout_item/backpack/skub
 	path = /obj/item/skub
 
+/datum/loadout_item/backpack/lipstick
+	path = /obj/item/lipstick
+	customization_flags = CUSTOMIZE_NAME_DESC
+/datum/loadout_item/backpack/lipstick_purple
+	path = /obj/item/lipstick/purple
+	customization_flags = CUSTOMIZE_NAME_DESC
+/datum/loadout_item/backpack/lipstick_jade
+	path = /obj/item/lipstick/jade
+	customization_flags = CUSTOMIZE_NAME_DESC
+/datum/loadout_item/backpack/lipstick_black
+	path = /obj/item/lipstick/black
+	customization_flags = CUSTOMIZE_NAME_DESC
+/datum/loadout_item/backpack/lipstick_random
+	path = /obj/item/lipstick/random
+	customization_flags = CUSTOMIZE_NAME_DESC
+/datum/loadout_item/backpack/lizard_plushie
+	path = /obj/item/toy/plush/lizard_plushie
+/datum/loadout_item/backpack/bee_plushie
+	path = /obj/item/toy/plush/beeplushie
+/datum/loadout_item/backpack/moth_plushie
+	path = /obj/item/toy/plush/moth
+/datum/loadout_item/backpack/snake_plushie
+	path = /obj/item/toy/plush/snakeplushie
+/datum/loadout_item/backpack/skateboard
+	path = /obj/item/melee/skateboard
+	cost = 5 //lets you ignore hunger and the weight of spacesuits and its a weapon
+	customization_flags = CUSTOMIZE_NONE //all customization is lost when you put the skateboard on the ground because of how skateboards are implemented
+/datum/loadout_item/backpack/music_beacon
+	path = /obj/item/choice_beacon/music
+	cost = 2
 /datum/loadout_item/backpack/multipen
 	path = /obj/item/pen/fourcolor
 

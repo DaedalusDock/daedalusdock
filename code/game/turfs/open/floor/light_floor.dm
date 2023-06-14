@@ -7,6 +7,7 @@
 	name = "light floor"
 	desc = "A wired glass tile embedded into the floor. Modify the color with a Multitool."
 	light_outer_range = 5
+	light_power = 0.3
 	icon_state = "light_on-1"
 	floor_tile = /obj/item/stack/tile/light
 	broken_blend = BLEND_OVERLAY

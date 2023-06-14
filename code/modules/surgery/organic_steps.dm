@@ -141,7 +141,7 @@
 /datum/surgery_step/close/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
+		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(deprecise_zone(target_zone))
 		var/datum/wound/W = target_bodypart.get_incision()
 		if(W)
 			W.close_wound()

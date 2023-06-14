@@ -10,7 +10,8 @@
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
 	/// Has this atom's constructor ran?
-	var/initialized = null
+	var/initialized = FALSE
+
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
@@ -388,6 +389,10 @@
 	if(mover.throwing && (pass_flags_self & LETPASSTHROW))
 		return TRUE
 	return !density
+
+/// A version of CanPass() that accounts for vertical movement.
+/atom/proc/CanMoveOnto(atom/movable/mover, border_dir)
+	return ((border_dir & DOWN) && HAS_TRAIT(src, TRAIT_CLIMBABLE)) || CanPass(mover, border_dir)
 
 /**
  * Is this atom currently located on centcom
@@ -1123,6 +1128,14 @@
 	if(!length(atom_colours))
 		return
 	for(var/checked_color in atom_colours)
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
+			color = checked_color
+			return
+
+		color = checked_color
+		return
 		if(isnull(checked_color))
 			continue
 		if(islist(checked_color) && length(checked_color))

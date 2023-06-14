@@ -363,3 +363,16 @@
 ///unfreezes this obj if its frozen
 /obj/proc/unfreeze()
 	SEND_SIGNAL(src, COMSIG_OBJ_UNFREEZE)
+
+/// Removes a BLOCK_Z_OUT_* flag, and then tries to get every movable in the turf to fall.
+/obj/proc/lose_block_z_out(flag_to_lose)
+	if(!(obj_flags & flag_to_lose))
+		return
+
+	obj_flags &= ~flag_to_lose
+	var/turf/T = get_turf(src)
+	if(!T)
+		return
+
+	for(var/atom/movable/AM as anything in T)
+		AM.zFall()

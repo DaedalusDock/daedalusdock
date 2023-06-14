@@ -205,7 +205,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	. = ..()
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return

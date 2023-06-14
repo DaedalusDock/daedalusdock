@@ -207,7 +207,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/airlock_painter/decal
@@ -216,7 +216,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/airlock_painter/decal/tile
@@ -225,8 +225,18 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal/tile
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
+
+/datum/design/paint_sprayer
+	name = "Paint Sprayer"
+	id = "paint_sprayer"
+	build_type = AUTOLATHE | FABRICATOR
+	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
+	build_path = /obj/item/paint_sprayer
+	category = list(DCAT_PAINTER)
+	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
+
 
 /datum/design/emergency_oxygen
 	name = "Emergency Oxygen Tank"

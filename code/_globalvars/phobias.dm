@@ -278,7 +278,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/clothing/under/rank/rnd/research_director,
 		/obj/item/clothing/under/rank/security/head_of_security,
 		/obj/item/megaphone/command,
-		/obj/item/melee/baton/telescopic,
+		/obj/item/assembly/flash/handheld,
 		/obj/item/stamp/captain,
 		/obj/item/stamp/ce,
 		/obj/item/stamp/centcom,

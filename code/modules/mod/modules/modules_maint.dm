@@ -299,19 +299,20 @@
 	qdel(mod.wearer.RemoveElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY))
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
 	REMOVE_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, MOD_TRAIT)
-	var/turf/open/openspace/current_turf = get_turf(mod.wearer)
-	if(istype(current_turf))
-		current_turf.zFall(mod.wearer, falling_from_move = TRUE)
+	mod.wearer.zFall(falling_from_move = TRUE)
 
 /obj/item/mod/module/atrocinator/proc/check_upstairs()
 	SIGNAL_HANDLER
 
 	if(you_fucked_up || mod.wearer.has_gravity() != NEGATIVE_GRAVITY)
 		return
+
 	var/turf/open/current_turf = get_turf(mod.wearer)
 	var/turf/open/openspace/turf_above = GetAbove(mod.wearer)
+
 	if(current_turf && istype(turf_above))
-		current_turf.zFall(mod.wearer)
+		mod.wearer.zFall()
+
 	else if(!turf_above && istype(current_turf) && !current_turf.simulated) //nothing holding you down
 		INVOKE_ASYNC(src, PROC_REF(fly_away))
 	else if(!(step_count % 2))

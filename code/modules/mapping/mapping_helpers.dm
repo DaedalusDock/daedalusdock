@@ -759,9 +759,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/low_wall/low_wall = locate() in loc
 		if(low_wall)
 			if(!isnull(wall_paint))
-				low_wall.set_wall_paint(wall_paint)
+				low_wall.paint_wall(wall_paint)
 			if(!isnull(stripe_paint))
-				low_wall.set_stripe_paint(stripe_paint)
+				low_wall.paint_stripe(stripe_paint)
 			did_anything = TRUE
 		else
 			var/obj/structure/falsewall/falsewall = locate() in loc

@@ -12,8 +12,9 @@
 #define BLOCK_Z_OUT_UP (1<<8) // Should this object block z uprise from loc?
 #define BLOCK_Z_IN_DOWN (1<<9) // Should this object block z falling from above?
 #define BLOCK_Z_IN_UP (1<<10) // Should this object block z uprise from below?
-#define NO_BUILD (1<<11) // Can we build on this object?
-#define PLASMAGUARD (1<<12) //Immune to plasma contamination
+#define BLOCK_Z_FALL (1<<11) // Should this object block falling?
+#define NO_BUILD (1<<12) // Can we build on this object?
+#define PLASMAGUARD (1<<13) //Immune to plasma contamination
 
 // If you add new ones, be sure to add them to /obj/Initialize as well for complete mapping support
 

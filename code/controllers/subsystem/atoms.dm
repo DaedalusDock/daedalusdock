@@ -65,7 +65,6 @@ SUBSYSTEM_DEF(atoms)
 			if(QDELETED(A))
 				continue
 			A.LateInitialize()
-		to_chat(world, span_boldannounce("Atoms: [late_loaders.len] atoms marked for Late Initialize."))
 		late_loaders.Cut()
 
 	if (created_atoms)
@@ -99,7 +98,7 @@ SUBSYSTEM_DEF(atoms)
 
 		for(var/I in 1 to length(atoms))
 			var/atom/A = atoms[I]
-			if(isnull(A.initialized))
+			if(!(A.initialized))
 				CHECK_TICK
 				PROFILE_INIT_ATOM_BEGIN()
 				InitAtom(A, TRUE, mapload_arg)
@@ -109,7 +108,7 @@ SUBSYSTEM_DEF(atoms)
 		count = 0
 		#endif
 		for(var/atom/A in world)
-			if(isnull(A.initialized))
+			if(!(A.initialized))
 				PROFILE_INIT_ATOM_BEGIN()
 				InitAtom(A, FALSE, mapload_arg)
 				PROFILE_INIT_ATOM_END(A)
@@ -160,7 +159,7 @@ SUBSYSTEM_DEF(atoms)
 
 	if(!A) //possible harddel
 		qdeleted = TRUE
-	else if(isnull(A.initialized))
+	else if(!(A.initialized))
 		BadInitializeCalls[the_type] |= BAD_INIT_DIDNT_INIT
 	else
 		if(ismovable(A) && arguments[1])

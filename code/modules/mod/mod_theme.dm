@@ -227,7 +227,6 @@
 		/obj/item/pipe_dispenser,
 		/obj/item/construction/rcd,
 		/obj/item/storage/bag/construction,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"advanced" = list(
@@ -517,7 +516,6 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/storage/bag/chemistry,
 		/obj/item/storage/bag/bio,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"rescue" = list(
@@ -573,7 +571,6 @@
 		/obj/item/dnainjector,
 		/obj/item/biopsy_tool,
 		/obj/item/storage/bag/bio,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"research" = list(

@@ -107,7 +107,7 @@
 	return FALSE //We handle this ourselves. Please dont break <3.
 
 /obj/structure/low_wall/attackby(obj/item/weapon, mob/living/user, params)
-	if(istype(weapon, /obj/item/paint) || istype(weapon, /obj/item/paint_remover))
+	if(istype(weapon, /obj/item/paint_sprayer) || istype(weapon, /obj/item/paint_remover))
 		return ..()
 
 	if(is_top_obstructed())
@@ -178,11 +178,11 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/low_wall/proc/set_wall_paint(new_paint)
+/obj/structure/low_wall/proc/paint_wall(new_paint)
 	wall_paint = new_paint
 	update_appearance()
 
-/obj/structure/low_wall/proc/set_stripe_paint(new_paint)
+/obj/structure/low_wall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
 	update_appearance()
 

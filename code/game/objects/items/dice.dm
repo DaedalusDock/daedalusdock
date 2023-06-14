@@ -227,6 +227,8 @@
 
 /obj/item/dice/update_overlays()
 	. = ..()
+	if(!has_overlays)
+		return
 	. += "[icon_state]-[result]"
 
 /obj/item/dice/microwave_act(obj/machinery/microwave/M)

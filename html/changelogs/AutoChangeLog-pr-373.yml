@@ -1,0 +1,6 @@
+author: chesse20
+delete-after: true
+changes:
+  - rscadd: A bunch of old loadout items
+  - rscadd: A few new masks
+  - bugfix: You can see which jobs let you use certain items

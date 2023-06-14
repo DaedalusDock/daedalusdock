@@ -204,11 +204,12 @@
 
 ///Removes the organ from the limb, placing it into nullspace.
 /obj/item/organ/proc/remove_from_limb(move)
-	ownerlimb = null
 	if(visual)
 		ownerlimb.cosmetic_organs -= src
 		if(ownerlimb.owner && external_bodytypes)
 			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
+
+	ownerlimb = null
 
 	if(move)
 		moveToNullspace()

@@ -151,7 +151,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			stored_feature_id = reciever.dna.features[feature_key]
 
 		reciever.cosmetic_organs.Add(src)
-		limb.cosmetic_organs.Add(src)
 
 		add_to_limb(limb)
 
@@ -183,12 +182,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	organ_owner.organs -= src
 	if(organ_owner.organs_by_slot[slot] == src)
 		organ_owner.organs_by_slot.Remove(slot)
+
 	if(!cosmetic_only)
 		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
 			organ_owner.death()
 		organ_owner.processing_organs -= src
-
-	if(!cosmetic_only)
 		START_PROCESSING(SSobj, src)
 
 	if(visual)

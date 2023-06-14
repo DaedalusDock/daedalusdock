@@ -79,11 +79,6 @@
 	path = /obj/item/toy/plush/snakeplushie
 	subcategory = LOADOUT_SUBCATEGORY_BACKPACK_TOYS
 
-/datum/loadout_item/backpack/skateboard
-	path = /obj/item/melee/skateboard
-	cost = 5 //lets you ignore hunger and the weight of spacesuits and its a weapon
-	customization_flags = CUSTOMIZE_NONE //all customization is lost when you put the skateboard on the ground because of how skateboards are implemented
-
 /datum/loadout_item/backpack/music_beacon
 	path = /obj/item/choice_beacon/music
 	cost = 2

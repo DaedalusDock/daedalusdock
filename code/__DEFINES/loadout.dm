@@ -59,7 +59,6 @@
 #define MAX_LOADOUT_SLOTS 6
 
 // Flags for customizing the loadout items
-#define CUSTOMIZE_NONE 0
 #define CUSTOMIZE_NAME (1<<0)
 #define CUSTOMIZE_DESC (1<<1)
 #define CUSTOMIZE_COLOR (1<<2)

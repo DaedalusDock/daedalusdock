@@ -41,5 +41,5 @@
 	path = /obj/item/clothing/mask/breath/vox
 /datum/loadout_item/mask/security_hailer
 	path = /obj/item/clothing/mask/gas/sechailer
-	restricted_roles = JOB_SECURITY_OFFICER
+	restricted_roles = list(JOB_SECURITY_OFFICER,JOB_HEAD_OF_SECURITY,JOB_WARDEN)
 

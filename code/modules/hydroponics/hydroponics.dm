@@ -763,7 +763,7 @@
 		return
 	if (!anchored)
 		to_chat(user, "<span class='warning'>Anchor the tray first!</span>")
-		return
+		return TOOL_ACT_TOOLTYPE_SUCCESS
 
 	using_irrigation = !using_irrigation
 	tool.play_tool_sound(src)
@@ -771,6 +771,7 @@
 	"<span class='notice'>You [using_irrigation ? "" : "dis"]connect [src]'s irrigation hoses.</span>")
 	for(var/obj/machinery/hydroponics/h in range(1,src))
 		h.update_icon_state()
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params)
 	//Called when mob user "attacks" it with object O

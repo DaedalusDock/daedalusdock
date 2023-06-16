@@ -14,4 +14,5 @@
 		resize = RESIZE_DEFAULT_SIZE
 
 	if(changed)
-		z_animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+		UPDATE_OO_IF_PRESENT

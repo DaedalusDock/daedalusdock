@@ -284,11 +284,6 @@
 	name = "bacteria rich moldy pizza slice"
 	desc = "Not only is this once delicious pizza encrusted with a layer of spore-spewing fungus, it also seems to shift and slide when unattended, teeming with new life."
 
-/obj/item/food/pizzaslice/moldy/bacteria/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
-
-
 // Arnold Pizza
 // Has meme code.
 /obj/item/food/pizza/arnold

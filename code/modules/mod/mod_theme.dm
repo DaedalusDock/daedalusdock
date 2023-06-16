@@ -569,7 +569,6 @@
 		/obj/item/tank/internals,
 		/obj/item/analyzer,
 		/obj/item/dnainjector,
-		/obj/item/biopsy_tool,
 		/obj/item/storage/bag/bio,
 	)
 	skins = list(

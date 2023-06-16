@@ -497,8 +497,6 @@
 		/datum/design/plastic_ring,
 		/datum/design/plastic_box,
 		/datum/design/sticky_tape,
-		/datum/design/petridish,
-		/datum/design/swab,
 		/datum/design/chisel,
 		/datum/design/control,
 		/datum/design/paperroll,

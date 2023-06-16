@@ -657,10 +657,6 @@
 		SSidlenpcpool.idle_mobs_by_zlevel[old_turf.z] -= src
 		toggle_ai(initial(AIStatus))
 
-///This proc is used for adding the swabbale element to mobs so that they are able to be biopsied and making sure holograpic and butter-based creatures don't yield viable cells samples.
-/mob/living/simple_animal/proc/add_cell_sample()
-	return
-
 /mob/living/simple_animal/relaymove(mob/living/user, direction)
 	if(user.incapacitated())
 		return

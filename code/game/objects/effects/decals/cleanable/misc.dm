@@ -181,7 +181,6 @@
 /obj/effect/decal/cleanable/vomit/old/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	icon_state += "-old"
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
 
 
 /obj/effect/decal/cleanable/chem_pile
@@ -275,7 +274,6 @@
 
 /obj/effect/decal/cleanable/garbage/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 15)
 
 /obj/effect/decal/cleanable/ants
 	name = "space ants"

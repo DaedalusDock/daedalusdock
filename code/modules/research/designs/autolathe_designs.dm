@@ -1005,24 +1005,6 @@
 	maxstack = 5
 	mapload_design_flags = DESIGN_FAB_CIV
 
-/datum/design/petridish
-	name = "Petri Dish"
-	id = "petri_dish"
-	build_type = FABRICATOR | AUTOLATHE
-	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/petri_dish
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_MEDICAL
-
-/datum/design/swab
-	name = "Sterile Swab"
-	id = "swab"
-	build_type = FABRICATOR  | AUTOLATHE
-	materials = list(/datum/material/plastic = 200)
-	build_path = /obj/item/swab
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_MEDICAL
-
 /datum/design/chisel
 	name = "Chisel"
 	id = "chisel"

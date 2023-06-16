@@ -72,7 +72,6 @@
 
 /obj/item/food/breadslice/moldy/bacteria/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
 
 /obj/item/food/bread/meat

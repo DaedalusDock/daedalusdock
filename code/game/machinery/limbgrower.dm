@@ -25,7 +25,6 @@
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
 	. = ..()
-	AddComponent(/datum/component/plumbing/simple_demand)
 
 	internal_disk.set_data(
 		DATA_IDX_DESIGNS,

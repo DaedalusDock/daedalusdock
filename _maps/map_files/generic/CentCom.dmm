@@ -713,10 +713,6 @@
 /obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/white,
 /area/centcom/tdome/observation)
-"ci" = (
-/obj/machinery/duct,
-/turf/open/floor/iron/cafeteria,
-/area/centcom/central_command_areas/holding)
 "cj" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
 	dir = 9
@@ -1231,7 +1227,6 @@
 "dC" = (
 /obj/structure/rack,
 /obj/item/stack/sheet/iron/fifty,
-/obj/item/stack/ducts/fifty,
 /obj/item/wrench{
 	desc = "A little smidgeon of Freon...";
 	name = "Freon"
@@ -1863,10 +1858,6 @@
 /obj/structure/mirror/directional/east,
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/showroomfloor,
-/area/centcom/central_command_areas/holding)
-"fq" = (
-/obj/machinery/duct,
-/turf/open/floor/carpet/black,
 /area/centcom/central_command_areas/holding)
 "fs" = (
 /obj/effect/turf_decal/tile/yellow/half,
@@ -2759,10 +2750,6 @@
 "hQ" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
-	},
-/obj/structure/reagent_dispensers/plumbed{
-	pixel_x = 5;
-	pixel_y = 4
 	},
 /turf/open/floor/catwalk_floor,
 /area/centcom/central_command_areas/holding)
@@ -4989,7 +4976,6 @@
 	pixel_x = -5;
 	pixel_y = -3
 	},
-/obj/machinery/duct,
 /turf/open/floor/catwalk_floor,
 /area/centcom/central_command_areas/holding)
 "oh" = (
@@ -5564,7 +5550,6 @@
 /turf/open/misc/asteroid/basalt/airless,
 /area/centcom/central_command_areas/holding)
 "pK" = (
-/obj/structure/reagent_dispensers/plumbed,
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/carpet/black,
 /area/centcom/central_command_areas/holding)
@@ -10063,7 +10048,6 @@
 /obj/machinery/door/airlock/wood{
 	name = "Bar"
 	},
-/obj/machinery/duct,
 /turf/open/floor/iron/sepia,
 /area/centcom/central_command_areas/holding)
 "Do" = (
@@ -14147,7 +14131,6 @@
 /area/centcom/central_command_areas/supplypod/loading/four)
 "Pw" = (
 /obj/effect/turf_decal/siding/wood,
-/obj/machinery/duct,
 /obj/item/clothing/suit/apron,
 /turf/open/floor/catwalk_floor,
 /area/centcom/central_command_areas/holding)
@@ -17291,13 +17274,6 @@
 	},
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/centcom/syndicate_mothership/expansion_bombthreat)
-"XH" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-10"
-	},
-/obj/machinery/duct,
-/turf/open/floor/carpet/black,
-/area/centcom/central_command_areas/holding)
 "XI" = (
 /obj/structure/closet,
 /obj/item/storage/backpack/duffelbag/med/surgery,
@@ -17876,7 +17852,6 @@
 	pixel_x = -9;
 	pixel_y = 15
 	},
-/obj/item/construction/plumbing,
 /obj/item/reagent_containers/dropper{
 	pixel_x = 5;
 	pixel_y = 14
@@ -36282,15 +36257,15 @@ hs
 pJ
 Nd
 OB
-ci
-ci
+Fh
+Fh
 Dn
-fq
-fq
-fq
-fq
-fq
-fq
+Sd
+Sd
+Sd
+Sd
+Sd
+Sd
 TJ
 CQ
 Rc
@@ -36539,11 +36514,11 @@ pJ
 pJ
 Nd
 QA
-ci
+Fh
 Fh
 fO
 Wb
-XH
+bu
 Sd
 Sd
 bu

@@ -683,7 +683,7 @@ GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 			found_oo += D
 			temp_objects += D
 
-	sortTim(found_oo, /proc/cmp_zm_render_order)
+	sortTim(found_oo, GLOBAL_PROC_REF(cmp_zm_render_order))
 
 	var/list/atoms_list_list = list()
 	for (var/thing in found_oo)

@@ -1,8 +1,0 @@
-///List of all possible sample colors
-GLOBAL_LIST_INIT(xeno_sample_colors, list(
-	COLOR_SAMPLE_BROWN,
-	COLOR_SAMPLE_GRAY,
-	COLOR_SAMPLE_GREEN,
-	COLOR_SAMPLE_PURPLE,
-	COLOR_SAMPLE_YELLOW,
-))

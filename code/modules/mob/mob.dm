@@ -481,7 +481,7 @@
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
 
-			if(!isobserver(usr) && !(usr == examinify))
+			if(!isdead(usr) && !(usr == examinify))
 				var/list/can_see_target = viewers(usr)
 				for(var/mob/M as anything in viewers(4, usr))
 					if(!M.client)

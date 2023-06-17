@@ -308,7 +308,7 @@
 	if(ratio != 1)
 		var/list/cached_gas = gas
 		for(var/id in cached_gas)
-			cached_gas[id] = cached_gas[id] * ratio
+			cached_gas[id] = QUANTIZE(cached_gas[id] * ratio)
 		AIR_UPDATE_VALUES(src)
 	else
 		total_moles = sample.total_moles

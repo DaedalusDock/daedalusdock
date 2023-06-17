@@ -250,6 +250,11 @@
 					eye_right.color = eyes.eye_color_right
 				. += eye_left
 				. += eye_right
+				if(eye_sclera)
+					var/image/sclera = image(eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+					sclera.color = eyes.sclera_color
+					. += sclera
+
 			else
 				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else

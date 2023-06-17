@@ -350,7 +350,7 @@
 			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = json_encode(initial_gas + temperature, "")
+		var/gas_key = json_encode(initial_gas + temperature)
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM

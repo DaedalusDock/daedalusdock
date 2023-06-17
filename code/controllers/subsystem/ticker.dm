@@ -138,7 +138,7 @@ SUBSYSTEM_DEF(ticker)
 			sortTim(players)
 
 			if(CONFIG_GET(flag/show_job_estimation))
-				for(var/ckey as anything in players)
+				for(var/ckey in players)
 					var/mob/dead/new_player/player = players[ckey]
 					var/datum/preferences/prefs = player.client?.prefs
 					if(!prefs)

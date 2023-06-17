@@ -474,3 +474,6 @@ MAXFINE 2000
 
 ## Enabling this config will cause an unsecured nuke disk to increase the chance of a Lone Nuclear Operative spawning.
 #LONE_OP_NAG
+
+## Enabling this shows all players the job estimates for the round during the lobby phase.
+SHOW_JOB_ESTIMATION

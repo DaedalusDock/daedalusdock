@@ -48,6 +48,8 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
+	/// Data for lobby player stat panels during the pre-game.
+	var/list/player_ready_data = list()
 
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
@@ -122,11 +124,40 @@ SUBSYSTEM_DEF(ticker)
 			totalPlayers = LAZYLEN(GLOB.new_player_list)
 			totalPlayersReady = 0
 			total_admins_ready = 0
+			player_ready_data.Cut()
+			var/list/players = list()
+
 			for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-				if(player.ready == PLAYER_READY_TO_PLAY)
+				if(player.ready == PLAYER_READY_TO_PLAY || player.ready == PLAYER_READY_TO_OBSERVE)
 					++totalPlayersReady
 					if(player.client?.holder)
 						++total_admins_ready
+
+					players[player.key] = player
+
+			sortTim(players)
+
+			if(CONFIG_GET(flag/show_job_estimation))
+				for(var/ckey as anything in players)
+					var/mob/dead/new_player/player = players[ckey]
+					var/datum/preferences/prefs = player.client?.prefs
+					if(!prefs)
+						continue
+					if(!prefs.read_preference(/datum/preference/toggle/ready_job))
+						continue
+
+					var/datum/job/J = prefs.get_highest_priority_job()
+					var/title = prefs.alt_job_titles?[J.title] || J.title
+					if(player.ready == PLAYER_READY_TO_PLAY)
+						player_ready_data += "* [ckey] as [title]"
+					else if(player.ready == PLAYER_READY_TO_OBSERVE)
+						player_ready_data += "* [ckey] as Observer"
+
+				if(length(player_ready_data))
+					player_ready_data.Insert(1, "------------------")
+					player_ready_data.Insert(1, "Job Estimation:")
+					player_ready_data.Insert(1, "")
+
 
 			if(start_immediately)
 				timeLeft = 0

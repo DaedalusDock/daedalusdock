@@ -178,7 +178,7 @@
 
 	output += "</center>"
 
-	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome to<br>Daedalus Outpost</div></center>", 270, 295)
+	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome to<br>Daedalus Outpost</div></center>", 270, 310)
 	popup.set_window_options("can_close=0;focus=false;")
 	popup.set_content(output.Join())
 	popup.open(FALSE)
@@ -568,3 +568,10 @@
 	//This is bypassing a LOT of safety checks, so we're just going to send this immediately.
 	to_chat_immediate(usr, span_userdanger("Bypassing all safety checks and spawning you in immediately.\nDon't complain on the repo if this breaks shit!"))
 	make_me_an_observer(1)
+
+/mob/dead/new_player/get_status_tab_items()
+	. = ..()
+	if(SSticker.HasRoundStarted())
+		return
+
+	. += SSticker.player_ready_data

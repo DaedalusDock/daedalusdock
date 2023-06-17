@@ -53,6 +53,8 @@
 
 /mob/living/simple_animal/hostile/retaliate/frog/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!stat && isliving(AM))
 		var/mob/living/L = AM
 		if(L.mob_size > MOB_SIZE_TINY)

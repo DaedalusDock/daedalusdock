@@ -325,3 +325,6 @@
 
 	if(insert_type)
 		inserted_item = new insert_type(src)
+
+	spawn(-1) //Linter doesn't know this doesn't call ui_interact() w/o a user
+		turn_on()

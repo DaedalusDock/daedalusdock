@@ -5,9 +5,6 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	abstract_type = /datum/preference/name
 
-	/// The display name when showing on the "other names" panel
-	var/explanation
-
 	/// These will be grouped together on the preferences menu
 	var/group
 
@@ -31,6 +28,21 @@
 
 /datum/preference/name/is_valid(value)
 	return istext(value) && !isnull(reject_bad_name(value, allow_numbers))
+
+/datum/preference/name/user_edit(mob/user, datum/preferences/prefs)
+	var/input = tgui_input_text(user, "Change [explanation]",, serialize(prefs.read_preference(type)))
+	if(!input)
+		return
+	. = prefs.update_preference(src, input)
+
+	if(istype(user, /mob/dead/new_player))
+		var/mob/dead/new_player/player = user
+		player.new_player_panel()
+
+	return .
+
+/datum/preference/name/get_button(datum/preferences/prefs)
+	return button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")
 
 /// A character's real name
 /datum/preference/name/real_name
@@ -67,7 +79,7 @@
 
 /// The name for a backup human, when nonhumans are made into head of staff
 /datum/preference/name/backup_human
-	explanation = "Backup human name"
+	explanation = "Backup Human Name"
 	group = "backup_human"
 	savefile_key = "human_name"
 
@@ -79,7 +91,7 @@
 /datum/preference/name/clown
 	savefile_key = "clown_name"
 
-	explanation = "Clown name"
+	explanation = "Clown Name"
 	group = "fun"
 	relevant_job = /datum/job/clown
 
@@ -89,7 +101,7 @@
 /datum/preference/name/mime
 	savefile_key = "mime_name"
 
-	explanation = "Mime name"
+	explanation = "Mime Name"
 	group = "fun"
 	relevant_job = /datum/job/mime
 
@@ -102,7 +114,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Cyborg name"
+	explanation = "Cyborg Name"
 	group = "silicons"
 	relevant_job = /datum/job/cyborg
 
@@ -113,7 +125,7 @@
 	savefile_key = "ai_name"
 
 	allow_numbers = TRUE
-	explanation = "AI name"
+	explanation = "AI Name"
 	group = "silicons"
 	relevant_job = /datum/job/ai
 
@@ -125,7 +137,7 @@
 
 	allow_numbers = TRUE
 
-	explanation = "Religion name"
+	explanation = "Religion Name"
 	group = "religion"
 
 /datum/preference/name/religion/create_default_value()
@@ -137,7 +149,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Deity name"
+	explanation = "(Chaplain) Deity Name"
 	group = "religion"
 
 /datum/preference/name/deity/create_default_value()
@@ -149,7 +161,7 @@
 	allow_numbers = TRUE
 	can_randomize = FALSE
 
-	explanation = "Bible name"
+	explanation = "(Chaplain) Book Name"
 	group = "religion"
 
 /datum/preference/name/bible/create_default_value()

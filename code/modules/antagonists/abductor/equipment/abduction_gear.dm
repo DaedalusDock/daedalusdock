@@ -112,7 +112,7 @@
 			to_chat(loc, span_warning("Combat injection is still recharging."))
 			return
 		var/mob/living/carbon/human/M = loc
-		M.adjustStaminaLoss(-75)
+		M.stamina.adjust(75)
 		M.SetUnconscious(0)
 		M.SetStun(0)
 		M.SetKnockdown(0)
@@ -824,6 +824,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/structure/table/optable/abductor/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(iscarbon(AM))
 		START_PROCESSING(SSobj, src)
 		to_chat(AM, span_danger("You feel a series of tiny pricks!"))

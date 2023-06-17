@@ -1,5 +1,5 @@
 
-/mob/living/silicon/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null)
+/mob/living/silicon/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	var/hit_percent = (100-blocked)/100
 	if((!damage || (!forced && hit_percent <= 0)))
 		return 0
@@ -27,8 +27,8 @@
 /mob/living/silicon/setCloneLoss(amount, updating_health = TRUE, forced = FALSE)
 	return FALSE
 
-/mob/living/silicon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE) //immune to stamina damage.
-	return FALSE
+/mob/living/silicon/pre_stamina_change(diff as num) //immune to stamina damage.
+	return 0
 
 /mob/living/silicon/setStaminaLoss(amount, updating_health = TRUE)
 	return FALSE

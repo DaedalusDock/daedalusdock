@@ -41,8 +41,8 @@
 				continue
 
 			var/cur_stacks = stacks
-			adjust_stacks(-enemy_effect.stacks * enemy_effect.stack_modifier / stack_modifier)
-			enemy_effect.adjust_stacks(-cur_stacks * stack_modifier / enemy_effect.stack_modifier)
+			adjust_stacks(-abs(enemy_effect.stacks * enemy_effect.stack_modifier / stack_modifier))
+			enemy_effect.adjust_stacks(-abs(cur_stacks * stack_modifier / enemy_effect.stack_modifier))
 			if(enemy_effect.stacks <= 0)
 				qdel(enemy_effect)
 
@@ -141,10 +141,7 @@
 	if(!on_fire || isanimal(owner))
 		return TRUE
 
-	if(iscyborg(owner))
-		adjust_stacks(-0.55 * delta_time)
-	else
-		adjust_stacks(-0.05 * delta_time)
+	adjust_stacks(owner.fire_stack_decay_rate * delta_time)
 
 	if(stacks <= 0)
 		qdel(src)
@@ -220,6 +217,7 @@
 	SEND_SIGNAL(owner, COMSIG_LIVING_IGNITED, owner)
 	cache_stacks()
 	update_overlay()
+	return TRUE
 
 /**
  * Handles mob extinguishing, should be the only way to set on_fire to FALSE
@@ -234,6 +232,12 @@
 	SEND_SIGNAL(owner, COMSIG_LIVING_EXTINGUISHED, owner)
 	cache_stacks()
 	update_overlay()
+	if(!iscarbon(owner))
+		return
+
+	for(var/obj/item/equipped in owner.get_equipped_items())
+		equipped.wash(CLEAN_TYPE_ACID)
+		equipped.extinguish()
 
 /datum/status_effect/fire_handler/fire_stacks/on_remove()
 	if(on_fire)

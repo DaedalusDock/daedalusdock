@@ -33,8 +33,9 @@ COMMENDATION_PERCENT_POLL 0.05
 ## To speed things up make the number negative, to slow things down, make the number positive.
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied.
-RUN_DELAY 1.5
+RUN_DELAY 2.2
 WALK_DELAY 4
+SPRINT_DELAY 1.4
 
 ## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
 ## Entries completely override all subtypes. Later entries have precedence over earlier entries.
@@ -470,3 +471,6 @@ MAXFINE 2000
 
 ## How many played hours of DRONE_REQUIRED_ROLE required to be a Maintenance Done
 #DRONE_ROLE_PLAYTIME 14
+
+## Enabling this config will cause an unsecured nuke disk to increase the chance of a Lone Nuclear Operative spawning.
+#LONE_OP_NAG

@@ -112,6 +112,8 @@
 
 /datum/component/infective/proc/try_infect_crossed(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(parent == arrived)
+		return
 
 	if(isliving(arrived))
 		try_infect(arrived, BODY_ZONE_PRECISE_L_FOOT)

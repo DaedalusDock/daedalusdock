@@ -294,7 +294,7 @@ Difficulty: Hard
 	else
 		new /obj/effect/temp_visual/hierophant/telegraph(T, src)
 	playsound(T,'sound/effects/bin_close.ogg', 200, TRUE)
-	SLEEP_CHECK_DEATH(2, src)
+	SLEEP_CHECK_DEATH(4, src)
 	new /obj/effect/temp_visual/hierophant/blast/damaging(T, src, FALSE)
 	for(var/d in directions)
 		INVOKE_ASYNC(src, PROC_REF(blast_wall), T, d)
@@ -390,7 +390,7 @@ Difficulty: Hard
 		var/dist = get_dist(original, T)
 		if(dist > last_dist)
 			last_dist = dist
-			sleep(1 + min(burst_range - last_dist, 12) * spread_speed) //gets faster as it gets further out
+			sleep(2 + min(burst_range - last_dist, 12) * spread_speed) //gets faster as it gets further out
 		new /obj/effect/temp_visual/hierophant/blast/damaging(T, caster, FALSE)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/burst(turf/original, spread_speed)
@@ -688,6 +688,8 @@ Difficulty: Hard
 
 /obj/effect/temp_visual/hierophant/blast/damaging/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(bursting)
 		do_damage(get_turf(src))
 

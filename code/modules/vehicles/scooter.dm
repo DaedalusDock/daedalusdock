@@ -89,9 +89,9 @@
 
 	next_crash = world.time + 10
 	var/mob/living/rider = buckled_mobs[1]
-	rider.adjustStaminaLoss(instability*6)
+	rider.stamina.adjust(-instability*6)
 	playsound(src, 'sound/effects/bang.ogg', 40, TRUE)
-	if(!iscarbon(rider) || rider.getStaminaLoss() >= 100 || grinding || iscarbon(bumped_thing))
+	if(!iscarbon(rider) || HAS_TRAIT(rider, TRAIT_EXHAUSTED) || grinding || iscarbon(bumped_thing))
 		var/atom/throw_target = get_edge_target_turf(rider, pick(GLOB.cardinals))
 		unbuckle_mob(rider)
 		if((istype(bumped_thing, /obj/machinery/disposal/bin)))
@@ -122,14 +122,15 @@
 /obj/vehicle/ridden/scooter/skateboard/proc/grind()
 	step(src, dir)
 	if(!has_buckled_mobs() || !(locate(/obj/structure/table) in loc.contents) && !(locate(/obj/structure/fluff/tram_rail) in loc.contents))
-		obj_flags = CAN_BE_HIT
+		obj_flags |= CAN_BE_HIT
 		grinding = FALSE
 		icon_state = "[initial(icon_state)]"
+		lose_block_z_out(BLOCK_Z_OUT_DOWN)
 		return
 
 	var/mob/living/skater = buckled_mobs[1]
-	skater.adjustStaminaLoss(instability*0.3)
-	if(skater.getStaminaLoss() >= 100)
+	skater.stamina.adjust(-instability*0.3)
+	if(HAS_TRAIT(skater, TRAIT_EXHAUSTED))
 		obj_flags = CAN_BE_HIT
 		playsound(src, 'sound/effects/bang.ogg', 20, TRUE)
 		unbuckle_mob(skater)
@@ -153,7 +154,7 @@
 			var/body_part = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_CHEST)
 			victim.apply_damage(damage = 25, damagetype = BRUTE, def_zone = body_part)
 			victim.Paralyze(1.5 SECONDS)
-			skater.adjustStaminaLoss(instability)
+			skater.stamina.adjust(-instability)
 			victim.visible_message(span_danger("[victim] straight up gets grinded into the ground by [skater]'s [src]! Radical!"))
 	addtimer(CALLBACK(src, PROC_REF(grind)), 1)
 

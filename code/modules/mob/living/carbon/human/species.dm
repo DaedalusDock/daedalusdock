@@ -764,7 +764,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		H.losebreath = 0
 
 		var/takes_crit_damage = (!HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
-		if((H.health < H.crit_threshold) && takes_crit_damage && H.stat != DEAD)
+		if((H.health < H.hardcrit_threshold) && takes_crit_damage && H.stat != DEAD)
 			H.adjustBruteLoss(0.5 * delta_time)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
@@ -921,7 +921,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 /// Equips the necessary species-relevant gear before putting on the rest of the uniform.
-/datum/species/proc/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
+/datum/species/proc/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only = FALSE)
 	return
 
 
@@ -1036,7 +1036,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
 		return FALSE
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
-		return TRUE
+		return ATTACK_HANDLED
 	else
 
 		var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
@@ -1063,7 +1063,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
 				miss_chance = 0
 			else
-				miss_chance = min((attacking_bodypart.unarmed_damage_high/attacking_bodypart.unarmed_damage_low) + user.getStaminaLoss() + (user.getBruteLoss()*0.5), 100) //old base chance for a miss + various damage. capped at 100 to prevent weirdness in prob()
+				miss_chance = min((attacking_bodypart.unarmed_damage_high/attacking_bodypart.unarmed_damage_low) + (user.getBruteLoss()*0.5), 100) //old base chance for a miss + various damage. capped at 100 to prevent weirdness in prob()
 
 		if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
 			playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
@@ -1096,21 +1096,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/attack_type = attacking_bodypart.attack_type
 		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
 			log_combat(user, target, "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*1.5)) //Kicks do alot of stamina damage
 		else//other attacks deal full raw damage + 1.5x in stamina damage
 			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
+			target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
 			log_combat(user, target, "punched")
+			. |= ATTACK_CONSUME_STAMINA
 
-		if((target.stat != DEAD) && damage >= attacking_bodypart.unarmed_stun_threshold)
-			target.visible_message(span_danger("[user] knocks [target] down!"), \
-							span_userdanger("You're knocked down by [user]!"), span_hear("You hear aggressive shuffling followed by a loud thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_danger("You knock [target] down!"))
-			var/knockdown_duration = 40 + (target.getStaminaLoss() + (target.getBruteLoss()*0.5))*0.8 //50 total damage = 40 base stun + 40 stun modifier = 80 stun duration, which is the old base duration
-			target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
-			log_combat(user, target, "got a stun punch with their previous punch")
-
-		return TRUE
+		return ATTACK_CONTINUE | .
 
 /datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	return
@@ -1164,8 +1157,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return // dont attack after
 	if(M.combat_mode)
 		. = harm(M, H, attacker_style)
-		if(.)
+		if(. & ATTACK_CONTINUE)
 			M.animate_interact(H, INTERACT_HARM)
+		if(. & ATTACK_CONSUME_STAMINA)
+			M.stamina_swing(STAMINA_SWING_COST_UNARMED)
 	else
 		. = help(M, H, attacker_style)
 		if(.)
@@ -1197,7 +1192,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 	var/attack_direction = get_dir(user, H)
-	apply_damage(I.force * weakness, I.damtype, def_zone, armor_block, H, sharpness = I.get_sharpness(), attack_direction = attack_direction)
+	apply_damage(I.force * weakness, I.damtype, def_zone, armor_block, H, sharpness = I.sharpness, attack_direction = attack_direction)
+
+	if(I.stamina_damage)
+		H.stamina.adjust(-I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1))
 
 	if(!I.force)
 		return FALSE //item force is zero
@@ -1216,10 +1214,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		switch(hit_area)
 			if(BODY_ZONE_HEAD)
-				if(!I.get_sharpness() && armor_block < 50)
+				if(!I.sharpness && armor_block < 50)
 					if(prob(I.force))
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
-						if(H.stat == CONSCIOUS)
+						if(H.stat <= SOFT_CRIT)
 							H.visible_message(span_danger("[H] is knocked senseless!"), \
 											span_userdanger("You're knocked senseless!"))
 							H.set_timed_status_effect(20 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
@@ -1229,7 +1227,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					else
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.2)
 
-					if(H.mind && H.stat == CONSCIOUS && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
+					if(H.mind && H.stat <= SOFT_CRIT && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
 						var/datum/antagonist/rev/rev = H.mind.has_antag_datum(/datum/antagonist/rev)
 						if(rev)
 							rev.remove_revolutionary(FALSE, user)
@@ -1246,7 +1244,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 						H.update_worn_glasses()
 
 			if(BODY_ZONE_CHEST)
-				if(H.stat == CONSCIOUS && !I.get_sharpness() && armor_block < 50)
+				if(H.stat == CONSCIOUS && !I.sharpness && armor_block < 50)
 					if(prob(I.force))
 						H.visible_message(span_danger("[H] is knocked down!"), \
 									span_userdanger("You're knocked down!"))
@@ -1262,7 +1260,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return TRUE
 
-/datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null)
+/datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	SEND_SIGNAL(H, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone, sharpness, attack_direction)
 	var/hit_percent = (100-(blocked+armor))/100
 	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
@@ -1307,12 +1305,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.clone_mod
 			H.adjustCloneLoss(damage_amount)
 		if(STAMINA)
-			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.stamina_mod
-			if(BP)
-				if(BP.receive_damage(0, 0, damage_amount))
-					H.update_stamina()
-			else
-				H.adjustStaminaLoss(damage_amount)
+			CRASH("You get the idea")
 		if(BRAIN)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.brain_mod
 			H.adjustOrganLoss(ORGAN_SLOT_BRAIN, damage_amount)
@@ -1661,6 +1654,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
 /datum/species/proc/get_features()
+	SHOULD_NOT_OVERRIDE(TRUE)
 	var/cached_features = GLOB.features_by_species[type]
 	if (!isnull(cached_features))
 		return cached_features
@@ -1678,17 +1672,27 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			|| (preference.relevant_species_trait in species_traits) \
 			|| (preference.relevant_external_organ in cosmetic_organs)
 		)
-			features += preference.savefile_key
+			features[preference.savefile_key] = preference
 
 	for (var/obj/item/organ/organ_type as anything in cosmetic_organs)
 		var/preference = initial(organ_type.preference)
 		if (!isnull(preference))
-			features += preference
+			features[preference] = GLOB.preference_entries_by_key[preference]
+
+	if(use_skintones)
+		features["skin_tone"] = GLOB.preference_entries[/datum/preference/choiced/skin_tone]
+
+	features += populate_features()
+	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 
 	GLOB.features_by_species[type] = features
 
 	return features
 
+/datum/species/proc/populate_features()
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	return
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)

@@ -82,7 +82,7 @@
 				to_chat(user, span_notice("You fill the balloon with the contents of [I]."))
 				I.reagents.trans_to(src, 10, transfered_by = user)
 				update_appearance()
-	else if(I.get_sharpness())
+	else if(I.sharpness)
 		balloon_burst()
 	else
 		return ..()
@@ -547,7 +547,7 @@
 
 /obj/item/dualsaber/toy/impale(mob/living/user)//Stops Toy Dualsabers from injuring clowns
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
-	user.adjustStaminaLoss(25)
+	user.stamina.adjust(-25)
 
 /obj/item/toy/katana
 	name = "replica katana"
@@ -604,6 +604,8 @@
 
 /obj/item/toy/snappop/proc/on_entered(datum/source, H as mob|obj)
 	SIGNAL_HANDLER
+	if(H == src)
+		return
 	if(ishuman(H) || issilicon(H)) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(issilicon(H) || M.m_intent == MOVE_INTENT_RUN)

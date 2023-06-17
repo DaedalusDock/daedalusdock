@@ -50,17 +50,17 @@
 #define TEST_DEFAULT 1
 #define TEST_DEL_WORLD INFINITY
 
-/// Change color to red on ANSI terminal output, if enabled with -DANSICOLORS.
 #ifdef ANSICOLORS
+/// Change color to red on ANSI terminal output, if enabled with -DANSICOLORS.
 #define TEST_OUTPUT_RED(text) "\x1B\x5B1;31m[text]\x1B\x5B0m"
+/// Change color to green on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_GREEN(text) "\x1B\x5B1;32m[text]\x1B\x5B0m"
+/// Change color to yellow on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_YELLOW(text) "\x1B\x5B1;33m[text]\x1B\x5B0m"
 #else
 #define TEST_OUTPUT_RED(text) (text)
-#endif
-/// Change color to green on ANSI terminal output, if enabled with -DANSICOLORS.
-#ifdef ANSICOLORS
-#define TEST_OUTPUT_GREEN(text) "\x1B\x5B1;32m[text]\x1B\x5B0m"
-#else
 #define TEST_OUTPUT_GREEN(text) (text)
+#define TEST_OUTPUT_YELLOW(text) (text)
 #endif
 
 /// A trait source when adding traits through unit tests
@@ -113,6 +113,7 @@
 #include "mob_spawn.dm"
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
+#include "novaflower_burn.dm"
 #include "ntnetwork_tests.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"
@@ -124,6 +125,7 @@
 #include "projectiles.dm"
 #include "quirks.dm"
 #include "rcd.dm"
+#include "reagent_descriptions.dm"
 #include "reagent_id_typos.dm"
 #include "reagent_mod_expose.dm"
 #include "reagent_mod_procs.dm"

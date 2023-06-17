@@ -129,6 +129,9 @@
 ///Enables Multi-Z lighting
 #define ZMIMIC_LIGHT_BLEED
 
+///Enables multi-z speech
+#define ZMIMIC_MULTIZ_SPEECH
+
 /////////////////////// MISC PERFORMANCE
 //uncomment this to load centcom and runtime station and thats it.
 // #define LOWMEMORYMODE

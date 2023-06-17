@@ -12,8 +12,6 @@
 	throw_range = 2 //No head bowling
 	px_x = 0
 	px_y = -8
-	stam_damage_coeff = 1
-	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
 	grind_results = null
@@ -252,6 +250,11 @@
 					eye_right.color = eyes.eye_color_right
 				. += eye_left
 				. += eye_right
+				if(eye_sclera)
+					var/image/sclera = image(eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+					sclera.color = eyes.sclera_color
+					. += sclera
+
 			else
 				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else

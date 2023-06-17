@@ -11,8 +11,8 @@
 
 	var/paths = subtypesof(/datum/reagent)
 
-	for(var/path in paths)
-		if(path in GLOB.fake_reagent_blacklist)
+	for(var/datum/reagent/path as anything in paths)
+		if(initial(path.abstract_type) == path)//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()
 		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!
@@ -698,7 +698,6 @@
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
 	if(owner && need_mob_update) //some of the metabolized reagents had effects on the mob that requires some updates.
 		owner.updatehealth()
-		owner.update_stamina()
 	update_total()
 
 /*
@@ -793,7 +792,6 @@
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose = TRUE)
 	if(owner && need_mob_update) //some of the metabolized reagents had effects on the mob that requires some updates.
 		owner.updatehealth()
-		owner.update_stamina()
 	update_total()
 
 /**

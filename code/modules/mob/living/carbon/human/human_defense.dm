@@ -520,7 +520,7 @@
 	if(undergoing_cardiac_arrest() && can_heartattack() && !(flags & SHOCK_ILLUSION))
 		if(shock_damage * siemens_coeff >= 1 && prob(25))
 			var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-			if(heart.Restart() && stat == CONSCIOUS)
+			if(heart.Restart() && stat <= SOFT_CRIT)
 				to_chat(src, span_notice("You feel your heart beating again!"))
 	electrocution_animation(40)
 
@@ -807,8 +807,8 @@
 		bleed_text += "!</span>"
 		combined_msg += bleed_text
 
-	if(getStaminaLoss())
-		if(getStaminaLoss() > 30)
+	if(stamina.loss)
+		if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 			combined_msg += span_info("You're completely exhausted.")
 		else
 			combined_msg += span_info("You feel fatigued.")

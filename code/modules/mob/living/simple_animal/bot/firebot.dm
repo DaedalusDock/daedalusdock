@@ -93,7 +93,6 @@
 	..()
 	target_fire = null
 	old_target_fire = null
-	ignore_list = list()
 	set_anchored(FALSE)
 	update_appearance()
 
@@ -191,12 +190,14 @@
 		target_fire = null
 		var/scan_range = (stationary_mode ? 1 : DEFAULT_SCAN_RANGE)
 
+		var/list/things_to_extinguish = list()
 		if(extinguish_people)
-			target_fire = scan(/mob/living, old_target_fire, scan_range) // Scan for burning humans first
+			things_to_extinguish += list(/mob/living)
 
 		if(target_fire == null && extinguish_fires)
-			target_fire = scan(/turf/open, old_target_fire, scan_range) // Scan for burning turfs second
+			things_to_extinguish += list(/turf/open)
 
+		target_fire = scan(things_to_extinguish, old_target_fire, scan_range) // Scan for burning turfs second
 		old_target_fire = target_fire
 
 	// Target reached ENGAGE WATER CANNON
@@ -227,7 +228,7 @@
 
 	if(target_fire && (get_dist(src, target_fire) > 2))
 
-		path = get_path_to(src, target_fire, 30, 1, id=access_card)
+		path = get_path_to(src, target_fire, max_distance=30, mintargetdist=1, id=access_card)
 		mode = BOT_MOVING
 		if(!path.len)
 			soft_reset()
@@ -252,19 +253,16 @@
 
 //Look for burning people or turfs around the bot
 /mob/living/simple_animal/bot/firebot/process_scan(atom/scan_target)
-	var/result
-
 	if(scan_target == src)
-		return result
+		return src
+	if(!is_burning(scan_target))
+		return null
 
-	if(is_burning(scan_target))
-		if((detected_cooldown + DETECTED_VOICE_INTERVAL) < world.time)
-			speak("Fire detected!")
-			playsound(src, 'sound/voice/firebot/detected.ogg', 50, FALSE)
-			detected_cooldown = world.time
-		result = scan_target
-
-	return result
+	if((detected_cooldown + DETECTED_VOICE_INTERVAL) < world.time)
+		speak("Fire detected!")
+		playsound(src, 'sound/voice/firebot/detected.ogg', 50, FALSE)
+		detected_cooldown = world.time
+		return scan_target
 
 /mob/living/simple_animal/bot/firebot/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > T0C + 200 || exposed_temperature < BODYTEMP_COLD_DAMAGE_LIMIT)

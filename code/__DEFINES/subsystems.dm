@@ -98,7 +98,7 @@
 ///type and all subtypes should always immediately call Initialize in New()
 #define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\
 	..();\
-	if(!(flags_1 & INITIALIZED_1)) {\
+	if(!(initialized)) {\
 		var/previous_initialized_value = SSatoms.initialized;\
 		SSatoms.initialized = INITIALIZATION_INNEW_MAPLOAD;\
 		args[1] = TRUE;\
@@ -200,6 +200,7 @@
 #define FIRE_PRIORITY_TGUI 90
 #define FIRE_PRIORITY_TICKER 85
 #define FIRE_PRIORITY_MOBS 80
+#define FIRE_PRIORITY_STAMINA 75
 #define FIRE_PRIORITY_PACKETS 70
 #define FIRE_PRIORITY_AIRFLOW 70
 #define FIRE_PRIORITY_INSTRUMENTS 65
@@ -210,6 +211,7 @@
 #define FIRE_PRIORITY_AIRMACHINES 45
 #define FIRE_PRIORITY_OBJ 40
 #define FIRE_PRIORITY_NETWORKS 40
+#define FIRE_PRIORITY_PATHFINDING 37
 #define FIRE_PRIOTITY_SMOOTHING 35
 #define FIRE_PRIORITY_REAGENTS 30
 #define FIRE_PRIORITY_WET_FLOORS 25

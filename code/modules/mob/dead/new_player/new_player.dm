@@ -55,9 +55,7 @@
 
 	if(href_list["character_setup"])
 		var/datum/preferences/preferences = client.prefs
-		preferences.current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
-		preferences.update_static_data(usr)
-		preferences.ui_interact(usr)
+		preferences.html_show(usr)
 		return TRUE
 
 	if(href_list["ready"])
@@ -138,29 +136,50 @@
 	if (client?.restricted_mode)
 		return
 
-	var/list/output = list("<center><p><a href='byond://?src=[REF(src)];character_setup=1'>Setup Character</a></p>")
-	output += "<p><a href='byond://?src=[REF(src)];show_preferences=1'>Preferences</a></p>"
+	var/list/output = list()
+	output += {"
+	<center>
+		<div>
+			<a href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
+		</div>
+		<hr>
+		<p>
+			<b>Playing As</b>
+			<br>
+			<a href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
+		</p>
+		<hr>
+	"}
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)
 		switch(ready)
 			if(PLAYER_NOT_READY)
-				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | <b>Not Ready</b> | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+				output += "<div>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | <b>Not Ready</b> | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</div>"
 			if(PLAYER_READY_TO_PLAY)
-				output += "<p>\[ <b>Ready</b> | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</p>"
+				output += "<div>\[ <b>Ready</b> | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | [LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)] \]</div>"
 			if(PLAYER_READY_TO_OBSERVE)
-				output += "<p>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | <b> Observe </b> \]</p>"
+				output += "<div>\[ [LINKIFY_READY("Ready", PLAYER_READY_TO_PLAY)] | [LINKIFY_READY("Not Ready", PLAYER_NOT_READY)] | <b> Observe </b> \]</div>"
 	else
-		output += "<p><a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a></p>"
-		output += "<p><a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a></p>"
-		output += "<p>[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]</p>"
+		output += {"
+		<p>
+			<a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
+		</p>
+		<p>
+			<a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
+		</p>
+		<p>
+			[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]
+		</p>
+		"}
+
 
 	if(!is_guest_key(src.key))
 		output += playerpolls()
 
 	output += "</center>"
 
-	var/datum/browser/popup = new(src, "playersetup", "<div align='center'>New Player Options</div>", 250, 265)
-	popup.set_window_options("can_close=0")
+	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome to<br>Daedalus Outpost</div></center>", 270, 295)
+	popup.set_window_options("can_close=0;focus=false;")
 	popup.set_content(output.Join())
 	popup.open(FALSE)
 
@@ -377,13 +396,6 @@
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CREWMEMBER_JOINED, character, rank)
 
-	//PARIAH EDIT ADDITION
-	if(humanc)
-		for(var/datum/loadout_item/item as anything in loadout_list_to_datums(humanc?.client?.prefs?.loadout_list))
-			if (item.restricted_roles && length(item.restricted_roles) && !(job.title in item.restricted_roles))
-				continue
-			item.post_equip_item(humanc.client?.prefs, humanc)
-	//PARIAH EDIT END
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
 	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.
@@ -501,18 +513,24 @@
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
 	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
+
 	// If they have antags enabled, they're potentially doing this on purpose instead of by accident. Notify admins if so.
 	var/has_antags = FALSE
-	if(client.prefs.be_special.len > 0)
-		has_antags = TRUE
-	if(client.prefs.job_preferences.len == 0)
+	var/num_antags = 0
+	var/list/client_antags = client.prefs.read_preference(/datum/preference/blob/antagonists)
+	for(var/antagonist in client_antags)
+		if(client_antags[antagonist])
+			has_antags = TRUE
+			num_antags++
+
+	if(client.prefs.read_preference(/datum/preference/blob/job_priority):len == 0)
 		if(!ineligible_for_roles)
 			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. This makes you ineligible for any round start role, please update your job preferences."))
 		ineligible_for_roles = TRUE
 		ready = PLAYER_NOT_READY
 		if(has_antags)
-			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. The player has been forcefully returned to the lobby.")
-			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
+			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [num_antags] antag preferences enabled. The player has been forcefully returned to the lobby.")
+			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [num_antags] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
 		return FALSE //This is the only case someone should actually be completely blocked from antag rolling as well
 	return TRUE
 

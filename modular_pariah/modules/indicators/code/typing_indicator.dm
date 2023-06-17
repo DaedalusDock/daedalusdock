@@ -15,6 +15,8 @@ GLOBAL_VAR_INIT(emote_indicator_overlay, mutable_appearance('modular_pariah/modu
 		cut_overlay(GLOB.typing_indicator_overlay)
 		cut_overlay(GLOB.emote_indicator_overlay)
 
+	UPDATE_OO_IF_PRESENT
+
 /mob/living/key_down(_key, client/user)
 	if(!typing_indicator && stat == CONSCIOUS)
 		var/list/binds = user.prefs?.key_bindings_by_key[_key]

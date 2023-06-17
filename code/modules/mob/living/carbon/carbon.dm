@@ -13,6 +13,7 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(disarm_collision),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/carbon_sprint)
 
 /mob/living/carbon/Destroy()
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
@@ -505,35 +506,30 @@
 		return
 	var/total_burn = 0
 	var/total_brute = 0
-	var/total_stamina = 0
 	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
 		total_brute += (BP.brute_dam * BP.body_damage_coeff)
 		total_burn += (BP.burn_dam * BP.body_damage_coeff)
-		total_stamina += (BP.stamina_dam * BP.stam_damage_coeff)
+
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute, DAMAGE_PRECISION))
-	staminaloss = round(total_stamina, DAMAGE_PRECISION)
 	update_stat()
 	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD*2) && stat == DEAD )
 		become_husk(BURN)
 	med_hud_set_health()
-	if(stat == SOFT_CRIT)
-		add_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
-	else
-		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
-/mob/living/carbon/update_stamina()
-	var/stam = getStaminaLoss()
-	if(stam > DAMAGE_PRECISION && (maxHealth - stam) <= crit_threshold)
-		if (!stat)
-			enter_stamcrit()
-	else if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
-		REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
-		filters -= FILTER_STAMINACRIT //PARIAH EDIT
-	else
-		return
+/mob/living/carbon/on_stamina_update()
+	var/stam = stamina.current
+	var/max = stamina.maximum
+	var/is_exhausted = HAS_TRAIT_FROM(src, TRAIT_EXHAUSTED, STAMINA)
+	var/is_stam_stunned = HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)
+	if((stam < max * STAMINA_EXHAUSTION_THRESHOLD_MODIFIER) && !is_exhausted)
+		ADD_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
+		ADD_TRAIT(src, TRAIT_NO_SPRINT, STAMINA)
+	if((stam < max * STAMINA_STUN_THRESHOLD_MODIFIER) && !is_stam_stunned && stat <= SOFT_CRIT)
+		stamina_stun()
+	if(is_exhausted && (stam > max * STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER))
+		REMOVE_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
+		REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAMINA)
 	update_stamina_hud()
 
 /mob/living/carbon/update_sight()
@@ -652,40 +648,40 @@
 	if(health <= crit_threshold)
 		var/severity = 0
 		switch(health)
-			if(-20 to -10)
+			if(-120 to -110)
 				severity = 1
-			if(-30 to -20)
+			if(-130 to -120)
 				severity = 2
-			if(-40 to -30)
+			if(-140 to -130)
 				severity = 3
-			if(-50 to -40)
+			if(-150 to -140)
 				severity = 4
-			if(-50 to -40)
+			if(-150 to -140)
 				severity = 5
-			if(-60 to -50)
+			if(-160 to -150)
 				severity = 6
-			if(-70 to -60)
+			if(-170 to -160)
 				severity = 7
-			if(-90 to -70)
+			if(-190 to -170)
 				severity = 8
-			if(-95 to -90)
+			if(-195 to -190)
 				severity = 9
-			if(-INFINITY to -95)
+			if(-INFINITY to -195)
 				severity = 10
-		if(stat != HARD_CRIT)
+		if(stat >= UNCONSCIOUS)
 			var/visionseverity = 4
 			switch(health)
-				if(-8 to -4)
+				if(-115 to -100)
 					visionseverity = 5
-				if(-12 to -8)
+				if(-130 to -115)
 					visionseverity = 6
-				if(-16 to -12)
+				if(-145 to -130)
 					visionseverity = 7
-				if(-20 to -16)
+				if(-160 to -145)
 					visionseverity = 8
-				if(-24 to -20)
+				if(-175 to -160)
 					visionseverity = 9
-				if(-INFINITY to -24)
+				if(-INFINITY to -175)
 					visionseverity = 10
 			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, visionseverity)
 		else
@@ -766,22 +762,23 @@
 /mob/living/carbon/update_stamina_hud(shown_stamina_amount)
 	if(!client || !hud_used?.stamina)
 		return
-	if(stat == DEAD || IsStun() || IsParalyzed() || IsImmobilized() || IsKnockdown() || IsFrozen())
+	if(stat == DEAD)
 		hud_used.stamina.icon_state = "stamina6"
 	else
+		var/max = stamina.maximum
 		if(shown_stamina_amount == null)
-			shown_stamina_amount = health - getStaminaLoss() - crit_threshold
-		if(shown_stamina_amount >= health)
+			shown_stamina_amount = stamina.current
+		if(shown_stamina_amount == max)
 			hud_used.stamina.icon_state = "stamina0"
-		else if(shown_stamina_amount > health*0.8)
+		else if(shown_stamina_amount > max*0.8)
 			hud_used.stamina.icon_state = "stamina1"
-		else if(shown_stamina_amount > health*0.6)
+		else if(shown_stamina_amount > max*0.6)
 			hud_used.stamina.icon_state = "stamina2"
-		else if(shown_stamina_amount > health*0.4)
+		else if(shown_stamina_amount > max*0.4)
 			hud_used.stamina.icon_state = "stamina3"
-		else if(shown_stamina_amount > health*0.2)
+		else if(shown_stamina_amount > max*0.2)
 			hud_used.stamina.icon_state = "stamina4"
-		else if(shown_stamina_amount > 0)
+		else if(shown_stamina_amount > 1)
 			hud_used.stamina.icon_state = "stamina5"
 		else
 			hud_used.stamina.icon_state = "stamina6"
@@ -878,6 +875,7 @@
 		set_handcuffed(null)
 		update_handcuffed()
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
+	exit_stamina_stun()
 	..()
 
 /mob/living/carbon/can_be_revived()
@@ -938,14 +936,6 @@
 	if(organs_amt)
 		to_chat(user, span_notice("You retrieve some of [src]\'s internal organs!"))
 	remove_all_embedded_objects()
-
-/mob/living/carbon/extinguish_mob()
-	for(var/X in get_equipped_items())
-		var/obj/item/I = X
-		I.wash(CLEAN_TYPE_ACID) //washes off the acid on our clothes
-		I.extinguish() //extinguishes our clothes
-	..()
-
 
 /mob/living/carbon/proc/create_bodyparts()
 	var/l_arm_index_next = -1
@@ -1310,11 +1300,16 @@
 	if(src == target || LAZYFIND(target.buckled_mobs, src) || !can_be_shoved_into)
 		return
 	target.Knockdown(SHOVE_KNOCKDOWN_HUMAN)
-	if(!is_shove_knockdown_blocked())
+	if(shove_resistance() <= 0)
 		Knockdown(SHOVE_KNOCKDOWN_COLLATERAL)
-	target.visible_message(span_danger("[shover] shoves [target.name] into [name]!"),
-		span_userdanger("You're shoved into [name] by [shover]!"), span_hear("You hear aggressive shuffling followed by a loud thud!"), COMBAT_MESSAGE_RANGE, src)
-	to_chat(src, span_danger("You shove [target.name] into [name]!"))
+	target.visible_message(
+		span_danger("[shover] shoves [target.name] into [name]!"),
+		span_userdanger("You're shoved into [name] by [shover]!"),
+		span_hear("You hear aggressive shuffling followed by a loud thud!"),
+		COMBAT_MESSAGE_RANGE,
+		///src
+	)
+	///to_chat(src, span_danger("You shove [target.name] into [name]!"))
 	log_combat(src, target, "shoved", "into [name]")
 	return COMSIG_CARBON_SHOVE_HANDLED
 
@@ -1349,6 +1344,8 @@
 	if(!isturf(loc))
 		return
 	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc)
+	if(QDELETED(our_splatter))
+		return
 	our_splatter.add_blood_DNA(return_blood_DNA())
 	our_splatter.blood_dna_info = get_blood_dna_list()
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
@@ -1394,3 +1391,35 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(LAZYLEN(BP.wounds))
 			. += BP.wounds
+
+/mob/living/carbon/ZImpactDamage(turf/T, levels)
+	. = ..()
+	if(!.)
+		return
+
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in T)
+		if(hurt_atom == src)
+			continue
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage(30 * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

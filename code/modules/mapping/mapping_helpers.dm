@@ -748,9 +748,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/low_wall/low_wall = locate() in loc
 		if(low_wall)
 			if(!isnull(wall_paint))
-				low_wall.set_wall_paint(wall_paint)
+				low_wall.paint_wall(wall_paint)
 			if(!isnull(stripe_paint))
-				low_wall.set_stripe_paint(stripe_paint)
+				low_wall.paint_stripe(stripe_paint)
 			did_anything = TRUE
 		else
 			var/obj/structure/falsewall/falsewall = locate() in loc
@@ -806,3 +806,34 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	wall_paint = PAINT_WALL_CENTCOM
 	stripe_paint = PAINT_STRIPE_CENTCOM
 	icon_state = "paint_centcom"
+
+
+/obj/effect/mapping_helpers/broken_floor
+	name = "broken floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "damaged1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/broken_floor/Initialize(mapload)
+	.=..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/broken_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.break_tile()
+	qdel(src)
+
+/obj/effect/mapping_helpers/burnt_floor
+	name = "burnt floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "floorscorched1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/burnt_floor/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/burnt_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.burn_tile()
+	qdel(src)

@@ -2,6 +2,7 @@
 
 /datum/reagent/method_patch_test
 	name = "method patch test"
+	description = "Exposure Method Test Reagent"
 
 /datum/reagent/method_patch_test/expose_mob(mob/living/target, methods = PATCH, reac_volume, show_message = TRUE)
 	. = ..()
@@ -31,7 +32,7 @@
 	// TOUCH
 	dropper.reagents.add_reagent(/datum/reagent/water, 1)
 	dropper.afterattack(human, human, TRUE)
-	TEST_ASSERT_EQUAL(human.fire_stacks, 0, "Human still has fire stacks after touching water")
+	TEST_ASSERT(human.fire_stacks < 0, "Human still has fire stacks after touching water")
 
 	// VAPOR
 	TEST_ASSERT_EQUAL(human.drowsyness, 0, "Human is drowsy at the start of testing")

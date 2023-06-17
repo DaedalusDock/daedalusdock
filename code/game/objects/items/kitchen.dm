@@ -103,10 +103,15 @@
 	desc = "Used to knock out the Bartender."
 	icon_state = "rolling_pin"
 	worn_icon_state = "rolling_pin"
+
 	force = 8
-	throwforce = 5
+	throwforce = 10
 	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 40
+	stamina_cost = 15
+	stamina_critical_chance = 2
+
 	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.5)
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
@@ -147,5 +152,17 @@
 /obj/item/kitchen/spoon/plastic/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
+
+/obj/item/kitchen/spatula
+	name = "spatula"
+	desc = "Used to move hot food from a griddle onto a plate or tray, instead of using your own hands like some sort of animal."
+	icon_state = "spatula"
+	w_class = WEIGHT_CLASS_SMALL
+	force = 2
+	custom_materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
+	throw_speed = 3
+	throw_range = 5
+	attack_verb_simple = list("smack", "thwack", "slap")
+	attack_verb_continuous = list("smacks", "thwacks", "slaps")
 
 #undef PLASTIC_BREAK_PROBABILITY

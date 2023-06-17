@@ -24,7 +24,7 @@
 	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].")
 
 /datum/surgery_step/incise/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !tool.sharpness)
 		return FALSE
 
 	return TRUE
@@ -141,7 +141,7 @@
 /datum/surgery_step/close/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(target_zone)
+		var/obj/item/bodypart/target_bodypart = human_target.get_bodypart(deprecise_zone(target_zone))
 		var/datum/wound/W = target_bodypart.get_incision()
 		if(W)
 			W.close_wound()
@@ -182,7 +182,7 @@
 	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!")
 
 /datum/surgery_step/saw/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !(tool.get_sharpness() && (tool.force >= 10)))
+	if(implement_type == /obj/item && !(tool.sharpness && (tool.force >= 10)))
 		return FALSE
 	return TRUE
 

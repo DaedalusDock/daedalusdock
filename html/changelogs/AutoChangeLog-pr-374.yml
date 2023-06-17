@@ -1,0 +1,4 @@
+author: JohnFulpWillard, LemonInTheDark, MTandi, SmArtKar, Mothblocks
+delete-after: true
+changes:
+  - refactor: JPS Pathfinding & Bot code.

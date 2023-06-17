@@ -64,10 +64,6 @@
 	STOP_PROCESSING(SSobj, src)
 	set_light_on(FALSE)
 
-
-/obj/item/dualsaber/get_sharpness()
-	return wielded * sharpness
-
 /obj/item/dualsaber/update_icon_state()
 	icon_state = wielded ? "dualsaber[saber_color][wielded]" : "dualsaber0"
 	return ..()
@@ -138,7 +134,7 @@
 	if(wielded)
 		user.take_bodypart_damage(20,25,check_armor = TRUE)
 	else
-		user.adjustStaminaLoss(25)
+		user.stamina.adjust(-25)
 
 /obj/item/dualsaber/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	if(wielded)

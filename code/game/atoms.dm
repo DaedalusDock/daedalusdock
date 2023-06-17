@@ -9,6 +9,9 @@
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
+	/// Has this atom's constructor ran?
+	var/initialized = FALSE
+
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
@@ -165,6 +168,8 @@
 
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/datum/storage/atom_storage
+	/// How this atom should react to having its astar blocking checked
+	var/can_astar_pass = CANASTARPASS_DENSITY
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -233,12 +238,9 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
-
-	if(loc)
-		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
+	initialized = TRUE
 
 	if(greyscale_config && greyscale_colors)
 		update_greyscale()
@@ -415,6 +417,10 @@
 	if(mover.throwing && (pass_flags_self & LETPASSTHROW))
 		return TRUE
 	return !density
+
+/// A version of CanPass() that accounts for vertical movement.
+/atom/proc/CanMoveOnto(atom/movable/mover, border_dir)
+	return ((border_dir & DOWN) && HAS_TRAIT(src, TRAIT_CLIMBABLE)) || CanPass(mover, border_dir)
 
 /**
  * Is this atom currently located on centcom
@@ -1122,13 +1128,13 @@
 
 ///Adds an instance of colour_type to the atom's atom_colours list
 /atom/proc/add_atom_colour(coloration, colour_priority)
-	if(!atom_colours || !atom_colours.len)
-		atom_colours = list()
-		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
-	if(!coloration)
+	if(!length(atom_colours))
+		atom_colours = new /list(COLOUR_PRIORITY_AMOUNT)
+	if(isnull(coloration))
 		return
-	if(colour_priority > atom_colours.len)
-		return
+	if(colour_priority > length(atom_colours))
+		CRASH("Invalid color priority supplied to add_atom_color!")
+
 	atom_colours[colour_priority] = coloration
 	update_atom_colour()
 
@@ -1147,19 +1153,19 @@
 
 ///Resets the atom's color to null, and then sets it to the highest priority colour available
 /atom/proc/update_atom_colour()
-	color = null
-	if(!atom_colours)
+	if(!length(atom_colours))
 		return
 	for(var/checked_color in atom_colours)
-		if(islist(checked_color))
-			var/list/color_list = checked_color
-			if(color_list.len)
-				color = color_list
-				return
-		else if(checked_color)
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
 			color = checked_color
 			return
 
+		color = checked_color
+		return
+
+	color = null
 
 /**
  * Wash this atom
@@ -1281,7 +1287,7 @@
 				create_reagents(amount)
 
 		if(reagents)
-			var/chosen_id
+			var/datum/reagent/chosen_id
 			switch(tgui_alert(usr, "Choose a method.", "Add Reagents", list("Search", "Choose from a list", "I'm feeling lucky")))
 				if("Search")
 					var/valid_id
@@ -1291,7 +1297,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id))
+							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
 								valid_id = TRUE
 						else
 							valid_id = TRUE
@@ -2222,8 +2228,12 @@
  * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
+ * * no_id: When true, doors with public access will count as impassible
+ *
+ * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
+ * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

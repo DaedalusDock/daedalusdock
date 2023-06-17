@@ -9,13 +9,17 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
-	selection_color = "#ffdddd"
+	selection_color = "#8e2929"
 	req_admin_notify = 1
 	minimal_player_age = 14
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SECURITY
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/mars_exec
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -35,7 +39,6 @@
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_HEAD_OF_SECURITY
 	bounty_types = CIV_JOB_SEC
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)

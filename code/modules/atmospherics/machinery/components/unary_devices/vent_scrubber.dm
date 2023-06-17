@@ -223,9 +223,6 @@
 	var/datum/gas_mixture/environment = tile.unsafe_return_air() // The proc that calls this proc marks the turf for update!
 	var/datum/gas_mixture/air_contents = airs[1]
 
-	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
-		return FALSE
-
 	if(scrubbing) // == SCRUBBING
 		if(length(environment.gas & filter_types))
 			. = TRUE

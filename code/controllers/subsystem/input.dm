@@ -53,7 +53,7 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	if(control != "mapwindow.map")
 		return FALSE
 
-	if(average_click_delay >= MAXIMUM_CLICK_LATENCY || !..())
+	if((average_click_delay >= MAXIMUM_CLICK_LATENCY || !..()) && !always_queue)
 		current_clicks++
 		average_click_delay = MC_AVG_FAST_UP_SLOW_DOWN(average_click_delay, 0)
 		return FALSE

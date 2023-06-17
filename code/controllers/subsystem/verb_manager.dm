@@ -21,8 +21,8 @@
  */
 SUBSYSTEM_DEF(verb_manager)
 	name = "Verb Manager"
-	wait = 1
-	flags = SS_TICKER | SS_NO_INIT
+	wait = 0
+	flags = SS_TICKER | SS_HIBERNATE
 	priority = FIRE_PRIORITY_DELAYED_VERBS
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
@@ -48,6 +48,12 @@ SUBSYSTEM_DEF(verb_manager)
 
 	///always queue if possible. overides can_queue_admin_verbs but not FOR_ADMINS_IF_VERBS_FUCKED_immediately_execute_all_verbs
 	var/always_queue = FALSE
+
+/datum/controller/subsystem/verb_manager/Initialize(start_timeofday)
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, verb_queue)
+	)
 
 /**
  * queue a callback for the given verb/verblike proc and any given arguments to the specified verb subsystem, so that they process in the next tick.

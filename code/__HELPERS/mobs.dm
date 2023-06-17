@@ -329,7 +329,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
 			time *= mobuser.cached_multiplicative_actions_slowdown
 	else
-		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS
+		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
 
 	var/datum/progressbar/progbar
 	if(progress)

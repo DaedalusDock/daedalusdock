@@ -53,3 +53,8 @@
   - bugfix: Fixed a critical issue with Z-Mimic.
   francinum:
   - config: Lone Op disk security nagging can now be configured.
+2023-06-15:
+  chesse20:
+  - rscadd: A bunch of old loadout items
+  - rscadd: A few new masks
+  - bugfix: You can see which jobs let you use certain items

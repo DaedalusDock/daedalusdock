@@ -22,8 +22,9 @@
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, z_flags, Z_MIMIC_BELOW))) \
 )
 
-#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN; while ((MVAR = MVAR:bound_overlay) && !MVAR:destruction_timer)
-
+/// This macro currently doesn't work for an unknown reason, probably a byond bug(?)
+#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN.bound_overlay; while (MVAR) if(!MVAR.destruction_timer) break;
+/// See above
 #define z_animate(thing, args...) \
 	do { \
 		animate(thing, ##args); \

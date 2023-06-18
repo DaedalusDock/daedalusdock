@@ -58,3 +58,14 @@
   - rscadd: A bunch of old loadout items
   - rscadd: A few new masks
   - bugfix: You can see which jobs let you use certain items
+2023-06-18:
+  JohnFulpWillard, LemonInTheDark, MTandi, SmArtKar, Mothblocks:
+  - refactor: JPS Pathfinding & Bot code.
+  Kapu1178:
+  - bugfix: Decapitation is now lethal again.
+  - bugfix: Tongueless speech works again.
+  - bugfix: Fabricators no longer get SLOWER with better parts
+  - qol: Fabricators now have a queue system.
+  - bugfix: Pref menu window somehow changed size?? Fixed
+  Kylerace:
+  - bugfix: Extremely rare and horrific bug relating to the spatial gridmap

@@ -1,4 +1,0 @@
-author: Kylerace
-delete-after: true
-changes:
-  - bugfix: Extremely rare and horrific bug relating to the spatial gridmap

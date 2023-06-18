@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fabricators no longer get SLOWER with better parts
-  - qol: Fabricators now have a queue system.
-  - bugfix: Pref menu window somehow changed size?? Fixed

@@ -135,7 +135,7 @@ SUBSYSTEM_DEF(ticker)
 
 					players[player.key] = player
 
-			sortTim(players)
+			sortTim(players, GLOBAL_PROC_REF(cmp_text_asc))
 
 			if(CONFIG_GET(flag/show_job_estimation))
 				for(var/ckey as anything in players)
@@ -147,6 +147,9 @@ SUBSYSTEM_DEF(ticker)
 						continue
 
 					var/datum/job/J = prefs.get_highest_priority_job()
+					if(!J)
+						player_ready_data += "*[ckey] forgot to pick a job!"
+						continue
 					var/title = prefs.alt_job_titles?[J.title] || J.title
 					if(player.ready == PLAYER_READY_TO_PLAY)
 						player_ready_data += "* [ckey] as [title]"

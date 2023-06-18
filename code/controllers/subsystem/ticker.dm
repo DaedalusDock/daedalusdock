@@ -146,15 +146,18 @@ SUBSYSTEM_DEF(ticker)
 					if(!prefs.read_preference(/datum/preference/toggle/ready_job))
 						continue
 
+					var/display = player.client?.holder?.fakekey || ckey
+					if(player.ready == PLAYER_READY_TO_OBSERVE)
+						player_ready_data += "* [display] as Observer"
+						continue
+
 					var/datum/job/J = prefs.get_highest_priority_job()
 					if(!J)
-						player_ready_data += "*[ckey] forgot to pick a job!"
+						player_ready_data += "* [display] forgot to pick a job!"
 						continue
 					var/title = prefs.alt_job_titles?[J.title] || J.title
 					if(player.ready == PLAYER_READY_TO_PLAY)
-						player_ready_data += "* [ckey] as [title]"
-					else if(player.ready == PLAYER_READY_TO_OBSERVE)
-						player_ready_data += "* [ckey] as Observer"
+						player_ready_data += "* [display] as [title]"
 
 				if(length(player_ready_data))
 					player_ready_data.Insert(1, "------------------")

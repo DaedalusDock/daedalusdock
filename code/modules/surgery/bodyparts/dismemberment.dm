@@ -246,7 +246,7 @@
 		else if(src == head.ears)
 			head.ears = null
 		else if(src == head.tongue)
-			head.tongue == null
+			head.tongue = null
 	return ..()
 
 /obj/item/bodypart/chest/drop_limb(special)

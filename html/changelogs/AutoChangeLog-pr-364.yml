@@ -1,0 +1,8 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - qol: Mouse spawns are now mapped in, rather then spawning on exposed wires.
+  - rscadd: 'New Event: Animal Infestation. Comes in different variants, and includes
+      a hint as to what was spawned.'
+  - rscdel: Removed the Mice Migration event, replaced by Animal Infestation
+  - rscdel: Regal Rats no longer spawn roundstart.

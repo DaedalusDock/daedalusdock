@@ -121,9 +121,6 @@
 			owner.dropItemToGround(owner.get_item_for_held_index(held_index), 1)
 			owner.hand_bodyparts[held_index] = null
 
-	for(var/obj/item/organ/ext_organ as anything in cosmetic_organs)
-		ext_organ.transfer_to_limb(src, null, special)
-
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
 	for(var/datum/surgery/surgery as anything in phantom_owner.surgeries) //if we had an ongoing surgery on that limb, we stop it.
@@ -149,11 +146,14 @@
 					to_chat(phantom_owner, span_warning("You feel your [mutation] deactivating from the loss of your [body_zone]!"))
 					phantom_owner.dna.force_lose(mutation)
 
-		for(var/obj/item/organ/organ as anything in phantom_owner.processing_organs) //internal organs inside the dismembered limb are dropped.
+		for(var/obj/item/organ/organ as anything in phantom_owner.organs) //internal organs inside the dismembered limb are dropped.
 			var/org_zone = check_zone(organ.zone)
 			if(org_zone != body_zone)
 				continue
 			organ.transfer_to_limb(src, null)
+
+	else
+		cosmetic_organs.Cut()
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)

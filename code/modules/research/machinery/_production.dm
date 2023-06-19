@@ -104,6 +104,7 @@
 		return
 	busy = TRUE
 
+	update_appearance(UPDATE_OVERLAYS)
 	while(length(queue))
 		var/list/queue_packet = queue[1]
 		queue -= list(queue_packet)
@@ -111,6 +112,7 @@
 		updateUsrDialog()
 		do_print(queue_packet[1], queue_packet[2])
 
+	update_appearance(UPDATE_OVERLAYS)
 	processing_packet = null
 	busy = FALSE
 	updateUsrDialog()
@@ -150,7 +152,6 @@
 
 	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
 	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE, ignore_walls = FALSE)
-	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/rnd/production/proc/can_build_design(datum/design/D, amount)
 	var/coeff = efficient_with(D.build_path) ? efficiency_coeff : 1

@@ -11,7 +11,6 @@
 	possible_locs = list(BODY_ZONE_CHEST)
 	requires_bodypart_type = FALSE
 	replaced_by = /datum/surgery
-	ignore_clothes = TRUE
 	var/healing_step_type
 	var/antispam = FALSE
 
@@ -85,11 +84,7 @@
 	else
 		brute_healed += round((target.getBruteLoss() * brute_multiplier),0.1)
 		burn_healed += round((target.getFireLoss() * burn_multiplier),0.1)
-	if(!get_location_accessible(target, target_zone))
-		brute_healed *= 0.55
-		burn_healed *= 0.55
-		user_msg += " as best as you can while [target.p_they()] [target.p_have()] clothing on"
-		target_msg += " as best as [user.p_they()] can while [target.p_they()] [target.p_have()] clothing on"
+
 	target.heal_bodypart_damage(brute_healed,burn_healed)
 
 	user_msg += get_progress(user, target, brute_healed, burn_healed)

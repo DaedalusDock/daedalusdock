@@ -69,3 +69,13 @@
   - bugfix: Pref menu window somehow changed size?? Fixed
   Kylerace:
   - bugfix: Extremely rare and horrific bug relating to the spatial gridmap
+2023-06-19:
+  Kapu1178:
+  - bugfix: Transformations no longer ghost players due to deleting their brain.
+  - bugfix: Fabricators now animate correctly.
+  Spyroshark:
+  - qol: Mouse spawns are now mapped in, rather then spawning on exposed wires.
+  - rscadd: 'New Event: Animal Infestation. Comes in different variants, and includes
+      a hint as to what was spawned.'
+  - rscdel: Removed the Mice Migration event, replaced by Animal Infestation
+  - rscdel: Regal Rats no longer spawn roundstart.

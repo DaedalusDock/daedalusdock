@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Transformations no longer ghost players due to deleting their brain.
-  - bugfix: Fabricators now animate correctly.

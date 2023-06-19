@@ -206,8 +206,6 @@
 	if(length(wounds))
 		stack_trace("[type] qdeleted with [length(wounds)] uncleared wounds")
 		wounds.Cut()
-	for(var/obj/item/organ/O in contents | cosmetic_organs)
-		qdel(O)
 	if(owner)
 		drop_limb(TRUE)
 	return ..()

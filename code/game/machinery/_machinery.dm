@@ -101,7 +101,7 @@
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_UI_INTERACT
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
-	has_disk_slot = TRUE
+	var/has_disk_slot = TRUE
 
 	var/machine_stat = NONE
 	var/use_power = IDLE_POWER_USE

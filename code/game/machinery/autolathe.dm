@@ -6,6 +6,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.5
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
+	has_disk_slot = TRUE
 
 	var/operating = FALSE
 	var/list/L = list()

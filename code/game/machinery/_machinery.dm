@@ -101,6 +101,8 @@
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_UI_INTERACT
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
+	has_disk_slot = TRUE
+
 	var/machine_stat = NONE
 	var/use_power = IDLE_POWER_USE
 		//0 = dont use power
@@ -126,6 +128,8 @@
 	var/obj/item/disk/data/inserted_disk = null
 	/// Used for data management.
 	var/obj/item/disk/data/selected_disk = null
+	/// Can insert a disk into this machine
+	var/has_disk_slot = FALSE
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -707,7 +711,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	if(.)
 		return
 
-	if(internal_disk && istype(weapon, /obj/item/disk/data))
+	if(has_disk_slot && istype(weapon, /obj/item/disk/data))
 		insert_disk(user, weapon)
 		return TRUE
 

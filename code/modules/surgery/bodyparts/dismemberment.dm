@@ -153,7 +153,8 @@
 			organ.transfer_to_limb(src, null)
 
 	else
-		cosmetic_organs.Cut()
+		for(var/obj/item/organ/O as anything in cosmetic_organs)
+			O.remove_from_limb()
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
@@ -234,6 +235,19 @@
 /obj/item/organ/tongue/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
 	head.tongue = src
 	..()
+
+/obj/item/organ/remove_from_limb(move)
+	if(istype(ownerlimb, /obj/item/bodypart/head))
+		var/obj/item/bodypart/head/head = ownerlimb
+		if(src == head.eyes)
+			head.eyes = null
+		else if(src == head.brain)
+			head.brain = null
+		else if(src == head.ears)
+			head.ears = null
+		else if(src == head.tongue)
+			head.tongue = null
+	return ..()
 
 /obj/item/bodypart/chest/drop_limb(special)
 	if(special)

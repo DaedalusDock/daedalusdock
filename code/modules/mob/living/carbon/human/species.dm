@@ -94,6 +94,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
 
+	/// Robotic bodyparts for preference selection
+	var/list/robotic_bodyparts = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/robot/surplus,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus,
+		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/robot/surplus,
+	)
+
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout"). Still WIP
 	var/list/cosmetic_organs = list()
 

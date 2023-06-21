@@ -59,3 +59,66 @@
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
+
+
+///////////////////////////////////////////////////////
+/obj/item/bodypart/head/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/chest/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/arm/right/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/arm/left/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/leg/right/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/leg/left/robot/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+///////////////////////////////////////////////////////////
+/obj/item/bodypart/head/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/chest/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/arm/right/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/arm/left/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/leg/right/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
+
+/obj/item/bodypart/leg/left/robot/surplus/teshari
+	icon = 'icons/mob/species/teshari/augments.dmi'
+	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC

@@ -347,6 +347,8 @@
 		var/state2use = build_icon_state(physique, image_layer)
 
 		for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
+			if(!IS_ORGANIC_LIMB(BP))
+				continue
 			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -image_layer)
 			new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 			. += new_overlay
@@ -354,11 +356,17 @@
 /obj/item/organ/teshari_body_feathers/build_cache_key()
 	. = ..()
 	if(ishuman(owner))
-		. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"
+		var/obj/item/bodypart/BP = owner.get_bodypart(BODY_ZONE_CHEST)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_HEAD)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_ARM)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_ARM)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_LEG)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_LEG)
+		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
 	else
 		. += "CHEST_ONLY"

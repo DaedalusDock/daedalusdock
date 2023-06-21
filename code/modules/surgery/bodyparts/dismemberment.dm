@@ -224,6 +224,17 @@
 		head.brainmob.forceMove(head)
 		head.brainmob.set_stat(DEAD)
 
+/obj/item/organ/brain/remove_from_limb(move)
+	if(istype(ownerlimb, /obj/item/bodypart/head))
+		var/obj/item/bodypart/head/head = ownerlimb
+		if(head.brainmob)
+			head.brainmob.container = null
+			brainmob = head.brainmob
+			head.brainmob = null
+			head.brain = null
+			head.brainmob.forceMove(src)
+	return ..()
+
 /obj/item/organ/eyes/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
 	head.eyes = src
 	..()
@@ -241,8 +252,8 @@
 		var/obj/item/bodypart/head/head = ownerlimb
 		if(src == head.eyes)
 			head.eyes = null
-		else if(src == head.brain)
-			head.brain = null
+		/*else if(src == head.brain) //This is handled by the brain's override. This is here for clarity.
+			head.brain = null*/
 		else if(src == head.ears)
 			head.ears = null
 		else if(src == head.tongue)
@@ -414,20 +425,14 @@
 	if(!.)
 		return .
 	//Transfer some head appearance vars over
-	if(brain)
+	/*if(brain)
 		if(brainmob)
 			brainmob.container = null //Reset brainmob head var.
 			brainmob.forceMove(brain) //Throw mob into brain.
 			brain.brainmob = brainmob //Set the brain to use the brainmob
 			brainmob = null //Set head brainmob var to null
 		brain.Insert(new_head_owner) //Now insert the brain proper
-
-	if(tongue)
-		tongue = null
-	if(ears)
-		ears = null
-	if(eyes)
-		eyes = null
+	*/
 
 	if(real_name)
 		new_head_owner.real_name = real_name

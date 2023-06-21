@@ -134,7 +134,7 @@
 
 /////////////////////// MISC PERFORMANCE
 //uncomment this to load centcom and runtime station and thats it.
-// #define LOWMEMORYMODE
+#define LOWMEMORYMODE
 
 ///A reasonable number of maximum overlays an object needs
 ///If you think you need more, rethink it

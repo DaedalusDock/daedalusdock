@@ -250,9 +250,9 @@
 
 #define MAPLOADING_CHECK_TICK \
 	if(TICK_CHECK) { \
-		SSatoms.map_loader_stop(); \
+		SSatoms.map_loader_stop(REF(src)); \
 		stoplag(); \
-		SSatoms.map_loader_begin(); \
+		SSatoms.map_loader_begin(REF(src)); \
 	}
 
 // Do not call except via load() above.
@@ -260,7 +260,7 @@
 	PRIVATE_PROC(TRUE)
 	// Tell ss atoms that we're doing maploading
 	// We'll have to account for this in the following tick_checks so it doesn't overflow
-	SSatoms.map_loader_begin()
+	SSatoms.map_loader_begin(REF(src))
 
 	// Loading used to be done in this proc
 	// We make the assumption that if the inner procs runtime, we WANT to do cleanup on them, but we should stil tell our parents we failed
@@ -273,7 +273,7 @@
 			sucessful = _dmm_load(x_offset, y_offset, z_offset, cropMap, no_changeturf, x_lower, x_upper, y_lower, y_upper, placeOnTop)
 
 	// And we are done lads, call it off
-	SSatoms.map_loader_stop()
+	SSatoms.map_loader_stop(REF(src))
 
 	if(!no_changeturf)
 		for(var/turf/T as anything in block(locate(bounds[MAP_MINX], bounds[MAP_MINY], bounds[MAP_MINZ]), locate(bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ])))
@@ -395,7 +395,7 @@
 
 			var/list/cache = modelCache[gset.gridLines[i]]
 			if(!cache)
-				SSatoms.map_loader_stop()
+				SSatoms.map_loader_stop(REF(src))
 				CRASH("Undefined model key in DMM: [gset.gridLines[i]]")
 			build_coordinate(cache, locate(true_xcrd, ycrd, zcrd), no_afterchange, placeOnTop)
 
@@ -520,7 +520,7 @@
 					continue
 				var/list/cache = modelCache[model_key]
 				if(!cache)
-					SSatoms.map_loader_stop()
+					SSatoms.map_loader_stop(REF(src))
 					CRASH("Undefined model key in DMM: [model_key]")
 				build_coordinate(cache, locate(xcrd, ycrd, zcrd), no_afterchange, placeOnTop)
 
@@ -927,6 +927,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 
 /datum/parsed_map/Destroy()
 	..()
+	SSatoms.map_loader_stop(REF(src)) // Just in case, I don't want to double up here
 	if(turf_blacklist)
 		turf_blacklist.Cut()
 	parsed_bounds.Cut()

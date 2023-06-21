@@ -1,0 +1,4 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - balance: Lavaland mobs no longer take reduced projectile or throwing damage.

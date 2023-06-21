@@ -424,15 +424,6 @@
 	. = ..()
 	if(!.)
 		return .
-	//Transfer some head appearance vars over
-	/*if(brain)
-		if(brainmob)
-			brainmob.container = null //Reset brainmob head var.
-			brainmob.forceMove(brain) //Throw mob into brain.
-			brain.brainmob = brainmob //Set the brain to use the brainmob
-			brainmob = null //Set head brainmob var to null
-		brain.Insert(new_head_owner) //Now insert the brain proper
-	*/
 
 	if(real_name)
 		new_head_owner.real_name = real_name

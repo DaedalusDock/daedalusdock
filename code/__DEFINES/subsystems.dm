@@ -180,6 +180,7 @@
 
 /*	Ticker bucket	*/
 #define FIRE_PRIORITY_INPUT 100 // This must always always be the max highest priority. Player input must never be lost.
+#define FIRE_PRIORITY_DELAYED_VERBS 95
 #define FIRE_PRIORITY_TIMER 90
 #define FIRE_PRIORITY_SOUND_LOOPS 60
 #define FIRE_PRIORITY_MOUSE_ENTERED 50
@@ -235,7 +236,6 @@
 
 // SS runlevels
 
-#define RUNLEVEL_INIT 0
 #define RUNLEVEL_LOBBY 1
 #define RUNLEVEL_SETUP 2
 #define RUNLEVEL_GAME 4

@@ -2627,6 +2627,7 @@
 #include "code\modules\client\preferences\playtime_reward_cloak.dm"
 #include "code\modules\client\preferences\preferred_map.dm"
 #include "code\modules\client\preferences\quirks.dm"
+#include "code\modules\client\preferences\ready_job.dm"
 #include "code\modules\client\preferences\runechat.dm"
 #include "code\modules\client\preferences\scaling_method.dm"
 #include "code\modules\client\preferences\screentips.dm"

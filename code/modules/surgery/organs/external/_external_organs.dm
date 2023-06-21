@@ -357,16 +357,16 @@
 	. = ..()
 	if(ishuman(owner))
 		var/obj/item/bodypart/BP = owner.get_bodypart(BODY_ZONE_CHEST)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 		BP = owner.get_bodypart(BODY_ZONE_HEAD)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 		BP = owner.get_bodypart(BODY_ZONE_R_ARM)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 		BP = owner.get_bodypart(BODY_ZONE_L_ARM)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 		BP = owner.get_bodypart(BODY_ZONE_R_LEG)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 		BP = owner.get_bodypart(BODY_ZONE_L_LEG)
-		. += BP ? "[IS_ORGANIC_BODYPART(BP)]" : "NOAPPLY"
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 	else
 		. += "CHEST_ONLY"

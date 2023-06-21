@@ -46,6 +46,10 @@
 		mind.set_current(null)
 	return ..()
 
+/mob/New()
+	// This needs to happen IMMEDIATELY. I'm sorry :(
+	GenerateTag()
+	return ..()
 
 /**
  * Intialize a mob
@@ -81,6 +85,10 @@
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
 	. = ..()
+
+	if(ispath(ai_controller))
+		ai_controller = new ai_controller(src)
+
 	update_config_movespeed()
 	initialize_actionspeed()
 	update_movespeed(TRUE)
@@ -93,6 +101,7 @@
  * This is simply "mob_"+ a global incrementing counter that goes up for every mob
  */
 /mob/GenerateTag()
+	. = ..()
 	tag = "mob_[next_mob_id++]"
 
 /**

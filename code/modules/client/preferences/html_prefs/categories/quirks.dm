@@ -49,7 +49,9 @@
 	"}
 
 	for(var/quirk in all_quirks)
-		if(quirk in user_quirks || (quirk_info[quirk]["mood"] && CONFIG_GET(flag/disable_human_mood)))
+		if(quirk_info[quirk]["mood"] && CONFIG_GET(flag/disable_human_mood))
+			continue
+		if(quirk in user_quirks)
 			continue
 		var/quirk_type ="<span style='color: #AAAAFF'>Neuteral</span>"
 		if(quirk_info[quirk]["value"])

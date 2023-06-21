@@ -42,7 +42,7 @@
 /turf/open/indestructible/permalube
 	icon_state = "darkfull"
 
-/turf/open/indestructible/permalube/ComponentInitialize()
+/turf/open/indestructible/permalube/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_LUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -55,7 +55,7 @@
 	heavyfootstep = null
 	var/sound = 'sound/effects/clownstep1.ogg'
 
-/turf/open/indestructible/honk/ComponentInitialize()
+/turf/open/indestructible/honk/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_SUPERLUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -103,9 +103,6 @@
 	tiled_dirt = FALSE
 
 /turf/open/indestructible/hierophant/two
-
-/turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/open/indestructible/paper
 	name = "notebook floor"

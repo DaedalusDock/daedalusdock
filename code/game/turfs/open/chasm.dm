@@ -7,8 +7,8 @@
 	icon_state = "chasms-255"
 	base_icon_state = "chasms"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_TURF_CHASM)
-	canSmoothWith = list(SMOOTH_GROUP_TURF_CHASM)
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_TURF_CHASM
+	canSmoothWith = SMOOTH_GROUP_TURF_CHASM
 	density = TRUE //This will prevent hostile mobs from pathing into chasms, while the canpass override will still let it function like an open turf
 	bullet_bounce_sound = null //abandon all hope ye who enter
 
@@ -51,11 +51,6 @@
 
 /turf/open/chasm/rust_heretic_act()
 	return FALSE
-
-/turf/open/chasm/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
 
 /turf/open/chasm/attackby(obj/item/C, mob/user, params, area/area_restriction)
 	..()
@@ -104,8 +99,3 @@
 	initial_gas = OPENTURF_LOW_PRESSURE
 
 	baseturfs = /turf/open/chasm/jungle
-
-/turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "dirt"
-	return TRUE

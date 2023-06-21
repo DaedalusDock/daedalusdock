@@ -13,8 +13,8 @@
 	opacity = FALSE
 	max_integrity = 100
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
 	can_be_unanchored = FALSE
 	can_atmos_pass = CANPASS_DENSITY
 	rad_insulation = RAD_MEDIUM_INSULATION
@@ -67,7 +67,6 @@
 	to_chat(user, span_notice("The outer plating is <b>welded</b> firmly in place."))
 	return null
 
-
 /*
  * Other misc tramwall types
  */
@@ -79,7 +78,7 @@
 	flags_1 = CAN_BE_DIRTY_1
 	flags_ricochet = RICOCHET_SHINY | RICOCHET_HARD
 	tram_wall_type = /obj/structure/tramwall/titanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
 	color = "#b3c0c7" //To display in mapping softwares
 
 /obj/structure/tramwall/plastitanium
@@ -87,4 +86,4 @@
 	desc = "An evil wall of plasma and titanium."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	tram_wall_type = /obj/structure/tramwall/plastitanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS

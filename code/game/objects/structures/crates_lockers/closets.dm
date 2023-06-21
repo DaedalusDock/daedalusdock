@@ -71,8 +71,6 @@
 	var/can_install_electronics = TRUE
 
 /obj/structure/closet/Initialize(mapload)
-	if(mapload && !opened) // if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, PROC_REF(take_contents), TRUE), 0)
 	. = ..()
 	update_appearance()
 	PopulateContents()
@@ -82,6 +80,13 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+	if(mapload && !opened)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/closet/LateInitialize()
+	. = ..()
+	take_contents()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -242,13 +247,12 @@
 	var/atom/location = drop_location()
 	if(!location)
 		return
-	for(var/atom/movable/AM in location)
+	for(var/atom/movable/AM as anything in location)
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")
 			break
-	for(var/i in reverse_range(location.get_all_contents()))
-		var/atom/movable/thing = i
+	for(var/atom/movable/thing as anything in reverse_range(location.get_all_contents()))
 		thing.atom_storage?.close_all()
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE)

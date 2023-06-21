@@ -96,46 +96,43 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * This is done because it's called so often that any extra code just slows things down too much
  * If you add something relevant here add it there too
  * [/turf/open/space/Initialize]
+ * [/turf/closed/mineral/Initialize]
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
+
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
+
 	initialized = TRUE
 
-	if(mapload && permit_ao)
+	if(permit_ao && mapload)
 		queue_ao()
 
 	// by default, vis_contents is inherited from the turf that was here before
-	vis_contents.Cut()
+	if(length(vis_contents))
+		vis_contents.len = 0
 
 	assemble_baseturfs()
 
-	levelupdate()
+	if(length(contents))
+		levelupdate()
 
-	if (!isnull(smoothing_groups))
-		#ifdef UNIT_TESTS
-		assert_sorted(smoothing_groups, "[type].smoothing_groups")
-		#endif
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
 
-		SET_BITFLAG_LIST(smoothing_groups)
-	if (!isnull(canSmoothWith))
-		#ifdef UNIT_TESTS
-		assert_sorted(canSmoothWith, "[type].canSmoothWith")
-		#endif
+	SETUP_SMOOTHING()
 
-		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
-			smoothing_flags |= SMOOTH_OBJ
-		SET_BITFLAG_LIST(canSmoothWith)
-	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH(src)
+	QUEUE_SMOOTH(src)
 
 	// visibilityChanged() will never hit any path with side effects during mapload
 	if (!mapload)
 		visibilityChanged()
-
-	for(var/atom/movable/content as anything in src)
-		Entered(content, null)
+		if(length(contents))
+			for(var/atom/movable/AM as anything in src)
+				Entered(AM, null)
 
 	var/area/our_area = loc
 	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
@@ -147,47 +144,24 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (light_power && light_outer_range)
 		update_light()
 
-	var/turf/T = GetAbove(src)
-	if(T)
-		T.multiz_turf_new(src, DOWN)
-	T = GetBelow(src)
-	if(T)
-		T.multiz_turf_new(src, UP)
-
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
 
 	// apply materials properly from the default custom_materials value
-	if (isnull(custom_materials))
+	if (length(custom_materials))
 		set_custom_materials(custom_materials)
 
-	ComponentInitialize()
-
-	if(uses_integrity)
-		atom_integrity = max_integrity
-
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (!armor)
-			armor = getArmor()
-
+	#ifdef SPATIAL_GRID_ZLEVEL_STATS
+	if((istype(src, /turf/open/floor) || istype(src, /turf/closed/wall)) && isstationlevel(z))
+		GLOB.station_turfs |= src
+	#endif
 	return INITIALIZE_HINT_NORMAL
 
-/*
-/turf/proc/Initalize_Atmos(times_fired)
-	CALCULATE_ADJACENT_TURFS(src, NORMAL_TURF)
-*/
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
-	var/turf/T = GetAbove(src)
-	if(T)
-		T.multiz_turf_del(src, DOWN)
-	T = GetBelow(src)
-	if(T)
-		T.multiz_turf_del(src, UP)
 
 	if (z_flags & Z_MIMIC_BELOW)
 		cleanup_zmimic()
@@ -203,7 +177,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	visibilityChanged()
 	QDEL_LIST(blueprint_data)
 	initialized = FALSE
-	requires_activation = FALSE
 
 	///ZAS THINGS
 	if(connections)
@@ -214,8 +187,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	///NO MORE ZAS THINGS
 
 	..()
+	#ifdef SPATIAL_GRID_ZLEVEL_STATS
+	if(isstationlevel(z))
+		GLOB.station_turfs += src
+	#endif
 
-	vis_contents.Cut()
+	vis_contents.len = 0
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS
@@ -229,12 +206,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(.)
 		return
 	user.Move_Pulled(src)
-
-/turf/proc/multiz_turf_del(turf/T, dir)
-	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
-
-/turf/proc/multiz_turf_new(turf/T, dir)
-	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
 
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.
@@ -476,7 +447,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
 	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-	if(L && (L.initialized))
+	if(L && L.initialized)
 		qdel(L)
 
 /turf/proc/Bless()
@@ -549,12 +520,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			continue
 		if(ismob(A) || .)
 			A.narsie_act()
-
-/turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = icon
-	underlay_appearance.icon_state = icon_state
-	underlay_appearance.dir = adjacency_dir
-	return TRUE
 
 /turf/proc/add_blueprints(atom/movable/AM)
 	var/image/I = new

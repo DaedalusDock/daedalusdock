@@ -38,7 +38,6 @@ SUBSYSTEM_DEF(atoms)
 	initialized = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
 	initialized = INITIALIZATION_INNEW_REGULAR
-
 	return ..()
 
 #ifdef PROFILE_MAPLOAD_INIT_ATOM
@@ -66,7 +65,6 @@ SUBSYSTEM_DEF(atoms)
 			if(QDELETED(A))
 				continue
 			A.LateInitialize()
-		to_chat(world, span_boldannounce("Atoms: Late initialized [late_loaders.len] atoms."))
 		late_loaders.Cut()
 
 	if (created_atoms)
@@ -88,12 +86,17 @@ SUBSYSTEM_DEF(atoms)
 	if (atoms_to_return)
 		LAZYINITLIST(created_atoms)
 
-	var/count
+	#ifdef TESTING
+	var/count = atoms.len
+	#endif
 	var/list/mapload_arg = list(TRUE)
 
 	if(atoms)
+		#ifdef TESTING
 		count = atoms.len
-		for(var/I in 1 to count)
+		#endif
+
+		for(var/I in 1 to length(atoms))
 			var/atom/A = atoms[I]
 			if(!(A.initialized))
 				CHECK_TICK
@@ -101,17 +104,20 @@ SUBSYSTEM_DEF(atoms)
 				InitAtom(A, TRUE, mapload_arg)
 				PROFILE_INIT_ATOM_END(A)
 	else
+		#ifdef TESTING
 		count = 0
+		#endif
 		for(var/atom/A in world)
 			if(!(A.initialized))
 				PROFILE_INIT_ATOM_BEGIN()
 				InitAtom(A, FALSE, mapload_arg)
 				PROFILE_INIT_ATOM_END(A)
+				#ifdef TESTING
 				++count
+				#endif
 				CHECK_TICK
 
-	to_chat(world, span_boldannounce("Atoms: Initialized [count] atoms."))
-	pass(count)
+	testing("Initialized [count] atoms")
 
 /// Init this specific atom
 /datum/controller/subsystem/atoms/proc/InitAtom(atom/A, from_template = FALSE, list/arguments)
@@ -122,37 +128,41 @@ SUBSYSTEM_DEF(atoms)
 			BadInitializeCalls[the_type] |= BAD_INIT_QDEL_BEFORE
 		return TRUE
 
+	//Linter already handles this, just in case.
+	#ifdef UNIT_TESTS
 	var/start_tick = world.time
+	#endif
 
 	var/result = A.Initialize(arglist(arguments))
 
+	#ifdef UNIT_TESTS
 	if(start_tick != world.time)
 		BadInitializeCalls[the_type] |= BAD_INIT_SLEPT
-
+	#endif
 	var/qdeleted = FALSE
 
-	if(result != INITIALIZE_HINT_NORMAL)
-		switch(result)
-			if(INITIALIZE_HINT_LATELOAD)
-				if(arguments[1]) //mapload
-					late_loaders += A
-				else
-					A.LateInitialize()
-			if(INITIALIZE_HINT_QDEL)
-				qdel(A)
-				qdeleted = TRUE
-			if(INITIALIZE_HINT_QDEL_FORCE)
-				qdel(A, force = TRUE)
-				qdeleted = TRUE
+	switch(result)
+		if(INITIALIZE_HINT_NORMAL)
+		if(INITIALIZE_HINT_LATELOAD)
+			if(arguments[1]) //mapload
+				late_loaders += A
 			else
-				BadInitializeCalls[the_type] |= BAD_INIT_NO_HINT
+				A.LateInitialize()
+		if(INITIALIZE_HINT_QDEL)
+			qdel(A)
+			qdeleted = TRUE
+		if(INITIALIZE_HINT_QDEL_FORCE)
+			qdel(A, force = TRUE)
+			qdeleted = TRUE
+		else
+			BadInitializeCalls[the_type] |= BAD_INIT_NO_HINT
 
 	if(!A) //possible harddel
 		qdeleted = TRUE
 	else if(!(A.initialized))
 		BadInitializeCalls[the_type] |= BAD_INIT_DIDNT_INIT
 	else
-		if(ismovable(A))
+		if(ismovable(A) && arguments[1])
 			A.loc?.Entered(A)
 		SEND_SIGNAL(A,COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE)
 		if(created_atoms && from_template && ispath(the_type, /atom/movable))//we only want to populate the list with movables

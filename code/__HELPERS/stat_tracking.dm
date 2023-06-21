@@ -11,3 +11,15 @@
 		user << browse("<ol><li>[lines.Join("</li><li>")]</li></ol>", "window=[url_encode("stats:[REF(stats)]")]")
 
 	. = lines.Join("\n")
+
+/proc/stat_tracking_export_to_csv_later(filename, costs, counts)
+	if (IsAdminAdvancedProcCall())
+		return
+
+	var/list/output = list()
+
+	output += "key, cost, count"
+	for (var/key in costs)
+		output += "[replacetext(key, ",", "")], [costs[key]], [counts[key]]"
+
+	rustg_file_write(output.Join("\n"), "[GLOB.log_directory]/[filename]")

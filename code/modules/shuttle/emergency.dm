@@ -591,15 +591,13 @@
 	possible_destinations = "pod_asteroid"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "dorm_available"
+	icon_keyboard = null
 	light_color = LIGHT_COLOR_BLUE
 	density = FALSE
 
 /obj/machinery/computer/shuttle/pod/Initialize(mapload)
 	. = ..()
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_lock))
-
-/obj/machinery/computer/shuttle/pod/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
 /obj/machinery/computer/shuttle/pod/emag_act(mob/user)

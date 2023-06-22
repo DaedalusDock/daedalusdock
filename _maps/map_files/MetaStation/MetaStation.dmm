@@ -5845,9 +5845,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/dark,
 /area/station/medical/break_room)
-"bAr" = (
-/turf/open/misc/dirt,
-/area/station/security/range)
 "bAu" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -17126,8 +17123,7 @@
 /area/station/medical/break_room)
 "fcw" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
-/turf/open/floor/plating,
+/turf/open/floor/iron/dark,
 /area/station/security/range)
 "fcF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -18088,7 +18084,7 @@
 /area/space/nearstation)
 "fvc" = (
 /obj/structure/bed/dogbed,
-/turf/open/misc/dirt,
+/turf/open/misc/grass/dirt,
 /area/station/security/range)
 "fve" = (
 /obj/structure/disposalpipe/segment{
@@ -25630,8 +25626,8 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "ikq" = (
-/obj/structure/cable,
-/turf/open/misc/dirt,
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
+/turf/open/floor/plating,
 /area/station/security/range)
 "iky" = (
 /obj/machinery/firealarm/directional/east,
@@ -33200,7 +33196,6 @@
 	name = "Pig Pen";
 	req_access_txt = "63"
 	},
-/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "kZT" = (
@@ -53156,6 +53151,10 @@
 /obj/effect/turf_decal/trimline/red/filled/corner,
 /turf/open/floor/iron,
 /area/station/security/brig)
+"sii" = (
+/obj/structure/flora/rock/pile/largejungle,
+/turf/closed/wall/prepainted/daedalus,
+/area/station/engineering/storage/tech)
 "siw" = (
 /obj/structure/sign/warning/securearea{
 	name = "\improper STAY CLEAR HEAVY MACHINERY"
@@ -60551,7 +60550,7 @@
 /area/station/science/genetics)
 "vgj" = (
 /obj/machinery/light/small/directional/north,
-/turf/open/misc/dirt,
+/turf/open/misc/grass/dirt,
 /area/station/security/range)
 "vgq" = (
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide,
@@ -61076,6 +61075,7 @@
 	},
 /obj/structure/table,
 /obj/effect/turf_decal/tile/red/half/contrasted,
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "vqC" = (
@@ -61485,8 +61485,7 @@
 /area/station/science/mixing/launch)
 "vAx" = (
 /mob/living/simple_animal/hostile/retaliate/hog/security,
-/obj/structure/cable,
-/turf/open/misc/dirt,
+/turf/open/misc/grass/dirt,
 /area/station/security/range)
 "vAB" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -62997,6 +62996,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
+"wdi" = (
+/turf/open/misc/grass/dirt,
+/area/station/security/range)
 "wdn" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -98645,7 +98647,7 @@ itT
 dnL
 rFW
 jnd
-pNN
+jkv
 nnO
 wSI
 qwb
@@ -99416,7 +99418,7 @@ rrt
 lMJ
 wSI
 vgj
-ikq
+wdi
 xSg
 mXe
 jLR
@@ -99671,10 +99673,10 @@ aaa
 aaa
 rrt
 lAu
-mXe
-bAr
+ikq
+wdi
 vAx
-bAr
+wdi
 mXe
 jLR
 ebb
@@ -99928,10 +99930,10 @@ aaa
 aaa
 rrt
 lAu
-mXe
 ikq
-ikq
-ikq
+wdi
+wdi
+wdi
 mXe
 qyl
 ebb
@@ -100187,8 +100189,8 @@ rrt
 lMJ
 wSI
 vgj
-bAr
-bAr
+wdi
+wdi
 dWd
 vqB
 vlx
@@ -100444,8 +100446,8 @@ aaa
 aaa
 wSI
 fvc
-bAr
-bAr
+wdi
+wdi
 uKA
 ftE
 iKy
@@ -107423,7 +107425,7 @@ kMN
 xEb
 fun
 vQj
-jIP
+sii
 gts
 cUl
 lzN

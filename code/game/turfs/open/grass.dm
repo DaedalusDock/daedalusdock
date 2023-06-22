@@ -30,3 +30,17 @@
 
 /turf/open/misc/grass/lavaland
 	initial_gas = LAVALAND_DEFAULT_ATMOS
+
+/turf/open/misc/grass/dirt
+	name = "dirt"
+	desc = "A wet, muddy patch of dirt."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "dirt"
+	base_icon_state = "grass"
+	baseturfs = /turf/open/misc/sandy_dirt
+	bullet_bounce_sound = null
+	footstep = FOOTSTEP_MEAT //this is... probably the closest sounding to mud.
+	barefootstep = FOOTSTEP_MEAT
+	clawfootstep = FOOTSTEP_MEAT
+	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
+	smoothing_flags = NONE

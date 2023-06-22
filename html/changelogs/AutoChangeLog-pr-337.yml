@@ -1,4 +1,0 @@
-author: KylerAce, Kapu1178
-delete-after: true
-changes:
-  - code_imp: Verbs are now pushed back 1 tick to prevent overtime (lag)

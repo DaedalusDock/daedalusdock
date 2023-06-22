@@ -441,7 +441,7 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Actually update the overlay.
 		if (OO.dir != OO.associated_atom.dir)
-			OO.setDir(OO.associated_atom.dir)
+			OO.dir = OO.associated_atom.dir
 
 		if (OO.particles != OO.associated_atom.particles)
 			OO.particles = OO.associated_atom.particles

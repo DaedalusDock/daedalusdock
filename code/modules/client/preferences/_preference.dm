@@ -605,6 +605,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 ///Holds any kind of abstract list data you'd like it to. MUST impliment `is_valid`!
 /datum/preference/blob
 	abstract_type = /datum/preference/blob
+	can_randomize = FALSE
 
 /datum/preference/blob/create_default_value()
 	return list()

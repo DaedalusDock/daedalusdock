@@ -68,6 +68,10 @@
 ///~~Requires TESTING to be defined to work~~
 //#define REAGENTS_TESTING
 
+///If defined, we will compile with FULL timer debug info, rather then a limited scope
+///Be warned, this increases timer creation cost by 5x
+// #define TIMER_DEBUG
+
 ///If this is uncommented, force our verb processing into just the 2% of a tick
 ///We normally reserve for it
 ///NEVER run this on live, it's for simulating highpop only
@@ -173,6 +177,8 @@
 #define REFERENCE_TRACKING_DEBUG
 #define FIND_REF_NO_CHECK_TICK
 #define GC_FAILURE_HARD_LOOKUP
+//Test at full capacity, the extra cost doesn't matter
+#define TIMER_DEBUG
 #endif
 
 #ifdef TGS

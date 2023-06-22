@@ -1055,3 +1055,48 @@
 			return list(0,-3)
 		if(WEST)
 			return list(0,-3)
+
+/obj/item/bodypart/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_WIRES || !(bodytype & BODYTYPE_ROBOTIC))
+		return FALSE
+
+	if(!(body_zone == BODY_ZONE_CHEST))
+		owner.visible_message(span_danger("<b>[owner]<b>'s [src.name] falls limp!"))
+
+	var/time_needed = 10 SECONDS
+	var/brute_damage = 1.5
+	var/burn_damage = 2.5
+
+	if(severity == EMP_HEAVY)
+		time_needed *= 2
+		brute_damage *= 2
+		burn_damage *= 2
+
+	receive_damage(brute_damage, burn_damage)
+	do_sparks(number = 1, cardinal_only = FALSE, source = owner)
+	ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
+	addtimer(CALLBACK(src, PROC_REF(un_paralyze)), time_needed)
+	return TRUE
+
+/obj/item/bodypart/proc/un_paralyze()
+	REMOVE_TRAITS_IN(src, EMP_TRAIT)
+
+/obj/item/bodypart/leg/emp_act(severity)
+	. = ..()
+	if(!.)
+		return
+	owner.Knockdown(severity == EMP_HEAVY ? 20 SECONDS : 10 SECONDS)
+
+/obj/item/bodypart/chest/robot/emp_act(severity)
+	. = ..()
+	if(!.)
+		return
+	to_chat(owner, span_danger("Your [src.name]'s logic boards temporarily become unresponsive!"))
+	if(severity == EMP_HEAVY)
+		owner.Stun(6 SECONDS)
+		owner.Shake(pixelshiftx = 5, pixelshifty = 2, duration = 4 SECONDS)
+		return
+
+	owner.Stun(3 SECONDS)
+	owner.Shake(pixelshiftx = 3, pixelshifty = 0, duration = 2.5 SECONDS)

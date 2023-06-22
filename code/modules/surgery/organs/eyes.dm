@@ -224,6 +224,15 @@
 	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
 
+	///Incase the eyes are removed before the timer expires
+	var/emp_timer
+
+/obj/item/organ/eyes/robotic/Remove(mob/living/carbon/eye_owner, special)
+	if(emp_timer)
+		deltimer(emp_timer)
+		remove_malfunction()
+	..()
+
 /obj/item/organ/eyes/robotic/emp_act(severity)
 	. = ..()
 	if(!owner || . & EMP_PROTECT_SELF)
@@ -232,6 +241,12 @@
 		return
 	to_chat(owner, span_warning("Static obfuscates your vision!"))
 	owner.flash_act(visual = 1)
+	owner.add_client_colour(/datum/client_colour/malfunction)
+	emp_timer = addtimer(CALLBACK(src, PROC_REF(remove_malfunction)), glitch_duration, TIMER_STOPPABLE)
+
+/obj/item/organ/eyes/robotic/proc/remove_malfunction()
+	owner.remove_client_colour(/datum/client_colour/malfunction)
+	emp_timer = null
 
 /obj/item/organ/eyes/robotic/basic
 	name = "basic robotic eyes"

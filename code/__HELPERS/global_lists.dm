@@ -70,6 +70,7 @@
 
 	init_crafting_recipes(GLOB.crafting_recipes)
 	init_loadout_references()
+	init_augment_references()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -169,3 +170,18 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	for(var/category as anything in GLOB.loadout_category_to_subcategory_to_items)
 		for(var/subcategory as anything in GLOB.loadout_category_to_subcategory_to_items[category])
 			GLOB.loadout_category_to_subcategory_to_items[category][subcategory] = sortTim(GLOB.loadout_category_to_subcategory_to_items[category][subcategory], GLOBAL_PROC_REF(cmp_loadout_name))
+
+/proc/init_augment_references()
+	// Here we build the global loadout lists
+	for(var/path in subtypesof(/datum/augment_item))
+		var/datum/augment_item/L = path
+		if(initial(L.path))
+			L = new path()
+			GLOB.augment_items[L.path] = L
+
+			if(!GLOB.augment_slot_to_items[L.slot])
+				GLOB.augment_slot_to_items[L.slot] = list()
+				if(!GLOB.augment_categories_to_slots[L.category])
+					GLOB.augment_categories_to_slots[L.category] = list()
+				GLOB.augment_categories_to_slots[L.category] += L.slot
+			GLOB.augment_slot_to_items[L.slot] += L.path

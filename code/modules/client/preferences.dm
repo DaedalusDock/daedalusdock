@@ -82,6 +82,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/tmp/loadout_category = LOADOUT_CATEGORY_BACKPACK
 	var/tmp/loadout_subcategory = LOADOUT_SUBCATEGORY_MISC
 
+	/// Used by the augments UI
+	var/tmp/chosen_augment_slot
+
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
@@ -517,7 +520,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 			continue
 		if(preference.requires_accessible && !preference.is_accessible(src))
 			continue
-		preference.apply_to_human(character, read_preference(preference.type))
+		preference.apply_to_human(character, read_preference(preference.type), src)
 
 	character.dna.real_name = character.real_name
 

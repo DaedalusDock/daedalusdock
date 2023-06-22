@@ -334,24 +334,32 @@
 	name = "surplus prosthetic left arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/arm/right/robot/surplus
 	name = "surplus prosthetic right arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/left/robot/surplus
 	name = "surplus prosthetic left leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/right/robot/surplus
 	name = "surplus prosthetic right leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 

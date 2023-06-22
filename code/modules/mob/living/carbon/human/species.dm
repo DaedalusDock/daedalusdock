@@ -98,10 +98,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/robotic_bodyparts = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/robot/surplus,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus,
 		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/robot/surplus,
 	)
 
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout"). Still WIP
@@ -440,8 +438,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
-	if(old_species.type != type)
-		replace_body(C, src)
+	replace_body(C, src)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
 

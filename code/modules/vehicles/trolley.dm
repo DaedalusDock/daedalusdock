@@ -14,6 +14,7 @@
 	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_REJECT_INSERTION, INNATE_TRAIT)
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/trolley)
+	AddComponent(/datum/component/simple_rotation)
 	var/handlebars = new /image{icon_state = "trolley_handlebars"; layer = MOB_BELOW_PIGGYBACK_LAYER}
 	add_overlay(handlebars)
 

@@ -799,3 +799,13 @@
 	underlay_appearance.icon_state = SPACE_ICON_STATE(x, y, z)
 	underlay_appearance.plane = PLANE_SPACE
 	return TRUE
+
+/turf/open/floor/mud
+	name = "mud"
+	desc = "A wet, muddy pool of dirt."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "dirt"
+	footstep = FOOTSTEP_MEAT //this is... probably the closest sounding to mud.
+	barefootstep = FOOTSTEP_MEAT
+	clawfootstep = FOOTSTEP_MEAT
+	heavyfootstep = FOOTSTEP_GENERIC_HEAVY

@@ -17123,6 +17123,7 @@
 /area/station/medical/break_room)
 "fcw" = (
 /obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "fcF" = (
@@ -18084,7 +18085,7 @@
 /area/space/nearstation)
 "fvc" = (
 /obj/structure/bed/dogbed,
-/turf/open/misc/grass/dirt,
+/turf/open/floor/mud,
 /area/station/security/range)
 "fve" = (
 /obj/structure/disposalpipe/segment{
@@ -25626,8 +25627,8 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "ikq" = (
-/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
-/turf/open/floor/plating,
+/obj/structure/cable,
+/turf/open/floor/mud,
 /area/station/security/range)
 "iky" = (
 /obj/machinery/firealarm/directional/east,
@@ -33196,6 +33197,7 @@
 	name = "Pig Pen";
 	req_access_txt = "63"
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "kZT" = (
@@ -60550,7 +60552,7 @@
 /area/station/science/genetics)
 "vgj" = (
 /obj/machinery/light/small/directional/north,
-/turf/open/misc/grass/dirt,
+/turf/open/floor/mud,
 /area/station/security/range)
 "vgq" = (
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide,
@@ -61075,7 +61077,6 @@
 	},
 /obj/structure/table,
 /obj/effect/turf_decal/tile/red/half/contrasted,
-/obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "vqC" = (
@@ -61485,7 +61486,8 @@
 /area/station/science/mixing/launch)
 "vAx" = (
 /mob/living/simple_animal/hostile/retaliate/hog/security,
-/turf/open/misc/grass/dirt,
+/obj/structure/cable,
+/turf/open/floor/mud,
 /area/station/security/range)
 "vAB" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -62997,7 +62999,7 @@
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
 "wdi" = (
-/turf/open/misc/grass/dirt,
+/turf/open/floor/mud,
 /area/station/security/range)
 "wdn" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -67863,6 +67865,7 @@
 "xSg" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/food/donut,
+/obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/security/range)
 "xSi" = (
@@ -98647,7 +98650,7 @@ itT
 dnL
 rFW
 jnd
-jkv
+pNN
 nnO
 wSI
 qwb
@@ -99418,7 +99421,7 @@ rrt
 lMJ
 wSI
 vgj
-wdi
+ikq
 xSg
 mXe
 jLR
@@ -99673,10 +99676,10 @@ aaa
 aaa
 rrt
 lAu
+dWd
 ikq
-wdi
 vAx
-wdi
+ikq
 mXe
 jLR
 ebb
@@ -99930,7 +99933,7 @@ aaa
 aaa
 rrt
 lAu
-ikq
+dWd
 wdi
 wdi
 wdi

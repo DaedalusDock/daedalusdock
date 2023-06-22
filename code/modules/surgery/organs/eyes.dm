@@ -242,7 +242,7 @@
 	to_chat(owner, span_warning("Static obfuscates your vision!"))
 	owner.flash_act(visual = 1)
 	owner.add_client_colour(/datum/client_colour/malfunction)
-	emp_timer = addtimer(CALLBACK(src, PROC_REF(remove_malfunction)), glitch_duration, TIMER_STOPPABLE)
+	emp_timer = addtimer(CALLBACK(src, PROC_REF(remove_malfunction)), 10 SECONDS, TIMER_STOPPABLE)
 
 /obj/item/organ/eyes/robotic/proc/remove_malfunction()
 	owner.remove_client_colour(/datum/client_colour/malfunction)

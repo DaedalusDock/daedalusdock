@@ -5846,12 +5846,7 @@
 /turf/open/floor/iron/dark,
 /area/station/medical/break_room)
 "bAr" = (
-/obj/effect/turf_decal/box,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/security_officer,
-/turf/open/floor/iron/dark,
+/turf/open/misc/dirt,
 /area/station/security/range)
 "bAu" = (
 /obj/structure/cable,
@@ -11896,11 +11891,11 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "dnL" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/mob/living/simple_animal/hostile/retaliate/bat/sgt_araneus,
-/turf/open/floor/carpet,
-/area/station/command/heads_quarters/hos)
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/station/security/range)
 "dnO" = (
 /obj/machinery/space_heater,
 /obj/effect/decal/cleanable/cobweb,
@@ -14063,6 +14058,14 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/cafeteria)
+"ebB" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 10
+	},
+/obj/structure/cable,
+/obj/structure/window/reinforced,
+/turf/open/floor/iron,
+/area/station/security/range)
 "ebF" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -17122,11 +17125,9 @@
 /turf/open/floor/plating,
 /area/station/medical/break_room)
 "fcw" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 6
-	},
+/obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
-/turf/open/floor/iron,
+/turf/open/floor/plating,
 /area/station/security/range)
 "fcF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -17991,6 +17992,8 @@
 /obj/structure/table,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/red/half/contrasted,
+/obj/machinery/airalarm/directional/north,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "ftN" = (
@@ -18084,14 +18087,8 @@
 /turf/open/space,
 /area/space/nearstation)
 "fvc" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
-	},
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
+/obj/structure/bed/dogbed,
+/turf/open/misc/dirt,
 /area/station/security/range)
 "fve" = (
 /obj/structure/disposalpipe/segment{
@@ -18339,7 +18336,6 @@
 /area/station/service/kitchen/coldroom)
 "fBf" = (
 /obj/machinery/flasher/portable,
-/obj/machinery/light/small/directional/east,
 /obj/item/radio/intercom/directional/east,
 /obj/machinery/camera/directional/east{
 	c_tag = "Security - Secure Gear Storage"
@@ -21459,6 +21455,14 @@
 /obj/effect/turf_decal/tile/purple,
 /turf/open/floor/iron/white,
 /area/station/science/misc_lab)
+"gGT" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/structure/cable,
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/iron,
+/area/station/security/range)
 "gGX" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/clothing/costume,
@@ -25626,12 +25630,8 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "ikq" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
 /obj/structure/cable,
-/obj/machinery/light/small/directional/east,
-/turf/open/floor/iron,
+/turf/open/misc/dirt,
 /area/station/security/range)
 "iky" = (
 /obj/machinery/firealarm/directional/east,
@@ -26160,6 +26160,13 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron,
 /area/station/engineering/storage/mech)
+"itT" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/iron,
+/area/station/security/range)
 "iud" = (
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
@@ -26808,6 +26815,12 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/main)
+"iHf" = (
+/obj/item/target/syndicate,
+/obj/structure/training_machine,
+/obj/effect/spawner/random/engineering/tracking_beacon,
+/turf/open/floor/iron,
+/area/station/security/range)
 "iHk" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/plating,
@@ -27778,7 +27791,7 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/mob/living/simple_animal/hostile/lizard/wags_his_tail,
+/mob/living/simple_animal/slug/glubby,
 /turf/open/floor/plating,
 /area/station/service/janitor)
 "iZa" = (
@@ -27893,22 +27906,13 @@
 /turf/open/floor/iron/white,
 /area/station/science/lobby)
 "jaT" = (
-/obj/item/target,
-/obj/item/target,
-/obj/item/target/alien,
-/obj/item/target/alien,
-/obj/item/target/clown,
-/obj/item/target/clown,
-/obj/item/target/syndicate,
-/obj/item/target/syndicate,
-/obj/structure/closet/crate/secure{
-	desc = "A secure crate containing various materials for building a customised test-site.";
-	name = "Firing Range Gear Crate";
-	req_access_txt = "1"
+/obj/structure/table,
+/obj/machinery/recharger{
+	pixel_y = 4
 	},
-/obj/machinery/airalarm/directional/north,
+/obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/range)
@@ -28317,8 +28321,7 @@
 /turf/open/floor/iron/dark,
 /area/station/science/research)
 "jkv" = (
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/iron,
+/turf/open/floor/iron/dark,
 /area/station/security/range)
 "jkE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -28455,15 +28458,16 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/starboard/fore)
 "jnd" = (
-/obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/table,
-/obj/machinery/recharger{
-	pixel_y = 4
+/obj/item/clothing/glasses/sunglasses{
+	pixel_x = 3;
+	pixel_y = -3
 	},
-/obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
-	dir = 4
+/obj/item/clothing/ears/earmuffs{
+	pixel_y = 7
 	},
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
+/obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "jng" = (
@@ -29169,6 +29173,13 @@
 /obj/structure/table,
 /turf/open/floor/iron,
 /area/station/security/prison)
+"jzp" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 9
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/security/range)
 "jzH" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -33184,15 +33195,13 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "kZS" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
+/obj/machinery/door/airlock/security/glass{
+	id_tag = "outerbrig";
+	name = "Pig Pen";
+	req_access_txt = "63"
 	},
-/obj/machinery/door/window/left/directional/west{
-	base_state = "right";
-	icon_state = "right";
-	name = "Shooting Range"
-	},
-/turf/open/floor/iron,
+/obj/structure/cable,
+/turf/open/floor/iron/dark,
 /area/station/security/range)
 "kZT" = (
 /obj/machinery/door/poddoor/incinerator_atmos_main,
@@ -39975,17 +39984,10 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "nnO" = (
-/obj/structure/table,
-/obj/item/clothing/glasses/sunglasses{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/clothing/ears/earmuffs{
-	pixel_y = 7
-	},
+/obj/machinery/power/apc/auto_name/directional/east,
+/obj/structure/cable,
+/obj/machinery/airalarm/directional/south,
 /obj/machinery/light/small/directional/south,
-/obj/machinery/firealarm/directional/south,
-/obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "nnR" = (
@@ -42702,11 +42704,9 @@
 /area/station/service/chapel/funeral)
 "opc" = (
 /obj/effect/turf_decal/stripes/line{
-	dir = 10
-	},
-/obj/structure/window/reinforced{
 	dir = 8
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/security/range)
 "opd" = (
@@ -46694,9 +46694,6 @@
 /area/station/engineering/engine_smes)
 "pNN" = (
 /obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "pNO" = (
@@ -48707,6 +48704,12 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
+"qyl" = (
+/obj/effect/turf_decal/tile/red/anticorner/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/security/office)
 "qyo" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/public/glass{
@@ -51407,7 +51410,6 @@
 /obj/item/clothing/head/beret/sec/navyofficer,
 /obj/item/clothing/head/beret/sec/navywarden,
 /obj/item/clothing/head/hos/beret/navyhos,
-/obj/structure/extinguisher_cabinet/directional/east,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron/dark,
@@ -51574,6 +51576,13 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/freezer,
 /area/station/security/prison)
+"rFW" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 6
+	},
+/obj/structure/window/reinforced,
+/turf/open/floor/iron,
+/area/station/security/range)
 "rGa" = (
 /obj/machinery/light/directional/north,
 /obj/machinery/door/window/right/directional/north{
@@ -51755,11 +51764,15 @@
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "rJg" = (
-/obj/machinery/light/directional/north,
-/obj/machinery/airalarm/directional/north,
-/obj/effect/turf_decal/tile/red/half/contrasted,
+/obj/effect/turf_decal/stripes/line,
+/obj/machinery/door/window/left/directional/west{
+	base_state = "right";
+	icon_state = "right";
+	name = "Shooting Range";
+	dir = 2
+	},
 /turf/open/floor/iron,
-/area/station/security/office)
+/area/station/security/range)
 "rJm" = (
 /obj/structure/cable,
 /obj/structure/table/glass,
@@ -53769,16 +53782,24 @@
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
 "sxT" = (
-/obj/machinery/camera/directional/west{
-	c_tag = "Firing Range"
+/obj/item/target,
+/obj/item/target,
+/obj/item/target/alien,
+/obj/item/target/alien,
+/obj/item/target/clown,
+/obj/item/target/clown,
+/obj/item/target/syndicate,
+/obj/item/target/syndicate,
+/obj/structure/closet/crate/secure{
+	desc = "A secure crate containing various materials for building a customised test-site.";
+	name = "Firing Range Gear Crate";
+	req_access_txt = "1"
 	},
-/obj/machinery/light_switch/directional/west{
-	pixel_y = -12
+/obj/machinery/airalarm/directional/north,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 1
 	},
 /obj/structure/extinguisher_cabinet/directional/west,
-/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
-	dir = 8
-	},
 /turf/open/floor/iron/dark,
 /area/station/security/range)
 "sxU" = (
@@ -56611,13 +56632,8 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "tAd" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
 /area/station/security/range)
 "tAh" = (
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
@@ -60534,13 +60550,8 @@
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
 "vgj" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
+/obj/machinery/light/small/directional/north,
+/turf/open/misc/dirt,
 /area/station/security/range)
 "vgq" = (
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide,
@@ -61473,10 +61484,9 @@
 /turf/open/floor/iron/dark,
 /area/station/science/mixing/launch)
 "vAx" = (
-/obj/item/target/syndicate,
-/obj/structure/training_machine,
-/obj/effect/spawner/random/engineering/tracking_beacon,
-/turf/open/floor/iron,
+/mob/living/simple_animal/hostile/retaliate/hog/security,
+/obj/structure/cable,
+/turf/open/misc/dirt,
 /area/station/security/range)
 "vAB" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -67848,6 +67858,11 @@
 /obj/machinery/light_switch/directional/south,
 /turf/open/floor/iron/white,
 /area/station/security/prison)
+"xSg" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/item/food/donut,
+/turf/open/floor/plating,
+/area/station/security/range)
 "xSi" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -68501,6 +68516,16 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/locker)
+"yeW" = (
+/obj/structure/extinguisher_cabinet/directional/east,
+/obj/item/kirbyplants{
+	icon_state = "plant-11";
+	name = "tactical plant"
+	},
+/obj/structure/closet,
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/iron/dark,
+/area/station/security/lockers)
 "yeX" = (
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -97316,7 +97341,6 @@ aaa
 aaa
 aaa
 aaa
-aav
 aaa
 aaa
 aaa
@@ -97324,7 +97348,8 @@ aaa
 aaa
 aaa
 aaa
-aav
+aaa
+aaa
 aaa
 aaa
 aaa
@@ -97590,7 +97615,7 @@ aaa
 rrt
 lMJ
 pVd
-pVd
+yeW
 tAC
 fjK
 fBf
@@ -97840,13 +97865,13 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+aUn
+lMJ
+wSI
+wSI
+wSI
+wSI
+wSI
 pVd
 ped
 ped
@@ -98097,16 +98122,16 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 rrt
-lMJ
-uKA
+lAu
+dWd
+jzp
+opc
+gGT
+opc
+ebB
 jaT
-vgj
+lAI
 sxT
 dWd
 gBo
@@ -98354,16 +98379,16 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 rrt
 lAu
-mXe
-lAI
-bAr
+uKA
+fPj
+iHf
+ahc
+ahc
+rJg
+jkv
+jkv
 pNN
 qgq
 fKe
@@ -98611,16 +98636,16 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 rrt
-lMJ
-uKA
+lAu
+dWd
+evO
+dnL
+itT
+dnL
+rFW
 jnd
-tAd
+pNN
 nnO
 wSI
 qwb
@@ -98868,18 +98893,18 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+aUn
+lMJ
 uKA
-fvc
-kZS
-opc
 wSI
+wSI
+wSI
+wSI
+wSI
+wSI
+kZS
+wSI
+uKA
 jLR
 ebb
 cpe
@@ -99132,11 +99157,11 @@ aaa
 aaa
 aaa
 aaa
-uKA
-fPj
-ahc
-jkv
 wSI
+tAd
+fcw
+jkv
+uKA
 jLR
 ebb
 kyN
@@ -99371,7 +99396,7 @@ aaa
 aaa
 aaa
 aaa
-aav
+aaa
 aaa
 aaa
 aaa
@@ -99389,11 +99414,11 @@ aaa
 aaa
 rrt
 lMJ
-uKA
-fPj
-ahc
-jkv
 wSI
+vgj
+ikq
+xSg
+mXe
 jLR
 ebb
 lyV
@@ -99636,7 +99661,7 @@ aaa
 aaa
 aaa
 aaa
-aav
+aaa
 aaa
 aaa
 aaa
@@ -99646,11 +99671,11 @@ aaa
 aaa
 rrt
 lAu
-dWd
-fPj
+mXe
+bAr
 vAx
-jkv
-wSI
+bAr
+mXe
 jLR
 ebb
 viX
@@ -99902,14 +99927,14 @@ aaa
 aaa
 aaa
 rrt
-lMJ
-uKA
-evO
+lAu
+mXe
 ikq
-fcw
-wSI
-qwb
-rJg
+ikq
+ikq
+mXe
+qyl
+ebb
 cpe
 cpe
 cpe
@@ -100158,13 +100183,13 @@ aaa
 aaa
 aaa
 aaa
-aaa
-vbm
-uKA
+rrt
+lMJ
+wSI
+vgj
+bAr
+bAr
 dWd
-uKA
-dWd
-uKA
 vqB
 vlx
 vIZ
@@ -100417,11 +100442,11 @@ aaa
 aaa
 aaa
 aaa
-lMJ
-lAu
-lAu
-lAu
-yfo
+wSI
+fvc
+bAr
+bAr
+uKA
 ftE
 iKy
 qCx
@@ -101703,7 +101728,7 @@ aaa
 rrt
 lAu
 arf
-dnL
+sdc
 sdc
 niJ
 bvp

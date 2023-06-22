@@ -451,6 +451,7 @@ SUBSYSTEM_DEF(zcopy)
 		OO.plane = ZMIMIC_MAX_PLANE - OO.depth
 
 		OO.opacity = FALSE
+		OO.glide_size = initial(OO.glide_size)
 		OO.queued = 0
 
 		// If an atom has explicit plane sets on its overlays/underlays, we need to replace the appearance so they can be mangled to work with our planing.

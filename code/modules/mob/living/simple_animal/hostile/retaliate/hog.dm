@@ -22,28 +22,21 @@
 	obj_damage = 80 //do not underestimate the destructive ability of an angry hog
 	environment_smash = ENVIRONMENT_SMASH_STRUCTURES
 	attack_vis_effect = ATTACK_EFFECT_SMASH
-	ranged = TRUE
 	ranged_cooldown_time = 10 SECONDS
 	speak_emote = list("oinks")
 	var/territorial = TRUE
-	var/datum/action/cooldown/mob_cooldown/charge/basic_charge/charge
+	var/rename = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/hog/Initialize(mapload)
 	. = ..()
-	charge = new /datum/action/cooldown/mob_cooldown/charge/basic_charge()
-	charge.Grant(src)
 	if(territorial)
 		AddComponent(/datum/component/connect_range, src, list(COMSIG_ATOM_ENTERED = PROC_REF(checkEntered)), 1, FALSE)
-	if(name == initial(name)) //don't rename renamed hogs
+	if(rename)
 		switch (gender)
 			if(MALE)
 				name = "feral boar"
 			if(FEMALE)
 				name = "feral sow"
-
-/mob/living/simple_animal/hostile/retaliate/hog/Destroy()
-	QDEL_NULL(charge)
-	return ..()
 
 /mob/living/simple_animal/hostile/retaliate/hog/Aggro()
 	..()
@@ -56,19 +49,18 @@
 		return
 	Retaliate()
 
-/mob/living/simple_animal/hostile/retaliate/hog/OpenFire()
-	if(client)
-		return
-	charge.Trigger(target = target)
-
 /mob/living/simple_animal/hostile/retaliate/hog/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	if(prob(15))
 		playsound(src, 'sound/creatures/hog/hoggrunt.ogg', 50, TRUE)
 
 /mob/living/simple_animal/hostile/retaliate/hog/proc/hogAlert() //YOU HAVE ALERTED THE HOG
-	var/image/alert_overlay = image('icons/mob/animal.dmi', src, "hog_alert_overlay", layer+1)
-	flick_overlay_view(alert_overlay, src, 1.5 SECONDS)
+	var/obj/effect/overlay/vis/overlay = new()
+	overlay.icon = 'icons/mob/animal.dmi'
+	overlay.icon_state = "hog_alert_overlay"
+	overlay.layer += 1
+	vis_contents += overlay
+	QDEL_IN(overlay, 1.5 SECONDS)
 	playsound(src, 'sound/creatures/hog/hogscream.ogg', 50, TRUE)
 
 /mob/living/simple_animal/hostile/retaliate/hog/security
@@ -78,3 +70,4 @@
 	icon_living = "hog_officer"
 	faction = list("neutral")
 	territorial = FALSE
+	rename = FALSE

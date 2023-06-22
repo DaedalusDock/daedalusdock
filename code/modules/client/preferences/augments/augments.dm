@@ -3,14 +3,13 @@
 	savefile_key = "augments"
 	priority = PREFERENCE_PRIORITY_AUGMENTS
 
-/datum/preference/blob/augments/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
-	var/datum/species/S = preferences.read_preference(/datum/preference/choiced/species)
-	S = new S()
+/datum/preference/blob/augments/apply_to_human(mob/living/carbon/human/target, value)
+	var/datum/species/S = target.dna.species
 
 	for(var/slot in value)
 		var/path = value[slot]
 		var/datum/augment_item/A = GLOB.augment_items[path]
-		A.apply_to_human(target, preferences, S)
+		A.apply_to_human(target, S)
 
 /datum/preference/blob/augments/create_default_value()
 	return list()

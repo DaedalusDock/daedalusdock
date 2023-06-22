@@ -29,7 +29,7 @@
 /datum/preference/blob/job_priority/create_default_value()
 	return list()
 
-/datum/preference/blob/job_priority/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/blob/job_priority/apply_to_human(mob/living/carbon/human/target, value)
 	return
 
 /datum/preference/blob/job_priority/deserialize(input, datum/preferences/preferences)

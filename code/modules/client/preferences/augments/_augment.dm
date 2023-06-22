@@ -18,7 +18,7 @@ GLOBAL_LIST_EMPTY(augment_slot_to_items)
 		var/obj/O = path
 		description = initial(O.desc)
 
-/datum/augment_item/proc/apply_to_human(mob/living/carbon/human/H, datum/preferences/prefs, datum/species/S)
+/datum/augment_item/proc/apply_to_human(mob/living/carbon/human/H, datum/species/S)
 	return
 
 /datum/augment_item/proc/can_apply_to_species(datum/species/S)

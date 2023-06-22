@@ -229,7 +229,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /// Apply this preference onto the given human.
 /// Must be overriden by subtypes.
 /// Called when the savefile_identifier == PREFERENCE_CHARACTER.
-/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
@@ -618,5 +618,5 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/blob/is_valid(value)
 	return islist(value)
 
-/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value)
 	return

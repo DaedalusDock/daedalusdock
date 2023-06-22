@@ -1,7 +1,7 @@
 /datum/augment_item/bodypart
 	category = AUGMENT_CATEGORY_BODYPARTS
 
-/datum/augment_item/bodypart/apply_to_human(mob/living/carbon/human/H, datum/preferences/prefs, datum/species/S)
+/datum/augment_item/bodypart/apply_to_human(mob/living/carbon/human/H, datum/species/S)
 	var/newpath = S.robotic_bodyparts[initial(path:body_zone)]
 
 	var/obj/item/bodypart/BP = new newpath()

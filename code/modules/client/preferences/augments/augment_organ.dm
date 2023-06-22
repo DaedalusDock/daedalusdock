@@ -1,7 +1,7 @@
 /datum/augment_item/organ
 	category = AUGMENT_CATEGORY_ORGANS
 
-/datum/augment_item/organ/apply_to_human(mob/living/carbon/human/H, datum/preferences/prefs)
+/datum/augment_item/organ/apply_to_human(mob/living/carbon/human/H)
 	if(istype(H, /mob/living/carbon/human/dummy))
 		return
 	var/obj/item/organ/new_organ = new path()

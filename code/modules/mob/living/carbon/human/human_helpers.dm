@@ -145,7 +145,7 @@
 			continue
 
 		if (preference.is_randomizable())
-			preference.apply_to_human(src, preference.create_random_value(preferences), preferences)
+			preference.apply_to_human(src, preference.create_random_value(preferences))
 
 /mob/living/carbon/human/can_smell(intensity)
 	var/turf/T = get_turf(src)

@@ -37,7 +37,7 @@
 /datum/preference/choiced/tail_vox/init_possible_values()
 	return GLOB.tails_list_vox
 
-/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_vox"] = value
 
 #undef VOX_BODY_COLOR

@@ -520,7 +520,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 			continue
 		if(preference.requires_accessible && !preference.is_accessible(src))
 			continue
-		preference.apply_to_human(character, read_preference(preference.type), src)
+		preference.apply_to_human(character, read_preference(preference.type))
 
 	character.dna.real_name = character.real_name
 

@@ -26,7 +26,6 @@
 /datum/unit_test/codex_links
 
 /datum/unit_test/codex_links/Run()
-	var/list/failures = list()
 	for(var/datum/codex_entry/entry in SScodex.all_entries)
 		var/entry_body = jointext(entry.get_codex_body(), null)
 		while(SScodex.linkRegex.Find(entry_body))

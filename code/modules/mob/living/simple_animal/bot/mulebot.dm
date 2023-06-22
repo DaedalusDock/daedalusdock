@@ -587,7 +587,7 @@
 // calculates a path to the current destination
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/mulebot/calc_path(turf/avoid = null)
-	path = get_path_to(src, target, 250, id=access_card, exclude=avoid)
+	path = get_path_to(src, target, max_distance=250, id=access_card, exclude=avoid)
 
 // sets the current destination
 // signals all beacons matching the delivery code
@@ -744,8 +744,11 @@
 	new /obj/effect/decal/cleanable/oil(loc)
 	return ..()
 
-/mob/living/simple_animal/bot/mulebot/resist()
-	..()
+/mob/living/simple_animal/bot/mulebot/remove_air(amount) //To prevent riders suffocating
+	return loc ? loc.remove_air(amount) : null
+
+/mob/living/simple_animal/bot/mulebot/execute_resist()
+	. = ..()
 	if(load)
 		unload()
 

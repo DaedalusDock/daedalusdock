@@ -117,7 +117,7 @@
 			owner.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 			owner.say("AAAAH!!", forced = "phobia")
 			if(reason)
-				owner.pointed(reason)
+				owner._pointed(reason)
 		if(3)
 			to_chat(owner, span_warning("You shut your eyes in terror!"))
 			owner.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)

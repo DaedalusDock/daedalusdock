@@ -455,7 +455,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	var/sleep_time = 2 MINUTES
 	var/time_to_cuff = 3 SECONDS
 
-/obj/item/melee/baton/abductor/ComponentInitialize()
+/obj/item/melee/baton/abductor/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
@@ -648,7 +648,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	. = ..()
 	make_syndie()
 
-/obj/item/radio/headset/abductor/ComponentInitialize()
+/obj/item/radio/headset/abductor/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -794,8 +794,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	framestack = /obj/item/stack/sheet/mineral/abductor
 	buildstackamount = 1
 	framestackamount = 1
-	smoothing_groups = list(SMOOTH_GROUP_ABDUCTOR_TABLES)
-	canSmoothWith = list(SMOOTH_GROUP_ABDUCTOR_TABLES)
+	smoothing_groups = SMOOTH_GROUP_ABDUCTOR_TABLES
+	canSmoothWith = SMOOTH_GROUP_ABDUCTOR_TABLES
 	frame = /obj/structure/table_frame/abductor
 	custom_materials = list(/datum/material/silver = 2000)
 

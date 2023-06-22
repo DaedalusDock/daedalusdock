@@ -235,7 +235,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	lit = TRUE
 
-	if(!(initialized))
+	if(!initialized)
 		update_icon()
 		return
 

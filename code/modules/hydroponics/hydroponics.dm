@@ -154,7 +154,7 @@
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "hydrotray3"
 
-/obj/machinery/hydroponics/constructable/ComponentInitialize()
+/obj/machinery/hydroponics/constructable/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/usb_port, list(/obj/item/circuit_component/hydroponics))
 

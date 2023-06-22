@@ -1,6 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
 	. = ..()
-	create_reagents(1000, REAGENT_HOLDER_ALIVE)
+	create_carbon_reagents(1000, REAGENT_HOLDER_ALIVE)
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	register_context()
 
@@ -27,6 +27,12 @@
 	remove_from_all_data_huds()
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
+
+///Humans need to init these early for species purposes
+/mob/living/carbon/proc/create_carbon_reagents()
+	if(reagents)
+		return
+	create_reagents(1000, REAGENT_HOLDER_ALIVE)
 
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()
@@ -937,11 +943,12 @@
 		to_chat(user, span_notice("You retrieve some of [src]\'s internal organs!"))
 	remove_all_embedded_objects()
 
-/mob/living/carbon/proc/create_bodyparts()
+/mob/living/carbon/proc/create_bodyparts(list/overrides)
 	var/l_arm_index_next = -1
 	var/r_arm_index_next = 0
-	for(var/bodypart_path in bodyparts)
-		var/obj/item/bodypart/bodypart_instance = new bodypart_path()
+	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts)
+		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
+		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
 		bodypart_instance.set_owner(src)
 		bodyparts.Remove(bodypart_path)
 		add_bodypart(bodypart_instance)
@@ -954,7 +961,6 @@
 				r_arm_index_next += 2
 				bodypart_instance.held_index = r_arm_index_next //2, 4, 6, 8...
 				hand_bodyparts += bodypart_instance
-
 
 ///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)

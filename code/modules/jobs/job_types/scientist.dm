@@ -35,7 +35,6 @@
 
 	liver_traits = list(TRAIT_BALLMER_SCIENTIST)
 
-	bounty_types = CIV_JOB_SCI
 	departments_list = list(
 		/datum/job_department/science,
 		)

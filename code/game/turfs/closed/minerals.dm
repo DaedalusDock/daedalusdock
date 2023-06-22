@@ -7,14 +7,20 @@
 	icon = 'icons/turf/mining.dmi'
 	icon_state = "rock"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_MINERAL_WALLS
+	canSmoothWith = SMOOTH_GROUP_MINERAL_WALLS
 	baseturfs = /turf/open/misc/asteroid/airless
 	initial_gas = AIRLESS_ATMOS
 	opacity = TRUE
 	density = TRUE
 	base_icon_state = "smoothrocks"
 	temperature = TCMB
+	base_pixel_x = -4
+	base_pixel_y = -4
+	/* Here as a note: these are set in Initialize for the purposes of the map viewer
+	pixel_y = -4
+	pixel_x = -4
+	*/
 	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
 	var/turf/open/floor/plating/turf_type = /turf/open/misc/asteroid/airless
 	var/obj/item/stack/ore/mineralType = null
@@ -28,14 +34,81 @@
 	///How long it takes to mine this turf without tools, if it's weak.
 	var/hand_mine_speed = 15 SECONDS
 
+//We don't call parent for perf reasons. Instead, we copy paste everything. BYOND!
 /turf/closed/mineral/Initialize(mapload)
-	. = ..()
-	var/matrix/M = new
-	M.Translate(-4, -4)
-	transform = M
+	SHOULD_CALL_PARENT(FALSE)
+
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+
+	initialized = TRUE
+
+	if(mapload && permit_ao)
+		queue_ao()
+
+	// by default, vis_contents is inherited from the turf that was here before
+	if(length(vis_contents))
+		vis_contents.len = 0
+
+	assemble_baseturfs()
+
+	levelupdate()
+
+	SETUP_SMOOTHING()
+
+	QUEUE_SMOOTH(src)
+
+	// visibilityChanged() will never hit any path with side effects during mapload
+	if (!mapload)
+		visibilityChanged()
+
+	for(var/atom/movable/content as anything in src)
+		Entered(content, null)
+
+	var/area/our_area = loc
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
+
+	if (light_power && light_outer_range)
+		update_light()
+
+	if (opacity)
+		directional_opacity = ALL_CARDINALS
+
+	// apply materials properly from the default custom_materials value
+	if (!length(custom_materials))
+		set_custom_materials(custom_materials)
+
+	if(uses_integrity)
+		atom_integrity = max_integrity
+
+	/// UNIQUE MINERAL BEHAVIOR
 	icon = smooth_icon
+	pixel_x = -4
+	pixel_y = -4
 	var/static/list/behaviors = list(TOOL_MINING)
-	AddElement(/datum/element/bump_click, tool_behaviours = behaviors, allow_unarmed = TRUE)
+	///END MINERAL BEHAVIOR
+
+	return INITIALIZE_HINT_NORMAL
+
+// Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
+/turf/closed/mineral/Bumped(atom/movable/bumped_atom)
+	. = ..()
+	if(!isliving(bumped_atom))
+		return
+
+	var/mob/living/bumping = bumped_atom
+	if(!ISADVANCEDTOOLUSER(bumping)) // Unadvanced tool users can't mine anyway (this is a lie). This just prevents message spam from attackby()
+		return
+
+	var/obj/item/held_item = bumping.get_active_held_item()
+	// !held_item exists to be nice to snow. the other bit is for pickaxes obviously
+	if(!held_item)
+		INVOKE_ASYNC(bumping, TYPE_PROC_REF(/mob, ClickOn), src)
+	else if(held_item.tool_behaviour == TOOL_MINING)
+		attackby(held_item, bumping)
+
+	return INITIALIZE_HINT_NORMAL
 
 /turf/closed/mineral/proc/Spread_Vein()
 	var/spreadChance = initial(mineralType.spreadChance)
@@ -54,14 +127,6 @@
 		var/obj/item/stack/ore/the_ore = ore_type
 		scan_state = initial(the_ore.scan_state) // I SAID. SWITCH. TO. IT.
 		mineralType = ore_type // Everything else assumes that this is typed correctly so don't set it to non-ores thanks.
-
-/turf/closed/mineral/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	if(turf_type)
-		underlay_appearance.icon = initial(turf_type.icon)
-		underlay_appearance.icon_state = initial(turf_type.icon_state)
-		return TRUE
-	return ..()
-
 
 /turf/closed/mineral/attackby(obj/item/I, mob/user, params)
 	if (!ISADVANCEDTOOLUSER(user))
@@ -262,7 +327,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -323,7 +388,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -445,7 +510,7 @@
 	icon_state = "rock2"
 	base_icon_state = "rock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/ashplanet/wateryrock
 	initial_gas = OPENTURF_LOW_PRESSURE
 	turf_type = /turf/open/misc/ashplanet/rocky
@@ -458,7 +523,7 @@
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/asteroid/snow
 	temperature = 180
 	turf_type = /turf/open/misc/asteroid/snow

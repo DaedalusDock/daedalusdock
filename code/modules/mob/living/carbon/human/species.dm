@@ -225,6 +225,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///Was the species changed from its original type at the start of the round?
 	var/roundstart_changed = FALSE
 
+	var/properly_gained = FALSE
+
 ///////////
 // PROCS //
 ///////////
@@ -428,7 +430,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
-	replace_body(C, src)
+	if(old_species.type != type)
+		replace_body(C, src)
+
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
 
 	if(exotic_bloodtype && C.dna.blood_type != exotic_bloodtype)
@@ -483,6 +487,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, multiplicative_slowdown=speedmod)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
+
+	properly_gained = TRUE
 
 /**
  * Proc called when a carbon is no longer this species.
@@ -2117,3 +2123,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			new_part.replace_limb(target, TRUE)
 			new_part.update_limb(is_creating = TRUE)
 			qdel(old_part)
+
+/// Creates body parts for the target completely from scratch based on the species
+/datum/species/proc/create_fresh_body(mob/living/carbon/target)
+	target.create_bodyparts(bodypart_overrides)

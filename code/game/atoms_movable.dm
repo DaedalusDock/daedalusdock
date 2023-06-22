@@ -92,20 +92,51 @@
 	/// The degree of pressure protection that mobs in list/contents have from the external environment, between 0 and 1
 	var/contents_pressure_protection = 0
 
+	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
+	var/list/do_afters
+
+/mutable_appearance/emissive_blocker
+
+/mutable_appearance/emissive_blocker/New()
+	. = ..()
+	// Need to do this here because it's overriden by the parent call
+	plane = EMISSIVE_PLANE
+	color = EM_BLOCK_COLOR
+	appearance_flags = EMISSIVE_APPEARANCE_FLAGS
+
 /atom/movable/Initialize(mapload)
 	. = ..()
 	switch(blocks_emissive)
 		if(EMISSIVE_BLOCK_GENERIC)
-			var/mutable_appearance/gen_emissive_blocker = mutable_appearance(icon, icon_state, plane = EMISSIVE_PLANE, alpha = src.alpha)
-			gen_emissive_blocker.color = GLOB.em_block_color
-			gen_emissive_blocker.dir = dir
-			gen_emissive_blocker.appearance_flags |= appearance_flags
-			add_overlay(list(gen_emissive_blocker))
-
+			var/static/mutable_appearance/emissive_blocker/blocker = new()
+			blocker.icon = icon
+			blocker.icon_state = icon_state
+			blocker.dir = dir
+			blocker.appearance_flags |= appearance_flags
+			// Ok so this is really cursed, but I want to set with this blocker cheaply while
+			// Still allowing it to be removed from the overlays list later
+			// So I'm gonna flatten it, then insert the flattened overlay into overlays AND the managed overlays list, directly
+			// I'm sorry
+			var/mutable_appearance/flat = blocker.appearance
+			overlays += flat
+			if(managed_overlays)
+				if(islist(managed_overlays))
+					managed_overlays += flat
+				else
+					managed_overlays = list(managed_overlays, flat)
+			else
+				managed_overlays = flat
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
 			em_block = new(src, render_target)
-			add_overlay(list(em_block))
+			overlays += em_block
+			if(managed_overlays)
+				if(islist(managed_overlays))
+					managed_overlays += em_block
+				else
+					managed_overlays = list(managed_overlays, em_block)
+			else
+				managed_overlays = em_block
 
 	if(opacity)
 		AddElement(/datum/element/light_blocking)
@@ -114,7 +145,6 @@
 			AddComponent(/datum/component/overlay_lighting)
 		if(MOVABLE_LIGHT_DIRECTIONAL)
 			AddComponent(/datum/component/overlay_lighting, is_directional = TRUE)
-
 
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
@@ -152,9 +182,9 @@
 		move_packet = null
 
 	if(spatial_grid_key)
-		SSspatial_grid.force_remove_from_cell(src)
+		SSspatial_grid.force_remove_from_grid(src)
 
-	LAZYCLEARLIST(client_mobs_in_contents)
+	LAZYNULL(client_mobs_in_contents)
 
 	. = ..()
 
@@ -166,7 +196,7 @@
 	//This absolutely must be after moveToNullspace()
 	//We rely on Entered and Exited to manage this list, and the copy of this list that is on any /atom/movable "Containers"
 	//If we clear this before the nullspace move, a ref to this object will be hung in any of its movable containers
-	LAZYCLEARLIST(important_recursive_contents)
+	LAZYNULL(important_recursive_contents)
 
 
 	vis_locs = null //clears this atom out of all viscontents
@@ -836,7 +866,6 @@
 				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
 					pulling.move_from_pull(src, target_turf, glide_size)
 			check_pulling()
-
 
 	//glide_size strangely enough can change mid movement animation and update correctly while the animation is playing
 	//This means that if you don't override it late like this, it will just be set back by the movement update that's called when you move turfs.

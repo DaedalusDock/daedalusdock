@@ -151,12 +151,14 @@
 	var/list/canSmoothWith = null
 	///Reference to atom being orbited
 	var/atom/orbit_target
-	///AI controller that controls this atom. type on init, then turned into an instance during runtime
+	///AI controller that controls this atom. type on init, then turned into an instance during runtime.
+	///Note: If you are for some reason giving this to a non-mob, it needs to create it's own in Initialize()
 	var/datum/ai_controller/ai_controller
 
 	///any atom that uses integrity and can be damaged must set this to true, otherwise the integrity procs will throw an error
 	var/uses_integrity = FALSE
 
+	///Atom armor. Use returnArmor()
 	var/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
@@ -168,6 +170,8 @@
 
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/datum/storage/atom_storage
+	/// How this atom should react to having its astar blocking checked
+	var/can_astar_pass = CANASTARPASS_DENSITY
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -177,15 +181,11 @@
  * if the preloader is being used and then call [InitAtom][/datum/controller/subsystem/atoms/proc/InitAtom] of which the ultimate
  * result is that the Intialize proc is called.
  *
- * We also generate a tag here if the DF_USE_TAG flag is set on the atom
  */
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
-	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
+	if(use_preloader && (type == global._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)
-
-	if(datum_flags & DF_USE_TAG)
-		GenerateTag()
 
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)
@@ -238,42 +238,24 @@
 
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
+
 	initialized = TRUE
 
-	if(greyscale_config && greyscale_colors)
+	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
 		update_greyscale()
 
 	//atom color stuff
-	if(color)
+	if(!isnull(color))
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
-	if (length(smoothing_groups))
-		#ifdef UNIT_TESTS
-		assert_sorted(smoothing_groups, "[type].smoothing_groups")
-		#endif
-
-		SET_BITFLAG_LIST(smoothing_groups)
-
-	if (length(canSmoothWith))
-		#ifdef UNIT_TESTS
-		assert_sorted(canSmoothWith, "[type].canSmoothWith")
-		#endif
-
-		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
-			smoothing_flags |= SMOOTH_OBJ
-
-		SET_BITFLAG_LIST(canSmoothWith)
-
 	if(uses_integrity)
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (isnull(armor))
-			armor = getArmor()
-		else if (!istype(armor, /datum/armor))
-			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")
+		#ifdef UNIT_TESTS
+		if (!(islist(armor) || isnull(armor) || istype(armor)))
+			stack_trace("Invalid armor found on atom of type [type] during /atom/Initialize()! Value: [armor]")
+		#endif
 
 		atom_integrity = max_integrity
 
@@ -281,10 +263,8 @@
 	// This MUST come after atom_integrity is set above, as if old materials get removed,
 	// atom_integrity is checked against max_integrity and can BREAK the atom.
 	// The integrity to max_integrity ratio is still preserved.
-	set_custom_materials(custom_materials)
-
-	ComponentInitialize()
-	InitializeAIController()
+	if(length(custom_materials))
+		set_custom_materials(custom_materials)
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -301,10 +281,6 @@
  */
 /atom/proc/LateInitialize()
 	set waitfor = FALSE
-
-/// Put your [AddComponent] calls here
-/atom/proc/ComponentInitialize()
-	return
 
 /**
  * Top level of the destroy chain for most atoms
@@ -839,8 +815,8 @@
 /// Child procs should call parent last so the update happens after all changes.
 /atom/proc/set_greyscale(list/colors, new_config)
 	SHOULD_CALL_PARENT(TRUE)
-	if(istype(colors))
-		colors = colors.Join("")
+	if(islist(colors))
+		colors = jointext(colors, "")
 	if(!isnull(colors) && greyscale_colors != colors) // If you want to disable greyscale stuff then give a blank string
 		greyscale_colors = colors
 
@@ -1162,8 +1138,17 @@
 
 		color = checked_color
 		return
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
+			color = checked_color
+			return
+
+		color = checked_color
+		return
 
 	color = null
+
 
 /**
  * Wash this atom
@@ -1600,10 +1585,6 @@
 
 /// Called on an object when a tool with analyzer capabilities is used to right click an object
 /atom/proc/analyzer_act_secondary(mob/living/user, obj/item/tool)
-	return
-
-///Generate a tag for this atom
-/atom/proc/GenerateTag()
 	return
 
 ///Connect this atom to a shuttle
@@ -2087,16 +2068,6 @@
 	return ..()
 
 /**
-* Instantiates the AI controller of this atom. Override this if you want to assign variables first.
-*
-* This will work fine without manually passing arguments.
-
-+*/
-/atom/proc/InitializeAIController()
-	if(ispath(ai_controller))
-		ai_controller = new ai_controller(src)
-
-/**
  * Point at an atom
  *
  * Intended to enable and standardise the pointing animation for all atoms
@@ -2226,8 +2197,12 @@
  * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
+ * * no_id: When true, doors with public access will count as impassible
+ *
+ * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
+ * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

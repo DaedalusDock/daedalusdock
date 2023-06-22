@@ -34,7 +34,7 @@
 	charge.Grant(src)
 	if(territorial)
 		AddComponent(/datum/component/connect_range, src, list(COMSIG_ATOM_ENTERED = PROC_REF(checkEntered)), 1, FALSE)
-	if(name == "feral hog") //don't rename renamed hogs
+	if(name == initial(name)) //don't rename renamed hogs
 		switch (gender)
 			if(MALE)
 				name = "feral boar"

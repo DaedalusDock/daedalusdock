@@ -141,6 +141,9 @@
 		to_chat(usr, span_warning("The limb grower is busy. Please wait for completion of previous operation."))
 		return
 
+	if(!(params["active_tab"] in categories))
+		return
+
 	switch(action)
 
 		if("empty_reagent")

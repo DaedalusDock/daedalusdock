@@ -158,8 +158,8 @@
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
 
-	///A list of all the cosmetic organs we've got stored to draw horns, wings and stuff with (special because we are actually in the limbs unlike normal organs :/ )
-	var/list/obj/item/organ/cosmetic_organs = list()
+	///A list of all the organs inside of us.
+	var/list/obj/item/organ/contained_organs = list()
 
 	/// Type of an attack from this limb does. Arms will do punches, Legs for kicks, and head for bites. (TO ADD: tactical chestbumps)
 	var/attack_type = BRUTE
@@ -206,6 +206,9 @@
 	if(length(wounds))
 		stack_trace("[type] qdeleted with [length(wounds)] uncleared wounds")
 		wounds.Cut()
+
+	QDEL_LIST(contained_organs)
+
 	if(owner)
 		drop_limb(TRUE)
 	return ..()
@@ -331,14 +334,13 @@
 		playsound(bodypart_turf, 'sound/misc/splort.ogg', 50, TRUE, -1)
 	seep_gauze(9999) // destroy any existing gauze if any exists
 
-	for(var/obj/item/organ/bodypart_organ in get_organs())
-		bodypart_organ.transfer_to_limb(src, null)
-
 	for(var/obj/item/item_in_bodypart in src)
-		if(istype(item_in_bodypart, /obj/item/organ))
+		if(isorgan(item_in_bodypart))
 			var/obj/item/organ/O = item_in_bodypart
 			if(O.organ_flags & ORGAN_UNREMOVABLE)
 				continue
+			else
+				remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
 
@@ -987,8 +989,10 @@
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_cosmetic_organs()
-	for(var/obj/item/organ/ext_organ as anything in cosmetic_organs)
-		ext_organ.inherit_color(force = TRUE)
+	for(var/obj/item/organ/O as anything in contained_organs)
+		if(!O.visual)
+			continue
+		O.inherit_color(force = TRUE)
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
 /obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)

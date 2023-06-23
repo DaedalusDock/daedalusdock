@@ -146,15 +146,8 @@
 					to_chat(phantom_owner, span_warning("You feel your [mutation] deactivating from the loss of your [body_zone]!"))
 					phantom_owner.dna.force_lose(mutation)
 
-		for(var/obj/item/organ/organ as anything in phantom_owner.organs) //internal organs inside the dismembered limb are dropped.
-			var/org_zone = check_zone(organ.zone)
-			if(org_zone != body_zone)
-				continue
-			organ.transfer_to_limb(src, null)
-
-	else
-		for(var/obj/item/organ/O as anything in cosmetic_organs)
-			O.remove_from_limb()
+	for(var/obj/item/organ/O as anything in contained_organs)
+		O.Remove(phantom_owner, special)
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
@@ -179,85 +172,56 @@
 	if(!QDELETED(src))
 		forceMove(drop_loc)
 
-///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
-/obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner, special)
-	if(owner)
-		Remove(owner, special)
-	else if(ownerlimb)
-		remove_from_limb(FALSE)
+///Adds the organ to a bodypart.
+/obj/item/bodypart/proc/add_organ(obj/item/organ/O)
+	O.ownerlimb = src
+	contained_organs |= O
+	if(O.visual)
+		if(owner && O.external_bodytypes)
+			synchronize_bodytypes(owner)
+		O.inherit_color()
 
-	if(bodypart_owner)
-		Insert(bodypart_owner, special)
-	else
-		add_to_limb(bodypart, TRUE)
+///Removes the organ from the limb.
+/obj/item/bodypart/proc/remove_organ(obj/item/organ/O)
+	contained_organs -= O
 
-///Adds the organ to a bodypart, used in transfer_to_limb()
-/obj/item/organ/proc/add_to_limb(obj/item/bodypart/bodypart, move)
-	ownerlimb = bodypart
-	if(visual)
-		ownerlimb.cosmetic_organs |= src
-		if(ownerlimb.owner && external_bodytypes)
-			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
-		inherit_color()
+	if(owner && O.visual && O.external_bodytypes)
+		synchronize_bodytypes(owner)
 
-	if(move)
-		forceMove(bodypart)
+	O.ownerlimb = null
 
-///Removes the organ from the limb, placing it into nullspace.
-/obj/item/organ/proc/remove_from_limb(move)
-	if(visual)
-		ownerlimb.cosmetic_organs -= src
-		if(ownerlimb.owner && external_bodytypes)
-			ownerlimb.synchronize_bodytypes(ownerlimb.owner)
-
-	ownerlimb = null
-
-	if(move)
-		moveToNullspace()
-
-/obj/item/organ/brain/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
+/obj/item/bodypart/head/add_organ(obj/item/organ/O)
 	. = ..()
-	head.brain = src
-	if(brainmob)
-		head.brainmob = brainmob
+	if(istype(O, /obj/item/organ/ears))
+		ears = O
+
+	else if(istype(O, /obj/item/organ/eyes))
+		eyes = O
+
+	else if(istype(O, /obj/item/organ/tongue))
+		tongue = O
+
+	else if(istype(O, /obj/item/organ/brain))
+		brain = O
+
+/obj/item/bodypart/head/remove_organ(obj/item/organ/O)
+	if(O == brain && brainmob)
+		var/obj/item/organ/brain/B = O
+		brainmob.container = null
+		B.brainmob = brainmob
 		brainmob = null
-		head.brainmob.forceMove(head)
-		head.brainmob.set_stat(DEAD)
+		brain = null
+		B.brainmob.forceMove(B)
 
-/obj/item/organ/brain/remove_from_limb(move)
-	if(istype(ownerlimb, /obj/item/bodypart/head))
-		var/obj/item/bodypart/head/head = ownerlimb
-		if(head.brainmob)
-			head.brainmob.container = null
-			brainmob = head.brainmob
-			head.brainmob = null
-			head.brain = null
-			head.brainmob.forceMove(src)
-	return ..()
+	else if(O == tongue)
+		tongue = null
 
-/obj/item/organ/eyes/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.eyes = src
-	..()
+	else if(O == eyes)
+		eyes = null
 
-/obj/item/organ/ears/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.ears = src
-	..()
+	else if(O == ears)
+		ears = null
 
-/obj/item/organ/tongue/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.tongue = src
-	..()
-
-/obj/item/organ/remove_from_limb(move)
-	if(istype(ownerlimb, /obj/item/bodypart/head))
-		var/obj/item/bodypart/head/head = ownerlimb
-		if(src == head.eyes)
-			head.eyes = null
-		/*else if(src == head.brain) //This is handled by the brain's override. This is here for clarity.
-			head.brain = null*/
-		else if(src == head.ears)
-			head.ears = null
-		else if(src == head.tongue)
-			head.tongue = null
 	return ..()
 
 /obj/item/bodypart/chest/drop_limb(special)
@@ -339,7 +303,14 @@
 			pill.forceMove(src)
 
 	name = "[owner.real_name]'s head"
-	return ..()
+
+	. = ..()
+
+	if(!special)
+		if(brain?.brainmob)
+			brainmob = brain.brainmob
+			brain.brainmob = null
+			brainmob.set_stat(DEAD)
 
 ///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails.
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special)
@@ -385,7 +356,7 @@
 				qdel(attach_surgery)
 				break
 
-	for(var/obj/item/organ/limb_organ in contents)
+	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
 
 	for(var/datum/wound/W as anything in wounds)
@@ -461,7 +432,9 @@
 		return
 	var/all_limb_flags
 	for(var/obj/item/bodypart/limb as anything in carbon_owner.bodyparts)
-		for(var/obj/item/organ/ext_organ as anything in limb.cosmetic_organs)
+		for(var/obj/item/organ/ext_organ as anything in limb.contained_organs)
+			if(!ext_organ.visual)
+				continue
 			all_limb_flags = all_limb_flags | ext_organ.external_bodytypes
 		all_limb_flags = all_limb_flags | limb.bodytype
 

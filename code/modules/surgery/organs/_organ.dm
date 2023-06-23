@@ -182,6 +182,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
 
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+
 	if(visual)
 		organ_owner.cosmetic_organs.Remove(src)
 		organ_owner.update_body_parts()

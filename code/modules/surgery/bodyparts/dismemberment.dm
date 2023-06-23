@@ -148,6 +148,7 @@
 
 	for(var/obj/item/organ/O as anything in contained_organs)
 		O.Remove(phantom_owner, special)
+		add_organ(O) //Remove() removes it from the limb as well.
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)

@@ -1,6 +1,7 @@
 /datum/augment_item/bodypart
 	category = AUGMENT_CATEGORY_BODYPARTS
 
+
 /datum/augment_item/bodypart/apply_to_human(mob/living/carbon/human/H, datum/species/S)
 	var/newpath = S.robotic_bodyparts[initial(path:body_zone)]
 
@@ -64,3 +65,32 @@
 	name = "Prosthetic"
 	slot = AUGMENT_SLOT_R_LEG
 	path = /obj/item/bodypart/leg/right/robot/surplus
+
+/// AMPUTATION
+/datum/augment_item/bodypart/amputated/l_arm
+	name = "Amputated"
+	path = /obj/item/bodypart/arm/left
+	slot = AUGMENT_SLOT_L_ARM
+
+/datum/augment_item/bodypart/amputated/r_arm
+	name = "Amputated"
+	path = /obj/item/bodypart/arm/right
+	slot = AUGMENT_SLOT_R_ARM
+
+/datum/augment_item/bodypart/amputated/l_leg
+	name = "Amputated"
+	path = /obj/item/bodypart/leg/left
+	slot = AUGMENT_SLOT_L_LEG
+
+/datum/augment_item/bodypart/amputated/r_leg
+	name = "Amputated"
+	path = /obj/item/bodypart/leg/right
+	slot = AUGMENT_SLOT_R_LEG
+
+/datum/augment_item/bodypart/amputated/apply_to_human(mob/living/carbon/human/H, datum/species/S)
+	var/obj/item/bodypart/path = src.path
+	var/obj/item/bodypart/BP = H.get_bodypart(initial(path.body_zone))
+	qdel(BP)
+
+/datum/augment_item/bodypart/amputated/can_apply_to_species(datum/species/S)
+	return TRUE

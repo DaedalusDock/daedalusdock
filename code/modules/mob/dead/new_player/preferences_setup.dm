@@ -27,6 +27,7 @@
 	var/datum/job/preview_job = get_highest_priority_job()
 
 	// Set up the dummy for its photoshoot
+	mannequin.dna.species.replace_missing_bodyparts(mannequin) // Augments modify bodyparts, so we need to reset them incase augs were removed.
 	apply_prefs_to(mannequin, TRUE)
 
 	switch(preview_pref)

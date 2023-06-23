@@ -4,12 +4,14 @@ GLOBAL_LIST_EMPTY(augment_slot_to_items)
 
 /datum/augment_item
 	var/name
+	///Description of the loadout augment, automatically set by New() if null
+	var/description
 	///Category in which the augment belongs to. check "_DEFINES/augment.dm"
 	var/category = AUGMENT_CATEGORY_NONE
 	///Slot in which the augment belongs to, MAKE SURE THE SAME SLOT IS ONLY IN ONE CATEGORY
 	var/slot = AUGMENT_SLOT_NONE
-	///Description of the loadout augment, automatically set by New() if null
-	var/description
+	///Can multiple of this type be taken?
+	var/exclusive = TRUE
 	///Typepath to the augment being used
 	var/path
 

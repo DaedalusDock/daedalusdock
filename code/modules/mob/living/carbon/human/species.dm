@@ -465,7 +465,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
-	replace_body(C, src)
+	if(type != old_species.type)
+		replace_body(C, src)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
 
@@ -2152,3 +2153,26 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Creates body parts for the target completely from scratch based on the species
 /datum/species/proc/create_fresh_body(mob/living/carbon/target)
 	target.create_bodyparts(bodypart_overrides)
+
+/datum/species/proc/replace_missing_bodyparts(mob/living/carbon/target)
+	if((digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == "Digitigrade Legs") || digitigrade_customization == DIGITIGRADE_FORCED)
+		bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
+		bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+
+	for(var/slot in target.get_missing_limbs())
+		var/obj/item/bodypart/path = bodypart_overrides[slot]
+		if(path)
+			path = new path()
+			path.attach_limb(target, TRUE)
+			path.update_limb(is_creating = TRUE)
+
+	for(var/obj/item/bodypart/BP as anything in target.bodyparts)
+		if(BP.type == bodypart_overrides[BP.body_zone])
+			continue
+
+		var/obj/item/bodypart/new_part = bodypart_overrides[BP.body_zone]
+		if(new_part)
+			new_part = new new_part()
+			new_part.replace_limb(target, TRUE)
+			new_part.update_limb(is_creating = TRUE)
+			qdel(BP)

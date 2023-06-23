@@ -4,6 +4,7 @@
 	desc = "A disk for storing device data."
 	icon_state = "datadisk0"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
+	item_flags = NOBLUDGEON
 	/// How many THIIINGGGS can we store in memory
 	VAR_PROTECTED/storage = 32
 	/// The actual storage of the disk.

@@ -7,6 +7,8 @@
 	icon = 'icons/obj/machines/research.dmi'
 	density = TRUE
 	use_power = IDLE_POWER_USE
+	has_disk_slot = TRUE
+
 	var/busy = FALSE
 	var/hacked = FALSE
 	var/disabled = FALSE

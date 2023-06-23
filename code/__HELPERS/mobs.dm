@@ -87,8 +87,6 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	if(!GLOB.pod_hair_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	if(!GLOB.headtails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
 	if(!GLOB.teshari_feathers_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
 	if(!GLOB.teshari_ears_list.len)
@@ -125,7 +123,6 @@
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
-		"headtails" = (pick(GLOB.headtails_list)),
 		"vox_snout" = pick(GLOB.vox_snouts_list),
 		"tail_vox" = pick(GLOB.tails_list_vox),
 		"vox_hair" = pick(GLOB.vox_hair_list),

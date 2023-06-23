@@ -85,29 +85,34 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
 	create_dna(src)
 	dna.initialize_dna(skip_index = TRUE)
-	dna.features["ears"] = "None"
+	dna.features["ears"] = get_consistent_feature_entry(GLOB.ears_list)
 	dna.features["ethcolor"] = COLOR_WHITE
-	dna.features["frills"] = "None"
-	dna.features["horns"] = "None"
+	dna.features["frills"] = get_consistent_feature_entry(GLOB.frills_list)
+	dna.features["horns"] = get_consistent_feature_entry(GLOB.horns_list)
 	dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
-	dna.features["moth_antennae"] = "Plain"
-	dna.features["moth_markings"] = "None"
-	dna.features["moth_wings"] = "Plain"
-	dna.features["snout"] = "Round"
-	dna.features["spines"] = "None"
-	dna.features["tail_human"] = "None"
-	dna.features["tail_lizard"] = "Smooth"
-	dna.features["tail_vox"] = "Vox Tail"
-	dna.features["vox_hair"] = "None"
-	dna.features["vox_facial_hair"] = "None"
-	dna.features["vox_snout"] = "Vox Snout"
-	dna.features["tail_cat"] = "None"
-	dna.features["pod_hair"] = "Ivy"
-	dna.features["teshari_feathers"] = "Mane"
-	dna.features["teshari_body_feathers"] = "Plain"
-	dna.features["teshari_ears"] = "None"
-	dna.features["tail_teshari"] = "Default"
-	dna.features["headtails"] = "Long"
+	dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
+	dna.features["moth_markings"] = get_consistent_feature_entry(GLOB.moth_markings_list)
+	dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.wings_list)
+	dna.features["snout"] = get_consistent_feature_entry(GLOB.snouts_list)
+	dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
+	dna.features["tail_human"] = get_consistent_feature_entry(GLOB.tails_list_human)
+	dna.features["tail_lizard"] = get_consistent_feature_entry(GLOB.tails_list_lizard)
+	dna.features["tail_vox"] = get_consistent_feature_entry(GLOB.tails_list_vox)
+	dna.features["vox_hair"] = get_consistent_feature_entry(GLOB.vox_hair_list)
+	dna.features["vox_facial_hair"] = get_consistent_feature_entry(GLOB.vox_facial_hair_list)
+	dna.features["vox_snout"] = get_consistent_feature_entry(GLOB.vox_snouts_list)
+	dna.features["tail_cat"] = get_consistent_feature_entry(GLOB.tails_list_human)
+	dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
+	dna.features["teshari_feathers"] = get_consistent_feature_entry(GLOB.teshari_feathers_list)
+	dna.features["teshari_body_feathers"] = get_consistent_feature_entry(GLOB.teshari_body_feathers_list)
+	dna.features["teshari_ears"] = get_consistent_feature_entry(GLOB.teshari_ears_list)
+	dna.features["tail_teshari"] = get_consistent_feature_entry(GLOB.teshari_tails_list)
+
+/// Takes in an accessory list and returns the first entry from that list, ensuring that we dont return SPRITE_ACCESSORY_NONE in the process.
+/proc/get_consistent_feature_entry(list/accessory_feature_list)
+	var/consistent_entry = (accessory_feature_list- SPRITE_ACCESSORY_NONE)[1]
+	ASSERT(!isnull(consistent_entry))
+	return consistent_entry
 
 //Inefficient pooling/caching way.
 GLOBAL_LIST_EMPTY(human_dummy_list)

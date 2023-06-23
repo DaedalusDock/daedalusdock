@@ -210,31 +210,6 @@
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
 
-//skrell
-/obj/item/organ/headtails
-	///Unremovable is until the features are completely finished
-	organ_flags = ORGAN_UNREMOVABLE | ORGAN_EDIBLE
-	visual = TRUE
-	cosmetic_only = TRUE
-
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_HEADTAILS
-	layers = list(BODY_FRONT_LAYER | BODY_ADJ_LAYER)
-	dna_block = DNA_HEADTAILS_BLOCK
-
-	feature_key = "headtails"
-	preference = "feature_headtails"
-
-/obj/item/organ/headtails/can_draw_on_bodypart(mob/living/carbon/human/human)
-	. = TRUE
-	if(human.head && (human.head.flags_inv & HIDEHAIR))
-		return FALSE
-	if(human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
-		return FALSE
-
-/obj/item/organ/headtails/get_global_feature_list()
-	return GLOB.headtails_list
-
 // Teshari head feathers
 /obj/item/organ/teshari_feathers
 	name = "head feathers"

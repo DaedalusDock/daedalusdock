@@ -83,7 +83,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isdullahan(A) (is_species(A, /datum/species/dullahan))
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
 #define isandroid(A) (is_species(A, /datum/species/android))
-#define isskrell(A) (is_species(A, /datum/species/skrell))
 #define isteshari(A) (is_species(A, /datum/species/teshari))
 
 //More carbon mobs

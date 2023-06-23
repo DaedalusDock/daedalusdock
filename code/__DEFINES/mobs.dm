@@ -80,16 +80,14 @@
 #define BODYTYPE_MONKEY (1<<4)
 ///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
-///The limb has skrelly bits
-#define BODYTYPE_SKRELL (1<<6)
 ///The limb is voxed
-#define BODYTYPE_VOX_BEAK (1<<7)
+#define BODYTYPE_VOX_BEAK (1<<6)
 ///The limb is in the shape of a vox leg.
-#define BODYTYPE_VOX_LEGS (1<<8)
+#define BODYTYPE_VOX_LEGS (1<<7)
 ///Vox limb that isnt a head or legs.
-#define BODYTYPE_VOX_OTHER (1<<9)
+#define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<10)
+#define BODYTYPE_TESHARI (1<<9)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -120,7 +118,6 @@
 #define SPECIES_PODPERSON "pod"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
-#define SPECIES_SKRELL "skrell"
 #define SPECIES_SNAIL "snail"
 #define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"

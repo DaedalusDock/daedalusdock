@@ -14,35 +14,40 @@
 	//socks
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	//bodypart accessories (blizzard intensifies)
+
+	//Snowflakes
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns,GLOB.horns_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines_animated, GLOB.animated_spines_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
+
+	// Lizadhs
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns,GLOB.horns_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+	// Moths
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_hair, GLOB.moth_hairstyles_list)
+
+	// Teshari
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_ears, GLOB.teshari_ears_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
 
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
+	//Vox
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
-	//Moths have a whitelist
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_hair, GLOB.moth_hairstyles_list)
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))

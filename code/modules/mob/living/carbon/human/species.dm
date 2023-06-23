@@ -337,6 +337,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/copy_properties_from(datum/species/old_species)
 	return
 
+/datum/species/proc/should_organ_apply_to(mob/living/carbon/target, obj/item/organ/organpath)
+	if(isnull(organpath) || isnull(target))
+		CRASH("passed a null path or mob to 'should_external_organ_apply_to'")
+
+	var/feature_key = initial(organpath.feature_key)
+	if(isnull(feature_key))
+		return TRUE
+
+	if(target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE)
+		return TRUE
+	return FALSE
+
 /**
  * Corrects organs in a carbon, removing ones it doesn't need and adding ones it does.
  *
@@ -399,7 +411,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/organ/I = C.getorgan(mutantorgan)
 			if(I)
 				I.Remove(C)
-				QDEL_NULL(I)
+				qdel(I)
+
+		for(var/mutantorgan in old_species.cosmetic_organs)
+			if(mutantorgan in cosmetic_organs)
+				continue
+			var/obj/item/organ/I = C.getorgan(mutantorgan)
+			if(I)
+				I.Remove(C)
+				qdel(I)
 
 	for(var/organ_path in mutant_organs)
 		var/obj/item/organ/current_organ = C.getorgan(organ_path)
@@ -412,6 +432,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				current_organ.before_organ_replacement(replacement)
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
 			replacement.Insert(C, TRUE, FALSE)
+
+	for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
+		if(!should_organ_apply_to(C, organ_path))
+			continue
+		//Load a persons preferences from DNA
+		var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+		new_organ.Insert(C)
 
 /**
  * Proc called when a carbon becomes this species.
@@ -459,13 +486,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				C.dropItemToGround(I)
 			else //Entries in the list should only ever be items or null, so if it's not an item, we can assume it's an empty hand
 				INVOKE_ASYNC(C, TYPE_PROC_REF(/mob, put_in_hands), new mutanthands)
-
-	if(ishuman(C))
-		var/mob/living/carbon/human/human = C
-		for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
-			//Load a persons preferences from DNA
-			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
-			new_organ.Insert(human)
 
 	for(var/X in inherent_traits)
 		ADD_TRAIT(C, X, SPECIES_TRAIT)
@@ -683,8 +703,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.legs_list[source.dna.features["legs"]]
 				if("caps")
 					accessory = GLOB.caps_list[source.dna.features["caps"]]
-				if("headtails")
-					accessory = GLOB.headtails_list[source.dna.features["headtails"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue

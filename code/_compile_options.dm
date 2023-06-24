@@ -148,7 +148,7 @@
 /// 1 to use the default behaviour;
 /// 2 for preloading absolutely everything;
 #ifndef PRELOAD_RSC
-#define PRELOAD_RSC 2
+#define PRELOAD_RSC 1
 #endif
 
 

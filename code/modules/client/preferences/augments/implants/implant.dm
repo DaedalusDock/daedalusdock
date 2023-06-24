@@ -4,17 +4,13 @@
 	/// What species can use this implant?
 	var/list/allowed_species = list()
 
-/datum/augment_item/implant/apply_to_human(mob/living/carbon/human/H, datum/species/S)
-	if(!H.client?.prefs)
-		return
-
-	var/feature = H.client.prefs.read_preference(/datum/preference/blob/augments)[AUGMENT_SLOT_IMPLANTS][type]
-	if(!feature) // wtf did you do
-		return
+/datum/augment_item/implant/apply_to_human(mob/living/carbon/human/H, datum/species/S, feature_value)
+	if(!feature_value) // wtf did you do
+		CRASH("Tried to assign an implant without a feature value")
 
 	var/obj/item/organ/O = new path
 
-	H.dna.features[O.feature_key] = feature
+	H.dna.features[O.feature_key] = feature_value
 	O.Insert(H, TRUE)
 
 /datum/augment_item/implant/can_apply_to_species(datum/species/S)

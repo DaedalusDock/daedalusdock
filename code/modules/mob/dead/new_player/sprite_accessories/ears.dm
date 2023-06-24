@@ -5,5 +5,5 @@
 /datum/sprite_accessory/ears/cat
 	name = "Cat"
 	icon_state = "cat"
-	hasinner = 1
+	hasinner = TRUE
 	color_src = HAIR

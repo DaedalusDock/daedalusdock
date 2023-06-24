@@ -19,10 +19,14 @@
 /datum/preference/blob/augments/apply_to_human(mob/living/carbon/human/target, value)
 	var/datum/species/S = target.dna.species
 
-	for(var/slot in value)
+	for(var/slot in value - AUGMENT_SLOT_IMPLANTS)
 		var/path = value[slot]
 		var/datum/augment_item/A = GLOB.augment_items[path]
 		A.apply_to_human(target, S)
+
+	for(var/datum/augment_item/A as anything in value[AUGMENT_SLOT_IMPLANTS])
+		A = GLOB.augment_items[A]
+		A.apply_to_human(target, S, value[AUGMENT_SLOT_IMPLANTS][A.type])
 
 /datum/preference/blob/augments/create_default_value()
 	return list()
@@ -137,7 +141,7 @@
 			return
 
 		I = GLOB.augment_items[I]
-		var/new_look = tgui_input_list(user, "Modify Implant", "Implants", I.get_choices(), user_augs[AUGMENT_SLOT_IMPLANTS][I.type])
+		var/new_look = tgui_input_list(user, "Modify Implant", "Implants", I.get_choices() - SPRITE_ACCESSORY_NONE, user_augs[AUGMENT_SLOT_IMPLANTS][I.type])
 		if(!new_look)
 			return
 

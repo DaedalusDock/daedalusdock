@@ -681,12 +681,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
 		return
 
-	var/obj/item/bodypart/head/noggin = source.get_bodypart(BODY_ZONE_HEAD)
-
-	if(mutant_bodyparts["ears"])
-		if(!source.dna.features["ears"] || source.dna.features["ears"] == "None" || source.head && (source.head.flags_inv & HIDEHAIR) || (source.wear_mask && (source.wear_mask.flags_inv & HIDEHAIR)) || !noggin || !IS_ORGANIC_LIMB(noggin))
-			bodyparts_to_add -= "ears"
-
 	if(!bodyparts_to_add)
 		return
 
@@ -698,8 +692,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		for(var/bodypart in bodyparts_to_add)
 			var/datum/sprite_accessory/accessory
 			switch(bodypart)
-				if("ears")
-					accessory = GLOB.ears_list[source.dna.features["ears"]]
 				if("legs")
 					accessory = GLOB.legs_list[source.dna.features["legs"]]
 				if("caps")

@@ -12,7 +12,7 @@
 
 /datum/augment_item/bodypart/can_apply_to_species(datum/species/S)
 	var/obj/item/bodypart/BP = path
-	if(S.robotic_bodyparts[initial(BP.body_zone)])
+	if(S.robotic_bodyparts?[initial(BP.body_zone)])
 		return TRUE
 	return FALSE
 

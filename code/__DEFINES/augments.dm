@@ -19,3 +19,8 @@
 #define AUGMENT_SLOT_STOMACH		"Stomach"
 #define AUGMENT_SLOT_EYES			"Eyes"
 #define AUGMENT_SLOT_TONGUE			"Tongue"
+
+//Implants
+#define AUGMENT_CATEGORY_IMPLANTS "Implants"
+#define AUGMENT_SLOT_IMPLANTS "Code Reasons"
+

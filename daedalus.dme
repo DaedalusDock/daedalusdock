@@ -2652,6 +2652,7 @@
 #include "code\modules\client\preferences\augments\augment_bodypart.dm"
 #include "code\modules\client\preferences\augments\augment_organ.dm"
 #include "code\modules\client\preferences\augments\augments.dm"
+#include "code\modules\client\preferences\augments\implants\implant.dm"
 #include "code\modules\client\preferences\html_prefs\helpers.dm"
 #include "code\modules\client\preferences\html_prefs\main_window.dm"
 #include "code\modules\client\preferences\html_prefs\preference_group.dm"

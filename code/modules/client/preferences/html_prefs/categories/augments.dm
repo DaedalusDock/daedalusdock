@@ -3,90 +3,69 @@
 
 /datum/preference_group/category/augments/get_content(datum/preferences/prefs)
 	. = ..()
-	var/datum/species/S = prefs.read_preference(/datum/preference/choiced/species)
-	S = new S()
-	var/datum/preference/blob/augments/user_augs = prefs.read_preference(/datum/preference/blob/augments)
+	var/list/user_augs = prefs.read_preference(/datum/preference/blob/augments)
 
-	. += {"
-	<table width='100%' style='display:block'>
-		<tr>
+	for(var/category in GLOB.augment_categories_to_slots - AUGMENT_CATEGORY_IMPLANTS)
+		. += {"
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+		<legend class='computerLegend'>
+			<b>[category]</b>
+		</legend>
+	<table style='width: 100%;border-collapse: collapse'>
+	<tr>
+		<td colspan='2' style='text-align: center'>[button_element(prefs, "Add Augment", "pref_act=/datum/preference/blob/augments;add_augment=[category]")]</td>
 	"}
 
-	for(var/category in GLOB.augment_categories_to_slots)
+		for(var/slot in GLOB.augment_categories_to_slots[category])
+			if(isnull(user_augs[slot]))
+				continue
+
+			var/datum/augment_item/augment = GLOB.augment_items[user_augs[slot]]
+			if(!augment)
+				continue
+
+			. += {"
+			<tr>
+				<td style='padding: 4px 8px;border-right: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>
+					<span class='computerText'>[augment.name] [augment.slot]</span>
+				</td>
+				<td style='padding: 4px 8px;border-left: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>
+					[button_element(prefs, "Switch Augment", "pref_act=/datum/preference/blob/augments;switch_augment=[slot]")]
+					[button_element(prefs, "Remove Augment", "pref_act=/datum/preference/blob/augments;remove_augment=[slot]")]
+				</td>
+			</tr>
+			"}
+
+		. += "</table></fieldset>"
+
+	// Special handling for implants :)
+	if(!length(get_species_augments(prefs.read_preference(/datum/preference/choiced/species))?[AUGMENT_CATEGORY_IMPLANTS]?[AUGMENT_SLOT_IMPLANTS]))
+		return
+
+	. += {"
+	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
+		<legend class='computerLegend'>
+			<b>Implants</b>
+		</legend>
+	<table style='width: 100%;border-collapse: collapse'>
+	<tr>
+		<td colspan='2' style='text-align: center'>[button_element(prefs, "Add Implant", "pref_act=/datum/preference/blob/augments;add_implant=1")]</td>
+	"}
+
+	for(var/path in user_augs[AUGMENT_SLOT_IMPLANTS])
+		var/datum/augment_item/implant = GLOB.augment_items[path]
+		if(!implant)
+			continue
 		. += {"
-			<td valign='top' width='23%'>
-				<h2>[category]</h2>
+		<tr>
+			<td style='padding: 4px 8px;border-right: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>
+				<span class='computerText'>[implant.name]</span>
+			</td>
+			<td style='padding: 4px 8px;border-left: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>
+				[button_element(prefs, "Modify Implant", "pref_act=/datum/preference/blob/augments;modify_implant=[implant.type]")]
+				[button_element(prefs, "Remove Implant", "pref_act=/datum/preference/blob/augments;remove_implant=[implant.type]")]
+			</td>
+		</tr>
 		"}
-		var/list/slot_list = GLOB.augment_categories_to_slots[category]
 
-		for(var/slot in slot_list)
-			var/datum/augment_item/chosen_item
-			var/button
-			if(user_augs[slot])
-				chosen_item = GLOB.augment_items[user_augs[slot]]
-
-			if(prefs.chosen_augment_slot && prefs.chosen_augment_slot == slot)
-				button = "<span class='linkOn'>[slot]</span>"
-			else
-				button = button_element(prefs, slot, "pref_act=/datum/preference/blob/augments;select_slot=[slot]")
-
-			. += {"
-				<table align='center' width='100%' height='100px' style='background-color:#7C5500'>
-					<tr style='vertical-align:top'>
-						<td width='300px' style='background-color:#533200'>
-							[button]: <span style='color:#AAAAFF'>[chosen_item?.name]</span>
-						</td>
-					</tr>
-					<tr style='vertical-align:top'>
-						<td width='300px' height='100%'>
-							<i>[chosen_item?.description]</i>
-						</td>
-					</tr>
-				</table>
-			"}
-
-		. += "</td>"
-	. += "<td valign='top' width='31%'>"
-	if(prefs.chosen_augment_slot)
-		var/list/augment_list = GLOB.augment_slot_to_items[prefs.chosen_augment_slot]
-		if(augment_list)
-			. += {"
-			<table width=100%; class='zebraTable'>
-				<center><h2>[prefs.chosen_augment_slot]</h2></center>
-				<tr style='vertical-align:top;background-color:#533200'>
-					<td width=40%>
-						<b>Name</b>
-					</td>
-					<td width=60%>
-						<b>Description</b>
-					</td>
-				</tr>
-			"}
-
-			for(var/type_thing in augment_list)
-				var/datum/augment_item/aug_datum = GLOB.augment_items[type_thing]
-				var/datum/augment_item/current
-				if(!aug_datum.can_apply_to_species(S))
-					continue
-
-				if(user_augs[prefs.chosen_augment_slot])
-					current = GLOB.augment_items[user_augs[prefs.chosen_augment_slot]]
-				var/aug_link
-
-				if(current == aug_datum)
-					aug_link = button_element(prefs, "[aug_datum.name] (Remove)", "pref_act=/datum/preference/blob/augments;set_augment=[type_thing]")
-				else
-					aug_link = button_element(prefs, "[aug_datum.name]", "pref_act=/datum/preference/blob/augments;set_augment=[type_thing]")
-
-				. += {"
-					<tr>
-						<td>
-							<b>[aug_link]</b>
-						</td>
-						<td>
-							<i>[aug_datum.description]</i>
-						</td>
-					</tr>
-				"}
-			. += "</table>"
-	. += "</td></tr></table>"
+	. += "</table></fieldset>"

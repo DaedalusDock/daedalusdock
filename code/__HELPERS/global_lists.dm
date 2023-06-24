@@ -180,13 +180,15 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	// Here we build the global loadout lists
 	for(var/path in subtypesof(/datum/augment_item))
 		var/datum/augment_item/L = path
-		if(initial(L.path))
-			L = new path()
-			GLOB.augment_items[L.path] = L
+		if(!initial(L.path))
+			continue
 
-			if(!GLOB.augment_slot_to_items[L.slot])
-				GLOB.augment_slot_to_items[L.slot] = list()
-				if(!GLOB.augment_categories_to_slots[L.category])
-					GLOB.augment_categories_to_slots[L.category] = list()
-				GLOB.augment_categories_to_slots[L.category] += L.slot
-			GLOB.augment_slot_to_items[L.slot] += L.path
+		L = new path()
+		GLOB.augment_items[L.type] = L
+
+		if(!GLOB.augment_slot_to_items[L.slot])
+			GLOB.augment_slot_to_items[L.slot] = list()
+			if(!GLOB.augment_categories_to_slots[L.category])
+				GLOB.augment_categories_to_slots[L.category] = list()
+			GLOB.augment_categories_to_slots[L.category] += L.slot
+		GLOB.augment_slot_to_items[L.slot] += L.type

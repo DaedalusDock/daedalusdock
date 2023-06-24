@@ -1,6 +1,8 @@
 GLOBAL_LIST_EMPTY(augment_items)
 GLOBAL_LIST_EMPTY(augment_categories_to_slots)
 GLOBAL_LIST_EMPTY(augment_slot_to_items)
+/// Map of species > category > slot > item
+GLOBAL_LIST_EMPTY(species_augment_tree)
 
 /datum/augment_item
 	var/name
@@ -25,3 +27,30 @@ GLOBAL_LIST_EMPTY(augment_slot_to_items)
 
 /datum/augment_item/proc/can_apply_to_species(datum/species/S)
 	return TRUE
+
+/// Returns a tree of species > category > slot > item path
+/proc/get_species_augments(datum/species/S)
+	RETURN_TYPE(/list)
+
+	var/static/list/augment_tree = list()
+	if(istype(S))
+		S = S.type
+
+	if(augment_tree[S])
+		return augment_tree[S]
+
+	S = new S()
+
+	if(!augment_tree[S.type])
+		augment_tree[S.type] = list()
+
+	for(var/datum/augment_item/A as anything in GLOB.augment_items)
+		A = GLOB.augment_items[A]
+
+		if(!A.can_apply_to_species(S))
+			continue
+		if(!augment_tree[S.type][A.category])
+			augment_tree[S.type][A.category] = list()
+		if(!augment_tree[S.type][A.category][A.slot])
+			augment_tree[S.type][A.category][A.slot] = list()
+		augment_tree[S.type][A.category][A.slot] += A.type

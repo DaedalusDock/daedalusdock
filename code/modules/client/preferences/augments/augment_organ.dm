@@ -12,7 +12,7 @@
 	slot = AUGMENT_SLOT_HEART
 
 /datum/augment_item/organ/heart/cybernetic
-	name = "Cybernetic heart"
+	name = "Cybernetic"
 	path = /obj/item/organ/heart/cybernetic
 
 /datum/augment_item/organ/heart/can_apply_to_species(datum/species/S)
@@ -23,7 +23,7 @@
 	slot = AUGMENT_SLOT_LUNGS
 
 /datum/augment_item/organ/lungs/cybernetic
-	name = "Cybernetic lungs"
+	name = "Cybernetic"
 	path = /obj/item/organ/lungs/cybernetic
 
 /datum/augment_item/organ/lungs/can_apply_to_species(datum/species/S)
@@ -34,7 +34,7 @@
 	slot = AUGMENT_SLOT_LIVER
 
 /datum/augment_item/organ/liver/cybernetic
-	name = "Cybernetic liver"
+	name = "Cybernetic"
 	path = /obj/item/organ/liver/cybernetic
 
 /datum/augment_item/organ/liver/can_apply_to_species(datum/species/S)
@@ -45,7 +45,7 @@
 	slot = AUGMENT_SLOT_STOMACH
 
 /datum/augment_item/organ/stomach/cybernetic
-	name = "Cybernetic stomach"
+	name = "Cybernetic"
 	path = /obj/item/organ/stomach/cybernetic
 
 /datum/augment_item/organ/stomach/can_apply_to_species(datum/species/S)
@@ -56,7 +56,7 @@
 	slot = AUGMENT_SLOT_EYES
 
 /datum/augment_item/organ/eyes/cybernetic
-	name = "Cybernetic eyes"
+	name = "Cybernetic"
 	path = /obj/item/organ/eyes/robotic
 
 //TONGUES
@@ -64,13 +64,13 @@
 	slot = AUGMENT_SLOT_TONGUE
 
 /datum/augment_item/organ/tongue/normal
-	name = "Organic tongue"
+	name = "Organic"
 	path = /obj/item/organ/tongue
 
 /datum/augment_item/organ/tongue/robo
-	name = "Robotic voicebox"
+	name = "Robotic"
 	path = /obj/item/organ/tongue/robot
 
 /datum/augment_item/organ/tongue/forked
-	name = "Forked tongue"
+	name = "Forked"
 	path = /obj/item/organ/tongue/lizard

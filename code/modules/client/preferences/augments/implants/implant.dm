@@ -11,7 +11,7 @@
 	var/obj/item/organ/O = new path
 
 	H.dna.features[O.feature_key] = feature_value
-	O.Insert(H, TRUE)
+	O.Insert(H, TRUE, FALSE)
 
 /datum/augment_item/implant/can_apply_to_species(datum/species/S)
 	if(S.id in allowed_species)

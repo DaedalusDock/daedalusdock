@@ -89,3 +89,6 @@
   - code_imp: Verbs are now pushed back 1 tick to prevent overtime (lag)
   Spyroshark:
   - balance: Lavaland mobs no longer take reduced projectile or throwing damage.
+2023-06-25:
+  MrStonedOne:
+  - server: Security improvement.

@@ -52989,10 +52989,6 @@
 /obj/effect/turf_decal/trimline/red/filled/corner,
 /turf/open/floor/iron,
 /area/station/security/brig)
-"sii" = (
-/obj/structure/flora/rock/pile/largejungle,
-/turf/closed/wall/prepainted/daedalus,
-/area/station/engineering/storage/tech)
 "siw" = (
 /obj/structure/sign/warning/securearea{
 	name = "\improper STAY CLEAR HEAVY MACHINERY"
@@ -107794,7 +107790,7 @@ kMN
 xEb
 fun
 vQj
-sii
+jIP
 gts
 cUl
 lzN

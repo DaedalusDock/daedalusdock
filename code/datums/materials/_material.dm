@@ -133,14 +133,16 @@ Simple datum which is instanced once per type and is used for every object of sa
 		o.throwforce *= strength_modifier
 
 		var/list/temp_armor_list = list() //Time to add armor modifiers!
+		var/datum/armor/A = o.returnArmor()
 
-		if(!istype(o.armor))
+		if(!istype(A))
 			return
-		var/list/current_armor = o.armor?.getList()
+
+		var/list/current_armor = A.getList()
 
 		for(var/i in current_armor)
 			temp_armor_list[i] = current_armor[i] * armor_modifiers[i]
-		o.armor = getArmor(arglist(temp_armor_list))
+		o.setArmor(getArmor(arglist(temp_armor_list)))
 
 	if(!isitem(o))
 		return
@@ -153,7 +155,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 		item.set_greyscale(
 			new_worn_config = worn_path,
 			new_inhand_left = lefthand_path,
-			new_inhand_right = righthand_path
+			new_inhand_right = righthand_path,
+			queue = TRUE
 		)
 
 	if(!item_sound_override)

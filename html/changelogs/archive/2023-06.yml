@@ -79,3 +79,13 @@
       a hint as to what was spawned.'
   - rscdel: Removed the Mice Migration event, replaced by Animal Infestation
   - rscdel: Regal Rats no longer spawn roundstart.
+2023-06-22:
+  Kapu1178:
+  - tweak: You must expose your flesh to be healed by tend wounds.
+  - rscadd: You can now see player's jobs in the lobby.
+  - qol: Surgically attaching your head to a body no longer sends your brain to [DATA
+      EXPUNGED]
+  KylerAce, Kapu1178:
+  - code_imp: Verbs are now pushed back 1 tick to prevent overtime (lag)
+  Spyroshark:
+  - balance: Lavaland mobs no longer take reduced projectile or throwing damage.

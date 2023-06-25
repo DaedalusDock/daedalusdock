@@ -152,6 +152,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 		reciever.cosmetic_organs.Add(src)
 
+		if(ownerlimb)
+			remove_from_limb()
 		add_to_limb(limb)
 
 		reciever.update_body_parts()

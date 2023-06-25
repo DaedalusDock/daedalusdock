@@ -152,18 +152,13 @@
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
+			brain.remove_from_limb()
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-			if(brainmob)
-				brainmob.container = null
-				brainmob.forceMove(brain)
-				brain.brainmob = brainmob
-				brainmob = null
 			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
 				to_chat(user, span_warning("[brain] was damaged in the process!"))
 				brain.setOrganDamage(brain.maxHealth)
 			brain.forceMove(head_turf)
-			brain = null
 			update_icon_dropped()
 		else
 			if(istype(head_item, /obj/item/reagent_containers/pill))
@@ -173,6 +168,7 @@
 				var/obj/item/organ/organ = head_item
 				if(organ.organ_flags & ORGAN_UNREMOVABLE)
 					continue
+				organ.remove_from_limb()
 			head_item.forceMove(head_turf)
 	eyes = null
 	ears = null

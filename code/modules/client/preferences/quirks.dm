@@ -6,7 +6,7 @@
 	if(!islist(input))
 		return create_default_value()
 
-	SSquirks.filter_invalid_quirks(input)
+	input = SSquirks.filter_invalid_quirks(input)
 
 	if(GetQuirkBalance(input) < 0)
 		return create_default_value()

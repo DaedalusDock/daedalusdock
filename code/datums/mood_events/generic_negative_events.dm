@@ -228,10 +228,6 @@
 	description = "This is it... I'm really going to die."
 	mood_change = -20
 
-/datum/mood_event/gunpoint
-	description = "This guy is insane! I better be careful..."
-	mood_change = -10
-
 /datum/mood_event/tripped
 	description = "I can't believe I fell for the oldest trick in the book!"
 	mood_change = -5

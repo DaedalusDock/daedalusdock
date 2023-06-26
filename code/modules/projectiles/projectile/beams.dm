@@ -82,13 +82,13 @@
 /obj/projectile/beam/disabler
 	name = "disabler beam"
 	icon_state = "omnilaser"
-	speed = 0.6
+	speed = 0.7
 	damage = 0
 	damage_type = STAMINA
 	armor_flag = ENERGY
 
 	disorient_length = 2 SECONDS
-	disorient_damage = 80
+	disorient_damage = 65
 	disorient_status_length = 4 SECONDS
 
 	hitsound = 'sound/weapons/tap.ogg'

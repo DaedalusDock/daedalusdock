@@ -441,7 +441,7 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Actually update the overlay.
 		if (OO.dir != OO.associated_atom.dir)
-			OO.setDir(OO.associated_atom.dir)
+			OO.dir = OO.associated_atom.dir
 
 		if (OO.particles != OO.associated_atom.particles)
 			OO.particles = OO.associated_atom.particles
@@ -451,6 +451,7 @@ SUBSYSTEM_DEF(zcopy)
 		OO.plane = ZMIMIC_MAX_PLANE - OO.depth
 
 		OO.opacity = FALSE
+		OO.glide_size = initial(OO.glide_size)
 		OO.queued = 0
 
 		// If an atom has explicit plane sets on its overlays/underlays, we need to replace the appearance so they can be mangled to work with our planing.

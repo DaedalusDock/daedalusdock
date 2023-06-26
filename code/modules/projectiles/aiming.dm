@@ -22,6 +22,9 @@
 
 /obj/effect/abstract/aim_overlay/Initialize(mapload, mob/living/user, mob/living/target, obj/item/gun/tool)
 	. = ..()
+	if(!istype(user) || !istype(target) || !istype(tool))
+		return INITIALIZE_HINT_QDEL
+
 	src.user = user
 	src.tool = tool
 
@@ -56,9 +59,9 @@
 	addtimer(CALLBACK(src, PROC_REF(set_locked)), lock_time)
 
 /obj/effect/abstract/aim_overlay/Destroy(force)
-	user.remove_status_effect(/datum/status_effect/holdup)
-	target.remove_status_effect(/datum/status_effect/grouped/heldup, REF(user))
-	user.gunpoint = null
+	user?.remove_status_effect(/datum/status_effect/holdup)
+	target?.remove_status_effect(/datum/status_effect/grouped/heldup, REF(user))
+	user?.gunpoint = null
 	user = null
 	target = null
 	tool = null

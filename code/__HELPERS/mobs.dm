@@ -70,7 +70,7 @@
 	if(!GLOB.horns_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
 	if(!GLOB.ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.horns_list)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
 	if(!GLOB.frills_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
 	if(!GLOB.spines_list.len)
@@ -87,8 +87,6 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	if(!GLOB.pod_hair_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	if(!GLOB.headtails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
 	if(!GLOB.teshari_feathers_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
 	if(!GLOB.teshari_ears_list.len)
@@ -125,7 +123,6 @@
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
-		"headtails" = (pick(GLOB.headtails_list)),
 		"vox_snout" = pick(GLOB.vox_snouts_list),
 		"tail_vox" = pick(GLOB.tails_list_vox),
 		"vox_hair" = pick(GLOB.vox_hair_list),
@@ -789,6 +786,8 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(BODY_ZONE_PRECISE_GROIN)
 			return BODY_ZONE_CHEST
 		if(BODY_ZONE_PRECISE_EYES)
+			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_MOUTH)
 			return BODY_ZONE_HEAD
 		if(BODY_ZONE_PRECISE_R_HAND)
 			return BODY_ZONE_R_ARM

@@ -146,4 +146,14 @@
 	return !is_mouth_covered()
 
 /mob/living/carbon/CanSpreadAirborneDisease()
-	return !((head && (head.flags_cover & HEADCOVERSMOUTH) && (head.returnArmor().getRating(BIO) >= 25)) || (wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH) && (wear_mask.returnArmor().getRating(BIO) >= 25)))
+	if(head && (head.flags_cover & HEADCOVERSMOUTH) && head.returnArmor().getRating(BIO) >= 25)
+		return FALSE
+
+	if(wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH) && wear_mask.returnArmor().getRating(BIO) >= 25)
+		return FALSE
+
+	var/obj/item/bodypart/head/realhead = get_bodypart(BODY_ZONE_HEAD)
+	if(realhead && realhead.returnArmor().getRating(BIO) >= 100)
+		return FALSE
+
+	return TRUE

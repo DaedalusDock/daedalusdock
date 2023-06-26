@@ -78,25 +78,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		Remove(owner, special=TRUE)
 
 	if(ownerlimb)
-		remove_from_limb()
+		ownerlimb.remove_organ(src)
 
 	if(!cosmetic_only)
 		STOP_PROCESSING(SSobj, src)
 
 	return ..()
 
-/obj/item/organ/forceMove(atom/destination, check_dest = TRUE)
-	if(check_dest && destination) //Nullspace is always a valid location for organs. Because reasons.
-		if(organ_flags & ORGAN_UNREMOVABLE) //If this organ is unremovable, it should delete itself if it tries to be moved to anything besides a bodypart.
-			if(!istype(destination, /obj/item/bodypart) && !iscarbon(destination))
-				stack_trace("Unremovable organ tried to be removed!")
-				qdel(src)
-				return //Don't move it out of nullspace if it's deleted.
-	return ..()
-
-/// A little hack to ensure old behavior for now.
+/// A little hack to ensure old behavior.
 /obj/item/organ/ex_act(severity, target)
-	if(visual && ownerlimb)
+	if(ownerlimb)
 		return
 	return ..()
 
@@ -112,10 +103,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return FALSE
 
 	var/obj/item/bodypart/limb
-	if(visual)
-		limb = reciever.get_bodypart(deprecise_zone(zone))
-		if(!limb)
-			return FALSE
+	limb = reciever.get_bodypart(deprecise_zone(zone))
+	if(!limb)
+		return FALSE
 
 	var/obj/item/organ/replaced = reciever.getorganslot(slot)
 	if(replaced)
@@ -146,16 +136,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		/// Otherwise life processing breaks down
 		sortTim(owner.processing_organs, GLOBAL_PROC_REF(cmp_organ_slot_asc))
 
-	if(visual) //Brains are visual and I don't know why. Blame lemon.
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+	limb.add_organ(src)
+	forceMove(limb)
+
+	if(visual)
 		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
 			stored_feature_id = reciever.dna.features[feature_key]
 
 		reciever.cosmetic_organs.Add(src)
-
-		if(ownerlimb)
-			remove_from_limb()
-		add_to_limb(limb)
-
 		reciever.update_body_parts()
 	return TRUE
 
@@ -175,6 +165,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	owner = null
 	for(var/datum/action/action as anything in actions)
 		action.Remove(organ_owner)
+
 	for(var/trait in organ_traits)
 		REMOVE_TRAIT(organ_owner, trait, REF(src))
 
@@ -191,10 +182,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
 
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+
 	if(visual)
 		organ_owner.cosmetic_organs.Remove(src)
-		if(ownerlimb)
-			remove_from_limb()
 		organ_owner.update_body_parts()
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.

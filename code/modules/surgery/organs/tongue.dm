@@ -31,7 +31,6 @@
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
 		/datum/language/nekomimetic,
-		/datum/language/skrell,
 		/datum/language/schechi,
 		/datum/language/vox,
 	))
@@ -324,12 +323,6 @@
 
 /obj/item/organ/tongue/alien/modify_speech(datum/source, list/speech_args)
 	playsound(owner, SFX_HISS, 25, TRUE, TRUE)
-
-/obj/item/organ/tongue/skrell
-	name = "internal vocal sacs"
-	desc = "A strange looking sac."
-	icon_state = "tongue-skrell"
-	taste_sensitivity = 5
 
 /obj/item/organ/tongue/bone
 	name = "bone \"tongue\""

@@ -210,31 +210,6 @@
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
 
-//skrell
-/obj/item/organ/headtails
-	///Unremovable is until the features are completely finished
-	organ_flags = ORGAN_UNREMOVABLE | ORGAN_EDIBLE
-	visual = TRUE
-	cosmetic_only = TRUE
-
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_HEADTAILS
-	layers = list(BODY_FRONT_LAYER | BODY_ADJ_LAYER)
-	dna_block = DNA_HEADTAILS_BLOCK
-
-	feature_key = "headtails"
-	preference = "feature_headtails"
-
-/obj/item/organ/headtails/can_draw_on_bodypart(mob/living/carbon/human/human)
-	. = TRUE
-	if(human.head && (human.head.flags_inv & HIDEHAIR))
-		return FALSE
-	if(human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
-		return FALSE
-
-/obj/item/organ/headtails/get_global_feature_list()
-	return GLOB.headtails_list
-
 // Teshari head feathers
 /obj/item/organ/teshari_feathers
 	name = "head feathers"
@@ -347,6 +322,8 @@
 		var/state2use = build_icon_state(physique, image_layer)
 
 		for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
+			if(!IS_ORGANIC_LIMB(BP))
+				continue
 			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -image_layer)
 			new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 			. += new_overlay
@@ -354,11 +331,17 @@
 /obj/item/organ/teshari_body_feathers/build_cache_key()
 	. = ..()
 	if(ishuman(owner))
-		. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"
+		var/obj/item/bodypart/BP = owner.get_bodypart(BODY_ZONE_CHEST)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_HEAD)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_ARM)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_ARM)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_LEG)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_LEG)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 	else
 		. += "CHEST_ONLY"

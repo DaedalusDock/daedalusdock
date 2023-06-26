@@ -184,7 +184,7 @@
 /datum/preference/color/sclera/create_default_value()
 	return "#f8ef9e"
 
-/datum/preference/color/sclera/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/color/sclera/apply_to_human(mob/living/carbon/human/target, value)
 	target.sclera_color = value
 	target.update_eyes()
 /datum/preference/tri_color
@@ -261,7 +261,7 @@
 		serialized_mods[serial_mod_data["path"]] = serial_mod_data
 	return serialized_mods
 
-/datum/preference/appearance_mods/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/appearance_mods/apply_to_human(mob/living/carbon/human/target, value)
 	var/list/deserialized_mods = value
 	if(!value)
 		return

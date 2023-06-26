@@ -94,6 +94,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
 
+	/// Robotic bodyparts for preference selection
+	var/list/robotic_bodyparts = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus,
+		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus,
+	)
+
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout"). Still WIP
 	var/list/cosmetic_organs = list()
 
@@ -329,6 +337,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/copy_properties_from(datum/species/old_species)
 	return
 
+/datum/species/proc/should_organ_apply_to(mob/living/carbon/target, obj/item/organ/organpath)
+	if(isnull(organpath) || isnull(target))
+		CRASH("passed a null path or mob to 'should_external_organ_apply_to'")
+
+	var/feature_key = initial(organpath.feature_key)
+	if(isnull(feature_key))
+		return TRUE
+
+	if(target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE)
+		return TRUE
+	return FALSE
+
 /**
  * Corrects organs in a carbon, removing ones it doesn't need and adding ones it does.
  *
@@ -391,7 +411,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/organ/I = C.getorgan(mutantorgan)
 			if(I)
 				I.Remove(C)
-				QDEL_NULL(I)
+				qdel(I)
+
+		for(var/mutantorgan in old_species.cosmetic_organs)
+			if(mutantorgan in cosmetic_organs)
+				continue
+			var/obj/item/organ/I = C.getorgan(mutantorgan)
+			if(I)
+				I.Remove(C)
+				qdel(I)
 
 	for(var/organ_path in mutant_organs)
 		var/obj/item/organ/current_organ = C.getorgan(organ_path)
@@ -404,6 +432,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				current_organ.before_organ_replacement(replacement)
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
 			replacement.Insert(C, TRUE, FALSE)
+
+	for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
+		if(!should_organ_apply_to(C, organ_path))
+			continue
+		//Load a persons preferences from DNA
+		var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+		new_organ.Insert(C)
 
 /**
  * Proc called when a carbon becomes this species.
@@ -430,7 +465,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
-	if(old_species.type != type)
+	if(type != old_species.type)
 		replace_body(C, src)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
@@ -452,13 +487,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				C.dropItemToGround(I)
 			else //Entries in the list should only ever be items or null, so if it's not an item, we can assume it's an empty hand
 				INVOKE_ASYNC(C, TYPE_PROC_REF(/mob, put_in_hands), new mutanthands)
-
-	if(ishuman(C))
-		var/mob/living/carbon/human/human = C
-		for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
-			//Load a persons preferences from DNA
-			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
-			new_organ.Insert(human)
 
 	for(var/X in inherent_traits)
 		ADD_TRAIT(C, X, SPECIES_TRAIT)
@@ -653,12 +681,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
 		return
 
-	var/obj/item/bodypart/head/noggin = source.get_bodypart(BODY_ZONE_HEAD)
-
-	if(mutant_bodyparts["ears"])
-		if(!source.dna.features["ears"] || source.dna.features["ears"] == "None" || source.head && (source.head.flags_inv & HIDEHAIR) || (source.wear_mask && (source.wear_mask.flags_inv & HIDEHAIR)) || !noggin || !IS_ORGANIC_LIMB(noggin))
-			bodyparts_to_add -= "ears"
-
 	if(!bodyparts_to_add)
 		return
 
@@ -670,14 +692,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		for(var/bodypart in bodyparts_to_add)
 			var/datum/sprite_accessory/accessory
 			switch(bodypart)
-				if("ears")
-					accessory = GLOB.ears_list[source.dna.features["ears"]]
 				if("legs")
 					accessory = GLOB.legs_list[source.dna.features["legs"]]
 				if("caps")
 					accessory = GLOB.caps_list[source.dna.features["caps"]]
-				if("headtails")
-					accessory = GLOB.headtails_list[source.dna.features["headtails"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue
@@ -2127,3 +2145,26 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Creates body parts for the target completely from scratch based on the species
 /datum/species/proc/create_fresh_body(mob/living/carbon/target)
 	target.create_bodyparts(bodypart_overrides)
+
+/datum/species/proc/replace_missing_bodyparts(mob/living/carbon/target)
+	if((digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == "Digitigrade Legs") || digitigrade_customization == DIGITIGRADE_FORCED)
+		bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
+		bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+
+	for(var/slot in target.get_missing_limbs())
+		var/obj/item/bodypart/path = bodypart_overrides[slot]
+		if(path)
+			path = new path()
+			path.attach_limb(target, TRUE)
+			path.update_limb(is_creating = TRUE)
+
+	for(var/obj/item/bodypart/BP as anything in target.bodyparts)
+		if(BP.type == bodypart_overrides[BP.body_zone])
+			continue
+
+		var/obj/item/bodypart/new_part = bodypart_overrides[BP.body_zone]
+		if(new_part)
+			new_part = new new_part()
+			new_part.replace_limb(target, TRUE)
+			new_part.update_limb(is_creating = TRUE)
+			qdel(BP)

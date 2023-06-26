@@ -15009,6 +15009,15 @@
 	},
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
+"eri" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/mob/living/simple_animal/slug/glubby,
+/turf/open/floor/iron,
+/area/station/cargo/warehouse)
 "ero" = (
 /obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
@@ -27788,7 +27797,7 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/mob/living/simple_animal/slug/glubby,
+/mob/living/simple_animal/hostile/lizard/wags_his_tail,
 /turf/open/floor/plating,
 /area/station/service/janitor)
 "iZa" = (
@@ -35406,7 +35415,6 @@
 	dir = 4
 	},
 /obj/structure/disposalpipe/segment,
-/mob/living/simple_animal/sloth/citrus,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "lMZ" = (
@@ -89165,7 +89173,7 @@ tCR
 auC
 eBk
 sqo
-juK
+eri
 fYp
 lTb
 wcm

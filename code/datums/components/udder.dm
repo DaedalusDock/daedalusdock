@@ -190,26 +190,3 @@
 	slug_turf.wash(CLEAN_SCRUB)
 	reagents.expose(slug_turf, TOUCH, 5)
 	reagents.remove_any(5)
-
-/obj/item/udder/slug/glubby
-//unique slug udder that lets you inject your own reagents. Also uses slightly less at a time while cleaning.
-
-/obj/item/udder/slug/glubby/initial_conditions()
-	. = ..()
-	RegisterSignal(udder_mob, COMSIG_PARENT_ATTACKBY, .proc/inject_slug)
-
-/obj/item/udder/slug/glubby/on_slug_move()
-	if (reagents.total_volume <= 0)
-		return
-	var/turf/slug_turf = get_turf(udder_mob)
-	if(!slug_turf)
-		return
-	slug_turf.wash(CLEAN_SCRUB)
-	reagents.expose(slug_turf, TOUCH, 1)
-	reagents.remove_any(1)
-
-/obj/item/udder/slug/glubby/proc/inject_slug(datum/source, obj/item/I, mob/user)
-	SIGNAL_HANDLER
-	if (istype(I, /obj/item/reagent_containers/syringe))
-		I.reagents.trans_to(src, 15)
-		to_chat(user, span_warning("You fill [src] with the [I]"))

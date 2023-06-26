@@ -25,6 +25,7 @@
 	. = ..()
 	AddComponent(/datum/component/udder, udder, null, null, /datum/reagent/slug_slime)
 
+//cargo's badass loose-cannon pet slug who doesn't play by the rules
 /mob/living/simple_animal/slug/glubby
 	name = "Glubby"
 	desc = "He's just misunderstood."
@@ -32,8 +33,3 @@
 	icon_living = "glubby"
 	icon_dead = "glubby_dead"
 	gold_core_spawnable = NO_SPAWN
-	udder = /obj/item/udder/slug/glubby
-
-/mob/living/simple_animal/slug/glubby/examine(mob/user)
-	. = ..()
-	. += span_notice("You could use a syringe to refill [src]'s slime gland.")

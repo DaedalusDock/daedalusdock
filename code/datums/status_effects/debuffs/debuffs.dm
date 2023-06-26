@@ -23,6 +23,7 @@
 //STUN
 /datum/status_effect/incapacitating/stun
 	id = "stun"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/stun/on_apply()
 	. = ..()
@@ -42,6 +43,7 @@
 //KNOCKDOWN
 /datum/status_effect/incapacitating/knockdown
 	id = "knockdown"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/knockdown/on_apply()
 	. = ..()
@@ -72,6 +74,7 @@
 //PARALYZED
 /datum/status_effect/incapacitating/paralyzed
 	id = "paralyzed"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/paralyzed/on_apply()
 	. = ..()

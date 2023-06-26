@@ -87,7 +87,6 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	add_cell_sample()
 	if(ai_controller)
 		ai_controller.blackboard[BB_HOSTILE_ATTACK_WORD] = pick(speak_emote)
 		if(tamer)
@@ -107,10 +106,6 @@
 		ai_current_controller.befriend(tamer)
 		can_have_ai = FALSE
 		toggle_ai(AI_OFF)
-
-
-/mob/living/simple_animal/hostile/carp/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CARP, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /**
  * Randomly assigns a color to a carp from either a common or rare color variant lists
@@ -192,10 +187,6 @@
 	del_on_death = 1
 	random_color = FALSE
 
-
-/mob/living/simple_animal/hostile/carp/holocarp/add_cell_sample()
-	return
-
 /mob/living/simple_animal/hostile/carp/megacarp
 	icon = 'icons/mob/broadMobs.dmi'
 	name = "Mega Space Carp"
@@ -226,10 +217,6 @@
 	melee_damage_upper += rand(10,20)
 	maxHealth += rand(30,60)
 	move_to_delay = rand(3,7)
-
-
-/mob/living/simple_animal/hostile/carp/megacarp/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MEGACARP, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/carp/megacarp/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
 	. = ..()

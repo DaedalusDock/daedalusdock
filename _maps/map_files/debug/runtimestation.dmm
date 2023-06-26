@@ -159,7 +159,6 @@
 /obj/item/rcd_ammo/large,
 /obj/item/rcd_ammo/large,
 /obj/item/construction/rcd/combat,
-/obj/item/construction/plumbing,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "aN" = (

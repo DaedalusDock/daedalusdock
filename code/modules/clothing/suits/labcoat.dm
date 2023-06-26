@@ -7,7 +7,6 @@
 	body_parts_covered = CHEST|ARMS
 	allowed = list(
 		/obj/item/analyzer,
-		/obj/item/biopsy_tool,
 		/obj/item/dnainjector,
 		/obj/item/flashlight/pen,
 		/obj/item/healthanalyzer,

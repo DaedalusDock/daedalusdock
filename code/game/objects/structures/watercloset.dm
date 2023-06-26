@@ -258,7 +258,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	anchored = TRUE
 	///Something's being washed at the moment
 	var/busy = FALSE
-	///What kind of reagent is produced by this sink by default? (We now have actual plumbing, Arcane, August 2020)
+	///What kind of reagent is produced by this sink by default?
 	var/dispensedreagent = /datum/reagent/water
 	///Material to drop when broken or deconstructed.
 	var/buildstacktype = /obj/item/stack/sheet/iron
@@ -276,7 +276,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(has_water_reclaimer)
 		create_reagents(100, NO_REACT)
 		reagents.add_reagent(dispensedreagent, 100)
-	AddComponent(/datum/component/plumbing/simple_demand, bolt)
 
 /obj/structure/sink/examine(mob/user)
 	. = ..()
@@ -437,7 +436,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 /obj/structure/sink/proc/begin_reclamation()
 	if(!reclaiming)
 		reclaiming = TRUE
-		START_PROCESSING(SSfluids, src)
+		START_PROCESSING(SSobj, src)
 
 /obj/structure/sink/kitchen
 	name = "kitchen sink"

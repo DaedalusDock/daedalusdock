@@ -554,17 +554,8 @@
 	desc = "The circuit board for a Medipen Refiller."
 	id = "medipen_refiller"
 	build_path = /obj/item/circuitboard/machine/medipen_refiller
-	category = list (DCAT_CIRCUIT)
+	category = list(DCAT_CIRCUIT)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
-/datum/design/board/plumbing_receiver
-	name = "Machine Board (Chemical Recipient)"
-	desc = "The circuit board for a Chemical Recipient."
-	id = "plumbing_receiver"
-	build_path = /obj/item/circuitboard/machine/plumbing_receiver
-	category = list (DCAT_CIRCUIT)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 
 /datum/design/board/sheetifier
 	name = "Machine Board (Sheet-meister 2000)"

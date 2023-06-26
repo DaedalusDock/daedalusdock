@@ -54,6 +54,11 @@
 
 	levelupdate()
 
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+
 	SETUP_SMOOTHING()
 
 	QUEUE_SMOOTH(src)

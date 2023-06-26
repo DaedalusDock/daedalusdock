@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Disablers like, do stamina damage.
-  - bugfix: LOOC can be used while in soft crit

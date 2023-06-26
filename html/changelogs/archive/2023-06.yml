@@ -92,3 +92,11 @@
 2023-06-25:
   MrStonedOne:
   - server: Security improvement.
+2023-06-26:
+  Kapu1178:
+  - bugfix: Disablers like, do stamina damage.
+  - bugfix: LOOC can be used while in soft crit
+  - tweak: Darkened the color of the Daedalus walls.
+  - balance: All air mixture values are rounded to 0.0001.
+  - rscadd: Augment Customization
+  - rscdel: Prosthetic Quirk

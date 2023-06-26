@@ -630,9 +630,9 @@
 	else if(getOxyLoss() <= 100)
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 
-/mob/living/carbon/()
+/mob/living/carbon/get_organic_health()
 	. = health
-	for (var/_limb in boget_organic_healthdyparts)
+	for (var/_limb in bodyparts)
 		var/obj/item/bodypart/limb = _limb
 		if (!IS_ORGANIC_LIMB(limb))
 			. += (limb.brute_dam * limb.body_damage_coeff) + (limb.burn_dam * limb.body_damage_coeff)

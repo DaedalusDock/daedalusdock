@@ -1,6 +1,0 @@
-author: LemonInTheDark, Guillaume Prata
-delete-after: true
-changes:
-  - bugfix: Maps loaded post init will no longer randomly enter a failed state. Hopefully.
-  - qol: Be polite! While on walk intent you won't bump, swap places or push other
-      people now.

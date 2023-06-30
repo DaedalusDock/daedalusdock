@@ -24,6 +24,11 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 ///Let's extract our dummies organs and limbs for storage, to reduce the cache missed that spamming a dummy cause
 /mob/living/carbon/human/dummy/proc/harvest_organs()
+	for(var/obj/item/organ/O as anything in organs)
+		O.Remove(src, special = TRUE)
+		SSwardrobe.stash_object(O)
+
+	/*
 	for(var/slot in list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_APPENDIX, \
 		ORGAN_SLOT_EYES, ORGAN_SLOT_EARS, ORGAN_SLOT_TONGUE, ORGAN_SLOT_LIVER, ORGAN_SLOT_STOMACH))
 		var/obj/item/organ/current_organ = getorganslot(slot) //Time to cache it lads
@@ -36,7 +41,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		var/obj/item/organ/current_organ = getorgan(organ_path)
 		if(current_organ)
 			current_organ.Remove(src, special = TRUE) //Please don't somehow kill our dummy
-			SSwardrobe.stash_object(current_organ)
+			SSwardrobe.stash_object(current_organ)*/
 
 //Instead of just deleting our equipment, we save what we can and reinsert it into SSwardrobe's store
 //Hopefully this makes preference reloading not the worst thing ever

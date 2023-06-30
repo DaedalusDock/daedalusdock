@@ -52,8 +52,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 /datum/preferences/proc/early_update_character(current_version, savefile/savefile)
 	if(current_version < 43)
 		var/species
-		var/name
-		READ_FILE(savefile["real_name"], name)
 		READ_FILE(savefile["species"], species)
 		if(species == "felinid")
 			write_preference(/datum/preference/choiced/species, SPECIES_HUMAN)

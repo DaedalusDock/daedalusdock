@@ -88,19 +88,18 @@
 	if(!open)
 		to_chat(user, span_warning("You need to open [src]'s door!"))
 		return
+
 	if(target.mob_size > max_occupant_weight)
 		if(ishuman(target))
-			var/mob/living/carbon/human/H = target
-			if(isfelinid(H))
-				to_chat(user, span_warning("You'd need a lot of catnip and treats, plus maybe a laser pointer, for that to work."))
-			else
-				to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
+			to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
 		else
 			to_chat(user, span_warning("You get the feeling [target] isn't meant for a [name]."))
 		return
+
 	if(user == target)
 		to_chat(user, span_warning("Why would you ever do that?"))
 		return
+
 	load_occupant(user, target)
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)

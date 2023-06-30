@@ -194,25 +194,6 @@
 	sound = 'sound/emotes/mothchitter.ogg'
 	species_type_whitelist_typecache = list(/datum/species/moth)
 
-//Felinid emotes
-/datum/emote/living/meow
-	key = "meow"
-	key_third_person = "meows"
-	message = "meows!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'sound/emotes/meow.ogg'
-	species_type_whitelist_typecache = list(/datum/species/human/felinid)
-
-/datum/emote/living/purr //Ported from CitRP originally by buffyuwu.
-	key = "purr"
-	key_third_person = "purrs!"
-	message = "purrs!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'sound/voice/feline_purr.ogg'
-	species_type_whitelist_typecache = list(/datum/species/human/felinid)
-
 //Shared custody between felinids and lizards
 /datum/emote/living/hiss
 	key = "hiss"
@@ -222,7 +203,7 @@
 	vary = TRUE
 	sound = 'sound/emotes/hiss.ogg'
 	mob_type_allowed_typecache = list(/mob/living/carbon, /mob/living/silicon/pai)
-	species_type_whitelist_typecache = list(/datum/species/lizard, /datum/species/human/felinid)
+	species_type_whitelist_typecache = list(/datum/species/lizard)
 
 //Lizard emotes
 /datum/emote/living/rpurr

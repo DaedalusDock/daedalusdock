@@ -30,7 +30,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/schechi,
 		/datum/language/vox,
 	))
@@ -208,7 +207,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/buzzwords
 	))
 
@@ -349,7 +347,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/calcic
 	))
 
@@ -428,7 +425,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/voltaic
 	))
 

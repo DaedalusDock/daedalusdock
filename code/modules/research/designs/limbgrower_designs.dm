@@ -263,16 +263,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
-/obj/item/disk/data/limbs/felinid
-	name = "Felinid Organ Design Disk"
-	limb_designs = list(/datum/design/cat_tail, /datum/design/cat_ears)
-
-/datum/design/limb_disk/felinid
-	name = "Felinid Organ Design Disk"
-	desc = "Contains designs for felinid organs for the limbgrower - Felinid ears and tail."
-	id = "limbdesign_felinid"
-	build_path = /obj/item/disk/data/limbs/felinid
-
 /obj/item/disk/data/limbs/lizard
 	name = "Unathi Organ Design Disk"
 	limb_designs = list(/datum/design/lizard_tail, /datum/design/lizard_tongue)

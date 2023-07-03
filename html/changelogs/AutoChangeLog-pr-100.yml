@@ -1,0 +1,8 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - rscadd: Inflatable shelters can be found in emergency lockers to help you survive
+      disasters! Idea, code inspiration, and sprites from vgstation.
+  - imageadd: Inflatable boxes actually have their own sprite now.
+  - balance: Inflatable boxes start with an extra wall and door. Inflatables can no
+      longer activate if a structure or mob is on their tile.

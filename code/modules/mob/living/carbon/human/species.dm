@@ -1105,8 +1105,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
 			null,
 			span_hear("You hear a sickening sound of flesh hitting flesh!"),
-			COMBAT_MESSAGE_RANGE,
-			user
+			COMBAT_MESSAGE_RANGE
 		)
 
 		target.lastattacker = user.real_name

@@ -341,6 +341,8 @@
 	icon_state = "stunbaton"
 	inhand_icon_state = "baton"
 	worn_icon_state = "baton"
+	lefthand_file = 'goon/icons/mob/inhands/baton_left.dmi'
+	righthand_file = 'goon/icons/mob/inhands/baton_right.dmi'
 
 	force = 10
 	attack_verb_continuous = list("beats")
@@ -607,6 +609,9 @@
 	throw_speed = 1
 	icon_state = "boomerang"
 	inhand_icon_state = "boomerang"
+	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
+
 	force = 5
 	throwforce = 5
 	throw_range = 5

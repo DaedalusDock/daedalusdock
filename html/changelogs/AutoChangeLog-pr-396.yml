@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Passout threshold from oxyloss from 50 to 100
+  - balance: Oxyloss taken when failing a breath from 3 to rand(2, 4)
+  - balance: Oxyloss taken when failing a breath in critical condition from 3.3 to
+      rand(3,6)

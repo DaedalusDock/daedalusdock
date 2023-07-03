@@ -87,13 +87,13 @@
 
 /datum/component/engraved/proc/on_tool_act(mob/user, obj/item/tool)
 	SIGNAL_HANDLER
+	set waitfor = FALSE //Do not remove without removing the UNLINT below
 
 	. = COMPONENT_BLOCK_TOOL_ATTACK
-	spawn(-1)
-		to_chat(user, span_notice("You begin to remove the engraving on [parent]."))
-		if(do_after(user, parent, 4 SECONDS, DO_PUBLIC, display = tool))
-			to_chat(user, span_notice("You remove the engraving on [parent]."))
-			qdel(src)
+	to_chat(user, span_notice("You begin to remove the engraving on [parent]."))
+	if(UNLINT(do_after(user, parent, 4 SECONDS, DO_PUBLIC, display = tool)))
+		to_chat(user, span_notice("You remove the engraving on [parent]."))
+		qdel(src)
 
 ///returns all the information SSpersistence needs in a list to load up this engraving on a future round!
 /datum/component/engraved/proc/save_persistent()

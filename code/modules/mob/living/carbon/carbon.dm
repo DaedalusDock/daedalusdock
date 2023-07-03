@@ -703,17 +703,17 @@
 		switch(oxyloss)
 			if(10 to 20)
 				severity = 1
-			if(20 to 25)
+			if(20 to 35)
 				severity = 2
-			if(25 to 30)
+			if(35 to 50)
 				severity = 3
-			if(30 to 35)
+			if(50 to 65)
 				severity = 4
-			if(35 to 40)
+			if(65 to 80)
 				severity = 5
-			if(40 to 45)
+			if(80 to 90)
 				severity = 6
-			if(45 to INFINITY)
+			if(90 to INFINITY)
 				severity = 7
 		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 	else

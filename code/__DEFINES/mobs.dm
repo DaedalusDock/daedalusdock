@@ -154,8 +154,8 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_MAX_OXYLOSS 3
-#define HUMAN_CRIT_MAX_OXYLOSS (SSMOBS_DT/3)
+#define HUMAN_FAILBREATH_OXYLOSS (rand(2,4))
+#define HUMAN_CRIT_FAILBREATH_OXYLOSS (rand(3,6))
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point

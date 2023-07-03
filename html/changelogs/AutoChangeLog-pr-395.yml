@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - refactor: You may now right click with a gun to hold them at gunpoint from any
+      range. In addition, your HUD has new options that dictate what your victim will
+      be allowed to do.

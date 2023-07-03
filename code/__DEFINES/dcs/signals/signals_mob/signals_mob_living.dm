@@ -95,3 +95,6 @@
 
 ///From mob/living/Say()
 #define COMSIG_LIVING_USE_RADIO "living_talk_into_radio"
+
+///From mob/living/proc/set_combat_mode(): (mob/living/user, new_mode)
+#define COMSIG_LIVING_TOGGLE_COMBAT_MODE "living_toggle_combat_mode"

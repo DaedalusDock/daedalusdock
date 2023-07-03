@@ -92,3 +92,6 @@
 
 ///From obj/item/toy/crayon/spraycan
 #define COMSIG_LIVING_MOB_PAINTED "living_mob_painted"
+
+///From mob/living/Say()
+#define COMSIG_LIVING_USE_RADIO "living_talk_into_radio"

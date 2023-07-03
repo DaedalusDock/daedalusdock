@@ -299,8 +299,8 @@
 			return
 
 	target.visible_message(
-		span_danger("[name] shoves [target.name]!"),
-		span_userdanger("You're shoved by [name]!"),
+		span_danger("<b>[name]</b> shoves [target.name]!"),
+		null,
 		span_hear("You hear aggressive shuffling!"),
 		COMBAT_MESSAGE_RANGE,
 		//src
@@ -309,14 +309,14 @@
 
 	var/append_message = ""
 	//Roll disarm chance based on the target's missing stamina
-	var/disarm_success_chance = target.stamina.loss_as_percent/2
+	var/disarm_success_chance = min(target.stamina.loss_as_percent/2 + 10, 60)
 	if(prob(disarm_success_chance) && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I as anything in target.held_items)
 			if(target.dropItemToGround(I))
 				target.visible_message(
 					span_danger("<b>[target]</b> loses [target.p_their()] grip on [I]"),
-					span_userdanger("You drop [I]!"),
+					null,
 					null,
 					COMBAT_MESSAGE_RANGE
 				)

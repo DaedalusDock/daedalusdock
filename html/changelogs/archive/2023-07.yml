@@ -1,0 +1,24 @@
+2023-07-03:
+  Kapu1178:
+  - bugfix: A bug with zombie hands, pay no mind
+  - bugfix: Transformations no longer ghost players.
+  - bugfix: Changing bodytypes updates clothing to reflect new body.
+  - bugfix: Alot of circuitboards that were unobtainable are obtainable again via
+      the circuit imprinter.
+  - rscdel: Removes Felinids as a species. Felinid character saves will automatically
+      be updated to be a Human with the Feline Ears and Feline Tail implants.
+  - server: Bumps minimum savefile version to 42.
+  - bugfix: TEG circulators no longer lock up if the output network is empty.
+  - refactor: You may now right click with a gun to hold them at gunpoint from any
+      range. In addition, your HUD has new options that dictate what your victim will
+      be allowed to do.
+  - balance: Clamps all standard status effects to a maximum duration of 30 seconds
+  - balance: Disablers now deal Disorient.
+  - balance: Disabler projectile travels 12.5% faster
+  - rscdel: Syndicate Contractor
+  Spyroshark:
+  - rscadd: Inflatable shelters can be found in emergency lockers to help you survive
+      disasters! Idea, code inspiration, and sprites from vgstation.
+  - imageadd: Inflatable boxes actually have their own sprite now.
+  - balance: Inflatable boxes start with an extra wall and door. Inflatables can no
+      longer activate if a structure or mob is on their tile.

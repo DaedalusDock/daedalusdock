@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: TEG circulators no longer lock up if the output network is empty.

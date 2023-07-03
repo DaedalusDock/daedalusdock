@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: Removes Felinids as a species. Felinid character saves will automatically
+      be updated to be a Human with the Feline Ears and Feline Tail implants.
+  - server: Bumps minimum savefile version to 42.

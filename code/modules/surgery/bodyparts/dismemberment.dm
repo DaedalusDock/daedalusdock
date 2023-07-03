@@ -205,13 +205,14 @@
 		brain = O
 
 /obj/item/bodypart/head/remove_organ(obj/item/organ/O)
-	if(O == brain && brainmob)
-		var/obj/item/organ/brain/B = O
-		brainmob.container = null
-		B.brainmob = brainmob
-		brainmob = null
+	if(O == brain)
+		if(brainmob)
+			var/obj/item/organ/brain/B = O
+			brainmob.container = null
+			B.brainmob = brainmob
+			brainmob = null
+			B.brainmob.forceMove(B)
 		brain = null
-		B.brainmob.forceMove(B)
 
 	else if(O == tongue)
 		tongue = null
@@ -324,6 +325,10 @@
 	if(!.) //If it failed to replace, re-attach their old limb as if nothing happened.
 		old_limb.attach_limb(limb_owner, TRUE)
 
+	/// Replace organs gracefully
+	for(var/obj/item/organ/O as anything in old_limb.contained_organs)
+		O.Insert(limb_owner, TRUE)
+
 ///Attach src to target mob if able.
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
@@ -430,6 +435,7 @@
 /obj/item/bodypart/proc/synchronize_bodytypes(mob/living/carbon/carbon_owner)
 	if(!carbon_owner?.dna?.species) //carbon_owner and dna can somehow be null during garbage collection, at which point we don't care anyway.
 		return
+	var/old_limb_flags = carbon_owner.dna.species.bodytype
 	var/all_limb_flags
 	for(var/obj/item/bodypart/limb as anything in carbon_owner.bodyparts)
 		for(var/obj/item/organ/ext_organ as anything in limb.contained_organs)
@@ -439,6 +445,10 @@
 		all_limb_flags = all_limb_flags | limb.bodytype
 
 	carbon_owner.dna.species.bodytype = all_limb_flags
+
+	//Redraw bodytype dependant clothing
+	if(all_limb_flags != old_limb_flags)
+		carbon_owner.update_clothing(ALL)
 
 //Regenerates all limbs. Returns amount of limbs regenerated
 /mob/living/proc/regenerate_limbs(list/excluded_zones = list())

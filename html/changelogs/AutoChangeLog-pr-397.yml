@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Clamps all standard status effects to a maximum duration of 30 seconds
+  - balance: Disablers now deal Disorient.
+  - balance: Disabler projectile travels 12.5% faster

@@ -61,12 +61,14 @@
 
 /datum/component/engraved/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_ATOM_TOOL_ACT, PROC_REF(on_tool_act))
 	//supporting component transfer means putting these here instead of initialize
 	SSpersistence.wall_engravings += src
 	ADD_TRAIT(parent, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC)
 
 /datum/component/engraved/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_PARENT_EXAMINE)
+	UnregisterSignal(parent, COMSIG_ATOM_TOOL_ACT)
 	//supporting component transfer means putting these here instead of destroy
 	SSpersistence.wall_engravings -= src
 	REMOVE_TRAIT(parent, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC)
@@ -81,6 +83,18 @@
 /datum/component/engraved/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 	examine_list += span_boldnotice(engraved_description)
+	examine_list += span_notice("You can probably get this out with a <b>welding tool</b>.")
+
+/datum/component/engraved/proc/on_tool_act(mob/user, obj/item/tool)
+	if(!(tool.tooltype == TOOL_WELDER))
+		return
+
+	. = COMPONENT_BLOCK_TOOL_ATTACK
+
+	to_chat(user, span_notice("You begin to remove the engraving on [parent]."))
+	if(do_after(user, parent, 4 SECONDS, DO_PUBLIC, display = tool))
+		to_chat(user, span_notice("You remove the engraving on [parent]."))
+		qdel(src)
 
 ///returns all the information SSpersistence needs in a list to load up this engraving on a future round!
 /datum/component/engraved/proc/save_persistent()

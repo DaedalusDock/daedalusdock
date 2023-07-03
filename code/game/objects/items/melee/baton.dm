@@ -418,18 +418,21 @@
 
 /obj/item/melee/baton/security/update_icon_state()
 	. = ..()
-	var/suffix
-	if(active)
-		suffix = "_active"
+	var/active
+	var/nocell
+	var/flipped
+
+	if(src.active)
+		active = "_active"
 
 	else if(!cell)
-		suffix = "_nocell"
+		nocell = "_nocell"
 
-	if(flipped)
-		suffix = "[suffix]_f"
+	if(src.flipped)
+		flipped = "_f"
 
-	icon_state = "[initial(icon_state)][suffix]"
-	inhand_icon_state = "[initial(inhand_icon_state)][suffix]"
+	icon_state = "[initial(icon_state)][active][nocell][flipped]"
+	inhand_icon_state = "[initial(inhand_icon_state)][active][flipped]"
 
 /obj/item/melee/baton/security/examine(mob/user)
 	. = ..()

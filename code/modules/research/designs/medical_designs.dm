@@ -600,8 +600,7 @@
 	name = "Tend Wounds"
 	desc = "An upgraded version of the original surgery."
 	id = "surgery_healing_base" //holder because CI cries otherwise. Not used in techweb unlocks.
-	surgery = /datum/surgery/healing
-	research_icon_state = "surgery_chest"
+	surgery = null
 
 /datum/design/surgery/healing/brute_upgrade
 	name = "Tend Wounds (Brute) Upgrade"

@@ -16,6 +16,8 @@
 	. = ..()
 	find_table()
 	for(var/datum/design/surgery/D as anything in subtypesof(/datum/design/surgery))
+		if(!initial(D.surgery))
+			continue
 		advanced_surgeries += initial(D.surgery)
 
 /obj/machinery/computer/operating/Destroy()

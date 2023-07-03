@@ -213,7 +213,7 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	playsound(loc,'sound/effects/phasein.ogg', 200, 0, 50, TRUE, TRUE)
 	mychild.revive(full_heal = TRUE, admin_revive = TRUE)
 	if(boosted)
-		mychild.maxHealth = mychild.maxHealth * 3
+		mychild.maxHealth = mychild.maxHealth * 2
 		mychild.health = mychild.maxHealth
 		notify_ghosts("\A [mychild] has been challenged in \the [get_area(src)]!", source = mychild, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Lavaland Elite challenged")
 

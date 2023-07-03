@@ -13,6 +13,8 @@
 #define HEALTH_THRESHOLD_CRIT 0 //! Soft crit
 #define HEALTH_THRESHOLD_FULLCRIT -100 //! Hard crit
 #define HEALTH_THRESHOLD_DEAD -200
+#define HEALTH_LOSS_TO_DIE ((HEALTH_THRESHOLD_DEAD *-1)) //! The amount of health you need to lose to die.
+#define maxHealth * 3 (HEALTH_LOSS_TO_DIE + 100) //! The damage cap per damage type. Is equal to the amount of damage required to die, and some extra.
 
 #define HEALTH_THRESHOLD_NEARDEATH -150 //Not used mechanically, but to determine if someone is so close to death they hear the other side
 

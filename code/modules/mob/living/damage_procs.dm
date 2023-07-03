@@ -168,7 +168,7 @@
 /mob/living/proc/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_status)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	bruteloss = clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, (HEALTH_THRESHOLD_DEAD * -1))
+	bruteloss = clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 3)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -180,7 +180,7 @@
 	if(!forced && (status_flags & GODMODE))
 		return
 	. = oxyloss
-	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, (HEALTH_THRESHOLD_DEAD * -1))
+	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 3)
 	if(updating_health)
 		updatehealth()
 
@@ -200,7 +200,7 @@
 /mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, (HEALTH_THRESHOLD_DEAD * -1))
+	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 3)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -219,7 +219,7 @@
 /mob/living/proc/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	fireloss = clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, (HEALTH_THRESHOLD_DEAD * -1))
+	fireloss = clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 3)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -230,7 +230,7 @@
 /mob/living/proc/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && ( (status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOCLONELOSS)) )
 		return FALSE
-	cloneloss = clamp((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, (HEALTH_THRESHOLD_DEAD * -1))
+	cloneloss = clamp((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 3)
 	if(updating_health)
 		updatehealth()
 	return amount

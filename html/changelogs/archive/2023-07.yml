@@ -22,3 +22,9 @@
   - imageadd: Inflatable boxes actually have their own sprite now.
   - balance: Inflatable boxes start with an extra wall and door. Inflatables can no
       longer activate if a structure or mob is on their tile.
+2023-07-04:
+  Kapu1178:
+  - balance: Passout threshold from oxyloss from 50 to 100
+  - balance: Oxyloss taken when failing a breath from 3 to rand(2, 4)
+  - balance: Oxyloss taken when failing a breath in critical condition from 3.3 to
+      rand(3,6)

@@ -20,7 +20,7 @@
 
 	for(var/path in subtypesof(/datum/design/surgery))
 		var/datum/design/surgery/current_design = SStech.designs_by_type[path]
-		if (current_design.id == DESIGN_ID_IGNORE) //Don't check designs with ignore ID
+		if (isnull(current_design)) //Don't check designs with ignore ID
 			continue
 		if (isnull(current_design.id) || current_design.id == default_design_surgery.id) //Check if ID was not set
 			TEST_FAIL("Surgery Design [current_design.type] has no ID set")

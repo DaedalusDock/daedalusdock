@@ -148,6 +148,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/list/species_exception = null
 	///This is a bitfield that defines what variations exist for bodyparts like Digi legs. See: code\_DEFINES\inventory.dm
 	var/supports_variations_flags = NONE
+	///A blacklist of bodytypes that aren't allowed to equip this item
+	var/restricted_bodytypes = NONE
 
 	///A weakref to the mob who threw the item
 	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var

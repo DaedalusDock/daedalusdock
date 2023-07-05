@@ -15460,7 +15460,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/machinery/space_heater,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -15468,6 +15467,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/machinery/suit_storage_unit/atmos/mod,
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "exL" = (
@@ -36864,10 +36864,10 @@
 /turf/open/floor/iron/checker,
 /area/station/science/research)
 "mrb" = (
-/obj/machinery/suit_storage_unit/atmos,
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
+/obj/machinery/space_heater,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "mrd" = (
@@ -42990,10 +42990,10 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "oyN" = (
-/obj/machinery/suit_storage_unit/engine,
 /obj/effect/turf_decal/bot{
 	dir = 1
 	},
+/obj/machinery/suit_storage_unit/engine/mod,
 /turf/open/floor/iron{
 	dir = 1
 	},
@@ -44106,11 +44106,11 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/machinery/space_heater,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/machinery/suit_storage_unit/atmos,
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "oUF" = (

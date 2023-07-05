@@ -21,10 +21,6 @@
 	var/obj/item/clothing/suit/space/hardsuit/suit
 	var/hardsuit_type = "engineering" //Determines used sprites: hardsuit[on]-[type]
 
-/obj/item/clothing/head/helmet/space/hardsuit/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HEAD)
-
 /obj/item/clothing/head/helmet/space/hardsuit/Destroy()
 	if(!QDELETED(suit))
 		QDEL_NULL(suit)

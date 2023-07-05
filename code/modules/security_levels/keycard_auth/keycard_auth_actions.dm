@@ -27,14 +27,14 @@
 /datum/keycard_auth_action/red_alert
 	name = "Red Alert"
 
-	trigger()
+/datum/keycard_auth_action/red_alert/trigger()
 		set_security_level(SEC_LEVEL_RED)
 
 /datum/keycard_auth_action/emergency_maintenance
 	name = "Emergency Maintenance Access"
 	ui_icon = "wrench"
 
-	trigger()
+/datum/keycard_auth_action/emergency_maintenance/trigger()
 		make_maint_all_access()
 
 
@@ -50,8 +50,3 @@
 	minor_announce("Bluespace Artillery firing protocols have been [GLOB.bsa_unlock? "unlocked" : "locked"]", "Weapons Systems Update:")
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))
 
-/datum/keycard_auth_action/test_always_disabled
-	name = "I SHOULD BE DISABLED"
-
-	is_available()
-		return FALSE

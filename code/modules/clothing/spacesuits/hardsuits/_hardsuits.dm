@@ -18,7 +18,6 @@
 
 	var/obj/item/clothing/head/helmet/space/hardsuit/helmet
 	var/helmettype = /obj/item/clothing/head/helmet/space/hardsuit
-	var/hardsuit_type = "engineering"
 	/// Whether the helmet is on.
 	var/helmet_on = FALSE
 

@@ -285,6 +285,7 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/shield/riot/buckler = 1,
 		/obj/item/throwing_star = 1,
 		/obj/item/weldingtool/hugetank = 1,
+		/obj/item/paint_sprayer = 1,
 		) = 1,
 
 	list(//equipment
@@ -296,18 +297,6 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/clothing/head/helmet/justice = 1,
 		/obj/item/storage/belt/military/assault = 1,
 		/obj/item/storage/belt/security = 1,
-		) = 1,
-
-	list(//paint
-		/obj/item/paint/anycolor = 1,
-		/obj/item/paint/black = 1,
-		/obj/item/paint/blue = 1,
-		/obj/item/paint/green = 1,
-		/obj/item/paint_remover = 1,
-		/obj/item/paint/red = 1,
-		/obj/item/paint/violet = 1,
-		/obj/item/paint/white = 1,
-		/obj/item/paint/yellow = 1,
 		) = 1,
 
 	list(//medical and chemicals

@@ -482,7 +482,6 @@
 		/obj/item/food/deadmouse,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
-		/obj/item/petri_dish,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/glass/beaker,
 		/obj/item/reagent_containers/glass/bottle,
@@ -490,8 +489,6 @@
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
 		/obj/item/bodypart,
-		/obj/item/petri_dish,
-		/obj/item/swab
 		))
 
 /*

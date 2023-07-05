@@ -10,12 +10,8 @@ again.
 
 /obj/effect/spawner/structure/Initialize(mapload)
 	. = ..()
-
 	for(var/spawn_type in spawn_list)
 		new spawn_type(loc)
-
-	return INITIALIZE_HINT_QDEL
-
 
 //normal windows
 
@@ -28,7 +24,6 @@ again.
 
 /obj/effect/spawner/structure/window/Initialize(mapload)
 	. = ..()
-
 	var/turf/current_turf = loc
 	current_turf.rcd_memory = RCD_MEMORY_WINDOWGRILLE
 

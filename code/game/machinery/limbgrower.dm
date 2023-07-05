@@ -25,7 +25,6 @@
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
 	. = ..()
-	AddComponent(/datum/component/plumbing/simple_demand)
 
 	internal_disk.set_data(
 		DATA_IDX_DESIGNS,
@@ -139,6 +138,9 @@
 
 	if (busy)
 		to_chat(usr, span_warning("The limb grower is busy. Please wait for completion of previous operation."))
+		return
+
+	if(!(params["active_tab"] in categories))
 		return
 
 	switch(action)

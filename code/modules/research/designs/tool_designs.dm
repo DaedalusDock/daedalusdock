@@ -52,15 +52,6 @@
 	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
-/datum/design/biopsy_tool
-	name = "Biopsy Tool"
-	id = "biopsy_tool"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 4000, /datum/material/glass = 3000)
-	build_path = /obj/item/biopsy_tool
-	category = list(DCAT_MISC_TOOL)
-	mapload_design_flags = DESIGN_FAB_OMNI
-
 /datum/design/wirebrush
 	name = "Wirebrush"
 	desc = "A tool to remove rust from walls."

@@ -116,7 +116,6 @@
 		//AREA_USAGE_EQUIP,AREA_USAGE_ENVIRON or AREA_USAGE_LIGHT
 	///A combination of factors such as having power, not being broken and so on. Boolean.
 	var/is_operational = TRUE
-	var/wire_compatible = FALSE
 
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 
@@ -126,6 +125,8 @@
 	var/obj/item/disk/data/inserted_disk = null
 	/// Used for data management.
 	var/obj/item/disk/data/selected_disk = null
+	/// Can insert a disk into this machine
+	var/has_disk_slot = FALSE
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -173,10 +174,16 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
+GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+		armor = machinery_default_armor
+
 	. = ..()
+
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH(src)
+
 	GLOB.machines += src
 
 	if(ispath(circuit, /obj/item/circuitboard))
@@ -701,7 +708,7 @@
 	if(.)
 		return
 
-	if(internal_disk && istype(weapon, /obj/item/disk/data))
+	if(has_disk_slot && istype(weapon, /obj/item/disk/data))
 		insert_disk(user, weapon)
 		return TRUE
 

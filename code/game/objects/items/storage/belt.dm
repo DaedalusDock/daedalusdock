@@ -80,6 +80,7 @@
 		/obj/item/inducer,
 		/obj/item/plunger,
 		/obj/item/airlock_painter,
+		/obj/item/paint_sprayer,
 		))
 
 /obj/item/storage/belt/utility/chief
@@ -230,7 +231,6 @@
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/muzzle,
 		/obj/item/clothing/mask/surgical,
-		/obj/item/construction/plumbing,
 		/obj/item/dnainjector,
 		/obj/item/extinguisher/mini,
 		/obj/item/flashlight/pen,
@@ -284,7 +284,6 @@
 		/obj/item/implanter,
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
-		/obj/item/construction/plumbing,
 		/obj/item/plunger,
 		/obj/item/reagent_containers/spray,
 		/obj/item/shears,

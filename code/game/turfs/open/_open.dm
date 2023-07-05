@@ -9,33 +9,6 @@
 	var/clawfootstep = null
 	var/heavyfootstep = null
 
-
-//direction is direction of travel of A
-/turf/open/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_IN_DOWN)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of A
-/turf/open/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	if(direction == UP)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of air
-/turf/open/zAirIn(direction, turf/source)
-	return (direction == DOWN)
-
-//direction is direction of travel of air
-/turf/open/zAirOut(direction, turf/source)
-	return (direction == UP)
-
 /turf/open/indestructible
 	name = "floor"
 	icon = 'icons/turf/floors.dmi'
@@ -69,7 +42,7 @@
 /turf/open/indestructible/permalube
 	icon_state = "darkfull"
 
-/turf/open/indestructible/permalube/ComponentInitialize()
+/turf/open/indestructible/permalube/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_LUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -82,7 +55,7 @@
 	heavyfootstep = null
 	var/sound = 'sound/effects/clownstep1.ogg'
 
-/turf/open/indestructible/honk/ComponentInitialize()
+/turf/open/indestructible/honk/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_SUPERLUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -130,9 +103,6 @@
 	tiled_dirt = FALSE
 
 /turf/open/indestructible/hierophant/two
-
-/turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/open/indestructible/paper
 	name = "notebook floor"

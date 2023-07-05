@@ -16,7 +16,6 @@
 	pass_flags_self = PASSGLASS
 	can_atmos_pass = CANPASS_PROC
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
-	network_id = NETWORK_DOOR_AIRLOCKS
 	set_dir_on_move = FALSE
 	auto_dir_align = FALSE
 	var/obj/item/electronics/airlock/electronics = null
@@ -28,6 +27,7 @@
 
 /obj/machinery/door/window/Initialize(mapload, set_dir, unres_sides)
 	. = ..()
+	init_network_id(NETWORK_DOOR_AIRLOCKS)
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
 	if(set_dir)
 		setDir(set_dir)
@@ -63,9 +63,6 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
 	become_atmos_sensitive()
-
-/obj/machinery/door/window/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/ntnet_interface)
 
 /obj/machinery/door/window/Destroy()
@@ -183,8 +180,8 @@
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
-	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
+/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
+	return !density || (dir != to_dir) || (check_access(ID) && hasPower() && !no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER

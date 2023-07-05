@@ -105,16 +105,3 @@
 	var/datum/surgery_step/heal/burn/basic/basic_burn_heal = new
 	basic_burn_heal.success(user, patient, BODY_ZONE_CHEST)
 	TEST_ASSERT(patient.getFireLoss() < 100, "Tending burn wounds didn't lower burn damage ([patient.getFireLoss()])")
-
-	// Test that wearing clothing lowers heal amount
-	var/mob/living/carbon/human/naked_patient = allocate(/mob/living/carbon/human)
-	naked_patient.take_overall_damage(100)
-
-	var/mob/living/carbon/human/clothed_patient = allocate(/mob/living/carbon/human)
-	clothed_patient.equipOutfit(/datum/outfit/job/doctor, TRUE)
-	clothed_patient.take_overall_damage(100)
-
-	basic_brute_heal.success(user, naked_patient, BODY_ZONE_CHEST)
-	basic_brute_heal.success(user, clothed_patient, BODY_ZONE_CHEST)
-
-	TEST_ASSERT(naked_patient.getBruteLoss() < clothed_patient.getBruteLoss(), "Naked patient did not heal more from wounds tending than a clothed patient")

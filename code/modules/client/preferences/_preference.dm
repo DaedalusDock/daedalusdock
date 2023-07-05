@@ -10,15 +10,17 @@
 /// The priority at which body type is decided, applied after gender so we can
 /// support the "use gender" option.
 #define PREFERENCE_PRIORITY_BODY_TYPE 5
+/// Augments come after species and bodytype.
+#define PREFERENCE_PRIORITY_AUGMENTS 6
 /// The priority hair is applied. We apply human hair first, and moth hair after, only if they are a moth. Sorry.
-#define PREFERENCE_PRIORITY_HUMAN_HAIR 6
+#define PREFERENCE_PRIORITY_HUMAN_HAIR 7
 /// The priority non-human hair is applied (used to apply moth hair after normal hair)
-#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 7
+#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 8
 /// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 8
+#define PREFERENCE_PRIORITY_NAMES 9
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 9
-#define PREFERENCE_PRIORITY_APPEARANCE_MODS 10
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 10
+#define PREFERENCE_PRIORITY_APPEARANCE_MODS 11
 
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
 #define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_APPEARANCE_MODS
@@ -227,7 +229,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /// Apply this preference onto the given human.
 /// Must be overriden by subtypes.
 /// Called when the savefile_identifier == PREFERENCE_CHARACTER.
-/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences) //PARIAH EDIT
+/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
@@ -300,6 +302,8 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
 /datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
+	if(ispath(preference))
+		preference = GLOB.preference_entries[preference]
 	var/savefile = get_savefile_for_savefile_identifier(preference.savefile_identifier)
 	var/new_value = preference.deserialize(preference_value, src)
 	var/success = preference.write(savefile, new_value)
@@ -603,6 +607,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 ///Holds any kind of abstract list data you'd like it to. MUST impliment `is_valid`!
 /datum/preference/blob
 	abstract_type = /datum/preference/blob
+	can_randomize = FALSE
 
 /datum/preference/blob/create_default_value()
 	return list()
@@ -615,5 +620,5 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/blob/is_valid(value)
 	return islist(value)
 
-/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value)
 	return

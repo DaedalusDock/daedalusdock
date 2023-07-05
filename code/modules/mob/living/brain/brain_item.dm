@@ -3,6 +3,8 @@
 	desc = "A piece of juicy meat found in a person's head."
 	icon_state = "brain"
 	visual = TRUE
+	color_source = ORGAN_COLOR_STATIC
+	draw_color = null
 	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
@@ -351,10 +353,6 @@
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/jitter)
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
 			owner.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/confusion)
-
-/obj/item/organ/brain/skrell
-	name = "spongy brain"
-	icon_state = "skrell-brain"
 
 
 ////////////////////////////////////TRAUMAS////////////////////////////////////////

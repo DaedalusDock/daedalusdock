@@ -3,6 +3,7 @@
 	plane = FLOOR_PLANE
 	anchored = TRUE
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
+	uses_integrity = FALSE
 	var/turf_loc_check = TRUE
 
 /obj/effect/decal/Initialize(mapload)
@@ -39,19 +40,28 @@
 	var/decal_layer = DECAL_NORMAL_LAYER
 
 /obj/effect/turf_decal/Initialize(mapload)
-	..()
+	SHOULD_CALL_PARENT(FALSE)
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	initialized = TRUE
+
 	var/turf/T = loc
 	if(!istype(T)) //you know this will happen somehow
 		CRASH("Turf decal initialized in an object/nullspace")
 	T.AddElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return INITIALIZE_HINT_QDEL
 
-#ifdef UNIT_TESTS
 // If we don't do this, turf decals will end up stacking up on a tile, and break the overlay limit
 // I hate it too bestie
 /obj/effect/turf_decal/Destroy()
+	SHOULD_CALL_PARENT(FALSE)
+#ifdef UNIT_TESTS
+// If we don't do this, turf decals will end up stacking up on a tile, and break the overlay limit
+// I hate it too bestie
 	if(GLOB.running_create_and_destroy)
 		var/turf/T = loc
 		T.RemoveElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return ..()
 #endif
+	loc = null
+	return QDEL_HINT_QUEUE

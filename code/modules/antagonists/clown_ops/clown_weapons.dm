@@ -195,9 +195,6 @@
 	if(iscarbon(loc))
 		to_chat(loc, span_danger("[src] begins to beep."))
 	bomb.arm_grenade(loc, null, FALSE)
-
-/obj/item/grown/bananapeel/bombanana/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/slippery, det_time)
 
 /obj/item/grown/bananapeel/bombanana/Destroy()

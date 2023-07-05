@@ -12,7 +12,7 @@
 /datum/preference/choiced/teshari_feathers/init_possible_values()
 	return GLOB.teshari_feathers_list
 
-/datum/preference/choiced/teshari_feathers/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/teshari_feathers/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["teshari_feathers"] = value
 
 /datum/preference/choiced/teshari_ears
@@ -26,7 +26,7 @@
 /datum/preference/choiced/teshari_ears/init_possible_values()
 	return GLOB.teshari_ears_list
 
-/datum/preference/choiced/teshari_ears/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/teshari_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["teshari_ears"] = value
 
 /datum/preference/choiced/teshari_body_feathers
@@ -40,7 +40,7 @@
 /datum/preference/choiced/teshari_body_feathers/init_possible_values()
 	return GLOB.teshari_body_feathers_list
 
-/datum/preference/choiced/teshari_body_feathers/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/teshari_body_feathers/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["teshari_body_feathers"] = value
 
 /datum/preference/choiced/tail_teshari
@@ -54,7 +54,7 @@
 /datum/preference/choiced/tail_teshari/init_possible_values()
 	return GLOB.teshari_tails_list
 
-/datum/preference/choiced/tail_teshari/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/tail_teshari/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_teshari"] = value
 
 /datum/preference/tri_color/teshari_tail

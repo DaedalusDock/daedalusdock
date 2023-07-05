@@ -11,16 +11,14 @@
 			W.wall_paint = _color
 		if(wall_trim)
 			W.stripe_paint = _color
-		W.update_greyscale()
-		W.update_overlays()
+		W.update_appearance()
 
 	for(var/obj/structure/low_wall/L in view(user))
 		if(wall_paint)
 			L.wall_paint = _color
 		if(wall_trim)
 			L.stripe_paint = _color
-		L.update_greyscale()
-		L.update_overlays()
+		L.update_appearance()
 
 ///Dummy types for prepainted walls
 /turf/closed/wall/prepainted

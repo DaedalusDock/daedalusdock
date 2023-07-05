@@ -446,7 +446,7 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 //In case colors are changed after initialization
-/obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+/obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, queue, new_worn_config, new_inhand_left, new_inhand_right)
 	. = ..()
 	if(hood)
 		var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)

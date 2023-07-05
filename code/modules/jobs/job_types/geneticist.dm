@@ -31,8 +31,6 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	bounty_types = CIV_JOB_SCI
-
 	mail_goodies = list(
 		/obj/item/storage/box/monkeycubes = 10
 	)

@@ -664,3 +664,5 @@
 
 /datum/config_entry/flag/topic_enabled
 	protection = CONFIG_ENTRY_LOCKED
+
+/datum/config_entry/flag/show_job_estimation

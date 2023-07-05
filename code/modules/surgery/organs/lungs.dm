@@ -96,9 +96,9 @@
 		if(breather.reagents.has_reagent(crit_stabilizing_reagent, needs_metabolizing = TRUE))
 			return
 		if(breather.health >= breather.crit_threshold)
-			breather.adjustOxyLoss(HUMAN_MAX_OXYLOSS)
+			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 		else if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+			breather.adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)
@@ -301,11 +301,11 @@
 
 	if(breath_pp > 0)
 		var/ratio = safe_breath_min/breath_pp
-		suffocator.adjustOxyLoss(min(5*ratio, HUMAN_MAX_OXYLOSS)) // Don't fuck them up too fast (space only does HUMAN_MAX_OXYLOSS after all!
+		suffocator.adjustOxyLoss(min(5*ratio, HUMAN_FAILBREATH_OXYLOSS)) // Don't fuck them up too fast (space only does HUMAN_FAILBREATH_OXYLOSS after all!
 		suffocator.failed_last_breath = TRUE
 		. = true_pp*ratio/6
 	else
-		suffocator.adjustOxyLoss(HUMAN_MAX_OXYLOSS)
+		suffocator.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 		suffocator.failed_last_breath = TRUE
 
 
@@ -380,28 +380,6 @@
 	if (breath?.getGroupGas(GAS_PLASMA))
 		var/plasma_pp = breath.getBreathPartialPressure(breath.getGroupGas(GAS_PLASMA))
 		owner.blood_volume += (0.2 * plasma_pp) // 10/s when breathing literally nothing but plasma, which will suffocate you.
-
-/obj/item/organ/lungs/skrell
-	name = "skrell lungs"
-	icon_state = "lungs-skrell"
-	safe_plasma_max = 40
-	safe_co2_max = 40
-
-	cold_level_1_threshold = 248
-	cold_level_2_threshold = 220
-	cold_level_3_threshold = 170
-	cold_level_1_damage = COLD_GAS_DAMAGE_LEVEL_2 //Keep in mind with gas damage levels, you can set these to be negative, if you want someone to heal, instead.
-	cold_level_2_damage = COLD_GAS_DAMAGE_LEVEL_2
-	cold_level_3_damage = COLD_GAS_DAMAGE_LEVEL_3
-	cold_damage_type = BRUTE
-
-	heat_level_1_threshold = 318
-	heat_level_2_threshold = 348
-	heat_level_3_threshold = 1000
-	heat_level_1_damage = HEAT_GAS_DAMAGE_LEVEL_2
-	heat_level_2_damage = HEAT_GAS_DAMAGE_LEVEL_2
-	heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
-	heat_damage_type = BURN
 
 /obj/item/organ/lungs/teshari
 	name = "teshari lungs"

@@ -34,3 +34,10 @@
 /datum/loadout_item/mask/bandana_skull
 	path = /obj/item/clothing/mask/bandana/skull
 
+/datum/loadout_item/mask/breath_mask
+	path = /obj/item/clothing/mask/breath
+
+/datum/loadout_item/mask/breath_mask_vox
+	path = /obj/item/clothing/mask/breath/vox
+
+

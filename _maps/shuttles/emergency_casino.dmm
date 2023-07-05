@@ -905,14 +905,7 @@
 /area/shuttle/escape)
 "yH" = (
 /obj/structure/closet/crate,
-/obj/item/paint/black,
-/obj/item/paint/blue,
-/obj/item/paint/green,
-/obj/item/paint/red,
-/obj/item/paint/violet,
-/obj/item/paint/white,
-/obj/item/paint/yellow,
-/obj/item/paint_remover,
+/obj/item/paint_sprayer,
 /turf/open/floor/sepia,
 /area/shuttle/escape)
 "yJ" = (

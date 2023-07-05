@@ -98,11 +98,6 @@
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)
 
-/obj/item/organ/heart/skrell
-	name = "skrell heart"
-	icon_state = "heart-skrell-on"
-	base_icon_state = "heart-skrell"
-
 /obj/item/organ/heart/cursed
 	name = "cursed heart"
 	desc = "A heart that, when inserted, will force you to pump it manually."
@@ -286,6 +281,9 @@
 
 /obj/item/organ/heart/ethereal/Insert(mob/living/carbon/owner, special = 0)
 	. = ..()
+	if(!.)
+		return
+
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 	RegisterSignal(owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_owner_fully_heal))
 	RegisterSignal(owner, COMSIG_PARENT_PREQDELETED, PROC_REF(owner_deleted))

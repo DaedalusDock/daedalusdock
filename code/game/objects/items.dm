@@ -246,6 +246,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			hitsound = 'sound/items/welder.ogg'
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
+	if(sharpness && force > 5) //give sharp objects butchering functionality, for consistency
+		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 	if(LAZYLEN(embedding))
@@ -323,11 +325,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(B && B.loc == loc)
 		atom_destruction(MELEE)
 
-/obj/item/ComponentInitialize()
-	. = ..()
-
-	if(sharpness && force > 5) //give sharp objects butchering functionality, for consistency
-		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
 /**Makes cool stuff happen when you suicide with an item
  *
@@ -338,7 +335,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 /obj/item/proc/suicide_act(mob/user)
 	return
 
-/obj/item/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+/obj/item/set_greyscale(list/colors, new_config, queue, new_worn_config, new_inhand_left, new_inhand_right)
 	if(new_worn_config)
 		greyscale_config_worn = new_worn_config
 	if(new_inhand_left)
@@ -1502,3 +1499,37 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(isturf(locthing))
 		return src
 	return loc
+
+/obj/item/onZImpact(turf/impacted_turf, levels, message)
+	. = ..()
+	playsound(impacted_turf, hitsound, 50)
+
+	if(!force)
+		return
+
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(hurt_atom == src)
+			continue
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage((w_class * 5) * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

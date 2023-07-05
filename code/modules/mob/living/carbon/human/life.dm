@@ -84,9 +84,9 @@
 
 	if(!L)
 		if(health >= crit_threshold)
-			adjustOxyLoss(HUMAN_MAX_OXYLOSS + 1)
+			adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS + 1)
 		else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-			adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+			adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		failed_last_breath = TRUE
 

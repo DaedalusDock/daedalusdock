@@ -227,8 +227,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_MUSHROOM_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
-	if(features["headtails"])
-		L[DNA_HEADTAILS_BLOCK] = construct_block(GLOB.headtails_list.Find(features["headtails"]), GLOB.headtails_list.len)
 	if(features["teshari_feathers"])
 		L[DNA_TESHARI_FEATHERS_BLOCK] = construct_block(GLOB.teshari_feathers_list.Find(features["teshari_feathers"]), GLOB.teshari_feathers_list.len)
 	if(features["teshari_ears"])
@@ -380,8 +378,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
-		if(DNA_HEADTAILS_BLOCK)
-			set_uni_feature_block(blocknumber, construct_block(GLOB.headtails_list.Find(features["headtails"]), GLOB.headtails_list.len))
 		if(DNA_TESHARI_FEATHERS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.teshari_feathers_list.Find(features["teshari_feathers"]), GLOB.teshari_feathers_list.len))
 		if(DNA_TESHARI_EARS_BLOCK)
@@ -525,6 +521,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	current_body_size = desired_size
 
 /mob/proc/set_species(datum/species/mrace, icon_update = 1)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /mob/living/brain/set_species(datum/species/mrace, icon_update = 1)
@@ -547,10 +544,14 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		else
 			return
 		deathsound = new_race.deathsound
-		dna.species.on_species_loss(src, new_race, pref_load)
+
+		if(dna.species.properly_gained)
+			dna.species.on_species_loss(src, new_race, pref_load)
+
 		var/datum/species/old_species = dna.species
 		dna.species = new_race
 		dna.species.on_species_gain(src, old_species, pref_load)
+
 		if(ishuman(src))
 			qdel(language_holder)
 			var/species_holder = initial(mrace.species_language_holder)
@@ -675,8 +676,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_MUSHROOM_CAPS_BLOCK), GLOB.caps_list.len)]
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
-	if(dna.features["headtails"])
-		dna.features["headtails"] = GLOB.headtails_list[deconstruct_block(get_uni_feature_block(features, DNA_HEADTAILS_BLOCK), GLOB.headtails_list.len)]
 	if(dna.features["teshari_feathers"])
 		dna.features["teshari_feathers"] = GLOB.teshari_feathers_list[deconstruct_block(get_uni_feature_block(features, DNA_TESHARI_FEATHERS_BLOCK), GLOB.teshari_feathers_list.len)]
 	if(dna.features["teshari_ears"])

@@ -342,7 +342,7 @@
 	var/trimmable = TRUE
 	var/list/static/random_plant_states
 
-/obj/item/kirbyplants/ComponentInitialize()
+/obj/item/kirbyplants/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/tactical)
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_unwielded=10, force_wielded=10)
@@ -422,10 +422,6 @@
 	desc = "An old botanical research sample collected on a long forgotten jungle planet."
 	icon_state = "fern"
 	trimmable = FALSE
-
-/obj/item/kirbyplants/fern/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_ALGAE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 5)
 
 //a rock is flora according to where the icon file is
 //and now these defines

@@ -37,9 +37,10 @@
  *
  * Note that this proc can be overridden, and is in the case of screen objects.
  */
-/atom/Click(location,control,params)
+/atom/Click(location, control, params)
 	if(initialized)
 		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
+
 		usr.ClickOn(src, params)
 
 /atom/DblClick(location,control,params)
@@ -133,11 +134,10 @@
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			W.attack_self_secondary(src, modifiers)
 			update_held_items()
-			return
 		else
 			W.attack_self(src, modifiers)
 			update_held_items()
-			return
+		return
 
 	//These are always reachable.
 	//User itself, current loc, and user inventory

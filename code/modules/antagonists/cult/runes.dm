@@ -988,7 +988,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 		switch(outcome)
 			if(1 to 10)
 				var/datum/round_event_control/disease_outbreak/D = new()
-				var/datum/round_event_control/mice_migration/M = new()
+				var/datum/round_event_control/animal_infestation/vermin/M = new()
 				D.runEvent()
 				M.runEvent()
 			if(11 to 20)

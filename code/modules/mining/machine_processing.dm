@@ -124,6 +124,8 @@
 	icon_state = "furnace"
 	density = TRUE
 	needs_item_input = TRUE
+	has_disk_slot = TRUE
+
 	var/obj/machinery/mineral/CONSOLE = null
 	var/on = FALSE
 	var/datum/material/selected_material = null
@@ -176,6 +178,12 @@
 
 /obj/machinery/mineral/processing_unit/proc/get_machine_data()
 	var/dat = "<b>Smelter control console</b><br><br>"
+	//On or off
+	dat += "Machine is currently "
+	if (on)
+		dat += "<A href='?src=[REF(CONSOLE)];set_on=off'>On</A><br> "
+	else
+		dat += "<A href='?src=[REF(CONSOLE)];set_on=on'>Off</A><br> "
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	for(var/datum/material/M in materials.materials)
 		var/amount = materials.materials[M]
@@ -199,12 +207,6 @@
 
 	dat += "<br><br>"
 	//On or off
-	dat += "Machine is currently "
-	if (on)
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=off'>On</A> "
-	else
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=on'>Off</A> "
-
 	return dat
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)

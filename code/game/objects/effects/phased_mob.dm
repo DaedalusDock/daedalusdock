@@ -112,7 +112,7 @@
 		to_chat(user, span_danger("Some dull, universal force is blocking the way. It's overwhelmingly oppressive force feels dangerous."))
 		return
 	if (direction == UP || direction == DOWN)
-		newloc = can_z_move(direction, get_turf(src), newloc, ZMOVE_INCAPACITATED_CHECKS | ZMOVE_FEEDBACK | ZMOVE_ALLOW_ANCHORED, user)
+		newloc = can_z_move(direction, get_turf(src), ZMOVE_INCAPACITATED_CHECKS | ZMOVE_FEEDBACK | ZMOVE_ALLOW_ANCHORED, user)
 
 	return newloc
 

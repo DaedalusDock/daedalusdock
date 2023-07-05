@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - balance: Heads lost Telebatons and gained Flashes
-  - balance: Reduced the blast speed of heirophant's blasts.
-  - balance: Reduced the stamina cost of sprinting
-  - balance: Reduced the speed of sprinting
-  - qol: Sprinting no longer drains stamina if you aren't able to move in that direction.

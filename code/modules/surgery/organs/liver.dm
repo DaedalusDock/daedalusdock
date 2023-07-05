@@ -220,13 +220,6 @@
 	icon_state = "vox-liver"
 	alcohol_tolerance = 0.008 // 60% more toxic
 
-/obj/item/organ/liver/skrell
-	name = "skrell liver"
-	icon_state = "liver-skrell"
-	alcohol_tolerance = 5
-	toxTolerance = 10 //can shrug off up to 10u of toxins.
-	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
-
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"

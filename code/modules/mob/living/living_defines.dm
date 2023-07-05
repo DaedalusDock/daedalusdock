@@ -187,3 +187,11 @@
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null
+
+	///Used for lookup/lookdown verbs
+	var/mob/camera/z_eye/z_eye
+
+	///Gunpoint container
+	var/obj/effect/abstract/aim_overlay/gunpoint
+	var/gunpoint_flags = TARGET_CAN_MOVE | TARGET_CAN_INTERACT | TARGET_CAN_RADIO
+	var/use_gunpoint = FALSE

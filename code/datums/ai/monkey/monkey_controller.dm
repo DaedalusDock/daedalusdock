@@ -46,7 +46,7 @@ have ways of interacting with a specific mob and control it.
 		return AI_CONTROLLER_INCOMPATIBLE
 
 	var/mob/living/living_pawn = new_pawn
-	new_pawn.AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/connect_loc_behalf, new_pawn, loc_connections)
 	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_PAW, PROC_REF(on_attack_paw))
@@ -83,11 +83,11 @@ have ways of interacting with a specific mob and control it.
 // Stops sentient monkeys from being knocked over like weak dunces.
 /datum/ai_controller/monkey/on_sentience_gained()
 	. = ..()
-	pawn.RemoveElement(/datum/element/connect_loc, loc_connections)
+	qdel(GetComponent(/datum/component/connect_loc_behalf))
 
 /datum/ai_controller/monkey/on_sentience_lost()
 	. = ..()
-	pawn.AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/connect_loc_behalf, pawn, loc_connections)
 
 /datum/ai_controller/monkey/able_to_run()
 	. = ..()

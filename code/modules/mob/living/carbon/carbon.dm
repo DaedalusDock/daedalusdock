@@ -1,6 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
 	. = ..()
-	create_reagents(1000, REAGENT_HOLDER_ALIVE)
+	create_carbon_reagents(1000, REAGENT_HOLDER_ALIVE)
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	register_context()
 
@@ -27,6 +27,12 @@
 	remove_from_all_data_huds()
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
+
+///Humans need to init these early for species purposes
+/mob/living/carbon/proc/create_carbon_reagents()
+	if(reagents)
+		return
+	create_reagents(1000, REAGENT_HOLDER_ALIVE)
 
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()
@@ -697,17 +703,17 @@
 		switch(oxyloss)
 			if(10 to 20)
 				severity = 1
-			if(20 to 25)
+			if(20 to 35)
 				severity = 2
-			if(25 to 30)
+			if(35 to 50)
 				severity = 3
-			if(30 to 35)
+			if(50 to 65)
 				severity = 4
-			if(35 to 40)
+			if(65 to 80)
 				severity = 5
-			if(40 to 45)
+			if(80 to 90)
 				severity = 6
-			if(45 to INFINITY)
+			if(90 to INFINITY)
 				severity = 7
 		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 	else
@@ -937,11 +943,12 @@
 		to_chat(user, span_notice("You retrieve some of [src]\'s internal organs!"))
 	remove_all_embedded_objects()
 
-/mob/living/carbon/proc/create_bodyparts()
+/mob/living/carbon/proc/create_bodyparts(list/overrides)
 	var/l_arm_index_next = -1
 	var/r_arm_index_next = 0
-	for(var/bodypart_path in bodyparts)
-		var/obj/item/bodypart/bodypart_instance = new bodypart_path()
+	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts)
+		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
+		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
 		bodypart_instance.set_owner(src)
 		bodyparts.Remove(bodypart_path)
 		add_bodypart(bodypart_instance)
@@ -954,7 +961,6 @@
 				r_arm_index_next += 2
 				bodypart_instance.held_index = r_arm_index_next //2, 4, 6, 8...
 				hand_bodyparts += bodypart_instance
-
 
 ///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)
@@ -1391,3 +1397,35 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(LAZYLEN(BP.wounds))
 			. += BP.wounds
+
+/mob/living/carbon/ZImpactDamage(turf/T, levels)
+	. = ..()
+	if(!.)
+		return
+
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in T)
+		if(hurt_atom == src)
+			continue
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage(30 * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

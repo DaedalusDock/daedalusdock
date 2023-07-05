@@ -71,7 +71,7 @@
 		else
 			tag_position = findtext(text_to_play, html_locate_regex, tag_position)
 			reading_tag = TRUE
-	for(var/letter = 2 to length(text_to_play) + 1 step letters_per_update)
+	for(var/letter = 2 to length(text_to_play) + letters_per_update step letters_per_update)
 		if(letter in lines_to_skip)
 			continue
 		maptext = "[style_open][copytext_char(text_to_play, 1, letter)][style_close]"

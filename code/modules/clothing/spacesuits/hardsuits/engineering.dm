@@ -1,5 +1,5 @@
 /obj/item/clothing/head/helmet/space/hardsuit/engine
-	name = "engineering hardsuit helmet"
+	name = "engineering voidsuit helmet"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment. Has radiation shielding."
 	icon_state = "hardsuit0-engineering"
 	inhand_icon_state = "eng_helm"
@@ -12,7 +12,7 @@
 	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/suit/space/hardsuit/engine
-	name = "engineering hardsuit"
+	name = "engineering voidsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Has radiation shielding."
 	icon_state = "hardsuit-engineering"
 	inhand_icon_state = "eng_hardsuit"

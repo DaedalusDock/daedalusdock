@@ -1,5 +1,5 @@
 /obj/item/clothing/head/helmet/space/hardsuit/toxins
-	name = "prototype hardsuit helmet"
+	name = "prototype voidsuit helmet"
 	desc = "A prototype helmet designed for research in a hazardous, low pressure environment. Scientific data flashes across the visor."
 	icon_state = "hardsuit0-toxins"
 	hardsuit_type = "toxins"
@@ -39,7 +39,7 @@
 	display_visor_message("Explosion detected! Epicenter: [devastation_range], Outer: [heavy_impact_range], Shock: [light_impact_range]")
 
 /obj/item/clothing/suit/space/hardsuit/toxins
-	name = "prototype hardsuit"
+	name = "prototype voidsuit"
 	desc = "A prototype suit that protects against hazardous, low pressure environments. Fitted with extensive plating for handling explosives and dangerous research materials."
 	icon_state = "hardsuit-toxins"
 	inhand_icon_state = "hardsuit-toxins"

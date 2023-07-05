@@ -1,6 +1,6 @@
 	//Medical hardsuit
 /obj/item/clothing/head/helmet/space/hardsuit/medical
-	name = "medical hardsuit helmet"
+	name = "medical voidsuit helmet"
 	desc = "A special helmet designed for work in a hazardous, low pressure environment. Built with lightweight materials for extra comfort, but does not protect the eyes from intense light."
 	icon_state = "hardsuit0-medical"
 	inhand_icon_state = "medical_helm"
@@ -11,7 +11,7 @@
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT
 
 /obj/item/clothing/suit/space/hardsuit/medical
-	name = "medical hardsuit"
+	name = "medical voidsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Built with lightweight materials for easier movement."
 	icon_state = "hardsuit-medical"
 	inhand_icon_state = "medical_hardsuit"

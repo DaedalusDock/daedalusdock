@@ -2,7 +2,7 @@
 #define HARDSUIT_EMP_BURN 2 // a very orange number
 
 /obj/item/clothing/suit/space/hardsuit
-	name = "hardsuit"
+	name = "voidsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Has radiation shielding."
 	icon = 'icons/obj/clothing/hardsuits/suit.dmi'
 	worn_icon = 'icons/mob/clothing/hardsuit/hardsuit_body.dmi'

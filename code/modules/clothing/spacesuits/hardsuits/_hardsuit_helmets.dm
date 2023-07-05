@@ -1,5 +1,5 @@
 /obj/item/clothing/head/helmet/space/hardsuit
-	name = "hardsuit helmet"
+	name = "voidsuit helmet"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment. Has radiation shielding."
 	icon = 'icons/obj/clothing/hardsuits/helmet.dmi'
 	worn_icon = 'icons/mob/clothing/hardsuit/hardsuit_helm.dmi'

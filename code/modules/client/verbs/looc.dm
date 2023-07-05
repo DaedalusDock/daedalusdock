@@ -37,7 +37,7 @@
 		if(prefs.muted & MUTE_LOOC)
 			to_chat(src, span_danger("You cannot use LOOC (muted)."))
 			return
-		if(mob.stat)
+		if(mob.stat >= UNCONSCIOUS)
 			to_chat(src, span_danger("You cannot use LOOC while unconscious or dead."))
 			return
 		if(isdead(mob))

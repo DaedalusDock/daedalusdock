@@ -114,7 +114,8 @@
 	icon_state = "0"
 
 /turf/open/floor/holofloor/space/Initialize(mapload)
-	icon_state = SPACE_ICON_STATE(x, y, z) // so realistic
+	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1] // so realistic
+	layer = initial(layer)
 	. = ..()
 
 /turf/open/floor/holofloor/hyperspace
@@ -140,8 +141,8 @@
 	base_icon_state = "carpet"
 	floor_tile = /obj/item/stack/tile/carpet
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET)
-	canSmoothWith = list(SMOOTH_GROUP_CARPET)
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_CARPET
+	canSmoothWith = SMOOTH_GROUP_CARPET
 	bullet_bounce_sound = null
 	tiled_dirt = FALSE
 
@@ -151,7 +152,7 @@
 
 /turf/open/floor/holofloor/carpet/update_icon(updates=ALL)
 	. = ..()
-	if((updates & UPDATE_SMOOTHING) && overfloor_placed && smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+	if((updates & UPDATE_SMOOTHING) && overfloor_placed)
 		QUEUE_SMOOTH(src)
 
 /turf/open/floor/holofloor/wood

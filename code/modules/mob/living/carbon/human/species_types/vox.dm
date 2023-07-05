@@ -16,6 +16,7 @@
 		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
+		NO_UNDERWEAR,
 	)
 	inherent_traits = list(
 		TRAIT_RESISTCOLD,
@@ -41,6 +42,7 @@
 	outfit_important_for_life = /datum/outfit/vox
 	species_language_holder = /datum/language_holder/vox
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
+
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/vox,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/vox,
@@ -49,6 +51,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/vox,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/vox,
 	)
+
+	robotic_bodyparts = null
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"
@@ -63,9 +67,24 @@
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR
 
-/datum/species/vox/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
-	. = ..()
-	give_important_for_life(equipping)
+/datum/species/vox/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only)
+	if(!O)
+		give_important_for_life(equipping)
+		return
+
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath/vox, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	var/obj/item/tank/internals/nitrogen/belt/full/tank = new
+	if(!O.r_hand)
+		equipping.put_in_r_hand(tank)
+	else if(!O.l_hand)
+		equipping.put_in_l_hand(tank)
+	else
+		equipping.put_in_r_hand(tank)
+
+	equipping.internal = tank
 
 /datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()

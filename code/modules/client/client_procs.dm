@@ -130,7 +130,16 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(QDELETED(real_src))
 			return
 
+	//fun fact: Topic() acts like a verb and is executed at the end of the tick like other verbs. So we have to queue it if the server is
+	//overloaded
+	if(hsrc && hsrc != holder && DEFAULT_TRY_QUEUE_VERB(VERB_CALLBACK(src, PROC_REF(_Topic), hsrc, href, href_list)))
+		return
 	..() //redirect to hsrc.Topic()
+
+///dumb workaround because byond doesnt seem to recognize the .proc/Topic() typepath for /datum/proc/Topic() from the client Topic,
+///so we cant queue it without this
+/client/proc/_Topic(datum/hsrc, href, list/href_list)
+	return hsrc.Topic(href, href_list)
 
 /client/proc/is_content_unlocked()
 	if(!prefs.unlock_content)
@@ -619,7 +628,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
 	QDEL_NULL(tooltips)
-	QDEL_NULL(open_loadout_ui) //PARIAH EDIT ADDITION
 	seen_messages = null
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
@@ -944,6 +952,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			click_intercept_time = 0 //Reset and return. Next click should work, but not this one.
 			return
 		click_intercept_time = 0 //Just reset. Let's not keep re-checking forever.
+
 	var/ab = FALSE
 	var/list/modifiers = params2list(params)
 
@@ -957,12 +966,16 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/mcl = CONFIG_GET(number/minute_click_limit)
 	if (!holder && mcl)
 		var/minute = round(world.time, 600)
+
 		if (!clicklimiter)
 			clicklimiter = new(LIMITER_SIZE)
+
 		if (minute != clicklimiter[CURRENT_MINUTE])
 			clicklimiter[CURRENT_MINUTE] = minute
 			clicklimiter[MINUTE_COUNT] = 0
-		clicklimiter[MINUTE_COUNT] += 1+(ab)
+
+		clicklimiter[MINUTE_COUNT] += 1 + (ab)
+
 		if (clicklimiter[MINUTE_COUNT] > mcl)
 			var/msg = "Your previous click was ignored because you've done too many in a minute."
 			if (minute != clicklimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
@@ -983,13 +996,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		var/second = round(world.time, 10)
 		if (!clicklimiter)
 			clicklimiter = new(LIMITER_SIZE)
+
 		if (second != clicklimiter[CURRENT_SECOND])
 			clicklimiter[CURRENT_SECOND] = second
 			clicklimiter[SECOND_COUNT] = 0
-		clicklimiter[SECOND_COUNT] += 1+(!!ab)
+
+		clicklimiter[SECOND_COUNT] += 1 + (!!ab)
+
 		if (clicklimiter[SECOND_COUNT] > scl)
 			to_chat(src, span_danger("Your previous click was ignored because you've done too many in a second"))
 			return
+
+	//check if the server is overloaded and if it is then queue up the click for next tick
+	//yes having it call a wrapping proc on the subsystem is fucking stupid glad we agree unfortunately byond insists its reasonable
+	if(!QDELETED(object) && TRY_QUEUE_VERB(VERB_CALLBACK(object, TYPE_PROC_REF(/atom, _Click), location, control, params), VERB_HIGH_PRIORITY_QUEUE_THRESHOLD, SSinput, control))
+		return
 
 	if (hotkeys)
 		// If hotkey mode is enabled, then clicking the map will automatically

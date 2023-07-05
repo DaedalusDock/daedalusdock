@@ -36,7 +36,6 @@
 		self_right_time = rand(25 SECONDS, 50 SECONDS), \
 		post_tipped_callback = CALLBACK(src, PROC_REF(after_cow_tipped)))
 	AddElement(/datum/element/pet_bonus, "moos happily!")
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_COW, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	udder_component()
 	make_tameable()
 	. = ..()

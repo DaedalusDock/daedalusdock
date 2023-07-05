@@ -23,13 +23,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -52,13 +50,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -81,13 +77,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -110,13 +104,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -138,13 +130,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -249,13 +239,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -346,32 +334,32 @@
 	name = "surplus prosthetic left arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/arm/right/robot/surplus
 	name = "surplus prosthetic right arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/left/robot/surplus
 	name = "surplus prosthetic left leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/right/robot/surplus
 	name = "surplus prosthetic right leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 

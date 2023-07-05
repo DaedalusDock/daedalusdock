@@ -7,6 +7,9 @@
 	/// While processing, this becomes the world.time when the status effect will expire.
 	/// -1 = infinite duration.
 	var/duration = -1
+	/// The maximum duration this status effect can be.
+	/// -1 = No limit
+	var/max_duration =-1
 	/// When set initially / in on_creation, this is how long between [proc/tick] calls in deciseconds.
 	/// While processing, this becomes the world.time when the next tick will occur.
 	/// -1 = will stop processing, if duration is also unlimited (-1).
@@ -41,7 +44,10 @@
 		LAZYADD(owner.status_effects, src)
 
 	if(duration != -1)
-		duration = world.time + duration
+		if(max_duration != -1)
+			duration = world.time + min(duration, max_duration)
+		else
+			duration = world.time + duration
 	tick_interval = world.time + tick_interval
 
 	if(alert_type)

@@ -18,7 +18,7 @@ SUBSYSTEM_DEF(icon_smooth)
 		cached.len--
 		if(QDELETED(smoothing_atom) || !(smoothing_atom.smoothing_flags & SMOOTH_QUEUED))
 			continue
-		if(smoothing_atom.flags_1 & INITIALIZED_1)
+		if(smoothing_atom.initialized)
 			smoothing_atom.smooth_icon()
 		else
 			deferred += smoothing_atom
@@ -34,8 +34,6 @@ SUBSYSTEM_DEF(icon_smooth)
 		NAMEOF(src, smooth_queue),
 		NAMEOF(src, deferred)
 	)
-	smooth_zlevel(1, TRUE)
-	smooth_zlevel(2, TRUE)
 
 	var/list/queue = smooth_queue
 	smooth_queue = list()
@@ -43,7 +41,7 @@ SUBSYSTEM_DEF(icon_smooth)
 	while(length(queue))
 		var/atom/smoothing_atom = queue[length(queue)]
 		queue.len--
-		if(QDELETED(smoothing_atom) || !(smoothing_atom.smoothing_flags & SMOOTH_QUEUED) || smoothing_atom.z <= 2)
+		if(QDELETED(smoothing_atom) || !(smoothing_atom.smoothing_flags & SMOOTH_QUEUED))
 			continue
 		smoothing_atom.smooth_icon()
 		CHECK_TICK

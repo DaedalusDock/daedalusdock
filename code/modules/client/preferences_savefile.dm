@@ -1,11 +1,11 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
-#define SAVEFILE_VERSION_MIN 32
+#define SAVEFILE_VERSION_MIN 42
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
 // You do not need to raise this if you are adding new values that have sane defaults.
 // Only raise this value when changing the meaning/format/name/layout of an existing value
 // where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 42
+#define SAVEFILE_VERSION_MAX 43
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -42,66 +42,28 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 //if your savefile is 3 months out of date, then 'tough shit'.
 
 /datum/preferences/proc/update_preferences(current_version, savefile/S)
-	if(current_version < 33)
-		toggles |= SOUND_ENDOFROUND
-
-	if(current_version < 34)
-		write_preference(/datum/preference/toggle/auto_fit_viewport, TRUE)
-
-	if(current_version < 35) //makes old keybinds compatible with #52040, sets the new default
-		var/newkey = FALSE
-		for(var/list/key in key_bindings)
-			for(var/bind in key)
-				if(bind == "quick_equipbelt")
-					key -= "quick_equipbelt"
-					key |= "quick_equip_belt"
-
-				if(bind == "bag_equip")
-					key -= "bag_equip"
-					key |= "quick_equip_bag"
-
-				if(bind == "quick_equip_suit_storage")
-					newkey = TRUE
-		if(!newkey && !key_bindings["ShiftQ"])
-			key_bindings["ShiftQ"] = list("quick_equip_suit_storage")
-
-	if(current_version < 36)
-		if(key_bindings["ShiftQ"] == "quick_equip_suit_storage")
-			key_bindings["ShiftQ"] = list("quick_equip_suit_storage")
-
-	if(current_version < 37)
-		if(read_preference(/datum/preference/numeric/fps) == 0)
-			write_preference(GLOB.preference_entries[/datum/preference/numeric/fps], -1)
-
-	if (current_version < 38)
-		var/found_block_movement = FALSE
-
-		for (var/list/key in key_bindings)
-			for (var/bind in key)
-				if (bind == "block_movement")
-					found_block_movement = TRUE
-					break
-			if (found_block_movement)
-				break
-
-		if (!found_block_movement)
-			LAZYADD(key_bindings["Ctrl"], "block_movement")
-
-	if (current_version < 39)
-		LAZYADD(key_bindings["F"], "toggle_combat_mode")
-		LAZYADD(key_bindings["4"], "toggle_combat_mode")
-	if (current_version < 40)
-		LAZYADD(key_bindings["Space"], "hold_throw_mode")
-
-	if (current_version < 41)
-		migrate_preferences_to_tgui_prefs_menu()
+	return
 
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
-	if (current_version < 41)
-		migrate_character_to_tgui_prefs_menu()
+	return
 
-	if (current_version < 42)
-		migrate_body_types(savefile)
+/// Called when reading preferences if a savefile update is detected. This proc is for
+/// overriding preference datum values before they are sanitized by deserialize()
+/datum/preferences/proc/early_update_character(current_version, savefile/savefile)
+	if(current_version < 43)
+		var/species
+		READ_FILE(savefile["species"], species)
+		if(species == "felinid")
+			write_preference(/datum/preference/choiced/species, SPECIES_HUMAN)
+
+			var/list/augs = read_preference(/datum/preference/blob/augments)
+			var/datum/augment_item/implant/ears = GLOB.augment_items[/datum/augment_item/implant/cat_ears]
+			var/datum/augment_item/implant/tail = GLOB.augment_items[/datum/augment_item/implant/cat_tail]
+			augs[AUGMENT_SLOT_IMPLANTS] = list(
+				ears.type = ears.get_choices()[1],
+				tail.type = tail.get_choices()[1]
+			)
+			write_preference(/datum/preference/blob/augments, augs)
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
@@ -171,9 +133,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	READ_FILE(S["lastchangelog"], lastchangelog)
 
-	READ_FILE(S["be_special"] , be_special)
-
-
 	READ_FILE(S["default_slot"], default_slot)
 	READ_FILE(S["chat_toggles"], chat_toggles)
 	READ_FILE(S["toggles"], toggles)
@@ -211,7 +170,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
-	be_special = sanitize_be_special(SANITIZE_LIST(be_special))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
 
@@ -260,7 +218,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//general preferences
 	WRITE_FILE(S["lastchangelog"], lastchangelog)
-	WRITE_FILE(S["be_special"], be_special)
 	WRITE_FILE(S["default_slot"], default_slot)
 	WRITE_FILE(S["toggles"], toggles)
 	WRITE_FILE(S["chat_toggles"], chat_toggles)
@@ -296,6 +253,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
 
+	if(needs_update >= 0)
+		early_update_character(needs_update, S)
+
 	// Read everything into cache
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
@@ -305,34 +265,19 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		value_cache -= preference_type
 		read_preference(preference_type)
 
-	//Character
-	READ_FILE(S["randomise"],  randomise)
-
 	//Load prefs
-	READ_FILE(S["job_preferences"], job_preferences)
-
-	//Quirks
-	READ_FILE(S["all_quirks"], all_quirks)
-
-	//PARIAH EDIT ADDITION
-	load_character_pariah(S)
+	READ_FILE(S["alt_job_titles"], alt_job_titles)
 
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
 
-	//Sanitize
-	randomise = SANITIZE_LIST(randomise)
+	var/mob/dead/new_player/body = parent?.mob
+	if(istype(body))
+		spawn(-1)
+			body.new_player_panel()
 
-
-	//Validate job prefs
-	for(var/j in job_preferences)
-		if(job_preferences[j] != JP_LOW && job_preferences[j] != JP_MEDIUM && job_preferences[j] != JP_HIGH)
-			job_preferences -= j
-
-	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
-	validate_quirks()
 
 	return TRUE
 
@@ -360,33 +305,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //load_character will sanitize any bad data, so assume up-to-date.)
 
-	// This is the version when the random security department was removed.
-	// When the minimum is higher than that version, it's impossible for someone to have the "Random" department.
-	#if SAVEFILE_VERSION_MIN > 40
-	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
-	#endif
-
-	//Character
-	WRITE_FILE(S["randomise"] , randomise)
-
 	//Write prefs
-	WRITE_FILE(S["job_preferences"] , job_preferences)
-
-	//Quirks
-	WRITE_FILE(S["all_quirks"] , all_quirks)
-
-	save_character_pariah(S) //PARIAH EDIT ADDITION
+	WRITE_FILE(S["alt_job_titles"], alt_job_titles)
 
 	return TRUE
-
-/datum/preferences/proc/sanitize_be_special(list/input_be_special)
-	var/list/output = list()
-
-	for (var/role in input_be_special)
-		if (role in GLOB.special_roles)
-			output += role
-
-	return output.len == input_be_special.len ? input_be_special : output
 
 /proc/sanitize_keybindings(value)
 	var/list/base_bindings = sanitize_islist(value,list())

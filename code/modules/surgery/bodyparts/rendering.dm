@@ -170,8 +170,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	if(!is_husked)
 		//Draw external organs like horns and frills
-		for(var/obj/item/organ/visual_organ in cosmetic_organs)
-			if(!dropped && !visual_organ.can_draw_on_bodypart(owner))
+		for(var/obj/item/organ/visual_organ as anything in contained_organs)
+			if(!visual_organ.visual || (!dropped && !visual_organ.can_draw_on_bodypart(owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
 			. += visual_organ.get_overlays(limb_gender, image_dir)
@@ -201,7 +201,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
 
-	for(var/obj/item/organ/O as anything in cosmetic_organs)
+	for(var/obj/item/organ/O as anything in contained_organs)
+		if(!O.visual)
+			continue
 		. += "-[json_encode(O.build_cache_key())]"
 
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)

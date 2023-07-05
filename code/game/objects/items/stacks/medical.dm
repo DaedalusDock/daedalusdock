@@ -6,8 +6,13 @@
 	max_amount = 6
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
+
 	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	resistance_flags = FLAMMABLE
 	max_integrity = 40
 	novariants = FALSE
@@ -176,7 +181,7 @@
 	amount = 12
 
 /obj/item/stack/medical/gauze/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_WIRECUTTER || I.get_sharpness())
+	if(I.tool_behaviour == TOOL_WIRECUTTER || (I.sharpness & SHARP_EDGED))
 		if(get_amount() < 2)
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
 			return

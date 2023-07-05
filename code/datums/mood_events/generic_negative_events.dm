@@ -91,13 +91,6 @@
 	mood_change = -2
 	timeout = 2 MINUTES
 
-/datum/mood_event/table/add_effects()
-	if(isfelinid(owner)) //Holy snowflake batman!
-		var/mob/living/carbon/human/H = owner
-		SEND_SIGNAL(H, COMSIG_ORGAN_WAG_TAIL, TRUE, 3 SECONDS)
-		description = "They want to play on the table!"
-		mood_change = 2
-
 /datum/mood_event/table_limbsmash
 	description = "That fucking table, man that hurts..."
 	mood_change = -3
@@ -227,10 +220,6 @@
 /datum/mood_event/deaths_door
 	description = "This is it... I'm really going to die."
 	mood_change = -20
-
-/datum/mood_event/gunpoint
-	description = "This guy is insane! I better be careful..."
-	mood_change = -10
 
 /datum/mood_event/tripped
 	description = "I can't believe I fell for the oldest trick in the book!"

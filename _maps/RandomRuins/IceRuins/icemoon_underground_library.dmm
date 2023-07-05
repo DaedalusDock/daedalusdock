@@ -86,15 +86,6 @@
 	
 	},
 /area/ruin/unpowered/buried_library)
-"aq" = (
-/obj/structure/fluff/paper/stack,
-/turf/open/floor/wood{
-	icon_state = "wood-broken";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
 "ar" = (
 /turf/open/floor/cult,
 /area/ruin/unpowered/buried_library)
@@ -132,14 +123,6 @@
 "aA" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/plating/icemoon,
-/area/ruin/unpowered/buried_library)
-"aB" = (
-/turf/open/floor/wood{
-	icon_state = "wood-broken6";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
 /area/ruin/unpowered/buried_library)
 "aC" = (
 /obj/item/feather,
@@ -322,11 +305,10 @@
 /obj/structure/fluff/paper{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
 "be" = (
@@ -371,15 +353,6 @@
 /obj/item/book/manual/random,
 /turf/closed/mineral/random/snow,
 /area/ruin/unpowered/buried_library)
-"bk" = (
-/obj/structure/fluff/paper/stack,
-/turf/open/floor/wood{
-	icon_state = "wood-broken4";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
 "bl" = (
 /obj/item/storage/box/fountainpens,
 /turf/closed/mineral/random/snow,
@@ -422,32 +395,6 @@
 /obj/item/stack/sheet/mineral/wood,
 /turf/closed/mineral/random/snow,
 /area/icemoon/underground/unexplored)
-"bv" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken4";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bw" = (
-/turf/open/floor/wood{
-	icon_state = "wood-broken3";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bx" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken5";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
 "by" = (
 /obj/structure/statue/bronze/marx,
 /turf/open/floor/carpet/black{
@@ -486,125 +433,72 @@
 	
 	},
 /area/ruin/unpowered/buried_library)
-"bD" = (
-/turf/open/floor/wood{
-	icon_state = "wood-broken5";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bE" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bF" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken3";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bG" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken6";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bH" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/fluff/paper,
-/turf/open/floor/wood{
-	icon_state = "wood-broken4";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bI" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken7";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bJ" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood{
-	icon_state = "wood-broken2";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
 "bK" = (
 /obj/item/stack/sheet/mineral/wood,
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
 "bL" = (
 /obj/structure/fluff/paper{
 	dir = 10
 	},
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
 "bM" = (
 /obj/structure/fluff/paper{
 	dir = 1
 	},
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken5";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
-/area/ruin/unpowered/buried_library)
-"bN" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/fluff/paper,
-/turf/open/floor/wood{
-	icon_state = "wood-broken5";
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
 "bP" = (
 /obj/item/paper/crumpled/bloody/fluff/stations/lavaland/library/warning,
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken3";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
-"bQ" = (
+"dC" = (
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	icon_state = "wood-broken7";
 	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
+	temperature = 180
+	},
+/area/ruin/unpowered/buried_library)
+"GQ" = (
+/obj/structure/fluff/paper/stack,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180
+	},
+/area/ruin/unpowered/buried_library)
+"Qm" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180
+	},
+/area/ruin/unpowered/buried_library)
+"Xb" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/fluff/paper,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
+	temperature = 180
 	},
 /area/ruin/unpowered/buried_library)
 
@@ -692,7 +586,7 @@ aa
 aa
 ak
 ak
-bk
+GQ
 an
 an
 ae
@@ -725,7 +619,7 @@ ak
 av
 bg
 ah
-bH
+Xb
 ah
 ak
 ac
@@ -768,12 +662,12 @@ ac
 ak
 au
 ak
-bx
+Qm
 aR
-bE
+Qm
 aA
 ao
-bw
+dC
 ah
 aZ
 ah
@@ -798,9 +692,9 @@ aG
 aD
 aX
 an
-bx
+Qm
 ae
-bI
+Qm
 ah
 ae
 ac
@@ -825,12 +719,12 @@ aD
 bB
 ak
 ae
-bJ
+Qm
 ae
-bI
+Qm
 ac
 an
-bQ
+dC
 an
 "}
 (10,1,1) = {"
@@ -873,7 +767,7 @@ an
 aD
 aD
 by
-bG
+Qm
 aw
 ao
 ae
@@ -890,7 +784,7 @@ ab
 aI
 ar
 al
-aq
+GQ
 aE
 af
 aD
@@ -915,11 +809,11 @@ am
 aJ
 aW
 ay
-aB
+dC
 ah
 ao
 ae
-bv
+Qm
 ae
 af
 an
@@ -952,7 +846,7 @@ ak
 ah
 ak
 bn
-bN
+Xb
 ac
 ad
 aa
@@ -971,7 +865,7 @@ aL
 ah
 aA
 ah
-bF
+Qm
 ah
 ak
 ak
@@ -992,7 +886,7 @@ al
 al
 bd
 ah
-bv
+Qm
 ah
 ao
 aV
@@ -1017,9 +911,9 @@ ad
 ac
 be
 bf
-bw
+dC
 aP
-bD
+dC
 aR
 ae
 an

@@ -909,10 +909,8 @@
 /area/station/hallway/secondary/service)
 "ey" = (
 /obj/structure/ladder,
-/obj/effect/turf_decal/stripes/asteroid/corner{
-	dir = 8
-	},
-/turf/open/floor/iron,
+/obj/structure/lattice,
+/turf/open/openspace,
 /area/station/hallway/secondary/service)
 "ez" = (
 /obj/machinery/light/directional/west,
@@ -989,7 +987,8 @@
 /area/station/engineering/storage)
 "eV" = (
 /obj/structure/ladder,
-/turf/open/floor/iron,
+/obj/structure/lattice,
+/turf/open/openspace,
 /area/station/engineering/storage)
 "eX" = (
 /obj/effect/turf_decal/stripes/white/line{
@@ -1652,7 +1651,6 @@
 	dir = 1
 	},
 /obj/structure/table,
-/obj/item/construction/plumbing,
 /turf/open/floor/iron,
 /area/station/construction)
 "SN" = (

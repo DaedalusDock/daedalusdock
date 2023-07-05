@@ -196,7 +196,7 @@
 
 /datum/reagent/consumable/ethanol/hotlime_miami/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	M.set_timed_status_effect(1.5 MINUTES * REM * delta_time, /datum/status_effect/drugginess)
-	M.adjustStaminaLoss(-2)
+	M.stamina.adjust(2)
 	return ..()
 
 /datum/reagent/consumable/ethanol/coggrog

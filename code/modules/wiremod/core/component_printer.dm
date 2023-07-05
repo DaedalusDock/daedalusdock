@@ -6,6 +6,8 @@
 	icon_state = "fab-idle"
 	circuit = /obj/item/circuitboard/machine/component_printer
 
+	has_disk_slot = TRUE
+
 	/// The internal material bus
 	var/datum/component/remote_materials/materials
 

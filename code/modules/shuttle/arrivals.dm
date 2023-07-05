@@ -162,7 +162,7 @@
 	if(!. && !docked && !damaged)
 		if(console)
 			console.say("Welcome to [station_name()], have a safe and productive day!")
-			playsound(console, 'sound/voice/ApproachingDaedalus.ogg', 25, FALSE, extrarange = 4)
+			playsound(console, 'sound/voice/ApproachingDaedalus.ogg', 50, FALSE, extrarange = 4)
 		for(var/L in queued_announces)
 			var/datum/callback/C = L
 			C.Invoke()

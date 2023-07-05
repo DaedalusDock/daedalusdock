@@ -7,8 +7,13 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel and the medical director"
-	selection_color = "#bbe291"
+	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/aether,
+		/datum/employer/contractor
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -22,7 +27,6 @@
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_PSYCHOLOGIST
 	departments_list = list(
 		/datum/job_department/service,
 		)

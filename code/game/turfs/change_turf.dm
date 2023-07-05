@@ -74,7 +74,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			// no warning though because this can happen naturaly as a result of it being built on top of
 			path = /turf/open/space
 
-	if(!GLOB.use_preloader && path == type && !(flags & CHANGETURF_FORCEOP) && (baseturfs == new_baseturfs)) // Don't no-op if the map loader requires it to be reconstructed, or if this is a new set of baseturfs
+	if(!global.use_preloader && path == type && !(flags & CHANGETURF_FORCEOP) && (baseturfs == new_baseturfs)) // Don't no-op if the map loader requires it to be reconstructed, or if this is a new set of baseturfs
 		return src
 	if(flags & CHANGETURF_SKIP)
 		return new path(src)
@@ -236,7 +236,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	var/turf/newT
 	if(flags & CHANGETURF_SKIP) // We haven't been initialized
-		if(flags_1 & INITIALIZED_1)
+		if(initialized)
 			stack_trace("CHANGETURF_SKIP was used in a PlaceOnTop call for a turf that's initialized. This is a mistake. [src]([type])")
 		assemble_baseturfs()
 	if(fake_turf_type)
@@ -309,6 +309,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		//Assimilate_Air()
 		SSzas.mark_for_update(src)
 
-/turf/proc/ReplaceWithLattice()
-	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-	new /obj/structure/lattice(locate(x, y, z))
+/// Run ScrapeAway(amount), then attempt to place lattice.
+/turf/proc/TryScrapeToLattice(amount = 2)
+	var/turf/T = ScrapeAway(amount, flags = CHANGETURF_INHERIT_AIR)
+	if(!isfloorturf(T) && !(locate(/obj/structure/lattice) in T))
+		new /obj/structure/lattice(T)

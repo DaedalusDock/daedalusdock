@@ -137,7 +137,6 @@
 		factory.spores += src
 		if(linked_node.overmind && istype(linked_node.overmind.blobstrain, /datum/blobstrain/reagent/distributed_neurons) && !istype(src, /mob/living/simple_animal/hostile/blob/blobspore/weak))
 			notify_ghosts("A controllable spore has been created in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Sentient Spore Created")
-		add_cell_sample()
 
 /mob/living/simple_animal/hostile/blob/blobspore/Life(delta_time = SSMOBS_DT, times_fired)
 	if(!is_zombie && isturf(src.loc))
@@ -173,7 +172,7 @@
 	is_zombie = 1
 	if(H.wear_suit)
 		var/obj/item/clothing/suit/armor/A = H.wear_suit
-		maxHealth += A.armor.melee //That zombie's got armor, I want armor!
+		maxHealth += A.returnArmor().melee //That zombie's got armor, I want armor!
 	maxHealth += 40
 	health = maxHealth
 	name = "blob zombie"
@@ -241,10 +240,6 @@
 			blob_head_overlay.color = overmind.blobstrain.complementary_color
 		color = initial(color)//looks better.
 		add_overlay(blob_head_overlay)
-
-/mob/living/simple_animal/hostile/blob/blobspore/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /mob/living/simple_animal/hostile/blob/blobspore/independent
 	gold_core_spawnable = HOSTILE_SPAWN
 	independent = TRUE
@@ -285,13 +280,6 @@
 	//pressure_resistance = 50
 	mob_size = MOB_SIZE_LARGE
 	hud_type = /datum/hud/living/blobbernaut
-
-/mob/living/simple_animal/hostile/blob/blobbernaut/Initialize(mapload)
-	. = ..()
-	add_cell_sample()
-
-/mob/living/simple_animal/hostile/blob/blobbernaut/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBBERNAUT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/Life(delta_time = SSMOBS_DT, times_fired)
 	if(!..())

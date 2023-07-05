@@ -23,6 +23,7 @@
 //STUN
 /datum/status_effect/incapacitating/stun
 	id = "stun"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/stun/on_apply()
 	. = ..()
@@ -42,6 +43,7 @@
 //KNOCKDOWN
 /datum/status_effect/incapacitating/knockdown
 	id = "knockdown"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/knockdown/on_apply()
 	. = ..()
@@ -72,6 +74,7 @@
 //PARALYZED
 /datum/status_effect/incapacitating/paralyzed
 	id = "paralyzed"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/paralyzed/on_apply()
 	. = ..()
@@ -123,8 +126,8 @@
 	return ..()
 
 /datum/status_effect/incapacitating/unconscious/tick()
-	if(owner.getStaminaLoss())
-		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
+	if(owner.stamina.loss)
+		owner.stamina.adjust(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
 
 
 //SLEEPING
@@ -177,10 +180,10 @@
 			healing -= 0.1
 			break //Only count the first bedsheet
 		if(health_ratio > 0.8)
-			owner.adjustBruteLoss(healing)
-			owner.adjustFireLoss(healing)
-			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
-		owner.adjustStaminaLoss(healing)
+			owner.adjustBruteLoss(-healing)
+			owner.adjustFireLoss(-healing)
+			owner.adjustToxLoss(-healing * 0.5, TRUE, TRUE)
+		owner.stamina.adjust(healing)
 
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)
 	owner.set_drunk_effect(owner.get_drunk_amount() * 0.997)
@@ -413,7 +416,7 @@
 /datum/status_effect/eldritch/ash/on_effect()
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.adjustStaminaLoss(6 * repetitions) // first one = 30 stam
+		carbon_owner.stamina.adjust(-6 * repetitions) // first one = 30 stam
 		carbon_owner.adjustFireLoss(3 * repetitions) // first one = 15 burn
 		for(var/mob/living/carbon/victim in shuffle(range(1, carbon_owner)))
 			if(IS_HERETIC(victim) || victim == carbon_owner)

@@ -14,8 +14,6 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 	. = ..()
 	//So our first step isn't insane
 	previous_world_time = world.time
-	///Blacklists these reagents from being added to the master list. the exact type only. Children are not blacklisted.
-	GLOB.fake_reagent_blacklist = list(/datum/reagent/medicine/c2, /datum/reagent/medicine, /datum/reagent/reaction_agent)
 	//Build GLOB lists - see holder.dm
 	build_chemical_reactions_lists()
 	return

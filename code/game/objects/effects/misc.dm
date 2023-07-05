@@ -21,6 +21,19 @@
 /obj/effect/spawner
 	name = "object spawner"
 
+/obj/effect/spawner/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	initialized = TRUE
+
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/spawner/Destroy(force)
+	SHOULD_CALL_PARENT(FALSE)
+	loc = null
+	return QDEL_HINT_QUEUE
+
 /obj/effect/list_container
 	name = "list container"
 

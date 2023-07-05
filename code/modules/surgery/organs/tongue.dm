@@ -30,8 +30,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
-		/datum/language/skrell,
 		/datum/language/schechi,
 		/datum/language/vox,
 	))
@@ -74,7 +72,7 @@
 	if(say_mod && tongue_owner.dna && tongue_owner.dna.species)
 		tongue_owner.dna.species.say_mod = initial(tongue_owner.dna.species.say_mod)
 	UnregisterSignal(tongue_owner, COMSIG_MOB_SAY)
-	RegisterSignal(tongue_owner, COMSIG_MOB_SAY, TYPE_PROC_REF(/mob/living/carbon, handle_tongueless_speech))
+	tongue_owner.RegisterSignal(tongue_owner, COMSIG_MOB_SAY, TYPE_PROC_REF(/mob/living/carbon, handle_tongueless_speech))
 	REMOVE_TRAIT(tongue_owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
 	// Carbons by default start with NO_TONGUE_TRAIT caused TRAIT_AGEUSIA
 	ADD_TRAIT(tongue_owner, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
@@ -209,7 +207,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/buzzwords
 	))
 
@@ -325,12 +322,6 @@
 /obj/item/organ/tongue/alien/modify_speech(datum/source, list/speech_args)
 	playsound(owner, SFX_HISS, 25, TRUE, TRUE)
 
-/obj/item/organ/tongue/skrell
-	name = "internal vocal sacs"
-	desc = "A strange looking sac."
-	icon_state = "tongue-skrell"
-	taste_sensitivity = 5
-
 /obj/item/organ/tongue/bone
 	name = "bone \"tongue\""
 	desc = "Apparently skeletons alter the sounds they produce through oscillation of their teeth, hence their characteristic rattling."
@@ -356,7 +347,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/calcic
 	))
 
@@ -435,7 +425,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/nekomimetic,
 		/datum/language/voltaic
 	))
 

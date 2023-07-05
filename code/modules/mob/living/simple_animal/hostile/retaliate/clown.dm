@@ -399,7 +399,6 @@
 	var/datum/action/cooldown/regurgitate/spit = new(src)
 	spit.Grant(src)
 
-	add_cell_sample()
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
 
 
@@ -459,9 +458,6 @@
 	can_buckle = TRUE
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/glutton)
-
-/mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GLUTTON, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/Exited(atom/movable/gone, direction)
 	. = ..()

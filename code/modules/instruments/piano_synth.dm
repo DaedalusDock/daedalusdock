@@ -30,7 +30,7 @@
 	shell_capacity = SHELL_CAPACITY_TINY
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
-/obj/item/instrument/piano_synth/headphones/ComponentInitialize()
+/obj/item/instrument/piano_synth/headphones/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	RegisterSignal(src, COMSIG_INSTRUMENT_START, PROC_REF(start_playing))

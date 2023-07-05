@@ -48,9 +48,5 @@
 	else if(damage_coeff[CLONE])
 		. = adjustHealth(amount * damage_coeff[CLONE] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
-/mob/living/simple_animal/adjustStaminaLoss(amount, updating_health = FALSE, forced = FALSE)
-	if(forced)
-		staminaloss = max(0, min(max_staminaloss, staminaloss + amount))
-	else
-		staminaloss = max(0, min(max_staminaloss, staminaloss + (amount * damage_coeff[STAMINA])))
-	update_stamina()
+/mob/living/simple_animal/pre_stamina_change(diff as num)
+	return diff * damage_coeff[STAMINA]

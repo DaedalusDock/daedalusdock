@@ -459,6 +459,8 @@
 
 /obj/item/cultivator/rake/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!ishuman(AM))
 		return
 	var/mob/living/carbon/human/H = AM

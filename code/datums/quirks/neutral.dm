@@ -40,7 +40,7 @@
 	lose_text = "<span class='notice'>You've developed fluency in Galactic Common."
 	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
 
-/datum/quirk/foreigner/add()
+/datum/quirk/foreigner/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.add_blocked_language(/datum/language/common)
 	if(ishumanbasic(human_holder))
@@ -61,7 +61,7 @@
 	lose_text = "<span class='notice'>You feel like eating meat isn't that bad.</span>"
 	medical_record_text = "Patient reports a vegetarian diet."
 
-/datum/quirk/vegetarian/add()
+/datum/quirk/vegetarian/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.liked_food &= ~MEAT
@@ -102,7 +102,7 @@
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
 	medical_record_text = "Patient demonstrates a pathological love of pineapple."
 
-/datum/quirk/pineapple_liker/add()
+/datum/quirk/pineapple_liker/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.liked_food |= PINEAPPLE
@@ -127,7 +127,7 @@
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
 	medical_record_text = "Patient is correct to think that pineapple is disgusting."
 
-/datum/quirk/pineapple_hater/add()
+/datum/quirk/pineapple_hater/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.disliked_food |= PINEAPPLE
@@ -152,7 +152,7 @@
 	lose_text = "<span class='notice'>You feel like eating normal food again.</span>"
 	medical_record_text = "Patient demonstrates irregular nutrition preferences."
 
-/datum/quirk/deviant_tastes/add()
+/datum/quirk/deviant_tastes/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	var/liked = species.liked_food
@@ -174,14 +174,15 @@
 	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
 
 /datum/quirk/heterochromatic
-	name = "Heterochromatic"
+	name = "Heterochromia"
 	desc = "One of your eyes is a different color than the other!"
 	icon = "eye-low-vision" // Ignore the icon name, its actually a fairly good representation of different color eyes
 	value = 0
+	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_CHANGES_APPEARANCE
 	var/color
 
-/datum/quirk/heterochromatic/add()
-	color = color || quirk_holder.client?.prefs?.read_preference(/datum/preference/color/heterochromatic)
+/datum/quirk/heterochromatic/add_unique(client/client_source)
+	color = client_source?.prefs?.read_preference(/datum/preference/color/heterochromatic)
 	if(!color)
 		return
 
@@ -234,7 +235,7 @@
 	value = 0
 	medical_record_text = "Patient is afflicted with almost complete color blindness."
 
-/datum/quirk/monochromatic/add()
+/datum/quirk/monochromatic/add(client/client_source)
 	quirk_holder.add_client_colour(/datum/client_colour/monochrome)
 
 /datum/quirk/monochromatic/post_add()
@@ -251,20 +252,14 @@
 	icon = "spider"
 	value = 0
 	medical_record_text = "Patient has an irrational fear of something."
-	var/phobia
 
-/datum/quirk/phobia/add()
-	phobia = phobia || quirk_holder.client?.prefs?.read_preference(/datum/preference/choiced/phobia)
-
-	if(phobia)
-		var/mob/living/carbon/human/human_holder = quirk_holder
-		human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
-
-/datum/quirk/phobia/post_add()
+// Phobia will follow you between transfers
+/datum/quirk/phobia/add(client/client_source)
+	var/phobia = client_source?.prefs.read_preference(/datum/preference/choiced/phobia)
 	if(!phobia)
-		var/mob/living/carbon/human/human_holder = quirk_holder
-		phobia = human_holder.client.prefs.read_preference(/datum/preference/choiced/phobia)
-		human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
+		return
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/phobia/remove()
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -290,7 +285,7 @@
 	/// The user's starting hairstyle
 	var/old_hair
 
-/datum/quirk/item_quirk/bald/add()
+/datum/quirk/item_quirk/bald/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	old_hair = human_holder.hairstyle
 	human_holder.hairstyle = "Bald"
@@ -298,7 +293,7 @@
 	RegisterSignal(human_holder, COMSIG_CARBON_EQUIP_HAT, PROC_REF(equip_hat))
 	RegisterSignal(human_holder, COMSIG_CARBON_UNEQUIP_HAT, PROC_REF(unequip_hat))
 
-/datum/quirk/item_quirk/bald/add_unique()
+/datum/quirk/item_quirk/bald/add_unique(client/client_source)
 	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
 
 	if (old_hair == "Bald")
@@ -340,7 +335,7 @@
 	value = 0
 	medical_record_text = "During physical examination, patient's tongue was found to be uniquely damaged."
 
-/datum/quirk/item_quirk/tongue_tied/add_unique()
+/datum/quirk/item_quirk/tongue_tied/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/organ/tongue/old_tongue = human_holder.getorganslot(ORGAN_SLOT_TONGUE)
 	old_tongue.Remove(human_holder)
@@ -369,7 +364,7 @@
 	lose_text = "<span class='danger'>You forget how photo cameras work.</span>"
 	medical_record_text = "Patient mentions photography as a stress-relieving hobby."
 
-/datum/quirk/item_quirk/photographer/add_unique()
+/datum/quirk/item_quirk/photographer/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/storage/photo_album/personal/photo_album = new(get_turf(human_holder))
 	photo_album.persistence_id = "personal_[human_holder.last_mind?.key]" // this is a persistent album, the ID is tied to the account's key to avoid tampering
@@ -395,7 +390,7 @@
 	value = 0
 	medical_record_text = "Patient enjoys dyeing their hair with pretty colors."
 
-/datum/quirk/item_quirk/colorist/add_unique()
+/datum/quirk/item_quirk/colorist/add_unique(client/client_source)
 	give_item_to_holder(/obj/item/dyespray, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
 
 #define GAMING_WITHDRAWAL_TIME (15 MINUTES)
@@ -411,7 +406,7 @@
 	/// Timer for gaming withdrawal to kick in
 	var/gaming_withdrawal_timer = TIMER_ID_NULL
 
-/datum/quirk/gamer/add()
+/datum/quirk/gamer/add(client/client_source)
 	// Gamer diet
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
@@ -434,7 +429,7 @@
 	UnregisterSignal(human_holder, COMSIG_MOB_LOST_VIDEOGAME)
 	UnregisterSignal(human_holder, COMSIG_MOB_PLAYED_VIDEOGAME)
 
-/datum/quirk/gamer/add_unique()
+/datum/quirk/gamer/add_unique(client/client_source)
 	// The gamer starts off quelled
 	gaming_withdrawal_timer = addtimer(CALLBACK(src, PROC_REF(enter_withdrawal)), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
 

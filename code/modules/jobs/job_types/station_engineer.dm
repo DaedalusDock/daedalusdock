@@ -7,10 +7,15 @@
 	total_positions = 5
 	spawn_positions = 5
 	supervisors = "the chief engineer"
-	selection_color = "#fff5cc"
+	selection_color = "#5b4d20"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus,
+		/datum/employer/contractor
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -39,7 +44,6 @@
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_STATION_ENGINEER
 	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,

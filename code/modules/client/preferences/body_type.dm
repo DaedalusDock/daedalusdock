@@ -1,7 +1,7 @@
 #define USE_GENDER "Use gender"
 
 /datum/preference/choiced/body_type
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Body Type"
 	priority = PREFERENCE_PRIORITY_BODY_TYPE
 	savefile_key = "body_type"
 	savefile_identifier = PREFERENCE_CHARACTER

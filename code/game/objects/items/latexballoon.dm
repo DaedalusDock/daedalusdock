@@ -63,5 +63,5 @@
 		var/obj/item/tank/T = W
 		blow(T, user)
 		return
-	if (W.get_sharpness() || W.get_temperature())
+	if (W.sharpness || W.get_temperature())
 		burst()

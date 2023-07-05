@@ -28,7 +28,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "i" = (
-/obj/structure/reagent_dispensers/plumbed{
+/obj/structure/reagent_dispensers{
 	dir = 8
 	},
 /turf/open/floor/plating,
@@ -65,7 +65,6 @@
 /area/ruin/space/djstation/service)
 "x" = (
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "y" = (
@@ -100,17 +99,12 @@
 "I" = (
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "M" = (
 /obj/structure/cable,
 /obj/structure/closet/crate,
 /obj/effect/spawner/random/maintenance/five,
-/turf/open/floor/plating,
-/area/ruin/space/djstation/service)
-"N" = (
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "O" = (
@@ -513,11 +507,11 @@ o
 o
 o
 x
-N
-N
+C
+C
 x
 I
-N
+C
 C
 A
 C

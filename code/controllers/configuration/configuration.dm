@@ -120,7 +120,7 @@
 	var/list/_entries_by_type = list()
 	entries_by_type = _entries_by_type
 
-	for(var/I in typesof(/datum/config_entry)) //typesof is faster in this case
+	for(var/datum/config_entry/I as anything in typesof(/datum/config_entry)) //typesof is faster in this case
 		if(isabstract(I))
 			continue
 		var/datum/config_entry/E = new I
@@ -241,7 +241,7 @@
 	msg = "Edit"
 	return msg
 
-/datum/controller/configuration/proc/Get(entry_type)
+/datum/controller/configuration/proc/Get(datum/config_entry/entry_type)
 	if(isabstract(entry_type))
 		CRASH("Tried to retrieve an abstract config_entry: [entry_type]")
 	var/datum/config_entry/E = entries_by_type[entry_type]
@@ -252,7 +252,7 @@
 		return
 	return E.config_entry_value
 
-/datum/controller/configuration/proc/Set(entry_type, new_val)
+/datum/controller/configuration/proc/Set(datum/config_entry/entry_type, new_val)
 	if(isabstract(entry_type))
 		CRASH("Tried to set an abstract config_entry: [entry_type]")
 	var/datum/config_entry/E = entries_by_type[entry_type]

@@ -5,7 +5,7 @@
 	var/obj/item/food/egg/egg = allocate(/obj/item/food/egg)
 
 	for(var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
-		if(initial(reagent_type.abstract_type) == reagent_type)
+		if(isabstract(reagent_type))
 			continue
 		if(!(initial(reagent_type.chemical_flags) & REAGENT_CAN_BE_SYNTHESIZED))
 			continue

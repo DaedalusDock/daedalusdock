@@ -23,7 +23,7 @@
 		if(!traitor.uplink_handler)
 			TEST_FAIL("[job_name] when made traitor does not have a proper uplink created when spawned in!")
 		for(var/datum/traitor_objective/objective_typepath as anything in subtypesof(/datum/traitor_objective))
-			if(initial(objective_typepath.abstract_type) == objective_typepath)
+			if(isabstract(objective_typepath))
 				continue
 			var/datum/traitor_objective/objective = allocate(objective_typepath, traitor.uplink_handler)
 			try

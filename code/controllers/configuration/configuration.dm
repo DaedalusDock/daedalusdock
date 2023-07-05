@@ -121,10 +121,9 @@
 	entries_by_type = _entries_by_type
 
 	for(var/I in typesof(/datum/config_entry)) //typesof is faster in this case
-		var/datum/config_entry/E = I
-		if(initial(E.abstract_type) == I)
+		if(isabstract(I))
 			continue
-		E = new I
+		var/datum/config_entry/E = new I
 		var/esname = E.name
 		var/datum/config_entry/test = _entries[esname]
 		if(test)
@@ -243,11 +242,9 @@
 	return msg
 
 /datum/controller/configuration/proc/Get(entry_type)
-	var/datum/config_entry/E = entry_type
-	var/entry_is_abstract = initial(E.abstract_type) == entry_type
-	if(entry_is_abstract)
+	if(isabstract(entry_type))
 		CRASH("Tried to retrieve an abstract config_entry: [entry_type]")
-	E = entries_by_type[entry_type]
+	var/datum/config_entry/E = entries_by_type[entry_type]
 	if(!E)
 		CRASH("Missing config entry for [entry_type]!")
 	if((E.protection & CONFIG_ENTRY_HIDDEN) && IsAdminAdvancedProcCall() && GLOB.LastAdminCalledProc == "Get" && GLOB.LastAdminCalledTargetRef == "[REF(src)]")
@@ -256,11 +253,9 @@
 	return E.config_entry_value
 
 /datum/controller/configuration/proc/Set(entry_type, new_val)
-	var/datum/config_entry/E = entry_type
-	var/entry_is_abstract = initial(E.abstract_type) == entry_type
-	if(entry_is_abstract)
+	if(isabstract(entry_type))
 		CRASH("Tried to set an abstract config_entry: [entry_type]")
-	E = entries_by_type[entry_type]
+	var/datum/config_entry/E = entries_by_type[entry_type]
 	if(!E)
 		CRASH("Missing config entry for [entry_type]!")
 	if((E.protection & CONFIG_ENTRY_LOCKED) && IsAdminAdvancedProcCall() && GLOB.LastAdminCalledProc == "Set" && GLOB.LastAdminCalledTargetRef == "[REF(src)]")

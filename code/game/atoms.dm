@@ -183,6 +183,10 @@
  *
  */
 /atom/New(loc, ...)
+	// Kapu said no. I'm just going to leave this here.
+	// if(isabstract(src))
+	// 	CRASH("Attempted to create abstract atom [type]")
+
 	//atom creation method that preloads variables at creation
 	if(use_preloader && (type == global._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)
@@ -1280,7 +1284,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
+							if (ispath(chosen_id) && !isabstract(chosen_id))
 								valid_id = TRUE
 						else
 							valid_id = TRUE

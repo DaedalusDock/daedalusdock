@@ -132,3 +132,4 @@
 	mask = /obj/item/clothing/mask/gas/atmos/captain
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
+	box = null

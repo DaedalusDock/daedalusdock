@@ -92,6 +92,7 @@
 	back = /obj/item/mod/control/pre_equipped/cosmohonk
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
+	box = null
 
 /datum/outfit/job/clown/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

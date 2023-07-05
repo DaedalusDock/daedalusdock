@@ -107,3 +107,4 @@
 	shoes = /obj/item/clothing/shoes/magboots/advance
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
+	box = null

@@ -61,6 +61,7 @@
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
+	box = null
 
 /obj/effect/mob_spawn/ghost_role/human/oldsci
 	name = "old cryogenics pod"

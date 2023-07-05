@@ -249,6 +249,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	head = null
 	mask = /obj/item/clothing/mask/gas/sechailer
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
 
 /obj/item/radio/headset/headset_sec/alt/department/Initialize(mapload)
 	. = ..()

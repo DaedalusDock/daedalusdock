@@ -1259,18 +1259,6 @@
 	var/obj/item/mod/module/module = build_path
 	desc = "[initial(module.desc)] It uses [initial(module.complexity)] complexity."
 
-/datum/design/module/mod_storage
-	name = "MOD Module: Storage"
-	id = "mod_storage"
-	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	build_path = /obj/item/mod/module/storage
-
-/datum/design/module/mod_storage_expanded
-	name = "MOD Module: Expanded Storage"
-	id = "mod_storage_expanded"
-	materials = list(/datum/material/iron = 5000, /datum/material/uranium = 2000)
-	build_path = /obj/item/mod/module/storage/large_capacity
-
 /datum/design/module/mod_visor_medhud
 	name = "MOD Module: Medical Visor"
 	id = "mod_visor_medhud"

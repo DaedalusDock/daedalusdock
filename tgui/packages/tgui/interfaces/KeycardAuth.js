@@ -7,7 +7,7 @@ export const KeycardAuth = (props, context) => {
   return (
     <Window
       width={375}
-      height={125}>
+      height={58+(data.optmap.length*22)}>
       <Window.Content>
         <Section>
           <Box>
@@ -30,12 +30,10 @@ export const KeycardAuth = (props, context) => {
                 )}
                 {data.auth_required === 0 && (
                   <>
-                    <Button
+                    {/* <Button
                       icon="exclamation-triangle"
                       fluid
-                      onClick={() => {
-                        return act('red_alert');
-                      }}
+                      onClick={() => act('red_alert')}
                       content="Red Alert" />
                     <Button
                       icon="wrench"
@@ -46,7 +44,19 @@ export const KeycardAuth = (props, context) => {
                       icon="meteor"
                       fluid
                       onClick={() => act('bsa_unlock')}
-                      content="Bluespace Artillery Unlock" />
+                      content="Bluespace Artillery Unlock" /> */}{/* frag2*/}
+                    {data.optmap.map(optbundle => {
+                      return (
+                        <Button
+                          fluid
+                          key={optbundle.trigger_key}
+                          icon={optbundle.icon}
+                          content={optbundle.displaymsg}
+                          onClick={() => act('trigger', { path: optbundle.trigger_key })}
+                          disabled={!optbundle.is_valid}
+                        />
+                      );
+                    })}
                   </>
                 )}
               </>

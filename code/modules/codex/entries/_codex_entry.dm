@@ -19,15 +19,10 @@
 	var/disambiguator
 	var/list/categories
 
-	///Allows you to mark a type as "abstract" and to not generate it.
-	abstract_type = /datum/codex_entry
+	//Codex entries support abstract_type.
+	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
 /datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
-
-#ifdef UNIT_TESTS
-	if(isabstract(src))
-		CRASH("Attempted to instantiate abstract codex entry [type]")
-#endif
 
 	SScodex.all_entries += src
 

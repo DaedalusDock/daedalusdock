@@ -113,15 +113,15 @@
 
 	obj_flags = UNIQUE_RENAME
 	unique_reskin = list(
-		"Default" = "c38",
-		"Fitz Special" = "c38_fitz",
-		"Police Positive Special" = "c38_police",
-		"Blued Steel" = "c38_blued",
-		"Stainless Steel" = "c38_stainless",
-		"Gold Trim" = "c38_trim",
-		"Golden" = "c38_gold",
-		"The Peacemaker" = "c38_peacemaker",
-		"Black Panther" = "c38_panther"
+		"Default" = "detective",
+		"Fitz Special" = "detective_fitz",
+		"Police Positive Special" = "detective_police",
+		"Blued Steel" = "detective_blued",
+		"Stainless Steel" = "detective_stainless",
+		"Gold Trim" = "detective_gold",
+		"Leopard Spots" = "detective_leopard",
+		"The Peacemaker" = "detective_peacemaker",
+		"Black Panther" = "detective_panther"
 	)
 
 /obj/item/gun/ballistic/revolver/syndicate

@@ -820,6 +820,11 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	carbon_owner.changeNext_move(CLICK_CD_RESIST)
 	carbon_owner.shoes.handle_tying(carbon_owner)
 
+/atom/movable/screen/alert/softcrit
+	name = "Critical Condition"
+	desc = "You are in very bad shape. Max stamina reduced by 100 and stamina regen reduced by 5."
+	icon_state = ALERT_SOFTCRIT
+
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there

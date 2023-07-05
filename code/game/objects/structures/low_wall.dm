@@ -13,8 +13,8 @@
 	layer = LOW_WALL_LAYER
 	max_integrity = 150
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_LOW_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_LOW_WALL
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WALLS
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 
 	/// Material used in construction
@@ -107,7 +107,7 @@
 	return FALSE //We handle this ourselves. Please dont break <3.
 
 /obj/structure/low_wall/attackby(obj/item/weapon, mob/living/user, params)
-	if(istype(weapon, /obj/item/paint) || istype(weapon, /obj/item/paint_remover))
+	if(istype(weapon, /obj/item/paint_sprayer) || istype(weapon, /obj/item/paint_remover))
 		return ..()
 
 	if(is_top_obstructed())
@@ -178,11 +178,11 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/low_wall/proc/set_wall_paint(new_paint)
+/obj/structure/low_wall/proc/paint_wall(new_paint)
 	wall_paint = new_paint
 	update_appearance()
 
-/obj/structure/low_wall/proc/set_stripe_paint(new_paint)
+/obj/structure/low_wall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
 	update_appearance()
 
@@ -209,7 +209,7 @@
 
 /obj/structure/low_wall/titanium
 	plating_material = /datum/material/titanium
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WALLS
 
 /obj/structure/low_wall/plastitanium
 	plating_material = /datum/material/alloy/plastitanium

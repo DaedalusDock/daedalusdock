@@ -48,9 +48,6 @@ list(
 				modnames_by_species[path] += mod.name
 				mods_by_species[path] += mod
 
-
-
-
 /datum/controller/modmanager/proc/NewInstance(path)
 	var/datum/appearance_modifier/mod = new path
 	return mod

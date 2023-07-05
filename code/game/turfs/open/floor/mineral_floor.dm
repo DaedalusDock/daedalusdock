@@ -70,9 +70,6 @@
 	floor_tile = /obj/item/stack/tile/mineral/titanium
 	custom_materials = list(/datum/material/titanium = 500)
 
-/turf/open/floor/mineral/titanium/setup_broken_states()
-	return list("titanium_dam1","titanium_dam2","titanium_dam3","titanium_dam4","titanium_dam5")
-
 /turf/open/floor/mineral/titanium/rust_heretic_act()
 	return // titanium does not rust
 
@@ -113,9 +110,6 @@
 	icon_state = "titanium_tiled"
 	floor_tile = /obj/item/stack/tile/mineral/titanium/tiled
 
-/turf/open/floor/mineral/titanium/tiled/setup_broken_states()
-	return list("titanium_dam1_old","titanium_dam2_old","titanium_dam3_old","titanium_dam4_old","titanium_dam5_old")
-
 /turf/open/floor/mineral/titanium/tiled/airless
 	initial_gas = AIRLESS_ATMOS
 
@@ -153,9 +147,6 @@
 	icon_state = "plastitanium"
 	floor_tile = /obj/item/stack/tile/mineral/plastitanium
 	custom_materials = list(/datum/material/alloy/plastitanium = 500)
-
-/turf/open/floor/mineral/plastitanium/setup_broken_states()
-	return list("plastitanium_dam1","plastitanium_dam2","plastitanium_dam3","plastitanium_dam4","plastitanium_dam5")
 
 /turf/open/floor/mineral/plastitanium/rust_heretic_act()
 	return // plastitanium does not rust

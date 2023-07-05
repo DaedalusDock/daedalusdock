@@ -13,6 +13,7 @@
 	taste_mult = 4
 	inverse_chem_val = 0.1
 	inverse_chem = null
+	abstract_type = /datum/reagent/consumable
 	/// How much nutrition this reagent supplies
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'
@@ -733,7 +734,7 @@
 		M.losebreath += 4
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2*REM, 150)
 		M.adjustToxLoss(3*REM,0)
-		M.adjustStaminaLoss(10*REM,0)
+		M.stamina.adjust(-10*REM)
 		M.blur_eyes(5)
 		. = TRUE
 	..()

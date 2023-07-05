@@ -227,7 +227,6 @@
 		/obj/item/pipe_dispenser,
 		/obj/item/construction/rcd,
 		/obj/item/storage/bag/construction,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"advanced" = list(
@@ -517,7 +516,6 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/storage/bag/chemistry,
 		/obj/item/storage/bag/bio,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"rescue" = list(
@@ -571,9 +569,7 @@
 		/obj/item/tank/internals,
 		/obj/item/analyzer,
 		/obj/item/dnainjector,
-		/obj/item/biopsy_tool,
 		/obj/item/storage/bag/bio,
-		/obj/item/melee/baton/telescopic,
 	)
 	skins = list(
 		"research" = list(
@@ -992,13 +988,13 @@
 		"enchanted" = list(
 			HELMET_FLAGS = list(
 				UNSEALED_LAYER = null,
-				UNSEALED_CLOTHING = SNUG_FIT|THICKMATERIAL,
+				UNSEALED_CLOTHING = SNUG_FIT|THICKMATERIAL|CASTING_CLOTHES,
 				SEALED_CLOTHING = STOPSPRESSUREDAMAGE,
 				UNSEALED_INVISIBILITY = HIDEFACIALHAIR|HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT,
 				UNSEALED_COVER = HEADCOVERSMOUTH|HEADCOVERSEYES|PEPPERPROOF,
 			),
 			CHESTPLATE_FLAGS = list(
-				UNSEALED_CLOTHING = THICKMATERIAL,
+				UNSEALED_CLOTHING = THICKMATERIAL|CASTING_CLOTHES,
 				SEALED_CLOTHING = STOPSPRESSUREDAMAGE,
 				SEALED_INVISIBILITY = HIDEJUMPSUIT,
 			),

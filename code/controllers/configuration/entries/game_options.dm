@@ -237,6 +237,14 @@
 	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/walk)
 	M.sync()
 
+/datum/config_entry/number/movedelay/sprint_delay
+	integer = FALSE
+
+/datum/config_entry/number/movedelay/sprint_delay/ValidateAndSet()
+	. = ..()
+	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/sprint)
+	M.sync()
+
 /////////////////////////////////////////////////Outdated move delay
 /datum/config_entry/number/outdated_movedelay
 	deprecated_by = /datum/config_entry/keyed_list/multiplicative_movespeed
@@ -392,3 +400,20 @@
 	default = 1
 	min_val = 0
 	integer = FALSE
+
+/// Enable the disk secure nag system?
+/datum/config_entry/flag/lone_op_nag
+	default = FALSE
+
+/datum/config_entry/flag/lone_op_nag/ValidateAndSet(str_val)
+	var/old_val = config_entry_value
+	. = ..()
+	if(config_entry_value != old_val)
+		//Re-fuck their processing
+		for(var/obj/item/disk/nuclear/dick in SSpoints_of_interest.real_nuclear_disks)
+			if(config_entry_value)
+				//Set true, Make them process
+				START_PROCESSING(SSobj, dick)
+			else
+				//Set false, kill:tm:
+				STOP_PROCESSING(SSobj, dick)

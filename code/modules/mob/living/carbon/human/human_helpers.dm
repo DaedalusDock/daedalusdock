@@ -135,11 +135,13 @@
 
 
 /// Fully randomizes everything according to the given flags.
-/mob/living/carbon/human/proc/randomize_human_appearance(randomize_flags = ALL)
+/mob/living/carbon/human/proc/randomize_human_appearance(flags = ALL)
 	var/datum/preferences/preferences = new
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (!preference.included_in_randomization_flags(randomize_flags))
+		if(istype(preference, /datum/preference/name/real_name) && !(flags & RANDOMIZE_NAME))
+			continue
+		if(istype(preference, /datum/preference/choiced/species) && !(flags & RANDOMIZE_SPECIES))
 			continue
 
 		if (preference.is_randomizable())

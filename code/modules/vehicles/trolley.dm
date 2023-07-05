@@ -14,6 +14,7 @@
 	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_REJECT_INSERTION, INNATE_TRAIT)
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/trolley)
+	AddComponent(/datum/component/simple_rotation)
 	var/handlebars = new /image{icon_state = "trolley_handlebars"; layer = MOB_BELOW_PIGGYBACK_LAYER}
 	add_overlay(handlebars)
 
@@ -106,7 +107,7 @@
 	var/obj/structure/closet/crate/cargo = contents[amount_of_cargo]
 	var/turf/deposit_turf = get_turf(get_step(src, dir))
 
-	if(!deposit_turf.Enter(cargo))
+	if(!deposit_turf.Enter(cargo, TRUE))
 		to_chat(user, span_warning("There's no space to unload from [src]!"))
 		return
 

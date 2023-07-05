@@ -1,6 +1,7 @@
 /datum/reagent/blood
 	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
 	name = "Blood"
+	description = "A suspension of organic cells necessary for the transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
 	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
 	taste_description = "iron"
@@ -122,6 +123,7 @@
 /datum/reagent/vaccine
 	//data must contain virus type
 	name = "Vaccine"
+	description = "A suspension of degraded viral material suitable for use in inoculation."
 	color = "#C81040" // rgb: 200, 16, 64
 	taste_description = "slime"
 	penetrates_skin = NONE
@@ -143,6 +145,7 @@
 
 /datum/reagent/vaccine/fungal_tb
 	name = "Vaccine (Fungal Tuberculosis)"
+	description = "A suspension of degraded viral material suitable for use in inoculation. Taggants suspended in the solution report it to be targeting Fungal Tuberculosis."
 
 /datum/reagent/vaccine/fungal_tb/New(data)
 	. = ..()
@@ -211,20 +214,24 @@
 		new /obj/item/stack/sheet/wethide(get_turf(HH), HH.amount)
 		qdel(HH)
 
+/// How many wet stacks you get per units of water when it's applied by touch.
+#define WATER_TO_WET_STACKS_FACTOR_TOUCH 0.5
+/// How many wet stacks you get per unit of water when it's applied by vapor. Much less effective than by touch, of course.
+#define WATER_TO_WET_STACKS_FACTOR_VAPOR 0.1
 /*
  * Water reaction to a mob
  */
-
 /datum/reagent/water/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with water can help put them out!
 	. = ..()
 	if(methods & TOUCH)
 		exposed_mob.extinguish_mob() // extinguish removes all fire stacks
-	if(methods & VAPOR)
-		if(!isfelinid(exposed_mob))
-			return
-		exposed_mob.incapacitate(1) // startles the felinid, canceling any do_after
-		SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "watersprayed", /datum/mood_event/watersprayed)
+		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_TOUCH) // Water makes you wet, at a 50% water-to-wet-stacks ratio. Which, in turn, gives you some mild protection from being set on fire!
 
+	if(methods & VAPOR)
+		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_VAPOR) // Spraying someone with water with the hope to put them out is just simply too funny to me not to add it.
+
+#undef WATER_TO_WET_STACKS_FACTOR_TOUCH
+#undef WATER_TO_WET_STACKS_FACTOR_VAPOR
 
 /datum/reagent/water/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
@@ -369,7 +376,7 @@
 	if(IS_CULTIST(M))
 		M.adjust_drowsyness(-5* REM * delta_time)
 		M.AdjustAllImmobility(-40 *REM* REM * delta_time)
-		M.adjustStaminaLoss(-10 * REM * delta_time, 0)
+		M.stamina.adjust(10 * REM * delta_time)
 		M.adjustToxLoss(-2 * REM * delta_time, 0)
 		M.adjustOxyLoss(-2 * REM * delta_time, 0)
 		M.adjustBruteLoss(-2 * REM * delta_time, 0)
@@ -580,13 +587,6 @@
 	color = "#13BC5E" // rgb: 19, 188, 94
 	race = /datum/species/jelly/slime
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/mutationtoxin/felinid
-	name = "Felinid Mutation Toxin"
-	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/human/felinid
-	taste_description = "something nyat good"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/lizard
 	name = "Unathi Mutation Toxin"
@@ -1437,7 +1437,7 @@
 	return ..()
 
 /datum/reagent/nitrium_high_metabolization/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.adjustToxLoss(0.1 * current_cycle * REM * delta_time, 0) // 1 toxin damage per cycle at cycle 10
 	return ..()
 
@@ -2487,6 +2487,11 @@
 			changeling.adjust_chemicals(-2 * REM * delta_time)
 	return ..()
 
+//This used to be a blindly implied type. Don't do that.
+/datum/reagent/peaceborg
+	name = "Abstract Peaceborg Chemical"
+	abstract_type = /datum/reagent/peaceborg
+
 /datum/reagent/pax/peaceborg
 	name = "Synthpax"
 	description = "A colorless liquid that suppresses violence in its subjects. Cheaper to synthesize than normal Pax, but wears off faster."
@@ -2516,9 +2521,8 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/peaceborg/tire/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	var/healthcomp = (100 - M.health) //DOES NOT ACCOUNT FOR ADMINBUS THINGS THAT MAKE YOU HAVE MORE THAN 200/210 HEALTH, OR SOMETHING OTHER THAN A HUMAN PROCESSING THIS.
-	if(M.getStaminaLoss() < (45 - healthcomp)) //At 50 health you would have 200 - 150 health meaning 50 compensation. 60 - 50 = 10, so would only do 10-19 stamina.)
-		M.adjustStaminaLoss(10 * REM * delta_time)
+	if(M.stamina.loss_as_percent <= 80)
+		M.stamina.adjust(-10 * REM * delta_time)
 	if(DT_PROB(16, delta_time))
 		to_chat(M, "You should sit down and take a rest...")
 	..()
@@ -2710,7 +2714,7 @@
 	if(IS_HERETIC(drinker))
 		drinker.adjust_drowsyness(-5 * REM * delta_time)
 		drinker.AdjustAllImmobility(-40 * REM * delta_time)
-		drinker.adjustStaminaLoss(-10 * REM * delta_time, FALSE)
+		drinker.stamina.adjust(-10 * REM * delta_time)
 		drinker.adjustToxLoss(-2 * REM * delta_time, FALSE, forced = TRUE)
 		drinker.adjustOxyLoss(-2 * REM * delta_time, FALSE)
 		drinker.adjustBruteLoss(-2 * REM * delta_time, FALSE)
@@ -2843,7 +2847,7 @@
 /datum/reagent/kronkus_extract/on_mob_life(mob/living/carbon/kronkus_enjoyer)
 	. = ..()
 	kronkus_enjoyer.adjustOrganLoss(ORGAN_SLOT_HEART, 0.1)
-	kronkus_enjoyer.adjustStaminaLoss(-2, FALSE)
+	kronkus_enjoyer.stamina.adjust(2)
 
 /datum/reagent/brimdust
 	name = "Brimdust"

@@ -134,7 +134,7 @@ the new instance inside the host to be updated to the template's stats.
 			follow_next(Dir & NORTHWEST)
 			last_move_tick = world.time
 
-/mob/camera/disease/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+/mob/camera/disease/can_z_move(direction, turf/start, z_move_flags = NONE, mob/living/rider)
 	if(freemove)
 		return ..()
 	return FALSE

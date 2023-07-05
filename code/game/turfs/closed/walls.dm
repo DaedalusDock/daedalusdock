@@ -27,8 +27,8 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	flags_ricochet = RICOCHET_HARD
 
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	lighting_uses_jen = TRUE
 
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
@@ -90,13 +90,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	color = null // Remove the color that was set for mapping clarity
 	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
-	if(is_station_level(z))
-		GLOB.station_turfs += src
-
-/turf/closed/wall/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
 
 /turf/closed/wall/copyTurf(turf/T)
 	. = ..()

@@ -298,6 +298,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 /obj/effect/mapping_helpers/atom_injector/proc/generate_stack_trace()
 	. = "[name] found no targets at ([x], [y], [z]). First Match Only: [first_match_only ? "true" : "false"] target type: [target_type] | target name: [target_name]"
 
+/obj/effect/mapping_helpers/atom_injector/obj_flag
+	name = "Obj Flag Injector"
+	icon_state = "objflag_helper"
+	var/inject_flags = NONE
+
+/obj/effect/mapping_helpers/atom_injector/obj_flag/inject(atom/target)
+	if(!isobj(target))
+		return
+	var/obj/obj_target = target
+	obj_target.obj_flags |= inject_flags
+
 ///This helper applies components to things on the map directly.
 /obj/effect/mapping_helpers/atom_injector/component_injector
 	name = "Component Injector"
@@ -748,9 +759,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/low_wall/low_wall = locate() in loc
 		if(low_wall)
 			if(!isnull(wall_paint))
-				low_wall.set_wall_paint(wall_paint)
+				low_wall.paint_wall(wall_paint)
 			if(!isnull(stripe_paint))
-				low_wall.set_stripe_paint(stripe_paint)
+				low_wall.paint_stripe(stripe_paint)
 			did_anything = TRUE
 		else
 			var/obj/structure/falsewall/falsewall = locate() in loc
@@ -806,3 +817,34 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	wall_paint = PAINT_WALL_CENTCOM
 	stripe_paint = PAINT_STRIPE_CENTCOM
 	icon_state = "paint_centcom"
+
+
+/obj/effect/mapping_helpers/broken_floor
+	name = "broken floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "damaged1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/broken_floor/Initialize(mapload)
+	.=..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/broken_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.break_tile()
+	qdel(src)
+
+/obj/effect/mapping_helpers/burnt_floor
+	name = "burnt floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "floorscorched1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/burnt_floor/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/burnt_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.burn_tile()
+	qdel(src)

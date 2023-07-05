@@ -1,5 +1,5 @@
 /datum/preference/numeric/age
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	explanation = "Age"
 	savefile_key = "age"
 	savefile_identifier = PREFERENCE_CHARACTER
 

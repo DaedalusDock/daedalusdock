@@ -32,12 +32,7 @@
 	if(.)
 		return
 	var/mob/living/L = user.mob
-	L.look_up()
-	return TRUE
-
-/datum/keybinding/living/look_up/up(client/user)
-	var/mob/living/L = user.mob
-	L.end_look_up()
+	L.do_look_up()
 	return TRUE
 
 /datum/keybinding/living/look_down
@@ -52,12 +47,7 @@
 	if(.)
 		return
 	var/mob/living/L = user.mob
-	L.look_down()
-	return TRUE
-
-/datum/keybinding/living/look_down/up(client/user)
-	var/mob/living/L = user.mob
-	L.end_look_down()
+	L.do_look_down()
 	return TRUE
 
 /datum/keybinding/living/rest

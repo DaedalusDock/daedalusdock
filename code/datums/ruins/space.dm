@@ -314,12 +314,6 @@
 	name = "Syndicate Forgotten Ship"
 	description = "Seemingly abandoned ship went of course right into NT controlled space. It seems that malfunction caused most systems to turn off, except for sleepers."
 
-/datum/map_template/ruin/space/hellfactory
-	id = "hellfactory"
-	suffix = "hellfactory.dmm"
-	name = "Heck Brewery"
-	description = "An abandoned warehouse and brewing facility, which has been recently rediscovered. Reports claim that the security system entered an ultra-hard lockdown, but these reports are inconclusive."
-
 /datum/map_template/ruin/space/space_billboard
 	id = "space_billboard"
 	suffix = "space_billboard.dmm"

@@ -69,6 +69,68 @@
 	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
+//Teshari Augs
+/datum/design/teshari_chest
+	name = "Prototype Teshari Torso"
+	id = "teshari_borg_chest"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/chest/robot/surplus/teshari
+	materials = list(/datum/material/iron=40000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+
+/datum/design/teshari_head
+	name = "Prototype Teshari Head"
+	id = "teshari_borg_head"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/head/robot/surplus/teshari
+	materials = list(/datum/material/iron=5000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_r_arm
+	name = "Prototype Teshari Right Arm"
+	id = "teshari_borg_r_arm"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/arm/right/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_l_arm
+	name = "Prototype Teshari Left Arm"
+	id = "teshari_borg_l_arm"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/arm/left/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_l_leg
+	name = "Prototype Teshari Left Leg"
+	id = "teshari_borg_l_leg"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/leg/left/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_r_leg
+	name = "Prototype Teshari Right Leg"
+	id = "teshari_borg_r_leg"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/leg/right/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
 //Ripley
 /datum/design/ripley_chassis
 	name = "Exosuit Chassis (APLU \"Ripley\")"

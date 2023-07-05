@@ -135,6 +135,8 @@
 
 /obj/effect/meatgrinder/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	Bumped(AM)
 
 /obj/effect/meatgrinder/Bumped(atom/movable/AM)

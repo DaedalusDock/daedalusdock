@@ -48,6 +48,8 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
+	/// Data for lobby player stat panels during the pre-game.
+	var/list/player_ready_data = list()
 
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
@@ -122,11 +124,46 @@ SUBSYSTEM_DEF(ticker)
 			totalPlayers = LAZYLEN(GLOB.new_player_list)
 			totalPlayersReady = 0
 			total_admins_ready = 0
+			player_ready_data.Cut()
+			var/list/players = list()
+
 			for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-				if(player.ready == PLAYER_READY_TO_PLAY)
+				if(player.ready == PLAYER_READY_TO_PLAY || player.ready == PLAYER_READY_TO_OBSERVE)
 					++totalPlayersReady
 					if(player.client?.holder)
 						++total_admins_ready
+
+					players[player.key] = player
+
+			sortTim(players, GLOBAL_PROC_REF(cmp_text_asc))
+
+			if(CONFIG_GET(flag/show_job_estimation))
+				for(var/ckey in players)
+					var/mob/dead/new_player/player = players[ckey]
+					var/datum/preferences/prefs = player.client?.prefs
+					if(!prefs)
+						continue
+					if(!prefs.read_preference(/datum/preference/toggle/ready_job))
+						continue
+
+					var/display = player.client?.holder?.fakekey || ckey
+					if(player.ready == PLAYER_READY_TO_OBSERVE)
+						player_ready_data += "* [display] as Observer"
+						continue
+
+					var/datum/job/J = prefs.get_highest_priority_job()
+					if(!J)
+						player_ready_data += "* [display] forgot to pick a job!"
+						continue
+					var/title = prefs.alt_job_titles?[J.title] || J.title
+					if(player.ready == PLAYER_READY_TO_PLAY)
+						player_ready_data += "* [display] as [title]"
+
+				if(length(player_ready_data))
+					player_ready_data.Insert(1, "------------------")
+					player_ready_data.Insert(1, "Job Estimation:")
+					player_ready_data.Insert(1, "")
+
 
 			if(start_immediately)
 				timeLeft = 0
@@ -373,14 +410,7 @@ SUBSYSTEM_DEF(ticker)
 			SSjob.promote_to_captain(new_player_living, acting_captain)
 			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
 		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
-			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
-				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
 			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		//PARIAH EDIT ADDITION
-		if(ishuman(new_player_living))
-			for(var/datum/loadout_item/item as anything in loadout_list_to_datums(new_player_mob.client?.prefs?.loadout_list))
-				item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
-		//PARIAH EDIT END
 		CHECK_TICK
 
 	if(captainless)

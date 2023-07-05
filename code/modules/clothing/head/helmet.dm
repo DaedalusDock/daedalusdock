@@ -533,12 +533,6 @@
 		visible_message(span_warning("[src] falls off of [magnification]'s head as it changes shape!"))
 		magnification.dropItemToGround(src)
 
-//LightToggle
-
-/obj/item/clothing/head/helmet/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HEAD)
-
 /obj/item/clothing/head/helmet/update_icon_state()
 	if(attached_light)
 		var/state = "[initial(icon_state)]"

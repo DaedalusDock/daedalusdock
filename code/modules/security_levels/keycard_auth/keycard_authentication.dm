@@ -15,7 +15,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/datum/callback/ev
-	var/event = ""
+	var/datum/keycard_auth_action/event = ""
 	var/obj/machinery/keycard_auth/event_source
 	var/mob/triggerer = null
 	var/waiting = FALSE
@@ -39,6 +39,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth, 26)
 	if(!ui)
 		ui = new(user, src, "KeycardAuth", name)
 		ui.open()
+
+/obj/machinery/keycard_auth/ui_static_data(mob/user)
+	var/list/data = list()
+	var/list/kad_optmap = list()
+
+	for(var/datum/keycard_auth_action/possible_action as anything in SSsecurity_level.kad_actions)
+		var/list/i_optlist = list()
+		i_optlist["trigger_key"] = possible_action //Used to index back into kad_actions later.
+		possible_action = SSsecurity_level.kad_actions[possible_action] //Key-data moment
+		i_optlist["displaymsg"] = possible_action.name
+		i_optlist["icon"] = possible_action.ui_icon
+		i_optlist["is_valid"] = possible_action.is_available()
+		kad_optmap += list(i_optlist) //Wrap to prevent mangling
+	data["optmap"] = kad_optmap
+	return data
+
 
 /obj/machinery/keycard_auth/ui_data()
 	var/list/data = list()
@@ -66,24 +82,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth, 26)
 	if(. || waiting || !allowed(usr))
 		return
 	switch(action)
-		if("red_alert")
-			if(!event_source)
-				sendEvent(KEYCARD_RED_ALERT)
-				. = TRUE
-		if("emergency_maint")
-			if(!event_source)
-				sendEvent(KEYCARD_EMERGENCY_MAINTENANCE_ACCESS)
-				. = TRUE
+		if("trigger")
+			var/datum/keycard_auth_action = SSsecurity_level.kad_actions[text2path(params["path"])]
+			if(!keycard_auth_action)
+				CRASH("Sent invalid KAD trigger data [params["path"]]")
+			sendEvent(keycard_auth_action)
+			. = TRUE
 		if("auth_swipe")
 			if(event_source)
 				event_source.trigger_event(usr)
 				event_source = null
 				update_appearance()
 				. = TRUE
-		if("bsa_unlock")
-			if(!event_source)
-				sendEvent(KEYCARD_BSA_UNLOCK)
-				. = TRUE
+
 
 /obj/machinery/keycard_auth/update_appearance(updates)
 	. = ..()
@@ -122,21 +133,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth, 26)
 	update_appearance()
 
 /obj/machinery/keycard_auth/proc/trigger_event(confirmer)
-	log_game("[key_name(triggerer)] triggered and [key_name(confirmer)] confirmed event [event]")
-	message_admins("[ADMIN_LOOKUPFLW(triggerer)] triggered and [ADMIN_LOOKUPFLW(confirmer)] confirmed event [event]")
+	log_game("[key_name(triggerer)] triggered and [key_name(confirmer)] confirmed event [event.name]")
+	message_admins("[ADMIN_LOOKUPFLW(triggerer)] triggered and [ADMIN_LOOKUPFLW(confirmer)] confirmed event [event.name]")
 
 	var/area/A1 = get_area(triggerer)
-	deadchat_broadcast(" triggered [event] at [span_name("[A1.name]")].", span_name("[triggerer]"), triggerer, message_type=DEADCHAT_ANNOUNCEMENT)
+	deadchat_broadcast(" triggered [event.name] at [span_name("[A1.name]")].", span_name("[triggerer]"), triggerer, message_type=DEADCHAT_ANNOUNCEMENT)
 
 	var/area/A2 = get_area(confirmer)
 	deadchat_broadcast(" confirmed [event] at [span_name("[A2.name]")].", span_name("[confirmer]"), confirmer, message_type=DEADCHAT_ANNOUNCEMENT)
-	switch(event)
-		if(KEYCARD_RED_ALERT)
-			set_security_level(SEC_LEVEL_RED)
-		if(KEYCARD_EMERGENCY_MAINTENANCE_ACCESS)
-			make_maint_all_access()
-		if(KEYCARD_BSA_UNLOCK)
-			toggle_bluespace_artillery()
+	event.trigger()
 
 GLOBAL_VAR_INIT(emergency_access, FALSE)
 /proc/make_maint_all_access()
@@ -157,10 +162,6 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 	GLOB.emergency_access = FALSE
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "disabled"))
 
-/proc/toggle_bluespace_artillery()
-	GLOB.bsa_unlock = !GLOB.bsa_unlock
-	minor_announce("Bluespace Artillery firing protocols have been [GLOB.bsa_unlock? "unlocked" : "locked"]", "Weapons Systems Update:")
-	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))
 
 #undef KEYCARD_RED_ALERT
 #undef KEYCARD_EMERGENCY_MAINTENANCE_ACCESS

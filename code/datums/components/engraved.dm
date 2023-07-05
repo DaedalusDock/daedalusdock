@@ -85,7 +85,7 @@
 	examine_list += span_boldnotice(engraved_description)
 	examine_list += span_notice("You can probably get this out with a <b>welding tool</b>.")
 
-/datum/component/engraved/proc/on_tool_act(mob/user, obj/item/tool)
+/datum/component/engraved/proc/on_tool_act(datum/source, mob/user, obj/item/tool)
 	SIGNAL_HANDLER
 	set waitfor = FALSE //Do not remove without removing the UNLINT below
 

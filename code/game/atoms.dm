@@ -183,10 +183,6 @@
  *
  */
 /atom/New(loc, ...)
-	// Kapu said no. I'm just going to leave this here.
-	// if(isabstract(src))
-	// 	CRASH("Attempted to create abstract atom [type]")
-
 	//atom creation method that preloads variables at creation
 	if(use_preloader && (type == global._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)

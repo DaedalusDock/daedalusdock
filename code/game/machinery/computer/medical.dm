@@ -133,8 +133,8 @@
 
 						dat += "<tr><td><br><b><font size='4'>Comments/Log</font></b></td></tr>"
 						var/counter = 1
-						while(active2.fields[text("com_[]", counter)])
-							dat += "<tr><td>[active2.fields[text("com_[]", counter)]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
+						while(active2.fields["com_[counter]"])
+							dat += "<tr><td>[active2.fields["com_[counter]"]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
 							counter++
 						dat += "<tr><td><A href='?src=[REF(src)];add_c=1'>Add Entry</A></td></tr>"
 
@@ -485,8 +485,8 @@
 				active2.fields["com_[counter]"] = "Made by [authenticated] ([rank]) on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
 
 			else if(href_list["del_c"])
-				if((istype(active2, /datum/data/record) && active2.fields[text("com_[]", href_list["del_c"])]))
-					active2.fields[text("com_[]", href_list["del_c"])] = "<B>Deleted</B>"
+				if((istype(active2, /datum/data/record) && active2.fields["com_[href_list["del_c"]]"]))
+					active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
 
 			else if(href_list["search"])
 				var/t1 = stripped_input(usr, "Search String: (Name, DNA, or ID)", "Med. records")
@@ -559,7 +559,7 @@ Important Notes:<BR>
 						P.name ="MR-[GLOB.data_core.medicalPrintCount] '[active1.fields["name"]]'"
 					else
 						P.info += "<B>Medical Record Lost!</B><BR>"
-						P.name = "MR-[GLOB.data_core.medicalPrintCount] '[Record Lost]'"
+						P.name = "MR-[GLOB.data_core.medicalPrintCount] 'Record Lost'"
 					P.info += "</TT>"
 					P.update_appearance()
 					printing = null

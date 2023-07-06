@@ -587,15 +587,15 @@ Age: [active1.fields["age"]]<BR>"}
 							P.info += "</tr>"
 						P.info += "</table>"
 
-						P.info += text("<BR>\nImportant Notes:<BR>\n\t[]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>", active2.fields["notes"])
+						P.info += "<BR>\nImportant Notes:<BR>\n\t[active2.fields["notes"]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
 						var/counter = 1
-						while(active2.fields[text("com_[]", counter)])
-							P.info += text("[]<BR>", active2.fields[text("com_[]", counter)])
+						while(active2.fields["com_[counter]"])
+							P.info += "[active2.fields["com_[counter]"]]<BR>"
 							counter++
-						P.name = text("SR-[] '[]'", GLOB.data_core.securityPrintCount, active1.fields["name"])
+						P.name = "SR-[GLOB.data_core.securityPrintCount] '[active1.fields["name"]]'"
 					else
 						P.info += "<B>Security Record Lost!</B><BR>"
-						P.name = text("SR-[] '[]'", GLOB.data_core.securityPrintCount, "Record Lost")
+						P.name = "SR-[GLOB.data_core.securityPrintCount] 'Record Lost'"
 					P.info += "</TT>"
 					P.update_appearance()
 					printing = null
@@ -662,9 +662,9 @@ Age: [active1.fields["age"]]<BR>"}
 				if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
 					return
 				var/counter = 1
-				while(active2.fields[text("com_[]", counter)])
+				while(active2.fields["com_[counter]"])
 					counter++
-				active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [] [], []<BR>[]", src.authenticated, src.rank, stationtime2text(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
+				active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
 
 			if("Delete Record (ALL)")
 				if(active1)
@@ -679,15 +679,15 @@ Age: [active1.fields["age"]]<BR>"}
 					temp += "<a href='?src=[REF(src)];choice=Clear Screen'>No</a>"
 
 			if("Delete Entry")
-				if((istype(active2, /datum/data/record) && active2.fields[text("com_[]", href_list["del_c"])]))
-					active2.fields[text("com_[]", href_list["del_c"])] = "<B>Deleted</B>"
+				if((istype(active2, /datum/data/record) && active2.fields["com_[href_list["del_c"]]"]))
+					active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
 //RECORD CREATE
 			if("New Record (Security)")
 				if((istype(active1, /datum/data/record) && !( istype(active2, /datum/data/record) )))
 					var/datum/data/record/R = new /datum/data/record()
 					R.fields["name"] = active1.fields["name"]
 					R.fields["id"] = active1.fields["id"]
-					R.name = text("Security Record #[]", R.fields["id"])
+					R.name = "Security Record #[R.fields["id"]]"
 					R.fields["criminal"] = "None"
 					R.fields["crim"] = list()
 					R.fields["notes"] = "No notes."
@@ -718,7 +718,7 @@ Age: [active1.fields["age"]]<BR>"}
 				var/datum/data/record/R = new /datum/data/record()
 				R.fields["name"] = active1.fields["name"]
 				R.fields["id"] = active1.fields["id"]
-				R.name = text("Security Record #[]", R.fields["id"])
+				R.name = "Security Record #[R.fields["id"]]"
 				R.fields["criminal"] = "None"
 				R.fields["crim"] = list()
 				R.fields["notes"] = "No notes."

@@ -114,7 +114,7 @@
 	//1. view() only constructs lists of atoms with the mob primitive type and
 	//2. the mobs returned by view are fast typechecked to only iterate through /mob/oranges_ear mobs, which guarantees at most one per turf
 	//on a whole this can outperform iterating through all movables in view() by ~2x especially when hearables are a tiny percentage of movables in view
-	for(var/mob/oranges_ear/ear in view(view_radius, center_turf))
+	for(var/mob/oranges_ear/ear in hearers(view_radius, center_turf))
 		. += ear.references
 
 	for(var/mob/oranges_ear/remaining_ear as anything in assigned_oranges_ears)//we need to clean up our mess

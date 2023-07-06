@@ -38,21 +38,40 @@
 			if(FEMALE)
 				name = "feral sow"
 
-/mob/living/simple_animal/hostile/retaliate/hog/Aggro()
-	..()
-	hogAlert()
+/mob/living/simple_animal/hostile/retaliate/hog/Life(delta_time = SSMOBS_DT, times_fired)
+	. = ..()
+	if(stat == CONSCIOUS)
+		if(prob(5))
+			playsound(src, 'sound/creatures/hog/hoggrunt.ogg', 50, TRUE)
+		var/obj/item/food/fooditem = locate(/obj/item/food) in view(1, src)
+		if(fooditem && Adjacent(fooditem))
+			consume(fooditem)
+
+/mob/living/simple_animal/hostile/retaliate/hog/AttackingTarget()
+	if(istype(target, /obj/item/food))
+		consume(target)
+		return
+	return ..()
+
+/mob/living/simple_animal/hostile/retaliate/hog/proc/consume(atom/movable/fooditem)
+	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
+	visible_message("[name] eats the [fooditem].")
+	qdel(fooditem)
+	if(health == maxHealth)
+		return
+	health += 5
+	if(health > maxHealth)
+		health = maxHealth
 
 /mob/living/simple_animal/hostile/retaliate/hog/proc/checkEntered(datum/source, atom/movable/arrived)
+	if(stat != CONSCIOUS) //not 100% sure if this is needed
+		return
 	if(arrived == src)
 		return
 	if(!ismob(arrived))
 		return
+	hogAlert()
 	Retaliate()
-
-/mob/living/simple_animal/hostile/retaliate/hog/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	if(prob(15))
-		playsound(src, 'sound/creatures/hog/hoggrunt.ogg', 50, TRUE)
 
 /mob/living/simple_animal/hostile/retaliate/hog/proc/hogAlert() //YOU HAVE ALERTED THE HOG
 	var/obj/effect/overlay/vis/overlay = new()
@@ -68,6 +87,8 @@
 	desc = "A large, greasy hog that was rescued by security during an illegal pork trafficking operation. This pig is now the beloved pet of security, despite all the jokes made by the crew."
 	icon_state = "hog_officer"
 	icon_living = "hog_officer"
-	faction = list("neutral")
+	melee_damage_lower = 15 //life as a domestic pet has reduced this hog's combat ability.
+	melee_damage_upper = 15
+	obj_damage = 40
 	territorial = FALSE
 	rename = FALSE

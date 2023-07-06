@@ -28,3 +28,7 @@
   - balance: Oxyloss taken when failing a breath from 3 to rand(2, 4)
   - balance: Oxyloss taken when failing a breath in critical condition from 3.3 to
       rand(3,6)
+2023-07-06:
+  francinum:
+  - refactor: Keycard Authentication Devices have been made significantly less hardcoded.
+      They're still awful.

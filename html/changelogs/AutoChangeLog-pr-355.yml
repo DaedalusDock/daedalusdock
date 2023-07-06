@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - refactor: Keycard Authentication Devices have been made significantly less hardcoded.
-      They're still awful.

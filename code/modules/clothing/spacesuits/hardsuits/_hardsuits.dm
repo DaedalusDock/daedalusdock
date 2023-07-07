@@ -76,9 +76,11 @@
 	else
 		RemoveHelmet()
 
-/obj/item/clothing/suit/space/hardsuit/ui_action_click()
-	. = ..()
-	ToggleHelmet()
+/obj/item/clothing/suit/space/hardsuit/ui_action_click(mob/user, actiontype)
+	if(istype(actiontype, /datum/action/item_action/toggle_helmet))
+		ToggleHelmet()
+	else
+		return ..()
 
 /obj/item/clothing/suit/space/hardsuit/attack_self(mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)

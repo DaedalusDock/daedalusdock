@@ -1313,9 +1313,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
  * * status_only - Update only current availability status of the buttons to show if they are ready or not to use
  * * force - Force buttons update even if the given button icon state has not changed
  */
-/obj/item/proc/update_action_buttons(status_only = FALSE, force = FALSE)
+/obj/item/proc/update_action_buttons(force = FALSE)
 	for(var/datum/action/current_action as anything in actions)
-		current_action.build_all_button_icons(status_only, force)
+		current_action.build_all_button_icons(null, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)

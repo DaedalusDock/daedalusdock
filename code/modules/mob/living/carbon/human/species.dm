@@ -1732,12 +1732,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			'goon/sounds/voice/mascream5.ogg',
 			'goon/sounds/voice/mascream7.ogg',
 			'sound/voice/human/malescream_5.ogg',
+			'sound/voice/human/malescream_6.ogg',
+			'sound/voice/human/malescream_7.ogg',
+			'sound/voice/human/malescream_4.ogg'
 		)
 
 	return pick(
 		'sound/voice/human/femalescream_1.ogg',
 		'sound/voice/human/femalescream_2.ogg',
 		'sound/voice/human/femalescream_3.ogg',
+		'sound/voice/human/femalescream_6.ogg',
+		'sound/voice/human/femalescream_7.ogg',
 		'goon/sounds/voice/fescream1.ogg',
 		'goon/sounds/voice/fescream5.ogg',
 	)

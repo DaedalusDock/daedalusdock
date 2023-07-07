@@ -1734,7 +1734,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			'sound/voice/human/malescream_5.ogg',
 			'sound/voice/human/malescream_6.ogg',
 			'sound/voice/human/malescream_7.ogg',
-			'sound/voice/human/malescream_4.ogg'
+			'sound/voice/human/malescream_4.ogg',
 		)
 
 	return pick(

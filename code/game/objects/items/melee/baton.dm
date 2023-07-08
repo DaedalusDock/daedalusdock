@@ -24,7 +24,7 @@
 	/// If affect_cyborg is TRUE, this is how long we stun cyborgs for on a hit.
 	var/stun_time_cyborg = (5 SECONDS)
 	/// The length of the knockdown applied to the user on clumsy_check()
-	var/clumsy_knockdown_time = 18 SECONDS
+	var/clumsy_knockdown_time = 10 SECONDS
 	/// How much stamina damage we deal on a successful hit against a living, non-cyborg mob.
 	var/charged_stamina_damage = 130
 	/// Can we stun cyborgs?
@@ -106,6 +106,9 @@
 
 /obj/item/melee/baton/proc/user_flip(mob/living/user, new_mode)
 	SIGNAL_HANDLER
+
+	if(!can_be_flipped)
+		return
 
 	if(new_mode == flipped)
 		return
@@ -236,7 +239,7 @@
 	return
 
 /obj/item/melee/baton/proc/clumsy_check(mob/living/user, mob/living/intented_target)
-	if(!active || (!HAS_TRAIT(user, TRAIT_CLUMSY) && !flipped))
+	if(!active || (!HAS_TRAIT(user, TRAIT_CLUMSY) && (!flipped || !can_be_flipped)))
 		return FALSE
 
 	if(!flipped && prob(70)) //70% chance to not hit yourself, if you aren't holding it wrong
@@ -279,9 +282,11 @@
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NONE
 	force = 0
-	clumsy_knockdown_time = 15 SECONDS
+
+	clumsy_knockdown_time = 1 SECONDS
 	active = FALSE
 	can_be_flipped = FALSE
+	knockdown_time = 1 SECOND
 
 	/// The sound effecte played when our baton is extended.
 	var/on_sound = 'sound/weapons/batonextend.ogg'
@@ -300,6 +305,23 @@
 		attack_verb_continuous_on = list("smacks", "strikes", "cracks", "beats"), \
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
+
+/obj/item/melee/baton/telescopic/baton_effect(mob/living/target, mob/living/user)
+	if(user)
+		target.lastattacker = user.real_name
+		target.lastattackerckey = user.ckey
+		target.LAssailant = WEAKREF(user)
+		if(log_stun_attack)
+			log_combat(user, target, "telescopic batoned", src)
+
+	if(iscyborg(target))
+		return FALSE
+
+	var/trait_check = HAS_TRAIT(target, TRAIT_STUNRESISTANCE)
+	var/disable_duration =  knockdown_time * (trait_check ? 0.1 : 1)
+	target.Knockdown(disable_duration)
+	additional_effects_non_cyborg(target)
+	return TRUE
 
 /obj/item/melee/baton/telescopic/suicide_act(mob/user)
 	var/mob/living/carbon/human/human_user = user
@@ -353,7 +375,7 @@
 	throwforce = 7
 	charged_stamina_damage = 130
 	knockdown_time = 6 SECONDS
-	clumsy_knockdown_time = 15 SECONDS
+	clumsy_knockdown_time = 6 SECONDS
 	cooldown = 2.5 SECONDS
 	on_stun_sound = 'sound/weapons/egloves.ogg'
 	on_stun_volume = 50

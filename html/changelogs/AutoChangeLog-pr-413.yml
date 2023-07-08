@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Detective's revolver is no longer an error
+  - rscdel: Detective's revolver is no longer reskinnable

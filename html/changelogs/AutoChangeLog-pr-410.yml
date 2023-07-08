@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: do_after() now renders on the correct layer and plane
+  - bugfix: Auto surgeon do_after()

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed AoE flash function
+  - balance: AoE flash now has a cooldown.

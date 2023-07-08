@@ -145,8 +145,8 @@
 			. = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/colossus/devour(mob/living/L)
-	visible_message(span_colossus("[src] disintegrates [L]!"))
-	L.dust()
+	visible_message(span_colossus("[src] crushes [L]!"))
+	L.apply_damage(300, BRUTE, spread_damage = TRUE)
 
 /obj/effect/temp_visual/at_shield
 	name = "anti-toolbox field"

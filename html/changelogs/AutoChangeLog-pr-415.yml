@@ -1,0 +1,8 @@
+author: Kapu1178, AdharaInSpace
+delete-after: true
+changes:
+  - qol: Batons no longer have a right click interaction. Instead, turn on Combat
+      Mode to bludgeon crew with it. Don't try it while the baton is on, though...
+  - imageadd: Batons now have in-hand sprites that show if they are on/flipped.
+  - tweak: Changed most combat messages to third person regardless of who the attacker
+      is.

@@ -221,18 +221,24 @@
 		var/mob/living/carbon/carbontarget = target
 		var/list/damaged = carbontarget.get_damaged_bodyparts(1,1)
 		if(length(damaged)>0 || oxy_loss>0 || tox_loss>0 || fire_loss>0)
-			var/dmgreport = "<span class='info ml-1'>General status:</span>\
-							<table class='ml-2'><tr><font face='Verdana'>\
-							<td style='width:7em;'><font color='#ff0000'><b>Damage:</b></font></td>\
-							<td style='width:5em;'><font color='#ff3333'><b>Brute</b></font></td>\
-							<td style='width:4em;'><font color='#ff9933'><b>Burn</b></font></td>\
-							<td style='width:4em;'><font color='#00cc66'><b>Toxin</b></font></td>\
-							<td style='width:8em;'><font color='#00cccc'><b>Suffocation</b></font></td></tr>\
-							<tr><td><font color='#ff3333'><b>Overall:</b></font></td>\
-							<td><font color='#ff3333'><b>[CEILING(brute_loss,1)]</b></font></td>\
-							<td><font color='#ff9933'><b>[CEILING(fire_loss,1)]</b></font></td>\
-							<td><font color='#00cc66'><b>[CEILING(tox_loss,1)]</b></font></td>\
-							<td><font color='#33ccff'><b>[CEILING(oxy_loss,1)]</b></font></td></tr>"
+			var/dmgreport = {"
+				<span class='info ml-1'>General status:</span>
+				<table class='ml-2'>
+					<tr><font face='Verdana'>
+						<td style='width:7em;'><font color='#ff0000'><b>Damage:</b></font></td>
+						<td style='width:5em;'><font color='#ff3333'><b>Brute</b></font></td>
+						<td style='width:4em;'><font color='#ff9933'><b>Burn</b></font></td>
+						<td style='width:4em;'><font color='#00cc66'><b>Toxin</b></font></td>
+						<td style='width:8em;'><font color='#00cccc'><b>Suffocation</b></font></td>
+					</tr>
+					<tr>
+						<td><font color='#ff3333'><b>Overall:</b></font></td>
+						<td><font color='#ff3333'><b>[CEILING(brute_loss,1)]</b></font></td>
+						<td><font color='#ff9933'><b>[CEILING(fire_loss,1)]</b></font></td>
+						<td><font color='#00cc66'><b>[CEILING(tox_loss,1)]</b></font></td>
+						<td><font color='#33ccff'><b>[CEILING(oxy_loss,1)]</b></font></td>
+					</tr>
+			"}
 
 			if(mode == SCANNER_VERBOSE)
 				for(var/obj/item/bodypart/limb as anything in damaged)
@@ -328,7 +334,9 @@
 			if(wounded_part.burn_dam > 0)
 				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BURN, "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]"
 			if(wounded_part.bodypart_flags & BP_BLEEDING)
-				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE,"<b>bleeding</b>")]\]</span>"
+				limb_result = "[limb_result] \[[span_color(COLOR_MEDICAL_BRUTE,"<b>bleeding</b>")]\]"
+			if(wounded_part.bodypart_flags & BP_BROKEN_BONES)
+				limb_result = "[limb_result] \[[span_color("#dfdfcf", "<b>broken</b>")]\]"
 			render_list += "[limb_result]\n"
 
 	//Diseases

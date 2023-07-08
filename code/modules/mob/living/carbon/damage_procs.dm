@@ -156,11 +156,10 @@
 
 
 ///Returns a list of bodyparts with wounds (in case someone has a wound on an otherwise fully healed limb)
-/mob/living/carbon/proc/get_wounded_bodyparts(brute = FALSE, burn = FALSE, stamina = FALSE, status)
+/mob/living/carbon/proc/get_wounded_bodyparts()
 	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		if(LAZYLEN(BP.wounds))
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		if(LAZYLEN(BP.wounds) || (BP.bodypart_flags & BP_BROKEN_BONES) || (BP.bodypart_flags & BP_BLEEDING))
 			parts += BP
 	return parts
 

@@ -24,11 +24,13 @@
 	attack_vis_effect = ATTACK_EFFECT_SMASH
 	ranged_cooldown_time = 10 SECONDS
 	speak_emote = list("oinks")
+	can_buckle = TRUE
 	var/territorial = TRUE
 	var/rename = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/hog/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/ridable, /datum/component/riding/creature/hog)
 	if(territorial)
 		AddComponent(/datum/component/connect_range, src, list(COMSIG_ATOM_ENTERED = PROC_REF(checkEntered)), 1, FALSE)
 	if(rename)
@@ -51,6 +53,10 @@
 	if(istype(target, /obj/item/food))
 		consume(target)
 		return
+	if(istype(target, /atom/movable))
+		var/mob/living/moving_target = target
+		if(moving_target.buckled == src)
+			return
 	return ..()
 
 /mob/living/simple_animal/hostile/retaliate/hog/proc/consume(atom/movable/fooditem)
@@ -70,6 +76,8 @@
 		return
 	if(!ismob(arrived))
 		return
+	if(target)
+		return
 	hogAlert()
 	Retaliate()
 
@@ -81,6 +89,10 @@
 	vis_contents += overlay
 	QDEL_IN(overlay, 1.5 SECONDS)
 	playsound(src, 'sound/creatures/hog/hogscream.ogg', 50, TRUE)
+
+/mob/living/simple_animal/hostile/retaliate/hog/proc/flingRider(atom/rider) //shouldn't trigger if the hog has a client.
+	playsound(src, 'sound/creatures/hog/hogscream.ogg', 50, TRUE)
+	emote("spin")
 
 /mob/living/simple_animal/hostile/retaliate/hog/security
 	name = "Lieutenant Hoggison"

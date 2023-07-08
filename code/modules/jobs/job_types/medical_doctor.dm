@@ -86,3 +86,5 @@
 	mask = /obj/item/clothing/mask/breath/medical
 	r_pocket = /obj/item/flashlight/pen
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

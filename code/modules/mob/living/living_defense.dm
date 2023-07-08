@@ -87,8 +87,11 @@
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
 	if(combat_mode == new_mode)
 		return
+
+	SEND_SIGNAL(src, COMSIG_LIVING_TOGGLE_COMBAT_MODE, new_mode)
 	. = combat_mode
 	combat_mode = new_mode
+
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))

@@ -313,7 +313,7 @@
 		old_limb.attach_limb(limb_owner, TRUE)
 
 	/// Replace organs gracefully
-	for(var/obj/item/organ/O as anything in old_limb.contained_organs)
+	for(var/obj/item/organ/O as anything in old_limb?.contained_organs)
 		O.Insert(limb_owner, TRUE)
 
 ///Attach src to target mob if able.

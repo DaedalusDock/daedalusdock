@@ -116,7 +116,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(ishuman(user) && prob(60))
 		var/mob/living/carbon/human/H = user
 		if (blood_level)
-			user.blood_in_hands = blood_level
+			H.blood_in_hands = blood_level
 
 		/*if (blood_level > 1)
 			H.bloody_body(target,0)*/

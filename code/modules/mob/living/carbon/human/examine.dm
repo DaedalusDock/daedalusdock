@@ -149,14 +149,15 @@
 			var/is_bloody
 			for(var/datum/wound/W as anything in body_part.wounds)
 				if(W.bleeding())
-					msg += span_warning("[t_His] [body_part.plaintext_zone] covering is bloody!\n")
+					msg += span_warning("Blood soaks through [t_His] [body_part.plaintext_zone] covering!\n")
 					is_bloody = TRUE
 					break
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
 			continue
 		else
-			msg += body_part.mob_examine(hal_screwyhud)
+			for(var/string in body_part.mob_examine(hal_screwyhud))
+				msg += "[string]</br>"
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X

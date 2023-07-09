@@ -246,13 +246,16 @@
 	. += mob_examine()
 
 /obj/item/bodypart/proc/mob_examine(hallucinating)
-	if(!current_damage || hallucinating == SCREWYHUD_HEALTHY)
+	. = list()
+
+	if(hallucinating == SCREWYHUD_HEALTHY)
 		return
 	if(hallucinating == SCREWYHUD_CRIT)
 		var/list/flavor_text = list("a")
 		flavor_text += pick(" pair of ", " ton of ", " several ")
 		flavor_text += pick("large cuts", "severe burns")
-		return "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone].<br>"
+		. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
+		return
 
 	var/list/flavor_text = list()
 
@@ -286,10 +289,20 @@
 					flavor_text += "several [wound]s"
 				if(6 to INFINITY)
 					flavor_text += "a ton of [wound]\s"
+
 	if(owner)
-		return "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone].<br>"
+		if(current_damage)
+			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
+
+		if(bodypart_flags & BP_BROKEN_BONES)
+			. += span_warning("[owner.p_their(TRUE)] [plaintext_zone] is dented and swollen.")
+		return
 	else
-		return "it has [english_list(flavor_text)].<br>"
+		if(current_damage)
+			. += "It has [english_list(flavor_text)]."
+		if(bodypart_flags & BP_BROKEN_BONES)
+			. += span_warning("It is dented and swollen.")
+		return
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)

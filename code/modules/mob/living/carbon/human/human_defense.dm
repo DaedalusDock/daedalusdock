@@ -699,8 +699,6 @@
 
 	visible_message(span_notice("[src] examines [p_them()]self.")) //PARIAH EDIT CHANGE
 
-	combined_msg += span_boldnotice("You check yourself for injuries.<hr>") //PARIAH EDIT ADDITION
-
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)

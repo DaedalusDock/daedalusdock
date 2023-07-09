@@ -32,3 +32,35 @@
   francinum:
   - refactor: Keycard Authentication Devices have been made significantly less hardcoded.
       They're still awful.
+2023-07-09:
+  Kapu1178:
+  - bugfix: You can now die from only one damage type again.
+  - bugfix: Action Buttons that require consciousness can now be used in Soft Crit
+  - bugfix: Removed a phantom surgery from the operating console
+  - bugfix: Fixed AoE flash function
+  - balance: AoE flash now has a cooldown.
+  - bugfix: Examining someone now shows broken bones.
+  - qol: Health Analyzers now display broken bones.
+  - bugfix: Checking yourself for injuries now shows broken bones even if the limb
+      has no damage.
+  - bugfix: Detective's revolver is no longer an error
+  - rscdel: Detective's revolver is no longer reskinnable
+  - rscadd: Voidsuits! A simpler alternative to MODsuits that does not take the backpack
+      slot.
+  - balance: MODsuit slowdowns almost entirely removed, save for a couple.
+  - balance: MODsuit storage module taken from all non-antag suits.
+  - balance: MODsuit armor increased on most suits.
+  - bugfix: Item action buttons change icons again.
+  - tweak: Spacesuit cell batteries are now removed by using a screwdriver while the
+      cell compartment is open.
+  - bugfix: The clockwork HUD has aim intent icons.
+  - bugfix: do_after() now renders on the correct layer and plane
+  - bugfix: Auto surgeon do_after()
+  - balance: Megafauna no longer gib dead players.
+  - qol: Wall engravings can now be removed with a welding tool.
+  Kapu1178, AdharaInSpace:
+  - qol: Batons no longer have a right click interaction. Instead, turn on Combat
+      Mode to bludgeon crew with it. Don't try it while the baton is on, though...
+  - imageadd: Batons now have in-hand sprites that show if they are on/flipped.
+  - tweak: Changed most combat messages to third person regardless of who the attacker
+      is.

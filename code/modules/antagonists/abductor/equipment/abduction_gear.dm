@@ -501,12 +501,12 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			icon_state = "wonderprodProbe"
 			inhand_icon_state = "wonderprodProbe"
 
-/obj/item/melee/baton/abductor/baton_attack(mob/target, mob/living/user, modifiers)
+/obj/item/melee/baton/abductor/melee_baton_attack(mob/target, mob/living/user)
 	if(!AbductorCheck(user))
-		return BATON_ATTACK_DONE
+		return
 	return ..()
 
-/obj/item/melee/baton/abductor/baton_effect(mob/living/target, mob/living/user, modifiers, stun_override)
+/obj/item/melee/baton/abductor/baton_effect(mob/living/target, mob/living/user)
 	switch (mode)
 		if(BATON_STUN)
 			target.visible_message(span_danger("[user] stuns [target] with [src]!"),
@@ -522,6 +522,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			CuffAttack(target,user)
 		if(BATON_PROBE)
 			ProbeAttack(target,user)
+
+	return TRUE
 
 /obj/item/melee/baton/abductor/get_stun_description(mob/living/target, mob/living/user)
 	return // chat messages are handled in their own procs.

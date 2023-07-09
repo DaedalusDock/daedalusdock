@@ -140,6 +140,11 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/item/clothing/suit/space/screwdriver_act(mob/living/user, obj/item/tool)
+	if(cell_cover_open)
+		if(cell)
+			remove_cell(user)
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
 	var/range_low = 20 // Default min temp c
 	var/range_high = 45 // default max temp c
 	if(obj_flags & EMAGGED)
@@ -165,31 +170,14 @@
 		to_chat(user, span_notice("You successfully install \the [cell] into [src]."))
 		return
 
-/// Open the cell cover when ALT+Click on the suit
-/obj/item/clothing/suit/space/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return ..()
-	toggle_spacesuit_cell(user)
-
-/// Remove the cell whent he cover is open on CTRL+Click
-/obj/item/clothing/suit/space/CtrlClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		if(cell_cover_open && cell)
-			remove_cell(user)
-			return
-	return ..()
-
-// Remove the cell when using the suit on its self
-/obj/item/clothing/suit/space/attack_self(mob/user)
-	remove_cell(user)
-
 /// Remove the cell from the suit if the cell cover is open
 /obj/item/clothing/suit/space/proc/remove_cell(mob/user)
 	if(cell_cover_open && cell)
 		user.visible_message(span_notice("[user] removes \the [cell] from [src]!"), \
-			span_notice("You remove [cell]."))
+			span_notice("You remove [cell] from [src]."))
 		cell.add_fingerprint(user)
-		user.put_in_hands(cell)
+		if(!user.put_in_hands(cell))
+			cell.forceMove(user.drop_location())
 		cell = null
 
 /// Toggle the space suit's cell cover

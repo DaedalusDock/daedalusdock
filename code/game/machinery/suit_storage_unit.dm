@@ -70,12 +70,21 @@
 
 /obj/machinery/suit_storage_unit/engine
 	mask_type = /obj/item/clothing/mask/breath
-	mod_type = /obj/item/mod/control/pre_equipped/engineering
+	suit_type = /obj/item/clothing/suit/space/hardsuit/engine
+	storage_type = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/engine/mod
+	suit_type = /obj/item/mod/control/pre_equipped/engineering
+	storage_type = null
 
 /obj/machinery/suit_storage_unit/atmos
 	mask_type = /obj/item/clothing/mask/gas/atmos
-	storage_type = /obj/item/watertank/atmos
+	suit_type = /obj/item/clothing/suit/space/hardsuit/atmos
+	storage_type = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/atmos/mod
 	mod_type = /obj/item/mod/control/pre_equipped/atmospheric
+	storage_type = /obj/item/watertank/atmos
 
 /obj/machinery/suit_storage_unit/ce
 	mask_type = /obj/item/clothing/mask/breath
@@ -84,7 +93,7 @@
 
 /obj/machinery/suit_storage_unit/security
 	mask_type = /obj/item/clothing/mask/gas/sechailer
-	mod_type = /obj/item/mod/control/pre_equipped/security
+	suit_type = /obj/item/clothing/suit/space/hardsuit/security
 
 /obj/machinery/suit_storage_unit/hos
 	mask_type = /obj/item/clothing/mask/gas/sechailer
@@ -103,7 +112,7 @@
 /obj/machinery/suit_storage_unit/medical
 	mask_type = /obj/item/clothing/mask/breath/medical
 	storage_type = /obj/item/tank/internals/oxygen
-	mod_type = /obj/item/mod/control/pre_equipped/medical
+	suit_type = /obj/item/clothing/suit/space/hardsuit/medical
 
 /obj/machinery/suit_storage_unit/cmo
 	mask_type = /obj/item/clothing/mask/breath/medical
@@ -113,6 +122,11 @@
 /obj/machinery/suit_storage_unit/rd
 	mask_type = /obj/item/clothing/mask/breath
 	mod_type = /obj/item/mod/control/pre_equipped/research
+
+/obj/machinery/suit_storage_unit/toxins
+	mask_type = /obj/item/clothing/mask/breath
+	suit_type = /obj/item/clothing/suit/space/hardsuit/toxins
+	storage_type = /obj/item/tank/internals/oxygen
 
 /obj/machinery/suit_storage_unit/syndicate
 	mask_type = /obj/item/clothing/mask/gas/syndicate

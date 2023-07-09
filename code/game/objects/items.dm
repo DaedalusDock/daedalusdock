@@ -148,6 +148,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/list/species_exception = null
 	///This is a bitfield that defines what variations exist for bodyparts like Digi legs. See: code\_DEFINES\inventory.dm
 	var/supports_variations_flags = NONE
+	///A blacklist of bodytypes that aren't allowed to equip this item
+	var/restricted_bodytypes = NONE
 
 	///A weakref to the mob who threw the item
 	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var
@@ -1311,9 +1313,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
  * * status_only - Update only current availability status of the buttons to show if they are ready or not to use
  * * force - Force buttons update even if the given button icon state has not changed
  */
-/obj/item/proc/update_action_buttons(status_only = FALSE, force = FALSE)
+/obj/item/proc/update_action_buttons(force = FALSE)
 	for(var/datum/action/current_action as anything in actions)
-		current_action.build_all_button_icons(status_only, force)
+		current_action.build_all_button_icons(null, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)

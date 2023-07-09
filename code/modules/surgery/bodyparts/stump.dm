@@ -22,6 +22,7 @@
 	stump.bodypart_flags = NONE
 	stump.is_stump = TRUE
 
+	stump.held_index = held_index
 	stump.bleed_overlay_icon = null
 	stump.max_damage = max_damage
 	stump.icon = null

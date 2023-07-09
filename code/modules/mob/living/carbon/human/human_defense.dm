@@ -747,11 +747,13 @@
 
 			if(status == "")
 				status = "OK"
+
 		var/no_damage
 		if(status == "OK" || status == "no damage")
 			no_damage = TRUE
+
 		var/isdisabled = ""
-		if(body_part.bodypart_disabled)
+		if(body_part.bodypart_disabled && !body_part.is_stump)
 			isdisabled = " is disabled"
 			if(no_damage)
 				isdisabled += " but otherwise"

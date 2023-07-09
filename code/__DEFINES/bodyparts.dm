@@ -2,7 +2,7 @@
 #define BODYPARTS_DEFAULT_MAXIMUM 6
 
 ///max_damage * this = minimum damage before a bone can break
-#define BODYPART_MINIMUM_BREAK_MOD 0.8
+#define BODYPART_MINIMUM_BREAK_MOD 0.35
 ///A modifier applied to the chance to break bones on a given instance of damage
 #define BODYPART_BONES_BREAK_CHANCE_MOD 1
 ///The minimum amount of brute damage for an attack to roll for bone jostle

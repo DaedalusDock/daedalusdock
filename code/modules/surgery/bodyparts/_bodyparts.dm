@@ -208,7 +208,7 @@
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()
 	if(!minimum_break_damage)
-		minimum_break_damage = max_damage * BODYPART_MINIMUM_BREAK_MOD
+		minimum_break_damage = round(max_damage * BODYPART_MINIMUM_BREAK_MOD)
 
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_gain))

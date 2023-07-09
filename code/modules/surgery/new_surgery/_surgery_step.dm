@@ -35,9 +35,10 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 /// Returns how well tool is suited for this step
 /datum/surgery_step/proc/tool_potency(obj/item/tool)
-	. = allowed_tools["[tool.tool_behaviour]"]
-	if(!isnull(.))
-		return
+	if(tool.tool_behaviour)
+		. = allowed_tools["[tool.tool_behaviour]"]
+		if(!isnull(.))
+			return
 
 	for (var/T in allowed_tools)
 		if (istype(tool,T))
@@ -56,7 +57,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	return TRUE
 
 /// Checks if this surgery step can be performed with the given parameters.
-/datum/surgery_step/proc/can_operate(mob/living/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
+/datum/surgery_step/proc/can_operate(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return is_valid_target(target) && assess_bodypart(user, target, target_zone, tool)
 
 /datum/surgery_step/proc/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -68,13 +69,13 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		return FALSE
 
 	// Check various conditional flags.
-	if(((surgery_candidate_flags & SURGERY_NO_ROBOTIC) && IS_ORGANIC_LIMB(affected)) || \
+	if(((surgery_candidate_flags & SURGERY_NO_ROBOTIC) && !IS_ORGANIC_LIMB(affected)) || \
 		((surgery_candidate_flags & SURGERY_NO_STUMP) && affected.is_stump)         || \
 		((surgery_candidate_flags & SURGERY_NO_FLESH) && !(IS_ORGANIC_LIMB(affected))))
 		return FALSE
 
 	// Check if the surgery target is accessible.
-	if(IS_ORGANIC_LIMB(affected))
+	if(!IS_ORGANIC_LIMB(affected))
 		if(((surgery_candidate_flags & SURGERY_NEEDS_DEENCASEMENT) || \
 			(surgery_candidate_flags & SURGERY_NEEDS_INCISION)      || \
 			(surgery_candidate_flags & SURGERY_NEEDS_RETRACTED))    && \
@@ -115,7 +116,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(ishuman(user) && prob(60))
 		var/mob/living/carbon/human/H = user
 		if (blood_level)
-			H.blood_in_hands = blood_level
+			user.blood_in_hands = blood_level
 
 		/*if (blood_level > 1)
 			H.bloody_body(target,0)*/
@@ -206,7 +207,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			return TRUE
 
 	// Otherwise we can make a start on surgery!
-	else if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_hand() == src))
+	else if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))
 		// Double-check this in case it changed between initial check and now.
 		if(zone in M.surgeries_in_progress)
 			to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))

@@ -3,8 +3,6 @@
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
 	var/obj/structure/table/table = allocate(/obj/structure/table)
 
-	var/obj/item/scalpel/scalpel = allocate(/obj/item/scalpel)
-	var/obj/item/retractor/retractor = allocate(/obj/item/retractor)
 	var/obj/item/circular_saw/saw = allocate(/obj/item/circular_saw)
 
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 0, "Patient is somehow missing limbs before surgery")
@@ -12,16 +10,7 @@
 	patient.set_lying_down()
 	user.zone_selected = BODY_ZONE_R_ARM
 
-	user.put_in_active_hand(scalpel)
-	scalpel.melee_attack_chain(user, patient)
-	user.dropItemToGround(scalpel)
-
-	user.put_in_active_hand(retractor)
-	retractor.melee_attack_chain(user, patient)
-	user.dropItemToGround(retractor)
-
 	user.put_in_active_hand(saw)
-	saw.melee_attack_chain(user, patient)
 	saw.melee_attack_chain(user, patient)
 
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 1, "Patient did not lose any limbs")

@@ -63,9 +63,10 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	var/key = json_encode(generate_icon_key())
 	var/list/standing = GLOB.limb_overlays_cache[key]
 	standing ||= get_limb_overlays(TRUE)
-	for(var/image/I in standing)
-		I.pixel_x = px_x
-		I.pixel_y = px_y
+	if(!length(standing))
+		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
+	pixel_x = px_x
+	pixel_y = px_y
 	add_overlay(standing)
 
 ///Generates a list of mutable appearances for the limb to be used as overlays
@@ -73,6 +74,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
+	pixel_x = 0
+	pixel_y = 0
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
 
 

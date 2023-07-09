@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Examining someone now shows broken bones.
-  - qol: Health Analyzers now display broken bones.
-  - bugfix: Checking yourself for injuries now shows broken bones even if the limb
-      has no damage.

@@ -4319,6 +4319,7 @@
 #include "code\modules\surgery\bodyparts\wounds\punctures.dm"
 #include "code\modules\surgery\new_surgery\_surgery_step.dm"
 #include "code\modules\surgery\new_surgery\dental_implant.dm"
+#include "code\modules\surgery\new_surgery\generic_organic.dm"
 #include "code\modules\surgery\organs\_organ.dm"
 #include "code\modules\surgery\organs\appendix.dm"
 #include "code\modules\surgery\organs\augments_arms.dm"

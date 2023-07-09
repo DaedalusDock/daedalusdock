@@ -186,7 +186,6 @@
 		/obj/item/hemostat,
 		/obj/item/cautery,
 		/obj/item/scalpel,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/bonesetter,
 		/obj/item/flashlight/pen,

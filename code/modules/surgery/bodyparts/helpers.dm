@@ -2,13 +2,13 @@
 /mob/living/proc/get_bodypart(zone)
 	return
 
-/mob/living/carbon/get_bodypart(zone)
+/mob/living/carbon/get_bodypart(zone, get_stump)
 	RETURN_TYPE(/obj/item/bodypart)
 
 	if(!zone)
 		zone = BODY_ZONE_CHEST
 	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
-		if(bodypart.body_zone == zone)
+		if(bodypart.body_zone == zone && (!bodypart.is_stump || get_stump))
 			return bodypart
 
 

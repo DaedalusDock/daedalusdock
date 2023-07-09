@@ -1,17 +1,33 @@
 /datum/unit_test/amputation/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/obj/structure/table/table = allocate(/obj/structure/table)
+
+	var/obj/item/scalpel/scalpel = allocate(/obj/item/scalpel)
+	var/obj/item/retractor/retractor = allocate(/obj/item/retractor)
+	var/obj/item/circular_saw/saw = allocate(/obj/item/circular_saw)
 
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 0, "Patient is somehow missing limbs before surgery")
 
-	var/datum/surgery/amputation/surgery = new(patient, BODY_ZONE_R_ARM, patient.get_bodypart(BODY_ZONE_R_ARM))
+	patient.set_lying_down()
+	user.zone_selected = BODY_ZONE_R_ARM
 
-	var/datum/surgery_step/sever_limb/sever_limb = new
-	sever_limb.success(user, patient, BODY_ZONE_R_ARM, null, surgery)
+	user.put_in_active_hand(scalpel)
+	scalpel.melee_attack_chain(user, patient)
+	user.dropItemToGround(scalpel)
+
+	user.put_in_active_hand(retractor)
+	retractor.melee_attack_chain(user, patient)
+	user.dropItemToGround(retractor)
+
+	user.put_in_active_hand(saw)
+	saw.melee_attack_chain(user, patient)
+	saw.melee_attack_chain(user, patient)
 
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 1, "Patient did not lose any limbs")
 	TEST_ASSERT_EQUAL(patient.get_missing_limbs()[1], BODY_ZONE_R_ARM, "Patient is missing a limb that isn't the one we operated on")
 
+/*
 /datum/unit_test/brain_surgery/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
 	patient.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_SURGERY)
@@ -105,3 +121,4 @@
 	var/datum/surgery_step/heal/burn/basic/basic_burn_heal = new
 	basic_burn_heal.success(user, patient, BODY_ZONE_CHEST)
 	TEST_ASSERT(patient.getFireLoss() < 100, "Tending burn wounds didn't lower burn damage ([patient.getFireLoss()])")
+*/

@@ -741,6 +741,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define HIGHLANDER_TRAIT "highlander"
 /// Trait associated with airflow/spacewind
 #define AIRFLOW_TRAIT "airflow"
+/// Trait on stumps
+#define STUMP_TRAIT "stump"
 
 ///generic atom traits
 /// Trait from [/datum/element/rust]. Its rusty and should be applying a special overlay to denote this.

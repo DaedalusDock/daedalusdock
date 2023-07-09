@@ -16,6 +16,7 @@
 		return FALSE
 
 	var/obj/item/bodypart/affecting = limb_owner.get_bodypart(BODY_ZONE_CHEST)
+
 	affecting.receive_damage(clamp(brute_dam/2 * affecting.body_damage_coeff, 15, 50), clamp(burn_dam/2 * affecting.body_damage_coeff, 0, 50)) //Damage the chest based on limb's existing damage
 	if(!silent)
 		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
@@ -26,6 +27,9 @@
 	SEND_SIGNAL(limb_owner, COMSIG_ADD_MOOD_EVENT, "dismembered", /datum/mood_event/dismembered)
 
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
+
+	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
+	var/obj/item/bodypart/stump = create_stump(limb_owner, dismember_type & DROPLIMB_BURN, clean)
 	drop_limb()
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
@@ -33,13 +37,15 @@
 	if(istype(owner_location))
 		limb_owner.add_splatter_floor(owner_location)
 
+	// * Stumpty Dumpty *//
+	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
+	if(!QDELETED(parent_chest) && !QDELETED(limb_owner))
+		var/datum/wound/lost_limb/W = new(stump, dismember_type, clean)
+		LAZYADD(stump.wounds, W)
+		stump.attach_limb(limb_owner)
+
 	if(QDELETED(src)) //Could have dropped into lava/explosion/chasm/whatever
 		return TRUE
-
-	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(!QDELETED(parent_chest))
-		var/datum/wound/lost_limb/W = new(src, dismember_type, clean, parent_chest)
-		LAZYADD(parent_chest.wounds, W)
 
 	if(dismember_type == DROPLIMB_BURN)
 		burn()
@@ -123,19 +129,18 @@
 
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
-	for(var/datum/surgery/surgery as anything in phantom_owner.surgeries) //if we had an ongoing surgery on that limb, we stop it.
-		if(surgery.operated_bodypart == src)
-			phantom_owner.surgeries -= surgery
-			qdel(surgery)
-			break
+	// * Remove surgeries on this limb * //
+	remove_surgeries_from_mob(phantom_owner)
 
+	// * Remove embedded objects * //
 	for(var/obj/item/embedded in embedded_objects)
 		embedded.forceMove(src) // It'll self remove via signal reaction, just need to move it
+
 	if(!phantom_owner.has_embedded_objects())
 		phantom_owner.clear_alert(ALERT_EMBEDDED_OBJECT)
 		SEND_SIGNAL(phantom_owner, COMSIG_CLEAR_MOOD_EVENT, "embedded")
 
-
+	// * Unregister wounds from parent * //
 	for(var/datum/wound/W as anything in wounds)
 		W.unregister_from_mob(phantom_owner)
 
@@ -158,7 +163,7 @@
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
 
-	if(!drop_loc) // drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
+	if(!drop_loc || is_stump) // drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
 		if(!QDELETED(src))
 			qdel(src)
 		return
@@ -171,6 +176,16 @@
 
 	if(!QDELETED(src))
 		forceMove(drop_loc)
+
+/obj/item/bodypart/proc/remove_surgeries_from_mob(mob/living/carbon/human/H)
+	LAZYREMOVE(H.surgeries_in_progress, body_zone)
+	switch(body_zone)
+		if(BODY_ZONE_HEAD)
+			LAZYREMOVE(H.surgeries_in_progress, BODY_ZONE_PRECISE_EYES)
+			LAZYREMOVE(H.surgeries_in_progress, BODY_ZONE_PRECISE_MOUTH)
+
+		if(BODY_ZONE_CHEST)
+			LAZYREMOVE(H.surgeries_in_progress, BODY_ZONE_PRECISE_GROIN)
 
 ///Adds the organ to a bodypart.
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
@@ -331,12 +346,19 @@
 
 ///Attach src to target mob if able.
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/new_limb_owner, special)
+	var/obj/item/bodypart/existing = new_limb_owner.get_bodypart(body_zone, TRUE)
+	if(existing && !existing.is_stump)
+		return FALSE
+
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
 
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
 	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !special)
 		return FALSE
+
+	if(existing?.is_stump)
+		qdel(existing)
 
 	moveToNullspace()
 	set_owner(new_limb_owner)
@@ -354,12 +376,7 @@
 		new_limb_owner.update_worn_gloves()
 
 	if(special) //non conventional limb attachment
-		for(var/datum/surgery/attach_surgery as anything in new_limb_owner.surgeries) //if we had an ongoing surgery to attach a new limb, we stop it.
-			var/surgery_zone = check_zone(attach_surgery.location)
-			if(surgery_zone == body_zone)
-				new_limb_owner.surgeries -= attach_surgery
-				qdel(attach_surgery)
-				break
+		remove_surgeries_from_mob(new_limb_owner)
 
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
@@ -369,13 +386,6 @@
 
 	if(check_bones() & CHECKBONES_BROKEN)
 		apply_bone_break(new_limb_owner)
-
-	//Remove any stumps that may be present there, since we have a limb now
-	if(mob_chest)
-		for(var/datum/wound/lost_limb/W in mob_chest.wounds)
-			if(W.zone == src.body_zone)
-				qdel(W)
-				break
 
 	update_bodypart_damage_state()
 	if(can_be_disabled)

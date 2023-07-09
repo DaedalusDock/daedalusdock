@@ -15,8 +15,6 @@
 /obj/machinery/computer/operating/Initialize(mapload)
 	. = ..()
 	find_table()
-	for(var/datum/design/surgery/D as anything in subtypesof(/datum/design/surgery))
-		advanced_surgeries += initial(D.surgery)
 
 /obj/machinery/computer/operating/Destroy()
 	for(var/direction in GLOB.alldirs)
@@ -24,17 +22,6 @@
 		if(table && table.computer == src)
 			table.computer = null
 	. = ..()
-
-/obj/machinery/computer/operating/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/disk/surgery))
-		user.visible_message(span_notice("[user] begins to load \the [O] in \the [src]..."), \
-			span_notice("You begin to load a surgery protocol from \the [O]..."), \
-			span_hear("You hear the chatter of a floppy drive."))
-		var/obj/item/disk/surgery/D = O
-		if(do_after(user, src, 1 SECONDS, DO_PUBLIC, display = O))
-			advanced_surgeries |= D.surgeries
-		return TRUE
-	return ..()
 
 /obj/machinery/computer/operating/proc/find_table()
 	for(var/direction in GLOB.alldirs)
@@ -56,11 +43,13 @@
 /obj/machinery/computer/operating/ui_data(mob/user)
 	var/list/data = list()
 	var/list/surgeries = list()
+	/*
 	for(var/datum/surgery/S as anything in advanced_surgeries)
 		var/list/surgery = list()
 		surgery["name"] = initial(S.name)
 		surgery["desc"] = initial(S.desc)
 		surgeries += list(surgery)
+	*/
 	data["surgeries"] = surgeries
 
 	//If there's no patient just hop to it yeah?
@@ -96,6 +85,7 @@
 	data["patient"]["toxLoss"] = patient.getToxLoss()
 	data["patient"]["oxyLoss"] = patient.getOxyLoss()
 	data["procedures"] = list()
+	/*
 	if(patient.surgeries.len)
 		for(var/datum/surgery/procedure in patient.surgeries)
 			var/datum/surgery_step/surgery_step = procedure.get_surgery_step()
@@ -115,7 +105,8 @@
 				"chems_needed" = chems_needed,
 				"alternative_step" = alternative_step,
 				"alt_chems_needed" = alt_chems_needed
-			))
+			))*/
+	#warn operating computer
 	return data
 
 #undef MENU_OPERATION

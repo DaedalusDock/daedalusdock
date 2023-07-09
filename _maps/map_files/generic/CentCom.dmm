@@ -4208,7 +4208,6 @@
 	},
 /area/centcom/abductor_ship)
 "lY" = (
-/obj/item/surgical_drapes,
 /obj/item/paper/guides/antag/abductor,
 /obj/item/scalpel/alien,
 /obj/structure/table/abductor,
@@ -8967,7 +8966,6 @@
 /area/centcom/central_command_areas/control)
 "Aq" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},

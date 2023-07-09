@@ -219,50 +219,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	toolspeed = 0.5
 
-
-/obj/item/surgical_drapes
-	name = "surgical drapes"
-	desc = "Nanotrasen brand surgical drapes provide optimal safety and infection control."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "surgical_drapes"
-	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	inhand_icon_state = "drapes"
-	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("slaps")
-	attack_verb_simple = list("slap")
-
-/obj/item/surgical_drapes/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/surgery_initiator)
-
-
-/obj/item/surgical_processor //allows medical cyborgs to scan and initiate advanced surgeries
-	name = "\improper Surgical Processor"
-	desc = "A device for scanning and initiating surgeries from a disk or operating computer."
-	icon = 'icons/obj/device.dmi'
-	icon_state = "spectrometer"
-	item_flags = NOBLUDGEON
-	var/list/advanced_surgeries = list()
-
-/obj/item/surgical_processor/afterattack(obj/item/design_holder, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(istype(design_holder, /obj/item/disk/surgery))
-		to_chat(user, span_notice("You load the surgery protocol from [design_holder] into [src]."))
-		var/obj/item/disk/surgery/surgery_disk = design_holder
-		if(do_after(user, design_holder, 10))
-			advanced_surgeries |= surgery_disk.surgeries
-		return TRUE
-	if(istype(design_holder, /obj/machinery/computer/operating))
-		to_chat(user, span_notice("You copy surgery protocols from [design_holder] into [src]."))
-		var/obj/machinery/computer/operating/OC = design_holder
-		if(do_after(user, design_holder, 10))
-			advanced_surgeries |= OC.advanced_surgeries
-		return TRUE
-	return
-
 /obj/item/scalpel/advanced
 	name = "laser scalpel"
 	desc = "An advanced scalpel which uses laser technology to cut."

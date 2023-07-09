@@ -259,7 +259,6 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/surgical_drapes, //for true paramedics
 		/obj/item/reagent_containers/glass/vial, //PARIAH EDIT ADDITION
 		/obj/item/hypospray/mkii, //PARIAH EDIT ADDITION
 		/obj/item/scalpel,

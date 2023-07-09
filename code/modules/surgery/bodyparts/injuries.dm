@@ -128,6 +128,8 @@
 		. = SURGERY_OPEN
 	if(incision.damage >= beeg_threshold) //beeg incision
 		. = SURGERY_RETRACTED
+		if(encased && (bodypart_flags & BP_BROKEN_BONES))
+			. = SURGERY_DEENCASED
 
 /obj/item/bodypart/proc/get_incision(strict)
 
@@ -147,6 +149,7 @@
 				incision = W
 		else if(W.is_surgical()) //otherwise surgical one takes priority
 			incision = W
+
 	return incision
 
 /obj/item/bodypart/proc/open_incision()

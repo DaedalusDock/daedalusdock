@@ -14,6 +14,10 @@
 	wound_resistance = 10
 	bodypart_trait_source = CHEST_TRAIT
 
+	encased = "ribcage"
+	artery_name = "aorta"
+	cavity_name = "thoracic"
+
 	bodypart_flags = STOCK_BP_FLAGS_CHEST
 
 	///The bodytype(s) allowed to attach to this chest.
@@ -107,6 +111,7 @@
 	px_x = -6
 	px_y = 0
 	bodypart_trait_source = LEFT_ARM_TRAIT
+	amputation_point = "left shoulder"
 
 
 /obj/item/bodypart/arm/left/set_owner(new_owner)
@@ -174,7 +179,6 @@
 	max_damage = 100
 	should_draw_greyscale = FALSE
 
-
 /obj/item/bodypart/arm/right
 	name = "right arm"
 	desc = "Over 87% of humans are right handed. That figure is much lower \
@@ -190,6 +194,7 @@
 	px_y = 0
 	bodypart_trait_source = RIGHT_ARM_TRAIT
 	can_be_disabled = TRUE
+	amputation_point = "right shoulder"
 
 /obj/item/bodypart/arm/right/set_owner(new_owner)
 	. = ..()
@@ -286,6 +291,7 @@
 	px_y = 12
 	can_be_disabled = TRUE
 	bodypart_trait_source = LEFT_LEG_TRAIT
+	amputation_point = "left hip"
 
 /obj/item/bodypart/leg/left/set_owner(new_owner)
 	. = ..()
@@ -364,6 +370,7 @@
 	px_y = 12
 	bodypart_trait_source = RIGHT_LEG_TRAIT
 	can_be_disabled = TRUE
+	amputation_point = "right hip"
 
 /obj/item/bodypart/leg/right/set_owner(new_owner)
 	. = ..()

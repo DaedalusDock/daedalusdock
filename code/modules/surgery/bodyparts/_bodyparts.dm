@@ -90,9 +90,29 @@
 	var/burn_ratio = 0
 	///The minimum damage a part must have before it's bones may break. Defaults to max_damage * BODYPART_MINIMUM_BREAK_MOD
 	var/minimum_break_damage = 0
+	/// Bleed multiplier
+	var/arterial_bleed_severity = 1
+
+	/// Needs to be opened with a saw to access the organs. For robotic bodyparts, you can open the "hatch"
+	var/encased
+	/// Is a stump. This is handled at runtime, do not touch.
+	var/is_stump
+	/// Does this limb have a cavity?
+	var/cavity
+	/// The cavity storage of this bodypart. Is a typepath if cavity is FALSE.
+	var/datum/cavity_storage
 
 	///Bodypart flags, keeps track of blood, bones, arteries, tendons, and the like.
 	var/bodypart_flags = NONE
+	/// The name of the artery this limb has
+	var/artery_name = "artery"
+	/// The name of the tendon this limb has
+	var/tendon_name = "tendon"
+	/// The name for the amputation point of the limb
+	var/amputation_point
+	/// The name of the cavity of the limb
+	var/cavity_name
+
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
 	var/cremation_progress = 0
@@ -912,8 +932,9 @@
 #define BLEED_OVERLAY_GUSH 3.25
 
 /obj/item/bodypart/proc/update_part_wound_overlay()
-	if(!owner)
+	if(!owner || is_stump)
 		return FALSE
+
 	if(HAS_TRAIT(owner, TRAIT_NOBLEED) || !IS_ORGANIC_LIMB(src) || (NOBLOOD in species_flags_list))
 		if(bleed_overlay_icon)
 			bleed_overlay_icon = null

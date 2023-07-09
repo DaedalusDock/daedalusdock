@@ -27,6 +27,11 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
+	amputation_point = "neck"
+	encased = "skull"
+	artery_name = "carotid artery"
+	cavity_name = "cranial"
+
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
 	var/obj/item/organ/eyes/eyes

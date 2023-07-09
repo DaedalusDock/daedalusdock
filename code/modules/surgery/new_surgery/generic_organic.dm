@@ -261,7 +261,7 @@
 	span_notice("You are beginning to cut through [target]'s [affected.amputation_point] with \the [tool]."))
 	..()
 
-/datum/surgery_step/generic_organic/amputate/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/generic_organic/amputate/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] amputates [target]'s [affected.name] at the [affected.amputation_point] with \the [tool]."), \
 	span_notice("You amputate [target]'s [affected.name] with \the [tool]."))

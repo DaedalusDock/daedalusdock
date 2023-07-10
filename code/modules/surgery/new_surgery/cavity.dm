@@ -39,16 +39,14 @@
 
 /datum/surgery_step/cavity/make_space/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts making some space inside [target]'s [affected.cavity_name] cavity with \the [tool].", \
-	"You start making some space inside [target]'s [affected.cavity_name] cavity with \the [tool]." )
+	user.visible_message(span_notice("[user] starts making some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
 
 	affected.cavity = TRUE
 	..()
 
 /datum/surgery_step/cavity/make_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with \the [tool]."), \
-	span_notice("You make some space inside [target]'s [affected.cavity_name] cavity with \the [tool].") )
+	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
 
 //////////////////////////////////////////////////////////////////
 //	 implant cavity sealing surgery step
@@ -71,15 +69,13 @@
 
 /datum/surgery_step/cavity/close_space/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts mending [target]'s [affected.cavity_name] cavity wall with \the [tool].", \
-	"You start mending [target]'s [affected.cavity_name] cavity wall with \the [tool]." )
+	user.visible_message(span_notice("[user] starts mending [target]'s [affected.cavity_name] cavity wall with [tool]."))
 
 	..()
 
 /datum/surgery_step/cavity/close_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] mends [target]'s [affected.cavity_name] cavity walls with \the [tool]."), \
-	span_notice("You mend [target]'s [affected.cavity_name] cavity walls with \the [tool].") )
+	user.visible_message(span_notice("[user] mends [target]'s [affected.cavity_name] cavity walls with [tool]."))
 	affected.cavity = FALSE
 
 //////////////////////////////////////////////////////////////////
@@ -123,8 +119,7 @@
 
 /datum/surgery_step/cavity/place_item/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts putting \the [tool] inside [target]'s [affected.cavity_name] cavity.", \
-	"You start putting \the [tool] inside [target]'s [affected.cavity_name] cavity." )
+	user.visible_message("[user] starts putting [tool] inside [target]'s [affected.cavity_name] cavity.")
 
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
 	..()
@@ -133,8 +128,8 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	if(!user.temporarilyRemoveItemFromInventory(tool, affected))
 		return
-	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."), \
-	span_notice("You put \the [tool] inside [target]'s [affected.cavity_name] cavity.") )
+	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."))
+
 	if (tool.w_class == affected.atom_storage.max_specific_storage && prob(50) && IS_ORGANIC_LIMB(affected) && affected.sever_artery())
 		to_chat(user, span_warning("You tear some blood vessels trying to fit such a big object in this cavity."))
 
@@ -161,8 +156,7 @@
 
 /datum/surgery_step/cavity/implant_removal/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts poking around inside [target]'s [affected.name] with \the [tool].", \
-	"You start poking around inside [target]'s [affected.name] with \the [tool]." )
+	user.visible_message("[user] starts poking around inside [target]'s [affected.plaintext_zone] with [tool].")
 	..()
 
 /datum/surgery_step/cavity/implant_removal/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -201,8 +195,7 @@
 			find_prob +=50
 
 		if (prob(find_prob))
-			user.visible_message(span_notice("[user] takes something out of incision on [target]'s [affected.name] with \the [tool]."), \
-			span_notice("You take \the [obj] out of incision on \the [target]'s [affected.name] with \the [tool].") )
+			user.visible_message(span_notice("[user] takes something out of incision on [target]'s [affected.plaintext_zone] with [tool]."))
 			if(!user.put_in_hands(obj))
 				obj.forceMove(get_turf(target))
 
@@ -210,13 +203,13 @@
 
 		else
 			user.visible_message(
-				span_notice("[user] removes \the [tool] from [target]'s [affected.name]."),
-				span_notice("There's something inside [target]'s [affected.name], but you just missed it this time.")
+				span_notice("[user] removes [tool] from [target]'s [affected.plaintext_zone]."),
+				span_notice("There's something inside [target]'s [affected.plaintext_zone], but you just missed it this time.")
 			)
 
 	else
 		user.visible_message(
-			span_notice("[user] could not find anything inside [target]'s [affected.name], and pulls \the [tool] out."),
+			span_notice("[user] could not find anything inside [target]'s [affected.name], and pulls [tool] out."),
 			span_notice("You could not find anything inside [target]'s [affected.name].")
 		)
 

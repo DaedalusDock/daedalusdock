@@ -45,6 +45,7 @@
 /datum/surgery_step/limb/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = tool
 	user.visible_message(span_notice("[user] starts attaching the [BP.plaintext_zone] to [target]'s [BP.amputation_point]."))
+	..()
 
 /datum/surgery_step/limb/attach/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!user.temporarilyRemoveItemFromInventory(tool))
@@ -79,6 +80,7 @@
 /datum/surgery_step/limb/connect/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] starts connecting tendons and muscles in [target]'s [BP.amputation_point] with [tool]."))
+	..()
 
 /datum/surgery_step/limb/connect/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = target.get_bodypart(target_zone)
@@ -88,5 +90,5 @@
 
 /datum/surgery_step/limb/connect/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = target.get_bodypart(target_zone)
-	user.visible_message("[user]'s hand slips, damaging [target]'s [BP.amputation_point]!")
+	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [BP.amputation_point]!"))
 	target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, sharpness = tool.sharpness)

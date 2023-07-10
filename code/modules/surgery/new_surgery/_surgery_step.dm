@@ -109,17 +109,29 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 /// Does stuff to begin the step, usually just printing messages. Moved germs transfering and bloodying here too
 /datum/surgery_step/proc/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	/*var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone))
+	SHOULD_CALL_PARENT(TRUE)
+
+	var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone))
+	/*
 	if (can_infect && affected)
 		spread_germs_to_organ(affected, user)*/
+	if(user)
+		if(ishuman(user) && prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
+			var/mob/living/carbon/human/H = user
+			if (blood_level)
+				H.blood_in_hands = blood_level
 
-	if(ishuman(user) && prob(60))
-		var/mob/living/carbon/human/H = user
-		if (blood_level)
-			H.blood_in_hands = blood_level
+			if (blood_level > 1)
+				user.add_mob_blood(target)
 
-		if (blood_level > 1)
-			user.add_mob_blood(target)
+		if(!(ishuman(user) && user:gloves))
+			for(var/datum/disease/D as anything in user.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					target.ContactContractDisease(D)
+
+			for(var/datum/disease/D as anything in target.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					user.ContactContractDisease(D)
 
 	/*if(shock_level)
 		target.shock_stage = max(target.shock_stage, shock_level)*/

@@ -52,6 +52,7 @@
 	// helper lists
 	var/tmp/list/desc_list = list()
 	var/tmp/list/damage_list = list()
+	var/tmp/list/embedded_objects //lazy
 
 /datum/wound/New(damage, obj/item/bodypart/BP = null)
 
@@ -86,6 +87,7 @@
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
+	LAZYCLEARLIST(embedded_objects)
 	return ..()
 
 /datum/wound/proc/register_to_mob(mob/living/carbon/C)
@@ -114,10 +116,15 @@
 	return src.damage / src.amount
 
 /datum/wound/proc/can_autoheal()
-	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+	return (wound_damage() <= autoheal_cutoff) ? TRUE : is_treated()
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+
 	switch(wound_type)
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
 			return bandaged
@@ -139,6 +146,10 @@
 	return 1
 
 /datum/wound/proc/merge_wound(datum/wound/other)
+	for(var/obj/item/I as anything in other.embedded_objects)
+		RegisterSignal(I, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(item_gone))
+		LAZYDISTINCTADD(embedded_objects, I)
+
 	src.damage += other.damage
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
@@ -285,6 +296,12 @@
 
 
 	return this_wound_desc
+
+
+/datum/wound/proc/item_gone(datum/source)
+	SIGNAL_HANDLER
+	LAZYREMOVE(embedded_objects, source)
+	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 /*Note that the MINIMUM damage before a wound can be applied should correspond to
 //the damage amount for the stage with the same name as the wound.

@@ -29,7 +29,7 @@
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
-	var/obj/item/bodypart/stump = create_stump(limb_owner, dismember_type & DROPLIMB_BURN, clean)
+	var/obj/item/bodypart/stump = create_stump()
 	drop_limb()
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
@@ -73,7 +73,7 @@
 	return TRUE
 
 
-/obj/item/bodypart/chest/dismember()
+/obj/item/bodypart/chest/dismember(dismember_type = DROPLIMB_EDGE, silent=TRUE, clean = FALSE)
 	if(!owner)
 		return FALSE
 
@@ -83,31 +83,32 @@
 
 	if(HAS_TRAIT(chest_owner, TRAIT_NODISMEMBER))
 		return FALSE
+
 	. = list()
-	if(isturf(chest_owner.loc))
-		chest_owner.add_splatter_floor(chest_owner.loc)
+
+	var/drop_loc = chest_owner.drop_location()
+	if(isturf(drop_loc))
+		chest_owner.add_splatter_floor(drop_loc)
+
 	playsound(get_turf(chest_owner), 'sound/misc/splort.ogg', 80, TRUE)
+
 	for(var/obj/item/organ/organ as anything in chest_owner.processing_organs)
 		var/org_zone = check_zone(organ.zone)
 		if(org_zone != BODY_ZONE_CHEST)
 			continue
 		organ.Remove(chest_owner)
-		organ.forceMove(chest_owner.loc)
+		organ.forceMove(drop_loc)
 		. += organ
 
 	for(var/obj/item/organ/O in src)
 		if((O.organ_flags & ORGAN_UNREMOVABLE))
 			continue
 		O.Remove(chest_owner)
-		O.forceMove(chest_owner.loc)
+		O.forceMove(drop_loc)
 		. += O
 
-	if(cavity_item)
-		cavity_item.forceMove(chest_owner.loc)
-		. += cavity_item
-		cavity_item = null
-
-
+	for(var/obj/item/I in cavity_items)
+		I.forceMove(drop_loc)
 
 ///limb removal. The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
 /obj/item/bodypart/proc/drop_limb(special, dismembered)
@@ -116,6 +117,7 @@
 	var/atom/drop_loc = owner.drop_location()
 
 	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, dismembered)
+	SEND_SIGNAL(src, COMSIG_LIMB_REMOVE, owner, dismembered)
 	update_limb(1)
 
 	owner.remove_bodypart(src)
@@ -169,7 +171,7 @@
 		return
 
 	if(is_pseudopart)
-		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
+		drop_contents(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
 		if(!QDELETED(src))
 			qdel(src)
 		return
@@ -328,6 +330,8 @@
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
 	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !special)
 		return FALSE
+
+	SEND_SIGNAL(src, COMSIG_LIMB_ATTACH, new_limb_owner, special)
 
 	if(existing?.is_stump)
 		qdel(existing)

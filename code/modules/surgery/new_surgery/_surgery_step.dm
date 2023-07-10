@@ -118,8 +118,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		if (blood_level)
 			H.blood_in_hands = blood_level
 
-		/*if (blood_level > 1)
-			H.bloody_body(target,0)*/
+		if (blood_level > 1)
+			user.add_mob_blood(target)
 
 	/*if(shock_level)
 		target.shock_stage = max(target.shock_stage, shock_level)*/
@@ -251,7 +251,9 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /mob/proc/can_operate_on(mob/living/target, silent)
 	var/turf/T = get_turf(target)
 
-	if(locate(/obj/structure/table, T))
+	if(target.body_position = LYING_DOWN)
+		. = TRUE
+	else if(locate(/obj/structure/table, T))
 		. = TRUE
 	else if(locate(/obj/structure/bed, T))
 		. = TRUE
@@ -268,6 +270,12 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			if(!silent)
 				to_chat(src, span_warning("You cannot operate on that arm with that hand!"))
 			return FALSE
+
+/mob/living/can_operate_on(mob/living/target, silent)
+	if(combat_mode)
+		return FALSE
+	return ..()
+
 
 /proc/get_location_accessible(mob/located_mob, location)
 	var/covered_locations = 0 //based on body_parts_covered

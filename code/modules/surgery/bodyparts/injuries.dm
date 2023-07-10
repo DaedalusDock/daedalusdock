@@ -92,6 +92,14 @@
 		)
 		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
+/obj/item/bodypart/proc/sever_artery()
+	if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_SEVERED)
+		return FALSE
+
+	bodypart_flags |= BP_ARTERY_CUT
+	refresh_bleed_rate()
+	return TRUE
+
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)
 		. |= !W.clamped

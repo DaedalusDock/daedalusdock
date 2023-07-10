@@ -1,4 +1,4 @@
-/obj/item/bodypart/proc/create_stump(mob/living/carbon/human/H, disintegrated, clean)
+/obj/item/bodypart/proc/create_stump()
 	var/path
 	switch(body_zone)
 		if(BODY_ZONE_HEAD)

@@ -58,8 +58,6 @@
 	var/aux_layer
 	/// bitflag used to check which clothes cover this bodypart
 	var/body_part
-	/// List of obj/item's embedded inside us. Managed by embedded components, do not modify directly
-	var/list/embedded_objects = list()
 	/// are we a hand? if so, which one!
 	var/held_index = 0
 	/// For limbs that don't really exist, eg chainsaws
@@ -99,8 +97,17 @@
 	var/is_stump
 	/// Does this limb have a cavity?
 	var/cavity
-	/// The cavity storage of this bodypart. Is a typepath if cavity is FALSE.
-	var/datum/cavity_storage
+	/// The name of the cavity of the limb
+	var/cavity_name
+	/// The type of storage datum to use for cavity storage.
+	var/cavity_storage_max_weight = WEIGHT_CLASS_SMALL
+
+	/// List of obj/item's embedded inside us. Managed by embedded components, do not modify directly
+	var/list/embedded_objects = list()
+	/// List of obj/items stuck TO us. Managed by embedded components, do not directly modify
+	var/list/stuck_objects = list()
+	/// The items stored in our cavity
+	var/list/cavity_items = list()
 
 	///Bodypart flags, keeps track of blood, bones, arteries, tendons, and the like.
 	var/bodypart_flags = NONE
@@ -110,9 +117,6 @@
 	var/tendon_name = "tendon"
 	/// The name for the amputation point of the limb
 	var/amputation_point
-	/// The name of the cavity of the limb
-	var/cavity_name
-
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
 	var/cremation_progress = 0
@@ -228,7 +232,7 @@
 		wounds.Cut()
 
 	QDEL_LIST(contained_organs)
-
+	QDEL_LIST(cavity_items)
 	if(owner)
 		drop_limb(TRUE)
 	return ..()
@@ -339,7 +343,7 @@
 		user.visible_message(span_warning("[user] begins to cut open [src]."),\
 			span_notice("You begin to cut open [src]..."))
 		if(do_after(user, src, 54))
-			drop_organs(user, TRUE)
+			drop_contents(user, TRUE)
 	else
 		return ..()
 
@@ -359,13 +363,17 @@
 	return
 
 //empties the bodypart from its organs and other things inside it
-/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/proc/drop_contents(mob/user, violent_removal)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/turf/bodypart_turf = get_turf(src)
 	if(IS_ORGANIC_LIMB(src))
 		playsound(bodypart_turf, 'sound/misc/splort.ogg', 50, TRUE, -1)
 	seep_gauze(9999) // destroy any existing gauze if any exists
+
+	for(var/obj/item/I in cavity_items)
+		cavity_items -= I
+		I.forceMove(bodypart_turf)
 
 	for(var/obj/item/item_in_bodypart in src)
 		if(isorgan(item_in_bodypart))
@@ -376,21 +384,6 @@
 				remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
-
-///since organs aren't actually stored in the bodypart themselves while attached to a person, we have to query the owner for what we should have
-/obj/item/bodypart/proc/get_organs()
-	SHOULD_CALL_PARENT(TRUE)
-	RETURN_TYPE(/list)
-
-	if(!owner)
-		return FALSE
-
-	var/list/bodypart_organs
-	for(var/obj/item/organ/organ_check as anything in owner.processing_organs) //internal organs inside the dismembered limb are dropped.
-		if(check_zone(organ_check.zone) == body_zone)
-			LAZYADD(bodypart_organs, organ_check) // this way if we don't have any, it'll just return null
-
-	return bodypart_organs
 
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
@@ -839,7 +832,7 @@
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	drop_organs()
+	drop_contents()
 	return ..()
 
 /// INTERNAL PROC, DO NOT USE
@@ -1138,3 +1131,12 @@
 
 	owner.Stun(3 SECONDS)
 	owner.Shake(pixelshiftx = 3, pixelshifty = 0, duration = 2.5 SECONDS)
+
+/// Add an item to our cavity. Call AFTER physically moving it via a proc like forceMove().
+/obj/item/bodypart/proc/add_cavity_item(obj/item/I)
+	cavity_items += I
+	RegisterSignal(I, COMSIG_MOVABLE_MOVED, PROC_REF(item_gone))
+
+/obj/item/bodypart/proc/item_gone(datum/source)
+	cavity_items -= source
+	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)

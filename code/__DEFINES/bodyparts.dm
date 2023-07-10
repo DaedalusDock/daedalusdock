@@ -58,3 +58,5 @@
 #define CHECKARTERY_OK (1<<0)
 #define CHECKARTERY_SEVERED (1<<2)
 
+#define COMSIG_LIMB_ATTACH "limb_attach"
+#define COMSIG_LIMB_REMOVE "limb_remove"

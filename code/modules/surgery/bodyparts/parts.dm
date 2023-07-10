@@ -1,4 +1,3 @@
-
 /obj/item/bodypart/chest
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
@@ -23,22 +22,10 @@
 	///The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
-	var/obj/item/cavity_item
-
 /obj/item/bodypart/chest/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT || !get_organs())
+	if(owner.stat < HARD_CRIT || !length(contained_organs))
 		return FALSE
 	return ..()
-
-/obj/item/bodypart/chest/Destroy()
-	QDEL_NULL(cavity_item)
-	return ..()
-
-/obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
-	if(cavity_item)
-		cavity_item.forceMove(drop_location())
-		cavity_item = null
-	..()
 
 /obj/item/bodypart/chest/monkey
 	icon = 'icons/mob/animal_parts.dmi'

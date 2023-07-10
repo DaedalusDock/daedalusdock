@@ -49,7 +49,7 @@
 /datum/surgery_step/generic_organic/incise
 	name = "Make incision"
 	allowed_tools = list(
-		/obj/item/scalpel = 100,
+		TOOL_SCALPEL = 100,
 		/obj/item/knife = 75,
 		/obj/item/broken_bottle = 50,
 		/obj/item/shard = 50
@@ -93,7 +93,7 @@
 /datum/surgery_step/generic_organic/clamp_bleeders
 	name = "Clamp bleeders"
 	allowed_tools = list(
-		/obj/item/hemostat = 100,
+		TOOL_HEMOSTAT = 100,
 		/obj/item/stack/cable_coil = 75,
 		/obj/item/assembly/mousetrap = 20
 	)
@@ -128,8 +128,8 @@
 /datum/surgery_step/generic_organic/retract_skin
 	name = "Widen incision"
 	allowed_tools = list(
-		/obj/item/retractor = 100,
-		/obj/item/crowbar = 75,
+		TOOL_RETRACTOR = 100,
+		TOOL_CROWBAR = 75,
 		/obj/item/knife = 50,
 		/obj/item/kitchen/fork = 50
 	)
@@ -172,10 +172,10 @@
 /datum/surgery_step/generic_organic/cauterize
 	name = "Cauterize incision"
 	allowed_tools = list(
-		/obj/item/cautery = 100,
+		TOOL_CAUTERY = 100,
 		/obj/item/clothing/mask/cigarette = 75,
 		/obj/item/lighter = 50,
-		/obj/item/weldingtool = 25
+		TOOL_WELDER = 25
 	)
 	min_duration = 70
 	max_duration = 100
@@ -243,7 +243,7 @@
 /datum/surgery_step/generic_organic/amputate
 	name = "Amputate limb"
 	allowed_tools = list(
-		/obj/item/circular_saw = 100,
+		TOOL_SAW = 100,
 		/obj/item/hatchet = 75
 	)
 	min_duration = 110

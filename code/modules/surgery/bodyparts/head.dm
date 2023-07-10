@@ -153,7 +153,7 @@
 		return FALSE
 	return ..()
 
-/obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
@@ -170,12 +170,7 @@
 			if(istype(head_item, /obj/item/reagent_containers/pill))
 				for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_item.actions)
 					qdel(pill_action)
-			else if(istype(head_item, /obj/item/organ))
-				var/obj/item/organ/organ = head_item
-				if(organ.organ_flags & ORGAN_UNREMOVABLE)
-					continue
-				remove_organ(organ)
-			head_item.forceMove(head_turf)
+
 	eyes = null
 	ears = null
 	tongue = null

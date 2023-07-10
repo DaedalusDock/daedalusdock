@@ -1,6 +1,8 @@
 /datum/surgery_step/insert_pill
 	name = "insert pill dental implant"
-	allowed_tools = list(/obj/item/reagent_containers/pill = 100)
+	allowed_tools = list(
+		/obj/item/reagent_containers/pill = 100
+	)
 	min_duration = 1 SECOND
 	max_duration = 3 SECONDS
 

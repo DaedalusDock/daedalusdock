@@ -186,11 +186,16 @@
 		organ = null
 		return
 	var/mob/living/carbon/human/organ_receiver = target
-	#warn impliment cavity implanting here
-	/*
-	if(organ_receiver.cavity)
-		#warn impliment cavity implanting here
+	var/obj/item/bodypart/BP = target.get_bodypart(organ.zone)
+	if(!BP)
+		organ.forceMove(drop_location())
+		organ = null
+		return
+
+	if(BP.cavity)
+		forceMove(BP)
+		BP.add_cavity_item(organ)
 	else
 		organ.forceMove(drop_location())
-	*/
+
 	organ = null

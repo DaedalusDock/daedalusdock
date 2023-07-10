@@ -5,7 +5,7 @@
 
 	var/obj/item/circular_saw/saw = allocate(/obj/item/circular_saw)
 
-	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 0, "Patient is somehow missing limbs before surgery")
+	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 0, "Patient is somehow missing limbs before surgery.")
 
 	patient.set_lying_down()
 	user.zone_selected = BODY_ZONE_R_ARM
@@ -13,8 +13,8 @@
 	user.put_in_active_hand(saw)
 	saw.melee_attack_chain(user, patient)
 
-	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 1, "Patient did not lose any limbs")
-	TEST_ASSERT_EQUAL(patient.get_missing_limbs()[1], BODY_ZONE_R_ARM, "Patient is missing a limb that isn't the one we operated on")
+	TEST_ASSERT_EQUAL(patient.get_missing_limbs().len, 1, "Patient did not lose any limbs.")
+	TEST_ASSERT_EQUAL(patient.get_missing_limbs()[1], BODY_ZONE_R_ARM, "Patient is missing a limb that isn't the one we operated on.")
 
 /datum/unit_test/limb_attach/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
@@ -40,7 +40,6 @@
 
 	TEST_ASSERT(!(BP.bodypart_flags & BP_CUT_AWAY), "Arm did not lose CUT_AWAY flag after connection.")
 	TEST_ASSERT(patient.usable_hands == 2, "Patient's hand was not usable after connection.")
-
 
 
 /*

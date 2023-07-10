@@ -11,10 +11,11 @@
 
 /datum/surgery_step/remove_embedded_item/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = ..()
-	if(.)
-		var/obj/item/bodypart/affected = .
-		if(length(affected.embedded_objects))
-			return TRUE
+	if(!.)
+		return
+	var/obj/item/bodypart/affected = .
+	if(!length(affected.embedded_objects))
+		return FALSE
 
 /datum/surgery_step/remove_embedded_item/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)

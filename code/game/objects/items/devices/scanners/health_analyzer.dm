@@ -69,6 +69,8 @@
 		to_chat(user, "<span class='info'>[M]'s biological structure is too complex for the health analyzer.")
 		return
 
+	playsound(user, 'sound/items/healthanalyzer.ogg', 50, 1)
+
 	user.visible_message(span_notice("[user] analyzes [M]'s vitals."), \
 						span_notice("You analyze [M]'s vitals."))
 

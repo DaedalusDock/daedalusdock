@@ -118,6 +118,27 @@
 /obj/structure/table/attack_tk(mob/user)
 	return
 
+/obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
+	. = ..()
+	if(ishuman(dropping))
+		if(dropping != user)
+			return
+		var/mob/living/carbon/human/H = user
+		if(H.incapacitated() || H.body_position == LYING_DOWN || H.combat_mode)
+			return
+		if(!H.Adjacent(src))
+			return FALSE
+		if(!H.Enter(get_turf(src), TRUE))
+			return
+		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+		H.Paralyze(1 SECOND)
+		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
+		H.visible_message(
+			span_danger("[H] bangs [H.p_their()] head on [src]."),
+			span_danger("You bang your head on [src]."),
+			span_hear("You hear a metallic clang.")
+		)
+
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(.)

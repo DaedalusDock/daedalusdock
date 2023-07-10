@@ -25,7 +25,7 @@
 /datum/surgery_step/cavity/make_space
 	name = "Hollow out cavity"
 	allowed_tools = list(
-		TOOL_DRILL = 100 = 100,
+		TOOL_DRILL = 100,
 		/obj/item/pen = 75,
 		/obj/item/stack/rods = 50,
 	)

@@ -251,7 +251,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /mob/proc/can_operate_on(mob/living/target, silent)
 	var/turf/T = get_turf(target)
 
-	if(target.body_position = LYING_DOWN)
+	if(target.body_position == LYING_DOWN)
 		. = TRUE
 	else if(locate(/obj/structure/table, T))
 		. = TRUE

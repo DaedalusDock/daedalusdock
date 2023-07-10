@@ -186,7 +186,7 @@
 		organ = null
 		return
 	var/mob/living/carbon/human/organ_receiver = target
-	var/obj/item/bodypart/BP = target.get_bodypart(organ.zone)
+	var/obj/item/bodypart/BP = organ_receiver.get_bodypart(organ.zone)
 	if(!BP)
 		organ.forceMove(drop_location())
 		organ = null

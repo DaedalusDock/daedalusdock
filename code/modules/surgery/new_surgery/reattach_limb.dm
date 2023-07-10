@@ -11,6 +11,7 @@
 	can_infect = 0
 	shock_level = 40
 	delicate = 1
+	abstract_type = /datum/surgery/limb
 
 /datum/surgery_step/limb/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)

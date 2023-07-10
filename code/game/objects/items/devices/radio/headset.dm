@@ -30,6 +30,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	var/obj/item/encryptionkey/keyslot2 = null
+	/// Sound played locally when a person uses the radio
+	var/radiosound = 'sound/effects/radio/common.ogg'
 
 /obj/item/radio/headset/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins putting \the [src]'s antenna up [user.p_their()] nose! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer!"))
@@ -60,6 +62,12 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	. = ..()
 	recalculateChannels()
 	possibly_deactivate_in_loc()
+
+/obj/item/radio/headset/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(radiosound && listening)
+		playsound(M, radiosound, rand(20, 30))
+	return ..()
+
 
 /obj/item/radio/headset/proc/possibly_deactivate_in_loc()
 	if(ismob(loc))
@@ -92,6 +100,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	desc = "A syndicate headset that can be used to hear all radio frequencies. Protects ears from flashbangs."
 	icon_state = "syndie_headset"
 	inhand_icon_state = "syndie_headset"
+	radiosound = 'sound/radio/effects/syndie.ogg'
 
 /obj/item/radio/headset/syndicate/alt/Initialize(mapload)
 	. = ..()
@@ -117,6 +126,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	desc = "This is used by your elite security force."
 	icon_state = "sec_headset"
 	keyslot = new /obj/item/encryptionkey/headset_sec
+	radiosound = 'sound/effects/radio/security.ogg'
 
 /obj/item/radio/headset/headset_sec/alt
 	name = "security bowman headset"

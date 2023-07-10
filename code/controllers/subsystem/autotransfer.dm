@@ -35,6 +35,6 @@ SUBSYSTEM_DEF(autotransfer)
 		targettime = targettime + voteinterval
 		curvotes++
 	else
-		SSshuttle.autoEnd()
+		SSshuttle.auto_end()
 
 #undef NO_MAXVOTES_CAP

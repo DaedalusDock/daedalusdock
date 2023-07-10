@@ -120,7 +120,7 @@ SUBSYSTEM_DEF(vote)
 			//PARIAH EDIT ADDITION BEGIN
 			if("transfer")
 				if(. == "Initiate Crew Transfer")
-					SSshuttle.autoEnd()
+					SSshuttle.auto_end()
 					var/obj/machinery/computer/communications/C = locate() in GLOB.machines
 					if(C)
 						C.post_status("shuttle")

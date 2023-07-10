@@ -544,8 +544,7 @@
 		set_burn_dam(burn_dam + burn)
 
 	if(owner)
-		if(can_be_disabled)
-			update_disabled()
+		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
 	return update_bodypart_damage_state()
@@ -573,8 +572,7 @@
 	update_damage()
 
 	if(owner)
-		if(can_be_disabled)
-			update_disabled()
+		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
 	cremation_progress = min(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
@@ -645,9 +643,13 @@
 	if(!owner)
 		return
 
+	if(bodypart_flags & BP_CUT_AWAY)
+		set_disabled(TRUE)
+		return
+
 	if(!can_be_disabled)
 		set_disabled(FALSE)
-		CRASH("update_disabled called with can_be_disabled false")
+		return
 
 	if(HAS_TRAIT(src, TRAIT_PARALYSIS))
 		set_disabled(TRUE)

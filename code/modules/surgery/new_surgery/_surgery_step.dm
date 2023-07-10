@@ -151,7 +151,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			. -= 60
 
 	if(delicate)
-		if(user.has_status_effect(/datum/status_effect/speech/slurring))
+		if(user.has_status_effect(/datum/status_effect/speech/slurring/drunk))
 			. -= 10
 		if(target.body_position == STANDING_UP)
 			. -= 30

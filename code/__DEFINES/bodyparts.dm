@@ -37,6 +37,8 @@
 #define BP_IS_GRABBY_LIMB (1<<8)
 /// This limb is able to be used for movement and contributes to usable_legs
 #define BP_IS_MOVEMENT_LIMB (1<<9)
+/// Limb is not connected to the nervous system and is not usable.
+#define BP_CUT_AWAY (1<<10)
 
 #define STOCK_BP_FLAGS_CHEST (BP_HAS_BLOOD | BP_HAS_BONES)
 #define STOCK_BP_FLAGS_HEAD (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)

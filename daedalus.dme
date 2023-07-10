@@ -4330,6 +4330,7 @@
 #include "code\modules\surgery\new_surgery\cavity.dm"
 #include "code\modules\surgery\new_surgery\dental_implant.dm"
 #include "code\modules\surgery\new_surgery\generic_organic.dm"
+#include "code\modules\surgery\new_surgery\reattach_limb.dm"
 #include "code\modules\surgery\new_surgery\remove_embedded.dm"
 #include "code\modules\surgery\organs\_organ.dm"
 #include "code\modules\surgery\organs\appendix.dm"

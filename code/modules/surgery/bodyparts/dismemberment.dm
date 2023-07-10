@@ -146,6 +146,8 @@
 	for(var/datum/wound/W as anything in wounds)
 		W.unregister_from_mob(phantom_owner)
 
+	bodypart_flags |= BP_CUT_AWAY
+
 	if(!special)
 		if(phantom_owner.dna)
 			for(var/datum/mutation/human/mutation as anything in phantom_owner.dna.mutations) //some mutations require having specific limbs to be kept.
@@ -353,6 +355,7 @@
 
 	if(special) //non conventional limb attachment
 		remove_surgeries_from_mob(new_limb_owner)
+		bodypart_flags &= ~BP_CUT_AWAY
 
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
@@ -364,8 +367,8 @@
 		apply_bone_break(new_limb_owner)
 
 	update_bodypart_damage_state()
-	if(can_be_disabled)
-		update_disabled()
+
+	update_disabled()
 
 	for(var/trait in bodypart_traits)
 		ADD_TRAIT(owner, trait, bodypart_trait_source)

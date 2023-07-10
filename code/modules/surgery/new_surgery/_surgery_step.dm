@@ -111,12 +111,12 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /datum/surgery_step/proc/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	SHOULD_CALL_PARENT(TRUE)
 
-	var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone))
+	var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone), TRUE)
 	/*
 	if (can_infect && affected)
 		spread_germs_to_organ(affected, user)*/
 	if(user)
-		if(ishuman(user) && prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
+		if(ishuman(user) && prob(60) && (affected?.bodypart_flags & BP_HAS_BLOOD))
 			var/mob/living/carbon/human/H = user
 			if (blood_level)
 				H.blood_in_hands = blood_level

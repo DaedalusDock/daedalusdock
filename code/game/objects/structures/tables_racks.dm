@@ -681,20 +681,11 @@
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
 	var/mob/living/carbon/human/patient = null
-	var/obj/machinery/computer/operating/computer = null
-
-/obj/structure/table/optable/Initialize(mapload)
-	. = ..()
-	for(var/direction in GLOB.alldirs)
-		computer = locate(/obj/machinery/computer/operating) in get_step(src, direction)
-		if(computer)
-			computer.table = src
-			break
 
 /obj/structure/table/optable/Destroy()
-	. = ..()
-	if(computer && computer.table == src)
-		computer.table = null
+	if(patient)
+		set_patient(null)
+	return ..()
 
 /obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)

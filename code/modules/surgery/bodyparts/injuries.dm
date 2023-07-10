@@ -92,12 +92,36 @@
 		)
 		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
-/obj/item/bodypart/proc/sever_artery()
-	if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_SEVERED)
-		return FALSE
+/obj/item/bodypart/proc/set_sever_artery(val = TRUE)
+	if(val)
+		if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_SEVERED)
+			return FALSE
+	else
+		if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_OK)
+			return FALSE
 
-	bodypart_flags |= BP_ARTERY_CUT
+	if(val)
+		bodypart_flags |= BP_ARTERY_CUT
+	else
+		bodypart_flags &= ~BP_ARTERY_CUT
+
 	refresh_bleed_rate()
+	return TRUE
+
+/obj/item/bodypart/proc/set_sever_tendon(val = TRUE)
+	if(val)
+		if(check_tendon() & CHECKTENDON_NONE|CHECKTENDON_SEVERED)
+			return FALSE
+	else
+		if(check_tendon() & CHECKTENDON_NONE|CHECKTENDON_OK)
+			return FALSE
+
+	if(val)
+		bodypart_flags |= BP_TENDON_CUT
+	else
+		bodypart_flags &= ~BP_TENDON_CUT
+
+	update_disabled()
 	return TRUE
 
 /obj/item/bodypart/proc/clamp_wounds()

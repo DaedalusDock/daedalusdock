@@ -211,7 +211,7 @@
 		affected.update_damage()
 
 	if(affected.is_stump)
-		affected.bodypart_flags &= ~BP_ARTERY_CUT
+		affected.set_sever_artery(FALSE)
 
 	if(affected.clamped())
 		affected.remove_clamps()

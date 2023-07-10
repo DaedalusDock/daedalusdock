@@ -130,7 +130,7 @@
 		return
 	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."))
 
-	if (tool.w_class == affected.atom_storage.max_specific_storage && prob(50) && IS_ORGANIC_LIMB(affected) && affected.sever_artery())
+	if (tool.w_class == affected.atom_storage.max_specific_storage && prob(50) && IS_ORGANIC_LIMB(affected) && affected.set_sever_artery(TRUE))
 		to_chat(user, span_warning("You tear some blood vessels trying to fit such a big object in this cavity."))
 
 

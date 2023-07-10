@@ -19,7 +19,7 @@
 	stump.can_be_disabled = TRUE
 	ADD_TRAIT(stump, TRAIT_PARALYSIS, STUMP_TRAIT)
 	stump.update_disabled()
-	stump.bodypart_flags = NONE
+	stump.bodypart_flags = IS_ORGANIC_LIMB(src) ? BP_HAS_BLOOD|BP_HAS_ARTERY : NONE
 	stump.is_stump = TRUE
 
 	stump.held_index = held_index

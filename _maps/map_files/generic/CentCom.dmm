@@ -9163,9 +9163,6 @@
 /turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/control)
 "AU" = (
-/obj/machinery/computer/operating{
-	dir = 4
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},

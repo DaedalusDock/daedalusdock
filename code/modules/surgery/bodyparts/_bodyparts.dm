@@ -643,7 +643,7 @@
 	if(!owner)
 		return
 
-	if(bodypart_flags & BP_CUT_AWAY)
+	if(bodypart_flags & (BP_CUT_AWAY|BP_TENDON_CUT))
 		set_disabled(TRUE)
 		return
 

@@ -23,11 +23,8 @@
 	if(!embedded)
 		return
 
-	for(var/datum/component/embedded/E as anything in affected.GetComponents(/datum/component/embedded))
-		if(E.weapon == embedded)
-			if(!user.put_in_hands(E.weapon))
-				E.weapon.forceMove(user.drop_location())
-			break
+	if(!user.put_in_hands(embedded))
+		embedded.forceMove(user.drop_location())
 
 	user.visible_message(
 		span_notice("[user] pulls [embedded] from [target]'s [affected.plaintext_zone].")

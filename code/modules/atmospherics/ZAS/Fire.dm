@@ -126,7 +126,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /obj/effect/hotspot
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	icon = 'modular_pariah/master_files/icons/effects/fire.dmi'
+	icon = 'icons/effects/zas/fire.dmi'
 	icon_state = "1"
 	layer = GASFIRE_LAYER
 	blend_mode = BLEND_ADD

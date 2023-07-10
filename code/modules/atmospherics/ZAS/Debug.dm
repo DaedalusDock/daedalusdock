@@ -26,7 +26,7 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 #define ZAS_ZONE_BLOCKER(d) (zasdbgovl_dirzoneblock[dir2text(d)])
 
 /obj/effect/zasdbg
-	icon = 'modular_pariah/master_files/icons/testing/Zone.dmi'
+	icon = 'icons/testing/zas/Zone.dmi'
 	invisibility = INVISIBILITY_OBSERVER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = FLY_LAYER

@@ -93,7 +93,7 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 /obj/effect/gas_overlay
 	name = "gas"
 	desc = "You shouldn't be clicking this."
-	icon = 'modular_pariah/master_files/icons/effects/gas_overlays.dmi'
+	icon = 'icons/effects/zas/gas_overlays.dmi'
 	icon_state = "generic"
 	layer = GAS_LAYER
 	appearance_flags = RESET_COLOR|PIXEL_SCALE|TILE_BOUND

@@ -1,7 +1,7 @@
 #define CLICKSOUND_TIME 5 SECONDS
 
 /obj/machinery/computer
-	var/clicksound = "keyboard"
+	var/clicksound = SFX_KEYBOARD
 	var/clickvol = 40
 	var/next_clicksound
 
@@ -9,7 +9,7 @@
 	. = ..()
 	if(clicksound && world.time > next_clicksound && isliving(user))
 		next_clicksound = world.time + CLICKSOUND_TIME
-		playsound(src, get_sfx_pariah(clicksound), clickvol)
+		playsound(src, clicksound, clickvol)
 
 #undef CLICKSOUND_TIME
 

@@ -190,7 +190,6 @@
 
 /proc/get_sfx(soundin)
 	if(istext(soundin))
-		soundin = get_sfx_pariah(soundin) //PARIAH EDIT ADDITION - This overrides the default sound effects too, so use it to modularly change a sound effect output.
 		switch(soundin)
 			if (SFX_SHATTER)
 				soundin = pick('sound/effects/glassbr1.ogg','sound/effects/glassbr2.ogg','sound/effects/glassbr3.ogg')
@@ -257,8 +256,23 @@
 			if(SFX_ROCK_TAP)
 				soundin = pick('sound/effects/rocktap1.ogg', 'sound/effects/rocktap2.ogg', 'sound/effects/rocktap3.ogg')
 			if(SFX_BREAK_BONE)
-				soundin= pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
+				soundin = pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
 			if(SFX_PAINT)
-				soundin= pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
+				soundin = pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
+			if(SFX_KEYBOARD)
+				soundin = pick(
+					'modular_pariah/modules/aesthetics/computer/sound/keypress1.ogg',
+					'modular_pariah/modules/aesthetics/computer/sound/keypress2.ogg',
+					'modular_pariah/modules/aesthetics/computer/sound/keypress3.ogg',
+					'modular_pariah/modules/aesthetics/computer/sound/keypress4.ogg',
+					'modular_pariah/modules/aesthetics/computer/sound/keystroke4.ogg',
+				)
+			if(SFX_GLASS_CRACK)
+				soundin = pick(
+					'modular_pariah/master_files/sound/effects/glass_crack1.ogg',
+					'modular_pariah/master_files/sound/effects/glass_crack2.ogg',
+					'modular_pariah/master_files/sound/effects/glass_crack3.ogg',
+					'modular_pariah/master_files/sound/effects/glass_crack4.ogg',
+				)
 
 	return soundin

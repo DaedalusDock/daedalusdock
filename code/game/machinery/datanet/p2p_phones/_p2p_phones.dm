@@ -613,7 +613,7 @@
 				funnysound = voice_type2sound[admission_of_defeat.voice_type][admission_of_defeat.voice_type]
 
 
-	playsound(src, funnysound || 'modular_pariah/modules/radiosound/sound/radio/syndie.ogg', funnysound ? 300 : 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, falloff_exponent = 0)
+	playsound(src, funnysound || 'sound/effects/radio/syndie.ogg', funnysound ? 300 : 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, falloff_exponent = 0)
 	var/rendered = compose_message(v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"])
 	for(var/atom/movable/hearing_movable as anything in get_hearers_in_view(2, src)-src)
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.

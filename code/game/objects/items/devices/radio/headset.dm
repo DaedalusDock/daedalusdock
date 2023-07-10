@@ -65,7 +65,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(radiosound && listening)
-		playsound(M, radiosound, rand(20, 30))
+		playsound(talking_movable, radiosound, rand(20, 30))
 	return ..()
 
 
@@ -100,7 +100,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	desc = "A syndicate headset that can be used to hear all radio frequencies. Protects ears from flashbangs."
 	icon_state = "syndie_headset"
 	inhand_icon_state = "syndie_headset"
-	radiosound = 'sound/radio/effects/syndie.ogg'
+	radiosound = 'sound/effects/radio/syndie.ogg'
 
 /obj/item/radio/headset/syndicate/alt/Initialize(mapload)
 	. = ..()

@@ -24,8 +24,8 @@
 
 	for(var/datum/component/embedded/E as anything in affected.GetComponents(/datum/component/embedded))
 		if(E.weapon == embedded)
-			if(!user.put_in_hands(E))
-				E.forceMove(user.drop_location())
+			if(!user.put_in_hands(E.weapon))
+				E.weapon.forceMove(user.drop_location())
 			break
 
 	user.visible_message(

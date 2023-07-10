@@ -1,0 +1,2 @@
+/obj/item/surgical_drapes : @DELETE
+/obj/machinery/computer/operating : @DELETE

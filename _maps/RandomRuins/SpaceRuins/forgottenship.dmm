@@ -17,10 +17,6 @@
 	},
 /turf/closed/wall/r_wall/syndicate/nodiagonal,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
-"ad" = (
-/obj/machinery/computer/operating,
-/turf/open/floor/plastic,
-/area/ruin/space/has_grav/syndicate_forgotten_ship)
 "ae" = (
 /obj/structure/fans/tiny,
 /obj/machinery/door/airlock/external/ruin{
@@ -2198,7 +2194,7 @@ aa
 aa
 aa
 bZ
-ad
+am
 am
 am
 ct

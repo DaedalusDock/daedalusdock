@@ -849,7 +849,6 @@
 "cH" = (
 /obj/machinery/light/directional/south,
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /turf/open/floor/carpet/cyan,
 /area/shuttle/escape/luxury)
 "cI" = (

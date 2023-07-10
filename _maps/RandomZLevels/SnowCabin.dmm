@@ -217,7 +217,6 @@
 /obj/item/surgicaldrill,
 /obj/item/circular_saw,
 /obj/item/cautery,
-/obj/item/surgical_drapes,
 /obj/item/scalpel,
 /obj/item/hemostat,
 /turf/open/floor/iron/white,
@@ -482,10 +481,6 @@
 "bC" = (
 /obj/machinery/gibber,
 /turf/open/floor/iron/freezer,
-/area/awaymission/cabin)
-"bD" = (
-/obj/machinery/computer/operating,
-/turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "bE" = (
 /turf/open/floor/iron/white,
@@ -33112,7 +33107,7 @@ an
 eg
 aq
 an
-bD
+bE
 bE
 bE
 cI

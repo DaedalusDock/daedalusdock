@@ -98,10 +98,10 @@
 
 	// Time of death
 	if(target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		data_string_list += span_warning("<b>Time of Death:</b> [time2text(worldtime2stationtime(target.timeofdeath), "hh:mm")]\n")
+		data_string_list += span_warning("<b>Time of Death:</b> [stationtime2text(reference_time = target.timeofdeath)]\n")
 
 	// Temperature
-	data_string_list += "Body temperature: [target.bodytemperature - T0C]&deg;C ([KTOF(target.bodytemperature)]&deg;F)\n"
+	data_string_list += "Body temperature: [target.bodytemperature - T0C]&deg;C ([FAHRENHEIT(target.bodytemperature)]&deg;F)\n"
 
 	// Radiation
 	if(HAS_TRAIT(target, TRAIT_IRRADIATED))

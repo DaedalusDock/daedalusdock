@@ -263,4 +263,4 @@
 	return Atan2(b, a)
 
 /// Converts kelvin to farenheit
-#define KTOF(kelvin) (kelvin * 1.8) - 459.67
+#define FAHRENHEIT(kelvin) (kelvin * 1.8) - 459.67

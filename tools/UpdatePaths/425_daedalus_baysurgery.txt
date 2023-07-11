@@ -2,3 +2,6 @@
 /obj/machinery/computer/operating : @DELETE
 /obj/item/disk/surgery/debug : @DELETE
 /obj/item/disk/surgery/forgottenship : @DELETE
+/obj/item/circuitboard/machine/medical_kiosk : @DELETE
+/obj/machinery/medical_kiosk : @DELETE
+/obj/item/scanner_wand : @DELETE

@@ -21430,7 +21430,6 @@
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "gIb" = (
-/obj/machinery/medical_kiosk,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)

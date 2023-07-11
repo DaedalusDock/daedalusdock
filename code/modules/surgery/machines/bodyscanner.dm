@@ -14,14 +14,7 @@
 		stack_trace("A bodyscanner was initialized with an invalid direction")
 		return INITIALIZE_HINT_QDEL
 
-	if(!linked_console)
-		var/turf/T = get_step(src, turn(dir, 180))
-		if(!T)
-			return
-		linked_console = locate(/obj/machinery/bodyscanner_console) in T
-		if(linked_console)
-			linked_console.linked_scanner = src
-			linked_console.update_appearance()
+	rediscover()
 
 /obj/machinery/bodyscanner/Destroy()
 	if(!QDELETED(linked_console))
@@ -35,6 +28,26 @@
 	else
 		icon_state = "body_scanner_open"
 
+/obj/machinery/bodyscanner/setDir(ndir)
+	if(!(dir & (EAST|WEST)))
+		return
+
+	. = ..()
+	rediscover()
+
+/obj/machinery/bodyscanner/proc/rediscover()
+	if(linked_console)
+		linked_console.linked_scanner = null
+		linked_console = null
+
+	var/turf/T = get_step(src, turn(dir, 180))
+	if(!T)
+		return
+	linked_console = locate(/obj/machinery/bodyscanner_console) in T
+	if(linked_console)
+		linked_console.linked_scanner = src
+		linked_console.update_appearance()
+
 /obj/machinery/bodyscanner/set_occupant(atom/movable/new_occupant)
 	. = ..()
 	update_icon_state()
@@ -44,6 +57,12 @@
 	if(linked_console)
 		linked_console.linked_scanner = null
 		linked_console.update_appearance()
+		linked_console = null
+
+/obj/machinery/bodyscanner/wrench_act(mob/living/user, obj/item/tool)
+	tool.play_tool_sound(src, 50)
+	setDir(turn(dir, 180))
+	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/bodyscanner/MouseDrop_T(mob/living/carbon/human/target, mob/user)
 	if(!istype(target) || !can_interact(user) || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user, mover = target) || target.buckled || target.has_buckled_mobs())
@@ -55,21 +74,52 @@
 
 	target.forceMove(src)
 	set_occupant(target)
-	user.visible_message(span_notice("[user] moves [target] into [src]."))
+	if(user == target)
+		user.visible_message(
+			span_notice("\The [user] climbs into \the [src]."),
+			span_notice("You climb into \the [src]."),
+			span_hear("You hear metal clanking, then a pressurized hiss.")
+		)
+	else
+		user.visible_message(span_notice("[user] moves [target] into [src]."), blind_message = span_hear("You hear metal clanking, then a pressurized hiss."))
+
+	target.forceMove(src)
+	set_occupant(target)
 
 /obj/machinery/bodyscanner/AltClick(mob/user)
 	. = ..()
 	if(!user.canUseTopic(src, !issilicon(user)))
 		return
-	eject_occupant()
+	eject_occupant(user)
 
-/obj/machinery/bodyscanner/proc/eject_occupant()
-	if(occupant)
-		occupant.forceMove(get_turf(src))
-		set_occupant(null)
+/obj/machinery/bodyscanner/proc/eject_occupant(mob/user, resisted)
+	if(!occupant)
+		return
+
+	if(!resisted)
+		if(user)
+			visible_message(
+				span_notice("[user] opens \the [src]."),
+				blind_message = span_hear("You hear a pressurized hiss, then a sound like glass creaking.")
+			)
+		else
+			visible_message(
+				span_notice("[src] opens with a hiss."),
+				blind_message = span_hear("You hear a pressurized hiss, then a sound like glass creaking.")
+			)
+
+	else
+		visible_message(
+			span_notice("[occupant] climbs out of [src]"),
+			blind_message = span_hear("You hear a pressurized hiss, then a sound like glass creaking.")
+		)
+
+	occupant.forceMove(get_turf(src))
+	set_occupant(null)
+
 
 /obj/machinery/bodyscanner/container_resist_act(mob/living/user)
-	eject_occupant()
+	eject_occupant(src, TRUE)
 
 /////// The Console ////////
 /obj/machinery/bodyscanner_console
@@ -87,13 +137,7 @@
 		stack_trace("A bodyscanner console was initialized with an invalid direction")
 		return INITIALIZE_HINT_QDEL
 
-	if(!linked_scanner)
-		var/turf/T = get_step(src, dir)
-		if(!T)
-			return
-		linked_scanner = locate(/obj/machinery/bodyscanner) in T
-		if(linked_scanner)
-			linked_scanner.linked_console = src
+	rediscover()
 
 /obj/machinery/bodyscanner_console/Destroy()
 	if(!QDELETED(linked_scanner))
@@ -101,10 +145,36 @@
 
 	return ..()
 
+/obj/machinery/bodyscanner_console/setDir(ndir)
+	if(!(dir & (EAST|WEST)))
+		return
+
+	. = ..()
+	rediscover()
+
+/obj/machinery/bodyscanner_console/proc/rediscover()
+	if(linked_scanner)
+		linked_scanner.linked_console = null
+		linked_scanner = null
+
+	var/turf/T = get_step(src, dir)
+	if(!T)
+		return
+
+	linked_scanner = locate(/obj/machinery/bodyscanner) in T
+	if(linked_scanner)
+		linked_scanner.linked_console = src
+
+/obj/machinery/bodyscanner_console/wrench_act(mob/living/user, obj/item/tool)
+	tool.play_tool_sound(src, 50)
+	setDir(turn(dir, 180))
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
 /obj/machinery/bodyscanner_console/deconstruct(disassembled)
 	. = ..()
 	if(linked_scanner)
 		linked_scanner.linked_console = null
+		linked_scanner = null
 
 /obj/machinery/bodyscanner_console/update_icon_state()
 	. = ..()
@@ -119,6 +189,7 @@
 
 	var/mob/living/carbon/human/H = linked_scanner.occupant
 	scan = H.get_bodyscanner_data()
+	playsound(linked_scanner, 'sound/machines/medbayscanner.ogg', 50)
 	updateUsrDialog()
 
 /obj/machinery/bodyscanner_console/proc/clear_scan()
@@ -150,7 +221,11 @@
 			var/name = "[capitalize(display.name)] at [(get_area(display)).name]"
 			if(choices[name])
 				choices[name + " (1)"] = choices[name]
+				choices -= name
 				name = name + " (2)"
+			else if(choices[name + " (1)"])
+				name = name + " (1)"
+
 			while(choices[name])
 				name = splicetext(name, -4) + " ([(text2num(copytext(name, -2, -1)) + 1)])"
 

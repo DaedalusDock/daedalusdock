@@ -231,3 +231,17 @@
 	id = "account_console"
 	build_type = IMPRINTER
 	build_path = /obj/item/circuitboard/computer/accounting
+
+/datum/design/board/bodyscanner
+	name = "Circuit Board (Body Scanner)"
+	desc = "Allows for the construction of circuit boards used to assess the wealth of crewmates on station."
+	id = "bodyscanner"
+	build_type = IMPRINTER
+	build_path = /obj/item/circuitboard/machine/bodyscanner
+
+/datum/design/board/bodyscanner_console
+	name = "Circuit Board (Body Scanner)"
+	desc = "Allows for the construction of circuit boards used to assess the wealth of crewmates on station."
+	id = "bodyscanner_console"
+	build_type = IMPRINTER
+	build_path = /obj/item/circuitboard/machine/bodyscanner_console

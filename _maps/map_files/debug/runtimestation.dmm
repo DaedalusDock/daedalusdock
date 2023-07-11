@@ -756,6 +756,7 @@
 	dir = 8
 	},
 /obj/structure/table/optable,
+/obj/machinery/body_scan_display/directional/south,
 /turf/open/floor/iron/cafeteria,
 /area/station/medical/medbay)
 "cK" = (

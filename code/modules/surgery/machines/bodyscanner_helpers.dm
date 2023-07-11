@@ -45,23 +45,23 @@
 		part["brute_dam"] = BP.brute_dam
 		part["burn_dam"] = BP.burn_dam
 		part["scan_results"] = BP.get_scan_results(TRUE)
-		.["bodyparts"] += part
+		.["bodyparts"] += list(part)
 
 	.["organs"] = list()
 
 	for(var/obj/item/organ/O as anything in processing_organs)
 		var/list/org = list()
 		org["name"] = O.name
-		org["is_damaged"] = O.damage > 0
+		org["damaged_percent"] = O.damage / O.maxHealth * 100
 		org["scan_results"] = O.get_scan_results(TRUE)
 
 		if(istype(O, /obj/item/organ/appendix))
 			var/obj/item/organ/appendix/A = O
 			org["inflamed"] = A.inflamation_stage
 
-		.["organs"] += org
+		.["organs"] += list(org)
 
-	.["nearsight"] = HAS_TRAIT(src, TRAIT_NEARSIGHT)
+	.["nearsight"] = HAS_TRAIT_FROM(src, TRAIT_NEARSIGHT, QUIRK_TRAIT) || HAS_TRAIT_FROM(src, TRAIT_NEARSIGHT, GENETIC_MUTATION)
 	.["blind"] = HAS_TRAIT(src, TRAIT_BLIND)
 
 /obj/machinery/bodyscanner_console/proc/get_severity(amount, tag = FALSE)

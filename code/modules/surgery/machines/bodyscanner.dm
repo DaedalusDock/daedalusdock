@@ -56,15 +56,20 @@
 	target.forceMove(src)
 	set_occupant(target)
 	user.visible_message(span_notice("[user] moves [target] into [src]."))
-	linked_console?.scan = target.get_bodyscanner_data()
 
 /obj/machinery/bodyscanner/AltClick(mob/user)
 	. = ..()
 	if(!user.canUseTopic(src, !issilicon(user)))
 		return
+	eject_occupant()
+
+/obj/machinery/bodyscanner/proc/eject_occupant()
 	if(occupant)
 		occupant.forceMove(get_turf(src))
 		set_occupant(null)
+
+/obj/machinery/bodyscanner/proc/container_resist_act(mob/living/user)
+	eject_occupant()
 
 /////// The Console ////////
 /obj/machinery/bodyscanner_console
@@ -108,11 +113,74 @@
 	else
 		icon_state = "bodyscanner_console_powered"
 
+/obj/machinery/bodyscanner_console/proc/scan_patient()
+	if(!linked_scanner?.occupant)
+		return
+
+	var/mob/living/carbon/human/H = linked_scanner.occupant
+	scan = H.get_bodyscanner_data()
+	updateUsrDialog()
+
+/obj/machinery/bodyscanner_console/proc/clear_scan()
+	scan = null
+	updateUsrDialog()
+
+/obj/machinery/bodyscanner_console/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
+
+	if(href_list["scan"])
+		scan_patient()
+		return TRUE
+
+	if(href_list["eject"])
+		eject_occupant()
+		return TRUE
+
+	if(href_list["erase"])
+		clear_scan()
+		return TRUE
+
+	if(href_list["send2display"])
+		var/choices = list()
+		for(var/obj/machinery/body_scan_display/display as anything in GLOB.bodyscanscreens)
+			if(!SSmapping.are_same_zstack(src.z, display.z))
+				return
+			var/name = "[capitalize(display.name)] at [(get_area(display)).name]"
+			if(choices[name])
+				choices[name + " (1)"] = choices[name]
+				name = name + " (2)"
+			while(choices[name])
+				name = splicetext(name, -4) + " ([(text2num(copytext(name, -2, -1)) + 1)])"
+
+			choices[name] = display
+
+		if(!length(choices))
+			return TRUE
+
+		var/choice = input(usr, "Select Display", "Push to Display") as null|anything in choices
+		if(!(choice in choices))
+			return
+
+		var/obj/machinery/body_scan_display/display = choices[choice]
+		display.push_content(jointext(get_content(scan), null))
+		return TRUE
+
 /obj/machinery/bodyscanner_console/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
 
 	var/datum/browser/popup = new(user, "bodyscanner", "Body Scanner", 600, 800)
-	popup.set_content(jointext(get_content(scan), null))
+	var/content = {"
+		<fieldset class='computerPaneSimple' style='margin: 10px auto;text-align:center'>
+				[button_element(src, "Scan", "scan=1")]
+				[button_element(src, "Eject Occupant", "eject=1")]
+				[button_element(src, "Erase Scan", "erase=1")]
+				[button_element(src, "Push to Display", "send2display=1")]
+		</fieldset>
+	"}
+
+	popup.set_content(content + jointext(get_content(scan), null))
 	popup.open()
 
 
@@ -124,7 +192,11 @@
 		<fieldset class='computerPaneSimple' style='margin: 0 auto'>
 	"}
 
-	if(!scan?["name"])
+	if(!scan)
+		. += "<center>["<strong>NO DATA TO DISPLAY</strong>"]</center></fieldset>"
+		return
+
+	if(!scan["name"])
 		. += "<center>[span_bad("<strong>SCAN READOUT ERROR.</strong>")]</center></fieldset>"
 		return
 
@@ -146,7 +218,6 @@
 						[scan["time"]]
 					</td>
 				</tr>
-				<tr>
 	"}
 
 	var/brain_activity = scan["brain_activity"]
@@ -281,9 +352,81 @@
 				. += {"
 							<tr>
 								<td colspan = '2' style='padding-left: 35%'>
-									[span_mild("Unknown Reagent")]
+									[span_average("Unknown Reagent")]
 								</td>
 							</tr>
 					"}
 
+	. += {"
+			<tr>
+				<td colspan='2'>
+					<center>
+						<table class='block' border='1' width='95%'>
+							<tr>
+								<th colspan='3'>Body Status</th>
+							</tr>
+							<tr>
+								<th>Organ</th>
+								<th>Damage</th>
+								<th>Status</th>
+							</tr>
+	"}
+
+	for(var/list/limb as anything in scan["bodyparts"])
+		.+= {"
+			<tr>
+				<td>[limb["name"]]
+				</td>
+		"}
+
+		if(limb["is_stump"])
+			. += {"
+				<td>
+					<span style='font-weight: bold; color: [COLOR_MEDICAL_MISSING]'>Missing</span>
+				</td>
+				<td>
+					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
+				</td>
+			"}
+		else
+			. += "<td>"
+			if(!(limb["brute_dam"] || limb["burn_dam"]))
+				. += "None</td>"
+
+			if(limb["brute_dam"])
+				. += {"
+					<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[capitalize(get_wound_severity(limb["brute_ratio"]))] physical trauma</span><br>
+				"}
+			if(limb["burn_dam"])
+				. += {"
+					<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[capitalize(get_wound_severity(limb["burn_ratio"]))] burns</span>
+					</td>
+				"}
+			. += {"
+				<td>
+					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
+				</td>
+			"}
+		. += "</tr>"
+
+	. += "<tr><th colspan='3'><center>Internal Organs</center></th></tr>"
+	for(var/list/organ as anything in scan["organs"])
+		. += "<tr><td>[organ["name"]]</td>"
+
+		if(organ["damage_percent"])
+			. += "<td>[get_severity(organ["damage_percent"], TRUE)]</td>"
+		else
+			. += "<td>None</td>"
+
+		. += {"
+			<td>
+				[span_bad("[english_list(organ["scan_results"], nothing_text="&nbsp;")]")]
+			</td>
+		</tr>
+		"}
+
+	if(scan["nearsight"])
+		. += "<tr><td colspan='3'>[span_average( "Retinal misalignment detected.")]</td></tr>"
+
+	. += "</table></center></td></tr>"
 	. += "</table></fieldset>"

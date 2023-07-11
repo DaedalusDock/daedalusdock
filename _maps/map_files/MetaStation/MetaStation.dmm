@@ -7537,25 +7537,13 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "bXm" = (
-/obj/structure/table/glass,
-/obj/item/reagent_containers/chem_pack{
-	pixel_x = 10;
-	pixel_y = 10
-	},
-/obj/item/storage/box/rxglasses{
-	pixel_x = -4;
-	pixel_y = 8
-	},
-/obj/item/stack/medical/gauze{
-	pixel_x = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/siding/white/corner{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/item/stack/medical/mesh,
+/obj/machinery/bodyscanner_console,
 /turf/open/floor/iron/white/side{
 	dir = 10
 	},
@@ -8428,7 +8416,10 @@
 /turf/open/floor/iron/dark,
 /area/station/security/checkpoint/science)
 "coA" = (
-/mob/living/simple_animal/bot/cleanbot/medbay,
+/obj/effect/turf_decal/box/white{
+	color = "#52B4E9"
+	},
+/obj/machinery/holopad,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "coC" = (
@@ -22323,21 +22314,16 @@
 /turf/open/floor/iron/white,
 /area/station/science/robotics/lab)
 "haB" = (
-/obj/structure/table/glass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/white{
 	dir = 4
 	},
-/obj/item/clothing/glasses/hud/health{
-	pixel_y = 6
+/obj/structure/table/glass,
+/obj/item/reagent_containers/glass/bottle/epinephrine,
+/obj/item/reagent_containers/glass/bottle/multiver{
+	pixel_x = 6
 	},
-/obj/item/clothing/glasses/hud/health{
-	pixel_y = 4
-	},
-/obj/item/clothing/glasses/hud/health{
-	pixel_y = 2
-	},
-/obj/item/clothing/glasses/hud/health,
+/obj/item/reagent_containers/syringe,
 /turf/open/floor/iron/white/side{
 	dir = 8
 	},
@@ -24248,6 +24234,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 1
 	},
+/mob/living/simple_animal/bot/cleanbot/medbay,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "hGE" = (
@@ -30950,6 +30937,7 @@
 "kgL" = (
 /obj/structure/table/optable,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/body_scan_display/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "kgQ" = (
@@ -32686,14 +32674,11 @@
 "kOW" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/disposal/bin,
 /obj/effect/turf_decal/siding/white{
 	dir = 1
 	},
-/obj/structure/disposalpipe/trunk{
-	dir = 1
-	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/bodyscanner,
 /turf/open/floor/iron/white/side,
 /area/station/medical/treatment_center)
 "kPq" = (
@@ -39514,6 +39499,19 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/structure/table/glass,
+/obj/item/storage/box/rxglasses{
+	pixel_x = -4;
+	pixel_y = 8
+	},
+/obj/item/stack/medical/mesh,
+/obj/item/stack/medical/gauze{
+	pixel_x = 8
+	},
+/obj/item/reagent_containers/chem_pack{
+	pixel_x = 10;
+	pixel_y = 10
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "niS" = (
@@ -44863,6 +44861,14 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/structure/table/glass,
+/obj/item/storage/box/gloves{
+	pixel_y = 8
+	},
+/obj/item/storage/box/masks{
+	pixel_y = 4
+	},
+/obj/item/storage/box/bodybags,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "pjU" = (
@@ -45806,16 +45812,9 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "pAE" = (
-/obj/structure/table/glass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/white/corner,
-/obj/item/storage/box/gloves{
-	pixel_y = 8
-	},
-/obj/item/storage/box/masks{
-	pixel_y = 4
-	},
-/obj/item/storage/box/bodybags,
+/obj/structure/table/glass,
 /turf/open/floor/iron/white/side{
 	dir = 9
 	},
@@ -46072,8 +46071,10 @@
 /area/station/command/corporate_showroom)
 "pGn" = (
 /obj/structure/flora/junglebush/large,
-/obj/structure/disposalpipe/segment,
 /obj/machinery/light/floor/has_bulb,
+/obj/structure/disposalpipe/segment{
+	dir = 5
+	},
 /turf/open/floor/grass,
 /area/station/medical/treatment_center)
 "pGy" = (
@@ -54335,10 +54336,17 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/holopad,
-/obj/effect/turf_decal/box/white{
-	color = "#52B4E9"
+/obj/structure/table/glass,
+/obj/item/clothing/glasses/hud/health{
+	pixel_y = 6
 	},
+/obj/item/clothing/glasses/hud/health{
+	pixel_y = 4
+	},
+/obj/item/clothing/glasses/hud/health{
+	pixel_y = 2
+	},
+/obj/item/clothing/glasses/hud/health,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "sMT" = (
@@ -65362,16 +65370,13 @@
 /turf/open/floor/iron,
 /area/station/science/mixing)
 "xad" = (
-/obj/structure/table/glass,
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6
-	},
-/obj/item/reagent_containers/glass/bottle/epinephrine,
-/obj/item/reagent_containers/syringe,
 /obj/effect/turf_decal/siding/white/corner{
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/bodyscanner_console{
+	dir = 8
+	},
 /turf/open/floor/iron/white/side{
 	dir = 5
 	},
@@ -67408,21 +67413,14 @@
 /turf/open/floor/iron,
 /area/station/maintenance/disposal/incinerator)
 "xOp" = (
-/obj/structure/table/glass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/white{
 	dir = 8
 	},
-/obj/item/storage/belt/medical{
-	pixel_y = 6
+/obj/machinery/disposal/bin,
+/obj/structure/disposalpipe/trunk{
+	dir = 8
 	},
-/obj/item/storage/belt/medical{
-	pixel_y = 4
-	},
-/obj/item/storage/belt/medical{
-	pixel_y = 2
-	},
-/obj/item/storage/belt/medical,
 /turf/open/floor/iron/white/side{
 	dir = 4
 	},
@@ -68319,10 +68317,12 @@
 /turf/open/floor/iron/white,
 /area/station/security/prison)
 "yfh" = (
-/obj/machinery/medical_kiosk,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/white,
 /obj/structure/disposalpipe/segment,
+/obj/machinery/bodyscanner{
+	dir = 8
+	},
 /turf/open/floor/iron/white/side{
 	dir = 1
 	},

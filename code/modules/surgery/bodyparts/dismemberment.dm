@@ -321,7 +321,7 @@
 		O.Insert(limb_owner, TRUE)
 
 	/// Transfer cavity items like implants.
-	for(var/obj/item/I in old_limb.cavity_items)
+	for(var/obj/item/I in old_limb?.cavity_items)
 		I.forceMove(src)
 		add_cavity_item(I)
 

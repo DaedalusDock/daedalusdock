@@ -45,13 +45,6 @@ SUBSYSTEM_DEF(media)
 		var/tag_error
 		for(var/jd_tag in jd_tag_cache)
 			switch(jd_tag)
-				if(MEDIA_TAG_LOBBYMUSIC_COMMON)
-					if(MEDIA_TAG_LOBBYMUSIC_RARE in jd_tag_cache)
-						tag_error = list(MEDIA_TAG_LOBBYMUSIC_COMMON, "Track tagged as BOTH COMMON and RARE lobby music.")
-						break
-				if(MEDIA_TAG_ROUNDEND_COMMON)
-					if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
-						tag_error = list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
 				if(MEDIA_TAG_ALLMEDIA)
 					//Validation relevant for ALL tracks.
 					if(!json_data["name"])
@@ -59,6 +52,20 @@ SUBSYSTEM_DEF(media)
 					if(!fexists(jd_full_filepath))
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 						break
+					//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
+					var/list/directory_split = splittext(json_data["path"], "/")
+					var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
+						if(extension_split.len >= 2)
+							var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
+							if(!byond_sound_formats[ext])
+								tag_error = list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+				if(MEDIA_TAG_LOBBYMUSIC_COMMON)
+					if(MEDIA_TAG_LOBBYMUSIC_RARE in jd_tag_cache)
+						tag_error = list(MEDIA_TAG_LOBBYMUSIC_COMMON, "Track tagged as BOTH COMMON and RARE lobby music.")
+						break
+				if(MEDIA_TAG_ROUNDEND_COMMON)
+					if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
+						tag_error = list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
 				if(MEDIA_TAG_JUKEBOX)
 					//Validation specific to jukebox tracks.
 					if(!json_data["duration"])

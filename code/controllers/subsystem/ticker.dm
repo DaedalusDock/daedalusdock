@@ -709,7 +709,7 @@ SUBSYSTEM_DEF(ticker)
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks
 	for(var/datum/media/music_filtered as anything in music_tracks)
-		if(old_login_music_t && (music_entry.path == old_login_music_t))
+		if(old_login_music_t && (music_filtered.path == old_login_music_t))
 			old_login_music = music_filtered
 		if(music_filtered.map && music_filtered.map != SSmapping.config.map_name)
 			rare_music_data -= music_filtered

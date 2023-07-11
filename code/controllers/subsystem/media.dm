@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(media)
 	//Media definitions grouped by their `media_tags`, All tracks share the implicit tag `all`
 	VAR_PRIVATE/list/datum/media/tracks_by_tag
 
-	var/const/list/byond_sound_formats = list(
+	var/list/byond_sound_formats = list(
 		"mid" = TRUE,
 		"midi" = TRUE,
 		"mod" = TRUE,
@@ -56,8 +56,8 @@ SUBSYSTEM_DEF(media)
 					//Validation relevant for ALL tracks.
 					if(!json_data["name"])
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "Track has no name.")
-					if(!fexists(json_data["file"]))
-						tag_error = list(MEDIA_TAG_ALLMEDIA, "File [json_data["file"]] does not exist.")
+					if(!fexists(jd_full_filepath))
+						tag_error = list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 						break
 				if(MEDIA_TAG_JUKEBOX)
 					//Validation specific to jukebox tracks.
@@ -80,7 +80,7 @@ SUBSYSTEM_DEF(media)
 		var/datum/media/media_datum = new(
 			json_data["name"],
 			json_data["author"],
-			json_data["file"],
+			jd_full_filepath,
 			jd_tag_cache,
 			json_data["map"],
 			json_data["rare"],
@@ -91,7 +91,7 @@ SUBSYSTEM_DEF(media)
 		//Tag-specific validation
 	return ..()
 
-/datum/controller/subsystem/media/get_track_pool(media_tag)
+/datum/controller/subsystem/media/proc/get_track_pool(media_tag)
 	var/list/pool = tracks_by_tag[media_tag]
 	return pool.Copy()
 

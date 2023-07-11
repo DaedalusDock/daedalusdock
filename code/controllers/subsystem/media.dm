@@ -100,7 +100,8 @@ SUBSYSTEM_DEF(media)
 			jd_tag_cache,
 			json_data["map"],
 			json_data["rare"],
-			json_data["duration"]
+			json_data["duration"],
+			json_record
 			)
 		for(var/jd_tag in jd_tag_cache)
 			LAZYADD(tracks_by_tag[jd_tag], media_datum)
@@ -131,8 +132,10 @@ SUBSYSTEM_DEF(media)
 	var/list/media_tags
 	/// REQUIRED for JUKEBOX tagged music, Duration of the track in Deciseconds. Yes it's a shit unit, blame BYOND.
 	var/duration = 0
+	/// Back-reference name of the originating JSON file, so that you can track it down
+	var/definition_file
 
-/datum/media/New(name, author, path, tags, map, rare, length)
+/datum/media/New(name, author, path, tags, map, rare, length, src_file)
 	src.name = name
 	src.author = author
 	src.path = path
@@ -140,3 +143,4 @@ SUBSYSTEM_DEF(media)
 	src.rare = rare
 	media_tags = tags
 	duration = length
+	definition_file = src_file

@@ -79,8 +79,7 @@
 	if(selection)
 		data["track_selected"] = selection.name
 		data["track_length"] = DisplayTimeText(selection.duration)
-		//data["track_beat"] = selection.song_beat
-		#warn REMINDER: GO INTO THE TGUI AND SNIP THIS FIELD. IT WON'T BE HARD YOU FUCKING
+		data["track_author"] = selection.author
 	data["volume"] = volume
 	return data
 

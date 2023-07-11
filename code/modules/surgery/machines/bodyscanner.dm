@@ -334,7 +334,7 @@
 						<strong>Body Temperature:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[scan["temperature"]-T0C]&deg;C ([scan["temperature"]*1.8-459.67]&deg;F)
+						[scan["temperature"]-T0C]&deg;C ([FAHRENHEIT(scan["temperature"])]&deg;F)
 					</td>
 				</tr>
 	"}

@@ -140,16 +140,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/healthanalyzer_advanced
-	name = "Advanced Health Analyzer"
-	desc = "A hand-held body scanner able to distinguish vital signs of the subject with high accuracy."
-	id = "healthanalyzer_advanced"
-	build_path = /obj/item/healthanalyzer/advanced
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2500, /datum/material/silver = 2000, /datum/material/gold = 1500)
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/medigel
 	name = "Medical Gel"
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap."

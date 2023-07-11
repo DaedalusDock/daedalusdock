@@ -135,7 +135,7 @@
 		return TRUE
 
 	if(href_list["eject"])
-		eject_occupant()
+		linked_scanner?.eject_occupant()
 		return TRUE
 
 	if(href_list["erase"])

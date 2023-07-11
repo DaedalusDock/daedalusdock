@@ -35,6 +35,7 @@
 
 	.["bodyparts"] = list()
 
+	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		var/list/part = list()
 		part["name"] = BP.plaintext_zone

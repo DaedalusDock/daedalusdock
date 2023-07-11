@@ -86,14 +86,14 @@ const CrewTable = (props, context) => {
   return (
     <Table>
       <Table.Row>
-        <Table.Cell bold>
+        <Table.Cell width="50%" bold>
           Name
         </Table.Cell>
-        <Table.Cell bold collapsing />
-        <Table.Cell bold collapsing textAlign="center">
+        <Table.Cell width="5%" bold collapsing />
+        <Table.Cell width="15%" bold collapsing textAlign="center">
           Vitals
         </Table.Cell>
-        <Table.Cell bold collapsing textAlign="center">
+        <Table.Cell width="15%" bold collapsing textAlign="center">
           Position
         </Table.Cell>
         {!!data.link_allowed && (
@@ -124,26 +124,26 @@ const CrewTableEntry = (props, context) => {
 
   return (
     <Table.Row>
-      <Table.Cell
+      <Table.Cell width="50%"
         bold={jobIsHead(ijob)}
         color={jobToColor(ijob)}>
         {name}{assignment !== undefined ? ` (${assignment})` : ""}
       </Table.Cell>
-      <Table.Cell collapsing textAlign="center">
+      <Table.Cell width="5%" collapsing textAlign="center">
         {
           statusToImage(life_status)
         }
       </Table.Cell>
-      <Table.Cell collapsing textAlign="center">
+      <Table.Cell width="15%" collapsing textAlign="center">
         {
           statusToText(life_status)
         }
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell width="15%" collapsing textAlign="center">
         {area !== undefined ? area : <Icon name="question" color="#ffffff" size={1} />}
       </Table.Cell>
       {!!link_allowed && (
-        <Table.Cell collapsing>
+        <Table.Cell collapsing textAlign="center">
           <Button
             content="Track"
             disabled={!can_track}

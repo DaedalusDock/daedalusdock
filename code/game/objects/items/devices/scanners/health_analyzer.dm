@@ -1,8 +1,7 @@
 // Describes the three modes of scanning available for health analyzers
 #define SCANMODE_HEALTH 0
-#define SCANMODE_WOUND 1
-#define SCANMODE_CHEM 2
-#define SCANMODE_COUNT 3 // Update this to be the number of scan modes if you add more
+#define SCANMODE_CHEM 1
+#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
@@ -46,8 +45,6 @@
 	switch(scanmode)
 		if(SCANMODE_HEALTH)
 			to_chat(user, span_notice("You switch the health analyzer to check physical health."))
-		if(SCANMODE_WOUND)
-			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
 		if(SCANMODE_CHEM)
 			to_chat(user, span_notice("You switch the health analyzer to scan chemical contents."))
 		//If this list gets any longer please consider a LUT for the latter half of the message.
@@ -75,8 +72,6 @@
 	switch (scanmode)
 		if (SCANMODE_HEALTH)
 			healthscan(user, M, advanced, mode)
-		if (SCANMODE_WOUND)
-			woundscan(user, M, src)
 		if (SCANMODE_CHEM)
 			chemscan(user, M)
 
@@ -93,10 +88,8 @@
 	switch (scanmode)
 		if (SCANMODE_HEALTH)
 			context[SCREENTIP_CONTEXT_LMB] = "Scan health"
-		if (SCANMODE_WOUND)
-			context[SCREENTIP_CONTEXT_LMB] = "Scan wounds"
-
-	context[SCREENTIP_CONTEXT_RMB] = "Scan chemicals"
+		if (SCANMODE_CHEM)
+			context[SCREENTIP_CONTEXT_LMB] = "Scan chemicals"
 
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -167,8 +160,8 @@
 
 		// Limb damage
 		if(verbose)
-			var/list/damaged_limbs = carbon_target.get_damaged_bodyparts(TRUE, TRUE)
 			data_string_list += span_bold("Specific limb damage:\n")
+			var/list/damaged_limbs = carbon_target.get_damaged_bodyparts(TRUE, TRUE)
 			if(!length(damaged_limbs))
 				data_string_list += "No detectable limb injuries.\n"
 
@@ -301,7 +294,7 @@
 	advanced = TRUE
 
 /// Displays wounds with extended information on their status vs medscanners
-/proc/woundscan(mob/user, mob/living/carbon/patient, obj/item/healthanalyzer/wound/scanner)
+/proc/woundscan(mob/user, mob/living/carbon/patient, obj/item/healthanalyzer/wound/scanner, advanced = FALSE)
 	if(!istype(patient) || user.incapacitated())
 		return
 
@@ -309,26 +302,33 @@
 		to_chat(user, span_warning("You realize that your scanner has no accessibility support for the blind!"))
 		return
 
-	var/render_list = ""
-	for(var/obj/item/bodypart/wounded_part as anything in patient.get_wounded_bodyparts())
-		var/limb_result = "<span class='alert ml-2'>[capitalize(wounded_part.name)][!IS_ORGANIC_LIMB(wounded_part) ? " (Cybernetic)" : ""]:</span>"
-		if(wounded_part.brute_dam > 0)
-			limb_result = "[limb_result] \[[span_color("red", "<b>[get_wound_severity(wounded_part.brute_ratio)] physical trauma</b>")]\]</span>"
-		if(wounded_part.burn_dam > 0)
-			limb_result = "[limb_result] \[[span_color("#ffa500", "<b>[get_wound_severity(wounded_part.burn_ratio)] burns</b>")]\]</span>"
-		if(wounded_part.bodypart_flags & BP_BLEEDING)
-			limb_result = "<span class='alert ml-2'>[limb_result] \[[span_color("red","bleeding")]\]</span>"
-		render_list += limb_result
+	var/data_string_list = ""
+	var/list/damaged_limbs = patient.get_damaged_bodyparts(TRUE, TRUE)
+	if(!length(damaged_limbs))
+		data_string_list += "No detectable limb injuries.\n"
 
-	if(render_list == "")
+	for(var/obj/item/bodypart/limb as anything in damaged_limbs)
+		var/limb_string = "[capitalize(limb.name)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
+		if(limb.brute_dam)
+			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
+
+		if(limb.burn_dam)
+			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[advanced ? "[limb.burn_dam]" + " points of": get_wound_severity(limb.burn_ratio)] burns</span>\]"
+
+		if(limb.bodypart_flags & BP_BLEEDING)
+			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>bleeding</span>\]"
+
+		data_string_list += (limb_string + "\n")
+
+	if(data_string_list == "")
 		if(istype(scanner))
 			// Only emit the cheerful scanner message if this scan came from a scanner
 			playsound(scanner, 'sound/machines/ping.ogg', 50, FALSE)
-			to_chat(user, span_notice("\The [scanner] makes a happy ping and briefly displays a smiley face with several exclamation points! It's really excited to report that [patient] has no wounds!"))
+			to_chat(user, span_notice("[scanner] makes a happy ping and briefly displays a smiley face with several exclamation points! It's really excited to report that [patient] has no wounds!"))
 		else
 			to_chat(user, "<span class='notice ml-1'>No wounds detected in subject.</span>")
 	else
-		to_chat(user, jointext(render_list, ""), type = MESSAGE_TYPE_INFO)
+		to_chat(user, jointext(data_string_list, ""), type = MESSAGE_TYPE_INFO)
 
 /obj/item/healthanalyzer/wound
 	name = "first aid analyzer"
@@ -368,7 +368,6 @@
 	woundscan(user, patient, src)
 
 #undef SCANMODE_HEALTH
-#undef SCANMODE_WOUND
 #undef SCANMODE_CHEM
 #undef SCANMODE_COUNT
 #undef SCANNER_CONDENSED

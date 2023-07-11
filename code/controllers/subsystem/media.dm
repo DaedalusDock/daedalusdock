@@ -111,7 +111,7 @@ SUBSYSTEM_DEF(media)
 
 /datum/controller/subsystem/media/proc/get_track_pool(media_tag)
 	var/list/pool = tracks_by_tag[media_tag]
-	return pool.Copy()
+	return LAZYCOPY(pool)
 
 
 

@@ -99,6 +99,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 		return
 
 	var/list/music_tracks = list(SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)+SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE))
+	if(!length(music_tracks))
+		to_chat(usr, span_admin("MEDIA: No media tracks available. Manual music changing can't be used on fallback tracks."))
+		return
 	var/list/name2track = list()
 	for(var/datum/media/track in music_tracks)
 		name2track[track.name] = track

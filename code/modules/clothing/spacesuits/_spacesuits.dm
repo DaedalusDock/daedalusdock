@@ -126,7 +126,7 @@
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += "The thermal regulator is [thermal_on ? "on" : "off"] and the temperature is set to \
-			[round(temperature_setting-T0C,0.1)] &deg;C ([round(temperature_setting*1.8-459.67,0.1)] &deg;F)"
+			[round(temperature_setting-T0C,0.1)] &deg;C ([round(KTOF(temperature_setting), 0.1)] &deg;F)"
 		. += "The power meter shows [cell ? "[round(cell.percent(), 0.1)]%" : "!invalid!"] charge remaining."
 		if(cell_cover_open)
 			. += "The cell cover is open exposing the cell and setting knobs."

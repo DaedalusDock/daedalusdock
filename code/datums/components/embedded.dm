@@ -132,6 +132,7 @@
 	RegisterSignal(H, COMSIG_MOVABLE_MOVED, PROC_REF(jostleCheck))
 	RegisterSignal(H, COMSIG_CARBON_EMBED_RIP, PROC_REF(ripOut))
 	RegisterSignal(H, COMSIG_CARBON_EMBED_REMOVAL, PROC_REF(safeRemove))
+	RegisterSignal(H, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
 
 /datum/component/embedded/proc/unregister_from_mob(mob/living/carbon/human/H)
 	if(!H.has_embedded_objects())
@@ -351,6 +352,16 @@
 			user.visible_message(user, span_notice("[user] successfully plucks [weapon] from [limb]."))
 
 	safeRemove(user)
+
+/// Called whenever the limb owner is health scanned
+/datum/component/embedded/proc/on_healthscan(datum/source, list/render_string, mob/user, mode, advanced)
+	SIGNAL_HANDLER
+
+	var/obj/obj_parent = parent
+	if(advanced)
+		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_EMBEDDED]'>Foreign body detected in subject's [obj_parent.name].</span>\n"
+	else
+		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_EMBEDDED]'>Foreign body detected. Advanced scanner required for location.</span>\n"
 
 /obj/item/shard/embed_tester
 	name = "extra extra sharp glass"

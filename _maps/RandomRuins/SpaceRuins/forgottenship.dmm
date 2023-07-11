@@ -501,7 +501,7 @@
 /obj/item/stack/medical/ointment{
 	amount = 12
 	},
-/obj/item/healthanalyzer/advanced,
+/obj/item/healthanalyzer,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_cargopod)
 "bD" = (

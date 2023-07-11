@@ -10,6 +10,9 @@
 ///How many years into the future (or past, if you're into that) the server is
 #define STATION_YEAR_OFFSET 805
 
+/// Convert world time into station time in the hour:minute format
+#define worldtime2stationtime(time) time2text(SSticker.gametime_offset + time, "hh:mm")
+
 #define JANUARY 1
 #define FEBRUARY 2
 #define MARCH 3

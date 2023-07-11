@@ -203,18 +203,18 @@
 	.+= {"
 			<table style='min-width:100%'>
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Scan Results For:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["name"]]
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Scan Performed At:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["time"]]
 					</td>
 				</tr>
@@ -233,10 +233,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Brain Activity:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[brain_activity]
 					</td>
 				</tr>
@@ -244,10 +244,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Blood Volume:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u
 					</td>
 				</tr>
@@ -255,10 +255,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Body Temperature:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["temperature"]-T0C]&deg;C ([scan["temperature"]*1.8-459.67]&deg;F)
 					</td>
 				</tr>
@@ -266,10 +266,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Physical Trauma:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[get_severity(scan["brute"],TRUE)]
 					</td>
 				</tr>
@@ -277,10 +277,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Burn Severity:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[get_severity(scan["burn"],TRUE)]
 					</td>
 				</tr>
@@ -288,10 +288,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Systematic Organ Failure:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[get_severity(scan["toxin"],TRUE)]
 					</td>
 				</tr>
@@ -299,10 +299,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Oxygen Deprivation:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[get_severity(scan["oxygen"],TRUE)]
 					</td>
 				</tr>
@@ -310,10 +310,10 @@
 
 	. += {"
 				<tr>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						<strong>Genetic Damage:</strong>
 					</td>
-					<td>
+					<td style='padding-left: 5px;padding-right: 5px'>
 						[get_severity(scan["genetic"],TRUE)]
 					</td>
 				</tr>
@@ -375,21 +375,21 @@
 	for(var/list/limb as anything in scan["bodyparts"])
 		.+= {"
 			<tr>
-				<td>[limb["name"]]
+				<td style='padding-left: 5px;padding-right: 5px'>[limb["name"]]
 				</td>
 		"}
 
 		if(limb["is_stump"])
 			. += {"
-				<td>
+				<td style='padding-left: 5px;padding-right: 5px'>
 					<span style='font-weight: bold; color: [COLOR_MEDICAL_MISSING]'>Missing</span>
 				</td>
-				<td>
+				<td style='padding-left: 5px;padding-right: 5px'>
 					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
 				</td>
 			"}
 		else
-			. += "<td>"
+			. += "<td style='padding-left: 5px;padding-right: 5px'>"
 			if(!(limb["brute_dam"] || limb["burn_dam"]))
 				. += "None</td>"
 
@@ -403,7 +403,7 @@
 					</td>
 				"}
 			. += {"
-				<td>
+				<td style='padding-left: 5px;padding-right: 5px'>
 					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
 				</td>
 			"}
@@ -411,15 +411,15 @@
 
 	. += "<tr><th colspan='3'><center>Internal Organs</center></th></tr>"
 	for(var/list/organ as anything in scan["organs"])
-		. += "<tr><td>[organ["name"]]</td>"
+		. += "<tr><td style='padding-left: 5px;padding-right: 5px'>[organ["name"]]</td>"
 
 		if(organ["damage_percent"])
-			. += "<td>[get_severity(organ["damage_percent"], TRUE)]</td>"
+			. += "<td style='padding-left: 5px;padding-right: 5px'>[get_severity(organ["damage_percent"], TRUE)]</td>"
 		else
-			. += "<td>None</td>"
+			. += "<td style='padding-left: 5px;padding-right: 5px'>None</td>"
 
 		. += {"
-			<td>
+			<td style='padding-left: 5px;padding-right: 5px'>
 				[span_bad("[english_list(organ["scan_results"], nothing_text="&nbsp;")]")]
 			</td>
 		</tr>

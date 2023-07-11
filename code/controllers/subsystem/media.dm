@@ -55,7 +55,7 @@ SUBSYSTEM_DEF(media)
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 						break
 					//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
-					var/list/directory_split = splittext(json_data["path"], "/")
+					var/list/directory_split = splittext(json_data["file"], "/")
 					var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
 					if(extension_split.len >= 2)
 						var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here

@@ -1142,3 +1142,37 @@
 /obj/item/bodypart/proc/item_gone(datum/source)
 	cavity_items -= source
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
+
+/obj/item/bodypart/proc/get_scan_results(tag)
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	if(!IS_ORGANIC_LIMB(src))
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>Mechanical</span>" : "Mechanical"
+
+	if(bodypart_flags & BP_CUT_AWAY)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severed</span>" : "Severed"
+
+	if(check_tendon() & CHECKTENDON_SEVERED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
+
+	if(check_artery() & CHECKARTERY_SEVERED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [artery_name]</span>" : "Severed [artery_name]"
+
+	if(check_bones() & CHECKBONES_BROKEN)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
+
+	if (length(cavity_items))
+		var/unknown_body = 0
+		for(var/obj/item/I in cavity_items)
+			if(istype(I,/obj/item/implant))
+				var/obj/item/implant/imp = I
+				if(imp.implant_flags & IMPLANT_HIDDEN)
+					continue
+				if (imp.implant_flags & IMPLANT_KNOWN)
+					. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_IMPLANT]'>[capitalize(imp.name)] implanted</span>" : "[capitalize(imp.name)] implanted"
+					continue
+			unknown_body++
+
+		if(unknown_body)
+			. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_UNKNOWN_IMPLANT]'>Unknown body present</span>" : "Unknown body present"

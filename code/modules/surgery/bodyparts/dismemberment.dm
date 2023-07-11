@@ -320,6 +320,11 @@
 	for(var/obj/item/organ/O as anything in old_limb?.contained_organs)
 		O.Insert(limb_owner, TRUE)
 
+	/// Transfer cavity items like implants.
+	for(var/obj/item/I in old_limb.cavity_items)
+		I.forceMove(src)
+		add_cavity_item(I)
+
 ///Attach src to target mob if able.
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/new_limb_owner, special)
 	var/obj/item/bodypart/existing = new_limb_owner.get_bodypart(body_zone, TRUE)

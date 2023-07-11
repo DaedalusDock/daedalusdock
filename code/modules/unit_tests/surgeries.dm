@@ -1,7 +1,9 @@
 /datum/unit_test/amputation/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
-	var/obj/structure/table/table = allocate(/obj/structure/table)
+	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
+
+	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
 
 	var/obj/item/circular_saw/saw = allocate(/obj/item/circular_saw)
 
@@ -19,8 +21,10 @@
 /datum/unit_test/limb_attach/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
-	var/obj/structure/table/table = allocate(/obj/structure/table)
+	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
 	var/obj/item/hemostat/hemostat = allocate(/obj/item/hemostat)
+
+	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
 
 	var/obj/item/bodypart/BP = patient.get_bodypart(BODY_ZONE_R_ARM)
 	BP.dismember(clean = TRUE)

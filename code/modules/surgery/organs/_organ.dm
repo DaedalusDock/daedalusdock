@@ -405,15 +405,19 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
-/obj/item/organ/proc/get_status_text()
-	var/status = ""
+/obj/item/organ/proc/get_scan_results(tag)
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+
+	if(organ_flags & ORGAN_FAILING)
+		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
+
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		status = "<font color='#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</font>"
-	else if(organ_flags & ORGAN_FAILING)
-		status = "<font color='#cc3333'>Non-Functional</font>"
+		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
-		status = "<font color='#ff9933'>Severely Damaged</font>"
+		. +=  tag ?"<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"
 	else if (damage > low_threshold)
-		status = "<font color='#ffcc33'>Mildly Damaged</font>"
+		. += tag ?"<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
 	return status

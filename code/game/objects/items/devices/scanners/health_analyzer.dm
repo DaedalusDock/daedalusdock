@@ -261,12 +261,17 @@
 				<td style='width:12em;'><font color='#ff0000'><b>Status</b></font></td>"
 
 			for(var/obj/item/organ/organ as anything in humantarget.processing_organs)
-				var/status = organ.get_status_text()
-				if (status != "")
-					render = TRUE
-					toReport += "<tr><td><font color='#cc3333'>[organ.name]:</font></td>\
-						[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
-						<td>[status]</td></tr>"
+				var/status = organ.get_scan_results()
+				if(!length(status))
+					continue
+
+				status = status[1]
+				if (status == "")
+					continue
+				render = TRUE
+				toReport += "<tr><td><font color='#cc3333'>[organ.name]:</font></td>\
+					[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
+					<td>[status]</td></tr>"
 
 			var/datum/species/the_dudes_species = humantarget.dna.species
 			var/missing_organs = list()

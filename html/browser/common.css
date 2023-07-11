@@ -270,7 +270,7 @@ div.notice
 	margin: 3px 0;
 	color: #ffffff;
 	overflow: hidden;
-	background-image: inherit;
+	background: inherit;
 	box-shadow: 0 0 10px #FFCC00
 }
 
@@ -571,4 +571,23 @@ span.color_holder_box{
 
 .zebraTable tr:nth-child(odd){
 	background-color: #533200;
+}
+
+.good
+{
+	color: #00ff00;
+}
+
+.mild {
+	color: #e0d000;
+}
+
+.average
+{
+	color: #f09000;
+}
+
+.bad
+{
+	color: #ff0000;
 }

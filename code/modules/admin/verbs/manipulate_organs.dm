@@ -35,7 +35,7 @@
 				return
 			organ = organs[organ]
 			organ = new organ
-			organ.implant(C)
+			organ.implant(C, BODY_ZONE_CHEST)
 			log_admin("[key_name(usr)] has added implant [organ.type] to [key_name(C)]")
 			message_admins("[key_name_admin(usr)] has added implant [organ.type] to [ADMIN_LOOKUPFLW(C)]")
 

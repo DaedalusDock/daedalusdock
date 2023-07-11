@@ -196,6 +196,10 @@
 
 		if (prob(find_prob))
 			user.visible_message(span_notice("[user] takes something out of incision on [target]'s [affected.plaintext_zone] with [tool]."))
+			if(istype(obj, /obj/item/implant))
+				var/obj/item/implant/I = obj
+				I.removed(target)
+
 			if(!user.put_in_hands(obj))
 				obj.forceMove(get_turf(target))
 

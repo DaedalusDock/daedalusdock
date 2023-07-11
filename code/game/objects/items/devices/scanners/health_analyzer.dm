@@ -166,7 +166,7 @@
 				data_string_list += "No detectable limb injuries.\n"
 
 			for(var/obj/item/bodypart/limb as anything in damaged_limbs)
-				var/limb_string = "[capitalize(limb.name)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
+				var/limb_string = "[capitalize(limb.name)][!IS_ORGANIC_LIMB(limb) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
 				if(limb.brute_dam)
 					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
 

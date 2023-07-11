@@ -57,10 +57,10 @@ SUBSYSTEM_DEF(media)
 					//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
 					var/list/directory_split = splittext(json_data["path"], "/")
 					var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-						if(extension_split.len >= 2)
-							var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-							if(!byond_sound_formats[ext])
-								tag_error = list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+					if(extension_split.len >= 2)
+						var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
+						if(!byond_sound_formats[ext])
+							tag_error = list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
 
 				// Ensure common and rare lobby music pools are not contaminated.
 				if(MEDIA_TAG_LOBBYMUSIC_COMMON)

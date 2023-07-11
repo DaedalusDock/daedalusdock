@@ -68,7 +68,7 @@
 		occupant.forceMove(get_turf(src))
 		set_occupant(null)
 
-/obj/machinery/bodyscanner/proc/container_resist_act(mob/living/user)
+/obj/machinery/bodyscanner/container_resist_act(mob/living/user)
 	eject_occupant()
 
 /////// The Console ////////

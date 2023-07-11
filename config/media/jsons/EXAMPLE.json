@@ -2,6 +2,6 @@
 	"name" : "EXAMPLE",
 	"author" : "EXAMPLE",
 	"file" : "title_music/sounds/example.ogg",
-	"map" : false,
-	"rare" : false
+	"media_tags": ["LOBBY", "JUKEBOX"],
+	"map" : false
 }

@@ -33,20 +33,22 @@ SUBSYSTEM_DEF(media)
 		//Decode
 		var/list/json_data = json_decode(file2text("[basedir][json_record]"))
 
-		//Validate
+		//Skip the example file.
 		if(json_data["name"] == "EXAMPLE")
-			continue //Skip the example file.
+			continue
 
-		//Fixup
+		//Pre-Validation Fixups
 		var/jd_tag_cache = json_data["media_tags"]+MEDIA_TAG_ALLMEDIA //cache for sanic speed, We add the allmedia check here for universal validations.
 		var/jd_full_filepath = "[global.config.directory]/media/[json_data["file"]]"
 
-		//Tag-Specific Validations
+		//Validation
+		/// A two-entry list containing the erroring tag, and a reason for the error.
 		var/tag_error
 		for(var/jd_tag in jd_tag_cache)
 			switch(jd_tag)
+
+				//Validation relevant for ALL tracks.
 				if(MEDIA_TAG_ALLMEDIA)
-					//Validation relevant for ALL tracks.
 					if(!json_data["name"])
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "Track has no name.")
 					if(!fexists(jd_full_filepath))
@@ -59,18 +61,25 @@ SUBSYSTEM_DEF(media)
 							var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
 							if(!byond_sound_formats[ext])
 								tag_error = list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+
+				// Ensure common and rare lobby music pools are not contaminated.
 				if(MEDIA_TAG_LOBBYMUSIC_COMMON)
 					if(MEDIA_TAG_LOBBYMUSIC_RARE in jd_tag_cache)
 						tag_error = list(MEDIA_TAG_LOBBYMUSIC_COMMON, "Track tagged as BOTH COMMON and RARE lobby music.")
 						break
+
+				// Ensure common and rare credit music pools are not contaminated.
 				if(MEDIA_TAG_ROUNDEND_COMMON)
 					if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
 						tag_error = list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
+
+
+				// Jukebox tracks MUST have a duration.
 				if(MEDIA_TAG_JUKEBOX)
-					//Validation specific to jukebox tracks.
 					if(!json_data["duration"])
 						tag_error = list(MEDIA_TAG_JUKEBOX, "Jukebox tracks MUST have a valid duration.")
 						break
+			//For Loop begins at L:47
 
 		//Failed Validation?
 		if(tag_error)
@@ -95,7 +104,8 @@ SUBSYSTEM_DEF(media)
 			)
 		for(var/jd_tag in jd_tag_cache)
 			LAZYADD(tracks_by_tag[jd_tag], media_datum)
-		//Tag-specific validation
+
+		//For loop begins at L:32
 	return ..()
 
 /datum/controller/subsystem/media/proc/get_track_pool(media_tag)
@@ -127,6 +137,6 @@ SUBSYSTEM_DEF(media)
 	src.author = author
 	src.path = path
 	src.map = map
-	src.rare = rare || 0
+	src.rare = rare
 	media_tags = tags
 	duration = length

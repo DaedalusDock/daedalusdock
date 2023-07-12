@@ -1,4 +1,0 @@
-author: BrDown
-delete-after: true
-changes:
-  - bugfix: Deconstructing a railing will now give the proper amount of iron rods.

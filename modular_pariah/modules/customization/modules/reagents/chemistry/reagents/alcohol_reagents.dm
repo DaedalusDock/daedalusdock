@@ -8,7 +8,6 @@
 	color = "#1BB1FF"
 	boozepwr = 50
 	quality = DRINK_NICE
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi' // This should cover anything synthanol related. Will have to individually tag others unless we make an object path for pariah drinks.
 	glass_icon_state = "synthanolglass"
 	glass_name = "glass of synthanol"
 	glass_desc = "The equivalent of alcohol for synthetic crewmembers. They'd find it awful if they had tastebuds too."
@@ -97,7 +96,6 @@
 	boozepwr = 40
 	quality = DRINK_GOOD
 	taste_description = "tiny explosions"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "gunfire"
 	glass_name = "glass of gunfire"
 	glass_desc = "It pops constantly as you look at it, giving off tiny sparks."
@@ -114,7 +112,6 @@
 	boozepwr = 60
 	quality = DRINK_VERYGOOD
 	taste_description = "cold flames that lick at the top of your mouth"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "hellfire"
 	glass_name = "glass of hellfire"
 	glass_desc = "An amber colored drink that isn't quite as hot as it looks."
@@ -130,7 +127,6 @@
 	boozepwr = 66
 	quality = DRINK_FANTASTIC
 	taste_description = "overpowering sweetness with a touch of sourness, followed by iron and the sensation of a warm summer breeze"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "sins_delight"
 	glass_name = "glass of sin's delight"
 	glass_desc = "You can smell the seven sins rolling off the top of the glass."
@@ -142,7 +138,6 @@
 	color = "#FF4A74"
 	quality = DRINK_NICE
 	taste_description = "sweet strawberry, lime and the ocean breeze"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "strawberry_daiquiri"
 	glass_name = "glass of strawberry daiquiri"
 	glass_desc = "Pink looking drink with flowers and a big straw to sip it. Looks sweet and refreshing, perfect for warm days."
@@ -153,7 +148,6 @@
 	boozepwr = 0
 	color = "#D8FF59"
 	taste_description = "brain freezing sourness"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "liz_fizz"
 	glass_name = "glass of liz fizz"
 	glass_desc = "Looks like a citrus sherbet seperated in layers? Why would anyone want that is beyond you."
@@ -165,7 +159,6 @@
 	color = "#D8FF59"
 	quality = DRINK_FANTASTIC
 	taste_description = "sweet and refreshing flavor, complemented with strawberries and coconut, and hints of citrus"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "miami_vice"
 	glass_name = "glass of miami vice"
 	glass_desc = "Strawberries and coconut, like yin and yang."
@@ -177,7 +170,6 @@
 	color = "#FF9473"
 	quality = DRINK_NICE
 	taste_description = "coconut, with orange and grenadine accents"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "malibu_sunset"
 	glass_name = "glass of malibu sunset"
 	glass_desc = "Tropical looking drinks, with ice cubes hovering on the surface and grenadine coloring the bottom."
@@ -189,7 +181,6 @@
 	color = "#A7FAE8"
 	quality = DRINK_FANTASTIC
 	taste_description = "coconut and aesthetic violence"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "hotlime_miami"
 	glass_name = "glass of hotlime miami"
 	glass_desc = "This looks very aesthetically pleasing."
@@ -206,7 +197,6 @@
 	boozepwr = 10
 	quality = DRINK_FANTASTIC
 	taste_description = "a brass taste with a hint of oil"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "coggrog"
 	glass_name = "glass of cog grog"
 	glass_desc = "Not even Ratvar's Four Generals could withstand this!  Qevax Jryy!"
@@ -218,7 +208,6 @@
 	boozepwr = 35
 	quality = DRINK_GOOD
 	taste_description = "a slap to the face"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "badtouch"
 	glass_name = "glass of bad touch"
 	glass_desc = "We're nothing but mammals after all."
@@ -230,7 +219,6 @@
 	boozepwr = 70
 	quality = DRINK_FANTASTIC
 	taste_description = "hot red sand"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "marsblast"
 	glass_name = "glass of marsblast"
 	glass_desc = "One of these is enough to leave your face as red as the planet."
@@ -242,7 +230,6 @@
 	boozepwr = 40
 	quality = DRINK_VERYGOOD
 	taste_description = "chills down your spine"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "mercuryblast"
 	glass_name = "glass of mercuryblast"
 	glass_desc = "No thermometers were harmed in the creation of this drink"
@@ -258,7 +245,6 @@
 	boozepwr = 45
 	quality = DRINK_NICE
 	taste_description = "a fire in your throat"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "piledriver"
 	glass_name = "glass of piledriver"
 	glass_desc = "Not the only thing to leave your throat sore."
@@ -270,7 +256,6 @@
 	boozepwr = 35
 	quality = DRINK_NICE
 	taste_description = "dissapointment"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "zenstar"
 	glass_name = "glass of zen star"
 	glass_desc = "You'd think something so balanced would actually taste nice... you'd be dead wrong."
@@ -283,7 +268,6 @@
 	description = "A cold looking drink made for people with scales."
 	boozepwr = 50 //strong!
 	taste_description = "dead flies"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "coldscales"
 	glass_name = "glass of coldscales"
 	glass_desc = "A soft green drink that looks inviting!"
@@ -301,7 +285,6 @@
 	description = "Industrial grade oil mixed with some ethanol to make it a drink. Somehow not known to be toxic."
 	boozepwr = 45
 	taste_description = "oil spill"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "oil_drum"
 	glass_name = "drum of oil"
 	glass_desc = "A gray can of booze and oil..."
@@ -319,7 +302,6 @@
 	description = "Mixing of juices to make an alien taste."
 	boozepwr = 80 //Strong
 	taste_description = "grass and lime"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "abduction_fruit"
 	glass_name = "glass of abduction fruit"
 	glass_desc = "Mixed fruits that were never meant to be mixed..."
@@ -337,7 +319,6 @@
 	description = "Soil in a glass."
 	boozepwr = 5 //No booze really
 	taste_description = "dirt and iron"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "mush_crush"
 	glass_name = "glass of mush crush"
 	glass_desc = "Popular among people that want to grow their own food rather than drink the soil."
@@ -355,7 +336,6 @@
 	description = "Shockingly none-harmful mix of toxins and milk."
 	boozepwr = 15
 	taste_description = "Milk and salt"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "hollow_bone"
 	glass_name = "skull of hollow bone"
 	glass_desc = "Mixing of milk and bone hurting juice for enjoyment for rather skinny people."
@@ -373,7 +353,6 @@
 	description = "Horrible mix of Co2, toxins and heat. Meant for slime based life."
 	boozepwr = 40
 	taste_description = "tropical sea"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "jell_wyrm"
 	glass_name = "glass of jell wyrm"
 	glass_desc = "A bubbly drink that is rather inviting to those that don't know who it's meant for."
@@ -392,7 +371,6 @@
 	description = "Heat minerals and some mauna loa. Meant for rock based life."
 	boozepwr = 30
 	taste_description = "tropical island"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "laval_spit"
 	glass_name = "glass of laval spit"
 	glass_desc = "Piping hot drink for those who can stomach the heat of lava."
@@ -410,7 +388,6 @@
 	description = "The electric-green appley beverage nobody can turn down!"
 	boozepwr = 50
 	taste_description = "Sweet and green"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "appletini"
 	glass_name = "glass of appletini"
 	glass_desc = "An appley beverage in a martini glass"
@@ -421,7 +398,6 @@
 	description = "A smooth, fancy drink for people of ill repute"
 	boozepwr = 70
 	taste_description = "Your own sins"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "cityofsin"
 	glass_name = "glass of city of sin"
 	glass_desc = "Looking at it makes you recall every mistake you’ve made."

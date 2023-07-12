@@ -16,6 +16,8 @@
 	internal_magazine = TRUE
 	cartridge_wording = "arrow"
 	bolt_type = BOLT_TYPE_NO_BOLT
+	recoil = 0 // Bows don't have recoil.
+
 	var/drawn = FALSE
 
 /obj/item/gun/ballistic/bow/update_icon_state()

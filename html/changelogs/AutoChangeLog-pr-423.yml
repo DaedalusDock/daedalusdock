@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed a couple issues with augments/implants.
+  - bugfix: Fabricator icons update properly.

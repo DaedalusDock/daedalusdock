@@ -4,7 +4,6 @@
 	name = "Strawberry Milk"
 	description = "A drink of a bygone era of milk and artificial sweetener back on a rock."
 	color = "#f76aeb"//rgb(247, 106, 235)
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "pinkmilk"
 	quality = DRINK_VERYGOOD
 	taste_description = "sweet strawberry and milk cream"
@@ -24,7 +23,6 @@
 	glass_icon_state = "pinktea"
 	quality = DRINK_VERYGOOD
 	taste_description = "sweet tea with a hint of strawberry"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_name = "mug of strawberry tea"
 	glass_desc = "Delicious traditional tea flavored with strawberries."
 
@@ -39,7 +37,6 @@
 	description = "A sleepy and tasty catnip tea!"
 	color = "#101000" // rgb: 16, 16, 0
 	taste_description = "sugar and catnip"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "catnip_tea"
 	glass_name = "glass of catnip tea"
 	glass_desc = "A purrfect drink for a cat."
@@ -57,7 +54,6 @@
 	description = "A delicious, frozen treat!"
 	color = "#ede9dd" //237, 233, 221
 	taste_description = "richness and icecream"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "milkshake"
 	glass_name = "plastic cup of milkshake"
 	glass_desc = "Brings all the boys to the yard."
@@ -67,7 +63,6 @@
 	description = "A delicious, fruity treat!"
 	color = "#e39c91" //227, 156, 145
 	taste_description = "strawberry and icecream"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "milkshake_strawberry"
 	glass_name = "plastic cup of stawberry milkshake"
 	glass_desc = "Best shared with friends."
@@ -77,7 +72,6 @@
 	description = "Heaven-sent chocolatey elixir."
 	color = "#997755" // 153,119,85
 	taste_description = "richness and chocolate"
-	glass_icon = 'modular_pariah/master_files/icons/obj/drinks.dmi'
 	glass_icon_state = "milkshake_chocolate"
 	glass_name = "plastic cup of chocolate milkshake"
 	glass_desc = "Reminds you of someone, oddly enough."

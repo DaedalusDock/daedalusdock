@@ -223,6 +223,18 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/combat_click_delay = CLICK_CD_MELEE
 
 
+	///Icon file for mob worn overlays, if the user is digitigrade.
+	var/icon/worn_icon_digitigrade
+	///Same as above, but for if the user is snouted.
+	var/icon/worn_icon_snouted
+
+	var/greyscale_config_worn_digitigrade
+
+	//this is somewhat awful, but ¯\_(ツ)_/¯
+	var/greyscale_config_worn_vox
+	var/icon/worn_icon_vox
+
+
 /obj/item/Initialize(mapload)
 
 	if(attack_verb_continuous)

@@ -4,7 +4,7 @@
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	icon_state = "helmet"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
-	worn_icon_snouted = 'modular_pariah/master_files/icons/mob/mod.dmi'
+	worn_icon_snouted = 'icons/mob/clothing/modsuit/mod_clothing_digitigrade.dmi'
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
 	body_parts_covered = HEAD
 	heat_protection = HEAD
@@ -19,7 +19,7 @@
 	icon_state = "chestplate"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
-	worn_icon_digitigrade = 'modular_pariah/master_files/icons/mob/mod.dmi'
+	worn_icon_digitigrade = 'icons/mob/clothing/modsuit/mod_clothing_digitigrade.dmi'
 	blood_overlay_type = "armor"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
 	body_parts_covered = CHEST|GROIN
@@ -47,7 +47,7 @@
 	icon_state = "boots"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
-	worn_icon_digitigrade = 'modular_pariah/master_files/icons/mob/mod.dmi'
+	worn_icon_digitigrade = 'icons/mob/clothing/modsuit/mod_clothing_digitigrade.dmi'
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
 	body_parts_covered = FEET|LEGS
 	heat_protection = FEET|LEGS

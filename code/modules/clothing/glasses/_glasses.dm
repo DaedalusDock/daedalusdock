@@ -27,6 +27,15 @@
 	var/glass_colour_type
 	/// Whether or not vision coloring is forcing
 	var/forced_glass_color = FALSE
+	///Having this default to false means that its easy to make sure this doesnt apply to any pre-existing items
+	var/can_switch_eye = FALSE
+	///Added to the end of the icon_state to make this easy code-wise, L and R being the wearer's Left and Right
+	var/current_eye = "_R"
+
+/obj/item/clothing/glasses/Initialize()
+	. = ..()
+	if(can_switch_eye)
+		icon_state += current_eye	//Makes sure the icon initially ends in _R so its a valid sprite (Change current_eye in loadout once thats possible to spawn it on the side of your choice)
 
 /obj/item/clothing/glasses/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is stabbing \the [src] into [user.p_their()] eyes! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -36,6 +45,12 @@
 	. = ..()
 	if(glass_colour_type && !forced_glass_color && ishuman(user))
 		. += span_notice("Alt-click to toggle [p_their()] colors.")
+
+	if(can_switch_eye)
+		if(current_eye == "_L")
+			. += "Ctrl-click on [src] to wear it over your right eye."
+		else
+			. += "Ctrl-click on [src] to wear it over your left eye."
 
 /obj/item/clothing/glasses/visor_toggling()
 	..()
@@ -85,6 +100,15 @@
 	else
 		return ..()
 
+/obj/item/clothing/glasses/CtrlClick(mob/user)
+	. = ..()
+	if(.)
+		return
+	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+		return
+	else
+		switcheye()
+
 /obj/item/clothing/glasses/proc/change_glass_color(mob/living/carbon/human/H, datum/client_colour/glass_colour/new_color_type)
 	var/old_colour_type = glass_colour_type
 	if(!new_color_type || ispath(new_color_type)) //the new glass colour type must be null or a path.
@@ -101,6 +125,33 @@
 		add_client_colour(G.glass_colour_type)
 	else
 		remove_client_colour(G.glass_colour_type)
+
+/obj/item/clothing/glasses/verb/eyepatch_switcheye()
+	set name = "Switch Eyepatch Side"
+	set category = null
+	set src in usr
+	switcheye()
+
+/obj/item/clothing/glasses/proc/switcheye()
+	if(!can_use(usr))
+		return
+	if(!can_switch_eye)
+		to_chat(usr, span_warning("You cannot wear this any differently!"))
+		return
+	eyepatch_do_switch()
+	if(current_eye == "_L")
+		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your left eye."))
+	else if(current_eye == "_R")
+		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your right eye."))
+	usr.update_worn_glasses()
+	usr.update_overlays()
+
+/obj/item/clothing/glasses/proc/eyepatch_do_switch()
+	if(current_eye == "_L")
+		current_eye = "_R"
+	else if(current_eye == "_R")
+		current_eye = "_L"
+	src.icon_state = "[initial(icon_state)]"+ current_eye
 
 
 /obj/item/clothing/glasses/meson
@@ -191,6 +242,13 @@
 	icon_state = "eyepatch"
 	inhand_icon_state = "eyepatch"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	can_switch_eye = TRUE
+
+/obj/item/clothing/glasses/eyepatch/white
+	name = "white eyepatch"
+	desc = "This is what happens when a pirate gets a PhD."
+	icon_state = "eyepatch_white"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/monocle
 	name = "monocle"

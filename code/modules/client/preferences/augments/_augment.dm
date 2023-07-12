@@ -54,3 +54,5 @@ GLOBAL_LIST_EMPTY(species_augment_tree)
 		if(!augment_tree[S.type][A.category][A.slot])
 			augment_tree[S.type][A.category][A.slot] = list()
 		augment_tree[S.type][A.category][A.slot] += A.type
+
+	return augment_tree[S.type]

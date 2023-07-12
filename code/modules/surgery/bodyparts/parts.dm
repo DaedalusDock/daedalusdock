@@ -80,6 +80,9 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_ARMS
 
+	artery_name = "basilic vein"
+	tendon_name = "palmaris longus tendon"
+
 /obj/item/bodypart/arm/left
 	name = "left arm"
 	desc = "Did you know that the word 'sinister' stems originally from the \
@@ -265,6 +268,9 @@
 	unarmed_stun_threshold = 10
 
 	bodypart_flags = STOCK_BP_FLAGS_LEGS
+
+	artery_name = "femoral artery"
+	tendon_name = "cruciate ligament"
 
 /obj/item/bodypart/leg/left
 	name = "left leg"

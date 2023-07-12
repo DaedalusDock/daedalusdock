@@ -29,8 +29,8 @@
 
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
-
-	register_item_context()
+	if(advanced)
+		register_item_context()
 
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()
@@ -41,6 +41,9 @@
 	return BRUTELOSS
 
 /obj/item/healthanalyzer/attack_self(mob/user)
+	if(!advanced)
+		return ..()
+
 	scanmode = (scanmode + 1) % SCANMODE_COUNT
 	switch(scanmode)
 		if(SCANMODE_HEALTH)
@@ -76,13 +79,14 @@
 			chemscan(user, M)
 
 	add_fingerprint(user)
+	playsound(user, 'sound/machines/ping.ogg', 50, FALSE)
 
 /obj/item/healthanalyzer/add_item_context(
 	obj/item/source,
 	list/context,
 	atom/target,
 )
-	if (!isliving(target))
+	if (!isliving(target) || !advanced)
 		return NONE
 
 	switch (scanmode)
@@ -94,34 +98,35 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /proc/healthscan(mob/living/user, mob/living/target, advanced = FALSE, verbose = SCANNER_VERBOSE, chat = TRUE)
-	var/list/data_string_list = list("<b>Scan results for [target]:</b>\n")
+	var/list/data_string_list = list("<b>Scan results for [target]:</b>\n\n")
 
 	// Time of death
 	if(target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		data_string_list += span_warning("<b>Time of Death:</b> [stationtime2text(reference_time = target.timeofdeath)]\n")
+		data_string_list += span_warning("<b>Time of Death:</b> [stationtime2text("hh:mm", target.timeofdeath)]\n")
 
 	// Temperature
 	data_string_list += "Body temperature: [target.bodytemperature - T0C]&deg;C ([FAHRENHEIT(target.bodytemperature)]&deg;F)\n"
 
-	// Radiation
-	if(HAS_TRAIT(target, TRAIT_IRRADIATED))
-		data_string_list += span_warning("Patient is suffering from acute radiation poisioning. Treatment recommended.\n")
-
 	// Health
-	if(target.getOxyLoss() > 50)
-		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_OXYLOSS]'>Severe oxygen deprivation detected.</span>\n"
-
-	if(target.getToxLoss() > 50)
-		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>Major pollutants detected in bloodstream.</span>\n"
+	if(target.getBruteLoss() > 50)
+		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>Severe anatomical damage detected.</span>\n"
 
 	if(target.getFireLoss() > 50)
 		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>Severe burn damage detected.</span>\n"
 
-	if(target.getBruteLoss() > 50)
-		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>Severe anatomical damage detected.</span>\n"
+	if(target.getOxyLoss() > 50)
+		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_OXYLOSS]'>Severe oxygen deprivation detected.</span>\n"
+
+	if(target.getToxLoss() > 50)
+		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>Severe bloodstream intoxicification detected.</span>\n"
+
+	if(target.blood_volume < BLOOD_VOLUME_SAFE)
+		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severe bloodloss detected.</span>\n"
 
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
+		if(carbon_target.undergoing_cardiac_arrest())
+			data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Patient is suffering from cardiovascular shock. Administer CPR immediately.</span>\n"
 
 		// Brain
 		var/obj/item/organ/brain/brain = carbon_target.getorganslot(ORGAN_SLOT_BRAIN)
@@ -140,10 +145,10 @@
 				brain_activity = span_bad("extremely weak")
 
 			if(50 to 74)
-				brain_activity = span_bad("weak")
+				brain_activity = span_mild("weak")
 
 			if(75 to 99)
-				brain_activity = span_mild("minor brain damage")
+				brain_activity = span_average("minor brain damage")
 
 			if(100)
 				brain_activity = span_good("normal")
@@ -152,37 +157,6 @@
 				brain_activity = span_warning("ERROR - hardware failure")
 
 		data_string_list += "Brain activity: [brain_activity].\n"
-
-		// Blood
-		if(carbon_target.blood_volume <= BLOOD_VOLUME_OKAY)
-			data_string_list += span_bad("<b>Severe blood loss detected.</b>\n")
-
-
-		// Limb damage
-		if(verbose)
-			data_string_list += span_bold("Specific limb damage:\n")
-			var/list/damaged_limbs = carbon_target.get_damaged_bodyparts(TRUE, TRUE)
-			if(!length(damaged_limbs))
-				data_string_list += "No detectable limb injuries.\n"
-
-			for(var/obj/item/bodypart/limb as anything in damaged_limbs)
-				var/limb_string = "[capitalize(limb.name)][!IS_ORGANIC_LIMB(limb) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
-				if(limb.brute_dam)
-					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
-
-				if(limb.burn_dam)
-					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[advanced ? "[limb.burn_dam]" + " points of": get_wound_severity(limb.burn_ratio)] burns</span>\]"
-
-				if(limb.bodypart_flags & BP_BLEEDING)
-					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>bleeding</span>\]"
-
-				data_string_list += (limb_string + "\n")
-
-
-		// Fracs
-		for(var/obj/item/bodypart/limb as anything in carbon_target.bodyparts)
-			if(limb.check_bones() == CHECKBONES_BROKEN)
-				data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>Unsecured fracture in subject's [limb.name].</span>\n"
 
 		// Arteries, tendons, and embeds
 		if(!advanced)
@@ -205,15 +179,45 @@
 			var/tendon_string = ""
 			for(var/obj/item/bodypart/limb as anything in carbon_target.bodyparts)
 				if(limb.check_artery() == CHECKARTERY_SEVERED)
-					artery_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Arterial bleeding detected in subject's [limb.name].</span>\n"
+					artery_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Arterial bleeding detected in subject's [limb.plaintext_zone].</span>\n"
 
 				if(limb.check_tendon() == CHECKTENDON_SEVERED)
-					tendon_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_LIGAMENT]'>Tendon or ligament damage detected in subject's [limb.name].</span>\n"
+					tendon_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_LIGAMENT]'>Tendon or ligament damage detected in subject's [limb.plaintext_zone].</span>\n"
+
+			if(artery_string)
+				data_string_list += artery_string
+			if(tendon_string)
+				data_string_list += tendon_string
+
+		// Limb damage
+		if(verbose)
+			data_string_list += span_bold("\nSpecific limb damage:\n")
+			var/list/damaged_limbs = carbon_target.get_damaged_bodyparts(TRUE, TRUE, check_flags = BP_TENDON_CUT|BP_ARTERY_CUT|BP_BROKEN_BONES|BP_BLEEDING)
+			if(!length(damaged_limbs))
+				data_string_list += "No detectable limb injuries.\n"
+
+			sortTim(damaged_limbs, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
+
+			for(var/obj/item/bodypart/limb as anything in damaged_limbs)
+				var/limb_string = "[capitalize(limb.plaintext_zone)][!IS_ORGANIC_LIMB(limb) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
+				if(limb.brute_dam)
+					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
+
+				if(limb.burn_dam)
+					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[advanced ? "[limb.burn_dam]" + " points of": get_wound_severity(limb.burn_ratio)] burns</span>\]"
+
+				if(limb.bodypart_flags & BP_BLEEDING)
+					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>bleeding</span>\]"
+
+				if(limb.bodypart_flags & CHECKBONES_BROKEN)
+					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>fractured</span>\]"
+				data_string_list += (limb_string + "\n")
+
 
 	SEND_SIGNAL(target, COMSIG_LIVING_HEALTHSCAN, data_string_list, user, verbose, advanced)
 
 	if(chat)
-		to_chat(user, "<hr>" + jointext(data_string_list, "") + "<hr>", trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+		to_chat(user, examine_block(jointext(data_string_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 
 	return jointext(data_string_list, "")
 
@@ -276,7 +280,7 @@
 				render_list += "<span class='alert ml-2'>[allergies]</span>\n"
 
 		// we handled the last <br> so we don't need handholding
-		to_chat(user, jointext(render_list, ""), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+		to_chat(user, examine_block(jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 
 /obj/item/healthanalyzer/AltClick(mob/user)
 	..()
@@ -307,6 +311,8 @@
 	if(!length(damaged_limbs))
 		data_string_list += "No detectable limb injuries.\n"
 
+	sortTim(damaged_limbs, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
+
 	for(var/obj/item/bodypart/limb as anything in damaged_limbs)
 		var/limb_string = "[capitalize(limb.name)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
 		if(limb.brute_dam)
@@ -323,7 +329,6 @@
 	if(data_string_list == "")
 		if(istype(scanner))
 			// Only emit the cheerful scanner message if this scan came from a scanner
-			playsound(scanner, 'sound/machines/ping.ogg', 50, FALSE)
 			to_chat(user, span_notice("[scanner] makes a happy ping and briefly displays a smiley face with several exclamation points! It's really excited to report that [patient] has no wounds!"))
 		else
 			to_chat(user, "<span class='notice ml-1'>No wounds detected in subject.</span>")

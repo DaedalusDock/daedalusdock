@@ -205,9 +205,27 @@
 	desc = "Is used to contain blood used for transfusion. Must be attached to an IV drip."
 	id = "blood_pack"
 	build_type = FABRICATOR
-	mapload_design_flags = DESIGN_FAB_MEDICAL
 	materials = list(/datum/material/plastic = 1000)
 	build_path = /obj/item/reagent_containers/blood
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/blood_pack
+	name = "Bone Gel"
+	desc = "Used to mend bone fractures."
+	id = "bone_gel"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/medical/bone_gel
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/sticky_tape/surgical
+	name = "Surgical Tape"
+	id = "surgical_tape"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/sticky_tape/surgical
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -550,12 +568,3 @@
 	desc = "A pair of cybernetic eyes."
 	id = "cybernetic_eyes_improved"
 	build_path = /obj/item/organ/eyes/robotic
-
-/datum/design/sticky_tape/surgical
-	name = "Surgical Tape"
-	id = "surgical_tape"
-	build_type = FABRICATOR
-	materials = list(/datum/material/plastic = 500)
-	build_path = /obj/item/stack/sticky_tape/surgical
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI

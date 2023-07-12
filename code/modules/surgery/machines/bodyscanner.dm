@@ -404,6 +404,17 @@
 					<tr><td colspan='2'></td></tr>
 		"}
 
+	if(scan["genetic_instability"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("Genetic instability detected.")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
+
+
 	if(length(scan["reagents"]))
 		. += {"
 						<tr>

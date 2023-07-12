@@ -2,9 +2,9 @@
 #define BODYPARTS_DEFAULT_MAXIMUM 6
 
 ///max_damage * this = minimum damage before a bone can break
-#define BODYPART_MINIMUM_BREAK_MOD 0.35
+#define BODYPART_MINIMUM_BREAK_MOD 1
 ///A modifier applied to the chance to break bones on a given instance of damage
-#define BODYPART_BONES_BREAK_CHANCE_MOD 1
+#define BODYPART_BONES_BREAK_CHANCE_MOD 0.3
 ///The minimum amount of brute damage for an attack to roll for bone jostle
 #define BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES 8
 
@@ -16,7 +16,7 @@
 /// an attack must do this much damage after armor in order to be eliigible to dismember a suitably mushed bodypart
 #define DROPLIMB_MINIMUM_DAMAGE 10
 
-#define DROPLIMB_THRESHOLD_EDGE 0.2
+#define DROPLIMB_THRESHOLD_EDGE 0.35
 #define DROPLIMB_THRESHOLD_TEAROFF 0.66
 #define DROPLIMB_THRESHOLD_DESTROY 1
 
@@ -40,24 +40,24 @@
 /// Limb is not connected to the nervous system and is not usable.
 #define BP_CUT_AWAY (1<<10)
 
-#define STOCK_BP_FLAGS_CHEST (BP_HAS_BLOOD | BP_HAS_BONES)
+#define STOCK_BP_FLAGS_CHEST (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
 #define STOCK_BP_FLAGS_HEAD (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
-#define STOCK_BP_FLAGS_ARMS (BP_IS_GRABBY_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
-#define STOCK_BP_FLAGS_LEGS (BP_IS_MOVEMENT_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON)
+#define STOCK_BP_FLAGS_ARMS (BP_IS_GRABBY_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON | BP_HAS_ARTERY)
+#define STOCK_BP_FLAGS_LEGS (BP_IS_MOVEMENT_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON | BP_HAS_ARTERY)
 
 //check_bones() return values
-#define CHECKBONES_NONE (0<<0)
-#define CHECKBONES_OK (1<<0)
-#define CHECKBONES_BROKEN (1<<1)
+#define CHECKBONES_NONE (1<<0)
+#define CHECKBONES_OK (1<<1)
+#define CHECKBONES_BROKEN (1<<2)
 
 //check_tendon() return values
-#define CHECKTENDON_NONE (0<<0)
-#define CHECKTENDON_OK (1<<0)
+#define CHECKTENDON_NONE (1<<0)
+#define CHECKTENDON_OK (1<<1)
 #define CHECKTENDON_SEVERED (1<<2)
 
 //check_artery() return values
-#define CHECKARTERY_NONE (0<<0)
-#define CHECKARTERY_OK (1<<0)
+#define CHECKARTERY_NONE (1<<0)
+#define CHECKARTERY_OK (1<<1)
 #define CHECKARTERY_SEVERED (1<<2)
 
 #define COMSIG_LIMB_ATTACH "limb_attach"

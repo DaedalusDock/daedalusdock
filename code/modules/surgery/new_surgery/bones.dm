@@ -1,0 +1,102 @@
+//Procedures in this file: Fracture repair surgery
+//////////////////////////////////////////////////////////////////
+//						BONE SURGERY							//
+//////////////////////////////////////////////////////////////////
+
+/datum/surgery_step/bone
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_DEENCASEMENT
+	var/required_stage = 0
+
+/datum/surgery_step/bone/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = ..()
+	if(affected && (affected.check_bones() & CHECKBONES_BROKEN) && affected.stage == required_stage)
+		return affected
+
+//////////////////////////////////////////////////////////////////
+//	bone setting surgery step
+//////////////////////////////////////////////////////////////////
+/datum/surgery_step/bone/set_bone
+	name = "Set bone"
+	allowed_tools = list(
+		/obj/item/bonesetter = 100,
+		/obj/item/wrench = 75
+	)
+	min_duration = 60
+	max_duration = 70
+	shock_level = 40
+	delicate = 1
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_DEENCASEMENT
+	required_stage = 0
+
+/datum/surgery_step/bone/set_bone/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+
+	var/bone = affected.encased ? "\the [target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
+	if(affected.encased == "skull")
+		user.visible_message("[user] begins to piece [bone] back together with [tool].")
+	else
+		user.visible_message("[user] begins to set [bone] in place with [tool].")
+	..()
+
+/datum/surgery_step/bone/set_bone/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+
+	var/bone = affected.encased ? "\the [target]'s [affected.encased]" : "bones in \the [target]'s [affected.name]"
+
+	if (affected.check_bones() & CHECKBONES_BROKEN)
+		if(affected.encased == "skull")
+			user.visible_message(span_notice("[user] pieces [bone] back together with [tool]."))
+			user.visible_message(span_notice("[user] sets [bone] in place with [tool]."))
+		affected.stage = 1
+	else
+		user.visible_message("[span_notice("[user] sets [bone]")] [span_warning("in the WRONG place with [tool].")]")
+		affected.break_bones()
+
+/datum/surgery_step/bone/set_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+
+	user.visible_message(span_warning("[user]'s hand slips, damaging the [affected.encased ? affected.encased : "bones"] in [target]'s [affected.name] with [tool]!"))
+	affected.receive_damage(5)
+
+//////////////////////////////////////////////////////////////////
+//	post setting bone-gelling surgery step
+//////////////////////////////////////////////////////////////////
+/datum/surgery_step/bone/finish
+	name = "Repair bone"
+	allowed_tools = list(
+		/obj/item/stack/medical/bone_gel = 100,
+		/obj/item/stack/sticky_tape/surgical = 100,
+		/obj/item/stack/sticky_tape = 75
+	)
+	can_infect = 1
+	blood_level = 1
+	min_duration = 50
+	max_duration = 60
+	shock_level = 20
+	required_stage = 1
+
+/datum/surgery_step/bone/finish/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in \the [target]'s [affected.name]"
+	user.visible_message("[user] starts to finish mending [bone] with \the [tool].", \
+	"You start to finish mending [bone] with \the [tool].")
+	..()
+
+/datum/surgery_step/bone/finish/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in [target]'s [affected.name]"
+	user.visible_message(span_notice("[user] has mended [bone] with [tool]."))
+	affected.heal_bones()
+	affected.stage = 0
+
+	if(istype(tool, /obj/item/stack))
+		var/obj/item/stack/S = tool
+		S.use(1)
+
+/datum/surgery_step/bone/finish/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	user.visible_message(span_warning("[user]'s hand slips, smearing [tool] in the incision in [target]'s [affected.name]!"))
+
+	if(istype(tool, /obj/item/stack))
+		var/obj/item/stack/S = tool
+		S.use(1)

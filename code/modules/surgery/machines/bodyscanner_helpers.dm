@@ -56,14 +56,11 @@
 		org["damaged_percent"] = O.damage / O.maxHealth * 100
 		org["scan_results"] = O.get_scan_results(TRUE)
 
-		if(istype(O, /obj/item/organ/appendix))
-			var/obj/item/organ/appendix/A = O
-			org["inflamed"] = A.inflamation_stage
-
 		.["organs"] += list(org)
 
 	.["nearsight"] = HAS_TRAIT_FROM(src, TRAIT_NEARSIGHT, QUIRK_TRAIT) || HAS_TRAIT_FROM(src, TRAIT_NEARSIGHT, GENETIC_MUTATION)
 	.["blind"] = HAS_TRAIT(src, TRAIT_BLIND)
+	.["genetic_instability"] = !!GetComponent(/datum/component/genetic_damage)
 
 /obj/machinery/bodyscanner_console/proc/get_severity(amount, tag = FALSE)
 	if(!amount)

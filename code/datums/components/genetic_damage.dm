@@ -63,10 +63,6 @@
 
 	if (advanced)
 		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_GENETIC]'>Genetic damage: [round(total_damage / minimum_before_damage * 100, 0.1)]%</span>\n"
-	else if (total_damage >= minimum_before_damage)
-		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_GENETIC]'>Severe genetic damage detected.</span>\n"
-	else
-		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_GENETIC]'>Minor genetic damage detected.</span>\n"
 
 #undef GORILLA_MUTATION_CHANCE_PER_SECOND
 #undef GORILLA_MUTATION_MINIMUM_DAMAGE

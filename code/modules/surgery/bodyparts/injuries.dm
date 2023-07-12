@@ -39,7 +39,7 @@
 		jostle_bones()
 		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
-	playsound(loc, SFX_BREAK_BONE, 100, 1, -2)
+	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 
 	if(!IS_ORGANIC_LIMB(src))
 		broken_description = pick("broken","shattered","structural rupture")
@@ -94,10 +94,10 @@
 
 /obj/item/bodypart/proc/set_sever_artery(val = TRUE)
 	if(val)
-		if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_SEVERED)
+		if(check_artery() & (CHECKARTERY_NONE|CHECKARTERY_SEVERED))
 			return FALSE
 	else
-		if(check_artery() & CHECKARTERY_NONE|CHECKARTERY_OK)
+		if(check_artery() & (CHECKARTERY_NONE|CHECKARTERY_OK))
 			return FALSE
 
 	if(val)
@@ -110,10 +110,10 @@
 
 /obj/item/bodypart/proc/set_sever_tendon(val = TRUE)
 	if(val)
-		if(check_tendon() & CHECKTENDON_NONE|CHECKTENDON_SEVERED)
+		if(check_tendon() & (CHECKTENDON_NONE|CHECKTENDON_SEVERED))
 			return FALSE
 	else
-		if(check_tendon() & CHECKTENDON_NONE|CHECKTENDON_OK)
+		if(check_tendon() & (CHECKTENDON_NONE|CHECKTENDON_OK))
 			return FALSE
 
 	if(val)

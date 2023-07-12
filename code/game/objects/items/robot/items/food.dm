@@ -211,7 +211,7 @@
 	)
 	damage = 10
 	nodamage = FALSE
-	embed_falloff_tile = 0
+	embed_adjustment_tile = -3 //It's a goddamn lollipop
 
 /obj/projectile/bullet/reusable/lollipop/Initialize(mapload)
 	var/obj/item/food/lollipop/lollipop = new ammo_type(src)

@@ -1,6 +1,7 @@
 /obj/item/stack/splint
 	name = "medical splint"
-	icon_state = "splint"
+	singular_name = "splint"
+	icon_state = "medical splint"
 	w_class = WEIGHT_CLASS_SMALL
 	full_w_class = WEIGHT_CLASS_NORMAL
 	item_flags = NOBLUDGEON

@@ -5,8 +5,10 @@
 	w_class = WEIGHT_CLASS_SMALL
 	full_w_class = WEIGHT_CLASS_NORMAL
 	item_flags = NOBLUDGEON
+	merge_type = /obj/item/stack/splint
 	amount = 5
 	max_amount = 5
+
 
 	splint_slowdown = 1
 

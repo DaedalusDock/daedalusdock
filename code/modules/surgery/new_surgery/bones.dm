@@ -58,6 +58,7 @@
 
 	user.visible_message(span_warning("[user]'s hand slips, damaging the [affected.encased ? affected.encased : "bones"] in [target]'s [affected.name] with [tool]!"))
 	affected.receive_damage(5)
+	affected.break_bones()
 
 //////////////////////////////////////////////////////////////////
 //	post setting bone-gelling surgery step

@@ -187,7 +187,7 @@
 	if(incision.damage >= beeg_threshold) //beeg incision
 		. = SURGERY_RETRACTED
 		if(encased && (bodypart_flags & BP_BROKEN_BONES))
-			.| = SURGERY_DEENCASED
+			. |= SURGERY_DEENCASED
 
 /obj/item/bodypart/proc/get_incision(strict)
 

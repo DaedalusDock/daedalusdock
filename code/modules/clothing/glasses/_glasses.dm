@@ -100,15 +100,6 @@
 	else
 		return ..()
 
-/obj/item/clothing/glasses/CtrlClick(mob/user)
-	. = ..()
-	if(.)
-		return
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return
-	else
-		switcheye()
-
 /obj/item/clothing/glasses/proc/change_glass_color(mob/living/carbon/human/H, datum/client_colour/glass_colour/new_color_type)
 	var/old_colour_type = glass_colour_type
 	if(!new_color_type || ispath(new_color_type)) //the new glass colour type must be null or a path.
@@ -216,6 +207,15 @@
 	inhand_icon_state = "eyepatch"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	can_switch_eye = TRUE
+
+/obj/item/clothing/glasses/eyepatch/CtrlClick(mob/user)
+	. = ..()
+	if(.)
+		return
+	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+		return
+	else
+		switcheye()
 
 /obj/item/clothing/glasses/eyepatch/verb/eyepatch_switcheye()
 	set name = "Switch Eyepatch Side"

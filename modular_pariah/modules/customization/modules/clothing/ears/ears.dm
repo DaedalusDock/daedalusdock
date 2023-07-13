@@ -1,8 +1,6 @@
 /obj/item/clothing/ears/headphones
 	name = "headphones"
 	desc = "Unce unce unce unce. Boop!"
-	icon = 'modular_pariah/master_files/icons/obj/clothing/accessories.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/ears.dmi'
 	icon_state = "headphones"
 	inhand_icon_state = "headphones"
 	supports_variations_flags = CLOTHING_VOX_VARIATION

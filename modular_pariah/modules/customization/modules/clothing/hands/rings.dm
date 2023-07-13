@@ -1,11 +1,10 @@
 /obj/item/clothing/gloves/ring
-	icon = 'modular_pariah/master_files/icons/obj/ring.dmi'
-	worn_icon = 'modular_pariah/master_files/icons/mob/clothing/hands.dmi'
 	name = "gold ring"
 	desc = "A tiny gold ring, sized to wrap around a finger."
+	icon = 'icons/obj/ring.dmi'
+	worn_icon = 'icons/mob/clothing/hands.dmi'
 	gender = NEUTER
 	w_class = WEIGHT_CLASS_TINY
-	icon = 'modular_pariah/master_files/icons/obj/ring.dmi'
 	icon_state = "ringgold"
 	inhand_icon_state = "gring"
 	worn_icon_state = "gring"

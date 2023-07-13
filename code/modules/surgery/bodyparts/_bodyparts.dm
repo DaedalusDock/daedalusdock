@@ -69,6 +69,9 @@
 	var/disable_threshold = 0
 	///Controls whether bodypart_disabled makes sense or not for this limb.
 	var/can_be_disabled = FALSE
+	/// The interaction speed modifier when this limb is used to interact with the world. ONLY WORKS FOR ARMS
+	var/interaction_speed_modifier = 1
+
 	///Multiplier of the limb's damage that gets applied to the mob
 	var/body_damage_coeff = 1
 	var/brutestate = 0
@@ -183,6 +186,8 @@
 	var/obj/item/stack/current_gauze
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
+	/// If something is currently supporting this limb as a splint
+	var/obj/item/splint
 
 	///A list of all the organs inside of us.
 	var/list/obj/item/organ/contained_organs = list()
@@ -213,8 +218,6 @@
 
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()
-	if(!minimum_break_damage)
-		minimum_break_damage = round(max_damage * BODYPART_MINIMUM_BREAK_MOD)
 
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_gain))
@@ -237,6 +240,8 @@
 	QDEL_LIST(cavity_items)
 	if(owner)
 		drop_limb(TRUE)
+
+	QDEL_NULL(splint)
 	return ..()
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
@@ -251,11 +256,23 @@
 	. = ..()
 	. += mob_examine()
 
-/obj/item/bodypart/proc/mob_examine(hallucinating)
+/obj/item/bodypart/proc/mob_examine(hallucinating, covered)
 	. = list()
+
+	if(covered)
+		for(var/obj/item/I in embedded_objects)
+			if(I.isEmbedHarmless())
+				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
+			else
+				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
+
+		if(splint && istype(splint, /obj/item/stack))
+			. += span_notice("\n\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their()] [plaintext_zone] is splinted with [splint].</a>")
+		return
 
 	if(hallucinating == SCREWYHUD_HEALTHY)
 		return
+
 	if(hallucinating == SCREWYHUD_CRIT)
 		var/list/flavor_text = list("a")
 		flavor_text += pick(" pair of ", " ton of ", " several ")
@@ -302,6 +319,14 @@
 
 		if(bodypart_flags & BP_BROKEN_BONES)
 			. += span_warning("[owner.p_their(TRUE)] [plaintext_zone] is dented and swollen.")
+		for(var/obj/item/I in embedded_objects)
+			if(I.isEmbedHarmless())
+				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
+			else
+				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
+
+		if(splint && istype(splint, /obj/item/stack))
+			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their()] [plaintext_zone] is splinted with [splint].</a>")
 		return
 	else
 		if(current_damage)
@@ -702,7 +727,7 @@
 			if(bodypart_disabled)
 				owner.set_usable_legs(owner.usable_legs - 1)
 				if(owner.stat < UNCONSCIOUS)
-					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+					to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
 		else if(!bodypart_disabled)
 			owner.set_usable_legs(owner.usable_legs + 1)
 
@@ -711,7 +736,7 @@
 			if(bodypart_disabled)
 				owner.set_usable_hands(owner.usable_hands - 1)
 				if(owner.stat < UNCONSCIOUS)
-					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+					to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
 				if(held_index)
 					owner.dropItemToGround(owner.get_item_for_held_index(held_index))
 		else if(!bodypart_disabled)
@@ -999,7 +1024,7 @@
 	current_gauze = new gauze.type(src, 1)
 	gauze.use(1)
 	if(newly_gauzed)
-		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, gauze)
+		SEND_SIGNAL(src, COMSIG_LIMB_GAUZED, gauze)
 
 /**
  * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
@@ -1016,7 +1041,49 @@
 	if(current_gauze.absorption_capacity <= 0)
 		owner.visible_message(span_danger("\The [current_gauze.name] on [owner]'s [name] falls away in rags."), span_warning("\The [current_gauze.name] on your [name] falls away in rags."), vision_distance=COMBAT_MESSAGE_RANGE)
 		QDEL_NULL(current_gauze)
-		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZE_DESTROYED)
+		SEND_SIGNAL(src, COMSIG_LIMB_GAUZE_DESTROYED)
+
+/obj/item/bodypart/proc/apply_splint(obj/item/splint)
+	if(src.splint)
+		return FALSE
+
+	src.splint = splint
+	if(istype(splint, /obj/item/stack))
+		splint.forceMove(src)
+
+	update_interaction_speed()
+	RegisterSignal(splint, COMSIG_MOVABLE_MOVED, PROC_REF(splint_gone))
+	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
+	return TRUE
+
+/obj/item/bodypart/leg/apply_splint(obj/item/splint)
+	. = ..()
+	if(!.)
+		return
+	owner.apply_status_effect(/datum/status_effect/limp)
+
+/obj/item/bodypart/proc/remove_splint()
+	if(!splint)
+		return FALSE
+
+	var/was = splint
+	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
+	if(splint.loc == src)
+		splint.forceMove(drop_location())
+
+	splint = null
+	update_interaction_speed()
+	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
+	return was
+
+/obj/item/bodypart/proc/splint_gone(obj/item/source)
+	SIGNAL_HANDLER
+	remove_splint()
+
+/obj/item/bodypart/drop_location()
+	if(owner)
+		return owner.drop_location()
+	return ..()
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_cosmetic_organs()
@@ -1178,3 +1245,38 @@
 
 		if(unknown_body)
 			. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_UNKNOWN_IMPLANT]'>Unknown body present</span>" : "Unknown body present"
+
+/obj/item/bodypart/Topic(href, href_list)
+	. = ..()
+	if(QDELETED(src) || !owner)
+		return
+
+	if(!ishuman(usr))
+		return
+
+	var/mob/living/carbon/human/user = usr
+	if(!user.Adjacent(owner))
+		return
+
+	if(user.get_active_held_item())
+		return
+
+	if(href_list["embedded_object"])
+		var/obj/item/I = locate(href_list["embedded_object"]) in embedded_objects
+		if(!I || I.loc != src) //no item, no limb, or item is not in limb or in the person anymore
+			return
+		SEND_SIGNAL(src, COMSIG_LIMB_EMBED_RIP, I, user)
+		return
+
+	if(href_list["splint_remove"])
+		if(!splint)
+			return
+
+		if(do_after(user, owner, 5 SECONDS, DO_PUBLIC))
+			var/obj/item/removed = remove_splint()
+			if(!removed)
+				return
+			if(!user.put_in_hands(removed))
+				removed.forceMove(user.drop_location())
+
+		return

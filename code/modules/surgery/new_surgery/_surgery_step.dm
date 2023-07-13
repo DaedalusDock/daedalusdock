@@ -97,7 +97,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			return FALSE
 
 	// Check if clothing is blocking access
-	for(var/obj/item/I as anything in target.clothingonpart(target_zone))
+	for(var/obj/item/I as anything in target.clothingonpart(affected))
 		if(I.obj_flags & THICKMATERIAL)
 			to_chat(user, span_notice("The material covering this area is too thick for you to do surgery through!"))
 			return FALSE
@@ -277,7 +277,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			if(!silent)
 				to_chat(src, span_warning("You cannot operate on your own head!"))
 			return FALSE
-		var/hand = deprecise_zone(get_active_hand())
+		var/hand = get_active_hand().body_zone
 		if(zone_selected == hand)
 			if(!silent)
 				to_chat(src, span_warning("You cannot operate on that arm with that hand!"))

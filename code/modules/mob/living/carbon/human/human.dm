@@ -781,6 +781,12 @@
 	if(admin_revive)
 		regenerate_limbs()
 		regenerate_organs()
+
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		BP.set_sever_artery(FALSE)
+		BP.set_sever_tendon(FALSE)
+		BP.heal_bones()
+
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)
 	for(var/datum/mutation/human/HM in dna.mutations)

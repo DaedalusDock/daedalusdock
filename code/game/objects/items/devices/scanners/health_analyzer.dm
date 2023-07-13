@@ -109,7 +109,7 @@
 
 	// Health
 	if(target.getBruteLoss() > 50)
-		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>Severe anatomical damage detected.</span>\n"
+		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>Severe brute trauma detected.</span>\n"
 
 	if(target.getFireLoss() > 50)
 		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>Severe burn damage detected.</span>\n"

@@ -140,11 +140,6 @@
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.name]!</B>\n"
-			else
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
 		if(is_bodypart_visibly_covered(body_part, body_zones_covered))
 			var/is_bloody
@@ -155,9 +150,12 @@
 					break
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
+			for(var/string in body_part.mob_examine(hal_screwyhud, TRUE))
+				msg += "[string]</br>"
+
 			continue
 		else
-			for(var/string in body_part.mob_examine(hal_screwyhud))
+			for(var/string in body_part.mob_examine(hal_screwyhud, FALSE))
 				msg += "[string]</br>"
 
 	for(var/X in disabled)

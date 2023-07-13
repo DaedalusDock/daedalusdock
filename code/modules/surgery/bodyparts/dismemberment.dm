@@ -116,11 +116,11 @@
 		return
 	var/atom/drop_loc = owner.drop_location()
 
-	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, dismembered)
 	SEND_SIGNAL(src, COMSIG_LIMB_REMOVE, owner, dismembered)
 	update_limb(1)
 
 	owner.remove_bodypart(src)
+	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVED_LIMB, src, dismembered)
 
 	if(held_index)
 		if(owner.hand_bodyparts[held_index] == src)
@@ -161,6 +161,8 @@
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
+
+	remove_splint()
 
 	update_icon_dropped()
 	synchronize_bodytypes(phantom_owner)
@@ -370,6 +372,11 @@
 
 	if(check_bones() & CHECKBONES_BROKEN)
 		apply_bone_break(new_limb_owner)
+
+	else if(splint)
+		new_limb_owner.apply_status_effect(/datum/status_effect/limp)
+
+	update_interaction_speed()
 
 	update_bodypart_damage_state()
 

@@ -4,12 +4,13 @@
 //////////////////////////////////////////////////////////////////
 
 /datum/surgery_step/bone
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_DEENCASEMENT
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_RETRACTED
+	abstract_type = /datum/surgery_step/bone
 	var/required_stage = 0
 
 /datum/surgery_step/bone/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	if(affected && (affected.check_bones() & CHECKBONES_BROKEN) && affected.stage == required_stage)
+	if(affected && affected.stage == required_stage)
 		return affected
 
 //////////////////////////////////////////////////////////////////
@@ -25,7 +26,6 @@
 	max_duration = 70
 	shock_level = 40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_DEENCASEMENT
 	required_stage = 0
 
 /datum/surgery_step/bone/set_bone/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -33,9 +33,9 @@
 
 	var/bone = affected.encased ? "\the [target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
 	if(affected.encased == "skull")
-		user.visible_message("[user] begins to piece [bone] back together with [tool].")
+		user.visible_message(span_notice("[user] begins to piece [bone] back together with [tool]."))
 	else
-		user.visible_message("[user] begins to set [bone] in place with [tool].")
+		user.visible_message(span_notice("[user] begins to set [bone] in place with [tool]."))
 	..()
 
 /datum/surgery_step/bone/set_bone/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -46,6 +46,7 @@
 	if (affected.check_bones() & CHECKBONES_BROKEN)
 		if(affected.encased == "skull")
 			user.visible_message(span_notice("[user] pieces [bone] back together with [tool]."))
+		else
 			user.visible_message(span_notice("[user] sets [bone] in place with [tool]."))
 		affected.stage = 1
 	else

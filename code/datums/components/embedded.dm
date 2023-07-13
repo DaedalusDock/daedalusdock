@@ -130,23 +130,24 @@
 	limb_owner = H
 	H.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
 	RegisterSignal(H, COMSIG_MOVABLE_MOVED, PROC_REF(jostleCheck))
-	RegisterSignal(H, COMSIG_CARBON_EMBED_RIP, PROC_REF(ripOut))
 	RegisterSignal(H, COMSIG_CARBON_EMBED_REMOVAL, PROC_REF(safeRemove))
 	RegisterSignal(H, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
 
 /datum/component/embedded/proc/unregister_from_mob(mob/living/carbon/human/H)
 	if(!H.has_embedded_objects())
 		H.clear_alert(ALERT_EMBEDDED_OBJECT)
-	UnregisterSignal(H, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_EMBED_RIP, COMSIG_CARBON_EMBED_REMOVAL))
+	UnregisterSignal(H, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_EMBED_REMOVAL))
 	limb_owner = null
 
 /datum/component/embedded/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_LIMB_REMOVE, PROC_REF(limb_removed))
 	RegisterSignal(parent, COMSIG_LIMB_ATTACH, PROC_REF(limb_attached))
+	RegisterSignal(parent, COMSIG_LIMB_EMBED_RIP, PROC_REF(ripOut))
 
 /datum/component/embedded/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_LIMB_REMOVE)
 	UnregisterSignal(parent, COMSIG_LIMB_ATTACH)
+	UnregisterSignal(parent, COMSIG_LIMB_EMBED_RIP)
 
 /datum/component/embedded/proc/limb_removed(obj/item/bodypart/source, mob/living/carbon/human/owner, special)
 	SIGNAL_HANDLER
@@ -213,27 +214,31 @@
 	safeRemove()
 
 /// Called when a carbon with an object embedded/stuck to them inspects themselves and clicks the appropriate link to begin ripping the item out. This handles the ripping attempt, descriptors, and dealing damage, then calls safe_remove()
-/datum/component/embedded/proc/ripOut(datum/source, obj/item/I, obj/item/bodypart/limb)
+/datum/component/embedded/proc/ripOut(obj/item/bodypart/source, obj/item/I, mob/living/carbon/user)
 	SIGNAL_HANDLER
 
-	if(I != weapon || parent != limb)
+	if(I != weapon || source != parent)
 		return
 
 	var/time_taken = rip_time * weapon.w_class
-	INVOKE_ASYNC(src, PROC_REF(complete_rip_out), limb_owner, I, parent, time_taken)
+	INVOKE_ASYNC(src, PROC_REF(complete_rip_out), user, I, parent, time_taken)
 
 /// everything async that ripOut used to do
-/datum/component/embedded/proc/complete_rip_out(mob/living/carbon/victim, obj/item/I, obj/item/bodypart/limb, time_taken)
+/datum/component/embedded/proc/complete_rip_out(mob/living/carbon/user, obj/item/I, obj/item/bodypart/limb, time_taken)
 
-	victim.visible_message(
-		span_warning("[victim] attempts to remove [weapon] from [victim.p_their()] [limb.plaintext_zone]."),
-		span_notice("You attempt to remove [weapon] from your [limb.plaintext_zone]...")
-	)
+	if(user == limb_owner)
+		user.visible_message(
+			span_warning("[user] attempts to remove [weapon] from [user.p_their()] [limb.plaintext_zone]."),
+		)
+	else
+		user.visible_message(
+			span_warning("[user] attempts to remove [weapon] from [limb_owner]'s [limb.plaintext_zone].")
+		)
 
-	if(!do_after(victim, time = time_taken, timed_action_flags = DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
+	if(!do_after(user, limb_owner, time = time_taken, timed_action_flags = DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
 		return
 
-	if(!weapon || !limb || weapon.loc != victim || !(weapon in limb.embedded_objects))
+	if(!weapon || !limb || weapon.loc != limb || !(weapon in limb.embedded_objects))
 		qdel(src)
 		return
 
@@ -245,11 +250,11 @@
 				break
 
 		if(limb_owner)
-			victim.stamina.adjust(-(pain_stam_pct * damage))
-			victim.emote("scream")
+			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
+			limb_owner.emote("scream")
 
 			if(!IS_ORGANIC_LIMB(limb))
-				victim.visible_message(
+				user.visible_message(
 					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
 					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
 					span_danger("You hear the screech of abused metal.")
@@ -260,11 +265,16 @@
 					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
 					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
 				)
+	if(user == limb_owner)
+		user.visible_message(
+			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [user.p_their()] [limb.plaintext_zone]!"),
+		)
+	else
+		user.visible_message(
+			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [limb_owner]'s [limb.plaintext_zone]!"),
+		)
 
-	victim.visible_message(
-		span_notice("[victim] successfully rips [weapon] [harmful ? "out" : "off"] of [victim.p_their()] [limb.plaintext_zone]!"),
-	)
-	safeRemove(victim)
+	safeRemove(user)
 
 /// This proc handles the final step and actual removal of an embedded/stuck item from a carbon, whether or not it was actually removed safely.
 /// If you want the thing to go into someone's hands rather than the floor, pass them in to_hands

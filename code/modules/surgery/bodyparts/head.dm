@@ -32,6 +32,8 @@
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
 
+	minimum_break_damage = 30
+
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
 	var/obj/item/organ/eyes/eyes

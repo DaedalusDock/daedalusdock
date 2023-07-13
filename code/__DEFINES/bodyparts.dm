@@ -1,10 +1,8 @@
 ///The standard amount of bodyparts a carbon has. Currently 6, HEAD/arm/left/arm/right/CHEST/leg/left/R_LEG
 #define BODYPARTS_DEFAULT_MAXIMUM 6
 
-///max_damage * this = minimum damage before a bone can break
-#define BODYPART_MINIMUM_BREAK_MOD 1
 ///A modifier applied to the chance to break bones on a given instance of damage
-#define BODYPART_BONES_BREAK_CHANCE_MOD 0.3
+#define BODYPART_BONES_BREAK_CHANCE_MOD 1
 ///The minimum amount of brute damage for an attack to roll for bone jostle
 #define BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES 8
 
@@ -59,6 +57,3 @@
 #define CHECKARTERY_NONE (1<<0)
 #define CHECKARTERY_OK (1<<1)
 #define CHECKARTERY_SEVERED (1<<2)
-
-#define COMSIG_LIMB_ATTACH "limb_attach"
-#define COMSIG_LIMB_REMOVE "limb_remove"

@@ -20,6 +20,7 @@
 	gender = PLURAL
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
+
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -36,15 +37,17 @@
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
-		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
+	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
-	var/splint_factor
+	var/splint_slowdown = null
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
 	var/burn_cleanliness_bonus
+
 	/// How much blood flow this stack can absorb if used as a bandage on a cut wound, note that absorption is how much we lower the flow rate, not the raw amount of blood we suck up
 	var/absorption_capacity
 	/// How quickly we lower the blood flow on a cut wound we're bandaging. Expected lifetime of this bandage in seconds is thus absorption_capacity/absorption_rate, or until the cut heals, whichever comes first
 	var/absorption_rate
+
 	/// Amount of matter for RCD
 	var/matter_amount = 0
 	/// Does this stack require a unique girder in order to make a wall?
@@ -511,6 +514,11 @@
 	if(can_merge(hitting, inhand = TRUE))
 		merge(hitting)
 	. = ..()
+
+/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	if(splint_slowdown)
+		return try_splint(M, user)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)

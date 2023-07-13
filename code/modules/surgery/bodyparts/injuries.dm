@@ -47,6 +47,9 @@
 		broken_description = pick("broken","fracture","hairline fracture")
 
 	bodypart_flags |= BP_BROKEN_BONES
+
+	update_interaction_speed()
+
 	if(owner)
 		apply_bone_break(owner)
 	return TRUE
@@ -60,7 +63,7 @@
 /obj/item/bodypart/leg/apply_bone_break(mob/living/carbon/C)
 	. = ..()
 	if(!.)
-		return TRUE
+		return
 
 	C.apply_status_effect(/datum/status_effect/limp)
 
@@ -69,6 +72,8 @@
 		return FALSE
 
 	bodypart_flags &= ~BP_BROKEN_BONES
+
+	update_interaction_speed()
 
 	if(owner)
 		SEND_SIGNAL(owner, COMSIG_CARBON_HEAL_BONE, src)
@@ -91,6 +96,27 @@
 			span_warning("You feel something moving in your [plaintext_zone]!")
 		)
 		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+
+/// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
+/obj/item/bodypart/proc/update_interaction_speed()
+	if(bodypart_flags & BP_BROKEN_BONES)
+		if(!splint)
+			interaction_speed_modifier = 7
+		else
+			if(istype(splint, /obj/item/stack))
+				var/obj/item/stack/S = splint
+				interaction_speed_modifier = 2 * (1 + S.splint_slowdown)
+
+	else
+		interaction_speed_modifier = initial(interaction_speed_modifier)
+
+	SEND_SIGNAL(src, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, interaction_speed_modifier)
+	return interaction_speed_modifier
+
+/obj/item/bodypart/arm/update_interaction_speed()
+	. = ..()
+	if(. != 1)
+		owner.apply_status_effect(/datum/status_effect/arm_slowdown)
 
 /obj/item/bodypart/proc/set_sever_artery(val = TRUE)
 	if(val)
@@ -161,7 +187,7 @@
 	if(incision.damage >= beeg_threshold) //beeg incision
 		. = SURGERY_RETRACTED
 		if(encased && (bodypart_flags & BP_BROKEN_BONES))
-			. = SURGERY_DEENCASED
+			.| = SURGERY_DEENCASED
 
 /obj/item/bodypart/proc/get_incision(strict)
 

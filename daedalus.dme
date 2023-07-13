@@ -1725,6 +1725,7 @@
 #include "code\game\objects\items\stacks\license_plates.dm"
 #include "code\game\objects\items\stacks\medical.dm"
 #include "code\game\objects\items\stacks\rods.dm"
+#include "code\game\objects\items\stacks\splint.dm"
 #include "code\game\objects\items\stacks\stack.dm"
 #include "code\game\objects\items\stacks\tape.dm"
 #include "code\game\objects\items\stacks\telecrystal.dm"

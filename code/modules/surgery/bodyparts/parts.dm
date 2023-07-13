@@ -17,6 +17,8 @@
 	artery_name = "aorta"
 	cavity_name = "thoracic"
 
+	minimum_break_damage = 35
+
 	bodypart_flags = STOCK_BP_FLAGS_CHEST
 
 	///The bodytype(s) allowed to attach to this chest.
@@ -82,6 +84,8 @@
 
 	artery_name = "basilic vein"
 	tendon_name = "palmaris longus tendon"
+
+	minimum_break_damage = 30
 
 /obj/item/bodypart/arm/left
 	name = "left arm"
@@ -272,6 +276,8 @@
 	artery_name = "femoral artery"
 	tendon_name = "cruciate ligament"
 
+	minimum_break_damage = 30
+
 /obj/item/bodypart/leg/left
 	name = "left leg"
 	desc = "Some athletes prefer to tie their left shoelaces first for good \
@@ -285,6 +291,7 @@
 	can_be_disabled = TRUE
 	bodypart_trait_source = LEFT_LEG_TRAIT
 	amputation_point = "left hip"
+
 
 /obj/item/bodypart/leg/left/set_owner(new_owner)
 	. = ..()

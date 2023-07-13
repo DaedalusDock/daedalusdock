@@ -340,7 +340,7 @@
 	var/icon_state_to_use = module_icon_state
 	var/add_overlay = TRUE
 	if(suit_supports_variations_flags && (supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
-		icon_to_use = 'icons/mob/mod_clothing_digitigrade.dmi'
+		icon_to_use = 'icons/mob/clothing/modsuit/mod_clothing_digitigrade.dmi'
 		icon_state_to_use = "[module_icon_state]_digi"
 
 		if((active && head_only_when_active) | (!active && head_only_when_inactive))
@@ -352,7 +352,7 @@
 		. += module_icon
 
 	if(has_head_sprite)
-		icon_to_use = 'icons/mob/mod_clothing_digitigrade.dmi'
+		icon_to_use = 'icons/mob/clothing/modsuit/mod_clothing_digitigrade.dmi'
 		icon_state_to_use = "[module_icon_state]_head"
 
 		if(suit_supports_variations_flags && (supports_variations_flags & CLOTHING_SNOUTED_VARIATION))

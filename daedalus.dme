@@ -4693,7 +4693,6 @@
 #include "modular_pariah\modules\cryosleep\code\mind.dm"
 #include "modular_pariah\modules\customization\datums\keybinding\communication.dm"
 #include "modular_pariah\modules\customization\game\objects\items\devices\ttsdevice.dm"
-#include "modular_pariah\modules\customization\modules\clothing\clothing.dm"
 #include "modular_pariah\modules\customization\modules\clothing\toggle_base.dm"
 #include "modular_pariah\modules\customization\modules\clothing\ears\ears.dm"
 #include "modular_pariah\modules\customization\modules\clothing\hands\rings.dm"

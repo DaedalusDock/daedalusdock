@@ -1215,10 +1215,12 @@
 /obj/item/bodypart/proc/add_cavity_item(obj/item/I)
 	cavity_items += I
 	RegisterSignal(I, COMSIG_MOVABLE_MOVED, PROC_REF(item_gone))
+	RegisterSignal(I, COMSIG_PARENT_QDELETING, PROC_REF(item_gone))
 
 /obj/item/bodypart/proc/remove_cavity_item(obj/item/I)
 	cavity_items -= I
 	UnregisterSignal(I, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(I, COMSIG_PARENT_QDELETING)
 
 /obj/item/bodypart/proc/item_gone(datum/source)
 	SIGNAL_HANDLER

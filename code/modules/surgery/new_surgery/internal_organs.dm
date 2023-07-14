@@ -115,7 +115,7 @@
 	if(istype(I))
 		I.cut_away()
 
-/datum/surgery_step/internal/detatch_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/internal/detach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	if(affected.check_artery() & CHECKARTERY_OK)
 		user.visible_message(span_warning("[user]'s hand slips, slicing an artery inside [target]'s [affected.plaintext_zone] with \the [tool]!"))

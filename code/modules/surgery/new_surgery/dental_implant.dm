@@ -6,12 +6,6 @@
 	min_duration = 1 SECOND
 	max_duration = 3 SECONDS
 
-/datum/surgery_step/insert_pill/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if(target_zone != BODY_ZONE_PRECISE_MOUTH)
-		return FALSE
-
-	return ..()
-
 /datum/surgery_step/insert_pill/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = ..()
 	user.visible_message(span_notice("[user] begins inserting [tool] into [target]'s tooth."))

@@ -183,11 +183,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /// Attempt to perform a surgery step.
 /obj/item/proc/attempt_surgery(mob/living/carbon/M, mob/living/user)
 	// Check for the Hippocratic oath.
-	if(!istype(M) || user.combat_mode)
+	if(!istype(M) || user.combat_mode || GLOB.surgery_tool_exceptions[type])
 		return FALSE
 
 	// Check for multi-surgery drifting.
-	var/zone = user.zone_selected
+	var/zone = deprecise_zone(user.zone_selected)
 	if(LAZYACCESS(M.surgeries_in_progress, zone))
 		to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
 		return TRUE

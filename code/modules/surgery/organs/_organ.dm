@@ -174,8 +174,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
 
-	if(!special)
-		organ_flags |= ORGAN_CUT_AWAY
+	organ_flags |= ORGAN_CUT_AWAY
 
 	organ_owner.organs -= src
 	if(organ_owner.organs_by_slot[slot] == src)

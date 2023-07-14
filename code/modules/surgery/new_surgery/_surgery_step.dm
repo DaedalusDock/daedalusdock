@@ -30,6 +30,15 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	var/surgery_candidate_flags = 0      // Various bitflags for requirements of the surgery.
 	/// Whether or not this surgery will be fuzzy on size requirements.
 	var/strict_access_requirement = TRUE
+	/// Does this step attempt to repeat itself after every success?
+	var/looping = FALSE
+
+	/// Sound to play during begin_step(). Can be a sound, and associative list of sound:path, or a flat list of sounds.
+	var/preop_sound
+	/// Sound to play on success.
+	var/success_sound
+	/// Sound to play on failure.
+	var/failure_sound
 
 	var/abstract_type = /datum/surgery_step
 
@@ -111,6 +120,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /datum/surgery_step/proc/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	SHOULD_CALL_PARENT(TRUE)
 
+	play_preop_sound(user, target, target_zone, tool)
+
 	var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone), TRUE)
 	/*
 	if (can_infect && affected)
@@ -142,11 +153,19 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 // Does stuff to end the step, which is normally print a message + do whatever this step changes
 /datum/surgery_step/proc/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	if(!success_sound)
+		return
+	playsound(get_turf(target), success_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
 
 // Stuff that happens when the step fails
 /datum/surgery_step/proc/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	if(!failure_sound)
+		return
+
+	playsound(get_turf(target), failure_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+
 
 /// The chance for success vs failure
 /datum/surgery_step/proc/success_chance(mob/living/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
@@ -180,6 +199,22 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 	. = max(., 0)
 
+/datum/surgery_step/proc/play_preop_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool)
+	if(!preop_sound)
+		return
+	var/sound_file_use
+	if(islist(preop_sound))
+		if(!preop_sound[1]) //Test to see if the list is assoc
+			sound_file_use = pick(preop_sound)
+
+		for(var/typepath in preop_sound)//iterate and assign subtype to a list, works best if list is arranged from subtype first and parent last
+			if(istype(tool, typepath))
+				sound_file_use = preop_sound[typepath]
+				break
+	else
+		sound_file_use = preop_sound
+	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+
 /// Attempt to perform a surgery step.
 /obj/item/proc/attempt_surgery(mob/living/carbon/M, mob/living/user)
 	// Check for the Hippocratic oath.
@@ -206,47 +241,62 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	else if(LAZYLEN(possible_surgeries) >= 1)
 		if(user.client) // In case of future autodocs.
 			step = input(user, "Which surgery would you like to perform?", "Surgery") as null|anything in possible_surgeries
-		if(step)
+			if(!step)
+				return TRUE
+		#ifdef UNIT_TESTS
+		if(!step)
+			step = locate(user.desired_surgery) in possible_surgeries
+			if(!step)
+				CRASH("Failed to find desired surgery [user.desired_surgery]!")
+		#else
+		if(!step)
 			step = pick(possible_surgeries)
+		#endif
 
-	// We didn't find a surgery, or decided not to perform one.
+	// We didn't find a surgery.
 	if(!istype(step))
 		return FALSE
 
 	// Otherwise we can make a start on surgery!
-	else if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))
-		// Double-check this in case it changed between initial check and now.
-		if(zone in M.surgeries_in_progress)
-			to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
+	else
+		do_it_all_again:
+		if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))
+			// Double-check this in case it changed between initial check and now.
+			if(zone in M.surgeries_in_progress)
+				to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
 
-		else if(step.can_operate(user, M, zone, src) && step.is_valid_target(M))
+			else if(step.can_operate(user, M, zone, src) && step.is_valid_target(M))
 
-			var/operation_data = step.pre_surgery_step(user, M, zone, src)
+				var/operation_data = step.pre_surgery_step(user, M, zone, src)
 
-			if(operation_data)
-				LAZYSET(M.surgeries_in_progress, zone, operation_data)
+				if(operation_data)
+					LAZYSET(M.surgeries_in_progress, zone, operation_data)
 
-				step.begin_step(user, M, zone, src)
+					step.begin_step(user, M, zone, src)
 
-				var/duration = rand(step.min_duration, step.max_duration)
-				if(prob(step.success_chance(user, M, src, zone)) && do_after(user, M, duration, DO_PUBLIC, display = src))
-					if (step.can_operate(user, M, zone, src))
-						step.succeed_step(user, M, zone, src)
-						handle_post_surgery()
+					var/duration = rand(step.min_duration, step.max_duration)
+					if(prob(step.success_chance(user, M, src, zone)) && do_after(user, M, duration, DO_PUBLIC, display = src))
+						if (step.can_operate(user, M, zone, src))
+							step.succeed_step(user, M, zone, src)
+							handle_post_surgery()
+						else
+							to_chat(user, span_warning("The patient lost the target organ before you could finish operating!"))
+
+					else if ((src in user.held_items) && user.Adjacent(M))
+						step.fail_step(user, M, zone, src)
 					else
-						to_chat(user, span_warning("The patient lost the target organ before you could finish operating!"))
+						to_chat(user, span_warning("You must remain close to your patient to conduct surgery."))
 
-				else if ((src in user.held_items) && user.Adjacent(M))
-					step.fail_step(user, M, zone, src)
-				else
-					to_chat(user, span_warning("You must remain close to your patient to conduct surgery."))
+					if(!QDELETED(M))
+						LAZYREMOVE(M.surgeries_in_progress, zone) // Clear the in-progress flag.
+						/*if(ishuman(M))
+							var/mob/living/carbon/human/H = M
+							H.update_surgery()*/
 
-				if(!QDELETED(M))
-					LAZYREMOVE(M.surgeries_in_progress, zone) // Clear the in-progress flag.
-					/*if(ishuman(M))
-						var/mob/living/carbon/human/H = M
-						H.update_surgery()*/
-		return TRUE
+					if(step.looping)
+						goto do_it_all_again
+
+			return TRUE
 	return FALSE
 
 /obj/item/proc/handle_post_surgery()

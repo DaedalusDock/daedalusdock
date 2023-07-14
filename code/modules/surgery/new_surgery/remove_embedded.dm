@@ -29,3 +29,4 @@
 	user.visible_message(
 		span_notice("[user] pulls [embedded] from [target]'s [affected.plaintext_zone].")
 	)
+	..()

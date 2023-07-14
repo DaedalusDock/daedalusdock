@@ -1,7 +1,7 @@
 /datum/surgery_step/generic_organic
 	can_infect = 1
 	shock_level = 10
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_CRYSTAL | SURGERY_NO_STUMP
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/generic_organic
 
 /datum/surgery_step/generic_organic/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -19,8 +19,11 @@
 		/obj/item/scalpel/advanced = 100,
 		/obj/item/melee/energy/sword = 5
 	)
-	min_duration = 90
-	max_duration = 110
+	min_duration = 2 SECONDS
+	max_duration = 4 SECONDS
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/generic_organic/laser_incise/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -34,11 +37,13 @@
 	affected.create_wound(WOUND_CUT, affected.minimum_break_damage/2, TRUE)
 	affected.clamp_wounds()
 	//spread_germs_to_organ(affected, user)
+	..()
 
 /datum/surgery_step/generic_organic/laser_incise/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.plaintext_zone] with[tool]!"))
 	affected.receive_damage(15, 5, sharpness = SHARP_EDGED|SHARP_POINTY)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 scalpel surgery step
@@ -51,8 +56,12 @@
 		/obj/item/broken_bottle = 50,
 		/obj/item/shard = 50
 	)
-	min_duration = 90
-	max_duration = 110
+	min_duration = 3 SECONDS
+	max_duration = 5.5 SECONDS
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
+
 	var/fail_string = "slicing open"
 	var/access_string = "an incision"
 
@@ -75,11 +84,13 @@
 	user.visible_message(span_notice("[user] has made [access_string] on [target]'s [affected.plaintext_zone] with  [tool]."))
 	affected.create_wound(WOUND_CUT, affected.minimum_break_damage/2, TRUE)
 	playsound(target.loc, 'sound/weapons/bladeslice.ogg', 15, 1)
+	..()
 
 /datum/surgery_step/generic_organic/incise/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, [fail_string] \the [target]'s [affected.plaintext_zone] in the wrong place with [tool]!"))
 	affected.receive_damage(10, sharpness = SHARP_EDGED|SHARP_POINTY)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 bleeder clamping surgery step
@@ -91,10 +102,11 @@
 		/obj/item/stack/cable_coil = 75,
 		/obj/item/assembly/mousetrap = 20
 	)
-	min_duration = 40
-	max_duration = 60
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_CRYSTAL | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
+	min_duration = 3 SECONDS
+	max_duration = 5 SECONDS
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
 	strict_access_requirement = FALSE
+	preop_sound = 'sound/surgery/hemostat1.ogg'
 
 /datum/surgery_step/generic_organic/clamp_bleeders/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -112,6 +124,7 @@
 	affected.clamp_wounds()
 	//spread_germs_to_organ(affected, user)
 	playsound(target.loc, 'sound/items/Welder.ogg', 15, 1)
+	..()
 
 
 //////////////////////////////////////////////////////////////////
@@ -125,10 +138,12 @@
 		/obj/item/knife = 50,
 		/obj/item/kitchen/fork = 50
 	)
-	min_duration = 30
-	max_duration = 40
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_CRYSTAL | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
+	min_duration = 3 SECONDS
+	max_duration = 5 SECONDS
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
 	strict_access_requirement = TRUE
+	preop_sound = 'sound/surgery/retractor1.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
 
 /datum/surgery_step/generic_organic/retract_skin/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = FALSE
@@ -149,11 +164,13 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] keeps the incision open on [target]'s [affected.plaintext_zone] with [tool]."))
 	affected.open_incision()
+	..()
 
 /datum/surgery_step/generic_organic/retract_skin/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, tearing the edges of the incision on [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(12, sharpness = SHARP_EDGED|SHARP_POINTY)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 skin cauterization surgery step
@@ -166,9 +183,12 @@
 		/obj/item/lighter = 50,
 		TOOL_WELDER = 25
 	)
-	min_duration = 70
-	max_duration = 100
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_CRYSTAL
+	min_duration = 4 SECONDS
+	max_duration = 6 SECONDS
+	surgery_candidate_flags = SURGERY_NO_ROBOTIC
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
+
 	var/cauterize_term = "cauterize"
 	var/post_cauterize_term = "cauterized"
 
@@ -215,11 +235,13 @@
 
 	if(affected.clamped())
 		affected.remove_clamps()
+	..()
 
 /datum/surgery_step/generic_organic/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(0, 3)
+	..()
 
 
 //////////////////////////////////////////////////////////////////
@@ -230,11 +252,22 @@
 	name = "Amputate limb"
 	allowed_tools = list(
 		TOOL_SAW = 100,
-		/obj/item/hatchet = 75
+		/obj/item/fireaxe = 95,
+		/obj/item/hatchet = 75,
+		/obj/item/knife/butcher = 40,
+		/obj/item/knife = 20
 	)
-	min_duration = 110
-	max_duration = 160
-	surgery_candidate_flags = 0
+	min_duration = 11 SECONDS
+	max_duration = 16 SECONDS
+	surgery_candidate_flags = NONE
+
+	preop_sound = list(
+		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
+		/obj/item/fireaxe = 'sound/surgery/scalpel1.ogg',
+		/obj/item/hatchet = 'sound/surgery/scalpel1.ogg',
+		/obj/item/knife = 'sound/surgery/scalpel1.ogg',
+	)
+	success_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/generic_organic/amputate/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -250,9 +283,11 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] amputates [target]'s [affected.name] at the [affected.amputation_point] with [tool]."))
 	affected.dismember(DROPLIMB_EDGE, clean = TRUE)
+	..()
 
 /datum/surgery_step/generic_organic/amputate/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, sawing through the bone in [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(30, sharpness = SHARP_EDGED|SHARP_POINTY)
 	affected.break_bones()
+	..()

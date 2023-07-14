@@ -29,8 +29,10 @@
 		/obj/item/coin = 50,
 		/obj/item/knife = 50
 	)
-	min_duration = 90
-	max_duration = 110
+	min_duration = 4 SECONDS
+	max_duration = 6 SECONDS
+
+	success_sound = 'sound/items/screwdriver.ogg'
 
 /datum/surgery_step/robotics/unscrew_hatch/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -49,10 +51,12 @@
 		affected.hatch_state = HATCH_UNSCREWED
 	else
 		affected.hatch_state = HATCH_CLOSED
+	..()
 
 /datum/surgery_step/robotics/unscrew_hatch/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_CLOSED ? "unscrew" : "screw"] [target]'s [affected.plaintext_zone]."))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	open robotic limb surgery step
@@ -60,13 +64,15 @@
 /datum/surgery_step/robotics/open_hatch
 	name = "Open/close maintenance hatch"
 	allowed_tools = list(
-		/obj/item/retractor = 100,
-		/obj/item/crowbar = 100,
+		TOOL_RETRACTOR = 100,
+		TOOL_CROWBAR = 100,
 		/obj/item/kitchen = 50
 	)
 
-	min_duration = 30
-	max_duration = 40
+	min_duration = 2 SECONDS
+	max_duration = 3 SECONDS
+
+	success_sound = 'sound/items/crowbar.ogg'
 
 /datum/surgery_step/robotics/open_hatch/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -85,10 +91,12 @@
 		affected.hatch_state = HATCH_OPENED
 	else
 		affected.hatch_state = HATCH_UNSCREWED
+	..()
 
 /datum/surgery_step/robotics/open_hatch/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_UNSCREWED ? "open" : "close"] the hatch on [target]'s [affected.name]."))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	robotic limb brute damage repair surgery step
@@ -100,8 +108,10 @@
 		/obj/item/gun/energy/plasmacutter = 50,
 	)
 
-	min_duration = 50
-	max_duration = 60
+	min_duration = 3 SECONDS
+	max_duration = 6 SECONDS
+
+	success_sound = 'sound/items/welder.ogg'
 
 /datum/surgery_step/robotics/repair_brute/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -142,11 +152,13 @@
 
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] finishes patching damage to [target]'s [affected.plaintext_zone] with [tool]."))
+	..()
 
 /datum/surgery_step/robotics/repair_brute/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s [tool.name] slips, damaging the internal structure of [target]'s [affected.plaintext_zone]."))
 	affected.receive_damage(0, rand(5, 10))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	robotic limb burn damage repair surgery step
@@ -156,8 +168,8 @@
 	allowed_tools = list(
 		/obj/item/stack/cable_coil = 100
 	)
-	min_duration = 50
-	max_duration = 60
+	min_duration = 3 SECONDS
+	max_duration = 6 SECONDS
 
 /datum/surgery_step/robotics/repair_burn/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -193,11 +205,13 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] finishes splicing cable into [target]'s [affected.plaintext_zone]."))
 	affected.heal_damage(0, rand(30,50), BODYTYPE_ROBOTIC)
+	..()
 
 /datum/surgery_step/robotics/repair_burn/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user] causes a short circuit in [target]'s [affected.plaintext_zone]!"))
 	affected.receive_damage(0, rand(5,10))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 artificial organ repair surgery step
@@ -205,15 +219,24 @@
 /datum/surgery_step/robotics/fix_organ_robotic //For artificial organs
 	name = "Repair prosthetic organ"
 	allowed_tools = list(
-		/obj/item/screwdriver = 70,
+		TOOL_SCREWDRIVER = 70,
 		/obj/item/stack/medical/bone_gel = 30,
 	)
-	min_duration = 70
-	max_duration = 90
+	min_duration = 4 SECONDS
+	max_duration = 6 SECONDS
 	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/fix_organ_robotic/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
+	if(!affected)
+		return
+	for(var/obj/item/organ/I in affected.contained_organs)
+		if((I.status & ORGAN_ROBOTIC) && I.damage > 0)
+			return TRUE
+	..()
+
+/datum/surgery_step/robotics/fix_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	if(!affected)
 		return FALSE
 
@@ -221,6 +244,10 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if((I.status & ORGAN_ROBOTIC) && I.damage > 0)
 			organs[I.name] = I.slot
+
+	if(!length(organs))
+		to_chat(span_warning("[target.p_they(TRUE)] has no robotic organs there."))
+		return FALSE
 
 	var/organ = input(user, "Which organ do you want to prepare for surgery?", "Repair Organ", "Surgery") as null|anything in organs
 	if(organ)
@@ -237,6 +264,7 @@
 
 	user.visible_message(span_notice("[user] repairs [target]'s [I.name] with [tool]."))
 	I.damage = 0
+	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -244,6 +272,7 @@
 	affected.create_wound(WOUND_CUT, 5)
 	for(var/obj/item/organ/I in affected.contained_organs)
 		I.applyOrganDamage(rand(3,5))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	robotic organ detachment surgery step
@@ -251,10 +280,10 @@
 /datum/surgery_step/robotics/detach_organ_robotic
 	name = "Decouple prosthetic organ"
 	allowed_tools = list(
-		/obj/item/multitool = 100
+		TOOL_MULTITOOL = 100
 	)
-	min_duration = 90
-	max_duration = 110
+	min_duration = 9 SECONDS
+	max_duration = 11 SECONDS
 	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/detach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -262,8 +291,7 @@
 	var/list/attached_organs = list()
 
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(I.status & ORGAN_ROBOTIC)
-			attached_organs[I.name] = I.slot
+		attached_organs[I.name] = I.slot
 
 	if(!length(attached_organs))
 		to_chat(user, span_warning("There are no appropriate internal components to decouple."))
@@ -282,9 +310,11 @@
 	var/obj/item/organ/I = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(istype(I))
 		I.cut_away()
+	..()
 
 /datum/surgery_step/robotics/detach_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message(span_warning("[user]'s hand slips, disconnecting [tool]."))
+	..()
 
 
 //////////////////////////////////////////////////////////////////
@@ -293,17 +323,17 @@
 /datum/surgery_step/robotics/attach_organ_robotic
 	name = "Reattach prosthetic organ"
 	allowed_tools = list(
-		/obj/item/screwdriver = 100,
+		TOOL_SCREWDRIVER = 100,
 	)
-	min_duration = 100
-	max_duration = 120
+	min_duration = 10 SECONDS
+	max_duration = 12 SECONDS
 	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/attach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/removable_organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.cavity_items)
-		if ((I.status & ORGAN_ROBOTIC) && (deprecise_zone(I.zone) == affected.body_zone))
+		if ((deprecise_zone(I.zone) == affected.body_zone))
 			removable_organs[I.name] = REF(I)
 
 	if(!length(removable_organs))
@@ -329,6 +359,8 @@
 	O.organ_flags &= ~ORGAN_CUT_AWAY
 	affected.remove_cavity_item(O)
 	O.Insert(target)
+	..()
 
 /datum/surgery_step/robotics/attach_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message(span_warning("[user]'s hand slips, disconnecting [tool]."))
+	..()

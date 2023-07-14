@@ -17,8 +17,8 @@
 		/obj/item/bonesetter = 100,
 		/obj/item/wrench = 75
 	)
-	min_duration = 60
-	max_duration = 70
+	min_duration = 3 SECONDS
+	max_duration = 6 SECONDS
 	shock_level = 40
 	delicate = 1
 
@@ -46,6 +46,7 @@
 	else
 		user.visible_message("[span_notice("[user] sets [bone]")] [span_warning("in the WRONG place with [tool].")]")
 		affected.break_bones()
+	..()
 
 /datum/surgery_step/bone/set_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -53,6 +54,7 @@
 	user.visible_message(span_warning("[user]'s hand slips, damaging the [affected.encased ? affected.encased : "bones"] in [target]'s [affected.name] with [tool]!"))
 	affected.receive_damage(5)
 	affected.break_bones()
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	post setting bone-gelling surgery step
@@ -66,8 +68,8 @@
 	)
 	can_infect = 1
 	blood_level = 1
-	min_duration = 50
-	max_duration = 60
+	min_duration = 2 SECONDS
+	max_duration = 3 SECONDS
 	shock_level = 20
 
 /datum/surgery_step/bone/finish/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -91,6 +93,7 @@
 	if(istype(tool, /obj/item/stack))
 		var/obj/item/stack/S = tool
 		S.use(1)
+	..()
 
 /datum/surgery_step/bone/finish/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -99,3 +102,4 @@
 	if(istype(tool, /obj/item/stack))
 		var/obj/item/stack/S = tool
 		S.use(1)
+	..()

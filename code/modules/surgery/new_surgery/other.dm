@@ -15,8 +15,8 @@
 	)
 	can_infect = 1
 	blood_level = 1
-	min_duration = 70
-	max_duration = 90
+	min_duration = 5 SECONDS
+	max_duration = 8 SECONDS
 	shock_level = 40
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
@@ -35,11 +35,13 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] has reattached the [affected.tendon_name] in [target]'s [affected.plaintext_zone] with [tool]."))
 	affected.set_sever_tendon(FALSE)
+	..()
 
 /datum/surgery_step/fix_tendon/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, smearing [tool] in the incision in [target]'s [affected.plaintext_zone]!"))
 	affected.receive_damage(5, sharpness = tool.sharpness)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 IB fix surgery step
@@ -53,8 +55,8 @@
 	)
 	can_infect = 1
 	blood_level = 1
-	min_duration = 70
-	max_duration = 90
+	min_duration = 5 SECONDS
+	max_duration = 8 SECONDS
 	shock_level = 40
 	delicate = 1
 	strict_access_requirement = FALSE
@@ -74,8 +76,10 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] has patched the [affected.artery_name] in [target]'s [affected.plaintext_zone] with \the [tool]."))
 	affected.set_sever_artery(FALSE)
+	..()
 
 /datum/surgery_step/fix_vein/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, smearing [tool] in the incision in [target]'s [affected.plaintext_zone]!"))
 	affected.receive_damage(5, sharpness = tool.sharpness)
+	..()

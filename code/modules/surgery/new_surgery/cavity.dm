@@ -10,7 +10,7 @@
 /datum/surgery_step/cavity
 	shock_level = 40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_CRYSTAL | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 	abstract_type = /datum/surgery_step/cavity
 
 /datum/surgery_step/cavity/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -18,6 +18,7 @@
 	user.visible_message(span_warning("[user]'s hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"), \
 	span_warning("Your hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"))
 	affected.receive_damage(20, sharpness = SHARP_EDGED|SHARP_POINTY)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 create implant space surgery step
@@ -29,8 +30,8 @@
 		/obj/item/pen = 75,
 		/obj/item/stack/rods = 50,
 	)
-	min_duration = 60
-	max_duration = 80
+	min_duration = 3 SECONDS
+	max_duration = 4 SECONDS
 
 /datum/surgery_step/cavity/make_space/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -47,6 +48,7 @@
 /datum/surgery_step/cavity/make_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 implant cavity sealing surgery step
@@ -59,8 +61,11 @@
 		/obj/item/lighter = 50,
 		TOOL_WELDER = 25
 	)
-	min_duration = 60
-	max_duration = 80
+	min_duration = 3 SECONDS
+	max_duration = 4 SECONDS
+
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
 
 /datum/surgery_step/cavity/close_space/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -77,6 +82,7 @@
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] mends [target]'s [affected.cavity_name] cavity walls with [tool]."))
 	affected.cavity = FALSE
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 implanting surgery step
@@ -84,8 +90,11 @@
 /datum/surgery_step/cavity/place_item
 	name = "Place item in cavity"
 	allowed_tools = list(/obj/item = 100)
-	min_duration = 80
-	max_duration = 100
+	min_duration = 4 SECONDS
+	max_duration = 6 SECONDS
+
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/cavity/place_item/can_operate(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(istype(user,/mob/living/silicon/robot))
@@ -136,6 +145,7 @@
 
 	user.transferItemToLoc(tool, affected)
 	affected.add_cavity_item(tool)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 implant removal surgery step
@@ -147,8 +157,10 @@
 		TOOL_WIRECUTTER = 75,
 		/obj/item/kitchen/fork = 20
 	)
-	min_duration = 80
-	max_duration = 100
+	min_duration = 4 SECONDS
+	max_duration = 6 SECONDS
+
+	preop_sound = 'sound/surgery/hemostat1.ogg'
 
 /datum/surgery_step/cavity/implant_removal/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -216,6 +228,7 @@
 			span_notice("[user] could not find anything inside [target]'s [affected.name], and pulls [tool] out."),
 			span_notice("You could not find anything inside [target]'s [affected.name].")
 		)
+	..()
 
 /datum/surgery_step/cavity/implant_removal/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	..()

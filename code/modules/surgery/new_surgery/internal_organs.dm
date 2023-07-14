@@ -21,7 +21,7 @@
 	)
 	min_duration = 70
 	max_duration = 90
-	surgery_candidate_flags =  SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
+	surgery_candidate_flags = SURGERY_NO_STUMP
 
 /datum/surgery_step/internal/fix_organ/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -29,14 +29,16 @@
 		return
 
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(I.damage > 0)
+		if(istype(I, /obj/item/organ/brain))
+			continue
+		if(!(I.status & ORGAN_ROBOTIC) && I.damage > 0)
 			return TRUE
 
 /datum/surgery_step/internal/fix_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(I.damage > 0)
+		if(!(I.status & ORGAN_ROBOTIC) && I.damage > 0)
 			organs[I.name] = I.slot
 
 	var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in organs
@@ -61,6 +63,7 @@
 		return
 	O.applyOrganDamage(-O.damage)
 	user.visible_message(span_notice("[user] finishes treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."))
+	..()
 
 /datum/surgery_step/internal/fix_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -74,6 +77,7 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if(I.damage > 0 && !(I.status & ORGAN_ROBOTIC) && (affected.how_open() >= (affected.encased ? SURGERY_DEENCASED : SURGERY_RETRACTED)))
 			I.applyOrganDamage(dam_amt)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 Organ detatchment surgery step
@@ -114,6 +118,7 @@
 	var/obj/item/organ/I = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(istype(I))
 		I.cut_away()
+	..()
 
 /datum/surgery_step/internal/detach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -124,6 +129,7 @@
 	else
 		user.visible_message(span_warning("[user]'s hand slips, slicing up inside [target]'s [affected.plaintext_zone] with \the [tool]!"))
 		affected.receive_damage(rand(15, 25), sharpness = SHARP_EDGED|SHARP_POINTY)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 Organ removal surgery step
@@ -171,15 +177,13 @@
 		if(!user.put_in_hands(O))
 			O.forceMove(target.drop_location())
 
-		if(IS_ORGANIC_LIMB(affected))
-			playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
-		else
-			playsound(target.loc, 'sound/items/Ratchet.ogg', 50, 1)
+	..()
 
 /datum/surgery_step/internal/remove_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(20, sharpness = tool.sharpness)
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 Organ inserting surgery step
@@ -226,16 +230,14 @@
 		if(!(O.status & ORGAN_CUT_AWAY))
 			stack_trace("[user] ([user.ckey]) replaced organ [O.type], which didn't have ORGAN_CUT_AWAY set, in [target] ([target.ckey])")
 			O.status |= ORGAN_CUT_AWAY
-
-		playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
+	..()
 
 /datum/surgery_step/internal/replace_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message(span_warning("[user]'s hand slips, damaging \the [tool]!"))
 	var/obj/item/organ/I = tool
 	if(istype(I))
 		I.applyOrganDamage(rand(3,5))
-
-
+	..()
 
 //////////////////////////////////////////////////////////////////
 //	 Organ attachment surgery step
@@ -295,7 +297,9 @@
 		I.status &= ~ORGAN_CUT_AWAY //apply fixovein
 		affected.remove_cavity_item(I)
 		I.Insert(target)
+	..()
 
 /datum/surgery_step/internal/attach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, damaging the flesh in [target]'s [affected.plaintext_zone] with [tool]!"))
+	..()

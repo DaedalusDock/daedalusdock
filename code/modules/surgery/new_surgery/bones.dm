@@ -6,12 +6,7 @@
 /datum/surgery_step/bone
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_RETRACTED
 	abstract_type = /datum/surgery_step/bone
-	var/required_stage = 0
-
-/datum/surgery_step/bone/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/bodypart/affected = ..()
-	if(affected && affected.stage == required_stage)
-		return affected
+	strict_access_requirement = FALSE
 
 //////////////////////////////////////////////////////////////////
 //	bone setting surgery step
@@ -26,7 +21,6 @@
 	max_duration = 70
 	shock_level = 40
 	delicate = 1
-	required_stage = 0
 
 /datum/surgery_step/bone/set_bone/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -75,7 +69,11 @@
 	min_duration = 50
 	max_duration = 60
 	shock_level = 20
-	required_stage = 1
+
+/datum/surgery_step/bone/finish/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = ..()
+	if(affected && (affected.bodypart_flags & BP_BROKEN_BONES))
+		return affected
 
 /datum/surgery_step/bone/finish/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -89,7 +87,6 @@
 	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in [target]'s [affected.name]"
 	user.visible_message(span_notice("[user] has mended [bone] with [tool]."))
 	affected.heal_bones()
-	affected.stage = 0
 
 	if(istype(tool, /obj/item/stack))
 		var/obj/item/stack/S = tool

@@ -104,6 +104,8 @@
 	var/cavity_name
 	/// The type of storage datum to use for cavity storage.
 	var/cavity_storage_max_weight = WEIGHT_CLASS_SMALL
+	/// For robotic limbs: Hatch states, used by "surgery"
+	var/hatch_state
 
 	/// List of obj/item's embedded inside us. Managed by embedded components, do not modify directly
 	var/list/embedded_objects = list()
@@ -281,6 +283,8 @@
 		return
 
 	var/list/flavor_text = list()
+	if((bodypart_flags & BP_CUT_AWAY) && !is_stump)
+		flavor_text += "a tear at the [amputation_point] so severe that it hangs by a scrap of flesh"
 
 	if(!IS_ORGANIC_LIMB(src))
 		if(brute_dam)
@@ -302,6 +306,12 @@
 			if(descriptor)
 				wound_descriptors[descriptor] += W.amount
 
+		if(how_open() >= SURGERY_RETRACTED)
+			var/bone = encased ? encased : "bone"
+			if(bodypart_flags & BP_BROKEN_BONES)
+				bone = "broken [bone]"
+			wound_descriptors["a [bone] exposed"] = 1
+
 		for(var/wound in wound_descriptors)
 			switch(wound_descriptors[wound])
 				if(1)
@@ -317,8 +327,6 @@
 		if(current_damage)
 			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
 
-		if(bodypart_flags & BP_BROKEN_BONES)
-			. += span_warning("[owner.p_their(TRUE)] [plaintext_zone] is dented and swollen.")
 		for(var/obj/item/I in embedded_objects)
 			if(I.isEmbedHarmless())
 				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
@@ -399,7 +407,7 @@
 	seep_gauze(9999) // destroy any existing gauze if any exists
 
 	for(var/obj/item/I in cavity_items)
-		cavity_items -= I
+		remove_cavity_item(I)
 		I.forceMove(bodypart_turf)
 
 	for(var/obj/item/item_in_bodypart in src)
@@ -502,7 +510,7 @@
 	if(owner)
 		var/total_damage = brute_dam + burn_dam + burn + brute
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
-			if(attempt_dismemberment(pure_brute, burn, sharpness))
+			if(attempt_dismemberment(brute, burn, sharpness))
 				return update_bodypart_damage_state() || .
 
 
@@ -1208,9 +1216,13 @@
 	cavity_items += I
 	RegisterSignal(I, COMSIG_MOVABLE_MOVED, PROC_REF(item_gone))
 
+/obj/item/bodypart/proc/remove_cavity_item(obj/item/I)
+	cavity_items -= I
+	UnregisterSignal(I, COMSIG_MOVABLE_MOVED)
+
 /obj/item/bodypart/proc/item_gone(datum/source)
-	cavity_items -= source
-	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
+	SIGNAL_HANDLER
+	remove_cavity_item(source)
 
 /obj/item/bodypart/proc/get_scan_results(tag)
 	RETURN_TYPE(/list)

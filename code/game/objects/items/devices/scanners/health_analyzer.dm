@@ -209,7 +209,7 @@
 				if(limb.bodypart_flags & BP_BLEEDING)
 					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>bleeding</span>\]"
 
-				if(limb.bodypart_flags & CHECKBONES_BROKEN)
+				if(limb.bodypart_flags & BP_BROKEN_BONES)
 					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>fractured</span>\]"
 				data_string_list += (limb_string + "\n")
 

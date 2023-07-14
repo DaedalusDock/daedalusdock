@@ -450,3 +450,12 @@
 			var/chem_name = params["reagent"]
 			var/chem_id = get_chem_id(chem_name)
 			whitelist -= chem_id
+
+/obj/item/fixovein
+	name = "vascular recoupler"
+	desc = "Derived from a Vey-Med design, this miniature 3D printer is used to quickly synthetize and thread new organic tissue during surgical procedures."
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "fixovein"
+	force = 0
+	throwforce = 1.0
+	w_class = WEIGHT_CLASS_SMALL

@@ -98,6 +98,7 @@
 		/obj/item/cautery,
 		/obj/item/hemostat,
 		/obj/item/blood_filter,
+		/obj/item/fixovein,
 		/obj/item/shears,
 		/obj/item/geiger_counter,
 		/obj/item/clothing/neck/stethoscope,
@@ -127,7 +128,9 @@
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/scalpel = 1,
 		/obj/item/hemostat = 1,
-		/obj/item/cautery = 1)
+		/obj/item/cautery = 1,
+		/obj/item/fixovein = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient

@@ -38,6 +38,10 @@
 /// Limb is not connected to the nervous system and is not usable.
 #define BP_CUT_AWAY (1<<10)
 
+#define HATCH_CLOSED 1
+#define HATCH_UNSCREWED 2
+#define HATCH_OPENED 3
+
 #define STOCK_BP_FLAGS_CHEST (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
 #define STOCK_BP_FLAGS_HEAD (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
 #define STOCK_BP_FLAGS_ARMS (BP_IS_GRABBY_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON | BP_HAS_ARTERY)

@@ -448,6 +448,7 @@
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/razor(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/sec
 	name = "security duffel bag"
@@ -470,6 +471,7 @@
 	new /obj/item/cautery(src)
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/engineering
 	name = "industrial duffel bag"
@@ -563,6 +565,7 @@
 	new /obj/item/blood_filter(src)
 	new /obj/item/stack/medical/bone_gel(src)
 	new /obj/item/healthanalyzer/advanced(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo
 	name = "ammunition duffel bag"

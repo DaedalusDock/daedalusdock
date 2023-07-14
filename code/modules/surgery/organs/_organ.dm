@@ -115,6 +115,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		else
 			qdel(replaced)
 
+	organ_flags &= ~ORGAN_CUT_AWAY
+
 	SEND_SIGNAL(src, COMSIG_ORGAN_IMPLANTED, reciever)
 	SEND_SIGNAL(reciever, COMSIG_CARBON_GAIN_ORGAN, src, special)
 
@@ -172,6 +174,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
 
+	if(!special)
+		organ_flags |= ORGAN_CUT_AWAY
+
 	organ_owner.organs -= src
 	if(organ_owner.organs_by_slot[slot] == src)
 		organ_owner.organs_by_slot.Remove(slot)
@@ -188,6 +193,15 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(visual)
 		organ_owner.cosmetic_organs.Remove(src)
 		organ_owner.update_body_parts()
+
+/// Cut an organ away from it's container, but do not remove it from the container physically.
+/obj/item/organ/proc/cut_away()
+	if(!ownerlimb)
+		return
+
+	var/obj/item/bodypart/old_owner = ownerlimb
+	Remove(owner)
+	old_owner.add_cavity_item(src)
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.
 /obj/item/organ/proc/update_organ_traits()
@@ -284,7 +298,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
 /obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth) //use for damaging effects
-	if(!damage_amount) //Micro-optimization.
+	if(!damage_amount || cosmetic_only) //Micro-optimization.
 		return
 	if(maximum < damage)
 		return

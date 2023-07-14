@@ -71,7 +71,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	// Check various conditional flags.
 	if(((surgery_candidate_flags & SURGERY_NO_ROBOTIC) && !IS_ORGANIC_LIMB(affected)) || \
 		((surgery_candidate_flags & SURGERY_NO_STUMP) && affected.is_stump)         || \
-		((surgery_candidate_flags & SURGERY_NO_FLESH) && !(IS_ORGANIC_LIMB(affected))))
+		((surgery_candidate_flags & SURGERY_NO_FLESH) && (IS_ORGANIC_LIMB(affected))))
 		return FALSE
 
 	// Check if the surgery target is accessible.
@@ -79,7 +79,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		if(((surgery_candidate_flags & SURGERY_NEEDS_DEENCASEMENT) || \
 			(surgery_candidate_flags & SURGERY_NEEDS_INCISION)      || \
 			(surgery_candidate_flags & SURGERY_NEEDS_RETRACTED))    && \
-			affected.encased)
+			affected.hatch_state != HATCH_OPENED)
 			return FALSE
 	else
 		var/open_threshold = 0
@@ -115,8 +115,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	/*
 	if (can_infect && affected)
 		spread_germs_to_organ(affected, user)*/
-	if(user)
-		if(ishuman(user) && prob(60) && (affected?.bodypart_flags & BP_HAS_BLOOD))
+	if(user && affected)
+		if(ishuman(user) && prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
 			var/mob/living/carbon/human/H = user
 			if (blood_level)
 				H.blood_in_hands = blood_level
@@ -124,7 +124,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			if (blood_level > 1)
 				user.add_mob_blood(target)
 
-		if(!(ishuman(user) && user:gloves))
+		if((ishuman(user) && user:gloves) && IS_ORGANIC_LIMB(affected))
 			for(var/datum/disease/D as anything in user.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					target.ContactContractDisease(D)
@@ -206,17 +206,12 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	else if(LAZYLEN(possible_surgeries) >= 1)
 		if(user.client) // In case of future autodocs.
 			step = input(user, "Which surgery would you like to perform?", "Surgery") as null|anything in possible_surgeries
+		if(step)
+			step = pick(possible_surgeries)
 
 	// We didn't find a surgery, or decided not to perform one.
 	if(!istype(step))
-		// If we're on an optable, we are protected from some surgery fails. Bypass this for some items (like health analyzers).
-		if((locate(/obj/structure/table/optable) in get_turf(M)) && !user.combat_mode)
-			// Keep track of which tools we know aren't appropriate for surgery on help intent.
-			if(GLOB.surgery_tool_exceptions[type])
-				return FALSE
-
-			to_chat(user, span_warning("You aren't sure what you could do to \the [M] with \the [src]."))
-			return TRUE
+		return FALSE
 
 	// Otherwise we can make a start on surgery!
 	else if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))

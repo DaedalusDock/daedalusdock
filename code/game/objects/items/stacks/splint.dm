@@ -19,7 +19,7 @@
 	var/zone = deprecise_zone(user.zone_selected)
 	var/obj/item/bodypart/BP = H.get_bodypart(zone)
 	if(!BP)
-		to_chat(user, span_warning("[H] doe not have a limb there."))
+		to_chat(user, span_warning("[H] does not have a limb there."))
 		return
 
 	if(!(BP.body_zone in list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)))

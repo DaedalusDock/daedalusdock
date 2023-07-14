@@ -238,7 +238,7 @@
 
 /datum/surgery_step/generic_organic/amputate/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	if(affected && (affected.dismemberable) && !affected.how_open())
+	if(affected && (affected.dismemberable) && !affected.how_open() && !(target_zone == BODY_ZONE_CHEST))
 		return affected
 
 /datum/surgery_step/generic_organic/amputate/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -256,4 +256,3 @@
 	user.visible_message(span_warning("[user]'s hand slips, sawing through the bone in [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(30, sharpness = SHARP_EDGED|SHARP_POINTY)
 	affected.break_bones()
-

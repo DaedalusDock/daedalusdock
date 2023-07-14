@@ -39,4 +39,4 @@
 #define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
 
 ///The percentage of damage at which a bodypart can start to be dismembered.
-#define LIMB_DISMEMBERMENT_PERCENT 0.6
+#define LIMB_DISMEMBERMENT_PERCENT 0.8

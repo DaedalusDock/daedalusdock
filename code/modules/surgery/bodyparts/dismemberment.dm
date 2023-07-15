@@ -345,7 +345,7 @@
 	if(existing?.is_stump)
 		qdel(existing)
 
-	moveToNullspace()
+	//moveToNullspace()
 	set_owner(new_limb_owner)
 	new_limb_owner.add_bodypart(src)
 	if(held_index)

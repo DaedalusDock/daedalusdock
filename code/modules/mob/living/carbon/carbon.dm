@@ -945,6 +945,7 @@
 
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
+	new_bodypart.forceMove(src)
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)

@@ -46,7 +46,7 @@
 
 	user.desired_surgery = /datum/surgery_step/limb/connect
 	user.put_in_active_hand(fixovein)
-	hemostat.melee_attack_chain(user, patient)
+	fixovein.melee_attack_chain(user, patient)
 
 	TEST_ASSERT(!(BP.bodypart_flags & BP_CUT_AWAY), "Arm did not lose CUT_AWAY flag after connection.")
 	TEST_ASSERT(patient.usable_hands == 2, "Patient's hand was not usable after connection.")

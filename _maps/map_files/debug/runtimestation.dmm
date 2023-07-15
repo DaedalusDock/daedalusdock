@@ -1929,7 +1929,8 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "gV" = (
-/turf/open/space/basic,
+/obj/machinery/door/airlock,
+/turf/open/floor/plating,
 /area/station/engineering/gravity_generator)
 "gY" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
@@ -2232,13 +2233,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"zQ" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/machinery/door/airlock,
-/turf/open/floor/iron,
-/area/station/engineering/gravity_generator)
 "AE" = (
 /obj/machinery/airalarm/unlocked{
 	dir = 1;
@@ -7751,7 +7745,7 @@ af
 gV
 at
 Wx
-zQ
+bh
 bh
 br
 ak

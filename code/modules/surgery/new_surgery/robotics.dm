@@ -284,7 +284,7 @@
 	)
 	min_duration = 9 SECONDS
 	max_duration = 11 SECONDS
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/detach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -327,7 +327,7 @@
 	)
 	min_duration = 10 SECONDS
 	max_duration = 12 SECONDS
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_candidate_flags =  SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/attach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/removable_organs = list()

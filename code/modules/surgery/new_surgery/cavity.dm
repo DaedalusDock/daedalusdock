@@ -41,13 +41,12 @@
 /datum/surgery_step/cavity/make_space/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] starts making some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
-
-	affected.cavity = TRUE
 	..()
 
 /datum/surgery_step/cavity/make_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
+	affected.cavity = TRUE
 	..()
 
 //////////////////////////////////////////////////////////////////
@@ -103,7 +102,7 @@
 
 /datum/surgery_step/cavity/place_item/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	if(affected && affected.cavity)
+	if(affected && affected.cavity && !isorgan(tool))
 		return affected
 
 /datum/surgery_step/cavity/place_item/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -135,16 +134,15 @@
 
 /datum/surgery_step/cavity/place_item/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	if(!user.temporarilyRemoveItemFromInventory(tool, affected))
+	if(!user.transferItemToLoc(tool, affected))
 		return
+	affected.add_cavity_item(tool)
+
 	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."))
 
-	if (tool.w_class == affected.atom_storage.max_specific_storage && prob(50) && IS_ORGANIC_LIMB(affected) && affected.set_sever_artery(TRUE))
+	if (tool.w_class == affected.cavity_storage_max_weight && prob(50) && IS_ORGANIC_LIMB(affected) && affected.set_sever_artery(TRUE))
 		to_chat(user, span_warning("You tear some blood vessels trying to fit such a big object in this cavity."))
-
-
-	user.transferItemToLoc(tool, affected)
-	affected.add_cavity_item(tool)
+		target.bleed(15)
 	..()
 
 //////////////////////////////////////////////////////////////////
@@ -164,7 +162,11 @@
 
 /datum/surgery_step/cavity/implant_removal/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	return affected && length(affected.cavity_items)
+	if(!affected)
+		return FALSE
+	for(var/obj/item/I in affected.cavity_items)
+		if(!isorgan(I))
+			return affected
 
 /datum/surgery_step/cavity/implant_removal/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)

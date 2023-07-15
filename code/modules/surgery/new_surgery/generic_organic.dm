@@ -123,7 +123,6 @@
 	user.visible_message(span_notice("[user] clamps bleeders in [target]'s [affected.plaintext_zone] with [tool]."))
 	affected.clamp_wounds()
 	//spread_germs_to_organ(affected, user)
-	playsound(target.loc, 'sound/items/Welder.ogg', 15, 1)
 	..()
 
 

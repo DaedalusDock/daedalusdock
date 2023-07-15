@@ -108,6 +108,7 @@
 		target_human.sec_hud_set_implants()
 
 		if(BP.cavity_name)
+			forceMove(BP)
 			BP.add_cavity_item(src)
 
 	if(user)

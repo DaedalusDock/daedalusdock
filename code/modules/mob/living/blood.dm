@@ -71,7 +71,7 @@
 
 		if(iter_part.bodypart_flags & BP_HAS_BLOOD)
 			for(var/datum/wound/W as anything in iter_part.wounds)
-				if(W.bleeding())
+				if(W.bleeding() && W.bleed_timer > 0)
 					W.bleed_timer--
 
 		if(!bleed_amt)

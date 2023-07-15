@@ -224,7 +224,7 @@
 	user.visible_message(span_notice("\The [user] has [robotic_surgery ? "reinstalled" : "transplanted"] [tool] into [target]'s [affected.plaintext_zone]."))
 
 	var/obj/item/organ/O = tool
-	if(istype(O) && user.temporarilyRemoveItemFromInventory(O, target))
+	if(istype(O) && user.transferItemToLoc(O, target))
 		affected.add_cavity_item(O) //move the organ into the patient. The organ is properly reattached in the next step
 
 		if(!(O.status & ORGAN_CUT_AWAY))
@@ -279,7 +279,8 @@
 	if(O)
 		to_chat(user, span_warning("\The [target] already has \a [O]."))
 		return FALSE
-	return list(organ_to_replace, attachable_organs[organ_to_replace])
+
+	return list(organ_to_replace, attachable_organs[organ_to_replace.name])
 
 /datum/surgery_step/internal/attach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message(span_warning("[user] begins reattaching [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."))

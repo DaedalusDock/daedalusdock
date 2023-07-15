@@ -67,7 +67,7 @@
 /datum/surgery_step/limb/connect
 	name = "Connect limb"
 	allowed_tools = list(
-		TOOL_HEMOSTAT = 100,
+		/obj/item/fixovein = 100,
 		/obj/item/stack/cable_coil = 75,
 	)
 	can_infect = 1

@@ -696,15 +696,19 @@
 /obj/structure/table/optable/proc/get_patient()
 	var/mob/living/carbon/M = locate(/mob/living/carbon) in loc
 	if(M)
-		if(M.resting)
+		if(M.body_position == LYING_DOWN)
 			set_patient(M)
 	else
 		set_patient(null)
 
 /obj/structure/table/optable/proc/set_patient(new_patient)
 	if(patient)
+		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
+	patient.set_lying_angle(90)
+	patient.setDir(SOUTH)
+	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
 

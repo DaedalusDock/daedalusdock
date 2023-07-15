@@ -24,7 +24,7 @@
 		return
 
 	if(!(BP.body_zone in list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)))
-		to_chat(user, span_warning("You cannot use [src] apply a splint there."))
+		to_chat(user, span_warning("You cannot use [src] to apply a splint there."))
 		return
 
 	if(BP.splint)

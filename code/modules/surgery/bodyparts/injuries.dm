@@ -152,7 +152,7 @@
 
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)
-		. |= !W.clamped
+		. ||= !W.clamped
 		W.clamped = 1
 
 	refresh_bleed_rate()
@@ -160,16 +160,17 @@
 
 /obj/item/bodypart/proc/remove_clamps()
 	for(var/datum/wound/W as anything in wounds)
-		. |= W.clamped
+		. ||= !!W.clamped
 		W.clamped = 0
 
 	refresh_bleed_rate()
 	return .
 
 /obj/item/bodypart/proc/clamped()
+	. = TRUE
 	for(var/datum/wound/W as anything in wounds)
-		if(W.clamped)
-			return TRUE
+		if(!W.clamped)
+			return FALSE
 
 /obj/item/bodypart/proc/how_open()
 	. = 0

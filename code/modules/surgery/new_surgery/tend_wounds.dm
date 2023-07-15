@@ -11,11 +11,28 @@
 
 	preop_sound = list('sound/surgery/hemostat1.ogg', 'sound/surgery/scalpel1.ogg')
 
+/datum/surgery_step/tend_wounds/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = ..()
+	if(!affected)
+		return
+
+	if(damage_type == BRUTE)
+		if(affected.brute_dam >= affected.max_damage * 0.1)
+			return affected
+	else
+		if(affected.burn_dam >= affected.max_damage * 0.1)
+			return affected
+
 /datum/surgery_step/tend_wounds/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	. = affected.get_damage() >= affected.max_damage * 0.25
+	if(damage_type == BRUTE)
+		if(affected.brute_dam >= affected.max_damage * 0.1)
+			. = TRUE
+	else
+		if(affected.burn_dam >= affected.max_damage * 0.1)
+			. = TRUE
 	if(!.)
-		to_chat(user, span_warning("[target]'s [affected.plaintext_zone] cannot be repaired any more through surgery."))
+		to_chat(user, span_warning("[target]'s [affected.plaintext_zone] [(damage_type == BRUTE) ? "trauma" : "burns"] cannot be repaired any more through surgery."))
 
 /datum/surgery_step/tend_wounds/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)

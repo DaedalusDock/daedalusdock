@@ -532,7 +532,7 @@
 		return try_splint(M, user)
 
 	if(!user.combat_mode && absorption_capacity && ishuman(M))
-		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected)
+		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
 		if(BP.bandage)
 			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
 			return FALSE

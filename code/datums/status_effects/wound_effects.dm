@@ -208,14 +208,14 @@
 /datum/status_effect/arm_slowdown/proc/apply_to_mob()
 	SIGNAL_HANDLER
 	var/mob/living/carbon/C = owner
-	var/hand = C.get_active_hand().body_zone
+	var/hand = C.get_active_hand()?.body_zone
 
 	if(hand == BODY_ZONE_R_ARM)
 		if(speed_right == 1)
 			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
 		else
 			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, multiplicative_slowdown = speed_right)
-	else
+	else if(hand == BODY_ZONE_L_ARM)
 		if(speed_left == 1)
 			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
 		else

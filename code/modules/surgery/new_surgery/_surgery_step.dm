@@ -290,7 +290,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			step.begin_step(user, M, zone, src)
 
 			var/can_loop = FALSE
+			#ifndef UNIT_TESTS
 			var/duration = rand(step.min_duration, step.max_duration)
+			#else
+			var/duration = 0
+			#endif
 			if(do_after(user, M, duration, DO_PUBLIC, display = src))
 				if (step.can_operate(user, M, zone, src))
 					if(prob(step.success_chance(user, M, src, zone)))

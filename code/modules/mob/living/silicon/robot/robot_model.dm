@@ -610,7 +610,7 @@
 		/obj/item/extinguisher/mini,
 		/obj/item/roller/robo,
 		/obj/item/borg/cyborghug/medical,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/stack/medical/bone_gel,
 		/obj/item/borg/apparatus/organ_storage,
 		/obj/item/borg/lollipop)
@@ -800,7 +800,7 @@
 		/obj/item/crowbar/cyborg,
 		/obj/item/extinguisher/mini,
 		/obj/item/pinpointer/syndicate_cyborg,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/gun/medbeam,
 		/obj/item/borg/apparatus/organ_storage)
 

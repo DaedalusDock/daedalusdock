@@ -145,7 +145,7 @@
 			var/is_bloody
 			for(var/datum/wound/W as anything in body_part.wounds)
 				if(W.bleeding())
-					msg += span_warning("Blood soaks through [t_His] [body_part.plaintext_zone] covering!\n")
+					msg += span_warning("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
 					is_bloody = TRUE
 					break
 			if(!is_bloody)

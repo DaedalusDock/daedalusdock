@@ -127,61 +127,29 @@
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS)
 
-/obj/item/stack/medical/gauze
+/obj/item/stack/gauze
 	name = "medical gauze"
 	desc = "A roll of elastic cloth, perfect for stabilizing all kinds of wounds, from cuts and burns, to broken bones. "
 	gender = PLURAL
 	singular_name = "medical gauze"
 	icon_state = "gauze"
-	self_delay = 5 SECONDS
-	other_delay = 2 SECONDS
+	icon = 'icons/obj/stack_medical.dmi'
+	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	max_amount = 12
 	amount = 6
 	grind_results = list(/datum/reagent/cellulose = 2)
 	custom_price = PAYCHECK_ASSISTANT * 2
-	absorption_rate = 0.125
-	absorption_capacity = 5
-	splint_slowdown = 2
+	absorption_capacity = 50
+	absorption_rate_modifier = 0.5
+
 	burn_cleanliness_bonus = 0.35
-	merge_type = /obj/item/stack/medical/gauze
+	merge_type = /obj/item/stack/gauze
 
-// gauze is only relevant for wounds, which are handled in the wounds themselves
-/obj/item/stack/medical/gauze/try_heal(mob/living/M, mob/user, silent)
-	var/obj/item/bodypart/limb = M.get_bodypart(check_zone(user.zone_selected))
-	if(!limb)
-		to_chat(user, span_notice("There's nothing there to bandage!"))
-		return
-	if(!LAZYLEN(limb.wounds))
-		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
-		return
-
-	var/gauzeable_wound = FALSE
-
-	for(var/datum/wound/W in limb.wounds)
-		if(W.bleeding())
-			gauzeable_wound = TRUE
-			break
-
-
-	if(!gauzeable_wound)
-		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
-		return
-
-	if(limb.current_gauze && (limb.current_gauze.absorption_capacity * 0.8 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
-		to_chat(user, span_warning("The bandage currently on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone] is still in good condition!"))
-		return
-
-	user.visible_message(span_warning("[user] begins wrapping the wounds on [M]'s [limb.plaintext_zone] with [src]..."), span_warning("You begin wrapping the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone] with [src]..."))
-	if(!do_after(user, M, (user == M ? self_delay : other_delay), DO_PUBLIC, display = src))
-		return
-
-	user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] to [M]'s [limb.plaintext_zone].</span></span>", "<span class='infoplain'><span class='green'>You bandage the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone].</span></span>")
-	limb.apply_gauze(src)
-
-/obj/item/stack/medical/gauze/twelve
+/obj/item/stack/gauze/twelve
 	amount = 12
 
-/obj/item/stack/medical/gauze/attackby(obj/item/I, mob/user, params)
+/obj/item/stack/gauze/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_WIRECUTTER || (I.sharpness & SHARP_EDGED))
 		if(get_amount() < 2)
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
@@ -198,21 +166,38 @@
 	else
 		return ..()
 
-/obj/item/stack/medical/gauze/suicide_act(mob/living/user)
+/obj/item/stack/gauze/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins tightening [src] around [user.p_their()] neck! It looks like [user.p_they()] forgot how to use medical supplies!"))
 	return OXYLOSS
 
-/obj/item/stack/medical/gauze/improvised
+///Absorb an incoming bleed amount, return the amount we failed to absorb.
+/obj/item/stack/proc/absorb_blood(bleed_amt, mob/living/carbon/owner)
+	if(!bleed_amt)
+		return 0
+
+	add_blood_DNA(owner.get_blood_dna_list())
+	if(!absorption_capacity)
+		return null
+
+	absorption_capacity = absorption_capacity - bleed_amt
+	if(absorption_capacity < 0)
+		. = absorption_capacity * -1 // Blood we failed to absorb
+		var/obj/item/bodypart/BP = loc
+		to_chat(BP.owner, span_danger("The blood spills out from underneath \the [singular_name] on your [BP.plaintext_zone]!"))
+		absorption_capacity = 0
+	else
+		return 0 //Absorbed all blood, and bandage is still good.
+
+/obj/item/stack/gauze/improvised
 	name = "improvised gauze"
 	singular_name = "improvised gauze"
 	desc = "A roll of cloth roughly cut from something that does a decent job of stabilizing wounds, but less efficiently so than real medical gauze."
-	self_delay = 6 SECONDS
-	other_delay = 3 SECONDS
 	splint_slowdown = 1.5
 	burn_cleanliness_bonus = 0.7
-	absorption_rate = 0.075
-	absorption_capacity = 4
-	merge_type = /obj/item/stack/medical/gauze/improvised
+	absorption_capacity = 20
+	absorption_rate_modifier = 0.8
+
+	merge_type = /obj/item/stack/gauze/improvised
 
 	/*
 	The idea is for the following medical devices to work like a hybrid of the old brute packs and tend wounds,

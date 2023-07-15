@@ -69,7 +69,7 @@
 	user.put_in_active_hand(hemostat)
 	hemostat.melee_attack_chain(user, patient)
 
-	TEST_ASSERT(BP.get_damage() <= BP.max_damage/2, "Chest did not heal to less than [BP.max_damage/2], healed to [BP.get_damage()]")
+	TEST_ASSERT(BP.get_damage() <= BP.max_damage * 0.25, "Chest did not heal to less than [BP.max_damage/2], healed to [BP.get_damage()]")
 
 /*
 /datum/unit_test/brain_surgery/Run()

@@ -36925,7 +36925,7 @@
 /area/station/engineering/monitoring)
 "mrZ" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /obj/machinery/power/apc/auto_name/directional/north,
@@ -39504,7 +39504,7 @@
 	pixel_y = 8
 	},
 /obj/item/stack/medical/mesh,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 8
 	},
 /obj/item/reagent_containers/chem_pack{
@@ -65299,7 +65299,7 @@
 /obj/structure/cable,
 /obj/structure/table,
 /obj/item/stack/medical/mesh,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/suture,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,

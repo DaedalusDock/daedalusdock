@@ -717,7 +717,7 @@
 /obj/structure/closet/crate/freezer,
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/bot_assembly/medbot,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/reagent_containers/food/drinks/bottle/whiskey,
 /obj/item/reagent_containers/glass/bottle/ethanol,
 /obj/item/organ/stomach,

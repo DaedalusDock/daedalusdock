@@ -29,8 +29,6 @@
 	#define COMPONENT_NO_ATTACH (1<<0)
 #define COMSIG_CARBON_REMOVED_LIMB "carbon_remove_limb" //from base of /obj/item/bodypart/proc/drop_limb(lost_limb, dismembered)
 
-#define COMSIG_LIMB_GAUZED "bodypart_gauzed" // from /obj/item/bodypart/proc/apply_gauze(/obj/item/stack/gauze)
-#define COMSIG_LIMB_GAUZE_DESTROYED "bodypart_degauzed" // from [/obj/item/bodypart/proc/seep_gauze] when it runs out of absorption
 /// From /obj/item/bodypart/proc/attach_limb(/mob/living/carbon/C, special)
 #define COMSIG_LIMB_ATTACH "limb_attach"
 /// From /obj/item/bodypart/proc/drop_limb(/mob/living/carbon/C, special)

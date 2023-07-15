@@ -73,10 +73,6 @@
 
 	if(istype(BP))
 		parent = BP
-		if(BP.current_gauze)
-			bandage()
-		RegisterSignal(parent, COMSIG_LIMB_GAUZED, PROC_REF(on_gauze))
-		RegisterSignal(parent, COMSIG_LIMB_GAUZE_DESTROYED, PROC_REF(on_ungauze))
 		if(parent.owner)
 			register_to_mob(parent.owner)
 
@@ -138,7 +134,6 @@
 	if (other.wound_type != src.wound_type) return 0
 	if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
 	if (other.is_surgical() != src.is_surgical()) return 0
-	if (!(other.bandaged) != !(src.bandaged)) return 0
 	if (!(other.clamped) != !(src.clamped)) return 0
 	if (!(other.salved) != !(src.salved)) return 0
 	if (!(other.disinfected) != !(src.disinfected)) return 0
@@ -186,6 +181,8 @@
 	if(bandaged)
 		return FALSE
 	bandaged = 1
+	if(parent)
+		parent.refresh_bleed_rate()
 	return TRUE
 
 /datum/wound/proc/salve()
@@ -261,7 +258,7 @@
 	return 1
 
 /datum/wound/proc/bleeding()
-	if(bandaged || clamped)
+	if(clamped)
 		return FALSE
 	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
 

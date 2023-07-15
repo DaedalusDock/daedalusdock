@@ -257,46 +257,59 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(!istype(step))
 		return FALSE
 
-	// Otherwise we can make a start on surgery!
-	else
-		do_it_all_again:
-		if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))
-			// Double-check this in case it changed between initial check and now.
-			if(zone in M.surgeries_in_progress)
-				to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
-
-			else if(step.can_operate(user, M, zone, src) && step.is_valid_target(M))
-
-				var/operation_data = step.pre_surgery_step(user, M, zone, src)
-
-				if(operation_data)
-					LAZYSET(M.surgeries_in_progress, zone, operation_data)
-
-					step.begin_step(user, M, zone, src)
-
-					var/duration = rand(step.min_duration, step.max_duration)
-					if(prob(step.success_chance(user, M, src, zone)) && do_after(user, M, duration, DO_PUBLIC, display = src))
-						if (step.can_operate(user, M, zone, src))
-							step.succeed_step(user, M, zone, src)
-							handle_post_surgery()
-						else
-							to_chat(user, span_warning("The patient lost the target organ before you could finish operating!"))
-
-					else if ((src in user.held_items) && user.Adjacent(M))
-						step.fail_step(user, M, zone, src)
-					else
-						to_chat(user, span_warning("You must remain close to your patient to conduct surgery."))
-
-					if(!QDELETED(M))
-						LAZYREMOVE(M.surgeries_in_progress, zone) // Clear the in-progress flag.
-						/*if(ishuman(M))
-							var/mob/living/carbon/human/H = M
-							H.update_surgery()*/
-
-					if(step.looping)
-						goto do_it_all_again
-
+	if(M == user)
+		if(user.zone_selected == BODY_ZONE_HEAD)
+			to_chat(user, span_warning("You cannot operate on your own head!"))
 			return TRUE
+		var/hand = user.get_active_hand().body_zone
+		if(user.zone_selected == hand)
+			to_chat(src, span_warning("You cannot operate on that arm with that hand!"))
+			return TRUE
+
+	// Otherwise we can make a start on surgery!
+	do_it_all_again:
+	if(istype(M) && !QDELETED(M) && !user.combat_mode && (user.get_active_held_item() == src))
+		// Double-check this in case it changed between initial check and now.
+		if(zone in M.surgeries_in_progress)
+			to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
+
+		else if(step.can_operate(user, M, zone, src))
+
+			var/operation_data = step.pre_surgery_step(user, M, zone, src)
+
+			if(!operation_data) // Surgery step recognized but failed for some reason, terminate attack chain.
+				return TRUE
+
+			LAZYSET(M.surgeries_in_progress, zone, operation_data)
+
+			step.begin_step(user, M, zone, src)
+
+			var/can_loop = FALSE
+			var/duration = rand(step.min_duration, step.max_duration)
+			if(do_after(user, M, duration, DO_PUBLIC, display = src))
+				if (step.can_operate(user, M, zone, src))
+					if(prob(step.success_chance(user, M, src, zone)))
+						step.succeed_step(user, M, zone, src)
+						handle_post_surgery()
+						can_loop = TRUE
+					else
+						step.fail_step(user, M, zone, src)
+				else
+					to_chat(user, span_warning("The patient lost the target organ before you could finish operating!"))
+
+			else
+				step.fail_step(user, M, zone, src)
+
+			if(!QDELETED(M))
+				LAZYREMOVE(M.surgeries_in_progress, zone) // Clear the in-progress flag.
+				/*if(ishuman(M))
+					var/mob/living/carbon/human/H = M
+					H.update_surgery()*/
+
+			if(step.looping && can_loop)
+				goto do_it_all_again
+
+		return TRUE
 	return FALSE
 
 /obj/item/proc/handle_post_surgery()
@@ -305,7 +318,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 /obj/item/stack/handle_post_surgery()
 	use(1)
 
-/mob/proc/can_operate_on(mob/living/target, silent)
+/mob/proc/can_operate_on(mob/living/target)
 	var/turf/T = get_turf(target)
 
 	if(target.body_position == LYING_DOWN)
@@ -316,17 +329,6 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		. = TRUE
 	else if(locate(/obj/effect/rune, T))
 		. = TRUE
-
-	if(target == src)
-		if(zone_selected == BODY_ZONE_HEAD)
-			if(!silent)
-				to_chat(src, span_warning("You cannot operate on your own head!"))
-			return FALSE
-		var/hand = get_active_hand().body_zone
-		if(zone_selected == hand)
-			if(!silent)
-				to_chat(src, span_warning("You cannot operate on that arm with that hand!"))
-			return FALSE
 
 /mob/living/can_operate_on(mob/living/target, silent)
 	if(combat_mode)

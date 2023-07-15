@@ -184,12 +184,13 @@
 	var/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
 	var/generic_bleedstacks
-	/// If we have a gauze wrapping currently applied (not including splints)
-	var/obj/item/stack/current_gauze
+
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
 	/// If something is currently supporting this limb as a splint
 	var/obj/item/splint
+	/// The bandage that may-or-may-not be absorbing our blood
+	var/obj/item/stack/bandage
 
 	///A list of all the organs inside of us.
 	var/list/obj/item/organ/contained_organs = list()
@@ -244,6 +245,7 @@
 		drop_limb(TRUE)
 
 	QDEL_NULL(splint)
+	QDEL_NULL(bandage)
 	return ..()
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
@@ -269,7 +271,10 @@
 				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
 
 		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\n\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their()] [plaintext_zone] is splinted with [splint].</a>")
+			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
+
+		if(bandage)
+			. += span_notice("\t <a href='?src=[REF(src)];bandage_remove=1' class='[bandage.absorption_capacity ? "notice" : "warning"]'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
 		return
 
 	if(hallucinating == SCREWYHUD_HEALTHY)
@@ -334,8 +339,11 @@
 				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
 
 		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their()] [plaintext_zone] is splinted with [splint].</a>")
+			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
+		if(bandage)
+			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
 		return
+
 	else
 		if(current_damage)
 			. += "It has [english_list(flavor_text)]."
@@ -404,7 +412,11 @@
 	var/turf/bodypart_turf = get_turf(src)
 	if(IS_ORGANIC_LIMB(src))
 		playsound(bodypart_turf, 'sound/misc/splort.ogg', 50, TRUE, -1)
-	seep_gauze(9999) // destroy any existing gauze if any exists
+
+	if(splint)
+		remove_splint()
+	if(bandage)
+		remove_bandage()
 
 	for(var/obj/item/I in cavity_items)
 		remove_cavity_item(I)
@@ -967,6 +979,9 @@
 		bleed_rate *= 0.75
 	if(grasped_by)
 		bleed_rate *= 0.7
+
+	if(bandage)
+		bleed_rate *= bandage.absorption_rate_modifier
 	return bleed_rate
 
 // how much blood the limb needs to be losing per tick (not counting laying down/self grasping modifiers) to get the different bleed icons
@@ -1011,45 +1026,32 @@
 #undef BLEED_OVERLAY_MED
 #undef BLEED_OVERLAY_GUSH
 
-/**
- * apply_gauze() is used to- well, apply gauze to a bodypart
- *
- * As of the Wounds 2 PR, all bleeding is now bodypart based rather than the old bleedstacks system, and 90% of standard bleeding comes from flesh wounds (the exception is embedded weapons).
- * The same way bleeding is totaled up by bodyparts, gauze now applies to all wounds on the same part. Thus, having a slash wound, a pierce wound, and a broken bone wound would have the gauze
- * applying blood staunching to the first two wounds, while also acting as a sling for the third one. Once enough blood has been absorbed or all wounds with the ACCEPTS_GAUZE flag have been cleared,
- * the gauze falls off.
- *
- * Arguments:
- * * gauze- Just the gauze stack we're taking a sheet from to apply here
- */
-/obj/item/bodypart/proc/apply_gauze(obj/item/stack/gauze)
-	if(!istype(gauze) || !gauze.absorption_capacity)
+/obj/item/bodypart/proc/apply_bandage(obj/item/stack/new_bandage)
+	if(bandage || !istype(new_bandage) || !new_bandage.absorption_capacity)
 		return
-	var/newly_gauzed = FALSE
-	if(!current_gauze)
-		newly_gauzed = TRUE
-	QDEL_NULL(current_gauze)
-	current_gauze = new gauze.type(src, 1)
-	gauze.use(1)
-	if(newly_gauzed)
-		SEND_SIGNAL(src, COMSIG_LIMB_GAUZED, gauze)
 
-/**
- * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
- *
- * The passed amount of seepage is deducted from the bandage's absorption capacity, and if we reach a negative absorption capacity, the bandages falls off and we're left with nothing.
- *
- * Arguments:
- * * seep_amt - How much absorption capacity we're removing from our current bandages (think, how much blood or pus are we soaking up this tick?)
- */
-/obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
-	if(!current_gauze)
-		return
-	current_gauze.absorption_capacity -= seep_amt
-	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(span_danger("\The [current_gauze.name] on [owner]'s [name] falls away in rags."), span_warning("\The [current_gauze.name] on your [name] falls away in rags."), vision_distance=COMBAT_MESSAGE_RANGE)
-		QDEL_NULL(current_gauze)
-		SEND_SIGNAL(src, COMSIG_LIMB_GAUZE_DESTROYED)
+	bandage = new_bandage.split_stack(null, 1)
+	bandage.forceMove(src)
+	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
+	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
+		for(var/datum/wound/iter_wound as anything in wounds)
+			if(iter_wound.bleeding())
+				to_chat(owner, span_warning("You feel blood pool on your [plaintext_zone]."))
+				break
+
+/obj/item/bodypart/proc/remove_bandage()
+	if(!bandage)
+		return FALSE
+
+	. = bandage
+	UnregisterSignal(bandage, COMSIG_PARENT_QDELETING)
+	if(bandage.loc == src)
+		bandage.forceMove(drop_location())
+	bandage = null
+
+/obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
+	SIGNAL_HANDLER
+	remove_bandage()
 
 /obj/item/bodypart/proc/apply_splint(obj/item/splint)
 	if(src.splint)
@@ -1060,7 +1062,7 @@
 		splint.forceMove(src)
 
 	update_interaction_speed()
-	RegisterSignal(splint, COMSIG_MOVABLE_MOVED, PROC_REF(splint_gone))
+	RegisterSignal(splint, COMSIG_PARENT_QDELETING, PROC_REF(splint_gone))
 	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
 	return TRUE
 
@@ -1074,7 +1076,8 @@
 	if(!splint)
 		return FALSE
 
-	var/was = splint
+	. = splint
+
 	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
 	if(splint.loc == src)
 		splint.forceMove(drop_location())
@@ -1082,7 +1085,6 @@
 	splint = null
 	update_interaction_speed()
 	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
-	return was
 
 /obj/item/bodypart/proc/splint_gone(obj/item/source)
 	SIGNAL_HANDLER
@@ -1292,5 +1294,24 @@
 				return
 			if(!user.put_in_hands(removed))
 				removed.forceMove(user.drop_location())
+			if(user == owner)
+				user.visible_message(span_notice("[user] removes [removed] from [user.p_their()] [plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
+		return
 
+	if(href_list["bandage_remove"])
+		if(!bandage)
+			return
+
+		if(do_after(user, owner, 5 SECONDS, DO_PUBLIC))
+			var/obj/item/removed = remove_bandage()
+			if(!removed)
+				return
+			if(!user.put_in_hands(removed))
+				removed.forceMove(user.drop_location())
+			if(user == owner)
+				user.visible_message(span_notice("[user] removes [removed] from [user.p_their()] [plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
 		return

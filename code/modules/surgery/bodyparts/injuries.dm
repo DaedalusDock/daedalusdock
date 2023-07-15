@@ -190,11 +190,13 @@
 			. |= SURGERY_DEENCASED
 
 /obj/item/bodypart/proc/get_incision(strict)
+	if(bandage)
+		return FALSE
 
 	var/datum/wound/incision
 
 	for(var/datum/wound/cut/W in wounds)
-		if(W.bandaged || W.current_stage > W.max_bleeding_stage) // Shit's unusable
+		if(W.current_stage > W.max_bleeding_stage) // Shit's unusable
 			continue
 		if(strict && !W.is_surgical()) //We don't need dirty ones
 			continue

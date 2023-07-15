@@ -1,5 +1,5 @@
 /datum/surgery_step/tend_wounds
-	name = "Repair physical trauma"
+	name = "Repair greivous physical trauma"
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100
@@ -13,7 +13,7 @@
 
 /datum/surgery_step/tend_wounds/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	. = affected.get_damage() >= affected.max_damage * 0.5
+	. = affected.get_damage() >= affected.max_damage * 0.25
 	if(!.)
 		to_chat(user, span_warning("[target]'s [affected.plaintext_zone] cannot be repaired any more through surgery."))
 

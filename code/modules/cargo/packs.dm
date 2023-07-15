@@ -1246,7 +1246,7 @@
 					/obj/item/reagent_containers/glass/bottle/toxin,
 					/obj/item/reagent_containers/glass/beaker/large,
 					/obj/item/reagent_containers/pill/insulin,
-					/obj/item/stack/medical/gauze,
+					/obj/item/stack/gauze,
 					/obj/item/storage/box/beakers,
 					/obj/item/storage/box/medigels,
 					/obj/item/storage/box/syringes,

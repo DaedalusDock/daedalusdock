@@ -17,6 +17,8 @@
 	. = ..()
 	if(!uplink_flag)
 		uplink_flag = src.uplink_flag
+	if(isturf(uplink_handler))
+		stack_trace("what")
 	src.uplink_handler = uplink_handler
 	RegisterSignal(src, COMSIG_COMPONENT_REMOVING, PROC_REF(_component_removal))
 

@@ -426,6 +426,9 @@
 		CRASH("Uplink creation failed.")
 	new_uplink.setup_unlock_code()
 	new_uplink.uplink_handler.owner = traitor_mob.mind
+	if(isturf(new_uplink.uplink_handler))
+		stack_trace("what")
+
 	new_uplink.uplink_handler.assigned_role = traitor_mob.mind.assigned_role.title
 	new_uplink.uplink_handler.assigned_species = traitor_mob.dna.species.id
 	if(uplink_loc == R)

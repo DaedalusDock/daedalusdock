@@ -84,6 +84,9 @@
 		uplink_handler.purchase_log = purchase_log
 	else
 		uplink_handler = uplink_handler_override
+	if(isturf(uplink_handler))
+		stack_trace("what")
+
 	RegisterSignal(uplink_handler, COMSIG_UPLINK_HANDLER_ON_UPDATE, PROC_REF(handle_uplink_handler_update))
 	if(!lockable)
 		active = TRUE

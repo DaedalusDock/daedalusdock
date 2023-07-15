@@ -238,6 +238,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(LAZYLEN(possible_surgeries) == 1)
 		step = possible_surgeries[1]
 
+		#ifdef UNIT_TESTS
+		if(!istype(step, user.desired_surgery))
+			CRASH("User ended up with a surgery that wasn't the desied [user.desired_surgery]!")
+		#endif
+
 	else if(LAZYLEN(possible_surgeries) >= 1)
 		if(user.client) // In case of future autodocs.
 			step = input(user, "Which surgery would you like to perform?", "Surgery") as null|anything in possible_surgeries

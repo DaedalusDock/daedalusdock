@@ -26,7 +26,7 @@
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
 	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
-	var/obj/item/hemostat/hemostat = allocate(/obj/item/hemostat)
+	var/obj/item/fixovein/fixovein = allocate(/obj/item/fixovein)
 
 	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
 
@@ -36,6 +36,7 @@
 	TEST_ASSERT((BP.bodypart_flags & BP_CUT_AWAY), "Arm did not gain CUT_AWAY flag after dismemberment")
 
 	patient.set_lying_down()
+	user.desired_surgery = /datum/surgery_step/limb/attach
 	user.zone_selected = BODY_ZONE_R_ARM
 	user.put_in_active_hand(BP)
 	BP.melee_attack_chain(user, patient)
@@ -44,7 +45,7 @@
 	TEST_ASSERT((BP.bodypart_flags & BP_CUT_AWAY), "Arm lost CUT_AWAY flag after attachment")
 
 	user.desired_surgery = /datum/surgery_step/limb/connect
-	user.put_in_active_hand(hemostat)
+	user.put_in_active_hand(fixovein)
 	hemostat.melee_attack_chain(user, patient)
 
 	TEST_ASSERT(!(BP.bodypart_flags & BP_CUT_AWAY), "Arm did not lose CUT_AWAY flag after connection.")

@@ -149,7 +149,7 @@
 	var/listindex = 0
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
-	if(!_owner || !_goal)
+	if(!_owner)
 		return
 
 	owner = _owner
@@ -214,3 +214,10 @@
 	alpha = 0
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = NONE //We don't want VIS_INHERIT_PLANE
+
+/obj/effect/abstract/progbar/Del()
+	stack_trace("progbar hard deleted")
+	. = ..()
+
+/obj/effect/abstract/progbar/Destroy(force)
+	. = ..()

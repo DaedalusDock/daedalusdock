@@ -1,5 +1,5 @@
 /datum/surgery_step/tend_wounds
-	name = "Repair greivous physical trauma"
+	name = "Repair greivous physical trauma (organic)"
 	desc = "Repairs extreme damage from cuts, bruises, and punctures."
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC
 	allowed_tools = list(
@@ -50,7 +50,7 @@
 		affected.heal_damage(0, 15)
 
 /datum/surgery_step/tend_wounds/burn
-	name = "Repair third degree burns"
+	name = "Repair third degree burns (organic)"
 	desc = "Repairs extreme damage from burns."
 	damage_type = BURN
 

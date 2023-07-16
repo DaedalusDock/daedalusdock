@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/bone/set_bone
 	name = "Set bone"
-	desc = "Sets a bone in it's correct position to be mended."
+	desc = "Sets a bone in it's correct position to be " + CODEX_LINK("mended", "repair bone") + "."
 	allowed_tools = list(
 		/obj/item/bonesetter = 100,
 		/obj/item/wrench = 75

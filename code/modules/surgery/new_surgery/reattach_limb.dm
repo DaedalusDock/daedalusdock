@@ -23,7 +23,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/attach
 	name = "Attach limb"
-	desc = "Affixes a limb to a patient, where it can then be <b>connected</b>."
+	desc = "Affixes a limb to a patient, where it can then be " + CODEX_LINK("connected", "connect limb") + "." //String interpolation isn't const folded
 	allowed_tools = list(/obj/item/bodypart = 100)
 	min_duration = 50
 	max_duration = 70

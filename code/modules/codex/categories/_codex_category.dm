@@ -8,7 +8,7 @@
 	var/link_columns = 0
 
 /datum/codex_category/proc/get_category_link(datum/codex_entry/entry)
-	return "This page is categorized under <span codexlink='[name] (category)'>[name].</span>"
+	return "This page is categorized under <span codexlink='[name] (category)'>[name]</span>."
 
 //Children should call ..() at the end after filling the items list
 /datum/codex_category/proc/Populate()
@@ -17,7 +17,7 @@
 	if(length(items))
 		var/lore_text = desc + "<hr>"
 		if(guide_name && guide_html)
-			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide.</span><hr>"
+			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide</span>.<hr>"
 
 		items = sortTim(items, GLOBAL_PROC_REF(cmp_text_asc), TRUE)
 		var/list/links = list()

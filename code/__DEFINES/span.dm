@@ -129,3 +129,6 @@
 #define span_mild(str) ("<span class='mild'>" + str + "</span>")
 #define span_average(str) ("<span class='average'>" + str + "</span>")
 #define span_good(str) ("<span class='good'>" + str + "</span>")
+
+// Codex
+#define CODEX_LINK(str, entrytext) ("<span codexlink='" + entrytext + "'>" + str + "</span>")

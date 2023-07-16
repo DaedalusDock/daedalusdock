@@ -3847,19 +3847,14 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "aYA" = (
-/obj/structure/table/glass,
-/obj/item/scalpel{
-	pixel_y = 12
-	},
-/obj/item/circular_saw,
-/obj/item/blood_filter,
 /obj/machinery/light/directional/south,
-/obj/item/bonesetter,
 /obj/machinery/button/door/directional/south{
 	id = "main_surgery";
 	name = "privacy shutters control"
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/structure/table/glass,
+/obj/item/clothing/gloves/color/latex,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "aYE" = (
@@ -13779,6 +13774,8 @@
 /area/station/engineering/supermatter/room)
 "dVY" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "dWd" = (
@@ -13880,6 +13877,8 @@
 /obj/item/stack/sticky_tape/surgical,
 /obj/item/stack/medical/bone_gel,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/stack/sticky_tape/surgical,
+/obj/item/stack/medical/bone_gel,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "dYb" = (
@@ -24583,6 +24582,17 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat/foyer)
+"hOu" = (
+/obj/structure/table/glass,
+/obj/item/scalpel{
+	pixel_y = 12
+	},
+/obj/item/circular_saw,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/blood_filter,
+/obj/item/bonesetter,
+/turf/open/floor/iron/white,
+/area/station/medical/surgery/theatre)
 "hOB" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/corner{
@@ -25722,6 +25732,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
+"ini" = (
+/obj/structure/cable,
+/turf/open/floor/iron/white,
+/area/station/medical/surgery/theatre)
 "ink" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -26802,6 +26816,13 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/command/gateway)
+"iIp" = (
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 8
+	},
+/obj/structure/cable,
+/turf/open/floor/iron/white,
+/area/station/medical/surgery/theatre)
 "iIQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/dark,
@@ -30934,9 +30955,18 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/department/medical/central)
 "kgL" = (
-/obj/structure/table/optable,
+/obj/structure/table/glass,
+/obj/item/scalpel{
+	pixel_y = 12
+	},
+/obj/item/circular_saw,
+/obj/item/blood_filter,
+/obj/item/bonesetter,
+/obj/machinery/button/door/directional/south{
+	id = "main_surgery";
+	name = "privacy shutters control"
+	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/body_scan_display/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "kgQ" = (
@@ -37862,7 +37892,6 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 9
 	},
-/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "mIU" = (
@@ -43664,10 +43693,10 @@
 /turf/open/floor/iron/dark,
 /area/station/medical/break_room)
 "oMX" = (
-/obj/structure/table/glass,
-/obj/item/clothing/gloves/color/latex,
 /obj/machinery/airalarm/directional/south,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/structure/table/optable,
+/obj/machinery/body_scan_display/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "oNc" = (
@@ -44375,6 +44404,10 @@
 	network = list("ss13","medical")
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/button/door/directional/west{
+	name = "privacy shutters control";
+	id = "main_surgery"
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "pat" = (
@@ -59824,18 +59857,9 @@
 /area/station/security/prison/safe)
 "uWh" = (
 /obj/structure/table/glass,
-/obj/item/scalpel{
-	pixel_y = 12
-	},
-/obj/item/circular_saw,
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/item/blood_filter,
 /obj/machinery/light/directional/north,
-/obj/item/bonesetter,
-/obj/machinery/button/door/directional/north{
-	id = "main_surgery";
-	name = "privacy shutters control"
-	},
+/obj/item/clothing/gloves/color/latex,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "uWm" = (
@@ -65762,11 +65786,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "xhZ" = (
-/obj/structure/table/glass,
-/obj/item/clothing/gloves/color/latex,
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
+/obj/machinery/body_scan_display/directional/north,
+/obj/structure/table/optable,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/theatre)
 "xif" = (
@@ -87165,7 +87187,7 @@ vYs
 skZ
 bbE
 xyv
-kgL
+hOu
 dVY
 nbX
 pao
@@ -87423,7 +87445,7 @@ yjH
 bbE
 xhZ
 mIF
-nYV
+iIp
 bap
 nYV
 sCT
@@ -87680,7 +87702,7 @@ jLU
 bbE
 uWh
 fsq
-kxB
+ini
 aOa
 kxB
 uMv

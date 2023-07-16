@@ -1,5 +1,6 @@
 /datum/surgery_step/brain_trauma
 	name = "Repair brain trauma"
+	desc = "Repairs physiological and psychological damage to a patient's brain."
 	surgery_candidate_flags = SURGERY_NEEDS_DEENCASEMENT
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 85,

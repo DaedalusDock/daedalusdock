@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/fix_tendon
 	name = "Repair tendon"
+	desc = "Repairs the tendon of a patient's limb."
 	allowed_tools = list(
 		/obj/item/fixovein = 100,
 		/obj/item/stack/cable_coil = 75,
@@ -48,6 +49,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/fix_vein
 	name = "Repair arterial bleeding"
+	desc = "Stops bleeding from an artery in a patient's limb."
 	allowed_tools = list(
 		/obj/item/fixovein = 100,
 		/obj/item/stack/cable_coil = 75,

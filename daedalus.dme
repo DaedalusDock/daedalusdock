@@ -2830,6 +2830,7 @@
 #include "code\modules\codex\categories\mechcomp.dm"
 #include "code\modules\codex\categories\power.dm"
 #include "code\modules\codex\categories\species.dm"
+#include "code\modules\codex\categories\surgery.dm"
 #include "code\modules\codex\categories\tools.dm"
 #include "code\modules\codex\categories\uncategorized.dm"
 #include "code\modules\codex\entries\_codex_entry.dm"

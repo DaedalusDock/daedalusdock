@@ -1,5 +1,6 @@
 /datum/surgery_step/insert_pill
-	name = "insert pill dental implant"
+	name = "Insert pill dental implant"
+	desc = "Implants a pill for the patient to activate by biting down hard."
 	allowed_tools = list(
 		/obj/item/reagent_containers/pill = 100
 	)

@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic_organic/laser_incise
 	name = "Make laser incision"
+	desc = "Creates an incision on a patient without causing bleeding."
 	allowed_tools = list(
 		/obj/item/scalpel/advanced = 100,
 		/obj/item/melee/energy/sword = 5
@@ -50,6 +51,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic_organic/incise
 	name = "Make incision"
+	desc = "Creates a surgerical cut on a patient, can be widened to operate deeper in their body."
 	allowed_tools = list(
 		TOOL_SCALPEL = 100,
 		/obj/item/knife = 75,
@@ -97,6 +99,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic_organic/clamp_bleeders
 	name = "Clamp bleeders"
+	desc = "Clamps bleeding tissue to prevent blood loss during an operation."
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100,
 		/obj/item/stack/cable_coil = 75,
@@ -131,6 +134,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic_organic/retract_skin
 	name = "Widen incision"
+	desc = "Retracts the flesh of a patient to grant access to deeper portions of the body."
 	allowed_tools = list(
 		TOOL_RETRACTOR = 100,
 		TOOL_CROWBAR = 75,
@@ -176,6 +180,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic_organic/cauterize
 	name = "Cauterize incision"
+	desc = "Mends any surgical incisions on a patient's limb."
 	allowed_tools = list(
 		TOOL_CAUTERY = 100,
 		/obj/item/clothing/mask/cigarette = 75,
@@ -249,6 +254,7 @@
 
 /datum/surgery_step/generic_organic/amputate
 	name = "Amputate limb"
+	desc = "Removes a patient's limb."
 	allowed_tools = list(
 		TOOL_SAW = 100,
 		/obj/item/fireaxe = 95,

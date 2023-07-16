@@ -1,5 +1,6 @@
 /datum/surgery_step/remove_embedded_item
 	name = "Remove embedded item"
+	desc = "Removes an object embedded at the surface of a patient's flesh."
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_WIRECUTTER = 50,

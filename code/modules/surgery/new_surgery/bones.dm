@@ -13,6 +13,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/bone/set_bone
 	name = "Set bone"
+	desc = "Sets a bone in it's correct position to be mended."
 	allowed_tools = list(
 		/obj/item/bonesetter = 100,
 		/obj/item/wrench = 75
@@ -61,6 +62,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/bone/finish
 	name = "Repair bone"
+	desc = "Mends a broken bone."
 	allowed_tools = list(
 		/obj/item/stack/medical/bone_gel = 100,
 		/obj/item/stack/sticky_tape/surgical = 100,

@@ -23,6 +23,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/attach
 	name = "Attach limb"
+	desc = "Affixes a limb to a patient, where it can then be <b>connected</b>."
 	allowed_tools = list(/obj/item/bodypart = 100)
 	min_duration = 50
 	max_duration = 70
@@ -66,6 +67,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/connect
 	name = "Connect limb"
+	desc = "Connects a limb to a patient's nervous system, granting them the ability to use it."
 	allowed_tools = list(
 		/obj/item/fixovein = 100,
 		/obj/item/stack/cable_coil = 75,

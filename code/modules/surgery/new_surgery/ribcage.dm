@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/open_encased
 	name = "Saw through bone"
+	desc = "Surgerically fractures the bones of a patient's limb, granting access to any organs underneath."
 	allowed_tools = list(
 		TOOL_SAW = 100,
 		/obj/item/knife = 50,

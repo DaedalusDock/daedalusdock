@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ
 	name = "Repair internal organ"
+	desc = "Repairs damage to a patient's internal organ."
 	allowed_tools = list(
 		/obj/item/stack/medical/bruise_pack = 100,
 		/obj/item/stack/sticky_tape = 20
@@ -84,6 +85,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/detach_organ
 	name = "Detach organ"
+	desc = "Detaches a patient's organ from their body, leaving it stranded in their chest cavity for removal."
 	allowed_tools = list(
 		TOOL_SCALPEL = 100,
 		/obj/item/shard = 50
@@ -136,6 +138,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/remove_organ
 	name = "Remove internal organ"
+	desc = "Retrieves an organ from a patient's cavity."
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100,
 		/obj/item/wirecutters = 75,
@@ -190,6 +193,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/replace_organ
 	name = "Replace internal organ"
+	desc = "Places an organ into the patient's cavity, where it is able to be attached to them."
 	allowed_tools = list(
 		/obj/item/organ = 100
 	)
@@ -244,6 +248,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/attach_organ
 	name = "Attach internal organ"
+	desc = "Connects an organ to the patient's body, allowing them to utilize it."
 	allowed_tools = list(
 		/obj/item/fixovein = 100,
 		/obj/item/stack/cable_coil = 75,

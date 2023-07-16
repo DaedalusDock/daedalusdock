@@ -25,6 +25,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/make_space
 	name = "Hollow out cavity"
+	desc = "Grants access to an internal cavity. Often used to gain access to a patient's internal organs."
 	allowed_tools = list(
 		TOOL_DRILL = 100,
 		/obj/item/pen = 75,
@@ -54,6 +55,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/close_space
 	name = "Close cavity"
+	desc = "Seals a patient's internal cavity, preventing access."
 	allowed_tools = list(
 		TOOL_CAUTERY = 100,
 		/obj/item/clothing/mask/cigarette = 75,
@@ -88,6 +90,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/place_item
 	name = "Place item in cavity"
+	desc = "Inserts an object into a patient's cavity."
 	allowed_tools = list(/obj/item = 100)
 	min_duration = 4 SECONDS
 	max_duration = 6 SECONDS
@@ -150,6 +153,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/implant_removal
 	name = "Remove foreign body"
+	desc = "Removes an object from the patient's cavity."
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_WIRECUTTER = 75,

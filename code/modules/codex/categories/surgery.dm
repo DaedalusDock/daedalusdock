@@ -1,7 +1,7 @@
 /datum/codex_category/surgery
 	name = "Surgeries"
 	desc = "Information on surgerical procedures."
-	guide_name = "Guide to Surgery"
+	guide_name = "Surgery"
 	guide_html = {"
 		<h2>Important Notes</h2>
 		<ul>

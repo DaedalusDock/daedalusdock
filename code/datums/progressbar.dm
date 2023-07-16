@@ -214,10 +214,3 @@
 	alpha = 0
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = NONE //We don't want VIS_INHERIT_PLANE
-
-/obj/effect/abstract/progbar/Del()
-	stack_trace("progbar hard deleted")
-	. = ..()
-
-/obj/effect/abstract/progbar/Destroy(force)
-	. = ..()

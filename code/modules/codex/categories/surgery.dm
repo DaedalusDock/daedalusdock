@@ -52,7 +52,7 @@
 		Fresh limbs can be sourced from donors, organ printers, or prosthetics fabricators.
 		<ol>
 		<li>Remove the original limb by <span codexlink='amputate limb'>amputation</span> if it is present.</li>
-		<li>Target the appropriate limb slot and <span codexlink='replace limb'>install the new limb</span> on the patient.</li>
+		<li>Target the appropriate limb slot and <span codexlink='attach limb'>install the new limb</span> on the patient.</li>
 		<li>Use a <span codexlink='connect limb'>vascular recoupler to connect the nerves</span> to the new limb.</li>
 		</ol>
 	"}

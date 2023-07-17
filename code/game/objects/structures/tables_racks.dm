@@ -124,7 +124,7 @@
 		if(dropping != user)
 			return
 		var/mob/living/carbon/human/H = user
-		if(H.incapacitated() || H.body_position == LYING_DOWN || H.combat_mode)
+		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
 			return
 		if(!H.Adjacent(src))
 			return FALSE

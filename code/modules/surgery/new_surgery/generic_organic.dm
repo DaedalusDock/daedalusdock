@@ -42,7 +42,7 @@
 
 /datum/surgery_step/generic_organic/laser_incise/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.plaintext_zone] with[tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(15, 5, sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 

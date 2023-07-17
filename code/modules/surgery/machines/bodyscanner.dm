@@ -123,13 +123,15 @@
 
 /////// The Console ////////
 /obj/machinery/bodyscanner_console
-	var/obj/machinery/bodyscanner/linked_scanner
+	name = "body scanner console"
 	icon = 'icons/obj/cryogenics.dmi'
 	icon_state = "bodyscanner_console_powered"
 	dir = EAST
 
+	var/obj/machinery/bodyscanner/linked_scanner
 	/// Data! Maybe there's something to be done with data disks here.
 	var/list/scan
+
 
 /obj/machinery/bodyscanner_console/Initialize(mapload)
 	. = ..()

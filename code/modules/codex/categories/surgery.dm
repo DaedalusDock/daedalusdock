@@ -73,7 +73,7 @@
 
 			if(step.surgery_candidate_flags & SURGERY_NO_STUMP)
 				info += "<li>This operation cannot be performed on stumps."
-			if(step.surgery_candidate_flags & SURGERY_NEEDS_RETRACTED)
+			if(step.surgery_candidate_flags & SURGERY_NEEDS_INCISION)
 				info += "<li>This operation requires <b>[step.strict_access_requirement ? "exactly" : "atleast"]</b> an [CODEX_LINK("incision", "make incision")] or small cut.</li>"
 			else if(step.surgery_candidate_flags & (SURGERY_NEEDS_RETRACTED|SURGERY_NEEDS_DEENCASEMENT))
 				info += "<li>This operation requires <b>[step.strict_access_requirement ? "exactly" : "atleast"]</b> a [CODEX_LINK("widened incision", "widen incision")] or large cut.</li>"

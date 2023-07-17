@@ -91,17 +91,9 @@
 	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in [target]'s [affected.name]"
 	user.visible_message(span_notice("[user] has mended [bone] with [tool]."))
 	affected.heal_bones()
-
-	if(istype(tool, /obj/item/stack))
-		var/obj/item/stack/S = tool
-		S.use(1)
 	..()
 
 /datum/surgery_step/bone/finish/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, smearing [tool] in the incision in [target]'s [affected.name]!"))
-
-	if(istype(tool, /obj/item/stack))
-		var/obj/item/stack/S = tool
-		S.use(1)
 	..()

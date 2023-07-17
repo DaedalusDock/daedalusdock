@@ -31,8 +31,6 @@
 	var/heal_brute
 	/// How much burn we heal per application
 	var/heal_burn
-	/// How much we reduce bleeding per application on cut wounds
-	var/stop_bleeding
 	/// How much sanitization to apply to burn wounds on application
 	var/sanitization
 	/// How much we add to flesh_healing for burn wounds on application
@@ -117,7 +115,7 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 15
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
@@ -199,46 +197,49 @@
 
 	merge_type = /obj/item/stack/gauze/improvised
 
-	/*
-	The idea is for the following medical devices to work like a hybrid of the old brute packs and tend wounds,
-	they heal a little at a time, have reduced healing density and does not allow for rapid healing while in combat.
-	However they provice graunular control of where the healing is directed, this makes them better for curing work-related cuts and scrapes.
-
-	The interesting limb targeting mechanic is retained and i still believe they will be a viable choice, especially when healing others in the field.
-	 */
-
+/// Sutures close small cut or puncture wounds.
 /obj/item/stack/medical/suture
 	name = "suture"
-	desc = "Basic sterile sutures used to seal up cuts and lacerations and stop bleeding."
+	desc = "Basic sterile sutures used to seal up cuts and stop bleeding."
 	gender = PLURAL
 	singular_name = "suture"
 	icon_state = "suture"
-	self_delay = 3 SECONDS
-	other_delay = 1 SECONDS
+	self_delay = 8 SECONDS
+	other_delay = 5 SECONDS
 	amount = 10
 	max_amount = 10
 	repeating = TRUE
-	heal_brute = 10
-	stop_bleeding = 0.6
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
 
-/obj/item/stack/medical/suture/emergency
-	name = "emergency suture"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
+/obj/item/stack/medical/suture/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
+	var/obj/item/bodypart/affecting = C.get_bodypart(check_zone(user.zone_selected), TRUE)
+	if(!affecting) //Missing limb?
+		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
+		return FALSE
+	if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
+		to_chat(user, span_warning("[src] won't work on a robotic limb!"))
+		return FALSE
 
-/obj/item/stack/medical/suture/medicated
-	name = "medicated suture"
-	icon_state = "suture_purp"
-	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
-	heal_brute = 15
-	stop_bleeding = 0.75
-	grind_results = list(/datum/reagent/medicine/polypyr = 1)
-	merge_type = /obj/item/stack/medical/suture/medicated
+	var/wound_desc
+	for(var/datum/wound/W as anything in shuffle(affecting.wounds))
+		if(W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
+			continue
+		if(W.damage <= 15)
+			wound_desc = W.desc
+			W.heal_damage(15)
+			affecting.update_damage()
+			break
+
+	if(!wound_desc)
+		to_chat(user, span_warning("You can't find any wounds you can stitch shut."))
+		return FALSE
+
+	if(user == C)
+		user.visible_message(span_notice("[user] stitches the [wound_desc] on [user.p_their()] [affecting.plaintext_zone] shut."))
+	else
+		user.visible_message(span_notice("[user] stitches the [wound_desc] on [C]'s [affecting.plaintext_zone] shut."))
+	return TRUE
 
 /obj/item/stack/medical/ointment
 	name = "ointment"

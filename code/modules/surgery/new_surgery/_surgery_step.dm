@@ -323,10 +323,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	return FALSE
 
 /obj/item/proc/handle_post_surgery()
-	return
-
-/obj/item/stack/handle_post_surgery()
 	use(1)
+	return
 
 /mob/proc/can_operate_on(mob/living/target)
 	var/turf/T = get_turf(target)

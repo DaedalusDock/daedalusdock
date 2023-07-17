@@ -72,10 +72,6 @@
 		to_chat(user, span_warning("[tool] cannot be used right now."))
 		return FALSE
 
-/datum/surgery_step/tend_wounds/robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	..()
-	tool.use(1)
-
 /datum/surgery_step/tend_wounds/robotic/burn
 	name = "Repair third degree burns (robotic)"
 	desc = "Repairs extreme damage from burns."

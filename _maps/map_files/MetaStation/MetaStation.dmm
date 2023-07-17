@@ -36511,7 +36511,7 @@
 "mjS" = (
 /obj/structure/rack,
 /obj/item/stack/medical/mesh,
-/obj/item/stack/medical/suture,
+/obj/item/stack/medical/bruise_pack,
 /obj/item/reagent_containers/syringe/multiver,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = -1;
@@ -36957,7 +36957,7 @@
 /obj/structure/table,
 /obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
-/obj/item/stack/medical/suture,
+/obj/item/stack/medical/bruise_pack,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
@@ -52784,8 +52784,8 @@
 /obj/effect/decal/cleanable/blood/gibs/limb,
 /obj/structure/rack,
 /obj/item/storage/medkit/regular,
-/obj/item/stack/medical/suture,
-/obj/item/stack/medical/suture,
+/obj/item/stack/medical/bruise_pack,
+/obj/item/stack/medical/bruise_pack,
 /obj/item/stack/medical/mesh,
 /obj/item/clothing/glasses/hud/health,
 /obj/effect/turf_decal/trimline/green/filled/line,
@@ -65324,7 +65324,7 @@
 /obj/structure/table,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/gauze,
-/obj/item/stack/medical/suture,
+/obj/item/stack/medical/bruise_pack,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/blue/half/contrasted{

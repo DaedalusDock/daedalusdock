@@ -257,9 +257,15 @@
 		return 0
 	return 1
 
+/// Returns if the wound is currently bleeding.
 /datum/wound/proc/bleeding()
 	if(clamped)
 		return FALSE
+	if(length(embedded_objects))
+		for(var/obj/item/thing in embedded_objects)
+			if(thing.w_class > WEIGHT_CLASS_SMALL)
+				return FALSE
+	// If the bleed_timer is greater than zero, OR the wound_damage() is greater than the damage required to bleed constantly.
 	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
 
 /datum/wound/proc/is_surgical()

@@ -119,14 +119,8 @@
 		if(!affected.brute_dam)
 			to_chat(user, span_warning("There is no damage to repair."))
 			return FALSE
-		if(istype(tool, /obj/item/weldingtool))
-			var/obj/item/weldingtool/welder = tool
-			if(!welder.isOn() || !welder.tool_use_check(user, 1))
-				return FALSE
-		if(istype(tool, /obj/item/gun/energy/plasmacutter))
-			var/obj/item/gun/energy/plasmacutter/cutter = tool
-			if(!cutter.tool_use_check(user, 1))
-				return FALSE
+		if(!tool.tool_use_check(user, 1))
+			return FALSE
 		return TRUE
 	return FALSE
 
@@ -141,15 +135,6 @@
 	..()
 
 /datum/surgery_step/robotics/repair_brute/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if(istype(tool, /obj/item/weldingtool))
-		var/obj/item/weldingtool/welder = tool
-		if(!welder.isOn() || !welder.use(1))
-			return FALSE
-	if(istype(tool, /obj/item/gun/energy/plasmacutter))
-		var/obj/item/gun/energy/plasmacutter/cutter = tool
-		if(!cutter.use(1))
-			return FALSE
-
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] finishes patching damage to [target]'s [affected.plaintext_zone] with [tool]."))
 	..()
@@ -197,14 +182,10 @@
 	..()
 
 /datum/surgery_step/robotics/repair_burn/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/stack/cable_coil/C = tool
-	if(!istype(C) || !C.use(3))
-		to_chat(user, span_warning("You need three or more cable pieces to repair this damage."))
-		return
-
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] finishes splicing cable into [target]'s [affected.plaintext_zone]."))
 	affected.heal_damage(0, rand(30,50), BODYTYPE_ROBOTIC)
+	tool.use(2) // We need 3 cable coil, and `handle_post_surgery()` removes 1.
 	..()
 
 /datum/surgery_step/robotics/repair_burn/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

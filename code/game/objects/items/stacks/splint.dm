@@ -7,11 +7,13 @@
 	full_w_class = WEIGHT_CLASS_NORMAL
 	item_flags = NOBLUDGEON
 	merge_type = /obj/item/stack/splint
-	amount = 5
-	max_amount = 5
-
+	amount = 1
+	max_amount = 2
 
 	splint_slowdown = 1
+
+/obj/item/stack/splint/two
+	amount = 2
 
 /obj/item/stack/proc/try_splint(mob/living/carbon/human/H, mob/living/user)
 	if(!istype(H))

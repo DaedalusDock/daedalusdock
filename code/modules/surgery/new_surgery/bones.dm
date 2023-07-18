@@ -82,8 +82,7 @@
 /datum/surgery_step/bone/finish/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in \the [target]'s [affected.name]"
-	user.visible_message("[user] starts to finish mending [bone] with \the [tool].", \
-	"You start to finish mending [bone] with \the [tool].")
+	user.visible_message(span_notice("[user] starts to finish mending [bone] with \the [tool]."))
 	..()
 
 /datum/surgery_step/bone/finish/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

@@ -130,7 +130,7 @@
 
 /datum/surgery_step/cavity/place_item/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts putting [tool] inside [target]'s [affected.cavity_name] cavity.")
+	user.visible_message(span_notice("[user] starts putting [tool] inside [target]'s [affected.cavity_name] cavity."))
 
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
 	..()
@@ -174,7 +174,7 @@
 
 /datum/surgery_step/cavity/implant_removal/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message("[user] starts poking around inside [target]'s [affected.plaintext_zone] with [tool].")
+	user.visible_message(span_notice("[user] starts poking around inside [target]'s [affected.plaintext_zone] with [tool]."))
 	..()
 
 /datum/surgery_step/cavity/implant_removal/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

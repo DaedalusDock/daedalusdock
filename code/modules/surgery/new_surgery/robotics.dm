@@ -235,7 +235,7 @@
 		return list(organ, organs[organ])
 
 /datum/surgery_step/robotics/fix_organ_robotic/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("[user] starts mending the damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] mechanisms.")
+	user.visible_message(span_notice("[user] starts mending the damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] mechanisms."))
 	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -326,7 +326,7 @@
 		return list(organ_to_replace, removable_organs[organ_to_replace])
 
 /datum/surgery_step/robotics/attach_organ_robotic/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("[user] begins reattaching [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool].")
+	user.visible_message(span_notice("[user] begins reattaching [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
 	..()
 
 /datum/surgery_step/robotics/attach_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

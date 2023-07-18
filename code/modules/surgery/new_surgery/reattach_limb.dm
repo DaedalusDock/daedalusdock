@@ -58,7 +58,7 @@
 
 /datum/surgery_step/limb/attach/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = target.get_bodypart(target_zone, TRUE)
-	user.visible_message("[user]'s hand slips, damaging [target]'s [BP.amputation_point]!")
+	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [BP.amputation_point]!"))
 	target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, sharpness = SHARP_EDGED)
 	..()
 

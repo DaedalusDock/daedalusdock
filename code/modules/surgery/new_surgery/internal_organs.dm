@@ -99,8 +99,7 @@
 	var/list/attached_organs = list()
 
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(!(I.status & ORGAN_ROBOTIC))
-			attached_organs[I.name] = I.slot
+		attached_organs[I.name] = I.slot
 
 	if(!length(attached_organs))
 		to_chat(user, span_warning("There are no appropriate internal components to decouple."))

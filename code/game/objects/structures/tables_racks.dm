@@ -687,10 +687,14 @@
 		set_patient(null)
 	return ..()
 
-/obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
-	pushed_mob.forceMove(loc)
+/obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
+	. = ..()
 	pushed_mob.set_resting(TRUE, TRUE)
-	visible_message(span_notice("[user] lays [pushed_mob] on [src]."))
+	get_patient()
+
+/obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
+	. = ..()
+	pushed_mob.set_resting(TRUE, TRUE)
 	get_patient()
 
 /obj/structure/table/optable/proc/get_patient()

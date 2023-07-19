@@ -1,0 +1,7 @@
+author: Cenrus
+delete-after: true
+changes:
+  - balance: bio bags are unequippable on your belt, but hold slime extracts now
+  - bugfix: fixed sec fabricator
+  - bugfix: data disks now available as cargo crates
+  - rscadd: several new cargo packs to make lost designs attainable again

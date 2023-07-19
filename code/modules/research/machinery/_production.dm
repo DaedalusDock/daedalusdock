@@ -112,9 +112,9 @@
 		updateUsrDialog()
 		do_print(queue_packet[1], queue_packet[2])
 
-	update_appearance(UPDATE_OVERLAYS)
 	processing_packet = null
 	busy = FALSE
+	update_appearance(UPDATE_OVERLAYS)
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/do_print(datum/design/D, amount)

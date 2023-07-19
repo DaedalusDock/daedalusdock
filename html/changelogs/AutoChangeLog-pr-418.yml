@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Commendation polling was asking people in the order they joined the server.
+      It will now instead pick randomly.

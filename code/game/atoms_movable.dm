@@ -315,7 +315,7 @@
 	if(direction != UP && direction != DOWN)
 		CRASH("Tried to zMove on the same Z Level.")
 
-	var/turf/destination = get_step(start, direction)
+	var/turf/destination = get_step_multiz(start, direction)
 	if(!destination)
 		if(z_move_flags & ZMOVE_FEEDBACK)
 			to_chat(rider || src, span_notice("There is nothing of interest in this direction."))

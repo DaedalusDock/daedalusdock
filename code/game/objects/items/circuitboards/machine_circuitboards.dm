@@ -916,6 +916,9 @@
 	name = "Departmental Fabricator - Security (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/rnd/production/fabricator/department/security
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+	)
 
 /obj/item/circuitboard/machine/recharger
 	name = "Weapon Recharger (Machine Board)"

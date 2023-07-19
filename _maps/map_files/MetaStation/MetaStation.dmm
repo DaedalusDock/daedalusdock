@@ -4147,7 +4147,8 @@
 "bca" = (
 /obj/machinery/door/poddoor{
 	id = "QMLoaddoor2";
-	name = "Supply Dock Loading Door"
+	name = "Supply Dock Loading Door";
+	dir = 4
 	},
 /obj/machinery/conveyor{
 	dir = 4;
@@ -15091,6 +15092,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/landmark/navigate_destination,
+/obj/effect/mapping_helpers/paint_wall/bridge,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "erM" = (
@@ -24404,10 +24406,6 @@
 /obj/machinery/meter,
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/engineering/atmos)
-"hJJ" = (
-/obj/machinery/rnd/production/fabricator/omni,
-/turf/open/floor/iron/dark,
-/area/station/science/lab)
 "hJO" = (
 /obj/machinery/firealarm/directional/west,
 /obj/effect/turf_decal/tile/neutral{
@@ -44239,16 +44237,17 @@
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
 "oXt" = (
-/obj/machinery/door/poddoor{
-	id = "QMLoaddoor";
-	name = "Supply Dock Loading Door"
-	},
 /obj/machinery/conveyor{
 	dir = 8;
 	id = "QMLoad"
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
+	},
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor";
+	name = "Supply Dock Loading Door";
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/station/cargo/storage)
@@ -53966,6 +53965,7 @@
 /obj/effect/turf_decal/siding{
 	dir = 1
 	},
+/obj/machinery/rnd/production/fabricator/omni,
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
 "sFx" = (
@@ -55222,15 +55222,16 @@
 /turf/open/floor/iron/dark,
 /area/station/security/execution/education)
 "teQ" = (
-/obj/machinery/door/poddoor{
-	id = "QMLoaddoor2";
-	name = "Supply Dock Loading Door"
-	},
 /obj/machinery/conveyor{
 	dir = 4;
 	id = "QMLoad2"
 	},
 /obj/effect/turf_decal/stripes/line,
+/obj/machinery/door/poddoor{
+	id = "QMLoaddoor2";
+	name = "Supply Dock Loading Door";
+	dir = 4
+	},
 /turf/open/floor/plating,
 /area/station/cargo/storage)
 "tfa" = (
@@ -60503,7 +60504,8 @@
 "vkd" = (
 /obj/machinery/door/poddoor{
 	id = "QMLoaddoor";
-	name = "Supply Dock Loading Door"
+	name = "Supply Dock Loading Door";
+	dir = 4
 	},
 /obj/machinery/conveyor{
 	dir = 8;
@@ -100802,7 +100804,7 @@ rGa
 uuT
 sFm
 iUN
-hJJ
+iUN
 tPA
 pIn
 esw
@@ -113589,9 +113591,9 @@ tdK
 tdK
 dnS
 dnz
-bXZ
-tdK
-tdK
+awI
+dnS
+dnS
 fQO
 kBI
 lDy
@@ -113847,8 +113849,8 @@ dzb
 lhd
 dqu
 bXZ
-tdK
-tdK
+dnS
+dnS
 fQO
 kBI
 hZj
@@ -114104,8 +114106,8 @@ qgX
 dnS
 bXZ
 bXZ
-tdK
-tdK
+dnS
+dnS
 fQO
 mNe
 lDy
@@ -114360,8 +114362,8 @@ tdK
 auB
 avG
 bXZ
-tdK
-tdK
+dnS
+dnS
 fQO
 fQO
 kBI
@@ -114617,8 +114619,8 @@ tdK
 tdK
 vBr
 bXZ
-tdK
-tdK
+dnS
+dnS
 fQO
 kBI
 iqW

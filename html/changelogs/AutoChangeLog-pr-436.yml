@@ -1,4 +1,0 @@
-author: DTraitor
-delete-after: true
-changes:
-  - bugfix: fixed camera not being able to move between Z levels

@@ -76,3 +76,14 @@
 2023-07-19:
   DTraitor:
   - bugfix: fixed camera not being able to move between Z levels
+2023-07-20:
+  Cenrus:
+  - balance: bio bags are unequippable on your belt, but hold slime extracts now
+  - bugfix: fixed sec fabricator
+  - bugfix: data disks now available as cargo crates
+  - rscadd: several new cargo packs to make lost designs attainable again
+  Kapu1178:
+  - soundadd: More scream sounds!
+  francinum:
+  - bugfix: Commendation polling was asking people in the order they joined the server.
+      It will now instead pick randomly.

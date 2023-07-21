@@ -22,7 +22,7 @@
 	for(var/slot in value - AUGMENT_SLOT_IMPLANTS)
 		var/path = value[slot]
 		var/datum/augment_item/A = GLOB.augment_items[path]
-		if(!A.can_apply_to_species(S.type))
+		if(!A.can_apply_to_species(S))
 			continue
 		A.apply_to_human(target, S)
 

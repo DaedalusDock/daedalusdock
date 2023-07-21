@@ -4,23 +4,27 @@ SUBSYSTEM_DEF(media)
 	init_order = INIT_ORDER_MEDIA //We need to finish up before SSTicker for lobby music reasons.
 	flags = SS_NO_FIRE
 
-	//Media definitions grouped by their `media_tags`, All tracks share the implicit tag `all`
+	/// Media definitions grouped by their `media_tags`, All tracks share the implicit tag `all`
 	VAR_PRIVATE/list/datum/media/tracks_by_tag
 
+	/// It's more consistently functional to just store these in a list and tell admins to go digging than log it.
+	VAR_PRIVATE/list/errored_files
+
+	/// Stores all sound formats byond understands.
 	var/list/byond_sound_formats = list(
-		"mid" = TRUE,
-		"midi" = TRUE,
-		"mod" = TRUE,
-		"it" = TRUE,
-		"s3m" = TRUE,
-		"xm" = TRUE,
-		"oxm" = TRUE,
-		"wav" = TRUE,
-		"ogg" = TRUE,
-		"raw" = TRUE,
-		"wma" = TRUE,
-		"aiff" = TRUE,
-		"mp3" = TRUE,
+		"mid" = TRUE, //Midi, 8.3 File Name
+		"midi" = TRUE, //Midi, Long File Name
+		"mod" = TRUE, //Module, Original Amiga Tracker format
+		"it" = TRUE, //Impulse Tracker Module format
+		"s3m" = TRUE, //ScreamTracker 3 Module
+		"xm" = TRUE, //FastTracker 2 Module
+		"oxm" = TRUE, //FastTracker 2 (Vorbis Compressed Samples)
+		"wav" = TRUE, //DPCM Audio
+		"ogg" = TRUE, //OGG Audio Container, Usually contains Vorbis-compressed Audio
+		"raw" = TRUE, //PCM Audio
+		"wma" = TRUE, //Windows Media Audio container
+		"aiff" = TRUE, //Audio Interchange File Format
+		"mp3" = TRUE, //MPeg Layer 3 Container (And usually, Codec.)
 	)
 
 /datum/controller/subsystem/media/Initialize(start_timeofday)
@@ -83,13 +87,14 @@ SUBSYSTEM_DEF(media)
 
 		//Failed Validation?
 		if(tag_error)
-			log_config("MEDIA: [json_record] INVALID, [tag_error[1]]:[tag_error[2]]")
+			LAZYINITLIST(errored_files)
+			errored_files[json_record] = "[tag_error[1]]:[tag_error[2]]"
 			if(!invalid_jsons_exist)
 				//Only fire this once. Just check config_error...
 				invalid_jsons_exist = TRUE
 				spawn(0)
 					UNTIL(SSmedia.initialized)
-					message_admins("MEDIA: At least 1 Media JSON is invalid. Please check config_error.log")
+					message_admins("MEDIA: At least 1 Media JSON is invalid. Please check SSMedia.errored_files")
 			continue //Skip the track.
 
 		//JSON is fully validated. Wrap it in the datum and add it to the lists.

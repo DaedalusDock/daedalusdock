@@ -84,39 +84,34 @@
 	return attack_hand(user, modifiers)
 
 /obj/structure/table/attack_hand(mob/living/user, list/modifiers)
-	if(Adjacent(user) && user.pulling)
-		if(isliving(user.pulling))
-			var/mob/living/pushed_mob = user.pulling
-			if(pushed_mob.buckled)
-				to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
-				return
-			if(user.combat_mode)
-				switch(user.grab_state)
-					if(GRAB_PASSIVE)
-						to_chat(user, span_warning("You need a better grip to do that!"))
-						return
-					if(GRAB_AGGRESSIVE)
-						tablepush(user, pushed_mob)
-					if(GRAB_NECK to GRAB_KILL)
-						tablelimbsmash(user, pushed_mob)
-			else
-				pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
-									span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
-				if(do_after(user, pushed_mob, 3.5 SECONDS, DO_PUBLIC))
-					tableplace(user, pushed_mob)
-				else
-					return
-			user.stop_pulling()
-		else if(user.pulling.pass_flags & PASSTABLE)
-			user.Move_Pulled(src)
-			if (user.pulling.loc == loc)
-				user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
-					span_notice("You place [user.pulling] onto [src]."))
-				user.stop_pulling()
+	try_place_pulled_onto_table(user)
 	return ..()
 
 /obj/structure/table/attack_tk(mob/user)
 	return
+
+/obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
+	. = ..()
+	if(ishuman(dropping))
+		if(dropping != user)
+			try_place_pulled_onto_table(user)
+			return
+		var/mob/living/carbon/human/H = user
+		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
+			return
+		if(!H.Adjacent(src))
+			return FALSE
+		if(!H.Enter(get_turf(src), TRUE))
+			return
+		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+		H.Paralyze(1 SECOND)
+		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
+		H.visible_message(
+			span_danger("[H] bangs [H.p_their()] head on [src]."),
+			span_danger("You bang your head on [src]."),
+			span_hear("You hear a metallic clang.")
+		)
+		return
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
@@ -131,6 +126,39 @@
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE)
+
+/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
+	if(!Adjacent(user) || !user.pulling)
+		return
+
+	if(isliving(user.pulling))
+		var/mob/living/pushed_mob = user.pulling
+		if(pushed_mob.buckled)
+			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
+			return
+		if(user.combat_mode)
+			switch(user.grab_state)
+				if(GRAB_PASSIVE)
+					to_chat(user, span_warning("You need a better grip to do that!"))
+					return
+				if(GRAB_AGGRESSIVE)
+					tablepush(user, pushed_mob)
+				if(GRAB_NECK to GRAB_KILL)
+					tablelimbsmash(user, pushed_mob)
+		else
+			pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
+								span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
+			if(do_after(user, pushed_mob, 3.5 SECONDS, DO_PUBLIC))
+				tableplace(user, pushed_mob)
+			else
+				return
+		user.stop_pulling()
+	else if(user.pulling.pass_flags & PASSTABLE)
+		user.Move_Pulled(src)
+		if (user.pulling.loc == loc)
+			user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
+				span_notice("You place [user.pulling] onto [src]."))
+			user.stop_pulling()
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)

@@ -65,12 +65,19 @@
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
-		temp_bleed += iter_bleed_rate * delta_time
+		var/bleed_amt = iter_part.bandage?.absorb_blood(iter_bleed_rate, src)
+		if(isnull(bleed_amt))
+			bleed_amt = iter_bleed_rate
+
 		if(iter_part.bodypart_flags & BP_HAS_BLOOD)
 			for(var/datum/wound/W as anything in iter_part.wounds)
-				if(W.bleeding())
+				if(W.bleeding() && W.bleed_timer > 0)
 					W.bleed_timer--
 
+		if(!bleed_amt)
+			continue
+
+		temp_bleed += bleed_amt
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
 			iter_part.adjustBleedStacks(-1, 0)
@@ -154,7 +161,7 @@
 
 	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
 		rate_of_change = ", but it's clotting up quickly!"
-	
+
 	to_chat(src, span_warning("[bleeding_severity][rate_of_change || "."]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 

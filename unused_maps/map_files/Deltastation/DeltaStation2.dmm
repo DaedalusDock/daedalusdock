@@ -22743,7 +22743,7 @@
 "evi" = (
 /obj/machinery/vending/wallmed/directional/north,
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1
 	},
@@ -42051,7 +42051,7 @@
 /area/service/library)
 "kaN" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/suture,
 /obj/item/stack/medical/mesh,
 /obj/item/reagent_containers/syringe/epinephrine{
@@ -56429,7 +56429,7 @@
 	pixel_x = -4;
 	pixel_y = 8
 	},
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 8
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -58391,7 +58391,7 @@
 /area/service/library)
 "oSE" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/suture,
 /obj/item/stack/medical/mesh,
 /obj/effect/turf_decal/tile/blue{

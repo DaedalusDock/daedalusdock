@@ -56,6 +56,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	cut_overlays()
+	if(is_stump)
+		return
+
 	dir = SOUTH
 	var/key = json_encode(generate_icon_key())
 	var/list/standing = GLOB.limb_overlays_cache[key]

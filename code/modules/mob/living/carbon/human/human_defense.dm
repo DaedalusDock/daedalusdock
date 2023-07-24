@@ -699,10 +699,9 @@
 
 	visible_message(span_notice("[src] examines [p_them()]self.")) //PARIAH EDIT CHANGE
 
-	combined_msg += span_boldnotice("You check yourself for injuries.<hr>") //PARIAH EDIT ADDITION
-
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
+	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		missing -= body_part.body_zone
 		if(body_part.is_pseudopart) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
@@ -747,11 +746,13 @@
 
 			if(status == "")
 				status = "OK"
+
 		var/no_damage
 		if(status == "OK" || status == "no damage")
 			no_damage = TRUE
+
 		var/isdisabled = ""
-		if(body_part.bodypart_disabled)
+		if(body_part.bodypart_disabled && !body_part.is_stump)
 			isdisabled = " is disabled"
 			if(no_damage)
 				isdisabled += " but otherwise"
@@ -766,12 +767,6 @@
 
 		if(body_part.check_bones() & BP_BROKEN_BONES)
 			combined_msg += "\t [span_warning("Your [body_part.plaintext_zone] is broken!")]"
-
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(body_part)]' class='warning'>There is \a [I] stuck to your [body_part.name]!</a>"
-			else
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(body_part)]' class='warning'>There is \a [I] embedded in your [body_part.name]!</a>"
 
 	for(var/t in missing)
 		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")

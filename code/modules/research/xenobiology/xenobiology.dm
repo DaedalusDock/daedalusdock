@@ -1022,7 +1022,7 @@
 	to_chat(user, span_notice("You feed the potion to [M]."))
 	to_chat(M, span_notice("Your mind tingles as you are fed the potion. You can hear radio waves now!"))
 	var/obj/item/implant/radio/slime/imp = new(src)
-	imp.implant(M, user)
+	imp.implant(M, user, BODY_ZONE_CHEST)
 	qdel(src)
 
 ///Definitions for slime products that don't have anywhere else to go (Floor tiles, blueprints).

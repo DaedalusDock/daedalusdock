@@ -977,16 +977,6 @@
 	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
-/datum/design/borg_upgrade_surgicalprocessor
-	name = "Cyborg Upgrade (Surgical Processor)"
-	id = "borg_upgrade_surgicalprocessor"
-	build_type = MECHFAB
-	build_path = /obj/item/borg/upgrade/processor
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 4000, /datum/material/silver = 4000)
-	construction_time = 40
-	category = list(DCAT_SILICON)
-	mapload_design_flags = DESIGN_FAB_ROBOTICS
-
 /datum/design/borg_upgrade_trashofholding
 	name = "Cyborg Upgrade (Trash Bag of Holding)"
 	id = "borg_upgrade_trashofholding"
@@ -1258,18 +1248,6 @@
 	. = ..()
 	var/obj/item/mod/module/module = build_path
 	desc = "[initial(module.desc)] It uses [initial(module.complexity)] complexity."
-
-/datum/design/module/mod_storage
-	name = "MOD Module: Storage"
-	id = "mod_storage"
-	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	build_path = /obj/item/mod/module/storage
-
-/datum/design/module/mod_storage_expanded
-	name = "MOD Module: Expanded Storage"
-	id = "mod_storage_expanded"
-	materials = list(/datum/material/iron = 5000, /datum/material/uranium = 2000)
-	build_path = /obj/item/mod/module/storage/large_capacity
 
 /datum/design/module/mod_visor_medhud
 	name = "MOD Module: Medical Visor"

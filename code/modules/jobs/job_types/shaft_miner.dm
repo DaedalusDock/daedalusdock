@@ -99,3 +99,5 @@
 	back = /obj/item/mod/control/pre_equipped/mining
 	suit = null
 	mask = /obj/item/clothing/mask/gas/explorer
+	backpack_contents = null
+	box = null

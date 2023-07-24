@@ -83,7 +83,7 @@
 
 		// Making it here means the ritual was a success.
 		// Let's check all the atoms nearby to see if we got what we wanted.
-		var/list/atom/movable/nearby_atoms = range(1, our_heretic)
+		var/list/atom/movable/nearby_atoms = orange(1, our_heretic)
 		nearby_atoms -= our_heretic // Our dude is supposed to be there
 		nearby_atoms -= our_rune // Same with our rune
 

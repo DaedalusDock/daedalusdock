@@ -211,6 +211,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0

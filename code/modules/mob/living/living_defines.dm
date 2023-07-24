@@ -74,7 +74,9 @@
 
 	var/list/quirks = list()
 
-	var/list/surgeries = list() ///a list of surgery datums. generally empty, they're added when the player wants them.
+	/// A lazylist of active surgeries and their relevant data.
+	var/list/surgeries_in_progress
+
 	///Mob specific surgery speed modifier
 	var/mob_surgery_speed_mod = 1
 

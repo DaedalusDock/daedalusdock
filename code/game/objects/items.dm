@@ -148,6 +148,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/list/species_exception = null
 	///This is a bitfield that defines what variations exist for bodyparts like Digi legs. See: code\_DEFINES\inventory.dm
 	var/supports_variations_flags = NONE
+	///A blacklist of bodytypes that aren't allowed to equip this item
+	var/restricted_bodytypes = NONE
 
 	///A weakref to the mob who threw the item
 	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var
@@ -250,8 +252,10 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
+
 	if(LAZYLEN(embedding))
 		updateEmbedding()
+
 	if(mapload && !GLOB.steal_item_handler.generated_items)
 		add_stealing_item_objective()
 
@@ -1087,11 +1091,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /// A check called by [/obj/item/proc/tool_start_check] once, and by use_tool on every tick of delay.
 /obj/item/proc/tool_use_check(mob/living/user, amount)
-	return !amount
+	return TRUE
 
 /// Generic use proc. Depending on the item, it uses up fuel, charges, sheets, etc. Returns TRUE on success, FALSE on failure.
 /obj/item/proc/use(used)
-	return !used
+	return TRUE
 
 /// Plays item's usesound, if any.
 /obj/item/proc/play_tool_sound(atom/target, volume=50)
@@ -1129,7 +1133,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			dropped(M, FALSE)
 	return ..()
 
-/obj/item/proc/embedded(atom/embedded_target, obj/item/bodypart/part)
+/obj/item/proc/embedded(obj/item/bodypart/part)
 	return
 
 /obj/item/proc/unembedded()
@@ -1286,14 +1290,14 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	else if(w_class == WEIGHT_CLASS_TINY) //small items like soap or toys that don't have mat datums
 		/// victim's chest (for cavity implanting the item)
 		var/obj/item/bodypart/chest/victim_cavity = victim.get_bodypart(BODY_ZONE_CHEST)
-		if(victim_cavity.cavity_item)
+		if(length(victim_cavity.cavity_items))
 			victim.vomit(5, FALSE, FALSE, distance = 0)
 			forceMove(drop_location())
 			to_chat(victim, span_warning("You vomit up a [name]! [source_item? "Was that in \the [source_item]?" : ""]"))
 		else
 			victim.transferItemToLoc(src, victim, TRUE)
 			victim.losebreath += 2
-			victim_cavity.cavity_item = src
+			victim_cavity.add_cavity_item(src)
 			to_chat(victim, span_warning("You swallow hard. [source_item? "Something small was in \the [source_item]..." : ""]"))
 		discover_after = FALSE
 
@@ -1311,9 +1315,9 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
  * * status_only - Update only current availability status of the buttons to show if they are ready or not to use
  * * force - Force buttons update even if the given button icon state has not changed
  */
-/obj/item/proc/update_action_buttons(status_only = FALSE, force = FALSE)
+/obj/item/proc/update_action_buttons(force = FALSE)
 	for(var/datum/action/current_action as anything in actions)
-		current_action.build_all_button_icons(status_only, force)
+		current_action.build_all_button_icons(null, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)

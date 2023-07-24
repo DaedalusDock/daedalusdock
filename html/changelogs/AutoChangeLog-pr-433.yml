@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: 'Energy guns display charge again. Probably a few other things as well,
+      Overlay rendering was fucked:tm:'

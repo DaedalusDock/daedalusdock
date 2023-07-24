@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Click-drag is now a valid way to place someone onto a table.
+  - rscadd: Attempting to climb a table with combat mode on will cause you to bonk
+      your head.
+  - soundadd: Health Analyzers now have a sound
+  - soundadd: Replaced the airlock access denied sound.

@@ -253,7 +253,6 @@
 /area/shuttle/escape)
 "Tn" = (
 /obj/structure/table/optable/abductor,
-/obj/item/surgical_drapes,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
 "Um" = (

@@ -285,7 +285,7 @@
 /area/shuttle/escape)
 "aT" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/item/stack/medical/ointment,
 /obj/machinery/light/directional/east,
@@ -466,7 +466,6 @@
 /area/shuttle/escape)
 "bz" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /obj/machinery/light/directional/west,
 /obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/mineral/titanium,

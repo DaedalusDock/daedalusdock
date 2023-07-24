@@ -498,29 +498,6 @@
 	if(.)
 		defib_instance?.forceMove(R.drop_location()) // [on_defib_instance_qdel_or_moved()] handles the rest.
 
-/obj/item/borg/upgrade/processor
-	name = "medical cyborg surgical processor"
-	desc = "An upgrade to the Medical model, installing a processor \
-		capable of scanning surgery disks and carrying \
-		out procedures"
-	icon_state = "cyborg_upgrade3"
-	require_model = TRUE
-	model_type = list(/obj/item/robot_model/medical, /obj/item/robot_model/syndicate_medical)
-	model_flags = BORG_MODEL_MEDICAL
-
-/obj/item/borg/upgrade/processor/action(mob/living/silicon/robot/R, user = usr)
-	. = ..()
-	if(.)
-		var/obj/item/surgical_processor/SP = new(R.model)
-		R.model.basic_modules += SP
-		R.model.add_module(SP, FALSE, TRUE)
-
-/obj/item/borg/upgrade/processor/deactivate(mob/living/silicon/robot/R, user = usr)
-	. = ..()
-	if (.)
-		var/obj/item/surgical_processor/SP = locate() in R.model
-		R.model.remove_module(SP, TRUE)
-
 /obj/item/borg/upgrade/ai
 	name = "B.O.R.I.S. module"
 	desc = "Bluespace Optimized Remote Intelligence Synchronization. An uplink device which takes the place of an MMI in cyborg endoskeletons, creating a robotic shell controlled by an AI."

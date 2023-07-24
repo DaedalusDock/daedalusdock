@@ -24,7 +24,7 @@
 				<b>Implant Details:</b> Keeps the implantee from using most teleportation devices. In addition, it spoofs the implant signature of an exile implant to keep the implantee from using certain gateway systems.<BR>"}
 	return dat
 
-/obj/item/implant/exile/noteleport/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/exile/noteleport/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	. = ..()
 	if(!. || !isliving(target))
 		return FALSE

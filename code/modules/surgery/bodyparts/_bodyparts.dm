@@ -58,8 +58,6 @@
 	var/aux_layer
 	/// bitflag used to check which clothes cover this bodypart
 	var/body_part
-	/// List of obj/item's embedded inside us. Managed by embedded components, do not modify directly
-	var/list/embedded_objects = list()
 	/// are we a hand? if so, which one!
 	var/held_index = 0
 	/// For limbs that don't really exist, eg chainsaws
@@ -71,6 +69,9 @@
 	var/disable_threshold = 0
 	///Controls whether bodypart_disabled makes sense or not for this limb.
 	var/can_be_disabled = FALSE
+	/// The interaction speed modifier when this limb is used to interact with the world. ONLY WORKS FOR ARMS
+	var/interaction_speed_modifier = 1
+
 	///Multiplier of the limb's damage that gets applied to the mob
 	var/body_damage_coeff = 1
 	var/brutestate = 0
@@ -90,9 +91,39 @@
 	var/burn_ratio = 0
 	///The minimum damage a part must have before it's bones may break. Defaults to max_damage * BODYPART_MINIMUM_BREAK_MOD
 	var/minimum_break_damage = 0
+	/// Bleed multiplier
+	var/arterial_bleed_severity = 1
+
+	/// Needs to be opened with a saw to access the organs. For robotic bodyparts, you can open the "hatch"
+	var/encased
+	/// Is a stump. This is handled at runtime, do not touch.
+	var/is_stump
+	/// Does this limb have a cavity?
+	var/cavity
+	/// The name of the cavity of the limb
+	var/cavity_name
+	/// The type of storage datum to use for cavity storage.
+	var/cavity_storage_max_weight = WEIGHT_CLASS_SMALL
+	/// For robotic limbs: Hatch states, used by "surgery"
+	var/hatch_state
+
+	/// List of obj/item's embedded inside us. Managed by embedded components, do not modify directly
+	var/list/embedded_objects = list()
+	/// List of obj/items stuck TO us. Managed by embedded components, do not directly modify
+	var/list/stuck_objects = list()
+	/// The items stored in our cavity
+	var/list/cavity_items = list()
 
 	///Bodypart flags, keeps track of blood, bones, arteries, tendons, and the like.
 	var/bodypart_flags = NONE
+	/// The name of the artery this limb has
+	var/artery_name = "artery"
+	/// The name of the tendon this limb has
+	var/tendon_name = "tendon"
+	/// The name for the amputation point of the limb
+	var/amputation_point
+	/// Surgical stage. Magic BS. Do not touch
+	var/stage = 0
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
 	var/cremation_progress = 0
@@ -153,10 +184,13 @@
 	var/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
 	var/generic_bleedstacks
-	/// If we have a gauze wrapping currently applied (not including splints)
-	var/obj/item/stack/current_gauze
+
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
+	/// If something is currently supporting this limb as a splint
+	var/obj/item/splint
+	/// The bandage that may-or-may-not be absorbing our blood
+	var/obj/item/stack/bandage
 
 	///A list of all the organs inside of us.
 	var/list/obj/item/organ/contained_organs = list()
@@ -187,8 +221,6 @@
 
 /obj/item/bodypart/Initialize(mapload)
 	. = ..()
-	if(!minimum_break_damage)
-		minimum_break_damage = max_damage * BODYPART_MINIMUM_BREAK_MOD
 
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_gain))
@@ -208,9 +240,12 @@
 		wounds.Cut()
 
 	QDEL_LIST(contained_organs)
-
+	QDEL_LIST(cavity_items)
 	if(owner)
 		drop_limb(TRUE)
+
+	QDEL_NULL(splint)
+	QDEL_NULL(bandage)
 	return ..()
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
@@ -225,11 +260,26 @@
 	. = ..()
 	. += mob_examine()
 
-/obj/item/bodypart/proc/mob_examine(hallucinating)
+/obj/item/bodypart/proc/mob_examine(hallucinating, covered)
 	. = list()
+
+	if(covered)
+		for(var/obj/item/I in embedded_objects)
+			if(I.isEmbedHarmless())
+				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
+			else
+				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
+
+		if(splint && istype(splint, /obj/item/stack))
+			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
+
+		if(bandage)
+			. += span_notice("\t <a href='?src=[REF(src)];bandage_remove=1' class='[bandage.absorption_capacity ? "notice" : "warning"]'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
+		return
 
 	if(hallucinating == SCREWYHUD_HEALTHY)
 		return
+
 	if(hallucinating == SCREWYHUD_CRIT)
 		var/list/flavor_text = list("a")
 		flavor_text += pick(" pair of ", " ton of ", " several ")
@@ -238,6 +288,8 @@
 		return
 
 	var/list/flavor_text = list()
+	if((bodypart_flags & BP_CUT_AWAY) && !is_stump)
+		flavor_text += "a tear at the [amputation_point] so severe that it hangs by a scrap of flesh"
 
 	if(!IS_ORGANIC_LIMB(src))
 		if(brute_dam)
@@ -259,6 +311,12 @@
 			if(descriptor)
 				wound_descriptors[descriptor] += W.amount
 
+		if(how_open() >= SURGERY_RETRACTED)
+			var/bone = encased ? encased : "bone"
+			if(bodypart_flags & BP_BROKEN_BONES)
+				bone = "broken [bone]"
+			wound_descriptors["a [bone] exposed"] = 1
+
 		for(var/wound in wound_descriptors)
 			switch(wound_descriptors[wound])
 				if(1)
@@ -274,9 +332,18 @@
 		if(current_damage)
 			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
 
-		if(bodypart_flags & BP_BROKEN_BONES)
-			. += span_warning("[owner.p_their(TRUE)] [plaintext_zone] is dented and swollen.")
+		for(var/obj/item/I in embedded_objects)
+			if(I.isEmbedHarmless())
+				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
+			else
+				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
+
+		if(splint && istype(splint, /obj/item/stack))
+			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
+		if(bandage)
+			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
 		return
+
 	else
 		if(current_damage)
 			. += "It has [english_list(flavor_text)]."
@@ -319,7 +386,7 @@
 		user.visible_message(span_warning("[user] begins to cut open [src]."),\
 			span_notice("You begin to cut open [src]..."))
 		if(do_after(user, src, 54))
-			drop_organs(user, TRUE)
+			drop_contents(user, TRUE)
 	else
 		return ..()
 
@@ -339,13 +406,21 @@
 	return
 
 //empties the bodypart from its organs and other things inside it
-/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/proc/drop_contents(mob/user, violent_removal)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/turf/bodypart_turf = get_turf(src)
 	if(IS_ORGANIC_LIMB(src))
 		playsound(bodypart_turf, 'sound/misc/splort.ogg', 50, TRUE, -1)
-	seep_gauze(9999) // destroy any existing gauze if any exists
+
+	if(splint)
+		remove_splint()
+	if(bandage)
+		remove_bandage()
+
+	for(var/obj/item/I in cavity_items)
+		remove_cavity_item(I)
+		I.forceMove(bodypart_turf)
 
 	for(var/obj/item/item_in_bodypart in src)
 		if(isorgan(item_in_bodypart))
@@ -356,21 +431,6 @@
 				remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
-
-///since organs aren't actually stored in the bodypart themselves while attached to a person, we have to query the owner for what we should have
-/obj/item/bodypart/proc/get_organs()
-	SHOULD_CALL_PARENT(TRUE)
-	RETURN_TYPE(/list)
-
-	if(!owner)
-		return FALSE
-
-	var/list/bodypart_organs
-	for(var/obj/item/organ/organ_check as anything in owner.processing_organs) //internal organs inside the dismembered limb are dropped.
-		if(check_zone(organ_check.zone) == body_zone)
-			LAZYADD(bodypart_organs, organ_check) // this way if we don't have any, it'll just return null
-
-	return bodypart_organs
 
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
@@ -462,7 +522,7 @@
 	if(owner)
 		var/total_damage = brute_dam + burn_dam + burn + brute
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
-			if(attempt_dismemberment(pure_brute, burn, sharpness))
+			if(attempt_dismemberment(brute, burn, sharpness))
 				return update_bodypart_damage_state() || .
 
 
@@ -531,8 +591,7 @@
 		set_burn_dam(burn_dam + burn)
 
 	if(owner)
-		if(can_be_disabled)
-			update_disabled()
+		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
 	return update_bodypart_damage_state()
@@ -560,8 +619,7 @@
 	update_damage()
 
 	if(owner)
-		if(can_be_disabled)
-			update_disabled()
+		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
 	cremation_progress = min(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
@@ -632,9 +690,13 @@
 	if(!owner)
 		return
 
+	if(bodypart_flags & (BP_CUT_AWAY|BP_TENDON_CUT))
+		set_disabled(TRUE)
+		return
+
 	if(!can_be_disabled)
 		set_disabled(FALSE)
-		CRASH("update_disabled called with can_be_disabled false")
+		return
 
 	if(HAS_TRAIT(src, TRAIT_PARALYSIS))
 		set_disabled(TRUE)
@@ -685,7 +747,7 @@
 			if(bodypart_disabled)
 				owner.set_usable_legs(owner.usable_legs - 1)
 				if(owner.stat < UNCONSCIOUS)
-					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+					to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
 		else if(!bodypart_disabled)
 			owner.set_usable_legs(owner.usable_legs + 1)
 
@@ -694,7 +756,7 @@
 			if(bodypart_disabled)
 				owner.set_usable_hands(owner.usable_hands - 1)
 				if(owner.stat < UNCONSCIOUS)
-					to_chat(owner, span_userdanger("Your lose control of your [name]!"))
+					to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
 				if(held_index)
 					owner.dropItemToGround(owner.get_item_for_held_index(held_index))
 		else if(!bodypart_disabled)
@@ -819,7 +881,7 @@
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	drop_organs()
+	drop_contents()
 	return ..()
 
 /// INTERNAL PROC, DO NOT USE
@@ -917,6 +979,9 @@
 		bleed_rate *= 0.75
 	if(grasped_by)
 		bleed_rate *= 0.7
+
+	if(bandage)
+		bleed_rate *= bandage.absorption_rate_modifier
 	return bleed_rate
 
 // how much blood the limb needs to be losing per tick (not counting laying down/self grasping modifiers) to get the different bleed icons
@@ -925,8 +990,9 @@
 #define BLEED_OVERLAY_GUSH 3.25
 
 /obj/item/bodypart/proc/update_part_wound_overlay()
-	if(!owner)
+	if(!owner || is_stump)
 		return FALSE
+
 	if(HAS_TRAIT(owner, TRAIT_NOBLEED) || !IS_ORGANIC_LIMB(src) || (NOBLOOD in species_flags_list))
 		if(bleed_overlay_icon)
 			bleed_overlay_icon = null
@@ -960,45 +1026,74 @@
 #undef BLEED_OVERLAY_MED
 #undef BLEED_OVERLAY_GUSH
 
-/**
- * apply_gauze() is used to- well, apply gauze to a bodypart
- *
- * As of the Wounds 2 PR, all bleeding is now bodypart based rather than the old bleedstacks system, and 90% of standard bleeding comes from flesh wounds (the exception is embedded weapons).
- * The same way bleeding is totaled up by bodyparts, gauze now applies to all wounds on the same part. Thus, having a slash wound, a pierce wound, and a broken bone wound would have the gauze
- * applying blood staunching to the first two wounds, while also acting as a sling for the third one. Once enough blood has been absorbed or all wounds with the ACCEPTS_GAUZE flag have been cleared,
- * the gauze falls off.
- *
- * Arguments:
- * * gauze- Just the gauze stack we're taking a sheet from to apply here
- */
-/obj/item/bodypart/proc/apply_gauze(obj/item/stack/gauze)
-	if(!istype(gauze) || !gauze.absorption_capacity)
+/obj/item/bodypart/proc/apply_bandage(obj/item/stack/new_bandage)
+	if(bandage || !istype(new_bandage) || !new_bandage.absorption_capacity)
 		return
-	var/newly_gauzed = FALSE
-	if(!current_gauze)
-		newly_gauzed = TRUE
-	QDEL_NULL(current_gauze)
-	current_gauze = new gauze.type(src, 1)
-	gauze.use(1)
-	if(newly_gauzed)
-		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, gauze)
 
-/**
- * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
- *
- * The passed amount of seepage is deducted from the bandage's absorption capacity, and if we reach a negative absorption capacity, the bandages falls off and we're left with nothing.
- *
- * Arguments:
- * * seep_amt - How much absorption capacity we're removing from our current bandages (think, how much blood or pus are we soaking up this tick?)
- */
-/obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
-	if(!current_gauze)
+	bandage = new_bandage.split_stack(null, 1)
+	bandage.forceMove(src)
+	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
+	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
+		for(var/datum/wound/iter_wound as anything in wounds)
+			if(iter_wound.bleeding())
+				to_chat(owner, span_warning("You feel blood pool on your [plaintext_zone]."))
+				break
+
+/obj/item/bodypart/proc/remove_bandage()
+	if(!bandage)
+		return FALSE
+
+	. = bandage
+	UnregisterSignal(bandage, COMSIG_PARENT_QDELETING)
+	if(bandage.loc == src)
+		bandage.forceMove(drop_location())
+	bandage = null
+
+/obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
+	SIGNAL_HANDLER
+	remove_bandage()
+
+/obj/item/bodypart/proc/apply_splint(obj/item/splint)
+	if(src.splint)
+		return FALSE
+
+	src.splint = splint
+	if(istype(splint, /obj/item/stack))
+		splint.forceMove(src)
+
+	update_interaction_speed()
+	RegisterSignal(splint, COMSIG_PARENT_QDELETING, PROC_REF(splint_gone))
+	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
+	return TRUE
+
+/obj/item/bodypart/leg/apply_splint(obj/item/splint)
+	. = ..()
+	if(!.)
 		return
-	current_gauze.absorption_capacity -= seep_amt
-	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(span_danger("\The [current_gauze.name] on [owner]'s [name] falls away in rags."), span_warning("\The [current_gauze.name] on your [name] falls away in rags."), vision_distance=COMBAT_MESSAGE_RANGE)
-		QDEL_NULL(current_gauze)
-		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZE_DESTROYED)
+	owner.apply_status_effect(/datum/status_effect/limp)
+
+/obj/item/bodypart/proc/remove_splint()
+	if(!splint)
+		return FALSE
+
+	. = splint
+
+	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
+	if(splint.loc == src)
+		splint.forceMove(drop_location())
+
+	splint = null
+	update_interaction_speed()
+	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
+
+/obj/item/bodypart/proc/splint_gone(obj/item/source)
+	SIGNAL_HANDLER
+	remove_splint()
+
+/obj/item/bodypart/drop_location()
+	if(owner)
+		return owner.drop_location()
+	return ..()
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_cosmetic_organs()
@@ -1117,3 +1212,106 @@
 
 	owner.Stun(3 SECONDS)
 	owner.Shake(pixelshiftx = 3, pixelshifty = 0, duration = 2.5 SECONDS)
+
+/// Add an item to our cavity. Call AFTER physically moving it via a proc like forceMove().
+/obj/item/bodypart/proc/add_cavity_item(obj/item/I)
+	cavity_items += I
+	RegisterSignal(I, COMSIG_MOVABLE_MOVED, PROC_REF(item_gone))
+	RegisterSignal(I, COMSIG_PARENT_QDELETING, PROC_REF(item_gone))
+
+/obj/item/bodypart/proc/remove_cavity_item(obj/item/I)
+	cavity_items -= I
+	UnregisterSignal(I, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(I, COMSIG_PARENT_QDELETING)
+
+/obj/item/bodypart/proc/item_gone(datum/source)
+	SIGNAL_HANDLER
+	remove_cavity_item(source)
+
+/obj/item/bodypart/proc/get_scan_results(tag)
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	if(!IS_ORGANIC_LIMB(src))
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>Mechanical</span>" : "Mechanical"
+
+	if(bodypart_flags & BP_CUT_AWAY)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severed</span>" : "Severed"
+
+	if(check_tendon() & CHECKTENDON_SEVERED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
+
+	if(check_artery() & CHECKARTERY_SEVERED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [artery_name]</span>" : "Severed [artery_name]"
+
+	if(check_bones() & CHECKBONES_BROKEN)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
+
+	if (length(cavity_items))
+		var/unknown_body = 0
+		for(var/obj/item/I in cavity_items)
+			if(istype(I,/obj/item/implant))
+				var/obj/item/implant/imp = I
+				if(imp.implant_flags & IMPLANT_HIDDEN)
+					continue
+				if (imp.implant_flags & IMPLANT_KNOWN)
+					. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_IMPLANT]'>[capitalize(imp.name)] implanted</span>" : "[capitalize(imp.name)] implanted"
+					continue
+			unknown_body++
+
+		if(unknown_body)
+			. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_UNKNOWN_IMPLANT]'>Unknown body present</span>" : "Unknown body present"
+
+/obj/item/bodypart/Topic(href, href_list)
+	. = ..()
+	if(QDELETED(src) || !owner)
+		return
+
+	if(!ishuman(usr))
+		return
+
+	var/mob/living/carbon/human/user = usr
+	if(!user.Adjacent(owner))
+		return
+
+	if(user.get_active_held_item())
+		return
+
+	if(href_list["embedded_object"])
+		var/obj/item/I = locate(href_list["embedded_object"]) in embedded_objects
+		if(!I || I.loc != src) //no item, no limb, or item is not in limb or in the person anymore
+			return
+		SEND_SIGNAL(src, COMSIG_LIMB_EMBED_RIP, I, user)
+		return
+
+	if(href_list["splint_remove"])
+		if(!splint)
+			return
+
+		if(do_after(user, owner, 5 SECONDS, DO_PUBLIC))
+			var/obj/item/removed = remove_splint()
+			if(!removed)
+				return
+			if(!user.put_in_hands(removed))
+				removed.forceMove(user.drop_location())
+			if(user == owner)
+				user.visible_message(span_notice("[user] removes [removed] from [user.p_their()] [plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
+		return
+
+	if(href_list["bandage_remove"])
+		if(!bandage)
+			return
+
+		if(do_after(user, owner, 5 SECONDS, DO_PUBLIC))
+			var/obj/item/removed = remove_bandage()
+			if(!removed)
+				return
+			if(!user.put_in_hands(removed))
+				removed.forceMove(user.drop_location())
+			if(user == owner)
+				user.visible_message(span_notice("[user] removes [removed] from [user.p_their()] [plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
+		return

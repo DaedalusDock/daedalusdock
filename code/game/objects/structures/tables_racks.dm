@@ -681,39 +681,38 @@
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
 	var/mob/living/carbon/human/patient = null
-	var/obj/machinery/computer/operating/computer = null
-
-/obj/structure/table/optable/Initialize(mapload)
-	. = ..()
-	for(var/direction in GLOB.alldirs)
-		computer = locate(/obj/machinery/computer/operating) in get_step(src, direction)
-		if(computer)
-			computer.table = src
-			break
 
 /obj/structure/table/optable/Destroy()
+	if(patient)
+		set_patient(null)
+	return ..()
+
+/obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
 	. = ..()
-	if(computer && computer.table == src)
-		computer.table = null
+	pushed_mob.set_resting(TRUE, TRUE)
+	get_patient()
 
 /obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
-	pushed_mob.forceMove(loc)
+	. = ..()
 	pushed_mob.set_resting(TRUE, TRUE)
-	visible_message(span_notice("[user] lays [pushed_mob] on [src]."))
 	get_patient()
 
 /obj/structure/table/optable/proc/get_patient()
 	var/mob/living/carbon/M = locate(/mob/living/carbon) in loc
 	if(M)
-		if(M.resting)
+		if(M.body_position == LYING_DOWN)
 			set_patient(M)
 	else
 		set_patient(null)
 
 /obj/structure/table/optable/proc/set_patient(new_patient)
 	if(patient)
+		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
+	patient.set_lying_angle(90)
+	patient.setDir(SOUTH)
+	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
 

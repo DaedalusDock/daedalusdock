@@ -56,13 +56,8 @@
 	sort_list(GLOB.species_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	//Surgeries
-	for(var/datum/surgery_step/path as anything in subtypesof(/datum/surgery_step))
-		if(!isabstract(path))
-			path = new path()
-			GLOB.surgeries_list += path
-			if(!length(path.allowed_tools))
-				stack_trace("Surgery type [path.type] has no allowed_items list.")
-
+	for(var/path in subtypesof(/datum/surgery))
+		GLOB.surgeries_list += new path()
 	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	// Hair Gradients - Initialise all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name

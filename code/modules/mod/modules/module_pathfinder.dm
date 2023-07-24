@@ -37,7 +37,7 @@
 	if(!do_after(user, target, 1.5 SECONDS))
 		balloon_alert(user, "interrupted!")
 		return
-	if(!implant.implant(target, user, deprecise_zone(user.zone_selected)))
+	if(!implant.implant(target, user))
 		balloon_alert(user, "can't implant!")
 		return
 	if(target == user)
@@ -66,8 +66,6 @@
 	name = "MOD pathfinder implant"
 	desc = "Lets you recall a MODsuit to you at any time."
 	actions_types = list(/datum/action/item_action/mod_recall)
-	implant_flags = IMPLANT_KNOWN
-
 	/// The pathfinder module we are linked to.
 	var/obj/item/mod/module/pathfinder/module
 	/// The jet icon we apply to the MOD.

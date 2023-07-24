@@ -16,7 +16,7 @@
 	return dat
 
 
-/obj/item/implant/mindshield/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
+/obj/item/implant/mindshield/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE

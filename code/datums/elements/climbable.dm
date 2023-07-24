@@ -106,10 +106,6 @@
 	. = step(user, dir_step)
 	climbed_thing.set_density(TRUE)
 
-	if(istype(climbed_thing, /obj/structure/table/optable)) //This is my joker arc
-		var/obj/structure/table/optable/table = climbed_thing
-		table.get_patient()
-
 ///Handles climbing onto the atom when you click-drag
 /datum/element/climbable/proc/mousedrop_receive(atom/climbed_thing, atom/movable/dropped_atom, mob/user, params)
 	SIGNAL_HANDLER

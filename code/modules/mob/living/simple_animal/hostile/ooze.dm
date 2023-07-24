@@ -377,7 +377,7 @@
 	. = ..()
 	bodypart = null
 
-/obj/item/mending_globule/embedded(obj/item/bodypart/part)
+/obj/item/mending_globule/embedded(mob/living/carbon/human/embedded_mob, obj/item/bodypart/part)
 	. = ..()
 	if(!istype(part))
 		return

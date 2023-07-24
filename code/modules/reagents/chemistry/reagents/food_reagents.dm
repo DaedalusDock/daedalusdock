@@ -641,6 +641,16 @@
 		M.adjustToxLoss(-1, 0)
 	..()
 
+/datum/reagent/consumable/honey/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	. = ..()
+	if(!iscarbon(exposed_mob) || !(methods & (TOUCH|VAPOR|PATCH)))
+		return
+
+	var/mob/living/carbon/exposed_carbon = exposed_mob
+	for(var/s in exposed_carbon.surgeries)
+		var/datum/surgery/surgery = s
+		surgery.speed_modifier = max(0.6, surgery.speed_modifier)
+
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"
 	description = "A white and oily mixture of mixed egg yolks."

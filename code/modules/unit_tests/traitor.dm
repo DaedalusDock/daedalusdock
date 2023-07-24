@@ -22,8 +22,6 @@
 		var/datum/antagonist/traitor/traitor = mind.add_antag_datum(/datum/antagonist/traitor)
 		if(!traitor.uplink_handler)
 			TEST_FAIL("[job_name] when made traitor does not have a proper uplink created when spawned in!")
-		if(!istype(traitor.uplink_handler))
-			TEST_FAIL("[job_name] when made traitor has an insane uplink handler, of type [traitor.uplink_handler.type]")
 		for(var/datum/traitor_objective/objective_typepath as anything in subtypesof(/datum/traitor_objective))
 			if(initial(objective_typepath.abstract_type) == objective_typepath)
 				continue

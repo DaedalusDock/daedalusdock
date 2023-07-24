@@ -1268,7 +1268,7 @@
 					/obj/item/reagent_containers/glass/bottle/toxin,
 					/obj/item/reagent_containers/glass/beaker/large,
 					/obj/item/reagent_containers/pill/insulin,
-					/obj/item/stack/gauze,
+					/obj/item/stack/medical/gauze,
 					/obj/item/storage/box/beakers,
 					/obj/item/storage/box/medigels,
 					/obj/item/storage/box/syringes,
@@ -1282,8 +1282,8 @@
 					/obj/item/reagent_containers/blood/o_minus,
 					/obj/item/storage/pill_bottle/mining,
 					/obj/item/reagent_containers/pill/neurine,
-					/obj/item/stack/medical/bone_gel/twelve,
-					/obj/item/stack/medical/bone_gel/twelve,
+					/obj/item/stack/medical/bone_gel/four,
+					/obj/item/stack/medical/bone_gel/four,
 					/obj/item/vending_refill/medical,
 					/obj/item/vending_refill/drugs)
 	crate_name = "medical supplies crate"

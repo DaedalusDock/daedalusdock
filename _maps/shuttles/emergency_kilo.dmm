@@ -1562,6 +1562,9 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
 "cZ" = (
+/obj/machinery/computer/operating{
+	dir = 1
+	},
 /obj/effect/turf_decal/bot,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
@@ -1572,6 +1575,7 @@
 /area/shuttle/escape)
 "db" = (
 /obj/structure/table,
+/obj/item/surgical_drapes,
 /obj/item/retractor,
 /obj/item/cautery,
 /turf/open/floor/iron/dark,

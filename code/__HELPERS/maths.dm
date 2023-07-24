@@ -261,6 +261,3 @@
 /// Returns the angle of the matrix according to atan2 on the b, a parts
 /matrix/proc/get_angle()
 	return Atan2(b, a)
-
-/// Converts kelvin to farenheit
-#define FAHRENHEIT(kelvin) (kelvin * 1.8) - 459.67

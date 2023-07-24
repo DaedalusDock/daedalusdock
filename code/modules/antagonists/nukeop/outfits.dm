@@ -43,9 +43,9 @@
 		H.equip_to_slot_or_del(U, ITEM_SLOT_BACKPACK)
 
 	var/obj/item/implant/weapons_auth/W = new/obj/item/implant/weapons_auth(H)
-	W.implant(H, body_zone = BODY_ZONE_CHEST)
+	W.implant(H)
 	var/obj/item/implant/explosive/E = new/obj/item/implant/explosive(H)
-	E.implant(H, body_zone = BODY_ZONE_CHEST)
+	E.implant(H)
 	H.faction |= ROLE_SYNDICATE
 	H.update_icons()
 

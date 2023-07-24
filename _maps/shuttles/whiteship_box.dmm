@@ -487,6 +487,9 @@
 /area/shuttle/abandoned/medbay)
 "aZ" = (
 /obj/effect/decal/cleanable/dirt/dust,
+/obj/machinery/computer/operating{
+	dir = 1
+	},
 /obj/effect/turf_decal/bot,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,

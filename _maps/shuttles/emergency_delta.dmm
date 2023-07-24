@@ -135,8 +135,19 @@
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
+"ak" = (
+/obj/machinery/computer/operating,
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/shuttle/escape)
 "al" = (
 /obj/structure/table/optable,
+/obj/item/surgical_drapes,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -1639,7 +1650,7 @@ af
 ab
 ad
 hB
-aR
+ak
 as
 az
 nD

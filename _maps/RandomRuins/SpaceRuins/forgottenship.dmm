@@ -17,6 +17,10 @@
 	},
 /turf/closed/wall/r_wall/syndicate/nodiagonal,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
+"ad" = (
+/obj/machinery/computer/operating,
+/turf/open/floor/plastic,
+/area/ruin/space/has_grav/syndicate_forgotten_ship)
 "ae" = (
 /obj/structure/fans/tiny,
 /obj/machinery/door/airlock/external/ruin{
@@ -501,7 +505,7 @@
 /obj/item/stack/medical/ointment{
 	amount = 12
 	},
-/obj/item/healthanalyzer,
+/obj/item/healthanalyzer/advanced,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_cargopod)
 "bD" = (
@@ -1135,6 +1139,7 @@
 /obj/structure/closet/crate/secure/gear{
 	req_one_access_txt = "150"
 	},
+/obj/item/disk/surgery/forgottenship,
 /turf/open/floor/pod/dark,
 /area/ruin/space/has_grav/powered/syndicate_forgotten_vault)
 "dj" = (
@@ -2193,7 +2198,7 @@ aa
 aa
 aa
 bZ
-am
+ad
 am
 am
 ct

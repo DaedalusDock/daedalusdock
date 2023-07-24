@@ -3,7 +3,6 @@
 	desc = "Injects things."
 	icon_state = "reagents"
 	actions_types = null
-	implant_flags = IMPLANT_KNOWN
 
 /obj/item/implant/chem/get_data()
 	var/dat = {"<b>Implant Specifications:</b><BR>
@@ -30,7 +29,7 @@
 	GLOB.tracked_chem_implants -= src
 	return ..()
 
-/obj/item/implant/chem/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
+/obj/item/implant/chem/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
 	. = ..()
 	if(.)
 		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))

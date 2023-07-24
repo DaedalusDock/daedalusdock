@@ -451,6 +451,7 @@
 		/datum/design/scalpel,
 		/datum/design/circular_saw,
 		/datum/design/bonesetter,
+		/datum/design/surgical_drapes,
 		/datum/design/surgicaldrill,
 		/datum/design/retractor,
 		/datum/design/cautery,

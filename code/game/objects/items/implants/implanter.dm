@@ -35,7 +35,7 @@
 	if(!(src && imp))
 		return
 
-	if(imp.implant(target, user, deprecise_zone(user.zone_selected)))
+	if(imp.implant(target, user))
 		if (target == user)
 			to_chat(user, span_notice("You implant yourself."))
 		else

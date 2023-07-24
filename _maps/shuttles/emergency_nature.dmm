@@ -1105,6 +1105,9 @@
 /area/shuttle/escape)
 "Sl" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
+/obj/machinery/computer/operating{
+	dir = 1
+	},
 /turf/open/floor/iron{
 	dir = 1
 	},

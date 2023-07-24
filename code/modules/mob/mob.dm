@@ -865,8 +865,6 @@
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
 		return FALSE
-	if(HAS_TRAIT(src, TRAIT_CANNOTFACE))
-		return FALSE
 	return TRUE
 
 ///Checks mobility move as well as parent checks

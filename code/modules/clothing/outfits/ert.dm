@@ -3,7 +3,7 @@
 		return
 
 	var/obj/item/implant/mindshield/L = new/obj/item/implant/mindshield(H)//hmm lets have centcom officials become revs
-	L.implant(H, null, BODY_ZONE_CHEST, TRUE)
+	L.implant(H, null, 1)
 
 /datum/outfit/centcom/ert
 	name = "ERT Common"

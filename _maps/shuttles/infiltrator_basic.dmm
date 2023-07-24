@@ -323,7 +323,7 @@
 /area/shuttle/syndicate/medical)
 "bu" = (
 /obj/structure/table/reinforced,
-/obj/item/stack/gauze,
+/obj/item/stack/medical/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/item/stack/medical/ointment,
 /obj/effect/turf_decal/tile/blue{
@@ -534,6 +534,7 @@
 /area/shuttle/syndicate/hallway)
 "cp" = (
 /obj/structure/table/optable,
+/obj/item/surgical_drapes,
 /turf/open/floor/iron/white,
 /area/shuttle/syndicate/medical)
 "cr" = (

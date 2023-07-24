@@ -3987,6 +3987,7 @@
 /area/ruin/syndicate_lava_base/bar)
 "NR" = (
 /obj/structure/table/optable,
+/obj/item/surgical_drapes,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
 /turf/open/floor/iron/white/side{

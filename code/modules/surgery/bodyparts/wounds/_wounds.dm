@@ -52,7 +52,6 @@
 	// helper lists
 	var/tmp/list/desc_list = list()
 	var/tmp/list/damage_list = list()
-	var/tmp/list/embedded_objects //lazy
 
 /datum/wound/New(damage, obj/item/bodypart/BP = null)
 
@@ -73,6 +72,10 @@
 
 	if(istype(BP))
 		parent = BP
+		if(BP.current_gauze)
+			bandage()
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZED, PROC_REF(on_gauze))
+		RegisterSignal(parent, COMSIG_BODYPART_GAUZE_DESTROYED, PROC_REF(on_ungauze))
 		if(parent.owner)
 			register_to_mob(parent.owner)
 
@@ -83,7 +86,6 @@
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
-	LAZYCLEARLIST(embedded_objects)
 	return ..()
 
 /datum/wound/proc/register_to_mob(mob/living/carbon/C)
@@ -112,15 +114,10 @@
 	return src.damage / src.amount
 
 /datum/wound/proc/can_autoheal()
-	if(LAZYLEN(embedded_objects))
-		return FALSE
-	return (wound_damage() <= autoheal_cutoff) ? TRUE : is_treated()
+	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
-	if(LAZYLEN(embedded_objects))
-		return FALSE
-
 	switch(wound_type)
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
 			return bandaged
@@ -134,6 +131,7 @@
 	if (other.wound_type != src.wound_type) return 0
 	if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
 	if (other.is_surgical() != src.is_surgical()) return 0
+	if (!(other.bandaged) != !(src.bandaged)) return 0
 	if (!(other.clamped) != !(src.clamped)) return 0
 	if (!(other.salved) != !(src.salved)) return 0
 	if (!(other.disinfected) != !(src.disinfected)) return 0
@@ -141,10 +139,6 @@
 	return 1
 
 /datum/wound/proc/merge_wound(datum/wound/other)
-	for(var/obj/item/I as anything in other.embedded_objects)
-		RegisterSignal(I, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(item_gone))
-		LAZYDISTINCTADD(embedded_objects, I)
-
 	src.damage += other.damage
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
@@ -181,8 +175,6 @@
 	if(bandaged)
 		return FALSE
 	bandaged = 1
-	if(parent)
-		parent.refresh_bleed_rate()
 	return TRUE
 
 /datum/wound/proc/salve()
@@ -257,15 +249,9 @@
 		return 0
 	return 1
 
-/// Returns if the wound is currently bleeding.
 /datum/wound/proc/bleeding()
-	if(clamped)
+	if(bandaged || clamped)
 		return FALSE
-	if(length(embedded_objects))
-		for(var/obj/item/thing in embedded_objects)
-			if(thing.w_class > WEIGHT_CLASS_SMALL)
-				return FALSE
-	// If the bleed_timer is greater than zero, OR the wound_damage() is greater than the damage required to bleed constantly.
 	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
 
 /datum/wound/proc/is_surgical()
@@ -299,12 +285,6 @@
 
 
 	return this_wound_desc
-
-
-/datum/wound/proc/item_gone(datum/source)
-	SIGNAL_HANDLER
-	LAZYREMOVE(embedded_objects, source)
-	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 /*Note that the MINIMUM damage before a wound can be applied should correspond to
 //the damage amount for the stage with the same name as the wound.

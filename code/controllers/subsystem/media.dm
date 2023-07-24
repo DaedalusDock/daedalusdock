@@ -19,11 +19,12 @@ SUBSYSTEM_DEF(media)
 		"s3m" = TRUE, //ScreamTracker 3 Module
 		"xm" = TRUE, //FastTracker 2 Module
 		"oxm" = TRUE, //FastTracker 2 (Vorbis Compressed Samples)
-		"wav" = TRUE, //DPCM Audio
+		"wav" = TRUE, //Waveform Audio File Format, A (R)IFF-class format, and Microsoft's choice in the 80s sound format pissing match.
 		"ogg" = TRUE, //OGG Audio Container, Usually contains Vorbis-compressed Audio
-		"raw" = TRUE, //PCM Audio
+		//"raw" = TRUE, //On the tin, byond purports to support raw, uncompressed PCM Audio. I actually have no fucking idea how FMOD actually handles these.
+		//since they completely lack all information. As a confusion based anti-footgun, I'm just going to wire this to FALSE for now. It's here though.
 		"wma" = TRUE, //Windows Media Audio container
-		"aiff" = TRUE, //Audio Interchange File Format
+		"aiff" = TRUE, //Audio Interchange File Format, Apple's side of the 80s sound format pissing match. It's also (R)IFF in a trenchcoat.
 		"mp3" = TRUE, //MPeg Layer 3 Container (And usually, Codec.)
 	)
 

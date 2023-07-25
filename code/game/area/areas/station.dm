@@ -978,6 +978,13 @@
 	name = "\improper Medical Cold Room"
 	icon_state = "kitchen_cold"
 
+/area/station/medical/coldroom/port
+	name = "\improper Port Medical Cold Room "
+
+
+/area/station/medical/coldroom/starboard
+	name = "\improper Starboard Medical Cold "
+
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
 	icon_state = "patients"
@@ -985,11 +992,16 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-	icon_state = "patients"
+
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
-	icon_state = "patients"
+
+/area/station/medical/patients_rooms/room_c
+	name = "Patient Room C"
+
+/area/station/medical/patients_rooms/room_d
+	name = "Patient Room D"
 
 /area/station/medical/virology
 	name = "Virology"
@@ -1014,6 +1026,10 @@
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
+/area/station/medical/surgery/prep
+	name = "\improper Pre-Op Prep"
+	icon_state = "surgeryprep"
+
 /area/station/medical/surgery/fore
 	name = "\improper Fore Operating Room"
 	icon_state = "foresurgery"
@@ -1021,6 +1037,14 @@
 /area/station/medical/surgery/aft
 	name = "\improper Aft Operating Room"
 	icon_state = "aftsurgery"
+
+/area/station/medical/surgery/port
+	name = "\improper Port Operating Room"
+	icon_state = "portsurgery"
+
+/area/station/medical/surgery/starboard
+	name = "\improper Startboard Operating Room"
+	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"

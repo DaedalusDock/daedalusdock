@@ -266,20 +266,6 @@
 			if(!.)
 				return FALSE //to differentiate between no internals and active, but empty internals
 
-/mob/living/carbon/handle_chemicals()
-	if(HAS_TRAIT(src, TRAIT_NOMETABOLISM))
-		return
-
-	chem_effects.Cut()
-
-	var/obj/item/organ/liver/L = getorganslot(ORGAN_SLOT_LIVER)
-	if(!L || (L.organ_flags & ORGAN_FAILING))
-		return
-	if(stat != DEAD)
-		reagents.metabolize(src, can_overdose=TRUE)
-	else
-		reagents.dead_process(src)
-
 /mob/living/carbon/proc/handle_blood(delta_time, times_fired)
 	return
 

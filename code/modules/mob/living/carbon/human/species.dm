@@ -2192,3 +2192,5 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	else
 		. = 80 * (1 - bodytemperature / 120)
 		. = min(., 20)
+
+	return (round(.))

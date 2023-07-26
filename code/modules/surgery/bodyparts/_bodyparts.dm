@@ -952,7 +952,7 @@
 		cached_bleed_rate += 0.5
 
 	if(check_artery() & CHECKARTERY_SEVERED)
-		cached_bleed_rate += 5
+		cached_bleed_rate += 4
 
 	for(var/obj/item/embeddies in embedded_objects)
 		if(!embeddies.isEmbedHarmless())
@@ -1247,9 +1247,9 @@
 	if(check_bones() & CHECKBONES_BROKEN)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
 
-	if (length(cavity_items))
+	if (length(cavity_items) || length(embedded_objects))
 		var/unknown_body = 0
-		for(var/obj/item/I in cavity_items)
+		for(var/obj/item/I in cavity_items + embedded_objects)
 			if(istype(I,/obj/item/implant))
 				var/obj/item/implant/imp = I
 				if(imp.implant_flags & IMPLANT_HIDDEN)

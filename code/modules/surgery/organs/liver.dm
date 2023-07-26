@@ -100,9 +100,6 @@
 				if(provide_pain_message != HAS_PAINFUL_TOXIN)
 					provide_pain_message = toxin.silent_toxin ? HAS_SILENT_TOXIN : HAS_PAINFUL_TOXIN
 
-	//metabolize reagents
-	liver_owner.reagents.metabolize(liver_owner, delta_time, times_fired, can_overdose=TRUE)
-
 	if(damange_to_deal)
 		applyOrganDamage(damange_to_deal)
 
@@ -180,20 +177,6 @@
 			examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
 		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
 			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_they()] don't look like they will be alive for much longer.")
-
-/obj/item/organ/liver/on_death(delta_time, times_fired)
-	. = ..()
-	var/mob/living/carbon/carbon_owner = owner
-	if(!owner)//If we're outside of a mob
-		return
-	if(!iscarbon(carbon_owner))
-		CRASH("on_death() called for [src] ([type]) with invalid owner ([isnull(owner) ? "null" : owner.type])")
-	if(carbon_owner.stat != DEAD)
-		CRASH("on_death() called for [src] ([type]) with not-dead owner ([owner])")
-	if((organ_flags & ORGAN_FAILING) && HAS_TRAIT(carbon_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
-		return
-	for(var/datum/reagent/chem as anything in carbon_owner.reagents.reagent_list)
-		chem.on_mob_dead(carbon_owner, delta_time)
 
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN

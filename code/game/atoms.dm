@@ -533,6 +533,10 @@
 /atom/proc/return_analyzable_air()
 	return null
 
+///Return air that a contained mob will be breathing.
+/atom/proc/return_breathable_air()
+	return return_air()
+
 ///Check if this atoms eye is still alive (probably)
 /atom/proc/check_eye(mob/user)
 	SIGNAL_HANDLER

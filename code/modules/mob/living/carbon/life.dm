@@ -7,14 +7,11 @@
 		damageoverlaytemp = 0
 		update_damage_hud()
 
-	if(IS_IN_STASIS(src))
-		. = ..()
-		reagents.handle_stasis_chems(src, delta_time, times_fired)
-	else
-		//Reagent processing needs to come before breathing, to prevent edge cases.
+	. = ..()
+
+	if(!IS_IN_STASIS(src))
 		handle_organs(delta_time, times_fired)
 
-		. = ..()
 		if(QDELETED(src))
 			return
 
@@ -70,7 +67,7 @@
 //Second link in a breath chain, calls check_breath()
 /mob/living/carbon/proc/breathe(delta_time, times_fired)
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(reagents.has_reagent(/datum/reagent/toxin/lexorin, needs_metabolizing = TRUE))
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_RESPIRATORY_FAILURE)) //TODO: Replace with bay's proper CE_BREATHLOSS
 		return
 
 	SEND_SIGNAL(src, COMSIG_CARBON_PRE_BREATHE)
@@ -248,71 +245,6 @@
 		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 		clear_alert(ALERT_TOO_MUCH_N2O)
 
-	//BZ (Facepunch port of their Agent B)
-	/*
-	if(breath_gases[/datum/gas/bz])
-		var/bz_partialpressure = (breath_gases[/datum/gas/bz][MOLES]/breath.get_moles())*breath_pressure
-		if(bz_partialpressure > 1)
-			hallucination += 10
-		else if(bz_partialpressure > 0.01)
-			hallucination += 5
-	*/
-	//NITRIUM
-	/*
-	if(breath_gases[/datum/gas/nitrium])
-		var/nitrium_partialpressure = (breath_gases[/datum/gas/nitrium][MOLES]/breath.get_moles())*breath_pressure
-		if(nitrium_partialpressure > 0.5)
-			adjustFireLoss(nitrium_partialpressure * 0.15)
-		if(nitrium_partialpressure > 5)
-			adjustToxLoss(nitrium_partialpressure * 0.05)
-
-	//FREON
-	if(breath_gases[/datum/gas/freon])
-		var/freon_partialpressure = (breath_gases[/datum/gas/freon][MOLES]/breath.get_moles())*breath_pressure
-		adjustFireLoss(freon_partialpressure * 0.25)
-
-	//MIASMA
-	if(breath_gases[/datum/gas/miasma])
-		var/miasma_partialpressure = (breath_gases[/datum/gas/miasma][MOLES]/breath.get_moles())*breath_pressure
-
-		if(prob(1 * miasma_partialpressure))
-			var/datum/disease/advance/miasma_disease = new /datum/disease/advance/random(2,3)
-			miasma_disease.name = "Unknown"
-			ForceContractDisease(miasma_disease, TRUE, TRUE)
-
-		//Miasma side effects
-		switch(miasma_partialpressure)
-			if(0.25 to 5)
-				// At lower pp, give out a little warning
-				SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-				if(prob(5))
-					to_chat(src, span_notice("There is an unpleasant smell in the air."))
-			if(5 to 20)
-				//At somewhat higher pp, warning becomes more obvious
-				if(prob(15))
-					to_chat(src, span_warning("You smell something horribly decayed inside this room."))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/bad_smell)
-			if(15 to 30)
-				//Small chance to vomit. By now, people have internals on anyway
-				if(prob(5))
-					to_chat(src, span_warning("The stench of rotting carcasses is unbearable!"))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/nauseating_stench)
-					vomit()
-			if(30 to INFINITY)
-				//Higher chance to vomit. Let the horror start
-				if(prob(25))
-					to_chat(src, span_warning("The stench of rotting carcasses is unbearable!"))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/nauseating_stench)
-					vomit()
-			else
-				SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-
-	//Clear all moods if no miasma at all
-	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-
-	breath.garbage_collect()
-	*/
 	//BREATH TEMPERATURE
 	handle_breath_temperature(breath)
 
@@ -334,6 +266,20 @@
 			if(!.)
 				return FALSE //to differentiate between no internals and active, but empty internals
 
+/mob/living/carbon/handle_chemicals()
+	if(HAS_TRAIT(src, TRAIT_NOMETABOLISM))
+		return
+
+	chem_effects.Cut()
+
+	var/obj/item/organ/liver/L = getorganslot(ORGAN_SLOT_LIVER)
+	if(!L || (L.organ_flags & ORGAN_FAILING))
+		return
+	if(stat != DEAD)
+		reagents.metabolize(src, can_overdose=TRUE)
+	else
+		reagents.dead_process(src)
+
 /mob/living/carbon/proc/handle_blood(delta_time, times_fired)
 	return
 
@@ -343,7 +289,7 @@
 
 /mob/living/carbon/proc/handle_organs(delta_time, times_fired)
 	if(stat == DEAD)
-		if(reagents.has_reagent(/datum/reagent/toxin/formaldehyde, 1) || reagents.has_reagent(/datum/reagent/cryostylane)) // No organ decay if the body contains formaldehyde.
+		if(CHEM_EFFECT_MAGNITUDE(src, CE_ORGAN_PRESERVATION)) // No organ decay if the body contains formaldehyde.
 			return
 		for(var/obj/item/organ/organ as anything in processing_organs)
 			organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
@@ -425,19 +371,28 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /mob/living/carbon/handle_status_effects(delta_time, times_fired)
 	..()
 
-	var/restingpwr = 0.5 + 2 * resting
+	var/restingpwr = 1 + 2 * resting
 
-	if(drowsyness)
-		adjust_drowsyness(-1 * restingpwr * delta_time)
-		blur_eyes(1 * delta_time)
-		if(DT_PROB(2.5, delta_time))
-			AdjustSleeping(10 SECONDS)
+	if (drowsyness > 0)
+		adjust_drowsyness(-1 * restingpwr)
+		blur_eyes(1)
+		if(drowsyness > 10)
+			var/zzzchance = min(5, 5*drowsyness/30)
+			if((prob(zzzchance) || drowsyness >= 60))
+				if(stat == CONSCIOUS)
+					to_chat(src, span_notice("You are about to fall asleep..."))
+				Sleeping(5 SECONDS)
 
 	if(silent)
 		silent = max(silent - (0.5 * delta_time), 0)
 
 	if(hallucination)
 		handle_hallucinations(delta_time, times_fired)
+
+	if(stasis_level > 1 && drowsyness < stasis_level * 4)
+		drowsyness += min(stasis_level, 3)
+		if(stat < UNCONSCIOUS && prob(1))
+			to_chat(src, span_notice("You feel slow and sluggish..."))
 
 /// Base carbon environment handler, adds natural stabilization
 /mob/living/carbon/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)

@@ -3,7 +3,7 @@
 
 	var/obj/item/bodypart/BP = H.get_bodypart(BODY_ZONE_CHEST)
 
-	BP.receieve_damage(15)
+	BP.receive_damage(15)
 	TEST_ASSERT(BP.brute_dam != 0, "Bodypart failed to update brute damage.")
 	TEST_ASSERT(H.getBruteLoss() != 0, "Human failed to update brute damage.")
 

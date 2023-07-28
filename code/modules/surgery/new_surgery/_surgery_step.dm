@@ -231,7 +231,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	var/obj/item/bodypart/BP = M.get_bodypart(zone)
 	if(BP?.bandage)
 		to_chat(user, span_warning("You cannot operate on a bandaged bodypart, remove it!"))
-		return FALSE
+		return TRUE
 
 	// What surgeries does our tool/target enable?
 	var/list/possible_surgeries

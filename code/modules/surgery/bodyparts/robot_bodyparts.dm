@@ -23,7 +23,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
@@ -50,7 +50,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
@@ -77,7 +77,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
@@ -104,7 +104,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
@@ -130,7 +130,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
@@ -239,7 +239,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	dmg_overlay_type = "robotic"
+	dmg_overlay_file = 'icons/mob/species/misc/robotic_damage.dmi'
 
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 

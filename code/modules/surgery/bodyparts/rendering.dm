@@ -148,11 +148,11 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 
 	if(dropped)
-		if(dmg_overlay_file && !is_husked)
+		if(icon_dmg_overlay && !is_husked)
 			if(brutestate)
-				. += image(dmg_overlay_file, "[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 			if(burnstate)
-				. += image(dmg_overlay_file, "[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
 
 
 

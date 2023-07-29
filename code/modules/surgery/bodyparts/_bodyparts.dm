@@ -25,7 +25,9 @@
 	///The type of husk for building an iconstate
 	var/husk_type = "humanoid"
 	///The file to pull damage overlays from. Null is valid.
-	var/dmg_overlay_file = 'icons/mob/species/human/damage.dmi'
+	var/icon_dmg_overlay = 'icons/mob/species/human/damage.dmi'
+	/// The file to pull bloody clothing overlays from. Null is valid.
+	var/icon_bloodycover = 'icons/effects/blood.dmi'
 
 	grind_results = list(/datum/reagent/bone_dust = 10, /datum/reagent/liquidgibs = 5) // robotic bodyparts and chests/heads cannot be ground
 

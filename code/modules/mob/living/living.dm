@@ -42,7 +42,6 @@
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
 	QDEL_LAZYLIST(diseases)
-	QDEL_LIST(surgeries)
 	return ..()
 
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
@@ -2311,3 +2310,28 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 
 	to_chat(src, span_notice("You can see \the [T ? T : "floor"]."))
+
+/mob/living/proc/toggle_gunpoint_flag(permission)
+	gunpoint_flags ^= permission
+
+	var/message = "no longer permitted to "
+	var/use_span = "warning"
+	if (gunpoint_flags & permission)
+		message = "now permitted to "
+		use_span = "notice"
+
+	switch(permission)
+		if (TARGET_CAN_MOVE)
+			message += "move"
+		if (TARGET_CAN_INTERACT)
+			message += "use items"
+		if (TARGET_CAN_RADIO)
+			message += "use a radio"
+		if(TARGET_CAN_RUN)
+			message += "run"
+		else
+			return
+
+	to_chat(src, "<span class='[use_span]'>\The [gunpoint?.target || "victim"] is [message].</span>")
+	if(gunpoint?.target)
+		to_chat(gunpoint.target, "<span class='[use_span]'>You are [message].</span>")

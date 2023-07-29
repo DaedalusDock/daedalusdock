@@ -151,6 +151,9 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
+	if (user.can_operate_on(src) && attacking_item.attempt_surgery(src, user))
+		return TRUE
+
 	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)
 
@@ -324,15 +327,14 @@
 	var/message_hit_area = ""
 	if(hit_area)
 		message_hit_area = " in the [hit_area]"
-	var/attack_message_spectator = "[src] [message_verb_continuous][message_hit_area] with [I]!"
-	var/attack_message_victim = "Something [message_verb_continuous] you[message_hit_area] with [I]!"
-	var/attack_message_attacker = "You [message_verb_simple] [src][message_hit_area] with [I]!"
-	if(user in viewers(src, null))
-		attack_message_spectator = "[user] [message_verb_continuous] [src][message_hit_area] with [I]!"
-		attack_message_victim = "[user] [message_verb_continuous] you[message_hit_area] with [I]!"
+
+	var/attack_message_spectator = "<b>[src]</b> [message_verb_continuous][message_hit_area] with [I]!"
+
+	if(user in viewers(src))
+		attack_message_spectator = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
+
 	if(user == src)
-		attack_message_victim = "You [message_verb_simple] yourself[message_hit_area] with [I]"
-	visible_message(span_danger("[attack_message_spectator]"),\
-		span_userdanger("[attack_message_victim]"), null, COMBAT_MESSAGE_RANGE, user)
-	to_chat(user, span_danger("[attack_message_attacker]"))
+		attack_message_spectator = "<b>[user]</b> [message_verb_simple] [user.p_them()]self[message_hit_area] with [I]!"
+
+	visible_message(span_danger("[attack_message_spectator]"), vision_distance = COMBAT_MESSAGE_RANGE)
 	return 1

@@ -174,14 +174,14 @@
 				terrible_conversion_proc(flashed, user)
 				visible_message(span_danger("[user] blinds [flashed] with the flash!"), span_userdanger("[user] blinds you with the flash!"))
 			//easy way to make sure that you can only long stun someone who is facing in your direction
-			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 70, paralyze = 2 SECONDS)
+			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 		else if(user)
 			visible_message(span_warning("[user] fails to blind [flashed] with the flash!"), span_danger("[user] fails to blind you with the flash!"))
 		else
 			to_chat(flashed, span_danger("[src] fails to blind you!"))
 
 	else
-		flashed.Disorient(7 SECONDS * (1-(deviation*0.5)), paralyze = 2 SECONDS)
+		flashed.Disorient(7 SECONDS * (1-(deviation*0.5)), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 
 /**
  * Handles the directionality of the attack
@@ -255,8 +255,9 @@
 /obj/item/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
 	if(holder)
 		return FALSE
-	if(!AOE_flash(user = user))
-		return FALSE
+	if(AOE_flash(user = user))
+		user.changeNext_move(CLICK_CD_MELEE)
+
 
 /obj/item/assembly/flash/emp_act(severity)
 	. = ..()

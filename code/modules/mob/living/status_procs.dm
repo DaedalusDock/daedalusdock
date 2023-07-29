@@ -23,7 +23,10 @@
 		return
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		S.duration = max(world.time + amount, S.duration)
+		if(S.max_duration != -1)
+			S.duration = clamp(world.time + amount, S.duration, world.time + S.max_duration)
+		else
+			S.duration = max(world.time + amount, S.duration)
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -41,7 +44,10 @@
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(S)
-			S.duration = world.time + amount
+			if(S.max_duration != -1)
+				S.duration = min(world.time + amount, world.time + S.max_duration)
+			else
+				S.duration = world.time + amount
 		else
 			S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -55,7 +61,10 @@
 		return
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		S.duration += amount
+		if(S.max_duration != -1)
+			S.duration = min(S.duration + amount, world.time + S.max_duration)
+		else
+			S.duration += amount
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -79,7 +88,10 @@
 		return
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
-		K.duration = max(world.time + amount, K.duration)
+		if(K.max_duration != -1)
+			K.duration = clamp(world.time + amount, K.duration, world.time + K.max_duration)
+		else
+			K.duration = max(world.time + amount, K.duration)
 	else if(amount > 0)
 		K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -97,7 +109,10 @@
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(K)
-			K.duration = world.time + amount
+			if(K.max_duration != -1)
+				K.duration = min(world.time + amount, world.time + K.max_duration)
+			else
+				K.duration = world.time + amount
 		else
 			K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -111,7 +126,10 @@
 		return
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
-		K.duration += amount
+		if(K.max_duration != -1)
+			K.duration = min(K.duration + amount, world.time + K.max_duration)
+		else
+			K.duration += amount
 	else if(amount > 0)
 		K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -191,7 +209,10 @@
 		return
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
-		P.duration = max(world.time + amount, P.duration)
+		if(P.max_duration != -1)
+			P.duration = clamp(world.time + amount, P.duration, world.time + P.max_duration)
+		else
+			P.duration = max(world.time + amount, P.duration)
 	else if(amount > 0)
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -209,7 +230,10 @@
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(P)
-			P.duration = world.time + amount
+			if(P.max_duration != -1)
+				P.duration = min(world.time + amount, world.time + P.max_duration)
+			else
+				P.duration = world.time + amount
 		else
 			P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -223,7 +247,10 @@
 		return
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
-		P.duration += amount
+		if(P.max_duration != -1)
+			P.duration = min(P.duration + amount, world.time + P.max_duration)
+		else
+			P.duration += amount
 	else if(amount > 0)
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P

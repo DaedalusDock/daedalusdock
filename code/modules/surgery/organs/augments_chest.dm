@@ -162,7 +162,7 @@
 /obj/item/organ/cyberimp/chest/thrusters/proc/activate(silent = FALSE)
 	if(on)
 		return
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & (ORGAN_FAILING|ORGAN_CUT_AWAY))
 		if(!silent)
 			to_chat(owner, span_warning("Your thrusters set seems to be broken!"))
 		return

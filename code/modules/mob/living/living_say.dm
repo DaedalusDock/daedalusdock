@@ -155,6 +155,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			saymode = null
 			message_mods -= RADIO_EXTENSION
 
+	if(message_mods[RADIO_KEY] || message_mods[MODE_HEADSET])
+		SEND_SIGNAL(src, COMSIG_LIVING_USE_RADIO)
+
 	switch(stat)
 		if(SOFT_CRIT)
 			message_mods[WHISPER_MODE] = MODE_WHISPER

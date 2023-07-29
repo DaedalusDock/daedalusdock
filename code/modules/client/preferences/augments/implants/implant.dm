@@ -32,3 +32,12 @@
 /datum/augment_item/implant/cat_ears/get_choices()
 	return GLOB.ears_list
 
+/datum/augment_item/implant/cat_tail
+	name = "Feline Tail"
+	path = /obj/item/organ/tail/cat
+	allowed_species = list(
+		SPECIES_HUMAN
+	)
+
+/datum/augment_item/implant/cat_tail/get_choices()
+	return GLOB.tails_list_human

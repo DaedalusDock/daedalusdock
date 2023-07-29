@@ -128,6 +128,9 @@
 	overlays_standing[DAMAGE_LAYER] = damage_overlay
 
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
+		if(iter_part.is_stump)
+			continue
+
 		if(iter_part.dmg_overlay_type)
 			if(iter_part.brutestate)
 				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
@@ -270,6 +273,8 @@
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
+		if(limb.is_stump)
+			continue
 		limb.update_limb(is_creating = update_limb_data) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
@@ -288,20 +293,25 @@
 		return
 
 	//GENERATE NEW LIMBS
+	remove_overlay(BODYPARTS_LAYER)
 	var/list/new_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
+		if(limb.is_stump)
+			continue
 		if(limb in needs_update)
 			var/list/limb_overlays = limb.get_limb_overlays()
 			GLOB.limb_overlays_cache[icon_render_keys[limb.body_zone]] = limb_overlays
 			new_limbs += limb_overlays
 		else
 			new_limbs += GLOB.limb_overlays_cache[icon_render_keys[limb.body_zone]]
-		remove_overlay(BODYPARTS_LAYER)
 
 	if(new_limbs.len)
 		overlays_standing[BODYPARTS_LAYER] = new_limbs
 
 	apply_overlay(BODYPARTS_LAYER)
+
+/mob/living/carbon/add_overlay(list/add_overlays)
+	. = ..()
 
 ///Update the eye sprite on the carbon. Calling with refresh = TRUE will update the sprite information of the eye organ first.
 /mob/living/carbon/proc/update_eyes(refresh = TRUE)

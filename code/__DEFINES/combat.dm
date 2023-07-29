@@ -140,7 +140,7 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 ///Chance for embedded objects to cause pain (damage user)
 #define EMBEDDED_PAIN_CHANCE 15
 ///Chance for embedded object to fall out (causing pain but removing the object)
-#define EMBEDDED_ITEM_FALLOUT 5
+#define EMBEDDED_ITEM_FALLOUT 0
 ///Chance for an object to embed into somebody when thrown
 #define EMBED_CHANCE 45
 ///Coefficient of multiplication for the damage the item does while embedded (this*item.w_class)
@@ -148,11 +148,11 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 ///Coefficient of multiplication for the damage the item does when it first embeds (this*item.w_class)
 #define EMBEDDED_IMPACT_PAIN_MULTIPLIER 4
 ///The minimum value of an item's throw_speed for it to embed (Unless it has embedded_ignore_throwspeed_threshold set to 1)
-#define EMBED_THROWSPEED_THRESHOLD 4
+#define EMBED_THROWSPEED_THRESHOLD 2
 ///Coefficient of multiplication for the damage the item does when it falls out or is removed without a surgery (this*item.w_class)
 #define EMBEDDED_UNSAFE_REMOVAL_PAIN_MULTIPLIER 6
 ///A Time in ticks, total removal time = (this*item.w_class)
-#define EMBEDDED_UNSAFE_REMOVAL_TIME 30
+#define EMBEDDED_UNSAFE_REMOVAL_TIME (3 SECONDS)
 ///Chance for embedded objects to cause pain every time they move (jostle)
 #define EMBEDDED_JOSTLE_CHANCE 5
 ///Coefficient of multiplication for the damage the item does while
@@ -297,11 +297,3 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 
 /// IF an object is weak against armor, this is the value that any present armor is multiplied by
 #define ARMOR_WEAKENED_MULTIPLIER 2
-
-/// Return values used in item/melee/baton/baton_attack.
-/// Does a normal item attack.
-#define BATON_DO_NORMAL_ATTACK 1
-/// The attack has been stopped. Either because the user was clumsy or the attack was blocked.
-#define BATON_ATTACK_DONE 2
-/// The baton attack is still going. baton_effect() is called.
-#define BATON_ATTACKING 3

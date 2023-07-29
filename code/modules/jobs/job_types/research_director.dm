@@ -97,3 +97,5 @@
 	suit = null
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

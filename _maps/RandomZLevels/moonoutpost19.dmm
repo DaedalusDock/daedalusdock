@@ -2388,7 +2388,6 @@
 /area/awaymission/moonoutpost19/research)
 "gI" = (
 /obj/structure/table,
-/obj/item/surgical_drapes,
 /obj/machinery/light/small/broken/directional/east,
 /obj/structure/alien/weeds,
 /turf/open/floor/iron/white,
@@ -2498,9 +2497,6 @@
 	},
 /area/awaymission/moonoutpost19/research)
 "gU" = (
-/obj/machinery/computer/operating{
-	dir = 8
-	},
 /obj/structure/alien/weeds,
 /turf/open/floor/iron/white/side{
 	dir = 1;

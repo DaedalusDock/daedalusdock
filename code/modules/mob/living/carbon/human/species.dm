@@ -465,7 +465,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
 
-	if(type != old_species.type)
+	if(type != old_species?.type)
 		replace_body(C, src)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
@@ -803,6 +803,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(H.get_item_by_slot(slot))
 		return FALSE
 
+	// For whatever reason, this item cannot be equipped by this species
+	if(slot != ITEM_SLOT_HANDS && (bodytype & I.restricted_bodytypes))
+		return FALSE
+
 	// this check prevents us from equipping something to a slot it doesn't support, WITH the exceptions of storage slots (pockets, suit storage, and backpacks)
 	// we don't require having those slots defined in the item's slot_flags, so we'll rely on their own checks further down
 	if(!(I.slot_flags & slot))
@@ -1105,8 +1109,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
 			null,
 			span_hear("You hear a sickening sound of flesh hitting flesh!"),
-			COMBAT_MESSAGE_RANGE,
-			user
+			COMBAT_MESSAGE_RANGE
 		)
 
 		target.lastattacker = user.real_name
@@ -1120,7 +1123,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/attack_type = attacking_bodypart.attack_type
 		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
 			log_combat(user, target, "kicked")
-			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*1.5)) //Kicks do alot of stamina damage
+			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*3)) //Kicks do alot of stamina damage
 		else//other attacks deal full raw damage + 1.5x in stamina damage
 			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
 			target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
@@ -1732,12 +1736,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			'goon/sounds/voice/mascream5.ogg',
 			'goon/sounds/voice/mascream7.ogg',
 			'sound/voice/human/malescream_5.ogg',
+			'sound/voice/human/malescream_6.ogg',
+			'sound/voice/human/malescream_7.ogg',
+			'sound/voice/human/malescream_4.ogg',
 		)
 
 	return pick(
 		'sound/voice/human/femalescream_1.ogg',
 		'sound/voice/human/femalescream_2.ogg',
 		'sound/voice/human/femalescream_3.ogg',
+		'sound/voice/human/femalescream_6.ogg',
+		'sound/voice/human/femalescream_7.ogg',
 		'goon/sounds/voice/fescream1.ogg',
 		'goon/sounds/voice/fescream5.ogg',
 	)

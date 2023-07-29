@@ -22,10 +22,14 @@
 	for(var/slot in value - AUGMENT_SLOT_IMPLANTS)
 		var/path = value[slot]
 		var/datum/augment_item/A = GLOB.augment_items[path]
+		if(!A.can_apply_to_species(S))
+			continue
 		A.apply_to_human(target, S)
 
 	for(var/datum/augment_item/A as anything in value[AUGMENT_SLOT_IMPLANTS])
 		A = GLOB.augment_items[A]
+		if(!A.can_apply_to_species(S))
+			continue
 		A.apply_to_human(target, S, value[AUGMENT_SLOT_IMPLANTS][A.type])
 
 /datum/preference/blob/augments/create_default_value()

@@ -102,3 +102,5 @@
 	head = null
 	mask = /obj/item/clothing/mask/gas/sechailer
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

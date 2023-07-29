@@ -83,3 +83,5 @@
 	back = /obj/item/mod/control/pre_equipped/atmospheric
 	mask = /obj/item/clothing/mask/gas/atmos
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

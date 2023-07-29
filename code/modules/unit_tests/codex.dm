@@ -33,7 +33,6 @@
 			if(SScodex.linkRegex.group[2])
 				regex_key = SScodex.linkRegex.group[3]
 			regex_key = codex_sanitize(regex_key)
-			var/replacement = SScodex.linkRegex.group[4]
 			var/datum/codex_entry/linked_entry = SScodex.get_entry_by_string(regex_key)
 			if(!linked_entry)
-				TEST_FAIL("[entry.name] - [replacement]")
+				TEST_FAIL("Bad codex link: '[regex_key]' in [entry.type]")

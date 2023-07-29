@@ -35,7 +35,6 @@
 	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom)
 
 	mail_goodies = list(
-		/obj/item/healthanalyzer/advanced = 15,
 		/obj/item/scalpel/advanced = 6,
 		/obj/item/retractor/advanced = 6,
 		/obj/item/cautery/advanced = 6,
@@ -86,3 +85,5 @@
 	mask = /obj/item/clothing/mask/breath/medical
 	r_pocket = /obj/item/flashlight/pen
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

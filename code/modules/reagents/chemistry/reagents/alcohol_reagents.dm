@@ -77,16 +77,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	exposed_mob.adjust_fire_stacks(reac_volume / 15)
 
-	if(!iscarbon(exposed_mob))
-		return
-
-	var/mob/living/carbon/exposed_carbon = exposed_mob
-	var/power_multiplier = boozepwr / 65 // Weak alcohol has less sterilizing power
-
-	for(var/s in exposed_carbon.surgeries)
-		var/datum/surgery/surgery = s
-		surgery.speed_modifier = max(0.1*power_multiplier, surgery.speed_modifier)
-
 /datum/reagent/consumable/ethanol/beer
 	name = "Beer"
 	description = "An alcoholic beverage brewed since ancient times on Old Earth. Still popular today."

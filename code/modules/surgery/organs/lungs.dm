@@ -96,9 +96,9 @@
 		if(breather.reagents.has_reagent(crit_stabilizing_reagent, needs_metabolizing = TRUE))
 			return
 		if(breather.health >= breather.crit_threshold)
-			breather.adjustOxyLoss(HUMAN_MAX_OXYLOSS)
+			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 		else if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+			breather.adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)
@@ -301,11 +301,11 @@
 
 	if(breath_pp > 0)
 		var/ratio = safe_breath_min/breath_pp
-		suffocator.adjustOxyLoss(min(5*ratio, HUMAN_MAX_OXYLOSS)) // Don't fuck them up too fast (space only does HUMAN_MAX_OXYLOSS after all!
+		suffocator.adjustOxyLoss(min(5*ratio, HUMAN_FAILBREATH_OXYLOSS)) // Don't fuck them up too fast (space only does HUMAN_FAILBREATH_OXYLOSS after all!
 		suffocator.failed_last_breath = TRUE
 		. = true_pp*ratio/6
 	else
-		suffocator.adjustOxyLoss(HUMAN_MAX_OXYLOSS)
+		suffocator.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 		suffocator.failed_last_breath = TRUE
 
 

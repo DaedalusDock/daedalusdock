@@ -28,6 +28,7 @@
 
 	// Set up the dummy for its photoshoot
 	mannequin.dna.species.replace_missing_bodyparts(mannequin) // Augments modify bodyparts, so we need to reset them incase augs were removed.
+	//mannequin.dna.species.regenerate_organs(mannequin, visual_only = TRUE)
 	apply_prefs_to(mannequin, TRUE)
 
 	switch(preview_pref)

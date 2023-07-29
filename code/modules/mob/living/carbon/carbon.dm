@@ -70,19 +70,6 @@
 	else
 		mode() // Activate held item
 
-/mob/living/carbon/attackby(obj/item/I, mob/living/user, params)
-	for(var/datum/surgery/S in surgeries)
-		if(body_position == LYING_DOWN || !S.lying_required)
-			var/list/modifiers = params2list(params)
-			if((S.self_operable || user != src) && !user.combat_mode)
-				if(S.next_step(user, modifiers))
-					return 1
-
-	if(!(!user.combat_mode || user == src))
-		return ..()
-
-	return ..()
-
 /mob/living/carbon/CtrlShiftClick(mob/user)
 	..()
 	if(iscarbon(user))
@@ -202,18 +189,6 @@
 
 /mob/living/carbon/proc/canBeHandcuffed()
 	return FALSE
-
-/mob/living/carbon/Topic(href, href_list)
-	..()
-	if(href_list["embedded_object"] && usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
-		var/obj/item/bodypart/L = locate(href_list["embedded_limb"]) in bodyparts
-		if(!L)
-			return
-		var/obj/item/I = locate(href_list["embedded_object"]) in L.embedded_objects
-		if(!I || I.loc != src) //no item, no limb, or item is not in limb or in the person anymore
-			return
-		SEND_SIGNAL(src, COMSIG_CARBON_EMBED_RIP, I, L)
-		return
 
 /mob/living/carbon/on_fall()
 	. = ..()
@@ -703,17 +678,17 @@
 		switch(oxyloss)
 			if(10 to 20)
 				severity = 1
-			if(20 to 25)
+			if(20 to 35)
 				severity = 2
-			if(25 to 30)
+			if(35 to 50)
 				severity = 3
-			if(30 to 35)
+			if(50 to 65)
 				severity = 4
-			if(35 to 40)
+			if(65 to 80)
 				severity = 5
-			if(40 to 45)
+			if(80 to 90)
 				severity = 6
-			if(45 to INFINITY)
+			if(90 to INFINITY)
 				severity = 7
 		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 	else
@@ -962,12 +937,15 @@
 				bodypart_instance.held_index = r_arm_index_next //2, 4, 6, 8...
 				hand_bodyparts += bodypart_instance
 
+	sortTim(bodyparts, GLOBAL_PROC_REF(cmp_bodypart_by_body_part_asc))
+
 ///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
+	new_bodypart.forceMove(src)
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -984,15 +962,15 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	bodyparts -= old_bodypart
-	switch(old_bodypart.body_part)
-		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs - 1)
-		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands - 1)
+	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
+		set_num_legs(num_legs - 1)
+		if(!old_bodypart.bodypart_disabled)
+			set_usable_legs(usable_legs - 1)
+
+	if(old_bodypart.bodypart_flags & BP_IS_GRABBY_LIMB)
+		set_num_hands(num_hands - 1)
+		if(!old_bodypart.bodypart_disabled)
+			set_usable_hands(usable_hands - 1)
 
 
 /mob/living/carbon/proc/create_internal_organs()

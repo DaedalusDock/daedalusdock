@@ -149,12 +149,6 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	for(var/datum/surgery/S in surgeries)
-		if(body_position == LYING_DOWN || !S.lying_required)
-			if(!user.combat_mode)
-				if(S.next_step(user, modifiers))
-					return TRUE
-
 	return FALSE
 
 
@@ -299,8 +293,8 @@
 			return
 
 	target.visible_message(
-		span_danger("[name] shoves [target.name]!"),
-		span_userdanger("You're shoved by [name]!"),
+		span_danger("<b>[name]</b> shoves [target.name]!"),
+		null,
 		span_hear("You hear aggressive shuffling!"),
 		COMBAT_MESSAGE_RANGE,
 		//src
@@ -309,14 +303,14 @@
 
 	var/append_message = ""
 	//Roll disarm chance based on the target's missing stamina
-	var/disarm_success_chance = target.stamina.loss_as_percent/2
+	var/disarm_success_chance = min(target.stamina.loss_as_percent/2 + 10, 60)
 	if(prob(disarm_success_chance) && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I as anything in target.held_items)
 			if(target.dropItemToGround(I))
 				target.visible_message(
 					span_danger("<b>[target]</b> loses [target.p_their()] grip on [I]"),
-					span_userdanger("You drop [I]!"),
+					null,
 					null,
 					COMBAT_MESSAGE_RANGE
 				)
@@ -624,10 +618,10 @@
 /mob/living/carbon/proc/check_passout(oxyloss)
 	if(!isnum(oxyloss))
 		return
-	if(oxyloss <= 50)
-		if(getOxyLoss() > 50)
+	if(oxyloss <= 100)
+		if(getOxyLoss() > 100)
 			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
-	else if(getOxyLoss() <= 50)
+	else if(getOxyLoss() <= 100)
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 
 /mob/living/carbon/get_organic_health()
@@ -679,7 +673,7 @@
 		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
 		UnregisterSignal(user, COMSIG_PARENT_QDELETING)
 	if(grasped_part)
-		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_PARENT_QDELETING))
+		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING))
 		grasped_part.grasped_by = null
 		grasped_part.refresh_bleed_rate()
 	grasped_part = null
@@ -703,7 +697,7 @@
 	grasped_part.grasped_by = src
 	grasped_part.refresh_bleed_rate()
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(qdel_void))
-	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
+	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
 
 	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.name], trying to stop the bleeding."), span_notice("You grab hold of your [grasped_part.name] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
 	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)

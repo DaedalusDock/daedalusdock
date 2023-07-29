@@ -134,11 +134,10 @@
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			W.attack_self_secondary(src, modifiers)
 			update_held_items()
-			return
 		else
 			W.attack_self(src, modifiers)
 			update_held_items()
-			return
+		return
 
 	//These are always reachable.
 	//User itself, current loc, and user inventory

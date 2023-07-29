@@ -63,6 +63,9 @@
 		var/armor_check = check_projectile_armor(def_zone, P, is_silent = TRUE)
 		apply_damage(P.damage, P.damage_type, def_zone, armor_check, sharpness = P.sharpness, attack_direction = attack_direction)
 		apply_effects(P.stun, P.knockdown, P.unconscious, P.slur, P.stutter, P.eyeblur, P.drowsy, armor_check, P.stamina, P.jitter, P.paralyze, P.immobilize)
+		if(P.disorient_length)
+			var/stamina = P.disorient_damage * ((100-armor_check)/100)
+			Disorient(P.disorient_length, stamina, paralyze = P.disorient_status_length)
 		if(P.dismemberment)
 			check_projectile_dismemberment(P, def_zone)
 	return . ? BULLET_ACT_HIT : BULLET_ACT_BLOCK
@@ -84,8 +87,11 @@
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
 	if(combat_mode == new_mode)
 		return
+
+	SEND_SIGNAL(src, COMSIG_LIVING_TOGGLE_COMBAT_MODE, new_mode)
 	. = combat_mode
 	combat_mode = new_mode
+
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))

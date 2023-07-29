@@ -302,6 +302,8 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
 /datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
+	if(ispath(preference))
+		preference = GLOB.preference_entries[preference]
 	var/savefile = get_savefile_for_savefile_identifier(preference.savefile_identifier)
 	var/new_value = preference.deserialize(preference_value, src)
 	var/success = preference.write(savefile, new_value)

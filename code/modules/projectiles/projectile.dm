@@ -175,6 +175,14 @@
 	/// Slurring applied on projectile hit
 	var/slur = 0 SECONDS
 
+	// Disorient vars
+	/// Duration of disorient status effect
+	var/disorient_length = 0 SECONDS
+	/// Stamina damage applied
+	var/disorient_damage = 0
+	/// Paralyze duration if target is exhausted
+	var/disorient_status_length = 0 SECONDS
+
 	var/dismemberment = 0 //The higher the number, the greater the bonus to dismembering. 0 will not dismember at all.
 	var/impact_effect_type //what type of impact effect to show when hitting something
 	var/log_override = FALSE //is this type spammed enough to not log? (KAs)

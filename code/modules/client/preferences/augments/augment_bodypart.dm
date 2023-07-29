@@ -90,7 +90,9 @@
 /datum/augment_item/bodypart/amputated/apply_to_human(mob/living/carbon/human/H, datum/species/S)
 	var/obj/item/bodypart/path = src.path
 	var/obj/item/bodypart/BP = H.get_bodypart(initial(path.body_zone))
+	var/obj/item/bodypart/stump = BP.create_stump()
 	qdel(BP)
+	stump.attach_limb(H, TRUE)
 
 /datum/augment_item/bodypart/amputated/can_apply_to_species(datum/species/S)
 	return TRUE

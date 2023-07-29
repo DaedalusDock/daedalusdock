@@ -70,13 +70,10 @@
 	desc = "The circuit board that for a PACMAN-type portable generator."
 	id = "pacman"
 	build_path = /obj/item/circuitboard/machine/pacman
-	category = list(DCAT_POWER)
-	mapload_design_flags = DESIGN_FAB_ENGINEERING
 
 /datum/design/board/pacman/super
 	name = "Machine Board (SUPERPACMAN-type Generator Board)"
 	desc = "The circuit board that for a SUPERPACMAN-type portable generator."
 	id = "superpacman"
 	build_path = /obj/item/circuitboard/machine/pacman/super
-	mapload_design_flags = DESIGN_FAB_ENGINEERING
 

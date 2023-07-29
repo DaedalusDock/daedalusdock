@@ -134,13 +134,14 @@
 ////////////////////////////////////////////
 
 ///Returns a list of damaged bodyparts
-/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, status)
+/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, status, check_flags)
 	var/list/obj/item/bodypart/parts = list()
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(status && !(BP.bodytype & status))
 			continue
-		if((brute && BP.brute_dam) || (burn && BP.burn_dam))
+		if((brute && BP.brute_dam) || (burn && BP.burn_dam) || (BP.bodypart_flags & check_flags))
 			parts += BP
+
 	return parts
 
 ///Returns a list of damageable bodyparts
@@ -151,16 +152,6 @@
 		if(status && !(BP.bodytype & status))
 			continue
 		if(BP.brute_dam + BP.burn_dam < BP.max_damage)
-			parts += BP
-	return parts
-
-
-///Returns a list of bodyparts with wounds (in case someone has a wound on an otherwise fully healed limb)
-/mob/living/carbon/proc/get_wounded_bodyparts(brute = FALSE, burn = FALSE, stamina = FALSE, status)
-	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		if(LAZYLEN(BP.wounds))
 			parts += BP
 	return parts
 

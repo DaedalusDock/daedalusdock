@@ -149,7 +149,7 @@
 	var/listindex = 0
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
-	if(!_owner || !_goal)
+	if(!_owner)
 		return
 
 	owner = _owner
@@ -164,6 +164,7 @@
 
 		underlay.pixel_y += 2
 		underlay.alpha = 200
+		underlay.plane = GAME_PLANE
 		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay

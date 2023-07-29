@@ -100,3 +100,11 @@
   - balance: All air mixture values are rounded to 0.0001.
   - rscadd: Augment Customization
   - rscdel: Prosthetic Quirk
+2023-06-27:
+  Kapu1178:
+  - rscdel: Plumbing (FOR REAL)
+  - rscdel: Cytology
+  LemonInTheDark, Guillaume Prata:
+  - bugfix: Maps loaded post init will no longer randomly enter a failed state. Hopefully.
+  - qol: Be polite! While on walk intent you won't bump, swap places or push other
+      people now.

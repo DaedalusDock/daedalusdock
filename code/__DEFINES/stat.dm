@@ -14,6 +14,11 @@
 #define HEALTH_THRESHOLD_FULLCRIT -100 //! Hard crit
 #define HEALTH_THRESHOLD_DEAD -200
 
+/// The amount of damage a mob can take past that which would kill it, per damage type.
+#define HEALTH_OVERKILL_DAMAGE_PER_TYPE 0
+/// The maximum amount of damage a mob can take per damage type (carbon brute/burn excluded). This will always result in just enough to kill you if overkill is 0.
+#define HEALTH_LOSS_PER_TYPE_CAP(mob) (mob.maxHealth + ((-1 * HEALTH_THRESHOLD_DEAD) + HEALTH_OVERKILL_DAMAGE_PER_TYPE))
+
 #define HEALTH_THRESHOLD_NEARDEATH -150 //Not used mechanically, but to determine if someone is so close to death they hear the other side
 
 //Maximum healthiness an individual can have

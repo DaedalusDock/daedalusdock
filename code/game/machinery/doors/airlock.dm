@@ -573,7 +573,10 @@
 		if("deny")
 			if(!machine_stat)
 				update_icon(ALL, AIRLOCK_DENY)
-				playsound(src,doorDeni,50,FALSE,3)
+				if(prob(1) && prob(10)) //1000.
+					playsound(src, 'sound/machines/access_denied_hl.ogg', 50, FALSE, 3)
+				else
+					playsound(src,doorDeni,50,FALSE,3)
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_icon), ALL, AIRLOCK_CLOSED), AIRLOCK_DENY_ANIMATION_TIME)
 
 /obj/machinery/door/airlock/examine(mob/user)

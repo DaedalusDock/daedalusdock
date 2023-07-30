@@ -25,6 +25,9 @@
 /// Test if thing (an atom) can smooth with an adjacent turf. This is a macro because it is a very very hot proc.
 #define CAN_AREAS_SMOOTH(thing, turf, val) \
 	do{ \
+		if(isnull(turf)) { \
+			break; \
+		}; \
 		var/area/source_area = get_step(thing, 0)?.loc; \
 		var/area/target_area = turf:loc; \
 		if(isnull(target_area)) { \

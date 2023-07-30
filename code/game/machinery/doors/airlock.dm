@@ -162,7 +162,6 @@
 
 /obj/machinery/door/airlock/Initialize(mapload)
 	. = ..()
-	init_network_id(NETWORK_DOOR_AIRLOCKS)
 	wires = set_wires()
 	if(frequency)
 		set_frequency(frequency)
@@ -180,7 +179,6 @@
 	diag_hud_set_electrified()
 
 	RegisterSignal(src, COMSIG_MACHINERY_BROKEN, PROC_REF(on_break))
-	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, PROC_REF(ntnet_receive))
 
 	// Click on the floor to close airlocks
 	var/static/list/connections = list(
@@ -229,55 +227,6 @@
 	switch (var_name)
 		if (NAMEOF(src, cyclelinkeddir))
 			cyclelinkairlock()
-
-/obj/machinery/door/airlock/check_access_ntnet(datum/netdata/data)
-	return !requiresID() || ..()
-
-/obj/machinery/door/airlock/proc/ntnet_receive(datum/source, datum/netdata/data)
-	SIGNAL_HANDLER
-
-	// Check if the airlock is powered and can accept control packets.
-	if(!hasPower() || !canAIControl())
-		return
-
-	// Handle received packet.
-	var/command = data.data["data"]
-	var/command_value = data.data["data_secondary"]
-	switch(command)
-		if("open")
-			if(command_value == "on" && !density)
-				return
-
-			if(command_value == "off" && density)
-				return
-
-			if(density)
-				INVOKE_ASYNC(src, PROC_REF(open))
-			else
-				INVOKE_ASYNC(src, PROC_REF(close))
-
-		if("bolt")
-			if(command_value == "on" && locked)
-				return
-
-			if(command_value == "off" && !locked)
-				return
-
-			if(locked)
-				unbolt()
-			else
-				bolt()
-
-		if("emergency")
-			if(command_value == "on" && emergency)
-
-				return
-
-			if(command_value == "off" && !emergency)
-				return
-
-			emergency = !emergency
-			update_appearance()
 
 /obj/machinery/door/airlock/lock()
 	bolt()

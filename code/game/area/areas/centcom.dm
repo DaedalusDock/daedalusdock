@@ -176,7 +176,6 @@ The areas used here are STRICTLY on the CC Z level.
 	has_gravity = STANDARD_GRAVITY
 	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
-	network_root_id = "MAGIC_NET"
 
 //Abductors
 /area/centcom/abductor_ship
@@ -188,7 +187,6 @@ The areas used here are STRICTLY on the CC Z level.
 	base_lighting_alpha = 255
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
-	network_root_id = "ALIENS"
 
 //Syndicates
 /area/centcom/syndicate_mothership
@@ -199,7 +197,6 @@ The areas used here are STRICTLY on the CC Z level.
 	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
 	ambience_index = AMBIENCE_DANGER
-	network_root_id = SYNDICATE_NETWORK_ROOT
 
 /area/centcom/syndicate_mothership/control
 	name = "Syndicate Control Room"

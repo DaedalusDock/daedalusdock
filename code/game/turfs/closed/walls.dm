@@ -106,7 +106,9 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/neighbor_stripe = NONE
 	for (var/cardinal = NORTH; cardinal <= WEST; cardinal *= 2) //No list copy please good sir
 		var/turf/step_turf = get_step(src, cardinal)
-		if(!can_area_smooth(step_turf))
+		var/can_area_smooth
+		CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+		if(isnull(can_area_smooth))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(global.neighbor_typecache[movable_thing.type])

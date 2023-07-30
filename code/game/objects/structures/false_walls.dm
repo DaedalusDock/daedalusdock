@@ -136,7 +136,9 @@
 
 		for(var/cardinal in GLOB.cardinals)
 			var/turf/step_turf = get_step(src, cardinal)
-			if(!can_area_smooth(step_turf))
+			var/can_area_smooth
+			CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+			if(isnull(can_area_smooth))
 				continue
 			for(var/atom/movable/movable_thing as anything in step_turf)
 				if(neighbor_typecache[movable_thing.type])

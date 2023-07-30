@@ -25,16 +25,19 @@
 /// Test if thing (an atom) can smooth with an adjacent turf. This is a macro because it is a very very hot proc.
 #define CAN_AREAS_SMOOTH(thing, turf, val) \
 	do{ \
-		var/my_area = get_step(thing, 0)?.loc
-		var/target_area = turf.loc
-		if(isnull(target_area))
-			break
-		if(target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing))
-			break
-		if(source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing))
-			break
-		val = TRUE
-	}while FALSE;
+		var/area/source_area = get_step(thing, 0)?.loc; \
+		var/area/target_area = turf:loc; \
+		if(isnull(target_area)) { \
+			break; \
+		};\
+		if(target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing)) { \
+			break; \
+		}; \
+		if(source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing)) { \
+			break; \
+		}; \
+		val = TRUE; \
+	}while(FALSE)
 
 ///Scans all adjacent turfs to find targets to smooth with.
 /atom/proc/calculate_adjacencies()
@@ -203,7 +206,7 @@
 		return NULLTURF_BORDER
 
 	var/can_area_smooth
-	CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+	CAN_AREAS_SMOOTH(src, target_turf, can_area_smooth)
 	if(isnull(can_area_smooth))
 		return NO_ADJ_FOUND
 
@@ -250,7 +253,7 @@
 			do { \
 				var/turf/neighbor = get_step(src, direction); \
 				var/can_area_smooth; \
-				CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth); \
+				CAN_AREAS_SMOOTH(src, neighbor, can_area_smooth); \
 				if(neighbor && can_area_smooth) { \
 					var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
 					if(neighbor_smoothing_groups) { \

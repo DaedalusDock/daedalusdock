@@ -227,7 +227,7 @@
 	return amount
 
 // opens the wound again
-/datum/wound/proc/open_wound(damage)
+/datum/wound/proc/open_wound(damage, update_damage = TRUE)
 	src.damage += damage
 	bleed_timer += damage
 
@@ -236,6 +236,9 @@
 
 	src.desc = desc_list[current_stage]
 	src.min_damage = damage_list[current_stage]
+
+	if(update_damage)
+		parent.update_damage()
 
 /datum/wound/proc/close_wound()
 	return
@@ -270,14 +273,6 @@
 
 /datum/wound/proc/is_surgical()
 	return 0
-
-/datum/wound/proc/on_gauze(datum/source)
-	SIGNAL_HANDLER
-	bandage()
-
-/datum/wound/proc/on_ungauze(datum/source)
-	SIGNAL_HANDLER
-	bandaged = FALSE
 
 /datum/wound/proc/get_examine_desc()
 	var/this_wound_desc = desc

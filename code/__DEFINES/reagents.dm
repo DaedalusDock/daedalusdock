@@ -71,7 +71,7 @@
 #define REAGENT_STANDARD_PURITY 0.75
 
 //reagent bitflags, used for altering how they works
-///allows on_mob_dead() if present in a dead body
+///Can process in dead mobs.
 #define REAGENT_DEAD_PROCESS (1<<0)
 ///Do not split the chem at all during processing - ignores all purity effects
 #define REAGENT_DONOTSPLIT (1<<1)
@@ -83,12 +83,10 @@
 #define REAGENT_SPLITRETAINVOL (1<<4)
 ///Lets a given reagent be synthesized important for random reagents and things like the odysseus syringe gun(Replaces the old can_synth variable)
 #define REAGENT_CAN_BE_SYNTHESIZED (1<<5)
-///Allows a reagent to work on a mob regardless of stasis
-#define REAGENT_IGNORE_STASIS (1<<6)
 ///This reagent won't be used in most randomized recipes. Meant for reagents that could be synthetized but are normally inaccessible or TOO hard to get.
-#define REAGENT_NO_RANDOM_RECIPE (1<<7)
+#define REAGENT_NO_RANDOM_RECIPE (1<<6)
 ///Does this reagent clean things?
-#define REAGENT_CLEANS (1<<8)
+#define REAGENT_CLEANS (1<<7)
 
 //Chemical reaction flags, for determining reaction specialties
 ///Convert into impure/pure on reaction completion

@@ -1376,10 +1376,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * humi (required)(type: /mob/living/carbon/human) The mob we will target
  */
 /datum/species/proc/handle_body_temperature(mob/living/carbon/human/humi, delta_time, times_fired)
-	//when in a cryo unit we suspend all natural body regulation
-	if(istype(humi.loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
-		return
-
 	//Only stabilise core temp when alive and not in statis
 	if(humi.stat < DEAD && !IS_IN_STASIS(humi))
 		body_temperature_core(humi, delta_time, times_fired)
@@ -1388,8 +1384,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	body_temperature_skin(humi, delta_time, times_fired)
 	body_temperature_alerts(humi, delta_time, times_fired)
 
+	SET_STASIS_LEVEL(humi, STASIS_CRYOGENIC_FREEZING, get_cryogenic_factor(humi.coretemperature))
+
 	//Do not cause more damage in statis
-	if(!IS_IN_STASIS(humi))
+	if(!IS_IN_HARD_STASIS(humi))
 		body_temperature_damage(humi, delta_time, times_fired)
 
 /**
@@ -1551,7 +1549,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/cold_damage_limit = bodytemp_cold_damage_limit + (is_hulk ? BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER : 0)
 
-	if(humi.coretemperature < cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
+	if(humi.coretemperature < cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
 		var/damage_type = is_hulk ? BRUTE : BURN // Why?
 		var/damage_mod = coldmod * humi.physiology.cold_mod * (is_hulk ? HULK_COLD_DAMAGE_MOD : 1)
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
@@ -2177,3 +2175,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			new_part.replace_limb(target, TRUE)
 			new_part.update_limb(is_creating = TRUE)
 			qdel(BP)
+
+/datum/species/proc/get_cryogenic_factor(bodytemperature)
+	if(bodytemperature >= bodytemp_normal)
+		return 0
+
+	if(bodytemperature > 243)
+		return 0
+
+	else if(bodytemperature > 200)
+		. = 5 * (1 - (bodytemperature - 200) / (243 - 200))
+		. = min(2, .)
+	else if(bodytemperature > 120)
+		. = 20 * (1 - (bodytemperature - 120) / (200 - 120))
+		. = min(5, .)
+	else
+		. = 80 * (1 - bodytemperature / 120)
+		. = min(., 20)
+
+	return (round(.))

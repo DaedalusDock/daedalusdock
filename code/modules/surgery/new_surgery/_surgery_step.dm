@@ -228,11 +228,6 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		to_chat(user, span_warning("You can't operate on this area while surgery is already in progress."))
 		return TRUE
 
-	var/obj/item/bodypart/BP = M.get_bodypart(zone)
-	if(BP?.bandage)
-		to_chat(user, span_warning("You cannot operate on a bandaged bodypart, remove it!"))
-		return FALSE
-
 	// What surgeries does our tool/target enable?
 	var/list/possible_surgeries
 	for(var/datum/surgery_step/step in GLOB.surgeries_list)
@@ -267,6 +262,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	// We didn't find a surgery.
 	if(!istype(step))
 		return FALSE
+
+	var/obj/item/bodypart/BP = M.get_bodypart(zone)
+	if(BP?.bandage)
+		to_chat(user, span_warning("You cannot operate on a bandaged bodypart, remove it!"))
+		return TRUE
 
 	if(M == user)
 		if(user.zone_selected == BODY_ZONE_HEAD)

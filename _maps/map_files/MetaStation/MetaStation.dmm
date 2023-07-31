@@ -20727,10 +20727,10 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
-	dir = 1
+/obj/machinery/atmospherics/components/binary/pump{
+	dir = 8;
+	name = "Cryogenics Pump"
 	},
-/obj/machinery/portable_atmospherics/canister/anesthetic_mix,
 /turf/open/floor/iron/dark,
 /area/station/medical/cryo)
 "gtf" = (
@@ -29863,13 +29863,13 @@
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "jJq" = (
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
-	dir = 1
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/portable_atmospherics/canister/anesthetic_mix,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 8
+	},
+/obj/machinery/portable_atmospherics/canister/oxygen/cryo,
 /turf/open/floor/iron/dark,
 /area/station/medical/cryo)
 "jJC" = (
@@ -30415,6 +30415,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/end,
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
 /turf/open/floor/iron/white,
 /area/station/medical/cryo)
 "jVJ" = (

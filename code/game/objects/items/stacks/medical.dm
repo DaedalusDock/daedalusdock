@@ -190,7 +190,6 @@
 	name = "improvised gauze"
 	singular_name = "improvised gauze"
 	desc = "A roll of cloth roughly cut from something that does a decent job of stabilizing wounds, but less efficiently so than real medical gauze."
-	splint_slowdown = 1.5
 	burn_cleanliness_bonus = 0.7
 	absorption_capacity = 20
 	absorption_rate_modifier = 0.8

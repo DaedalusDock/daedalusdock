@@ -161,18 +161,18 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	if(M.IsSleeping() || M.IsUnconscious())
-		var/power = -0.00003 * (M.bodytemperature ** 2) + 3
-		if(M.bodytemperature < T0C)
-			M.adjustOxyLoss(-3 * power * REM * delta_time, 0)
-			M.adjustBruteLoss(-power * REM * delta_time, 0)
-			M.adjustFireLoss(-power * REM * delta_time, 0)
-			M.adjustToxLoss(-power * REM * delta_time, 0, TRUE) //heals TOXINLOVERs
-			M.adjustCloneLoss(-power * REM * delta_time, 0)
+	if(!(M.bodytemperature < T0C))
+		return ..()
 
-			REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
-			. = TRUE
-	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (M.bodytemperature ** 2) + 0.5)
+	M.adjustOxyLoss(-0.5, 0)
+	M.adjustBruteLoss(-0.5, 0)
+	M.adjustFireLoss(-0.5, 0)
+	M.adjustToxLoss(-0.5, 0, TRUE) //heals TOXINLOVERs
+	M.adjustCloneLoss(-5, 0)
+	APPLY_CHEM_EFFECT(M, CE_CRYO, 1)
+
+	REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+	. = TRUE
 	..()
 
 // Healing
@@ -797,8 +797,6 @@
 		return
 	if(M.health <= M.crit_threshold)
 		M.adjustToxLoss(-0.5 * REM * delta_time, 0)
-		M.adjustBruteLoss(-0.5 * REM * delta_time, 0)
-		M.adjustFireLoss(-0.5 * REM * delta_time, 0)
 		M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
 	if(M.losebreath >= 4)
 		M.losebreath -= 2 * REM * delta_time
@@ -945,6 +943,7 @@
 /datum/reagent/medicine/neurine/on_mob_dead(mob/living/carbon/owner, delta_time)
 	owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, -1 * REM * delta_time * normalise_creation_purity())
 	..()
+	return TRUE
 
 /datum/reagent/medicine/mutadone
 	name = "Mutadone"

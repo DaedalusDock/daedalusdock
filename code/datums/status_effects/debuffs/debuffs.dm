@@ -204,13 +204,13 @@
 	icon_state = "asleep"
 
 //STASIS
-/datum/status_effect/grouped/stasis
+/datum/status_effect/grouped/hard_stasis
 	id = "stasis"
 	duration = -1
 	alert_type = /atom/movable/screen/alert/status_effect/stasis
 	var/last_dead_time
 
-/datum/status_effect/grouped/stasis/proc/update_time_of_death()
+/datum/status_effect/grouped/hard_stasis/proc/update_time_of_death()
 	if(last_dead_time)
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
@@ -220,13 +220,13 @@
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
 
-/datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, set_duration)
+/datum/status_effect/grouped/hard_stasis/on_creation(mob/living/new_owner, set_duration)
 	. = ..()
 	if(.)
 		update_time_of_death()
 		owner.reagents?.end_metabolization(owner, FALSE)
 
-/datum/status_effect/grouped/stasis/on_apply()
+/datum/status_effect/grouped/hard_stasis/on_apply()
 	. = ..()
 	if(!.)
 		return
@@ -239,10 +239,10 @@
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.update_bodypart_bleed_overlays()
 
-/datum/status_effect/grouped/stasis/tick()
+/datum/status_effect/grouped/hard_stasis/tick()
 	update_time_of_death()
 
-/datum/status_effect/grouped/stasis/on_remove()
+/datum/status_effect/grouped/hard_stasis/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCKED, TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter("stasis_status_ripple")

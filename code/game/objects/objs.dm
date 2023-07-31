@@ -90,8 +90,8 @@
 	//DEFAULT: Take air from turf to give to have mob process
 
 	if(breath_request>0)
-		var/datum/gas_mixture/environment = return_air()
-		var/breath_percentage = BREATH_VOLUME / environment.get_volume()
+		var/datum/gas_mixture/environment = return_breathable_air()
+		var/breath_percentage = BREATH_VOLUME / environment.volume
 		return remove_air(environment.total_moles * breath_percentage)
 	else
 		return null

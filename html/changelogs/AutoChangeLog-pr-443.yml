@@ -1,0 +1,12 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The metabolism rate of mobs now slows down as their body chills. At maximum
+      effect (most obvious in the Cryogenics Toob), one life tick will occur every
+      40 seconds.
+  - rscadd: All health analyzers have a Surgerical mode.
+  - rscadd: Cryogenics now has a pump to regulate pressure.
+  - qol: The cryogenics O2 canister starts pre-chilled.
+  - balance: Arterial bleeding rate slowed by 20%
+  - bugfix: Epinephrine no longer heals brute or burn damage.
+  - bugfix: Body scanners now show embedded objects as foreign bodies.

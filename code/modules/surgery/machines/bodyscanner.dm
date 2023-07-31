@@ -119,7 +119,8 @@
 
 
 /obj/machinery/bodyscanner/container_resist_act(mob/living/user)
-	eject_occupant(src, TRUE)
+	if(!user.incapacitated())
+		eject_occupant(src, TRUE)
 
 /////// The Console ////////
 /obj/machinery/bodyscanner_console

@@ -6,6 +6,7 @@
 #define KEY_MODE_TYPE 1
 
 /datum/config_entry
+	abstract_type = /datum/config_entry
 	/// Read-only, this is determined by the last portion of the derived entry type
 	var/name
 	/// The configured value for this entry. This shouldn't be initialized in code, instead set default
@@ -20,8 +21,6 @@
 	var/deprecated_by
 	/// The /datum/config_entry type that supercedes this one
 	var/protection = NONE
-	/// Do not instantiate if type matches this
-	var/abstract_type = /datum/config_entry
 	/// Force validate and set on VV. VAS proccall guard will run regardless.
 	var/vv_VAS = TRUE
 	/// Controls if error is thrown when duplicate configuration values for this entry type are encountered
@@ -30,7 +29,7 @@
 	var/default_protection
 
 /datum/config_entry/New()
-	if(type == abstract_type)
+	if(isabstract(src)) // are we abstract?
 		CRASH("Abstract config entry [type] instatiated!")
 	name = lowertext(type2top(type))
 	default_protection = protection

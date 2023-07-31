@@ -9,6 +9,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 )))
 
 /datum/surgery_step
+	abstract_type = /datum/surgery_step
 	var/name
 	var/desc
 	/// type path referencing tools that can be used for this step, and how well are they suited for it
@@ -41,7 +42,6 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	/// Sound to play on failure.
 	var/failure_sound
 
-	var/abstract_type = /datum/surgery_step
 
 /// Returns how well tool is suited for this step
 /datum/surgery_step/proc/tool_potency(obj/item/tool)

@@ -1280,7 +1280,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
+							if (ispath(chosen_id) && !isabstract(chosen_id))
 								valid_id = TRUE
 						else
 							valid_id = TRUE

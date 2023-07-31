@@ -881,8 +881,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return TRUE
 
 /atom/movable/screen/alert/Destroy()
-	. = ..()
 	severity = 0
 	master = null
 	owner = null
 	screen_loc = ""
+	return ..()

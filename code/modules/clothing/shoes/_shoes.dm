@@ -43,7 +43,7 @@
 			playsound(user, 'sound/weapons/genhit2.ogg', 50, TRUE)
 		return(BRUTELOSS)
 
-/obj/item/clothing/shoes/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/shoes/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -51,10 +51,16 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 	if(HAS_BLOOD_DNA(src))
-		if(clothing_flags & LARGE_WORN_ICON)
-			. += mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
+		if(istype(wearer))
+			var/obj/item/bodypart/leg = wearer.get_bodypart(BODY_ZONE_R_LEG) || wearer.get_bodypart(BODY_ZONE_L_LEG)
+			if(!leg?.icon_bloodycover)
+				return
+			. += image(leg.icon_bloodycover, "shoeblood")
 		else
-			. += mutable_appearance('icons/effects/blood.dmi', "shoeblood")
+			if(clothing_flags & LARGE_WORN_ICON)
+				. += mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
+			else
+				. += image('icons/effects/blood.dmi', "shoeblood")
 
 /obj/item/clothing/shoes/examine(mob/user)
 	. = ..()

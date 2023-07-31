@@ -439,7 +439,7 @@
 		conceal(null, part)
 	return ..()
 
-/obj/item/mod/control/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file)
+/obj/item/mod/control/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, icon_file)
 	. = ..()
 	for(var/obj/item/mod/module/module as anything in modules)
 		var/list/module_icons = module.generate_worn_overlay(standing)

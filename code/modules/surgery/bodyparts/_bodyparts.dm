@@ -24,6 +24,10 @@
 	VAR_PROTECTED/icon_husk = 'icons/mob/human_parts.dmi'
 	///The type of husk for building an iconstate
 	var/husk_type = "humanoid"
+	///The file to pull damage overlays from. Null is valid.
+	var/icon_dmg_overlay = 'icons/mob/species/human/damage.dmi'
+	/// The file to pull bloody clothing overlays from. Null is valid.
+	var/icon_bloodycover = 'icons/effects/blood.dmi'
 
 	grind_results = list(/datum/reagent/bone_dust = 10, /datum/reagent/liquidgibs = 5) // robotic bodyparts and chests/heads cannot be ground
 
@@ -147,8 +151,6 @@
 	var/px_y = 0
 
 	var/species_flags_list = list()
-	///the type of damage overlay (if any) to use when this bodypart is bruised/burned.
-	var/dmg_overlay_type = "human"
 	/// If we're bleeding, which icon are we displaying on this part
 	var/bleed_overlay_icon
 

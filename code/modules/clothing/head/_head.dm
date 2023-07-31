@@ -59,7 +59,7 @@
 
 
 
-/obj/item/clothing/head/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/head/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -67,10 +67,16 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedhelmet")
 	if(HAS_BLOOD_DNA(src))
-		if(clothing_flags & LARGE_WORN_ICON)
-			. += mutable_appearance('icons/effects/64x64.dmi', "helmetblood_large")
+		if(istype(wearer))
+			var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
+			if(!head?.icon_bloodycover)
+				return
+			. += image(head.icon_bloodycover, "helmetblood")
 		else
-			. += mutable_appearance('icons/effects/blood.dmi', "helmetblood")
+			if(clothing_flags & LARGE_WORN_ICON)
+				. += mutable_appearance('icons/effects/64x64.dmi', "helmetblood_large")
+			else
+				. += mutable_appearance('icons/effects/blood.dmi', "helmetblood")
 
 /obj/item/clothing/head/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()

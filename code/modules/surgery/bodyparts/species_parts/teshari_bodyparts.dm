@@ -2,6 +2,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	is_dimorphic = FALSE
@@ -13,6 +15,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	is_dimorphic = FALSE
@@ -23,6 +27,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
@@ -36,6 +42,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
@@ -49,6 +57,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
@@ -57,6 +67,8 @@
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
 	icon_husk = 'icons/mob/species/teshari/bodyparts.dmi'
 	husk_type = "teshari"
+	icon_dmg_overlay = 'icons/mob/species/teshari/damage.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
@@ -65,35 +77,41 @@
 /obj/item/bodypart/head/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
 
 /obj/item/bodypart/chest/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
 
 /obj/item/bodypart/arm/right/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
 
 /obj/item/bodypart/arm/left/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
 
 /obj/item/bodypart/leg/right/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC
 
 /obj/item/bodypart/leg/left/robot/surplus/teshari
 	icon = 'icons/mob/species/teshari/augments.dmi'
 	icon_static = 'icons/mob/species/teshari/augments.dmi'
+	icon_bloodycover = 'icons/mob/species/teshari/blood_mask.dmi'
 	limb_id = "robotesh"
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ROBOTIC

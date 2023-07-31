@@ -31,7 +31,7 @@
 	equip_delay_other = 60
 	resistance_flags = FIRE_PROOF
 
-/obj/item/clothing/suit/fire/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/fire/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -158,7 +158,7 @@
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 
-/obj/item/clothing/suit/radiation/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/radiation/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)

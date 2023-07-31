@@ -437,7 +437,7 @@
 		add_atom_colour(user.eye_color_left, FIXED_COLOUR_PRIORITY) // I want this to be an average of the colors of both eyes, but that can be done later
 		colored_before = TRUE
 
-/obj/item/clothing/glasses/blindfold/white/worn_overlays(mutable_appearance/standing, isinhands = FALSE, file2use)
+/obj/item/clothing/glasses/blindfold/white/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, file2use)
 	. = ..()
 	if(isinhands || !ishuman(loc) || colored_before)
 		return

@@ -51,7 +51,7 @@
 	if(!do_after(user, H, 5 SECONDS, DO_PUBLIC, interaction_key = "splint", display = src))
 		return
 
-	if(H == user && prob(75))
+	if(H == user && prob(25))
 		user.visible_message(span_warning("[user] fumbles [src]."))
 		return
 

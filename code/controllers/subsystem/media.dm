@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(media)
 	//Fetch
 	for(var/json_record in flist(basedir))
 		//Decode
-		var/list/json_data = json_decode(file2text("[basedir][json_record]"))
+		var/list/json_data = json_decode(rustg_file_read("[basedir][json_record]"))
 
 		//Skip the example file.
 		if(json_data["name"] == "EXAMPLE")
@@ -56,7 +56,8 @@ SUBSYSTEM_DEF(media)
 				if(MEDIA_TAG_ALLMEDIA)
 					if(!json_data["name"])
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "Track has no name.")
-					if(!fexists(jd_full_filepath))
+						break
+					if(!rustg_file_exists(jd_full_filepath))
 						tag_error = list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 						break
 					//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
@@ -66,6 +67,7 @@ SUBSYSTEM_DEF(media)
 						var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
 						if(!byond_sound_formats[ext])
 							tag_error = list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+							break
 
 				// Ensure common and rare lobby music pools are not contaminated.
 				if(MEDIA_TAG_LOBBYMUSIC_COMMON)
@@ -77,6 +79,7 @@ SUBSYSTEM_DEF(media)
 				if(MEDIA_TAG_ROUNDEND_COMMON)
 					if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
 						tag_error = list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
+						break
 
 
 				// Jukebox tracks MUST have a duration.

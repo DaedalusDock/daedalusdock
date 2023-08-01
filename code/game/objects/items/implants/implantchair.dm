@@ -90,7 +90,7 @@
 	var/obj/item/I = new implant_type
 	if(istype(I, /obj/item/implant))
 		var/obj/item/implant/P = I
-		if(P.implant(M))
+		if(P.implant(M, body_zone = BODY_ZONE_CHEST))
 			visible_message(span_warning("[M] is implanted by [src]."))
 			return TRUE
 	else if(istype(I, /obj/item/organ))

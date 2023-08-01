@@ -1,4 +1,3 @@
-
 /obj/item/bodypart/chest
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
@@ -14,27 +13,21 @@
 	wound_resistance = 10
 	bodypart_trait_source = CHEST_TRAIT
 
+	encased = "ribcage"
+	artery_name = "aorta"
+	cavity_name = "thoracic"
+
+	minimum_break_damage = 35
+
 	bodypart_flags = STOCK_BP_FLAGS_CHEST
 
 	///The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
-	var/obj/item/cavity_item
-
 /obj/item/bodypart/chest/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT || !get_organs())
+	if(owner.stat < HARD_CRIT || !length(contained_organs))
 		return FALSE
 	return ..()
-
-/obj/item/bodypart/chest/Destroy()
-	QDEL_NULL(cavity_item)
-	return ..()
-
-/obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
-	if(cavity_item)
-		cavity_item.forceMove(drop_location())
-		cavity_item = null
-	..()
 
 /obj/item/bodypart/chest/monkey
 	icon = 'icons/mob/animal_parts.dmi'
@@ -46,7 +39,7 @@
 	wound_resistance = -10
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	acceptable_bodytype = BODYTYPE_MONKEY
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 
 /obj/item/bodypart/chest/alien
 	icon = 'icons/mob/animal_parts.dmi'
@@ -89,6 +82,11 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_ARMS
 
+	artery_name = "basilic vein"
+	tendon_name = "palmaris longus tendon"
+
+	minimum_break_damage = 30
+
 /obj/item/bodypart/arm/left
 	name = "left arm"
 	desc = "Did you know that the word 'sinister' stems originally from the \
@@ -107,6 +105,7 @@
 	px_x = -6
 	px_y = 0
 	bodypart_trait_source = LEFT_ARM_TRAIT
+	amputation_point = "left shoulder"
 
 
 /obj/item/bodypart/arm/left/set_owner(new_owner)
@@ -156,7 +155,7 @@
 	wound_resistance = -10
 	px_x = -5
 	px_y = -3
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	unarmed_damage_low = 1 /// monkey punches must be really weak, considering they bite people instead and their bites are weak as hell.
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
@@ -174,7 +173,6 @@
 	max_damage = 100
 	should_draw_greyscale = FALSE
 
-
 /obj/item/bodypart/arm/right
 	name = "right arm"
 	desc = "Over 87% of humans are right handed. That figure is much lower \
@@ -190,6 +188,7 @@
 	px_y = 0
 	bodypart_trait_source = RIGHT_ARM_TRAIT
 	can_be_disabled = TRUE
+	amputation_point = "right shoulder"
 
 /obj/item/bodypart/arm/right/set_owner(new_owner)
 	. = ..()
@@ -238,7 +237,7 @@
 	wound_resistance = -10
 	px_x = 5
 	px_y = -3
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
@@ -274,6 +273,11 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_LEGS
 
+	artery_name = "femoral artery"
+	tendon_name = "cruciate ligament"
+
+	minimum_break_damage = 30
+
 /obj/item/bodypart/leg/left
 	name = "left leg"
 	desc = "Some athletes prefer to tie their left shoelaces first for good \
@@ -286,6 +290,8 @@
 	px_y = 12
 	can_be_disabled = TRUE
 	bodypart_trait_source = LEFT_LEG_TRAIT
+	amputation_point = "left hip"
+
 
 /obj/item/bodypart/leg/left/set_owner(new_owner)
 	. = ..()
@@ -332,7 +338,7 @@
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	wound_resistance = -10
 	px_y = 4
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
@@ -364,6 +370,7 @@
 	px_y = 12
 	bodypart_trait_source = RIGHT_LEG_TRAIT
 	can_be_disabled = TRUE
+	amputation_point = "right hip"
 
 /obj/item/bodypart/leg/right/set_owner(new_owner)
 	. = ..()
@@ -410,7 +417,7 @@
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	wound_resistance = -10
 	px_y = 4
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4

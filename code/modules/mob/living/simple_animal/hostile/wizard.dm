@@ -41,7 +41,7 @@
 /mob/living/simple_animal/hostile/wizard/Initialize(mapload)
 	. = ..()
 	var/obj/item/implant/exile/exiled = new /obj/item/implant/exile(src)
-	exiled.implant(src)
+	exiled.implant(src, body_zone = BODY_ZONE_CHEST)
 
 	fireball = new(src)
 	fireball.spell_requirements &= ~(SPELL_REQUIRES_HUMAN|SPELL_REQUIRES_WIZARD_GARB|SPELL_REQUIRES_MIND)

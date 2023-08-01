@@ -30,10 +30,10 @@ list(
 	var/list/modnames_by_species = list()
 
 /datum/controller/modmanager/Initialize()
-	for(var/path as anything in subtypesof(/datum/appearance_modifier))
-		var/datum/appearance_modifier/mod = new path
-		if(mod.abstract_type == mod.type)
+	for(var/datum/path as anything in subtypesof(/datum/appearance_modifier))
+		if(isabstract(path))
 			continue
+		var/datum/appearance_modifier/mod = new path
 		mod_singletons += mod
 		mods_by_type[path] = mod
 		mods_by_name[mod.name] = mod

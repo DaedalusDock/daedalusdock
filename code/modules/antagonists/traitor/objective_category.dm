@@ -13,7 +13,7 @@
 			qdel(category)
 
 /datum/traitor_category_handler/proc/objective_valid(datum/traitor_objective/objective_path, progression_points)
-	if(initial(objective_path.abstract_type) == objective_path)
+	if(isabstract(objective_path))
 		return FALSE
 	if(progression_points < initial(objective_path.progression_minimum))
 		return FALSE

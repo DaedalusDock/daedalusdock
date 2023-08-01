@@ -8,7 +8,7 @@
 		/datum/reagent/eigenstate, //Creates clones after a delay which get into other tests
 	)
 	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
-		if(initial(reagent_type.abstract_type) == reagent_type) //Are we abstract?
+		if(isabstract(reagent_type)) //Are we abstract?
 			log_test(TEST_OUTPUT_YELLOW("Skipping abstract reagent [reagent_type]"))
 			continue
 		if(reagent_type in blacklisted_reagents)

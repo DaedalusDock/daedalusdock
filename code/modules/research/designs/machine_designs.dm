@@ -476,13 +476,6 @@
 	build_path = /obj/item/circuitboard/machine/spaceship_navigation_beacon
 	mapload_design_flags = IMPRINTER
 
-/datum/design/board/medical_kiosk
-	name = "Machine Board (Medical Kiosk)"
-	desc = "The circuit board for a Medical Kiosk."
-	id = "medical_kiosk"
-	build_path = /obj/item/circuitboard/machine/medical_kiosk
-	mapload_design_flags = IMPRINTER
-
 /datum/design/board/medipen_refiller
 	name = "Machine Board (Medipen Refiller)"
 	desc = "The circuit board for a Medipen Refiller."

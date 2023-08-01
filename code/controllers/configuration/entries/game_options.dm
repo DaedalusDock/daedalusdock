@@ -1,5 +1,3 @@
-/datum/config_entry/number_list/repeated_mode_adjust
-
 /datum/config_entry/keyed_list/max_pop
 	key_mode = KEY_MODE_TEXT
 	value_mode = VALUE_MODE_NUM
@@ -48,12 +46,12 @@
 
 /datum/config_entry/flag/disable_warops
 
-/datum/config_entry/number/traitor_scaling_coeff //how much does the amount of players get divided by to determine traitors
+/datum/config_entry/number/traitor_scaling_coeff //how much does the amount of players get divided by to determine traitors [UNUSED]
 	default = 6
 	integer = FALSE
 	min_val = 0
 
-/datum/config_entry/number/brother_scaling_coeff //how many players per brother team
+/datum/config_entry/number/brother_scaling_coeff //how many players per brother team [UNUSED]
 	default = 25
 	integer = FALSE
 	min_val = 0
@@ -73,12 +71,12 @@
 	default = 6
 	min_val = 1
 
-/datum/config_entry/number/changeling_scaling_coeff //how much does the amount of players get divided by to determine changelings
+/datum/config_entry/number/changeling_scaling_coeff //how much does the amount of players get divided by to determine changelings [UNUSED]
 	default = 6
 	integer = FALSE
 	min_val = 0
 
-/datum/config_entry/number/ecult_scaling_coeff //how much does the amount of players get divided by to determine e_cult
+/datum/config_entry/number/ecult_scaling_coeff //how much does the amount of players get divided by to determine e_cult (Heretic) [UNUSED]
 	default = 6
 	integer = FALSE
 	min_val = 0
@@ -169,11 +167,6 @@
 	default = "Destruction of the station is imminent. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill."
 
 /datum/config_entry/flag/revival_pod_plants
-
-/datum/config_entry/number/revival_brain_life
-	default = -1
-	integer = FALSE
-	min_val = -1
 
 /datum/config_entry/flag/ooc_during_round
 
@@ -267,8 +260,6 @@
 	movedelay_type = /mob/living/simple_animal
 /////////////////////////////////////////////////
 
-/datum/config_entry/flag/virtual_reality //Will virtual reality be loaded
-
 /datum/config_entry/flag/roundstart_away //Will random away mission be loaded.
 
 /datum/config_entry/number/gateway_delay //How long the gateway takes before it activates. Default is half an hour. Only matters if roundstart_away is enabled.
@@ -287,8 +278,6 @@
 
 /datum/config_entry/flag/silent_ai
 /datum/config_entry/flag/silent_borg
-
-/datum/config_entry/flag/sandbox_autoclose // close the sandbox panel after spawning an item, potentially reducing griff
 
 /datum/config_entry/number/default_laws //Controls what laws the AI spawns with.
 	default = 0

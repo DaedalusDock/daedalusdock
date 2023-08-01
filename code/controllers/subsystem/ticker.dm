@@ -704,8 +704,8 @@ SUBSYSTEM_DEF(ticker)
 	///The full datum of the last song used.
 	var/datum/media/old_login_music
 
-	if(fexists("data/last_round_lobby_music.txt"))
-		old_login_music_t = file2text("data/last_round_lobby_music.txt")
+	if(rustg_file_exists("data/last_round_lobby_music.txt"))
+		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks
 	for(var/datum/media/music_filtered as anything in music_tracks)

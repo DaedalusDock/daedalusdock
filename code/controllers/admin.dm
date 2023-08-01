@@ -98,7 +98,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	if(!check_rights(R_ADMIN) || !SSticker.initialized)
 		return
 
-	var/list/music_tracks = list(SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)+SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE))
+	var/list/music_tracks = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)+SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE)
 	if(!length(music_tracks))
 		to_chat(usr, span_admin("MEDIA: No media tracks available. Manual music changing can't be used on fallback tracks."))
 		return

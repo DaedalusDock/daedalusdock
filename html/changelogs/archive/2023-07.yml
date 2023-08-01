@@ -1,0 +1,109 @@
+2023-07-03:
+  Kapu1178:
+  - bugfix: A bug with zombie hands, pay no mind
+  - bugfix: Transformations no longer ghost players.
+  - bugfix: Changing bodytypes updates clothing to reflect new body.
+  - bugfix: Alot of circuitboards that were unobtainable are obtainable again via
+      the circuit imprinter.
+  - rscdel: Removes Felinids as a species. Felinid character saves will automatically
+      be updated to be a Human with the Feline Ears and Feline Tail implants.
+  - server: Bumps minimum savefile version to 42.
+  - bugfix: TEG circulators no longer lock up if the output network is empty.
+  - refactor: You may now right click with a gun to hold them at gunpoint from any
+      range. In addition, your HUD has new options that dictate what your victim will
+      be allowed to do.
+  - balance: Clamps all standard status effects to a maximum duration of 30 seconds
+  - balance: Disablers now deal Disorient.
+  - balance: Disabler projectile travels 12.5% faster
+  - rscdel: Syndicate Contractor
+  Spyroshark:
+  - rscadd: Inflatable shelters can be found in emergency lockers to help you survive
+      disasters! Idea, code inspiration, and sprites from vgstation.
+  - imageadd: Inflatable boxes actually have their own sprite now.
+  - balance: Inflatable boxes start with an extra wall and door. Inflatables can no
+      longer activate if a structure or mob is on their tile.
+2023-07-04:
+  Kapu1178:
+  - balance: Passout threshold from oxyloss from 50 to 100
+  - balance: Oxyloss taken when failing a breath from 3 to rand(2, 4)
+  - balance: Oxyloss taken when failing a breath in critical condition from 3.3 to
+      rand(3,6)
+2023-07-06:
+  francinum:
+  - refactor: Keycard Authentication Devices have been made significantly less hardcoded.
+      They're still awful.
+2023-07-09:
+  Kapu1178:
+  - bugfix: You can now die from only one damage type again.
+  - bugfix: Action Buttons that require consciousness can now be used in Soft Crit
+  - bugfix: Removed a phantom surgery from the operating console
+  - bugfix: Fixed AoE flash function
+  - balance: AoE flash now has a cooldown.
+  - bugfix: Examining someone now shows broken bones.
+  - qol: Health Analyzers now display broken bones.
+  - bugfix: Checking yourself for injuries now shows broken bones even if the limb
+      has no damage.
+  - bugfix: Detective's revolver is no longer an error
+  - rscdel: Detective's revolver is no longer reskinnable
+  - rscadd: Voidsuits! A simpler alternative to MODsuits that does not take the backpack
+      slot.
+  - balance: MODsuit slowdowns almost entirely removed, save for a couple.
+  - balance: MODsuit storage module taken from all non-antag suits.
+  - balance: MODsuit armor increased on most suits.
+  - bugfix: Item action buttons change icons again.
+  - tweak: Spacesuit cell batteries are now removed by using a screwdriver while the
+      cell compartment is open.
+  - bugfix: The clockwork HUD has aim intent icons.
+  - bugfix: do_after() now renders on the correct layer and plane
+  - bugfix: Auto surgeon do_after()
+  - balance: Megafauna no longer gib dead players.
+  - qol: Wall engravings can now be removed with a welding tool.
+  Kapu1178, AdharaInSpace:
+  - qol: Batons no longer have a right click interaction. Instead, turn on Combat
+      Mode to bludgeon crew with it. Don't try it while the baton is on, though...
+  - imageadd: Batons now have in-hand sprites that show if they are on/flipped.
+  - tweak: Changed most combat messages to third person regardless of who the attacker
+      is.
+2023-07-12:
+  BrDown:
+  - bugfix: Deconstructing a railing will now give the proper amount of iron rods.
+  Kapu1178:
+  - code_imp: Saved a large amount of tick time in sound.
+  - bugfix: Fixed a couple issues with augments/implants.
+  - bugfix: Fabricator icons update properly.
+  francinum:
+  - bugfix: You can no longer get to centcom from the station with one verb.
+2023-07-19:
+  DTraitor:
+  - bugfix: fixed camera not being able to move between Z levels
+2023-07-20:
+  Cenrus:
+  - balance: bio bags are unequippable on your belt, but hold slime extracts now
+  - bugfix: fixed sec fabricator
+  - bugfix: data disks now available as cargo crates
+  - rscadd: several new cargo packs to make lost designs attainable again
+  Kapu1178:
+  - soundadd: More scream sounds!
+  francinum:
+  - bugfix: Commendation polling was asking people in the order they joined the server.
+      It will now instead pick randomly.
+2023-07-25:
+  Kapu1178:
+  - qol: Click-drag is now a valid way to place someone onto a table.
+  - rscadd: Attempting to climb a table with combat mode on will cause you to bonk
+      your head.
+  - soundadd: Health Analyzers now have a sound
+  - soundadd: Replaced the airlock access denied sound.
+  Kapu1178, Zonespace:
+  - refactor: Surgery, gauze mechanics, limb breaking mechanics, embedding mechanics
+  - rscadd: Vascular Recoupler (Fix O Vein)
+  - rscadd: Splints
+  - rscadd: You can now remove embedded items, splints, and bandages from yourself
+      or other players by the Examine menu.
+  - rscadd: Bodyscanner, bodyscanner console, and bodyscanner display.
+  - tweak: Sutures now instantly close small wounds, but otherwise do nothing.
+  - rscdel: Surgical drapes
+  - rscdel: Operating computers
+  francinum:
+  - bugfix: 'Energy guns display charge again. Probably a few other things as well,
+      Overlay rendering was fucked:tm:'

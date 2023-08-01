@@ -218,7 +218,6 @@
 	. = ..()
 	setDir(pick(1,2,4,8))
 	add_blood_DNA(list("Non-human DNA" = random_blood_type()))
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
 	dry()
 
 /obj/effect/decal/cleanable/blood/drip
@@ -390,6 +389,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			return
 		if(splatter_strength <= 0)
 			break
+		if(QDELETED(iter_atom))
+			return
 		if(isitem(iter_atom))
 			iter_atom.add_blood_DNA(blood_dna_info)
 			splatter_strength--

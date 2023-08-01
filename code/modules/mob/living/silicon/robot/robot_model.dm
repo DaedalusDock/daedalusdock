@@ -282,7 +282,7 @@
 		/obj/item/stamp/clown,
 		/obj/item/bikehorn,
 		/obj/item/bikehorn/airhorn,
-		/obj/item/paint/anycolor,
+		/obj/item/paint_sprayer,
 		/obj/item/soap/nanotrasen/cyborg,
 		/obj/item/pneumatic_cannon/pie/selfcharge/cyborg,
 		/obj/item/razor, //killbait material
@@ -600,7 +600,6 @@
 		/obj/item/borg/apparatus/beaker,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/hemostat,
 		/obj/item/cautery,
@@ -611,7 +610,7 @@
 		/obj/item/extinguisher/mini,
 		/obj/item/roller/robo,
 		/obj/item/borg/cyborghug/medical,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/stack/medical/bone_gel,
 		/obj/item/borg/apparatus/organ_storage,
 		/obj/item/borg/lollipop)
@@ -791,7 +790,6 @@
 		/obj/item/reagent_containers/borghypo/syndicate,
 		/obj/item/shockpaddles/syndicate/cyborg,
 		/obj/item/healthanalyzer,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/hemostat,
 		/obj/item/cautery,
@@ -802,7 +800,7 @@
 		/obj/item/crowbar/cyborg,
 		/obj/item/extinguisher/mini,
 		/obj/item/pinpointer/syndicate_cyborg,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/gun/medbeam,
 		/obj/item/borg/apparatus/organ_storage)
 

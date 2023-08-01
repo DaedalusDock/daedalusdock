@@ -494,7 +494,7 @@
 	REMOVE_TRAIT(L, TRAIT_DOUBLE_TAP, type)
 	if(current_cycle > 10)
 		to_chat(L, span_warning("You feel kinda tired as your sugar rush wears off..."))
-		L.adjustStaminaLoss(min(80, current_cycle * 3))
+		L.stamina.adjust(-1 * min(80, current_cycle * 3))
 		L.adjust_drowsyness(current_cycle)
 	..()
 

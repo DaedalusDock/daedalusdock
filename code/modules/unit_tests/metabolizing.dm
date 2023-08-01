@@ -7,8 +7,12 @@
 	var/list/blacklisted_reagents = list(
 		/datum/reagent/eigenstate, //Creates clones after a delay which get into other tests
 	)
-	var/list/reagents_to_check = subtypesof(/datum/reagent) - blacklisted_reagents - GLOB.fake_reagent_blacklist
-	for (var/reagent_type in reagents_to_check)
+	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
+		if(isabstract(reagent_type)) //Are we abstract?
+			log_test(TEST_OUTPUT_YELLOW("Skipping abstract reagent [reagent_type]"))
+			continue
+		if(reagent_type in blacklisted_reagents)
+			log_test(TEST_OUTPUT_YELLOW("Skipping blacklisted reagent [reagent_type]"))
 		test_reagent(human, reagent_type)
 
 /datum/unit_test/metabolization/proc/test_reagent(mob/living/carbon/C, reagent_type)

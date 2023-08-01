@@ -18,6 +18,8 @@
 	if(damage > min_damage)
 		heal_damage(damage-min_damage)
 
+	parent.update_damage()
+
 /datum/wound/cut/small
 	// link wound descriptions to amounts of damage
 	// Minor cuts have max_bleeding_stage set to the stage that bears the wound type's name.

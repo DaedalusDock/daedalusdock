@@ -65,9 +65,6 @@
 	blood_type = "LE"
 	unique_blood = /datum/reagent/consumable/liquidelectricity
 
-/obj/item/reagent_containers/blood/skrell
-	blood_type = "S"
-
 /obj/item/reagent_containers/blood/universal
 	blood_type = "U"
 

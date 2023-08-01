@@ -1062,8 +1062,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		prefs.apply_prefs_to(body, TRUE)
 
 	var/datum/outfit/outfit = outfit_override || job?.outfit
+	outfit = new outfit()
 	if(job)
-		body.dna.species.pre_equip_species_outfit(job, body, TRUE)
+		body.dna.species.pre_equip_species_outfit(outfit, body, TRUE)
+
 	if(outfit)
 		body.equipOutfit(outfit, TRUE)
 
@@ -1397,3 +1399,44 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 		if(scream)
 			stack_trace("Icon Lookup for state: [state] in file [file] failed.")
 		return FALSE
+
+/atom/proc/save_icon()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = icon(icon, icon_state)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/atom/proc/save_icon_hard()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = getFlatIcon(src)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/// This exists purely to import sprites from a codebase like Citadel RP.
+/proc/pull_apart_damage_states(damage_states_file, species)
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/mob/living/carbon/human/human = new()
+	human.set_species(species)
+	var/icon/local = icon("data/saved_icons.dmi")
+	for(var/obj/item/bodypart/BP as anything in human.bodyparts)
+		for(var/state in list("10", "20", "30", "01", "02", "03"))
+			var/icon/masked_icon = icon(damage_states_file, state)
+			var/icon/masker = UNLINT(icon(BP.icon_greyscale, BP.is_dimorphic ? "[BP.limb_id]_[BP.body_zone]_[BP.limb_gender]" : "[BP.limb_id]_[BP.body_zone]"))
+			masker.Blend("#FFFFFF")
+			masker.BecomeAlphaMask()
+			masked_icon.AddAlphaMask(masker)
+			masked_icon.Blend("#950A0A", ICON_MULTIPLY)
+			UNLINT(local.Insert(masked_icon, "[BP.body_zone]_[state]"))
+
+	fcopy(local, "data/saved_icons.dmi")

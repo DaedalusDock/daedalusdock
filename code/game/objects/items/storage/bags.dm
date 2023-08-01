@@ -438,6 +438,7 @@
 	worn_icon_state = "biobag"
 	desc = "A bag for the safe transportation and disposal of biowaste and other virulent materials."
 	resistance_flags = FLAMMABLE
+	slot_flags = null //Primarily to limit slime extract storage on one person at a time
 
 /obj/item/storage/bag/bio/Initialize()
 	. = ..()
@@ -445,6 +446,7 @@
 	atom_storage.max_slots = 25
 	atom_storage.set_holdable(list(
 		/obj/item/bodypart,
+		/obj/item/slime_extract,
 		/obj/item/food/monkeycube,
 		/obj/item/healthanalyzer,
 		/obj/item/organ,
@@ -456,7 +458,6 @@
 		/obj/item/reagent_containers/hypospray/medipen,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
-		/obj/item/bodypart,
 		/obj/item/healthanalyzer
 		))
 
@@ -481,7 +482,6 @@
 		/obj/item/food/deadmouse,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
-		/obj/item/petri_dish,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/glass/beaker,
 		/obj/item/reagent_containers/glass/bottle,
@@ -489,8 +489,6 @@
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
 		/obj/item/bodypart,
-		/obj/item/petri_dish,
-		/obj/item/swab
 		))
 
 /*

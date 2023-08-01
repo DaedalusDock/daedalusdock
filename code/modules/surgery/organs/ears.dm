@@ -67,23 +67,25 @@
 	visual = TRUE
 	damage_multiplier = 2
 
-/obj/item/organ/ears/cat/Insert(mob/living/carbon/human/ear_owner, special = 0, drop_if_replaced = TRUE)
+	dna_block = DNA_EARS_BLOCK
+	feature_key = "ears"
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
+	color_source = ORGAN_COLOR_HAIR
+
+/obj/item/organ/ears/cat/can_draw_on_bodypart(mob/living/carbon/human/human)
 	. = ..()
-	if(!.)
-		return
+	if(human.head && (human.head.flags_inv & HIDEHAIR) || (human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR)))
+		return FALSE
 
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = ear_owner.dna.species.mutant_bodyparts["ears"] = "Cat"
-		ear_owner.dna.update_uf_block(DNA_EARS_BLOCK)
-		ear_owner.update_body()
+/obj/item/organ/ears/cat/get_global_feature_list()
+	return GLOB.ears_list
 
-/obj/item/organ/ears/cat/Remove(mob/living/carbon/human/ear_owner,  special = 0)
-	..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.species.mutant_bodyparts -= "ears"
-		ear_owner.update_body()
+/obj/item/organ/ears/cat/build_overlays(physique, image_dir)
+	. = ..()
+	if(sprite_datum.hasinner)
+		for(var/image_layer in layers)
+			. += image(sprite_datum.icon, "m_earsinner_[sprite_datum.icon_state]_[global.layer2text["[image_layer]"]]", layer = -image_layer)
+
 
 /obj/item/organ/ears/penguin
 	name = "penguin ears"

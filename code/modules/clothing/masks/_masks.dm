@@ -43,7 +43,7 @@
 /obj/item/clothing/mask/proc/handle_speech()
 	SIGNAL_HANDLER
 
-/obj/item/clothing/mask/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/mask/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -52,7 +52,13 @@
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
 		if(HAS_BLOOD_DNA(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			if(istype(wearer))
+				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
+				if(!head?.icon_bloodycover)
+					return
+				. += image(head.icon_bloodycover, "maskblood")
+			else
+				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()

@@ -12,20 +12,25 @@
 	var/broken = FALSE
 
 /obj/structure/Initialize(mapload)
-	if (!armor)
-		armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+
+	SETUP_SMOOTHING()
+	if(!isnull(smoothing_flags))
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 		if(smoothing_flags & SMOOTH_CORNERS)
 			icon_state = ""
+
 	GLOB.cameranet.updateVisibility(src)
 
 /obj/structure/Destroy()
 	GLOB.cameranet.updateVisibility(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/structure/ui_act(action, params)
@@ -62,3 +67,32 @@
 		take_damage(power/8000, BURN, "energy")
 	power -= power/2000 //walls take a lot out of ya
 	. = ..()
+
+/obj/structure/onZImpact(turf/impacted_turf, levels, message)
+	. = ..()
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(hurt_atom == src)
+			continue
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage(80 * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage(80 * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))

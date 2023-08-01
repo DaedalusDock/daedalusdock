@@ -673,23 +673,12 @@
 	},
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
-"bY" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
-/area/space/nearstation)
 "bZ" = (
-/turf/open/floor/plating/airless{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating/airless,
 /area/space/nearstation)
 "ca" = (
 /turf/open/floor/plating/airless,
-/area/space/nearstation)
-"cb" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg3"
-	},
 /area/space/nearstation)
 "cc" = (
 /obj/structure/sign/warning/nosmoking,
@@ -1116,6 +1105,10 @@
 	dir = 5
 	},
 /turf/open/space,
+/area/space/nearstation)
+"DJ" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/space/nearstation)
 
 (1,1,1) = {"
@@ -4713,7 +4706,7 @@ aa
 aa
 aa
 aa
-cb
+DJ
 aa
 aa
 aa
@@ -5426,7 +5419,7 @@ aa
 aa
 bC
 ah
-bY
+DJ
 cg
 ca
 ah
@@ -5836,7 +5829,7 @@ bD
 ah
 bZ
 cg
-cb
+DJ
 ah
 bD
 ah
@@ -6650,7 +6643,7 @@ aa
 aa
 bC
 ah
-cb
+DJ
 cg
 ca
 ah
@@ -6957,7 +6950,7 @@ aa
 aa
 aa
 ah
-bY
+DJ
 ah
 aa
 aa

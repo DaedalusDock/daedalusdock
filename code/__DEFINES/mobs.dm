@@ -10,6 +10,7 @@
 //movement intent defines for the m_intent var
 #define MOVE_INTENT_WALK "walk"
 #define MOVE_INTENT_RUN  "run"
+#define MOVE_INTENT_SPRINT "sprint"
 
 //Blood levels
 #define BLOOD_VOLUME_MAX_LETHAL 2150
@@ -79,16 +80,14 @@
 #define BODYTYPE_MONKEY (1<<4)
 ///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
-///The limb has skrelly bits
-#define BODYTYPE_SKRELL (1<<6)
 ///The limb is voxed
-#define BODYTYPE_VOX_BEAK (1<<7)
+#define BODYTYPE_VOX_BEAK (1<<6)
 ///The limb is in the shape of a vox leg.
-#define BODYTYPE_VOX_LEGS (1<<8)
+#define BODYTYPE_VOX_LEGS (1<<7)
 ///Vox limb that isnt a head or legs.
-#define BODYTYPE_VOX_OTHER (1<<9)
+#define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<10)
+#define BODYTYPE_TESHARI (1<<9)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -119,7 +118,6 @@
 #define SPECIES_PODPERSON "pod"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
-#define SPECIES_SKRELL "skrell"
 #define SPECIES_SNAIL "snail"
 #define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"
@@ -156,10 +154,8 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_MAX_OXYLOSS 3
-#define HUMAN_CRIT_MAX_OXYLOSS (SSMOBS_DT/3)
-
-#define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
+#define HUMAN_FAILBREATH_OXYLOSS (rand(2,4))
+#define HUMAN_CRIT_FAILBREATH_OXYLOSS (rand(3,6))
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -215,6 +211,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -432,6 +429,28 @@
 
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Organ preservation effects like formaldehyde. Boolean.
+#define CE_ORGAN_PRESERVATION "formaldehyde"
+/// Mob cannot breathe. Boolean.
+#define CE_RESPIRATORY_FAILURE "cantbreathe"
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0

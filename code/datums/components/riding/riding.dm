@@ -252,6 +252,6 @@
 	return TRUE
 
 /// Extra checks before buckled.can_z_move can be called in mob/living/can_z_move()
-/datum/component/riding/proc/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/datum/component/riding/proc/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, z_move_flags, mob/living/rider)
 	SIGNAL_HANDLER
 	return COMPONENT_RIDDEN_ALLOW_Z_MOVE

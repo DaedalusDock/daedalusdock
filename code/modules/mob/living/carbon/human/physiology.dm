@@ -23,5 +23,12 @@
 
 	var/hunger_mod = 1 //% of hunger rate taken per tick.
 
-/datum/physiology/New()
-	armor = new
+///Copy paste of /atom/proc/returnArmor().
+/datum/physiology/proc/returnArmor()
+	RETURN_TYPE(/datum/armor)
+	if(istype(armor, /datum/armor))
+		return armor
+
+	if(islist(armor) || isnull(armor))
+		armor = getArmor(armor)
+		return armor

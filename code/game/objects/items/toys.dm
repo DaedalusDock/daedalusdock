@@ -46,9 +46,6 @@
 /obj/item/toy/waterballoon/Initialize(mapload)
 	. = ..()
 	create_reagents(10)
-
-/obj/item/toy/waterballoon/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
 /obj/item/toy/waterballoon/attack(mob/living/carbon/human/M, mob/user)
@@ -82,7 +79,7 @@
 				to_chat(user, span_notice("You fill the balloon with the contents of [I]."))
 				I.reagents.trans_to(src, 10, transfered_by = user)
 				update_appearance()
-	else if(I.get_sharpness())
+	else if(I.sharpness)
 		balloon_burst()
 	else
 		return ..()
@@ -284,15 +281,16 @@
 		user.ghostize(FALSE) // get the fuck out of our body
 		return
 	var/obj/item/bodypart/chest/CH = user.get_bodypart(BODY_ZONE_CHEST)
-	if(CH.cavity_item) // if he's (un)bright enough to have a round and full belly...
+	if(length(CH.cavity_items)) // if he's (un)bright enough to have a round and full belly...
 		user.visible_message(span_danger("[user] regurgitates [src]!")) // I swear i dont have a fetish
 		user.vomit(100, TRUE, distance = 0)
 		user.adjustOxyLoss(120)
 		user.dropItemToGround(src) // incase the crit state doesn't drop the singulo to the floor
 		user.set_suicide(FALSE)
 		return
-	user.transferItemToLoc(src, user, TRUE)
-	CH.cavity_item = src // The mother came inside and found Andy, dead with a HUGE belly full of toys
+
+	user.transferItemToLoc(src, CH, TRUE, TRUE)
+	CH.add_cavity_item(src) // The mother came inside and found Andy, dead with a HUGE belly full of toys
 	user.adjustOxyLoss(200) // You know how most small toys in the EU have that 3+ onion head icon and a warning that says "Unsuitable for children under 3 years of age due to small parts - choking hazard"? This is why.
 	user.death(FALSE)
 	user.ghostize(FALSE)
@@ -547,7 +545,7 @@
 
 /obj/item/dualsaber/toy/impale(mob/living/user)//Stops Toy Dualsabers from injuring clowns
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
-	user.adjustStaminaLoss(25)
+	user.stamina.adjust(-25)
 
 /obj/item/toy/katana
 	name = "replica katana"
@@ -604,6 +602,8 @@
 
 /obj/item/toy/snappop/proc/on_entered(datum/source, H as mob|obj)
 	SIGNAL_HANDLER
+	if(H == src)
+		return
 	if(ishuman(H) || issilicon(H)) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(issilicon(H) || M.m_intent == MOVE_INTENT_RUN)

@@ -80,14 +80,11 @@
 /obj/item/hierophant_club/Initialize(mapload)
 	. = ..()
 	blink = new(src)
+	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hierophant_club/Destroy()
-	. = ..()
 	QDEL_NULL(blink)
-
-/obj/item/hierophant_club/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
+	return ..()
 
 /obj/item/hierophant_club/examine(mob/user)
 	. = ..()
@@ -344,7 +341,7 @@
 	glass_overlay.appearance_flags = RESET_COLOR
 	. += glass_overlay
 
-/obj/item/clothing/head/hooded/hostile_environment/worn_overlays(mutable_appearance/standing, isinhands)
+/obj/item/clothing/head/hooded/hostile_environment/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands)
 	. = ..()
 	if(!isinhands)
 		var/mutable_appearance/glass_overlay = mutable_appearance('icons/mob/clothing/head.dmi', "hostile_env_glass")
@@ -452,7 +449,7 @@
 		return
 	if(pixel_x != base_pixel_x || pixel_y != base_pixel_y)
 		animate(src, 0.2 SECONDS, pixel_x = base_pixel_y, pixel_y = base_pixel_y, flags = ANIMATION_PARALLEL)
-	Move(get_step(src, direction), direction)
+	Move(get_step_multiz(src, direction), direction)
 	COOLDOWN_START(src, move_cooldown, (direction in GLOB.cardinals) ? 0.1 SECONDS : 0.2 SECONDS)
 
 /obj/item/soulscythe/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

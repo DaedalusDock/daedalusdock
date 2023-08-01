@@ -205,6 +205,8 @@
 
 /obj/structure/table/wood/shuttle_bar/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	var/mob/living/M = AM
 	if(istype(M) && !M.incorporeal_move && !is_barstaff(M))
 		// No climbing on the bar please

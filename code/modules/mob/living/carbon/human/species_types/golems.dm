@@ -308,7 +308,7 @@
 /datum/species/golem/alloy/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
 	if(H.stat == DEAD)
 		return
-	H.heal_overall_damage(1 * delta_time, 1 * delta_time, 0, BODYTYPE_ORGANIC)
+	H.heal_overall_damage(1 * delta_time, 1 * delta_time, BODYTYPE_ORGANIC)
 	H.adjustToxLoss(-1 * delta_time)
 	H.adjustOxyLoss(-1 * delta_time)
 
@@ -355,7 +355,7 @@
 		if(H.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 			H.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 		if(light_amount > 0.2) //if there's enough light, heal
-			H.heal_overall_damage(0.5 * delta_time, 0.5 * delta_time, 0, BODYTYPE_ORGANIC)
+			H.heal_overall_damage(0.5 * delta_time, 0.5 * delta_time, BODYTYPE_ORGANIC)
 			H.adjustToxLoss(-0.5 * delta_time)
 			H.adjustOxyLoss(-0.5 * delta_time)
 
@@ -1221,7 +1221,7 @@
 /datum/species/golem/bone/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
 	. = ..()
 	if(chem.type == /datum/reagent/toxin/bonehurtingjuice)
-		H.adjustStaminaLoss(7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
+		H.stamina.adjust(-7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
 		H.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
 		if(DT_PROB(10, delta_time))
 			switch(rand(1, 3))
@@ -1239,7 +1239,7 @@
 					playsound(H, get_sfx(SFX_DESECRATION), 50, TRUE, -1) //You just want to socialize
 					H.visible_message(span_warning("[H] rattles loudly and flails around!!"), span_danger("Your bones hurt so much that your missing muscles spasm!!"))
 					H.say("OOF!!", forced=/datum/reagent/toxin/bonehurtingjuice)
-					bp.receive_damage(200, 0, 0) //But I don't think we should
+					bp.receive_damage(200, 0) //But I don't think we should
 				else
 					to_chat(H, span_warning("Your missing arm aches from wherever you left it."))
 					H.emote("sigh")

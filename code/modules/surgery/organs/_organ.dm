@@ -76,28 +76,18 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
-	else
-		if(visual)
-			if(ownerlimb)
-				remove_from_limb()
 
-		else
-			STOP_PROCESSING(SSobj, src)
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+
+	if(!cosmetic_only)
+		STOP_PROCESSING(SSobj, src)
 
 	return ..()
 
-/obj/item/organ/forceMove(atom/destination, check_dest = TRUE)
-	if(check_dest && destination) //Nullspace is always a valid location for organs. Because reasons.
-		if(organ_flags & ORGAN_UNREMOVABLE) //If this organ is unremovable, it should delete itself if it tries to be moved to anything besides a bodypart.
-			if(!istype(destination, /obj/item/bodypart) && !iscarbon(destination))
-				stack_trace("Unremovable organ tried to be removed!")
-				qdel(src)
-				return //Don't move it out of nullspace if it's deleted.
-	return ..()
-
-/// A little hack to ensure old behavior for now.
+/// A little hack to ensure old behavior.
 /obj/item/organ/ex_act(severity, target)
-	if(visual && ownerlimb)
+	if(ownerlimb)
 		return
 	return ..()
 
@@ -113,10 +103,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return FALSE
 
 	var/obj/item/bodypart/limb
-	if(visual)
-		limb = reciever.get_bodypart(deprecise_zone(zone))
-		if(!limb)
-			return FALSE
+	limb = reciever.get_bodypart(deprecise_zone(zone))
+	if(!limb)
+		return FALSE
 
 	var/obj/item/organ/replaced = reciever.getorganslot(slot)
 	if(replaced)
@@ -125,6 +114,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			replaced.forceMove(get_turf(reciever))
 		else
 			qdel(replaced)
+
+	organ_flags &= ~ORGAN_CUT_AWAY
 
 	SEND_SIGNAL(src, COMSIG_ORGAN_IMPLANTED, reciever)
 	SEND_SIGNAL(reciever, COMSIG_CARBON_GAIN_ORGAN, src, special)
@@ -147,18 +138,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		/// Otherwise life processing breaks down
 		sortTim(owner.processing_organs, GLOBAL_PROC_REF(cmp_organ_slot_asc))
 
-	if(visual) //Brains are visual and I don't know why. Blame lemon.
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+	limb.add_organ(src)
+	forceMove(limb)
+
+	if(visual)
 		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
 			stored_feature_id = reciever.dna.features[feature_key]
 
 		reciever.cosmetic_organs.Add(src)
-
-		ownerlimb = limb
-		add_to_limb(ownerlimb)
-
-		if(external_bodytypes)
-			limb.synchronize_bodytypes(reciever)
-
 		reciever.update_body_parts()
 	return TRUE
 
@@ -170,37 +159,48 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
  */
 /obj/item/organ/proc/Remove(mob/living/carbon/organ_owner, special = FALSE)
+	if(!istype(organ_owner))
+		CRASH("Tried to remove an organ with no owner argument.")
 
 	UnregisterSignal(owner, COMSIG_PARENT_EXAMINE)
 
 	owner = null
 	for(var/datum/action/action as anything in actions)
 		action.Remove(organ_owner)
+
 	for(var/trait in organ_traits)
 		REMOVE_TRAIT(organ_owner, trait, REF(src))
 
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
 
-	if(organ_owner)
-		organ_owner.organs -= src
-		if(organ_owner.organs_by_slot[slot] == src)
-			organ_owner.organs_by_slot.Remove(slot)
-		if(!cosmetic_only)
-			if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
-				organ_owner.death()
-			organ_owner.processing_organs -= src
+	organ_flags |= ORGAN_CUT_AWAY
+
+	organ_owner.organs -= src
+	if(organ_owner.organs_by_slot[slot] == src)
+		organ_owner.organs_by_slot.Remove(slot)
 
 	if(!cosmetic_only)
+		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
+			organ_owner.death()
+		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
 
-	if(visual)
-		if(ownerlimb)
-			remove_from_limb()
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
 
-		if(organ_owner)
-			organ_owner.cosmetic_organs.Remove(src)
-			organ_owner.update_body_parts()
+	if(visual)
+		organ_owner.cosmetic_organs.Remove(src)
+		organ_owner.update_body_parts()
+
+/// Cut an organ away from it's container, but do not remove it from the container physically.
+/obj/item/organ/proc/cut_away()
+	if(!ownerlimb)
+		return
+
+	var/obj/item/bodypart/old_owner = ownerlimb
+	Remove(owner)
+	old_owner.add_cavity_item(src)
 
 /// Updates the traits of the organ on the specific organ it is called on. Should be called anytime an organ is given a trait while it is already in a body.
 /obj/item/organ/proc/update_organ_traits()
@@ -297,7 +297,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
 /obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth) //use for damaging effects
-	if(!damage_amount) //Micro-optimization.
+	if(!damage_amount || cosmetic_only) //Micro-optimization.
 		return
 	if(maximum < damage)
 		return
@@ -418,15 +418,19 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
-/obj/item/organ/proc/get_status_text()
-	var/status = ""
+/obj/item/organ/proc/get_scan_results(tag)
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+
+	if(organ_flags & ORGAN_FAILING)
+		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
+
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		status = "<font color='#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</font>"
-	else if(organ_flags & ORGAN_FAILING)
-		status = "<font color='#cc3333'>Non-Functional</font>"
+		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
-		status = "<font color='#ff9933'>Severely Damaged</font>"
+		. +=  tag ?"<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"
 	else if (damage > low_threshold)
-		status = "<font color='#ffcc33'>Mildly Damaged</font>"
+		. += tag ?"<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
 	return status

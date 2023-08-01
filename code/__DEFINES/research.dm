@@ -7,6 +7,7 @@
 #define FABRICATOR_SCREEN_SEARCH 4
 #define FABRICATOR_SCREEN_CATEGORYVIEW 5
 #define FABRICATOR_SCREEN_MODIFY_MEMORY 6
+#define FABRICATOR_SCREEN_QUEUE 7
 
 //! Department flags for designs. Defines which depfab can print what at roundstart
 #define DESIGN_FAB_SECURITY (1<<0)

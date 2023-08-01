@@ -159,7 +159,6 @@
 /obj/item/rcd_ammo/large,
 /obj/item/rcd_ammo/large,
 /obj/item/construction/rcd/combat,
-/obj/item/construction/plumbing,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "aN" = (
@@ -521,7 +520,6 @@
 	},
 /area/station/medical/medbay)
 "bX" = (
-/obj/machinery/sleeper/syndie/fullupgrade,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -754,12 +752,11 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "cJ" = (
-/obj/machinery/computer/operating{
-	dir = 1
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/structure/table/optable,
+/obj/machinery/body_scan_display/directional/south,
 /turf/open/floor/iron/cafeteria,
 /area/station/medical/medbay)
 "cK" = (
@@ -767,24 +764,14 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/table/glass,
-/obj/item/storage/box/monkeycubes{
-	pixel_x = 6;
-	pixel_y = 1
-	},
-/obj/item/storage/box/monkeycubes{
-	pixel_x = -6;
-	pixel_y = 2
-	},
+/obj/machinery/bodyscanner,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "cL" = (
-/obj/item/storage/backpack/duffelbag/syndie/surgery,
-/obj/item/disk/surgery/debug,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/table/glass,
+/obj/machinery/bodyscanner_console,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "cN" = (
@@ -1008,10 +995,6 @@
 /obj/machinery/door/airlock,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
-"dH" = (
-/obj/machinery/door/airlock,
-/turf/open/floor/plating,
-/area/station/maintenance/department/bridge)
 "dI" = (
 /obj/effect/landmark/start,
 /turf/open/floor/iron,
@@ -1195,9 +1178,11 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/dna_scannernew,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/machinery/computer/scan_consolenew{
+	dir = 1
 	},
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
@@ -1943,6 +1928,10 @@
 /obj/item/paper/guides/jobs/security/labor_camp,
 /turf/open/floor/iron,
 /area/station/security/brig)
+"gV" = (
+/obj/machinery/door/airlock,
+/turf/open/floor/plating,
+/area/station/engineering/gravity_generator)
 "gY" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2224,6 +2213,14 @@
 "wU" = (
 /turf/closed/wall/r_wall,
 /area/station/science/misc_lab)
+"yw" = (
+/obj/structure/extinguisher_cabinet/directional/north,
+/obj/structure/closet/secure_closet/medical3{
+	locked = 0
+	},
+/obj/item/healthanalyzer/advanced,
+/turf/open/floor/iron,
+/area/station/medical/medbay)
 "yK" = (
 /obj/structure/fans/tiny/invisible,
 /obj/effect/turf_decal/stripes/line{
@@ -2305,9 +2302,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/computer/scan_consolenew{
-	dir = 1
-	},
+/obj/machinery/dna_scannernew,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "EA" = (
@@ -2315,10 +2310,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/construction)
-"EB" = (
-/obj/structure/extinguisher_cabinet/directional/north,
-/turf/open/floor/iron,
-/area/station/medical/medbay)
 "EG" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -2375,6 +2366,18 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"Js" = (
+/obj/structure/table/glass,
+/obj/item/storage/box/monkeycubes{
+	pixel_x = 6;
+	pixel_y = 1
+	},
+/obj/item/storage/box/monkeycubes{
+	pixel_x = -6;
+	pixel_y = 2
+	},
+/turf/open/floor/iron,
+/area/station/medical/medbay)
 "JF" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2412,6 +2415,16 @@
 /obj/machinery/door/airlock/research,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
+"LJ" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/structure/cable,
+/obj/machinery/sleeper/syndie/fullupgrade,
+/turf/open/floor/iron/white/corner{
+	dir = 1
+	},
+/area/station/medical/medbay)
 "LW" = (
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
@@ -2511,11 +2524,16 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/bridge)
+"Si" = (
+/obj/machinery/door/airlock,
+/turf/open/floor/plating,
+/area/station/medical/medbay)
 "Sj" = (
-/obj/structure/table/optable,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/structure/table/glass,
+/obj/item/storage/backpack/duffelbag/syndie/surgery,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "Td" = (
@@ -2537,13 +2555,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/construction)
-"Ut" = (
-/obj/structure/closet/secure_closet/medical3{
-	locked = 0
-	},
-/obj/item/healthanalyzer/advanced,
-/turf/open/floor/iron,
-/area/station/medical/medbay)
 "Vg" = (
 /obj/machinery/light/directional/south,
 /obj/structure/cable,
@@ -7731,7 +7742,7 @@ aa
 aa
 bY
 af
-ak
+gV
 at
 Wx
 bh
@@ -8016,7 +8027,7 @@ av
 by
 bU
 cl
-cl
+LJ
 cl
 cH
 cu
@@ -8291,10 +8302,10 @@ av
 av
 by
 bX
-cm
 eU
+cm
 cy
-Ut
+cm
 cm
 cK
 by
@@ -8382,12 +8393,12 @@ ak
 ak
 ak
 by
-by
-dH
-by
+Si
+ad
 Qt
 by
-EB
+yw
+cm
 DW
 by
 cS
@@ -8475,10 +8486,10 @@ af
 af
 af
 af
-af
-by
+ad
 cz
 by
+Js
 cm
 es
 by
@@ -8568,8 +8579,8 @@ ad
 ad
 ad
 ad
-by
 pI
+by
 by
 by
 by

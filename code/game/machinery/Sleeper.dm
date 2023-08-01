@@ -161,11 +161,7 @@
 
 /obj/machinery/sleeper/process()
 	..()
-	check_nap_violations()
 	use_power(active_power_usage)
-
-/obj/machinery/sleeper/nap_violation(mob/violator)
-	open_machine()
 
 /obj/machinery/sleeper/ui_data()
 	var/list/data = list()
@@ -217,7 +213,6 @@
 		return
 
 	var/mob/living/mob_occupant = occupant
-	check_nap_violations()
 	switch(action)
 		if("door")
 			if(state_open)

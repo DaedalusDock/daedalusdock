@@ -92,9 +92,6 @@
 	var/next_hallucination = 0
 	var/damageoverlaytemp = 0
 
-	///used to halt stamina regen temporarily
-	var/stam_regen_start_time = 0
-
 	/// Protection (insulation) from the heat, Value 0-1 corresponding to the percentage of protection
 	var/heat_protection = 0 // No heat protection
 	/// Protection (insulation) from the cold, Value 0-1 corresponding to the percentage of protection
@@ -111,5 +108,12 @@
 
 	/// Only load in visual organs
 	var/visual_only_organs = FALSE
+
+	///Is this carbon trying to sprint?
+	var/sprint_key_down = FALSE
+	var/sprinting = FALSE
+	///How many tiles we have continuously moved in the same direction
+	var/sustained_moves = 0
+
 
 	COOLDOWN_DECLARE(bleeding_message_cd)

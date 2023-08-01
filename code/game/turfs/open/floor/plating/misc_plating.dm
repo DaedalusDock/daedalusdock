@@ -14,6 +14,7 @@
 	name = "alien floor"
 	icon_state = "alienpod1"
 	base_icon_state = "alienpod1"
+	damaged_icon = 'icons/turf/floors.dmi'
 	tiled_dirt = FALSE
 
 /turf/open/floor/plating/abductor/setup_broken_states()
@@ -63,9 +64,8 @@
 	icon_state = "snow_turf-0"
 	base_icon_state = "snow_turf"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_FLOOR_SNOWED)
-	canSmoothWith = list(SMOOTH_GROUP_FLOOR_SNOWED)
-
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_SNOWED
+	canSmoothWith = SMOOTH_GROUP_FLOOR_SNOWED
 
 /turf/open/floor/plating/snowed/temperatre
 	temperature = 255.37

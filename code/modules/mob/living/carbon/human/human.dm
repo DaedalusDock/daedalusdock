@@ -4,14 +4,14 @@
 
 	icon_state = "" //Remove the inherent human icon that is visible on the map editor. We're rendering ourselves limb by limb, having it still be there results in a bug where the basic human icon appears below as south in all directions and generally looks nasty.
 
-	//initialize limbs first
-	create_bodyparts()
-
+	create_dna()
+	dna.species.create_fresh_body(src)
 	setup_human_dna()
-	prepare_huds() //Prevents a nasty runtime on human init
 
-	if(dna.species)
-		INVOKE_ASYNC(src, PROC_REF(set_species), dna.species.type)
+	create_carbon_reagents() //Humans init this early as species require it
+	set_species(dna.species.type)
+
+	prepare_huds() //Prevents a nasty runtime on human init
 
 	//initialise organs
 	create_internal_organs() //most of it is done in set_species now, this is only for parent call
@@ -21,7 +21,7 @@
 
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
 	AddComponent(/datum/component/personal_crafting)
-	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
+	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6, TRUE)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
@@ -38,11 +38,6 @@
 	create_dna(src)
 	randomize_human(src)
 	dna.initialize_dna()
-
-/mob/living/carbon/human/ComponentInitialize()
-	. = ..()
-	if(!CONFIG_GET(flag/disable_human_mood))
-		AddComponent(/datum/component/mood)
 
 /mob/living/carbon/human/Destroy()
 	QDEL_NULL(physiology)
@@ -369,6 +364,8 @@
 //called when something steps onto a human
 /mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()
@@ -771,6 +768,7 @@
 						icon_num = 0
 					if(icon_num)
 						hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]"))
+
 				for(var/t in get_missing_limbs()) //Missing limbs
 					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]6"))
 				for(var/t in get_disabled_limbs()) //Disabled limbs
@@ -783,6 +781,12 @@
 	if(admin_revive)
 		regenerate_limbs()
 		regenerate_organs()
+
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		BP.set_sever_artery(FALSE)
+		BP.set_sever_tendon(FALSE)
+		BP.heal_bones()
+
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)
 	for(var/datum/mutation/human/HM in dna.mutations)
@@ -808,7 +812,6 @@
 	VV_DROPDOWN_OPTION(VV_HK_MOD_MUTATIONS, "Add/Remove Mutation")
 	VV_DROPDOWN_OPTION(VV_HK_MOD_QUIRKS, "Add/Remove Quirks")
 	VV_DROPDOWN_OPTION(VV_HK_SET_SPECIES, "Set Species")
-	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -869,26 +872,6 @@
 			var/newtype = GLOB.species_list[result]
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
-	if(href_list[VV_HK_PURRBATION])
-		if(!check_rights(R_SPAWN))
-			return
-		if(!ishumanbasic(src))
-			to_chat(usr, "This can only be done to the basic human species at the moment.")
-			return
-		var/success = purrbation_toggle(src)
-		if(success)
-			to_chat(usr, "Put [src] on purrbation.")
-			log_admin("[key_name(usr)] has put [key_name(src)] on purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has put [key_name(src)] on purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-
-		else
-			to_chat(usr, "Removed [src] from purrbation.")
-			log_admin("[key_name(usr)] has removed [key_name(src)] from purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has removed [key_name(src)] from purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
@@ -977,13 +960,18 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 		return
-	var/health_deficiency = max((maxHealth - health), staminaloss)
+	var/health_deficiency = maxHealth - health
 	if(health_deficiency >= 40)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
+
+/mob/living/carbon/human/pre_stamina_change(diff as num, forced)
+	if(diff < 0) //Taking damage, not healing
+		return diff * physiology.stamina_mod
+	return diff
 
 /mob/living/carbon/human/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
@@ -1023,9 +1011,10 @@
 	var/race = null
 	var/use_random_name = TRUE
 
-/mob/living/carbon/human/species/Initialize(mapload)
-	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(set_species), race)
+/mob/living/carbon/human/species/create_dna()
+	dna = new /datum/dna(src)
+	if (!isnull(race))
+		dna.species = new race
 
 /mob/living/carbon/human/species/set_species(datum/species/mrace, icon_update, pref_load)
 	. = ..()
@@ -1040,9 +1029,6 @@
 
 /mob/living/carbon/human/species/dullahan
 	race = /datum/species/dullahan
-
-/mob/living/carbon/human/species/felinid
-	race = /datum/species/human/felinid
 
 /mob/living/carbon/human/species/fly
 	race = /datum/species/fly
@@ -1181,9 +1167,6 @@
 
 /mob/living/carbon/human/species/zombie/infectious
 	race = /datum/species/zombie/infectious
-
-/mob/living/carbon/human/species/skrell
-	race = /datum/species/skrell
 
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox

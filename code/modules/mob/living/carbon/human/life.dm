@@ -84,9 +84,9 @@
 
 	if(!L)
 		if(health >= crit_threshold)
-			adjustOxyLoss(HUMAN_MAX_OXYLOSS + 1)
+			adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS + 1)
 		else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-			adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+			adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		failed_last_breath = TRUE
 
@@ -105,14 +105,16 @@
 	else
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
-			lun.check_breath(breath,src)
+			if(lun.check_breath(breath,src))
+				return
+			// Failed a breath for one reason or another.
+			set_blurriness(max(3, eye_blurry))
+			if(prob(20))
+				spawn(-1)
+					emote("gasp")
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
-	// If we are in a cryo bed do not process life functions
-	if(istype(loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
-		return
-
 	dna.species.handle_environment(src, environment, delta_time, times_fired)
 
 /**

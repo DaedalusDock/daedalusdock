@@ -84,7 +84,6 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXITED = PROC_REF(conveyable_exit),
 		COMSIG_ATOM_ENTERED = PROC_REF(conveyable_enter),
-		COMSIG_ATOM_INITIALIZED_ON = PROC_REF(conveyable_enter)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	update_move_direction()
@@ -218,6 +217,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /obj/machinery/conveyor/proc/conveyable_enter(datum/source, atom/convayable)
 	SIGNAL_HANDLER
+	if(convayable == src)
+		return
 	if(operating == CONVEYOR_OFF)
 		SSmove_manager.stop_looping(convayable, SSconveyors)
 		return

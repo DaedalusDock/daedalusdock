@@ -142,7 +142,7 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 #define TCOMMS_ATMOS list(GAS_NITROGEN = 100)
 //#define TCOMMS_ATMOS "n2=100;TEMP=80"
 /// space
-#define AIRLESS_ATMOS list()
+#define AIRLESS_ATMOS null
 /// -93.15°C snow and ice turfs
 //#define FROZEN_ATMOS "o2=22;n2=82;TEMP=180"
 /// -14°C kitchen coldroom, just might loss your tail; higher amount of mol to reach about 101.3 kpA

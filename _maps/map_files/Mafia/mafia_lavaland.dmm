@@ -2,36 +2,28 @@
 "a" = (
 /turf/closed/indestructible/riveted,
 /area/centcom/mafia)
+"b" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
+/area/centcom/mafia)
 "c" = (
 /turf/closed/wall/rust,
 /area/centcom/mafia)
 "d" = (
 /turf/open/floor/plating,
 /area/centcom/mafia)
-"e" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/centcom/mafia)
 "f" = (
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "g" = (
 /obj/mafia_game_board,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "h" = (
 /obj/structure/grille/indestructable,
 /turf/open/floor/plating,
-/area/centcom/mafia)
-"i" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
 /area/centcom/mafia)
 "j" = (
 /obj/machinery/door/airlock/external/ruin{
@@ -124,9 +116,8 @@
 /area/centcom/mafia)
 "v" = (
 /obj/mafia_game_board,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "w" = (
 /obj/effect/turf_decal/trimline/brown/filled/line{
@@ -440,7 +431,7 @@ d
 d
 d
 d
-e
+b
 d
 d
 d
@@ -461,7 +452,7 @@ c
 h
 d
 d
-e
+b
 Y
 Y
 j
@@ -471,7 +462,7 @@ Y
 Y
 d
 d
-i
+b
 h
 c
 Y
@@ -483,7 +474,7 @@ a
 Y
 Y
 c
-i
+b
 Y
 Y
 j
@@ -623,7 +614,7 @@ C
 C
 J
 j
-e
+b
 c
 Y
 a
@@ -632,7 +623,7 @@ a
 a
 Y
 c
-e
+b
 Y
 Y
 p
@@ -698,7 +689,7 @@ Y
 p
 l
 Y
-i
+b
 c
 Y
 a
@@ -809,7 +800,7 @@ Y
 Y
 c
 h
-i
+b
 d
 d
 Y
@@ -820,7 +811,7 @@ j
 Y
 Y
 d
-e
+b
 d
 h
 c
@@ -837,7 +828,7 @@ k
 h
 d
 d
-e
+b
 d
 d
 d

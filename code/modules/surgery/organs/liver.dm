@@ -100,7 +100,6 @@
 				if(provide_pain_message != HAS_PAINFUL_TOXIN)
 					provide_pain_message = toxin.silent_toxin ? HAS_SILENT_TOXIN : HAS_PAINFUL_TOXIN
 
-	//metabolize reagents
 	liver_owner.reagents.metabolize(liver_owner, delta_time, times_fired, can_overdose=TRUE)
 
 	if(damange_to_deal)
@@ -181,6 +180,7 @@
 		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
 			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_they()] don't look like they will be alive for much longer.")
 
+
 /obj/item/organ/liver/on_death(delta_time, times_fired)
 	. = ..()
 	var/mob/living/carbon/carbon_owner = owner
@@ -192,8 +192,7 @@
 		CRASH("on_death() called for [src] ([type]) with not-dead owner ([owner])")
 	if((organ_flags & ORGAN_FAILING) && HAS_TRAIT(carbon_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
 		return
-	for(var/datum/reagent/chem as anything in carbon_owner.reagents.reagent_list)
-		chem.on_mob_dead(carbon_owner, delta_time)
+	carbon_owner.reagents.dead_process(carbon_owner)
 
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
@@ -219,13 +218,6 @@
 	name = "vox liver"
 	icon_state = "vox-liver"
 	alcohol_tolerance = 0.008 // 60% more toxic
-
-/obj/item/organ/liver/skrell
-	name = "skrell liver"
-	icon_state = "liver-skrell"
-	alcohol_tolerance = 5
-	toxTolerance = 10 //can shrug off up to 10u of toxins.
-	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
 
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"

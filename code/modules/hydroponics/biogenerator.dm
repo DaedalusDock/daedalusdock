@@ -282,7 +282,7 @@
 
 /obj/machinery/biogenerator/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/research_designs),
+		get_asset_datum(/datum/asset/spritesheet/biogenerator_designs),
 	)
 
 /obj/machinery/biogenerator/ui_interact(mob/user, datum/tgui/ui)

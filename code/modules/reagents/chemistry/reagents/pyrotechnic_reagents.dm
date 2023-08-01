@@ -233,8 +233,6 @@
 	taste_description = "icey bitterness"
 	purity = REAGENT_STANDARD_PURITY
 	self_consuming = TRUE
-	inverse_chem_val = 0.5
-	inverse_chem = /datum/reagent/inverse/cryostylane
 	burning_volume = 0.05
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED | REAGENT_DEAD_PROCESS
 
@@ -254,13 +252,7 @@
 	consumer.mob_surgery_speed_mod = 1
 	consumer.color = COLOR_WHITE
 
-//Pauses decay! Does do something, I promise.
-/datum/reagent/cryostylane/on_mob_dead(mob/living/carbon/consumer, delta_time)
-	. = ..()
-	metabolization_rate = 0.05 * REM //slower consumption when dead
-
 /datum/reagent/cryostylane/on_mob_life(mob/living/carbon/consumer, delta_time, times_fired)
-	metabolization_rate = 0.25 * REM//faster consumption when alive
 	if(consumer.reagents.has_reagent(/datum/reagent/oxygen))
 		consumer.reagents.remove_reagent(/datum/reagent/oxygen, 0.5 * REM * delta_time)
 		consumer.adjust_bodytemperature(-15 * REM * delta_time)
@@ -348,7 +340,7 @@
 	if(isjellyperson(M))
 		shock_timer = 0 //immune to shocks
 		M.AdjustAllImmobility(-40  *REM * delta_time)
-		M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+		M.stamina.adjust(2 * REM * delta_time)
 		if(isluminescent(M))
 			var/mob/living/carbon/human/H = M
 			var/datum/species/jelly/luminescent/L = H.dna.species

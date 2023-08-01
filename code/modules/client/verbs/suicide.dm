@@ -41,7 +41,7 @@
 				damagetype = held_item.suicide_act(src)
 			if(damagetype)
 				if(damagetype & SHAME)
-					adjustStaminaLoss(200)
+					stamina.adjust(-200)
 					set_suicide(FALSE)
 					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "shameful_suicide", /datum/mood_event/shameful_suicide)
 					return
@@ -143,7 +143,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(maxHealth * 2 - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -162,7 +162,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(maxHealth * 2 - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 

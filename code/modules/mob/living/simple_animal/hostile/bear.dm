@@ -49,10 +49,6 @@
 /mob/living/simple_animal/hostile/bear/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	add_cell_sample()
-
-/mob/living/simple_animal/hostile/bear/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/bear/Login()
 	. = ..()
@@ -143,9 +139,6 @@
 	attack_vis_effect = ATTACK_EFFECT_DISARM
 	attack_verb_simple = "slap"
 	attack_verb_continuous = "slaps"
-
-/mob/living/simple_animal/hostile/bear/butter/add_cell_sample()
-	return //You cannot grow a real bear from butter.
 
 /mob/living/simple_animal/hostile/bear/butter/Life(delta_time = SSMOBS_DT, times_fired) //Heals butter bear really fast when he takes damage.
 	if(stat)

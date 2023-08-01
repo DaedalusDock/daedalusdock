@@ -5,7 +5,7 @@
 	limb_id = SPECIES_PLASMAMAN
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 
 	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD)
 
@@ -16,7 +16,7 @@
 	limb_id = SPECIES_PLASMAMAN
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 
 	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD)
 
@@ -26,7 +26,7 @@
 	icon_static = 'icons/mob/species/plasmaman/bodyparts.dmi'
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 
 	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
 
@@ -36,7 +36,7 @@
 	icon_static = 'icons/mob/species/plasmaman/bodyparts.dmi'
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 
 	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
 
@@ -46,7 +46,7 @@
 	icon_static = 'icons/mob/species/plasmaman/bodyparts.dmi'
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/leg/right/plasmaman
@@ -55,5 +55,5 @@
 	icon_static = 'icons/mob/species/plasmaman/bodyparts.dmi'
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = null
+	icon_dmg_overlay = null
 	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)

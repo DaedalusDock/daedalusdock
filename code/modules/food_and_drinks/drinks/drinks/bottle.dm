@@ -70,7 +70,7 @@
 
 		//If they have a hat/helmet and the user is targeting their head.
 		if(istype(H.head, /obj/item/clothing/head) && affecting == BODY_ZONE_HEAD)
-			headarmor = H.head.armor.melee
+			headarmor = H.head.returnArmor().melee
 		else
 			headarmor = 0
 

@@ -100,8 +100,8 @@
 	normalspeed = 1
 	explosion_block = 1
 	hud_possible = list(DIAG_AIRLOCK_HUD)
-	smoothing_groups = list(SMOOTH_GROUP_AIRLOCK)
 	zmm_flags = ZMM_MANGLE_PLANES
+	smoothing_groups = SMOOTH_GROUP_AIRLOCK
 
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	blocks_emissive = NONE // Custom emissive blocker. We don't want the normal behavior.
@@ -160,10 +160,9 @@
 	flags_1 = HTML_USE_INITAL_ICON_1
 	rad_insulation = RAD_MEDIUM_INSULATION
 
-	network_id = NETWORK_DOOR_AIRLOCKS
-
 /obj/machinery/door/airlock/Initialize(mapload)
 	. = ..()
+	init_network_id(NETWORK_DOOR_AIRLOCKS)
 	wires = set_wires()
 	if(frequency)
 		set_frequency(frequency)
@@ -574,7 +573,10 @@
 		if("deny")
 			if(!machine_stat)
 				update_icon(ALL, AIRLOCK_DENY)
-				playsound(src,doorDeni,50,FALSE,3)
+				if(prob(1) && prob(10)) //1000.
+					playsound(src, 'sound/machines/access_denied_hl.ogg', 50, FALSE, 3)
+				else
+					playsound(src,doorDeni,50,FALSE,3)
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_icon), ALL, AIRLOCK_CLOSED), AIRLOCK_DENY_ANIMATION_TIME)
 
 /obj/machinery/door/airlock/examine(mob/user)
@@ -1304,9 +1306,9 @@
 	assemblytype = initial(airlock.assemblytype)
 	update_appearance()
 
-/obj/machinery/door/airlock/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/machinery/door/airlock/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	//Airlock is passable if it is open (!density), bot has access, and is not bolted shut or powered off)
-	return !density || (check_access(ID) && !locked && hasPower())
+	return !density || (check_access(ID) && !locked && hasPower() && !no_id)
 
 /obj/machinery/door/airlock/emag_act(mob/user, obj/item/card/emag/doorjack/D)
 	if(!operating && density && hasPower() && !(obj_flags & EMAGGED))

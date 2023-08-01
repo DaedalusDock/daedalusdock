@@ -30,11 +30,11 @@
 	. = ..()
 	if(random_sensor)
 		//make the sensor mode favor higher levels, except coords.
-		sensor_mode = pick(SENSOR_VITALS, SENSOR_VITALS, SENSOR_VITALS, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS, SENSOR_COORDS, SENSOR_OFF)
+		sensor_mode = pick(SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS, SENSOR_COORDS, SENSOR_OFF)
 	if(!(body_parts_covered & LEGS))
 		fallback_icon_state = "under_skirt"
 
-/obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/under/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -42,7 +42,13 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
 	if(HAS_BLOOD_DNA(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
+		if(istype(wearer))
+			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
+			if(!chest?.icon_bloodycover)
+				return
+			. += image(chest.icon_bloodycover, "uniformblood")
+		else
+			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -85,7 +91,7 @@
 				var/mob/M = loc
 				to_chat(M,span_warning("[src]'s sensors short out!"))
 		else
-			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_VITALS, SENSOR_VITALS, SENSOR_COORDS)
+			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS)
 			if(ismob(loc))
 				var/mob/M = loc
 				to_chat(M,span_warning("The sensors on the [src] change rapidly!"))
@@ -225,11 +231,10 @@
 			if(SENSOR_OFF)
 				. += "Its sensors appear to be disabled."
 			if(SENSOR_LIVING)
-				. += "Its binary life sensors appear to be enabled."
-			if(SENSOR_VITALS)
 				. += "Its vital tracker appears to be enabled."
 			if(SENSOR_COORDS)
 				. += "Its vital tracker and tracking beacon appear to be enabled."
+
 	if(attached_accessory)
 		. += "\A [attached_accessory] is attached to it."
 
@@ -252,7 +257,7 @@
 		to_chat(usr, "This suit does not have any sensors.")
 		return
 
-	var/list/modes = list("Off", "Binary vitals", "Exact vitals", "Tracking beacon")
+	var/list/modes = list("Off", "Vitals", "Tracking beacon")
 	var/switchMode = tgui_input_list(M, "Select a sensor mode", "Suit Sensors", modes, modes[sensor_mode + 1])
 	if(isnull(switchMode))
 		return
@@ -262,14 +267,12 @@
 	sensor_mode = modes.Find(switchMode) - 1
 	if (loc == usr)
 		switch(sensor_mode)
-			if(0)
+			if(SENSOR_OFF)
 				to_chat(usr, span_notice("You disable your suit's remote sensing equipment."))
-			if(1)
+			if(SENSOR_LIVING)
 				to_chat(usr, span_notice("Your suit will now only report whether you are alive or dead."))
-			if(2)
-				to_chat(usr, span_notice("Your suit will now only report your exact vital lifesigns."))
-			if(3)
-				to_chat(usr, span_notice("Your suit will now report your exact vital lifesigns as well as your coordinate position."))
+			if(SENSOR_COORDS)
+				to_chat(usr, span_notice("Your suit will now report your exact vital information as well as your coordinate position."))
 
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc

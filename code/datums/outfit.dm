@@ -254,7 +254,7 @@
 		if(implants)
 			for(var/implant_type in implants)
 				var/obj/item/implant/I = SSwardrobe.provide_type(implant_type, H)
-				I.implant(H, null, TRUE)
+				I.implant(H, null, BODY_ZONE_CHEST, TRUE)
 
 		// Insert the skillchips associated with this outfit into the target.
 		if(skillchips)

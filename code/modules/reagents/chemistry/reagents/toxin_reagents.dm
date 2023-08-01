@@ -168,6 +168,7 @@
 		. = FALSE
 
 	if(.)
+		APPLY_CHEM_EFFECT(C, CE_RESPIRATORY_FAILURE, 1)
 		C.adjustOxyLoss(5 * REM * normalise_creation_purity() * delta_time, 0)
 		C.losebreath += 2 * REM * normalise_creation_purity() * delta_time
 		if(DT_PROB(10, delta_time))

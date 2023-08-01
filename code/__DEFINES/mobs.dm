@@ -211,6 +211,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -428,6 +429,28 @@
 
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Organ preservation effects like formaldehyde. Boolean.
+#define CE_ORGAN_PRESERVATION "formaldehyde"
+/// Mob cannot breathe. Boolean.
+#define CE_RESPIRATORY_FAILURE "cantbreathe"
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0

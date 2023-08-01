@@ -28,7 +28,7 @@
 	var/obj/item/clothing/under/U = H.w_uniform
 	if(!istype(U))
 		return FALSE
-	if(U.sensor_mode <= SENSOR_VITALS)
+	if(U.sensor_mode <= SENSOR_LIVING)
 		return FALSE
 	return TRUE
 

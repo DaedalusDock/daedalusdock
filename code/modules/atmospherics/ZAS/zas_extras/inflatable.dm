@@ -19,7 +19,7 @@
 		vision_distance = 5
 	)
 
-	addtimer(CALLBACK(src, .proc/inflate, user), 2 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(inflate), user), 2 SECONDS)
 
 /obj/item/inflatable/proc/inflate(mob/user)
 	var/turf/T = get_turf(src)

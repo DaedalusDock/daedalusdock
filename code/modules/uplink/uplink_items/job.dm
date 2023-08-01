@@ -154,15 +154,6 @@
 
 // Medium progression cost
 
-/datum/uplink_item/role_restricted/brainwash_disk
-	name = "Brainwashing Surgery Program"
-	desc = "A disk containing the procedure to perform a brainwashing surgery, allowing you to implant an objective onto a target. \
-	Insert into an Operating Console to enable the procedure."
-	progression_minimum = 25 MINUTES
-	item = /obj/item/disk/surgery/brainwashing
-	restricted_roles = list(JOB_MEDICAL_DOCTOR, JOB_CHIEF_MEDICAL_OFFICER, JOB_ROBOTICIST)
-	cost = 5
-
 /datum/uplink_item/role_restricted/springlock_module
 	name = "Heavily Modified Springlock MODsuit Module"
 	desc = "A module that spans the entire size of the MOD unit, sitting under the outer shell. \

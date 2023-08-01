@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Teshari now have their own damage sprites instead of using the human ones.
-  - bugfix: Teshari now have their own bloody clothing sprites instead of using the
-      human ones.

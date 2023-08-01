@@ -1,6 +1,5 @@
-author: Kapu1178
-delete-after: true
-changes:
+2023-08-01:
+  Kapu1178:
   - rscadd: The metabolism rate of mobs now slows down as their body chills. At maximum
       effect (most obvious in the Cryogenics Toob), one life tick will occur every
       40 seconds.
@@ -10,3 +9,8 @@ changes:
   - balance: Arterial bleeding rate slowed by 20%
   - bugfix: Epinephrine no longer heals brute or burn damage.
   - bugfix: Body scanners now show embedded objects as foreign bodies.
+  - bugfix: Teshari now have their own damage sprites instead of using the human ones.
+  - bugfix: Teshari now have their own bloody clothing sprites instead of using the
+      human ones.
+  francinum:
+  - code_imp: Abstractness changes

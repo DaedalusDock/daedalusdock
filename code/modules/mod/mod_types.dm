@@ -340,7 +340,7 @@
 		/obj/item/mod/module/quick_carry/advanced,
 		/obj/item/mod/module/magboot/advanced,
 		/obj/item/mod/module/jetpack,
-		/obj/item/mod/module/anomaly_locked/kinesis/plus,
+		/obj/item/mod/module/anomaly_locked/kinesis/admin,
 	)
 
 //these exist for the prefs menu

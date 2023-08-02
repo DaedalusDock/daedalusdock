@@ -579,10 +579,6 @@
 
 	if(can_inflict <= 0)
 		return FALSE
-	if(brute)
-		set_brute_dam(brute_dam + brute)
-	if(burn)
-		set_burn_dam(burn_dam + burn)
 
 	update_damage()
 	if(owner)
@@ -654,7 +650,6 @@
 
 	//update damage counts
 	for(var/datum/wound/W as anything in wounds)
-
 		if(W.damage <= 0)
 			qdel(W)
 			continue

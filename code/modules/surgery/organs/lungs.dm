@@ -133,9 +133,6 @@
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
 	var/SA_pp = breath.getBreathPartialPressure(SA_moles)
-	//Vars for n2o and healium induced euphorias.
-	var/n2o_euphoria = EUPHORIA_LAST_FLAG
-	var/healium_euphoria = EUPHORIA_LAST_FLAG
 
 	//-- OXY --//
 

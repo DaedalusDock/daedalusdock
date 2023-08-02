@@ -467,9 +467,6 @@
 /area/station/commons/lounge
 	name = "\improper Bar Lounge"
 	icon_state = "lounge"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/commons/fitness
@@ -567,9 +564,6 @@
 /area/station/service/bar
 	name = "\improper Bar"
 	icon_state = "bar"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_WOODFLOOR
 
@@ -606,9 +600,6 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	mood_bonus = 5
-	mood_message = "I love being in the library!"
-	mood_trait = TRAIT_INTROVERT
 	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
@@ -640,9 +631,6 @@
 /area/station/service/chapel
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	mood_bonus = 5
-	mood_message = "Being in the chapel brings me peace."
-	mood_trait = TRAIT_SPIRITUAL
 	ambience_index = AMBIENCE_HOLY
 	flags_1 = NONE
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
@@ -1040,8 +1028,6 @@
 /area/station/medical/psychology
 	name = "\improper Psychology Office"
 	icon_state = "psychology"
-	mood_bonus = 3
-	mood_message = "I feel at ease here."
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security

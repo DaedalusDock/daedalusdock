@@ -482,11 +482,9 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
-	if(stamina)
-		stack_trace("Bodypart took stamina damage!")
 	if((!brute && !burn) || hit_percent <= 0)
 		return FALSE
 	if(owner && (owner.status_flags & GODMODE))
@@ -581,11 +579,8 @@
 
 	if(can_inflict <= 0)
 		return FALSE
-	if(brute)
-		set_brute_dam(brute_dam + brute)
-	if(burn)
-		set_burn_dam(burn_dam + burn)
 
+	update_damage()
 	if(owner)
 		update_disabled()
 		if(updating_health)
@@ -655,7 +650,6 @@
 
 	//update damage counts
 	for(var/datum/wound/W as anything in wounds)
-
 		if(W.damage <= 0)
 			qdel(W)
 			continue

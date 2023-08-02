@@ -79,7 +79,10 @@
 	internal_volume = initial(internal_volume) + (200 * bin_rating) //more air
 	heatsink_temperature = initial(heatsink_temperature) / ((manip_rating + bin_rating) / 2) //more efficient
 	set_power_level(power_setting)
-	airs[1].volume = internal_volume
+	if(airs[1])
+		airs[1].volume = internal_volume
+	else
+		airs[1] = new /datum/gas_mixture(200)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon_state()
 	var/colors_to_use = ""

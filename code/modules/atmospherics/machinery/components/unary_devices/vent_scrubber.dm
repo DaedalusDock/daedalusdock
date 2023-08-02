@@ -42,7 +42,7 @@
 	///Whether or not this machine can fall asleep. Use a multitool to change.
 	var/can_hibernate = TRUE
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/New()
+/obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize()
 	if(!id_tag)
 		id_tag = SSnetworks.assign_random_name()
 	. = ..()

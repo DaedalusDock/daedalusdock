@@ -17,7 +17,7 @@
 
 	vis_flags = VIS_INHERIT_PLANE
 
-/obj/machinery/atmospherics/pipe/New()
+/obj/machinery/atmospherics/pipe/Initialize()
 	add_atom_colour(pipe_color, FIXED_COLOUR_PRIORITY)
 	volume = ATMOS_DEFAULT_VOLUME_PIPE * device_type
 	. = ..()

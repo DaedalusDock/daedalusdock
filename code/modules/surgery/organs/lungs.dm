@@ -271,10 +271,8 @@
 		else if(SA_pp > 0.01) // There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 			if(prob(20))
-				n2o_euphoria = EUPHORIA_ACTIVE
 				breather.emote(pick("giggle", "laugh"))
 		else
-			n2o_euphoria = EUPHORIA_INACTIVE
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
 		// Activate mood on first flag, remove on second, do nothing on third.

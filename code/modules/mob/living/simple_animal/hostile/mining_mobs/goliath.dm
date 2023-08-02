@@ -166,7 +166,7 @@
 			last_location = loc
 			tentacle_recheck_cooldown = world.time + initial(tentacle_recheck_cooldown)
 			var/list/nearby_turfs = RANGE_TURFS(4, loc)
-			var/nearby_turfs -= get_turf(src)
+			nearby_turfs -= get_turf(src)
 			for(var/turf/open/T in nearby_turfs)
 				LAZYADD(cached_tentacle_turfs, T)
 		for(var/t in cached_tentacle_turfs)

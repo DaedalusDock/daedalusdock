@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Vent Pumps and Vent Scrubbers use 33% less power while idling.
+  - balance: Thermomachine volume from 70 to 400 + (bin_rating * 200)

@@ -1,6 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - config: A few config entries with no effect have been removed
-  - server: Jobs.txt is no longer supported. If you need to change job numbers like
-      that, fork (͜͠ʖ͠)

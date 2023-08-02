@@ -14,3 +14,10 @@
       human ones.
   francinum:
   - code_imp: Abstractness changes
+2023-08-02:
+  Kapu1178:
+  - qol: Removed the "syndicate" prefix from some items.
+  francinum:
+  - config: A few config entries with no effect have been removed
+  - server: "Jobs.txt is no longer supported. If you need to change job numbers like\
+      \ that, fork (\u0360\u035C\u0296\u0360)"

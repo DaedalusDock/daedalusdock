@@ -35,9 +35,7 @@
 	. = ..()
 	//None edible organs do not get a reagent holder by default
 	if(!reagents)
-		create_reagents(reagent_vol, REAGENT_HOLDER_ALIVE)
-	else
-		reagents.flags |= REAGENT_HOLDER_ALIVE
+		create_reagents(reagent_vol)
 
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
 	. = ..()

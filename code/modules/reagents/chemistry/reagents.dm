@@ -74,8 +74,6 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/harmful = FALSE
 	/// Are we from a material? We might wanna know that for special stuff. Like metalgen. Is replaced with a ref of the material on New()
 	var/datum/material/material
-	///A list of causes why this chem should skip being removed, if the length is 0 it will be removed from holder naturally, if this is >0 it will not be removed from the holder.
-	var/list/reagent_removal_skip_list = list()
 	///The set of exposure methods this penetrates skin with.
 	var/penetrates_skin = VAPOR
 	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_DONOTSPLIT, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
@@ -150,11 +148,51 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /// Called from [/datum/reagents/proc/metabolize]
-/datum/reagent/proc/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/proc/on_mob_life(mob/living/carbon/M, delta_time, times_fired, metabolism_class)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	SHOULD_NOT_SLEEP(TRUE)
+
 	current_cycle++
-	if(length(reagent_removal_skip_list))
-		return
-	holder.remove_reagent(type, metabolization_rate * M.metabolism_efficiency * delta_time) //By default it slowly disappears.
+	var/removed = metabolization_rate
+	if(ingest_met && (location == CHEM_INGEST))
+		removed = ingest_met
+	if(touch_met && (location == CHEM_TOUCH))
+		removed = touch_met
+
+	removed *= M.metabolism_efficiency
+	removed = min(removed, volume)
+
+	//adjust effective amounts - removed, dose, and max_dose - for mob size
+	var/effective = removed
+	if(!(flags & IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
+		effective *= (MOB_MEDIUM/M.mob_size)
+
+	if(effective >= (metabolism * 0.1) || effective >= 0.1)
+		switch(location)
+			if(CHEM_BLOOD)
+				affect_blood(M, effective)
+			if(CHEM_TOUCH)
+				affect_touch(M, effective)
+			if(CHEM_INGEST)
+				affect_ingest(M, effective)
+
+
+	holder.remove_reagent(type, removed) //medicine reagents stay longer if you have a better metabolism
+
+/datum/reagent/proc/affect_blood(mob/living/carbon/M, removed)
+	return
+
+/datum/reagent/proc/affect_ingest(mob/living/carbon/M, removed)
+	/*
+	if (protein_amount)
+		handle_protein(M, src)
+	if (sugar_amount)
+		handle_sugar(M, src)
+	*/
+	affect_blood(M, removed * 0.5)
+
+/datum/reagent/proc/affect_touch(mob/living/carbon/M, removed)
+	return
 
 /*
 Used to run functions before a reagent is transfered. Returning TRUE will block the transfer attempt.
@@ -190,8 +228,6 @@ Primarily used in reagents/reaction_agents
 	if(!(chemical_flags & REAGENT_DEAD_PROCESS))
 		return
 	current_cycle++
-	if(length(reagent_removal_skip_list))
-		return
 	holder.remove_reagent(type, metabolization_rate * C.metabolism_efficiency * delta_time)
 
 /// Called by [/datum/reagents/proc/conditional_update_move]

@@ -129,6 +129,8 @@
 	var/ui_reaction_index = 1
 	///If we're syncing with the beaker - so return reactions that are actively happening
 	var/ui_beaker_sync = FALSE
+	/// The metabolism type this container uses. For mobs.
+	var/metabolism_class
 
 /datum/reagents/New(maximum=100, new_flags=0)
 	maximum_volume = maximum
@@ -176,23 +178,6 @@
 	if(!glob_reagent)
 		stack_trace("[my_atom] attempted to add a reagent called '[reagent]' which doesn't exist. ([usr])")
 		return FALSE
-	if(isnull(added_purity)) //Because purity additions can be 0
-		added_purity = glob_reagent.creation_purity //Usually 1
-	if(!added_ph)
-		added_ph = glob_reagent.ph
-
-	//Split up the reagent if it's in a mob
-	var/has_split = FALSE
-	if(!ignore_splitting && (flags & REAGENT_HOLDER_ALIVE)) //Stomachs are a pain - they will constantly call on_mob_add unless we split on addition to stomachs, but we also want to make sure we don't double split
-		var/adjusted_vol = process_mob_reagent_purity(glob_reagent, amount, added_purity)
-		if(!adjusted_vol) //If we're inverse or FALSE cancel addition
-			return TRUE
-			/* We return true here because of #63301
-			The only cases where this will be false or 0 if its an inverse chem, an impure chem of 0 purity (highly unlikely if even possible), or if glob_reagent is null (which shouldn't happen at all as there's a check for that a few lines up),
-			In the first two cases, we would want to return TRUE so trans_to and other similar methods actually delete the corresponding chemical from the original reagent holder.
-			*/
-		amount = adjusted_vol
-		has_split = TRUE
 
 	update_total()
 	var/cached_total = total_volume
@@ -370,7 +355,7 @@
 			if(isliving(my_atom))
 				if(reagent.metabolizing)
 					reagent.metabolizing = FALSE
-					reagent.on_mob_end_metabolize(my_atom)
+					reagent.on_mob_end_metabolize(my_atom, metabolism_class)
 				reagent.on_mob_delete(my_atom)
 
 			reagent_list -= reagent
@@ -735,7 +720,7 @@
 			return
 		if(!reagent.metabolizing)
 			reagent.metabolizing = TRUE
-			reagent.on_mob_metabolize(owner)
+			reagent.on_mob_metabolize(owner, metabolism_class)
 		if(can_overdose)
 			if(reagent.overdose_threshold)
 				if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)

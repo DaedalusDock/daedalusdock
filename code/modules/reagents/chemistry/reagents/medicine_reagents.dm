@@ -10,12 +10,6 @@
 	taste_description = "bitterness"
 	abstract_type = /datum/reagent/medicine
 
-/datum/reagent/medicine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	current_cycle++
-	if(length(reagent_removal_skip_list))
-		return
-	holder.remove_reagent(type, metabolization_rate * delta_time / M.metabolism_efficiency) //medicine reagents stay longer if you have a better metabolism
-
 /datum/reagent/medicine/leporazine
 	name = "Leporazine"
 	description = "Leporazine will effectively regulate a patient's body temperature, ensuring it never leaves safe levels."

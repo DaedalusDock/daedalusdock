@@ -333,6 +333,24 @@
 		if(HM?.timeout)
 			dna.remove_mutation(HM.type)
 
+/mob/living/carbon/proc/handle_chemicals()
+	chem_effects.Cut()
+
+	if(status_flags & GODMODE)
+		return
+
+	var/datum/reagents/ingested = get_ingested_reagents()
+	if(touching)
+		. |= touching.metabolize(src, can_overdose = TRUE, liverless = TRUE)
+	if(ingested)
+		. |= ingested.metabolize(src, can_overdose = TRUE)
+	if(bloodstream)
+		. |= bloodstream.metabolize(src, liverless = TRUE)
+
+	if(.)
+		updatehealth()
+
+
 /*
 Alcohol Poisoning Chart
 Note that all higher effects of alcohol poisoning will inherit effects for smaller amounts (i.e. light poisoning inherts from slight poisoning)

@@ -51,6 +51,8 @@
 			//Breathing, if applicable
 			handle_breathing(delta_time, times_fired)
 
+		handle_chemicals()
+
 		handle_diseases(delta_time, times_fired)// DEAD check is in the proc itself; we want it to spread even if the mob is dead, but to handle its disease-y properties only if you're not.
 
 		if (QDELETED(src)) // diseases can qdel the mob via transformations
@@ -89,6 +91,9 @@
 	return
 
 /mob/living/proc/handle_random_events(delta_time, times_fired)
+	return
+
+/mob/living/proc/handle_chemicals()
 	return
 
 // Base mob environment handler for body temperature

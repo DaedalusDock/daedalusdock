@@ -1,6 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
 	. = ..()
-	create_carbon_reagents(1000, REAGENT_HOLDER_ALIVE)
+	create_carbon_reagents()
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	register_context()
 
@@ -32,7 +32,13 @@
 /mob/living/carbon/proc/create_carbon_reagents()
 	if(reagents)
 		return
-	create_reagents(1000, REAGENT_HOLDER_ALIVE)
+	bloodstream = new /datum/reagents(120)
+	bloodstream.my_atom = src
+
+	reagents = bloodstream
+
+	touching = new /datum/reagents(1000)
+	touching.my_atom = src
 
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()

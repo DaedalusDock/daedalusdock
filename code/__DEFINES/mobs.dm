@@ -27,11 +27,11 @@
 #define BLOOD_REGEN_FACTOR 0.25
 
 //Sizes of mobs, used by mob/living/var/mob_size
-#define MOB_SIZE_TINY 0
-#define MOB_SIZE_SMALL 1
-#define MOB_SIZE_HUMAN 2
-#define MOB_SIZE_LARGE 3
-#define MOB_SIZE_HUGE 4 // Use this for things you don't want bluespace body-bagged
+#define MOB_SIZE_TINY 1
+#define MOB_SIZE_SMALL 5
+#define MOB_SIZE_HUMAN 10
+#define MOB_SIZE_LARGE 20
+#define MOB_SIZE_HUGE 40 // Use this for things you don't want bluespace body-bagged
 
 //Ventcrawling defines
 #define VENTCRAWLER_NONE   0

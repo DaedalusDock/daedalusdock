@@ -771,9 +771,9 @@
 			continue
 		//Just halts the progression, I'd suggest you run to medbay asap to get it fixed
 		if(carbon_quirk_holder.reagents.has_reagent(/datum/reagent/medicine/epinephrine))
-			instantiated_med.reagent_removal_skip_list |= ALLERGIC_REMOVAL_SKIP
+			LAZYDISTINCTADD(instantiated_med.reagent_removal_skip_list, ALLERGIC_REMOVAL_SKIP)
 			return //intentionally stops the entire proc so we avoid the organ damage after the loop
-		instantiated_med.reagent_removal_skip_list -= ALLERGIC_REMOVAL_SKIP
+		LAZYREMOVE(instantiated_med.reagent_removal_skip_list, ALLERGIC_REMOVAL_SKIP)
 		carbon_quirk_holder.adjustToxLoss(3 * delta_time)
 		carbon_quirk_holder.reagents.add_reagent(/datum/reagent/toxin/histamine, 3 * delta_time)
 		if(DT_PROB(10, delta_time))

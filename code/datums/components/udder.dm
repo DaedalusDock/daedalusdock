@@ -73,7 +73,7 @@
 /obj/item/udder/Initialize(mapload, udder_mob, on_generate_callback, reagent_produced_typepath = /datum/reagent/consumable/milk)
 	src.udder_mob = udder_mob
 	src.on_generate_callback = on_generate_callback
-	create_reagents(size, REAGENT_HOLDER_ALIVE)
+	create_reagents(size)
 	src.reagent_produced_typepath = reagent_produced_typepath
 	initial_conditions()
 	. = ..()

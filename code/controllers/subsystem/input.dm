@@ -9,6 +9,7 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	use_default_stats = FALSE
 
 	var/list/macro_set
+	var/list/unprintables_cache
 
 	///running average of how many clicks inputted by a player the server processes every second. used for the subsystem stat entry
 	var/clicks_per_second = 0
@@ -34,11 +35,88 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 // This is for when macro sets are eventualy datumized
 /datum/controller/subsystem/verb_manager/input/proc/setup_default_macro_sets()
 	macro_set = list(
-	"Any" = "\"KeyDown \[\[*\]\]\"",
-	"Any+UP" = "\"KeyUp \[\[*\]\]\"",
-	"Back" = "\".winset \\\"input.text=\\\"\\\"\\\"\"",
-	"Tab" = "\".winset \\\"input.focus=true?map.focus=true input.background-color=[COLOR_INPUT_DISABLED]:input.focus=true input.background-color=[COLOR_INPUT_ENABLED]\\\"\"",
-	"Escape" = "Reset-Held-Keys",
+		// "Any" = "\"KeyDown \[\[*\]\]\"",
+		// "Any+UP" = "\"KeyUp \[\[*\]\]\"",
+		"Back" = "\".winset \\\"input.text=\\\"\\\"\\\"\"",
+		"Tab" = "\".winset \\\"input.focus=true?map.focus=true input.background-color=[COLOR_INPUT_DISABLED]:input.focus=true input.background-color=[COLOR_INPUT_ENABLED]\\\"\"",
+		"Escape" = "Reset-Held-Keys",
+	)
+	// This list may be out of date, and may include keys not actually legal to bind? The only full list is from 2008. http://www.byond.com/docs/notes/macro.html
+	unprintables_cache = list(
+		// Arrow Keys
+		"North" = TRUE,
+		"West" = TRUE,
+		"East" = TRUE,
+		"South" = TRUE,
+		// Numpad-Lock Disabled
+		"Northwest" = TRUE, // KP_Home
+		"Northeast" = TRUE, // KP_PgUp
+		"Center" = TRUE,
+		"Southwest" = TRUE, // KP_End
+		"Southeast" = TRUE, // KP_PgDn
+		// Keys you really shouldn't touch, but are technically unprintable
+		"Return" = TRUE,
+		"Escape" = TRUE,
+		"Delete" = TRUE,
+		// Things I'm not sure BYOND actually supports anymore.
+		"Select" = TRUE,
+		"Execute" = TRUE,
+		"Snapshot" = TRUE,
+		"Attn" = TRUE,
+		"CrSel" = TRUE,
+		"ExSel" = TRUE,
+		"ErEOF" = TRUE,
+		"Zoom" = TRUE,
+		"PA1" = TRUE,
+		"OEMClear" = TRUE,
+		// Things the modern ref says is okay
+		"Pause" = TRUE,
+		"Play" = TRUE,
+		"Insert" = TRUE,
+		"Help" = TRUE,
+		"LWin" = TRUE,
+		"RWin" = TRUE,
+		"Apps" = TRUE,
+		"Numpad0" = TRUE,
+		"Numpad1" = TRUE,
+		"Numpad2" = TRUE,
+		"Numpad3" = TRUE,
+		"Numpad4" = TRUE,
+		"Numpad5" = TRUE,
+		"Numpad6" = TRUE,
+		"Numpad7" = TRUE,
+		"Numpad8" = TRUE,
+		"Numpad9" = TRUE,
+		"Multiply" = TRUE,
+		"Add" = TRUE,
+		"Separator" = TRUE,
+		"Subtract" = TRUE,
+		"Decimal" = TRUE,
+		"Divide" = TRUE,
+		"F1" = TRUE,
+		"F2" = TRUE,
+		"F3" = TRUE,
+		"F4" = TRUE,
+		"F5" = TRUE,
+		"F6" = TRUE,
+		"F7" = TRUE,
+		"F8" = TRUE,
+		"F9" = TRUE,
+		"F10" = TRUE,
+		"F11" = TRUE,
+		"F12" = TRUE,
+		"F13" = TRUE,
+		"F14" = TRUE,
+		"F15" = TRUE,
+		"F16" = TRUE,
+		"F17" = TRUE,
+		"F18" = TRUE,
+		"F19" = TRUE,
+		"F20" = TRUE,
+		"F21" = TRUE,
+		"F22" = TRUE,
+		"F23" = TRUE,
+		"F24" = TRUE,
 	)
 
 // Badmins just wanna have fun ♪

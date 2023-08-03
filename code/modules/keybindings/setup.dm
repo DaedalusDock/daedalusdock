@@ -19,22 +19,44 @@
 	winset(src, null, erase_output)
 
 /client/proc/set_macros()
-	set waitfor = FALSE
+	set waitfor = FALSE //We're going to sleep here even more than TG.
 
 	//Reset the buffer
 	reset_held_keys()
 
 	erase_all_macros()
 
+	var/list/personal_macro_set = prefs?.key_bindings_by_key
+	if(!personal_macro_set)
+		to_chat(span_big(span_alertwarning("Something has gone horribly wrong setting up your input system, Please call a coder.")))
+		CRASH("Player missing keybinds but we've been asked to set them up??")
+
+	//Set up the stuff we don't let them override.
 	var/list/macro_set = SSinput.macro_set
 	for(var/k in 1 to length(macro_set))
 		var/key = macro_set[k]
 		var/command = macro_set[key]
-		winset(src, "default-[REF(key)]", "parent=default;name=[key];command=[command]")
+		winset(src, "shared-[REF(key)]", "parent=default;name=[key];command=[command]")
+
+
+	var/list/printables = list()
+	//Now the stuff we do.
+	for(var/keycode in personal_macro_set) //We don't care about the bound key, just the key itself
+		if(!hotkeys && !SSinput.unprintables_cache[keycode]) //Track printable hotkeys and skip them.
+			printables += keycode
+			continue
+		winset(src, "personal-[REF(keycode)]", "parent=default;name=[keycode];command=\"KeyDown [keycode]\"")
+		winset(src, "personal-[REF("[keycode]")]-UP", "parent=default;name=[keycode]+UP;command=\"KeyUp [keycode]\"")
+
 
 	if(hotkeys)
 		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
 	else
 		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_DISABLED]")
 
+	if(printables.len)
+		to_chat(src, "[span_boldnotice("Hey, you might have some bad keybinds!")]\n\
+		[span_notice("The following keys are bound despite Classic Controls being enabled. These binds are not applied.\nThis warning may be in error.")]\n\
+		Keys: [jointext(printables, ", ")]\
+		")
 	update_special_keybinds()

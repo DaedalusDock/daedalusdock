@@ -1,6 +1,5 @@
 /datum/keybinding/living
 	category = CATEGORY_HUMAN
-	weight = WEIGHT_MOB
 
 /datum/keybinding/living/can_use(client/user)
 	return isliving(user.mob)

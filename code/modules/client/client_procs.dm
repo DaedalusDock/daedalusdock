@@ -1118,12 +1118,20 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				if("South")
 					movement_keys[key] = SOUTH
 				if("Say")
+					if(!hotkeys && !SSinput.unprintables_cache[key])
+						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=say")
 				if("OOC")
+					if(!hotkeys && !SSinput.unprintables_cache[key])
+						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=ooc")
 				if("LOOC")
+					if(!hotkeys && !SSinput.unprintables_cache[key])
+						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc")
 				if("Me")
+					if(!hotkeys && !SSinput.unprintables_cache[key])
+						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=me")
 
 /client/proc/change_view(new_size)

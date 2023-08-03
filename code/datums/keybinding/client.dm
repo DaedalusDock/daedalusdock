@@ -1,6 +1,5 @@
 /datum/keybinding/client
 	category = CATEGORY_CLIENT
-	weight = WEIGHT_HIGHEST
 
 
 /datum/keybinding/client/admin_help

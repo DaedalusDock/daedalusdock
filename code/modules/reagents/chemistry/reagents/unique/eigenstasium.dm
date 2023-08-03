@@ -16,9 +16,6 @@
 	color = "#5020F4"
 	overdose_threshold = 15
 	metabolization_rate = 1 * REAGENTS_METABOLISM
-	ph = 3.7
-	purity = 0.5
-	creation_purity = 0.5
 	inverse_chem = /datum/reagent/impurity/eigenswap
 	inverse_chem_val = 0
 	chemical_flags = REAGENT_DEAD_PROCESS //So if you die with it in your body, you still get teleported back to the location as a corpse
@@ -76,7 +73,7 @@
 
 	return ..()
 
-/datum/reagent/eigenstate/on_mob_life(mob/living/carbon/living_mob)
+/datum/reagent/eigenstate/affect_blood(mob/living/carbon/C, removed)
 	if(prob(20))
 		do_sparks(5,FALSE,living_mob)
 
@@ -111,8 +108,6 @@
 ///Lets you link lockers together
 /datum/reagent/eigenstate/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
-	if(creation_purity < 0.8)
-		return
 	var/list/lockers = list()
 	for(var/obj/structure/closet/closet in exposed_turf.contents)
 		lockers += closet

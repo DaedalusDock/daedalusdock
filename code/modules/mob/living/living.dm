@@ -2335,3 +2335,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	to_chat(src, "<span class='[use_span]'>\The [gunpoint?.target || "victim"] is [message].</span>")
 	if(gunpoint?.target)
 		to_chat(gunpoint.target, "<span class='[use_span]'>You are [message].</span>")
+
+/mob/living/proc/get_ingested_reagents()
+	return reagents

@@ -1413,3 +1413,6 @@
 		L.Paralyze(10 SECONDS)
 
 	visible_message(span_warning("[src] slams into [highest] from above!"))
+
+/mob/living/carbon/get_ingested_reagents()
+	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents || touching

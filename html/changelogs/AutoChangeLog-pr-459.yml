@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Specific chemical effects no longer last forever
+  - bugfix: ZMimic failing to recognize new atoms

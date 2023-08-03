@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - code_imp: Daedalus now supports the Byond-Tracy profiler.
-  - bugfix: Fixed a serious bug with bodypart damage.

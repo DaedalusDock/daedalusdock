@@ -21,3 +21,9 @@
   - config: A few config entries with no effect have been removed
   - server: "Jobs.txt is no longer supported. If you need to change job numbers like\
       \ that, fork (\u0360\u035C\u0296\u0360)"
+2023-08-03:
+  Kapu1178:
+  - code_imp: Daedalus now supports the Byond-Tracy profiler.
+  - bugfix: Fixed a serious bug with bodypart damage.
+  - balance: Vent Pumps and Vent Scrubbers use 33% less power while idling.
+  - balance: Thermomachine volume from 70 to 400 + (bin_rating * 200)

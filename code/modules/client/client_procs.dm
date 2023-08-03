@@ -1019,7 +1019,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
 	else
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_ENABLED]")
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_CLICK, object, location, control, params, usr)
 
@@ -1108,6 +1108,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	movement_keys = list()
 	for(var/kb_name in D.key_bindings)
 		for(var/key in D.key_bindings[kb_name])
+			if(!hotkeys && !SSinput.unprintables_cache[key])
+				continue
 			switch(kb_name)
 				if("North")
 					movement_keys[key] = NORTH
@@ -1118,20 +1120,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				if("South")
 					movement_keys[key] = SOUTH
 				if("Say")
-					if(!hotkeys && !SSinput.unprintables_cache[key])
-						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=say")
 				if("OOC")
-					if(!hotkeys && !SSinput.unprintables_cache[key])
-						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=ooc")
 				if("LOOC")
-					if(!hotkeys && !SSinput.unprintables_cache[key])
-						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc")
 				if("Me")
-					if(!hotkeys && !SSinput.unprintables_cache[key])
-						continue
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=me")
 
 /client/proc/change_view(new_size)

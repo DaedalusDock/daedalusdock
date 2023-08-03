@@ -18,18 +18,30 @@
 		erase_output = "[erase_output];[macro_name].parent=null"
 	winset(src, null, erase_output)
 
+/// Apply client macros. Has a system to prevent infighting bullshit. There's probably a cleaner way to do this but I'm tired.
 /client/proc/set_macros()
 	set waitfor = FALSE //We're going to sleep here even more than TG.
+
+	updating_macros++ // Queue (0 - Not running, Not waiting, 1 - Running, Not Waiting, 2 - Running, Waiting. 3 - Running, Waiting, Overqueued.)
+	if(updating_macros > 2) //Are we the only one in line?
+		updating_macros-- //No, dequeue and let them handle it.
+		return
+	//This isn't an UNTIL because we would rather this lag than deadlock.
+	while(!(updating_macros == 1))
+		sleep(1)
+
+	//Get their personal macro set, This may be null if we're loading too early
+	var/list/personal_macro_set = prefs?.key_bindings_by_key
+	if(!personal_macro_set)
+		//We're too early, Just return, Someone'll follow us up.
+		updating_macros--
+		return
 
 	//Reset the buffer
 	reset_held_keys()
 
 	erase_all_macros()
 
-	var/list/personal_macro_set = prefs?.key_bindings_by_key
-	if(!personal_macro_set)
-		to_chat(span_big(span_alertwarning("Something has gone horribly wrong setting up your input system, Please call a coder.")))
-		CRASH("Player missing keybinds but we've been asked to set them up??")
 
 	//Set up the stuff we don't let them override.
 	var/list/macro_set = SSinput.macro_set
@@ -50,9 +62,9 @@
 
 
 	if(hotkeys)
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_ENABLED]")
 	else
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_DISABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
 	if(printables.len)
 		to_chat(src, "[span_boldnotice("Hey, you might have some bad keybinds!")]\n\
@@ -60,3 +72,4 @@
 		Keys: [jointext(printables, ", ")]\
 		")
 	update_special_keybinds()
+	updating_macros-- //Decrement, Let the next thread through.

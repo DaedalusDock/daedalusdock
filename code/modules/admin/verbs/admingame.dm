@@ -44,6 +44,7 @@
 		if(M.client.byond_version)
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
+		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
 
 
 	body += "<br><br>\[ "

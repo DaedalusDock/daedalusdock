@@ -179,10 +179,10 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 	holder.remove_reagent(type, removed) //medicine reagents stay longer if you have a better metabolism
 
-/datum/reagent/proc/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/proc/affect_blood(mob/living/carbon/C, removed)
 	return
 
-/datum/reagent/proc/affect_ingest(mob/living/carbon/M, removed)
+/datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
 	/*
 	if (protein_amount)
 		handle_protein(M, src)
@@ -191,7 +191,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	*/
 	affect_blood(M, removed * 0.5)
 
-/datum/reagent/proc/affect_touch(mob/living/carbon/M, removed)
+/datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	return
 
 /*

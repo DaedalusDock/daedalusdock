@@ -769,16 +769,7 @@
 		var/datum/reagent/instantiated_med = carbon_quirk_holder.reagents.has_reagent(allergy)
 		if(!instantiated_med)
 			continue
-		//Just halts the progression, I'd suggest you run to medbay asap to get it fixed
-		if(carbon_quirk_holder.reagents.has_reagent(/datum/reagent/medicine/epinephrine))
-			LAZYDISTINCTADD(instantiated_med.reagent_removal_skip_list, ALLERGIC_REMOVAL_SKIP)
-			return //intentionally stops the entire proc so we avoid the organ damage after the loop
-		LAZYREMOVE(instantiated_med.reagent_removal_skip_list, ALLERGIC_REMOVAL_SKIP)
-		carbon_quirk_holder.adjustToxLoss(3 * delta_time)
-		carbon_quirk_holder.reagents.add_reagent(/datum/reagent/toxin/histamine, 3 * delta_time)
-		if(DT_PROB(10, delta_time))
-			carbon_quirk_holder.vomit()
-			carbon_quirk_holder.adjustOrganLoss(pick(ORGAN_SLOT_BRAIN,ORGAN_SLOT_APPENDIX,ORGAN_SLOT_LUNGS,ORGAN_SLOT_HEART,ORGAN_SLOT_LIVER,ORGAN_SLOT_STOMACH),10)
+		carbon_quirk_holder.reagents.add_reagent(/datum/reagent/toxin/histamine, 6)
 
 /datum/quirk/bad_touch
 	name = "Bad Touch"

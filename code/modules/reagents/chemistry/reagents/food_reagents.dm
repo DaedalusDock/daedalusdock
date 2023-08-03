@@ -18,13 +18,12 @@
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'
 
-/datum/reagent/consumable/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	current_cycle++
+/datum/reagent/consumable/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(!HAS_TRAIT(H, TRAIT_NOHUNGER))
 			H.adjust_nutrition(nutriment_factor * REM * delta_time)
-	holder.remove_reagent(type, metabolization_rate * delta_time)
 
 /datum/reagent/consumable/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()

@@ -342,7 +342,7 @@
 	power_channel = AREA_USAGE_EQUIP
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/Initialize()
-	..()
+	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000
 

@@ -50,7 +50,7 @@
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
 /obj/machinery/atmospherics/components/trinary/mixer/Initialize()
-	..()
+	. ..()
 	var/datum/gas_mixture/air3 = airs[3]
 	air3.volume = 300
 	airs[3] = air3

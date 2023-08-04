@@ -111,7 +111,7 @@
 
 /datum/reagent/medicine/inaprovaline/overdose_process(mob/living/carbon/C)
 	if(prob(5))
-		C.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/slurring/drunk, max_duration = 10 SECONDS)
+		C.set_slurring_if_lower(10 SECONDS)
 	if(prob(2))
 		C.adjust = max(C.drowsyness, 5)
 
@@ -343,7 +343,7 @@
 
 	if(full_volume > overdose)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
-		C.set_timed_status_effect(60 SECONDS, /datum/status_effect/speech/slurring/drunk, only_if_higher = TRUE)
+		C.set_slurring_if_lower(60 SECONDS)
 		if(prob(1))
 			M.Knockdown(2 SECONDS)
 			M.drowsyness = max(M.drowsyness, 5)
@@ -351,12 +351,12 @@
 	else if(full_volume > 0.75 * overdose)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(5))
-			C.set_timed_status_effect(40 SECONDS, /datum/status_effect/speech/slurring/drunk, only_if_higher = TRUE)
+			C.set_slurring_if_lower(40 SECONDS)
 
 	else if(full_volume > 0.5 * overdose)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(1))
-			C.set_timed_status_effect(20 SECONDS, /datum/status_effect/speech/slurring/drunk, only_if_higher = TRUE)
+			C.set_slurring_if_lower(20 SECONDS)
 
 	else
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/tramadol)
@@ -422,7 +422,7 @@
 	if(prob(75))
 		H.drowsyness++
 	if(prob(25))
-		H.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion)
+		H.adjust_confusion(2 SECONDS)
 
 /datum/reagent/deletrathol/overdose_process(mob/living/carbon/C)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
@@ -483,7 +483,7 @@
 	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
-		H.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion)
+		H.adjust_confusion(2 SECONDS)
 		H.drowsyness++
 
 /datum/reagent/imidazoline
@@ -525,7 +525,7 @@
 		if(!(I.status & ORGAN_ROBOTIC))
 			if(I.organ_tag == BP_BRAIN)
 				// if we have located an organic brain, apply side effects
-				H.adjust_timed_status_effect(2 SECOND, /datum/status_effect/confusion)
+				H.adjust_confusion(2 SECONDS)
 				H.drowsyness++
 				// peridaxon only heals minor brain damage
 				if(I.damage >= I.min_bruised_damage)

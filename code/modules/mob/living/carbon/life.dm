@@ -158,7 +158,7 @@
 	if(!forced)
 		if(!breath || (breath.total_moles == 0) || !lungs)
 			if(chem_effects[CE_STABLE] && lungs)
-				return FALSE
+				return TRUE
 			adjustOxyLoss(2)
 
 			failed_last_breath = TRUE
@@ -174,8 +174,8 @@
 	var/oxygen_used = 0
 	var/breath_pressure = (breath.total_moles*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
 
-	if(CHEM_EFFECT_MAGNITUDE(owner, CE_BREATHLOSS) && !CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE))
-		safe_oxy_min *= 1 + rand(1, 4) * CHEM_EFFECT_MAGNITUDE(owner,)
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS) && !CHEM_EFFECT_MAGNITUDE(src, CE_STABLE))
+		safe_oxy_min *= 1 + rand(1, 4) * CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS)
 
 	var/O2_partialpressure = (breath_gases[GAS_OXYGEN]/breath.total_moles)*breath_pressure
 	var/Plasma_partialpressure = (breath_gases[GAS_PLASMA]/breath.total_moles)*breath_pressure

@@ -1,5 +1,3 @@
-#define REM REAGENTS_EFFECT_MULTIPLIER
-
 GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 /proc/build_name2reagent()
@@ -149,6 +147,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	holder.remove_reagent(type, removed) //medicine reagents stay longer if you have a better metabolism
 
 /datum/reagent/proc/affect_blood(mob/living/carbon/C, removed)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
@@ -177,7 +176,6 @@ Primarily used in reagents/reaction_agents
 
 /// Called when this reagent is first added to a mob
 /datum/reagent/proc/on_mob_add(mob/living/L, amount)
-	overdose_threshold /= max(normalise_creation_purity(), 1) //Maybe??? Seems like it would help pure chems be even better but, if I normalised this to 1, then everything would take a 25% reduction
 	return
 
 /// Called when this reagent is removed while inside a mob
@@ -186,11 +184,11 @@ Primarily used in reagents/reaction_agents
 	return
 
 /// Called when this reagent first starts being metabolized by a liver
-/datum/reagent/proc/on_mob_metabolize(mob/living/L)
+/datum/reagent/proc/on_mob_metabolize(mob/living/carbon/C)
 	return
 
 /// Called when this reagent stops being metabolized by a liver
-/datum/reagent/proc/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/proc/on_mob_end_metabolize(mob/living/carbon/C)
 	return
 
 /// Called when a reagent is inside of a mob when they are dead

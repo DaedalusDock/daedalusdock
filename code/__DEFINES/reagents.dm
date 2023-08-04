@@ -174,7 +174,7 @@
 
 #define GOLDSCHLAGER_GOLD_RATIO (GOLDSCHLAGER_GOLD/(GOLDSCHLAGER_VODKA+GOLDSCHLAGER_GOLD))
 
-#define BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT 3
+#define BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT 6
 #define BLASTOFF_DANCE_MOVES_PER_SUPER_MOVE 3
 
 ///This is the center of a 1 degree deadband in which water will neither freeze to ice nor melt to liquid

@@ -134,7 +134,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 	//adjust effective amounts - removed, dose, and max_dose - for mob size
 	var/effective = removed
-	if(!(flags & IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
+	if(!(chemical_flags & REAGENT_IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
 		effective *= (MOB_MEDIUM/M.mob_size)
 
 	if(effective >= (metabolization_rate * 0.1) || effective >= 0.1)

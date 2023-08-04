@@ -8,7 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	flags = IGNORE_MOB_SIZE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
@@ -16,7 +16,7 @@
 	description = "It's magic. We don't have to explain it."
 	color = "#E0BB00" //golden for the gods
 	taste_description = "badmins"
-	chemical_flags = REAGENT_DEAD_PROCESS
+	chemical_flags = REAGENT_DEAD_PROCESS | REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 1
 
 // The best stuff there is. For testing/debugging.
@@ -95,7 +95,6 @@
 	overdose_threshold = 60
 	metabolization_rate = 0.1
 	scannable = 1
-	flags = IGNORE_MOB_SIZE
 	value = 3.5
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
@@ -248,7 +247,6 @@
 	color = "#8080ff"
 	metabolization_rate = 0.1
 	scannable = 1
-	flags = IGNORE_MOB_SIZE
 	value = 3.9
 
 /datum/reagent/cryoxadone/affect_blood(mob/living/carbon/C, removed)
@@ -307,7 +305,6 @@
 	reagent_state = LIQUID
 	scannable = 1
 	metabolization_rate = 0.02
-	flags = IGNORE_MOB_SIZE
 	value = 3.3
 
 /datum/reagent/paracetamol/affect_blood(mob/living/carbon/C, removed)
@@ -328,7 +325,6 @@
 	scannable = 1
 	metabolization_rate = 0.05
 	ingest_met = 0.02
-	flags = IGNORE_MOB_SIZE
 	value = 3.1
 	var/pain_power = 80 //magnitide of painkilling effect
 	var/effective_dose = 0.5 //how many units it need to process to reach max power

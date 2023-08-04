@@ -112,7 +112,7 @@
 	if(prob(5))
 		C.set_slurring_if_lower(10 SECONDS)
 	if(prob(2))
-		C.adjust = max(C.drowsyness, 5)
+		C.drowsyness = max(C.drowsyness, 5)
 
 /datum/reagent/medicine/bicaridine
 	name = "Bicaridine"

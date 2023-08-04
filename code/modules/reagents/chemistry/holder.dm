@@ -424,9 +424,8 @@
  * * methods - passed through to [/datum/reagents/proc/expose_single] and [/datum/reagent/proc/on_transfer]
  * * show_message - passed through to [/datum/reagents/proc/expose_single]
  * * round_robin - if round_robin=TRUE, so transfer 5 from 15 water, 15 sugar and 15 plasma becomes 10, 15, 15 instead of 13.3333, 13.3333 13.3333. Good if you hate floating point errors
- * * ignore_stomach - when using methods INGEST will not use the stomach as the target
  */
-/datum/reagents/proc/trans_to(obj/target, amount = 1, multiplier = 1, preserve_data = TRUE, no_react = FALSE, mob/transfered_by, remove_blacklisted = FALSE, methods = NONE, show_message = TRUE, round_robin = FALSE, ignore_stomach = FALSE)
+/datum/reagents/proc/trans_to(obj/target, amount = 1, multiplier = 1, preserve_data = TRUE, no_react = FALSE, mob/transfered_by, remove_blacklisted = FALSE, methods = NONE, show_message = TRUE, round_robin = FALSE)
 	var/list/cached_reagents = reagent_list
 	if(!target || !total_volume)
 		return
@@ -436,23 +435,35 @@
 	var/cached_amount = amount
 	var/atom/target_atom
 	var/datum/reagents/R
+
 	if(istype(target, /datum/reagents))
 		R = target
 		target_atom = R.my_atom
 	else
-		if(!ignore_stomach && (methods & INGEST) && istype(target, /mob/living/carbon))
-			var/mob/living/carbon/eater = target
-			var/obj/item/organ/stomach/belly = eater.getorganslot(ORGAN_SLOT_STOMACH)
-			if(!belly)
-				eater.expel_ingested(my_atom, amount)
-				return
-			R = belly.reagents
-			target_atom = belly
+		if(istype(target, /mob/living/carbon))
+			var/mob/living/carbon/C = target
+			if(methods & INGEST)
+				var/obj/item/organ/stomach/belly = C.getorganslot(ORGAN_SLOT_STOMACH)
+				if(!belly)
+					C.expel_ingested(my_atom, amount)
+					return
+				R = belly.reagents
+				target_atom = belly
+
+			else if(methods & INJECT)
+				R = C.bloodstream
+				target_atom = C
+
+			else if(methods & TOUCH)
+				R = C.touching
+				target_atom = C
+
 		else if(!target.reagents)
 			return
 		else
 			R = target.reagents
 			target_atom = target
+
 
 	//Set up new reagents to inherit the old ongoing reactions
 	if(!no_react)
@@ -474,10 +485,6 @@
 			if(!R.add_reagent(reagent.type, transfer_amount * multiplier, trans_data, chem_temp, no_react = TRUE, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT)) //we only handle reaction after every reagent has been transfered.
 				continue
 			if(methods)
-				if(istype(target_atom, /obj/item/organ))
-					R.expose_single(reagent, target, methods, part, show_message)
-				else
-					R.expose_single(reagent, target_atom, methods, part, show_message)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
 			remove_reagent(reagent.type, transfer_amount)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount)
@@ -1048,7 +1055,7 @@
 			if(reaction.required_temp >= chem_temp)
 				return TRUE
 		else
-			if(reaction.required_temp =< chem_temp)
+			if(reaction.required_temp <= chem_temp)
 				return TRUE
 	return FALSE
 
@@ -1154,7 +1161,6 @@
 		reagents[reagent] = reagent.volume * volume_modifier
 
 	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message, chem_temp)
-
 
 /// Same as [/datum/reagents/proc/expose] but only for one reagent
 /datum/reagents/proc/expose_single(datum/reagent/R, atom/A, methods = TOUCH, volume_modifier = 1, show_message = TRUE)

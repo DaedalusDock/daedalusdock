@@ -179,9 +179,6 @@
 	if(should_force_temp && !min_temp)
 		say("Using forced temperatures.")
 		reagents.chem_temp = force_temp ? force_temp : reaction.optimal_temp
-	if(should_force_ph)
-		say("Using forced pH.")
-		reagents.ph = force_ph ? force_ph : (reaction.optimal_ph_max + reaction.optimal_ph_min)/2
 	if(failed == 0 && !should_force_temp)
 		reagents.chem_temp = reaction.optimal_temp
 	if(failed == 1 && !should_force_temp)
@@ -190,7 +187,7 @@
 	if(min_temp)
 		say("Overriding temperature to required temp.")
 		reagents.chem_temp = reaction.is_cold_recipe ? reaction.required_temp - 1 : reaction.required_temp + 1
-	say("Reacting [span_nicegreen("[cached_reactions[index]]")] starting pH: [reagents.ph] index [index] of [cached_reactions.len]")
+	say("Reacting [span_nicegreen("[cached_reactions[index]]")] index [index] of [cached_reactions.len]")
 
 /obj/machinery/chem_recipe_debug/ui_data(mob/user)
 	var/data = list()

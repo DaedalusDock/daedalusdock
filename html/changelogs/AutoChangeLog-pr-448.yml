@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - rscdel: door remotes
+  - qol: removes ntnet

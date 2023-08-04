@@ -448,6 +448,35 @@
 #define CE_ORGAN_PRESERVATION "formaldehyde"
 /// Mob cannot breathe. Boolean.
 #define CE_RESPIRATORY_FAILURE "cantbreathe"
+/// Inaprovaline
+#define CE_STABLE        "stable"
+/// Spaceacilin
+#define CE_ANTIBIOTIC    "antibiotic"
+/// Iron/nutriment
+#define CE_BLOODRESTORE  "bloodrestore"
+#define CE_PAINKILLER    "painkiller"
+/// Liver filtering
+#define CE_ALCOHOL       "alcohol"
+/// Liver damage
+#define CE_ALCOHOL_TOXIC "alcotoxic"
+/// Increases or decreases heart rate
+#define CE_PULSE         "xcardic"
+/// Stops heartbeat
+#define CE_NOPULSE       "heartstop"
+/// Reduces incoming toxin damage and helps with liver filtering
+#define CE_ANTITOX       "antitox"
+/// Dexalin.
+#define CE_OXYGENATED    "oxygen"
+/// Anti-virus effect.
+#define CE_ANTIVIRAL     "antiviral"
+// Generic toxins, stops autoheal.
+#define CE_TOXIN         "toxins"
+/// Gets in the way of blood circulation, higher the worse
+#define CE_BLOCKAGE	     "blockage"
+/// Lowers the subject's voice to a whisper
+#define	CE_VOICELOSS     "whispers"
+/// Makes it harder to disarm someone
+#define CE_STIMULANT     "stimulants"   // Makes it harder to disarm someone
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"

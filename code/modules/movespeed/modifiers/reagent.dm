@@ -39,3 +39,12 @@
 
 /datum/movespeed_modifier/reagent/nooartrium
 	multiplicative_slowdown = 2
+
+/datum/movespeed_modifier/inaprovaline
+	multiplicative_slowdown = 1
+
+/datum/movespeed_modifier/tramadol
+	multiplicative_slowdown = 1
+
+/datum/movespeed_modifier/deletrathol
+	multiplicative_slowdown = 1

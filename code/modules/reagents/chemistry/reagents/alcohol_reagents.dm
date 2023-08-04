@@ -53,7 +53,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		if(boozepwr > 0)
 			var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
 			if (istype(liver))
-				liver.applyOrganDamage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * delta_time, 0))/150))
+				liver.applyOrganDamage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * 2, 0))/150))
 	return ..()
 
 /datum/reagent/consumable/ethanol/expose_obj(obj/exposed_obj, reac_volume)

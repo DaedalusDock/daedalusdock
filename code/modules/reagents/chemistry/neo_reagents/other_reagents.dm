@@ -39,7 +39,7 @@
  * Water reaction to an object
  */
 
-/datum/reagent/water/expose_obj(obj/exposed_obj, reac_volume)
+/datum/reagent/water/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
 	. = ..()
 	exposed_obj.extinguish()
 	exposed_obj.wash(CLEAN_TYPE_ACID)
@@ -69,6 +69,14 @@
 	. = ..()
 	if(methods & TOUCH)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_TOUCH) // Water makes you wet, at a 50% water-to-wet-stacks ratio. Which, in turn, gives you some mild protection from being set on fire!
+
+		if(ishuman(exposed_mob))
+			var/mob/living/carbon/human/H = exposed_mob
+			var/obj/item/clothing/mask/cigarette/S = H.wear_mask
+			if (istype(S) && S.lit)
+				var/obj/item/clothing/C = H.head
+				if (!istype(C) || !(C.flags_cover & HEADCOVERSMOUTH))
+					S.extinguish()
 
 	if(methods & VAPOR)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_VAPOR) // Spraying someone with water with the hope to put them out is just simply too funny to me not to add it.
@@ -131,29 +139,29 @@
 		data = list("misc" = 0)
 
 	data["misc"] += 1 SECONDS * removed
-	M.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/jitter, max_duration = 20 SECONDS)
+	C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/jitter, max_duration = 20 SECONDS)
 	if(IS_CULTIST(M))
-		for(var/datum/action/innate/cult/blood_magic/BM in M.actions)
+		for(var/datum/action/innate/cult/blood_magic/BM in C.actions)
 			to_chat(M, span_cultlarge("Your blood rites falter as holy water scours your body!"))
-			for(var/datum/action/innate/cult/blood_spell/BS in BM.spells)
+			for(var/datum/action/innate/cult/blood_spell/BS in BC.spells)
 				qdel(BS)
 	if(data["misc"] >= (10 SECONDS))
-		M.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 20 SECONDS)
-		M.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
+		C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 20 SECONDS)
+		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 		if(IS_CULTIST(M) && prob(5))
-			M.say(pick("Av'te Nar'Sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"), forced = "holy water")
+			C.say(pick("Av'te Nar'Sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"), forced = "holy water")
 			if(prob(10))
-				M.visible_message(span_danger("[M] starts having a seizure!"), span_userdanger("You have a seizure!"))
-				M.Unconscious(12 SECONDS)
+				C.visible_message(span_danger("[M] starts having a seizure!"), span_userdanger("You have a seizure!"))
+				C.Unconscious(12 SECONDS)
 				to_chat(M, "<span class='cultlarge'>[pick("Your blood is your bond - you are nothing without it", "Do not forget your place", \
 				"All that power, and you still fail?", "If you cannot scour this poison, I shall scour your meager life!")].</span>")
 
 	if(data["misc"] >= (30 SECONDS))
 		if(IS_CULTIST(M))
-			M.mind.remove_antag_datum(/datum/antagonist/cult)
-			M.Unconscious(10 SECONDS)
-		M.remove_status_effect(/datum/status_effect/jitter)
-		M.remove_status_effect(/datum/status_effect/speech/stutter)
+			C.mind.remove_antag_datum(/datum/antagonist/cult)
+			C.Unconscious(10 SECONDS)
+		C.remove_status_effect(/datum/status_effect/jitter)
+		C.remove_status_effect(/datum/status_effect/speech/stutter)
 		holder.remove_reagent(type, volume) // maybe this is a little too perfect and a max() cap on the statuses would be better??
 		return
 	#warn TEST HOLYWATER

@@ -24,12 +24,14 @@
 	if(volume >= 3)
 		warning_message = pick("extremely dizzy","short of breath","faint","confused")
 		warning_prob = 15
-		M.adjustOxyLoss(rand(10,20))
+		M.adjustOxyLoss(rand(10,20), FALSE)
+		. = TRUE
 		M.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2, override = TRUE)
 	else if(volume >= 1.5)
 		warning_message = pick("dizzy","short of breath","faint","momentarily confused")
 		M.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2, override = TRUE)
-		M.adjustOxyLoss(rand(3,5))
+		M.adjustOxyLoss(rand(3,5), FALSE)
+		. = TRUE
 	else if(volume >= 0.25)
 		warning_message = pick("a little dizzy","short of breath")
 		warning_prob = 10

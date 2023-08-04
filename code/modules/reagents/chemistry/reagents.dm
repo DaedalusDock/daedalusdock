@@ -118,7 +118,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /// Called from [/datum/reagents/proc/metabolize]
-/datum/reagent/proc/on_mob_life(mob/living/carbon/M, delta_time, times_fired, metabolism_class)
+/datum/reagent/proc/on_mob_life(mob/living/carbon/M, location)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 
@@ -137,15 +137,14 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	if(!(flags & IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
 		effective *= (MOB_MEDIUM/M.mob_size)
 
-	if(effective >= (metabolism * 0.1) || effective >= 0.1)
+	if(effective >= (metabolization_rate * 0.1) || effective >= 0.1)
 		switch(location)
 			if(CHEM_BLOOD)
-				affect_blood(M, effective)
+				 . = affect_blood(M, effective)
 			if(CHEM_TOUCH)
-				affect_touch(M, effective)
+				. = affect_touch(M, effective)
 			if(CHEM_INGEST)
-				affect_ingest(M, effective)
-
+				. = affect_ingest(M, effective)
 
 	holder.remove_reagent(type, removed) //medicine reagents stay longer if you have a better metabolism
 
@@ -218,13 +217,11 @@ Primarily used in reagents/reaction_agents
 	return
 
 /// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects
-/datum/reagent/proc/overdose_process(mob/living/M, delta_time, times_fired)
+/datum/reagent/proc/overdose_process(mob/living/carbon/C)
 	return
 
 /// Called when an overdose starts
-/datum/reagent/proc/overdose_start(mob/living/M)
-	to_chat(M, span_userdanger("You feel like you took too much of [name]!"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overdose, name)
+/datum/reagent/proc/overdose_start(mob/living/carbon/C)
 	return
 
 /**

@@ -344,6 +344,10 @@
 				if(reagent.metabolizing)
 					reagent.metabolizing = FALSE
 					reagent.on_mob_end_metabolize(my_atom, metabolism_class)
+
+				if(reagent.overdosed && iscarbon(my_atom))
+					reagent.overdose_end(my_atom)
+
 				reagent.on_mob_delete(my_atom)
 
 			reagent_list -= reagent
@@ -712,9 +716,9 @@
 				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * REAGENTS_METABOLISM)
 
 			if(reagent.overdosed)
-				need_mob_update += reagent.overdose_process(owner, delta_time, times_fired)
+				need_mob_update += reagent.overdose_process(owner)
 
-		need_mob_update += reagent.on_mob_life(owner, delta_time, times_fired)
+		need_mob_update += reagent.on_mob_life(owner, metabolism_class)
 	return need_mob_update
 
 /// Signals that metabolization has stopped, triggering the end of trait-based effects
@@ -730,6 +734,7 @@
 		if(reagent.metabolizing)
 			reagent.metabolizing = FALSE
 			reagent.on_mob_end_metabolize(C)
+
 
 /**
  * Calls [/datum/reagent/proc/on_move] on every reagent in this holder

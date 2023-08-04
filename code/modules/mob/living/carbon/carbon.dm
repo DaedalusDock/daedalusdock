@@ -18,7 +18,8 @@
 /mob/living/carbon/Destroy()
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. = ..()
-
+	QDEL_NULL(bloodstream)
+	QDEL_NULL(touching)
 	QDEL_LIST(hand_bodyparts)
 	QDEL_LIST(organs)
 	QDEL_LIST(bodyparts)

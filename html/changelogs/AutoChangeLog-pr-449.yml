@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Silicon 'PDAs' will now properly ring.
+  - rscadd: Medibelts can store Gauze now

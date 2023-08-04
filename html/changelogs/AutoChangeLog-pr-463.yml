@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Limping no longer gets stuck on your character after your legs are fixed.

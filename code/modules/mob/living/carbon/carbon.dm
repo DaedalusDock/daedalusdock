@@ -577,6 +577,9 @@
 	if(SSmapping.level_trait(z, ZTRAIT_NOXRAY))
 		sight = null
 
+	if(!(sight & (SEE_TURFS|SEE_MOBS|SEE_OBJS)))
+		sight |= SEE_BLACKNESS
+
 	return ..()
 
 

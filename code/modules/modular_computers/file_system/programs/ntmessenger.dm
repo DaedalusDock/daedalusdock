@@ -351,17 +351,10 @@
 
 
 	if (ringer_status)
-		if(!computer)
-			message_admins("Messenger Program exists with no computer, [ADMIN_VV(src)]");
-			var/message = "Messenger Program with no computer."
-			if(QDELETED(src))
-				message += " \[Messenger is qdeleted!\]"
-			if(QDELETED(holder))
-				if(isnull(holder))
-					message += " \[Messenger is not in a harddrive!\]"
-				else
-					message += " \[Messenger harddrive is qdeleting!\]"
-			CRASH(message)
+		if(!holder.holder)
+			return //We aren't actually in a computer, SSpackets might have gotten severely gummed up or smth.
+		//otherwise, fix the computer var and run.
+		computer = holder.holder
 		computer.ring(ringtone)
 
 /datum/computer_file/program/messenger/Topic(href, href_list)

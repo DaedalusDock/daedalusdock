@@ -136,7 +136,7 @@
 	var/mob/living/carbon/human/H = M
 	for(var/obj/item/bodypart/E as anything in H.bodyparts)
 		if((E.bodypart_flags & ORGAN_ARTERY_CUT) && prob(2))
-			E.bodypart_flags &= ~ORGAN_ARTERY_CUT
+			E.set_sever_artery(FALSE)
 
 /datum/reagent/medicine/kelotane
 	name = "Kelotane"
@@ -545,3 +545,25 @@
 	APPLY_CHEM_EFFECT(C, CE_SPEEDBOOST, 1)
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 3)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 4)
+
+/datum/reagent/coagulant
+	name = "Coagulant"
+	description = "An experimental coagulant capable of staunching both internal and external bleeding."
+	taste_description = "iron"
+	reagent_state = LIQUID
+	color = "#bf0000"
+	metabolism = 0.01
+	scannable = TRUE
+
+/datum/reagent/coagulant/affect_blood(mob/living/carbon/M, removed)
+	if(!ishuman(M))
+		return
+
+	for(var/obj/item/bodypart/BP as anything in M.bodyparts)
+		if((BP.bodypart_flags & ORGAN_ARTERY_CUT) && prob(10))
+			BP.set_sever_artery(FALSE)
+
+		for(var/datum/wound/W as anything in E.wounds)
+			if(W.bleeding() && prob(20))
+				W.bleed_timer = 0
+				W.clamp_wound()

@@ -230,7 +230,7 @@
 		if(HYPO_INJECT)
 			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = INJECT)
 		if(HYPO_SPRAY)
-			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = PATCH)
+			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = TOUCH)
 
 	var/long_sound = vial.amount_per_transfer_from_this >= 15
 	playsound(loc, long_sound ? 'modular_pariah/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_pariah/modules/hyposprays/sound/hypospray.ogg','modular_pariah/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)

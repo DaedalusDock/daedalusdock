@@ -66,7 +66,7 @@
 	to_chat(living_mob, span_userdanger("You feel like part of yourself has split off!"))
 
 	//Teleports you home if it's pure enough
-	if(creation_purity > 0.9 && location_created && data["ingested"])
+	if(location_created && data["ingested"])
 		do_sparks(5,FALSE,living_mob)
 		do_teleport(living_mob, location_created, 0, asoundin = 'sound/effects/phasein.ogg')
 		do_sparks(5,FALSE,living_mob)
@@ -75,7 +75,7 @@
 
 /datum/reagent/eigenstate/affect_blood(mob/living/carbon/C, removed)
 	if(prob(20))
-		do_sparks(5,FALSE,living_mob)
+		do_sparks(5,FALSE, C)
 
 	return ..()
 

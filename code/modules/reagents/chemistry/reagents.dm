@@ -30,6 +30,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/glass_name = "glass of ...what?"
 	/// desc applied to glasses with this reagent
 	var/glass_desc = "You can't really tell what this is."
+	/// Icon for the... glass.
+	var/glass_icon = 'icons/obj/drinks.dmi'
 	/// Otherwise just sets the icon to a normal glass with the mixture of the reagents in the glass.
 	var/glass_icon_state = null
 	/// used for shot glasses, mostly for alcohol
@@ -50,10 +52,14 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/mass
 	/// color it looks in containers etc
 	var/color = "#000000" // rgb: 0, 0, 0
+
 	///how fast the reagent is metabolized by the mob
 	var/metabolization_rate = 0.2
-	/// appears unused
-	var/overrides_metab = 0
+	/// How fast the reagent metabolizes on touch
+	var/touch_met = 0
+	/// How fast the reagent metabolizes when ingested
+	var/ingest_met
+
 	/// above this overdoses happen
 	var/overdose_threshold = 0
 	/// You fucked up and this is now triggering its overdose effects, purge that shit quick.
@@ -129,7 +135,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	//adjust effective amounts - removed, dose, and max_dose - for mob size
 	var/effective = removed
 	if(!(chemical_flags & REAGENT_IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
-		effective *= (MOB_MEDIUM/M.mob_size)
+		effective *= (MOB_SIZE_HUMAN/M.mob_size)
 
 	if(effective >= (metabolization_rate * 0.1) || effective >= 0.1)
 		switch(location)
@@ -146,13 +152,14 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
+	SHOULD_CALL_PARENT(TRUE)
 	/*
 	if (protein_amount)
 		handle_protein(M, src)
 	if (sugar_amount)
 		handle_sugar(M, src)
 	*/
-	affect_blood(M, removed * 0.5)
+	affect_blood(C, removed * 0.5)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	return
@@ -234,21 +241,6 @@ Primarily used in reagents/reaction_agents
 /// Should return a associative list where keys are taste descriptions and values are strength ratios
 /datum/reagent/proc/get_taste_description(mob/living/taster)
 	return list("[taste_description]" = 1)
-
-/**
- * Used when you want the default reagents purity to be equal to the normal effects
- * (i.e. if default purity is 0.75, and your reacted purity is 1, then it will return 1.33)
- *
- * Arguments
- * * normalise_num_to - what number/purity value you're normalising to. If blank it will default to the compile value of purity for this chem
- * * creation_purity - creation_purity override, if desired. This is the purity of the reagent that you're normalising from.
- */
-/datum/reagent/proc/normalise_creation_purity(normalise_num_to, creation_purity)
-	if(!normalise_num_to)
-		normalise_num_to = initial(purity)
-	if(!creation_purity)
-		creation_purity = src.creation_purity
-	return creation_purity / normalise_num_to
 
 /proc/pretty_string_from_reagent_list(list/reagent_list)
 	//Convert reagent list to a printable string for logging etc

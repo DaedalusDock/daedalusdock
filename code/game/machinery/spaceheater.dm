@@ -364,7 +364,7 @@
 		return
 	//Dropper tools
 	if(beaker)
-		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/ph_meter, /obj/item/ph_paper, /obj/item/reagent_containers/syringe)))
+		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/reagent_containers/syringe)))
 			item.afterattack(beaker, user, 1)
 		return
 

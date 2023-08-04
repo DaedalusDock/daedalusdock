@@ -171,7 +171,6 @@
 			var/total_ph = 0
 			for (var/datum/reagents/rs in value["reagents"])
 				total_volume += rs.total_volume
-				total_ph = rs.ph
 			if(is_hallucinating && prob(5))
 				chemname = "[pick_list_replacements("hallucination.json", "chemicals")]"
 			chemicals.Add(list(list("title" = chemname, "id" = ckey(temp.name), "volume" = total_volume, "pH" = total_ph)))

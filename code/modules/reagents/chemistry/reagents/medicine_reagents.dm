@@ -226,7 +226,7 @@
 	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 2)
 	holder.remove_reagent(/datum/reagent/lexorin, 3 * removed)
 
-/datum/reagent/tricordrazine
+/datum/reagent/medicine/tricordrazine
 	name = "Tricordrazine"
 	description = "Tricordrazine is a highly potent stimulant, originally derived from cordrazine. Can be used to treat a wide range of injuries."
 	taste_description = "grossness"
@@ -235,11 +235,11 @@
 	scannable = 1
 	value = 6
 
-/datum/reagent/tricordrazine/affect_blood(mob/living/carbon/C, removed)
-	M.heal_overall_damage(3 * removed, 3 * removed, updating_health = FALSE)
+/datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
+	C.heal_overall_damage(3 * removed, 3 * removed, updating_health = FALSE)
 	return TRUE
 
-/datum/reagent/cryoxadone
+/datum/reagent/medicine/cryoxadone
 	name = "Cryoxadone"
 	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 	taste_description = "sludge"
@@ -249,24 +249,22 @@
 	scannable = 1
 	value = 3.9
 
-/datum/reagent/cryoxadone/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/cryoxadone/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_CRYO, 1)
-	if(!(M.bodytemperature < 170))
+	if(!(C.bodytemperature < 170))
 		return
 
-	M.adjustCloneLoss(-100 * removed, FALSE)
+	C.adjustCloneLoss(-100 * removed, FALSE)
 	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 1)
-	M.heal_overall_damage(30 * removed, 30 * removed, updating_health = FALSE)
+	C.heal_overall_damage(30 * removed, 30 * removed, updating_health = FALSE)
 	APPLY_CHEM_EFFECT(C, CE_PULSE, -2)
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		for(var/obj/item/organ/I as anything in H.processing_organs)
-			if(!(I.status & ORGAN_ROBOTIC))
-				I.applyOrganDamage(-20*removed)
+	for(var/obj/item/organ/I as anything in C.processing_organs)
+		if(!(I.status & ORGAN_ROBOTIC))
+			I.applyOrganDamage(-20*removed)
 	return TRUE
 
 
-/datum/reagent/clonexadone
+/datum/reagent/medicine/clonexadone
 	name = "Clonexadone"
 	description = "A liquid compound similar to that used in the cloning process. Can be used to 'finish' the cloning process when used in conjunction with a cryo tube."
 	taste_description = "slime"
@@ -279,23 +277,21 @@
 	heating_message = "turns back to sludge."
 	value = 5.5
 
-/datum/reagent/clonexadone/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/clonexadone/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_CRYO, 1)
-	if(M.bodytemperature < 170)
-		M.adjustCloneLoss(-300 * removed, FALSE)
+	if(C.bodytemperature < 170)
+		C.adjustCloneLoss(-300 * removed, FALSE)
 		APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 2)
-		M.heal_organ_damage(50 * removed, 50 * removed, updating_health = FALSE)
+		C.heal_organ_damage(50 * removed, 50 * removed, updating_health = FALSE)
 		APPLY_CHEM_EFFECT(C, CE_PULSE, -2)
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			for(var/obj/item/organ/I as anything in H.processing_organs)
-				if(!(I.status & ORGAN_ROBOTIC))
-					I.applyOrganDamage(-30*removed)
+		for(var/obj/item/organ/I as anything in C.processing_organs)
+			if(!(I.status & ORGAN_ROBOTIC))
+				I.applyOrganDamage(-30*removed)
 		return TRUE
 
 /* Painkillers */
 
-/datum/reagent/paracetamol
+/datum/reagent/medicine/paracetamol
 	name = "Paracetamol"
 	description = "Most probably know this as Tylenol, but this chemical is a mild, simple painkiller."
 	taste_description = "sickness"
@@ -307,15 +303,15 @@
 	metabolization_rate = 0.02
 	value = 3.3
 
-/datum/reagent/paracetamol/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/paracetamol/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 35)
 
-/datum/reagent/paracetamol/overdose_process(mob/living/carbon/C)
+/datum/reagent/medicine/paracetamol/overdose_process(mob/living/carbon/C)
 	APPLY_CHEM_EFFECT(C, CE_TOXIN, 1)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 
-/datum/reagent/tramadol
+/datum/reagent/medicine/tramadol
 	name = "Tramadol"
 	description = "A simple, yet effective painkiller. Don't mix with alcohol."
 	taste_description = "sourness"
@@ -329,7 +325,7 @@
 	var/pain_power = 80 //magnitide of painkilling effect
 	var/effective_dose = 0.5 //how many units it need to process to reach max power
 
-/datum/reagent/tramadol/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/tramadol/affect_blood(mob/living/carbon/C, removed)
 	var/effectiveness = 1
 
 	if(volume < effective_dose)
@@ -341,8 +337,8 @@
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		C.set_slurring_if_lower(60 SECONDS)
 		if(prob(1))
-			M.Knockdown(2 SECONDS)
-			M.drowsyness = max(M.drowsyness, 5)
+			C.Knockdown(2 SECONDS)
+			C.drowsyness = max(C.drowsyness, 5)
 
 	else if(volume > 0.75 * overdose_threshold)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
@@ -362,10 +358,10 @@
 		APPLY_CHEM_EFFECT(C, CE_ALCOHOL_TOXIC, 1)
 		APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.1 * boozed) //drinking and opiating makes breathing kinda hard
 
-/datum/reagent/tramadol/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/medicine/tramadol/on_mob_end_metabolize(mob/living/carbon/C)
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 
-/datum/reagent/tramadol/overdose_process(mob/living/carbon/C)
+/datum/reagent/medicine/tramadol/overdose_process(mob/living/carbon/C)
 	//C.hallucination(120, 30)
 	C.set_timed_status_effect(20 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power*0.5) //extra painkilling for extra trouble
@@ -373,7 +369,7 @@
 	if(how_boozed(C))
 		APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.2) //Don't drink and OD on opiates folks
 
-/datum/reagent/tramadol/proc/how_boozed(mob/living/carbon/C)
+/datum/reagent/medicine/tramadol/proc/how_boozed(mob/living/carbon/C)
 	. = 0
 	var/datum/reagents/ingested = C.get_ingested_reagents()
 	if(!ingested)
@@ -386,7 +382,7 @@
 		if(booze.strength < 40) //liquor stuff hits harder
 			return 2
 
-/datum/reagent/tramadol/oxycodone
+/datum/reagent/medicine/tramadol/oxycodone
 	name = "Oxycodone"
 	description = "An effective and very addictive painkiller. Don't mix with alcohol."
 	taste_description = "bitterness"
@@ -396,7 +392,7 @@
 	pain_power = 200
 	effective_dose = 2
 
-/datum/reagent/deletrathol
+/datum/reagent/medicine/deletrathol
 	name = "Deletrathol"
 	description = "An effective painkiller that causes confusion."
 	taste_description = "confusion"
@@ -406,13 +402,13 @@
 	scannable = 1
 	metabolization_rate = 0.02
 
-/datum/reagent/deletrathol/on_mob_metabolize(mob/living/L)
+/datum/reagent/medicine/deletrathol/on_mob_metabolize(mob/living/L)
 	L.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/deletrathol)
 
-/datum/reagent/deletrathol/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/medicine/deletrathol/on_mob_end_metabolize(mob/living/L)
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/deletrathol)
 
-/datum/reagent/deletrathol/affect_blood(mob/living/carbon/human/H, removed)
+/datum/reagent/medicine/deletrathol/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
 	//H.make_dizzy(2)
 	if(prob(75))
@@ -420,13 +416,13 @@
 	if(prob(25))
 		H.adjust_confusion(2 SECONDS)
 
-/datum/reagent/deletrathol/overdose_process(mob/living/carbon/C)
+/datum/reagent/medicine/deletrathol/overdose_process(mob/living/carbon/C)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 
 /* Other medicine */
 
-/datum/reagent/synaptizine
+/datum/reagent/medicine/synaptizine
 	name = "Synaptizine"
 	description = "Synaptizine is used to treat various diseases."
 	taste_description = "bitterness"
@@ -437,7 +433,7 @@
 	scannable = 1
 	value = 4.6
 
-/datum/reagent/synaptizine/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/synaptizine/affect_blood(mob/living/carbon/C, removed)
 	C.drowsyness = max(M.drowsyness - 5, 0)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/paralyzed)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
@@ -446,13 +442,12 @@
 	holder.remove_reagent(/datum/reagent/drugs/mindbreaker, 5)
 	//M.adjust_hallucination(-10)
 
-	APPLY_CHEM_EFFECT(C, CE_MIND, 2)
 	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
 
-/datum/reagent/dylovene/venaxilin
+/datum/reagent/medicine/dylovene/venaxilin
 	name = "Venaxilin"
 	description = "Venixalin is a strong, specialised antivenom for dealing with advanced toxins and venoms."
 	taste_description = "overpowering sweetness"
@@ -465,7 +460,7 @@
 		/datum/reagent/toxin/carpotoxin
 	)
 
-/datum/reagent/alkysine
+/datum/reagent/medicine/alkysine
 	name = "Alkysine"
 	description = "Alkysine is a drug used to lessen the damage to neurological tissue after a injury. Can aid in healing brain tissue."
 	taste_description = "bitterness"
@@ -476,7 +471,7 @@
 	scannable = 1
 	value = 5.9
 
-/datum/reagent/alkysine/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	if(ishuman(C))
@@ -484,7 +479,7 @@
 		H.adjust_confusion(2 SECONDS)
 		H.drowsyness++
 
-/datum/reagent/imidazoline
+/datum/reagent/medicine/imidazoline
 	name = "Imidazoline"
 	description = "Heals eye damage"
 	taste_description = "dull toxin"
@@ -494,7 +489,7 @@
 	scannable = 1
 	value = 4.2
 
-/datum/reagent/imidazoline/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)
 	C.eye_blurry = max(C.eye_blurry - 5, 0)
 	C.eye_blind = max(C.eye_blind - 5, 0)
 	if(ishuman(C))
@@ -503,7 +498,7 @@
 		if(istype(E) && E.damage > 0)
 			E.damage = max(E.damage - 5 * removed, 0)
 
-/datum/reagent/peridaxon
+/datum/reagent/medicine/peridaxon
 	name = "Peridaxon"
 	description = "Used to encourage recovery of internal organs and nervous systems. Medicate cautiously."
 	taste_description = "bitterness"
@@ -514,7 +509,7 @@
 	scannable = 1
 	value = 6
 
-/datum/reagent/peridaxon/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/peridaxon/affect_blood(mob/living/carbon/C, removed)
 	if(!ishuman(C))
 		return
 
@@ -530,7 +525,7 @@
 					continue
 			I.applyOrganDamage(-3 * removed)
 
-/datum/reagent/hyperzine
+/datum/reagent/medicine/hyperzine
 	name = "Hyperzine"
 	description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
 	taste_description = "acid"
@@ -540,20 +535,20 @@
 	overdose_threshold = 15
 	value = 3.9
 
-/datum/reagent/hyperzine/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/medicine/hyperzine/on_mob_metabolize(mob/living/carbon/C)
 	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
 
-/datum/reagent/hyperzine/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/medicine/hyperzine/on_mob_end_metabolize(mob/living/carbon/C)
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
 
-/datum/reagent/hyperzine/affect_blood(mob/living/carbon/C, removed)
+/datum/reagent/medicine/hyperzine/affect_blood(mob/living/carbon/C, removed)
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "blink_r", "shiver"))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 3)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 4)
 
-/datum/reagent/coagulant
+/datum/reagent/medicine/coagulant
 	name = "Coagulant"
 	description = "An experimental coagulant capable of staunching both internal and external bleeding."
 	taste_description = "iron"
@@ -562,7 +557,7 @@
 	metabolization_rate = 0.01
 	scannable = TRUE
 
-/datum/reagent/coagulant/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/medicine/coagulant/affect_blood(mob/living/carbon/M, removed)
 	if(!ishuman(M))
 		return
 

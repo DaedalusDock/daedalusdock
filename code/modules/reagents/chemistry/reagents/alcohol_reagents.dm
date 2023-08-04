@@ -12,8 +12,7 @@
 	color = "#404030" // rgb: 64, 64, 48
 	nutriment_factor = 0
 	taste_description = "alcohol"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	ph = 7.33
+	metabolization_rate = 0.1
 	burning_temperature = 2193//ethanol burns at 1970C (at it's peak)
 	burning_volume = 0.1
 	var/boozepwr = 65 //Higher numbers equal higher hardness, higher hardness equals more intense alcohol poisoning

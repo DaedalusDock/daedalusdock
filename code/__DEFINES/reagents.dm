@@ -27,6 +27,10 @@
 /// Direct into the blood stream
 #define INJECT (1<<3)
 
+#define CHEM_BLOOD 1
+#define CHEM_INGEST 2
+#define CHEM_TOUCH 3
+
 #define MIMEDRINK_SILENCE_DURATION 30  //ends up being 60 seconds given 1 tick every 2 seconds
 ///Health threshold for synthflesh and rezadone to unhusk someone
 #define UNHUSK_DAMAGE_THRESHOLD 50

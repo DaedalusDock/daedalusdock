@@ -155,26 +155,6 @@
 		reagent.volume = round((reagent.volume*0.98), 0.01) //Slowly lower yield per tick
 
 /**
- * Occurs when a reation is too impure (i.e. it's below purity_min)
- * Will be called every tick in the reaction that it is too impure
- * If you want this to be a once only proc (i.e. the reaction is stopped after) set reaction.toDelete = TRUE
- * The above is useful if you're writing an explosion
- * By default the parent proc will reduce the purity of all reagents involved in the reaction in the beaker slightly. If you don't want that don't add ..()
- *
- * Arguments:
- * * holder - the datum that holds this reagent, be it a beaker or anything else
- * * equilibrium - the equilibrium datum that contains the equilibrium reaction properties and methods
- * * step_volume_added - how much product (across all products) was added for this single step
- */
-/datum/chemical_reaction/proc/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	var/affected_list = results + required_reagents
-	for(var/_reagent in affected_list)
-		var/datum/reagent/reagent = holder.get_reagent(_reagent)
-		if(!reagent)
-			continue
-		reagent.purity = clamp((reagent.purity-0.01), 0, 1) //slowly reduce purity of reagents
-
-/**
  * Magical mob spawning when chemicals react
  *
  * Your go to proc when you want to create new mobs from chemicals. please dont use on_reaction.
@@ -346,7 +326,7 @@
 	var/sum_volume = 0
 	for (var/datum/reagent/reagent as anything in holder.reagent_list)
 		if((reagent.type in required_reagents) || (reagent.type in results))
-			reagents.add_reagent(reagent.type, reagent.volume, added_purity = reagent.purity, no_react = TRUE)
+			reagents.add_reagent(reagent.type, reagent.volume, no_react = TRUE)
 			holder.remove_reagent(reagent.type, reagent.volume)
 	if(!force_range)
 		force_range = (sum_volume/6) + 3
@@ -366,9 +346,7 @@
 		holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, sending a shockwave rippling through the air!")
 		playsound(this_turf, 'sound/chemistry/shockwave_explosion.ogg', 80, TRUE)
 	//Modified goonvortex
-	for(var/atom/movable/movey as anything in orange(range, this_turf))
-		if(!istype(movey, /atom/movable))
-			continue
+	for(var/atom/movable/movey in orange(range, this_turf))
 		if(isliving(movey) && damage)
 			var/mob/living/live = movey
 			live.apply_damage(damage)//Since this can be called multiple times

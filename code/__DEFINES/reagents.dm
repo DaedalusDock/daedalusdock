@@ -187,3 +187,5 @@
 #define GRENADE_WIRED 2
 /// Grenade is ready to be finished
 #define GRENADE_READY 3
+
+#define DISPENSER_REAGENT_VALUE 0.2

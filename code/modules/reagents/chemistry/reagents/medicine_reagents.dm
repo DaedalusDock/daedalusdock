@@ -521,8 +521,8 @@
 				H.adjust_confusion(2 SECONDS)
 				H.drowsyness++
 				// peridaxon only heals minor brain damage
-				if(I.damage >= I.min_bruised_damage)
-					continue
+				/*if(I.damage >= I.min_bruised_damage)
+					continue*/
 			I.applyOrganDamage(-3 * removed)
 
 /datum/reagent/medicine/hyperzine

@@ -7,15 +7,30 @@
 //////////////
 
 /datum/reagent/consumable/ethanol
-	name = "Ethanol"
+	name = "Ethanol" //Parent class for all alcoholic reagents.
 	description = "A well-known alcohol with a variety of applications."
-	color = "#404030" // rgb: 64, 64, 48
-	nutriment_factor = 0
-	taste_description = "alcohol"
-	metabolization_rate = 0.1
+	taste_description = "pure alcohol"
+	reagent_state = LIQUID
+	color = "#404030"
+	alpha = 180
+
+	touch_met = 5
+	metabolization_rate = 0.2
 	burning_temperature = 2193//ethanol burns at 1970C (at it's peak)
 	burning_volume = 0.1
+	var/nutriment_factor = 0
+	var/hydration_factor = 0
 	var/boozepwr = 65 //Higher numbers equal higher hardness, higher hardness equals more intense alcohol poisoning
+	var/toxicity = 1
+
+	var/druggy = 0
+	var/adj_temp = 0
+	var/targ_temp = 310
+
+	glass_name = "ethanol"
+	glass_desc = "A well-known alcohol with a variety of applications."
+	value = DISPENSER_REAGENT_VALUE
+	accelerant_quality = 5
 
 /*
 Boozepwr Chart
@@ -40,26 +55,61 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	addiction_types = list(/datum/addiction/alcohol = 0.05 * boozepwr)
 	return ..()
 
-/datum/reagent/consumable/ethanol/affect_blood(mob/living/carbon/M, removed)
-	if(drinker.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
+/datum/reagent/consumable/ethanol/affect_ingest(mob/living/carbon/C, removed)
+	. = (1 || ..()) - 1 //Linter defeat device. Alcohol does NOT go straight into the blood stream from ingestion
+
+	if(C.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
 		var/booze_power = boozepwr
-		if(HAS_TRAIT(drinker, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker
+		if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker
 			booze_power *= 0.7
-		if(HAS_TRAIT(drinker, TRAIT_LIGHT_DRINKER))
+		if(HAS_TRAIT(C, TRAIT_LIGHT_DRINKER))
 			booze_power *= 2
 		// Volume, power, and server alcohol rate effect how quickly one gets drunk
-		drinker.adjust_drunk_effect(sqrt(volume) * booze_power * ALCOHOL_RATE * REM * delta_time)
-		if(boozepwr > 0)
-			var/obj/item/organ/liver/liver = drinker.getorganslot(ORGAN_SLOT_LIVER)
-			if (istype(liver))
-				liver.applyOrganDamage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * 2, 0))/150))
-	return ..()
+		C.adjust_drunk_effect(sqrt(volume) * booze_power * ALCOHOL_RATE)
+
+	C.adjust_nutrition(nutriment_factor * removed)
+
+	C.add_chemical_effect(CE_ALCOHOL, 1)
+	var/effective_dose = volume * (1 + volume/60) //drinking a LOT will make you go down faster
+
+	/*if(effective_dose >= strength) // Early warning
+		C.make_dizzy(6) // It is decreased at the speed of 3 per tick
+	*/
+
+	if(effective_dose >= boozepwr / 13) // Slurring
+		C.add_chemical_effect(CE_PAINKILLER, 150/boozepwr)
+
+	if(effective_dose >= boozepwr / 6.5) // Confusion - walking in random directions
+		C.add_chemical_effect(CE_PAINKILLER, 150/boozepwr)
+
+	if(effective_dose >= boozepwr / 3.25) // Blurry vision
+		C.add_chemical_effect(CE_PAINKILLER, 150/boozepwr)
+
+	if(effective_dose >= boozepwr / 1.75) // Drowsyness - periodically falling asleep
+		C.add_chemical_effect(CE_PAINKILLER, 150/boozepwr)
+
+	if(effective_dose >= boozepwr) // Toxic dose
+		C.add_chemical_effect(CE_ALCOHOL_TOXIC, toxicity)
+
+	if(druggy)
+		C.set_drugginess_if_lower(30 SECONDS)
+
+	if(adj_temp > 0 && C.bodytemperature < targ_temp) // 310 is the normal bodytemp. 310.055
+		C.bodytemperature = min(targ_temp, C.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
+	if(adj_temp < 0 && C.bodytemperature > targ_temp)
+		C.bodytemperature = min(targ_temp, C.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
+
+	#warn TEST ALCOHOL
+/datum/reagent/consumable/ethanol/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(2 * removed, FALSE)
+	return TRUE
 
 /datum/reagent/consumable/ethanol/expose_obj(obj/exposed_obj, reac_volume)
 	if(istype(exposed_obj, /obj/item/paper))
 		var/obj/item/paper/paperaffected = exposed_obj
 		paperaffected.clearpaper()
 		to_chat(usr, span_notice("[paperaffected]'s ink washes away."))
+
 	if(istype(exposed_obj, /obj/item/book))
 		if(reac_volume >= 5)
 			var/obj/item/book/affectedbook = exposed_obj
@@ -67,11 +117,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			exposed_obj.visible_message(span_notice("[exposed_obj]'s writing is washed away by [name]!"))
 		else
 			exposed_obj.visible_message(span_warning("[exposed_obj]'s ink is smeared by [name], but doesn't wash away!"))
-	return ..()
 
-/datum/reagent/consumable/ethanol/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with ethanol isn't quite as good as fuel.
+
+/datum/reagent/consumable/ethanol/expose_mob(mob/living/exposed_mob, methods, reac_volume)
 	. = ..()
-	if(!(methods & (TOUCH|VAPOR|PATCH)))
+	if(!(methods & (TOUCH|VAPOR)))
 		return
 
 	exposed_mob.adjust_fire_stacks(reac_volume / 15)
@@ -1997,28 +2047,23 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_MEDIUM
 
-/datum/reagent/consumable/ethanol/between_the_sheets/on_mob_life(mob/living/drinker, delta_time, times_fired)
-	..()
-	var/is_between_the_sheets = FALSE
-	for(var/obj/item/bedsheet/bedsheet in range(drinker.loc, 0))
-		if(bedsheet.loc != drinker.loc) // bedsheets in your backpack/neck don't count
-			continue
-		is_between_the_sheets = TRUE
-		break
-
+/datum/reagent/consumable/ethanol/between_the_sheets/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	var/is_between_the_sheets = !!(locate(/obj/item/bedsheet/) in get_turf(C))
 	if(!drinker.IsSleeping() || !is_between_the_sheets)
 		return
 
 	if(drinker.getBruteLoss() && drinker.getFireLoss()) //If you are damaged by both types, slightly increased healing but it only heals one. The more the merrier wink wink.
 		if(prob(50))
-			drinker.adjustBruteLoss(-0.25 * REM * delta_time)
+			drinker.adjustBruteLoss(-0.25 * removed, FALSE)
 		else
-			drinker.adjustFireLoss(-0.25 * REM * delta_time)
+			drinker.adjustFireLoss(-0.25 * removed, FALSE)
 	else if(drinker.getBruteLoss()) //If you have only one, it still heals but not as well.
-		drinker.adjustBruteLoss(-0.2 * REM * delta_time)
+		drinker.adjustBruteLoss(-0.2 * removed, FALSE)
 	else if(drinker.getFireLoss())
-		drinker.adjustFireLoss(-0.2 * REM * delta_time)
+		drinker.adjustFireLoss(-0.2 * removed, FALSE)
 
+	return TRUE
 /datum/reagent/consumable/ethanol/kamikaze
 	name = "Kamikaze"
 	description = "Divinely windy."

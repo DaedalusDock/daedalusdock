@@ -76,20 +76,20 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/penetrates_skin = VAPOR
 	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_DONOTSPLIT, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
 	var/chemical_flags = NONE
-	/// If the impurity is below 0.5, replace ALL of the chem with inverse_chem upon metabolising
-	var/inverse_chem_val = 0.25
-	/// What chem is metabolised when purity is below inverse_chem_val
-	var/inverse_chem = /datum/reagent/inverse
-	///what chem is made at the end of a reaction IF the purity is below the recipies purity_min at the END of a reaction only
+
 	///Thermodynamic vars
 	///How hot this reagent burns when it's on fire - null means it can't burn
 	var/burning_temperature = null
 	///How much is consumed when it is burnt per second
 	var/burning_volume = 0.5
+
 	///Assoc list with key type of addiction this reagent feeds, and value amount of addiction points added per unit of reagent metabolzied (which means * REAGENTS_METABOLISM every life())
 	var/list/addiction_types = null
+
 	///The amount a robot will pay for a glass of this (20 units but can be higher if you pour more, be frugal!)
 	var/glass_price
+	/// Cargo value per unit
+	var/value = 0
 	//The closest abstract type this reagent belongs to. Used to detect creation of abstract chemicals.
 	abstract_type = /datum/reagent
 

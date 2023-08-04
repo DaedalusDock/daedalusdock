@@ -414,7 +414,6 @@
 	color = "#E700E7" // rgb: 231, 0, 231
 	metabolization_rate = 0.04
 	taste_description = "mushroom"
-	ph = 11
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/hallucinogens = 12)
 

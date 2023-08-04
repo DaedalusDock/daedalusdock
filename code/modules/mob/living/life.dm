@@ -49,7 +49,7 @@
 
 		if(stat != DEAD)
 			//Breathing, if applicable
-			handle_breathing(delta_time, times_fired)
+			handle_breathing(times_fired)
 
 		handle_chemicals()
 

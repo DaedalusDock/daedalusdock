@@ -42,7 +42,7 @@
 ///////////////
 
 //Start of a breath chain, calls breathe()
-/mob/living/carbon/handle_breathing(delta_time, times_fired)
+/mob/living/carbon/handle_breathing(times_fired)
 	var/next_breath = 4
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
@@ -54,7 +54,7 @@
 			next_breath--
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)
-		breathe(delta_time, times_fired) //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
+		breathe() //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
 		if(failed_last_breath)
 			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "suffocation", /datum/mood_event/suffocation)
 		else
@@ -65,7 +65,7 @@
 			location_as_object.handle_internal_lifeform(src,0)
 
 //Second link in a breath chain, calls check_breath()
-/mob/living/carbon/proc/breathe(delta_time, times_fired)
+/mob/living/carbon/proc/breathe(forced)
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
 	if(CHEM_EFFECT_MAGNITUDE(src, CE_RESPIRATORY_FAILURE)) //TODO: Replace with bay's proper CE_BREATHLOSS
 		return
@@ -78,19 +78,21 @@
 
 	var/datum/gas_mixture/breath
 
-	if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
+	if(!forced && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 		else if(health <= crit_threshold)
 			losebreath += 0.25 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
 
-	//Suffocate
-	if(losebreath >= 1) //You've missed a breath, take oxy damage
+	// Recover from breath loss
+	if(losebreath >= 1)
 		losebreath--
 		if(prob(10))
-			emote("gasp")
-		if(istype(loc, /obj/))
+			spawn(-1)
+				emote("gasp")
+
+		if(istype(loc, /obj))
 			var/obj/loc_as_obj = loc
 			loc_as_obj.handle_internal_lifeform(src,0)
 	else
@@ -131,7 +133,7 @@
 					reagents.add_reagent(breathed_product, reagent_amount)
 					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
-	check_breath(breath)
+	. = check_breath(breath)
 	if(breath?.total_moles)
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
@@ -143,27 +145,25 @@
 
 
 //Third link in a breath chain, calls handle_breath_temperature()
-/mob/living/carbon/proc/check_breath(datum/gas_mixture/breath)
+/mob/living/carbon/proc/check_breath(datum/gas_mixture/breath, forced = FALSE)
 	if(status_flags & GODMODE)
 		failed_last_breath = FALSE
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		return FALSE
+
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 
-	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(!lungs)
-		adjustOxyLoss(4)
-
 	//CRIT
-	if(!breath || (breath.total_moles == 0) || !lungs)
-		if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE) && lungs)
-			return FALSE
-		adjustOxyLoss(2)
+	if(!forced)
+		if(!breath || (breath.total_moles == 0) || !lungs)
+			if(chem_effects[CE_STABLE] && lungs)
+				return FALSE
+			adjustOxyLoss(2)
 
-		failed_last_breath = TRUE
-		throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
-		return FALSE
+			failed_last_breath = TRUE
+			throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
+			return FALSE
 
 	var/list/breath_gases = breath.gas
 	var/safe_oxy_min = 16
@@ -173,6 +173,9 @@
 	var/SA_sleep_min = 5
 	var/oxygen_used = 0
 	var/breath_pressure = (breath.total_moles*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
+
+	if(CHEM_EFFECT_MAGNITUDE(owner, CE_BREATHLOSS) && !CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE))
+		safe_oxy_min *= 1 + rand(1, 4) * CHEM_EFFECT_MAGNITUDE(owner,)
 
 	var/O2_partialpressure = (breath_gases[GAS_OXYGEN]/breath.total_moles)*breath_pressure
 	var/Plasma_partialpressure = (breath_gases[GAS_PLASMA]/breath.total_moles)*breath_pressure

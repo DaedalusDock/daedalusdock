@@ -48,3 +48,6 @@
 
 /datum/movespeed_modifier/deletrathol
 	multiplicative_slowdown = 1
+
+/datum/movespeed_modifier/hyperzine
+	multiplicative_slowdown = -0.4

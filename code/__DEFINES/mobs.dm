@@ -438,6 +438,14 @@
 		mob.chem_effects[effect] = magnitude; \
 	}
 
+#define SET_CHEM_EFFECT_IF_LOWER(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] = max(magnitude , mob.chem_effects[effect]); \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
 ///Check chem effect presence in a mob
 #define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
 

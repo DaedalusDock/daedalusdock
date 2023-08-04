@@ -135,7 +135,7 @@
 	APPLY_CHEM_EFFECT(M, CE_BLOCKAGE, (15 + volume - overdose_threshold)/100)
 	var/mob/living/carbon/human/H = M
 	for(var/obj/item/bodypart/E as anything in H.bodyparts)
-		if((E.bodypart_flags & ORGAN_ARTERY_CUT) && prob(2))
+		if((E.bodypart_flags & BP_ARTERY_CUT) && prob(2))
 			E.set_sever_artery(FALSE)
 
 /datum/reagent/medicine/kelotane
@@ -185,7 +185,7 @@
 	if(remove_generic)
 		C.drowsyness = max(0, C.drowsyness - 6 * removed)
 		//C.adjust_hallucination(-9 * removed)
-		APPLY_CHEM_EFFECT_UP_TO(C, CE_ANTITOX, 1)
+		SET_CHEM_EFFECT_IF_LOWER(C, CE_ANTITOX, 1)
 
 	var/removing = (4 * removed)
 	var/datum/reagents/ingested = C.get_ingested_reagents()
@@ -337,19 +337,19 @@
 
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power * effectiveness)
 
-	if(full_volume > overdose)
+	if(volume > overdose_threshold)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		C.set_slurring_if_lower(60 SECONDS)
 		if(prob(1))
 			M.Knockdown(2 SECONDS)
 			M.drowsyness = max(M.drowsyness, 5)
 
-	else if(full_volume > 0.75 * overdose)
+	else if(volume > 0.75 * overdose_threshold)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(5))
 			C.set_slurring_if_lower(40 SECONDS)
 
-	else if(full_volume > 0.5 * overdose)
+	else if(volume > 0.5 * overdose_threshold)
 		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(1))
 			C.set_slurring_if_lower(20 SECONDS)
@@ -357,23 +357,23 @@
 	else
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 
-	var/boozed = isboozed(M)
+	var/boozed = how_boozed(C)
 	if(boozed)
 		APPLY_CHEM_EFFECT(C, CE_ALCOHOL_TOXIC, 1)
 		APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.1 * boozed) //drinking and opiating makes breathing kinda hard
 
-/datum/reagent/tramadol/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/tramadol/on_mob_end_metabolize(mob/living/carbon/C)
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 
 /datum/reagent/tramadol/overdose_process(mob/living/carbon/C)
-	M.hallucination(120, 30)
+	//C.hallucination(120, 30)
 	C.set_timed_status_effect(20 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power*0.5) //extra painkilling for extra trouble
 	APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.6) //Have trouble breathing, need more air
-	if(isboozed(M))
+	if(how_boozed(C))
 		APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.2) //Don't drink and OD on opiates folks
 
-/datum/reagent/tramadol/proc/isboozed(mob/living/carbon/C)
+/datum/reagent/tramadol/proc/how_boozed(mob/living/carbon/C)
 	. = 0
 	var/datum/reagents/ingested = C.get_ingested_reagents()
 	if(!ingested)
@@ -413,7 +413,7 @@
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/deletrathol)
 
 /datum/reagent/deletrathol/affect_blood(mob/living/carbon/human/H, removed)
-	H.add_chemical_effect(CE_PAINKILLER, 80)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
 	//H.make_dizzy(2)
 	if(prob(75))
 		H.drowsyness++
@@ -438,14 +438,16 @@
 	value = 4.6
 
 /datum/reagent/synaptizine/affect_blood(mob/living/carbon/C, removed)
-	M.drowsyness = max(M.drowsyness - 5, 0)
-	M.AdjustParalysis(-1)
-	M.AdjustStunned(-1)
-	M.AdjustWeakened(-1)
+	C.drowsyness = max(M.drowsyness - 5, 0)
+	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/paralyzed)
+	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
+	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/knockdown)
+
 	holder.remove_reagent(/datum/reagent/drugs/mindbreaker, 5)
-	M.adjust_hallucination(-10)
+	//M.adjust_hallucination(-10)
+
 	APPLY_CHEM_EFFECT(C, CE_MIND, 2)
-	M.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
+	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
@@ -493,10 +495,10 @@
 	value = 4.2
 
 /datum/reagent/imidazoline/affect_blood(mob/living/carbon/C, removed)
-	M.eye_blurry = max(M.eye_blurry - 5, 0)
-	M.eye_blind = max(M.eye_blind - 5, 0)
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
+	C.eye_blurry = max(C.eye_blurry - 5, 0)
+	C.eye_blind = max(C.eye_blind - 5, 0)
+	if(ishuman(C))
+		var/mob/living/carbon/human/H = C
 		var/obj/item/organ/eyes/E = H.getorganslot(ORGAN_SLOT_EYES)
 		if(istype(E) && E.damage > 0)
 			E.damage = max(E.damage - 5 * removed, 0)
@@ -513,13 +515,13 @@
 	value = 6
 
 /datum/reagent/peridaxon/affect_blood(mob/living/carbon/C, removed)
-	if(!ishuman(M))
+	if(!ishuman(C))
 		return
 
 	var/mob/living/carbon/human/H = C
 	for(var/obj/item/organ/I in H.processing_organs)
 		if(!(I.status & ORGAN_ROBOTIC))
-			if(I.organ_tag == BP_BRAIN)
+			if(istype(I, /obj/item/organ/brain))
 				// if we have located an organic brain, apply side effects
 				H.adjust_confusion(2 SECONDS)
 				H.drowsyness++
@@ -535,14 +537,19 @@
 	reagent_state = LIQUID
 	color = "#ff3300"
 	metabolization_rate = 0.03
-	overdose_threshold =15
+	overdose_threshold = 15
 	value = 3.9
+
+/datum/reagent/hyperzine/on_mob_metabolize(mob/living/carbon/C)
+	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
+
+/datum/reagent/hyperzine/on_mob_end_metabolize(mob/living/carbon/C)
+	C.remove_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
 
 /datum/reagent/hyperzine/affect_blood(mob/living/carbon/C, removed)
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "blink_r", "shiver"))
-	APPLY_CHEM_EFFECT(C, CE_SPEEDBOOST, 1)
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 3)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 4)
 
@@ -552,7 +559,7 @@
 	taste_description = "iron"
 	reagent_state = LIQUID
 	color = "#bf0000"
-	metabolism = 0.01
+	metabolization_rate = 0.01
 	scannable = TRUE
 
 /datum/reagent/coagulant/affect_blood(mob/living/carbon/M, removed)
@@ -560,7 +567,7 @@
 		return
 
 	for(var/obj/item/bodypart/BP as anything in M.bodyparts)
-		if((BP.bodypart_flags & ORGAN_ARTERY_CUT) && prob(10))
+		if((BP.bodypart_flags & BP_ARTERY_CUT) && prob(10))
 			BP.set_sever_artery(FALSE)
 
 		for(var/datum/wound/W as anything in E.wounds)

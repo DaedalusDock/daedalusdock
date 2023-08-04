@@ -14,6 +14,9 @@
 	var/list/macro_set = params2list(winget(src, "default.*", "command")) // The third arg doesnt matter here as we're just removing them all
 	for(var/k in 1 to length(macro_set))
 		var/list/split_name = splittext(macro_set[k], ".")
+		if(split_name[2] in SSinput.protected_macro_ids)
+			testing("Skipping Protected Macro [split_name[2]]")
+			continue //Skip protected macros
 		var/macro_name = "[split_name[1]].[split_name[2]]" // [3] is "command"
 		erase_output = "[erase_output];[macro_name].parent=null"
 	winset(src, null, erase_output)
@@ -50,15 +53,23 @@
 		var/command = macro_set[key]
 		winset(src, "shared-[REF(key)]", "parent=default;name=[key];command=[command]")
 
-
-	var/list/printables = list()
-	//Now the stuff we do.
-	for(var/keycode in personal_macro_set) //We don't care about the bound key, just the key itself
-		if(!hotkeys && !SSinput.unprintables_cache[keycode]) //Track printable hotkeys and skip them.
-			printables += keycode
-			continue
-		winset(src, "personal-[REF(keycode)]", "parent=default;name=[keycode];command=\"KeyDown [keycode]\"")
-		winset(src, "personal-[REF("[keycode]")]-UP", "parent=default;name=[keycode]+UP;command=\"KeyUp [keycode]\"")
+	var/list/printables
+	//If they use hotkeys, we can safely use ANY
+	if(hotkeys)
+		var/list/hk_macro_set = SSinput.hotkey_only_set
+		for(var/k in 1 to length(hk_macro_set))
+			var/key = hk_macro_set[k]
+			var/command = hk_macro_set[key]
+			winset(src, "hotkey_only-[REF(key)]", "parent=default;name=[key];command=[command]")
+	else //Otherwise, we can't.
+		printables = list()
+		//Now the stuff we do.
+		for(var/keycode in personal_macro_set) //We don't care about the bound key, just the key itself
+			if(!hotkeys && !SSinput.unprintables_cache[keycode]) //Track printable hotkeys and skip them.
+				printables += keycode
+				continue
+			winset(src, "personal-[REF(keycode)]", "parent=default;name=[keycode];command=\"KeyDown [keycode]\"")
+			winset(src, "personal-[REF("[keycode]")]-UP", "parent=default;name=[keycode]+UP;command=\"KeyUp [keycode]\"")
 
 
 	if(hotkeys)
@@ -66,7 +77,7 @@
 	else
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
-	if(printables.len)
+	if(printables?.len)
 		to_chat(src, "[span_boldnotice("Hey, you might have some bad keybinds!")]\n\
 		[span_notice("The following keys are bound despite Classic Controls being enabled. These binds are not applied.\nThis warning may be in error.")]\n\
 		Keys: [jointext(printables, ", ")]\

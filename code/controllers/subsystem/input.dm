@@ -8,8 +8,14 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 
 	use_default_stats = FALSE
 
+	/// Standard macroset *ALL* players get
 	var/list/macro_set
+	/// Macros applied only to hotkey users
+	var/list/hotkey_only_set
+	/// Typecache of all unprintable keys that are safe for classic to bind
 	var/list/unprintables_cache
+	/// Macro IDs we shouldn't clear during client.clear_macros()
+	var/list/protected_macro_ids
 
 	///running average of how many clicks inputted by a player the server processes every second. used for the subsystem stat entry
 	var/clicks_per_second = 0
@@ -40,6 +46,10 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 		"Back" = "\".winset \\\"input.text=\\\"\\\"\\\"\"",
 		"Tab" = "\".winset \\\"input.focus=true?map.focus=true input.background-color=[COLOR_INPUT_DISABLED]:input.focus=true input.background-color=[COLOR_INPUT_ENABLED]\\\"\"",
 		"Escape" = "Reset-Held-Keys",
+	)
+	hotkey_only_set = list(
+		"Any" = "\"KeyDown \[\[*\]\]\"",
+		"Any+UP" = "\"KeyUp \[\[*\]\]\"",
 	)
 	// This list may be out of date, and may include keys not actually legal to bind? The only full list is from 2008. http://www.byond.com/docs/notes/macro.html
 	unprintables_cache = list(
@@ -117,6 +127,11 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 		"F22" = TRUE,
 		"F23" = TRUE,
 		"F24" = TRUE,
+	)
+	// Macro IDs we don't delete on wipe. Usually stuff baked into the skin.
+	protected_macro_ids = list(
+		"PROTECTED-Shift",
+		"PROTECTED-ShiftUp"
 	)
 
 // Badmins just wanna have fun ♪

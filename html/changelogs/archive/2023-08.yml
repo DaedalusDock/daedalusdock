@@ -27,3 +27,24 @@
   - bugfix: Fixed a serious bug with bodypart damage.
   - balance: Vent Pumps and Vent Scrubbers use 33% less power while idling.
   - balance: Thermomachine volume from 70 to 400 + (bin_rating * 200)
+2023-08-04:
+  Kapu1178:
+  - bugfix: Specific chemical effects no longer last forever
+  - bugfix: ZMimic failing to recognize new atoms
+  MrMelbert:
+  - bugfix: Items getting knocked off (glasses and cigars), bad omens, and spaghetti
+      falling from pockets should trigger on most knockdowns again like they used
+      to.
+  - code_imp: Cleaned up the knockoff component a bit. Also unit tests it.
+  - bugfix: Frozen stuff is now properly actually recognized as frozen and won't re-freeze.
+  - bugfix: Tonic Water heals dizziness instead of causing it
+  - bugfix: Fixes stuttered words with anxiety being capitalized
+  - rscadd: When you are drunk, the strength of your slurring now varies based on
+      how drunk you are. Being "a little drunk" only rarely slurs your words, being
+      average drunk is the same as the old effect, while being very drunk now slurs
+      your words even more.
+  - rscadd: Some non-alcohol sources of slurring, such as concussions, now give "generic
+      slurring" rather than "drunk slurring", which less resemble being drunk (ie,
+      no burping).
+  - rscadd: 'Mind restoration now heals ALL slurring, rather than only drunk slurring
+      (which includes cult / heretic slurring). /:cl:'

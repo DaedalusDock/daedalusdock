@@ -375,11 +375,11 @@
 	if(!ingested)
 		return
 	var/list/pool = C.reagents.reagent_list | ingested.reagent_list
-	for(var/datum/reagent/ethanol/booze in pool)
+	for(var/datum/reagent/consumable/ethanol/booze in pool)
 		if(M.volume < 2) //let them experience false security at first
 			continue
 		. = 1
-		if(booze.strength < 40) //liquor stuff hits harder
+		if(booze.boozepwr >= 65) //liquor stuff hits harder
 			return 2
 
 /datum/reagent/medicine/tramadol/oxycodone
@@ -412,9 +412,9 @@
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
 	//H.make_dizzy(2)
 	if(prob(75))
-		H.drowsyness++
+		C.drowsyness++
 	if(prob(25))
-		H.adjust_confusion(2 SECONDS)
+		C.adjust_confusion(2 SECONDS)
 
 /datum/reagent/medicine/deletrathol/overdose_process(mob/living/carbon/C)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
@@ -434,7 +434,7 @@
 	value = 4.6
 
 /datum/reagent/medicine/synaptizine/affect_blood(mob/living/carbon/C, removed)
-	C.drowsyness = max(M.drowsyness - 5, 0)
+	C.drowsyness = max(C.drowsyness - 5, 0)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/paralyzed)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/knockdown)
@@ -555,7 +555,7 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	metabolization_rate = 0.01
-	scannable = TRUE
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 
 /datum/reagent/medicine/coagulant/affect_blood(mob/living/carbon/M, removed)
 	if(!ishuman(M))
@@ -565,7 +565,7 @@
 		if((BP.bodypart_flags & BP_ARTERY_CUT) && prob(10))
 			BP.set_sever_artery(FALSE)
 
-		for(var/datum/wound/W as anything in E.wounds)
+		for(var/datum/wound/W as anything in BP.wounds)
 			if(W.bleeding() && prob(20))
 				W.bleed_timer = 0
 				W.clamp_wound()

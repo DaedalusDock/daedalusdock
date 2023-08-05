@@ -28,7 +28,7 @@
 
 /datum/reagent/consumable/nutriment
 	name = "Nutriment"
-	description = "All the vitamins, minerals, and carbohydrates the body needs in pure form."
+	description = "All the vitamins, minerals, and carbohydrates the body needs in pure forC."
 	reagent_state = SOLID
 	nutriment_factor = 15 * REAGENTS_METABOLISM
 	color = "#664330" // rgb: 102, 67, 48
@@ -45,7 +45,7 @@
 /datum/reagent/consumable/nutriment/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	if(prob(60))
-		M.heal_bodypart_damage(brute = brute_heal * removed, burn = burn_heal * removed)
+		C.heal_bodypart_damage(brute = brute_heal * removed, burn = burn_heal * removed)
 		. = TRUE
 
 /datum/reagent/consumable/nutriment/on_new(list/supplied_data)
@@ -91,7 +91,7 @@
 
 /datum/reagent/consumable/nutriment/vitamin
 	name = "Vitamin"
-	description = "All the best vitamins, minerals, and carbohydrates the body needs in pure form."
+	description = "All the best vitamins, minerals, and carbohydrates the body needs in pure forC."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 	brute_heal = 1
@@ -199,11 +199,11 @@
 
 /datum/reagent/consumable/sugar/overdose_start(mob/living/M)
 	to_chat(M, span_userdanger("Your body quakes as you collapse to the ground!"))
-	M.AdjustSleeping(600)
+	C.AdjustSleeping(600)
 	. = TRUE
 
 /datum/reagent/consumable/sugar/overdose_process(mob/living/M, delta_time, times_fired)
-	M.Sleeping(40)
+	C.Sleeping(40)
 	. = TRUE
 
 /datum/reagent/consumable/virus_food
@@ -295,13 +295,13 @@
 		if(25 to 35)
 			cooling = -30
 			if(prob(1))
-				M.emote("shiver")
+				C.emote("shiver")
 			if(isslime(M))
 				cooling = -rand(15, 20)
 		if(35 to INFINITY)
 			cooling = -40
 			if(prob(5))
-				M.emote("shiver")
+				C.emote("shiver")
 			if(isslime(C))
 				cooling = -rand(20, 25)
 	C.adjust_bodytemperature(cooling * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 50)
@@ -338,20 +338,20 @@
 
 	var/mob/living/carbon/victim = exposed_mob
 	if(methods & (TOUCH|VAPOR))
-		var/pepper_proof = victim.is_pepper_proof()
+		var/pepper_proof = victiC.is_pepper_proof()
 
 		//check for protection
 		//actually handle the pepperspray effects
 		if (!(pepper_proof)) // you need both eye and mouth protection
 			if(prob(5))
-				victim.emote("scream")
-			victim.blur_eyes(5) // 10 seconds
-			victim.blind_eyes(3) // 6 seconds
-			victim.set_timed_status_effect(5 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
-			victim.Knockdown(3 SECONDS)
-			victim.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
+				victiC.emote("scream")
+			victiC.blur_eyes(5) // 10 seconds
+			victiC.blind_eyes(3) // 6 seconds
+			victiC.set_timed_status_effect(5 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
+			victiC.Knockdown(3 SECONDS)
+			victiC.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
 			addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/reagent/pepperspray), 10 SECONDS)
-		victim.update_damage_hud()
+		victiC.update_damage_hud()
 
 /datum/reagent/consumable/condensedcapsaicin/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -415,7 +415,7 @@
 			C.Paralyze(10)
 			C.set_timed_status_effect(20 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	else
-		var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+		var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 		if(liver && HAS_TRAIT(liver, TRAIT_CULINARY_METABOLISM))
 			if(prob(20)) //stays in the system much longer than sprinkles/banana juice, so heals slower to partially compensate
 				C.heal_bodypart_damage(brute = 1 * removed, burn = 1 * removed, updating_health = FALSE)
@@ -489,7 +489,7 @@
 
 /datum/reagent/consumable/hot_ramen/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, M.get_body_temp_normal())
+	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 
 /datum/reagent/consumable/hell_ramen
 	name = "Hell Ramen"
@@ -610,10 +610,10 @@
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)
 	if(prob(33))
 		var/heal = -1 * removed
-		M.adjustBruteLoss(heal, 0)
-		M.adjustFireLoss(heal, 0)
-		M.adjustOxyLoss(heal, 0)
-		M.adjustToxLoss(heal, 0)
+		C.adjustBruteLoss(heal, 0)
+		C.adjustFireLoss(heal, 0)
+		C.adjustOxyLoss(heal, 0)
+		C.adjustToxLoss(heal, 0)
 		return TRUE
 
 /datum/reagent/consumable/mayonnaise
@@ -676,8 +676,8 @@
 
 /datum/reagent/consumable/nutriment/stabilized/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	if(M.nutrition > NUTRITION_LEVEL_FULL - 25)
-		M.adjust_nutrition(-3 * nutriment_factor * removed)
+	if(C.nutrition > NUTRITION_LEVEL_FULL - 25)
+		C.adjust_nutrition(-3 * nutriment_factor * removed)
 
 ////Lavaland Flora Reagents////
 
@@ -810,7 +810,8 @@
 
 /datum/reagent/consumable/char/overdose_process(mob/living/M, delta_time, times_fired)
 	if(prob(25))
-		M.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/char)
+		spawn(-1)
+			C.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/char)
 
 /datum/reagent/consumable/bbqsauce
 	name = "BBQ Sauce"

@@ -177,19 +177,22 @@ Primarily used in reagents/reaction_agents
 
 /// Called when this reagent is first added to a mob
 /datum/reagent/proc/on_mob_add(mob/living/L, amount)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when this reagent is removed while inside a mob
 /datum/reagent/proc/on_mob_delete(mob/living/L)
-	SEND_SIGNAL(L, COMSIG_CLEAR_MOOD_EVENT, "[type]_overdose")
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when this reagent first starts being metabolized by a liver
 /datum/reagent/proc/on_mob_metabolize(mob/living/carbon/C, class)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when this reagent stops being metabolized by a liver
 /datum/reagent/proc/on_mob_end_metabolize(mob/living/carbon/C, class)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when a reagent is inside of a mob when they are dead
@@ -218,14 +221,17 @@ Primarily used in reagents/reaction_agents
 
 /// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects
 /datum/reagent/proc/overdose_process(mob/living/carbon/C)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when an overdose starts
 /datum/reagent/proc/overdose_start(mob/living/carbon/C)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when an overdose ends
 /datum/reagent/proc/overdose_end(mob/living/carbon/C)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /**

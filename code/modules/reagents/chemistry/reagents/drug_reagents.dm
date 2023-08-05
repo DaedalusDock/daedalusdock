@@ -376,7 +376,7 @@
 	return TRUE
 
 /datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/carbon/C)
-	REMOVE_TRAIT(C ,TRAIT_HARDLY_WOUNDED,type)
+	REMOVE_TRAIT(C, TRAIT_HARDLY_WOUNDED, type)
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/carbon/C)
 	//You will be vomiting so the damage is really for a few ticks before you flush it out of your system

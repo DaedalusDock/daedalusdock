@@ -8,7 +8,6 @@
 	color = "#808080"
 	metabolization_rate = 0.04
 	value = DISPENSER_REAGENT_VALUE
-	accelerant_quality = 3
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(removed * 3, FALSE)
@@ -61,6 +60,7 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/carbon/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	var/datum/reagents/ingested = C.get_ingested_reagents()
 	if (ingested && length(ingested.reagent_list) > 1) // Need to have at least 2 reagents - cabon and something to remove
 		var/effect = 1 / (length(ingested.reagent_list) - 1)
@@ -90,7 +90,7 @@
 
 /datum/reagent/hydrazine
 	name = "Hydrazine"
-	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate form."
+	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate forC."
 	taste_description = "sweet tasting metal"
 	reagent_state = LIQUID
 	color = "#808080"
@@ -151,7 +151,8 @@
 	if(!isspaceturf(C.loc))
 		C.step(pick(GLOB.cardinals))
 	if(prob(5))
-		C.emote(pick("twitch", "drool", "moan"))
+		spawn(-1)
+			C.emote(pick("twitch", "drool", "moan"))
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.1 * removed)
 
 /datum/reagent/phosphorus
@@ -171,11 +172,11 @@
 	value = DISPENSER_REAGENT_VALUE
 	should_admin_log = TRUE
 
-/datum/reagent/potassium/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/potassium/affect_blood(mob/living/carbon/C, removed)
 	if(volume > 10)
-		M.add_chemical_effect(CE_PULSE, 2)
-	if(volume > 3)
-		M.add_chemical_effect(CE_PULSE, 1)
+		APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
+	else if(volume > 3)
+		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
 
 /datum/reagent/radium
 	name = "Radium"
@@ -212,8 +213,8 @@
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
 
-/datum/reagent/acid/affect_blood(mob/living/carbon/M, removed)
-	M.adjustFireLoss(removed * power, FALSE)
+/datum/reagent/acid/affect_blood(mob/living/carbon/C, removed)
+	C.adjustFireLoss(removed * power, FALSE)
 	return TRUE
 
 /datum/reagent/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
@@ -248,25 +249,6 @@
 	reagent_state = SOLID
 	color = "#808080"
 	value = DISPENSER_REAGENT_VALUE
-
-/datum/reagent/sugar
-	name = "Sugar"
-	description = "The organic compound commonly known as table sugar and sometimes called saccharose. This white, odorless, crystalline powder has a pleasing, sweet taste."
-	taste_description = "sugar"
-	taste_mult = 3
-	reagent_state = SOLID
-	color = "#ffffff"
-	scannable = 1
-	sugar_amount = 1
-
-	glass_name = "sugar"
-	glass_desc = "The organic compound commonly known as table sugar and sometimes called saccharose. This white, odorless, crystalline powder has a pleasing, sweet taste."
-	glass_icon = DRINK_ICON_NOISY
-	value = DISPENSER_REAGENT_VALUE
-
-/datum/reagent/sugar/affect_blood(mob/living/carbon/C, removed)
-	//handle_sugar(M, src)
-	C.adjust_nutrition(removed * 3)
 
 /datum/reagent/sulfur
 	name = "Sulfur"

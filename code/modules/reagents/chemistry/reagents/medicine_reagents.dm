@@ -94,7 +94,7 @@
 	color = "#00bfff"
 	overdose_threshold = 60
 	metabolization_rate = 0.1
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.5
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
@@ -122,7 +122,7 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	overdose_threshold = 30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
@@ -145,7 +145,7 @@
 	reagent_state = LIQUID
 	color = "#ffa800"
 	overdose_threshold = 30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.9
 
 /datum/reagent/medicine/kelotane/affect_blood(mob/living/carbon/C, removed)
@@ -160,7 +160,7 @@
 	reagent_state = LIQUID
 	color = "#ff8000"
 	overdose_threshold = 15
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
@@ -173,7 +173,7 @@
 	taste_description = "a roll of gauze"
 	reagent_state = LIQUID
 	color = "#00a000"
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.1
 
 	var/remove_generic = 1
@@ -205,7 +205,7 @@
 	reagent_state = LIQUID
 	color = "#0080ff"
 	overdose_threshold = 30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.4
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
@@ -219,7 +219,7 @@
 	reagent_state = LIQUID
 	color = "#0040ff"
 	overdose_threshold =15
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.7
 
 /datum/reagent/dexalinp/affect_blood(mob/living/carbon/C, removed)
@@ -232,7 +232,7 @@
 	taste_description = "grossness"
 	reagent_state = LIQUID
 	color = "#8040ff"
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 6
 
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
@@ -246,7 +246,7 @@
 	reagent_state = LIQUID
 	color = "#8080ff"
 	metabolization_rate = 0.1
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.9
 
 /datum/reagent/medicine/cryoxadone/affect_blood(mob/living/carbon/C, removed)
@@ -271,7 +271,7 @@
 	reagent_state = LIQUID
 	color = "#80bfff"
 	metabolization_rate = 0.1
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	heating_products = list(/datum/reagent/cryoxadone, /datum/reagent/sodium)
 	heating_point = 50 CELSIUS
 	heating_message = "turns back to sludge."
@@ -299,7 +299,7 @@
 	color = "#c8a5dc"
 	overdose_threshold =60
 	reagent_state = LIQUID
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.02
 	value = 3.3
 
@@ -318,7 +318,7 @@
 	reagent_state = LIQUID
 	color = "#cb68fc"
 	overdose_threshold =30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.05
 	ingest_met = 0.02
 	value = 3.1
@@ -387,7 +387,7 @@
 	description = "An effective and very addictive painkiller. Don't mix with alcohol."
 	taste_description = "bitterness"
 	color = "#800080"
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	overdose_threshold =20
 	pain_power = 200
 	effective_dose = 2
@@ -399,7 +399,7 @@
 	color = "#800080"
 	reagent_state = LIQUID
 	overdose_threshold =15
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.02
 
 /datum/reagent/medicine/deletrathol/on_mob_metabolize(mob/living/L)
@@ -430,7 +430,7 @@
 	color = "#99ccff"
 	metabolization_rate = 0.01
 	overdose_threshold = 5
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.6
 
 /datum/reagent/medicine/synaptizine/affect_blood(mob/living/carbon/C, removed)
@@ -452,7 +452,7 @@
 	description = "Venixalin is a strong, specialised antivenom for dealing with advanced toxins and venoms."
 	taste_description = "overpowering sweetness"
 	color = "#dadd98"
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.4
 	remove_generic = 0
 	remove_toxins = list(
@@ -468,12 +468,12 @@
 	color = "#ffff66"
 	metabolization_rate = 0.05
 	overdose_threshold =30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
+	//APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		H.adjust_confusion(2 SECONDS)
@@ -486,7 +486,7 @@
 	reagent_state = LIQUID
 	color = "#c8a5dc"
 	overdose_threshold =30
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.2
 
 /datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)
@@ -506,7 +506,7 @@
 	color = "#561ec3"
 	metabolization_rate = 0.1
 	overdose_threshold =10
-	scannable = 1
+	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 6
 
 /datum/reagent/medicine/peridaxon/affect_blood(mob/living/carbon/C, removed)

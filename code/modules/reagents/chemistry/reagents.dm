@@ -144,7 +144,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 			if(CHEM_INGEST)
 				. = affect_ingest(M, effective)
 
-	holder.remove_reagent(type, removed) //medicine reagents stay longer if you have a better metabolism
+	holder.remove_reagent(type, removed)
 
 /datum/reagent/proc/affect_blood(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -161,6 +161,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	affect_blood(C, removed * 0.5)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /*
@@ -184,11 +185,11 @@ Primarily used in reagents/reaction_agents
 	return
 
 /// Called when this reagent first starts being metabolized by a liver
-/datum/reagent/proc/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/proc/on_mob_metabolize(mob/living/carbon/C, class)
 	return
 
 /// Called when this reagent stops being metabolized by a liver
-/datum/reagent/proc/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/proc/on_mob_end_metabolize(mob/living/carbon/C, class)
 	return
 
 /// Called when a reagent is inside of a mob when they are dead

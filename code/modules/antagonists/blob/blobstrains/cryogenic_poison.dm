@@ -26,9 +26,9 @@
 	exposed_mob.apply_damage(0.2*reac_volume, BRUTE)
 
 /datum/reagent/blob/cryogenic_poison/affect_blood(mob/living/carbon/C, removed)
-	exposed_mob.adjustBruteLoss(1 * removed, FALSE)
-	exposed_mob.adjustFireLoss(1 * removed, FALSE)
-	exposed_mob.adjustToxLoss(1* removed, FALSE)
+	C.adjustBruteLoss(1 * removed, FALSE)
+	C.adjustFireLoss(1 * removed, FALSE)
+	C.adjustToxLoss(1* removed, FALSE)
 	return TRUE
 
 /datum/reagent/blob/cryogenic_poison/affect_touch(mob/living/carbon/C, removed)

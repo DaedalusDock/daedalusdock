@@ -23,18 +23,8 @@
 /datum/reagent/consumable/on_mob_metabolize(mob/living/carbon/C, class)
 	if(!(class == CHEM_INGEST) || HAS_TRAIT(C, TRAIT_AGEUSIA))
 		return
-	switch(quality)
-		if (DRINK_NICE)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_nice)
-		if (DRINK_GOOD)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_good)
-		if (DRINK_VERYGOOD)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_verygood)
-		if (DRINK_FANTASTIC)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_fantastic)
-			exposed_mob.mind?.add_memory(MEMORY_DRINK, list(DETAIL_DRINK = src), story_value = STORY_VALUE_OKAY)
-		if (FOOD_AMAZING)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_food", /datum/mood_event/amazingtaste)
+	if(quality >= DRINK_FANTASTIC)
+		C.mind?.add_memory(MEMORY_DRINK, list(DETAIL_DRINK = src), story_value = STORY_VALUE_OKAY)
 
 /datum/reagent/consumable/nutriment
 	name = "Nutriment"
@@ -262,20 +252,20 @@
 		if(1 to 15)
 			heating = 5
 			if(holder.has_reagent(/datum/reagent/cryostylane))
-				holder.remove_reagent(/datum/reagent/cryostylane, 5 * REM * delta_time)
-			if(isslime(M))
+				holder.remove_reagent(/datum/reagent/cryostylane, 5 * removed)
+			if(isslime(C))
 				heating = rand(5, 20)
 		if(15 to 25)
 			heating = 10
-			if(isslime(M))
+			if(isslime(C))
 				heating = rand(10, 20)
 		if(25 to 35)
 			heating = 15
-			if(isslime(M))
+			if(isslime(C))
 				heating = rand(15, 20)
 		if(35 to INFINITY)
 			heating = 20
-			if(isslime(M))
+			if(isslime(C))
 				heating = rand(20, 25)
 	C.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 
@@ -339,7 +329,6 @@
 	color = "#B31008" // rgb: 179, 16, 8
 	taste_description = "scorching agony"
 	penetrates_skin = NONE
-	ph = 7.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/condensedcapsaicin/expose_mob(mob/living/exposed_mob, methods, reac_volume)
@@ -368,7 +357,7 @@
 	. = ..()
 	if(!holder.has_reagent(/datum/reagent/consumable/milk))
 		if(prob(10))
-			M.visible_message(span_warning("[M] [pick("dry heaves!","coughs!","splutters!")]"))
+			C.visible_message(span_warning("[M] [pick("dry heaves!","coughs!","splutters!")]"))
 
 /datum/reagent/consumable/salt
 	name = "Table Salt"
@@ -428,8 +417,8 @@
 	else
 		var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
 		if(liver && HAS_TRAIT(liver, TRAIT_CULINARY_METABOLISM))
-			if(prob(20, delta_time)) //stays in the system much longer than sprinkles/banana juice, so heals slower to partially compensate
-				M.heal_bodypart_damage(brute = 1 * removed, burn = 1 * removed, updating_health = FALSE)
+			if(prob(20)) //stays in the system much longer than sprinkles/banana juice, so heals slower to partially compensate
+				C.heal_bodypart_damage(brute = 1 * removed, burn = 1 * removed, updating_health = FALSE)
 				. = TRUE
 
 /datum/reagent/consumable/sprinkles
@@ -441,9 +430,9 @@
 
 /datum/reagent/consumable/sprinkles/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
-		M.heal_bodypart_damage(1 * removed, 1 * removed, updating_health = FALSE)
+		C.heal_bodypart_damage(1 * removed, 1 * removed, updating_health = FALSE)
 		. = TRUE
 
 /datum/reagent/consumable/cornoil
@@ -512,7 +501,7 @@
 
 /datum/reagent/consumable/hell_ramen/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	target_mob.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
+	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 
 /datum/reagent/consumable/flour
 	name = "Flour"
@@ -617,7 +606,7 @@
 			mytray.adjust_pestlevel(rand(1,2))
 
 /datum/reagent/consumable/honey/affect_ingest(mob/living/carbon/C, removed)
-	return TRUE
+	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)
 	if(prob(33))
 		var/heal = -1 * removed
@@ -671,11 +660,11 @@
 
 /datum/reagent/consumable/tearjuice/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	if(M.eye_blurry) //Don't worsen vision if it was otherwise fine
-		M.blur_eyes(4 * removed)
+	if(C.eye_blurry) //Don't worsen vision if it was otherwise fine
+		C.blur_eyes(4 * removed)
 		if(prob(10))
 			to_chat(M, span_warning("Your eyes sting!"))
-			M.blind_eyes(2)
+			C.blind_eyes(2)
 
 /datum/reagent/consumable/nutriment/stabilized
 	name = "Stabilized Nutriment"
@@ -698,20 +687,18 @@
 	description = "An ichor, derived from a certain mushroom, makes for a bad time."
 	color = "#1d043d"
 	taste_description = "bitter mushroom"
-	ph = 12
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/entpoly/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	if(current_cycle >= 10)
-		M.Unconscious(40 * removed, FALSE)
-		. = TRUE
+		C.Unconscious(40 * removed, FALSE)
 	if(prob(10))
-		M.losebreath += 4 * removed
-		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150)
-		M.adjustToxLoss(3 * removed,0)
-		M.stamina.adjust(-10 * removed)
-		M.blur_eyes(5)
+		C.losebreath += 4 * removed
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150)
+		C.adjustToxLoss(3 * removed,0)
+		C.stamina.adjust(-10 * removed)
+		C.blur_eyes(5)
 		. = TRUE
 
 /datum/reagent/consumable/vitfro
@@ -720,14 +707,13 @@
 	color = "#d3a308"
 	nutriment_factor = 3 * REAGENTS_METABOLISM
 	taste_description = "fruity mushroom"
-	ph = 10.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/vitfro/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	if(prob(55, delta_time))
-		M.adjustBruteLoss(-1 * removed, 0)
-		M.adjustFireLoss(-1 * removed, 0)
+	if(prob(55))
+		C.adjustBruteLoss(-1 * removed, 0)
+		C.adjustFireLoss(-1 * removed, 0)
 		. = TRUE
 
 /datum/reagent/consumable/clownstears
@@ -736,7 +722,6 @@
 	nutriment_factor = 5 * REAGENTS_METABOLISM
 	color = "#eef442" // rgb: 238, 244, 66
 	taste_description = "mournful honking"
-	ph = 9.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 
@@ -789,7 +774,6 @@
 	taste_description = "indescribable"
 	quality = FOOD_AMAZING
 	taste_mult = 100
-	ph = 6.1
 
 /datum/reagent/consumable/nutriment/peptides
 	name = "Peptides"
@@ -926,8 +910,8 @@
 
 /datum/reagent/consumable/peanut_butter/affect_ingest(mob/living/carbon/C, removed) //ET loves peanut butter
 	. = ..()
-	if(isabductor(M))
-		M.set_timed_status_effect(30 SECONDS * removed, /datum/status_effect/drugginess, only_if_higher = TRUE)
+	if(isabductor(C))
+		C.set_timed_status_effect(30 SECONDS * removed, /datum/status_effect/drugginess, only_if_higher = TRUE)
 
 /datum/reagent/consumable/vinegar
 	name = "Vinegar"

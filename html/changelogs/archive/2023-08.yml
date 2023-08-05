@@ -48,3 +48,12 @@
       no burping).
   - rscadd: 'Mind restoration now heals ALL slurring, rather than only drunk slurring
       (which includes cult / heretic slurring). /:cl:'
+2023-08-05:
+  Kapu1178:
+  - tweak: Player darksight is now DRASTICALLY weaker.
+  - bugfix: Limping no longer gets stuck on your character after your legs are fixed.
+  francinum:
+  - rscdel: door remotes
+  - qol: removes ntnet
+  - bugfix: Silicon 'PDAs' will now properly ring.
+  - rscadd: Medibelts can store Gauze now

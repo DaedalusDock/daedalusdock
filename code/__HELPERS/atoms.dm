@@ -313,6 +313,8 @@ rough example of the "cone" made by the 3 dirs checked
 ///A do nothing proc
 /proc/pass(...)
 	return
+///A do nothing proc
+/proc/noop(...)
 
 ///Returns a list of the parents of all storage components that contain the target item
 /proc/get_storage_locs(obj/item/target)

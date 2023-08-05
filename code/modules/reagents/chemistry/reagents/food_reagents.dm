@@ -197,12 +197,12 @@
 		mytray.adjust_weedlevel(rand(1,2))
 		mytray.adjust_pestlevel(rand(1,2))
 
-/datum/reagent/consumable/sugar/overdose_start(mob/living/M)
-	to_chat(M, span_userdanger("Your body quakes as you collapse to the ground!"))
+/datum/reagent/consumable/sugar/overdose_start(mob/living/carbon/C)
+	to_chat(C, span_userdanger("Your body quakes as you collapse to the ground!"))
 	C.AdjustSleeping(600)
 	. = TRUE
 
-/datum/reagent/consumable/sugar/overdose_process(mob/living/M, delta_time, times_fired)
+/datum/reagent/consumable/sugar/overdose_process(mob/living/carbon/C)
 	C.Sleeping(40)
 	. = TRUE
 
@@ -338,20 +338,21 @@
 
 	var/mob/living/carbon/victim = exposed_mob
 	if(methods & (TOUCH|VAPOR))
-		var/pepper_proof = victiC.is_pepper_proof()
+		var/pepper_proof = victim.is_pepper_proof()
 
 		//check for protection
 		//actually handle the pepperspray effects
 		if (!(pepper_proof)) // you need both eye and mouth protection
 			if(prob(5))
-				victiC.emote("scream")
-			victiC.blur_eyes(5) // 10 seconds
-			victiC.blind_eyes(3) // 6 seconds
-			victiC.set_timed_status_effect(5 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
-			victiC.Knockdown(3 SECONDS)
-			victiC.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
+				spawn(-1)
+					victim.emote("scream")
+			victim.blur_eyes(5) // 10 seconds
+			victim.blind_eyes(3) // 6 seconds
+			victim.set_timed_status_effect(5 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
+			victim.Knockdown(3 SECONDS)
+			victim.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
 			addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/reagent/pepperspray), 10 SECONDS)
-		victiC.update_damage_hud()
+		victim.update_damage_hud()
 
 /datum/reagent/consumable/condensedcapsaicin/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -642,12 +643,11 @@
 	description = "A blinding substance extracted from certain onions."
 	color = "#c0c9a0"
 	taste_description = "bitterness"
-	ph = 5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/tearjuice/expose_mob(mob/living/exposed_mob, methods, reac_volume)
 	. = ..()
-	if(!(methods & INGEST) || !((methods & (TOUCH|PATCH|VAPOR)) && (exposed_mob.is_mouth_covered() || exposed_mob.is_eyes_covered())))
+	if(!(methods & INGEST) || !((methods & (TOUCH|VAPOR)) && (exposed_mob.is_mouth_covered() || exposed_mob.is_eyes_covered())))
 		return
 
 	if(!exposed_mob.getorganslot(ORGAN_SLOT_EYES)) //can't blind somebody with no eyes
@@ -663,7 +663,7 @@
 	if(C.eye_blurry) //Don't worsen vision if it was otherwise fine
 		C.blur_eyes(4 * removed)
 		if(prob(10))
-			to_chat(M, span_warning("Your eyes sting!"))
+			to_chat(C, span_warning("Your eyes sting!"))
 			C.blind_eyes(2)
 
 /datum/reagent/consumable/nutriment/stabilized
@@ -783,8 +783,6 @@
 	nutriment_factor = 10 * REAGENTS_METABOLISM // 33% less than nutriment to reduce weight gain
 	brute_heal = 3
 	burn_heal = 1
-	inverse_chem = /datum/reagent/peptides_failed//should be impossible, but it's so it appears in the chemical lookup gui
-	inverse_chem_val = 0.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/caramel
@@ -808,7 +806,7 @@
 	overdose_threshold = 15
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/char/overdose_process(mob/living/M, delta_time, times_fired)
+/datum/reagent/consumable/char/overdose_process(mob/living/C)
 	if(prob(25))
 		spawn(-1)
 			C.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/char)

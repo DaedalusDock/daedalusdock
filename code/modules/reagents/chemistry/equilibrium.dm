@@ -202,15 +202,6 @@
 			SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] overheated reaction steps")
 			reaction.overheated(holder, src, step_volume_added)
 
-	//is our product too impure?
-	for(var/product in reaction.results)
-		var/datum/reagent/reagent = holder.has_reagent(product)
-		if(!reagent) //might be missing from overheat exploding
-			continue
-		if (reagent.purity < reaction.purity_min)//If purity is below the min, call the proc
-			SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] overly impure reaction steps")
-			reaction.overly_impure(holder, src, step_volume_added)
-
 	//did we explode?
 	if(!holder.my_atom || holder.reagent_list.len == 0)
 		return FALSE
@@ -327,26 +318,6 @@
 		to_delete = TRUE
 
 	holder.update_total()//do NOT recalculate reactions
-
-
-/*
-* Calculates the total sum normalised purity of ALL reagents in a holder
-*
-* Currently calculates it irrespective of required reagents at the start, but this should be changed if this is powergamed to required reagents
-* It's not currently because overly_impure affects all reagents
-*/
-/datum/equilibrium/proc/reactant_purity(datum/chemical_reaction/C)
-	var/list/cached_reagents = holder.reagent_list
-	var/i = 0
-	var/cached_purity
-	for(var/datum/reagent/reagent as anything in holder.reagent_list)
-		if (reagent in cached_reagents)
-			cached_purity += reagent.purity
-			i++
-	if(!i)//I've never seen it get here with 0, but in case - it gets here when it blows up from overheat
-		stack_trace("No reactants found mid reaction for [C.type]. Beaker: [holder.my_atom]")
-		return 0 //we exploded and cleared reagents - but lets not kill the process
-	return cached_purity/i
 
 ///Panic stop a reaction - cleanup should be handled by the next timestep
 /datum/equilibrium/proc/force_clear_reactive_agents()

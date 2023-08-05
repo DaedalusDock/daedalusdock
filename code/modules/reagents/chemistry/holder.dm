@@ -712,7 +712,7 @@
 			return
 		if(!reagent.metabolizing)
 			reagent.metabolizing = TRUE
-			reagent.on_mob_metabolize(owner, metabolism_class)
+			need_mob_update += reagent.on_mob_metabolize(owner, metabolism_class)
 		if(can_overdose)
 			if(reagent.overdose_threshold)
 				if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)

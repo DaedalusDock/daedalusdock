@@ -276,7 +276,7 @@
 		if(milk.volume > 50)
 			reagents.remove_reagent(milk.type, milk.volume - 5)
 			to_chat(owner, span_warning("The excess milk is dripping off your bones!"))
-		body.heal_bodypart_damage(milk_brute_healing * REAGENTS_EFFECT_MULTIPLIER * delta_time, milk_burn_healing * REAGENTS_EFFECT_MULTIPLIER * delta_time)
+		body.heal_bodypart_damage(milk_brute_healing * milk.metabolization_rate, milk_burn_healing * milk.metabolization_rate)
 		if(prob(10))
 			for(var/obj/item/bodypart/BP as anything in body.bodyparts)
 				BP.heal_bones()

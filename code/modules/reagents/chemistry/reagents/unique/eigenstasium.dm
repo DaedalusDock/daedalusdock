@@ -15,9 +15,7 @@
 	taste_description = "wiggly cosmic dust."
 	color = "#5020F4"
 	overdose_threshold = 15
-	metabolization_rate = 1 * REAGENTS_METABOLISM
-	inverse_chem = /datum/reagent/impurity/eigenswap
-	inverse_chem_val = 0
+	metabolization_rate = 0.2
 	chemical_flags = REAGENT_DEAD_PROCESS //So if you die with it in your body, you still get teleported back to the location as a corpse
 	data = list("location_created" = null, "ingested" = FALSE)//So we retain the target location and creator between reagent instances
 	///The creation point assigned during the reaction

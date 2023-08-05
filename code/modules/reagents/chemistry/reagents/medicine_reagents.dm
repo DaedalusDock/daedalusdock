@@ -169,7 +169,7 @@
 
 /datum/reagent/medicine/dylovene
 	name = "Dylovene"
-	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harC."
+	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
 	taste_description = "a roll of gauze"
 	reagent_state = LIQUID
 	color = "#00a000"
@@ -272,9 +272,6 @@
 	color = "#80bfff"
 	metabolization_rate = 0.1
 	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
-	heating_products = list(/datum/reagent/cryoxadone, /datum/reagent/sodium)
-	heating_point = 50 CELSIUS
-	heating_message = "turns back to sludge."
 	value = 5.5
 
 /datum/reagent/medicine/clonexadone/affect_blood(mob/living/carbon/C, removed)
@@ -282,7 +279,7 @@
 	if(C.bodytemperature < 170)
 		C.adjustCloneLoss(-300 * removed, FALSE)
 		APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 2)
-		C.heal_organ_damage(50 * removed, 50 * removed, updating_health = FALSE)
+		C.heal_overall_damage(50 * removed, 50 * removed, updating_health = FALSE)
 		APPLY_CHEM_EFFECT(C, CE_PULSE, -2)
 		for(var/obj/item/organ/I as anything in C.processing_organs)
 			if(!(I.status & ORGAN_ROBOTIC))
@@ -376,7 +373,7 @@
 		return
 	var/list/pool = C.reagents.reagent_list | ingested.reagent_list
 	for(var/datum/reagent/consumable/ethanol/booze in pool)
-		if(M.volume < 2) //let them experience false security at first
+		if(booze.volume < 2) //let them experience false security at first
 			continue
 		. = 1
 		if(booze.boozepwr >= 65) //liquor stuff hits harder
@@ -410,7 +407,7 @@
 
 /datum/reagent/medicine/deletrathol/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
-	//H.make_dizzy(2)
+	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	if(prob(75))
 		C.drowsyness++
 	if(prob(25))
@@ -569,3 +566,55 @@
 			if(W.bleeding() && prob(20))
 				W.bleed_timer = 0
 				W.clamp_wound()
+
+/datum/reagent/medicine/epinephrine
+	name = "Epinephrine"
+	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
+	taste_description = "rush"
+	reagent_state = LIQUID
+	color = "#c8a5dc"
+	overdose_threshold = 20
+	metabolization_rate = 0.1
+	value = 2
+
+/datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_BLOOD)
+		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+
+/datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_BLOOD)
+		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+
+/datum/reagent/medicine/epinephrine/affect_blood(mob/living/carbon/C, removed)
+	if(volume < 0.2)	//not that effective after initial rush
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(30*volume, 80))
+		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
+	else if(volume < 1)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
+	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
+	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
+
+	if(volume > 10)
+		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
+
+	if(volume >= 4 && C.undergoing_cardiac_arrest())
+		holder.remove_reagent(type, 4)
+		if(C.set_heartattack(FALSE))
+			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
+			heart.applyOrganDamage(heart.maxHealth * 0.075)
+
+/datum/reagent/medicine/mutadone
+	name = "Ryetalyn"
+	description = "Ryetalyn can cure all genetic abnomalities via a catalytic process."
+	taste_description = "acid"
+	reagent_state = SOLID
+	color = "#004000"
+	overdose = 30
+	value = 3.6
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
+	overdose_threshold = 30
+
+/datum/reagent/medicine/mutadone/affect_blood(mob/living/carbon/C, removed)
+	C.remove_status_effect(/datum/status_effect/jitter)
+	if(C.has_dna())
+		C.dna.remove_all_mutations(list(MUT_NORMAL, MUT_EXTRA), TRUE)

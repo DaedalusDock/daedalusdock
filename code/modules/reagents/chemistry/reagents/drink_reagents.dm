@@ -162,7 +162,8 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/laughter/affect_blood(mob/living/carbon/C, removed)
-	C.emote("laugh")
+	spawn(-1)
+		C.emote("laugh")
 
 /datum/reagent/consumable/superlaughter
 	name = "Super Laughter"
@@ -448,7 +449,7 @@
 
 
 /datum/reagent/consumable/rootbeer/on_mob_end_metabolize(mob/living/carbon/C, class)
-	REMOVE_TRAIT(L, TRAIT_DOUBLE_TAP, type)
+	REMOVE_TRAIT(C, TRAIT_DOUBLE_TAP, type)
 	if(current_cycle > 10)
 		to_chat(C, span_warning("You feel kinda tired as your sugar rush wears off..."))
 		C.stamina.adjust(-1 * min(80, current_cycle * 3))
@@ -487,7 +488,7 @@
 	REMOVE_TRAIT(L, TRAIT_SHOCKIMMUNE, type)
 	..()
 
-/datum/reagent/consumable/grey_bull/affect_ingest(mob/living/carbon/M, removed)
+/datum/reagent/consumable/grey_bull/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	C.set_timed_status_effect(40 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
@@ -565,7 +566,7 @@
 	glass_desc = "Mmm mm, shambly."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/shamblers/affect_ingest(mob/living/carbon/M, removed)
+/datum/reagent/consumable/shamblers/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	C.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
@@ -643,7 +644,8 @@
 
 /datum/reagent/consumable/monkey_energy/overdose_process(mob/living/carbon/C)
 	if(prob(15))
-		C.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/monkey_energy)
+		spawn(-1)
+			C.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/monkey_energy)
 
 /datum/reagent/consumable/ice
 	name = "Ice"
@@ -682,7 +684,7 @@
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.SetSleeping(0)
-	C.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal())
+	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	. = TRUE
 
@@ -890,7 +892,8 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/hot_coco/affect_ingest(mob/living/carbon/C, removed)
-	C.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal())
+	. = ..()
+	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	if(C.getBruteLoss() && prob(20))
 		C.heal_bodypart_damage(1, 0, 0)
 		. = TRUE
@@ -1002,7 +1005,7 @@
 	glass_desc = "Ginger ale with processed grenadine. "
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/shirley_temple/affect_ingest(mob/living/carbon/M, removed)
+/datum/reagent/consumable/shirley_temple/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	C.adjust_disgust(-3 * removed)
 
@@ -1070,7 +1073,7 @@
 	glass_desc = "A healthy and refreshing juice."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/aloejuice/affect_ingest(mob/living/carbon/M, removed)
+/datum/reagent/consumable/aloejuice/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	if(C.getToxLoss() && prob(25))
 		C.adjustToxLoss(-1, 0)

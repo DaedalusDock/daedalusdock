@@ -146,7 +146,6 @@
 	optimal_temp = 550
 	overheat_temp = 575
 	temp_exponent_factor = 0.2
-	purity_min = 0.3
 	thermic_constant = 35 //gives a bonus 15C wiggle room
 	rate_up_lim = 25 //Give a chance to pull back
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL

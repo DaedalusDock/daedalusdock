@@ -87,3 +87,23 @@
   francinum:
   - bugfix: Commendation polling was asking people in the order they joined the server.
       It will now instead pick randomly.
+2023-07-25:
+  Kapu1178:
+  - qol: Click-drag is now a valid way to place someone onto a table.
+  - rscadd: Attempting to climb a table with combat mode on will cause you to bonk
+      your head.
+  - soundadd: Health Analyzers now have a sound
+  - soundadd: Replaced the airlock access denied sound.
+  Kapu1178, Zonespace:
+  - refactor: Surgery, gauze mechanics, limb breaking mechanics, embedding mechanics
+  - rscadd: Vascular Recoupler (Fix O Vein)
+  - rscadd: Splints
+  - rscadd: You can now remove embedded items, splints, and bandages from yourself
+      or other players by the Examine menu.
+  - rscadd: Bodyscanner, bodyscanner console, and bodyscanner display.
+  - tweak: Sutures now instantly close small wounds, but otherwise do nothing.
+  - rscdel: Surgical drapes
+  - rscdel: Operating computers
+  francinum:
+  - bugfix: 'Energy guns display charge again. Probably a few other things as well,
+      Overlay rendering was fucked:tm:'

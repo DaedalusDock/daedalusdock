@@ -2,6 +2,7 @@
 /// If a traitor objective needs to be removed from the failed/completed objective list of their handler, then you are doing something wrong
 /// and you should reconsider. When an objective is failed/completed, that is final and the only way you can change that is by refactoring the code.
 /datum/traitor_objective
+	abstract_type = /datum/traitor_objective
 	/// The name of the traitor objective
 	var/name = "traitor objective"
 	/// The description of the traitor objective
@@ -42,8 +43,6 @@
 	var/progression_cost_coeff = 0
 	/// The percentage that this objective has been increased or decreased by as a result of progression. Used by the UI
 	var/original_progression = 0
-	/// Abstract type that won't be included as a possible objective
-	var/abstract_type = /datum/traitor_objective
 
 /// Returns a list of variables that can be changed by config, allows for balance through configuration.
 /// It is not recommended to finetweak any values of objectives on your server.

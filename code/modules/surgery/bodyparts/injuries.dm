@@ -173,7 +173,7 @@
 			return FALSE
 
 /obj/item/bodypart/proc/how_open()
-	. = 0
+	. = SURGERY_CLOSED
 	var/datum/wound/incision = get_incision()
 	if(!incision)
 		return

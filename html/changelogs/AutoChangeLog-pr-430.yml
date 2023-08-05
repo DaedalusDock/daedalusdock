@@ -1,0 +1,6 @@
+author: francinum
+delete-after: true
+changes:
+  - config: Credits music, Lobby tracks, and Jukebox media organization has changed
+      massively. Check the repo for more information.
+  - rscdel: Disco Inferno has been made far less disco.

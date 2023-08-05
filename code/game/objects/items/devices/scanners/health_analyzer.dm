@@ -1,7 +1,8 @@
 // Describes the three modes of scanning available for health analyzers
 #define SCANMODE_HEALTH 0
-#define SCANMODE_CHEM 1
-#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
+#define SCANMODE_SURGERY 1
+#define SCANMODE_CHEM 2
+#define SCANMODE_COUNT 3 // Update this to be the number of scan modes if you add more
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
@@ -42,7 +43,13 @@
 
 /obj/item/healthanalyzer/attack_self(mob/user)
 	if(!advanced)
-		return ..()
+		scanmode = (scanmode + 1) % (SCANMODE_COUNT - 1)
+		switch(scanmode)
+			if(SCANMODE_HEALTH)
+				to_chat(user, span_notice("You switch the health analyzer to check physical health."))
+			if(SCANMODE_SURGERY)
+				to_chat(user, span_notice("You switch the health analyzer to output surgerical information."))
+		return
 
 	scanmode = (scanmode + 1) % SCANMODE_COUNT
 	switch(scanmode)
@@ -50,7 +57,8 @@
 			to_chat(user, span_notice("You switch the health analyzer to check physical health."))
 		if(SCANMODE_CHEM)
 			to_chat(user, span_notice("You switch the health analyzer to scan chemical contents."))
-		//If this list gets any longer please consider a LUT for the latter half of the message.
+		if(SCANMODE_SURGERY)
+			to_chat(user, span_notice("You switch the health analyzer to output surgerical information."))
 
 /obj/item/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
 	flick("[icon_state]-scan", src) //makes it so that it plays the scan animation upon scanning, including clumsy scanning
@@ -69,6 +77,8 @@
 		to_chat(user, "<span class='info'>[M]'s biological structure is too complex for the health analyzer.")
 		return
 
+	playsound(user, 'sound/items/healthanalyzer.ogg', 50, 1)
+
 	user.visible_message(span_notice("[user] analyzes [M]'s vitals."), \
 						span_notice("You analyze [M]'s vitals."))
 
@@ -77,6 +87,8 @@
 			healthscan(user, M, advanced, mode)
 		if (SCANMODE_CHEM)
 			chemscan(user, M)
+		if (SCANMODE_SURGERY)
+			surgericalscan(user, M)
 
 	add_fingerprint(user)
 	playsound(user, 'sound/machines/ping.ogg', 50, FALSE)
@@ -314,7 +326,7 @@
 	sortTim(damaged_limbs, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 
 	for(var/obj/item/bodypart/limb as anything in damaged_limbs)
-		var/limb_string = "[capitalize(limb.name)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
+		var/limb_string = "[capitalize(limb.body_zone)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
 		if(limb.brute_dam)
 			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
 
@@ -334,6 +346,34 @@
 			to_chat(user, "<span class='notice ml-1'>No wounds detected in subject.</span>")
 	else
 		to_chat(user, jointext(data_string_list, ""), type = MESSAGE_TYPE_INFO)
+
+/proc/surgericalscan(mob/living/user, mob/living/carbon/target)
+	if(!istype(target) || user.incapacitated())
+		return
+
+	if(user.is_blind())
+		to_chat(user, span_warning("You realize that your scanner has no accessibility support for the blind!"))
+		return
+
+	var/list/data = list()
+	for(var/obj/item/bodypart/BP as anything in sort_list(target.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order)))
+		var/list/bodypart_data = list()
+		bodypart_data += "<span class='notice ml-1'>[capitalize(BP.plaintext_zone)]: </span>"
+		switch(BP.how_open())
+			if(SURGERY_CLOSED)
+				bodypart_data += "<b>\[[span_good("CLOSED")]\]</b>"
+			if(SURGERY_OPEN)
+				bodypart_data += "<b>\[[span_mild("INCISED")]\]</b>"
+			if(SURGERY_RETRACTED)
+				bodypart_data += "<b>\[[span_average("RETRACTED")]\]</b>"
+			if(SURGERY_DEENCASED)
+				bodypart_data += "<b>\[[span_average("RETRACTED")]\] \[[span_bad("DEENCASED")]\]</b>"
+
+		if(length(BP.wounds) && BP.clamped())
+			bodypart_data += "<b>\[[span_mild("CLAMPED")]\]</b>"
+		data += jointext(bodypart_data, " ")
+
+	to_chat(user, jointext(data, "<br>"), type = MESSAGE_TYPE_INFO)
 
 /obj/item/healthanalyzer/wound
 	name = "first aid analyzer"
@@ -374,6 +414,7 @@
 
 #undef SCANMODE_HEALTH
 #undef SCANMODE_CHEM
+#undef SCANMODE_SURGERY
 #undef SCANMODE_COUNT
 #undef SCANNER_CONDENSED
 #undef SCANNER_VERBOSE

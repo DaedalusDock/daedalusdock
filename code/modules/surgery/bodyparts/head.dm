@@ -321,7 +321,7 @@
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	is_dimorphic = FALSE
 
 /obj/item/bodypart/head/alien

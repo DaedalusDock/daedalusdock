@@ -40,7 +40,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_preference_entries()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[preference_type] = new preference_type
 	return output
@@ -48,7 +48,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_preference_entries_by_key()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[initial(preference_type.savefile_key)] = GLOB.preference_entries[preference_type]
 	return output
@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_all_pref_groups()
 	. = list()
 	for(var/datum/preference_group/module as anything in typesof(/datum/preference_group))
-		if(initial(module.abstract_type) == module)
+		if(isabstract(module))
 			continue
 
 		. += new module()
@@ -86,6 +86,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /// Represents an individual preference.
 /datum/preference
+	abstract_type = /datum/preference
 	/// The display default name when inserted into the chargen
 	var/explanation = "ERROR"
 
@@ -98,9 +99,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	/// This isn't used for anything other than as a key for UI data.
 	/// It is up to the PreferencesMenu UI itself to interpret it.
 	var/category = "misc"
-
-	/// Do not instantiate if type matches this.
-	var/abstract_type = /datum/preference
 
 	/// What savefile should this preference be read from?
 	/// Valid values are PREFERENCE_CHARACTER and PREFERENCE_PLAYER.

@@ -1,5 +1,3 @@
-#define DISPENSER_REAGENT_VALUE 0.2
-
 /datum/reagent/acetone
 	name = "Acetone"
 	description = "A colorless liquid solvent used in chemical synthesis."
@@ -170,7 +168,6 @@
 	reagent_state = SOLID
 	color = "#a0a0a0"
 	value = DISPENSER_REAGENT_VALUE
-	should_admin_log = TRUE
 
 /datum/reagent/potassium/affect_blood(mob/living/carbon/C, removed)
 	if(volume > 10)

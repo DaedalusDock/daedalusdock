@@ -267,18 +267,8 @@
 				. = TRUE
 			if(.)
 				force_temp = clamp(target, 0, 1000)
-		if("pH")
-			var/target = params["target"]
-			if(text2num(target) != null)
-				target = text2num(target)
-				. = TRUE
-			if(.)
-				force_ph = target
 		if("forceTemp")
 			should_force_temp = ! should_force_temp
-			. = TRUE
-		if("forcepH")
-			should_force_ph = ! should_force_ph
 			. = TRUE
 		if("react")
 			react = TRUE

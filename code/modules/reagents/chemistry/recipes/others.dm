@@ -150,14 +150,6 @@
 	rate_up_lim = 25 //Give a chance to pull back
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
 
-/datum/chemical_reaction/nitrous_oxide/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	var/turf/exposed_turf = get_turf(holder.my_atom)
-	if(!exposed_turf)
-		return
-	exposed_turf.atmos_spawn_air(GAS_N2O, equilibrium.step_target_vol/2, holder?.chem_temp || T20C)
-	clear_products(holder, equilibrium.step_target_vol)
-
 /datum/chemical_reaction/nitrous_oxide/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	return //This is empty because the explosion reaction will occur instead (see pyrotechnics.dm). This is just here to update the lookup ui.
 
@@ -374,9 +366,6 @@
 /datum/chemical_reaction/ammonia
 	results = list(/datum/reagent/ammonia = 3)
 	required_reagents = list(/datum/reagent/hydrogen = 3, /datum/reagent/nitrogen = 1)
-	optimal_ph_min = 1  // Lets increase our range for this basic chem
-	optimal_ph_max = 12
-	H_ion_release = -0.02 //handmade is more neutral
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL | REACTION_TAG_PLANT
 
 /datum/chemical_reaction/diethylamine
@@ -789,12 +778,8 @@
 	required_temp = WATER_MATTERSTATE_CHANGE_TEMP-0.5 //274 So we can be sure that basic ghetto rigged stuff can freeze
 	optimal_temp = 200
 	overheat_temp = 0
-	optimal_ph_min = 0
-	optimal_ph_max = 14
 	thermic_constant = 0
-	H_ion_release = 0
 	rate_up_lim = 50
-	purity_min = 0
 	mix_message = "The solution freezes up into ice!"
 	reaction_flags = REACTION_COMPETITIVE
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL | REACTION_TAG_DRINK
@@ -805,12 +790,8 @@
 	required_temp = WATER_MATTERSTATE_CHANGE_TEMP+0.5
 	optimal_temp = 350
 	overheat_temp = NO_OVERHEAT
-	optimal_ph_min = 0
-	optimal_ph_max = 14
 	thermic_constant = 0
-	H_ion_release = 0
 	rate_up_lim = 50
-	purity_min = 0
 	mix_message = "The ice melts back into water!"
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL | REACTION_TAG_DRINK
 
@@ -822,12 +803,8 @@
 	required_temp = 274
 	optimal_temp = 350
 	overheat_temp = NO_OVERHEAT
-	optimal_ph_min = 0
-	optimal_ph_max = 14
 	thermic_constant = 0
-	H_ion_release = 0
 	rate_up_lim = 50
-	purity_min = 0
 	mix_message = "The mixture's colors swirl together."
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
 
@@ -840,15 +817,9 @@
 	required_temp = 350
 	optimal_temp = 600
 	overheat_temp = 650
-	optimal_ph_min = 9
-	optimal_ph_max = 12
-	determin_ph_range = 5
 	temp_exponent_factor = 1.5
-	ph_exponent_factor = 3
 	thermic_constant = 12
-	H_ion_release = -0.05
 	rate_up_lim = 10
-	purity_min = 0.4
 	reaction_flags = REACTION_HEAT_ARBITARY
 	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
 
@@ -907,9 +878,6 @@
 /datum/chemical_reaction/ants // Breeding ants together, high sugar cost makes this take a while to farm.
 	results = list(/datum/reagent/ants = 3)
 	required_reagents = list(/datum/reagent/ants = 2, /datum/reagent/consumable/sugar = 8)
-	//FermiChem vars:
-	optimal_ph_min = 3
-	optimal_ph_max = 12
 	required_temp = 50
 	reaction_flags = REACTION_INSTANT
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE

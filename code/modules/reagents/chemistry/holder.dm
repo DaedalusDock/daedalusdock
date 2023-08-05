@@ -676,16 +676,17 @@
  * * can_overdose - Allows overdosing
  * * liverless - Stops reagents that aren't set as [/datum/reagent/var/self_consuming] from metabolizing
  */
-/datum/reagents/proc/metabolize(mob/living/carbon/owner, delta_time, times_fired, can_overdose = FALSE, liverless = FALSE)
+/datum/reagents/proc/metabolize(mob/living/carbon/owner, delta_time, times_fired, can_overdose = FALSE, liverless = FALSE, updatehealth = TRUE)
 	var/list/cached_reagents = reagent_list
 	if(owner)
 		expose_temperature(owner.bodytemperature, 0.25)
 	var/need_mob_update = FALSE
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
-	if(owner && need_mob_update) //some of the metabolized reagents had effects on the mob that requires some updates.
-		owner.updatehealth()
 	update_total()
+	if(owner && updatehealth && needs_mob_update)
+		owner.updatehealth()
+	return need_mob_update
 
 /*
  * Metabolises a single reagent for a target owner carbon mob. See above.

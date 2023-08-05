@@ -1131,35 +1131,34 @@
 	overdose_threshold = 50
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/toxin/bonehurtingjuice/on_mob_add(mob/living/carbon/M)
-	M.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
-	return ..()
+/datum/reagent/toxin/bonehurtingjuice/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_BLOOD)
+		spawn(-1)
+			C.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
 
-/datum/reagent/toxin/bonehurtingjuice/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.stamina.adjust(-7.5 * removed)
-	if(DT_PROB(10, delta_time))
+/datum/reagent/toxin/bonehurtingjuice/affect_blood(mob/living/carbon/C, removed)
+	C.stamina.adjust(-7.5 * removed)
+	if(prob(20))
 		switch(rand(1, 3))
 			if(1)
-				M.say(pick("oof.", "ouch.", "my bones.", "oof ouch.", "oof ouch my bones."), forced = /datum/reagent/toxin/bonehurtingjuice)
+				spawn(-1)
+					C.say(pick("oof.", "ouch.", "my bones.", "oof ouch.", "oof ouch my bones."), forced = /datum/reagent/toxin/bonehurtingjuice)
 			if(2)
-				M.manual_emote(pick("oofs silently.", "looks like [M.p_their()] bones hurt.", "grimaces, as though [M.p_their()] bones hurt."))
-			if(3)
-				to_chat(M, span_warning("Your bones hurt!"))
-	return ..()
+				to_chat(C, span_warning("Your bones hurt!"))
 
-/datum/reagent/toxin/bonehurtingjuice/overdose_process(mob/living/carbon/M, delta_time, times_fired)
-	if(DT_PROB(2, delta_time) && iscarbon(M)) //big oof
+/datum/reagent/toxin/bonehurtingjuice/overdose_process(mob/living/carbon/C)
+	if(prob(4)) //big oof
 		var/selected_part = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG) //God help you if the same limb gets picked twice quickly.
 		var/obj/item/bodypart/bp = M.get_bodypart(selected_part)
 		if(bp)
-			playsound(M, get_sfx(SFX_DESECRATION), 50, TRUE, -1)
-			M.visible_message(span_warning("[M]'s bones hurt too much!!"), span_danger("Your bones hurt too much!!"))
-			M.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
-			bp.receive_damage(20, 0, 200)
+			if(bp.break_bones())
+				playsound(M, get_sfx(SFX_DESECRATION), 50, TRUE, -1)
+				spawn(-1)
+					M.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
 		else //SUCH A LUST FOR REVENGE!!!
-			to_chat(M, span_warning("A phantom limb hurts!"))
-			M.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
-	return ..()
+			to_chat(C, span_warning("A phantom limb hurts!"))
+			spawn(-1)
+				M.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
 
 /datum/reagent/toxin/bungotoxin
 	name = "Bungotoxin"

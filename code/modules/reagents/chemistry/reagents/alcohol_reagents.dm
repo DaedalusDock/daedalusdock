@@ -589,14 +589,14 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	. = ..()
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM))
-		ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+		ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(CHEM_INGEST))
 		if (HAS_TRAIT(C, TRAIT_IRRADIATED))
 			C.adjustToxLoss(-2 * removed, FALSE)
 			return TRUE
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
-		REMOVE_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+		REMOVE_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/ethanol/booger
 	name = "Booger"
@@ -1431,7 +1431,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(current_cycle > 5)
 		if(prob(20))
 			var/paralyzed_limb = pick_paralyzed_limb()
-			ADD_TRAIT(C, paralyzed_limb, type)
+			ADD_TRAIT(C, paralyzed_limb, CHEM_TRAIT_SOURCE(class))
 			C.stamina.adjust(-10)
 		if(current_cycle > 30)
 			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed)
@@ -2190,13 +2190,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A popular drink amongst those adhering to an all synthetic diet."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ethanol/rubberneck/on_mob_metabolize(mob/living/carbon/C)
-	. = ..()
-	ADD_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
+/datum/reagent/consumable/ethanol/rubberneck/on_mob_metabolize(mob/living/carbon/C, class)
+	ADD_TRAIT(C, TRAIT_SHOCKIMMUNE, CHEM_TRAIT_SOURCE(class))
 
-/datum/reagent/consumable/ethanol/rubberneck/on_mob_end_metabolize(mob/living/carbon/C)
-	REMOVE_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
-	return ..()
+/datum/reagent/consumable/ethanol/rubberneck/on_mob_end_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_SHOCKIMMUNE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/ethanol/duplex
 	name = "Duplex"

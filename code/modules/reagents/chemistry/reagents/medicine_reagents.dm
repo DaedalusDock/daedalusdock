@@ -579,11 +579,11 @@
 
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
-		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
-		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/epinephrine/affect_blood(mob/living/carbon/C, removed)
 	if(volume < 0.2)	//not that effective after initial rush

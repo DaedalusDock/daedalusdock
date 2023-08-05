@@ -158,7 +158,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	if (sugar_amount)
 		handle_sugar(M, src)
 	*/
-	affect_blood(C, removed * 0.5)
+	holder.trans_id_to(C.bloodstream, type, removed * 0.5, TRUE)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)

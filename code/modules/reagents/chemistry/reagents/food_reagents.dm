@@ -394,13 +394,13 @@
 	metabolization_rate = 0.15 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/garlic/on_mob_add(mob/living/L, amount)
-	. = ..()
-	ADD_TRAIT(L, TRAIT_GARLIC_BREATH, type)
+/datum/reagent/consumable/garlic/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_INGEST)
+		ADD_TRAIT(L, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
 
-/datum/reagent/consumable/garlic/on_mob_delete(mob/living/L)
-	. = ..()
-	REMOVE_TRAIT(L, TRAIT_GARLIC_BREATH, type)
+/datum/reagent/consumable/garlic/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_INGEST)
+		REMOVE_TRAIT(L, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/garlic/affect_blood(mob/living/carbon/C, removed)
 	if(isvampire(C)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.

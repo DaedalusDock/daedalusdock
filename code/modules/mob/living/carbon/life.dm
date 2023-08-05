@@ -344,11 +344,11 @@
 
 	var/datum/reagents/ingested = get_ingested_reagents()
 	if(touching)
-		. |= touching.metabolize(src, can_overdose = TRUE, liverless = TRUE)
+		. |= touching.metabolize(src, can_overdose = FALSE, updatehealth = FALSE)
 	if(ingested)
-		. |= ingested.metabolize(src, can_overdose = TRUE)
+		. |= ingested.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
 	if(bloodstream)
-		. |= bloodstream.metabolize(src, liverless = TRUE)
+		. |= bloodstream.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
 
 	if(.)
 		updatehealth()
@@ -578,7 +578,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return
 
 	reagents.end_metabolization(src, keep_liverless = TRUE) //Stops trait-based effects on reagents, to prevent permanent buffs
-	reagents.metabolize(src, delta_time, times_fired, can_overdose=FALSE, liverless = TRUE)
+	if(reagents.metabolize(src, delta_time, times_fired, can_overdose=FALSE, liverless = TRUE))
+		updatehealth()
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		return

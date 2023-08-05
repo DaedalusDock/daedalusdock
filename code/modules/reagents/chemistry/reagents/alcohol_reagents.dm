@@ -587,6 +587,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM))
 		ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
@@ -594,7 +595,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			C.adjustToxLoss(-2 * removed, FALSE)
 			return TRUE
 
-/datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
 		REMOVE_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
 
@@ -685,6 +686,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.gain_trauma(beepsky_hallucination, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/consumable/ethanol/beepsky_smash/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	// if you have a liver and that liver is an officer's liver
@@ -1248,6 +1250,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/bananahonk/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || ismonkey(C))
 		C.heal_overall_damage(0.25 * removed, 0.25 * removed, FALSE)
@@ -1325,8 +1328,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/fetching_fizz/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	for(var/obj/item/stack/ore/O in oview(3, M))
-		step_towards(O, get_turf(M))
+	for(var/obj/item/stack/ore/O in oview(3, C))
+		step_towards(O, get_turf(C))
 
 /datum/reagent/consumable/ethanol/bacchus_blessing //An EXTREMELY powerful drink. Smashed in seconds, dead in minutes.
 	name = "Bacchus' Blessing"
@@ -1586,6 +1589,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/quadruple_sec/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
@@ -1650,8 +1654,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/squirt_cider/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	C.satiety += 5 * removed //for context, vitamins give 15 satiety per second
-	. = TRUE
 
 /datum/reagent/consumable/ethanol/fringe_weaver
 	name = "Fringe Weaver"
@@ -1917,6 +1921,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/blank_paper/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	if(ishuman(C) && C.mind?.miming)
 		C.silent = max(C.silent, MIMEDRINK_SILENCE_DURATION)
 		C.heal_bodypart_damage(0.5 * removed, 0.5 * removed)
@@ -2266,6 +2271,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	metabolization_rate = 1
 
 /datum/reagent/consumable/ethanol/mauna_loa/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	// Heats the user up while the reagent is in the body. Occasionally makes you burst into flames.
 	C.adjust_bodytemperature(25 * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 	if (prob(5))
@@ -2476,12 +2482,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/datum/brain_trauma/special/bluespace_prophet/prophet_trauma
 
 /datum/reagent/consumable/ethanol/the_juice/on_mob_metabolize(mob/living/carbon/C, class)
-	if(class == CE_INGEST)
+	if(class == CHEM_INGEST)
 		prophet_trauma = new()
 		C.gain_trauma(prophet_trauma, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/consumable/ethanol/the_juice/on_mob_end_metabolize(mob/living/carbon/C, class)
-	if(class == CE_INGEST)
+	if(class == CHEM_INGEST)
 		if(prophet_trauma)
 			QDEL_NULL(prophet_trauma)
 

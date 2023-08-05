@@ -12,7 +12,6 @@
 	taste_description = "pure alcohol"
 	reagent_state = LIQUID
 	color = "#404030"
-	alpha = 180
 
 	touch_met = 5
 	metabolization_rate = 0.2
@@ -657,9 +656,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "toxinsspecialglass"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ethanol/toxins_special/on_mob_life(mob/living/carbon/C, delta_time, times_fired)
-	C.adjust_bodytemperature(15 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
-	return ..()
+/datum/reagent/consumable/ethanol/toxins_special/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(15 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
 
 /datum/reagent/consumable/ethanol/beepsky_smash
 	name = "Beepsky Smash"
@@ -1358,6 +1357,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_price = DRINK_PRICE_HIGH
 
 /datum/reagent/consumable/ethanol/atomicbomb/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	C.set_timed_status_effect(100 SECONDS * removed, /datum/status_effect/drugginess)
 	if(!HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/confusion)
@@ -1880,7 +1880,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	C.adjust_nutrition(-5 * removed)
 	C.overeatduration = 0
 
-/datum/reagent/consumable/ethanol/fanciulli/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/consumable/ethanol/fanciulli/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
 		if(C.health > 0)
 			C.stamina.adjust(-20)

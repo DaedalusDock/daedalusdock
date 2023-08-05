@@ -118,11 +118,11 @@
 #define MAX_ADDICTION_POINTS 1000
 
 ///Addiction start/ends
-#define WITHDRAWAL_STAGE1_START_CYCLE 10 MINUTES
-#define WITHDRAWAL_STAGE1_END_CYCLE 20 MINUTES
-#define WITHDRAWAL_STAGE2_START_CYCLE ((20 MINUTES) + (1 SECOND))
-#define WITHDRAWAL_STAGE2_END_CYCLE 40 MINUTES
-#define WITHDRAWAL_STAGE3_START_CYCLE ((40 MINUTES) + (1 SECOND))
+#define WITHDRAWAL_STAGE1_START_CYCLE 600 //10 minutes
+#define WITHDRAWAL_STAGE1_END_CYCLE 1200
+#define WITHDRAWAL_STAGE2_START_CYCLE 1201 // 20 minutes
+#define WITHDRAWAL_STAGE2_END_CYCLE 2400
+#define WITHDRAWAL_STAGE3_START_CYCLE 2400 //40 minutes
 
 ///reagent tags - used to look up reagents for specific effects. Feel free to add to but comment it
 /// This reagent does brute effects (BOTH damaging and healing)

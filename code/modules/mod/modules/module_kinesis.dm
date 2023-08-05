@@ -172,7 +172,7 @@
 	kinesis_catcher.assign_to_mob(mod.wearer)
 	RegisterSignal(kinesis_catcher, COMSIG_CLICK, PROC_REF(on_catcher_click))
 	soundloop.start()
-	START_PROCESSING(SSfastprocess, src)
+	START_PROCESSING(SSkinesis, src)
 
 /obj/item/mod/module/anomaly_locked/kinesis/proc/clear_grab(playsound = TRUE)
 	if(!grabbed_atom)
@@ -180,7 +180,7 @@
 	. = grabbed_atom
 	if(playsound)
 		playsound(grabbed_atom, 'sound/effects/empulse.ogg', 75, TRUE)
-	STOP_PROCESSING(SSfastprocess, src)
+	STOP_PROCESSING(SSkinesis, src)
 	kinesis_catcher = null
 	mod.wearer.clear_fullscreen("kinesis")
 	grabbed_atom.cut_overlay(kinesis_icon)

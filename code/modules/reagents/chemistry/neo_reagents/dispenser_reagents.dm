@@ -185,7 +185,6 @@
 	reagent_state = SOLID
 	color = "#c7c7c7"
 	value = DISPENSER_REAGENT_VALUE
-	should_admin_log = TRUE
 
 /datum/reagent/radium/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(10 * removed, FALSE)
@@ -195,9 +194,9 @@
 	. = ..()
 	if(reac_volume >= 3)
 		if(!isspaceturf(exposed_turf))
-			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, exposed_turf)
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
+				new /obj/effect/decal/cleanable/greenglow(exposed_turf)
 			return
 
 /datum/reagent/acid

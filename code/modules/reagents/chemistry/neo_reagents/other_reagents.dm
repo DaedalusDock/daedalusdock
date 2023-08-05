@@ -132,18 +132,19 @@
 	C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/jitter, max_duration = 20 SECONDS)
 	if(IS_CULTIST(C))
 		for(var/datum/action/innate/cult/blood_magic/BM in C.actions)
-			to_chat(M, span_cultlarge("Your blood rites falter as holy water scours your body!"))
+			to_chat(C, span_cultlarge("Your blood rites falter as holy water scours your body!"))
 			for(var/datum/action/innate/cult/blood_spell/BS in C.spells)
 				qdel(BS)
 	if(data["misc"] >= (10 SECONDS))
 		C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 20 SECONDS)
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 		if(IS_CULTIST(C) && prob(5))
-			C.say(pick("Av'te Nar'Sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"), forced = "holy water")
+			spawn(-1)
+				C.say(pick("Av'te Nar'Sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"), forced = "holy water")
 			if(prob(10))
 				C.visible_message(span_danger("[C] starts having a seizure!"), span_userdanger("You have a seizure!"))
 				C.Unconscious(12 SECONDS)
-				to_chat(M, "<span class='cultlarge'>[pick("Your blood is your bond - you are nothing without it", "Do not forget your place", \
+				to_chat(C, "<span class='cultlarge'>[pick("Your blood is your bond - you are nothing without it", "Do not forget your place", \
 				"All that power, and you still fail?", "If you cannot scour this poison, I shall scour your meager life!")].</span>")
 
 	if(data["misc"] >= (30 SECONDS))
@@ -193,7 +194,6 @@
 	glass_desc = "Are you sure this is tomato juice?"
 	shot_glass_icon_state = "shotglassred"
 	penetrates_skin = NONE
-	ph = 7.4
 
 	// FEED ME
 /datum/reagent/blood/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)

@@ -248,7 +248,6 @@
 	data["currentTemp"] = beaker ? beaker.reagents.chem_temp : null
 	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, 0.01) : null
 	data["beakerMaxVolume"] = beaker ? beaker.volume : null
-	data["currentpH"] = beaker ? round(beaker.reagents.ph, 0.01)  : null
 	var/upgrade_level = heater_coefficient*10
 	data["upgradeLevel"] = upgrade_level
 
@@ -275,12 +274,6 @@
 		var/overheat = FALSE
 		var/danger = FALSE
 		var/purity_alert = 2 //same as flashing
-		if(reagent.purity < equilibrium.reaction.purity_min)
-			purity_alert = ENABLE_FLASHING//Because 0 is seen as null
-			danger = TRUE
-		if(!(flashing == ENABLE_FLASHING))//So that the pH meter flashes for ANY reactions out of optimal
-			if(equilibrium.reaction.optimal_ph_min > beaker?.reagents.ph || equilibrium.reaction.optimal_ph_max < beaker?.reagents.ph)
-				flashing = ENABLE_FLASHING
 		if(equilibrium.reaction.is_cold_recipe)
 			if(equilibrium.reaction.overheat_temp > beaker?.reagents.chem_temp && equilibrium.reaction.overheat_temp != NO_OVERHEAT)
 				danger = TRUE
@@ -294,10 +287,9 @@
 				if(entry["name"] == reagent.name) //If we have multiple reaction methods for the same result - combine them
 					entry["reactedVol"] = equilibrium.reacted_vol
 					entry["targetVol"] = round(equilibrium.target_vol, 1)//Use the first result reagent to name the reaction detected
-					entry["quality"] = (entry["quality"] + equilibrium.reaction_quality) /2
 					continue
 		active_reactions.len++
-		active_reactions[length(active_reactions)] = list("name" = reagent.name, "danger" = danger, "purityAlert" = purity_alert, "quality" = equilibrium.reaction_quality, "overheat" = overheat, "inverse" = reagent.inverse_chem_val, "minPure" = equilibrium.reaction.purity_min, "reactedVol" = equilibrium.reacted_vol, "targetVol" = round(equilibrium.target_vol, 1))//Use the first result reagent to name the reaction detected
+		active_reactions[length(active_reactions)] = list("name" = reagent.name, "danger" = danger, "purityAlert" = purity_alert, "overheat" = overheat, "reactedVol" = equilibrium.reacted_vol, "targetVol" = round(equilibrium.target_vol, 1))//Use the first result reagent to name the reaction detected
 	data["activeReactions"] = active_reactions
 	data["isFlashing"] = flashing
 
@@ -356,21 +348,11 @@ To continue set your target temperature to 390K."}
 				if(!calo)
 					tutorial_state = TUT_COMPLETE
 					return
-				switch(calo.purity)
-					if(-INFINITY to 0.25)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. That's pretty close to the fail purity of 0.15 - which can often make some reactions explode. This chem will invert into Toxic sludge when ingested by another person, and will not cause of calomel's normal effects. Sneaky, huh?"
-					if(0.25 to 0.6)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. Normally, this reaction will resolve above 0.7 without intervention. Are you praticing impure reactions? The lower you go, the higher change you have of getting dangerous effects during a reaction. In some more dangerous reactions, you're riding a fine line between death and an inverse chem, don't forget you can always chill your reaction to give yourself more time to manage it!"
-					if(0.6 to 0.75)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. Normally, this reaction will resolve above 0.7 without intervention. Did you maybe add too much basic buffer and go past 9? If you like - you're welcome to try again. Just double press the help button!"
-					if(0.75 to 0.85)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. You got pretty close to optimal! Feel free to try again if you like by double pressing the help button."
-					if(0.75 to 0.99)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. You got pretty close to optimal! Feel free to try again if you like by double pressing the help button, but this is a respectable purity."
-					if(0.99 to 1)
-						data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. Your calomel is as pure as they come! You've mastered the basics of chemistry, but there's plenty more challenges on the horizon. Good luck!"
-						user.client?.give_award(/datum/award/achievement/jobs/chemistry_tut, user)
-				data["tutorialMessage"] += "\n\nDid you notice that your temperature increased past 390K while reacting too? That's because this reaction is exothermic (heat producing), so for some reactions you might have to adjust your target to compensate. Oh, and you can check your purity by researching and printing off a chemical analyzer at the medlathe (for now)!"
+
+				data["tutorialMessage"] = "You did it! Congratulations! I can tell you that your final purity was [calo.purity]. Your calomel is as pure as they come! You've mastered the basics of chemistry, but there's plenty more challenges on the horizon. Good luck!"
+				user.client?.give_award(/datum/award/achievement/jobs/chemistry_tut, user)
+				data["tutorialMessage"] += "\n\nDid you notice that your temperature increased past 390K while reacting too? That's because this reaction is exothermic (heat producing), so for some reactions you might have to adjust your target to compensate."
+
 			if(TUT_MISSING) //Missing
 				data["tutorialMessage"] = "Uh oh, something went wrong. Did you take the beaker out, heat it up too fast, or have other things in the beaker? Try restarting the tutorial by double pressing the help button."
 
@@ -464,22 +446,6 @@ To continue set your target temperature to 390K."}
 			return
 		reagents.trans_id_to(beaker, /datum/reagent/reaction_agent/basic_buffer, dispense_volume)
 		return
-
-
-/obj/machinery/chem_heater/proc/get_purity_color(datum/equilibrium/equilibrium)
-	var/_reagent = equilibrium.reaction.results[1]
-	var/datum/reagent/reagent = equilibrium.holder.get_reagent(_reagent)
-	// Can't be a switch due to http://www.byond.com/forum/post/2750423
-	if(reagent.purity in 1 to INFINITY)
-		return "blue"
-	else if(reagent.purity in 0.8 to 1)
-		return "green"
-	else if(reagent.purity in reagent.inverse_chem_val to 0.8)
-		return "olive"
-	else if(reagent.purity in equilibrium.reaction.purity_min to reagent.inverse_chem_val)
-		return "orange"
-	else if(reagent.purity in -INFINITY to equilibrium.reaction.purity_min)
-		return "red"
 
 //Has a lot of buffer and is upgraded
 /obj/machinery/chem_heater/debug

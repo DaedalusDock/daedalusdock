@@ -15,11 +15,10 @@
 	ph = 3.3
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/orangejuice/affect_blood(mob/living/carbon/M, removed)
-	if(M.getOxyLoss() && DT_PROB(16, delta_time))
-		M.adjustOxyLoss(-1, 0)
+/datum/reagent/consumable/orangejuice/affect_blood(mob/living/carbon/C, removed)
+	if(prob(30) && C.getOxyLoss())
+		C.adjustOxyLoss(-1 * removed, 0)
 		. = TRUE
-	..()
 
 /datum/reagent/consumable/tomatojuice
 	name = "Tomato Juice"
@@ -31,11 +30,10 @@
 	glass_desc = "Are you sure this is tomato juice?"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/tomatojuice/affect_blood(mob/living/carbon/M, removed)
-	if(M.getFireLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(0, 1, 0)
+/datum/reagent/consumable/tomatojuice/affect_blood(mob/living/carbon/C, removed)
+	if(prob(20) && C.getFireLoss())
+		C.heal_bodypart_damage(0, 1 * removed, 0)
 		. = TRUE
-	..()
 
 /datum/reagent/consumable/limejuice
 	name = "Lime Juice"
@@ -48,11 +46,10 @@
 	ph = 2.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/limejuice/affect_blood(mob/living/carbon/M, removed)
-	if(M.getToxLoss() && DT_PROB(10, delta_time))
-		M.adjustToxLoss(-1, 0)
+/datum/reagent/consumable/limejuice/affect_blood(mob/living/carbon/C, removed)
+	if(prob(20) && C.getToxLoss())
+		C.adjustToxLoss(-1 * removed, 0)
 		. = TRUE
-	..()
 
 /datum/reagent/consumable/carrotjuice
 	name = "Carrot Juice"
@@ -64,19 +61,17 @@
 	glass_desc = "It's just like a carrot but without crunching."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/carrotjuice/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_blurriness(-1 * REM * delta_time)
-	M.adjust_blindness(-1 * REM * delta_time)
+/datum/reagent/consumable/carrotjuice/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_blurriness(-1 * removed)
+	C.adjust_blindness(-1 * removed)
 	switch(current_cycle)
 		if(1 to 20)
 			//nothing
 		if(21 to 110)
-			if(DT_PROB(100 * (1 - (sqrt(110 - current_cycle) / 10)), delta_time))
-				M.cure_nearsighted(list(EYE_DAMAGE))
+			if(prob(100 * (1 - (sqrt(110 - current_cycle) / 10))))
+				C.cure_nearsighted(list(EYE_DAMAGE))
 		if(110 to INFINITY)
-			M.cure_nearsighted(list(EYE_DAMAGE))
-	..()
-	return
+			C.cure_nearsighted(list(EYE_DAMAGE))
 
 /datum/reagent/consumable/berryjuice
 	name = "Berry Juice"
@@ -85,7 +80,7 @@
 	taste_description = "berries"
 	glass_icon_state = "berryjuice"
 	glass_name = "glass of berry juice"
-	glass_desc = "Berry juice. Or maybe it's jam. Who cares?"
+	glass_desc = "Berry juice. Or maybe it's jaC. Who cares?"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/applejuice
@@ -105,10 +100,9 @@
 	glass_desc = "Berry juice. Or maybe it's poison. Who cares?"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/poisonberryjuice/affect_blood(mob/living/carbon/M, removed)
-	M.adjustToxLoss(1 * REM * delta_time, 0)
+/datum/reagent/consumable/poisonberryjuice/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(1 * removed, 0)
 	. = TRUE
-	..()
 
 /datum/reagent/consumable/watermelonjuice
 	name = "Watermelon Juice"
@@ -141,12 +135,11 @@
 	glass_desc = "The raw essence of a banana. HONK."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/banana/affect_blood(mob/living/carbon/M, removed)
-	var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+/datum/reagent/consumable/banana/affect_blood(mob/living/carbon/C, removed)
+	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || ismonkey(M))
-		M.heal_bodypart_damage(1 * REM * delta_time, 1 * REM * delta_time, 0)
+		C.heal_bodypart_damage(1 * removed, 1 * removed, 0)
 		. = TRUE
-	..()
 
 /datum/reagent/consumable/nothing
 	name = "Nothing"
@@ -158,12 +151,11 @@
 	shot_glass_icon_state = "shotglass"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/nothing/affect_blood(mob/living/carbon/M, removed)
-	if(ishuman(M) && M.mind?.miming)
-		M.silent = max(M.silent, MIMEDRINK_SILENCE_DURATION)
-		M.heal_bodypart_damage(1 * REM * delta_time, 1 * REM * delta_time)
+/datum/reagent/consumable/nothing/affect_blood(mob/living/carbon/C, removed)
+	if(ishuman(M) && C.mind?.miming)
+		C.silent = max(C.silent, MIMEDRINK_SILENCE_DURATION)
+		C.heal_bodypart_damage(1 * removed, 1 * removed)
 		. = TRUE
-	..()
 
 /datum/reagent/consumable/laughter
 	name = "Laughter"
@@ -173,10 +165,8 @@
 	taste_description = "laughter"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/laughter/affect_blood(mob/living/carbon/M, removed)
-	M.emote("laugh")
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "chemical_laughter", /datum/mood_event/chemical_laughter)
-	..()
+/datum/reagent/consumable/laughter/affect_blood(mob/living/carbon/C, removed)
+	C.emote("laugh")
 
 /datum/reagent/consumable/superlaughter
 	name = "Super Laughter"
@@ -186,12 +176,10 @@
 	taste_description = "laughter"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/superlaughter/affect_blood(mob/living/carbon/M, removed)
-	if(DT_PROB(16, delta_time))
-		M.visible_message(span_danger("[M] bursts out into a fit of uncontrollable laughter!"), span_userdanger("You burst out in a fit of uncontrollable laughter!"))
-		M.Stun(5)
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "chemical_laughter", /datum/mood_event/chemical_superlaughter)
-	..()
+/datum/reagent/consumable/superlaughter/affect_blood(mob/living/carbon/C, removed)
+	if(prob(30))
+		C.visible_message(span_danger("[M] bursts out into a fit of uncontrollable laughter!"), span_userdanger("You burst out in a fit of uncontrollable laughter!"))
+		C.Stun(5)
 
 /datum/reagent/consumable/potato_juice
 	name = "Potato Juice"
@@ -230,13 +218,14 @@
 		if(myseed)
 			myseed.adjust_potency(-chems.get_reagent_amount(type) * 0.5)
 
-/datum/reagent/consumable/milk/affect_blood(mob/living/carbon/M, removed)
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1,0, 0)
+/datum/reagent/consumable/milk/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.getBruteLoss() && prob(20))
+		C.heal_bodypart_damage(1 * removed,0, 0)
 		. = TRUE
+
 	if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
-		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 1 * delta_time)
-	..()
+		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 1 * removed)
 
 /datum/reagent/consumable/soymilk
 	name = "Soy Milk"
@@ -248,9 +237,9 @@
 	glass_desc = "White and nutritious soy goodness!"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/soymilk/affect_blood(mob/living/carbon/M, removed)
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1, 0, 0)
+/datum/reagent/consumable/soymilk/affect_blood(mob/living/carbon/C, removed)
+	if(C.getBruteLoss() && DT_PROB(10, delta_time))
+		C.heal_bodypart_damage(1, 0, 0)
 		. = TRUE
 	..()
 
@@ -264,9 +253,9 @@
 	glass_desc = "Ewwww..."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/cream/affect_blood(mob/living/carbon/M, removed)
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1, 0, 0)
+/datum/reagent/consumable/cream/affect_blood(mob/living/carbon/C, removed)
+	if(C.getBruteLoss() && DT_PROB(10, delta_time))
+		C.heal_bodypart_damage(1, 0, 0)
 		. = TRUE
 	..()
 
@@ -284,18 +273,16 @@
 	glass_price = DRINK_PRICE_STOCK
 
 /datum/reagent/consumable/coffee/overdose_process(mob/living/M, delta_time, times_fired)
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	..()
+	C.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 
-/datum/reagent/consumable/coffee/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 * REM * delta_time)
-	M.AdjustSleeping(-40 * REM * delta_time)
+/datum/reagent/consumable/coffee/affect_ingest(mob/living/carbon/C, removed)
+	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-3 * removed)
+	C.AdjustSleeping(-40 * removed)
 	//310.15 is the normal bodytemp.
-	M.adjust_bodytemperature(25 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
+	C.adjust_bodytemperature(25 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	if(holder.has_reagent(/datum/reagent/consumable/frostoil))
-		holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * REM * delta_time)
-	..()
+		holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * removed)
 	. = TRUE
 
 /datum/reagent/consumable/tea
@@ -310,16 +297,16 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_STOCK
 
-/datum/reagent/consumable/tea/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-4 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-1 * REM * delta_time)
-	M.adjust_timed_status_effect(-6 SECONDS * REM * delta_time, /datum/status_effect/jitter)
-	M.AdjustSleeping(-20 * REM * delta_time)
-	if(M.getToxLoss() && DT_PROB(10, delta_time))
-		M.adjustToxLoss(-1, 0)
-	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
-	..()
-	. = TRUE
+/datum/reagent/consumable/tea/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-4 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-1 * REM * delta_time)
+	C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
+	C.AdjustSleeping(-20 * REM * delta_time)
+	if(C.getToxLoss() && DT_PROB(10, delta_time))
+		C.adjustToxLoss(-1, 0)
+		. = TRUE
+	C.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal())
 
 /datum/reagent/consumable/lemonade
 	name = "Lemonade"
@@ -345,11 +332,9 @@
 	glass_desc = "You feel like taking a few golf swings after a few swigs of this."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/tea/arnold_palmer/affect_blood(mob/living/carbon/M, removed)
-	if(DT_PROB(2.5, delta_time))
+/datum/reagent/consumable/tea/arnold_palmer/affect_blood(mob/living/carbon/C, removed)
+	if(prob(5, delta_time))
 		to_chat(M, span_notice("[pick("You remember to square your shoulders.","You remember to keep your head down.","You can't decide between squaring your shoulders and keeping your head down.","You remember to relax.","You think about how someday you'll get two strokes off your golf game.")]"))
-	..()
-	. = TRUE
 
 /datum/reagent/consumable/icecoffee
 	name = "Iced Coffee"
@@ -362,35 +347,13 @@
 	glass_desc = "A drink to perk you up and refresh you!"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/icecoffee/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 * REM * delta_time)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	..()
-	. = TRUE
-
-/datum/reagent/consumable/hot_ice_coffee
-	name = "Hot Ice Coffee"
-	description = "Coffee with pulsing ice shards"
-	color = "#102838" // rgb: 16, 40, 56
-	nutriment_factor = 0
-	taste_description = "bitter coldness and a hint of smoke"
-	glass_icon_state = "hoticecoffee"
-	glass_name = "hot ice coffee"
-	glass_desc = "A sharp drink, this can't have come cheap"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/consumable/hot_ice_coffee/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 * REM * delta_time)
-	M.AdjustSleeping(-60 * REM * delta_time)
-	M.adjust_bodytemperature(-7 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	M.adjustToxLoss(1 * REM * delta_time, 0)
-	..()
-	. = TRUE
+/datum/reagent/consumable/icecoffee/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-3 * removed)
+	C.AdjustSleeping(-40 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 /datum/reagent/consumable/icetea
 	name = "Iced Tea"
@@ -403,15 +366,14 @@
 	glass_desc = "All natural, antioxidant-rich flavour sensation."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/icetea/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-4 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-1 * REM * delta_time)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	if(M.getToxLoss() && DT_PROB(10, delta_time))
-		M.adjustToxLoss(-1, 0)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
-	. = TRUE
+/datum/reagent/consumable/icetea/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_timed_status_effect(-4 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-1 * removed)
+	C.AdjustSleeping(-40 * removed)
+	if(C.getToxLoss() && prob(10))
+		C.adjustToxLoss(-1, 0)
+		. = TRUE
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/space_cola
 	name = "Cola"
@@ -423,10 +385,10 @@
 	glass_desc = "A glass of refreshing Space Cola."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/space_cola/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_drowsyness(-5 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/space_cola/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	C.adjust_drowsyness(-5 * removed)
+	C.adjust_bodytemperature(-5 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
 
 /datum/reagent/consumable/roy_rogers
 	name = "Roy Rogers"
@@ -439,10 +401,10 @@
 	glass_desc = "90% sugar in a glass."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/roy_rogers/affect_blood(mob/living/carbon/M, removed)
-	M.set_timed_status_effect(12 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	M.adjust_drowsyness(-5 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
+/datum/reagent/consumable/roy_rogers/affect_ingest(mob/living/carbon/C, removed)
+	C.set_timed_status_effect(12 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.adjust_drowsyness(-5 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 	return ..()
 
 /datum/reagent/consumable/nuka_cola
@@ -456,23 +418,22 @@
 	glass_desc = "Don't cry, Don't raise your eye, It's only nuclear wasteland."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/nuka_cola/on_mob_metabolize(mob/living/L)
-	..()
-	L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
+/datum/reagent/consumable/nuka_cola/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_TOUCH)
+		L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
 
-/datum/reagent/consumable/nuka_cola/on_mob_end_metabolize(mob/living/L)
-	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
-	..()
+/datum/reagent/consumable/nuka_cola/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_TOUCH)
+		L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
 
-/datum/reagent/consumable/nuka_cola/affect_blood(mob/living/carbon/M, removed)
-	M.set_timed_status_effect(40 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	M.set_timed_status_effect(1 MINUTES * REM * delta_time, /datum/status_effect/drugginess)
-	M.adjust_timed_status_effect(3 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.set_drowsyness(0)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
-	. = TRUE
+/datum/reagent/consumable/nuka_cola/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.set_timed_status_effect(40 SECONDS * removed /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.set_timed_status_effect(1 MINUTES * removed, /datum/status_effect/drugginess)
+	C.adjust_timed_status_effect(3 SECONDS * removed, /datum/status_effect/dizziness)
+	C.set_drowsyness(0)
+	C.AdjustSleeping(-40 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/rootbeer
 	name = "root beer"
@@ -490,7 +451,7 @@
 	var/effect_enabled = FALSE
 
 
-/datum/reagent/consumable/rootbeer/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/consumable/rootbeer/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(L, TRAIT_DOUBLE_TAP, type)
 	if(current_cycle > 10)
 		to_chat(L, span_warning("You feel kinda tired as your sugar rush wears off..."))
@@ -498,20 +459,19 @@
 		L.adjust_drowsyness(current_cycle)
 	..()
 
-/datum/reagent/consumable/rootbeer/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/consumable/rootbeer/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	if(current_cycle >= 3 && !effect_enabled) // takes a few seconds for the bonus to kick in to prevent microdosing
 		to_chat(M, span_notice("You feel your trigger finger getting itchy..."))
 		ADD_TRAIT(M, TRAIT_DOUBLE_TAP, type)
 		effect_enabled = TRUE
 
-	M.set_timed_status_effect(4 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.set_timed_status_effect(4 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	if(prob(50))
-		M.adjust_timed_status_effect(2 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
+		C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
 	if(current_cycle > 10)
-		M.adjust_timed_status_effect(3 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
+		C.adjust_timed_status_effect(3 SECONDS * removed, /datum/status_effect/dizziness)
 
-	..()
-	. = TRUE
 
 /datum/reagent/consumable/grey_bull
 	name = "Grey Bull"
@@ -532,13 +492,13 @@
 	REMOVE_TRAIT(L, TRAIT_SHOCKIMMUNE, type)
 	..()
 
-/datum/reagent/consumable/grey_bull/affect_blood(mob/living/carbon/M, removed)
-	M.set_timed_status_effect(40 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	M.adjust_timed_status_effect(2 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.set_drowsyness(0)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/grey_bull/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	C.set_timed_status_effect(40 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
+	C.set_drowsyness(0)
+	C.AdjustSleeping(-40 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/spacemountainwind
 	name = "SM Wind"
@@ -550,13 +510,12 @@
 	glass_desc = "Space Mountain Wind. As you know, there are no mountains in space, only wind."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/spacemountainwind/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_drowsyness(-7 * REM * delta_time)
-	M.AdjustSleeping(-20 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	..()
-	. = TRUE
+/datum/reagent/consumable/spacemountainwind/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_drowsyness(-7 * removed)
+	C.AdjustSleeping(-20 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 /datum/reagent/consumable/dr_gibb
 	name = "Dr. Gibb"
@@ -568,11 +527,10 @@
 	glass_desc = "Dr. Gibb. Not as dangerous as the glass_name might imply."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/dr_gibb/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_drowsyness(-6 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
-
+/datum/reagent/consumable/dr_gibb/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_drowsyness(-6 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 /datum/reagent/consumable/space_up
 	name = "Space-Up"
 	description = "Tastes like a hull breach in your mouth."
@@ -584,9 +542,9 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 
-/datum/reagent/consumable/space_up/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-8 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/space_up/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(-8 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
 
 /datum/reagent/consumable/lemon_lime
 	name = "Lemon Lime"
@@ -598,34 +556,9 @@
 	glass_desc = "You're pretty certain a real fruit has never actually touched this."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-
-/datum/reagent/consumable/lemon_lime/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-8 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
-
-
-/datum/reagent/consumable/pwr_game
-	name = "Pwr Game"
-	description = "The only drink with the PWR that true gamers crave."
-	color = "#9385bf" // rgb: 58, 52, 75
-	taste_description = "sweet and salty tang"
-	glass_icon_state = "pwrgame"
-	glass_name = "glass of Pwr Game"
-	glass_desc = "Goes well with a Vlad's salad."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/consumable/pwr_game/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/consumable/lemon_lime/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
-	if(exposed_mob?.mind?.get_skill_level(/datum/skill/gaming) >= SKILL_LEVEL_LEGENDARY && (methods & INGEST) && !HAS_TRAIT(exposed_mob, TRAIT_GAMERGOD))
-		ADD_TRAIT(exposed_mob, TRAIT_GAMERGOD, "pwr_game")
-		to_chat(exposed_mob, "<span class='nicegreen'>As you imbibe the Pwr Game, your gamer third eye opens... \
-		You feel as though a great secret of the universe has been made known to you...</span>")
-
-/datum/reagent/consumable/pwr_game/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-8 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	if(DT_PROB(5, delta_time))
-		M.mind?.adjust_experience(/datum/skill/gaming, 5)
-	..()
+	C.adjust_bodytemperature(-8 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
 
 /datum/reagent/consumable/shamblers
 	name = "Shambler's Juice"
@@ -637,9 +570,9 @@
 	glass_desc = "Mmm mm, shambly."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/shamblers/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-8 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/shamblers/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	C.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/sodawater
 	name = "Soda Water"
@@ -660,11 +593,11 @@
 		mytray.adjust_waterlevel(round(chems.get_reagent_amount(type) * 1))
 		mytray.adjust_plant_health(round(chems.get_reagent_amount(type) * 0.1))
 
-/datum/reagent/consumable/sodawater/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/sodawater/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-3 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/tonic
 	name = "Tonic Water"
@@ -676,13 +609,12 @@
 	glass_desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/tonic/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 * REM * delta_time)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
-	. = TRUE
+/datum/reagent/consumable/tonic/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-3 * removed)
+	C.AdjustSleeping(-40 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/monkey_energy
 	name = "Monkey Energy"
@@ -695,27 +627,28 @@
 	glass_desc = "You can unleash the ape, but without the pop of the can?"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/monkey_energy/affect_blood(mob/living/carbon/M, removed)
-	M.set_timed_status_effect(80 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	M.adjust_timed_status_effect(2 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.set_drowsyness(0)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/monkey_energy/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.set_timed_status_effect(80 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
+	C.set_drowsyness(0)
+	C.AdjustSleeping(-40 * removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
-/datum/reagent/consumable/monkey_energy/on_mob_metabolize(mob/living/L)
-	..()
+/datum/reagent/consumable/monkey_energy/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_TOUCH)
+		return
 	if(ismonkey(L))
 		L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/monkey_energy)
 
-/datum/reagent/consumable/monkey_energy/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/consumable/monkey_energy/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_TOUCH)
+		return
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/monkey_energy)
-	..()
 
-/datum/reagent/consumable/monkey_energy/overdose_process(mob/living/M, delta_time, times_fired)
-	if(DT_PROB(7.5, delta_time))
-		M.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/monkey_energy)
-	..()
+/datum/reagent/consumable/monkey_energy/overdose_process(mob/living/carbon/C)
+	if(prob(15))
+		C.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/monkey_energy)
 
 /datum/reagent/consumable/ice
 	name = "Ice"
@@ -728,10 +661,15 @@
 	glass_desc = "Generally, you're supposed to put something else in there too..."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ice/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/ice/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(-3  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
+/datum/reagent/consumable/ice/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_bodytemperature(-3  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+
+/datum/reagent/consumable/ice/affect_touch(mob/living/carbon/C, removed)
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 /datum/reagent/consumable/soy_latte
 	name = "Soy Latte"
 	description = "A nice and tasty beverage while you are reading your hippie books."
@@ -744,15 +682,13 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_EASY
 
-/datum/reagent/consumable/soy_latte/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-3 *REM * delta_time)
-	M.SetSleeping(0)
-	M.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1,0, 0)
-	..()
+/datum/reagent/consumable/soy_latte/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-3 * removed)
+	C.SetSleeping(0)
+	C.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal())
+	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	. = TRUE
 
 /datum/reagent/consumable/cafe_latte
@@ -767,16 +703,13 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_EASY
 
-/datum/reagent/consumable/cafe_latte/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
-	M.adjust_drowsyness(-6 * REM * delta_time)
-	M.SetSleeping(0)
-	M.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
-	M.set_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1, 0, 0)
-	..()
-	. = TRUE
+/datum/reagent/consumable/cafe_latte/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
+	C.adjust_drowsyness(-6 * removed)
+	C.SetSleeping(0)
+	C.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
+	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 /datum/reagent/consumable/doctor_delight
 	name = "The Doctor's Delight"
@@ -789,18 +722,17 @@
 	glass_desc = "The space doctor's favorite. Guaranteed to restore bodily injury; side effects include cravings and hunger."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/doctor_delight/affect_blood(mob/living/carbon/M, removed)
-	M.adjustBruteLoss(-0.5 * REM * delta_time, 0)
-	M.adjustFireLoss(-0.5 * REM * delta_time, 0)
-	M.adjustToxLoss(-0.5 * REM * delta_time, 0)
-	M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
-	if(M.nutrition && (M.nutrition - 2 > 0))
-		var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+/datum/reagent/consumable/doctor_delight/affect_blood(mob/living/carbon/C, removed)
+	C.adjustBruteLoss(-0.5 * removed, 0)
+	C.adjustFireLoss(-0.5 * removed, 0)
+	C.adjustToxLoss(-0.5 * removed, 0)
+	C.adjustOxyLoss(-0.5 * removed, 0)
+	if(C.nutrition && (C.nutrition - 2 > 0))
+		var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 		if(!(HAS_TRAIT(liver, TRAIT_MEDICAL_METABOLISM)))
 			// Drains the nutrition of the holder. Not medical doctors though, since it's the Doctor's Delight!
-			M.adjust_nutrition(-2 * REM * delta_time)
-	..()
-	. = TRUE
+			C.adjust_nutrition(-2 * removed)
+	return TRUE
 
 /datum/reagent/consumable/cinderella
 	name = "Cinderella"
@@ -813,9 +745,9 @@
 	glass_desc = "There is not a single drop of alcohol in this thing."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/cinderella/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_disgust(-5 * REM * delta_time)
-	return ..()
+/datum/reagent/consumable/cinderella/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_disgust(-5 * removed)
 
 /datum/reagent/consumable/cherryshake
 	name = "Cherry Shake"
@@ -939,9 +871,9 @@
 	glass_desc = "It's grape (soda)!"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/grape_soda/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	..()
+/datum/reagent/consumable/grape_soda/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/consumable/milk/chocolate_milk
 	name = "Chocolate Milk"
@@ -962,14 +894,13 @@
 	glass_desc = "A favorite winter drink to warm you up."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/hot_coco/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
-	if(M.getBruteLoss() && DT_PROB(10, delta_time))
-		M.heal_bodypart_damage(1, 0, 0)
+/datum/reagent/consumable/hot_coco/affect_ingest(mob/living/carbon/C, removed)
+	C.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, C.get_body_temp_normal())
+	if(C.getBruteLoss() && prob(20))
+		C.heal_bodypart_damage(1, 0, 0)
 		. = TRUE
 	if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
-		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 2 * REM * delta_time)
-	..()
+		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 2 * removed)
 
 /datum/reagent/consumable/italian_coco
 	name = "Italian Hot Chocolate"
@@ -983,9 +914,9 @@
 	glass_desc = "A spin on a winter favourite, made to please."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/italian_coco/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
-	return ..()
+/datum/reagent/consumable/italian_coco/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 
 /datum/reagent/consumable/menthol
 	name = "Menthol"
@@ -997,9 +928,9 @@
 	glass_desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/menthol/on_mob_life(mob/living/L, delta_time, times_fired)
+/datum/reagent/consumable/menthol/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
 	L.apply_status_effect(/datum/status_effect/throat_soothed)
-	..()
 
 /datum/reagent/consumable/grenadine
 	name = "Grenadine"
@@ -1046,8 +977,8 @@
 	glass_desc = "A classic space-American vanilla flavored soft drink."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/cream_soda/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
+/datum/reagent/consumable/cream_soda/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, C.get_body_temp_normal())
 	..()
 
 /datum/reagent/consumable/sol_dry
@@ -1061,9 +992,9 @@
 	glass_desc = "A soothing, mellow drink made from ginger."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/sol_dry/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_disgust(-5 * REM * delta_time)
-	..()
+/datum/reagent/consumable/sol_dry/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_disgust(-5 * removed)
 
 /datum/reagent/consumable/shirley_temple
 	name = "Shirley Temple"
@@ -1076,9 +1007,9 @@
 	glass_desc = "Ginger ale with processed grenadine. "
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/shirley_temple/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_disgust(-3 * REM * delta_time)
-	return ..()
+/datum/reagent/consumable/shirley_temple/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	C.adjust_disgust(-3 * removed)
 
 /datum/reagent/consumable/red_queen
 	name = "Red Queen"
@@ -1092,24 +1023,27 @@
 	var/current_size = RESIZE_DEFAULT_SIZE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/red_queen/on_mob_life(mob/living/carbon/H, delta_time, times_fired)
-	if(DT_PROB(50, delta_time))
-		return ..()
+/datum/reagent/consumable/red_queen/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	if(prob(50))
+		return
 
 	var/newsize = pick(0.5, 0.75, 1, 1.50, 2)
 	newsize *= RESIZE_DEFAULT_SIZE
-	H.resize = newsize/current_size
+	C.resize = newsize/current_size
 	current_size = newsize
-	H.update_transform()
-	if(DT_PROB(23, delta_time))
-		H.emote("sneeze")
-	..()
+	C.update_transform()
+	if(prob(35))
+		spawn(-1)
+			H.emote("sneeze")
 
-/datum/reagent/consumable/red_queen/on_mob_end_metabolize(mob/living/M)
-	M.resize = RESIZE_DEFAULT_SIZE/current_size
+/datum/reagent/consumable/red_queen/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_TOUCH)
+		return
+
+	C.resize = RESIZE_DEFAULT_SIZE/current_size
 	current_size = RESIZE_DEFAULT_SIZE
-	M.update_transform()
-	..()
+	C.update_transform()
 
 /datum/reagent/consumable/bungojuice
 	name = "Bungo Juice"
@@ -1141,11 +1075,11 @@
 	glass_desc = "A healthy and refreshing juice."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/aloejuice/on_mob_life(mob/living/M, delta_time, times_fired)
-	if(M.getToxLoss() && DT_PROB(16, delta_time))
-		M.adjustToxLoss(-1, 0)
-	..()
-	. = TRUE
+/datum/reagent/consumable/aloejuice/affect_ingest(mob/living/carbon/M, removed)
+	. = ..()
+	if(C.getToxLoss() && prob(25))
+		C.adjustToxLoss(-1, 0)
+		. = TRUE
 
 /datum/reagent/consumable/agua_fresca
 	name = "Agua Fresca"
@@ -1158,11 +1092,13 @@
 	glass_desc = "90% water, but still refreshing."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/agua_fresca/affect_blood(mob/living/carbon/M, removed)
-	M.adjust_bodytemperature(-8 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
-	if(M.getToxLoss() && DT_PROB(10, delta_time))
-		M.adjustToxLoss(-0.5, 0)
-	return ..()
+/datum/reagent/consumable/agua_fresca/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	if(C.getToxLoss() && prob(20))
+		C.adjustToxLoss(-0.5, 0)
+		. = TRUE
+
 
 /datum/reagent/consumable/mushroom_tea
 	name = "Mushroom Tea"
@@ -1175,11 +1111,12 @@
 	glass_desc = "Oddly savoury for a drink."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/mushroom_tea/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/consumable/mushroom_tea/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	if(islizard(M))
-		M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
-	..()
-	. = TRUE
+		C.adjustOxyLoss(-0.5 * removed, 0)
+		. = TRUE
+
 
 //Moth Stuff
 /datum/reagent/consumable/toechtauese_juice

@@ -210,7 +210,7 @@
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 1)
-	holder.remove_reagent(/datum/reagent/medicine/lexorin, 2 * removed)
+	holder.remove_reagent(/datum/reagent/toxin/lexorin, 2 * removed)
 
 /datum/reagent/dexalinp
 	name = "Dexalin Plus"
@@ -224,7 +224,7 @@
 
 /datum/reagent/dexalinp/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 2)
-	holder.remove_reagent(/datum/reagent/lexorin, 3 * removed)
+	holder.remove_reagent(/datum/reagent/toxin/lexorin, 3 * removed)
 
 /datum/reagent/medicine/tricordrazine
 	name = "Tricordrazine"
@@ -618,3 +618,10 @@
 	C.remove_status_effect(/datum/status_effect/jitter)
 	if(C.has_dna())
 		C.dna.remove_all_mutations(list(MUT_NORMAL, MUT_EXTRA), TRUE)
+
+/datum/reagent/medicine/spaceacillin
+	name = "Spaceacillin"
+	description = "Spaceacillin will prevent a patient from conventionally spreading any diseases they are currently infected with. Also reduces infection in serious burns."
+	color = "#E1F2E6"
+	metabolization_rate = 0.02
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED

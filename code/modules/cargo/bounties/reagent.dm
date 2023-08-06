@@ -39,7 +39,6 @@
 		/datum/reagent/consumable/ethanol/bilk,\
 		/datum/reagent/consumable/ethanol/black_russian,\
 		/datum/reagent/consumable/ethanol/bloody_mary,\
-		/datum/reagent/consumable/ethanol/brave_bull,\
 		/datum/reagent/consumable/ethanol/martini,\
 		/datum/reagent/consumable/ethanol/cuba_libre,\
 		/datum/reagent/consumable/ethanol/eggnog,\
@@ -62,7 +61,6 @@
 		/datum/reagent/consumable/ethanol/syndicatebomb,\
 		/datum/reagent/consumable/ethanol/tequila_sunrise,\
 		/datum/reagent/consumable/ethanol/manly_dorf,\
-		/datum/reagent/consumable/ethanol/thirteenloko,\
 		/datum/reagent/consumable/triple_citrus,\
 		/datum/reagent/consumable/ethanol/vodkamartini,\
 		/datum/reagent/consumable/ethanol/whiskeysoda,\
@@ -87,7 +85,6 @@
 	var/static/list/possible_reagents = list(\
 		/datum/reagent/consumable/ethanol/atomicbomb,\
 		/datum/reagent/consumable/ethanol/bacchus_blessing,\
-		/datum/reagent/consumable/ethanol/bastion_bourbon,\
 		/datum/reagent/consumable/ethanol/booger,\
 		/datum/reagent/consumable/ethanol/hippies_delight,\
 		/datum/reagent/consumable/ethanol/drunkenblumpkin,\
@@ -121,7 +118,6 @@
 	var/static/list/possible_reagents = list(\
 		/datum/reagent/medicine/leporazine,\
 		/datum/reagent/medicine/clonexadone,\
-		/datum/reagent/medicine/mine_salve,\
 		/datum/reagent/medicine/c2/convermol,\
 		/datum/reagent/medicine/ephedrine,\
 		/datum/reagent/medicine/diphenhydramine,\

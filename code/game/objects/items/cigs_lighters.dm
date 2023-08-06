@@ -193,11 +193,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!lighting_text)
 		return ..()
 
-	if(!reagents.has_reagent(/datum/reagent/oxygen)) //cigarettes need oxygen
-		var/datum/gas_mixture/air = return_air()
-		if(!air || !air.hasGas(GAS_OXYGEN, 1)) //or oxygen on a tile to burn
-			to_chat(user, span_notice("Your [name] needs a source of oxygen to burn."))
-			return ..()
+	var/datum/gas_mixture/air = unsafe_return_air()
+	if(!air || !air.hasGas(GAS_OXYGEN, 1)) //or oxygen on a tile to burn
+		to_chat(user, span_notice("\The [src] won't light."))
+		return ..()
 
 	if(smoketime > 0)
 		light(lighting_text)

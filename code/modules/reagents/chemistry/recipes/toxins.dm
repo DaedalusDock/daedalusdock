@@ -197,7 +197,6 @@
 	temp_exponent_factor = 2.5
 	thermic_constant = 375
 	rate_up_lim = 10
-	reaction_flags = REACTION_PH_VOL_CONSTANT
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/rotatium

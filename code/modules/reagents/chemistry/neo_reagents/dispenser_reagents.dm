@@ -249,7 +249,7 @@
 	taste_description = "stomach acid"
 	reagent_state = LIQUID
 	color = "#808080"
-	power = 3
+	toxpwr = 3
 	meltdose = 8
 	max_damage = 30
 	value = DISPENSER_REAGENT_VALUE * 2
@@ -285,4 +285,17 @@
 	color = "#dcdcdc"
 	value = DISPENSER_REAGENT_VALUE
 
-#undef DISPENSER_REAGENT_VALUE
+/datum/reagent/oxygen
+	name = "Oxygen"
+	description = "A colorless, odorless gas. Grows on trees but is still pretty valuable."
+	reagent_state = GAS
+	color = "#808080" // rgb: 128, 128, 128
+	taste_mult = 0 // oderless and tasteless
+	ph = 9.2//It's acutally a huge range and very dependant on the chemistry but ph is basically a made up var in it's implementation anyways
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/oxygen/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
+	. = ..()
+	if(isopenturf(exposed_turf))
+		exposed_turf.atmos_spawn_air(GAS_OXYGEN, reac_volume/20, exposed_temperature || T20C)
+

@@ -411,15 +411,14 @@
 		to_chat(victim, span_userdanger("With this last sip, you feel your body convulsing horribly from the contents you've ingested. As you contemplate your actions, you sense an awakened kinship with rat-kind and their newly risen leader!"))
 		victim.faction |= "rat"
 		victim.vomit()
-	metabolization_rate = 10 * REAGENTS_METABOLISM
+	metabolization_rate = 10 * initial(metabolization_rate)
 
-/datum/reagent/rat_spit/on_mob_life(mob/living/carbon/C)
+/datum/reagent/rat_spit/affect_blood(mob/living/carbon/C, removed)
 	if(prob(15))
 		to_chat(C, span_notice("You feel queasy!"))
-		C.adjust_disgust(3)
+		C.adjust_disgust(3 * removed)
 	else if(prob(10))
 		to_chat(C, span_warning("That food does not sit up well!"))
-		C.adjust_disgust(5)
+		C.adjust_disgust(5 * removed)
 	else if(prob(5))
 		C.vomit()
-	..()

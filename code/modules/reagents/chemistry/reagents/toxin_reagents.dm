@@ -136,9 +136,6 @@
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
 	C.adjustPlasma(20 * removed)
 	C.adjust_bodytemperature(-7 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
-	if(ishuman(C))
-		var/mob/living/carbon/human/humi = M
-		humi.adjust_coretemperature(-7 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/toxin/lexorin
 	name = "Lexorin"

@@ -60,7 +60,7 @@
 /datum/crafting_recipe/food/donut/trumpet
 	name = "Spaceman's Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/plain = 1
 	)
 

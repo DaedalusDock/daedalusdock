@@ -129,7 +129,7 @@
 	outstring += "\n|"
 
 	//Chemical properties - *2 because 1 tick is every 2s
-	outstring += "<b>Rate:</b> [reagent.metabolization_rate*2]u/tick\n<br><b>Unreacted purity:</b> [reagent.creation_purity*100]%[(reagent.overdose_threshold ? "\n<br><b>OD:</b> [reagent.overdose_threshold]u" : "")]"
+	outstring += "<b>Rate:</b> [reagent.metabolization_rate*2]u/tick\n<br>[(reagent.overdose_threshold ? "\n<br><b>OD:</b> [reagent.overdose_threshold]u" : "")]"
 
 	if(length(reagent.addiction_types))
 		outstring += "\n<br><b>Addictions:</b>"

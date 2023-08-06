@@ -230,8 +230,31 @@
 	value = 6
 
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
-	C.heal_overall_damage(3 * removed, 3 * removed, updating_health = FALSE)
-	C.adjustToxLoss(0.5 * removed, FALSE)
+	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
+	C.adjustToxLoss(-0.5 * removed, FALSE)
+	return TRUE
+
+/datum/reagent/medicine/tricordrazine/godblood
+	name = "God's Blood"
+	description = "Slowly heals all wounds, while being almost impossible to overdose on."
+	overdose_threshold = 0
+
+/datum/reagent/medicine/tricordrazine/godblood/affect_blood(mob/living/carbon/C, removed)
+	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
+	C.adjustToxLoss(-0.5 * removed, FALSE)
+	return TRUE
+
+/datum/reagent/medicine/omnizine
+	name = "Omnizine"
+	description = "A quickly metabolizing miracle drug that mends all wounds at a rapid pace."
+	reagent_state = LIQUID
+	color = "#DCDCDC"
+	metabolization_rate = 1
+	overdose_threshold = 30
+
+/datum/reagent/medicine/omnizine/affect_blood(mob/living/carbon/C, removed)
+	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
+	C.adjustToxLoss(-0.5 * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/cryoxadone
@@ -635,9 +658,9 @@
 /datum/reagent/medicine/ephedrine/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	if(prob(20))
-		var/obj/item/I = M.get_active_held_item()
-		if(I && M.dropItemToGround(I))
-			to_chat(M, span_notice("Your hands spaz out and you drop what you were holding!"))
+		var/obj/item/I = C.get_active_held_item()
+		if(I && C.dropItemToGround(I))
+			to_chat(C, span_notice("Your hands spaz out and you drop what you were holding!"))
 			C.set_timed_status_effect(20 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 	C.AdjustAllImmobility(-20 * removed)

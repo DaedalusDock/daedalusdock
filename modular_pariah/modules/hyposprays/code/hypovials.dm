@@ -61,7 +61,7 @@
 //Hypos that are in the CMO's kit round start
 /obj/item/reagent_containers/glass/vial/large/deluxe
 	name = "deluxe hypovial"
-	list_reagents = list(/datum/reagent/medicine/omnizine = 20, /datum/reagent/medicine/leporazine = 20, /datum/reagent/medicine/atropine = 20)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 20, /datum/reagent/medicine/leporazine = 20, /datum/reagent/medicine/atropine = 20)
 
 /obj/item/reagent_containers/glass/vial/large/salglu
 	name = "large green hypovial (salglu)"

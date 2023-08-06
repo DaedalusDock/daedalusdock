@@ -128,11 +128,11 @@ To add a crossbreed:
 	color = "#FFCCCC"
 	list_reagents = list(/datum/reagent/pax/peaceborg = 5)
 
-/obj/item/slimecrossbeaker/omnizine //15u omnizine.
+/obj/item/slimecrossbeaker/tricordrazine //15u tricordrazine.
 	name = "healing extract"
-	desc = "A gelatinous extract of pure omnizine."
+	desc = "A gelatinous extract of pure tricordrazine."
 	color = "#FF00FF"
-	list_reagents = list(/datum/reagent/medicine/omnizine = 15)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 15)
 
 /obj/item/slimecrossbeaker/autoinjector //As with the above, but automatically injects whomever it is used on with contents.
 	var/ignore_flags = FALSE

@@ -52,7 +52,7 @@
 	instability = 30
 	product = /obj/item/food/grown/cannabis/white
 	mutatelist = null
-	reagents_add = list(/datum/reagent/medicine/omnizine = 0.35, /datum/reagent/drug/cannabis = 0.15)
+	reagents_add = list(/datum/reagent/medicine/tricordrazine = 0.35, /datum/reagent/drug/cannabis = 0.15)
 	rarity = 40
 
 

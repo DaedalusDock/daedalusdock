@@ -51,7 +51,7 @@
 			/datum/reagent/fuel/oil, /datum/reagent/medicine/synaptizine, /datum/reagent/medicine/alkysine, /datum/reagent/drug/space_drugs, /datum/reagent/cryptobiolin
 		),
 		list( // level 6
-			/datum/reagent/phenol, /datum/reagent/medicine/inacusiate, /datum/reagent/medicine/oculine, /datum/reagent/medicine/antihol
+			/datum/reagent/phenol, /datum/reagent/medicine/inacusiate, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/antihol
 		),
 		list( // level 7
 			/datum/reagent/medicine/leporazine, /datum/reagent/toxin/mindbreaker, /datum/reagent/medicine/higadrite

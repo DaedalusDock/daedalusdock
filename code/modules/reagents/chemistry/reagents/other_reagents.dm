@@ -406,12 +406,6 @@
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2.5*delta_time, 150)
 	holder.remove_reagent(type, 0.5*delta_time)
 
-/datum/reagent/medicine/omnizine/godblood
-	name = "Godblood"
-	description = "Slowly heals all damage types. Has a rather high overdose threshold. Glows with mysterious power."
-	overdose_threshold = 150
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
 ///Used for clownery
 /datum/reagent/lube
 	name = "Space Lube"

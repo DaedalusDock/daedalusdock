@@ -51,10 +51,10 @@ Charged extracts:
 
 /obj/item/slimecross/charged/purple
 	colour = "purple"
-	effect_desc = "Creates a packet of omnizine."
+	effect_desc = "Creates a packet of tricordrazine."
 
 /obj/item/slimecross/charged/purple/do_effect(mob/user)
-	new /obj/item/slimecrossbeaker/omnizine(get_turf(user))
+	new /obj/item/slimecrossbeaker/tricordrazine(get_turf(user))
 	user.visible_message(span_notice("[src] sparks, and floods with a regenerative solution!"))
 	..()
 

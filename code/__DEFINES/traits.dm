@@ -767,7 +767,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EYES_COVERED "eyes_covered"
 #define HYPNOCHAIR_TRAIT "hypnochair"
 #define FLASHLIGHT_EYES "flashlight_eyes"
-#define IMPURE_OCULINE "impure_oculine"
 #define BLINDFOLD_TRAIT "blindfolded"
 #define TRAIT_SANTA "santa"
 #define SCRYING_ORB "scrying-orb"

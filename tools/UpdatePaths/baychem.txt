@@ -6,3 +6,4 @@
 /obj/item/ph_booklet : @DELETE
 /obj/item/thermometer/@SUBTYPES : @DELETE
 /obj/item/burner/@SUBTYPES : @DELETE
+/obj/item/slimecrossbeaker/omnizine : /obj/item/slimecrossbeaker/tricordrazine

@@ -58,7 +58,7 @@
 
 
 /obj/item/reagent_containers/hypospray/cmo
-	list_reagents = list(/datum/reagent/medicine/omnizine = 30)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 30)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 //combat
@@ -72,7 +72,7 @@
 	volume = 90
 	possible_transfer_amounts = list(5,10)
 	ignore_flags = 1 // So they can heal their comrades.
-	list_reagents = list(/datum/reagent/medicine/epinephrine = 30, /datum/reagent/medicine/omnizine = 30, /datum/reagent/medicine/leporazine = 15, /datum/reagent/medicine/atropine = 15)
+	list_reagents = list(/datum/reagent/medicine/epinephrine = 30, /datum/reagent/medicine/tricordrazine = 30, /datum/reagent/medicine/leporazine = 15, /datum/reagent/medicine/atropine = 15)
 
 /obj/item/reagent_containers/hypospray/combat/nanites
 	name = "experimental combat stimulant injector"
@@ -155,7 +155,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/stimpack/traitor
 	desc = "A modified stimulants autoinjector for use in combat situations. Has a mild healing effect."
-	list_reagents = list(/datum/reagent/medicine/stimulants = 10, /datum/reagent/medicine/omnizine = 10)
+	list_reagents = list(/datum/reagent/medicine/stimulants = 10, /datum/reagent/medicine/tricordrazine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/stimulants
 	name = "stimulant medipen"
@@ -259,7 +259,7 @@
 	base_icon_state = "luxpen"
 	volume = 60
 	amount_per_transfer_from_this = 60
-	list_reagents = list(/datum/reagent/medicine/salbutamol = 10, /datum/reagent/medicine/c2/penthrite = 10, /datum/reagent/medicine/oxandrolone = 10, /datum/reagent/medicine/sal_acid = 10 ,/datum/reagent/medicine/omnizine = 10 ,/datum/reagent/medicine/leporazine = 10)
+	list_reagents = list(/datum/reagent/medicine/salbutamol = 10, /datum/reagent/medicine/c2/penthrite = 10, /datum/reagent/medicine/oxandrolone = 10, /datum/reagent/medicine/sal_acid = 10 ,/datum/reagent/medicine/tricordrazine = 10 ,/datum/reagent/medicine/leporazine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/atropine
 	name = "atropine autoinjector"

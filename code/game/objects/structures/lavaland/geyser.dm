@@ -98,10 +98,6 @@
 	reagent_id = /datum/reagent/plasma_oxide
 	true_name = "plasma-oxide geyser"
 
-/obj/structure/geyser/protozine
-	reagent_id = /datum/reagent/medicine/omnizine/protozine
-	true_name = "protozine geyser"
-
 /obj/structure/geyser/hollowwater
 	reagent_id = /datum/reagent/water/hollowwater
 	true_name = "hollow water geyser"

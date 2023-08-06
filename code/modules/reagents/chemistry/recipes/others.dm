@@ -581,7 +581,7 @@
 
 //butterflium
 /datum/chemical_reaction/butterflium
-	required_reagents = list(/datum/reagent/colorful_reagent = 1, /datum/reagent/medicine/omnizine = 1, /datum/reagent/medicine/strange_reagent = 1, /datum/reagent/consumable/nutriment = 1)
+	required_reagents = list(/datum/reagent/colorful_reagent = 1, /datum/reagent/medicine/tricordrazine = 1, /datum/reagent/medicine/strange_reagent = 1, /datum/reagent/consumable/nutriment = 1)
 	reaction_flags = REACTION_INSTANT
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 

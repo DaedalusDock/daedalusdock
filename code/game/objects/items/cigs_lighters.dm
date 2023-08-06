@@ -407,7 +407,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 2 MINUTES
 	smoke_all = TRUE
 	lung_harm = 1.5
-	list_reagents = list(/datum/reagent/drug/nicotine = 10, /datum/reagent/medicine/omnizine = 15)
+	list_reagents = list(/datum/reagent/drug/nicotine = 10, /datum/reagent/medicine/tricordrazine = 15)
 
 /obj/item/clothing/mask/cigarette/shadyjims
 	desc = "A Shady Jim's Super Slims cigarette."

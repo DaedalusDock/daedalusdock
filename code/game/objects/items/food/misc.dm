@@ -301,7 +301,7 @@
 	desc = "Still gross, but at least it has a mountain of sugar on it."
 	icon_state = "spiderlollipop"
 	worn_icon_state = "lollipop_stick"
-	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/toxin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/omnizine = 2) //lollipop, but vitamins = toxins
+	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/toxin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2) //lollipop, but vitamins = toxins
 	tastes = list("cobwebs" = 1, "sugar" = 2)
 	foodtypes = JUNKFOOD | SUGAR
 	food_flags = FOOD_FINGER_FOOD
@@ -425,7 +425,7 @@
 	icon = 'icons/obj/lollipop.dmi'
 	icon_state = "lollipop_stick"
 	inhand_icon_state = "lollipop_stick"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/omnizine = 2) //Honk
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2) //Honk
 	tastes = list("candy" = 1)
 	foodtypes = JUNKFOOD | SUGAR
 	food_flags = FOOD_FINGER_FOOD
@@ -933,7 +933,7 @@
 	name = "warm Ready-Donk: Bachelor Chow"
 	desc = "A quick Donk-dinner, now with flavour! And it's even hot!"
 	icon_state = "ready_donk_warm"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/omnizine = 3)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/tricordrazine = 3)
 	microwaved_type = null
 	tastes = list("food?" = 2, "laziness" = 1)
 

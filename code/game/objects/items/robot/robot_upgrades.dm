@@ -416,7 +416,7 @@
 	name = "medical cyborg expanded hypospray"
 	desc = "An upgrade to the Medical model's hypospray, allowing it \
 		to treat a wider range of conditions and problems."
-	additional_reagents = list(/datum/reagent/medicine/alkysine, /datum/reagent/medicine/oculine, /datum/reagent/medicine/inacusiate,
+	additional_reagents = list(/datum/reagent/medicine/alkysine, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/inacusiate,
 		/datum/reagent/medicine/mutadone, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/oxandrolone, /datum/reagent/medicine/sal_acid,
 		/datum/reagent/medicine/rezadone, /datum/reagent/medicine/pen_acid)
 

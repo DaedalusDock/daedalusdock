@@ -135,7 +135,7 @@
 /datum/crafting_recipe/food/donut/jelly/trumpet
 	name = "Spaceman's Jelly Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/jelly/plain = 1
 	)
 
@@ -210,7 +210,7 @@
 /datum/crafting_recipe/food/donut/slimejelly/trumpet
 	name = "Spaceman's Slime Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/jelly/slimejelly/plain = 1
 	)
 

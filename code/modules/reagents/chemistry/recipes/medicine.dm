@@ -48,11 +48,6 @@
 	. = ..()
 	explode_flash(holder, equilibrium, equilibrium.reacted_vol/10, 10)
 
-/datum/chemical_reaction/medicine/oculine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
-	. = ..()
-	explode_flash(holder, equilibrium, 3, 30)
-
-
 /datum/chemical_reaction/medicine/inacusiate
 	results = list(/datum/reagent/medicine/inacusiate = 2)
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/c2/multiver = 1)
@@ -195,12 +190,12 @@
 
 /datum/chemical_reaction/medicine/strange_reagent
 	results = list(/datum/reagent/medicine/strange_reagent = 3)
-	required_reagents = list(/datum/reagent/medicine/omnizine = 1, /datum/reagent/water/holywater = 1, /datum/reagent/toxin/mutagen = 1)
+	required_reagents = list(/datum/reagent/medicine/tricordrazine = 1, /datum/reagent/water/holywater = 1, /datum/reagent/toxin/mutagen = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/strange_reagent/alt
 	results = list(/datum/reagent/medicine/strange_reagent = 2)
-	required_reagents = list(/datum/reagent/medicine/omnizine/protozine = 1, /datum/reagent/water/holywater = 1, /datum/reagent/toxin/mutagen = 1)
+	required_reagents = list(/datum/reagent/medicine/omnizine = 1, /datum/reagent/water/holywater = 1, /datum/reagent/toxin/mutagen = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_PLANT | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/mannitol
@@ -308,7 +303,7 @@
 
 /datum/chemical_reaction/medicine/regen_jelly
 	results = list(/datum/reagent/medicine/regen_jelly = 2)
-	required_reagents = list(/datum/reagent/medicine/omnizine = 1, /datum/reagent/toxin/slimejelly = 1)
+	required_reagents = list(/datum/reagent/medicine/tricordrazine = 1, /datum/reagent/toxin/slimejelly = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE |REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY
 
 /datum/chemical_reaction/medicine/higadrite

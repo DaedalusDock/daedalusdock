@@ -154,6 +154,8 @@
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 
+	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+
 	//CRIT
 	if(!forced)
 		if(!breath || (breath.total_moles == 0) || !lungs)
@@ -559,9 +561,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(.)
 		return
 	var/obj/item/organ/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
-	if(!belly)
-		return FALSE
-	return belly.reagents.has_reagent(reagent, amount, needs_metabolizing)
+	if(belly)
+		. = belly.reagents.has_reagent(reagent, amount, needs_metabolizing)
+
+	. ||= touching.has_reagent(reagent, amount, needs_metabolizing)
+
 
 /////////
 //LIVER//

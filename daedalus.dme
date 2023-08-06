@@ -4083,6 +4083,7 @@
 #include "code\modules\reagents\chemistry\reagents\drug_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\food_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\medicine_reagents.dm"
+#include "code\modules\reagents\chemistry\reagents\toxin_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\unique\eigenstasium.dm"
 #include "code\modules\reagents\chemistry\recipes\others.dm"
 #include "code\modules\reagents\chemistry\recipes\slime_extracts.dm"

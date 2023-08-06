@@ -223,7 +223,7 @@
 	var/beakerCurrentVolume = 0
 	if(beaker && beaker.reagents && beaker.reagents.reagent_list.len)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, 0.01), "pH" = R.ph, "purity" = R.purity))) // list in a list because Byond merges the first list...
+			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
 			beakerCurrentVolume += R.volume
 	data["beakerContents"] = beakerContents
 
@@ -231,12 +231,10 @@
 		data["beakerCurrentVolume"] = round(beakerCurrentVolume, 0.01)
 		data["beakerMaxVolume"] = beaker.volume
 		data["beakerTransferAmounts"] = beaker.possible_transfer_amounts
-		data["beakerCurrentpH"] = round(beaker.reagents.ph, 0.01)
 	else
 		data["beakerCurrentVolume"] = null
 		data["beakerMaxVolume"] = null
 		data["beakerTransferAmounts"] = null
-		data["beakerCurrentpH"] = null
 
 	var/chemicals[0]
 	var/is_hallucinating = FALSE

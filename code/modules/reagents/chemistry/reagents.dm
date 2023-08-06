@@ -176,12 +176,12 @@ Primarily used in reagents/reaction_agents
 	return
 
 /// Called when this reagent is first added to a mob
-/datum/reagent/proc/on_mob_add(mob/living/L, amount)
+/datum/reagent/proc/on_mob_add(mob/living/carbon/C, amount, class)
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /// Called when this reagent is removed while inside a mob
-/datum/reagent/proc/on_mob_delete(mob/living/L)
+/datum/reagent/proc/on_mob_delete(mob/living/carbon/C, class)
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 

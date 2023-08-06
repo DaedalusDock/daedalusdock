@@ -216,7 +216,7 @@
 	new_reagent.on_new(data)
 
 	if(isliving(my_atom))
-		new_reagent.on_mob_add(my_atom, amount) //Must occur before it could posibly run on_mob_delete
+		new_reagent.on_mob_add(my_atom, amount, metabolism_class) //Must occur before it could posibly run on_mob_delete
 
 	/*
 	if(has_split) //prevent it from splitting again
@@ -348,7 +348,7 @@
 				if(reagent.overdosed && iscarbon(my_atom))
 					reagent.overdose_end(my_atom)
 
-				reagent.on_mob_delete(my_atom)
+				reagent.on_mob_delete(my_atom, metabolism_class)
 
 			reagent_list -= reagent
 			LAZYREMOVE(previous_reagent_list, reagent.type)
@@ -684,7 +684,7 @@
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
 	update_total()
-	if(owner && updatehealth && needs_mob_update)
+	if(owner && updatehealth && need_mob_update)
 		owner.updatehealth()
 	return need_mob_update
 
@@ -712,8 +712,9 @@
 		if(liverless && !reagent.self_consuming) //need to be metabolized
 			return
 		if(!reagent.metabolizing)
-			reagent.metabolizing = TRUE
-			need_mob_update += reagent.on_mob_metabolize(owner, metabolism_class)
+			if((metabolism_class == CHEM_BLOOD) ||(metabolism_class == CHEM_TOUCH && reagent.touch_met) || (metabolism_class == CHEM_INGEST && reagent.ingest_met))
+				reagent.metabolizing = TRUE
+				need_mob_update += reagent.on_mob_metabolize(owner, metabolism_class)
 		if(can_overdose)
 			if(reagent.overdose_threshold)
 				if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)

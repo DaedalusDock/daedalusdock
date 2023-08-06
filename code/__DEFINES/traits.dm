@@ -958,3 +958,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define RIGHT_LEG_TRAIT "right_leg"
 #define LEFT_LEG_TRAIT "left_leg"
 
+// Reagent traits
+#define TRAIT_ZOMBIEPOWDER "zombiepowder"
+#define TRAIT_ROTATIUM "rotatedidiot"
+#define TRAIT_VENOMSIZE "venomsize"

@@ -16,6 +16,10 @@
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'
 
+/datum/reagent/consumable/New()
+	. = ..()
+	ingest_met = metabolization_rate
+
 /datum/reagent/consumable/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
 	C.adjust_nutrition(nutriment_factor * removed)
@@ -396,11 +400,11 @@
 
 /datum/reagent/consumable/garlic/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
-		ADD_TRAIT(L, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
+		ADD_TRAIT(C, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/garlic/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
-		REMOVE_TRAIT(L, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
+		REMOVE_TRAIT(C, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/garlic/affect_blood(mob/living/carbon/C, removed)
 	if(isvampire(C)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.

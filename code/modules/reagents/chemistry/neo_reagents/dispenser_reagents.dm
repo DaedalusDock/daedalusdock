@@ -196,7 +196,7 @@
 				new /obj/effect/decal/cleanable/greenglow(exposed_turf)
 			return
 
-/datum/reagent/acid
+/datum/reagent/toxin/acid
 	name = "Sulphuric Acid"
 	description = "A very corrosive mineral acid with the molecular formula H2SO4."
 	taste_description = "acid"
@@ -204,23 +204,46 @@
 	color = "#db5008"
 	metabolization_rate = 0.4
 	touch_met = 50 // It's acid!
-	var/power = 5
-	var/meltdose = 10 // How much is needed to melt
+	var/acidpwr = 10
+	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
 
-/datum/reagent/acid/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(removed * power, FALSE)
+/datum/reagent/toxin/acid/affect_blood(mob/living/carbon/C, removed)
+	C.adjustFireLoss(removed * acidpwr, FALSE)
 	return TRUE
 
-/datum/reagent/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
-	C.acid_act(power, removed)
+/datum/reagent/toxin/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
+	C.acid_act(acidpwr, removed)
 
-/datum/reagent/acid/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+/datum/reagent/toxin/acid/expose_mob(mob/living/carbon/exposed_carbon, methods=TOUCH, reac_volume)
 	. = ..()
-	exposed_obj.acid_act(power, reac_volume)
+	if(!istype(exposed_carbon))
+		return
+	reac_volume = round(reac_volume,0.1)
+	if(methods & INGEST)
+		exposed_carbon.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
+		return
+	if(methods & INJECT)
+		exposed_carbon.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
+		return
+	exposed_carbon.acid_act(acidpwr, reac_volume)
 
-/datum/reagent/acid/hydrochloric //Like sulfuric, but less toxic and more acidic.
+/datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	if(ismob(exposed_obj.loc)) //handled in human acid_act()
+		return
+	reac_volume = round(reac_volume,0.1)
+	exposed_obj.acid_act(acidpwr, reac_volume)
+
+/datum/reagent/toxin/acid/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
+	. = ..()
+	if (!istype(exposed_turf))
+		return
+	reac_volume = round(reac_volume,0.1)
+	exposed_turf.acid_act(acidpwr, reac_volume)
+
+/datum/reagent/toxin/acid/hydrochloric //Like sulfuric, but less toxic and more acidic.
 	name = "Hydrochloric Acid"
 	description = "A very corrosive mineral acid with the molecular formula HCl."
 	taste_description = "stomach acid"

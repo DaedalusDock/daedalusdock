@@ -99,62 +99,6 @@
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Heating reagents at <b>[heater_coefficient*1000]%</b> speed.")
 
-/obj/machinery/chem_heater/process(delta_time)
-	..()
-	//Tutorial logics
-	if(tutorial_active)
-		switch(tutorial_state)
-			if(TUT_NO_BUFFER)
-				if(reagents.has_reagent(/datum/reagent/reaction_agent/basic_buffer, 5) && reagents.has_reagent(/datum/reagent/reaction_agent/acidic_buffer, 5))
-					tutorial_state = TUT_START
-
-			if(TUT_START)
-				if(!reagents.has_reagent(/datum/reagent/reaction_agent/basic_buffer, 5) || !reagents.has_reagent(/datum/reagent/reaction_agent/acidic_buffer, 5))
-					tutorial_state = TUT_NO_BUFFER
-					return
-				if(beaker?.reagents.has_reagent(/datum/reagent/mercury, 10) || beaker?.reagents.has_reagent(/datum/reagent/chlorine, 10))
-					tutorial_state = TUT_HAS_REAGENTS
-			if(TUT_HAS_REAGENTS)
-				if(!(beaker?.reagents.has_reagent(/datum/reagent/mercury, 9)) || !(beaker?.reagents.has_reagent(/datum/reagent/chlorine, 9)))
-					tutorial_state = TUT_MISSING
-					return
-				if(beaker?.reagents.chem_temp > 374)//If they heated it up as asked
-					tutorial_state = TUT_IS_ACTIVE
-					target_temperature = 375
-					beaker.reagents.chem_temp = 375
-
-			if(TUT_IS_ACTIVE)
-				if(!(beaker?.reagents.has_reagent(/datum/reagent/mercury)) || !(beaker?.reagents.has_reagent(/datum/reagent/chlorine))) //Slightly concerned that people might take ages to read and it'll react anyways
-					tutorial_state = TUT_MISSING
-					return
-				if(length(beaker?.reagents.reaction_list) == 1)//Only fudge numbers for our intentful reaction
-					beaker.reagents.chem_temp = 375
-
-				if(target_temperature >= 390)
-					tutorial_state = TUT_IS_REACTING
-
-			if(TUT_IS_REACTING)
-				if(!(beaker?.reagents.has_reagent(/datum/reagent/mercury)) || !(beaker?.reagents.has_reagent(/datum/reagent/chlorine)))
-					tutorial_state = TUT_COMPLETE
-
-			if(TUT_COMPLETE)
-				if(beaker?.reagents.has_reagent(/datum/reagent/consumable/failed_reaction))
-					tutorial_state = TUT_FAIL
-					return
-				if(!beaker?.reagents.has_reagent(/datum/reagent/medicine/calomel))
-					tutorial_state = TUT_MISSING
-
-	if(machine_stat & NOPOWER)
-		return
-	if(on)
-		if(beaker?.reagents.total_volume)
-			if(beaker.reagents.is_reacting)//on_reaction_step() handles this
-				return
-			//keep constant with the chemical acclimator please
-			beaker.reagents.adjust_thermal_energy((target_temperature - beaker.reagents.chem_temp) * heater_coefficient * delta_time * SPECIFIC_HEAT_DEFAULT * beaker.reagents.total_volume)
-			beaker.reagents.handle_reactions()
-
-			use_power(active_power_usage * delta_time)
 
 /obj/machinery/chem_heater/attackby(obj/item/I, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "mixer0b", "mixer0b", I))
@@ -416,11 +360,11 @@ To continue set your target temperature to 390K."}
 		return
 	if(buffer_type == "acid")
 		if(volume < 0)
-			var/datum/reagent/acid_reagent = beaker.reagents.get_reagent(/datum/reagent/reaction_agent/acidic_buffer)
+			var/datum/reagent/toxin/acid_reagent = beaker.reagents.get_reagent(/datum/reagent/reaction_agent/acidic_buffer)
 			if(!acid_reagent)
 				say("Unable to find acidic buffer in beaker to draw from! Please insert a beaker containing acidic buffer.")
 				return
-			var/datum/reagent/acid_reagent_heater = reagents.get_reagent(/datum/reagent/reaction_agent/acidic_buffer)
+			var/datum/reagent/toxin/acid_reagent_heater = reagents.get_reagent(/datum/reagent/reaction_agent/acidic_buffer)
 			var/cur_vol = 0
 			if(acid_reagent_heater)
 				cur_vol = acid_reagent_heater.volume
@@ -446,27 +390,6 @@ To continue set your target temperature to 390K."}
 			return
 		reagents.trans_id_to(beaker, /datum/reagent/reaction_agent/basic_buffer, dispense_volume)
 		return
-
-//Has a lot of buffer and is upgraded
-/obj/machinery/chem_heater/debug
-	name = "Debug Reaction Chamber"
-	desc = "Now with even more buffers!"
-
-/obj/machinery/chem_heater/debug/Initialize(mapload)
-	. = ..()
-	reagents.maximum_volume = 2000
-	reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 1000)
-	reagents.add_reagent(/datum/reagent/reaction_agent/acidic_buffer, 1000)
-	heater_coefficient = 0.4 //hack way to upgrade
-
-//map load types
-/obj/machinery/chem_heater/withbuffer
-	desc = "This Reaction Chamber comes with a bit of buffer to help get you started."
-
-/obj/machinery/chem_heater/withbuffer/Initialize(mapload)
-	. = ..()
-	reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 20)
-	reagents.add_reagent(/datum/reagent/reaction_agent/acidic_buffer, 20)
 
 #undef TUT_NO_BUFFER
 #undef TUT_START

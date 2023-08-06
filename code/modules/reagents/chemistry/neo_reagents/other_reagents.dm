@@ -133,7 +133,7 @@
 	if(IS_CULTIST(C))
 		for(var/datum/action/innate/cult/blood_magic/BM in C.actions)
 			to_chat(C, span_cultlarge("Your blood rites falter as holy water scours your body!"))
-			for(var/datum/action/innate/cult/blood_spell/BS in C.spells)
+			for(var/datum/action/innate/cult/blood_spell/BS in BM.spells)
 				qdel(BS)
 	if(data["misc"] >= (10 SECONDS))
 		C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 20 SECONDS)

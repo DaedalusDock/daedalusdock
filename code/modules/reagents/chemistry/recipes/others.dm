@@ -387,7 +387,6 @@
 /datum/chemical_reaction/weedkiller
 	results = list(/datum/reagent/toxin/plantbgone/weedkiller = 5)
 	required_reagents = list(/datum/reagent/toxin = 1, /datum/reagent/ammonia = 4)
-	H_ion_release = -0.05		// Push towards acidic
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_PLANT
 
 /datum/chemical_reaction/pestkiller

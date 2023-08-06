@@ -735,7 +735,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /datum/reagent/consumable/ethanol/manly_dorf/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
 		if(ishuman(C))
-			var/mob/living/carbon/human/potential_dwarf = drinker
+			var/mob/living/carbon/human/potential_dwarf = C
 			if(HAS_TRAIT(potential_dwarf, TRAIT_DWARF))
 				to_chat(potential_dwarf, span_notice("Now THAT is MANLY!"))
 				boozepwr = 50 // will still smash but not as much.
@@ -1431,7 +1431,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(current_cycle > 5)
 		if(prob(20))
 			var/paralyzed_limb = pick_paralyzed_limb()
-			ADD_TRAIT(C, paralyzed_limb, CHEM_TRAIT_SOURCE(class))
+			ADD_TRAIT(C, paralyzed_limb, type)
 			C.stamina.adjust(-10)
 		if(current_cycle > 30)
 			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed)

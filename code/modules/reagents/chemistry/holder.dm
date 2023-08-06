@@ -448,7 +448,7 @@
 					C.expel_ingested(my_atom, amount)
 					return
 				R = belly.reagents
-				target_atom = belly
+				target_atom = C
 
 			else if(methods & INJECT)
 				R = C.bloodstream
@@ -722,7 +722,7 @@
 					need_mob_update += reagent.overdose_start(owner)
 					log_game("[key_name(owner)] has started overdosing on [reagent.name] at [reagent.volume] units.")
 			for(var/addiction in reagent.addiction_types)
-				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * REAGENTS_METABOLISM)
+				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * 0.2)
 
 			if(reagent.overdosed)
 				need_mob_update += reagent.overdose_process(owner)

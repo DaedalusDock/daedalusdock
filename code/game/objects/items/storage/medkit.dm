@@ -389,21 +389,21 @@
 	for(var/i in 1 to 4)
 		new /obj/item/reagent_containers/pill/iron(src)
 
-/obj/item/storage/pill_bottle/mannitol
-	name = "bottle of mannitol pills"
+/obj/item/storage/pill_bottle/alkysine
+	name = "bottle of alkysine pills"
 	desc = "Contains pills used to treat brain damage."
 
-/obj/item/storage/pill_bottle/mannitol/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/mannitol(src)
+		new /obj/item/reagent_containers/pill/alkysine(src)
 
 //Contains 4 pills instead of 7, and 5u pills instead of 50u (50u pills heal 250 brain damage, 5u pills heal 25)
-/obj/item/storage/pill_bottle/mannitol/braintumor
+/obj/item/storage/pill_bottle/alkysine/braintumor
 	desc = "Contains diluted pills used to treat brain tumor symptoms. Take one when feeling lightheaded."
 
-/obj/item/storage/pill_bottle/mannitol/braintumor/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/braintumor/PopulateContents()
 	for(var/i in 1 to 4)
-		new /obj/item/reagent_containers/pill/mannitol/braintumor(src)
+		new /obj/item/reagent_containers/pill/alkysine/braintumor(src)
 
 /obj/item/storage/pill_bottle/stimulant
 	name = "bottle of stimulant pills"

@@ -1,0 +1,8 @@
+/obj/item/storage/pill_bottle/mannitol : /obj/item/storage/pill_bottle/alkysine
+/obj/item/storage/pill_bottle/mannitol/braintumor : /obj/item/storage/pill_bottle/alkysine/braintumor
+/obj/item/reagent_containers/glass/bottle/mannitol : /obj/item/reagent_containers/glass/bottle/alkysine
+/obj/item/reagent_containers/pill/mannitol : /obj/item/reagent_containers/pill/alkysine
+/obj/item/reagent_containers/pill/mannitol/braintumor : /obj/item/reagent_containers/pill/alkysine/braintumor
+/obj/item/ph_booklet : @DELETE
+/obj/item/thermometer/@SUBTYPES : @DELETE
+/obj/item/burner/@SUBTYPES : @DELETE

@@ -650,7 +650,7 @@
 		exposed_mob.adjust_fire_stacks(reac_volume / 10)
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5*delta_time, 0)
+	C.adjustToxLoss(0.5 * removed, 0)
 	return TRUE
 
 /datum/reagent/space_cleaner

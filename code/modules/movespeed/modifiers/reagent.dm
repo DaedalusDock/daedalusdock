@@ -46,7 +46,7 @@
 /datum/movespeed_modifier/tramadol
 	multiplicative_slowdown = 1
 
-/datum/movespeed_modifier/deletrathol
+/datum/movespeed_modifier/morphine
 	multiplicative_slowdown = 1
 
 /datum/movespeed_modifier/hyperzine

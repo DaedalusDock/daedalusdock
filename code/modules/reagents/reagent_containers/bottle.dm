@@ -49,10 +49,10 @@
 	icon_state = "bottle20"
 	list_reagents = list(/datum/reagent/toxin/chloralhydrate = 15)
 
-/obj/item/reagent_containers/glass/bottle/mannitol
-	name = "mannitol bottle"
-	desc = "A small bottle of Mannitol. Useful for healing brain damage."
-	list_reagents = list(/datum/reagent/medicine/mannitol = 30)
+/obj/item/reagent_containers/glass/bottle/alkysine
+	name = "alkysine bottle"
+	desc = "A small bottle of Alkysine. Useful for healing brain damage."
+	list_reagents = list(/datum/reagent/medicine/alkysine = 30)
 
 /obj/item/reagent_containers/glass/bottle/multiver
 	name = "multiver bottle"

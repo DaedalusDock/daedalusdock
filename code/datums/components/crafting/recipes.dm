@@ -1305,67 +1305,6 @@
 				)
 	category = CAT_MISC
 
-/datum/crafting_recipe/alcohol_burner
-	name = "Alcohol burner"
-	result = /obj/item/burner
-	time = 5 SECONDS
-	reqs = list(/obj/item/reagent_containers/glass/beaker = 1,
-				/datum/reagent/consumable/ethanol = 15,
-				/obj/item/paper = 1
-				)
-	category = CAT_CHEMISTRY
-
-/datum/crafting_recipe/oil_burner
-	name = "Oil burner"
-	result = /obj/item/burner/oil
-	time = 5 SECONDS
-	reqs = list(/obj/item/reagent_containers/glass/beaker = 1,
-				/datum/reagent/fuel/oil = 15,
-				/obj/item/paper = 1
-				)
-	category = CAT_CHEMISTRY
-
-/datum/crafting_recipe/fuel_burner
-	name = "Fuel burner"
-	result = /obj/item/burner/fuel
-	time = 5 SECONDS
-	reqs = list(/obj/item/reagent_containers/glass/beaker = 1,
-				/datum/reagent/fuel = 15,
-				/obj/item/paper = 1
-				)
-	category = CAT_CHEMISTRY
-
-/datum/crafting_recipe/thermometer
-	name = "Thermometer"
-	tool_behaviors = list(TOOL_WELDER)
-	result = /obj/item/thermometer
-	time = 5 SECONDS
-	reqs = list(
-				/datum/reagent/mercury = 5,
-				/obj/item/stack/sheet/glass = 1
-				)
-	category = CAT_CHEMISTRY
-
-/datum/crafting_recipe/thermometer_alt
-	name = "Thermometer"
-	result = /obj/item/thermometer/pen
-	time = 5 SECONDS
-	reqs = list(
-				/datum/reagent/mercury = 5,
-				/obj/item/pen = 1
-				)
-	category = CAT_CHEMISTRY
-
-/datum/crafting_recipe/ph_booklet
-	name = "pH booklet"
-	result = /obj/item/ph_booklet
-	time = 5 SECONDS
-	reqs = list(
-				/datum/reagent/universal_indicator = 5,
-				/obj/item/paper = 1
-				)
-	category = CAT_CHEMISTRY
-
 /datum/crafting_recipe/dropper //Maybe make a glass pipette icon?
 	name = "Dropper"
 	result = /obj/item/reagent_containers/dropper
@@ -1386,7 +1325,6 @@
 				/obj/item/stack/sheet/glass = 2,
 				/obj/item/stack/sheet/iron = 2,
 				/datum/reagent/water = 50,
-				/obj/item/thermometer = 1
 				)
 	machinery = list(/obj/machinery/space_heater = CRAFTING_MACHINERY_CONSUME)
 	category = CAT_CHEMISTRY

@@ -135,17 +135,17 @@
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 15)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/mannitol
-	name = "mannitol pill"
+/obj/item/reagent_containers/pill/alkysine
+	name = "alkysine pill"
 	desc = "Used to treat brain damage."
 	icon_state = "pill17"
-	list_reagents = list(/datum/reagent/medicine/mannitol = 14)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 14)
 	rename_with_volume = TRUE
 
-//Lower quantity mannitol pills (50u pills heal 250 brain damage, 5u pills heal 25)
-/obj/item/reagent_containers/pill/mannitol/braintumor
+//Lower quantity alkysine pills (50u pills heal 250 brain damage, 5u pills heal 25)
+/obj/item/reagent_containers/pill/alkysine/braintumor
 	desc = "Used to treat symptoms for brain tumors."
-	list_reagents = list(/datum/reagent/medicine/mannitol = 5)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 5)
 
 /obj/item/reagent_containers/pill/mutadone
 	name = "mutadone pill"

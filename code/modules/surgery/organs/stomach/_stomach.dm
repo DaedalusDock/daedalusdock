@@ -37,6 +37,17 @@
 	if(!reagents)
 		create_reagents(reagent_vol)
 
+/obj/item/organ/stomach/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
+	. = ..()
+	if(!.)
+		return
+
+	reagents.my_atom = reciever
+
+/obj/item/organ/stomach/Remove(mob/living/carbon/stomach_owner, special)
+	. = ..()
+	reagents.my_atom = src
+
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
 	. = ..()
 

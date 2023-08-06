@@ -29,7 +29,7 @@
 	user.reagents.add_reagent(/datum/reagent/medicine/mutadone, 10)
 	user.reagents.add_reagent(/datum/reagent/medicine/pen_acid, 20)
 	user.reagents.add_reagent(/datum/reagent/medicine/antihol, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/mannitol, 25)
+	user.reagents.add_reagent(/datum/reagent/medicine/alkysine, 25)
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user

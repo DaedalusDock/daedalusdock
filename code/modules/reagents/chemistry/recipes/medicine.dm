@@ -204,7 +204,7 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_PLANT | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/mannitol
-	results = list(/datum/reagent/medicine/mannitol = 3)
+	results = list(/datum/reagent/medicine/alkysine = 3)
 	required_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/hydrogen = 1, /datum/reagent/water = 1)
 	mix_message = "The solution slightly bubbles, becoming thicker."
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
@@ -227,12 +227,9 @@
 		explode_attack_chem(holder, equilibrium, /datum/reagent/impurity/mannitol, 5)
 		explode_invert_smoke(holder, equilibrium)
 
-/datum/chemical_reaction/medicine/mannitol/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
-	overheated(holder, equilibrium, vol_added)
-
 /datum/chemical_reaction/medicine/neurine
 	results = list(/datum/reagent/medicine/neurine = 3)
-	required_reagents = list(/datum/reagent/medicine/mannitol = 1, /datum/reagent/acetone = 1, /datum/reagent/oxygen = 1)
+	required_reagents = list(/datum/reagent/medicine/alkysine = 1, /datum/reagent/acetone = 1, /datum/reagent/oxygen = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
 	//FermiChem vars:
 	required_temp = 100
@@ -333,7 +330,7 @@
 
 /datum/chemical_reaction/medicine/psicodine
 	results = list(/datum/reagent/medicine/psicodine = 5)
-	required_reagents = list( /datum/reagent/medicine/mannitol = 2, /datum/reagent/water = 2, /datum/reagent/impedrezene = 1)
+	required_reagents = list( /datum/reagent/medicine/alkysine = 2, /datum/reagent/water = 2, /datum/reagent/impedrezene = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/granibitaluri

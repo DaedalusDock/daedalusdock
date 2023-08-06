@@ -962,3 +962,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_ZOMBIEPOWDER "zombiepowder"
 #define TRAIT_ROTATIUM "rotatedidiot"
 #define TRAIT_VENOMSIZE "venomsize"
+#define TRAIT_HYPERZINE "zoomzoomzoom"
+#define TRAIT_EPHEDRINE "ephedrine"
+#define TRAIT_HALOPERIDOL "haloperidol"

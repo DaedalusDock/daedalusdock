@@ -76,14 +76,6 @@
 			mutations.Remove(pick(temp_mut_list))
 		temp_mut_list.Cut()
 
-	if(reagents.has_reagent(/datum/reagent/phenol, 5))
-		for(var/datum/spacevine_mutation/SM in mutations)
-			if(SM.quality == MINOR_NEGATIVE)
-				temp_mut_list += SM
-		if(prob(20) && temp_mut_list.len)
-			mutations.Remove(pick(temp_mut_list))
-		temp_mut_list.Cut()
-
 	if(reagents.has_reagent(/datum/reagent/blood, 15))
 		adjust_production(rand(15, -5))
 

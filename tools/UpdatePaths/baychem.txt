@@ -7,3 +7,7 @@
 /obj/item/thermometer/@SUBTYPES : @DELETE
 /obj/item/burner/@SUBTYPES : @DELETE
 /obj/item/slimecrossbeaker/omnizine : /obj/item/slimecrossbeaker/tricordrazine
+/obj/item/ph_meter : @DELETE
+/obj/item/storage/pill_bottle/mutadone : /obj/item/storage/pill_bottle/ryetalyn
+/obj/item/ammo_box/magazine/tranq_rifle/mutadone : /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn
+/obj/item/reagent_containers/pill/mutadone : /obj/item/reagent_containers/pill/ryetalyn

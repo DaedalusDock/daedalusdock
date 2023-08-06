@@ -94,7 +94,7 @@
 	new /obj/item/storage/lockbox/medal/med(src)
 	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
 	new /obj/item/ammo_box/magazine/tranq_rifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle/mutadone(src)
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
 
 
 /obj/structure/closet/secure_closet/animal

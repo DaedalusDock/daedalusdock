@@ -152,15 +152,15 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/proc/check_mutation(mutation_type)
 	return get_mutation(mutation_type)
 
-/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
-	remove_mutation_group(mutations, classes, mutadone)
+/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
+	remove_mutation_group(mutations, classes, ryetalyn)
 	scrambled = FALSE
 
-/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
+/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
 	if(!group)
 		return
 	for(var/datum/mutation/human/HM in group)
-		if((HM.class in classes) && !(HM.mutadone_proof && mutadone))
+		if((HM.class in classes) && !(HM.ryetalyn_proof && ryetalyn))
 			force_lose(HM)
 
 /datum/dna/proc/generate_unique_identity()
@@ -488,7 +488,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/stored/check_mutation(mutation_name)
 	return
 
-/datum/dna/stored/remove_all_mutations(list/classes, mutadone = FALSE)
+/datum/dna/stored/remove_all_mutations(list/classes, ryetalyn = FALSE)
 	return
 
 /datum/dna/stored/remove_mutation_group(list/group)
@@ -807,7 +807,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			if(HM)
 				HM.scrambled = TRUE
 				if(HM.quality & resilient)
-					HM.mutadone_proof = TRUE
+					HM.ryetalyn_proof = TRUE
 		return TRUE
 
 /mob/living/carbon/proc/random_mutate_unique_identity()

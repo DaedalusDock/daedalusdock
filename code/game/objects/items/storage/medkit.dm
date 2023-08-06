@@ -357,13 +357,13 @@
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/epinephrine(src)
 
-/obj/item/storage/pill_bottle/mutadone
-	name = "bottle of mutadone pills"
+/obj/item/storage/pill_bottle/ryetalyn
+	name = "bottle of ryetalyn pills"
 	desc = "Contains pills used to treat genetic abnormalities."
 
-/obj/item/storage/pill_bottle/mutadone/PopulateContents()
+/obj/item/storage/pill_bottle/ryetalyn/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/mutadone(src)
+		new /obj/item/reagent_containers/pill/ryetalyn(src)
 
 /obj/item/storage/pill_bottle/potassiodide
 	name = "bottle of potassium iodide pills"

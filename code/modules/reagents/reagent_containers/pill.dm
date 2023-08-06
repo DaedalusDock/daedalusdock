@@ -147,11 +147,11 @@
 	desc = "Used to treat symptoms for brain tumors."
 	list_reagents = list(/datum/reagent/medicine/alkysine = 5)
 
-/obj/item/reagent_containers/pill/mutadone
-	name = "mutadone pill"
+/obj/item/reagent_containers/pill/ryetalyn
+	name = "ryetalyn pill"
 	desc = "Used to treat genetic damage."
 	icon_state = "pill20"
-	list_reagents = list(/datum/reagent/medicine/mutadone = 50)
+	list_reagents = list(/datum/reagent/medicine/ryetalyn = 50)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/salicylic

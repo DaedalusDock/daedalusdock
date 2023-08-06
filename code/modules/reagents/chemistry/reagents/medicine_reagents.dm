@@ -318,13 +318,13 @@
 	ingest_met = 0.02
 	value = 3.1
 	var/pain_power = 40 //magnitide of painkilling effect
-	var/effective_cycle = 10 //how many units it need to process to reach max power
+	var/effective_cycle = 10 //how many cycles it need to process to reach max power
 
 /datum/reagent/medicine/tramadol/affect_blood(mob/living/carbon/C, removed)
-	var/effectiveness = 1
+	var/effectiveness = volume
 
-	if(current_cycle < effective_dose)
-		effectiveness = volume/effective_dose
+	if(current_cycle < effective_cycle)
+		effectiveness = volume * cycle/effective_cycle
 
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power * effectiveness)
 
@@ -640,11 +640,7 @@
 	color = "#D2FFFA"
 	metabolization_rate = 0.3
 	overdose_threshold = 30
-	purity = REAGENT_STANDARD_PURITY
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/stimulants = 4) //1.6 per 2 seconds
-	inverse_chem = /datum/reagent/inverse/corazargh
-	inverse_chem_val = 0.4
 
 /datum/reagent/medicine/ephedrine/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_EPHEDRINE, CHEM_TRAIT_SOURCE(class))
@@ -696,7 +692,6 @@
 	reagent_state = LIQUID
 	color = "#27870a"
 	metabolization_rate = 0.4
-	ph = 4.3
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	harmful = TRUE
 
@@ -713,11 +708,11 @@
 	if(C.get_timed_status_effect_duration(/datum/status_effect/jitter) >= 6 SECONDS)
 		C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
 
-	C.adjust_drowsyness(3 * removed)
+	C.adjust_drowsyness(8 * removed)
 	C.adjust_timed_status_effect(-3 * removed, /datum/status_effect/drugginess)
 
-	if (M.hallucination >= 5)
-		M.hallucination -= 5 * removed
+	if (C.hallucination >= 5)
+		C.hallucination -= 5 * removed
 
 	if(prob(20))
 		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50)
@@ -734,12 +729,12 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/medicine/leporazine/affect_blood(mob/living/carbon/C, removed)
-	var/target_temp = M.get_body_temp_normal(apply_change=FALSE)
-	if(M.bodytemperature > target_temp)
-		M.adjust_bodytemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, target_temp)
+	var/target_temp = C.get_body_temp_normal(apply_change=FALSE)
+	if(C.bodytemperature > target_temp)
+		C.adjust_bodytemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, target_temp)
 	else if(M.bodytemperature < (target_temp + 1))
-		M.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, target_temp)
-	if(ishuman(M))
+		C.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, target_temp)
+	if(ishuman(C))
 		var/mob/living/carbon/human/humi = M
 		if(humi.coretemperature > target_temp)
 			humi.adjust_coretemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, target_temp)

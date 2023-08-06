@@ -564,7 +564,7 @@
 /obj/item/slime_extract/cerulean/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
-			user.reagents.add_reagent(/datum/reagent/medicine/salbutamol,15)
+			user.reagents.add_reagent(/datum/reagent/medicine/dexalin,15)
 			to_chat(user, span_notice("You feel like you don't need to breathe!"))
 			return 150
 

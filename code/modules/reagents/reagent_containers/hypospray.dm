@@ -199,13 +199,13 @@
 	base_icon_state = "salacid"
 	list_reagents = list(/datum/reagent/medicine/sal_acid = 10)
 
-/obj/item/reagent_containers/hypospray/medipen/salbutamol
-	name = "salbutamol medipen"
-	desc = "An autoinjector containing salbutamol, used to heal oxygen damage quickly."
+/obj/item/reagent_containers/hypospray/medipen/dexalin
+	name = "dexalin medipen"
+	desc = "An autoinjector containing dexalin, used to heal oxygen damage quickly."
 	icon_state = "salpen"
 	inhand_icon_state = "salpen"
 	base_icon_state = "salpen"
-	list_reagents = list(/datum/reagent/medicine/salbutamol = 10)
+	list_reagents = list(/datum/reagent/medicine/dexalin = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/tuberculosiscure
 	name = "BVAK autoinjector"
@@ -259,7 +259,7 @@
 	base_icon_state = "luxpen"
 	volume = 60
 	amount_per_transfer_from_this = 60
-	list_reagents = list(/datum/reagent/medicine/salbutamol = 10, /datum/reagent/medicine/c2/penthrite = 10, /datum/reagent/medicine/oxandrolone = 10, /datum/reagent/medicine/sal_acid = 10 ,/datum/reagent/medicine/tricordrazine = 10 ,/datum/reagent/medicine/leporazine = 10)
+	list_reagents = list(/datum/reagent/medicine/dexalin = 10, /datum/reagent/medicine/c2/penthrite = 10, /datum/reagent/medicine/oxandrolone = 10, /datum/reagent/medicine/sal_acid = 10 ,/datum/reagent/medicine/tricordrazine = 10 ,/datum/reagent/medicine/leporazine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/atropine
 	name = "atropine autoinjector"

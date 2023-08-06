@@ -215,7 +215,7 @@
 		/datum/reagent/medicine/pen_acid,\
 		/datum/reagent/medicine/atropine,\
 		/datum/reagent/medicine/cryoxadone,\
-		/datum/reagent/medicine/salbutamol,\
+		/datum/reagent/medicine/dexalin,\
 		/datum/reagent/medicine/c2/hercuri,\
 		/datum/reagent/medicine/c2/probital,\
 		/datum/reagent/drug/methamphetamine,\

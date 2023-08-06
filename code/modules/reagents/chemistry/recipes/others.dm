@@ -476,7 +476,7 @@
 
 /datum/chemical_reaction/carpet/simple_neon_cyan
 	results = list(/datum/reagent/carpet/neon/simple_cyan = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/salbutamol = 1)
+	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/dexalin = 1)
 
 /datum/chemical_reaction/carpet/simple_neon_teal
 	results = list(/datum/reagent/carpet/neon/simple_teal = 2)

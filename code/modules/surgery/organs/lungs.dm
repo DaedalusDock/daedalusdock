@@ -20,7 +20,7 @@
 	var/operated = FALSE //whether we can still have our damages fixed through surgery
 
 
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/salbutamol = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/dexalin = 5)
 
 	//Breath damage
 	//These thresholds are checked against what amounts to total_mix_pressure * (gas_type_mols/total_mols)

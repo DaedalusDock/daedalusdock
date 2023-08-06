@@ -11,3 +11,5 @@
 /obj/item/storage/pill_bottle/mutadone : /obj/item/storage/pill_bottle/ryetalyn
 /obj/item/ammo_box/magazine/tranq_rifle/mutadone : /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn
 /obj/item/reagent_containers/pill/mutadone : /obj/item/reagent_containers/pill/ryetalyn
+/obj/item/reagent_containers/hypospray/medipen/salbutamol : /obj/item/reagent_containers/hypospray/medipen/dexalin
+/obj/item/reagent_containers/pill/salbutamol : /obj/item/reagent_containers/pill/dexalin

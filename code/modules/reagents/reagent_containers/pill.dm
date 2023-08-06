@@ -114,11 +114,11 @@
 	icon_state = "pill19"
 	list_reagents = list(/datum/reagent/medicine/ephedrine = 10, /datum/reagent/medicine/antihol = 10, /datum/reagent/consumable/coffee = 30)
 
-/obj/item/reagent_containers/pill/salbutamol
-	name = "salbutamol pill"
+/obj/item/reagent_containers/pill/dexalin
+	name = "dexalin pill"
 	desc = "Used to treat oxygen deprivation."
 	icon_state = "pill16"
-	list_reagents = list(/datum/reagent/medicine/salbutamol = 30)
+	list_reagents = list(/datum/reagent/medicine/dexalin = 30)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/multiver

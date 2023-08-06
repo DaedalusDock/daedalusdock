@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: In some cases organs would be unable to be coupled to a mob, these have
-      been fixed.

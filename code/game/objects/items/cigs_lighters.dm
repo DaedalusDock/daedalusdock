@@ -490,9 +490,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/rollie/cannabis
 	list_reagents = list(/datum/reagent/drug/cannabis = 15)
 
-/obj/item/clothing/mask/cigarette/rollie/mindbreaker
-	list_reagents = list(/datum/reagent/toxin/mindbreaker = 35, /datum/reagent/toxin/lipolicide = 15)
-
 /obj/item/clothing/mask/cigarette/candy
 	name = "\improper Little Timmy's candy cigarette"
 	desc = "For all ages*! Doesn't contain any amount of nicotine. Health and safety risks can be read on the tip of the cigarette."

@@ -6,7 +6,7 @@
 	inhand_icon_state = "bandaid"
 	possible_transfer_amounts = list()
 	volume = 40
-	apply_type = PATCH
+	apply_type = TOUCH
 	apply_method = "apply"
 	self_delay = 30 // three seconds
 	dissolvable = FALSE

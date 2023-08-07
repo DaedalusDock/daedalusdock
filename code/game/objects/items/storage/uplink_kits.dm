@@ -368,7 +368,7 @@
 	new /obj/item/reagent_containers/glass/bottle/initropidril(src)
 	new /obj/item/reagent_containers/glass/bottle/pancuronium(src)
 	new /obj/item/reagent_containers/glass/bottle/sodium_thiopental(src)
-	new /obj/item/reagent_containers/glass/bottle/coniine(src)
+	new /obj/item/reagent_containers/glass/bottle/lexorin(src)
 	new /obj/item/reagent_containers/glass/bottle/curare(src)
 	new /obj/item/reagent_containers/glass/bottle/amanitin(src)
 	new /obj/item/reagent_containers/syringe(src)

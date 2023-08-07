@@ -384,7 +384,7 @@
 	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	overdose_threshold =20
 	pain_power = 200
-	effective_dose = 2
+	effective_cycle = 2
 
 /datum/reagent/medicine/morphine
 	name = "Morphine"
@@ -801,13 +801,35 @@
 		if(!spoke)
 			to_chat(C, span_notice("Your skin feels cold as the synthetic flesh integrates itself into your wounds."))
 			spoke = TRUE
-		C.heal_overall_damage(2 * removed, 2 * removed, updating_health = FALSE)
+		C.heal_overall_damage(2 * removed, 2 * removed, BODYTYPE_ORGANIC, updating_health = FALSE)
 		. = TRUE
 
-	if(HAS_TRAIT_FROM(C, TRAIT_HUSK, BURN) && carbies.getFireLoss() < UNHUSK_DAMAGE_THRESHOLD && (volume >= SYNTHFLESH_UNHUSK_AMOUNT))
+	if(HAS_TRAIT_FROM(C, TRAIT_HUSK, BURN) && C.getFireLoss() < UNHUSK_DAMAGE_THRESHOLD && (volume >= SYNTHFLESH_UNHUSK_AMOUNT))
 		C.cure_husk(BURN)
-		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [carbies]'s burns. [carbies] looks a lot healthier!") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
+		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [C]'s burns.") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
 
 /datum/reagent/medicine/synthflesh/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(1 * removed)
 	return TRUE
+
+/datum/reagent/medicine/atropine
+	name = "Atropine"
+	description = "If a patient is in critical condition, rapidly heals all damage types as well as regulating oxygen in the body. Excellent for stabilizing wounded patients."
+	reagent_state = LIQUID
+	color = "#1D3535" //slightly more blue, like epinephrine
+	metabolization_rate = 0.1
+	overdose_threshold = 35
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/atropine/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.health <= C.crit_threshold)
+		C.adjustToxLoss(-2 * removed, 0)
+		C.adjustBruteLoss(-2 * removed, 0)
+		C.adjustFireLoss(-2 * removed, 0)
+		C.adjustOxyLoss(-5 * removed, 0)
+		. = TRUE
+	C.losebreath = 0
+	if(prob(20))
+		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
+		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)

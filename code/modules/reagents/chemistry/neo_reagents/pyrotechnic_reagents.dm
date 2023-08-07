@@ -99,7 +99,7 @@
 		for(var/turf/nearby_turf in RANGE_TURFS(1, exposed_turf))
 			nearby_turf.create_fire(1, 10)
 
-/datum/reagent/clf3/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/clf3/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	exposed_mob.adjust_fire_stacks(min(reac_volume/5, 10))
 	var/turf/T = get_turf(exposed_mob)
@@ -214,7 +214,7 @@
 /datum/reagent/napalm/affect_touch(mob/living/carbon/C, removed)
 	C.adjust_fire_stacks(1 * removed)
 
-/datum/reagent/napalm/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/napalm/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(istype(exposed_mob) && (methods & (TOUCH|VAPOR)))
 		exposed_mob.adjust_fire_stacks(min(reac_volume/4, 20))
@@ -272,7 +272,7 @@
 	. = ..()
 	exposed_obj.extinguish()
 
-/datum/reagent/firefighting_foam/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/firefighting_foam/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.extinguish_mob() //All stacks are removed

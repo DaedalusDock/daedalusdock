@@ -116,7 +116,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			exposed_obj.visible_message(span_warning("[exposed_obj]'s ink is smeared by [name], but doesn't wash away!"))
 
 
-/datum/reagent/consumable/ethanol/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+/datum/reagent/consumable/ethanol/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)))
 		return

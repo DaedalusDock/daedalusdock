@@ -96,7 +96,7 @@
 		new /obj/item/soap/homemade(location)
 
 /datum/chemical_reaction/omegasoapification
-	required_reagents = list(/datum/reagent/consumable/potato_juice = 10, /datum/reagent/consumable/ethanol/lizardwine = 10, /datum/reagent/monkey_powder = 10, /datum/reagent/drug/krokodil = 10, /datum/reagent/toxin/acid/nitracid = 10, /datum/reagent/baldium = 10, /datum/reagent/consumable/ethanol/hooch = 10, /datum/reagent/bluespace = 10, /datum/reagent/drug/pumpup = 10, /datum/reagent/consumable/space_cola = 10)
+	required_reagents = list(/datum/reagent/consumable/potato_juice = 10, /datum/reagent/consumable/ethanol/lizardwine = 10, /datum/reagent/monkey_powder = 10, /datum/reagent/drug/krokodil = 10, /datum/reagent/toxin/acid/nitracid = 10, /datum/reagent/baldium = 10, /datum/reagent/consumable/ethanol/hooch = 10, /datum/reagent/drug/pumpup = 10, /datum/reagent/consumable/space_cola = 10)
 	required_temp = 999
 	optimal_temp = 999
 	overheat_temp = 1200
@@ -687,19 +687,6 @@
 	var/location = get_turf(holder.my_atom)
 	new /obj/item/slime_extract/grey(location)
 
-/datum/chemical_reaction/metalgen_imprint
-	required_reagents = list(/datum/reagent/metalgen = 1, /datum/reagent/liquid_dark_matter = 1)
-	results = list(/datum/reagent/metalgen = 1)
-	reaction_flags = REACTION_INSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
-
-/datum/chemical_reaction/metalgen_imprint/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	var/datum/reagent/metalgen/MM = holder.get_reagent(/datum/reagent/metalgen)
-	for(var/datum/reagent/R in holder.reagent_list)
-		if(R.material && R.volume >= 40)
-			MM.data["material"] = R.material
-			holder.remove_reagent(R.type, 40)
-
 /datum/chemical_reaction/gravitum
 	required_reagents = list(/datum/reagent/wittel = 1, /datum/reagent/sorium = 10)
 	results = list(/datum/reagent/gravitum = 10)
@@ -806,73 +793,6 @@
 	rate_up_lim = 50
 	mix_message = "The mixture's colors swirl together."
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
-
-/datum/chemical_reaction/eigenstate
-	results = list(/datum/reagent/eigenstate = 1)
-	required_reagents = list(/datum/reagent/bluespace = 1, /datum/reagent/stable_plasma = 1, /datum/reagent/consumable/caramel = 1)
-	mix_message = "the reaction zaps suddenly!"
-	mix_sound = 'sound/chemistry/bluespace.ogg'
-	//FermiChem vars:
-	required_temp = 350
-	optimal_temp = 600
-	overheat_temp = 650
-	temp_exponent_factor = 1.5
-	thermic_constant = 12
-	rate_up_lim = 10
-	reaction_flags = REACTION_HEAT_ARBITARY
-	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
-
-/datum/chemical_reaction/eigenstate/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
-	. = ..()
-	var/turf/open/location = get_turf(holder.my_atom)
-
-	var/datum/reagent/eigenstate/eigen = holder.has_reagent(/datum/reagent/eigenstate)
-	if(!eigen)
-		return
-	if(location)
-		eigen.location_created = location
-		eigen.data["location_created"] = location
-
-	do_sparks(5,FALSE,location)
-	playsound(location, 'sound/effects/phasein.ogg', 80, TRUE)
-
-/datum/chemical_reaction/eigenstate/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	if(!off_cooldown(holder, equilibrium, 0.5, "eigen"))
-		return
-	var/turf/location = get_turf(holder.my_atom)
-	do_sparks(3,FALSE,location)
-	playsound(location, 'sound/effects/phasein.ogg', 80, TRUE)
-	for(var/mob/living/nearby_mob in range(location, 3))
-		do_sparks(3,FALSE,nearby_mob)
-		do_teleport(nearby_mob, get_turf(holder.my_atom), 3, no_effects=TRUE)
-		nearby_mob.Knockdown(20, TRUE)
-		nearby_mob.add_atom_colour("#cebfff", WASHABLE_COLOUR_PRIORITY)
-		to_chat()
-		do_sparks(3,FALSE,nearby_mob)
-	clear_products(holder, step_volume_added)
-
-/datum/chemical_reaction/eigenstate/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	if(!off_cooldown(holder, equilibrium, 1, "eigen"))
-		return
-	var/turf/location = get_turf(holder.my_atom)
-	do_sparks(3,FALSE,location)
-	holder.chem_temp += 10
-	playsound(location, 'sound/effects/phasein.ogg', 80, TRUE)
-	var/lets_not_go_crazy = 15 //Teleport 15 items at max
-	var/list/items = list()
-	for(var/obj/item/item in range(location, 3))
-		items += item
-	shuffle(items)
-	for(var/obj/item/item in items)
-		do_teleport(item, location, 3, no_effects=TRUE)
-		lets_not_go_crazy -= 1
-		item.add_atom_colour("#c4b3fd", WASHABLE_COLOUR_PRIORITY)
-		if(!lets_not_go_crazy)
-			clear_products(holder, step_volume_added)
-			return
-	clear_products(holder, step_volume_added)
-	holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))] The reaction gives out a fizz, teleporting items everywhere!"))
 
 /datum/chemical_reaction/ants // Breeding ants together, high sugar cost makes this take a while to farm.
 	results = list(/datum/reagent/ants = 3)

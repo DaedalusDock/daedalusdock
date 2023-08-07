@@ -26,5 +26,4 @@
 /obj/item/reagent_containers/glass/beaker/large/aiuri : /obj/item/reagent_containers/glass/beaker/large/kelotane
 /obj/item/reagent_containers/medigel/aiuri : /obj/item/reagent_containers/pill/bicaridine
 /obj/item/reagent_containers/syringe/convermol : @DELETE
-
-
+/obj/item/reagent_containers/glass/bottle/coniine : /obj/item/reagent_containers/glass/bottle/lexorin

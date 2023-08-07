@@ -328,7 +328,7 @@
 	penetrates_skin = NONE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/condensedcapsaicin/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+/datum/reagent/consumable/condensedcapsaicin/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!ishuman(exposed_mob))
 		return
@@ -642,7 +642,7 @@
 	taste_description = "bitterness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/tearjuice/expose_mob(mob/living/exposed_mob, methods, reac_volume)
+/datum/reagent/consumable/tearjuice/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!(methods & INGEST) || !((methods & (TOUCH|VAPOR)) && (exposed_mob.is_mouth_covered() || exposed_mob.is_eyes_covered())))
 		return

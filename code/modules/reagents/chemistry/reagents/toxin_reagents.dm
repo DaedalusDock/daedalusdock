@@ -40,7 +40,7 @@
 	taste_mult = 0.9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/toxin/mutagen/expose_mob(mob/living/carbon/exposed_mob, methods, reac_volume)
+/datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!exposed_mob.has_dna() || HAS_TRAIT(exposed_mob, TRAIT_GENELESS) || HAS_TRAIT(exposed_mob, TRAIT_BADDNA))
 		return  //No robots, AIs, aliens, Ians or other mobs should be affected by this.
@@ -311,7 +311,7 @@
 		var/obj/structure/spacevine/SV = exposed_obj
 		SV.on_chem_effect(src)
 
-/datum/reagent/toxin/plantbgone/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume)
+/datum/reagent/toxin/plantbgone/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	var/damage = min(round(0.4 * reac_volume, 0.1), 10)
 	if(exposed_mob.mob_biotypes & MOB_PLANT)
@@ -351,7 +351,7 @@
 		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 1))
 		mytray.adjust_pestlevel(-rand(1,2))
 
-/datum/reagent/toxin/pestkiller/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/toxin/pestkiller/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(exposed_mob.mob_biotypes & MOB_BUG)
 		var/damage = min(round(0.4*reac_volume, 0.1),10)
@@ -896,7 +896,7 @@
 /datum/reagent/toxin/anacea/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	var/remove_amt = 5
-	if(holder.has_reagent(/datum/reagent/medicine/calomel) || holder.has_reagent(/datum/reagent/medicine/pen_acid))
+	if(holder.has_reagent(/datum/reagent/medicine/activated_charcoal))
 		remove_amt = 0.5
 	for(var/datum/reagent/medicine/R in holder.reagent_list)
 		holder.remove_reagent(R.type, remove_amt * removed)

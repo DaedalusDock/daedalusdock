@@ -216,7 +216,7 @@
 /datum/reagent/toxin/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
 	C.acid_act(acidpwr, removed)
 
-/datum/reagent/toxin/acid/expose_mob(mob/living/carbon/exposed_carbon, methods=TOUCH, reac_volume)
+/datum/reagent/toxin/acid/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!istype(exposed_carbon))
 		return

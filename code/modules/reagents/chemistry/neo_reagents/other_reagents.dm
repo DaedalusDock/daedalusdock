@@ -56,7 +56,7 @@
 /*
  * Water reaction to a mob
  */
-/datum/reagent/water/expose_mob(mob/living/exposed_mob, exposed_temperature, reac_volume, methods=TOUCH)
+/datum/reagent/water/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & TOUCH)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_TOUCH) // Water makes you wet, at a 50% water-to-wet-stacks ratio. Which, in turn, gives you some mild protection from being set on fire!
@@ -118,7 +118,7 @@
 	REMOVE_TRAIT(L, TRAIT_HOLY, type)
 	..()
 
-/datum/reagent/water/holywater/expose_mob(mob/living/exposed_mob, exposed_temperature, reac_volume, methods=TOUCH)
+/datum/reagent/water/holywater/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(IS_CULTIST(exposed_mob))
 		to_chat(exposed_mob, span_userdanger("A vile holiness begins to spread its shining tendrils through your mind, purging the Geometer of Blood's influence!"))
@@ -644,7 +644,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/alcohol = 4)
 
-/datum/reagent/fuel/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with welding fuel to make them easy to ignite!
+/datum/reagent/fuel/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)//Splashing people with welding fuel to make them easy to ignite!
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.adjust_fire_stacks(reac_volume / 10)
@@ -701,7 +701,7 @@
 	C.adjustToxLoss(1.665*removed, FALSE)
 	return TRUE
 
-/datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if((methods & (TOUCH|VAPOR)) && !issilicon(exposed_mob))
 		exposed_mob.adjustBruteLoss(1.5)
@@ -750,9 +750,32 @@
 	metabolization_rate = INFINITY
 	taste_description = "brains"
 
-/datum/reagent/romerol/expose_mob(mob/living/carbon/human/exposed_mob, methods=TOUCH, reac_volume)
+/datum/reagent/romerol/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	// Silently add the zombie infection organ to be activated upon death
 	if(!exposed_mob.getorganslot(ORGAN_SLOT_ZOMBIE))
 		var/obj/item/organ/zombie_infection/nodamage/ZI = new()
 		ZI.Insert(exposed_mob)
+
+/datum/reagent/fuel/oil
+	name = "Oil"
+	description = "Burns in a small smoky fire, can be used to get Ash."
+	reagent_state = LIQUID
+	color = "#2D2D2D"
+	taste_description = "oil"
+	burning_temperature = 1200//Oil is crude
+	burning_volume = 0.05 //but has a lot of hydrocarbons
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	addiction_types = null
+
+/datum/reagent/stable_plasma
+	name = "Stable Plasma"
+	description = "Non-flammable plasma locked into a liquid form that cannot ignite or become gaseous/solid."
+	reagent_state = LIQUID
+	color = "#2D2D2D"
+	taste_description = "bitterness"
+	taste_mult = 1.5
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/stable_plasma/affect_blood(mob/living/carbon/C, removed)
+	C.adjustPlasma(10 * removed)

@@ -183,11 +183,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.15
 	wall_type = null
 
-/datum/material/bluespace/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.reagents.add_reagent(/datum/reagent/bluespace, rand(5, 8))
-	source_item?.reagents?.add_reagent(/datum/reagent/bluespace, source_item.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Honks and slips
 /datum/material/bananium
 	name = "bananium"

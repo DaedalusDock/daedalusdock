@@ -147,7 +147,12 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 			if(CHEM_TOUCH)
 				. = affect_touch(M, effective)
 			if(CHEM_INGEST)
-				. = affect_ingest(M, effective)
+				if(type == M.dna?.species.exotic_blood)
+					M.blood_volume = min(M.blood_volume + round(volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+					holder.del_reagent(type)
+					return
+				else
+					. = affect_ingest(M, effective)
 
 	holder.remove_reagent(type, removed)
 

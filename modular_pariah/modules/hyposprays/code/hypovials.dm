@@ -64,8 +64,8 @@
 	list_reagents = list(/datum/reagent/medicine/tricordrazine = 20, /datum/reagent/medicine/leporazine = 20, /datum/reagent/medicine/atropine = 20)
 
 /obj/item/reagent_containers/glass/vial/large/salglu
-	name = "large green hypovial (salglu)"
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 60)
+	name = "large green hypovial (saline glucose)"
+	list_reagents = list(/datum/reagent/medicine/saline_glucose = 60)
 
 /obj/item/reagent_containers/glass/vial/large/synthflesh
 	name = "large orange hypovial (synthflesh)"

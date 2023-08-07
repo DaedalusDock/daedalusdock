@@ -194,10 +194,10 @@
 	desc = "A small bottle of potassium iodide."
 	list_reagents = list(/datum/reagent/medicine/potass_iodide = 30)
 
-/obj/item/reagent_containers/glass/bottle/salglu_solution
+/obj/item/reagent_containers/glass/bottle/saline_glucose
 	name = "saline-glucose solution bottle"
 	desc = "A small bottle of saline-glucose solution."
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 30)
+	list_reagents = list(/datum/reagent/medicine/saline_glucose = 30)
 
 /obj/item/reagent_containers/glass/bottle/atropine
 	name = "atropine bottle"

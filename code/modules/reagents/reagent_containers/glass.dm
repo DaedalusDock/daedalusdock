@@ -387,4 +387,4 @@
 /obj/item/reagent_containers/glass/saline
 	name = "saline canister"
 	volume = 5000
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 5000)
+	list_reagents = list(/datum/reagent/medicine/saline_glucose = 5000)

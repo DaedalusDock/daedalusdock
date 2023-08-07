@@ -719,7 +719,7 @@
 
 /datum/chemical_reaction/drink/salt_and_swell
 	results = list(/datum/reagent/consumable/ethanol/salt_and_swell = 10)
-	required_reagents = list(/datum/reagent/consumable/ethanol/navy_rum = 4, /datum/reagent/consumable/toechtauese_syrup = 3, /datum/reagent/consumable/eggwhite = 2, /datum/reagent/medicine/salglu_solution = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol/navy_rum = 4, /datum/reagent/consumable/toechtauese_syrup = 3, /datum/reagent/consumable/eggwhite = 2, /datum/reagent/medicine/saline_glucose = 1)
 
 /datum/chemical_reaction/drink/tiltaellen
 	results = list(/datum/reagent/consumable/ethanol/tiltaellen = 10)

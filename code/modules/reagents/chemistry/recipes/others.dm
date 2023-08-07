@@ -191,7 +191,7 @@
 
 /datum/chemical_reaction/virus_food_mutagen_salineglucose
 	results = list(/datum/reagent/toxin/mutagen/mutagenvirusfood/sugar = 2)
-	required_reagents = list(/datum/reagent/medicine/salglu_solution = 1, /datum/reagent/toxin/mutagen/mutagenvirusfood = 1)
+	required_reagents = list(/datum/reagent/medicine/saline_glucose = 1, /datum/reagent/toxin/mutagen/mutagenvirusfood = 1)
 
 /datum/chemical_reaction/virus_food_uranium
 	results = list(/datum/reagent/uranium/uraniumvirusfood = 1)

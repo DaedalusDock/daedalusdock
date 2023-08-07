@@ -729,7 +729,6 @@
 	description = "Royal Bee Jelly, if injected into a Queen Space Bee said bee will split into two bees."
 	color = "#00ff80"
 	taste_description = "strange honey"
-	ph = 3
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/royal_bee_jelly/affect_blood(mob/living/carbon/C, removed)

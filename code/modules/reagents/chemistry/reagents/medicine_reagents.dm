@@ -324,7 +324,7 @@
 	var/effectiveness = volume
 
 	if(current_cycle < effective_cycle)
-		effectiveness = volume * cycle/effective_cycle
+		effectiveness = volume * current_cycle/effective_cycle
 
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power * effectiveness)
 
@@ -735,8 +735,52 @@
 	else if(M.bodytemperature < (target_temp + 1))
 		C.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, target_temp)
 	if(ishuman(C))
-		var/mob/living/carbon/human/humi = M
+		var/mob/living/carbon/human/humi = C
 		if(humi.coretemperature > target_temp)
 			humi.adjust_coretemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, target_temp)
 		else if(humi.coretemperature < (target_temp + 1))
 			humi.adjust_coretemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, target_temp)
+
+
+/datum/reagent/medicine/potass_iodide
+	name = "Potassium Iodide"
+	description = "Heals low toxin damage while the patient is irradiated, and will halt the damaging effects of radiation."
+	reagent_state = LIQUID
+	color = "#BAA15D"
+	metabolization_rate = 0.4
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/potass_iodide/on_mob_metabolize(mob/living/carbon/C, class)
+	ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/medicine/potass_iodide/on_mob_end_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/medicine/potass_iodide/affect_blood(mob/living/carbon/C, removed)
+	if (HAS_TRAIT(C, TRAIT_IRRADIATED))
+		M.adjustToxLoss(-1 * removed)
+
+/datum/reagent/medicine/saline_glucose
+	name = "Saline-Glucose"
+	description = "Promotes blood rejuvination in living creatures."
+	reagent_state = LIQUID
+	color = "#DCDCDC"
+	metabolization_rate = 0.1
+	overdose_threshold = 60
+	taste_description = "sweetness and salt"
+	var/last_added = 0
+	var/maximum_reachable = BLOOD_VOLUME_NORMAL - 10 //So that normal blood regeneration can continue with salglu active
+	var/extra_regen = 0.25 // in addition to acting as temporary blood, also add about half this much to their actual blood per second
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/saline_glucose/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	if(last_added)
+		C.blood_volume -= last_added
+		last_added = 0
+
+	if(C.blood_volume < maximum_reachable) //Can only up to double your effective blood level.
+		var/amount_to_add = min(C.blood_volume, 5*volume)
+		var/new_blood_level = min(C.blood_volume + amount_to_add, maximum_reachable)
+		last_added = new_blood_level - C.blood_volume
+		C.blood_volume = new_blood_level + (extra_regen * removed)

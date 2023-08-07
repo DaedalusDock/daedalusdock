@@ -3,8 +3,8 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = 0
-	. |= SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_ATOM, exposed_atom, reac_volume, exposed_temperature, datum/reagents/source)
-	. |= SEND_SIGNAL(exposed_atom, COMSIG_ATOM_EXPOSE_REAGENT, src, reac_volume, exposed_temperature, datum/reagents/source)
+	. |= SEND_SIGNAL(src, COMSIG_REAGENT_EXPOSE_ATOM, exposed_atom, reac_volume, exposed_temperature, source)
+	. |= SEND_SIGNAL(exposed_atom, COMSIG_ATOM_EXPOSE_REAGENT, src, reac_volume, exposed_temperature, source)
 
 /// Applies this reagent to a [/mob/living]
 /datum/reagent/proc/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)

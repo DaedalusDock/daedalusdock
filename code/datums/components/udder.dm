@@ -164,7 +164,7 @@
 		reagents.add_reagent(/datum/reagent/consumable/cream, rand(2, 5))
 		made_something = TRUE
 	if(prob(45))
-		reagents.add_reagent(/datum/reagent/medicine/salglu_solution, rand(2,5))
+		reagents.add_reagent(/datum/reagent/medicine/saline_glucose, rand(2,5))
 		made_something = TRUE
 	if(made_something && on_generate_callback)
 		on_generate_callback.Invoke(reagents.total_volume, reagents.maximum_volume)

@@ -83,8 +83,8 @@
 	required_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/lithium = 1, /datum/reagent/water = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
 
-/datum/chemical_reaction/medicine/salglu_solution
-	results = list(/datum/reagent/medicine/salglu_solution = 3)
+/datum/chemical_reaction/medicine/saline_glucose
+	results = list(/datum/reagent/medicine/saline_glucose = 3)
 	required_reagents = list(/datum/reagent/consumable/salt = 1, /datum/reagent/water = 1, /datum/reagent/consumable/sugar = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
 

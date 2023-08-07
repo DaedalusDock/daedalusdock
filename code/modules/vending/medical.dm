@@ -63,7 +63,7 @@
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
 					/obj/item/reagent_containers/glass/bottle/morphine = 4,
 					/obj/item/reagent_containers/glass/bottle/potass_iodide = 1,
-					/obj/item/reagent_containers/glass/bottle/salglu_solution = 3,
+					/obj/item/reagent_containers/glass/bottle/saline_glucose = 3,
 					/obj/item/reagent_containers/glass/bottle/toxin = 3,
 					/obj/item/reagent_containers/syringe/antiviral = 6,
 					/obj/item/reagent_containers/medigel/libital = 2,

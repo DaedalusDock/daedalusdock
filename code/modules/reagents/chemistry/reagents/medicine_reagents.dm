@@ -784,3 +784,29 @@
 		var/new_blood_level = min(C.blood_volume + amount_to_add, maximum_reachable)
 		last_added = new_blood_level - C.blood_volume
 		C.blood_volume = new_blood_level + (extra_regen * removed)
+
+/datum/reagent/medicine/synthflesh
+	name = "Synthflesh"
+	description = "Synthetic flesh that weaves itself into organic creatures. Do not ingest."
+	reagent_state = LIQUID
+	color = "#FFEBEB"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	touch_met = 1
+	metabolization_rate = 0.2
+	var/spoke
+
+/datum/reagent/medicine/synthflesh/affect_touch(mob/living/carbon/C, removed)
+	if(C.getFireLoss() || C.getBruteLoss())
+		if(!spoke)
+			to_chat(C, span_notice("Your skin feels cold as the synthetic flesh integrates itself into your wounds."))
+			spoke = TRUE
+		C.heal_overall_damage(2 * removed, 2 * removed, updating_health = FALSE)
+		. = TRUE
+
+	if(HAS_TRAIT_FROM(C, TRAIT_HUSK, BURN) && carbies.getFireLoss() < UNHUSK_DAMAGE_THRESHOLD && (volume >= SYNTHFLESH_UNHUSK_AMOUNT))
+		C.cure_husk(BURN)
+		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [carbies]'s burns. [carbies] looks a lot healthier!") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
+
+/datum/reagent/medicine/synthflesh/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(1 * removed)
+	return TRUE

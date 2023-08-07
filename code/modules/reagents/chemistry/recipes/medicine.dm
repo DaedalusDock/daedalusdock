@@ -99,7 +99,7 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
 
 /datum/chemical_reaction/medicine/synthflesh
-	results = list(/datum/reagent/medicine/c2/synthflesh = 3)
+	results = list(/datum/reagent/medicine//synthflesh = 3)
 	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/meralyne = 1)
 	required_temp = 250
 	optimal_temp = 310

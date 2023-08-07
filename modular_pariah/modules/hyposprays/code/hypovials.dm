@@ -69,7 +69,7 @@
 
 /obj/item/reagent_containers/glass/vial/large/synthflesh
 	name = "large orange hypovial (synthflesh)"
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 60)
+	list_reagents = list(/datum/reagent/medicine//synthflesh = 60)
 
 /obj/item/reagent_containers/glass/vial/large/multiver
 	name = "large black hypovial (multiver)"

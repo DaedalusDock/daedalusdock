@@ -83,7 +83,7 @@
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap. This one contains synthflesh, a slightly toxic medicine capable of healing both bruises and burns."
 	icon_state = "synthgel"
 	current_skin = "synthgel"
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 60)
+	list_reagents = list(/datum/reagent/medicine//synthflesh = 60)
 	custom_price = PAYCHECK_MEDIUM * 5
 
 /obj/item/reagent_containers/medigel/sterilizine

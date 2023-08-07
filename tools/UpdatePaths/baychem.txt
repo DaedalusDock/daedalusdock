@@ -14,3 +14,7 @@
 /obj/item/reagent_containers/hypospray/medipen/salbutamol : /obj/item/reagent_containers/hypospray/medipen/dexalin
 /obj/item/reagent_containers/pill/salbutamol : /obj/item/reagent_containers/pill/dexalin
 /obj/item/reagent_containers/glass/bottle/salglu_solution : /obj/item/reagent_containers/glass/bottle/saline_glucose
+/obj/item/reagent_containers/glass/bottle/acidic_buffer : @DELETE
+/obj/item/reagent_containers/spray/hercuri : /obj/item/storage/pill_bottle/dermaline
+/obj/item/reagent_containers/pill/probital : /obj/item/reagent_containers/pill/meralyne
+/obj/item/storage/pill_bottle/meralyne : /obj/item/storage/pill_bottle/meralyne

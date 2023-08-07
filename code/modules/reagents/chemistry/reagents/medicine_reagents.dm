@@ -421,7 +421,7 @@
 	color = "#800080"
 	overdose_threshold = 20
 	pain_power = 200
-	effective_dose = 2
+	effective_cycle = 2
 	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	addiction_types = list(/datum/addiction/opiods = 20)
 
@@ -758,7 +758,7 @@
 
 /datum/reagent/medicine/potass_iodide/affect_blood(mob/living/carbon/C, removed)
 	if (HAS_TRAIT(C, TRAIT_IRRADIATED))
-		M.adjustToxLoss(-1 * removed)
+		C.adjustToxLoss(-1 * removed)
 
 /datum/reagent/medicine/saline_glucose
 	name = "Saline-Glucose"

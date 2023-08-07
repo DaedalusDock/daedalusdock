@@ -282,11 +282,18 @@
 	list_reagents = list(/datum/reagent/medicine/potass_iodide = 15)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/probital
-	name = "Probital pill"
-	desc = "Used to treat brute damage of minor and moderate severity.The carving in the pill says 'Eat before ingesting'. Causes fatigue and diluted with granibitaluri."
+/obj/item/reagent_containers/pill/meralyne
+	name = "meralyne pill"
+	desc = "Used to treat brute damage of minor and moderate severity. The carving in the pill says 'Eat before ingesting'."
 	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/c2/probital = 5, /datum/reagent/medicine/granibitaluri = 10)
+	list_reagents = list(/datum/reagent/medicine/meralyne = 5)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/dermaline
+	name = "dermaline pill"
+	desc = "Used to treat second and third degree burns. The carving in the pill says 'Eat before ingesting'."
+	icon_state = "pill12"
+	list_reagents = list(/datum/reagent/medicine/dermaline = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/iron

@@ -209,22 +209,23 @@
 
 /datum/bounty/pill/simple_pill/New()
 	//reagent that are possible to be chem factory'd
-	var/static/list/possible_reagents = list(\
-		/datum/reagent/medicine/spaceacillin,\
-		/datum/reagent/medicine/c2/synthflesh,\
-		/datum/reagent/medicine/pen_acid,\
-		/datum/reagent/medicine/atropine,\
-		/datum/reagent/medicine/cryoxadone,\
-		/datum/reagent/medicine/dexalin,\
-		/datum/reagent/medicine/c2/hercuri,\
-		/datum/reagent/medicine/c2/probital,\
-		/datum/reagent/drug/methamphetamine,\
-		/datum/reagent/nitrous_oxide,\
-		/datum/reagent/barbers_aid,\
-		/datum/reagent/pax,\
-		/datum/reagent/flash_powder,\
-		/datum/reagent/phlogiston,\
-		/datum/reagent/firefighting_foam)
+	var/static/list/possible_reagents = list(
+		/datum/reagent/medicine/spaceacillin,
+		/datum/reagent/medicine/c2/synthflesh,
+		/datum/reagent/medicine/pen_acid,
+		/datum/reagent/medicine/atropine,
+		/datum/reagent/medicine/cryoxadone,
+		/datum/reagent/medicine/dexalin,
+		/datum/reagent/medicine/dermaline,
+		/datum/reagent/medicine/meralyne,
+		/datum/reagent/drug/methamphetamine,
+		/datum/reagent/nitrous_oxide,
+		/datum/reagent/barbers_aid,
+		/datum/reagent/pax,
+		/datum/reagent/flash_powder,
+		/datum/reagent/phlogiston,
+		/datum/reagent/firefighting_foam
+	)
 
 	var/datum/reagent/reagent_type = pick(possible_reagents)
 	wanted_reagent = new reagent_type

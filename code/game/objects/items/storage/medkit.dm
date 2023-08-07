@@ -170,7 +170,7 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/aiuri = 3,
-		/obj/item/reagent_containers/spray/hercuri = 1,
+		/obj/item/storage/pill_bottle/dermaline = 1,
 		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1)
 	generate_items_inside(items_inside,src)
@@ -235,7 +235,7 @@
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
 		/obj/item/stack/gauze = 1,
-		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/storage/pill_bottle/meralyne = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
 		/obj/item/stack/splint = 1
 	)
@@ -373,13 +373,21 @@
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/potassiodide(src)
 
-/obj/item/storage/pill_bottle/probital
-	name = "bottle of probital pills"
+/obj/item/storage/pill_bottle/meralyne
+	name = "bottle of meralyne pills"
 	desc = "Contains pills used to treat brute damage.The tag in the bottle states 'Eat before ingesting, may cause fatigue'."
 
-/obj/item/storage/pill_bottle/probital/PopulateContents()
+/obj/item/storage/pill_bottle/meralyne/PopulateContents()
 	for(var/i in 1 to 4)
-		new /obj/item/reagent_containers/pill/probital(src)
+		new /obj/item/reagent_containers/pill/meralyne(src)
+
+/obj/item/storage/pill_bottle/dermaline
+	name = "bottle of dermaline pills"
+	desc = "Used to treat second and third degree burns. The carving in the pill says 'Eat before ingesting'."
+
+/obj/item/storage/pill_bottle/meralyne/PopulateContents()
+	for(var/i in 1 to 4)
+		new /obj/item/reagent_containers/pill/dermaline(src)
 
 /obj/item/storage/pill_bottle/iron
 	name = "bottle of iron pills"

@@ -138,7 +138,12 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	if(effective >= (metabolization_rate * 0.1) || effective >= 0.1)
 		switch(location)
 			if(CHEM_BLOOD)
-				. = affect_blood(M, effective)
+				if(type == M.dna?.exotic_blood)
+					M.blood_volume = min(H.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+					holder.del_reagent(type)
+					return
+				else
+					. = affect_blood(M, effective)
 			if(CHEM_TOUCH)
 				. = affect_touch(M, effective)
 			if(CHEM_INGEST)

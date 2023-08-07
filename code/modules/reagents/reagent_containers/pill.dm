@@ -121,11 +121,11 @@
 	list_reagents = list(/datum/reagent/medicine/dexalin = 30)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/multiver
-	name = "multiver pill"
-	desc = "Neutralizes many common toxins and scales with unique medicine in the system. Diluted with granibitaluri."
+/obj/item/reagent_containers/pill/dylovene
+	name = "dylovene pill"
+	desc = "Helps counteract nervous system damage induced by toxins."
 	icon_state = "pill17"
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 5, /datum/reagent/medicine/granibitaluri = 5)
+	list_reagents = list(/datum/reagent/medicine/c2/dylovene = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/epinephrine

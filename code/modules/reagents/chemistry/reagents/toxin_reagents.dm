@@ -89,6 +89,10 @@
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
 	C.adjustPlasma(20 * removed)
+	if(isplasmaman(C))
+		if(prob(10))
+			for(var/obj/item/bodypart/BP as anything in H.bodyparts)
+				BP.heal_bones()
 
 /// Handles plasma boiling.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
@@ -357,6 +361,16 @@
 	if(exposed_mob.mob_biotypes & MOB_BUG)
 		var/damage = min(round(0.4*reac_volume, 0.1),10)
 		exposed_mob.adjustToxLoss(damage)
+
+/datum/reagent/toxin/pestkiller/affect_blood(mob/living/carbon/C, removed)
+	if(!(ismoth(C) || isflyperson(C)))
+		return
+
+	C.adjustToxLoss(3 * removed, FALSE)
+	return TRUE
+
+/datum/reagent/toxin/pestkiller/affect_touch(mob/living/carbon/C, removed)
+	return affect_blood(C, removed)
 
 /datum/reagent/toxin/pestkiller/organic
 	name = "Natural Pest Killer"

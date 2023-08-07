@@ -143,37 +143,6 @@
 	rate_up_lim = 15
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_TOXIN
 
-/datum/chemical_reaction/medicine/multiver
-	results = list(/datum/reagent/medicine/c2/multiver = 2)
-	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/salt = 1)
-	mix_message = "The mixture yields a fine black powder."
-	required_temp = 380
-	optimal_temp = 400
-	overheat_temp = 410
-	temp_exponent_factor = 0.1
-	thermic_constant = 0
-	rate_up_lim = 10
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_PLANT | REACTION_TAG_TOXIN
-
-//You get nothing! I'm serious about staying under the heating requirements!
-/datum/chemical_reaction/medicine/multiver/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	var/datum/reagent/monover = holder.has_reagent(/datum/reagent/inverse/healing/monover)
-	if(monover)
-		holder.remove_reagent(/datum/reagent/inverse/healing/monover, monover.volume)
-		holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))] The Monover bursts into flames from the heat!"))
-		explode_fire_square(holder, equilibrium, 1)
-		holder.my_atom.fire_act(holder.chem_temp, monover.volume)//I'm kinda banking on this setting the thing on fire. If you see this, then it didn't!
-
-/datum/chemical_reaction/medicine/multiver/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
-	. = ..()
-	if(delta_ph < 0.35)
-		//normalise delta_ph
-		var/norm_d_ph = 1-(delta_ph/0.35)
-		holder.chem_temp += norm_d_ph*12 //0 - 48 per second)
-	if(delta_ph < 0.1)
-		holder.my_atom.visible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))] The Monover begins to glow!"))
-
 /datum/chemical_reaction/medicine/syriniver
 	results = list(/datum/reagent/medicine/c2/syriniver = 5)
 	required_reagents = list(/datum/reagent/sulfur = 1, /datum/reagent/fluorine = 1, /datum/reagent/toxin = 1, /datum/reagent/nitrous_oxide = 2)

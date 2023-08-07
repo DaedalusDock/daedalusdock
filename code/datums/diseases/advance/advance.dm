@@ -45,7 +45,7 @@
 			/datum/reagent/consumable/salt, /datum/reagent/consumable/sugar, /datum/reagent/consumable/orangejuice, /datum/reagent/consumable/tomatojuice, /datum/reagent/consumable/milk
 		),
 		list( //level 4
-			/datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/saline_glucose, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/c2/multiver
+			/datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/saline_glucose, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/dylovene
 		),
 		list( //level 5
 			/datum/reagent/fuel/oil, /datum/reagent/medicine/synaptizine, /datum/reagent/medicine/alkysine, /datum/reagent/drug/space_drugs, /datum/reagent/cryptobiolin

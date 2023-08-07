@@ -20,7 +20,7 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 					/obj/item/healthanalyzer = 4,
 					/obj/item/reagent_containers/glass/bottle/bicaridine = 2,
 					/obj/item/reagent_containers/glass/bottle/kelotane = 5,
-					/obj/item/reagent_containers/glass/bottle/multiver = 1,
+					/obj/item/reagent_containers/glass/bottle/dylovene = 1,
 					/obj/item/reagent_containers/glass/bottle/syriniver = 1,
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
 					/obj/item/reagent_containers/glass/bottle/morphine = 3,

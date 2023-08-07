@@ -58,7 +58,7 @@
 					/obj/item/reagent_containers/pill/kelotane = 7,
 					/obj/item/reagent_containers/syringe/dexalin = 2,
 					/obj/item/reagent_containers/pill/insulin = 5,
-					/obj/item/reagent_containers/glass/bottle/multiver = 2,
+					/obj/item/reagent_containers/glass/bottle/dylovene = 2,
 					/obj/item/reagent_containers/glass/bottle/syriniver = 2,
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
 					/obj/item/reagent_containers/glass/bottle/morphine = 4,
@@ -70,7 +70,7 @@
 				)
 	contraband = list(/obj/item/reagent_containers/pill/tox = 3,
 					/obj/item/reagent_containers/pill/morphine = 4,
-					/obj/item/reagent_containers/pill/multiver = 6)
+					/obj/item/reagent_containers/pill/dylovene = 6)
 	premium = list(/obj/item/reagent_containers/medigel/synthflesh = 2,
 					/obj/item/storage/pill_bottle/psicodine = 2)
 	default_price = 50

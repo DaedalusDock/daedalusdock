@@ -56,12 +56,6 @@
 		H.take_overall_damage(1 * delta_time, 0)
 	..()
 
-/datum/species/pod/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	if(chem.type == /datum/reagent/toxin/plantbgone)
-		H.adjustToxLoss(3 * REAGENTS_EFFECT_MULTIPLIER * delta_time)
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
-		return TRUE
-
 /datum/species/pod/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
 	var/hairstyle = pick(GLOB.pod_hair_list)
 	human_mob.dna.features["pod_hair"] = hairstyle

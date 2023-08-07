@@ -54,10 +54,10 @@
 	desc = "A small bottle of Alkysine. Useful for healing brain damage."
 	list_reagents = list(/datum/reagent/medicine/alkysine = 30)
 
-/obj/item/reagent_containers/glass/bottle/multiver
-	name = "multiver bottle"
-	desc = "A small bottle of multiver, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 30)
+/obj/item/reagent_containers/glass/bottle/dylovene
+	name = "dylovene bottle"
+	desc = "A small bottle of dylovene, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/c2/dylovene = 30)
 
 /obj/item/reagent_containers/glass/bottle/calomel
 	name = "calomel bottle"

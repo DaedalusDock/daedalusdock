@@ -191,7 +191,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-	    /obj/item/storage/pill_bottle/multiver/less = 1,
+		/obj/item/storage/pill_bottle/dylovene/less = 1,
 		/obj/item/reagent_containers/syringe/syriniver = 3,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
 		/obj/item/reagent_containers/hypospray/medipen/penacid = 1)
@@ -334,19 +334,19 @@
 	user.visible_message(span_suicide("[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (TOXLOSS)
 
-/obj/item/storage/pill_bottle/multiver
-	name = "bottle of multiver pills"
+/obj/item/storage/pill_bottle/dylovene
+	name = "bottle of dylovene pills"
 	desc = "Contains pills used to counter toxins."
 
-/obj/item/storage/pill_bottle/multiver/PopulateContents()
+/obj/item/storage/pill_bottle/dylovene/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/multiver(src)
+		new /obj/item/reagent_containers/pill/dylovene(src)
 
-/obj/item/storage/pill_bottle/multiver/less
+/obj/item/storage/pill_bottle/dylovene/less
 
-/obj/item/storage/pill_bottle/multiver/less/PopulateContents()
+/obj/item/storage/pill_bottle/dylovene/less/PopulateContents()
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/multiver(src)
+		new /obj/item/reagent_containers/pill/dylovene(src)
 
 /obj/item/storage/pill_bottle/epinephrine
 	name = "bottle of epinephrine pills"

@@ -209,7 +209,7 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 			/obj/item/stack/medical/bruise_pack = 1,
 			) = 1,
 		list(//medical chems
-			/obj/item/reagent_containers/glass/bottle/multiver = 1,
+			/obj/item/reagent_containers/glass/bottle/dylovene = 1,
 			/obj/item/reagent_containers/hypospray/medipen = 1,
 			) = 1,
 		list(//drinks

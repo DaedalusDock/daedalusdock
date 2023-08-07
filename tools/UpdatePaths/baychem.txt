@@ -27,3 +27,7 @@
 /obj/item/reagent_containers/medigel/aiuri : /obj/item/reagent_containers/pill/bicaridine
 /obj/item/reagent_containers/syringe/convermol : @DELETE
 /obj/item/reagent_containers/glass/bottle/coniine : /obj/item/reagent_containers/glass/bottle/lexorin
+/obj/item/reagent_containers/glass/bottle/multiver : /obj/item/reagent_containers/glass/bottle/dylovene
+/obj/item/storage/pill_bottle/multiver : /obj/item/storage/pill_bottle/dylovene
+/obj/item/storage/pill_bottle/multiver/less : /obj/item/storage/pill_bottle/dylovene/less
+/obj/item/reagent_containers/glass/beaker/large/multiver : /obj/item/reagent_containers/glass/beaker/large/dylovene

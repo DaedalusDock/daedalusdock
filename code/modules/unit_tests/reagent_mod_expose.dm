@@ -4,9 +4,9 @@
 	name = "method patch test"
 	description = "Exposure Method Test Reagent"
 
-/datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0))
+/datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if(methods & PATCH)
+	if(methods & TOUCH)
 		target.health = 90
 	if(methods & INJECT)
 		target.health = 80

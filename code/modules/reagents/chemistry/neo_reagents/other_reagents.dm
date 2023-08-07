@@ -350,45 +350,6 @@
 
 	return ..()
 
-/datum/reagent/colorful_reagent
-	name = "Colorful Reagent"
-	description = "Thoroughly sample the rainbow."
-	reagent_state = LIQUID
-	var/list/random_color_list = list("#00aedb","#a200ff","#f47835","#d41243","#d11141","#00b159","#00aedb","#f37735","#ffc425","#008744","#0057e7","#d62d20","#ffa700")
-	color = "#C8A5DC"
-	taste_description = "rainbows"
-	var/can_colour_mobs = TRUE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	var/datum/callback/color_callback
-
-/datum/reagent/colorful_reagent/New()
-	color_callback = CALLBACK(src, PROC_REF(UpdateColor))
-	SSticker.OnRoundstart(color_callback)
-	return ..()
-
-/datum/reagent/colorful_reagent/Destroy()
-	LAZYREMOVE(SSticker.round_end_events, color_callback) //Prevents harddels during roundstart
-	color_callback = null //Fly free little callback
-	return ..()
-
-/datum/reagent/colorful_reagent/proc/UpdateColor()
-	color_callback = null
-	color = pick(random_color_list)
-
-/datum/reagent/colorful_reagent/affect_blood(mob/living/carbon/C, removed)
-	if(can_colour_mobs)
-		C.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
-
-/datum/reagent/colorful_reagent/affect_touch(mob/living/carbon/C, removed)
-	if(can_colour_mobs)
-		C.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
-
-/// Colors anything it touches a random color.
-/datum/reagent/colorful_reagent/expose_atom(atom/exposed_atom, reac_volume)
-	. = ..()
-	if(!isliving(exposed_atom) || can_colour_mobs)
-		exposed_atom.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
-
 /datum/reagent/hair_dye
 	name = "Quantum Hair Dye"
 	description = "Has a high chance of making you look like a mad scientist."
@@ -420,132 +381,6 @@
 	exposed_human.hair_color = pick(potential_colors)
 	exposed_human.facial_hair_color = pick(potential_colors)
 	exposed_human.update_body_parts()
-
-/////////////////////////Colorful Powder////////////////////////////
-//For colouring in /proc/mix_color_from_reagents
-
-/datum/reagent/colorful_reagent/powder
-	name = "Mundane Powder" //the name's a bit similar to the name of colorful reagent, but hey, they're practically the same chem anyway
-	var/colorname = "none"
-	description = "A powder that is used for coloring things."
-	reagent_state = SOLID
-	color = "#FFFFFF" // rgb: 207, 54, 0
-	taste_description = "the back of class"
-
-/datum/reagent/colorful_reagent/powder/New()
-	if(colorname == "none")
-		description = "A rather mundane-looking powder. It doesn't look like it'd color much of anything..."
-	else if(colorname == "invisible")
-		description = "An invisible powder. Unfortunately, since it's invisible, it doesn't look like it'd color much of anything..."
-	else
-		description = "\An [colorname] powder, used for coloring things [colorname]."
-	return ..()
-
-/datum/reagent/colorful_reagent/powder/red
-	name = "Red Powder"
-	colorname = "red"
-	color = "#DA0000" // red
-	random_color_list = list("#FC7474")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/orange
-	name = "Orange Powder"
-	colorname = "orange"
-	color = "#FF9300" // orange
-	random_color_list = list("#FF9300")
-
-/datum/reagent/colorful_reagent/powder/yellow
-	name = "Yellow Powder"
-	colorname = "yellow"
-	color = "#FFF200" // yellow
-	random_color_list = list("#FFF200")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/green
-	name = "Green Powder"
-	colorname = "green"
-	color = "#A8E61D" // green
-	random_color_list = list("#A8E61D")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/blue
-	name = "Blue Powder"
-	colorname = "blue"
-	color = "#00B7EF" // blue
-	random_color_list = list("#71CAE5")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/purple
-	name = "Purple Powder"
-	colorname = "purple"
-	color = "#DA00FF" // purple
-	random_color_list = list("#BD8FC4")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/invisible
-	name = "Invisible Powder"
-	colorname = "invisible"
-	color = "#FFFFFF00" // white + no alpha
-	random_color_list = list("#FFFFFF") //because using the powder color turns things invisible
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/black
-	name = "Black Powder"
-	colorname = "black"
-	color = "#1C1C1C" // not quite black
-	random_color_list = list("#8D8D8D") //more grey than black, not enough to hide your true colors
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/white
-	name = "White Powder"
-	colorname = "white"
-	color = "#FFFFFF" // white
-	random_color_list = list("#FFFFFF") //doesn't actually change appearance at all
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/* used by crayons, can't color living things but still used for stuff like food recipes */
-
-/datum/reagent/colorful_reagent/powder/red/crayon
-	name = "Red Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/orange/crayon
-	name = "Orange Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/yellow/crayon
-	name = "Yellow Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/green/crayon
-	name = "Green Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/blue/crayon
-	name = "Blue Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/purple/crayon
-	name = "Purple Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-//datum/reagent/colorful_reagent/powder/invisible/crayon
-
-/datum/reagent/colorful_reagent/powder/black/crayon
-	name = "Black Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/colorful_reagent/powder/white/crayon
-	name = "White Crayon Powder"
-	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 //////////////////////////////////Hydroponics stuff///////////////////////////////
 
@@ -630,98 +465,6 @@
 		myseed.adjust_weed_chance(round(chems.get_reagent_amount(src.type) * 0.3))
 		myseed.adjust_production(-round(chems.get_reagent_amount(src.type) * 0.075))
 
-/datum/reagent/fuel
-	name = "Welding Fuel"
-	description = "Required for welders. Flammable."
-	color = "#660000" // rgb: 102, 0, 0
-	taste_description = "gross metal"
-	glass_icon_state = "dr_gibb_glass"
-	glass_name = "glass of welder fuel"
-	glass_desc = "Unless you're an industrial tool, this is probably not safe for consumption."
-	penetrates_skin = NONE
-	burning_temperature = 1725 //more refined than oil
-	burning_volume = 0.2
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/alcohol = 4)
-
-/datum/reagent/fuel/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)//Splashing people with welding fuel to make them easy to ignite!
-	. = ..()
-	if(methods & (TOUCH|VAPOR))
-		exposed_mob.adjust_fire_stacks(reac_volume / 10)
-
-/datum/reagent/fuel/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5 * removed, 0)
-	return TRUE
-
-/datum/reagent/space_cleaner
-	name = "Space Cleaner"
-	description = "A compound used to clean things. Now with 50% more sodium hypochlorite!"
-	color = "#A5F0EE" // rgb: 165, 240, 238
-	taste_description = "sourness"
-	reagent_weight = 0.6 //so it sprays further
-	penetrates_skin = NONE
-	var/clean_types = CLEAN_WASH
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
-
-/datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
-	. = ..()
-	exposed_obj?.wash(clean_types)
-
-/datum/reagent/space_cleaner/expose_turf(turf/exposed_turf, reac_volume)
-	. = ..()
-	if(reac_volume < 1)
-		return
-
-	exposed_turf.wash(clean_types)
-	for(var/am in exposed_turf)
-		var/atom/movable/movable_content = am
-		if(ismopable(movable_content)) // Mopables will be cleaned anyways by the turf wash
-			continue
-		movable_content.wash(clean_types)
-
-	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
-		exposed_slime.adjustToxLoss(rand(5,10))
-
-/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
-	. = ..()
-	if(methods & (TOUCH|VAPOR))
-		exposed_mob.wash(clean_types)
-
-/datum/reagent/space_cleaner/ez_clean
-	name = "EZ Clean"
-	description = "A powerful, acidic cleaner sold by Waffle Co. Affects organic matter while leaving other objects unaffected."
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-	taste_description = "acid"
-	penetrates_skin = VAPOR
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(1.665*removed, FALSE)
-	C.adjustFireLoss(1.665*removed, FALSE)
-	C.adjustToxLoss(1.665*removed, FALSE)
-	return TRUE
-
-/datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
-	. = ..()
-	if((methods & (TOUCH|VAPOR)) && !issilicon(exposed_mob))
-		exposed_mob.adjustBruteLoss(1.5)
-		exposed_mob.adjustFireLoss(1.5)
-
-/datum/reagent/fluorosurfactant//foam precursor
-	name = "Fluorosurfactant"
-	description = "A perfluoronated sulfonic acid that forms a foam when mixed with water."
-	color = "#9E6B38" // rgb: 158, 107, 56
-	taste_description = "metal"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/foaming_agent// Metal foaming agent. This is lithium hydride. Add other recipes (e.g. LiH + H2O -> LiOH + H2) eventually.
-	name = "Foaming Agent"
-	description = "An agent that yields metallic foam when mixed with light metal and a strong acid."
-	reagent_state = SOLID
-	color = "#664B63" // rgb: 102, 75, 99
-	taste_description = "metal"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
 // Bee chemicals
 
 /datum/reagent/royal_bee_jelly
@@ -757,25 +500,150 @@
 		var/obj/item/organ/zombie_infection/nodamage/ZI = new()
 		ZI.Insert(exposed_mob)
 
-/datum/reagent/fuel/oil
-	name = "Oil"
-	description = "Burns in a small smoky fire, can be used to get Ash."
-	reagent_state = LIQUID
-	color = "#2D2D2D"
-	taste_description = "oil"
-	burning_temperature = 1200//Oil is crude
-	burning_volume = 0.05 //but has a lot of hydrocarbons
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = null
+// Virology virus food chems.
 
-/datum/reagent/stable_plasma
-	name = "Stable Plasma"
-	description = "Non-flammable plasma locked into a liquid form that cannot ignite or become gaseous/solid."
-	reagent_state = LIQUID
-	color = "#2D2D2D"
+/datum/reagent/toxin/mutagen/mutagenvirusfood
+	name = "Mutagenic Agar"
+	color = "#A3C00F" // rgb: 163,192,15
+	taste_description = "sourness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/toxin/mutagen/mutagenvirusfood/sugar
+	name = "Sucrose Agar"
+	color = "#41B0C0" // rgb: 65,176,192
+	taste_description = "sweetness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/synaptizine/synaptizinevirusfood
+	name = "Virus Rations"
+	color = "#D18AA5" // rgb: 209,138,165
+	taste_description = "bitterness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/toxin/plasma/plasmavirusfood
+	name = "Virus Plasma"
+	color = "#A270A8" // rgb: 166,157,169
 	taste_description = "bitterness"
 	taste_mult = 1.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/stable_plasma/affect_blood(mob/living/carbon/C, removed)
-	C.adjustPlasma(10 * removed)
+/datum/reagent/toxin/plasma/plasmavirusfood/weak
+	name = "Weakened Virus Plasma"
+	color = "#A28CA5" // rgb: 206,195,198
+	taste_description = "bitterness"
+	taste_mult = 1.5
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/uranium/uraniumvirusfood
+	name = "Decaying Uranium Gel"
+	color = "#67ADBA" // rgb: 103,173,186
+	taste_description = "the inside of a reactor"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/uranium/uraniumvirusfood/unstable
+	name = "Unstable Uranium Gel"
+	color = "#2FF2CB" // rgb: 47,242,203
+	taste_description = "the inside of a reactor"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/uranium/uraniumvirusfood/stable
+	name = "Stable Uranium Gel"
+	color = "#04506C" // rgb: 4,80,108
+	taste_description = "the inside of a reactor"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/technetium
+	name = "Technetium 99"
+	description = "A radioactive tracer agent that can improve a scanner's ability to detect internal organ damage. Will poison the patient when present very slowly, purging or using a low dose is recommended after use."
+	metabolization_rate = 0.2
+
+/datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
+	if(current_cycle % 8)
+		C.adjustToxLoss(5 * removed, FALSE)
+		. = TRUE
+
+/datum/reagent/helgrasp
+	name = "Helgrasp"
+	description = "This rare and forbidden concoction is thought to bring you closer to the grasp of the Norse goddess Hel."
+	metabolization_rate = 0.4  //This is fast
+	//Keeps track of the hand timer so we can cleanup on removal
+	var/list/timer_ids
+
+//Warns you about the impenting hands
+/datum/reagent/helgrasp/on_mob_add(mob/living/L, amount)
+	to_chat(L, span_hierophant("You hear laughter as malevolent hands apparate before you, eager to drag you down to hell...! Look out!"))
+	playsound(L.loc, 'sound/chemistry/ahaha.ogg', 80, TRUE, -1) //Very obvious tell so people can be ready
+	. = ..()
+
+/datum/reagent/helgrasp/affect_blood(mob/living/carbon/C, removed)
+	spawn(-1)
+		spawn_hands(C)
+	var/hands = 1
+	var/time = 1
+	while(hands < 2) //we already made a hand now so start from 1
+		LAZYADD(timer_ids, addtimer(CALLBACK(src, PROC_REF(spawn_hands), owner), (time*hands) SECONDS, TIMER_STOPPABLE)) //keep track of all the timers we set up
+		hands += time
+
+/datum/reagent/helgrasp/proc/spawn_hands(mob/living/carbon/owner)
+	if(!owner && iscarbon(holder.my_atom))//Catch timer
+		owner = holder.my_atom
+	//Adapted from the end of the curse - but lasts a short time
+	var/grab_dir = turn(owner.dir, pick(-90, 90, 180, 180)) //grab them from a random direction other than the one faced, favoring grabbing from behind
+	var/turf/spawn_turf = get_ranged_target_turf(owner, grab_dir, 8)//Larger range so you have more time to dodge
+	if(!spawn_turf)
+		return
+	new/obj/effect/temp_visual/dir_setting/curse/grasp_portal(spawn_turf, owner.dir)
+	playsound(spawn_turf, 'sound/effects/curse2.ogg', 80, TRUE, -1)
+	var/obj/projectile/curse_hand/hel/hand = new (spawn_turf)
+	hand.preparePixelProjectile(owner, spawn_turf)
+	if(QDELETED(hand)) //safety check if above fails - above has a stack trace if it does fail
+		return
+	hand.fire()
+
+//At the end, we clear up any loose hanging timers just in case and spawn any remaining lag_remaining hands all at once.
+/datum/reagent/helgrasp/on_mob_delete(mob/living/owner)
+	var/hands = 0
+	for(var/id in timer_ids) // So that we can be certain that all timers are deleted at the end.
+		deltimer(id)
+	timer_ids.Cut()
+	return ..()
+
+/datum/reagent/helgrasp/heretic
+	name = "Grasp of the Mansus"
+	description = "The Hand of the Mansus is at your neck."
+	metabolization_rate = 0.2
+	tox_damage = 0
+
+// unholy water, but for heretics.
+// why couldn't they have both just used the same reagent?
+// who knows.
+// maybe nar'sie is considered to be too "mainstream" of a god to worship in the heretic community.
+/datum/reagent/eldritch
+	name = "Eldritch Essence"
+	description = "A strange liquid that defies the laws of physics. \
+		It re-energizes and heals those who can see beyond this fragile reality, \
+		but is incredibly harmful to the closed-minded. It metabolizes very quickly."
+	taste_description = "Ag'hsj'saje'sh"
+	color = "#1f8016"
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM  //0.5u/second
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+
+/datum/reagent/eldritch/affect_blood(mob/living/carbon/drinker, removed)
+	. = ..()
+	if(IS_HERETIC(drinker))
+		drinker.adjust_drowsyness(-5 * removed)
+		drinker.AdjustAllImmobility(-40 * removed)
+		drinker.stamina.adjust(-10 * removed)
+		drinker.adjustToxLoss(-2 * removed, FALSE, forced = TRUE)
+		drinker.adjustOxyLoss(-2 * removed, FALSE)
+		drinker.adjustBruteLoss(-2 * removed, FALSE)
+		drinker.adjustFireLoss(-2 * removed, FALSE)
+		if(drinker.blood_volume < BLOOD_VOLUME_NORMAL)
+			drinker.blood_volume += 3 * removed
+	else
+		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		drinker.adjustToxLoss(2 * removed, FALSE)
+		drinker.adjustFireLoss(2 * removed, FALSE)
+		drinker.adjustOxyLoss(2 * removed, FALSE)
+		drinker.adjustBruteLoss(2 * removed, FALSE)
+	return TRUE

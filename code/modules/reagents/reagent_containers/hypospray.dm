@@ -155,7 +155,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/stimpack/traitor
 	desc = "A modified stimulants autoinjector for use in combat situations. Has a mild healing effect."
-	list_reagents = list(/datum/reagent/medicine/stimulants = 10, /datum/reagent/medicine/tricordrazine = 10)
+	list_reagents = list(/datum/reagent/stimulants = 10, /datum/reagent/medicine/tricordrazine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/stimulants
 	name = "stimulant medipen"
@@ -165,7 +165,7 @@
 	base_icon_state = "syndipen"
 	volume = 50
 	amount_per_transfer_from_this = 50
-	list_reagents = list(/datum/reagent/medicine/stimulants = 50)
+	list_reagents = list(/datum/reagent/stimulants = 50)
 
 /obj/item/reagent_containers/hypospray/medipen/morphine
 	name = "morphine medipen"

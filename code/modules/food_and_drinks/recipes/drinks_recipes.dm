@@ -110,10 +110,6 @@
 	required_reagents = list(/datum/reagent/consumable/ethanol/vodka = 1, /datum/reagent/consumable/ethanol/gin = 1, /datum/reagent/consumable/ethanol/whiskey = 1, /datum/reagent/consumable/ethanol/cognac = 1, /datum/reagent/consumable/lemonjuice = 1)
 	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_OTHER
 
-/datum/chemical_reaction/drink/brave_bull
-	results = list(/datum/reagent/consumable/ethanol/brave_bull = 3)
-	required_reagents = list(/datum/reagent/consumable/ethanol/tequila = 2, /datum/reagent/consumable/ethanol/kahlua = 1)
-
 /datum/chemical_reaction/drink/tequila_sunrise
 	results = list(/datum/reagent/consumable/ethanol/tequila_sunrise = 5)
 	required_reagents = list(/datum/reagent/consumable/ethanol/tequila = 2, /datum/reagent/consumable/orangejuice = 2, /datum/reagent/consumable/grenadine = 1)
@@ -295,11 +291,6 @@
 	results = list(/datum/reagent/consumable/ethanol/amasec = 10)
 	required_reagents = list(/datum/reagent/iron = 1, /datum/reagent/consumable/ethanol/wine = 5, /datum/reagent/consumable/ethanol/vodka = 5)
 
-/datum/chemical_reaction/drink/changelingsting
-	results = list(/datum/reagent/consumable/ethanol/changelingsting = 5)
-	required_reagents = list(/datum/reagent/consumable/ethanol/screwdrivercocktail = 1, /datum/reagent/consumable/lemon_lime = 2)
-	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_OTHER
-
 /datum/chemical_reaction/drink/aloe
 	results = list(/datum/reagent/consumable/ethanol/aloe = 2)
 	required_reagents = list(/datum/reagent/consumable/ethanol/irish_cream = 1, /datum/reagent/consumable/watermelonjuice = 1)
@@ -351,11 +342,6 @@
 /datum/chemical_reaction/drink/driestmartini
 	results = list(/datum/reagent/consumable/ethanol/driestmartini = 2)
 	required_reagents = list(/datum/reagent/consumable/nothing = 1, /datum/reagent/consumable/ethanol/gin = 1)
-
-/datum/chemical_reaction/drink/thirteenloko
-	results = list(/datum/reagent/consumable/ethanol/thirteenloko = 3)
-	required_reagents = list(/datum/reagent/consumable/ethanol/vodka = 1, /datum/reagent/consumable/coffee = 1, /datum/reagent/consumable/limejuice = 1)
-	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/drink/cherryshake
 	results = list(/datum/reagent/consumable/cherryshake = 3)
@@ -411,13 +397,6 @@
 	results = list(/datum/reagent/consumable/ethanol/fetching_fizz = 3)
 	required_reagents = list(/datum/reagent/consumable/nuka_cola = 1, /datum/reagent/iron = 1) //Manufacturable from only the mining station
 	mix_message = "The mixture slightly vibrates before settling."
-
-/datum/chemical_reaction/drink/hearty_punch
-	results = list(/datum/reagent/consumable/ethanol/hearty_punch = 1)  //Very little, for balance reasons
-	required_reagents = list(/datum/reagent/consumable/ethanol/brave_bull = 5, /datum/reagent/consumable/ethanol/syndicatebomb = 5, /datum/reagent/consumable/ethanol/absinthe = 5)
-	mix_message = "The mixture darkens to a healthy crimson."
-	required_temp = 315 //Piping hot!
-	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_CLONE
 
 /datum/chemical_reaction/drink/bacchus_blessing
 	results = list(/datum/reagent/consumable/ethanol/bacchus_blessing = 4)

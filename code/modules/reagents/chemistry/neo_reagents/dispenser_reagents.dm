@@ -218,16 +218,14 @@
 
 /datum/reagent/toxin/acid/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if(!istype(exposed_carbon))
-		return
 	reac_volume = round(reac_volume,0.1)
 	if(methods & INGEST)
-		exposed_carbon.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
+		exposed_mob.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
 		return
 	if(methods & INJECT)
-		exposed_carbon.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
+		exposed_mob.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
 		return
-	exposed_carbon.acid_act(acidpwr, reac_volume)
+	exposed_mob.acid_act(acidpwr, reac_volume)
 
 /datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

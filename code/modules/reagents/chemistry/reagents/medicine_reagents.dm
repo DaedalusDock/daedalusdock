@@ -448,7 +448,7 @@
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/knockdown)
 
-	holder.remove_reagent(/datum/reagent/drugs/toxin/chlorpromazine, 5)
+	holder.remove_reagent(/datum/reagent/drugs/mindbreaker, 5)
 	//M.adjust_hallucination(-10)
 
 	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
@@ -573,8 +573,8 @@
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 3)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 4)
 
-/datum/reagent/medicine/heparin
-	name = "Heparin"
+/datum/reagent/medicine/coagulant
+	name = "Coagulant"
 	description = "A coagulant capable of staunching both internal and external bleeding."
 	taste_description = "iron"
 	reagent_state = LIQUID
@@ -582,7 +582,7 @@
 	metabolization_rate = 0.01
 	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 
-/datum/reagent/medicine/heparin/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/medicine/coagulant/affect_blood(mob/living/carbon/M, removed)
 	if(!ishuman(M))
 		return
 
@@ -834,6 +834,7 @@
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 
+// Note to self: should be made with lexorin, haloperidol, and clf3
 /datum/reagent/medicine/chlorpromazine
 	name = "Chlorpromazine"
 	description = "A powerful antipsychotic. For schizophrenics, it counteracts their symptoms and anchors them to reality."

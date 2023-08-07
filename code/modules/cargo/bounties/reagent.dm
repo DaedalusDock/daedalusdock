@@ -129,7 +129,6 @@
 		/datum/reagent/toxin/itching_powder,\
 		/datum/reagent/toxin/cyanide,\
 		/datum/reagent/toxin/heparin,\
-		/datum/reagent/medicine/pen_acid,\
 		/datum/reagent/medicine/atropine,\
 		/datum/reagent/drug/aranesp,\
 		/datum/reagent/drug/krokodil,\
@@ -163,7 +162,6 @@
 		/datum/reagent/toxin/mimesbane,\
 		/datum/reagent/medicine/strange_reagent,\
 		/datum/reagent/nitroglycerin,\
-		/datum/reagent/medicine/rezadone,\
 		/datum/reagent/toxin/zombiepowder,\
 		/datum/reagent/toxin/ghoulpowder,\
 		/datum/reagent/mulligan)
@@ -219,7 +217,6 @@
 		/datum/reagent/drug/methamphetamine,
 		/datum/reagent/nitrous_oxide,
 		/datum/reagent/barbers_aid,
-		/datum/reagent/pax,
 		/datum/reagent/flash_powder,
 		/datum/reagent/phlogiston,
 		/datum/reagent/firefighting_foam

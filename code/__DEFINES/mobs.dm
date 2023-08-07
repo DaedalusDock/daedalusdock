@@ -484,7 +484,9 @@
 /// Lowers the subject's voice to a whisper
 #define	CE_VOICELOSS "whispers"
 /// Makes it harder to disarm someone
-#define CE_STIMULANT "stimulants"   // Makes it harder to disarm someone
+#define CE_STIMULANT "stimulants"
+/// Multiplier for bloodloss
+#define CE_ANTICOAGULANT "anticoagulant"
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"

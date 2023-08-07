@@ -42,17 +42,18 @@
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if(!exposed_mob.has_dna() || HAS_TRAIT(exposed_mob, TRAIT_GENELESS) || HAS_TRAIT(exposed_mob, TRAIT_BADDNA))
+	if(!iscarbon(exposed_mob) || !exposed_mob.has_dna() || HAS_TRAIT(exposed_mob, TRAIT_GENELESS) || HAS_TRAIT(exposed_mob, TRAIT_BADDNA))
 		return  //No robots, AIs, aliens, Ians or other mobs should be affected by this.
+	var/mob/living/carbon/C = exposed_mob
 	if(((methods & VAPOR) && prob(min(33, reac_volume))) || (methods & (INGEST|INJECT)))
-		exposed_mob.random_mutate_unique_identity()
-		exposed_mob.random_mutate_unique_features()
+		C.random_mutate_unique_identity()
+		C.random_mutate_unique_features()
 		if(prob(98))
-			exposed_mob.easy_random_mutate(NEGATIVE+MINOR_NEGATIVE)
+			C.easy_random_mutate(NEGATIVE+MINOR_NEGATIVE)
 		else
-			exposed_mob.easy_random_mutate(POSITIVE)
-		exposed_mob.updateappearance()
-		exposed_mob.domutcheck()
+			C.easy_random_mutate(POSITIVE)
+		C.updateappearance()
+		C.domutcheck()
 
 /datum/reagent/toxin/mutagen/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
 	mytray.mutation_roll(user)

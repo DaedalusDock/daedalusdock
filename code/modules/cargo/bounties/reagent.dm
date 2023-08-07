@@ -118,7 +118,6 @@
 	var/static/list/possible_reagents = list(\
 		/datum/reagent/medicine/leporazine,\
 		/datum/reagent/medicine/clonexadone,\
-		/datum/reagent/medicine/c2/convermol,\
 		/datum/reagent/medicine/ephedrine,\
 		/datum/reagent/medicine/diphenhydramine,\
 		/datum/reagent/drug/space_drugs,\
@@ -135,7 +134,6 @@
 		/datum/reagent/drug/aranesp,\
 		/datum/reagent/drug/krokodil,\
 		/datum/reagent/drug/methamphetamine,\
-		/datum/reagent/teslium,\
 		/datum/reagent/toxin/anacea,\
 		/datum/reagent/pax)
 
@@ -211,7 +209,7 @@
 	//reagent that are possible to be chem factory'd
 	var/static/list/possible_reagents = list(
 		/datum/reagent/medicine/spaceacillin,
-		/datum/reagent/medicine//synthflesh,
+		/datum/reagent/medicine/synthflesh,
 		/datum/reagent/medicine/pen_acid,
 		/datum/reagent/medicine/atropine,
 		/datum/reagent/medicine/cryoxadone,

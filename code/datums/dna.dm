@@ -886,7 +886,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	dna.remove_all_mutations()
 	dna.stability = 100
 	if(prob(max(70-instability,0)))
-		switch(rand(0,10)) //not complete and utter death
+		switch(rand(0,9)) //not complete and utter death
 			if(0)
 				monkeyize()
 			if(1)
@@ -901,14 +901,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				to_chat(src, span_notice("Oh, I actually feel quite alright!")) //you thought
 				physiology.damage_resistance = -20000
 			if(5)
-				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
-				reagents.add_reagent(/datum/reagent/aslimetoxin, 10)
-			if(6)
 				apply_status_effect(/datum/status_effect/go_away)
-			if(7)
+			if(6)
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 				ForceContractDisease(new/datum/disease/decloning()) //slow acting, non-viral clone damage based GBS
-			if(8)
+			if(7)
 				var/list/elligible_organs = list()
 				for(var/obj/item/organ/organ as anything in processing_organs) //make sure we dont get an implant or cavity item
 					elligible_organs += organ
@@ -920,7 +917,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 					O.forceMove(drop_location())
 					if(prob(20))
 						O.animate_atom_living()
-			if(9 to 10)
+			if(8 to 9)
 				ForceContractDisease(new/datum/disease/gastrolosis())
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 	else

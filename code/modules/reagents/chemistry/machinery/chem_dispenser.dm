@@ -718,5 +718,5 @@
 		/datum/reagent/toxin/plasma,
 		/datum/reagent/uranium,
 		/datum/reagent/consumable/liquidelectricity/enriched,
-		/datum/reagent/medicine//synthflesh
+		/datum/reagent/medicine/synthflesh
 	)

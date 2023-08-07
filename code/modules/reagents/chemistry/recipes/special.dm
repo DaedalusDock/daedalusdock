@@ -111,11 +111,6 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 			if(exo_or_endothermic)
 				thermic_constant = (rand(-200, 200))
 
-	if(randomize_impurity_reagents)
-		for(var/rid in required_reagents)
-			var/datum/reagent/R = GLOB.chemical_reagents_list[rid]
-			R.inverse_chem = get_random_reagent_id()
-
 	if(randomize_results)
 		results = list()
 		var/list/remaining_possible_results = GetPossibleReagents(RNGCHEM_OUTPUT)

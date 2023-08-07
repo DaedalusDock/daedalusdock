@@ -95,41 +95,6 @@
 /*****OXY*****/
 //These react faster with optional oxygen, and have blastback effects! (the oxygen makes their fail states deadlier)
 
-/datum/chemical_reaction/medicine/convermol
-	results = list(/datum/reagent/medicine/c2/convermol = 3)
-	required_reagents = list(/datum/reagent/hydrogen = 1, /datum/reagent/fluorine = 1, /datum/reagent/fuel/oil = 1)
-	required_temp = 370
-	mix_message = "The mixture rapidly turns into a dense pink liquid."
-	optimal_temp = 420
-	overheat_temp = 570 //Ash will be created before this - so it's pretty rare that overheat is actually triggered
-	thermic_constant = 15
-	rate_up_lim = 50
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OXY
-
-/datum/chemical_reaction/medicine/convermol/reaction_step(datum/reagents/holder, datum/equilibrium/reaction, delta_t, delta_ph, step_reaction_vol)
-	. = ..()
-	var/datum/reagent/oxy = holder.has_reagent(/datum/reagent/oxygen)
-	if(oxy)
-		holder.remove_reagent(/datum/reagent/oxygen, 0.25)
-	else
-		reaction.delta_t = delta_t/10 //slow without oxygen
-
-/datum/chemical_reaction/medicine/convermol/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, impure = FALSE)
-	var/range = impure ? 4 : 3
-	if(holder.has_reagent(/datum/reagent/oxygen))
-		explode_shockwave(holder, equilibrium, range) //damage 5
-	else
-		explode_shockwave(holder, equilibrium, range, damage = 2)
-
-/datum/chemical_reaction/medicine/convermol/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	overheated(holder, equilibrium, impure = TRUE)
-	if(holder.has_reagent(/datum/reagent/oxygen))
-		clear_reactants(holder, step_volume_added*2)
-	else
-		clear_reactants(holder)
-
-
 /datum/chemical_reaction/medicine/tirimol
 	results = list(/datum/reagent/medicine/c2/tirimol = 5)
 	required_reagents = list(/datum/reagent/nitrogen = 3, /datum/reagent/acetone = 2)

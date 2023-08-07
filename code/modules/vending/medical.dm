@@ -56,7 +56,7 @@
 	req_access = list(ACCESS_MEDICAL)
 	products = list(/obj/item/reagent_containers/pill/bicaridine = 7,
 					/obj/item/reagent_containers/pill/kelotane = 7,
-					/obj/item/reagent_containers/syringe/convermol = 2,
+					/obj/item/reagent_containers/syringe/dexalin = 2,
 					/obj/item/reagent_containers/pill/insulin = 5,
 					/obj/item/reagent_containers/glass/bottle/multiver = 2,
 					/obj/item/reagent_containers/glass/bottle/syriniver = 2,

@@ -732,8 +732,9 @@
 	var/target_temp = C.get_body_temp_normal(apply_change=FALSE)
 	if(C.bodytemperature > target_temp)
 		C.adjust_bodytemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, target_temp)
-	else if(M.bodytemperature < (target_temp + 1))
+	else if(C.bodytemperature < (target_temp + 1))
 		C.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, target_temp)
+
 	if(ishuman(C))
 		var/mob/living/carbon/human/humi = C
 		if(humi.coretemperature > target_temp)

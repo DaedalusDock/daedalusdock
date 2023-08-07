@@ -349,28 +349,6 @@
 	effectmod = "gentle"
 	activate_reagents = list(/datum/reagent/blood,/datum/reagent/toxin/plasma)
 
-/obj/item/slime_extract/pink/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
-	switch(activation_type)
-		if(SLIME_ACTIVATE_MINOR)
-			if(user.gender != MALE && user.gender != FEMALE)
-				to_chat(user, span_warning("You can't swap your gender!"))
-				return
-
-			if(user.gender == MALE)
-				user.gender = FEMALE
-				user.visible_message(span_boldnotice("[user] suddenly looks more feminine!"), span_boldwarning("You suddenly feel more feminine!"))
-			else
-				user.gender = MALE
-				user.visible_message(span_boldnotice("[user] suddenly looks more masculine!"), span_boldwarning("You suddenly feel more masculine!"))
-			return 100
-
-		if(SLIME_ACTIVATE_MAJOR)
-			user.visible_message(span_warning("[user]'s skin starts flashing hypnotically..."), span_notice("Your skin starts forming odd patterns, pacifying creatures around you."))
-			for(var/mob/living/carbon/C in viewers(user, null))
-				if(C != user)
-					C.reagents.add_reagent(/datum/reagent/pax,2)
-			return 600
-
 /obj/item/slime_extract/green
 	name = "green slime extract"
 	icon_state = "green slime extract"

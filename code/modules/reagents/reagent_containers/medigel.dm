@@ -19,7 +19,7 @@
 	possible_transfer_amounts = list(5,10)
 	volume = 60
 	var/can_fill_from_container = TRUE
-	var/apply_type = PATCH
+	var/apply_type = TOUCH
 	var/apply_method = "spray" //the thick gel is sprayed and then dries into patch like film.
 	var/self_delay = 30
 	var/squirt_mode = 0
@@ -83,7 +83,7 @@
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap. This one contains synthflesh, a slightly toxic medicine capable of healing both bruises and burns."
 	icon_state = "synthgel"
 	current_skin = "synthgel"
-	list_reagents = list(/datum/reagent/medicine//synthflesh = 60)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 60)
 	custom_price = PAYCHECK_MEDIUM * 5
 
 /obj/item/reagent_containers/medigel/sterilizine

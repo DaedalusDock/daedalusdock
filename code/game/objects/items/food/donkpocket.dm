@@ -119,20 +119,3 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/medicine/tricordrazine = 2, /datum/reagent/consumable/berryjuice = 3)
 	tastes = list("dough" = 2, "warm jam" = 2)
 	foodtypes = GRAIN
-
-/obj/item/food/donkpocket/gondola
-	name = "\improper Gondola-pocket"
-	desc = "The choice to use real gondola meat in the recipe is controversial, to say the least." //Only a monster would craft this.
-	icon_state = "donkpocketgondola"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/gondola_mutation_toxin = 5)
-	microwaved_type = /obj/item/food/donkpocket/warm/gondola
-	tastes = list("meat" = 2, "dough" = 2, "inner peace" = 1)
-	foodtypes = GRAIN
-
-/obj/item/food/donkpocket/warm/gondola
-	name = "warm Gondola-pocket"
-	desc = "The choice to use real gondola meat in the recipe is controversial, to say the least."
-	icon_state = "donkpocketgondola"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/medicine/tricordrazine = 2, /datum/reagent/gondola_mutation_toxin = 10)
-	tastes = list("meat" = 2, "dough" = 2, "inner peace" = 1)
-	foodtypes = GRAIN

@@ -964,3 +964,4 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HYPERZINE "zoomzoomzoom"
 #define TRAIT_EPHEDRINE "ephedrine"
 #define TRAIT_HALOPERIDOL "haloperidol"
+#define TRAIT_STIMULANTS "stimulants"

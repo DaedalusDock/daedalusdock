@@ -135,7 +135,6 @@
 
 /mob/living/basic/cow/moonicorn/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/venomous, /datum/reagent/pax, 5)
 	AddElement(/datum/element/movement_turf_changer, /turf/open/floor/grass/fairy)
 
 /mob/living/basic/cow/moonicorn/udder_component()

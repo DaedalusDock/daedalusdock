@@ -581,7 +581,7 @@
 	var/hands = 1
 	var/time = 1
 	while(hands < 2) //we already made a hand now so start from 1
-		LAZYADD(timer_ids, addtimer(CALLBACK(src, PROC_REF(spawn_hands), owner), (time*hands) SECONDS, TIMER_STOPPABLE)) //keep track of all the timers we set up
+		LAZYADD(timer_ids, addtimer(CALLBACK(src, PROC_REF(spawn_hands), C), (time*hands) SECONDS, TIMER_STOPPABLE)) //keep track of all the timers we set up
 		hands += time
 
 /datum/reagent/helgrasp/proc/spawn_hands(mob/living/carbon/owner)
@@ -612,7 +612,6 @@
 	name = "Grasp of the Mansus"
 	description = "The Hand of the Mansus is at your neck."
 	metabolization_rate = 0.2
-	tox_damage = 0
 
 // unholy water, but for heretics.
 // why couldn't they have both just used the same reagent?

@@ -359,7 +359,7 @@
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(/datum/status_effect/necropolis_curse)
 	sac_target.remove_status_effect(/datum/status_effect/unholy_determination)
-	sac_target.reagents?.del_reagent(/datum/reagent/inverse/helgrasp/heretic)
+	sac_target.reagents?.del_reagent(/datum/reagent/helgrasp/heretic)
 	SEND_SIGNAL(sac_target, COMSIG_CLEAR_MOOD_EVENT, "shadow_realm")
 
 	// Wherever we end up, we sure as hell won't be able to explain

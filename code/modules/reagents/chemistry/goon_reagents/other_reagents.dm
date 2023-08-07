@@ -188,7 +188,7 @@
 /datum/reagent/stimulants/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, CHEM_TRAIT_SOURCE(class))
 	REMOVE_TRAIT(C, TRAIT_STIMULANTS, CHEM_TRAIT_SOURCE(class))
-	if(!HAS_TRAIT(L, TRAIT_STIMULANTS))
+	if(!HAS_TRAIT(C, TRAIT_STIMULANTS))
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/stimulants)
 
 /datum/reagent/stimulants/affect_blood(mob/living/carbon/C, removed)

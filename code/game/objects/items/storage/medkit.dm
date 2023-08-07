@@ -169,7 +169,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/reagent_containers/pill/patch/aiuri = 3,
+		/obj/item/reagent_containers/pill/kelotane = 3,
 		/obj/item/storage/pill_bottle/dermaline = 1,
 		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1)
@@ -233,7 +233,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/reagent_containers/pill/patch/libital = 3,
+		/obj/item/reagent_containers/pill/bicaridine = 3,
 		/obj/item/stack/gauze = 1,
 		/obj/item/storage/pill_bottle/meralyne = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
@@ -278,10 +278,10 @@
 	new /obj/item/stack/splint/two(src)
 	new /obj/item/defibrillator/compact/combat/loaded(src)
 	new /obj/item/reagent_containers/hypospray/combat(src)
-	new /obj/item/reagent_containers/pill/patch/libital(src)
-	new /obj/item/reagent_containers/pill/patch/libital(src)
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
+	new /obj/item/reagent_containers/pill/bicaridine(src)
+	new /obj/item/reagent_containers/pill/bicaridine(src)
+	new /obj/item/reagent_containers/pill/kelotane(src)
+	new /obj/item/reagent_containers/pill/kelotane(src)
 	new /obj/item/clothing/glasses/hud/health/night(src)
 
 //medibot assembly
@@ -373,9 +373,17 @@
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/potassiodide(src)
 
+/obj/item/storage/pill_bottle/bicaridine
+	name = "bottle of bicaridine pills"
+	desc = "Contains pills used to treat brute damage."
+
+/obj/item/storage/pill_bottle/bicaridine/PopulateContents()
+	for(var/i in 1 to 4)
+		new /obj/item/reagent_containers/pill/bicaridine(src)
+
 /obj/item/storage/pill_bottle/meralyne
 	name = "bottle of meralyne pills"
-	desc = "Contains pills used to treat brute damage.The tag in the bottle states 'Eat before ingesting, may cause fatigue'."
+	desc = "Contains pills used to treat brute damage."
 
 /obj/item/storage/pill_bottle/meralyne/PopulateContents()
 	for(var/i in 1 to 4)
@@ -383,7 +391,7 @@
 
 /obj/item/storage/pill_bottle/dermaline
 	name = "bottle of dermaline pills"
-	desc = "Used to treat second and third degree burns. The carving in the pill says 'Eat before ingesting'."
+	desc = "Used to treat second and third degree burns."
 
 /obj/item/storage/pill_bottle/meralyne/PopulateContents()
 	for(var/i in 1 to 4)
@@ -426,9 +434,10 @@
 	desc = "Contains patches used to treat brute and burn damage."
 
 /obj/item/storage/pill_bottle/mining/PopulateContents()
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/patch/libital(src)
+		new /obj/item/reagent_containers/pill/kelotane(src)
+	for(var/i in 1 to 3)
+		new /obj/item/reagent_containers/pill/bicaridine(src)
 
 /obj/item/storage/pill_bottle/zoom
 	name = "suspicious pill bottle"

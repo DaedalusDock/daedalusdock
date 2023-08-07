@@ -20,7 +20,7 @@
 	var/list/available_chems
 	var/controls_inside = FALSE
 	var/list/possible_chems = list(
-		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/c2/libital, /datum/reagent/medicine/c2/aiuri),
+		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/bicaridine, /datum/reagent/medicine/kelotane),
 		list(/datum/reagent/medicine/imidazoline,/datum/reagent/medicine/inacusiate),
 		list(/datum/reagent/medicine/c2/multiver, /datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/alkysine, /datum/reagent/medicine/dexalin, /datum/reagent/medicine/pen_acid),
 		list(/datum/reagent/medicine/tricordrazine)

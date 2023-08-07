@@ -227,13 +227,13 @@
 /obj/item/reagent_containers/glass/beaker/slime
 	list_reagents = list(/datum/reagent/toxin/slimejelly = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/libital
-	name = "libital reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/libital = 10,/datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/bicaridine
+	name = "bicaridine reserve tank"
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/aiuri
-	name = "aiuri reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/aiuri = 10, /datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/kelotane
+	name = "kelotane reserve tank"
+	list_reagents = list(/datum/reagent/medicine/kelotane = 50)
 
 /obj/item/reagent_containers/glass/beaker/large/multiver
 	name = "multiver reserve tank (diluted)"

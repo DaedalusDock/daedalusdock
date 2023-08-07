@@ -18,8 +18,8 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	desc = "An advanced vendor that dispenses medical drugs, both recreational and medicinal."
 	products = list(/obj/item/reagent_containers/syringe = 4,
 					/obj/item/healthanalyzer = 4,
-					/obj/item/reagent_containers/pill/patch/libital = 5,
-					/obj/item/reagent_containers/pill/patch/aiuri = 5,
+					/obj/item/reagent_containers/glass/bottle/bicaridine = 2,
+					/obj/item/reagent_containers/glass/bottle/kelotane = 5,
 					/obj/item/reagent_containers/glass/bottle/multiver = 1,
 					/obj/item/reagent_containers/glass/bottle/syriniver = 1,
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
@@ -27,8 +27,6 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 					/obj/item/reagent_containers/glass/bottle/potass_iodide = 1,
 					/obj/item/reagent_containers/glass/bottle/saline_glucose = 3,
 					/obj/item/reagent_containers/syringe/antiviral = 5,
-					/obj/item/reagent_containers/medigel/libital = 2,
-					/obj/item/reagent_containers/medigel/aiuri = 2,
 					/obj/item/reagent_containers/medigel/sterilizine = 1)
 	contraband = list(/obj/item/reagent_containers/glass/bottle/cold = 2,
 					/obj/item/restraints/handcuffs = 4,

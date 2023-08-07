@@ -7,11 +7,9 @@
 	density = FALSE
 	products = list(
 		/obj/item/reagent_containers/syringe = 3,
-		/obj/item/reagent_containers/pill/patch/libital = 5,
-		/obj/item/reagent_containers/pill/patch/aiuri = 5,
+		/obj/item/reagent_containers/pill/bicaridine = 7,
+		/obj/item/reagent_containers/pill/kelotane = 7,
 		/obj/item/reagent_containers/pill/multiver = 2,
-		/obj/item/reagent_containers/medigel/libital = 2,
-		/obj/item/reagent_containers/medigel/aiuri = 2,
 		/obj/item/reagent_containers/medigel/sterilizine = 1,
 		/obj/item/healthanalyzer/wound = 2,
 		/obj/item/stack/medical/bone_gel/twelve = 2

@@ -19,16 +19,6 @@
 	. = ..()//drains product
 	explode_fire_vortex(holder, equilibrium, 2, 2, "overheat", TRUE)
 
-/datum/chemical_reaction/medicine/libital
-	results = list(/datum/reagent/medicine/c2/libital = 3)
-	required_reagents = list(/datum/reagent/phenol = 1, /datum/reagent/oxygen = 1, /datum/reagent/nitrogen = 1)
-	required_temp = 225
-	optimal_temp = 700
-	overheat_temp = 840
-	thermic_constant = 75
-	rate_up_lim = 40
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE
-
 /datum/chemical_reaction/medicine/probital
 	results = list(/datum/reagent/medicine/c2/probital = 4)
 	required_reagents = list(/datum/reagent/copper = 1, /datum/reagent/acetone = 2,  /datum/reagent/phosphorus = 1)

@@ -1039,15 +1039,6 @@
 	new /obj/item/circuitboard/machine/destructive_analyzer(src)
 	new /obj/item/circuitboard/machine/circuit_imprinter/offstation(src)
 
-/obj/item/storage/box/silver_sulf
-	name = "box of silver sulfadiazine patches"
-	desc = "Contains patches used to treat burns."
-	illustration = "firepatch"
-
-/obj/item/storage/box/silver_sulf/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/patch/aiuri(src)
-
 /obj/item/storage/box/fountainpens
 	name = "box of fountain pens"
 	illustration = "fpen"

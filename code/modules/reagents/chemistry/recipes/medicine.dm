@@ -100,7 +100,7 @@
 
 /datum/chemical_reaction/medicine/synthflesh
 	results = list(/datum/reagent/medicine/c2/synthflesh = 3)
-	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/c2/libital = 1)
+	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/meralyne = 1)
 	required_temp = 250
 	optimal_temp = 310
 	overheat_temp = 325

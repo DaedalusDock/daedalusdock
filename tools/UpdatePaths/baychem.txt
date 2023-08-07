@@ -18,3 +18,12 @@
 /obj/item/reagent_containers/spray/hercuri : /obj/item/storage/pill_bottle/dermaline
 /obj/item/reagent_containers/pill/probital : /obj/item/reagent_containers/pill/meralyne
 /obj/item/storage/pill_bottle/meralyne : /obj/item/storage/pill_bottle/meralyne
+/obj/item/reagent_containers/pill/patch/libital : /obj/item/reagent_containers/pill/bicaridine
+/obj/item/reagent_containers/medigel/libital : /obj/item/reagent_containers/pill/bicaridine
+/obj/item/reagent_containers/glass/beaker/large/libital : /obj/item/reagent_containers/glass/beaker/large/bicaridine
+/obj/item/reagent_containers/pill/patch/aiuri : /obj/item/reagent_containers/pill/kelotane
+/obj/item/storage/box/silver_sulf : /obj/item/storage/pill_bottle/kelotane
+/obj/item/reagent_containers/glass/beaker/large/aiuri : /obj/item/reagent_containers/glass/beaker/large/kelotane
+/obj/item/reagent_containers/medigel/aiuri : /obj/item/reagent_containers/pill/bicaridine
+
+

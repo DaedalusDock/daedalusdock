@@ -54,10 +54,20 @@
 	desc = "A small bottle of Alkysine. Useful for healing brain damage."
 	list_reagents = list(/datum/reagent/medicine/alkysine = 30)
 
+/obj/item/reagent_containers/glass/bottle/kelotane
+	name = "kelotane bottle"
+	desc = "A small bottle of kelotane, which helps the body close physical injuries. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/kelotane = 30)
+
+/obj/item/reagent_containers/glass/bottle/bicaridine
+	name = "bicaridine bottle"
+	desc = "A small bottle of bicaridine, which helps heal burns. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 30)
+
 /obj/item/reagent_containers/glass/bottle/dylovene
 	name = "dylovene bottle"
 	desc = "A small bottle of dylovene, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
-	list_reagents = list(/datum/reagent/medicine/c2/dylovene = 30)
+	list_reagents = list(/datum/reagent/medicine/dylovene = 30)
 
 /obj/item/reagent_containers/glass/bottle/calomel
 	name = "calomel bottle"

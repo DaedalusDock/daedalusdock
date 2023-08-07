@@ -113,7 +113,6 @@
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 15,
 		/obj/item/reagent_containers/syringe = 15,
 		/obj/item/cigbutt/roach = 15,
-		/obj/item/clothing/mask/cigarette/rollie/mindbreaker = 5,
 	)
 
 /obj/effect/spawner/random/entertainment/dice

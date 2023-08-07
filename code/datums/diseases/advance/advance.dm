@@ -57,13 +57,13 @@
 			/datum/reagent/medicine/leporazine, /datum/reagent/medicine/chlorpromazine, /datum/reagent/medicine/higadrite
 		),
 		list( // level 8
-			/datum/reagent/haloperidol, /datum/reagent/drug/happiness, /datum/reagent/medicine/ephedrine
+			/datum/reagent/medicine/haloperidol, /datum/reagent/drug/happiness, /datum/reagent/medicine/ephedrine
 		),
 		list( // level 9
 			/datum/reagent/toxin/lipolicide, /datum/reagent/medicine/sal_acid
 		),
 		list( // level 10
-			/datum/reagent/medicine/haloperidol, /datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
+		 /datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
 		),
 		list( //level 11
 			/datum/reagent/medicine/modafinil, /datum/reagent/toxin/anacea

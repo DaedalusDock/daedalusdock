@@ -91,7 +91,7 @@
 	C.adjustPlasma(20 * removed)
 	if(isplasmaman(C))
 		if(prob(10))
-			for(var/obj/item/bodypart/BP as anything in H.bodyparts)
+			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
 				BP.heal_bones()
 
 /// Handles plasma boiling.

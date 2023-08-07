@@ -97,20 +97,6 @@
 			//if("cheesey")
 				//outstring += "<br>Dangerously Cheesey"
 
-		//pH drift
-		if(reaction.results)
-			var/reactant_vol = 0
-			for(var/typepath in reaction.required_reagents)
-				var/datum/reagent/req_reagent = GLOB.chemical_reagents_list[typepath]
-				reactant_vol += reaction.required_reagents[typepath]
-
-			var/product_vol = 0
-			for(var/typepath in reaction.results)
-				var/datum/reagent/prod_reagent = GLOB.chemical_reagents_list[typepath]
-				product_vol += reaction.results[typepath]
-
-			if(!(reactant_vol && product_vol))
-				to_chat(usr, "[reaction] doesn't have valid product and reagent volumes! Please tell Fermi.")
 
 		//container
 		if(reaction.required_container)

@@ -27,7 +27,7 @@
 		O.forceMove(get_turf(user))
 
 	user.reagents.add_reagent(/datum/reagent/medicine/ryetalyn, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/pen_acid, 20)
+	user.reagents.add_reagent(/datum/reagent/medicine/dexalin, 20)
 	user.reagents.add_reagent(/datum/reagent/medicine/antihol, 10)
 	user.reagents.add_reagent(/datum/reagent/medicine/alkysine, 25)
 

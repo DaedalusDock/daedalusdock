@@ -43,7 +43,7 @@
 	C.adjustToxLoss(removed * 1.5, FALSE)
 	return TRUE
 
-/datum/reagent/ammonia/overdose(mob/living/carbon/C)
+/datum/reagent/ammonia/overdose_process(mob/living/carbon/C)
 	C.adjustToxLoss(0.5, FALSE)
 	return TRUE
 
@@ -147,7 +147,7 @@
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/C, removed)
 	if(!isspaceturf(C.loc))
-		C.step(pick(GLOB.cardinals))
+		step(C, pick(GLOB.cardinals))
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "drool", "moan"))

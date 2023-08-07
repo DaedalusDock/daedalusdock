@@ -193,7 +193,6 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 		/obj/item/beacon = 1,
 		/obj/item/paper/fluff/stations/soap = 1, //recipes count as crafting.
 		/obj/item/plaque = 1,
-		/obj/item/seeds/kronkus = 1,
 		/obj/item/seeds/odious_puffball = 1,
 		/obj/item/stack/sheet/mineral/wood/fifty = 1,
 		/obj/item/stock_parts/cell/high = 1,
@@ -332,7 +331,6 @@ GLOBAL_LIST_INIT(oddity_loot, list(//oddity: strange or crazy items
 		/obj/item/dice/d20/fate/stealth/one_use = 1, //Looks like a d20, keep the d20 in the uncommon pool.
 		/obj/item/shadowcloak = 1,
 		/obj/item/spear/grey_tide = 1,
-		/obj/item/storage/box/donkpockets/donkpocketgondola = 1,
 		list(//music
 			/obj/item/instrument/saxophone/spectral = 1,
 			/obj/item/instrument/trombone/spectral = 1,

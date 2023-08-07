@@ -488,11 +488,6 @@
 	icon_state = "donkpocketboxpizza"
 	donktype = /obj/item/food/donkpocket/pizza
 
-/obj/item/storage/box/donkpockets/donkpocketgondola
-	name = "box of gondola-flavoured donk-pockets"
-	icon_state = "donkpocketboxgondola"
-	donktype = /obj/item/food/donkpocket/gondola
-
 /obj/item/storage/box/donkpockets/donkpocketberry
 	name = "box of berry-flavoured donk-pockets"
 	icon_state = "donkpocketboxberry"
@@ -791,15 +786,6 @@
 /obj/item/storage/box/metalfoam/PopulateContents()
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/metalfoam(src)
-
-/obj/item/storage/box/smart_metal_foam
-	name = "box of smart metal foam grenades"
-	desc = "Used to rapidly seal hull breaches. This variety conforms to the walls of its area."
-	illustration = "grenade"
-
-/obj/item/storage/box/smart_metal_foam/PopulateContents()
-	for(var/i in 1 to 7)
-		new/obj/item/grenade/chem_grenade/smart_metal_foam(src)
 
 /obj/item/storage/box/hug
 	name = "box of hugs"

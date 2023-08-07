@@ -354,13 +354,6 @@
 	required_reagents = list(/datum/reagent/lithium = 1, /datum/reagent/hydrogen = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 
-/datum/chemical_reaction/smart_foaming_agent
-	results = list(/datum/reagent/smart_foaming_agent = 3)
-	required_reagents = list(/datum/reagent/foaming_agent = 3, /datum/reagent/acetone = 1, /datum/reagent/iron = 1)
-	mix_message = "The solution mixes into a frothy metal foam and conforms to the walls of its container."
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
-
-
 /////////////////////////////// Cleaning and hydroponics /////////////////////////////////////////////////
 
 /datum/chemical_reaction/ammonia

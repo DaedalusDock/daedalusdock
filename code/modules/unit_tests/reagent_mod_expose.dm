@@ -4,12 +4,11 @@
 	name = "method patch test"
 	description = "Exposure Method Test Reagent"
 
-/datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
-	. = ..()
-	if(methods & TOUCH)
-		target.health = 90
-	if(methods & INJECT)
-		target.health = 80
+/datum/reagent/method_patch_test/affect_blood(mob/living/carbon/C, removed)
+	C.health = 80
+
+/datum/reagent/method_patch_test/affect_touch(mob/living/carbon/C, removed)
+	C.health = 90
 
 /datum/unit_test/reagent_mob_expose/Run()
 	// Life() is handled just by tests

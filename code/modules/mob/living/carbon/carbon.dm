@@ -33,12 +33,12 @@
 /mob/living/carbon/proc/create_carbon_reagents()
 	if(reagents)
 		return
-	bloodstream = new /datum/reagents(120)
+	bloodstream = new /datum/reagents{metabolism_class = CHEM_BLOOD}(120)
 	bloodstream.my_atom = src
 
 	reagents = bloodstream
 
-	touching = new /datum/reagents(1000)
+	touching = new /datum/reagents{metabolism_class = CHEM_TOUCH}(1000)
 	touching.my_atom = src
 
 /mob/living/carbon/swap_hand(held_index)

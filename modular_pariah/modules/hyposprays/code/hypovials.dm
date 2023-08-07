@@ -73,4 +73,4 @@
 
 /obj/item/reagent_containers/glass/vial/large/dylovene
 	name = "large black hypovial (dylovene)"
-	list_reagents = list(/datum/reagent/medicine/c2/multidylovenever = 60)
+	list_reagents = list(/datum/reagent/medicine/dylovene = 60)

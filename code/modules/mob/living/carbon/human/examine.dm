@@ -247,9 +247,6 @@
 			var/obj/item/bodypart/grasped_part = i
 			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
 
-	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
-		msg += "[t_He] [t_is] emitting a gentle blue glow!\n"
-
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])

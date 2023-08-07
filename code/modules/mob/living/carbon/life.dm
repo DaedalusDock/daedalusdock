@@ -338,7 +338,7 @@
 		if(HM?.timeout)
 			dna.remove_mutation(HM.type)
 
-/mob/living/carbon/proc/handle_chemicals()
+/mob/living/carbon/handle_chemicals()
 	chem_effects.Cut()
 
 	if(status_flags & GODMODE)

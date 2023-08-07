@@ -448,7 +448,7 @@
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
 	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/knockdown)
 
-	holder.remove_reagent(/datum/reagent/drugs/mindbreaker, 5)
+	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 	//M.adjust_hallucination(-10)
 
 	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
@@ -625,6 +625,7 @@
 	if(volume > 10)
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 
+	holder.remove_reagent(/datum/reagent/toxin/histamine, 10 * removed)
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
 		holder.remove_reagent(type, 4)
 		if(C.set_heartattack(FALSE))
@@ -849,3 +850,76 @@
 		C.hallucination = 0
 	if(volume >= 20)
 		holder.add_reagent(/datum/reagent/medicine/haloperidol, removed)
+
+/datum/reagent/medicine/regen_jelly
+	name = "Regenerative Jelly"
+	description = "Gradually regenerates all types of damage, without harming slime anatomy."
+	reagent_state = LIQUID
+	color = "#CC23FF"
+	taste_description = "jelly"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/regen_jelly/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
+	. = ..()
+	if(!ishuman(exposed_mob) || (reac_volume < 0.5))
+		return
+
+	var/mob/living/carbon/human/exposed_human = exposed_mob
+	exposed_human.hair_color = "#CC22FF"
+	exposed_human.facial_hair_color = "#CC22FF"
+	exposed_human.update_body_parts()
+
+/datum/reagent/medicine/regen_jelly/affect_blood(mob/living/carbon/C, removed)
+	C.adjustBruteLoss(-1.5 * removed, 0)
+	C.adjustFireLoss(-1.5 * removed, 0)
+	C.adjustOxyLoss(-1.5 * removed, 0)
+	C.adjustToxLoss(-1.5 * removed, 0, TRUE) //heals TOXINLOVERs
+	. = TRUE
+
+/datum/reagent/medicine/regen_jelly/affect_touch(mob/living/carbon/C, removed)
+	return affect_blood(C, removed)
+
+/datum/reagent/medicine/diphenhydramine
+	name = "Diphenhydramine"
+	description = "Rapidly purges the body of Histamine and reduces jitteriness. Slight chance of causing drowsiness."
+	reagent_state = LIQUID
+	color = "#64FFE6"
+	metabolization_rate = 0.1
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/diphenhydramine/affect_blood(mob/living/carbon/C, removed)
+	if(prob(10))
+		C.adjust_drowsyness(1)
+	C.adjust_timed_status_effect(-2 SECONDS * removed, /datum/status_effect/jitter)
+	holder.remove_reagent(/datum/reagent/toxin/histamine, 10 * removed)
+
+/datum/reagent/medicine/inacusiate
+	name = "Inacusiate"
+	description = "Rapidly repairs damage to the patient's ears to cure deafness, assuming the source of said deafness isn't from genetic mutations, chronic deafness, or a total defecit of ears." //by "chronic" deafness, we mean people with the "deaf" quirk
+	color = "#606060" // ditto
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/inacusiate/on_mob_add(mob/living/owner, amount)
+	. = ..()
+	RegisterSignal(owner, COMSIG_MOVABLE_HEAR, PROC_REF(owner_hear))
+
+//Lets us hear whispers from far away!
+/datum/reagent/medicine/inacusiate/proc/owner_hear(datum/source, message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+	SIGNAL_HANDLER
+	if(!isliving(holder.my_atom))
+		return
+	var/mob/living/owner = holder.my_atom
+	var/atom/movable/composer = holder.my_atom
+	if(message_mods[WHISPER_MODE])
+		message = composer.compose_message(owner, message_language, message, , spans, message_mods)
+
+/datum/reagent/medicine/inacusiate/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	var/obj/item/organ/ears/ears = C.getorganslot(ORGAN_SLOT_EARS)
+	if(!ears)
+		return
+	ears.adjustEarDamage(-4 * removed, -4 * removed)
+
+/datum/reagent/medicine/inacusiate/on_mob_delete(mob/living/owner)
+	. = ..()
+	UnregisterSignal(owner, COMSIG_MOVABLE_HEAR)

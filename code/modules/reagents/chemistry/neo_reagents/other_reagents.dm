@@ -646,3 +646,28 @@
 		drinker.adjustOxyLoss(2 * removed, FALSE)
 		drinker.adjustBruteLoss(2 * removed, FALSE)
 	return TRUE
+
+/datum/reagent/cellulose
+	name = "Cellulose Fibers"
+	description = "A crystaline polydextrose polymer, plants swear by this stuff."
+	reagent_state = SOLID
+	color = "#E6E6DA"
+	taste_mult = 0
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/diethylamine
+	name = "Diethylamine"
+	description = "A secondary amine, mildly corrosive."
+	color = "#604030" // rgb: 96, 64, 48
+	taste_description = "iron"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+// This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
+/datum/reagent/diethylamine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+	. = ..()
+	if(chems.has_reagent(src.type, 1))
+		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
+		mytray.adjust_pestlevel(-rand(1,2))
+		if(myseed)
+			myseed.adjust_yield(round(chems.get_reagent_amount(src.type) * 1))
+			myseed.adjust_instability(-round(chems.get_reagent_amount(src.type) * 1))

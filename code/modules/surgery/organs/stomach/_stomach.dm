@@ -36,6 +36,7 @@
 	//None edible organs do not get a reagent holder by default
 	if(!reagents)
 		create_reagents(reagent_vol)
+		reagents.metabolism_class = CHEM_INGEST
 
 /obj/item/organ/stomach/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()

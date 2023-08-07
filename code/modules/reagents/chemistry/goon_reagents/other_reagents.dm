@@ -207,3 +207,96 @@
 		C.adjustToxLoss(1, 0)
 		C.losebreath++
 		. = TRUE
+
+/datum/reagent/ash
+	name = "Ash"
+	description = "Supposedly phoenixes rise from these, but you've never seen it."
+	reagent_state = LIQUID
+	color = "#515151"
+	taste_description = "ash"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+// Ash is also used IRL in gardening, as a fertilizer enhancer and weed killer
+/datum/reagent/ash/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+	. = ..()
+	if(chems.has_reagent(src.type, 1))
+		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
+		mytray.adjust_weedlevel(-1)
+
+// [Original ants concept by Keelin on Goon]
+/datum/reagent/ants
+	name = "Ants"
+	description = "A genetic crossbreed between ants and termites, their bites land at a 3 on the Schmidt Pain Scale."
+	reagent_state = SOLID
+	color = "#993333"
+	taste_mult = 1.3
+	taste_description = "tiny legs scuttling down the back of your throat"
+	metabolization_rate = 5 * REAGENTS_METABOLISM //1u per second
+	glass_name = "glass of ants"
+	glass_desc = "Bottoms up...?"
+
+	/// How much damage the ants are going to be doing (rises with each tick the ants are in someone's body)
+	var/ant_damage = 0
+	/// Tells the debuff how many ants we are being covered with.
+	var/amount_left = 0
+	/// List of possible common statements to scream when eating ants
+	var/static/list/ant_screams = list(
+		"THEY'RE UNDER MY SKIN!!",
+		"GET THEM OUT OF ME!!",
+		"HOLY HELL THEY BURN!!",
+		"MY GOD THEY'RE INSIDE ME!!",
+		"GET THEM OUT!!"
+		)
+
+/datum/reagent/ants/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjustBruteLoss(max(0.1, round((ant_damage * 0.025),0.1)), FALSE) //Scales with time. Roughly 32 brute with 100u.
+	ant_damage++
+	if(ant_damage < 5) // Makes ant food a little more appetizing, since you won't be screaming as much.
+		return TRUE
+
+	if(prob(10))
+		spawn(-1)
+			C.say(pick(ant_screams), forced = /datum/reagent/ants)
+	if(prob(30))
+		spawn(-1)
+			C.emote("scream")
+	if(prob(5)) // Stuns, but purges ants.
+		C.vomit(rand(5,10), FALSE, TRUE, 1, TRUE, FALSE, purge_ratio = 1)
+	return TRUE
+
+/datum/reagent/ants/affect_touch(mob/living/carbon/C, removed)
+	return affect_ingest(C, removed)
+
+/datum/reagent/ants/on_mob_end_metabolize(mob/living/living_anthill)
+	ant_damage = 0
+	to_chat(living_anthill, "<span class='notice'>You feel like the last of the ants are out of your system.</span>")
+	return ..()
+
+/datum/reagent/ants/affect_touch(mob/living/carbon/C, removed)
+	. = ..()
+	C.apply_status_effect(/datum/status_effect/ants, round(removed, 0.1))
+
+/datum/reagent/ants/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	var/turf/open/my_turf = exposed_obj.loc // No dumping ants on an object in a storage slot
+	if(!istype(my_turf)) //Are we actually in an open turf?
+		return
+	var/static/list/accepted_types = typecacheof(list(/obj/machinery/atmospherics, /obj/structure/cable, /obj/structure/disposalpipe))
+	if(!accepted_types[exposed_obj.type]) // Bypasses pipes, vents, and cables to let people create ant mounds on top easily.
+		return
+	expose_turf(my_turf, reac_volume)
+
+/datum/reagent/ants/expose_turf(turf/exposed_turf, reac_volume)
+	. = ..()
+	if(!istype(exposed_turf) || isspaceturf(exposed_turf)) // Is the turf valid
+		return
+	if((reac_volume <= 10)) // Makes sure people don't duplicate ants.
+		return
+
+	var/obj/effect/decal/cleanable/ants/pests = locate() in exposed_turf.contents
+	if(!pests)
+		pests = new(exposed_turf)
+	var/spilled_ants = (round(reac_volume,1) - 5) // To account for ant decals giving 3-5 ants on initialize.
+	pests.reagents.add_reagent(/datum/reagent/ants, spilled_ants)
+	pests.update_ant_damage()

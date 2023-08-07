@@ -125,7 +125,7 @@
 	name = "dylovene pill"
 	desc = "Helps counteract nervous system damage induced by toxins."
 	icon_state = "pill17"
-	list_reagents = list(/datum/reagent/medicine/c2/dylovene = 5)
+	list_reagents = list(/datum/reagent/medicine/dylovene = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/epinephrine

@@ -414,25 +414,6 @@
 	beakers += beaker_one
 	beakers += beaker_two
 
-
-/obj/item/grenade/chem_grenade/smart_metal_foam
-	name = "smart metal foam grenade"
-	desc = "Used for emergency sealing of hull breaches, while keeping areas accessible."
-	stage = GRENADE_READY
-
-/obj/item/grenade/chem_grenade/smart_metal_foam/Initialize(mapload)
-	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/large/beaker_one = new(src)
-	var/obj/item/reagent_containers/glass/beaker/beaker_two = new(src)
-
-	beaker_one.reagents.add_reagent(/datum/reagent/aluminium, 75)
-	beaker_two.reagents.add_reagent(/datum/reagent/smart_foaming_agent, 25)
-	beaker_two.reagents.add_reagent(/datum/reagent/toxin/acid/fluacid, 25)
-
-	beakers += beaker_one
-	beakers += beaker_two
-
-
 /obj/item/grenade/chem_grenade/incendiary
 	name = "incendiary grenade"
 	desc = "Used for clearing rooms of living things."

@@ -502,7 +502,6 @@
 		/datum/reagent/consumable/tonic,
 		/datum/reagent/consumable/sodawater,
 		/datum/reagent/consumable/lemon_lime,
-		/datum/reagent/consumable/pwr_game,
 		/datum/reagent/consumable/shamblers,
 		/datum/reagent/consumable/sugar,
 		/datum/reagent/consumable/pineapplejuice,
@@ -531,7 +530,6 @@
 	)
 	//PARIAH EDIT END
 	emagged_reagents = list(
-		/datum/reagent/consumable/ethanol/thirteenloko,
 		/datum/reagent/consumable/ethanol/whiskey_cola,
 		/datum/reagent/toxin/mindbreaker,
 		/datum/reagent/toxin/staminatoxin
@@ -605,7 +603,6 @@
 		/datum/reagent/consumable/ethanol/curacao,
 		/datum/reagent/consumable/ethanol/sake,
 		/datum/reagent/consumable/ethanol/applejack,
-		/datum/reagent/consumable/ethanol/synthanol// PARIAH EDIT
 	)
 	upgrade_reagents = null
 	emagged_reagents = list(

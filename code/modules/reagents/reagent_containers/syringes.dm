@@ -177,6 +177,11 @@
 	desc = "Contains calomel."
 	list_reagents = list(/datum/reagent/medicine/calomel = 15)
 
+/obj/item/reagent_containers/syringe/dexalin
+	name = "syringe (dexalin)"
+	desc = "Contains dexalin."
+	list_reagents = list(/datum/reagent/medicine/dexalin = 15)
+
 /obj/item/reagent_containers/syringe/plasma
 	name = "syringe (plasma)"
 	desc = "Contains plasma."

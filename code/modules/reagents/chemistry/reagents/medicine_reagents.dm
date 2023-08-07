@@ -838,10 +838,13 @@
 	name = "Chlorpromazine"
 	description = "A powerful antipsychotic. For schizophrenics, it counteracts their symptoms and anchors them to reality."
 	color = "#B31008" // rgb: 139, 166, 233
-	toxpwr = 0
 	taste_description = "sourness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	metabolization_rate = 0.02
+	overdose_threshold = 60
 
 /datum/reagent/medicine/chlorpromazine/affect_blood(mob/living/carbon/C, removed)
 	if(HAS_TRAIT(C, TRAIT_INSANITY))
 		C.hallucination = 0
+	if(volume >= 20)
+		holder.add_reagent(/datum/reagent/medicine/haloperidol, removed)

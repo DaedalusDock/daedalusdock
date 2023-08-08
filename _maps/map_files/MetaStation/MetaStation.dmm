@@ -8107,7 +8107,7 @@
 /obj/item/folder/white,
 /obj/item/folder/blue,
 /obj/structure/window/reinforced/spawner/west{
-	pixel_w = -4
+	pixel_x = -4
 	},
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
@@ -29747,7 +29747,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/structure/window/reinforced/spawner/west{
-	pixel_w = -4
+	pixel_x = -4
 	},
 /obj/machinery/telephone/medical{
 	friendly_name = "Medical Front Desk"

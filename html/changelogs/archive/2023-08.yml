@@ -69,3 +69,6 @@
   - config: Credits music, Lobby tracks, and Jukebox media organization has changed
       massively. Check the repo for more information.
   - rscdel: Disco Inferno has been made far less disco.
+2023-08-08:
+  Kapu1178:
+  - rscadd: Added a chance for Runtime to spawn with a different name.

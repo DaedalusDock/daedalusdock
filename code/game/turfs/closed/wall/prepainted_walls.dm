@@ -49,3 +49,13 @@
 	color = PAINT_WALL_MEDICAL
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
+
+/turf/closed/wall/prepainted/bridge
+	color = PAINT_WALL_COMMAND
+	wall_paint = PAINT_WALL_COMMAND
+	stripe_paint = PAINT_STRIPE_COMMAND
+
+/turf/closed/wall/r_wall/prepainted/bridge
+	color = PAINT_WALL_COMMAND
+	wall_paint = PAINT_WALL_COMMAND
+	stripe_paint = PAINT_STRIPE_COMMAND

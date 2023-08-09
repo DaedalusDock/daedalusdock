@@ -236,11 +236,11 @@
 	list_reagents = list(/datum/reagent/medicine/kelotane = 50)
 
 /obj/item/reagent_containers/glass/beaker/large/dylovene
-	name = "dylovene reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/dylovene = 10, /datum/reagent/medicine/granibitaluri = 40)
+	name = "dylovene reserve tank"
+	list_reagents = list(/datum/reagent/medicine/dylovene = 50)
 
 /obj/item/reagent_containers/glass/beaker/large/epinephrine
-	name = "epinephrine reserve tank (diluted)"
+	name = "epinephrine reserve tank"
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 50)
 
 /obj/item/reagent_containers/glass/beaker/synthflesh

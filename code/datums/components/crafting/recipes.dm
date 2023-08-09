@@ -302,7 +302,6 @@
 	reqs = list(/obj/item/gun/energy/laser = 1,
 				/obj/item/stack/cable_coil = 5,
 				/obj/item/weaponcrafting/gunkit/decloner = 1,
-				/datum/reagent/baldium = 30,
 				/datum/reagent/toxin/mutagen = 40)
 	time = 200
 	category = CAT_WEAPONRY

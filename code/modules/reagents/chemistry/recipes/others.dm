@@ -1,9 +1,3 @@
-
-/datum/chemical_reaction/sterilizine
-	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
-	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/chlorine = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
-
 /datum/chemical_reaction/lube
 	results = list(/datum/reagent/lube = 4)
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/oxygen = 1)
@@ -387,11 +381,6 @@
 	required_reagents = list(/datum/reagent/toxin = 1, /datum/reagent/consumable/ethanol = 4)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_PLANT
 
-/datum/chemical_reaction/drying_agent
-	results = list(/datum/reagent/drying_agent = 3)
-	required_reagents = list(/datum/reagent/stable_plasma = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/sodium = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
-
 //////////////////////////////////// Other goon stuff ///////////////////////////////////////////
 
 /datum/chemical_reaction/acetone
@@ -601,17 +590,6 @@
 /datum/chemical_reaction/barbers_aid
 	results = list(/datum/reagent/barbers_aid = 5)
 	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/uranium/radium = 1, /datum/reagent/drug/space_drugs = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
-
-/datum/chemical_reaction/concentrated_barbers_aid
-	results = list(/datum/reagent/concentrated_barbers_aid = 2)
-	required_reagents = list(/datum/reagent/barbers_aid = 1, /datum/reagent/toxin/mutagen = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
-
-/datum/chemical_reaction/baldium
-	results = list(/datum/reagent/baldium = 1)
-	required_reagents = list(/datum/reagent/uranium/radium = 1, /datum/reagent/toxin/acid = 1, /datum/reagent/lye = 1)
-	required_temp = 395
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 
 /datum/chemical_reaction/saltpetre

@@ -39,7 +39,6 @@
 	//dispensable_reagents is copypasted in plumbing synthesizers. Please update accordingly. (I didn't make it global because that would limit custom chem dispensers)
 	var/list/dispensable_reagents = list(
 		/datum/reagent/aluminium,
-		/datum/reagent/bromine,
 		/datum/reagent/carbon,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
@@ -78,7 +77,6 @@
 	)
 
 	var/list/upgrade_reagents3 = list(
-		/datum/reagent/medicine/mine_salve,
 		/datum/reagent/toxin
 	)
 
@@ -677,7 +675,6 @@
 	use_power = NO_POWER_USE
 	dispensable_reagents = list(
 		/datum/reagent/aluminium,
-		/datum/reagent/bromine,
 		/datum/reagent/carbon,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
@@ -708,7 +705,6 @@
 		/datum/reagent/diethylamine,
 		/datum/reagent/fuel/oil,
 		/datum/reagent/saltpetre,
-		/datum/reagent/medicine/mine_salve,
 		/datum/reagent/medicine/morphine,
 		/datum/reagent/drug/space_drugs,
 		/datum/reagent/toxin,

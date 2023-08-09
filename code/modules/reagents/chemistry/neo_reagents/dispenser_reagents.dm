@@ -296,3 +296,67 @@
 	if(isopenturf(exposed_turf))
 		exposed_turf.atmos_spawn_air(GAS_OXYGEN, reac_volume/20, exposed_temperature || T20C)
 
+
+/datum/reagent/nitrogen
+	name = "Nitrogen"
+	description = "A colorless, odorless, tasteless gas. A simple asphyxiant that can silently displace vital oxygen."
+	reagent_state = GAS
+	color = "#808080" // rgb: 128, 128, 128
+	taste_mult = 0
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
+	. = ..()
+	if(istype(exposed_turf))
+		var/temp = holder ? holder.chem_temp : T20C
+		exposed_turf.atmos_spawn_air(GAS_NITROGEN, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
+
+/datum/reagent/hydrogen
+	name = "Hydrogen"
+	description = "A colorless, odorless, nonmetallic, tasteless, highly combustible diatomic gas."
+	reagent_state = GAS
+	color = "#808080" // rgb: 128, 128, 128
+	taste_mult = 0
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/fluorine
+	name = "Fluorine"
+	description = "A comically-reactive chemical element. The universe does not want this stuff to exist in this form in the slightest."
+	reagent_state = GAS
+	color = "#808080" // rgb: 128, 128, 128
+	taste_description = "acid"
+	ph = 2
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+// You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
+/datum/reagent/fluorine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+	. = ..()
+	if(chems.has_reagent(src.type, 1))
+		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 2))
+		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 2.5))
+		mytray.adjust_waterlevel(-round(chems.get_reagent_amount(src.type) * 0.5))
+		mytray.adjust_weedlevel(-rand(1,4))
+
+/datum/reagent/fluorine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(0.5*removed, 0)
+	. = TRUE
+
+//This is intended to a be a scarce reagent to gate certain drugs and toxins with. Do not put in a synthesizer. Renewable sources of this reagent should be inefficient.
+/datum/reagent/lead
+	name = "Lead"
+	description = "A dull metalltic element with a low melting point."
+	taste_description = "metal"
+	reagent_state = SOLID
+	color = "#80919d"
+	metabolization_rate = 0.15
+
+/datum/reagent/lead/affect_blood(mob/living/carbon/C, removed)
+	victim.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)
+
+/datum/reagent/iodine
+	name = "Iodine"
+	description = "Commonly added to table salt as a nutrient. On its own it tastes far less pleasing."
+	reagent_state = LIQUID
+	color = "#BC8A00"
+	taste_description = "metal"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED

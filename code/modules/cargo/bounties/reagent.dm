@@ -157,7 +157,6 @@
 		/datum/reagent/consumable/honey,
 		/datum/reagent/consumable/frostoil,
 		/datum/reagent/toxin/slimejelly,
-		/datum/reagent/teslium/energized_jelly,
 		/datum/reagent/toxin/mimesbane,
 		/datum/reagent/medicine/strange_reagent,
 		/datum/reagent/nitroglycerin,

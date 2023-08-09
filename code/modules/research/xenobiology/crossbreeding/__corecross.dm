@@ -122,11 +122,11 @@ To add a crossbreed:
 	color = "#FF0000"
 	list_reagents = list(/datum/reagent/blood = 50)
 
-/obj/item/slimecrossbeaker/pax //5u synthpax.
+/obj/item/slimecrossbeaker/pax
 	name = "peace-inducing extract"
 	desc = "A small blob of synthetic pax."
 	color = "#FFCCCC"
-	list_reagents = list(/datum/reagent/pax/peaceborg = 5)
+	list_reagents = list(/datum/reagent/pax = 2)
 
 /obj/item/slimecrossbeaker/tricordrazine //15u tricordrazine.
 	name = "healing extract"
@@ -180,7 +180,7 @@ To add a crossbreed:
 	name = "peaceful distillation"
 	desc = "A light pink gooey sphere. Simply touching it makes you a little dizzy."
 	color = "#DDAAAA"
-	list_reagents = list(/datum/reagent/pax/peaceborg = 10, /datum/reagent/drug/space_drugs = 15) //Peace, dudes
+	list_reagents = list(/datum/reagent/pax = 5, /datum/reagent/drug/space_drugs = 15) //Peace, dudes
 
 /obj/item/slimecrossbeaker/autoinjector/peaceandlove/Initialize(mapload)
 	. = ..()

@@ -561,11 +561,6 @@
 
 	return ..()
 
-/obj/item/reagent_containers/spray/cyborg_drying
-	name = "drying agent spray"
-	color = "#A000A0"
-	list_reagents = list(/datum/reagent/drying_agent = 250)
-
 /obj/item/reagent_containers/spray/cyborg_lube
 	name = "lube spray"
 	list_reagents = list(/datum/reagent/lube = 250)
@@ -576,10 +571,6 @@
 	if(light_replacer)
 		for(var/charge in 1 to coeff)
 			light_replacer.Charge(cyborg)
-
-	var/obj/item/reagent_containers/spray/cyborg_drying/drying_agent = locate(/obj/item/reagent_containers/spray/cyborg_drying) in basic_modules
-	if(drying_agent)
-		drying_agent.reagents.add_reagent(/datum/reagent/drying_agent, 5 * coeff)
 
 	var/obj/item/reagent_containers/spray/cyborg_lube/lube = locate(/obj/item/reagent_containers/spray/cyborg_lube) in emag_modules
 	if(lube)

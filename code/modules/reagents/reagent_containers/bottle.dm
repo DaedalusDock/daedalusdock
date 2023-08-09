@@ -32,11 +32,6 @@
 	desc = "A small bottle of cyanide. Bitter almonds?"
 	list_reagents = list(/datum/reagent/toxin/cyanide = 30)
 
-/obj/item/reagent_containers/glass/bottle/spewium
-	name = "spewium bottle"
-	desc = "A small bottle of spewium."
-	list_reagents = list(/datum/reagent/toxin/spewium = 30)
-
 /obj/item/reagent_containers/glass/bottle/morphine
 	name = "morphine bottle"
 	desc = "A small bottle of morphine."
@@ -69,10 +64,10 @@
 	desc = "A small bottle of dylovene, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
 	list_reagents = list(/datum/reagent/medicine/dylovene = 30)
 
-/obj/item/reagent_containers/glass/bottle/calomel
-	name = "calomel bottle"
-	desc = "A small bottle of calomel, which quickly purges all chemicals from the patient. Causes toxin damage if the patient is not heavily injured."
-	list_reagents = list(/datum/reagent/medicine/calomel = 30)
+/obj/item/reagent_containers/glass/bottle/ipecac
+	name = "ipecac bottle"
+	desc = "A small bottle of ipecac, which rapidly induces vomitting to purge the stomach of reagents."
+	list_reagents = list(/datum/reagent/medicine/ipecac = 30)
 
 /obj/item/reagent_containers/glass/bottle/syriniver
 	name = "syriniver bottle"
@@ -393,10 +388,6 @@
 /obj/item/reagent_containers/glass/bottle/iodine
 	name = "iodine bottle"
 	list_reagents = list(/datum/reagent/iodine = 30)
-
-/obj/item/reagent_containers/glass/bottle/bromine
-	name = "bromine bottle"
-	list_reagents = list(/datum/reagent/bromine = 30)
 
 /obj/item/reagent_containers/glass/bottle/thermite
 	name = "thermite bottle"

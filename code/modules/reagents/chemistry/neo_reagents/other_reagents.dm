@@ -671,3 +671,260 @@
 		if(myseed)
 			myseed.adjust_yield(round(chems.get_reagent_amount(src.type) * 1))
 			myseed.adjust_instability(-round(chems.get_reagent_amount(src.type) * 1))
+
+/datum/reagent/pax
+	name = "Pax 400"
+	description = "A colorless liquid that suppresses violence in its subjects."
+	color = "#AAAAAA55"
+	taste_description = "water"
+	metabolization_rate = 0.05
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/pax/on_mob_metabolize(mob/living/carbon/C, class)
+	ADD_TRAIT(C, TRAIT_PACIFISM, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/pax/on_mob_end_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_PACIFISM, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/monkey_powder
+	name = "Monkey Powder"
+	description = "Just add water!"
+	color = "#9C5A19"
+	taste_description = "bananas"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/liquidgibs
+	name = "Liquid Gibs"
+	color = "#CC4633"
+	description = "You don't even want to think about what's in here."
+	taste_description = "gross iron"
+	shot_glass_icon_state = "shotglassred"
+	material = /datum/material/meat
+	ph = 7.45
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/fuel/unholywater //if you somehow managed to extract this from someone, dont splash it on yourself and have a smoke
+	name = "Unholy Water"
+	description = "Something that shouldn't exist on this plane of existence."
+	taste_description = "suffering"
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM  //0.5u/second
+	penetrates_skin = TOUCH|VAPOR
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/fuel/unholywater/affect_blood(mob/living/carbon/C, removed)
+	if(IS_CULTIST(C))
+		C.adjust_drowsyness(-5* removed)
+		C.AdjustAllImmobility(-40 * removed)
+		C.stamina.adjust(10 * removed)
+		C.adjustToxLoss(-2 * removed, 0)
+		C.adjustOxyLoss(-2 * removed, 0)
+		C.adjustBruteLoss(-2 * removed, 0)
+		C.adjustFireLoss(-2 * removed, 0)
+		if(ishuman(M) && M.blood_volume < BLOOD_VOLUME_NORMAL)
+			M.blood_volume += 3 * REM * delta_time
+	else  // Will deal about 90 damage when 50 units are thrown
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		C.adjustToxLoss(1 * removed, 0)
+		C.adjustFireLoss(1 * removed, 0)
+		C.adjustOxyLoss(1 * removed, 0)
+		C.adjustBruteLoss(1 * removed, 0)
+
+	return TRUE
+
+
+/datum/reagent/glitter
+	name = "Generic Glitter"
+	description = "if you can see this description, contact a coder."
+	color = "#FFFFFF" //pure white
+	taste_description = "plastic"
+	reagent_state = SOLID
+	var/glitter_type = /obj/effect/decal/cleanable/glitter
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/glitter/expose_turf(turf/exposed_turf, reac_volume)
+	. = ..()
+	if(!istype(exposed_turf))
+		return
+	new glitter_type(exposed_turf)
+
+/datum/reagent/glitter/pink
+	name = "Pink Glitter"
+	description = "pink sparkles that get everywhere"
+	color = "#ff8080" //A light pink color
+	glitter_type = /obj/effect/decal/cleanable/glitter/pink
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/glitter/white
+	name = "White Glitter"
+	description = "white sparkles that get everywhere"
+	glitter_type = /obj/effect/decal/cleanable/glitter/white
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/glitter/blue
+	name = "Blue Glitter"
+	description = "blue sparkles that get everywhere"
+	color = "#4040FF" //A blueish color
+	glitter_type = /obj/effect/decal/cleanable/glitter/blue
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/mulligan
+	name = "Mulligan Toxin"
+	description = "This toxin will rapidly change the DNA of living creatures."
+	color = "#5EFF3B" //RGB: 94, 255, 59
+	metabolization_rate = INFINITY
+	taste_description = "slime"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/mulligan/affect_blood(mob/living/carbon/human/H, removed)
+	if(!istype(H))
+		return
+	var/datum/reagents/R = C.get_ingested_reagents()
+	if(R)
+		R.del_reagent(type)
+	to_chat(H, span_warning("You grit your teeth in pain as your body rapidly mutates!"))
+	H.visible_message(span_danger("[H]'s skin melts away, as they morph into a new form!"))
+	randomize_human(H)
+	H.dna.update_dna_identity()
+
+
+/datum/reagent/lye
+	name = "Sodium Hydroxide"
+	description = "Also known as Lye. As a profession making this is somewhat underwhelming."
+	reagent_state = LIQUID
+	color = "#FFFFD6" // very very light yellow
+	taste_description = "acid"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/vaccine
+	//data must contain virus type
+	name = "Vaccine"
+	description = "A suspension of degraded viral material suitable for use in inoculation."
+	color = "#C81040" // rgb: 200, 16, 64
+	taste_description = "slime"
+	penetrates_skin = NONE
+
+/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+	. = ..()
+	if(!islist(data) || !(methods & (INGEST|INJECT)))
+		return
+
+	for(var/thing in exposed_mob.diseases)
+		var/datum/disease/infection = thing
+		if(infection.GetDiseaseID() in data)
+			infection.cure()
+	LAZYOR(exposed_mob.disease_resistances, data)
+
+/datum/reagent/vaccine/affect_blood(mob/living/carbon/C, removed)
+	if(!islist(data))
+		return
+	for(var/thing in exposed_mob.diseases)
+		var/datum/disease/infection = thing
+		if(infection.GetDiseaseID() in data)
+			infection.cure()
+	LAZYOR(exposed_mob.disease_resistances, data)
+
+
+/datum/reagent/vaccine/on_merge(list/data)
+	if(istype(data))
+		src.data |= data.Copy()
+
+/datum/reagent/vaccine/fungal_tb
+	name = "Vaccine (Fungal Tuberculosis)"
+	description = "A suspension of degraded viral material suitable for use in inoculation. Taggants suspended in the solution report it to be targeting Fungal Tuberculosis."
+
+/datum/reagent/vaccine/fungal_tb/New(data)
+	. = ..()
+	var/list/cached_data
+	if(!data)
+		cached_data = list()
+	else
+		cached_data = data
+	cached_data |= "[/datum/disease/tuberculosis]"
+	src.data = cached_data
+
+/datum/reagent/barbers_aid
+	name = "Barber's Aid"
+	description = "A solution to hair loss across the world."
+	reagent_state = LIQUID
+	color = "#A86B45" //hair is brown
+	taste_description = "sourness"
+	penetrates_skin = NONE
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/barbers_aid/affect_touch(mob/living/carbon/C, removed)
+	var/mob/living/carbon/human/exposed_human = exposed_mob
+	var/datum/sprite_accessory/hair/picked_hair = pick(GLOB.hairstyles_list)
+	var/datum/sprite_accessory/facial_hair/picked_beard = pick(GLOB.facial_hairstyles_list)
+	to_chat(exposed_human, span_notice("Hair starts sprouting from your scalp."))
+	exposed_human.hairstyle = picked_hair
+	exposed_human.facial_hairstyle = picked_beard
+	exposed_human.update_body_parts()
+
+	holder.del_reagent(type)
+
+/datum/reagent/growthserum
+	name = "Growth Serum"
+	description = "A commercial chemical designed to help older men in the bedroom."//not really it just makes you a giant
+	color = "#ff0000"//strong red. rgb 255, 0, 0
+	var/current_size = RESIZE_DEFAULT_SIZE
+	taste_description = "bitterness" // apparently what viagra tastes like
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/growthserum/affect_blood(mob/living/carbon/C, removed)
+	var/newsize = current_size
+	switch(volume)
+		if(0 to 19)
+			newsize = 1.25*RESIZE_DEFAULT_SIZE
+		if(20 to 49)
+			newsize = 1.5*RESIZE_DEFAULT_SIZE
+		if(50 to 99)
+			newsize = 2*RESIZE_DEFAULT_SIZE
+		if(100 to 199)
+			newsize = 2.5*RESIZE_DEFAULT_SIZE
+		if(200 to INFINITY)
+			newsize = 3.5*RESIZE_DEFAULT_SIZE
+
+	H.resize = newsize/current_size
+	current_size = newsize
+	H.update_transform()
+
+/datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C)
+	M.resize = RESIZE_DEFAULT_SIZE/current_size
+	current_size = RESIZE_DEFAULT_SIZE
+	M.update_transform()
+
+/datum/reagent/impedrezene // Impairs mental function correctly, takes an overwhelming dose to kill.
+	name = "Impedrezene"
+	description = "Impedrezene is a narcotic that impedes one's ability by slowing down the higher brain cell functions."
+	taste_description = "numbness"
+	reagent_state = LIQUID
+	color = "#c8a5dc"
+	overdose = REAGENTS_OVERDOSE
+	value = 1.8
+
+/datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
+	ADD_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/impedrezene/affect_blood(mob/living/carbon/C, removed)
+	C.set_jitter_if_lower(10 SECONDS)
+	C.add_chemical_effect(M.add_chemical_effect(CE_SLOWDOWN, 1))
+
+	if(prob(80))
+		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
+	if(prob(50))
+		C.drowsyness = max(C.drowsyness, 3)
+	if(prob(10))
+		spawn(-1)
+			C.emote("drool")
+		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+
+	var/obj/item/organ/brain/B = C.getorganslot(ORGAN_SLOT_BRAIN)
+	if (B.damage < 60)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed)
+	else
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed)
+
+/datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))
+	if(!HAS_TRAIT(C, TRAIT_IMPEDREZENE))
+

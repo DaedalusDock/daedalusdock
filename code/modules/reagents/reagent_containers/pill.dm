@@ -189,10 +189,17 @@
 	icon_state = "pill22"
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/neurine
-	name = "neurine pill"
+/obj/item/reagent_containers/pill/alkysine
+	name = "alkysine pill"
 	desc = "Used to treat non-severe mental traumas."
-	list_reagents = list(/datum/reagent/medicine/neurine = 10)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 10)
+	icon_state = "pill22"
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/ipecac
+	name = "ipecac pill"
+	desc = "Used to purge the stomach of reagents."
+	list_reagents = list(/datum/reagent/medicine/ipecac = 5)
 	icon_state = "pill22"
 	rename_with_volume = TRUE
 

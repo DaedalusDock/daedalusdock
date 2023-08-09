@@ -505,6 +505,9 @@
 		H.adjust_confusion(2 SECONDS)
 		H.drowsyness++
 
+	if(prob(15))
+		C.cure_trauma_type(resilience = TRAUMA_RESILIENCE_BASIC)
+
 /datum/reagent/medicine/imidazoline
 	name = "Imidazoline"
 	description = "Heals eye damage"
@@ -923,3 +926,32 @@
 /datum/reagent/medicine/inacusiate/on_mob_delete(mob/living/owner)
 	. = ..()
 	UnregisterSignal(owner, COMSIG_MOVABLE_HEAR)
+
+/datum/reagent/medicine/insulin
+	name = "Insulin"
+	description = "Increases sugar depletion rates."
+	reagent_state = LIQUID
+	color = "#FFFFF0"
+	metabolization_rate = 0.1
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/insulin/affect_blood(mob/living/carbon/C, removed)
+	holder.remove_reagent(/datum/reagent/consumable/sugar, 3 * removed)
+
+/datum/reagent/medicine/ipecac
+	name = "Ipecac"
+	description = "Rapidly induces vomitting to purge the stomach."
+	reagent_state = LIQUID
+	color = "#19C832"
+	metabolization_rate = 0.4
+	taste_description = "acid"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/ipecac/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	if(prob(15))
+		C.vomit(harm = FALSE, force = TRUE, purge_ratio = (rand(15, 30)/100))
+
+/datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(5 * removed, 0)
+	. = TRUE

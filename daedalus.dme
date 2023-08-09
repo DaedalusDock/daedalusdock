@@ -4078,6 +4078,7 @@
 #include "code\modules\reagents\chemistry\neo_reagents\carpet_reagents.dm"
 #include "code\modules\reagents\chemistry\neo_reagents\colorful_reagents.dm"
 #include "code\modules\reagents\chemistry\neo_reagents\dispenser_reagents.dm"
+#include "code\modules\reagents\chemistry\neo_reagents\mutation_toxins.dm"
 #include "code\modules\reagents\chemistry\neo_reagents\other_reagents.dm"
 #include "code\modules\reagents\chemistry\neo_reagents\pyrotechnic_reagents.dm"
 #include "code\modules\reagents\chemistry\neo_reagents\temp.dm"

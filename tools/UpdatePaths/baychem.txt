@@ -33,3 +33,9 @@
 /obj/item/reagent_containers/glass/beaker/large/multiver : /obj/item/reagent_containers/glass/beaker/large/dylovene
 /obj/item/grenade/chem_grenade/smart_metal_foam : /obj/item/grenade/chem_grenade/metalfoam
 /obj/item/storage/box/smart_metal_foam : /obj/item/storage/box/metalfoam
+/obj/item/reagent_containers/glass/bottle/spewium : @DELETE
+/obj/item/reagent_containers/hypospray/medipen/snail : @DELETE
+/obj/item/reagent_containers/medigel/sterilizine : @DELETE
+/obj/item/reagent_containers/glass/bottle/calomel : /obj/item/reagent_containers/glass/bottle/ipecac
+/obj/item/reagent_containers/syringe/calomel : /obj/item/reagent_containers/pill/ipecac
+/obj/item/reagent_containers/glass/bottle/bromine : @DELETE

@@ -269,14 +269,6 @@
 	base_icon_state = "atropen"
 	list_reagents = list(/datum/reagent/medicine/atropine = 10)
 
-/obj/item/reagent_containers/hypospray/medipen/snail
-	name = "snail shot"
-	desc = "All-purpose snail medicine! Do not use on non-snails!"
-	icon_state = "snail"
-	inhand_icon_state = "snail"
-	base_icon_state = "snail"
-	list_reagents = list(/datum/reagent/snail = 10)
-
 /obj/item/reagent_containers/hypospray/medipen/magillitis
 	name = "experimental autoinjector"
 	desc = "A custom-frame needle injector with a small single-use reservoir, containing an experimental serum. Unlike the more common medipen frame, it cannot pierce through protective armor or space suits, nor can the chemical inside be extracted."

@@ -88,16 +88,6 @@
 	required_reagents = list(/datum/reagent/consumable/salt = 1, /datum/reagent/water = 1, /datum/reagent/consumable/sugar = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
 
-/datum/chemical_reaction/medicine/mine_salve
-	results = list(/datum/reagent/medicine/mine_salve = 3)
-	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/water = 1, /datum/reagent/iron = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
-
-/datum/chemical_reaction/medicine/mine_salve2
-	results = list(/datum/reagent/medicine/mine_salve = 15)
-	required_reagents = list(/datum/reagent/toxin/plasma = 5, /datum/reagent/iron = 5, /datum/reagent/consumable/sugar = 1) // A sheet of plasma, a twinkie and a sheet of metal makes four of these
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
-
 /datum/chemical_reaction/medicine/synthflesh
 	results = list(/datum/reagent/medicine/synthflesh = 3)
 	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/meralyne = 1)
@@ -198,57 +188,6 @@
 	required_reagents = list(/datum/reagent/medicine/omnizine = 1, /datum/reagent/water/holywater = 1, /datum/reagent/toxin/mutagen = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_PLANT | REACTION_TAG_OTHER
 
-/datum/chemical_reaction/medicine/mannitol
-	results = list(/datum/reagent/medicine/alkysine = 3)
-	required_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/hydrogen = 1, /datum/reagent/water = 1)
-	mix_message = "The solution slightly bubbles, becoming thicker."
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
-	//FermiChem vars:
-	required_temp = 50
-	optimal_temp = 300
-	overheat_temp = 650
-	optimal_ph_min = 5
-	optimal_ph_max = 7.5
-	determin_ph_range = 3
-	temp_exponent_factor = 1
-	ph_exponent_factor = 1
-	thermic_constant = 100
-	H_ion_release = 0
-	rate_up_lim = 10
-	purity_min = 0.4
-
-/datum/chemical_reaction/medicine/mannitol/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
-	if(off_cooldown(holder, equilibrium, 10, "mannitol"))
-		explode_attack_chem(holder, equilibrium, /datum/reagent/impurity/mannitol, 5)
-		explode_invert_smoke(holder, equilibrium)
-
-/datum/chemical_reaction/medicine/neurine
-	results = list(/datum/reagent/medicine/neurine = 3)
-	required_reagents = list(/datum/reagent/medicine/alkysine = 1, /datum/reagent/acetone = 1, /datum/reagent/oxygen = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
-	//FermiChem vars:
-	required_temp = 100
-	optimal_temp = 500
-	overheat_temp = 700
-	optimal_ph_min = 6.8
-	optimal_ph_max = 10
-	determin_ph_range = 8
-	temp_exponent_factor = 0.8
-	ph_exponent_factor = 2
-	thermic_constant = 87
-	H_ion_release = -0.05
-	rate_up_lim = 15
-	purity_min = 0.4
-
-/datum/chemical_reaction/medicine/neurine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
-	if(off_cooldown(holder, equilibrium, 10, "neurine"))
-		explode_invert_smoke(holder, equilibrium, clear_products = FALSE, clear_reactants = FALSE)
-		explode_attack_chem(holder, equilibrium, /datum/reagent/inverse/neurine, 10)
-		clear_products(holder, 5)
-
-/datum/chemical_reaction/medicine/neurine/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
-	overheated(holder, equilibrium, vol_added)
-
 /datum/chemical_reaction/medicine/mutadone
 	results = list(/datum/reagent/medicine/mutadone = 3)
 	required_reagents = list(/datum/reagent/toxin/mutagen = 1, /datum/reagent/acetone = 1, /datum/reagent/bromine = 1)
@@ -328,12 +267,6 @@
 	required_reagents = list( /datum/reagent/medicine/alkysine = 2, /datum/reagent/water = 2, /datum/reagent/impedrezene = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
 
-/datum/chemical_reaction/medicine/granibitaluri
-	results = list(/datum/reagent/medicine/granibitaluri = 3)
-	required_reagents = list(/datum/reagent/consumable/salt = 1, /datum/reagent/carbon = 1, /datum/reagent/toxin/acid = 1)
-	required_catalysts = list(/datum/reagent/iron = 5)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
-
 ///medical stacks
 
 /datum/chemical_reaction/medicine/medsuture
@@ -346,7 +279,7 @@
 		new /obj/item/stack/medical/bruise_pack(location)
 
 /datum/chemical_reaction/medicine/medmesh
-	required_reagents = list(/datum/reagent/cellulose = 20, /datum/reagent/consumable/aloejuice = 20, /datum/reagent/space_cleaner/sterilizine = 10)
+	required_reagents = list(/datum/reagent/cellulose = 20, /datum/reagent/consumable/aloejuice = 20, /datum/reagent/space_cleaner = 10)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BURN
 
 /datum/chemical_reaction/medicine/medmesh/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)

@@ -10818,9 +10818,7 @@
 	},
 /obj/item/toy/figure/geneticist,
 /obj/item/radio/intercom/directional/west,
-/obj/item/storage/pill_bottle/mutadone{
-	pixel_x = -9
-	},
+/obj/item/storage/pill_bottle/ryetalyn,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -17280,9 +17278,7 @@
 	pixel_x = 7;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 1
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/iron/dark/textured_edge{
 	dir = 8
 	},
@@ -21650,10 +21646,7 @@
 	pixel_x = 7;
 	pixel_y = -3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -4;
-	pixel_y = -3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = 3;
 	pixel_y = -2
@@ -22759,7 +22752,7 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
-/obj/item/storage/pill_bottle/mannitol,
+/obj/item/storage/pill_bottle/alkysine,
 /obj/item/reagent_containers/dropper{
 	pixel_y = 6
 	},
@@ -28468,8 +28461,8 @@
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/crowbar,
-/obj/item/grenade/chem_grenade/smart_metal_foam,
-/obj/item/grenade/chem_grenade/smart_metal_foam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
 /obj/effect/turf_decal/bot{
 	dir = 1
 	},
@@ -43613,10 +43606,6 @@
 /area/station/engineering/main)
 "oJA" = (
 /obj/structure/rack,
-/obj/item/reagent_containers/glass/bottle/acidic_buffer{
-	pixel_x = 7;
-	pixel_y = 3
-	},
 /obj/item/reagent_containers/glass/bottle/basic_buffer{
 	pixel_x = -5;
 	pixel_y = 3
@@ -43963,7 +43952,7 @@
 /obj/structure/table,
 /obj/item/storage/medkit/regular,
 /obj/item/reagent_containers/glass/bottle/epinephrine,
-/obj/item/reagent_containers/glass/bottle/multiver,
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe,
 /obj/structure/extinguisher_cabinet/directional/west,
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -44777,7 +44766,7 @@
 /obj/structure/table/reinforced,
 /obj/item/folder/yellow,
 /obj/item/stamp/ce,
-/obj/item/reagent_containers/pill/patch/aiuri,
+/obj/item/reagent_containers/pill/kelotane,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /obj/item/computer_hardware/hard_drive/role/atmos,
 /obj/item/computer_hardware/hard_drive/role/engineering,
@@ -47881,9 +47870,7 @@
 	},
 /obj/structure/table/glass,
 /obj/item/reagent_containers/glass/bottle/epinephrine,
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe,
 /turf/open/floor/iron/white/side{
 	dir = 8
@@ -48244,9 +48231,7 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = 8
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -5
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine,
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron/white,
@@ -48435,20 +48420,10 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = -4;
-	pixel_y = 6
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_y = 4
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 4;
-	pixel_y = 2
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 8
-	},
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -52285,10 +52260,7 @@
 	pixel_x = -4;
 	pixel_y = 12
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 7;
-	pixel_y = 12
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "rTW" = (
@@ -57000,20 +56972,10 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/light/directional/west,
 /obj/structure/table,
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = -4;
-	pixel_y = 6
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 4;
-	pixel_y = 2
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 8
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_y = 4
-	},
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/eva)
 "tLz" = (

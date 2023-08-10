@@ -154,10 +154,7 @@
 /turf/open/floor/iron/white,
 /area/space)
 "aq" = (
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 7;
-	pixel_y = 12
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = -4;
 	pixel_y = 12
@@ -647,10 +644,7 @@
 	pixel_x = -4;
 	pixel_y = 12
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 7;
-	pixel_y = 12
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted,
 /turf/open/floor/iron/white,
 /area/space)

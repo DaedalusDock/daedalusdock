@@ -721,10 +721,7 @@
 	pixel_x = -5;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6;
-	pixel_y = 3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "qX" = (

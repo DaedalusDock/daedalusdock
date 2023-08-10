@@ -183,7 +183,7 @@
 	exposed_turf.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
 
 /datum/reagent/consumable/sugar
-	name = "Sugar"
+	name = "Sucrose"
 	description = "The organic compound commonly known as table sugar and sometimes called saccharose. This white, odorless, crystalline powder has a pleasing, sweet taste."
 	reagent_state = SOLID
 	color = "#FFFFFF" // rgb: 255, 255, 255
@@ -358,8 +358,8 @@
 			C.visible_message(span_warning("[C] [pick("dry heaves!","coughs!","splutters!")]"))
 
 /datum/reagent/consumable/salt
-	name = "Table Salt"
-	description = "A salt made of sodium chloride. Commonly used to season food."
+	name = "Sodium Chloride"
+	description = "No dude, that's salt."
 	reagent_state = SOLID
 	color = "#FFFFFF" // rgb: 255,255,255
 	taste_description = "salt"

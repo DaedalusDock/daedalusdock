@@ -1,19 +1,19 @@
 
 /datum/chemical_reaction/inaprovaline
-	results = list(/datum/reagent/inaprovaline = 3)
+	results = list(/datum/reagent/medicine/inaprovaline = 3)
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/sugar = 1)
 
 /datum/chemical_reaction/dylovene
-	results = list(/datum/reagent/dylovene = 3)
+	results = list(/datum/reagent/medicine/dylovene = 3)
 	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/potassium = 1, /datum/reagent/ammonia = 1)
 
 /datum/chemical_reaction/bicaridine
 	results = list(/datum/reagent/bicaridine = 2)
-	required_reagents = list(/datum/reagent/phosphorus = 1, /datum/reagent/carbon = 1)
+	required_reagents = list(/datum/reagent/phosphorus = 1, /datum/reagent/carbon = 1, /datum/reagent/acetone = 1)
 
 /datum/chemical_reaction/meralyne
 	results = list(/datum/reagent/medicine/meralyne = 2)
-	required_reagents = list(/datum/reagent/bicaridine = 1, /datum/reagent/inaprovaline = 1)
+	required_reagents = list(/datum/reagent/bicaridine = 1, /datum/reagent/inaprovaline = 1, /datum/reagent/acetone = 1)
 	inhibitors = list(/datum/reagent/sugar = 1) // Messes up with inaprovaline
 	required_temp = (-50 CELSIUS) - 100
 	optimal_temp = (-50 CELSIUS) - 25
@@ -32,7 +32,7 @@
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/phosphorus = 1, /datum/reagent/kelotane = 1)
 	required_temp = (-50 CELSIUS) - 100
 	optimal_temp = (-50 CELSIUS) - 25
-	overheat_temp =  = -50 CELSIUS
+	overheat_temp = -50 CELSIUS
 
 /datum/chemical_reaction/dermaline/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()
@@ -52,7 +52,7 @@
 	required_reagents = list(/datum/reagent/potass_iodide = 1, /datum/reagent/carbon = 1)
 
 /datum/chemical_reaction/cryoxadone
-	result = list(/datum/reagent/medicine/cryoxadone = 3)
+	results = list(/datum/reagent/medicine/cryoxadone = 3)
 	required_reagents = list(/datum/reagent/dexalin = 1, /datum/reagent/drink/ice = 1, /datum/reagent/acetone = 1)
 	required_temp = (-25 CELSIUS) - 100
 	optimal_temp = (-25 CELSIUS) - 50
@@ -62,7 +62,7 @@
 /datum/chemical_reaction/clonexadone
 	results = list(/datum/reagent/medicine/clonexadone = 2)
 	required_reagents = list(/datum/reagent/medicine/cryoxadone = 1, /datum/reagent/sodium = 1)
-	minimum_temperature = -100 CELSIUS
+	required_temp = -100 CELSIUS
 	optimal_temp = -100 CELSIUS
 	overheat_temp = -75 CELSIUS
 	mix_message = "The solution thickens into translucent slime."
@@ -78,17 +78,15 @@
 /datum/chemical_reaction/oxycodone
 	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/medicine/tramadol = 1)
-	catalysts = list(/datum/reagent/toxin/phoron = 5)
+	required_catalysts = list(/datum/reagent/toxin/phoron = 5)
 
 /datum/chemical_reaction/venaxilin
 	results = list(/datum/reagent/medicine/venaxilin = 1)
 	required_reagents = list(/datum/reagent/medicine/dylovene = 1, /datum/reagent/medicine/spaceacillin = 1, /datum/reagent/toxin/venom = 1)
-	result_amount = 1
 	required_temp = 50 CELSIUS
 	optimal_temp = 75 CELSIUS
 	overheat_temp = 100 CELSIUS
 	mix_message = "The solution steams and becomes cloudy."
-#warn come back to ^
 
 /datum/chemical_reaction/spaceacillin
 	results = list(/datum/reagent/medicine/spaceacillin = 2)
@@ -104,3 +102,92 @@
 /datum/chemical_reaction/alkysine
 	results = list(/datum/reagent/alkysine = 2)
 	required_reagents = list(/datum/reagent/toxin/acid/hydrochloric = 1, /datum/reagent/ammonia = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/medicine/morphine
+	results = list(/datum/reagent/medicine/morphine = 2)
+	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/oxygen = 1)
+	required_temp = 480
+
+/datum/chemical_reaction/imidazoline
+	results = list(/datum/reagent/medicine/imidazoline = 2)
+	required_reagents = list(/datum/reagent/carbon = 1, /datum/reagent/phosphorus = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/peridaxon
+	results = list(/datum/reagent/medicine/peridaxon = 2)
+	required_reagents = list(/datum/reagent/medicine/bicaridine = 2, /datum/reagent/medicine/clonexadone = 2)
+	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
+
+/datum/chemical_reaction/leporazine
+	results = list(/datum/reagent/medicine/leporazine = 2)
+	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/copper = 1)
+	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
+
+/datum/chemical_reaction/coagulant
+	results = list(/datum/reagent/medicine/coagulant = 2)
+	required_reagents = list(/datum/reagent/calcium = 1, /datum/reagent/phosporus = 1, /datum/reagent/glycerol = 1)
+
+/datum/chemical_reaction/epinephrine
+	results = list(/datum/reagent/medicine/epinephrine = 6)
+	required_reagents = list(/datum/reagent/phenol = 1, /datum/reagent/acetone = 1, /datum/reagent/diethylamine = 1, /datum/reagent/oxygen = 1, /datum/reagent/chlorine = 1, /datum/reagent/hydrogen = 1)
+
+/datum/chemical_reaction/ephedrine
+	results = list(/datum/reagent/medicine/ephedrine = 4)
+	required_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/fuel/oil = 1, /datum/reagent/hydrogen = 1, /datum/reagent/diethylamine = 1)
+	mix_message = "The solution fizzes and gives off toxic fumes."
+	required_temp = 200
+	optimal_temp = 300
+	overheat_temp = 500
+	temp_exponent_factor = 0.1
+	thermic_constant = -0.25
+	rate_up_lim = 15
+
+/datum/chemical_reaction/ephedrine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
+	default_explode(holder, equilibrium.reacted_vol, 0, 25)
+
+/datum/chemical_reaction/haloperidol
+	results = list(/datum/reagent/medicine/haloperidol = 4)
+	required_reagents = list(/datum/reagent/chlorine = 1, /datum/reagent/fluorine = 1, /datum/reagent/aluminium = 1, /datum/reagent/potass_iodide = 1, /datum/reagent/fuel/oil = 1)
+
+/datum/chemical_reaction/potass_iodide
+	results = list(/datum/reagent/medicine/potass_iodide = 2)
+	required_reagents = list(/datum/reagent/potassium = 1, /datum/reagent/iodine = 1)
+	mix_message = "The solution settles calmly and emits gentle fumes."
+
+/datum/chemical_reaction/salgu_solution
+	results = list(/datum/reagent/medicine/saline_glucose = 3)
+	required_reagents = list(/datum/reagent/consumable/salt = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/water = 1)
+
+/datum/chemical_reaction/synthflesh
+	results = list(/datum/reagent/medicine/synthflesh = 3)
+	required_reagents = list(/datum/reagent/carbon = 1, /datum/reagent/blood = 1, /datum/reagent/medicine/meralyne = 1)
+	mix_message = "The mixture bubbles, emitting an acrid reek."
+
+/datum/chemical_reaction/atropine
+	results = list(/datum/reagent/medicine/atropine = 4)
+	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/diethylamine = 1, /datum/reagent/acetone = 1, /datum/reagent/phenol = 1, /datum/reagent/toxin/acid = 1)
+	mix_message = "A horrid smell like something died drifts from the mixture."
+
+/datum/chemical_reaction/chlorpromazine
+	results = list(/datum/reagent/medicine/chlorpromazine = 2)
+	required_reagents = list(/datum/reagent/cryptobiolin = 1, /datum/reagent/medicine/haloperidol = 1, /datum/reagent/chlorine = 1)
+
+/datum/chemical_reaction/inacusiate
+	results = list(/datum/reagent/medicine/inacusiate = 2)
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/dylovene = 1)
+	mix_message = "The mixture sputters loudly and becomes a light grey color."
+	required_temp = 300
+	optimal_temp = 400
+	overheat_temp = 500
+	temp_exponent_factor = 0.35
+	thermic_constant = 20
+	rate_up_lim = 3
+
+/datum/chemical_reaction/ipecac
+	results = list(/datum/reagent/medicine/ipecac = 2)
+	required_reagents = list(/datum/reagent/glycerol = 1, /datum/reagent/ethanol = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/charcoal
+	results = list(/datum/reagent/medicine/activated_charcoal = 3)
+	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/salt = 1)
+	mix_message = "The mixture yields a fine black powder."
+	mix_sound = 'sound/effects/fuse.ogg'

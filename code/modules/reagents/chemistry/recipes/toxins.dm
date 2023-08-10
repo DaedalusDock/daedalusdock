@@ -10,11 +10,13 @@
 	rate_up_lim = 15
 
 /datum/chemical_reaction/zombiepowder
-	name = "Zombie Powder"
-	result = /datum/reagent/toxin/zombiepowder
+	results = list(/datum/reagent/toxin/zombiepowder = 2)
 	required_reagents = list(/datum/reagent/toxin/carpotoxin = 5, /datum/reagent/soporific = 5, /datum/reagent/copper = 5)
-	result_amount = 2
 	required_temp = 90 CELSIUS
 	optimal_temp = 95 CELSIUS
 	overheat_temp = 99 CELSIUS
 	mix_message = "The solution boils off to form a fine powder."
+
+/datum/chemical_reaction/toxin
+	results = list(/datum/reagent/toxin = 2)
+	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 1, /datum/reagent/dylovene = 1)

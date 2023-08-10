@@ -594,12 +594,14 @@
 	if(!ishuman(M))
 		return
 
+	APPLY_CHEM_EFFECT(M, CE_ANTICOAGULANT, -1)
+
 	for(var/obj/item/bodypart/BP as anything in M.bodyparts)
-		if((BP.bodypart_flags & BP_ARTERY_CUT) && prob(10))
+		if((BP.bodypart_flags & BP_ARTERY_CUT) && prob(2))
 			BP.set_sever_artery(FALSE)
 
 		for(var/datum/wound/W as anything in BP.wounds)
-			if(W.bleeding() && prob(20))
+			if(W.bleeding() && prob(10))
 				W.bleed_timer = 0
 				W.clamp_wound()
 
@@ -889,7 +891,7 @@
 
 /datum/reagent/medicine/diphenhydramine
 	name = "Diphenhydramine"
-	description = "Rapidly purges the body of Histamine and reduces jitteriness. Slight chance of causing drowsiness."
+	description = "Rapidly purges the body of histamine and reduces jitteriness. Slight chance of causing drowsiness."
 	reagent_state = LIQUID
 	color = "#64FFE6"
 	metabolization_rate = 0.1

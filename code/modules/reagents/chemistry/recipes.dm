@@ -15,11 +15,8 @@
 	///Reagents that block the reaction from occuring, like an inverse catalyst.
 	var/list/inhibitors = list()
 
-	// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
-	/// the exact container path required for the reaction to happen
+	/// the exact container path required for the reaction to happen.
 	var/required_container
-	/// an integer required for the reaction to happen
-	var/required_other = 0
 
 	///Determines if a chemical reaction can occur inside a mob
 	var/mob_react = TRUE

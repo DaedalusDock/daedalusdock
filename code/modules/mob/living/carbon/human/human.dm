@@ -525,7 +525,7 @@
 		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
 		log_combat(src, target, "CPRed")
 
-		if(target.breathe(TRUE))
+		if(target.breathe(TRUE) == BREATH_OKAY)
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
 			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 

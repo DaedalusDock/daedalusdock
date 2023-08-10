@@ -67,8 +67,6 @@
 //Second link in a breath chain, calls check_breath()
 /mob/living/carbon/proc/breathe(forced)
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(CHEM_EFFECT_MAGNITUDE(src, CE_RESPIRATORY_FAILURE)) //TODO: Replace with bay's proper CE_BREATHLOSS
-		return
 
 	SEND_SIGNAL(src, COMSIG_CARBON_PRE_BREATHE)
 
@@ -133,7 +131,7 @@
 					reagents.add_reagent(breathed_product, reagent_amount)
 					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
-	. = check_breath(breath)
+	. = check_breath(breath, forced)
 	if(breath?.total_moles)
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
@@ -159,9 +157,8 @@
 	//CRIT
 	if(!forced)
 		if(!breath || (breath.total_moles == 0) || !lungs)
-			if(chem_effects[CE_STABLE] && lungs)
-				return TRUE
-			adjustOxyLoss(2)
+			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+				adjustOxyLoss(2)
 
 			failed_last_breath = TRUE
 			throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
@@ -176,7 +173,7 @@
 	var/oxygen_used = 0
 	var/breath_pressure = (breath.total_moles*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
 
-	if(CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS) && !CHEM_EFFECT_MAGNITUDE(src, CE_STABLE))
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS) && !HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 		safe_oxy_min *= 1 + rand(1, 4) * CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS)
 
 	var/O2_partialpressure = (breath_gases[GAS_OXYGEN]/breath.total_moles)*breath_pressure

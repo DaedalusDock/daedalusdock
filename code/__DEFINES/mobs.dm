@@ -452,8 +452,6 @@
 #define CE_CRYO "cryo"
 /// Organ preservation effects like formaldehyde. Boolean.
 #define CE_ORGAN_PRESERVATION "formaldehyde"
-/// Mob cannot breathe. Boolean.
-#define CE_RESPIRATORY_FAILURE "cantbreathe"
 /// Inaprovaline
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air
@@ -788,3 +786,12 @@ GLOBAL_REAL_VAR(list/voice_type2sound) = list(
 
 ///Managed global that is a reference to the real global
 GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
+
+/// Breath succeeded completely
+#define BREATH_OKAY 1
+/// Breath caused damage, but should not be obvious
+#define BREATH_SILENT_DAMAGING 0
+/// Breath succeeded but is damaging.
+#define BREATH_DAMAGING -1
+/// Breath completely failed. chokies!!
+#define BREATH_FAILED -2

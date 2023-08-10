@@ -75,10 +75,12 @@
 	return ..()
 
 /mob/living/carbon/human/breathe()
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
-		return ..()
+	if(HAS_TRAIT(src, TRAIT_NOBREATH))
+		return FALSE
 
-/mob/living/carbon/human/check_breath(datum/gas_mixture/breath)
+	return ..()
+
+/mob/living/carbon/human/check_breath(datum/gas_mixture/breath, forced = FALSE)
 
 	var/L = getorganslot(ORGAN_SLOT_LUNGS)
 
@@ -105,8 +107,11 @@
 	else
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
-			if(lun.check_breath(breath,src))
+			. = lun.check_breath(breath, src, forced)
+
+			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
 				return
+
 			// Failed a breath for one reason or another.
 			set_blurriness(max(3, eye_blurry))
 			if(prob(20))

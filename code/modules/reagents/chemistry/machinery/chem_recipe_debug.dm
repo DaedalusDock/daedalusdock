@@ -218,6 +218,7 @@
 		var/datum/reagent/reagent = reagents.get_reagent(equilibrium.reaction.results[1]) //Reactions are named after their primary products
 		if(!reagent)
 			continue
+		var/overheat = FALSE
 		var/danger = FALSE
 		if(equilibrium.reaction.is_cold_recipe)
 			if(equilibrium.reaction.overheat_temp > reagents.chem_temp && equilibrium.reaction.overheat_temp != NO_OVERHEAT)
@@ -234,7 +235,7 @@
 					entry["targetVol"] = round(equilibrium.target_vol, 1)//Use the first result reagent to name the reaction detected
 					continue
 		active_reactions.len++
-		active_reactions[length(active_reactions)] = list("name" = reagent.name, "danger" = danger, "reactedVol" = equilibrium.reacted_vol, "targetVol" = round(equilibrium.target_vol, 1))//Use the first result reagent to name the reaction detected
+		active_reactions[length(active_reactions)] = list("name" = reagent.name, "danger" = danger, "overheat" = overheat, "reactedVol" = equilibrium.reacted_vol, "targetVol" = round(equilibrium.target_vol, 1))//Use the first result reagent to name the reaction detected
 	data["activeReactions"] = active_reactions
 	data["isFlashing"] = flashing
 

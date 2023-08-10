@@ -105,9 +105,6 @@
 			container_name = replacetext(container_name, "_", " ")
 			outstring += "\n<br>[container_name]"
 
-		//Warn if it's dangerous
-		if(reaction.reaction_tags & REACTION_TAG_DANGEROUS)
-			outstring += "\n<br><b>Dangerous</b>"
 		outstring += "\n|"
 
 	//Description

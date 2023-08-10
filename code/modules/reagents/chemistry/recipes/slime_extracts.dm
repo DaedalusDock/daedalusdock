@@ -2,7 +2,7 @@
 /datum/chemical_reaction/slime
 	var/deletes_extract = TRUE
 	reaction_flags = REACTION_INSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME
+
 
 /datum/chemical_reaction/slime/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	use_slime_core(holder)
@@ -92,7 +92,7 @@
 	required_container = /obj/item/slime_extract/gold
 	required_other = TRUE
 	deletes_extract = FALSE //we do delete, but we don't do so instantly
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
+
 
 /datum/chemical_reaction/slime/slimemobspawn/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
@@ -122,7 +122,7 @@
 
 /datum/chemical_reaction/slime/slimemobspawn/spider
 	required_reagents = list(/datum/reagent/spider_extract = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
+
 
 /datum/chemical_reaction/slime/slimemobspawn/spider/summon_mobs(datum/reagents/holder, turf/T)
 	T.visible_message(span_danger("The slime extract begins to vibrate crikey-ingly!"))
@@ -262,7 +262,7 @@
 	required_reagents = list(/datum/reagent/blood = 1)
 	required_container = /obj/item/slime_extract/yellow
 	required_other = TRUE
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
+
 
 /datum/chemical_reaction/slime/slimeoverload/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	empulse(get_turf(holder.my_atom), 3, 7)
@@ -328,7 +328,7 @@
 	required_reagents = list(/datum/reagent/blood = 1)
 	required_container = /obj/item/slime_extract/red
 	required_other = TRUE
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
+
 
 /datum/chemical_reaction/slime/slimebloodlust/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	for(var/mob/living/simple_animal/slime/slime in viewers(get_turf(holder.my_atom), null))
@@ -375,7 +375,7 @@
 	required_container = /obj/item/slime_extract/oil
 	required_other = TRUE
 	deletes_extract = FALSE
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
+
 
 /datum/chemical_reaction/slime/slimeexplosion/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)

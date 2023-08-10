@@ -46,7 +46,6 @@
 		var/list/product_ids = list()
 		var/list/reagents = list()
 		var/list/product_names = list()
-		var/bitflags = D.reaction_tags
 
 		if(!D.required_reagents || !D.required_reagents.len) //Skip impossible reactions
 			continue
@@ -80,7 +79,7 @@
 
 		//Master list of ALL reactions that is used in the UI lookup table. This is expensive to make, and we don't want to lag the server by creating it on UI request, so it's cached to send to UIs instantly.
 		if(!(is_type_in_list(D.type, blacklist)))
-			GLOB.chemical_reactions_results_lookup_list += list(list("name" = product_name, "id" = D.type, "bitflags" = bitflags, "reactants" = reagents))
+			GLOB.chemical_reactions_results_lookup_list += list(list("name" = product_name, "id" = D.type, "reactants" = reagents))
 
 		// Create filters based on each reagent id in the required reagents list - this is used to speed up handle_reactions()
 		for(var/id in reaction_ids)
@@ -1653,30 +1652,6 @@
 	var/data = list()
 	//Use GLOB list - saves processing
 	data["master_reaction_list"] = GLOB.chemical_reactions_results_lookup_list
-	data["bitflags"] = list()
-	data["bitflags"]["BRUTE"] = REACTION_TAG_BRUTE
-	data["bitflags"]["BURN"] = REACTION_TAG_BURN
-	data["bitflags"]["TOXIN"] = REACTION_TAG_TOXIN
-	data["bitflags"]["OXY"] = REACTION_TAG_OXY
-	data["bitflags"]["CLONE"] = REACTION_TAG_CLONE
-	data["bitflags"]["HEALING"] = REACTION_TAG_HEALING
-	data["bitflags"]["DAMAGING"] = REACTION_TAG_DAMAGING
-	data["bitflags"]["EXPLOSIVE"] = REACTION_TAG_EXPLOSIVE
-	data["bitflags"]["OTHER"] = REACTION_TAG_OTHER
-	data["bitflags"]["DANGEROUS"] = REACTION_TAG_DANGEROUS
-	data["bitflags"]["EASY"] = REACTION_TAG_EASY
-	data["bitflags"]["MODERATE"] = REACTION_TAG_MODERATE
-	data["bitflags"]["HARD"] = REACTION_TAG_HARD
-	data["bitflags"]["ORGAN"] = REACTION_TAG_ORGAN
-	data["bitflags"]["DRINK"] = REACTION_TAG_DRINK
-	data["bitflags"]["FOOD"] = REACTION_TAG_FOOD
-	data["bitflags"]["SLIME"] = REACTION_TAG_SLIME
-	data["bitflags"]["DRUG"] = REACTION_TAG_DRUG
-	data["bitflags"]["UNIQUE"] = REACTION_TAG_UNIQUE
-	data["bitflags"]["CHEMICAL"] = REACTION_TAG_CHEMICAL
-	data["bitflags"]["PLANT"] = REACTION_TAG_PLANT
-	data["bitflags"]["COMPETITIVE"] = REACTION_TAG_COMPETITIVE
-
 	return data
 
 /* Returns a reaction type by index from an input reagent type
@@ -1741,72 +1716,6 @@
 			return TRUE
 		if("beaker_sync")
 			ui_beaker_sync = !ui_beaker_sync
-			return TRUE
-		if("toggle_tag_brute")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_BRUTE
-			return TRUE
-		if("toggle_tag_burn")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_BURN
-			return TRUE
-		if("toggle_tag_toxin")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_TOXIN
-			return TRUE
-		if("toggle_tag_oxy")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_OXY
-			return TRUE
-		if("toggle_tag_clone")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_CLONE
-			return TRUE
-		if("toggle_tag_healing")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_HEALING
-			return TRUE
-		if("toggle_tag_damaging")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_DAMAGING
-			return TRUE
-		if("toggle_tag_explosive")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_EXPLOSIVE
-			return TRUE
-		if("toggle_tag_other")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_OTHER
-			return TRUE
-		if("toggle_tag_easy")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_EASY
-			return TRUE
-		if("toggle_tag_moderate")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_MODERATE
-			return TRUE
-		if("toggle_tag_hard")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_HARD
-			return TRUE
-		if("toggle_tag_organ")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_ORGAN
-			return TRUE
-		if("toggle_tag_drink")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_DRINK
-			return TRUE
-		if("toggle_tag_food")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_FOOD
-			return TRUE
-		if("toggle_tag_dangerous")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_DANGEROUS
-			return TRUE
-		if("toggle_tag_slime")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_SLIME
-			return TRUE
-		if("toggle_tag_drug")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_DRUG
-			return TRUE
-		if("toggle_tag_unique")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_UNIQUE
-			return TRUE
-		if("toggle_tag_chemical")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_CHEMICAL
-			return TRUE
-		if("toggle_tag_plant")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_PLANT
-			return TRUE
-		if("toggle_tag_competitive")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_COMPETITIVE
 			return TRUE
 		if("update_ui")
 			return TRUE

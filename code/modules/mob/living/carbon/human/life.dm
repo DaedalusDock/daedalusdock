@@ -74,7 +74,7 @@
 		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "brain_damage")
 	return ..()
 
-/mob/living/carbon/human/breathe()
+/mob/living/carbon/human/breathe(forced)
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 

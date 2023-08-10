@@ -822,10 +822,12 @@
 				if(!has_reagent(req_reagent, (cached_required_reagents[req_reagent]*granularity)))
 					break
 				total_matching_reagents++
+
 			for(var/_catalyst in cached_required_catalysts)
 				if(!has_reagent(_catalyst, (cached_required_catalysts[_catalyst]*granularity)))
 					break
 				total_matching_catalysts++
+
 			if(cached_my_atom)
 				if(!reaction.required_container)
 					matching_container = TRUE
@@ -834,6 +836,8 @@
 						matching_container = TRUE
 				if (isliving(cached_my_atom) && !reaction.mob_react) //Makes it so certain chemical reactions don't occur in mobs
 					matching_container = FALSE
+				if(!reaction.required_other)
+					matching_other = TRUE
 
 				else if(istype(cached_my_atom, /obj/item/slime_extract))
 					var/obj/item/slime_extract/extract = cached_my_atom
@@ -843,6 +847,8 @@
 			else
 				if(!reaction.required_container)
 					matching_container = TRUE
+				if(!reaction.required_other)
+					matching_other = TRUE
 
 			if(required_temp == 0 || (is_cold_recipe && chem_temp <= required_temp) || (!is_cold_recipe && chem_temp >= required_temp))
 				meets_temp_requirement = TRUE

@@ -305,3 +305,10 @@
 	var/spilled_ants = (round(reac_volume,1) - 5) // To account for ant decals giving 3-5 ants on initialize.
 	pests.reagents.add_reagent(/datum/reagent/ants, spilled_ants)
 	pests.update_ant_damage()
+
+/datum/reagent/phenol
+	name = "Phenol"
+	description = "An aromatic ring of carbon with a hydroxyl group. A useful precursor to some medicines, but has no healing properties on its own."
+	reagent_state = LIQUID
+	color = "#E7EA91"
+	taste_description = "acid"

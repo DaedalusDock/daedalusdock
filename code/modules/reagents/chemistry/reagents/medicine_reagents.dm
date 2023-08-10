@@ -88,7 +88,7 @@
 
 /datum/reagent/medicine/inaprovaline
 	name = "Inaprovaline"
-	description = "Inaprovaline is a multipurpose neurostimulant and cardioregulator. Commonly used to slow bleeding and stabilize patients."
+	description = "Inaprovaline is a multipurpose neurostimulant and cardioregulator. Commonly used to stabilize patients."
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#00bfff"

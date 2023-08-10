@@ -11,7 +11,7 @@
 
 /datum/chemical_reaction/zombiepowder
 	results = list(/datum/reagent/toxin/zombiepowder = 2)
-	required_reagents = list(/datum/reagent/toxin/carpotoxin = 5, /datum/reagent/soporific = 5, /datum/reagent/copper = 5)
+	required_reagents = list(/datum/reagent/toxin/carpotoxin = 5, /datum/reagent/medicine/morphine = 5, /datum/reagent/copper = 5)
 	required_temp = 90 CELSIUS
 	optimal_temp = 95 CELSIUS
 	overheat_temp = 99 CELSIUS
@@ -19,4 +19,4 @@
 
 /datum/chemical_reaction/toxin
 	results = list(/datum/reagent/toxin = 2)
-	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 1, /datum/reagent/dylovene = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/mercury = 1, /datum/reagent/medicine/dylovene = 1)

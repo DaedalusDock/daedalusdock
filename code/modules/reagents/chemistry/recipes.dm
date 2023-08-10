@@ -17,6 +17,8 @@
 
 	/// the exact container path required for the reaction to happen.
 	var/required_container
+	/// Some stupid magic bullshit for slime reactions. Literally what the fuck.
+	var/required_other = 0
 
 	///Determines if a chemical reaction can occur inside a mob
 	var/mob_react = TRUE

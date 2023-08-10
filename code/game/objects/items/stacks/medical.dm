@@ -256,7 +256,7 @@
 	heal_burn = 5
 	flesh_regeneration = 2.5
 	sanitization = 0.25
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/kelotane = 10)
 	merge_type = /obj/item/stack/medical/ointment
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)

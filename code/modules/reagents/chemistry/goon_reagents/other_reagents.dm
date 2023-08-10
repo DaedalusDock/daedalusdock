@@ -96,11 +96,12 @@
 
 /datum/reagent/space_cleaner
 	name = "Space Cleaner"
-	description = "A compound used to clean things. Now with 50% more sodium hypochlorite!"
+	description = "A compound used to clean things."
 	color = "#A5F0EE" // rgb: 165, 240, 238
 	taste_description = "sourness"
 	reagent_weight = 0.6 //so it sprays further
 	penetrates_skin = NONE
+	touch_met = 2
 	var/clean_types = CLEAN_WASH
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
 
@@ -127,6 +128,10 @@
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.wash(clean_types)
+
+/datum/reagent/space_cleaner/affect_touch(mob/living/carbon/C, removed)
+	C.adjustFireLoss(2 * removed, 0) // burns
+	return TRUE
 
 /datum/reagent/space_cleaner/ez_clean
 	name = "EZ Clean"

@@ -69,11 +69,6 @@
 	desc = "A small bottle of ipecac, which rapidly induces vomitting to purge the stomach of reagents."
 	list_reagents = list(/datum/reagent/medicine/ipecac = 30)
 
-/obj/item/reagent_containers/glass/bottle/syriniver
-	name = "syriniver bottle"
-	desc = "A small bottle of syriniver."
-	list_reagents = list(/datum/reagent/medicine/c2/syriniver = 30)
-
 /obj/item/reagent_containers/glass/bottle/mutagen
 	name = "unstable mutagen bottle"
 	desc = "A small bottle of unstable mutagen. Randomly changes the DNA structure of whoever comes in contact."
@@ -133,11 +128,6 @@
 	name = "polonium bottle"
 	desc = "A small bottle. Contains Polonium."
 	list_reagents = list(/datum/reagent/toxin/polonium = 30)
-
-/obj/item/reagent_containers/glass/bottle/magillitis
-	name = "magillitis bottle"
-	desc = "A small bottle. Contains a serum known only as 'magillitis'."
-	list_reagents = list(/datum/reagent/magillitis = 5)
 
 /obj/item/reagent_containers/glass/bottle/venom
 	name = "venom bottle"
@@ -409,11 +399,6 @@
 	name = "flash powder bottle"
 	desc = "A small bottle. Contains flash powder."
 	list_reagents = list(/datum/reagent/flash_powder = 30)
-
-/obj/item/reagent_containers/glass/bottle/exotic_stabilizer
-	name = "exotic stabilizer bottle"
-	desc = "A small bottle. Contains exotic stabilizer."
-	list_reagents = list(/datum/reagent/exotic_stabilizer = 30)
 
 /obj/item/reagent_containers/glass/bottle/leadacetate
 	name = "lead acetate bottle"

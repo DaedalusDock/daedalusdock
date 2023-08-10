@@ -39,7 +39,7 @@
 			/datum/reagent/copper, /datum/reagent/silver, /datum/reagent/iodine, /datum/reagent/iron, /datum/reagent/carbon
 		),
 		list( // level 2
-			/datum/reagent/potassium, /datum/reagent/consumable/ethanol, /datum/reagent/lithium, /datum/reagent/silicon, /datum/reagent/bromine
+			/datum/reagent/potassium, /datum/reagent/consumable/ethanol, /datum/reagent/lithium, /datum/reagent/silicon,
 		),
 		list( // level 3
 			/datum/reagent/consumable/salt, /datum/reagent/consumable/sugar, /datum/reagent/consumable/orangejuice, /datum/reagent/consumable/tomatojuice, /datum/reagent/consumable/milk
@@ -51,22 +51,22 @@
 			/datum/reagent/fuel/oil, /datum/reagent/medicine/synaptizine, /datum/reagent/medicine/alkysine, /datum/reagent/drug/space_drugs, /datum/reagent/cryptobiolin
 		),
 		list( // level 6
-			/datum/reagent/phenol, /datum/reagent/medicine/inacusiate, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/antihol
+			/datum/reagent/medicine/inacusiate, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/antihol
 		),
 		list( // level 7
-			/datum/reagent/medicine/leporazine, /datum/reagent/medicine/chlorpromazine, /datum/reagent/medicine/higadrite
+			/datum/reagent/medicine/leporazine, /datum/reagent/medicine/chlorpromazine,
 		),
 		list( // level 8
 			/datum/reagent/medicine/haloperidol, /datum/reagent/drug/happiness, /datum/reagent/medicine/ephedrine
 		),
 		list( // level 9
-			/datum/reagent/toxin/lipolicide, /datum/reagent/medicine/sal_acid
+			/datum/reagent/toxin/lipolicide,
 		),
 		list( // level 10
 		 /datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
 		),
 		list( //level 11
-			/datum/reagent/medicine/modafinil, /datum/reagent/toxin/anacea
+			/datum/reagent/toxin/anacea
 		)
 	)
 

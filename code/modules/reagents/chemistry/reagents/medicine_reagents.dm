@@ -11,10 +11,6 @@
 	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
 
-/datum/reagent/medicine/overdose_process(mob/living/carbon/C)
-	APPLY_CHEM_EFFECT(C, CE_TOXIN, 1)
-	C.adjustToxLoss(0.2)
-
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"
 	description = "It's magic. We don't have to explain it."
@@ -100,6 +96,18 @@
 	metabolization_rate = 0.1
 	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.5
+
+/datum/reagent/medicine/inaprovaline/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_BLOOD)
+		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+		ADD_TRAIT(C, TRAIT_STABLEHEART, type)
+		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,type)
+
+/datum/reagent/medicine/inaprovaline/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class == CHEM_BLOOD)
+		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
+		REMOVE_TRAIT(C, TRAIT_STABLEHEART, type)
+		REMOVE_TRAIT(C, TRAIT_NOSOFTCRIT, type)
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
@@ -955,3 +963,14 @@
 /datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(5 * removed, 0)
 	. = TRUE
+
+/datum/reagent/medicine/activated_charcoal
+	name = "Activated Charcoal"
+	description = "Helps the body filter out toxins from the blood."
+	reagent_state = SOLID
+	color = "#FFFFFFAA"
+	metabolization_rate = 0.4
+
+/datum/reagent/medicine/activated_charcoal/affect_blood(mob/living/carbon/C, removed)
+	for(var/datum/reagent/toxin/R in holder.reagent_list)
+		holder.remove_reagent(R.type, 1 * removed)

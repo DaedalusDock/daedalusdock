@@ -154,39 +154,11 @@
 	list_reagents = list(/datum/reagent/medicine/ryetalyn = 50)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/salicylic
-	name = "salicylic acid pill"
-	desc = "Used to dull pain."
-	icon_state = "pill9"
-	list_reagents = list(/datum/reagent/medicine/sal_acid = 24)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/oxandrolone
-	name = "oxandrolone pill"
-	desc = "Used to stimulate burn healing."
-	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/oxandrolone = 24)
-	rename_with_volume = TRUE
-
 /obj/item/reagent_containers/pill/insulin
 	name = "insulin pill"
 	desc = "Handles hyperglycaemic coma."
 	icon_state = "pill18"
 	list_reagents = list(/datum/reagent/medicine/insulin = 50)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/psicodine
-	name = "psicodine pill"
-	desc = "Used to treat mental instability and phobias."
-	list_reagents = list(/datum/reagent/medicine/psicodine = 10)
-	icon_state = "pill22"
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/penacid
-	name = "pentetic acid pill"
-	desc = "Used to expunge radiation and toxins."
-	list_reagents = list(/datum/reagent/medicine/pen_acid = 10)
-	icon_state = "pill22"
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/alkysine

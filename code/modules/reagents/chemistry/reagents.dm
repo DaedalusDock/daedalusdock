@@ -234,7 +234,9 @@ Primarily used in reagents/reaction_agents
 /// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects
 /datum/reagent/proc/overdose_process(mob/living/carbon/C)
 	SHOULD_NOT_SLEEP(TRUE)
-	return
+	APPLY_CHEM_EFFECT(C, CE_TOXIN, 1)
+	C.adjustToxLoss(0.2, FALSE)
+	return TRUE
 
 /// Called when an overdose starts
 /datum/reagent/proc/overdose_start(mob/living/carbon/C)

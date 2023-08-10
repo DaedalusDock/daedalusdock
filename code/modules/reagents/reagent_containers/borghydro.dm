@@ -189,7 +189,7 @@ Borg Hypospray
 	charge_cost = 20
 	recharge_time = 2
 	reagent_ids = list(
-		/datum/reagent/medicine/syndicate_nanites,
+		/datum/reagent/medicine/omnizine,
 		/datum/reagent/medicine/inacusiate,
 		/datum/reagent/medicine/potass_iodide,
 		/datum/reagent/medicine/morphine,
@@ -284,13 +284,13 @@ Borg Shaker
 /obj/item/reagent_containers/borghypo/peace
 	name = "Peace Hypospray"
 
-	reagent_ids = list(/datum/reagent/peaceborg/confuse,/datum/reagent/peaceborg/tire,/datum/reagent/pax)
+	reagent_ids = list(/datum/reagent/cryptobiolin, /datum/reagent/pax)
 	accepts_reagent_upgrades = FALSE
 
 /obj/item/reagent_containers/borghypo/peace/hacked
 	desc = "Everything's peaceful in death!"
 	icon_state = "borghypo_s"
-	reagent_ids = list(/datum/reagent/peaceborg/confuse,/datum/reagent/peaceborg/tire,/datum/reagent/pax,/datum/reagent/toxin/staminatoxin,/datum/reagent/toxin/sulfonal,/datum/reagent/toxin/sodium_thiopental,/datum/reagent/toxin/cyanide,/datum/reagent/toxin/fentanyl)
+	reagent_ids = list(/datum/reagent/cryptobiolin,/datum/reagent/peaceborg/tire,/datum/reagent/pax,/datum/reagent/toxin/staminatoxin,/datum/reagent/toxin/sulfonal,/datum/reagent/toxin/sodium_thiopental,/datum/reagent/toxin/cyanide,/datum/reagent/toxin/fentanyl)
 	accepts_reagent_upgrades = FALSE
 
 /obj/item/reagent_containers/borghypo/epi

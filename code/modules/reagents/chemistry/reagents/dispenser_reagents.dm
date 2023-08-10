@@ -360,3 +360,42 @@
 	color = "#BC8A00"
 	taste_description = "metal"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/carbondioxide
+	name = "Carbon Dioxide"
+	reagent_state = GAS
+	description = "A gas commonly produced by burning carbon fuels. You're constantly producing this in your lungs."
+	color = "#B0B0B0" // rgb : 192, 192, 192
+	taste_description = "something unknowable"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
+	if(istype(exposed_turf))
+		var/temp = holder ? holder.chem_temp : T20C
+		exposed_turf.atmos_spawn_air(GAS_CO2, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
+	return ..()
+
+/datum/reagent/chlorine
+	name = "Chlorine"
+	description = "A pale yellow gas that's well known as an oxidizer. While it forms many harmless molecules in its elemental form it is far from harmless."
+	reagent_state = GAS
+	color = "#FFFB89" //pale yellow? let's make it light gray
+	taste_description = "chlorine"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+
+// You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
+/datum/reagent/chlorine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+	. = ..()
+	if(chems.has_reagent(src.type, 1))
+		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 1))
+		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 1.5))
+		mytray.adjust_waterlevel(-round(chems.get_reagent_amount(src.type) * 0.5))
+		mytray.adjust_weedlevel(-rand(1,3))
+		// White Phosphorous + water -> phosphoric acid. That's not a good thing really.
+
+
+/datum/reagent/chlorine/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjustToxLoss(3 * removed, FALSE)
+	. = TRUE

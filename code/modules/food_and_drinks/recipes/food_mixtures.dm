@@ -172,12 +172,12 @@
 /datum/chemical_reaction/food/nutriconversion
 	results = list(/datum/reagent/consumable/nutriment/peptides = 0.5)
 	required_reagents = list(/datum/reagent/consumable/nutriment/ = 0.5)
-	required_catalysts = list(/datum/reagent/medicine/metafactor = 0.5)
+	required_catalysts = list(/datum/reagent/metafactor = 0.5)
 
 /datum/chemical_reaction/food/protein_peptide
 	results = list(/datum/reagent/consumable/nutriment/peptides = 0.5)
 	required_reagents = list(/datum/reagent/consumable/nutriment/protein = 0.5)
-	required_catalysts = list(/datum/reagent/medicine/metafactor = 0.5)
+	required_catalysts = list(/datum/reagent/metafactor = 0.5)
 
 /datum/chemical_reaction/food/failed_nutriconversion
 	results = list(/datum/reagent/peptides_failed = 0.5)

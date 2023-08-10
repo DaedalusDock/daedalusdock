@@ -127,11 +127,6 @@
 	required_reagents = list(/datum/reagent/sodium = 1, /datum/reagent/phenol = 1, /datum/reagent/carbon = 1, /datum/reagent/oxygen = 1, /datum/reagent/toxin/acid = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE
 
-/datum/chemical_reaction/medicine/oxandrolone
-	results = list(/datum/reagent/medicine/oxandrolone = 6)
-	required_reagents = list(/datum/reagent/carbon = 3, /datum/reagent/phenol = 1, /datum/reagent/hydrogen = 1, /datum/reagent/oxygen = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BURN
-
 /datum/chemical_reaction/medicine/salbutamol
 	results = list(/datum/reagent/medicine/salbutamol = 5)
 	required_reagents = list(/datum/reagent/medicine/sal_acid = 1, /datum/reagent/lithium = 1, /datum/reagent/aluminium = 1, /datum/reagent/bromine = 1, /datum/reagent/ammonia = 1)
@@ -256,17 +251,6 @@
 	required_temp = 480
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
 
-/datum/chemical_reaction/medicine/modafinil
-	results = list(/datum/reagent/medicine/modafinil = 5)
-	required_reagents = list(/datum/reagent/diethylamine = 1, /datum/reagent/ammonia = 1, /datum/reagent/phenol = 1, /datum/reagent/acetone = 1, /datum/reagent/toxin/acid = 1)
-	required_catalysts = list(/datum/reagent/bromine = 1) // as close to the real world synthesis as possible
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
-
-/datum/chemical_reaction/medicine/psicodine
-	results = list(/datum/reagent/medicine/psicodine = 5)
-	required_reagents = list( /datum/reagent/medicine/alkysine = 2, /datum/reagent/water = 2, /datum/reagent/impedrezene = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
-
 ///medical stacks
 
 /datum/chemical_reaction/medicine/medsuture
@@ -295,8 +279,3 @@
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
 		new /obj/item/stack/medical/poultice(location)
-
-/datum/chemical_reaction/medicine/seraka_destroy //seraka extract is destroyed by sodium hydroxide
-	results = list(/datum/reagent/consumable/sugar = 1)
-	required_reagents = list(/datum/reagent/medicine/coagulant/seraka_extract = 1, /datum/reagent/lye = 1)
-	reaction_tags = REACTION_TAG_EASY

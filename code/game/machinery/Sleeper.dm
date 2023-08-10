@@ -22,7 +22,7 @@
 	var/list/possible_chems = list(
 		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/bicaridine, /datum/reagent/medicine/kelotane),
 		list(/datum/reagent/medicine/imidazoline,/datum/reagent/medicine/inacusiate),
-		list(/datum/reagent/medicine/dylovene, /datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/alkysine, /datum/reagent/medicine/dexalin, /datum/reagent/medicine/pen_acid),
+		list(/datum/reagent/medicine/dylovene, /datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/alkysine, /datum/reagent/medicine/dexalin),
 		list(/datum/reagent/medicine/tricordrazine)
 	)
 	var/list/chem_buttons //Used when emagged to scramble which chem is used, eg: ryetalyn -> morphine
@@ -286,12 +286,12 @@
 	controls_inside = TRUE
 	possible_chems = list(
 		list(/datum/reagent/consumable/ethanol/beer, /datum/reagent/consumable/laughter),
-		list(/datum/reagent/spraytan,/datum/reagent/barbers_aid),
+		list(/datum/reagent/barbers_aid),
 		list(/datum/reagent/colorful_reagent,/datum/reagent/hair_dye),
 		list(/datum/reagent/drug/space_drugs)
 	)//Exclusively uses non-lethal, "fun" chems. At an obvious downside.
 	var/spray_chems = list(
-		/datum/reagent/spraytan, /datum/reagent/hair_dye, /datum/reagent/barbers_aid
+		/datum/reagent/hair_dye, /datum/reagent/barbers_aid
 	)//Chemicals that need to have a touch or vapor reaction to be applied, not the standard chamber reaction.
 	enter_message = "<span class='notice'><b>You're surrounded by some funky music inside the chamber. You zone out as you feel waves of krunk vibe within you.</b></span>"
 

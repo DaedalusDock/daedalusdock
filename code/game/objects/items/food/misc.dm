@@ -453,7 +453,7 @@
 	throwforce = 0
 
 /obj/item/food/lollipop/cyborg
-	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/psicodine = 2) //psicodine instead of omnizine, because the latter was making coders freak out
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2)
 
 /obj/item/food/bubblegum
 	name = "bubblegum"
@@ -545,7 +545,7 @@
 	icon = 'icons/obj/lollipop.dmi'
 	icon_state = "gumball"
 	worn_icon_state = "bubblegum"
-	food_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/sal_acid = 2, /datum/reagent/medicine/oxandrolone = 2) //Kek
+	food_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/meralyne = 2, /datum/reagent/medicine/dermaline = 2) //Kek
 	tastes = list("candy")
 	foodtypes = JUNKFOOD
 	food_flags = FOOD_FINGER_FOOD

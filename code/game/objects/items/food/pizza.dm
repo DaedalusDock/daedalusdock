@@ -60,9 +60,6 @@
 /obj/item/food/pizza/margherita/raw/MakeBakeable()
 	AddComponent(/datum/component/bakeable, /obj/item/food/pizza/margherita, rand(70 SECONDS, 80 SECONDS), TRUE, TRUE)
 
-/obj/item/food/pizza/margherita/robo
-	food_reagents = list(/datum/reagent/cyborg_mutation_nanomachines = 70, /datum/reagent/consumable/nutriment = 25, /datum/reagent/consumable/nutriment/protein = 8, /datum/reagent/consumable/tomatojuice = 6, /datum/reagent/consumable/nutriment/vitamin = 5)
-
 /obj/item/food/pizzaslice/margherita
 	name = "margherita slice"
 	desc = "A slice of the most cheezy pizza in galaxy."

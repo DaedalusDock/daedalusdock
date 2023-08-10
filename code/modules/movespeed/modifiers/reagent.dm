@@ -51,3 +51,6 @@
 
 /datum/movespeed_modifier/hyperzine
 	multiplicative_slowdown = -0.4
+
+/datum/movespeed_modifier/impedrezene
+	multiplicative_slowdown = 2

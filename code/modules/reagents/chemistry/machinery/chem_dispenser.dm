@@ -72,7 +72,6 @@
 
 	var/list/upgrade_reagents2 = list(
 		/datum/reagent/acetone,
-		/datum/reagent/phenol,
 		/datum/reagent/diethylamine
 	)
 

@@ -417,8 +417,8 @@
 	desc = "An upgrade to the Medical model's hypospray, allowing it \
 		to treat a wider range of conditions and problems."
 	additional_reagents = list(/datum/reagent/medicine/alkysine, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/inacusiate,
-		/datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/oxandrolone, /datum/reagent/medicine/sal_acid,
-		/datum/reagent/medicine/rezadone, /datum/reagent/medicine/pen_acid)
+		/datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/dermaline, /datum/reagent/medicine/meralyne,
+		/datum/reagent/medicine/potass_iodide, /datum/reagent/medicine/ipecac)
 
 /obj/item/borg/upgrade/piercing_hypospray
 	name = "cyborg piercing hypospray"

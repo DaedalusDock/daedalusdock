@@ -435,9 +435,6 @@
 			/obj/item/toy/crayon/purple = 1,
 			/obj/item/food/canned/peaches/maint = 6,
 		),
-		VENUE_BAR = list(
-			/datum/reagent/spraytan = 1,
-		),
 	)
 
 	found_seat_lines = list("customer_pawn.say(pick(customer_data.found_seat_lines))", "I saw your sector on the hub. What are the laws of this land?", "The move speed here is a bit low...")

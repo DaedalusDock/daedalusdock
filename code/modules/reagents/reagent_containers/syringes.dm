@@ -201,13 +201,6 @@
 	volume = 1
 	list_reagents = list(/datum/reagent/mulligan = 1)
 
-/obj/item/reagent_containers/syringe/gluttony
-	name = "Gluttony's Blessing"
-	desc = "A syringe recovered from a dread place. It probably isn't wise to use."
-	amount_per_transfer_from_this = 1
-	volume = 1
-	list_reagents = list(/datum/reagent/gluttonytoxin = 1)
-
 /obj/item/reagent_containers/syringe/bluespace
 	name = "bluespace syringe"
 	desc = "An advanced syringe that can hold 60 units of chemicals."
@@ -238,26 +231,6 @@
 	name = "spider extract syringe"
 	desc = "Contains crikey juice - makes any gold core create the most deadly companions in the world."
 	list_reagents = list(/datum/reagent/spider_extract = 1)
-
-/obj/item/reagent_containers/syringe/oxandrolone
-	name = "syringe (oxandrolone)"
-	desc = "Contains oxandrolone, used to treat severe burns."
-	list_reagents = list(/datum/reagent/medicine/oxandrolone = 15)
-
-/obj/item/reagent_containers/syringe/salacid
-	name = "syringe (salicylic acid)"
-	desc = "Contains salicylic acid, used to treat severe brute damage."
-	list_reagents = list(/datum/reagent/medicine/sal_acid = 15)
-
-/obj/item/reagent_containers/syringe/penacid
-	name = "syringe (pentetic acid)"
-	desc = "Contains pentetic acid, used to reduce high levels of radiation and heal severe toxins."
-	list_reagents = list(/datum/reagent/medicine/pen_acid = 15)
-
-/obj/item/reagent_containers/syringe/syriniver
-	name = "syringe (syriniver)"
-	desc = "Contains syriniver, used to treat toxins and purge chemicals.The tag on the syringe states 'Inject one time per minute'"
-	list_reagents = list(/datum/reagent/medicine/c2/syriniver = 15)
 
 /obj/item/reagent_containers/syringe/contraband
 	name = "unlabeled syringe"

@@ -86,29 +86,6 @@
 	color = "#6e3b08"
 	value = DISPENSER_REAGENT_VALUE
 
-/datum/reagent/hydrazine
-	name = "Hydrazine"
-	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate forC."
-	taste_description = "sweet tasting metal"
-	reagent_state = LIQUID
-	color = "#808080"
-	metabolization_rate = 0.04
-	touch_met = 5
-	value = DISPENSER_REAGENT_VALUE
-
-/datum/reagent/hydrazine/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(4 * removed, FALSE)
-	return TRUE
-
-/datum/reagent/hydrazine/affect_touch(mob/living/carbon/C, removed) // Hydrazine is both toxic and flammable.
-	C.adjust_fire_stacks(removed / 12)
-	C.adjustToxLoss(0.2 * removed, FALSE)
-	return TRUE
-
-/datum/reagent/hydrazine/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
-	. = ..()
-	//new /obj/effect/decal/cleanable/liquid_fuel(T, volume)
-
 /datum/reagent/iron
 	name = "Iron"
 	description = "Pure iron is a metal."

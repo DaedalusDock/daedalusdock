@@ -602,7 +602,6 @@
 
 //At the end, we clear up any loose hanging timers just in case and spawn any remaining lag_remaining hands all at once.
 /datum/reagent/helgrasp/on_mob_delete(mob/living/owner)
-	var/hands = 0
 	for(var/id in timer_ids) // So that we can be certain that all timers are deleted at the end.
 		deltimer(id)
 	timer_ids.Cut()

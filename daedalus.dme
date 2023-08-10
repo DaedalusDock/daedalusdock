@@ -4076,7 +4076,6 @@
 #include "code\modules\reagents\chemistry\machinery\pandemic.dm"
 #include "code\modules\reagents\chemistry\machinery\reagentgrinder.dm"
 #include "code\modules\reagents\chemistry\machinery\smoke_machine.dm"
-#include "code\modules\reagents\chemistry\neo_reagents\temp.dm"
 #include "code\modules\reagents\chemistry\reagents\alcohol_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\carpet_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\colorful_reagents.dm"

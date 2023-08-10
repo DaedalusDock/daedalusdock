@@ -170,7 +170,7 @@
 			E.set_sever_artery(FALSE)
 	C.losebreath++
 
- /datum/reagent/medicine/kelotane
+/datum/reagent/medicine/kelotane
 	name = "Kelotane"
 	description = "Kelotane is a drug used to treat burns."
 	taste_description = "bitterness"
@@ -197,7 +197,7 @@
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(-12 * removed, updating_health = FALSE)
+	C.adjustFireLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dylovene

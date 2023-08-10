@@ -983,12 +983,12 @@
 	self_consuming = TRUE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
-/datum/reagent/medicine/cordiolis_hepatico/on_mob_add(mob/living/carbon/C, amount, class)
+/datum/reagent/cordiolis_hepatico/on_mob_add(mob/living/carbon/C, amount, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_STABLELIVER, type)
 		ADD_TRAIT(C, TRAIT_STABLEHEART, type)
 
-/datum/reagent/medicine/cordiolis_hepatico/on_mob_delete(mob/living/carbon/C, class)
+/datum/reagent/cordiolis_hepatico/on_mob_delete(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_STABLEHEART, type)
 		REMOVE_TRAIT(C, TRAIT_STABLELIVER, type)
@@ -1117,13 +1117,13 @@
 	C.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	return TRUE
 
-/datum/reagent/changelingadrenaline/on_mob_metabolize(mob/living/carbon/C, class)
+/datum/reagent/medicine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		ADD_TRAIT(C, TRAIT_STUNRESISTANCE, type)
 		C.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 
-/datum/reagent/changelingadrenaline/on_mob_end_metabolize(mob/living/carbon/C, class)
+/datum/reagent/medicine/changelingadrenaline/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, type)
@@ -1153,3 +1153,41 @@
 /datum/reagent/medicine/changelinghaste/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(0.2, 0)
 	return TRUE
+
+/datum/reagent/gold
+	name = "Gold"
+	description = "Gold is a dense, soft, shiny metal and the most malleable and ductile metal known."
+	reagent_state = SOLID
+	color = "#F7C430" // rgb: 247, 196, 48
+	taste_description = "expensive metal"
+	material = /datum/material/gold
+
+/datum/reagent/nitrous_oxide
+	name = "Nitrous Oxide"
+	description = "A potent oxidizer used as fuel in rockets and as an anaesthetic during surgery."
+	reagent_state = LIQUID
+	metabolization_rate = 1.5 * REAGENTS_METABOLISM
+	color = "#808080"
+	taste_description = "sweetness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/nitrous_oxide/expose_turf(turf/open/exposed_turf, reac_volume)
+	. = ..()
+	if(istype(exposed_turf))
+		var/temp = holder ? holder.chem_temp : T20C
+		exposed_turf.assume_gas(GAS_N2O, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
+
+/datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
+	. = ..()
+	if(methods & VAPOR)
+		exposed_mob.adjust_drowsyness(max(round(reac_volume, 1), 2))
+
+/datum/reagent/nitrous_oxide/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	C.adjust_drowsyness(2 * removed)
+	if(ishuman(C))
+		var/mob/living/carbon/human/H = C
+		H.blood_volume = max(H.blood_volume - (10 * removed), 0)
+	if(prob(20))
+		C.losebreath += 2
+		C.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion, max_duration = 5 SECONDS)

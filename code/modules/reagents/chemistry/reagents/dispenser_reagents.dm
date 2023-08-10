@@ -392,3 +392,29 @@
 	description = "Contrary to popular belief, this is not a currency."
 	reagent_state = SOLID
 	color = "#dcdcdc"
+
+/datum/reagent/copper
+	name = "Copper"
+	description = "A highly ductile metal. Things made out of copper aren't very durable, but it makes a decent material for electrical wiring."
+	reagent_state = SOLID
+	color = "#6E3B08" // rgb: 110, 59, 8
+	taste_description = "metal"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/copper/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+	. = ..()
+	if(!istype(exposed_obj, /obj/item/stack/sheet/iron))
+		return
+
+	var/obj/item/stack/sheet/iron/M = exposed_obj
+	reac_volume = min(reac_volume, M.amount)
+	new/obj/item/stack/sheet/bronze(get_turf(M), reac_volume)
+	M.use(reac_volume)
+
+/datum/reagent/silver
+	name = "Silver"
+	description = "A soft, white, lustrous transition metal, it has the highest electrical conductivity of any element and the highest thermal conductivity of any metal."
+	reagent_state = SOLID
+	color = "#D0D0D0" // rgb: 208, 208, 208
+	taste_description = "expensive yet reasonable metal"
+	material = /datum/material/silver

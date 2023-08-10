@@ -36,19 +36,21 @@
 	var/nopower_state = "dispenser_nopower"
 	var/has_panel_overlay = TRUE
 	var/obj/item/reagent_containers/beaker = null
-	//dispensable_reagents is copypasted in plumbing synthesizers. Please update accordingly. (I didn't make it global because that would limit custom chem dispensers)
 	var/list/dispensable_reagents = list(
 		/datum/reagent/aluminium,
 		/datum/reagent/carbon,
+		/datum/reagent/calcium,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/fluorine,
+		/datum/reagent/helium,
 		/datum/reagent/hydrogen,
 		/datum/reagent/iodine,
 		/datum/reagent/iron,
 		/datum/reagent/lithium,
 		/datum/reagent/mercury,
+		/datum/reagent/nickel,
 		/datum/reagent/nitrogen,
 		/datum/reagent/oxygen,
 		/datum/reagent/phosphorus,
@@ -56,38 +58,18 @@
 		/datum/reagent/uranium/radium,
 		/datum/reagent/silicon,
 		/datum/reagent/sodium,
-		/datum/reagent/stable_plasma,
 		/datum/reagent/consumable/sugar,
 		/datum/reagent/sulfur,
-		/datum/reagent/toxin/acid,
 		/datum/reagent/water,
 		/datum/reagent/fuel
-	)
-	//PARIAH EDIT
-	var/list/upgrade_reagents = list(
-		/datum/reagent/fuel/oil,
-		/datum/reagent/ammonia,
-		/datum/reagent/ash
-	)
-
-	var/list/upgrade_reagents2 = list(
-		/datum/reagent/acetone,
-		/datum/reagent/diethylamine
-	)
-
-	var/list/upgrade_reagents3 = list(
-		/datum/reagent/toxin
 	)
 
 	var/list/emagged_reagents = list(
 		/datum/reagent/drug/space_drugs,
-		/datum/reagent/toxin/plasma,
 		/datum/reagent/consumable/frostoil,
-		/datum/reagent/toxin/carpotoxin,
 		/datum/reagent/toxin/histamine,
 		/datum/reagent/medicine/morphine
 	)
-	//PARIAH EDIT END
 
 	var/list/recording_recipe
 
@@ -98,16 +80,6 @@
 	dispensable_reagents = sort_list(dispensable_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
 	if(emagged_reagents)
 		emagged_reagents = sort_list(emagged_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
-	if(upgrade_reagents)
-		upgrade_reagents = sort_list(upgrade_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
-	//PARIAH EDIT
-	if(upgrade_reagents)
-		upgrade_reagents = sort_list(upgrade_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
-	if(upgrade_reagents2)
-		upgrade_reagents2 = sort_list(upgrade_reagents2, GLOBAL_PROC_REF(cmp_reagents_asc))
-	if(upgrade_reagents3)
-		upgrade_reagents3 = sort_list(upgrade_reagents3, GLOBAL_PROC_REF(cmp_reagents_asc))
-	//PARIAH EDIT END
 	if(is_operational)
 		begin_processing()
 	update_appearance()
@@ -429,8 +401,6 @@
 		recharge_amount *= C.rating
 		parts_rating += C.rating
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
-		if (M.rating > 3)
-			dispensable_reagents |= upgrade_reagents
 		parts_rating += M.rating
 	powerefficiency = round(newpowereff, 0.01)
 
@@ -509,23 +479,7 @@
 		/datum/reagent/consumable/lemonjuice,
 		/datum/reagent/consumable/menthol
 	)
-	//PARIAH EDIT
-	upgrade_reagents = list(
-		/datum/reagent/consumable/applejuice,
-		/datum/reagent/consumable/pumpkinjuice,
-		/datum/reagent/consumable/vanilla
-	)
-	upgrade_reagents2 = list(
-		/datum/reagent/consumable/banana,
-		/datum/reagent/consumable/berryjuice,
-		/datum/reagent/consumable/blumpkinjuice
-	)
-	upgrade_reagents3 = list(
-		/datum/reagent/consumable/watermelonjuice,
-		/datum/reagent/consumable/peachjuice,
-		/datum/reagent/consumable/sol_dry
-	)
-	//PARIAH EDIT END
+
 	emagged_reagents = list(
 		/datum/reagent/consumable/ethanol/whiskey_cola,
 		/datum/reagent/toxin/mindbreaker,
@@ -601,7 +555,7 @@
 		/datum/reagent/consumable/ethanol/sake,
 		/datum/reagent/consumable/ethanol/applejack,
 	)
-	upgrade_reagents = null
+
 	emagged_reagents = list(
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/iron,
@@ -624,7 +578,6 @@
 	name = "mutagen dispenser"
 	desc = "Creates and dispenses mutagen."
 	dispensable_reagents = list(/datum/reagent/toxin/mutagen)
-	upgrade_reagents = null
 	emagged_reagents = list(/datum/reagent/toxin/plasma)
 
 
@@ -649,7 +602,6 @@
 		/datum/reagent/ammonia,
 		/datum/reagent/ash,
 		/datum/reagent/diethylamine)
-	upgrade_reagents = null
 
 /obj/machinery/chem_dispenser/fullupgrade //fully ugpraded stock parts, emagged
 	desc = "Creates and dispenses chemicals. This model has had its safeties shorted out."

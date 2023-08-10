@@ -208,7 +208,6 @@
 	data["queuedReactions"] = queued_reactions
 
 	var/list/active_reactions = list()
-	var/flashing = DISABLE_FLASHING //for use with alertAfter - since there is no alertBefore, I set the after to 0 if true, or to the max value if false
 	for(var/datum/equilibrium/equilibrium as anything in reagents.reaction_list)
 		if(!length(reagents.reaction_list))//I'm not sure why when it explodes it causes the gui to fail (it's missing danger (?) )
 			stack_trace("Chem debug managed to find an equilibrium in a location where there should be none (skipping this entry and continuing). This is usually because of an ill timed explosion.")
@@ -237,7 +236,6 @@
 		active_reactions.len++
 		active_reactions[length(active_reactions)] = list("name" = reagent.name, "danger" = danger, "overheat" = overheat, "reactedVol" = equilibrium.reacted_vol, "targetVol" = round(equilibrium.target_vol, 1))//Use the first result reagent to name the reaction detected
 	data["activeReactions"] = active_reactions
-	data["isFlashing"] = flashing
 
 	if(edit_recipe)
 		data["editRecipeName"] = edit_recipe.type

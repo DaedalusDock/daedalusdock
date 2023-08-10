@@ -729,7 +729,7 @@
 	hardcore_value = 3
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
 	var/list/allergies = list()
-	var/list/blacklist = list(/datum/reagent/medicine/c2,/datum/reagent/medicine/epinephrine,/datum/reagent/medicine/adminordrazine,/datum/reagent/medicine/tricordrazine/godblood,/datum/reagent/medicine/cordiolis_hepatico,/datum/reagent/medicine/diphenhydramine)
+	var/list/blacklist = list(/datum/reagent/medicine/epinephrine,/datum/reagent/medicine/adminordrazine,/datum/reagent/medicine/tricordrazine/godblood,/datum/reagent/medicine/cordiolis_hepatico,/datum/reagent/medicine/diphenhydramine)
 	var/allergy_string
 
 /datum/quirk/item_quirk/allergic/add_unique(client/client_source)

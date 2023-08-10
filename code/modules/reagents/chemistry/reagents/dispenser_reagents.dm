@@ -395,6 +395,23 @@
 
 
 /datum/reagent/chlorine/affect_blood(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjustToxLoss(3 * removed, FALSE)
 	. = TRUE
+
+/datum/reagent/calcium
+	name = "Calcium"
+	description = "A white metallic element."
+	color = "#FFFFFF"
+	reagent_state = SOLID
+
+/datum/reagent/helium
+	name = "Helium"
+	description = "Does not make any sound."
+	reagent_state = GAS
+	color = "#ffffa099"
+
+/datum/reagent/nickel
+	name = "Nickel"
+	description = "Contrary to popular belief, this is not a currency."
+	reagent_state = SOLID
+	color = "#dcdcdc"

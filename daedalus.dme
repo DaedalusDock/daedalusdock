@@ -4089,6 +4089,7 @@
 #include "code\modules\reagents\chemistry\reagents\pyrotechnic_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\toxin_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\unique\eigenstasium.dm"
+#include "code\modules\reagents\chemistry\recipes\gateway_reagents.dm"
 #include "code\modules\reagents\chemistry\recipes\slime_extracts.dm"
 #include "code\modules\reagents\chemistry\recipes\special.dm"
 #include "code\modules\reagents\reagent_containers\blood_pack.dm"

@@ -125,17 +125,14 @@
 
 /datum/reagent/water/holywater/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	if(!data)
-		data = list("misc" = 0)
 
-	data["misc"] += 1 SECONDS * removed
 	C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/jitter, max_duration = 20 SECONDS)
 	if(IS_CULTIST(C))
 		for(var/datum/action/innate/cult/blood_magic/BM in C.actions)
 			to_chat(C, span_cultlarge("Your blood rites falter as holy water scours your body!"))
 			for(var/datum/action/innate/cult/blood_spell/BS in BM.spells)
 				qdel(BS)
-	if(data["misc"] >= (10 SECONDS))
+	if(current_cycle >= 10)
 		C.adjust_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 20 SECONDS)
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 		if(IS_CULTIST(C) && prob(5))
@@ -147,7 +144,7 @@
 				to_chat(C, "<span class='cultlarge'>[pick("Your blood is your bond - you are nothing without it", "Do not forget your place", \
 				"All that power, and you still fail?", "If you cannot scour this poison, I shall scour your meager life!")].</span>")
 
-	if(data["misc"] >= (30 SECONDS))
+	if(current_cycle >= 30)
 		if(IS_CULTIST(C))
 			C.mind.remove_antag_datum(/datum/antagonist/cult)
 			C.Unconscious(10 SECONDS)

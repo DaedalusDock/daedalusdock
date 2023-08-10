@@ -316,7 +316,7 @@
 	attack_verb_simple = "ferociously maul"
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/foam, /obj/item/soap)
-	attack_reagent = /datum/reagent/peaceborg/confuse
+	attack_reagent = /datum/reagent/cryptobiolin
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/destroyer
 	name = "The Destroyer"

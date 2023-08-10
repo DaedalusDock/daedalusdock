@@ -295,3 +295,10 @@
 	icon_state = "pill8"
 	list_reagents = list(/datum/reagent/iron = 30)
 	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/haloperidol
+	name = "haloperidol pill"
+	desc = "Used to treat drug abuse and psychosis."
+	icon_state = "pill8"
+	list_reagents = list(/datum/reagent/medicine/haloperidol = 5)
+	rename_with_volume = TRUE

@@ -218,7 +218,6 @@
 		var/datum/reagent/reagent = reagents.get_reagent(equilibrium.reaction.results[1]) //Reactions are named after their primary products
 		if(!reagent)
 			continue
-		var/overheat = FALSE
 		var/danger = FALSE
 		if(equilibrium.reaction.is_cold_recipe)
 			if(equilibrium.reaction.overheat_temp > reagents.chem_temp && equilibrium.reaction.overheat_temp != NO_OVERHEAT)

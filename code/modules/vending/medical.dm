@@ -59,20 +59,18 @@
 					/obj/item/reagent_containers/syringe/dexalin = 2,
 					/obj/item/reagent_containers/pill/insulin = 5,
 					/obj/item/reagent_containers/glass/bottle/dylovene = 2,
-					/obj/item/reagent_containers/glass/bottle/syriniver = 2,
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
 					/obj/item/reagent_containers/glass/bottle/morphine = 4,
 					/obj/item/reagent_containers/glass/bottle/potass_iodide = 1,
 					/obj/item/reagent_containers/glass/bottle/saline_glucose = 3,
 					/obj/item/reagent_containers/glass/bottle/toxin = 3,
 					/obj/item/reagent_containers/syringe/antiviral = 6,
-					/obj/item/reagent_containers/medigel/sterilizine = 1
 				)
 	contraband = list(/obj/item/reagent_containers/pill/tox = 3,
 					/obj/item/reagent_containers/pill/morphine = 4,
 					/obj/item/reagent_containers/pill/dylovene = 6)
 	premium = list(/obj/item/reagent_containers/medigel/synthflesh = 2,
-					/obj/item/storage/pill_bottle/psicodine = 2)
+					/obj/item/storage/pill_bottle/haloperidol = 2)
 	default_price = 50
 	extra_price = 100
 	payment_department = ACCOUNT_MED

@@ -325,7 +325,6 @@
 	reagent_state = GAS
 	color = "#808080" // rgb: 128, 128, 128
 	taste_description = "acid"
-	ph = 2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
@@ -351,7 +350,7 @@
 	metabolization_rate = 0.15
 
 /datum/reagent/lead/affect_blood(mob/living/carbon/C, removed)
-	victim.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)
 
 /datum/reagent/iodine
 	name = "Iodine"

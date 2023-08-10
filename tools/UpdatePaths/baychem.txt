@@ -55,3 +55,5 @@
 /obj/item/reagent_containers/pill/salicylic : /obj/item/reagent_containers/pill/meralyne
 /obj/item/reagent_containers/spray/spraytan : @DELETE
 /obj/item/mod/module/tanner : @DELETE
+/obj/item/storage/pill_bottle/neurine : /obj/item/storage/pill_bottle/alkysine
+/obj/item/storage/pill_bottle/psicodine : /obj/item/storage/pill_bottle/alkysine

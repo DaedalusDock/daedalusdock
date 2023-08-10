@@ -58,7 +58,7 @@
 
 /datum/chemical_reaction/nitracid
 	results = list(/datum/reagent/toxin/acid/nitracid = 2)
-	required_reagents = list(/datum/reagent/toxin/acid/fluacid = 1, /datum/reagent/nitrogen = 1,  /datum/reagent/hydrogen_peroxide = 1)
+	required_reagents = list(/datum/reagent/toxin/acid/fluacid = 1, /datum/reagent/nitrogen = 1,  /datum/reagent/space_cleaner = 1)
 	mix_message = "The mixture bubbles fiercly and gives off a pungent smell."
 	is_cold_recipe = FALSE
 	required_temp = 480

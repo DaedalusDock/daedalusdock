@@ -163,7 +163,6 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
-	SHOULD_CALL_PARENT(TRUE)
 	/*
 	if (protein_amount)
 		handle_protein(M, src)

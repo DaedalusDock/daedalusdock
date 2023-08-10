@@ -91,7 +91,8 @@
 	taste_description = "grandma's gelatin"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/mutationtoxin/jelly/on_mob_life(mob/living/carbon/human/H, delta_time, times_fired)
+/datum/reagent/mutationtoxin/jelly/affect_blood(mob/living/carbon/human/H, removed)
+	. = ..()
 	if(isjellyperson(H))
 		to_chat(H, span_warning("Your jelly shifts and morphs, turning you into another subspecies!"))
 		var/species_type = pick(subtypesof(/datum/species/jelly))
@@ -104,7 +105,6 @@
 		holder.del_reagent(type)
 		to_chat(H, span_warning("You've become \a [initial(species_type.name)]!"))
 		return TRUE
-	return ..()
 
 /datum/reagent/mutationtoxin/golem
 	name = "Golem Mutation Toxin"

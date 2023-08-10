@@ -355,7 +355,7 @@
 		/obj/item/paint_remover,
 		/obj/item/lightreplacer/cyborg,
 		/obj/item/holosign_creator,
-		/obj/item/reagent_containers/spray/cyborg_drying)
+		)
 	radio_channels = list(RADIO_CHANNEL_SERVICE)
 	emag_modules = list(/obj/item/reagent_containers/spray/cyborg_lube)
 	cyborg_base_icon = "janitor"

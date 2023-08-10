@@ -265,10 +265,6 @@
 	list_reagents = list(/datum/reagent/water/holywater = 100)
 	foodtype = NONE
 
-/obj/item/reagent_containers/food/drinks/bottle/holywater/hell
-	desc = "A flask of holy water...it's been sitting in the Necropolis a while though."
-	list_reagents = list(/datum/reagent/hellwater = 100)
-
 /obj/item/reagent_containers/food/drinks/bottle/vermouth
 	name = "Goldeneye vermouth"
 	desc = "Sweet, sweet dryness~"

@@ -199,6 +199,14 @@
 	base_icon_state = "salpen"
 	list_reagents = list(/datum/reagent/medicine/dexalin = 10)
 
+/obj/item/reagent_containers/hypospray/medipen/dylovene
+	name = "dylovene medipen"
+	desc = "An autoinjector containing dylovene, used to heal toxin damage quickly."
+	icon_state = "salpen"
+	inhand_icon_state = "salpen"
+	base_icon_state = "salpen"
+	list_reagents = list(/datum/reagent/medicine/dylovene = 10)
+
 /obj/item/reagent_containers/hypospray/medipen/tuberculosiscure
 	name = "BVAK autoinjector"
 	desc = "Bio Virus Antidote Kit autoinjector. Has a two use system for yourself, and someone else. Inject when infected."

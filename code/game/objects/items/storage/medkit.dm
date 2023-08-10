@@ -171,7 +171,7 @@
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/kelotane = 3,
 		/obj/item/storage/pill_bottle/dermaline = 1,
-		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1)
 	generate_items_inside(items_inside,src)
 
@@ -192,9 +192,9 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/storage/pill_bottle/dylovene/less = 1,
-		/obj/item/reagent_containers/syringe/syriniver = 3,
+		/obj/item/reagent_containers/syringe/dylovene = 3,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
-		/obj/item/reagent_containers/hypospray/medipen/penacid = 1)
+		/obj/item/reagent_containers/hypospray/medipen/dylovene = 1)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/o2
@@ -235,7 +235,7 @@
 		/obj/item/reagent_containers/pill/bicaridine = 3,
 		/obj/item/stack/gauze = 1,
 		/obj/item/storage/pill_bottle/meralyne = 1,
-		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
+		/obj/item/reagent_containers/hypospray/medipen/meralyne = 1,
 		/obj/item/stack/splint = 1
 	)
 	generate_items_inside(items_inside,src)
@@ -255,7 +255,7 @@
 		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
 		/obj/item/stack/gauze = 1,
-		/obj/item/storage/pill_bottle/penacid = 1,
+		/obj/item/storage/pill_bottle/dylovene = 1,
 		/obj/item/stack/splint = 1
 		)
 	generate_items_inside(items_inside,src)
@@ -470,30 +470,13 @@
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/pill/aranesp(src)
 
-/obj/item/storage/pill_bottle/psicodine
-	name = "bottle of psicodine pills"
+/obj/item/storage/pill_bottle/alkysine
+	name = "bottle of alkysine pills"
 	desc = "Contains pills used to treat mental distress and traumas."
 
-/obj/item/storage/pill_bottle/psicodine/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/psicodine(src)
-
-/obj/item/storage/pill_bottle/penacid
-	name = "bottle of pentetic acid pills"
-	desc = "Contains pills to expunge radiation and toxins."
-
-/obj/item/storage/pill_bottle/penacid/PopulateContents()
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/penacid(src)
-
-
-/obj/item/storage/pill_bottle/neurine
-	name = "bottle of neurine pills"
-	desc = "Contains pills to treat non-severe mental traumas."
-
-/obj/item/storage/pill_bottle/neurine/PopulateContents()
-	for(var/i in 1 to 5)
-		new /obj/item/reagent_containers/pill/neurine(src)
+		new /obj/item/reagent_containers/pill/alkysine(src)
 
 /obj/item/storage/pill_bottle/maintenance_pill
 	name = "bottle of maintenance pills"
@@ -536,6 +519,14 @@
 /obj/item/storage/pill_bottle/paxpsych/PopulateContents()
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/pill/paxpsych(src)
+
+/obj/item/storage/pill_bottle/haloperidol
+	name = "haloperidol pill bottle"
+	desc = "Contains pills of a sedative that treats hallucinations and flushes narcotics from the system."
+
+/obj/item/storage/pill_bottle/haloperidol/PopulateContents()
+	for(var/i in 1 to 5)
+		new /obj/item/reagent_containers/pill/haloperidol(src)
 
 /obj/item/storage/organbox
 	name = "organ transport box"

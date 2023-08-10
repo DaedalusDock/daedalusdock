@@ -700,7 +700,6 @@
 	taste_description = "gross iron"
 	shot_glass_icon_state = "shotglassred"
 	material = /datum/material/meat
-	ph = 7.45
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/fuel/unholywater //if you somehow managed to extract this from someone, dont splash it on yourself and have a smoke
@@ -720,8 +719,8 @@
 		C.adjustOxyLoss(-2 * removed, 0)
 		C.adjustBruteLoss(-2 * removed, 0)
 		C.adjustFireLoss(-2 * removed, 0)
-		if(ishuman(M) && M.blood_volume < BLOOD_VOLUME_NORMAL)
-			M.blood_volume += 3 * REM * delta_time
+		if(ishuman(C) && C.blood_volume < BLOOD_VOLUME_NORMAL)
+			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
 		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
 		C.adjustToxLoss(1 * removed, 0)
@@ -778,7 +777,7 @@
 /datum/reagent/mulligan/affect_blood(mob/living/carbon/human/H, removed)
 	if(!istype(H))
 		return
-	var/datum/reagents/R = C.get_ingested_reagents()
+	var/datum/reagents/R = H.get_ingested_reagents()
 	if(R)
 		R.del_reagent(type)
 	to_chat(H, span_warning("You grit your teeth in pain as your body rapidly mutates!"))
@@ -817,11 +816,11 @@
 /datum/reagent/vaccine/affect_blood(mob/living/carbon/C, removed)
 	if(!islist(data))
 		return
-	for(var/thing in exposed_mob.diseases)
+	for(var/thing in C.diseases)
 		var/datum/disease/infection = thing
 		if(infection.GetDiseaseID() in data)
 			infection.cure()
-	LAZYOR(exposed_mob.disease_resistances, data)
+	LAZYOR(C.disease_resistances, data)
 
 
 /datum/reagent/vaccine/on_merge(list/data)
@@ -852,7 +851,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/barbers_aid/affect_touch(mob/living/carbon/C, removed)
-	var/mob/living/carbon/human/exposed_human = exposed_mob
+	var/mob/living/carbon/human/exposed_human = C
 	var/datum/sprite_accessory/hair/picked_hair = pick(GLOB.hairstyles_list)
 	var/datum/sprite_accessory/facial_hair/picked_beard = pick(GLOB.facial_hairstyles_list)
 	to_chat(exposed_human, span_notice("Hair starts sprouting from your scalp."))
@@ -884,14 +883,14 @@
 		if(200 to INFINITY)
 			newsize = 3.5*RESIZE_DEFAULT_SIZE
 
-	H.resize = newsize/current_size
+	C.resize = newsize/current_size
 	current_size = newsize
-	H.update_transform()
+	C.update_transform()
 
 /datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C)
-	M.resize = RESIZE_DEFAULT_SIZE/current_size
+	C.resize = RESIZE_DEFAULT_SIZE/current_size
 	current_size = RESIZE_DEFAULT_SIZE
-	M.update_transform()
+	C.update_transform()
 
 /datum/reagent/impedrezene // Impairs mental function correctly, takes an overwhelming dose to kill.
 	name = "Impedrezene"
@@ -908,7 +907,6 @@
 
 /datum/reagent/impedrezene/affect_blood(mob/living/carbon/C, removed)
 	C.set_jitter_if_lower(10 SECONDS)
-	C.add_chemical_effect(M.add_chemical_effect(CE_SLOWDOWN, 1))
 
 	if(prob(80))
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
@@ -940,7 +938,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/brimdust/affect_blood(mob/living/carbon/C, removed)
-	carbon.adjustFireLoss((ispodperson(carbon) ? -1 : 1) * removed, FALSE)
+	C.adjustFireLoss((ispodperson(C) ? -1 : 1) * removed, FALSE)
 	return TRUE
 
 /datum/reagent/brimdust/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -994,7 +992,7 @@
 		ADD_TRAIT(C, TRAIT_STABLELIVER, type)
 		ADD_TRAIT(C, TRAIT_STABLEHEART, type)
 
-/datum/reagent/medicine/cordiolis_hepatico/on_mob_remove(mob/living/carbon/C, amount, class)
+/datum/reagent/medicine/cordiolis_hepatico/on_mob_delete(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_STABLEHEART, type)
 		REMOVE_TRAIT(C, TRAIT_STABLELIVER, type)
@@ -1026,14 +1024,14 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
-	exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_touch(mob/living/carbon/C, removed)
 	if(prob(min(volume,100)*(1 - C.get_permeability_protection())))
-		exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+		C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 
 #define CRYO_SPEED_PREFACTOR 0.4
@@ -1043,10 +1041,8 @@
 	name = "Cryostylane"
 	description = "Induces a cryostasis like state in a patient's organs, preventing them from decaying while dead. Slows down surgery while in a patient however. When reacted with oxygen, it will slowly consume it and reduce a container's temperature to 0K. Also damages slime simplemobs when 5u is sprayed."
 	color = "#0000DC"
-	ph = 8.6
 	metabolization_rate = 0.02
 	taste_description = "icey bitterness"
-	purity = REAGENT_STANDARD_PURITY
 	burning_volume = 0.05
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED | REAGENT_DEAD_PROCESS
 
@@ -1065,11 +1061,11 @@
 	consumer.remove_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
 
 /datum/reagent/cryostylane/affect_blood(mob/living/carbon/C, removed)
-	if(consumer.reagents.has_reagent(/datum/reagent/oxygen))
-		consumer.reagents.remove_reagent(/datum/reagent/oxygen, 0.5 * removed)
-		consumer.adjust_bodytemperature(-15 * removed)
-		if(ishuman(consumer))
-			var/mob/living/carbon/human/humi = consumer
+	if(C.reagents.has_reagent(/datum/reagent/oxygen))
+		C.reagents.remove_reagent(/datum/reagent/oxygen, 0.5 * removed)
+		C.adjust_bodytemperature(-15 * removed)
+		if(ishuman(C))
+			var/mob/living/carbon/human/humi = C
 			humi.adjust_coretemperature(-15 * removed)
 
 /datum/reagent/cryostylane/expose_turf(turf/exposed_turf, reac_volume)
@@ -1119,10 +1115,10 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/medicine/changelingadrenaline/affect_blood(mob/living/carbon/C, removed)
-	metabolizer.AdjustAllImmobility(-20 * removed)
-	metabolizer.stamina.adjust(10 * removed)
-	metabolizer.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
-	metabolizer.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
+	C.AdjustAllImmobility(-20 * removed)
+	C.stamina.adjust(10 * removed)
+	C.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	C.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	return TRUE
 
 /datum/reagent/changelingadrenaline/on_mob_metabolize(mob/living/carbon/C, class)
@@ -1140,7 +1136,7 @@
 		C.remove_status_effect(/datum/status_effect/jitter)
 
 /datum/reagent/medicine/changelingadrenaline/overdose_process(mob/living/carbon/C)
-	metabolizer.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0)
 	return TRUE
 
 /datum/reagent/medicine/changelinghaste
@@ -1159,5 +1155,5 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/changelinghaste)
 
 /datum/reagent/medicine/changelinghaste/affect_blood(mob/living/carbon/C, removed)
-	metabolizer.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0)
 	return TRUE

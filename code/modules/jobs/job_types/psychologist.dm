@@ -54,7 +54,7 @@
 		/obj/item/storage/pill_bottle/lsdpsych,
 		/obj/item/storage/pill_bottle/alkysine,
 		/obj/item/storage/pill_bottle/paxpsych,
-		/obj/item/storage/pill_bottle/psicodine,
+		/obj/item/storage/pill_bottle/haloperidol,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/medical
 	ears = /obj/item/radio/headset/headset_srvmed

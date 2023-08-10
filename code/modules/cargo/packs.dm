@@ -1281,7 +1281,7 @@
 					/obj/item/defibrillator/loaded,
 					/obj/item/reagent_containers/blood/o_minus,
 					/obj/item/storage/pill_bottle/mining,
-					/obj/item/reagent_containers/pill/neurine,
+					/obj/item/reagent_containers/pill/alkysine,
 					/obj/item/stack/medical/bone_gel/twelve,
 					/obj/item/stack/medical/bone_gel/twelve,
 					/obj/item/vending_refill/medical,
@@ -1298,7 +1298,6 @@
 	desc = "Do you want to perform surgery, but don't have one of those fancy shmancy degrees? Just get started with this crate containing a medical duffelbag, Sterilizine spray and collapsible roller bed."
 	cost = CARGO_CRATE_VALUE * 6
 	contains = list(/obj/item/storage/backpack/duffelbag/med/surgery,
-					/obj/item/reagent_containers/medigel/sterilizine,
 					/obj/item/roller)
 	crate_name = "surgical supplies crate"
 

@@ -109,12 +109,18 @@
 	var/total_matching_catalysts = 0
 	//Reagents check should be handled in the calculate_yield() from multiplier
 
-	//If the product/reactants are too impure
+	//This is generally faster
+	if(length(reaction.inhibitors))
+		for(var/datum/reagent/reagent as anything in holder.reagent_list)
+			if(reagent in reaction.inhibitors)
+				return FALSE
+
+	//If the product/reactants are able to occur
 	for(var/datum/reagent/reagent as anything in holder.reagent_list)
 		//this is done this way to reduce processing compared to holder.has_reagent(P)
-		for(var/datum/reagent/catalyst as anything in reaction.required_catalysts)
-			if(catalyst == reagent.type)
-				total_matching_catalysts++
+		if(reagent in reaction.required_catalysts)
+			total_matching_catalysts++
+
 	if(!(total_matching_catalysts == reaction.required_catalysts.len))
 		return FALSE
 

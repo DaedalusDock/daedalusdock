@@ -6,3 +6,7 @@
 /datum/chemical_reaction/oil
 	results = list(/datum/reagent/fuel/oil = 3)
 	required_reagents = list(/datum/reagent/fuel = 1, /datum/reagent/hydrogen = 1, /datum/reagent/carbon = 1)
+
+/datum/chemical_reaction/glycerol
+	result = list(/datum/reagent/glycerol = 1)
+	required_reagents = list(/datum/reagent/consumable/cornoil = 3, /datum/reagent/toxin/acid = 1)

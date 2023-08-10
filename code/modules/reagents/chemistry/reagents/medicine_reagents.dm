@@ -452,12 +452,9 @@
 
 /datum/reagent/medicine/synaptizine/affect_blood(mob/living/carbon/C, removed)
 	C.drowsyness = max(C.drowsyness - 5, 0)
-	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/paralyzed)
-	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/stun)
-	C.adjust_timed_status_effect(-2 SECONDS, /datum/status_effect/incapacitating/knockdown)
+	C.AdjustAllImmobility(-2 SECONDS * removed)
 
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
-	//M.adjust_hallucination(-10)
 
 	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)

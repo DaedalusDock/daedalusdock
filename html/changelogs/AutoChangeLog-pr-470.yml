@@ -1,0 +1,5 @@
+author: Gonenoculer5
+delete-after: true
+changes:
+  - bugfix: Modifies EXAMPLE.json to contain correct comment text relating to durations
+      of music files.

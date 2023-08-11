@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed objects that render out of their tile rendering over blackness,
+      when logically they should be invisible.

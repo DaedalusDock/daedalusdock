@@ -5,5 +5,7 @@
 	"author" : "EXAMPLE",
 	"file" : "sounds/poacher.ogg",
 	"media_tags": ["LOBBY", "JUKEBOX"],
+	"x-comment-duration": "Duration of a given file for use in the jukebox in deciseconds.",
+	"duration": 260,
 	"map" : false
 }

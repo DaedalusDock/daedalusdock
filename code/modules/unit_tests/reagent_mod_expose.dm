@@ -6,10 +6,10 @@
 
 /datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
 	. = ..()
-	if(method == TOUCH)
-		C.health = 90
-	else if(method == INJECT)
-		C.health = 80
+	if(methods == TOUCH)
+		exposed_mob.health = 90
+	else if(methods == INJECT)
+		exposed_mob.health = 80
 
 /datum/unit_test/reagent_mob_expose/Run()
 	// Life() is handled just by tests

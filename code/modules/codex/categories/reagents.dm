@@ -4,12 +4,11 @@
 
 /datum/codex_category/reagents/Populate()
 	for(var/datum/reagent/R as anything in subtypesof(/datum/reagent))
-		if(isabstract(R) || (initial(R.chemical_flags) & REAGENT_NO_CODEX))
+		if(isabstract(R) || !(initial(R.show_in_codex) || R == /datum/reagent/toxin)) //OOP moment
 			continue
 
 		var/datum/codex_entry/entry = new(
 			_display_name = "[initial(R.name)] (chemical)",
-			_associated_strings = list("[initial(R.name)] pill"),
 			_lore_text = "[initial(R.description)] It apparently tastes of [initial(R.taste_description)]."
 		)
 

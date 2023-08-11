@@ -1,24 +1,3 @@
-/datum/reagent/acetone
-	name = "Acetone"
-	description = "A colorless liquid solvent used in chemical synthesis."
-	taste_description = "acid"
-	reagent_state = LIQUID
-	color = "#808080"
-	metabolization_rate = 0.04
-	value = DISPENSER_REAGENT_VALUE
-
-/datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(removed * 3, FALSE)
-	return TRUE
-
-/datum/reagent/acetone/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
-	. = ..()
-	if(istype(exposed_obj, /obj/item/paper))
-		var/obj/item/paper/paperaffected = exposed_obj
-		paperaffected.clearpaper()
-		to_chat(usr, span_notice("The solution dissolves the ink on the paper."))
-		return
-
 /datum/reagent/aluminium
 	name = "Aluminium"
 	taste_description = "metal"

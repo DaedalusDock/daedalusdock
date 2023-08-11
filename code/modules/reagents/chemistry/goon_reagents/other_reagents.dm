@@ -58,6 +58,7 @@
 	burning_volume = 0.05 //but has a lot of hydrocarbons
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = null
+	show_in_codex = TRUE
 
 /datum/reagent/stable_plasma
 	name = "Stable Plasma"
@@ -312,3 +313,26 @@
 	reagent_state = LIQUID
 	color = "#E7EA91"
 	taste_description = "acid"
+	show_in_codex = TRUE
+
+/datum/reagent/acetone
+	name = "Acetone"
+	description = "A colorless liquid solvent used in chemical synthesis."
+	taste_description = "acid"
+	reagent_state = LIQUID
+	color = "#808080"
+	metabolization_rate = 0.04
+	value = DISPENSER_REAGENT_VALUE
+	show_in_codex = TRUE
+
+/datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 3, FALSE)
+	return TRUE
+
+/datum/reagent/acetone/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+	. = ..()
+	if(istype(exposed_obj, /obj/item/paper))
+		var/obj/item/paper/paperaffected = exposed_obj
+		paperaffected.clearpaper()
+		to_chat(usr, span_notice("The solution dissolves the ink on the paper."))
+		return

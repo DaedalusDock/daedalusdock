@@ -1080,6 +1080,7 @@
 	color = "#D3B913"
 	taste_description = "sweetness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin
 	name = "Cryptobiolin"
@@ -1088,6 +1089,7 @@
 	metabolization_rate = 0.3
 	taste_description = "sourness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

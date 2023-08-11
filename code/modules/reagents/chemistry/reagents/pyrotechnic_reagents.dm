@@ -9,9 +9,8 @@
 
 /datum/reagent/phlogiston/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
 	. = ..()
-	if(methods == TOUCH)
-		exposed_mob.adjust_fire_stacks(1)
-		exposed_mob.ignite_mob()
+	exposed_mob.adjust_fire_stacks(1)
+	exposed_mob.ignite_mob()
 
 /datum/reagent/phlogiston/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_fire_stacks(1 * removed)

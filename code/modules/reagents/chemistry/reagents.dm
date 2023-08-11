@@ -77,6 +77,9 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_DONOTSPLIT, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
 	var/chemical_flags = NONE
 
+	/// Does this reagent and its recipe appear in the Codex?
+	var/show_in_codex = FALSE
+
 	///Thermodynamic vars
 	///How hot this reagent burns when it's on fire - null means it can't burn
 	var/burning_temperature = null

@@ -91,9 +91,6 @@
 #define REAGENT_IGNORE_MOB_SIZE (1<<8)
 ///Scannable
 #define REAGENT_SCANNABLE (1<<8)
-///Hidden from the codex
-#define REAGENT_NO_CODEX (1<<9)
-
 //Chemical reaction flags, for determining reaction specialties
 ///Used to create instant reactions
 #define REACTION_INSTANT (1<<1)

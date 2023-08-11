@@ -114,7 +114,7 @@
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
-	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
+	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
 
 /datum/reagent/medicine/inaprovaline/overdose_end(mob/living/carbon/C)
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -337,19 +337,19 @@
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, pain_power * effectiveness)
 
 	if(volume > overdose_threshold)
-		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
+		C.add_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		C.set_slurring_if_lower(60 SECONDS)
 		if(prob(1))
 			C.Knockdown(2 SECONDS)
 			C.drowsyness = max(C.drowsyness, 5)
 
 	else if(volume > 0.75 * overdose_threshold)
-		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
+		C.add_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(5))
 			C.set_slurring_if_lower(40 SECONDS)
 
 	else if(volume > 0.5 * overdose_threshold)
-		C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/tramadol)
+		C.add_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 		if(prob(1))
 			C.set_slurring_if_lower(20 SECONDS)
 
@@ -405,7 +405,7 @@
 	addiction_types = list(/datum/addiction/opiods = 10)
 
 /datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/L)
-	L.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/morphine)
+	L.add_movespeed_modifier(/datum/movespeed_modifier/morphine)
 
 /datum/reagent/medicine/morphine/on_mob_end_metabolize(mob/living/L)
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/morphine)
@@ -567,7 +567,7 @@
 
 /datum/reagent/medicine/hyperzine/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_HYPERZINE, CHEM_TRAIT_SOURCE(class))
-	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
+	C.add_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
 
 /datum/reagent/medicine/hyperzine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_HYPERZINE, CHEM_TRAIT_SOURCE(class))

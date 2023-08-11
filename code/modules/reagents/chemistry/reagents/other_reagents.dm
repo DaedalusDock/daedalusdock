@@ -1054,7 +1054,7 @@
 
 /datum/reagent/cryostylane/on_mob_delete(mob/living/consumer)
 	. = ..()
-	consumer.remove_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
+	consumer.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_CYAN)
 
 /datum/reagent/cryostylane/affect_blood(mob/living/carbon/C, removed)
 	if(C.reagents.has_reagent(/datum/reagent/oxygen))

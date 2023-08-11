@@ -449,12 +449,12 @@
 				R = belly.reagents
 				target_atom = C
 
-			else if(methods & INJECT)
-				R = C.bloodstream
-				target_atom = C
-
 			else if(methods & TOUCH)
 				R = C.touching
+				target_atom = C
+
+			else
+				R = C.bloodstream
 				target_atom = C
 
 		else if(!target.reagents)

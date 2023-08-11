@@ -29,7 +29,7 @@
 	TEST_ASSERT(human.fire_stacks > 1, "Human fire stacks did not increase after life tick")
 
 	// TOUCH
-	dropper.reagents.add_reagent(/datum/reagent/water, 1)
+	dropper.reagents.add_reagent(/datum/reagent/water, 5)
 	dropper.afterattack(human, human, TRUE)
 	TEST_ASSERT(human.fire_stacks < 0, "Human still has fire stacks after touching water")
 

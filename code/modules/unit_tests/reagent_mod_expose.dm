@@ -47,7 +47,6 @@
 	patch.reagents.add_reagent(/datum/reagent/method_patch_test, 1)
 	patch.self_delay = 0
 	patch.attack(human, human)
-	human.Life(SSMOBS_DT)
 	TEST_ASSERT_EQUAL(human.health, 90, "Human health did not update after patch was applied")
 
 	// INJECT

@@ -1,6 +1,6 @@
 /obj/item/grenade/syndieminibomb
+	name = "grenade"
 	desc = "A syndicate manufactured explosive used to sow destruction and chaos."
-	name = "syndicate minibomb"
 	icon = 'icons/obj/grenade.dmi'
 	icon_state = "syndicate"
 	inhand_icon_state = "flashbang"
@@ -19,7 +19,7 @@
 	qdel(src)
 
 /obj/item/grenade/syndieminibomb/concussion
-	name = "HE Grenade"
+	name = "HE grenade"
 	desc = "A compact shrapnel grenade meant to devastate nearby organisms and cause some damage in the process. Pull pin and throw opposite direction."
 	icon_state = "concussion"
 	ex_heavy = 2
@@ -59,7 +59,7 @@
 	var/freeze_range = 4
 	var/rad_range = 4
 	var/rad_threshold = RAD_EXTREME_INSULATION
-	var/stamina_damage = 30
+	var/rad_stamina_damage = 30
 	var/temp_adjust = -230
 
 /obj/item/grenade/gluon/detonate(mob/living/lanced_by)
@@ -73,6 +73,6 @@
 	for (var/turf/open/floor/floor in view(freeze_range, loc))
 		floor.MakeSlippery(TURF_WET_PERMAFROST, 6 MINUTES)
 		for(var/mob/living/carbon/victim in floor)
-			victim.adjustStaminaLoss(stamina_damage)
+			victim.stamina.adjust(-rad_stamina_damage)
 			victim.adjust_bodytemperature(temp_adjust)
 	qdel(src)

@@ -110,7 +110,7 @@
 	prev_access = access_card.access.Copy()
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -143,6 +143,12 @@
 		playsound(src, 'sound/machines/defib_zap.ogg', 50)
 		visible_message(span_warning("[src] shakes and speeds up!"))
 
+/mob/living/simple_animal/bot/secbot/handle_atom_del(atom/deleting_atom)
+	if(deleting_atom == weapon)
+		weapon = null
+		update_appearance()
+	return ..()
+
 // Variables sent to TGUI
 /mob/living/simple_animal/bot/secbot/ui_data(mob/user)
 	var/list/data = ..()
@@ -174,7 +180,7 @@
 
 /mob/living/simple_animal/bot/secbot/proc/retaliate(mob/living/carbon/human/attacking_human)
 	var/judgement_criteria = judgement_criteria()
-	threatlevel = attacking_human.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, .proc/check_for_weapons))
+	threatlevel = attacking_human.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, PROC_REF(check_for_weapons)))
 	threatlevel += 6
 	if(threatlevel >= 4)
 		target = attacking_human
@@ -257,10 +263,7 @@
 		return ..()
 	var/mob/living/carbon/carbon_target = attack_target
 	if(!carbon_target.IsParalyzed() || !(security_mode_flags & SECBOT_HANDCUFF_TARGET))
-		if(!check_nap_violations())
-			stun_attack(attack_target, TRUE)
-		else
-			stun_attack(attack_target)
+		stun_attack(attack_target)
 	else if(carbon_target.canBeHandcuffed() && !carbon_target.handcuffed)
 		start_handcuffing(attack_target)
 
@@ -278,7 +281,7 @@
 	playsound(src, 'sound/weapons/cablecuff.ogg', 30, TRUE, -2)
 	current_target.visible_message(span_danger("[src] is trying to put zipties on [current_target]!"),\
 						span_userdanger("[src] is trying to put zipties on you!"))
-	addtimer(CALLBACK(src, .proc/handcuff_target, current_target), 6 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(handcuff_target), current_target), 6 SECONDS)
 
 /mob/living/simple_animal/bot/secbot/proc/handcuff_target(mob/living/carbon/current_target)
 	if(!(bot_mode_flags & BOT_MODE_ON)) //if he's in a closet or not adjacent, we cancel cuffing.
@@ -297,7 +300,7 @@
 	var/judgement_criteria = judgement_criteria()
 	playsound(src, 'sound/weapons/egloves.ogg', 50, TRUE, -1)
 	icon_state = "[initial(icon_state)]-c"
-	addtimer(CALLBACK(src, /atom.proc/update_appearance), 0.2 SECONDS)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance)), 0.2 SECONDS)
 	var/threat = 5
 
 	if(harm)
@@ -306,11 +309,11 @@
 		current_target.set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
 		current_target.Paralyze(100)
 		var/mob/living/carbon/human/human_target = current_target
-		threat = human_target.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, .proc/check_for_weapons))
+		threat = human_target.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, PROC_REF(check_for_weapons)))
 	else
 		current_target.Paralyze(100)
 		current_target.set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
-		threat = current_target.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, .proc/check_for_weapons))
+		threat = current_target.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, PROC_REF(check_for_weapons)))
 
 	log_combat(src, target, "stunned")
 	if(security_mode_flags & SECBOT_DECLARE_ARRESTS)
@@ -346,11 +349,7 @@
 				back_to_idle()
 				return
 			if(Adjacent(target) && isturf(target.loc)) // if right next to perp
-				if(!check_nap_violations())
-					stun_attack(target, TRUE)
-				else
-					stun_attack(target)
-
+				stun_attack(target)
 				set_anchored(TRUE)
 				return
 
@@ -388,9 +387,6 @@
 				return
 
 			if(target.handcuffed) //no target or target cuffed? back to idle.
-				if(!check_nap_violations())
-					stun_attack(target, TRUE)
-					return
 				back_to_idle()
 				return
 
@@ -415,13 +411,13 @@
 	target = null
 	last_found = world.time
 	frustration = 0
-	INVOKE_ASYNC(src, .proc/handle_automated_action)
+	INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 
 /mob/living/simple_animal/bot/secbot/proc/back_to_hunt()
 	set_anchored(FALSE)
 	frustration = 0
 	mode = BOT_HUNT
-	INVOKE_ASYNC(src, .proc/handle_automated_action)
+	INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 // look for a criminal in view of the bot
 
 /mob/living/simple_animal/bot/secbot/proc/look_for_perp()
@@ -434,7 +430,7 @@
 		if((nearby_carbons.name == oldtarget_name) && (world.time < last_found + 100))
 			continue
 
-		threatlevel = nearby_carbons.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, .proc/check_for_weapons))
+		threatlevel = nearby_carbons.assess_threat(judgement_criteria, weaponcheck = CALLBACK(src, PROC_REF(check_for_weapons)))
 
 		if(!threatlevel)
 			continue
@@ -455,7 +451,7 @@
 
 			visible_message("<b>[src]</b> points at [nearby_carbons.name]!")
 			mode = BOT_HUNT
-			INVOKE_ASYNC(src, .proc/handle_automated_action)
+			INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 			break
 
 /mob/living/simple_animal/bot/secbot/proc/check_for_weapons(obj/item/slot_item)
@@ -509,42 +505,10 @@
 
 /mob/living/simple_animal/bot/secbot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(has_gravity() && ismob(AM) && target)
 		var/mob/living/carbon/C = AM
 		if(!istype(C) || !C || in_range(src, target))
 			return
 		knockOver(C)
-
-/// Returns false if the current target is unable to pay the fair_market_price for being arrested/detained
-/mob/living/simple_animal/bot/secbot/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!target)
-		return TRUE
-	if(!ishuman(target))
-		return TRUE
-	var/mob/living/carbon/human/human_target = target
-	var/obj/item/card/id/target_id = human_target.get_idcard()
-	if(!target_id)
-		say("Suspect NAP Violation: No ID card found.")
-		nap_violation(target)
-		return FALSE
-	var/datum/bank_account/insurance = target_id.registered_account
-	if(!insurance)
-		say("Suspect NAP Violation: No bank account found.")
-		nap_violation(target)
-		return FALSE
-	var/fair_market_price = (security_mode_flags & SECBOT_HANDCUFF_TARGET ? fair_market_price_detain : fair_market_price_arrest)
-	if(!insurance.adjust_money(-fair_market_price))
-		say("Suspect NAP Violation: Unable to pay.")
-		nap_violation(target)
-		return FALSE
-	var/datum/bank_account/beepsky_department_account = SSeconomy.department_accounts_by_id[payment_department]
-	say("Thank you for your compliance. Your account been charged [fair_market_price] credits.")
-	if(beepsky_department_account)
-		beepsky_department_account.adjust_money(fair_market_price)
-		return TRUE
-
-/// Does nothing
-/mob/living/simple_animal/bot/secbot/proc/nap_violation(mob/violator)
-	return

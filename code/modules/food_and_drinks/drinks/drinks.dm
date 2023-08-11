@@ -37,7 +37,7 @@
 	else
 		M.visible_message(span_danger("[user] attempts to feed [M] the contents of [src]."), \
 			span_userdanger("[user] attempts to feed you the contents of [src]."))
-		if(!do_after(user, M))
+		if(!do_after(user, M, 3 SECONDS))
 			return
 		if(!reagents || !reagents.total_volume)
 			return // The drink might be empty after the delay, such as by spam-feeding
@@ -95,7 +95,7 @@
 				return
 			var/mob/living/silicon/robot/bro = user
 			bro.cell.use(30)
-			addtimer(CALLBACK(reagents, /datum/reagents.proc/add_reagent, refill, trans), 600)
+			addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, add_reagent), refill, trans), 600)
 
 	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if (!is_refillable())
@@ -380,8 +380,6 @@
 	if(!QDELETED(src) && cap_on && reagents.total_volume)
 		if(prob(flip_chance)) // landed upright
 			src.visible_message(span_notice("[src] lands upright!"))
-			if(throwingdatum.thrower)
-				SEND_SIGNAL(throwingdatum.thrower, COMSIG_ADD_MOOD_EVENT, "bottle_flip", /datum/mood_event/bottle_flip)
 		else // landed on it's side
 			animate(src, transform = matrix(prob(50)? 90 : -90, MATRIX_ROTATE), time = 3, loop = 0)
 
@@ -701,12 +699,6 @@
 /obj/item/reagent_containers/food/drinks/soda_cans/proc/burst_soda(atom/target, hide_message = FALSE)
 	if(!target)
 		return
-
-	if(ismob(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "soda_spill", /datum/mood_event/soda_spill, src)
-		for(var/mob/living/iter_mob in view(src, 7))
-			if(iter_mob != target)
-				SEND_SIGNAL(iter_mob, COMSIG_ADD_MOOD_EVENT, "observed_soda_spill", /datum/mood_event/observed_soda_spill, target, src)
 
 	playsound(src, 'sound/effects/can_pop.ogg', 80, TRUE)
 	if(!hide_message)

@@ -85,10 +85,11 @@
 		power = 2
 
 /datum/symptom/heal/starlight/proc/CanTileHealDirectional(turf/turf_to_check, direction)
-	if(direction == ZTRAIT_UP)
-		turf_to_check = turf_to_check.above()
+	if(direction == UP)
+		turf_to_check = GetAbove(turf_to_check)
 		if(!turf_to_check)
 			return STARLIGHT_CANNOT_HEAL
+
 	var/area/area_to_check = get_area(turf_to_check)
 	var/levels_of_glass = 0 // Since starlight condensation only works 2 tiles to the side anyways, it shouldn't work with like 100 z-levels of glass
 	while(levels_of_glass <= STARLIGHT_MAX_RANGE)
@@ -108,10 +109,10 @@
 		// Our turf is transparent OR openspace - we can check higher or lower z-levels
 		if(istransparentturf(turf_to_check) || istype(turf_to_check, /turf/open/openspace))
 			// Check above or below us
-			if(direction == ZTRAIT_UP)
-				turf_to_check = turf_to_check.above()
+			if(direction == UP)
+				turf_to_check = GetAbove(turf_to_check)
 			else
-				turf_to_check = turf_to_check.below()
+				turf_to_check = GetBelow(turf_to_check)
 
 			// If we found a turf above or below us,
 			// then we can rerun the loop on the newly found turf / area
@@ -124,7 +125,7 @@
 			// Checking below, we assume that space is below us (as we're standing on station)
 			// Checking above, we check that the area is "outdoors" before assuming if it is space or not.
 			else
-				if(direction == ZTRAIT_DOWN || (direction == ZTRAIT_UP && area_to_check.outdoors))
+				if(direction == DOWN || (direction == UP && area_to_check.outdoors))
 					if (levels_of_glass)
 						return STARLIGHT_CAN_HEAL_WITH_PENALTY
 					return STARLIGHT_CAN_HEAL
@@ -132,12 +133,12 @@
 		return STARLIGHT_CANNOT_HEAL // Hit a non-space, Non-transparent turf - no healsies
 
 /datum/symptom/heal/starlight/proc/CanTileHeal(turf/original_turf, satisfied_with_penalty)
-	var/current_heal_level = CanTileHealDirectional(original_turf, ZTRAIT_DOWN)
+	var/current_heal_level = CanTileHealDirectional(original_turf, DOWN)
 	if(current_heal_level == STARLIGHT_CAN_HEAL)
 		return current_heal_level
 	if(current_heal_level && satisfied_with_penalty) // do not care if there is a healing penalty or no
 		return current_heal_level
-	var/heal_level_from_above = CanTileHealDirectional(original_turf, ZTRAIT_UP)
+	var/heal_level_from_above = CanTileHealDirectional(original_turf, UP)
 	if(heal_level_from_above > current_heal_level)
 		return heal_level_from_above
 	else
@@ -167,13 +168,13 @@
 
 	M.adjustToxLoss(-(4 * heal_amt)) //most effective on toxins
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return
 
-	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+	for(var/obj/item/bodypart/L as anything in parts)
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 	return 1
 
@@ -305,7 +306,7 @@
 /datum/symptom/heal/darkness/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return
@@ -314,7 +315,7 @@
 		to_chat(M, span_notice("The darkness soothes and mends your wounds."))
 
 	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len * 0.5, null, BODYTYPE_ORGANIC)) //more effective on brute
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len * 0.5, BODYTYPE_ORGANIC)) //more effective on brute
 			M.update_damage_overlays()
 	return 1
 
@@ -390,12 +391,12 @@
 	if(M.getBruteLoss() + M.getFireLoss() >= 70 && !active_coma)
 		to_chat(M, span_warning("You feel yourself slip into a regenerative coma..."))
 		active_coma = TRUE
-		addtimer(CALLBACK(src, .proc/coma, M), 60)
+		addtimer(CALLBACK(src, PROC_REF(coma), M), 60)
 
 
 /datum/symptom/heal/coma/proc/coma(mob/living/M)
 	M.fakedeath("regenerative_coma", !deathgasp)
-	addtimer(CALLBACK(src, .proc/uncoma, M), 300)
+	addtimer(CALLBACK(src, PROC_REF(uncoma), M), 300)
 
 
 /datum/symptom/heal/coma/proc/uncoma(mob/living/M)
@@ -414,7 +415,7 @@
 		return
 
 	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 
 	if(active_coma && M.getBruteLoss() + M.getFireLoss() == 0)
@@ -467,7 +468,7 @@
 /datum/symptom/heal/water/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC) //more effective on burns
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC) //more effective on burns
 
 	if(!parts.len)
 		return
@@ -476,7 +477,7 @@
 		to_chat(M, span_notice("You feel yourself absorbing the water around you to soothe your damaged skin."))
 
 	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len * 0.5, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+		if(L.heal_damage(heal_amt/parts.len * 0.5, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 
 	return 1
@@ -542,13 +543,13 @@
 
 	M.adjustToxLoss(-heal_amt)
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 	if(!parts.len)
 		return
 	if(prob(5))
 		to_chat(M, span_notice("The pain from your wounds fades rapidly."))
 	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 	return 1
 
@@ -592,7 +593,7 @@
 
 	M.adjustToxLoss(-(2 * heal_amt))
 
-	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYTYPE_ORGANIC)
+	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
 
 	if(!parts.len)
 		return
@@ -601,6 +602,6 @@
 		to_chat(M, span_notice("Your skin glows faintly, and you feel your wounds mending themselves."))
 
 	for(var/obj/item/bodypart/L in parts)
-		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYTYPE_ORGANIC))
+		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 	return 1

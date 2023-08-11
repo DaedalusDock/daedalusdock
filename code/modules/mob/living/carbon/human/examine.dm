@@ -127,7 +127,7 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/internal/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()
@@ -135,35 +135,35 @@
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
 	var/list/body_zones_covered = get_covered_body_zones(TRUE) //This is a bitfield of the body_zones_covered. Not parts. Yeah. Sucks.
+	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.name]!</B>\n"
-			else
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
 		if(is_bodypart_visibly_covered(body_part, body_zones_covered))
 			var/is_bloody
 			for(var/datum/wound/W as anything in body_part.wounds)
 				if(W.bleeding())
-					msg += span_warning("[t_His] [body_part.plaintext_zone] covering is bloody!\n")
+					msg += span_warning("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
 					is_bloody = TRUE
 					break
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
+			for(var/string in body_part.mob_examine(hal_screwyhud, TRUE))
+				msg += "[string]</br>"
+
 			continue
 		else
-			msg += body_part.mob_examine(hal_screwyhud)
+			for(var/string in body_part.mob_examine(hal_screwyhud, FALSE))
+				msg += "[string]</br>"
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
 		var/damage_text
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
-		if(!(body_part.get_damage(include_stamina = FALSE) >= body_part.max_damage)) //we don't care if it's stamcritted
+		if(!(body_part.get_damage() >= body_part.max_damage)) //we don't care if it's stamcritted
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
@@ -280,7 +280,6 @@
 
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
-				SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "religious_comfort", /datum/mood_event/religiously_comforted)
 
 		switch(stat)
 			if(UNCONSCIOUS, HARD_CRIT)
@@ -290,7 +289,7 @@
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
-		if(getorgan(/obj/item/organ/internal/brain))
+		if(getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
 			else if(!key)
@@ -312,7 +311,7 @@
 			. += "<span class='deptradio'>Rank:</span> [R.fields["rank"]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
 			var/cyberimp_detect
-			for(var/obj/item/organ/internal/cyberimp/CI in internal_organs)
+			for(var/obj/item/organ/cyberimp/CI in processing_organs)
 				if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
 					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
 			if(cyberimp_detect)
@@ -345,21 +344,6 @@
 					"<a href='?src=[REF(src)];hud=s;add_comment=1'>\[Add comment\]</a>"), "")
 	else if(isobserver(user))
 		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
-	//. += "*---------*</span>" PARIAH EDIT REMOVAL
-
-	//PARIAH EDIT ADDITION
-	var/flavor_text_link
-	/// The first 1-FLAVOR_PREVIEW_LIMIT characters in the mob's "flavor_text" DNA feature. FLAVOR_PREVIEW_LIMIT is defined in flavor_defines.dm.
-	var/preview_text = copytext_char((dna.features["flavor_text"]), 1, FLAVOR_PREVIEW_LIMIT)
-	// What examine_tgui.dm uses to determine if flavor text appears as "Obscured".
-	var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
-
-	if (!(face_obscured))
-		flavor_text_link = span_notice("[preview_text]... <a href='?src=[REF(src)];lookup_info=open_examine_panel'>Look closer?</a>")
-	else
-		flavor_text_link = span_notice("<a href='?src=[REF(src)];lookup_info=open_examine_panel'>Examine closely...</a>")
-	if (flavor_text_link)
-		. += flavor_text_link
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 

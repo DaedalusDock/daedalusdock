@@ -5,7 +5,7 @@
 	icon_keyboard = "power_key"
 	req_access = list(ACCESS_CE)
 	circuit = /obj/item/circuitboard/computer/apc_control
-	light_color = LIGHT_COLOR_YELLOW
+	light_color = LIGHT_COLOR_DIM_YELLOW
 	var/mob/living/operator //Who's operating the computer right now
 	var/obj/machinery/power/apc/active_apc //The APC we're using right now
 	var/should_log = TRUE
@@ -117,7 +117,7 @@
 			log_game("[key_name(operator)] set the logs of [src] in [AREACOORD(src)] [should_log ? "On" : "Off"]")
 		if("restore-console")
 			restoring = TRUE
-			addtimer(CALLBACK(src, .proc/restore_comp), rand(3,5) * 9)
+			addtimer(CALLBACK(src, PROC_REF(restore_comp)), rand(3,5) * 9)
 		if("access-apc")
 			var/ref = params["ref"]
 			playsound(src, SFX_TERMINAL_TYPE, 50, FALSE)

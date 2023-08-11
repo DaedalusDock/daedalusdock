@@ -13,26 +13,23 @@
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		armorval += checkarmor(BP, type)
 		organnum++
 	return (armorval/max(organnum, 1))
 
 
-/mob/living/carbon/human/proc/checkarmor(obj/item/bodypart/def_zone, d_type)
+/mob/living/carbon/human/proc/checkarmor(obj/item/bodypart/limb, d_type)
 	if(!d_type)
 		return 0
-	var/protection = 0
+	var/protection = limb.returnArmor().getRating(d_type)
 	var/list/body_parts = list(head, wear_mask, wear_suit, w_uniform, back, gloves, shoes, belt, s_store, glasses, ears, wear_id, wear_neck) //Everything but pockets. Pockets are l_store and r_store. (if pockets were allowed, putting something armored, gloves or hats for example, would double up on the armor)
-	for(var/bp in body_parts)
-		if(!bp)
-			continue
-		if(bp && istype(bp , /obj/item/clothing))
-			var/obj/item/clothing/C = bp
-			if(C.body_parts_covered & def_zone.body_part)
-				protection += C.armor.getRating(d_type)
-	protection += physiology.armor.getRating(d_type)
+
+	for(var/obj/item/clothing/C in body_parts)
+		if(C.body_parts_covered & limb.body_part)
+			protection += C.returnArmor().getRating(d_type)
+
+	protection += physiology.returnArmor().getRating(d_type)
 	return protection
 
 ///Get all the clothing on a specific body part
@@ -415,7 +412,7 @@
 //200 max knockdown for EXPLODE_HEAVY
 //160 max knockdown for EXPLODE_LIGHT
 
-	var/obj/item/organ/internal/ears/ears = getorganslot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			if(bomb_armor < EXPLODE_GIB_THRESHOLD) //gibs the mob if their bomb armor is lower than EXPLODE_GIB_THRESHOLD
@@ -519,8 +516,8 @@
 	//If they can't, they're missing their heart and this would runtime
 	if(undergoing_cardiac_arrest() && can_heartattack() && !(flags & SHOCK_ILLUSION))
 		if(shock_damage * siemens_coeff >= 1 && prob(25))
-			var/obj/item/organ/internal/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-			if(heart.Restart() && stat == CONSCIOUS)
+			var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+			if(heart.Restart() && stat <= SOFT_CRIT)
 				to_chat(src, span_notice("You feel your heart beating again!"))
 	electrocution_animation(40)
 
@@ -528,19 +525,10 @@
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
 		return
-	var/informed = FALSE
+
 	for(var/obj/item/bodypart/L as anything in src.bodyparts)
 		if(!IS_ORGANIC_LIMB(L))
-			if(!informed)
-				to_chat(src, span_userdanger("You feel a sharp pain as your robotic limbs overload."))
-				informed = TRUE
-			switch(severity)
-				if(1)
-					L.receive_damage(0,10)
-					Paralyze(200)
-				if(2)
-					L.receive_damage(0,5)
-					Paralyze(100)
+			L.emp_act()
 
 /mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit) //todo: update this to utilize check_obscured_slots() //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
 	var/list/damaged = list()
@@ -711,10 +699,9 @@
 
 	visible_message(span_notice("[src] examines [p_them()]self.")) //PARIAH EDIT CHANGE
 
-	combined_msg += span_boldnotice("You check yourself for injuries.<hr>") //PARIAH EDIT ADDITION
-
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
+	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		missing -= body_part.body_zone
 		if(body_part.is_pseudopart) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
@@ -759,11 +746,13 @@
 
 			if(status == "")
 				status = "OK"
+
 		var/no_damage
 		if(status == "OK" || status == "no damage")
 			no_damage = TRUE
+
 		var/isdisabled = ""
-		if(body_part.bodypart_disabled)
+		if(body_part.bodypart_disabled && !body_part.is_stump)
 			isdisabled = " is disabled"
 			if(no_damage)
 				isdisabled += " but otherwise"
@@ -778,12 +767,6 @@
 
 		if(body_part.check_bones() & BP_BROKEN_BONES)
 			combined_msg += "\t [span_warning("Your [body_part.plaintext_zone] is broken!")]"
-
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(body_part)]' class='warning'>There is \a [I] stuck to your [body_part.name]!</a>"
-			else
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(body_part)]' class='warning'>There is \a [I] embedded in your [body_part.name]!</a>"
 
 	for(var/t in missing)
 		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")
@@ -807,8 +790,8 @@
 		bleed_text += "!</span>"
 		combined_msg += bleed_text
 
-	if(getStaminaLoss())
-		if(getStaminaLoss() > 30)
+	if(stamina.loss)
+		if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 			combined_msg += span_info("You're completely exhausted.")
 		else
 			combined_msg += span_info("You feel fatigued.")
@@ -851,8 +834,7 @@
 	var/broken_plural
 	var/damaged_plural
 	//Sets organs into their proper list
-	for(var/O in internal_organs)
-		var/obj/item/organ/organ = O
+	for(var/obj/item/organ/organ as anything in processing_organs)
 		if(organ.organ_flags & ORGAN_FAILING)
 			if(broken.len)
 				broken += ", "

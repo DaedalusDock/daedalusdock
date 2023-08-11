@@ -59,7 +59,7 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 /datum/rpgloot_controller/New()
 	. = ..()
 	//second operation takes MUCH longer, so lets set up signals first.
-	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, .proc/on_new_item_in_existence)
+	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, PROC_REF(on_new_item_in_existence))
 	handle_current_items()
 
 ///signal sent by a new item being created.
@@ -79,7 +79,7 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 	for(var/obj/item/fantasy_item in world)
 		CHECK_TICK
 
-		if(!(fantasy_item.flags_1 & INITIALIZED_1) || QDELETED(fantasy_item))
+		if(!fantasy_item.initialized || QDELETED(fantasy_item))
 			continue
 
 		fantasy_item.AddComponent(/datum/component/fantasy)

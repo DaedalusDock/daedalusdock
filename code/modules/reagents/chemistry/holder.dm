@@ -11,8 +11,8 @@
 
 	var/paths = subtypesof(/datum/reagent)
 
-	for(var/path in paths)
-		if(path in GLOB.fake_reagent_blacklist)
+	for(var/datum/reagent/path as anything in paths)
+		if(isabstract(path))//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()
 		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!
@@ -472,7 +472,7 @@
 	else
 		if(!ignore_stomach && (methods & INGEST) && istype(target, /mob/living/carbon))
 			var/mob/living/carbon/eater = target
-			var/obj/item/organ/internal/stomach/belly = eater.getorganslot(ORGAN_SLOT_STOMACH)
+			var/obj/item/organ/stomach/belly = eater.getorganslot(ORGAN_SLOT_STOMACH)
 			if(!belly)
 				eater.expel_ingested(my_atom, amount)
 				return
@@ -679,6 +679,16 @@
 	return master
 /*							MOB/CARBON RELATED PROCS 								*/
 
+/// Called by mob life when the mob is dead.
+/datum/reagents/proc/dead_process(mob/living/carbon/owner)
+	var/list/cached_reagents = reagent_list
+	var/update_health = FALSE
+	for(var/datum/reagent/reagent as anything in cached_reagents)
+		update_health += reagent.on_mob_dead(owner)
+	if(update_health)
+		owner.updatehealth()
+	update_total()
+
 /**
  * Triggers metabolizing for all the reagents in this holder
  *
@@ -698,7 +708,6 @@
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
 	if(owner && need_mob_update) //some of the metabolized reagents had effects on the mob that requires some updates.
 		owner.updatehealth()
-		owner.update_stamina()
 	update_total()
 
 /*
@@ -783,18 +792,6 @@
 			inverse_reagent.name = reagent.name//Negative effects are hidden
 		return FALSE //prevent addition
 	return added_volume
-
-///Processes any chems that have the REAGENT_IGNORE_STASIS bitflag ONLY
-/datum/reagents/proc/handle_stasis_chems(mob/living/carbon/owner, delta_time, times_fired)
-	var/need_mob_update = FALSE
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		if(!(reagent.chemical_flags & REAGENT_IGNORE_STASIS))
-			continue
-		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose = TRUE)
-	if(owner && need_mob_update) //some of the metabolized reagents had effects on the mob that requires some updates.
-		owner.updatehealth()
-		owner.update_stamina()
-	update_total()
 
 /**
  * Calls [/datum/reagent/proc/on_move] on every reagent in this holder

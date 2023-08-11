@@ -10,6 +10,7 @@
 //movement intent defines for the m_intent var
 #define MOVE_INTENT_WALK "walk"
 #define MOVE_INTENT_RUN  "run"
+#define MOVE_INTENT_SPRINT "sprint"
 
 //Blood levels
 #define BLOOD_VOLUME_MAX_LETHAL 2150
@@ -79,16 +80,14 @@
 #define BODYTYPE_MONKEY (1<<4)
 ///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
-///The limb has skrelly bits
-#define BODYTYPE_SKRELL (1<<6)
 ///The limb is voxed
-#define BODYTYPE_VOX_BEAK (1<<7)
+#define BODYTYPE_VOX_BEAK (1<<6)
 ///The limb is in the shape of a vox leg.
-#define BODYTYPE_VOX_LEGS (1<<8)
+#define BODYTYPE_VOX_LEGS (1<<7)
 ///Vox limb that isnt a head or legs.
-#define BODYTYPE_VOX_OTHER (1<<9)
+#define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<10)
+#define BODYTYPE_TESHARI (1<<9)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -119,7 +118,6 @@
 #define SPECIES_PODPERSON "pod"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
-#define SPECIES_SKRELL "skrell"
 #define SPECIES_SNAIL "snail"
 #define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"
@@ -156,10 +154,8 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_MAX_OXYLOSS 3
-#define HUMAN_CRIT_MAX_OXYLOSS (SSMOBS_DT/3)
-
-#define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
+#define HUMAN_FAILBREATH_OXYLOSS (rand(2,4))
+#define HUMAN_CRIT_FAILBREATH_OXYLOSS (rand(3,6))
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -215,6 +211,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -236,26 +233,6 @@
 #define BEAUTY_LEVEL_DECENT 33
 #define BEAUTY_LEVEL_GOOD 66
 #define BEAUTY_LEVEL_GREAT 100
-
-//Moods levels for humans
-#define MOOD_LEVEL_HAPPY4 15
-#define MOOD_LEVEL_HAPPY3 10
-#define MOOD_LEVEL_HAPPY2 6
-#define MOOD_LEVEL_HAPPY1 2
-#define MOOD_LEVEL_NEUTRAL 0
-#define MOOD_LEVEL_SAD1 -3
-#define MOOD_LEVEL_SAD2 -7
-#define MOOD_LEVEL_SAD3 -15
-#define MOOD_LEVEL_SAD4 -20
-
-//Sanity levels for humans
-#define SANITY_MAXIMUM 150
-#define SANITY_GREAT 125
-#define SANITY_NEUTRAL 100
-#define SANITY_DISTURBED 75
-#define SANITY_UNSTABLE 50
-#define SANITY_CRAZY 25
-#define SANITY_INSANE 0
 
 //Nutrition levels for humans
 #define NUTRITION_LEVEL_FAT 600
@@ -342,11 +319,18 @@
 #define ENVIRONMENT_SMASH_WALLS (1<<1)  //walls
 #define ENVIRONMENT_SMASH_RWALLS (1<<2) //rwalls
 
+// Slip flags, also known as lube flags
+/// The mob will not slip if they're walking intent
 #define NO_SLIP_WHEN_WALKING (1<<0)
+/// Slipping on this will send them sliding a few tiles down
 #define SLIDE (1<<1)
-#define GALOSHES_DONT_HELP (1<<2)
-#define SLIDE_ICE (1<<3)
-#define SLIP_WHEN_CRAWLING (1<<4) //clown planet ruin
+/// Ice slides only go one tile and don't knock you over, they're intended to cause a "slip chain"
+/// where you slip on ice until you reach a non-slippable tile (ice puzzles)
+#define SLIDE_ICE (1<<2)
+/// [TRAIT_NO_SLIP_WATER] does not work on this slip. ONLY [TRAIT_NO_SLIP_ALL] will
+#define GALOSHES_DONT_HELP (1<<3)
+/// Slip works even if you're already on the ground
+#define SLIP_WHEN_CRAWLING (1<<4)
 
 #define MAX_CHICKENS 50
 
@@ -425,6 +409,28 @@
 
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Organ preservation effects like formaldehyde. Boolean.
+#define CE_ORGAN_PRESERVATION "formaldehyde"
+/// Mob cannot breathe. Boolean.
+#define CE_RESPIRATORY_FAILURE "cantbreathe"
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0
@@ -560,6 +566,9 @@
 #define AI_EMOTION_BLUE_GLOW "Blue Glow"
 #define AI_EMOTION_RED_GLOW "Red Glow"
 
+/// Icon state to use for ai displays that just turns them off
+#define AI_DISPLAY_DONT_GLOW "ai_off"
+
 /// Throw modes, defines whether or not to turn off throw mode after
 #define THROW_MODE_DISABLED 0
 #define THROW_MODE_TOGGLE 1
@@ -587,17 +596,19 @@
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays
-#define TOTAL_LAYERS 33 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
+#define TOTAL_LAYERS 34 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
 /// Mutations layer - Tk headglows, cold resistance glow, etc
-#define MUTATIONS_LAYER 33
+#define MUTATIONS_LAYER 34
 /// Mutantrace features (tail when looking south) that must appear behind the body parts
-#define BODY_BEHIND_LAYER 32
+#define BODY_BEHIND_LAYER 33
 /// Layer for bodyparts that should appear behind every other bodypart - Mostly, legs when facing WEST or EAST
-#define BODYPARTS_LOW_LAYER 31
+#define BODYPARTS_LOW_LAYER 32
 /// Layer for most bodyparts, appears above BODYPARTS_LOW_LAYER and below BODYPARTS_HIGH_LAYER
-#define BODYPARTS_LAYER 30
+#define BODYPARTS_LAYER 31
 /// Mutantrace features (snout, body markings) that must appear above the body parts
-#define BODY_ADJ_LAYER 29
+#define BODY_ADJ_LAYER 30
+/// Eyes!
+#define EYE_LAYER 29
 /// Underwear, undershirts, socks, eyes, lips(makeup)
 #define BODY_LAYER 28
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
@@ -654,16 +665,6 @@
 #define HALO_LAYER 2
 /// Fire layer when you're on fire
 #define FIRE_LAYER 1
-
-//Bitflags for the layers an external organ can draw on (organs can be drawn on multiple layers)
-/// Draws organ on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 1)
-/// Draws organ on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 2)
-/// Draws organ on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 3)
-/// Draws organ on all EXTERNAL layers
-#define ALL_EXTERNAL_OVERLAYS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
 
 //Mob Overlay Index Shortcuts for alternate_worn_layer, layers
 //Because I *KNOW* somebody will think layer+1 means "above"

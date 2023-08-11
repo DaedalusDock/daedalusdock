@@ -4,6 +4,7 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "implant"
 	actions_types = null
+
 	var/obj/machinery/abductor/pad/home
 	var/cooldown = 60 SECONDS
 	var/on_cooldown
@@ -17,7 +18,7 @@
 	home.Retrieve(imp_in,1)
 	on_cooldown = addtimer(VARSET_CALLBACK(src, on_cooldown, null), cooldown , TIMER_STOPPABLE)
 
-/obj/item/implant/abductor/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/abductor/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	if(..())
 		var/obj/machinery/abductor/console/console
 		if(ishuman(target))

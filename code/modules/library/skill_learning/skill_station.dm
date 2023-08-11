@@ -115,7 +115,7 @@
 		CRASH("Unusual error - [usr] attempted to start implanting of [inserted_skillchip] when the interface state should not have allowed it.")
 
 	working = TRUE
-	work_timer = addtimer(CALLBACK(src,.proc/implant),SKILLCHIP_IMPLANT_TIME,TIMER_STOPPABLE)
+	work_timer = addtimer(CALLBACK(src,PROC_REF(implant)),SKILLCHIP_IMPLANT_TIME,TIMER_STOPPABLE)
 	update_appearance()
 
 /// Finish implanting.
@@ -142,7 +142,7 @@
 		CRASH("Unusual error - [usr] attempted to start removal of [to_be_removed] when the interface state should not have allowed it.")
 
 	working = TRUE
-	work_timer = addtimer(CALLBACK(src,.proc/remove_skillchip,to_be_removed),SKILLCHIP_REMOVAL_TIME,TIMER_STOPPABLE)
+	work_timer = addtimer(CALLBACK(src,PROC_REF(remove_skillchip),to_be_removed),SKILLCHIP_REMOVAL_TIME,TIMER_STOPPABLE)
 	update_appearance()
 
 /// Finish removal.
@@ -229,7 +229,7 @@
 		.["slots_max"] = null
 		return
 
-	var/obj/item/organ/internal/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
 
 	// If there's no brain, we don't need to worry either.
 	if(QDELETED(occupant_brain))
@@ -272,7 +272,7 @@
 				return TRUE
 			var/chipref = params["ref"]
 			var/mob/living/carbon/carbon_occupant = occupant
-			var/obj/item/organ/internal/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
 			if(QDELETED(carbon_occupant) || QDELETED(occupant_brain))
 				return TRUE
 			var/obj/item/skillchip/to_be_removed = locate(chipref) in occupant_brain.skillchips
@@ -297,7 +297,7 @@
 				stack_trace("[usr] tried to toggle skillchip activation when [src] was in an invalid state.")
 				return TRUE
 			var/mob/living/carbon/carbon_occupant = occupant
-			var/obj/item/organ/internal/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
+			var/obj/item/organ/brain/occupant_brain = carbon_occupant.getorganslot(ORGAN_SLOT_BRAIN)
 			if(QDELETED(carbon_occupant) || QDELETED(occupant_brain))
 				return TRUE
 			var/obj/item/skillchip/to_be_removed = locate(chipref) in occupant_brain.skillchips

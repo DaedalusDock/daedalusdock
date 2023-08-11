@@ -28,8 +28,9 @@
 	affected_turf.lighting_object = src
 	affected_turf.luminosity = 0
 
-	for(var/turf/open/space/space_tile in RANGE_TURFS(1, affected_turf))
-		space_tile.update_starlight()
+	if(CONFIG_GET(flag/starlight))
+		for(var/turf/open/space/space_tile in RANGE_TURFS(1, affected_turf))
+			space_tile.update_starlight()
 
 	needs_update = TRUE
 	SSlighting.objects_queue += src
@@ -113,7 +114,8 @@
 
 		affected_turf.underlays += current_underlay
 
-	if(red_corner.applying_additive || green_corner.applying_additive || blue_corner.applying_additive || alpha_corner.applying_additive)
+	if((red_corner.applying_additive || green_corner.applying_additive || blue_corner.applying_additive || alpha_corner.applying_additive) && !(affected_turf.z_flags & Z_MIMIC_OVERWRITE))
+		//I'm not ENTIRELY sure why, but turfs of this nature will black out if they get bloom'd
 		affected_turf.underlays -= additive_underlay
 		additive_underlay.icon_state = affected_turf.lighting_uses_jen ? "wall-jen-[affected_turf.smoothing_junction]" : "light"
 		var/arr = red_corner.add_r
@@ -144,3 +146,9 @@
 		affected_turf.underlays -= additive_underlay
 
 	affected_turf.luminosity = set_luminosity
+
+	if (affected_turf.above)
+		if(affected_turf.above.shadower)
+			affected_turf.above.shadower.copy_lighting(src)
+		else
+			affected_turf.above.update_mimic()

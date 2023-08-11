@@ -41,7 +41,7 @@
 	update_appearance(UPDATE_ICON)
 	req_one_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION, REGION_CENTCOM))
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -110,7 +110,9 @@
 
 /obj/machinery/recycler/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, .proc/eat, AM)
+	if(AM == src)
+		return
+	INVOKE_ASYNC(src, PROC_REF(eat), AM)
 
 /obj/machinery/recycler/proc/eat(atom/movable/AM0, sound=TRUE)
 	if(machine_stat & (BROKEN|NOPOWER))
@@ -133,7 +135,7 @@
 		if(istype(AM, /obj/item))
 			var/obj/item/bodypart/head/as_head = AM
 			var/obj/item/mmi/as_mmi = AM
-			if(istype(AM, /obj/item/organ/internal/brain) || (istype(as_head) && as_head.brain) || (istype(as_mmi) && as_mmi.brain) || istype(AM, /obj/item/dullahan_relay))
+			if(istype(AM, /obj/item/organ/brain) || (istype(as_head) && as_head.brain) || (istype(as_mmi) && as_mmi.brain) || istype(AM, /obj/item/dullahan_relay))
 				living_detected = TRUE
 			nom += AM
 		else if(isliving(AM))
@@ -187,7 +189,7 @@
 	playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
 	safety_mode = TRUE
 	update_appearance()
-	addtimer(CALLBACK(src, .proc/reboot), SAFETY_COOLDOWN)
+	addtimer(CALLBACK(src, PROC_REF(reboot)), SAFETY_COOLDOWN)
 
 /obj/machinery/recycler/proc/reboot()
 	playsound(src, 'sound/machines/ping.ogg', 50, FALSE)

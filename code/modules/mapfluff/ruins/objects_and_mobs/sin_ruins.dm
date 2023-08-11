@@ -5,6 +5,8 @@
 	desc = "High stakes, high rewards."
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "slots"
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	var/icon_screen = "slots_screen"
 	var/brightness_on = 1
 	anchored = TRUE
@@ -32,7 +34,7 @@
 	icon_screen = "slots_screen_working"
 	update_appearance()
 	playsound(src, 'sound/lavaland/cursed_slot_machine.ogg', 50, FALSE)
-	addtimer(CALLBACK(src, .proc/determine_victor, user), 50)
+	addtimer(CALLBACK(src, PROC_REF(determine_victor), user), 50)
 
 /obj/structure/cursed_slot_machine/proc/determine_victor(mob/living/user)
 	icon_screen = "slots_screen"
@@ -64,7 +66,7 @@
 
 /obj/structure/cursed_money/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/collapse), 600)
+	addtimer(CALLBACK(src, PROC_REF(collapse)), 600)
 
 /obj/structure/cursed_money/proc/collapse()
 	visible_message("<span class='warning'>[src] falls in on itself, \

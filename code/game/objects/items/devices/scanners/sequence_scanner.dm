@@ -36,19 +36,6 @@
 /obj/item/sequence_scanner/attack_self_tk(mob/user)
 	return
 
-/obj/item/sequence_scanner/afterattack(obj/O, mob/user, proximity)
-	. = ..()
-	if(!istype(O) || !proximity)
-		return
-
-	if(istype(O, /obj/machinery/computer/scan_consolenew))
-		var/obj/machinery/computer/scan_consolenew/C = O
-		if(C.stored_research)
-			to_chat(user, span_notice("[name] linked to central research database."))
-			discovered = C.stored_research.discovered_mutations
-		else
-			to_chat(user,span_warning("No database to update from."))
-
 /obj/item/sequence_scanner/proc/gene_scan(mob/living/carbon/C, mob/living/user)
 	if(!iscarbon(C) || !C.has_dna())
 		return
@@ -87,7 +74,7 @@
 
 		ready = FALSE
 		icon_state = "[icon_state]_recharging"
-		addtimer(CALLBACK(src, .proc/recharge), cooldown, TIMER_UNIQUE)
+		addtimer(CALLBACK(src, PROC_REF(recharge)), cooldown, TIMER_UNIQUE)
 
 /obj/item/sequence_scanner/proc/recharge()
 	icon_state = initial(icon_state)

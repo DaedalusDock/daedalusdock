@@ -16,7 +16,6 @@
 	pass_flags_self = PASSGLASS
 	can_atmos_pass = CANPASS_PROC
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
-	network_id = NETWORK_DOOR_AIRLOCKS
 	set_dir_on_move = FALSE
 	auto_dir_align = FALSE
 	var/obj/item/electronics/airlock/electronics = null
@@ -54,19 +53,14 @@
 	src.unres_sides = unres_sides
 	update_appearance(UPDATE_ICON)
 
-	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, .proc/ntnet_receive)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = .proc/on_exit,
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
 	become_atmos_sensitive()
-
-/obj/machinery/door/window/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/ntnet_interface)
 
 /obj/machinery/door/window/Destroy()
 	set_density(FALSE)
@@ -74,7 +68,6 @@
 	if(atom_integrity == 0)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
-	zas_update_loc()
 	lose_atmos_sensitivity()
 	return ..()
 
@@ -184,8 +177,8 @@
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
-	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
+/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
+	return !density || (dir != to_dir) || (check_access(ID) && hasPower() && !no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -392,33 +385,6 @@
 		if("deny")
 			flick("[base_state]deny", src)
 
-/obj/machinery/door/window/check_access_ntnet(datum/netdata/data)
-	return !requiresID() || ..()
-
-/obj/machinery/door/window/proc/ntnet_receive(datum/source, datum/netdata/data)
-	SIGNAL_HANDLER
-
-	// Check if the airlock is powered.
-	if(!hasPower())
-		return
-
-	// Handle received packet.
-	var/command = data.data["data"]
-	var/command_value = data.data["data_secondary"]
-	switch(command)
-		if("open")
-			if(command_value == "on" && !density)
-				return
-
-			if(command_value == "off" && density)
-				return
-
-			if(density)
-				INVOKE_ASYNC(src, .proc/open)
-			else
-				INVOKE_ASYNC(src, .proc/close)
-		if("touch")
-			INVOKE_ASYNC(src, .proc/open_and_close)
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

@@ -34,7 +34,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 	//Burn eyes if exposed.
 	if(rand(1, 100) < zas_settings.plc.eye_burns * exposed_amount)
 		if(!is_eyes_covered())
-			var/obj/item/organ/internal/eyes/E = getorganslot(ORGAN_SLOT_EYES)
+			var/obj/item/organ/eyes/E = getorganslot(ORGAN_SLOT_EYES)
 			if(E && !(E.status == ORGAN_ROBOTIC))
 				if(prob(20))
 					to_chat(src, span_warning("Your eyes burn!"))

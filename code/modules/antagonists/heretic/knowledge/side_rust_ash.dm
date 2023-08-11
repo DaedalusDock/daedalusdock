@@ -32,7 +32,7 @@
 	required_atoms = list(
 		/obj/item/wirecutters = 1,
 		/obj/effect/decal/cleanable/vomit = 1,
-		/obj/item/organ/internal/heart = 1,
+		/obj/item/organ/heart = 1,
 	)
 	duration = 2 MINUTES
 	cost = 1
@@ -70,5 +70,5 @@
 		CRASH("[type] required a head bodypart, yet did not have one in selected_atoms when it reached cleanup_atoms.")
 
 	// Spill out any brains or stuff before we delete it.
-	ritual_head.drop_organs()
+	ritual_head.drop_contents()
 	return ..()

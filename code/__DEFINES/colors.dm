@@ -118,13 +118,6 @@
 #define COLOR_ASSEMBLY_BLUE    "#38559E"
 #define COLOR_ASSEMBLY_PURPLE  "#6F6192"
 
-///Colors for xenobiology vatgrowing
-#define COLOR_SAMPLE_YELLOW "#c0b823"
-#define COLOR_SAMPLE_PURPLE "#342941"
-#define COLOR_SAMPLE_GREEN "#98b944"
-#define COLOR_SAMPLE_BROWN "#91542d"
-#define COLOR_SAMPLE_GRAY "#5e5856"
-
 ///Main colors for UI themes
 #define COLOR_THEME_MIDNIGHT "#6086A0"
 #define COLOR_THEME_PLASMAFIRE "#FFB200"
@@ -143,14 +136,20 @@
  */
 /// Bright but quickly dissipating neon green. rgb(100, 200, 100)
 #define LIGHT_COLOR_GREEN      "#64C864"
+/// Vivid, slightly blue green. rgb(60, 240, 70)
+#define LIGHT_COLOR_VIVID_GREEN "#3CF046"
 /// Electric green. rgb(0, 255, 0)
 #define LIGHT_COLOR_ELECTRIC_GREEN      "#00FF00"
 /// Cold, diluted blue. rgb(100, 150, 250)
 #define LIGHT_COLOR_BLUE       "#6496FA"
+/// Faint white blue. rgb(222, 239, 255)
+#define LIGHT_COLOR_FAINT_BLUE "#DEEFFF"
 /// Light blueish green. rgb(125, 225, 175)
 #define LIGHT_COLOR_BLUEGREEN  "#7DE1AF"
 /// Diluted cyan. rgb(125, 225, 225)
 #define LIGHT_COLOR_CYAN       "#7DE1E1"
+/// Baby Blue rgb(0, 170, 220)
+#define LIGHT_COLOR_BABY_BLUE "#00AADC"
 /// Electric cyan rgb(0, 255, 255)
 #define LIGHT_COLOR_ELECTRIC_CYAN "#00FFFF"
 /// More-saturated cyan. rgb(64, 206, 255)
@@ -160,7 +159,9 @@
 /// Diluted, mid-warmth pink. rgb(225, 125, 225)
 #define LIGHT_COLOR_PINK       "#E17DE1"
 /// Dimmed yellow, leaning kaki. rgb(225, 225, 125)
-#define LIGHT_COLOR_YELLOW     "#E1E17D"
+#define LIGHT_COLOR_DIM_YELLOW "#E1E17D"
+/// Bright yellow. rgb(255, 255, 150)
+#define LIGHT_COLOR_BRIGHT_YELLOW "#FFFF99"
 /// Clear brown, mostly dim. rgb(150, 100, 50)
 #define LIGHT_COLOR_BROWN      "#966432"
 /// Mostly pure orange. rgb(250, 150, 50)
@@ -173,6 +174,8 @@
 #define LIGHT_COLOR_HOLY_MAGIC "#FFF743"
 /// deep crimson
 #define LIGHT_COLOR_BLOOD_MAGIC "#D00000"
+/// Vivid red. Leans a bit darker to accentuate red colors and leave other channels a bit dry.  rgb(200, 25, 25)
+#define LIGHT_COLOR_INTENSE_RED "#C81919"
 
 /* These ones aren't a direct colour like the ones above, because nothing would fit */
 /// Warm orange color, leaning strongly towards yellow. rgb(250, 160, 25)
@@ -183,10 +186,10 @@
 #define LIGHT_COLOR_FLARE      "#FA644B"
 /// Weird color, between yellow and green, very slimy. rgb(175, 200, 75)
 #define LIGHT_COLOR_SLIME_LAMP "#AFC84B"
-/// Extremely diluted yellow, close to skin color (for some reason). rgb(250, 225, 175)
-#define LIGHT_COLOR_TUNGSTEN   "#FAE1AF"
 /// Barely visible cyan-ish hue, as the doctor prescribed. rgb(240, 250, 250)
 #define LIGHT_COLOR_HALOGEN    "#F0FAFA"
+/// Extremely diluted yellow, close to skin color (for some reason). rgb(255, 214, 170)
+#define LIGHT_COLOR_TUNGSTEN "#FFD6AA"
 
 //The GAGS greyscale_colors for each department's computer/machine circuits
 #define CIRCUIT_COLOR_GENERIC "#1A7A13"
@@ -197,6 +200,7 @@
 #define CIRCUIT_COLOR_MEDICAL "#00CCFF"
 #define CIRCUIT_COLOR_ENGINEERING "#F8D700"
 #define CIRCUIT_COLOR_SUPPLY "#C47749"
+#define CIRCUIT_COLOR_ROBOTICS "#666363"
 
 /// Colors for pride week
 #define COLOR_PRIDE_RED "#FF6666"
@@ -218,3 +222,50 @@
 #define GAUSSIAN_BLUR(filter_size) filter(type="blur", size=filter_size)
 
 #define RANDOM_RGB rgb(rand(0,255), rand(0,255), rand(0,255))
+
+// Some defines for accessing specific entries in color matrices.
+
+#define CL_MATRIX_RR 1
+#define CL_MATRIX_RG 2
+#define CL_MATRIX_RB 3
+#define CL_MATRIX_RA 4
+#define CL_MATRIX_GR 5
+#define CL_MATRIX_GG 6
+#define CL_MATRIX_GB 7
+#define CL_MATRIX_GA 8
+#define CL_MATRIX_BR 9
+#define CL_MATRIX_BG 10
+#define CL_MATRIX_BB 11
+#define CL_MATRIX_BA 12
+#define CL_MATRIX_AR 13
+#define CL_MATRIX_AG 14
+#define CL_MATRIX_AB 15
+#define CL_MATRIX_AA 16
+#define CL_MATRIX_CR 17
+#define CL_MATRIX_CG 18
+#define CL_MATRIX_CB 19
+#define CL_MATRIX_CA 20
+
+// Medical readout colors
+#define COLOR_MEDICAL_BRUTE "#ff0000"
+#define COLOR_MEDICAL_BURN "#ff7700"
+#define COLOR_MEDICAL_TOXIN "#00ff00"
+#define COLOR_MEDICAL_OXYLOSS "#0000ff"
+#define COLOR_MEDICAL_CRYSTAL "#0066ff"
+#define COLOR_MEDICAL_ROBOTIC "#666688"
+#define COLOR_MEDICAL_INTERNAL "#ff66ff"
+#define COLOR_MEDICAL_RADIATION "#66ff66"
+#define COLOR_MEDICAL_NECROTIC "#663333"
+#define COLOR_MEDICAL_INTERNAL_DANGER "#aa3333"
+#define COLOR_MEDICAL_DISLOCATED "#6666ff"
+#define COLOR_MEDICAL_BROKEN "#ff00aa"
+#define COLOR_MEDICAL_SPLINTED "#ff66aa"
+#define COLOR_MEDICAL_EMBEDDED "#D580FF"
+#define COLOR_MEDICAL_LIGAMENT "#4DA6FF"
+#define COLOR_MEDICAL_GENETIC "#3BB300"
+#define COLOR_MEDICAL_IMPLANT "#aa66ff"
+#define COLOR_MEDICAL_UNKNOWN_IMPLANT "#aa00ff"
+#define COLOR_MEDICAL_SCARRING "#aa9999"
+#define COLOR_MEDICAL_MISSING "#886666"
+
+#define COLORED_SQUARE(COLOR) "<span style='font-face: fixedsys; font-size: 14px; background-color: [COLOR]; color: [COLOR]'>___</span>"

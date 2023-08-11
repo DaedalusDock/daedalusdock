@@ -2,6 +2,7 @@
 	name = "spell implant"
 	desc = "Allows you to cast a spell as if you were a wizard."
 	actions_types = null
+	implant_flags = IMPLANT_HIDDEN
 
 	/// Whether to make the spell robeless
 	var/make_robeless = TRUE
@@ -32,7 +33,7 @@
 				<b>Function:</b> [spell_to_give ? "Allows a non-wizard to cast [spell_to_give] as if they were a wizard." : "None."]"}
 	return dat
 
-/obj/item/implant/spell/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/spell/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	. = ..()
 	if (!.)
 		return

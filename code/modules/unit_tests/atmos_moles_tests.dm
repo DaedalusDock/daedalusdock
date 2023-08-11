@@ -42,7 +42,6 @@
 	return result
 
 /datum/unit_test/atmos_machinery/proc/check_moles_conserved(case_name, list/before_gas_mixes, list/after_gas_mixes)
-	var/failed = FALSE
 	for(var/gasid in xgm_gas_data.gases)
 		var/before = 0
 		for(var/gasmix in before_gas_mixes)
@@ -56,10 +55,6 @@
 
 		if(abs(before - after) > ATMOS_PRECISION)
 			Fail("expected [before] moles of [gasid], found [after] moles.")
-			failed |= TRUE
-
-	if(!failed)
-		pass("conserved moles of each gas ID.")
 
 /datum/unit_test/atmos_machinery/conserve_moles
 	//template = /datum/unit_test/atmos_machinery/conserve_moles

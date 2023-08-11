@@ -145,29 +145,29 @@
 	id_eject(user, inserted_scan_id)
 
 /obj/machinery/computer/piratepad_control/civilian/ui_data(mob/user)
-	var/list/data = list()
-	data["points"] = points
-	data["pad"] = pad_ref?.resolve() ? TRUE : FALSE
-	data["sending"] = sending
-	data["status_report"] = status_report
-	data["id_inserted"] = inserted_scan_id
+	. = list()
+	.["points"] = points
+	.["pad"] = pad_ref?.resolve() ? TRUE : FALSE
+	.["sending"] = sending
+	.["status_report"] = status_report
+	.["id_inserted"] = inserted_scan_id
 	if(inserted_scan_id?.registered_account)
 		if(inserted_scan_id.registered_account.civilian_bounty)
-			data["id_bounty_info"] = inserted_scan_id.registered_account.civilian_bounty.description
-			data["id_bounty_num"] = inserted_scan_id.registered_account.bounty_num()
-			data["id_bounty_value"] = (inserted_scan_id.registered_account.civilian_bounty.reward) * (CIV_BOUNTY_SPLIT/100)
+			.["id_bounty_info"] = inserted_scan_id.registered_account.civilian_bounty.description
+			.["id_bounty_num"] = inserted_scan_id.registered_account.bounty_num()
+			.["id_bounty_value"] = (inserted_scan_id.registered_account.civilian_bounty.reward) * (CIV_BOUNTY_SPLIT/100)
 		if(inserted_scan_id.registered_account.bounties)
-			data["picking"] = TRUE
-			data["id_bounty_names"] = list(inserted_scan_id.registered_account.bounties[1].name,
+			.["picking"] = TRUE
+			.["id_bounty_names"] = list(inserted_scan_id.registered_account.bounties[1].name,
 											inserted_scan_id.registered_account.bounties[2].name,
 											inserted_scan_id.registered_account.bounties[3].name)
-			data["id_bounty_values"] = list(inserted_scan_id.registered_account.bounties[1].reward * (CIV_BOUNTY_SPLIT/100),
+			.["id_bounty_values"] = list(inserted_scan_id.registered_account.bounties[1].reward * (CIV_BOUNTY_SPLIT/100),
 											inserted_scan_id.registered_account.bounties[2].reward * (CIV_BOUNTY_SPLIT/100),
 											inserted_scan_id.registered_account.bounties[3].reward * (CIV_BOUNTY_SPLIT/100))
 		else
-			data["picking"] = FALSE
+			.["picking"] = FALSE
 
-	return data
+	return
 
 /obj/machinery/computer/piratepad_control/civilian/ui_act(action, params)
 	. = ..()
@@ -274,7 +274,7 @@
 	radio.keyslot = new radio_key
 	radio.set_listening(FALSE, TRUE)
 	radio.recalculateChannels()
-	RegisterSignal(radio, COMSIG_ITEM_PRE_EXPORT, .proc/on_export)
+	RegisterSignal(radio, COMSIG_ITEM_PRE_EXPORT, PROC_REF(on_export))
 
 /obj/item/bounty_cube/Destroy()
 	if(radio)
@@ -370,7 +370,7 @@
 
 /obj/item/civ_bounty_beacon/attack_self()
 	loc.visible_message(span_warning("\The [src] begins to beep loudly!"))
-	addtimer(CALLBACK(src, .proc/launch_payload), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(launch_payload)), 1 SECONDS)
 
 /obj/item/civ_bounty_beacon/proc/launch_payload()
 	playsound(src, SFX_SPARKS, 80, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)

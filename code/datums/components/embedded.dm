@@ -25,7 +25,8 @@
 
 /datum/component/embedded
 	dupe_mode = COMPONENT_DUPE_ALLOWED
-	var/obj/item/bodypart/limb
+	var/mob/living/carbon/human/limb_owner
+
 	var/obj/item/weapon
 
 	// all of this stuff is explained in _DEFINES/combat.dm
@@ -59,11 +60,13 @@
 			jostle_pain_mult = EMBEDDED_JOSTLE_PAIN_MULTIPLIER,
 			pain_stam_pct = EMBEDDED_PAIN_STAM_PCT)
 
-	if(!iscarbon(parent) || !isitem(I))
+	if(!istype(parent, /obj/item/bodypart) || !isitem(I))
 		return COMPONENT_INCOMPATIBLE
 
-	if(part)
-		limb = part
+	var/obj/item/bodypart/limb = parent
+	if(limb.owner)
+		register_to_mob(limb.owner)
+
 	src.embed_chance = embed_chance
 	src.fall_chance = fall_chance
 	src.pain_chance = pain_chance
@@ -80,72 +83,89 @@
 	if(!weapon.isEmbedHarmless())
 		harmful = TRUE
 
+	var/datum/wound/W
+
+	if(harmful)
+		var/damage = weapon.throwforce
+		playsound(parent,'sound/weapons/bladeslice.ogg', 40)
+		damage += weapon.w_class * impact_pain_mult
+		var/post_armor_damage = damage
+		if(limb_owner)
+			var/armor = limb_owner.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
+			post_armor_damage = damage * ((100-armor)/100)
+
+		if(post_armor_damage <= 0)
+			return COMPONENT_INCOMPATIBLE
+
+		if(limb_owner)
+			weapon.add_mob_blood(limb_owner)//it embedded itself in you, of course it's bloody!
+			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
+
+		W = limb.create_wound(WOUND_PIERCE, damage)
+		LAZYADD(W.embedded_objects, weapon)
+
 	weapon.embedded(parent, part)
-	START_PROCESSING(SSdcs, src)
-	var/mob/living/carbon/victim = parent
+
+	START_PROCESSING(SSembeds, src)
+
+	limb_owner?.visible_message(
+		span_danger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] [limb_owner]'s [limb.plaintext_zone]!"),
+	)
 
 	limb._embed_object(weapon) // on the inside... on the inside...
-	weapon.forceMove(victim)
-	RegisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), .proc/weaponDeleted)
-	victim.visible_message(span_danger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] [victim]'s [limb.plaintext_zone]!"), span_userdanger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] your [limb.plaintext_zone]!"))
+	weapon.forceMove(limb)
 
-	var/damage = weapon.throwforce
-	if(harmful)
-		victim.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
-		playsound(victim,'sound/weapons/bladeslice.ogg', 40)
-		weapon.add_mob_blood(victim)//it embedded itself in you, of course it's bloody!
-		damage += weapon.w_class * impact_pain_mult
-		SEND_SIGNAL(victim, COMSIG_ADD_MOOD_EVENT, "embedded", /datum/mood_event/embedded)
-
-	if(damage > 0)
-		var/armor = victim.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, stamina=pain_stam_pct * damage, blocked=armor, sharpness = I.get_sharpness())
+	if(W)
+		W.RegisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), TYPE_PROC_REF(/datum/wound, item_gone))
+	RegisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(weaponDeleted))
 
 /datum/component/embedded/Destroy()
-	var/mob/living/carbon/victim = parent
-	if(victim && !victim.has_embedded_objects())
-		victim.clear_alert(ALERT_EMBEDDED_OBJECT)
-		SEND_SIGNAL(victim, COMSIG_CLEAR_MOOD_EVENT, "embedded")
-	if(weapon)
-		UnregisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
+	if(limb_owner)
+		unregister_from_mob(limb_owner)
+
 	weapon = null
-	limb = null
 	return ..()
 
+/datum/component/embedded/proc/register_to_mob(mob/living/carbon/human/H)
+	limb_owner = H
+	H.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
+	RegisterSignal(H, COMSIG_MOVABLE_MOVED, PROC_REF(jostleCheck))
+	RegisterSignal(H, COMSIG_CARBON_EMBED_REMOVAL, PROC_REF(safeRemove))
+	RegisterSignal(H, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
+
+/datum/component/embedded/proc/unregister_from_mob(mob/living/carbon/human/H)
+	if(!H.has_embedded_objects())
+		H.clear_alert(ALERT_EMBEDDED_OBJECT)
+	UnregisterSignal(H, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_EMBED_REMOVAL))
+	limb_owner = null
+
 /datum/component/embedded/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, .proc/jostleCheck)
-	RegisterSignal(parent, COMSIG_CARBON_EMBED_RIP, .proc/ripOut)
-	RegisterSignal(parent, COMSIG_CARBON_EMBED_REMOVAL, .proc/safeRemove)
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/checkTweeze)
+	RegisterSignal(parent, COMSIG_LIMB_REMOVE, PROC_REF(limb_removed))
+	RegisterSignal(parent, COMSIG_LIMB_ATTACH, PROC_REF(limb_attached))
+	RegisterSignal(parent, COMSIG_LIMB_EMBED_RIP, PROC_REF(ripOut))
 
 /datum/component/embedded/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_EMBED_RIP, COMSIG_CARBON_EMBED_REMOVAL, COMSIG_PARENT_ATTACKBY))
+	UnregisterSignal(parent, COMSIG_LIMB_REMOVE)
+	UnregisterSignal(parent, COMSIG_LIMB_ATTACH)
+	UnregisterSignal(parent, COMSIG_LIMB_EMBED_RIP)
+
+/datum/component/embedded/proc/limb_removed(obj/item/bodypart/source, mob/living/carbon/human/owner, special)
+	SIGNAL_HANDLER
+	unregister_from_mob(limb_owner)
+
+/datum/component/embedded/proc/limb_attached(obj/item/bodypart/source, mob/living/carbon/human/owner, special)
+	SIGNAL_HANDLER
+	register_to_mob(owner)
 
 /datum/component/embedded/process(delta_time)
-	var/mob/living/carbon/victim = parent
-
-	if(!victim || !limb) // in case the victim and/or their limbs exploded (say, due to a sticky bomb)
-		weapon.forceMove(get_turf(weapon))
-		qdel(src)
+	if(!limb_owner)
 		return
 
-	if(victim.stat == DEAD)
+	if(limb_owner.stat == DEAD)
 		return
-
-	var/damage = weapon.w_class * pain_mult
-	var/pain_chance_current = DT_PROB_RATE(pain_chance / 100, delta_time) * 100
-	if(pain_stam_pct && HAS_TRAIT_FROM(victim, TRAIT_INCAPACITATED, STAMINA)) //if it's a less-lethal embed, give them a break if they're already stamcritted
-		pain_chance_current *= 0.2
-		damage *= 0.5
-	else if(victim.body_position == LYING_DOWN)
-		pain_chance_current *= 0.2
-
-	if(harmful && prob(pain_chance_current))
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, stamina=pain_stam_pct * damage)
-		to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone]] hurts!"))
 
 	var/fall_chance_current = DT_PROB_RATE(fall_chance / 100, delta_time) * 100
-	if(victim.body_position == LYING_DOWN)
+	if(limb_owner.body_position == LYING_DOWN)
 		fall_chance_current *= 0.2
 
 	if(prob(fall_chance_current))
@@ -160,70 +180,117 @@
 /datum/component/embedded/proc/jostleCheck()
 	SIGNAL_HANDLER
 
-	var/mob/living/carbon/victim = parent
+	var/obj/item/bodypart/limb = parent
+
 	var/chance = jostle_chance
-	if(victim.m_intent == MOVE_INTENT_WALK || victim.body_position == LYING_DOWN)
+	if(limb_owner.m_intent == MOVE_INTENT_WALK || limb_owner.body_position == LYING_DOWN)
 		chance *= 0.5
 
 	if(harmful && prob(chance))
 		var/damage = weapon.w_class * jostle_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, stamina=pain_stam_pct * damage)
-		to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] jostles and stings!"))
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		limb_owner.stamina.adjust(-(pain_stam_pct * damage))
+		var/msg = pick( \
+			"A spike of pain jolts your [limb.plaintext_zone] as you bump [weapon] inside.",\
+			"Your movement jostles [weapon] in your [limb.plaintext_zone] painfully.",\
+			"Your movement jostles [weapon] in your [limb.plaintext_zone] painfully."\
+		)
+		to_chat(limb_owner, span_danger(msg))
 
 
 /// Called when then item randomly falls out of a carbon. This handles the damage and descriptors, then calls safe_remove()
 /datum/component/embedded/proc/fallOut()
-	var/mob/living/carbon/victim = parent
-
+	var/obj/item/bodypart/limb = parent
 	if(harmful)
 		var/damage = weapon.w_class * remove_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, stamina=pain_stam_pct * damage)
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		if(limb_owner)
+			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
 
-	victim.visible_message(span_danger("[weapon] falls [harmful ? "out" : "off"] of [victim.name]'s [limb.plaintext_zone]!"), span_userdanger("[weapon] falls [harmful ? "out" : "off"] of your [limb.plaintext_zone]!"))
+	limb_owner?.visible_message(
+		span_danger("[weapon] falls [harmful ? "out" : "off"] of [limb_owner.name]'s [limb.plaintext_zone]!"),
+	)
+
 	safeRemove()
 
-
 /// Called when a carbon with an object embedded/stuck to them inspects themselves and clicks the appropriate link to begin ripping the item out. This handles the ripping attempt, descriptors, and dealing damage, then calls safe_remove()
-/datum/component/embedded/proc/ripOut(datum/source, obj/item/I, obj/item/bodypart/limb)
+/datum/component/embedded/proc/ripOut(obj/item/bodypart/source, obj/item/I, mob/living/carbon/user)
 	SIGNAL_HANDLER
 
-	if(I != weapon || src.limb != limb)
+	if(I != weapon || source != parent)
 		return
-	var/mob/living/carbon/victim = parent
+
 	var/time_taken = rip_time * weapon.w_class
-	INVOKE_ASYNC(src, .proc/complete_rip_out, victim, I, limb, time_taken)
+	INVOKE_ASYNC(src, PROC_REF(complete_rip_out), user, I, parent, time_taken)
 
 /// everything async that ripOut used to do
-/datum/component/embedded/proc/complete_rip_out(mob/living/carbon/victim, obj/item/I, obj/item/bodypart/limb, time_taken)
-	victim.visible_message(span_warning("[victim] attempts to remove [weapon] from [victim.p_their()] [limb.plaintext_zone]."),span_notice("You attempt to remove [weapon] from your [limb.plaintext_zone]... (It will take [DisplayTimeText(time_taken)].)"))
-	if(!do_after(victim, time = time_taken))
+/datum/component/embedded/proc/complete_rip_out(mob/living/carbon/user, obj/item/I, obj/item/bodypart/limb, time_taken)
+
+	if(user == limb_owner)
+		user.visible_message(
+			span_warning("[user] attempts to remove [weapon] from [user.p_their()] [limb.plaintext_zone]."),
+		)
+	else
+		user.visible_message(
+			span_warning("[user] attempts to remove [weapon] from [limb_owner]'s [limb.plaintext_zone].")
+		)
+
+	if(!do_after(user, limb_owner, time = time_taken, timed_action_flags = DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
 		return
-	if(!weapon || !limb || weapon.loc != victim || !(weapon in limb.embedded_objects))
+
+	if(!weapon || !limb || weapon.loc != limb || !(weapon in limb.embedded_objects))
 		qdel(src)
 		return
+
 	if(harmful)
 		var/damage = weapon.w_class * remove_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, stamina=pain_stam_pct * damage, sharpness=SHARP_EDGED) //It hurts to rip it out, get surgery you dingus. unlike the others, this CAN wound + increase slash bloodflow
-		victim.emote("scream")
+		for(var/datum/wound/W as anything in limb.wounds)
+			if(weapon in W.embedded_objects)
+				W.open_wound((1-pain_stam_pct) * damage)
+				break
 
-	victim.visible_message(span_notice("[victim] successfully rips [weapon] [harmful ? "out" : "off"] of [victim.p_their()] [limb.plaintext_zone]!"), span_notice("You successfully remove [weapon] from your [limb.plaintext_zone]."))
-	safeRemove(victim)
+		if(limb_owner)
+			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
+			limb_owner.emote("scream")
+
+			if(!IS_ORGANIC_LIMB(limb))
+				user.visible_message(
+					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
+					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
+					span_danger("You hear the screech of abused metal.")
+				)
+			else
+				limb_owner.visible_message(
+					span_danger("The wound on \the [limb_owner]'s [limb.plaintext_zone] widens with a nasty ripping noise."),\
+					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
+					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
+				)
+	if(user == limb_owner)
+		user.visible_message(
+			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [user.p_their()] [limb.plaintext_zone]!"),
+		)
+	else
+		user.visible_message(
+			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [limb_owner]'s [limb.plaintext_zone]!"),
+		)
+
+	safeRemove(user)
 
 /// This proc handles the final step and actual removal of an embedded/stuck item from a carbon, whether or not it was actually removed safely.
 /// If you want the thing to go into someone's hands rather than the floor, pass them in to_hands
 /datum/component/embedded/proc/safeRemove(mob/to_hands)
 	SIGNAL_HANDLER
 
-	var/mob/living/carbon/victim = parent
+	var/obj/item/bodypart/limb = parent
 	limb._unembed_object(weapon)
 	UnregisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING)) // have to do it here otherwise we trigger weaponDeleted()
 
 	if(!weapon.unembedded()) // if it hasn't deleted itself due to drop del
 		UnregisterSignal(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 		if(to_hands)
-			INVOKE_ASYNC(to_hands, /mob.proc/put_in_hands, weapon)
+			INVOKE_ASYNC(to_hands, TYPE_PROC_REF(/mob, put_in_hands), weapon)
 		else
-			weapon.forceMove(get_turf(victim))
+			weapon.forceMove(get_turf(limb_owner || parent))
 
 	qdel(src)
 
@@ -231,55 +298,81 @@
 /datum/component/embedded/proc/weaponDeleted()
 	SIGNAL_HANDLER
 
-	var/mob/living/carbon/victim = parent
+	var/obj/item/bodypart/limb = parent
 	limb._unembed_object(weapon)
 
-	if(victim)
-		to_chat(victim, span_userdanger("\The [weapon] that was embedded in your [limb.plaintext_zone] disappears!"))
+	if(limb_owner)
+		to_chat(limb_owner, span_userdanger("\The [weapon] that was embedded in your [limb.plaintext_zone] disappears!"))
 
 	qdel(src)
 
 /// The signal for listening to see if someone is using a hemostat on us to pluck out this object
-/datum/component/embedded/proc/checkTweeze(mob/living/carbon/victim, obj/item/possible_tweezers, mob/user)
+/datum/component/embedded/proc/checkTweeze(obj/item/bodypart/source, obj/item/possible_tweezers, mob/user)
 	SIGNAL_HANDLER
 
-	if(!istype(victim) || possible_tweezers.tool_behaviour != TOOL_HEMOSTAT || user.zone_selected != limb.body_zone)
+	var/obj/item/bodypart/limb = parent
+	if(possible_tweezers.tool_behaviour != TOOL_HEMOSTAT || user.zone_selected != limb.body_zone)
 		return
 
 	if(weapon != limb.embedded_objects[1]) // just pluck the first one, since we can't easily coordinate with other embedded components affecting this limb who is highest priority
 		return
 
-	if(ishuman(victim)) // check to see if the limb is actually exposed
-		var/mob/living/carbon/human/victim_human = victim
-		if(!victim_human.try_inject(user, limb.body_zone, INJECT_CHECK_IGNORE_SPECIES | INJECT_TRY_SHOW_ERROR_MESSAGE))
+	if(limb_owner) // check to see if the limb is actually exposed
+		if(limb_owner.try_inject(user, limb.body_zone, INJECT_CHECK_IGNORE_SPECIES | INJECT_TRY_SHOW_ERROR_MESSAGE))
 			return TRUE
 
-	INVOKE_ASYNC(src, .proc/tweezePluck, possible_tweezers, user)
+	INVOKE_ASYNC(src, PROC_REF(tweezePluck), possible_tweezers, user)
 	return COMPONENT_NO_AFTERATTACK
 
 /// The actual action for pulling out an embedded object with a hemostat
 /datum/component/embedded/proc/tweezePluck(obj/item/possible_tweezers, mob/user)
-	var/mob/living/carbon/victim = parent
-
-	var/self_pluck = (user == victim)
+	var/self_pluck = (user == limb_owner)
+	var/obj/item/bodypart/limb = parent
+	var/target = limb_owner || limb
 
 	if(self_pluck)
-		user.visible_message(span_danger("[user] begins plucking [weapon] from [user.p_their()] [limb.plaintext_zone]"), span_notice("You start plucking [weapon] from your [limb.plaintext_zone]..."),\
-			vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=victim)
+		user.visible_message(
+			span_notice("[user] begins plucking [weapon] from [user.p_their()] [limb.plaintext_zone]"),
+			vision_distance=COMBAT_MESSAGE_RANGE,
+		)
 	else
-		user.visible_message(span_danger("[user] begins plucking [weapon] from [victim]'s [limb.plaintext_zone]"),span_notice("You start plucking [weapon] from [victim]'s [limb.plaintext_zone]..."), \
-			vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=victim)
-		to_chat(victim, span_userdanger("[user] begins plucking [weapon] from your [limb.plaintext_zone]..."))
+		user.visible_message(
+			span_notice("[user] begins plucking [weapon] from [target]'s [limb.plaintext_zone]"),
+			vision_distance=COMBAT_MESSAGE_RANGE,
+		)
 
 	var/pluck_time = 2.5 SECONDS * weapon.w_class * (self_pluck ? 2 : 1)
-	if(!do_after(user, victim, pluck_time))
+	if(!do_after(user, target, pluck_time, DO_PUBLIC, display = possible_tweezers))
 		if(self_pluck)
-			to_chat(user, span_danger("You fail to pluck [weapon] from your [limb.plaintext_zone]."))
+			to_chat(user, span_warning("You fail to pluck [weapon] from your [limb.plaintext_zone]."))
 		else
-			to_chat(user, span_danger("You fail to pluck [weapon] from [victim]'s [limb.plaintext_zone]."))
-			to_chat(victim, span_danger("[user] fails to pluck [weapon] from your [limb.plaintext_zone]."))
+			if(limb_owner)
+				to_chat(user, span_warning("You fail to pluck [weapon] from [limb_owner]'s [limb.plaintext_zone]."))
+				to_chat(limb_owner, span_warning("[user] fails to pluck [weapon] from your [limb.plaintext_zone]."))
+			else
+				to_chat(to_chat(user, span_warning("You fail to pluck [weapon] from [limb].")))
 		return
 
-	to_chat(user, span_notice("You successfully pluck [weapon] from [victim]'s [limb.plaintext_zone]."))
-	to_chat(victim, span_notice("[user] plucks [weapon] from your [limb.plaintext_zone]."))
+	if(self_pluck)
+		user.visible_message(user, span_notice("[user] successfully plucks [weapon] from [user.p_their()] [limb.plaintext_zone]."))
+	else
+		if(limb_owner)
+			user.visible_message(user, span_notice("[user] successfully plucks [weapon] from [limb_owner]'s [limb.plaintext_zone]."))
+		else
+			user.visible_message(user, span_notice("[user] successfully plucks [weapon] from [limb]."))
+
 	safeRemove(user)
+
+/// Called whenever the limb owner is health scanned
+/datum/component/embedded/proc/on_healthscan(datum/source, list/render_string, mob/user, mode, advanced)
+	SIGNAL_HANDLER
+
+	var/obj/obj_parent = parent
+	if(advanced)
+		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_EMBEDDED]'>Foreign body detected in subject's [obj_parent.name].</span>\n"
+	else
+		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_EMBEDDED]'>Foreign body detected. Advanced scanner required for location.</span>\n"
+
+/obj/item/shard/embed_tester
+	name = "extra extra sharp glass"
+	embedding = list("embed_chance" = 100, "ignore_throwspeed_threshold" = TRUE)

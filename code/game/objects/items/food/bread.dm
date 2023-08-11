@@ -72,7 +72,6 @@
 
 /obj/item/food/breadslice/moldy/bacteria/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
 
 /obj/item/food/bread/meat
@@ -292,6 +291,6 @@
 	foodtypes = GRAIN | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/food/butterdog/ComponentInitialize()
+/obj/item/food/butterdog/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)

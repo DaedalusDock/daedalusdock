@@ -2,6 +2,10 @@
 	name = "belt"
 	desc = "Can hold various things."
 	icon = 'icons/obj/clothing/belts.dmi'
+	stamina_damage = 10
+	stamina_cost = 5
+	stamina_critical_chance = 5
+
 	icon_state = "utility"
 	inhand_icon_state = "utility"
 	worn_icon_state = "utility"
@@ -76,7 +80,7 @@
 		/obj/item/inducer,
 		/obj/item/plunger,
 		/obj/item/airlock_painter,
-		/obj/item/pipe_painter
+		/obj/item/paint_sprayer,
 		))
 
 /obj/item/storage/belt/utility/chief
@@ -227,7 +231,6 @@
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/muzzle,
 		/obj/item/clothing/mask/surgical,
-		/obj/item/construction/plumbing,
 		/obj/item/dnainjector,
 		/obj/item/extinguisher/mini,
 		/obj/item/flashlight/pen,
@@ -245,6 +248,7 @@
 		/obj/item/storage/fancy/cigarettes,
 		/obj/item/storage/pill_bottle,
 		/obj/item/stack/medical,
+		/obj/item/stack/gauze,
 		/obj/item/flashlight/pen,
 		/obj/item/extinguisher/mini,
 		/obj/item/reagent_containers/hypospray,
@@ -256,7 +260,6 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/surgical_drapes, //for true paramedics
 		/obj/item/reagent_containers/glass/vial, //PARIAH EDIT ADDITION
 		/obj/item/hypospray/mkii, //PARIAH EDIT ADDITION
 		/obj/item/scalpel,
@@ -281,7 +284,6 @@
 		/obj/item/implanter,
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
-		/obj/item/construction/plumbing,
 		/obj/item/plunger,
 		/obj/item/reagent_containers/spray,
 		/obj/item/shears,
@@ -294,7 +296,7 @@
 /obj/item/storage/belt/medical/paramedic/PopulateContents()
 	SSwardrobe.provide_type(/obj/item/sensor_device, src)
 	SSwardrobe.provide_type(/obj/item/pinpointer/crew/prox, src)
-	SSwardrobe.provide_type(/obj/item/stack/medical/gauze/twelve, src)
+	SSwardrobe.provide_type(/obj/item/stack/gauze/twelve, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/syringe, src)
 	SSwardrobe.provide_type(/obj/item/stack/medical/bone_gel, src)
 	SSwardrobe.provide_type(/obj/item/stack/sticky_tape/surgical, src)
@@ -305,7 +307,7 @@
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/sensor_device
 	to_preload += /obj/item/pinpointer/crew/prox
-	to_preload += /obj/item/stack/medical/gauze/twelve
+	to_preload += /obj/item/stack/gauze/twelve
 	to_preload += /obj/item/reagent_containers/syringe
 	to_preload += /obj/item/stack/medical/bone_gel
 	to_preload += /obj/item/stack/sticky_tape/surgical
@@ -340,18 +342,16 @@
 		/obj/item/grenade,
 		/obj/item/reagent_containers/spray/pepper,
 		/obj/item/restraints/handcuffs,
-		/obj/item/assembly/flash/handheld,
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_casing/shotgun,
 		/obj/item/ammo_box,
 		/obj/item/food/donut,
 		/obj/item/knife/combat,
 		/obj/item/flashlight/seclite,
-		/obj/item/melee/baton/telescopic,
 		/obj/item/radio,
 		/obj/item/clothing/gloves,
 		/obj/item/restraints/legcuffs/bola,
-		/obj/item/holosign_creator/security
+		/obj/item/holosign_creator/security,
 		))
 
 /obj/item/storage/belt/security/full/PopulateContents()

@@ -6,8 +6,13 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/priapus,
+		/datum/employer/contractor,
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -19,7 +24,6 @@
 	paycheck = PAYCHECK_MINIMAL
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	display_order = JOB_DISPLAY_ORDER_MIME
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -109,7 +113,7 @@
 		"Invisible Chair" = image(icon = 'icons/mob/actions/actions_mime.dmi', icon_state = "invisible_chair"),
 		"Invisible Box" = image(icon = 'icons/mob/actions/actions_mime.dmi', icon_state = "invisible_box")
 		)
-	var/picked_spell = show_radial_menu(user, src, spell_icons, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 36, require_near = TRUE)
+	var/picked_spell = show_radial_menu(user, src, spell_icons, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 36, require_near = TRUE)
 	var/datum/action/cooldown/spell/picked_spell_type
 	switch(picked_spell)
 		if("Invisible Wall")

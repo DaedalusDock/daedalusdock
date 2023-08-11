@@ -15,7 +15,7 @@
  * Arguments:
  * * zone [a BODY_ZONE_X define](https://github.com/DaedalusDock/Gameserver/blob/master/code/__DEFINES/combat.dm#L187-L200)
  */
-/mob/proc/getorganszone(zone)
+/mob/proc/getorgansofzone(zone)
 	return
 /**
  * Returns a list of all organs in specified slot
@@ -27,25 +27,23 @@
 	return
 
 /mob/living/carbon/getorgan(typepath)
-	return (locate(typepath) in internal_organs + external_organs)
+	return (locate(typepath) in organs)
 
 
-/mob/living/carbon/getorganszone(zone, subzones = 0)
+/mob/living/carbon/getorgansofzone(zone, subzones = FALSE, include_cosmetic = FALSE)
 	var/list/returnorg = list()
 	if(subzones)
 		// Include subzones - groin for chest, eyes and mouth for head
 		if(zone == BODY_ZONE_HEAD)
-			returnorg = getorganszone(BODY_ZONE_PRECISE_EYES) + getorganszone(BODY_ZONE_PRECISE_MOUTH)
+			returnorg = getorgansofzone(BODY_ZONE_PRECISE_EYES, FALSE, include_cosmetic) + getorgansofzone(BODY_ZONE_PRECISE_MOUTH, FALSE, include_cosmetic)
 		if(zone == BODY_ZONE_CHEST)
-			returnorg = getorganszone(BODY_ZONE_PRECISE_GROIN)
+			returnorg = getorgansofzone(BODY_ZONE_PRECISE_GROIN, FALSE, include_cosmetic)
 
-	for(var/obj/item/organ/organ as anything in internal_organs + external_organs)
+	for(var/obj/item/organ/organ as anything in (include_cosmetic ? organs : processing_organs))
 		if(zone == organ.zone)
 			returnorg += organ
 	return returnorg
 
 /mob/living/carbon/getorganslot(slot)
-	. = internal_organs_slot[slot]
-	if(!.)
-		return external_organs_slot[slot]
+	. = organs_by_slot[slot]
 

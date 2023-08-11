@@ -9,7 +9,7 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/microwave
 	pass_flags = PASSTABLE
-	light_color = LIGHT_COLOR_YELLOW
+	light_color = LIGHT_COLOR_DIM_YELLOW
 	light_power = 3
 	var/wire_disabled = FALSE // is its internal wire cut?
 	var/operating = FALSE
@@ -318,7 +318,7 @@
 		return
 	time--
 	use_power(active_power_usage)
-	addtimer(CALLBACK(src, .proc/loop, type, time, wait), wait)
+	addtimer(CALLBACK(src, PROC_REF(loop), type, time, wait), wait)
 
 /obj/machinery/microwave/power_change()
 	. = ..()

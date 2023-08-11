@@ -1,165 +1,108 @@
 //NEVER USE THIS IT SUX -PETETHEGOAT
 //IT SUCKS A BIT LESS -GIACOM
+//IT SUCKED SO MUCH WE CHANGED IT ENTIRELY
 
-/obj/item/paint
-	gender= PLURAL
-	name = "paint"
-	desc = "Used to recolor floors and walls. Can be removed by the janitor."
+/obj/item/paint_sprayer
+	name = "paint sprayer"
+	desc = "A slender and none-too-sophisticated device capable of applying paint onto walls and various other things. Applied paint can be removed by the Janitor."
 	icon = 'icons/obj/items_and_weapons.dmi'
-	icon_state = "paint_neutral"
-	inhand_icon_state = "paintcan"
+	icon_state = "paint_sprayer"
+	inhand_icon_state = "paint_sprayer"
+	worn_icon_state = "painter"
+	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
+	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_NORMAL
-	resistance_flags = FLAMMABLE
-	max_integrity = 100
+	flags_1 = CONDUCT_1
+	slot_flags = ITEM_SLOT_BELT
 	/// With what color will we paint with
-	var/paint_color = COLOR_WHITE
-	/// How many uses are left
-	var/paintleft = 10
+	var/wall_color = COLOR_WHITE
+	var/stripe_color = COLOR_WHITE
 
-/obj/item/paint/examine(mob/user)
+	var/preset_wall_colors= list(
+		"Daedalus Industries" = list("wall" = PAINT_WALL_DAEDALUS, "trim" = PAINT_STRIPE_DAEDALUS),
+		"Priapus Recreational Solutions" = list("wall" = PAINT_WALL_PRIAPUS, "trim" = PAINT_STRIPE_PRIAPUS),
+		"Command" = list("wall" = PAINT_WALL_COMMAND, "trim" = PAINT_STRIPE_COMMAND),
+		"Medical" = list("wall" = PAINT_WALL_MEDICAL, "trim" = PAINT_STRIPE_MEDICAL),
+	)
+
+/obj/item/paint_sprayer/examine(mob/user)
 	. = ..()
-	. += span_notice("Paint wall stripes by right clicking a walls.")
 
-/obj/item/paint/red
-	name = "red paint"
-	paint_color = COLOR_RED
-	icon_state = "paint_red"
+	. += span_notice("It is configured to paint walls using <span style='color:[wall_color]'>[wall_color]</span> paint and trims using <span style='color:[stripe_color]'>[stripe_color]</span> paint.")
+	. += span_notice("Paint wall stripes by right clicking a wall.")
 
-/obj/item/paint/green
-	name = "green paint"
-	paint_color = COLOR_VIBRANT_LIME
-	icon_state = "paint_green"
-
-/obj/item/paint/blue
-	name = "blue paint"
-	paint_color = COLOR_BLUE
-	icon_state = "paint_blue"
-
-/obj/item/paint/yellow
-	name = "yellow paint"
-	paint_color = COLOR_YELLOW
-	icon_state = "paint_yellow"
-
-/obj/item/paint/violet
-	name = "violet paint"
-	paint_color = COLOR_MAGENTA
-	icon_state = "paint_violet"
-
-/obj/item/paint/black
-	name = "black paint"
-	paint_color = COLOR_ALMOST_BLACK
-	icon_state = "paint_black"
-
-/obj/item/paint/white
-	name = "white paint"
-	paint_color = COLOR_WHITE
-	icon_state = "paint_white"
-
-/obj/item/paint/anycolor
-	gender = PLURAL
-	name = "adaptive paint"
-	icon_state = "paint_neutral"
-
-/obj/item/paint/anycolor/examine(mob/user)
+/obj/item/paint_sprayer/update_overlays()
 	. = ..()
-	. += span_notice("Choose a basic color by using the paint.")
-	. += span_notice("Choose any color by alt-clicking the paint.")
+	var/mutable_appearance/color_overlay = mutable_appearance(icon, "paint_sprayer_color")
+	color_overlay.color = wall_color
+	. += color_overlay
 
-/obj/item/paint/anycolor/AltClick(mob/living/user)
-	var/new_paint_color = input(user, "Choose new paint color", "Paint Color", paint_color) as color|null
-	if(new_paint_color)
-		paint_color = new_paint_color
-		icon_state = "paint_neutral"
-
-/obj/item/paint/anycolor/attack_self(mob/user)
-	var/list/possible_colors = list(
-		"black" = image(icon = src.icon, icon_state = "paint_black"),
-		"blue" = image(icon = src.icon, icon_state = "paint_blue"),
-		"green" = image(icon = src.icon, icon_state = "paint_green"),
-		"red" = image(icon = src.icon, icon_state = "paint_red"),
-		"violet" = image(icon = src.icon, icon_state = "paint_violet"),
-		"white" = image(icon = src.icon, icon_state = "paint_white"),
-		"yellow" = image(icon = src.icon, icon_state = "paint_yellow")
-		)
-	var/picked_color = show_radial_menu(user, src, possible_colors, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 38, require_near = TRUE)
-	switch(picked_color)
-		if("black")
-			paint_color = COLOR_ALMOST_BLACK
-		if("blue")
-			paint_color = COLOR_BLUE
-		if("green")
-			paint_color = COLOR_VIBRANT_LIME
-		if("red")
-			paint_color = COLOR_RED
-		if("violet")
-			paint_color = COLOR_MAGENTA
-		if("white")
-			paint_color = COLOR_WHITE
-		if("yellow")
-			paint_color = COLOR_YELLOW
-		else
-			return
-	icon_state = "paint_[picked_color]"
-	add_fingerprint(user)
-
-/**
- * Checks if we are allowed to interact with a radial menu
- *
- * Arguments:
- * * user The mob interacting with the menu
- */
-/obj/item/paint/anycolor/proc/check_menu(mob/user)
-	if(!istype(user))
-		return FALSE
-	if(!user.is_holding(src))
-		return FALSE
-	if(user.incapacitated())
-		return FALSE
+/obj/item/paint_sprayer/attack_self(mob/living/user)
+	var/static/list/options_list = list("Select wall color", "Select stripe color", "Color presets")
+	var/option = input(user, null, "Configure Device", null) as null|anything in options_list
+	switch(option)
+		if("Select wall color")
+			var/new_wall_color = input(user, "Choose new wall paint color", "Paint Color", wall_color) as color|null
+			if(new_wall_color)
+				wall_color = new_wall_color
+		if("Select stripe color")
+			var/new_stripe_color = input(user, "Choose new wall stripe color", "Paint Color", stripe_color) as color|null
+			if(new_stripe_color)
+				stripe_color = new_stripe_color
+		if("Color presets")
+			var/chosen = input(user, null, "Select a preset", null) as null|anything in preset_wall_colors
+			if(!chosen)
+				return
+			chosen = preset_wall_colors[chosen]
+			wall_color = chosen["wall"]
+			stripe_color = chosen["trim"]
+			playsound(src, 'sound/machines/click.ogg', 50, TRUE)
+	update_appearance()
 	return TRUE
 
-/obj/item/paint/afterattack(atom/target, mob/user, proximity, params)
+/obj/item/paint_sprayer/afterattack(atom/target, mob/user, proximity, params)
 	. = ..()
 	if(.)
 		return
 	if(!proximity)
 		return
 	var/list/modifiers = params2list(params)
-	if(paintleft <= 0)
-		icon_state = "paint_empty"
-		return
 	if(istype(target, /obj/structure/low_wall))
 		var/obj/structure/low_wall/target_low_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			target_low_wall.set_stripe_paint(paint_color)
+			target_low_wall.paint_stripe(stripe_color)
 		else
-			target_low_wall.set_wall_paint(paint_color)
+			target_low_wall.paint_wall(wall_color)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] paints \the [target_low_wall]."), \
 			span_notice("You paint \the [target_low_wall]."))
+		playsound(src, SFX_PAINT, 50, TRUE)
 		return TRUE
 	if(iswall(target))
 		var/turf/closed/wall/target_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			target_wall.paint_stripe(paint_color)
+			target_wall.paint_stripe(stripe_color)
 		else
-			target_wall.paint_wall(paint_color)
+			target_wall.paint_wall(wall_color)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] paints \the [target_wall]."), \
 			span_notice("You paint \the [target_wall]."))
+		playsound(src, SFX_PAINT, 50, TRUE)
 		return TRUE
 	if(isfalsewall(target))
 		var/obj/structure/falsewall/target_falsewall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			target_falsewall.paint_stripe(paint_color)
+			target_falsewall.paint_stripe(stripe_color)
 		else
-			target_falsewall.paint_wall(paint_color)
+			target_falsewall.paint_wall(wall_color)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] paints \the [target_falsewall]."), \
 			span_notice("You paint \the [target_falsewall]."))
+		playsound(src, SFX_PAINT, 50, TRUE)
 		return TRUE
 	if(!isturf(target) || isspaceturf(target))
 		return TRUE
-	target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
+	target.add_atom_colour(wall_color, WASHABLE_COLOUR_PRIORITY)
 
 /obj/item/paint_remover
 	gender = PLURAL
@@ -189,12 +132,12 @@
 			if(!target_low_wall.stripe_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
 				return TRUE
-			target_low_wall.set_stripe_paint(null)
+			target_low_wall.paint_stripe(null)
 		else
 			if(!target_low_wall.wall_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
 				return TRUE
-			target_low_wall.set_wall_paint(null)
+			target_low_wall.paint_wall(null)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] strips the paint from \the [target_low_wall]."), \
 			span_notice("You strip the paint from \the [target_low_wall]."))

@@ -6,6 +6,7 @@
 
 	name = "air scrubber"
 	desc = "Has a valve and pump attached to it."
+
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 
@@ -43,7 +44,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/New()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
@@ -206,19 +207,16 @@
 		should_cooldown = FALSE
 		SAFE_ZAS_UPDATE(us)
 
-	if(quicksucc)
-		for(var/i in 1 to 2)
-			if(scrub(us))
-				should_cooldown = FALSE
-				SAFE_ZAS_UPDATE(us)
+	if(quicksucc) //do it again
+		if(scrub(us))
+			should_cooldown = FALSE
+			SAFE_ZAS_UPDATE(us)
+
 	if(should_cooldown && can_hibernate)
 		COOLDOWN_START(src, hibernating, 15 SECONDS)
 	update_icon_nopipes()
 
 	return TRUE
-
-///filtered gases at or below this amount automatically get removed from the mix
-#define MINIMUM_MOLES_TO_SCRUB MOLAR_ACCURACY*100
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/scrub(turf/tile)
 	if(!istype(tile))
@@ -226,19 +224,9 @@
 	var/datum/gas_mixture/environment = tile.unsafe_return_air() // The proc that calls this proc marks the turf for update!
 	var/datum/gas_mixture/air_contents = airs[1]
 
-	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
-		return FALSE
-
 	if(scrubbing) // == SCRUBBING
 		if(length(environment.gas & filter_types))
 			. = TRUE
-			var/total_moles_to_remove = 0
-			for(var/gas in filter_types & environment.gas)
-				total_moles_to_remove += environment.gas[gas]
-
-			if(total_moles_to_remove == 0)//sometimes this gets non gc'd values
-				return FALSE
-
 			//take this gases portion of removal_ratio of the turfs air, or all of that gas if less than or equal to MINIMUM_MOLES_TO_SCRUB
 			//var/transfer_moles = min(environment.total_moles, volume_rate/environment.volume)*environment.total_moles
 			var/transfer_moles = min(environment.total_moles, environment.total_moles*volume_rate/environment.volume)
@@ -258,9 +246,6 @@
 		ATMOS_USE_POWER(draw)
 		update_parents()
 		return TRUE
-
-
-#undef MINIMUM_MOLES_TO_SCRUB
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
 	if(!is_operational || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))

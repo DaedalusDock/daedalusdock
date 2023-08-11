@@ -128,8 +128,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 			continue
 		if(!is_unique_objective(possible_target,dupe_search_range))
 			continue
-		if(!HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS) && istype(target_area, /area/shuttle/arrival))
-			continue
 		if(possible_target in blacklist)
 			continue
 		if(is_type_in_typecache(target_area, blacklisted_target_areas))
@@ -293,7 +291,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 
 
 /datum/objective/protect/check_completion()
-	var/obj/item/organ/internal/brain/brain_target
+	var/obj/item/organ/brain/brain_target
 	if(human_check)
 		brain_target = target.current?.getorganslot(ORGAN_SLOT_BRAIN)
 	//Protect will always suceed when someone suicides
@@ -860,14 +858,22 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 		var/list/all_items = M.current.get_all_contents() //this should get things in cheesewheels, books, etc.
 		for(var/obj/I in all_items) //Check for wanted items
 			if(is_type_in_typecache(I, wanted_items))
-				stolen_count++
+				if(check_if_valid_item(I))
+					stolen_count++
 	return stolen_count >= amount
+
+/datum/objective/steal_n_of_type/proc/check_if_valid_item(obj/item/current_item)
+	return TRUE
 
 /datum/objective/steal_n_of_type/summon_guns
 	name = "steal guns"
 	explanation_text = "Steal at least five guns!"
 	wanted_items = list(/obj/item/gun)
 	amount = 5
+
+/datum/objective/steal_n_of_type/summon_guns/check_if_valid_item(obj/item/current_item)
+	var/obj/item/gun/gun = current_item
+	return !(gun.gun_flags & NOT_A_REAL_GUN)
 
 /datum/objective/steal_n_of_type/summon_guns/thief
 	explanation_text = "Steal at least 3 guns!"
@@ -956,48 +962,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 		/datum/objective/capture,
 		/datum/objective/absorb,
 		/datum/objective/custom
-	),/proc/cmp_typepaths_asc)
+	),GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	for(var/T in allowed_types)
 		var/datum/objective/X = T
 		GLOB.admin_objective_list[initial(X.name)] = T
-
-/datum/objective/contract
-	var/payout = 0
-	var/payout_bonus = 0
-	var/area/dropoff = null
-	blacklisted_target_areas = list(/area/space, /area/ruin, /area/icemoon, /area/lavaland)
-
-// Generate a random valid area on the station that the dropoff will happen.
-/datum/objective/contract/proc/generate_dropoff()
-	var/found = FALSE
-	while (!found)
-		var/area/dropoff_area = pick(GLOB.sortedAreas)
-		if(dropoff_area && (dropoff_area.type in GLOB.the_station_areas) && !dropoff_area.outdoors)
-			dropoff = dropoff_area
-			found = TRUE
-
-// Check if both the contractor and contract target are at the dropoff point.
-/datum/objective/contract/proc/dropoff_check(mob/user, mob/target)
-	var/area/user_area = get_area(user)
-	var/area/target_area = get_area(target)
-
-	return (istype(user_area, dropoff) && istype(target_area, dropoff))
-
-/// Used by drifting contractors
-/datum/objective/contractor_total
-	name = "contractor"
-	martyr_compatible = TRUE
-	/// How many contracts are needed, rand(1, 3)
-	var/contracts_needed
-
-/datum/objective/contractor_total/New(text)
-	. = ..()
-	contracts_needed = rand(1, 3)
-	explanation_text = "Complete at least [contracts_needed] contract\s."
-
-/datum/objective/contractor_total/check_completion()
-	var/datum/contractor_hub/the_hub = GLOB.contractors[owner]
-	if(!the_hub)
-		return FALSE
-	return the_hub.contracts_completed >= contracts_needed

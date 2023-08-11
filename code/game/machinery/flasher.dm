@@ -107,7 +107,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, TRUE)
 	flick("[base_icon_state]_flash", src)
 	set_light_on(TRUE)
-	addtimer(CALLBACK(src, .proc/flash_end), FLASH_LIGHT_DURATION, TIMER_OVERRIDE|TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(flash_end)), FLASH_LIGHT_DURATION, TIMER_OVERRIDE|TIMER_UNIQUE)
 
 	last_flash = world.time
 	use_power(1000)

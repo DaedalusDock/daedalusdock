@@ -7,7 +7,7 @@
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
-		TRAIT_NOSLIPALL,
+		TRAIT_NO_SLIP_ALL,
 	)
 
 	say_mod = "slurs"
@@ -18,8 +18,8 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP
 	sexes = FALSE //snails are hermaphrodites
 
-	mutanteyes = /obj/item/organ/internal/eyes/snail
-	mutanttongue = /obj/item/organ/internal/tongue/snail
+	mutanteyes = /obj/item/organ/eyes/snail
+	mutanttongue = /obj/item/organ/tongue/snail
 	exotic_blood = /datum/reagent/lube
 
 	bodypart_overrides = list(

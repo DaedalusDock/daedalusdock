@@ -103,26 +103,6 @@
 	key_third_person = "shrugs"
 	message = "shrugs."
 
-/datum/emote/living/carbon/human/wag
-	key = "wag"
-	key_third_person = "wags"
-	message = "wags their tail."
-
-/datum/emote/living/carbon/human/wag/run_emote(mob/user, params, type_override, intentional)
-	. = ..()
-	if(!.)
-		return
-	var/obj/item/organ/external/tail/oranges_accessory = user.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
-	if(oranges_accessory.wag_flags & WAG_WAGGING) //We verified the tail exists in can_run_emote()
-		SEND_SIGNAL(user, COMSIG_ORGAN_WAG_TAIL, FALSE)
-	else
-		SEND_SIGNAL(user, COMSIG_ORGAN_WAG_TAIL, TRUE)
-
-/datum/emote/living/carbon/human/wag/can_run_emote(mob/user, status_check, intentional)
-	var/obj/item/organ/external/tail/tail = user.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
-	if(tail?.wag_flags & WAG_ABLE)
-		return ..()
-	return FALSE
 /datum/emote/living/carbon/human/wing
 	key = "wing"
 	key_third_person = "wings"
@@ -132,7 +112,7 @@
 	. = ..()
 	if(.)
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/external/wings/functional/wings = H.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+		var/obj/item/organ/wings/functional/wings = H.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(wings && findtext(select_message_type(user,intentional), "open"))
 			wings.open_wings()
 		else
@@ -214,25 +194,6 @@
 	sound = 'sound/emotes/mothchitter.ogg'
 	species_type_whitelist_typecache = list(/datum/species/moth)
 
-//Felinid emotes
-/datum/emote/living/meow
-	key = "meow"
-	key_third_person = "meows"
-	message = "meows!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'sound/emotes/meow.ogg'
-	species_type_whitelist_typecache = list(/datum/species/human/felinid)
-
-/datum/emote/living/purr //Ported from CitRP originally by buffyuwu.
-	key = "purr"
-	key_third_person = "purrs!"
-	message = "purrs!"
-	emote_type = EMOTE_AUDIBLE
-	vary = TRUE
-	sound = 'sound/voice/feline_purr.ogg'
-	species_type_whitelist_typecache = list(/datum/species/human/felinid)
-
 //Shared custody between felinids and lizards
 /datum/emote/living/hiss
 	key = "hiss"
@@ -242,7 +203,7 @@
 	vary = TRUE
 	sound = 'sound/emotes/hiss.ogg'
 	mob_type_allowed_typecache = list(/mob/living/carbon, /mob/living/silicon/pai)
-	species_type_whitelist_typecache = list(/datum/species/lizard, /datum/species/human/felinid)
+	species_type_whitelist_typecache = list(/datum/species/lizard)
 
 //Lizard emotes
 /datum/emote/living/rpurr
@@ -265,7 +226,7 @@
 	sound = 'sound/emotes/voxrustle.ogg'
 	species_type_whitelist_typecache = list(/datum/species/vox)
 
-//Shared custody between skrell and teshari
+// Teshari emotes. for some reason.
 /datum/emote/living/carbon/human/warble
 	key = "warble"
 	key_third_person = "warbles!"
@@ -273,7 +234,7 @@
 	sound = 'sound/voice/warbles.ogg'
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
-	species_type_whitelist_typecache = list(/datum/species/skrell, /datum/species/teshari)
+	species_type_whitelist_typecache = list(/datum/species/teshari)
 
 /datum/emote/living/carbon/human/warble/get_frequency(mob/living/user) //no regular warbling sound but oh well
 	if(isteshari(user))
@@ -288,7 +249,7 @@
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
 	sound = 'sound/voice/trills.ogg'
-	species_type_whitelist_typecache = list(/datum/species/skrell, /datum/species/teshari)
+	species_type_whitelist_typecache = list(/datum/species/teshari)
 
 /datum/emote/living/carbon/human/wurble
 	key = "wurble"
@@ -297,7 +258,7 @@
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
 	sound = 'sound/voice/wurble.ogg'
-	species_type_whitelist_typecache = list(/datum/species/skrell, /datum/species/teshari)
+	species_type_whitelist_typecache = list(/datum/species/teshari)
 
 //Teshari emotes
 /datum/emote/living/carbon/human/chirp

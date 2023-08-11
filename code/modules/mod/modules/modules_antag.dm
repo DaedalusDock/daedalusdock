@@ -42,7 +42,7 @@
 	mod.wearer.update_equipment_speed_mods()
 	var/list/parts = mod.mod_parts + mod
 	for(var/obj/item/part as anything in parts)
-		part.armor = part.armor.modifyRating(arglist(armor_values))
+		part.setArmor(part.returnArmor().modifyRating(arglist(armor_values)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
 		var/obj/item/clothing/clothing_part = part
@@ -63,7 +63,7 @@
 	for(var/armor_type in removed_armor)
 		removed_armor[armor_type] = -removed_armor[armor_type]
 	for(var/obj/item/part as anything in parts)
-		part.armor = part.armor.modifyRating(arglist(removed_armor))
+		part.setArmor(part.returnArmor().modifyRating(arglist(removed_armor)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
 		var/obj/item/clothing/clothing_part = part
@@ -114,7 +114,7 @@
 /obj/item/mod/module/energy_shield/on_suit_activation()
 	mod.AddComponent(/datum/component/shielded, max_charges = max_charges, recharge_start_delay = recharge_start_delay, charge_increment_delay = charge_increment_delay, \
 	charge_recovery = charge_recovery, lose_multiple_charges = lose_multiple_charges, recharge_path = recharge_path, starting_charges = charges, shield_icon_file = shield_icon_file, shield_icon = shield_icon)
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, .proc/shield_reaction)
+	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(shield_reaction))
 
 /obj/item/mod/module/energy_shield/on_suit_deactivation(deleting = FALSE)
 	var/datum/component/shielded/shield = mod.GetComponent(/datum/component/shielded)
@@ -231,10 +231,10 @@
 	incompatible_modules = list(/obj/item/mod/module/noslip)
 
 /obj/item/mod/module/noslip/on_suit_activation()
-	ADD_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
+	ADD_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, MOD_TRAIT)
 
 /obj/item/mod/module/noslip/on_suit_deactivation(deleting = FALSE)
-	REMOVE_TRAIT(mod.wearer, TRAIT_NOSLIPWATER, MOD_TRAIT)
+	REMOVE_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, MOD_TRAIT)
 
 /obj/item/mod/module/springlock/bite_of_87
 
@@ -281,52 +281,11 @@
 	flame.preparePixelProjectile(target, mod.wearer)
 	flame.firer = mod.wearer
 	playsound(src, 'sound/items/modsuit/flamethrower.ogg', 75, TRUE)
-	INVOKE_ASYNC(flame, /obj/projectile.proc/fire)
+	INVOKE_ASYNC(flame, TYPE_PROC_REF(/obj/projectile, fire))
 	drain_power(use_power_cost)
 
 /obj/projectile/bullet/incendiary/backblast/flamethrower
 	range = 6
-
-/// Baton holster - stops contractors from losing their baton when installed
-/obj/item/mod/module/baton_holster
-	name = "MOD baton holster module"
-	desc = "A module installed into the chest of a MODSuit, this allows you \
-		to retrieve an inserted baton from the suit at will. Insert a baton \
-		by hitting the module, while it is removed from the suit, with the baton."
-	icon_state = "holster"
-	module_type = MODULE_ACTIVE
-	complexity = 3
-	active_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
-	device = /obj/item/melee/baton/telescopic/contractor_baton
-	incompatible_modules = list(/obj/item/mod/module/baton_holster)
-	cooldown_time = 0.5 SECONDS
-	allowed_inactive = TRUE
-	/// Have they sacrificed a baton to actually be able to use this?
-	var/eaten_baton = FALSE
-
-/obj/item/mod/module/baton_holster/attackby(obj/item/attacking_item, mob/user, params)
-	. = ..()
-	if(!istype(attacking_item, /obj/item/melee/baton/telescopic/contractor_baton) || eaten_baton)
-		return
-	balloon_alert(user, "[attacking_item] inserted")
-	eaten_baton = TRUE
-	for(var/obj/item/melee/baton/telescopic/contractor_baton/device_baton as anything in src)
-		for(var/obj/item/item_contents as anything in attacking_item)
-			if(istype(item_contents, /obj/item/baton_upgrade))
-				device_baton.add_upgrade(item_contents)
-			else
-				item_contents.forceMove(device_baton)
-	qdel(attacking_item)
-
-/obj/item/mod/module/baton_holster/on_activation()
-	if(!eaten_baton)
-		balloon_alert(mod.wearer, "no baton inserted")
-		return
-	return ..()
-
-/obj/item/mod/module/baton_holster/preloaded
-	eaten_baton = TRUE
-	device = /obj/item/melee/baton/telescopic/contractor_baton/upgraded
 
 /// Chameleon - Allows you to disguise your modsuit as another type
 /obj/item/mod/module/chameleon
@@ -372,7 +331,7 @@
 
 /obj/item/mod/module/chameleon/on_use()
 	var/obj/item/picked_item
-	var/picked_name = tgui_input_list(mod.wearer, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, /proc/cmp_typepaths_asc))
+	var/picked_name = tgui_input_list(mod.wearer, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(picked_name) || isnull(chameleon_list[picked_name]))
 		return
 	picked_item = chameleon_list[picked_name]
@@ -386,7 +345,7 @@
 	chameleon_worn_icon = initial(mod.worn_icon)
 	chameleon_left = initial(mod.lefthand_file)
 	chameleon_right = initial(mod.righthand_file)
-	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, .proc/reset_chameleon)
+	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(reset_chameleon))
 
 /obj/item/mod/module/chameleon/on_uninstall(deleting = FALSE)
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)

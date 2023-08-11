@@ -264,7 +264,7 @@
 /obj/structure/closet/decay/Initialize(mapload)
 	. = ..()
 	if(auto_destroy)
-		addtimer(CALLBACK(src, .proc/bust_open), 5 MINUTES)
+		addtimer(CALLBACK(src, PROC_REF(bust_open)), 5 MINUTES)
 
 /obj/structure/closet/decay/after_weld(weld_state)
 	if(weld_state)
@@ -280,12 +280,12 @@
 	icon_state = weakened_icon
 	update_appearance()
 
-	addtimer(CALLBACK(src, .proc/decay), 15 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(decay)), 15 SECONDS)
 
 ///Fade away into nothing
 /obj/structure/closet/decay/proc/decay()
 	animate(src, alpha = 0, time = 3 SECONDS)
-	addtimer(CALLBACK(src, .proc/decay_finished), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(decay_finished)), 3 SECONDS)
 
 /obj/structure/closet/decay/proc/decay_finished()
 	dump_contents()
@@ -332,11 +332,6 @@
 /obj/projectile/magic/sapping
 	name = "bolt of sapping"
 	icon_state = "sapping"
-
-/obj/projectile/magic/sapping/on_hit(mob/living/target)
-	. = ..()
-	if(isliving(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, REF(src), /datum/mood_event/sapped)
 
 /obj/projectile/magic/necropotence
 	name = "bolt of necropotence"

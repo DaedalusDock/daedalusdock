@@ -220,7 +220,7 @@
 	var/turf/T = get_turf(src)
 	T.visible_message(span_userdanger("[src] flares briefly."))
 
-	addtimer(CALLBACK(src, .proc/effect, user, .), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(effect), user, .), 1 SECONDS)
 	COOLDOWN_START(src, roll_cd, 2.5 SECONDS)
 
 /obj/item/dice/d20/fate/equipped(mob/user, slot)
@@ -410,7 +410,7 @@
 	icon_state = "1"
 	color = rgb(0,0,255)
 
-/obj/structure/ladder/unbreakable/rune/ComponentInitialize()
+/obj/structure/ladder/unbreakable/rune/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 

@@ -6,8 +6,17 @@
 /datum/debugger/New()
 		enable_debugger()
 
+//#define DLL_HARDWIRE "<filepath_here>"
+
+
 /datum/debugger/proc/enable_debugger()
+#ifndef DLL_HARDWIRE
 	var/dll = world.GetConfig("env", "AUXTOOLS_DEBUG_DLL")
+#else
+	var/dll = DLL_HARDWIRE
+	#warn AUXTOOLS DEBUG DLL HARDWIRED, DO NOT MERGE
+#endif
 	if (dll)
-		call(dll, "auxtools_init")()
+		log_world("Loading Debug DLL at: [dll]")
+		LIBCALL(dll, "auxtools_init")()
 		enable_debugging()

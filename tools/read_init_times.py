@@ -27,3 +27,4 @@ for (type, time) in sorted(init_times_per_type.items(), key = lambda x: x[1], re
         if error.errno == errno.EPIPE:
             sys.stderr.close()
             sys.exit(0)
+input("Press any key to close...")

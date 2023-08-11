@@ -6,10 +6,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
-		dmg_overlay_type = "" //no damage overlay shown when husked
 		is_husked = TRUE
 	else
-		dmg_overlay_type = initial(dmg_overlay_type)
 		is_husked = FALSE
 
 	if(variable_color)
@@ -48,7 +46,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
-	recolor_external_organs()
+	recolor_cosmetic_organs()
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
@@ -56,6 +54,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	cut_overlays()
+	if(is_stump)
+		return
+
 	dir = SOUTH
 	var/key = json_encode(generate_icon_key())
 	var/list/standing = GLOB.limb_overlays_cache[key]
@@ -147,38 +148,34 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 
 	if(dropped)
-		if(dmg_overlay_type)
+		if(icon_dmg_overlay && !is_husked)
 			if(brutestate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 			if(burnstate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
 
 
 
 	//EMISSIVE CODE START
-	// For some reason this was applied as an overlay on the aux image and limb image before.
-	// I am very sure that this is unnecessary, and i need to treat it as part of the return list
-	// to be able to mask it proper in case this limb is a leg.
 	if(!is_husked)
 		if(blocks_emissive)
-			var/atom/location = loc || owner || src
-			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, location, alpha = limb_appearance.alpha)
+			var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, -BODY_LAYER, alpha = limb_appearance.alpha)
 			limb_em_block.dir = image_dir
 			. += limb_em_block
 
 			if(aux_zone)
-				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, location, alpha = aux_appearance.alpha)
+				var/mutable_appearance/aux_em_block = emissive_blocker(chosen_icon, chosen_aux_state, -BODY_LAYER, alpha = aux_appearance.alpha)
 				aux_em_block.dir = image_dir
 				. += aux_em_block
 	//EMISSIVE CODE END
 
 	if(!is_husked)
 		//Draw external organs like horns and frills
-		for(var/obj/item/organ/external/external_organ in external_organs)
-			if(!dropped && !external_organ.can_draw_on_bodypart(owner))
+		for(var/obj/item/organ/visual_organ as anything in contained_organs)
+			if(!visual_organ.visual || (!dropped && !visual_organ.can_draw_on_bodypart(owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			. += external_organ.get_overlays(limb_gender, image_dir)
+			. += visual_organ.get_overlays(limb_gender, image_dir)
 
 	return .
 
@@ -205,10 +202,10 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
 
-	for(var/obj/item/organ/external/external_organ as anything in external_organs)
-		if(owner && !external_organ.can_draw_on_bodypart(owner))
+	for(var/obj/item/organ/O as anything in contained_organs)
+		if(!O.visual)
 			continue
-		. += "-[jointext(external_organ.generate_icon_cache(), "-")]"
+		. += "-[json_encode(O.build_cache_key())]"
 
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
 		. += mod.key

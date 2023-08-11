@@ -765,7 +765,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	else
 		qdel(target)
 
-/obj/item/proc/can_trigger_gun(mob/living/user)
+/obj/item/proc/can_trigger_gun(mob/living/user, akimbo_usage)
 	if(!user.can_use_guns(src))
 		return FALSE
 	return TRUE
@@ -858,12 +858,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/highfrequencyblade/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, .proc/on_wield)
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, .proc/on_unwield)
+	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
+	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-
-/obj/item/highfrequencyblade/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/two_handed)
 
 /obj/item/highfrequencyblade/update_icon_state()

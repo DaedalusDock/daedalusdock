@@ -5,7 +5,12 @@
 	base_icon_state = "chemg"
 	inhand_icon_state = "flashbang"
 	w_class = WEIGHT_CLASS_SMALL
+
 	force = 2
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	/// Which stage of construction this grenade is currently at.
 	var/stage = GRENADE_EMPTY
 	/// The set of reagent containers that have been added to this grenade casing.
@@ -32,9 +37,6 @@
 	create_reagents(casing_holder_volume)
 	stage_change() // If no argument is set, it will change the stage to the current stage, useful for stock grenades that start READY.
 	wires = new /datum/wires/explosive/chem_grenade(src)
-
-/obj/item/grenade/chem_grenade/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
 
 /obj/item/grenade/chem_grenade/examine(mob/user)
@@ -230,7 +232,7 @@
 	if(landminemode)
 		landminemode.activate()
 		return
-	addtimer(CALLBACK(src, .proc/detonate), isnull(delayoverride)? det_time : delayoverride)
+	addtimer(CALLBACK(src, PROC_REF(detonate)), isnull(delayoverride)? det_time : delayoverride)
 
 /obj/item/grenade/chem_grenade/detonate(mob/living/lanced_by)
 	if(stage != GRENADE_READY)
@@ -385,7 +387,7 @@
 	chem_splash(get_turf(src), reagents, affected_area, list(reactants), ignition_temp, threatscale)
 
 	var/turf/detonated_turf = get_turf(src)
-	addtimer(CALLBACK(src, .proc/detonate), det_time)
+	addtimer(CALLBACK(src, PROC_REF(detonate)), det_time)
 	log_game("A grenade detonated at [AREACOORD(detonated_turf)]")
 
 

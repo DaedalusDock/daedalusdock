@@ -388,7 +388,7 @@
 
 /obj/item/clothing/head/helmet/rus_helmet/Initialize(mapload)
 	. = ..()
-	
+
 	create_storage(type = /datum/storage/pockets/helmet)
 
 /obj/item/clothing/head/helmet/rus_ushanka
@@ -471,7 +471,7 @@
 	magnification = user //this polls ghosts
 	visible_message(span_warning("[src] powers up!"))
 	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
-	RegisterSignal(magnification, COMSIG_SPECIES_LOSS, .proc/make_fall_off)
+	RegisterSignal(magnification, COMSIG_SPECIES_LOSS, PROC_REF(make_fall_off))
 	polling = TRUE
 	var/list/candidates = poll_candidates_for_mob("Do you want to play as a mind magnified monkey?", ROLE_SENTIENCE, ROLE_SENTIENCE, 5 SECONDS, magnification, POLL_IGNORE_SENTIENCE_POTION)
 	polling = FALSE
@@ -532,12 +532,6 @@
 	if(magnification)
 		visible_message(span_warning("[src] falls off of [magnification]'s head as it changes shape!"))
 		magnification.dropItemToGround(src)
-
-//LightToggle
-
-/obj/item/clothing/head/helmet/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/clothing/head/helmet/update_icon_state()
 	if(attached_light)

@@ -37,7 +37,6 @@
 /mob/living/simple_animal/hostile/ooze/Initialize(mapload)
 	. = ..()
 	create_reagents(300)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/ooze/attacked_by(obj/item/I, mob/living/user)
@@ -128,9 +127,6 @@
 		return FALSE
 	consume.stop_consuming()
 
-/mob/living/simple_animal/hostile/ooze/gelatinous/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GELATINOUS, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 ///This ability lets the gelatinious ooze speed up for a little bit
 /datum/action/cooldown/metabolicboost
 	name = "Metabolic boost"
@@ -165,8 +161,8 @@
 /datum/action/cooldown/metabolicboost/proc/trigger_boost()
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
 	ooze.add_movespeed_modifier(/datum/movespeed_modifier/metabolicboost)
-	var/timerid = addtimer(CALLBACK(src, .proc/HeatUp), 1 SECONDS, TIMER_STOPPABLE | TIMER_LOOP) //Heat up every second
-	addtimer(CALLBACK(src, .proc/FinishSpeedup, timerid), 6 SECONDS)
+	var/timerid = addtimer(CALLBACK(src, PROC_REF(HeatUp)), 1 SECONDS, TIMER_STOPPABLE | TIMER_LOOP) //Heat up every second
+	addtimer(CALLBACK(src, PROC_REF(FinishSpeedup), timerid), 6 SECONDS)
 	to_chat(ooze, span_notice("You start feel a lot quicker."))
 	active = TRUE
 	ooze.adjust_ooze_nutrition(-10)
@@ -200,8 +196,8 @@
 ///Register for owner death
 /datum/action/consume/New(Target)
 	. = ..()
-	RegisterSignal(owner, COMSIG_LIVING_DEATH, .proc/on_owner_death)
-	RegisterSignal(owner, COMSIG_PARENT_PREQDELETED, .proc/handle_mob_deletion)
+	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_owner_death))
+	RegisterSignal(owner, COMSIG_PARENT_PREQDELETED, PROC_REF(handle_mob_deletion))
 
 /datum/action/consume/proc/handle_mob_deletion()
 	SIGNAL_HANDLER
@@ -233,7 +229,7 @@
 /datum/action/consume/proc/start_consuming(mob/living/target)
 	vored_mob = target
 	vored_mob.forceMove(owner) ///AAAAAAAAAAAAAAAAAAAAAAHHH!!!
-	RegisterSignal(vored_mob, COMSIG_PARENT_PREQDELETED, .proc/handle_mob_deletion)
+	RegisterSignal(vored_mob, COMSIG_PARENT_PREQDELETED, PROC_REF(handle_mob_deletion))
 	playsound(owner,'sound/items/eatfood.ogg', rand(30,50), TRUE)
 	owner.visible_message(span_warning("[src] devours [target]!"), span_notice("You devour [target]."))
 	START_PROCESSING(SSprocessing, src)
@@ -288,9 +284,6 @@
 	glob_shooter.Grant(src)
 	var/datum/action/cooldown/gel_cocoon/gel_cocoon = new(src)
 	gel_cocoon.Grant(src)
-
-/mob/living/simple_animal/hostile/ooze/grapes/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GRAPE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///Ability that allows the owner to fire healing globules at mobs, targetting specific limbs.
 /datum/action/cooldown/globules
@@ -384,7 +377,7 @@
 	. = ..()
 	bodypart = null
 
-/obj/item/mending_globule/embedded(mob/living/carbon/human/embedded_mob, obj/item/bodypart/part)
+/obj/item/mending_globule/embedded(obj/item/bodypart/part)
 	. = ..()
 	if(!istype(part))
 		return

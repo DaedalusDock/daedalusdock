@@ -31,8 +31,8 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN
 	exotic_bloodtype = "U"
 	use_skintones = TRUE
-	mutantheart = /obj/item/organ/internal/heart/vampire
-	mutanttongue = /obj/item/organ/internal/tongue/vampire
+	mutantheart = /obj/item/organ/heart/vampire
+	mutanttongue = /obj/item/organ/tongue/vampire
 	examine_limb_id = SPECIES_HUMAN
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	///some starter text sent to the vampire initially, because vampires have shit to do to stay alive
@@ -53,7 +53,7 @@
 /datum/species/vampire/spec_life(mob/living/carbon/human/vampire, delta_time, times_fired)
 	. = ..()
 	if(istype(vampire.loc, /obj/structure/closet/crate/coffin))
-		vampire.heal_overall_damage(2 * delta_time, 2 * delta_time, 0, BODYTYPE_ORGANIC)
+		vampire.heal_overall_damage(2 * delta_time, 2 * delta_time, BODYTYPE_ORGANIC)
 		vampire.adjustToxLoss(-2 * delta_time)
 		vampire.adjustOxyLoss(-2 * delta_time)
 		vampire.adjustCloneLoss(-2 * delta_time)
@@ -148,7 +148,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/tongue/vampire
+/obj/item/organ/tongue/vampire
 	name = "vampire tongue"
 	actions_types = list(/datum/action/item_action/organ_action/vampire)
 	color = "#1C1C1C"
@@ -162,7 +162,7 @@
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/H = owner
-		var/obj/item/organ/internal/tongue/vampire/V = target
+		var/obj/item/organ/tongue/vampire/V = target
 		if(!COOLDOWN_FINISHED(V, drain_cooldown))
 			to_chat(H, span_warning("You just drained blood, wait a few seconds!"))
 			return
@@ -198,7 +198,7 @@
 			if(!victim.blood_volume)
 				to_chat(H, span_notice("You finish off [victim]'s blood supply."))
 
-/obj/item/organ/internal/heart/vampire
+/obj/item/organ/heart/vampire
 	name = "vampire heart"
 	color = "#1C1C1C"
 

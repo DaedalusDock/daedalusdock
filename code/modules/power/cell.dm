@@ -62,8 +62,8 @@
 
 /obj/item/stock_parts/cell/create_reagents(max_vol, flags)
 	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), .proc/on_reagent_change)
-	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, .proc/on_reagents_del)
+	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
+	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
 /// Handles properly detaching signal hooks.
 /obj/item/stock_parts/cell/proc/on_reagents_del(datum/reagents/reagents)
@@ -173,12 +173,12 @@
 /obj/item/stock_parts/cell/attack_self(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/internal/stomach/maybe_stomach = H.getorganslot(ORGAN_SLOT_STOMACH)
+		var/obj/item/organ/stomach/maybe_stomach = H.getorganslot(ORGAN_SLOT_STOMACH)
 
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
 
 			var/charge_limit = ETHEREAL_CHARGE_DANGEROUS - CELL_POWER_GAIN
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if((stomach.drain_time > world.time) || !stomach)
 				return
 			if(charge < CELL_POWER_DRAIN)
@@ -331,7 +331,7 @@
 	maxcharge = 50000
 	ratingdesc = FALSE
 
-/obj/item/stock_parts/cell/infinite/abductor/ComponentInitialize()
+/obj/item/stock_parts/cell/infinite/abductor/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -353,7 +353,7 @@
 	desc = "An EMP-proof cell."
 	maxcharge = 500
 
-/obj/item/stock_parts/cell/emproof/ComponentInitialize()
+/obj/item/stock_parts/cell/emproof/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
 

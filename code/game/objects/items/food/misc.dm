@@ -55,7 +55,7 @@
 
 /obj/item/food/cheese/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_RAT_INTERACT, .proc/on_rat_eat)
+	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
 
 /obj/item/food/cheese/proc/on_rat_eat(datum/source, mob/living/simple_animal/hostile/regalrat/king)
 	SIGNAL_HANDLER
@@ -109,10 +109,6 @@
 	tastes = list("mushroom" = 1)
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
-
-/obj/item/food/hugemushroomslice/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_WALKING_MUSHROOM, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/food/popcorn
 	name = "popcorn"
@@ -214,7 +210,7 @@
 
 /obj/item/food/badrecipe/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_ITEM_GRILLED, .proc/OnGrill)
+	RegisterSignal(src, COMSIG_ITEM_GRILLED, PROC_REF(OnGrill))
 	AddComponent(/datum/component/smell/strong, SCENT_HAZE, "burned garbage", 4)
 
 /obj/item/food/badrecipe/moldy
@@ -233,10 +229,6 @@
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
 	desc = "Not only is this rancid lump of disgusting bile crawling with insect life, but it is also teeming with various microscopic cultures. <i>It moves when you're not looking.</i>"
-
-/obj/item/food/badrecipe/moldy/bacteria/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
 ///Prevents grilling burnt shit from well, burning.
 /obj/item/food/badrecipe/proc/OnGrill()
@@ -527,7 +519,7 @@
 				bite_consumption = bite_consumption,\
 				microwaved_type = microwaved_type,\
 				junkiness = junkiness,\
-				on_consume = CALLBACK(src, .proc/OnConsume))
+				on_consume = CALLBACK(src, PROC_REF(OnConsume)))
 
 /obj/item/food/bubblegum/bubblegum/proc/OnConsume(mob/living/eater, mob/living/feeder)
 	if(iscarbon(eater))
@@ -750,7 +742,7 @@
 				bite_consumption = bite_consumption,\
 				microwaved_type = microwaved_type,\
 				junkiness = junkiness,\
-				check_liked = CALLBACK(src, .proc/check_liked))
+				check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
 /obj/item/food/rationpack/proc/check_liked(fraction, mob/mob) //Nobody likes rationpacks. Nobody.
 	return FOOD_DISLIKED

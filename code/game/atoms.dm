@@ -9,6 +9,9 @@
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
+	/// Has this atom's constructor ran?
+	var/initialized = FALSE
+
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
@@ -148,12 +151,14 @@
 	var/list/canSmoothWith = null
 	///Reference to atom being orbited
 	var/atom/orbit_target
-	///AI controller that controls this atom. type on init, then turned into an instance during runtime
+	///AI controller that controls this atom. type on init, then turned into an instance during runtime.
+	///Note: If you are for some reason giving this to a non-mob, it needs to create it's own in Initialize()
 	var/datum/ai_controller/ai_controller
 
 	///any atom that uses integrity and can be damaged must set this to true, otherwise the integrity procs will throw an error
 	var/uses_integrity = FALSE
 
+	///Atom armor. Use returnArmor()
 	var/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
@@ -165,6 +170,8 @@
 
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/datum/storage/atom_storage
+	/// How this atom should react to having its astar blocking checked
+	var/can_astar_pass = CANASTARPASS_DENSITY
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -174,15 +181,11 @@
  * if the preloader is being used and then call [InitAtom][/datum/controller/subsystem/atoms/proc/InitAtom] of which the ultimate
  * result is that the Intialize proc is called.
  *
- * We also generate a tag here if the DF_USE_TAG flag is set on the atom
  */
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
-	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
+	if(use_preloader && (type == global._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)
-
-	if(datum_flags & DF_USE_TAG)
-		GenerateTag()
 
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)
@@ -233,47 +236,26 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
 
-	if(loc)
-		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
+	initialized = TRUE
 
-	if(greyscale_config && greyscale_colors)
+	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
 		update_greyscale()
 
 	//atom color stuff
-	if(color)
+	if(!isnull(color))
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
-	if (length(smoothing_groups))
-		#ifdef UNIT_TESTS
-		assert_sorted(smoothing_groups, "[type].smoothing_groups")
-		#endif
-
-		SET_BITFLAG_LIST(smoothing_groups)
-
-	if (length(canSmoothWith))
-		#ifdef UNIT_TESTS
-		assert_sorted(canSmoothWith, "[type].canSmoothWith")
-		#endif
-
-		if(canSmoothWith[length(canSmoothWith)] > MAX_S_TURF) //If the last element is higher than the maximum turf-only value, then it must scan turf contents for smoothing targets.
-			smoothing_flags |= SMOOTH_OBJ
-
-		SET_BITFLAG_LIST(canSmoothWith)
-
 	if(uses_integrity)
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (isnull(armor))
-			armor = getArmor()
-		else if (!istype(armor, /datum/armor))
-			stack_trace("Invalid type [armor.type] found in .armor during /atom Initialize()")
+		#ifdef UNIT_TESTS
+		if (!(islist(armor) || isnull(armor) || istype(armor)))
+			stack_trace("Invalid armor found on atom of type [type] during /atom/Initialize()! Value: [armor]")
+		#endif
 
 		atom_integrity = max_integrity
 
@@ -281,10 +263,8 @@
 	// This MUST come after atom_integrity is set above, as if old materials get removed,
 	// atom_integrity is checked against max_integrity and can BREAK the atom.
 	// The integrity to max_integrity ratio is still preserved.
-	set_custom_materials(custom_materials)
-
-	ComponentInitialize()
-	InitializeAIController()
+	if(length(custom_materials))
+		set_custom_materials(custom_materials)
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -301,10 +281,6 @@
  */
 /atom/proc/LateInitialize()
 	set waitfor = FALSE
-
-/// Put your [AddComponent] calls here
-/atom/proc/ComponentInitialize()
-	return
 
 /**
  * Top level of the destroy chain for most atoms
@@ -415,6 +391,10 @@
 	if(mover.throwing && (pass_flags_self & LETPASSTHROW))
 		return TRUE
 	return !density
+
+/// A version of CanPass() that accounts for vertical movement.
+/atom/proc/CanMoveOnto(atom/movable/mover, border_dir)
+	return ((border_dir & DOWN) && HAS_TRAIT(src, TRAIT_CLIMBABLE)) || CanPass(mover, border_dir)
 
 /**
  * Is this atom currently located on centcom
@@ -552,6 +532,10 @@
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
 	return null
+
+///Return air that a contained mob will be breathing.
+/atom/proc/return_breathable_air()
+	return return_air()
 
 ///Check if this atoms eye is still alive (probably)
 /atom/proc/check_eye(mob/user)
@@ -704,6 +688,10 @@
 	if(desc)
 		. += desc
 
+	if(z && user.z && user.z != z)
+		var/diff = abs(user.z - z)
+		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
+
 	if(custom_materials)
 		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
@@ -772,6 +760,10 @@
 	if(updates & UPDATE_ICON)
 		. |= update_icon(updates)
 
+	// This is not an override for performance.
+	if (ismovable(src))
+		UPDATE_OO_IF_PRESENT
+
 /// Updates the name of the atom
 /atom/proc/update_name(updates=ALL)
 	SHOULD_CALL_PARENT(TRUE)
@@ -827,8 +819,8 @@
 /// Child procs should call parent last so the update happens after all changes.
 /atom/proc/set_greyscale(list/colors, new_config)
 	SHOULD_CALL_PARENT(TRUE)
-	if(istype(colors))
-		colors = colors.Join("")
+	if(islist(colors))
+		colors = jointext(colors, "")
 	if(!isnull(colors) && greyscale_colors != colors) // If you want to disable greyscale stuff then give a blank string
 		greyscale_colors = colors
 
@@ -913,7 +905,7 @@
 /atom/proc/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, hitting_atom, skipcatch, hitpush, blocked, throwingdatum)
 	if(density && !has_gravity(hitting_atom)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
-		addtimer(CALLBACK(src, .proc/hitby_react, hitting_atom), 2)
+		addtimer(CALLBACK(src, PROC_REF(hitby_react), hitting_atom), 2)
 
 /**
  * We have have actually hit the passed in atom
@@ -1114,13 +1106,13 @@
 
 ///Adds an instance of colour_type to the atom's atom_colours list
 /atom/proc/add_atom_colour(coloration, colour_priority)
-	if(!atom_colours || !atom_colours.len)
-		atom_colours = list()
-		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
-	if(!coloration)
+	if(!length(atom_colours))
+		atom_colours = new /list(COLOUR_PRIORITY_AMOUNT)
+	if(isnull(coloration))
 		return
-	if(colour_priority > atom_colours.len)
-		return
+	if(colour_priority > length(atom_colours))
+		CRASH("Invalid color priority supplied to add_atom_color!")
+
 	atom_colours[colour_priority] = coloration
 	update_atom_colour()
 
@@ -1139,18 +1131,27 @@
 
 ///Resets the atom's color to null, and then sets it to the highest priority colour available
 /atom/proc/update_atom_colour()
-	color = null
-	if(!atom_colours)
+	if(!length(atom_colours))
 		return
 	for(var/checked_color in atom_colours)
-		if(islist(checked_color))
-			var/list/color_list = checked_color
-			if(color_list.len)
-				color = color_list
-				return
-		else if(checked_color)
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
 			color = checked_color
 			return
+
+		color = checked_color
+		return
+		if(isnull(checked_color))
+			continue
+		if(islist(checked_color) && length(checked_color))
+			color = checked_color
+			return
+
+		color = checked_color
+		return
+
+	color = null
 
 
 /**
@@ -1273,7 +1274,7 @@
 				create_reagents(amount)
 
 		if(reagents)
-			var/chosen_id
+			var/datum/reagent/chosen_id
 			switch(tgui_alert(usr, "Choose a method.", "Add Reagents", list("Search", "Choose from a list", "I'm feeling lucky")))
 				if("Search")
 					var/valid_id
@@ -1283,14 +1284,14 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id))
+							if (ispath(chosen_id) && !isabstract(chosen_id))
 								valid_id = TRUE
 						else
 							valid_id = TRUE
 						if(!valid_id)
 							to_chat(usr, span_warning("A reagent with that ID doesn't exist!"))
 				if("Choose from a list")
-					chosen_id = input(usr, "Choose a reagent to add.", "Choose a reagent.") as null|anything in sort_list(subtypesof(/datum/reagent), /proc/cmp_typepaths_asc)
+					chosen_id = input(usr, "Choose a reagent to add.", "Choose a reagent.") as null|anything in sort_list(subtypesof(/datum/reagent), GLOBAL_PROC_REF(cmp_typepaths_asc))
 				if("I'm feeling lucky")
 					chosen_id = pick(subtypesof(/datum/reagent))
 			if(chosen_id)
@@ -1590,10 +1591,6 @@
 /atom/proc/analyzer_act_secondary(mob/living/user, obj/item/tool)
 	return
 
-///Generate a tag for this atom
-/atom/proc/GenerateTag()
-	return
-
 ///Connect this atom to a shuttle
 /atom/proc/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	return
@@ -1654,6 +1651,8 @@
 			log_mecha(log_text)
 		if(LOG_SHUTTLE)
 			log_shuttle(log_text)
+		if(LOG_MECHCOMP)
+			log_mechcomp(log_text)
 		else
 			stack_trace("Invalid individual logging type: [message_type]. Defaulting to [LOG_GAME] (LOG_GAME).")
 			log_game(log_text)
@@ -1728,7 +1727,7 @@
 
 /atom/proc/update_filters()
 	filters = null
-	filter_data = sortTim(filter_data, /proc/cmp_filter_data_priority, TRUE)
+	filter_data = sortTim(filter_data, GLOBAL_PROC_REF(cmp_filter_data_priority), TRUE)
 	for(var/f in filter_data)
 		var/list/data = filter_data[f]
 		var/list/arguments = data.Copy()
@@ -1944,6 +1943,11 @@
  *
  * micro-optimized to hell because this proc is very hot, being called several times per movement every movement.
  *
+ * HEY JACKASS, LISTEN
+ * IF YOU ADD SOMETHING TO THIS PROC, MAKE SURE /mob/living ACCOUNTS FOR IT
+ * Living mobs treat gravity in an event based manner. We've decomposed this proc into different checks
+ * for them to use. If you add more to it, make sure you do that, or things will behave strangely
+ *
  * Gravity situations:
  * * No gravity if you're not in a turf
  * * No gravity if this atom is in is a space turf
@@ -1972,7 +1976,7 @@
 
 	var/area/turf_area = gravity_turf.loc
 
-	return !gravity_turf.force_no_gravity && (SSmapping.gravity_by_z_level["[gravity_turf.z]"] || turf_area.has_gravity)
+	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**
  * Causes effects when the atom gets hit by a rust effect from heretics
@@ -2066,16 +2070,6 @@
 	if(!source && ignore_stealthed_admins && client?.holder?.fakekey)
 		return list()
 	return ..()
-
-/**
-* Instantiates the AI controller of this atom. Override this if you want to assign variables first.
-*
-* This will work fine without manually passing arguments.
-
-+*/
-/atom/proc/InitializeAIController()
-	if(ispath(ai_controller))
-		ai_controller = new ai_controller(src)
 
 /**
  * Point at an atom
@@ -2207,8 +2201,12 @@
  * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
+ * * no_id: When true, doors with public access will count as impassible
+ *
+ * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
+ * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

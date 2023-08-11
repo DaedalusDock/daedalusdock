@@ -14,12 +14,9 @@
 	var/placement_offset = -15
 
 /obj/item/plate/attackby(obj/item/I, mob/user, params)
-	if(!IS_EDIBLE(I))
-		to_chat(user, span_notice("[src] is made for food, and food alone!"))
+	if(!can_accept_item(I, user))
 		return
-	if(contents.len >= max_items)
-		to_chat(user, span_notice("[src] can't fit more items!"))
-		return
+
 	var/list/modifiers = params2list(params)
 	//Center the icon where the user clicked.
 	if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
@@ -45,8 +42,8 @@
 /obj/item/plate/proc/AddToPlate(obj/item/item_to_plate)
 	vis_contents += item_to_plate
 	item_to_plate.flags_1 |= IS_ONTOP_1
-	RegisterSignal(item_to_plate, COMSIG_MOVABLE_MOVED, .proc/ItemMoved)
-	RegisterSignal(item_to_plate, COMSIG_PARENT_QDELETING, .proc/ItemMoved)
+	RegisterSignal(item_to_plate, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
+	RegisterSignal(item_to_plate, COMSIG_PARENT_QDELETING, PROC_REF(ItemMoved))
 	update_appearance()
 
 ///This proc cleans up any signals on the item when it is removed from a plate, and ensures it has the correct state again.
@@ -59,6 +56,15 @@
 /obj/item/plate/proc/ItemMoved(obj/item/moved_item, atom/OldLoc, Dir, Forced)
 	SIGNAL_HANDLER
 	ItemRemovedFromPlate(moved_item)
+
+/obj/item/plate/proc/can_accept_item(obj/item/I, mob/user)
+	if(!IS_EDIBLE(I))
+		to_chat(user, span_notice("[src] is made for food, and food alone!"))
+		return FALSE
+	if(contents.len >= max_items)
+		to_chat(user, span_notice("[src] can't fit more items!"))
+		return FALSE
+	return TRUE
 
 #define PLATE_SHARD_PIECES 5
 

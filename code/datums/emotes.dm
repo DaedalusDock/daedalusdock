@@ -107,7 +107,7 @@
 	var/space = should_have_space_before_emote(html_decode(msg)[1]) ? " " : ""
 	var/dchatmsg = "<b>[user]</b>[space][msg]"
 	//PARIAH EDIT END
-	var/tmp_sound = get_sound(user)
+	var/tmp_sound = get_sound(user, intentional)
 	if(tmp_sound && should_play_sound(user, intentional) && !TIMER_COOLDOWN_CHECK(user, type))
 		TIMER_COOLDOWN_START(user, type, audio_cooldown)
 		playsound(user, tmp_sound, 50, vary, frequency = get_frequency(user))
@@ -160,7 +160,7 @@
  *
  * Returns the sound that will be made while sending the emote.
  */
-/datum/emote/proc/get_sound(mob/living/user)
+/datum/emote/proc/get_sound(mob/living/user, involuntary)
 	return sound //by default just return this var.
 
 /**

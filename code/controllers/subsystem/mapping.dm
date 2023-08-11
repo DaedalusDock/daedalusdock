@@ -42,12 +42,13 @@ SUBSYSTEM_DEF(mapping)
 	var/space_levels_so_far = 0
 	///list of all z level datums in the order of their z (z level 1 is at index 1, etc.)
 	var/list/datum/space_level/z_list
-	///list of all z level indices that form multiz connections and whether theyre linked up or down.
-	///list of lists, inner lists are of the form: list("up or down link direction" = TRUE)
+	///list of all z level indices that form multiz connections. multi_zlevels[Z] = TRUE indicates there is an above Z-level.
 	var/list/multiz_levels = list()
 
-	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_z_connected()
+	///List of Z level connections. This is NOT direct connections, Decks 1 and 3 of a ship are "connected", but not directly. Use SSmapping.are_same_zstack()
 	VAR_PRIVATE/list/linked_zlevels = list()
+	///Same as above but includes lateral connections. Dangerous!
+	VAR_PRIVATE/list/laterally_linked_zlevels = list()
 
 	var/datum/space_level/transit
 	var/datum/space_level/empty_space
@@ -55,9 +56,9 @@ SUBSYSTEM_DEF(mapping)
 	/// True when in the process of adding a new Z-level, global locking
 	var/adding_new_zlevel = FALSE
 
-	///shows the default gravity value for each z level. recalculated when gravity generators change.
-	///associative list of the form: list("[z level num]" = max generator gravity in that z level OR the gravity level trait)
-	var/list/gravity_by_z_level = list()
+	/// shows the default gravity value for each z level. recalculated when gravity generators change.
+	/// List in the form: list(z level num = max generator gravity in that z level OR the gravity level trait)
+	var/list/gravity_by_zlevel = list()
 
 /datum/controller/subsystem/mapping/New()
 	..()
@@ -96,12 +97,6 @@ SUBSYSTEM_DEF(mapping)
 	if(CONFIG_GET(flag/roundstart_away))
 		createRandomZlevel(prob(CONFIG_GET(number/config_gateway_chance)))
 
-	// Load the virtual reality hub
-	if(CONFIG_GET(flag/virtual_reality))
-		to_chat(world, span_boldannounce("Loading virtual reality..."))
-		load_new_z_level("_maps/RandomZLevels/VR/vrhub.dmm", "Virtual Reality Hub")
-		to_chat(world, span_boldannounce("Virtual reality loaded."))
-
 	loading_ruins = TRUE
 	setup_ruins()
 	loading_ruins = FALSE
@@ -116,8 +111,7 @@ SUBSYSTEM_DEF(mapping)
 	setup_map_transitions()
 	generate_station_area_list()
 	initialize_reserved_level(transit.z_value)
-	SSticker.OnRoundstart(CALLBACK(src, .proc/spawn_maintenance_loot))
-	generate_z_level_linkages()
+	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(spawn_maintenance_loot)))
 	calculate_default_z_level_gravities()
 
 	return ..()
@@ -134,17 +128,13 @@ SUBSYSTEM_DEF(mapping)
 	if(!isnum(z_level) || z_level <= 0)
 		return FALSE
 
-	if(multiz_levels.len < z_level)
-		multiz_levels.len = z_level
-
 	var/linked_down = level_trait(z_level, ZTRAIT_DOWN)
 	var/linked_up = level_trait(z_level, ZTRAIT_UP)
-	multiz_levels[z_level] = list()
 	if(linked_down)
-		multiz_levels[z_level]["[DOWN]"] = TRUE
+		multiz_levels[z_level-1] = TRUE
 		. = TRUE
 	if(linked_up)
-		multiz_levels[z_level]["[UP]"] = TRUE
+		multiz_levels[z_level] = TRUE
 		. = TRUE
 
 	#if !defined(MULTIZAS) && !defined(UNIT_TESTS)
@@ -162,9 +152,15 @@ SUBSYSTEM_DEF(mapping)
 		max_gravity = max(grav_gen.setting, max_gravity)
 
 	max_gravity = max_gravity || level_trait(z_level_number, ZTRAIT_GRAVITY) || 0//just to make sure no nulls
-	gravity_by_z_level["[z_level_number]"] = max_gravity
+	gravity_by_zlevel[z_level_number] = max_gravity
 	return max_gravity
 
+/// Takes a z level datum, and tells the mapping subsystem to manage it
+/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z)
+	z_list += new_z
+	///Increment all the z level lists (note: not all yet)
+	gravity_by_zlevel.len += 1
+	multiz_levels.len += 1
 
 /**
  * ##setup_ruins
@@ -175,20 +171,20 @@ SUBSYSTEM_DEF(mapping)
 	// Generate mining ruins
 	var/list/lava_ruins = levels_by_trait(ZTRAIT_LAVA_RUINS)
 	if (lava_ruins.len)
-		seedRuins(lava_ruins, CONFIG_GET(number/lavaland_budget), list(/area/lavaland/surface/outdoors/unexplored), themed_ruins[ZTRAIT_LAVA_RUINS])
+		seedRuins(lava_ruins, CONFIG_GET(number/lavaland_budget), list(/area/lavaland/surface/outdoors/unexplored), themed_ruins[ZTRAIT_LAVA_RUINS], clear_below = TRUE)
 		for (var/lava_z in lava_ruins)
 			spawn_rivers(lava_z)
 
 	var/list/ice_ruins = levels_by_trait(ZTRAIT_ICE_RUINS)
 	if (ice_ruins.len)
 		// needs to be whitelisted for underground too so place_below ruins work
-		seedRuins(ice_ruins, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/surface/outdoors/unexplored, /area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS])
+		seedRuins(ice_ruins, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/surface/outdoors/unexplored, /area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS], clear_below = TRUE)
 		for (var/ice_z in ice_ruins)
 			spawn_rivers(ice_z, 4, /turf/open/openspace/icemoon, /area/icemoon/surface/outdoors/unexplored/rivers)
 
 	var/list/ice_ruins_underground = levels_by_trait(ZTRAIT_ICE_RUINS_UNDERGROUND)
 	if (ice_ruins_underground.len)
-		seedRuins(ice_ruins_underground, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS_UNDERGROUND])
+		seedRuins(ice_ruins_underground, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS_UNDERGROUND], clear_below = TRUE)
 		for (var/ice_z in ice_ruins_underground)
 			spawn_rivers(ice_z, 4, level_trait(ice_z, ZTRAIT_BASETURF), /area/icemoon/underground/unexplored/rivers)
 
@@ -214,7 +210,7 @@ SUBSYSTEM_DEF(mapping)
 		message_admins("Shuttles in transit detected. Attempting to fast travel. Timeout is [wipe_safety_delay/10] seconds.")
 	var/list/cleared = list()
 	for(var/i in in_transit)
-		INVOKE_ASYNC(src, .proc/safety_clear_transit_dock, i, in_transit[i], cleared)
+		INVOKE_ASYNC(src, PROC_REF(safety_clear_transit_dock), i, in_transit[i], cleared)
 	UNTIL((go_ahead < world.time) || (cleared.len == in_transit.len))
 	do_wipe_turf_reservations()
 	clearing_reserved_turfs = FALSE
@@ -483,7 +479,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	banned += generateMapList("spaceruinblacklist.txt")
 	banned += generateMapList("iceruinblacklist.txt")
 
-	for(var/item in sort_list(subtypesof(/datum/map_template/ruin), /proc/cmp_ruincost_priority))
+	for(var/item in sort_list(subtypesof(/datum/map_template/ruin), GLOBAL_PROC_REF(cmp_ruincost_priority)))
 		var/datum/map_template/ruin/ruin_type = item
 		// screen out the abstract subtypes
 		if(!initial(ruin_type.id))

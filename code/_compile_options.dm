@@ -68,11 +68,18 @@
 ///~~Requires TESTING to be defined to work~~
 //#define REAGENTS_TESTING
 
+///If defined, we will compile with FULL timer debug info, rather then a limited scope
+///Be warned, this increases timer creation cost by 5x
+// #define TIMER_DEBUG
+
 ///If this is uncommented, force our verb processing into just the 2% of a tick
 ///We normally reserve for it
 ///NEVER run this on live, it's for simulating highpop only
 // #define VERB_STRESS_TEST
 
+// If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
+// We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
+// #define USE_BYOND_TRACY
 
 ///Uncomment this to force all verbs to run into overtime all of the time
 ///Essentially negating the reserve 2%
@@ -122,13 +129,23 @@
 // #define ZASDBG
 
 ///Enables multi-Z air movement. Zones do not merge across Z levels.
-// #define MULTIZAS
+#define MULTIZAS
 
+/////////////////////// ZMIMIC
 
+///Enables Multi-Z lighting
+#define ZMIMIC_LIGHT_BLEED
+
+///Enables multi-z speech
+#define ZMIMIC_MULTIZ_SPEECH
 
 /////////////////////// MISC PERFORMANCE
+
 //uncomment this to load centcom and runtime station and thats it.
 // #define LOWMEMORYMODE
+
+//uncomment to enable the spatial grid debug proc.
+// #define SPATIAL_GRID_ZLEVEL_STATS
 
 ///A reasonable number of maximum overlays an object needs
 ///If you think you need more, rethink it
@@ -138,7 +155,7 @@
 /// 1 to use the default behaviour;
 /// 2 for preloading absolutely everything;
 #ifndef PRELOAD_RSC
-#define PRELOAD_RSC 2
+#define PRELOAD_RSC 1
 #endif
 
 
@@ -163,6 +180,8 @@
 #define REFERENCE_TRACKING_DEBUG
 #define FIND_REF_NO_CHECK_TICK
 #define GC_FAILURE_HARD_LOOKUP
+//Test at full capacity, the extra cost doesn't matter
+#define TIMER_DEBUG
 #endif
 
 #ifdef TGS
@@ -174,6 +193,8 @@
 #warn Building with Dream Maker is no longer supported and will result in errors.
 #warn In order to build, run BUILD.bat in the root directory.
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
+//Hi, Hijacking this to do DMEd-Specific Icon Overrides
+#define SIMPLE_MAPHELPERS
 #endif
 
 #ifdef ZASDBG

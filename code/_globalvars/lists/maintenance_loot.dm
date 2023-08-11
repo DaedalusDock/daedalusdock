@@ -190,10 +190,6 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 		/obj/item/storage/belt/utility = 1,
 		) = 8,
 
-	list(//strange objects
-		/obj/item/relic = 5,
-		) = 8,
-
 	list(//construction and crafting
 		/obj/item/beacon = 1,
 		/obj/item/paper/fluff/stations/soap = 1, //recipes count as crafting.
@@ -208,9 +204,10 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 
 	list(//medical and chemicals
 		list(//basic healing items
-			/obj/item/stack/medical/gauze = 1,
+			/obj/item/stack/gauze = 1,
 			/obj/item/stack/medical/mesh = 1,
 			/obj/item/stack/medical/suture = 1,
+			/obj/item/stack/medical/bruise_pack = 1,
 			) = 1,
 		list(//medical chems
 			/obj/item/reagent_containers/glass/bottle/multiver = 1,
@@ -289,6 +286,7 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/shield/riot/buckler = 1,
 		/obj/item/throwing_star = 1,
 		/obj/item/weldingtool/hugetank = 1,
+		/obj/item/paint_sprayer = 1,
 		) = 1,
 
 	list(//equipment
@@ -300,18 +298,6 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/clothing/head/helmet/justice = 1,
 		/obj/item/storage/belt/military/assault = 1,
 		/obj/item/storage/belt/security = 1,
-		) = 1,
-
-	list(//paint
-		/obj/item/paint/anycolor = 1,
-		/obj/item/paint/black = 1,
-		/obj/item/paint/blue = 1,
-		/obj/item/paint/green = 1,
-		/obj/item/paint_remover = 1,
-		/obj/item/paint/red = 1,
-		/obj/item/paint/violet = 1,
-		/obj/item/paint/white = 1,
-		/obj/item/paint/yellow = 1,
 		) = 1,
 
 	list(//medical and chemicals

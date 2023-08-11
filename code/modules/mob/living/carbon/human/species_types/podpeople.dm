@@ -10,8 +10,8 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_PLANT_SAFE,
 	)
-	external_organs = list(
-		/obj/item/organ/external/pod_hair = "None",
+	cosmetic_organs = list(
+		/obj/item/organ/pod_hair = "None",
 	)
 	inherent_biotypes = MOB_ORGANIC | MOB_HUMANOID | MOB_PLANT
 	inherent_factions = list("plants", "vines")
@@ -48,7 +48,7 @@
 		if(H.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 			H.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 		if(light_amount > 0.2) //if there's enough light, heal
-			H.heal_overall_damage(0.5 * delta_time, 0.5 * delta_time, 0, BODYTYPE_ORGANIC)
+			H.heal_overall_damage(0.5 * delta_time, 0.5 * delta_time, BODYTYPE_ORGANIC)
 			H.adjustToxLoss(-0.5 * delta_time)
 			H.adjustOxyLoss(-0.5 * delta_time)
 
@@ -69,6 +69,6 @@
 	human_mob.update_body()
 
 /datum/species/pod/proc/change_hairstyle(mob/living/carbon/human/human_mob, new_style)
-	var/obj/item/organ/external/organ = human_mob.getorganslot(ORGAN_SLOT_EXTERNAL_POD_HAIR)
+	var/obj/item/organ/organ = human_mob.getorganslot(ORGAN_SLOT_EXTERNAL_POD_HAIR)
 	organ.set_sprite(new_style)
 	human_mob.update_body_parts()

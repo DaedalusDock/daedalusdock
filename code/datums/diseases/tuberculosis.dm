@@ -9,7 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	cure_chance = 2.5 //like hell are you getting out of hell
 	desc = "A rare highly transmissible virulent virus. Few samples exist, rumoured to be carefully grown and cultured by clandestine bio-weapon specialists. Causes fever, blood vomiting, lung damage, weight loss, and fatigue."
-	required_organs = list(/obj/item/organ/internal/lungs)
+	required_organs = list(/obj/item/organ/lungs)
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
 
@@ -42,9 +42,9 @@
 		if(5)
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_userdanger("[pick("You feel your heart slowing...", "You relax and slow your heartbeat.")]"))
-				affected_mob.adjustStaminaLoss(70, FALSE)
+				affected_mob.stamina.adjust(-70)
 			if(DT_PROB(5, delta_time))
-				affected_mob.adjustStaminaLoss(100, FALSE)
+				affected_mob.stamina.adjust(-100)
 				affected_mob.visible_message(span_warning("[affected_mob] faints!"), span_userdanger("You surrender yourself and feel at peace..."))
 				affected_mob.AdjustSleeping(100)
 			if(DT_PROB(1, delta_time))

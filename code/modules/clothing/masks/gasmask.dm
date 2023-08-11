@@ -152,7 +152,7 @@
 	flags_cover = MASKCOVERSEYES
 
 /obj/item/clothing/mask/gas/syndicate
-	name = "syndicate mask"
+	name = "red gasmask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "syndicate"
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -186,7 +186,6 @@
 		"The Madman" = image(icon = src.icon, icon_state = "joker"),
 		"The Rainbow Color" = image(icon = src.icon, icon_state = "rainbow")
 		)
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 
 /obj/item/clothing/mask/gas/clown_hat/ui_action_click(mob/user)
 	if(!istype(user) || user.incapacitated())

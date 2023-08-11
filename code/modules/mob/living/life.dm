@@ -39,6 +39,8 @@
 	if(!loc)
 		return
 
+	life_ticks++
+
 	if(!IS_IN_STASIS(src))
 
 		if(stat != DEAD)
@@ -63,11 +65,12 @@
 		if(environment)
 			handle_environment(environment, delta_time, times_fired)
 
-		handle_gravity(delta_time, times_fired)
-
 		if(stat != DEAD)
 			handle_traits(delta_time, times_fired) // eye, ear, brain damages
 			handle_status_effects(delta_time, times_fired) //all special effects, stun, knockdown, jitteryness, hallucination, sleeping, etc
+
+	if(!IS_IN_HARD_STASIS(src))
+		handle_gravity(delta_time, times_fired)
 
 	if(machine)
 		machine.check_eye(src)
@@ -158,19 +161,14 @@
 	return
 
 /mob/living/proc/handle_gravity(delta_time, times_fired)
-	var/gravity = has_gravity()
-	update_gravity(gravity)
-
-	if(gravity > STANDARD_GRAVITY)
-		gravity_animate()
-		handle_high_gravity(gravity, delta_time, times_fired)
-	else if(get_filter("gravity"))
-		remove_filter("gravity")
+	if(gravity_state > STANDARD_GRAVITY)
+		handle_high_gravity(gravity_state, delta_time, times_fired)
 
 /mob/living/proc/gravity_animate()
 	if(!get_filter("gravity"))
 		add_filter("gravity",1,list("type"="motion_blur", "x"=0, "y"=0))
-	INVOKE_ASYNC(src, .proc/gravity_pulse_animation)
+	animate(get_filter("gravity"), y = 1, time = 10, loop = -1)
+	animate(y = 0, time = 10)
 
 /mob/living/proc/gravity_pulse_animation()
 	animate(get_filter("gravity"), y = 1, time = 10)

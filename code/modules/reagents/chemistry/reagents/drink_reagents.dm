@@ -12,7 +12,7 @@
 	glass_icon_state = "glass_orange"
 	glass_name = "glass of orange juice"
 	glass_desc = "Vitamins! Yay!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/orangejuice/affect_blood(mob/living/carbon/C, removed)
 	if(prob(30) && C.getOxyLoss())
@@ -27,7 +27,7 @@
 	glass_icon_state = "glass_red"
 	glass_name = "glass of tomato juice"
 	glass_desc = "Are you sure this is tomato juice?"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/tomatojuice/affect_blood(mob/living/carbon/C, removed)
 	if(prob(20) && C.getFireLoss())
@@ -42,7 +42,7 @@
 	glass_icon_state = "glass_green"
 	glass_name = "glass of lime juice"
 	glass_desc = "A glass of sweet-sour lime juice."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/limejuice/affect_blood(mob/living/carbon/C, removed)
 	if(prob(20) && C.getToxLoss())
@@ -57,7 +57,7 @@
 	glass_icon_state = "carrotjuice"
 	glass_name = "glass of  carrot juice"
 	glass_desc = "It's just like a carrot but without crunching."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/carrotjuice/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_blurriness(-1 * removed)
@@ -79,7 +79,7 @@
 	glass_icon_state = "berryjuice"
 	glass_name = "glass of berry juice"
 	glass_desc = "Berry juice. Or maybe it's jaC. Who cares?"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/applejuice
 	name = "Apple Juice"
@@ -95,7 +95,7 @@
 	glass_icon_state = "poisonberryjuice"
 	glass_name = "glass of berry juice"
 	glass_desc = "Berry juice. Or maybe it's poison. Who cares?"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/poisonberryjuice/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(1 * removed, 0)
@@ -109,7 +109,7 @@
 	glass_icon_state = "glass_red"
 	glass_name = "glass of watermelon juice"
 	glass_desc = "A glass of watermelon juice."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/lemonjuice
 	name = "Lemon Juice"
@@ -119,7 +119,7 @@
 	glass_icon_state = "lemonglass"
 	glass_name = "glass of lemon juice"
 	glass_desc = "Sour..."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/banana
 	name = "Banana Juice"
@@ -129,7 +129,7 @@
 	glass_icon_state = "banana"
 	glass_name = "glass of banana juice"
 	glass_desc = "The raw essence of a banana. HONK."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/banana/affect_blood(mob/living/carbon/C, removed)
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
@@ -145,7 +145,7 @@
 	glass_name = "nothing"
 	glass_desc = "Absolutely nothing."
 	shot_glass_icon_state = "shotglass"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/nothing/affect_blood(mob/living/carbon/C, removed)
 	if(ishuman(C) && C.mind?.miming)
@@ -159,7 +159,7 @@
 	metabolization_rate = INFINITY
 	color = "#FF4DD2"
 	taste_description = "laughter"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/laughter/affect_blood(mob/living/carbon/C, removed)
 	spawn(-1)
@@ -171,7 +171,7 @@
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
 	color = "#FF4DD2"
 	taste_description = "laughter"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/superlaughter/affect_blood(mob/living/carbon/C, removed)
 	if(prob(30))
@@ -187,14 +187,14 @@
 	glass_icon_state = "glass_brown"
 	glass_name = "glass of potato juice"
 	glass_desc = "Bleh..."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/grapejuice
 	name = "Grape Juice"
 	description = "The juice of a bunch of grapes. Guaranteed non-alcoholic."
 	color = "#290029" // dark purple
 	taste_description = "grape soda"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/milk
 	name = "Milk"
@@ -204,7 +204,7 @@
 	glass_icon_state = "glass_white"
 	glass_name = "glass of milk"
 	glass_desc = "White and nutritious goodness!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 	// Milk is good for humans, but bad for plants. The sugars cannot be used by plants, and the milk fat harms growth. Not shrooms though. I can't deal with this now...
 /datum/reagent/consumable/milk/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -231,7 +231,7 @@
 	glass_icon_state = "glass_white"
 	glass_name = "glass of soy milk"
 	glass_desc = "White and nutritious soy goodness!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/soymilk/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -247,7 +247,7 @@
 	glass_icon_state = "glass_white"
 	glass_name = "glass of cream"
 	glass_desc = "Ewwww..."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/cream/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -265,7 +265,7 @@
 	glass_icon_state = "glass_brown"
 	glass_name = "glass of coffee"
 	glass_desc = "Don't drop it, or you'll send scalding liquid and glass shards everywhere."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_STOCK
 
 /datum/reagent/consumable/coffee/overdose_process(mob/living/carbon/C)
@@ -291,7 +291,7 @@
 	glass_icon_state = "teaglass"
 	glass_name = "glass of tea"
 	glass_desc = "Drinking it from here would not seem right."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_STOCK
 
 /datum/reagent/consumable/tea/affect_ingest(mob/living/carbon/C, removed)
@@ -314,7 +314,7 @@
 	glass_icon_state = "lemonpitcher"
 	glass_name = "pitcher of lemonade"
 	glass_desc = "This drink leaves you feeling nostalgic for some reason."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_EASY
 
 /datum/reagent/consumable/tea/arnold_palmer
@@ -327,7 +327,7 @@
 	glass_icon_state = "arnold_palmer"
 	glass_name = "Arnold Palmer"
 	glass_desc = "You feel like taking a few golf swings after a few swigs of this."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/tea/arnold_palmer/affect_blood(mob/living/carbon/C, removed)
 	if(prob(5))
@@ -342,7 +342,7 @@
 	glass_icon_state = "icedcoffeeglass"
 	glass_name = "iced coffee"
 	glass_desc = "A drink to perk you up and refresh you!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/icecoffee/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -361,7 +361,7 @@
 	glass_icon_state = "icedteaglass"
 	glass_name = "iced tea"
 	glass_desc = "All natural, antioxidant-rich flavour sensation."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/icetea/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_timed_status_effect(-4 SECONDS * removed, /datum/status_effect/dizziness)
@@ -380,7 +380,7 @@
 	glass_icon_state = "spacecola"
 	glass_name = "glass of Space Cola"
 	glass_desc = "A glass of refreshing Space Cola."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/space_cola/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -396,7 +396,7 @@
 	glass_icon_state = "royrogers"
 	glass_name = "Roy Rogers"
 	glass_desc = "90% sugar in a glass."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/roy_rogers/affect_ingest(mob/living/carbon/C, removed)
 	C.set_timed_status_effect(12 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
@@ -413,7 +413,7 @@
 	glass_icon_state = "nuka_colaglass"
 	glass_name = "glass of Nuka Cola"
 	glass_desc = "Don't cry, Don't raise your eye, It's only nuclear wasteland."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/nuka_cola/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_TOUCH)
@@ -443,7 +443,7 @@
 	glass_icon_state = "spacecola"
 	glass_name = "glass of root beer"
 	glass_desc = "A glass of highly potent, incredibly sugary root beer."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	/// If we activated the effect
 	var/effect_enabled = FALSE
 
@@ -478,7 +478,7 @@
 	glass_icon_state = "grey_bull_glass"
 	glass_name = "glass of Grey Bull"
 	glass_desc = "Surprisingly it isn't grey."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/grey_bull/on_mob_metabolize(mob/living/L)
 	..()
@@ -504,7 +504,7 @@
 	glass_icon_state = "Space_mountain_wind_glass"
 	glass_name = "glass of Space Mountain Wind"
 	glass_desc = "Space Mountain Wind. As you know, there are no mountains in space, only wind."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/spacemountainwind/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -521,7 +521,7 @@
 	glass_icon_state = "dr_gibb_glass"
 	glass_name = "glass of Dr. Gibb"
 	glass_desc = "Dr. Gibb. Not as dangerous as the glass_name might imply."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/dr_gibb/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -535,7 +535,7 @@
 	glass_icon_state = "space-up_glass"
 	glass_name = "glass of Space-Up"
 	glass_desc = "Space-up. It helps you keep your cool."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 
 /datum/reagent/consumable/space_up/affect_ingest(mob/living/carbon/C, removed)
@@ -550,7 +550,7 @@
 	glass_icon_state = "lemonlime"
 	glass_name = "glass of lemon-lime"
 	glass_desc = "You're pretty certain a real fruit has never actually touched this."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/lemon_lime/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -564,7 +564,7 @@
 	glass_icon_state = "shamblerjuice"
 	glass_name = "glass of Shambler's juice"
 	glass_desc = "Mmm mm, shambly."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/shamblers/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -578,7 +578,7 @@
 	glass_icon_state = "glass_clearcarb"
 	glass_name = "glass of soda water"
 	glass_desc = "Soda water. Why not make a scotch and soda?"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 
 	// A variety of nutrients are dissolved in club soda, without sugar.
@@ -603,7 +603,7 @@
 	glass_icon_state = "glass_clearcarb"
 	glass_name = "glass of tonic water"
 	glass_desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/tonic/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -621,7 +621,7 @@
 	glass_icon_state = "monkey_energy_glass"
 	glass_name = "glass of Monkey Energy"
 	glass_desc = "You can unleash the ape, but without the pop of the can?"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/monkey_energy/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -656,7 +656,7 @@
 	glass_icon_state = "iceglass"
 	glass_name = "glass of ice"
 	glass_desc = "Generally, you're supposed to put something else in there too..."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/ice/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -676,7 +676,7 @@
 	glass_icon_state = "soy_latte"
 	glass_name = "soy latte"
 	glass_desc = "A nice and refreshing beverage while you're reading."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_EASY
 
 /datum/reagent/consumable/soy_latte/affect_ingest(mob/living/carbon/C, removed)
@@ -697,7 +697,7 @@
 	glass_icon_state = "cafe_latte"
 	glass_name = "cafe latte"
 	glass_desc = "A nice, strong and refreshing beverage while you're reading."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_EASY
 
 /datum/reagent/consumable/cafe_latte/affect_ingest(mob/living/carbon/C, removed)
@@ -717,7 +717,7 @@
 	glass_icon_state = "doctorsdelightglass"
 	glass_name = "Doctor's Delight"
 	glass_desc = "The space doctor's favorite. Guaranteed to restore bodily injury; side effects include cravings and hunger."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/doctor_delight/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(-0.5 * removed, 0)
@@ -740,7 +740,7 @@
 	glass_icon_state = "cinderella"
 	glass_name = "Cinderella"
 	glass_desc = "There is not a single drop of alcohol in this thing."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/cinderella/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -756,7 +756,7 @@
 	glass_icon_state = "cherryshake"
 	glass_name = "cherry shake"
 	glass_desc = "A cherry flavored milkshake."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/bluecherryshake
@@ -769,7 +769,7 @@
 	glass_icon_state = "bluecherryshake"
 	glass_name = "blue cherry shake"
 	glass_desc = "An exotic blue milkshake."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/vanillashake
 	name = "Vanilla Shake"
@@ -781,7 +781,7 @@
 	glass_icon_state = "vanillashake"
 	glass_name = "vanilla shake"
 	glass_desc = "A vanilla flavored milkshake."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/caramelshake
@@ -794,7 +794,7 @@
 	glass_icon_state = "caramelshake"
 	glass_name = "caramel shake"
 	glass_desc = "A caramel flavored milkshake."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/choccyshake
@@ -807,7 +807,7 @@
 	glass_icon_state = "choccyshake"
 	glass_name = "chocolate shake"
 	glass_desc = "A chocolate flavored milkshake."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/pumpkin_latte
@@ -820,7 +820,7 @@
 	glass_icon_state = "pumpkin_latte"
 	glass_name = "pumpkin latte"
 	glass_desc = "A mix of coffee and pumpkin juice."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/gibbfloats
 	name = "Gibb Floats"
@@ -832,21 +832,21 @@
 	glass_icon_state = "gibbfloats"
 	glass_name = "Gibbfloat"
 	glass_desc = "Dr. Gibb with ice cream on top."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/pumpkinjuice
 	name = "Pumpkin Juice"
 	description = "Juiced from real pumpkin."
 	color = "#FFA500"
 	taste_description = "pumpkin"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/blumpkinjuice
 	name = "Blumpkin Juice"
 	description = "Juiced from real blumpkin."
 	color = "#00BFFF"
 	taste_description = "a mouthful of pool water"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/triple_citrus
 	name = "Triple Citrus"
@@ -857,7 +857,7 @@
 	glass_icon_state = "triplecitrus" //needs own sprite mine are trash //your sprite is great tho
 	glass_name = "glass of triple citrus"
 	glass_desc = "A mixture of citrus juices. Tangy, yet smooth."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/grape_soda
 	name = "Grape Soda"
@@ -866,7 +866,7 @@
 	taste_description = "grape soda"
 	glass_name = "glass of grape juice"
 	glass_desc = "It's grape (soda)!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/grape_soda/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -878,7 +878,7 @@
 	color = "#7D4E29"
 	quality = DRINK_NICE
 	taste_description = "chocolate milk"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/hot_coco
 	name = "Hot Coco"
@@ -889,7 +889,7 @@
 	glass_icon_state = "chocolateglass"
 	glass_name = "glass of hot coco"
 	glass_desc = "A favorite winter drink to warm you up."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/hot_coco/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -910,7 +910,7 @@
 	glass_icon_state = "italiancoco"
 	glass_name = "glass of italian coco"
 	glass_desc = "A spin on a winter favourite, made to please."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/italian_coco/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -924,7 +924,7 @@
 	glass_icon_state = "glass_green"
 	glass_name = "glass of menthol"
 	glass_desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/menthol/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -937,7 +937,7 @@
 	taste_description = "sweet pomegranates"
 	glass_name = "glass of grenadine"
 	glass_desc = "Delicious flavored syrup."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/parsnipjuice
 	name = "Parsnip Juice"
@@ -945,7 +945,7 @@
 	color = "#FFA500"
 	taste_description = "parsnip"
 	glass_name = "glass of parsnip juice"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/pineapplejuice
 	name = "Pineapple Juice"
@@ -954,7 +954,7 @@
 	taste_description = "pineapple"
 	glass_name = "glass of pineapple juice"
 	glass_desc = "Tart, tropical, and hotly debated."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/peachjuice //Intended to be extremely rare due to being the limiting ingredients in the blazaam drink
 	name = "Peach Juice"
@@ -962,7 +962,7 @@
 	color = "#E78108"
 	taste_description = "peaches"
 	glass_name = "glass of peach juice"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/cream_soda
 	name = "Cream Soda"
@@ -973,7 +973,7 @@
 	glass_icon_state = "cream_soda"
 	glass_name = "Cream Soda"
 	glass_desc = "A classic space-American vanilla flavored soft drink."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/cream_soda/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
@@ -988,7 +988,7 @@
 	glass_icon_state = "soldry"
 	glass_name = "Sol Dry"
 	glass_desc = "A soothing, mellow drink made from ginger."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/sol_dry/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -1003,7 +1003,7 @@
 	glass_icon_state = "shirleytemple"
 	glass_name = "Shirley Temple"
 	glass_desc = "Ginger ale with processed grenadine. "
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/shirley_temple/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -1019,7 +1019,7 @@
 	glass_name = "Red Queen"
 	glass_desc = "DRINK ME."
 	var/current_size = RESIZE_DEFAULT_SIZE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/red_queen/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -1051,7 +1051,7 @@
 	glass_icon_state = "glass_yellow"
 	glass_name = "glass of bungo juice"
 	glass_desc = "Exotic! You feel like you are on vacation already."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/prunomix
 	name = "Pruno Mixture"
@@ -1061,7 +1061,7 @@
 	glass_icon_state = "glass_orange"
 	glass_name = "glass of pruno mixture"
 	glass_desc = "Fruit, sugar, yeast, and water pulped together into a pungent slurry."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/aloejuice
 	name = "Aloe Juice"
@@ -1071,7 +1071,7 @@
 	glass_icon_state = "glass_yellow"
 	glass_name = "glass of aloe juice"
 	glass_desc = "A healthy and refreshing juice."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/aloejuice/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -1088,7 +1088,7 @@
 	glass_icon_state = "aguafresca"
 	glass_name = "Agua Fresca"
 	glass_desc = "90% water, but still refreshing."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/agua_fresca/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -1107,7 +1107,7 @@
 	glass_icon_state = "mushroom_tea_glass"
 	glass_name = "glass of mushroom tea"
 	glass_desc = "Oddly savoury for a drink."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/mushroom_tea/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -1126,7 +1126,7 @@
 	glass_icon_state = "toechtauese_syrup"
 	glass_name = "glass of töchtaüse juice"
 	glass_desc = "Raw, unadulterated töchtaüse juice. One swig will fill you with regrets."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/consumable/toechtauese_syrup
 	name = "Töchtaüse Syrup"
@@ -1137,4 +1137,4 @@
 	glass_icon_state = "toechtauese_syrup"
 	glass_name = "glass of töchtaüse syrup"
 	glass_desc = "Not for drinking on its own."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+

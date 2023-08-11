@@ -8,7 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
 	abstract_type = /datum/reagent/medicine
 	show_in_codex = TRUE
 
@@ -17,7 +17,7 @@
 	description = "It's magic. We don't have to explain it."
 	color = "#E0BB00" //golden for the gods
 	taste_description = "badmins"
-	chemical_flags = REAGENT_DEAD_PROCESS | REAGENT_IGNORE_MOB_SIZE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SPECIAL | REAGENT_DEAD_PROCESS
 	metabolization_rate = 1
 
 // The best stuff there is. For testing/debugging.
@@ -77,7 +77,6 @@
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
 			continue
 		D.cure()
-	..()
 	. = TRUE
 
 /datum/reagent/medicine/adminordrazine/quantum_heal
@@ -95,7 +94,6 @@
 	color = "#00bfff"
 	overdose_threshold = 60
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.5
 
 /datum/reagent/medicine/inaprovaline/on_mob_metabolize(mob/living/carbon/C, class)
@@ -136,7 +134,6 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
@@ -179,7 +176,6 @@
 	color = "#ffa800"
 	overdose_threshold = 30
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.9
 
 /datum/reagent/medicine/kelotane/affect_blood(mob/living/carbon/C, removed)
@@ -194,7 +190,6 @@
 	reagent_state = LIQUID
 	color = "#ff8000"
 	overdose_threshold = 10
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
@@ -207,7 +202,6 @@
 	taste_description = "a roll of gauze"
 	reagent_state = LIQUID
 	color = "#00a000"
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.1
 
 /datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
@@ -221,7 +215,6 @@
 	reagent_state = LIQUID
 	color = "#0080ff"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 2.4
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
@@ -235,7 +228,6 @@
 	taste_description = "grossness"
 	reagent_state = LIQUID
 	color = "#8040ff"
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 6
 
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
@@ -273,7 +265,6 @@
 	reagent_state = LIQUID
 	color = "#8080ff"
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 3.9
 
 /datum/reagent/medicine/cryoxadone/affect_blood(mob/living/carbon/C, removed)
@@ -298,7 +289,6 @@
 	reagent_state = LIQUID
 	color = "#80bfff"
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 5.5
 
 /datum/reagent/medicine/clonexadone/affect_blood(mob/living/carbon/C, removed)
@@ -322,7 +312,6 @@
 	reagent_state = LIQUID
 	color = "#cb68fc"
 	overdose_threshold =30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.05
 	ingest_met = 0.02
 	value = 3.1
@@ -390,7 +379,6 @@
 	description = "An effective and very addictive painkiller. Don't mix with alcohol."
 	taste_description = "bitterness"
 	color = "#800080"
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	overdose_threshold =20
 	pain_power = 200
 	effective_cycle = 2
@@ -402,7 +390,6 @@
 	color = "#A9FBFB"
 	metabolization_rate = 0.1
 	overdose_threshold = 30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	addiction_types = list(/datum/addiction/opiods = 10)
 
 /datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/L)
@@ -431,7 +418,6 @@
 	overdose_threshold = 20
 	pain_power = 200
 	effective_cycle = 2
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	addiction_types = list(/datum/addiction/opiods = 20)
 
 /datum/reagent/medicine/tramadol/oxycodone/on_mob_end_metabolize(mob/living/carbon/C)
@@ -448,7 +434,6 @@
 	color = "#99ccff"
 	metabolization_rate = 0.01
 	overdose_threshold = 5
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.6
 
 /datum/reagent/medicine/synaptizine/affect_blood(mob/living/carbon/C, removed)
@@ -467,7 +452,6 @@
 	description = "Venixalin is a strong, specialised antivenom for dealing with advanced toxins and venoms."
 	taste_description = "overpowering sweetness"
 	color = "#dadd98"
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	metabolization_rate = 0.4
 
 	var/remove_generic = 0
@@ -500,7 +484,6 @@
 	reagent_state = LIQUID
 	color = "#ffff66"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
@@ -521,7 +504,6 @@
 	reagent_state = LIQUID
 	color = "#c8a5dc"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 4.2
 
 /datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)
@@ -537,7 +519,6 @@
 	color = "#561ec3"
 	metabolization_rate = 0.1
 	overdose_threshold =10
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 	value = 6
 
 /datum/reagent/medicine/peridaxon/affect_blood(mob/living/carbon/C, removed)
@@ -589,7 +570,6 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	metabolization_rate = 0.01
-	chemical_flags = REAGENT_SCANNABLE|REAGENT_IGNORE_MOB_SIZE
 
 /datum/reagent/medicine/coagulant/affect_blood(mob/living/carbon/M, removed)
 	if(!ishuman(M))
@@ -683,7 +663,6 @@
 	color = "#004000"
 	overdose_threshold = 30
 	value = 3.6
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
 	overdose_threshold = 30
 
 /datum/reagent/medicine/ryetalyn/affect_blood(mob/living/carbon/C, removed)
@@ -696,7 +675,7 @@
 	description = "Spaceacillin will prevent a patient from conventionally spreading any diseases they are currently infected with. Also reduces infection in serious burns."
 	color = "#E1F2E6"
 	metabolization_rate = 0.02
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"
@@ -704,7 +683,7 @@
 	reagent_state = LIQUID
 	color = "#27870a"
 	metabolization_rate = 0.4
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	harmful = TRUE
 
 /datum/reagent/medicine/haloperidol/on_mob_metabolize(mob/living/carbon/C, class)
@@ -738,7 +717,7 @@
 	name = "Leporazine"
 	description = "Leporazine will effectively regulate a patient's body temperature, ensuring it never leaves safe levels."
 	color = "#DB90C6"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/leporazine/affect_blood(mob/living/carbon/C, removed)
 	var/target_temp = C.get_body_temp_normal(apply_change=FALSE)
@@ -761,7 +740,7 @@
 	reagent_state = LIQUID
 	color = "#BAA15D"
 	metabolization_rate = 0.4
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/potass_iodide/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(class))
@@ -784,7 +763,7 @@
 	var/last_added = 0
 	var/maximum_reachable = BLOOD_VOLUME_NORMAL - 10 //So that normal blood regeneration can continue with salglu active
 	var/extra_regen = 0.25 // in addition to acting as temporary blood, also add about half this much to their actual blood per second
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/saline_glucose/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -803,7 +782,7 @@
 	description = "Synthetic flesh that weaves itself into organic creatures. Do not ingest."
 	reagent_state = LIQUID
 	color = "#FFEBEB"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	touch_met = 1
 	metabolization_rate = 0.2
 	var/spoke
@@ -831,7 +810,7 @@
 	color = "#1D3535" //slightly more blue, like epinephrine
 	metabolization_rate = 0.1
 	overdose_threshold = 35
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/atropine/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -852,7 +831,7 @@
 	description = "A powerful antipsychotic. For schizophrenics, it counteracts their symptoms and anchors them to reality."
 	color = "#B31008" // rgb: 139, 166, 233
 	taste_description = "sourness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	metabolization_rate = 0.02
 	overdose_threshold = 60
 
@@ -868,7 +847,7 @@
 	reagent_state = LIQUID
 	color = "#CC23FF"
 	taste_description = "jelly"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/regen_jelly/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -896,7 +875,6 @@
 	reagent_state = LIQUID
 	color = "#64FFE6"
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/medicine/diphenhydramine/affect_blood(mob/living/carbon/C, removed)
 	if(prob(10))
@@ -908,7 +886,7 @@
 	name = "Inacusiate"
 	description = "Rapidly repairs damage to the patient's ears to cure deafness, assuming the source of said deafness isn't from genetic mutations, chronic deafness, or a total defecit of ears." //by "chronic" deafness, we mean people with the "deaf" quirk
 	color = "#606060" // ditto
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/inacusiate/on_mob_add(mob/living/owner, amount)
 	. = ..()
@@ -941,7 +919,7 @@
 	reagent_state = LIQUID
 	color = "#FFFFF0"
 	metabolization_rate = 0.1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/insulin/affect_blood(mob/living/carbon/C, removed)
 	holder.remove_reagent(/datum/reagent/consumable/sugar, 3 * removed)
@@ -953,7 +931,7 @@
 	color = "#19C832"
 	metabolization_rate = 0.4
 	taste_description = "acid"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/ipecac/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()

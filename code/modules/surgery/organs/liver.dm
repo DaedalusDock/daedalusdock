@@ -180,20 +180,6 @@
 		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
 			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_they()] don't look like they will be alive for much longer.")
 
-
-/obj/item/organ/liver/on_death(delta_time, times_fired)
-	. = ..()
-	var/mob/living/carbon/carbon_owner = owner
-	if(!owner)//If we're outside of a mob
-		return
-	if(!iscarbon(carbon_owner))
-		CRASH("on_death() called for [src] ([type]) with invalid owner ([isnull(owner) ? "null" : owner.type])")
-	if(carbon_owner.stat != DEAD)
-		CRASH("on_death() called for [src] ([type]) with not-dead owner ([owner])")
-	if((organ_flags & ORGAN_FAILING) && HAS_TRAIT(carbon_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
-		return
-	carbon_owner.reagents.dead_process(carbon_owner)
-
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN

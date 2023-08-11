@@ -8,6 +8,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM //metabolizes to prevent micro-dosage
 	taste_description = "slime"
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SPECIAL
 	var/race = /datum/species/human
 	var/list/mutationtexts = list( "You don't feel very well." = MUT_MSG_IMMEDIATE,
 									"Your skin feels a bit abnormal." = MUT_MSG_IMMEDIATE,
@@ -49,7 +50,7 @@
 	description = "A corruptive toxin."
 	color = "#13BC5E" // rgb: 19, 188, 94
 	race = /datum/species/jelly/slime
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/mutationtoxin/lizard
 	name = "Unathi Mutation Toxin"
@@ -57,7 +58,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/lizard
 	taste_description = "dragon's breath but not as cool"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/mutationtoxin/fly
 	name = "Fly Mutation Toxin"
@@ -65,7 +66,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/fly
 	taste_description = "trash"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/moth
 	name = "Gamuioda Mutation Toxin"
@@ -73,7 +74,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/moth
 	taste_description = "clothing"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/pod
 	name = "Podperson Mutation Toxin"
@@ -81,7 +82,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/pod
 	taste_description = "flowers"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/jelly
 	name = "Imperfect Mutation Toxin"
@@ -89,7 +90,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/jelly
 	taste_description = "grandma's gelatin"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/mutationtoxin/jelly/affect_blood(mob/living/carbon/human/H, removed)
 	. = ..()
@@ -112,7 +113,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/golem
 	taste_description = "rocks"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/golem/on_mob_metabolize()
 	var/static/list/random_golem_types
@@ -130,7 +131,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/abductor
 	taste_description = "something out of this world... no, universe!"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/android
 	name = "Android Mutation Toxin"
@@ -138,7 +139,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/android
 	taste_description = "circuitry and steel"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 //BLACKLISTED RACES
 /datum/reagent/mutationtoxin/skeleton
@@ -147,7 +148,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/skeleton
 	taste_description = "milk... and lots of it"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/zombie
 	name = "Zombie Mutation Toxin"
@@ -155,7 +156,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/zombie //Not the infectious kind. The days of xenobio zombie outbreaks are long past.
 	taste_description = "brai...nothing in particular"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/ash
 	name = "Ash Mutation Toxin"
@@ -163,7 +164,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/lizard/ashwalker
 	taste_description = "savagery"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 //DANGEROUS RACES
 /datum/reagent/mutationtoxin/shadow
@@ -172,7 +173,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/shadow
 	taste_description = "the night"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/mutationtoxin/plasma
 	name = "Plasma Mutation Toxin"
@@ -180,7 +181,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/plasmaman
 	taste_description = "plasma"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 #undef MUT_MSG_IMMEDIATE
 #undef MUT_MSG_EXTENDED

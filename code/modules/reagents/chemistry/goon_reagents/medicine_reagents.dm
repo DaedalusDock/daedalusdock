@@ -3,7 +3,7 @@
 	description = "Purges alcoholic substance from the patient's body and eliminates its side effects."
 	color = "#00B4C8"
 	taste_description = "raw egg"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/antihol/affect_blood(mob/living/carbon/C, removed)
 	C.remove_status_effect(/datum/status_effect/dizziness)
@@ -26,7 +26,7 @@
 	metabolization_rate = 1.25 * REAGENTS_METABOLISM
 	taste_description = "magnets"
 	harmful = TRUE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 
 // FEED ME SEYMOUR

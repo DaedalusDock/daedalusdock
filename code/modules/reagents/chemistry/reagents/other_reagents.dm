@@ -7,7 +7,7 @@
 	glass_name = "glass of water"
 	glass_desc = "The father of all refreshments."
 	shot_glass_icon_state = "shotglassclear"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
+	chemical_flags = REAGENT_CLEANS
 
 	metabolization_rate = 2
 
@@ -95,7 +95,7 @@
 	glass_name = "glass of holy water"
 	glass_desc = "A glass of holy water."
 	self_consuming = TRUE //divine intervention won't be limited by the lack of a liver
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
+	chemical_flags = REAGENT_CLEANS
 
 	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
 /datum/reagent/water/holywater/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
@@ -166,7 +166,7 @@
 	description = "An ubiquitous chemical substance that is composed of hydrogen and oxygen, but it looks kinda hollow."
 	color = "#88878777"
 	taste_description = "emptyiness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/blood
 	data = list(
@@ -355,7 +355,7 @@
 	color = "#C8A5DC"
 	taste_description = "sourness"
 	penetrates_skin = NONE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/hair_dye/New()
 	SSticker.OnRoundstart(CALLBACK(src,PROC_REF(UpdateColor)))
@@ -398,7 +398,7 @@
 	description = "Contains electrolytes. It's what plants crave."
 	color = "#376400" // RBG: 50, 100, 0
 	tox_prob = 5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/plantnutriment/eznutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
 	. = ..()
@@ -412,7 +412,7 @@
 	description = "Unstable nutriment that makes plants mutate more often than usual."
 	color = "#1A1E4D" // RBG: 26, 30, 77
 	tox_prob = 13
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/plantnutriment/left4zednutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
 	. = ..()
@@ -425,7 +425,7 @@
 	description = "Very potent nutriment that slows plants from mutating."
 	color = "#9D9D00" // RBG: 157, 157, 0
 	tox_prob = 8
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/plantnutriment/robustharvestnutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
 	. = ..()
@@ -439,7 +439,7 @@
 	description = "A specialized nutriment, which decreases product quantity and potency, but strengthens the plants endurance."
 	color = "#a06fa7" // RBG: 160, 111, 167
 	tox_prob = 8
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/plantnutriment/endurogrow/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
 	. = ..()
@@ -453,7 +453,7 @@
 	description = "A specialized nutriment, which increases the plant's production speed, as well as it's susceptibility to weeds."
 	color = "#912e00" // RBG: 145, 46, 0
 	tox_prob = 13
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/plantnutriment/liquidearthquake/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
 	. = ..()
@@ -469,7 +469,7 @@
 	description = "Royal Bee Jelly, if injected into a Queen Space Bee said bee will split into two bees."
 	color = "#00ff80"
 	taste_description = "strange honey"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/royal_bee_jelly/affect_blood(mob/living/carbon/C, removed)
 	if(prob(1))
@@ -503,51 +503,51 @@
 	name = "Mutagenic Agar"
 	color = "#A3C00F" // rgb: 163,192,15
 	taste_description = "sourness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mutagen/mutagenvirusfood/sugar
 	name = "Sucrose Agar"
 	color = "#41B0C0" // rgb: 65,176,192
 	taste_description = "sweetness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/medicine/synaptizine/synaptizinevirusfood
 	name = "Virus Rations"
 	color = "#D18AA5" // rgb: 209,138,165
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/plasma/plasmavirusfood
 	name = "Virus Plasma"
 	color = "#A270A8" // rgb: 166,157,169
 	taste_description = "bitterness"
 	taste_mult = 1.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/plasma/plasmavirusfood/weak
 	name = "Weakened Virus Plasma"
 	color = "#A28CA5" // rgb: 206,195,198
 	taste_description = "bitterness"
 	taste_mult = 1.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/uranium/uraniumvirusfood
 	name = "Decaying Uranium Gel"
 	color = "#67ADBA" // rgb: 103,173,186
 	taste_description = "the inside of a reactor"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/uranium/uraniumvirusfood/unstable
 	name = "Unstable Uranium Gel"
 	color = "#2FF2CB" // rgb: 47,242,203
 	taste_description = "the inside of a reactor"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/uranium/uraniumvirusfood/stable
 	name = "Stable Uranium Gel"
 	color = "#04506C" // rgb: 4,80,108
 	taste_description = "the inside of a reactor"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/technetium
 	name = "Technetium 99"
@@ -621,7 +621,7 @@
 	taste_description = "Ag'hsj'saje'sh"
 	color = "#1f8016"
 	metabolization_rate = 2.5 * REAGENTS_METABOLISM  //0.5u/second
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/eldritch/affect_blood(mob/living/carbon/drinker, removed)
 	. = ..()
@@ -649,14 +649,14 @@
 	reagent_state = SOLID
 	color = "#E6E6DA"
 	taste_mult = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/diethylamine
 	name = "Diethylamine"
 	description = "A secondary amine, mildly corrosive."
 	color = "#604030" // rgb: 96, 64, 48
 	taste_description = "iron"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 // This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
 /datum/reagent/diethylamine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -674,7 +674,7 @@
 	color = "#AAAAAA55"
 	taste_description = "water"
 	metabolization_rate = 0.05
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/pax/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_PACIFISM, CHEM_TRAIT_SOURCE(class))
@@ -687,7 +687,7 @@
 	description = "Just add water!"
 	color = "#9C5A19"
 	taste_description = "bananas"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/liquidgibs
 	name = "Liquid Gibs"
@@ -696,7 +696,7 @@
 	taste_description = "gross iron"
 	shot_glass_icon_state = "shotglassred"
 	material = /datum/material/meat
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/fuel/unholywater //if you somehow managed to extract this from someone, dont splash it on yourself and have a smoke
 	name = "Unholy Water"
@@ -704,7 +704,7 @@
 	taste_description = "suffering"
 	metabolization_rate = 2.5 * REAGENTS_METABOLISM  //0.5u/second
 	penetrates_skin = TOUCH|VAPOR
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/fuel/unholywater/affect_blood(mob/living/carbon/C, removed)
 	if(IS_CULTIST(C))
@@ -734,7 +734,7 @@
 	taste_description = "plastic"
 	reagent_state = SOLID
 	var/glitter_type = /obj/effect/decal/cleanable/glitter
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/glitter/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -747,20 +747,20 @@
 	description = "pink sparkles that get everywhere"
 	color = "#ff8080" //A light pink color
 	glitter_type = /obj/effect/decal/cleanable/glitter/pink
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/glitter/white
 	name = "White Glitter"
 	description = "white sparkles that get everywhere"
 	glitter_type = /obj/effect/decal/cleanable/glitter/white
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/glitter/blue
 	name = "Blue Glitter"
 	description = "blue sparkles that get everywhere"
 	color = "#4040FF" //A blueish color
 	glitter_type = /obj/effect/decal/cleanable/glitter/blue
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/mulligan
 	name = "Mulligan Toxin"
@@ -768,7 +768,7 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	metabolization_rate = INFINITY
 	taste_description = "slime"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/mulligan/affect_blood(mob/living/carbon/human/H, removed)
 	if(!istype(H))
@@ -788,7 +788,7 @@
 	reagent_state = LIQUID
 	color = "#FFFFD6" // very very light yellow
 	taste_description = "acid"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/vaccine
 	//data must contain virus type
@@ -844,7 +844,7 @@
 	color = "#A86B45" //hair is brown
 	taste_description = "sourness"
 	penetrates_skin = NONE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/barbers_aid/affect_touch(mob/living/carbon/C, removed)
 	var/mob/living/carbon/human/exposed_human = C
@@ -863,7 +863,7 @@
 	color = "#ff0000"//strong red. rgb 255, 0, 0
 	var/current_size = RESIZE_DEFAULT_SIZE
 	taste_description = "bitterness" // apparently what viagra tastes like
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/growthserum/affect_blood(mob/living/carbon/C, removed)
 	var/newsize = current_size
@@ -931,7 +931,7 @@
 	reagent_state = SOLID
 	color = "#522546"
 	taste_description = "burning"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/brimdust/affect_blood(mob/living/carbon/C, removed)
 	C.adjustFireLoss((ispodperson(C) ? -1 : 1) * removed, FALSE)
@@ -964,7 +964,7 @@
 	reagent_state = LIQUID
 	color = "#60A584" // rgb: 96, 165, 132
 	taste_description = "cool salt"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 // Saltpetre is used for gardening IRL, to simplify highly, it speeds up growth and strengthens plants
 /datum/reagent/saltpetre/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -981,7 +981,7 @@
 	description = "A strange, pitch-black reagent that seems to absorb all light. Effects unknown."
 	color = "#000000"
 	self_consuming = TRUE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/cordiolis_hepatico/on_mob_add(mob/living/carbon/C, amount, class)
 	if(class == CHEM_BLOOD)
@@ -1000,7 +1000,7 @@
 	reagent_state = SOLID
 	color = "#FFBE00"
 	overdose_threshold = 10
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/metafactor/overdose_start(mob/living/carbon/C)
 	metabolization_rate = 0.4
@@ -1033,53 +1033,12 @@
 #define CRYO_SPEED_PREFACTOR 0.4
 #define CRYO_SPEED_CONSTANT 0.1
 
-/datum/reagent/cryostylane
-	name = "Cryostylane"
-	description = "Induces a cryostasis like state in a patient's organs, preventing them from decaying while dead. Slows down surgery while in a patient however. When reacted with oxygen, it will slowly consume it and reduce a container's temperature to 0K. Also damages slime simplemobs when 5u is sprayed."
-	color = "#0000DC"
-	metabolization_rate = 0.02
-	taste_description = "icey bitterness"
-	burning_volume = 0.05
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED | REAGENT_DEAD_PROCESS
-
-/datum/reagent/cryostylane/burn(datum/reagents/holder)
-	if(holder.has_reagent(/datum/reagent/oxygen))
-		burning_temperature = 0//king chilly
-		return
-	burning_temperature = null
-
-/datum/reagent/cryostylane/on_mob_add(mob/living/consumer, amount)
-	. = ..()
-	consumer.add_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
-
-/datum/reagent/cryostylane/on_mob_delete(mob/living/consumer)
-	. = ..()
-	consumer.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_CYAN)
-
-/datum/reagent/cryostylane/affect_blood(mob/living/carbon/C, removed)
-	if(C.reagents.has_reagent(/datum/reagent/oxygen))
-		C.reagents.remove_reagent(/datum/reagent/oxygen, 0.5 * removed)
-		C.adjust_bodytemperature(-15 * removed)
-		if(ishuman(C))
-			var/mob/living/carbon/human/humi = C
-			humi.adjust_coretemperature(-15 * removed)
-
-/datum/reagent/cryostylane/expose_turf(turf/exposed_turf, reac_volume)
-	. = ..()
-	if(reac_volume < 5)
-		return
-	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
-		exposed_slime.adjustToxLoss(rand(15,30))
-
-#undef CRYO_SPEED_PREFACTOR
-#undef CRYO_SPEED_CONSTANT
-
 /datum/reagent/glycerol
 	name = "Glycerol"
 	description = "Glycerol is a simple polyol compound. Glycerol is sweet-tasting and of low toxicity."
 	color = "#D3B913"
 	taste_description = "sweetness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin
@@ -1088,7 +1047,7 @@
 	color = "#ADB5DB" //i hate default violets and 'crypto' keeps making me think of cryo so it's light blue now
 	metabolization_rate = 0.3
 	taste_description = "sourness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/C, removed)
@@ -1110,7 +1069,7 @@
 	description = "Reduces the duration of unconciousness, knockdown and stuns. Restores stamina, but deals toxin damage when overdosed."
 	color = "#C1151D"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/medicine/changelingadrenaline/affect_blood(mob/living/carbon/C, removed)
 	C.AdjustAllImmobility(-20 * removed)
@@ -1142,7 +1101,7 @@
 	description = "Drastically increases movement speed, but deals toxin damage."
 	color = "#AE151D"
 	metabolization_rate = 2.5 * REAGENTS_METABOLISM
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/medicine/changelinghaste/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -1171,7 +1130,7 @@
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
 	color = "#808080"
 	taste_description = "sweetness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/nitrous_oxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	. = ..()

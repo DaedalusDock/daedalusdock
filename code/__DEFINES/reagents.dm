@@ -81,8 +81,8 @@
 #define REAGENT_SNEAKYNAME (1<<3)
 ///Retains initial volume of chem when splitting for purity effects
 #define REAGENT_SPLITRETAINVOL (1<<4)
-///Lets a given reagent be synthesized important for random reagents and things like the odysseus syringe gun(Replaces the old can_synth variable)
-#define REAGENT_CAN_BE_SYNTHESIZED (1<<5)
+///Any reagent marked with this cannot be put in random objects like eggs
+#define REAGENT_SPECIAL (1<<5)
 ///This reagent won't be used in most randomized recipes. Meant for reagents that could be synthetized but are normally inaccessible or TOO hard to get.
 #define REAGENT_NO_RANDOM_RECIPE (1<<6)
 ///Does this reagent clean things?

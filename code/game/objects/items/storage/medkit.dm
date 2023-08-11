@@ -551,75 +551,31 @@
 		/obj/item/food/icecream
 		))
 
-	create_reagents(100, TRANSPARENT)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/storage/organbox/process(delta_time)
-	///if there is enough coolant var
-	var/cool = FALSE
-	var/amount = min(reagents.get_reagent_amount(/datum/reagent/cryostylane), 0.05 * delta_time)
-	if(amount > 0)
-		reagents.remove_reagent(/datum/reagent/cryostylane, amount)
-		cool = TRUE
-	else
-		amount = min(reagents.get_reagent_amount(/datum/reagent/consumable/ice), 0.1 * delta_time)
-		if(amount > 0)
-			reagents.remove_reagent(/datum/reagent/consumable/ice, amount)
-			cool = TRUE
-	if(!cooling && cool)
-		cooling = TRUE
-		update_appearance()
-		for(var/C in contents)
-			freeze_contents(C)
-		return
-	if(cooling && !cool)
-		cooling = FALSE
-		update_appearance()
-		for(var/C in contents)
-			unfreeze_contents(C)
-
 /obj/item/storage/organbox/update_icon_state()
 	icon_state = "[base_icon_state][cooling ? "-working" : null]"
 	return ..()
 
-///freezes the organ and loops bodyparts like heads
-/obj/item/storage/organbox/proc/freeze_contents(datum/source, obj/item/I)
-	SIGNAL_HANDLER
-	if(isinternalorgan(I))
-		var/obj/item/organ/int_organ = I
+/obj/item/storage/organbox/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	if(isinternalorgan(arrived))
+		var/obj/item/organ/int_organ = arrived
 		int_organ.organ_flags |= ORGAN_FROZEN
 		return
-	if(istype(I, /obj/item/bodypart))
-		var/obj/item/bodypart/B = I
+	if(istype(arrived, /obj/item/bodypart))
+		var/obj/item/bodypart/B = arrived
 		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags |= ORGAN_FROZEN
 
-///unfreezes the organ and loops bodyparts like heads
-/obj/item/storage/organbox/proc/unfreeze_contents(datum/source, obj/item/I)
-	SIGNAL_HANDLER
-	if(isinternalorgan(I))
-		var/obj/item/organ/int_organ = I
+/obj/item/storage/organbox/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(isinternalorgan(gone))
+		var/obj/item/organ/int_organ = gone
 		int_organ.organ_flags &= ~ORGAN_FROZEN
 		return
-	if(istype(I, /obj/item/bodypart))
-		var/obj/item/bodypart/B = I
+	if(istype(gone, /obj/item/bodypart))
+		var/obj/item/bodypart/B = gone
 		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags &= ~ORGAN_FROZEN
-
-/obj/item/storage/organbox/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers) && I.is_open_container())
-		var/obj/item/reagent_containers/RC = I
-		var/units = RC.reagents.trans_to(src, RC.amount_per_transfer_from_this, transfered_by = user)
-		if(units)
-			to_chat(user, span_notice("You transfer [units] units of the solution to [src]."))
-			return
-	if(istype(I, /obj/item/plunger))
-		to_chat(user, span_notice("You start furiously plunging [name]."))
-		if(do_after(user, src, 1 SECONDS))
-			to_chat(user, span_notice("You finish plunging the [name]."))
-			reagents.clear_reagents()
-		return
-	return ..()
 
 /obj/item/storage/organbox/suicide_act(mob/living/carbon/user)
 	if(HAS_TRAIT(user, TRAIT_RESISTCOLD)) //if they're immune to cold, just do the box suicide

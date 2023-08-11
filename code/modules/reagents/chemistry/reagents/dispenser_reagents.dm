@@ -224,7 +224,7 @@
 	reagent_state = GAS
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0 // oderless and tasteless
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/oxygen/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
@@ -238,7 +238,7 @@
 	reagent_state = GAS
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
 	. = ..()
@@ -252,7 +252,7 @@
 	reagent_state = GAS
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/fluorine
 	name = "Fluorine"
@@ -260,7 +260,7 @@
 	reagent_state = GAS
 	color = "#808080" // rgb: 128, 128, 128
 	taste_description = "acid"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
 /datum/reagent/fluorine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -293,7 +293,7 @@
 	reagent_state = LIQUID
 	color = "#BC8A00"
 	taste_description = "metal"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/carbondioxide
 	name = "Carbon Dioxide"
@@ -301,7 +301,7 @@
 	description = "A gas commonly produced by burning carbon fuels. You're constantly producing this in your lungs."
 	color = "#B0B0B0" // rgb : 192, 192, 192
 	taste_description = "something unknowable"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
@@ -315,7 +315,7 @@
 	reagent_state = GAS
 	color = "#FFFB89" //pale yellow? let's make it light gray
 	taste_description = "chlorine"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
@@ -357,7 +357,7 @@
 	reagent_state = SOLID
 	color = "#6E3B08" // rgb: 110, 59, 8
 	taste_description = "metal"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/copper/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
 	. = ..()

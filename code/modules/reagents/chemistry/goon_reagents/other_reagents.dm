@@ -7,7 +7,7 @@
 	/// How much tox damage to deal per tick
 	var/tox_damage = 0.5
 	material = /datum/material/uranium
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/uranium/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(tox_damage * removed, FALSE)
@@ -40,7 +40,7 @@
 	taste_description = "the colour blue and regret"
 	tox_damage = 1
 	material = null
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/uranium/radium/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
 	. = ..()
@@ -56,7 +56,7 @@
 	taste_description = "oil"
 	burning_temperature = 1200//Oil is crude
 	burning_volume = 0.05 //but has a lot of hydrocarbons
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = null
 	show_in_codex = TRUE
 
@@ -67,7 +67,7 @@
 	color = "#2D2D2D"
 	taste_description = "bitterness"
 	taste_mult = 1.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/stable_plasma/affect_blood(mob/living/carbon/C, removed)
 	C.adjustPlasma(10 * removed)
@@ -83,7 +83,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 1725 //more refined than oil
 	burning_volume = 0.2
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/alcohol = 4)
 
 /datum/reagent/fuel/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)//Splashing people with welding fuel to make them easy to ignite!
@@ -104,7 +104,7 @@
 	penetrates_skin = NONE
 	touch_met = 2
 	var/clean_types = CLEAN_WASH
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
+	chemical_flags = REAGENT_CLEANS
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
@@ -140,7 +140,7 @@
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
 	taste_description = "acid"
 	penetrates_skin = VAPOR
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1.665*removed, FALSE)
@@ -161,7 +161,7 @@
 	color = "#009CA8" // rgb: 0, 156, 168
 	taste_description = "cherry" // by popular demand
 	var/lube_kind = TURF_WET_LUBE ///What kind of slipperiness gets added to turfs
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/lube/expose_turf(turf/open/exposed_turf, reac_volume)
 	. = ..()
@@ -175,7 +175,7 @@
 	name = "Super Duper Lube"
 	description = "This \[REDACTED\] has been outlawed after the incident on \[DATA EXPUNGED\]."
 	lube_kind = TURF_WET_SUPERLUBE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/stimulants
 	name = "Stimulants"
@@ -183,7 +183,7 @@
 	color = "#78008C"
 	metabolization_rate = 0.2
 	overdose_threshold = 60
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 	addiction_types = list(/datum/addiction/stimulants = 4) //0.8 per 2 seconds
 
 /datum/reagent/stimulants/on_mob_metabolize(mob/living/carbon/C, class)
@@ -220,7 +220,7 @@
 	reagent_state = LIQUID
 	color = "#515151"
 	taste_description = "ash"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 // Ash is also used IRL in gardening, as a fertilizer enhancer and weed killer
 /datum/reagent/ash/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)

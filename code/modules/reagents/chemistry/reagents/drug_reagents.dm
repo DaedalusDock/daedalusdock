@@ -10,7 +10,7 @@
 	description = "An illegal chemical compound used as drug."
 	color = "#60A584" // rgb: 96, 165, 132
 	overdose_threshold = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/hallucinogens = 10) //4 per 2 seconds
 
 /datum/reagent/drug/space_drugs/affect_blood(mob/living/carbon/C, removed)
@@ -32,7 +32,7 @@
 	description = "A psychoactive drug from the Cannabis plant used for recreational purposes."
 	color = "#059033"
 	overdose_threshold = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	metabolization_rate = 0.05
 
 /datum/reagent/drug/cannabis/affect_blood(mob/living/carbon/C, removed)
@@ -63,7 +63,7 @@
 	trippy = FALSE
 	overdose_threshold = 15
 	metabolization_rate = 0.01
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/nicotine = 18) // 7.2 per 2 seconds
 
 	//Nicotine is used as a pesticide IRL.
@@ -97,7 +97,7 @@
 	reagent_state = LIQUID
 	color = "#0064B4"
 	overdose_threshold = 20
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/opiods = 18) //7.2 per 2 seconds
 
 /datum/reagent/drug/krokodil/affect_blood(mob/living/carbon/C, removed)
@@ -128,7 +128,7 @@
 	color = "#FAFAFA"
 	overdose_threshold = 20
 	metabolization_rate = 0.15
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
 
 /datum/reagent/drug/methamphetamine/on_mob_metabolize(mob/living/L)
@@ -181,7 +181,7 @@
 	overdose_threshold = 20
 	taste_description = "salt" // because they're bathsalts?
 	addiction_types = list(/datum/addiction/stimulants = 25)  //8 per 2 seconds
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 
@@ -227,7 +227,7 @@
 	description = "Amps you up, gets you going, and rapidly restores stamina damage. Side effects include breathlessness and toxicity."
 	reagent_state = LIQUID
 	color = "#78FFF0"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/stimulants = 8)
 
 /datum/reagent/drug/aranesp/affect_blood(mob/living/carbon/C, removed)
@@ -248,7 +248,7 @@
 	reagent_state = LIQUID
 	color = "#EE35FF"
 	overdose_threshold = 20
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	taste_description = "paint thinner"
 	addiction_types = list(/datum/addiction/hallucinogens = 18)
 
@@ -290,7 +290,7 @@
 	color = "#e38e44"
 	metabolization_rate = 0.4
 	overdose_threshold = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/stimulants = 6) //2.6 per 2 seconds
 
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/L)
@@ -340,7 +340,7 @@
 	color = "#ffffff"
 	metabolization_rate = 0.1
 	overdose_threshold = 15
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/maintenance_drugs = 14)
 
 /datum/reagent/drug/maint/powder/affect_blood(mob/living/carbon/C, removed)
@@ -365,7 +365,7 @@
 	color = "#203d2c"
 	metabolization_rate = 0.4
 	overdose_threshold = 25
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/maintenance_drugs = 8)
 
 /datum/reagent/drug/maint/sludge/on_mob_metabolize(mob/living/carbon/C)
@@ -392,7 +392,7 @@
 	reagent_state = LIQUID
 	color = "#000000"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
 
 /datum/reagent/drug/maint/tar/affect_blood(mob/living/carbon/C, removed)
@@ -414,7 +414,7 @@
 	color = "#E700E7" // rgb: 231, 0, 231
 	metabolization_rate = 0.04
 	taste_description = "mushroom"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/hallucinogens = 12)
 
 /datum/reagent/drug/mushroomhallucinogen/affect_blood(mob/living/carbon/psychonaut, removed)
@@ -474,7 +474,7 @@
 	color = "#9015a9"
 	taste_description = "holodisk cleaner"
 	overdose_threshold = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/hallucinogens = 15)
 	///How many flips have we done so far?
 	var/flip_count = 0
@@ -591,7 +591,7 @@
 	color = "#638b9b"
 	overdose_threshold = 25
 	metabolization_rate = 0.25
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/maintenance_drugs = 20)
 
 /datum/reagent/drug/saturnx/affect_blood(mob/living/carbon/C, removed)

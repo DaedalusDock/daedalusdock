@@ -5,7 +5,6 @@
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 
 	var/list/blacklisted_reagents = list(
-		/datum/reagent/eigenstate, //Creates clones after a delay which get into other tests
 	)
 	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
 		if(isabstract(reagent_type)) //Are we abstract?

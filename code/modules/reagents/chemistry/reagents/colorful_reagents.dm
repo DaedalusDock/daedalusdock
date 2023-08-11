@@ -6,7 +6,7 @@
 	color = "#C8A5DC"
 	taste_description = "rainbows"
 	var/can_colour_mobs = TRUE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	var/datum/callback/color_callback
 
 /datum/reagent/colorful_reagent/New()
@@ -62,7 +62,7 @@
 	colorname = "red"
 	color = "#DA0000" // red
 	random_color_list = list("#FC7474")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/orange
 	name = "Orange Powder"
@@ -75,90 +75,90 @@
 	colorname = "yellow"
 	color = "#FFF200" // yellow
 	random_color_list = list("#FFF200")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/green
 	name = "Green Powder"
 	colorname = "green"
 	color = "#A8E61D" // green
 	random_color_list = list("#A8E61D")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/blue
 	name = "Blue Powder"
 	colorname = "blue"
 	color = "#00B7EF" // blue
 	random_color_list = list("#71CAE5")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/purple
 	name = "Purple Powder"
 	colorname = "purple"
 	color = "#DA00FF" // purple
 	random_color_list = list("#BD8FC4")
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/invisible
 	name = "Invisible Powder"
 	colorname = "invisible"
 	color = "#FFFFFF00" // white + no alpha
 	random_color_list = list("#FFFFFF") //because using the powder color turns things invisible
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/black
 	name = "Black Powder"
 	colorname = "black"
 	color = "#1C1C1C" // not quite black
 	random_color_list = list("#8D8D8D") //more grey than black, not enough to hide your true colors
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/white
 	name = "White Powder"
 	colorname = "white"
 	color = "#FFFFFF" // white
 	random_color_list = list("#FFFFFF") //doesn't actually change appearance at all
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /* used by crayons, can't color living things but still used for stuff like food recipes */
 
 /datum/reagent/colorful_reagent/powder/red/crayon
 	name = "Red Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/orange/crayon
 	name = "Orange Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/yellow/crayon
 	name = "Yellow Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/green/crayon
 	name = "Green Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/blue/crayon
 	name = "Blue Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/purple/crayon
 	name = "Purple Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 //datum/reagent/colorful_reagent/powder/invisible/crayon
 
 /datum/reagent/colorful_reagent/powder/black/crayon
 	name = "Black Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/colorful_reagent/powder/white/crayon
 	name = "White Crayon Powder"
 	can_colour_mobs = FALSE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+

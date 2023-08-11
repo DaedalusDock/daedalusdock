@@ -419,7 +419,7 @@
  * * preserve_data - if preserve_data=0, the reagents data will be lost. Usefull if you use data for some strange stuff and don't want it to be transferred.
  * * no_react - passed through to [/datum/reagents/proc/add_reagent]
  * * mob/transfered_by - used for logging
- * * remove_blacklisted - skips transferring of reagents without REAGENT_CAN_BE_SYNTHESIZED in chemical_flags
+ * * remove_blacklisted - skips transferring of reagents with REAGENT_SPECIAL in chemical_flags
  * * methods - passed through to [/datum/reagents/proc/expose_single] and [/datum/reagent/proc/on_transfer]
  * * show_message - passed through to [/datum/reagents/proc/expose_single]
  * * round_robin - if round_robin=TRUE, so transfer 5 from 15 water, 15 sugar and 15 plasma becomes 10, 15, 15 instead of 13.3333, 13.3333 13.3333. Good if you hate floating point errors
@@ -474,7 +474,7 @@
 	if(!round_robin)
 		var/part = amount / src.total_volume
 		for(var/datum/reagent/reagent as anything in cached_reagents)
-			if(remove_blacklisted && !(reagent.chemical_flags & REAGENT_CAN_BE_SYNTHESIZED))
+			if(remove_blacklisted && (reagent.chemical_flags & REAGENT_SPECIAL))
 				continue
 			var/transfer_amount = reagent.volume * part
 			if(preserve_data)
@@ -498,7 +498,7 @@
 		for(var/datum/reagent/reagent as anything in cached_reagents)
 			if(!to_transfer)
 				break
-			if(remove_blacklisted && !(reagent.chemical_flags & REAGENT_CAN_BE_SYNTHESIZED))
+			if(remove_blacklisted && (reagent.chemical_flags & REAGENT_SPECIAL))
 				continue
 			if(preserve_data)
 				trans_data = copy_data(reagent)
@@ -659,16 +659,6 @@
 	return master
 /*							MOB/CARBON RELATED PROCS 								*/
 
-/// Called by mob life when the mob is dead.
-/datum/reagents/proc/dead_process(mob/living/carbon/owner)
-	var/list/cached_reagents = reagent_list
-	var/update_health = FALSE
-	for(var/datum/reagent/reagent as anything in cached_reagents)
-		update_health += reagent.on_mob_dead(owner)
-	if(update_health)
-		owner.updatehealth()
-	update_total()
-
 /**
  * Triggers metabolizing for all the reagents in this holder
  *
@@ -685,6 +675,8 @@
 		expose_temperature(owner.bodytemperature, 0.25)
 	var/need_mob_update = FALSE
 	for(var/datum/reagent/reagent as anything in cached_reagents)
+		if(owner.stat == DEAD && !(reagent.chemical_flags & REAGENT_DEAD_PROCESS))
+			continue
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
 	update_total()
 	if(owner && updatehealth && need_mob_update)

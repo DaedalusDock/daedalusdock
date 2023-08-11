@@ -1,7 +1,7 @@
 GLOBAL_LIST_INIT(food_reagents, build_reagents_to_food()) //reagentid = related food types
 GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 
-#define VALID_RANDOM_RECIPE_REAGENT(chemical_flags) (chemical_flags & REAGENT_CAN_BE_SYNTHESIZED && !(chemical_flags & REAGENT_NO_RANDOM_RECIPE))
+#define VALID_RANDOM_RECIPE_REAGENT(chemical_flags) (!(chemical_flags & REAGENT_SPECIAL) && !(chemical_flags & REAGENT_NO_RANDOM_RECIPE))
 
 /proc/build_reagents_to_food()
 	. = list()

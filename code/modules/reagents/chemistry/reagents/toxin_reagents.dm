@@ -9,7 +9,7 @@
 	taste_mult = 1.2
 	harmful = TRUE
 	var/toxpwr = 1.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	var/silent_toxin = FALSE //won't produce a pain message when processed by liver/life() if there isn't another non-silent toxin present.
 
 // Are you a bad enough dude to poison your own plants?
@@ -29,7 +29,7 @@
 	color = "#792300" // rgb: 121, 35, 0
 	toxpwr = 2.5
 	taste_description = "mushroom"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mutagen
 	name = "Unstable Mutagen"
@@ -38,7 +38,7 @@
 	toxpwr = 0.5
 	taste_description = "slime"
 	taste_mult = 0.9
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -74,7 +74,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 4500//plasma is hot!!
 	burning_volume = 0.3//But burns fast
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/plasma/on_new(data)
 	. = ..()
@@ -133,7 +133,7 @@
 	specific_heat = SPECIFIC_HEAT_PLASMA
 	toxpwr = 3
 	material = /datum/material/hot_ice
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/hot_ice/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -147,7 +147,7 @@
 	description = "A powerful poison used to stop respiration."
 	color = "#7DC3A0"
 	taste_description = "acid"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/lexorin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -172,7 +172,7 @@
 	toxpwr = 0
 	taste_description = "slime"
 	taste_mult = 1.3
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/slimejelly/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -188,7 +188,7 @@
 	color = "#CF3600" // rgb: 207, 54, 0
 	toxpwr = 0
 	taste_description = "mint"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/minttoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -202,7 +202,7 @@
 	color = "#003333" // rgb: 0, 51, 51
 	toxpwr = 1
 	taste_description = "fish"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/zombiepowder
 	name = "Zombie Powder"
@@ -213,7 +213,7 @@
 	toxpwr = 0.5
 	taste_description = "death"
 	penetrates_skin = NONE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/zombiepowder/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -260,7 +260,7 @@
 	color = "#664700" // rgb: 102, 71, 0
 	toxpwr = 0.8
 	taste_description = "death"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/ghoulpowder/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_FAKEDEATH, CHEM_TRAIT_SOURCE(class))
@@ -278,7 +278,7 @@
 	color = "#B31008" // rgb: 139, 166, 233
 	toxpwr = 0
 	taste_description = "sourness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/hallucinogens = 18)  //7.2 per 2 seconds
 
 /datum/reagent/toxin/mindbreaker/affect_blood(mob/living/carbon/C, removed)
@@ -295,7 +295,7 @@
 	toxpwr = 1
 	taste_mult = 1
 	penetrates_skin = NONE
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 	// Plant-B-Gone is just as bad
 /datum/reagent/toxin/plantbgone/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -331,7 +331,7 @@
 	name = "Weed Killer"
 	description = "A harmful toxic mixture to kill weeds. Do not ingest!"
 	color = "#4B004B" // rgb: 75, 0, 75
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 	//Weed Spray
 /datum/reagent/toxin/plantbgone/weedkiller/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -346,7 +346,7 @@
 	description = "A harmful toxic mixture to kill pests. Do not ingest!"
 	color = "#4B004B" // rgb: 75, 0, 75
 	toxpwr = 1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 //Pest Spray
 /datum/reagent/toxin/pestkiller/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -377,7 +377,7 @@
 	description = "An organic mixture used to kill pests, with less of the side effects. Do not ingest!"
 	color = "#4b2400" // rgb: 75, 0, 75
 	toxpwr = 1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 //Pest Spray
 /datum/reagent/toxin/pestkiller/organic/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -392,7 +392,7 @@
 	description = "A natural toxin produced by blob spores that inhibits vision when ingested."
 	color = "#9ACD32"
 	toxpwr = 1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/spore/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -405,7 +405,7 @@
 	color = "#9ACD32"
 	toxpwr = 0.5
 	taste_description = "burning"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/spore_burning/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -420,7 +420,7 @@
 	color = "#000067" // rgb: 0, 0, 103
 	toxpwr = 0
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/chloralhydrate/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -444,7 +444,7 @@
 	glass_icon_state = "beerglass"
 	glass_name = "glass of beer"
 	glass_desc = "A freezing pint of beer."
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/fakebeer/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -462,7 +462,7 @@
 	reagent_state = SOLID
 	color = "#5B2E0D" // rgb: 91, 46, 13
 	toxpwr = 0.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/teapowder
 	name = "Ground Tea Leaves"
@@ -471,7 +471,7 @@
 	color = "#7F8400" // rgb: 127, 132, 0
 	toxpwr = 0.1
 	taste_description = "green tea"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mushroom_powder
 	name = "Mushroom Powder"
@@ -480,7 +480,7 @@
 	color = "#67423A" // rgb: 127, 132, 0
 	toxpwr = 0.1
 	taste_description = "mushrooms"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mutetoxin //the new zombie powder.
 	name = "Mute Toxin"
@@ -489,7 +489,7 @@
 	color = "#F0F8FF" // rgb: 240, 248, 255
 	toxpwr = 0
 	taste_description = "silence"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mutetoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -502,7 +502,7 @@
 	color = "#6E2828"
 	data = 15
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/staminatoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -516,7 +516,7 @@
 	color = "#787878"
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/polonium/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -535,7 +535,7 @@
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/histamine/affect_blood(mob/living/carbon/C, removed)
 	if(prob(33))
@@ -569,7 +569,7 @@
 	color = "#B4004B"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/formaldehyde/affect_blood(mob/living/carbon/C, removed)
 	if(prob(5))
@@ -585,7 +585,7 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 	///Mob Size of the current mob sprite.
 	var/current_size = RESIZE_DEFAULT_SIZE
 
@@ -619,7 +619,7 @@
 	color = "#64916E"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	addiction_types = list(/datum/addiction/opiods = 25)
 
 /datum/reagent/toxin/fentanyl/affect_blood(mob/living/carbon/C, removed)
@@ -637,7 +637,7 @@
 	color = "#00B4FF"
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	toxpwr = 1.25
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/cyanide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -656,7 +656,7 @@
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	toxpwr = 0.5
 	taste_description = "bad cooking"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/itching_powder
 	name = "Itching Powder"
@@ -667,7 +667,7 @@
 	metabolization_rate = 0.4 * REAGENTS_METABOLISM
 	toxpwr = 0
 	penetrates_skin = TOUCH|VAPOR
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/itching_powder/affect_blood(mob/living/carbon/C, removed)
 	if(prob(15))
@@ -714,7 +714,7 @@
 	color = "#7F10C0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 2.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/initropidril/affect_blood(mob/living/carbon/C, removed)
 	if(prob(25))
@@ -747,7 +747,7 @@
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	toxpwr = 0
 	taste_mult = 0 // undetectable, I guess?
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/pancuronium/affect_blood(mob/living/carbon/C, removed)
 	if(current_cycle >= 10)
@@ -763,7 +763,7 @@
 	color = "#6496FA"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/sodium_thiopental/on_mob_add(mob/living/carbon/C, amount, class)
 	. = ..()
@@ -787,7 +787,7 @@
 	color = "#7DC3A0"
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	toxpwr = 0.5
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/sulfonal/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -802,7 +802,7 @@
 	color = "#FFFFFF"
 	toxpwr = 0
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 	var/delayed_toxin_damage = 0
 
 /datum/reagent/toxin/amanitin/affect_blood(mob/living/carbon/C, removed)
@@ -824,7 +824,7 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -841,7 +841,7 @@
 	color = "#191919"
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	toxpwr = 1
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/curare/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -858,7 +858,7 @@
 	color = "#C8C8C8" //RGB: 200, 200, 200
 	metabolization_rate = 0.2 * REAGENTS_METABOLISM
 	toxpwr = 0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/heparin/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_BLOODY_MESS, CHEM_TRAIT_SOURCE(class))
@@ -877,7 +877,7 @@
 	metabolization_rate = 0.6 * REAGENTS_METABOLISM
 	toxpwr = 0.5
 	taste_description = "spinning"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/rotatium/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -906,7 +906,7 @@
 	color = "#3C5133"
 	metabolization_rate = 0.08 * REAGENTS_METABOLISM
 	toxpwr = 0.15
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/anacea/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -922,7 +922,7 @@
 	color = "#5050FF"
 	toxpwr = 2
 	acidpwr = 42
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 // SERIOUSLY
 /datum/reagent/toxin/acid/fluacid/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -942,7 +942,7 @@
 	color = "#5050FF"
 	toxpwr = 3
 	acidpwr = 5.0
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/acid/nitracid/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -957,7 +957,7 @@
 	toxpwr = 0
 	var/actual_toxpwr = 5
 	var/delay = 30
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/toxin/delayed/affect_blood(mob/living/carbon/C, removed)
 	if(current_cycle > delay)
@@ -976,7 +976,7 @@
 	toxpwr = 0
 
 	taste_description = "stillness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/mimesbane/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_EMOTEMUTE, CHEM_TRAIT_SOURCE(class))
@@ -992,7 +992,7 @@
 	toxpwr = 0
 	taste_description = "bone hurting"
 	overdose_threshold = 50
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -1031,7 +1031,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
 	taste_description = "tannin"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/bungotoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -1054,7 +1054,7 @@
 	toxpwr = 0.5
 	taste_mult = 1.3
 	taste_description = "sugary sweetness"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
 
 /datum/reagent/toxin/leadacetate/affect_blood(mob/living/carbon/C, removed)
 	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed)

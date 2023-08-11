@@ -511,14 +511,12 @@
 		to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
 	else
 		var/obj/item/bodypart/affecting = electrician.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-		if(affecting?.receive_damage( 0, 5 )) // 5 burn damage
-			electrician.update_damage_overlays()
+		affecting?.receive_damage( 0, 5 )
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
 			if(!do_after(user, src, 5 SECONDS))
 				return
-			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
-				electrician.update_damage_overlays()
+			affecting?.receive_damage( 0, 10 ) // 10 more burn damage
 			to_chat(user, span_notice("You manage to remove the light [fitting], shattering it in process."))
 			break_light_tube()
 		else

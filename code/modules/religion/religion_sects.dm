@@ -110,8 +110,8 @@
 	if(hurt_limbs.len)
 		for(var/X in hurt_limbs)
 			var/obj/item/bodypart/affecting = X
-			if(affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC))
-				blessed.update_damage_overlays()
+			affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC)
+
 		blessed.visible_message(span_notice("[chap] heals [blessed] with the power of [GLOB.deity]!"))
 		to_chat(blessed, span_boldnotice("May the power of [GLOB.deity] compel you to be healed!"))
 		playsound(chap, SFX_PUNCH, 25, TRUE, -1)
@@ -176,8 +176,7 @@
 		return TRUE
 
 	//charge(?) and go
-	if(bodypart.heal_damage(5,5,BODYTYPE_ROBOTIC))
-		blessed.update_damage_overlays()
+	bodypart.heal_damage(5,5,BODYTYPE_ROBOTIC)
 
 	blessed.visible_message(span_notice("[chap] [did_we_charge ? "repairs" : "repairs and charges"] [blessed] with the power of [GLOB.deity]!"))
 	to_chat(blessed, span_boldnotice("The inner machinations of [GLOB.deity] [did_we_charge ? "repairs" : "repairs and charges"] you!"))
@@ -261,8 +260,8 @@
 	var/list/hurt_limbs = blessed.get_damaged_bodyparts(1, 1, BODYTYPE_ORGANIC)
 	if(hurt_limbs.len)
 		for(var/obj/item/bodypart/affecting as anything in hurt_limbs)
-			if(affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC))
-				blessed.update_damage_overlays()
+			affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC)
+
 		blessed.visible_message(span_notice("[chap] barters a heal for [blessed] from [GLOB.deity]!"))
 		to_chat(blessed, span_boldnotice("May the power of [GLOB.deity] compel you to be healed! Thank you for choosing [GLOB.deity]!"))
 		playsound(chap, 'sound/effects/cashregister.ogg', 60, TRUE)

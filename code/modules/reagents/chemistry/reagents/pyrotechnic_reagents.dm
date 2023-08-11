@@ -9,10 +9,9 @@
 
 /datum/reagent/phlogiston/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
 	. = ..()
-	exposed_mob.adjust_fire_stacks(1)
-	var/burndmg = max(0.3*exposed_mob.fire_stacks, 0.3)
-	exposed_mob.adjustFireLoss(burndmg, 0)
-	exposed_mob.ignite_mob()
+	if(methods == TOUCH)
+		exposed_mob.adjust_fire_stacks(1)
+		exposed_mob.ignite_mob()
 
 /datum/reagent/phlogiston/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_fire_stacks(1 * removed)

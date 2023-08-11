@@ -20,40 +20,6 @@
 			else
 				exposed_mob.reagents.add_reagent(type, amount) //This handles carbon bloodstreams
 
-	else if(iscarbon(exposed_mob) && amount >= 0.05)
-		var/mob/living/carbon/C = exposed_mob
-		switch(methods)
-			if(VAPOR)
-				// Incredibly unscientific but might be cool.
-				//C.bloodstream.add_reagent(type, amount * 0.1)
-				if(source)
-					source.trans_id_to(C.touching, type, amount * 0.4)
-				else
-					C.touching.add_reagent(type, amount * 0.4)
-
-			if(TOUCH)
-				if(source)
-					source.trans_id_to(C.touching, type, amount)
-				else
-					C.touching.add_reagent(type, amount)
-
-			if(INJECT)
-				if(source)
-					source.trans_id_to(C.bloodstream, type, amount)
-				else
-					C.bloodstream.add_reagent(type, amount)
-
-			if(INGEST)
-				var/obj/item/organ/stomach/S = C.getorganslot(ORGAN_SLOT_STOMACH)
-				if(!S)
-					return
-				else if(source)
-					source.trans_id_to(S.reagents, type, amount)
-				else
-					S.reagents.add_reagent(type, amount)
-
-
-
 /// Applies this reagent to an [/obj]
 /datum/reagent/proc/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
 	SHOULD_CALL_PARENT(TRUE)

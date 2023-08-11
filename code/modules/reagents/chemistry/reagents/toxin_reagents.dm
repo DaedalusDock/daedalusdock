@@ -2,7 +2,7 @@
 //////////////////////////Poison stuff (Toxins & Acids)///////////////////////
 
 /datum/reagent/toxin
-	name = "Toxin"
+	name = "Generic Toxin"
 	description = "A toxic chemical."
 	color = "#CF3600" // rgb: 207, 54, 0
 	taste_description = "bitterness"

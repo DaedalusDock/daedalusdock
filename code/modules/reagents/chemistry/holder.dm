@@ -484,6 +484,10 @@
 			if(!R.add_reagent(reagent.type, transfer_amount * multiplier, trans_data, chem_temp, no_react = TRUE, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT)) //we only handle reaction after every reagent has been transfered.
 				continue
 			if(methods)
+				if(istype(target_atom, /obj/item/organ))
+					R.expose_single(reagent, target, methods, transfer_amount, show_message)
+				else
+					R.expose_single(reagent, target_atom, methods, transfer_amount, show_message)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
 			remove_reagent(reagent.type, transfer_amount)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount)

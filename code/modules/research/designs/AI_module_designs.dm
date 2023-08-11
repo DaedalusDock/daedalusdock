@@ -20,7 +20,6 @@
 	id = "safeguard_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/supplied/safeguard
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/onehuman_module
 	name = "Law Board (OneHuman)"
@@ -28,7 +27,6 @@
 	id = "onehuman_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 6000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/zeroth/onehuman
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/protectstation_module
 	name = "Law Board (ProtectStation)"
@@ -36,7 +34,6 @@
 	id = "protectstation_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/supplied/protect_station
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/quarantine_module
 	name = "Law Board (Quarantine)"
@@ -44,7 +41,6 @@
 	id = "quarantine_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/supplied/quarantine
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/oxygen_module
 	name = "Law Board (OxygenIsToxicToHumans)"
@@ -52,7 +48,6 @@
 	id = "oxygen_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/supplied/oxygen
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/freeform_module
 	name = "Law Board (Freeform)"
@@ -60,7 +55,6 @@
 	id = "freeform_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 10000, /datum/material/bluespace = 2000)//Custom inputs should be more expensive to get
 	build_path = /obj/item/ai_module/supplied/freeform
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/reset_module
 	name = "Law Board (Reset)"
@@ -68,7 +62,6 @@
 	id = "reset_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000)
 	build_path = /obj/item/ai_module/reset
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/purge_module
 	name = "Law Board (Purge)"
@@ -76,7 +69,6 @@
 	id = "purge_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/reset/purge
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/remove_module
 	name = "Law Board (Law Removal)"
@@ -84,7 +76,6 @@
 	id = "remove_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/remove
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/freeformcore_module
 	name = "AI Core Module (Freeform)"
@@ -92,7 +83,6 @@
 	id = "freeformcore_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 10000, /datum/material/bluespace = 2000)//Ditto
 	build_path = /obj/item/ai_module/core/freeformcore
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/asimov
 	name = "Core Law Board (Asimov)"
@@ -100,7 +90,6 @@
 	id = "asimov_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/asimov
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/paladin_module
 	name = "Core Law Board (P.A.L.A.D.I.N.)"
@@ -108,7 +97,6 @@
 	id = "paladin_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/paladin
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/tyrant_module
 	name = "Core Law Board (T.Y.R.A.N.T.)"
@@ -116,7 +104,6 @@
 	id = "tyrant_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/tyrant
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/overlord_module
 	name = "Core Law Board (Overlord)"
@@ -124,7 +111,6 @@
 	id = "overlord_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/overlord
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/corporate_module
 	name = "Core Law Board (Corporate)"
@@ -132,7 +118,6 @@
 	id = "corporate_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/corp
-	category = list(DCAT_AI_LAW)
 
 /datum/design/law/default_module
 	name = "Core Law Board (Default)"
@@ -140,4 +125,3 @@
 	id = "default_module"
 	materials = list(/datum/material/glass = 1000, /datum/material/diamond = 2000, /datum/material/bluespace = 1000)
 	build_path = /obj/item/ai_module/core/full/custom
-	category = list(DCAT_AI_LAW)

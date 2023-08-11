@@ -3,10 +3,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	taste_description = "bitterness"
 	var/trippy = TRUE //Does this drug make you trip?
-
-/datum/reagent/drug/on_mob_end_metabolize(mob/living/M)
-	if(trippy)
-		SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "[type]_high")
+	abstract_type = /datum/reagent/drug
 
 /datum/reagent/drug/space_drugs
 	name = "Space Drugs"
@@ -27,7 +24,6 @@
 
 /datum/reagent/drug/space_drugs/overdose_start(mob/living/M)
 	to_chat(M, span_userdanger("You start tripping hard!"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overdose, name)
 
 /datum/reagent/drug/space_drugs/overdose_process(mob/living/M, delta_time, times_fired)
 	if(M.hallucination < volume && DT_PROB(10, delta_time))
@@ -83,7 +79,6 @@
 	if(DT_PROB(0.5, delta_time))
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
 		to_chat(M, span_notice("[smoke_message]"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "smoked", /datum/mood_event/smoked, name)
 	M.remove_status_effect(/datum/status_effect/jitter)
 	M.AdjustStun(-50  * REM * delta_time)
 	M.AdjustKnockdown(-50 * REM * delta_time)
@@ -114,7 +109,6 @@
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "smacked out", /datum/mood_event/narcotic_heavy, name)
 	if(current_cycle == 35 && creation_purity <= 0.6)
 		if(!istype(M.dna.species, /datum/species/human/krokodil_addict))
 			to_chat(M, span_userdanger("Your skin falls off easily!"))
@@ -157,13 +151,12 @@
 	var/high_message = pick("You feel hyper.", "You feel like you need to go faster.", "You feel like you can run the world.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tweaking", /datum/mood_event/stimulant_medium, name)
 	M.AdjustStun(-40 * REM * delta_time)
 	M.AdjustKnockdown(-40 * REM * delta_time)
 	M.AdjustUnconscious(-40 * REM * delta_time)
 	M.AdjustParalyzed(-40 * REM * delta_time)
 	M.AdjustImmobilized(-40 * REM * delta_time)
-	M.adjustStaminaLoss(-2 * REM * delta_time, 0)
+	M.stamina.adjust(2 * REM * delta_time)
 	M.set_timed_status_effect(4 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * REM * delta_time)
 	if(DT_PROB(2.5, delta_time))
@@ -217,8 +210,7 @@
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "salted", /datum/mood_event/stimulant_heavy, name)
-	M.adjustStaminaLoss(-5 * REM * delta_time, 0)
+	M.stamina.adjust(5 * REM * delta_time)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * REM * delta_time)
 	M.hallucination += 5 * REM * delta_time
 	if(!HAS_TRAIT(M, TRAIT_IMMOBILIZED) && !ismovable(M.loc))
@@ -250,7 +242,7 @@
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(DT_PROB(2.5, delta_time))
 		to_chat(M, span_notice("[high_message]"))
-	M.adjustStaminaLoss(-18 * REM * delta_time, 0)
+	M.stamina.adjust(-18 * REM * delta_time)
 	M.adjustToxLoss(0.5 * REM * delta_time, 0)
 	if(DT_PROB(30, delta_time))
 		M.losebreath++
@@ -271,11 +263,9 @@
 /datum/reagent/drug/happiness/on_mob_metabolize(mob/living/L)
 	..()
 	ADD_TRAIT(L, TRAIT_FEARLESS, type)
-	SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "happiness_drug", /datum/mood_event/happiness_drug)
 
 /datum/reagent/drug/happiness/on_mob_delete(mob/living/L)
 	REMOVE_TRAIT(L, TRAIT_FEARLESS, type)
-	SEND_SIGNAL(L, COMSIG_CLEAR_MOOD_EVENT, "happiness_drug")
 	..()
 
 /datum/reagent/drug/happiness/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
@@ -292,13 +282,12 @@
 		switch(reaction)
 			if(1)
 				M.emote("laugh")
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "happiness_drug", /datum/mood_event/happiness_drug_good_od)
 			if(2)
 				M.emote("sway")
 				M.set_timed_status_effect(50 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 			if(3)
 				M.emote("frown")
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "happiness_drug", /datum/mood_event/happiness_drug_bad_od)
+
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5 * REM * delta_time)
 	..()
 	. = TRUE
@@ -343,7 +332,7 @@
 		M.emote(pick("twitch","drool"))
 	if(DT_PROB(10, delta_time))
 		M.losebreath++
-		M.adjustStaminaLoss(4, 0)
+		M.stamina.adjust(-4)
 	if(DT_PROB(7.5, delta_time))
 		M.adjustToxLoss(2, 0)
 	..()
@@ -351,6 +340,7 @@
 /datum/reagent/drug/maint
 	name = "Maintenance Drugs"
 	chemical_flags = NONE
+	abstract_type = /datum/reagent/drug/maint
 
 /datum/reagent/drug/maint/powder
 	name = "Maintenance Powder"
@@ -468,7 +458,6 @@
 /datum/reagent/drug/mushroomhallucinogen/on_mob_metabolize(mob/living/psychonaut)
 	. = ..()
 
-	SEND_SIGNAL(psychonaut, COMSIG_ADD_MOOD_EVENT, "tripping", /datum/mood_event/high, name)
 	if(!psychonaut.hud_used)
 		return
 
@@ -494,7 +483,6 @@
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_end_metabolize(mob/living/psychonaut)
 	. = ..()
-	SEND_SIGNAL(psychonaut, COMSIG_CLEAR_MOOD_EVENT, "tripping")
 	if(!psychonaut.hud_used)
 		return
 	var/atom/movable/plane_master_controller/game_plane_master_controller = psychonaut.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
@@ -521,7 +509,6 @@
 /datum/reagent/drug/blastoff/on_mob_metabolize(mob/living/dancer)
 	. = ..()
 
-	SEND_SIGNAL(dancer, COMSIG_ADD_MOOD_EVENT, "vibing", /datum/mood_event/high, name)
 	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), PROC_REF(on_flip))
 	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), PROC_REF(on_spin))
 
@@ -552,7 +539,6 @@
 /datum/reagent/drug/blastoff/on_mob_end_metabolize(mob/living/dancer)
 	. = ..()
 
-	SEND_SIGNAL(dancer, COMSIG_CLEAR_MOOD_EVENT, "vibing")
 	UnregisterSignal(dancer, COMSIG_MOB_EMOTED("flip"))
 	UnregisterSignal(dancer, COMSIG_MOB_EMOTED("spin"))
 
@@ -681,7 +667,7 @@
 		return
 	if(HAS_TRAIT(invisible_man, TRAIT_NOMETABOLISM))
 		return
-	if(invisible_man.has_status_effect(/datum/status_effect/grouped/stasis))
+	if(invisible_man.has_status_effect(/datum/status_effect/grouped/hard_stasis))
 		return
 
 	ADD_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN, name)
@@ -753,12 +739,11 @@
 	if(!iscarbon(kronkaine_receptacle))
 		return
 	var/mob/living/carbon/druggo = kronkaine_receptacle
-	druggo.adjustStaminaLoss(-4 * trans_volume, 0)
+	druggo.stamina.adjust(4 * trans_volume)
 	//I wish i could give it some kind of bonus when smoked, but we don't have an INHALE method.
 
 /datum/reagent/drug/kronkaine/on_mob_life(mob/living/carbon/kronkaine_fiend, delta_time, times_fired)
 	. = ..()
-	SEND_SIGNAL(kronkaine_fiend, COMSIG_ADD_MOOD_EVENT, "tweaking", /datum/mood_event/stimulant_medium, name)
 	kronkaine_fiend.adjustOrganLoss(ORGAN_SLOT_HEART, 0.4 * REM * delta_time)
 	kronkaine_fiend.set_timed_status_effect(20 SECONDS * REM * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
 	kronkaine_fiend.AdjustSleeping(-20 * REM * delta_time)

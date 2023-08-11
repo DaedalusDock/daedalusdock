@@ -37,7 +37,6 @@
 /mob/living/simple_animal/hostile/ooze/Initialize(mapload)
 	. = ..()
 	create_reagents(300)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/ooze/attacked_by(obj/item/I, mob/living/user)
@@ -127,9 +126,6 @@
 	if(!do_after(user, time = 6 SECONDS)) //6 second struggle
 		return FALSE
 	consume.stop_consuming()
-
-/mob/living/simple_animal/hostile/ooze/gelatinous/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GELATINOUS, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///This ability lets the gelatinious ooze speed up for a little bit
 /datum/action/cooldown/metabolicboost
@@ -289,9 +285,6 @@
 	var/datum/action/cooldown/gel_cocoon/gel_cocoon = new(src)
 	gel_cocoon.Grant(src)
 
-/mob/living/simple_animal/hostile/ooze/grapes/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GRAPE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 ///Ability that allows the owner to fire healing globules at mobs, targetting specific limbs.
 /datum/action/cooldown/globules
 	name = "Fire Mending globule"
@@ -384,7 +377,7 @@
 	. = ..()
 	bodypart = null
 
-/obj/item/mending_globule/embedded(mob/living/carbon/human/embedded_mob, obj/item/bodypart/part)
+/obj/item/mending_globule/embedded(obj/item/bodypart/part)
 	. = ..()
 	if(!istype(part))
 		return

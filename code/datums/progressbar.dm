@@ -140,7 +140,7 @@
 	///The progress bar visual element.
 	var/obj/effect/abstract/progbar/bar
 	///The atom who "created" the bar
-	var/atom/owner
+	var/atom/movable/owner
 	///Effectively the number of steps the progress bar will need to do before reaching completion.
 	var/goal = 1
 	///Control check to see if the progress was interrupted before reaching its goal.
@@ -149,7 +149,7 @@
 	var/listindex = 0
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
-	if(!_owner || !_goal)
+	if(!_owner)
 		return
 
 	owner = _owner
@@ -164,11 +164,14 @@
 
 		underlay.pixel_y += 2
 		underlay.alpha = 200
-		underlay.plane = ABOVE_HUD_PLANE
+		underlay.plane = GAME_PLANE
+		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 
 	owner:vis_contents += bar
+	if(owner.bound_overlay)
+		owner.bound_overlay.vis_contents += bar
 
 	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 

@@ -81,7 +81,7 @@
 	var/turf/T = get_turf(src)
 	for(var/atom/movable/AM in T)
 		if(!AM.currently_z_moving)
-			T.zFall(AM)
+			AM.zFall()
 
 /obj/structure/pitgrate/proc/reset_plane()
 	plane = FLOOR_PLANE

@@ -245,8 +245,6 @@
 /datum/config_entry/flag/load_legacy_ranks_only //Loads admin ranks only from legacy admin_ranks.txt, while enabled ranks are mirrored to the database
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/string/hostedby
-
 /datum/config_entry/flag/norespawn
 
 /datum/config_entry/flag/usewhitelist
@@ -330,8 +328,6 @@
 		config_entry_value *= 10 //documented as seconds in config.txt
 
 /datum/config_entry/flag/kick_inactive //force disconnect for inactive players
-
-/datum/config_entry/flag/load_jobs_from_txt
 
 /datum/config_entry/flag/forbid_singulo_possession
 
@@ -664,3 +660,5 @@
 
 /datum/config_entry/flag/topic_enabled
 	protection = CONFIG_ENTRY_LOCKED
+
+/datum/config_entry/flag/show_job_estimation

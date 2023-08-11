@@ -151,3 +151,8 @@
 /obj/machinery/atmospherics/pipe/add_member(obj/machinery/atmospherics/considered_device)
 	. = ..()
 	update_device_type()
+
+/obj/machinery/atmospherics/pipe/CanZFall(turf/from, direction, anchor_bypass)
+	. = ..()
+	if(anchored)
+		return FALSE

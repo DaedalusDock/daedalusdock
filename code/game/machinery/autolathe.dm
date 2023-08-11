@@ -6,6 +6,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.5
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
+	has_disk_slot = TRUE
 
 	var/operating = FALSE
 	var/list/L = list()
@@ -435,6 +436,7 @@
 		/datum/design/airlock_painter,
 		/datum/design/airlock_painter/decal,
 		/datum/design/airlock_painter/decal/tile,
+		/datum/design/paint_sprayer,
 		/datum/design/emergency_oxygen,
 		/datum/design/plasmaman_tank_belt,
 		/datum/design/iron,
@@ -449,7 +451,6 @@
 		/datum/design/scalpel,
 		/datum/design/circular_saw,
 		/datum/design/bonesetter,
-		/datum/design/surgical_drapes,
 		/datum/design/surgicaldrill,
 		/datum/design/retractor,
 		/datum/design/cautery,
@@ -496,8 +497,6 @@
 		/datum/design/plastic_ring,
 		/datum/design/plastic_box,
 		/datum/design/sticky_tape,
-		/datum/design/petridish,
-		/datum/design/swab,
 		/datum/design/chisel,
 		/datum/design/control,
 		/datum/design/paperroll,

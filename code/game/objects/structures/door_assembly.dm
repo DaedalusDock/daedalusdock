@@ -44,6 +44,8 @@
 	update_appearance()
 	update_name()
 
+	AddComponent(/datum/component/simple_rotation)
+
 /obj/structure/door_assembly/examine(mob/user)
 	. = ..()
 	var/doorname = ""
@@ -315,7 +317,7 @@
 		if(!glass && has_fill_overlays)
 			. += get_airlock_overlay("fill_construction", stripe_overlays, color = stripe_paint)
 
-	. += get_airlock_overlay("panel_c[state+1]", overlays_file, TRUE)
+	. += get_airlock_overlay("panelAddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)_c[state+1]", overlays_file, TRUE)
 
 /obj/structure/door_assembly/update_name()
 	name = ""
@@ -329,6 +331,9 @@
 			name = "near finished "
 	name += "[heat_proof_finished ? "heat-proofed " : ""][glass ? "window " : ""][base_name] assembly"
 	return ..()
+
+/obj/structure/door_assembly/AltClick(mob/user)
+	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/structure/door_assembly/proc/transfer_assembly_vars(obj/structure/door_assembly/source, obj/structure/door_assembly/target, previous = FALSE)
 	target.glass = source.glass

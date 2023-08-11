@@ -93,6 +93,8 @@
 //This is on /cleanable because fuck this ancient mess
 /obj/effect/decal/cleanable/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(iscarbon(AM) && blood_state && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
@@ -132,3 +134,4 @@
 		return
 	if(merger.reagents && reagents)
 		reagents.trans_to(merger, reagents.total_volume)
+

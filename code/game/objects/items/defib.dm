@@ -341,7 +341,7 @@
 	var/combat = FALSE //If it penetrates armor and gives additional functionality
 	var/wielded = FALSE // track wielded status on item
 
-/obj/item/shockpaddles/ComponentInitialize()
+/obj/item/shockpaddles/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS|ITEM_SLOT_BACK)
 	AddComponent(/datum/component/two_handed, force_unwielded=8, force_wielded=12)
@@ -526,7 +526,7 @@
 	busy = TRUE
 	M.visible_message(span_danger("[user] touches [M] with [src]!"), \
 			span_userdanger("[user] touches [M] with [src]!"))
-	M.adjustStaminaLoss(60)
+	M.stamina.adjust(-60)
 	M.Knockdown(75)
 	M.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.apply_status_effect(/datum/status_effect/convulsing)
@@ -651,7 +651,6 @@
 					H.emote("gasp")
 					H.set_timed_status_effect(200 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 					SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
-					SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
 					log_combat(user, H, "revived", defib)
 				do_success()
 				return
@@ -691,7 +690,6 @@
 	. = ..()
 
 /obj/item/shockpaddles/syndicate
-	name = "syndicate defibrillator paddles"
 	desc = "A pair of paddles used to revive deceased operatives. They possess both the ability to penetrate armor and to deliver powerful or disabling shocks offensively."
 	combat = TRUE
 	icon = 'icons/obj/defib.dmi'
@@ -700,7 +698,7 @@
 	base_icon_state = "syndiepaddles"
 
 /obj/item/shockpaddles/syndicate/nanotrasen
-	name = "elite nanotrasen defibrillator paddles"
+	name = "advanced defibrillator paddles"
 	desc = "A pair of paddles used to revive deceased ERT members. They possess both the ability to penetrate armor and to deliver powerful or disabling shocks offensively."
 	icon_state = "ntpaddles0"
 	inhand_icon_state = "ntpaddles0"

@@ -324,14 +324,17 @@
 	switch(hud?.mymob?.m_intent)
 		if(MOVE_INTENT_WALK)
 			icon_state = "walking"
-		if(MOVE_INTENT_RUN)
+		if(MOVE_INTENT_RUN, MOVE_INTENT_SPRINT)
 			icon_state = "running"
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/user)
 	if(isobserver(user))
 		return
-	user.toggle_move_intent(user)
+	if(user.m_intent != MOVE_INTENT_WALK)
+		user.set_move_intent(MOVE_INTENT_WALK)
+	else
+		user.set_move_intent(MOVE_INTENT_RUN)
 
 /atom/movable/screen/pull
 	name = "stop pulling"
@@ -605,14 +608,6 @@
 	screen_loc = ui_living_healthdoll
 	var/filtered = FALSE //so we don't repeatedly create the mask of the mob every update
 
-/atom/movable/screen/mood
-	name = "mood"
-	icon_state = "mood5"
-	screen_loc = ui_mood
-
-/atom/movable/screen/mood/attack_tk()
-	return
-
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent
 
@@ -659,3 +654,159 @@
 	name = "stamina"
 	icon_state = "stamina0"
 	screen_loc = ui_stamina
+
+/atom/movable/screen/stamina/Click(location, control, params)
+	if (iscarbon(usr))
+		var/mob/living/carbon/C = usr
+		var/content = {"
+		<div class='examine_block'>
+			[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
+		</div>
+		"}
+		to_chat(C, content)
+
+/atom/movable/screen/stamina/MouseEntered(location, control, params)
+	. = ..()
+	var/mob/living/L = usr
+	if(!istype(L))
+		return
+
+	if(QDELETED(src))
+		return
+	var/_content = {"
+		Stamina: [L.stamina.current]/[L.stamina.maximum]<br>
+		Regen: [L.stamina.regen_rate]
+	"}
+	openToolTip(usr, src, params, title = "Stamina", content = _content)
+
+/atom/movable/screen/stamina/MouseExited(location, control, params)
+	. = ..()
+	closeToolTip(usr)
+
+/atom/movable/screen/gun_mode
+	name = "Toggle Gun Mode"
+	icon_state = "gun0"
+	screen_loc = ui_gun_select
+
+/atom/movable/screen/gun_mode/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	hud.gun_setting_icon.update_icon_state()
+	hud.update_gunpoint(targetmob)
+
+
+/atom/movable/screen/gun_mode/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+	user.use_gunpoint = !user.use_gunpoint
+
+	if(!user.use_gunpoint)
+		icon_state = "gun0"
+		user.client.screen -= hud.gunpoint_options
+	else
+		icon_state = "gun1"
+		user.client.screen += hud.gunpoint_options
+
+/atom/movable/screen/gun_radio
+	name = "Disallow Radio Use"
+	icon_state = "no_radio1"
+	screen_loc = ui_gun1
+
+/atom/movable/screen/gun_radio/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_radio/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+	user.toggle_gunpoint_flag(TARGET_CAN_RADIO)
+
+	if(user.gunpoint_flags & TARGET_CAN_RADIO)
+		icon_state = "no_radio1"
+	else
+		icon_state = "no_radio0"
+
+/atom/movable/screen/gun_item
+	name = "Allow Item Use"
+	icon_state = "no_item1"
+	screen_loc = ui_gun2
+
+/atom/movable/screen/gun_item/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_item/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+
+	user.toggle_gunpoint_flag(TARGET_CAN_INTERACT)
+	if(user.gunpoint_flags & TARGET_CAN_INTERACT)
+		icon_state = "no_item1"
+	else
+		icon_state = "no_item0"
+
+/atom/movable/screen/gun_move
+	name = "Allow Movement"
+	icon_state = "no_walk1"
+	screen_loc = ui_gun3
+
+/atom/movable/screen/gun_move/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_move/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+
+	user.toggle_gunpoint_flag(TARGET_CAN_MOVE)
+	if(user.gunpoint_flags & TARGET_CAN_MOVE)
+		icon_state = "no_walk1"
+	else
+		icon_state = "no_walk0"

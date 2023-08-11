@@ -89,7 +89,7 @@
 			beat = BEAT_NONE
 
 	if(organ_flags & ORGAN_FAILING && owner.can_heartattack() && !(HAS_TRAIT(src, TRAIT_STABLEHEART))) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
-		if(owner.stat == CONSCIOUS)
+		if(owner.stat <= SOFT_CRIT)
 			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"), \
 				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
 		owner.set_heartattack(TRUE)
@@ -97,11 +97,6 @@
 
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)
-
-/obj/item/organ/heart/skrell
-	name = "skrell heart"
-	icon_state = "heart-skrell-on"
-	base_icon_state = "heart-skrell"
 
 /obj/item/organ/heart/cursed
 	name = "cursed heart"
@@ -259,7 +254,7 @@
 	if(owner.health < 5 && COOLDOWN_FINISHED(src, adrenaline_cooldown))
 		COOLDOWN_START(src, adrenaline_cooldown, rand(25 SECONDS, 1 MINUTES))
 		to_chat(owner, span_userdanger("You feel yourself dying, but you refuse to give up!"))
-		owner.heal_overall_damage(15, 15, 0, BODYTYPE_ORGANIC)
+		owner.heal_overall_damage(15, 15, BODYTYPE_ORGANIC)
 		if(owner.reagents.get_reagent_amount(/datum/reagent/medicine/ephedrine) < 20)
 			owner.reagents.add_reagent(/datum/reagent/medicine/ephedrine, 10)
 
@@ -286,6 +281,9 @@
 
 /obj/item/organ/heart/ethereal/Insert(mob/living/carbon/owner, special = 0)
 	. = ..()
+	if(!.)
+		return
+
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 	RegisterSignal(owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_owner_fully_heal))
 	RegisterSignal(owner, COMSIG_PARENT_PREQDELETED, PROC_REF(owner_deleted))

@@ -13365,7 +13365,7 @@
 /area/hallway/secondary/entry)
 "fze" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 1
 	},
 /obj/item/stack/medical/mesh,
@@ -38568,7 +38568,7 @@
 /area/engineering/supermatter/room)
 "rVk" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 2
 	},
 /obj/item/stack/medical/mesh,
@@ -39193,7 +39193,7 @@
 /area/engineering/supermatter/room)
 "ska" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = -2;
 	pixel_y = 8
 	},

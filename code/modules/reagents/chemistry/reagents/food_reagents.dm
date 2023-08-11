@@ -13,6 +13,7 @@
 	taste_mult = 4
 	inverse_chem_val = 0.1
 	inverse_chem = null
+	abstract_type = /datum/reagent/consumable
 	/// How much nutrition this reagent supplies
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'
@@ -31,18 +32,8 @@
 	. = ..()
 	if(!(methods & INGEST) || !quality || HAS_TRAIT(exposed_mob, TRAIT_AGEUSIA))
 		return
-	switch(quality)
-		if (DRINK_NICE)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_nice)
-		if (DRINK_GOOD)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_good)
-		if (DRINK_VERYGOOD)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_verygood)
-		if (DRINK_FANTASTIC)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_drink", /datum/mood_event/quality_fantastic)
-			exposed_mob.mind?.add_memory(MEMORY_DRINK, list(DETAIL_DRINK = src), story_value = STORY_VALUE_OKAY)
-		if (FOOD_AMAZING)
-			SEND_SIGNAL(exposed_mob, COMSIG_ADD_MOOD_EVENT, "quality_food", /datum/mood_event/amazingtaste)
+	if(quality == DRINK_FANTASTIC)
+		exposed_mob.mind?.add_memory(MEMORY_DRINK, list(DETAIL_DRINK = src), story_value = STORY_VALUE_OKAY)
 
 /datum/reagent/consumable/nutriment
 	name = "Nutriment"
@@ -640,16 +631,6 @@
 		M.adjustToxLoss(-1, 0)
 	..()
 
-/datum/reagent/consumable/honey/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
-	. = ..()
-	if(!iscarbon(exposed_mob) || !(methods & (TOUCH|VAPOR|PATCH)))
-		return
-
-	var/mob/living/carbon/exposed_carbon = exposed_mob
-	for(var/s in exposed_carbon.surgeries)
-		var/datum/surgery/surgery = s
-		surgery.speed_modifier = max(0.6, surgery.speed_modifier)
-
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"
 	description = "A white and oily mixture of mixed egg yolks."
@@ -733,7 +714,7 @@
 		M.losebreath += 4
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2*REM, 150)
 		M.adjustToxLoss(3*REM,0)
-		M.adjustStaminaLoss(10*REM,0)
+		M.stamina.adjust(-10*REM)
 		M.blur_eyes(5)
 		. = TRUE
 	..()
@@ -993,7 +974,6 @@
 
 /datum/reagent/consumable/peanut_butter/on_mob_life(mob/living/carbon/M, delta_time, times_fired) //ET loves peanut butter
 	if(isabductor(M))
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "ET_pieces", /datum/mood_event/et_pieces, name)
 		M.set_timed_status_effect(30 SECONDS * REM * delta_time, /datum/status_effect/drugginess)
 	..()
 

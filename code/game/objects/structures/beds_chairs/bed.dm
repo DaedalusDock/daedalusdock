@@ -233,10 +233,6 @@
 	desc = "An old grubby mattress. You try to not think about what could be the cause of those stains."
 	icon_state = "dirty_mattress"
 
-/obj/structure/bed/maint/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 25)
-
 //Double Beds, for luxurious sleeping, i.e. the captain and maybe heads- if people use this for ERP, send them to skyrat
 /obj/structure/bed/double
 	name = "double bed"

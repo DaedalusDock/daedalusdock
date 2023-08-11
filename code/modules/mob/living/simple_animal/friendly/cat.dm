@@ -45,12 +45,7 @@
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "purrs!")
 	add_verb(src, /mob/living/proc/toggle_resting)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/pet/cat/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CAT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 
 /mob/living/simple_animal/pet/cat/space
 	name = "space cat"
@@ -73,9 +68,6 @@
 	held_state = "breadcat"
 	butcher_results = list(/obj/item/food/meat/slab = 2, /obj/item/organ/ears/cat = 1, /obj/item/organ/tail/cat = 1, /obj/item/food/breadslice/plain = 1)
 
-/mob/living/simple_animal/pet/cat/breadcat/add_cell_sample()
-	return
-
 /mob/living/simple_animal/pet/cat/original
 	name = "Batsy"
 	desc = "The product of alien DNA and bored geneticists."
@@ -87,8 +79,6 @@
 	unique_pet = TRUE
 	held_state = "original"
 
-/mob/living/simple_animal/pet/cat/original/add_cell_sample()
-	return
 /mob/living/simple_animal/pet/cat/kitten
 	name = "kitten"
 	desc = "D'aaawwww."
@@ -121,6 +111,8 @@
 		icon_state = "original"
 		icon_living = "original"
 		icon_dead = "original_dead"
+	if(prob(33))
+		name = "Athena"
 	Read_Memory()
 	. = ..()
 
@@ -288,9 +280,6 @@
 	deathmessage = "loses her false life and collapses!"
 	deathsound = SFX_BODYFALL
 	held_state = "cak"
-
-/mob/living/simple_animal/pet/cat/cak/add_cell_sample()
-	return
 
 /mob/living/simple_animal/pet/cat/cak/CheckParts(list/parts)
 	..()

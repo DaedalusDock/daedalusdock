@@ -1,10 +1,7 @@
 /datum/preference/choiced/vampire_status
 	savefile_key = "feature_vampire_status"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
 	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS //this will be overwritten by names otherwise
-	main_feature_name = "Vampire status"
-	should_generate_icons = TRUE
 	relevant_species_trait = BLOOD_CLANS
 
 /datum/preference/choiced/vampire_status/create_default_value()
@@ -13,8 +10,8 @@
 /datum/preference/choiced/vampire_status/init_possible_values()
 	var/list/values = list()
 
-	values["Inoculated"] = icon('icons/obj/drinks.dmi', "bloodglass")
-	values["Outcast"] = icon('icons/obj/bloodpack.dmi', "generic_bloodpack")
+	values += "Inoculated"
+	values += "Outcast"
 
 	return values
 

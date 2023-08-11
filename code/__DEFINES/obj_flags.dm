@@ -6,13 +6,13 @@
 #define CAN_BE_HIT (1<<2) //can this be bludgeoned by items?
 #define BEING_SHOCKED (1<<3) // Whether this thing is currently (already) being shocked by a tesla
 #define DANGEROUS_POSSESSION (1<<4) //Admin possession yes/no
-#define ON_BLUEPRINTS (1<<5)  //Are we visible on the station blueprints at roundstart?
-#define UNIQUE_RENAME (1<<6) // can you customize the description/name of the thing?
-#define USES_TGUI (1<<7) //put on things that use tgui on ui_interact instead of custom/old UI.
-#define BLOCK_Z_OUT_DOWN (1<<8)  // Should this object block z falling from loc?
-#define BLOCK_Z_OUT_UP (1<<9) // Should this object block z uprise from loc?
-#define BLOCK_Z_IN_DOWN (1<<10) // Should this object block z falling from above?
-#define BLOCK_Z_IN_UP (1<<11) // Should this object block z uprise from below?
+#define UNIQUE_RENAME (1<<5) // can you customize the description/name of the thing?
+#define USES_TGUI (1<<6) //put on things that use tgui on ui_interact instead of custom/old UI.
+#define BLOCK_Z_OUT_DOWN (1<<7)  // Should this object block z falling from loc?
+#define BLOCK_Z_OUT_UP (1<<8) // Should this object block z uprise from loc?
+#define BLOCK_Z_IN_DOWN (1<<9) // Should this object block z falling from above?
+#define BLOCK_Z_IN_UP (1<<10) // Should this object block z uprise from below?
+#define BLOCK_Z_FALL (1<<11) // Should this object block falling?
 #define NO_BUILD (1<<12) // Can we build on this object?
 #define PLASMAGUARD (1<<13) //Immune to plasma contamination
 
@@ -87,6 +87,7 @@
 #define ORGAN_EDIBLE (1<<5) //is a snack? :D
 #define ORGAN_SYNTHETIC_EMP (1<<6) //Synthetic organ affected by an EMP. Deteriorates over time.
 #define ORGAN_UNREMOVABLE (1<<7) //Can't be removed using surgery
+#define ORGAN_CUT_AWAY (1<<8) //! The organ is not attached to the parent.
 
 /// Integrity defines for clothing (not flags but close enough)
 #define CLOTHING_PRISTINE 0 // We have no damage on the clothing

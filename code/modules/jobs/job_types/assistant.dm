@@ -10,8 +10,18 @@ Assistant
 	total_positions = 5
 	spawn_positions = 5
 	supervisors = "absolutely everyone"
-	selection_color = "#dddddd"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus,
+		/datum/employer/ananke,
+		/datum/employer/aether,
+		/datum/employer/priapus,
+		/datum/employer/mars_exec,
+		/datum/employer/hermes,
+		/datum/employer/contractor,
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -21,8 +31,6 @@ Assistant
 	)
 
 	paycheck = PAYCHECK_ASSISTANT // Get a job. Job reassignment changes your paycheck now. Get over it.
-
-	display_order = JOB_DISPLAY_ORDER_ASSISTANT
 
 	department_for_prefs = /datum/job_department/assistant
 

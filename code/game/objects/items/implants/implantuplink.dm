@@ -5,6 +5,8 @@
 	icon_state = "radio"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
+	implant_flags = IMPLANT_HIDDEN
+
 	var/starting_tc = 0
 	/// The uplink flags of the implant uplink inside, only checked during initialisation so modifying it after initialisation will do nothing
 	var/uplink_flag = UPLINK_TRAITORS
@@ -15,10 +17,12 @@
 	. = ..()
 	if(!uplink_flag)
 		uplink_flag = src.uplink_flag
+	if(isturf(uplink_handler))
+		stack_trace("what")
 	src.uplink_handler = uplink_handler
 	RegisterSignal(src, COMSIG_COMPONENT_REMOVING, PROC_REF(_component_removal))
 
-/obj/item/implant/uplink/implant(mob/living/carbon/target, mob/user, silent, force)
+/obj/item/implant/uplink/implant(mob/living/carbon/target, mob/user, body_zone, silent, force)
 	. = ..()
 	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = target?.key, lockable = TRUE, enabled = FALSE, uplink_handler_override = uplink_handler, starting_tc = starting_tc)
 	new_uplink.unlock_text = "Your Syndicate Uplink has been cunningly implanted in you, for a small TC fee. Simply trigger the uplink to access it."

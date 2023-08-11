@@ -137,11 +137,7 @@
 	AddElement(/datum/element/pet_bonus, "chirps!")
 	pixel_x = base_pixel_x + rand(-6, 6)
 	pixel_y = base_pixel_y + rand(0, 10)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/chick/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/chick/Life(delta_time = SSMOBS_DT, times_fired)
 	. =..()
@@ -196,7 +192,6 @@
 /mob/living/simple_animal/chicken/Initialize(mapload)
 	. = ..()
 	chicken_count++
-	add_cell_sample()
 	AddElement(/datum/element/animal_variety, "chicken", pick("brown","black","white"), TRUE)
 	AddComponent(/datum/component/egg_layer,\
 		/obj/item/food/egg,\
@@ -209,9 +204,6 @@
 		egg_laid_callback = CALLBACK(src, PROC_REF(egg_laid))\
 	)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/chicken/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/chicken/Destroy()
 	chicken_count--

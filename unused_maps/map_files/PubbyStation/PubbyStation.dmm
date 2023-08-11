@@ -18560,7 +18560,7 @@
 /area/medical/medbay/central)
 "boO" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/reagent_containers/glass/bottle/epinephrine,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
@@ -20752,7 +20752,7 @@
 	dir = 8
 	},
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /turf/open/floor/iron/white,
@@ -24317,7 +24317,7 @@
 /turf/open/floor/engine,
 /area/maintenance/department/engine)
 "bKl" = (
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -39494,7 +39494,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
@@ -42316,7 +42316,7 @@
 /area/space/nearstation)
 "lsr" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/clothing/neck/stethoscope,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -42394,7 +42394,7 @@
 /turf/open/floor/iron/dark,
 /area/service/library/lounge)
 "lxx" = (
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 2
 	},
 /obj/machinery/door/window/right/directional/south{
@@ -45636,7 +45636,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 1
 	},
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/light/small{
 	dir = 4
 	},
@@ -47558,7 +47558,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
 "qip" = (

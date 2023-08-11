@@ -307,8 +307,6 @@
 	sac_target.reagents?.add_reagent(/datum/reagent/inverse/helgrasp/heretic, helgrasp_time / 20)
 	sac_target.apply_necropolis_curse(CURSE_BLINDING | CURSE_GRASPING)
 
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm", /datum/mood_event/shadow_realm)
-
 	sac_target.flash_act()
 	sac_target.blur_eyes(15)
 	sac_target.set_timed_status_effect(20 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
@@ -360,7 +358,6 @@
 	sac_target.remove_status_effect(/datum/status_effect/necropolis_curse)
 	sac_target.remove_status_effect(/datum/status_effect/unholy_determination)
 	sac_target.reagents?.del_reagent(/datum/reagent/inverse/helgrasp/heretic)
-	SEND_SIGNAL(sac_target, COMSIG_CLEAR_MOOD_EVENT, "shadow_realm")
 
 	// Wherever we end up, we sure as hell won't be able to explain
 	sac_target.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/speech/slurring/heretic)
@@ -436,11 +433,7 @@
 	sac_target.blur_eyes(50)
 	sac_target.set_timed_status_effect(1 MINUTES, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	sac_target.AdjustKnockdown(80)
-	sac_target.adjustStaminaLoss(120)
-
-	// Glad i'm outta there, though!
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived", /datum/mood_event/shadow_realm_live)
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived_sadness", /datum/mood_event/shadow_realm_live_sad)
+	sac_target.stamina.adjust(-120)
 
 	// Could use a little pick-me-up...
 	sac_target.reagents?.add_reagent(/datum/reagent/medicine/atropine, 8)

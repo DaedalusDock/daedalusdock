@@ -44,13 +44,6 @@
 	/// Size of the area in open turfs, only calculated for indoors areas.
 	var/areasize = 0
 
-	/// Bonus mood for being in this area
-	var/mood_bonus = 0
-	/// Mood message for being here, only shows up if mood_bonus != 0
-	var/mood_message = "This area is pretty nice!"
-	/// Does the mood bonus require a trait?
-	var/mood_trait
-
 	///Will objects this area be needing power?
 	var/requires_power = TRUE
 	/// This gets overridden to 1 for space in area/.
@@ -94,11 +87,6 @@
 
 	///This datum, if set, allows terrain generation behavior to be ran on Initialize()
 	var/datum/map_generator/map_generator
-
-	/// Default network root for this area aka station, lavaland, etc
-	var/network_root_id = null
-	/// Area network id when you want to find all devices hooked up to this area
-	var/network_area_id = null
 
 	///Used to decide what kind of reverb the area makes sound have
 	var/sound_environment = SOUND_ENVIRONMENT_NONE
@@ -188,12 +176,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		blend_mode = BLEND_MULTIPLY
 
 	reg_in_areas_in_z()
-
-	if(!mapload)
-		if(!network_root_id)
-			network_root_id = STATION_NETWORK_ROOT // default to station root because this might be created with a blueprint
-		SSnetworks.assign_area_network_id(src)
-
 	update_base_lighting()
 
 	return INITIALIZE_HINT_LATELOAD
@@ -211,14 +193,14 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		var/list/turfs = list()
 		for(var/turf/T in contents)
 			turfs += T
-		map_generator.generate_terrain(turfs)
+		map_generator.generate_terrain(turfs, src)
 
 /area/proc/test_gen()
 	if(map_generator)
 		var/list/turfs = list()
 		for(var/turf/T in contents)
 			turfs += T
-		map_generator.generate_terrain(turfs)
+		map_generator.generate_terrain(turfs, src)
 
 
 /**

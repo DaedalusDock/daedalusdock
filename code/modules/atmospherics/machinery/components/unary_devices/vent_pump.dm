@@ -13,7 +13,7 @@
 	desc = "Has a valve and pump attached to it."
 
 	use_power = IDLE_POWER_USE
-	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 	can_unwrench = TRUE
 	welded = FALSE
 	layer = GAS_SCRUBBER_LAYER
@@ -49,7 +49,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/New()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()

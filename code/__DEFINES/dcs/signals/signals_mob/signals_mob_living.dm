@@ -6,8 +6,6 @@
 // Organ signals
 /// Called on the organ when it is implanted into someone (mob/living/carbon/receiver)
 #define COMSIG_ORGAN_IMPLANTED "comsig_organ_implanted"
-/// Called when using the *wag emote
-#define COMSIG_ORGAN_WAG_TAIL "comsig_wag_tail"
 /// Called on the organ when it is removed from someone (mob/living/carbon/old_owner)
 #define COMSIG_ORGAN_REMOVED "comsig_organ_removed"
 
@@ -51,7 +49,7 @@
 #define COMSIG_LIVING_WRITE_MEMORY "living_write_memory"
 	#define COMPONENT_DONT_WRITE_MEMORY (1<<0)
 
-/// from /proc/healthscan(): (list/scan_results, advanced, mob/user, mode)
+/// from /proc/healthscan(): (list/render_strings, mob/user, mode, advanced)
 /// Consumers are allowed to mutate the scan_results list to add extra information
 #define COMSIG_LIVING_HEALTHSCAN "living_healthscan"
 
@@ -94,3 +92,9 @@
 
 ///From obj/item/toy/crayon/spraycan
 #define COMSIG_LIVING_MOB_PAINTED "living_mob_painted"
+
+///From mob/living/Say()
+#define COMSIG_LIVING_USE_RADIO "living_talk_into_radio"
+
+///From mob/living/proc/set_combat_mode(): (mob/living/user, new_mode)
+#define COMSIG_LIVING_TOGGLE_COMBAT_MODE "living_toggle_combat_mode"

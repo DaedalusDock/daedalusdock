@@ -69,6 +69,68 @@
 	category = list(DCAT_CYBORG)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
+//Teshari Augs
+/datum/design/teshari_chest
+	name = "Prototype Teshari Torso"
+	id = "teshari_borg_chest"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/chest/robot/surplus/teshari
+	materials = list(/datum/material/iron=40000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+
+/datum/design/teshari_head
+	name = "Prototype Teshari Head"
+	id = "teshari_borg_head"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/head/robot/surplus/teshari
+	materials = list(/datum/material/iron=5000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_r_arm
+	name = "Prototype Teshari Right Arm"
+	id = "teshari_borg_r_arm"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/arm/right/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_l_arm
+	name = "Prototype Teshari Left Arm"
+	id = "teshari_borg_l_arm"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/arm/left/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_l_leg
+	name = "Prototype Teshari Left Leg"
+	id = "teshari_borg_l_leg"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/leg/left/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
+/datum/design/teshari_r_leg
+	name = "Prototype Teshari Right Leg"
+	id = "teshari_borg_r_leg"
+	build_type = MECHFAB
+	build_path = /obj/item/bodypart/leg/right/robot/surplus/teshari
+	materials = list(/datum/material/iron=10000)
+	construction_time = 350
+	category = list(DCAT_CYBORG)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
+
 //Ripley
 /datum/design/ripley_chassis
 	name = "Exosuit Chassis (APLU \"Ripley\")"
@@ -915,16 +977,6 @@
 	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
-/datum/design/borg_upgrade_surgicalprocessor
-	name = "Cyborg Upgrade (Surgical Processor)"
-	id = "borg_upgrade_surgicalprocessor"
-	build_type = MECHFAB
-	build_path = /obj/item/borg/upgrade/processor
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 4000, /datum/material/silver = 4000)
-	construction_time = 40
-	category = list(DCAT_SILICON)
-	mapload_design_flags = DESIGN_FAB_ROBOTICS
-
 /datum/design/borg_upgrade_trashofholding
 	name = "Cyborg Upgrade (Trash Bag of Holding)"
 	id = "borg_upgrade_trashofholding"
@@ -1196,18 +1248,6 @@
 	. = ..()
 	var/obj/item/mod/module/module = build_path
 	desc = "[initial(module.desc)] It uses [initial(module.complexity)] complexity."
-
-/datum/design/module/mod_storage
-	name = "MOD Module: Storage"
-	id = "mod_storage"
-	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	build_path = /obj/item/mod/module/storage
-
-/datum/design/module/mod_storage_expanded
-	name = "MOD Module: Expanded Storage"
-	id = "mod_storage_expanded"
-	materials = list(/datum/material/iron = 5000, /datum/material/uranium = 2000)
-	build_path = /obj/item/mod/module/storage/large_capacity
 
 /datum/design/module/mod_visor_medhud
 	name = "MOD Module: Medical Visor"

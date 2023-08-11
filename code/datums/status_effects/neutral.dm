@@ -127,14 +127,6 @@
 	desc = "Making any sudden moves would probably be a bad idea!"
 	icon_state = "aimed"
 
-/datum/status_effect/grouped/heldup/on_apply()
-	owner.apply_status_effect(/datum/status_effect/grouped/surrender, REF(src))
-	return ..()
-
-/datum/status_effect/grouped/heldup/on_remove()
-	owner.remove_status_effect(/datum/status_effect/grouped/surrender, REF(src))
-	return ..()
-
 // holdup is for the person aiming
 /datum/status_effect/holdup
 	id = "holdup"
@@ -147,6 +139,11 @@
 	name = "Holding Up"
 	desc = "You're currently pointing a gun at someone."
 	icon_state = "aimed"
+
+/atom/movable/screen/alert/status_effect/holdup/Click(location, control, params)
+	. = ..()
+	var/mob/living/L = usr
+	qdel(L.gunpoint)
 
 // this status effect is used to negotiate the high-fiving capabilities of all concerned parties
 /datum/status_effect/offering
@@ -236,26 +233,6 @@
 /datum/status_effect/offering/secret_handshake
 	id = "secret_handshake"
 	give_alert_type = /atom/movable/screen/alert/give/secret_handshake
-
-//this effect gives the user an alert they can use to surrender quickly
-/datum/status_effect/grouped/surrender
-	id = "surrender"
-	duration = -1
-	tick_interval = -1
-	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /atom/movable/screen/alert/status_effect/surrender
-
-/atom/movable/screen/alert/status_effect/surrender
-	name = "Surrender"
-	desc = "Looks like you're in trouble now, bud. Click here to surrender. (Warning: You will be incapacitated.)"
-	icon_state = "surrender"
-
-/atom/movable/screen/alert/status_effect/surrender/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-
-	owner.emote("surrender")
 
 /*
  * A status effect used for preventing caltrop message spam
@@ -447,10 +424,7 @@
 			//new you new stuff
 			SSquirks.randomise_quirks(owner)
 			owner.reagents.remove_all(1000)
-			var/datum/component/mood/mood = owner.GetComponent(/datum/component/mood)
-			mood.remove_temp_moods() //New you, new moods.
 			var/mob/living/carbon/human/human_mob = owner
-			SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "Eigentrip", /datum/mood_event/eigentrip)
 			if(QDELETED(human_mob))
 				return
 			if(prob(1))//low chance of the alternative reality returning to monkey

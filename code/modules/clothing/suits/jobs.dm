@@ -100,7 +100,7 @@
 	species_exception = list(/datum/species/golem)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
-/obj/item/clothing/suit/hazardvest/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/hazardvest/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -186,7 +186,6 @@
 		/obj/item/hemostat,
 		/obj/item/cautery,
 		/obj/item/scalpel,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/bonesetter,
 		/obj/item/flashlight/pen,

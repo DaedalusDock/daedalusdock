@@ -525,7 +525,6 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	ADD_TRAIT(owner, TRAIT_NOCRITDAMAGE, type)
 	ADD_TRAIT(owner, TRAIT_NODEATH, type)
 	owner.set_stat(CONSCIOUS) //This doesn't touch knocked out
-	owner.updatehealth()
 	owner.update_sight()
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, STAT_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT) //Because these are normally updated using set_health() - but we don't want to adjust health, and the addition of NOHARDCRIT blocks it being added after, but doesn't remove it if it was added before
@@ -535,6 +534,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	owner.emote("gasp")
 	owner.playsound_local(owner, 'sound/health/fastbeat.ogg', 65)
 	..()
+	return TRUE
 
 /datum/reagent/inverse/penthrite/on_mob_life(mob/living/carbon/owner, delta_time, times_fired)
 	if(!back_from_the_dead)
@@ -548,9 +548,9 @@ Basically, we fill the time between now and 2s from now with hands based off the
 
 	owner.adjustBruteLoss(5 * (1-creation_purity) * delta_time)
 	owner.adjustOrganLoss(ORGAN_SLOT_HEART, (1 + (1-creation_purity)) * delta_time)
-	if(owner.health < HEALTH_THRESHOLD_CRIT)
+	if(owner.health < owner.crit_threshold)
 		owner.add_movespeed_modifier(/datum/movespeed_modifier/reagent/nooartrium)
-	if(owner.health < HEALTH_THRESHOLD_FULLCRIT)
+	if(owner.health < owner.hardcrit_threshold)
 		owner.add_actionspeed_modifier(/datum/actionspeed_modifier/nooartrium)
 	var/obj/item/organ/heart/heart = owner.getorganslot(ORGAN_SLOT_HEART)
 	if(!heart || heart.organ_flags & ORGAN_FAILING)

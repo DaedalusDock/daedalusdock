@@ -70,17 +70,12 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 
 /////////// forgottenship items
 
-/obj/item/disk/surgery/forgottenship
-	name = "Advanced Surgery Disk"
-	desc = "A disk that contains advanced surgery procedures, must be loaded into an Operating Console."
-	surgeries = list(/datum/surgery/advanced/lobotomy, /datum/surgery/advanced/bioware/vein_threading, /datum/surgery/advanced/bioware/nerve_splicing)
-
 /obj/structure/fluff/empty_sleeper/syndicate/captain
 	icon_state = "sleeper_s-open"
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	deconstructible = FALSE
 
-/obj/structure/fluff/empty_sleeper/syndicate/captain/ComponentInitialize()
+/obj/structure/fluff/empty_sleeper/syndicate/captain/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/gps, "Old Encrypted Signal")
 

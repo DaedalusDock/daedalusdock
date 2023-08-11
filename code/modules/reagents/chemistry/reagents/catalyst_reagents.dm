@@ -1,10 +1,11 @@
 ///These alter reaction conditions while they're in the beaker
 /datum/reagent/catalyst_agent
 	name ="Catalyst agent"
+	abstract_type = /datum/reagent/catalyst_agent
 	///The typepath of the reagent they that they affect
 	var/target_reagent_type
 	///The minimumvolume required in the beaker for them to have an effect
-	var/min_volume = 10 
+	var/min_volume = 10
 	///The value in which the associated type is modified
 	var/modifier = 1
 
@@ -16,6 +17,7 @@
 
 /datum/reagent/catalyst_agent/speed
 	name ="Speed catalyst agent"
+	abstract_type = /datum/reagent/catalyst_agent/speed
 
 /datum/reagent/catalyst_agent/speed/consider_catalyst(datum/equilibrium/equilibrium)
 	. = ..()
@@ -25,6 +27,7 @@
 
 /datum/reagent/catalyst_agent/ph
 	name ="pH catalyst agent"
+	abstract_type = /datum/reagent/catalyst_agent/ph
 
 /datum/reagent/catalyst_agent/ph/consider_catalyst(datum/equilibrium/equilibrium)
 	. = ..()
@@ -33,6 +36,7 @@
 
 /datum/reagent/catalyst_agent/temperature
 	name = "Temperature Catalyst Agent"
+	abstract_type = /datum/reagent/catalyst_agent/temperature
 
 /datum/reagent/catalyst_agent/temperature/consider_catalyst(datum/equilibrium/equilibrium)
 	. = ..()

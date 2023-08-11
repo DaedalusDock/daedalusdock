@@ -8,9 +8,6 @@ DAMAGE_MULTIPLIER 1
 ## whether pod plants work or not
 REVIVAL_POD_PLANTS
 
-## amount of time (in hundredths of seconds) for which a brain retains the "spark of life" after the person's death (set to -1 for infinite)
-REVIVAL_BRAIN_LIFE -1
-
 ## OOC DURING ROUND ###
 ## Comment this out if you want OOC to be automatically disabled during the round, it will be enabled during the lobby and after the round end results.
 OOC_DURING_ROUND
@@ -33,8 +30,9 @@ COMMENDATION_PERCENT_POLL 0.05
 ## To speed things up make the number negative, to slow things down, make the number positive.
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied.
-RUN_DELAY 1.5
+RUN_DELAY 2.2
 WALK_DELAY 4
+SPRINT_DELAY 1.4
 
 ## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
 ## Entries completely override all subtypes. Later entries have precedence over earlier entries.
@@ -159,9 +157,6 @@ ALLOW_AI_MULTICAM
 
 ## AWAY MISSIONS ###
 
-## Uncomment to load the virtual reality hub map
-#VIRTUAL_REALITY
-
 ## Uncomment to load one of the missions from awaymissionconfig.txt or away_missions/ at roundstart.
 #ROUNDSTART_AWAY
 
@@ -210,13 +205,6 @@ NEAR_DEATH_EXPERIENCE
 ## Uncomment these to stop the AI, or cyborgs, from having vocal communication.
 #SILENT_AI
 #SILENT_BORG
-
-## SANDBOX PANEL AUTOCLOSE ###
-## The sandbox panel's item spawning dialog now stays open even after you click an option.
-## If you find that your players are abusing the sandbox panel, this option may slow them down
-## without preventing people from using it properly.
-## Only functions in sandbox game mode.
-#SANDBOX_AUTOCLOSE
 
 ## ROUNDSTART SILICON LAWS ###
 ## This controls what the AI's laws are at the start of the round.
@@ -312,7 +300,6 @@ SILICON_MAX_LAW_AMOUNT 12
 ROUNDSTART_RACES human
 
 ## Races that are strictly worse than humans that could probably be turned on without balance concerns
-ROUNDSTART_RACES felinid
 ROUNDSTART_RACES lizard
 #ROUNDSTART_RACES fly
 ROUNDSTART_RACES moth
@@ -444,7 +431,7 @@ MICE_ROUNDSTART 10
 ROUNDSTART_TRAITS
 
 ## Uncomment to disable human moods.
-#DISABLE_HUMAN_MOOD
+DISABLE_HUMAN_MOOD
 
 ## Enable night shifts ##
 #ENABLE_NIGHT_SHIFTS
@@ -470,3 +457,9 @@ MAXFINE 2000
 
 ## How many played hours of DRONE_REQUIRED_ROLE required to be a Maintenance Done
 #DRONE_ROLE_PLAYTIME 14
+
+## Enabling this config will cause an unsecured nuke disk to increase the chance of a Lone Nuclear Operative spawning.
+#LONE_OP_NAG
+
+## Enabling this shows all players the job estimates for the round during the lobby phase.
+SHOW_JOB_ESTIMATION

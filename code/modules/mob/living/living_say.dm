@@ -155,6 +155,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			saymode = null
 			message_mods -= RADIO_EXTENSION
 
+	if(message_mods[RADIO_KEY] || message_mods[MODE_HEADSET])
+		SEND_SIGNAL(src, COMSIG_LIVING_USE_RADIO)
+
 	switch(stat)
 		if(SOFT_CRIT)
 			message_mods[WHISPER_MODE] = MODE_WHISPER
@@ -361,6 +364,12 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(message_mods[WHISPER_MODE]) //If we're whispering
 		eavesdrop_range = EAVESDROP_EXTRA_RANGE
 	var/list/listening = get_hearers_in_view(message_range+eavesdrop_range, source)
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(bound_overlay)
+		listening += get_hearers_in_view(message_range+eavesdrop_range, bound_overlay)
+	#endif
+
 	var/list/the_dead = list()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))	// Sign language
 		var/mob/living/carbon/mute = src
@@ -380,6 +389,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 				if(SIGN_CUFFED) // Cuffed
 					mute.visible_message("tries to sign, but can't with [src.p_their()] hands bound!", visible_message_flags = EMOTE_MESSAGE)
 					return FALSE
+
 	if(client) //client is so that ghosts don't have to listen to mice
 		for(var/mob/player_mob as anything in GLOB.player_list)
 			if(QDELETED(player_mob)) //Some times nulls and deleteds stay in this list. This is a workaround to prevent ic chat breaking for everyone when they do.
@@ -452,14 +462,20 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	return TRUE
 
 
-
-/mob/living/proc/treat_message(message)
+/**
+ * Treats the passed message with things that may modify speech (stuttering, slurring etc).
+ *
+ * message - The message to treat.
+ * capitalize_message - Whether we run capitalize() on the message after we're done.
+ */
+/mob/living/proc/treat_message(message, capitalize_message = TRUE)
 	if(HAS_TRAIT(src, TRAIT_UNINTELLIGIBLE_SPEECH))
 		message = unintelligize(message)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_TREAT_MESSAGE, args)
 
-	message = capitalize(message)
+	if(capitalize_message)
+		message = capitalize(message)
 
 	return message
 

@@ -60,7 +60,7 @@
 	harvested = FALSE
 
 /obj/structure/flora/ash/attackby(obj/item/W, mob/user, params)
-	if(!harvested && needs_sharp_harvest && W.get_sharpness())
+	if(!harvested && needs_sharp_harvest && W.sharpness)
 		user.visible_message(span_notice("[user] starts to harvest from [src] with [W]."),span_notice("You begin to harvest from [src] with [W]."))
 		if(do_after(user, src, harvest_time))
 			harvest(user)

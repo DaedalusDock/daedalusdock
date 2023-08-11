@@ -15,6 +15,8 @@
 			return ..()
 		else
 			return FALSE
+	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
+		return FALSE
 	return ..()
 
 /mob/living/carbon/could_speak_language(datum/language/language)

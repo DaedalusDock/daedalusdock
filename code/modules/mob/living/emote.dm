@@ -194,21 +194,52 @@
 	emote_type = EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
 
-/datum/emote/living/gasp/get_sound(mob/living/user)
-	if(iscarbon(user))
-		if(user.gender == MALE)
+/datum/emote/living/gasp/get_sound(mob/living/user, involuntary)
+	if(!iscarbon(user))
+		return
+
+	if(user.gender == MALE)
+		if(!involuntary)
 			return pick('sound/emotes/male/gasp_m1.ogg',
-						'sound/emotes/male/gasp_m2.ogg',
-						'sound/emotes/male/gasp_m3.ogg',
-						'sound/emotes/male/gasp_m4.ogg',
-						'sound/emotes/male/gasp_m5.ogg',
-						'sound/emotes/male/gasp_m6.ogg')
-		return pick('sound/emotes/female/gasp_f1.ogg',
+					'sound/emotes/male/gasp_m2.ogg',
+					'sound/emotes/male/gasp_m3.ogg',
+					'sound/emotes/male/gasp_m4.ogg',
+					'sound/emotes/male/gasp_m5.ogg',
+					'sound/emotes/male/gasp_m6.ogg',
+					)
+		else return pick('sound/emotes/male/gasp_m1.ogg',
+					'sound/emotes/male/gasp_m2.ogg',
+					'sound/emotes/male/gasp_m3.ogg',
+					'sound/emotes/male/gasp_m4.ogg',
+					'sound/emotes/male/gasp_m5.ogg',
+					'sound/emotes/male/gasp_m6.ogg',
+					'goon/sounds/voice/gasp/male_gasp_1.ogg',
+					'goon/sounds/voice/gasp/male_gasp_2.ogg',
+					'goon/sounds/voice/gasp/male_gasp_3.ogg',
+					'goon/sounds/voice/gasp/male_gasp_4.ogg',
+					'goon/sounds/voice/gasp/male_gasp_5.ogg',
+					)
+	else
+		if(!involuntary)
+			return pick('sound/emotes/female/gasp_f1.ogg',
 					'sound/emotes/female/gasp_f2.ogg',
 					'sound/emotes/female/gasp_f3.ogg',
 					'sound/emotes/female/gasp_f4.ogg',
 					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg')
+					'sound/emotes/female/gasp_f6.ogg',
+					)
+		else return pick('sound/emotes/female/gasp_f1.ogg',
+					'sound/emotes/female/gasp_f2.ogg',
+					'sound/emotes/female/gasp_f3.ogg',
+					'sound/emotes/female/gasp_f4.ogg',
+					'sound/emotes/female/gasp_f5.ogg',
+					'sound/emotes/female/gasp_f6.ogg',
+					'goon/sounds/voice/gasp/female_gasp_1.ogg',
+					'goon/sounds/voice/gasp/female_gasp_2.ogg',
+					'goon/sounds/voice/gasp/female_gasp_3.ogg',
+					'goon/sounds/voice/gasp/female_gasp_4.ogg',
+					'goon/sounds/voice/gasp/female_gasp_5.ogg',
+					)
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -463,16 +494,11 @@
 	message = "puts their hands on their head and falls to the ground, they surrender%s!"
 	emote_type = EMOTE_AUDIBLE
 
-//PARIAH EDIT - moved combat_indicator.dm in the indicators module
-/*
 /datum/emote/living/surrender/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
 		L.Paralyze(200)
-		L.remove_status_effect(/datum/status_effect/grouped/surrender)
-*/
-//PARIAH EDIT END
 
 /datum/emote/living/sway
 	key = "sway"

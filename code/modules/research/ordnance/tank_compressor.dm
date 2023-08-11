@@ -27,9 +27,6 @@
 	. = ..()
 	leaked_gas_buffer = new(200)
 	compressor_record = list()
-
-/obj/machinery/atmospherics/components/binary/tank_compressor/ComponentInitialize()
-	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(explosion_handle))
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/examine()

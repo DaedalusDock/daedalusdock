@@ -8,7 +8,6 @@
 	roundend_category = "revolutionaries" // if by some miracle revolutionaries without revolution happen
 	antagpanel_category = "Revolution"
 	job_rank = ROLE_REV
-	antag_moodlet = /datum/mood_event/revolution
 	antag_hud_name = "rev"
 	suicide_cry = "VIVA LA REVOLUTION!!"
 	var/datum/team/revolution/rev_team
@@ -369,7 +368,8 @@
 			var/list/datum/mind/nonhuman_promotable = list()
 			for(var/datum/mind/khrushchev in non_heads)
 				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_RESTRAINED) && khrushchev.current.client)
-					if((ROLE_REV_HEAD in khrushchev.current.client.prefs.be_special) || (ROLE_PROVOCATEUR in khrushchev.current.client.prefs.be_special))
+					var/list/client_antags = khrushchev.current.client.prefs.read_preference(/datum/preference/blob/antagonists)
+					if((client_antags[ROLE_REV_HEAD]) || (client_antags[ROLE_PROVOCATEUR]))
 						if(ishuman(khrushchev.current))
 							promotable += khrushchev
 						else

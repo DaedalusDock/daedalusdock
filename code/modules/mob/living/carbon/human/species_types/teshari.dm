@@ -49,6 +49,13 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/teshari,
 	)
 
+	robotic_bodyparts = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus/teshari,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus/teshari,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus/teshari,
+		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus/teshari,
+	)
+
 #define TESH_BODY_COLOR "#DEB887" // Also in code\modules\client\preferences\species_features\teshari.dm
 #define TESH_FEATHER_COLOR "#996633"
 

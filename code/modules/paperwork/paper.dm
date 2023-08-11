@@ -22,11 +22,14 @@
 	inhand_icon_state = "paper"
 	worn_icon_state = "paper"
 	custom_fire_overlay = "paper_onfire_overlay"
+
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
 	throw_speed = 1
-	//pressure_resistance = 0
+	stamina_cost = 0
+	stamina_damage = 0
+
 	slot_flags = ITEM_SLOT_HEAD
 	body_parts_covered = HEAD
 	resistance_flags = FLAMMABLE
@@ -148,7 +151,7 @@
 	if(isnull(n_name) || n_name == "")
 		return
 	if(((loc == usr || istype(loc, /obj/item/clipboard)) && usr.stat == CONSCIOUS))
-		name = "paper[(n_name ? text("- '[n_name]'") : null)]"
+		name = "paper[(n_name ? "- '[n_name]'" : null)]"
 	add_fingerprint(usr)
 
 /obj/item/paper/suicide_act(mob/user)

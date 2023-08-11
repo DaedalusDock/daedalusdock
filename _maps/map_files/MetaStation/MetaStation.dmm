@@ -8762,6 +8762,9 @@
 /obj/structure/sign/poster/official/periodic_table{
 	pixel_x = 32
 	},
+/obj/structure/disposalpipe/segment{
+	dir = 9
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "ctd" = (
@@ -23897,6 +23900,7 @@
 	dir = 4
 	},
 /obj/machinery/telephone/medical,
+/obj/machinery/power/data_terminal,
 /turf/open/floor/wood,
 /area/station/medical/psychology)
 "hFZ" = (
@@ -28691,6 +28695,7 @@
 "jwv" = (
 /obj/structure/table/glass,
 /obj/item/storage/box/beakers,
+/obj/item/reagent_containers/spray/cleaner,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "jwJ" = (
@@ -28874,6 +28879,11 @@
 /area/station/security/brig)
 "jAl" = (
 /obj/item/radio/intercom/directional/west,
+/obj/structure/table/glass,
+/obj/item/scalpel,
+/obj/item/circular_saw{
+	pixel_y = 12
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "jAy" = (
@@ -29720,11 +29730,11 @@
 /area/station/hallway/primary/fore)
 "jRs" = (
 /obj/structure/rack,
-/obj/item/storage/medkit/regular,
-/obj/item/storage/medkit/regular,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 4
 	},
+/obj/item/storage/medkit/brute,
+/obj/item/storage/medkit/brute,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "jRw" = (
@@ -34049,6 +34059,9 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/security/prison/safe)
+"lwi" = (
+/turf/closed/wall,
+/area/station/maintenance/department/medical/central)
 "lwA" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -36860,6 +36873,7 @@
 	network = list("ss13","medbay")
 	},
 /obj/structure/noticeboard/directional/north,
+/obj/structure/disposalpipe/trunk,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "mxw" = (
@@ -39346,6 +39360,8 @@
 "nle" = (
 /obj/structure/window/reinforced/spawner/west,
 /obj/structure/rack,
+/obj/item/storage/medkit/regular,
+/obj/item/storage/medkit/regular,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "nlm" = (
@@ -40048,6 +40064,14 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Medbay Storage";
 	network = list("ss13","medbay")
+	},
+/obj/structure/rack,
+/obj/item/roller,
+/obj/item/roller{
+	pixel_y = 6
+	},
+/obj/item/roller{
+	pixel_y = 12
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
@@ -43806,6 +43830,9 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
+"oTf" = (
+/turf/closed/wall,
+/area/station/maintenance/port/aft)
 "oTo" = (
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/plating,
@@ -44499,6 +44526,17 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/vacant_room/commissary)
+"phK" = (
+/obj/docking_port/stationary{
+	dir = 2;
+	dwidth = 9;
+	height = 25;
+	id = "emergency_home";
+	name = "MetaStation emergency evac bay";
+	width = 29
+	},
+/turf/open/space/basic,
+/area/space)
 "phL" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -48381,6 +48419,9 @@
 /area/station/commons/fitness/recreation)
 "qBy" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "qBH" = (
@@ -49522,6 +49563,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/layer1,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "qZE" = (
@@ -50516,6 +50560,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
 /obj/structure/cable/layer1,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "rrt" = (
@@ -50753,10 +50800,10 @@
 /area/station/engineering/break_room)
 "rwf" = (
 /obj/structure/table/glass,
-/obj/item/reagent_containers/spray/cleaner,
 /obj/structure/sign/poster/official/periodic_table{
 	pixel_x = 32
 	},
+/obj/item/reagent_containers/glass/beaker/large,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "rwm" = (
@@ -54187,6 +54234,7 @@
 /obj/machinery/computer/med_data{
 	dir = 1
 	},
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "sOb" = (
@@ -54770,6 +54818,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
 /obj/structure/cable/layer1,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "sYV" = (
@@ -55003,8 +55054,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
 /obj/structure/cable/layer1,
-/obj/structure/disposalpipe/segment{
-	dir = 10
+/obj/structure/disposalpipe/junction/flip{
+	dir = 8
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
@@ -55575,6 +55626,7 @@
 "tov" = (
 /obj/structure/table/glass,
 /obj/machinery/firealarm/directional/north,
+/obj/item/reagent_containers/glass/beaker/large,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "tow" = (
@@ -58543,6 +58595,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/ai_monitored/command/storage/eva)
+"uuw" = (
+/obj/structure/lattice,
+/obj/machinery/atmospherics/components/unary/passive_vent/layer2,
+/turf/open/space/basic,
+/area/space/nearstation)
 "uuy" = (
 /obj/structure/cable,
 /turf/open/floor/engine,
@@ -59847,6 +59904,9 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/ce)
+"uXm" = (
+/turf/closed/wall,
+/area/station/maintenance/port)
 "uXo" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -60094,6 +60154,7 @@
 /obj/effect/turf_decal/tile/dark{
 	dir = 8
 	},
+/obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/white,
 /area/station/maintenance/port/aft)
 "vcO" = (
@@ -82573,7 +82634,7 @@ prw
 iYf
 beg
 vYs
-lAu
+uuw
 kcu
 vIi
 kYE
@@ -84885,7 +84946,7 @@ vYs
 vYs
 oEz
 mSS
-vYs
+oTf
 hdZ
 vYs
 aaa
@@ -85142,7 +85203,7 @@ iaE
 itG
 haV
 cEy
-vYs
+oTf
 mAY
 vYs
 aaa
@@ -85399,7 +85460,7 @@ oaY
 mLd
 syW
 aBF
-vYs
+oTf
 eQQ
 vYs
 lAu
@@ -85653,11 +85714,11 @@ isK
 jAl
 umw
 oaY
-xqc
-xqc
+oTf
+oTf
 aBF
-vYs
-vYs
+oTf
+oTf
 vYs
 qNY
 vYs
@@ -85914,7 +85975,7 @@ wNe
 ftH
 aBF
 idS
-xqc
+oTf
 gAT
 uNH
 bXE
@@ -86171,7 +86232,7 @@ kpn
 vGW
 aBF
 qNi
-xqc
+oTf
 bXE
 oeQ
 ePc
@@ -88977,7 +89038,7 @@ sAX
 eEw
 rBw
 vBh
-eEw
+uXm
 jAI
 hks
 jIN
@@ -89491,8 +89552,8 @@ sbV
 eEw
 uKD
 eFG
-eEw
-eEw
+uXm
+uXm
 hks
 rgx
 ncc
@@ -89747,8 +89808,8 @@ pfv
 sbV
 lJm
 uKD
-eEw
-eEw
+uXm
+uXm
 aob
 hks
 gsG
@@ -92345,7 +92406,7 @@ pSv
 vct
 vct
 eRj
-xPs
+lwi
 eKQ
 gMc
 nrF
@@ -95714,7 +95775,7 @@ cua
 cQK
 cQK
 vwN
-aaa
+phK
 aaa
 aaa
 aaa

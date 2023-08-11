@@ -1,5 +1,5 @@
 /datum/reagent/uranium
-	name ="Uranium"
+	name = "Uranium"
 	description = "A jade-green metallic chemical element in the actinide series, weakly radioactive."
 	reagent_state = SOLID
 	color = "#5E9964" //this used to be silver, but liquid uranium can still be green and it's more easily noticeable as uranium like this so why bother?

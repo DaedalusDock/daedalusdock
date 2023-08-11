@@ -55,7 +55,6 @@
 		/datum/reagent/oxygen,
 		/datum/reagent/phosphorus,
 		/datum/reagent/potassium,
-		/datum/reagent/uranium/radium,
 		/datum/reagent/silicon,
 		/datum/reagent/sodium,
 		/datum/reagent/consumable/sugar,

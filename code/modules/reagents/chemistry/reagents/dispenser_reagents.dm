@@ -152,27 +152,6 @@
 	else if(volume > 3)
 		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
 
-/datum/reagent/radium
-	name = "Radium"
-	description = "Radium is an alkaline earth metal. It is extremely radioactive."
-	taste_description = "the color blue, and regret"
-	reagent_state = SOLID
-	color = "#c7c7c7"
-	value = DISPENSER_REAGENT_VALUE
-
-/datum/reagent/radium/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(10 * removed, FALSE)
-	return TRUE
-
-/datum/reagent/radium/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
-	. = ..()
-	if(reac_volume >= 3)
-		if(!isspaceturf(exposed_turf))
-			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, exposed_turf)
-			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(exposed_turf)
-			return
-
 /datum/reagent/toxin/acid
 	name = "Sulphuric Acid"
 	description = "A very corrosive mineral acid with the molecular formula H2SO4."

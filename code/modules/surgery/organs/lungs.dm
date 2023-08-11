@@ -133,9 +133,6 @@
 	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
 	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
 	var/SA_pp = breath.getBreathPartialPressure(SA_moles)
-	//Vars for n2o and healium induced euphorias.
-	var/n2o_euphoria = EUPHORIA_LAST_FLAG
-	var/healium_euphoria = EUPHORIA_LAST_FLAG
 
 	//-- OXY --//
 
@@ -274,16 +271,10 @@
 		else if(SA_pp > 0.01) // There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 			if(prob(20))
-				n2o_euphoria = EUPHORIA_ACTIVE
 				breather.emote(pick("giggle", "laugh"))
 		else
-			n2o_euphoria = EUPHORIA_INACTIVE
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
-		if (n2o_euphoria == EUPHORIA_ACTIVE || healium_euphoria == EUPHORIA_ACTIVE)
-			SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "chemical_euphoria", /datum/mood_event/chemical_euphoria)
-		else if (n2o_euphoria == EUPHORIA_INACTIVE && healium_euphoria == EUPHORIA_INACTIVE)
-			SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 		// Activate mood on first flag, remove on second, do nothing on third.
 
 		handle_breath_temperature(breath, breather)

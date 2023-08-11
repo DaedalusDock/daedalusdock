@@ -4,11 +4,12 @@
 	name = "method patch test"
 	description = "Exposure Method Test Reagent"
 
-/datum/reagent/method_patch_test/affect_blood(mob/living/carbon/C, removed)
-	C.health = 80
-
-/datum/reagent/method_patch_test/affect_touch(mob/living/carbon/C, removed)
-	C.health = 90
+/datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+	. = ..()
+	if(method == TOUCH)
+		C.health = 80
+	else if(method == INJECT)
+		C.health = 90
 
 /datum/unit_test/reagent_mob_expose/Run()
 	// Life() is handled just by tests
@@ -46,6 +47,7 @@
 	patch.reagents.add_reagent(/datum/reagent/method_patch_test, 1)
 	patch.self_delay = 0
 	patch.attack(human, human)
+	human.Life(SSMOBS_DT)
 	TEST_ASSERT_EQUAL(human.health, 90, "Human health did not update after patch was applied")
 
 	// INJECT

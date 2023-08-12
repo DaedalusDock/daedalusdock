@@ -490,7 +490,6 @@
 	toxpwr = 0
 	taste_description = "silence"
 
-
 /datum/reagent/toxin/mutetoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	C.silent = max(C.silent, 3 * removed)

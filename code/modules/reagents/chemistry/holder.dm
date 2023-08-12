@@ -547,12 +547,12 @@
 	if(amount < 0)
 		return
 
-	var/cached_amount
+	var/cached_amount = amount
 	var/trans_data = null
 	if(!istype(reagent))
-		cached_amount = min(get_reagent_amount(reagent), amount)
-
+		amount = min(get_reagent_amount(reagent), amount)
 		amount = min(round(amount, CHEMICAL_VOLUME_ROUNDING), holder.maximum_volume - holder.total_volume)
+
 		for (var/looping_through_reagents in cached_reagents)
 			var/datum/reagent/current_reagent = looping_through_reagents
 			if(current_reagent.type == reagent)
@@ -565,7 +565,7 @@
 				remove_reagent(current_reagent.type, amount, 1)
 				break
 	else
-		cached_amount = min(round(reagent.volume, CHEMICAL_QUANTISATION_LEVEL), amount)
+		amount = min(round(reagent.volume, CHEMICAL_QUANTISATION_LEVEL), amount)
 		amount = min(round(amount, CHEMICAL_VOLUME_ROUNDING), holder.maximum_volume - holder.total_volume)
 		if(preserve_data)
 			trans_data = reagent.data

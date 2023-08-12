@@ -161,6 +161,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 					return
 				else
 					. = affect_ingest(M, effective)
+					holder?.remove_reagent(type, removed * 0.5) //We split 50/50, half goes into blood in affect_ingest, half is removed entirely.
 
 	if(remove_from_holder)
 		// Holder can go null if we're removed from our container during processing.

@@ -23,6 +23,10 @@
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/sodium = 1, /datum/reagent/chlorine = 1)
 
 
+/datum/chemical_reaction/hydrochloric
+	results = list(/datum/reagent/toxin/acid/hydrochloric = 3)
+	required_reagents = list(/datum/reagent/hydrogen = 1, /datum/reagent/chlorine = 1, /datum/reagent/water = 1)
+
 /datum/chemical_reaction/stable_plasma
 	results = list(/datum/reagent/stable_plasma = 1)
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)

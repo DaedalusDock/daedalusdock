@@ -1,5 +1,5 @@
 /obj/machinery/chem_heater
-	name = "reaction chamber" //Maybe this name is more accurate?
+	name = "chemical heater"
 	density = TRUE
 	pass_flags_self = PASSMACHINE | LETPASSTHROW
 	icon = 'icons/obj/chemical.dmi'

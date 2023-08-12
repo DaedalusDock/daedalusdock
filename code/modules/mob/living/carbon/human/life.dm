@@ -66,8 +66,8 @@
 		return (occupied_space.contents_pressure_protection * ONE_ATMOSPHERE + (1 - occupied_space.contents_pressure_protection) * pressure)
 	return pressure
 
-/mob/living/carbon/human/breathe()
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
+/mob/living/carbon/human/breathe(forced)
+	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 
 	return ..()

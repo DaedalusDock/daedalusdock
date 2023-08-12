@@ -157,7 +157,7 @@
 	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(0, -6 * removed, updating_health = FALSE)
+	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/meralyne/overdose_process(mob/living/carbon/C)
@@ -215,11 +215,12 @@
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#0080ff"
+	metabolization_rate = 0.5
 	overdose_threshold = 30
 	value = 2.4
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOxyLoss(-4 * removed, FALSE)
+	C.adjustOxyLoss(-10 * removed, FALSE)
 	holder.remove_reagent(/datum/reagent/toxin/lexorin, 2 * removed)
 	return TRUE
 
@@ -232,8 +233,9 @@
 	value = 6
 
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
-	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
-	C.adjustToxLoss(-0.5 * removed, FALSE)
+	var/heal = 1 + ((clamp(round(current_cycle % 10), 0, 3))) * removed
+	C.heal_overall_damage(heal, heal, updating_health = FALSE)
+	C.adjustToxLoss(heal, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine/godblood
@@ -455,7 +457,7 @@
 	color = "#dadd98"
 	metabolization_rate = 0.4
 
-	var/remove_generic = 0
+	var/remove_generic = 1
 	var/list/remove_toxins = list(
 		/datum/reagent/toxin/venom,
 		/datum/reagent/toxin/carpotoxin,
@@ -489,7 +491,7 @@
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -5 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		H.adjust_confusion(2 SECONDS)
@@ -505,6 +507,7 @@
 	reagent_state = LIQUID
 	color = "#c8a5dc"
 	overdose_threshold = 30
+	metabolization_rate = 0.4
 	value = 4.2
 
 /datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)

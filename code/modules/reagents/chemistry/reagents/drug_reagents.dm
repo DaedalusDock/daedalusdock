@@ -132,12 +132,10 @@
 	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
 
 /datum/reagent/drug/methamphetamine/on_mob_metabolize(mob/living/L)
-	..()
 	L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
 
 /datum/reagent/drug/methamphetamine/on_mob_end_metabolize(mob/living/L)
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
-	..()
 
 /datum/reagent/drug/methamphetamine/affect_blood(mob/living/carbon/C, removed)
 	var/high_message = pick("You feel hyper.", "You feel like you need to go faster.", "You feel like you can run the world.")

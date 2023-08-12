@@ -567,7 +567,7 @@
 	show_in_codex = TRUE
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
-	if(current_cycle % 8)
+	if(!(current_cycle % 8))
 		C.adjustToxLoss(5 * removed, FALSE)
 		. = TRUE
 

@@ -105,7 +105,7 @@
 	results = list(/datum/reagent/medicine/alkysine = 2)
 	required_reagents = list(/datum/reagent/toxin/acid/hydrochloric = 1, /datum/reagent/ammonia = 1, /datum/reagent/medicine/dylovene = 1)
 
-/datum/chemical_reaction/medicine/morphine
+/datum/chemical_reaction/morphine
 	results = list(/datum/reagent/medicine/morphine = 2)
 	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/oxygen = 1)
 	required_temp = 480

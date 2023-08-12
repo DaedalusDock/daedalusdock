@@ -499,7 +499,7 @@
 
 		else if (damage == 2)
 			to_chat(src, span_warning("Your eyes burn."))
-			eyes.applyOrganDamage(rand(2, 4))
+			eyes.applyOrganDamage(rand(4, 6))
 
 		else if( damage >= 3)
 			to_chat(src, span_warning("Your eyes itch and burn severely!"))

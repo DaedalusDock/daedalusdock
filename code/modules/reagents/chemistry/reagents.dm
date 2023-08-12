@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	/// How fast the reagent metabolizes on touch
 	var/touch_met = 0
 	/// How fast the reagent metabolizes when ingested
-	var/ingest_met
+	var/ingest_met = 0
 
 	/// above this overdoses happen
 	var/overdose_threshold = 0
@@ -138,6 +138,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	if(!(chemical_flags & REAGENT_IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
 		effective *= (MOB_SIZE_HUMAN/M.mob_size)
 
+	var/remove_from_holder = FALSE
 	if(effective >= (metabolization_rate * 0.1) || effective >= 0.1)
 		switch(location)
 			if(CHEM_BLOOD)
@@ -147,9 +148,11 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 					return
 				else
 					. = affect_blood(M, effective)
+					remove_from_holder = TRUE
 
 			if(CHEM_TOUCH)
 				. = affect_touch(M, effective)
+				remove_from_holder = TRUE
 
 			if(CHEM_INGEST)
 				if(type == M.dna?.species.exotic_blood)
@@ -159,20 +162,24 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 				else
 					. = affect_ingest(M, effective)
 
-	holder.remove_reagent(type, removed)
+	if(remove_from_holder)
+		// Holder can go null if we're removed from our container during processing.
+		holder?.remove_reagent(type, removed)
 
 /datum/reagent/proc/affect_blood(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
+	SHOULD_NOT_SLEEP(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 	/*
 	if (protein_amount)
 		handle_protein(M, src)
 	if (sugar_amount)
 		handle_sugar(M, src)
 	*/
-	holder.trans_id_to(C.bloodstream, type, removed * 0.5, TRUE)
+	holder.trans_id_to(C.bloodstream, src, removed * 0.5, TRUE)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)

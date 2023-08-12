@@ -82,32 +82,39 @@
 	if(organ_flags & ORGAN_FAILING || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
 		return
 
-	// How much damage to inflict on our liver
-	var/damange_to_deal = 0
+	//Detox can heal small amounts of damage
+	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
+		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX])
 
-	var/provide_pain_message = HAS_NO_TOXIN
-	var/obj/belly = liver_owner.getorganslot(ORGAN_SLOT_STOMACH)
-	if(filterToxins && !HAS_TRAIT(owner, TRAIT_TOXINLOVER))
-		//handle liver toxin filtration
-		for(var/datum/reagent/toxin/toxin in liver_owner.reagents.reagent_list)
-			var/thisamount = liver_owner.reagents.get_reagent_amount(toxin.type)
-			if(belly)
-				thisamount += belly.reagents.get_reagent_amount(toxin.type)
-			if (thisamount && thisamount <= toxTolerance * (maxHealth - damage) / maxHealth ) //toxTolerance is effectively multiplied by the % that your liver's health is at
-				liver_owner.reagents.remove_reagent(toxin.type, 0.5 * delta_time)
-			else
-				damange_to_deal += (thisamount * toxLethality * delta_time)
-				if(provide_pain_message != HAS_PAINFUL_TOXIN)
-					provide_pain_message = toxin.silent_toxin ? HAS_SILENT_TOXIN : HAS_PAINFUL_TOXIN
+	// Get the effectiveness of the liver.
+	var/filter_effect = 3
+	if(damage > low_threshold)
+		filter_effect -= 1
+	if(damage > high_threshold)
+		filter_effect -= 2
+	// Robotic organs filter better but don't get benefits from dylovene for filtering.
+	if(status & ORGAN_ROBOTIC)
+		filter_effect += 1
+	else if(owner.chem_effects[CE_ANTITOX])
+		filter_effect += 1
 
-	liver_owner.reagents.metabolize(liver_owner, delta_time, times_fired, can_overdose=TRUE)
+	// If you're not filtering well, you're in trouble. Ammonia buildup to toxic levels and damage from alcohol
+	if(filter_effect < 2)
+		if(owner.chem_effects[CE_ALCOHOL])
+			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
 
-	if(damange_to_deal)
-		applyOrganDamage(damange_to_deal)
+	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
+		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC])
 
-	if(provide_pain_message && damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
+	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
+	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
+		if(damage < low_threshold)
+			applyOrganDamage(-0.2)
+		if(damage < high_threshold)
+			applyOrganDamage(-0.3)
+
+	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
-
 
 /obj/item/organ/liver/handle_failing_organs(delta_time)
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))

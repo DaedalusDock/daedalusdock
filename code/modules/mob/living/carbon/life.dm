@@ -373,10 +373,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	if (drowsyness > 0)
 		adjust_drowsyness(-1 * restingpwr)
-		blur_eyes(1)
+		blur_eyes(2)
 		if(drowsyness > 10)
 			var/zzzchance = min(5, 5*drowsyness/30)
-			if((prob(zzzchance) || drowsyness >= 60))
+			if((prob(zzzchance) || drowsyness >= 60) || ( drowsyness >= 20 && IsSleeping()))
 				if(stat == CONSCIOUS)
 					to_chat(src, span_notice("You are about to fall asleep..."))
 				Sleeping(5 SECONDS)
@@ -570,9 +570,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(liver)
 		return
 
-	reagents.end_metabolization(src, keep_liverless = TRUE) //Stops trait-based effects on reagents, to prevent permanent buffs
-	if(reagents.metabolize(src, delta_time, times_fired, can_overdose=FALSE, liverless = TRUE))
-		updatehealth()
+	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		return

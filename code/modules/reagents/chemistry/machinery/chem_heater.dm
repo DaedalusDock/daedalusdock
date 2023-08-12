@@ -24,18 +24,15 @@
 /obj/machinery/chem_heater/Initialize(mapload)
 	. = ..()
 	create_reagents(200, NO_REACT)//Lets save some calculations here
-	//TODO: comsig reaction_start and reaction_end to enable/disable the UI autoupdater - this doesn't work presently as there's a hard divide between instant and processed reactions
 
 /obj/machinery/chem_heater/deconstruct(disassembled)
 	. = ..()
 	if(beaker && disassembled)
-		UnregisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP)
 		beaker.forceMove(drop_location())
 		beaker = null
 
 /obj/machinery/chem_heater/Destroy()
 	if(beaker)
-		UnregisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP)
 		QDEL_NULL(beaker)
 	return ..()
 
@@ -70,11 +67,9 @@
 		return FALSE
 	if(beaker)
 		try_put_in_hand(beaker, user)
-		UnregisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP)
 		beaker = null
 	if(new_beaker)
 		beaker = new_beaker
-		RegisterSignal(beaker.reagents, COMSIG_REAGENTS_REACTION_STEP, PROC_REF(on_reaction_step))
 	update_appearance()
 	return TRUE
 
@@ -123,18 +118,9 @@
 	replace_beaker()
 	return ..()
 
-///Forces a UI update every time a reaction step happens inside of the beaker it contains. This is so the UI is in sync with the reaction since it's important that the output matches the current conditions for pH adjustment and temperature.
-/obj/machinery/chem_heater/proc/on_reaction_step(datum/reagents/holder, num_reactions, delta_time)
-	SIGNAL_HANDLER
-	if(on)
-		holder.adjust_thermal_energy((target_temperature - beaker.reagents.chem_temp) * heater_coefficient * delta_time * SPECIFIC_HEAT_DEFAULT * beaker.reagents.total_volume * (rand(8,11) * 0.1))//Give it a little wiggle room since we're actively reacting
-	for(var/ui_client in ui_client_list)
-		var/datum/tgui/ui = ui_client
-		if(!ui)
-			stack_trace("Warning: UI in UI client list is missing in [src] (chem_heater)")
-			remove_ui_client_list(ui)
-			continue
-		ui.send_update()
+/obj/machinery/chem_heater/process()
+	if(on && beaker)
+		beaker.reagents.adjust_thermal_energy((target_temperature - beaker.reagents.chem_temp) * heater_coefficient * SPECIFIC_HEAT_DEFAULT * beaker.reagents.total_volume * (rand(8,11) * 0.1))//Give it a little wiggle room since we're actively reacting
 
 /obj/machinery/chem_heater/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -247,19 +233,3 @@
 			//Eject doesn't turn it off, so you can preheat for beaker swapping
 			replace_beaker(usr)
 			. = TRUE
-		if("disp_vol")
-			var/target = params["target"]
-			if(text2num(target) != null)
-				target = text2num(target) //Because the input is flipped
-				. = TRUE
-			if(.)
-				dispense_volume = target
-		if("help")
-			tutorial_active = !tutorial_active
-			if(tutorial_active)
-				tutorial_state = 1
-				return
-			tutorial_state = 0
-			//Refresh window size
-			ui_close(usr)
-			ui_interact(usr, null)

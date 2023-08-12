@@ -52,6 +52,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	if(C.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
 		var/booze_power = boozepwr
 		if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker
@@ -91,10 +92,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.bodytemperature = min(targ_temp, C.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
 	if(adj_temp < 0 && C.bodytemperature > targ_temp)
 		C.bodytemperature = min(targ_temp, C.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
-
-/datum/reagent/consumable/ethanol/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(2 * removed, FALSE)
-	return TRUE
 
 /datum/reagent/consumable/ethanol/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

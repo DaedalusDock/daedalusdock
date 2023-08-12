@@ -224,7 +224,7 @@
 * * delta_time - the time displacement between the last call and the current, 1 is a standard step
 * * purity_modifier - how much to modify the step's purity by (0 - 1)
 */
-/datum/equilibrium/proc/react_timestep(delta_time, purity_modifier = 1)
+/datum/equilibrium/proc/react_timestep(delta_time)
 	if(to_delete)
 		//This occurs when it explodes
 		return FALSE
@@ -307,7 +307,7 @@
 		holder.chem_temp += clamp((reaction.thermic_constant* total_step_added*thermic_mod), 0, CHEMICAL_MAXIMUM_TEMPERATURE) //old method - for every bit added, the whole temperature is adjusted
 	else //Standard mechanics
 		var/heat_energy = reaction.thermic_constant * total_step_added * thermic_mod * SPECIFIC_HEAT_DEFAULT
-		holder.adjust_thermal_energy(heat_energy, 0, CHEMICAL_MAXIMUM_TEMPERATURE) //heat is relative to the beaker conditions
+		holder.adjust_thermal_energy(heat_energy, 0, CHEMICAL_MAXIMUM_TEMPERATURE, handle_reactions = FALSE) //heat is relative to the beaker conditions
 
 	//Give a chance of sounds
 	if(prob(5))

@@ -15,9 +15,10 @@
 	results = list(/datum/reagent/medicine/meralyne = 2)
 	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/inaprovaline = 1, /datum/reagent/acetone = 1)
 	inhibitors = list(/datum/reagent/consumable/sugar = 1) // Messes up with inaprovaline
-	required_temp = (-50 CELSIUS) - 100
+	is_cold_recipe = TRUE
 	optimal_temp = (-50 CELSIUS) - 25
-	overheat_temp = -50 CELSIUS
+	required_temp = -50 CELSIUS
+	overheat_temp = -10 CELSIUS
 
 /datum/chemical_reaction/meralyne/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()
@@ -30,9 +31,10 @@
 /datum/chemical_reaction/dermaline
 	results = list(/datum/reagent/medicine/dermaline = 3)
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/phosphorus = 1, /datum/reagent/medicine/kelotane = 1)
-	required_temp = (-50 CELSIUS) - 100
 	optimal_temp = (-50 CELSIUS) - 25
-	overheat_temp = -50 CELSIUS
+	required_temp = -50 CELSIUS
+	overheat_temp = -10 CELSIUS
+	is_cold_recipe = TRUE
 
 /datum/chemical_reaction/dermaline/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()

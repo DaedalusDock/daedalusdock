@@ -128,6 +128,7 @@
 		to_chat(exposed_mob, span_userdanger("A vile holiness begins to spread its shining tendrils through your mind, purging the Geometer of Blood's influence!"))
 
 /datum/reagent/water/holywater/affect_ingest(mob/living/carbon/C, removed)
+	SHOULD_CALL_PARENT(FALSE) //We're going straight into blood through jesus i guess
 	holder.trans_to(C.bloodstream, volume)
 
 /datum/reagent/water/holywater/affect_touch(mob/living/carbon/C, removed)
@@ -1017,8 +1018,8 @@
 /datum/reagent/metafactor/overdose_start(mob/living/carbon/C)
 	metabolization_rate = 0.4
 
-/datum/reagent/medicine/overdose_process(mob/living/carbon/C)
-	if(prob(25))
+/datum/reagent/metafactor/overdose_process(mob/living/carbon/C)
+	if(prob(10))
 		C.vomit()
 
 /datum/reagent/fungalspores
@@ -1032,6 +1033,7 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
 	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)

@@ -531,8 +531,8 @@
 		src.handle_reactions()
 	return amount
 
-/// Transfer a specific reagent id to the target object
-/datum/reagents/proc/trans_id_to(obj/target, reagent, amount=1, preserve_data=1)//Not sure why this proc didn't exist before. It does now! /N
+/// Transfer a specific reagent id to the target object. Accepts a reagent instance, but assumes the reagent is in src.
+/datum/reagents/proc/trans_id_to(obj/target, datum/reagent/reagent, amount=1, preserve_data=1)//Not sure why this proc didn't exist before. It does now! /N
 	var/list/cached_reagents = reagent_list
 	if (!target)
 		return
@@ -546,23 +546,33 @@
 		return
 	if(amount < 0)
 		return
-	var/cached_amount = amount
-	if(get_reagent_amount(reagent) < amount)
-		amount = get_reagent_amount(reagent)
 
-	amount = min(round(amount, CHEMICAL_VOLUME_ROUNDING), holder.maximum_volume - holder.total_volume)
+	var/cached_amount
 	var/trans_data = null
-	for (var/looping_through_reagents in cached_reagents)
-		var/datum/reagent/current_reagent = looping_through_reagents
-		if(current_reagent.type == reagent)
-			if(preserve_data)
-				trans_data = current_reagent.data
-			if(current_reagent.intercept_reagents_transfer(holder, cached_amount))//Use input amount instead.
+	if(!istype(reagent))
+		cached_amount = min(get_reagent_amount(reagent), amount)
+
+		amount = min(round(amount, CHEMICAL_VOLUME_ROUNDING), holder.maximum_volume - holder.total_volume)
+		for (var/looping_through_reagents in cached_reagents)
+			var/datum/reagent/current_reagent = looping_through_reagents
+			if(current_reagent.type == reagent)
+				if(preserve_data)
+					trans_data = current_reagent.data
+				if(current_reagent.intercept_reagents_transfer(holder, cached_amount))//Use input amount instead.
+					break
+				force_stop_reagent_reacting(current_reagent)
+				holder.add_reagent(current_reagent.type, amount, trans_data, chem_temp, no_react = TRUE, ignore_splitting = current_reagent.chemical_flags & REAGENT_DONOTSPLIT)
+				remove_reagent(current_reagent.type, amount, 1)
 				break
-			force_stop_reagent_reacting(current_reagent)
-			holder.add_reagent(current_reagent.type, amount, trans_data, chem_temp, no_react = TRUE, ignore_splitting = current_reagent.chemical_flags & REAGENT_DONOTSPLIT)
-			remove_reagent(current_reagent.type, amount, 1)
-			break
+	else
+		cached_amount = min(round(reagent.volume, CHEMICAL_QUANTISATION_LEVEL), amount)
+		amount = min(round(amount, CHEMICAL_VOLUME_ROUNDING), holder.maximum_volume - holder.total_volume)
+		if(preserve_data)
+			trans_data = reagent.data
+		if(!reagent.intercept_reagents_transfer(holder, cached_amount))//Use input amount instead.
+			force_stop_reagent_reacting(reagent)
+			holder.add_reagent(reagent.type, amount, trans_data, chem_temp, no_react = TRUE, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT)
+			remove_reagent(reagent.type, amount, 1)
 
 	update_total()
 	holder.update_total()
@@ -1292,11 +1302,13 @@
  * - min_temp: The minimum temperature that can be reached.
  * - max_temp: The maximum temperature that can be reached.
  */
-/datum/reagents/proc/adjust_thermal_energy(delta_energy, min_temp = 2.7, max_temp = 1000)
+/datum/reagents/proc/adjust_thermal_energy(delta_energy, min_temp = 2.7, max_temp = 1000, handle_reactions = TRUE)
 	var/heat_capacity = getHeatCapacity()
 	if(!heat_capacity)
 		return // no div/0 please
 	set_temperature(clamp(chem_temp + (delta_energy / heat_capacity), min_temp, max_temp))
+	if(handle_reactions)
+		handle_reactions()
 
 /// Applies heat to this holder
 /datum/reagents/proc/expose_temperature(temperature, coeff=0.02)

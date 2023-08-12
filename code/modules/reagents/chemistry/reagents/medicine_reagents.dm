@@ -154,10 +154,10 @@
 	color = "#FD5964"
 	taste_mult = 12
 	metabolization_rate = 0.2
-	overdose_threshold = 10
+	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(0, -12 * removed, updating_health = FALSE)
+	C.adjustBruteLoss(0, -6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/meralyne/overdose_process(mob/living/carbon/C)
@@ -189,7 +189,7 @@
 	taste_mult = 1.5
 	reagent_state = LIQUID
 	color = "#ff8000"
-	overdose_threshold = 10
+	overdose_threshold = 20
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
@@ -205,6 +205,7 @@
 	value = 2.1
 
 /datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_ANTITOX, 1)
 	C.adjustToxLoss(1.5 * removed, FALSE)
 	return TRUE
 
@@ -682,8 +683,7 @@
 	description = "A powerful antipsychotic and sedative. Will help control psychiatric problems, but may cause brain damage."
 	reagent_state = LIQUID
 	color = "#27870a"
-	metabolization_rate = 0.4
-
+	metabolization_rate = 0.2
 	harmful = TRUE
 
 /datum/reagent/medicine/haloperidol/on_mob_metabolize(mob/living/carbon/C, class)
@@ -699,7 +699,7 @@
 	if(C.get_timed_status_effect_duration(/datum/status_effect/jitter) >= 6 SECONDS)
 		C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
 
-	C.adjust_drowsyness(8 * removed)
+	C.adjust_drowsyness(16 * removed)
 	C.adjust_timed_status_effect(-3 * removed, /datum/status_effect/drugginess)
 
 	if (C.hallucination >= 5)
@@ -946,9 +946,11 @@
 	name = "Activated Charcoal"
 	description = "Helps the body filter out toxins from the blood."
 	reagent_state = SOLID
-	color = "#FFFFFFAA"
-	metabolization_rate = 0.4
+	color = "#252525"
+	metabolization_rate = 1
 
 /datum/reagent/medicine/activated_charcoal/affect_blood(mob/living/carbon/C, removed)
-	for(var/datum/reagent/toxin/R in holder.reagent_list)
-		holder.remove_reagent(R.type, 1 * removed)
+	for(var/datum/reagent/R in holder.reagent_list)
+		if(R.type == type)
+			continue
+		holder.remove_reagent(R.type, 2.5 * removed)

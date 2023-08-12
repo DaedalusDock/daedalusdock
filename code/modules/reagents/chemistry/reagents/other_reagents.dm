@@ -95,7 +95,11 @@
 	glass_name = "glass of holy water"
 	glass_desc = "A glass of holy water."
 	self_consuming = TRUE //divine intervention won't be limited by the lack of a liver
-	chemical_flags = REAGENT_CLEANS
+	chemical_flags = REAGENT_CLEANS | REAGENT_IGNORE_MOB_SIZE
+	touch_met = INFINITY
+	ingest_met = INFINITY
+	show_in_codex = TRUE
+	metabolization_rate = 1
 
 	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
 /datum/reagent/water/holywater/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
@@ -122,6 +126,13 @@
 	. = ..()
 	if(IS_CULTIST(exposed_mob))
 		to_chat(exposed_mob, span_userdanger("A vile holiness begins to spread its shining tendrils through your mind, purging the Geometer of Blood's influence!"))
+
+/datum/reagent/water/holywater/affect_ingest(mob/living/carbon/C, removed)
+	holder.trans_to(C.bloodstream, volume)
+
+/datum/reagent/water/holywater/affect_touch(mob/living/carbon/C, removed)
+	. = ..()
+	holder.trans_to(C.bloodstream, volume)
 
 /datum/reagent/water/holywater/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -152,7 +163,6 @@
 		C.remove_status_effect(/datum/status_effect/speech/stutter)
 		holder.remove_reagent(type, volume) // maybe this is a little too perfect and a max() cap on the statuses would be better??
 		return
-	#warn TEST HOLYWATER
 
 /datum/reagent/water/holywater/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()

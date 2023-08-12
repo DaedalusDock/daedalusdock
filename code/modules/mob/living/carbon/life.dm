@@ -344,7 +344,7 @@
 	var/datum/reagents/ingested = get_ingested_reagents()
 	if(touching)
 		. |= touching.metabolize(src, can_overdose = FALSE, updatehealth = FALSE)
-	if(ingested)
+	if(ingested && ingested != touching)
 		. |= ingested.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
 	if(bloodstream)
 		. |= bloodstream.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)

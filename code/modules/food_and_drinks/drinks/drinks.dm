@@ -48,7 +48,6 @@
 	SEND_SIGNAL(src, COMSIG_DRINK_DRANK, M, user)
 
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	M.taste(reagents)
 	reagents.trans_to(M, gulp_size, transfered_by = user, methods = INGEST)
 	checkLiked(fraction, M)
 

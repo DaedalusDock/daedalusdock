@@ -2258,7 +2258,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/can_look_up()
 	return !(incapacitated(IGNORE_RESTRAINTS))
 
-/mob/living/carbon/human/verb/lookup()
+/mob/living/verb/lookup()
 	set name = "Look Upwards"
 	set desc = "If you want to know what's above."
 	set category = "IC"

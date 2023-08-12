@@ -46453,7 +46453,7 @@
 /area/station/medical/medbay/lobby)
 "qoa" = (
 /obj/machinery/telephone{
-	friendly_name = "Unknown Handset";
+	friendly_name = "Unknown";
 	name = "dusty telephone";
 	show_netids = 1;
 	desc = "It's a dusty, old NTPO 667 phone. Judging by its frayed appearance, you think it'll be a miracle if it even works at all."

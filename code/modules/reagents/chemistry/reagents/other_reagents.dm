@@ -553,6 +553,7 @@
 	name = "Technetium 99"
 	description = "A radioactive tracer agent that can improve a scanner's ability to detect internal organ damage. Will poison the patient when present very slowly, purging or using a low dose is recommended after use."
 	metabolization_rate = 0.2
+	show_in_codex = TRUE
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(current_cycle % 8)
@@ -896,6 +897,7 @@
 	color = "#c8a5dc"
 	overdose_threshold = 30
 	value = 1.8
+	show_in_codex = TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))

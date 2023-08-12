@@ -249,3 +249,20 @@
 	tick_interval = INFINITY
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
+
+///Makes the mob luminescent for the duration of the effect.
+/datum/status_effect/tinlux_light
+	id = "tinea_luxor_light"
+	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
+	var/obj/effect/dummy/lighting_obj/moblight/mob_light_obj
+
+/datum/status_effect/tinlux_light/on_creation(mob/living/new_owner, duration = 2 SECONDS)
+	src.duration = duration
+	return ..()
+
+/datum/status_effect/tinlux_light/on_apply()
+	mob_light_obj = owner.mob_light(2)
+	return TRUE
+
+/datum/status_effect/tinlux_light/on_remove()
+	QDEL_NULL(mob_light_obj)

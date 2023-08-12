@@ -943,3 +943,17 @@
 	taste_description = "raw batter"
 	color = "#ebca85"
 
+/datum/reagent/consumable/tinlux
+	name = "Tinea Luxor"
+	description = "A stimulating ichor which causes luminescent fungi to grow on the skin. "
+	color = "#b5a213"
+	taste_description = "tingling mushroom"
+	chemical_flags = REAGENT_DEAD_PROCESS
+
+/datum/reagent/consumable/tinlux/on_mob_add(mob/living/living_mob)
+	. = ..()
+	living_mob.apply_status_effect(/datum/status_effect/tinlux_light) //infinite duration
+
+/datum/reagent/consumable/tinlux/on_mob_delete(mob/living/living_mob)
+	. = ..()
+	living_mob.remove_status_effect(/datum/status_effect/tinlux_light)

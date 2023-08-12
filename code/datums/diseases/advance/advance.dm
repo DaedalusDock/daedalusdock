@@ -63,7 +63,7 @@
 			/datum/reagent/toxin/lipolicide,
 		),
 		list( // level 10
-		 /datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
+			/datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
 		),
 		list( //level 11
 			/datum/reagent/toxin/anacea

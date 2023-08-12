@@ -10,7 +10,7 @@
 		/obj/item/reagent_containers/hypospray/medipen = /datum/reagent/medicine/epinephrine,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = /datum/reagent/medicine/atropine,
 		/obj/item/reagent_containers/hypospray/medipen/dexalin = /datum/reagent/medicine/dexalin,
-		 /obj/item/reagent_containers/hypospray/medipen/dermaline = /datum/reagent/medicine/dermaline,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = /datum/reagent/medicine/dermaline,
 		/obj/item/reagent_containers/hypospray/medipen/meralyne = /datum/reagent/medicine/meralyne,
 	)
 

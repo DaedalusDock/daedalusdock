@@ -52,8 +52,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/affect_ingest(mob/living/carbon/C, removed)
-	. = (1 || ..()) - 1 //Linter defeat device. Alcohol does NOT go straight into the blood stream from ingestion
-
 	if(C.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
 		var/booze_power = boozepwr
 		if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker
@@ -93,8 +91,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.bodytemperature = min(targ_temp, C.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
 	if(adj_temp < 0 && C.bodytemperature > targ_temp)
 		C.bodytemperature = min(targ_temp, C.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
-
-	#warn TEST ALCOHOL
 
 /datum/reagent/consumable/ethanol/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(2 * removed, FALSE)

@@ -3782,6 +3782,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
+"aVV" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "aWd" = (
 /obj/machinery/camera/directional/north{
 	c_tag = "Central Primary Hallway - Fore"
@@ -16344,6 +16353,13 @@
 /obj/structure/sign/departments/cargo,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/cargo/warehouse)
+"eNH" = (
+/obj/structure/bodycontainer/morgue,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "eNT" = (
 /obj/effect/turf_decal/arrows/red{
 	dir = 4;
@@ -18810,7 +18826,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "fKA" = (
-/obj/machinery/smartfridge/organ,
+/obj/structure/closet/crate/freezer,
 /turf/open/floor/iron/freezer,
 /area/station/medical/coldroom/port)
 "fKD" = (
@@ -86072,8 +86088,8 @@ ppE
 wEv
 wEv
 wEv
-wEv
-kcQ
+eNH
+aVV
 jAl
 umw
 oaY

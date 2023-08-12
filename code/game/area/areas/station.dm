@@ -1000,6 +1000,7 @@
 	icon_state = "morgue"
 	ambience_index = AMBIENCE_SPOOKY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	lightswitch = FALSE
 
 /area/station/medical/chemistry
 	name = "Chemistry"

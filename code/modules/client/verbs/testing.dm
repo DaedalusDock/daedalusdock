@@ -90,4 +90,5 @@
 			// Repeatedly rerun the same winget to watch the value
 			var/winout = winget(src, x_mt_winmon_packet[1], x_mt_winmon_packet[2])
 			to_chat(usr, ( winout ? "WINMON:[winout]": "WINMON: NULL (Bad Call?)"))
+			sleep(0.5 SECONDS)
 #endif

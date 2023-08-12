@@ -4,7 +4,7 @@ macro "default"
 		command = ".winset :map.right-click=false;KeyDown Shift"
 	elem "PROTECTED-ShiftUp"
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=true;KepUp Shift"
+		command = ".winset :map.right-click=true;KeyUp Shift"
 
 
 menu "menu"

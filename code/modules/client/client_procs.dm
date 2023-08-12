@@ -1233,12 +1233,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
 		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "ShiftUp", "is-disabled=false")
-		winset(src, "Shift", "is-disabled=false")
+		winset(src, "default.PROTECTED-Shift", "is-disabled=false")
+		winset(src, "default.PROTECTED-ShiftUp", "is-disabled=false")
 	else
 		winset(src, "mapwindow.map", "right-click=false")
-		winset(src, "default.Shift", "is-disabled=true")
-		winset(src, "default.ShiftUp", "is-disabled=true")
+		winset(src, "default.PROTECTED-Shift", "is-disabled=true")
+		winset(src, "default.PROTECTED-ShiftUp", "is-disabled=true")
 
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)

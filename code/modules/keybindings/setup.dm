@@ -77,9 +77,11 @@
 	else
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
-	if(printables?.len)
+	//Do we have bad bindings at all, and if so, do we actually care?
+	if(printables?.len && !prefs.read_preference(/datum/preference/toggle/hotkeys_silence))
 		to_chat(src, "[span_boldnotice("Hey, you might have some bad keybinds!")]\n\
-		[span_notice("The following keys are bound despite Classic Controls being enabled. These binds are not applied.\nThis warning may be in error.")]\n\
+		[span_notice("The following keys are bound despite Classic Hotkeys being enabled. These binds are not applied.\n\
+		The code used to generate this list is imperfect, You can silence this warning in your Game Preferences.")]\n\
 		Keys: [jointext(printables, ", ")]\
 		")
 	update_special_keybinds()

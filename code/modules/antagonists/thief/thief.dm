@@ -75,9 +75,6 @@
 		return
 	var/chosen_type = pick(possible_hideout_locations)
 	hideout = GLOB.areas_by_type[chosen_type]
-	hideout.mood_trait = TRAIT_VAL_CORRIN_MEMBER
-	hideout.mood_bonus = 5
-	hideout.mood_message = "Feels good, having Val Corrin connections."
 
 ///checks if an area exists in the global areas, obviously comes up null (falsey) if say, abandoned cabin is checked on metastation.
 /datum/antagonist/thief/proc/filter_nonexistent_areas(area_type)

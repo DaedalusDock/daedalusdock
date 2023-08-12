@@ -126,7 +126,7 @@
 		C.emote("scream")
 		if(BP.body_zone != "chest")
 			BP.forceMove(target)    //Move the limbs right next to it, except chest, that's a weird one
-			BP.drop_organs()
+			BP.drop_contents()
 		else
 			for(var/obj/item/organ/O in BP.dismember())
 				O.forceMove(target) //Some organs, like chest ones, are different so we need to manually move them

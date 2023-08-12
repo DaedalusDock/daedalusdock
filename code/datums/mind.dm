@@ -414,7 +414,7 @@
 
 	if(implant)
 		var/obj/item/implant/uplink/starting/new_implant = new(traitor_mob)
-		new_implant.implant(traitor_mob, null, silent = TRUE)
+		new_implant.implant(traitor_mob, null, BODY_ZONE_CHEST, silent = TRUE)
 		if(!silent)
 			to_chat(traitor_mob, span_boldnotice("Your Syndicate Uplink has been cunningly implanted in you, for a small TC fee. Simply trigger the uplink to access it."))
 		return new_implant
@@ -426,6 +426,9 @@
 		CRASH("Uplink creation failed.")
 	new_uplink.setup_unlock_code()
 	new_uplink.uplink_handler.owner = traitor_mob.mind
+	if(isturf(new_uplink.uplink_handler))
+		stack_trace("what")
+
 	new_uplink.uplink_handler.assigned_role = traitor_mob.mind.assigned_role.title
 	new_uplink.uplink_handler.assigned_species = traitor_mob.dna.species.id
 	if(uplink_loc == R)

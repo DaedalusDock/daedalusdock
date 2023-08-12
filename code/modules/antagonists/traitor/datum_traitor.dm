@@ -3,7 +3,6 @@
 	roundend_category = "traitors"
 	antagpanel_category = "Traitor"
 	job_rank = ROLE_TRAITOR
-	antag_moodlet = /datum/mood_event/focused
 	antag_hud_name = "traitor"
 	hijack_speed = 0.5 //10 seconds per hijack stage by default
 	ui_name = "AntagInfoTraitor"
@@ -52,6 +51,9 @@
 			uplink.uplink_handler = uplink_handler
 		else
 			uplink_handler = uplink.uplink_handler
+		if(isturf(uplink_handler))
+			stack_trace("what")
+
 		uplink_handler.has_progression = FALSE //PARIAH EDIT
 		SStraitor.register_uplink_handler(uplink_handler)
 

@@ -70,19 +70,6 @@
 	else
 		mode() // Activate held item
 
-/mob/living/carbon/attackby(obj/item/I, mob/living/user, params)
-	for(var/datum/surgery/S in surgeries)
-		if(body_position == LYING_DOWN || !S.lying_required)
-			var/list/modifiers = params2list(params)
-			if((S.self_operable || user != src) && !user.combat_mode)
-				if(S.next_step(user, modifiers))
-					return 1
-
-	if(!(!user.combat_mode || user == src))
-		return ..()
-
-	return ..()
-
 /mob/living/carbon/CtrlShiftClick(mob/user)
 	..()
 	if(iscarbon(user))
@@ -202,18 +189,6 @@
 
 /mob/living/carbon/proc/canBeHandcuffed()
 	return FALSE
-
-/mob/living/carbon/Topic(href, href_list)
-	..()
-	if(href_list["embedded_object"] && usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
-		var/obj/item/bodypart/L = locate(href_list["embedded_limb"]) in bodyparts
-		if(!L)
-			return
-		var/obj/item/I = locate(href_list["embedded_object"]) in L.embedded_objects
-		if(!I || I.loc != src) //no item, no limb, or item is not in limb or in the person anymore
-			return
-		SEND_SIGNAL(src, COMSIG_CARBON_EMBED_RIP, I, L)
-		return
 
 /mob/living/carbon/on_fall()
 	. = ..()
@@ -429,13 +404,10 @@
 		if(message)
 			visible_message(span_danger("[src] throws up all over [p_them()]self!"), \
 							span_userdanger("You throw up all over yourself!"))
-			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "vomit", /datum/mood_event/vomitself)
 		distance = 0
 	else
 		if(message)
 			visible_message(span_danger("[src] throws up!"), span_userdanger("You throw up!"))
-			if(!isflyperson(src))
-				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "vomit", /datum/mood_event/vomit)
 
 	if(stun)
 		Paralyze(80)
@@ -601,6 +573,9 @@
 
 	if(SSmapping.level_trait(z, ZTRAIT_NOXRAY))
 		sight = null
+
+	if(!(sight & (SEE_TURFS|SEE_MOBS|SEE_OBJS)))
+		sight |= SEE_BLACKNESS
 
 	return ..()
 
@@ -836,10 +811,9 @@
 		drop_all_held_items()
 		stop_pulling()
 		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
-		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "handcuffed", /datum/mood_event/handcuffed)
 	else
 		clear_alert(ALERT_HANDCUFFED)
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "handcuffed")
+
 	update_mob_action_buttons() //some of our action buttons might be unusable when we're handcuffed.
 	update_worn_handcuffs()
 	update_hud_handcuffed()
@@ -962,12 +936,15 @@
 				bodypart_instance.held_index = r_arm_index_next //2, 4, 6, 8...
 				hand_bodyparts += bodypart_instance
 
+	sortTim(bodyparts, GLOBAL_PROC_REF(cmp_bodypart_by_body_part_asc))
+
 ///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
+	new_bodypart.forceMove(src)
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -984,15 +961,15 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	bodyparts -= old_bodypart
-	switch(old_bodypart.body_part)
-		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs - 1)
-		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands - 1)
+	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
+		set_num_legs(num_legs - 1)
+		if(!old_bodypart.bodypart_disabled)
+			set_usable_legs(usable_legs - 1)
+
+	if(old_bodypart.bodypart_flags & BP_IS_GRABBY_LIMB)
+		set_num_hands(num_hands - 1)
+		if(!old_bodypart.bodypart_disabled)
+			set_usable_hands(usable_hands - 1)
 
 
 /mob/living/carbon/proc/create_internal_organs()
@@ -1141,10 +1118,6 @@
 		return TRUE
 	if(HAS_TRAIT(src, TRAIT_DUMB))
 		return TRUE
-	var/datum/component/mood/mood = src.GetComponent(/datum/component/mood)
-	if(mood)
-		if(mood.sanity < SANITY_UNSTABLE)
-			return TRUE
 
 /mob/living/carbon/wash(clean_types)
 	. = ..()

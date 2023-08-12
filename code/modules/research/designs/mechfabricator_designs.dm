@@ -977,16 +977,6 @@
 	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
-/datum/design/borg_upgrade_surgicalprocessor
-	name = "Cyborg Upgrade (Surgical Processor)"
-	id = "borg_upgrade_surgicalprocessor"
-	build_type = MECHFAB
-	build_path = /obj/item/borg/upgrade/processor
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 4000, /datum/material/silver = 4000)
-	construction_time = 40
-	category = list(DCAT_SILICON)
-	mapload_design_flags = DESIGN_FAB_ROBOTICS
-
 /datum/design/borg_upgrade_trashofholding
 	name = "Cyborg Upgrade (Trash Bag of Holding)"
 	id = "borg_upgrade_trashofholding"

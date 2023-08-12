@@ -10,7 +10,7 @@
 				objectives_that_exist += value
 
 	for(var/datum/traitor_objective/objective_typepath as anything in subtypesof(/datum/traitor_objective))
-		if(initial(objective_typepath.abstract_type) == objective_typepath)
+		if(isabstract(objective_typepath))
 			continue
 		if(!(objective_typepath in objectives_that_exist))
 			TEST_FAIL("[objective_typepath] is not in a traitor category and isn't an abstract type! Place it into a [/datum/traitor_objective_category] or remove it from code.")

@@ -107,7 +107,7 @@
 	min_cold_protection_temperature = FIRE_HELM_MIN_TEMP_PROTECT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 
-/obj/item/clothing/head/hardhat/atmos/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/head/hardhat/atmos/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -149,7 +149,7 @@
 		playsound(src, 'sound/mecha/mechmove03.ogg', 50, TRUE) //Visors don't just come from nothing
 	update_appearance()
 
-/obj/item/clothing/head/hardhat/weldhat/worn_overlays(mutable_appearance/standing, isinhands)
+/obj/item/clothing/head/hardhat/weldhat/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands)
 	. = ..()
 	if(isinhands)
 		return
@@ -211,7 +211,7 @@
 	if(light_on)
 		. += emissive_appearance(icon, "carved_pumpkin-emissive", alpha = src.alpha)
 
-/obj/item/clothing/head/hardhat/pumpkinhead/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/head/hardhat/pumpkinhead/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(light_on && !isinhands)
 		. += emissive_appearance(icon_file, "carved_pumpkin-emissive", alpha = src.alpha)

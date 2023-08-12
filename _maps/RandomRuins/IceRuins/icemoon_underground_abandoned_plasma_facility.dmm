@@ -491,10 +491,6 @@
 	pixel_x = 6;
 	pixel_y = 2
 	},
-/obj/item/surgical_drapes{
-	pixel_x = 4;
-	pixel_y = -2
-	},
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/white,
 /area/ruin/plasma_facility/commons)

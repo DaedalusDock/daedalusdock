@@ -18,7 +18,6 @@
 	new /obj/item/radio/headset/heads/captain(src)
 	new /obj/item/storage/belt/sabre(src)
 	new /obj/item/gun/energy/e_gun(src)
-	new /obj/item/door_remote/captain(src)
 	new /obj/item/storage/photo_album/captain(src)
 
 /obj/structure/closet/secure_closet/hop
@@ -39,7 +38,6 @@
 	new /obj/item/gun/energy/e_gun(src)
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)
-	new /obj/item/door_remote/civilian(src)
 	new /obj/item/circuitboard/machine/fabricator/department/service(src)
 	new /obj/item/storage/photo_album/hop(src)
 	new /obj/item/storage/lockbox/medal/hop(src)
@@ -91,7 +89,6 @@
 	new /obj/item/storage/belt/security/full(src)
 	new /obj/item/flashlight/seclite(src)
 	new /obj/item/clothing/gloves/krav_maga/sec(src)
-	new /obj/item/door_remote/head_of_security(src)
 
 /obj/structure/closet/secure_closet/security
 	name = "security officer's locker"

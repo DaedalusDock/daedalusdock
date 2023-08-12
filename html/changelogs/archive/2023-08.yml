@@ -1,0 +1,84 @@
+2023-08-01:
+  Kapu1178:
+  - rscadd: The metabolism rate of mobs now slows down as their body chills. At maximum
+      effect (most obvious in the Cryogenics Toob), one life tick will occur every
+      40 seconds.
+  - rscadd: All health analyzers have a Surgerical mode.
+  - rscadd: Cryogenics now has a pump to regulate pressure.
+  - qol: The cryogenics O2 canister starts pre-chilled.
+  - balance: Arterial bleeding rate slowed by 20%
+  - bugfix: Epinephrine no longer heals brute or burn damage.
+  - bugfix: Body scanners now show embedded objects as foreign bodies.
+  - bugfix: Teshari now have their own damage sprites instead of using the human ones.
+  - bugfix: Teshari now have their own bloody clothing sprites instead of using the
+      human ones.
+  francinum:
+  - code_imp: Abstractness changes
+2023-08-02:
+  Kapu1178:
+  - qol: Removed the "syndicate" prefix from some items.
+  francinum:
+  - config: A few config entries with no effect have been removed
+  - server: "Jobs.txt is no longer supported. If you need to change job numbers like\
+      \ that, fork (\u0360\u035C\u0296\u0360)"
+2023-08-03:
+  Kapu1178:
+  - code_imp: Daedalus now supports the Byond-Tracy profiler.
+  - bugfix: Fixed a serious bug with bodypart damage.
+  - balance: Vent Pumps and Vent Scrubbers use 33% less power while idling.
+  - balance: Thermomachine volume from 70 to 400 + (bin_rating * 200)
+2023-08-04:
+  Kapu1178:
+  - bugfix: Specific chemical effects no longer last forever
+  - bugfix: ZMimic failing to recognize new atoms
+  MrMelbert:
+  - bugfix: Items getting knocked off (glasses and cigars), bad omens, and spaghetti
+      falling from pockets should trigger on most knockdowns again like they used
+      to.
+  - code_imp: Cleaned up the knockoff component a bit. Also unit tests it.
+  - bugfix: Frozen stuff is now properly actually recognized as frozen and won't re-freeze.
+  - bugfix: Tonic Water heals dizziness instead of causing it
+  - bugfix: Fixes stuttered words with anxiety being capitalized
+  - rscadd: When you are drunk, the strength of your slurring now varies based on
+      how drunk you are. Being "a little drunk" only rarely slurs your words, being
+      average drunk is the same as the old effect, while being very drunk now slurs
+      your words even more.
+  - rscadd: Some non-alcohol sources of slurring, such as concussions, now give "generic
+      slurring" rather than "drunk slurring", which less resemble being drunk (ie,
+      no burping).
+  - rscadd: 'Mind restoration now heals ALL slurring, rather than only drunk slurring
+      (which includes cult / heretic slurring). /:cl:'
+2023-08-05:
+  Kapu1178:
+  - tweak: Player darksight is now DRASTICALLY weaker.
+  - bugfix: Limping no longer gets stuck on your character after your legs are fixed.
+  francinum:
+  - rscdel: door remotes
+  - qol: removes ntnet
+  - bugfix: Silicon 'PDAs' will now properly ring.
+  - rscadd: Medibelts can store Gauze now
+2023-08-06:
+  Kapu1178:
+  - bugfix: In some cases organs would be unable to be coupled to a mob, these have
+      been fixed.
+  - balance: Addiction phases changed to 10/20/40 minutes from 1/2/3 minutes.
+  SmoSmoSmoSmok:
+  - bugfix: mulebots can be turned on/off
+  francinum:
+  - code_imp: TESTING mode works again.
+  - config: Credits music, Lobby tracks, and Jukebox media organization has changed
+      massively. Check the repo for more information.
+  - rscdel: Disco Inferno has been made far less disco.
+2023-08-08:
+  Kapu1178:
+  - rscadd: Added a chance for Runtime to spawn with a different name.
+2023-08-12:
+  Gonenoculer5:
+  - bugfix: Modifies EXAMPLE.json to contain correct comment text relating to durations
+      of music files.
+  Kapu1178:
+  - rscdel: Mood has been removed. Not like Production ever had it turned on...
+  - bugfix: Fixed objects that render out of their tile rendering over blackness,
+      when logically they should be invisible.
+  francinum:
+  - admin: DSAY now autocompletes again.

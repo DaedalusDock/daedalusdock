@@ -161,18 +161,18 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	if(M.IsSleeping() || M.IsUnconscious())
-		var/power = -0.00003 * (M.bodytemperature ** 2) + 3
-		if(M.bodytemperature < T0C)
-			M.adjustOxyLoss(-3 * power * REM * delta_time, 0)
-			M.adjustBruteLoss(-power * REM * delta_time, 0)
-			M.adjustFireLoss(-power * REM * delta_time, 0)
-			M.adjustToxLoss(-power * REM * delta_time, 0, TRUE) //heals TOXINLOVERs
-			M.adjustCloneLoss(-power * REM * delta_time, 0)
+	if(!(M.bodytemperature < T0C))
+		return ..()
 
-			REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
-			. = TRUE
-	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (M.bodytemperature ** 2) + 0.5)
+	M.adjustOxyLoss(-0.5, 0)
+	M.adjustBruteLoss(-0.5, 0)
+	M.adjustFireLoss(-0.5, 0)
+	M.adjustToxLoss(-0.5, 0, TRUE) //heals TOXINLOVERs
+	M.adjustCloneLoss(-5, 0)
+	APPLY_CHEM_EFFECT(M, CE_CRYO, 1)
+
+	REMOVE_TRAIT(M, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+	. = TRUE
 	..()
 
 // Healing
@@ -365,15 +365,6 @@
 		exposed_mob.adjust_nutrition(-5)
 		if(show_message)
 			to_chat(exposed_mob, span_warning("Your stomach feels empty and cramps!"))
-
-	if(methods & (PATCH|TOUCH))
-		var/mob/living/carbon/exposed_carbon = exposed_mob
-		for(var/s in exposed_carbon.surgeries)
-			var/datum/surgery/surgery = s
-			surgery.speed_modifier = max(0.1, surgery.speed_modifier)
-
-		if(show_message)
-			to_chat(exposed_carbon, span_danger("You feel your injuries fade away to nothing!") )
 
 /datum/reagent/medicine/mine_salve/on_mob_end_metabolize(mob/living/M)
 	if(iscarbon(M))
@@ -609,8 +600,6 @@
 	..()
 
 /datum/reagent/medicine/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	if(current_cycle >= 5)
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_medium, name)
 	switch(current_cycle)
 		if(11)
 			to_chat(M, span_warning("You start to feel tired...") )
@@ -806,8 +795,6 @@
 		return
 	if(M.health <= M.crit_threshold)
 		M.adjustToxLoss(-0.5 * REM * delta_time, 0)
-		M.adjustBruteLoss(-0.5 * REM * delta_time, 0)
-		M.adjustFireLoss(-0.5 * REM * delta_time, 0)
 		M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
 	if(M.losebreath >= 4)
 		M.losebreath -= 2 * REM * delta_time
@@ -954,6 +941,7 @@
 /datum/reagent/medicine/neurine/on_mob_dead(mob/living/carbon/owner, delta_time)
 	owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, -1 * REM * delta_time * normalise_creation_purity())
 	..()
+	return TRUE
 
 /datum/reagent/medicine/mutadone
 	name = "Mutadone"
@@ -1382,9 +1370,6 @@
 	M.adjust_timed_status_effect(-12 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
 	M.adjust_timed_status_effect(-6 SECONDS * REM * delta_time, /datum/status_effect/confusion)
 	M.disgust = max(M.disgust - (6 * REM * delta_time), 0)
-	var/datum/component/mood/mood = M.GetComponent(/datum/component/mood)
-	if(mood != null && mood.sanity <= SANITY_NEUTRAL) // only take effect if in negative sanity and then...
-		mood.setSanity(min(mood.sanity + (5 * REM * delta_time), SANITY_NEUTRAL)) // set minimum to prevent unwanted spiking over neutral
 	..()
 	. = TRUE
 

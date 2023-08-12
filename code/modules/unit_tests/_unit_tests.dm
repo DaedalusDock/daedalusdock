@@ -115,7 +115,6 @@
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
 #include "novaflower_burn.dm"
-#include "ntnetwork_tests.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"
 #include "paintings.dm"

@@ -557,7 +557,7 @@
 /area/space)
 "bp" = (
 /obj/structure/cable,
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 8

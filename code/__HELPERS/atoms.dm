@@ -311,7 +311,7 @@ rough example of the "cone" made by the 3 dirs checked
 			return TRUE
 
 ///A do nothing proc
-/proc/pass(...)
+/proc/noop(...)
 	return
 
 ///Returns a list of the parents of all storage components that contain the target item

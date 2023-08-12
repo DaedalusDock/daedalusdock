@@ -2461,7 +2461,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_name = "Triumphal Arch"
 	glass_desc = "A toast to the Empire, long may it stand."
 
-
 /datum/reagent/consumable/ethanol/the_juice
 	name = "The Juice"
 	description = "Woah man, this like, feels familiar to you dude."

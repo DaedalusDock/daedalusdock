@@ -72,3 +72,13 @@
 2023-08-08:
   Kapu1178:
   - rscadd: Added a chance for Runtime to spawn with a different name.
+2023-08-12:
+  Gonenoculer5:
+  - bugfix: Modifies EXAMPLE.json to contain correct comment text relating to durations
+      of music files.
+  Kapu1178:
+  - rscdel: Mood has been removed. Not like Production ever had it turned on...
+  - bugfix: Fixed objects that render out of their tile rendering over blackness,
+      when logically they should be invisible.
+  francinum:
+  - admin: DSAY now autocompletes again.

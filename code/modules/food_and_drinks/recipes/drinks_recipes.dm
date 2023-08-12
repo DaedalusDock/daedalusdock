@@ -29,10 +29,6 @@
 	results = list(/datum/reagent/consumable/icecoffee = 4)
 	required_reagents = list(/datum/reagent/consumable/ice = 1, /datum/reagent/consumable/coffee = 3)
 
-/datum/chemical_reaction/drink/hoticecoffee
-	results = list(/datum/reagent/consumable/hot_ice_coffee = 3)
-	required_reagents = list(/datum/reagent/toxin/hot_ice = 1, /datum/reagent/consumable/coffee = 2)
-
 /datum/chemical_reaction/drink/nuka_cola
 	results = list(/datum/reagent/consumable/nuka_cola = 6)
 	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/consumable/space_cola = 6)
@@ -184,7 +180,7 @@
 
 /datum/chemical_reaction/drink/hiveminderaser
 	results = list(/datum/reagent/consumable/ethanol/hiveminderaser = 4)
-	required_reagents = list(/datum/reagent/consumable/ethanol/black_russian = 2, /datum/reagent/consumable/ethanol/thirteenloko = 1, /datum/reagent/consumable/grenadine = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol/black_russian = 2, /datum/reagent/consumable/grenadine = 1)
 
 /datum/chemical_reaction/drink/manhattan
 	results = list(/datum/reagent/consumable/ethanol/manhattan = 3)
@@ -469,13 +465,6 @@
 	mix_message = "Judgement is upon you."
 	mix_sound = 'sound/items/airhorn2.ogg'
 
-
-/datum/chemical_reaction/drink/bastion_bourbon
-	results = list(/datum/reagent/consumable/ethanol/bastion_bourbon = 2)
-	required_reagents = list(/datum/reagent/consumable/tea = 1, /datum/reagent/consumable/ethanol/creme_de_menthe = 1, /datum/reagent/consumable/triple_citrus = 1, /datum/reagent/consumable/berryjuice = 1) //herbal and minty, with a hint of citrus and berry
-	mix_message = "You catch an aroma of hot tea and fruits as the mix blends into a blue-green color."
-
-
 /datum/chemical_reaction/drink/squirt_cider
 	results = list(/datum/reagent/consumable/ethanol/squirt_cider = 4)
 	required_reagents = list(/datum/reagent/water = 2, /datum/reagent/consumable/tomatojuice = 2, /datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/salt = 1)
@@ -509,12 +498,6 @@
 	results = list(/datum/reagent/consumable/ethanol/peppermint_patty = 10)
 	required_reagents = list(/datum/reagent/consumable/hot_coco = 6, /datum/reagent/consumable/ethanol/creme_de_cacao = 1, /datum/reagent/consumable/ethanol/creme_de_menthe = 1, /datum/reagent/consumable/ethanol/vodka = 1, /datum/reagent/consumable/menthol = 1)
 	mix_message = "The coco turns mint green just as the strong scent hits your nose."
-
-
-/datum/chemical_reaction/drink/alexander
-	results = list(/datum/reagent/consumable/ethanol/alexander = 3)
-	required_reagents = list(/datum/reagent/consumable/ethanol/cognac = 1, /datum/reagent/consumable/ethanol/creme_de_cacao = 1, /datum/reagent/consumable/cream = 1)
-
 
 /datum/chemical_reaction/drink/sidecar
 	results = list(/datum/reagent/consumable/ethanol/sidecar = 4)
@@ -574,12 +557,12 @@
 
 /datum/chemical_reaction/drink/turbo
 	results = list(/datum/reagent/consumable/ethanol/turbo = 5)
-	required_reagents = list(/datum/reagent/consumable/ethanol/moonshine = 2, /datum/reagent/nitrous_oxide = 1, /datum/reagent/consumable/ethanol/sugar_rush = 1, /datum/reagent/consumable/pwr_game = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol/moonshine = 2, /datum/reagent/nitrous_oxide = 1, /datum/reagent/consumable/ethanol/sugar_rush = 1)
 
 
 /datum/chemical_reaction/drink/old_timer
 	results = list(/datum/reagent/consumable/ethanol/old_timer = 6)
-	required_reagents = list(/datum/reagent/consumable/ethanol/whiskeysoda = 3, /datum/reagent/consumable/parsnipjuice = 2, /datum/reagent/consumable/ethanol/alexander = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol/whiskeysoda = 3, /datum/reagent/consumable/parsnipjuice = 2)
 
 
 /datum/chemical_reaction/drink/rubberneck
@@ -602,8 +585,7 @@
 
 /datum/chemical_reaction/drink/blazaam
 	results = list(/datum/reagent/consumable/ethanol/blazaam = 3)
-	required_reagents = list(/datum/reagent/consumable/ethanol/gin = 2, /datum/reagent/consumable/peachjuice = 1, /datum/reagent/bluespace = 1)
-
+	required_reagents = list(/datum/reagent/consumable/ethanol/gin = 2, /datum/reagent/consumable/peachjuice = 1)
 
 /datum/chemical_reaction/drink/planet_cracker
 	results = list(/datum/reagent/consumable/ethanol/planet_cracker = 20)
@@ -668,7 +650,7 @@
 
 /datum/chemical_reaction/drink/the_juice
 	results = list(/datum/reagent/consumable/ethanol/the_juice = 5)
-	required_reagents = list(/datum/reagent/consumable/mushroom_tea = 1, /datum/reagent/bluespace = 1, /datum/reagent/toxin/mindbreaker = 1, /datum/reagent/consumable/ethanol/neurotoxin = 1, /datum/reagent/medicine/morphine = 1)
+	required_reagents = list(/datum/reagent/consumable/mushroom_tea = 1, /datum/reagent/toxin/mindbreaker = 1, /datum/reagent/consumable/ethanol/neurotoxin = 1, /datum/reagent/medicine/morphine = 1)
 	mix_message = "The liquids all swirl together into a deep purple."
 
 /datum/chemical_reaction/drink/admiralty

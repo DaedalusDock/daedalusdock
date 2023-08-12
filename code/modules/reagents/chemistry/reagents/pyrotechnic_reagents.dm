@@ -274,3 +274,10 @@
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.extinguish_mob() //All stacks are removed
+
+/datum/reagent/sorium
+	name = "Sorium"
+	description = "Sends everything flying from the detonation point."
+	reagent_state = LIQUID
+	color = "#5A64C8"
+	taste_description = "air and bitterness"

@@ -27,7 +27,6 @@
 			return
 
 		var/trans = 0
-		var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 
 		if(ismob(target))
 			if(ishuman(target))

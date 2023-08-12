@@ -1031,7 +1031,7 @@
 	icon_state = "portsurgery"
 
 /area/station/medical/surgery/starboard
-	name = "\improper Startboard Operating Room"
+	name = "\improper Starboard Operating Room"
 	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre

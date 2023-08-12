@@ -18,10 +18,6 @@
 	icon_state = "saturnx_glob" //tell kryson to sprite two more variants in the future.
 	food_reagents = list(/datum/reagent/drug/saturnx = 10)
 
-/obj/item/food/drug/moon_rock/Initialize(mapload)
-	. = ..()
-	icon_state = pick("moon_rock1", "moon_rock2", "moon_rock3")
-
 /obj/item/reagent_containers/glass/blastoff_ampoule
 	name = "bLaSToFF ampoule" //stylized name
 	desc = "A small ampoule. The liquid inside appears to be boiling violently.\nYou suspect it contains bLasSToFF; the drug thought to be the cause of the infamous Luna nightclub mass casualty incident."

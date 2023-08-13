@@ -1000,7 +1000,6 @@
 	icon_state = "morgue"
 	ambience_index = AMBIENCE_SPOOKY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
-	lightswitch = FALSE
 
 /area/station/medical/chemistry
 	name = "Chemistry"
@@ -1032,7 +1031,7 @@
 	icon_state = "portsurgery"
 
 /area/station/medical/surgery/starboard
-	name = "\improper Starboard Operating Room"
+	name = "\improper Startboard Operating Room"
 	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre

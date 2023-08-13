@@ -131,11 +131,15 @@
 
 	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
 
-/datum/reagent/drug/methamphetamine/on_mob_metabolize(mob/living/L)
-	L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
+/datum/reagent/drug/methamphetamine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.add_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
 
-/datum/reagent/drug/methamphetamine/on_mob_end_metabolize(mob/living/L)
-	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
+/datum/reagent/drug/methamphetamine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/methamphetamine)
 
 /datum/reagent/drug/methamphetamine/affect_blood(mob/living/carbon/C, removed)
 	var/high_message = pick("You feel hyper.", "You feel like you need to go faster.", "You feel like you can run the world.")
@@ -183,15 +187,19 @@
 
 	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 
-/datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_STUNIMMUNE, type)
 	ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 	rage = new()
 	C.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 
-/datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/L)
-	REMOVE_TRAIT(L, TRAIT_STUNIMMUNE, type)
-	REMOVE_TRAIT(L, TRAIT_SLEEPIMMUNE, type)
+/datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	REMOVE_TRAIT(C, TRAIT_STUNIMMUNE, type)
+	REMOVE_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 	if(rage)
 		QDEL_NULL(rage)
 
@@ -250,11 +258,15 @@
 	taste_description = "paint thinner"
 	addiction_types = list(/datum/addiction/hallucinogens = 18)
 
-/datum/reagent/drug/happiness/on_mob_metabolize(mob/living/L)
-	ADD_TRAIT(L, TRAIT_FEARLESS, type)
+/datum/reagent/drug/happiness/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	ADD_TRAIT(C, TRAIT_FEARLESS, type)
 
-/datum/reagent/drug/happiness/on_mob_delete(mob/living/L)
-	REMOVE_TRAIT(L, TRAIT_FEARLESS, type)
+/datum/reagent/drug/happiness/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	REMOVE_TRAIT(C, TRAIT_FEARLESS, type)
 
 /datum/reagent/drug/happiness/affect_blood(mob/living/carbon/C, removed)
 	C.remove_status_effect(/datum/status_effect/jitter)
@@ -291,11 +303,15 @@
 
 	addiction_types = list(/datum/addiction/stimulants = 6) //2.6 per 2 seconds
 
-/datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/L)
-	ADD_TRAIT(L, TRAIT_STUNRESISTANCE, type)
+/datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	ADD_TRAIT(C, TRAIT_STUNRESISTANCE, type)
 
-/datum/reagent/drug/pumpup/on_mob_end_metabolize(mob/living/L)
-	REMOVE_TRAIT(L, TRAIT_STUNRESISTANCE, type)
+/datum/reagent/drug/pumpup/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, type)
 
 /datum/reagent/drug/pumpup/affect_blood(mob/living/carbon/C, removed)
 	C.set_jitter_if_lower(10 SECONDS)
@@ -366,14 +382,18 @@
 
 	addiction_types = list(/datum/addiction/maintenance_drugs = 8)
 
-/datum/reagent/drug/maint/sludge/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/drug/maint/sludge/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C,TRAIT_HARDLY_WOUNDED, type)
 
 /datum/reagent/drug/maint/sludge/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(0.5 * removed, FALSE)
 	return TRUE
 
-/datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_HARDLY_WOUNDED, type)
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/carbon/C)
@@ -434,7 +454,9 @@
 				spawn(-1)
 					psychonaut.emote(pick("twitch","giggle"))
 
-/datum/reagent/drug/mushroomhallucinogen/on_mob_metabolize(mob/living/psychonaut)
+/datum/reagent/drug/mushroomhallucinogen/on_mob_metabolize(mob/living/psychonaut, class)
+	if(class != CHEM_BLOOD)
+		return
 	if(!psychonaut.hud_used)
 		return
 
@@ -458,7 +480,9 @@
 	for(var/filter in game_plane_master_controller.get_filters("psilocybin_wave"))
 		animate(filter, time = 64 SECONDS, loop = -1, easing = LINEAR_EASING, offset = 32, flags = ANIMATION_PARALLEL)
 
-/datum/reagent/drug/mushroomhallucinogen/on_mob_end_metabolize(mob/living/psychonaut)
+/datum/reagent/drug/mushroomhallucinogen/on_mob_end_metabolize(mob/living/psychonaut, class)
+	if(class != CHEM_BLOOD)
+		return
 	if(!psychonaut.hud_used)
 		return
 	var/atom/movable/plane_master_controller/game_plane_master_controller = psychonaut.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
@@ -481,7 +505,9 @@
 	///How many flips for a super flip?
 	var/super_flip_requirement = 3
 
-/datum/reagent/drug/blastoff/on_mob_metabolize(mob/living/dancer)
+/datum/reagent/drug/blastoff/on_mob_metabolize(mob/living/dancer, class)
+	if(class != CHEM_BLOOD)
+		return
 	RegisterSignal(dancer, COMSIG_MOB_EMOTED("flip"), PROC_REF(on_flip))
 	RegisterSignal(dancer, COMSIG_MOB_EMOTED("spin"), PROC_REF(on_spin))
 
@@ -509,7 +535,9 @@
 
 	dancer.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
 
-/datum/reagent/drug/blastoff/on_mob_end_metabolize(mob/living/dancer)
+/datum/reagent/drug/blastoff/on_mob_end_metabolize(mob/living/dancer, class)
+	if(class != CHEM_BLOOD)
+		return
 	UnregisterSignal(dancer, COMSIG_MOB_EMOTED("flip"))
 	UnregisterSignal(dancer, COMSIG_MOB_EMOTED("spin"))
 
@@ -595,8 +623,9 @@
 /datum/reagent/drug/saturnx/affect_blood(mob/living/carbon/C, removed)
 	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * removed)
 
-/datum/reagent/drug/saturnx/on_mob_metabolize(mob/living/invisible_man)
-	. = ..()
+/datum/reagent/drug/saturnx/on_mob_metabolize(mob/living/invisible_man, class)
+	if(class != CHEM_BLOOD)
+		return
 	playsound(invisible_man, 'sound/chemistry/saturnx_fade.ogg', 40)
 	to_chat(invisible_man, span_nicegreen("You feel pins and needles all over your skin as your body suddenly becomes transparent!"))
 	addtimer(CALLBACK(src, PROC_REF(turn_man_invisible), invisible_man), 10) //just a quick delay to synch up the sound.
@@ -650,8 +679,9 @@
 	invisible_man.remove_from_all_data_huds()
 	invisible_man.sound_environment_override = SOUND_ENVIROMENT_PHASED
 
-/datum/reagent/drug/saturnx/on_mob_end_metabolize(mob/living/invisible_man)
-	. = ..()
+/datum/reagent/drug/saturnx/on_mob_end_metabolize(mob/living/invisible_man, class)
+	if(class != CHEM_BLOOD)
+		return
 	if(HAS_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN))
 		invisible_man.add_to_all_human_data_huds() //Is this safe, what do you think, Floyd?
 		REMOVE_TRAIT(invisible_man, TRAIT_INVISIBLE_MAN, name)

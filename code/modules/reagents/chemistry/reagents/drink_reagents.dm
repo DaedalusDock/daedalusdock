@@ -159,7 +159,7 @@
 	metabolization_rate = INFINITY
 	color = "#FF4DD2"
 	taste_description = "laughter"
-
+	ingest_met = INFINITY
 
 /datum/reagent/consumable/laughter/affect_blood(mob/living/carbon/C, removed)
 	spawn(-1)
@@ -168,13 +168,12 @@
 /datum/reagent/consumable/superlaughter
 	name = "Super Laughter"
 	description = "Funny until you're the one laughing."
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.3
 	color = "#FF4DD2"
 	taste_description = "laughter"
 
-
 /datum/reagent/consumable/superlaughter/affect_blood(mob/living/carbon/C, removed)
-	if(prob(30))
+	if(prob(10))
 		C.visible_message(span_danger("[C] bursts out into a fit of uncontrollable laughter!"), span_userdanger("You burst out in a fit of uncontrollable laughter!"))
 		C.Stun(5)
 
@@ -438,7 +437,7 @@
 	color = "#181008" // rgb: 24, 16, 8
 	quality = DRINK_VERYGOOD
 	nutriment_factor = 10 * REAGENTS_METABOLISM
-	metabolization_rate = 2 * REAGENTS_METABOLISM
+	ingest_met = 0.4
 	taste_description = "a monstrous sugar rush"
 	glass_icon_state = "spacecola"
 	glass_name = "glass of root beer"
@@ -449,6 +448,9 @@
 
 
 /datum/reagent/consumable/rootbeer/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
+		return
+
 	REMOVE_TRAIT(C, TRAIT_DOUBLE_TAP, type)
 	if(current_cycle > 10)
 		to_chat(C, span_warning("You feel kinda tired as your sugar rush wears off..."))
@@ -480,12 +482,12 @@
 	glass_desc = "Surprisingly it isn't grey."
 
 
-/datum/reagent/consumable/grey_bull/on_mob_metabolize(mob/living/L)
+/datum/reagent/consumable/grey_bull/on_mob_metabolize(mob/living/carbon/C, class)
 	..()
-	ADD_TRAIT(L, TRAIT_SHOCKIMMUNE, type)
+	ADD_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
 
-/datum/reagent/consumable/grey_bull/on_mob_end_metabolize(mob/living/L)
-	REMOVE_TRAIT(L, TRAIT_SHOCKIMMUNE, type)
+/datum/reagent/consumable/grey_bull/on_mob_end_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
 	..()
 
 /datum/reagent/consumable/grey_bull/affect_ingest(mob/living/carbon/C, removed)

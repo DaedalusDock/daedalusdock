@@ -10,6 +10,7 @@
 	chemical_flags = REAGENT_CLEANS
 
 	metabolization_rate = 2
+	ingest_met = 2
 
 /datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
@@ -109,17 +110,17 @@
 		if(myseed)
 			myseed.adjust_instability(round(chems.get_reagent_amount(type) * 0.15))
 
-/datum/reagent/water/holywater/on_mob_metabolize(mob/living/L)
+/datum/reagent/water/holywater/on_mob_metabolize(mob/living/carbon/C, class)
 	..()
-	ADD_TRAIT(L, TRAIT_HOLY, type)
+	ADD_TRAIT(C, TRAIT_HOLY, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/water/holywater/on_mob_add(mob/living/L, amount)
 	. = ..()
 	if(data)
 		data["misc"] = 0
 
-/datum/reagent/water/holywater/on_mob_end_metabolize(mob/living/L)
-	REMOVE_TRAIT(L, TRAIT_HOLY, type)
+/datum/reagent/water/holywater/on_mob_end_metabolize(mob/living/carbon/C, class)
+	REMOVE_TRAIT(C, TRAIT_HOLY, CHEM_TRAIT_SOURCE(class))
 	..()
 
 /datum/reagent/water/holywater/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
@@ -315,7 +316,7 @@
 	color = "#545000"
 	taste_description = "insides"
 	taste_mult = 4
-	metabolization_rate = 0.4 * REAGENTS_METABOLISM
+	ingest_met = 0.08
 	var/yuck_cycle = 0 //! The `current_cycle` when puking starts.
 
 /datum/reagent/yuck/on_mob_add(mob/living/L)
@@ -687,11 +688,14 @@
 	taste_description = "water"
 	metabolization_rate = 0.05
 
-
 /datum/reagent/pax/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_PACIFISM, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/pax/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_PACIFISM, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/monkey_powder
@@ -895,7 +899,9 @@
 	current_size = newsize
 	C.update_transform()
 
-/datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	C.resize = RESIZE_DEFAULT_SIZE/current_size
 	current_size = RESIZE_DEFAULT_SIZE
 	C.update_transform()
@@ -1114,7 +1120,7 @@
 	name = "Changeling Haste"
 	description = "Drastically increases movement speed, but deals toxin damage."
 	color = "#AE151D"
-	metabolization_rate = 2.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.5
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/medicine/changelinghaste/on_mob_metabolize(mob/living/carbon/C, class)
@@ -1141,10 +1147,9 @@
 	name = "Nitrous Oxide"
 	description = "A potent oxidizer used as fuel in rockets and as an anaesthetic during surgery."
 	reagent_state = LIQUID
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.3
 	color = "#808080"
 	taste_description = "sweetness"
-
 
 /datum/reagent/nitrous_oxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	. = ..()

@@ -860,12 +860,14 @@
 
 
 /datum/reagent/toxin/heparin/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_BLOODY_MESS, CHEM_TRAIT_SOURCE(class))
-	return ..()
 
 /datum/reagent/toxin/heparin/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_BLOODY_MESS, CHEM_TRAIT_SOURCE(class))
-	return ..()
 
 /datum/reagent/toxin/rotatium //Rotatium. Fucks up your rotation and is hilarious
 	name = "Rotatium"
@@ -973,14 +975,16 @@
 	silent_toxin = TRUE
 	color = "#F0F8FF" // rgb: 240, 248, 255
 	toxpwr = 0
-
 	taste_description = "stillness"
 
-
 /datum/reagent/toxin/mimesbane/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_EMOTEMUTE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/toxin/mimesbane/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_EMOTEMUTE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/toxin/bonehurtingjuice //oof ouch
@@ -991,7 +995,6 @@
 	toxpwr = 0
 	taste_description = "bone hurting"
 	overdose_threshold = 50
-
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)

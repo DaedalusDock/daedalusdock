@@ -715,15 +715,16 @@
 		if(liverless && !reagent.self_consuming) //need to be metabolized
 			return
 		if(!reagent.metabolizing)
-			if((metabolism_class == CHEM_BLOOD) ||(metabolism_class == CHEM_TOUCH && reagent.touch_met) || (metabolism_class == CHEM_INGEST && reagent.ingest_met))
-				reagent.metabolizing = TRUE
-				need_mob_update += reagent.on_mob_metabolize(owner, metabolism_class)
+			reagent.metabolizing = TRUE
+			need_mob_update += reagent.on_mob_metabolize(owner, metabolism_class)
+
 		if(can_overdose)
 			if(reagent.overdose_threshold)
 				if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)
 					reagent.overdosed = TRUE
 					need_mob_update += reagent.overdose_start(owner)
 					log_game("[key_name(owner)] has started overdosing on [reagent.name] at [reagent.volume] units.")
+
 			for(var/addiction in reagent.addiction_types)
 				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * 0.2)
 

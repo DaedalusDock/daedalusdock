@@ -6,7 +6,7 @@
 	name = "Stable Mutation Toxin"
 	description = "A humanizing toxin."
 	color = "#5EFF3B" //RGB: 94, 255, 59
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM //metabolizes to prevent micro-dosage
+	metabolization_rate = 0.1 //metabolizes to prevent micro-dosage
 	taste_description = "slime"
 	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SPECIAL
 	var/race = /datum/species/human
@@ -115,7 +115,9 @@
 	taste_description = "rocks"
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
-/datum/reagent/mutationtoxin/golem/on_mob_metabolize()
+/datum/reagent/mutationtoxin/golem/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	var/static/list/random_golem_types
 	random_golem_types = subtypesof(/datum/species/golem) - type
 	for(var/i in random_golem_types)

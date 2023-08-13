@@ -131,7 +131,8 @@
 	taste_mult = 0.8
 	taste_description = "oil"
 	nutriment_factor = 7 * REAGENTS_METABOLISM //Not very healthy on its own
-	metabolization_rate = 10 * REAGENTS_METABOLISM
+	metabolization_rate = 2
+	ingest_met = 2
 	penetrates_skin = NONE
 	var/fry_temperature = 450 //Around ~350 F (117 C) which deep fryers operate around in the real world
 
@@ -189,7 +190,8 @@
 	color = "#FFFFFF" // rgb: 255, 255, 255
 	taste_mult = 1.5
 	nutriment_factor = 10 * REAGENTS_METABOLISM
-	metabolization_rate = 2 * REAGENTS_METABOLISM
+	metabolization_rate = 0.4
+	ingest_met = 0.4
 	overdose_threshold = 200
 	taste_description = "sweetness"
 
@@ -393,8 +395,7 @@
 	description = "Crushed garlic. Chefs love it, but it can make you smell bad."
 	color = "#FEFEFE"
 	taste_description = "garlic"
-	metabolization_rate = 0.15 * REAGENTS_METABOLISM
-
+	ingest_met = 0.03
 
 /datum/reagent/consumable/garlic/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
@@ -574,7 +575,7 @@
 	name = "Corn Syrup"
 	description = "Decays into sugar."
 	color = "#DBCE95"
-	metabolization_rate = 3 * REAGENTS_METABOLISM
+	ingest_met = 0.6
 	taste_description = "sweet slime"
 
 
@@ -587,9 +588,8 @@
 	description = "Sweet sweet honey that decays into sugar. Has antibacterial and natural healing properties."
 	color = "#d3a308"
 	nutriment_factor = 15 * REAGENTS_METABOLISM
-	metabolization_rate = 1 * REAGENTS_METABOLISM
+	ingest_met = 0.2
 	taste_description = "sweetness"
-
 
 	// On the other hand, honey has been known to carry pollen with it rarely. Can be used to take in a lot of plant qualities all at once, or harm the plant.
 /datum/reagent/consumable/honey/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
@@ -749,13 +749,12 @@
 	name = "Astrotame"
 	description = "A space age artifical sweetener."
 	nutriment_factor = 0
-	metabolization_rate = 2 * REAGENTS_METABOLISM
+	ingest_met = 0.4
 	reagent_state = SOLID
 	color = "#FFFFFF" // rgb: 255, 255, 255
 	taste_mult = 8
 	taste_description = "sweetness"
 	overdose_threshold = 17
-
 
 /datum/reagent/consumable/astrotame/overdose_process(mob/living/carbon/C)
 	if(C.disgust < 80)
@@ -883,9 +882,8 @@
 	description = "A sweet, sugary syrup made from crushed sweet korta nuts."
 	color = "#d3a308"
 	nutriment_factor = 5 * REAGENTS_METABOLISM
-	metabolization_rate = 1 * REAGENTS_METABOLISM
+	ingest_met = 0.2
 	taste_description = "peppery sweetness"
-
 
 /datum/reagent/consumable/whipped_cream
 	name = "Whipped Cream"

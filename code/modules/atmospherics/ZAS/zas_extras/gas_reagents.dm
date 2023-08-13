@@ -37,9 +37,10 @@
 	if(warning_message && prob(warning_prob))
 		to_chat(M, "<span class='warning'>You feel [warning_message].</span>")
 
-/datum/reagent/carbon_monoxide/on_mob_end_metabolize(mob/living/L)
-	. = ..()
-	L.clear_alert(ALERT_TOO_MUCH_CO2, clear_override = TRUE)
+/datum/reagent/carbon_monoxide/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.clear_alert(ALERT_TOO_MUCH_CO2, clear_override = TRUE)
 
 /datum/reagent/toxin/boron
 	name = "Boron"

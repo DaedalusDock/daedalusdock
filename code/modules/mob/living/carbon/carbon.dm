@@ -1170,6 +1170,9 @@
 		update_worn_gloves()
 		. = TRUE
 
+	if(get_permeability_protection() > 0.5)
+		touching.remove_all(INFINITY)
+
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
 	for(var/obj/item/bodypart/part as anything in bodyparts)

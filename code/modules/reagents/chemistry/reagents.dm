@@ -55,8 +55,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/metabolization_rate = 0.2
 	/// How fast the reagent metabolizes on touch
 	var/touch_met = 0
-	/// How fast the reagent metabolizes when ingested
-	var/ingest_met = 0
+	/// How fast the reagent metabolizes when ingested. NOTE: Due to how reagents are coded, if you have an on_metabolize() for blood, this MUST be greater than metabolization_rate.
+	var/ingest_met = 1
 
 	/// above this overdoses happen
 	var/overdose_threshold = 0
@@ -161,7 +161,9 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 					return
 				else
 					. = affect_ingest(M, effective)
-					holder?.remove_reagent(type, removed * 0.5) //We split 50/50, half goes into blood in affect_ingest, half is removed entirely.
+					// Thanos snap a small portion of what we processed.
+					// This is only after transfering to Blood because we're nice :)
+					holder?.remove_reagent(type, ingest_met * 0.2)
 
 	if(remove_from_holder)
 		// Holder can go null if we're removed from our container during processing.
@@ -174,13 +176,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
-	/*
-	if (protein_amount)
-		handle_protein(M, src)
-	if (sugar_amount)
-		handle_sugar(M, src)
-	*/
-	holder.trans_id_to(C.bloodstream, src, removed * 0.5, TRUE)
+
+	holder.trans_id_to(C.bloodstream, src, ingest_met, TRUE)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -207,7 +204,7 @@ Primarily used in reagents/reaction_agents
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
-/// Called when this reagent first starts being metabolized by a liver
+/// Called when this reagent first starts being metabolized. Does NOT get called during microdoses, such as when going from stomach to blood.
 /datum/reagent/proc/on_mob_metabolize(mob/living/carbon/C, class)
 	SHOULD_NOT_SLEEP(TRUE)
 	return

@@ -23,11 +23,9 @@
 	description = "A miracle drug capable of bringing the dead back to life. Works topically unless anotamically complex, in which case works orally. Only works if the target has less than 200 total brute and burn damage and hasn't been husked and requires more reagent depending on damage inflicted. Causes damage to the living."
 	reagent_state = LIQUID
 	color = "#A0E85E"
-	metabolization_rate = 1.25 * REAGENTS_METABOLISM
+	metabolization_rate = 0.25
 	taste_description = "magnets"
 	harmful = TRUE
-
-
 
 // FEED ME SEYMOUR
 /datum/reagent/medicine/strange_reagent/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)

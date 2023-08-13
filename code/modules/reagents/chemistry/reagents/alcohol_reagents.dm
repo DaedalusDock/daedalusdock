@@ -14,7 +14,7 @@
 	color = "#404030"
 
 	touch_met = 5
-	metabolization_rate = 0.2
+	ingest_met = 0.2
 	burning_temperature = 2193//ethanol burns at 1970C (at it's peak)
 	burning_volume = 0.1
 	var/boozepwr = 65 //Higher numbers equal higher hardness, higher hardness equals more intense alcohol poisoning
@@ -661,7 +661,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	color = "#808000" // rgb: 128,128,0
 	boozepwr = 60 //THE FIST OF THE LAW IS STRONG AND HARD
 	quality = DRINK_GOOD
-	metabolization_rate = 1.25 * REAGENTS_METABOLISM
+	ingest_met = 0.25
 	taste_description = "JUSTICE"
 	glass_icon_state = "beepskysmashglass"
 	glass_name = "Beepsky Smash"
@@ -669,12 +669,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	overdose_threshold = 40
 	var/datum/brain_trauma/special/beepsky/beepsky_hallucination
 
-
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_INGEST)
 		return
 	if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
-		metabolization_rate = 0.8
+		ingest_met = 0.8
 	// if you don't have a liver, or your liver isn't an officer's liver
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
@@ -1318,7 +1317,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	color = rgb(255, 91, 15)
 	boozepwr = 10
 	quality = DRINK_VERYGOOD
-	metabolization_rate = 0.1 * REAGENTS_METABOLISM
+	ingest_met = 0.02
 	taste_description = "charged metal" // the same as teslium, honk honk.
 	glass_icon_state = "fetching_fizz"
 	glass_name = "Fetching Fizz"
@@ -1407,11 +1406,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	boozepwr = 50
 	quality = DRINK_VERYGOOD
 	taste_description = "a numbing sensation"
-	metabolization_rate = 1 * REAGENTS_METABOLISM
+	ingest_met = 0.2
 	glass_icon_state = "neurotoxinglass"
 	glass_name = "Neurotoxin"
 	glass_desc = "A drink that is guaranteed to knock you silly."
-
 
 /datum/reagent/consumable/ethanol/neurotoxin/proc/pick_paralyzed_limb()
 	return (pick(TRAIT_PARALYSIS_L_ARM,TRAIT_PARALYSIS_R_ARM,TRAIT_PARALYSIS_R_LEG,TRAIT_PARALYSIS_L_LEG))
@@ -1459,7 +1457,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	nutriment_factor = 0
 	boozepwr = 0 //custom drunk effect
 	quality = DRINK_FANTASTIC
-	metabolization_rate = 0.2 * REAGENTS_METABOLISM
+	ingest_met = 0.04
 	taste_description = "giving peace a chance"
 	glass_icon_state = "hippiesdelightglass"
 	glass_name = "Hippie's Delight"
@@ -2267,8 +2265,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_name = "Mauna Loa"
 	glass_desc = "Lavaland in a drink... mug... volcano... thing."
 
-
-	metabolization_rate = 1
+	ingest_met = 1
 
 /datum/reagent/consumable/ethanol/mauna_loa/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()

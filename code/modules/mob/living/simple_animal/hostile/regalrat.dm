@@ -398,11 +398,12 @@
 	taste_description = "something funny"
 	overdose_threshold = 20
 
-/datum/reagent/rat_spit/on_mob_metabolize(mob/living/L)
-	..()
-	if(HAS_TRAIT(L, TRAIT_AGEUSIA))
+/datum/reagent/rat_spit/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
 		return
-	to_chat(L, span_notice("This food has a funny taste!"))
+	if(HAS_TRAIT(C, TRAIT_AGEUSIA))
+		return
+	to_chat(C, span_notice("This food has a funny taste!"))
 
 /datum/reagent/rat_spit/overdose_start(mob/living/M)
 	..()

@@ -354,7 +354,9 @@
 		APPLY_CHEM_EFFECT(C, CE_ALCOHOL_TOXIC, 1)
 		APPLY_CHEM_EFFECT(C, CE_BREATHLOSS, 0.1 * boozed) //drinking and opiating makes breathing kinda hard
 
-/datum/reagent/medicine/tramadol/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/medicine/tramadol/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/tramadol)
 
 /datum/reagent/medicine/tramadol/overdose_process(mob/living/carbon/C)
@@ -395,11 +397,15 @@
 	overdose_threshold = 30
 	addiction_types = list(/datum/addiction/opiods = 10)
 
-/datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/L)
-	L.add_movespeed_modifier(/datum/movespeed_modifier/morphine)
+/datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.add_movespeed_modifier(/datum/movespeed_modifier/morphine)
 
-/datum/reagent/medicine/morphine/on_mob_end_metabolize(mob/living/L)
-	L.remove_movespeed_modifier(/datum/movespeed_modifier/morphine)
+/datum/reagent/medicine/morphine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.remove_movespeed_modifier(/datum/movespeed_modifier/morphine)
 
 /datum/reagent/medicine/morphine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
@@ -423,8 +429,9 @@
 	effective_cycle = 2
 	addiction_types = list(/datum/addiction/opiods = 20)
 
-/datum/reagent/medicine/tramadol/oxycodone/on_mob_end_metabolize(mob/living/carbon/C)
-	. = ..()
+/datum/reagent/medicine/tramadol/oxycodone/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	C.stamina.adjust(-INFINITY)
 	to_chat(C, span_userdanger("Stinging pain shoots through your body!"))
 
@@ -552,10 +559,14 @@
 	value = 3.9
 
 /datum/reagent/medicine/hyperzine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_HYPERZINE, CHEM_TRAIT_SOURCE(class))
 	C.add_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
 
 /datum/reagent/medicine/hyperzine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_HYPERZINE, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_HYPERZINE))
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/hyperzine)
@@ -639,10 +650,14 @@
 	addiction_types = list(/datum/addiction/stimulants = 4) //1.6 per 2 seconds
 
 /datum/reagent/medicine/ephedrine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_EPHEDRINE, CHEM_TRAIT_SOURCE(class))
 	C.add_movespeed_modifier(/datum/movespeed_modifier/reagent/ephedrine)
 
 /datum/reagent/medicine/ephedrine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_EPHEDRINE, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_EPHEDRINE))
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/ephedrine)
@@ -690,7 +705,8 @@
 	harmful = TRUE
 
 /datum/reagent/medicine/haloperidol/on_mob_metabolize(mob/living/carbon/C, class)
-	ADD_TRAIT(C, TRAIT_HALOPERIDOL, CHEM_TRAIT_SOURCE(class))
+	if(class != CHEM_BLOOD)
+		ADD_TRAIT(C, TRAIT_HALOPERIDOL, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/haloperidol/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_HALOPERIDOL, CHEM_TRAIT_SOURCE(class))
@@ -746,6 +762,8 @@
 
 
 /datum/reagent/medicine/potass_iodide/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/potass_iodide/on_mob_end_metabolize(mob/living/carbon/C, class)

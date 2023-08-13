@@ -137,10 +137,9 @@
 /datum/reagent/space_cleaner/ez_clean
 	name = "EZ Clean"
 	description = "A powerful, acidic cleaner sold by Waffle Co. Affects organic matter while leaving other objects unaffected."
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.5
 	taste_description = "acid"
 	penetrates_skin = VAPOR
-
 
 /datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1.665*removed, FALSE)
@@ -187,11 +186,15 @@
 	addiction_types = list(/datum/addiction/stimulants = 4) //0.8 per 2 seconds
 
 /datum/reagent/stimulants/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	ADD_TRAIT(C, TRAIT_STUNRESISTANCE, CHEM_TRAIT_SOURCE(class))
 	ADD_TRAIT(C, TRAIT_STIMULANTS, CHEM_TRAIT_SOURCE(class))
 	C.add_movespeed_modifier(/datum/movespeed_modifier/reagent/stimulants)
 
 /datum/reagent/stimulants/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
 	REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, CHEM_TRAIT_SOURCE(class))
 	REMOVE_TRAIT(C, TRAIT_STIMULANTS, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_STIMULANTS))
@@ -237,7 +240,7 @@
 	color = "#993333"
 	taste_mult = 1.3
 	taste_description = "tiny legs scuttling down the back of your throat"
-	metabolization_rate = 5 * REAGENTS_METABOLISM //1u per second
+	metabolization_rate = 1 //1u per second
 	glass_name = "glass of ants"
 	glass_desc = "Bottoms up...?"
 

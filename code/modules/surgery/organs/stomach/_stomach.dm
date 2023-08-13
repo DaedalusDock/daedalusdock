@@ -75,36 +75,6 @@
 
 	var/mob/living/carbon/body = owner
 
-	// digest food, sent all reagents that can metabolize to the body
-	for(var/datum/reagent/bit as anything in reagents.reagent_list)
-
-		// If the reagent does not metabolize then it will sit in the stomach
-		// This has an effect on items like plastic causing them to take up space in the stomach
-		if(bit.metabolization_rate <= 0)
-			continue
-
-		//Ensure that the the minimum is equal to the metabolization_rate of the reagent if it is higher then the STOMACH_METABOLISM_CONSTANT
-		var/rate_min = max(bit.metabolization_rate, STOMACH_METABOLISM_CONSTANT)
-		//Do not transfer over more then we have
-		var/amount_max = bit.volume
-
-		//If the reagent is part of the food reagents for the organ
-		//prevent all the reagents form being used leaving the food reagents
-		var/amount_food = food_reagents[bit.type]
-		if(amount_food)
-			amount_max = max(amount_max - amount_food, 0)
-
-		// Transfer the amount of reagents based on volume with a min amount of 1u
-		var/amount = min((round(metabolism_efficiency * amount_max, 0.05) + rate_min) * delta_time, amount_max)
-
-		if(amount <= 0)
-			continue
-
-		// transfer the reagents over to the body at the rate of the stomach metabolim
-		// this way the body is where all reagents that are processed and react
-		// the stomach manages how fast they are feed in a drip style
-		reagents.trans_id_to(body, bit.type, amount=amount)
-
 	//Handle disgust
 	if(body)
 		handle_disgust(body, delta_time, times_fired)

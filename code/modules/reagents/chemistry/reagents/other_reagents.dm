@@ -1098,7 +1098,7 @@
 	C.set_timed_status_effect(20 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	return TRUE
 
-/datum/reagent/medicine/on_mob_metabolize(mob/living/carbon/C, class)
+/datum/reagent/medicine/changelingadrenaline/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		ADD_TRAIT(C, TRAIT_STUNRESISTANCE, type)

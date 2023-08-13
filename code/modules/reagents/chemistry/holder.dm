@@ -358,16 +358,14 @@
 
 /// Remove every reagent except this one
 /datum/reagents/proc/isolate_reagent(reagent)
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/cached_reagent as anything in cached_reagents)
+	for(var/datum/reagent/cached_reagent as anything in reagent_list)
 		if(cached_reagent.type != reagent)
 			del_reagent(cached_reagent.type)
 			update_total()
 
 /// Removes all reagents
 /datum/reagents/proc/clear_reagents()
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/reagent as anything in cached_reagents)
+	for(var/datum/reagent/reagent as anything in reagent_list)
 		del_reagent(reagent.type)
 	SEND_SIGNAL(src, COMSIG_REAGENTS_CLEAR_REAGENTS)
 
@@ -379,8 +377,7 @@
  * Needs matabolizing takes into consideration if the chemical is matabolizing when it's checked.
  */
 /datum/reagents/proc/has_reagent(reagent, amount = -1, needs_metabolizing = FALSE)
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/holder_reagent as anything in cached_reagents)
+	for(var/datum/reagent/holder_reagent as anything in reagent_list)
 		if (holder_reagent.type == reagent)
 			if(!amount)
 				if(needs_metabolizing && !holder_reagent.metabolizing)
@@ -400,8 +397,7 @@
  */
 /datum/reagents/proc/has_chemical_flag(chemical_flag, amount = 0)
 	var/found_amount = 0
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/holder_reagent as anything in cached_reagents)
+	for(var/datum/reagent/holder_reagent as anything in reagent_list)
 		if (holder_reagent.chemical_flags & chemical_flag)
 			found_amount += holder_reagent.volume
 			if(found_amount >= amount)
@@ -485,10 +481,11 @@
 				continue
 			if(methods)
 				if(istype(target_atom, /obj/item/organ))
-					R.expose_single(reagent, target, methods, transfer_amount, show_message)
+					R.expose_single(reagent, target, methods, transfer_amount, multiplier, show_message)
 				else
-					R.expose_single(reagent, target_atom, methods, transfer_amount, show_message)
+					R.expose_single(reagent, target_atom, methods, transfer_amount, multiplier, show_message)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
+
 			remove_reagent(reagent.type, transfer_amount)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount)
 			transfer_log[reagent.type] = reagent_qualities
@@ -512,10 +509,11 @@
 			to_transfer = max(to_transfer - transfer_amount , 0)
 			if(methods)
 				if(istype(target_atom, /obj/item/organ))
-					R.expose_single(reagent, target, methods, transfer_amount, show_message)
+					R.expose_single(reagent, target, methods, transfer_amount, multiplier, show_message)
 				else
-					R.expose_single(reagent, target_atom, methods, transfer_amount, show_message)
+					R.expose_single(reagent, target_atom, methods, transfer_amount, multiplier, show_message)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
+
 			remove_reagent(reagent.type, transfer_amount)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount)
 			transfer_log[reagent.type] = reagent_qualities
@@ -680,11 +678,10 @@
  * * liverless - Stops reagents that aren't set as [/datum/reagent/var/self_consuming] from metabolizing
  */
 /datum/reagents/proc/metabolize(mob/living/carbon/owner, delta_time, times_fired, can_overdose = FALSE, liverless = FALSE, updatehealth = TRUE)
-	var/list/cached_reagents = reagent_list
 	if(owner)
 		expose_temperature(owner.bodytemperature, 0.25)
 	var/need_mob_update = FALSE
-	for(var/datum/reagent/reagent as anything in cached_reagents)
+	for(var/datum/reagent/reagent as anything in reagent_list)
 		if(owner.stat == DEAD && !(reagent.chemical_flags & REAGENT_DEAD_PROCESS))
 			continue
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
@@ -736,8 +733,7 @@
 
 /// Signals that metabolization has stopped, triggering the end of trait-based effects
 /datum/reagents/proc/end_metabolization(mob/living/carbon/C, keep_liverless = TRUE)
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/reagent as anything in cached_reagents)
+	for(var/datum/reagent/reagent as anything in reagent_list)
 		if(QDELETED(reagent.holder))
 			continue
 		if(keep_liverless && reagent.self_consuming) //Will keep working without a liver
@@ -757,8 +753,7 @@
  * * Running - passed to on_move
  */
 /datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/reagent as anything in cached_reagents)
+	for(var/datum/reagent/reagent as anything in reagent_list)
 		reagent.on_move(A, Running)
 	update_total()
 
@@ -769,8 +764,7 @@
  * * atom/A - passed to on_update
  */
 /datum/reagents/proc/conditional_update(atom/A)
-	var/list/cached_reagents = reagent_list
-	for(var/datum/reagent/reagent as anything in cached_reagents)
+	for(var/datum/reagent/reagent as anything in reagent_list)
 		reagent.on_update(A)
 	update_total()
 
@@ -1171,7 +1165,7 @@
 	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message, chem_temp)
 
 /// Same as [/datum/reagents/proc/expose] but only for one reagent
-/datum/reagents/proc/expose_single(datum/reagent/R, atom/A, methods = TOUCH, volume_modifier = 1, show_message = TRUE)
+/datum/reagents/proc/expose_single(datum/reagent/R, atom/A, methods = TOUCH, expose_volume, volume_modifier = 1, show_message = TRUE)
 	if(isnull(A))
 		return null
 
@@ -1181,7 +1175,7 @@
 		return null
 
 	// Yes, we need the parentheses.
-	return A.expose_reagents(list((R) = R.volume * volume_modifier), src, methods, volume_modifier, show_message, chem_temp)
+	return A.expose_reagents(list((R) = expose_volume), src, methods, volume_modifier, show_message, chem_temp)
 
 /// Is this holder full or not
 /datum/reagents/proc/holder_full()

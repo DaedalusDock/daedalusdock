@@ -41,9 +41,12 @@
 	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
-/obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
+/obj/item/reagent_containers/pre_attack(atom/A, mob/living/user, params)
 	if (!user.combat_mode)
-		return
+		return ..()
+
+	if(try_splash(user, A))
+		return TRUE
 	return ..()
 
 /obj/item/reagent_containers/proc/on_reagents_del(datum/reagents/reagents)
@@ -101,17 +104,16 @@
 
 	var/reagent_text
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target][punctuation]"),
+		span_danger("[user] splashes the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
+		span_danger("You splash the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
 		ignored_mobs = target,
 	)
-
-	if (ismob(target))
-		var/mob/target_mob = target
-		target_mob.show_message(
-			span_userdanger("[user] splash the contents of [src] onto you!"),
+	if(user != target && ismob(target))
+		var/mob/living/L = target
+		L.show_message(
+			span_userdanger("You're soaked in the contents of [src]!"),
 			MSG_VISUAL,
-			span_userdanger("You feel drenched!"),
+			span_userdanger("You're soaked by a splash of liquid!")
 		)
 
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
@@ -122,10 +124,8 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.expose(target, TOUCH)
+	reagents.trans_to(target, reagents.total_volume, methods = TOUCH)
 	log_combat(user, target, "splashed", reagent_text)
-	reagents.clear_reagents()
-
 	return TRUE
 
 /obj/item/reagent_containers/proc/canconsume(mob/eater, mob/user)

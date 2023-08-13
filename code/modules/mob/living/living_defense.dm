@@ -374,7 +374,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/acid_act(acidpwr, acid_volume)
+/mob/living/acid_act(acidpwr, acid_volume, affect_clothing = TRUE, affect_body = TRUE)
 	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
 	return TRUE
 

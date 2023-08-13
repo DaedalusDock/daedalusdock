@@ -1178,7 +1178,7 @@
 		. = TRUE
 
 	if(get_permeability_protection() > 0.5)
-		touching.remove_all(INFINITY)
+		touching.clear_reagents()
 
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()

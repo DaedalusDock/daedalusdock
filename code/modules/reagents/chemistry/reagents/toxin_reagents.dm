@@ -944,7 +944,6 @@
 	toxpwr = 3
 	acidpwr = 5.0
 
-
 /datum/reagent/toxin/acid/nitracid/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	C.adjustFireLoss(10 * removed, FALSE) //here you go nervar

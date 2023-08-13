@@ -138,7 +138,7 @@
 	reagent_state = LIQUID
 	color = "#db5008"
 	metabolization_rate = 0.4
-	touch_met = 50 // It's acid!
+	touch_met = 1
 	var/acidpwr = 10
 	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
@@ -150,18 +150,25 @@
 	return TRUE
 
 /datum/reagent/toxin/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
-	C.acid_act(acidpwr, removed)
+	C.acid_act(acidpwr, removed, affect_clothing = FALSE)
 
 /datum/reagent/toxin/acid/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	reac_volume = round(reac_volume,0.1)
-	if(methods & INGEST)
-		exposed_mob.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
-		return
-	if(methods & INJECT)
-		exposed_mob.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
-		return
-	exposed_mob.acid_act(acidpwr, reac_volume)
+	if(!iscarbon(exposed_mob))
+		if(methods & INGEST)
+			exposed_mob.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
+			return
+		if(methods & INJECT)
+			exposed_mob.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
+			return
+		exposed_mob.acid_act(acidpwr, reac_volume, affect_clothing = (methods & TOUCH), affect_body = (methods & INJECT|INGEST))
+	else
+		if(methods & TOUCH)
+			// Body is handled by affect_touch()
+			exposed_mob.acid_act(acidpwr, reac_volume, affect_body = FALSE)
+		spawn(-1)
+			exposed_mob.emote("scream")
 
 /datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

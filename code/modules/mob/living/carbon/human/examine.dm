@@ -203,7 +203,9 @@
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
 		msg += "[t_He] [t_is] covered in something flammable.\n"
-	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
+	if(locate(/datum/reagent/toxin/acid) in touching?.reagent_list)
+		msg += span_warning("[t_He] is covered in burning acid! \n")
+	else if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks) || length(touching?.reagent_list))
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 

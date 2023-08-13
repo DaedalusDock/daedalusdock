@@ -438,7 +438,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			continue
 		//Load a persons preferences from DNA
 		var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
-		new_organ.Insert(C)
+		new_organ.Insert(C, FALSE, FALSE)
 
 /**
  * Proc called when a carbon becomes this species.

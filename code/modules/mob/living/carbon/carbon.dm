@@ -843,6 +843,11 @@
 /mob/living/carbon/fully_heal(admin_revive = FALSE)
 	if(reagents)
 		reagents.clear_reagents()
+	if(touching)
+		touching.clear_reagents()
+	if(bloodstream)
+		bloodstream.clear_reagents()
+
 	if(mind)
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
@@ -861,6 +866,8 @@
 		QDEL_NULL(legcuffed)
 		set_handcuffed(null)
 		update_handcuffed()
+		client?.prefs?.apply_prefs_to(src)
+
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 	exit_stamina_stun()
 	..()

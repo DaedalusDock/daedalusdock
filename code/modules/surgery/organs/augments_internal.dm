@@ -143,11 +143,11 @@
 	. = ..()
 	if((organ_flags & (ORGAN_FAILING|ORGAN_CUT_AWAY)) || . & EMP_PROTECT_SELF)
 		return
-	organ_flags |= ORGAN_FAILING
+	set_organ_failing(TRUE)
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
-	organ_flags &= ~ORGAN_FAILING
+	set_organ_failing(FALSE)
 
 //[[[[MOUTH]]]]
 /obj/item/organ/cyberimp/mouth

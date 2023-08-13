@@ -341,9 +341,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
 /obj/item/organ/proc/check_failing_thresholds()
 	if(damage >= maxHealth)
+		set_organ_failing(TRUE)
+	else if(damage < maxHealth)
+		set_organ_failing(FALSE)
+
+/// Set or unset the organ as failing. Returns TRUE on success.
+/obj/item/organ/proc/set_organ_failing(failing)
+	if(failing)
+		if(organ_flags & ORGAN_FAILING)
+			return FALSE
 		organ_flags |= ORGAN_FAILING
-	if(damage < maxHealth)
-		organ_flags &= ~ORGAN_FAILING
+		return TRUE
+	else
+		if(organ_flags & ORGAN_FAILING)
+			organ_flags &= ~ORGAN_FAILING
+			return TRUE
 
 //Looking for brains?
 //Try code/modules/mob/living/carbon/brain/brain_item.dm

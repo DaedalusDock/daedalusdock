@@ -49,8 +49,20 @@
 	reagents.my_atom = reciever
 
 /obj/item/organ/stomach/Remove(mob/living/carbon/stomach_owner, special)
-	. = ..()
 	reagents.my_atom = src
+	reagents.end_metabolization(stomach_owner)
+	if(ishuman(stomach_owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.clear_alert(ALERT_DISGUST)
+		human_owner.clear_alert(ALERT_NUTRITION)
+	return ..()
+
+/obj/item/organ/stomach/set_organ_failing(failing)
+	if(!.)
+		return
+
+	if(organ_flags & ORGAN_FAILING && owner)
+		reagents.end_metabolization(owner)
 
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
 	. = ..()
@@ -257,14 +269,6 @@
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/verygross)
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/disgusted)
-
-/obj/item/organ/stomach/Remove(mob/living/carbon/stomach_owner, special = 0)
-	if(ishuman(stomach_owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.clear_alert(ALERT_DISGUST)
-		human_owner.clear_alert(ALERT_NUTRITION)
-
-	return ..()
 
 /obj/item/organ/stomach/bone
 	desc = "You have no idea what this strange ball of bones does."

@@ -1950,6 +1950,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			add_to_dead_mob_list()
 
 
+/mob/living/carbon/set_stat(new_stat)
+	. = ..()
+
+	switch(stat) //Current stat
+		if(DEAD)
+			bloodstream.end_metabolization(src)
+			var/datum/reagents/R = get_ingested_reagents()
+			if(R)
+				R.end_metabolization(src)
+
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
 	if(new_buckled == buckled)

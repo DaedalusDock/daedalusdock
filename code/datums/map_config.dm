@@ -17,6 +17,7 @@
 	var/map_name = "Meta Station"
 	var/map_path = "map_files/MetaStation"
 	var/map_file = "MetaStation.dmm"
+	var/webmap_id = "DaedalusMeta"
 
 	var/traits = null
 	var/space_ruin_levels = 7
@@ -132,6 +133,10 @@
 	else
 		log_world("map_file missing from json!")
 		return
+
+	webmap_id = json["webmap_id"]
+	if(!webmap_id)
+		log_mapping("Map is missing a webmap ID.")
 
 	if (islist(json["shuttles"]))
 		var/list/L = json["shuttles"]

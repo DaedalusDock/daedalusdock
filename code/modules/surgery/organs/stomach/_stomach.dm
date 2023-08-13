@@ -27,10 +27,6 @@
 	///The rate that disgust decays
 	var/disgust_metabolism = 1
 
-	///The rate that the stomach will transfer reagents to the body
-	var/metabolism_efficiency = 0.05 // the lowest we should go is 0.05
-
-
 /obj/item/organ/stomach/Initialize(mapload)
 	. = ..()
 	//None edible organs do not get a reagent holder by default
@@ -242,7 +238,6 @@
 
 /obj/item/organ/stomach/bone
 	desc = "You have no idea what this strange ball of bones does."
-	metabolism_efficiency = 0.025 //very bad
 	/// How much [BRUTE] damage milk heals every second
 	var/milk_brute_healing = 2.5
 	/// How much [BURN] damage milk heals every second
@@ -266,7 +261,6 @@
 	name = "digestive crystal"
 	icon_state = "stomach-p"
 	desc = "A strange crystal that is responsible for metabolizing the unseen energy force that feeds plasmamen."
-	metabolism_efficiency = 0.06
 	milk_burn_healing = 0
 
 /obj/item/organ/stomach/cybernetic
@@ -276,7 +270,6 @@
 	organ_flags = ORGAN_SYNTHETIC
 	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
-	metabolism_efficiency = 0.35 // not as good at digestion
 
 /obj/item/organ/stomach/cybernetic/tier2
 	name = "cybernetic stomach"
@@ -285,7 +278,6 @@
 	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
 	disgust_metabolism = 2
 	emp_vulnerability = 40
-	metabolism_efficiency = 0.07
 
 /obj/item/organ/stomach/cybernetic/tier3
 	name = "upgraded cybernetic stomach"
@@ -294,7 +286,6 @@
 	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
 	disgust_metabolism = 3
 	emp_vulnerability = 20
-	metabolism_efficiency = 0.1
 
 /obj/item/organ/stomach/cybernetic/emp_act(severity)
 	. = ..()

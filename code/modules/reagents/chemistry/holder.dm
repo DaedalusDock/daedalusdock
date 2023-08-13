@@ -1244,8 +1244,8 @@
 
 /// Get a reference to the reagent if it exists
 /datum/reagents/proc/get_reagent(type)
-	var/list/cached_reagents = reagent_list
-	. = locate(type) in cached_reagents
+	RETURN_TYPE(/datum/reagent)
+	. = locate(type) in reagent_list
 
 /**
  * Returns what this holder's reagents taste like

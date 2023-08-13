@@ -2347,4 +2347,5 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		to_chat(gunpoint.target, "<span class='[use_span]'>You are [message].</span>")
 
 /mob/living/proc/get_ingested_reagents()
+	RETURN_TYPE(/datum/reagents)
 	return reagents

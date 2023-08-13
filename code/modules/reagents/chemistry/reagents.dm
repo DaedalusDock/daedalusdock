@@ -177,7 +177,9 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	holder.trans_id_to(C.bloodstream, src, ingest_met, TRUE)
+	// Annoys the living hell out of me, but this ensures nothing outright breaks and causes
+	// constant metabolism start/stop.
+	holder.trans_id_to(C.bloodstream, src, max(ingest_met, metabolization_rate + 0.01), TRUE)
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)

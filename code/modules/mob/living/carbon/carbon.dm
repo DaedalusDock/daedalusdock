@@ -1414,4 +1414,5 @@
 	visible_message(span_warning("[src] slams into [highest] from above!"))
 
 /mob/living/carbon/get_ingested_reagents()
+	RETURN_TYPE(/datum/reagents)
 	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents

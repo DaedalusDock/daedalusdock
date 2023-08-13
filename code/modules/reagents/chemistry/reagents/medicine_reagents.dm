@@ -951,13 +951,14 @@
 	reagent_state = LIQUID
 	color = "#19C832"
 	metabolization_rate = 0.4
+	ingest_met = 0.4
 	taste_description = "acid"
 
 
 /datum/reagent/medicine/ipecac/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(15))
 		C.vomit(harm = FALSE, force = TRUE, purge_ratio = (rand(15, 30)/100))
+	return ..()
 
 /datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(5 * removed, 0)

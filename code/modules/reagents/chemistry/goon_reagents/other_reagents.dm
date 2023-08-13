@@ -258,7 +258,6 @@
 		)
 
 /datum/reagent/ants/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjustBruteLoss(max(0.1, round((ant_damage * 0.025),0.1)), FALSE) //Scales with time. Roughly 32 brute with 100u.
 	ant_damage++
 	if(ant_damage < 5) // Makes ant food a little more appetizing, since you won't be screaming as much.
@@ -272,7 +271,8 @@
 			C.emote("scream")
 	if(prob(5)) // Stuns, but purges ants.
 		C.vomit(rand(5,10), FALSE, TRUE, 1, TRUE, FALSE, purge_ratio = 1)
-	return TRUE
+	. = TRUE
+	..()
 
 /datum/reagent/ants/affect_touch(mob/living/carbon/C, removed)
 	return affect_ingest(C, removed)

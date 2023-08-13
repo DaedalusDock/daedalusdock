@@ -54,7 +54,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	///how fast the reagent is metabolized by the mob
 	var/metabolization_rate = 0.2
 	/// How fast the reagent metabolizes on touch
-	var/touch_met = 0
+	var/touch_met = 0.01
 	/// How fast the reagent metabolizes when ingested. NOTE: Due to how reagents are coded, if you have an on_metabolize() for blood, this MUST be greater than metabolization_rate.
 	var/ingest_met = 1
 
@@ -173,6 +173,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
+/// Ingestion process. Call parent *after* your override's body, as holder can go null as a result of trans_id_to.
 /datum/reagent/proc/affect_ingest(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
@@ -181,6 +182,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	// constant metabolism start/stop.
 	holder.trans_id_to(C.bloodstream, src, max(ingest_met, metabolization_rate + 0.01), TRUE)
 
+/// Touch process. Don't get covered in acid, now!
 /datum/reagent/proc/affect_touch(mob/living/carbon/C, removed)
 	SHOULD_NOT_SLEEP(TRUE)
 	return

@@ -21,8 +21,8 @@
 	ingest_met = metabolization_rate
 
 /datum/reagent/consumable/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_nutrition(nutriment_factor * removed)
+	return ..()
 
 /datum/reagent/consumable/on_mob_metabolize(mob/living/carbon/C, class)
 	if(!(class == CHEM_INGEST) || HAS_TRAIT(C, TRAIT_AGEUSIA))
@@ -47,10 +47,10 @@
 		mytray.adjust_plant_health(round(chems.get_reagent_amount(type) * 0.2))
 
 /datum/reagent/consumable/nutriment/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(60))
 		C.heal_bodypart_damage(brute = brute_heal * removed, burn = burn_heal * removed)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/nutriment/on_new(list/supplied_data)
 	. = ..()
@@ -102,9 +102,9 @@
 	burn_heal = 1
 
 /datum/reagent/consumable/nutriment/vitamin/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.satiety < 600)
 		C.satiety += 10 * removed
+	return ..()
 
 /datum/reagent/consumable/nutriment/vitamin/affect_blood(mob/living/carbon/C, removed)
 	if(C.satiety < 600)
@@ -252,7 +252,6 @@
 
 
 /datum/reagent/consumable/capsaicin/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/heating = 0
 	switch(current_cycle)
 		if(1 to 15)
@@ -272,6 +271,7 @@
 			if(isslime(C))
 				heating = rand(20, 25)
 	C.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
+	return ..()
 
 /datum/reagent/consumable/frostoil
 	name = "Frost Oil"
@@ -283,7 +283,6 @@
 	specific_heat = 40
 
 /datum/reagent/consumable/frostoil/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/cooling = 0
 	switch(current_cycle)
 		if(1 to 15)
@@ -302,6 +301,7 @@
 			if(prob(5))
 				C.emote("shiver")
 	C.adjust_bodytemperature(cooling * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 50)
+	return ..()
 
 /datum/reagent/consumable/frostoil/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -352,10 +352,10 @@
 		victim.update_damage_hud()
 
 /datum/reagent/consumable/condensedcapsaicin/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(!holder.has_reagent(/datum/reagent/consumable/milk))
 		if(prob(10))
 			C.visible_message(span_warning("[C] [pick("dry heaves!","coughs!","splutters!")]"))
+	return ..()
 
 /datum/reagent/consumable/salt
 	name = "Sodium Chloride"
@@ -426,11 +426,11 @@
 
 
 /datum/reagent/consumable/sprinkles/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		C.heal_bodypart_damage(1 * removed, 1 * removed, updating_health = FALSE)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/cornoil
 	name = "Corn Oil"
@@ -485,8 +485,8 @@
 
 
 /datum/reagent/consumable/hot_ramen/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/hell_ramen
 	name = "Hell Ramen"
@@ -497,8 +497,8 @@
 
 
 /datum/reagent/consumable/hell_ramen/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
+	return ..()
 
 /datum/reagent/consumable/flour
 	name = "Flour"
@@ -580,8 +580,8 @@
 
 
 /datum/reagent/consumable/corn_syrup/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)
+	return ..()
 
 /datum/reagent/consumable/honey
 	name = "Honey"
@@ -602,7 +602,6 @@
 			mytray.adjust_pestlevel(rand(1,2))
 
 /datum/reagent/consumable/honey/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)
 	if(prob(33))
 		var/heal = -1 * removed
@@ -610,7 +609,8 @@
 		C.adjustFireLoss(heal, 0)
 		C.adjustOxyLoss(heal, 0)
 		C.adjustToxLoss(heal, 0)
-		return TRUE
+		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"
@@ -654,12 +654,13 @@
 		exposed_mob.blur_eyes(5)
 
 /datum/reagent/consumable/tearjuice/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.eye_blurry) //Don't worsen vision if it was otherwise fine
 		C.blur_eyes(4 * removed)
 		if(prob(10))
 			to_chat(C, span_warning("Your eyes sting!"))
 			C.blind_eyes(2)
+
+	return ..()
 
 /datum/reagent/consumable/nutriment/stabilized
 	name = "Stabilized Nutriment"
@@ -670,9 +671,9 @@
 
 
 /datum/reagent/consumable/nutriment/stabilized/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.nutrition > NUTRITION_LEVEL_FULL - 25)
 		C.adjust_nutrition(-3 * nutriment_factor * removed)
+	return ..()
 
 ////Lavaland Flora Reagents////
 
@@ -685,7 +686,6 @@
 
 
 /datum/reagent/consumable/entpoly/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(current_cycle >= 10)
 		C.Unconscious(40 * removed, FALSE)
 	if(prob(10))
@@ -695,6 +695,7 @@
 		C.stamina.adjust(-10 * removed)
 		C.blur_eyes(5)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/vitfro
 	name = "Vitrium Froth"
@@ -705,11 +706,11 @@
 
 
 /datum/reagent/consumable/vitfro/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(55))
 		C.adjustBruteLoss(-1 * removed, 0)
 		C.adjustFireLoss(-1 * removed, 0)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/clownstears
 	name = "Clown's Tears"
@@ -901,9 +902,9 @@
 
 
 /datum/reagent/consumable/peanut_butter/affect_ingest(mob/living/carbon/C, removed) //ET loves peanut butter
-	. = ..()
 	if(isabductor(C))
 		C.set_timed_status_effect(30 SECONDS * removed, /datum/status_effect/drugginess, only_if_higher = TRUE)
+	return ..()
 
 /datum/reagent/consumable/vinegar
 	name = "Vinegar"

@@ -52,7 +52,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
 		var/booze_power = boozepwr
 		if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker
@@ -92,6 +91,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.bodytemperature = min(targ_temp, C.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
 	if(adj_temp < 0 && C.bodytemperature > targ_temp)
 		C.bodytemperature = min(targ_temp, C.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
+
+	..()
 
 /datum/reagent/consumable/ethanol/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
@@ -172,9 +173,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
 
 /datum/reagent/consumable/ethanol/beer/green/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.color != color)
 		C.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
+	return ..()
 
 /datum/reagent/consumable/ethanol/beer/green/affect_touch(mob/living/carbon/C, removed)
 	if(C.color != color)
@@ -197,13 +198,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/kahlua/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	C.adjust_drowsyness(-3 * removed)
 	C.AdjustSleeping(-40 * removed)
 	if(!HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		C.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
-
+	return ..()
 
 /datum/reagent/consumable/ethanol/whiskey
 	name = "Whiskey"
@@ -239,10 +239,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/whiskey/candycorn/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(10))
 		C.hallucination += hal_amt //conscious dreamers can be treasurers to their own currency
-
+	return ..()
 /datum/reagent/consumable/ethanol/vodka
 	name = "Vodka"
 	description = "Number one drink AND fueling choice for Russians worldwide."
@@ -280,8 +279,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/threemileisland/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(100 SECONDS * removed, /datum/status_effect/drugginess)
+	return ..()
 
 /datum/reagent/consumable/ethanol/gin
 	name = "Gin"
@@ -418,9 +417,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/absinthe/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(10) && !HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		C.hallucination += 4 //Reference to the urban myth
+	return ..()
 
 /datum/reagent/consumable/ethanol/hooch
 	name = "Hooch"
@@ -511,13 +510,13 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/cuba_libre/affect_ingest(mob/living/carbon/cubano, removed)
-	. = ..()
 	if(cubano.mind && cubano.mind.has_antag_datum(/datum/antagonist/rev)) //Cuba Libre, the traditional drink of revolutions! Heals revolutionaries.
 		cubano.adjustBruteLoss(-0.25 * removed, 0)
 		cubano.adjustFireLoss(-0.25 * removed, 0)
 		cubano.adjustToxLoss(-0.25 * removed, 0)
 		cubano.adjustOxyLoss(-1 * removed, 0)
 		. = TRUE
+	return ..() || .
 /datum/reagent/consumable/ethanol/whiskey_cola
 	name = "Whiskey Cola"
 	description = "Whiskey, mixed with cola. Surprisingly refreshing."
@@ -587,7 +586,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		ADD_TRAIT(C, TRAIT_HALT_RADIATION_EFFECTS, CHEM_TRAIT_SOURCE(CHEM_INGEST))
 		if (HAS_TRAIT(C, TRAIT_IRRADIATED))
 			C.adjustToxLoss(-2 * removed, FALSE)
-			return TRUE
+			. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
@@ -652,8 +652,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/toxins_special/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(15 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
+	return ..()
 
 /datum/reagent/consumable/ethanol/beepsky_smash
 	name = "Beepsky Smash"
@@ -691,7 +691,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			new /datum/hallucination/items_other(C)
 		if(prob(10))
 			new /datum/hallucination/stray_bullet(C)
-	return TRUE
+	. = TRUE
+	..()
 
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_INGEST)
@@ -847,8 +848,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/manhattan_proj/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(1 MINUTES * removed, /datum/status_effect/drugginess)
+	return ..()
 
 /datum/reagent/consumable/ethanol/whiskeysoda
 	name = "Whiskey Soda"
@@ -875,8 +876,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/antifreeze/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
+	return ..()
 
 /datum/reagent/consumable/ethanol/barefoot
 	name = "Barefoot"
@@ -1050,8 +1051,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sbiten/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
+	return ..()
 
 /datum/reagent/consumable/ethanol/red_mead
 	name = "Red Mead"
@@ -1090,8 +1091,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/iced_beer/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, T0C) //310.15 is the normal bodytemp.
+	return ..()
 
 /datum/reagent/consumable/ethanol/grog
 	name = "Grog"
@@ -1193,9 +1194,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/syndicatebomb/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(5))
 		playsound(get_turf(C), 'sound/effects/explosionfar.ogg', 100, TRUE)
+	return ..()
 
 /datum/reagent/consumable/ethanol/hiveminderaser
 	name = "Hivemind Eraser"
@@ -1248,11 +1249,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/bananahonk/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || ismonkey(C))
 		C.heal_overall_damage(0.25 * removed, 0.25 * removed, FALSE)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/silencer
 	name = "Silencer"
@@ -1268,10 +1269,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/silencer/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(ishuman(C) && C.mind?.miming)
 		C.silent = max(C.silent, MIMEDRINK_SILENCE_DURATION)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/drunkenblumpkin
 	name = "Drunken Blumpkin"
@@ -1325,9 +1326,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/fetching_fizz/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	for(var/obj/item/stack/ore/O in oview(3, C))
 		step_towards(O, get_turf(C))
+	return ..()
 
 /datum/reagent/consumable/ethanol/bacchus_blessing //An EXTREMELY powerful drink. Smashed in seconds, dead in minutes.
 	name = "Bacchus' Blessing"
@@ -1356,7 +1357,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_price = DRINK_PRICE_HIGH
 
 /datum/reagent/consumable/ethanol/atomicbomb/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(100 SECONDS * removed, /datum/status_effect/drugginess)
 	if(!HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/confusion)
@@ -1371,6 +1371,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			C.adjustToxLoss(2 * removed, 0)
 			. = TRUE
 
+	return ..() || .
+
 /datum/reagent/consumable/ethanol/gargle_blaster
 	name = "Pan-Galactic Gargle Blaster"
 	description = "Whoah, this stuff looks volatile!"
@@ -1384,7 +1386,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/gargle_blaster/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(3 SECONDS * removed, /datum/status_effect/dizziness)
 	switch(current_cycle)
 		if(15 to 45)
@@ -1398,6 +1399,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		if(200 to INFINITY)
 			C.adjustToxLoss(2 * removed, 0)
 			. = TRUE
+
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/neurotoxin
 	name = "Neurotoxin"
@@ -1415,10 +1418,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return (pick(TRAIT_PARALYSIS_L_ARM,TRAIT_PARALYSIS_R_ARM,TRAIT_PARALYSIS_R_LEG,TRAIT_PARALYSIS_L_LEG))
 
 /datum/reagent/consumable/ethanol/neurotoxin/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
-	affect_blood(C, removed*0.5)
-
-/datum/reagent/consumable/ethanol/neurotoxin/affect_blood(mob/living/carbon/C, removed)
 	C.set_timed_status_effect(100 SECONDS * removed, /datum/status_effect/drugginess)
 	C.adjust_timed_status_effect(4 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed, 150)
@@ -1439,6 +1438,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 					if(C.stat == CONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest as if [C.p_their()] heart stopped!"))
 	. = TRUE
+	..()
 
 /datum/reagent/consumable/ethanol/neurotoxin/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_INGEST)
@@ -1465,7 +1465,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/hippies_delight/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(1 SECONDS * removed, /datum/status_effect/speech/slurring/drunk, only_if_higher = TRUE)
 
 	switch(current_cycle)
@@ -1501,6 +1500,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 				C.adjustToxLoss(2 * removed, 0)
 				. = TRUE
 
+	return ..() || .
 /datum/reagent/consumable/ethanol/eggnog
 	name = "Eggnog"
 	description = "For enjoying the most wonderful time of the year."
@@ -1528,9 +1528,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/narsour/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(6 SECONDS * removed, /datum/status_effect/speech/slurring/cult, max_duration = 6 SECONDS)
 	C.adjust_timed_status_effect(6 SECONDS * removed, /datum/status_effect/speech/stutter, max_duration = 6 SECONDS)
+	return ..()
 
 /datum/reagent/consumable/ethanol/triple_sec
 	name = "Triple Sec"
@@ -1589,12 +1589,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/quadruple_sec/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		C.heal_bodypart_damage(0.75 * removed, 0.75 * removed, FALSE)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/quintuple_sec
 	name = "Quintuple Sec"
@@ -1609,13 +1609,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/quintuple_sec/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes but STRONG..
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		C.heal_bodypart_damage(1 * removed, 1 * removed, FALSE)
 		. = TRUE
-
+	return ..() || .
 /datum/reagent/consumable/ethanol/grasshopper
 	name = "Grasshopper"
 	description = "A fresh and sweet dessert shooter. Difficult to look manly while drinking this."
@@ -1654,8 +1653,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/squirt_cider/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.satiety += 5 * removed //for context, vitamins give 15 satiety per second
+	return ..()
 
 /datum/reagent/consumable/ethanol/fringe_weaver
 	name = "Fringe Weaver"
@@ -1683,9 +1682,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sugar_rush/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.satiety -= 10 * removed //junky as hell! a whole glass will keep you from being able to eat junk food
-
+	return ..()
 /datum/reagent/consumable/ethanol/crevice_spike
 	name = "Crevice Spike"
 	description = "Sour, bitter, and smashingly sobering."
@@ -1728,9 +1726,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/peppermint_patty/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.apply_status_effect(/datum/status_effect/throat_soothed)
 	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/ethanol/amaretto_alexander
 	name = "Amaretto Alexander"
@@ -1771,7 +1769,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/ethanol/between_the_sheets/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/is_between_the_sheets = !!(locate(/obj/item/bedsheet/) in get_turf(C))
 	if(!C.IsSleeping() || !is_between_the_sheets)
 		return
@@ -1786,7 +1783,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	else if(C.getFireLoss())
 		C.adjustFireLoss(-0.2 * removed, FALSE)
 
-	return TRUE
+	return ..() || TRUE
 /datum/reagent/consumable/ethanol/kamikaze
 	name = "Kamikaze"
 	description = "Divinely windy."
@@ -1835,14 +1832,13 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/fernet/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.nutrition <= NUTRITION_LEVEL_STARVING)
 		C.adjustToxLoss(1 * removed, 0)
-		return TRUE
+		. = TRUE
 
 	C.adjust_nutrition(-5 * removed)
 	C.overeatduration = 0
-
+	return ..() || .
 /datum/reagent/consumable/ethanol/fernet_cola
 	name = "Fernet Cola"
 	description = "A very popular and bittersweet digestif, ideal after a heavy meal. Best served on a sawed-off cola bottle as per tradition."
@@ -1856,11 +1852,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/fernet_cola/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.nutrition <= NUTRITION_LEVEL_STARVING)
 		C.adjustToxLoss(0.5 * removed, 0)
 	C.adjust_nutrition(-3 * removed)
 	C.overeatduration = 0
+	return ..()
 
 /datum/reagent/consumable/ethanol/fanciulli
 	name = "Fanciulli"
@@ -1876,9 +1872,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_price = DRINK_PRICE_HIGH
 
 /datum/reagent/consumable/ethanol/fanciulli/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_nutrition(-5 * removed)
 	C.overeatduration = 0
+	return ..()
 
 /datum/reagent/consumable/ethanol/fanciulli/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
@@ -1899,8 +1895,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_price = DRINK_PRICE_MEDIUM
 
 /datum/reagent/consumable/ethanol/branca_menta/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-20 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, T0C)
+	return ..()
 
 /datum/reagent/consumable/ethanol/branca_menta/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_INGEST)
@@ -1921,12 +1917,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/blank_paper/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(ishuman(C) && C.mind?.miming)
 		C.silent = max(C.silent, MIMEDRINK_SILENCE_DURATION)
 		C.heal_bodypart_damage(0.5 * removed, 0.5 * removed)
 		. = TRUE
-
+	return ..() || .
 /datum/reagent/consumable/ethanol/fruit_wine
 	name = "Fruit Wine"
 	description = "A wine made from grown plants."
@@ -2060,14 +2055,13 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/wizz_fizz/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	//A healing drink similar to Quadruple Sec, Ling Stings, and Screwdrivers for the Wizznerds; the check is consistent with the changeling sting
 	if(C?.mind?.has_antag_datum(/datum/antagonist/wizard))
 		C.heal_bodypart_damage(1 * removed, 1 * removed, 1 * removed)
 		C.adjustOxyLoss(-1 * removed, 0)
 		C.adjustToxLoss(-1 * removed, 0)
-		return TRUE
-
+		. = TRUE
+	return ..() || .
 /datum/reagent/consumable/ethanol/bug_spray
 	name = "Bug Spray"
 	description = "A harsh, acrid, bitter drink, for those who need something to brace themselves."
@@ -2081,11 +2075,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/bug_spray/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	//Bugs should not drink Bug spray.
 	if(ismoth(C) || isflyperson(C))
 		C.adjustToxLoss(1 * removed, 0)
-		return TRUE
+		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/bug_spray/affect_touch(mob/living/carbon/C, removed)
 	//Bugs should not drink Bug spray.
@@ -2140,10 +2134,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/turbo/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(prob(4))
 		to_chat(C, span_notice("[pick("You feel disregard for the rule of law.", "You feel pumped!", "Your head is pounding.", "Your thoughts are racing..")]"))
 	C.stamina.adjust(0.25 * C.get_drunk_amount() * removed)
+	return ..()
 
 /datum/reagent/consumable/ethanol/old_timer
 	name = "Old Timer"
@@ -2155,11 +2149,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_icon_state = "old_timer"
 	glass_name = "Old Timer"
 	glass_desc = "WARNING! May cause premature aging!"
-
-
-/datum/reagent/consumable/ethanol/old_timer/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
-	affect_blood(C, removed)
 
 /datum/reagent/consumable/ethanol/old_timer/affect_blood(mob/living/carbon/human/metabolizer, removed)
 	if(prob(10))
@@ -2268,12 +2257,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	ingest_met = 1
 
 /datum/reagent/consumable/ethanol/mauna_loa/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	// Heats the user up while the reagent is in the body. Occasionally makes you burst into flames.
 	C.adjust_bodytemperature(25 * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 	if (prob(5))
 		C.adjust_fire_stacks(1)
 		C.ignite_mob()
+	return ..()
 
 /datum/reagent/consumable/ethanol/painkiller
 	name = "Painkiller"
@@ -2311,8 +2300,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/pruno/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_disgust(5 * removed)
+	return ..()
 
 /datum/reagent/consumable/ethanol/ginger_amaretto
 	name = "Ginger Amaretto"
@@ -2364,10 +2353,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/kortara/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.getBruteLoss() && prob(10))
 		C.heal_bodypart_damage(0.5 * removed, 0, 0)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/ethanol/sea_breeze
 	name = "Sea Breeze"
@@ -2382,9 +2371,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sea_breeze/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.apply_status_effect(/datum/status_effect/throat_soothed)
-
+	return ..()
 /datum/reagent/consumable/ethanol/white_tiziran
 	name = "White Tiziran"
 	description = "A mix of vodka and kortara. The Lizard imbibes."
@@ -2434,12 +2422,12 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		C.adjust_disgust(2 * removed)
 
 /datum/reagent/consumable/ethanol/protein_blend/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_nutrition(2 * removed)
 	if(!islizard(C))
 		C.adjust_disgust(5 * removed)
 	else
 		C.adjust_disgust(2 * removed)
+	return ..()
 
 /datum/reagent/consumable/ethanol/mushi_kombucha
 	name = "Mushi Kombucha"
@@ -2660,6 +2648,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/helianthus/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.hallucination < hal_cap && prob(5))
 		C.hallucination += hal_amt * removed
+	return ..()

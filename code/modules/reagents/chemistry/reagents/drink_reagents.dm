@@ -214,13 +214,14 @@
 			myseed.adjust_potency(-chems.get_reagent_amount(type) * 0.5)
 
 /datum/reagent/consumable/milk/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.getBruteLoss() && prob(20))
 		C.heal_bodypart_damage(1 * removed,0, 0)
 		. = TRUE
 
 	if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
 		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 1 * removed)
+
+	return ..() || .
 
 /datum/reagent/consumable/soymilk
 	name = "Soy Milk"
@@ -233,11 +234,11 @@
 
 
 /datum/reagent/consumable/soymilk/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.getBruteLoss() && prob(10))
 		C.heal_bodypart_damage(0.5, 0, 0)
 		. = TRUE
 
+	return ..() || .
 /datum/reagent/consumable/cream
 	name = "Cream"
 	description = "The fatty, still liquid part of milk. Why don't you mix this with sum scotch, eh?"
@@ -249,10 +250,10 @@
 
 
 /datum/reagent/consumable/cream/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.getBruteLoss() && prob(20))
 		C.heal_bodypart_damage(0.5 * removed, 0, 0)
 		. = TRUE
+	return ..() || .
 
 /datum/reagent/consumable/coffee
 	name = "Coffee"
@@ -271,7 +272,6 @@
 	C.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 
 /datum/reagent/consumable/coffee/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.AdjustSleeping(-40 * removed)
@@ -279,7 +279,7 @@
 	C.adjust_bodytemperature(25 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	if(holder.has_reagent(/datum/reagent/consumable/frostoil))
 		holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * removed)
-	. = TRUE
+	return ..() || TRUE
 
 /datum/reagent/consumable/tea
 	name = "Tea"
@@ -294,7 +294,6 @@
 	glass_price = DRINK_PRICE_STOCK
 
 /datum/reagent/consumable/tea/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-4 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-1 * removed)
 	C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
@@ -303,6 +302,7 @@
 		C.adjustToxLoss(-1, 0)
 		. = TRUE
 	C.adjust_bodytemperature(20  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
+	return ..() || .
 
 /datum/reagent/consumable/lemonade
 	name = "Lemonade"
@@ -344,12 +344,12 @@
 
 
 /datum/reagent/consumable/icecoffee/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.AdjustSleeping(-40 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	return ..()
 
 /datum/reagent/consumable/icetea
 	name = "Iced Tea"
@@ -382,9 +382,9 @@
 
 
 /datum/reagent/consumable/space_cola/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_drowsyness(-5 * removed)
 	C.adjust_bodytemperature(-5 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/roy_rogers
 	name = "Roy Rogers"
@@ -423,13 +423,13 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
 
 /datum/reagent/consumable/nuka_cola/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(40 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	C.set_timed_status_effect(1 MINUTES * removed, /datum/status_effect/drugginess)
 	C.adjust_timed_status_effect(3 SECONDS * removed, /datum/status_effect/dizziness)
 	C.set_drowsyness(0)
 	C.AdjustSleeping(-40 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/rootbeer
 	name = "root beer"
@@ -458,7 +458,6 @@
 		C.adjust_drowsyness(current_cycle)
 
 /datum/reagent/consumable/rootbeer/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(current_cycle >= 3 && !effect_enabled) // takes a few seconds for the bonus to kick in to prevent microdosing
 		to_chat(C, span_notice("You feel your trigger finger getting itchy..."))
 		ADD_TRAIT(C, TRAIT_DOUBLE_TAP, type)
@@ -469,7 +468,7 @@
 		C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
 	if(current_cycle > 10)
 		C.adjust_timed_status_effect(3 SECONDS * removed, /datum/status_effect/dizziness)
-
+	return..()
 
 /datum/reagent/consumable/grey_bull
 	name = "Grey Bull"
@@ -483,20 +482,18 @@
 
 
 /datum/reagent/consumable/grey_bull/on_mob_metabolize(mob/living/carbon/C, class)
-	..()
-	ADD_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
+	ADD_TRAIT(C, TRAIT_SHOCKIMMUNE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/grey_bull/on_mob_end_metabolize(mob/living/carbon/C, class)
-	REMOVE_TRAIT(C, TRAIT_SHOCKIMMUNE, type)
-	..()
+	REMOVE_TRAIT(C, TRAIT_SHOCKIMMUNE, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/grey_bull/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(40 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
 	C.set_drowsyness(0)
 	C.AdjustSleeping(-40 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/spacemountainwind
 	name = "SM Wind"
@@ -509,11 +506,11 @@
 
 
 /datum/reagent/consumable/spacemountainwind/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_drowsyness(-7 * removed)
 	C.AdjustSleeping(-20 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	return ..()
 
 /datum/reagent/consumable/dr_gibb
 	name = "Dr. Gibb"
@@ -526,9 +523,9 @@
 
 
 /datum/reagent/consumable/dr_gibb/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_drowsyness(-6 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 /datum/reagent/consumable/space_up
 	name = "Space-Up"
 	description = "Tastes like a hull breach in your mouth."
@@ -541,8 +538,8 @@
 
 
 /datum/reagent/consumable/space_up/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-8 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/lemon_lime
 	name = "Lemon Lime"
@@ -555,8 +552,8 @@
 
 
 /datum/reagent/consumable/lemon_lime/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-8 * removed * TEMPERATURE_DAMAGE_COEFFICIENT, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/shamblers
 	name = "Shambler's Juice"
@@ -569,8 +566,8 @@
 
 
 /datum/reagent/consumable/shamblers/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/sodawater
 	name = "Soda Water"
@@ -592,10 +589,10 @@
 		mytray.adjust_plant_health(round(chems.get_reagent_amount(type) * 0.1))
 
 /datum/reagent/consumable/sodawater/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/tonic
 	name = "Tonic Water"
@@ -608,11 +605,11 @@
 
 
 /datum/reagent/consumable/tonic/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.AdjustSleeping(-40 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/monkey_energy
 	name = "Monkey Energy"
@@ -626,12 +623,12 @@
 
 
 /datum/reagent/consumable/monkey_energy/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.set_timed_status_effect(80 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
 	C.adjust_timed_status_effect(2 SECONDS * removed, /datum/status_effect/dizziness)
 	C.set_drowsyness(0)
 	C.AdjustSleeping(-40 * removed)
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/monkey_energy/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_TOUCH)
@@ -661,8 +658,8 @@
 
 
 /datum/reagent/consumable/ice/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-3  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/ice/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_bodytemperature(-3  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
@@ -682,14 +679,12 @@
 	glass_price = DRINK_PRICE_EASY
 
 /datum/reagent/consumable/soy_latte/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-3 * removed)
 	C.SetSleeping(0)
 	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
-	. = TRUE
-
+	return ..() || TRUE
 /datum/reagent/consumable/cafe_latte
 	name = "Cafe Latte"
 	description = "A nice, strong and tasty beverage while you are reading."
@@ -703,12 +698,12 @@
 	glass_price = DRINK_PRICE_EASY
 
 /datum/reagent/consumable/cafe_latte/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_timed_status_effect(-10 SECONDS * removed, /datum/status_effect/dizziness)
 	C.adjust_drowsyness(-6 * removed)
 	C.SetSleeping(0)
 	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	C.set_timed_status_effect(10 SECONDS * removed, /datum/status_effect/jitter, only_if_higher = TRUE)
+	return ..()
 
 /datum/reagent/consumable/doctor_delight
 	name = "The Doctor's Delight"
@@ -745,8 +740,8 @@
 
 
 /datum/reagent/consumable/cinderella/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_disgust(-5 * removed)
+	return ..()
 
 /datum/reagent/consumable/cherryshake
 	name = "Cherry Shake"
@@ -871,8 +866,8 @@
 
 
 /datum/reagent/consumable/grape_soda/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/milk/chocolate_milk
 	name = "Chocolate Milk"
@@ -894,13 +889,13 @@
 
 
 /datum/reagent/consumable/hot_coco/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
 	if(C.getBruteLoss() && prob(20))
 		C.heal_bodypart_damage(1, 0, 0)
 		. = TRUE
 	if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
 		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 2 * removed)
+	return ..() || .
 
 /datum/reagent/consumable/italian_coco
 	name = "Italian Hot Chocolate"
@@ -915,8 +910,8 @@
 
 
 /datum/reagent/consumable/italian_coco/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(5 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.get_body_temp_normal())
+	return ..()
 
 /datum/reagent/consumable/menthol
 	name = "Menthol"
@@ -929,8 +924,8 @@
 
 
 /datum/reagent/consumable/menthol/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.apply_status_effect(/datum/status_effect/throat_soothed)
+	return ..()
 
 /datum/reagent/consumable/grenadine
 	name = "Grenadine"
@@ -993,8 +988,8 @@
 
 
 /datum/reagent/consumable/sol_dry/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_disgust(-5 * removed)
+	return ..()
 
 /datum/reagent/consumable/shirley_temple
 	name = "Shirley Temple"
@@ -1008,8 +1003,8 @@
 
 
 /datum/reagent/consumable/shirley_temple/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_disgust(-3 * removed)
+	return ..()
 
 /datum/reagent/consumable/red_queen
 	name = "Red Queen"
@@ -1076,11 +1071,10 @@
 
 
 /datum/reagent/consumable/aloejuice/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(C.getToxLoss() && prob(25))
 		C.adjustToxLoss(-1, 0)
 		. = TRUE
-
+	return ..() || .
 /datum/reagent/consumable/agua_fresca
 	name = "Agua Fresca"
 	description = "A refreshing watermelon agua fresca. Perfect on a day at the holodeck."
@@ -1093,11 +1087,11 @@
 
 
 /datum/reagent/consumable/agua_fresca/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 	if(C.getToxLoss() && prob(20))
 		C.adjustToxLoss(-0.5, 0)
 		. = TRUE
+	return ..() || .
 
 
 /datum/reagent/consumable/mushroom_tea
@@ -1112,11 +1106,10 @@
 
 
 /datum/reagent/consumable/mushroom_tea/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	if(islizard(C))
 		C.adjustOxyLoss(-0.5 * removed, 0)
 		. = TRUE
-
+	return ..() || .
 
 //Moth Stuff
 /datum/reagent/consumable/toechtauese_juice

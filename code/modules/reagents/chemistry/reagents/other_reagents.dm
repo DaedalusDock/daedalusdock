@@ -377,9 +377,8 @@
 	color = pick(potential_colors)
 
 /datum/reagent/hair_dye/affect_ingest(mob/living/carbon/C, removed) //What the fuck is wrong with you
-	. = ..()
 	C.adjustToxLoss(2 * removed, FALSE)
-	return TRUE
+	return ..() || TRUE
 
 /datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
 	. = ..()
@@ -1039,8 +1038,8 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	return ..()
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
 	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)

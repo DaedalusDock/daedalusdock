@@ -37,7 +37,6 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/carbon/affect_ingest(mob/living/carbon/C, removed)
-	. = ..()
 	var/datum/reagents/ingested = C.get_ingested_reagents()
 	if (ingested && length(ingested.reagent_list) > 1) // Need to have at least 2 reagents - cabon and something to remove
 		var/effect = 1 / (length(ingested.reagent_list) - 1)
@@ -45,6 +44,7 @@
 			if(R == src)
 				continue
 			ingested.remove_reagent(R.type, removed * effect)
+	return ..()
 
 /datum/reagent/carbon/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()

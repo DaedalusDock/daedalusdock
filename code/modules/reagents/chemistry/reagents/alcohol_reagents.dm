@@ -180,7 +180,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(C.color != color)
 		C.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
 
-/datum/reagent/consumable/ethanol/beer/green/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/consumable/ethanol/beer/green/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
+		return
 	C.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, color)
 
 /datum/reagent/consumable/ethanol/kahlua
@@ -668,7 +670,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/datum/brain_trauma/special/beepsky/beepsky_hallucination
 
 
-/datum/reagent/consumable/ethanol/beepsky_smash/on_mob_metabolize(mob/living/carbon/C)
+/datum/reagent/consumable/ethanol/beepsky_smash/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
+		return
 	if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		metabolization_rate = 0.8
 	// if you don't have a liver, or your liver isn't an officer's liver
@@ -690,7 +694,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			new /datum/hallucination/stray_bullet(C)
 	return TRUE
 
-/datum/reagent/consumable/ethanol/beepsky_smash/on_mob_end_metabolize(mob/living/carbon/C)
+/datum/reagent/consumable/ethanol/beepsky_smash/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
+		return
 	if(beepsky_hallucination)
 		QDEL_NULL(beepsky_hallucination)
 
@@ -772,8 +778,9 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	glass_price = DRINK_PRICE_EASY
 
-/datum/reagent/consumable/ethanol/b52/on_mob_metabolize(mob/living/M)
-	playsound(M, 'sound/effects/explosion_distant.ogg', 100, FALSE)
+/datum/reagent/consumable/ethanol/b52/on_mob_metabolize(mob/living/M, class)
+	if(class == CHEM_INGEST)
+		playsound(M, 'sound/effects/explosion_distant.ogg', 100, FALSE)
 
 /datum/reagent/consumable/ethanol/irishcoffee
 	name = "Irish Coffee"
@@ -1436,6 +1443,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	. = TRUE
 
 /datum/reagent/consumable/ethanol/neurotoxin/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
+		return
 	REMOVE_TRAIT(C, TRAIT_PARALYSIS_L_ARM, type)
 	REMOVE_TRAIT(C, TRAIT_PARALYSIS_R_ARM, type)
 	REMOVE_TRAIT(C, TRAIT_PARALYSIS_R_LEG, type)
@@ -2490,13 +2499,17 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_mult = 6
 	taste_description = "concentrated herbs"
 
-/datum/reagent/consumable/ethanol/ritual_wine/on_mob_metabolize(mob/living/psychonaut)
+/datum/reagent/consumable/ethanol/ritual_wine/on_mob_metabolize(mob/living/psychonaut, class)
+	if(class != CHEM_INGEST)
+		return
 	if(!psychonaut.hud_used)
 		return
 	var/atom/movable/plane_master_controller/game_plane_master_controller = psychonaut.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 	game_plane_master_controller.add_filter("ritual_wine", 1, list("type" = "wave", "size" = 1, "x" = 5, "y" = 0, "flags" = WAVE_SIDEWAYS))
 
-/datum/reagent/consumable/ethanol/ritual_wine/on_mob_end_metabolize(mob/living/psychonaut)
+/datum/reagent/consumable/ethanol/ritual_wine/on_mob_end_metabolize(mob/living/psychonaut, class)
+	if(class != CHEM_INGEST)
+		return
 	if(!psychonaut.hud_used)
 		return
 	var/atom/movable/plane_master_controller/game_plane_master_controller = psychonaut.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]

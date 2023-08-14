@@ -183,10 +183,10 @@
 			healing -= 0.1
 			break //Only count the first bedsheet
 		if(health_ratio > 0.8)
-			owner.adjustBruteLoss(-healing)
-			owner.adjustFireLoss(-healing)
-			owner.adjustToxLoss(-healing * 0.5, TRUE, TRUE)
-		owner.stamina.adjust(healing)
+			owner.adjustBruteLoss(healing)
+			owner.adjustFireLoss(healing)
+			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
+		owner.stamina.adjust(-healing)
 
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)
 	owner.set_drunk_effect(owner.get_drunk_amount() * 0.997)

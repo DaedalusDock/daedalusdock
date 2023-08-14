@@ -1,7 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - rscadd: You can now view a map of the station with the 'Webmap' button in the
-      top right cluster
-  - code_imp: Map JSONS must set the 'webmap_id' key for this to work.
-  - rscadd: You can now open the codex with the 'Codex' button, In the same place.

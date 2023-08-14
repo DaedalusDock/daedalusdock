@@ -231,27 +231,62 @@
 	src.stamina_swing(STAMINA_DISARM_COST)
 
 	do_attack_animation(target, ATTACK_EFFECT_DISARM)
+	animate_interact(target, INTERACT_DISARM)
 	playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
+
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		human_target.w_uniform?.add_fingerprint(src)
 
 	SEND_SIGNAL(target, COMSIG_HUMAN_DISARM_HIT, src, zone_selected)
-	var/shove_dir = get_dir(loc, target.loc)
-	var/turf/target_shove_turf = get_step(target.loc, shove_dir)
-	var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
-	var/turf/target_old_turf = target.loc
 
-	//Are we hitting anything? or
-	if(SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_PRESHOVE) & COMSIG_CARBON_ACT_SOLID)
-		shove_blocked = TRUE
-	else
-		target.Move(target_shove_turf, shove_dir)
-		if(get_turf(target) == target_old_turf)
+	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
+	var/state_modifier = get_melee_inaccuracy() - target.get_melee_inaccuracy()
+	var/stimulants = CHEM_EFFECT_MAGNITUDE(target, CE_STIMULANT)
+	var/disarm_chance = 25 - (stimulants * 2)
+	var/shove_chance = 12 - stimulants
+	if(!target.combat_mode)
+		state_modifier -= 30
+
+	//Handle unintended consequences
+	for(var/obj/item/I in holding)
+		var/hurt_prob = holding[I]
+		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
+			return
+
+	var/shove_roll = rand(1, 100) + state_modifier
+	if(shove_roll <= shove_chance)
+
+		var/shove_dir = get_dir(loc, target.loc)
+		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
+		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
+
+		var/directional_blocked = FALSE
+		var/can_hit_something = !target.buckled
+
+		//Are we hitting anything? or
+		if(!target.Move(target_shove_turf, shove_dir))
 			shove_blocked = TRUE
 
+		if(!can_hit_something)
+			//Don't hit people through windows, ok?
+			if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
+				return
+
+		target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
+		target.visible_message(
+			span_danger("<b>[name]</b> shoves <b>[target.name]</b>, knocking [target.p_them()] down!"),
+			span_userdanger("You're knocked down from a shove by [name]!"),
+			span_hear("You hear aggressive shuffling followed by a loud thud!"),
+			COMBAT_MESSAGE_RANGE,
+		)
+		log_combat(src, target, "shoved", "knocking them down")
+		target.pulledby?.stop_pulling()
+		target.stop_pulling()
+		return
+
 	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
-		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST, spread_damage = TRUE)
+		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST)
 		target.adjustOxyLoss(10) //Knock the wind right out of his sails
 		target.visible_message(
 			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
@@ -261,55 +296,25 @@
 			//src
 		)
 
-		//to_chat(src, span_danger("You kick [target.name] onto [target.p_their()] side!"))
-		log_combat(src, target, "kicks", "in the chest")
-
-	var/directional_blocked = FALSE
-	var/can_hit_something = ((target.shove_resistance() < 0) && !target.buckled)
-
-	//Directional checks to make sure that we're not shoving through a windoor or something like that
-	if(shove_blocked && can_hit_something && (shove_dir in GLOB.cardinals))
-		var/target_turf = get_turf(target)
-		for(var/obj/obj_content in target_turf)
-			if(obj_content.flags_1 & ON_BORDER_1 && obj_content.dir == shove_dir && obj_content.density)
-				directional_blocked = TRUE
-				break
-		if(target_turf != target_shove_turf && !directional_blocked) //Make sure that we don't run the exact same check twice on the same tile
-			for(var/obj/obj_content in target_shove_turf)
-				if(obj_content.flags_1 & ON_BORDER_1 && obj_content.dir == turn(shove_dir, 180) && obj_content.density)
-					directional_blocked = TRUE
-					break
-
-	if(can_hit_something)
-		//Don't hit people through windows, ok?
-		if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
-			return
-		if(directional_blocked || shove_blocked)
-			target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
-			target.visible_message(span_danger("[name] shoves [target.name], knocking [target.p_them()] down!"),
-				span_userdanger("You're knocked down from a shove by [name]!"), span_hear("You hear aggressive shuffling followed by a loud thud!"), COMBAT_MESSAGE_RANGE, src)
-			to_chat(src, span_danger("You shove [target.name], knocking [target.p_them()] down!"))
-			log_combat(src, target, "shoved", "knocking them down")
-			return
+		log_combat(src, target, "kicks", addition = "dealing stam/oxy damage")
+		return
 
 	target.visible_message(
-		span_danger("<b>[name]</b> shoves [target.name]!"),
+		span_danger("<b>[name]</b> shoves <b>[target.name]</b>!"),
 		null,
 		span_hear("You hear aggressive shuffling!"),
 		COMBAT_MESSAGE_RANGE,
-		//src
 	)
-	//to_chat(src, span_danger("You shove [target.name]!"))
 
 	var/append_message = ""
 	//Roll disarm chance based on the target's missing stamina
-	var/disarm_success_chance = min(target.stamina.loss_as_percent/2 + 10, 60)
-	if(prob(disarm_success_chance) && length(target.held_items))
+	var/disarm_roll = rand(1, 100) + state_modifier
+	if(disarm_roll <= disarm_chance && length(target.held_items))
 		var/list/dropped = list()
-		for(var/obj/item/I as anything in target.held_items)
+		for(var/obj/item/I in target.held_items)
 			if(target.dropItemToGround(I))
 				target.visible_message(
-					span_danger("<b>[target]</b> loses [target.p_their()] grip on [I]"),
+					span_warning("<b>[target]</b> loses [target.p_their()] grip on [I]."),
 					null,
 					null,
 					COMBAT_MESSAGE_RANGE
@@ -317,10 +322,7 @@
 				dropped += I
 		append_message = "causing them to drop [length(dropped) ? english_list(dropped) : "nothing"]"
 
-	log_combat(src, target, "shoved", append_message)
-
-/mob/living/carbon/proc/shove_resistance()
-	. = 0
+	log_combat(src, target, "shoved", addition = append_message)
 
 /mob/living/carbon/proc/clear_shove_slowdown()
 	remove_movespeed_modifier(/datum/movespeed_modifier/shove)

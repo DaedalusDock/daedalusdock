@@ -33,7 +33,7 @@
 	var/turf/T = move_args[MOVE_ARG_NEW_LOC]
 	if(!isturf(T))
 		return
-	if(!T.Enter(parent, TRUE))
+	if(!carbon_parent.can_step_into(T))
 		return
 
 	if(sprint_key_down && !HAS_TRAIT(carbon_parent, TRAIT_NO_SPRINT))

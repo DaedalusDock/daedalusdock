@@ -2349,3 +2349,18 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_ingested_reagents()
 	RETURN_TYPE(/datum/reagents)
 	return reagents
+
+/mob/living/proc/get_melee_inaccuracy()
+	. = 0
+	if(incapacitated())
+		. += 100
+	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
+		. += 10
+	if(IsKnockdown())
+		. += 15
+	if(eye_blurry)
+		. += 5
+	if(eye_blind)
+		. += 60
+	if(HAS_TRAIT(src, TRAIT_CLUMSY))
+		. += 25

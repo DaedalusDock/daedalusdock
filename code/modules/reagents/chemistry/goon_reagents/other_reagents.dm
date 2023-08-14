@@ -192,6 +192,9 @@
 	ADD_TRAIT(C, TRAIT_STIMULANTS, CHEM_TRAIT_SOURCE(class))
 	C.add_movespeed_modifier(/datum/movespeed_modifier/reagent/stimulants)
 
+/datum/reagent/stimulants/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
+
 /datum/reagent/stimulants/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return

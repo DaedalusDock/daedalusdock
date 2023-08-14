@@ -1536,3 +1536,15 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		L.Paralyze(10 SECONDS)
 
 	visible_message(span_warning("[src] slams into [highest] from above!"))
+
+/obj/item/proc/on_disarm_attempt(mob/living/user, mob/living/attacker)
+	if(force < 1)
+		return 0
+	if(!istype(attacker))
+		return 0
+	var/obj/item/bodypart/BP = attacker.get_active_hand()
+	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, MELEE, silent = TRUE), sharpness = sharpness)
+	attacker.visible_message(span_danger("[attacker] hurts \his hand on [src]!"))
+	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
+	playsound(user, hitsound, 50, 1, -1)
+	return 1

@@ -1714,3 +1714,13 @@
  */
 /atom/movable/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
 	return
+
+/// Tests if src can move from their current loc to an adjacent destination, without doing the move.
+/atom/movable/proc/can_step_into(turf/destination)
+	var/current_loc = get_turf(src)
+	var/direction = get_dir(current_loc, destination)
+	if(loc)
+		if(!loc.Exit(src, direction))
+			return FALSE
+
+	return destination.Enter(src, TRUE)

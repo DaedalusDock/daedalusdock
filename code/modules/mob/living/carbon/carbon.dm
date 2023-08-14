@@ -8,11 +8,6 @@
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 
 	GLOB.carbon_list += src
-	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_PRESHOVE = PROC_REF(disarm_precollide),
-		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(disarm_collision),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 	AddComponent(/datum/component/carbon_sprint)
 
 /mob/living/carbon/Destroy()
@@ -1285,29 +1280,6 @@
 /mob/living/carbon/proc/attach_rot()
 	if(mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD))
 		AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
-
-/mob/living/carbon/proc/disarm_precollide(datum/source, mob/living/carbon/shover, mob/living/carbon/target)
-	SIGNAL_HANDLER
-	if(can_be_shoved_into)
-		return COMSIG_CARBON_ACT_SOLID
-
-/mob/living/carbon/proc/disarm_collision(datum/source, mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)
-	SIGNAL_HANDLER
-	if(src == target || LAZYFIND(target.buckled_mobs, src) || !can_be_shoved_into)
-		return
-	target.Knockdown(SHOVE_KNOCKDOWN_HUMAN)
-	if(shove_resistance() <= 0)
-		Knockdown(SHOVE_KNOCKDOWN_COLLATERAL)
-	target.visible_message(
-		span_danger("[shover] shoves [target.name] into [name]!"),
-		span_userdanger("You're shoved into [name] by [shover]!"),
-		span_hear("You hear aggressive shuffling followed by a loud thud!"),
-		COMBAT_MESSAGE_RANGE,
-		///src
-	)
-	///to_chat(src, span_danger("You shove [target.name] into [name]!"))
-	log_combat(src, target, "shoved", "into [name]")
-	return COMSIG_CARBON_SHOVE_HANDLED
 
 // Checks to see how many hands this person has to sign with.
 /mob/living/carbon/proc/check_signables_state()

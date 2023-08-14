@@ -858,11 +858,14 @@
 	metabolization_rate = 0.2 * REAGENTS_METABOLISM
 	toxpwr = 0
 
-
 /datum/reagent/toxin/heparin/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
 	ADD_TRAIT(C, TRAIT_BLOODY_MESS, CHEM_TRAIT_SOURCE(class))
+
+/datum/reagent/toxin/heparin/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	APPLY_CHEM_EFFECT(C, CE_ANTICOAGULANT, 1)
 
 /datum/reagent/toxin/heparin/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)

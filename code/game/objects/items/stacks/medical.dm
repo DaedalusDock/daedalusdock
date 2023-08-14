@@ -97,8 +97,7 @@
 			span_infoplain(span_green("You apply [src] on [C]'s [parse_zone(affecting.body_zone)]."))
 		)
 		var/previous_damage = affecting.get_damage()
-		if(affecting.heal_damage(brute, burn))
-			C.update_damage_overlays()
+		affecting.heal_damage(brute, burn)
 		post_heal_effects(max(previous_damage - affecting.get_damage(), 0), C, user)
 		return TRUE
 	to_chat(user, span_warning("[C]'s [parse_zone(affecting.body_zone)] can not be healed with [src]!"))

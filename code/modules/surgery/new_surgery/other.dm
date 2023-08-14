@@ -24,7 +24,7 @@
 
 /datum/surgery_step/fix_tendon/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	if(affected && (affected.bodypart_flags & BP_ARTERY_CUT))
+	if(affected && (affected.bodypart_flags & BP_TENDON_CUT))
 		return affected
 
 /datum/surgery_step/fix_tendon/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

@@ -64,6 +64,7 @@
 
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
+		var/needs_bleed_update = FALSE
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
 		var/bleed_amt = iter_part.bandage?.absorb_blood(iter_bleed_rate, src)
 		if(isnull(bleed_amt))
@@ -73,6 +74,11 @@
 			for(var/datum/wound/W as anything in iter_part.wounds)
 				if(W.bleeding() && W.bleed_timer > 0)
 					W.bleed_timer--
+					if(!W.bleeding())
+						needs_bleed_update = TRUE
+
+		if(needs_bleed_update)
+			iter_part.refresh_bleed_rate()
 
 		if(!bleed_amt)
 			continue
@@ -85,6 +91,7 @@
 	if(temp_bleed)
 		bleed(temp_bleed)
 		bleed_warn(temp_bleed)
+
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()

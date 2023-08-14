@@ -24,8 +24,7 @@
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 	else
-		var/bprv = handle_bodyparts(delta_time, times_fired)
-		if(bprv & BODYPART_LIFE_UPDATE_HEALTH)
+		if(handle_bodyparts(delta_time, times_fired))
 			updatehealth()
 
 	check_cremation(delta_time, times_fired)

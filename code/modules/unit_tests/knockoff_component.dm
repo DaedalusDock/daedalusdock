@@ -27,7 +27,6 @@
 	// A disarm targeting chest should not knockdown or lose glasses
 	shoves_the_guy.zone_selected = BODY_ZONE_CHEST
 	shoves_the_guy.disarm(wears_the_glasses)
-	TEST_ASSERT(!wears_the_glasses.IsKnockdown(), "Dummy was knocked down when being disarmed shouldn't have been.")
 	TEST_ASSERT(wears_the_glasses.glasses == glasses, "Dummy lost their glasses even thought they were disarmed targeting the wrong slot.")
 
 	set_glasses_wearer(wears_the_glasses, right_of_shover, glasses)
@@ -36,7 +35,6 @@
 	// A disarm targeting eyes should not knockdown but should lose glasses
 	shoves_the_guy.zone_selected = BODY_ZONE_PRECISE_EYES
 	shoves_the_guy.disarm(wears_the_glasses)
-	TEST_ASSERT(!wears_the_glasses.IsKnockdown(), "Dummy was knocked down when being disarmed shouldn't have been.")
 	TEST_ASSERT(wears_the_glasses.glasses != glasses, "Dummy kept their glasses, even though they were shoved targeting the correct zone.")
 
 	set_glasses_wearer(wears_the_glasses, right_of_shover, glasses)

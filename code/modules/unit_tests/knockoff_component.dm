@@ -23,6 +23,8 @@
 
 	TEST_ASSERT(wears_the_glasses.glasses == glasses, "Dummy failed to equip the glasses.")
 
+	wears_the_glasses.status_flags &= ~CANKNOCKDOWN //Rng knockdowns aren't apart of this equation
+
 	// Test disarm, targeting chest
 	// A disarm targeting chest should not knockdown or lose glasses
 	shoves_the_guy.zone_selected = BODY_ZONE_CHEST
@@ -38,6 +40,8 @@
 	TEST_ASSERT(wears_the_glasses.glasses != glasses, "Dummy kept their glasses, even though they were shoved targeting the correct zone.")
 
 	set_glasses_wearer(wears_the_glasses, right_of_shover, glasses)
+
+	wears_the_glasses.status_flags |= CANKNOCKDOWN
 
 	// Test Knockdown()
 	// Any amount of positive Kockdown should lose glasses

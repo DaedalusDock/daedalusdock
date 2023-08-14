@@ -688,6 +688,7 @@
 	update_total()
 	if(owner && updatehealth && need_mob_update)
 		owner.updatehealth()
+		owner.update_damage_overlays()
 	return need_mob_update
 
 /*

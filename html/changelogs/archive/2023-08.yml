@@ -72,3 +72,29 @@
 2023-08-08:
   Kapu1178:
   - rscadd: Added a chance for Runtime to spawn with a different name.
+2023-08-12:
+  Gonenoculer5:
+  - bugfix: Modifies EXAMPLE.json to contain correct comment text relating to durations
+      of music files.
+  Kapu1178:
+  - rscdel: Mood has been removed. Not like Production ever had it turned on...
+  - bugfix: Fixed objects that render out of their tile rendering over blackness,
+      when logically they should be invisible.
+  francinum:
+  - admin: DSAY now autocompletes again.
+2023-08-14:
+  Cenrus:
+  - bugfix: fixed disposals in the new MetaStation medbay
+  - bugfix: added the chemdrobe back to MetaStation
+  - bugfix: fixed the virology airlock controls not functioning
+  Kapu1178:
+  - bugfix: Fixed a bug that might(?) have existed that caused wounds to not stop
+      bleeding when they should.
+  - bugfix: Damage overlays should now always be in the correct state. Cannot say
+      the same for bleeding overlays, but, cope.
+  - bugfix: Tendon repair surgery works.
+  francinum:
+  - rscadd: You can now view a map of the station with the 'Webmap' button in the
+      top right cluster
+  - code_imp: Map JSONS must set the 'webmap_id' key for this to work.
+  - rscadd: You can now open the codex with the 'Codex' button, In the same place.

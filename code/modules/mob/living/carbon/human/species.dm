@@ -1309,16 +1309,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			H.damageoverlaytemp = 20
 			var/damage_amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
 			if(BP)
-				if(BP.receive_damage(damage_amount, 0, sharpness = sharpness))
-					H.update_damage_overlays()
+				BP.receive_damage(damage_amount, 0, sharpness = sharpness)
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage_amount)
 		if(BURN)
 			H.damageoverlaytemp = 20
 			var/damage_amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
 			if(BP)
-				if(BP.receive_damage(0, damage_amount, sharpness = sharpness))
-					H.update_damage_overlays()
+				BP.receive_damage(0, damage_amount, sharpness = sharpness)
 			else
 				H.adjustFireLoss(damage_amount)
 		if(TOX)

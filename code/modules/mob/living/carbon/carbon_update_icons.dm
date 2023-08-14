@@ -267,7 +267,6 @@
 
 ///Checks to see if any bodyparts need to be redrawn, then does so. update_limb_data = TRUE redraws the limbs to conform to the owner.
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
-	update_damage_overlays()
 	update_wound_overlays()
 	update_eyes(update_limb_data)
 

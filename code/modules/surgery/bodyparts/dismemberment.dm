@@ -375,8 +375,6 @@
 
 	update_interaction_speed()
 
-	update_bodypart_damage_state()
-
 	update_disabled()
 
 	for(var/trait in bodypart_traits)

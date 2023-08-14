@@ -1,6 +1,0 @@
-author: Cenrus
-delete-after: true
-changes:
-  - bugfix: fixed disposals in the new MetaStation medbay
-  - bugfix: added the chemdrobe back to MetaStation
-  - bugfix: fixed the virology airlock controls not functioning

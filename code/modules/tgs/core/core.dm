@@ -115,7 +115,6 @@
 			return result
 
 /world/TgsTestMerges()
-	RETURN_TYPE(/list)
 	var/datum/tgs_api/api = TGS_READ_GLOBAL(tgs)
 	if(api)
 		var/result = api.TestMerges()

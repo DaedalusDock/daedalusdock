@@ -1,5 +1,4 @@
 #define MINING_MESSAGE_COOLDOWN 20
-#define MINERAL_WALL_OFFSET -4
 /**********************Mineral deposits**************************/
 
 /turf/closed/mineral //wall piece
@@ -17,10 +16,10 @@
 	base_icon_state = "smoothrocks"
 	temperature = TCMB
 
-	base_pixel_x = MINERAL_WALL_OFFSET
-	base_pixel_y = MINERAL_WALL_OFFSET
-	pixel_x = MAP_SWITCH(MINERAL_WALL_OFFSET, 0)
-	pixel_y = MAP_SWITCH(MINERAL_WALL_OFFSET, 0)
+	// This is static
+	// Done like this to avoid needing to make it dynamic and save cpu time
+	// 4 to the left, 4 down
+	transform = MAP_SWITCH(TRANSLATE_MATRIX(-4, -4), matrix())
 
 	var/turf/open/floor/plating/turf_type = /turf/open/misc/asteroid/airless
 	var/obj/item/stack/ore/mineralType = null
@@ -33,8 +32,6 @@
 	var/tool_mine_speed = 4 SECONDS
 	///How long it takes to mine this turf without tools, if it's weak.
 	var/hand_mine_speed = 15 SECONDS
-
-#undef MINERAL_WALL_OFFSET
 
 //We don't call parent for perf reasons. Instead, we copy paste everything. BYOND!
 /turf/closed/mineral/Initialize(mapload)

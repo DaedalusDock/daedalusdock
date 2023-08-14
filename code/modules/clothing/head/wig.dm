@@ -30,7 +30,7 @@
 	return ..()
 
 
-/obj/item/clothing/head/wig/worn_overlays(mutable_appearance/standing, isinhands = FALSE, file2use)
+/obj/item/clothing/head/wig/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, file2use)
 	. = ..()
 	if(isinhands)
 		return

@@ -279,6 +279,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MESON_VISION "meson_vision"
 /// Gives us Night vision
 #define TRAIT_TRUE_NIGHT_VISION "true_night_vision"
+/// Prevents direction changes done by face_atom()
+#define TRAIT_CANNOTFACE "cannotface"
 
 /// Negates our gravity, letting us move normally on floors in 0-g
 #define TRAIT_NEGATES_GRAVITY "negates_gravity"
@@ -741,6 +743,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define HIGHLANDER_TRAIT "highlander"
 /// Trait associated with airflow/spacewind
 #define AIRFLOW_TRAIT "airflow"
+/// Trait on stumps
+#define STUMP_TRAIT "stump"
 
 ///generic atom traits
 /// Trait from [/datum/element/rust]. Its rusty and should be applying a special overlay to denote this.
@@ -844,6 +848,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define ITEM_SCALING_TRAIT "item_scaling"
 /// From EMPs
 #define EMP_TRAIT "emp"
+/// Given by the operating table
+#define OPTABLE_TRAIT "optable"
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and

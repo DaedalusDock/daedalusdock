@@ -228,3 +228,10 @@
 // )
 
 #define GET_TRUE_DIST(a, b) (a == null || b == null) ? -1 : max(abs(a.x -b.x), abs(a.y-b.y), abs(a.z-b.z))
+
+// A neat little helper to convert the value X, that's between imin and imax, into a value
+// that's proportionally scaled and in range of omin and omax.
+#define MAP(x, imin, imax, omin, omax) ((x - imin) * (omax - omin) / (imax - imin) + omin)
+
+/// See above, but clamps the resulting value between omin and omax
+#define MAPCLAMP(x, imin, imax, omin, omax) clamp(MAP(x, imin, imax, omin, omax), omin, omax)

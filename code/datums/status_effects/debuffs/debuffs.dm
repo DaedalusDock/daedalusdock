@@ -144,14 +144,17 @@
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = -1
+	ADD_TRAIT(owner, TRAIT_DEAF, TRAIT_STATUS_EFFECT(id))
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_insomniac))
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_sleepy))
 
 /datum/status_effect/incapacitating/sleeping/on_remove()
+	REMOVE_TRAIT(owner, TRAIT_DEAF, TRAIT_STATUS_EFFECT(id))
 	UnregisterSignal(owner, list(SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE)))
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = initial(tick_interval)
+
 	return ..()
 
 ///If the mob is sleeping and gain the TRAIT_SLEEPIMMUNE we remove the TRAIT_KNOCKEDOUT and stop the tick() from happening
@@ -201,13 +204,13 @@
 	icon_state = "asleep"
 
 //STASIS
-/datum/status_effect/grouped/stasis
+/datum/status_effect/grouped/hard_stasis
 	id = "stasis"
 	duration = -1
 	alert_type = /atom/movable/screen/alert/status_effect/stasis
 	var/last_dead_time
 
-/datum/status_effect/grouped/stasis/proc/update_time_of_death()
+/datum/status_effect/grouped/hard_stasis/proc/update_time_of_death()
 	if(last_dead_time)
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
@@ -217,13 +220,13 @@
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
 
-/datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, set_duration)
+/datum/status_effect/grouped/hard_stasis/on_creation(mob/living/new_owner, set_duration)
 	. = ..()
 	if(.)
 		update_time_of_death()
 		owner.reagents?.end_metabolization(owner, FALSE)
 
-/datum/status_effect/grouped/stasis/on_apply()
+/datum/status_effect/grouped/hard_stasis/on_apply()
 	. = ..()
 	if(!.)
 		return
@@ -236,10 +239,10 @@
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.update_bodypart_bleed_overlays()
 
-/datum/status_effect/grouped/stasis/tick()
+/datum/status_effect/grouped/hard_stasis/tick()
 	update_time_of_death()
 
-/datum/status_effect/grouped/stasis/on_remove()
+/datum/status_effect/grouped/hard_stasis/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCKED, TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter("stasis_status_ripple")
@@ -670,13 +673,11 @@
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_PACIFISM, CLOTHING_TRAIT)
 	ADD_TRAIT(owner, TRAIT_MUTE, CLOTHING_TRAIT)
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/gondola)
 	to_chat(owner, span_notice("You suddenly feel at peace and feel no need to make any sudden or rash actions..."))
 
 /datum/status_effect/gonbola_pacify/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, CLOTHING_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_MUTE, CLOTHING_TRAIT)
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, type)
 	return ..()
 
 /datum/status_effect/trance

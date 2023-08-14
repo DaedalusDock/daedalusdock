@@ -525,7 +525,6 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	ADD_TRAIT(owner, TRAIT_NOCRITDAMAGE, type)
 	ADD_TRAIT(owner, TRAIT_NODEATH, type)
 	owner.set_stat(CONSCIOUS) //This doesn't touch knocked out
-	owner.updatehealth()
 	owner.update_sight()
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, STAT_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT) //Because these are normally updated using set_health() - but we don't want to adjust health, and the addition of NOHARDCRIT blocks it being added after, but doesn't remove it if it was added before
@@ -535,6 +534,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	owner.emote("gasp")
 	owner.playsound_local(owner, 'sound/health/fastbeat.ogg', 65)
 	..()
+	return TRUE
 
 /datum/reagent/inverse/penthrite/on_mob_life(mob/living/carbon/owner, delta_time, times_fired)
 	if(!back_from_the_dead)

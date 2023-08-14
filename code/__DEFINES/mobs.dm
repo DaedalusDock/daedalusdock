@@ -211,6 +211,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -232,26 +233,6 @@
 #define BEAUTY_LEVEL_DECENT 33
 #define BEAUTY_LEVEL_GOOD 66
 #define BEAUTY_LEVEL_GREAT 100
-
-//Moods levels for humans
-#define MOOD_LEVEL_HAPPY4 15
-#define MOOD_LEVEL_HAPPY3 10
-#define MOOD_LEVEL_HAPPY2 6
-#define MOOD_LEVEL_HAPPY1 2
-#define MOOD_LEVEL_NEUTRAL 0
-#define MOOD_LEVEL_SAD1 -3
-#define MOOD_LEVEL_SAD2 -7
-#define MOOD_LEVEL_SAD3 -15
-#define MOOD_LEVEL_SAD4 -20
-
-//Sanity levels for humans
-#define SANITY_MAXIMUM 150
-#define SANITY_GREAT 125
-#define SANITY_NEUTRAL 100
-#define SANITY_DISTURBED 75
-#define SANITY_UNSTABLE 50
-#define SANITY_CRAZY 25
-#define SANITY_INSANE 0
 
 //Nutrition levels for humans
 #define NUTRITION_LEVEL_FAT 600
@@ -428,6 +409,28 @@
 
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Organ preservation effects like formaldehyde. Boolean.
+#define CE_ORGAN_PRESERVATION "formaldehyde"
+/// Mob cannot breathe. Boolean.
+#define CE_RESPIRATORY_FAILURE "cantbreathe"
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0
@@ -444,6 +447,7 @@
 
 // /obj/item/bodypart on_mob_life() retval flag
 #define BODYPART_LIFE_UPDATE_HEALTH (1<<0)
+#define BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS (1<<1)
 
 #define MAX_REVIVE_FIRE_DAMAGE 180
 #define MAX_REVIVE_BRUTE_DAMAGE 180

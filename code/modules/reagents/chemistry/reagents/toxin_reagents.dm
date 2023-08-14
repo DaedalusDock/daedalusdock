@@ -168,6 +168,7 @@
 		. = FALSE
 
 	if(.)
+		APPLY_CHEM_EFFECT(C, CE_RESPIRATORY_FAILURE, 1)
 		C.adjustOxyLoss(5 * REM * normalise_creation_purity() * delta_time, 0)
 		C.losebreath += 2 * REM * normalise_creation_purity() * delta_time
 		if(DT_PROB(10, delta_time))
@@ -661,8 +662,6 @@
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * REM * normalise_creation_purity() * delta_time, 150)
 	if(M.toxloss <= 60)
 		M.adjustToxLoss(1 * REM * normalise_creation_purity() * delta_time, 0)
-	if(current_cycle >= 4)
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "smacked out", /datum/mood_event/narcotic_heavy, name)
 	if(current_cycle >= 18)
 		M.Sleeping(40 * REM * normalise_creation_purity() * delta_time)
 	..()

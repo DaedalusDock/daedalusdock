@@ -30,6 +30,7 @@
 
 	register_to_target(target)
 
+	RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_sight))
 	RegisterSignal(user, COMSIG_MOB_FIRED_GUN, PROC_REF(user_shot))

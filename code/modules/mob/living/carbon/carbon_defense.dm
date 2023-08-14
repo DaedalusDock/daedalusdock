@@ -149,12 +149,6 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	for(var/datum/surgery/S in surgeries)
-		if(body_position == LYING_DOWN || !S.lying_required)
-			if(!user.combat_mode)
-				if(S.next_step(user, modifiers))
-					return TRUE
-
 	return FALSE
 
 
@@ -433,15 +427,6 @@
 		// Warm them up with hugs
 		share_bodytemperature(helper)
 
-		// No moodlets for people who hate touches
-		if(!HAS_TRAIT(src, TRAIT_BADTOUCH))
-			if(bodytemperature > helper.bodytemperature)
-				if(!HAS_TRAIT(helper, TRAIT_BADTOUCH))
-					SEND_SIGNAL(helper, COMSIG_ADD_MOOD_EVENT, "hug", /datum/mood_event/warmhug, src) // Hugger got a warm hug (Unless they hate hugs)
-				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "hug", /datum/mood_event/hug) // Reciver always gets a mood for being hugged
-			else
-				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "hug", /datum/mood_event/warmhug, helper) // You got a warm hug
-
 		// Let people know if they hugged someone really warm or really cold
 		if(helper.bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
 			to_chat(src, span_warning("It feels like [helper] is over heating as [helper.p_they()] hug[helper.p_s()] you."))
@@ -452,14 +437,6 @@
 			to_chat(helper, span_warning("It feels like [src] is over heating as you hug [p_them()]."))
 		else if(bodytemperature < BODYTEMP_COLD_DAMAGE_LIMIT)
 			to_chat(helper, span_warning("It feels like [src] is freezing as you hug [p_them()]."))
-
-		if(HAS_TRAIT(helper, TRAIT_FRIENDLY))
-			var/datum/component/mood/hugger_mood = helper.GetComponent(/datum/component/mood)
-			if (hugger_mood.sanity >= SANITY_GREAT)
-				new /obj/effect/temp_visual/heart(loc)
-				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "friendly_hug", /datum/mood_event/besthug, helper)
-			else if (hugger_mood.sanity >= SANITY_DISTURBED)
-				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "friendly_hug", /datum/mood_event/betterhug, helper)
 
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you hug [p_them()]."))
@@ -679,7 +656,7 @@
 		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
 		UnregisterSignal(user, COMSIG_PARENT_QDELETING)
 	if(grasped_part)
-		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_PARENT_QDELETING))
+		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING))
 		grasped_part.grasped_by = null
 		grasped_part.refresh_bleed_rate()
 	grasped_part = null
@@ -703,7 +680,7 @@
 	grasped_part.grasped_by = src
 	grasped_part.refresh_bleed_rate()
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(qdel_void))
-	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
+	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
 
 	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.name], trying to stop the bleeding."), span_notice("You grab hold of your [grasped_part.name] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
 	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)

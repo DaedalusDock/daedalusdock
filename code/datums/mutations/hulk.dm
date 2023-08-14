@@ -24,7 +24,6 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = "#00aa00"
 	owner.update_body_parts()
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "hulk", /datum/mood_event/hulk)
 	RegisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
@@ -78,7 +77,6 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = null
 	owner.update_body_parts()
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "hulk")
 	UnregisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)

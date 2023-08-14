@@ -21,14 +21,12 @@
 	switch(damagetype)
 		if(BRUTE)
 			if(BP)
-				if(BP.receive_damage(damage_amount, 0, sharpness = sharpness))
-					update_damage_overlays()
+				BP.receive_damage(damage_amount, 0, sharpness = sharpness)
 			else //no bodypart, we deal damage with a more general method.
 				adjustBruteLoss(damage_amount, forced = forced)
 		if(BURN)
 			if(BP)
-				if(BP.receive_damage(0, damage_amount, sharpness = sharpness))
-					update_damage_overlays()
+				BP.receive_damage(0, damage_amount, sharpness = sharpness)
 			else
 				adjustFireLoss(damage_amount, forced = forced)
 		if(TOX)
@@ -134,13 +132,14 @@
 ////////////////////////////////////////////
 
 ///Returns a list of damaged bodyparts
-/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, status)
+/mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, status, check_flags)
 	var/list/obj/item/bodypart/parts = list()
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		if(status && !(BP.bodytype & status))
 			continue
-		if((brute && BP.brute_dam) || (burn && BP.burn_dam))
+		if((brute && BP.brute_dam) || (burn && BP.burn_dam) || (BP.bodypart_flags & check_flags))
 			parts += BP
+
 	return parts
 
 ///Returns a list of damageable bodyparts
@@ -151,15 +150,6 @@
 		if(status && !(BP.bodytype & status))
 			continue
 		if(BP.brute_dam + BP.burn_dam < BP.max_damage)
-			parts += BP
-	return parts
-
-
-///Returns a list of bodyparts with wounds (in case someone has a wound on an otherwise fully healed limb)
-/mob/living/carbon/proc/get_wounded_bodyparts()
-	var/list/obj/item/bodypart/parts = list()
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		if(LAZYLEN(BP.wounds) || (BP.bodypart_flags & BP_BROKEN_BONES) || (BP.bodypart_flags & BP_BLEEDING))
 			parts += BP
 	return parts
 

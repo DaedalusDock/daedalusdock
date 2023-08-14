@@ -116,6 +116,7 @@
 /// or when a status effect with on_remove_on_mob_delete
 /// set to FALSE has its mob deleted
 /datum/status_effect/proc/be_replaced()
+	linked_alert = null
 	owner.clear_alert(id)
 	LAZYREMOVE(owner.status_effects, src)
 	owner = null
@@ -141,6 +142,18 @@
 /// Adds nextmove adjustment additiviely to the owner while applied
 /datum/status_effect/proc/nextmove_adjust()
 	return 0
+
+/// Remove [seconds] of duration from the status effect, qdeling / ending if we eclipse the current world time.
+/datum/status_effect/proc/remove_duration(seconds)
+	if(duration == -1) // Infinite duration
+		return FALSE
+
+	duration -= seconds
+	if(duration <= world.time)
+		qdel(src)
+		return TRUE
+
+	return FALSE
 
 /// Alert base type for status effect alerts
 /atom/movable/screen/alert/status_effect

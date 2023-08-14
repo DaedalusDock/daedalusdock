@@ -252,8 +252,10 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
+
 	if(LAZYLEN(embedding))
 		updateEmbedding()
+
 	if(mapload && !GLOB.steal_item_handler.generated_items)
 		add_stealing_item_objective()
 
@@ -492,8 +494,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		else
 			to_chat(user, span_warning("You burn your hand on [src]!"))
 			var/obj/item/bodypart/affecting = C.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-			if(affecting?.receive_damage( 0, 5 )) // 5 burn damage
-				C.update_damage_overlays()
+			affecting?.receive_damage( 0, 5 ) // 5 burn damage
 			return
 
 	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP)) //See if we're supposed to auto pickup.
@@ -1089,11 +1090,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 /// A check called by [/obj/item/proc/tool_start_check] once, and by use_tool on every tick of delay.
 /obj/item/proc/tool_use_check(mob/living/user, amount)
-	return !amount
+	return TRUE
 
 /// Generic use proc. Depending on the item, it uses up fuel, charges, sheets, etc. Returns TRUE on success, FALSE on failure.
 /obj/item/proc/use(used)
-	return !used
+	return TRUE
 
 /// Plays item's usesound, if any.
 /obj/item/proc/play_tool_sound(atom/target, volume=50)
@@ -1131,7 +1132,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			dropped(M, FALSE)
 	return ..()
 
-/obj/item/proc/embedded(atom/embedded_target, obj/item/bodypart/part)
+/obj/item/proc/embedded(obj/item/bodypart/part)
 	return
 
 /obj/item/proc/unembedded()
@@ -1288,14 +1289,14 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	else if(w_class == WEIGHT_CLASS_TINY) //small items like soap or toys that don't have mat datums
 		/// victim's chest (for cavity implanting the item)
 		var/obj/item/bodypart/chest/victim_cavity = victim.get_bodypart(BODY_ZONE_CHEST)
-		if(victim_cavity.cavity_item)
+		if(length(victim_cavity.cavity_items))
 			victim.vomit(5, FALSE, FALSE, distance = 0)
 			forceMove(drop_location())
 			to_chat(victim, span_warning("You vomit up a [name]! [source_item? "Was that in \the [source_item]?" : ""]"))
 		else
 			victim.transferItemToLoc(src, victim, TRUE)
 			victim.losebreath += 2
-			victim_cavity.cavity_item = src
+			victim_cavity.add_cavity_item(src)
 			to_chat(victim, span_warning("You swallow hard. [source_item? "Something small was in \the [source_item]..." : ""]"))
 		discover_after = FALSE
 

@@ -69,7 +69,7 @@
 	else
 		flags_1 &= ~PREVENT_CLICK_UNDER_1
 
-	zas_update_loc()
+	withdraw_from_zone()
 	//doors only block while dense though so we have to use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
@@ -179,6 +179,21 @@
 		spark_system = null
 	return ..()
 
+/obj/machinery/door/proc/withdraw_from_zone()
+	var/turf/T = get_turf(src)
+	if(!T || !T.simulated)
+		return
+	if(!T.zone || !density || T.zone.invalid)
+		return T.zas_update_loc()
+
+	var/zone/old_zone = T.zone
+	old_zone.remove_turf(T)
+
+	var/datum/gas_mixture/GM = unsafe_return_air()
+	old_zone.air.merge(GM)
+	GM.zero()
+	zas_update_loc()
+
 /obj/machinery/door/zas_canpass(turf/other)
 	if(QDELETED(src))
 		return AIR_ALLOWED
@@ -247,14 +262,6 @@
 		else
 			do_animate("deny")
 		return
-
-/obj/machinery/door/Move()
-	var/turf/T = loc
-	. = ..()
-	if(.)
-		T.zas_update_loc()
-		zas_update_loc()
-
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
@@ -474,7 +481,7 @@
 	if(visible && !glass)
 		set_opacity(1)
 	operating = FALSE
-	zas_update_loc()
+	withdraw_from_zone()
 	update_freelook_sight()
 
 	if(!can_crush)

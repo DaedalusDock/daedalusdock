@@ -50,7 +50,6 @@
 	id_trim = /datum/id_trim/job/psychologist
 	uniform = /obj/item/clothing/under/suit/black
 	backpack_contents = list(
-		/obj/item/storage/pill_bottle/happinesspsych,
 		/obj/item/storage/pill_bottle/lsdpsych,
 		/obj/item/storage/pill_bottle/alkysine,
 		/obj/item/storage/pill_bottle/paxpsych,

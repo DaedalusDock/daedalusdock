@@ -64,3 +64,5 @@
 /obj/item/reagent_containers/syringe/multiver : /obj/item/reagent_containers/syringe/dylovene
 /obj/item/reagent_containers/pill/happinesspsych : @DELETE
 /obj/item/food/bubblegum/happiness : @DELETE
+/obj/item/storage/box/gum/happiness : @DELETE
+/obj/item/storage/pill_bottle/happinesspsych : @DELETE

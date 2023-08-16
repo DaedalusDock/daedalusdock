@@ -496,14 +496,6 @@
 		new /obj/item/reagent_containers/pill/maintenance(src)
 
 ///////////////////////////////////////// Psychologist inventory pillbottles
-/obj/item/storage/pill_bottle/happinesspsych
-	name = "happiness pills"
-	desc = "Contains pills used as a last resort means to temporarily stabilize depression and anxiety. WARNING: side effects may include slurred speech, drooling, and severe addiction."
-
-/obj/item/storage/pill_bottle/happinesspsych/PopulateContents()
-	for(var/i in 1 to 5)
-		new /obj/item/reagent_containers/pill/happinesspsych(src)
-
 /obj/item/storage/pill_bottle/lsdpsych
 	name = "mindbreaker toxin pills"
 	desc = "!FOR THERAPEUTIC USE ONLY! Contains pills used to alleviate the symptoms of Reality Dissociation Syndrome."

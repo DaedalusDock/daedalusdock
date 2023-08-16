@@ -39785,10 +39785,6 @@
 	pixel_x = 4;
 	pixel_y = 5
 	},
-/obj/item/storage/pill_bottle/happinesspsych{
-	pixel_x = -4;
-	pixel_y = -1
-	},
 /obj/item/seeds/coffee{
 	pixel_x = 4;
 	pixel_y = -2

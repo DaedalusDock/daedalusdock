@@ -443,7 +443,7 @@
 
 /datum/chemical_reaction/carpet/simple_neon_blue
 	results = list(/datum/reagent/carpet/neon/simple_blue = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/drug/happiness = 1)
+	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/cryoxadone = 1)
 
 /datum/chemical_reaction/carpet/simple_neon_purple
 	results = list(/datum/reagent/carpet/neon/simple_purple = 2)

@@ -485,13 +485,6 @@
 	tastes = list("mint" = 1)
 	color = "#60A584"
 
-/obj/item/food/bubblegum/happiness
-	name = "HP+ gum"
-	desc = "A rubbery strip of gum. It smells funny."
-	food_reagents = list(/datum/reagent/drug/happiness = 15)
-	tastes = list("paint thinner" = 1)
-	color = "#EE35FF"
-
 /obj/item/food/bubblegum/bubblegum
 	name = "bubblegum gum"
 	desc = "A rubbery strip of gum. You don't feel like eating it is a good idea."

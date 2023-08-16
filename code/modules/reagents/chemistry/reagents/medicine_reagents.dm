@@ -695,7 +695,6 @@
 	color = "#E1F2E6"
 	metabolization_rate = 0.02
 
-
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"
 	description = "A powerful antipsychotic and sedative. Will help control psychiatric problems, but may cause brain damage."

@@ -74,12 +74,6 @@
 	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/medicine/atropine = 1, /datum/reagent/medicine/morphine = 1)
 
 
-/datum/chemical_reaction/happiness
-	results = list(/datum/reagent/drug/happiness = 4)
-	required_reagents = list(/datum/reagent/nitrous_oxide = 2, /datum/reagent/medicine/epinephrine = 1, /datum/reagent/consumable/ethanol = 1)
-	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
-
-
 /datum/chemical_reaction/pumpup
 	results = list(/datum/reagent/drug/pumpup = 5)
 	required_reagents = list(/datum/reagent/medicine/epinephrine = 2, /datum/reagent/consumable/coffee = 5)

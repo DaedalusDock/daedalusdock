@@ -823,7 +823,7 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-
+	show_in_codex = TRUE
 
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

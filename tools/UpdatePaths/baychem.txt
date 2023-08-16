@@ -62,3 +62,5 @@
 /obj/item/storage/pill_bottle/penacid : @DELETE
 /obj/machinery/chem_heater/debug :/obj/machinery/chem_heater
 /obj/item/reagent_containers/syringe/multiver : /obj/item/reagent_containers/syringe/dylovene
+/obj/item/reagent_containers/pill/happinesspsych : @DELETE
+/obj/item/food/bubblegum/happiness : @DELETE

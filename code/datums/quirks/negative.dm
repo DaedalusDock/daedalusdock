@@ -373,7 +373,7 @@
 	medical_record_text = "Patient has a history of hard drugs."
 	hardcore_value = 4
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
-	var/drug_list = list(/datum/reagent/drug/blastoff, /datum/reagent/drug/krokodil, /datum/reagent/medicine/morphine, /datum/reagent/drug/happiness, /datum/reagent/drug/methamphetamine) //List of possible IDs
+	var/drug_list = list(/datum/reagent/drug/blastoff, /datum/reagent/drug/krokodil, /datum/reagent/medicine/morphine, /datum/reagent/drug/methamphetamine) //List of possible IDs
 	var/datum/reagent/reagent_type //!If this is defined, reagent_id will be unused and the defined reagent type will be instead.
 	var/datum/reagent/reagent_instance //! actual instanced version of the reagent
 	var/where_drug //! Where the drug spawned

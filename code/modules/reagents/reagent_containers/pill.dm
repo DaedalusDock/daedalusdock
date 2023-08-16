@@ -184,12 +184,6 @@
 	list_reagents = list(/datum/reagent/mutationtoxin/shadow = 5)
 
 ///////////////////////////////////////// Psychologist inventory pills
-/obj/item/reagent_containers/pill/happinesspsych
-	name = "mood stabilizer pill"
-	desc = "Used to temporarily alleviate anxiety and depression, take only as prescribed."
-	list_reagents = list(/datum/reagent/drug/happiness = 5)
-	icon_state = "pill_happy"
-	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/paxpsych
 	name = "pacification pill"

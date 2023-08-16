@@ -57,7 +57,7 @@
 			/datum/reagent/medicine/leporazine, /datum/reagent/medicine/chlorpromazine,
 		),
 		list( // level 8
-			/datum/reagent/medicine/haloperidol, /datum/reagent/drug/happiness, /datum/reagent/medicine/ephedrine
+			/datum/reagent/medicine/haloperidol, /datum/reagent/medicine/ephedrine
 		),
 		list( // level 9
 			/datum/reagent/toxin/lipolicide,

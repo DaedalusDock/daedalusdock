@@ -248,51 +248,6 @@
 		C.adjustOxyLoss(1 * removed, 0)
 	. = TRUE
 
-/datum/reagent/drug/happiness
-	name = "Happiness"
-	description = "Fills you with ecstasic numbness and causes minor brain damage. Highly addictive. If overdosed causes sudden mood swings."
-	reagent_state = LIQUID
-	color = "#EE35FF"
-	overdose_threshold = 20
-
-	taste_description = "paint thinner"
-	addiction_types = list(/datum/addiction/hallucinogens = 18)
-
-/datum/reagent/drug/happiness/on_mob_metabolize(mob/living/carbon/C, class)
-	if(class != CHEM_BLOOD)
-		return
-	ADD_TRAIT(C, TRAIT_FEARLESS, type)
-
-/datum/reagent/drug/happiness/on_mob_end_metabolize(mob/living/carbon/C, class)
-	if(class != CHEM_BLOOD)
-		return
-	REMOVE_TRAIT(C, TRAIT_FEARLESS, type)
-
-/datum/reagent/drug/happiness/affect_blood(mob/living/carbon/C, removed)
-	C.remove_status_effect(/datum/status_effect/jitter)
-	C.remove_status_effect(/datum/status_effect/confusion)
-	C.disgust = 0
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed)
-	. = TRUE
-
-/datum/reagent/drug/happiness/overdose_process(mob/living/carbon/C)
-	if(prob(16))
-		var/reaction = rand(1,3)
-		switch(reaction)
-			if(1)
-				spawn(-1)
-					C.emote("laugh")
-			if(2)
-				spawn(-1)
-					C.emote("sway")
-				C.set_timed_status_effect(50 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
-			if(3)
-				spawn(-1)
-					C.emote("frown")
-
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)
-	. = TRUE
-
 /datum/reagent/drug/pumpup
 	name = "Pump-Up"
 	description = "Take on the world! A fast acting, hard hitting drug that pushes the limit on what you can handle."

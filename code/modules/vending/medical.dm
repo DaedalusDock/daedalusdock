@@ -19,7 +19,6 @@
 		/obj/item/stack/medical/bone_gel/twelve = 4
 	)
 	contraband = list(
-		/obj/item/storage/box/gum/happiness = 3,
 		/obj/item/storage/box/hug/medical = 1
 	)
 	premium = list(

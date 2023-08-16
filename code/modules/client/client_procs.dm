@@ -1233,8 +1233,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
 		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "default.PROTECTED-Shift", "command=\".winset :map.right-click=false;KeyDown Shift\"")
-		winset(src, "default.PROTECTED-ShiftUp", "command=\".winset :map.right-click=true;KeyUp Shift\"")
+		winset(src, "default.PROTECTED-Shift", "command=\".winset :map.right-click=false\nKeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\".winset :map.right-click=true\nKeyUp Shift\"")
 	else
 		winset(src, "mapwindow.map", "right-click=false")
 		winset(src, "default.PROTECTED-Shift", "command=\"KeyDown Shift\"")

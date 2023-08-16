@@ -134,7 +134,7 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 		"F23" = TRUE,
 		"F24" = TRUE,
 	)
-	// Macro IDs we don't delete on wipe. Usually stuff baked into the skin.
+	// Macro IDs we don't delete on wipe, Usually stuff baked into the skin, or that we have to be more careful with.
 	protected_macro_ids = list(
 		"PROTECTED-Shift",
 		"PROTECTED-ShiftUp"

@@ -21586,8 +21586,8 @@
 "gNO" = (
 /obj/structure/cable,
 /obj/structure/bed/dogbed/runtime,
-/mob/living/simple_animal/pet/cat/runtime,
 /obj/item/toy/cattoy,
+/mob/living/simple_animal/pet/cat/runtime,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/cmo)
 "gNY" = (
@@ -26422,12 +26422,10 @@
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/office)
 "iEY" = (
-/obj/structure/disposalpipe/segment{
-	dir = 6
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "iFn" = (
@@ -45683,6 +45681,7 @@
 	network = list("ss13","medbay")
 	},
 /obj/machinery/telephone/command,
+/obj/machinery/power/data_terminal,
 /turf/open/floor/carpet/blue,
 /area/station/command/heads_quarters/cmo)
 "pyP" = (

@@ -7281,6 +7281,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/wood/parquet,
 /area/station/medical/break_room)
 "bQI" = (
@@ -14321,6 +14322,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
+"eeF" = (
+/obj/machinery/chem_dispenser,
+/obj/structure/extinguisher_cabinet/directional/west,
+/turf/open/floor/iron/white,
+/area/station/medical/chemistry)
 "eeG" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/machinery/door/airlock/external{
@@ -30862,6 +30868,10 @@
 "klR" = (
 /turf/open/floor/iron/freezer,
 /area/station/medical/coldroom/starboard)
+"klX" = (
+/obj/structure/extinguisher_cabinet/directional/east,
+/turf/open/floor/iron/white,
+/area/station/medical/medbay/aft)
 "kmj" = (
 /obj/structure/window/reinforced,
 /obj/effect/decal/cleanable/cobweb,
@@ -32195,6 +32205,7 @@
 	c_tag = "Medbay Lobby";
 	network = list("ss13","medbay")
 	},
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "kLt" = (
@@ -36463,6 +36474,13 @@
 /obj/effect/mapping_helpers/paint_wall/priapus,
 /turf/closed/wall/prepainted/daedalus,
 /area/station/service/hydroponics)
+"mom" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/obj/structure/extinguisher_cabinet/directional/west,
+/turf/open/floor/iron,
+/area/station/medical/surgery/prep)
 "mot" = (
 /obj/structure/mirror/directional/west,
 /obj/machinery/shower{
@@ -44740,6 +44758,7 @@
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 1
 	},
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "pjG" = (
@@ -48754,6 +48773,7 @@
 "qDn" = (
 /obj/machinery/vending/coffee,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/aft)
 "qDI" = (
@@ -48840,6 +48860,7 @@
 /obj/item/storage/medkit/toxin,
 /obj/structure/window/reinforced/spawner/west,
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
+/obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "qFa" = (
@@ -49000,6 +49021,7 @@
 	dir = 1
 	},
 /obj/item/defibrillator/loaded,
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "qIb" = (
@@ -56599,6 +56621,7 @@
 	c_tag = "Medbay Treatment Center";
 	network = list("ss13","medbay")
 	},
+/obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "tzh" = (
@@ -68018,6 +68041,7 @@
 	dir = 1
 	},
 /obj/machinery/light/cold/directional/south,
+/obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "xTd" = (
@@ -88210,7 +88234,7 @@ eEw
 eGC
 xBV
 lfh
-ajw
+eeF
 xng
 cdO
 lat
@@ -89004,7 +89028,7 @@ pNm
 sFr
 mTq
 pNm
-pNm
+mom
 gTQ
 qLk
 iHk
@@ -92093,7 +92117,7 @@ iHk
 swm
 aPD
 aKx
-iHk
+klX
 hzX
 iHk
 wCc

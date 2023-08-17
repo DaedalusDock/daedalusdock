@@ -85,7 +85,7 @@
 	desc = "A dusty SUPER-SIZED from the back of the Syndicate warehouse. Rumored to contain a valuable assortment of items, \
 			but you never know. Contents are sorted to always be worth 125 TC."
 	cost = 40
-	crate_tc_value = 125
+	crate_tc_value = 100
 
 /datum/uplink_item/bundles_tc/surplus/proc/generate_possible_items(mob/user, datum/uplink_handler/handler)
 	var/list/possible_items = list()

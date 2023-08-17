@@ -121,6 +121,8 @@
 		"body" = issue_body
 	)
 	var/datum/http_request/issue_report = new
+	rustg_file_write(issue_body, "[GLOB.log_directory]/issue_reports/[ckey]-[world.time]-[SANITIZE_FILENAME(issue_title)].txt")
+	message_admins("BUGREPORT: Bug report filed by [ADMIN_LOOKUPFLW(src)], Title: [strip_html(issue_title)]")
 	issue_report.prepare(
 		RUSTG_HTTP_METHOD_POST,
 		"https://api.github.com/repos/[CONFIG_GET(string/issue_slug)]/issues",
@@ -141,6 +143,7 @@
 		to_chat(src, "[span_alertwarning("Bug report FAILED!")]\n\
 		[span_warning("Please adminhelp immediately!")]\n\
 		[span_notice("Code:[issue_response.status_code || "9001 CATASTROPHIC ERROR"]")]")
+
 		return
 	SEND_SOUND(src, 'sound/misc/compiler-stage2.ogg')
 	to_chat(src, span_notice("Bug submitted successfully."))

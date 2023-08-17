@@ -608,14 +608,6 @@
 	screen_loc = ui_living_healthdoll
 	var/filtered = FALSE //so we don't repeatedly create the mask of the mob every update
 
-/atom/movable/screen/mood
-	name = "mood"
-	icon_state = "mood5"
-	screen_loc = ui_mood
-
-/atom/movable/screen/mood/attack_tk()
-	return
-
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent
 

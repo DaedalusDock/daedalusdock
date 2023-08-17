@@ -644,7 +644,7 @@
 
 	//DAMAGE//
 	for(var/obj/item/bodypart/affecting in damaged)
-		affecting.receive_damage(acidity, 2*acidity)
+		affecting.receive_damage(acidity, 2*acidity, updating_health = FALSE)
 
 		if(affecting.name == BODY_ZONE_HEAD)
 			if(prob(min(acidpwr*acid_volume/10, 90))) //Applies disfigurement
@@ -655,7 +655,8 @@
 				update_body_parts()
 				ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
 
-		update_damage_overlays()
+	updatehealth()
+	update_damage_overlays()
 
 	//MELTING INVENTORY ITEMS//
 	//these items are all outside of armour visually, so melt regardless.

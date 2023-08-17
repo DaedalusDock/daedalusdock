@@ -8,7 +8,7 @@
 		update_damage_hud()
 
 	. = ..()
-
+	chem_effects.Cut()
 	if(!IS_IN_STASIS(src))
 		handle_organs(delta_time, times_fired)
 
@@ -24,8 +24,7 @@
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 	else
-		var/bprv = handle_bodyparts(delta_time, times_fired)
-		if(bprv & BODYPART_LIFE_UPDATE_HEALTH)
+		if(handle_bodyparts(delta_time, times_fired))
 			updatehealth()
 
 	check_cremation(delta_time, times_fired)
@@ -55,10 +54,6 @@
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)
 		breathe(delta_time, times_fired) //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
-		if(failed_last_breath)
-			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "suffocation", /datum/mood_event/suffocation)
-		else
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "suffocation")
 	else
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
@@ -229,7 +224,6 @@
 		var/SA_partialpressure = (breath_gases[GAS_N2O]/breath.total_moles)*breath_pressure
 		if(SA_partialpressure > SA_para_min)
 			throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 			Unconscious(60)
 			if(SA_partialpressure > SA_sleep_min)
 				Sleeping(max(AmountSleeping() + 40, 200))
@@ -237,12 +231,9 @@
 			clear_alert(ALERT_TOO_MUCH_N2O)
 			if(prob(20))
 				emote(pick("giggle","laugh"))
-			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "chemical_euphoria", /datum/mood_event/chemical_euphoria)
 		else
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 			clear_alert(ALERT_TOO_MUCH_N2O)
 	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 		clear_alert(ALERT_TOO_MUCH_N2O)
 
 	//BREATH TEMPERATURE

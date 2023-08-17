@@ -10,5 +10,3 @@
 #define QUIRK_PROCESSES (1<<1)
 /// This quirk is has a visual aspect in that it changes how the player looks. Used in generating dummies.
 #define QUIRK_CHANGES_APPEARANCE (1<<2)
-/// The only thing this quirk effects is mood so it should be disabled if mood is
-#define QUIRK_MOODLET_BASED (1<<3)

@@ -70,6 +70,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			color = "#[random_color()]" //A temporary random color that gets overwritten on insertion.
 	else
 		START_PROCESSING(SSobj, src)
+		organ_flags |= ORGAN_CUT_AWAY
 
 /obj/item/organ/Destroy(force)
 	if(owner)

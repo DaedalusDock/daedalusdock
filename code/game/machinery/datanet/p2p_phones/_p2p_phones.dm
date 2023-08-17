@@ -42,6 +42,8 @@
 	var/list/discovered_phones
 	/// The 'common name' of the station. Used in the UI.
 	var/friendly_name = null
+	/// Name 'placard', such as 'Special Hotline', gets appended to the end.
+	var/placard_name
 	/// Do we show netaddrs in the phone UI, or just the names?
 	var/show_netids = FALSE
 
@@ -79,7 +81,7 @@
 ///Recalculate our name.
 /obj/machinery/telephone/proc/recalculate_name()
 	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
-	name = "phone - [friendly_name]"
+	name = "phone - [friendly_name][placard_name ? " - [placard_name]" : null]"
 
 /obj/machinery/telephone/Destroy()
 	if(!QDELETED(handset))
@@ -165,15 +167,21 @@
 
 
 /obj/machinery/telephone/multitool_act(mob/living/user, obj/item/tool)
-	var/static/list/options_list = list("Rename Station", "Reconnect to terminal", "Toggle Address Display")
+	var/static/list/options_list = list("Set Caller ID", "Set Placard", "Reconnect to terminal", "Toggle Address Display")
 	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
 	switch(selected)
-		if("Rename Station")
+		if("Set Caller ID")
 			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
 			if(!new_friendly_name)
 				return TOOL_ACT_TOOLTYPE_SUCCESS
 			friendly_name = new_friendly_name
 			recalculate_name()
+
+		if("Set Placard")
+			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
+			if(!new_placard_name)
+				return TOOL_ACT_TOOLTYPE_SUCCESS
+			placard_name = new_placard_name
 
 		if("Reconnect to terminal")
 			switch(link_to_jack()) //Just in case something stupid happens to the jack.
@@ -185,12 +193,14 @@
 					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
 				else
 					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))
+
 		if("Toggle Address Display")
 			show_netids = !show_netids
 			if(show_netids)
 				to_chat(user, span_notice("You enabled the display of network IDs."))
 			else
 				to_chat(user, span_notice("You disabled the display of network IDs."))
+		//else fall through
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 

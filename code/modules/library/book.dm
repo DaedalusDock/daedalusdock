@@ -115,7 +115,6 @@
 	if(!user.can_read(src))
 		return
 	user.visible_message(span_notice("[user] opens a book titled \"[book_data.title]\" and begins reading intently."))
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "book_nerd", /datum/mood_event/book_nerd)
 	on_read(user)
 
 /obj/item/book/attackby(obj/item/I, mob/user, params)

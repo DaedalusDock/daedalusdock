@@ -212,9 +212,9 @@
 /mob/living/silicon/pai/get_status_tab_items()
 	. += ..()
 	if(!stat)
-		. += text("Emitter Integrity: [emitterhealth * (100 / emittermaxhealth)]")
+		. += "Emitter Integrity: [emitterhealth * (100 / emittermaxhealth)]"
 	else
-		. += text("Systems nonfunctional")
+		. += "Systems nonfunctional"
 
 
 // See software.dm for Topic()

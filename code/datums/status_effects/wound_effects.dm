@@ -114,8 +114,8 @@
 		C.remove_status_effect(src)
 		return
 
-	slowdown_left = 0
-	slowdown_right = 0
+	slowdown_left = 1
+	slowdown_right = 1
 	limp_chance_left = 0
 	limp_chance_right = 0
 
@@ -128,7 +128,7 @@
 		limp_chance_right = 100
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
-	if(!slowdown_left && !slowdown_right)
+	if(slowdown_left + slowdown_right == 2)
 		C.remove_status_effect(src)
 		return
 

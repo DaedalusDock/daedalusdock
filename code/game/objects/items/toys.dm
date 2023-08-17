@@ -174,22 +174,6 @@
 	inhand_icon_state = "syndballoon"
 	random_color = FALSE
 
-/obj/item/toy/balloon/syndicate/pickup(mob/user)
-	. = ..()
-	if(user && user.mind && user.mind.has_antag_datum(/datum/antagonist, TRUE))
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-
-/obj/item/toy/balloon/syndicate/dropped(mob/user)
-	if(user)
-		SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-	. = ..()
-
-/obj/item/toy/balloon/syndicate/Destroy()
-	if(ismob(loc))
-		var/mob/M = loc
-		SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-	. = ..()
-
 /obj/item/toy/balloon/arrest
 	name = "arreyst balloon"
 	desc = "A half inflated balloon about a boyband named Arreyst that was popular about ten years ago, famous for making fun of red jumpsuits as unfashionable."
@@ -1478,7 +1462,6 @@ GLOBAL_LIST_EMPTY(intento_players)
 	switch(intent)
 		if(HELP)
 			to_chat(victim, span_danger("[src] hugs you to make you feel better!"))
-			SEND_SIGNAL(victim, COMSIG_ADD_MOOD_EVENT, "hug", /datum/mood_event/hug)
 		if(DISARM)
 			to_chat(victim, span_danger("You're knocked down from a shove by [src]!"))
 			victim.Knockdown(2 SECONDS)

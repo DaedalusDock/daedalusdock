@@ -1,6 +1,6 @@
 ---LICENSE NOTICE---
 
-The server operator(s) is responsible for the copyright status of all sounds placed within the /config/title_music/sounds folder unless otherwise noted.
+The server operator(s) is responsible for the copyright status of all sounds placed within the /config/media/sounds folder unless otherwise noted.
 
 If a sound requires attribution and/or a specific license it is up to the operator(s) to make this information publicly available on either 
 a website associated with their server or on the server itself. 

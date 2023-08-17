@@ -196,7 +196,6 @@
 
 	to_chat(user, span_warning("The acid on \the [parent_atom] burns your hand!"))
 	playsound(parent_atom, 'sound/weapons/sear.ogg', 50, TRUE)
-	user.update_damage_overlays()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 

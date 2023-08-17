@@ -179,7 +179,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 
 	if(area)
 		if(area.apc)
-			log_mapping("Duplicate APC created at [AREACOORD(src)]")
+			log_mapping("Duplicate APC created at [AREACOORD(src)] (Original APC at[COORD(area.apc)])")
 		area.apc = src
 
 	update_appearance()

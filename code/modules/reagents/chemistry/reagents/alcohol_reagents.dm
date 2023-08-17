@@ -2639,11 +2639,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A drink to make facing death easier."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ethanol/drunken_espatier/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
-	drinker.hal_screwyhud = SCREWYHUD_HEALTHY //almost makes you forget how much it hurts
-	SEND_SIGNAL(drinker, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_medium, name) //comfortably numb
-	..()
-
 /datum/reagent/consumable/ethanol/protein_blend
 	name = "Protein Blend"
 	description = "A vile blend of protein, pure grain alcohol, korta flour, and blood. Useful for bulking up, if you can keep it down."
@@ -2688,11 +2683,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_name = "Triumphal Arch"
 	glass_desc = "A toast to the Empire, long may it stand."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/consumable/ethanol/triumphal_arch/on_mob_life(mob/living/carbon/drinker, delta_time, times_fired)
-	if(islizard(drinker))
-		SEND_SIGNAL(drinker, COMSIG_ADD_MOOD_EVENT, "triumph", /datum/mood_event/memories_of_home, name)
-	..()
 
 /datum/reagent/consumable/ethanol/the_juice
 	name = "The Juice"

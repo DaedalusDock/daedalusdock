@@ -63,10 +63,6 @@
 			continue
 		GLOB.religious_sect.adjust_favor(0.2)
 
-/datum/religion_rites/song_tuner/evangelism/finish_effect(atom/song_player, datum/song/song_datum)
-	for(var/mob/living/carbon/human/listener in song_datum.hearing_mobs)
-		SEND_SIGNAL(listener, COMSIG_ADD_MOOD_EVENT, "blessing", /datum/mood_event/blessing)
-
 /datum/religion_rites/song_tuner/nullwave
 	name = "Nullwave Vibrato"
 	desc = "Sing a dull song, protecting those who listen from magic."

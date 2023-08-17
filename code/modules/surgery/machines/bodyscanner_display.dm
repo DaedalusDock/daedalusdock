@@ -3,7 +3,7 @@ GLOBAL_LIST_EMPTY(bodyscanscreens)
 /obj/machinery/body_scan_display
 	name = "body scan display"
 	desc = "A wall-mounted display linked to a body scanner."
-	icon = 'icons/obj/cryogenics.dmi'
+	icon = 'icons/obj/machines/bodyscan_displays.dmi'
 	icon_state = "telescreen"
 
 	var/current_content = ""

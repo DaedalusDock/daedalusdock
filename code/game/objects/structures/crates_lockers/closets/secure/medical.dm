@@ -85,7 +85,6 @@
 	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
 	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
 	new /obj/item/autosurgeon/organ/cmo(src)
-	new /obj/item/door_remote/chief_medical_officer(src)
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)
 	new /obj/item/wallframe/defib_mount(src)

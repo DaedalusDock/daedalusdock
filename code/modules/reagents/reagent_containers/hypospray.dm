@@ -144,7 +144,7 @@
 		. += span_notice("It is spent.")
 
 /obj/item/reagent_containers/hypospray/medipen/stimpack //goliath kiting
-	name = "stimpack medipen"
+	name = "stimpack autoinjector"
 	desc = "A rapid way to stimulate your body's adrenaline, allowing for freer movement in restrictive armor."
 	icon_state = "stimpen"
 	inhand_icon_state = "stimpen"
@@ -158,7 +158,7 @@
 	list_reagents = list(/datum/reagent/stimulants = 10, /datum/reagent/medicine/tricordrazine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/stimulants
-	name = "stimulant medipen"
+	name = "stimulant autoinjector"
 	desc = "Contains a very large amount of an incredibly powerful stimulant, vastly increasing your movement speed and reducing stuns by a very large amount for around five minutes. Do not take if pregnant."
 	icon_state = "syndipen"
 	inhand_icon_state = "tbpen"
@@ -168,7 +168,7 @@
 	list_reagents = list(/datum/reagent/stimulants = 50)
 
 /obj/item/reagent_containers/hypospray/medipen/morphine
-	name = "morphine medipen"
+	name = "morphine autoinjector"
 	desc = "A rapid way to get you out of a tight situation and fast! You'll feel rather drowsy, though."
 	icon_state = "morphen"
 	inhand_icon_state = "morphen"
@@ -176,7 +176,7 @@
 	list_reagents = list(/datum/reagent/medicine/morphine = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/dermaline
-	name = "dermaline medipen"
+	name = "dermaline autoinjector"
 	desc = "An autoinjector containing dermaline, used to treat severe burns."
 	icon_state = "oxapen"
 	inhand_icon_state = "oxapen"
@@ -184,7 +184,7 @@
 	list_reagents = list(/datum/reagent/medicine/dermaline = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/meralyne
-	name = "meralyne medipen"
+	name = "meralyne autoinjector"
 	desc = "An autoinjector containing meralyne, used to treat severe brute damage."
 	icon_state = "salacid"
 	inhand_icon_state = "salacid"
@@ -192,7 +192,7 @@
 	list_reagents = list(/datum/reagent/medicine/meralyne = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/dexalin
-	name = "dexalin medipen"
+	name = "dexalin autoinjector"
 	desc = "An autoinjector containing dexalin, used to heal oxygen damage quickly."
 	icon_state = "salpen"
 	inhand_icon_state = "salpen"
@@ -200,7 +200,7 @@
 	list_reagents = list(/datum/reagent/medicine/dexalin = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/dylovene
-	name = "dylovene medipen"
+	name = "dylovene autoinjector"
 	desc = "An autoinjector containing dylovene, used to heal toxin damage quickly."
 	icon_state = "salpen"
 	inhand_icon_state = "salpen"
@@ -225,14 +225,14 @@
 	icon_state = "[base_icon_state][(reagents.total_volume > 0) ? 1 : 0]"
 
 /obj/item/reagent_containers/hypospray/medipen/survival
-	name = "survival emergency medipen"
+	name = "survival emergency autoinjector"
 	desc = "A medipen for surviving in the harsh environments, heals most common damage sources. WARNING: May cause organ damage."
 	icon_state = "stimpen"
 	inhand_icon_state = "stimpen"
 	base_icon_state = "stimpen"
 	volume = 30
 	amount_per_transfer_from_this = 30
-	list_reagents = list( /datum/reagent/medicine/epinephrine = 8, /datum/reagent/medicine/kelotane = 8, /datum/reagent/medicine/bicaridine = 8, /datum/reagent/medicine/leporazine = 6)
+	list_reagents = list(/datum/reagent/medicine/synaptizine = 8, /datum/reagent/medicine/dermaline = 8, /datum/reagent/medicine/meralyne = 8, /datum/reagent/medicine/leporazine = 6)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
 	if(lavaland_equipment_pressure_check(get_turf(user)))
@@ -252,8 +252,8 @@
 
 
 /obj/item/reagent_containers/hypospray/medipen/survival/luxury
-	name = "luxury medipen"
-	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments. WARNING: DO NOT MIX WITH EPINEPHRINE OR ATROPINE."
+	name = "luxury autoinjector"
+	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
 	icon_state = "luxpen"
 	inhand_icon_state = "atropen"
 	base_icon_state = "luxpen"

@@ -111,6 +111,8 @@
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	if(C.has_reagent(/datum/reagent/medicine/epinephrine))
+		C.set_heartattack(TRUE)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -206,7 +208,7 @@
 
 /datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_ANTITOX, 1)
-	C.adjustToxLoss(1.5 * removed, FALSE)
+	C.adjustToxLoss(-1.5 * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dexalin
@@ -235,7 +237,6 @@
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
 	var/heal = 1 + ((clamp(round(current_cycle % 10), 0, 3))) * removed
 	C.heal_overall_damage(heal, heal, updating_health = FALSE)
-	C.adjustToxLoss(heal, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine/godblood
@@ -627,6 +628,10 @@
 		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
+
+	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
+		C.set_heartattack(TRUE)
+		return
 
 	if(volume > 10)
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)

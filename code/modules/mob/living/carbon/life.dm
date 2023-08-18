@@ -8,7 +8,6 @@
 		update_damage_hud()
 
 	. = ..()
-	chem_effects.Cut()
 	if(!IS_IN_STASIS(src))
 		handle_organs(delta_time, times_fired)
 

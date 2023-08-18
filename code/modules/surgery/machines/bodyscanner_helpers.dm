@@ -31,6 +31,7 @@
 			reagent["name"] = R.name
 			reagent["quantity"] = round(R.volume, 1)
 			reagent["visible"] = !(R.chemical_flags & REAGENT_INVISIBLE)
+			reagent["overdosed"] = R.overdosed
 			.["reagents"] += list(reagent)
 
 	.["bodyparts"] = list()

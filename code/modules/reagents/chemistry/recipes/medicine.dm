@@ -1,7 +1,7 @@
 
 /datum/chemical_reaction/inaprovaline
 	results = list(/datum/reagent/medicine/inaprovaline = 3)
-	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/consumable/sugar = 1)
+	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/phenol = 1)
 
 /datum/chemical_reaction/dylovene
 	results = list(/datum/reagent/medicine/dylovene = 3)
@@ -13,12 +13,8 @@
 
 /datum/chemical_reaction/meralyne
 	results = list(/datum/reagent/medicine/meralyne = 2)
-	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/inaprovaline = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/epinephrine = 1, /datum/reagent/acetone = 1)
 	inhibitors = list(/datum/reagent/consumable/sugar = 1) // Messes up with inaprovaline
-	is_cold_recipe = TRUE
-	optimal_temp = (-50 CELSIUS) - 25
-	required_temp = -50 CELSIUS
-	overheat_temp = -10 CELSIUS
 
 /datum/chemical_reaction/meralyne/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()
@@ -27,6 +23,10 @@
 /datum/chemical_reaction/kelotane
 	results = list(/datum/reagent/medicine/kelotane = 2)
 	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
+	is_cold_recipe = TRUE
+	optimal_temp = (-50 CELSIUS) - 50
+	required_temp = -50 CELSIUS
+	overheat_temp = -10 CELSIUS
 
 /datum/chemical_reaction/dermaline
 	results = list(/datum/reagent/medicine/dermaline = 3)
@@ -47,7 +47,7 @@
 
 /datum/chemical_reaction/tricordrazine
 	results =  list(/datum/reagent/medicine/tricordrazine = 5)
-	required_reagents = list(/datum/reagent/medicine/inaprovaline = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1)
+	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/acetone = 1)
 
 /datum/chemical_reaction/ryetalyn
 	results = list(/datum/reagent/medicine/ryetalyn = 2)
@@ -75,7 +75,7 @@
 
 /datum/chemical_reaction/tramadol
 	results = list(/datum/reagent/medicine/tramadol = 3)
-	required_reagents = list(/datum/reagent/medicine/inaprovaline = 1, /datum/reagent/consumable/ethanol = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/consumable/ethanol = 1, /datum/reagent/acetone = 1)
 
 /datum/chemical_reaction/oxycodone
 	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
@@ -92,7 +92,7 @@
 
 /datum/chemical_reaction/spaceacillin
 	results = list(/datum/reagent/medicine/spaceacillin = 2)
-	required_reagents = list(/datum/reagent/cryptobiolin = 1, /datum/reagent/medicine/inaprovaline = 1)
+	required_reagents = list(/datum/reagent/cryptobiolin = 1, /datum/reagent/medicine/epinephrine = 1)
 
 /datum/chemical_reaction/synaptizine
 	results = list(/datum/reagent/medicine/synaptizine = 3)
@@ -130,7 +130,7 @@
 
 /datum/chemical_reaction/epinephrine
 	results = list(/datum/reagent/medicine/epinephrine = 6)
-	required_reagents = list(/datum/reagent/phenol = 1, /datum/reagent/acetone = 1, /datum/reagent/diethylamine = 1, /datum/reagent/oxygen = 1, /datum/reagent/chlorine = 1, /datum/reagent/hydrogen = 1)
+	required_reagents = list(/datum/reagent/diethylamine = 1, /datum/reagent/oxygen = 1, /datum/reagent/chlorine = 1, /datum/reagent/hydrogen = 1)
 
 /datum/chemical_reaction/ephedrine
 	results = list(/datum/reagent/medicine/ephedrine = 4)

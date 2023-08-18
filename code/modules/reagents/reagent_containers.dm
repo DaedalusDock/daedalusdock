@@ -45,9 +45,8 @@
 	if (!user.combat_mode)
 		return ..()
 
-	if(try_splash(user, A))
-		return TRUE
-	return ..()
+	try_splash(user, A)
+	return TRUE
 
 /obj/item/reagent_containers/proc/on_reagents_del(datum/reagents/reagents)
 	SIGNAL_HANDLER
@@ -83,10 +82,6 @@
 	mode_change_message(user)
 
 /obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
-	if(HAS_TRAIT(target, DO_NOT_SPLASH))
-		return ..()
-	if(!user.combat_mode)
-		return ..()
 	if (try_splash(user, target))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -98,6 +93,7 @@
 		return FALSE
 
 	if (!reagents?.total_volume)
+		to_chat(user, span_warning("There are no reagents in this container to splash!"))
 		return FALSE
 
 	var/punctuation = ismob(target) ? "!" : "."
@@ -124,7 +120,9 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.trans_to(target, reagents.total_volume, methods = TOUCH)
+	if(!reagents.trans_to(target, reagents.total_volume, methods = TOUCH))
+		reagents.expose(target, TOUCH)
+		reagents.clear_reagents()
 	log_combat(user, target, "splashed", reagent_text)
 	return TRUE
 

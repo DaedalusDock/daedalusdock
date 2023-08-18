@@ -61,7 +61,7 @@
 	color = "#60A584" // rgb: 96, 165, 132
 	taste_description = "smoke"
 	trippy = FALSE
-	overdose_threshold = 15
+	overdose_threshold = 30
 	metabolization_rate = 0.01
 
 	addiction_types = list(/datum/addiction/nicotine = 18) // 7.2 per 2 seconds

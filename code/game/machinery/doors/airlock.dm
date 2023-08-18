@@ -1196,12 +1196,12 @@
 	if(air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		withdraw_from_zone()
+		zas_update_loc()
 	sleep(1)
 	if(!air_tight)
 		set_density(TRUE)
 		flags_1 |= PREVENT_CLICK_UNDER_1
-		withdraw_from_zone()
+		zas_update_loc()
 	sleep(4)
 	if(dangerous_close)
 		crush()

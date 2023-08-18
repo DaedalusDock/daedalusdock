@@ -237,6 +237,7 @@
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
 	var/heal = 1 + ((clamp(round(current_cycle % 10), 0, 3))) * removed
 	C.heal_overall_damage(heal, heal, updating_health = FALSE)
+	C.adjustToxLoss(-heal * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine/godblood

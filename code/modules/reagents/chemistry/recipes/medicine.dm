@@ -47,7 +47,7 @@
 
 /datum/chemical_reaction/tricordrazine
 	results =  list(/datum/reagent/medicine/tricordrazine = 5)
-	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/medicine/dylovene = 1)
 
 /datum/chemical_reaction/ryetalyn
 	results = list(/datum/reagent/medicine/ryetalyn = 2)

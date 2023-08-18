@@ -486,17 +486,6 @@
 		smoker_lungs.maxHealth = smoker_lungs.maxHealth * 0.75
 		smoker_lungs.healing_factor = smoker_lungs.healing_factor * 0.75
 
-/datum/quirk/unstable
-	name = "Unstable"
-	desc = "Due to past troubles, you are unable to recover your sanity if you lose it. Be very careful managing your mood!"
-	icon = "angry"
-	value = -10
-	mob_trait = TRAIT_UNSTABLE
-	gain_text = "<span class='danger'>There's a lot on your mind right now.</span>"
-	lose_text = "<span class='notice'>Your mind finally feels calm.</span>"
-	medical_record_text = "Patient's mind is in a vulnerable state, and cannot recover from traumatic events."
-	hardcore_value = 9
-
 /datum/quirk/item_quirk/allergic
 	name = "Extreme Medicine Allergy"
 	desc = "Ever since you were a kid, you've been allergic to certain chemicals..."

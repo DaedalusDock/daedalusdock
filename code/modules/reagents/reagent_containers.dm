@@ -42,11 +42,16 @@
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
 /obj/item/reagent_containers/pre_attack(atom/A, mob/living/user, params)
-	if (!user.combat_mode)
-		return ..()
+	if (user.combat_mode)
+		if(try_splash(user, A))
+			return TRUE
 
-	try_splash(user, A)
-	return TRUE
+	return ..()
+
+/obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
+	if(!user.combat_mode)
+		return
+	return ..()
 
 /obj/item/reagent_containers/proc/on_reagents_del(datum/reagents/reagents)
 	SIGNAL_HANDLER

@@ -29,6 +29,10 @@
 		return FALSE
 	if(!target.reagents)
 		return FALSE
+	if(isliving(user))
+		var/mob/living/L = user
+		if(L.combat_mode)
+			return FALSE
 
 	if(isliving(target))
 		var/mob/living/living_target = target

@@ -201,7 +201,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -590,34 +590,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		return FALSE
 
 	return TRUE // If we passed all of those checks, woohoo! We can interact with this machine.
-
-/obj/machinery/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!occupant || state_open)
-		return TRUE
-	var/mob/living/occupant_mob = occupant
-	var/obj/item/card/id/occupant_id = occupant_mob.get_idcard(TRUE)
-	if(!occupant_id)
-		say("[market_verb] NAP Violation: No ID card found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/insurance = occupant_id.registered_account
-	if(!insurance)
-		say("[market_verb] NAP Violation: No bank account found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	if(!insurance.adjust_money(-fair_market_price))
-		say("[market_verb] NAP Violation: Unable to pay.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
-	if(department_account)
-		department_account.adjust_money(fair_market_price)
-	return TRUE
-
-/obj/machinery/proc/nap_violation(mob/violator)
-	return
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 

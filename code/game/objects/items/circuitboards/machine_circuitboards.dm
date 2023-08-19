@@ -807,7 +807,7 @@
 /obj/item/circuitboard/machine/bodyscanner_console
 	name = "Body Scanner Console (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/bodyscanner
+	build_path = /obj/machinery/bodyscanner_console
 	req_components = list(
 		/obj/item/stack/cable_coil = 1,
 		/obj/item/stack/sheet/glass = 1

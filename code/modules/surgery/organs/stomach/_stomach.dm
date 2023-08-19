@@ -139,9 +139,6 @@
 	if (human.nutrition > 0 && human.stat != DEAD)
 		// THEY HUNGER
 		var/hunger_rate = HUNGER_DECAY
-		var/datum/component/mood/mood = human.GetComponent(/datum/component/mood)
-		if(mood && mood.sanity > SANITY_DISTURBED)
-			hunger_rate *= max(1 - 0.002 * mood.sanity, 0.5) //0.85 to 0.75
 		// Whether we cap off our satiety or move it towards 0
 		if(human.satiety > MAX_SATIETY)
 			human.satiety = MAX_SATIETY
@@ -181,9 +178,7 @@
 			to_chat(human, span_notice("You no longer feel vigorous."))
 		human.metabolism_efficiency = 1
 
-	//Hunger slowdown for if mood isn't enabled
-	if(CONFIG_GET(flag/disable_human_mood))
-		handle_hunger_slowdown(human)
+	handle_hunger_slowdown(human)
 
 	// If we did anything more then just set and throw alerts here I would add bracketing
 	// But well, it is all we do, so there's not much point bothering with it you get me?
@@ -243,22 +238,17 @@
 	switch(disgust)
 		if(0 to DISGUST_LEVEL_GROSS)
 			disgusted.clear_alert(ALERT_DISGUST)
-			SEND_SIGNAL(disgusted, COMSIG_CLEAR_MOOD_EVENT, "disgust")
 		if(DISGUST_LEVEL_GROSS to DISGUST_LEVEL_VERYGROSS)
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/gross)
-			SEND_SIGNAL(disgusted, COMSIG_ADD_MOOD_EVENT, "disgust", /datum/mood_event/gross)
 		if(DISGUST_LEVEL_VERYGROSS to DISGUST_LEVEL_DISGUSTED)
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/verygross)
-			SEND_SIGNAL(disgusted, COMSIG_ADD_MOOD_EVENT, "disgust", /datum/mood_event/verygross)
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/disgusted)
-			SEND_SIGNAL(disgusted, COMSIG_ADD_MOOD_EVENT, "disgust", /datum/mood_event/disgusted)
 
 /obj/item/organ/stomach/Remove(mob/living/carbon/stomach_owner, special = 0)
 	if(ishuman(stomach_owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.clear_alert(ALERT_DISGUST)
-		SEND_SIGNAL(human_owner, COMSIG_CLEAR_MOOD_EVENT, "disgust")
 		human_owner.clear_alert(ALERT_NUTRITION)
 
 	return ..()

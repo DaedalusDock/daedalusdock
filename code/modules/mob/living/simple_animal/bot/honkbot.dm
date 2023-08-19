@@ -129,10 +129,6 @@
 	addtimer(CALLBACK(src, PROC_REF(limiting_spam_false)), cooldowntimehorn)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance)), 3 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
 
-//Honkbots don't care for NAP violations
-/mob/living/simple_animal/bot/secbot/honkbot/check_nap_violations()
-	return TRUE
-
 /mob/living/simple_animal/bot/secbot/honkbot/proc/limiting_spam_false() //used for addtimer
 	limiting_spam = FALSE
 

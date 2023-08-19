@@ -34,7 +34,7 @@
 	if(!(body_parts_covered & LEGS))
 		fallback_icon_state = "under_skirt"
 
-/obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/under/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -42,7 +42,13 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
 	if(HAS_BLOOD_DNA(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
+		if(istype(wearer))
+			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
+			if(!chest?.icon_bloodycover)
+				return
+			. += image(chest.icon_bloodycover, "uniformblood")
+		else
+			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -120,7 +126,6 @@
 	..()
 	if(slot == ITEM_SLOT_ICLOTHING && freshly_laundered)
 		freshly_laundered = FALSE
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "fresh_laundry", /datum/mood_event/fresh_laundry)
 
 /obj/item/clothing/under/dropped(mob/user)
 	if(attached_accessory)

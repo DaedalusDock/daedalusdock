@@ -123,9 +123,9 @@
 	UPDATE_SUM_LUM(g)
 	UPDATE_SUM_LUM(b)
 
-	add_r = clamp((self_r - 1.4) * 0.5, 0, 0.3)
-	add_g = clamp((self_g - 1.4) * 0.5, 0, 0.3)
-	add_b = clamp((self_b - 1.4) * 0.5, 0, 0.3)
+	add_r = clamp((self_r - 1.1) * 0.3, 0, 0.22)
+	add_g = clamp((self_g - 1.1) * 0.3, 0, 0.22)
+	add_b = clamp((self_b - 1.1) * 0.3, 0, 0.22)
 
 	applying_additive = add_r || add_b || add_g
 

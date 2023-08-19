@@ -27,7 +27,7 @@
 		var/mob/living/simple_animal/hostile/heretic_summon/armsy/prime/old_armsy = cast_on
 		var/mob/living/our_heretic = locate() in old_armsy
 
-		if(our_heretic.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_ASCENSION_EFFECT))
+		if(our_heretic.remove_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_ASCENSION_EFFECT))
 			our_heretic.forceMove(old_armsy.loc)
 
 		old_armsy.mind.transfer_to(our_heretic, TRUE)
@@ -39,13 +39,12 @@
 
 		cast_on.mind.transfer_to(new_armsy, TRUE)
 		cast_on.forceMove(new_armsy)
-		cast_on.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_ASCENSION_EFFECT)
+		cast_on.apply_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_ASCENSION_EFFECT)
 
 		// They see the very reality uncoil before their eyes.
 		for(var/mob/living/carbon/human/nearby_human in view(scare_radius, new_armsy))
 			if(IS_HERETIC_OR_MONSTER(nearby_human))
 				continue
-			SEND_SIGNAL(nearby_human, COMSIG_ADD_MOOD_EVENT, "gates_of_mansus", /datum/mood_event/gates_of_mansus)
 
 			if(prob(25))
 				var/datum/brain_trauma/trauma = pick(subtypesof(BRAIN_TRAUMA_MILD) + subtypesof(BRAIN_TRAUMA_SEVERE))

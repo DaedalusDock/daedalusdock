@@ -17,8 +17,6 @@
 	cast_on.mind.miming = !cast_on.mind.miming
 	if(cast_on.mind.miming)
 		to_chat(cast_on, span_notice("You make a vow of silence."))
-		SEND_SIGNAL(cast_on, COMSIG_CLEAR_MOOD_EVENT, "vow")
 	else
 		to_chat(cast_on, span_notice("You break your vow of silence."))
-		SEND_SIGNAL(cast_on, COMSIG_ADD_MOOD_EVENT, "vow", /datum/mood_event/broken_vow)
 	cast_on?.update_mob_action_buttons()

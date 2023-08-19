@@ -197,6 +197,11 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
 
+/obj/machinery/portable_atmospherics/canister/oxygen/cryo
+	name = "cryogenic canister"
+	starter_temp = 80
+	filled = 0.2
+
 /obj/machinery/portable_atmospherics/canister/boron
 	name = "boron canister"
 	gas_type = GAS_BORON

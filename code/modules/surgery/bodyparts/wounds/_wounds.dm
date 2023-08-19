@@ -21,8 +21,6 @@
 	///Amount of damage the current wound type requires(less means we need to apply the next healing stage)
 	var/min_damage = 0
 
-	///Is bandaged?
-	var/bandaged = 0
 	///Is clamped?
 	var/clamped = 0
 	///Is salved?
@@ -114,7 +112,15 @@
 /datum/wound/proc/can_autoheal()
 	if(LAZYLEN(embedded_objects))
 		return FALSE
-	return (wound_damage() <= autoheal_cutoff) ? TRUE : is_treated()
+
+	switch(wound_type) //OOP is a lie. Should bruises, cuts, and punctures all share a common parent? Probably. Fuck you!
+		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
+			if(parent.bandage)
+				return wound_damage() <= initial(autoheal_cutoff)
+		if(WOUND_BURN)
+			. = salved
+
+	. ||= (wound_damage() <= autoheal_cutoff)
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
@@ -123,7 +129,7 @@
 
 	switch(wound_type)
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
-			return bandaged
+			return parent.bandage
 		if (WOUND_BURN)
 			return salved
 
@@ -177,14 +183,6 @@
 
 	return 0
 
-/datum/wound/proc/bandage()
-	if(bandaged)
-		return FALSE
-	bandaged = 1
-	if(parent)
-		parent.refresh_bleed_rate()
-	return TRUE
-
 /datum/wound/proc/salve()
 	if(salved)
 		return FALSE
@@ -227,7 +225,7 @@
 	return amount
 
 // opens the wound again
-/datum/wound/proc/open_wound(damage)
+/datum/wound/proc/open_wound(damage, update_damage = TRUE)
 	src.damage += damage
 	bleed_timer += damage
 
@@ -236,6 +234,9 @@
 
 	src.desc = desc_list[current_stage]
 	src.min_damage = damage_list[current_stage]
+
+	if(update_damage)
+		parent.update_damage()
 
 /datum/wound/proc/close_wound()
 	return
@@ -271,14 +272,6 @@
 /datum/wound/proc/is_surgical()
 	return 0
 
-/datum/wound/proc/on_gauze(datum/source)
-	SIGNAL_HANDLER
-	bandage()
-
-/datum/wound/proc/on_ungauze(datum/source)
-	SIGNAL_HANDLER
-	bandaged = FALSE
-
 /datum/wound/proc/get_examine_desc()
 	var/this_wound_desc = desc
 	if (wound_type == WOUND_BURN && salved)
@@ -289,7 +282,7 @@
 			this_wound_desc = "<b>bleeding</b> [this_wound_desc]"
 		else
 			this_wound_desc = "bleeding [this_wound_desc]"
-	else if(bandaged)
+	else if(parent.bandage)
 		this_wound_desc = "bandaged [this_wound_desc]"
 
 	if(germ_level > 600)

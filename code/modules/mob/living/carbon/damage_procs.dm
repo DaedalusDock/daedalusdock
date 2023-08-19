@@ -21,14 +21,12 @@
 	switch(damagetype)
 		if(BRUTE)
 			if(BP)
-				if(BP.receive_damage(damage_amount, 0, sharpness = sharpness))
-					update_damage_overlays()
+				BP.receive_damage(damage_amount, 0, sharpness = sharpness)
 			else //no bodypart, we deal damage with a more general method.
 				adjustBruteLoss(damage_amount, forced = forced)
 		if(BURN)
 			if(BP)
-				if(BP.receive_damage(0, damage_amount, sharpness = sharpness))
-					update_damage_overlays()
+				BP.receive_damage(0, damage_amount, sharpness = sharpness)
 			else
 				adjustFireLoss(damage_amount, forced = forced)
 		if(TOX)

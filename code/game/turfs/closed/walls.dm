@@ -72,6 +72,13 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	///Appearance cache key. This is very touchy.
 	VAR_PRIVATE/cache_key
 
+// DMEd Specific Simplified wall icons
+#if defined(SIMPLE_MAPHELPERS)
+/turf/closed/wall
+	icon='icons/effects/simplified_wall_helpers.dmi'
+	icon_state="generic"
+#endif
+
 /turf/closed/wall/has_material_type(datum/material/mat_type, exact=FALSE, mat_amount=0)
 	if(plating_material == mat_type)
 		return TRUE

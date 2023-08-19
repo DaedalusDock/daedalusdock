@@ -232,7 +232,6 @@
 
 	if(istype(W))
 		W.close_wound()
-		affected.update_damage()
 
 	if(affected.is_stump)
 		affected.set_sever_artery(FALSE)

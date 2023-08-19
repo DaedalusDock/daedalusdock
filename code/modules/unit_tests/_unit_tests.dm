@@ -105,6 +105,7 @@
 #include "hydroponics_harvest.dm"
 #include "hydroponics_self_mutations.dm"
 #include "keybinding_init.dm"
+#include "knockoff_component.dm"
 #include "load_map_security.dm"
 #include "machine_disassembly.dm"
 #include "mapping.dm"
@@ -115,7 +116,6 @@
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
 #include "novaflower_burn.dm"
-#include "ntnetwork_tests.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"
 #include "paintings.dm"
@@ -160,6 +160,7 @@
 #include "traitor.dm"
 #include "unit_test.dm"
 #include "wizard_loadout.dm"
+#include "wounds.dm"
 #ifdef REFERENCE_TRACKING_DEBUG //Don't try and parse this file if ref tracking isn't turned on. IE: don't parse ref tracking please mr linter
 #include "find_reference_sanity.dm"
 #endif

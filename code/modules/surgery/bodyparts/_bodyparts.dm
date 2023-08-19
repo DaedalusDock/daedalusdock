@@ -24,6 +24,10 @@
 	VAR_PROTECTED/icon_husk = 'icons/mob/human_parts.dmi'
 	///The type of husk for building an iconstate
 	var/husk_type = "humanoid"
+	///The file to pull damage overlays from. Null is valid.
+	var/icon_dmg_overlay = 'icons/mob/species/human/damage.dmi'
+	/// The file to pull bloody clothing overlays from. Null is valid.
+	var/icon_bloodycover = 'icons/effects/blood.dmi'
 
 	grind_results = list(/datum/reagent/bone_dust = 10, /datum/reagent/liquidgibs = 5) // robotic bodyparts and chests/heads cannot be ground
 
@@ -147,8 +151,6 @@
 	var/px_y = 0
 
 	var/species_flags_list = list()
-	///the type of damage overlay (if any) to use when this bodypart is bruised/burned.
-	var/dmg_overlay_type = "human"
 	/// If we're bleeding, which icon are we displaying on this part
 	var/bleed_overlay_icon
 
@@ -341,7 +343,7 @@
 		if(splint && istype(splint, /obj/item/stack))
 			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
 		if(bandage)
-			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
+			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
 		return
 
 	else
@@ -474,17 +476,14 @@
 			W.heal_damage(heal_amt)
 
 	// sync the bodypart's damage with its wounds
-	if(update_damage())
-		return BODYPART_LIFE_UPDATE_HEALTH
+	return update_damage()
 
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
-	if(stamina)
-		stack_trace("Bodypart took stamina damage!")
 	if((!brute && !burn) || hit_percent <= 0)
 		return FALSE
 	if(owner && (owner.status_flags & GODMODE))
@@ -523,7 +522,7 @@
 		var/total_damage = brute_dam + burn_dam + burn + brute
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
 			if(attempt_dismemberment(brute, burn, sharpness))
-				return update_bodypart_damage_state() || .
+				return update_damage() || .
 
 
 	//blunt damage is gud at fracturing
@@ -553,14 +552,8 @@
 		create_wound(to_create, brute, update_damage = FALSE)
 
 	if(burn)
-		/* Laser damage isnt a damage type yet
-		if(laser)
-			createwound(INJURY_TYPE_LASER, burn)
-			if(prob(40))
-				owner.IgniteMob()
-		else
-		*/
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
+
 	//Disturb treated burns
 	if(brute > 5)
 		var/disturbed = 0
@@ -583,18 +576,14 @@
 		brute = round(brute * (can_inflict / total_damage),DAMAGE_PRECISION)
 		burn = round(burn * (can_inflict / total_damage),DAMAGE_PRECISION)
 
-	if(can_inflict <= 0)
-		return FALSE
-	if(brute)
-		set_brute_dam(brute_dam + brute)
-	if(burn)
-		set_burn_dam(burn_dam + burn)
-
+	. = update_damage()
 	if(owner)
 		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
-	return update_bodypart_damage_state()
+			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
+				owner.update_damage_overlays()
+	return .
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.
@@ -616,15 +605,16 @@
 		else
 			brute = W.heal_damage(brute)
 
-	update_damage()
+	. = update_damage()
 
 	if(owner)
 		update_disabled()
 		if(updating_health)
 			owner.updatehealth()
+			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
+				owner.update_damage_overlays()
 	cremation_progress = min(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
-	return update_bodypart_damage_state()
-
+	return .
 
 ///Proc to hook behavior associated to the change of the brute_dam variable's value.
 /obj/item/bodypart/proc/set_brute_dam(new_value)
@@ -659,7 +649,6 @@
 
 	//update damage counts
 	for(var/datum/wound/W as anything in wounds)
-
 		if(W.damage <= 0)
 			qdel(W)
 			continue
@@ -678,10 +667,18 @@
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
 
-	. = (old_brute != brute_dam || old_burn != burn_dam)
+	var/tbrute = round( (brute_dam/max_damage)*3, 1 )
+	var/tburn = round( (burn_dam/max_damage)*3, 1 )
+	if((tbrute != brutestate) || (tburn != burnstate))
+		brutestate = tbrute
+		burnstate = tburn
+		. |= BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS
+
+	if(old_brute != brute_dam || old_burn != burn_dam)
+		. |= BODYPART_LIFE_UPDATE_HEALTH
+
 	if(.)
 		refresh_bleed_rate()
-
 
 //Checks disabled status thresholds
 /obj/item/bodypart/proc/update_disabled()
@@ -865,19 +862,6 @@
 
 	set_can_be_disabled(initial(can_be_disabled))
 
-//Updates an organ's brute/burn states for use by update_damage_overlays()
-//Returns 1 if we need to update overlays. 0 otherwise.
-/obj/item/bodypart/proc/update_bodypart_damage_state()
-	SHOULD_CALL_PARENT(TRUE)
-
-	var/tbrute = round( (brute_dam/max_damage)*3, 1 )
-	var/tburn = round( (burn_dam/max_damage)*3, 1 )
-	if((tbrute != brutestate) || (tburn != burnstate))
-		brutestate = tbrute
-		burnstate = tburn
-		return TRUE
-	return FALSE
-
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -952,7 +936,7 @@
 		cached_bleed_rate += 0.5
 
 	if(check_artery() & CHECKARTERY_SEVERED)
-		cached_bleed_rate += 5
+		cached_bleed_rate += 4
 
 	for(var/obj/item/embeddies in embedded_objects)
 		if(!embeddies.isEmbedHarmless())
@@ -1247,9 +1231,9 @@
 	if(check_bones() & CHECKBONES_BROKEN)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
 
-	if (length(cavity_items))
+	if (length(cavity_items) || length(embedded_objects))
 		var/unknown_body = 0
-		for(var/obj/item/I in cavity_items)
+		for(var/obj/item/I in cavity_items + embedded_objects)
 			if(istype(I,/obj/item/implant))
 				var/obj/item/implant/imp = I
 				if(imp.implant_flags & IMPLANT_HIDDEN)

@@ -535,6 +535,10 @@
 /atom/proc/return_analyzable_air()
 	return null
 
+///Return air that a contained mob will be breathing.
+/atom/proc/return_breathable_air()
+	return return_air()
+
 ///Check if this atoms eye is still alive (probably)
 /atom/proc/check_eye(mob/user)
 	SIGNAL_HANDLER
@@ -1282,7 +1286,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
+							if (ispath(chosen_id) && !isabstract(chosen_id))
 								valid_id = TRUE
 						else
 							valid_id = TRUE

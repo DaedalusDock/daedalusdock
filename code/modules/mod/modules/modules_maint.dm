@@ -68,7 +68,7 @@
 	/// The current element in the rainbow_order list we are on.
 	var/rave_number = 1
 	/// The track we selected to play.
-	var/datum/track/selection
+	var/datum/media/selection
 	/// A list of all the songs we can play.
 	var/list/songs = list()
 	/// A list of the colors the module can take.
@@ -83,18 +83,11 @@
 
 /obj/item/mod/module/visor/rave/Initialize(mapload)
 	. = ..()
-	var/list/tracks = flist("[global.config.directory]/jukebox_music/sounds/")
-	for(var/sound in tracks)
-		var/datum/track/track = new()
-		track.song_path = file("[global.config.directory]/jukebox_music/sounds/[sound]")
-		var/list/sound_params = splittext(sound,"+")
-		if(length(sound_params) != 3)
-			continue
-		track.song_name = sound_params[1]
-		track.song_length = text2num(sound_params[2])
-		track.song_beat = text2num(sound_params[3])
-		songs[track.song_name] = track
-	if(length(songs))
+	//This is structured in a stupid way. It'd be more effort to recode it than to crush the format until it's happy.
+	var/list/datum/media/tmp_songs = SSmedia.get_track_pool(MEDIA_TAG_JUKEBOX)
+	for(var/datum/media/track as anything in tmp_songs)
+		songs[track.name] = track
+	if(songs.len)
 		var/song_name = pick(songs)
 		selection = songs[song_name]
 
@@ -105,7 +98,7 @@
 	rave_screen = mod.wearer.add_client_colour(/datum/client_colour/rave)
 	rave_screen.update_colour(rainbow_order[rave_number])
 	if(selection)
-		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.song_path), use_reverb = FALSE)
+		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.path), use_reverb = FALSE)
 
 /obj/item/mod/module/visor/rave/on_deactivation(display_message = TRUE, deleting = FALSE)
 	. = ..()
@@ -133,7 +126,7 @@
 /obj/item/mod/module/visor/rave/get_configuration()
 	. = ..()
 	if(length(songs))
-		.["selection"] = add_ui_configuration("Song", "list", selection.song_name, clean_songs())
+		.["selection"] = add_ui_configuration("Song", "list", selection.name, clean_songs())
 
 /obj/item/mod/module/visor/rave/configure_edit(key, value)
 	switch(key)

@@ -42,9 +42,7 @@
 
 			if(length(compatible_wounds))
 				var/datum/wound/W = pick(compatible_wounds)
-				W.open_wound(damage)
-				if(update_damage)
-					update_damage()
+				W.open_wound(damage, update_damage)
 				if(prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(

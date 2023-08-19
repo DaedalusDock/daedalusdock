@@ -1,7 +1,7 @@
 /obj/machinery/bodyscanner
 	name = "body scanner"
 	desc = "A large full-body scanning machine that provides a complete physical assessment of a patient placed inside. Operated using an adjacent console."
-	icon = 'icons/obj/cryogenics.dmi'
+	icon = 'icons/obj/machines/bodyscanner.dmi'
 	icon_state = "body_scanner_open"
 	dir = EAST
 	density = TRUE
@@ -119,12 +119,13 @@
 
 
 /obj/machinery/bodyscanner/container_resist_act(mob/living/user)
-	eject_occupant(src, TRUE)
+	if(!user.incapacitated())
+		eject_occupant(src, TRUE)
 
 /////// The Console ////////
 /obj/machinery/bodyscanner_console
 	name = "body scanner console"
-	icon = 'icons/obj/cryogenics.dmi'
+	icon = 'icons/obj/machines/bodyscanner.dmi'
 	icon_state = "bodyscanner_console_powered"
 	dir = EAST
 

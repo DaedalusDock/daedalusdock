@@ -38,10 +38,10 @@
 
 			production_strings += "- Optimal temperature: [KELVIN_TO_CELSIUS(reaction.optimal_temp)]C ([reaction.optimal_temp]K)"
 
-			if (reaction.overheat_temp < INFINITY)
-				production_strings += "- Maximum temperature: [KELVIN_TO_CELSIUS(reaction.overheat_temp)]C ([reaction.overheat_temp]K)"
+			if (reaction.overheat_temp < NO_OVERHEAT)
+				production_strings += "- Overheat temperature: [KELVIN_TO_CELSIUS(reaction.overheat_temp)]C ([reaction.overheat_temp]K)"
 			if (reaction.required_temp > 0)
-				production_strings += "- Minimum temperature: [KELVIN_TO_CELSIUS(reaction.required_temp)]C ([reaction.required_temp]K)"
+				production_strings += "- Required temperature: [KELVIN_TO_CELSIUS(reaction.required_temp)]C ([reaction.required_temp]K)"
 
 		if(length(production_strings))
 			if(!entry.mechanics_text)

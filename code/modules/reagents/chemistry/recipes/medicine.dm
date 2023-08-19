@@ -26,14 +26,14 @@
 	is_cold_recipe = TRUE
 	optimal_temp = (-50 CELSIUS) - 50
 	required_temp = -50 CELSIUS
-	overheat_temp = -10 CELSIUS
+	overheat_temp = NO_OVERHEAT
 
 /datum/chemical_reaction/dermaline
 	results = list(/datum/reagent/medicine/dermaline = 3)
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/phosphorus = 1, /datum/reagent/medicine/kelotane = 1)
 	optimal_temp = (-50 CELSIUS) - 25
 	required_temp = -50 CELSIUS
-	overheat_temp = -10 CELSIUS
+	overheat_temp = NO_OVERHEAT
 	is_cold_recipe = TRUE
 
 /datum/chemical_reaction/dermaline/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)

@@ -98,3 +98,6 @@
       top right cluster
   - code_imp: Map JSONS must set the 'webmap_id' key for this to work.
   - rscadd: You can now open the codex with the 'Codex' button, In the same place.
+2023-08-15:
+  Kapu1178:
+  - qol: Changed station lighting.

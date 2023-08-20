@@ -60,7 +60,7 @@
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(amount, 0, updating_health, required_status)
+		take_overall_damage(amount, 0, updating_health, required_status, can_break_bones = FALSE)
 	else
 		heal_overall_damage(abs(amount), 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
@@ -214,7 +214,7 @@
 		update_damage_overlays()
 
 /// damage MANY bodyparts, in random order
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status, can_break_bones = TRUE)
 	if(status_flags & GODMODE)
 		return //godmode
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_status)
@@ -228,7 +228,7 @@
 		var/burn_was = picked.burn_dam
 
 
-		update |= picked.receive_damage(brute_per_part, burn_per_part, 0, FALSE, required_status)
+		update |= picked.receive_damage(brute_per_part, burn_per_part, 0, FALSE, required_status, breaks_bones = can_break_bones)
 		brute = round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
 		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
 

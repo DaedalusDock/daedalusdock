@@ -93,7 +93,7 @@
 	if(damage > high_threshold)
 		filter_effect -= 2
 	// Robotic organs filter better but don't get benefits from dylovene for filtering.
-	if(status & ORGAN_ROBOTIC)
+	if(organ_flags & ORGAN_SYNTHETIC)
 		filter_effect += 1
 	else if(owner.chem_effects[CE_ANTITOX])
 		filter_effect += 1

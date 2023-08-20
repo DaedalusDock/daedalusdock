@@ -6,7 +6,6 @@
 	throwforce = 0
 	///The mob that owns this organ.
 	var/mob/living/carbon/owner = null
-	var/status = ORGAN_ORGANIC
 	///The body zone this organ is supposed to inhabit.
 	var/zone = BODY_ZONE_CHEST
 	///The organ slot this organ is supposed to inhabit. This should be unique by type. (Lungs, Appendix, Stomach, etc)
@@ -271,7 +270,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	. += span_notice("It should be inserted in the [parse_zone(zone)].")
 
 	if(organ_flags & ORGAN_FAILING)
-		if(status == ORGAN_ROBOTIC)
+		if(organ_flags & ORGAN_SYNTHETIC)
 			. += span_warning("[src] seems to be broken.")
 			return
 		. += span_warning("[src] has decayed for too long, and has turned a sickly color. It probably won't work without repairs.")
@@ -306,7 +305,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	var/mess = check_damage_thresholds(owner)
 	check_failing_thresholds()
 	prev_damage = damage
-	if(mess && owner && owner.stat <= SOFT_CRIT)
+	if(owner && owner.stat <= SOFT_CRIT && !(organ_flags & ORGAN_SYNTHETIC) && damage_amount > 0 && (damage_amount > 5 || prob(10)))
+		if(!mess)
+			var/obj/item/bodypart/BP = loc
+			if(!BP)
+				return
+			var/degree = ""
+			if(damage > high_threshold)
+				degree = " a lot"
+			else if(damage < low_threshold)
+				degree = " a bit"
+			mess = span_warning("Something inside your [BP.plaintext_zone] hurts[degree].")
 		to_chat(owner, mess)
 
 ///SETS an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
@@ -446,4 +455,4 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	else if (damage > low_threshold)
 		. += tag ?"<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
-	return status
+	return

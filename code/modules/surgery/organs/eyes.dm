@@ -221,7 +221,6 @@
 	name = "robotic eyes"
 	icon_state = "cybernetic_eyeballs"
 	desc = "Your vision is augmented."
-	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
 
 	///Incase the eyes are removed before the timer expires

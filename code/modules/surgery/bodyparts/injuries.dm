@@ -32,7 +32,7 @@
 	if(owner)
 		owner.visible_message(
 			span_danger("You hear a loud cracking sound coming from \the [owner]."),
-			span_danger("Something feels like it shattered in your [name]!"),
+			span_danger("Something feels like it shattered in your [plaintext_zone]!"),
 			span_danger("You hear a sickening crack.")
 		)
 
@@ -84,18 +84,23 @@
 	if(brute_dam + force < BODYPART_MINIMUM_DAMAGE_TO_JIGGLEBONES)	//no papercuts moving bones
 		return
 
-	if(!prob(brute_dam + force))
+	if(!length(contained_organs) || !prob(brute_dam + force))
 		return
 
-	receive_damage(force, breaks_bones = FALSE) //NO RECURSIVE BONE JOSTLING
+	var/obj/item/organ/O
+	var/list/organs = shuffle(contained_organs)
+	while(!O && length(organs))
+		O = pick_n_take(organs)
+		if(O.cosmetic_only)
+			O = null
+	if(!O)
+		return
+
+	O.applyOrganDamage(rand(3,5))
+
 	if(owner)
-		owner.audible_message(
-			span_warning("A sickening noise comes from [owner]'s [plaintext_zone]!"),
-			null,
-			2,
-			span_warning("You feel something moving in your [plaintext_zone]!")
-		)
-		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+		to_chat(owner, span_warning("You feel something moving in your [plaintext_zone]!"))
+
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()

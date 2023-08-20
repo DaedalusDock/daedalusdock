@@ -31,14 +31,14 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if(istype(I, /obj/item/organ/brain))
 			continue
-		if(!(I.status & ORGAN_ROBOTIC) && I.damage > 0)
+		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			return TRUE
 
 /datum/surgery_step/internal/fix_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(!(I.status & ORGAN_ROBOTIC) && I.damage > 0)
+		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			organs[I.name] = I.slot
 
 	var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in organs
@@ -75,7 +75,7 @@
 	affected.receive_damage(dam_amt, sharpness = SHARP_EDGED|SHARP_POINTY)
 
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(I.damage > 0 && !(I.status & ORGAN_ROBOTIC) && (affected.how_open() >= (affected.encased ? SURGERY_DEENCASED : SURGERY_RETRACTED)))
+		if(I.damage > 0 && !(I.organ_flags & ORGAN_SYNTHETIC) && (affected.how_open() >= (affected.encased ? SURGERY_DEENCASED : SURGERY_RETRACTED)))
 			I.applyOrganDamage(dam_amt)
 	..()
 
@@ -229,9 +229,9 @@
 	if(istype(O) && user.transferItemToLoc(O, target))
 		affected.add_cavity_item(O) //move the organ into the patient. The organ is properly reattached in the next step
 
-		if(!(O.status & ORGAN_CUT_AWAY))
+		if(!(O.organ_flags & ORGAN_CUT_AWAY))
 			stack_trace("[user] ([user.ckey]) replaced organ [O.type], which didn't have ORGAN_CUT_AWAY set, in [target] ([target.ckey])")
-			O.status |= ORGAN_CUT_AWAY
+			O.organ_flags |= ORGAN_CUT_AWAY
 	..()
 
 /datum/surgery_step/internal/replace_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -298,7 +298,6 @@
 	user.visible_message(span_notice("[user] has reattached [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with [tool]."))
 
 	if(istype(I) && affected && deprecise_zone(I.zone) == affected.body_zone && (I in affected.cavity_items))
-		I.status &= ~ORGAN_CUT_AWAY //apply fixovein
 		affected.remove_cavity_item(I)
 		I.Insert(target)
 	..()

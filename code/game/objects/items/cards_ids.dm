@@ -706,8 +706,8 @@
 	content += "Name: [registered_name]<br>"
 	content += "Age: [registered_age]<br>"
 	content += "Assignment: [assignment]<br><br>"
-	content += "Fingerprint: [fingerprint]<br>"
 	content += "Blood Type: [blood_type]<br>"
+	content += "Fingerprint: [fingerprint]<br>"
 	content += "DNA Hash: [dna_hash]<br>"
 	if(front_image && side_image)
 		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=front.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=side.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"

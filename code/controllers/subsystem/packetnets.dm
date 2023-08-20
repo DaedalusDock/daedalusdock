@@ -21,8 +21,6 @@ SUBSYSTEM_DEF(packets)
 
 	///Amount of radio packets processed last cycle
 	var/last_processed_radio_packets = 0
-	///Subspace/vocal packets to process
-	var/list/queued_subspace_vocals = list()
 	///Amount of subspace vocal packets processed last cycle
 	var/last_processed_ssv_packets = 0
 
@@ -69,7 +67,6 @@ SUBSYSTEM_DEF(packets)
 		NAMEOF(src, queued_subspace_vocals),
 		NAMEOF(src, current_networks),
 		NAMEOF(src, current_radio_packets),
-		NAMEOF(src, current_tablet_messages),
 		NAMEOF(src, current_subspace_vocals)
 	)
 

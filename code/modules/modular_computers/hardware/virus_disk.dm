@@ -30,7 +30,6 @@
 			return
 		if(VIRUS_MODE_NO_INPUT)
 			//Add some fluffy bogus data.
-			var/signal_data = outgoing.data
 			var/itermax = rand(2,5)
 			for(var/iter = 0, iter<itermax, iter++)
 				signal_data[random_string(5, GLOB.hex_characters)] = random_string(16, GLOB.hex_characters)
@@ -47,7 +46,7 @@
 /// Return value is a list of 1/2 values:
 /// list(VIRUS_MODE_ABORT) - Abort the send attempt
 ///
-/// list(VIRUS_MODE_NO_INPUT) - No input taken,
+/// list(VIRUS_MODE_NO_INPUT) - No input taken
 ///
 /// list(VIRUS_MODE_RAW_SIGNAL, ref/datum/signal) - Signal packet will be sent as is.
 ///
@@ -99,7 +98,7 @@
 	)
 	to_chat(user, "Sending... Attempting to install uplink with Code: [span_robot(lock_code)]")
 	telecrystals = 0 // Burn the crystals regardless.
-	outgoing.has_magic_data = MAGIC_DATA_MUST_OBFUSCATE //touch this and you lose your spine, legs, AND eyes. Three for one.
+	outgoing.has_magic_data = MAGIC_DATA_INVIOLABLE //touch this and you lose your spine, legs, AND eyes. Three for one.
 	return list(VIRUS_MODE_RAW_SIGNAL, outgoing)
 
 /obj/item/computer_hardware/hard_drive/role/virus/frame/attackby(obj/item/I, mob/user, params)

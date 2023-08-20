@@ -270,8 +270,8 @@
 			if(!sending_and_receiving)
 				to_chat(usr, span_notice("ERROR: Device has sending disabled."))
 				return
-				//So much easier with GPRS.
-				send_message(usr, null, TRUE)
+			//So much easier with GPRS.
+			send_message(usr, null, TRUE)
 
 			return(UI_UPDATE)
 		if("PDA_sendMessage")

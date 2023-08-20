@@ -42,7 +42,7 @@
 
 /// "Retro" ID card that renders itself as the icon state with no overlays.
 /obj/item/card/id
-	name = "retro identification card"
+	name = "identification card"
 	desc = "A card used to provide ID and determine access across the station."
 	icon_state = "card_grey"
 	worn_icon_state = "card_retro"
@@ -58,8 +58,6 @@
 
 	/// How many magical mining Disney Dollars this card has for spending at the mining equipment vendors.
 	var/mining_points = 0
-	/// The name registered on the card (for example: Dr Bryan See)
-	var/registered_name = null
 	/// Linked bank account.
 	var/datum/bank_account/registered_account
 
@@ -84,10 +82,23 @@
 	/// The holopay name chosen by the user
 	var/holopay_name = "holographic pay stand"
 
+	/// The name registered on the card (for example: Dr Bryan See)
+	var/registered_name = null
+	/// The name used in the ID UI. See update_label()
+	var/label = "Unassigned"
 	/// Registered owner's age.
 	var/registered_age = 30
+	/// Registered owner's dna hash.
+	var/dna_hash = "UNSET"
+	/// Registered owner's fingerprint.
+	var/fingerprint = "UNSET"
+	/// Registered owner's blood type.
+	var/blood_type = "UNSET"
+	// Images to store in the ID, based on the datacore.
+	var/icon/front_image
+	var/icon/side_image
 
-	/// The job name registered on the card (for example: Assistant).
+	/// The job name registered on the card (for example: Assistant). Set by trim usually.
 	var/assignment
 
 	/// Trim datum associated with the card. Controls which job icon is displayed on the card and which accesses do not require wildcards.
@@ -681,39 +692,36 @@
 
 /obj/item/card/id/examine(mob/user)
 	. = ..()
+	. += "<a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>"
 	if(registered_account)
 		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
-	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
-		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
-	. += span_notice("<i>There's more information below, you can look again to take a closer look...</i>")
-
-/obj/item/card/id/examine_more(mob/user)
-	. = ..()
-	. += span_notice("<i>You examine [src] closer, and note the following...</i>")
-
-	if(registered_age)
-		. += "The card indicates that the holder is [registered_age] years old. [(registered_age < AGE_MINOR) ? "There's a holographic stripe that reads <b>[span_danger("'MINOR: DO NOT SERVE ALCOHOL OR TOBACCO'")]</b> along the bottom of the card." : ""]"
-	if(mining_points)
-		. += "There's [mining_points] mining equipment redemption point\s loaded onto this card."
-	if(registered_account)
-		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
-		if(registered_account.account_job)
-			var/datum/bank_account/D = SSeconomy.department_accounts_by_id[registered_account.account_job.paycheck_department]
-			if(D)
-				. += "The [D.account_holder] reports a balance of [D.account_balance] cr."
-		. += span_info("Alt-Click the ID to pull money from the linked account in the form of holochips.")
-		. += span_info("You can insert credits into the linked account by pressing holochips, cash, or coins against the ID.")
-		if(registered_account.civilian_bounty)
-			. += "<span class='info'><b>There is an active civilian bounty.</b>"
-			. += span_info("<i>[registered_account.bounty_text()]</i>")
-			. += span_info("Quantity: [registered_account.bounty_num()]")
-			. += span_info("Reward: [registered_account.bounty_value()]")
 		if(registered_account.account_holder == user.real_name)
 			. += span_boldnotice("If you lose this ID card, you can reclaim your account by Alt-Clicking a blank ID card while holding it and entering your account ID number.")
-	else
-		. += span_info("There is no registered account linked to this card. Alt-Click to add one.")
 
-	return .
+	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
+		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
+
+/obj/item/card/id/proc/show(mob/user)
+	var/list/content = list("<table style='width:100%'><tr><td>")
+	content += "Name: [registered_name]<br>"
+	content += "Age: [registered_age]<br>"
+	content += "Assignment: [assignment]<br><br>"
+	content += "Fingerprint: [fingerprint]<br>"
+	content += "Blood Type: [blood_type]<br>"
+	content += "DNA Hash: [dna_hash]<br>"
+	if(front_image && side_image)
+		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=front.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=side.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
+	content += "</tr></table>"
+	content = jointext(content, null)
+
+	if(front_image && side_image)
+		user << browse_rsc(front_image, "front.png")
+		user << browse_rsc(side_image, "side.png")
+
+	var/datum/browser/popup = new(user, "idcard", name, 650, 280)
+	popup.set_content(content)
+	popup.open()
+	return
 
 /obj/item/card/id/GetAccess()
 	return access.Copy()
@@ -747,7 +755,32 @@
 	else
 		assignment_string = assignment
 
-	name = "[name_string] ([assignment_string])"
+	label = "[name_string], [assignment_string]"
+
+/obj/item/card/id/proc/datacore_ready(datum/datacore/datacore)
+	SIGNAL_HANDLER
+	set_icon()
+	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
+
+/// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
+/obj/item/card/id/proc/set_icon()
+	set waitfor = FALSE
+	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
+	var/datum/data/record/R = find_record("name", registered_name, GLOB.data_core.general)
+	if(R)
+		var/obj/item/photo/side = R.get_side_photo()
+		CHECK_TICK
+		var/obj/item/photo/front = R.get_front_photo()
+
+		side_image = side.picture.picture_image
+		front_image = front.picture.picture_image
+	else
+		var/mob/M = get_top_level_mob()
+		if(!M)
+			return
+		front_image = getFlatIcon(mutable_appearance(M), WEST)
+		CHECK_TICK
+		side_image = getFlatIcon(mutable_appearance(M), SOUTH)
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()

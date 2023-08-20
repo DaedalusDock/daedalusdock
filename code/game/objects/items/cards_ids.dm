@@ -718,7 +718,7 @@
 		user << browse_rsc(front_image, "front.png")
 		user << browse_rsc(side_image, "side.png")
 
-	var/datum/browser/popup = new(user, "idcard", name, 650, 280)
+	var/datum/browser/popup = new(user, "idcard", name, 660, 270)
 	popup.set_content(content)
 	popup.open()
 	return

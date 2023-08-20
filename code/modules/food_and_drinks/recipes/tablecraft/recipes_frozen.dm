@@ -223,16 +223,6 @@
 	result = /obj/item/food/snowcones/spacemountainwind
 	subcategory = CAT_ICE
 
-/datum/crafting_recipe/food/pwrgame_sc
-	name = "Pwrgame snowcone"
-	reqs = list(
-		/obj/item/reagent_containers/food/drinks/sillycup = 1,
-		/datum/reagent/consumable/ice = 15,
-		/datum/reagent/consumable/pwr_game = 15
-	)
-	result = /obj/item/food/snowcones/pwrgame
-	subcategory = CAT_ICE
-
 /datum/crafting_recipe/food/honey_sc
 	name = "Honey snowcone"
 	reqs = list(

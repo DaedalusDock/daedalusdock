@@ -15,9 +15,10 @@
 		return TRUE
 
 /datum/surgery_step/brain_trauma/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	. = ..()
 	var/obj/item/organ/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
 	if(!target_brain)
-		to_chat(span_warning("[target] doesn't have a brain."))
+		to_chat(user, span_warning("[target] doesn't have a brain."))
 		return FALSE
 
 /datum/surgery_step/brain_trauma/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

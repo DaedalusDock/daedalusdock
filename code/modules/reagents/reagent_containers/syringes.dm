@@ -29,6 +29,10 @@
 		return FALSE
 	if(!target.reagents)
 		return FALSE
+	if(isliving(user))
+		var/mob/living/L = user
+		if(L.combat_mode)
+			return FALSE
 
 	if(isliving(target))
 		var/mob/living/living_target = target
@@ -157,15 +161,10 @@
 	desc = "Contains epinephrine - used to stabilize patients."
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 15)
 
-/obj/item/reagent_containers/syringe/multiver
-	name = "syringe (multiver)"
-	desc = "Contains multiver. Diluted with granibitaluri."
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 6, /datum/reagent/medicine/granibitaluri = 9)
-
-/obj/item/reagent_containers/syringe/convermol
-	name = "syringe (convermol)"
-	desc = "Contains convermol. Diluted with granibitaluri."
-	list_reagents = list(/datum/reagent/medicine/c2/convermol = 6, /datum/reagent/medicine/granibitaluri = 9)
+/obj/item/reagent_containers/syringe/dylovene
+	name = "syringe (dylovene)"
+	desc = "Contains dylovene. Diluted with granibitaluri."
+	list_reagents = list(/datum/reagent/medicine/dylovene = 15)
 
 /obj/item/reagent_containers/syringe/antiviral
 	name = "syringe (spaceacillin)"
@@ -177,10 +176,10 @@
 	desc = "Contains several paralyzing reagents."
 	list_reagents = list(/datum/reagent/consumable/ethanol/neurotoxin = 5, /datum/reagent/toxin/mutetoxin = 5, /datum/reagent/toxin/sodium_thiopental = 5)
 
-/obj/item/reagent_containers/syringe/calomel
-	name = "syringe (calomel)"
-	desc = "Contains calomel."
-	list_reagents = list(/datum/reagent/medicine/calomel = 15)
+/obj/item/reagent_containers/syringe/dexalin
+	name = "syringe (dexalin)"
+	desc = "Contains dexalin."
+	list_reagents = list(/datum/reagent/medicine/dexalin = 15)
 
 /obj/item/reagent_containers/syringe/plasma
 	name = "syringe (plasma)"
@@ -205,13 +204,6 @@
 	amount_per_transfer_from_this = 1
 	volume = 1
 	list_reagents = list(/datum/reagent/mulligan = 1)
-
-/obj/item/reagent_containers/syringe/gluttony
-	name = "Gluttony's Blessing"
-	desc = "A syringe recovered from a dread place. It probably isn't wise to use."
-	amount_per_transfer_from_this = 1
-	volume = 1
-	list_reagents = list(/datum/reagent/gluttonytoxin = 1)
 
 /obj/item/reagent_containers/syringe/bluespace
 	name = "bluespace syringe"
@@ -243,26 +235,6 @@
 	name = "spider extract syringe"
 	desc = "Contains crikey juice - makes any gold core create the most deadly companions in the world."
 	list_reagents = list(/datum/reagent/spider_extract = 1)
-
-/obj/item/reagent_containers/syringe/oxandrolone
-	name = "syringe (oxandrolone)"
-	desc = "Contains oxandrolone, used to treat severe burns."
-	list_reagents = list(/datum/reagent/medicine/oxandrolone = 15)
-
-/obj/item/reagent_containers/syringe/salacid
-	name = "syringe (salicylic acid)"
-	desc = "Contains salicylic acid, used to treat severe brute damage."
-	list_reagents = list(/datum/reagent/medicine/sal_acid = 15)
-
-/obj/item/reagent_containers/syringe/penacid
-	name = "syringe (pentetic acid)"
-	desc = "Contains pentetic acid, used to reduce high levels of radiation and heal severe toxins."
-	list_reagents = list(/datum/reagent/medicine/pen_acid = 15)
-
-/obj/item/reagent_containers/syringe/syriniver
-	name = "syringe (syriniver)"
-	desc = "Contains syriniver, used to treat toxins and purge chemicals.The tag on the syringe states 'Inject one time per minute'"
-	list_reagents = list(/datum/reagent/medicine/c2/syriniver = 15)
 
 /obj/item/reagent_containers/syringe/contraband
 	name = "unlabeled syringe"

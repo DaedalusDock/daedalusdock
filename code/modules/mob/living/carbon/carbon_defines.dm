@@ -22,6 +22,10 @@
 	///A list of organs that process, used to keep life() fast!
 	var/list/obj/item/organ/processing_organs = list()
 
+	/// Bloodstream reagents
+	var/datum/reagents/bloodstream = null
+	/// Surface level reagents
+	var/datum/reagents/touching = null
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
 	///How many dream images we have left to send

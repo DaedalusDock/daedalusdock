@@ -263,8 +263,6 @@
 	if(isobserver(user))
 		if(bomb)
 			. += span_deadsay("This pizza box contains [bomb_defused ? "an unarmed bomb" : "an armed bomb"].")
-		if(pizza && istype(pizza, /obj/item/food/pizza/margherita/robo))
-			. += span_deadsay("The pizza in this pizza box contains nanomachines.")
 
 /obj/item/pizzabox/proc/disperse_pizzas()
 	visible_message(span_warning("The pizzas fall everywhere!"))
@@ -308,9 +306,6 @@
 
 /obj/item/pizzabox/margherita
 	pizza = /obj/item/food/pizza/margherita
-
-/obj/item/pizzabox/margherita/robo
-	pizza = /obj/item/food/pizza/margherita/robo
 
 /obj/item/pizzabox/vegetable
 	pizza = /obj/item/food/pizza/vegetable

@@ -208,7 +208,7 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "aQ" = (
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "aR" = (
@@ -225,7 +225,7 @@
 	pixel_x = 2;
 	pixel_y = 2
 	},
-/obj/item/reagent_containers/glass/bottle/multiver,
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "aU" = (

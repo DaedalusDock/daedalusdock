@@ -311,7 +311,7 @@
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_notice("You activate [src]. Your genome feels more stable!"))
 			user.adjustCloneLoss(-15)
-			user.reagents.add_reagent(/datum/reagent/medicine/mutadone, 10)
+			user.reagents.add_reagent(/datum/reagent/medicine/ryetalyn, 10)
 			user.reagents.add_reagent(/datum/reagent/medicine/potass_iodide, 10)
 			return 250
 
@@ -348,28 +348,6 @@
 	icon_state = "pink slime extract"
 	effectmod = "gentle"
 	activate_reagents = list(/datum/reagent/blood,/datum/reagent/toxin/plasma)
-
-/obj/item/slime_extract/pink/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
-	switch(activation_type)
-		if(SLIME_ACTIVATE_MINOR)
-			if(user.gender != MALE && user.gender != FEMALE)
-				to_chat(user, span_warning("You can't swap your gender!"))
-				return
-
-			if(user.gender == MALE)
-				user.gender = FEMALE
-				user.visible_message(span_boldnotice("[user] suddenly looks more feminine!"), span_boldwarning("You suddenly feel more feminine!"))
-			else
-				user.gender = MALE
-				user.visible_message(span_boldnotice("[user] suddenly looks more masculine!"), span_boldwarning("You suddenly feel more masculine!"))
-			return 100
-
-		if(SLIME_ACTIVATE_MAJOR)
-			user.visible_message(span_warning("[user]'s skin starts flashing hypnotically..."), span_notice("Your skin starts forming odd patterns, pacifying creatures around you."))
-			for(var/mob/living/carbon/C in viewers(user, null))
-				if(C != user)
-					C.reagents.add_reagent(/datum/reagent/pax,2)
-			return 600
 
 /obj/item/slime_extract/green
 	name = "green slime extract"
@@ -564,7 +542,7 @@
 /obj/item/slime_extract/cerulean/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
-			user.reagents.add_reagent(/datum/reagent/medicine/salbutamol,15)
+			user.reagents.add_reagent(/datum/reagent/medicine/dexalin,15)
 			to_chat(user, span_notice("You feel like you don't need to breathe!"))
 			return 150
 

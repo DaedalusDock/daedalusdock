@@ -101,3 +101,10 @@
 2023-08-15:
   Kapu1178:
   - qol: Changed station lighting.
+2023-08-20:
+  Kapu1178:
+  - bugfix: Doors of all kinds will no longer "trap" dangerous gas inside when closing.
+  francinum:
+  - bugfix: Non-human living mobs can now look up
+  - rscdel: Snob and Unstable quirk has been removed, as it no longer worked.
+  - bugfix: Security Helmet flashlight behaviour is now a lot more reliable

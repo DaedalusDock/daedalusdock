@@ -786,7 +786,7 @@
 	desc = "Spacer's Sidekick: Breathe easy with a friend at your side!"
 	icon_state = "spacers_sidekick"
 	trash_type = /obj/item/trash/spacers_sidekick
-	food_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/consumable/menthol = 1, /datum/reagent/medicine/salbutamol = 1)
+	food_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/consumable/menthol = 1, /datum/reagent/medicine/dexalin = 1)
 	tastes = list("strong mint" = 1)
 	junkiness = 15
 	foodtypes = JUNKFOOD

@@ -1892,9 +1892,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-			if(stat >= SOFT_CRIT)
-				ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
-				ADD_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 		if(SOFT_CRIT)
 			if(stat >= UNCONSCIOUS)
 				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
@@ -1903,6 +1900,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
 			if(pulledby)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 		if(UNCONSCIOUS)
 			if(stat != HARD_CRIT)
 				cure_blind(UNCONSCIOUS_TRAIT)
@@ -1925,6 +1923,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 		if(SOFT_CRIT)
+			ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 			if(pulledby)
 				ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT) //adding trait sources should come before removing to avoid unnecessary updates
 			if(. >= UNCONSCIOUS)
@@ -1936,10 +1935,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(UNCONSCIOUS)
 			if(. != HARD_CRIT)
 				become_blind(UNCONSCIOUS_TRAIT)
-			if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-				ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-			else
-				REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 		if(HARD_CRIT)
 			if(. != UNCONSCIOUS)
 				become_blind(UNCONSCIOUS_TRAIT)
@@ -1949,6 +1944,18 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
+
+/mob/living/carbon/set_stat(new_stat)
+	. = ..()
+	if(isnull(.))
+		return
+
+	switch(stat) //Current stat
+		if(DEAD)
+			bloodstream.end_metabolization(src)
+			var/datum/reagents/R = get_ingested_reagents()
+			if(R)
+				R.end_metabolization(src)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -2258,7 +2265,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/can_look_up()
 	return !(incapacitated(IGNORE_RESTRAINTS))
 
-/mob/living/carbon/human/verb/lookup()
+/mob/living/verb/lookup()
 	set name = "Look Upwards"
 	set desc = "If you want to know what's above."
 	set category = "IC"
@@ -2335,3 +2342,22 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	to_chat(src, "<span class='[use_span]'>\The [gunpoint?.target || "victim"] is [message].</span>")
 	if(gunpoint?.target)
 		to_chat(gunpoint.target, "<span class='[use_span]'>You are [message].</span>")
+
+/mob/living/proc/get_ingested_reagents()
+	RETURN_TYPE(/datum/reagents)
+	return reagents
+
+/mob/living/proc/get_melee_inaccuracy()
+	. = 0
+	if(incapacitated())
+		. += 100
+	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
+		. += 10
+	if(IsKnockdown())
+		. += 15
+	if(eye_blurry)
+		. += 5
+	if(eye_blind)
+		. += 60
+	if(HAS_TRAIT(src, TRAIT_CLUMSY))
+		. += 25

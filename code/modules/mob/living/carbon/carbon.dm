@@ -1,6 +1,6 @@
 /mob/living/carbon/Initialize(mapload)
 	. = ..()
-	create_carbon_reagents(1000, REAGENT_HOLDER_ALIVE)
+	create_carbon_reagents()
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	register_context()
 
@@ -8,17 +8,13 @@
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 
 	GLOB.carbon_list += src
-	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_PRESHOVE = PROC_REF(disarm_precollide),
-		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(disarm_collision),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 	AddComponent(/datum/component/carbon_sprint)
 
 /mob/living/carbon/Destroy()
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. = ..()
-
+	QDEL_NULL(bloodstream)
+	QDEL_NULL(touching)
 	QDEL_LIST(hand_bodyparts)
 	QDEL_LIST(organs)
 	QDEL_LIST(bodyparts)
@@ -32,7 +28,13 @@
 /mob/living/carbon/proc/create_carbon_reagents()
 	if(reagents)
 		return
-	create_reagents(1000, REAGENT_HOLDER_ALIVE)
+	bloodstream = new /datum/reagents{metabolism_class = CHEM_BLOOD}(120)
+	bloodstream.my_atom = src
+
+	reagents = bloodstream
+
+	touching = new /datum/reagents{metabolism_class = CHEM_TOUCH}(1000)
+	touching.my_atom = src
 
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()
@@ -799,6 +801,7 @@
 			set_stat(SOFT_CRIT)
 		else
 			set_stat(CONSCIOUS)
+
 	update_damage_hud()
 	update_health_hud()
 	update_stamina_hud()
@@ -836,6 +839,11 @@
 /mob/living/carbon/fully_heal(admin_revive = FALSE)
 	if(reagents)
 		reagents.clear_reagents()
+	if(touching)
+		touching.clear_reagents()
+	if(bloodstream)
+		bloodstream.clear_reagents()
+
 	if(mind)
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
@@ -854,6 +862,8 @@
 		QDEL_NULL(legcuffed)
 		set_handcuffed(null)
 		update_handcuffed()
+		client?.prefs?.apply_prefs_to(src)
+
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 	exit_stamina_stun()
 	..()
@@ -1163,6 +1173,9 @@
 		update_worn_gloves()
 		. = TRUE
 
+	if(get_permeability_protection() > 0.5)
+		touching.clear_reagents()
+
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
 	for(var/obj/item/bodypart/part as anything in bodyparts)
@@ -1268,29 +1281,6 @@
 /mob/living/carbon/proc/attach_rot()
 	if(mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD))
 		AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
-
-/mob/living/carbon/proc/disarm_precollide(datum/source, mob/living/carbon/shover, mob/living/carbon/target)
-	SIGNAL_HANDLER
-	if(can_be_shoved_into)
-		return COMSIG_CARBON_ACT_SOLID
-
-/mob/living/carbon/proc/disarm_collision(datum/source, mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)
-	SIGNAL_HANDLER
-	if(src == target || LAZYFIND(target.buckled_mobs, src) || !can_be_shoved_into)
-		return
-	target.Knockdown(SHOVE_KNOCKDOWN_HUMAN)
-	if(shove_resistance() <= 0)
-		Knockdown(SHOVE_KNOCKDOWN_COLLATERAL)
-	target.visible_message(
-		span_danger("[shover] shoves [target.name] into [name]!"),
-		span_userdanger("You're shoved into [name] by [shover]!"),
-		span_hear("You hear aggressive shuffling followed by a loud thud!"),
-		COMBAT_MESSAGE_RANGE,
-		///src
-	)
-	///to_chat(src, span_danger("You shove [target.name] into [name]!"))
-	log_combat(src, target, "shoved", "into [name]")
-	return COMSIG_CARBON_SHOVE_HANDLED
 
 // Checks to see how many hands this person has to sign with.
 /mob/living/carbon/proc/check_signables_state()
@@ -1402,3 +1392,7 @@
 		L.Paralyze(10 SECONDS)
 
 	visible_message(span_warning("[src] slams into [highest] from above!"))
+
+/mob/living/carbon/get_ingested_reagents()
+	RETURN_TYPE(/datum/reagents)
+	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents

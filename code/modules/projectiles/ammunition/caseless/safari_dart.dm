@@ -8,5 +8,5 @@
 	firing_effect_type = null
 	caliber = CALIBER_308_DART
 
-/obj/item/ammo_casing/caseless/safari_dart/mutadone
-	projectile_type = /obj/projectile/bullet/dart/mutadone
+/obj/item/ammo_casing/caseless/safari_dart/ryetalyn
+	projectile_type = /obj/projectile/bullet/dart/ryetalyn

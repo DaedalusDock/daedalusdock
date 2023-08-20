@@ -248,7 +248,6 @@
 		return ..()
 
 /obj/item/bodypart/arm/drop_limb(special)
-	. = ..()
 
 	var/mob/living/carbon/arm_owner = owner
 	if(arm_owner && !special)
@@ -264,6 +263,7 @@
 		if(arm_owner.gloves)
 			arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
 		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
+	return ..()
 
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)

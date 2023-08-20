@@ -8,9 +8,6 @@
 ///Called from /mob/living/carbon/help_shake_act on the helper, after any hugs have ocurred. (mob/living/helped)
 #define COMSIG_CARBON_HELPED "carbon_helped_someone"
 
-///Before a carbon mob is shoved, sent to the turf we're trying to shove onto (mob/living/carbon/shover, mob/living/carbon/target)
-#define COMSIG_CARBON_DISARM_PRESHOVE "carbon_disarm_preshove"
-	#define COMSIG_CARBON_ACT_SOLID (1<<0) //Tells disarm code to act as if the mob was shoved into something solid, even we we're not
 ///When a carbon mob is disarmed, this is sent to the turf we're trying to shove onto (mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)
 #define COMSIG_CARBON_DISARM_COLLIDE "carbon_disarm_collision"
 	#define COMSIG_CARBON_SHOVE_HANDLED (1<<0)

@@ -433,7 +433,7 @@
 				. += {"
 						<tr>
 							<td colspan = '2' style='padding-left: 35%'>
-								["[R["quantity"]]u [R["name"]]"]
+								["[R["quantity"]]u [R["name"]][R["overdosed"] ? " <span class='bad'>OVERDOSED" : ""]"]
 							</td>
 						</tr>
 				"}

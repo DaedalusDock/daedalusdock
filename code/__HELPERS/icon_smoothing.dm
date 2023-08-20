@@ -243,6 +243,7 @@
  * Returns the previous smoothing_junction state so the previous state can be compared with the new one after the proc ends, and see the changes, if any.
  *
 */
+#warn DO NOT MERGE WHILE THIS TRY CATCH EXISTS
 /atom/proc/bitmask_smooth()
 	var/new_junction = NONE
 	// cache for sanic speed
@@ -256,33 +257,38 @@
 			do { \
 				var/turf/neighbor = get_step(src, direction); \
 				var/can_area_smooth; \
-				CAN_AREAS_SMOOTH(src, neighbor, can_area_smooth); \
-				if(neighbor && can_area_smooth) { \
-					var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
-					if(neighbor_smoothing_groups) { \
-						for(var/target in canSmoothWith) { \
-							if(canSmoothWith[target] & neighbor_smoothing_groups[target]) { \
-								new_junction |= direction_flag; \
-								break set_adj_in_dir; \
-							}; \
-						}; \
-					}; \
-					if(smooth_obj) { \
-						for(var/atom/movable/thing as anything in neighbor) { \
-							var/thing_smoothing_groups = thing.smoothing_groups; \
-							if(!thing.anchored || isnull(thing_smoothing_groups)) { \
-								continue; \
-							}; \
+				try { \
+					CAN_AREAS_SMOOTH(src, neighbor, can_area_smooth); \
+					if(neighbor && can_area_smooth) { \
+						var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
+						if(neighbor_smoothing_groups) { \
 							for(var/target in canSmoothWith) { \
-								if(canSmoothWith[target] & thing_smoothing_groups[target]) { \
+								if(canSmoothWith[target] & neighbor_smoothing_groups[target]) { \
 									new_junction |= direction_flag; \
 									break set_adj_in_dir; \
 								}; \
 							}; \
 						}; \
+						if(smooth_obj) { \
+							for(var/atom/movable/thing as anything in neighbor) { \
+								var/thing_smoothing_groups = thing.smoothing_groups; \
+								if(!thing.anchored || isnull(thing_smoothing_groups)) { \
+									continue; \
+								}; \
+								for(var/target in canSmoothWith) { \
+									if(canSmoothWith[target] & thing_smoothing_groups[target]) { \
+										new_junction |= direction_flag; \
+										break set_adj_in_dir; \
+									}; \
+								}; \
+							}; \
+						}; \
+					} else if (smooth_border) { \
+						new_junction |= direction_flag; \
 					}; \
-				} else if (smooth_border) { \
-					new_junction |= direction_flag; \
+				}; \
+				catch(var/exception/E) { \
+					throw EXCEPTION("SMOOTHING EXCEPTION: [E.name] @ [E.line] | SMOOTH OBJ? [smooth_obj ? "YES" : "NO"] | SRC: [type] @ ([x], [y], [z]) | TGT: [neighbor.type] @ ([neighbor.x], [neighbor.y], [neighbor.z] | SRC SMOOTH GROUPS: [json_encode(smoothing_groups)] | SRC CANSMOOTHWITH: [json_encode(canSmoothWith)] | TGT SMOOTH GROUPS: [json_encode(neighbor.smoothing_groups)] | TGT CANSMOOTHWITH: [json_encode(neighbor.canSmoothWith)])"); \
 				}; \
 			} while(FALSE) \
 		}

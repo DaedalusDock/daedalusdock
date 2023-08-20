@@ -1,0 +1,12 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Sleeping heals instead of dealing damage.
+  - qol: Chem splashing can now be done with combat mode instead of right click.
+  - refactor: Regeants.
+  - rscdel: Reagent purity and pH
+  - rscadd: Digest vs Bloodstream vs Touching metabolisms.
+  - rscadd: You can wash off reagents on your skin using a shower or splashing water.
+  - refactor: Acid now takes into account the permeability of worn clothing.
+  - rscdel: Most Fermichem and Cobbychem medicines.
+  - rscadd: Trekchem and Goonchem reagents.

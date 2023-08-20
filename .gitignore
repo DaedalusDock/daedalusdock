@@ -216,4 +216,3 @@ libprof.so
 #Ignore everything but the example config in the media jsons directory, For easy testing.
 /config/media/jsons/*
 !/config/media/jsons/__EXAMPLE.json
-/config/_devtest.txt

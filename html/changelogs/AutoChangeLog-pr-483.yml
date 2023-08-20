@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Doors of all kinds will no longer "trap" dangerous gas inside when closing.

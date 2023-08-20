@@ -775,7 +775,9 @@
 		side_image = side.picture.picture_image
 		front_image = front.picture.picture_image
 	else
-		var/mob/M = get_top_level_mob()
+		var/mob/M = src
+		while(M && !ismob(M))
+			M = M.loc
 		if(!M)
 			return
 		front_image = getFlatIcon(mutable_appearance(M), WEST)

@@ -349,7 +349,7 @@
 	return null //no wound
 
 /obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness)
-	if((sharpness & SHARP_EDGED) && brute >= max_damage * DROPLIMB_THRESHOLD_EDGE)
+	if((sharpness & SHARP_EDGED) && (brute + src.brute_dam) >= max_damage * DROPLIMB_THRESHOLD_EDGE)
 		if(prob(brute))
 			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
 

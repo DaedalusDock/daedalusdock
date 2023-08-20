@@ -282,7 +282,7 @@
 	C.heal_overall_damage(30 * removed, 30 * removed, updating_health = FALSE)
 	APPLY_CHEM_EFFECT(C, CE_PULSE, -2)
 	for(var/obj/item/organ/I as anything in C.processing_organs)
-		if(!(I.status & ORGAN_ROBOTIC))
+		if(!(I.organ_flags & ORGAN_SYNTHETIC))
 			I.applyOrganDamage(-20*removed)
 	return TRUE
 
@@ -304,7 +304,7 @@
 		C.heal_overall_damage(50 * removed, 50 * removed, updating_health = FALSE)
 		APPLY_CHEM_EFFECT(C, CE_PULSE, -2)
 		for(var/obj/item/organ/I as anything in C.processing_organs)
-			if(!(I.status & ORGAN_ROBOTIC))
+			if(!(I.organ_flags & ORGAN_SYNTHETIC))
 				I.applyOrganDamage(-30*removed)
 		return TRUE
 
@@ -540,7 +540,7 @@
 
 	var/mob/living/carbon/human/H = C
 	for(var/obj/item/organ/I in H.processing_organs)
-		if(!(I.status & ORGAN_ROBOTIC))
+		if(!(I.organ_flags & ORGAN_SYNTHETIC))
 			if(istype(I, /obj/item/organ/brain))
 				// if we have located an organic brain, apply side effects
 				H.adjust_confusion(2 SECONDS)

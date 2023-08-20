@@ -526,11 +526,14 @@
 
 
 	//blunt damage is gud at fracturing
-	if(breaks_bones)
-		if(brute)
+	if(breaks_bones && brute)
+		if(bodypart_flags & BP_BROKEN_BONES)
 			jostle_bones(brute)
-			if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
-				break_bones()
+			if(prob(20))
+				spawn(-1)
+					owner?.emote("scream")
+		else if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
+			break_bones()
 
 
 	if(!damagable)

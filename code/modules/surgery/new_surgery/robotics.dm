@@ -212,7 +212,7 @@
 	if(!affected)
 		return
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if((I.status & ORGAN_ROBOTIC) && I.damage > 0)
+		if((I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			return TRUE
 	..()
 
@@ -223,7 +223,7 @@
 
 	var/list/organs = list()
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if((I.status & ORGAN_ROBOTIC) && I.damage > 0)
+		if((I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			organs[I.name] = I.slot
 
 	if(!length(organs))

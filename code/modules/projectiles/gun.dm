@@ -494,6 +494,21 @@
 			QDEL_NULL(pin)
 			return TRUE
 
+/obj/item/gun/on_disarm_attempt(mob/living/user, mob/living/attacker)
+	var/list/turfs = list()
+	for(var/turf/T in view())
+		turfs += T
+	if(length(turfs))
+		var/turf/shoot_to = pick(turfs)
+		if(process_fire(shoot_to, user, message = FALSE, bonus_spread = 10))
+			user.visible_message(
+				span_danger("\The [src] goes off during the struggle!"),
+				blind_message = span_hear("You hear a gunshot!")
+			)
+			log_combat(attacker, user, "caused a misfire with a disarm")
+			return TRUE
+		log_combat(attacker, user, "caused a misfire with a disarm, but the gun didn't go off")
+
 /obj/item/gun/proc/remove_bayonet(mob/living/user, obj/item/tool_item)
 	tool_item?.play_tool_sound(src)
 	to_chat(user, span_notice("You unfix [bayonet] from [src]."))

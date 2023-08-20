@@ -206,8 +206,7 @@
 		owner.adjust_fire_stacks(20)
 		owner.ignite_mob()
 		owner.adjustFireLoss(25)
-		organ_flags |= ORGAN_FAILING
-
+		set_organ_failing(TRUE)
 
 /obj/item/organ/cyberimp/arm/gun/laser
 	name = "arm-mounted laser implant"

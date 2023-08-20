@@ -85,6 +85,10 @@
 			blood_volume = max(blood_volume - amount, 0)
 	else if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 		amount = min(amount, 0)
+
+	if(amount > 0) //Not a toxin lover
+		amount *= (1 - (CHEM_EFFECT_MAGNITUDE(src, CE_ANTITOX) * 0.25)) || 1
+
 	return ..()
 
 /mob/living/carbon/pre_stamina_change(diff as num, forced)

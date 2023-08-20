@@ -7,7 +7,7 @@
 	for(var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
 		if(isabstract(reagent_type))
 			continue
-		if(!(initial(reagent_type.chemical_flags) & REAGENT_CAN_BE_SYNTHESIZED))
+		if((initial(reagent_type.chemical_flags) & REAGENT_SPECIAL))
 			continue
 
 		try

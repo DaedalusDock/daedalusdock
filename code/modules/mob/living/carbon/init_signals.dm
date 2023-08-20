@@ -43,6 +43,7 @@
 	reagents.end_metabolization(keep_liverless = TRUE)
 
 /mob/living/carbon/proc/on_softcrit_gain(datum/source)
+	ADD_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 	stamina.maximum -= 100
 	stamina.regen_rate -= 5
 	stamina.process()
@@ -50,6 +51,7 @@
 	add_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
 
 /mob/living/carbon/proc/on_softcrit_loss(datum/source)
+	REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 	stamina.maximum += 100
 	stamina.regen_rate += 5
 	stamina.process()

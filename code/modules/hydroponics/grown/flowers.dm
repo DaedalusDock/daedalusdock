@@ -17,7 +17,7 @@
 	icon_dead = "poppy-dead"
 	genes = list(/datum/plant_gene/trait/preserved)
 	mutatelist = list(/obj/item/seeds/poppy/geranium, /obj/item/seeds/poppy/lily)
-	reagents_add = list(/datum/reagent/medicine/c2/libital = 0.2, /datum/reagent/consumable/nutriment = 0.05)
+	reagents_add = list(/datum/reagent/medicine/morphine = 0.2, /datum/reagent/consumable/nutriment = 0.05)
 
 /obj/item/food/grown/poppy
 	seed = /obj/item/seeds/poppy
@@ -70,10 +70,9 @@
 	icon_grow = "spacemanstrumpet-grow"
 	icon_dead = "spacemanstrumpet-dead"
 	mutatelist = null
-	genes = list(/datum/plant_gene/reagent/preset/polypyr, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/preserved)
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05)
 	rarity = 30
-	graft_gene = /datum/plant_gene/reagent/preset/polypyr
 
 /obj/item/food/grown/trumpet
 	seed = /obj/item/seeds/poppy/lily/trumpet
@@ -274,7 +273,7 @@
 	icon_dead = "rose-dead"
 	mutatelist = list(/obj/item/seeds/carbon_rose)
 	//Roses are commonly used as herbal medicines (diarrhodons) and for their 'rose oil'.
-	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/granibitaluri = 0.1, /datum/reagent/fuel/oil = 0.05)
+	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/tricordrazine = 0.1, /datum/reagent/fuel/oil = 0.05)
 
 /obj/item/food/grown/rose
 	seed = /obj/item/seeds/rose
@@ -316,7 +315,7 @@
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 	icon_grow = "carbonrose-grow"
 	icon_dead = "carbonrose-dead"
-	reagents_add = list(/datum/reagent/plastic_polymers = 0.05)
+	reagents_add = list(/datum/reagent/carbon = 0.1)
 	rarity = 10
 	graft_gene = /datum/plant_gene/reagent/preset/carbon
 

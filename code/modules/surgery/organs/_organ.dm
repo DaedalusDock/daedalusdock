@@ -20,8 +20,8 @@
 	///Healing factor and decay factor function on % of maxhealth, and do not work by applying a static number per tick
 	var/healing_factor = 0 //fraction of maxhealth healed per on_life(), set to 0 for generic organs
 	var/decay_factor = 0 //same as above but when without a living owner, set to 0 for generic organs
-	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.45 //when severe organ damage occurs
-	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.1 //when minor organ damage occurs
+	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.7 //when severe organ damage occurs
+	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.3 //when minor organ damage occurs
 	var/severe_cooldown //cooldown for severe effects, used for synthetic organ emp effects.
 	///Organ variables for determining what we alert the owner with when they pass/clear the damage thresholds
 	var/prev_damage = 0
@@ -341,9 +341,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
 /obj/item/organ/proc/check_failing_thresholds()
 	if(damage >= maxHealth)
+		set_organ_failing(TRUE)
+	else if(damage < maxHealth)
+		set_organ_failing(FALSE)
+
+/// Set or unset the organ as failing. Returns TRUE on success.
+/obj/item/organ/proc/set_organ_failing(failing)
+	if(failing)
+		if(organ_flags & ORGAN_FAILING)
+			return FALSE
 		organ_flags |= ORGAN_FAILING
-	if(damage < maxHealth)
-		organ_flags &= ~ORGAN_FAILING
+		return TRUE
+	else
+		if(organ_flags & ORGAN_FAILING)
+			organ_flags &= ~ORGAN_FAILING
+			return TRUE
 
 //Looking for brains?
 //Try code/modules/mob/living/carbon/brain/brain_item.dm
@@ -427,7 +439,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_FAILING)
 		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
 
-	if(owner.has_reagent(/datum/reagent/inverse/technetium))
+	if(owner.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
 		. +=  tag ?"<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"

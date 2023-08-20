@@ -29,7 +29,7 @@
 	plantname = "Rainbow Weed"
 	product = /obj/item/food/grown/cannabis/rainbow
 	mutatelist = null
-	reagents_add = list(/datum/reagent/colorful_reagent = 0.05, /datum/reagent/medicine/psicodine = 0.03, /datum/reagent/drug/happiness = 0.1, /datum/reagent/toxin/mindbreaker = 0.1, /datum/reagent/toxin/lipolicide = 0.15, /datum/reagent/drug/space_drugs = 0.15)
+	reagents_add = list(/datum/reagent/colorful_reagent = 0.05, /datum/reagent/medicine/haloperidol = 0.03, /datum/reagent/toxin/mindbreaker = 0.1, /datum/reagent/toxin/lipolicide = 0.15, /datum/reagent/drug/space_drugs = 0.15)
 	rarity = 40
 
 /obj/item/seeds/cannabis/death
@@ -52,7 +52,7 @@
 	instability = 30
 	product = /obj/item/food/grown/cannabis/white
 	mutatelist = null
-	reagents_add = list(/datum/reagent/medicine/omnizine = 0.35, /datum/reagent/drug/cannabis = 0.15)
+	reagents_add = list(/datum/reagent/medicine/tricordrazine = 0.35, /datum/reagent/drug/cannabis = 0.15)
 	rarity = 40
 
 

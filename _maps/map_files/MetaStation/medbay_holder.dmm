@@ -264,20 +264,10 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/light/directional/west,
 /obj/structure/table,
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = -4;
-	pixel_y = 6
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 4;
-	pixel_y = 2
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_x = 8
-	},
-/obj/item/grenade/chem_grenade/smart_metal_foam{
-	pixel_y = 4
-	},
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
+/obj/item/grenade/chem_grenade/metalfoam,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/eva)
 "aS" = (
@@ -2716,7 +2706,7 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
-/obj/item/storage/pill_bottle/mannitol,
+/obj/item/storage/pill_bottle/alkysine,
 /obj/item/reagent_containers/dropper{
 	pixel_y = 6
 	},
@@ -4387,10 +4377,7 @@
 	pixel_x = 7;
 	pixel_y = -3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -4;
-	pixel_y = -3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = 3;
 	pixel_y = -2
@@ -4477,7 +4464,7 @@
 /area/station/medical/pharmacy)
 "lk" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "ll" = (
@@ -5286,9 +5273,7 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = 8
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -5
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine,
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /turf/open/floor/iron/white,
@@ -5557,13 +5542,6 @@
 /obj/structure/closet/secure_closet/chemical,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
-"nT" = (
-/obj/machinery/chem_mass_spec,
-/obj/effect/turf_decal/tile/yellow/half/contrasted{
-	dir = 4
-	},
-/turf/open/floor/iron/white,
-/area/station/medical/pharmacy)
 "nU" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -5722,9 +5700,7 @@
 	},
 /obj/structure/table/glass,
 /obj/item/reagent_containers/glass/bottle/epinephrine,
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe,
 /turf/open/floor/iron/white/side{
 	dir = 8
@@ -5874,10 +5850,7 @@
 	pixel_x = -4;
 	pixel_y = 12
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 7;
-	pixel_y = 12
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "oB" = (
@@ -6493,9 +6466,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "pW" = (
-/obj/machinery/chem_heater/withbuffer{
-	pixel_x = 4
-	},
+/obj/machinery/chem_heater,
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
@@ -11670,10 +11641,6 @@
 /area/station/medical/medbay/central)
 "BO" = (
 /obj/structure/rack,
-/obj/item/reagent_containers/glass/bottle/acidic_buffer{
-	pixel_x = 7;
-	pixel_y = 3
-	},
 /obj/item/reagent_containers/glass/bottle/basic_buffer{
 	pixel_x = -5;
 	pixel_y = 3
@@ -12197,9 +12164,7 @@
 	pixel_x = 7;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 1
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/iron/dark/textured_edge{
 	dir = 8
 	},
@@ -25489,7 +25454,7 @@ ll
 lQ
 mA
 nm
-nT
+mA
 oB
 pr
 pX

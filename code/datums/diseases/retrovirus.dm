@@ -3,7 +3,7 @@
 	max_stages = 4
 	spread_text = "Contact"
 	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
-	cure_text = "Rest or an injection of mutadone"
+	cure_text = "Rest or an injection of ryetalyn"
 	cure_chance = 3
 	agent = ""
 	viable_mobtypes = list(/mob/living/carbon/human)
@@ -17,7 +17,7 @@
 	..()
 	agent = "Virus class [pick("A","B","C","D","E","F")][pick("A","B","C","D","E","F")]-[rand(50,300)]"
 	if(prob(40))
-		cures = list(/datum/reagent/medicine/mutadone)
+		cures = list(/datum/reagent/medicine/ryetalyn)
 	else
 		restcure = 1
 

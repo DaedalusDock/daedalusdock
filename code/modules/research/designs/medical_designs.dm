@@ -61,15 +61,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/ph_meter
-	name = "Chemical Analyzer"
-	id = "ph_meter"
-	build_type = FABRICATOR
-	materials = list(/datum/material/glass = 2500, /datum/material/gold = 1000, /datum/material/titanium = 1000)
-	build_path = /obj/item/ph_meter
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/dna_disk
 	name = "Genetic Data Disk"
 	desc = "Produce additional disks for storing genetic data."

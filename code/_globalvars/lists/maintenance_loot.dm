@@ -127,7 +127,6 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/grenade/chem_grenade/cleaner = 1,
 		/obj/item/lead_pipe = 1,
 		/obj/item/reagent_containers/glass/beaker = 1,
-		/obj/item/reagent_containers/glass/bottle/random_buffer = 2,
 		/obj/item/reagent_containers/glass/rag = 1,
 		/obj/item/reagent_containers/hypospray/medipen/pumpup = 2,
 		/obj/item/reagent_containers/syringe = 1,
@@ -194,7 +193,6 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 		/obj/item/beacon = 1,
 		/obj/item/paper/fluff/stations/soap = 1, //recipes count as crafting.
 		/obj/item/plaque = 1,
-		/obj/item/seeds/kronkus = 1,
 		/obj/item/seeds/odious_puffball = 1,
 		/obj/item/stack/sheet/mineral/wood/fifty = 1,
 		/obj/item/stock_parts/cell/high = 1,
@@ -210,9 +208,8 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 			/obj/item/stack/medical/bruise_pack = 1,
 			) = 1,
 		list(//medical chems
-			/obj/item/reagent_containers/glass/bottle/multiver = 1,
+			/obj/item/reagent_containers/glass/bottle/dylovene = 1,
 			/obj/item/reagent_containers/hypospray/medipen = 1,
-			/obj/item/reagent_containers/syringe/convermol = 1,
 			) = 1,
 		list(//drinks
 			/obj/item/reagent_containers/food/drinks/bottle/vodka = 1,
@@ -229,7 +226,6 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 	list(//food
 		/obj/item/food/canned/peaches/maint = 1,
 		/obj/item/storage/box/donkpockets = 1,
-		/obj/item/storage/box/gum/happiness = 1,
 		list(//Donk Varieties
 			/obj/item/storage/box/donkpockets/donkpocketberry = 1,
 			/obj/item/storage/box/donkpockets/donkpockethonk = 1,
@@ -307,8 +303,8 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 			/obj/item/storage/medkit/regular = 1,
 			) = 1,
 		list(//medical chems
-			/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
-			/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
+			/obj/item/reagent_containers/hypospray/medipen/dermaline = 1,
+			/obj/item/reagent_containers/hypospray/medipen/meralyne = 1,
 			/obj/item/reagent_containers/syringe/contraband/methamphetamine = 1,
 			) = 1,
 		) = 1,
@@ -334,7 +330,6 @@ GLOBAL_LIST_INIT(oddity_loot, list(//oddity: strange or crazy items
 		/obj/item/dice/d20/fate/stealth/one_use = 1, //Looks like a d20, keep the d20 in the uncommon pool.
 		/obj/item/shadowcloak = 1,
 		/obj/item/spear/grey_tide = 1,
-		/obj/item/storage/box/donkpockets/donkpocketgondola = 1,
 		list(//music
 			/obj/item/instrument/saxophone/spectral = 1,
 			/obj/item/instrument/trombone/spectral = 1,

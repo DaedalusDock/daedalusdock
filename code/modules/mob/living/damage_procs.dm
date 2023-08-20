@@ -260,10 +260,8 @@
  *
  * needs to return amount healed in order to calculate things like tend wounds xp gain
  */
-/mob/living/proc/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
+/mob/living/proc/heal_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_status)
 	. = (adjustBruteLoss(-brute, FALSE) + adjustFireLoss(-burn, FALSE)) //zero as argument for no instant health update
-	if(stamina)
-		stack_trace("heal_bodypart_damage tried to heal stamina!")
 	if(updating_health)
 		updatehealth()
 

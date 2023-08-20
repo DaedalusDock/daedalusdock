@@ -11,7 +11,6 @@
 /turf/open/floor/plastic,
 /area/ruin/bughabitat)
 "aR" = (
-/obj/item/reagent_containers/syringe/syriniver,
 /obj/effect/turf_decal/siding/wideplating/dark/corner,
 /obj/effect/turf_decal/tile/dark/anticorner,
 /turf/open/floor/iron,

@@ -27,7 +27,6 @@
 			return
 
 		var/trans = 0
-		var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 
 		if(ismob(target))
 			if(ishuman(target))
@@ -54,7 +53,6 @@
 			target.visible_message(span_danger("[user] squirts something into [target]'s eyes!"), \
 									span_userdanger("[user] squirts something into your eyes!"))
 
-			reagents.expose(target, TOUCH, fraction)
 			var/mob/M = target
 			var/R
 			if(reagents)
@@ -63,7 +61,7 @@
 
 			log_combat(user, M, "squirted", R)
 
-		trans = src.reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
+		trans = src.reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user, methods = TOUCH)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution."))
 		update_appearance()
 

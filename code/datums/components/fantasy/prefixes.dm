@@ -121,7 +121,6 @@
 		/datum/reagent/toxin/mutetoxin,
 		/datum/reagent/toxin/amanitin,
 		/datum/reagent/toxin/lipolicide,
-		/datum/reagent/toxin/spewium,
 		/datum/reagent/toxin/heparin,
 		/datum/reagent/toxin/rotatium,
 		/datum/reagent/toxin/histamine
@@ -131,7 +130,6 @@
 		/datum/reagent/toxin/mutetoxin = "mimemind",
 		/datum/reagent/toxin/amanitin = "dormant death",
 		/datum/reagent/toxin/lipolicide = "famineblood",
-		/datum/reagent/toxin/spewium = "gulchergut",
 		/datum/reagent/toxin/heparin = "jabberwound",
 		/datum/reagent/toxin/rotatium = "spindown",
 		/datum/reagent/toxin/histamine = "creeping malaise"

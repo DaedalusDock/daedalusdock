@@ -966,6 +966,14 @@
 
 	if(bandage)
 		bleed_rate *= bandage.absorption_rate_modifier
+
+	var/coag_level = CHEM_EFFECT_MAGNITUDE(owner, CE_ANTICOAGULANT)
+	if(coag_level)
+		if(coag_level > 0)
+			bleed_rate *= 1 + coag_level
+		else
+			bleed_rate *= 0.5 / coag_level
+
 	return bleed_rate
 
 // how much blood the limb needs to be losing per tick (not counting laying down/self grasping modifiers) to get the different bleed icons

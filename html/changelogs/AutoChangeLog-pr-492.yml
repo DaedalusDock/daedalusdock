@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Security Helmet flashlight behaviour is now a lot more reliable

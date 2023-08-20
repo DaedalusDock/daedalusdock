@@ -89,6 +89,7 @@
 
 /// Push a signal onto the queue, Drop a packet if we're over the limit.
 /obj/item/computer_hardware/network_card/packetnet/proc/push_signal(datum/signal/signal)
+	PRIVATE_PROC(TRUE)
 	if(signal.has_magic_data & MAGIC_DATA_MUST_DISCARD)
 		return //We can't hold volatile signals.
 	if(length(packet_queue) == queue_max)

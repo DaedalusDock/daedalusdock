@@ -149,6 +149,11 @@ export const NtosMessenger = (props, context) => {
                 content={`Sort by: ${sortByJob ? "Job" : "Name"}`}
                 onClick={() => act('PDA_changeSortStyle')}
               />
+              <Button
+                icon="wifi"
+                content={`Scan for PDAs`}
+                onClick={() => act('PDA_scanForPDAs')}
+              />
               {!!virus_attach && (
                 <Button
                   icon="bug"

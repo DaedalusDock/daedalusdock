@@ -44,8 +44,10 @@
 	var/obj/item/computer_hardware/network_card/packetnet/netcard_cache
 	/// Learned PDA info tuples
 	///
-	///list(d_addr1 = list(d_addr1, name, job), d_addr2=list(d_addr2, name, job)...)
-	var/list/known_cells = list()
+	///list(d_addr1 = list(d_addr1, name, job), d_addr2=list(d_addr2, name, job),...)
+	var/list/known_cells
+	/// TGUI display format, list(list("target_addr"="addr","name"="name","job"="job"),...)
+	var/list/known_cells_display
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
 	if(istype(user, /mob/living/silicon))
@@ -98,6 +100,9 @@
 	//Network ID verification is "hardware accelerated" (AKA: Done for us by the card)
 
 	var/rigged = FALSE//are we going to explode?
+
+	//Due to BYOND's lack of dynamic switch statements, we get to run this massive ifchain..
+
 	// "Exploiting a bug" my ass this shit is going to suck to write.
 	// ESPECIALLY THIS FUCKER RIGHT HERE vvvv
 	if(signal_command == SSpackets.detomatix_magic_packet)
@@ -118,7 +123,6 @@
 				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
 			//Intentional fallthrough.
-
 	if(signal_command == NETCMD_PDAMESSAGE)
 		var/list/message_data = list(
 			"name" = signal_data["name"] || "#UNK",
@@ -294,3 +298,29 @@
 		if("PDA_toggleVirus")
 			sending_virus = !sending_virus
 			return(UI_UPDATE)
+		if("PDA_scanForPDAs")
+			var/obj/item/computer_hardware/network_card/packetnet/pnetcard = computer.all_components[MC_NET]
+			if(!istype(pnetcard)) //This catches nulls too, so...
+				to_chat(usr, span_warning("Radio missing or bad driver!"))
+
+/datum/computer_file/program/messenger/ui_data(mob/user)
+	var/list/data = get_header_data()
+
+	var/obj/item/computer_hardware/hard_drive/role/disk = computer.all_components[MC_HDD_JOB]
+
+	data["owner"] = computer.saved_identification
+	data["messages"] = messages
+	data["ringer_status"] = ringer_status
+	data["sending_and_receiving"] = sending_and_receiving
+	data["messengers"] = known_cells
+	data["viewing_messages"] = viewing_messages
+	data["sortByJob"] = sort_by_job
+	data["isSilicon"] = is_silicon
+	data["photo"] = photo_path
+
+	if(disk)
+		data["canSpam"] = disk.CanSpam()
+		data["virus_attach"] = istype(disk, /obj/item/computer_hardware/hard_drive/role/virus)
+		data["sending_virus"] = sending_virus
+
+	return data

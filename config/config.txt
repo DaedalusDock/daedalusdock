@@ -629,4 +629,5 @@ PR_ANNOUNCEMENTS_PER_ROUND 5
 #FORBID_ADMIN_PROFILING
 
 #Included last to allow developers have stable test configs
-$include _devtest.txt
+#this file is gitignored.
+$include _config_nogit.txt
